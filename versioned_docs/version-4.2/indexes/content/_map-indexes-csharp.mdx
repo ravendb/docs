@@ -11,13 +11,13 @@ These **mapping functions** are **LINQ-based functions** or  **JavaScript functi
 
 You can:
 
-- [index single fields](../indexes/map-indexes.mdx#indexing-single-fields)
-- [combine multiple fields](../indexes/map-indexes.mdx#combining-multiple-fields-together) together
-- [index partial field data](../indexes/map-indexes.mdx#indexing-partial-field-data)
-- [index nested data](../indexes/map-indexes.mdx#indexing-nested-data)
-- [index fields from related documents](../indexes/indexing-related-documents.mdx)
-- [index fields from multiple collections](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)
-- [configure whether to index a document if the specified fields are `null`](../indexes/map-indexes.mdx#indexing-missing-fields)
+- [index single fields](../../indexes/map-indexes.mdx#indexing-single-fields)
+- [combine multiple fields](../../indexes/map-indexes.mdx#combining-multiple-fields-together) together
+- [index partial field data](../../indexes/map-indexes.mdx#indexing-partial-field-data)
+- [index nested data](../../indexes/map-indexes.mdx#indexing-nested-data)
+- [index fields from related documents](../../indexes/indexing-related-documents.mdx)
+- [index fields from multiple collections](../../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)
+- [configure whether to index a document if the specified fields are `null`](../../indexes/map-indexes.mdx#indexing-missing-fields)
 
 ## Indexing Single Fields
 
@@ -50,7 +50,7 @@ Let's create an index that will help us search for `Employees` by their `FirstNa
 </TabItem>
 </Tabs>
 
-You might notice that we're passing `Employee` as a generic parameter to `AbstractIndexCreationTask`. This gives our indexing function a strongly-typed syntax. If you are not familiar with `AbstractIndexCreationTask`, you can read [this](../indexes/creating-and-deploying.mdx) article before proceeding.
+You might notice that we're passing `Employee` as a generic parameter to `AbstractIndexCreationTask`. This gives our indexing function a strongly-typed syntax. If you are not familiar with `AbstractIndexCreationTask`, you can read [this](../../indexes/creating-and-deploying.mdx) article before proceeding.
 
 - The next step is to create the indexing function itself. This is done by setting the `Map` property with our function in a **parameterless constructor**.
 
@@ -102,7 +102,7 @@ You might notice that we're passing `Employee` as a generic parameter to `Abstra
 </TabItem>
 </Tabs>
 
-- The final step is to [deploy it](../indexes/creating-and-deploying.mdx) to the server and issue a query using the session [Query](../client-api/session/querying/how-to-query.mdx) method:
+- The final step is to [deploy it](../../indexes/creating-and-deploying.mdx) to the server and issue a query using the session [Query](../../client-api/session/querying/how-to-query.mdx) method:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -347,7 +347,7 @@ where FullName = 'Robert King'
 In this example, the index field `Query` combines all values from various Employee fields into one. 
 The default Analyzer on fields is changed to enable `Full Text Search` operations. The matches no longer need to be exact.
 
-You can read more about analyzers and `Full Text Search` [here](../indexes/using-analyzers.mdx).
+You can read more about analyzers and `Full Text Search` [here](../../indexes/using-analyzers.mdx).
 
 </Admonition>
 
@@ -704,19 +704,19 @@ where Country = 'USA'
 </TabItem>
 </Tabs>
 
-If a document relationship is represented by the document's ID, you can use the `LoadDocument` method to retrieve such a document. More about it can be found [here](../indexes/indexing-related-documents.mdx).
+If a document relationship is represented by the document's ID, you can use the `LoadDocument` method to retrieve such a document. More about it can be found [here](../../indexes/indexing-related-documents.mdx).
 
 ## Indexing Multiple Collections
 
-Read the article dedicated to `Multi-Map` indexes [here](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes).
+Read the article dedicated to `Multi-Map` indexes [here](../../indexes/indexing-polymorphic-data.mdx#multi-map-indexes).
 
 ## Indexing Missing Fields
 
 By default, indexes will not index a document that contains none of the specified fields. This behavior can be changed 
-using the [Indexing.IndexEmptyEntries](../server/configuration/indexing-configuration.mdx#indexingindexemptyentries) 
+using the [Indexing.IndexEmptyEntries](../../server/configuration/indexing-configuration.mdx#indexingindexemptyentries) 
 configuration option.  
 
-The option [Indexing.IndexMissingFieldsAsNull](../server/configuration/indexing-configuration.mdx#indexingindexmissingfieldsasnull) 
+The option [Indexing.IndexMissingFieldsAsNull](../../server/configuration/indexing-configuration.mdx#indexingindexmissingfieldsasnull) 
 determines whether missing fields in documents are indexed with the value `null`, or not indexed at all.  
 
 

@@ -24,7 +24,7 @@ void RegisterFileDeletion(FileHeader file, Etag etag = null);
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **path** | string | The full file path |
-| **file** | [FileHeader](../../../glossary/file-header.mdx) | The file represented by `FileHeader` |
+| **file** | [FileHeader](../../../../glossary/file-header.mdx) | The file represented by `FileHeader` |
 | **etag** | Etag | Current file Etag, used for concurrency checks (`null` will skip the check) |
 
 <Admonition type="warning" title="FileNotFoundException" id="filenotfoundexception" href="#filenotfoundexception">
@@ -72,7 +72,7 @@ You need to specify the valid Lucene query as a string value.
 
 ### Example
 
-The below code deletes all files which names end with `.draft` (note the usage of the built-in `__rfileName` term, click [here](../../indexing.mdx) to see more built-in index fields)
+The below code deletes all files which names end with `.draft` (note the usage of the built-in `__rfileName` term, click [here](../../../indexing.mdx) to see more built-in index fields)
 
 <TabItem value="register_deletion_query_2" label="register_deletion_query_2">
 <CodeBlock language="csharp">

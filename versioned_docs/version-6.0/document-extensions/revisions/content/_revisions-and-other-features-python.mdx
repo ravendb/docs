@@ -10,14 +10,14 @@ import CodeBlock from '@theme/CodeBlock';
     * How revisions are supported by other features  
 
 * In this page:  
-   * [Revisions and Counters](../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-and-counters)  
-   * [Revisions and Time Series](../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-and-time-series)  
-   * [Revisions and Attachments](../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-and-attachments)  
-   * [Revisions and Replication](../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-and-replication)
-   * [Revisions and ETL](../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-and-etl)
-   * [Revisions and Backup](../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-and-backup)  
-   * [Revisions and Data Subscriptions](../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-and-data-subscriptions)
-   * [Revisions Import and Export](../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-import-and-export)
+   * [Revisions and Counters](../../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-and-counters)  
+   * [Revisions and Time Series](../../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-and-time-series)  
+   * [Revisions and Attachments](../../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-and-attachments)  
+   * [Revisions and Replication](../../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-and-replication)
+   * [Revisions and ETL](../../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-and-etl)
+   * [Revisions and Backup](../../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-and-backup)  
+   * [Revisions and Data Subscriptions](../../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-and-data-subscriptions)
+   * [Revisions Import and Export](../../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-import-and-export)
 
 </Admonition>
 ## Revisions and Counters
@@ -28,7 +28,7 @@ import CodeBlock from '@theme/CodeBlock';
   * A new counter is **created** on the document.  
   * A counter is **deleted** from the document.
     
-* A revision will Not be created upon modifying the value of an existing [counter](../../document-extensions/counters/overview.mdx).
+* A revision will Not be created upon modifying the value of an existing [counter](../../../document-extensions/counters/overview.mdx).
 ### Stored data:
 
 * A revision that is created for a document that contains counters  
@@ -57,7 +57,7 @@ import CodeBlock from '@theme/CodeBlock';
 </TabItem>
 ### Reverted data:
 
-When a document is [reverted](../../document-extensions/revisions/revert-revisions.mdx) to a revision that has counters,  
+When a document is [reverted](../../../document-extensions/revisions/revert-revisions.mdx) to a revision that has counters,  
 the counters from the revision are restored to functionality along with their values.  
 
 
@@ -71,7 +71,7 @@ the counters from the revision are restored to functionality along with their va
     * A time series is **deleted** from the document.  
       (A time series is deleted from a document when all its entries are deleted)
 
-* A revision will Not be created upon modifying the values of an existing [time series](../../document-extensions/timeseries/overview.mdx).
+* A revision will Not be created upon modifying the values of an existing [time series](../../../document-extensions/timeseries/overview.mdx).
 ### Stored Data:
 
 * A revision that is created for a document that contains time series  
@@ -83,7 +83,7 @@ the counters from the revision are restored to functionality along with their va
   * The number of entries in each time series
   * Dates of the first and last entry in each time series
   
-* Read more about Revisions and Time Series [here](../../document-extensions/timeseries/time-series-and-other-features.mdx#revisions).
+* Read more about Revisions and Time Series [here](../../../document-extensions/timeseries/time-series-and-other-features.mdx#revisions).
 
 * Sample revision metadata:  
 <TabItem value="json" label="json">
@@ -111,7 +111,7 @@ the counters from the revision are restored to functionality along with their va
 </TabItem>
 ### Reverted Data:
 
-When a document is [reverted](../../document-extensions/revisions/revert-revisions.mdx) to a revision that has a time series:  
+When a document is [reverted](../../../document-extensions/revisions/revert-revisions.mdx) to a revision that has a time series:  
 
 * If the current document **contains** a time series name as in the revision:
     * The reverted document will keep the time series entries & values as it was in the current document.
@@ -130,7 +130,7 @@ When a document is [reverted](../../document-extensions/revisions/revert-revisio
 
 A document revision will be created when:  
 
-  * A new [attachment](../../document-extensions/attachments/what-are-attachments.mdx) is **added** to the document.  
+  * A new [attachment](../../../document-extensions/attachments/what-are-attachments.mdx) is **added** to the document.  
   * An attachment is **deleted** from the document.   
 ### Stored Data:
 
@@ -170,27 +170,27 @@ A document revision will be created when:
 </TabItem>
 ### Reverted Data:
 
-When a document is [reverted](../../document-extensions/revisions/revert-revisions.mdx) to a revision that has attachments,  
+When a document is [reverted](../../../document-extensions/revisions/revert-revisions.mdx) to a revision that has attachments,  
 the attachments are restored to their state when the revision was created.
 
 
 
 ## Revisions and Replication
 
-* Revisions are transferred during [replication](../../server/clustering/replication/replication-overview.mdx) from one database instance to another.
+* Revisions are transferred during [replication](../../../server/clustering/replication/replication-overview.mdx) from one database instance to another.
 
 * The revisions will be replicated by all replication types:
-   * [Internal replication](../../server/clustering/replication/replication-overview.mdx#internal-replication)
-   * [External replication](../../server/clustering/replication/replication-overview.mdx#external-replication)
-   * [Hub/Sink replication](../../server/clustering/replication/replication-overview.mdx#hubsink-replication)
+   * [Internal replication](../../../server/clustering/replication/replication-overview.mdx#internal-replication)
+   * [External replication](../../../server/clustering/replication/replication-overview.mdx#external-replication)
+   * [Hub/Sink replication](../../../server/clustering/replication/replication-overview.mdx#hubsink-replication)
 
-* Revisions can [help keep data consistency](../../server/clustering/replication/replication-overview.mdx#how-revisions-replication-help-data-consistency).  
+* Revisions can [help keep data consistency](../../../server/clustering/replication/replication-overview.mdx#how-revisions-replication-help-data-consistency).  
 
 
 
 ## Revisions and ETL
 
-* An [ETL](../../server/ongoing-tasks/etl/raven.mdx) ongoing task does Not send  revisions to the destination database.  
+* An [ETL](../../../server/ongoing-tasks/etl/raven.mdx) ongoing task does Not send  revisions to the destination database.  
 
 * However, if revisions are enabled on the destination database,  
   whenever the ETL process sends a modified document and the target document is overwritten,  
@@ -200,22 +200,22 @@ the attachments are restored to their state when the revision was created.
 
 ## Revisions and Backup
 
-Revisions are [backed up](../../server/ongoing-tasks/backup-overview.mdx#backup-contents) both by a logical-backup and by a snapshot.
+Revisions are [backed up](../../../server/ongoing-tasks/backup-overview.mdx#backup-contents) both by a logical-backup and by a snapshot.
 
 
 
 ## Revisions and Data Subscriptions
 
-* Learn about revisions and data subscriptions [here](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx).  
+* Learn about revisions and data subscriptions [here](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx).  
 
 
 
 ## Revisions Import and Export
 
 * Revisions can be imported and exported with a `.ravendbdump` file 
-  from the [import](../../studio/database/tasks/import-data/import-data-file.mdx#import-options) and [export](../../studio/database/tasks/export-database.mdx#export-options) views in the Studio  
+  from the [import](../../../studio/database/tasks/import-data/import-data-file.mdx#import-options) and [export](../../../studio/database/tasks/export-database.mdx#export-options) views in the Studio  
 
-* Revisions can be imported when migrating data from another [live RavenDB server](../../studio/database/tasks/import-data/import-from-ravendb.mdx#step-#4:-set-import-options).
+* Revisions can be imported when migrating data from another [live RavenDB server](../../../studio/database/tasks/import-data/import-from-ravendb.mdx#step-#4:-set-import-options).
 
   ![Import from Live Server](../assets/import-from-live-server.png)
 

@@ -7,16 +7,16 @@ import CodeBlock from '@theme/CodeBlock';
 
 * This article provides examples of projecting query results when querying a **static-index**.
 
-* Prior to reading this article, please refer to [query results projection overview](../../client-api/session/querying/how-to-project-query-results.mdx) 
+* Prior to reading this article, please refer to [query results projection overview](../../../client-api/session/querying/how-to-project-query-results.mdx) 
   for general knowledge about Projections and for dynamic-queries examples.  
 
 * In this page:  
-    * [Projection Methods](../../indexes/querying/projections.mdx#select):  
-      * [Select](../../indexes/querying/projections.mdx#select)  
-      * [ProjectInto](../../indexes/querying/projections.mdx#projectinto)  
-      * [SelectFields](../../indexes/querying/projections.mdx#selectfields)  
-    * [Projection behavior with a static-index](../../indexes/querying/projections.mdx#projection-behavior-with-a-static-index)  
-    * [OfType](../../indexes/querying/projections.mdx#oftype)  
+    * [Projection Methods](../../../indexes/querying/projections.mdx#select):  
+      * [Select](../../../indexes/querying/projections.mdx#select)  
+      * [ProjectInto](../../../indexes/querying/projections.mdx#projectinto)  
+      * [SelectFields](../../../indexes/querying/projections.mdx#selectfields)  
+    * [Projection behavior with a static-index](../../../indexes/querying/projections.mdx#projection-behavior-with-a-static-index)  
+    * [OfType](../../../indexes/querying/projections.mdx#oftype)  
 
 </Admonition>
 ## Select
@@ -109,14 +109,14 @@ select FirstName as EmployeeFirstName, LastName as EmployeeLastName
   * In the above example, the fields to return by the projection that are specified in the `Select` method  
     (`x.FirstName` & `x.LastName`) are recognized by the compiler as fields of the `IndexEntry` class.
   
-  * If you wish to specify fields from the original 'Employee' class type then follow [this example](../../indexes/querying/projections.mdx#oftype) that uses `OfType`.  
+  * If you wish to specify fields from the original 'Employee' class type then follow [this example](../../../indexes/querying/projections.mdx#oftype) that uses `OfType`.  
 
 * **Source of projection fields**:  
 
-  * Since the index-fields in this example are not [Stored in the index](../../indexes/storing-data-in-index.mdx), and no projection behavior was defined,  
+  * Since the index-fields in this example are not [Stored in the index](../../../indexes/storing-data-in-index.mdx), and no projection behavior was defined,  
     resulting values for `FirstName` & `LastName` will be retrieved from the matching Employee document in the storage.
   
-  * This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections.mdx#projection-behavior-with-a-static-index) used when querying a static-index.
+  * This behavior can be modified by setting the [projection behavior](../../../indexes/querying/projections.mdx#projection-behavior-with-a-static-index) used when querying a static-index.
 
 </Admonition>
 
@@ -196,7 +196,7 @@ select FirstName as EmployeeFirstName, LastName as EmployeeLastName
 * In this example, the projected fields (`FirstName` and `LastName`) are stored in the index,  
   so by default, the resulting values will come directly from the index and Not from the Employee document in the storage.
 
-* This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections.mdx#projection-behavior-with-a-static-index) used when querying a static-index.
+* This behavior can be modified by setting the [projection behavior](../../../indexes/querying/projections.mdx#projection-behavior-with-a-static-index) used when querying a static-index.
 </Admonition>
 
 <Admonition type="note" title="">
@@ -935,7 +935,7 @@ select ContactName, ContactTitle
 
 ## SelectFields
 
-The `SelectFields` method can only be used by a [Document Query](../../client-api/session/querying/document-query/what-is-document-query.mdx).  
+The `SelectFields` method can only be used by a [Document Query](../../../client-api/session/querying/document-query/what-is-document-query.mdx).  
 It has two overloads:
 
 <TabItem value="csharp" label="csharp">
@@ -1150,7 +1150,7 @@ select ProductName, PricePerUnit
 ## Projection behavior with a static-index
 
 * **By default**, when querying a static-index and projecting query results,  
-  the server will try to retrieve the fields' values from the fields [stored in the index](../../indexes/storing-data-in-index.mdx).  
+  the server will try to retrieve the fields' values from the fields [stored in the index](../../../indexes/storing-data-in-index.mdx).  
   If the index does Not store those fields then the fields' values will be retrieved from the documents.
 
 * This behavior can be modified by setting the **projection behavior**.

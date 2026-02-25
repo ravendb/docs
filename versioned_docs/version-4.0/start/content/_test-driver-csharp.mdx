@@ -5,12 +5,12 @@ import CodeBlock from '@theme/CodeBlock';
 
 In this section we will explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) in order to write unit tests for working with RavenDB.
 
-- [RavenServerLocator](../start/test-driver.mdx#ravenserverlocator)
-- [RavenTestDriver](../start/test-driver.mdx#raventestdriver)
-- [Pre-initializing the store](../start/test-driver.mdx#preinitialize)
-- [Unit test](../start/test-driver.mdx#unittest)
-- [Complete example](../start/test-driver.mdx#complete-example)
-- [CI Servers](../start/test-driver.mdx#continuous-integration-servers)
+- [RavenServerLocator](../../start/test-driver.mdx#ravenserverlocator)
+- [RavenTestDriver](../../start/test-driver.mdx#raventestdriver)
+- [Pre-initializing the store](../../start/test-driver.mdx#preinitialize)
+- [Unit test](../../start/test-driver.mdx#unittest)
+- [Complete example](../../start/test-driver.mdx#complete-example)
+- [CI Servers](../../start/test-driver.mdx#continuous-integration-servers)
 
 ## RavenServerLocator
 
@@ -133,7 +133,7 @@ The first thing we need to implement is a class derived from `RavenServerLocator
 ## RavenTestDriver
 
 Now that we learned how to implement a server locator we can define a class that derives from Raven's TestDriver.
-Let's start with reviewing the TestDriver's methods and properties and later we will get into implementation (complete code sample of a RavenTestDriver can be found at the [bottom](../start/test-driver.mdx##complete-example) of the page).
+Let's start with reviewing the TestDriver's methods and properties and later we will get into implementation (complete code sample of a RavenTestDriver can be found at the [bottom](../../start/test-driver.mdx##complete-example) of the page).
 
 ### Properties and Methods
 | Signature | Description |
@@ -175,7 +175,7 @@ protected override void PreInitialize(IDocumentStore documentStore)
 ## UnitTest
 Finally we can write down a simple test, note that I'm using [xunit](https://www.nuget.org/packages/xunit/) for my test framework in the below example.
 Also note that the test itself is meant to show diffrent capabilities of the test driver and is not meant to be the most efficient.
-The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver.mdx##complete-example)
+The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../../start/test-driver.mdx##complete-example)
 
 ### Example
 

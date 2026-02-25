@@ -5,30 +5,30 @@ import CodeBlock from '@theme/CodeBlock';
 
 This API article demonstrates how to create various ETL tasks and the connection strings required.  
 
-* You can add an ETL task by using the [**AddEtlOperation** method](../../../../client-api/operations/maintenance/etl/add-etl.mdx#addetloperation).  
+* You can add an ETL task by using the [**AddEtlOperation** method](../../../../../client-api/operations/maintenance/etl/add-etl.mdx#addetloperation).  
 
 * ETL tasks are ongoing tasks that:
   1. Extract selected data from your source database when changes are made or new data is added.
   2. Apply a transform script on the data.
   3. Load the transformed data to a destination that you designate.  
 
-* To learn more about ETL (Extract, Transfer, Load) ongoing tasks, see this article on [ETL Basics](../../../../server/ongoing-tasks/etl/basics.mdx).  
+* To learn more about ETL (Extract, Transfer, Load) ongoing tasks, see this article on [ETL Basics](../../../../../server/ongoing-tasks/etl/basics.mdx).  
 
-* To learn how to manage ETL tasks using the Studio see: [RavenDB ETL Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx).  
+* To learn how to manage ETL tasks using the Studio see: [RavenDB ETL Task](../../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx).  
 In this page:
 
-* [AddEtlOperation](../../../../client-api/operations/maintenance/etl/add-etl.mdx#addetloperation)  
-* [Add Raven ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#add-raven-etl)  
-    * [Creating a Connection String for Raven ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#creating-a-connection-string-for-raven-etl)  
-    * [Code Sample to Add Raven ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#code-sample-to-add-raven-etl)  
+* [AddEtlOperation](../../../../../client-api/operations/maintenance/etl/add-etl.mdx#addetloperation)  
+* [Add Raven ETL](../../../../../client-api/operations/maintenance/etl/add-etl.mdx#add-raven-etl)  
+    * [Creating a Connection String for Raven ETL](../../../../../client-api/operations/maintenance/etl/add-etl.mdx#creating-a-connection-string-for-raven-etl)  
+    * [Code Sample to Add Raven ETL](../../../../../client-api/operations/maintenance/etl/add-etl.mdx#code-sample-to-add-raven-etl)  
 
-* [Add Sql ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#add-sql-etl)  
-    * [Creating a Connection String for Sql ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#creating-a-connection-string-for-sql-etl)  
-    * [Code Sample to Add Sql ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#code-sample-to-add-sql-etl)  
+* [Add Sql ETL](../../../../../client-api/operations/maintenance/etl/add-etl.mdx#add-sql-etl)  
+    * [Creating a Connection String for Sql ETL](../../../../../client-api/operations/maintenance/etl/add-etl.mdx#creating-a-connection-string-for-sql-etl)  
+    * [Code Sample to Add Sql ETL](../../../../../client-api/operations/maintenance/etl/add-etl.mdx#code-sample-to-add-sql-etl)  
 
-* [Add OLAP ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#add-olap-etl)  
-    * [Creating a Connection String for Olap ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#creating-a-connection-string-for-olap-etl)  
-    * [Code Sample to Add Olap ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#code-sample-to-add-olap-etl)  
+* [Add OLAP ETL](../../../../../client-api/operations/maintenance/etl/add-etl.mdx#add-olap-etl)  
+    * [Creating a Connection String for Olap ETL](../../../../../client-api/operations/maintenance/etl/add-etl.mdx#creating-a-connection-string-for-olap-etl)  
+    * [Code Sample to Add Olap ETL](../../../../../client-api/operations/maintenance/etl/add-etl.mdx#code-sample-to-add-olap-etl)  
 
 
 
@@ -49,21 +49,21 @@ In this page:
 
 ## Add Raven ETL Task
 
-[Raven ETL](../../../../server/ongoing-tasks/etl/raven.mdx) tasks enable ongoing Extract, Transform, Load functionality from a RavenDB source database to a RavenDB destination.  
+[Raven ETL](../../../../../server/ongoing-tasks/etl/raven.mdx) tasks enable ongoing Extract, Transform, Load functionality from a RavenDB source database to a RavenDB destination.  
 
 ### Creating a Connection String for Raven ETL
 
 <Admonition type="note" title="Secure servers" id="secure-servers" href="#secure-servers">
- To [connect secure RavenDB servers](../../../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers:-importing-and-exporting-certificates) 
+ To [connect secure RavenDB servers](../../../../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers:-importing-and-exporting-certificates) 
  you need to 
 
   1. Export the server certificate from the source server. 
   2. Install it as a client certificate on the destination server.  
 
- This can be done in the RavenDB Studio -&gt; Server Management -&gt; [Certificates view](../../../../server/security/authentication/certificate-management.mdx#studio-certificates-management-view).
+ This can be done in the RavenDB Studio -&gt; Server Management -&gt; [Certificates view](../../../../../server/security/authentication/certificate-management.mdx#studio-certificates-management-view).
 </Admonition>
 
-* After passing the certificate, you can either create an ETL with a connection string and transformation script [via the studio](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx) 
+* After passing the certificate, you can either create an ETL with a connection string and transformation script [via the studio](../../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx) 
   or with the following API.  
   
 <TabItem value="raven_etl_connection_string" label="raven_etl_connection_string">
@@ -132,7 +132,7 @@ AddEtlOperationResult result = store.Maintenance.Send(operation);
 
 ## Add Sql ETL
 
-[SQL ETL](../../../../server/ongoing-tasks/etl/sql.mdx) tasks enable ongoing Extract, Transform, Load functionality from RavenDB to SQL servers. 
+[SQL ETL](../../../../../server/ongoing-tasks/etl/sql.mdx) tasks enable ongoing Extract, Transform, Load functionality from RavenDB to SQL servers. 
 
 ### Creating a Connection String for Sql ETL
 
@@ -228,7 +228,7 @@ AddEtlOperationResult result = store.Maintenance.Send(operation);
 
 ## Add OLAP ETL
 
-[Olap ETL](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx) is an ETL process that converts RavenDB data to the Apache Parquet file format  
+[Olap ETL](../../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx) is an ETL process that converts RavenDB data to the Apache Parquet file format  
 and sends it to local storage, cloud servers or File Transfer Protocol.
 
 ### Creating a Connection String for Olap ETL
@@ -252,7 +252,7 @@ var resultOlapString = store.Maintenance.Send
 </CodeBlock>
 </TabItem>
   
-To see API with properties to connect to various cloud servers and an in-depth explanation of transform scripts, see the [Olap ETL article](../../../../server/ongoing-tasks/etl/olap.mdx#section-1).  
+To see API with properties to connect to various cloud servers and an in-depth explanation of transform scripts, see the [Olap ETL article](../../../../../server/ongoing-tasks/etl/olap.mdx#section-1).  
   
 The following code sample is for a connection string to Amazon AWS. If you use Google or Microsoft cloud servers, change the parameters accordingly.   
 <TabItem value="olap_Etl_AWS_connection_string" label="olap_Etl_AWS_connection_string">

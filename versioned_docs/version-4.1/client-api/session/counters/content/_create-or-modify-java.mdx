@@ -5,15 +5,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Use the [countersFor](../../../client-api/session/counters/overview.mdx#counter-methods-and-the--object). `increment` method to **create** a new Counter or **modify** an existing Counter's value.  
+* Use the [countersFor](../../../../client-api/session/counters/overview.mdx#counter-methods-and-the--object). `increment` method to **create** a new Counter or **modify** an existing Counter's value.  
 
 *  If the Counter exists, `increment` will add a number to the Counter's current value.  
    If the Counter doesn't exist, `increment` will create it and set its initial value.  
 
 * In this page:
-  - [`increment` Syntax](../../../client-api/session/counters/create-or-modify.mdx#increment-syntax)
-  - [`increment` Usage](../../../client-api/session/counters/create-or-modify.mdx#increment-usage)
-  - [Code Sample](../../../client-api/session/counters/create-or-modify.mdx#code-sample)
+  - [`increment` Syntax](../../../../client-api/session/counters/create-or-modify.mdx#increment-syntax)
+  - [`increment` Usage](../../../../client-api/session/counters/create-or-modify.mdx#increment-usage)
+  - [Code Sample](../../../../client-api/session/counters/create-or-modify.mdx#code-sample)
 </Admonition>
 ## `increment` Syntax
 
@@ -37,7 +37,7 @@ void increment(String counterName, long incrementValue);
   - Open a session  
   - Create an instance of `countersFor`.  
       * Either pass `countersFor` an explicit document ID, -or-  
-      - Pass it an [entity tracked by the session](../../../client-api/session/loading-entities.mdx), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../../client-api/session/loading-entities.mdx#load).  
+      - Pass it an [entity tracked by the session](../../../../client-api/session/loading-entities.mdx), e.g. a document object returned from [session.query](../../../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../../../client-api/session/loading-entities.mdx#load).  
   - Execute `countersFor.increment`
   - Execute `session.saveChanges` for the changes to take effect  
 

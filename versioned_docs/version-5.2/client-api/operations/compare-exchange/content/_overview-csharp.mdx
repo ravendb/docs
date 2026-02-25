@@ -12,15 +12,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Compare-exchange items can be used to coordinate work between sessions that are trying to modify a shared resource (such as a document) at the same time.
 
-* Compare-exchange items are [not replicated externally](../../../client-api/operations/compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases) to other databases.
+* Compare-exchange items are [not replicated externally](../../../../client-api/operations/compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases) to other databases.
 
 * In this page:  
-* [What Compare Exchange Items Are](../../../client-api/operations/compare-exchange/overview.mdx#what-compare-exchange-items-are)  
-* [Creating and Managing Compare-Exchange Items](../../../client-api/operations/compare-exchange/overview.mdx#creating-and-managing-compare-exchange-items)  
-* [Why Compare-Exchange Items are Not Replicated to External Databases](../../../client-api/operations/compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases)  
-* [Example I - Email Address Reservation](../../../client-api/operations/compare-exchange/overview.mdx#example-i---email-address-reservation)  
-* [Example II - Reserve a Shared Resource](../../../client-api/operations/compare-exchange/overview.mdx#example-ii---reserve-a-shared-resource)  
-* [Example III - Ensuring Unique Values without Using Compare Exchange](../../../client-api/operations/compare-exchange/overview.mdx#example-iii---ensuring-unique-values-without-using-compare-exchange)  
+* [What Compare Exchange Items Are](../../../../client-api/operations/compare-exchange/overview.mdx#what-compare-exchange-items-are)  
+* [Creating and Managing Compare-Exchange Items](../../../../client-api/operations/compare-exchange/overview.mdx#creating-and-managing-compare-exchange-items)  
+* [Why Compare-Exchange Items are Not Replicated to External Databases](../../../../client-api/operations/compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases)  
+* [Example I - Email Address Reservation](../../../../client-api/operations/compare-exchange/overview.mdx#example-i---email-address-reservation)  
+* [Example II - Reserve a Shared Resource](../../../../client-api/operations/compare-exchange/overview.mdx#example-ii---reserve-a-shared-resource)  
+* [Example III - Ensuring Unique Values without Using Compare Exchange](../../../../client-api/operations/compare-exchange/overview.mdx#example-iii---ensuring-unique-values-without-using-compare-exchange)  
 
 </Admonition>
 ## What Compare Exchange Items Are
@@ -33,7 +33,7 @@ Compare Exchange items are key/value pairs where the key servers a unique value 
   * **Metadata** - Data that is associated with the compare-exchange item.
     Must be a valid JSON object.
      * For example, the metadata can be used to set expiration time for the compare-exchange item.  
-       Learn more in [compare-exchange expiration](../../../client-api/operations/compare-exchange/compare-exchange-expiration.mdx).  
+       Learn more in [compare-exchange expiration](../../../../client-api/operations/compare-exchange/compare-exchange-expiration.mdx).  
   * **Raft index** - The compare-exchange item's version.  
     Any change to the value or metadata will increase this number.  
 
@@ -47,7 +47,7 @@ Compare Exchange items are key/value pairs where the key servers a unique value 
 Compare exchange items are created and managed with any of the following approaches:
 
 * **Document Store Operations**  
-  You can manage a compare-exchange item as an [Operation on the document store](../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx).  
+  You can manage a compare-exchange item as an [Operation on the document store](../../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx).  
   This can be done within or outside of a session (cluster-wide or single-node session).
    * When inside a session:  
      If the session fails, the compare-exchange operation can still succeed
@@ -55,18 +55,18 @@ Compare exchange items are created and managed with any of the following approac
      You will need to delete the compare-exchange item explicitly upon session failure if you don't want the compare-exchange item to persist.
 
 * **Cluster-Wide Sessions**  
-  You can manage a compare-exchange item from inside a [Cluster-Wide session](../../../client-api/session/cluster-transaction/compare-exchange.mdx).  
+  You can manage a compare-exchange item from inside a [Cluster-Wide session](../../../../client-api/session/cluster-transaction/compare-exchange.mdx).  
   If the session fails, the compare-exchange item creation also fails.  
   None of the nodes in the group will have the new compare-exchange item.
 
 
 * **Atomic Guards**  
-  When creating documents using a cluster-wide session RavenDB automatically creates [Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards.mdx),  
+  When creating documents using a cluster-wide session RavenDB automatically creates [Atomic Guards](../../../../client-api/session/cluster-transaction/atomic-guards.mdx),  
   which are compare-exchange items that guarantee ACID transactions.  
-  See [Cluster-wide vs. Single-node](../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction) for a session comparision overview.
+  See [Cluster-wide vs. Single-node](../../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction) for a session comparision overview.
 
 * **Studio**  
-  Compare-exchange items can be created from the [Studio](../../../studio/database/documents/compare-exchange-view.mdx#the-compare-exchange-view) as well.
+  Compare-exchange items can be created from the [Studio](../../../../studio/database/documents/compare-exchange-view.mdx#the-compare-exchange-view) as well.
 
 
 
@@ -84,7 +84,7 @@ Compare exchange items are created and managed with any of the following approac
   Change-Vector. Compare-exchange conflicts cannot be handled properly as they do not have a similar
   mechanism to resolve conflicts.
 
-* To ensure unique values between two databases without using compare-exchange items see [Example III](../../../client-api/operations/compare-exchange/overview.mdx#example-iii---ensuring-unique-values-without-using-compare-exchange).
+* To ensure unique values between two databases without using compare-exchange items see [Example III](../../../../client-api/operations/compare-exchange/overview.mdx#example-iii---ensuring-unique-values-without-using-compare-exchange).
 
 
 
@@ -94,7 +94,7 @@ The following example shows how to use compare-exchange to create documents with
 The scope is within the database group on a single cluster. 
 
 Compare-exchange items are not externally replicated to other databases.  
-To establish uniqueness without using compare-exchange see [Example III](../../../client-api/operations/compare-exchange/overview.mdx#example-iii---ensuring-unique-values-without-using-compare-exchange).
+To establish uniqueness without using compare-exchange see [Example III](../../../../client-api/operations/compare-exchange/overview.mdx#example-iii---ensuring-unique-values-without-using-compare-exchange).
 
 <TabItem value="email" label="email">
 <CodeBlock language="csharp">
@@ -132,8 +132,8 @@ using (IDocumentSession session = store.OpenSession())
 
 * The `User` object is saved as a document, hence it can be indexed, queried, etc.  
 
-* This compare-exchange item was [created as an operation](../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx)
-  rather than with a [cluster-wide session](../../../client-api/session/cluster-transaction/overview.mdx).  
+* This compare-exchange item was [created as an operation](../../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx)
+  rather than with a [cluster-wide session](../../../../client-api/session/cluster-transaction/overview.mdx).  
   Thus, if `session.SaveChanges` fails, then the email reservation is _not_ rolled back automatically.  
   It is your responsibility to do so.  
 
@@ -254,13 +254,13 @@ Unique values can also be ensured without using compare-exchange.
 The below example shows how to achieve that by using **reference documents**.  
 The reference documents' IDs will contain the unique values instead of the compare-exchange items.
 
-Using reference documents is especially useful when [External Replication](../../../server/ongoing-tasks/external-replication.mdx) 
+Using reference documents is especially useful when [External Replication](../../../../server/ongoing-tasks/external-replication.mdx) 
 is defined between two databases that need to be synced with unique values.  
 The reference documents will replicate to the destination database, 
 as opposed to compare-exchange items, which are not externally replicated.
 
 <Admonition type="note" title="">
-Sessions which process fields that must be unique should be set to [TransactionMode.ClusterWide](../../../client-api/session/cluster-transaction/overview.mdx).  
+Sessions which process fields that must be unique should be set to [TransactionMode.ClusterWide](../../../../client-api/session/cluster-transaction/overview.mdx).  
 </Admonition>
 
 <TabItem value="create_uniqueness_control_documents" label="create_uniqueness_control_documents">

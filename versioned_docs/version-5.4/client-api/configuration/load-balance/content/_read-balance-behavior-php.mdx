@@ -6,7 +6,7 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * When set, the `ReadBalanceBehavior` configuration will be in effect according to the   
-  conditional flow described in [Client logic for choosing a node](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).
+  conditional flow described in [Client logic for choosing a node](../../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).
 
 * Once configuration is in effect then:  
   * **_Read_** requests - will be sent to the node determined by the configured option - see below.
@@ -15,12 +15,12 @@ import CodeBlock from '@theme/CodeBlock';
   * Upon a node failure, the node to failover to is also determined by the defined option.  
 
 * In this page:
-    * [ReadBalanceBehavior options](../../../client-api/configuration/load-balance/read-balance-behavior.mdx#readbalancebehavior-options)  
-    * [Initialize ReadBalanceBehavior on the client](../../../client-api/configuration/load-balance/read-balance-behavior.mdx#initialize-readbalancebehavior-on-the-client)  
-    * [Set ReadBalanceBehavior on the server:](../../../client-api/configuration/load-balance/read-balance-behavior.mdx#set-readbalancebehavior-on-the-server)  
-        * [By operation](../../../client-api/configuration/load-balance/read-balance-behavior.mdx#set-readbalancebehavior-on-the-server---by-operation)  
-        * [From Studio](../../../client-api/configuration/load-balance/read-balance-behavior.mdx#set-readbalancebehavior-on-the-server---from-studio)  
-    * [When to use](../../../client-api/configuration/load-balance/read-balance-behavior.mdx#when-to-use)
+    * [ReadBalanceBehavior options](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx#readbalancebehavior-options)  
+    * [Initialize ReadBalanceBehavior on the client](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx#initialize-readbalancebehavior-on-the-client)  
+    * [Set ReadBalanceBehavior on the server:](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx#set-readbalancebehavior-on-the-server)  
+        * [By operation](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx#set-readbalancebehavior-on-the-server---by-operation)  
+        * [From Studio](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx#set-readbalancebehavior-on-the-server---from-studio)  
+    * [When to use](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx#when-to-use)
      
 </Admonition>
 ## readBalanceBehavior options 
@@ -29,9 +29,9 @@ import CodeBlock from '@theme/CodeBlock';
 
   * **Read-balance**  
     No read balancing will occur.  
-    The client will always send _Read_ requests to the [preferred node](../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node).
+    The client will always send _Read_ requests to the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node).
   * **Failover**  
-    The client will failover nodes in the order they appear in the [topology nodes list](../../../studio/database/settings/manage-database-group.mdx#database-group-topology---actions).
+    The client will failover nodes in the order they appear in the [topology nodes list](../../../../studio/database/settings/manage-database-group.mdx#database-group-topology---actions).
 ### `RoundRobin`
 
 * **Read-balance**
@@ -39,7 +39,7 @@ import CodeBlock from '@theme/CodeBlock';
     **Per session**, the client will select the next node from the topology list based on this internal session-id.  
   * All _Read_ requests made on the session (i.e a query or a load request, etc.)  
     will address the calculated node.  
-  * A _Read_ request that is made on the store (i.e. executing an [operation](../../../client-api/operations/what-are-operations.mdx))   
+  * A _Read_ request that is made on the store (i.e. executing an [operation](../../../../client-api/operations/what-are-operations.mdx))   
     will go to the preferred node.  
 * **Failover**  
   In case of a failure, the client will try the next node from the topology nodes list.  
@@ -47,7 +47,7 @@ import CodeBlock from '@theme/CodeBlock';
 
   * **Read-balance**  
     All _Read_ requests will go to the fastest node.  
-    The fastest node is determined by a [Speed Test](../../../client-api/cluster/speed-test.mdx).
+    The fastest node is determined by a [Speed Test](../../../../client-api/cluster/speed-test.mdx).
   * **Failover**  
     In case of a failure, a speed test will be triggered again,  
     and in the meantime the client will use the preferred node.
@@ -59,7 +59,7 @@ import CodeBlock from '@theme/CodeBlock';
 * The `ReadBalanceBehavior` convention can be set **on the client** when initializing the Document Store.  
   This will set the read balance behavior for the default database that is set on the store.  
 
-* This setting can be **overriden** by setting 'ReadBalanceBehavior' on the server, see [below](../../../client-api/configuration/load-balance/read-balance-behavior.mdx#set-readbalancebehavior-on-the-server).   
+* This setting can be **overriden** by setting 'ReadBalanceBehavior' on the server, see [below](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx#set-readbalancebehavior-on-the-server).   
 
 <TabItem value="ReadBalance_1" label="ReadBalance_1">
 <CodeBlock language="php">
@@ -84,12 +84,12 @@ $documentStore->initialize();
 
 #### Set ReadBalanceBehavior on the server - by operation:
 
-* The `ReadBalanceBehavior` configuration can be set **on the server** by sending an [operation](../../../client-api/operations/what-are-operations.mdx).  
+* The `ReadBalanceBehavior` configuration can be set **on the server** by sending an [operation](../../../../client-api/operations/what-are-operations.mdx).  
 
 * The operation can modify the default database only, or all databases - see examples below.  
 
 * Once configuration on the server has changed, the running client will get updated with the new settings.  
-  See [keeping client up-to-date](../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date).  
+  See [keeping client up-to-date](../../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date).  
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Operation_For_Default_Database" label="Operation_For_Default_Database">
@@ -147,11 +147,11 @@ try {
 
 #### Set ReadBalanceBehavior on the server - from Studio:
 
-* The `ReadBalanceBehavior` configuration can be set from the Studio's [Client Configuration view](../../../studio/database/settings/client-configuration-per-database.mdx).  
+* The `ReadBalanceBehavior` configuration can be set from the Studio's [Client Configuration view](../../../../studio/database/settings/client-configuration-per-database.mdx).  
   Setting it from the Studio will set this configuration directly **on the server**.  
 
 * Once configuration on the server has changed, the running client will get updated with the new settings.  
-  See [keeping client up-to-date](../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date).  
+  See [keeping client up-to-date](../../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date).  
 
 
 

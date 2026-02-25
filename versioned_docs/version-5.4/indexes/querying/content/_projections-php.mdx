@@ -7,18 +7,18 @@ import CodeBlock from '@theme/CodeBlock';
 
 * This article provides examples of projecting query results when querying a **static-index**.  
 
-* Prior to reading this article, please refer to [query results projection overview](../../client-api/session/querying/how-to-project-query-results.mdx) 
+* Prior to reading this article, please refer to [query results projection overview](../../../client-api/session/querying/how-to-project-query-results.mdx) 
   for general knowledge about Projections and for dynamic-queries examples.  
 
 * Projections can be applied using the `selectFields` method.  
 
 * In this page:  
 
-  * [What are Projections and When to Use Them](../../indexes/querying/projections.mdx#what-are-projections-and-when-to-use-them)
-  * [`selectFields`](../../indexes/querying/projections.mdx#selectfields)
-  * [Examples](../../indexes/querying/projections.mdx#examples)
-  * [Projection Behavior](../../indexes/querying/projections.mdx#projection-behavior)
-  * [Projections and the Session](../../indexes/querying/projections.mdx#projections-and-the-session)
+  * [What are Projections and When to Use Them](../../../indexes/querying/projections.mdx#what-are-projections-and-when-to-use-them)
+  * [`selectFields`](../../../indexes/querying/projections.mdx#selectfields)
+  * [Examples](../../../indexes/querying/projections.mdx#examples)
+  * [Projection Behavior](../../../indexes/querying/projections.mdx#projection-behavior)
+  * [Projections and the Session](../../../indexes/querying/projections.mdx#projections-and-the-session)
   
 </Admonition>
 ## What are Projections and When to Use Them
@@ -58,7 +58,7 @@ projection, and exceeding these (quite generous) limits will fail the query.
 If a projection function only requires fields that are stored, then the document will not be loaded from 
 storage and all data will come from the index directly. This can increase query performance (by the cost 
 of disk space used) in many situations when whole document is not needed. You can read more about field 
-storing [here](../../indexes/storing-data-in-index.mdx).
+storing [here](../../../indexes/storing-data-in-index.mdx).
 
 
 
@@ -720,7 +720,7 @@ select {
 The `selectFields` methods can also take a `ProjectionBehavior` parameter, which
 determines whether the query should retrieve indexed data or directly retrieve 
 document data, and what to do when the data can't be retrieved. Learn more 
-[here](../../client-api/session/querying/how-to-customize-query.mdx#projection).  
+[here](../../../client-api/session/querying/how-to-customize-query.mdx#projection).  
 
 
 

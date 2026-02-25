@@ -7,12 +7,12 @@ import CodeBlock from '@theme/CodeBlock';
 
 * All the Counters for a document are deleted when the document is deleted.  
 
-* You can also use the [countersFor](../../../client-api/session/counters/overview.mdx#counter-methods-and-the--object).`delete` method to remove a specific Counter from a document.  
+* You can also use the [countersFor](../../../../client-api/session/counters/overview.mdx#counter-methods-and-the--object).`delete` method to remove a specific Counter from a document.  
 
 * In this page:
-    - [`delete ` Syntax](../../../client-api/session/counters/delete.mdx#delete-syntax)
-    - [`delete ` Usage](../../../client-api/session/counters/delete.mdx#delete-usage)
-    - [Code Sample](../../../client-api/session/counters/delete.mdx#code-sample)
+    - [`delete ` Syntax](../../../../client-api/session/counters/delete.mdx#delete-syntax)
+    - [`delete ` Usage](../../../../client-api/session/counters/delete.mdx#delete-usage)
+    - [Code Sample](../../../../client-api/session/counters/delete.mdx#code-sample)
 </Admonition>
 ## `delete ` Syntax
 
@@ -34,7 +34,7 @@ import CodeBlock from '@theme/CodeBlock';
   * Open a session  
   * Create an instance of `countersFor`.  
       * Either pass `countersFor` an explicit document ID, -or-  
-      * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities.mdx), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../../client-api/session/loading-entities.mdx#load).  
+      * Pass it an [entity tracked by the session](../../../../client-api/session/loading-entities.mdx), e.g. a document object returned from [session.query](../../../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../../../client-api/session/loading-entities.mdx#load).  
   * Execute `countersFor.delete`
   * Execute `session.saveChanges` for the changes to take effect  
 

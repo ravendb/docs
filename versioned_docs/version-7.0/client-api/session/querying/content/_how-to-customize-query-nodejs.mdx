@@ -10,19 +10,19 @@ import CodeBlock from '@theme/CodeBlock';
 
 * These methods can be used for both a dynamic-query and an index-query.
 
-* A [query](../../../querying/overview.mdx) can also be customized on the Store or Session level by subscribing to the `beforeQuery` event.  
-  Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events.mdx).
+* A [query](../../../../querying/overview.mdx) can also be customized on the Store or Session level by subscribing to the `beforeQuery` event.  
+  Learn more in [Subscribing to Events](../../../../client-api/session/how-to/subscribe-to-events.mdx).
 
 * Customization methods available:
 
-  - [on ("beforeQueryExecuted")](../../../client-api/session/querying/how-to-customize-query.mdx#on-("beforequeryexecuted"))
-  - [on ("afterQueryExecuted")](../../../client-api/session/querying/how-to-customize-query.mdx#on-("afterqueryexecuted"))
-  - [noCaching](../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
-  - [noTracking](../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
-  - [projectionBehavior](../../../client-api/session/querying/how-to-customize-query.mdx#projectionbehavior)
-  - [randomOrdering](../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
-  - [timings](../../../client-api/session/querying/how-to-customize-query.mdx#timings)
-  - [waitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+  - [on ("beforeQueryExecuted")](../../../../client-api/session/querying/how-to-customize-query.mdx#on-("beforequeryexecuted"))
+  - [on ("afterQueryExecuted")](../../../../client-api/session/querying/how-to-customize-query.mdx#on-("afterqueryexecuted"))
+  - [noCaching](../../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+  - [noTracking](../../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+  - [projectionBehavior](../../../../client-api/session/querying/how-to-customize-query.mdx#projectionbehavior)
+  - [randomOrdering](../../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+  - [timings](../../../../client-api/session/querying/how-to-customize-query.mdx#timings)
+  - [waitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
 
 </Admonition>
 ## on (beforeQueryExecuted)
@@ -203,11 +203,11 @@ const results = await session
 
 ## noTracking
 
-* By default, the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all changes made to all entities that it has either loaded, stored, or queried for.
+* By default, the [Session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all changes made to all entities that it has either loaded, stored, or queried for.
 
 * You can use the `noTracking` customization to disable entity tracking.
 
-* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
+* See [disable entity tracking](../../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
 
 <Admonition type="note" title="">
 
@@ -244,9 +244,9 @@ const results = await session
 
 ## projectionBehavior
 
-* By default, when [querying an index](../../../indexes/querying/query-index.mdx), and projecting query results  
+* By default, when [querying an index](../../../../indexes/querying/query-index.mdx), and projecting query results  
   (projecting means the query returns only specific document fields instead of the full document)  
-  then the server will try to retrieve the fields' values from the fields [stored in the index](../../../indexes/storing-data-in-index.mdx).
+  then the server will try to retrieve the fields' values from the fields [stored in the index](../../../../indexes/storing-data-in-index.mdx).
 
 * If the index does Not store those fields then the fields' values will be retrieved from the documents store.
 
@@ -255,8 +255,8 @@ const results = await session
 * Note:  
   Entities resulting from a projecting query are Not tracked by the session.  
   Learn more about projections in:  
-    * [Projections](../../../indexes/querying/projections.mdx)
-    * [How to project query results](../../../client-api/session/querying/how-to-project-query-results.mdx)
+    * [Projections](../../../../indexes/querying/projections.mdx)
+    * [How to project query results](../../../../client-api/session/querying/how-to-project-query-results.mdx)
 
 <Admonition type="note" title="">
 
@@ -356,7 +356,7 @@ const query = session
 
 * Use `RandomOrdering` to order the query results randomly.
 
-* More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results.mdx) article.
+* More ordering options are available in this [Sorting](../../../../client-api/session/querying/sort-query-results.mdx) article.
 
 <Admonition type="note" title="">
 
@@ -401,7 +401,7 @@ randomOrdering(seed);
 
 * The timing statistics will be included in the query results.
 
-* Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings.mdx).
+* Learn more in [how to include query timings](../../../../client-api/session/querying/debugging/query-timings.mdx).
 
 <Admonition type="note" title="">
 
@@ -451,17 +451,17 @@ const results = await session.query(\{ collection: "Products" \})
 ## waitForNonStaleResults
 
 * All queries in RavenDB provide results using an index, even when you don't specify one.  
-  See detailed explanation in [Queries always provide results using an index](../../../querying/overview.mdx#queries-always-provide-results-using-an-index).
+  See detailed explanation in [Queries always provide results using an index](../../../../querying/overview.mdx#queries-always-provide-results-using-an-index).
 
 * Use `waitForNonStaleResults` to instruct the query to wait for non-stale results from the index.
 
 * A `TimeoutException` will be thrown if the query is not able to return non-stale results within the specified  
   (or default) timeout.
 
-* Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
+* Note: This feature is Not available when [streaming the query results](../../../../client-api/session/querying/how-to-stream-query-results.mdx).  
   Calling _waitForNonStaleResults_ with a streaming query will throw an exception.
 
-* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes.mdx).
+* Learn more about stale results in [stale indexes](../../../../indexes/stale-indexes.mdx).
 
 <Admonition type="note" title="">
 

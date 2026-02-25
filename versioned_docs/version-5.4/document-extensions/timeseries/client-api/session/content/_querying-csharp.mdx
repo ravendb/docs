@@ -11,27 +11,27 @@ import CodeBlock from '@theme/CodeBlock';
 * Time series queries can be made using:  
   * The high-level `Query` method utilizing LINQ,  
   * The lower-level API `DocumentQuery`,  
-  * Or directly through [RQL](../../../../client-api/session/querying/what-is-rql.mdx),
-    which can be provided to a `RawQuery` or executed from the Studio's [Query view](../../../../studio/database/queries/query-view.mdx).
+  * Or directly through [RQL](../../../../../client-api/session/querying/what-is-rql.mdx),
+    which can be provided to a `RawQuery` or executed from the Studio's [Query view](../../../../../studio/database/queries/query-view.mdx).
 
 * In this page:  
-    * [Query](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query)
-        * [Query usage](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-usage)
-        * [Query examples](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-examples)  
-        * [Query syntax](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-syntax)
-    * [DocumentQuery](../../../../document-extensions/timeseries/client-api/session/querying.mdx#documentquery)
-        * [DocumentQuery usage](../../../../document-extensions/timeseries/client-api/session/querying.mdx#documentquery-usage)
-        * [DocumentQuery examples](../../../../document-extensions/timeseries/client-api/session/querying.mdx#documentquery-examples)
-        * [DocumentQuery Syntax](../../../../document-extensions/timeseries/client-api/session/querying.mdx#documentquery-syntax)
-    * [RawQuery](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery)
-        * [RawQuery usage](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-usage)
-        * [RawQuery examples](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-examples)
-        * [RawQuery syntax](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-syntax)
+    * [Query](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#query)
+        * [Query usage](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-usage)
+        * [Query examples](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-examples)  
+        * [Query syntax](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-syntax)
+    * [DocumentQuery](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#documentquery)
+        * [DocumentQuery usage](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#documentquery-usage)
+        * [DocumentQuery examples](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#documentquery-examples)
+        * [DocumentQuery Syntax](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#documentquery-syntax)
+    * [RawQuery](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery)
+        * [RawQuery usage](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-usage)
+        * [RawQuery examples](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-examples)
+        * [RawQuery syntax](../../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-syntax)
     
 </Admonition>
 
 <Admonition type="info" title="">
-Learn more about time series queries in the [section dedicated to this subject](../../../../document-extensions/timeseries/querying/overview-and-syntax.mdx).  
+Learn more about time series queries in the [section dedicated to this subject](../../../../../document-extensions/timeseries/querying/overview-and-syntax.mdx).  
 </Admonition>
 ## Query
 
@@ -47,7 +47,7 @@ Learn more about time series queries in the [section dedicated to this subject](
   * `TimeSeriesRawResult` for non-aggregated data, or -  
   * `TimeSeriesAggregationResult` for aggregated data  
 * Note:  
-  The RavenDB client translates the LINQ query to [RQL](../../../../client-api/session/querying/what-is-rql.mdx) before transmitting it to the server for execution.
+  The RavenDB client translates the LINQ query to [RQL](../../../../../client-api/session/querying/what-is-rql.mdx) before transmitting it to the server for execution.
 ### Query examples
 
 * This LINQ query filters users by their age and retrieves their HeartRates time series.  
@@ -112,7 +112,7 @@ select timeseries(from q.HeartRates between "2020-05-17T00:00:00.0000000" and "2
 </Tabs>
 
 * In this example, we retrieve a company's stock trade data.  
-  Note the usage of named values, so we may address trade Volume [by name](../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx).  
+  Note the usage of named values, so we may address trade Volume [by name](../../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx).  
 <Tabs groupId='languageSyntax'>
 <TabItem value="Native" label="Native">
 <CodeBlock language="csharp">
@@ -183,7 +183,7 @@ List<TimeSeriesAggregationResult> result = query.ToList();
 </TabItem>
 ### Query syntax
 
-* The `session.Query` syntax is available [here](../../../../client-api/session/querying/how-to-query.mdx#syntax).
+* The `session.Query` syntax is available [here](../../../../../client-api/session/querying/how-to-query.mdx#syntax).
 
 * To define a time series query use `RavenQuery.TimeSeries` within the query `Select` clause.
 
@@ -243,7 +243,7 @@ Where(Expression<Func<TimeSeriesEntry, bool>> predicate);
     * `TimeSeriesRawResult` for non-aggregated data, or -
     * `TimeSeriesAggregationResult` for aggregated data
 * Note:  
-  The RavenDB client translates query to [RQL](../../../../client-api/session/querying/what-is-rql.mdx) before transmitting it to the server for execution.
+  The RavenDB client translates query to [RQL](../../../../../client-api/session/querying/what-is-rql.mdx) before transmitting it to the server for execution.
 ### DocumentQuery examples
 
 * A _DocumentQuery_ using only the `From()` method.  
@@ -339,7 +339,7 @@ List<TimeSeriesRawResult> results = query.ToList();
 </Tabs>
 ### DocumentQuery syntax
 
-The session [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query.mdx),
+The session [DocumentQuery](../../../../../client-api/session/querying/document-query/what-is-document-query.mdx),
 which is accessible from `session.Advanced`, can be extended with several useful time series methods.
 To access these methods, begin with method `SelectTimeSeries()`:
 
@@ -396,7 +396,7 @@ Where(Expression<Func<TimeSeriesEntry, TTag, bool>> predicate);
 #### Return Value:
 
 * **`List<TimeSeriesAggregationResult>`**  for aggregated data.  
-  When the query [aggregates time series entries](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx),
+  When the query [aggregates time series entries](../../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx),
   the results are returned in an aggregated array.
 
 * **`List<TimeSeriesRawResult>`** for non-aggregated data.  
@@ -525,7 +525,7 @@ List<TimeSeriesAggregationResult> results = query.ToList();
 **Return Value**:
 
 * **`List<TimeSeriesAggregationResult>`**  for aggregated data.  
-  When the query [aggregates time series entries](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx),
+  When the query [aggregates time series entries](../../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx),
   the results are returned in an aggregated array.
 
 * **`List<TimeSeriesRawResult>`** for non-aggregated data.  

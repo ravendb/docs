@@ -15,19 +15,19 @@ import CodeBlock from '@theme/CodeBlock';
 * The indexing process and its results can be controlled by various field options and by the Analyzers.  
 
 * In this page:  
-  * [Understanding Analyzers](../indexes/using-analyzers.mdx#understanding-analyzers)  
-  * [Full-Text Search](../indexes/using-analyzers.mdx#full-text-search)  
-  * [Selecting an Analyzer for a Field](../indexes/using-analyzers.mdx#selecting-an-analyzer-for-a-field)  
-  * [Creating Custom Analyzers](../indexes/using-analyzers.mdx#creating-custom-analyzers)  
-  * [RavenDB's Default Analyzers](../indexes/using-analyzers.mdx#ravendb)  
-  * [Manipulating Field Indexing Behavior](../indexes/using-analyzers.mdx#manipulating-field-indexing-behavior)  
-  * [Ordering When a Field is Searchable](../indexes/using-analyzers.mdx#ordering-when-a-field-is-searchable)  
+  * [Understanding Analyzers](../../indexes/using-analyzers.mdx#understanding-analyzers)  
+  * [Full-Text Search](../../indexes/using-analyzers.mdx#full-text-search)  
+  * [Selecting an Analyzer for a Field](../../indexes/using-analyzers.mdx#selecting-an-analyzer-for-a-field)  
+  * [Creating Custom Analyzers](../../indexes/using-analyzers.mdx#creating-custom-analyzers)  
+  * [RavenDB's Default Analyzers](../../indexes/using-analyzers.mdx#ravendb)  
+  * [Manipulating Field Indexing Behavior](../../indexes/using-analyzers.mdx#manipulating-field-indexing-behavior)  
+  * [Ordering When a Field is Searchable](../../indexes/using-analyzers.mdx#ordering-when-a-field-is-searchable)  
 
 </Admonition>
 ## Understanding Analyzers
 
 Lucene offers several Analyzers out of the box.  
-New [customized analyzers](../indexes/using-analyzers.mdx#creating-custom-analyzers) can also be created.  
+New [customized analyzers](../../indexes/using-analyzers.mdx#creating-custom-analyzers) can also be created.  
 
 Various Analyzers differ in the way they split the text stream ("tokenize"),  
 and in the way they process those tokens in post-tokenization.  
@@ -47,7 +47,7 @@ one of the stop words and remove it from searches.
 This can affect other acronyms such as WHO (World Health Organization) or names such as "The Who" or "The IT Crowd".  
 
 To prevent excluding acronyms, you can either spell out the entire title instead of abbreviating it 
-or use an [analyzer that doesn't remove stop words](../indexes/using-analyzers.mdx#analyzers-that-do-not-remove-common-stop-words).
+or use an [analyzer that doesn't remove stop words](../../indexes/using-analyzers.mdx#analyzers-that-do-not-remove-common-stop-words).
 </Admonition>
 
 * **StandardAnalyzer**, which is Lucene's default, will produce the following tokens:  
@@ -116,7 +116,7 @@ These are available as part of the Lucene library which ships with RavenDB.
 For most cases, Lucene's `StandardAnalyzer` would be your analyzer of choice. As shown above, this analyzer is aware of e-mail and network addresses when tokenizing. It normalizes cases, filters out common English words, and does some basic English stemming as well.  
 
 For languages other than English, or if you need a custom analysis process, you can roll your own `Analyzer`. It is quite simple and may already be available as a contrib package for Lucene.  
-There are also `Collation analyzers` available (you can read more about them [here](../indexes/sorting-and-collation.mdx#collation)).  
+There are also `Collation analyzers` available (you can read more about them [here](../../indexes/sorting-and-collation.mdx#collation)).  
 
 
 
@@ -172,7 +172,7 @@ name:
 
 <Admonition type="info" title="Customized Analyzer Availability" id="customized-analyzer-availability" href="#customized-analyzer-availability">
 The analyzer you are referencing must be available to the RavenDB server instance.  
-See the different methods of [creating custom analyzers](../indexes/using-analyzers.mdx#creating-custom-analyzers).  
+See the different methods of [creating custom analyzers](../../indexes/using-analyzers.mdx#creating-custom-analyzers).  
 </Admonition>
 
 
@@ -189,9 +189,9 @@ database will use the database version of the analyzer. So you can think of data
 the server-wide analyzers with the same names.  
 
 There are a few ways to create a custom analyzer and add it to your server:  
-1. [Using the Studio](../studio/database/settings/custom-analyzers.mdx)  
+1. [Using the Studio](../../studio/database/settings/custom-analyzers.mdx)  
 2. Using the Client API  
-3. Adding it [directly to RavenDB's binaries](../indexes/using-analyzers.mdx#adding-an-analyzer-to-the-binaries)  
+3. Adding it [directly to RavenDB's binaries](../../indexes/using-analyzers.mdx#adding-an-analyzer-to-the-binaries)  
 
 ### Using the Client API
 
@@ -230,9 +230,9 @@ public class PutServerWideAnalyzersOperation
 </CodeBlock>
 </TabItem>
 
-By default, the `PutAnalyzersOperation` will apply to the [default database](../client-api/setting-up-default-database.mdx) 
+By default, the `PutAnalyzersOperation` will apply to the [default database](../../client-api/setting-up-default-database.mdx) 
 of the document store you're using. To target a different database, use the `ForDatabase()` method - read more 
-[here](../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).  
+[here](../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).  
 
 The `AnalyzerDefinition` object has two properties, `Name` and `Code`:  
 
@@ -298,7 +298,7 @@ RavenDB has three default analyzers that it uses to index text when no other ana
 * **Default Exact Analyzer** - `KeywordAnalyzer`  
 * **Default Search Analyzer** - `RavenStandardAnalyzer`  
 
-You can choose other analyzers to serve as your default analyzers by modifying the [indexing configuration](../server/configuration/indexing-configuration.mdx#indexinganalyzersdefault).  
+You can choose other analyzers to serve as your default analyzers by modifying the [indexing configuration](../../server/configuration/indexing-configuration.mdx#indexinganalyzersdefault).  
 
 **Default Analyzer**
 
@@ -313,13 +313,13 @@ the same sample text above, `LowerCaseKeywordAnalyzer` will produce a single tok
 
 For 'exact case' text fields, RavenDB uses Lucene's `KeywordAnalyzer`, which treats the entire text field as one 
 token and does not change the case of the original text. To make an index store text with the exact case, see the 
-section on changing field indexing behavior [below](../indexes/using-analyzers.mdx#manipulating-field-indexing-behavior).  
+section on changing field indexing behavior [below](../../indexes/using-analyzers.mdx#manipulating-field-indexing-behavior).  
 
 **Default Search Analyzer**
 
 For full-text search text fields, RavenDB uses `RavenStandardAnalyzer`, which is just an optimized version of 
 Lucene's `StandardAnalyzer`. To make an index that allows full-text search, see the section on changing field 
-indexing behavior [below](../indexes/using-analyzers.mdx#manipulating-field-indexing-behavior).  
+indexing behavior [below](../../indexes/using-analyzers.mdx#manipulating-field-indexing-behavior).  
 
 
 
@@ -380,7 +380,7 @@ by default:
 </CodeBlock>
 </TabItem>
 
-If you want to disable indexing on a particular field, use the `FieldIndexing.No` option. This can be useful when you want to [store field data in the index](../indexes/storing-data-in-index.mdx), but don't want to make it available for querying. However, it will still be available 
+If you want to disable indexing on a particular field, use the `FieldIndexing.No` option. This can be useful when you want to [store field data in the index](../../indexes/storing-data-in-index.mdx), but don't want to make it available for querying. However, it will still be available 
 for extraction by projections:  
 
 <TabItem value="analyzers_5" label="analyzers_5">
@@ -408,7 +408,7 @@ for extraction by projections:
 
 ## Ordering When a Field is Searchable
 
-When a field is marked as `Search`, sorting must be done using an additional field. More [here](../indexes/querying/sorting.mdx#ordering-when-a-field-is-searchable).  
+When a field is marked as `Search`, sorting must be done using an additional field. More [here](../../indexes/querying/sorting.mdx#ordering-when-a-field-is-searchable).  
 
 
 

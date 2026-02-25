@@ -113,7 +113,7 @@ Replicating the index to a relation database table is done as part of the indexi
 Replicated fields must be set to Store.Yes, if the field isn't set to Store.Yes, the Index Replication bundle will be unable to replicate its value to the relational table.
 
 ## What is being replicated?
-It is important to note that the bundle does not replicate the index itself, it only replicate changes to the index made once the configuration is set. This is a fine distinction, but an important one. What it means is that if you have an existing index, without the matching IndexReplicationDestination document, it will not be replicated. Once you add a matching IndexReplicationDestination document, all new changes to the index will be replicated, but existing documents, which are already indexed, will not be replicated. You can [reset the index](../../../client-api/advanced/index-administration.mdx) to force replication of all the matching documents as a result of the re-indexing process.
+It is important to note that the bundle does not replicate the index itself, it only replicate changes to the index made once the configuration is set. This is a fine distinction, but an important one. What it means is that if you have an existing index, without the matching IndexReplicationDestination document, it will not be replicated. Once you add a matching IndexReplicationDestination document, all new changes to the index will be replicated, but existing documents, which are already indexed, will not be replicated. You can [reset the index](../../../../client-api/advanced/index-administration.mdx) to force replication of all the matching documents as a result of the re-indexing process.
 
 ## Error handling
 

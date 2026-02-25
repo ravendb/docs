@@ -8,17 +8,17 @@ import CodeBlock from '@theme/CodeBlock';
 * One of the most basic functionalities of querying is the ability to filter out data and return records that match a given condition.
 
 * The following examples demonstrate how to add simple conditions to a query:
-  * [Where - equals](../../indexes/querying/filtering.mdx#where---equals)
-  * [Where - numeric property](../../indexes/querying/filtering.mdx#where---numeric-property)
-  * [Where - nested property](../../indexes/querying/filtering.mdx#where---nested-property)
-  * [Where - multiple values](../../indexes/querying/filtering.mdx#where---multiple-values)
-  * [Where - in](../../indexes/querying/filtering.mdx#where---in)
-  * [Where - containsAny](../../indexes/querying/filtering.mdx#where---containsany)
-  * [Where - containsAll](../../indexes/querying/filtering.mdx#where---containsall)
-  * [Where - startsWith](../../indexes/querying/filtering.mdx#where---startswith)
-  * [Where - endsWith](../../indexes/querying/filtering.mdx#where---endswith)
-  * [Where - exists](../../indexes/querying/filtering.mdx#where---exists)
-  * [Where - filter by ID](../../indexes/querying/filtering.mdx#where---filter-by-id)
+  * [Where - equals](../../../indexes/querying/filtering.mdx#where---equals)
+  * [Where - numeric property](../../../indexes/querying/filtering.mdx#where---numeric-property)
+  * [Where - nested property](../../../indexes/querying/filtering.mdx#where---nested-property)
+  * [Where - multiple values](../../../indexes/querying/filtering.mdx#where---multiple-values)
+  * [Where - in](../../../indexes/querying/filtering.mdx#where---in)
+  * [Where - containsAny](../../../indexes/querying/filtering.mdx#where---containsany)
+  * [Where - containsAll](../../../indexes/querying/filtering.mdx#where---containsall)
+  * [Where - startsWith](../../../indexes/querying/filtering.mdx#where---startswith)
+  * [Where - endsWith](../../../indexes/querying/filtering.mdx#where---endswith)
+  * [Where - exists](../../../indexes/querying/filtering.mdx#where---exists)
+  * [Where - filter by ID](../../../indexes/querying/filtering.mdx#where---filter-by-id)
 
 </Admonition>
 ## Where - equals
@@ -450,10 +450,10 @@ where endsWith(Name, 'ra')
 ## Where - exists
 
 * To find all documents in a collection that have a specified field,  
-  see [How to Filter by Field Presence](../../client-api/session/querying/how-to-filter-by-field.mdx).
+  see [How to Filter by Field Presence](../../../client-api/session/querying/how-to-filter-by-field.mdx).
   
 * To find all documents in a collection that don't have a specified field,  
-  see [How to Filter by Non-Existing Field](../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx).
+  see [How to Filter by Non-Existing Field](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx).
 
 
 
@@ -466,7 +466,7 @@ where endsWith(Name, 'ra')
   and don't require any additional handling like ordering, full-text searching, etc, are handled directly by the storage engine.
 
 * This means that querying by ID doesn't create an auto-index and has no extra cost.  
-  In terms of efficiency, it is the same as loading documents with [`session.load`](../../client-api/session/loading-entities.mdx) usage.
+  In terms of efficiency, it is the same as loading documents with [`session.load`](../../../client-api/session/loading-entities.mdx) usage.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">

@@ -162,7 +162,7 @@ An attempt to use `contains()` method as condition of `where` closure, will thro
 </Admonition>
 
 <Admonition type="info" title="">
-Note that that results of a query might be different depending on [an analyzer](../../indexes/using-analyzers.mdx) that was applied.
+Note that that results of a query might be different depending on [an analyzer](../../../indexes/using-analyzers.mdx) that was applied.
 </Admonition>
 
 ---
@@ -673,7 +673,7 @@ the `EscapeQueryOptions` parameter. It's the enum that can have one of the follo
 * ALLOW_ALL_WILDCARDS,
 * RAW_QUERY.
 
-By default all special characters contained in the query will be escaped (`ESCAPE_ALL`) when [Query](../../client-api/session/querying/how-to-query.mdx) from session is used. However you can add a bit more of flexibility to your searching mechanism.
+By default all special characters contained in the query will be escaped (`ESCAPE_ALL`) when [Query](../../../client-api/session/querying/how-to-query.mdx) from session is used. However you can add a bit more of flexibility to your searching mechanism.
 `EscapeQueryOptions.ALLOW_POSTFIX_WILDCARD` enables searching against a field by using search term that ends with wildcard character:
 
 <Tabs groupId='languageSyntax'>

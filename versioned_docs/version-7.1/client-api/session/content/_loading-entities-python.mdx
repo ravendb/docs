@@ -9,15 +9,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 * This article covers the following methods:
 
-  - [load](../../client-api/session/loading-entities.mdx#load)
-  - [load with includes](../../client-api/session/loading-entities.mdx#load-with-includes)
-  - [load_starting_with](../../client-api/session/loading-entities.mdx#load_starting_with)
-  - [load_starting_with_into_stream](../../client-api/session/loading-entities.mdx#load_starting_with_into_stream)
-  - [conditional_load](../../client-api/session/loading-entities.mdx#conditional_load)
-  - [stream](../../client-api/session/loading-entities.mdx#stream)
-  - [is_loaded](../../client-api/session/loading-entities.mdx#is_loaded)
+  - [load](../../../client-api/session/loading-entities.mdx#load)
+  - [load with includes](../../../client-api/session/loading-entities.mdx#load-with-includes)
+  - [load_starting_with](../../../client-api/session/loading-entities.mdx#load_starting_with)
+  - [load_starting_with_into_stream](../../../client-api/session/loading-entities.mdx#load_starting_with_into_stream)
+  - [conditional_load](../../../client-api/session/loading-entities.mdx#conditional_load)
+  - [stream](../../../client-api/session/loading-entities.mdx#stream)
+  - [is_loaded](../../../client-api/session/loading-entities.mdx#is_loaded)
 
-* For loading entities lazily see [perform requests lazily](../../client-api/session/how-to/perform-operations-lazily.mdx).
+* For loading entities lazily see [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx).
 
 <Admonition type="warning" title="">
 From RavenDB version 4.x onward, only string identifiers are supported.  
@@ -45,7 +45,7 @@ Use the `load` method to load **an entity** or **multiple entities**.
 | ------------- | ------------- | ----- |
 | **key_or_keys** | `str` or `List[str]` | Identifier or a list of identifiers of entities to load |
 | **object_type**<br/>(optional) | `[Type[_T]` | Entity type to load (optional) |
-| **includes**<br/>(optional) | `Callable[[IncludeBuilder], None]` | A **consumer function** that takes an [include builder](../../client-api/how-to/handle-document-relationships.mdx#includes) argument.<br/>The user should use the builder inside this function to _include_ all the data needed within a load. |
+| **includes**<br/>(optional) | `Callable[[IncludeBuilder], None]` | A **consumer function** that takes an [include builder](../../../client-api/how-to/handle-document-relationships.mdx#includes) argument.<br/>The user should use the builder inside this function to _include_ all the data needed within a load. |
 
 | Return Type | Description |
 | ------------- | ----- |
@@ -77,7 +77,7 @@ Use the `load` method to load **an entity** or **multiple entities**.
 
 When there is a 'relationship' between documents, those documents can be loaded in a 
 single request call using the `include + load` methods. Learn more in 
-[How To Handle Document Relationships](../../client-api/how-to/handle-document-relationships.mdx).  
+[How To Handle Document Relationships](../../../client-api/how-to/handle-document-relationships.mdx).  
 
 <Admonition type="note" title="">
 Also see:  
@@ -240,7 +240,7 @@ This method can be used to check whether a document has been modified
 since the last time its change vector was recorded, so that the cost of loading it 
 can be saved if it has not been modified.  
 
-The `conditional_load` method takes a document's [change vector](../../server/clustering/replication/change-vector.mdx). 
+The `conditional_load` method takes a document's [change vector](../../../server/clustering/replication/change-vector.mdx). 
 If the entity is tracked by the session, this method returns the entity. If the entity 
 is not tracked, it checks if the provided change vector matches the document's 
 current change vector on the server side. If they match, the entity is not loaded. 
@@ -306,8 +306,8 @@ with store.open_session() as session:
 
 Entities can be streamed from the server using one of the following `stream` methods from the `advanced` session operations.
 
-Streaming query results does not support the [`include` feature](../../client-api/how-to/handle-document-relationships.mdx#includes). 
-Learn more in [How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results.mdx).  
+Streaming query results does not support the [`include` feature](../../../client-api/how-to/handle-document-relationships.mdx#includes). 
+Learn more in [How to Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
 
 <Admonition type="info" title="">
 Entities loaded using `stream` will be transient (not attached to session).
@@ -331,7 +331,7 @@ Entities loaded using `stream` will be transient (not attached to session).
 
 | Return Type | Description |
 | ------------- | ----- |
-| `IEnumerator<`[StreamResult](../../glossary/stream-result.mdx)`>` | Enumerator with entities. |
+| `IEnumerator<`[StreamResult](../../../glossary/stream-result.mdx)`>` | Enumerator with entities. |
 | `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
 
 

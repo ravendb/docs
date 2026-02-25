@@ -6,15 +6,15 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * RavenDB queries can be executed via `query`, `documentQuery` or directly using `RQL`.  
-  Learn more in [Query Overview](../../../../querying/overview.mdx).
+  Learn more in [Query Overview](../../../../../querying/overview.mdx).
 
-* See [Query -vs- documentQuery](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx) 
+* See [Query -vs- documentQuery](../../../../../client-api/session/querying/document-query/query-vs-document-query.mdx) 
   for additional details.
 
 * In this page:
-  * [documentQuery examples](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#documentquery-examples)
-  * [Custom methods](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#custom-methods)
-  * [Syntax](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#syntax)
+  * [documentQuery examples](../../../../../client-api/session/querying/document-query/what-is-document-query.mdx#documentquery-examples)
+  * [Custom methods](../../../../../client-api/session/querying/document-query/what-is-document-query.mdx#custom-methods)
+  * [Syntax](../../../../../client-api/session/querying/document-query/what-is-document-query.mdx#syntax)
 
 </Admonition>
 ## documentQuery examples
@@ -94,7 +94,7 @@ $employees = $session
 </TabItem>
 
 <Admonition type="note" title="">
-Please refer to [Querying an index](../../../../indexes/querying/query-index.mdx#sessionadvanceddocumentquery) for examples of querying an index using a documentQuery.
+Please refer to [Querying an index](../../../../../indexes/querying/query-index.mdx#sessionadvanceddocumentquery) for examples of querying an index using a documentQuery.
 </Admonition>
 
 
@@ -111,19 +111,19 @@ Refer to the corresponding documentation articles, marked with links starting wi
 Available custom methods:   
 
 - AddOrder
-- [query] [afterQueryExecuted](../../../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
-- [query] [afterStreamExecuted](../../../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
-- [query] [aggregateBy](../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
-- [query] [aggregateUsing](../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
+- [query] [afterQueryExecuted](../../../../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
+- [query] [afterStreamExecuted](../../../../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
+- [query] [aggregateBy](../../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
+- [query] [aggregateUsing](../../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
 - andAlso
-- [query] [beforeQueryExecuted](../../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
-- [boost](../../../../client-api/session/querying/text-search/boost-search-results.mdx)
+- [query] [beforeQueryExecuted](../../../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
+- [boost](../../../../../client-api/session/querying/text-search/boost-search-results.mdx)
 - closeSubclause
 - cmpXchg
 - containsAll
 - containsAny
-- [count](../../../../client-api/session/querying/how-to-count-query-results.mdx)
-- [countLazily](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)
+- [count](../../../../../client-api/session/querying/how-to-count-query-results.mdx)
+- [countLazily](../../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)
 - distinct
 - explainScores
 - first
@@ -131,70 +131,70 @@ Available custom methods:
 - fuzzy
 - getIndexQuery
 - getQueryResult
-- [groupBy](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx)
-- [groupByArrayValues](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-values)
-- [groupByArrayContent](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-content)
-- [query] [Highlight](../../../../client-api/session/querying/text-search/highlight-query-results.mdx)
+- [groupBy](../../../../../client-api/session/querying/how-to-perform-group-by-query.mdx)
+- [groupByArrayValues](../../../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-values)
+- [groupByArrayContent](../../../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-content)
+- [query] [Highlight](../../../../../client-api/session/querying/text-search/highlight-query-results.mdx)
 - include
 - includeExplanations
 - intersect
 - invokeAfterQueryExecuted
 - invokeAfterStreamExecuted
-- [query] [lazily](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
-- [longCount](../../../../client-api/session/querying/how-to-count-query-results.mdx)
+- [query] [lazily](../../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
+- [longCount](../../../../../client-api/session/querying/how-to-count-query-results.mdx)
 - moreLikeThis
 - negateNext
-- [not](../../../../client-api/session/querying/document-query/how-to-use-not-operator.mdx)
-- [query] [noCaching](../../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
-- [query] [noTracking](../../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+- [not](../../../../../client-api/session/querying/document-query/how-to-use-not-operator.mdx)
+- [query] [noCaching](../../../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+- [query] [noTracking](../../../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
 - ofType
 - openSubclause
-- [orderBy](../../../../client-api/session/querying/sort-query-results.mdx)
-- [orderByDescending](../../../../client-api/session/querying/sort-query-results.mdx)
-- [query] [orderByDistance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistance)
-- [query] [orderByDistanceDescending](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistancedesc)
-- [orderByScore](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
-- [orderByScoreDescending](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
+- [orderBy](../../../../../client-api/session/querying/sort-query-results.mdx)
+- [orderByDescending](../../../../../client-api/session/querying/sort-query-results.mdx)
+- [query] [orderByDistance](../../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistance)
+- [query] [orderByDistanceDescending](../../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistancedesc)
+- [orderByScore](../../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
+- [orderByScoreDescending](../../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
 - orElse
-- [query] [projection](../../../../client-api/session/querying/how-to-customize-query.mdx#projection)
+- [query] [projection](../../../../../client-api/session/querying/how-to-customize-query.mdx#projection)
 - proximity
-- [query] [randomOrdering](../../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
-- [query] [relatesToShape](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-shape)
-- [search](../../../../client-api/session/querying/text-search/full-text-search.mdx)
+- [query] [randomOrdering](../../../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+- [query] [relatesToShape](../../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-shape)
+- [search](../../../../../client-api/session/querying/text-search/full-text-search.mdx)
 - selectFields
 - selectTimeSeries
 - single
 - singleOrDefault
 - skip
-- [query] [spatial](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx)
+- [query] [spatial](../../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx)
 - statistics
-- [suggestUsing](../../../../client-api/session/querying/how-to-work-with-suggestions.mdx)
+- [suggestUsing](../../../../../client-api/session/querying/how-to-work-with-suggestions.mdx)
 - take
-- [query] [timings](../../../../client-api/session/querying/how-to-customize-query.mdx#timings)
+- [query] [timings](../../../../../client-api/session/querying/how-to-customize-query.mdx#timings)
 - usingDefaultOperator
-- [query] [waitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+- [query] [waitForNonStaleResults](../../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
 - where
 - whereBetween
-- [whereEndsWith](../../../../client-api/session/querying/text-search/ends-with-query.mdx)
+- [whereEndsWith](../../../../../client-api/session/querying/text-search/ends-with-query.mdx)
 - whereEquals
-- [whereExists](../../../../client-api/session/querying/how-to-filter-by-field.mdx)
+- [whereExists](../../../../../client-api/session/querying/how-to-filter-by-field.mdx)
 - whereGreaterThan
 - whereGreaterThanOrEqual
 - whereIn
 - whereLessThan
 - whereLessThanOrEqual
-- [whereLucene](../../../../client-api/session/querying/document-query/how-to-use-lucene.mdx)
+- [whereLucene](../../../../../client-api/session/querying/document-query/how-to-use-lucene.mdx)
 - whereNotEquals
-- [whereRegex](../../../../client-api/session/querying/text-search/using-regex.mdx)
-- [whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-query.mdx)
+- [whereRegex](../../../../../client-api/session/querying/text-search/using-regex.mdx)
+- [whereStartsWith](../../../../../client-api/session/querying/text-search/starts-with-query.mdx)
 - withinRadiusOf
 
 
 
 ## Syntax
 
-The definition for `documentQuery` is listed in the [Syntax section](../../../../querying/overview.mdx#syntax) 
-of the [Query Overview](../../../../querying/overview.mdx).
+The definition for `documentQuery` is listed in the [Syntax section](../../../../../querying/overview.mdx#syntax) 
+of the [Query Overview](../../../../../querying/overview.mdx).
 
 
 

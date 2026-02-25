@@ -3,7 +3,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-The RavenDB client API is built with the notion of layers. At the top, and what you will usually interact with, are the **[DocumentStore](../../client-api/what-is-a-document-store.mdx)** and the **[DocumentSession](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx)**.
+The RavenDB client API is built with the notion of layers. At the top, and what you will usually interact with, are the **[DocumentStore](../../../client-api/what-is-a-document-store.mdx)** and the **[DocumentSession](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx)**.
 
 They in turn, are built on top of the notion of Operations and Commands.
 
@@ -13,8 +13,8 @@ They are available in the DocumentStore under the **Operations**, **Maintenance*
 
 ## Common Operations
 
-Common operations include set based operations for [Patching](../../client-api/operations/patching/set-based.mdx) or removal of documents by using queries (more can be read [here](../../client-api/operations/delete-by-query.mdx)).  
-There is also the ability to handle distributed [Compare Exchange](../../client-api/operations/compare-exchange/overview.mdx) operations and manage [Attachments](../../client-api/operations/attachments/get-attachment.mdx) and [Counters](../../client-api/operations/counters/counter-batch.mdx).
+Common operations include set based operations for [Patching](../../../client-api/operations/patching/set-based.mdx) or removal of documents by using queries (more can be read [here](../../../client-api/operations/delete-by-query.mdx)).  
+There is also the ability to handle distributed [Compare Exchange](../../../client-api/operations/compare-exchange/overview.mdx) operations and manage [Attachments](../../../client-api/operations/attachments/get-attachment.mdx) and [Counters](../../../client-api/operations/counters/counter-batch.mdx).
 
 ### How to Send an Operation
 
@@ -54,27 +54,27 @@ Task<PatchOperation.Result<TEntity>> SendAsync<TEntity>(PatchOperation<TEntity> 
 
 #### Compare Exchange
 
-* [CompareExchange](../../client-api/operations/compare-exchange/overview.mdx)   
+* [CompareExchange](../../../client-api/operations/compare-exchange/overview.mdx)   
 
 #### Attachments
 
-* [GetAttachmentOperation](../../client-api/operations/attachments/get-attachment.mdx)
-* [PutAttachmentOperation](../../client-api/operations/attachments/put-attachment.mdx)
-* [DeleteAttachmentOperation](../../client-api/operations/attachments/delete-attachment.mdx)
+* [GetAttachmentOperation](../../../client-api/operations/attachments/get-attachment.mdx)
+* [PutAttachmentOperation](../../../client-api/operations/attachments/put-attachment.mdx)
+* [DeleteAttachmentOperation](../../../client-api/operations/attachments/delete-attachment.mdx)
 
 #### Patching
 
-* [PatchByQueryOperation](../../client-api/operations/patching/set-based.mdx)   
-* [PatchOperation](../../client-api/operations/patching/single-document.mdx)   
+* [PatchByQueryOperation](../../../client-api/operations/patching/set-based.mdx)   
+* [PatchOperation](../../../client-api/operations/patching/single-document.mdx)   
 
 #### Counters
 
-* [CounterBatchOperation](../../client-api/operations/counters/counter-batch.mdx)   
-* [GetCountersOperation](../../client-api/operations/counters/get-counters.mdx)   
+* [CounterBatchOperation](../../../client-api/operations/counters/counter-batch.mdx)   
+* [GetCountersOperation](../../../client-api/operations/counters/get-counters.mdx)   
 
 #### Misc
 
-* [DeleteByQueryOperation](../../client-api/operations/delete-by-query.mdx)   
+* [DeleteByQueryOperation](../../../client-api/operations/delete-by-query.mdx)   
 
 ### Example - Get Attachment
 
@@ -134,37 +134,37 @@ Task<Operation> SendAsync(IMaintenanceOperation<OperationIdResult> operation, Ca
 
 #### Client Configuration
 
-* [PutClientConfigurationOperation](../../client-api/operations/maintenance/configuration/put-client-configuration.mdx)   
-* [GetClientConfigurationOperation](../../client-api/operations/maintenance/configuration/get-client-configuration.mdx)   
+* [PutClientConfigurationOperation](../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx)   
+* [GetClientConfigurationOperation](../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx)   
 
 #### ETL
 
-* [ResetEtlOperation](../../client-api/operations/maintenance/etl/reset-etl.mdx)
+* [ResetEtlOperation](../../../client-api/operations/maintenance/etl/reset-etl.mdx)
 
 #### Indexes
 
-* [DeleteIndexOperation](../../client-api/operations/maintenance/indexes/delete-index.mdx)   
-* [DisableIndexOperation](../../client-api/operations/maintenance/indexes/disable-index.mdx)   
-* [EnableIndexOperation](../../client-api/operations/maintenance/indexes/enable-index.mdx)   
-* [ResetIndexOperation](../../client-api/operations/maintenance/indexes/reset-index.mdx)   
-* [SetIndexesLockOperation](../../client-api/operations/maintenance/indexes/set-index-lock.mdx)   
-* [SetIndexesPriorityOperation](../../client-api/operations/maintenance/indexes/set-index-priority.mdx)   
-* [StartIndexOperation](../../client-api/operations/maintenance/indexes/start-index.mdx)   
-* [StartIndexingOperation](../../client-api/operations/maintenance/indexes/start-indexing.mdx)   
-* [StopIndexOperation](../../client-api/operations/maintenance/indexes/stop-index.mdx)   
-* [StopIndexingOperation](../../client-api/operations/maintenance/indexes/stop-indexing.mdx)   
-* [GetIndexErrorsOperation](../../client-api/operations/maintenance/indexes/get-index-errors.mdx)   
-* [GetIndexOperation](../../client-api/operations/maintenance/indexes/get-index.mdx)   
-* [GetIndexesOperation](../../client-api/operations/maintenance/indexes/get-indexes.mdx)   
-* [GetTermsOperation](../../client-api/operations/maintenance/indexes/get-terms.mdx)   
-* [IndexHasChangedOperation](../../client-api/operations/maintenance/indexes/index-has-changed.mdx)   
-* [PutIndexesOperation](../../client-api/operations/maintenance/indexes/put-indexes.mdx)   
+* [DeleteIndexOperation](../../../client-api/operations/maintenance/indexes/delete-index.mdx)   
+* [DisableIndexOperation](../../../client-api/operations/maintenance/indexes/disable-index.mdx)   
+* [EnableIndexOperation](../../../client-api/operations/maintenance/indexes/enable-index.mdx)   
+* [ResetIndexOperation](../../../client-api/operations/maintenance/indexes/reset-index.mdx)   
+* [SetIndexesLockOperation](../../../client-api/operations/maintenance/indexes/set-index-lock.mdx)   
+* [SetIndexesPriorityOperation](../../../client-api/operations/maintenance/indexes/set-index-priority.mdx)   
+* [StartIndexOperation](../../../client-api/operations/maintenance/indexes/start-index.mdx)   
+* [StartIndexingOperation](../../../client-api/operations/maintenance/indexes/start-indexing.mdx)   
+* [StopIndexOperation](../../../client-api/operations/maintenance/indexes/stop-index.mdx)   
+* [StopIndexingOperation](../../../client-api/operations/maintenance/indexes/stop-indexing.mdx)   
+* [GetIndexErrorsOperation](../../../client-api/operations/maintenance/indexes/get-index-errors.mdx)   
+* [GetIndexOperation](../../../client-api/operations/maintenance/indexes/get-index.mdx)   
+* [GetIndexesOperation](../../../client-api/operations/maintenance/indexes/get-indexes.mdx)   
+* [GetTermsOperation](../../../client-api/operations/maintenance/indexes/get-terms.mdx)   
+* [IndexHasChangedOperation](../../../client-api/operations/maintenance/indexes/index-has-changed.mdx)   
+* [PutIndexesOperation](../../../client-api/operations/maintenance/indexes/put-indexes.mdx)   
 
 #### Misc
 
-* [GetCollectionStatisticsOperation](../../client-api/operations/maintenance/get-collection-statistics.mdx)   
-* [GetStatisticsOperation](../../client-api/operations/maintenance/get-statistics.mdx)     
-* [GetIdentitiesOperation](../../client-api/operations/maintenance/identities/get-identities.mdx)   
+* [GetCollectionStatisticsOperation](../../../client-api/operations/maintenance/get-collection-statistics.mdx)   
+* [GetStatisticsOperation](../../../client-api/operations/maintenance/get-statistics.mdx)     
+* [GetIdentitiesOperation](../../../client-api/operations/maintenance/identities/get-identities.mdx)   
 
 ### Example - Stop Index
 
@@ -218,29 +218,29 @@ Task<Operation> SendAsync(IServerOperation<OperationIdResult> operation, Cancell
 
 #### Client Certificates
 
-* [CreateClientCertificateOperation](../../client-api/operations/server-wide/certificates/create-client-certificate.mdx)   
-* [GetCertificatesOperation](../../client-api/operations/server-wide/certificates/get-certificates.mdx)   
-* [DeleteCertificateOperation](../../client-api/operations/server-wide/certificates/delete-certificate.mdx)   
-* [PutClientCertificateOperation](../../client-api/operations/server-wide/certificates/put-client-certificate.mdx)   
+* [CreateClientCertificateOperation](../../../client-api/operations/server-wide/certificates/create-client-certificate.mdx)   
+* [GetCertificatesOperation](../../../client-api/operations/server-wide/certificates/get-certificates.mdx)   
+* [DeleteCertificateOperation](../../../client-api/operations/server-wide/certificates/delete-certificate.mdx)   
+* [PutClientCertificateOperation](../../../client-api/operations/server-wide/certificates/put-client-certificate.mdx)   
 
 #### Server-wide Configuration
 
-* [GetServerWideClientConfigurationOperation](../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration.mdx)   
-* [PutServerWideClientConfigurationOperation](../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx)   
+* [GetServerWideClientConfigurationOperation](../../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration.mdx)   
+* [PutServerWideClientConfigurationOperation](../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx)   
 
 #### Cluster Management
 
-* [AddDatabaseNodeOperation](../../client-api/operations/server-wide/add-database-node.mdx)   
-* [CreateDatabaseOperation](../../client-api/operations/server-wide/create-database.mdx)   
-* [DeleteDatabasesOperation](../../client-api/operations/server-wide/delete-database.mdx)   
-* [PromoteDatabaseNodeOperation](../../client-api/operations/server-wide/promote-database-node.mdx)   
-* [ToggleDatabasesStateOperation](../../client-api/operations/server-wide/toggle-databases-state.mdx)   
-* [ReorderDatabaseMembersOperation](../../client-api/operations/server-wide/reorder-database-members.mdx)   
+* [AddDatabaseNodeOperation](../../../client-api/operations/server-wide/add-database-node.mdx)   
+* [CreateDatabaseOperation](../../../client-api/operations/server-wide/create-database.mdx)   
+* [DeleteDatabasesOperation](../../../client-api/operations/server-wide/delete-database.mdx)   
+* [PromoteDatabaseNodeOperation](../../../client-api/operations/server-wide/promote-database-node.mdx)   
+* [ToggleDatabasesStateOperation](../../../client-api/operations/server-wide/toggle-databases-state.mdx)   
+* [ReorderDatabaseMembersOperation](../../../client-api/operations/server-wide/reorder-database-members.mdx)   
 
 #### Miscellaneous
 
-* [GetBuildNumberOperation](../../client-api/operations/server-wide/get-build-number.mdx)   
-* [GetDatabaseNamesOperation](../../client-api/operations/server-wide/get-database-names.mdx)   
+* [GetBuildNumberOperation](../../../client-api/operations/server-wide/get-build-number.mdx)   
+* [GetDatabaseNamesOperation](../../../client-api/operations/server-wide/get-database-names.mdx)   
 
 ### Example - Get Build Number
 
@@ -266,7 +266,7 @@ Console.WriteLine(buildNumber.BuildVersion);
 ## Remarks
 
 <Admonition type="note" title="">
-By default, operations available in `store.Operations` or `store.Maintenance` are working on a default database that was setup for that store. To switch operations to a different database that is available on that server use the **[ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx)** method.
+By default, operations available in `store.Operations` or `store.Maintenance` are working on a default database that was setup for that store. To switch operations to a different database that is available on that server use the **[ForDatabase](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx)** method.
 </Admonition>
 
 

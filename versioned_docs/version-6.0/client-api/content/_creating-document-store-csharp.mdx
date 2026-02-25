@@ -8,13 +8,13 @@ import CodeBlock from '@theme/CodeBlock';
 * **Creating a Document Store** is the _first step_ that a RavenDB client application needs to make when working with RavenDB.
 
 * We recommend that your Document Store implement the [Singleton Pattern](https://csharpindepth.com/articles/Singleton) as demonstrated in 
-the example code [below](../client-api/creating-document-store.mdx#creating-a-document-store---example).  
+the example code [below](../../client-api/creating-document-store.mdx#creating-a-document-store---example).  
 Creating more than one Document Store may be resource intensive, and one instance is sufficient for most use cases.  
 
 * In this page:  
-  * [Creating a Document Store - Configuration](../client-api/creating-document-store.mdx#creating-a-document-store---configuration)  
-     * [Certificate Disposal](../client-api/creating-document-store.mdx#certificate-disposal)  
-  * [Creating a Document Store - Example](../client-api/creating-document-store.mdx#creating-a-document-store---example)  
+  * [Creating a Document Store - Configuration](../../client-api/creating-document-store.mdx#creating-a-document-store---configuration)  
+     * [Certificate Disposal](../../client-api/creating-document-store.mdx#certificate-disposal)  
+  * [Creating a Document Store - Example](../../client-api/creating-document-store.mdx#creating-a-document-store---example)  
 </Admonition>
 ## Creating a Document Store - Configuration
 
@@ -24,7 +24,7 @@ The following properties can be configured when creating a new Document Store:
 
     * An initial URLs list of your RavenDB cluster nodes that is used when the client accesses the database for the _first_ time.  
 
-    * Upon the first database access, the client will fetch the [Database Group Topology](../studio/database/settings/manage-database-group.mdx) 
+    * Upon the first database access, the client will fetch the [Database Group Topology](../../studio/database/settings/manage-database-group.mdx) 
     from the first server on this list that it successfully connected to. An exception is thrown if the client fails to connect with neither 
     of the servers specified on this list. The URLs from the Database Group Topology will supersede this initial URLs list for any future 
     access to that database.  
@@ -32,16 +32,16 @@ The following properties can be configured when creating a new Document Store:
     * **Note**: Do not create a Document Store with URLs that point to servers outside of your cluster.  
 
     * **Note**: This list is not binding. You can always modify your cluster later dynamically, add new nodes or remove existing ones as 
-    necessary. Learn more in [Cluster View Operations](../studio/cluster/cluster-view.mdx#cluster-view-operations).  
+    necessary. Learn more in [Cluster View Operations](../../studio/cluster/cluster-view.mdx#cluster-view-operations).  
 
-* **[Database](../client-api/setting-up-default-database.mdx)** (optional)  
+* **[Database](../../client-api/setting-up-default-database.mdx)** (optional)  
   The default database which the Client will work against.  
-  A different database can be specified when creating a [Session](../client-api/session/opening-a-session.mdx) if needed.  
+  A different database can be specified when creating a [Session](../../client-api/session/opening-a-session.mdx) if needed.  
 
-* **[Conventions](../client-api/configuration/conventions.mdx)** (optional)  
+* **[Conventions](../../client-api/configuration/conventions.mdx)** (optional)  
   Customize the Client behavior with a variety of options, overriding the default settings.  
 
-* **[Certificate](../client-api/setting-up-authentication-and-authorization.mdx)** (optional)  
+* **[Certificate](../../client-api/setting-up-authentication-and-authorization.mdx)** (optional)  
   X.509 certificate used to authenticate the client to the RavenDB server  
 
 After setting the above configurations as necessary, call `.Initialize()` to begin using the Document Store.  
@@ -57,7 +57,7 @@ Starting with RavenDB `6.x`, disposing of a store automatically removes any X509
 it, to [prevent the accumulation of unneeded certificate files](https://snede.net/the-most-dangerous-constructor-in-net/).  
 
 To **disable** the automatic disposal of certificates, please use the 
-[DisposeCertificate](../client-api/configuration/conventions.mdx#disposecertificate) convention.  
+[DisposeCertificate](../../client-api/configuration/conventions.mdx#disposecertificate) convention.  
 
 <TabItem value="disable_certificate_cleanup" label="disable_certificate_cleanup">
 <CodeBlock language="csharp">

@@ -18,7 +18,7 @@ The **StartAsync** method is used to manually force the synchronization to the d
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **forceSyncingAll** | bool | Determines whether finished synchronization should schedule a next pending one (there can be only [a limited number of concurrent synchronizations](../../../synchronization/configurations.mdx#ravensynchronizationconfig) to a destination file system). The reports of such synchronizations will *not* be included in `DestinationSyncResult` object. |
+| **forceSyncingAll** | bool | Determines whether finished synchronization should schedule a next pending one (there can be only [a limited number of concurrent synchronizations](../../../../synchronization/configurations.mdx#ravensynchronizationconfig) to a destination file system). The reports of such synchronizations will *not* be included in `DestinationSyncResult` object. |
 
 
 ---
@@ -73,7 +73,7 @@ e;
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;SynchronizationReport&gt;** | A task that represents the asynchronous file synchronization operation. The task result is a [`SynchronizationReport`](../../../../glossary/synchronization-report.mdx).  |
+| **Task&lt;SynchronizationReport&gt;** | A task that represents the asynchronous file synchronization operation. The task result is a [`SynchronizationReport`](../../../../../glossary/synchronization-report.mdx).  |
 
 
 ### Example

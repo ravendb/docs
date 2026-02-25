@@ -12,23 +12,23 @@ import CodeBlock from '@theme/CodeBlock';
 * The retrieved data can be paged to get the time series entries gradually, one custom-size page at a time.
 
 * By default, the session will track the retrieved time series data. 
-  See [disable tracking](../../../../../client-api/session/configuration/how-to-disable-tracking.mdx) to learn how to disable.
+  See [disable tracking](../../../../../../client-api/session/configuration/how-to-disable-tracking.mdx) to learn how to disable.
   
 * When getting the time series entries,  
   you can also _include_ the series' **parent document** and/or **documents referred to by the entry tag**.  
-  Learn more [below](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#include-parent-and-tagged-documents).
+  Learn more [below](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#include-parent-and-tagged-documents).
 
 * Calling `timeSeriesFor.get` will result in a trip to the server unless the series' parent document was loaded  
   (or queried for) with the time series included beforehand.  
 
 * In this page:  
-  * [`get` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-usage)
-  * [Examples](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#examples)
-     * [Get all entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-all-entries)
-     * [Get range of entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-range-of-entries)
-     * [Get entries with multiple values](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-entries-with-multiple-values)
-  * [Include parent and tagged documents](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#include-parent-and-tagged-documents)
-  * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#syntax)
+  * [`get` usage](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-usage)
+  * [Examples](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#examples)
+     * [Get all entries](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-all-entries)
+     * [Get range of entries](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-range-of-entries)
+     * [Get entries with multiple values](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-entries-with-multiple-values)
+  * [Include parent and tagged documents](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#include-parent-and-tagged-documents)
+  * [Syntax](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#syntax)
 
 </Admonition>
 ## `get` usage 
@@ -36,9 +36,9 @@ import CodeBlock from '@theme/CodeBlock';
 * Open a session.  
 * Create an instance of `timeSeriesFor` and pass it the following:
     * Provide an explicit document ID, -or-  
-      pass an [entity tracked by the session](../../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern), 
-      e.g. a document object returned from [session.query](../../../../../client-api/session/querying/how-to-query.mdx) 
-      or from [session.load](../../../../../client-api/session/loading-entities.mdx#load).
+      pass an [entity tracked by the session](../../../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern), 
+      e.g. a document object returned from [session.query](../../../../../../client-api/session/querying/how-to-query.mdx) 
+      or from [session.load](../../../../../../client-api/session/loading-entities.mdx#load).
     * Specify the time series name.
 * Call `timeSeriesFor.get`.  
 
@@ -91,10 +91,10 @@ try \{
 #### Get entries with multiple values:
 
 * Here, we check whether a stock's closing-time price is rising from day to day (over three days).  
-  This example is based on the sample entries that were entered in [this example](../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values).
+  This example is based on the sample entries that were entered in [this example](../../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values).
  
 * Since each time series entry contains multiple StockPrice values, 
-  we include a sample that uses [named](../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values) 
+  we include a sample that uses [named](../../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values) 
   time series values to make the code easier to read.  
 
 <TabItem value="timeseries_region_Get-Named-Values" label="timeseries_region_Get-Named-Values">
@@ -129,7 +129,7 @@ try \{
 
 * When retrieving time series entries using `timeSeriesFor.get`,  
   you can include the series parent document and/or documents referred to by the entries 
-  [tags](../../../../../document-extensions/timeseries/overview.mdx#tags).  
+  [tags](../../../../../../document-extensions/timeseries/overview.mdx#tags).  
 
 * The included documents will be cached in the session, and instantly retrieved from memory if loaded by the user.
 

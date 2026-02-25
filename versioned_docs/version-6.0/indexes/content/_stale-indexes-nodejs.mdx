@@ -16,7 +16,7 @@ the server. As far as RavenDB is concerned, it is better to be stale than offlin
 
 The querying response has an `isStale` method indicating whether the results are stale: that is, whether there were any outstanding tasks against the index at the time of querying.
 
-It can be retrieved using the [Statistics](../client-api/session/querying/how-to-get-query-statistics.mdx) method:
+It can be retrieved using the [Statistics](../../client-api/session/querying/how-to-get-query-statistics.mdx) method:
 
 <TabItem value="stale1" label="stale1">
 <CodeBlock language="js">
@@ -104,7 +104,7 @@ The default parameters are:
   
 <Admonition type="danger" title="Beware of waiting for non stale results overuse" id="beware-of-waiting-for-non-stale-results-overuse" href="#beware-of-waiting-for-non-stale-results-overuse">
 
-The indexing mechanism in RavenDB is built on [a BASE model](../client-api/faq/transaction-support.mdx#base-for-query-operations). 
+The indexing mechanism in RavenDB is built on [a BASE model](../../client-api/faq/transaction-support.mdx#base-for-query-operations). 
 In order to avoid querying consistency pitfalls, you need to consider this at the data modeling phase.
 
 The usage of `WaitForNonStaleResults` at the query level is usually reasonable on only rare occasions. 

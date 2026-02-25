@@ -96,7 +96,7 @@ Subscription<Order> orders = store.subscriptions().open(Order.class, id, connect
 ## Processing documents
 
 The result of opening subscription is `Subscription<T>` or `Subscription<RavenJObject>` instance. It implements `IObservable` interface, so it means that you can 
-subscribe to the incoming documents in order to process them. Also you will continue to get them, even for items that were added after you opened the subscription, because under the hood the [Changes API](../changes/what-is-changes-api.mdx)
+subscribe to the incoming documents in order to process them. Also you will continue to get them, even for items that were added after you opened the subscription, because under the hood the [Changes API](../../changes/what-is-changes-api.mdx)
 is used to get notifications about any document updates.
 
 ### Example II

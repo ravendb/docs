@@ -10,13 +10,13 @@ The client then processes the batch and will receive the next one *only after it
 The server persists the processing progress, allowing you to pause and continue the processing.  
 
 * In this page:  
-   * [Data subscription consumption](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#data-subscription-consumption)  
-   * [What defines a data subscription](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#what-defines-a-data-subscription)  
-   * [Documents processing](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#documents-processing)  
-   * [Progress Persistence](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#progress-persistence)  
-   * [How the worker communicates with the server](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#how-the-worker-communicates-with-the-server)  
-   * [Working with multiple clients](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#working-with-multiple-clients)  
-   * [Data subscriptions usage example](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#data-subscriptions-usage-example)  
+   * [Data subscription consumption](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#data-subscription-consumption)  
+   * [What defines a data subscription](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#what-defines-a-data-subscription)  
+   * [Documents processing](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#documents-processing)  
+   * [Progress Persistence](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#progress-persistence)  
+   * [How the worker communicates with the server](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#how-the-worker-communicates-with-the-server)  
+   * [Working with multiple clients](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#working-with-multiple-clients)  
+   * [Data subscriptions usage example](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#data-subscriptions-usage-example)  
 
 
 </Admonition>
@@ -32,9 +32,9 @@ When it's done, depending on the code that the client gave the worker, it can ta
 
 Data subscriptions are defined by the server side definition and by the worker connecting to it:
 
-1. [Subscription Creation Options](../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions): The documents that will be received, it's filtering and projection.
+1. [Subscription Creation Options](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions): The documents that will be received, it's filtering and projection.
 
-2. [Subscription Worker Options](../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions): Worker batch processing logic, batch size, interaction with other connections.
+2. [Subscription Worker Options](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions): Worker batch processing logic, batch size, interaction with other connections.
 
 
 
@@ -52,7 +52,7 @@ Documents are always sent in Etag order which means that data that already been 
 <Admonition type="note" title="">
 If the database has Revisions defined, the subscription can be configured to process pairs 
 of subsequent document revisions.  
-Read more here: [revisions support](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx)
+Read more here: [revisions support](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx)
 </Admonition>
 
 
@@ -94,7 +94,7 @@ See the sequence diagram below that summarizes the lifetime of a subscription co
 In order to support various inter-worker scenarios, one worker is allowed to take the place of another in the processing of a subscription. 
 Thanks to subscriptions persistence, the worker will be able to continue the work from the point it's predecessor stopped. 
 
-It's possible to configure that a worker will wait for an existing connection to fail, and take it's place, or we can configure it to force close an existing connection etc. See more in [Workers interplay](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#workers-interplay).
+It's possible to configure that a worker will wait for an existing connection to fail, and take it's place, or we can configure it to force close an existing connection etc. See more in [Workers interplay](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#workers-interplay).
 
 
 

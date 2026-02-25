@@ -62,7 +62,7 @@ To allow full-text search on the text fields, you can use the analyzers provided
 For most cases, Lucene's `StandardAnalyzer` would be your analyzer of choice. As shown above, this analyzer is aware of e-mail and network addresses when tokenizing. It normalizes cases, filters out common English words, and does some basic English stemming as well.
 
 For languages other than English, or if you need a custom analysis process, you can roll your own `Analyzer`. It is quite simple and may be already available as a contrib package for Lucene. 
-There are also `Collation analyzers` available (you can read more about them [here](../indexes/sorting-and-collation.mdx#collation)).
+There are also `Collation analyzers` available (you can read more about them [here](../../indexes/sorting-and-collation.mdx#collation)).
 
 ## Using Non-Default Analyzer
 
@@ -166,7 +166,7 @@ This behavior can be changed by turning off the field analysis (setting the `Fie
 </CodeBlock>
 </TabItem>
 
-If you want to disable indexing on a particular field, use the `FieldIndexing.NO` option. This can be useful when you want to [store](../indexes/storing-data-in-index.mdx) field data in the index, but don't want to make it available for querying, however it will available for extraction by projections:
+If you want to disable indexing on a particular field, use the `FieldIndexing.NO` option. This can be useful when you want to [store](../../indexes/storing-data-in-index.mdx) field data in the index, but don't want to make it available for querying, however it will available for extraction by projections:
 
 <TabItem value="analyzers_5" label="analyzers_5">
 <CodeBlock language="java">
@@ -187,6 +187,6 @@ If you want to disable indexing on a particular field, use the `FieldIndexing.NO
 
 ## Ordering When Field is Searchable
 
-When field is marked as `SEARCH` sorting must be done using additional field. More [here](../indexes/querying/sorting.mdx#ordering-when-a-field-is-searchable).
+When field is marked as `SEARCH` sorting must be done using additional field. More [here](../../indexes/querying/sorting.mdx#ordering-when-a-field-is-searchable).
 
 

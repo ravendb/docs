@@ -14,16 +14,16 @@ import CodeBlock from '@theme/CodeBlock';
     * **Change vector**
 
 * In this page:
-  * [Overview:](../../../../document-extensions/revisions/client-api/session/including.mdx#overview)
-      * [Why include revisions](../../../../document-extensions/revisions/client-api/session/including.mdx#why-include)
-      * [Including by creation time](../../../../document-extensions/revisions/client-api/session/including.mdx#include-by-time)
-      * [Including by change vector](../../../../document-extensions/revisions/client-api/session/including.mdx#include-by-change-vector)
-  * [Include revisions:](../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-loading-document)  
-      * [When Loading document](../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-loading-document)
-      * [When making a Query](../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-query)
-      * [When making a Raw Query](../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-raw-query)
-  * [Syntax](../../../../document-extensions/revisions/client-api/session/including.mdx#syntax)
-  * [Patching the revision change vector](../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector)
+  * [Overview:](../../../../../document-extensions/revisions/client-api/session/including.mdx#overview)
+      * [Why include revisions](../../../../../document-extensions/revisions/client-api/session/including.mdx#why-include)
+      * [Including by creation time](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-by-time)
+      * [Including by change vector](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-by-change-vector)
+  * [Include revisions:](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-loading-document)  
+      * [When Loading document](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-loading-document)
+      * [When making a Query](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-query)
+      * [When making a Raw Query](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-raw-query)
+  * [Syntax](../../../../../document-extensions/revisions/client-api/session/including.mdx#syntax)
+  * [Patching the revision change vector](../../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector)
 
 </Admonition>
 ## Overview
@@ -35,7 +35,7 @@ import CodeBlock from '@theme/CodeBlock';
   The document's past revisions can be included with the document to make the document's history available for instant inspection.  
 
 * Once loaded to the session, there are no additional trips to the server when accessing the revisions.  
-  [Getting](../../../../document-extensions/revisions/client-api/session/loading.mdx) a revision that was included with the document will retrieve it directly from the session.  
+  [Getting](../../../../../document-extensions/revisions/client-api/session/loading.mdx) a revision that was included with the document will retrieve it directly from the session.  
   This also holds true when attempting to include revisions but none are found.
 
 </Admonition>
@@ -56,7 +56,7 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 <a id="include-by-change-vector"/> **Including by Change Vector**:
-* Each time a document is modified, its [Change Vector](../../../../server/clustering/replication/change-vector.mdx) is updated.  
+* Each time a document is modified, its [Change Vector](../../../../../server/clustering/replication/change-vector.mdx) is updated.  
 
 * When a revision is created,  
   the revision's change vector is the change vector of the document at the time of the revision's creation.  
@@ -64,7 +64,7 @@ import CodeBlock from '@theme/CodeBlock';
 * To include single or multiple document revisions by their change vectors:   
 
   * When modifying the document, store its updated change vector in a property in the document.  
-    Can be done by [patching](../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector) the document from the Client API or from the Studio.
+    Can be done by [patching](../../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector) the document from the Client API or from the Studio.
 
   * Specify the **path** to this property when including the revisions, see examples below.  
   
@@ -199,7 +199,7 @@ const revisions = await session
 </CodeBlock>
 </TabItem>
 
-* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document). 
+* See the _Contract_ class definition [above](../../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document). 
 
 
 
@@ -266,7 +266,7 @@ const revisions = await session
 </CodeBlock>
 </TabItem>
 
-* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document).
+* See the _Contract_ class definition [above](../../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document).
 
 
 
@@ -317,7 +317,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 
-* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document).
+* See the _Contract_ class definition [above](../../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document).
 
 
 

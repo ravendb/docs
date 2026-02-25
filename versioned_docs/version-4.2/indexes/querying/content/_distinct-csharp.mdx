@@ -9,10 +9,10 @@ import CodeBlock from '@theme/CodeBlock';
   Items are compared based on the fields listed in the `select` section of the query. 
 
 * In this page:
-   * [Sample query with Distinct](../../indexes/querying/distinct.mdx#sample-query-with-distinct)
-   * [Paging with Distinct](../../indexes/querying/distinct.mdx#paging-with-distinct)
-   * [Count with Distinct](../../indexes/querying/distinct.mdx#count-with-distinct)
-      * [Performance cost and alternative approaches](../../indexes/querying/distinct.mdx#performance-cost-and-alternative-approaches)
+   * [Sample query with Distinct](../../../indexes/querying/distinct.mdx#sample-query-with-distinct)
+   * [Paging with Distinct](../../../indexes/querying/distinct.mdx#paging-with-distinct)
+   * [Count with Distinct](../../../indexes/querying/distinct.mdx#count-with-distinct)
+      * [Performance cost and alternative approaches](../../../indexes/querying/distinct.mdx#performance-cost-and-alternative-approaches)
 
 </Admonition>
 ## Sample query with Distinct
@@ -91,7 +91,7 @@ select distinct ShipTo.Country
 ## Paging with Distinct
 
 A special approach must be used when calling `Distinct()` while paging.  
-Please read the dedicated article about [paging through tampered results](../../indexes/querying/paging.mdx#paging-through-tampered-results).  
+Please read the dedicated article about [paging through tampered results](../../../indexes/querying/paging.mdx#paging-through-tampered-results).  
 
 
 
@@ -169,11 +169,11 @@ limit 0, 0
 * Please keep in mind that using `Count()` with `Distinct()` might not be efficient for large sets of data  
   as it requires scanning all index results to find unique values.
 
-* Getting the distinct items' count can also be achieved by creating a [Map-Reduce](../../indexes/map-reduce-indexes.mdx) index 
+* Getting the distinct items' count can also be achieved by creating a [Map-Reduce](../../../indexes/map-reduce-indexes.mdx) index 
   that will aggregate data by the field for which distinct count results are needed.
 
 * Using a Map-Reduce index is more efficient since computations are done during indexing time and not at query time. 
-  The entire dataset is [indexed](../../indexes/creating-and-deploying.mdx) once, 
+  The entire dataset is [indexed](../../../indexes/creating-and-deploying.mdx) once, 
   whereafter the aggregated value is always kept up to date as indexing will occur only for new/modified data.  
 
 #### Map-Reduce index example:

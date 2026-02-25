@@ -6,23 +6,23 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * The RavenDB Client API is built with the notion of layers.  
-  At the top, and what you will usually interact with, are the **[DocumentStore](../../client-api/what-is-a-document-store.mdx)**
-  and the **[Session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx)**.  
+  At the top, and what you will usually interact with, are the **[DocumentStore](../../../client-api/what-is-a-document-store.mdx)**
+  and the **[Session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx)**.  
   They, in turn, are built on top of the lower-level **Operations** and **Commands** API.
 
 * **RavenDB provides direct access to this lower-level API**, allowing you to send requests  
   directly to the server via DocumentStore Operations instead of using the higher-level Session API.
 
 * In this page:  
-  * [Why use operations](../../client-api/operations/what-are-operations.mdx#why-use-operations)  
-  * [How operations work](../../client-api/operations/what-are-operations.mdx#how-operations-work)  
+  * [Why use operations](../../../client-api/operations/what-are-operations.mdx#why-use-operations)  
+  * [How operations work](../../../client-api/operations/what-are-operations.mdx#how-operations-work)  
   * __Operation types__: 
-      * [Common operations](../../client-api/operations/what-are-operations.mdx#common-operations)  
-      * [Maintenance operations](../../client-api/operations/what-are-operations.mdx#maintenance-operations)  
-      * [Server-maintenance operations](../../client-api/operations/what-are-operations.mdx#server-maintenance-operations)  
-  * [Manage lengthy operations](../../client-api/operations/what-are-operations.mdx#manage-lengthy-operations)
-      * [Wait for completion](../../client-api/operations/what-are-operations.mdx#wait-for-completion)
-      * [Kill operation](../../client-api/operations/what-are-operations.mdx#killoperation)
+      * [Common operations](../../../client-api/operations/what-are-operations.mdx#common-operations)  
+      * [Maintenance operations](../../../client-api/operations/what-are-operations.mdx#maintenance-operations)  
+      * [Server-maintenance operations](../../../client-api/operations/what-are-operations.mdx#server-maintenance-operations)  
+  * [Manage lengthy operations](../../../client-api/operations/what-are-operations.mdx#manage-lengthy-operations)
+      * [Wait for completion](../../../client-api/operations/what-are-operations.mdx#wait-for-completion)
+      * [Kill operation](../../../client-api/operations/what-are-operations.mdx#killoperation)
 
 </Admonition>
 ## Why use operations
@@ -35,8 +35,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 * The operations are executed on the DocumentStore and are not part of the session transaction.
 
-* There are some client tasks, such as patching documents, that can be carried out either via the Session ([session.advanced.patch()](../../client-api/operations/patching/single-document.mdx#array-manipulation))
-  or via an Operation on the DocumentStore ([PatchOperation](../../client-api/operations/patching/single-document.mdx#operations-api)).
+* There are some client tasks, such as patching documents, that can be carried out either via the Session ([session.advanced.patch()](../../../client-api/operations/patching/single-document.mdx#array-manipulation))
+  or via an Operation on the DocumentStore ([PatchOperation](../../../client-api/operations/patching/single-document.mdx#operations-api)).
 
 
 
@@ -46,17 +46,17 @@ import CodeBlock from '@theme/CodeBlock';
   Each Operation creates an HTTP request message to be sent to the relevant server endpoint.  
   The DocumentStore `OperationExecutor` sends the request and processes the results.
 * __Target node__:  
-  By default, the operation will be executed on the server node that is defined by the [client configuration](../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
-  However, server-maintenance operations can be executed on a specific node by using the [forNode](../../client-api/operations/how-to/switch-operations-to-a-different-node.mdx) method.  
+  By default, the operation will be executed on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
+  However, server-maintenance operations can be executed on a specific node by using the [forNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node.mdx) method.  
 * __Target database__:  
   By default, operations work on the default database defined in the DocumentStore.  
-  However, common operations & maintenance operations can operate on a different database by using the [forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx) method.  
+  However, common operations & maintenance operations can operate on a different database by using the [forDatabase](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx) method.  
 * __Transaction scope__:  
   Operations execute as a single-node transaction.  
   If needed, data will then replicate to the other nodes in the database-group.
 * __Background operations__:  
   Some operations may take a long time to complete and can be awaited for completion.   
-  Learn more [below](../../client-api/operations/what-are-operations.mdx#wait-for-completion).
+  Learn more [below](../../../client-api/operations/what-are-operations.mdx#wait-for-completion).
 
 
 
@@ -66,7 +66,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * All common operations implement the `IOperation` interface.  
   The operation is executed within the __database scope__.  
-  Use [forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx) to operate on a specific database other than the default defined in the store.  
+  Use [forDatabase](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx) to operate on a specific database other than the default defined in the store.  
 
 * These operations include set-based operations such as _PatchOperation_, _CounterBatchOperation_,  
   document-extensions related operations such as getting/putting an attachment, and more.  
@@ -118,13 +118,13 @@ await send(patchOperation, sessionInfo, resultType);
 #### The following common operations are available:
 
 * __Attachments__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutAttachmentOperation](../../client-api/operations/attachments/put-attachment.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetAttachmentOperation](../../client-api/operations/attachments/get-attachment.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteAttachmentOperation](../../client-api/operations/attachments/delete-attachment.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutAttachmentOperation](../../../client-api/operations/attachments/put-attachment.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetAttachmentOperation](../../../client-api/operations/attachments/get-attachment.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteAttachmentOperation](../../../client-api/operations/attachments/delete-attachment.mdx)  
 
 * __Counters__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CounterBatchOperation](../../client-api/operations/counters/counter-batch.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCountersOperation](../../client-api/operations/counters/get-counters.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CounterBatchOperation](../../../client-api/operations/counters/counter-batch.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCountersOperation](../../../client-api/operations/counters/get-counters.mdx)  
 
 * __Time series__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TimeSeriesBatchOperation  
@@ -133,14 +133,14 @@ await send(patchOperation, sessionInfo, resultType);
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTimeSeriesStatisticsOperation  
 
 * __Revisions__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetRevisionsOperation](../../document-extensions/revisions/client-api/operations/get-revisions.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetRevisionsOperation](../../../document-extensions/revisions/client-api/operations/get-revisions.mdx)  
 
 * __Patching__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchOperation](../../client-api/operations/patching/single-document.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchByQueryOperation](../../client-api/operations/patching/set-based.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchOperation](../../../client-api/operations/patching/single-document.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchByQueryOperation](../../../client-api/operations/patching/set-based.mdx)  
 
 * __Delete by query__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteByQueryOperation](../../client-api/operations/common/delete-by-query.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteByQueryOperation](../../../client-api/operations/common/delete-by-query.mdx)   
 
 * __Compare-exchange__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutCompareExchangeValueOperation  
@@ -157,7 +157,7 @@ await send(patchOperation, sessionInfo, resultType);
 
 * All maintenance operations implement the `IMaintenanceOperation` interface.  
   The operation is executed within the __database scope__.  
-  Use [forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx) to operate on a specific database other than the default defined in the store.
+  Use [forDatabase](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx) to operate on a specific database other than the default defined in the store.
 
 * These operations include database management operations such as setting client configuration,  
   managing indexes & ongoing-tasks operations, getting stats, and more.  
@@ -205,53 +205,53 @@ __Send syntax__:
 #### The following maintenance operations are available:
 
 * __Statistics__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetStatisticsOperation](../../client-api/operations/maintenance/get-stats.mdx#get-database-stats)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDetailedStatisticsOperation](../../client-api/operations/maintenance/get-stats.mdx#get-detailed-database-stats)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCollectionStatisticsOperation](../../client-api/operations/maintenance/get-stats.mdx#get-collection-stats)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDetailedCollectionStatisticsOperation](../../client-api/operations/maintenance/get-stats.mdx#get-detailed-collection-stats)
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetStatisticsOperation](../../../client-api/operations/maintenance/get-stats.mdx#get-database-stats)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDetailedStatisticsOperation](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-database-stats)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCollectionStatisticsOperation](../../../client-api/operations/maintenance/get-stats.mdx#get-collection-stats)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDetailedCollectionStatisticsOperation](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-collection-stats)
 
 * __Client Configuration__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutClientConfigurationOperation](../../client-api/operations/maintenance/configuration/put-client-configuration.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetClientConfigurationOperation](../../client-api/operations/maintenance/configuration/get-client-configuration.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutClientConfigurationOperation](../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetClientConfigurationOperation](../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx)  
 
 * __Indexes__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutIndexesOperation](../../client-api/operations/maintenance/indexes/put-indexes.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SetIndexesLockOperation](../../client-api/operations/maintenance/indexes/set-index-lock.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SetIndexesPriorityOperation](../../client-api/operations/maintenance/indexes/set-index-priority.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexErrorsOperation](../../client-api/operations/maintenance/indexes/get-index-errors.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexOperation](../../client-api/operations/maintenance/indexes/get-index.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexesOperation](../../client-api/operations/maintenance/indexes/get-indexes.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetTermsOperation](../../client-api/operations/maintenance/indexes/get-terms.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutIndexesOperation](../../../client-api/operations/maintenance/indexes/put-indexes.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SetIndexesLockOperation](../../../client-api/operations/maintenance/indexes/set-index-lock.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SetIndexesPriorityOperation](../../../client-api/operations/maintenance/indexes/set-index-priority.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexErrorsOperation](../../../client-api/operations/maintenance/indexes/get-index-errors.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexOperation](../../../client-api/operations/maintenance/indexes/get-index.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexesOperation](../../../client-api/operations/maintenance/indexes/get-indexes.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetTermsOperation](../../../client-api/operations/maintenance/indexes/get-terms.mdx)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexPerformanceStatisticsOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexStatisticsOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexesStatisticsOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexingStatusOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexStalenessOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexNamesOperation](../../client-api/operations/maintenance/indexes/get-index-names.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StartIndexOperation](../../client-api/operations/maintenance/indexes/start-index.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StartIndexingOperation](../../client-api/operations/maintenance/indexes/start-indexing.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StopIndexOperation](../../client-api/operations/maintenance/indexes/stop-index.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StopIndexingOperation](../../client-api/operations/maintenance/indexes/stop-indexing.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ResetIndexOperation](../../client-api/operations/maintenance/indexes/reset-index.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteIndexOperation](../../client-api/operations/maintenance/indexes/delete-index.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteIndexErrorsOperation](../../client-api/operations/maintenance/indexes/delete-index-errors.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DisableIndexOperation](../../client-api/operations/maintenance/indexes/disable-index.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [EnableIndexOperation](../../client-api/operations/maintenance/indexes/enable-index.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [IndexHasChangedOperation](../../client-api/operations/maintenance/indexes/index-has-changed.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexNamesOperation](../../../client-api/operations/maintenance/indexes/get-index-names.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StartIndexOperation](../../../client-api/operations/maintenance/indexes/start-index.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StartIndexingOperation](../../../client-api/operations/maintenance/indexes/start-indexing.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StopIndexOperation](../../../client-api/operations/maintenance/indexes/stop-index.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StopIndexingOperation](../../../client-api/operations/maintenance/indexes/stop-indexing.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ResetIndexOperation](../../../client-api/operations/maintenance/indexes/reset-index.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteIndexOperation](../../../client-api/operations/maintenance/indexes/delete-index.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteIndexErrorsOperation](../../../client-api/operations/maintenance/indexes/delete-index-errors.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DisableIndexOperation](../../../client-api/operations/maintenance/indexes/disable-index.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [EnableIndexOperation](../../../client-api/operations/maintenance/indexes/enable-index.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [IndexHasChangedOperation](../../../client-api/operations/maintenance/indexes/index-has-changed.mdx)   
 
 * __Analyzers__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutAnalyzersOperation](../../indexes/using-analyzers.mdx#add-custom-analyzer-via-client-api)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutAnalyzersOperation](../../../indexes/using-analyzers.mdx#add-custom-analyzer-via-client-api)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteAnalyzerOperation  
 
 * **Ongoing tasks**:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetOngoingTaskInfoOperation](../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations.mdx#get-ongoing-task-info)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ToggleOngoingTaskStateOperation](../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations.mdx#toggle-ongoing-task-state)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteOngoingTaskOperation](../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations.mdx#delete-ongoing-task)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetOngoingTaskInfoOperation](../../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations.mdx#get-ongoing-task-info)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ToggleOngoingTaskStateOperation](../../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations.mdx#toggle-ongoing-task-state)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteOngoingTaskOperation](../../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations.mdx#delete-ongoing-task)  
 
 * __ETL tasks__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AddEtlOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateEtlOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ResetEtlOperation](../../client-api/operations/maintenance/etl/reset-etl.mdx)
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ResetEtlOperation](../../../client-api/operations/maintenance/etl/reset-etl.mdx)
 
 * __Replication tasks__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutPullReplicationAsHubOperation  
@@ -270,9 +270,9 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdatePeriodicBackupOperation  
 
 * __Connection strings__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutConnectionStringOperation](../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [RemoveConnectionStringOperation](../../client-api/operations/maintenance/connection-strings/remove-connection-string.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetConnectionStringsOperation](../../client-api/operations/maintenance/connection-strings/get-connection-string.mdx)
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutConnectionStringOperation](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [RemoveConnectionStringOperation](../../../client-api/operations/maintenance/connection-strings/remove-connection-string.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetConnectionStringsOperation](../../../client-api/operations/maintenance/connection-strings/get-connection-string.mdx)
 
 * __Transaction recording__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StartTransactionsRecordingOperation  
@@ -280,13 +280,13 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ReplayTransactionsRecordingOperation  
 
 * __Database settings__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutDatabaseSettingsOperation](../../client-api/operations/maintenance/configuration/database-settings-operation.mdx#put-database-settings-operation)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDatabaseSettingsOperation](../../client-api/operations/maintenance/configuration/database-settings-operation.mdx#get-database-settings-operation)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutDatabaseSettingsOperation](../../../client-api/operations/maintenance/configuration/database-settings-operation.mdx#put-database-settings-operation)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDatabaseSettingsOperation](../../../client-api/operations/maintenance/configuration/database-settings-operation.mdx#get-database-settings-operation)  
 
 * __Identities__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIdentitiesOperation](../../client-api/operations/maintenance/identities/get-identities.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [NextIdentityForOperation](../../client-api/operations/maintenance/identities/increment-next-identity.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SeedIdentityForOperation](../../client-api/operations/maintenance/identities/seed-identity.mdx)
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIdentitiesOperation](../../../client-api/operations/maintenance/identities/get-identities.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [NextIdentityForOperation](../../../client-api/operations/maintenance/identities/increment-next-identity.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SeedIdentityForOperation](../../../client-api/operations/maintenance/identities/seed-identity.mdx)
 
 * __Time series__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesOperation  
@@ -295,16 +295,16 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RemoveTimeSeriesPolicyOperation  
 
 * __Revisions__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsOperation](../../document-extensions/revisions/client-api/operations/configure-revisions.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsOperation](../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx)  
 
 * __Sorters__:   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutSortersOperation](../../client-api/operations/maintenance/sorters/put-sorter.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutSortersOperation](../../../client-api/operations/maintenance/sorters/put-sorter.mdx)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteSorterOperation  
 
 * **Sharding**:   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [AddPrefixedShardingSettingOperation](../../sharding/administration/sharding-by-prefix.mdx#add-prefixes-after-database-creation)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeletePrefixedShardingSettingOperation](../../sharding/administration/sharding-by-prefix.mdx#removing-prefixes)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [UpdatePrefixedShardingSettingOperation](../../sharding/administration/sharding-by-prefix.mdx#updating-shard-configurations-for-prefixes)
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [AddPrefixedShardingSettingOperation](../../../sharding/administration/sharding-by-prefix.mdx#add-prefixes-after-database-creation)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeletePrefixedShardingSettingOperation](../../../sharding/administration/sharding-by-prefix.mdx#removing-prefixes)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [UpdatePrefixedShardingSettingOperation](../../../sharding/administration/sharding-by-prefix.mdx#updating-shard-configurations-for-prefixes)
 
 * __Misc__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureExpirationOperation  
@@ -324,7 +324,7 @@ __Send syntax__:
 
 * All server-maintenance operations implement the `IServerOperation` interface.  
   The operation is executed within the __server scope__.   
-  Use [forNode](../../client-api/operations/how-to/switch-operations-to-a-different-node.mdx) to operate on a specific node other than the default defined in the client configuration.
+  Use [forNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node.mdx) to operate on a specific node other than the default defined in the client configuration.
 
 * These operations include server management and configuration operations.  
   See all available operations [below](../../client-api/operations/what-are-operations#the-following-server-maintenance-operations-are-available).
@@ -368,27 +368,27 @@ __Send syntax__:
 #### The following server-maintenance operations are available:
 
 * __Client certificates__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutClientCertificateOperation](../../client-api/operations/server-wide/certificates/put-client-certificate.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CreateClientCertificateOperation](../../client-api/operations/server-wide/certificates/create-client-certificate.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCertificatesOperation](../../client-api/operations/server-wide/certificates/get-certificates.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteCertificateOperation](../../client-api/operations/server-wide/certificates/delete-certificate.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutClientCertificateOperation](../../../client-api/operations/server-wide/certificates/put-client-certificate.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CreateClientCertificateOperation](../../../client-api/operations/server-wide/certificates/create-client-certificate.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCertificatesOperation](../../../client-api/operations/server-wide/certificates/get-certificates.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteCertificateOperation](../../../client-api/operations/server-wide/certificates/delete-certificate.mdx)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EditClientCertificateOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetCertificateMetadataOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ReplaceClusterCertificateOperation  
 
 * __Server-wide client configuration__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideClientConfigurationOperation](../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetServerWideClientConfigurationOperation](../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideClientConfigurationOperation](../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetServerWideClientConfigurationOperation](../../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration.mdx)   
 
 * __Database management__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CreateDatabaseOperation](../../client-api/operations/server-wide/create-database.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteDatabasesOperation](../../client-api/operations/server-wide/delete-database.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ToggleDatabasesStateOperation](../../client-api/operations/server-wide/toggle-databases-state.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDatabaseNamesOperation](../../client-api/operations/server-wide/get-database-names.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [AddDatabaseNodeOperation](../../client-api/operations/server-wide/add-database-node.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PromoteDatabaseNodeOperation](../../client-api/operations/server-wide/promote-database-node.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ReorderDatabaseMembersOperation](../../client-api/operations/server-wide/reorder-database-members.mdx)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CompactDatabaseOperation](../../client-api/operations/server-wide/compact-database.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CreateDatabaseOperation](../../../client-api/operations/server-wide/create-database.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteDatabasesOperation](../../../client-api/operations/server-wide/delete-database.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ToggleDatabasesStateOperation](../../../client-api/operations/server-wide/toggle-databases-state.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDatabaseNamesOperation](../../../client-api/operations/server-wide/get-database-names.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [AddDatabaseNodeOperation](../../../client-api/operations/server-wide/add-database-node.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PromoteDatabaseNodeOperation](../../../client-api/operations/server-wide/promote-database-node.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ReorderDatabaseMembersOperation](../../../client-api/operations/server-wide/reorder-database-members.mdx)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CompactDatabaseOperation](../../../client-api/operations/server-wide/compact-database.mdx)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetDatabaseRecordOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetDatabasesLockOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CreateDatabaseOperationWithoutNameValidation  
@@ -413,18 +413,18 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RestoreBackupOperation
 
 * __Server-wide analyzers__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideAnalyzersOperation](../../indexes/using-analyzers.mdx#add-custom-analyzer-via-client-api)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideAnalyzersOperation](../../../indexes/using-analyzers.mdx#add-custom-analyzer-via-client-api)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideAnalyzerOperation
 
 * __Server-wide sorters__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideSortersOperation](../../client-api/operations/server-wide/sorters/put-sorter-server-wide.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideSortersOperation](../../../client-api/operations/server-wide/sorters/put-sorter-server-wide.mdx)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideSorterOperation
 
 * __Logs & debug__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetLogsConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetLogsConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetClusterDebugInfoPackageOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetBuildNumberOperation](../../client-api/operations/server-wide/get-build-number.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetBuildNumberOperation](../../../client-api/operations/server-wide/get-build-number.mdx)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideOperationStateOperation
 
 * __Traffic watch__:  
@@ -432,7 +432,7 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTrafficWatchConfigurationOperation
 
 * __Revisions__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsForConflictsOperation](../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsForConflictsOperation](../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx)  
 
 * __Misc__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ModifyConflictSolverOperation  

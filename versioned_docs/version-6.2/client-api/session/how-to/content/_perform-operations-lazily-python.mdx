@@ -22,24 +22,24 @@ import CodeBlock from '@theme/CodeBlock';
       This can help reduce the number of remote calls made to the server over the network.
 
 * In this page:
-    * [Requests that can be executed lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx#operations-that-can-be-executed-lazily)
-        * [Load entities](../../../client-api/session/how-to/perform-operations-lazily.mdx#load-entities)
-        * [Load entities with include](../../../client-api/session/how-to/perform-operations-lazily.mdx#load-entities-with-include)
-        * [Load entities starting with](../../../client-api/session/how-to/perform-operations-lazily.mdx#load-entities-starting-with)
-        * [Conditional load](../../../client-api/session/how-to/perform-operations-lazily.mdx#conditional-load)
-        * [Run query](../../../client-api/session/how-to/perform-operations-lazily.mdx#run-query)
-        * [Get revisions](../../../client-api/session/how-to/perform-operations-lazily.mdx#get-revisions)
-        * [Get compare-exchange value](../../../client-api/session/how-to/perform-operations-lazily.mdx#get-compare-exchange-value)
-    * [Multiple lazy requests](../../../client-api/session/how-to/perform-operations-lazily.mdx#multiple-lazy-requests)
-        * [Execute all requests - implicitly](../../../client-api/session/how-to/perform-operations-lazily.mdx#execute-all-requests---implicitly)
-        * [Execute all requests - explicitly](../../../client-api/session/how-to/perform-operations-lazily.mdx#execute-all-requests---explicitly)
+    * [Requests that can be executed lazily](../../../../client-api/session/how-to/perform-operations-lazily.mdx#operations-that-can-be-executed-lazily)
+        * [Load entities](../../../../client-api/session/how-to/perform-operations-lazily.mdx#load-entities)
+        * [Load entities with include](../../../../client-api/session/how-to/perform-operations-lazily.mdx#load-entities-with-include)
+        * [Load entities starting with](../../../../client-api/session/how-to/perform-operations-lazily.mdx#load-entities-starting-with)
+        * [Conditional load](../../../../client-api/session/how-to/perform-operations-lazily.mdx#conditional-load)
+        * [Run query](../../../../client-api/session/how-to/perform-operations-lazily.mdx#run-query)
+        * [Get revisions](../../../../client-api/session/how-to/perform-operations-lazily.mdx#get-revisions)
+        * [Get compare-exchange value](../../../../client-api/session/how-to/perform-operations-lazily.mdx#get-compare-exchange-value)
+    * [Multiple lazy requests](../../../../client-api/session/how-to/perform-operations-lazily.mdx#multiple-lazy-requests)
+        * [Execute all requests - implicitly](../../../../client-api/session/how-to/perform-operations-lazily.mdx#execute-all-requests---implicitly)
+        * [Execute all requests - explicitly](../../../../client-api/session/how-to/perform-operations-lazily.mdx#execute-all-requests---explicitly)
 
 </Admonition>
 ## Operations that can be executed lazily
 
 ### Load entities
 
-[load](../../../client-api/session/loading-entities.mdx#load) loads a document entity from 
+[load](../../../../client-api/session/loading-entities.mdx#load) loads a document entity from 
 the database into the session.  
 Loading entities can be executed **lazily**.   
 
@@ -60,7 +60,7 @@ employee = lazy_employee.value  # 'load' operation is executed here
 </TabItem>
 ### Load entities with include
 
-[load with include](../../../client-api/session/loading-entities.mdx#load-with-includes) loads 
+[load with include](../../../../client-api/session/loading-entities.mdx#load-with-includes) loads 
 both the document and the specified related document.  
 Loading entities with include can be executed **lazily**.
 
@@ -100,7 +100,7 @@ supplier = session.load(product.SupplierId)
 </Tabs>
 ### Load entities starting with
 
-[load_starting_with](../../../client-api/session/loading-entities.mdx#loadstartingwith) loads 
+[load_starting_with](../../../../client-api/session/loading-entities.mdx#loadstartingwith) loads 
 entities whose ID starts with the specified prefix.  
 Loading entities with a common prefix can be executed **lazily**.
 
@@ -122,7 +122,7 @@ employees = lazy_employees.value  # 'load' operation is executed here
 </TabItem>
 ### Conditional load
 
-[conditional_load](../../../client-api/session/loading-entities.mdx#conditionalload) logic is: 
+[conditional_load](../../../../client-api/session/loading-entities.mdx#conditionalload) logic is: 
 
 * If the entity is already loaded to the session:  
   no server call is made, the tracked entity is returned.    
@@ -164,7 +164,7 @@ with store.open_session() as session2:
 ### Run query
 
 A query can be executed **lazily**.  
-Learn more about running queries lazily in [lazy queries](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx).
+Learn more about running queries lazily in [lazy queries](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx).
 
 <TabItem value="lazy_Query" label="lazy_Query">
 <CodeBlock language="python">
@@ -183,7 +183,7 @@ employees = lazy_employees.value  # query is executed here
 </TabItem>
 ### Get revisions
 
-All methods for [getting revisions](../../../document-extensions/revisions/client-api/session/loading.mdx) and their metadata can be executed **lazily**.
+All methods for [getting revisions](../../../../document-extensions/revisions/client-api/session/loading.mdx) and their metadata can be executed **lazily**.
 
 <TabItem value="lazy_Revisions" label="lazy_Revisions">
 <CodeBlock language="python">
@@ -205,7 +205,7 @@ revisions = lazy_revisions.value  # Getting revisions is executed here
 </TabItem>
 ### Get compare-exchange value
 
-[get_compare_exchange_value](../../../client-api/session/cluster-transaction/compare-exchange.mdx#get-compare-exchange) 
+[get_compare_exchange_value](../../../../client-api/session/cluster-transaction/compare-exchange.mdx#get-compare-exchange) 
 can be executed **lazily**.
 
 <TabItem value="lazy_CompareExchange" label="lazy_CompareExchange">

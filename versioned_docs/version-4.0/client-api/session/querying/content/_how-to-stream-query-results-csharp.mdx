@@ -5,9 +5,9 @@ import CodeBlock from '@theme/CodeBlock';
 
 Query results can be streamed using the `Stream` method from the `Advanced` session operations. The query can be issued using either a static index, or it can be a dynamic one where it will be handled by an auto index.
 
-Streaming query results does not support the [`include` feature](../../../client-api/how-to/handle-document-relationships.mdx#includes). 
-Instead, the query should rely on the [`load` clause](../../../indexes/querying/what-is-rql.mdx#load). See 
-[example IV](../../../client-api/session/querying/how-to-stream-query-results.mdx#example-iv) below.  
+Streaming query results does not support the [`include` feature](../../../../client-api/how-to/handle-document-relationships.mdx#includes). 
+Instead, the query should rely on the [`load` clause](../../../../indexes/querying/what-is-rql.mdx#load). See 
+[example IV](../../../../client-api/session/querying/how-to-stream-query-results.mdx#example-iv) below.  
 
 <Admonition type="info" title="">
 Entities loaded using `Stream` will be transient (not attached to session).
@@ -53,12 +53,12 @@ while (streamResults.MoveNext())
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **query** | [IQueryable](../../../client-api/session/querying/how-to-query.mdx#sessionquery), [IDocumentQuery](../../../client-api/session/querying/how-to-query.mdx#sessionadvanceddocumentquery) or [IRawDocumentQuery](../../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery) | Query to stream results for. |
-| `out` **streamQueryStats** | [StreamQueryStatistics](../../../glossary/stream-query-statistics.mdx) | Information about performed query. |
+| **query** | [IQueryable](../../../../client-api/session/querying/how-to-query.mdx#sessionquery), [IDocumentQuery](../../../../client-api/session/querying/how-to-query.mdx#sessionadvanceddocumentquery) or [IRawDocumentQuery](../../../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery) | Query to stream results for. |
+| `out` **streamQueryStats** | [StreamQueryStatistics](../../../../glossary/stream-query-statistics.mdx) | Information about performed query. |
 
 | Return Value | |
 | ------------- | ----- |
-| IEnumerator&lt;[StreamResult](../../../glossary/stream-result.mdx)&gt; | Enumerator with entities. |
+| IEnumerator&lt;[StreamResult](../../../../glossary/stream-result.mdx)&gt; | Enumerator with entities. |
 
 ### Example I - Using Static Index
 
@@ -170,7 +170,7 @@ while (await results.MoveNextAsync())
 
 ## Alternative to Using Includes
 
-Streaming does not support the [`include` feature](../../../client-api/how-to/handle-document-relationships.mdx#includes). 
+Streaming does not support the [`include` feature](../../../../client-api/how-to/handle-document-relationships.mdx#includes). 
 An `include` clause in a query loads additional documents related to the primary target of the query. 
 These are stored in the session on the client side so that they can be accessed without an additional 
 query.  
@@ -186,7 +186,7 @@ with the other results.
 To include related documents in your query, add them using `load`, then use `select` to 
 retrieve the documents.  
 
-Because we used `select`, the query results are now a [projection](../../../indexes/querying/projections.mdx) containing more than 
+Because we used `select`, the query results are now a [projection](../../../../indexes/querying/projections.mdx) containing more than 
 one entity. So on the client side, you need a projection class that matches the query result.  
 
 In this example, we query the `Orders` collection and also load related `Company` and 

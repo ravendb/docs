@@ -8,7 +8,7 @@ Pending session operations like `store`, `delete`, and many others, will not be 
 <Admonition type="info" title="">
 
 When `saveChanges()` is applied to send a batch of operations (e.g. `put`, `update`, and `delete`) 
-in a request, the server will wrap these operations in a [transaction](../../client-api/faq/transaction-support.mdx) 
+in a request, the server will wrap these operations in a [transaction](../../../client-api/faq/transaction-support.mdx) 
 upon execution in the database.  
 
 Either all operations are performed as a single, atomic transaction, or none of them are.  
@@ -72,9 +72,9 @@ by this write.
 
 ## Transaction Mode - Cluster Wide
 
-Setting `TransactionMode` to `TransactionMode.clusterWide` will enable the [Cluster Transactions](../../server/clustering/cluster-transactions.mdx) feature.
+Setting `TransactionMode` to `TransactionMode.clusterWide` will enable the [Cluster Transactions](../../../server/clustering/cluster-transactions.mdx) feature.
 
-With this feature enabled the [session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) will support the following _write_ commands:
+With this feature enabled the [session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) will support the following _write_ commands:
 
 - `store`
 - `delete`

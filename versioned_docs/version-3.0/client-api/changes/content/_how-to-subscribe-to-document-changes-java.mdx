@@ -5,11 +5,11 @@ import CodeBlock from '@theme/CodeBlock';
 
 Following methods allow you to subscribe to document changes:
 
-- [ForDocument](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)
-- [ForDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)
-- [ForDocumentsOfType](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsoftype)
-- [ForDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)
-- [ForAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)
+- [ForDocument](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)
+- [ForDocumentsInCollection](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)
+- [ForDocumentsOfType](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsoftype)
+- [ForDocumentsStartingWith](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)
+- [ForAllDocuments](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)
 
 ## ForDocument
 
@@ -30,7 +30,7 @@ Single document changes can be observed using `forDocument` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IObservable&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document. |
+| IObservable&lt;[DocumentChangeNotification](../../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document. |
 
 ### Example
 
@@ -75,7 +75,7 @@ IChangesObservable<DocumentChange> forDocumentsInCollection(Class<?> clazz);
 
 | Return Value | |
 | ------------- | ----- |
-| IObservable&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
+| IObservable&lt;[DocumentChangeNotification](../../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
 
 <Admonition type="info" title="">
 Overload with `Class` uses `Conventions.getTypeTagName` to get collection name.
@@ -133,7 +133,7 @@ public IObservable<DocumentChangeNotification> forDocumentsOfType(Class<?> clazz
 
 | Return Value | |
 | ------------- | ----- |
-| IObservable&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document type name. |
+| IObservable&lt;[DocumentChangeNotification](../../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document type name. |
 
 <Admonition type="info" title="">
 Overload with `Class` uses `Conventions.findClrTypeName` to get type name.
@@ -195,7 +195,7 @@ To observe all document changes for documents with Id that contains given prefix
 
 | Return Value | |
 | ------------- | ----- |
-| IObservable&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document Id prefix. |
+| IObservable&lt;[DocumentChangeNotification](../../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document Id prefix. |
 
 ## Example
 
@@ -228,7 +228,7 @@ To observe all document changes use `forAllDocuments` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IObservable&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all documents. |
+| IObservable&lt;[DocumentChangeNotification](../../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all documents. |
 
 ## Example
 

@@ -7,7 +7,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 
 
-You can setup a custom key generation strategy by supplying a custom function `DocumentKeyGenerator`. By default a session uses [the HiLo algorithm](../../../../client-api/document-identifiers/hilo-algorithm.mdx) for both sync and async API usage:
+You can setup a custom key generation strategy by supplying a custom function `DocumentKeyGenerator`. By default a session uses [the HiLo algorithm](../../../../../client-api/document-identifiers/hilo-algorithm.mdx) for both sync and async API usage:
 
 <TabItem value="key_generator_hilo" label="key_generator_hilo">
 <CodeBlock language="csharp">
@@ -22,7 +22,7 @@ Conventions.AsyncDocumentKeyGenerator = (dbName, commands, entity) =>
 </CodeBlock>
 </TabItem>
 
-However if you want the session to use [an identity key generation strategy](../../../../client-api/document-identifiers/working-with-document-ids.mdx#identity-ids) by default, you can overwrite this convention in the following manner:
+However if you want the session to use [an identity key generation strategy](../../../../../client-api/document-identifiers/working-with-document-ids.mdx#identity-ids) by default, you can overwrite this convention in the following manner:
 
 <TabItem value="key_generator_identityKeys" label="key_generator_identityKeys">
 <CodeBlock language="csharp">
@@ -36,7 +36,7 @@ Function `GetTypeTagName` will use either the convention specified in `FindTypeT
 
 ### FindTypeTagName and FindDynamicTagName
 
-Entity objects that share a common tag name belong to the same [collection](../../../../client-api/faq/what-is-a-collection.mdx) on the server side. Tag names are also used to build document keys. There are two functions that the client uses to determine the collection name. The first one is used for standard objects with well defined type:
+Entity objects that share a common tag name belong to the same [collection](../../../../../client-api/faq/what-is-a-collection.mdx) on the server side. Tag names are also used to build document keys. There are two functions that the client uses to determine the collection name. The first one is used for standard objects with well defined type:
 
 <TabItem value="find_type_tagname" label="find_type_tagname">
 <CodeBlock language="csharp">

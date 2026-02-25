@@ -10,9 +10,9 @@ A `SubscriptionWorker` object manages the documents processing and the communica
 We've introduced several ways to create and configure a SubscriptionWorker, starting from just giving a subscription name, and ending with a detailed configuration object - `SubscriptionWorkerOptions`.
 
 * In this page:
-   * [SubscriptionWorker lifecycle](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#subscriptionworker-lifecycle)  
-   * [Error handling](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#error-handling)  
-   * [Worker strategies](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies)
+   * [SubscriptionWorker lifecycle](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#subscriptionworker-lifecycle)  
+   * [Error handling](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#error-handling)  
+   * [Worker strategies](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies)
 
 </Admonition>
 ## SubscriptionWorker lifecycle
@@ -52,7 +52,7 @@ When an unexpected error arises, the worker will attempt to **reconnect to the s
 However, there are several conditions under which the worker will stop its operation but will Not attempt to reconnect:
 
 * The subscription no longer exists or has been deleted.
-* Another worker has taken control of the subscription (see [connection strategy](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#available-worker-strategies)).
+* Another worker has taken control of the subscription (see [connection strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#available-worker-strategies)).
 * The worker is unable to connect to any of the servers.
 * The worker could not receive the node responsible for the task  
   (this can happen when there is no leader in the cluster).
@@ -77,7 +77,7 @@ For example:
 </TabItem>
 
 When creating a worker, the worker can be configured to handle these exceptions in either of the following ways,
-depending on the `IgnoreSubscriberErrors` property in [SubscriptionWorkerOptions](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions):
+depending on the `IgnoreSubscriberErrors` property in [SubscriptionWorkerOptions](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions):
 
 * **Abort processing completely**  
   When `IgnoreSubscriberErrors` is set to _false_ (default):  
@@ -94,7 +94,7 @@ depending on the `IgnoreSubscriberErrors` property in [SubscriptionWorkerOptions
 
 <Admonition type="info" title="Reconnecting" id="reconnecting" href="#reconnecting">
 
-Two properties in the [SubscriptionWorkerOptions](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions)
+Two properties in the [SubscriptionWorkerOptions](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions)
 object control the behavior of a worker attempting to reconnect with the server:
 
 * `timeToWaitBeforeConnectionRetry`  

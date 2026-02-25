@@ -11,8 +11,8 @@ import CodeBlock from '@theme/CodeBlock';
   are returned in the `QueryStatistics` object.
 
 * In This Page:  
-   * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx#get-query-statistics)  
-   * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics.mdx#syntax)  
+   * [Get query statistics](../../../../client-api/session/querying/how-to-get-query-statistics.mdx#get-query-statistics)  
+   * [Syntax](../../../../client-api/session/querying/how-to-get-query-statistics.mdx#syntax)  
 
 </Admonition>
 ## Get query statistics
@@ -77,8 +77,8 @@ with self.embedded_server.get_document_store("QueryStatistics") as store:
 |---------------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **is_stale**        | `bool`           | Are the results returned by the query potentially stale                                                                                                                               |
 | **duration_in_ms**  | `int`            | Query duration on the server side in Milliseconds                                                                                                                                     |
-| **total_results**   | `int`            | The total count of results that matched the query<br/>Matching query results can also be counted using [count](../../../client-api/session/querying/how-to-count-query-results.mdx#count). |
-| **skipped_results** | `int`            | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging.mdx#paging-through-tampered-results).                    |
+| **total_results**   | `int`            | The total count of results that matched the query<br/>Matching query results can also be counted using [count](../../../../client-api/session/querying/how-to-count-query-results.mdx#count). |
+| **skipped_results** | `int`            | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../../indexes/querying/paging.mdx#paging-through-tampered-results).                    |
 | **timestamp**       | `datetime`       | The time when the query results were unstale                                                                                                                                          |
 | **index_name**      | `str`            | The name of the queried index                                                                                                                                                         |
 | **index_timestamp** | `IndexTimestamp` | The timestamp of the queried index                                                                                                                                                    |

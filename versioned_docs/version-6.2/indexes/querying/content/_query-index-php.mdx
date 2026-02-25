@@ -5,24 +5,24 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Prior to this article, it is recommended that you first read this [Query Overview](../../querying/overview.mdx).
+* Prior to this article, it is recommended that you first read this [Query Overview](../../../querying/overview.mdx).
 
-* For a basic indexes overview, see the [Indexes Overview](../../studio/database/indexes/indexes-overview.mdx).
+* For a basic indexes overview, see the [Indexes Overview](../../../studio/database/indexes/indexes-overview.mdx).
 * Indexing the content of your documents allows for **fast document retrieval** when querying the index.  
 
 * This article is a basic overview of how to query a **static index** using **code**.  
-   * For dynamic query examples see [Query Overview](../../querying/overview.mdx).  
-   * An index can also be queried from [Studio](../../studio/database/queries/query-view.mdx) 
-     using [RQL](../../client-api/session/querying/what-is-rql.mdx).
+   * For dynamic query examples see [Query Overview](../../../querying/overview.mdx).  
+   * An index can also be queried from [Studio](../../../studio/database/queries/query-view.mdx) 
+     using [RQL](../../../client-api/session/querying/what-is-rql.mdx).
 
-* Querying can be enhanced using these [extension methods](../../querying/overview.mdx#custom-methods).
+* Querying can be enhanced using these [extension methods](../../../querying/overview.mdx#custom-methods).
 
 * In this page:  
-   * [Query index - no filtering](../../indexes/querying/query-index.mdx#query-index---no-filtering)
-   * [Query index - with filtering](../../indexes/querying/query-index.mdx#query-index---with-filtering)
-   * [Query index - with paging](../../indexes/querying/query-index.mdx#query-index---with-paging)
-   * [Query an index by `documentQuery`](../../indexes/querying/query-index.mdx#query-an-index-by-documentquery)
-   * [Query an index by `rawQuery`](../../indexes/querying/query-index.mdx#query-an-index-by-rawquery)
+   * [Query index - no filtering](../../../indexes/querying/query-index.mdx#query-index---no-filtering)
+   * [Query index - with filtering](../../../indexes/querying/query-index.mdx#query-index---with-filtering)
+   * [Query index - with paging](../../../indexes/querying/query-index.mdx#query-index---with-paging)
+   * [Query an index by `documentQuery`](../../../indexes/querying/query-index.mdx#query-an-index-by-documentquery)
+   * [Query an index by `rawQuery`](../../../indexes/querying/query-index.mdx#query-an-index-by-rawquery)
 
 </Admonition>
 ## Query index - no filtering
@@ -229,7 +229,7 @@ where LastName == "King"
 
 * An exception will be thrown when filtering by fields that are Not defined in the index.
 
-* Read more about filtering [here](../../indexes/querying/filtering.mdx).
+* Read more about filtering [here](../../../indexes/querying/filtering.mdx).
 
 
 
@@ -323,7 +323,7 @@ limit 5, 10 // skip 5, take 10
 </TabItem>
 </Tabs>
 
-* Read more about paging [here](../../indexes/querying/paging.mdx).
+* Read more about paging [here](../../../indexes/querying/paging.mdx).
 
 
 
@@ -442,9 +442,9 @@ where LastName == "King"
 
 ## Query an index by `rawQuery`
 
-* Queries defined with [Query](../../indexes/querying/query-index.mdx#sessionquery) 
-  or [DocumentQuery](../../indexes/querying/query-index.mdx#sessionadvanceddocumentquery) 
-  are translated by the RavenDB client to [RQL](../../client-api/session/querying/what-is-rql.mdx)  
+* Queries defined with [Query](../../../indexes/querying/query-index.mdx#sessionquery) 
+  or [DocumentQuery](../../../indexes/querying/query-index.mdx#sessionadvanceddocumentquery) 
+  are translated by the RavenDB client to [RQL](../../../client-api/session/querying/what-is-rql.mdx)  
   when sent to the server.
 
 * The session also gives you a way to express the query directly in RQL using the 

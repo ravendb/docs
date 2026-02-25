@@ -5,10 +5,10 @@ import CodeBlock from '@theme/CodeBlock';
 
 Spatial indexes can be queried using `Spatial` method which contains full spectrum of spatial methods, certain shortcuts have been created for easier access and are available in `Customize` as a part of query customizations. Following article will cover those methods:
 
-- [Spatial](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#spatial)
-- [RelatesToShape](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#relatestoshape)
-- [SortByDistance](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#sortbydistance)
-- [WithinRadiusOf](../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#withinradiusof)
+- [Spatial](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#spatial)
+- [RelatesToShape](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#relatestoshape)
+- [SortByDistance](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#sortbydistance)
+- [WithinRadiusOf](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx#withinradiusof)
 
 ## Spatial
 
@@ -36,7 +36,7 @@ IRavenQueryable<T> Spatial<T>(
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **path** | Expression&lt;Func&lt;TResult, object&gt;&gt; | Path to spatial field. |
-| **clause** | Func&lt;[SpatialCriteriaFactory](../../../glossary/spatial-criteria-factory.mdx), SpatialCriteria&gt; | Spatial criteria that will be executed on given spatial field from `path` parameter. |
+| **clause** | Func&lt;[SpatialCriteriaFactory](../../../../glossary/spatial-criteria-factory.mdx), SpatialCriteria&gt; | Spatial criteria that will be executed on given spatial field from `path` parameter. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -124,7 +124,7 @@ SpatialCriteria WithinRadius(
 | ------------- | ------------- | ----- |
 | **fieldName** | string | Spatial field name. |
 | **shapeWKT** | string | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) formatted shape. |
-| **rel** | [SpatialRelation](../../../glossary/spatial-relation.mdx) | Spatial relation to check. |
+| **rel** | [SpatialRelation](../../../../glossary/spatial-relation.mdx) | Spatial relation to check. |
 
 | Return Value | |
 | ------------- | ----- |

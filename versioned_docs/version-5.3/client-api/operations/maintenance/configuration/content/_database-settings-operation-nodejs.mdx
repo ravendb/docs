@@ -9,13 +9,13 @@ import CodeBlock from '@theme/CodeBlock';
 
   * From the Client API - as described in this article.
 
-  * From the Studio - via the [Database Settings View](../../../../studio/database/settings/database-settings.mdx#database-settings).
+  * From the Studio - via the [Database Settings View](../../../../../studio/database/settings/database-settings.mdx#database-settings).
 
 * In this page:  
 
-  * [Put database settings operation](../../../../client-api/operations/maintenance/configuration/database-settings-operation.mdx#put-database-settings-operation)
+  * [Put database settings operation](../../../../../client-api/operations/maintenance/configuration/database-settings-operation.mdx#put-database-settings-operation)
 
-  * [Get database settings operation](../../../../client-api/operations/maintenance/configuration/database-settings-operation.mdx#get-database-settings-operation)
+  * [Get database settings operation](../../../../../client-api/operations/maintenance/configuration/database-settings-operation.mdx#get-database-settings-operation)
 
 <Admonition type="warning" title="">
 Do not modify the database settings unless you are an expert and know what you're doing.  
@@ -28,10 +28,10 @@ Do not modify the database settings unless you are an expert and know what you'r
 * Use `PutDatabaseSettingsOperation` to modify the default database configuration.
 
 * Only __database-level__ settings can be customized using this operation.  
-  See article [Configuration overview](../../../../server/configuration/configuration-options.mdx) to learn how to customize the __server-level__ settings.  
+  See article [Configuration overview](../../../../../server/configuration/configuration-options.mdx) to learn how to customize the __server-level__ settings.  
 
 * Note: for the changes to take effect, the database must be __reloaded__.  
-  Reloading is accomplished by disabling and enabling the database using [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state.mdx).  
+  Reloading is accomplished by disabling and enabling the database using [ToggleDatabasesStateOperation](../../../../../client-api/operations/server-wide/toggle-databases-state.mdx).  
   See the following example:
 
 <TabItem value="put_database_settings" label="put_database_settings">

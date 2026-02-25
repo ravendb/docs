@@ -7,14 +7,14 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Use the `AddEtlOperation` method to add a new ongoing ETL task to your database.
 
-* To learn about ETL (Extract, Transfer, Load) ongoing tasks, see article [ETL Basics](../../../../server/ongoing-tasks/etl/basics.mdx).  
-  To learn how to manage ETL tasks from the Studio, see [Ongoing tasks - overview](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx).
+* To learn about ETL (Extract, Transfer, Load) ongoing tasks, see article [ETL Basics](../../../../../server/ongoing-tasks/etl/basics.mdx).  
+  To learn how to manage ETL tasks from the Studio, see [Ongoing tasks - overview](../../../../../studio/database/tasks/ongoing-tasks/general-info.mdx).
 
 * In this page:
-  * [Example - add Raven ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#example---add-raven-etl)
-  * [Example - add SQL ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#example---add-sql-etl)
-  * [Example - add OLAP ETL](../../../../client-api/operations/maintenance/etl/add-etl.mdx#example---add-olap-etl)
-  * [Syntax](../../../../client-api/operations/maintenance/etl/add-etl.mdx#syntax)
+  * [Example - add Raven ETL](../../../../../client-api/operations/maintenance/etl/add-etl.mdx#example---add-raven-etl)
+  * [Example - add SQL ETL](../../../../../client-api/operations/maintenance/etl/add-etl.mdx#example---add-sql-etl)
+  * [Example - add OLAP ETL](../../../../../client-api/operations/maintenance/etl/add-etl.mdx#example---add-olap-etl)
+  * [Syntax](../../../../../client-api/operations/maintenance/etl/add-etl.mdx#syntax)
 
 </Admonition>
 ## Example - add Raven ETL
@@ -41,13 +41,13 @@ AddEtlOperationResult result = store.maintenance().send(operation);
 
 **Secure servers**:
 
-To [connect secure RavenDB servers](../../../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers:-importing-and-exporting-certificates)
+To [connect secure RavenDB servers](../../../../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers:-importing-and-exporting-certificates)
 you need to
 
 1. Export the server certificate from the source server.
 2. Install it as a client certificate on the destination server.
 
-This can be done in the RavenDB Studio -&gt; Server Management -&gt; [Certificates view](../../../../server/security/authentication/certificate-management.mdx#studio-certificates-management-view).
+This can be done in the RavenDB Studio -&gt; Server Management -&gt; [Certificates view](../../../../../server/security/authentication/certificate-management.mdx#studio-certificates-management-view).
 </Admonition>
 
 

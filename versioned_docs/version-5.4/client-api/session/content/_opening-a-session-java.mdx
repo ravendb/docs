@@ -67,11 +67,11 @@ private TransactionMode transactionMode;
 
 | Options | | |
 | ------------- | ------------- | ----- |
-| **database** | String | Name of database that session should operate on. If `null` then [default database set in DocumentStore](../../client-api/setting-up-default-database.mdx) is used. |
-| **noTracking** | boolean | Indicates if session should **not** keep track of the changes. Default: `false`. More [here](../../client-api/session/configuration/how-to-disable-tracking.mdx). |
-| **noCaching** | boolean | Indicates if session should **not** cache responses. Default: `false`. More [here](../../client-api/session/configuration/how-to-disable-caching.mdx). |
+| **database** | String | Name of database that session should operate on. If `null` then [default database set in DocumentStore](../../../client-api/setting-up-default-database.mdx) is used. |
+| **noTracking** | boolean | Indicates if session should **not** keep track of the changes. Default: `false`. More [here](../../../client-api/session/configuration/how-to-disable-tracking.mdx). |
+| **noCaching** | boolean | Indicates if session should **not** cache responses. Default: `false`. More [here](../../../client-api/session/configuration/how-to-disable-caching.mdx). |
 | **requestExecutor** | `RequestExecutor` | _(Advanced)_ Request executor to use. If `null` default one will be used. |
-| **transactionMode** | `TransactionMode` | Sets the mode for the session. By default it is set to `SINGLE_NODE`, but session can also operate 'CLUSTER_WIDE'. You can read more about Cluster-Wide Transactions [here](../../server/clustering/cluster-transactions.mdx). |
+| **transactionMode** | `TransactionMode` | Sets the mode for the session. By default it is set to `SINGLE_NODE`, but session can also operate 'CLUSTER_WIDE'. You can read more about Cluster-Wide Transactions [here](../../../server/clustering/cluster-transactions.mdx). |
 
 
 ## Example I

@@ -5,21 +5,21 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* After indexing has been paused using [StopIndexingOperation](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx),  
+* After indexing has been paused using [StopIndexingOperation](../../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx),  
   use `StartIndexingOperation` to **resume indexing** for ALL indexes in the database.  
   <Admonition type="info" title="">
   Calling `StartIndexingOperation` on a single index will have no effect.
   </Admonition>
 
 * When resuming indexing from the **client**:  
-  Indexing is resumed on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.  
+  Indexing is resumed on the [preferred node](../../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.  
 
-* When resuming indexing from the **Studio** [database list](../../../../studio/database/databases-list-view.mdx#more-actions) view:  
+* When resuming indexing from the **Studio** [database list](../../../../../studio/database/databases-list-view.mdx#more-actions) view:  
   Indexing is resumed on the local node the browser is opened on, even if it is Not the preferred node.  
 
 * In this page:
-  * [Resume indexing example](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx#resume-indexing-example)
-  * [Syntax](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx#syntax)
+  * [Resume indexing example](../../../../../client-api/operations/maintenance/indexes/start-indexing.mdx#resume-indexing-example)
+  * [Syntax](../../../../../client-api/operations/maintenance/indexes/start-indexing.mdx#syntax)
 
 </Admonition>
 ## Resume indexing example

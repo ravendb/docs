@@ -5,11 +5,11 @@ import CodeBlock from '@theme/CodeBlock';
 
 Following methods allow you to subscribe to document changes:
 
-- [ForDocument](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)
-- [ForDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)
-- [ForDocumentsOfType](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsoftype)
-- [ForDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)
-- [ForAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)
+- [ForDocument](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)
+- [ForDocumentsInCollection](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)
+- [ForDocumentsOfType](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsoftype)
+- [ForDocumentsStartingWith](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)
+- [ForAllDocuments](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)
 
 ## ForDocument
 
@@ -30,7 +30,7 @@ Single document changes can be observed using `ForDocument` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IObservableWithTask&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document. |
+| IObservableWithTask&lt;[DocumentChangeNotification](../../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document. |
 
 ### Example
 
@@ -79,7 +79,7 @@ IChangesObservable<DocumentChange> ForDocumentsInCollection<TEntity>();
 
 | Return Value | |
 | ------------- | ----- |
-| IObservableWithTask&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
+| IObservableWithTask&lt;[DocumentChangeNotification](../../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
 
 <Admonition type="info" title="">
 Overload with `TEntity` type uses `Conventions.GetTypeTagName` to get collection name.
@@ -138,7 +138,7 @@ IObservableWithTask<DocumentChangeNotification>
 
 | Return Value | |
 | ------------- | ----- |
-| IObservableWithTask&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document type name. |
+| IObservableWithTask&lt;[DocumentChangeNotification](../../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document type name. |
 
 <Admonition type="info" title="">
 Overloads with `TEntity` type or `Type` uses `Conventions.FindClrTypeName` to get type name.
@@ -190,7 +190,7 @@ To observe all document changes for documents with Id that contains given prefix
 
 | Return Value | |
 | ------------- | ----- |
-| IObservableWithTask&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document Id prefix. |
+| IObservableWithTask&lt;[DocumentChangeNotification](../../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for given document Id prefix. |
 
 ## Example
 
@@ -221,7 +221,7 @@ To observe all document changes use `ForAllDocuments` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IObservableWithTask&lt;[DocumentChangeNotification](../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all documents. |
+| IObservableWithTask&lt;[DocumentChangeNotification](../../../glossary/document-change-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all documents. |
 
 ## Example
 

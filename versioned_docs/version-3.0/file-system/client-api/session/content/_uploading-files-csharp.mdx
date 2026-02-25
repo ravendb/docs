@@ -32,7 +32,7 @@ void RegisterUpload(FileHeader file, long fileSize, Action<Stream> write, Etag e
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **path** | string | The full path of the file |
-| **file** | [FileHeader](../../../glossary/file-header.mdx) | The file represented by the `FileHeader` |
+| **file** | [FileHeader](../../../../glossary/file-header.mdx) | The file represented by the `FileHeader` |
 | **stream** | Stream | The file content that will be copied to the HTTP request |
 | **fileSize** | long | The declared number of bytes to write in **write** action |
 | **write** | Action&lt;Stream&gt; | The action which writes file content bytes directly to the HTTP request stream |

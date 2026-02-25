@@ -15,22 +15,22 @@ import CodeBlock from '@theme/CodeBlock';
   To compact all database-group nodes, the command must be sent to each node separately.  
 
 * **Target node**:  
-  By default, the operation will be executed on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
-  The operation can be executed on a specific node by using the [ForNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node.mdx) method.  
+  By default, the operation will be executed on the server node that is defined by the [client configuration](../../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
+  The operation can be executed on a specific node by using the [ForNode](../../../../client-api/operations/how-to/switch-operations-to-a-different-node.mdx) method.  
 
 * **Target database**:  
   The database to compact is specified in `CompactSettings` (see examples below).  
   An exception is thrown if the specified database doesn't exist on the server node.  
 
 * In this page:  
-  * [Examples](../../../client-api/operations/server-wide/compact-database.mdx#examples):  
-      * [Compact documents](../../../client-api/operations/server-wide/compact-database.mdx#examples)  
-      * [Compact specific indexes](../../../client-api/operations/server-wide/compact-database.mdx#compact-specific-indexes)  
-      * [Compact all indexes](../../../client-api/operations/server-wide/compact-database.mdx#compact-all-indexes)  
-      * [Compact on other nodes](../../../client-api/operations/server-wide/compact-database.mdx#compact-on-other-nodes)  
-  * [Compaction triggers compression](../../../client-api/operations/server-wide/compact-database.mdx#compaction-triggers-compression)  
-  * [Compact from Studio](../../../client-api/operations/server-wide/compact-database.mdx#compact-from-studio)  
-  * [Syntax](../../../client-api/operations/server-wide/compact-database.mdx#syntax)  
+  * [Examples](../../../../client-api/operations/server-wide/compact-database.mdx#examples):  
+      * [Compact documents](../../../../client-api/operations/server-wide/compact-database.mdx#examples)  
+      * [Compact specific indexes](../../../../client-api/operations/server-wide/compact-database.mdx#compact-specific-indexes)  
+      * [Compact all indexes](../../../../client-api/operations/server-wide/compact-database.mdx#compact-all-indexes)  
+      * [Compact on other nodes](../../../../client-api/operations/server-wide/compact-database.mdx#compact-on-other-nodes)  
+  * [Compaction triggers compression](../../../../client-api/operations/server-wide/compact-database.mdx#compaction-triggers-compression)  
+  * [Compact from Studio](../../../../client-api/operations/server-wide/compact-database.mdx#compact-from-studio)  
+  * [Syntax](../../../../client-api/operations/server-wide/compact-database.mdx#syntax)  
 
 </Admonition>
 ## Examples
@@ -238,8 +238,8 @@ await operation.WaitForCompletionAsync();
 
 #### Compact on other nodes
 
-* By default, an operation executes on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
-* The following example will compact the database on all [member](../../../server/clustering/rachis/cluster-topology.mdx#nodes-states-and-types) nodes from its database-group topology.  
+* By default, an operation executes on the server node that is defined by the [client configuration](../../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
+* The following example will compact the database on all [member](../../../../server/clustering/rachis/cluster-topology.mdx#nodes-states-and-types) nodes from its database-group topology.  
   `ForNode` is used to execute the operation on a specific node.   
 
 <Tabs groupId='languageSyntax'>
@@ -314,20 +314,20 @@ foreach (string nodeTag in allMemberNodes)
 
 ## Compaction triggers compression
 
-* When document [compression](../../../server/storage/documents-compression.mdx) is turned on, compression is applied to the documents when:
+* When document [compression](../../../../server/storage/documents-compression.mdx) is turned on, compression is applied to the documents when:
   * __New__ documents that are created and saved.  
   * __Existing__ documents that are modified and saved.  
 
-* You can use the [compaction](../../../client-api/operations/server-wide/compact-database.mdx) operation to __compress existing documents without having to modify and save__ them.  
+* You can use the [compaction](../../../../client-api/operations/server-wide/compact-database.mdx) operation to __compress existing documents without having to modify and save__ them.  
   Executing compaction triggers compression on ALL existing documents for the collections that are configured for compression.
 
-* Learn more about Compression -vs- Compaction [here](../../../server/storage/documents-compression.mdx#compression--vs--compaction).
+* Learn more about Compression -vs- Compaction [here](../../../../server/storage/documents-compression.mdx#compression--vs--compaction).
 
 
 
 ## Compact from Studio
 
-* Compaction can be triggered from the [Storage Report](../../../studio/database/stats/storage-report.mdx) view in the Studio.  
+* Compaction can be triggered from the [Storage Report](../../../../studio/database/stats/storage-report.mdx) view in the Studio.  
   The operation will compact the database only on the node being viewed (node info is in the Studio footer).
  
 * To compact the database on another node,  

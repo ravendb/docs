@@ -7,10 +7,10 @@ import CodeBlock from '@theme/CodeBlock';
 
 * **Time series index**:
 
-    * STATIC-time-series-indexes can be defined from the [Client API](../../../document-extensions/timeseries/indexing.mdx) 
-      or using [Studio](../../../studio/database/indexes/create-map-index.mdx).  
+    * STATIC-time-series-indexes can be defined from the [Client API](../../../../document-extensions/timeseries/indexing.mdx) 
+      or using [Studio](../../../../studio/database/indexes/create-map-index.mdx).  
       Such an index can be queried in the same way as a regular index that indexes documents.  
-      (See [Querying an index](../../../indexes/querying/query-index.mdx)).
+      (See [Querying an index](../../../../indexes/querying/query-index.mdx)).
     
     * AUTO-time-series-indexes are Not generated automatically by the server when making a time series query.
 
@@ -28,13 +28,13 @@ import CodeBlock from '@theme/CodeBlock';
       The documents themselves are not returned.
 
 * In this page:
-    * [Sample index](../../../document-extensions/timeseries/querying/using-indexes.mdx#sample-index)
-    * [Querying the index](../../../document-extensions/timeseries/querying/using-indexes.mdx#querying-the-index)
-        * [Query all time series entries](../../../document-extensions/timeseries/querying/using-indexes.mdx#query-all-time-series-entries)
-        * [Filter query results](../../../document-extensions/timeseries/querying/using-indexes.mdx#filter-query-results)
-        * [Order query results](../../../document-extensions/timeseries/querying/using-indexes.mdx#order-query-results)
-        * [Project results](../../../document-extensions/timeseries/querying/using-indexes.mdx#project-results)
-    * [Syntax](../../../document-extensions/timeseries/querying/using-indexes.mdx#syntax)
+    * [Sample index](../../../../document-extensions/timeseries/querying/using-indexes.mdx#sample-index)
+    * [Querying the index](../../../../document-extensions/timeseries/querying/using-indexes.mdx#querying-the-index)
+        * [Query all time series entries](../../../../document-extensions/timeseries/querying/using-indexes.mdx#query-all-time-series-entries)
+        * [Filter query results](../../../../document-extensions/timeseries/querying/using-indexes.mdx#filter-query-results)
+        * [Order query results](../../../../document-extensions/timeseries/querying/using-indexes.mdx#order-query-results)
+        * [Project results](../../../../document-extensions/timeseries/querying/using-indexes.mdx#project-results)
+    * [Syntax](../../../../document-extensions/timeseries/querying/using-indexes.mdx#syntax)
 
 </Admonition>
 ## Sample Index
@@ -43,13 +43,13 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Each **index-entry** consists of:
   * Three index-fields obtained from the "HeartRates" time series entries: `BPM`, `Date`, and `Tag`.
-  * One index-field obtained from the time series [segment](../../../document-extensions/timeseries/indexing.mdx#timeseriessegment-object) header: `EmployeeID`.
+  * One index-field obtained from the time series [segment](../../../../document-extensions/timeseries/indexing.mdx#timeseriessegment-object) header: `EmployeeID`.
   * One index-field obtained from the loaded employee document: `EmployeeName`.
 
 * When querying this time series index:  
   * The resulting items correspond to the time series entries that match the query predicate.  
   * Each item in the results will be of type `TsIndex.IndexEntry`, which is the index-entry.  
-    Different result types may be returned when the query [projects the results](../../../document-extensions/timeseries/querying/using-indexes.mdx#project-results).
+    Different result types may be returned when the query [projects the results](../../../../document-extensions/timeseries/querying/using-indexes.mdx#project-results).
 
 <TabItem value="sample_ts_index" label="sample_ts_index">
 <CodeBlock language="python">
@@ -260,7 +260,7 @@ select distinct EmployeeID
 
 ## Syntax
    
-* [query](../../../querying/overview.mdx)  
+* [query](../../../../querying/overview.mdx)  
 <TabItem value="json" label="json">
 <CodeBlock language="json">
 {`def query(
@@ -271,7 +271,7 @@ self, source: Optional[Query] = None, object_type: Optional[Type[_T]] = None
 </CodeBlock>
 </TabItem>
 
-* [document_query](../../../client-api/session/querying/document-query/query-vs-document-query.mdx)  
+* [document_query](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx)  
 <TabItem value="json" label="json">
 <CodeBlock language="json">
 {`def document_query(

@@ -96,7 +96,7 @@ To not include any confidential database settings, please issue a backup request
 
 ### Backup & Restore
 
-1. Issue a [backup request](../../../http/client-api/commands/how-to/start-backup-restore-operations.mdx#startbackup) with empty `SecuredSettings` (where encryption configuration is placed) in [DatabaseDocument](../../glossary/database-document.mdx) specified:
+1. Issue a [backup request](../../../../http/client-api/commands/how-to/start-backup-restore-operations.mdx#startbackup) with empty `SecuredSettings` (where encryption configuration is placed) in [DatabaseDocument](../../glossary/database-document.mdx) specified:
 
 <TabItem value="json" label="json">
 <CodeBlock language="json">
@@ -108,7 +108,7 @@ To not include any confidential database settings, please issue a backup request
 
 2. Notice that `Database.Document` found in `c:\temp\backup\Northwind\` contains exactly the same information that you send in your request, which means that your database cannot be restored until you specify `Raven/Encryption/Key` in this document.
 
-3. After filling `Raven/Encryption/Key`, `Raven/Encryption/Algorithm`, `Raven/Encryption/KeyBitsPreference` and `Raven/Encryption/EncryptIndexes` in your `Database.Document` you can issue a [restore request](../../../http/client-api/commands/how-to/start-backup-restore-operations.mdx#startrestore):
+3. After filling `Raven/Encryption/Key`, `Raven/Encryption/Algorithm`, `Raven/Encryption/KeyBitsPreference` and `Raven/Encryption/EncryptIndexes` in your `Database.Document` you can issue a [restore request](../../../../http/client-api/commands/how-to/start-backup-restore-operations.mdx#startrestore):
 
 <TabItem value="json" label="json">
 <CodeBlock language="json">

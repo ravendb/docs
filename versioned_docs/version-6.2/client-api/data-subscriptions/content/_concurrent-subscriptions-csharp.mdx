@@ -13,23 +13,23 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Documents that were assigned to workers whose connection has ended unexpectedly,  
   can be reassigned by the server to available workers. 
-  See [connection failure](../../client-api/data-subscriptions/concurrent-subscriptions.mdx#connection-failure) below.
+  See [connection failure](../../../client-api/data-subscriptions/concurrent-subscriptions.mdx#connection-failure) below.
 
 * In this page:  
-   * [Defining concurrent workers](../../client-api/data-subscriptions/concurrent-subscriptions.mdx#defining-concurrent-workers)  
-   * [Dropping a connection](../../client-api/data-subscriptions/concurrent-subscriptions.mdx#dropping-a-connection)  
-   * [Connection failure](../../client-api/data-subscriptions/concurrent-subscriptions.mdx#connection-failure)  
+   * [Defining concurrent workers](../../../client-api/data-subscriptions/concurrent-subscriptions.mdx#defining-concurrent-workers)  
+   * [Dropping a connection](../../../client-api/data-subscriptions/concurrent-subscriptions.mdx#dropping-a-connection)  
+   * [Connection failure](../../../client-api/data-subscriptions/concurrent-subscriptions.mdx#connection-failure)  
 
 </Admonition>
 ## Defining concurrent workers
 
 Concurrent workers are defined similarly to other workers, except their 
-[strategy](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies) 
-is set to [SubscriptionOpeningStrategy.Concurrent](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#multiple-workers-per-subscription-strategy).  
+[strategy](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies) 
+is set to [SubscriptionOpeningStrategy.Concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#multiple-workers-per-subscription-strategy).  
 
 * To define a concurrent worker:  
-   * Create the worker using [GetSubscriptionWorker](../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker).  
-   * Pass it a [SubscriptionWorkerOptions](../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions) instance.  
+   * Create the worker using [GetSubscriptionWorker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker).  
+   * Pass it a [SubscriptionWorkerOptions](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions) instance.  
    * Set the strategy to `SubscriptionOpeningStrategy.Concurrent`  
 
 * Usage:  

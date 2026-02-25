@@ -3,12 +3,12 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-Once the [tokenization and analysis](../indexes/using-analyzers.mdx) process is completed, the resulting tokens, created according to the used analyzer, are stored in the index.
+Once the [tokenization and analysis](../../indexes/using-analyzers.mdx) process is completed, the resulting tokens, created according to the used analyzer, are stored in the index.
 By default, tokens saved in the index are available for searching. but their original field values aren't stored.
 
 Lucene allows you to store the original field text (before it is analyzed) as well. This feature is exposed in the index definition object as the `Storage` property of the `IndexFieldOptions`.
 
-Enabling field storing causes original values will be available for retrieval when doing [projections](../indexes/querying/projections.mdx).
+Enabling field storing causes original values will be available for retrieval when doing [projections](../../indexes/querying/projections.mdx).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">

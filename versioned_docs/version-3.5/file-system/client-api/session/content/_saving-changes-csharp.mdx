@@ -23,7 +23,7 @@ Pending registered operations (`RegisterUpload`, `RegisterRename`, `RegisterFile
 
 ## Applying Changes
 
-The RavenFS session, in contrast to the [`IDocumentSession`](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx), does not send changes as a batch operation in a single call. Each registered file modification will be executed in a separate request. 
+The RavenFS session, in contrast to the [`IDocumentSession`](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx), does not send changes as a batch operation in a single call. Each registered file modification will be executed in a separate request. 
 
 If the exception occurs when the file change is applied, the exception will be thrown by the `SaveChangesAsync` and any pending modifications will be canceled.
 

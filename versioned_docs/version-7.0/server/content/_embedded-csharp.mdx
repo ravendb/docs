@@ -11,22 +11,22 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * In this page:  
 
-  * [Overview](../server/embedded.mdx#overview)  
-  * [Prerequisites and Recommendations](../server/embedded.mdx#prerequisites-and-recommendations)  
-  * [Installation](../server/embedded.mdx#installation)  
-  * [Starting the server](../server/embedded.mdx#starting-the-server)  
-  * [Server options](../server/embedded.mdx#server-options)  
-     * [Setting server directory](../server/embedded.mdx#setting-server-directory)  
-     * [Restarting the server](../server/embedded.mdx#restarting-the-server)  
-     * [ServerProcessExited Event](../server/embedded.mdx#serverprocessexited-event)  
-  * [Embedded server licensing](../server/embedded.mdx#embedded-server-licensing)  
-      * [Licensing configuration options](../server/embedded.mdx#licensing-configuration-options)  
-      * [License an embedded server using an Environment variable](../server/embedded.mdx#license-an-embedded-server-using-an-environment-variable)  
-  * [`.NET` FrameworkVersion](../server/embedded.mdx#net-frameworkversion)  
-  * [Security](../server/embedded.mdx#security)  
-  * [Document store](../server/embedded.mdx#document-store)  
-  * [Get server URL and process ID](../server/embedded.mdx#get-server-url-and-process-id)  
-  * [Remarks](../server/embedded.mdx#remarks)  
+  * [Overview](../../server/embedded.mdx#overview)  
+  * [Prerequisites and Recommendations](../../server/embedded.mdx#prerequisites-and-recommendations)  
+  * [Installation](../../server/embedded.mdx#installation)  
+  * [Starting the server](../../server/embedded.mdx#starting-the-server)  
+  * [Server options](../../server/embedded.mdx#server-options)  
+     * [Setting server directory](../../server/embedded.mdx#setting-server-directory)  
+     * [Restarting the server](../../server/embedded.mdx#restarting-the-server)  
+     * [ServerProcessExited Event](../../server/embedded.mdx#serverprocessexited-event)  
+  * [Embedded server licensing](../../server/embedded.mdx#embedded-server-licensing)  
+      * [Licensing configuration options](../../server/embedded.mdx#licensing-configuration-options)  
+      * [License an embedded server using an Environment variable](../../server/embedded.mdx#license-an-embedded-server-using-an-environment-variable)  
+  * [`.NET` FrameworkVersion](../../server/embedded.mdx#net-frameworkversion)  
+  * [Security](../../server/embedded.mdx#security)  
+  * [Document store](../../server/embedded.mdx#document-store)  
+  * [Get server URL and process ID](../../server/embedded.mdx#get-server-url-and-process-id)  
+  * [Remarks](../../server/embedded.mdx#remarks)  
 
 </Admonition>
 
@@ -70,13 +70,13 @@ using (var store = await EmbeddedServer.Instance.GetDocumentStoreAsync("Embedded
 * **Prerequisites**  
    * Install [`.NET` Core runtime](https://dotnet.microsoft.com/en-us/download), 
      either manually or [along with a RavenDB full version](embedded#setting-server-directory).  
-   * Verify that the RavenDB server [FrameworkVersion](../server/embedded.mdx#net-frameworkversion) 
+   * Verify that the RavenDB server [FrameworkVersion](../../server/embedded.mdx#net-frameworkversion) 
      definition matches the `.NET` Core version that you install.  
 
 * **Recommendations**  
    * Projects targeting `.NET Framework 4.6.1+` that use the old `packages.config` 
      for NuGet packages maintenance, should migrate to `PackageReference` package management.  
-     Find additional details [below](../server/embedded.mdx#migrating-from--to--in-old-csproj-projects).  
+     Find additional details [below](../../server/embedded.mdx#migrating-from--to--in-old-csproj-projects).  
 
 <ContentFrame>
 
@@ -180,8 +180,8 @@ and additional options.
 | **AcceptEula** |  `bool` | If set to `false`, will ask to accept our terms & conditions |
 | **ServerUrl** | `string` | What address we want to start our server (default `127.0.0.1:0`) |
 | **MaxServerStartupTimeDuration** | `TimeSpan` | The timeout for the server to start |
-| **CommandLineArgs** | `List<string>` | The [command lines arguments](../server/configuration/configuration-options.mdx#command-line-arguments) to start the server with |
-| **ServerDirectory** | `string` | The path to the server binary files&lt;sup&gt;[*](../server/embedded.mdx#setting-server-directory) |
+| **CommandLineArgs** | `List<string>` | The [command lines arguments](../../server/configuration/configuration-options.mdx#command-line-arguments) to start the server with |
+| **ServerDirectory** | `string` | The path to the server binary files&lt;sup&gt;[*](../../server/embedded.mdx#setting-server-directory) |
 
 <TabItem value="start_server_with_options" label="start_server_with_options">
 <CodeBlock language="csharp">
@@ -439,7 +439,7 @@ serverOptions.Secured(
 </TabItem>
 
 The first way to enable authentication is to set the 
-[certificate with the path to your .pfx](../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) 
+[certificate with the path to your .pfx](../../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) 
 server certificate.  
 You can supply the certificate password using certPassword.  
 

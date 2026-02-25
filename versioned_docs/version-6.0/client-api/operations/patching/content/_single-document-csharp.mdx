@@ -11,43 +11,43 @@ import CodeBlock from '@theme/CodeBlock';
   updating denormalized data in entities.
 
 * Since the operation is executed in a single request to the database,  
-  the patch command is performed in a single write [transaction](../../../client-api/faq/transaction-support.mdx).  
+  the patch command is performed in a single write [transaction](../../../../client-api/faq/transaction-support.mdx).  
 
 * The current page covers patch operations on single documents.
 
-* Patching has three possible interfaces: [Session API](../../../client-api/operations/patching/single-document.mdx#session-api), 
-[Session API using Defer](../../../client-api/operations/patching/single-document.mdx#session-api-using-defer), 
-and [Operations API](../../../client-api/operations/patching/single-document.mdx#operations-api).
+* Patching has three possible interfaces: [Session API](../../../../client-api/operations/patching/single-document.mdx#session-api), 
+[Session API using Defer](../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer), 
+and [Operations API](../../../../client-api/operations/patching/single-document.mdx#operations-api).
 
-* Patching can be done from the [client API](../../../client-api/operations/patching/single-document.mdx#examples) as well as in the [studio](../../../studio/database/documents/patch-view.mdx).  
+* Patching can be done from the [client API](../../../../client-api/operations/patching/single-document.mdx#examples) as well as in the [studio](../../../../studio/database/documents/patch-view.mdx).  
 
 In this page:  
 
-* [API overview](../../../client-api/operations/patching/single-document.mdx#api-overview)  
-  * [Session API](../../../client-api/operations/patching/single-document.mdx#session-api)
-  * [Session API using Defer](../../../client-api/operations/patching/single-document.mdx#session-api-using-defer)
-  * [Operations API](../../../client-api/operations/patching/single-document.mdx#operations-api)
-  * [List of script methods](../../../client-api/operations/patching/single-document.mdx#list-of-script-methods)
-* [Examples](../../../client-api/operations/patching/single-document.mdx#examples)  
-  * [Change value of single field](../../../client-api/operations/patching/single-document.mdx#change-value-of-single-field)  
-  * [Change values of two fields](../../../client-api/operations/patching/single-document.mdx#change-values-of-two-fields)  
-  * [Increment value](../../../client-api/operations/patching/single-document.mdx#increment-value)  
-  * [Add or increment](../../../client-api/operations/patching/single-document.mdx#add-or-increment)  
-  * [Add or patch](../../../client-api/operations/patching/single-document.mdx#add-or-patch)  
-  * [Add or patch to an existing array](../../../client-api/operations/patching/single-document.mdx#add-or-patch-to-an-existing-array)  
-  * [Add item to array](../../../client-api/operations/patching/single-document.mdx#add-item-to-array)  
-  * [Insert item into specific position in array](../../../client-api/operations/patching/single-document.mdx#insert-item-into-specific-position-in-array)  
-  * [Modify item in specific position in array](../../../client-api/operations/patching/single-document.mdx#modify-item-in-specific-position-in-array)  
-  * [Remove items from array](../../../client-api/operations/patching/single-document.mdx#remove-items-from-array)  
-  * [Loading documents in a script](../../../client-api/operations/patching/single-document.mdx#loading-documents-in-a-script)  
-  * [Remove property](../../../client-api/operations/patching/single-document.mdx#remove-property)  
-  * [Rename property](../../../client-api/operations/patching/single-document.mdx#rename-property)  
-  * [Add document](../../../client-api/operations/patching/single-document.mdx#add-document)  
-  * [Clone document](../../../client-api/operations/patching/single-document.mdx#clone-document)  
-  * [Increment counter](../../../client-api/operations/patching/single-document.mdx#increment-counter)  
-  * [Delete counter](../../../client-api/operations/patching/single-document.mdx#delete-counter)  
-  * [Get counter](../../../client-api/operations/patching/single-document.mdx#get-counter)  
-  * [Patching using inline string compilation](../../../client-api/operations/patching/single-document.mdx#patching-using-inline-string-compilation)  
+* [API overview](../../../../client-api/operations/patching/single-document.mdx#api-overview)  
+  * [Session API](../../../../client-api/operations/patching/single-document.mdx#session-api)
+  * [Session API using Defer](../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer)
+  * [Operations API](../../../../client-api/operations/patching/single-document.mdx#operations-api)
+  * [List of script methods](../../../../client-api/operations/patching/single-document.mdx#list-of-script-methods)
+* [Examples](../../../../client-api/operations/patching/single-document.mdx#examples)  
+  * [Change value of single field](../../../../client-api/operations/patching/single-document.mdx#change-value-of-single-field)  
+  * [Change values of two fields](../../../../client-api/operations/patching/single-document.mdx#change-values-of-two-fields)  
+  * [Increment value](../../../../client-api/operations/patching/single-document.mdx#increment-value)  
+  * [Add or increment](../../../../client-api/operations/patching/single-document.mdx#add-or-increment)  
+  * [Add or patch](../../../../client-api/operations/patching/single-document.mdx#add-or-patch)  
+  * [Add or patch to an existing array](../../../../client-api/operations/patching/single-document.mdx#add-or-patch-to-an-existing-array)  
+  * [Add item to array](../../../../client-api/operations/patching/single-document.mdx#add-item-to-array)  
+  * [Insert item into specific position in array](../../../../client-api/operations/patching/single-document.mdx#insert-item-into-specific-position-in-array)  
+  * [Modify item in specific position in array](../../../../client-api/operations/patching/single-document.mdx#modify-item-in-specific-position-in-array)  
+  * [Remove items from array](../../../../client-api/operations/patching/single-document.mdx#remove-items-from-array)  
+  * [Loading documents in a script](../../../../client-api/operations/patching/single-document.mdx#loading-documents-in-a-script)  
+  * [Remove property](../../../../client-api/operations/patching/single-document.mdx#remove-property)  
+  * [Rename property](../../../../client-api/operations/patching/single-document.mdx#rename-property)  
+  * [Add document](../../../../client-api/operations/patching/single-document.mdx#add-document)  
+  * [Clone document](../../../../client-api/operations/patching/single-document.mdx#clone-document)  
+  * [Increment counter](../../../../client-api/operations/patching/single-document.mdx#increment-counter)  
+  * [Delete counter](../../../../client-api/operations/patching/single-document.mdx#delete-counter)  
+  * [Get counter](../../../../client-api/operations/patching/single-document.mdx#get-counter)  
+  * [Patching using inline string compilation](../../../../client-api/operations/patching/single-document.mdx#patching-using-inline-string-compilation)  
 
 </Admonition>
 
@@ -81,7 +81,7 @@ void Increment<T, U>(string id, Expression<Func<T, U>> fieldPath, U delta);
 | **fieldPath** | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
 | **delta** | `U` | Value to be added. |
 
-* Note how numbers are handled with the [JavaScript engine](../../../server/kb/numbers-in-ravendb.mdx) in RavenDB.
+* Note how numbers are handled with the [JavaScript engine](../../../../server/kb/numbers-in-ravendb.mdx) in RavenDB.
 `Session.Advanced.AddOrIncrement`
 <TabItem value="add_or_increment_generic" label="add_or_increment_generic">
 <CodeBlock language="csharp">
@@ -279,7 +279,7 @@ Task<PatchStatus> SendAsync(PatchOperation operation,
 ## List of script methods
 
 This is a list of a few of the javascript methods that can be used in patch scripts.  
-See the more comprehensive list at [Knowledge Base: JavaScript Engine](../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).  
+See the more comprehensive list at [Knowledge Base: JavaScript Engine](../../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).  
 
 | Method               | Arguments                                           | Description                                                                                                                                                                                                                                            |
 |----------------------|-----------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -1147,7 +1147,7 @@ The method can be called by document ID or by document reference.
 * When using a JavaScript script with the _defer_ or _operations_ syntax,  
   you can apply logic using **inline string compilation**.
 
-* To enable this, set the [Patching.AllowStringCompilation](../../../server/configuration/patching-configuration.mdx#patchingallowstringcompilation) configuration key to _true_.
+* To enable this, set the [Patching.AllowStringCompilation](../../../../server/configuration/patching-configuration.mdx#patchingallowstringcompilation) configuration key to _true_.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Patching_usingFunction" label="Patching_usingFunction">

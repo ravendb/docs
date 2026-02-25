@@ -5,18 +5,18 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* [Static](../../studio/database/indexes/indexes-overview.mdx#index-types) time series indexes can be created from your client application or from the Studio.
+* [Static](../../../studio/database/indexes/indexes-overview.mdx#index-types) time series indexes can be created from your client application or from the Studio.
 
 * Indexing allows for fast retrieval of the indexed time series data when querying a time series.
 
 * In this page:  
-  * [Time series indexes vs Document indexes](../../document-extensions/timeseries/indexing.mdx#time-series-indexes-vs-document-indexes)
-  * [Ways to create a time series index](../../document-extensions/timeseries/indexing.mdx#ways-to-create-a-time-series-index)
-  * [Examples of time series indexes](../../document-extensions/timeseries/indexing.mdx#examples-of-time-series-indexes)
-      * [Map index - index single time series from single collection](../../document-extensions/timeseries/indexing.mdx#map-index---index-single-time-series-from-single-collection)
-      * [Multi-Map index - index time series from several collections](../../document-extensions/timeseries/indexing.mdx#multi-map-index---index-time-series-from-several-collections)
-      * [Map-Reduce index](../../document-extensions/timeseries/indexing.mdx#map-reduce-index)
-  * [Syntax](../../document-extensions/timeseries/indexing.mdx#syntax)
+  * [Time series indexes vs Document indexes](../../../document-extensions/timeseries/indexing.mdx#time-series-indexes-vs-document-indexes)
+  * [Ways to create a time series index](../../../document-extensions/timeseries/indexing.mdx#ways-to-create-a-time-series-index)
+  * [Examples of time series indexes](../../../document-extensions/timeseries/indexing.mdx#examples-of-time-series-indexes)
+      * [Map index - index single time series from single collection](../../../document-extensions/timeseries/indexing.mdx#map-index---index-single-time-series-from-single-collection)
+      * [Multi-Map index - index time series from several collections](../../../document-extensions/timeseries/indexing.mdx#multi-map-index---index-time-series-from-several-collections)
+      * [Map-Reduce index](../../../document-extensions/timeseries/indexing.mdx#map-reduce-index)
+  * [Syntax](../../../document-extensions/timeseries/indexing.mdx#syntax)
 
 </Admonition>
 ## Time series indexes vs Document indexes
@@ -27,7 +27,7 @@ import CodeBlock from '@theme/CodeBlock';
   Dynamic time series indexes are Not created in response to queries.
 
 * Document index:  
-  [Auto-indexes](../../studio/database/indexes/indexes-overview.mdx#indexes-types) are created in response to dynamic queries.
+  [Auto-indexes](../../../studio/database/indexes/indexes-overview.mdx#indexes-types) are created in response to dynamic queries.
 #### Data source:
 
 * Time series index:
@@ -65,8 +65,8 @@ from entry in segment
 #### Query results:
 
 * Time series index:  
-  When [querying](../../document-extensions/timeseries/querying/using-indexes.mdx) a time series index, each result item corresponds to the type defined by the **index-entry** in the index definition,
-  (unless results are [projected](../../document-extensions/timeseries/querying/using-indexes.mdx#project-results)). The documents themselves are not returned.
+  When [querying](../../../document-extensions/timeseries/querying/using-indexes.mdx) a time series index, each result item corresponds to the type defined by the **index-entry** in the index definition,
+  (unless results are [projected](../../../document-extensions/timeseries/querying/using-indexes.mdx#project-results)). The documents themselves are not returned.
 
 * Document index:  
   The resulting objects are the document entities (unless results are projected).
@@ -79,13 +79,13 @@ There are two main ways to create a time series index:
 
 1. Create a class that inherits from one of the following abstract index creation task classes:
     * `AbstractTimeSeriesIndexCreationTask`  
-      for [map](../../indexes/map-indexes.mdx) and [map-reduce](../../indexes/map-reduce-indexes.mdx) time series indexes.  
+      for [map](../../../indexes/map-indexes.mdx) and [map-reduce](../../../indexes/map-reduce-indexes.mdx) time series indexes.  
     * `AbstractMultiMapTimeSeriesIndexCreationTask`  
-      for [multi-map](../../indexes/multi-map-indexes.mdx) time series indexes.  
+      for [multi-map](../../../indexes/multi-map-indexes.mdx) time series indexes.  
     * `AbstractJavaScriptTimeSeriesIndexCreationTask`  
       for static javascript indexes.  
 
-2. Deploy a time series index definition via [PutIndexesOperation](../../client-api/operations/maintenance/indexes/put-indexes.mdx):
+2. Deploy a time series index definition via [PutIndexesOperation](../../../client-api/operations/maintenance/indexes/put-indexes.mdx):
    * Create a `TimeSeriesIndexDefinition` directly.  
    * Create a strongly typed index definition using `TimeSeriesIndexDefinitionBuilder`.  
 
@@ -100,7 +100,7 @@ There are two main ways to create a time series index:
 * In addition, we index the containing document id (`DocumentID`), which is obtained from the segment,  
   and some content from the document referenced by the entry's Tag (`EmployeeName`).
  
-* Each tab below presents one of the different [ways](../../document-extensions/timeseries/indexing.mdx#ways-to-create-a-time-series-index) the index can be defined.
+* Each tab below presents one of the different [ways](../../../document-extensions/timeseries/indexing.mdx#ways-to-create-a-time-series-index) the index can be defined.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Map_index" label="Map_index">
@@ -535,7 +535,7 @@ class TradeVolume_PerDay_ByCountry extends AbstractTimeSeriesIndexCreationTask
 </TabItem>
 
 While `TimeSeriesIndexDefinition` is currently functionally equivalent to the regular 
-[`IndexDefinition`](../../indexes/creating-and-deploying.mdx#using-maintenance-operations) 
+[`IndexDefinition`](../../../indexes/creating-and-deploying.mdx#using-maintenance-operations) 
 class from which it inherits, it is recommended to use `TimeSeriesIndexDefinition` when 
 creating a time series index definition in case additional functionality is added in 
 future versions of RavenDB.

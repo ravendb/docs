@@ -7,12 +7,12 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Use the low-level `DeleteDocumentCommand` to remove a document from the database.
 
-* To delete a document using a higher-level method, see [deleting entities](../../../client-api/session/deleting-entities.mdx).
+* To delete a document using a higher-level method, see [deleting entities](../../../../client-api/session/deleting-entities.mdx).
 
 * In this page:
 
-    * [Examples](../../../client-api/commands/documents/delete.mdx#examples)
-    * [Syntax](../../../client-api/commands/documents/delete.mdx#syntax)
+    * [Examples](../../../../client-api/commands/documents/delete.mdx#examples)
+    * [Syntax](../../../../client-api/commands/documents/delete.mdx#syntax)
 
 </Admonition>
 ## Examples
@@ -91,7 +91,7 @@ catch (err) \{
 | Parameter        | Type     | Description                                                                                                                                                                                                                                             |
 |------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **id**           | `string` | The ID of the document to delete.                                                                                                                                                                                                                       |
-| **changeVector** | `string` | The change-vector of the document you wish to delete,<br/>used for [optimistic concurrency control](../../../server/clustering/replication/change-vector.mdx#concurrency-control--change-vectors).<br/>Pass `null` to skip the check and force the deletion. |
+| **changeVector** | `string` | The change-vector of the document you wish to delete,<br/>used for [optimistic concurrency control](../../../../server/clustering/replication/change-vector.mdx#concurrency-control--change-vectors).<br/>Pass `null` to skip the check and force the deletion. |
 
 
 

@@ -18,7 +18,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Documents can be scheduled for refresh by a `@refresh` property in their `@metadata`.  
 * When the document refresh feature is enabled, it routinely checks for documents that 
   include the `@refresh` property and refreshes them on the scheduled time.  
-  When a document is refreshed its [change vector](../../server/clustering/replication/change-vector.mdx) 
+  When a document is refreshed its [change vector](../../../server/clustering/replication/change-vector.mdx) 
   is incremented, triggering its re-indexation and other features that react to document updates.  
 * Documents are refreshed only once: after refreshing a document, the refresh feature removes 
   the `@refresh` property from its `@metadata`.  

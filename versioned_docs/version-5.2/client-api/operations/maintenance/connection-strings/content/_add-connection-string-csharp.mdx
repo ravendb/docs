@@ -3,16 +3,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-* You can add a connection string by using the [PutConnectionStringOperation](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#putconnectionstringoperation) method.
+* You can add a connection string by using the [PutConnectionStringOperation](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#putconnectionstringoperation) method.
 
 * This article demonstrates how to connect to an external database.  
 
 In this page:
 
-* [PutConnectionStringOperation](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#putconnectionstringoperation)  
-* [Add a Raven Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-raven-connection-string)  
-* [Add an Sql Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-sql-connection-string)  
-* [Add an Olap Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-olap-connection-string)  
+* [PutConnectionStringOperation](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#putconnectionstringoperation)  
+* [Add a Raven Connection String](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-raven-connection-string)  
+* [Add an Sql Connection String](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-sql-connection-string)  
+* [Add an Olap Connection String](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-olap-connection-string)  
 
 ## `PutConnectionStringOperation`
 
@@ -49,13 +49,13 @@ In this page:
 ## Add a Raven Connection String
 
 <Admonition type="note" title="Secure servers" id="secure-servers" href="#secure-servers">
- To [connect secure RavenDB servers](../../../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers:-importing-and-exporting-certificates) 
+ To [connect secure RavenDB servers](../../../../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers:-importing-and-exporting-certificates) 
  you need to 
 
   1. Export the server certificate from the source server. 
   2. Install it as a client certificate on the destination server.  
 
- This can be done in the RavenDB Studio -&gt; Server Management -&gt; [Certificates view](../../../../server/security/authentication/certificate-management.mdx#studio-certificates-management-view).
+ This can be done in the RavenDB Studio -&gt; Server Management -&gt; [Certificates view](../../../../../server/security/authentication/certificate-management.mdx#studio-certificates-management-view).
 </Admonition>
 
 <TabItem value="add_raven_connection_string" label="add_raven_connection_string">
@@ -159,16 +159,16 @@ var resultOlapString = store.Maintenance.Send
 
 #### To a Cloud-Based Server
 
-To learn how to connect to a cloud instance, see the [Olap ETL article](../../../../server/ongoing-tasks/etl/olap.mdx#section-1).  
+To learn how to connect to a cloud instance, see the [Olap ETL article](../../../../../server/ongoing-tasks/etl/olap.mdx#section-1).  
   
 The following code sample is for a connection string to Amazon AWS.  
 If you use the following cloud-based servers, change the parameters accordingly:  
 
-- [Google](../../../../server/ongoing-tasks/etl/olap.mdx#section-7)  
-- [Azure](../../../../server/ongoing-tasks/etl/olap.mdx#section-6)  
-- [Glacier](../../../../server/ongoing-tasks/etl/olap.mdx#section-5)  
-- [S3](../../../../server/ongoing-tasks/etl/olap.mdx#section-4)  
-- [FTP](../../../../server/ongoing-tasks/etl/olap.mdx#section-3)  
+- [Google](../../../../../server/ongoing-tasks/etl/olap.mdx#section-7)  
+- [Azure](../../../../../server/ongoing-tasks/etl/olap.mdx#section-6)  
+- [Glacier](../../../../../server/ongoing-tasks/etl/olap.mdx#section-5)  
+- [S3](../../../../../server/ongoing-tasks/etl/olap.mdx#section-4)  
+- [FTP](../../../../../server/ongoing-tasks/etl/olap.mdx#section-3)  
 
 
 

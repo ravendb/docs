@@ -5,7 +5,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* __Prior to this article__, please refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx)  
+* __Prior to this article__, please refer to [Full-Text search with dynamic queries](../../../client-api/session/querying/text-search/full-text-search.mdx)  
   to learn about the `Search` method.  
 
 * __All capabilities__ provided by `Search` with a dynamic query can also be used when querying a static-index.
@@ -17,11 +17,11 @@ import CodeBlock from '@theme/CodeBlock';
       See examples below.  
       
     * You can configure which analyzer will be used to tokenize this field.  
-      See [selecting an analyzer](../../indexes/using-analyzers.mdx#selecting-an-analyzer-for-a-field).    
+      See [selecting an analyzer](../../../indexes/using-analyzers.mdx#selecting-an-analyzer-for-a-field).    
 * In this page:
-  * [Indexing single field for FTS](../../indexes/querying/searching.mdx#indexing-single-field-for-fts)
-  * [Indexing multiple fields for FTS](../../indexes/querying/searching.mdx#indexing-multiple-fields-for-fts)
-  * [Boosting search results](../../indexes/querying/searching.mdx#boosting-search-results)
+  * [Indexing single field for FTS](../../../indexes/querying/searching.mdx#indexing-single-field-for-fts)
+  * [Indexing multiple fields for FTS](../../../indexes/querying/searching.mdx#indexing-multiple-fields-for-fts)
+  * [Boosting search results](../../../indexes/querying/searching.mdx#boosting-search-results)
 
 </Admonition>
 ## Indexing single field for FTS
@@ -72,7 +72,7 @@ __The index__:
 __Query with Search__:
 * Use `Search` to make a full-text search when querying the index.  
 
-* Refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx) for all available __Search options__,  
+* Refer to [Full-Text search with dynamic queries](../../../client-api/session/querying/text-search/full-text-search.mdx) for all available __Search options__,  
   such as using wildcards, searching for multiple terms, etc.
 
 <Tabs groupId='languageSyntax'>
@@ -276,10 +276,10 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
   This can be applied by either of the following:
 
   * Add a boost value to the relevant index-field __inside the index definition__.  
-    Refer to article [indexes - boosting](../../indexes/boosting.mdx).
+    Refer to article [indexes - boosting](../../../indexes/boosting.mdx).
 
   * Add a boost value to the queried terms __at query time__.  
-    Refer to article [Boost search results](../../client-api/session/querying/text-search/boost-search-results.mdx).
+    Refer to article [Boost search results](../../../client-api/session/querying/text-search/boost-search-results.mdx).
 
 
 

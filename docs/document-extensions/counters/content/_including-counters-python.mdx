@@ -6,17 +6,17 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * Counters can be included when [loading entities](../../client-api/session/loading-entities) 
-  or when making [queries](../../querying/overview.mdx).
+  or when making [queries](../../../querying/overview.mdx).
  
 * The _Session_ stores the included counters in its in-memory cache,  
   so their values can be accessed later in the same session without making additional requests to the server.
     
 * To see how to include counters when creating a subscription, see
-  [Create subscription - include counters](../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters).
+  [Create subscription - include counters](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters).
 
 </Admonition>
 
-* **Including Counters when using [session.load](../../client-api/session/loading-entities.mdx#session--loading-entities)**:  
+* **Including Counters when using [session.load](../../../client-api/session/loading-entities.mdx#session--loading-entities)**:  
     * Include a single Counter using `include_counter`  
     * Include multiple Counters using `include_counters`  
 
@@ -49,7 +49,7 @@ product_page = session.load(
 </TabItem>
 </Tabs>
 
-* **Including Counters when using [Session.Query](../../querying/overview.mdx#session-query)**:  
+* **Including Counters when using [Session.Query](../../../querying/overview.mdx#session-query)**:  
     * Include a single Counter using `include_counter`.  
     * Include multiple Counters using `include_counters`.  
 

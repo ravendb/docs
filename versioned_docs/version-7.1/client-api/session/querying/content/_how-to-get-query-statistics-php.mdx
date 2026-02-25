@@ -11,8 +11,8 @@ import CodeBlock from '@theme/CodeBlock';
   are returned in the `QueryStatistics` object.
 
 * In This Page:  
-   * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx#get-query-statistics)  
-   * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics.mdx#syntax)  
+   * [Get query statistics](../../../../client-api/session/querying/how-to-get-query-statistics.mdx#get-query-statistics)  
+   * [Syntax](../../../../client-api/session/querying/how-to-get-query-statistics.mdx#syntax)  
 
 </Admonition>
 ## Get query statistics
@@ -82,8 +82,8 @@ $durationInMs = $stats->getDurationInMs();
 |---------------------------------------------|----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **$isStale**                                | `bool`               | Are the results returned by the query potentially stale                                                                                                                                |
 | **$durationInMs**                           | `int`                | Query duration on the server side in Milliseconds                                                                                                                                      |
-| **$totalResults**,<br/>**$longTotalResults** | `int`                | The total count of results that matched the query.<br/>Matching query results can also be counted using [Count](../../../client-api/session/querying/how-to-count-query-results.mdx#count). |
-| **$skippedResults**                         | `int`                | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging.mdx#paging-through-tampered-results).                     |
+| **$totalResults**,<br/>**$longTotalResults** | `int`                | The total count of results that matched the query.<br/>Matching query results can also be counted using [Count](../../../../client-api/session/querying/how-to-count-query-results.mdx#count). |
+| **$skippedResults**                         | `int`                | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../../indexes/querying/paging.mdx#paging-through-tampered-results).                     |
 | **$timestamp**                              | `?DateTimeInterface` | The time when the query results were unstale                                                                                                                                           |
 | **$indexName**                              | `?string`            | The name of the queried index                                                                                                                                                          |
 | **$indexTimestamp**                         | `?DateTimeInterface` | The timestamp of the queried index                                                                                                                                                     |

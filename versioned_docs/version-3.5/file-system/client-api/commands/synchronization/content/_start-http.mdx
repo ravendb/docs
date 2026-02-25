@@ -30,7 +30,7 @@ There are two endpoints that allow you either to synchronize all the files which
 
 | Query parameter | Required | Description |
 | ------------- | -- | ---- |
-| **forceSyncingAll** | Yes | Determines whether finished synchronization should schedule a next pending one (there can be only [a limited number of concurrent synchronizations](../../../synchronization/configurations.mdx#ravensynchronizationconfig) to a destination file system). The reports of such synchronizations will *not* be included in the returned `DestinationSyncResult` object.  |
+| **forceSyncingAll** | Yes | Determines whether finished synchronization should schedule a next pending one (there can be only [a limited number of concurrent synchronizations](../../../../synchronization/configurations.mdx#ravensynchronizationconfig) to a destination file system). The reports of such synchronizations will *not* be included in the returned `DestinationSyncResult` object.  |
 
 ### Response
 
@@ -103,7 +103,7 @@ There are two endpoints that allow you either to synchronize all the files which
 
 | Payload |
 | ------- |
-| The JSON formatted [`SynchronizationDestination`](../../../../glossary/synchronization-destination.mdx) object|
+| The JSON formatted [`SynchronizationDestination`](../../../../../glossary/synchronization-destination.mdx) object|
 
 | Query parameter | Required | Description |
 | ------------- | -- | ---- |
@@ -117,7 +117,7 @@ There are two endpoints that allow you either to synchronize all the files which
 
 | Return Value | Description |
 | ------------- | ------------- |
-| **[`SynchronizationReport`](../../../../glossary/synchronization-report.mdx)** | The object that represent the result of the synchronization |
+| **[`SynchronizationReport`](../../../../../glossary/synchronization-report.mdx)** | The object that represent the result of the synchronization |
 
 ---
 
@@ -148,6 +148,6 @@ Synchronize file `/books/Inside.RavenDB.3.0.pdf` to `SlaveNorthwindFS` file syst
 
 
 
-- [How file synchronization works?](../../../synchronization/how-it-works.mdx)
+- [How file synchronization works?](../../../../synchronization/how-it-works.mdx)
 
 

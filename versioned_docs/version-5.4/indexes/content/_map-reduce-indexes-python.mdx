@@ -23,10 +23,10 @@ import CodeBlock from '@theme/CodeBlock';
     and then runs the Reduce function to get a final aggregation result per field value.  
 
 * In this page: 
-   * [Creating Map Reduce Indexes](../indexes/map-reduce-indexes.mdx#creating-map-reduce-indexes)
-   * [Creating Multi-Map-Reduce Indexes](../indexes/map-reduce-indexes.mdx#creating-multi-map-reduce-indexes)  
-   * [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents)
-   * [Remarks](../indexes/map-reduce-indexes.mdx#remarks)  
+   * [Creating Map Reduce Indexes](../../indexes/map-reduce-indexes.mdx#creating-map-reduce-indexes)
+   * [Creating Multi-Map-Reduce Indexes](../../indexes/map-reduce-indexes.mdx#creating-multi-map-reduce-indexes)  
+   * [Reduce Results as Artificial Documents](../../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents)
+   * [Remarks](../../indexes/map-reduce-indexes.mdx#remarks)  
 
 </Admonition>
 
@@ -35,7 +35,7 @@ import CodeBlock from '@theme/CodeBlock';
 When it comes to index creation, the only difference between simple indexes and the map-reduce ones 
 is an additional reduce function defined in the index definition.  
 To deploy an index we need to create a definition and deploy it using one of the ways described in the 
-[creating and deploying](../indexes/creating-and-deploying.mdx) article.  
+[creating and deploying](../../indexes/creating-and-deploying.mdx) article.  
 #### Example I - Count
 
 Let's assume that we want to count the number of products for each category.  
@@ -335,7 +335,7 @@ And run the query:
 
 A **Multi-Map-Reduce** index allows aggregating (or 'reducing') data from several collections.  
 
-They can be created and edited via [Studio](../studio/database/indexes/create-map-reduce-index.mdx#multi-map-reduce), 
+They can be created and edited via [Studio](../../studio/database/indexes/create-map-reduce-index.mdx#multi-map-reduce), 
 or with API as shown below.  
 
 In the following code sample, we want the number of companies, suppliers, and employees per city.  
@@ -454,10 +454,10 @@ give to their document ID also determines how the output documents are grouped.
 Because reference documents have well known, predictable IDs, they are easier to plug into 
 indexes and other operations, and can serve as an intermediary for the output documents whose 
 IDs are less predictable. This allows you to chain map-reduce indexes in a recursive fashion, 
-see [Example II](../indexes/map-reduce-indexes.mdx#example-ii).  
+see [Example II](../../indexes/map-reduce-indexes.mdx#example-ii).  
 
 Learn more about how to configure output and reference documents in the 
-[Studio: Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index.mdx).  
+[Studio: Create Map-Reduce Index](../../studio/database/indexes/create-map-reduce-index.mdx).  
 ### Artificial Document Properties  
 
 #### IDs
@@ -466,7 +466,7 @@ The identifiers of **map reduce output documents** have three components in this
 
 `<Output collection name>/<incrementing value>/<hash of reduce key values>`  
 
-The index in [Example I](../indexes/map-reduce-indexes.mdx#example-i) might generate an output document 
+The index in [Example I](../../indexes/map-reduce-indexes.mdx#example-i) might generate an output document 
 ID like this:  
 
 `DailyProductSales/35/14369232530304891504`  
@@ -476,7 +476,7 @@ ID like this:
 amount whenever the index definition is modified. This can be useful because when an index definition 
 changes, there is a brief transition phase when the new output documents are being created, but the 
 old output documents haven't been deleted yet (this phase is called 
-["side-by-side indexing"](../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---side-by-side-indexing)). 
+["side-by-side indexing"](../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---side-by-side-indexing)). 
 During this phase, the output collection contains output documents created both by the old version 
 and the new version of the index, and they can be distinguished by this value: the new output 
 documents will always have a higher value (by 1 or more).  
@@ -486,7 +486,7 @@ case: `hash(Product, Month)`.
 The identifiers of **reference documents** follow some pattern you choose, and this pattern 
 determines which output documents are held by a given reference document.  
 
-The index in [Example I](../indexes/map-reduce-indexes.mdx#example-i) has this pattern for reference documents:  
+The index in [Example I](../../indexes/map-reduce-indexes.mdx#example-i) has this pattern for reference documents:  
 
 `sales/daily/{Date:yyyy-MM-dd}`
 
@@ -528,7 +528,7 @@ self._pattern_for_output_reduce_to_collection_references = pattern_for_output_re
 | - | - | - |
 | **\_output_reduce_to_collection** | `str` | Collection name for the output documents. |
 | **\_pattern_references_collection_name** | `str` | Optional collection name for the reference documents - by default it is `OutputReduceToCollection/References` |
-| **\_pattern_for_output_reduce_to_collection_references** | `str` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](../indexes/creating-and-deploying.mdx#using-maintenance-operations) or [AbstractIndexCreationTask](../indexes/creating-and-deploying.mdx#using-abstractindexcreationtask). |
+| **\_pattern_for_output_reduce_to_collection_references** | `str` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](../../indexes/creating-and-deploying.mdx#using-maintenance-operations) or [AbstractIndexCreationTask](../../indexes/creating-and-deploying.mdx#using-abstractindexcreationtask). |
 #### Example:
 
 Here is a map-reduce index with output documents and reference documents:  
@@ -644,7 +644,7 @@ May 6th 1998.
 
 #### Saving documents
 
-[Artificial documents](../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents) 
+[Artificial documents](../../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents) 
 are stored immediately after the indexing transaction completes.  
 #### Recursive indexing loop
 

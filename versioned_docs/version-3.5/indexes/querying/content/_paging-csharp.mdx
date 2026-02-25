@@ -10,7 +10,7 @@ If not specified, page size **on client side** is set to **128**.
 </Admonition>
 
 <Admonition type="note" title="">
-If not specified, maximum page size **on server side** is set to **1024** and can be altered using `Raven/MaxPageSize` setting (more information [here](../../server/configuration/configuration-options.mdx)).
+If not specified, maximum page size **on server side** is set to **1024** and can be altered using `Raven/MaxPageSize` setting (more information [here](../../../server/configuration/configuration-options.mdx)).
 </Admonition>
 
 ## Example I - Safe by Default
@@ -574,7 +574,7 @@ do
 
 ## Increasing StartsWith Performance
 
-All `StartsWith` operations (e.g. [LoadStartingWith](../../client-api/session/loading-entities.mdx#loadstartingwith) and [Stream](../../client-api/session/querying/how-to-stream-query-results.mdx) from advanced session operations or [StartsWith](../../client-api/commands/documents/get.mdx#startswith) and [Stream](../../client-api/commands/documents/stream.mdx) from low-level commands) contain a `RavenPagingInformation` parameter that can be used to increase the performance of a StartsWith operation when **next page** is requested.
+All `StartsWith` operations (e.g. [LoadStartingWith](../../../client-api/session/loading-entities.mdx#loadstartingwith) and [Stream](../../../client-api/session/querying/how-to-stream-query-results.mdx) from advanced session operations or [StartsWith](../../../client-api/commands/documents/get.mdx#startswith) and [Stream](../../../client-api/commands/documents/stream.mdx) from low-level commands) contain a `RavenPagingInformation` parameter that can be used to increase the performance of a StartsWith operation when **next page** is requested.
 
 To do this, we need to pass the same instance of `RavenPagingInformation` to the identical operation. The client will use information contained in this object to increase the performance (only if next page is requested).
 

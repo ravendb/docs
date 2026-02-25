@@ -15,11 +15,11 @@ Many time series applications produce massive amounts of data at a steady rate.
   Controlling the duration for which time series data is kept before deletion.
  
 * In this page:  
-  * [Time series policies](../../document-extensions/timeseries/rollup-and-retention.mdx#time-series-policies)  
-  * [Examples](../../document-extensions/timeseries/rollup-and-retention.mdx#examples)  
-      * [Create time series policy](../../document-extensions/timeseries/rollup-and-retention.mdx#create-time-series-policies)  
-      * [Retrieve rollup data](../../document-extensions/timeseries/rollup-and-retention.mdx#retrieve-rollup-data)
-  * [Syntax](../../document-extensions/timeseries/rollup-and-retention.mdx#syntax)
+  * [Time series policies](../../../document-extensions/timeseries/rollup-and-retention.mdx#time-series-policies)  
+  * [Examples](../../../document-extensions/timeseries/rollup-and-retention.mdx#examples)  
+      * [Create time series policy](../../../document-extensions/timeseries/rollup-and-retention.mdx#create-time-series-policies)  
+      * [Retrieve rollup data](../../../document-extensions/timeseries/rollup-and-retention.mdx#retrieve-rollup-data)
+  * [Syntax](../../../document-extensions/timeseries/rollup-and-retention.mdx#syntax)
 
 </Admonition>
 ## Time series policies
@@ -50,7 +50,7 @@ Rollup time series are created automatically according to rollup policies that c
   * Subsequently, the resulting rollup time series is further aggregated using the policy with the next shortest aggregation frame,  
     and so on.
 
-[Querying with group-by](../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#examples) 
+[Querying with group-by](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#examples) 
 will transparently traverse over the rollups to retrieve the relevant results.  
 
 Let's look at an example of rollup data:  
@@ -129,7 +129,7 @@ $store->maintenance()->send(new ConfigureTimeSeriesOperation($timeSeriesConfig))
 
 * Retrieving entries from a rollup time series is similar to getting the raw time series data.
 
-* Learn more about using `timeSeriesFor.get` in [Get time series entries](../../document-extensions/timeseries/client-api/session/get/get-entries.mdx).
+* Learn more about using `timeSeriesFor.get` in [Get time series entries](../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx).
 
 <TabItem value="rollup_and_retention_1" label="rollup_and_retention_1">
 <CodeBlock language="php">
@@ -279,7 +279,7 @@ class TimeSeriesCollectionConfiguration:
 </CodeBlock>
 </TabItem>
 
-Learn more about operations in: [What are operations](../../client-api/operations/what-are-operations.mdx).  
+Learn more about operations in: [What are operations](../../../client-api/operations/what-are-operations.mdx).  
 ### Time series entries
 
 Time series entries are of one of the following classes:  

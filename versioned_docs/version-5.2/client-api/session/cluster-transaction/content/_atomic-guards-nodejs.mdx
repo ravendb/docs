@@ -5,9 +5,9 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* **Atomic-Guards** are [compare exchange](../../../client-api/operations/compare-exchange/overview.mdx) 
+* **Atomic-Guards** are [compare exchange](../../../../client-api/operations/compare-exchange/overview.mdx) 
   key/value items that RavenDB creates and manages automatically to guarantee 
-  [ACID](../../../server/clustering/cluster-transactions.mdx#cluster-transaction-properties) 
+  [ACID](../../../../server/clustering/cluster-transactions.mdx#cluster-transaction-properties) 
   transactions in cluster-wide sessions.  
   Each document will be associated with its own unique Atomic-Guard item.
 
@@ -17,25 +17,25 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Prior to the introduction of this feature (in **RavenDB 5.2**), client code had to 
   administer compare-exchange entries explicitly. You can still do that if you wish by 
-  [disabling](../../../client-api/session/cluster-transaction/atomic-guards.mdx#disabling-atomic-guards) 
+  [disabling](../../../../client-api/session/cluster-transaction/atomic-guards.mdx#disabling-atomic-guards) 
   the automatic usage of Atomic-Guards in a session and defining and managing compare exchange 
   key/value pairs 
-  [yourself](../../../client-api/operations/compare-exchange/overview.mdx#example-i---email-address-reservation) 
+  [yourself](../../../../client-api/operations/compare-exchange/overview.mdx#example-i---email-address-reservation) 
   where needed.  
   * **We strongly recommend not managing Atomic-Guards manually** unless you _truly_ know what you're doing. 
     Doing so could cancel RavenDB's ACID transaction guarantees.  
 
 * In this page:
-  * [How Atomic Guards Work](../../../client-api/session/cluster-transaction/atomic-guards.mdx#how-atomic-guards-work)  
-  * [Atomic Guard Transaction Scope](../../../client-api/session/cluster-transaction/atomic-guards.mdx#atomic-guard-transaction-scope)  
-  * [Syntax and Usage](../../../client-api/session/cluster-transaction/atomic-guards.mdx#syntax-and-usage)  
-  * [Disabling Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards.mdx#disabling-atomic-guards)  
-  * [When are Atomic Guards Removed](../../../client-api/session/cluster-transaction/atomic-guards.mdx#when-are-atomic-guards-removed)  
+  * [How Atomic Guards Work](../../../../client-api/session/cluster-transaction/atomic-guards.mdx#how-atomic-guards-work)  
+  * [Atomic Guard Transaction Scope](../../../../client-api/session/cluster-transaction/atomic-guards.mdx#atomic-guard-transaction-scope)  
+  * [Syntax and Usage](../../../../client-api/session/cluster-transaction/atomic-guards.mdx#syntax-and-usage)  
+  * [Disabling Atomic Guards](../../../../client-api/session/cluster-transaction/atomic-guards.mdx#disabling-atomic-guards)  
+  * [When are Atomic Guards Removed](../../../../client-api/session/cluster-transaction/atomic-guards.mdx#when-are-atomic-guards-removed)  
 
 </Admonition>
 ## How Atomic Guards Work
 
-Atomic-Guards are created and managed by default __only when the session's transaction mode is set to [ClusterWide](../../../client-api/session/cluster-transaction/overview.mdx#open-a-cluster-transaction)__.
+Atomic-Guards are created and managed by default __only when the session's transaction mode is set to [ClusterWide](../../../../client-api/session/cluster-transaction/overview.mdx#open-a-cluster-transaction)__.
 The Atomic-Guards are managed as follows:
  
 * __New document__:  
@@ -65,7 +65,7 @@ The Atomic-Guards are managed as follows:
 
 * Since Atomic-Guards are implemented as compare-exchange items,  
   they are Not externally replicated to another database by any ongoing replication task.  
-  Learn more in [why compare-exhange items are not replicated](../../../client-api/operations/compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases).
+  Learn more in [why compare-exhange items are not replicated](../../../../client-api/operations/compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases).
 
 
 
@@ -118,7 +118,7 @@ await session2.saveChanges();
 </TabItem>
 
 After running the above example, the Atomic-Guard that was automatically created can be viewed in the Studio,  
-in the [Compare-Exchange view](../../../studio/database/documents/compare-exchange-view.mdx#the-compare-exchange-view):
+in the [Compare-Exchange view](../../../../studio/database/documents/compare-exchange-view.mdx#the-compare-exchange-view):
 
 ![Atomic Guard](../assets/atomic-guard.png)
 
@@ -155,7 +155,7 @@ await session.saveChanges();
 <Admonition type="warning" title="Warning" id="warning" href="#warning">
 
 * To enable **ACIDity in cluster-wide transactions** when Atomic-Guards are disabled,  
-  you have to explicitly [set and use](../../../client-api/operations/compare-exchange/overview.mdx) 
+  you have to explicitly [set and use](../../../../client-api/operations/compare-exchange/overview.mdx) 
   the required compare exchange key/value pairs.  
 
 * Only disable and edit Atomic-Guards if you truly know what you're doing as it can negatively 

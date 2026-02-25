@@ -39,7 +39,7 @@ The second one is generic `SubscriptionCriteria<T>` where `T` is an entity type.
 * &lt;em&gt;PropertiesNotMatch&lt;/em&gt;,
 * &lt;em&gt;StartEtag&lt;/em&gt;
 
-_BelongsToAnyCollection_ will be automatically filled in by a single value based on the entity type (see [FindTypeTagName](../configuration/conventions/identifier-generation/global.mdx#findtypetagname-and-finddynamictagname) convention).
+_BelongsToAnyCollection_ will be automatically filled in by a single value based on the entity type (see [FindTypeTagName](../../configuration/conventions/identifier-generation/global.mdx#findtypetagname-and-finddynamictagname) convention).
 
 Additionally the criteria object has _StartEtag_ property which sets the etag of the first document that the subscription starts from (in large databases can be used to skip documents that you already know they won't match the given criteria).
 

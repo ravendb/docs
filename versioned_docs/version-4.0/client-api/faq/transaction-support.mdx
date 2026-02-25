@@ -74,7 +74,7 @@ In this mode, a user can perform all requested operations (read and/or write) in
   * __Multiple reads & writes__:  
   Performing interleaving reads and writes or conditional execution can be achieved by [running a patching script](../../client-api/operations/patching/single-document.mdx).  
   In the script you can read documents, make decisions based on their content and update or put document(s) within the scope of a single transaction.  
-  If you only need to modify a document in a transaction, [JSON Patch syntax](../../client-api/operations/patching/json-patch-syntax.mdx) allows you to do that.
+  If you only need to modify a document in a transaction, [JSON Patch syntax](../../../client-api/operations/patching/json-patch-syntax.mdx) allows you to do that.
 
 * __Multiple requests__:  
   RavenDB does not support a single transaction that spans all requested operations within multiple requests.  
@@ -146,7 +146,7 @@ To achieve consistency across the entire cluster please refer to the [Cluster-wi
 
 This is an important observation because you can get into situations where two clients wrote (even with [optimistic concurrency](../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx) turned on)
 to the same document and both of them committed successfully (each one to a separate node). 
-RavenDB attempts to minimize this situation by designating a [preferred node](../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) for writes for each database,  
+RavenDB attempts to minimize this situation by designating a [preferred node](../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) for writes for each database,  
 but since writing to the preferred node isn't guaranteed, this might not alleviate the issue.
 
 In such a case, the data will replicate across the cluster, and RavenDB will detect that there were [conflicting](../../server/clustering/replication/replication-conflicts.mdx) modifications to the document. 
@@ -183,7 +183,7 @@ Read more about that in [How revisions replication help data consistency](../../
 
 ### Cluster-wide transactions
 
-RavenDB also supports [cluster-wide transactions](../../client-api/session/cluster-transaction/overview.mdx).  
+RavenDB also supports [cluster-wide transactions](../../../client-api/session/cluster-transaction/overview.mdx).  
 This feature modifies the way RavenDB commits a transaction, and it is meant to address scenarios where you prefer to get a failure if the transaction cannot be persisted to a majority of the nodes in the cluster.  
 In other words, this feature is for scenarios where you want to favor consistency over availability.
 
@@ -192,7 +192,7 @@ This protocol ensures that the transaction is acknowledged by a majority of the 
 
 Similar to single-node transactions, RavenDB requires that you submit the cluster-wide transaction as a single request of all the changes you want to commit to the database. 
 
-Cluster-wide transactions have the notion of [atomic guards](../../client-api/session/cluster-transaction/atomic-guards.mdx) to prevent an overwrite of a document modified in a cluster transaction by a change made in another cluster transaction.
+Cluster-wide transactions have the notion of [atomic guards](../../../client-api/session/cluster-transaction/atomic-guards.mdx) to prevent an overwrite of a document modified in a cluster transaction by a change made in another cluster transaction.
 
 <Admonition type="info" title="">
 

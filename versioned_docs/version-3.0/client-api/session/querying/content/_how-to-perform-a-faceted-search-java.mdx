@@ -22,14 +22,14 @@ IAggregationDocumentQuery<T> aggregateUsing(String facetSetupDocumentId);
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **facets** | List&lt;[Facet](../../../glossary/facet.mdx)&gt; | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
-| **facetSetupDoc** | String | Document key that contains predefined [FacetSetup](../../../glossary/facet-setup.mdx) (mutually exclusive with `facets`). |
+| **facets** | List&lt;[Facet](../../../../glossary/facet.mdx)&gt; | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
+| **facetSetupDoc** | String | Document key that contains predefined [FacetSetup](../../../../glossary/facet-setup.mdx) (mutually exclusive with `facets`). |
 | **start** | int | number of results that should be skipped. Default: `0`. |
 | **pageSize** | int | maximum number of results that will be retrieved. Default: `null`. | 
 
 | Return Value | |
 | ------------- | ----- |
-| [FacetResults](../../../glossary/facet-results.mdx) | Facet query results with query `duration` and list of `results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
+| [FacetResults](../../../../glossary/facet-results.mdx) | Facet query results with query `duration` and list of `results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
 
 ## Example I
 
@@ -151,14 +151,14 @@ IAggregationDocumentQuery<T> aggregateUsing(String facetSetupDocumentId);
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **facets** | List&lt;[Facet](../../../glossary/facet.mdx)&gt; | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
-| **facetSetupDoc** | String | Document key that contains predefined [FacetSetup](../../../glossary/facet-setup.mdx) (mutually exclusive with `facets`). |
+| **facets** | List&lt;[Facet](../../../../glossary/facet.mdx)&gt; | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
+| **facetSetupDoc** | String | Document key that contains predefined [FacetSetup](../../../../glossary/facet-setup.mdx) (mutually exclusive with `facets`). |
 | **start** | int | number of results that should be skipped. Default: `0`. |
 | **pageSize** | int | maximum number of results that will be retrieved. Default: `null`. | 
 
 | Return Value | |
 | ------------- | ----- |
-| [FacetQuery](../../../glossary/facet-query.mdx) | Instance of FacetQuery containing all options set in `query`. Can be used with `multiFacetedSearch` from `advanced` session operations or with `commands` directly. |
+| [FacetQuery](../../../../glossary/facet-query.mdx) | Instance of FacetQuery containing all options set in `query`. Can be used with `multiFacetedSearch` from `advanced` session operations or with `commands` directly. |
 
 ### Example
 

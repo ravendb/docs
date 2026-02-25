@@ -57,6 +57,6 @@ Note that a file move operation is basically the rename too (directories are jus
 </TabItem>
 
 <Admonition type="info" title="Rename on the server side" id="rename-on-the-server-side" href="#rename-on-the-server-side">
-If the file rename is requested, RavenFS needs to update collection of usages of this file's [pages](../../../files.mdx#pages). In order to make RavenFS resistant to restarts  in the middle of the rename operation, use a [a periodic task](../../../server/background-tasks.mdx), which ensures that all requested renames will be finished after the restart.
+If the file rename is requested, RavenFS needs to update collection of usages of this file's [pages](../../../../files.mdx#pages). In order to make RavenFS resistant to restarts  in the middle of the rename operation, use a [a periodic task](../../../../server/background-tasks.mdx), which ensures that all requested renames will be finished after the restart.
 </Admonition>
 

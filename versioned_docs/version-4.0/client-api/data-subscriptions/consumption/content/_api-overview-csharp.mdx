@@ -7,11 +7,11 @@ import CodeBlock from '@theme/CodeBlock';
 
 In this page:  
 
-[Subscription worker generation](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscription-worker-generation)  
-[SubscriptionWorkerOptions](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions)  
-[Running subscription worker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#running-subscription-worker)  
-[SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatcht)  
-[SubscriptionWorker&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkert)  
+[Subscription worker generation](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscription-worker-generation)  
+[SubscriptionWorkerOptions](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions)  
+[Running subscription worker](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#running-subscription-worker)  
+[SubscriptionBatch&lt;T&gt;](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatcht)  
+[SubscriptionWorker&lt;T&gt;](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkert)  
 
 </Admonition>
 ## Subscription worker generation
@@ -136,7 +136,7 @@ Usage of `RawResult`, `RawMetadata`, and `Metadata` values outside of the docume
 | **DisposeAsync()** | `Task` | Async version of `Dispose()`. |
 | **Dispose(bool waitForSubscriptionTask)** | `void` | Aborts the subscription worker, but allows deciding whether to wait for the `Run` function task or not. |
 | **DisposeAsync(bool waitForSubscriptionTask)** | `void` | Async version of `DisposeAsync(bool waitForSubscriptionTask)`. |
-| **Run (multiple overloads)** | `Task` | Starts the subscription worker work of processing batches, receiving the batch processing delegates (see [above](../../../client-api/data-subscriptions/consumption/api-overview.mdx#running-subscription-worker)). |
+| **Run (multiple overloads)** | `Task` | Starts the subscription worker work of processing batches, receiving the batch processing delegates (see [above](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#running-subscription-worker)). |
 
 </Admonition>
 

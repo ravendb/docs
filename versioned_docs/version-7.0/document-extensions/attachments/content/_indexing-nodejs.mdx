@@ -14,11 +14,11 @@ import CodeBlock from '@theme/CodeBlock';
   Auto-indexing attachments via dynamic queries is not available at this time.  
 
 * In this page:  
-  * [Index attachments details](../../document-extensions/attachments/indexing.mdx#index-attachments-details)
-  * [Index details & content - by attachment name](../../document-extensions/attachments/indexing.mdx#index-details--content---by-attachment-name)
-  * [Index details & content - all attachments](../../document-extensions/attachments/indexing.mdx#index-details--content---all-attachments)
-  * [Leveraging indexed attachments](../../document-extensions/attachments/indexing.mdx#leveraging-indexed-attachments)
-  * [Syntax](../../document-extensions/attachments/indexing.mdx#syntax)
+  * [Index attachments details](../../../document-extensions/attachments/indexing.mdx#index-attachments-details)
+  * [Index details & content - by attachment name](../../../document-extensions/attachments/indexing.mdx#index-details--content---by-attachment-name)
+  * [Index details & content - all attachments](../../../document-extensions/attachments/indexing.mdx#index-details--content---all-attachments)
+  * [Leveraging indexed attachments](../../../document-extensions/attachments/indexing.mdx#leveraging-indexed-attachments)
+  * [Syntax](../../../document-extensions/attachments/indexing.mdx#syntax)
 
 </Admonition>
 ## Index attachments details
@@ -32,7 +32,7 @@ import CodeBlock from '@theme/CodeBlock';
   These details can then be used when defining the index-fields.
   Once the index is deployed, you can query the index to find Employee documents based on these attachment properties.
 
-* To index **attachments' content**, see the examples [below](../../document-extensions/attachments/indexing.mdx#index-details--content---by-attachment-name).
+* To index **attachments' content**, see the examples [below](../../../document-extensions/attachments/indexing.mdx#index-details--content---by-attachment-name).
 
 <TabItem value="index_1" label="index_1">
 <CodeBlock language="js">
@@ -220,7 +220,7 @@ where search(attachmentContent, "Colorado Dallas")
 **The index**:
 * Use `loadAttachments()` to be able to index the **details & content** of ALL attachments.
 
-* Note how the index example below is employing the [Fanout index](../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document) pattern.
+* Note how the index example below is employing the [Fanout index](../../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document) pattern.
 
 <TabItem value="index_3" label="index_3">
 <CodeBlock language="js">
@@ -301,7 +301,7 @@ where attachmentSize > 20000 or search(attachmentContent, "Colorado Dallas")
   including many that can be integrated directly into RavenDB.
 
 * This [blog post](https://ayende.com/blog/192001-B/using-machine-learning-with-ravendb) demonstrates 
-  how image recognition can be applied to indexed attachments using the [additional sources](../../indexes/extending-indexes.mdx) feature. 
+  how image recognition can be applied to indexed attachments using the [additional sources](../../../indexes/extending-indexes.mdx) feature. 
   The resulting index allows filtering and querying based on image content.
 
 

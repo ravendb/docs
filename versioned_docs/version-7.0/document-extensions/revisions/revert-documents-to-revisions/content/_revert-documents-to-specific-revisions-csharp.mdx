@@ -9,14 +9,14 @@ import Panel from '@site/src/components/Panel';
 
 * This article describes how to revert specific documents to **specific revisions**.  
   To revert documents from all collections (or from selected collections) to a **specific point in time**,  
-  see [Revert documents to specific time](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-time.mdx). 
+  see [Revert documents to specific time](../../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-time.mdx). 
 
 * In this article:  
-  * [Overview](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#overview)
-  * [Revert documents](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#revert-documents)
-    * [Revert single document](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#revert-single-document)
-    * [Revert multiple documents](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#revert-multiple-documents)
-  * [Syntax](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#syntax)  
+  * [Overview](../../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#overview)
+  * [Revert documents](../../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#revert-documents)
+    * [Revert single document](../../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#revert-single-document)
+    * [Revert multiple documents](../../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#revert-multiple-documents)
+  * [Syntax](../../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#syntax)  
 
 </Admonition>
 
@@ -37,7 +37,7 @@ import Panel from '@site/src/components/Panel';
   * **Counters**:  
     If the target revision owns counters, they are restored to functionality with their values at the time the revision was created.  
   * **Time series**:  
-    Time series data is Not reverted. Learn more in [Revisions and time series](../../../document-extensions/revisions/revisions-and-other-features.mdx#reverted-data-1).
+    Time series data is Not reverted. Learn more in [Revisions and time series](../../../../document-extensions/revisions/revisions-and-other-features.mdx#reverted-data-1).
     
 </Panel>
 
@@ -45,8 +45,8 @@ import Panel from '@site/src/components/Panel';
     
 * You can revert single or multiple documents to specific revisions using the `RevertRevisionsByIdOperation` operation.
 
-* By default, the operation will be applied to the [default database](../../../client-api/setting-up-default-database.mdx).  
-  To operate on a different database, see [switch operations to different database](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
+* By default, the operation will be applied to the [default database](../../../../client-api/setting-up-default-database.mdx).  
+  To operate on a different database, see [switch operations to different database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
     
 * To revert a document to a specific revision, provide the document ID and the change-vector of the target revision to the `RevertRevisionsByIdOperation` operation.  
   The document content will be overwritten by the content of the specified revision.

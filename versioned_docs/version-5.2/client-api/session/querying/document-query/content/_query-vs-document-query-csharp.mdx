@@ -5,15 +5,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Queries in RavenDB can be written using `Query`, `DocumentQuery`, `RawQuery`, or directly with [RQL](../../../../client-api/session/querying/what-is-rql.mdx).  
-  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query.mdx).
+* Queries in RavenDB can be written using `Query`, `DocumentQuery`, `RawQuery`, or directly with [RQL](../../../../../client-api/session/querying/what-is-rql.mdx).  
+  Learn more in [Query Overview](../../../../../client-api/session/querying/how-to-query.mdx).
 
 * The main differences between `Query` and `DocumentQuery` are outlined in this article.
 
 * In this page:
-  * [API support](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#api-support)
-  * [Immutability](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#immutability)
-  * [Default query operator](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#default-query-operator)
+  * [API support](../../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#api-support)
+  * [Immutability](../../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#immutability)
+  * [Default query operator](../../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#default-query-operator)
 
 </Admonition>
 ## API support
@@ -27,7 +27,7 @@ __Query__:
 * When using _Query_, the query is translated into a _DocumentQuery_ object,  
   which then builds into an RQL that is sent to the server.
 
-* The available _Query_ methods and extensions are listed [here](../../../../client-api/session/querying/how-to-query.mdx#custom-methods-and-extensions-for-linq).
+* The available _Query_ methods and extensions are listed [here](../../../../../client-api/session/querying/how-to-query.mdx#custom-methods-and-extensions-for-linq).
 __DocumentQuery__:
 
 * `DocumentQuery` does Not support LINQ.
@@ -36,14 +36,14 @@ __DocumentQuery__:
 
 * When using _DocumentQuery_, the query is translated into an RQL that is sent to the server.
 
-* The available _DocumentQuery_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#custom-methods-and-extensions).
+* The available _DocumentQuery_ methods and extensions are listed [here](../../../../../client-api/session/querying/document-query/what-is-document-query.mdx#custom-methods-and-extensions).
 <Admonition type="note" title="">
 
 __Note__:
 
 `Query` and `DocumentQuery` can be converted to one another.  
 This enables you to take advantage of all available API methods & extensions.  
-See [Convert between DocumentQuery and Query](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#convert-between-documentquery-and-query).
+See [Convert between DocumentQuery and Query](../../../../../client-api/session/querying/document-query/what-is-document-query.mdx#convert-between-documentquery-and-query).
 
 </Admonition>
 

@@ -6,10 +6,10 @@ import CodeBlock from '@theme/CodeBlock';
 Instead of pulling full documents in query results you can just grab some pieces of data from documents. You can also transform the projected
 results. The projections are defined in LINQ with the usage of:
 
-- [Select](../../../client-api/session/querying/how-to-project-query-results.mdx#select)  
-- [SelectFields](../../../client-api/session/querying/how-to-project-query-results.mdx#selectfields)  
-- [ProjectInto](../../../client-api/session/querying/how-to-project-query-results.mdx#projectinto)  
-- [OfType (As)](../../../client-api/session/querying/how-to-project-query-results.mdx#oftype-(as)---simple-projection)  
+- [Select](../../../../client-api/session/querying/how-to-project-query-results.mdx#select)  
+- [SelectFields](../../../../client-api/session/querying/how-to-project-query-results.mdx#selectfields)  
+- [ProjectInto](../../../../client-api/session/querying/how-to-project-query-results.mdx#projectinto)  
+- [OfType (As)](../../../../client-api/session/querying/how-to-project-query-results.mdx#oftype-(as)---simple-projection)  
 
 ## Select
 
@@ -367,7 +367,7 @@ select {
 
 ## SelectFields
 
-The `SelectFields` method can only be used with the [Document Query](../../../client-api/session/querying/document-query/what-is-document-query.mdx). 
+The `SelectFields` method can only be used with the [Document Query](../../../../client-api/session/querying/document-query/what-is-document-query.mdx). 
 It has two overloads:
 
 <TabItem value="csharp" label="csharp">
@@ -520,7 +520,7 @@ select Name, Phone
 The `SelectFields` methods can also take a `ProjectionBehavior` parameter, which 
 determines whether the query should retrieve indexed data or directly retrieve 
 document data, and what to do when the data can't be retrieved. Learn more 
-[here](../../../client-api/session/querying/how-to-customize-query.mdx#projectionbehavior).  
+[here](../../../../client-api/session/querying/how-to-customize-query.mdx#projectionbehavior).  
 
 <TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">

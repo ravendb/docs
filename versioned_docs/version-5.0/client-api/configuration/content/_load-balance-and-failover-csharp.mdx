@@ -13,16 +13,16 @@ import CodeBlock from '@theme/CodeBlock';
      with the ***Read*** request.  
 
 * ***Write*** requests are sent to the 
-  [Preferred Node](../../client-api/configuration/load-balance-and-failover.mdx#preferred-node) 
+  [Preferred Node](../../../client-api/configuration/load-balance-and-failover.mdx#preferred-node) 
   calculated by the client.  
 
 * The `LoadBalanceBehavior` convention can determine that the topology would 
   be specified by a client session.  
 
 * In this page:  
-  * [ReadBalanceBehavior Options](../../client-api/configuration/load-balance-and-failover.mdx#readbalancebehavior-options)  
-  * [Preferred Node](../../client-api/configuration/load-balance-and-failover.mdx#preferred-node) 
-  * [Session usage](../../client-api/configuration/load-balance-and-failover.mdx#session-usage) 
+  * [ReadBalanceBehavior Options](../../../client-api/configuration/load-balance-and-failover.mdx#readbalancebehavior-options)  
+  * [Preferred Node](../../../client-api/configuration/load-balance-and-failover.mdx#preferred-node) 
+  * [Session usage](../../../client-api/configuration/load-balance-and-failover.mdx#session-usage) 
 </Admonition>
 ## ReadBalanceBehavior Options
 
@@ -34,7 +34,7 @@ import CodeBlock from '@theme/CodeBlock';
       
          <Admonition type="note" title=""> 
          The list can be reordered, see 
-         [Database Group Actions](../../studio/database/settings/manage-database-group.mdx#database-group-topology---actions).  
+         [Database Group Actions](../../../studio/database/settings/manage-database-group.mdx#database-group-topology---actions).  
          </Admonition>
 
   * `RoundRobin`  
@@ -46,7 +46,7 @@ import CodeBlock from '@theme/CodeBlock';
 
   * `FastestNode`  
     * **Load-balance**: _Read_ request will go to the fastest node.  
-      The fastest node is determined by a [Speed Test](../../client-api/cluster/speed-test.mdx).  
+      The fastest node is determined by a [Speed Test](../../../client-api/cluster/speed-test.mdx).  
     * **Failover**  
       In case of a failure, a speed test will be triggered again and in the meantime the 
       client will use the _preferred node_.  
@@ -64,7 +64,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="LoadBalanceBehavior" id="loadbalancebehavior" href="#loadbalancebehavior">
 The nodes topology used to handle client requests can be selected per-session, 
-using the [LoadBalanceBehavior convention](../../client-api/session/configuration/use-session-context-for-load-balancing.mdx).  
+using the [LoadBalanceBehavior convention](../../../client-api/session/configuration/use-session-context-for-load-balancing.mdx).  
 <TabItem value="LoadBalanceBehavior" label="LoadBalanceBehavior">
 <CodeBlock language="csharp">
 {`Conventions = new DocumentConventions
@@ -87,11 +87,11 @@ using the [LoadBalanceBehavior convention](../../client-api/session/configuratio
 
 ## Session Usage
 
-* When using `RoundRobin` or `FastestNode` it might happen that the next [session](../../client-api/session/opening-a-session.mdx) you open will access a different node.  
+* When using `RoundRobin` or `FastestNode` it might happen that the next [session](../../../client-api/session/opening-a-session.mdx) you open will access a different node.  
 
 * A short delay in replicating changes to all nodes in the cluster is acceptable in most cases.  
   If you need to ensure that the next request will be able to _immediately_ read what you just wrote, 
-  you need to use [Write Assurance](../../client-api/session/saving-changes.mdx#waiting-for-replication---write-assurance).  
+  you need to use [Write Assurance](../../../client-api/session/saving-changes.mdx#waiting-for-replication---write-assurance).  
 
 
 

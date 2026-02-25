@@ -4,19 +4,19 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 In this section we will explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) in order to write unit tests for working with RavenDB.
-TestDriver uses an [Embedded](../server/embedded.mdx) package with the same set of [prerequisites](../server/embedded.mdx#prerequisites) to run the Server.
+TestDriver uses an [Embedded](../../server/embedded.mdx) package with the same set of [prerequisites](../../server/embedded.mdx#prerequisites) to run the Server.
 
-- [RavenTestDriver](../start/test-driver.mdx#raventestdriver)
-- [Pre-initializing the store](../start/test-driver.mdx#preinitialize)
-- [ConfigureServer](../start/test-driver.mdx#configureserver)
-- [Unit test](../start/test-driver.mdx#unittest)
-- [Complete example](../start/test-driver.mdx#complete-example)
-- [CI Servers](../start/test-driver.mdx#continuous-integration-servers)
+- [RavenTestDriver](../../start/test-driver.mdx#raventestdriver)
+- [Pre-initializing the store](../../start/test-driver.mdx#preinitialize)
+- [ConfigureServer](../../start/test-driver.mdx#configureserver)
+- [Unit test](../../start/test-driver.mdx#unittest)
+- [Complete example](../../start/test-driver.mdx#complete-example)
+- [CI Servers](../../start/test-driver.mdx#continuous-integration-servers)
 
 ## RavenTestDriver
 
 First, we define a class that derives from Raven's TestDriver.
-Let's start with reviewing the TestDriver's methods and properties and later we will get into implementation (a complete code sample of a RavenTestDriver can be found at the [bottom](../start/test-driver.mdx##complete-example) of the page).
+Let's start with reviewing the TestDriver's methods and properties and later we will get into implementation (a complete code sample of a RavenTestDriver can be found at the [bottom](../../start/test-driver.mdx##complete-example) of the page).
 
 ### Properties and Methods
 | Signature | Description |
@@ -57,7 +57,7 @@ protected override void PreInitialize(IDocumentStore documentStore)
 ## UnitTest
 We'll be using [xunit](https://www.nuget.org/packages/xunit/) for my test framework in the below example.
 Note that the test itself is meant to show different capabilities of the test driver and is not meant to be the most efficient.
-The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver.mdx#complete-example)
+The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../../start/test-driver.mdx#complete-example)
 
 ### Example
 
@@ -106,7 +106,7 @@ You can use it with `TestServerOptions` to change the path to the Raven server b
 
 <Admonition type="info" title="TestServerOptions" id="testserveroptions" href="#testserveroptions">
 
-`TestServerOptions` inherits from [ServerOptions](../server/Embedded.mdx#getting-started). In that way you can be more in control of how the embedded server is going to run
+`TestServerOptions` inherits from [ServerOptions](../../server/Embedded.mdx#getting-started). In that way you can be more in control of how the embedded server is going to run
 with just a minor change. Here you can change your ServerDirectory.
 
 </Admonition>

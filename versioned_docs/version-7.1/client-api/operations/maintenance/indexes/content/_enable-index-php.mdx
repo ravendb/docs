@@ -7,14 +7,14 @@ import CodeBlock from '@theme/CodeBlock';
 
 * When an index is enabled, indexing will take place, and new data will be indexed.
 
-* To learn how to disable an index, see [disable index](../../../../client-api/operations/maintenance/indexes/disable-index.mdx).
+* To learn how to disable an index, see [disable index](../../../../../client-api/operations/maintenance/indexes/disable-index.mdx).
 
 * In this page:
-    * [How to enable an index](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#how-to-enable-an-index)
-    * [Enable index from the Client API](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#enable-index-from-the-client-api)
-      * [Enable index - single node](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#enable-index---single-node)
-      * [Enable index - cluster wide](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#enable-index---cluster-wide)
-      * [Syntax](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#syntax)
+    * [How to enable an index](../../../../../client-api/operations/maintenance/indexes/enable-index.mdx#how-to-enable-an-index)
+    * [Enable index from the Client API](../../../../../client-api/operations/maintenance/indexes/enable-index.mdx#enable-index-from-the-client-api)
+      * [Enable index - single node](../../../../../client-api/operations/maintenance/indexes/enable-index.mdx#enable-index---single-node)
+      * [Enable index - cluster wide](../../../../../client-api/operations/maintenance/indexes/enable-index.mdx#enable-index---cluster-wide)
+      * [Syntax](../../../../../client-api/operations/maintenance/indexes/enable-index.mdx#syntax)
 
 </Admonition>
 ## How to enable an index
@@ -26,17 +26,17 @@ import CodeBlock from '@theme/CodeBlock';
     * Cluster wide, on all database-group nodes.  
 
 * **From Studio**:  
-  To enable the index from Studio go to the [indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions).
+  To enable the index from Studio go to the [indexes list view](../../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions).
 
 * **Reset index**:  
-  [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index.mdx) a disabled index will re-enable the index 
+  [Resetting](../../../../../client-api/operations/maintenance/indexes/reset-index.mdx) a disabled index will re-enable the index 
   locally, on the node that the reset operation was performed on.
 
 * **Modify index definition**:  
   Modifying the index definition will also re-enable the normal operation of the index.
 
 * The above methods can also be used to enable an index that was 
-  [disabled via the file system](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index-manually-via-the-file-system), 
+  [disabled via the file system](../../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index-manually-via-the-file-system), 
   after removing the `disable.marker` file.  
   
 
@@ -45,10 +45,10 @@ import CodeBlock from '@theme/CodeBlock';
 
 #### Enable index - single node:  
 
-* With this option, the index will be enabled on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only.  
-  The preferred node is simply the first node in the [database group topology](../../../../studio/database/settings/manage-database-group.mdx).
+* With this option, the index will be enabled on the [preferred node](../../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only.  
+  The preferred node is simply the first node in the [database group topology](../../../../../studio/database/settings/manage-database-group.mdx).
 
-* Note: When enabling an index from [Studio](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions),  
+* Note: When enabling an index from [Studio](../../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions),  
   the index will be enabled on the local node the browser is opened on, even if it is Not the preferred node.
 
 <TabItem value="enable_1" label="enable_1">

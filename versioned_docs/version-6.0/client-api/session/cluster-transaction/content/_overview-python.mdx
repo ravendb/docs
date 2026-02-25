@@ -6,15 +6,15 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * A session represents a single [business transaction](https://martinfowler.com/eaaCatalog/unitOfWork.html) 
-  (not to be confused with an [ACID transaction](../../../client-api/faq/transaction-support.mdx)).  
+  (not to be confused with an [ACID transaction](../../../../client-api/faq/transaction-support.mdx)).  
  
 * When opening a session, the session's mode can be set to either:  
     * **SINGLE-NODE** - transaction is executed on a specific node and then replicated
     * **CLUSTER-WIDE** - transaction is registered for execution on all nodes in an atomic fashion
 
 * In this page:  
-    * [Open a cluster transaction](../../../client-api/session/cluster-transaction/overview.mdx#open-a-cluster-transaction)
-    * [Cluster-wide transaction vs. Single-node transaction](../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction)
+    * [Open a cluster transaction](../../../../client-api/session/cluster-transaction/overview.mdx#open-a-cluster-transaction)
+    * [Cluster-wide transaction vs. Single-node transaction](../../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction)
      
 </Admonition>
 ## Open a cluster transaction
@@ -56,7 +56,7 @@ import CodeBlock from '@theme/CodeBlock';
     * **put** or **delete** a document
     * **put** or **delete** a compare-exchange item
 * To prevent from concurrent documents modifications,  
-  the server creates [Atomic-Guards](../../../client-api/session/cluster-transaction/atomic-guards.mdx) that will be associated with the documents.  
+  the server creates [Atomic-Guards](../../../../client-api/session/cluster-transaction/atomic-guards.mdx) that will be associated with the documents.  
   An Atomic-Guard will be created when:
     * A new document is created
     * Modifying an existing document that doesn't have yet an Atomic-Guard
@@ -90,7 +90,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="info" title="Transactions in RavenDB" id="transactions-in-ravendb" href="#transactions-in-ravendb">
 
-For a detailed description of transactions in RavenDB please refer to the [Transaction support in RavenDB](../../../client-api/faq/transaction-support.mdx) article.
+For a detailed description of transactions in RavenDB please refer to the [Transaction support in RavenDB](../../../../client-api/faq/transaction-support.mdx) article.
 
 </Admonition>
 

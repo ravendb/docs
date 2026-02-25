@@ -21,18 +21,18 @@ import CodeBlock from '@theme/CodeBlock';
       E.g., to invoke an event after SaveChanges() is called by **any subsequent session**, use -  
       `store.OnAfterSaveChanges += OnAfterSaveChangesEvent;`
 
-      Read more about `DocumentStore` events [here](../../../client-api/how-to/subscribe-to-store-events.mdx).  
+      Read more about `DocumentStore` events [here](../../../../client-api/how-to/subscribe-to-store-events.mdx).  
 
 * In this Page:  
-   * [OnBeforeStore](../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforestore)  
-   * [OnBeforeDelete](../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforedelete)  
-   * [OnAfterSaveChanges](../../../client-api/session/how-to/subscribe-to-events.mdx#onaftersavechanges)  
-   * [OnBeforeQuery](../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforequery)  
-   * [OnBeforeConversionToDocument](../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforeconversiontodocument)  
-   * [OnAfterConversionToDocument](../../../client-api/session/how-to/subscribe-to-events.mdx#onafterconversiontodocument)  
-   * [OnBeforeConversionToEntity](../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforeconversiontoentity)  
-   * [OnAfterConversionToEntity](../../../client-api/session/how-to/subscribe-to-events.mdx#onafterconversiontoentity)  
-   * [OnSessionDisposing](../../../client-api/session/how-to/subscribe-to-events.mdx#onsessiondisposing)  
+   * [OnBeforeStore](../../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforestore)  
+   * [OnBeforeDelete](../../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforedelete)  
+   * [OnAfterSaveChanges](../../../../client-api/session/how-to/subscribe-to-events.mdx#onaftersavechanges)  
+   * [OnBeforeQuery](../../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforequery)  
+   * [OnBeforeConversionToDocument](../../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforeconversiontodocument)  
+   * [OnAfterConversionToDocument](../../../../client-api/session/how-to/subscribe-to-events.mdx#onafterconversiontodocument)  
+   * [OnBeforeConversionToEntity](../../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforeconversiontoentity)  
+   * [OnAfterConversionToEntity](../../../../client-api/session/how-to/subscribe-to-events.mdx#onafterconversiontoentity)  
+   * [OnSessionDisposing](../../../../client-api/session/how-to/subscribe-to-events.mdx#onsessiondisposing)  
 
 </Admonition>
 
@@ -244,7 +244,7 @@ It should be defined with this signature:
 | Parameters | Type | Description |
 | - | - | - |
 | **sender** | `IDocumentSession` | The session on which `SaveChanges()` has been called, triggering this event |
-| **args** | `BeforeQueryEventArgs` | `args` contains the session on which `SaveChanges()` has been called, and the query's [query customizations](../../../client-api/session/querying/how-to-customize-query.mdx). |
+| **args** | `BeforeQueryEventArgs` | `args` contains the session on which `SaveChanges()` has been called, and the query's [query customizations](../../../../client-api/session/querying/how-to-customize-query.mdx). |
 
 The class `BeforeQueryEventArgs`:  
 
@@ -275,7 +275,7 @@ If you want to disable caching of all query results, you can implement the metho
 
 ### Example II
 
-If you want each query to [wait for non-stale results](../../../indexes/stale-indexes.mdx) you can create an event as follows:  
+If you want each query to [wait for non-stale results](../../../../indexes/stale-indexes.mdx) you can create an event as follows:  
 
 <TabItem value="on_before_query_execute_event_2" label="on_before_query_execute_event_2">
 <CodeBlock language="csharp">

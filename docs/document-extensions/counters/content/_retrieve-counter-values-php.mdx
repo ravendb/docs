@@ -8,19 +8,19 @@ import CodeBlock from '@theme/CodeBlock';
 * Use `countersFor.get` to retrieve the values of **specific counters**,  
   or `countersFor.getAll` to retrieve the names and values of **all counters** associated with a document.
 
-* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
+* For all other `countersFor` methods see this [Overview](../../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
 
 * In this page:  
 
-  * [Get values of specific counters](../../document-extensions/counters/retrieve-counter-values.mdx#get-values-of-specific-counters)  
-     * [`get` usage](../../document-extensions/counters/retrieve-counter-values.mdx#usage)  
-     * [`get` example](../../document-extensions/counters/retrieve-counter-values.mdx#example)  
-     * [`get` syntax](../../document-extensions/counters/retrieve-counter-values.mdx#syntax)
+  * [Get values of specific counters](../../../document-extensions/counters/retrieve-counter-values.mdx#get-values-of-specific-counters)  
+     * [`get` usage](../../../document-extensions/counters/retrieve-counter-values.mdx#usage)  
+     * [`get` example](../../../document-extensions/counters/retrieve-counter-values.mdx#example)  
+     * [`get` syntax](../../../document-extensions/counters/retrieve-counter-values.mdx#syntax)
 
-  * [Get all Counters of a document](../../document-extensions/counters/retrieve-counter-values.mdx#get-all-counters-of-a-document)  
-     * [`getAll` usage](../../document-extensions/counters/retrieve-counter-values.mdx#usage-1)  
-     * [`getAll` example](../../document-extensions/counters/retrieve-counter-values.mdx#example-1)  
-     * [`getAll` Syntax](../../document-extensions/counters/retrieve-counter-values.mdx#syntax-1)  
+  * [Get all Counters of a document](../../../document-extensions/counters/retrieve-counter-values.mdx#get-all-counters-of-a-document)  
+     * [`getAll` usage](../../../document-extensions/counters/retrieve-counter-values.mdx#usage-1)  
+     * [`getAll` example](../../../document-extensions/counters/retrieve-counter-values.mdx#example-1)  
+     * [`getAll` Syntax](../../../document-extensions/counters/retrieve-counter-values.mdx#syntax-1)  
 
 </Admonition>
 ## Get values of specific counters
@@ -30,8 +30,8 @@ import CodeBlock from '@theme/CodeBlock';
 * Open a session
 * Create an instance of `countersFor`.
    * Either pass `countersFor` an explicit document ID, -or-
-   * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
-     e.g. a document object returned from [session.query](../../querying/overview.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).
+   * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities.mdx), 
+     e.g. a document object returned from [session.query](../../../querying/overview.mdx) or from [session.load](../../../client-api/session/loading-entities.mdx#load).
 * Call `countersFor.get` to retrieve counter value/s.
    * `get("CounterName")` will return a single `int` value for the specified counter.  
    * `get(["counter1", "counter2"]` will return an array with values for all listed counters.  
@@ -81,8 +81,8 @@ try \{
 * Open a session.  
 * Create an instance of `countersFor`.
     * Either pass `countersFor` an explicit document ID, -or-
-    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
-      e.g. a document object returned from [session.query](../../querying/overview.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).
+    * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.query](../../../querying/overview.mdx) or from [session.load](../../../client-api/session/loading-entities.mdx#load).
 * Call `countersFor.getAll` to retrieve the names and values of all counters associated with the document.
 #### `getAll` example:  
 

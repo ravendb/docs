@@ -4,8 +4,8 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 There are two methods that allow you to send a Facet query to a database:   
-- [GetFacets](../../../client-api/commands/querying/how-to-work-with-facet-query.mdx#getfacets)    
-- [GetMultiFacets](../../../client-api/commands/querying/how-to-work-with-facet-query.mdx#getmultifacets)   
+- [GetFacets](../../../../client-api/commands/querying/how-to-work-with-facet-query.mdx#getfacets)    
+- [GetMultiFacets](../../../../client-api/commands/querying/how-to-work-with-facet-query.mdx#getmultifacets)   
 
 ## GetFacets
 
@@ -36,7 +36,7 @@ curl \\
 </TabItem>
 
 <Admonition type="note" title="IndexQuery parameters" id="indexquery-parameters" href="#indexquery-parameters">
-This endpoint accepts [IndexQuery](../../../glossary/index-query.mdx) object. All possible [IndexQuery](../../../glossary/index-query.mdx) parameters are listed [here](../../../client-api/commands/querying/how-to-query-a-database.mdx#indexquery-parameters)
+This endpoint accepts [IndexQuery](../../../../glossary/index-query.mdx) object. All possible [IndexQuery](../../../../glossary/index-query.mdx) parameters are listed [here](../../../../client-api/commands/querying/how-to-query-a-database.mdx#indexquery-parameters)
 </Admonition>
 
 ### Request
@@ -53,8 +53,8 @@ This endpoint accepts [IndexQuery](../../../glossary/index-query.mdx) object. Al
 | Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **indexName** | Yes | A name of an index to query |
-| **facets** | Yes | Serialized list of [facets](../../../glossary/facet.mdx) required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
-| **facetSetupDoc** | Yes | Document key that contains predefined [FacetSetup](../../../glossary/facet-setup.mdx) (mutually exclusive with `facets`). |
+| **facets** | Yes | Serialized list of [facets](../../../../glossary/facet.mdx) required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
+| **facetSetupDoc** | Yes | Document key that contains predefined [FacetSetup](../../../../glossary/facet-setup.mdx) (mutually exclusive with `facets`). |
 | **start** | No | number of results that should be skipped.|
 | **pageSize** | No | maximum number of results that will be retrieved. |
 
@@ -66,7 +66,7 @@ This endpoint accepts [IndexQuery](../../../glossary/index-query.mdx) object. Al
 
 | Return Value | Description |
 | ------------- | ----- |
-| [FacetResults](../../../glossary/facet-results.mdx) | Facet query results containing query `Duration` and a list of `Results` - one entry for each term/range as specified in [FacetSetup](../../../glossary/facet-setup.mdx) document or passed in parameters. |
+| [FacetResults](../../../../glossary/facet-results.mdx) | Facet query results containing query `Duration` and a list of `Results` - one entry for each term/range as specified in [FacetSetup](../../../../glossary/facet-setup.mdx) document or passed in parameters. |
 
 
 
@@ -90,7 +90,7 @@ Sending multiple facet queries is achievable by using `/facets/multisearch` endp
 
 | Payload |
 | ------- |
-| Serialized list of [FacetQuery](../../../glossary/facet-query.mdx) |
+| Serialized list of [FacetQuery](../../../../glossary/facet-query.mdx) |
 
 ### Response
 
@@ -100,7 +100,7 @@ Sending multiple facet queries is achievable by using `/facets/multisearch` endp
 
 | Return Value | Description |
 | ------------- | ------------- |
-| **Results** | list of [FacetResults](../../../glossary/facet-results.mdx) |
+| **Results** | list of [FacetResults](../../../../glossary/facet-results.mdx) |
 
 
 

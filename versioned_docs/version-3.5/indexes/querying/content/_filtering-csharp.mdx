@@ -3,7 +3,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-One of the most basic functionalities when it comes to querying is the ability to filter out data and only return records that match given condition. There are couple of ways to do this, and they all depend on querying approach you want to use ([Query](../../client-api/session/querying/how-to-query.mdx) from basic session operations, [DocumentQuery](../../client-api/session/querying/lucene/how-to-use-lucene-in-queries.mdx) from advanced session operations or low-level [Command](../../client-api/commands/querying/how-to-query-a-database.mdx)). Following example demonstrates how to add a simple conditions to query using all those methods.
+One of the most basic functionalities when it comes to querying is the ability to filter out data and only return records that match given condition. There are couple of ways to do this, and they all depend on querying approach you want to use ([Query](../../../client-api/session/querying/how-to-query.mdx) from basic session operations, [DocumentQuery](../../../client-api/session/querying/lucene/how-to-use-lucene-in-queries.mdx) from advanced session operations or low-level [Command](../../../client-api/commands/querying/how-to-query-a-database.mdx)). Following example demonstrates how to add a simple conditions to query using all those methods.
 
 ## Where
 
@@ -182,7 +182,7 @@ Note that `PricePerUnit` is of type `decimal` in `Order` entity, so indexed `Tot
 properly query such index, we need to preserve types in queries. That is why `Orders_ByTotalPrice.Result.TotalPrice` is `decimal` and 
 `IndexQuery.Query` has `Dx` prefix specified before the actual value. Types of properties in predicates have to match types of indexed fields.
 
-* More about the need to use `OfType` here, you can find in [projections article](../../client-api/session/querying/how-to-perform-projection.mdx#oftype-(as)---simple-projection).
+* More about the need to use `OfType` here, you can find in [projections article](../../../client-api/session/querying/how-to-perform-projection.mdx#oftype-(as)---simple-projection).
 
 </Admonition>
 
@@ -483,7 +483,7 @@ Underneath, `Query` and `DocumentQuery` are converting predicates to `IndexQuery
 </Admonition>
 
 <Admonition type="note" title="">
-By default **page size is set to 128** if not specified, so above queries will not return more than 128 results. You can read more about paging [here](../../indexes/querying/paging.mdx).
+By default **page size is set to 128** if not specified, so above queries will not return more than 128 results. You can read more about paging [here](../../../indexes/querying/paging.mdx).
 </Admonition>
 
 

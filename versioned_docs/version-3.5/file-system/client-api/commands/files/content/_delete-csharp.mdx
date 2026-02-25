@@ -81,7 +81,7 @@ In order to delete files located in `/temp` folder except from ones in its subdi
 
 
 <Admonition type="info" title="Delete on the server side" id="delete-on-the-server-side" href="#delete-on-the-server-side">
-To delete a file, RavenFS needs to remove a lot of information related to this file. In order to respond to the user quickly, the file is just renamed and a delete marker is added to its metadata. The actual delete is performed by [a periodic task](../../../server/background-tasks.mdx), which ensures that all the requested deletes will be accomplished even in the presence of a server restarts in the middle.
+To delete a file, RavenFS needs to remove a lot of information related to this file. In order to respond to the user quickly, the file is just renamed and a delete marker is added to its metadata. The actual delete is performed by [a periodic task](../../../../server/background-tasks.mdx), which ensures that all the requested deletes will be accomplished even in the presence of a server restarts in the middle.
 </Admonition>
 
 

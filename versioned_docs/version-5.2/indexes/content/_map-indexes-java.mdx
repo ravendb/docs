@@ -11,12 +11,12 @@ These **mapping functions** are **LINQ-based functions** or  **JavaScript functi
 
 You can:
 
-- [index single fields](../indexes/map-indexes.mdx#indexing-single-fields)
-- [combine multiple fields together](../indexes/map-indexes.mdx#combining-multiple-fields-together) 
-- [index partial field data](../indexes/map-indexes.mdx#indexing-partial-field-data)
-- [index nested data](../indexes/map-indexes.mdx#indexing-nested-data)
-- [index fields from related documents](../indexes/indexing-related-documents.mdx)
-- [index fields from multiple collections](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)
+- [index single fields](../../indexes/map-indexes.mdx#indexing-single-fields)
+- [combine multiple fields together](../../indexes/map-indexes.mdx#combining-multiple-fields-together) 
+- [index partial field data](../../indexes/map-indexes.mdx#indexing-partial-field-data)
+- [index nested data](../../indexes/map-indexes.mdx#indexing-nested-data)
+- [index fields from related documents](../../indexes/indexing-related-documents.mdx)
+- [index fields from multiple collections](../../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)
 - ...and more. 
 
 ## Indexing Single Fields
@@ -73,7 +73,7 @@ Let's create an index that will help us search for `Employees` by their `FirstNa
 </TabItem>
 </Tabs>
 
-- The final step is to [deploy it](../indexes/creating-and-deploying.mdx) to the server and issue a query using the session [Query](../indexes/querying/query-index.mdx) method:
+- The final step is to [deploy it](../../indexes/creating-and-deploying.mdx) to the server and issue a query using the session [Query](../../indexes/querying/query-index.mdx) method:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -242,7 +242,7 @@ where FullName = 'Robert King'
 
 In this example, the index field `Query` combines all values from various Employee fields into one. The default Analyzer on field is changed to enable `Full Text Search` operations. The matches no longer need to be exact.
 
-You can read more about analyzers and `Full Text Search` [here](../indexes/using-analyzers.mdx).
+You can read more about analyzers and `Full Text Search` [here](../../indexes/using-analyzers.mdx).
 
 </Admonition>
 
@@ -466,10 +466,10 @@ where Country = 'USA'
 </TabItem>
 </Tabs>
 
-If a document relationship is represented by the document's ID, you can use the `LoadDocument` method to retrieve such a document. More about it can be found [here](../indexes/indexing-related-documents.mdx).
+If a document relationship is represented by the document's ID, you can use the `LoadDocument` method to retrieve such a document. More about it can be found [here](../../indexes/indexing-related-documents.mdx).
 
 ## Indexing Multiple Collections
 
-Read the article dedicated to `Multi-Map` indexes [here](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes).
+Read the article dedicated to `Multi-Map` indexes [here](../../indexes/indexing-polymorphic-data.mdx#multi-map-indexes).
 
 

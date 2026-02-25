@@ -14,19 +14,19 @@ import CodeBlock from '@theme/CodeBlock';
 
 * In this page:
 
-    * [Streaming overview](../../../client-api/session/querying/how-to-stream-query-results.mdx#streaming-overview)
+    * [Streaming overview](../../../../client-api/session/querying/how-to-stream-query-results.mdx#streaming-overview)
      
-    * [Stream by query](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-by-query)
-        * [Stream a dynamic query](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-a-dynamic-query)
-        * [Stream a dynamic raw query](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-a-dynamic-raw-query)
-        * [Stream a projected query](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-a-projected-query)
-        * [Stream an index query](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-an-index-query)
-        * [Stream related documents](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-related-documents)
-        * [By query syntax](../../../client-api/session/querying/how-to-stream-query-results.mdx#by-query-syntax)
+    * [Stream by query](../../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-by-query)
+        * [Stream a dynamic query](../../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-a-dynamic-query)
+        * [Stream a dynamic raw query](../../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-a-dynamic-raw-query)
+        * [Stream a projected query](../../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-a-projected-query)
+        * [Stream an index query](../../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-an-index-query)
+        * [Stream related documents](../../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-related-documents)
+        * [By query syntax](../../../../client-api/session/querying/how-to-stream-query-results.mdx#by-query-syntax)
       
-    * [Stream by prefix](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-by-prefix)
-        * [Stream results by prefix](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-results-by-prefix)
-        * [By prefix syntax](../../../client-api/session/querying/how-to-stream-query-results.mdx#by-prefix-syntax)
+    * [Stream by prefix](../../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-by-prefix)
+        * [Stream results by prefix](../../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-results-by-prefix)
+        * [By prefix syntax](../../../../client-api/session/querying/how-to-stream-query-results.mdx#by-prefix-syntax)
 
 </Admonition>
 ## Streaming overview
@@ -47,10 +47,10 @@ import CodeBlock from '@theme/CodeBlock';
 * __Query limitations:__:  
 
   * A streaming query does not wait for indexing by design.  
-    So calling [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults) is Not supported and will result in an exception.   
+    So calling [WaitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults) is Not supported and will result in an exception.   
   
-  * Using [Include](../../../client-api/how-to/handle-document-relationships.mdx#includes) to load a related document to the session in a streaming query is Not supported.  
-    Learn how to __stream related documents__ here [below](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-related-documents).
+  * Using [Include](../../../../client-api/how-to/handle-document-relationships.mdx#includes) to load a related document to the session in a streaming query is Not supported.  
+    Learn how to __stream related documents__ here [below](../../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-related-documents).
 
 
 
@@ -378,8 +378,8 @@ public class Employees_ByFirstName : AbstractIndexCreationTask<Employee>
 #### Stream related documents
 __Why streaming query results does not support 'include'__:
 
-* A document can reference [related documents](../../../indexes/indexing-related-documents.mdx#what-are-related-documents).
-* An [Include](../../../client-api/how-to/handle-document-relationships.mdx#includes) clause in a non-streamed query loads these related documents to the session  
+* A document can reference [related documents](../../../../indexes/indexing-related-documents.mdx#what-are-related-documents).
+* An [Include](../../../../client-api/how-to/handle-document-relationships.mdx#includes) clause in a non-streamed query loads these related documents to the session  
   so that they can be accessed without an additional query to the server.
 * Those included documents are sent to the client at the end of the query results.  
   This does not mesh well with streaming, which is designed to allow transferring massive amounts of data,  
@@ -387,7 +387,7 @@ __Why streaming query results does not support 'include'__:
 
 __How to stream related documents__:
 
-* Instead of using _include_, define the query so that it will return a [projection](../../../indexes/querying/projections.mdx).
+* Instead of using _include_, define the query so that it will return a [projection](../../../../indexes/querying/projections.mdx).
 * The projected query results will not be just the documents from the queried collection.  
   Instead, each result will be an entity containing the related document entities in addition to the original queried document.
 * On the client side, you need to define a class that matches the projected query result.
@@ -511,12 +511,12 @@ IEnumerator<StreamResult<T>> Stream<T>(IRawDocumentQuery<T> query, out StreamQue
 
 | Parameters | type | description |
 | - | - | - |
-| **query** | [IQueryable](../../../querying/overview.mdx#session-query), [IDocumentQuery](../../../querying/overview.mdx#session-advanced-documentquery) or [IRawDocumentQuery](../../../querying/overview.mdx#session-advanced-rawquery) | The query for which to stream results |
-| `out` **streamQueryStats** | [StreamQueryStatistics](../../../glossary/stream-query-statistics.mdx) | Information about performed query |
+| **query** | [IQueryable](../../../../querying/overview.mdx#session-query), [IDocumentQuery](../../../../querying/overview.mdx#session-advanced-documentquery) or [IRawDocumentQuery](../../../../querying/overview.mdx#session-advanced-rawquery) | The query for which to stream results |
+| `out` **streamQueryStats** | [StreamQueryStatistics](../../../../glossary/stream-query-statistics.mdx) | Information about performed query |
 
 | Return Value | |
 | - | - |
-| IEnumerator&lt;[StreamResult&lt;T&gt;](../../../glossary/stream-result.mdx)&gt; | Enumerator with resulting entities |
+| IEnumerator&lt;[StreamResult&lt;T&gt;](../../../../glossary/stream-result.mdx)&gt; | Enumerator with resulting entities |
 
 </Admonition>
 
@@ -598,7 +598,7 @@ IEnumerator<StreamResult<T>> Stream<T>(string startsWith, string matches = null,
 
 | Return Value | |
 | - | - |
-| IEnumerator&lt;[StreamResult&lt;T&gt;](../../../glossary/stream-result.mdx)&gt; | Enumerator with resulting entities |
+| IEnumerator&lt;[StreamResult&lt;T&gt;](../../../../glossary/stream-result.mdx)&gt; | Enumerator with resulting entities |
 
 </Admonition>
 

@@ -5,7 +5,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Prior to reading this article, please refer to [full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx) 
+* Prior to reading this article, please refer to [full-Text search with dynamic queries](../../../client-api/session/querying/text-search/full-text-search.mdx) 
   to learn about the `search` method.  
 
 * **All capabilities** provided by `search` with a dynamic query can also be used when querying a static-index.
@@ -17,12 +17,12 @@ import CodeBlock from '@theme/CodeBlock';
       See examples below.  
       
     * You can configure which analyzer will be used to tokenize this field.  
-      See [selecting an analyzer](../../indexes/using-analyzers.mdx#selecting-an-analyzer-for-a-field).    
+      See [selecting an analyzer](../../../indexes/using-analyzers.mdx#selecting-an-analyzer-for-a-field).    
 * In this article:
-  * [Indexing single field for FTS](../../indexes/querying/searching.mdx#indexing-single-field-for-fts)
-  * [Indexing multiple fields for FTS](../../indexes/querying/searching.mdx#indexing-multiple-fields-for-fts)
-  * [Indexing all fields for FTS (using AsJson)](../../indexes/querying/searching.mdx#indexing-all-fields-for-fts-(using-asjson))
-  * [Boosting search results](../../indexes/querying/searching.mdx#boosting-search-results)
+  * [Indexing single field for FTS](../../../indexes/querying/searching.mdx#indexing-single-field-for-fts)
+  * [Indexing multiple fields for FTS](../../../indexes/querying/searching.mdx#indexing-multiple-fields-for-fts)
+  * [Indexing all fields for FTS (using AsJson)](../../../indexes/querying/searching.mdx#indexing-all-fields-for-fts-(using-asjson))
+  * [Boosting search results](../../../indexes/querying/searching.mdx#boosting-search-results)
 
 </Admonition>
 ## Indexing single field for FTS
@@ -79,7 +79,7 @@ class Employees_ByNotes extends AbstractIndexCreationTask
 
 * Use `search` to make a full-text search when querying the index.  
 
-* Refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx) for all available **Search options**,  
+* Refer to [Full-Text search with dynamic queries](../../../client-api/session/querying/text-search/full-text-search.mdx) for all available **Search options**,  
   such as using wildcards, searching for multiple terms, etc.
 
 <Tabs groupId='languageSyntax'>
@@ -339,10 +339,10 @@ where search(allValues, "tofu")
   This can be applied by either of the following:
 
   * Add a boost value to the relevant index-field **inside the index definition**.  
-    Refer to the indexes [Boosting](../../indexes/boosting.mdx) article.  
+    Refer to the indexes [Boosting](../../../indexes/boosting.mdx) article.  
 
   * Add a boost value to the queried terms **at query time**.  
-    Refer to the [Boost search results](../../client-api/session/querying/text-search/boost-search-results.mdx) article.  
+    Refer to the [Boost search results](../../../client-api/session/querying/text-search/boost-search-results.mdx) article.  
 
 
 

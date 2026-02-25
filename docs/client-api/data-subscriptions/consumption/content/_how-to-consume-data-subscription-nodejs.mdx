@@ -9,13 +9,13 @@ import CodeBlock from '@theme/CodeBlock';
 
 * The `SubscriptionWorker` object, defined on the client, manages the communication between the server and the client and processes the document batches sent from the server.  
 
-* There are several ways to create and configure the SubscriptionWorker - see [subscription worker options](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions).  
+* There are several ways to create and configure the SubscriptionWorker - see [subscription worker options](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions).  
 
 * In this page:
-  * [SubscriptionWorker lifecycle](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#subscriptionworker-lifecycle)  
-  * [Error handling](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#error-handling)  
-  * [Worker strategies](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies)   
-  * [Determining which workers a subscription will serve](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#determining-which-workers-a-subscription-will-serve)  
+  * [SubscriptionWorker lifecycle](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#subscriptionworker-lifecycle)  
+  * [Error handling](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#error-handling)  
+  * [Worker strategies](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies)   
+  * [Determining which workers a subscription will serve](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#determining-which-workers-a-subscription-will-serve)  
 
 </Admonition>
 ## SubscriptionWorker lifecycle
@@ -73,7 +73,7 @@ When an unexpected error arises, the worker will attempt to **reconnect to the s
 However, there are several conditions under which the worker will stop its operation but will Not attempt to reconnect:
 
 * The subscription no longer exists or has been deleted.
-* Another worker has taken control of the subscription (see [connection strategy](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#available-worker-strategies)).
+* Another worker has taken control of the subscription (see [connection strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#available-worker-strategies)).
 * The worker is unable to connect to any of the servers.
 * The worker could not receive the node responsible for the task  
   (this can happen when there is no leader in the cluster).
@@ -102,7 +102,7 @@ For example:
 </TabItem>
 
 When creating a worker, the worker can be configured to handle these exceptions in either of the following ways,
-depending on the `ignoreSubscriberErrors` property in the [subscription worker options](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions):
+depending on the `ignoreSubscriberErrors` property in the [subscription worker options](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions):
 
 * **Abort processing completely**  
   When `ignoreSubscriberErrors` is `false` (default):  
@@ -119,7 +119,7 @@ depending on the `ignoreSubscriberErrors` property in the [subscription worker o
 
 <Admonition type="info" title="Reconnecting" id="reconnecting" href="#reconnecting">
 
-Two properties in the [subscription worker options](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions) 
+Two properties in the [subscription worker options](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions) 
 object control the behavior of a worker attempting to reconnect with the server:
 
 * `timeToWaitBeforeConnectionRetry`  
@@ -172,7 +172,7 @@ and determine what happens when one worker is connected and another tries to con
 
 * `Concurrent`  
   The server allows multiple workers to connect to the same subscription **concurrently**.  
-  Read more about concurrent subscriptions [here](../../../client-api/data-subscriptions/concurrent-subscriptions.mdx).  
+  Read more about concurrent subscriptions [here](../../../../client-api/data-subscriptions/concurrent-subscriptions.mdx).  
 
 
 
@@ -185,15 +185,15 @@ which additional workers the subscription can serve until all worker connections
 
 </Admonition>
 
-* A subscription that serves one or more [concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#multiple-workers-per-subscription-strategy) workers, 
+* A subscription that serves one or more [concurrent](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#multiple-workers-per-subscription-strategy) workers, 
   **can only serve other concurrent workers** until all connections are dropped. 
-  If a worker with a [one worker per subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#one-worker-per-subscription-strategies) 
+  If a worker with a [one worker per subscription](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#one-worker-per-subscription-strategies) 
   strategy attempts to connect -  
    * The connection attempt will be rejected.  
    * `SubscriptionInUseException` will be thrown.  
 
-* A subscription that serves a worker with a [one worker per subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#one-worker-per-subscription-strategies) strategy, 
-  **cannot** serve [concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#multiple-workers-per-subscription-strategy) 
+* A subscription that serves a worker with a [one worker per subscription](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#one-worker-per-subscription-strategies) strategy, 
+  **cannot** serve [concurrent](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#multiple-workers-per-subscription-strategy) 
   workers until that worker's connection is dropped. 
   If a concurrent worker attempts to connect -  
    * The connection attempt will be rejected.  

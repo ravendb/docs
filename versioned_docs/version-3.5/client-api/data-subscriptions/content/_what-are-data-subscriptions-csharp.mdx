@@ -13,7 +13,7 @@ When you open the subscription it will send you all documents matching the speci
 
 This also ensures that you never miss any document even in the presence of failure - subscription will retry to send documents from the last acknowledged and processed document (by tracking its Etag).
 
-Every time you open the subscription you receive all new or changed documents since the last time you pulled. After you download and process all documents you can still keep the subscription open to get new or modified documents. Under the hood, the data subscription uses [Changes API](../changes/what-is-changes-api.mdx) to be notified about any document changes, so it is able to immediately provide subscribers with new documents that match the subscription criteria.
+Every time you open the subscription you receive all new or changed documents since the last time you pulled. After you download and process all documents you can still keep the subscription open to get new or modified documents. Under the hood, the data subscription uses [Changes API](../../changes/what-is-changes-api.mdx) to be notified about any document changes, so it is able to immediately provide subscribers with new documents that match the subscription criteria.
 
 The subscriptions are persistent and long lived objects. A subscription created by one client can be accessed by another client by opening it by using a unique subscription identifier (however, there can be only one client connected at any time), so you are expected to hold on to that id and make use of it. You can find more details about managing and consuming data subscriptions in further articles.
 

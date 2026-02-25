@@ -12,12 +12,12 @@ import CodeBlock from '@theme/CodeBlock';
   requests routed to the **same node**. Gain load balancing by assigning **different contexts** 
   to **different sessions**.  
 * In this page:
-    * [LoadBalanceBehavior options](../../../client-api/configuration/load-balance/load-balance-behavior.mdx#loadbalancebehavior-options)
-    * [Initialize LoadBalanceBehavior on the client](../../../client-api/configuration/load-balance/load-balance-behavior.mdx#initialize-loadbalancebehavior-on-the-client)
-    * [Set LoadBalanceBehavior on the server:](../../../client-api/configuration/load-balance/load-balance-behavior.mdx#set-loadbalancebehavior-on-the-server)
-        * [By operation](../../../client-api/configuration/load-balance/load-balance-behavior.mdx#set-loadbalancebehavior-on-the-server---by-operation)
-        * [From Studio](../../../client-api/configuration/load-balance/load-balance-behavior.mdx#set-loadbalancebehavior-on-the-server---from-studio)
-    * [When to use](../../../client-api/configuration/load-balance/load-balance-behavior.mdx#when-to-use)
+    * [LoadBalanceBehavior options](../../../../client-api/configuration/load-balance/load-balance-behavior.mdx#loadbalancebehavior-options)
+    * [Initialize LoadBalanceBehavior on the client](../../../../client-api/configuration/load-balance/load-balance-behavior.mdx#initialize-loadbalancebehavior-on-the-client)
+    * [Set LoadBalanceBehavior on the server:](../../../../client-api/configuration/load-balance/load-balance-behavior.mdx#set-loadbalancebehavior-on-the-server)
+        * [By operation](../../../../client-api/configuration/load-balance/load-balance-behavior.mdx#set-loadbalancebehavior-on-the-server---by-operation)
+        * [From Studio](../../../../client-api/configuration/load-balance/load-balance-behavior.mdx#set-loadbalancebehavior-on-the-server---from-studio)
+    * [When to use](../../../../client-api/configuration/load-balance/load-balance-behavior.mdx#when-to-use)
      
 </Admonition>
 ## LoadBalanceBehavior options 
@@ -25,11 +25,11 @@ import CodeBlock from '@theme/CodeBlock';
 ### `None` (default option)
 
 * Requests will be handled based on the `ReadBalanceBehavior` configuration.  
-  See the conditional flow described in [Client logic for choosing a node](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
+  See the conditional flow described in [Client logic for choosing a node](../../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
    * **_Read_** requests:  
-     The client will calculate the target node from the configured [ReadBalanceBehavior Option](../../../client-api/configuration/load-balance/read-balance-behavior.mdx#readbalancebehavior-options).  
+     The client will calculate the target node from the configured [ReadBalanceBehavior Option](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx#readbalancebehavior-options).  
    * **_Write_** requests:  
-     Will be sent to the [preferred node](../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node).  
+     Will be sent to the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node).  
      The data will then be replicated to all the other nodes in the database group.
 ### `UseSessionContext`
 
@@ -44,7 +44,7 @@ import CodeBlock from '@theme/CodeBlock';
   
   * All **_Read & Write_** requests made on the session (i.e a query or a load request, etc.)  
     will address this calculated node.  
-    _Read & Write_ requests that are made on the store (i.e. executing an [operation](../../../client-api/operations/what-are-operations.mdx))  
+    _Read & Write_ requests that are made on the store (i.e. executing an [operation](../../../../client-api/operations/what-are-operations.mdx))  
     will go to the preferred node.
 
   * All _Write_ requests will be replicated to all the other nodes in the database group as usual.
@@ -60,7 +60,7 @@ import CodeBlock from '@theme/CodeBlock';
 * The `LoadBalanceBehavior` convention can be set **on the client** when initializing the Document Store.  
   This will set the load balance behavior for the default database that is set on the store.
 
-* This setting can be **overriden** by setting 'LoadBalanceBehavior' on the server, see [below](../../../client-api/configuration/load-balance/load-balance-behavior.mdx#set-loadbalancebehavior-on-the-server).
+* This setting can be **overriden** by setting 'LoadBalanceBehavior' on the server, see [below](../../../../client-api/configuration/load-balance/load-balance-behavior.mdx#set-loadbalancebehavior-on-the-server).
 **Initialize conventions**:
 
 <TabItem value="LoadBalance_1" label="LoadBalance_1">
@@ -149,12 +149,12 @@ using (var session = documentStore.OpenSession())
 </Admonition>
 #### Set LoadBalanceBehavior on the server - by operation:
 
-* The `LoadBalanceBehavior` configuration can be set **on the server** by sending an [operation](../../../client-api/operations/what-are-operations.mdx).
+* The `LoadBalanceBehavior` configuration can be set **on the server** by sending an [operation](../../../../client-api/operations/what-are-operations.mdx).
 
 * The operation can modify the default database only, or all databases - see examples below.
 
 * Once configuration on the server has changed, the running client will get updated with the new settings.  
-  See [keeping client up-to-date](../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date).
+  See [keeping client up-to-date](../../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Operation_For_Default_Database" label="Operation_For_Default_Database">
@@ -240,11 +240,11 @@ using (documentStore)
 </Tabs>
 #### Set LoadBalanceBehavior on the server - from Studio:
 
-* The `LoadBalanceBehavior` configuration can be set from the Studio's [Client Configuration view](../../../studio/database/settings/client-configuration-per-database.mdx).  
+* The `LoadBalanceBehavior` configuration can be set from the Studio's [Client Configuration view](../../../../studio/database/settings/client-configuration-per-database.mdx).  
   Setting it from the Studio will set this configuration directly **on the server**.
 
 * Once configuration on the server has changed, the running client will get updated with the new settings.  
-  See [keeping client up-to-date](../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date).
+  See [keeping client up-to-date](../../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date).
 
 
 

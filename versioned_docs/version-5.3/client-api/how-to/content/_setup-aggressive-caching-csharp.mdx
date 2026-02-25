@@ -7,7 +7,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 The RavenDB client provides a caching mechanism out of the box. The default caching configuration is to cache all requests.
 
-The size of cache can be configured by changing [`MaxHttpCacheSize` convention](../../client-api/configuration/conventions.mdx#maxhttpcachesize).
+The size of cache can be configured by changing [`MaxHttpCacheSize` convention](../../../client-api/configuration/conventions.mdx#maxhttpcachesize).
 
 The client utilizes the notion of the `304 Not Modified` server's response and will serve the data from the cache if available.
 
@@ -16,7 +16,7 @@ The client utilizes the notion of the `304 Not Modified` server's response and w
 The aggressive caching feature goes even further. Enabling it means that the client doesn't need to ask the server. It will simply return the response directly from a local cache without any usage of `304 Not Modified` status. 
 Results will be returned very fast. 
 
-Here's how it works: The client subscribes to server notifications using the [Changes API](../changes/what-is-changes-api.mdx). By taking advantage of them, he is able to invalidate cached documents when they are changed.
+Here's how it works: The client subscribes to server notifications using the [Changes API](../../changes/what-is-changes-api.mdx). By taking advantage of them, he is able to invalidate cached documents when they are changed.
 The client knows when it can serve the response from the cache, and when it has to send the request to get the up-to-date result. 
 
 <Admonition type="warning" title="Important" id="important" href="#important">
@@ -103,7 +103,7 @@ which is equivalent to:
 
 ### Disable Change Tracking
 
-The client subscribes to change notifications from the server using the [Changes API](../changes/what-is-changes-api.mdx). You can choose to ignore 
+The client subscribes to change notifications from the server using the [Changes API](../../changes/what-is-changes-api.mdx). You can choose to ignore 
 these notifications from the server by changing the `AggressiveCacheMode` in the Document Store conventions.  
 
 The modes are:  

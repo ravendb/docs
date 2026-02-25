@@ -9,13 +9,13 @@ The whole operation is executed on the server side and is useful as a performanc
 
 The current page deals with patch operations on single documents.
 
-Patching has three possible interfaces: [Session API](../../../client-api/operations/patching/single-document.mdx#session-api), [Session API using defer](../../../client-api/operations/patching/single-document.mdx#session-api-using-defer), and [Operations API](../../../client-api/operations/patching/single-document.mdx#operations-api).
+Patching has three possible interfaces: [Session API](../../../../client-api/operations/patching/single-document.mdx#session-api), [Session API using defer](../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer), and [Operations API](../../../../client-api/operations/patching/single-document.mdx#operations-api).
 
 Patching can be done from the client as well as in the studio.  
 
 In this page:  
-[API overview](../../../client-api/operations/patching/single-document.mdx#api-overview)  
-[Examples](../../../client-api/operations/patching/single-document.mdx#examples)  
+[API overview](../../../../client-api/operations/patching/single-document.mdx#api-overview)  
+[Examples](../../../../client-api/operations/patching/single-document.mdx#examples)  
 </Admonition>
 
 ## API overview
@@ -44,7 +44,7 @@ The patch request will be sent to server only when calling `saveChanges`, this w
 | **entity id** | `String` | Entity ID on which the operation should be performed. |
 | **delta** | `U` | Value to be added. |
 
-* Note how numbers are handled with the [JavaScript engine](../../../server/kb/numbers-in-ravendb.mdx) in RavenDB.
+* Note how numbers are handled with the [JavaScript engine](../../../../server/kb/numbers-in-ravendb.mdx) in RavenDB.
 
 ### Set Field Value
 `session.advanced().patch`
@@ -169,7 +169,7 @@ PatchStatus send(PatchOperation operation, SessionInfo sessionInfo);
 ## List of Script Methods
 
 This is a list of a few of the javascript methods that can be used in patch scripts. See the 
-more comprehensive list at [Knowledge Base: JavaScript Engine](../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).  
+more comprehensive list at [Knowledge Base: JavaScript Engine](../../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).  
 
 | Method | Arguments | Description |
 | - | - | - |
@@ -651,8 +651,8 @@ store.operations().send(new PatchOperation("employees/1-A", null, patchRequest))
   * When cloning a document via patching, only the document's fields are copied to the new document.
     Attachments, counters, time series data, and revisions from the source document will Not be copied automatically.
   * To manage time series & counters via patching, you can use the pre-defined JavaScript methods listed here:
-    [Counters methods](../../../server/kb/javascript-engine.mdx#counter-operations) & [Time series methods](../../../server/kb/javascript-engine.mdx#time-series-operations).
-  * Note: When [Cloning a document via the Studio](../../../studio/database/documents/create-new-document.mdx#clone-an-existing-document),
+    [Counters methods](../../../../server/kb/javascript-engine.mdx#counter-operations) & [Time series methods](../../../../server/kb/javascript-engine.mdx#time-series-operations).
+  * Note: When [Cloning a document via the Studio](../../../../studio/database/documents/create-new-document.mdx#clone-an-existing-document),
     attachments, counters, time Series, and revisions will be copied automatically.
 
 **Archived documents:**

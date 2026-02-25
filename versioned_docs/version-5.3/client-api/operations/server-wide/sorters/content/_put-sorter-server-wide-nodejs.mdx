@@ -11,14 +11,14 @@ import CodeBlock from '@theme/CodeBlock';
 * Use `PutServerWideSortersOperation` to deploy a custom sorter to the RavenDB server.  
   Once deployed, you can use it to sort query results for all queries made on __all databases__ in your cluster.  
 
-* To deploy a custom sorter that will apply only to the database scoped to your [Document Store](../../../../client-api/setting-up-default-database.mdx),  
-  see [put custom sorter](../../../../client-api/operations/maintenance/sorters/put-sorter.mdx).
+* To deploy a custom sorter that will apply only to the database scoped to your [Document Store](../../../../../client-api/setting-up-default-database.mdx),  
+  see [put custom sorter](../../../../../client-api/operations/maintenance/sorters/put-sorter.mdx).
 
-* A custom sorter can also be uploaded server-wide from the [Studio](../../../../studio/database/settings/custom-sorters.mdx).
+* A custom sorter can also be uploaded server-wide from the [Studio](../../../../../studio/database/settings/custom-sorters.mdx).
 
 * In this page:
-    * [Put custom sorter server-wide](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide.mdx#put-custom-sorter-server-wide)
-    * [Syntax](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide.mdx#syntax)
+    * [Put custom sorter server-wide](../../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide.mdx#put-custom-sorter-server-wide)
+    * [Syntax](../../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide.mdx#syntax)
 
 </Admonition>
 ## Put custom sorter server-wide
@@ -49,7 +49,7 @@ await documentStore.maintenance.server.send(putSortersServerWideOp );
 <Admonition type="note" title="">
 
 You can now order your query results using the custom sorter.  
-A query example is available [here](../../../../client-api/session/querying/sort-query-results.mdx#custom-sorters).
+A query example is available [here](../../../../../client-api/session/querying/sort-query-results.mdx#custom-sorters).
 
 </Admonition>
 

@@ -43,7 +43,7 @@ Task<Operation> ExportAsync(
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **options** | `DatabaseSmugglerExportOptions` | Options that will be used during the export. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerexportoptions). |
+| **options** | `DatabaseSmugglerExportOptions` | Options that will be used during the export. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerexportoptions). |
 | **toDatabase** | `DatabaseSmuggler` | `DatabaseSmuggler` instance used as a destination |
 | **toFile** | `string` | Path to a file where exported data will be written |
 | **token** | `CancellationToken` | Token used to cancel the operation |
@@ -60,7 +60,7 @@ Task<Operation> ExportAsync(
 | **OperateOnTypes** | `DatabaseItemType` | Indicates what should be exported. Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `Identities`, `CompareExchange` |
 | **IncludeExpired** | `bool` | Should expired documents be included in the export. Default: `true` |
 | **RemoveAnalyzers** | `bool` | Should analyzers be removed from Indexes. Default: `false` |
-| **TransformScript** | `string` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
+| **TransformScript** | `string` | JavaScript-based script applied to every exported document. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
 | **MaxStepsForTransformScript** | `int` | Maximum number of steps that transform script can process before failing. Default: 10000 |
 
 ### Example
@@ -107,7 +107,7 @@ Task<Operation> ImportAsync(
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **options** | `DatabaseSmugglerImportOptions` | Options that will be used during the import. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions). |
+| **options** | `DatabaseSmugglerImportOptions` | Options that will be used during the import. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions). |
 | **stream** | `Stream` | Stream with data to import |
 | **fromFile** | `string` | Path to a file from which data will be imported |
 | **token** | `CancellationToken` | Token used to cancel the operation |
@@ -124,7 +124,7 @@ Task<Operation> ImportAsync(
 | **OperateOnTypes** | `DatabaseItemType` | Indicates what should be imported. Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `Identities`, `CompareExchange` |
 | **IncludeExpired** | `bool` | Should expired documents be imported. Default: `true` |
 | **RemoveAnalyzers** | `bool` | Should analyzers be removed from Indexes. Default: `false` |
-| **TransformScript** | `string` | JavaScript-based script applied to every imported document. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
+| **TransformScript** | `string` | JavaScript-based script applied to every imported document. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
 | **MaxStepsForTransformScript** | `int` | Maximum number of steps that transform script can process before failing. Default: 10000 |
 
 ### Example
@@ -154,7 +154,7 @@ await importOperation.WaitForCompletionAsync();
 
 `TransformScript` exposes the ability to modify or even filter-out the document during the import and export process using the provided JavaScript. 
 
-Underneath the JavaScript engine is exactly the same as used for [patching operations](../../client-api/operations/patching/single-document.mdx) giving you identical syntax and capabilities with additional **ability to filter out documents by throwing a 'skip' exception**.
+Underneath the JavaScript engine is exactly the same as used for [patching operations](../../../client-api/operations/patching/single-document.mdx) giving you identical syntax and capabilities with additional **ability to filter out documents by throwing a 'skip' exception**.
 
 <TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">

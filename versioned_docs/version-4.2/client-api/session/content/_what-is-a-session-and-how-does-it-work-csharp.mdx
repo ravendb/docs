@@ -5,7 +5,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">  
 
-* The **Session**, which is obtained from the [Document Store](../../client-api/what-is-a-document-store.mdx), is a 
+* The **Session**, which is obtained from the [Document Store](../../../client-api/what-is-a-document-store.mdx), is a 
   [Unit of Work](https://martinfowler.com/eaaCatalog/unitOfWork.html) that represents  
   a single business transaction on a particular database.  
 
@@ -16,19 +16,19 @@ import CodeBlock from '@theme/CodeBlock';
   and persists to the server only what is needed when `SaveChanges()` is called.  
 
 * The number of server requests allowed per session is configurable (default is 30).  
-  See: [Change Maximum Number of Requests per Session](../../client-api/session/configuration/how-to-change-maximum-number-of-requests-per-session.mdx)  
+  See: [Change Maximum Number of Requests per Session](../../../client-api/session/configuration/how-to-change-maximum-number-of-requests-per-session.mdx)  
 
 * In this page:
-  * [Unit of Work Pattern](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern)
-      * [Tracking Changes](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes)
-      * [Batching](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#batching)
-      * [Store New Document Example](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#store-new-document-example)
-      * [Load & Edit Document Example](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#load--edit-document-example)
-  * [Identity Map Pattern](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#identity-map-pattern)
-  * [Reducing Server Calls (Best Practices) For:](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#reducing-server-calls-(best-practices)-for:)
-      * [The N+1 Problem](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#the-select-n1-problem)
-      * [Large Query Results](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#large-query-results)
-      * [Retrieving Results on Demand (Lazy)](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#retrieving-results-on-demand-lazy)
+  * [Unit of Work Pattern](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern)
+      * [Tracking Changes](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes)
+      * [Batching](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#batching)
+      * [Store New Document Example](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#store-new-document-example)
+      * [Load & Edit Document Example](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#load--edit-document-example)
+  * [Identity Map Pattern](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#identity-map-pattern)
+  * [Reducing Server Calls (Best Practices) For:](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#reducing-server-calls-(best-practices)-for:)
+      * [The N+1 Problem](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#the-select-n1-problem)
+      * [Large Query Results](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#large-query-results)
+      * [Retrieving Results on Demand (Lazy)](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#retrieving-results-on-demand-lazy)
 
 </Admonition>  
 ## Unit of Work Pattern  
@@ -42,8 +42,8 @@ import CodeBlock from '@theme/CodeBlock';
   The Session will do it for you.  
 * All these tracked changes are combined & persisted to the database only when calling `SaveChanges()`.  
 * Entity tracking can be disabled if needed. See:  
-  * [Disable Entity Tracking](../../client-api/session/configuration/how-to-disable-tracking.mdx)  
-  * [Clear a Session](../../client-api/session/how-to/clear-a-session.mdx)  
+  * [Disable Entity Tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx)  
+  * [Clear a Session](../../../client-api/session/how-to/clear-a-session.mdx)  
 <br/>
 #### Batching  
 * Remote calls to a server over the network are among the most expensive operations an application makes.  
@@ -130,7 +130,7 @@ Assert.Same(entity1, entity2);
 </TabItem>  
 
 * Note: To override this and update an entity with the latest changes from the server see: 
-  [Refresh an Entity](../../client-api/session/how-to/refresh-entity.mdx)  
+  [Refresh an Entity](../../../client-api/session/how-to/refresh-entity.mdx)  
 
   
 
@@ -140,18 +140,18 @@ Assert.Same(entity1, entity2);
   with all ORMs and ORM-like APIs.  
   It results in an excessive number of remote calls to the server, which makes a query very expensive.  
 * Make use of RavenDB's `include()` method to include related documents and avoid this issue.  
-  See: [Document Relationships](../../client-api/how-to/handle-document-relationships.mdx)  
+  See: [Document Relationships](../../../client-api/how-to/handle-document-relationships.mdx)  
 <br/>
 #### Large query results
 * When query results are large and you don't want the overhead of keeping all results in memory, you can 
-  [Stream the Query Results](../../client-api/session/querying/how-to-stream-query-results.mdx).  
+  [Stream the Query Results](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
   A single server call is executed and the client can handle the results one by one.  
-* Note: [Paging](../../indexes/querying/paging.mdx) also avoids getting all query results in one time, but multiple server calls are 
+* Note: [Paging](../../../indexes/querying/paging.mdx) also avoids getting all query results in one time, but multiple server calls are 
   generated - one per page retrieved.  
 <br/>
 #### Retrieving results on demand (Lazy)
 * Query calls to the server can be delayed and executed on-demand as needed using `Lazily()`
-* See [Perform Queries Lazily](../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
+* See [Perform Queries Lazily](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
 
 
 

@@ -10,29 +10,29 @@ import CodeBlock from '@theme/CodeBlock';
 * Word similarities are found using string distance algorithms.
 
 * Examples in this article demonstrate getting suggestions with a **dynamic-query**.  
-  For getting suggestions with an **index-query** see [query for suggestions with index](../../../indexes/querying/suggestions.mdx).
+  For getting suggestions with an **index-query** see [query for suggestions with index](../../../../indexes/querying/suggestions.mdx).
 * In this page:
 
     * Overview:
-        * [What are terms](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#what-are-terms)
-        * [When to use suggestions](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#when-to-use-suggestions)
+        * [What are terms](../../../../client-api/session/querying/how-to-work-with-suggestions.mdx#what-are-terms)
+        * [When to use suggestions](../../../../client-api/session/querying/how-to-work-with-suggestions.mdx#when-to-use-suggestions)
       
     * Examples:
-        * [Suggest terms - for a single term](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---for-a-single-term)
-        * [Suggest terms - for multiple terms](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---for-multiple-terms)
+        * [Suggest terms - for a single term](../../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---for-a-single-term)
+        * [Suggest terms - for multiple terms](../../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---for-multiple-terms)
       
-    * [The auto-index terms in Studio](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#the-auto-index-terms-in-studio)
-    * [Syntax](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#syntax)
+    * [The auto-index terms in Studio](../../../../client-api/session/querying/how-to-work-with-suggestions.mdx#the-auto-index-terms-in-studio)
+    * [Syntax](../../../../client-api/session/querying/how-to-work-with-suggestions.mdx#syntax)
 
 </Admonition>
 ## What are terms
 
-* All queries in RavenDB use an index - learn more about that [here](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).  
+* All queries in RavenDB use an index - learn more about that [here](../../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).  
   Whether making a dynamic query which generates an auto-index or using a static index,  
   the data from your documents is 'broken' into **terms** that are kept in the index.  
 
 * This tokenization process (what terms will be generated) depends on the analyzer used,    
-  various analyzers differ in the way they split the text stream. Learn more in [Analyzers](../../../indexes/using-analyzers.mdx).
+  various analyzers differ in the way they split the text stream. Learn more in [Analyzers](../../../../indexes/using-analyzers.mdx).
 
 * The terms can then be queried to retrieve matching documents that contain them.
 
@@ -87,7 +87,7 @@ public function suggestUsing(null|SuggestionBase|Closure $suggestionOrBuilder): 
 
 * Executing the above query will generate the auto-index `Auto/Products/ByName`.  
   This auto-index will contain a list of all available terms from the document field `Name`.  
-  The generated terms are visible in the Studio - see image [below](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#the-auto-index-terms-in-studio).
+  The generated terms are visible in the Studio - see image [below](../../../../client-api/session/querying/how-to-work-with-suggestions.mdx#the-auto-index-terms-in-studio).
 
 * If you suspect that the term `chaig` in the query criteria is written incorrectly,   
   you can ask RavenDB to suggest **existing terms** that are similar to `chaig`, as follows:.  

@@ -8,13 +8,13 @@ import CodeBlock from '@theme/CodeBlock';
 * There are a few ways to create and deploy indexes in a database.  
 
 * This page describes deploying a **static-index** using the `PutIndexesOperation` Operation.  
-  For a general description of Operations see [what are operations](../../../../client-api/operations/what-are-operations.mdx).  
+  For a general description of Operations see [what are operations](../../../../../client-api/operations/what-are-operations.mdx).  
 
 * In this page:
-    * [Ways to deploy indexes - short summary](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#ways-to-deploy-indexes---short-summary)
-    * [Put indexes operation with IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#put-indexes-operation-with-indexdefinition)
-    * [Put indexes operation with IndexDefinitionBuilder](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#put-indexes-operation-with-indexdefinitionbuilder)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#syntax)
+    * [Ways to deploy indexes - short summary](../../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#ways-to-deploy-indexes---short-summary)
+    * [Put indexes operation with IndexDefinition](../../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#put-indexes-operation-with-indexdefinition)
+    * [Put indexes operation with IndexDefinitionBuilder](../../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#put-indexes-operation-with-indexdefinitionbuilder)
+    * [Syntax](../../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#syntax)
 
 </Admonition>
 ## Ways to deploy indexes - short summary 
@@ -26,12 +26,12 @@ There are a few ways to deploy a static-index from the Client API:
   * Call `execute()` on a specific index instance
   * Call `IndexCreation.create_indexes()` to deploy multiple indexes
   * Execute `PutIndexesOperation` maintenance operation on the Document Store - see below
-  * Learn more in [static indexes](../../../../indexes/creating-and-deploying.mdx#static-indexes)
+  * Learn more in [static indexes](../../../../../indexes/creating-and-deploying.mdx#static-indexes)
 
 #### Auto index:  
 
   * An auto-index is created by the server when making a filtering query that doesn't specify which index to use
-  * Learn more in [auto indexes](../../../../indexes/creating-and-deploying.mdx#auto-indexes)
+  * Learn more in [auto indexes](../../../../../indexes/creating-and-deploying.mdx#auto-indexes)
 
 
 
@@ -213,7 +213,7 @@ $store->maintenance()->send($putIndexesOp);
 | **$fields** | `?IndexFieldOptionsArray` | _IndexFieldOptions_ per index field |
 | **$additionalSources** | `?AdditionalSourcesArray` | Additional code files to be compiled with this index |
 | **$additionalAssemblies** | `?AdditionalAssemblySet` | Additional assemblies that are referenced |
-| **$configuration** | `?IndexConfiguration` | Can override [indexing configuration](../../../../server/configuration/indexing-configuration.mdx) by setting this dictionary |
+| **$configuration** | `?IndexConfiguration` | Can override [indexing configuration](../../../../../server/configuration/indexing-configuration.mdx) by setting this dictionary |
 | **$outputReduceToCollection** | `?string` | A collection name for saving the reduce results as documents |
 | **$reduceOutputIndex** | `?int` | This number will be part of the reduce results documents IDs |
 | **$patternForOutputReduceToCollectionReferences** | `?string` | Pattern for documents IDs which reference IDs of reduce results documents |

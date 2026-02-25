@@ -7,17 +7,17 @@ import CodeBlock from '@theme/CodeBlock';
 
 * `bulkInsert` is RavenDB's high-performance data insertion operation.  
 
-* The `bulkInsert.timeSeriesFor` interface provides similar functionality to the [session.timeSeriesFor](../../../../document-extensions/timeseries/client-api/session/append.mdx),  
+* The `bulkInsert.timeSeriesFor` interface provides similar functionality to the [session.timeSeriesFor](../../../../../document-extensions/timeseries/client-api/session/append.mdx),  
   but without the overhead associated with the _Session_, resulting in significantly improved performance.
 
 * In this page:  
-  * [Usage](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#usage)  
-  * [Examples](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#examples)
-      * [Append single entry](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-single-entry)
-      * [Append multiple entries](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-multiple-entries)
-      * [Append multiple values per entry](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-multiple-values-per-entry)
-      * [Append multiple time series](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-multiple-time-series) 
-  * [Syntax](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#syntax)
+  * [Usage](../../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#usage)  
+  * [Examples](../../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#examples)
+      * [Append single entry](../../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-single-entry)
+      * [Append multiple entries](../../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-multiple-entries)
+      * [Append multiple values per entry](../../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-multiple-values-per-entry)
+      * [Append multiple time series](../../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-multiple-time-series) 
+  * [Syntax](../../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#syntax)
 
 </Admonition>
 
@@ -41,7 +41,7 @@ import CodeBlock from '@theme/CodeBlock';
 * To append multiple entries, call `append` as many times as needed.
 * Ensure there is at least a 1-millisecond interval between each timestamp.
 * The client converts all timestamps to **UTC** before sending the batch to the server.
-* Multiple time series can be appended in the same `BulkInsertOperation`. See this [example](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-multiple-time-series) below.
+* Multiple time series can be appended in the same `BulkInsertOperation`. See this [example](../../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-multiple-time-series) below.
 
 
 

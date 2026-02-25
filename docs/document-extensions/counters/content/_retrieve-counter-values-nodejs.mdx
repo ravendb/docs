@@ -8,19 +8,19 @@ import CodeBlock from '@theme/CodeBlock';
 * Use `countersFor.get` to retrieve the value of a **single Counter**,  
   or `countersFor.getAll` to retrieve the names and values of **all Counters** associated with a document.
 
-* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
+* For all other `countersFor` methods see this [Overview](../../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
 
 * In this page:  
 
-  * [Get a single Counter's value](../../document-extensions/counters/retrieve-counter-values.mdx#get-a-single-counter)  
-     * [Get usage](../../document-extensions/counters/retrieve-counter-values.mdx#get-usage)  
-     * [Get example](../../document-extensions/counters/retrieve-counter-values.mdx#get-example)  
-     * [Get syntax](../../document-extensions/counters/retrieve-counter-values.mdx#get-syntax)
+  * [Get a single Counter's value](../../../document-extensions/counters/retrieve-counter-values.mdx#get-a-single-counter)  
+     * [Get usage](../../../document-extensions/counters/retrieve-counter-values.mdx#get-usage)  
+     * [Get example](../../../document-extensions/counters/retrieve-counter-values.mdx#get-example)  
+     * [Get syntax](../../../document-extensions/counters/retrieve-counter-values.mdx#get-syntax)
 
-  * [Get all Counters of a document](../../document-extensions/counters/retrieve-counter-values.mdx#get-all-counters-of-a-document)  
-     * [GetAll usage](../../document-extensions/counters/retrieve-counter-values.mdx#getall-usage)  
-     * [GetAll example](../../document-extensions/counters/retrieve-counter-values.mdx#getall-exmaple)  
-     * [GetAll Syntax](../../document-extensions/counters/retrieve-counter-values.mdx#getall-syntax)  
+  * [Get all Counters of a document](../../../document-extensions/counters/retrieve-counter-values.mdx#get-all-counters-of-a-document)  
+     * [GetAll usage](../../../document-extensions/counters/retrieve-counter-values.mdx#getall-usage)  
+     * [GetAll example](../../../document-extensions/counters/retrieve-counter-values.mdx#getall-exmaple)  
+     * [GetAll Syntax](../../../document-extensions/counters/retrieve-counter-values.mdx#getall-syntax)  
 
 </Admonition>
 ## Get a single Counter's value
@@ -32,8 +32,8 @@ import CodeBlock from '@theme/CodeBlock';
 * Open a session
 * Create an instance of `countersFor`.
     * Either pass `countersFor` an explicit document ID, -or-
-    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
-      e.g. a document object returned from [session.query](../../querying/overview.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).
+    * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.query](../../../querying/overview.mdx) or from [session.load](../../../client-api/session/loading-entities.mdx#load).
 * Call `countersFor.get` to retrieve the current value of a single Counter.
 
 </Admonition>
@@ -89,8 +89,8 @@ console.log("Days Left For Sale: " + daysLeft);
 * Open a session.  
 * Create an instance of `countersFor`.
     * Either pass `countersFor` an explicit document ID, -or-
-    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
-      e.g. a document object returned from [session.query](../../querying/overview.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).
+    * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.query](../../../querying/overview.mdx) or from [session.load](../../../client-api/session/loading-entities.mdx#load).
 * Call `countersFor.getAll` to retrieve the names and values of all counters associated with the document.
 
 </Admonition>

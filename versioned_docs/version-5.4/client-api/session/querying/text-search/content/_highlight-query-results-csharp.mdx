@@ -5,21 +5,21 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* When making a [Full-Text Search query](../../../../client-api/session/querying/text-search/full-text-search.mdx),  
+* When making a [Full-Text Search query](../../../../../client-api/session/querying/text-search/full-text-search.mdx),  
   in addition to retrieving documents that contain the searched terms in the results,  
   you can also request to get a **list of text fragments that highlight the searched terms**.
 
 * The highlighted terms can enhance user experience when searching for documents with specific content.
 
 * This article shows highlighting search results when making a **dynamic-query**.  
-  For highlighting search results when querying a **static-index** see [highlight index search results](../../../../indexes/querying/highlighting.mdx).
+  For highlighting search results when querying a **static-index** see [highlight index search results](../../../../../indexes/querying/highlighting.mdx).
 * In this page:
-  * [Highlight - basic example](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---basic-example)
-      * [Highlight tags](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight-tags)
-      * [Highlight results in Studio](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight-results-in-studio)
-  * [Highlight - customize tags](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---customize-tags)
-  * [Highlight - projected results](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---projected-results)
-  * [Syntax](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#syntax)
+  * [Highlight - basic example](../../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---basic-example)
+      * [Highlight tags](../../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight-tags)
+      * [Highlight results in Studio](../../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight-results-in-studio)
+  * [Highlight - customize tags](../../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---customize-tags)
+  * [Highlight - projected results](../../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---projected-results)
+  * [Syntax](../../../../../client-api/session/querying/text-search/highlight-query-results.mdx#syntax)
   
 </Admonition>
 ## Highlight - basic example
@@ -168,7 +168,7 @@ string fragmentsHtml = builder.AppendLine("</ul>").ToString();
   - &lt;span style="border-left: 10px solid powderblue"&gt;&nbsp;&lt;/span&gt;powderblue
 
 * The html tags that wrap the highlighted terms can be **customized** to any other tags.  
-  See [customize tags](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---customize-tags) below.
+  See [customize tags](../../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---customize-tags) below.
 
 </Admonition>
 
@@ -291,7 +291,7 @@ include highlight(Notes, 35, 1, $p0), highlight(Title, 35, 1, $p1)
 
 ## Highlight - projected results
 
-* Highlighting can also be used when [projecting query results](../../../../client-api/session/querying/how-to-project-query-results.mdx).
+* Highlighting can also be used when [projecting query results](../../../../../client-api/session/querying/how-to-project-query-results.mdx).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -425,7 +425,7 @@ public string[] PostTags \{ get; set; \}
 
 | Option       | Type      | Description                                                                                                                                                                                                                                                                                                      |
 |--------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **GroupKey** | string    | Grouping key for the results.<br/>Used when highlighting query results from a [Map-Reduce index](../../../../indexes/querying/highlighting.mdx#highlight-results---map-reduce-index).<br/>If `null` results are grouped by document ID (default).<br/>Note: Highlighting is Not available for dynamic aggregation queries. |
+| **GroupKey** | string    | Grouping key for the results.<br/>Used when highlighting query results from a [Map-Reduce index](../../../../../indexes/querying/highlighting.mdx#highlight-results---map-reduce-index).<br/>If `null` results are grouped by document ID (default).<br/>Note: Highlighting is Not available for dynamic aggregation queries. |
 | **PreTags**  | string[]  | Array of PRE tags used to wrap the highlighted search terms in the text fragments.                                                                                                                                                                                                                               |
 | **PostTags** | string[]  | Array of POST tags used to wrap the highlighted search terms in the text fragments.                                                                                                                                                                                                                              |
 

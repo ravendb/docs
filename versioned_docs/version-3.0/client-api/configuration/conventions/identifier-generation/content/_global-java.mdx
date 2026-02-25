@@ -7,7 +7,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 
 
-You can setup a custom key generation strategy by supplying a custom function `DocumentKeyGenerator`. By default a session uses [the HiLo algorithm](../../../../client-api/document-identifiers/hilo-algorithm.mdx):
+You can setup a custom key generation strategy by supplying a custom function `DocumentKeyGenerator`. By default a session uses [the HiLo algorithm](../../../../../client-api/document-identifiers/hilo-algorithm.mdx):
 
 <TabItem value="key_generator_hilo" label="key_generator_hilo">
 <CodeBlock language="java">
@@ -22,7 +22,7 @@ conventions.setDocumentKeyGenerator(new DocumentKeyGenerator() \{
 </CodeBlock>
 </TabItem>
 
-However if you want the session to use [an identity key generation strategy](../../../../client-api/document-identifiers/working-with-document-ids.mdx#identity-ids) by default, you can overwrite this convention in the following manner:
+However if you want the session to use [an identity key generation strategy](../../../../../client-api/document-identifiers/working-with-document-ids.mdx#identity-ids) by default, you can overwrite this convention in the following manner:
 
 <TabItem value="key_generator_identityKeys" label="key_generator_identityKeys">
 <CodeBlock language="java">
@@ -40,7 +40,7 @@ Function `getTypeTagName` will use either the convention specified in `findTypeT
 
 ### FindTypeTagName
 
-Entity objects that share a common tag name belong to the same [collection](../../../../client-api/faq/what-is-a-collection.mdx) on the server side. Tag names are also used to build document keys.
+Entity objects that share a common tag name belong to the same [collection](../../../../../client-api/faq/what-is-a-collection.mdx) on the server side. Tag names are also used to build document keys.
 
 <TabItem value="find_type_tagname" label="find_type_tagname">
 <CodeBlock language="java">

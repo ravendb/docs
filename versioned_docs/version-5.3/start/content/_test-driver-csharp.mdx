@@ -7,22 +7,22 @@ import CodeBlock from '@theme/CodeBlock';
 
 * In this section, we explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) to write RavenDB unit tests.  
 
-* TestDriver uses an [Embedded Server](../server/embedded.mdx) package with the same set of [prerequisite](../server/embedded.mdx#prerequisite) as embedded servers to run the tests.  
+* TestDriver uses an [Embedded Server](../../server/embedded.mdx) package with the same set of [prerequisite](../../server/embedded.mdx#prerequisite) as embedded servers to run the tests.  
 
 * In this page: 
- - [RavenTestDriver](../start/test-driver.mdx#raventestdriver)
- - [Pre-initializing the store](../start/test-driver.mdx#preinitialize)
- - [ConfigureServer](../start/test-driver.mdx#configureserver)
- - [Unit test](../start/test-driver.mdx#unittest)
- - [Complete example](../start/test-driver.mdx#complete-example)
- - [CI Servers](../start/test-driver.mdx#continuous-integration-servers)
+ - [RavenTestDriver](../../start/test-driver.mdx#raventestdriver)
+ - [Pre-initializing the store](../../start/test-driver.mdx#preinitialize)
+ - [ConfigureServer](../../start/test-driver.mdx#configureserver)
+ - [Unit test](../../start/test-driver.mdx#unittest)
+ - [Complete example](../../start/test-driver.mdx#complete-example)
+ - [CI Servers](../../start/test-driver.mdx#continuous-integration-servers)
 
 </Admonition>
 
 ## RavenTestDriver
 
 First, we define a class that derives from Raven's TestDriver.
-Let's start with reviewing the TestDriver's methods and properties and later we will get into implementation (a complete code sample of a RavenTestDriver can be found at the [bottom](../start/test-driver.mdx#complete-example) of the page).
+Let's start with reviewing the TestDriver's methods and properties and later we will get into implementation (a complete code sample of a RavenTestDriver can be found at the [bottom](../../start/test-driver.mdx#complete-example) of the page).
 
 ### Properties and Methods
 | Signature | Description |
@@ -68,7 +68,7 @@ We use [xunit](https://www.nuget.org/packages/xunit/) for the test framework in 
 Note that the test itself is meant to show different capabilities of the test driver and is not meant to be the most efficient.  
 </Admonition>
 
-The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver.mdx#complete-example)
+The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../../start/test-driver.mdx#complete-example)
 
 ### Example
 
@@ -122,7 +122,7 @@ You can use it with `TestServerOptions` to change the path to the Raven server b
 
 * `ConfigureServer` can only be set once per test run.  
   It needs to be set before `DocumentStore` is called.  
-  See an [example](../start/test-driver.mdx#complete-example) below.  
+  See an [example](../../start/test-driver.mdx#complete-example) below.  
 
 * If it is called twice, or within the `DocumentStore` scope, you will get the following error message:
   `System.InvalidOperationException : Cannot configure server after it was started. Please call 'ConfigureServer' method before any 'GetDocumentStore' is called.`  
@@ -130,10 +130,10 @@ You can use it with `TestServerOptions` to change the path to the Raven server b
 <Admonition type="info" title="TestServerOptions" id="testserveroptions" href="#testserveroptions">
 
 Defining TestServerOptions allows you to be more in control of 
-how the embedded server is going to run with just a minor [definition change](../start/test-driver.mdx#example-2).
+how the embedded server is going to run with just a minor [definition change](../../start/test-driver.mdx#example-2).
 
-* To see the complete list of `TestServerOptions`, which inherits from embedded servers, go to embedded [ServerOptions](../server/Embedded.mdx#getting-started).  
-* It's important to be sure that the correct [.NET FrameworkVersion](../server/Embedded.mdx#net-frameworkversion) is set.
+* To see the complete list of `TestServerOptions`, which inherits from embedded servers, go to embedded [ServerOptions](../../server/Embedded.mdx#getting-started).  
+* It's important to be sure that the correct [.NET FrameworkVersion](../../server/Embedded.mdx#net-frameworkversion) is set.
 
 </Admonition>
 

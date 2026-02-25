@@ -6,28 +6,28 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
    
 
-* Patching time series data (Append or Delete entries) can be performed via [Operations](../../../../client-api/operations/what-are-operations.mdx).
-  * Use [PatchOperation](../../../../client-api/operations/patching/single-document.mdx) to patch data on a **single** document.
-  * Use [PatchByQueryOperation](../../../../client-api/operations/patching/set-based.mdx) to patch data on **multiple** documents.
+* Patching time series data (Append or Delete entries) can be performed via [Operations](../../../../../client-api/operations/what-are-operations.mdx).
+  * Use [PatchOperation](../../../../../client-api/operations/patching/single-document.mdx) to patch data on a **single** document.
+  * Use [PatchByQueryOperation](../../../../../client-api/operations/patching/set-based.mdx) to patch data on **multiple** documents.
 
-* Patching time series entries on a single document can also be performed via the [session](../../../../document-extensions/timeseries/client-api/session/patch.mdx).
+* Patching time series entries on a single document can also be performed via the [session](../../../../../document-extensions/timeseries/client-api/session/patch.mdx).
 
 * In this page:  
-  * [Patch time series data - single document](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#patch-time-series-data---single-document)
-     * [Usage](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#usage)
-     * [Examples](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#examples)
-     * [Syntax](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#syntax)
-  * [Patch time series data - multiple documents](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#patch-time-series-data---multiple-documents)
-     * [Usage](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#usage-1)
-     * [Examples](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#examples-1)
-     * [Syntax](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#syntax-1)
+  * [Patch time series data - single document](../../../../../document-extensions/timeseries/client-api/operations/patch.mdx#patch-time-series-data---single-document)
+     * [Usage](../../../../../document-extensions/timeseries/client-api/operations/patch.mdx#usage)
+     * [Examples](../../../../../document-extensions/timeseries/client-api/operations/patch.mdx#examples)
+     * [Syntax](../../../../../document-extensions/timeseries/client-api/operations/patch.mdx#syntax)
+  * [Patch time series data - multiple documents](../../../../../document-extensions/timeseries/client-api/operations/patch.mdx#patch-time-series-data---multiple-documents)
+     * [Usage](../../../../../document-extensions/timeseries/client-api/operations/patch.mdx#usage-1)
+     * [Examples](../../../../../document-extensions/timeseries/client-api/operations/patch.mdx#examples-1)
+     * [Syntax](../../../../../document-extensions/timeseries/client-api/operations/patch.mdx#syntax-1)
 
 </Admonition>
 ## Patch time series data - single document
 ### Usage
 
 * Create a `PatchRequest` instance:
-    * Define the Append or Delete action using the [JavaScript time series API](../../../../document-extensions/timeseries/client-api/javascript-support.mdx).
+    * Define the Append or Delete action using the [JavaScript time series API](../../../../../document-extensions/timeseries/client-api/javascript-support.mdx).
 
 * Create a `PatchOperation` instance and pass it:
     * The ID of the document to patch
@@ -132,11 +132,11 @@ await documentStore.operations.send(patchOp);
 </TabItem>
 ### Syntax
 
-* The detailed syntax of `PatchOperation` is listed under this [syntax section](../../../../client-api/operations/patching/single-document.mdx#operations-api-syntax).
+* The detailed syntax of `PatchOperation` is listed under this [syntax section](../../../../../client-api/operations/patching/single-document.mdx#operations-api-syntax).
 
-* The detailed syntax of `PatchRequest` is listed under this [syntax section](../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer-syntax).
+* The detailed syntax of `PatchRequest` is listed under this [syntax section](../../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer-syntax).
 
-* The available JavaScript API methods are detailed in the [time series JavaScript support](../../../../document-extensions/timeseries/client-api/javascript-support.mdx) article.
+* The available JavaScript API methods are detailed in the [time series JavaScript support](../../../../../document-extensions/timeseries/client-api/javascript-support.mdx) article.
 
 
 
@@ -149,14 +149,14 @@ await documentStore.operations.send(patchOp);
 
 * This is achieved by defining a string, or creating an instance of `IndexQuery` that contains such string,  
   with the following two parts:
-  * **The query**: provide an [RQL](../../../../client-api/session/querying/what-is-rql.mdx) code snippet to filter the documents you want to patch.
-  * **The patching script**: use the [JavaScript time series API](../../../../document-extensions/timeseries/client-api/javascript-support.mdx) to define the patching action.
+  * **The query**: provide an [RQL](../../../../../client-api/session/querying/what-is-rql.mdx) code snippet to filter the documents you want to patch.
+  * **The patching script**: use the [JavaScript time series API](../../../../../document-extensions/timeseries/client-api/javascript-support.mdx) to define the patching action.
     
 * Create a `PatchByQueryOperation` instance and pass it the `IndexQuery` object, or the defined string.
 
 * Execute the `PatchByQueryOperation` by calling `store.operations.send`.  
   * The patch operation will be executed only on documents that match the query.
-  * This type of operation can be awaited for completion. Learn more in [Manage length operations](../../../../client-api/operations/what-are-operations.mdx#manage-lengthy-operations).
+  * This type of operation can be awaited for completion. Learn more in [Manage length operations](../../../../../client-api/operations/what-are-operations.mdx#manage-lengthy-operations).
 
 * NOTE:
     * The server treats timestamps passed in the patch request script as **UTC**, no conversion is applied.
@@ -217,7 +217,7 @@ await documentStore.operations.send(deleteByQueryOp);
 * In this example, for each document in the "Users" collection, we patch a document field with data retrieved from its time series entries.  
   The document's time series data itself is Not patched.  
   The document `numberOfUniqueTagsInTS` field will be updated with the number of unique tags in the user's "HeartRates" time series.  
-  To do this, we use the JavaScript [get](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-3) method to get all the time series entries for each document  
+  To do this, we use the JavaScript [get](../../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-3) method to get all the time series entries for each document  
   and extract each entry's tag.  
 <TabItem value="patch_6" label="patch_6">
 <CodeBlock language="js">
@@ -262,9 +262,9 @@ await asyncOp.waitForCompletion();
 </TabItem>
 ### Syntax
 
-* The detailed syntax of `PatchByQueryOperation` is listed under this [syntax section](../../../../client-api/operations/patching/set-based.mdx#patchbyqueryoperation-syntax).
+* The detailed syntax of `PatchByQueryOperation` is listed under this [syntax section](../../../../../client-api/operations/patching/set-based.mdx#patchbyqueryoperation-syntax).
 
-* The available JavaScript API methods are detailed in the [time series JavaScript support](../../../../document-extensions/timeseries/client-api/javascript-support.mdx) article.
+* The available JavaScript API methods are detailed in the [time series JavaScript support](../../../../../document-extensions/timeseries/client-api/javascript-support.mdx) article.
 
 
 

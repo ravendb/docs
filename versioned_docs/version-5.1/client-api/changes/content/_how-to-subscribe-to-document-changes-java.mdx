@@ -5,10 +5,10 @@ import CodeBlock from '@theme/CodeBlock';
 
 Following methods allow you to subscribe to document changes:
 
-- [forDocument](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)
-- [forDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)
-- [forDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)
-- [forAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)
+- [forDocument](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)
+- [forDocumentsInCollection](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)
+- [forDocumentsStartingWith](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)
+- [forAllDocuments](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)
 
 ## forDocument
 
@@ -29,7 +29,7 @@ Single document changes can be observed using `forDocument` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document. |
+| IChangesObservable&lt;[DocumentChange](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document. |
 
 ### Example
 
@@ -74,7 +74,7 @@ IChangesObservable<DocumentChange> forDocumentsInCollection(Class<?> clazz);
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
+| IChangesObservable&lt;[DocumentChange](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
 
 <Admonition type="info" title="">
 Overload with `TEntity` type uses `conventions.GetCollectionName` to get collection name.
@@ -130,7 +130,7 @@ To observe all document changes for documents with ID that contains given prefix
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document ID prefix. |
+| IChangesObservable&lt;[DocumentChange](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document ID prefix. |
 
 ### Example
 
@@ -163,7 +163,7 @@ To observe all document changes use `forAllDocuments` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for all documents. |
+| IChangesObservable&lt;[DocumentChange](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for all documents. |
 
 ### Example
 
@@ -185,7 +185,7 @@ To observe all document changes use `forAllDocuments` method.
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **Type** | [DocumentChangeTypes](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchangetypes) | Document change type enum |
+| **Type** | [DocumentChangeTypes](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchangetypes) | Document change type enum |
 | **Id** | String | Document identifier |
 | **CollectionName** | String | Document's collection name |
 | **TypeName** | String | Type name |

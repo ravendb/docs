@@ -4,7 +4,7 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
-This article focuses only on querying side of the sorting. If you are interested in reading how to create indexes and change default sorting behavior go [here](../../indexes/customizing-results-order.mdx).
+This article focuses only on querying side of the sorting. If you are interested in reading how to create indexes and change default sorting behavior go [here](../../../indexes/customizing-results-order.mdx).
 </Admonition>
 
 ## Basics
@@ -196,7 +196,7 @@ When query is issued, each index entry is scored by Lucene (you can read more ab
 
 ## Random ordering
 
-If you want to randomize the order of your results each time the query is executed you can use `RandomOrdering` method (API reference [here](../../client-api/session/querying/how-to-customize-query.mdx#randomordering)):
+If you want to randomize the order of your results each time the query is executed you can use `RandomOrdering` method (API reference [here](../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)):
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -259,7 +259,7 @@ If you want to randomize the order of your results each time the query is execut
 
 ## Ordering when field is Analyzed
 
-When sorting must be done on field that is marked as [Analyzed](../../indexes/using-analyzers.mdx) then due to [Lucene](https://lucene.apache.org/) limitations sorting on such a field is not supported. To overcome this, the solution is to create another field that is not marked as Analyzed and sort by it.
+When sorting must be done on field that is marked as [Analyzed](../../../indexes/using-analyzers.mdx) then due to [Lucene](https://lucene.apache.org/) limitations sorting on such a field is not supported. To overcome this, the solution is to create another field that is not marked as Analyzed and sort by it.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -331,7 +331,7 @@ When sorting must be done on field that is marked as [Analyzed](../../indexes/us
 
 ## Custom sorting
 
-If you want to sort using your custom algorithm you need create your own sorter that inherits from `IndexEntriesToComparablesGenerator` and deploy it to [plugins](../../server/plugins/what-are-plugins.mdx) folder on the server.
+If you want to sort using your custom algorithm you need create your own sorter that inherits from `IndexEntriesToComparablesGenerator` and deploy it to [plugins](../../../server/plugins/what-are-plugins.mdx) folder on the server.
 
 <TabItem value="sorting_5_1" label="sorting_5_1">
 <CodeBlock language="csharp">

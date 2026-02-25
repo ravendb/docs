@@ -5,12 +5,12 @@ import CodeBlock from '@theme/CodeBlock';
 
 There are various methods with many overloads that allow users to download documents from a database and convert them to entities. This article will cover the following methods:
 
-- [Load](../../client-api/session/loading-entities.mdx#load)
-- [Load with Includes](../../client-api/session/loading-entities.mdx#load-with-includes)
-- [Load - multiple entities](../../client-api/session/loading-entities.mdx#load---multiple-entities)
-- [LoadStartingWith](../../client-api/session/loading-entities.mdx#loadstartingwith)
-- [Stream](../../client-api/session/loading-entities.mdx#stream)
-- [IsLoaded](../../client-api/session/loading-entities.mdx#isloaded)
+- [Load](../../../client-api/session/loading-entities.mdx#load)
+- [Load with Includes](../../../client-api/session/loading-entities.mdx#load-with-includes)
+- [Load - multiple entities](../../../client-api/session/loading-entities.mdx#load---multiple-entities)
+- [LoadStartingWith](../../../client-api/session/loading-entities.mdx#loadstartingwith)
+- [Stream](../../../client-api/session/loading-entities.mdx#stream)
+- [IsLoaded](../../../client-api/session/loading-entities.mdx#isloaded)
 
 ## Load
 
@@ -323,8 +323,8 @@ Employee[] result = (await asyncSession
 
 Entities can be streamed from the server using one of the following `Stream` methods from the `Advanced` session operations.
 
-Streaming query results does not support the [`include` feature](../../client-api/how-to/handle-document-relationships.mdx#includes). 
-Learn more in [How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results.mdx).  
+Streaming query results does not support the [`include` feature](../../../client-api/how-to/handle-document-relationships.mdx#includes). 
+Learn more in [How to Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
 
 <Admonition type="info" title="">
 Entities loaded using `Stream` will be transient (not attached to session).
@@ -380,7 +380,7 @@ Task<IAsyncEnumerator<StreamResult<T>>> StreamAsync<T>(string startsWith, string
 
 | Return Type | Description |
 | ------------- | ----- |
-| `IEnumerator<`[StreamResult](../../glossary/stream-result.mdx)`>` | Enumerator with entities. |
+| `IEnumerator<`[StreamResult](../../../glossary/stream-result.mdx)`>` | Enumerator with entities. |
 | `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
 
 

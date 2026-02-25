@@ -168,7 +168,7 @@ using (IDocumentSession session = store.OpenSession())
 
 ## Loading entities with customized IDs by non string identifiers
 
-The RavenDB client supports identifiers that aren't strings. There is a dedicated overload of `Load` method which accepts value types to handle [that](../../../session/loading-entities.mdx#non-string-identifiers).
+The RavenDB client supports identifiers that aren't strings. There is a dedicated overload of `Load` method which accepts value types to handle [that](../../../../session/loading-entities.mdx#non-string-identifiers).
 However if you decide to register a custom convention for an entity that has non string id then you will experience problems with the usage of this `Load<T>(ValueType)` method overload because
 by default such call will try to load a document with the key `collectionNameBasedOnType/valueTypeValue`.
 

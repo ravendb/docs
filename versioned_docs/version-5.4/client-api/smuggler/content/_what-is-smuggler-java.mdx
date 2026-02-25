@@ -37,7 +37,7 @@ public Operation exportAsync(DatabaseSmugglerExportOptions options, DatabaseSmug
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **options** | `DatabaseSmugglerExportOptions` | Options that will be used during the export. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerexportoptions). |
+| **options** | `DatabaseSmugglerExportOptions` | Options that will be used during the export. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerexportoptions). |
 | **toDatabase** | `DatabaseSmuggler` | `DatabaseSmuggler` instance used as a destination |
 | **toFile** | `String` | Path to a file where exported data will be written |
 
@@ -54,7 +54,7 @@ public Operation exportAsync(DatabaseSmugglerExportOptions options, DatabaseSmug
 | **operateOnDatabaseRecordType** | `DatabaseRecordItemType` | Indicates what should be exported from database record. Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications` |
 | **includeExpired** | `boolean` | Should expired documents be included in the export. Default: `true` |
 | **removeAnalyzers** | `boolean` | Should analyzers be removed from Indexes. Default: `false` |
-| **transformScript** | `String` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
+| **transformScript** | `String` | JavaScript-based script applied to every exported document. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
 | **maxStepsForTransformScript** | `int` | Maximum number of steps that transform script can process before failing. Default: 10000 |
 
 ### Example
@@ -83,7 +83,7 @@ public Operation importAsync(DatabaseSmugglerImportOptions options, InputStream 
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **options** | `DatabaseSmugglerImportOptions` | Options that will be used during the import. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions). |
+| **options** | `DatabaseSmugglerImportOptions` | Options that will be used during the import. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions). |
 | **stream** | `InputStream` | Stream with data to import |
 | **fromFile** | `String` | Path to a file from which data will be imported |
 
@@ -100,7 +100,7 @@ public Operation importAsync(DatabaseSmugglerImportOptions options, InputStream 
 | **operateOnDatabaseRecordType** | `DatabaseRecordItemType` | Indicates what should be imported. Default: `CLIENT`, `CONFLICT_SOLVER_CONFIG`, `EXPIRATION`, `EXTERNAL_REPLICATIONS`, `PERIODIC_BACKUPS`, `RAVEN_CONNECTION_STRINGS`, `RAVEN_ETLS`, `REVISIONS`, `SQL_CONNECTION_STRINGS`, `SORTERS`, `SQL_ETLS`, `HUB_PULL_REPLICATIONS`, `SINK_PULL_REPLICATIONS` |
 | **includeExpired** | `boolean` | Should expired documents be included in the import. Default: `true` |
 | **removeAnalyzers** | `boolean` | Should analyzers be removed from Indexes. Default: `false` |
-| **transformScript** | `String` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
+| **transformScript** | `String` | JavaScript-based script applied to every exported document. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
 | **maxStepsForTransformScript** | `int` | Maximum number of steps that transform script can process before failing. Default: 10000 |
 
 
@@ -119,7 +119,7 @@ public Operation importAsync(DatabaseSmugglerImportOptions options, InputStream 
 
 `TransformScript` exposes the ability to modify or even filter-out the document during the import and export process using the provided JavaScript. 
 
-Underneath the JavaScript engine is exactly the same as used for [patching operations](../../client-api/operations/patching/single-document.mdx) giving you identical syntax and capabilities with additional **ability to filter out documents by throwing a 'skip' exception**.
+Underneath the JavaScript engine is exactly the same as used for [patching operations](../../../client-api/operations/patching/single-document.mdx) giving you identical syntax and capabilities with additional **ability to filter out documents by throwing a 'skip' exception**.
 
 <TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">

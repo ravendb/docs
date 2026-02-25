@@ -6,16 +6,16 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * RavenDB Queries can be executed using `query` or `document_query`, or by passing 
-  [RQL](../../../../client-api/session/querying/what-is-rql.mdx) directly to the server 
+  [RQL](../../../../../client-api/session/querying/what-is-rql.mdx) directly to the server 
   via `raw_query`.  
-  Learn more in [Query Overview](../../../../querying/overview.mdx).
+  Learn more in [Query Overview](../../../../../querying/overview.mdx).
 
 * The main differences between `Query` and `DocumentQuery` are outlined in this article.
 
 * In this page:
-  * [API support](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#api-support)
-  * [Immutability](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#immutability)
-  * [Default query operator](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#default-query-operator)
+  * [API support](../../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#api-support)
+  * [Immutability](../../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#immutability)
+  * [Default query operator](../../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#default-query-operator)
 
 </Admonition>
 ## API support
@@ -29,7 +29,7 @@ import CodeBlock from '@theme/CodeBlock';
 * When using _Query_, the query is translated into a _DocumentQuery_ object,  
   which then builds into an RQL that is sent to the server.
 
-* The available _Query_ methods and extensions are listed [here](../../../../querying/overview.mdx#custom-methods-and-extensions-for-linq).
+* The available _Query_ methods and extensions are listed [here](../../../../../querying/overview.mdx#custom-methods-and-extensions-for-linq).
 **DocumentQuery**:
 
 * `DocumentQuery` does Not support LINQ.
@@ -38,14 +38,14 @@ import CodeBlock from '@theme/CodeBlock';
 
 * When using _DocumentQuery_, the query is translated into an RQL that is sent to the server.
 
-* The available _DocumentQuery_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#custom-methods-and-extensions).
+* The available _DocumentQuery_ methods and extensions are listed [here](../../../../../client-api/session/querying/document-query/what-is-document-query.mdx#custom-methods-and-extensions).
 <Admonition type="note" title="">
 
 **Note**:
 
 `Query` and `DocumentQuery` can be converted to one another.  
 This enables you to take advantage of all available API methods & extensions.  
-See [Convert between DocumentQuery and Query](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#convert-between-documentquery-and-query).
+See [Convert between DocumentQuery and Query](../../../../../client-api/session/querying/document-query/what-is-document-query.mdx#convert-between-documentquery-and-query).
 
 </Admonition>
 

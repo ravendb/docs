@@ -5,7 +5,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
     
-* By default, the [session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all entities that it has either stored, loaded, or queried.  
+* By default, the [session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all entities that it has either stored, loaded, or queried.  
   Any changes made to these entities are automatically persisted when `SaveChanges` is called. 
   
 * Use the `Evict` method to **remove a specific entity** from the session's tracking before calling _SaveChanges_.  
@@ -13,15 +13,15 @@ import CodeBlock from '@theme/CodeBlock';
   and cancels any pending operations for that entity (e.g., Store, Delete).
  
 * This article explains how to **evict a single entity** from the session.    
-  To evict _all_ tracked entities and clear _all_ pending operations, use the [Clear](../../../client-api/session/how-to/clear-a-session.mdx) method instead.  
-  To prevent an entity from being tracked, see [DisableTracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx).
+  To evict _all_ tracked entities and clear _all_ pending operations, use the [Clear](../../../../client-api/session/how-to/clear-a-session.mdx) method instead.  
+  To prevent an entity from being tracked, see [DisableTracking](../../../../client-api/session/configuration/how-to-disable-tracking.mdx).
     
 * In this article:
-  * [Evict an entity before saving](../../../client-api/session/how-to/evict-entity-from-a-session.mdx#evict-an-entity-before-saving)
-  * [Evict an entity to force reload from server](../../../client-api/session/how-to/evict-entity-from-a-session.mdx#evict-an-entity-to-force-reload-from-server)    
-  * [Evict an entity from the session's delete queue](../../../client-api/session/how-to/evict-entity-from-a-session.mdx#evict-an-entity-from-the-sessions-delete-queue)    
-  * [Limitations](../../../client-api/session/how-to/evict-entity-from-a-session.mdx#limitations)
-  * [Syntax](../../../client-api/session/how-to/evict-entity-from-a-session.mdx#syntax)
+  * [Evict an entity before saving](../../../../client-api/session/how-to/evict-entity-from-a-session.mdx#evict-an-entity-before-saving)
+  * [Evict an entity to force reload from server](../../../../client-api/session/how-to/evict-entity-from-a-session.mdx#evict-an-entity-to-force-reload-from-server)    
+  * [Evict an entity from the session's delete queue](../../../../client-api/session/how-to/evict-entity-from-a-session.mdx#evict-an-entity-from-the-sessions-delete-queue)    
+  * [Limitations](../../../../client-api/session/how-to/evict-entity-from-a-session.mdx#limitations)
+  * [Syntax](../../../../client-api/session/how-to/evict-entity-from-a-session.mdx#syntax)
     
 </Admonition>
 
@@ -185,8 +185,8 @@ using (var asyncSession = store.OpenAsyncSession())
 
 ## Limitations
 
-* `Evict` cannot be called from within an [OnBeforeStore](../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforestore) or
-  [OnBeforeDelete](../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforedelete) event handler.  
+* `Evict` cannot be called from within an [OnBeforeStore](../../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforestore) or
+  [OnBeforeDelete](../../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforedelete) event handler.  
   Attempting to do so will throw an exception.  
 * This is a design limitation intended to prevent changes to the session's internal state during event handlers that are triggered by _SaveChanges_.
   For example:  

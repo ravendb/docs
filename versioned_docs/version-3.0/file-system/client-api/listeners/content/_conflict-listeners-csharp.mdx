@@ -5,7 +5,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 #Conflict listeners
 
-To allow users to handle [file synchronization conflicts](../../synchronization/conflicts.mdx) automatically on the client side, we introduced `IFilesConflictListener`. 
+To allow users to handle [file synchronization conflicts](../../../synchronization/conflicts.mdx) automatically on the client side, we introduced `IFilesConflictListener`. 
 In order to create the listener that will be able to deal with conflicted files implement this interface.
 
 <TabItem value="interface" label="interface">
@@ -32,11 +32,11 @@ In order to create the listener that will be able to deal with conflicted files 
 </CodeBlock>
 </TabItem>
 
-The attempt to resolve the conflict is taken when [a conflict notification](../changes/how-to-subscribe-conflicts.mdx) arrives. It means that you need to subscribe to the conflict notifications first to take
+The attempt to resolve the conflict is taken when [a conflict notification](../../changes/how-to-subscribe-conflicts.mdx) arrives. It means that you need to subscribe to the conflict notifications first to take
 advantage of the registered conflict listeners.
 
 The conflict is resolved according to the first encountered strategy different than `ConflictResolutionStrategy.NoResolution` returned by the listener. The listeners are executed in 
-the order of addition. To get more details about resolution strategies read [Resolving conflicts](../../synchronization/conflicts.mdx#resolving-conflicts) section.
+the order of addition. To get more details about resolution strategies read [Resolving conflicts](../../../synchronization/conflicts.mdx#resolving-conflicts) section.
 
 
 

@@ -17,7 +17,7 @@ Replication conflicts, for both documents and attachments, can be tracked using 
 
 | Return value | |
 | ------------- | ----- |
-| IObservableWithTask&lt;[ReplicationConflictNotification](../../glossary/replication-conflict-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all replication conflicts. |
+| IObservableWithTask&lt;[ReplicationConflictNotification](../../../glossary/replication-conflict-notification.mdx)&gt; | Observable that allows to add subscriptions to notifications for all replication conflicts. |
 
 ## Example
 
@@ -42,7 +42,7 @@ Replication conflicts, for both documents and attachments, can be tracked using 
 
 ## Automatic document conflict resolution
 
-In RavenDB client you have an opportunity to register [conflict listeners](../../client-api/listeners/what-are-conflict-listeners-and-how-to-work-with-them.mdx) which are used to resolve conflicted document. However this can happen only if you get the conflicted document. The ability to subscribe to the replication conflicts gives the client more power. Now if you listen to the conflicts and have any conflict listener registered, the client will automatically resolve the conflict right after the arrival of the notification.
+In RavenDB client you have an opportunity to register [conflict listeners](../../../client-api/listeners/what-are-conflict-listeners-and-how-to-work-with-them.mdx) which are used to resolve conflicted document. However this can happen only if you get the conflicted document. The ability to subscribe to the replication conflicts gives the client more power. Now if you listen to the conflicts and have any conflict listener registered, the client will automatically resolve the conflict right after the arrival of the notification.
 
 ## Remarks
 

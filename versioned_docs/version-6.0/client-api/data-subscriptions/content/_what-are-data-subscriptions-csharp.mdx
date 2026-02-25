@@ -11,20 +11,20 @@ import CodeBlock from '@theme/CodeBlock';
   The server persists the processing progress, allowing you to pause and continue the processing.  
 
 * In this page:  
-   * [Data subscription consumption](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#data-subscription-consumption)  
-   * [What defines a data subscription](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#what-defines-a-data-subscription)  
-   * [Documents processing](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#documents-processing)  
-   * [Progress Persistence](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#progress-persistence)  
-   * [How the worker communicates with the server](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#how-the-worker-communicates-with-the-server)  
-   * [Working with multiple clients](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#working-with-multiple-clients)  
-   * [Data subscriptions usage example](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#data-subscriptions-usage-example)  
+   * [Data subscription consumption](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#data-subscription-consumption)  
+   * [What defines a data subscription](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#what-defines-a-data-subscription)  
+   * [Documents processing](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#documents-processing)  
+   * [Progress Persistence](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#progress-persistence)  
+   * [How the worker communicates with the server](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#how-the-worker-communicates-with-the-server)  
+   * [Working with multiple clients](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#working-with-multiple-clients)  
+   * [Data subscriptions usage example](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#data-subscriptions-usage-example)  
 
 </Admonition>
 ## Data subscription consumption
 
 * Data subscriptions are consumed by clients, called **Subscription Workers**.  
 * You can determine whether workers would be able to connect a subscription 
-  [concurrently, or only one at a time](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-interplay).  
+  [concurrently, or only one at a time](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-interplay).  
 * A worker that connects to a data subscription receives a batch of documents, and gets to process it.  
   Depending on the code that the client provided the worker with, processing can take from seconds to hours.  
   When all documents are processed, the worker informs the server of its progress and the server can send it the next batch.  
@@ -35,9 +35,9 @@ import CodeBlock from '@theme/CodeBlock';
 
 Data subscriptions are defined by the server-side definition and by the worker connecting to it:
 
-1. [Subscription Creation Options](../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions): The documents that will be sent to the worker, it's filtering and projection.
+1. [Subscription Creation Options](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions): The documents that will be sent to the worker, it's filtering and projection.
 
-2. [Subscription Worker Options](../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions): Worker batch processing logic, batch size, interaction with other connections.
+2. [Subscription Worker Options](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions): Worker batch processing logic, batch size, interaction with other connections.
 
 
 
@@ -55,7 +55,7 @@ Documents are always sent in Etag order which means that data that has already b
 <Admonition type="note" title="">
 If the database has Revisions defined, the subscription can be configured to process pairs 
 of subsequent document revisions.  
-Read more here: [revisions support](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx)
+Read more here: [revisions support](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx)
 </Admonition>
 
 
@@ -89,7 +89,7 @@ With the Enterprise license, the cluster will automatically reassign the work to
 
 * The status of the TCP connection is also used to determine the "state" of the worker process.  
   If the subscription and its workers implement a 
-  [One Worker Per Subscription](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-interplay) 
+  [One Worker Per Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-interplay) 
   strategy, as long as the connection is alive the server will not allow 
   other clients to consume the subscription. 
 * The TCP connection is kept alive and monitored using "heartbeat" messages.  
@@ -115,7 +115,7 @@ workers of the same subscription can connect to it one by one, or **concurrently
      starting at the point its predecessor got to.  
    * You can also configure a worker to wait for an existing connection to fail and take 
      its place, or to force an existing connection to close.  
-   * Read more about these strategies [here](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#one-worker-per-subscription-strategies).  
+   * Read more about these strategies [here](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#one-worker-per-subscription-strategies).  
 
 * **Concurrent Subscription Strategy**  
   Using the concurrent subscription strategy, multiple workers of the same subscription can 
@@ -123,7 +123,7 @@ workers of the same subscription can connect to it one by one, or **concurrently
    * Batch processing is divided between the multiple workers.  
    * Connection failure is handled by assigning batches of failing workers to 
      active available workers.  
-   * Read more about this strategy [here](../../client-api/data-subscriptions/concurrent-subscriptions.mdx).  
+   * Read more about this strategy [here](../../../client-api/data-subscriptions/concurrent-subscriptions.mdx).  
 
 
 

@@ -7,12 +7,12 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Use `StopIndexingOperation` to **pause indexing** for ALL indexes in the database.  
 
-* To pause only a specific index use the [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index.mdx).  
+* To pause only a specific index use the [StopIndexOperation](../../../../../client-api/operations/maintenance/indexes/stop-index.mdx).  
  
 * In this page:
-  * [Overview](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx#overview)
-  * [Pause indexing example](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx#pause-indexing-example)
-  * [Syntax](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx#syntax)
+  * [Overview](../../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx#overview)
+  * [Pause indexing example](../../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx#pause-indexing-example)
+  * [Syntax](../../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx#syntax)
 
 </Admonition>
 ## Overview
@@ -20,9 +20,9 @@ import CodeBlock from '@theme/CodeBlock';
 #### Which node is indexing paused for?
 
 * When pausing indexing from the **client**:  
-  Indexing will be paused on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.  
+  Indexing will be paused on the [preferred node](../../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.  
 
-* When pausing indexing from the **Studio** [database list](../../../../studio/database/databases-list-view.mdx#more-actions) view:  
+* When pausing indexing from the **Studio** [database list](../../../../../studio/database/databases-list-view.mdx#more-actions) view:  
   Indexing will be paused on the local node the browser is opened on, even if it is Not the preferred node.
 #### What happens when indexing is paused for a node?
 
@@ -36,21 +36,21 @@ import CodeBlock from '@theme/CodeBlock';
   However, the new indexes will also be paused on any node that indexing is paused for,  
   until indexing is resumed for that node.  
 
-* When [resetting](../../../../client-api/operations/maintenance/indexes/reset-index.mdx) indexes 
+* When [resetting](../../../../../client-api/operations/maintenance/indexes/reset-index.mdx) indexes 
   or editing index definitions, re-indexing on a node that indexing has been paused for will 
   only be triggered when indexing is resumed on that node.
 #### Resuming indexing:
 
-* Learn to resume indexing for all indexes by a client, here: [resume indexing](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx)  
+* Learn to resume indexing for all indexes by a client, here: [resume indexing](../../../../../client-api/operations/maintenance/indexes/start-indexing.mdx)  
 
-* Learn to resume indexing for all indexes via **Studio**, here: [database list view](../../../../studio/database/databases-list-view.mdx#more-actions)  
+* Learn to resume indexing for all indexes via **Studio**, here: [database list view](../../../../../studio/database/databases-list-view.mdx#more-actions)  
 
 * Pausing indexing is **Not a persistent operation**.  
   This means that all paused indexes will resume upon either of the following:
     * The server is restarted.
     * The database is re-loaded (by disabling and then enabling it).  
-      Toggling the database state can be done using the **Studio** [database list](../../../../studio/database/databases-list-view.mdx#database-actions) view,  
-      or using [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state.mdx) by the client.
+      Toggling the database state can be done using the **Studio** [database list](../../../../../studio/database/databases-list-view.mdx#database-actions) view,  
+      or using [ToggleDatabasesStateOperation](../../../../../client-api/operations/server-wide/toggle-databases-state.mdx) by the client.
 
 
 

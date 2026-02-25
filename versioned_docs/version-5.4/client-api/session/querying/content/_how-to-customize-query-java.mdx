@@ -7,14 +7,14 @@ import CodeBlock from '@theme/CodeBlock';
 
 The following query customization options are available in the `IDocumentQueryCustomization` interface:
 
-- [BeforeQueryExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
-- [AfterQueryExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
-- [AfterStreamExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
-- [NoCaching](../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
-- [NoTracking](../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
-- [ProjectionBehavior](../../../client-api/session/querying/how-to-customize-query.mdx#projectionbehavior)
-- [RandomOrdering](../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
-- [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+- [BeforeQueryExecuted](../../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
+- [AfterQueryExecuted](../../../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
+- [AfterStreamExecuted](../../../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
+- [NoCaching](../../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+- [NoTracking](../../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+- [ProjectionBehavior](../../../../client-api/session/querying/how-to-customize-query.mdx#projectionbehavior)
+- [RandomOrdering](../../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+- [WaitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
 
 </Admonition>
 ## BeforeQueryExecuted
@@ -283,7 +283,7 @@ List<Employee> results = session.query(Employee.class)
 Queries can be 'instructed' to wait for non-stale results for a specified amount of time using the `waitForNonStaleResults` method. If the query won't be able to return 
 non-stale results within the specified (or default) timeout, then a `TimeoutException` is thrown.
 
-Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
+Note: This feature is Not available when [streaming the query results](../../../../client-api/session/querying/how-to-stream-query-results.mdx).  
 Calling _waitForNonStaleResults_ with a streaming query will throw an exception.
 
 <Admonition type="note" title="Cutoff Point" id="cutoff-point" href="#cutoff-point">

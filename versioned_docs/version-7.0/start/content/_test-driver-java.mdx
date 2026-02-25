@@ -8,15 +8,15 @@ import CodeBlock from '@theme/CodeBlock';
 * In this section, we explain how to use [ravendb-test-driver](https://central.sonatype.com/search?q=g:net.ravendb%20%20a:ravendb-test-driver&core=gav&smo=true) 
   to write RavenDB unit tests.  
 
-* TestDriver uses an [Embedded Server](../server/embedded.mdx) package with the same set of 
-  [prerequisites](../server/embedded.mdx#prerequisites) as embedded servers to run the tests.  
+* TestDriver uses an [Embedded Server](../../server/embedded.mdx) package with the same set of 
+  [prerequisites](../../server/embedded.mdx#prerequisites) as embedded servers to run the tests.  
 
 * In this page: 
-   - [RavenTestDriver](../start/test-driver.mdx#raventestdriver)
-   - [Pre-initializing the store](../start/test-driver.mdx#preinitialize)
-   - [ConfigureServer](../start/test-driver.mdx#configureserver)
-   - [Unit test](../start/test-driver.mdx#unittest)
-   - [Complete example](../start/test-driver.mdx#complete-example)
+   - [RavenTestDriver](../../start/test-driver.mdx#raventestdriver)
+   - [Pre-initializing the store](../../start/test-driver.mdx#preinitialize)
+   - [ConfigureServer](../../start/test-driver.mdx#configureserver)
+   - [Unit test](../../start/test-driver.mdx#unittest)
+   - [Complete example](../../start/test-driver.mdx#complete-example)
 
 </Admonition>
 
@@ -36,7 +36,7 @@ First, please make sure that the Raven TestDriver is added to your project depen
 Then, define a class that derives from the Raven TestDriver.
 
 We can start by reviewing TestDriver methods, and then get into implementation 
-(find a complete Raven TestDriver code sample [below](../start/test-driver.mdx#complete-example)).  
+(find a complete Raven TestDriver code sample [below](../../start/test-driver.mdx#complete-example)).  
 ### Methods
 
 | Signature | Description |
@@ -83,7 +83,7 @@ protected void preInitialize(IDocumentStore documentStore) \{
 
 We'll be using [JUnit](https://junit.org/) for my test framework in the below example.
 Note that the test itself is meant to show different capabilities of the test driver and is not meant to be the most efficient.
-The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver.mdx#complete-example)
+The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../../start/test-driver.mdx#complete-example)
 
 ### Example
 

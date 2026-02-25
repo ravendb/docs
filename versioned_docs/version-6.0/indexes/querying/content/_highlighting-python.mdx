@@ -5,21 +5,21 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* When making a [Full-Text Search query](../../indexes/querying/searching.mdx), 
+* When making a [Full-Text Search query](../../../indexes/querying/searching.mdx), 
   in addition to retrieving documents that contain the searched terms, you can 
   also request to get a list of text fragments that highlight the searched terms.  
 
 * This article provides examples of highlighting search results when querying a static-index.  
-  Prior to reading this article, please refer to [Highlight search results](../../client-api/session/querying/text-search/highlight-query-results.mdx) 
+  Prior to reading this article, please refer to [Highlight search results](../../../client-api/session/querying/text-search/highlight-query-results.mdx) 
   for general knowledge about Highlighting and for dynamic-queries examples.
 
 * To search and get fragments with highlighted terms when querying a static-index,  
   the index field on which you search must be configured for highlighting. See examples below.  
 
 * In this page:
-  * [Highlight results - Map index](../../indexes/querying/highlighting.mdx#highlight-results---map-index)
-  * [Highlight results - Map-Reduce index](../../indexes/querying/highlighting.mdx#highlight-results---map-reduce-index)
-  * [Customize highlight tags](../../indexes/querying/highlighting.mdx#customize-highlight-tags)
+  * [Highlight results - Map index](../../../indexes/querying/highlighting.mdx#highlight-results---map-index)
+  * [Highlight results - Map-Reduce index](../../../indexes/querying/highlighting.mdx#highlight-results---map-reduce-index)
+  * [Customize highlight tags](../../../indexes/querying/highlighting.mdx#customize-highlight-tags)
 
 </Admonition>
 ## Highlight results - Map index
@@ -315,7 +315,7 @@ fragments_html = "".join(builder)
 
 * **Default tags**:  
 
-  * Please refer to [Highlight tags](../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight-tags) to learn about the default html tags used to wrap the highlighted terms.
+  * Please refer to [Highlight tags](../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight-tags) to learn about the default html tags used to wrap the highlighted terms.
 
 * **Customizing tags**:  
 
@@ -324,7 +324,7 @@ fragments_html = "".join(builder)
   * Customizing the wrapping tags when querying an index is done exactly the same as when making  
     a dynamic query where a `HighlightingOptions` object is passed to the `Highlight` method.
   
-  * Follow the example in [Highlight - customize tags](../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---customize-tags).
+  * Follow the example in [Highlight - customize tags](../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---customize-tags).
 
 
 

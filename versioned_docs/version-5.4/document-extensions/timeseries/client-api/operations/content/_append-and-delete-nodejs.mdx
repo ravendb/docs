@@ -8,17 +8,17 @@ import CodeBlock from '@theme/CodeBlock';
 * Use `TimeSeriesBatchOperation` to Append and Delete multiple time series entries on a single document.  
   A list of predefined Append and Delete actions will be executed in this single batch operation.
 
-* To Append and Delete multiple time series entries on multiple documents, see [PatchByQueryOperation](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#patchbyqueryoperation).
+* To Append and Delete multiple time series entries on multiple documents, see [PatchByQueryOperation](../../../../../document-extensions/timeseries/client-api/operations/patch.mdx#patchbyqueryoperation).
 
-* For a general _Operations_ overview, see [What are Operations](../../../../client-api/operations/what-are-operations.mdx).
+* For a general _Operations_ overview, see [What are Operations](../../../../../client-api/operations/what-are-operations.mdx).
 
 * In this page:  
-   * [Usage](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#usage)
-   * [Examples](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#examples)
-       * [Append multiple entries](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#append-multiple-entries)
-       * [Delete multiple entries](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#delete-multiple-entries)
-       * [Append & delete entries in the same batch](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#append--delete-entries-in-the-same-batch)
-   * [Syntax](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#syntax)
+   * [Usage](../../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#usage)
+   * [Examples](../../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#examples)
+       * [Append multiple entries](../../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#append-multiple-entries)
+       * [Delete multiple entries](../../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#delete-multiple-entries)
+       * [Append & delete entries in the same batch](../../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#append--delete-entries-in-the-same-batch)
+   * [Syntax](../../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#syntax)
 
 </Admonition>
 ## Usage
@@ -39,7 +39,7 @@ import CodeBlock from '@theme/CodeBlock';
 **Note**:
 
    * All the added Append and Delete operations will be executed in a single-node transaction.
-   * Delete actions are executed **before** Append actions. As seen in [this example](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#append--delete-entries-in-the-same-batch).
+   * Delete actions are executed **before** Append actions. As seen in [this example](../../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#append--delete-entries-in-the-same-batch).
    * Appending entries to a time series that doesn't yet exist yet will create the time series.
    * An exception will be thrown if the specified document does Not exist.
 

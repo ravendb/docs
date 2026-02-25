@@ -22,17 +22,17 @@ import CodeBlock from '@theme/CodeBlock';
       This can help reduce the number of remote calls made to the server over the network.
 
 * In this page:
-    * [Requests that can be executed lazily:](../../../client-api/session/how-to/perform-operations-lazily.mdx#requests-that-can-be-executed-lazily)
-        * [Load entities](../../../client-api/session/how-to/perform-operations-lazily.mdx#loadentities)
-        * [Load entities with include](../../../client-api/session/how-to/perform-operations-lazily.mdx#loadwithinclude)
-        * [Load entities starting with](../../../client-api/session/how-to/perform-operations-lazily.mdx#loadstartingwith)
-        * [Conditional load](../../../client-api/session/how-to/perform-operations-lazily.mdx#conditionalload)
-        * [Run query](../../../client-api/session/how-to/perform-operations-lazily.mdx#runquery)
-        * [Get revisions](../../../client-api/session/how-to/perform-operations-lazily.mdx#getrevisions)
-        * [Get compare-exchange value](../../../client-api/session/how-to/perform-operations-lazily.mdx#getcompareexchange)
-    * [Multiple lazy requests](../../../client-api/session/how-to/perform-operations-lazily.mdx#multiple-lazy-requests)
-        * [Execute all requests - implicitly](../../../client-api/session/how-to/perform-operations-lazily.mdx#implicit)
-        * [Execute all requests - explicitly](../../../client-api/session/how-to/perform-operations-lazily.mdx#explicit)
+    * [Requests that can be executed lazily:](../../../../client-api/session/how-to/perform-operations-lazily.mdx#requests-that-can-be-executed-lazily)
+        * [Load entities](../../../../client-api/session/how-to/perform-operations-lazily.mdx#loadentities)
+        * [Load entities with include](../../../../client-api/session/how-to/perform-operations-lazily.mdx#loadwithinclude)
+        * [Load entities starting with](../../../../client-api/session/how-to/perform-operations-lazily.mdx#loadstartingwith)
+        * [Conditional load](../../../../client-api/session/how-to/perform-operations-lazily.mdx#conditionalload)
+        * [Run query](../../../../client-api/session/how-to/perform-operations-lazily.mdx#runquery)
+        * [Get revisions](../../../../client-api/session/how-to/perform-operations-lazily.mdx#getrevisions)
+        * [Get compare-exchange value](../../../../client-api/session/how-to/perform-operations-lazily.mdx#getcompareexchange)
+    * [Multiple lazy requests](../../../../client-api/session/how-to/perform-operations-lazily.mdx#multiple-lazy-requests)
+        * [Execute all requests - implicitly](../../../../client-api/session/how-to/perform-operations-lazily.mdx#implicit)
+        * [Execute all requests - explicitly](../../../../client-api/session/how-to/perform-operations-lazily.mdx#explicit)
 
 </Admonition>
 ## Operations that can be executed lazily
@@ -40,7 +40,7 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 <a id="loadEntities"/> __Load entities__
 
-* ['load'](../../../client-api/session/loading-entities.mdx#load) loads a document entity from the database into the session.  
+* ['load'](../../../../client-api/session/loading-entities.mdx#load) loads a document entity from the database into the session.  
   Loading entities can be executed __lazily__.   
 
 <TabItem value="lazy_load" label="lazy_load">
@@ -61,7 +61,7 @@ const employee = await lazyEmployee.getValue(); // 'load' operation is executed 
 <Admonition type="note" title="">
 <a id="loadWithInclude"/> __Load entities with include__
 
-* ['load' with include](../../../client-api/session/loading-entities.mdx#load-with-includes) loads both the document and the specified related document.    
+* ['load' with include](../../../../client-api/session/loading-entities.mdx#load-with-includes) loads both the document and the specified related document.    
   Loading entities with include can be executed __lazily__.
 
 <Tabs groupId='languageSyntax'>
@@ -105,7 +105,7 @@ class Product {
 <Admonition type="note" title="">
 <a id="loadStartingWith"/> __Load entities starting with__
 
-* ['loadStartingWith'](../../../client-api/session/loading-entities.mdx#loadstartingwith) loads entities whose ID starts with the specified prefix.  
+* ['loadStartingWith'](../../../../client-api/session/loading-entities.mdx#loadstartingwith) loads entities whose ID starts with the specified prefix.  
   Loading entities with a common prefix can be executed __lazily__.
 
 <TabItem value="lazy_loadStartingWith" label="lazy_loadStartingWith">
@@ -127,7 +127,7 @@ const employees = await lazyEmployees.getValue(); // 'load' operation is execute
 <Admonition type="note" title="">
 <a id="conditionalLoad"/> __Conditional load__
 
-* ['conditionalLoad'](../../../client-api/session/loading-entities.mdx#conditionalload) logic is: 
+* ['conditionalLoad'](../../../../client-api/session/loading-entities.mdx#conditionalload) logic is: 
   * If the entity is already loaded to the session:  
     no server call is made, the tracked entity is returned.    
   * If the entity is Not already loaded to the session:  
@@ -174,7 +174,7 @@ const employees = await lazyEmployees.getValue(); // 'load' operation is execute
 <a id="runQuery"/> __Run query__
 
 * A Query can be executed __lazily__.  
-  Learn more about running queries lazily in [lazy queries](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx).
+  Learn more about running queries lazily in [lazy queries](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx).
 
 <TabItem value="lazy_query" label="lazy_query">
 <CodeBlock language="js">
@@ -197,7 +197,7 @@ const employees = await lazyEmployees.getValue(); // Query is executed here
 <Admonition type="note" title="">
 <a id="getRevisions"/> __Get revisions__
 
-* All methods for [getting revisions](../../../client-api/session/revisions/loading.mdx#revisions-loading-revisions) and their metadata can be executed __lazily__.
+* All methods for [getting revisions](../../../../client-api/session/revisions/loading.mdx#revisions-loading-revisions) and their metadata can be executed __lazily__.
 
 <TabItem value="lazy_revisions" label="lazy_revisions">
 <CodeBlock language="js">
@@ -220,7 +220,7 @@ const revisions = lazyRevisions.getValue(); // Getting revisions is executed her
 <Admonition type="note" title="">
 <a id="getCompareExchange"/> __Get compare-exchange value__
 
-* [Getting compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange.mdx#get-compare-exchange) values can be executed __lazily__.
+* [Getting compare-exchange](../../../../client-api/session/cluster-transaction/compare-exchange.mdx#get-compare-exchange) values can be executed __lazily__.
 
 <TabItem value="lazy_compareExchange" label="lazy_compareExchange">
 <CodeBlock language="js">

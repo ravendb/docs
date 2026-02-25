@@ -6,14 +6,14 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * `BulkInsert` is useful when inserting a large quantity of data from the client to the server.  
-* It is an optimized time-saving approach with a few [limitations](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#limitations)
+* It is an optimized time-saving approach with a few [limitations](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#limitations)
   such as transactionality and the possibility of interruptions during the operation.
 
 In this page:
 
-* [Syntax](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#syntax)
-* [BulkInsertOperation](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#bulkinsertoperation)
-* [Example](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#example)
+* [Syntax](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#syntax)
+* [BulkInsertOperation](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#bulkinsertoperation)
+* [Example](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#example)
 
 </Admonition>
 
@@ -62,7 +62,7 @@ There are a couple limitations to the API:
   * Make sure that your logic accounts for the possibility of an interruption where some of your data has not yet persisted on the server.
   * If the operation was interrupted, one option is to re-insert the whole dataset in a new operation.  
     It will overwrite existing documents.
-  * **If you need full transactionality**, the [session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) may be a better option.  
+  * **If you need full transactionality**, the [session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) may be a better option.  
     If using the session, because all of the data is processed in one transaction, your server resources must be able to handle the 
     entire data-set included in the transaction.  
 * Bulk insert is **not thread-safe**.  

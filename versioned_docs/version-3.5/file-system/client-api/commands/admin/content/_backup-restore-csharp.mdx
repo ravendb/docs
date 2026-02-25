@@ -25,7 +25,7 @@ The `StartBackup` and `StartRestore` methods do not wait for operation to comple
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **backupLocation** | string | The path to a directory where the backup will be stored |
-| **fileSystemDocument** | [FileSystemDocument](../../../../glossary/file-system-document.mdx) | The file system configuration document that will be stored with the backup location as 'Filesystem.Document' file. Pass `null` to use the current one.&lt;br /&gt;**WARNING**: The file system configuration document may contain sensitive data which will be decrypted and stored in the backup. |
+| **fileSystemDocument** | [FileSystemDocument](../../../../../glossary/file-system-document.mdx) | The file system configuration document that will be stored with the backup location as 'Filesystem.Document' file. Pass `null` to use the current one.&lt;br /&gt;**WARNING**: The file system configuration document may contain sensitive data which will be decrypted and stored in the backup. |
 | **incremental** | bool | Indicates if it should be the incremental backup |
 | **fileSystemName** | string | The name of the file system to backup. |
 
@@ -74,7 +74,7 @@ if (status.IsRunning)
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **restoreRequest** | [FilesystemRestoreRequest](../../../../glossary/file-system-restore-request.mdx) | Restore information |
+| **restoreRequest** | [FilesystemRestoreRequest](../../../../../glossary/file-system-restore-request.mdx) | Restore information |
 
 &lt;hr/&gt;
 

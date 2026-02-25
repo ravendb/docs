@@ -6,27 +6,27 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * This article explains how to perform a **vector search** using a **static index**.  
-  **Prior to this article**, it is recommended to get familiar with the [Vector search using a dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx) article.
+  **Prior to this article**, it is recommended to get familiar with the [Vector search using a dynamic query](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx) article.
 
 * A static index allows you to define a **vector index-field**, enabling you to execute vector searches
-  while leveraging the advantages of RavenDB's [indexes](../../indexes/what-are-indexes.mdx).
+  while leveraging the advantages of RavenDB's [indexes](../../../indexes/what-are-indexes.mdx).
 
-* The vector search feature is only supported by indexes that use the [Corax search engine](../../indexes/search-engine/corax.mdx).
+* The vector search feature is only supported by indexes that use the [Corax search engine](../../../indexes/search-engine/corax.mdx).
 
 * In this article:
-    * [Indexing a vector field - Overview](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-a-vector-field---overview)
-       * [Defining a vector field in a static index](../../ai-integration/vector-search/vector-search-using-static-index.mdx#defining-a-vector-field-in-a-static-index)
-       * [Parameters defined at index definition](../../ai-integration/vector-search/vector-search-using-static-index.mdx#parameters-defined-at-index-definition)
-       * [Behavior during indexing](../../ai-integration/vector-search/vector-search-using-static-index.mdx#behavior-during-indexing)
-       * [Parameters used at query time](../../ai-integration/vector-search/vector-search-using-static-index.mdx#parameters-used-at-query-time)
-       * [Behavior when documents are deleted](../../ai-integration/vector-search/vector-search-using-static-index.mdx#vector-behavior-when-documents-are-deleted)
-    * [Indexing vector data - TEXT](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-vector-data---text)
-      * [Indexing raw text](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-raw-text)
-      * [Indexing pre-made text-embeddings](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-pre-made-text-embeddings)
-    * [Indexing vector data - NUMERICAL](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-vector-data---numerical)
-    * [Indexing multiple field types](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-multiple-field-types)
-    * [Querying the static index for similar documents](../../ai-integration/vector-search/vector-search-using-static-index.mdx#querying-the-static-index-for-similar-documents)
-    * [Configure the vector field in the Studio](../../ai-integration/vector-search/vector-search-using-static-index.mdx#configure-the-vector-field-in-the-studio)
+    * [Indexing a vector field - Overview](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-a-vector-field---overview)
+       * [Defining a vector field in a static index](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#defining-a-vector-field-in-a-static-index)
+       * [Parameters defined at index definition](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#parameters-defined-at-index-definition)
+       * [Behavior during indexing](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#behavior-during-indexing)
+       * [Parameters used at query time](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#parameters-used-at-query-time)
+       * [Behavior when documents are deleted](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#vector-behavior-when-documents-are-deleted)
+    * [Indexing vector data - TEXT](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-vector-data---text)
+      * [Indexing raw text](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-raw-text)
+      * [Indexing pre-made text-embeddings](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-pre-made-text-embeddings)
+    * [Indexing vector data - NUMERICAL](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-vector-data---numerical)
+    * [Indexing multiple field types](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-multiple-field-types)
+    * [Querying the static index for similar documents](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#querying-the-static-index-for-similar-documents)
+    * [Configure the vector field in the Studio](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#configure-the-vector-field-in-the-studio)
 
 </Admonition>
 ## Indexing a vector field - Overview
@@ -38,17 +38,17 @@ To define a vector index-field in your static-index definition:
 
 * **From the Client API**:  
  
-    When indexing **pre-made text-embeddings** generated by RavenDB's [Embeddings generation tasks](../../ai-integration/generating-embeddings/overview.mdx),  
+    When indexing **pre-made text-embeddings** generated by RavenDB's [Embeddings generation tasks](../../../ai-integration/generating-embeddings/overview.mdx),  
     use the `LoadVector()` method in your index definition.  
-    An example is available in [Indexing pre-made text-embeddings](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-pre-made-text-embeddings).
+    An example is available in [Indexing pre-made text-embeddings](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-pre-made-text-embeddings).
    
     When indexing your own data (textual or numerical) that was not generated by these tasks,  
     use the `CreateVector()` method in your index definition.  
-    An example is available in [Indexing raw text](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-raw-text).  
+    An example is available in [Indexing raw text](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-raw-text).  
 
 * **From the Studio**:  
-  See [Define a vector field in the Studio](../../ai-integration/vector-search/vector-search-using-static-index.mdx#define-a-vector-field-in-the-studio).  
-The **source data types** that can be used for vector search are detailed in [Data types for vector search](../../ai-integration/vector-search/data-types-for-vector-search.mdx).
+  See [Define a vector field in the Studio](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#define-a-vector-field-in-the-studio).  
+The **source data types** that can be used for vector search are detailed in [Data types for vector search](../../../ai-integration/vector-search/data-types-for-vector-search.mdx).
 
 </Admonition>
 <Admonition type="note" title="">
@@ -63,7 +63,7 @@ Options include `Text`, `Single`, `Int8`, or `Binary`.
 
 **Destination embedding type** -   
 Specify the quantization format for the embeddings that will be generated.  
-Read more about quantization in [Quantization options](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#quantization-options).
+Read more about quantization in [Quantization options](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#quantization-options).
 
 **Dimensions** -   
 For numerical input only - define the size of the array from your source document.  
@@ -76,11 +76,11 @@ For numerical input only - define the size of the array from your source documen
 
 **Number of edges** -  
 Specify the number of edges that will be created for a vector during indexing.  
-If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfEdges](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofedges).
+If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfEdges](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofedges).
 
 **Number of candidates for indexing time** -   
 The  number of candidates (potential neighboring vectors) that RavenDB evaluates during vector indexing.  
-If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforindexing).   
+If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforindexing).   
 (Note, this param differs from the number of candidates for query time).
 
 </Admonition>
@@ -93,7 +93,7 @@ If not specified, the default value is taken from the following configuration ke
 
 * **Pre-made text-embeddings input**:  
   When indexing embeddings that are pre-generated from your documents' raw text by RavenDB's  
-  [Embeddings generation tasks](../../ai-integration/generating-embeddings/overview.mdx),
+  [Embeddings generation tasks](../../../ai-integration/generating-embeddings/overview.mdx),
   RavenDB indexes them without additional transformation, unless quantization is applied.  
  
 * **Raw numerical input**:  
@@ -111,7 +111,7 @@ enabling efficient retrieval of Approximate Nearest Neighbors (ANN) during queri
 **Minimum similarity** -  
 You can specify the minimum similarity to use when searching for related vectors. Can be a value between `0.0f` and `1.0f`.  
 A value closer to `1.0f` requires higher similarity between vectors, while a value closer to `0.0f` allows for less similarity.  
-If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultminimumsimilarity).
+If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultminimumsimilarity).
 
 **Number of candidates at query time** -  
 You can specify the maximum number of vectors that RavenDB will return from a graph search.  
@@ -121,7 +121,7 @@ The number of the resulting documents that correspond to these vectors may be:
    
   * higher than the number of candidates - when the same vector is shared between multiple documents.
 
-If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforquerying).
+If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforquerying).
 
 **Search method** -  
 You can specify the search method at query time:  
@@ -140,8 +140,8 @@ The server will search for the most similar vectors in the indexed vector space,
 The documents that correspond to the resulting vectors are then returned to the client.
 
 By default, the resulting documents will be ordered by their score.
-You can modify this behavior using the [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchorderbyscoreautomatically) configuration key.  
-In addition, you can apply any of the 'order by' methods to your query, as explained in [sort query results](../../client-api/session/querying/sort-query-results.mdx).
+You can modify this behavior using the [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchorderbyscoreautomatically) configuration key.  
+In addition, you can apply any of the 'order by' methods to your query, as explained in [sort query results](../../../client-api/session/querying/sort-query-results.mdx).
 
 </Admonition>
 <Admonition type="note" title="">
@@ -161,7 +161,7 @@ In addition, you can apply any of the 'order by' methods to your query, as expla
 ### Indexing raw text
 
 The index in this example indexes data from raw text.  
-For an index that indexes pre-made text-embeddings see [this example below](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-pre-made-text-embeddings).
+For an index that indexes pre-made text-embeddings see [this example below](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-pre-made-text-embeddings).
  
 This index defines a **vector field** named `VectorfromText`.  
 It indexes embeddings generated from the raw textual data in the `Name` field of all _Product_ documents.
@@ -422,7 +422,7 @@ where exact(vector.search(VectorFromText, $searchTerm, 0.82, 20))
 
 The index in this example defines a **vector field** named `VectorfromTextEmbeddings`.  
 It indexes pre-made embeddings that were generated by this
-[embedding generation task](../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task---from-the-studio).
+[embedding generation task](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task---from-the-studio).
  
 <Tabs groupId='languageSyntax'>
 <TabItem value="LINQ_index" label="LINQ_index">
@@ -658,7 +658,7 @@ where exact(vector.search(VectorFromTextEmbeddings, $p0, 0.75, 20))
 ## Indexing vector data - NUMERICAL
 
 <Admonition type="note" title="">
-The examples in this section use the [sample data provided in the dynamic query article](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#sample-data).
+The examples in this section use the [sample data provided in the dynamic query article](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#sample-data).
 </Admonition>
 The following index defines a vector field named `VectorFromSingle`.  
 It indexes embeddings generated from the numerical data in the `TagsEmbeddedAsSingle` field of all _Movie_ documents.
@@ -1173,7 +1173,7 @@ where vector.search(VectorFromInt8Arrays, $queryVector)
 ## Indexing multiple field types
 
 An index can define multiple types of index-fields. In this example, the index includes:  
-A _'regular'_ field, a _'vector'_ field, and a field configured for [full-text search](../../indexes/querying/searching.mdx).  
+A _'regular'_ field, a _'vector'_ field, and a field configured for [full-text search](../../../indexes/querying/searching.mdx).  
 This allows you to query across all fields using various predicates.
 
 <Tabs groupId='languageSyntax'>
@@ -1380,10 +1380,10 @@ or vector.search(VectorFromText, $searchTerm2, 0.8)
 
 ## Querying the static index for similar documents
 
-* Similar to [querying for similar documents using a dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#dynamic-vector-search---querying-for-similar-documents),  
+* Similar to [querying for similar documents using a dynamic query](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#dynamic-vector-search---querying-for-similar-documents),  
   you can **query a static-index for similar documents** by specifying a document ID in the vector search.
 
-* The following example queries the static-index defined in [this example](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-vector-data---text) above.
+* The following example queries the static-index defined in [this example](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-vector-data---text) above.
   The document for which we want to find similar documents is specified by the document ID passed to the `ForDocument` method.
 
 * RavenDB retrieves the embedding that was indexed for the queried field in the specified document and uses it as the query vector for the similarity comparison.

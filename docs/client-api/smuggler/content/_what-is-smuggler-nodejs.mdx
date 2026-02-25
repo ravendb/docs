@@ -38,7 +38,7 @@ const operation = await store.smuggler.export(options, toFile);
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **options** | `DatabaseSmugglerExportOptions` | Options that will be used during the export. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerexportoptions). |
+| **options** | `DatabaseSmugglerExportOptions` | Options that will be used during the export. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerexportoptions). |
 | **toDatabase** | `DatabaseSmuggler` | `DatabaseSmuggler` instance used as a destination |
 | **toFile** | `string` | Path to a file where exported data will be written |
 
@@ -56,7 +56,7 @@ const operation = await store.smuggler.export(options, toFile);
 | **includeExpired** | `boolean` | Should expired documents be included in the export. Default: `true` |
 | **includeArtificial** | `boolean` | ? |
 | **removeAnalyzers** | `boolean` | Should analyzers be removed from Indexes. Default: `false` |
-| **transformScript** | `string` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
+| **transformScript** | `string` | JavaScript-based script applied to every exported document. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
 | **maxStepsForTransformScript** | `number` | Maximum number of steps that transform script can process before failing. Default: 10000 |
 | **skipRevisionCreation** | `boolean` | skip revision creation |
 | **encryptionKey** | `string` | Encryption key used for restore |
@@ -92,7 +92,7 @@ const operation = await store.smuggler.import(options, stream);
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **options** | `DatabaseSmugglerImportOptions` | Options that will be used during the import. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions). |
+| **options** | `DatabaseSmugglerImportOptions` | Options that will be used during the import. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions). |
 | **stream** | `Stream` | Stream with data to import |
 | **fromFile** | `string` | Path to a file from which data will be imported |
 
@@ -109,7 +109,7 @@ const operation = await store.smuggler.import(options, stream);
 | **includeExpired** | `boolean` | Should expired documents be included in the import. Default: `true` |
 | **includeArtificial** | `boolean` | ? |
 | **removeAnalyzers** | `boolean` | Should analyzers be removed from Indexes. Default: `false` |
-| **transformScript** | `string` | JavaScript-based script applied to every imported document. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
+| **transformScript** | `string` | JavaScript-based script applied to every imported document. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
 | **maxStepsForTransformScript** | `number` | Maximum number of steps that transform script can process before failing. Default: 10000 |
 | **skipRevisionCreation** | `boolean` | skip revision creation |
 | **encryptionKey** | `string` | Encryption key used for restore |
@@ -132,7 +132,7 @@ await operation.waitForCompletion();
 
 `TransformScript` exposes the ability to modify or even filter-out the document during the import and export process using the provided JavaScript. 
 
-Underneath the JavaScript engine is exactly the same as used for [patching operations](../../client-api/operations/patching/single-document.mdx) giving you identical syntax and capabilities with additional **ability to filter out documents by throwing a 'skip' exception**.
+Underneath the JavaScript engine is exactly the same as used for [patching operations](../../../client-api/operations/patching/single-document.mdx) giving you identical syntax and capabilities with additional **ability to filter out documents by throwing a 'skip' exception**.
 
 <TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">

@@ -5,26 +5,26 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Prior to this article, it is recommended that you first read this [Query Overview](../../client-api/session/querying/how-to-query.mdx).
+* Prior to this article, it is recommended that you first read this [Query Overview](../../../client-api/session/querying/how-to-query.mdx).
 
-* For a basic indexes overview, see the [Indexes Overview](../../studio/database/indexes/indexes-overview.mdx).
+* For a basic indexes overview, see the [Indexes Overview](../../../studio/database/indexes/indexes-overview.mdx).
 * Indexing the content of your documents allows for **fast document retrieval** when querying the index.  
 
 * This article is a basic overview of how to query a **static index** using **code**.  
-   * For dynamic query examples see [Query Overview](../../client-api/session/querying/how-to-query.mdx).  
-   * An index can also be queried from [Studio](../../studio/database/queries/query-view.mdx) 
-     using [RQL](../../client-api/session/querying/what-is-rql.mdx).
+   * For dynamic query examples see [Query Overview](../../../client-api/session/querying/how-to-query.mdx).  
+   * An index can also be queried from [Studio](../../../studio/database/queries/query-view.mdx) 
+     using [RQL](../../../client-api/session/querying/what-is-rql.mdx).
 
 * In this page:  
-   * [Query an index by `query_index_type` and `query_index`](../../indexes/querying/query-index.mdx#query-an-index-by-query_index_type-and-query_index)
-   * [Query an index by `raw_query`](../../indexes/querying/query-index.mdx#query-an-index-by-raw_query) (using RQL)
+   * [Query an index by `query_index_type` and `query_index`](../../../indexes/querying/query-index.mdx#query-an-index-by-query_index_type-and-query_index)
+   * [Query an index by `raw_query`](../../../indexes/querying/query-index.mdx#query-an-index-by-raw_query) (using RQL)
 
 </Admonition>
 ## Query an index by `query_index_type` and `query_index`
 
 * In the following examples we **query an index** using the session `query_index_type` and `query_index` methods.  
 
-* Querying can be enhanced using these [extension methods](../../client-api/session/querying/how-to-query.mdx#custom-methods).
+* Querying can be enhanced using these [extension methods](../../../client-api/session/querying/how-to-query.mdx#custom-methods).
 #### Query index - no filtering:
 
 <Tabs groupId='languageSyntax'>
@@ -175,7 +175,7 @@ where LastName == "King"
 
 * An exception will be thrown when filtering by fields that are Not defined in the index.
 
-* Read more about filtering [here](../../indexes/querying/filtering.mdx).
+* Read more about filtering [here](../../../indexes/querying/filtering.mdx).
 #### Query index - with paging:
 
 <Tabs groupId='languageSyntax'>
@@ -241,15 +241,15 @@ limit 5, 10 // skip 5, take 10
 </TabItem>
 </Tabs>
 
-* Read more about paging [here](../../indexes/querying/paging.mdx).
+* Read more about paging [here](../../../indexes/querying/paging.mdx).
 
 
 
 ## Query an index by `raw_query`
 
-* Queries defined with [Query](../../indexes/querying/query-index.mdx#sessionquery) 
-  or [DocumentQuery](../../indexes/querying/query-index.mdx#sessionadvanceddocumentquery) 
-  are translated by the RavenDB client to [RQL](../../client-api/session/querying/what-is-rql.mdx)  
+* Queries defined with [Query](../../../indexes/querying/query-index.mdx#sessionquery) 
+  or [DocumentQuery](../../../indexes/querying/query-index.mdx#sessionadvanceddocumentquery) 
+  are translated by the RavenDB client to [RQL](../../../client-api/session/querying/what-is-rql.mdx)  
   when sent to the server.
 
 * The session also gives you a way to express the query directly in RQL using the 

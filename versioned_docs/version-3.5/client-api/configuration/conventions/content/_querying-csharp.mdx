@@ -32,7 +32,7 @@ The consistency options used when querying a database. Its default value is:
 </TabItem>
 
 This option ensures that after querying an index at time T, you will never see the results of the index at a time prior to T. This is ensured by the server and 
-require no action from the client. Note that because of the indexing process done by the server in the background you might get [stale](../../../indexes/stale-indexes.mdx) index results. 
+require no action from the client. Note that because of the indexing process done by the server in the background you might get [stale](../../../../indexes/stale-indexes.mdx) index results. 
 
 If you really need your query results to include documents you have just changed or added, you can use the option:
 
@@ -46,14 +46,14 @@ If you really need your query results to include documents you have just changed
 Then the client will wait 15 seconds for non-stale results, using an etag of a last written document within a session as a cut-off point. If after that time the results are still stale, then `TimeoutException` will be thrown. 
 
 <Admonition type="danger" title="Beware of `AlwaysWaitForNonStaleResultsAsOfLastWrite` overuse" id="beware-of-alwayswaitfornonstaleresultsasoflastwrite-overuse" href="#beware-of-alwayswaitfornonstaleresultsasoflastwrite-overuse">
-The indexing mechanism in RavenDB is built on [a BASE model](../../faq/transaction-support.mdx#base-for-query-operations). In order to avoid querying consistency pitfalls in the future you need to consider this at the data modeling phase.
+The indexing mechanism in RavenDB is built on [a BASE model](../../../faq/transaction-support.mdx#base-for-query-operations). In order to avoid querying consistency pitfalls in the future you need to consider this at the data modeling phase.
 
-The usage of [`WaitForNonStaleResultsAsOfLastWrite` at a query level](../../session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasoflastwrite) is usually reasonable on only very rare occassions. The need of taking advantage of `AlwaysWaitForNonStaleResultsAsOfLastWrite` convention is very often a symptom of deeper issues in an application model and misunderstanding of querying concepts in RavenDB. 
+The usage of [`WaitForNonStaleResultsAsOfLastWrite` at a query level](../../../session/querying/how-to-customize-query.mdx#waitfornonstaleresultsasoflastwrite) is usually reasonable on only very rare occassions. The need of taking advantage of `AlwaysWaitForNonStaleResultsAsOfLastWrite` convention is very often a symptom of deeper issues in an application model and misunderstanding of querying concepts in RavenDB. 
 </Admonition>
 
 ### ApplyReduceFunction
 
-If you work in [a sharded environment](../../../server/scaling-out/sharding/how-to-setup-sharding.mdx) then `ShardedDocumentStore` needs to merge results of a map-reduce index that come
+If you work in [a sharded environment](../../../../server/scaling-out/sharding/how-to-setup-sharding.mdx) then `ShardedDocumentStore` needs to merge results of a map-reduce index that come
 from different shards. So they need to be reduced on the client side. The behavior of the client side reduction can by overwritten by the following 
 convention:
 

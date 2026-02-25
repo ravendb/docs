@@ -256,7 +256,7 @@ order by UnitsInStock, score(), Name desc
 
 ## Random Ordering
 
-If you want to randomize the order of your results each time the query is executed, use the `RandomOrdering` method (API reference [here](../../client-api/session/querying/how-to-customize-query.mdx#randomordering)):
+If you want to randomize the order of your results each time the query is executed, use the `RandomOrdering` method (API reference [here](../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)):
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -308,7 +308,7 @@ order by random()
 
 ## Ordering When a Field is Searchable
 
-When sorting must be done on field that is [Searchable](../../indexes/using-analyzers.mdx), due to [Lucene](https://lucene.apache.org/) limitations sorting on such a field is not supported. To overcome this, create another field that is not searchable and sort by it.
+When sorting must be done on field that is [Searchable](../../../indexes/using-analyzers.mdx), due to [Lucene](https://lucene.apache.org/) limitations sorting on such a field is not supported. To overcome this, create another field that is not searchable and sort by it.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
