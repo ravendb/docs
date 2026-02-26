@@ -1,7 +1,7 @@
 ---
 title: "RQL - Raven Query Language"
 sidebar_label: "What is RQL"
-sidebar_position: 1
+sidebar_position: 0
 ---
 
 import Admonition from '@theme/Admonition';
@@ -31,19 +31,19 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * In this article:  
 
-  * [The query pipeline](../querying/what-is-rql.mdx#the-query-pipeline)  
-  * [RQL keywords and methods](../querying/what-is-rql.mdx#rql-keywords-and-methods)  
-     * [`declare`](../querying/what-is-rql.mdx#declare)  
-     * [`from`](../querying/what-is-rql.mdx#from)
-     * [`where`](../querying/what-is-rql.mdx#where)
-     * [`group by`](../querying/what-is-rql.mdx#group-by)
-     * [`include`](../querying/what-is-rql.mdx#include)
-     * [`order by`](../querying/what-is-rql.mdx#order-by)
-     * [`select`](../querying/what-is-rql.mdx#select)
-     * [`load`](../querying/what-is-rql.mdx#load)
-     * [`limit`](../querying/what-is-rql.mdx#limit)
-     * [`update`](../querying/what-is-rql.mdx#update)    
-  * [RQL comments](../querying/what-is-rql.mdx#rql-comments)
+  * [The query pipeline](../../querying/rql/what-is-rql.mdx#the-query-pipeline)  
+  * [RQL keywords and methods](../../querying/rql/what-is-rql.mdx#rql-keywords-and-methods)  
+     * [`declare`](../../querying/rql/what-is-rql.mdx#declare)  
+     * [`from`](../../querying/rql/what-is-rql.mdx#from)
+     * [`where`](../../querying/rql/what-is-rql.mdx#where)
+     * [`group by`](../../querying/rql/what-is-rql.mdx#group-by)
+     * [`include`](../../querying/rql/what-is-rql.mdx#include)
+     * [`order by`](../../querying/rql/what-is-rql.mdx#order-by)
+     * [`select`](../../querying/rql/what-is-rql.mdx#select)
+     * [`load`](../../querying/rql/what-is-rql.mdx#load)
+     * [`limit`](../../querying/rql/what-is-rql.mdx#limit)
+     * [`update`](../../querying/rql/what-is-rql.mdx#update)    
+  * [RQL comments](../../querying/rql/what-is-rql.mdx#rql-comments)
 
 </Admonition>
 
@@ -51,7 +51,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 The query pipeline in RavenDB includes the following main stages:  
 
-1. **Detect query source** ([`from`](../querying/what-is-rql.mdx#from))
+1. **Detect query source** ([`from`](../../querying/rql/what-is-rql.mdx#from))
 
    * Based on your query, RavenDB will determine the appropriate data source from which to retrieve results.           
    * The following options are available:     
@@ -61,23 +61,23 @@ The query pipeline in RavenDB includes the following main stages:
    * Note: all queries in RavenDB use an index to provide results, even when you don't specify one.  
      Learn more about these **query scenarios** in this [Query Overview](../querying/overview.mdx#queries-always-provide-results-using-an-index).
 
-2. **Filter the data** ([`where`](../querying/what-is-rql.mdx#where))  
+2. **Filter the data** ([`where`](../../querying/rql/what-is-rql.mdx#where))  
    * The index is scanned for records that match the query predicate. 
 
-3. **Include related documents**  ([`include`](../querying/what-is-rql.mdx#include))
+3. **Include related documents**  ([`include`](../../querying/rql/what-is-rql.mdx#include))
     * [Related documents](../client-api/how-to/handle-document-relationships.mdx#includes) that are included in the query will be retrieved and returned to the client  
       along with the resulting matching documents, reducing the need to do another network round trip  
       to the database when accessing the included documents.
 
-4. **Sort results** ([`order by`](../querying/what-is-rql.mdx#order-by)) 
+4. **Sort results** ([`order by`](../../querying/rql/what-is-rql.mdx#order-by)) 
    * Query results can be sorted.  
      For example, you can order by a field value, by the resulting documents' score, by random ordering, etc.
 
-5. **Limit results** ([`limit`](../querying/what-is-rql.mdx#limit))
+5. **Limit results** ([`limit`](../../querying/rql/what-is-rql.mdx#limit))
    * You can specify the number of results you want to get back from the query  
      and the number of results you want to skip.
 
-6. **Project results** ([`select`](../querying/what-is-rql.mdx#select)) 
+6. **Project results** ([`select`](../../querying/rql/what-is-rql.mdx#select)) 
    * [Projections](../indexes/querying/projections.mdx) are specified when you need to retrieve only specific document fields, instead of the whole full document.
      This reduces the amount of data sent over the network and is useful when only partial data is needed.
      When projections are Not defined on the query - then the full document content is retrieved from the document storage.
@@ -86,7 +86,7 @@ The query pipeline in RavenDB includes the following main stages:
      This means that the projection doesn't apply to all the documents in the database,  
      only to the results that are actually returned.
 
-   * Data can be loaded ([`load`](../querying/what-is-rql.mdx#load)) from related documents to be used in the projected fields.  
+   * Data can be loaded ([`load`](../../querying/rql/what-is-rql.mdx#load)) from related documents to be used in the projected fields.  
    
    * For each record, the server extracts the requested field:  
      If a field is stored in the index - the server will fetch it from the index.  
@@ -100,12 +100,12 @@ The query pipeline in RavenDB includes the following main stages:
 
 The following keywords and methods are available in RQL:
 
-- [DECLARE](../querying/what-is-rql.mdx#declare)
-- [FROM](../querying/what-is-rql.mdx#from)
+- [DECLARE](../../querying/rql/what-is-rql.mdx#declare)
+- [FROM](../../querying/rql/what-is-rql.mdx#from)
     - index
-- [GROUP BY](../querying/what-is-rql.mdx#group-by)
+- [GROUP BY](../../querying/rql/what-is-rql.mdx#group-by)
     - [array()](../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-content)
-- [WHERE](../querying/what-is-rql.mdx#where)
+- [WHERE](../../querying/rql/what-is-rql.mdx#where)
     - id()
     - [search()](../client-api/session/querying/text-search/full-text-search.mdx)
     - cmpxchg()
@@ -123,7 +123,7 @@ The following keywords and methods are available in RQL:
     - [spatial.intersects()](../indexes/querying/spatial.mdx)
     - [moreLikeThis()](../client-api/session/querying/how-to-use-morelikethis.mdx)
     - [vector.search()](../ai-integration/vector-search/vector-search-using-dynamic-query.mdx)
-- [ORDER BY](../querying/what-is-rql.mdx#order-by)
+- [ORDER BY](../../querying/rql/what-is-rql.mdx#order-by)
     - [ASC | ASCENDING](../indexes/querying/sorting.mdx#basics)
     - [DESC | DESCENDING](../indexes/querying/sorting.mdx#basics)
     - [AS](../indexes/querying/sorting.mdx#basics)
@@ -134,8 +134,8 @@ The following keywords and methods are available in RQL:
     - [random()](../indexes/querying/sorting.mdx#random-ordering)
     - [score()](../indexes/querying/sorting.mdx#ordering-by-score)
     - [spatial.distance()](../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting)
-- [LOAD](../querying/what-is-rql.mdx#load)
-- [SELECT](../querying/what-is-rql.mdx#select)
+- [LOAD](../../querying/rql/what-is-rql.mdx#load)
+- [SELECT](../../querying/rql/what-is-rql.mdx#select)
     - DISTINCT
     - key()
     - sum()
@@ -143,9 +143,9 @@ The following keywords and methods are available in RQL:
     - [facet()](../indexes/querying/faceted-search.mdx)
     - [timeseries()](../document-extensions/timeseries/querying/overview-and-syntax.mdx#syntax)
     - [counter()](../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries)
-- [LIMIT](../querying/what-is-rql.mdx#limit)
-- [UPDATE](../querying/what-is-rql.mdx#update)
-- [INCLUDE](../querying/what-is-rql.mdx#include)
+- [LIMIT](../../querying/rql/what-is-rql.mdx#limit)
+- [UPDATE](../../querying/rql/what-is-rql.mdx#update)
+- [INCLUDE](../../querying/rql/what-is-rql.mdx#include)
 
 With the following operators:
 

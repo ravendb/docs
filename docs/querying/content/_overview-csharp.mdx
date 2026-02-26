@@ -14,7 +14,7 @@ import Panel from '@site/src/components/Panel';
         * when querying with the session's `RawQuery` method.  
         * when querying from the [Query view](../../studio/database/queries/query-view.mdx) in Studio.  
 
-* Queries defined with `Query` or `DocumentQuery` are translated by the RavenDB client to [RQL](../../querying/what-is-rql.mdx)  
+* Queries defined with `Query` or `DocumentQuery` are translated by the RavenDB client to [RQL](../../querying/rql/what-is-rql.mdx)  
   when sent to the server.
     
 * All queries in RavenDB use an **index** to provide results, even when you don't specify one.  
@@ -524,7 +524,7 @@ from "Employees" where FirstName = "Robert"
 
 <Panel heading="Session.Advanced.RawQuery">
 
-* Queries defined with [Query](../../querying/overview.mdx#session-query) or [DocumentQuery](../../querying/overview.mdx#session-advanced-documentquery) are translated by the RavenDB client to [RQL](../../querying/what-is-rql.mdx)  
+* Queries defined with [Query](../../querying/overview.mdx#session-query) or [DocumentQuery](../../querying/overview.mdx#session-advanced-documentquery) are translated by the RavenDB client to [RQL](../../querying/rql/what-is-rql.mdx)  
   when sent to the server.
 
 * The session also gives you a way to express the query directly in RQL using the `RawQuery` method.
