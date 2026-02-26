@@ -25,9 +25,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * A query can be written with RQL directly by either:  
   * Using the session's `RawQuery` method  
-  * Making a query from the [Query view](../studio/database/queries/query-view.mdx) in Studio  
+  * Making a query from the [Query view](../../studio/database/queries/query-view.mdx) in Studio  
 
-* Learn more about querying from the session in this [Query Overview](../querying/overview.mdx). 
+* Learn more about querying from the session in this [Query Overview](../../querying/overview.mdx). 
 
 * In this article:  
 
@@ -59,13 +59,13 @@ The query pipeline in RavenDB includes the following main stages:
      * `from collection` - Specify the collection to query.  
        RavenDB will decide which index will be used depending on the query criteria.
    * Note: all queries in RavenDB use an index to provide results, even when you don't specify one.  
-     Learn more about these **query scenarios** in this [Query Overview](../querying/overview.mdx#queries-always-provide-results-using-an-index).
+     Learn more about these **query scenarios** in this [Query Overview](../../querying/overview.mdx#queries-always-provide-results-using-an-index).
 
 2. **Filter the data** ([`where`](../../querying/rql/what-is-rql.mdx#where))  
    * The index is scanned for records that match the query predicate. 
 
 3. **Include related documents**  ([`include`](../../querying/rql/what-is-rql.mdx#include))
-    * [Related documents](../client-api/how-to/handle-document-relationships.mdx#includes) that are included in the query will be retrieved and returned to the client  
+    * [Related documents](../../client-api/how-to/handle-document-relationships.mdx#includes) that are included in the query will be retrieved and returned to the client  
       along with the resulting matching documents, reducing the need to do another network round trip  
       to the database when accessing the included documents.
 
@@ -78,7 +78,7 @@ The query pipeline in RavenDB includes the following main stages:
      and the number of results you want to skip.
 
 6. **Project results** ([`select`](../../querying/rql/what-is-rql.mdx#select)) 
-   * [Projections](../indexes/querying/projections.mdx) are specified when you need to retrieve only specific document fields, instead of the whole full document.
+   * [Projections](../../indexes/querying/projections.mdx) are specified when you need to retrieve only specific document fields, instead of the whole full document.
      This reduces the amount of data sent over the network and is useful when only partial data is needed.
      When projections are Not defined on the query - then the full document content is retrieved from the document storage.
 
@@ -107,42 +107,42 @@ The following keywords and methods are available in RQL:
     - [array()](../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-content)
 - [WHERE](../../querying/rql/what-is-rql.mdx#where)
     - id()
-    - [search()](../client-api/session/querying/text-search/full-text-search.mdx)
+    - [search()](../../client-api/session/querying/text-search/full-text-search.mdx)
     - cmpxchg()
-    - [boost()](../client-api/session/querying/text-search/boost-search-results.mdx)
-    - [regex()](../client-api/session/querying/text-search/using-regex.mdx)
-    - [startsWith()](../client-api/session/querying/text-search/starts-with-query.mdx)
-    - [endsWith()](../client-api/session/querying/text-search/ends-with-query.mdx)
-    - [lucene()](../client-api/session/querying/document-query/how-to-use-lucene.mdx)
-    - [exists()](../client-api/session/querying/how-to-filter-by-field.mdx)
-    - [exact()](../client-api/session/querying/text-search/exact-match-query.mdx)
-    - [intersect()](../indexes/querying/intersection.mdx)
-    - [spatial.within()](../indexes/querying/spatial.mdx)
-    - [spatial.contains()](../indexes/querying/spatial.mdx)
-    - [spatial.disjoint()](../indexes/querying/spatial.mdx)
-    - [spatial.intersects()](../indexes/querying/spatial.mdx)
-    - [moreLikeThis()](../client-api/session/querying/how-to-use-morelikethis.mdx)
-    - [vector.search()](../ai-integration/vector-search/vector-search-using-dynamic-query.mdx)
+    - [boost()](../../client-api/session/querying/text-search/boost-search-results.mdx)
+    - [regex()](../../client-api/session/querying/text-search/using-regex.mdx)
+    - [startsWith()](../../client-api/session/querying/text-search/starts-with-query.mdx)
+    - [endsWith()](../../client-api/session/querying/text-search/ends-with-query.mdx)
+    - [lucene()](../../client-api/session/querying/document-query/how-to-use-lucene.mdx)
+    - [exists()](../../client-api/session/querying/how-to-filter-by-field.mdx)
+    - [exact()](../../client-api/session/querying/text-search/exact-match-query.mdx)
+    - [intersect()](../../indexes/querying/intersection.mdx)
+    - [spatial.within()](../../indexes/querying/spatial.mdx)
+    - [spatial.contains()](../../indexes/querying/spatial.mdx)
+    - [spatial.disjoint()](../../indexes/querying/spatial.mdx)
+    - [spatial.intersects()](../../indexes/querying/spatial.mdx)
+    - [moreLikeThis()](../../client-api/session/querying/how-to-use-morelikethis.mdx)
+    - [vector.search()](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx)
 - [ORDER BY](../../querying/rql/what-is-rql.mdx#order-by)
-    - [ASC | ASCENDING](../indexes/querying/sorting.mdx#basics)
-    - [DESC | DESCENDING](../indexes/querying/sorting.mdx#basics)
-    - [AS](../indexes/querying/sorting.mdx#basics)
-        - [string](../indexes/querying/sorting.mdx#basics)
-        - [long](../indexes/querying/sorting.mdx#basics)
-        - [double](../indexes/querying/sorting.mdx#basics)
-        - [alphaNumeric](../indexes/querying/sorting.mdx#alphanumeric-ordering)
-    - [random()](../indexes/querying/sorting.mdx#random-ordering)
-    - [score()](../indexes/querying/sorting.mdx#ordering-by-score)
-    - [spatial.distance()](../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting)
+    - [ASC | ASCENDING](../../indexes/querying/sorting.mdx#basics)
+    - [DESC | DESCENDING](../../indexes/querying/sorting.mdx#basics)
+    - [AS](../,,.indexes/querying/sorting.mdx#basics)
+        - [string](../../indexes/querying/sorting.mdx#basics)
+        - [long](../../indexes/querying/sorting.mdx#basics)
+        - [double](../../indexes/querying/sorting.mdx#basics)
+        - [alphaNumeric](../../indexes/querying/sorting.mdx#alphanumeric-ordering)
+    - [random()](../../indexes/querying/sorting.mdx#random-ordering)
+    - [score()](../../indexes/querying/sorting.mdx#ordering-by-score)
+    - [spatial.distance()](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting)
 - [LOAD](../../querying/rql/what-is-rql.mdx#load)
 - [SELECT](../../querying/rql/what-is-rql.mdx#select)
     - DISTINCT
     - key()
     - sum()
     - count()
-    - [facet()](../indexes/querying/faceted-search.mdx)
-    - [timeseries()](../document-extensions/timeseries/querying/overview-and-syntax.mdx#syntax)
-    - [counter()](../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries)
+    - [facet()](../../indexes/querying/faceted-search.mdx)
+    - [timeseries()](../../document-extensions/timeseries/querying/overview-and-syntax.mdx#syntax)
+    - [counter()](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries)
 - [LIMIT](../../querying/rql/what-is-rql.mdx#limit)
 - [UPDATE](../../querying/rql/what-is-rql.mdx#update)
 - [INCLUDE](../../querying/rql/what-is-rql.mdx#include)
@@ -195,7 +195,7 @@ from Employees as employee select output(employee)
 </TabItem>
 
 Values are returned from a declared Javascript function as a set of values rather than in a nested array to ease the projection of retrieved values.
-See an example for this usage [here](../document-extensions/timeseries/querying/overview-and-syntax.mdx#combine-time-series-and-javascript-functions).  
+See an example for this usage [here](../../document-extensions/timeseries/querying/overview-and-syntax.mdx#combine-time-series-and-javascript-functions).  
 
 ---
 
@@ -289,7 +289,7 @@ Use the `where` keyword with various operators to filter chosen documents from t
 #### Operator: &nbsp;&nbsp; `>=`, `<=`, `<>`, `!=`, `<`, `>`, `=`, `==`
 
 These basic operators can be used with all value types, including 'numbers' and 'strings'.  
-For example, you can return every document from the [Companies collection](../client-api/faq/what-is-a-collection.mdx) 
+For example, you can return every document from the [Companies collection](../../client-api/faq/what-is-a-collection.mdx) 
 whose _field value_ **=** _a given input_.  
 
 <TabItem>
@@ -428,7 +428,7 @@ Subclauses can be used along with binary operators to build even more complex lo
 ## `group by`
 
 The keyword `group by` is used to create an aggregation query.  
-Learn more in [dynamic group by queries](../client-api/session/querying/how-to-perform-group-by-query.mdx).
+Learn more in [dynamic group by queries](../../client-api/session/querying/how-to-perform-group-by-query.mdx).
 
 ---
 
@@ -436,35 +436,35 @@ Learn more in [dynamic group by queries](../client-api/session/querying/how-to-p
 
 The keyword `include` has been introduced to support:
 
-- [including related documents](../client-api/how-to/handle-document-relationships.mdx#includes) in the query response
-- [including counters](../document-extensions/counters/counters-and-other-features.mdx#including-counters),
-  [time series](../document-extensions/timeseries/client-api/session/include/with-raw-queries.mdx),
-  or [revisions](../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-raw-query) in the query response
-- [including compare-exchange items](../compare-exchange/include-cmpxchg-items#include-cmpxchg-items-when-querying) in the query response
-- [highlighting](../client-api/session/querying/text-search/highlight-query-results.mdx) results
-- [get query timings](../client-api/session/querying/debugging/query-timings.mdx)
-- [get explanations](../client-api/session/querying/debugging/include-explanations.mdx)
+- [including related documents](../../client-api/how-to/handle-document-relationships.mdx#includes) in the query response
+- [including counters](../../document-extensions/counters/counters-and-other-features.mdx#including-counters),
+  [time series](../../document-extensions/timeseries/client-api/session/include/with-raw-queries.mdx),
+  or [revisions](../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-raw-query) in the query response
+- [including compare-exchange items](../../compare-exchange/include-cmpxchg-items#include-cmpxchg-items-when-querying) in the query response
+- [highlighting](../../client-api/session/querying/text-search/highlight-query-results.mdx) results
+- [get query timings](../../client-api/session/querying/debugging/query-timings.mdx)
+- [get explanations](../../client-api/session/querying/debugging/include-explanations.mdx)
 
 ---
 
 ## `order by`
 
 Use `order by` to perform sorting.  
-Learn more in this [sorting](../indexes/querying/sorting.mdx) article.  
+Learn more in this [sorting](../../indexes/querying/sorting.mdx) article.  
 
 ---
 
 ## `select`
 
 Use `select` to have the query return a projection instead of the full document.  
-Learn more in this [projection](../indexes/querying/projections.mdx) article.
+Learn more in this [projection](../../indexes/querying/projections.mdx) article.
 
 ---
 
 ## `load`
 
 Use `load`when you need to use data from a related document in projection.  
-See an example in this [projection](../indexes/querying/projections.mdx#example-viii---projection-using-a-loaded-document) article.
+See an example in this [projection](../../indexes/querying/projections.mdx#example-viii---projection-using-a-loaded-document) article.
 
 ---
 
@@ -472,7 +472,7 @@ See an example in this [projection](../indexes/querying/projections.mdx#example-
 
 Use `limit` to limit the number of results returned by the query.  
 Specify the number of items to **skip** from the beginning of the result set and the number of items to **take** (return).  
-This is useful when [paging](../indexes/querying/paging.mdx) results.
+This is useful when [paging](../../indexes/querying/paging.mdx) results.
 
 <TabItem>
 ```csharp
@@ -492,7 +492,7 @@ from "Products" offset 5          // skip 5, take all the rest
 ## `update`
 
 To patch documents on the server-side, use `update` with the desired JavaScript that will be applied to any document matching the query criteria.  
-For more information, please refer to this [patching](../client-api/operations/patching/set-based.mdx) article.  
+For more information, please refer to this [patching](../../client-api/operations/patching/set-based.mdx) article.  
 
 </Panel>
 
