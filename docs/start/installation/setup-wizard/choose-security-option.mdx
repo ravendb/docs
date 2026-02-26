@@ -59,14 +59,15 @@ In this step, choose one of three security options:
  
 Use this option to secure your server with a [Let's Encrypt certificate](../../../server/security/authentication/lets-encrypt-certificates).
 Let’s Encrypt is a free, automated certificate authority that provides trusted SSL/TLS certificates for HTTPS communication.  
-RavenDB will manage the certificate lifecycle for you, including generation and automatic renewal.    
+    
+To make this process as seamless as possible, **RavenDB provides a free domain name** for your cluster.  
+RavenDB will automatically issue and renew a trusted HTTPS certificate for the [domain you define in the next step](../../../start/installation/setup-wizard/choose-security-option.mdx#enter-a-domain-name),  
+fully managing the certificate lifecycle so you don't need to provide or maintain your own. 
 
 **When to use this option**:
     
-* Default choice for most scenarios where you don't need a custom certificate and prefer RavenDB to handle encryption automatically.
-* RavenDB will automatically issue and renew a trusted HTTPS certificate for the domain you define in the next step, 
-  so you don't need to provide or maintain your own certificate.  
-* Suitable when a public domain is available and you want a simple, secure default configuration.
+* Default choice for most scenarios where you don't need a custom certificate and prefer RavenDB to handle encryption automatically. 
+* Suitable when you want a simple, secure default configuration out-of-the-box.  
   This is typically the preferred choice for production and development environments where the server is publicly reachable.
 
 <Admonition type="note" title="">

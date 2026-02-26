@@ -75,8 +75,9 @@ import Panel from '@site/src/components/Panel';
    This is useful when the cluster is behind a firewall or load balancer and the internal network layout differs from the external one.    
 7. **External IP address/hostname**:    
    Enter the external/public IP address or hostname that clients will use to access this node.
-   This must be reachable from outside the cluster’s private network (for example, a public IP or a domain name that resolves to it).   
-   If you use a load balancer or gateway, enter its public IP address or hostname here; it will forward requests to the node’s internal/private address.    
+   This must be reachable from outside the cluster’s private network (for example, a public IP or a domain name that resolves to it).  
+   If you use a load balancer, a gateway, or any type of isolated container environment, enter its public IP address or hostname here.   
+   **Note**: You must ensure that traffic reaching this external address is properly forwarded to the node’s internal/private address; otherwise, the traffic will not reach your server.
 8. **External HTTPS port**:  
    Enter the external/public HTTPS port that clients and browsers will use to connect to this node.  
    This port is used in the public URL and can be different from the node’s internal HTTPS port.  
@@ -148,44 +149,35 @@ The following example shows a configuration of a 3-node cluster:
 <ContentFrame>    
     
 ### In a Docker container  
-    
-* When running RavenDB in Docker with port mapping, the container listens on internal ports, while the host exposes different external ports.
-    
-* For example, if the container is started with:
-    
-    <TabItem>
-    ```plain    
-    sudo docker run -t -p 38889:38888 -p 443:8080 ravendb/ravendb
-    ```    
-    </TabItem>
 
-    then:
-    * Inside the container, RavenDB listens on HTTPS `8080` and TCP `38888`.
-    * On the host, clients connect to HTTPS `443` and TCP `38889`.
+* When running RavenDB in a Docker container,  
+  we highly recommend configuring the server manually rather than using the Setup Wizard. 
 
-* Configure the node addresses like this:  
-  In the HTTPS port field, enter the internal port RavenDB listens on inside the container (`8080`).  
-  In the TCP port field, enter the internal TCP port (`38888`).  
-  In IP address/hostname, use the container’s internal IP address,  
-  or `0.0.0.0` if RavenDB should listen on all interfaces inside the container.  
+* Using the Setup Wizard to configure a Docker container introduces unnecessary networking and port-mapping complexities.
+  Instead, it is much simpler to pass your configuration directly using Environment Variables or by mounting a pre-configured `settings.json` file.
 
-* Enable "Customize external IP and ports" and set:  
-  External IP address/hostname to the host machine’s IP address.  
-  External HTTPS port to `443` (the external port mapped to `8080`).  
-  External TCP port to `38889` (the external port mapped to `38888`).  
+* For detailed instructions on how to properly set up and configure a container, see [Docker image usage](../../../start/containers/image-usage.mdx).
+
+</ContentFrame>
     
-* RavenDB will use the external IP and ports in the node URL and DNS record, so clients connect to the host (not directly to the container), 
-  while Docker forwards the traffic to the container’s internal ports.
-
-      ![In docker](./assets/node-addresses-4.png)     
+<ContentFrame>    
     
-</ContentFrame> 
+### In a Docker container  
+    
+When running RavenDB in a Docker container, we highly recommend configuring the server manually rather than using the Setup Wizard. 
+
+Using the Setup Wizard to configure a Docker container introduces unnecessary networking and port-mapping complexities. 
+Instead, it is much simpler to pass your configuration directly using Docker Environment Variables, or by using Docker volumes to provide a pre-configured `settings.json` file to the container.
+
+For detailed instructions on how to properly set up and configure a container, see **[RavenDB Docker Image Usage](../../../start/containers/image-usage.mdx)**.
+
+</ContentFrame>
     
 </Panel>
 
 <Panel heading= "Set up node addresses for an UNSECURED cluster">
     
-![Unsecured cluster](./assets/node-addresses-5.png)  
+![Unsecured cluster](./assets/node-addresses-4.png)  
 
 1. **Save**:  
    When you finish configuring this node, click this button to save its settings.
