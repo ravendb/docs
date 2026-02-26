@@ -15,22 +15,22 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* Queries in RavenDB use a SQL-like language called **RQL** (Raven Query Language).
+* **What is RQL**:  
+  Queries in RavenDB use a SQL-like language called **RQL** (Raven Query Language).  
+  RQL exposes the RavenDB query pipeline in a straightforward, accessible manner that is easy to interact with.    
+  The RQL query structure reflects the order of operations performed by the RavenDB server when serving a query.   
 
-* RQL exposes the RavenDB query pipeline in a straightforward and accessible manner  
-  that is easy to use and interact with.
+* **High-level queries are translated to RQL**:  
+  Any query written using high-level Session methods (`Query`, `DocumentQuery`) will be translated by the client into RQL  
+  before being sent to the server for execution.
+  Learn more about querying from the session in this [Query Overview](../../querying/overview.mdx).    
 
-* Any query written using high-level Session methods (`Query`, `DocumentQuery`)  
-  is translated by the client to RQL before being sent to the server for execution.
+* **Writing RQL directly:**  
+  A query can be written directly in RQL by either:  
+  * Using the session's [RawQuery](../../querying/overview.mdx#session-advanced-rawquery) method in the Client API.  
+  * Writing a query in the [Query view](../../studio/database/queries/query-view.mdx) in Studio, where [RQL code assistance](../../querying/rql/rql-code-assistance.mdx) is available.
 
-* A query can be written with RQL directly by either:  
-  * Using the session's `RawQuery` method  
-  * Making a query from the [Query view](../../studio/database/queries/query-view.mdx) in Studio  
-
-* Learn more about querying from the session in this [Query Overview](../../querying/overview.mdx). 
-
-* In this article:  
-
+* In this article:
   * [The query pipeline](../../querying/rql/what-is-rql.mdx#the-query-pipeline)  
   * [RQL keywords and methods](../../querying/rql/what-is-rql.mdx#rql-keywords-and-methods)  
      * [`declare`](../../querying/rql/what-is-rql.mdx#declare)  
@@ -102,7 +102,7 @@ The following keywords and methods are available in RQL:
 
 - [DECLARE](../../querying/rql/what-is-rql.mdx#declare)
 - [FROM](../../querying/rql/what-is-rql.mdx#from)
-    - index
+    - [index](../../querying/rql/what-is-rql.mdx#query-an-index--from-index-index-name)
 - [GROUP BY](../../querying/rql/what-is-rql.mdx#group-by)
     - [array()](../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-content)
 - [WHERE](../../querying/rql/what-is-rql.mdx#where)
