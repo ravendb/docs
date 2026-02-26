@@ -18,7 +18,13 @@ export default function TagsGrid() {
 
     const tags = (pluginData?.tags || [])
         .filter((tag) => tag.count > 0)
-        .sort(() => Math.random() - 0.5)
+        .sort((a, b) => {
+            if (b.count !== a.count) {
+                return b.count - a.count;
+            }
+
+            return a.label.localeCompare(b.label);
+        })
         .slice(0, 25);
 
     return (
