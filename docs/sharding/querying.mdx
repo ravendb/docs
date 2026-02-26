@@ -588,7 +588,7 @@ Querying features that are not supported or not yet implemented on sharded datab
   map-reduce results is not supported in a sharded database.  
 
 * **Querying with a limit is not supported in patch/delete by query operations**  
-  Attempting to set a [limit](../client-api/session/querying/what-is-rql.mdx#limit) when executing 
+  Attempting to set a [limit](../querying/what-is-rql.mdx#limit) when executing 
   [PatchByQueryOperation](../client-api/operations/patching/set-based.mdx#sending-a-patch-request) or [DeleteByQueryOperation](../client-api/operations/common/delete-by-query.mdx)  
   will throw a `NotSupportedInShardingException` exception.  
 

@@ -45,7 +45,7 @@ const GUIDES: GuideItem[] = [
         description:
             "Unlock the full power of Raven Query Language (RQL): write expressive, efficient, and precise queries.",
         icon: "rql",
-        url: "/client-api/session/querying/what-is-rql",
+        url: "/querying/what-is-rql",
     },
     {
         title: "Get started with Studio",

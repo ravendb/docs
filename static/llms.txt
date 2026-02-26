@@ -86,7 +86,7 @@ Everything you need to know about our product, from getting started to advanced 
 
 - [Auto indexes](https://docs.ravendb.net/indexes/creating-and-deploying#auto-indexes): Self-optimizing database features requiring no manual effort.
 
-- [Raven Query Language](https://docs.ravendb.net/client-api/session/querying/what-is-rql): SQL-style queries for data retrieval.
+- [Raven Query Language](https://docs.ravendb.net/querying/what-is-rql): SQL-style queries for data retrieval.
 
 - [Full-text search](https://docs.ravendb.net/client-api/session/querying/text-search/full-text-search): Integrated search engine for advanced querying.
 

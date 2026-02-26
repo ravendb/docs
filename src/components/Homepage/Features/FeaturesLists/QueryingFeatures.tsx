@@ -11,7 +11,7 @@ export default function QueryingFeaturesGrid() {
         {
             title: "Raven Query Language",
             icon: "rql",
-            url: `/${activeVersion.label}/client-api/session/querying/what-is-rql`,
+            url: `/${activeVersion.label}/querying/what-is-rql`,
             description: "Simple yet powerful SQL-style queries",
         },
         {
