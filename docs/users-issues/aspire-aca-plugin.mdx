@@ -54,7 +54,7 @@ unsecuredRavenDb.PublishAsAzureContainerApp((infra, app) =>
 We'll use the [azd up](https://learn.microsoft.com/en-us/dotnet/aspire/deployment/azd/aca-deployment-azd-in-depth?tabs=windows#how-azure-developer-cli-integration-works) command to deploy the application. The command will:
 - Use `azd infra gen` to generate the infrastructure **bicep** files.
 - Use `azd provision` to provision the infrastructure on Azure, basing on the generated bicep files.
-- Use `azd deploy` to deploy the application to the Azure infractructure
+- Use `azd deploy` to deploy the application to the Azure infrastructure
 
 Let's try to execute first step manually to see the generated bicep files:
 ```
