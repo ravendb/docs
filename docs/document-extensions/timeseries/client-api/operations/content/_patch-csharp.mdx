@@ -147,7 +147,7 @@ store.Operations.Send(patchOp);
 
 * This is achieved by defining a string, or creating an instance of `IndexQuery` that contains such string,  
   with the following two parts:
-  * **The query**: provide an [RQL](../../../../../client-api/session/querying/what-is-rql.mdx) code snippet to filter the documents you want to patch.
+  * **The query**: provide an [RQL](../../../../../querying/rql/what-is-rql.mdx) code snippet to filter the documents you want to patch.
   * **The patching script**: use the [JavaScript time series API](../../../../../document-extensions/timeseries/client-api/javascript-support.mdx) to define the patching action.
     
 * Create a `PatchByQueryOperation` instance and pass it the `IndexQuery` object, or the defined string.

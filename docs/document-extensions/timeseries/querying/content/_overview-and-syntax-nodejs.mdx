@@ -8,7 +8,7 @@ import CodeBlock from '@theme/CodeBlock';
 * Querying time series entries enables comprehending how a process gradually populates a time series over time and locating documents related to chosen time series entries.
  
 * Time series querying is native to RavenDB's queries.  
-  Clients can express time series queries in high-level queries or directly in [RQL](../../../../client-api/session/querying/what-is-rql.mdx).
+  Clients can express time series queries in high-level queries or directly in [RQL](../../../../querying/rql/what-is-rql.mdx).
 
 * Queries can be executed as dynamic queries or over [time series indexes](../../../../document-extensions/timeseries/indexing.mdx).
 
@@ -230,7 +230,7 @@ select timeseries(
 
 ## Combine time series and custom functions
 
-* You can declare and use both time series functions and [custom JavaScript function](../../../../client-api/session/querying/what-is-rql.mdx#declare) in a query.  
+* You can declare and use both time series functions and [custom JavaScript function](../../../../querying/rql/what-is-rql.mdx#declare) in a query.  
   The custom functions can call the time series functions, pass them arguments, and use their results.
 
 * In the example below, a custom function (`customFunc`) is called by the query `select` clause to fetch and format a set of time series entries, which are then projected by the query.  

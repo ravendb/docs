@@ -11,7 +11,7 @@ import CodeBlock from '@theme/CodeBlock';
 * Time series queries can be made using:  
   * The high-level `Query` method utilizing LINQ,  
   * The lower-level API `DocumentQuery`,  
-  * Or directly through [RQL](../../../../../client-api/session/querying/what-is-rql.mdx),
+  * Or directly through [RQL](../../../../../querying/rql/what-is-rql.mdx),
     which can be provided to a `RawQuery` or executed from the Studio's [Query view](../../../../../studio/database/queries/query-view.mdx).
 
 * In this page:  
@@ -47,7 +47,7 @@ Learn more about time series queries in the [section dedicated to this subject](
   * `TimeSeriesRawResult` for non-aggregated data, or -  
   * `TimeSeriesAggregationResult` for aggregated data  
 * Note:  
-  The RavenDB client translates the LINQ query to [RQL](../../../../../client-api/session/querying/what-is-rql.mdx) before transmitting it to the server for execution.
+  The RavenDB client translates the LINQ query to [RQL](../../../../../querying/rql/what-is-rql.mdx) before transmitting it to the server for execution.
 ### Query examples
 
 * This LINQ query filters users by their age and retrieves their HeartRates time series.  
@@ -243,7 +243,7 @@ Where(Expression<Func<TimeSeriesEntry, bool>> predicate);
     * `TimeSeriesRawResult` for non-aggregated data, or -
     * `TimeSeriesAggregationResult` for aggregated data
 * Note:  
-  The RavenDB client translates query to [RQL](../../../../../client-api/session/querying/what-is-rql.mdx) before transmitting it to the server for execution.
+  The RavenDB client translates query to [RQL](../../../../../querying/rql/what-is-rql.mdx) before transmitting it to the server for execution.
 ### DocumentQuery examples
 
 * A _DocumentQuery_ using only the `From()` method.  
