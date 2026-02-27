@@ -17,7 +17,7 @@ You can read more about stale indexes [here](../../indexes/stale-indexes.mdx).
 
 ## Querying
 
-RavenDB uses `Raven Query Language (RQL)`, an SQL-like querying language for querying. The easiest way for us would be to expose a method in which you could pass your RQL-flavored query as a string (we [did](../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery) that) and do not bother about anything else.
+RavenDB uses `Raven Query Language (RQL)`, an SQL-like querying language for querying. The easiest way for us would be to expose a method in which you could pass your RQL-flavored query as a string (we [did](../../querying/overview.mdx#sessionadvancedrawquery) that) and do not bother about anything else.
 
 The fact is that we did not stop at this point. We went much further, by exposing querying methods that hides all Lucene syntax complexity:
 
@@ -39,7 +39,7 @@ where FirstName = 'Robert'
 </TabItem>
 </Tabs>
 
-You can also create queries by using [RawQuery](../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery). It is available as a part of advanced session operations:
+You can also create queries by using [RawQuery](../../querying/overview.mdx#sessionadvancedrawquery). It is available as a part of advanced session operations:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="RawQuery" label="RawQuery">
