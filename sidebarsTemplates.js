@@ -21,6 +21,11 @@ export default {
                     items: [
                         {
                             type: "doc",
+                            id: "authors",
+                            label: "Authors",
+                        },
+                        {
+                            type: "doc",
                             id: "new-guides",
                             label: "Adding new guides",
                         },

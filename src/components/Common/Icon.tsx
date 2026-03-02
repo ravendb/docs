@@ -2,7 +2,7 @@ import React from "react";
 import { IconName } from "../../typescript/iconName";
 import clsx from "clsx";
 
-export type IconSize = "xs" | "sm" | "md" | "lg" | "xl";
+export type IconSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 export interface IconProps {
     icon: IconName;
@@ -43,6 +43,8 @@ function getSizeClass(size?: IconSize): `w-${number} h-${number}` {
             return "w-10 h-10";
         case "xl":
             return "w-12 h-12";
+        case "2xl":
+            return "w-18 h-18";
         default:
             return "w-6 h-6";
     }

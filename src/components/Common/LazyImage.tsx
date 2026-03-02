@@ -4,9 +4,18 @@ import ThemedImage, { Props as ThemedImageProps } from "@theme/ThemedImage";
 
 export interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
     imgSrc?: string | { light: string; dark: string };
+    minContentHeight?: number;
 }
 
-export default function LazyImage({ imgSrc, src, alt = "", className, style, ...props }: LazyImageProps) {
+export default function LazyImage({
+    imgSrc,
+    src,
+    alt = "",
+    className,
+    style,
+    minContentHeight = 100,
+    ...props
+}: LazyImageProps) {
     const [isLoaded, setIsLoaded] = useState(false);
     const imgRef = useRef<HTMLImageElement>(null);
 
@@ -24,7 +33,7 @@ export default function LazyImage({ imgSrc, src, alt = "", className, style, ...
             className={clsx("relative overflow-hidden inline-block w-full", className)}
             style={{
                 ...style,
-                minHeight: !isLoaded ? "100px" : undefined,
+                minHeight: !isLoaded ? `${minContentHeight + "px"}` : undefined,
             }}
         >
             {!isLoaded && <span className="absolute inset-0 skeleton rounded-[inherit] z-10" aria-hidden="true" />}
