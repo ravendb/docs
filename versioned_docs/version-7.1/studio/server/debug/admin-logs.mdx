@@ -75,7 +75,7 @@ From the debug menu, click **Admin Logs**.
    A lit funnel symbol indicates that filters were created and are now active.  
    See **Settings** below to learn what filters do and how to create and remove them.  
 2. <a id="set-displayed-logs-minimum-level"/>**Min level**  
-   The minimum [logging level](../../../server/troubleshooting/logging#available-logging-levels) from which log entries are displayed on this view.  
+   The minimum [logging level](../../../server/troubleshooting/logging.mdx#available-logging-levels) from which log entries are displayed on this view.  
    For example, selecting `Warn` (warning) will display log entries from this level and up,  
    including `Warn`, `Error`, and `Fatal`.  
 3. <a id="monitor-controls"/>**Monitor controls**  
@@ -175,7 +175,7 @@ From the debug menu, click **Admin Logs**.
       ![Logs on disk - Settings](./assets/admin-logs_logs-on-disk_settings.png)
       
       * <a id="define-logs-on-disk-minimum-level"/>**A.** **Current Minimum Level**  
-        The minimum [logging level](../../../server/troubleshooting/logging#available-logging-levels) from which log entries will be stored in log files.  
+        The minimum [logging level](../../../server/troubleshooting/logging.mdx#available-logging-levels) from which log entries will be stored in log files.  
         For example, selecting `Warn` (warning) will store log entries from this level and up, including `Warn`, `Error`, and `Fatal`.  
          * **Save the minimum level in `settings.json`**  
            Check this box to save the minimum log level in the `settings.json` file.  
@@ -235,7 +235,7 @@ From the debug menu, click **Admin Logs**.
           `<Timestamp>|<Level>|<ThreadId>|<Resource>|<Component>|<Logger>|<Message>|<Data>`  
           All fields are always present (empty if not applicable).   
             * **Timestamp** - UTC timestamp of the event.
-            * **Level** - The entry's [logging level](../../../server/troubleshooting/logging#available-logging-levels).
+            * **Level** - The entry's [logging level](../../../server/troubleshooting/logging.mdx#available-logging-levels).
             * **ThreadId** - ID of the thread that generated the log entry.
             * **Resource** - Affected resource, e.g., the server or the database name.
             * **Component** - The subsystem where the entry was generated, e.g., an index name.

@@ -15,11 +15,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * In this page: 
    - [`RavenTestDriver`](../../start/test-driver.mdx#raventestdriver)
-   - [Pre-initializing the store: `PreInitialize`](../start/test-driver#pre-initializing-the-store-preinitialize)
-   - [Configure the server: `ConfigureServer`](../start/test-driver#configure-the-server-configureserver)
+   - [Pre-initializing the store: `PreInitialize`](../start/test-driver.mdx#pre-initializing-the-store-preinitialize)
+   - [Configure the server: `ConfigureServer`](../start/test-driver.mdx#configure-the-server-configureserver)
    - [Unit test](../../start/test-driver.mdx#unit-test)
    - [Complete example](../../start/test-driver.mdx#complete-example)
-   - [Continuous Integration (CI) Servers](../start/test-driver#continuous-integration-ci-servers)
+   - [Continuous Integration (CI) Servers](../start/test-driver.mdx#continuous-integration-ci-servers)
    - [Licensing](../../start/test-driver.mdx#licensing)
 
 </Admonition>
@@ -417,6 +417,6 @@ E.g., an unlicensed server will be able to use no more than 3 CPU cores, while a
    * Since RavenDB version `6.2`, `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` is set by default to `true` so a `LicenseExpiredException` exception **would** be thrown if the embedded server used by TestDriver fails to validate a license.  
      Users that prefer that no exception would be thrown if an unlicensed embedded server is used, can explicitly set the configuration option to **`false`**.  
 
-* Read about additional licensing configuration options in the [Embedded server page](../server/embedded#embedded-server-licensing) licensing section.  
+* Read about additional licensing configuration options in the [Embedded server page](../server/embedded.mdx#embedded-server-licensing) licensing section.  
 
 </Panel>
