@@ -16,7 +16,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * Schedule an **External Replication Task** in order to have a _live_ replica of your data in another database:  
   * In the same cluster if you want a live copy that won't be a client failover target.
-  * In a separate RavenDB cluster [on local machines](../../../../start/getting-started.mdx) or [a cloud instance](/cloud/cloud-overview),  
+  * In a separate RavenDB cluster [on local machines](../../../../start/getting-started.mdx) or [a cloud instance](/cloud/cloud-overview.mdx),  
     which can be used as a failover if the source cluster is down.
 
 * "Live" means that the replica is up to date at all times.  
@@ -32,7 +32,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   You can read more about this option in the sharding documentation [external replication](../../../../sharding/external-replication.mdx) and [migration](../../../../sharding/migration.mdx) sections.  
 
 * The External Replication task **does _not_ create a backup** of your data and indexes.  
-  See more in [Backup -vs- Replication](../../../../studio/database/tasks/backup-task#backup-task--vs--replication-task)
+  See more in [Backup -vs- Replication](../../../../studio/database/tasks/backup-task.mdx#backup-task--vs--replication-task)
 
 * In this page:  
   * [General Information about External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#general-information-about-external-replication-task)
