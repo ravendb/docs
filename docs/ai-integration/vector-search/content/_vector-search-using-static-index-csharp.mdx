@@ -1350,9 +1350,9 @@ Execute a vector search using the index:
   * The query is only meaningful if the vector field being searched contains numerical embeddings  
     generated using the same model as the one configured in the specified task.
   
-  * If the specified task ID is not found, RavenDB will throw an `InvalidQueryException`.
-    To avoid this error, you can verify that the specified embeddings generation task exists before issuing the query.
-    See [Get embeddings generation task details](../../generating-embeddings/overview.mdx#get-embeddings-generation-task-details)
+  * If the specified task ID is not found, RavenDB will throw an `InvalidQueryException`.  
+    To avoid this error, you can verify that the specified embeddings generation task exists before issuing the query.  
+    See [Get embeddings generation task details](../../ai-integration/generating-embeddings/overview.mdx#get-embeddings-generation-task-details)
     to learn how to check which tasks are defined and what their identifiers are.
 
 <Tabs groupId='languageSyntax'>
@@ -1664,7 +1664,7 @@ or vector.search(VectorFromText, $searchTerm2, 0.8)
 * Note:  
 You can also combine **multiple vector search statements** in a single query using logical operators.  
 An example is available in:
-[Combining multiple vector searches in the same query](../../ai-integration/vector-search/vector-search-using-dynamic-query#combining-multiple-vector-searches-in-the-same-query).
+[Combining multiple vector searches in the same query](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#combining-multiple-vector-searches-in-the-same-query).
 
 
 ---

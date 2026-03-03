@@ -16,35 +16,35 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * This page provides a step-by-step guide to creating an AI agent and interacting with it using the Client API.  
 
 * In this article:
-   * [Creating a connection string](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-a-connection-string)  
-   * [Defining an agent configuration](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#defining-an-agent-configuration)
-      * [Set the agent ID](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#set-the-agent-id)
-      * [Define a response object](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#define-a-response-object)
-      * [Add agent parameters](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#add-agent-parameters)
-      * [Set maximum number of iterations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#set-maximum-number-of-iterations)
-      * [Set chat trimming configuration](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#set-chat-trimming-configuration)
-   * [Adding agent tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#adding-agent-tools)
-      * [Query tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#query-tools)
-         * [Initial-context queries](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#initial-context-queries)
-      * [Action tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tools)
-   * [Creating the Agent](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-the-agent)
-   * [Retrieving existing agent configurations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#retrieving-existing-agent-configurations)
-   * [Managing conversations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#managing-conversations)
-      * [Setting a conversation](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-a-conversation)
-      * [Processing action-tool requests](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#processing-action-tool-requests)
-         * [Action-tool Handlers](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tool-handlers)
-         * [Action-tool Receivers](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tool-receivers)
-      * [Conversation response](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#conversation-response)
-      * [Setting user prompt and running the conversation](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-user-prompt-and-running-the-conversation)
-   * [Stream LLM responses](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses)
-   * [Full Example](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#full-example)
+   * [Creating a connection string](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#creating-a-connection-string)  
+   * [Defining an agent configuration](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#defining-an-agent-configuration)
+      * [Set the agent ID](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#set-the-agent-id)
+      * [Define a response object](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#define-a-response-object)
+      * [Add agent parameters](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#add-agent-parameters)
+      * [Set maximum number of iterations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#set-maximum-number-of-iterations)
+      * [Set chat trimming configuration](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#set-chat-trimming-configuration)
+   * [Adding agent tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#adding-agent-tools)
+      * [Query tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#query-tools)
+         * [Initial-context queries](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#initial-context-queries)
+      * [Action tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#action-tools)
+   * [Creating the Agent](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#creating-the-agent)
+   * [Retrieving existing agent configurations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#retrieving-existing-agent-configurations)
+   * [Managing conversations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#managing-conversations)
+      * [Setting a conversation](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#setting-a-conversation)
+      * [Processing action-tool requests](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#processing-action-tool-requests)
+         * [Action-tool Handlers](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#action-tool-handlers)
+         * [Action-tool Receivers](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#action-tool-receivers)
+      * [Conversation response](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#conversation-response)
+      * [Setting user prompt and running the conversation](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#setting-user-prompt-and-running-the-conversation)
+   * [Stream LLM responses](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#stream-llm-responses)
+   * [Full Example](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#full-example)
 
 </Admonition>
 
 <Panel heading="Creating a connection string">
 
 Your agent will need a connection string to connect with the LLM. Create a connection string using an `AiConnectionString` instance and the `PutConnectionStringOperation` operation.  
-(You can also create a connection string using Studio, see [here](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio#configure-basic-settings))
+(You can also create a connection string using Studio, see [here](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#configure-basic-settings))
 
 You can use a local `Ollama` model if your considerations are mainly speed, cost, open-source, or security,  
 Or you can use a remote `OpenAI` service for its additional resources and capabilities.  
@@ -162,7 +162,7 @@ Start by creating a new `AiAgentConfiguration` instance.
 While creating the instance, pass its constructor:  
 
 - The agent's Name  
-- The [connection string](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#creating-a-connection-string) you created  
+- The [connection string](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#creating-a-connection-string) you created  
 - A System prompt  
 
 The agent will send the system prompt you define here to the LLM to define its basic characteristics, including its role, purpose, behavior, and the tools it can use.  
@@ -312,7 +312,7 @@ agent.OutputSchema = "{" +
 <ContentFrame>
 
 ### Add agent parameters
-Agent parameters are parameters that can be used by [query tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#query-tools) when the agent queries the database on behalf of the LLM.  
+Agent parameters are parameters that can be used by [query tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#query-tools) when the agent queries the database on behalf of the LLM.  
 Values for agent parameters are provided by the client, or by a user through the client, 
 when a chat is started.  
 When the agent is requested to use a query tool that uses agent parameters, it replaces these parameters with the values provided by the user before running the query.  
@@ -358,7 +358,7 @@ agent tools in response to a single user prompt. Use `MaxModelIterationsPerCall`
 
 <Admonition type="note" title="">
 Note that you can improve the TTFB (Time To First Byte) by getting the LLM's response in chunks using streaming.  
-Find more about streaming in the [overview](../../../ai-integration/ai-agents/overview#streaming-llm-responses) and [below](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses).  
+Find more about streaming in the [overview](../../../ai-integration/ai-agents/overview.mdx#streaming-llm-responses) and [below](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#stream-llm-responses).  
 </Admonition>
 
 </ContentFrame>
@@ -366,7 +366,7 @@ Find more about streaming in the [overview](../../../ai-integration/ai-agents/ov
 
 ### Set chat trimming configuration
 
-To [summarize the conversation](../../../ai-integration/ai-agents/overview#define-a-chat-trimming-configuration), create an `AiAgentChatTrimmingConfiguration` instance, 
+To [summarize the conversation](../../../ai-integration/ai-agents/overview.mdx#define-a-chat-trimming-configuration), create an `AiAgentChatTrimmingConfiguration` instance, 
 use it to configure your trimming strategy, and set the agent's `ChatTrimming` property 
 with the instance.  
 
@@ -431,11 +431,11 @@ After defining agent tools and submitting them to the LLM, it is up to the LLM t
 
 ### Query tools
 
-[Query tools](../../../ai-integration/ai-agents/overview#query-tools) provide the LLM with the ability to retrieve data from the database.  
+[Query tools](../../../ai-integration/ai-agents/overview.mdx#query-tools) provide the LLM with the ability to retrieve data from the database.  
 A query tool includes a natural-language **description** that explains the LLM what the tool is for, and an **RQL query**.  
 
 * **Passing values to query tools**  
-   * Query tools optionally include [parameters](../../../ai-integration/ai-agents/overview#query-parameters), identified by a `$` prefix.  
+   * Query tools optionally include [parameters](../../../ai-integration/ai-agents/overview.mdx#query-parameters), identified by a `$` prefix.  
      Both the user and the LLM can pass values to these parameters.  
    * **Passing values from the user**  
      Users can pass values to queries through **agent parameters**.  
@@ -524,7 +524,7 @@ A query tool includes a natural-language **description** that explains the LLM w
 
 #### <u>Initial-context queries</u>
 
-* You can set a query tool as an [initial-context query](../../../ai-integration/ai-agents/overview#initial-context-queries) using its `Options.AddToInitialContext` property, to execute the query and provide the LLM with its results immediately when the agent is started.  
+* You can set a query tool as an [initial-context query](../../../ai-integration/ai-agents/overview.mdx#initial-context-queries) using its `Options.AddToInitialContext` property, to execute the query and provide the LLM with its results immediately when the agent is started.  
    * An initial-context query is **not allowed** to use LLM parameters, since the query 
      runs before the conversation starts, earlier than the first communication with the LLM, and the LLM will have no opportunity to fill the parameters with values.  
    * An initial-context query **is** allowed to use agent parameters, whose values are provided by the user even before the query is executed.  
@@ -795,7 +795,7 @@ You can also retrieve the configurations of **all existing agents** using `GetAg
   | Property | Type | Description |
   |----------|------|-------------|
   | agentId | `string` | The agent unique ID |
-  | conversationId | `string` | The [conversation ID](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-a-conversation) |
+  | conversationId | `string` | The [conversation ID](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#setting-a-conversation) |
   | creationOptions | `AiConversationCreationOptions` | Conversation creation options (see class definition below) |
   | changeVector | `string` | Optional change vector for concurrency control |
 
@@ -842,7 +842,7 @@ During the conversation, the LLM can request the agent to trigger action tools.
 The agent will pass a requested action tool's name and parameters to the client,  
 and it is then up to the client to process the request.  
 
-The client can process an action-tool request using a [handler](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tool-handlers) or a [receiver](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#action-tool-receivers).  
+The client can process an action-tool request using a [handler](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#action-tool-handlers) or a [receiver](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#action-tool-receivers).  
 
 #### <u>Action-tool Handlers</u>
 A **handler** is created for a specific action tool and registered with the server using the `Handle` method.  
@@ -1058,7 +1058,7 @@ Set the user prompt using the `SetUserPrompt` method, and run the conversation u
 `RunAsync` method.
 <Admonition type="note" title="">
 You can also use `StreamAsync` to **stream** the LLM's response as it is generated.  
-Learn how to do this in the [Stream LLM responses](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#stream-llm-responses) section.
+Learn how to do this in the [Stream LLM responses](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#stream-llm-responses) section.
 </Admonition>
 
 ```csharp
@@ -1075,14 +1075,14 @@ if (LLMResponse.Status == AiConversationResult.Done)
 }
 ```
 
-See the full example [below](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#full-example).  
+See the full example [below](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#full-example).  
 
 </ContentFrame>
 </Panel>
 
 <Panel heading="Stream LLM responses">
 
-You can set the agent to [stream the LLM's response to the client](../../../ai-integration/ai-agents/overview#streaming-llm-responses) in real time as the LLM generates it, using the `StreamAsync` method, instead of using [RunAsync](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api#setting-user-prompt-and-running-the-conversation) which sends the whole response to the client when it is fully prepared.  
+You can set the agent to [stream the LLM's response to the client](../../../ai-integration/ai-agents/overview.mdx#streaming-llm-responses) in real time as the LLM generates it, using the `StreamAsync` method, instead of using [RunAsync](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#setting-user-prompt-and-running-the-conversation) which sends the whole response to the client when it is fully prepared.  
 
 Streaming the response allows the client to start processing it before it is complete, which can improve the application's responsiveness.  
 

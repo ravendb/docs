@@ -21,16 +21,16 @@ import Panel from '@site/src/components/Panel';
     By default, attachments are stored locally in RavenDB's internal storage.  
     They are stored separately from the document itself in a dedicated attachment storage.  
     This avoids bloating your JSON document with large binary content.    
-    See [Store attachments in local storage](../../document-extensions/attachments/store-attachments/store-attachments-local).
+    See [Store attachments in local storage](../../document-extensions/attachments/store-attachments/store-attachments-local.mdx).
   * **Remote storage**:  
     RavenDB does not enforce a hard limit on the size of locally stored attachments.  
     However, to reduce local disk usage, you can optionally configure RavenDB to offload attachments to remote storage.
-    See [Store attachments in remote storage](../../document-extensions/attachments/store-attachments/store-attachments-remote).
+    See [Store attachments in remote storage](../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx).
     
 * In this article:
-  * [Attachments in the documents list view](../../document-extensions/attachments/overview#attachments-in-the-documents-list-view)
-  * [Attachments in the document view](../../document-extensions/attachments/overview#attachments-in-the-document-view)
-  * [Attachments stats](../../document-extensions/attachments/overview#attachments-stats)
+  * [Attachments in the documents list view](../../document-extensions/attachments/overview.mdx#attachments-in-the-documents-list-view)
+  * [Attachments in the document view](../../document-extensions/attachments/overview.mdx#attachments-in-the-document-view)
+  * [Attachments stats](../../document-extensions/attachments/overview.mdx#attachments-stats)
     
 </Admonition>  
 
@@ -58,21 +58,21 @@ import Panel from '@site/src/components/Panel';
 
 3. **Viewing the full metadata**:  
    Click this JSON button to view the document's raw content, including its full metadata.  
-   You can also get the metadata programmatically using the Client API, see [Get entity metadata](../../client-api/session/how-to/get-and-modify-entity-metadata).  
+   You can also get the metadata programmatically using the Client API, see [Get entity metadata](../../client-api/session/how-to/get-and-modify-entity-metadata.mdx).  
    For details on the structure of attachment metadata, refer to:  
-   * [The attachment metadata - local](../../document-extensions/attachments/store-attachments/store-attachments-local#the-attachment-metadata)
-   * [The attachment metadata - remote](../../document-extensions/attachments/store-attachments/store-attachments-remote#the-attachment-metadata)
+   * [The attachment metadata - local](../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#the-attachment-metadata)
+   * [The attachment metadata - remote](../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#the-attachment-metadata)
 
 4. **Attachments tab**:  
    All attachments associated with the document are listed under the _Attachments_ tab in the document _Properties_ pane.  
 
 5. **Add attachment to local storage**:  
     Click to add a new attachment to the document that will be stored in RavenDB's local storage.  
-    Learn more in [Store attachments in local storage](../../document-extensions/attachments/store-attachments/store-attachments-local).
+    Learn more in [Store attachments in local storage](../../document-extensions/attachments/store-attachments/store-attachments-local.mdx).
     
 6. **Add attachment to remote storage**:  
     Click to add a new attachment to the document that will be uploaded and stored in a remote destination.  
-    Learn more in [Store attachments in remote storage](../../document-extensions/attachments/store-attachments/store-attachments-remote).
+    Learn more in [Store attachments in remote storage](../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx).
     
 7. **Storage location**:  
    The clip icon indicates where the attachment content is stored:  
@@ -90,7 +90,7 @@ import Panel from '@site/src/components/Panel';
     
 11. **Delete attachment**:  
     Click to remove the attachment from the document and delete it from local RavenDB storage.  
-    Learn more in [Delete attachments](../../document-extensions/attachments/delete-attachment).    
+    Learn more in [Delete attachments](../../document-extensions/attachments/delete-attachment.mdx).    
 
 </Panel>
 
@@ -113,7 +113,7 @@ import Panel from '@site/src/components/Panel';
     The total number of attachments in the database, from all collections.  
    `unique`:  
     The number of unique attachments stored **locally** in the database.   
-    Learn more in [Deduplicating local attachments](../../document-extensions/attachments/store-attachments/store-attachments-local#deduplicating-local-attachments).  
+    Learn more in [Deduplicating local attachments](../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#deduplicating-local-attachments).  
    `remote`:  
     The total number of attachments stored in remote storage.   
 
@@ -122,7 +122,7 @@ import Panel from '@site/src/components/Panel';
 ### Get attachments stats via the Client API
 
 * Use the `GetDetailedStatisticsOperation` to retrieve statistics about attachments in the database.  
-  For a list of all available statistics properties, see [Get statistics](../../client-api/operations/maintenance/get-stats). 
+  For a list of all available statistics properties, see [Get statistics](../../client-api/operations/maintenance/get-stats.mdx). 
     
 <Tabs groupId='languageSyntax'>
 <TabItem value="Get_stats_operation" label="Get_stats_operation">

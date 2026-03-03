@@ -8,26 +8,26 @@ import Panel from '@site/src/components/Panel';
 <Admonition type="note" title="">
 
 * This article focuses on **storing attachments in a remote storage**.  
-  To learn about local storage, see [Store attachments in local storage](../../../document-extensions/attachments/store-attachments/store-attachments-local).
+  To learn about local storage, see [Store attachments in local storage](../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx).
     
 * A document can have any number of attachments, including both local attachments (stored in RavenDB)  
   and remote attachments (stored in external storage such as Amazon S3 or Azure.  
 
 * **To store attachments in remote storage**, first enable the feature and configure one or more remote destinations.  
-  See [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments).  
+  See [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments.mdx).  
     
 * In this article
-  * [Overview](../../../document-extensions/attachments/store-attachments/store-attachments-remote#overview)  
-    * [Remote attachment upload - flow](../../../document-extensions/attachments/store-attachments/store-attachments-remote#remote-attachment-upload---flow)  
-    * [Remote attachment upload – considerations](../../../document-extensions/attachments/store-attachments/store-attachments-remote#remote-attachment-upload--considerations)  
-  * [Store attachments remotely - using the **Studio**](../../../document-extensions/attachments/store-attachments/store-attachments-remote#store-attachments-remotely-using-the-studio)  
-  * [Store attachments remotely - using the **Client API**](../../../document-extensions/attachments/store-attachments/store-attachments-remote#store-attachments-remotely-using-the-client-api)  
-    * [Store via the Session](../../../document-extensions/attachments/store-attachments/store-attachments-remote#store-attachments-remotely---via-the-session)  
-    * [Store via an Operation](../../../document-extensions/attachments/store-attachments/store-attachments-remote#store-attachments-remotely---via-an-operation)  
-  * [Schedule existing attachments for remote upload](../../../document-extensions/attachments/store-attachments/store-attachments-remote#schedule-existing-attachments-for-remote-upload)  
-  * [The attachment metadata](../../../document-extensions/attachments/store-attachments/store-attachments-remote#the-attachment-metadata)  
-  * [Deduplicating remote attachments](../../../document-extensions/attachments/store-attachments/store-attachments-remote#deduplicating-remote-attachments)  
-  * [Syntax](../../../document-extensions/attachments/store-attachments/store-attachments-remote#syntax)  
+  * [Overview](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#overview)  
+    * [Remote attachment upload - flow](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#remote-attachment-upload---flow)  
+    * [Remote attachment upload – considerations](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#remote-attachment-upload--considerations)  
+  * [Store attachments remotely - using the **Studio**](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#store-attachments-remotely-using-the-studio)  
+  * [Store attachments remotely - using the **Client API**](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#store-attachments-remotely-using-the-client-api)  
+    * [Store via the Session](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#store-attachments-remotely---via-the-session)  
+    * [Store via an Operation](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#store-attachments-remotely---via-an-operation)  
+  * [Schedule existing attachments for remote upload](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#schedule-existing-attachments-for-remote-upload)  
+  * [The attachment metadata](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#the-attachment-metadata)  
+  * [Deduplicating remote attachments](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#deduplicating-remote-attachments)  
+  * [Syntax](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#syntax)  
  
 </Admonition>
 
@@ -36,7 +36,7 @@ import Panel from '@site/src/components/Panel';
 ### Remote attachment upload - flow
     
 * Ensure the Remote Attachments feature is enabled in the database and that remote destinations are configured.  
-  See [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments).
+  See [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments.mdx).
 
 * Create or load a document.  
 
@@ -58,7 +58,7 @@ import Panel from '@site/src/components/Panel';
   * The attachment is **deleted from the local storage** of the server that performed the upload.
   * The document replicates again, and all other nodes delete their local copies of the attachment.
   * Any actions triggered by the document change, such as indexing or ongoing tasks configured for the document, will be executed. 
-    Learn more in [Attachments and other features](../../../document-extensions/attachments/attachments-and-other-features).
+    Learn more in [Attachments and other features](../../../document-extensions/attachments/attachments-and-other-features.mdx).
 
 ---
     
@@ -66,22 +66,22 @@ import Panel from '@site/src/components/Panel';
     
 * **Can the upload process be canceled?**   
   You can stop the upload process by disabling the remote destination in the remote attachments settings,  
-  or by temporarily disabling the remote attachments feature entirely. (See [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments)).  
+  or by temporarily disabling the remote attachments feature entirely. (See [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments.mdx)).  
   Alternatively, you can remove the remote destination configuration if it is no longer needed.
     
 * **Can a remote attachment be pulled back into local storage?**  
   There is no built-in mechanism to reverse the upload.  
-  To "un-remote" an attachment, you'll need to retrieve it from the remote storage (see [Get attachments](../../../document-extensions/attachments/get-attachments)),  
-  and then store it again in the database as a local attachment (see [Store attachments in local storage](../../../document-extensions/attachments/store-attachments/store-attachments-local)).   
+  To "un-remote" an attachment, you'll need to retrieve it from the remote storage (see [Get attachments](../../../document-extensions/attachments/get-attachments.mdx)),  
+  and then store it again in the database as a local attachment (see [Store attachments in local storage](../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx)).   
     
 * **Why is my attachment not uploading?**  
   Remote upload will not occur in the following cases:  
   * Configuration issues:  
     The Remote Attachments feature is disabled, or the specified destination is disabled,  
-    or the destination identifier is invalid or not configured. See [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments). 
+    or the destination identifier is invalid or not configured. See [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments.mdx). 
   * The upload time has not yet arrived.
   * The server cannot connect to the remote storage destination.    
-  * Revisions are enabled for the document’s collection. See [Remote attachments and revisions](../../../document-extensions/attachments/attachments-and-other-features#attachments-revisions).    
+  * Revisions are enabled for the document’s collection. See [Remote attachments and revisions](../../../document-extensions/attachments/attachments-and-other-features.mdx#attachments-revisions).    
     
 * **What happens if the upload fails?**  
   If the upload attempt fails (e.g., due to a network issue or misconfiguration),  
@@ -121,7 +121,7 @@ import Panel from '@site/src/components/Panel';
    It only shows the `@flags` property with the value `HasAttachments` in the document's `@metadata` section  
    to indicate that the document has attachments.
 4. Click this JSON button to view the document's raw content, including its full metadata.  
-   Learn more about the attachment metadata in [The attachment metadata](../../../document-extensions/attachments/store-attachments/store-attachments-remote#the-attachment-metadata).
+   Learn more about the attachment metadata in [The attachment metadata](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#the-attachment-metadata).
 
 ![Add attachment to remote storage 4](../assets/add-attachment-to-remote-storage-4.png)    
     
@@ -136,13 +136,13 @@ import Panel from '@site/src/components/Panel';
   An exception will be thrown if you attempt to add an attachment to a document that does not exist.
 
 * When storing remote attachments, you must specify the **destination identifier** and the **scheduled upload time**.  
-  The destination identifier must be pre-configured. See [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments).
+  The destination identifier must be pre-configured. See [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments.mdx).
 
 * **Transaction support**:
     
   * Like documents, attachments are tracked by the session and are not sent to the server immediately.  
     They are persisted only when you call `session.SaveChanges()`, along with all other changes made in the session, 
-    as part of a single [unit of work](../../../client-api/session/what-is-a-session-and-how-does-it-work#unit-of-work-pattern).
+    as part of a single [unit of work](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern).
     
   * If you store both the document and its attachment in the same session, they are saved transactionally:  
     if saving the document fails, the attachment is not stored, and vice versa.    
@@ -365,7 +365,7 @@ await using (var stream = new FileStream(attachmentPath,
 <Panel heading="Schedule existing attachments for remote upload">
     
 * You can schedule existing **local** attachments for remote upload using a **patch operation**.  
-  Learn more about patching in general in [Single document patch operations](../../../client-api/operations/patching/single-document).  
+  Learn more about patching in general in [Single document patch operations](../../../client-api/operations/patching/single-document.mdx).  
     
 * In the patch script, specify:  
   * The name of the existing local attachment to mark
@@ -374,9 +374,9 @@ await using (var stream = new FileStream(attachmentPath,
 
 * Once patching is successful:
   * The document's metadata is updated with the requested remote attachment parameters,  
-    as described in [The attachment metadata](../../../document-extensions/attachments/store-attachments/store-attachments-remote#the-attachment-metadata).
+    as described in [The attachment metadata](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#the-attachment-metadata).
     
-  * If the feature is enabled and destinations are defined (see [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments)),  
+  * If the feature is enabled and destinations are defined (see [Configure remote attachments](../../../document-extensions/attachments/configure-remote-attachments.mdx)),  
     the background task will upload the attachment to the specified remote destination when the scheduled time arrives.    
     
 <Tabs groupId='languageSyntax'>
@@ -549,7 +549,7 @@ of their content, under the path defined by the destination’s container or buc
 `{ContainerOrBucket}/{RemoteFolderName}/{Base64Hash}`.
 
 **Remote deduplication is based on hash & size**:  
-Unlike [local attachments](../../../document-extensions/attachments/store-attachments/store-attachments-local#deduplicating-local-attachments),
+Unlike [local attachments](../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#deduplicating-local-attachments),
 which deduplicate files based only on their SHA-256 hash,  
 remote attachments are deduplicated based on **both the hash and the file size**.    
     
@@ -565,7 +565,7 @@ Before uploading an attachment to the remote destination, RavenDB:
 
 <Panel heading="Syntax">
 
-Please refer to [the syntax section](../../../document-extensions/attachments/store-attachments/store-attachments-local#syntax)
+Please refer to [the syntax section](../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#syntax)
 in the _Store local attachments_ article for all available overloads and syntax options.  
     
 </Panel>

@@ -17,24 +17,24 @@ import Panel from "@site/src/components/Panel";
 <Admonition type="note" title="">
 
 * Audit stored documents' compliance with a schema to identify and address any validation violations.  
-   * You can run an [audit operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#running-an-audit-operation) that scans a document collection or a part of it and generates a validation violations report.  
-   * You can also audit document compliance [by index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#audit-document-compliance-by-index), validating documents during indexing and embedding any validation error messages into the indexes. The indexed documents can then be queried and managed based on their schema compliance.
+   * You can run an [audit operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api.mdx#running-an-audit-operation) that scans a document collection or a part of it and generates a validation violations report.  
+   * You can also audit document compliance [by index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api.mdx#audit-document-compliance-by-index), validating documents during indexing and embedding any validation error messages into the indexes. The indexed documents can then be queried and managed based on their schema compliance.
 
 * In this article:  
-  * [Running an audit operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#running-an-audit-operation)
-    * [`StartSchemaValidationOperation`](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#startschemavalidationoperation)  
-    * [Example](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#example)  
-  * [Audit document compliance by index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#audit-document-compliance-by-index)
-    * [Define a validation schema](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#define-a-validation-schema)
-    * [Define and execute an index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#define-and-execute-an-index)
-    * [Query the index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#query-the-index)
-    * [Full Example](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#full-example)
+  * [Running an audit operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api.mdx#running-an-audit-operation)
+    * [`StartSchemaValidationOperation`](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api.mdx#startschemavalidationoperation)  
+    * [Example](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api.mdx#example)  
+  * [Audit document compliance by index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api.mdx#audit-document-compliance-by-index)
+    * [Define a validation schema](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api.mdx#define-a-validation-schema)
+    * [Define and execute an index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api.mdx#define-and-execute-an-index)
+    * [Query the index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api.mdx#query-the-index)
+    * [Full Example](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api.mdx#full-example)
 
 </Admonition>
 
 <Panel heading="Running an audit operation">
 
-Use this audit approach to examine the [compliance of documents in a collection](../../../documents/schema-validation/overview#running-an-audit-operation) with a validation schema. You can limit the number of documents to be checked and the number of error messages returned.  
+Use this audit approach to examine the [compliance of documents in a collection](../../../documents/schema-validation/overview.mdx#running-an-audit-operation) with a validation schema. You can limit the number of documents to be checked and the number of error messages returned.  
 This method is useful for one-time audits or periodic checks of data integrity.  
 
 To execute this audit, run `StartSchemaValidationOperation`. The operation will scan the documents in the specified collection, validate each document against the provided JSON schema, and produce a report of any validation errors.
@@ -157,7 +157,7 @@ public class Order
 <Panel heading="Audit document compliance by index">
 
 Use this audit approach to continuously validate document compliance during indexing and store validation error messages in the index. The index can then be queried to filter documents by their compliance status.  
-This method is useful for checking data integrity in large or frequently changing datasets, where [a single audit operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#running-an-audit-operation) may be less efficient.
+This method is useful for checking data integrity in large or frequently changing datasets, where [a single audit operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api.mdx#running-an-audit-operation) may be less efficient.
 
 To validate documents by index:  
 
@@ -165,12 +165,12 @@ To validate documents by index:
 #### Define a validation schema
 
 Define a validation schema that the index will use to validate documents during indexing.  
-The index will use the schema defined in its index configuration (see [below](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api#defining-an-index-level-validation-schema) how to define it).  
-* If no schema is defined in the index configuration, the index will use the [database-level schema](../../../documents/schema-validation/write-validation/write-validation_api#creating-a-validation-schema).  
+The index will use the schema defined in its index configuration (see [below](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api.mdx#defining-an-index-level-validation-schema) how to define it).  
+* If no schema is defined in the index configuration, the index will use the [database-level schema](../../../documents/schema-validation/write-validation/write-validation_api.mdx#creating-a-validation-schema).  
 * If no schema is defined either in the index configuration or at the database level, the index will not perform any validation.
 
 <Admonition type="note" title="">
-**Note**: When the index uses a database-level schema, [disabling validation at the database level](../../../documents/schema-validation/write-validation/write-validation_api#2-create-the-schema-configuration) will also disable auditing by the index.  
+**Note**: When the index uses a database-level schema, [disabling validation at the database level](../../../documents/schema-validation/write-validation/write-validation_api.mdx#2-create-the-schema-configuration) will also disable auditing by the index.  
 However, when the index uses an index-level schema, disabling database-level validation will **not** disable auditing by the index.
 </Admonition>
 

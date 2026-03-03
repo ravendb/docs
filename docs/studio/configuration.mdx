@@ -17,13 +17,13 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Admonition type="note" title="">
 
 Use the configuration keys listed below to set Studio-related options for your RavenDB server.  
-Learn how to apply these keys in the [Configuration Overview](../server/configuration/configuration-options) article.
+Learn how to apply these keys in the [Configuration Overview](../server/configuration/configuration-options.mdx) article.
 
 * On this page:  
-   * [Configuration keys](../studio/configuration#configuration-keys)
-      * [Studio.Path](../studio/configuration#studiopath)
-      * [Ai.Assistant.Disable](../studio/configuration#aiassistantdisable)
-      * [Ai.Assistant.DisableDataSubmission](../studio/configuration#aiassistantdisabledatasubmission)
+   * [Configuration keys](../studio/configuration.mdx#configuration-keys)
+      * [Studio.Path](../studio/configuration.mdx#studiopath)
+      * [Ai.Assistant.Disable](../studio/configuration.mdx#aiassistantdisable)
+      * [Ai.Assistant.DisableDataSubmission](../studio/configuration.mdx#aiassistantdisabledatasubmission)
 
 </Admonition>
 
@@ -46,7 +46,7 @@ Defaults to the base directory of the RavenDB server installation.
 
 ### Ai.Assistant.Disable
 
-Use this key to completely disable the [AI assistant](../studio/ai-assistant) for all users regardless of individual [user consent](../studio/ai-assistant#user-consent) and to block the `AI assistant` option in Studio's Knowledge Center panel.
+Use this key to completely disable the [AI assistant](../studio/ai-assistant.mdx) for all users regardless of individual [user consent](../studio/ai-assistant.mdx#user-consent) and to block the `AI assistant` option in Studio's Knowledge Center panel.
 
 - **Type**: `bool`
 - **Default**: `false`
@@ -58,7 +58,7 @@ Use this key to completely disable the [AI assistant](../studio/ai-assistant) fo
 
 ### Ai.Assistant.DisableDataSubmission
 
-Use this key to prevent the transmission of any user data [exposed to the AI assistant](../studio/ai-assistant#add-context) to the RavenDB backend or LLM. The assistant can still provide general guidance but cannot analyze any user data.
+Use this key to prevent the transmission of any user data [exposed to the AI assistant](../studio/ai-assistant.mdx#add-context) to the RavenDB backend or LLM. The assistant can still provide general guidance but cannot analyze any user data.
 
 - **Type**: `bool`
 - **Default**: `false`
