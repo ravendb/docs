@@ -54,11 +54,11 @@ using your browser to access and manage the server.
 
 <Admonition type="info" title="Secure and Unsecure servers" id="secure-and-unsecure-servers" href="#secure-and-unsecure-servers">
 When a RavenDB server runs for the first time, it presents its user with 
-a [setup wizard](../start/installation/setup-wizard.mdx#select-setup-mode).  
+a [setup wizard](../start/installation/setup-wizard/overview.mdx).  
 You can use this wizard to select whether to install a **Secure** server 
-(with a [Let's Encrypt](../start/installation/setup-wizard.mdx#secure-setup-with-a-free-let) 
-or a [self-obtained](../start/installation/setup-wizard.mdx#secure-setup-with-your-own-certificate) 
-certificate) or an [Unsecure](../start/installation/setup-wizard.mdx#unsecure-setup) server.  
+(with a [Let's Encrypt](../start/installation/setup-wizard/choose-security-option.mdx) 
+or a [self-obtained](../start/installation/setup-wizard/choose-security-option.mdx#provide-your-own-certificate) 
+certificate) or an [Unsecure](../start/installation/setup-wizard/choose-security-option.mdx#don-t-use-certificate) server.  
 </Admonition>
 
 Connecting your browser to Studio is **different** when the server you attempt to access 
@@ -68,7 +68,7 @@ is secure and when it isn't.
 
 ## Connecting to an Unsecure server:
 
-When connecting to an [unsecure](../start/installation/setup-wizard.mdx#unsecure-setup) 
+When connecting to an [unsecure](../start/installation/setup-wizard/choose-security-option.mdx#don-t-use-certificate) 
 server, **no certificate** is required and Studio can be directly connected using 
 the server's URL.  
 <Admonition type="warning" title="">
@@ -90,14 +90,14 @@ Trying to connect to a secure server without a certificate
 
 Certificates must be installed where the browser can find them.  
 
-* If you generate a [Let's Encrypt](../start/installation/setup-wizard.mdx#secure-setup-with-a-free-let) 
+* If you generate a [Let's Encrypt](../start/installation/setup-wizard/choose-security-option.mdx#generate-let-s-encrypt-certificate) 
   certificate during setup, the certificate will be automatically registered in the browser's default 
   location. This location is browser-specific:  
   **Edge** looks for certificates in the OS root store.  
   **Firefox** looks for certificates in the browser's root store.  
   **Chrome** version 105 and up also looks for certificates in the [browser's root store](https://blog.chromium.org/2022/09/announcing-launch-of-chrome-root-program.html).  
 
-* If you obtain the certificate [elsewhere](../start/installation/setup-wizard.mdx#secure-setup-with-your-own-certificate), 
+* If you obtain the certificate [elsewhere](../start/installation/setup-wizard/choose-security-option.mdx#provide-your-own-certificate), 
   you need to ensure that it is properly registered where your browser can find it.  
   <Admonition type="note" title="">
   To register a certificate for Firefox or Chrome, you may need to 
