@@ -54,7 +54,7 @@ This can be caused by two different reasons:
 1. Your private IP address is not reachable inside the machine or you provided the wrong IP/port.
 2. You are running behind a firewall (VM, docker...) and accidentally provided the external IP address during setup.
 
-Make sure you provide the private IP address in the "IP Address / Hostname" field as seen in [this example](../../start/installation/setup-wizard.mdx#example-iii---behind-a-firewall).
+Make sure you provide the private IP address in the "IP Address / Hostname" field as seen in [this example](../../start/installation/setup-wizard/configure-node-addresses.mdx#behind-a-firewall-or-load-balancer).
 ### Ports are blocked by the firewall
 
 When configuring a VM in Azure, [AWS](../../start/installation/setup-examples/aws-windows-vm.mdx) or any other provider, you should define firewall rules to allow both the **HTTP** and **TCP** ports you have chosen during setup.
@@ -236,7 +236,7 @@ Learn how to handle this issue [here](../../server/security/authentication/solve
 ### Authentication Error Occurred using Edge
 
 You cannot access Studio using Edge, though during 
-[setup](../../start/installation/setup-wizard.mdx#configuring-the-server-addresses) you checked 
+[setup](../../start/installation/setup-wizard/configure-node-addresses.mdx) you checked 
 the "Automatically register the admin client certificate in this (local) OS" checkbox 
 and the setup wizard ended successfully.  
 
@@ -286,7 +286,7 @@ Value data: 0 (False)
 ### Authentication Error Occurred using Chrome
 
 You cannot access Studio using Chrome, though during 
-[setup](../../start/installation/setup-wizard.mdx#configuring-the-server-addresses) you checked 
+[setup](../../start/installation/setup-wizard/configure-node-addresses.mdx) you checked 
 the "Automatically register the admin client certificate in this (local) OS" checkbox 
 and the setup wizard ended successfully.  
 

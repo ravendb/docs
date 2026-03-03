@@ -106,7 +106,7 @@ If you choose to use only one machine (although this will increase the chances o
 3. Extract the [downloaded](https://ravendb.net/download) `RavenDB...zip` server package into each node folder.  
 4. If you want to install the cluster **as a service** (it will improve availability because it will automatically run in the background every time your 
 machine restarts), this simple step will be done after initial secure installation via the Setup Wizard or manually. Read [Running as a Service](installation/running-as-service).  
-5. Start the [Setup Wizard](../start/installation/setup-wizard.mdx) by running `run.ps1` (or `run.sh` in Linux) in PowerShell or [disable the 'Setup Wizard' and configuring the server manually](../start/installation/manual.mdx).  
+5. Start the [Setup Wizard](../start/installation/setup-wizard/overview.mdx) by running `run.ps1` (or `run.sh` in Linux) in PowerShell or [disable the 'Setup Wizard' and configuring the server manually](../start/installation/manual.mdx).  
 ![Running the Setup Wizard](./assets/run-ps1-with-PowerShell.png)
 
 <Admonition type="note" title="Running in a Docker container" id="running-in-a-docker-container" href="#running-in-a-docker-container">
@@ -152,7 +152,7 @@ appearing:
 
 The RavenDB server uses a [settings.json](../server/configuration/configuration-options.mdx#settingsjson) file in each node `Server` folder to store the server-wide configuration options.  
 When starting a server, RavenDB will look for the `settings.json` file in the node `Server` folder, so it must be located there.  
-The [Setup Wizard](../start/installation/setup-wizard.mdx) places it correctly automatically.  
+The [Setup Wizard](../start/installation/setup-wizard/overview.mdx) places it correctly automatically.  
 
 After making changes to this file, a server restart is required for them to be applied.  
 
@@ -194,7 +194,7 @@ For a list of IPs and ports already in use, run `netstat -a` in the command line
 
 RavenDB requires write permissions to the following locations:
 
-- The folder where RavenDB server is running (to update [settings.json](../server/configuration/configuration-options.mdx#settingsjson) by the [Setup Wizard](../start/installation/setup-wizard.mdx))
+- The folder where RavenDB server is running (to update [settings.json](../server/configuration/configuration-options.mdx#settingsjson) by the [Setup Wizard](../start/installation/setup-wizard/overview.mdx))
 - The data folder ([`DataDir`](../server/configuration/core-configuration.mdx#datadir) setting)
 - The logs folder ([`Logs.Path`](../server/configuration/logs-configuration.mdx#logspath) setting)
 
