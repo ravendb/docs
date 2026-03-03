@@ -7,8 +7,8 @@ import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* Counters can be included when [loading entities](../../client-api/session/loading-entities) 
-  or when making [queries](../../client-api/session/querying/how-to-query).
+* Counters can be included when [loading entities](../../client-api/session/loading-entities.mdx) 
+  or when making [queries](../../client-api/session/querying/how-to-query.mdx).
  
 * The _Session_ stores the included counters in its in-memory cache,  
   so their values can be accessed later in the same session without making additional requests to the server.
@@ -644,8 +644,8 @@ However:
 * Accessing it later in the same session will not trigger a server request, because the counter is already cached in the session’s internal state.
 * Even if the counter is created after the _include_, no server call will be made when trying to access its value.
 * To retrieve the counter in this case, you can:
-  * Call [Clear](../../client-api/session/how-to/clear-a-session) to reset the session and discard all tracked state.
-  * Use [Evict](../../client-api/session/how-to/evict-entity-from-a-session) to remove the document (and its cached counters) from the session’s internal state.
+  * Call [Clear](../../client-api/session/how-to/clear-a-session.mdx) to reset the session and discard all tracked state.
+  * Use [Evict](../../client-api/session/how-to/evict-entity-from-a-session.mdx) to remove the document (and its cached counters) from the session’s internal state.
   * Or simply fetch the counter in a new session.  
     
 <TabItem value="" label="">
