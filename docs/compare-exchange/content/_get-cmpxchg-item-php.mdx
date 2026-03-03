@@ -10,14 +10,14 @@ import CodeBlock from '@theme/CodeBlock';
   A cluster-wide session also supports lazy retrieval.
 
 * To view existing compare-exchange items in the **Studio**, go to _Documents > Compare Exchange_,  
-  as described in [Ways to manage compare-exchange items](../compare-exchange/overview#ways-to-create-and-manage-compare-exchange-items).  
+  as described in [Ways to manage compare-exchange items](../compare-exchange/overview.mdx#ways-to-create-and-manage-compare-exchange-items).  
 
 * This article shows how to get a **single** compare-exchange item by its unique _key_.  
-  To get **multiple** items at once, see [Get multiple compare-exchange items](../compare-exchange/get-cmpxchg-items).
+  To get **multiple** items at once, see [Get multiple compare-exchange items](../compare-exchange/get-cmpxchg-items.mdx).
 
 * In this article:    
-  * [Get item using a **cluster-wide session**](../compare-exchange/get-cmpxchg-item#get-item-using-a-cluster-wide-session)
-  * [Syntax](../compare-exchange/get-cmpxchg-item#syntax)
+  * [Get item using a **cluster-wide session**](../compare-exchange/get-cmpxchg-item.mdx#get-item-using-a-cluster-wide-session)
+  * [Syntax](../compare-exchange/get-cmpxchg-item.mdx#syntax)
 
 </Admonition>
 
@@ -25,7 +25,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 ## Get item using a cluster-wide session
 
-* You can retrieve compare-exchange items using a [cluster-wide session](../client-api/session/cluster-transaction/overview#open-a-cluster-transaction).  
+* You can retrieve compare-exchange items using a [cluster-wide session](../client-api/session/cluster-transaction/overview.mdx#open-a-cluster-transaction).  
   The session must be opened in cluster-wide mode.
   
 * Use the `getCompareExchangeValue` advanced session method to get a compare-exchange item by its _key_.  

@@ -8,17 +8,17 @@ import Panel from '@site/src/components/Panel';
 <Admonition type="note" title="">
 
 * This article focuses on **storing attachments locally**.  
-  To learn about remote storage, see [Store attachments in remote storage](../../../document-extensions/attachments/store-attachments/store-attachments-remote).
+  To learn about remote storage, see [Store attachments in remote storage](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx).
     
 * In this article
-  * [Overview](../../../document-extensions/attachments/store-attachments/store-attachments-local#overview)  
-  * [Store attachments using the **Studio**](../../../document-extensions/attachments/store-attachments/store-attachments-local#store-attachments-using-the-studio)  
-  * [Store attachments using the **Client API**](../../../document-extensions/attachments/store-attachments/store-attachments-local#store-attachments-using-the-client-api)  
-    * [Store via the Session](../../../document-extensions/attachments/store-attachments/store-attachments-local#store-attachments-via-the-session)  
-    * [Store via an Operation](../../../document-extensions/attachments/store-attachments/store-attachments-local#store-attachments-via-an-operation) 
-  * [The attachment metadata](../../../document-extensions/attachments/store-attachments/store-attachments-local#the-attachment-metadata)  
-  * [Deduplicating local attachments](../../../document-extensions/attachments/store-attachments/store-attachments-local#deduplicating-local-attachments)  
-  * [Syntax](../../../document-extensions/attachments/store-attachments/store-attachments-local#syntax)  
+  * [Overview](../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#overview)  
+  * [Store attachments using the **Studio**](../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#store-attachments-using-the-studio)  
+  * [Store attachments using the **Client API**](../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#store-attachments-using-the-client-api)  
+    * [Store via the Session](../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#store-attachments-via-the-session)  
+    * [Store via an Operation](../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#store-attachments-via-an-operation) 
+  * [The attachment metadata](../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#the-attachment-metadata)  
+  * [Deduplicating local attachments](../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#deduplicating-local-attachments)  
+  * [Syntax](../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#syntax)  
  
 </Admonition>
 
@@ -31,7 +31,7 @@ import Panel from '@site/src/components/Panel';
 * The document’s metadata is updated to reference each attachment that is added.  
   This metadata update is considered a document change, which causes the document to be replicated to all other nodes in the database group.  
   Any actions associated with the document change, such as indexing or ongoing tasks configured for the document, will be triggered.
-  Learn more in [Attachments and other features](../../../document-extensions/attachments/attachments-and-other-features).  
+  Learn more in [Attachments and other features](../../../document-extensions/attachments/attachments-and-other-features.mdx).  
     
 * When stored **locally**, attachments are not embedded within the document.
   Instead, they are saved in a dedicated attachment storage area on the RavenDB server, separate from the document store.  
@@ -57,7 +57,7 @@ You can add and manage attachments directly in the Studio.
    It only shows the `@flags` property with the value `HasAttachments` in the document's `@metadata` section  
    to indicate that the document has attachments.
 5. Click this JSON button to view the document's raw content, including its full metadata.  
-   Learn more about the attachment metadata in [The attachment metadata](../../../document-extensions/attachments/store-attachments/store-attachments-local#the-attachment-metadata).
+   Learn more about the attachment metadata in [The attachment metadata](../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#the-attachment-metadata).
 
 </Panel>
 
@@ -73,7 +73,7 @@ You can add and manage attachments directly in the Studio.
     
   * Like documents, attachments are tracked by the session and are not sent to the server immediately.  
     They are persisted only when you call `session.SaveChanges()`, along with all other changes made in the session, 
-    as part of a single [unit of work](../../../client-api/session/what-is-a-session-and-how-does-it-work#unit-of-work-pattern).
+    as part of a single [unit of work](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern).
     
   * If you store both the document and its attachment in the same session, they are saved transactionally:  
     if saving the document fails, the attachment is not stored, and vice versa.    
@@ -335,7 +335,7 @@ public PutAttachmentOperation(string documentId, StoreAttachmentParameters param
     
 | Return value         | Description                                 |
 |----------------------|---------------------------------------------|
-| [AttachmentDetails](../../../document-extensions/attachments/store-attachments/store-attachments-local#attachmentdetails) | An object with the new attachment's details |
+| [AttachmentDetails](../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#attachmentdetails) | An object with the new attachment's details |
     
 ---
     
@@ -363,7 +363,7 @@ void Store(object entity, string name, Stream stream, string contentType = null)
 | **stream**           | `Stream`                     | The stream containing the binary content of the attachment. |
 | **contentType**      | `string`                     | The MIME type of the attachment (optional).<br/>Common examples include:<br/>`image/png`, `application/pdf`, `text/plain`, `video/mp4`. |
 | **parameters**       | `StoreAttachmentParameters`  | An object that encapsulates all parameters required to store an attachment. |
-| **remoteParameters** | `RemoteAttachmentParameters` | Parameters for uploading the attachment to [Remote storage](../../../document-extensions/attachments/store-attachments/store-attachments-remote).<br/>Set to _null_ or omit to store the attachment **locally**. |
+| **remoteParameters** | `RemoteAttachmentParameters` | Parameters for uploading the attachment to [Remote storage](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx).<br/>Set to _null_ or omit to store the attachment **locally**. |
 | **changeVector**     | `string`                     | The document's change vector used for concurrency control.<br/>If set to `null`, no concurrency check will be performed and the attachment will be added regardless of the document's current state. |
 
 <TabItem>

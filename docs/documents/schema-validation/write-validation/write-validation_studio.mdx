@@ -16,14 +16,14 @@ import Panel from "@site/src/components/Panel";
 # Write validation: Studio
 <Admonition type="note" title="">
 
-Manage [schema validation](../../../documents/schema-validation/overview) using the Studio **Document Schema** view, to condition documents storage on their compliance with a defined JSON schema.  
+Manage [schema validation](../../../documents/schema-validation/overview.mdx) using the Studio **Document Schema** view, to condition documents storage on their compliance with a defined JSON schema.  
 
 * In this article:  
-   * [The Document Schema view](../../../documents/schema-validation/write-validation/write-validation_studio#the-document-schema-view)  
-   * [Creating a collection schema](../../../documents/schema-validation/write-validation/write-validation_studio#creating-a-collection-schema)  
-   * [Managing and Testing existing schemas](../../../documents/schema-validation/write-validation/write-validation_studio#managing-and-testing-existing-schemas)  
-   * [The schema playground](../../../documents/schema-validation/write-validation/write-validation_studio#the-schema-playground)  
-   * [Validating a specific document](../../../documents/schema-validation/write-validation/write-validation_studio#validating-a-specific-document)  
+   * [The Document Schema view](../../../documents/schema-validation/write-validation/write-validation_studio.mdx#the-document-schema-view)  
+   * [Creating a collection schema](../../../documents/schema-validation/write-validation/write-validation_studio.mdx#creating-a-collection-schema)  
+   * [Managing and Testing existing schemas](../../../documents/schema-validation/write-validation/write-validation_studio.mdx#managing-and-testing-existing-schemas)  
+   * [The schema playground](../../../documents/schema-validation/write-validation/write-validation_studio.mdx#the-schema-playground)  
+   * [Validating a specific document](../../../documents/schema-validation/write-validation/write-validation_studio.mdx#validating-a-specific-document)  
    
 </Admonition>
 
@@ -38,9 +38,9 @@ Use this view to create, test, and manage document schemas for your database col
 2. **Document schema**  
    Click to open this view.
 3. **Schema playground**  
-   Click to create and test schemas in a [secluded playground](../../../documents/schema-validation/write-validation/write-validation_studio#the-schema-playground).  
+   Click to create and test schemas in a [secluded playground](../../../documents/schema-validation/write-validation/write-validation_studio.mdx#the-schema-playground).  
 3. **Add new**  
-   Click to create a [new schema](../../../documents/schema-validation/write-validation/write-validation_studio#creating-a-collection-schema) associated with one of your document collections.  
+   Click to create a [new schema](../../../documents/schema-validation/write-validation/write-validation_studio.mdx#creating-a-collection-schema) associated with one of your document collections.  
 
 </Panel>
 
@@ -74,7 +74,7 @@ To create a validation schema, open: **Settings** > **Document schema** > **Add 
    ```
 
    <Admonition type="note" title="">
-   [See a list of available constraints.](../../../documents/schema-validation/overview#available-constraints)  
+   [See a list of available constraints.](../../../documents/schema-validation/overview.mdx#available-constraints)  
    </Admonition>
 
 3. **Save**  
@@ -87,7 +87,7 @@ To create a validation schema, open: **Settings** > **Document schema** > **Add 
 
    <Admonition type="note" title="">
    Note that once a schema is enabled for a collection, collection documents are validated when they are saved directly, as well as when they are added or modified by operations such as patching or ETL tasks.  
-   [See a list of operations that trigger validation](../../../documents/schema-validation/overview#a-list-of-operations-that-trigger-validation).
+   [See a list of operations that trigger validation](../../../documents/schema-validation/overview.mdx#a-list-of-operations-that-trigger-validation).
    </Admonition>
 
 </Panel>
@@ -184,9 +184,9 @@ To create and test schemas in a secluded environment, without affecting your pro
 
 <Panel heading="Validating a specific document">
 
-To validate a specific document against the schema defined for its collection, open the [document view](../../../studio/database/documents/document-view#the-document-view), select the document, and click the **Validate document** button.  
+To validate a specific document against the schema defined for its collection, open the [document view](../../../studio/database/documents/document-view.mdx#the-document-view), select the document, and click the **Validate document** button.  
 * The validation button will be displayed only if a schema is defined for the document's collection.
-* To validate a whole collection, use the **Document Schema** view [Test](../../../documents/schema-validation/write-validation/write-validation_studio#managing-and-testing-existing-schemas) as described above.
+* To validate a whole collection, use the **Document Schema** view [Test](../../../documents/schema-validation/write-validation/write-validation_studio.mdx#managing-and-testing-existing-schemas) as described above.
 
 ![Validate document button](./assets/schema-validation_studio_validate-document-button.png)
 

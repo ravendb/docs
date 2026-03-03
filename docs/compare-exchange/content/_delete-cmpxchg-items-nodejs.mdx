@@ -11,7 +11,7 @@ import CodeBlock from '@theme/CodeBlock';
   
 * **Delete items by expiration**:  
   Compare-exchange items can also be deleted by adding an expiration date to them.  
-  Learn more in [Compare-exchange expiration](../compare-exchange/cmpxchg-expiration).
+  Learn more in [Compare-exchange expiration](../compare-exchange/cmpxchg-expiration.mdx).
   
 * **Compare-exchange tombstones**:  
   Whenever a compare-exchange item is deleted, a compare-exchange tombstone is created for it.  
@@ -19,10 +19,10 @@ import CodeBlock from '@theme/CodeBlock';
   so they can react accordingly.  
   For example, indexes referencing the deleted item will update themselves to remove those references.  
   Compare-exchange tombstones that are eligible for deletion are removed periodically by an internal cleanup task.  
-  See: [Cluster.CompareExchangeTombstonesCleanupIntervalInMin](../compare-exchange/configuration#clustercompareexchangetombstonescleanupintervalinmin).
+  See: [Cluster.CompareExchangeTombstonesCleanupIntervalInMin](../compare-exchange/configuration.mdx#clustercompareexchangetombstonescleanupintervalinmin).
 
 * <Admonition type="warning" title="">
-  Do not attempt to delete [atomic guards](../compare-exchange/atomic-guards), which RavenDB uses internally to ensure ACID guarantees in cluster-wide transactions.
+  Do not attempt to delete [atomic guards](../compare-exchange/atomic-guards.mdx), which RavenDB uses internally to ensure ACID guarantees in cluster-wide transactions.
   These items are created automatically and must not be modified or removed.  
   
   If your custom compare-exchange item was set up to protect the consistency of a transaction, deleting it will break the ACID guarantees.
@@ -32,13 +32,13 @@ import CodeBlock from '@theme/CodeBlock';
 ---
 
 * In this article:  
-  * [Delete compare-exchange item using a **cluster-wide session**](../compare-exchange/delete-cmpxchg-items#delete-compare-exchange-item-using-a-cluster-wide-session) 
-    * [Delete by item](../compare-exchange/delete-cmpxchg-items#delete-by-item)  
-    * [Delete by key and index](../compare-exchange/delete-cmpxchg-items#delete-by-key-and-index)  
-    * [Delete multiple items](../compare-exchange/delete-cmpxchg-items#delete-multiple-items)  
-  * [Delete compare-exchange item using a **store operation**](../compare-exchange/delete-cmpxchg-items#delete-compare-exchange-item-using-a-store-operation)  
-  * [Delete compare-exchange items using the **Studio**](../compare-exchange/delete-cmpxchg-items#delete-compare-exchange-items-using-the-studio)
-  * [Syntax](../compare-exchange/delete-cmpxchg-items#syntax)
+  * [Delete compare-exchange item using a **cluster-wide session**](../compare-exchange/delete-cmpxchg-items.mdx#delete-compare-exchange-item-using-a-cluster-wide-session) 
+    * [Delete by item](../compare-exchange/delete-cmpxchg-items.mdx#delete-by-item)  
+    * [Delete by key and index](../compare-exchange/delete-cmpxchg-items.mdx#delete-by-key-and-index)  
+    * [Delete multiple items](../compare-exchange/delete-cmpxchg-items.mdx#delete-multiple-items)  
+  * [Delete compare-exchange item using a **store operation**](../compare-exchange/delete-cmpxchg-items.mdx#delete-compare-exchange-item-using-a-store-operation)  
+  * [Delete compare-exchange items using the **Studio**](../compare-exchange/delete-cmpxchg-items.mdx#delete-compare-exchange-items-using-the-studio)
+  * [Syntax](../compare-exchange/delete-cmpxchg-items.mdx#syntax)
 
 </Admonition>
 
@@ -48,7 +48,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Delete compare-exchange items using a cluster-wide session when you want the deletion to be part of a transaction committed via `saveChanges()`.
   This is suitable if you want to include compare-exchange deletions alongside other operations, such as putting or deleting documents and compare-exchange items, in a single transaction.  
-  Learn more about cluster-wide sessions in [Cluster transactions - overview](../client-api/session/cluster-transaction/overview).  
+  Learn more about cluster-wide sessions in [Cluster transactions - overview](../client-api/session/cluster-transaction/overview.mdx).  
 
 * Use `deleteCompareExchangeValue()` to register the deletion of an existing compare-exchange item in the session.  
   The item will be deleted as part of the cluster-wide transaction when _saveChanges()_ is called.
@@ -152,7 +152,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 ## Delete compare-exchange item using a store operation
 
-* Use the `DeleteCompareExchangeValueOperation` [store operation](../client-api/operations/what-are-operations) to delete a compare-exchange item by its key and index, without opening a session.
+* Use the `DeleteCompareExchangeValueOperation` [store operation](../client-api/operations/what-are-operations.mdx) to delete a compare-exchange item by its key and index, without opening a session.
   This is ideal for stand-alone tasks that don't require batching multiple commands into a single transactional session. 
   
 * The delete operation will only succeed if the item's current index on the server is the same as the one you provide.  

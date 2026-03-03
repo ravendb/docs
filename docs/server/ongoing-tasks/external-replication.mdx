@@ -15,7 +15,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="">
 
 * Schedule an **External Replication Task** to have a _live_ replica of your data in another database:
-    * In a separate RavenDB cluster [on local machines](../../start/getting-started.mdx) or [a cloud instance](/cloud/cloud-overview),  
+    * In a separate RavenDB cluster [on local machines](../../start/getting-started.mdx) or [a cloud instance](/cloud/cloud-overview.mdx),  
       which can be used as a failover if the source cluster is down.
     * In the same cluster if you want a live copy that won't be a client failover target.
 
@@ -45,22 +45,22 @@ import LanguageContent from "@site/src/components/LanguageContent";
 **What is being replicated:**
 
 * All database documents and related data:
-    * [Attachments](../../document-extensions/attachments/overview)
-    * [Revisions](../../document-extensions/revisions/overview)
-    * [Counters](../../document-extensions/counters/overview)
-    * [Time Series](../../document-extensions/timeseries/overview)
+    * [Attachments](../../document-extensions/attachments/overview.mdx)
+    * [Revisions](../../document-extensions/revisions/overview.mdx)
+    * [Counters](../../document-extensions/counters/overview.mdx)
+    * [Time Series](../../document-extensions/timeseries/overview.mdx)
 **What is _not_ being replicated:**
 
 * Server and cluster level features:
-    * [Indexes](../../indexes/creating-and-deploying)
+    * [Indexes](../../indexes/creating-and-deploying.mdx)
     * [Conflict resolution scripts](../../server/clustering/replication/replication-conflicts.mdx#conflict-resolution-script)
-    * [Compare-Exchange](../../compare-exchange/overview)
-    * [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions)
-    * [Identities](../../server/kb/document-identifier-generation#identity-id)
+    * [Compare-Exchange](../../compare-exchange/overview.mdx)
+    * [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)
+    * [Identities](../../server/kb/document-identifier-generation.mdx#identity-id)
     * Ongoing tasks
-        * [ETL](../../server/ongoing-tasks/etl/basics)
-        * [Backup](../../studio/database/tasks/backup-task)
-        * [Hub/Sink Replication](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)
+        * [ETL](../../server/ongoing-tasks/etl/basics.mdx)
+        * [Backup](../../studio/database/tasks/backup-task.mdx)
+        * [Hub/Sink Replication](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)
           <Admonition type="note" title="">
 
           **Why are cluster-level features not replicated?**
