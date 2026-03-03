@@ -21,8 +21,8 @@ import webinarThumbnailPlaceholder from "@site/static/img/webinar.webp";
 # GenAI tasks
 
 ### Build intelligent workflows with GenAI tasks.
-GenAI tasks are [ongoing operations](../../studio/database/tasks/ongoing-tasks/general-info) that continuously monitor specified collections and process documents as they are added or modified.  
-- Similar to [ETL tasks](../../studio/database/tasks/ongoing-tasks/ravendb-etl-task), a GenAI task extracts content from documents. But instead of sending the content to another database, the task sends it to an AI model (like OpenAI) along with a guiding **prompt** and a **JSON schema** that defines the layout for the model's response.  
+GenAI tasks are [ongoing operations](../../studio/database/tasks/ongoing-tasks/general-info.mdx) that continuously monitor specified collections and process documents as they are added or modified.  
+- Similar to [ETL tasks](../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx), a GenAI task extracts content from documents. But instead of sending the content to another database, the task sends it to an AI model (like OpenAI) along with a guiding **prompt** and a **JSON schema** that defines the layout for the model's response.  
 - When the LLM responds, the GenAI task can use its response to, for example, update the source document with LLM-generated content, or create new documents in the database.  
 - GenAI tasks can infuse intelligence into a wide variety of content handling scenarios.  
   E.g., they can enrich documents with AI-generated summaries or classifications, translate text into different languages, or generate new content based on existing data.

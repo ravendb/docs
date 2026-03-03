@@ -23,18 +23,18 @@ import Admonition from '@theme/Admonition';
   * Handle concurrency safely, without external services or custom locking logic.
   
 * Key Characteristics of a compare-exchange item:
-  * Cluster-wide - Visible and consistent across all nodes in the [database group](../studio/database/settings/manage-database-group).
+  * Cluster-wide - Visible and consistent across all nodes in the [database group](../studio/database/settings/manage-database-group.mdx).
   * Atomic - Only one client can successfully modify an item at a time (all-or-nothing updates).
   * Versioned - Each update increments the version, enabling conflict detection.
   * Flexible - Values can be strings, numbers, arrays, or JSON objects.
   * Internal - Not replicated outside the database.
 
 * On this start page, you'll find:
-  * [Technical documentation links](../compare-exchange/start#technical-documentation-links-)
-  * [RavenDB Demo links](../compare-exchange/start#ravendb-demo-links)
-  * [Related blog posts](../compare-exchange/start#related-blog-posts)
-  * [Related in-depth articles](../compare-exchange/start#related-in-depth-articles)
-  * [Sample use cases](../compare-exchange/start#sample-use-cases)
+  * [Technical documentation links](../compare-exchange/start.mdx#technical-documentation-links-)
+  * [RavenDB Demo links](../compare-exchange/start.mdx#ravendb-demo-links)
+  * [Related blog posts](../compare-exchange/start.mdx#related-blog-posts)
+  * [Related in-depth articles](../compare-exchange/start.mdx#related-in-depth-articles)
+  * [Sample use cases](../compare-exchange/start.mdx#sample-use-cases)
   
 </Admonition>
 
@@ -42,17 +42,17 @@ import Admonition from '@theme/Admonition';
 
 ## Technical documentation links ✨
 
-* [Overview](../compare-exchange/overview) 
-* [Create Compare-Exchange Items](../compare-exchange/create-cmpxchg-items)
-* [Get Compare-Exchange Item](../compare-exchange/get-cmpxchg-item)
-* [Get Compare-Exchange Items](../compare-exchange/get-cmpxchg-items)
-* [Delete Compare-Exchange Items](../compare-exchange/delete-cmpxchg-items)
-* [Update Compare-Exchange Item](../compare-exchange/update-cmpxchg-item)
-* [Include Compare-Exchange Items](../compare-exchange/include-cmpxchg-items)
-* [Indexing Compare-Exchange Values](../compare-exchange/indexing-cmpxchg-values)
-* [Compare-Exchange in Dynamic Queries](../compare-exchange/cmpxchg-in-dynamic-queries)
-* [Compare-Exchange Expiration](../compare-exchange/cmpxchg-expiration)
-* [Atomic Guards](../compare-exchange/atomic-guards)
+* [Overview](../compare-exchange/overview.mdx) 
+* [Create Compare-Exchange Items](../compare-exchange/create-cmpxchg-items.mdx)
+* [Get Compare-Exchange Item](../compare-exchange/get-cmpxchg-item.mdx)
+* [Get Compare-Exchange Items](../compare-exchange/get-cmpxchg-items.mdx)
+* [Delete Compare-Exchange Items](../compare-exchange/delete-cmpxchg-items.mdx)
+* [Update Compare-Exchange Item](../compare-exchange/update-cmpxchg-item.mdx)
+* [Include Compare-Exchange Items](../compare-exchange/include-cmpxchg-items.mdx)
+* [Indexing Compare-Exchange Values](../compare-exchange/indexing-cmpxchg-values.mdx)
+* [Compare-Exchange in Dynamic Queries](../compare-exchange/cmpxchg-in-dynamic-queries.mdx)
+* [Compare-Exchange Expiration](../compare-exchange/cmpxchg-expiration.mdx)
+* [Atomic Guards](../compare-exchange/atomic-guards.mdx)
 
 ---
 
@@ -254,7 +254,7 @@ import Admonition from '@theme/Admonition';
 ### Add safety to cluster-wide transactions
 
 * When using cluster-wide sessions to handle documents, RavenDB automatically creates internal compare-exchange items,
-  called [atomic guards](../compare-exchange/atomic-guards), to enforce atomic document modifications.
+  called [atomic guards](../compare-exchange/atomic-guards.mdx), to enforce atomic document modifications.
   These items coordinate access and prevent conflicting writes across nodes.  
 
 * ✅ Why compare-exchange?  
