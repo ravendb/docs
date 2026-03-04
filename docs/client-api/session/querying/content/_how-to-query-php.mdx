@@ -13,7 +13,7 @@ import CodeBlock from '@theme/CodeBlock';
         * via the Studio's [Query view](../../../../studio/database/queries/query-view.mdx)  
 
 * Queries defined using `query` or `documentQuery` are translated by the RavenDB client 
-  to [RQL](../../../../client-api/session/querying/what-is-rql.mdx) when sent to the server.  
+  to [RQL](../../../../querying/rql/what-is-rql.mdx) when sent to the server.  
 * All RavenDB queries use an **index** to provide results, even when an index is not explicitly defined.  
   Learn more [below](../../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).
 
@@ -341,7 +341,7 @@ from "Employees" where FirstName = "Robert"
 
 * Queries defined with [query](../../../../client-api/session/querying/how-to-query.mdx#sessionquery) 
   or [documentQuery](../../../../client-api/session/querying/how-to-query.mdx#sessionadvanceddocumentquery) 
-  are translated by the RavenDB client to [RQL](../../../../client-api/session/querying/what-is-rql.mdx)  
+  are translated by the RavenDB client to [RQL](../../../../querying/rql/what-is-rql.mdx)  
   when sent to the server.
 
 * The session also gives you a way to express the query directly in RQL using the `rawQuery` method.

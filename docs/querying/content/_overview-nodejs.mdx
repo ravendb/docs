@@ -12,7 +12,7 @@ import Panel from '@site/src/components/Panel';
     * The session's `rawQuery` method - using RQL
     * The [Query view](../../studio/database/queries/query-view.mdx) in Studio - using RQL
 
-* Queries defined with the `query` method are translated by the RavenDB client to [RQL](../../client-api/session/querying/what-is-rql.mdx)  
+* Queries defined with the `query` method are translated by the RavenDB client to [RQL](../../querying/rql/what-is-rql.mdx)  
   when sent to the server.
     
 * All queries in RavenDB use an **index** to provide results, even when you don't specify one.  
@@ -339,7 +339,7 @@ from "products" limit 5, 10 // skip 5, take 10
 
 <Panel heading="session.advanced.rawQuery">
 
-* Queries defined with [query](../../querying/overview.mdx#session-query) are translated by the RavenDB client to [RQL](../../client-api/session/querying/what-is-rql.mdx) when sent to the server.  
+* Queries defined with [query](../../querying/overview.mdx#session-query) are translated by the RavenDB client to [RQL](../../querying/rql/what-is-rql.mdx) when sent to the server.  
 
 * The session also gives you a way to express the query directly in RQL using the `rawQuery` method.
 

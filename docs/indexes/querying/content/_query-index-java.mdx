@@ -7,7 +7,7 @@ Indexes are used by RavenDB to satisfy queries.
 
 ## Query-Flow
 
-Each query in RavenDB must be expressed by [RQL](../../../client-api/session/querying/what-is-rql.mdx), our query language. Each query must match an index in order to return the results. The full query flow is as follows:
+Each query in RavenDB must be expressed by [RQL](../../../querying/rql/what-is-rql.mdx), our query language. Each query must match an index in order to return the results. The full query flow is as follows:
 
 1. `from index | collection` 
   - First step. When a query is issued, it locates the appropriate index. If our query specifies that index, the task is simple - use this index. Otherwise, a query analysis takes place and an auto-index is created.
