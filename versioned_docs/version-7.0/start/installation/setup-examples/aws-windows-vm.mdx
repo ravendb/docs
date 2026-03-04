@@ -18,7 +18,7 @@ In this walkthrough we will setup RavenDB on an AWS EC2 t2.micro Windows virtual
 We will go through the necessary steps that are required for RavenDB to run securely including how to configure RavenDB 
 with the correct IP addresses and ports.
 
-It's recommended to read the [Setup Wizard](../../../start/installation/setup-wizard.mdx) section where you can find a detailed 
+It's recommended to read the [Setup Wizard](../../../start/installation/setup-wizard/overview.mdx) section where you can find a detailed 
 explanation about the RavenDB setup process.
 
 ## Create the VM
@@ -116,7 +116,7 @@ If you intend to run as a service, the write permissions should be granted to th
 ![22](./assets/22.png)
 
 You have a few choices on how to run the RavenDB server. 
-We will use the [Setup Wizard](../../../start/installation/setup-wizard.mdx), but you can also configure things [manually](../../../start/installation/manual.mdx).
+We will use the [Setup Wizard](../../../start/installation/setup-wizard/overview.mdx), but you can also configure things [manually](../../../start/installation/manual.mdx).
 
 Open PowerShell and navigate to the extracted RavenDB folder. 
 
@@ -130,7 +130,7 @@ The service will be registered. The server will start and you will be redirected
 
 Accept the agreement and choose the setup type you want to do. In the example we choose to setup securely with a Let's Encrypt certificate.
 
-You will need to claim your domain, read more [here](../../../start/installation/setup-wizard.mdx#secure-setup-with-a-let).
+You will need to claim your domain, read more [here](../../../start/installation/setup-wizard/choose-security-option.mdx#generate-let-s-encrypt-certificate).
 
 When you reach the point where you have to enter the IP addresses, you can go to the EC2 management console and check the machine's IP addresses.
 
@@ -184,5 +184,5 @@ If you want to access the RavenDB CLI, first find out the RavenDB process number
  
 Congratulations! You have a secure RavenDB server running on a simple EC2 machine. 
 
-Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard.mdx) to construct a cluster during setup.
+Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard/overview.mdx) to construct a cluster during setup.
 

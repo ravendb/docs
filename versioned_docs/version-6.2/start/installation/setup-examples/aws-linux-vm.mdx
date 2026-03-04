@@ -18,7 +18,7 @@ In this walkthrough, we will setup RavenDB on an AWS EC2 t2.micro virtual machin
 We will go through the necessary steps that are required for RavenDB to run securely including how to configure RavenDB 
 with the correct IP addresses and ports.
 
-It's recommended to read the [Setup Wizard](../../../start/installation/setup-wizard.mdx) section where you can find a detailed 
+It's recommended to read the [Setup Wizard](../../../start/installation/setup-wizard/overview.mdx) section where you can find a detailed 
 explanation about the RavenDB setup process.
 
 ## Create the VM
@@ -129,7 +129,7 @@ Locate the VM's private and public IP addresses in the AWS EC2 Management Consol
 ![9](./assets/9.png)
 
 You have a few choices on how to run the RavenDB server. 
-We will use the [Setup Wizard](../../../start/installation/setup-wizard.mdx), but you can also configure things [manually](../../../start/installation/manual.mdx).
+We will use the [Setup Wizard](../../../start/installation/setup-wizard/overview.mdx), but you can also configure things [manually](../../../start/installation/manual.mdx).
 
 Let's edit the [settings.json](../../../server/configuration/configuration-options.mdx#settingsjson) file so that we can perform the setup remotely using the browser.
 Notice that when we run the server for the first time, `settings.json` is created from `settings.default.json`. So if `settings.json` doesn't exist, edit `settings.default.json` instead.
@@ -196,7 +196,7 @@ RavenDB is running and you can access it from your (local) browser using the VM'
 ![12](./assets/12.png)
 
 Accept the agreement and choose the setup type you want to do. In the example we choose to setup securely with a Let's Encrypt certificate.
-You will need to claim your domain, read more [here](../../../start/installation/setup-wizard.mdx#secure-setup-with-a-let).
+You will need to claim your domain, read more [here](../../../start/installation/setup-wizard/choose-security-option.mdx#generate-let-s-encrypt-certificate).
 
 When you reach the point where you have to enter the IP addresses, you can go to the EC2 management console and check the machine's IP addresses.
 
@@ -237,5 +237,5 @@ Congratulations! You have a secure RavenDB server running on a simple EC2 machin
 
 Don't forget to delete the `Security.UnsecuredAccessAllowed` property from [settings.json](../../../server/configuration/configuration-options.mdx#settingsjson). It's not necessary anymore because access to the server now requires using a registered client certificate. 
 
-Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard.mdx) to construct a cluster during setup.
+Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard/overview.mdx) to construct a cluster during setup.
 
