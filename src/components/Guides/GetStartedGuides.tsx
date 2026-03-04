@@ -3,6 +3,7 @@ import CardWithIcon from "../Common/CardWithIcon";
 import Heading from "@theme/Heading";
 import { IconName } from "@site/src/typescript/iconName";
 import { useLatestVersion } from "@site/src/hooks/useLatestVersion";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 interface GuideItem {
     title: string;
@@ -17,7 +18,7 @@ const GUIDES: GuideItem[] = [
         description:
             "Learn how to handle documents efficiently: explore data modeling, document structure, and CRUD operations.",
         icon: "database",
-        url: "/studio/database/documents/documents-and-collections/",
+        url: "/studio/database/documents/documents-and-collections",
     },
     {
         title: "Get started with Querying",
@@ -70,8 +71,14 @@ const GUIDES: GuideItem[] = [
     },
 ];
 
-export default function GetStartedGuides() {
+function GetDocAbsoluteUrl(relativeUrl: string): string {
     const latestVersion = useLatestVersion();
+    const { siteConfig } = useDocusaurusContext();
+
+    return `${siteConfig.url}/${latestVersion}${relativeUrl}`;
+}
+
+export default function GetStartedGuides() {
     return (
         <div className="flex flex-col gap-6 items-start relative w-full mb-8">
             <div className="flex flex-col gap-1 items-start w-full">
@@ -89,7 +96,7 @@ export default function GetStartedGuides() {
                         title={guide.title}
                         icon={guide.icon}
                         description={guide.description}
-                        url={latestVersion + guide.url}
+                        url={GetDocAbsoluteUrl(guide.url)}
                     />
                 ))}
             </div>
