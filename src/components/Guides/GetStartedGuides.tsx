@@ -71,7 +71,7 @@ const GUIDES: GuideItem[] = [
     },
 ];
 
-function GetDocAbsoluteUrl(relativeUrl: string): string {
+function useDocAbsoluteUrl(relativeUrl: string): string {
     const latestVersion = useLatestVersion();
     const { siteConfig } = useDocusaurusContext();
 
@@ -96,7 +96,7 @@ export default function GetStartedGuides() {
                         title={guide.title}
                         icon={guide.icon}
                         description={guide.description}
-                        url={GetDocAbsoluteUrl(guide.url)}
+                        url={useDocAbsoluteUrl(guide.url)}
                     />
                 ))}
             </div>
