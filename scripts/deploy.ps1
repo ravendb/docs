@@ -118,14 +118,23 @@ function Update-CloudFrontKVS {
         exit 1
     }
 
-    $redirectsData = Get-Content -Raw $RedirectsFilePath
+    $redirectsData = Get-Content -Path $RedirectsFilePath | ConvertFrom-Json
+
+    $transformedRedirects = $redirectsData | ForEach-Object {
+        @{
+            Key   = $_.key
+            Value = ($_.value | ConvertTo-Json -Compress)
+        }
+    }
+
+    $encodedPayload = $transformedRedirects | ConvertTo-Json -Compress
 
     $kvsDetails = aws cloudfront describe-key-value-store --kvs-arn $kvsArn
 
     aws cloudfront-keyvaluestore update-keys \
         --kvs-arn $kvsArn \
         --if-match $kvsDetails.ETag \
-        --puts $redirectsData
+        --puts $encodedPayload
 }
 
 Ensure-Dependencies
