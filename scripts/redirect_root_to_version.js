@@ -38,9 +38,10 @@ async function handler(event) {
         const redirectPath = redirectJsonValue.targetUrl;
         const redirectMinimumVersion = redirectJsonValue.minimumVersion;
 
-        const isVersionSupported = version.localeCompare(redirectMinimumVersion, "en", {
-            numeric: true
-        }) >= 0;
+        const isVersionSupported =
+            version.localeCompare(redirectMinimumVersion, "en", {
+                numeric: true,
+            }) >= 0;
 
         if (redirectPath === null || !isVersionSupported) {
             return request;
