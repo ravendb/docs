@@ -1,4 +1,4 @@
-import cf from 'cloudfront';
+import cf from "cloudfront";
 
 const kvsHandle = cf.kvs();
 
@@ -27,8 +27,7 @@ async function handler(event) {
     if (versionMatch) {
         version = versionMatch[1];
         versionlessUri = versionMatch[2];
-    }
-    else {
+    } else {
         version = defaultVersion;
         versionlessUri = uri;
     }
@@ -46,11 +45,10 @@ async function handler(event) {
             statusCode: 301,
             statusDescription: "Moved Permanently",
             headers: {
-                location: { value: newUri }
-            }
+                location: { value: newUri },
+            },
         };
-    }
-    catch (_) {
+    } catch (_) {
         return request;
     }
 }
