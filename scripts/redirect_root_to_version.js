@@ -1,24 +1,53 @@
-function handler(event) {
-    var request = event.request;
-    var uri = request.uri;
+import cf from "cloudfront";
+
+const kvsHandle = cf.kvs();
+
+const defaultVersion = "7.2";
+
+const staticAssetRegex =
+    /\.(html|css|js|jpg|jpeg|png|gif|webp|svg|ico|ttf|otf|woff|woff2|eot|mp4|mp3|webm|avi|mov|pdf|txt|xml)$/i;
+
+const versionRegex = /^\/(\d+\.\d+)(\/.*)?/;
+
+async function handler(event) {
+    const request = event.request;
+    const uri = request.uri;
 
     if (uri.startsWith("/cloud") || uri.startsWith("/guides")) {
         return request;
     }
 
-    var defaultVersion = "7.2";
-
-    var staticAssetRegex =
-        /\.(html|css|js|jpg|jpeg|png|gif|webp|svg|ico|ttf|otf|woff|woff2|eot|mp4|mp3|webm|avi|mov|pdf|txt|xml)$/i;
-
     if (staticAssetRegex.test(uri)) {
         return request;
     }
 
-    var versionRegex = /^\/\d+\.\d+/;
+    const versionMatch = uri.match(versionRegex);
 
-    if (!versionRegex.test(uri)) {
-        var newUri = `/${defaultVersion}${uri}`;
+    let version, versionlessUri;
+    if (versionMatch) {
+        version = versionMatch[1];
+        versionlessUri = versionMatch[2];
+    } else {
+        version = defaultVersion;
+        versionlessUri = uri;
+    }
+
+    try {
+        const redirectData = await kvsHandle.get(versionlessUri);
+        const redirectJsonValue = JSON.parse(redirectData).value;
+        const redirectPath = redirectJsonValue.targetUrl;
+        const redirectMinimumVersion = redirectJsonValue.minimumVersion;
+
+        const isVersionSupported =
+            version.localeCompare(redirectMinimumVersion, "en", {
+                numeric: true,
+            }) >= 0;
+
+        if (redirectPath === null || !isVersionSupported) {
+            return request;
+        }
+
+        const newUri = `/${version}${redirectPath}`;
 
         return {
             statusCode: 301,
@@ -27,7 +56,7 @@ function handler(event) {
                 location: { value: newUri },
             },
         };
+    } catch (_) {
+        return request;
     }
-
-    return request;
 }

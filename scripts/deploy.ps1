@@ -45,6 +45,7 @@ param(
 )
 
 $PythonWhatsNewPath = Join-Path $PSScriptRoot 'build_whats_new.py'
+$RedirectsFilePath = Join-Path $PSScriptRoot 'redirects.json'
 
 function ThrowIfEmpty {
     param (
@@ -109,6 +110,33 @@ function Prepare-RobotsTxt {
     Write-Host "robots.txt -> using '$srcName'" -ForegroundColor Cyan
 }
 
+function Update-CloudFrontKVS {
+    $kvsArn = $env:KVS_ARN
+
+    if (-not $kvsArn) {
+        Write-Error "Environment variable KVS_ARN is not set."
+        exit 1
+    }
+
+    $redirectsData = Get-Content -Path $RedirectsFilePath | ConvertFrom-Json
+
+    $transformedRedirects = $redirectsData | ForEach-Object {
+        @{
+            Key   = $_.key
+            Value = ($_.value | ConvertTo-Json -Compress)
+        }
+    }
+
+    $encodedPayload = $transformedRedirects | ConvertTo-Json -Compress
+
+    $kvsDetails = aws cloudfront describe-key-value-store --kvs-arn $kvsArn
+
+    aws cloudfront-keyvaluestore update-keys \
+        --kvs-arn $kvsArn \
+        --if-match $kvsDetails.ETag \
+        --puts $encodedPayload
+}
+
 Ensure-Dependencies
 
 ThrowIfEmpty $Env:AWS_ACCESS_KEY_ID      'AWS_ACCESS_KEY_ID not set'
@@ -141,12 +169,15 @@ $BuildDir = [IO.Path]::Combine($PSScriptRoot, '..', 'build')
 if (-not (Test-Path $BuildDir)) { throw "Build folder not produced ($BuildDir)" }
 
 if ($DryRun) {
-    Write-Host "Dry run mode enabled. Skipping sync to s3://$S3BucketName/ and CloudFront invalidation." -ForegroundColor Yellow
+    Write-Host "Dry run mode enabled. Skipping sync to s3://$S3BucketName/, CloudFront KeyValueStore update and CloudFront invalidation." -ForegroundColor Yellow
 } else {
 
     Write-Host "Syncing to s3://$S3BucketName/ ..." -ForegroundColor Cyan
     aws s3 sync $BuildDir "s3://$S3BucketName/" --delete
     if ($LASTEXITCODE) { throw 'aws s3 sync failed' }
+
+    Write-Host "Updating CloudFront KeyValueStore $CloudFrontDistributionId" -ForegroundColor Cyan
+    Update-CloudFrontKVS
 
     if ($CloudFrontDistributionId) {
         Write-Host "Invalidating CloudFront distribution $CloudFrontDistributionId" -ForegroundColor Cyan

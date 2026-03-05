@@ -1,0 +1,16 @@
+[
+    {
+        "key": "/client-api/session/querying/what-is-rql",
+        "value": {
+            "targetUrl": "/querying/rql/what-is-rql",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/database/code-assistance",
+        "value": {
+            "targetUrl": "/querying/rql/rql-code-assistance",
+            "minimumVersion": "7.2"
+        }
+    }
+]
