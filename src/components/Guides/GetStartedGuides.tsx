@@ -1,16 +1,6 @@
 import React from "react";
-import CardWithIcon from "../Common/CardWithIcon";
 import Heading from "@theme/Heading";
-import { IconName } from "@site/src/typescript/iconName";
-import { useLatestVersion } from "@site/src/hooks/useLatestVersion";
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-
-interface GuideItem {
-    title: string;
-    description: string;
-    icon: IconName;
-    url: string;
-}
+import Guide, { GuideItem } from "./Guide";
 
 const GUIDES: GuideItem[] = [
     {
@@ -71,13 +61,6 @@ const GUIDES: GuideItem[] = [
     },
 ];
 
-function useDocAbsoluteUrl(relativeUrl: string): string {
-    const latestVersion = useLatestVersion();
-    const { siteConfig } = useDocusaurusContext();
-
-    return `${siteConfig.url}/${latestVersion}${relativeUrl}`;
-}
-
 export default function GetStartedGuides() {
     return (
         <div className="flex flex-col gap-6 items-start relative w-full mb-8">
@@ -91,13 +74,7 @@ export default function GetStartedGuides() {
             </div>
             <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                 {GUIDES.map((guide, index) => (
-                    <CardWithIcon
-                        key={index}
-                        title={guide.title}
-                        icon={guide.icon}
-                        description={guide.description}
-                        url={useDocAbsoluteUrl(guide.url)}
-                    />
+                    <Guide key={index} guide={guide} />
                 ))}
             </div>
         </div>
