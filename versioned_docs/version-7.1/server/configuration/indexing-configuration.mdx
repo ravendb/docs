@@ -243,7 +243,7 @@ EXPERT ONLY:
 
 ## Indexing.Auto.ArchivedDataProcessingBehavior
 
-The default processing behavior for archived documents in auto-indexes.
+The default processing behavior for [archived documents](../../data-archival/overview) in auto-indexes.
 
 - **Type**: `enum ArchivedDataProcessingBehavior`:
     * `ExcludeArchived`: only non-archived documents are processed by the index.
@@ -381,7 +381,7 @@ Allow to open an index without checking if current Database ID matched the one f
 
 ## Indexing.Static.ArchivedDataProcessingBehavior
 
-* Set the default processing behavior for archived documents in static indexes.
+* Set the default processing behavior for [archived documents](../../data-archival/overview) in static indexes.
 * This setting applies only to static indexes that use _Documents_ as their data source.  
   It does not apply to indexes based on _Time Series_ or _Counters_, which default to `IncludeArchived`.
 - **Type**: `enum ArchivedDataProcessingBehavior`:

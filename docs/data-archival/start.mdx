@@ -1,0 +1,51 @@
+---
+title: "Start"
+sidebar_label: "Start"
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import CardWithImage from "@site/src/components/Common/CardWithImage";
+import CardWithImageHorizontal from "@site/src/components/Common/CardWithImageHorizontal";
+import ColGrid from "@site/src/components/ColGrid";
+import Card from "@site/src/components/Common/Card";
+
+# Data Archival
+
+### Archive your documents for long-term storage without impacting performance.
+
+RavenDB’s Data Archival feature is ideal for keeping historical documents while seamlessly excluding them from your active dataset. 
+Archiving lets you retain documents for as long as needed without bloating indexes or slowing queries, keeping your active dataset small and efficient.
+
+Once a document is archived:  
+* **Storage is optimized:** Documents are compressed to reduce disk usage.
+* **Performance is preserved:** Documents are excluded from indexes and subscriptions by default.
+* **Data remains accessible:** Documents remain fully retrievable and can be unarchived at any time.
+
+Your active dataset stays lean, queries run faster, and indexes remain smaller - while you can still load any archived document whenever you need it.
+
+### Use cases
+
+* Keep your active dataset lean while preserving older records.
+* Archive completed orders, outdated logs, or past events that rarely need to be queried.
+* Retain regulatory or audit data for long-term storage without impacting day-to-day database performance.
+
+### Technical documentation
+
+Refer to the technical documentation to learn how to enable the data archival feature, schedule individual documents for archiving,
+understand what is (and isn't) archived, discover how to unarchive documents, and see how other RavenDB features behave when working with archived data.
+
+<ColGrid colCount={3}>
+    <CardWithImage title="Data archival overview" description="Learn the basic concepts of RavenDB data archival." url="../data-archival/overview" imgIcon="data-archival" />
+    <CardWithImage title="Enable data archiving" description="Learn how to enable archiving." url="../data-archival/enable-data-archiving" imgIcon="data-archival" />
+    <CardWithImage title="Schedule document archiving" description="Learn how to schedule documents for archiving." url="../data-archival/schedule-document-archiving" imgIcon="data-archival" />
+</ColGrid>
+
+### Learn more: In-depth articles
+
+<ColGrid colCount={2}>
+    <CardWithImage title="Indexing only recent data - adventures with large datasets & archiving" 
+                   description="Read blog post" 
+                   url="https://ayende.com/blog/201442-B/indexing-only-recent-data-adventures-with-large-datasets-archiving"
+                   imgIcon="data-archival" />
+</ColGrid>
