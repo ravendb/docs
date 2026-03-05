@@ -33,9 +33,16 @@ async function handler(event) {
     }
 
     try {
-        const redirectPath = await kvsHandle.get(versionlessUri);
+        const redirectData = await kvsHandle.get(versionlessUri);
+        const redirectJsonValue = JSON.parse(redirectData).value;
+        const redirectPath = redirectJsonValue.key;
+        const redirectMinimumVersion = redirectJsonValue.minimumVersion;
 
-        if (redirectPath === null) {
+        const isVersionSupported = version.localeCompare(redirectMinimumVersion, "en", {
+            numeric: true
+        }) >= 0;
+
+        if (redirectPath === null || !isVersionSupported) {
             return request;
         }
 
