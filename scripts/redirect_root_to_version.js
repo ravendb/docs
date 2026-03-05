@@ -35,7 +35,7 @@ async function handler(event) {
     try {
         const redirectData = await kvsHandle.get(versionlessUri);
         const redirectJsonValue = JSON.parse(redirectData).value;
-        const redirectPath = redirectJsonValue.key;
+        const redirectPath = redirectJsonValue.targetUrl;
         const redirectMinimumVersion = redirectJsonValue.minimumVersion;
 
         const isVersionSupported = version.localeCompare(redirectMinimumVersion, "en", {
