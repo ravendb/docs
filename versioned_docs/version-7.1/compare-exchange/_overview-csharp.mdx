@@ -19,19 +19,19 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * Compare-exchange items are also suitable for storing shared or global values that aren't tied to a specific document -
   such as configuration flags, feature toggles, or reusable identifiers stored under a unique key.  
-  However, [unlike regular documents](../../compare-exchange/overview.mdx#why-not-use-regular-documents-to-enforce-uniqueness),
+  However, [unlike regular documents](../compare-exchange/overview#why-not-use-regular-documents-to-enforce-uniqueness),
   compare-exchange provides atomic updates, version-based conflict prevention, and Raft-based consistency for distributed safety.
   
-* Compare-exchange items are [not replicated externally](../../compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases) to other databases.   
+* Compare-exchange items are [not replicated externally](../compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-databases) to other databases.   
 
 * In this article:  
-    * [What compare-exchange items are](../compare-exchange/overvie.mdxw#what-compare-exchange-items-are)  
-    * [Ways to create and manage compare-exchange items](../compare-exchange/overview.mdx#ways-to-create-and-manage-compare-exchange-items)  
-    * [Why compare-exchange items are not replicated to external databases](../compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases)  
-    * [Why not use regular documents to enforce uniqueness](../compare-exchange/overview.mdx#why-not-use-regular-documents-to-enforce-uniqueness)  
-    * [Example I - Email address reservation](../compare-exchange/overview.mdx#example-i-email-address-reservation)  
-    * [Example II - Reserve a shared resource](../compare-exchange/overview.mdx#example-ii-reserve-a-shared-resource)  
-    * [Use cases](../compare-exchange/overview.mdx#use-cases)  
+  * [What compare-exchange items are](../compare-exchange/overview#what-compare-exchange-items-are)  
+  * [Ways to create and manage compare-exchange items](../compare-exchange/overview#ways-to-create-and-manage-compare-exchange-items)  
+  * [Why compare-exchange items are not replicated to external databases](../compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-databases)  
+  * [Why not use regular documents to enforce uniqueness](../compare-exchange/overview#why-not-use-regular-documents-to-enforce-uniqueness)  
+  * [Example I - Email address reservation](../compare-exchange/overview#example-i-email-address-reservation)  
+  * [Example II - Reserve a shared resource](../compare-exchange/overview#example-ii-reserve-a-shared-resource)   
+  * [Use cases](../compare-exchange/overview#use-cases)   
 
 </Admonition>
 
@@ -44,7 +44,7 @@ Compare-exchange items are key/value pairs where the key serves as a unique valu
   * **A value** - Can be any value (a number, string, array, or any valid JSON object). 
   * **Metadata** - Optional data that is associated with the compare-exchange item. Must be a valid JSON object.  
     For example, the metadata can be used to set expiration time for the compare-exchange item.  
-    Learn more in [compare-exchange expiration](../../compare-exchange/cmpxchg-expiration.mdx).  
+    Learn more in [compare-exchange expiration](../compare-exchange/cmpxchg-expiration).  
   * **Raft index** - The compare-exchange item's version.  
     Any change to the value or metadata will increase this number.  
 
@@ -52,7 +52,7 @@ Compare-exchange items are key/value pairs where the key serves as a unique valu
   but in RavenDB, this concept is applied to a distributed environment across multiple nodes instead of within a single multi-threaded process.  
   These operations require cluster consensus to ensure consistency.
   Once consensus is reached, the compare-exchange items are distributed through the Raft algorithm to all nodes in the database group.
-
+  
 </Panel>
 
 <Panel heading="Ways to create and manage compare-exchange items">
@@ -61,21 +61,22 @@ Compare exchange items can be created and managed using any of the following app
 
 * **Document Store Operations**  
   You can create and manage compare-exchange items using _document store_ operations.  
-  For example, see [Create items using a store operation](../../compare-exchange/create-cmpxchg-items.mdx#create-items-using-a-store-operation).
+  For example, see [Create items using a store operation](../compare-exchange/create-cmpxchg-items#create-items-using-a-store-operation).
 
 * **Cluster-Wide Sessions**  
-  You can create and manage compare-exchange items from within a [Cluster-Wide session](../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction).  
-  For example, see [Create items using a cluster-wide session](../../compare-exchange/create-cmpxchg-items.mdx#create-items-using-a-cluster-wide-session).     
+  You can create and manage compare-exchange items from within a [Cluster-Wide session](../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs-single-node-transaction).  
+  For example, see [Create items using a cluster-wide session](../compare-exchange/create-cmpxchg-items#create-items-using-a-cluster-wide-session).     
   When using a cluster-wide session, the compare-exchange item is created as part of the cluster-wide transaction.  
-  If the session fails, the item creation also fails, and none of the nodes in the database group will store the new compare-exchange item.
+  Like any transaction, all operations either succeed as a group or are rolled back.  
+  If the transaction is not committed, the new compare-exchange item will not be stored on any node in the database group.
   
 * **Atomic Guards**  
-  When creating _documents_ using a cluster-wide session, RavenDB automatically creates [Atomic Guards](../../compare-exchange/atomic-guards.mdx),  
+  When creating _documents_ using a cluster-wide session, RavenDB automatically creates [Atomic Guards](../compare-exchange/atomic-guards),  
   which are special compare-exchange items that guarantee ACID transactions.  
-  See [Cluster-wide transaction vs. Single-node transaction](../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction) for a session comparison overview.  
+  See [Cluster-wide transaction vs. Single-node transaction](../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs-single-node-transaction) for a session comparison overview.  
 
 * **Studio**  
-  All compare-exchange items can also be managed from the **Compare-Exchange view** in Studio:  
+  All compare-exchange items can also be managed from the **Compare-Exchange view** in the [Studio](../todo..):  
     
     ![The compare-exchange view](../assets/the-cmpxchg-view.png)
 
@@ -83,7 +84,7 @@ Compare exchange items can be created and managed using any of the following app
     2. Click on the **Compare-Exchange** tab.
     3. This is a compare-exchange item.  
        In this view you can create, edit, and delete compare-exchange items.
-
+  
 </Panel>
 
 <Panel heading="Why compare-exchange items are not replicated to external databases">
@@ -99,9 +100,9 @@ Compare exchange items can be created and managed using any of the following app
 * Conflicts between documents that occur between two databases are resolved using the documents' change-vector. 
   Compare-exchange conflicts cannot be resolved in the same way, as they lack a similar conflict resolution mechanism.
 
-* Learn more about Replication in RavenDB in [Replication overview](../../server/clustering/replication/replication-overview.mdx).
-  For details about what is and what isn't replicated in [What is Replicated](../../server/ongoing-tasks/external-replication.mdx#what-is-replicated).
-
+* Learn more about Replication in RavenDB in [Replication overview](../server/clustering/replication/replication-overview).
+  For details about what is and what isn't replicated in [What is Replicated](../server/ongoing-tasks/external-replication#what-is-replicated).
+    
 </Panel>
 
 <Panel heading="Why not use regular documents to enforce uniqueness">
@@ -117,87 +118,101 @@ Compare exchange items can be created and managed using any of the following app
 
 * To reliably enforce uniqueness across all cluster nodes, you must use compare-exchange items,
   which are designed for this purpose and ensure global consistency.
-
+    
 </Panel>
 
-<Panel heading="Example I - Email address reservation">  
+<Panel heading="Example I - Email address reservation">
 
 The following example shows how to use compare-exchange to create documents with unique values.  
 The scope is within the database group on a single cluster. 
+    
+<TabItem value="" label="">    
+```csharp
+string email = "user@example.com";
 
-<TabItem value="" label="">
-<CodeBlock language="php">
-{`$email = "user@example.com";
+User user = new User
+{
+    Email = email
+};
 
-$user = new User();
-$user->setEmail($email);
-
-$session = $store->openSession();
-try \{
-    $session->store($user);
-
+using (IDocumentSession session = store.OpenSession())
+{
+    session.Store(user);
     // At this point, the user object has a document ID assigned by the session.
 
     // Try to reserve the user email using a compare-exchange item.
     // Note: This 'put compare-exchange operation' is not part of the session transaction, 
     //       It is a separate, cluster-wide reservation.
+    CompareExchangeResult<string> cmpXchgResult
+        = store.Operations.Send(
+            // parameters passed to the operation:
+            // email   - the unique key of the compare-exchange item
+            // user.Id - the value associated with the key
+            // 0       - pass `0` to ensure the item is created only if it doesn't already exist.
+            // If a compare-exchange item with the given key already exists, the operation will fail.
+            new PutCompareExchangeValueOperation<string>(email, user.Id, 0));
 
-    /** @var CompareExchangeResult $cmpXchgResult */
-    $cmpXchgResult = $store->operations()->send(
-        // Parameters passed to the operation:
-        // $email - the unique key of the compare-exchange item
-        // $user->getId() - the value associated with the key
-        // 0 - ensures the item is created only if it doesn't already exist
-        // If a compare-exchange item with the given key already exists, the operation will fail.
-        new PutCompareExchangeValueOperation($email, $user->getId(), 0));
-
-    if (!$cmpXchgResult->isSuccessful()) \{
-        throw new RuntimeException("Email is already in use");
-    \}
+    if (cmpXchgResult.Successful == false)
+        throw new Exception("Email is already in use");
 
     // At this point, the email has been successfully reserved/saved.
     // We can now save the user document to the database.
-    $session->saveChanges();
-\} finally \{
-    $session->close();
-\}
-`}
-</CodeBlock>
-</TabItem>  
+    session.SaveChanges();
+}
+```
+</TabItem>
 
 **Implications**:
 
-* This compare-exchange item was [created as an operation](../../compare-exchange/create-cmpxchg-items.mdx#create-items-using-a-store-operation)
-  rather than with a [cluster-wide session](../../compare-exchange/create-cmpxchg-items.mdx#create-items-using-a-cluster-wide-session).  
+* This compare-exchange item was [created as an operation](../compare-exchange/create-cmpxchg-items#create-items-using-a-store-operation)
+  rather than with a [cluster-wide session](../compare-exchange/create-cmpxchg-items#create-items-using-a-cluster-wide-session).  
   Thus, if `session.SaveChanges` fails, then the email reservation is Not rolled back automatically.  
   It is your responsibility to do so.  
 
 * The compare-exchange value that was saved can be accessed in a query using the `CmpXchg` method:  
-    
+
 <Tabs groupId='languageSyntax'>
-<TabItem value="query" label="query">
-<CodeBlock language="php">
-{`$query = $session->advanced()->rawQuery(User::class,
-    "from Users as s where id() == cmpxchg(\\"emails/ayende@ayende.com\\")")
-    ->toList();
-`}
-</CodeBlock>
+<TabItem value="Query" label="Query">
+```csharp
+ using (var session = store.OpenSession())
+ {
+     // Retrieve the user document that has the specified email:
+     var user = session.Query<User>()
+          // Access the compare-exchange value using the CmpXchg method:
+         .Where(x => x.Id == RavenQuery.CmpXchg<string>("ayende@ayende.com"))
+         .FirstOrDefault();
+ }
+```
 </TabItem>  
-<TabItem value="documentQuery" label="documentQuery">
-<CodeBlock language="php">
-{`$q = $session->advanced()
-    ->documentQuery(User::class)
-    ->whereEquals("id", CmpXchg::value("emails/ayende@ayende.com"));
-`}
-</CodeBlock>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+using (var asyncSession = store.OpenAsyncSession())
+{    
+    var user = await asyncSession.Query<User>()
+        .Where(x => x.Id == RavenQuery.CmpXchg<string>("ayende@ayende.com"))
+        .FirstOrDefaultAsync();
+}
+```
+</TabItem>  
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+using (var session = store.OpenSession())
+{
+    var user = session.Advanced
+        .DocumentQuery<User>()
+        .WhereEquals("Id", CmpXchg.Value("ayende@ayende.com"))
+        .FirstOrDefault();
+    }
+```
 </TabItem>  
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from Users as s where id() == cmpxchg("emails/ayende@ayende.com")
-`}
-</CodeBlock>
+```sql
+from "Users" 
+where id() == cmpxchg("ayende@ayende.com")
+limit 0, 1 // take the first result
+```
 </TabItem>
-</Tabs>   
+</Tabs>
 
 </Panel>
 
@@ -209,98 +224,89 @@ The scope is within the database group on a single cluster.
 The code also checks for clients which never release resources (i.e. due to failure) by using timeout.  
 
 <TabItem value="" label="">
-<CodeBlock language="php">
-{`class SharedResource
-\{
-    private ?DateTime $reservedUntil = null;
+```csharp
+private class SharedResource
+{
+    public DateTime? ReservedUntil { get; set; }
+}
 
-    public function getReservedUntil(): ?DateTime
-    \{
-        return $this->reservedUntil;
-    \}
+public void PrintWork() 
+{
+    // Try to get hold of the printer resource
+    long reservationIndex = LockResource(store, "Printer/First-Floor", TimeSpan.FromMinutes(20));
 
-    public function setReservedUntil(?DateTime $reservedUntil): void
-    \{
-        $this->reservedUntil = $reservedUntil;
-    \}
-\}
+    try
+    {
+        // Do some work for the duration that was set (TimeSpan.FromMinutes(20)).
+        //
+        // In a distributed system (unlike a multi-threaded app), a process may crash or exit unexpectedly  
+        // without releasing the resource it reserved (i.e. never reaching the 'finally' block).  
+        // This can leave the resource locked indefinitely.
+        //
+        // To prevent that, each reservation includes a timeout (TimeSpan.FromMinutes(20)).  
+        // If the process fails or exits, the resource becomes available again once the timeout expires.
+        //
+        // Important: Ensure the work completes within the timeout period.  
+        // If it runs longer, another client may acquire the same resource at the same time.
+    }
+    finally
+    {
+        ReleaseResource(store, "Printer/First-Floor", reservationIndex);
+    }
+}
 
-class CompareExchangeSharedResource
-\{
-    private ?DocumentStore $store = null;
+public long LockResource(IDocumentStore store, string resourceName, TimeSpan duration)
+{
+    while (true)
+    {
+        DateTime now = DateTime.UtcNow;
 
-    public function printWork(): void
-    \{
-        // Try to get hold of the printer resource
-        $reservationIndex = $this->lockResource($this->store, "Printer/First-Floor", Duration::ofMinutes(20));
+        SharedResource resource = new SharedResource
+        {
+            ReservedUntil = now.Add(duration)
+        };
 
-        try \{
-            // Do some work for the duration that was set (TimeSpan.FromMinutes(20)).
-            //
-            // In a distributed system (unlike a multi-threaded app), a process may crash or exit unexpectedly  
-            // without releasing the resource it reserved (i.e. never reaching the 'finally' block).  
-            // This can leave the resource locked indefinitely.
-            //
-            // To prevent that, each reservation includes a timeout (TimeSpan.FromMinutes(20)).  
-            // If the process fails or exits, the resource becomes available again once the timeout expires.
-            //
-            // Important: Ensure the work completes within the timeout period.  
-            // If it runs longer, another client may acquire the same resource at the same time.
-        \} finally \{
-            $this->releaseResource($this->store, "Printer/First-Floor", $reservationIndex);
-        \}
-    \}
+        CompareExchangeResult<SharedResource> putResult = store.Operations.Send(
+                new PutCompareExchangeValueOperation<SharedResource>(resourceName, resource, 0));
 
-    /**  throws InterruptedException */
-    public function lockResource(DocumentStoreInterface $store, ?string $resourceName, Duration $duration): int
-    \{
-        while (true) \{
-            $now = new DateTime();
+        if (putResult.Successful)
+        {
+            // resourceName wasn't present - we managed to reserve
+            return putResult.Index;
+        }
+        
+        // At this point, another process owns the resource.
+        // But if that process crashed and never released the resource, the reservation may have expired,
+        // so we can try to take the lock by overwriting the value using the current index.
+        if (putResult.Value.ReservedUntil < now)
+        {
+            // Time expired - Update the existing key with the new value
+            CompareExchangeResult<SharedResource> takeLockWithTimeoutResult = store.Operations.Send(
+                new PutCompareExchangeValueOperation<SharedResource>(
+                    resourceName, resource, putResult.Index
+                ));
 
-            $resource = new SharedResource();
-            $resource->setReservedUntil($now->add($duration->toDateInterval()));
+            if (takeLockWithTimeoutResult.Successful)
+            {
+                return takeLockWithTimeoutResult.Index;
+            }
+        }
 
-            /** @var CompareExchangeResult<SharedResource> $saveResult */
-            $saveResult = $store->operations()->send(
-                new PutCompareExchangeValueOperation($resourceName, $resource, 0));
+        // Wait a little bit and retry
+        Thread.Sleep(20);
+    }
+}
 
-            if ($saveResult->isSuccessful()) \{
-                // resourceName wasn't present - we managed to reserve
-                return $saveResult->getIndex();
-            \}
+public void ReleaseResource(IDocumentStore store, string resourceName, long index)
+{
+    CompareExchangeResult<SharedResource> deleteResult = store.Operations.Send(
+        new DeleteCompareExchangeValueOperation<SharedResource>(resourceName, index));
 
-            // At this point, another process owns the resource.
-            // But if that process crashed and never released the resource, the reservation may have expired,
-            // so we can try to take the lock by overwriting the value using the current index.
-            if ($saveResult->getValue()->getReservedUntil() < $now) \{
-                // Time expired - Update the existing key with the new value
-                /** @var CompareExchangeResult<SharedResource> takeLockWithTimeoutResult */
-                $takeLockWithTimeoutResult = $store->operations()->send(
-                    new PutCompareExchangeValueOperation($resourceName, $resource, $saveResult->getIndex()));
-
-                if ($takeLockWithTimeoutResult->isSuccessful()) \{
-                    return $takeLockWithTimeoutResult->getIndex();
-                \}
-            \}
-
-            // Wait a little bit and retry
-            usleep(20000);
-        \}
-    \}
-
-    public function releaseResource(DocumentStoreInterface $store, ?string $resourceName, int $index): void
-    \{
-        $deleteResult = $store->operations()->send(
-            new DeleteCompareExchangeValueOperation(SharedResource::class, $resourceName, $index)
-        );
-
-        // We have 2 options here:
-        // $deleteResult->isSuccessful is true - we managed to release resource
-        // $deleteResult->isSuccessful is false - someone else took the lock due to timeout
-    \}
-\}
-`}
-</CodeBlock>
+    // We have 2 options here:
+    // deleteResult.Successful is true - we managed to release resource
+    // deleteResult.Successful is false - someone else took the lock due to timeout 
+}
+```
 </TabItem>
 
 </Panel>
