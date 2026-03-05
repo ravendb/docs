@@ -1,0 +1,4 @@
+[
+    { "key": "/client-api/session/querying/what-is-rql", "value": "/querying/rql/what-is-rql" },
+    { "key": "/studio/database/code-assistance", "value": "/querying/rql/rql-code-assistance" }
+]
