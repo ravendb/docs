@@ -40,11 +40,10 @@ This is how the concept of the [transactional outbox](https://en.wikipedia.org/w
 ```csharp
 using (var session = store.OpenAsyncSession())
 {
-await session.StoreAsync(invoice);
-
-await session.StoreAsync(invoiceCreatedMessage);
-
-await session.SaveChangesAsync(); // single atomic commit
+    await session.StoreAsync(invoice);
+    await session.StoreAsync(invoiceCreatedMessage);
+    
+    await session.SaveChangesAsync(); // single atomic commit
 } 
 
 ```
