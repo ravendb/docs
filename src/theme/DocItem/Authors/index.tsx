@@ -3,8 +3,39 @@ import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import authorsData from "@site/docs/authors.json";
 import { Icon } from "@site/src/components/Common/Icon";
 import LazyImage from "@site/src/components/Common/LazyImage";
+import { IconName } from "@site/src/typescript/iconName";
 
-function normalizeSocialLink(platform, handleOrUrl) {
+type Platform = "x" | "github" | "linkedin" | "email";
+
+type Author = {
+    name: string;
+    title: string | null;
+    url: string | null;
+    imageURL: string;
+    socials: Record<string, string>;
+};
+
+function getAuthorData(authorKey: string): Author | null {
+    const authorInfo = authorsData[authorKey];
+    if (!authorInfo) {
+        // eslint-disable-next-line no-console
+        console.warn(`No author data found for key '${authorKey}' in authors.json`);
+        return null;
+    }
+    return {
+        name: authorInfo.name,
+        title: authorInfo.title,
+        url: authorInfo.url,
+        imageURL: authorInfo.image_url,
+        socials: authorInfo.socials,
+    };
+}
+
+function isPlatform(value: string): value is Platform {
+    return ["x", "github", "linkedin", "email"].includes(value);
+}
+
+function normalizeSocialLink(platform: Platform, handleOrUrl: string): string {
     const isAbsoluteUrl = handleOrUrl.startsWith("http://") || handleOrUrl.startsWith("https://");
     if (isAbsoluteUrl) {
         return handleOrUrl;
@@ -16,8 +47,6 @@ function normalizeSocialLink(platform, handleOrUrl) {
             return `https://github.com/${handleOrUrl}`;
         case "linkedin":
             return `https://www.linkedin.com/in/${handleOrUrl}/`;
-        case "stackoverflow":
-            return `https://stackoverflow.com/users/${handleOrUrl}`;
         case "email":
             return `mailto:${handleOrUrl}`;
         default:
@@ -25,7 +54,7 @@ function normalizeSocialLink(platform, handleOrUrl) {
     }
 }
 
-const socialIconMap = {
+const socialIconMap: Record<Platform, IconName> = {
     x: "x",
     github: "github",
     linkedin: "linkedin",
@@ -40,23 +69,7 @@ export default function DocItemAuthors() {
         return null;
     }
 
-    let author = null;
-
-    if (authorKey) {
-        const authorInfo = authorsData[authorKey];
-        if (!authorInfo) {
-            // eslint-disable-next-line no-console
-            console.warn(`No author data found for key '${authorKey}' in authors.json`);
-        } else {
-            author = {
-                name: authorInfo.name,
-                title: authorInfo.title,
-                url: authorInfo.url,
-                imageURL: authorInfo.image_url,
-                socials: authorInfo.socials,
-            };
-        }
-    }
+    const author = authorKey ? getAuthorData(authorKey) : null;
 
     if (!author && !publishedAt) {
         return null;
@@ -88,6 +101,9 @@ export default function DocItemAuthors() {
                         {author.socials && (
                             <div className="docAuthorSocials">
                                 {Object.entries(author.socials).map(([platform, handleOrUrl]) => {
+                                    if (!isPlatform(platform)) {
+                                        return null;
+                                    }
                                     const normalizedUrl = normalizeSocialLink(platform, handleOrUrl);
                                     return (
                                         <a

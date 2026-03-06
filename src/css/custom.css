@@ -707,8 +707,8 @@ a {
 }
 
 .docAuthorTitle {
-    font-size: 0.75rem;
     @apply text-black/60 dark:text-white/60;
+    font-size: 0.75rem;
     line-height: 1.2;
 }
 
@@ -736,4 +736,3 @@ a {
     font-size: 0.75rem;
     line-height: 1.2;
 }
-
