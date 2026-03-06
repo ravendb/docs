@@ -129,14 +129,14 @@ function Update-CloudFrontKVS {
 
     $encodedPayload = $transformedRedirects | ConvertTo-Json -Compress
 
-    $kvsDetails = aws cloudfront-keyvaluestore describe-key-value-store --kvs-arn $kvsArn
+    $kvsEtag = aws cloudfront-keyvaluestore describe-key-value-store --kvs-arn $kvsArn --query 'ETag' --output text
 
-    aws cloudfront-keyvaluestore update-keys --kvs-arn $kvsArn --if-match $kvsDetails.ETag --puts $encodedPayload
+    aws cloudfront-keyvaluestore update-keys --kvs-arn $kvsArn --if-match $kvsEtag --puts $encodedPayload
 }
 
 Ensure-Dependencies
 
-ThrowIfEmpty $Env:AWS_ACCESS_KEY_ID      'AWS_ACCESS_KEY_ID not set'
+ThrowIfEmpty $Env:AWS_ACCESS_KEY_ID     'AWS_ACCESS_KEY_ID not set'
 ThrowIfEmpty $Env:AWS_SECRET_ACCESS_KEY 'AWS_SECRET_ACCESS_KEY not set'
 ThrowIfEmpty $Env:AWS_DEFAULT_REGION    'AWS_DEFAULT_REGION not set'
 
