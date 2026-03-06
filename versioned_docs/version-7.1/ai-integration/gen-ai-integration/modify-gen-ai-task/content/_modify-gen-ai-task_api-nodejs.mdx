@@ -12,21 +12,21 @@ import Panel from "@site/src/components/Panel";
 * **To modify an existing GenAI task**, register a modified task configuration object with the server using the existing `taskID`, 
   via the `UpdateGenAiOperation` store operation.    
     
-* This _taskID_ is Not the [user-defined task identifier](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#configure-basic-settings)
+* This _taskID_ is Not the [user-defined task identifier](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#configure-basic-settings)
   that you define as part of the GenAI task configuration,   
   but an internal identifier that RavenDB uses to manage the task (similar to how it manages ETL, backup, and other ongoing tasks).    
 
     * **User-defined task identifier**  
       The _user-defined task identifier_ is a `string` used mainly as a metadata property name for the list of hashes that track 
-      [processed document parts](../../../ai-integration/gen-ai-integration/overview#tracking-of-processed-document-parts).   
+      [processed document parts](../../../ai-integration/gen-ai-integration/overview.mdx#tracking-of-processed-document-parts).   
 
     * **taskID**  
       The _taskID_ is a `number` used internally by RavenDB to identify and manage the task.  
       See the examples below to learn how to extract the _taskID_ and use it to register the modified task configuration.  
 
 * In this article:
-   * [Modify task configuration](../../../ai-integration/gen-ai-integration/modify-gen-ai-task/modify-gen-ai-task_api#modify-task-configuration) 
-   * [Syntax](../../../ai-integration/gen-ai-integration/modify-gen-ai-task/modify-gen-ai-task_api#syntax)  
+   * [Modify task configuration](../../../ai-integration/gen-ai-integration/modify-gen-ai-task/modify-gen-ai-task_api.mdx#modify-task-configuration) 
+   * [Syntax](../../../ai-integration/gen-ai-integration/modify-gen-ai-task/modify-gen-ai-task_api.mdx#syntax)  
 
 </Admonition>
 
@@ -54,7 +54,7 @@ To modify the configuration of an existing GenAI task:
     
 **Examples**:
     
-The following examples modify the _spam-filter_ task that was created in the [Create GenAI task](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#full-example) article.  
+The following examples modify the _spam-filter_ task that was created in the [Create GenAI task](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api.mdx#full-example) article.  
 This task removes spam comments from documents in the _Posts_ collection.
   * The first example, **Modify_selected_configuration_details**,  
     shows how to retrieve the existing configuration, modify selected fields, and deploy it to the server again.    

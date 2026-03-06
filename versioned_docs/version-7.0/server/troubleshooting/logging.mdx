@@ -82,8 +82,8 @@ filtering and error handling tools, and a long list of applications that NLog is
 
 * **Temporary changes** can be applied at runtime, without requiring a server restart, using:
   * the [CLI](../../server/troubleshooting/logging.mdx#cli-customization-immediate-temporary-changes)  
-  * the [Admin Logs view](../../studio/server/debug/admin-logs) in the Studio  
-  * the [`SetLogsConfigurationOperation`](../../client-api/operations/server-wide/logs/set-logs-configuration) in the Client API 
+  * the [Admin Logs view](../../studio/server/debug/admin-logs.mdx) in the Studio  
+  * the [`SetLogsConfigurationOperation`](../../client-api/operations/server-wide/logs/set-logs-configuration.mdx) in the Client API 
 
 * The _scope_ of all logging settings is _server-wide_, applying to all databases.  
 
@@ -228,7 +228,7 @@ ravendb> log debug
 To use NLog you need to:  
 
 1. [Configure RavenDB to use an external NLog configuration file](../../server/troubleshooting/logging.mdx#use-external-config-file)  
-2. [Configure RavenDB to use NLog plugins for streaming log data](../../server/troubleshooting/logging#2-configure-ravendb-to-use-nlog-plugins-for-streaming-log-data) 
+2. [Configure RavenDB to use NLog plugins for streaming log data](../../server/troubleshooting/logging.mdx#2-configure-ravendb-to-use-nlog-plugins-for-streaming-log-data) 
 3. [Set your NLog configuration file](../../server/troubleshooting/logging.mdx#set-nlog-config-file)  
 
 <Admonition type="note" title="">  
@@ -296,7 +296,7 @@ add an `NLog.Targets.Loki` property to RavenDB’s `Logs.NuGet.AdditionalPackage
   Use this key to set the default URL for the NuGet package source.  
 * [Logs.NuGet.AllowPreReleasePackages](../../server/configuration/logs-configuration.mdx#logsnugetallowprereleasepackages)  
   Use this key to determine whether RavenDB is allowed to install pre-release versions of NuGet packages.
-* [Logs.NuGet.AdditionalPackages](../../server/configuration/logs-configuration#logsnugetadditionalpackages)  
+* [Logs.NuGet.AdditionalPackages](../../server/configuration/logs-configuration.mdx#logsnugetadditionalpackages)  
   Use this key to specify a dictionary of additional NuGet packages to load during server startup for logging.  
   Each key is a package name, and the corresponding value is the desired version.
     

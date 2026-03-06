@@ -17,36 +17,36 @@ import Panel from "@site/src/components/Panel";
 <Admonition type="note" title="">
 
 To check document compliance with a validation schema via Studio, you can:  
- - Run a manual [validation test operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#running-a-validation-test), that goes through a collection or a part of it and reports invalid documents and their validation errors.  
- - Create an [audit index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#audit-documents-compliance-by-index), that validates documents during indexing and stores any validation error messages in the index, so the documents can be queried by compliance status and specific validation error messages.  
+ - Run a manual [validation test operation](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio.mdx#running-a-validation-test), that goes through a collection or a part of it and reports invalid documents and their validation errors.  
+ - Create an [audit index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio.mdx#audit-documents-compliance-by-index), that validates documents during indexing and stores any validation error messages in the index, so the documents can be queried by compliance status and specific validation error messages.  
 
 * In this article:  
-  * [Running a validation test](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#running-a-validation-test)
-    * [Test a schema using the Document Schema view](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#test-a-schema-using-the-document-schema-view)  
-    * [Test a schema using the Schema Playground](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#test-a-schema-using-the-schema-playground)  
-  * [Audit documents compliance by index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#audit-documents-compliance-by-index)
-    * [Define a validation schema](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#define-a-validation-schema)
-    * [Create the audit index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#create-the-audit-index)
-    * [Query the index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#query-the-index)
+  * [Running a validation test](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio.mdx#running-a-validation-test)
+    * [Test a schema using the Document Schema view](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio.mdx#test-a-schema-using-the-document-schema-view)  
+    * [Test a schema using the Schema Playground](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio.mdx#test-a-schema-using-the-schema-playground)  
+  * [Audit documents compliance by index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio.mdx#audit-documents-compliance-by-index)
+    * [Define a validation schema](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio.mdx#define-a-validation-schema)
+    * [Create the audit index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio.mdx#create-the-audit-index)
+    * [Query the index](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio.mdx#query-the-index)
 
 </Admonition>
 
 <Panel heading="Running a validation test">
 
-You can initiate a compliance test operation that validates documents against a schema, using either a defined schema listed in the [Document Schema view](../../../documents/schema-validation/write-validation/write-validation_studio#managing-and-testing-existing-schemas) or the [Schema playground](../../../documents/schema-validation/write-validation/write-validation_studio#the-schema-playground) views.  
+You can initiate a compliance test operation that validates documents against a schema, using either a defined schema listed in the [Document Schema view](../../../documents/schema-validation/write-validation/write-validation_studio.mdx#managing-and-testing-existing-schemas) or the [Schema playground](../../../documents/schema-validation/write-validation/write-validation_studio.mdx#the-schema-playground) views.  
 
 <ContentFrame>
 
 ### Test a schema using the Document Schema view
 
-The validation schemas that you already defined are displayed in the [Document Schema view](../../../documents/schema-validation/write-validation/write-validation_studio#creating-a-collection-schema), where you can test each schema against documents in the associated collection.  
+The validation schemas that you already defined are displayed in the [Document Schema view](../../../documents/schema-validation/write-validation/write-validation_studio.mdx#creating-a-collection-schema), where you can test each schema against documents in the associated collection.  
 
 ![Test collection schema](./assets/schema-validation_studio_audit-test.png)
 
 * Use this method to verify schema effectiveness and documents compliance with schema constraints.  
 * Test results include the number and names of invalid documents, and the validation error messages generated for each document.  
 * You can validate an entire collection or a specified number of documents. This is helpful when working with large collections.  
-* Find [here](../../../documents/schema-validation/write-validation/write-validation_studio#managing-and-testing-existing-schemas) a detailed explanation of this view. 
+* Find [here](../../../documents/schema-validation/write-validation/write-validation_studio.mdx#managing-and-testing-existing-schemas) a detailed explanation of this view. 
 
 </ContentFrame>
 
@@ -54,7 +54,7 @@ The validation schemas that you already defined are displayed in the [Document S
 
 ### Test a schema using the Schema Playground
 
-The [Document Schema](../../../documents/schema-validation/write-validation/write-validation_studio#creating-a-collection-schema) view also provides an isolated playground environment for experimentation, allowing you to define schemas and try them out on your data without affecting your existing collections or schemas.
+The [Document Schema](../../../documents/schema-validation/write-validation/write-validation_studio.mdx#creating-a-collection-schema) view also provides an isolated playground environment for experimentation, allowing you to define schemas and try them out on your data without affecting your existing collections or schemas.
 
 ![Document Schema view](./assets/schema-validation_studio_audit-playground.png)
 
@@ -62,7 +62,7 @@ The [Document Schema](../../../documents/schema-validation/write-validation/writ
 * You can validate an entire collection or a specified number of documents.  
 * You can test multiple schemas in a single run, including multiple schemas for the same collection. This is helpful when you want to compare the effectiveness of different schema definitions, validate a specific field across collections, or test a large dataset.
 * Test results are presented per schema, detailing the number and names of invalid documents and the validation error messages generated for each document.  
-* Find [here](../../../documents/schema-validation/write-validation/write-validation_studio#the-schema-playground) a detailed explanation of the playground.
+* Find [here](../../../documents/schema-validation/write-validation/write-validation_studio.mdx#the-schema-playground) a detailed explanation of the playground.
 
 </ContentFrame>
 
@@ -83,12 +83,12 @@ You can define an **audit index** that validates documents against a schema duri
 #### Define a validation schema
 
 The index will use the schema defined in its index configuration.  
-See how to add a schema to the index configuration [below](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio#create-the-audit-index).  
-* If no schema is defined in the index configuration, the index will use the [database-level schema](../../../documents/schema-validation/write-validation/write-validation_studio#creating-a-collection-schema).  
+See how to add a schema to the index configuration [below](../../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_studio.mdx#create-the-audit-index).  
+* If no schema is defined in the index configuration, the index will use the [database-level schema](../../../documents/schema-validation/write-validation/write-validation_studio.mdx#creating-a-collection-schema).  
 * If no schema is defined either in the index configuration or at the database level, the index will not perform any validation.
 
 <Admonition type="note" title="">
-**Note**: When the index uses a database-level schema, [disabling validation at the database level](../../../documents/schema-validation/write-validation/write-validation_studio#managing-and-testing-existing-schemas) will also disable auditing by the index.  
+**Note**: When the index uses a database-level schema, [disabling validation at the database level](../../../documents/schema-validation/write-validation/write-validation_studio.mdx#managing-and-testing-existing-schemas) will also disable auditing by the index.  
 However, when the index uses an index-level schema, disabling database-level validation will **not** disable auditing by the index.
 </Admonition>
 
@@ -98,7 +98,7 @@ However, when the index uses an index-level schema, disabling database-level val
 
 #### Create the audit index
 
-To [create the index](../../../studio/database/indexes/create-map-index), open **Indexes** > **List of indexes** and click the **New index** button.  
+To [create the index](../../../studio/database/indexes/create-map-index.mdx), open **Indexes** > **List of indexes** and click the **New index** button.  
 
 * Name the index, and add to its map a call to the validation method: `Schema.GetErrorsFor()` for a static index, or `schema.getErrorsFor()` for a JavaScript map.  
   Assign the value returned by the validation method to a dedicated index field, e.g., `Errors`.  
@@ -134,7 +134,7 @@ To [create the index](../../../studio/database/indexes/create-map-index), open *
   </Tabs>
 
 * Add the validation error messages field (defined in the map) to the index.  
-  Set the [Store](../../../indexes/storing-data-in-index/) option for this field to **Yes**, to store actual error messages in the index rather than just their tokens.  
+  Set the [Store](../../../indexes/storing-data-in-index/.mdx) option for this field to **Yes**, to store actual error messages in the index rather than just their tokens.  
 
   ![Create audit index](./assets/schema-validation_studio_audit_index_create-index.png)
 

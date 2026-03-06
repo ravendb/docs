@@ -20,18 +20,18 @@ import Panel from "@site/src/components/Panel";
       5. Runs a user-defined script that may act on those results. 
     
 * The main steps in defining a GenAI task are:  
-   * Defining a [Connection string](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#define-a-connection-string) 
+   * Defining a [Connection string](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api.mdx#define-a-connection-string) 
      to the AI model  
-   * Defining a [Context generation script](../../../ai-integration/gen-ai-integration/overview#the-elements_context-objects)  
-   * Defining a [Prompt](../../../ai-integration/gen-ai-integration/overview#the-elements_prompt)  
-   * Defining a [JSON schema](../../../ai-integration/gen-ai-integration/overview#the-elements_json-schema)  
-   * Defining an [Update script](../../../ai-integration/gen-ai-integration/overview#the-elements_update-script)  
+   * Defining a [Context generation script](../../../ai-integration/gen-ai-integration/overview.mdx#the-elements_context-objects)  
+   * Defining a [Prompt](../../../ai-integration/gen-ai-integration/overview.mdx#the-elements_prompt)  
+   * Defining a [JSON schema](../../../ai-integration/gen-ai-integration/overview.mdx#the-elements_json-schema)  
+   * Defining an [Update script](../../../ai-integration/gen-ai-integration/overview.mdx#the-elements_update-script)  
 
 * In this article:
-    * [Define a connection string](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#define-a-connection-string)
-    * [Define the GenAI task](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#define-the-genai-task)
-    * [Full example](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#full-example)
-    * [Syntax](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#syntax)
+    * [Define a connection string](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api.mdx#define-a-connection-string)
+    * [Define the GenAI task](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api.mdx#define-the-genai-task)
+    * [Full example](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api.mdx#full-example)
+    * [Syntax](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api.mdx#syntax)
 
 
 </Admonition>
@@ -40,9 +40,9 @@ import Panel from "@site/src/components/Panel";
     
 * Your GenAI task will need a connection string to connect to a **generative AI model**.  
   RavenDB supports the following providers for these model types:  
-  [Ollama](../../../ai-integration/connection-strings/ollama),
-  [OpenAI and compatible providers](../../../ai-integration/connection-strings/open-ai),
-  and [Azure OpenAI](../../../ai-integration/connection-strings/azure-open-ai).
+  [Ollama](../../../ai-integration/connection-strings/ollama.mdx),
+  [OpenAI and compatible providers](../../../ai-integration/connection-strings/open-ai.mdx),
+  and [Azure OpenAI](../../../ai-integration/connection-strings/azure-open-ai.mdx).
    
 * Choose the model that best suits your needs:  
   You can use a local _Ollama_ model (e.g. `llama3.2`) if your priorities are speed, cost, open-source usage, or security.  
@@ -53,9 +53,9 @@ import Panel from "@site/src/components/Panel";
 
 * **From the Studio**:    
   You can define a connection string in the _AI Connection Strings_ view.
-  See [AI connection strings - Overview](../../../ai-integration/connection-strings/overview).  
+  See [AI connection strings - Overview](../../../ai-integration/connection-strings/overview.mdx).  
   You can also create a connection string when defining the GenAI task.
-  See [Configure basic settings](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#configure-basic-settings).      
+  See [Configure basic settings](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#configure-basic-settings).      
 
 ---
     
@@ -136,9 +136,9 @@ const putConnectionStringResult = await documentStore.maintenance.send(putConnec
 
 **Syntax reference**    
 See the dedicated syntax sections in the following articles for full configuration details:    
-* [Ollama (syntax)](../../../ai-integration/connection-strings/ollama#syntax)  
-* [OpenAI and compatible providers (syntax)](../../../ai-integration/connection-strings/open-ai#syntax)  
-* [Azure OpenAI (syntax)](../../../ai-integration/connection-strings/azure-open-ai#syntax)  
+* [Ollama (syntax)](../../../ai-integration/connection-strings/ollama.mdx#syntax)  
+* [OpenAI and compatible providers (syntax)](../../../ai-integration/connection-strings/open-ai.mdx#syntax)  
+* [Azure OpenAI (syntax)](../../../ai-integration/connection-strings/azure-open-ai.mdx#syntax)  
 
 </Panel>
 

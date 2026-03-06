@@ -1,15 +1,6 @@
 import React from "react";
-import CardWithIcon from "../Common/CardWithIcon";
 import Heading from "@theme/Heading";
-import { IconName } from "@site/src/typescript/iconName";
-import { useLatestVersion } from "@site/src/hooks/useLatestVersion";
-
-interface GuideItem {
-    title: string;
-    description: string;
-    icon: IconName;
-    url: string;
-}
+import Guide, { GuideItem } from "./Guide";
 
 const GUIDES: GuideItem[] = [
     {
@@ -17,7 +8,7 @@ const GUIDES: GuideItem[] = [
         description:
             "Learn how to handle documents efficiently: explore data modeling, document structure, and CRUD operations.",
         icon: "database",
-        url: "/studio/database/documents/documents-and-collections/",
+        url: "/studio/database/documents/documents-and-collections",
     },
     {
         title: "Get started with Querying",
@@ -71,7 +62,6 @@ const GUIDES: GuideItem[] = [
 ];
 
 export default function GetStartedGuides() {
-    const latestVersion = useLatestVersion();
     return (
         <div className="flex flex-col gap-6 items-start relative w-full mb-8">
             <div className="flex flex-col gap-1 items-start w-full">
@@ -84,13 +74,7 @@ export default function GetStartedGuides() {
             </div>
             <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                 {GUIDES.map((guide, index) => (
-                    <CardWithIcon
-                        key={index}
-                        title={guide.title}
-                        icon={guide.icon}
-                        description={guide.description}
-                        url={latestVersion + guide.url}
-                    />
+                    <Guide key={index} guide={guide} />
                 ))}
             </div>
         </div>

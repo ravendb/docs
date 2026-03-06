@@ -23,14 +23,14 @@ import Panel from "@site/src/components/Panel";
 * Validation is automatically triggered when documents in the associated collection are saved directly or via operations such as patching or ETL tasks.  
 
 * In this article:  
-   * [Creating a validation schema](../../../documents/schema-validation/write-validation/write-validation_api#creating-a-validation-schema)  
-      * [Define your schema as a string](../../../documents/schema-validation/write-validation/write-validation_api#1-define-your-schema-as-a-string)  
-      * [Create the schema configuration](../../../documents/schema-validation/write-validation/write-validation_api#2-create-the-schema-configuration)  
-      * [Register the schema with the server](../../../documents/schema-validation/write-validation/write-validation_api#3-register-the-schema-with-the-server)  
-      * [Validate documents](../../../documents/schema-validation/write-validation/write-validation_api#4-validate-documents)  
-   * [Example](../../../documents/schema-validation/write-validation/write-validation_api#example)  
-   * [Available constraints](../../../documents/schema-validation/write-validation/write-validation_api#available-constraints)  
-   * [Syntax](../../../documents/schema-validation/write-validation/write-validation_api#syntax)
+   * [Creating a validation schema](../../../documents/schema-validation/write-validation/write-validation_api.mdx#creating-a-validation-schema)  
+      * [Define your schema as a string](../../../documents/schema-validation/write-validation/write-validation_api.mdx#1-define-your-schema-as-a-string)  
+      * [Create the schema configuration](../../../documents/schema-validation/write-validation/write-validation_api.mdx#2-create-the-schema-configuration)  
+      * [Register the schema with the server](../../../documents/schema-validation/write-validation/write-validation_api.mdx#3-register-the-schema-with-the-server)  
+      * [Validate documents](../../../documents/schema-validation/write-validation/write-validation_api.mdx#4-validate-documents)  
+   * [Example](../../../documents/schema-validation/write-validation/write-validation_api.mdx#example)  
+   * [Available constraints](../../../documents/schema-validation/write-validation/write-validation_api.mdx#available-constraints)  
+   * [Syntax](../../../documents/schema-validation/write-validation/write-validation_api.mdx#syntax)
 
 </Admonition>
 
@@ -148,7 +148,7 @@ string schemaDefinition = @"{
 <ContentFrame>
 
 ### 2. Create the schema configuration  
-Create a [SchemaValidationConfiguration](../../../documents/schema-validation/write-validation/write-validation_api#schemavalidationconfiguration-class) object and use it to enable validation and associate your schema with a document collection.  
+Create a [SchemaValidationConfiguration](../../../documents/schema-validation/write-validation/write-validation_api.mdx#schemavalidationconfiguration-class) object and use it to enable validation and associate your schema with a document collection.  
    
 E.g., to associate your schema with the `Users` collection:  
 ```csharp
@@ -173,7 +173,7 @@ var configuration = new SchemaValidationConfiguration
 
 ### 3. Register the schema with the server  
 
-Use [ConfigureSchemaValidationOperation](../../../documents/schema-validation/write-validation/write-validation_api#configureschemavalidationoperation-definition) to register the schema configuration with the server.  
+Use [ConfigureSchemaValidationOperation](../../../documents/schema-validation/write-validation/write-validation_api.mdx#configureschemavalidationoperation-definition) to register the schema configuration with the server.  
 
 E.g.,  
 ```csharp
@@ -182,7 +182,7 @@ await store.Maintenance.SendAsync(new ConfigureSchemaValidationOperation(configu
 ```
 
 <Admonition type="note" title="">
-Once a schema is enabled for a collection, collection documents are validated when they are saved directly, as well as when they are added or modified by operations such as patching or ETL tasks. (See a list of [operations that trigger validation](../../../documents/schema-validation/overview#a-list-of-operations-that-trigger-validation).)
+Once a schema is enabled for a collection, collection documents are validated when they are saved directly, as well as when they are added or modified by operations such as patching or ETL tasks. (See a list of [operations that trigger validation](../../../documents/schema-validation/overview.mdx#a-list-of-operations-that-trigger-validation).)
 </Admonition>
 
 </ContentFrame>
@@ -192,7 +192,7 @@ Once a schema is enabled for a collection, collection documents are validated wh
 ### 4. Validate documents  
 After registering the schema, any document saved to the associated collection will be validated against the schema constraints.  
    
-E.g., attempting to save a document that violates the `maxLength` constraint will result in a [SchemaValidationException](../../../documents/schema-validation/write-validation/write-validation_api#schemavalidationexception-message) such as:
+E.g., attempting to save a document that violates the `maxLength` constraint will result in a [SchemaValidationException](../../../documents/schema-validation/write-validation/write-validation_api.mdx#schemavalidationexception-message) such as:
 ```plain
 Raven.Client.Exceptions.SchemaValidation.SchemaValidationException: The length of the value 'TooLongValue' at 'Name' should not exceed 7, but its actual length is 12.
 ``` 

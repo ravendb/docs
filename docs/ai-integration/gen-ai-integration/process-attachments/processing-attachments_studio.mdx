@@ -30,13 +30,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
   E.g., to process image files you can use OpenAI's `gpt-4.1-mini` model.  
 
 * In this article:
-    * [Include attachments in the Context generation script](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#include-attachments-in-the-context-generation-script)
-       * [Conditional attachment](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#conditional-attachment)
-       * [Multiple attachments](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#multiple-attachments)
-       * [Embedding base64-encoded images in the context object](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#embedding-base64-encoded-images-in-the-context-object)
-       * [Embedding text in the context object](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#embedding-text-in-the-context-object)
-    * [Set task Prompt and JSON schema](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#set-task-prompt-and-json-schema)
-    * [Set task Update script](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#set-task-update-script)
+    * [Include attachments in the Context generation script](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio.mdx#include-attachments-in-the-context-generation-script)
+       * [Conditional attachment](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio.mdx#conditional-attachment)
+       * [Multiple attachments](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio.mdx#multiple-attachments)
+       * [Embedding base64-encoded images in the context object](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio.mdx#embedding-base64-encoded-images-in-the-context-object)
+       * [Embedding text in the context object](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio.mdx#embedding-text-in-the-context-object)
+    * [Set task Prompt and JSON schema](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio.mdx#set-task-prompt-and-json-schema)
+    * [Set task Update script](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio.mdx#set-task-update-script)
 
 </Admonition>
 
@@ -55,7 +55,7 @@ We want the LLM to analyze each circuit scheme, and return a short explanation o
 We will then embed this explanation in the original document.  
 </Admonition>
 
-* Learn about the GenAI task's context generation script and how to set it [here](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#generate-context-objects).
+* Learn about the GenAI task's context generation script and how to set it [here](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#generate-context-objects).
 
 * When creating the context object that will be sent to the LLM, include document attachments by specifying them in the context generation script. The LLM will receive and process the attachments along with the main document content.
 
@@ -155,7 +155,7 @@ ai.genContext({ ToyName: this.Name, ToyId: id(this) })
 
 ## Set task Prompt and JSON schema
 
-* Learn about the GenAI task's Prompt and JSON schema and how to set them [here](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#define-prompt-and-json-schema).
+* Learn about the GenAI task's Prompt and JSON schema and how to set them [here](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#define-prompt-and-json-schema).
 
 * While defining the task prompt and JSON schema, consider the attachments you include in the context object.  
   Make sure your prompt instructs the LLM to analyze the attached files, and that your Sample response object (or JSON schema) is designed to capture LLM output derived from these files.
@@ -197,7 +197,7 @@ ai.genContext({ ToyName: this.Name, ToyId: id(this) })
 
 ## Set task Update script
 
-* Learn about the GenAI task's Update script and how to set it [here](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio#provide-update-script).
+* Learn about the GenAI task's Update script and how to set it [here](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#provide-update-script).
 
 * Provide an update script that processes the AI model's responses, including any response derived from the attached files, and updates the source documents in your database accordingly.
 

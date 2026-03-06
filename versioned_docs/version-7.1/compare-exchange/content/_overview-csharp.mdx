@@ -17,18 +17,18 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Compare-exchange items are also suitable for storing shared or global values that aren't tied to a specific document -
   such as configuration flags, feature toggles, or reusable identifiers stored under a unique key.  
-  However, [unlike regular documents](../compare-exchange/overview#why-not-use-regular-documents-to-enforce-uniqueness),
+  However, [unlike regular documents](../compare-exchange/overview.mdx#why-not-use-regular-documents-to-enforce-uniqueness),
   compare-exchange provides atomic updates, version-based conflict prevention, and Raft-based consistency for distributed safety.
   
-* Compare-exchange items are [not replicated externally](../compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-databases) to other databases.   
+* Compare-exchange items are [not replicated externally](../compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases) to other databases.   
 
 * In this article:  
-  * [What compare-exchange items are](../compare-exchange/overview#what-compare-exchange-items-are)  
-  * [Ways to create and manage compare-exchange items](../compare-exchange/overview#ways-to-create-and-manage-compare-exchange-items)  
-  * [Why compare-exchange items are not replicated to external databases](../compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-databases)  
-  * [Why not use regular documents to enforce uniqueness](../compare-exchange/overview#why-not-use-regular-documents-to-enforce-uniqueness)  
-  * [Example I - Email address reservation](../compare-exchange/overview#example-i---email-address-reservation)  
-  * [Example II - Reserve a shared resource](../compare-exchange/overview#example-ii---reserve-a-shared-resource)   
+  * [What compare-exchange items are](../compare-exchange/overview.mdx#what-compare-exchange-items-are)  
+  * [Ways to create and manage compare-exchange items](../compare-exchange/overview.mdx#ways-to-create-and-manage-compare-exchange-items)  
+  * [Why compare-exchange items are not replicated to external databases](../compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases)  
+  * [Why not use regular documents to enforce uniqueness](../compare-exchange/overview.mdx#why-not-use-regular-documents-to-enforce-uniqueness)  
+  * [Example I - Email address reservation](../compare-exchange/overview.mdx#example-i---email-address-reservation)  
+  * [Example II - Reserve a shared resource](../compare-exchange/overview.mdx#example-ii---reserve-a-shared-resource)   
 
 </Admonition>
 
@@ -43,7 +43,7 @@ Compare-exchange items are key/value pairs where the key serves as a unique valu
   * **A value** - Can be any value (a number, string, array, or any valid JSON object). 
   * **Metadata** - Optional data that is associated with the compare-exchange item. Must be a valid JSON object.  
     For example, the metadata can be used to set expiration time for the compare-exchange item.  
-    Learn more in [compare-exchange expiration](../compare-exchange/cmpxchg-expiration).  
+    Learn more in [compare-exchange expiration](../compare-exchange/cmpxchg-expiration.mdx).  
   * **Raft index** - The compare-exchange item's version.  
     Any change to the value or metadata will increase this number.  
 
@@ -60,19 +60,19 @@ Compare exchange items can be created and managed using any of the following app
 
 * **Document Store Operations**  
   You can create and manage compare-exchange items using _document store_ operations.  
-  For example, see [Create items using a store operation](../compare-exchange/create-cmpxchg-items#create-items-using-a-store-operation).
+  For example, see [Create items using a store operation](../compare-exchange/create-cmpxchg-items.mdx#create-items-using-a-store-operation).
 
 * **Cluster-Wide Sessions**  
-  You can create and manage compare-exchange items from within a [Cluster-Wide session](../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs-single-node-transaction).  
-  For example, see [Create items using a cluster-wide session](../compare-exchange/create-cmpxchg-items#create-items-using-a-cluster-wide-session).     
+  You can create and manage compare-exchange items from within a [Cluster-Wide session](../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction).  
+  For example, see [Create items using a cluster-wide session](../compare-exchange/create-cmpxchg-items.mdx#create-items-using-a-cluster-wide-session).     
   When using a cluster-wide session, the compare-exchange item is created as part of the cluster-wide transaction.  
   Like any transaction, all operations either succeed as a group or are rolled back.  
   If the transaction is not committed, the new compare-exchange item will not be stored on any node in the database group.
   
 * **Atomic Guards**  
-  When creating _documents_ using a cluster-wide session, RavenDB automatically creates [Atomic Guards](../compare-exchange/atomic-guards),  
+  When creating _documents_ using a cluster-wide session, RavenDB automatically creates [Atomic Guards](../compare-exchange/atomic-guards.mdx),  
   which are special compare-exchange items that guarantee ACID transactions.  
-  See [Cluster-wide transaction vs. Single-node transaction](../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs-single-node-transaction) for a session comparison overview.  
+  See [Cluster-wide transaction vs. Single-node transaction](../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction) for a session comparison overview.  
 
 * **Studio**  
   All compare-exchange items can also be managed from the **Compare-Exchange view** in Studio:  
@@ -99,10 +99,10 @@ Compare exchange items can be created and managed using any of the following app
 * Conflicts between documents that occur between two databases are resolved using the documents' change-vector. 
   Compare-exchange conflicts cannot be resolved in the same way, as they lack a similar conflict resolution mechanism.
 
-* To ensure unique values between two databases without using compare-exchange items see [Example III](../compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange).
+* To ensure unique values between two databases without using compare-exchange items see [Example III](../compare-exchange/overview.mdx#example-iii---ensuring-unique-values-without-using-compare-exchange).
 
-* Learn more about Replication in RavenDB in [Replication overview](../server/clustering/replication/replication-overview).
-  For details about what is and what isn't replicated in [What is Replicated](../server/ongoing-tasks/external-replication#what-is-replicated).
+* Learn more about Replication in RavenDB in [Replication overview](../server/clustering/replication/replication-overview.mdx).
+  For details about what is and what isn't replicated in [What is Replicated](../server/ongoing-tasks/external-replication.mdx#what-is-replicated).
     
 ---
 
@@ -165,8 +165,8 @@ using (IDocumentSession session = store.OpenSession())
 
 **Implications**:
 
-* This compare-exchange item was [created as an operation](../compare-exchange/create-cmpxchg-items#create-items-using-a-store-operation)
-  rather than with a [cluster-wide session](../compare-exchange/create-cmpxchg-items#create-items-using-a-cluster-wide-session).  
+* This compare-exchange item was [created as an operation](../compare-exchange/create-cmpxchg-items.mdx#create-items-using-a-store-operation)
+  rather than with a [cluster-wide session](../compare-exchange/create-cmpxchg-items.mdx#create-items-using-a-cluster-wide-session).  
   Thus, if `session.SaveChanges` fails, then the email reservation is Not rolled back automatically.  
   It is your responsibility to do so.  
 

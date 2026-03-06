@@ -17,19 +17,19 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Admonition type="note" title="">
 
 * Use the configuration keys listed below to set AI-related options for your RavenDB server.  
-* Learn how to apply these keys in the [Configuration Overview](../../server/configuration/configuration-options) article.
+* Learn how to apply these keys in the [Configuration Overview](../../server/configuration/configuration-options.mdx) article.
 
 * On this page:
-   * [Embeddings configuration keys](../../server/configuration/ai-integration-configuration#embeddings-configuration-keys)  
+   * [Embeddings configuration keys](../../server/configuration/ai-integration-configuration.mdx#embeddings-configuration-keys)  
       * [Ai.Embeddings.MaxBatchSize](../../server/configuration/ai-integration-configuration.mdx#aiembeddingsmaxbatchsize)  
       * [Ai.Embeddings.MaxConcurrentBatches](../../server/configuration/ai-integration-configuration.mdx#aiembeddingsmaxconcurrentbatches)  
       * [Ai.Embeddings.MaxFallbackTimeInSec](../../server/configuration/ai-integration-configuration.mdx#aiembeddingsmaxfallbacktimeinsec)  
-   * [AI Agents configuration keys](../../server/configuration/ai-integration-configuration#ai-agents-configuration-keys)  
+   * [AI Agents configuration keys](../../server/configuration/ai-integration-configuration.mdx#ai-agents-configuration-keys)  
       * [Ai.Agent.Tools.TokenUsageThreshold](../../server/configuration/ai-integration-configuration.mdx#aiagenttoolstokenusagethreshold)  
       * [Ai.Agent.Trimming.Summarization.SummarizationResultPrefix](../../server/configuration/ai-integration-configuration.mdx#aiagenttrimmingsummarizationsummarizationresultprefix)  
       * [Ai.Agent.Trimming.Summarization.SummarizationTaskBeginningPrompt](../../server/configuration/ai-integration-configuration.mdx#aiagenttrimmingsummarizationsummarizationtaskbeginningprompt)  
       * [Ai.Agent.Trimming.Summarization.SummarizationTaskEndPrompt](../../server/configuration/ai-integration-configuration.mdx#aiagenttrimmingsummarizationsummarizationtaskendprompt)  
-   * [Studio AI Assistant configuration keys](../../server/configuration/ai-integration-configuration#studio-ai-assistant-configuration-keys)
+   * [Studio AI Assistant configuration keys](../../server/configuration/ai-integration-configuration.mdx#studio-ai-assistant-configuration-keys)
       * [Ai.Assistant.Disable](../../server/configuration/ai-integration-configuration.mdx#aiassistantdisable)
       * [Ai.Assistant.DisableDataSubmission](../../server/configuration/ai-integration-configuration.mdx#aiassistantdisabledatasubmission)
 
@@ -144,7 +144,7 @@ The user-role message that triggers the conversation summarization process.
 
 ### Ai.Assistant.Disable
 
-Use this key to completely disable the [AI assistant](../../studio/ai-assistant) for all users regardless of individual [user consent](../../studio/ai-assistant#user-consent) and to block the `AI assistant` option in Studio's Knowledge Center panel.
+Use this key to completely disable the [AI assistant](../../studio/ai-assistant.mdx) for all users regardless of individual [user consent](../../studio/ai-assistant.mdx#user-consent) and to block the `AI assistant` option in Studio's Knowledge Center panel.
 
 - **Type**: `bool`
 - **Default**: `false`
@@ -156,7 +156,7 @@ Use this key to completely disable the [AI assistant](../../studio/ai-assistant)
 
 ### Ai.Assistant.DisableDataSubmission
 
-Use this key to prevent the transmission of any user data [exposed to the AI assistant](../../studio/ai-assistant#add-context) to the RavenDB backend or LLM. The assistant can still provide general guidance but cannot analyze any user data.
+Use this key to prevent the transmission of any user data [exposed to the AI assistant](../../studio/ai-assistant.mdx#add-context) to the RavenDB backend or LLM. The assistant can still provide general guidance but cannot analyze any user data.
 
 - **Type**: `bool`
 - **Default**: `false`
