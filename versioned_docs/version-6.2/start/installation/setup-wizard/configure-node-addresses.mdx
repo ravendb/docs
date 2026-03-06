@@ -160,19 +160,6 @@ The following example shows a configuration of a 3-node cluster:
 
 </ContentFrame>
     
-<ContentFrame>    
-    
-### In a Docker container  
-    
-When running RavenDB in a Docker container, we highly recommend configuring the server manually rather than using the Setup Wizard. 
-
-Using the Setup Wizard to configure a Docker container introduces unnecessary networking and port-mapping complexities. 
-Instead, it is much simpler to pass your configuration directly using Docker Environment Variables, or by using Docker volumes to provide a pre-configured `settings.json` file to the container.
-
-For detailed instructions on how to properly set up and configure a container, see **[RavenDB Docker Image Usage](../../../start/containers/image-usage.mdx)**.
-
-</ContentFrame>
-    
 </Panel>
 
 <Panel heading= "Set up node addresses for an UNSECURED cluster">
