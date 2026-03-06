@@ -49,6 +49,7 @@ export default function DocItemContent({ children }: Props): ReactNode {
                             <BannerImage />
                             {canDisplayTagsRow && (
                                 <div className="flex flex-wrap gap-2 mb-8">
+                                    <strong>Tags:</strong>
                                     {tags.map((tag) => (
                                         <Tag key={tag.label} permalink={tag.permalink}>
                                             {tag.label}
