@@ -131,10 +131,7 @@ function Update-CloudFrontKVS {
 
     $kvsDetails = aws cloudfront describe-key-value-store --kvs-arn $kvsArn
 
-    aws cloudfront-keyvaluestore update-keys \
-        --kvs-arn $kvsArn \
-        --if-match $kvsDetails.ETag \
-        --puts $encodedPayload
+    aws cloudfront-keyvaluestore update-keys --kvs-arn $kvsArn --if-match $kvsDetails.ETag --puts $encodedPayload
 }
 
 Ensure-Dependencies
