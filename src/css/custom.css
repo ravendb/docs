@@ -672,3 +672,67 @@ a {
 .plugin-id-cloud .pagination-nav {
     display: none;
 }
+
+/* Custom styles for authors */
+.docAuthors {
+    @apply flex flex-row flex-wrap justify-between items-end gap-4;
+}
+
+.docAuthor {
+    display: flex;
+    align-items: center;
+}
+
+.docAuthorImg {
+    @apply !rounded-full;
+    width: 32px;
+    height: 32px;
+    margin-right: 0.5rem;
+    object-fit: cover;
+}
+
+.docAuthorName {
+    @apply text-black dark:text-white;
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
+.docAuthorName a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.docAuthorName a:hover {
+    text-decoration: underline;
+}
+
+.docAuthorTitle {
+    @apply text-black/60 dark:text-white/60;
+    font-size: 0.75rem;
+    line-height: 1.2;
+}
+
+.docAuthorSocials {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.docAuthorSocialLink {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    line-height: 1;
+}
+
+.docAuthorSocialLink:hover {
+    color: var(--ifm-color-primary);
+}
+
+.docPublishedDate {
+    @apply text-black/60 dark:text-white/60;
+    font-size: 0.75rem;
+    line-height: 1.2;
+}

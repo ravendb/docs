@@ -1,0 +1,77 @@
+---
+title: "Authors"
+hide_table_of_contents: false
+sidebar_label: Authors
+see_also:
+    - title: "New guides"
+      link: "/templates/new-guides"
+      source: "docs"
+      path: "Templates > Guides"
+---
+
+import Admonition from "@theme/Admonition";
+import Panel from "@site/src/components/Panel";
+
+<head>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+
+# Authors
+
+## Add a new author
+
+Authors are defined centrally in `docs/authors.json` and then referenced from guide frontmatter.
+
+### Define the author in `docs/authors.json`
+
+Each author entry uses the author's name as the key. Example:
+
+```json
+{
+    "Paweł Lachowski": {
+        "name": "Paweł Lachowski",
+        "title": "Technical writer @ RavenDB",
+        "url": "https://example.com",
+        "image_url": "https://example.com/author-photo.jpg",
+        "socials": {
+            "x": "twitter_handle",
+            "github": "github_username",
+            "linkedin": "linkedin_profile",
+            "email": "author@example.com",
+        }
+    }
+}
+```
+
+**Fields explained**
+
+- `name` – author's full name (displayed in article header)
+- `title` – author's role or title (displayed below name)
+- `url` – optional link to author's website or profile
+- `image_url` – author's profile photo source (displayed as circular avatar)
+- `socials` – optional social media links:
+  - `x` – Twitter/X handle (without @)
+  - `github` – GitHub username
+  - `linkedin` – LinkedIn profile ID
+  - `email` – email address
+
+### Use the author in a guide
+
+In a guide MDX file, reference the author by their name in the `author` frontmatter:
+
+```mdx
+---
+title: "My Guide"
+author: "Paweł Lachowski"
+publishedAt: 2026-02-27
+---
+```
+
+<Admonition type="info" title="Single author only">
+    Each article supports **one author only**. The `author` field accepts a single string value matching an author key in `docs/authors.json`.
+</Admonition>
+
+<Admonition type="warning" title="Author key must match exactly">
+    The author name in the `author` frontmatter must **exactly match** the key in `docs/authors.json` (including capitalization and spacing). If the author is not found, a warning will be logged to the console.
+</Admonition>
+

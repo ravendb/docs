@@ -7,6 +7,10 @@ see_also:
       link: "/templates/featured-guides"
       source: "docs"
       path: "Templates > Guides"
+    - title: "Authors"
+      link: "/templates/authors"
+      source: "docs"
+      path: "Templates > Setup"
 ---
 
 import Admonition from "@theme/Admonition";
@@ -36,13 +40,13 @@ guides/my-new-guide.mdx
 ```mdx
 ---
 title: "My new guide"
+publishedAt: 2026-02-27
+author: "Author Name"
 tags: [indexes, querying]
 image: "/img/guides-ai-agents.webp"
 icon: "guides" // To be used when no `image` have been defined
 description: "One-sentence summary used in cards and lists."
 ---
-
-# My new guide
 
 Intro paragraph...
 
@@ -51,10 +55,12 @@ Intro paragraph...
 
 **Fields explained**
 
-- `title` – main page title and default card title.
-- `tags` – keys from `guides/tags.yml` (see <Link to="/templates/tags">Tags</Link>).
-- `image` – card image; can be a string or a themed image object (see <Link to="/templates/themed-images">Themed Images</Link> template).
-- `icon` – icon name used in cards (see <Link to="/templates/icon-gallery">Icon Gallery</Link> template).
+- `title` – main page title displayed in the header.
+- `publishedAt` – publication date (YYYY-MM-DD format). Displayed in the article header.
+- `author` – name of the guide author (single author only). Displayed in the article header below the title. Must match exactly with a key in `docs/authors.json`.
+- `tags` – keys from `guides/tags.yml` (see <Link to="/templates/tags">Tags</Link>). Displayed below the title.
+- `image` – banner image displayed at the top of the article; can be a string or a themed image object (see <Link to="/templates/themed-images">Themed Images</Link> template). If not provided, a gradient background with icon is shown.
+- `icon` – icon name used in the banner (see <Link to="/templates/icon-gallery">Icon Gallery</Link> template). Used when no `image` is defined.
 - `description` – short summary shown in cards and lists.
 
 ### Tags
@@ -62,6 +68,32 @@ Intro paragraph...
 - Define reusable tags and their labels in `guides/tags.yml`.
 - In guide frontmatter, reference tags by key, for example: `tags: [ai, querying]`.
 - The recent-guides plugin maps these keys to friendly labels and tag URLs.
+
+<Admonition type="danger" title="Critical: No # Heading in Markdown">
+    **Do NOT add a `#` heading in your markdown content.**
+    
+    The `title` frontmatter is automatically rendered as the page heading. Adding a `#` heading breaks the layout.
+    
+    ✅ Correct:
+    ```mdx
+    ---
+    title: "My Article"
+    ---
+    
+    Intro paragraph...
+    ```
+    
+    ❌ Wrong:
+    ```mdx
+    ---
+    title: "My Article"
+    ---
+    
+    # My Article
+    
+    Intro paragraph...
+    ```
+</Admonition>
 
 ## External guides (linking to blog/articles)
 
@@ -72,10 +104,11 @@ Use this pattern when the actual content lives elsewhere but you still want it l
 ```mdx
 ---
 title: "Begin analysis with OLAP ETL"
+publishedAt: 2025-12-23
+author: "Author Name"
 tags: [integration, getting-started]
 description: "Short description shown in cards and lists."
 externalUrl: "https://ravendb.net/articles/begin-analysis-with-olap-etl"
-publishedAt: 2025-12-23
 image: "https://ravendb.net/wp-content/uploads/2025/12/OLAP-article-image.svg"
 ---
 

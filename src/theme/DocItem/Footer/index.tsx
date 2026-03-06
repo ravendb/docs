@@ -6,7 +6,6 @@ import EditMetaRow from "@theme/EditMetaRow";
 import { HIDDEN_EDIT_PAGE_ROUTES } from "@site/src/typescript/hiddenEditPageRoutes";
 import { DocsLanguage, useLanguage } from "@site/src/components/LanguageStore";
 import SeeAlso from "@site/src/components/SeeAlso";
-import Tag from "../../Tag";
 
 const getEditUrlWithLanguage = (url: string, language: DocsLanguage, supportedLanguages: DocsLanguage[]): string => {
     if (!supportedLanguages || supportedLanguages.length === 0) {
@@ -40,15 +39,6 @@ export default function DocItemFooter(): ReactNode {
 
     return (
         <footer className={clsx(ThemeClassNames.docs.docFooter, "mt-4")}>
-            {canDisplayTagsRow && (
-                <div className="flex flex-wrap gap-2">
-                    {tags.map((tag) => (
-                        <Tag key={tag.label} permalink={tag.permalink}>
-                            {tag.label}
-                        </Tag>
-                    ))}
-                </div>
-            )}
             {canDisplayEditMetaRow && (
                 <EditMetaRow
                     className={clsx(ThemeClassNames.docs.docFooterEditMetaRow)}
