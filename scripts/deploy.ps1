@@ -129,7 +129,7 @@ function Update-CloudFrontKVS {
 
     $encodedPayload = $transformedRedirects | ConvertTo-Json -Compress
 
-    $kvsDetails = aws cloudfront describe-key-value-store --kvs-arn $kvsArn
+    $kvsDetails = aws cloudfront-keyvaluestore describe-key-value-store --kvs-arn $kvsArn
 
     aws cloudfront-keyvaluestore update-keys --kvs-arn $kvsArn --if-match $kvsDetails.ETag --puts $encodedPayload
 }
