@@ -9,16 +9,10 @@ import CardWithImage from "@site/src/components/Common/CardWithImage";
 import CardWithImageHorizontal from "@site/src/components/Common/CardWithImageHorizontal";
 import ColGrid from "@site/src/components/ColGrid";
 
-import embedGenStartApiImage from "./assets/embeddings-generation_start_api-image.png";
-import embedGenStartStudioImage from "./assets/embeddings-generation_start_studio-image.png";
-import aiSearchArticleImage from "./assets/ai-search-article-cover.webp";
+import aiSearchImage from "./assets/ai-search-article-cover.webp";
+import webinarImage from "@site/static/img/webinar.webp";
+import discordImage from "@site/static/img/discord-lg.webp";
 
-import ayendeBlogImage from "@site/static/img/from-ayende-com.webp";
-import webinarThumbnailPlaceholder from "@site/static/img/webinar.webp";
-import discordLargeThumbnailPlaceholder from "@site/static/img/discord-lg.webp";
-
-<Admonition type="note" title="">
-    
 ### Create embeddings to enable AI-powered similarity search.
     
 * [Embeddings](https://en.wikipedia.org/wiki/Embedding_(machine_learning)) are numeric vectors that represent the meaning, context, or relationships within the data (e.g., text or images).
@@ -38,77 +32,69 @@ import discordLargeThumbnailPlaceholder from "@site/static/img/discord-lg.webp";
 * Embeddings also power other AI features in RavenDB, such as [GenAI](../../ai-integration/gen-ai-integration/start.mdx) and [AI agents](../../ai-integration/ai-agents/start.mdx),  
   which may use vector search queries to retrieve relevant documents in response to LLM requests.
 
-* On this start page, you'll find:
-  * [Use cases](../../ai-integration/generating-embeddings/start.mdx#use-cases)    
-  * [Technical documentation links](../../ai-integration/generating-embeddings/start.mdx#technical-documentation-links-)
-  * [Related in-depth articles](../../ai-integration/generating-embeddings/start.mdx#related-in-depth-articles)
-  * [Related lives & videos](../../ai-integration/generating-embeddings/start.mdx#related-lives--videos)
-    
-</Admonition>
-
----
-
 ### Use cases
 
 Embeddings-generation tasks can prepare your data for AI-powered search, analysis, and retrieval.  
 Common use cases include:  
 
-* **Enterprise knowledge bases**  
-  Generate embeddings for thousands of documents, policies, and procedures to enable fast, semantic search.
-* **Legal document libraries**  
-  Process case law, contracts, and regulations to build a searchable legal knowledge base.
-* **Product catalogs**  
-  Convert product descriptions, specifications, and reviews into embeddings for intelligent e-commerce search and recommendations.
-* **Content management systems**  
-  Transform blog posts, articles, and marketing materials into searchable vector embeddings.
+* Generate embeddings for thousands of documents, policies, and procedures to enable fast, semantic search.
+* Process case law, contracts, and regulations to build a searchable legal knowledge base.
+* Convert product descriptions, specifications, and reviews into embeddings for intelligent e-commerce search and recommendations.
+* Transform blog posts, articles, and marketing materials into searchable vector embeddings.
 
----
+### Technical documentation
 
-### Technical documentation links ✨
+Refer to the technical documentation to learn how to automatically vectorize data from your documents by configuring embedding generation tasks.
 
-* [Generating embeddings - overview](../../ai-integration/generating-embeddings/overview.mdx) 
-* [Configure an embeddings generation task - from the Studio](../../ai-integration/generating-embeddings/embeddings-generation-task.mdx)
-* [Configure an embeddings generation task - from the Client API](../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task---from-the-client-api)
-* [The embedding collections](../../ai-integration/generating-embeddings/embedding-collections.mdx)
+<ColGrid colCount={3}>
+    <CardWithImage title="Generating embeddings - overview" 
+                   description="Learn what an embeddings generation task is and how it works." 
+                   url="../../ai-integration/generating-embeddings/overview" 
+                   imgIcon="embeddings" />
+    <CardWithImage title="Configure an embeddings generation task - Studio" 
+                   description="Learn how to configure an embeddings generation task from Studio."
+                   url="../../ai-integration/generating-embeddings/embeddings-generation-task#configuring-an-embeddings-generation-task-from-the-studio" 
+                   imgIcon="embeddings" />
+    <CardWithImage title="Configure an embeddings generation task - Client API" 
+                   description="Learn how to configure an embeddings generation task from the Client API."
+                   url="../../ai-integration/generating-embeddings/embeddings-generation-task#configuring-an-embeddings-generation-task-from-the-client-api" 
+                   imgIcon="embeddings" />
+</ColGrid>
 
----
-
-### Related in-depth articles
+### Learn more: In-depth articles
 
 <ColGrid colCount={2}>
     <CardWithImage
         title="Embeddings with RavenDB and External Models"
         description="Step-by-step setup guide for AI-powered semantic search, by Paweł Lachowski"
-        imgSrc={aiSearchArticleImage} url="https://ravendb.net/articles/embeddings-generation-with-ravendb"
+        imgSrc={aiSearchImage}
+        url="https://ravendb.net/articles/embeddings-generation-with-ravendb"
         imgAlt="Embeddings with RavenDB and External Models"
     />
     <CardWithImage
         title="The integration of embeddings generation in RavenDB"
         description="The reasoning and architecture behind RavenDB's embeddings feature, by Oren Eini"
-        imgSrc={ayendeBlogImage} url="https://ravendb.net/articles/ai-integration-in-ravendb-embeddings-generation"
+        imgSrc={aiSearchImage}
+        url="https://ravendb.net/articles/ai-integration-in-ravendb-embeddings-generation"
         imgAlt="The integration of embeddings generation in RavenDB"
     />
 </ColGrid>
 
----
-
 ### Related lives & videos
-
-Learn more about enhancing your applications using vector search operations.
 
 <ColGrid colCount={1}>
     <CardWithImageHorizontal
         title="Taking over the world with AI and RavenDB"
         description="Learn how to integrate AI into your apps using RavenDB for semantic search, vector embeddings, and LLM-powered features - with real examples from Oren Eini."
         url="https://www.youtube.com/watch?v=7DhbgfH_rSE"
-        imgSrc={webinarThumbnailPlaceholder}
+        imgSrc={webinarImage}
         imgAlt="Taking over the world with AI and RavenDB"
     />
     <CardWithImageHorizontal
         title="Vector search in RavenDB"
         description="The AI trend developers simply cannot ignore."
         url="https://www.youtube.com/watch?v=zZwid8LA-e4"
-        imgSrc={discordLargeThumbnailPlaceholder}
+        imgSrc={discordImage}
         imgAlt="Vector search in RavenDB"
     />
 </ColGrid>
