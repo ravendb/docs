@@ -10,12 +10,13 @@ import Panel from '@site/src/components/Panel';
 * RavenDB queries can be executed via `query`, `documentQuery` or directly using raw `RQL`.  
   Learn more in [Query Overview](../../../querying/overview.mdx).
 
-* See [Query -vs- documentQuery](../../../../../querying/document-query/query-vs-document-query.mdx) 
-  for additional details.
+* Unlike the **C#** client (where the `Query` method supports LINQ while `DocumentQuery` provides lower-level flexibility and control),
+  the **PHP** client API implements the `query` and `document_query` methods with **identical functionality**.    
+    
+    See [query -vs- documentQuery](../../../querying/document-query/query-vs-document-query.mdx) for additional details.
 
-* In this page:
+* In this article:
   * [`documentQuery` examples](../../../querying/document-query/what-is-document-query.mdx#documentquery-examples)
-  * [Custom methods](../../../querying/document-query/what-is-document-query.mdx#custom-methods)
   * [Syntax](../../../querying/document-query/what-is-document-query.mdx#syntax)
 
 </Admonition>
@@ -95,106 +96,15 @@ $employees = $session
 </TabItem>
 
 <Admonition type="note" title="">
+    
 Refer to [Query an index by documentQuery](../../../indexes/querying/query-index.mdx#query-an-index-by-documentquery) for more examples.
+    
 </Admonition>
-
-</Panel>
-
-<Panel heading="Custom Methods">
-
-<Admonition type="note" title="">
-
-Several methods share the same functionality as their `query` counterparts.  
-Refer to the corresponding documentation articles, marked with links starting with "[query]" in the list below.
-
-</Admonition>
-
-Available custom methods:   
-
-- AddOrder
-- [query] [afterQueryExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
-- [query] [afterStreamExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
-- [query] [aggregateBy](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
-- [query] [aggregateUsing](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
-- andAlso
-- [query] [beforeQueryExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
-- [boost](../../../client-api/session/querying/text-search/boost-search-results.mdx)
-- closeSubclause
-- cmpXchg
-- containsAll
-- containsAny
-- [count](../../../client-api/session/querying/how-to-count-query-results.mdx)
-- [countLazily](../../..client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)
-- distinct
-- explainScores
-- first
-- firstOrDefault
-- fuzzy
-- getIndexQuery
-- getQueryResult
-- [groupBy](../../../client-api/session/querying/how-to-perform-group-by-query.mdx)
-- [groupByArrayValues](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-values)
-- [groupByArrayContent](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-content)
-- [query] [Highlight](../../../client-api/session/querying/text-search/highlight-query-results.mdx)
-- include
-- includeExplanations
-- intersect
-- invokeAfterQueryExecuted
-- invokeAfterStreamExecuted
-- [query] [lazily](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
-- [longCount](../../../client-api/session/querying/how-to-count-query-results.mdx)
-- moreLikeThis
-- negateNext
-- [not](../../../client-api/session/querying/document-query/how-to-use-not-operator.mdx)
-- [query] [noCaching](../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
-- [query] [noTracking](../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
-- ofType
-- openSubclause
-- [orderBy](../../../client-api/session/querying/sort-query-results.mdx)
-- [orderByDescending](../../../client-api/session/querying/sort-query-results.mdx)
-- [query] [orderByDistance](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistance)
-- [query] [orderByDistanceDescending](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistancedesc)
-- [orderByScore](../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
-- [orderByScoreDescending](../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
-- orElse
-- [query] [projection](../../../client-api/session/querying/how-to-customize-query.mdx#projection)
-- proximity
-- [query] [randomOrdering](../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
-- [query] [relatesToShape](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-shape)
-- [search](../../../client-api/session/querying/text-search/full-text-search.mdx)
-- selectFields
-- selectTimeSeries
-- single
-- singleOrDefault
-- skip
-- [query] [spatial](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx)
-- statistics
-- [suggestUsing](../../../client-api/session/querying/how-to-work-with-suggestions.mdx)
-- take
-- [query] [timings](../../../client-api/session/querying/how-to-customize-query.mdx#timings)
-- usingDefaultOperator
-- [query] [waitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
-- where
-- whereBetween
-- [whereEndsWith](../../../client-api/session/querying/text-search/ends-with-query.mdx)
-- whereEquals
-- [whereExists](../../../client-api/session/querying/how-to-filter-by-field.mdx)
-- whereGreaterThan
-- whereGreaterThanOrEqual
-- whereIn
-- whereLessThan
-- whereLessThanOrEqual
-- [whereLucene](../../../client-api/session/querying/document-query/how-to-use-lucene.mdx)
-- whereNotEquals
-- [whereRegex](../../../client-api/session/querying/text-search/using-regex.mdx)
-- [whereStartsWith](../../../client-api/session/querying/text-search/starts-with-query.mdx)
-- withinRadiusOf
 
 </Panel>
 
 <Panel heading="Syntax">
 
-The definition for `documentQuery` is listed in the [Syntax section](../../../querying/overview.mdx#syntax) 
-of the [Query Overview](../../../querying/overview.mdx).
+The definition for `documentQuery` is listed in the [Syntax section](../../../querying/overview.mdx#syntax) of the [Query Overview](../../../querying/overview.mdx).
 
 </Panel>

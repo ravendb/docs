@@ -1,0 +1,75 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* RavenDB Queries can be executed using `query` or `document_query`,  
+  or by passing raw [RQL](../../../querying/rql/what-is-rql.mdx) directly to the server via `rawQuery`.  
+  Learn more in [Query Overview](../../../querying/overview.mdx).
+    
+* In the **Python** client API, `query` and `document_query` provide **identical functionality**.
+  This is different from the **C#** client implementation, where `Query` supports LINQ while `DocumentQuery` provides lower-level flexibility and control. 
+
+* All available methods for the session `query` and `document_query` methods are listed [here](../../../querying/overview.mdx#query-api).  
+  Examples of equivalent calls are listed below.    
+    
+* In this article:
+  * [Examples of equivalent `query` & `document_query` calls](../../../querying/document-query/query-vs-document-query.mdx#examples-of-equivalent-query-document_query-calls)
+
+</Admonition>
+
+<Panel heading="Examples of equivalent query & document_query calls">
+
+<TabItem>
+```python
+# This collection query:
+session.query(object_type=Order)
+
+# is equivalent to this document_query:    
+session.advanced.document_query(object_type=Order)
+```
+</TabItem>
+
+<TabItem>
+```python
+# This collection query:
+session.query_collection("orders")
+
+# is equivalent to this document_query
+session.advanced.document_query(
+    collection_name="orders",
+    index_name=None,
+    is_map_reduce=False
+)
+```
+</TabItem>
+
+<TabItem>
+```python
+# This index query:
+session.query_index(index_name="Orders/ByShipToAndLines")
+
+# is equivalent to this document_query:
+session.advanced.document_query(index_name="Orders/ByShipToAndLines")
+```
+</TabItem>
+
+<TabItem>
+```python
+# This index query:
+session.query_index(index_name="Orders/ByShipToAndLines")
+
+# is equivalent to this document_query:
+session.advanced.document_query(
+    index_name="Orders/ByShipToAndLines", 
+    is_map_reduce=False,
+    collection_name=None
+)
+```
+</TabItem>
+    
+</Panel>

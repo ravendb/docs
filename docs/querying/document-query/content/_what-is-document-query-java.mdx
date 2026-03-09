@@ -11,55 +11,52 @@ Querying capabilities can be accessed via the `documentQuery` method in advanced
 ## Syntax
 
 <TabItem value="document_query_1" label="document_query_1">
-<CodeBlock language="java">
-{`<T> IDocumentQuery<T> documentQuery(Class<T> clazz);
+```java
+<T> IDocumentQuery<T> documentQuery(Class<T> clazz);
 
 <T> IDocumentQuery<T> documentQuery(Class<T> clazz, String indexName, String collectionName, boolean isMapReduce);
-`}
-</CodeBlock>
+```
 </TabItem>
 
-| Parameters | |                                                                                                       |
-| ------------- | ------------- |-------------------------------------------------------------------------------------------------------|
-| **indexName** | String | Name of an index to perform a query on<br/> (mutually exclusive with **collectionName**)               |
-| **collectionName** | String | Name of a collection to perform a query on<br/> (mutually exclusive with **indexName**)                |
-| **isMapReduce** | bool | Indicates if a queried index is a map-reduce index<br/> (modifies how we treat identifier properties) |
+| Parameter          | Type     | Description                                                                                           |
+| ------------------ | ---------|-------------------------------------------------------------------------------------------------------|
+| **indexName**      | `String` | Name of an index to perform a query on<br/> (mutually exclusive with **collectionName**)              |
+| **collectionName** | `String` | Name of a collection to perform a query on<br/> (mutually exclusive with **indexName**)               |
+| **isMapReduce**    | `bool`   | Indicates if a queried index is a map-reduce index<br/> (modifies how we treat identifier properties) |
 
-| Return Value | |
-| ------------- | ----- |
+| Return Value |       |
+| ------------ | ----- |
 | **IDocumentQuery** | Instance implementing IDocumentQuery interface containing additional query methods and extensions |
 
 ## Example I - Basic
 
-<TabItem value="document_query_2" label="document_query_2">
-<CodeBlock language="java">
-{`// load all entities from 'Employees' collection
+<TabItem>
+```java
+// load all entities from 'Employees' collection
 List<Employee> employees = session
     .advanced()
     .documentQuery(Employee.class)
     .toList();
-`}
-</CodeBlock>
+```
 </TabItem>
 
-<TabItem value="document_query_3" label="document_query_3">
-<CodeBlock language="java">
-{`// load all entities from 'Employees' collection
+<TabItem>
+```java
+// load all entities from 'Employees' collection
 // where firstName equals 'Robert'
 List<Employee> employees = session
     .advanced()
     .documentQuery(Employee.class)
     .whereEquals("FirstName", "Robert")
     .toList();
-`}
-</CodeBlock>
+```
 </TabItem>
 
 ## Example II - Querying Specified Index
 
-<TabItem value="document_query_4" label="document_query_4">
-<CodeBlock language="java">
-{`// load all entities from 'Employees' collection
+<TabItem>
+```java
+// load all entities from 'Employees' collection
 // where firstName equals 'Robert'
 // using 'My/Custom/Index'
 List<Employee> employees = session
@@ -67,15 +64,14 @@ List<Employee> employees = session
     .documentQuery(Employee.class, "My/Custom/Index", null, false)
     .whereEquals("FirstName", "Robert")
     .toList();
-`}
-</CodeBlock>
+```
 </TabItem>
 
 or
 
-<TabItem value="document_query_5" label="document_query_5">
-<CodeBlock language="java">
-{`// load all entities from 'Employees' collection
+<TabItem>
+```java
+// load all entities from 'Employees' collection
 // where firstName equals 'Robert'
 // using 'My/Custom/Index'
 List<Employee> employees = session
@@ -83,14 +79,16 @@ List<Employee> employees = session
     .documentQuery(Employee.class, MyCustomIndex.class)
     .whereEquals("FirstName", "Robert")
     .toList();
-`}
-</CodeBlock>
+```
 </TabItem>
 
 ## Custom Methods and Extensions
 
 <Admonition type="note" title="">
-Functionality of most of the methods match the functionality of their `query` counterparts and therefore will not be described again. Please refer to the appropriate counterpart documentation articles. Links starting with `[query]` are marking those articles.
+    
+Functionality of most of the methods match the functionality of their `query` counterparts and therefore will not be described again. 
+Please refer to the appropriate counterpart documentation articles. Links starting with `[query]` are marking those articles.
+    
 </Admonition>
 
 Available methods:

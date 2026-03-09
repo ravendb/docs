@@ -7,16 +7,19 @@ import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* In the RavenDB Python client, queries can be executed via `query`, `document_query`, or directly using raw `RQL`.  
-  Learn more in [Query Overview](../../../querying/overview.mdx).      
+* RavenDB Queries can be executed using `query` or `document_query`,  
+  or by passing raw [RQL](../../../querying/rql/what-is-rql.mdx) directly to the server via `raw_query`.  
+  Learn more in [Query Overview](../../../querying/overview.mdx).     
     
-* Unlike the **C#** client - where the `Query` method supports LINQ while `DocumentQuery` provides lower-level flexibility and control -
-  the **Python** client API implements the `query` and `document_query` methods with identical functionality.
-  Therefore, our Python documentation typically provides `query` samples without duplicating them for `document_query`.  
+* Unlike the **C#** client (where the `Query` method supports LINQ while `DocumentQuery` provides lower-level flexibility and control),
+  the **Python** client API implements the `query` and `document_query` methods with **identical functionality**.
+    
+    Therefore, our Python documentation typically provides `query` samples without duplicating them for `document_query`.  
+    See [query -vs- document_query](../../../querying/document-query/query-vs-document-query.mdx) for additional details.
 
 * In this article:
   * [`document_query` examples](../../../querying/document-query/what-is-document-query.mdx#document_query-examples)
-  * [Available custom methods and extensions](../../../querying/document-query/what-is-document-query.mdx#available-custom-methods-and-extensions)
+  * [Syntax](../../../querying/document-query/what-is-document-query.mdx#syntax)
 
 </Admonition>
 
@@ -93,89 +96,12 @@ from "Products" limit 5, 10 // skip 5, take 10
 
 #### Query an index
 
-Please refer to [Querying an index](../../../indexes/querying/query-index.mdx#sessionadvanceddocumentquery) for examples of querying an index using `document_query`.
+Refer to [Querying an index](../../../indexes/querying/query-index.mdx#sessionadvanceddocumentquery) for examples of querying an index using `document_query`.
     
 </Panel>
 
-<Panel heading="Available custom methods and extensions">
+<Panel heading="Syntax">
 
-- add_order
-- [query] [after_query_executed](../../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
-- [query] [after_stream_executed](../../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
-- [query] [aggregate_by](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
-- [query] [aggregate_using](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
-- and_also
-- [query] [before_query_executed](../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
-- [boost](../../../client-api/session/querying/text-search/boost-search-results.mdx)
-- close_subclause
-- cmp_xchg
-- contains_all
-- contains_any
-- [count](../../../client-api/session/querying/how-to-count-query-results.mdx)
-- [count_lazily](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)
-- distinct
-- explain_scores
-- first
-- first_or_default
-- fuzzy
-- get_index_query
-- get_query_result
-- [group_by](../../../client-api/session/querying/how-to-perform-group-by-query.mdx)
-- [group_by_array_values](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-values)
-- [group_by_array_content](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-content)
-- [query] [highlight](../../../client-api/session/querying/text-search/highlight-query-results.mdx)
-- include
-- include_explanations
-- intersect
-- invoke_after_query_executed
-- invoke_after_stream_eExecuted
-- [query] [lazily](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
-- [long_count](../../../client-api/session/querying/how-to-count-query-results.mdx)
-- more_like_this
-- negate_next
-- [not](../../../client-api/session/querying/document-query/how-to-use-not-operator.mdx)
-- [query] [no_caching](../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
-- [query] [no_tracking](../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
-- of_type
-- open_subclause
-- [order_by](../../../client-api/session/querying/sort-query-results.mdx)
-- [order_by_descending](../../../client-api/session/querying/sort-query-results.mdx)
-- [query] [order_by_distance](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistance)
-- [query] [order_by_distance_descending](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistancedesc)
-- [order_by_score](../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
-- [order_by_score_descending](../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
-- or_else
-- [query] [projection](../../../client-api/session/querying/how-to-customize-query.mdx#projection)
-- proximity
-- [query] [random_ordering](../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
-- [query] [relates_to_shape](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-shape)
-- [search](../../../client-api/session/querying/text-search/full-text-search.mdx)
-- select_fields
-- select_time_series
-- single
-- single_or_default
-- skip
-- [query] [spatial](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx)
-- statistics
-- [suggest_using](../../../client-api/session/querying/how-to-work-with-suggestions.mdx)
-- take
-- [query] [timings](../../../client-api/session/querying/how-to-customize-query.mdx#timings)
-- using_default_operator
-- [query] [wait_for_non_stale_results](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
-- where
-- WhereBetween
-- [where_ends_with](../../../client-api/session/querying/text-search/ends-with-query.mdx)
-- where_equals
-- [where_exists](../../../client-api/session/querying/how-to-filter-by-field.mdx)
-- where_greater_than
-- where_greater_than_or_equal
-- where_in
-- where_less_than
-- where_less_than_or_equal
-- [where_lucene](../../../client-api/session/querying/document-query/how-to-use-lucene.mdx)
-- where_not_equals
-- [where_regex](../../../client-api/session/querying/text-search/using-regex.mdx)
-- [where_starts_with](../../../client-api/session/querying/text-search/starts-with-query.mdx)
-- within_radius_of
+The definition for `document_query` is listed in the [Syntax section](../../../querying/overview.mdx#syntax) of the [Query Overview](../../../querying/overview.mdx).
 
 </Panel>

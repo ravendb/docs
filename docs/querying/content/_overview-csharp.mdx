@@ -14,8 +14,7 @@ import Panel from '@site/src/components/Panel';
         * when querying with the session's `RawQuery` method.  
         * when querying from the [Query view](../../studio/database/queries/query-view.mdx) in Studio.  
 
-* Queries defined with `Query` or `DocumentQuery` are translated by the RavenDB client to [RQL](../../querying/rql/what-is-rql.mdx)  
-  when sent to the server.
+* Queries defined with `Query` or `DocumentQuery` are **translated by the RavenDB client to [RQL](../../querying/rql/what-is-rql.mdx)** when sent to the server.
     
 * All queries in RavenDB use an **index** to provide results, even when you don't specify one.  
   Learn more [below](../../querying/overview.mdx#queries-always-provide-results-using-an-index).
@@ -603,6 +602,11 @@ List<Employee> employees = await asyncSession
    * ToListAsync
    * ToArrayAsync
    * [VectorSearch](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx)
+    
+---
+    
+* The available methods for the session's [DocumentQuery](../../querying/overview.mdx#session-advanced-documentquery) method
+  are listed in [Custom methods and extensions](../../querying/document-query/what-is-document-query#custom-methods-and-extensions).    
 
 </Panel>
 

@@ -1,0 +1,67 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* RavenDB Queries can be executed using `query` or `documentQuery`,  
+  or by passing raw [RQL](../../../querying/rql/what-is-rql.mdx) directly to the server via `rawQuery`.  
+  Learn more in [Query Overview](../../../querying/overview.mdx).
+
+* In the **PHP** client API, `query` and `documentQuery` provide **identical functionality**.
+  This is different from the **C#** client implementation, where `Query` supports LINQ while `DocumentQuery` provides lower-level flexibility and control.    
+    
+* All available methods for the session _query_ and _documentQuery_ methods are listed [here](../../../querying/overview.mdx#query-api).  
+  Examples of equivalent calls are listed below.    
+
+* In this article:
+   * [Examples of equivalent `query` & `documentQuery` calls](../../../querying/document-query/query-vs-document-query.mdx#examples-of-equivalent-query-documentquery-calls)
+
+</Admonition>
+
+<Panel heading="Examples of equivalent query & documentQuery calls">
+
+<TabItem value="query_1a" label="query_1a">
+```php
+// This collection query:
+$session->query(Order::class)
+
+// is equivalent to:
+$session->advanced()->documentQuery(Order::class)
+```
+</TabItem>
+
+<TabItem>
+```php
+// This collection query:
+$session->query(Order::class, Orders_ByShipToAndLines::class)
+
+// is equivalent to:
+$session->advanced()->documentQuery(Order::class, Orders_ByShipToAndLines::class)
+```
+</TabItem>
+
+<TabItem>
+```php
+// This index query:    
+$session->query(Order::class, Query::index("Orders/ByShipToAndLines"))
+
+// is equivalent to:
+$session->advanced()->documentQuery(Order::class, "Orders/ByShipToAndLines", null, false);
+```
+</TabItem>
+
+<TabItem>
+```php
+// This index query:
+$session->query(Order::class, Query::collection("orders"))
+
+// is equivalent to:
+$session->advanced()->documentQuery(Order::class, null, "orders", false);
+```
+</TabItem>
+
+</Panel>
