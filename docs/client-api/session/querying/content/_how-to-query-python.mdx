@@ -2,48 +2,42 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import ContentFrame from '@site/src/components/ContentFrame';
-import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
 * Queries in RavenDB can be written with either of the following:
    * Using a rich API via the session's `query` method  
-   * Using the [document_query](../../client-api/session/querying/document-query/query-vs-document-query.mdx) method  
+   * Using the [document_query](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx) method  
    * Using **RQL** -  
       - when querying via the session's `raw_query` method  
-      - when querying from the Studio's [Query view](../../studio/database/queries/query-view.mdx)  
+      - when querying from the Studio's [Query view](../../../../studio/database/queries/query-view.mdx)  
 
-* Queries defined with `query` or `document_query` are translated by the RavenDB client to [RQL](../../querying/rql/what-is-rql.mdx)  
+* Queries defined with `query` or `document_query` are translated by the RavenDB client to [RQL](../../../../querying/rql/what-is-rql.mdx)  
   when sent to the server.
-    
 * All queries in RavenDB use an **index** to provide results, even when you don't specify one.  
-  Learn more [below](../../querying/overview.mdx#queries-always-provide-results-using-an-index).
+  Learn more [below](../../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).
 
 * Queries that do Not specify which index to use are called **Dynamic Queries**.  
   This article displays examples of dynamic queries only.  
-  For examples showing how to query an index see [querying an index](../../indexes/querying/query-index.mdx).
-    
-* The entities returned by the query are 'loaded' and **tracked** by the [Session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx).  
+  For examples showing how to query an index see [querying an index](../../../../indexes/querying/query-index.mdx).
+* The entities returned by the query are 'loaded' and **tracked** by the [Session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx).  
   Entities will Not be tracked when:  
-    * Query returns a [projection](../../client-api/session/querying/how-to-project-query-results.mdx)  
-    * Tracking is [disabled](../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-query-results)  
+    * Query returns a [projection](../../../../client-api/session/querying/how-to-project-query-results.mdx)  
+    * Tracking is [disabled](../../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-query-results)  
 
-* Query results are **cached** by default. To disable query caching see [NoCaching](../../client-api/session/querying/how-to-customize-query.mdx#nocaching).
+* Query results are **cached** by default. To disable query caching see [NoCaching](../../../../client-api/session/querying/how-to-customize-query.mdx#nocaching).
 
-* Queries are timed out after a configurable time period.  See [query timeout](../../server/configuration/database-configuration.mdx#databasesquerytimeoutinsec).
-    
-* In this aricle:
-  * [Queries always provide results using an index](../../querying/overview.mdx#queries-always-provide-results-using-an-index)  
-  * [session.query](../../querying/overview.mdx#session-query)  
-  * [session.advanced.document_query](../../querying/overview.mdx#session-advanced-document_query)  
-  * [session.advanced.raw_query](../../querying/overview.mdx#session-advanced-raw_query)
-  * [Custom methods](../../querying/overview.mdx#custom-methods)  
-  * [Syntax](../../querying/overview.mdx#syntax)  
+* Queries are timed out after a configurable time period.  See [query timeout](../../../../server/configuration/database-configuration.mdx#databasesquerytimeoutinsec).
+* In this page:
+  * [Queries always provide results using an index](../../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index)  
+  * [session.query](../../../../client-api/session/querying/how-to-query.mdx#sessionquery)  
+  * [session.advanced.document_query](../../../../client-api/session/querying/how-to-query.mdx#sessionadvanceddocument_query)  
+  * [session.advanced.raw_query](../../../../client-api/session/querying/how-to-query.mdx#sessionadvancedraw_query)
+  * [Custom methods](../../../../client-api/session/querying/how-to-query.mdx#custom-methods)  
+  * [Syntax](../../../../client-api/session/querying/how-to-query.mdx#syntax)  
 
 </Admonition>
-
-<Panel heading="Queries always provide results using an index">
+## Queries always provide results using an index 
 
 * Queries always use an index to provide fast results regardless of the size of your data.
 
@@ -51,17 +45,17 @@ import Panel from '@site/src/components/Panel';
   and determine which index should be used to retrieve the requested data.
 
 * Indexes allow to provide query results without scanning the entire dataset each and every time.
-    * Learn more about indexes, their general concept, and the different **index types** in this [indexes overview](../../studio/database/indexes/indexes-overview.mdx) article.
+    * Learn more about indexes, their general concept, and the different **index types** in this [indexes overview](../../../../studio/database/indexes/indexes-overview.mdx) article.
     * You can choose the underlying **search engine** that will be used by the RavenDB indexes.  
-      Learn more in [selecting the search engine](../../indexes/search-engine/corax.mdx#selecting-the-search-engine).
+      Learn more in [selecting the search engine](../../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).
 
 <Admonition type="info" title="">
 
 We differentiate between the following **3 query scenarios**:
 
-1. [Index query](../../querying/overview.mdx#indexquery)
-2. [Dynamic query](../../querying/overview.mdx#dynamicquery)
-3. [Full collection query](../../querying/overview.mdx#collectionquery)
+1. [Index query](../../../../client-api/session/querying/how-to-query.mdx#indexquery)
+2. [Dynamic query](../../../../client-api/session/querying/how-to-query.mdx#dynamicquery)
+3. [Full collection query](../../../../client-api/session/querying/how-to-query.mdx#collectionquery)
 
 For each scenario, a different index type is used, as described below.
 
@@ -77,10 +71,10 @@ For each scenario, a different index type is used, as described below.
 * You can specify which **STATIC-index** the query will use.
 
 * Static indexes are defined by the user, as opposed to auto-indexes that are created by the server  
-  when querying a collection with some filtering applied. See [Static-index vs Auto-index](../../studio/database/indexes/indexes-overview.mdx#auto-indexes--vs--static-indexes).  
+  when querying a collection with some filtering applied. See [Static-index vs Auto-index](../../../../studio/database/indexes/indexes-overview.mdx#auto-indexes--vs--static-indexes).  
 
 * Example RQL: &nbsp; `from index "Employees/ByFirstName" where FirstName == "Laura"`  
-  See more examples in [querying an index](../../indexes/querying/query-index.mdx).
+  See more examples in [querying an index](../../../../indexes/querying/query-index.mdx).
 
 </Admonition>
 <Admonition type="note" title="">
@@ -113,10 +107,10 @@ For each scenario, a different index type is used, as described below.
 * Over time, an optimal set of indexes is generated by the query optimizer to answer your queries.
 
 * Example RQL: &nbsp; `from Employees where FirstName == "Laura"`  
-  See more examples [below](../../querying/overview.mdx#session-query).
+  See more examples [below](../../../../client-api/session/querying/how-to-query.mdx#sessionquery).
 * Note: Counters and Time series are an exception to this flow.  
   Dynamic queries on counters and time series values don't create auto-indexes.  
-  However, a static-index can be defined on [Time series](../../document-extensions/timeseries/indexing.mdx) and [Counters](../../document-extensions/counters/indexing.mdx).
+  However, a static-index can be defined on [Time series](../../../../document-extensions/timeseries/indexing.mdx) and [Counters](../../../../document-extensions/counters/indexing.mdx).
 
 </Admonition>
 <Admonition type="note" title="">
@@ -145,39 +139,39 @@ For each scenario, a different index type is used, as described below.
   * RavenDB uses the raw collection documents as the source for this query.  
 
   * Example RQL: &nbsp; `from Employees where id() == "employees/1-A"`  
-    See more examples [below](../../querying/overview.mdx#session-query).
+    See more examples [below](../../../../client-api/session/querying/how-to-query.mdx#sessionquery).
 
 </Admonition>
 
-</Panel>
 
-<Panel heading="session.query">
+## session.query
 
 * The simplest way to issue a query is using session's `query` method.  
 
 * The following examples show **dynamic queries** that do not specify which index to use.  
-  Please refer to [querying an index](../../indexes/querying/query-index.mdx) for other examples.
+  Please refer to [querying an index](../../../../indexes/querying/query-index.mdx) for other examples.
 
-* Querying can be enhanced using these [extension methods](../../querying/overview.mdx#custom-methods-and-extensions-for-linq).
+* Querying can be enhanced using these [extension methods](../../../../client-api/session/querying/how-to-query.mdx#custom-methods-and-extensions-for-linq).
  
-<ContentFrame>
+<Admonition type="note" title="">
 
 **Query collection - no filtering** 
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Method-syntax" label="Method-syntax">
-```python
-# This is a Full Collection Query
+<CodeBlock language="python">
+{`# This is a Full Collection Query
 # No auto-index is created since no filtering is applied
 
 all_employees = list(  # Execute the query
     session.query(object_type=Employee)  # Query for all documents from 'Employees' collection
 )
-```
+`}
+</CodeBlock>
 </TabItem>
 <TabItem value="Query-syntax" label="Query-syntax">
-```python
-# This is a Full Collection Query
+<CodeBlock language="python">
+{`# This is a Full Collection Query
 # No auto-index is created since no filtering is applied
 
 # Query for all documents from 'Employees' collection
@@ -187,28 +181,30 @@ query = session.query(object_type=Employee)
 all_employees = list(query)
 
 # All 'Employee' entities are loaded and will be tracked by the session
-```
+`}
+</CodeBlock>
 </TabItem>
 <TabItem value="RQL" label="RQL">
-```sql
-// This RQL is a Full Collection Query
+<CodeBlock language="sql">
+{`// This RQL is a Full Collection Query
 // No auto-index is created since no filtering is applied
 
 from "Employees"
-```
+`}
+</CodeBlock>
 </TabItem>
 </Tabs>
 
-</ContentFrame>
+</Admonition>
 
-<ContentFrame>
-    
+<Admonition type="note" title="">
+
 **Query collection - by ID**
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Method-syntax" label="Method-syntax">
-```python
-# Query collection by document ID
+<CodeBlock language="python">
+{`# Query collection by document ID
 # No auto-index is created when querying only by ID
 
 employee = (
@@ -218,11 +214,12 @@ employee = (
 )
 
 # The resulting 'Employee' entity is loaded and will be tracked by the session
-```
+`}
+</CodeBlock>
 </TabItem>
 <TabItem value="Query-syntax" label="Query-syntax">
-```python
-# Query collection by document ID
+<CodeBlock language="python">
+{`# Query collection by document ID
 # No auto-index is created when querying only by ID
 
 # Query for specific document from 'Employees' collection
@@ -232,28 +229,30 @@ query = session.query(object_type=Employee).where_equals("Id", "employees/1-A")
 employee_result = query.first()
 
 # The resulting 'Employee' entity is loaded and will be tracked by the session
-```
+`}
+</CodeBlock>
 </TabItem>
 <TabItem value="RQL" label="RQL">
-```sql
-// This RQL queries the 'Employees' collection by ID
+<CodeBlock language="sql">
+{`// This RQL queries the 'Employees' collection by ID
 // No auto-index is created when querying only by ID
 
 from "Employees" where id() == "employees/1-A"
-```
+`}
+</CodeBlock>
 </TabItem>
 </Tabs>
 
-</ContentFrame>
+</Admonition>
 
-<ContentFrame>
+<Admonition type="note" title="">
 
 **Query collection - with filtering** 
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Method-syntax" label="Method-syntax">
-```python
-# Query collection - filter by document field
+<CodeBlock language="python">
+{`# Query collection - filter by document field
 
 # An auto-index will be created if there isn't already an existing auto-index
 # that indexes this document field
@@ -265,11 +264,12 @@ employees = list(  # Execute the query
 )
 
 # The resulting 'Employee' entities are loaded and will be tracked by the session
-```
+`}
+</CodeBlock>
 </TabItem>
 <TabItem value="Query-syntax" label="Query-syntax">
-```python
-# Query collection - filter by document field
+<CodeBlock language="python">
+{`# Query collection - filter by document field
 
 # An auto-index will be created if there isn't already an existing auto-index
 # that indexes this document field
@@ -281,44 +281,43 @@ query = session.query(object_type=Employee).where_equals("first_name", "Robert")
 employees = list(query)
 
 # The resulting 'Employee' entities are loaded and will be tracked by the session
-```
+`}
+</CodeBlock>
 </TabItem>
 <TabItem value="RQL" label="RQL">
-```sql
-// Query collection - filter by document field
+<CodeBlock language="sql">
+{`// Query collection - filter by document field
 
 // An auto-index will be created if there isn't already an existing auto-index
 // that indexes the requested field
 
 from "Employees" where FirstName == "Robert"
-```
+`}
+</CodeBlock>
 </TabItem>
 </Tabs>
 
-</ContentFrame>
+</Admonition>
 
-<ContentFrame>
+<Admonition type="note" title="">
 
 **Query collection - with paging** 
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Method-syntax" label="Method-syntax">
-```python
-# Query collection - page results
+<CodeBlock language="python">
+{`# Query collection - page results
 # No auto-index is created since no filtering is applied
-    
-products = list(
-    session.query(object_type=Product)
-    .skip(5)   # Skip first 5 results
-    .take(10)  # Load up to 10 entities from 'Products' collection
-)
+
+products = list()  # Execute the query
 
 # The resulting 'Product' entities are loaded and will be tracked by the session
-```
+`}
+</CodeBlock>
 </TabItem>
 <TabItem value="Query-syntax" label="Query-syntax">
-```python
-# Query collection - page results
+<CodeBlock language="python">
+{`# Query collection - page results
 # No auto-index is created since no filtering is applied
 
 query = (
@@ -329,37 +328,39 @@ query = (
 products = list(query)
 
 # The resulting 'Product' entities are loaded and will be tracked by the session
-```
+`}
+</CodeBlock>
 </TabItem>
 <TabItem value="RQL" label="RQL">
-```sql
-// Query collection - page results
+<CodeBlock language="sql">
+{`// Query collection - page results
 // No auto-index is created since no filtering is applied
 
 from "Products" limit 5, 10 // skip 5, take 10
-```
+`}
+</CodeBlock>
 </TabItem>
 </Tabs>
 
 * By default, if the page size is not specified, all matching records will be retrieved from the database.
 
-</ContentFrame>
-    
-</Panel>
+</Admonition>
 
-<Panel heading="session.advanced.document_query">
+
+
+## session.advanced.document_query
 
 * Below is a simple `document_query` usage sample and its RQL equivalent.  
   For a full description and more examples see:  
-   * [What is a document query](../../querying/document-query/what-is-document-query.mdx)
-   * [query -vs- document_query](../../client-api/session/querying/document-query/query-vs-document-query.mdx)
+   * [What is a document query](../../../../client-api/session/querying/document-query/what-is-document-query.mdx)
+   * [query -vs- document_query](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx)
 
 **Example**:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="document_query" label="document_query">
-```python
-# Query with document_query - filter by document field
+<CodeBlock language="python">
+{`# Query with document_query - filter by document field
 
 # An auto-index will be created if there isn't already an existing auto-index
 # that indexes this document field
@@ -371,25 +372,27 @@ employees = list(  # Execute the query
 )
 
 # The resulting 'Employee' entities are loaded and will be tracked by the session
-```
+`}
+</CodeBlock>
 </TabItem>
 <TabItem value="RQL" label="RQL">
-```sql
-// Query collection - filter by document field
+<CodeBlock language="sql">
+{`// Query collection - filter by document field
 
 // An auto-index will be created if there isn't already an existing auto-index
 // that indexes the requested field
 
 from "Employees" where FirstName = "Robert"
-```
+`}
+</CodeBlock>
 </TabItem>
 </Tabs>
 
-</Panel>
 
-<Panel heading="session.advanced.raw_query">
 
-* Queries defined with [query](../../querying/overview.mdx#session-query) or [document_query](../../querying/overview.mdx#session-advanced-document_query) are translated by the RavenDB client to [RQL](../../querying/rql/what-is-rql.mdx)  
+## session.advanced.raw_query
+
+* Queries defined with [query](../../../client-api/session/querying/how-to-query.mdx#sessionquery) or [document_query](../../../client-api/session/querying/how-to-query.mdx#sessionadvanceddocument_query) are translated by the RavenDB client to [RQL](../../../../querying/rql/what-is-rql.mdx)  
   when sent to the server.
 
 * The session also gives you a way to express the query directly in RQL using the `raw_query` method.
@@ -398,8 +401,8 @@ from "Employees" where FirstName = "Robert"
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="RawQuery" label="RawQuery">
-```python
-# Query with RawQuery - filter by document field
+<CodeBlock language="python">
+{`# Query with RawQuery - filter by document field
 
 # An auto-index will be created if there isn't already an existing auto-index
 # that indexes this document field
@@ -410,44 +413,45 @@ employees = list(  # Execute the query
     )  # Provide RQL to RawQuery
 )
 # The resulting 'Employee' entities are loaded and will be tracked by the session
-```
+`}
+</CodeBlock>
 </TabItem>
 </Tabs>
 
-</Panel>
 
-<Panel heading="Custom methods">
 
-Available custom methods for session's [query](../../querying/overview.mdx#session-query) method:
+## Custom methods
 
-- [aggregate_by](../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
-- [count](../../client-api/session/querying/how-to-count-query-results.mdx)
-- [count_lazily](../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
-- [customize](../../client-api/session/querying/how-to-customize-query.mdx)
-- [highlight](../../client-api/session/querying/text-search/highlight-query-results.mdx)
-- [include](../../client-api/how-to/handle-document-relationships.mdx)
-- [intersect](../../client-api/session/querying/how-to-use-intersect.mdx)
-- [lazily](../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
-- [long_count](../../client-api/session/querying/how-to-count-query-results.mdx)
-- [more_like_this](../../client-api/session/querying/how-to-use-morelikethis.mdx)
-- [of_type](../../client-api/session/querying/how-to-project-query-results.mdx#oftype-(as)---simple-projection)
-- [order_by_distance](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistance)
-- [order_by_distance_descending](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistancedesc)
-- [order_by_score](../../client-api/session/querying/sort-query-results.mdx#order-by-score)
-- [order_by_score_descending](../../client-api/session/querying/sort-query-results.mdx#order-by-score)
-- [project_into](../../client-api/session/querying/how-to-project-query-results.mdx)
-- [search](../../client-api/session/querying/text-search/full-text-search.mdx)
-- [spatial](../../client-api/session/querying/how-to-make-a-spatial-query.mdx)
-- [statistics](../../client-api/session/querying/how-to-get-query-statistics.mdx)
-- [suggest_using](../../client-api/session/querying/how-to-work-with-suggestions.mdx)
+Available custom methods for session's [query](../../../../client-api/session/querying/how-to-query.mdx#sessionquery) method:
 
-</Panel>
+- [aggregate_by](../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
+- [count](../../../../client-api/session/querying/how-to-count-query-results.mdx)
+- [count_lazily](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
+- [customize](../../../../client-api/session/querying/how-to-customize-query.mdx)
+- [highlight](../../../../client-api/session/querying/text-search/highlight-query-results.mdx)
+- [include](../../../../client-api/how-to/handle-document-relationships.mdx)
+- [intersect](../../../../client-api/session/querying/how-to-use-intersect.mdx)
+- [lazily](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
+- [long_count](../../../../client-api/session/querying/how-to-count-query-results.mdx)
+- [more_like_this](../../../../client-api/session/querying/how-to-use-morelikethis.mdx)
+- [of_type](../../../../client-api/session/querying/how-to-project-query-results.mdx#oftype-(as)---simple-projection)
+- [order_by_distance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistance)
+- [order_by_distance_descending](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistancedesc)
+- [order_by_score](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
+- [order_by_score_descending](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
+- [project_into](../../../../client-api/session/querying/how-to-project-query-results.mdx)
+- [search](../../../../client-api/session/querying/text-search/full-text-search.mdx)
+- [spatial](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx)
+- [statistics](../../../../client-api/session/querying/how-to-get-query-statistics.mdx)
+- [suggest_using](../../../../client-api/session/querying/how-to-work-with-suggestions.mdx)
 
-<Panel heading="Syntax">
+
+
+## Syntax
 
 <TabItem value="syntax" label="syntax">
-```python
-# Overloads for querying a collection OR an index:
+<CodeBlock language="python">
+{`# Overloads for querying a collection OR an index:
 # ================================================
 
 def query(
@@ -488,8 +492,10 @@ def document_query_from_index_type(
 # ================================
 def raw_query(self, query: str, object_type: Optional[Type[_T]] = None) -> RawDocumentQuery[_T]:
     ...
-```
+`}
+</CodeBlock>
 </TabItem>
+
 
 | Parameter | Type | Description |
 |--------------------|--------|------------------------------------------|
@@ -502,6 +508,8 @@ def raw_query(self, query: str, object_type: Optional[Type[_T]] = None) -> RawDo
 
 | Return Value | |
 | - | - |
-| `DocumentQuery[_T]`<br/>`RawDocumentQuery[_T]` | Instances exposing additional query methods and [extensions](../../querying/overview.mdx#custom-methods-and-extensions-for-linq) |
+| `DocumentQuery[_T]`<br/>`RawDocumentQuery[_T]` | Instances exposing additional query methods and [extensions](../../../../client-api/session/querying/how-to-query.mdx#custom-methods-and-extensions-for-linq) |
+ 
 
-</Panel>
+
+
