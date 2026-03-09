@@ -10,8 +10,8 @@ const staticAssetRegex =
 const versionRegex = /^\/(\d+\.\d+)(\/.*)?/;
 
 function compareVersions(v1, v2) {
-    const parts1 = v1.split('.');
-    const parts2 = v2.split('.');
+    const parts1 = v1.split(".");
+    const parts2 = v2.split(".");
 
     const major1 = parseInt(parts1[0]);
     const major2 = parseInt(parts2[0]);
@@ -20,14 +20,22 @@ function compareVersions(v1, v2) {
     const minor2 = parseInt(parts2[1]);
 
     if (major1 === major2) {
-        if (minor1 > minor2) { return 1; }
-        if (minor1 < minor2) { return -1; }
+        if (minor1 > minor2) {
+            return 1;
+        }
+        if (minor1 < minor2) {
+            return -1;
+        }
 
         return 0;
     }
 
-    if (major1 > major2) { return 1; }
-    if (major1 < major2) { return -1; }
+    if (major1 > major2) {
+        return 1;
+    }
+    if (major1 < major2) {
+        return -1;
+    }
 }
 
 async function handler(event) {
