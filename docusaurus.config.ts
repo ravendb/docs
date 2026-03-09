@@ -32,8 +32,8 @@ const config: Config = {
     url: "https://docs.ravendb.net/",
     baseUrl: "/",
 
-    onBrokenLinks: "ignore",
-    onBrokenMarkdownLinks: "ignore",
+    onBrokenLinks: "warn",
+    onBrokenMarkdownLinks: "warn",
     onBrokenAnchors: "ignore",
 
     i18n: {
