@@ -89,7 +89,7 @@ export default function GetStartedGuides() {
                         title={guide.title}
                         icon={guide.icon}
                         description={guide.description}
-                        url={latestVersion + guide.url}
+                        url={`/${latestVersion}${guide.url}`}
                     />
                 ))}
             </div>

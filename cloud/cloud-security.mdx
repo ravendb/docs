@@ -57,8 +57,8 @@ In other cases (e.g. if you're using Firefox) you will have to import the certif
 !["Server URLs"](./assets/migration-001-urls.png)  
   
 Once the certificate is imported, please make sure your IP address is on the [allowed IPs list](#managing-allowed-ips) and then click your cloud instance's URL. 
-Your browser will prompt you to select a certificate. When you select the client certificate, your product's 
-[management studio](../7.1/studio/overview) will launch.  
+Your browser will prompt you to select a certificate. When you select the client certificate, your product's
+[management studio](../7.2/studio/overview) will launch.
 
 ## Managing allowed IPs
 
@@ -90,8 +90,8 @@ Cross-instance communication **inside the cluster** is **not** subject to these 
 
 ## Using additional certificates
 
-Your initial [operator-level](../7.1/server/security/authorization/security-clearance-and-permissions#operator) 
-certificate allows you to perform operations like creating and deleting databases, managing access to the cluster, and inspecting the cluster's state.  
+Your initial [operator-level](../7.2/server/security/authorization/security-clearance-and-permissions#operator)
+certificate allows you to perform operations like creating and deleting databases, managing access to the cluster, and inspecting the cluster's state.
 Operations like adding and removing cluster nodes are left for your [products administrators](../cloud/cloud-overview.mdx#ravendb-on-the-cloud-overview).  
 
 <Admonition type="info" title="">
@@ -105,8 +105,8 @@ process.
 We therefore recommend that you generate your certificates off-cloud and import them to your cloud instance.  
 </Admonition>
 
-**To generate additional [operator](../7.1/server/security/authorization/security-clearance-and-permissions#operator) 
-  or [user](../7.1/server/security/authorization/security-clearance-and-permissions#user) certificates**:  
+**To generate additional [operator](../7.2/server/security/authorization/security-clearance-and-permissions#operator)
+  or [user](../7.2/server/security/authorization/security-clearance-and-permissions#user) certificates**:
  
 * Go to the server management studio, and click the `Manage Certificates` button.  
   !["Manage Certificates"](./assets/migration-002-manage-certificates.png)  

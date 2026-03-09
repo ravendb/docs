@@ -25,10 +25,10 @@ cloud servers and between different RavenDB versions.
 </Admonition>
 ## Import From Live RavenDB Instance
 
-You can easily migrate your database using the [import data from RavenDB](../7.1/studio/database/tasks/import-data/import-from-ravendb) operation.  
-In order to do so, the **source server** needs to have the **destination server's cluster certificate**.  
+You can easily migrate your database using the [import data from RavenDB](../7.2/studio/database/tasks/import-data/import-from-ravendb) operation.
+In order to do so, the **source server** needs to have the **destination server's cluster certificate**.
 
-Open the [Management Studio](../7.1/studio/overview) of each server.  
+Open the [Management Studio](../7.2/studio/overview) of each server.
 Each server's Studio is available in the [Portal](../cloud/portal/cloud-portal.mdx#cloud-portal)'s 
 [Product tab](../cloud/portal/cloud-portal-products-tab.mdx#cloud-account-portal-products).  
 
@@ -68,9 +68,9 @@ In the Destination Server, create or select an empty database and open its **Tas
 
 ## Import From File
   
-Another option is to [export a database](../7.1/studio/database/tasks/export-database) from the source server in the 
-`.ravenDBDump` format, and upload it to another database using the 
-[import data from file](../7.1/studio/database/tasks/import-data/import-data-file) operation.  
+Another option is to [export a database](../7.2/studio/database/tasks/export-database) from the source server in the
+`.ravenDBDump` format, and upload it to another database using the
+[import data from file](../7.2/studio/database/tasks/import-data/import-data-file) operation.
 This option doesn't require passing certificates:  
 #### First export the data from source server  
 
@@ -100,11 +100,11 @@ This option doesn't require passing certificates:
 ## Documents Recently Deleted from Source Database  
 
 * If you've deleted documents from the source database in the last few minutes before live-importing, 
-the deleted documents will still appear in the destination database. 
-This is because after deleting a document, a [tombstone](../7.1/glossary/tombstone) is left behind as a signal for backups and 
-various behind-the-scene processes.  
-* Once all of these processes have been completed, 
-the tombstones are cleaned. They are cleaned every 5 minutes by default. You can configure the [tombstone cleaner time intervals](../7.1/server/configuration/tombstone-configuration).   
+the deleted documents will still appear in the destination database.
+This is because after deleting a document, a [tombstone](../7.2/glossary/tombstone) is left behind as a signal for backups and
+various behind-the-scene processes.
+* Once all of these processes have been completed,
+the tombstones are cleaned. They are cleaned every 5 minutes by default. You can configure the [tombstone cleaner time intervals](../7.2/server/configuration/tombstone-configuration).
 * After they are cleaned, performing another live-import will show that the documents have been deleted.  
   
 
