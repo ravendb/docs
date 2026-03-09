@@ -14,6 +14,9 @@ function getOnlyIncludeVersions(): string[] | undefined {
     return versionsEnv.split(",").map((v) => v.trim());
 }
 
+const isStrict = process.env.DOCUSAURUS_STRICT === "true";
+
+
 const config: Config = {
     title: "RavenDB Documentation",
     tagline: "High-performance NoSQL database that just works.",
@@ -32,8 +35,8 @@ const config: Config = {
     url: "https://docs.ravendb.net/",
     baseUrl: "/",
 
-    onBrokenLinks: "warn",
-    onBrokenMarkdownLinks: "warn",
+    onBrokenLinks: isStrict ? "throw" : "warn",
+    onBrokenMarkdownLinks: isStrict ? "throw" : "warn",
     onBrokenAnchors: "ignore",
 
     i18n: {
