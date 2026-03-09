@@ -11,8 +11,11 @@ type Props = WrapperProps<typeof MetadataType>;
 export default function MetadataWrapper(props: Props): ReactNode {
     const { siteConfig } = useDocusaurusContext();
     const { metadata } = useDoc();
-    const docSlug = metadata.slug;
-    let canonicalUrl = `${siteConfig.url}/${siteConfig.customFields.latestVersion}${docSlug}`;
+    const permalink = metadata.permalink;
+    const isVersionedDoc = !permalink.startsWith("/guides/") && !permalink.startsWith("/cloud/");
+    let canonicalUrl = isVersionedDoc
+        ? `${siteConfig.url}/${siteConfig.customFields.latestVersion}${metadata.slug}`
+        : `${siteConfig.url}${permalink}`;
 
     if (canonicalUrl.endsWith("/") == false) {
         canonicalUrl = canonicalUrl.concat("/");
