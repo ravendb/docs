@@ -117,7 +117,7 @@ E.g., to add version `7.2`:
    ```
 3. Update `latestVersion` in `customFields` of `docusaurus.config.ts`.
 
-4. Update `defaultVersion` in `redirect_root_to_version.js`.
+4. Update `defaultVersion` in `handle_redirects.js`.
 
 ## Modifying latest version
 
