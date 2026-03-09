@@ -259,3 +259,16 @@ onBrokenLinks: "ignore",
 onBrokenMarkdownLinks: "ignore",
 onBrokenAnchors: "ignore",
 ```
+
+## Updating redirects for moved documentation
+When moving a documentation page, it's necessary to add a redirect entry to `/scripts/redirects.json` file.
+For example, when moving documentation page from `/studio/database/code-assistance` to `/querying/rql/rql-code-assistance` for versions 7.2 and above, add the following entry:
+```json
+{
+  "key": "/studio/database/code-assistance",
+  "value": {
+      "targetUrl": "/querying/rql/rql-code-assistance",
+      "minimumVersion": "7.2"
+  }
+}
+```
