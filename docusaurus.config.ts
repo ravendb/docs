@@ -29,8 +29,9 @@ const config: Config = {
         latestVersion: "7.2",
     },
 
-    url: "https://docs.ravendb.net/",
+    url: "https://docs.ravendb.net",
     baseUrl: "/",
+    trailingSlash: true,
 
     onBrokenLinks: "ignore",
     onBrokenMarkdownLinks: "ignore",
@@ -64,7 +65,7 @@ const config: Config = {
                     customCss: "./src/css/custom.css",
                 },
                 sitemap: {
-                    lastmod: null,
+                    lastmod: "date",
                     changefreq: "weekly",
                     priority: null,
                 },
@@ -159,6 +160,50 @@ const config: Config = {
                     type: "font/woff2",
                     crossorigin: "anonymous",
                 },
+            },
+            {
+                tagName: "script",
+                attributes: { type: "application/ld+json" },
+                innerHTML: JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "WebSite",
+                    name: "RavenDB Documentation",
+                    url: "https://docs.ravendb.net/",
+                    description:
+                        "Official RavenDB documentation. Learn installation, querying, indexing, scaling, security, and every advanced feature of the fully ACID NoSQL database that combines performance with ease of use.",
+                    publisher: {
+                        "@type": "Organization",
+                        name: "RavenDB",
+                        url: "https://ravendb.net/",
+                        logo: {
+                            "@type": "ImageObject",
+                            url: "https://docs.ravendb.net/img/social-card.jpg",
+                        },
+                    },
+                    potentialAction: {
+                        "@type": "SearchAction",
+                        target: {
+                            "@type": "EntryPoint",
+                            urlTemplate: "https://docs.ravendb.net/search?q={search_term_string}",
+                        },
+                        "query-input": "required name=search_term_string",
+                    },
+                }),
+            },
+            {
+                tagName: "script",
+                attributes: { type: "application/ld+json" },
+                innerHTML: JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "Organization",
+                    name: "RavenDB",
+                    url: "https://ravendb.net/",
+                    logo: {
+                        "@type": "ImageObject",
+                        url: "https://docs.ravendb.net/img/social-card.jpg",
+                    },
+                    sameAs: ["https://github.com/ravendb/ravendb", "https://www.youtube.com/@ravendb_net"],
+                }),
             },
         ],
         metadata: [

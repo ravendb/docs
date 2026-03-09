@@ -1,9 +1,48 @@
 ---
-title: "Vibe coding with RavenDB and Context7"
+title: "Vibe Coding with RavenDB and Context7"
 tags: [getting-started, ai]
 icon: "ai"
-description: "Learn how to power-up your AI-coding process with context directly from RavenDB documentation."
+description: "Learn how to set up Context7 MCP with OpenAI Codex in VS Code to give your AI assistant direct access to RavenDB documentation — faster, context-rich vibe coding with fewer interruptions."
+keywords: [vibe coding, Context7, MCP, model context protocol, RavenDB, AI coding assistant, OpenAI Codex, VS Code, NoSQL prototype]
+publishedAt: 2026-03-09
+see_also:
+  - title: "AI Integration Overview"
+    link: "ai-integration/start"
+    source: "docs"
+    path: "AI Integration"
+  - title: "Generating Embeddings"
+    link: "ai-integration/generating-embeddings/overview"
+    source: "docs"
+    path: "AI Integration > Generating Embeddings"
 ---
+
+<script type="application/ld+json">{`
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Vibe Coding with RavenDB and Context7",
+  "description": "Learn how to set up Context7 MCP with OpenAI Codex in VS Code to give your AI assistant direct access to RavenDB documentation — faster, context-rich vibe coding with fewer interruptions.",
+  "url": "https://docs.ravendb.net/guides/vibe-coding-with-ravendb-and-context7/",
+  "datePublished": "2026-03-09",
+  "inLanguage": "en",
+  "keywords": ["RavenDB", "Context7", "vibe coding", "MCP", "Model Context Protocol", "OpenAI Codex", "VS Code", "AI coding", "NoSQL"],
+  "author": { "@type": "Organization", "name": "RavenDB", "url": "https://ravendb.net" },
+  "publisher": { "@type": "Organization", "name": "RavenDB", "url": "https://ravendb.net" },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://docs.ravendb.net/guides/vibe-coding-with-ravendb-and-context7/" },
+  "proficiencyLevel": "Beginner"
+}
+`}</script>
+
+<script type="application/ld+json">{`
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Guides", "item": "https://docs.ravendb.net/guides/" },
+    { "@type": "ListItem", "position": 2, "name": "Vibe Coding with RavenDB and Context7", "item": "https://docs.ravendb.net/guides/vibe-coding-with-ravendb-and-context7/" }
+  ]
+}
+`}</script>
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
@@ -12,36 +51,43 @@ import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
-# Vibe coding with RavenDB and Context7
+# Vibe Coding with RavenDB and Context7
 
-As AI tools become more capable, so-called “vibe coding” becomes a practical option in certain situations. It can be especially useful for fast PoC development and prototyping. When treated as just another tool in our toolbox, it fits naturally into a modern workflow. One of its strongest advantages is lowering the barrier to entry for technologies you are not yet comfortable with. With AI assistance, you can quickly prototype an idea and evaluate whether a chosen technology is appropriate before committing more time to it.
+As AI tools become more capable, so-called "vibe coding" — an AI-assisted development style where you describe intent in natural language and the AI generates code iteratively — becomes a practical option in certain situations. It can be especially useful for fast PoC development and prototyping. When treated as just another tool in our toolbox, it fits naturally into a modern workflow. One of its strongest advantages is lowering the barrier to entry for technologies you are not yet comfortable with. With AI assistance, you can quickly prototype an idea and evaluate whether a chosen technology is appropriate before committing more time to it.
 
 Overall, AI has improved steadily over time. Models are faster and can handle more context; they have become a standard to provide web search access to find missing information. Many of these LLMs can now be integrated into the IDE, helping you stay focused on the code rather than constantly switching applications. In most cases, this makes work faster and smoother, and the user enters a flow state.
 
-That said, it is not always the case. Sometimes, when working with various technologies, the model can’t find specific information on the web about how precisely the particular app building block works. 
+That said, it is not always the case. Sometimes, when working with various technologies, the model can't find specific information on the web about how precisely the particular app building block works.
 
-This forces you to step outside the IDE to provide additional context, which interrupts your immersion in work just to find information for your AI that was supposed to help you. 
+This forces you to step outside the IDE to provide additional context, which interrupts your immersion in work just to find information for your AI that was supposed to help you.
 
-But needing to do it yourself isn’t the worst part. The worst part is that you just used a lot of tokens and populated the context with unnecessary data. At that point, a question appears. Does it have to work this way?
+But needing to do it yourself isn't the worst part. The worst part is that you just used a lot of tokens and populated the context with unnecessary data. At that point, a question appears. Does it have to work this way?
 
-## Can we make that happen?
+## How Context7 Gives Your AI Direct Access to RavenDB Docs
 
 This leads to a natural question. Could these interruptions be reduced? If AI had access to up-to-date technology-specific context, it could spend fewer tokens and time searching and more time assisting. That would not eliminate all problems, but it could make AI-assisted development smoother and more reliable. To help with that, you can use tools such as Context7, which supports you and your LLM during coding.
 
-Context7 is an MCP (Model Context Protocol) server that provides your AI coding assistant with documentation from official sources, such as RavenDB docs, without requiring you or LLM to search for it. It’s like a shortcut that provides AI with context without using more tokens than necessary. When you ask the assistant to check something in Context7, you stay within your workflow, and AI goes straight to trusted sources. Staying in IDE reduces context switching and keeps your focus where it’s needed, on writing and understanding code. At the same time, an LLM generates high-quality code in comparison with the time needed for that task. But how do we set up such an MCP in our IDE?
+Context7 is an MCP (Model Context Protocol) server — an open standard that lets AI assistants connect to external data sources and tools — that provides your AI coding assistant with documentation from official sources, such as RavenDB docs, without requiring you or the LLM to search for it. It's like a shortcut that provides AI with context without using more tokens than necessary. When you ask the assistant to check something in Context7, you stay within your workflow, and AI goes straight to trusted sources. Staying in the IDE reduces context switching and keeps your focus where it's needed, on writing and understanding code. At the same time, an LLM generates high-quality code in comparison with the time needed for that task. But how do we set up such an MCP in our IDE?
 
-## Setup
+## Setting Up Context7 MCP in VS Code with OpenAI Codex
 
-To show how to connect our Context7, we will use:
+### Prerequisites
 
-* Visual Studio Code  
-* OpenAI Codex
+Before starting, make sure you have the following in place:
 
-First, we install the Codex extension in Visual Studio Code and log in to our Codex. Next, we open the Codex’s settings menu (the cog icon) and select MCP settings \-\> Open config.toml.
+- **Node.js** installed (required to run `npx`)
+- **Visual Studio Code** installed
+- **OpenAI Codex** extension installed and logged in
+- A **Context7 account** with an API key (available from your Context7 dashboard)
+- Access to a **RavenDB instance** — you can use the [RavenDB Live Test](https://live-test.ravendb.net) server for quick prototyping
 
-![](./assets/context1.png)
+### Configuration Steps
 
-Inside this file, we need to establish a connection with our MCP server. Using the Context7 documentation available [here](https://context7.com/docs/resources/all-clients#openai-codex), we copy and paste the configuration code. For Codex, it is:
+First, we install the Codex extension in Visual Studio Code and log in to our Codex. Next, we open the Codex settings menu (the cog icon) and select MCP settings → Open config.toml.
+
+![OpenAI Codex settings menu showing the cog icon and MCP settings option in VS Code](./assets/context1.png)
+
+Inside this file, we need to establish a connection with our MCP server. Using the [Context7 MCP setup guide for Codex](https://context7.com/docs/resources/all-clients#openai-codex), we copy and paste the configuration code. For Codex, it is:
 
 ```json
 [mcp_servers.context7]
@@ -49,47 +95,51 @@ args = ["-y", "@upstash/context7-mcp", "--api-key", "YOUR_API_KEY"]
 command = "npx"
 ```
 
-Then just replace the “YOUR\_API\_KEY” argument with your Context7 API key, which you can get from your Context7 dashboard.
+<Admonition type="warning" title="Never commit your API key">
+  Replace `YOUR_API_KEY` with your actual Context7 API key from the Context7 dashboard. Never commit API keys to version control — store them only in local config files.
+</Admonition>
 
-![](./assets/context2.png)
+Then replace the `YOUR_API_KEY` argument with your Context7 API key.
 
-After saving the config and restarting the IDE, you should be able to tell your AI assistant to use Context7. Now what is left is go and check if it works for us.
+![config.toml file open in VS Code with the Context7 MCP server entry and API key field filled in](./assets/context2.png)
 
-## How to use it?
+After saving the config and restarting the IDE, you should be able to tell your AI assistant to use Context7. Now what is left is to go and check if it works.
 
-We can now write a standard prompt. To force AI to call Context7, we can just add it to the prompt. Using this, we will quickly prototype an e-commerce website:
+## Building an E-Commerce Prototype with RavenDB
 
-- that displays products from the RavenDB database with sample data.   
-- displays statistics  
-- sends mail to the selected email address after making an order
+We can now write a standard prompt. To instruct the AI to call Context7, we can simply add it to the prompt. Using this, we will quickly prototype an e-commerce website that:
 
-And we will implement it all by iterating step by step with AI. The prompt we start with is as follows:
+- Displays products from the RavenDB database with sample data
+- Displays sales statistics
+- Sends a confirmation email to the customer after an order is placed
+
+We will implement it all by iterating step by step with AI. The prompt we start with is as follows:
 
 ```
-Using Context7 write backend and frontend of ecommerce website connecting with RavenDB livetest. Make it connect to database and use sample data from products collection.
+Using Context7, write the backend and frontend of an e-commerce website connecting to RavenDB livetest. Make it connect to the database and use sample data from the products collection.
 ```
 
 Now we can check whether the assistant will provide the requested code and use Context7 for it. We easily check by just looking at the generated content, and we can also click on the AI tool call to see it used Context7:
 
-![](./assets/context3.png)
+![AI assistant tool call panel showing Context7 was invoked to retrieve RavenDB library documentation](./assets/context3.png)
 
-As you can see, in the first Context7 was called to retrieve information about libraries. It gathered context from ravendb/docs. Of course, we don’t need to call Context7 explicitly; the AI can use it itself. We run a few more prompts to fix potential errors. While doing it, Codex takes information from Context7 itself.
+As you can see, Context7 was called first to retrieve information about libraries. It gathered context from `ravendb/docs`. Of course, we don't need to call Context7 explicitly; the AI can use it on its own. We run a few more prompts to fix potential errors. While doing so, Codex fetches from Context7 on its own.
 
-![](./assets/context4.png)
+![Codex autonomously calling Context7 to resolve a RavenDB client API error without being asked](./assets/context4.png)
 
-As you can see, we asked AI to help with the error we received, and Codex itself called Context7. After those fixes we have a ready-to-run prototype code:
+As you can see, we asked the AI to help with an error we received, and Codex called Context7 itself. After those fixes we have ready-to-run prototype code:
 
-![](./assets/context5.png)
+![Generated e-commerce backend code using the RavenDB client API, connected to the live test server](./assets/context5.png)
 
- We can run the prepared code and verify it works and looks as expected.
+We can run the prepared code and verify it works and looks as expected.
 
-![](./assets/context6.png)
+![Running e-commerce prototype web application showing a product listing page connected to RavenDB](./assets/context6.png)
 
-Fast and easy to build a working prototype without much technical knowledge. But we want more functions.
+Fast and easy to build a working prototype without much prior knowledge of RavenDB. But we want more features.
 
-### Expanding the prototype
+### Expanding the Prototype with a Sales Dashboard
 
-Let's give AI next prompt to add another function we want.
+Let's give the AI a next prompt to add another function:
 
 ```
 Create a dashboard that analyzes orders and provides basic sales insights. Include filtering options such as date range, company name, revenue, and other relevant criteria.
@@ -97,17 +147,17 @@ Create a dashboard that analyzes orders and provides basic sales insights. Inclu
 
 After that, we have to wait a bit and let the AI work. We check and approve changes from time to time and issue additional prompts to fix errors and iterate on functionality (e.g., design or sorting logic) until we have working code.
 
-![](./assets/context7.png)
+![Dashboard source code showing RavenDB queries for order aggregation and sales statistics](./assets/context7.png)
 
-We can of course restart program to get changes and have a look how it presents.
+We can of course restart the program to pick up the changes and see how it looks.
 
-![](./assets/context8.png)
+![Sales analytics dashboard showing top products, best-selling days, top companies, revenue totals, and order counts](./assets/context8.png)
 
-What AI created gives us information about top products, which day sells best, or which company is doing best, while also counting revenue, items sold, and orders. It is satisfactory at this point. 
+What AI created gives us information about top products, which day sells best, and which company is doing best, while also counting revenue, items sold, and orders. It is satisfactory at this point.
 
-### Automated email support
+### Automated Email Support
 
-Now last thing we want to test is sending an automated email. We prompt:
+Now the last thing we want to test is sending an automated email. We prompt:
 
 ```
 Add email sending. When a customer completes the order form, an email with the order details should be sent to the provided email address.
@@ -115,10 +165,14 @@ Add email sending. When a customer completes the order form, an email with the o
 
 The assistant then generates the code with the ready logic and informs us we only need to change the required lines in the config file.
 
-![](./assets/context9.png)
+![Generated email configuration file showing SMTP settings and order confirmation template](./assets/context9.png)
 
-We enable email sending in config and test it using a local SMTP server; we can see the file is generated and sent. 
+We enable email sending in the config and test it using a local SMTP server. We can see the message is generated and delivered.
 
-![](./assets/context10.png)
+![Local SMTP server log showing an order confirmation email successfully received at the test address](./assets/context10.png)
 
-With an AI assistant in our hour, we have a working prototype that we can improve it further, or we can pause to consider whether we want to proceed with development using the chosen technologies.
+## Summary and Next Steps
+
+With an AI assistant at our side, we built a working RavenDB e-commerce prototype — complete with a product listing page, a sales analytics dashboard, and automated order email notifications — in a single session. Context7 kept the AI grounded in accurate RavenDB documentation throughout, reducing the need to search for context and keeping the workflow uninterrupted.
+
+From here you can extend the prototype with additional RavenDB features, use it as a basis for evaluating whether RavenDB fits your project's requirements, or explore RavenDB's built-in AI integration capabilities for embeddings and vector search in production applications.
