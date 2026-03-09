@@ -24,6 +24,7 @@ import CodeBlock from '@theme/CodeBlock';
   - [RandomOrdering](../../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
   - [Timings](../../../../client-api/session/querying/how-to-customize-query.mdx#timings)
   - [WaitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+  - [WithTag](../../../../client-api/session/querying/how-to-customize-query.mdx#withtag)
 
 * [Methods return value](../../../../client-api/session/querying/how-to-customize-query.mdx#methods-return-value)
 
@@ -863,6 +864,96 @@ IDocumentQueryCustomization RandomOrdering(string seed);
 | Parameters | Type | Description |
 |------------| ------------- |-----------|
 | **waitTimeout** | `TimeSpan?` | Time to wait for non-stale results. <br/>Default is 15 seconds. |
+
+</Admonition>
+
+
+
+## WithTag
+
+* Use `WithTag` to attach a user-defined string label to a query.
+
+* The tag is sent as a URL query parameter (`&tag=...`) with each `/queries` request,
+  making it easy to identify specific queries in server-side logs and during debugging.
+
+* Supported for standard queries, lazy queries, suggestion queries, and aggregation queries.
+
+* The tag value cannot be `null`, empty, or whitespace — an `ArgumentException` is thrown if it is.
+
+<Admonition type="note" title="">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Query<Employee>()
+     // Call 'Customize' with 'WithTag'
+     // Attach an identifying label to this query
+    .Customize(x => x.WithTag("Employees-from-London"))
+    .Where(x => x.Address.City == "London")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> results = await asyncSession
+    .Query<Employee>()
+     // Call 'Customize' with 'WithTag'
+     // Attach an identifying label to this query
+    .Customize(x => x.WithTag("Employees-from-London"))
+    .Where(x => x.Address.City == "London")
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(x => x.Address.City, "London")
+     // Call 'WithTag' directly on DocumentQuery
+     // Attach an identifying label to this query
+    .WithTag("Employees-from-London")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .RawQuery<Employee>("from 'Employees' where Address.City == 'London'")
+     // Call 'WithTag' directly on RawQuery
+     // Attach an identifying label to this query
+    .WithTag("Employees-from-London")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Syntax**
+
+<TabItem value="customize_10_5" label="customize_10_5">
+<CodeBlock language="csharp">
+{`// From IDocumentQueryCustomization (used with Customize() on Query/LINQ)
+IDocumentQueryCustomization WithTag(string tag);
+
+// From IQueryBase (used directly on DocumentQuery and RawQuery)
+TSelf WithTag(string tag);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|------------| ---- | ----------- |
+| **tag** | `string` | A user-defined label to attach to the query. Cannot be `null`, empty, or whitespace. |
 
 </Admonition>
 
