@@ -24,9 +24,10 @@ export default function DocumentExtensionsFeaturesGrid() {
         {
             title: "Attachments",
             icon: "attachment",
-            url: activeVersion.label >= "7.2"
-                ? `/${activeVersion.label}/document-extensions/attachments/overview`
-                : `/${activeVersion.label}/document-extensions/attachments/what-are-attachments`,
+            url:
+                activeVersion.label >= "7.2"
+                    ? `/${activeVersion.label}/document-extensions/attachments/overview`
+                    : `/${activeVersion.label}/document-extensions/attachments/what-are-attachments`,
             description: "Attach binary files directly to documents - scalable, searchable",
         },
         {

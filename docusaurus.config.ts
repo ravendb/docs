@@ -16,7 +16,6 @@ function getOnlyIncludeVersions(): string[] | undefined {
 
 const isStrict = process.env.DOCUSAURUS_STRICT === "true";
 
-
 const config: Config = {
     title: "RavenDB Documentation",
     tagline: "High-performance NoSQL database that just works.",
