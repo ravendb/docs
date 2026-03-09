@@ -83,7 +83,7 @@ But in RavenDB particularly, there’s another way of achieving the same goal, u
 
 ## Setup
 
-We want to connect and save our documents to both collections as a single atomic transaction. To achieve that, we want to use the saveChanges() after storing both documents, to wrap both changes into a single transaction, as described in this [article](/client-api/faq/transaction-support/#acid-for-document-operations).
+We want to connect and save our documents to both collections as a single atomic transaction. To achieve that, we want to use the saveChanges() after storing both documents, to wrap both changes into a single transaction, as described in this [article](/7.2/client-api/faq/transaction-support#acid-for-document-operations).
 
 ```csharp
 var invoice = new Invoice
