@@ -44,19 +44,16 @@ You can add, remove or change the default credit card.
 
 ### User management  
 
-In this section, you can manage all users on your account.  
-You can add or remove new users with selected roles, as well as modifying existing users roles.
+In this section, you can manage all users on your account. You can add or remove users and assign their roles, as well as modify the roles of existing users.
 
-Users with role *Account with User Management* can modify roles of other users (except for *Account with User Management*).  
-Users with role *Account with User Management* can **not** add or remove roles, that they are **not** assigned themselves.  
+Users with the **Account with User Management role** can modify the roles of other users, with the exception of other **Account with User Management** users. Furthermore, they cannot assign or remove roles that they do not possess themselves.
 
 <Admonition type="note" title="Example" id="example" href="#example">
-  User with roles **Account with User Management** and **Products** can assign the **Products** role to another user (that does not have a **Account with User Management** role).  
-  User with roles **Account with User Management** and **Products** can not assign the **Billing** role to another user.
+  A user with the **Account with User Management** and **Products** roles can assign the **Products** role to another user (provided that user does not have the **Account with User Management** role).
+  A user with the **Account with User Management** and **Products** roles cannot assign the **Billing** role to another user.
 </Admonition>
 
-Only *account owner* can modify roles of other users with *Account with User Management* role, as well as assign and remove this role.  
-*Account owner* can modify any role to any user.
+Only the **Account Owner** can modify the roles of users who have the **Account with User Management** role, or assign/remove that specific role. The **Account Owner** can modify any role for any user.
 
 You can read more about *account roles* in the [Account](../../cloud/cloud-account.mdx#account-roles) page. 
 
@@ -96,4 +93,4 @@ You can read more about *account roles* in the [Account](../../cloud/cloud-accou
 
 !["Account Tab - Invite a user"](./assets/portal-account-tab-edit-user-wizard-apply-changes.png)
 
-   **3**. Submit the edit.  
+   **3**. Save the changes.  
