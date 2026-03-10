@@ -2,6 +2,8 @@ import React from "react";
 import Link from "@docusaurus/Link";
 import clsx from "clsx";
 import { ThemeClassNames } from "@docusaurus/theme-common";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import { useLocation } from "@docusaurus/router";
 
 export interface BreadcrumbItem {
     label: string;
@@ -14,6 +16,10 @@ export interface BreadcrumbsProps {
 }
 
 export default function CustomBreadcrumbs({ items, className }: BreadcrumbsProps) {
+    const { siteConfig } = useDocusaurusContext();
+    const { pathname } = useLocation();
+    const baseUrl = (siteConfig.url as string).replace(/\/$/, "");
+
     if (!items || items.length === 0) {
         return null;
     }
@@ -31,6 +37,11 @@ export default function CustomBreadcrumbs({ items, className }: BreadcrumbsProps
             <ul className="breadcrumbs" itemScope itemType="https://schema.org/BreadcrumbList">
                 {items.map((item, index) => {
                     const isLast = index === items.length - 1;
+                    const absoluteHref = isLast
+                        ? `${baseUrl}${pathname}`
+                        : item.href
+                          ? `${baseUrl}${item.href}`
+                          : undefined;
 
                     return (
                         <li
@@ -43,7 +54,7 @@ export default function CustomBreadcrumbs({ items, className }: BreadcrumbsProps
                             itemType="https://schema.org/ListItem"
                         >
                             {!isLast && item.href ? (
-                                <Link className="breadcrumbs__link" itemProp="item" to={item.href}>
+                                <Link className="breadcrumbs__link" to={item.href}>
                                     <span itemProp="name">{item.label}</span>
                                 </Link>
                             ) : (
@@ -51,6 +62,7 @@ export default function CustomBreadcrumbs({ items, className }: BreadcrumbsProps
                                     {item.label}
                                 </span>
                             )}
+                            {absoluteHref && <link itemProp="item" href={absoluteHref} />}
                             <meta itemProp="position" content={String(index + 1)} />
                         </li>
                     );

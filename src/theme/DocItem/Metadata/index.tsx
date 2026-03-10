@@ -12,10 +12,13 @@ export default function MetadataWrapper(props: Props): ReactNode {
     const { siteConfig } = useDocusaurusContext();
     const { metadata } = useDoc();
     const permalink = metadata.permalink;
-    const isVersionedDoc = !permalink.startsWith("/guides/") && !permalink.startsWith("/cloud/");
+    // Strip trailing slash from base URL to avoid double slashes
+    const baseUrl = (siteConfig.url as string).replace(/\/$/, "");
+    const isVersionedDoc =
+        !permalink.startsWith("/guides/") && !permalink.startsWith("/cloud/") && !permalink.startsWith("/templates/");
     let canonicalUrl = isVersionedDoc
-        ? `${siteConfig.url}/${siteConfig.customFields.latestVersion}${metadata.slug}`
-        : `${siteConfig.url}${permalink}`;
+        ? `${baseUrl}/${siteConfig.customFields.latestVersion}${metadata.slug}`
+        : `${baseUrl}${permalink}`;
 
     if (canonicalUrl.endsWith("/") == false) {
         canonicalUrl = canonicalUrl.concat("/");
@@ -23,10 +26,10 @@ export default function MetadataWrapper(props: Props): ReactNode {
 
     return (
         <>
-            <Metadata {...props} />
             <Head>
                 <link rel="canonical" href={canonicalUrl} />
             </Head>
+            <Metadata {...props} />
         </>
     );
 }
