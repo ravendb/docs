@@ -5,7 +5,12 @@ import { Feature } from "@site/src/typescript/feature";
 
 export default function BackgroundTasksFeaturesGrid() {
     const pluginId = "default";
+    const minimumCategorySupportedVersion = "4.0";
     const { activeVersion } = useActiveDocContext(pluginId);
+
+    if (minimumCategorySupportedVersion > activeVersion.label) {
+        return null;
+    }
 
     const backgroundTasksFeatures: Feature[] = [
         {
@@ -13,12 +18,14 @@ export default function BackgroundTasksFeaturesGrid() {
             icon: "document-expiration",
             url: `/${activeVersion.label}/server/extensions/expiration`,
             description: "Automatically scheduled documents cleanup",
+            minimumSupportedVersion: "4.0",
         },
         {
             title: "Refresh",
             icon: "document-refresh",
             url: `/${activeVersion.label}/server/extensions/refresh`,
             description: "Automatically re-trigger your documents",
+            minimumSupportedVersion: "4.2",
         },
         {
             title: "Archival",

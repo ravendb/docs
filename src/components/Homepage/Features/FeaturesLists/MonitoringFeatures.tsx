@@ -5,7 +5,12 @@ import { Feature } from "@site/src/typescript/feature";
 
 export default function MonitoringFeaturesGrid() {
     const pluginId = "default";
+    const minimumCategorySupportedVersion = "4.0";
     const { activeVersion } = useActiveDocContext(pluginId);
+
+    if (minimumCategorySupportedVersion > activeVersion.label) {
+        return null;
+    }
 
     const monitoringFeatures: Feature[] = [
         {
@@ -13,12 +18,14 @@ export default function MonitoringFeaturesGrid() {
             icon: "cluster-dashboard",
             url: `/${activeVersion.label}/studio/cluster/cluster-dashboard/cluster-dashboard-overview`,
             description: "Customizable live view of your cluster's health and performance",
+            minimumSupportedVersion: "5.2",
         },
         {
             title: "SNMP monitoring",
             icon: "snmp",
             url: `/${activeVersion.label}/server/administration/snmp/snmp-overview`,
             description: "Easily expose RavenDB metrics to Zabbix/Datadog/PTRG",
+            minimumSupportedVersion: "4.0",
         },
         {
             title: "Telegraf and Grafana",

@@ -5,7 +5,12 @@ import { Feature } from "@site/src/typescript/feature";
 
 export default function IntegrationFeaturesGrid() {
     const pluginId = "default";
+    const minimumCategorySupportedVersion = "4.0";
     const { activeVersion } = useActiveDocContext(pluginId);
+
+    if (minimumCategorySupportedVersion > activeVersion.label) {
+        return null;
+    }
 
     const integrationFeatures: Feature[] = [
         {
@@ -13,6 +18,7 @@ export default function IntegrationFeaturesGrid() {
             icon: "ravendb-etl",
             url: `/${activeVersion.label}/server/ongoing-tasks/etl/basics`,
             description: "Move and transform data between RavenDB databases",
+            minimumSupportedVersion: "4.0",
         },
         {
             title: "OLAP ETL",
@@ -33,6 +39,7 @@ export default function IntegrationFeaturesGrid() {
             icon: "sql-etl",
             url: `/${activeVersion.label}/server/ongoing-tasks/etl/sql`,
             description: "Send documents to SQL databases with schema transformation",
+            minimumSupportedVersion: "4.0",
         },
         {
             title: "Kafka ETL",

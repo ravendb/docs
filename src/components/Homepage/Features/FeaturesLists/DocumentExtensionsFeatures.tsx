@@ -5,7 +5,12 @@ import { Feature } from "@site/src/typescript/feature";
 
 export default function DocumentExtensionsFeaturesGrid() {
     const pluginId = "default";
+    const minimumCategorySupportedVersion = "5.0";
     const { activeVersion } = useActiveDocContext(pluginId);
+
+    if (minimumCategorySupportedVersion > activeVersion.label) {
+        return null;
+    }
 
     const documentExtensionsFeatures: Feature[] = [
         {
@@ -13,6 +18,7 @@ export default function DocumentExtensionsFeaturesGrid() {
             icon: "revisions",
             url: `/${activeVersion.label}/document-extensions/revisions/overview`,
             description: "Capture, track, and rewind any change",
+            minimumSupportedVersion: "5.3",
         },
         {
             title: "Time series",
@@ -29,6 +35,7 @@ export default function DocumentExtensionsFeaturesGrid() {
                     ? `/${activeVersion.label}/document-extensions/attachments/overview`
                     : `/${activeVersion.label}/document-extensions/attachments/what-are-attachments`,
             description: "Attach binary files directly to documents - scalable, searchable",
+            minimumSupportedVersion: "5.0",
         },
         {
             title: "Documents compression",
@@ -42,6 +49,7 @@ export default function DocumentExtensionsFeaturesGrid() {
             icon: "new-counter",
             url: `/${activeVersion.label}/document-extensions/counters/overview`,
             description: "Simple, scalable, and conflict-free numeric counters",
+            minimumSupportedVersion: "5.0",
         },
         {
             title: "Remote Attachments",
