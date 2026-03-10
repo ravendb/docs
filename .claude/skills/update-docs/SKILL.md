@@ -165,18 +165,34 @@ cd /tmp/ravendb-source && git diff origin/<BASE_BRANCH>...HEAD --stat
 3. **Query/RQL changes** — new functions, syntax additions
 4. **Test files** — use as real-world usage examples for documentation code samples
 
-## Phase 6 — Read Existing Documentation
+## Phase 6 — Read Existing Documentation and Study Style
 
-Read the documentation files identified in Phase 3. Understand:
+Read the documentation files identified in Phase 3, **plus 2–3 sibling pages in the same directory** to use as style references. The goal is to match the look and feel of existing documentation exactly.
+
+### Read target pages
 - Current structure, headings, and content
 - Frontmatter fields (especially `see_also` cross-references)
 - Whether the page uses multi-language patterns
 - What components are imported
-- Writing style and level of detail
 
-Use `Glob` and `Grep` to find related pages and existing mentions of the affected feature.
+### Study sibling pages as style templates
+Read nearby pages in the same documentation section (same parent folder) to learn:
+- **Heading hierarchy** — what heading levels are used and in what order (e.g., do they start with a summary paragraph? An admonition? A code example?)
+- **Tone and voice** — formal vs conversational, second person ("you") vs third person, imperative vs descriptive
+- **Section patterns** — do pages in this section follow a consistent structure? (e.g., Overview → Syntax → Example → Related)
+- **Code sample style** — inline code vs `<CodeBlock>`, length of examples, how parameters are documented, whether examples include comments
+- **Component usage** — which components (Admonition, Tabs, CodeBlock, etc.) are used and how
+- **Level of detail** — how much explanation accompanies code samples, how deeply parameters/options are described
+- **Cross-reference patterns** — how `see_also` is structured, inline links to related pages
+
+When creating or editing pages, **replicate the patterns found in sibling pages**. New content should be indistinguishable in style from existing content in the same section.
+
+### Find related pages
+Use `Glob` and `Grep` to find additional pages that mention the affected feature across the docs.
 
 ## Phase 7 — Make Documentation Updates
+
+**Style rule**: Match the look and feel of sibling pages studied in Phase 6. Use the same heading hierarchy, section order, tone, code sample style, and component patterns. New or updated content should read as if the same author wrote the entire section.
 
 Apply changes following these conventions:
 
