@@ -15,9 +15,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="">
 
 * In most cases, the cloud configuration settings are similar to the on-premise settings.  
-  To see general RavenDB configuration settings see: 
-   * [Client API Configurations](../7.1/client-api/configuration/conventions) 
-   * [Server Configurations](../7.1/server/configuration/configuration-options) 
+  To see general RavenDB configuration settings see:
+   * [Client API Configurations](../7.2/client-api/configuration/conventions)
+   * [Server Configurations](../7.2/server/configuration/configuration-options)
 
 * Whenever **cloud** configuration defaults differ from **on-premise** defaults, 
   the cloud configurations will be discussed in this article.
@@ -31,8 +31,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 If you want to change configurations for cloud instances, they must be set in Studio. 
 
-* [Database Configurations](../7.1/studio/database/settings/database-settings)
-* [Indexing Configurations](../7.1/studio/database/indexes/create-map-index#configuration)
+* [Database Configurations](../7.2/studio/database/settings/database-settings)
+* [Indexing Configurations](../7.2/studio/database/indexes/create-map-index#configuration)
 
 To learn how to access the RavenDB Cloud Studio interface, see the [Studio section in the Cloud Overview](../cloud/cloud-overview.mdx#ravendb-studio---graphic-user-interface) article.
 
@@ -57,7 +57,7 @@ When heavy-duty indexing is done on a large dataset, there are ways to prevent e
 The factors to consider when adjusting the max indexing batch size:
 
 * [Size of documents](https://ravendb.net/articles/dealing-with-large-documents-100-mb#:~:text=RavenDB%20can%20handle%20large%20documents,isn't%20a%20practical%20one.)
-* [The Complexity of calculations](../7.1/studio/database/indexes/indexing-performance#common-indexing-issues) that static indexes do.
+* [The Complexity of calculations](../7.2/studio/database/indexes/indexing-performance#common-indexing-issues) that static indexes do.
 * [IOPS](../cloud/cloud-scaling.mdx#change-storage) - Input/Output Operations Per Second
 #### Cloud Indexing Batch Size 
 
@@ -77,7 +77,7 @@ In this example, 4,096 is larger than 1024, so the maximum batch size will be 4,
 </Admonition>
 #### Overriding the Default Setting
 
-Change [cloud configurations in Studio](../7.1/studio/database/indexes/create-map-index#configuration).
+Change [cloud configurations in Studio](../7.2/studio/database/indexes/create-map-index#configuration).
 
 **Type**: `int`  
 **MinValue**: `128`  

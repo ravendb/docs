@@ -57,9 +57,9 @@ a sharded database:
 See a code example [here](../client-api/smuggler/what-is-smuggler.mdx#example).  
 
 <Admonition type="warning" title="Casting Smuggler Results" id="casting-smuggler-results" href="#casting-smuggler-results">
-In a sharded database, results are returned by Smuggler, Import, and Export 
-in a `ShardedSmugglerResult` type. This type is specific to a sharded database, 
-and casting it using a non-sharded type [will fail](../../migration/client-api/client-breaking-changes.mdx#casting-smuggler-results).  
+In a sharded database, results are returned by Smuggler, Import, and Export
+in a `ShardedSmugglerResult` type. This type is specific to a sharded database,
+and casting it using a non-sharded type [will fail](../migration/client-api/previous-versions-client-breaking-changes.mdx#casting-smuggler-results).
 </Admonition>
 
 
@@ -89,11 +89,11 @@ or contents of the database the data is imported to.
   In case the shard has [several nodes](../sharding/overview.mdx#shard-replication), 
   each shard database will be replicated to all the nodes of this shard.  
 
-See a code example [here](../client-api/smuggler/what-is-smuggler.mdx#example-1).  
+See a code example [here](../client-api/smuggler/what-is-smuggler.mdx#example-1).
 <Admonition type="warning" title="Casting Smuggler Results" id="casting-smuggler-results" href="#casting-smuggler-results">
-In a sharded database, results are returned by Smuggler, Import, and Export 
-in a `ShardedSmugglerResult` type. This type is specific to a sharded database, 
-and casting it using a non-sharded type [will fail](../../migration/client-api/client-breaking-changes.mdx#casting-smuggler-results).  
+In a sharded database, results are returned by Smuggler, Import, and Export
+in a `ShardedSmugglerResult` type. This type is specific to a sharded database,
+and casting it using a non-sharded type [will fail](../migration/client-api/previous-versions-client-breaking-changes.mdx#casting-smuggler-results).
 </Admonition>
 
 ## Importing data from backup files

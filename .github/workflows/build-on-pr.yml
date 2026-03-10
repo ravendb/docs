@@ -30,8 +30,8 @@ jobs:
       - name: Prettier
         run: npm run prettier
 
-      - name: Build Docusaurus
-        run: npx cross-env DOCUSAURUS_VERSIONS='6.2, 7.1, current' npm run build
+      - name: Build Docusaurus & Check Internal Links
+        run: npx cross-env DOCUSAURUS_VERSIONS='6.2, 7.1, current' DOCUSAURUS_STRICT=true npm run build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
