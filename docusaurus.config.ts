@@ -31,9 +31,8 @@ const config: Config = {
         latestVersion: "7.2",
     },
 
-    url: "https://docs.ravendb.net",
+    url: "https://docs.ravendb.net/",
     baseUrl: "/",
-    trailingSlash: true,
 
     onBrokenLinks: isStrict ? "throw" : "warn",
     onBrokenMarkdownLinks: isStrict ? "throw" : "warn",
