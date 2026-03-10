@@ -2,9 +2,22 @@
 title: "Transactional Outbox Pattern with RavenDB Queue ETL"
 tags: [ongoing-tasks, architecture, csharp, integration]
 icon: "etl"
-description: "Learn how to implement the transactional outbox pattern in C# using RavenDB data subscriptions or Queue ETL. Covers RabbitMQ and Apache Kafka integration with full code examples."
+description: "Learn to implement the transactional outbox pattern in C# using RavenDB data subscriptions or Queue ETL, with RabbitMQ and Kafka code examples."
 keywords: [transactional outbox, outbox pattern, RavenDB ETL, RabbitMQ, Kafka, distributed systems, event-driven architecture]
 publishedAt: 2026-02-13
+see_also:
+  - title: "RabbitMQ Queue ETL"
+    link: "server/ongoing-tasks/etl/queue-etl/rabbit-mq"
+    source: "docs"
+    path: "Server > Ongoing Tasks > ETL > Queue ETL"
+  - title: "Kafka Queue ETL"
+    link: "server/ongoing-tasks/etl/queue-etl/kafka"
+    source: "docs"
+    path: "Server > Ongoing Tasks > ETL > Queue ETL"
+  - title: "What are Data Subscriptions"
+    link: "client-api/data-subscriptions/what-are-data-subscriptions"
+    source: "docs"
+    path: "Client API > Data Subscriptions"
 ---
 
 <script type="application/ld+json">{`
@@ -15,10 +28,31 @@ publishedAt: 2026-02-13
   "description": "Learn how to implement the transactional outbox pattern in C# using RavenDB data subscriptions or Queue ETL with RabbitMQ and Apache Kafka.",
   "url": "https://docs.ravendb.net/guides/transactional-outbox/",
   "datePublished": "2026-02-13",
+  "dateModified": "2026-02-13",
   "inLanguage": "en",
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://docs.ravendb.net/img/social-card.jpg",
+    "width": 1200,
+    "height": 630
+  },
   "keywords": ["RavenDB", "transactional outbox", "Queue ETL", "RabbitMQ", "Kafka", "C#"],
-  "author": { "@type": "Organization", "name": "RavenDB", "url": "https://ravendb.net" },
-  "publisher": { "@type": "Organization", "name": "RavenDB", "url": "https://ravendb.net" },
+  "author": {
+    "@type": "Organization",
+    "@id": "https://ravendb.net/#organization",
+    "name": "RavenDB",
+    "url": "https://ravendb.net"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://ravendb.net/#organization",
+    "name": "RavenDB",
+    "url": "https://ravendb.net",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://docs.ravendb.net/img/social-card.jpg"
+    }
+  },
   "mainEntityOfPage": { "@type": "WebPage", "@id": "https://docs.ravendb.net/guides/transactional-outbox/" },
   "proficiencyLevel": "Intermediate",
   "programmingLanguage": "C#"
@@ -61,7 +95,7 @@ When it happens, we can end up with situations where the invoice exists, but no 
 
 At the same time, we can have the opposite situation: the queue receives our event, but the database doesn’t create an invoice. That’s how minor problems can change into real legal difficulties. We can’t have partial failure at all; it is worse than complete failure. Then how is it possible we have so many online services that work?
 
-#### Solution
+### Solution
 
 The reason systems like this can work at all is that they stop treating event sending or document creation separately. The moment an invoice is created is also the exact moment an event must be captured. There is no acceptable state in which only one of those happens.
 

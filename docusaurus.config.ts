@@ -217,6 +217,14 @@ const config: Config = {
                 content:
                     "Official RavenDB documentation. Learn installation, querying, indexing, scaling, security, and every advanced feature of the fully ACID NoSQL database that combines performance with ease of use.",
             },
+            {
+                property: "og:image:width",
+                content: "1200",
+            },
+            {
+                property: "og:image:height",
+                content: "630",
+            },
         ],
         colorMode: {
             defaultMode: "dark",

@@ -10,7 +10,7 @@ export default function DocItemTOCDesktop(): ReactNode {
 
     return (
         <div className="sticky top-[160px]">
-            <h5 className="!mb-1">In this article</h5>
+            <p className="!mb-1 font-semibold">In this article</p>
             <TOC
                 toc={filteredToc}
                 minHeadingLevel={frontMatter.toc_min_heading_level}
