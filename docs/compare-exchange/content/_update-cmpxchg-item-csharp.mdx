@@ -11,10 +11,10 @@ import CodeBlock from '@theme/CodeBlock';
   * Using the Studio
   
 * In this article:  
-  * [Update compare-exchange item using a **cluster-wide session**](../compare-exchange/update-cmpxchg-item.mdx#update-compare-exchange-item-using-a-cluster-wide-session)  
-  * [Update compare-exchange item using a **store operation**](../compare-exchange/update-cmpxchg-item.mdx#update-compare-exchange-item-using-a-store-operation)  
-  * [Update compare-exchange item using the **Studio**](../compare-exchange/update-cmpxchg-item.mdx#update-compare-exchange-item-using-the-studio)  
-  * [Syntax](../compare-exchange/update-cmpxchg-item.mdx#syntax)   
+  * [Update compare-exchange item using a **cluster-wide session**](../../compare-exchange/update-cmpxchg-item.mdx#update-compare-exchange-item-using-a-cluster-wide-session)  
+  * [Update compare-exchange item using a **store operation**](../../compare-exchange/update-cmpxchg-item.mdx#update-compare-exchange-item-using-a-store-operation)  
+  * [Update compare-exchange item using the **Studio**](../../compare-exchange/update-cmpxchg-item.mdx#update-compare-exchange-item-using-the-studio)  
+  * [Syntax](../../compare-exchange/update-cmpxchg-item.mdx#syntax)   
 
 </Admonition>
 
@@ -88,7 +88,7 @@ using (var asyncSession = store.OpenAsyncSession(
 ## Update compare-exchange item using a store operation
 
 * Use `PutCompareExchangeValueOperation` to **update the _value_ and/or _metadata_** of an existing compare-exchange item.
-  This operation is also used to create new compare-exchange items, see [Create compare-exchange item](../compare-exchange/create-cmpxchg-items.mdx).
+  This operation is also used to create new compare-exchange items, see [Create compare-exchange item](../../compare-exchange/create-cmpxchg-items.mdx).
 
 * To perform an update, provide:
   * The existing key
@@ -213,7 +213,7 @@ public PutCompareExchangeValueOperation(
 |--------------|----------|-------------------------------------------------------------------------------------------------------------------------|
 | **key**      | `string` | The unique identifier in the database scope.                                                                            |
 | **value**    | `T`      | The value to be saved for the specified _key_.<br/>Can be any object (number, string, array, or any valid JSON object). |
-| **index**    | `long`   | The current version of the item when updating an existing item.<br/>Pass `0` to [create a new key](../compare-exchange/create-cmpxchg-items.mdx). |
+| **index**    | `long`   | The current version of the item when updating an existing item.<br/>Pass `0` to [create a new key](../../compare-exchange/create-cmpxchg-items.mdx). |
 | **metadata** | `IMetadataDictionary` | Metadata to be saved for the specified key.<br/>Must be a valid JSON object. |
 
 **Returned object**:

@@ -14,20 +14,20 @@ import CodeBlock from '@theme/CodeBlock';
   Any compare-exchange item whose `@expires` timestamp has passed at the time of the scan will be automatically removed.
   
 * The **scan frequency** is configurable -  
-  see the [Cluster.CompareExchangeExpiredDeleteFrequencyInSec](../compare-exchange/configuration.mdx#clustercompareexchangeexpireddeletefrequencyinsec) configuration key. 
+  see the [Cluster.CompareExchangeExpiredDeleteFrequencyInSec](../../compare-exchange/configuration.mdx#clustercompareexchangeexpireddeletefrequencyinsec) configuration key. 
   The default is 60 seconds.  
 
-* To manually remove a compare-exchange item, see [Delete compare-exchange items](../compare-exchange/delete-cmpxchg-items.mdx).
+* To manually remove a compare-exchange item, see [Delete compare-exchange items](../../compare-exchange/delete-cmpxchg-items.mdx).
 
-* Note: The compare-exchange expiration feature is not related to [document expiration](../server/extensions/expiration.mdx).  
+* Note: The compare-exchange expiration feature is not related to [document expiration](../../server/extensions/expiration.mdx).  
   You do NOT need to enable document expiration in order to use compare-exchange expiration.
   
 ---
 
 * In this article:  
-  * [Add expiration date using the **Client API**](../compare-exchange/cmpxchg-expiration.mdx#add-expiration-date-using-the-client-api)   
-  * [Add expiration date using the **Studio**](../compare-exchange/cmpxchg-expiration.mdx#add-expiration-date-using-the-studio)  
-  * [Syntax](../compare-exchange/cmpxchg-expiration.mdx#syntax)   
+  * [Add expiration date using the **Client API**](../../compare-exchange/cmpxchg-expiration.mdx#add-expiration-date-using-the-client-api)   
+  * [Add expiration date using the **Studio**](../../compare-exchange/cmpxchg-expiration.mdx#add-expiration-date-using-the-studio)  
+  * [Syntax](../../compare-exchange/cmpxchg-expiration.mdx#syntax)   
 
 </Admonition>
 
@@ -136,5 +136,5 @@ CompareExchangeResult<string> putResult = await store.Operations.SendAsync(putCm
 
 ## Syntax
 
-* The syntax for **creating** a compare-exchange item is available in [Create compare-exchange item - Syntax](../compare-exchange/create-cmpxchg-items.mdx#syntax)
-* The syntax for **updating** a compare-exchange item is available in [Update compare-exchange item - Syntax](../compare-exchange/update-cmpxchg-item.mdx#syntax)
+* The syntax for **creating** a compare-exchange item is available in [Create compare-exchange item - Syntax](../../compare-exchange/create-cmpxchg-items.mdx#syntax)
+* The syntax for **updating** a compare-exchange item is available in [Update compare-exchange item - Syntax](../../compare-exchange/update-cmpxchg-item.mdx#syntax)

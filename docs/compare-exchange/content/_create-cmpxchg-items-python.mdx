@@ -15,14 +15,14 @@ import CodeBlock from '@theme/CodeBlock';
   * **An associated value** (number, string, array, or any valid JSON object)
   * You can optionally add **metadata** (a valid JSON object) to store extra information with the item.    
     A common use case is to set an expiration time for the compare-exchange item in its metadata.  
-    Learn more in [Set expiration for compare-exchange items](../compare-exchange/cmpxchg-expiration.mdx).     
+    Learn more in [Set expiration for compare-exchange items](../../compare-exchange/cmpxchg-expiration.mdx).     
  
-* To modify an existing compare-exchange item, see: [Update compare-exchange item](../compare-exchange/update-cmpxchg-item.mdx).
+* To modify an existing compare-exchange item, see: [Update compare-exchange item](../../compare-exchange/update-cmpxchg-item.mdx).
 
 * In this article:  
-  * [Create item using a **cluster-wide session**](../compare-exchange/create-cmpxchg-items.mdx#create-item-using-a-cluster-wide-session)
-  * [Create item using the **Studio**](../compare-exchange/create-cmpxchg-items.mdx#create-item-using-the-studio)
-  * [Syntax](../compare-exchange/create-cmpxchg-items.mdx#syntax)
+  * [Create item using a **cluster-wide session**](../../compare-exchange/create-cmpxchg-items.mdx#create-item-using-a-cluster-wide-session)
+  * [Create item using the **Studio**](../../compare-exchange/create-cmpxchg-items.mdx#create-item-using-the-studio)
+  * [Syntax](../../compare-exchange/create-cmpxchg-items.mdx#syntax)
 
 </Admonition>
 
@@ -32,7 +32,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Create compare-exchange items using a cluster-wide session when you want the creation to be part of a transaction committed via `save_changes()`. 
   This is suitable if you want to include compare-exchange item creation and document changes in the same transaction.
-  Learn more about cluster-wide sessions in [Cluster transactions - overview](../client-api/session/cluster-transaction/overview.mdx).     
+  Learn more about cluster-wide sessions in [Cluster transactions - overview](../../client-api/session/cluster-transaction/overview.mdx).     
   
 * Use `create_compare_exchange_value()` to register the creation of a new compare-exchange item in the session.  
   The item will be created as part of the cluster-wide transaction when _save_changes()_ is called.

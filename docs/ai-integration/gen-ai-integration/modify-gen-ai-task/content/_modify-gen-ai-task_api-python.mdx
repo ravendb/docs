@@ -10,14 +10,14 @@ import Panel from "@site/src/components/Panel";
 <Admonition type="note" title="">
 
 * To modify an existing GenAI task, register a modified task configuration object with the server using the existing task ID (`task_id`), via the `UpdateGenAiOperation` store operation.  
-* Note that this task ID is **not** the [user-defined task identifier](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#configure-basic-settings) that we define as part of the task configuration, but an identifier that RavenDB uses internally to manage the task (same as it does with other ongoing tasks like ETL tasks, backup tasks, and others).  
-   * The **user-defined task identifier** is a `str` variable that is mainly used as a property name for a list of hashes that identify [processed document parts](../../../ai-integration/gen-ai-integration/overview.mdx#tracking-of-processed-document-parts) in the document metadata.  
+* Note that this task ID is **not** the [user-defined task identifier](../../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#configure-basic-settings) that we define as part of the task configuration, but an identifier that RavenDB uses internally to manage the task (same as it does with other ongoing tasks like ETL tasks, backup tasks, and others).  
+   * The **user-defined task identifier** is a `str` variable that is mainly used as a property name for a list of hashes that identify [processed document parts](../../../../ai-integration/gen-ai-integration/overview.mdx#tracking-of-processed-document-parts) in the document metadata.  
    * The `task_id` is an `int` variable that is used by RavenDB to identify and manage the task.  
      See the examples below to learn how to extract the `task_id` and use it to register the modified task configuration.  
 
 * In this article:
-   * [Modify task configuration](../../../ai-integration/gen-ai-integration/modify-gen-ai-task/modify-gen-ai-task_api.mdx#modify-task-configuration) 
-   * [Syntax](../../../ai-integration/gen-ai-integration/modify-gen-ai-task/modify-gen-ai-task_api.mdx#syntax)  
+   * [Modify task configuration](../../../../ai-integration/gen-ai-integration/modify-gen-ai-task/modify-gen-ai-task_api.mdx#modify-task-configuration) 
+   * [Syntax](../../../../ai-integration/gen-ai-integration/modify-gen-ai-task/modify-gen-ai-task_api.mdx#syntax)  
 
 </Admonition>
 
@@ -38,7 +38,7 @@ To modify the configuration of an existing GenAI task:
    * The configuration object  
 
 ### Examples:
-The below examples modify the spam-filter demonstrated in the [create GenAI task](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api.mdx#full-example) article, which removes spam comments from documents in the `Posts` collection.  
+The below examples modify the spam-filter demonstrated in the [create GenAI task](../../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api.mdx#full-example) article, which removes spam comments from documents in the `Posts` collection.  
  * The first example, **modify-selected-configuration-details**, demonstrates how to retrieve the existing configuration, modify selected sections of it, and register it with the server again.  
  * The second example, **create-configuration-from-scratch**, demonstrates how to create a new configuration object, populate it with all necessary configuration details, and register it with the server again.  
  * Both examples leave all details as configured in the original example except for the task **name**, the user-defined task **identifier**, and the **update script** - which doesn't remove spammy comments but instead adds a `Warning` property to each comment suspected as spam and explains in it why the comment might be spam.  
