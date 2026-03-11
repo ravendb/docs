@@ -169,18 +169,25 @@ allowed to connect your database instance.
 
 !["Figure 17 - Manage Product: Manage access"](./assets/portal-product-details-manage-access.png)
 
-* **Download Certificate**  
-  Click this button to download your certificate.  
-  Your product will communicate only with trusted sources. Install this certificate only on trusted machines.  
+* **Download Certificate** Click this button to download the **Initial Client Certificate**.
+  This is an **operator-level** certificate used to perform cluster-wide operations (like creating/deleting databases) and for your first login to RavenDB Studio.
 
-* **Regenerate Certificate**  
-  Click the dropdown button next to the *Download certificate*. Additional button to regenerate your certificate will appear.  
-  If your certificate has expired, you can regenerate a new one.  
-  After this operation you need to download the certificate again using **Download Certificate** button.  
+* **Regenerate Certificate** Click the dropdown next to the *Download certificate* button to regenerate it.
 
-  <Admonition type="danger" title=""> 
-  The previous certificate is not going to be removed by this operation. Old certificates can be
-  removed using RavenDB Studio Certificates view.
+  <Admonition type="warning" title="Note on Regeneration">
+      Regenerating a certificate creates a new identity. After this operation, you must download and install the new certificate to maintain access via the portal.
+  </Admonition>
+  <Admonition type="danger" title="">
+    The previous certificate is **not** automatically removed from the cluster by this operation. To revoke old certificates, you must use the RavenDB Studio Certificates view.
+  </Admonition>
+
+  <Admonition type="tip" title="Best Practice: Certificate Management">
+    For maximum security and performance, we recommend using the initial certificate only for setup and emergency access.
+
+    1. **Granular Permissions**: Create separate certificates for each user, developer, or application.
+    2. **Least Privilege**: Use the Studio to assign specific roles (e.g., User vs. Admin) or restrict access to specific databases.
+    3. **Save CPU Credits**: If your instance uses a burstable CPU (especially low-end instances), generating certificates can consume significant CPU credits.
+      We recommend **generating certificates off-cloud** (on your own machine) and importing them into the Studio via **Settings > Certificates**.
   </Admonition>
 
 * **See audit logs**
