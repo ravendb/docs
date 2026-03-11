@@ -40,9 +40,11 @@ import Panel from '@site/src/components/Panel';
 <Panel heading="Archived documents and indexing">
      
 * Indexing performance may decline as the database grows, since a larger number of documents increases indexing load, expands index size, and can eventually reduce query speed.
+    
 * Archiving documents and excluding them from indexing can be an effective way to maintain performance.  
   By removing low-priority or infrequently accessed documents from the indexing process, RavenDB can create smaller, faster indexes focused on current or high-value data.
   This also improves the relevance and responsiveness of queries, as they execute over a smaller and more meaningful dataset.
+    
 * **Configuring indexing behavior - Static indexes**:
     * **At the database level or server-wide**:  
       To control whether static indexes process archived documents from the source collection,  
@@ -273,7 +275,7 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
 ### Configuring archived document processing for a static index - from the Studio
 
 You can configure how a static index handles archived documents directly from the Studio.  
-This setting will **override** the global configuration defined by the [Indexing.Static.ArchivedDataProcessingBehavior](../../data-archival/configuration.mdxindexingstaticarchiveddataprocessingbehavior) configuration key.
+This setting will **override** the global configuration defined by the [Indexing.Static.ArchivedDataProcessingBehavior](../../data-archival/configuration.mdx#indexingstaticarchiveddataprocessingbehavior) configuration key.
 
 ![Configure index](../assets/configure-static-index.png)
 
