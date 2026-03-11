@@ -25,13 +25,13 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * Compare-exchange items are [not replicated externally](../../compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases) to other databases.   
 
 * In this article:  
-  * [What compare-exchange items are](../compare-exchange/overview.mdx#what-compare-exchange-items-are)  
-  * [Ways to create and manage compare-exchange items](../compare-exchange/overview.mdx#ways-to-create-and-manage-compare-exchange-items)  
-  * [Why compare-exchange items are not replicated to external databases](../compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases)  
-  * [Why not use regular documents to enforce uniqueness](../compare-exchange/overview.mdx#why-not-use-regular-documents-to-enforce-uniqueness)  
-  * [Example I - Email address reservation](../compare-exchange/overview.mdx#example-i-email-address-reservation)  
-  * [Example II - Reserve a shared resource](../compare-exchange/overview.mdx#example-ii-reserve-a-shared-resource)   
-  * [Use cases](../compare-exchange/overview.mdx#use-cases)   
+  * [What compare-exchange items are](../../compare-exchange/overview.mdx#what-compare-exchange-items-are)  
+  * [Ways to create and manage compare-exchange items](../../compare-exchange/overview.mdx#ways-to-create-and-manage-compare-exchange-items)  
+  * [Why compare-exchange items are not replicated to external databases](../../compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases)  
+  * [Why not use regular documents to enforce uniqueness](../../compare-exchange/overview.mdx#why-not-use-regular-documents-to-enforce-uniqueness)  
+  * [Example I - Email address reservation](../../compare-exchange/overview.mdx#example-i-email-address-reservation)  
+  * [Example II - Reserve a shared resource](../../compare-exchange/overview.mdx#example-ii-reserve-a-shared-resource)   
+  * [Use cases](../../compare-exchange/overview.mdx#use-cases)   
 
 </Admonition>
 
@@ -458,7 +458,7 @@ public void ReleaseResource(IDocumentStore store, string resourceName, long inde
 ### Add safety to cluster-wide transactions
 
 * When using cluster-wide sessions to handle documents, RavenDB automatically creates internal compare-exchange items,
-  called [atomic guards](../compare-exchange/atomic-guards), to enforce atomic document modifications.
+  called [atomic guards](../../compare-exchange/atomic-guards.mdx), to enforce atomic document modifications.
   These items coordinate access and prevent conflicting writes across nodes.  
 
 * ✅ Why compare-exchange?  
