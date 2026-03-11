@@ -5,6 +5,7 @@ icon: "ravendb-etl"
 description: "Learn about index definitions and thier optimization."
 publishedAt: 2025-09-17
 image: "https://ravendb.net/wp-content/uploads/2025/09/spotting-red-flags-article-image.png"
+author: "Paweł Lachowski"
 ---
 
 import Admonition from '@theme/Admonition';
@@ -13,8 +14,6 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
-
-# Master RavenDB: Spotting red flags in index definitions
 
 Every database has a way of making data easier & faster to find. This role is often fulfilled by [indexes](https://docs.ravendb.net/studio/database/indexes/indexes-overview/#indexes---the-general-concept). Without them, every request would be like searching through a stack of papers one by one, hoping to stumble on the right page. With them, your queries can quickly jump over to the relevant results, going through compacted entries with only the data that the query cares about. 
 
