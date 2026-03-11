@@ -10,15 +10,16 @@ https://issues.hibernatingrhinos.com/issue/RDoc-...
 - [ ] Content - cloud
 - [ ] Content - guides
 - [ ] Content - start pages/other
-- [ ] New feature (consider updating `/templates` or readme) 
+- [ ] New docs feature (consider updating `/templates` or readme) 
 - [ ] Bug fix
+- [ ] Optimization
 - [ ] Other
 
 
 ### Changes in docs URLs
 
 - [ ] No changes in docs URLs
-- [ ] Articles are restructured, URLs will change, mapping is required (set "Documents Moved" label)
+- [ ] Articles are restructured, URLs will change, mapping is required (update `/scripts/redirects.json` file, set `Documents Moved` PR label)
 
 ### Changes in UX/UI
 - [ ] No changes in UX/UI
