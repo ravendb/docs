@@ -266,10 +266,12 @@ Set the default deployment mode for auto indexes.
 
 ## Indexing.Auto.SearchEngineType
 
-Set the search engine to be used with auto-indexes.
+Set the search engine used by auto-indexes.
 
 - **Type**: `enum SearchEngineType` (`Lucene`, `Corax`)
-- **Default**: `Lucene`
+- **Default**: 
+    * `Corax` when running under a Community or Developer license, or without a license
+    * `Lucene` for all other license types
 - **Scope**: Server-wide, or per database
 
 
@@ -999,10 +1001,12 @@ Queries that repeat within this time frame will be considered worth caching.
 
 ## Indexing.Static.SearchEngineType
 
-Set the search engine to be used with static indexes.
+Set the search engine used by static indexes.
 
 - **Type**: `enum SearchEngineType` (`Lucene`, `Corax`)
-- **Default**: `Lucene`
+- **Default**: 
+    * `Corax` when running under a Community or Developer license, or without a license
+    * `Lucene` for all other license types
 - **Scope**: Server-wide, or per database, or per index
 
 
