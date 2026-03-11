@@ -5,7 +5,12 @@ import { Feature } from "@site/src/typescript/feature";
 
 export default function QueryingFeaturesGrid() {
     const pluginId = "default";
+    const minimumCategorySupportedVersion = "3.0";
     const { activeVersion } = useActiveDocContext(pluginId);
+
+    if (minimumCategorySupportedVersion > activeVersion.label) {
+        return null;
+    }
 
     const queryingFeatures: Feature[] = [
         {
@@ -16,30 +21,35 @@ export default function QueryingFeaturesGrid() {
                     ? `/${activeVersion.label}/querying/rql/what-is-rql`
                     : `/${activeVersion.label}/client-api/session/querying/what-is-rql`,
             description: "Simple yet powerful SQL-style queries",
+            minimumSupportedVersion: "5.2",
         },
         {
             title: "Full-text search",
             icon: "full-text-search",
             url: `/${activeVersion.label}/client-api/session/querying/text-search/full-text-search`,
             description: "Cutting‑edge integrated search engine",
+            minimumSupportedVersion: "5.2",
         },
         {
             title: "Patching",
             icon: "patch",
             url: `/${activeVersion.label}/client-api/operations/patching/single-document`,
             description: "Transform documents at scale with a script",
+            minimumSupportedVersion: "4.0",
         },
         {
             title: "Facets",
             icon: "facets",
             url: `/${activeVersion.label}/indexes/querying/faceted-search`,
             description: "Slice and navigate through a large dataset",
+            minimumSupportedVersion: "3.0",
         },
         {
             title: "MoreLikeThis",
             icon: "morelikethis",
             url: `/${activeVersion.label}/indexes/querying/morelikethis`,
             description: "Get similar documents based on content",
+            minimumSupportedVersion: "4.0",
         },
         {
             title: "Spatial",

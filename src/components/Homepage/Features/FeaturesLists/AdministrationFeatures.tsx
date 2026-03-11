@@ -5,7 +5,12 @@ import { Feature } from "@site/src/typescript/feature";
 
 export default function AdministrationFeaturesGrid() {
     const pluginId = "default";
+    const minimumCategorySupportedVersion = "4.0";
     const { activeVersion } = useActiveDocContext(pluginId);
+
+    if (minimumCategorySupportedVersion > activeVersion.label) {
+        return null;
+    }
 
     const administrationFeatures: Feature[] = [
         {
@@ -13,18 +18,21 @@ export default function AdministrationFeaturesGrid() {
             icon: "studio",
             url: `/${activeVersion.label}/studio/overview`,
             description: "State-of-the-art admin interface bundled in every RavenDB license",
+            minimumSupportedVersion: "4.0",
         },
         {
             title: "RavenCLI",
             icon: "raven-cli",
             url: `/${activeVersion.label}/server/administration/cli`,
             description: "Simple yet powerful shell tool for server admin",
+            minimumSupportedVersion: "4.0",
         },
         {
             title: "NLog",
             icon: "nlog",
             url: `/${activeVersion.label}/server/troubleshooting/logging#configuring-and-using-nlog`,
             description: "Seamless NLog integration to route RavenDB logs anywhere",
+            minimumSupportedVersion: "4.0",
         },
     ];
 
@@ -34,9 +42,14 @@ export default function AdministrationFeaturesGrid() {
                 Administration
             </Heading>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {administrationFeatures.map((props, idx) => (
-                    <FeatureItem key={idx} {...props} />
-                ))}
+                {administrationFeatures
+                    .filter(
+                        (feature) =>
+                            !feature.minimumSupportedVersion || feature.minimumSupportedVersion <= activeVersion.label
+                    )
+                    .map((props, idx) => (
+                        <FeatureItem key={idx} {...props} />
+                    ))}
             </div>
         </>
     );

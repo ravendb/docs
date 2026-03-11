@@ -5,7 +5,12 @@ import { Feature } from "@site/src/typescript/feature";
 
 export default function ClustersFeaturesGrid() {
     const pluginId = "default";
+    const minimumCategorySupportedVersion = "4.0";
     const { activeVersion } = useActiveDocContext(pluginId);
+
+    if (minimumCategorySupportedVersion > activeVersion.label) {
+        return null;
+    }
 
     const clustersFeatures: Feature[] = [
         {
@@ -20,12 +25,14 @@ export default function ClustersFeaturesGrid() {
             icon: "cluster-wide-tasks",
             url: `/${activeVersion.label}/server/clustering/distribution/highly-available-tasks`,
             description: "Cluster-wide, auto‑failover tasks (backup, ETL, subscriptions)",
+            minimumSupportedVersion: "4.0",
         },
         {
             title: "Cluster-wide transactions",
             icon: "cluster-wide-transactions",
             url: `/${activeVersion.label}/server/clustering/cluster-transactions`,
             description: "Partition-tolerant ACID writes across a cluster",
+            minimumSupportedVersion: "4.1",
         },
     ];
 
