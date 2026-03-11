@@ -21,10 +21,10 @@ import Panel from "@site/src/components/Panel";
      PDF files are sent as base64-encoded strings.
 
 * A complete example of how to define and run a GenAI task that processes attachments **via Studio**  
-  is available in [Processing attachments: Studio](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio).
+  is available in [Processing attachments: Studio](../../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio.mdx).
 
 * In this article:
-  * [Sending attachments to the LLM - via the Client API](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_api#sending-attachments-to-the-llm)
+  * [Sending attachments to the LLM - via the Client API](../../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_api.mdx#sending-attachments-to-the-llm)
 
 </Admonition>
 
@@ -33,11 +33,11 @@ import Panel from "@site/src/components/Panel";
 To send context objects to the LLM along with document attachments,  
 define and run the GenAI task as you normally would, with the following differences:    
 
-* When [defining the connection string](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api#define-a-connection-string) to the LLM,
+* When [defining the connection string](../../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api.mdx#define-a-connection-string) to the LLM,
   make sure the AI model you use is capable of processing the attachment types.
   For example, use OpenAI’s `gpt-4.1-mini` to process attached image files.
 
-* When [creating the context object](../../../ai-integration/gen-ai-integration/overview#the-elements) that will be sent to the LLM, 
+* When [creating the context object](../../../../ai-integration/gen-ai-integration/overview.mdx#the-elements) that will be sent to the LLM, 
   include the document's attachments using the context generation script. 
   The LLM will receive and process the attachments along with the main context object.
 
@@ -62,17 +62,17 @@ define and run the GenAI task as you normally would, with the following differen
             
             <ContentFrame>
             Additional options include:   
-            * [Conditional attachment](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#conditional-attachment)  
-            * [Multiple attachments](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#multiple-attachments)  
-            * [Embedding base64-encoded images in the context object](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#embedding-base64-encoded-images-in-the-context-object)  
-            * [Embedding text in the context object](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#embedding-text-in-the-context-object)             
+            * [Conditional attachment](../../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio.mdx#conditional-attachment)  
+            * [Multiple attachments](../../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio.mdx#multiple-attachments)  
+            * [Embedding base64-encoded images in the context object](../../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio.mdx#embedding-base64-encoded-images-in-the-context-object)  
+            * [Embedding text in the context object](../../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio.mdx#embedding-text-in-the-context-object)             
             </ContentFrame>    
 
-* When [defining the task Prompt and JSON schema](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#set-task-prompt-and-json-schema),   
+* When [defining the task Prompt and JSON schema](../../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio.mdx#set-task-prompt-and-json-schema),   
   make sure to include instructions in the prompt for how the LLM should handle the attachments,  
   and define schema fields for the expected response. 
 
-* When [defining the task Update script](../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio#set-task-update-script),   
+* When [defining the task Update script](../../../../ai-integration/gen-ai-integration/process-attachments/processing-attachments_studio.mdx#set-task-update-script),   
   make sure to include logic to handle the LLM's response related to the attachments.
 
 ---

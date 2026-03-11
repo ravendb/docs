@@ -18,15 +18,15 @@ import Panel from '@site/src/components/Panel';
 * Once an attachment is added to a document, the `@attachments` property is added to the document’s metadata with details about the attachment.
     
 * This metadata update triggers any features that respond to document changes -  
-  such as [Indexing](../../studio/database/indexes/indexes-overview),
-  any defined [ongoing tasks](../../studio/database/tasks/ongoing-tasks/general-info),
-  [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions), etc.
+  such as [Indexing](../../studio/database/indexes/indexes-overview.mdx),
+  any defined [ongoing tasks](../../studio/database/tasks/ongoing-tasks/general-info.mdx),
+  [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx), etc.
  
 * In this article:
-  * [Attachments & Replication](../../document-extensions/attachments/attachments-and-other-features#attachments-replication)  
-  * [Attachments & RavenDB ETL](../../document-extensions/attachments/attachments-and-other-features#attachments-ravendb-etl)
-  * [Attachments & Export/import/backup/restore](../../document-extensions/attachments/attachments-and-other-features#attachments-export-import-backup-restore)
-  * [Attachments & Revisions](../../document-extensions/attachments/attachments-and-other-features#attachments-revisions)
+  * [Attachments & Replication](../../document-extensions/attachments/attachments-and-other-features.mdx#attachments-replication)  
+  * [Attachments & RavenDB ETL](../../document-extensions/attachments/attachments-and-other-features.mdx#attachments-ravendb-etl)
+  * [Attachments & Export/import/backup/restore](../../document-extensions/attachments/attachments-and-other-features.mdx#attachments-export-import-backup-restore)
+  * [Attachments & Revisions](../../document-extensions/attachments/attachments-and-other-features.mdx#attachments-revisions)
     
 </Admonition>
 
@@ -36,7 +36,7 @@ Replication is triggered by document changes, including when attachments are add
 * **Internal replication** occurs automatically between nodes in the database group.    
 * **External replication** is a defined ongoing task between two RavenDB databases (typically across clusters).
     
-Learn more about replication in [Replication overview](../../server/clustering/replication/replication-overview).    
+Learn more about replication in [Replication overview](../../server/clustering/replication/replication-overview.mdx).    
     
 ---
     
@@ -62,7 +62,7 @@ The attachment's content resides in shared remote storage (e.g., S3, Azure Blob)
 
 <Panel heading="Attachments & RavenDB ETL">  
 
-A [RavenDB ETL task](../../server/ongoing-tasks/etl/raven) sends documents to another RavenDB database and allows you to transform documents using a script.
+A [RavenDB ETL task](../../server/ongoing-tasks/etl/raven.mdx) sends documents to another RavenDB database and allows you to transform documents using a script.
 The ETL task is triggered by document changes in the source database, including when attachments are added or modified.
     
 ---
@@ -85,10 +85,10 @@ The document is sent without the binary stream, only the metadata is transferred
 
 <Panel heading="Attachments & Export/import/backup/restore">
     
-The following behavior applies to [Export](../../studio/database/tasks/export-database),
-[Import](../../studio/database/tasks/import-data/import-data-file), 
-[Backup](../../studio/database/tasks/backup-task),
-and [Restore from backup](../../studio/database/create-new-database/from-backup) operations.
+The following behavior applies to [Export](../../studio/database/tasks/export-database.mdx),
+[Import](../../studio/database/tasks/import-data/import-data-file.mdx), 
+[Backup](../../studio/database/tasks/backup-task.mdx),
+and [Restore from backup](../../studio/database/create-new-database/from-backup.mdx) operations.
     
 ---    
     
@@ -121,7 +121,7 @@ The attachment metadata and the binary content are included in the operation:
 <Panel heading="Attachments & Revisions">
 
 Revisions are immutable snapshots of a document's state at a given point in time.
-If [Document revisions](../../document-extensions/revisions/overview) are enabled, any addition or removal of attachments will create a new revision of the document.
+If [Document revisions](../../document-extensions/revisions/overview.mdx) are enabled, any addition or removal of attachments will create a new revision of the document.
 
 ---
         
@@ -133,7 +133,7 @@ The storage location of the attachment is bound to the revision’s creation con
 The background process that uploads attachments to remote storage only processes current documents.  
 It does not process or modify revisions.    
   * Revisions that reference an attachment as local will remain local forever, even if the attachment in the current (parent) document is
-    [scheduled for remote uploading](../../document-extensions/attachments/store-attachments/store-attachments-remote#schedule-existing-attachments-for-remote-upload) and later uploaded to remote storage.
+    [scheduled for remote uploading](../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#schedule-existing-attachments-for-remote-upload) and later uploaded to remote storage.
   * The binary content will be retained on disk until all references to the attachments are removed -  
     both from the parent document and from any revision that still reference it.
     

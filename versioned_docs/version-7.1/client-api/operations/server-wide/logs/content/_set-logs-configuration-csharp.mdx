@@ -15,15 +15,15 @@ import Panel from '@site/src/components/Panel';
 * After the server is up and running,  
   you can override the logging minimum level and configure logging filters at **runtime**:  
   * From the **Client API** - use `SetLogsConfigurationOperation`, as explained below.  
-  * From the **Studio** - see: [Admin Logs view](../../../../studio/server/debug/admin-logs).
+  * From the **Studio** - see: [Admin Logs view](../../../../../studio/server/debug/admin-logs.mdx).
 
 * Learn more about RavenDB's logging system in the [Logging](../../../../../server/troubleshooting/logging.mdx) article. 
     
 * In this article:
-    * [Set logs configuration](../../../../client-api/operations/server-wide/logs/set-logs-configuration#set-logs-configuration)
-    * [Set Microsoft logs configuration](../../../../client-api/operations/server-wide/logs/set-logs-configuration#set-microsoft-logs-configuration)
-    * [Set Admin logs configuration](../../../../client-api/operations/server-wide/logs/set-logs-configuration#set-admin-logs-configuration)
-    * [Syntax](../../../../client-api/operations/server-wide/logs/set-logs-configuration#syntax)
+    * [Set logs configuration](../../../../../client-api/operations/server-wide/logs/set-logs-configuration.mdx#set-logs-configuration)
+    * [Set Microsoft logs configuration](../../../../../client-api/operations/server-wide/logs/set-logs-configuration.mdx#set-microsoft-logs-configuration)
+    * [Set Admin logs configuration](../../../../../client-api/operations/server-wide/logs/set-logs-configuration.mdx#set-admin-logs-configuration)
+    * [Syntax](../../../../../client-api/operations/server-wide/logs/set-logs-configuration.mdx#syntax)
 
 </Admonition>
 
@@ -33,7 +33,7 @@ import Panel from '@site/src/components/Panel';
   You can override this level and apply filters to control which log entries are written.
 
 * Setting `persist` to `true` in the operation will persist **only the minimum level** to the `settings.json` file.    
-  The value will be written under the [Logs.MinLevel](../../../../server/configuration/logs-configuration#logsminlevel) configuration key.  
+  The value will be written under the [Logs.MinLevel](../../../../../server/configuration/logs-configuration.mdx#logsminlevel) configuration key.  
   Filter rules are currently Not persisted and must be reapplied after a server restart.
     
 <Tabs groupId='languageSyntax'>
@@ -147,7 +147,7 @@ you can define the logging level and filters directly in the XML file using `<lo
   You can override this level to control which log entries are written.
 
 * To persist this minimum level to the _settings.json file_, set `persist` to `true`.  
-  The value will be written under the [Logs.Microsoft.MinLevel](../../../../server/configuration/logs-configuration#logsmicrosoftminlevel) configuration key.  
+  The value will be written under the [Logs.Microsoft.MinLevel](../../../../../server/configuration/logs-configuration.mdx#logsmicrosoftminlevel) configuration key.  
   If set to `false`, the change will take effect immediately but will Not be saved across server restarts.
 
 <Admonition type="warning" title="">
@@ -195,7 +195,7 @@ await store.Maintenance.Server.SendAsync(setLogsOp);
 
 <Panel heading="Set admin logs configuration">
     
-* The admin logs are displayed in the **Admin Logs view** in the Studio, under the [Logs on this view](../../../../studio/server/debug/admin-logs#logs-on-this-view) section.  
+* The admin logs are displayed in the **Admin Logs view** in the Studio, under the [Logs on this view](../../../../../studio/server/debug/admin-logs.mdx#logs-on-this-view) section.  
   This is a live stream of recent log activity shown only in the UI.
     
 * These logs are configured separately from the logs that are written to disk.

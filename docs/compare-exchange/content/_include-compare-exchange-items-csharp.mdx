@@ -5,17 +5,17 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Compare-exchange items can be included when [loading entities](../client-api/session/loading-entities) 
+* Compare-exchange items can be included when [loading entities](../../client-api/session/loading-entities.mdx) 
   or when making [queries](../../querying/overview.mdx).
 
-* The Session [tracks](../client-api/session/what-is-a-session-and-how-does-it-work) the included compare-exchange items,
+* The Session [tracks](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) the included compare-exchange items,
   which means their values can be accessed later in the same session without making additional requests to the server.
 
 * In this page:
-    * [Sample data](../compare-exchange/include-cmpxchg-items#sample-data)
-    * [Include compare-exchange items when loading](../compare-exchange/include-cmpxchg-items#include-compare-exchange-items-when-loading)
-    * [Include compare-exchange items when querying](../compare-exchange/include-cmpxchg-items#include-compare-exchange-items-when-querying)
-    * [Syntax](../compare-exchange/include-cmpxchg-items#syntax)
+    * [Sample data](../../compare-exchange/include-cmpxchg-items.mdx#sample-data)
+    * [Include compare-exchange items when loading](../../compare-exchange/include-cmpxchg-items.mdx#include-compare-exchange-items-when-loading)
+    * [Include compare-exchange items when querying](../../compare-exchange/include-cmpxchg-items.mdx#include-compare-exchange-items-when-querying)
+    * [Syntax](../../compare-exchange/include-cmpxchg-items.mdx#syntax)
 
 </Admonition>
 
@@ -24,7 +24,7 @@ import CodeBlock from '@theme/CodeBlock';
 ## Sample data
 
 The examples in this article are based on the following **sample data**:  
-To learn about ALL the available methods for creating a compare-exchange item, see [Create compare-exchange item](../compare-exchange/create-cmpxchg-items).
+To learn about ALL the available methods for creating a compare-exchange item, see [Create compare-exchange item](../../compare-exchange/create-cmpxchg-items.mdx).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sample_documents" label="Sample_documents">
@@ -616,7 +616,7 @@ public class Companies_ByNameAndSupplier : AbstractIndexCreationTask<Company>
 </Tabs>
 
 * Note:  
-  Similar to the above dynamic query example, you can query the index with a [raw query](../indexes/querying/query-index#query-an-index-by-rawquery) using the provided RQL.
+  Similar to the above dynamic query example, you can query the index with a [raw query](../../indexes/querying/query-index.mdx#query-an-index-by-rawquery) using the provided RQL.
 
 </Admonition>
 
@@ -652,7 +652,7 @@ IncludeCompareExchangeValue(Expression<Func<T, IEnumerable<string>>> path);
 
 **When querying with RQL**:  
 
-* Use the [include](../querying/rql/what-is-rql#include) keyword followed by `cmpxchg()` to include a compare-exchange item.  
+* Use the [include](../../querying/rql/what-is-rql.mdx#include) keyword followed by `cmpxchg()` to include a compare-exchange item.  
 
 <TabItem value="" label="">
 ```sql
@@ -666,7 +666,7 @@ include cmpxchg(key)
 
 **When using JavaScript functions within RQL**:
 
-* Use `includes.cmpxchg()` In [JavaScript functions](../querying/rql/what-is-rql#declare) within RQL queries. 
+* Use `includes.cmpxchg()` In [JavaScript functions](../../querying/rql/what-is-rql.mdx#declare) within RQL queries. 
 
 <TabItem value="" label="">
 ```csharp

@@ -14,8 +14,8 @@ import Panel from '@site/src/components/Panel';
     * Enable the feature.
     * Configure the remote destinations.  
       (Currently, Azure Blob Storage and Amazon S3 or any S3-compatible storage service are supported).
-    * Mark the attachment for remote storage, either when [storing](../../document-extensions/attachments/store-attachments/store-attachments-remote)
-      it or later using a [patch](../../document-extensions/attachments/store-attachments/store-attachments-remote#schedule-existing-attachments-for-remote-upload) operation.
+    * Mark the attachment for remote storage, either when [storing](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx)
+      it or later using a [patch](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#schedule-existing-attachments-for-remote-upload) operation.
 
 * When the Remote Attachments feature is enabled:  
   * RavenDB runs a **background task** that periodically scans the database for attachments marked for remote upload.  
@@ -27,11 +27,11 @@ import Panel from '@site/src/components/Panel';
   Attempts to configure remote attachments on sharded databases will throw an exception.  
     
 * In this article:  
-    * [Configuring remote attachments settings - from the Studio](../../document-extensions/attachments/configure-remote-attachments#configuring-remote-attachments-settings-from-the-studio)
-    * [Configuring remote attachments settings - using the Client API](../../document-extensions/attachments/configure-remote-attachments#configuring-remote-attachments-settings-using-the-client-api)
-      * [Configure remote attachments settings](../../document-extensions/attachments/configure-remote-attachments#configure-remote-attachments-settings)
-      * [Get remote attachments settings](../../document-extensions/attachments/configure-remote-attachments#get-remote-attachments-settings)
-    * [Syntax](../../document-extensions/attachments/configure-remote-attachments#syntax)
+    * [Configuring remote attachments settings - from the Studio](../../../document-extensions/attachments/configure-remote-attachments.mdx#configuring-remote-attachments-settings-from-the-studio)
+    * [Configuring remote attachments settings - using the Client API](../../../document-extensions/attachments/configure-remote-attachments.mdx#configuring-remote-attachments-settings-using-the-client-api)
+      * [Configure remote attachments settings](../../../document-extensions/attachments/configure-remote-attachments.mdx#configure-remote-attachments-settings)
+      * [Get remote attachments settings](../../../document-extensions/attachments/configure-remote-attachments.mdx#get-remote-attachments-settings)
+    * [Syntax](../../../document-extensions/attachments/configure-remote-attachments.mdx#syntax)
     
 </Admonition>  
 
@@ -127,7 +127,7 @@ import Panel from '@site/src/components/Panel';
     Provide the corresponding AWS secret key for this S3 bucket.  
 11. **Storage class**  
     Choose an Amazon S3 storage class based on how often you access your data and its retention requirements.  
-    For available options, see [S3StorageClass](../../document-extensions/attachments/configure-remote-attachments#s3storageclass). Default: `STANDARD`.
+    For available options, see [S3StorageClass](../../../document-extensions/attachments/configure-remote-attachments.mdx#s3storageclass). Default: `STANDARD`.
 12. **Test credentials**  
     Click this option to verify whether the connection to the S3 storage works successfully. 
 13. **Apply configuration**    
@@ -174,7 +174,7 @@ import Panel from '@site/src/components/Panel';
 * Note:  
   Configuring remote attachment settings will **override** any existing configurations on the server.  
   If you need to add new destinations without losing existing ones,  
-  make sure to [Get the current remote attachmets settings](../../document-extensions/attachments/configure-remote-attachments#get-remote-attachments-settings) first, 
+  make sure to [Get the current remote attachmets settings](../../../document-extensions/attachments/configure-remote-attachments.mdx#get-remote-attachments-settings) first, 
   update it, and then send it back to the server.  
 
 * The following example demonstrates how to configure both Amazon S3 and Azure destinations:

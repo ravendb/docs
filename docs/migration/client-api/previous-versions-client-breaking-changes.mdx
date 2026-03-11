@@ -18,24 +18,24 @@ This page lists client breaking changes introduced in RavenDB versions earlier t
 Each breaking change indicates a behavior change or a function that is no longer available in the specified version.
 
 * In this article:  
-   * [RavenDB 7.0 client breaking changes](../../migration/client-api/previous-versions-client-breaking-changes#ravendb-7-0-client-breaking-changes)  
-      * [Subscription creation overload modification](../../migration/client-api/previous-versions-client-breaking-changes#subscription-creation-overload-modification)  
-      * [HTTP-Compression algorithm is now `Zstd` by default](../../migration/client-api/previous-versions-client-breaking-changes#http-compression-algorithm-is-now-zstd-by-default)  
-      * [Bulk-insert Compression is now Enabled by default](../../migration/client-api/previous-versions-client-breaking-changes#bulk-insert-compression-is-now-enabled-by-default)  
-      * [Removed irrelevant `SingleNodeBatchCommand` parameters](../../migration/client-api/previous-versions-client-breaking-changes#removed-irrelevant-singlenodebatchcommand-parameters)  
-      * [Removed obsolete methods](../../migration/client-api/previous-versions-client-breaking-changes#removed-obsolete-methods)  
-      * [`FromEtl` is now internal](../../migration/client-api/previous-versions-client-breaking-changes#frometl-is-now-internal)  
-   * [RavenDB 6.2 client breaking changes](../../migration/client-api/previous-versions-client-breaking-changes#ravendb-6-2-client-breaking-changes)  
-      * [`CounterBatchOperation` default increment Delta is 1](../../migration/client-api/previous-versions-client-breaking-changes#counterbatchoperation-default-increment-delta-is-1)  
-      * [CmpXchg item can only be created with an index of 0](../../migration/client-api/previous-versions-client-breaking-changes#cmpxchg-item-can-only-be-created-with-an-index-of-0)  
-      * [Dynamic Linq query cannot apply `.Any` with logical AND (`&&`)](../../migration/client-api/previous-versions-client-breaking-changes#dynamic-linq-query-cannot-apply-any-with-logical-and-)  
-      * [`LoadDocument` must be provided with a collection name String](../../migration/client-api/previous-versions-client-breaking-changes#loaddocument-must-be-provided-with-a-collection-name-string)  
-      * [Tracking operations using the Changes API now requires Node Tag](../../migration/client-api/previous-versions-client-breaking-changes#tracking-operations-using-the-changes-api-now-requires-node-tag)  
-      * [Consistency in `null` handling](../../migration/client-api/previous-versions-client-breaking-changes#consistency-in-null-handling)  
-   * [RavenDB 6.0 client breaking changes](../../migration/client-api/previous-versions-client-breaking-changes#ravendb-6-0-client-breaking-changes)  
-      * [6.0 Breaking changes](../../migration/client-api/previous-versions-client-breaking-changes#60-breaking-changes)  
-      * [6.0 Breaking changes in a sharded database](../../migration/client-api/previous-versions-client-breaking-changes#60-breaking-changes-in-a-sharded-database)  
-      * [Additional 6.0 breaking changes](../../migration/client-api/previous-versions-client-breaking-changes#additional-60-breaking-changes)  
+   * [RavenDB 7.0 client breaking changes](../../migration/client-api/previous-versions-client-breaking-changes.mdx#ravendb-7-0-client-breaking-changes)  
+      * [Subscription creation overload modification](../../migration/client-api/previous-versions-client-breaking-changes.mdx#subscription-creation-overload-modification)  
+      * [HTTP-Compression algorithm is now `Zstd` by default](../../migration/client-api/previous-versions-client-breaking-changes.mdx#http-compression-algorithm-is-now-zstd-by-default)  
+      * [Bulk-insert Compression is now Enabled by default](../../migration/client-api/previous-versions-client-breaking-changes.mdx#bulk-insert-compression-is-now-enabled-by-default)  
+      * [Removed irrelevant `SingleNodeBatchCommand` parameters](../../migration/client-api/previous-versions-client-breaking-changes.mdx#removed-irrelevant-singlenodebatchcommand-parameters)  
+      * [Removed obsolete methods](../../migration/client-api/previous-versions-client-breaking-changes.mdx#removed-obsolete-methods)  
+      * [`FromEtl` is now internal](../../migration/client-api/previous-versions-client-breaking-changes.mdx#frometl-is-now-internal)  
+   * [RavenDB 6.2 client breaking changes](../../migration/client-api/previous-versions-client-breaking-changes.mdx#ravendb-6-2-client-breaking-changes)  
+      * [`CounterBatchOperation` default increment Delta is 1](../../migration/client-api/previous-versions-client-breaking-changes.mdx#counterbatchoperation-default-increment-delta-is-1)  
+      * [CmpXchg item can only be created with an index of 0](../../migration/client-api/previous-versions-client-breaking-changes.mdx#cmpxchg-item-can-only-be-created-with-an-index-of-0)  
+      * [Dynamic Linq query cannot apply `.Any` with logical AND (`&&`)](../../migration/client-api/previous-versions-client-breaking-changes.mdx#dynamic-linq-query-cannot-apply-any-with-logical-and-)  
+      * [`LoadDocument` must be provided with a collection name String](../../migration/client-api/previous-versions-client-breaking-changes.mdx#loaddocument-must-be-provided-with-a-collection-name-string)  
+      * [Tracking operations using the Changes API now requires Node Tag](../../migration/client-api/previous-versions-client-breaking-changes.mdx#tracking-operations-using-the-changes-api-now-requires-node-tag)  
+      * [Consistency in `null` handling](../../migration/client-api/previous-versions-client-breaking-changes.mdx#consistency-in-null-handling)  
+   * [RavenDB 6.0 client breaking changes](../../migration/client-api/previous-versions-client-breaking-changes.mdx#ravendb-6-0-client-breaking-changes)  
+      * [6.0 Breaking changes](../../migration/client-api/previous-versions-client-breaking-changes.mdx#60-breaking-changes)  
+      * [6.0 Breaking changes in a sharded database](../../migration/client-api/previous-versions-client-breaking-changes.mdx#60-breaking-changes-in-a-sharded-database)  
+      * [Additional 6.0 breaking changes](../../migration/client-api/previous-versions-client-breaking-changes.mdx#additional-60-breaking-changes)  
 
 </Admonition>
 
@@ -271,7 +271,7 @@ var operationResult = store.Operations.Send(new CounterBatchOperation(new Counte
 <ContentFrame>
 
 ## CmpXchg item can only be created with an index of 0
-Creating a [compare exchange item](../../compare-exchange/create-cmpxchg-items#create-item-using-a-store-operation) 
+Creating a [compare exchange item](../../compare-exchange/create-cmpxchg-items.mdx#create-item-using-a-store-operation) 
 using `PutCompareExchangeValueOperation` is now possible only if the `index` parameter 
 passed to the method is `0`.  
 ```csharp

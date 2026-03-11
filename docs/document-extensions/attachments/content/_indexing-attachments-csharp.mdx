@@ -18,11 +18,11 @@ import Panel from '@site/src/components/Panel';
   Auto-indexing attachments via dynamic queries is not available at this time.
 
 * In this page:
-    * [Index attachments details](../../document-extensions/attachments/indexing-attachments#index-attachments-details)
-    * [Index details & content - for specific attachment name](../../document-extensions/attachments/indexing-attachments#index-details-content-for-specific-attachment-name)
-    * [Index details & content - for all attachments](../../document-extensions/attachments/indexing-attachments#index-details-content-for-all-attachments)
-    * [Leveraging indexed attachments](../../document-extensions/attachments/indexing-attachments#leveraging-indexed-attachments)
-    * [Syntax](../../document-extensions/attachments/indexing-attachments#syntax)
+    * [Index attachments details](../../../document-extensions/attachments/indexing-attachments.mdx#index-attachments-details)
+    * [Index details & content - for specific attachment name](../../../document-extensions/attachments/indexing-attachments.mdx#index-details-content-for-specific-attachment-name)
+    * [Index details & content - for all attachments](../../../document-extensions/attachments/indexing-attachments.mdx#index-details-content-for-all-attachments)
+    * [Leveraging indexed attachments](../../../document-extensions/attachments/indexing-attachments.mdx#leveraging-indexed-attachments)
+    * [Syntax](../../../document-extensions/attachments/indexing-attachments.mdx#syntax)
 
 </Admonition>
 
@@ -37,7 +37,7 @@ import Panel from '@site/src/components/Panel';
   Once the index is deployed, you can query the index to find Employee documents based on these attachment properties.
 
 * Indexing attachment details is supported for both **local** and **remote** attachments.  
-  To index attachment content, see the examples [below](../../document-extensions/attachments/indexing-attachments#index-details--content---by-attachment-name).
+  To index attachment content, see the examples [below](../../../document-extensions/attachments/indexing-attachments.mdx#index-details--content---by-attachment-name).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="LINQ_index" label="LINQ_index">
@@ -165,8 +165,8 @@ where AttachmentNames == "photo.jpg" and AttachmentSizes > 20000
 
 <Admonition type="info" title="">
     
-Indexing attachment content is supported only for [Local attachments](../../document-extensions/attachments/store-attachments/store-attachments-local).   
-Indexing attachment content is Not supported for [Remote attachments](../../document-extensions/attachments/store-attachments/store-attachments-remote).
+Indexing attachment content is supported only for [Local attachments](../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx).   
+Indexing attachment content is Not supported for [Remote attachments](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx).
     
 </Admonition>
     
@@ -369,7 +369,7 @@ where search(AttachmentContent, "Colorado Dallas")
     
 * Access to the content is available only for LOCAL attachments, and it can be indexed just like the details. 
 
-* Note how the index example below is employing the [Fanout index](../../indexes/indexing-nested-data#fanout-index---multiple-index-entries-per-document) pattern.
+* Note how the index example below is employing the [Fanout index](../../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document) pattern.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="LINQ_index" label="LINQ_index">
@@ -519,7 +519,7 @@ where search(AttachmentContent, "Colorado Dallas") or AttachmentSize > 20000
   including many that can be integrated directly into RavenDB.
 
 * This [blog post](https://ayende.com/blog/192001-B/using-machine-learning-with-ravendb) demonstrates
-  how image recognition can be applied to indexed attachments using the [additional sources](../../indexes/extending-indexes) feature.
+  how image recognition can be applied to indexed attachments using the [additional sources](../../../indexes/extending-indexes.mdx) feature.
   The resulting index allows filtering and querying based on image content.
 
 </Panel>

@@ -10,20 +10,20 @@ import CodeBlock from '@theme/CodeBlock';
   A cluster-wide session also supports lazy retrieval.
 
 * To view existing compare-exchange items in the **Studio**, go to _Documents > Compare Exchange_,  
-  as described in [Ways to manage compare-exchange items](../compare-exchange/overview#ways-to-create-and-manage-compare-exchange-items).  
+  as described in [Ways to manage compare-exchange items](../../compare-exchange/overview.mdx#ways-to-create-and-manage-compare-exchange-items).  
 
 * This article shows how to get a **single** compare-exchange item by its unique _key_.  
-  To get **multiple** items at once, see [Get multiple compare-exchange items](../compare-exchange/get-cmpxchg-items).
+  To get **multiple** items at once, see [Get multiple compare-exchange items](../../compare-exchange/get-cmpxchg-items.mdx).
 
 * In this article:  
-  * [Get item using a **cluster-wide session**](../compare-exchange/get-cmpxchg-item#get-item-using-a-cluster-wide-session)
-    * [Get compare-exchange item](../compare-exchange/get-cmpxchg-item#get-compare-exchange-item)  
-    * [Get compare-exchange item lazily](../compare-exchange/get-cmpxchg-item#get-compare-exchange-item-lazily)  
-    * [Retrieved compare-exchange items are tracked by the session](../compare-exchange/get-cmpxchg-item#retrieved-compare-exchange-items-are-tracked-by-the-session) 
-  * [Get item using a **store operation**](../compare-exchange/get-cmpxchg-item#get-item-using-a-store-operation)
-    * [Get compare-exchange item that has a number value and metadata](../compare-exchange/get-cmpxchg-item#get-compare-exchange-item-that-has-a-number-value-and-metadata)  
-    * [Get compare-exchange item that has a custom object value](../compare-exchange/get-cmpxchg-item#get-compare-exchange-item-that-has-a-custom-object-value)  
-  * [Syntax](../compare-exchange/get-cmpxchg-item#syntax)
+  * [Get item using a **cluster-wide session**](../../compare-exchange/get-cmpxchg-item.mdx#get-item-using-a-cluster-wide-session)
+    * [Get compare-exchange item](../../compare-exchange/get-cmpxchg-item.mdx#get-compare-exchange-item)  
+    * [Get compare-exchange item lazily](../../compare-exchange/get-cmpxchg-item.mdx#get-compare-exchange-item-lazily)  
+    * [Retrieved compare-exchange items are tracked by the session](../../compare-exchange/get-cmpxchg-item.mdx#retrieved-compare-exchange-items-are-tracked-by-the-session) 
+  * [Get item using a **store operation**](../../compare-exchange/get-cmpxchg-item.mdx#get-item-using-a-store-operation)
+    * [Get compare-exchange item that has a number value and metadata](../../compare-exchange/get-cmpxchg-item.mdx#get-compare-exchange-item-that-has-a-number-value-and-metadata)  
+    * [Get compare-exchange item that has a custom object value](../../compare-exchange/get-cmpxchg-item.mdx#get-compare-exchange-item-that-has-a-custom-object-value)  
+  * [Syntax](../../compare-exchange/get-cmpxchg-item.mdx#syntax)
 
 </Admonition>
 
@@ -31,7 +31,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 ## Get item using a cluster-wide session
 
-* You can retrieve compare-exchange items using a [cluster-wide session](../client-api/session/cluster-transaction/overview#open-a-cluster-transaction).  
+* You can retrieve compare-exchange items using a [cluster-wide session](../../client-api/session/cluster-transaction/overview.mdx#open-a-cluster-transaction).  
   The session must be opened in cluster-wide mode.
   
 * Use the `getCompareExchangeValue` advanced session method to get a compare-exchange item by its _key_.  
@@ -153,7 +153,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 ## Get item uaing a store operation
 
-* You can retrieve compare-exchange items using a [store operation](../client-api/operations/what-are-operations).  
+* You can retrieve compare-exchange items using a [store operation](../../client-api/operations/what-are-operations.mdx).  
   Use the `GetCompareExchangeValueOperation` operation to get a compare-exchange item by its _key_.  
 
 * If the specified key does not exist, the operation returns `null`. No exception is thrown.

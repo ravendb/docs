@@ -17,11 +17,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
 This page covers potential security concerns related to AI agents and the mitigation strategies for these concerns.  
 
 * On this page:
-   * [Unauthorized database access](../../ai-integration/ai-agents/ai-agents_security-concerns#unauthorized-database-access)  
-   * [Data compromise during transit](../../ai-integration/ai-agents/ai-agents_security-concerns#data-compromise-during-transit)  
-   * [Untraceable malicious or unexpected actions](../../ai-integration/ai-agents/ai-agents_security-concerns#untraceable-malicious-or-unexpected-actions)  
-   * [AI model data memorization](../../ai-integration/ai-agents/ai-agents_security-concerns#ai-model-data-memorization)  
-   * [Validation or injection attacks via user input](../../ai-integration/ai-agents/ai-agents_security-concerns#validation-or-injection-attacks-via-user-input)  
+   * [Unauthorized database access](../../ai-integration/ai-agents/ai-agents_security-concerns.mdx#unauthorized-database-access)  
+   * [Data compromise during transit](../../ai-integration/ai-agents/ai-agents_security-concerns.mdx#data-compromise-during-transit)  
+   * [Untraceable malicious or unexpected actions](../../ai-integration/ai-agents/ai-agents_security-concerns.mdx#untraceable-malicious-or-unexpected-actions)  
+   * [AI model data memorization](../../ai-integration/ai-agents/ai-agents_security-concerns.mdx#ai-model-data-memorization)  
+   * [Validation or injection attacks via user input](../../ai-integration/ai-agents/ai-agents_security-concerns.mdx#validation-or-injection-attacks-via-user-input)  
 
 </Admonition>
 
@@ -55,7 +55,7 @@ Concern: Data may be compromised during transit.
 Concern: Inability to trace malicious or unexpected actions related to agents.  
 
 * **Mitigation: Audit logging**  
-  RavenDB [admin logs](../../studio/server/debug/admin-logs/) track the creation, modification, and deletion of AI agents, as well as agent interactions with the database.  
+  RavenDB [admin logs](../../studio/server/debug/admin-logs.mdx) track the creation, modification, and deletion of AI agents, as well as agent interactions with the database.  
   
       Example of an audit log entry recorded when an agent was deleted:  
       ```
@@ -79,7 +79,7 @@ Concern: Sensitive data might inadvertently be memorized and reproduced by the A
   When using the service of your choice, it is your responsibility to define safe queries and expose only the data that it is in your interest to share with the AI model.  
 
 * **Mitigation: Agent parameters**  
-  You can use [agent parameters](../../ai-integration/ai-agents/overview#query-parameters) to limit the scope of the defined query and the dataset subsequently transferred to the AI model.  
+  You can use [agent parameters](../../ai-integration/ai-agents/overview.mdx#query-parameters) to limit the scope of the defined query and the dataset subsequently transferred to the AI model.  
 
 <hr />
 
