@@ -53,7 +53,7 @@ Common scenarios include:
 Refer to the technical documentation to learn how to execute dynamic vector queries, create static vector indexes,  
 and understand how RavenDB automatically generates embeddings to power semantic searches across your data.
 
-<ColGrid colCount={3}>
+<ColGrid colCount={2}>
     <CardWithImage title="Vector search - Overview" 
                    description="Learn about vector search in RavenDB." 
                    url="../../ai-integration/vector-search/overview" 
@@ -62,20 +62,23 @@ and understand how RavenDB automatically generates embeddings to power semantic 
                    description="Learn how to run a vector search using a dynamic query."
                    url="../../ai-integration/vector-search/vector-search-using-dynamic-query" 
                    imgIcon="vector-search" />
-    <CardWithImage title="Vector search using a static index" 
-                   description="Learn how to perform a vector search using a static index."
-                   url="../../ai-integration/vector-search/vector-search-using-static-index" 
-                   imgIcon="vector-search" />
 </ColGrid>
 
 ### Learn more: In-depth articles
 
 <ColGrid colCount={2}>
     <CardWithImage
+        title="Semantic Search with RavenDB, Python, and FastAPI" 
+        description="Automate embedding generation and easily query vectorized data to find results by meaning rather than keywords, by Paweł Lachowski."
+        url="https://ravendb.net/articles/semantic-search-with-ravendb-python-and-fastapi" 
+        imgIcon="vector-search"
+    />
+    <CardWithImage
         title="AI image search with RavenDB" 
         description="Build AI-powered image search with text and image queries using CLIP embeddings, by Paweł Lachowski." 
         url="https://ravendb.net/articles/ai-image-search-with-ravendb" 
-        imgSrc={aiSearchWithRavenDbImage} />
+        imgSrc={aiSearchWithRavenDbImage}
+    />
 </ColGrid>
 
 ### Related blog posts
