@@ -53,5 +53,6 @@
         "value": {
             "targetUrl": "/data-archival/overview",
             "minimumVersion": "6.2"
+        }
     }
 ]

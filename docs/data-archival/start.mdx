@@ -12,7 +12,7 @@ import Card from "@site/src/components/Common/Card";
 
 # Data Archival
 
-### Archive your documents for long-term storage without impacting performance.
+### Archive documents for long-term storage without impacting performance.
 
 RavenDB’s Data Archival feature is ideal for keeping historical documents while seamlessly excluding them from your active dataset. 
 Archiving lets you retain documents for as long as needed without bloating indexes or slowing queries, keeping your active dataset small and efficient.
@@ -35,17 +35,30 @@ Your active dataset stays lean, queries run faster, and indexes remain smaller -
 Refer to the technical documentation to learn how to enable the data archival feature, schedule individual documents for archiving,
 understand what is (and isn't) archived, discover how to unarchive documents, and see how other RavenDB features behave when working with archived data.
 
-<ColGrid colCount={3}>
-    <CardWithImage title="Data archival overview" description="Learn the basic concepts of RavenDB data archival." url="../data-archival/overview" imgIcon="data-archival" />
-    <CardWithImage title="Enable data archiving" description="Learn how to enable archiving." url="../data-archival/enable-data-archiving" imgIcon="data-archival" />
-    <CardWithImage title="Schedule document archiving" description="Learn how to schedule documents for archiving." url="../data-archival/schedule-document-archiving" imgIcon="data-archival" />
+<ColGrid colCount={2}>
+    <CardWithImage title="Data archival overview"
+                   description="Learn the basic concepts of RavenDB data archival."
+                   url="../data-archival/overview"
+                   imgIcon="data-archival"
+    />
+    <CardWithImage title="Schedule document archiving"
+                   description="Learn how to schedule documents for archiving."
+                   url="../data-archival/schedule-document-archiving"
+                   imgIcon="data-archival"
+    />
 </ColGrid>
 
 ### Learn more: In-depth articles
 
 <ColGrid colCount={2}>
+    <CardWithImage title="Employing Data Archival guide" 
+                   description="Learn how to manage growing datasets and maintain peak query performance by configuring RavenDB to automatically archive older documents, keeping your indexes fast and lightweight." 
+                   url="https://docs.ravendb.net/guides/employing-data-archival-guide"
+                   imgIcon="data-archival"
+    />
     <CardWithImage title="Indexing only recent data - adventures with large datasets & archiving" 
-                   description="Read blog post" 
+                   description="Explore a real-world scenario on the challenges of indexing large datasets. Discover why filtering indexes by date is an anti-pattern and how RavenDB's built-in Data Archival solves it." 
                    url="https://ayende.com/blog/201442-B/indexing-only-recent-data-adventures-with-large-datasets-archiving"
-                   imgIcon="data-archival" />
+                   imgIcon="data-archival"
+    />
 </ColGrid>
