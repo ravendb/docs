@@ -1,0 +1,19 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* In contrast to the **.NET client** - where the `Query` method supports LINQ while `DocumentQuery` provides lower-level flexibility and control - 
+  the **Node.js client** provides a **unified API** for querying documents through `session.query()`.  
+
+* In the Node.js client, the `query` method is essentially a shorthand for invoking the `documentQuery` method.  
+  See examples of those equivalent calls in [query vs documentQuery](../../../querying/document-query/query-vs-document-query.mdx).
+
+* All available methods for the session `query` method are listed in the [query API](../../../querying/overview.mdx#query-api) section.
+
+</Admonition>
+

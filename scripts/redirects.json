@@ -12,5 +12,40 @@
             "targetUrl": "/querying/rql/rql-code-assistance",
             "minimumVersion": "7.2"
         }
+    },
+    {
+        "key": "/start/installation/setup-wizard",
+        "value": {
+            "targetUrl": "/start/installation/setup-wizard/overview",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/client-api/session/querying/how-to-query",
+        "value": {
+            "targetUrl": "/querying/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/start/licensing/licensing-overview",
+        "value": {
+            "targetUrl": "/licensing/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/session/querying/document-query/what-is-document-query",
+        "value": {
+            "targetUrl": "/querying/document-query/what-is-document-query",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/session/querying/document-query/query-vs-document-query",
+        "value": {
+            "targetUrl": "/querying/document-query/query-vs-document-query",
+            "minimumVersion": "7.2"
+        }
     }
 ]

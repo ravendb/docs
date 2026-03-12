@@ -9,13 +9,12 @@ import Panel from '@site/src/components/Panel';
 
 * Queries in RavenDB can be written with either of the following:
    * Using a rich API via the session's `query` method  
-   * Using the [document_query](../../client-api/session/querying/document-query/query-vs-document-query.mdx) method  
+   * Using the `document_query` method  
    * Using **RQL** -  
       - when querying via the session's `raw_query` method  
       - when querying from the Studio's [Query view](../../studio/database/queries/query-view.mdx)  
 
-* Queries defined with `query` or `document_query` are translated by the RavenDB client to [RQL](../../querying/rql/what-is-rql.mdx)  
-  when sent to the server.
+* Queries defined with `query` or `document_query` are **translated by the RavenDB client to [RQL](../../querying/rql/what-is-rql.mdx)** when sent to the server.
     
 * All queries in RavenDB use an **index** to provide results, even when you don't specify one.  
   Learn more [below](../../querying/overview.mdx#queries-always-provide-results-using-an-index).
@@ -33,12 +32,12 @@ import Panel from '@site/src/components/Panel';
 
 * Queries are timed out after a configurable time period.  See [query timeout](../../server/configuration/database-configuration.mdx#databasesquerytimeoutinsec).
     
-* In this aricle:
+* In this article:
   * [Queries always provide results using an index](../../querying/overview.mdx#queries-always-provide-results-using-an-index)  
   * [session.query](../../querying/overview.mdx#session-query)  
   * [session.advanced.document_query](../../querying/overview.mdx#session-advanced-document_query)  
   * [session.advanced.raw_query](../../querying/overview.mdx#session-advanced-raw_query)
-  * [Custom methods](../../querying/overview.mdx#custom-methods)  
+  * [query API](../../querying/overview.mdx#query-api)  
   * [Syntax](../../querying/overview.mdx#syntax)  
 
 </Admonition>
@@ -153,34 +152,36 @@ For each scenario, a different index type is used, as described below.
 
 <Panel heading="session.query">
 
-* The simplest way to issue a query is using session's `query` method.  
+* The simplest way to issue a query is using session's `query` method.   
+  Customize your query with these [API methods](../../querying/overview.mdx#query-api).  
 
 * The following examples show **dynamic queries** that do not specify which index to use.  
   Please refer to [querying an index](../../indexes/querying/query-index.mdx) for other examples.
-
-* Querying can be enhanced using these [extension methods](../../querying/overview.mdx#custom-methods-and-extensions-for-linq).
  
 <ContentFrame>
 
 **Query collection - no filtering** 
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Method-syntax" label="Method-syntax">
+<TabItem value="Inline_query_execution" label="Inline_query_execution">
 ```python
 # This is a Full Collection Query
 # No auto-index is created since no filtering is applied
 
 all_employees = list(  # Execute the query
-    session.query(object_type=Employee)  # Query for all documents from 'Employees' collection
+    # Query for all documents from 'Employees' collection
+    session.query(object_type=Employee)
 )
+    
+# All 'Employee' entities are loaded and will be tracked by the session    
 ```
 </TabItem>
-<TabItem value="Query-syntax" label="Query-syntax">
+<TabItem value="Step_by_step" label="Step_by_step">
 ```python
 # This is a Full Collection Query
 # No auto-index is created since no filtering is applied
 
-# Query for all documents from 'Employees' collection
+# Define a query for all documents from 'Employees' collection
 query = session.query(object_type=Employee)
 
 # Execute the query
@@ -206,26 +207,27 @@ from "Employees"
 **Query collection - by ID**
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Method-syntax" label="Method-syntax">
+<TabItem value="Inline_query_execution" label="Inline_query_execution">
 ```python
 # Query collection by document ID
 # No auto-index is created when querying only by ID
 
-employee = (
+employee = (    
     session.query(object_type=Employee)
-    .where_equals("Id", "employees/1-A")  # Query for specific document from 'Employees' collection
+    # Query for a specific document from 'Employees' collection
+    .where_equals("Id", "employees/1-A") 
     .first()  # Execute the query
 )
 
 # The resulting 'Employee' entity is loaded and will be tracked by the session
 ```
 </TabItem>
-<TabItem value="Query-syntax" label="Query-syntax">
+<TabItem value="Step_by_step" label="Step_by_step">
 ```python
 # Query collection by document ID
 # No auto-index is created when querying only by ID
 
-# Query for specific document from 'Employees' collection
+# Define a query for a specific document from 'Employees' collection
 query = session.query(object_type=Employee).where_equals("Id", "employees/1-A")
 
 # Execute the query
@@ -251,7 +253,7 @@ from "Employees" where id() == "employees/1-A"
 **Query collection - with filtering** 
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Method-syntax" label="Method-syntax">
+<TabItem value="Inline_query_execution" label="Inline_query_execution">
 ```python
 # Query collection - filter by document field
 
@@ -259,22 +261,22 @@ from "Employees" where id() == "employees/1-A"
 # that indexes this document field
 
 employees = list(  # Execute the query
-    session.query(object_type=Employee).where_equals(
-        "first_name", "Robert"
-    )  # Query for all 'Employee' documents that match this predicate
+    session.query(object_type=Employee)
+    # Query for all 'Employee' documents that match this predicate
+    .where_equals("first_name", "Robert") 
 )
 
 # The resulting 'Employee' entities are loaded and will be tracked by the session
 ```
 </TabItem>
-<TabItem value="Query-syntax" label="Query-syntax">
+<TabItem value="Step_by_step" label="Step_by_step">
 ```python
 # Query collection - filter by document field
 
 # An auto-index will be created if there isn't already an existing auto-index
 # that indexes this document field
 
-# Query for all 'Employee' documents that match this predicate
+# Define a query for all 'Employee' documents that match this predicate
 query = session.query(object_type=Employee).where_equals("first_name", "Robert")
 
 # Execute the query
@@ -302,7 +304,7 @@ from "Employees" where FirstName == "Robert"
 **Query collection - with paging** 
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Method-syntax" label="Method-syntax">
+<TabItem value="Inline_query_execution" label="Inline_query_execution">
 ```python
 # Query collection - page results
 # No auto-index is created since no filtering is applied
@@ -316,14 +318,17 @@ products = list(
 # The resulting 'Product' entities are loaded and will be tracked by the session
 ```
 </TabItem>
-<TabItem value="Query-syntax" label="Query-syntax">
+<TabItem value="Step_by_step" label="Step_by_step">
 ```python
 # Query collection - page results
 # No auto-index is created since no filtering is applied
 
+# Define the query 
 query = (
-    session.query(object_type=Product).skip(5).take(10)  # Skip first 5 results
-)  # Load up to 10 entities from 'Products' collection
+    # Skip first 5 results
+    # Load up to 10 entities from 'Products' collection
+    session.query(object_type=Product).skip(5).take(10) 
+)  
 
 # Execute the query
 products = list(query)
@@ -349,12 +354,12 @@ from "Products" limit 5, 10 // skip 5, take 10
 
 <Panel heading="session.advanced.document_query">
 
-* Below is a simple `document_query` usage sample and its RQL equivalent.  
-  For a full description and more examples see:  
-   * [What is a document query](../../client-api/session/querying/document-query/what-is-document-query.mdx)
-   * [query -vs- document_query](../../client-api/session/querying/document-query/query-vs-document-query.mdx)
-
-**Example**:
+* Although you can explicitly call `document_query`, in the **Python** client API, the `query` and `document_query` methods provide **identical functionality**.
+  Learn more in:  
+    * [What is a document query](../../querying/document-query/what-is-document-query.mdx)
+    * [query -vs- document_query](../../querying/document-query/query-vs-document-query.mdx)
+  
+* The following example shows a simple `document_query` and its RQL statement.    
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="document_query" label="document_query">
@@ -365,9 +370,8 @@ from "Products" limit 5, 10 // skip 5, take 10
 # that indexes this document field
 
 employees = list(  # Execute the query
-    session.advanced.document_query(object_type=Employee).where_equals(  # Use document_query
-        "first_name", "Robert"
-    )  # Query for all 'Employee' documents that match this predicate
+    session.advanced.document_query(object_type=Employee)
+    .where_equals("first_name", "Robert")
 )
 
 # The resulting 'Employee' entities are loaded and will be tracked by the session
@@ -397,7 +401,7 @@ from "Employees" where FirstName = "Robert"
 **Example**:
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="RawQuery" label="RawQuery">
+<TabItem value="raw_query" label="raw_query">
 ```python
 # Query with RawQuery - filter by document field
 
@@ -416,30 +420,89 @@ employees = list(  # Execute the query
 
 </Panel>
 
-<Panel heading="Custom methods">
+<Panel heading="query API">
 
-Available custom methods for session's [query](../../querying/overview.mdx#session-query) method:
-
+Available methods for the session's [query](../../querying/overview.mdx#session-query) method:
+    
+- add_order
+- [after_query_executed](../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
+- [after_stream_executed](../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
 - [aggregate_by](../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
+- [aggregate_using](../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
+- and_also
+- [before_query_executed](../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
+- [boost](../../client-api/session/querying/text-search/boost-search-results.mdx)
+- close_subclause
+- cmp_xchg
+- contains_all
+- contains_any
 - [count](../../client-api/session/querying/how-to-count-query-results.mdx)
-- [count_lazily](../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
-- [customize](../../client-api/session/querying/how-to-customize-query.mdx)
-- [highlight](../../client-api/session/querying/text-search/highlight-query-results.mdx)
-- [include](../../client-api/how-to/handle-document-relationships.mdx)
+- [count_lazily](../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)
+- [customize](../../client-api/session/querying/how-to-customize-query.mdx)    
+- distinct
+- explain_scores
+- first
+- first_or_default
+- fuzzy
+- get_index_query
+- get_query_result
+- [group_by](../../client-api/session/querying/how-to-perform-group-by-query.mdx)
+- [group_by_array_values](../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-values)
+- [group_by_array_content](../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-content)
+- [highlight](../../client-api/session/querying/text-search/highlight-query-results.mdx)   
+- [include](../../client-api/how-to/handle-document-relationships.mdx)    
+- include_explanations
 - [intersect](../../client-api/session/querying/how-to-use-intersect.mdx)
+- invoke_after_query_executed
+- invoke_after_stream_eExecuted
 - [lazily](../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
-- [long_count](../../client-api/session/querying/how-to-count-query-results.mdx)
 - [more_like_this](../../client-api/session/querying/how-to-use-morelikethis.mdx)
+- negate_next
+- [not](../../client-api/session/querying/document-query/how-to-use-not-operator.mdx)
+- [no_caching](../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+- [no_tracking](../../client-api/session/querying/how-to-customize-query.mdx#notracking)
 - [of_type](../../client-api/session/querying/how-to-project-query-results.mdx#oftype-(as)---simple-projection)
+- open_subclause
+- [order_by](../../client-api/session/querying/sort-query-results.mdx)
+- [order_by_descending](../../client-api/session/querying/sort-query-results.mdx)
 - [order_by_distance](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistance)
 - [order_by_distance_descending](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistancedesc)
-- [order_by_score](../../client-api/session/querying/sort-query-results.mdx#order-by-score)
+- [order_by_score](../../client-api/session/querying/sort-query-results.mdx#order-by-score)  
 - [order_by_score_descending](../../client-api/session/querying/sort-query-results.mdx#order-by-score)
-- [project_into](../../client-api/session/querying/how-to-project-query-results.mdx)
-- [search](../../client-api/session/querying/text-search/full-text-search.mdx)
-- [spatial](../../client-api/session/querying/how-to-make-a-spatial-query.mdx)
+- or_else
+- [projection](../../client-api/session/querying/how-to-customize-query.mdx#projection)
+- [project_into](../../client-api/session/querying/how-to-project-query-results.mdx)    
+- proximity
+- [random_ordering](../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+- [relates_to_shape](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-shape)
+- [search](../../client-api/session/querying/text-search/full-text-search.mdx)  
+- select_fields
+- select_time_series
+- single
+- single_or_default
+- skip
+- [spatial](../../client-api/session/querying/how-to-make-a-spatial-query.mdx) 
 - [statistics](../../client-api/session/querying/how-to-get-query-statistics.mdx)
 - [suggest_using](../../client-api/session/querying/how-to-work-with-suggestions.mdx)
+- take
+- [timings](../../client-api/session/querying/how-to-customize-query.mdx#timings)
+- using_default_operator
+- [wait_for_non_stale_results](../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+- where
+- WhereBetween
+- [where_ends_with](../../client-api/session/querying/text-search/ends-with-query.mdx)
+- where_equals
+- [where_exists](../../client-api/session/querying/how-to-filter-by-field.mdx)
+- where_greater_than
+- where_greater_than_or_equal
+- where_in
+- where_less_than
+- where_less_than_or_equal
+- [where_lucene](../../client-api/session/querying/document-query/how-to-use-lucene.mdx)
+- where_not_equals
+- [where_regex](../../client-api/session/querying/text-search/using-regex.mdx)
+- [where_starts_with](../../client-api/session/querying/text-search/starts-with-query.mdx)
+- within_radius_of    
 
 </Panel>
 
@@ -484,21 +547,21 @@ def document_query_from_index_type(
 ) -> DocumentQuery[_T]:
     ...
 
-# RawQuery
-# ================================
+# raw_query:
+# ==========
 def raw_query(self, query: str, object_type: Optional[Type[_T]] = None) -> RawDocumentQuery[_T]:
     ...
 ```
 </TabItem>
 
-| Parameter | Type | Description |
-|--------------------|--------|------------------------------------------|
-| **object_type** | `Type[_T]` | Queried entities type |
-| **collection_name** | `str` | Queried collection name |
-| **query** | `str` | RQL query string |
-| **index_name** | `str` | Queried index name |
-| **index_type** | `Type[_TIndex]` | Queried index type |
-| **is_map_reduce** | `bool` | Is a map-reduce index queried |
+| Parameter           | Type       | Description |
+|---------------------|------------|-------------|
+| **object_type**     | `Type[_T]` | Queried entities type |
+| **collection_name** | `str`      | Queried collection name |
+| **query**           | `str`      | RQL query string |
+| **index_name**      | `str`      | Queried index name |
+| **index_type**      | `Type[_TIndex]` | Queried index type |
+| **is_map_reduce**   | `bool`     | Is a map-reduce index queried |
 
 | Return Value | |
 | - | - |

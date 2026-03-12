@@ -7,15 +7,14 @@ import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* PHP Queries can be written -  
+* Queries in RavenDB can be written with either of the following:
     * Using the session's `query` method  
     * Using the session's `documentQuery` method  
     * Using **RQL**:  
         * via the session's `rawQuery` method  
         * via the Studio's [Query view](../../studio/database/queries/query-view.mdx)  
 
-* Queries defined using `query` or `documentQuery` are translated by the RavenDB client 
-  to [RQL](../../querying/rql/what-is-rql.mdx) when sent to the server.  
+* Queries defined using `query` or `documentQuery` are **translated by the RavenDB client to [RQL](../../querying/rql/what-is-rql.mdx)** when sent to the server.  
     
 * All RavenDB queries use an **index** to provide results, even when an index is not explicitly defined.  
   Learn more [below](../../querying/overview.mdx#queries-always-provide-results-using-an-index).
@@ -40,7 +39,7 @@ import Panel from '@site/src/components/Panel';
   * [session.query](../../querying/overview.mdx#session-query)  
   * [session.advanced.documentQuery](../../querying/overview.mdx#session-advanced-documentquery)  
   * [session.advanced.rawQuery](../../querying/overview.mdx#session-advanced-rawquery)
-  * [Custom methods](../../querying/overview.mdx#custom-methods)  
+  * [query API](../../querying/overview.mdx#query-api)  
   * [Syntax](../../querying/overview.mdx#syntax)  
 
 </Admonition>
@@ -156,13 +155,11 @@ For each scenario, a different index type is used, as described below.
 
 <Panel heading="session.query">
 
-* The simplest way to issue a query is by using the session's `query` method which supports LINQ.  
-  Both the LINQ method syntax and the LINQ query syntax are supported.  
+* The simplest way to issue a query is by using the session's `query` method.  
+  Customize your query with these [API methods](../../querying/overview.mdx#query-api).
 
 * The following examples show **dynamic queries** that do not specify which index to use.  
   Please refer to [querying an index](../../indexes/querying/query-index.mdx) for other examples.
-
-* Querying can be enhanced using these [extension methods](../../querying/overview.mdx#custom-methods-and-extensions-for-linq).
  
 <ContentFrame>
 
@@ -176,7 +173,7 @@ For each scenario, a different index type is used, as described below.
 
 $allEmployees = $session
     ->query(Employee::class)  // Query for all documents from 'Employees' collection
-    ->toList();                         // Execute the query
+    ->toList();               // Execute the query
 
 // All 'Employee' entities are loaded and will be tracked by the session
 ```
@@ -205,8 +202,10 @@ from "Employees"
 
 $employee = $session
     ->query(Employee::class)
-    ->whereEquals("Id", "employees/1-A") // Query for specific document from 'Employees' collection
-    ->firstOrDefault();                                 // Execute the query
+    // Query for a specific document from 'Employees' collection
+    ->whereEquals("Id", "employees/1-A")
+    // Execute the query
+    ->firstOrDefault(); 
 
 // The resulting 'Employee' entity is loaded and will be tracked by the session
 ```
@@ -237,8 +236,10 @@ from "Employees" where id() == "employees/1-A"
 
 $employees = $session
     ->query(Employee::class)
-    ->whereEquals("FirstName", "Robert") // Query for all 'Employee' documents that match this predicate
-    ->ToList();                                         // Execute the query
+    // Query for all 'Employee' documents that match this predicate
+    ->whereEquals("FirstName", "Robert")
+    // Execute the query
+    ->ToList();                        
 
 // The resulting 'Employee' entities are loaded and will be tracked by the session
 ```
@@ -294,18 +295,15 @@ from "Products" limit 5, 10 // skip 5, take 10
 
 <Panel heading="session.advanced.documentQuery">
 
-* `documentQuery` provides a full spectrum of low-level querying capabilities,  
-   giving you more flexibility and control when making complex queries.
-
-* Below is a simple _DocumentQuery_ usage.  
-  For a full description and more examples see:  
-    * [What is a document query](../../client-api/session/querying/document-query/what-is-document-query.mdx)
-    * [query -vs- documentQuery](../../client-api/session/querying/document-query/query-vs-document-query.mdx)
-
-**Example**:
+* Although you can explicitly call `documentQuery`, in the **PHP** client API, the `query` and `documentQuery` methods provide **identical functionality**.
+  Learn more in:  
+    * [What is a document query](../../querying/document-query/what-is-document-query.mdx)
+    * [query -vs- document_query](../../querying/document-query/query-vs-document-query.mdx)
+  
+* The following example shows a simple `documentQuery` and its RQL statement.        
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="DocumentQuery" label="DocumentQuery">
+<TabItem value="documentQuery" label="documentQuery">
 ```php
 // Query with DocumentQuery - filter by document field
 
@@ -313,9 +311,11 @@ from "Products" limit 5, 10 // skip 5, take 10
 // that indexes this document field
 
 $employees = $session
-    ->advanced()->documentQuery(Employee::class) // Use DocumentQuery
-    ->whereEquals("FirstName", "Robert")    // Query for all 'Employee' documents that match this predicate
-    ->toList();                             // Execute the query
+    ->advanced()->documentQuery(Employee::class) 
+    // Query for all 'Employee' documents that match this predicate
+    ->whereEquals("FirstName", "Robert")    
+    // Execute the query
+    ->toList();
 
 // The resulting 'Employee' entities are loaded and will be tracked by the session
 ```
@@ -364,30 +364,90 @@ $employees = $session
 
 </Panel>
 
-<Panel heading="Custom methods"> 
+<Panel heading="query API"> 
 
-Available custom methods for session's [query](../../querying/overview.mdx#session-query) method:
-
+Available methods for the session's [query](../../querying/overview.mdx#session-query) method:    
+    
+- AddOrder
+- [afterQueryExecuted](../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
+- [afterStreamExecuted](../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
 - [aggregateBy](../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
+- [aggregateUsing](../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
+- andAlso
+- [beforeQueryExecuted](../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
+- [boost](../../client-api/session/querying/text-search/boost-search-results.mdx)
+- closeSubclause
+- cmpXchg
+- containsAll
+- containsAny
 - [count](../../client-api/session/querying/how-to-count-query-results.mdx)
-- [countLazily](../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
-- [customize](../../client-api/session/querying/how-to-customize-query.mdx)
+- [countLazily](../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)
+- [customize](../../client-api/session/querying/how-to-customize-query.mdx)    
+- distinct
+- explainScores
+- first
+- firstOrDefault
+- fuzzy
+- getIndexQuery
+- getQueryResult
+- [groupBy](../../client-api/session/querying/how-to-perform-group-by-query.mdx)
+- [groupByArrayValues](../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-values)
+- [groupByArrayContent](../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-content)
 - [highlight](../../client-api/session/querying/text-search/highlight-query-results.mdx)
 - [include](../../client-api/how-to/handle-document-relationships.mdx)
+- includeExplanations
 - [intersect](../../client-api/session/querying/how-to-use-intersect.mdx)
+- invokeAfterQueryExecuted
+- invokeAfterStreamExecuted
 - [lazily](../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
 - [longCount](../../client-api/session/querying/how-to-count-query-results.mdx)
 - [moreLikeThis](../../client-api/session/querying/how-to-use-morelikethis.mdx)
+- negateNext
+- [not](../../client-api/session/querying/document-query/how-to-use-not-operator.mdx)
+- [noCaching](../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+- [noTracking](../../client-api/session/querying/how-to-customize-query.mdx#notracking)
 - [ofType](../../client-api/session/querying/how-to-project-query-results.mdx#oftype-(as)---simple-projection)
+- openSubclause
+- [orderBy](../../client-api/session/querying/sort-query-results.mdx)
+- [orderByDescending](../../client-api/session/querying/sort-query-results.mdx)
 - [orderByDistance](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistance)
 - [orderByDistanceDescending](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistancedesc)
 - [orderByScore](../../client-api/session/querying/sort-query-results.mdx#order-by-score)
 - [orderByScoreDescending](../../client-api/session/querying/sort-query-results.mdx#order-by-score)
-- [projectInto](../../client-api/session/querying/how-to-project-query-results.mdx)
+- orElse
+- [projection](../../client-api/session/querying/how-to-customize-query.mdx#projection)
+- [projectInto](../../client-api/session/querying/how-to-project-query-results.mdx)    
+- proximity
+- [randomOrdering](../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+- [relatesToShape](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-shape)
 - [search](../../client-api/session/querying/text-search/full-text-search.mdx)
+- selectFields
+- selectTimeSeries
+- single
+- singleOrDefault
+- skip
 - [spatial](../../client-api/session/querying/how-to-make-a-spatial-query.mdx)
 - [statistics](../../client-api/session/querying/how-to-get-query-statistics.mdx)
 - [suggestUsing](../../client-api/session/querying/how-to-work-with-suggestions.mdx)
+- take
+- [timings](../../client-api/session/querying/how-to-customize-query.mdx#timings)
+- usingDefaultOperator
+- [waitForNonStaleResults](../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+- where
+- whereBetween
+- [whereEndsWith](../../client-api/session/querying/text-search/ends-with-query.mdx)
+- whereEquals
+- [whereExists](../../client-api/session/querying/how-to-filter-by-field.mdx)
+- whereGreaterThan
+- whereGreaterThanOrEqual
+- whereIn
+- whereLessThan
+- whereLessThanOrEqual
+- [whereLucene](../../client-api/session/querying/document-query/how-to-use-lucene.mdx)
+- whereNotEquals
+- [whereRegex](../../client-api/session/querying/text-search/using-regex.mdx)
+- [whereStartsWith](../../client-api/session/querying/text-search/starts-with-query.mdx)
+- withinRadiusOf    
 
 </Panel>
 
@@ -408,14 +468,14 @@ public function rawQuery(?string $className, string $query): RawDocumentQueryInt
 ```
 </TabItem>
 
-| Parameter          | Type   | Description                                                                                                                                                                                                                                                                                                                                                                                                              |
-|--------------------|--------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **$className** | `string` | The name of the class to query |
+| Parameter                  | Type      | Description |
+|----------------------------|-----------|-------------|
+| **$className**             | `string`  | The name of the class to query |
 | **$collectionOrIndexName** | `?string` | The name of the collection or index to query |
-| **$indexNameOrClass** | `?string` | The name or class of the index to query |
-| **$collectionName** | `?string` | The name of the collection to query |
-| **$isMapReduce** | `bool` | Whether querying a map-reduce index |
-| **$query** |`string` | The RQL query string |
+| **$indexNameOrClass**      | `?string` | The name or class of the index to query |
+| **$collectionName**        | `?string` | The name of the collection to query |
+| **$isMapReduce**           | `bool`    | Whether querying a map-reduce index |
+| **$query**                 |`string`   | The RQL query string |
 
 | Return Value | |
 | - | - |

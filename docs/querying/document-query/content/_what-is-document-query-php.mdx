@@ -1,0 +1,110 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* RavenDB queries can be executed via `query`, `documentQuery` or directly using raw `RQL`.  
+  Learn more in [Query Overview](../../../querying/overview.mdx).
+
+* Unlike the **C#** client (where the `Query` method supports LINQ while `DocumentQuery` provides lower-level flexibility and control),
+  the **PHP** client API implements the `query` and `document_query` methods with **identical functionality**.    
+    
+    See [query -vs- documentQuery](../../../querying/document-query/query-vs-document-query.mdx) for additional details.
+
+* In this article:
+  * [`documentQuery` examples](../../../querying/document-query/what-is-document-query.mdx#documentquery-examples)
+  * [Syntax](../../../querying/document-query/what-is-document-query.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="documentQuery examples">
+
+#### Query collection - no filtering
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="documentQuery" label="documentQuery">
+```php
+// load all entities from 'Employees' collection
+$employees = $session
+    ->advanced()
+    ->documentQuery(Employee::class)
+    ->toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Employees"
+```
+</TabItem>
+</Tabs>
+    
+#### Query collection - with filtering
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="documentQuery" label="documentQuery">
+```php
+// load all entities from 'Employees' collection
+// where firstName equals 'Robert'
+$employees = $session
+    ->advanced()
+    ->documentQuery(Employee::class)
+    ->whereEquals("FirstName", "Robert")
+    ->toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Employees" where FirstName == "Robert"
+```
+</TabItem>
+</Tabs>
+    
+#### Query an index
+
+* Using a Path string
+    
+<TabItem value="documentQuery_4" label="documentQuery_4">
+```php
+// load all entities from 'Employees' collection
+// where firstName equals 'Robert'
+// using 'My/Custom/Index'
+$employees = $session
+    ->advanced()
+    ->documentQuery(Employee::class, "My/Custom/Index", null, false)
+    ->whereEquals("FirstName", "Robert")
+    ->toList();
+```
+</TabItem>
+
+* Using an index Class
+    
+<TabItem value="documentQuery_5" label="documentQuery_5">
+```php
+// load all entities from 'Employees' collection
+// where firstName equals 'Robert'
+// using 'MyCustomIndex::class'
+$employees = $session
+    ->advanced()
+    ->documentQuery(Employee::class, MyCustomIndex::class)
+    ->whereEquals("FirstName", "Robert")
+    ->toList();
+```
+</TabItem>
+
+<Admonition type="note" title="">
+    
+Refer to [Query an index by documentQuery](../../../indexes/querying/query-index.mdx#query-an-index-by-documentquery) for more examples.
+    
+</Admonition>
+
+</Panel>
+
+<Panel heading="Syntax">
+
+The definition for `documentQuery` is listed in the [Syntax section](../../../querying/overview.mdx#syntax) of the [Query Overview](../../../querying/overview.mdx).
+
+</Panel>

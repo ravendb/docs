@@ -1,0 +1,107 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* RavenDB Queries can be executed using `query` or `document_query`,  
+  or by passing raw [RQL](../../../querying/rql/what-is-rql.mdx) directly to the server via `raw_query`.  
+  Learn more in [Query Overview](../../../querying/overview.mdx).     
+    
+* Unlike the **C#** client (where the `Query` method supports LINQ while `DocumentQuery` provides lower-level flexibility and control),
+  the **Python** client API implements the `query` and `document_query` methods with **identical functionality**.
+    
+    Therefore, our Python documentation typically provides `query` samples without duplicating them for `document_query`.  
+    See [query -vs- document_query](../../../querying/document-query/query-vs-document-query.mdx) for additional details.
+
+* In this article:
+  * [`document_query` examples](../../../querying/document-query/what-is-document-query.mdx#document_query-examples)
+  * [Syntax](../../../querying/document-query/what-is-document-query.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="document_query examples">
+    
+#### Query collection - no filtering
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="document_query" label="document_query">
+```python
+all_employees = list(session.advanced.document_query(object_type=Employee))
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Employees"
+```
+</TabItem>
+</Tabs>
+
+#### Query collection - by ID
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="document_query" label="document_query">
+```python
+# Query collection by document ID
+employee = (
+    session.advanced.document_query(object_type=Employee)
+    .where_equals("Id", "employees/1-A")
+    .first()
+)
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Employees" where id() == "employees/1-A"
+```
+</TabItem>
+</Tabs>
+    
+#### Query collection - with filtering
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="document_query" label="document_query">
+```python
+# Query collection - filter by document field
+employees = list(
+    session.advanced.document_query(object_type=Employee).where_equals("first_name", "Robert")
+)
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Employees" where FirstName == "Robert"
+```
+</TabItem>
+</Tabs> 
+    
+#### Query collection - with paging
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="document_query" label="document_query">
+```python
+# Query collection - page results
+products = list(session.advanced.document_query(object_type=Product).skip(5).take(10))
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Products" limit 5, 10 // skip 5, take 10
+```
+</TabItem>
+</Tabs>
+
+#### Query an index
+
+Refer to [Querying an index](../../../indexes/querying/query-index.mdx#sessionadvanceddocumentquery) for examples of querying an index using `document_query`.
+    
+</Panel>
+
+<Panel heading="Syntax">
+
+The definition for `document_query` is listed in the [Syntax section](../../../querying/overview.mdx#syntax) of the [Query Overview](../../../querying/overview.mdx).
+
+</Panel>
