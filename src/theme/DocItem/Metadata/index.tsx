@@ -117,12 +117,8 @@ export default function MetadataWrapper(props: Props): ReactNode {
                 {title && <meta name="twitter:title" content={title} />}
                 {description && <meta name="twitter:description" content={description} />}
                 <meta name="twitter:image" content={ogImageUrl} />
-                {techArticleJsonLd && (
-                    <script type="application/ld+json">{techArticleJsonLd}</script>
-                )}
-                {breadcrumbJsonLd && (
-                    <script type="application/ld+json">{breadcrumbJsonLd}</script>
-                )}
+                {techArticleJsonLd && <script type="application/ld+json">{techArticleJsonLd}</script>}
+                {breadcrumbJsonLd && <script type="application/ld+json">{breadcrumbJsonLd}</script>}
             </Head>
             <Metadata {...props} />
         </>
