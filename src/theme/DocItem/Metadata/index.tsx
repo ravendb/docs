@@ -33,6 +33,8 @@ export default function MetadataWrapper(props: Props): ReactNode {
     const authorInfo = authorKey ? authorsData[authorKey as keyof typeof authorsData] : null;
     const publishedAt = frontMatter.publishedAt as string | undefined;
 
+    const ogImageUrl = `${baseUrl}/img/social-card.jpg`;
+
     const techArticleJsonLd =
         isGuide && title
             ? JSON.stringify({
@@ -41,6 +43,8 @@ export default function MetadataWrapper(props: Props): ReactNode {
                   headline: title,
                   description: description,
                   url: canonicalUrl,
+                  mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
+                  image: { "@type": "ImageObject", url: ogImageUrl, width: 1200, height: 630 },
                   ...(publishedAt ? { datePublished: publishedAt } : {}),
                   ...(metadata.lastUpdatedAt
                       ? { dateModified: new Date(metadata.lastUpdatedAt * 1000).toISOString().split("T")[0] }
@@ -71,6 +75,7 @@ export default function MetadataWrapper(props: Props): ReactNode {
                       "@type": "Organization",
                       name: "RavenDB",
                       url: "https://ravendb.net",
+                      logo: { "@type": "ImageObject", url: ogImageUrl },
                   },
                   proficiencyLevel: "Intermediate",
               })
@@ -108,6 +113,7 @@ export default function MetadataWrapper(props: Props): ReactNode {
                 <meta name="twitter:card" content="summary_large_image" />
                 {title && <meta name="twitter:title" content={title} />}
                 {description && <meta name="twitter:description" content={description} />}
+                <meta name="twitter:image" content={ogImageUrl} />
                 {techArticleJsonLd && (
                     <script type="application/ld+json">{techArticleJsonLd}</script>
                 )}
