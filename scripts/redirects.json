@@ -47,5 +47,12 @@
             "targetUrl": "/querying/document-query/query-vs-document-query",
             "minimumVersion": "7.2"
         }
+    },
+    {
+        "key": "/server/extensions/archival",
+        "value": {
+            "targetUrl": "/data-archival/overview",
+            "minimumVersion": "6.2"
+        }
     }
 ]
