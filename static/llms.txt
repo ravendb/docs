@@ -1,6 +1,6 @@
-## RavenDB Documentation
+# RavenDB
 
-Everything you need to know about our product, from getting started to advanced features.
+> RavenDB is a NoSQL document database designed for building high-performance, distributed applications. This is the official documentation site covering all product versions, cloud services, and community guides.
 
 ## General Information
 
@@ -15,6 +15,8 @@ Everything you need to know about our product, from getting started to advanced 
 - [Getting Started](https://docs.ravendb.net/start/getting-started): A guide for new users to set up and begin using RavenDB effectively.
 
 ## Version Information
+
+- [7.2 (Current)](https://docs.ravendb.net/): Documentation for the current version 7.2 of RavenDB.
 
 - [7.1](https://docs.ravendb.net/7.1): Documentation for version 7.1 of RavenDB.
 
@@ -168,6 +170,48 @@ Everything you need to know about our product, from getting started to advanced 
 
 - [Akka.NET](https://docs.ravendb.net/integrations/akka.net-persistence/integrating-with-akka-persistence): Use RavenDB as storage for Akka.Persistence.
 
+## Guides
+
+- [Guides Home](https://docs.ravendb.net/guides/home): Browse all community guides for RavenDB.
+
+- [Using Remote Attachments to Cut Storage Costs](https://docs.ravendb.net/guides/using-remote-attachments-to-cut-storage-costs): Store attachments in Amazon S3 or Azure Blob Storage to reduce database storage costs.
+
+- [Employing Data Archival](https://docs.ravendb.net/guides/employing-data-archival-guide): Set up and use data archival in RavenDB to improve query performance.
+
+- [AI Image Search with RavenDB](https://docs.ravendb.net/guides/ai-image-search-with-ravendb): Build AI-powered image search using vector search and embeddings.
+
+- [Embeddings Generation with RavenDB](https://docs.ravendb.net/guides/embeddings-generation-with-ravendb): Automatically generate vector embeddings from document data.
+
+- [Vector Search in RavenDB](https://docs.ravendb.net/guides/new-in-7-0-ravendbs-vector-search): Use vector search capabilities for semantic similarity queries.
+
+- [Practical Look at AI Agents with RavenDB](https://docs.ravendb.net/guides/practical-look-at-ai-agents-with-ravendb): Build database-native AI agents.
+
+- [GenAI: How We Make You Work Less](https://docs.ravendb.net/guides/genai-how-we-make-you-work-less): Leverage RavenDB's generative AI integration features.
+
+- [Setting Up RavenDB with ASP.NET Core 8](https://docs.ravendb.net/guides/how-to-setup-ravendb-with-asp-net-core-8-application): Connect and configure RavenDB in an ASP.NET Core 8 project.
+
+- [Querying with RavenDB and ASP.NET Core 9](https://docs.ravendb.net/guides/how-to-query-using-ravendb-and-asp-net-core-9): Query data using RavenDB in ASP.NET Core 9 applications.
+
+- [Integrating RavenDB into Next.js](https://docs.ravendb.net/guides/integrating-ravendb-into-next-js-app): Use RavenDB as the database for a Next.js web application.
+
+- [Integrate RavenDB into SvelteKit](https://docs.ravendb.net/guides/integrate-ravendb-into-sveltekit-app): Connect RavenDB to a SvelteKit application.
+
+- [Semantic Search with Python and FastAPI](https://docs.ravendb.net/guides/semantic-search-with-ravendb-python-and-fastapi): Build semantic search using RavenDB with Python and FastAPI.
+
+- [Deploying RavenDB with Docker Compose](https://docs.ravendb.net/guides/ravendb-deployment-guide-docker-compose-cluster): Deploy a RavenDB cluster using Docker Compose.
+
+- [Setting Up RavenDB on AWS EKS](https://docs.ravendb.net/guides/setting-up-ravendb-cluster-on-aws-eks): Deploy RavenDB on Amazon Elastic Kubernetes Service.
+
+- [Deploying RavenDB with Helm Chart](https://docs.ravendb.net/guides/deploying-ravendb-with-helm-chart): Use Helm charts for Kubernetes deployment.
+
+- [Grafana Cloud with OpenTelemetry](https://docs.ravendb.net/guides/grafana-cloud-configuration-with-opentelemetry): Monitor RavenDB with Grafana Cloud via OpenTelemetry.
+
+- [Leverage RavenDB Observability with Datadog](https://docs.ravendb.net/guides/leverage-ravendb-observability-with-datadog): Integrate RavenDB monitoring with Datadog.
+
+- [Writing Unit Tests with .NET Test Driver](https://docs.ravendb.net/guides/writing-unit-tests-with-ravendb-net-test-driver): Test RavenDB applications using the .NET test driver.
+
+- [From Zero to a Fully Secured Cluster](https://docs.ravendb.net/guides/from-zero-to-a-fully-secured-cluster): Step-by-step guide to securing a RavenDB cluster.
+
 ## Support and Resources
 
 - [Contact support](https://ravendb.net/support): Reach out for assistance with RavenDB.
@@ -179,4 +223,3 @@ Everything you need to know about our product, from getting started to advanced 
 - [About us](https://ravendb.net/about): Learn more about the RavenDB team and mission.
 
 - [Legal](https://ravendb.net/legal): Access legal information related to RavenDB usage.
-

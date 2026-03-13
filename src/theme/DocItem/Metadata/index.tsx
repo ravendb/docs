@@ -5,12 +5,13 @@ import type { WrapperProps } from "@docusaurus/types";
 import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Head from "@docusaurus/Head";
+import authorsData from "@site/docs/authors.json";
 
 type Props = WrapperProps<typeof MetadataType>;
 
 export default function MetadataWrapper(props: Props): ReactNode {
     const { siteConfig } = useDocusaurusContext();
-    const { metadata } = useDoc();
+    const { metadata, frontMatter } = useDoc();
     const permalink = metadata.permalink;
     // Strip trailing slash from base URL to avoid double slashes
     const baseUrl = (siteConfig.url as string).replace(/\/$/, "");
@@ -24,10 +25,95 @@ export default function MetadataWrapper(props: Props): ReactNode {
         canonicalUrl = canonicalUrl.concat("/");
     }
 
+    const isGuide = permalink.startsWith("/guides/") && !permalink.endsWith("/guides/");
+    const description = metadata.description || (frontMatter.description as string) || "";
+    const title = metadata.title || "";
+
+    const authorKey = frontMatter.author as string | undefined;
+    const authorInfo = authorKey ? authorsData[authorKey as keyof typeof authorsData] : null;
+    const publishedAt = frontMatter.publishedAt as string | undefined;
+
+    const techArticleJsonLd =
+        isGuide && title
+            ? JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "TechArticle",
+                  headline: title,
+                  description: description,
+                  url: canonicalUrl,
+                  ...(publishedAt ? { datePublished: publishedAt } : {}),
+                  ...(metadata.lastUpdatedAt
+                      ? { dateModified: new Date(metadata.lastUpdatedAt * 1000).toISOString().split("T")[0] }
+                      : publishedAt
+                        ? { dateModified: publishedAt }
+                        : {}),
+                  inLanguage: "en",
+                  ...(authorInfo
+                      ? {
+                            author: {
+                                "@type": "Person",
+                                name: authorInfo.name,
+                                ...(authorInfo.url ? { url: authorInfo.url } : {}),
+                                ...(authorInfo.title
+                                    ? {
+                                          jobTitle: authorInfo.title.replace(/ @ .*$/, ""),
+                                          worksFor: {
+                                              "@type": "Organization",
+                                              name: "RavenDB",
+                                              url: "https://ravendb.net",
+                                          },
+                                      }
+                                    : {}),
+                            },
+                        }
+                      : {}),
+                  publisher: {
+                      "@type": "Organization",
+                      name: "RavenDB",
+                      url: "https://ravendb.net",
+                  },
+                  proficiencyLevel: "Intermediate",
+              })
+            : null;
+
+    const breadcrumbJsonLd = isGuide
+        ? JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                  {
+                      "@type": "ListItem",
+                      position: 1,
+                      name: "Guides",
+                      item: `${baseUrl}/guides/`,
+                  },
+                  {
+                      "@type": "ListItem",
+                      position: 2,
+                      name: title,
+                      item: canonicalUrl,
+                  },
+              ],
+          })
+        : null;
+
     return (
         <>
             <Head>
                 <link rel="canonical" href={canonicalUrl} />
+                {description && <meta property="og:description" content={description} />}
+                {title && <meta property="og:title" content={title} />}
+                <meta property="og:type" content="article" />
+                <meta property="og:url" content={canonicalUrl} />
+                <meta name="twitter:card" content="summary_large_image" />
+                {title && <meta name="twitter:title" content={title} />}
+                {description && <meta name="twitter:description" content={description} />}
+                {techArticleJsonLd && (
+                    <script type="application/ld+json">{techArticleJsonLd}</script>
+                )}
+                {breadcrumbJsonLd && (
+                    <script type="application/ld+json">{breadcrumbJsonLd}</script>
+                )}
             </Head>
             <Metadata {...props} />
         </>
