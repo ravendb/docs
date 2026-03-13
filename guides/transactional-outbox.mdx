@@ -28,6 +28,7 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
 
 ## Distributed systems and their quirks
 
@@ -334,12 +335,10 @@ With our app running, we can enter our queue’s interface or console.
 
 Both Kafka and RabbitMQ are receiving data. Kafka can be checked using a shell script:
 
-![Kafka terminal output showing invoice-created messages after the RavenDB subscription worker ran](./assets/outbox1.png)
-
+<Image img={require("./assets/outbox1.png")} alt="Kafka terminal output showing invoice-created messages after the RavenDB subscription worker ran" />
 And RabbitMQ can be checked in the GUI.
 
-![RabbitMQ management GUI showing the invoice-created queue with queued messages](./assets/outbox2.png)
-
+<Image img={require("./assets/outbox2.png")} alt="RabbitMQ management GUI showing the invoice-created queue with queued messages" />
 So this works perfectly, we’ve used various features of RavenDB, like ACID for document operations, or data subscriptions, to implement transactional outbox in no time.
 
 But RavenDB offers another way to help you achieve your goal. Instead of the Transactional Outbox pattern, we’ll use another durable ongoing task \- RavenDB Queue ETL\!
@@ -358,14 +357,12 @@ Most importantly, we can do it without writing any application-level code\!
 
 Let’s show how to connect and configure this task:
 
-![RavenDB Studio Ongoing Tasks panel showing available ETL task types including RabbitMQ and Kafka](./assets/outbox3.png)
-
+<Image img={require("./assets/outbox3.png")} alt="RavenDB Studio Ongoing Tasks panel showing available ETL task types including RabbitMQ and Kafka" />
 ### Connecting RabbitMQ ETL
 
 Let’s connect to RabbitMQ. We enter the ongoing tasks creation menu and select RabbitMQ ETL. First, we need to create a connection string, which we can do easily:
 
-![RavenDB Studio RabbitMQ ETL connection string configuration form](./assets/outbox4.png)
-
+<Image img={require("./assets/outbox4.png")} alt="RavenDB Studio RabbitMQ ETL connection string configuration form" />
 Select a name for the task, then proceed and select a name for the new connection string. Then you need to add the actual connection string that connects RavenDB to RabbitMQ. Use this format:
 
 ```
@@ -376,8 +373,7 @@ amqp://user:password@host:10000/
 
 You can also do the same using Kafka ETL. We open the ongoing tasks menu in your database, then select Kafka ETL. Then you select your ETL name and name for your connection string. Enter your bootstrap server address (we’re running Kafka locally on port 9092):
 
-![RavenDB Studio Kafka ETL connection string form with bootstrap server address field](./assets/outbox5.png)
-
+<Image img={require("./assets/outbox5.png")} alt="RavenDB Studio Kafka ETL connection string form with bootstrap server address field" />
 After that, we can move to the transformation script.
 
 ### Transformation Script \- “T” in the ETL
@@ -405,16 +401,13 @@ loadToInvoiceCreated({
 
 Then you just select your collection from the list, in this example, collection Invoices, and it’s ready to be saved. Nothing more is needed for the connection between RavenDB and those queues.
 
-![RavenDB Studio ETL transformation script editor showing the loadToInvoiceCreated function with Invoices collection selected](./assets/outbox6.png)
-
+<Image img={require("./assets/outbox6.png")} alt="RavenDB Studio ETL transformation script editor showing the loadToInvoiceCreated function with Invoices collection selected" />
 Let’s check if the data is stored properly. Kafka:
 
-![Kafka terminal output confirming invoice-created events published via RavenDB Queue ETL](./assets/outbox7.png)
-
+<Image img={require("./assets/outbox7.png")} alt="Kafka terminal output confirming invoice-created events published via RavenDB Queue ETL" />
 And for RabbitMQ we can just look into the GUI.
 
-![RabbitMQ management GUI showing messages published via RavenDB Queue ETL](./assets/outbox8.png)
-
+<Image img={require("./assets/outbox8.png")} alt="RabbitMQ management GUI showing messages published via RavenDB Queue ETL" />
 This way, with RavenDB, you can address the actual need of publishing an event after invoice creation in **minutes**.
 
 RavenDB ETLs can be used in many different ways. If you are interested in ETL to AWS SQS, [read about RavenDB Amazon SQS ETL](https://ravendb.net/articles/new-in-7-0-ravendb-and-amazon-sqs-etl). You might also be interested in [The Library of Ravens sample repository](https://github.com/ravendb/samples-library), which uses ETL to handle timeouts.

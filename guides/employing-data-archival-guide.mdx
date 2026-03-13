@@ -15,6 +15,7 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
 
 Let’s say you’re building an invoice processing system. When you first set up your database during development, everything feels great. Routines start storing invoices as documents, and indexes work flawlessly, allowing queries to be processed quickly. The entire system feels smooth and responsive.
 
@@ -38,9 +39,8 @@ from index "InvoicesByIssueDate" where issue_date >= "2025-06-25T10:21:56.1500Z"
 
 A query (not so complex) alone took over 1200ms. Exploring the data by the user takes a lot of time, reducing the quality of service and making interacting with your application frustrating.
 
-![](./assets/archival1.png) 
-![](./assets/archival2.png) 
-
+<Image img={require("./assets/archival1.png")} alt="" />
+<Image img={require("./assets/archival2.png")} alt="" />
 Not mentioning overhead of the rest of the system. Forget about instant filtering \- you’re indexing all of the data, even though your users don’t care about the old stuff.
 
 This creates a huge problem as all those files from seven years ago are still being viewed and filtered during the query.
@@ -63,8 +63,7 @@ To trigger this feature, you can take one of two approaches: from code or the st
 
 **If you’re using RavenDB Cloud,** make sure to enable Data Archival in the Product Features section before continuing.
 
-![](./assets/archival3.png) 
-
+<Image img={require("./assets/archival3.png")} alt="" />
 To enable and trigger data archival from your application, we need to define which collection should be archived and set up the archival configuration. That’s how we do that:
 
 ```csharp showLineNumbers
@@ -102,8 +101,7 @@ Or we can trigger it from the studio easily, we just need to:
 4. Optionally, toggle to customize the maximum number of documents the archiving task will process in a single run.  
 5. Click Save to apply your settings.
 
-![](./assets/archival4.png) 
-
+<Image img={require("./assets/archival4.png")} alt="" />
 But this is only the beginning. We have only triggered our archival, but now we need to tell RavenDB which files we want to archive.
 
 ## Sorting Through the Piles: Choosing What to Archive
@@ -126,8 +124,7 @@ update {
 
 This code calculates our gap 90 days from the `issue_date` of each file. Then it converts it to an ISO string, allowing us to use and archive it using this calculated value. RavenDB will process all documents in the Invoices collection.
 
-![](./assets/archival5.png) 
-
+<Image img={require("./assets/archival5.png")} alt="" />
 Alternatively, we can do it with patchByQuery from code:
 
 ```csharp showLineNumbers
@@ -182,16 +179,13 @@ using (var session = store.OpenSession())
 
 How does archival affect this problem? After setting up the archival, documents only 90 days old or newer will be made available by default for all indexes. Because indexes are interconnected with other parts of the system, this affects your whole system. After archiving our files, changes are made to the metadata.
 
-![](./assets/archival6.png) 
-
+<Image img={require("./assets/archival6.png")} alt="" />
 And the index becomes smaller, containing fewer files.
 
-![](./assets/archival7.png) 
-
+<Image img={require("./assets/archival7.png")} alt="" />
 This will affect queries by reducing the time they need to search through data. After all, a big part of the documents isn’t in the indexes.
 
-![](./assets/archival8.png) 
-
+<Image img={require("./assets/archival8.png")} alt="" />
 Query performance improved, but the data is still in the database. Perfect of two worlds.
 
 ## Archive behaviour
@@ -202,12 +196,10 @@ When you have archival enabled during index creation, you can choose the behavio
 
 In indexes, you do that at the bottom of the index in the configuration.
 
-![](./assets/archival9.png) 
-
+<Image img={require("./assets/archival9.png")} alt="" />
 Or if you are using subscriptions, you can change this setting directly under subscription RQL. 
 
-![](./assets/archival10.png) 
-
+<Image img={require("./assets/archival10.png")} alt="" />
 More information about behaviour can be found in our documentation under this [link](https://docs.ravendb.net/7.1/data-archival/archived-documents-and-other-features).
 
 ## Taking documents out

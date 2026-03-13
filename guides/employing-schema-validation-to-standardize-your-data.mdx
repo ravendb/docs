@@ -14,6 +14,7 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
 
 When working with any type of data, things usually go smoothly when a single team owns the entire system. When an organisation adds new teams that work on the same data, it can quickly become a mess without proper governance. You may find yourself being frustrated that the other team is saving as a string what breaks your system from time to time.  Data must be tracked, and dataset version changes must be enforced precisely. You need to keep the same data model between all documents. Thankfully, we now have a tool to handle those situation and you don’t need to prepare for the worst by preparing boundaries. This tool is a schema validation.
 
@@ -57,21 +58,18 @@ About the modes we mentioned, we can divide the audit operation into two modes. 
 If the schema is triggered, it will block the document from being stored and return an error. 
 
 If you want to input only a few documents or use schema validation as a one-time scan, you can disable schema validation while leaving global schema validation enabled. You can also trigger a collection-wide scan to test all documents, not just new ones. We will use a basic schema to scan if all our Orders have the Company and Employee fields. Click on the testing button and then on the bottom-right corner, press run test. It will return all errors in the table.
-![](./assets/Validation1.png)
-![](./assets/Validation2.png)
-
+<Image img={require("./assets/Validation1.png")} alt="" />
+<Image img={require("./assets/Validation2.png")} alt="" />
 As you can see, one of our orders is missing the Employee field.
 
 ### Index
 
 Once your schema is ready, we can also create an index to store all documents that do not fit the schema in one place. With index, prepared you can just query your documents:
 
-![](./assets/Validation3.png)
-
+<Image img={require("./assets/Validation3.png")} alt="" />
 And after clicking eye icon in preview you can learn more information about this document.
 
-![](./assets/Validation4.png)
-
+<Image img={require("./assets/Validation4.png")} alt="" />
 ## How to use it with code?
 
 ### Audit Operation
@@ -102,8 +100,7 @@ foreach (var error in result.Errors)
 ```
 
 After that, we get a response like this.  
-![](./assets/Validation5.png)
-
+<Image img={require("./assets/Validation5.png")} alt="" />
 ### Index
 
 Of course, querying from code is an option too; you just need to prepare the required index beforehand. To query such an index, you can usea  script like this one:
@@ -142,8 +139,7 @@ How do you create such index? Can we make it from code? Let’s get into configu
 
 To configure schema validation in Studio, first enter the database you want to set it for, then navigate to Settings \> Document Schema. Add a new schema. This gives us two fields. One to select the collection and another to write our schema in.
 
-![](./assets/Validation6.png)
-
+<Image img={require("./assets/Validation6.png")} alt="" />
 After you selected collection, you can proceed to write your schema. Schemas are built using [JSON Schema](https://json-schema.org/), a popular vocabulary for JSON files. Basic schema on orders collection can look like this:
 
 ```json
@@ -258,8 +254,7 @@ select new
 
 We need to add Errors to stored values. We can easily do that in the fields section.
 
-![](./assets/Validation7.png)
-
+<Image img={require("./assets/Validation7.png")} alt="" />
 If you want to make this index to only gather errors from one collection, change the first line to:
 
 ```
@@ -268,16 +263,14 @@ from doc in docs.ChosenCollection //change ChosenCollection to your collection
 
 We can save the index, and if we have any documents not matching the schema in database, we can notice they are added to the index.
 
-![](./assets/Validation8.png)
-
+<Image img={require("./assets/Validation8.png")} alt="" />
 ### Dedicated index schema
 
 Because our schema is enabled, writes will be blocked. But we can create an index that does not require enabling the schema. We switch to a different section on the same bar where we were selecting Fields to add the Errors field, and switch to Schema Definitions. There, we can write a definition dedicated to this index.
 
 In there, we select our desired collection and input our schema.
 
-![](./assets/Validation9.png)
-
+<Image img={require("./assets/Validation9.png")} alt="" />
 After saving it if you didn’t do it before, you can delete or disable the schema in the **database** setting. Now let’s do this from code.
 
 ## Configure it from code

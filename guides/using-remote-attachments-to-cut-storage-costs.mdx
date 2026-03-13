@@ -12,6 +12,7 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import Image from "@theme/IdealImage";
 
 RavenDB's document [attachments](https://docs.ravendb.net/7.2/document-extensions/attachments/overview/) let you store any file with the corresponding document. No matter if it's a PDF, a video, an image, or something completely different, you can still keep it with the rest of the document, stored as bytes. The only problem is that some attachments can be large and numerous, while your storage space may be limited.
 
@@ -55,8 +56,7 @@ Currently (RavenDB 7.2), Azure Blob, Amazon S3, and any S3-compatible services (
 
 To pick a destination for your attachments, first prepare a connection string. Open your database, open the Settings tab, and then the Remote Attachments settings.
 
-![RavenDB Studio Settings tab showing the Remote Attachments configuration panel](./assets/Remote1.png)
-
+<Image img={require("./assets/Remote1.png")} alt="RavenDB Studio Settings tab showing the Remote Attachments configuration panel" />
 #### Amazon S3
 
 Configuration is straightforward:
@@ -73,14 +73,12 @@ Configuration is straightforward:
 
 If you want to learn more about S3 storage classes, see the [AWS storage class documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html). After choosing a class, you can Test credentials and then Apply Configuration. Then switch on Remote Attachments and you are ready to add documents.
 
-![Amazon S3 remote attachments connection string configuration in RavenDB Studio](./assets/Remote2.png)
-
+<Image img={require("./assets/Remote2.png")} alt="Amazon S3 remote attachments connection string configuration in RavenDB Studio" />
 #### Azure Blob
 
 Azure Blob Storage doesn't have a storage class selector in Studio, so the setup is simpler. You configure storage tiers (Hot, Cool, Archive) directly in the Azure portal; from RavenDB's side, you just connect and go.
 
-![Azure Blob Storage remote attachments configuration form in RavenDB Studio](./assets/Remote3.png)
-
+<Image img={require("./assets/Remote3.png")} alt="Azure Blob Storage remote attachments configuration form in RavenDB Studio" />
 To connect:
 
 1. In Azure, go to your Storage Account's Security settings and then Access keys. Copy both the Account name and Account key.
@@ -88,8 +86,7 @@ To connect:
 3. In RavenDB Studio, enter the Account name, Account key, and storage container name. Then select a name for the destination and save.
 4. After enabling Remote Attachments, you are ready to add attachments.
 
-![Azure Blob connection string details entered in RavenDB Studio configuration panel](./assets/Remote4.png)
-
+<Image img={require("./assets/Remote4.png")} alt="Azure Blob connection string details entered in RavenDB Studio configuration panel" />
 ### How do you configure remote attachments from C# code?
 
 <Admonition type="warning" title="Configuration override behavior">
@@ -176,12 +173,10 @@ For more details on all configuration options, see the [remote attachments refer
 
 Once configured, you can add a new remote attachment to a document. Enter your document and select the attachments tab under the properties window. Click the arrow on the right to reveal 'Add attachment to remote storage'.
 
-![Document attachments tab in RavenDB Studio with the expanded dropdown showing the Add attachment to remote storage option](./assets/Remote5.png)
-
+<Image img={require("./assets/Remote5.png")} alt="Document attachments tab in RavenDB Studio with the expanded dropdown showing the Add attachment to remote storage option" />
 Add the file, select the destination you want to use, and set the time it is supposed to be moved to the destination. After saving, your attachment is added locally and will be transported to your remote storage when the scheduled time comes.
 
-![Remote attachment upload dialog showing destination selection and scheduled transfer time](./assets/Remote6.png)
-
+<Image img={require("./assets/Remote6.png")} alt="Remote attachment upload dialog showing destination selection and scheduled transfer time" />
 ### How do you add a remote attachment from C# code?
 
 Adding remote attachments from code is nearly as easy as adding regular attachments:
@@ -253,8 +248,7 @@ await using (var stream = new FileStream(
 
 Then after one minute that has been requested with `DateTime.UtcNow.AddMinutes(1)`, we can see the attachments were automatically offloaded to our S3 bucket:
 
-![RavenDB Studio showing an attachment that has been offloaded to Amazon S3 remote storage with a remote storage indicator](./assets/Remote7.png)
-
+<Image img={require("./assets/Remote7.png")} alt="RavenDB Studio showing an attachment that has been offloaded to Amazon S3 remote storage with a remote storage indicator" />
 ### How do you migrate existing local attachments to remote storage?
 
 When moving to remote storage, you would probably also want to move old attachments. To do that we can use a [set-based patch operation](https://docs.ravendb.net/7.2/client-api/operations/patching/set-based#updating-all-documents):
