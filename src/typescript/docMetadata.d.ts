@@ -10,6 +10,8 @@ export interface CustomDocFrontMatter extends DocFrontMatter {
     icon?: IconName;
     image?: string | { light: string; dark: string };
     publishedAt?: string;
+    proficiencyLevel?: string;
+    keywords?: string[];
 }
 
 type CustomDocContextValue = Omit<DocContextValue, "frontMatter" | "metadata"> & {

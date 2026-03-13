@@ -5,7 +5,6 @@ import ThemedImage, { Props as ThemedImageProps } from "@theme/ThemedImage";
 export interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
     imgSrc?: string | { light: string; dark: string };
     minContentHeight?: number;
-    loading?: "lazy" | "eager";
 }
 
 export default function LazyImage({
@@ -15,7 +14,6 @@ export default function LazyImage({
     className,
     style,
     minContentHeight = 100,
-    loading = "lazy",
     ...props
 }: LazyImageProps) {
     const [isLoaded, setIsLoaded] = useState(false);
@@ -47,7 +45,7 @@ export default function LazyImage({
                 className={clsx(className, "transition-opacity duration-300", !isLoaded ? "opacity-0" : "opacity-100")}
                 onLoad={() => setIsLoaded(true)}
                 onError={() => setIsLoaded(true)}
-                loading={loading}
+                loading="lazy"
             />
         </span>
     );

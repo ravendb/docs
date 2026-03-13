@@ -25,14 +25,21 @@ export default function MetadataWrapper(props: Props): ReactNode {
         canonicalUrl = canonicalUrl.concat("/");
     }
 
-    const isGuide = permalink.startsWith("/guides/") && !permalink.endsWith("/guides/");
-    const description = metadata.description || (frontMatter.description as string) || "";
+    const guidesLandingPaths = ["/guides", "/guides/"];
+    const isGuide = permalink.startsWith("/guides/") && !guidesLandingPaths.includes(permalink);
+    const description = metadata.description || frontMatter.description || "";
+
+    if (isGuide && !metadata.title) {
+        throw new Error(`Guide "${permalink}" is missing a required "title" in frontmatter.`);
+    }
+
     const title = metadata.title || "";
 
-    const authorKey = frontMatter.author as string | undefined;
+    const authorKey = frontMatter.author;
     const authorInfo = authorKey ? authorsData[authorKey as keyof typeof authorsData] : null;
-    const publishedAt = frontMatter.publishedAt as string | undefined;
-    const keywords = frontMatter.keywords as string[] | undefined;
+    const publishedAt = frontMatter.publishedAt;
+    const keywords = frontMatter.keywords;
+    const proficiencyLevel = frontMatter.proficiencyLevel || "Intermediate";
 
     const ogImageUrl = `${baseUrl}/img/social-card.jpg`;
 
@@ -60,9 +67,9 @@ export default function MetadataWrapper(props: Props): ReactNode {
                                 "@type": "Person",
                                 name: authorInfo.name,
                                 ...(authorInfo.url ? { url: authorInfo.url } : {}),
-                                ...(authorInfo.title
+                                ...(authorInfo.jobTitle
                                     ? {
-                                          jobTitle: authorInfo.title.replace(/ @ .*$/, ""),
+                                          jobTitle: authorInfo.jobTitle,
                                           worksFor: {
                                               "@type": "Organization",
                                               name: "RavenDB",
@@ -79,7 +86,7 @@ export default function MetadataWrapper(props: Props): ReactNode {
                       url: "https://ravendb.net",
                       logo: { "@type": "ImageObject", url: ogImageUrl },
                   },
-                  proficiencyLevel: "Intermediate",
+                  proficiencyLevel,
               })
             : null;
 
