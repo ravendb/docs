@@ -32,6 +32,7 @@ export default function MetadataWrapper(props: Props): ReactNode {
     const authorKey = frontMatter.author as string | undefined;
     const authorInfo = authorKey ? authorsData[authorKey as keyof typeof authorsData] : null;
     const publishedAt = frontMatter.publishedAt as string | undefined;
+    const keywords = frontMatter.keywords as string[] | undefined;
 
     const ogImageUrl = `${baseUrl}/img/social-card.jpg`;
 
@@ -52,6 +53,7 @@ export default function MetadataWrapper(props: Props): ReactNode {
                         ? { dateModified: publishedAt }
                         : {}),
                   inLanguage: "en",
+                  ...(keywords?.length ? { keywords } : {}),
                   ...(authorInfo
                       ? {
                             author: {
@@ -110,6 +112,7 @@ export default function MetadataWrapper(props: Props): ReactNode {
                 {title && <meta property="og:title" content={title} />}
                 <meta property="og:type" content="article" />
                 <meta property="og:url" content={canonicalUrl} />
+                <meta property="og:image" content={ogImageUrl} />
                 <meta name="twitter:card" content="summary_large_image" />
                 {title && <meta name="twitter:title" content={title} />}
                 {description && <meta name="twitter:description" content={description} />}
