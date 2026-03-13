@@ -124,10 +124,13 @@ export default function MetadataWrapper(props: Props): ReactNode {
                 <meta property="og:type" content="article" />
                 <meta property="og:url" content={canonicalUrl} />
                 <meta property="og:image" content={ogImageUrl} />
+                <meta property="og:image:alt" content={title || "RavenDB Documentation"} />
+                <meta property="og:site_name" content="RavenDB Documentation" />
                 <meta name="twitter:card" content="summary_large_image" />
                 {title && <meta name="twitter:title" content={title} />}
                 {description && <meta name="twitter:description" content={description} />}
                 <meta name="twitter:image" content={ogImageUrl} />
+                <meta name="twitter:site" content="@RavenDB" />
                 {techArticleJsonLd && <script type="application/ld+json">{techArticleJsonLd}</script>}
                 {breadcrumbJsonLd && <script type="application/ld+json">{breadcrumbJsonLd}</script>}
             </Head>

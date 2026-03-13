@@ -198,6 +198,8 @@
 
 - [Semantic Search with Python and FastAPI](https://docs.ravendb.net/guides/semantic-search-with-ravendb-python-and-fastapi): Build semantic search using RavenDB with Python and FastAPI.
 
+- [Spatial Search in RavenDB](https://docs.ravendb.net/guides/spatial-search-in-ravendb): Build radius, polygon, and reverse spatial search applications in Python using RavenDB's native geospatial indexing.
+
 - [Deploying RavenDB with Docker Compose](https://docs.ravendb.net/guides/ravendb-deployment-guide-docker-compose-cluster): Deploy a RavenDB cluster using Docker Compose.
 
 - [Setting Up RavenDB on AWS EKS](https://docs.ravendb.net/guides/setting-up-ravendb-cluster-on-aws-eks): Deploy RavenDB on Amazon Elastic Kubernetes Service.

@@ -90,6 +90,10 @@ fastapi:
     label: "FastAPI"
     permalink: "/fastapi"
     description: "Content related to FastAPI."
+spatial:
+    label: "Spatial"
+    permalink: "/spatial"
+    description: "Content related to Spatial search and geospatial queries."
 nextjs:
     label: "Next.js"
     permalink: "/nextjs"
