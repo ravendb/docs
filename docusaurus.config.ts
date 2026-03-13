@@ -108,6 +108,16 @@ const config: Config = {
                 showLastUpdateTime: true,
             },
         ],
+        [
+            "@docusaurus/plugin-ideal-image",
+            {
+                max: 1200,
+                min: 640,
+                steps: 3,
+                quality: 85,
+                disableInDev: false,
+            },
+        ],
         require.resolve("./src/plugins/recent-guides-plugin"),
     ],
     themeConfig: {

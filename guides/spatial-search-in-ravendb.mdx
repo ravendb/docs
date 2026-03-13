@@ -28,6 +28,7 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
 
 <Admonition type="info" title="What is spatial search in RavenDB?">
 RavenDB offers native spatial search without external plugins. Store point coordinates or polygon shapes in your documents and query by radius, custom shapes, or reverse point-in-polygon lookup — using the same indexing workflow you use for all other fields. This guide walks through all three query types with a working Python demo.
@@ -130,7 +131,7 @@ Now that we have covered the theory, let’s look at the demo and see how to bui
 
 Let’s start from the beginning. We `git clone` the repository and `uv sync` for dependencies, and then start it with `uv run python main.py`. What we get is this view.
 
-![Flat Finder demo application initial view after startup](./assets/spatialsearch1.png)
+<Image img={require("./assets/spatialsearch1.png")} alt="Flat Finder demo application initial view after startup" />
 
 Now let's dive into the app and see what it's capable of. We will go through three demos:
 
@@ -144,11 +145,11 @@ Let’s start with the first function, searching by radius.
 
 This option is selected by default on the top left. All you need to do is click anywhere and select a radius if the default search radius does not suit you. This gives us points within the radius; in this demo, those are flats in Paris.
 
-![Radius search result showing two flats within the selected distance in Paris](./assets/spatialsearch2.png)
+<Image img={require("./assets/spatialsearch2.png")} alt="Radius search result showing two flats within the selected distance in Paris" />
 
 As you can see, a search by radius excludes any other flats outside the radius, leaving us with only two results. We also get information about the flats themselves and the distance to them from our point. This is how flat data looks inside.
 
-![Flat document detail showing coordinates and distance metadata](./assets/spatialsearch3.png)
+<Image img={require("./assets/spatialsearch3.png")} alt="Flat document detail showing coordinates and distance metadata" />
 
 But how do we map those flats on a map?
 
@@ -192,7 +193,7 @@ async def search_by_radius(request: SearchByRadiusRequest):
 
 First, we define the endpoint and open a session in order to communicate with RavenDB. Then we have this part of code that is querying using index we prepared that looks like this:
 
-![Flats_SpatialIndex definition in RavenDB Studio](./assets/spatialsearch4.png)
+<Image img={require("./assets/spatialsearch4.png")} alt="Flats_SpatialIndex definition in RavenDB Studio" />
 
 ```py
  query = session.query_index_type(Flats_SpatialIndex, Flat)
@@ -241,7 +242,7 @@ The second option in our demo allows us to search not by distance from a point, 
 
 Instead of saying “show me flats within 3 km of this point”, we now say “show me flats inside this exact area.”
 
-![Custom polygon drawn on the Paris map for shape-based flat search](./assets/spatialsearch5.png)
+<Image img={require("./assets/spatialsearch5.png")} alt="Custom polygon drawn on the Paris map for shape-based flat search" />
 
 This is useful when the area you care about is not a perfect circle. Maybe you want to select only a specific neighborhood or exclude a specific zone. A polygon gives you full control.
 
@@ -343,7 +344,7 @@ Just like in Part 1, RavenDB stores spatial calculation results in metadata. We 
 
 We can also use similar logic and search all points inside the area.
 
-![Paris district overlays shown on the map for selecting arrondissement boundaries](./assets/spatialsearch6.png)
+<Image img={require("./assets/spatialsearch6.png")} alt="Paris district overlays shown on the map for selecting arrondissement boundaries" />
 
 As you can see, those are districts that we had ready underneath it all. We can select them and see all flats in a specific area. How do we do this? Of course, we start with the endpoint and the opening session.
 
@@ -374,15 +375,15 @@ Then we can just connect search by shape type of code, and we can search all fla
 
 You might have noticed that if we click on any flat, the district (4th Arrondissement - Hôtel-de-Ville on the image) it is in is shown.
 
-![Flat detail showing reverse search result identifying the 4th Arrondissement](./assets/spatialsearch7.png)
+<Image img={require("./assets/spatialsearch7.png")} alt="Flat detail showing reverse search result identifying the 4th Arrondissement" />
 
 This is a reverse search. We select a point, and RavenDB returns the area it is in. Data of our districts look like this:
 
-![District document structure showing name, population, and boundary_wkt fields](./assets/spatialsearch8.png)
+<Image img={require("./assets/spatialsearch8.png")} alt="District document structure showing name, population, and boundary_wkt fields" />
 
 All those districts were indexed in RavenDB, and a field was created to hold interpreted spatial data. Static index that holds it looks like this:
 
-![Districts_SpatialIndex definition with boundary field for spatial indexing](./assets/spatialsearch9.png)
+<Image img={require("./assets/spatialsearch9.png")} alt="Districts_SpatialIndex definition with boundary field for spatial indexing" />
 
 The only thing that distinguishes this index from a non-spatial one is a single field: boundary. This is the field that contains our prepared spatial data.
 
