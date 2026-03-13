@@ -33,13 +33,17 @@ export default function MetadataWrapper(props: Props): ReactNode {
         throw new Error(`Guide "${permalink}" is missing a required "title" in frontmatter.`);
     }
 
+    if (isGuide && !frontMatter.proficiencyLevel) {
+        throw new Error(`Guide "${permalink}" is missing a required "proficiencyLevel" in frontmatter.`);
+    }
+
     const title = metadata.title || "";
 
     const authorKey = frontMatter.author;
     const authorInfo = authorKey ? authorsData[authorKey as keyof typeof authorsData] : null;
     const publishedAt = frontMatter.publishedAt;
     const keywords = frontMatter.keywords;
-    const proficiencyLevel = frontMatter.proficiencyLevel || "Intermediate";
+    const proficiencyLevel = frontMatter.proficiencyLevel;
 
     const ogImageUrl = `${baseUrl}/img/social-card.jpg`;
 
