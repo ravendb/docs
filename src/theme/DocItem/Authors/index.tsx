@@ -78,9 +78,7 @@ export default function DocItemAuthors() {
         <div className="docAuthors margin-bottom--md">
             {author && (
                 <div className="docAuthor">
-                    {author.imageURL && (
-                        <img src={author.imageURL} alt={author.name} className="docAuthorImg" loading="eager" />
-                    )}
+                    {author.imageURL && <img src={author.imageURL} alt={author.name} className="docAuthorImg" />}
                     <div>
                         <div className="docAuthorName">
                             {author.url ? (
