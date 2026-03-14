@@ -3,6 +3,7 @@ import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import authorsData from "@site/docs/authors.json";
 import { Icon } from "@site/src/components/Common/Icon";
 import { IconName } from "@site/src/typescript/iconName";
+import LazyImage from "@site/src/components/Common/LazyImage";
 
 type Platform = "x" | "github" | "linkedin" | "email";
 
@@ -78,7 +79,14 @@ export default function DocItemAuthors() {
         <div className="docAuthors margin-bottom--md">
             {author && (
                 <div className="docAuthor">
-                    {author.imageURL && <img src={author.imageURL} alt={author.name} className="docAuthorImg" />}
+                    {author.imageURL && (
+                        <LazyImage
+                            src={author.imageURL}
+                            alt={author.name}
+                            className="docAuthorImg"
+                            minContentHeight={40}
+                        />
+                    )}
                     <div>
                         <div className="docAuthorName">
                             {author.url ? (

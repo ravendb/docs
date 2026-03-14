@@ -1,44 +1,44 @@
 import React, { type ReactNode } from "react";
-import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import Head from "@docusaurus/Head";
 import authorsData from "@site/docs/authors.json";
 
-interface GuideMetadataProps {
+/** Pre-validated guide frontmatter — all required fields are non-optional. */
+export interface GuideMetadataProps {
+    title: string;
+    description: string;
+    proficiencyLevel: string;
     canonicalUrl: string;
     ogImageUrl: string;
-    permalink: string;
+    authorKey?: string;
+    publishedAt?: string;
+    keywords?: string[];
+    lastUpdatedAt?: number;
 }
 
-export default function GuideMetadata({ canonicalUrl, ogImageUrl, permalink }: GuideMetadataProps): ReactNode {
-    const { metadata, frontMatter } = useDoc();
-
-    if (!metadata.title) {
-        throw new Error(`Guide "${permalink}" is missing a required "title" in frontmatter.`);
-    }
-
-    if (!frontMatter.proficiencyLevel) {
-        throw new Error(`Guide "${permalink}" is missing a required "proficiencyLevel" in frontmatter.`);
-    }
-
-    const title = metadata.title;
-    const description = metadata.description || frontMatter.description || "";
-    const authorKey = frontMatter.author;
+export default function GuideMetadata({
+    title,
+    description,
+    proficiencyLevel,
+    canonicalUrl,
+    ogImageUrl,
+    authorKey,
+    publishedAt,
+    keywords,
+    lastUpdatedAt,
+}: GuideMetadataProps): ReactNode {
     const authorInfo = authorKey ? authorsData[authorKey as keyof typeof authorsData] : null;
-    const publishedAt = frontMatter.publishedAt;
-    const keywords = frontMatter.keywords;
-    const proficiencyLevel = frontMatter.proficiencyLevel;
 
     const techArticleJsonLd = JSON.stringify({
         "@context": "https://schema.org",
         "@type": "TechArticle",
         headline: title,
-        description: description,
+        description,
         url: canonicalUrl,
         mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
         image: { "@type": "ImageObject", url: ogImageUrl, width: 1200, height: 630 },
         ...(publishedAt ? { datePublished: publishedAt } : {}),
-        ...(metadata.lastUpdatedAt
-            ? { dateModified: new Date(metadata.lastUpdatedAt * 1000).toISOString().split("T")[0] }
+        ...(lastUpdatedAt
+            ? { dateModified: new Date(lastUpdatedAt * 1000).toISOString().split("T")[0] }
             : publishedAt
               ? { dateModified: publishedAt }
               : {}),
