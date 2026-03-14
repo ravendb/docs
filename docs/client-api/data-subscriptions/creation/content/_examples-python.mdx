@@ -13,6 +13,7 @@ import CodeBlock from '@theme/CodeBlock';
 * In this page:
     * [Create subscription - for all documents in a collection](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---for-all-documents-in-a-collection)
     * [Create subscription - filter documents](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-documents)
+    * [Create subscription - filter documents using regex](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-documents-using-regex)
     * [Create subscription - filter and project fields](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-and-project-fields)
     * [Create subscription - project data from a related document](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---project-data-from-a-related-document)
     * [Create subscription - include documents](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-documents)
@@ -64,6 +65,24 @@ Only documents that match this condition will be sent from the server to a clien
             "From Orders as o "
             "Where getOrderLinesSum(o) > 100 "
         )
+    ),
+)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Create subscription - filter documents using regex
+
+Here we create a subscription for documents from the _Orders_ collection where the `ShipTo.City` field matches a regular expression pattern.
+Use the RQL `regex` function to perform server-side pattern matching.
+
+<TabItem value="create_filter_regex_RQL" label="create_filter_regex_RQL">
+<CodeBlock language="python">
+{`name = store.subscriptions.create_for_options(
+    SubscriptionCreationOptions(
+        query="From Orders Where regex(ShipTo.City, '^New')"
     ),
 )
 `}

@@ -12,7 +12,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 * In this page:  
    * [Create subscription - for all documents in a collection](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---for-all-documents-in-a-collection)  
-   * [Create subscription - filter documents](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-documents)  
+   * [Create subscription - filter documents](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-documents)
+   * [Create subscription - filter documents using regex](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-documents-using-regex)
    * [Create subscription - filter and project fields](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-and-project-fields)  
    * [Create subscription - project data from a related document](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---project-data-from-a-related-document)  
    * [Create subscription - include documents](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-documents)  
@@ -86,6 +87,22 @@ const subscriptionName = await documentStore.subscriptions.create(\{ query \});
 
 // In this case, the server will create a default name for the subscription
 // since no specific name was provided when creating the subscription.
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Create subscription - filter documents using regex
+
+Here we create a subscription for documents from the _Orders_ collection where the `ShipTo.City` field matches a regular expression pattern.
+Use the RQL `regex` function to perform server-side pattern matching.
+
+<TabItem value="create_filter_regex" label="create_filter_regex">
+<CodeBlock language="js">
+{`const query = \`from Orders where regex(ShipTo.City, '^New')\`;
+
+const subscriptionName = await documentStore.subscriptions.create(\{ query \});
 `}
 </CodeBlock>
 </TabItem>
