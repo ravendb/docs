@@ -1,0 +1,175 @@
+---
+title: "FAQ"
+sidebar_label: "FAQ"
+sidebar_position: 90
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Backup & Restore: FAQ
+
+<Admonition type="note" title="">
+
+* In this article:  
+  * [Is there a one-time backup?](#is-there-a-one-time-backup)  
+  * [Can I back up my entire cluster rather than just one database?](#can-i-back-up-my-entire-cluster-rather-than-just-one-database)  
+  * [Is an External Replication task a good substitute for a backup task?](#is-an-external-replication-task-a-good-substitute-for-a-backup-task)  
+  * [How should the servers' time be set in a multi-node cluster?](#how-should-the-servers-time-be-set-in-a-multi-node-cluster)  
+  * [Can I simply copy the database folder when I need a backup?](#can-i-simply-copy-the-database-folder-when-i-need-a-backup)  
+  * [Does RavenDB automatically delete old backups?](#does-ravendb-automatically-delete-old-backups)  
+  * [Are there any locations where backup files should NOT be stored?](#are-there-any-locations-where-backup-files-should-not-be-stored)  
+  * [What happens when a backup process fails or is aborted before completion?](#what-happens-when-a-backup-process-fails-or-is-aborted-before-completion)  
+  * [What happens if the node responsible for a backup task is down?](#what-happens-if-the-node-responsible-for-a-backup-task-is-down)  
+  * [What happens when the cluster is down?](#what-happens-when-the-cluster-is-down)
+
+
+</Admonition>
+
+<Panel heading="Frequently Asked Questions">
+
+<ContentFrame>
+
+### Is there a one-time backup?
+
+Yes, you can create a backup for any database immediately.  
+It is recommended to run [periodic backup tasks](../backup/create/periodic-tasks/database-backup) that continuously create backups at predefined time intervals, but it is also possible to create one-time backups whenever needed.  
+
+There are two ways to create a backup immediately:
+* Configuring and running a one-time backup operation.  
+* Triggering any existing database backup task to create a backup immediately, outside its schedule.  
+
+[Learn to create a one-time backup via the client API or Studio](../backup/create/one-time-backup)
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Can I back up my entire cluster rather than just one database?  
+
+Yes, instead of creating a backup task for each database individually, you can define a single **periodic server-wide backup task**.  
+
+- The server will apply your backup configuration to all databases by creating per-database backup tasks.  
+  Even databases added **after** the server-wide task was defined will be included in the backup when they are created.  
+
+- Backups will be kept for each database separately, containing [the same content](../backup/overview#backup-content) as regular database backups.  
+
+- After backing up all databases, you can rebuild the [cluster configuration and nodes setup](../start/getting-started.mdx#installation--setup) and [restore the databases](../backup/restore) one by one.  
+
+- You can **prevent downtime** while rebuilding the cluster by [replicating any database](../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview).  
+  This will keep a live version of the database and maintain the replica as a failover.  
+
+[Learn to create a periodic server-wide backup task](../backup/create/periodic-tasks/server-wide-backup)
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Is an External Replication task a good substitute for a backup task?  
+
+Although [external replication](../studio/database/tasks/ongoing-tasks/external-replication-task) and [backup](../backup/create/periodic-tasks/database-backup) tasks are both ongoing routines that safeguard your data, their aims and methods are very different.  
+
+* An external replication task provides you with a live off-site copy of a database, instantly replicating any changes to the database content.  
+   Having a replica ready to immediately take over can help when:  
+   * A database is down.  
+   * You are shifting operations to a secondary data center.  
+   * You need to share the workload with an additional server.  
+
+* But a replica cannot replace a backup in numerous scenarios, including:  
+   * An accidental collection delete or a patch operation gone wrong.  
+   * A cyber attack that compromises the database.  
+   * A need to restore the database to a specific point in time.  
+
+So while an external replication task can be a great addition to your data safety strategy, it is not a substitute for a backup task.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### How should the servers' time be set in a multi-node cluster?
+
+The backup task runs on schedule according to the executing server's local time.  
+It is recommended that you set all nodes to the same time.  
+This way, backup files' timestamps will remain consistent even when the backups are created by different nodes.  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Can I simply copy the database folder when I need a backup?
+
+Copying a live database folder lacks the guaranteed ACID compliance of a proper backup operation, and might cause data corruption during restore.  
+It also lacks many advantages of periodic backup tasks, including:  
+* A continuous backup routine providing up-to-date backups.  
+* Reliable point-in-time restore points for post-failure recovery.  
+* Backup encryption for secure storage.  
+* Incremental backups, saving only the changes since the last backup.  
+* Retention policies, automatically deleting old backups to free up storage space.  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Does RavenDB automatically delete old backups?  
+
+By default, RavenDB does **not** automatically delete old backups. Backups are stored indefinitely, and will only be deleted when you remove them.  
+
+You can, however, set a [retention policy](../backup/overview#retention-policy) that defines an expiration age for backups. Backups whose age exceeds this limit will be automatically deleted.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Are there any locations where backup files should NOT be stored?  
+
+It is recommended **not** to store backups on the same drive as your database data files, since both the database and the backups would be exposed to the same risks.  
+For example, disk space may run low as backups accumulate or the database grows.  
+
+One-time backup operations and periodic backup tasks can keep backups in a [variety of destinations](../backup/overview#backup-storage), including a local path, an FTP target, and cloud destinations like Azure storage or Google Cloud.  
+For example, you can set a backup task to keep backups locally as well as send them to an Amazon S3 bucket. 
+
+</ContentFrame>
+
+<ContentFrame>
+
+### What happens when a backup process fails or is aborted before completion?  
+
+* While in progress, the backup content is written to an `.in-progress` file on disk.  
+  Once the backup operation is complete, the file is renamed to its correct final name.  
+* If the backup process fails or is aborted, the `.in-progress` file will remain on disk.  
+  This file will not be used by any future restore operation.  
+  If the failed process was an incremental backup task, the next incremental backup will pick up from the last successfully completed backup, ensuring consistency.  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### What happens if the node responsible for a backup task is down?
+
+When the responsible node is down during the scheduled time, another node from the database group will assume ownership of the task, so there will be no gaps in the backup schedule.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### What happens when the cluster is down?
+
+When the cluster is down (and there is no leader):  
+
+* Creating a new task is a cluster-wide operation.  
+  Therefore, a new backup task **cannot** be scheduled.  
+
+* If a backup task was already defined and is active when the cluster goes down,  
+  the task will **continue to execute** on its defined schedule on its responsible node.  
+  However, it will fail to be reported to the cluster, and the missed backup may be re-executed when the cluster recovers.  
+
+</ContentFrame>
+
+</Panel>
+

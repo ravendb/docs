@@ -1,0 +1,580 @@
+---
+title: "Overview"
+sidebar_label: "Overview"
+sidebar_position: 10
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Overview
+
+<Admonition type="note" title="">
+
+* RavenDB provides a powerful and diverse backup mechanism that you can use to both secure your data and retain access to it as it was at specific points in time.
+
+* You can create [periodic](../studio/database/tasks/ongoing-tasks/general-info.mdx) backup tasks that generate [full](../backup/overview#full-backup) or [incremental](../backup/overview#incremental-backup) backups on a predefined schedule.  
+  Whenever needed, you can also run a [one-time backup](../backup/overview#one-time-backup-operation) operation.  
+
+* Backups can be [logical](../backup/overview#logical-backup) JSON-based dumps of database content, or binary [snapshot](../backup/overview#snapshot-image) images.  
+
+* Backup files can be [encrypted](../backup/overview#encryption).  
+
+* To save storage space, backups are [compressed](../backup/overview#compression), and you can set a [retention policy](../backup/overview#retention-policy) to automatically delete outdated backup files.
+
+* You can create and configure backup tasks using the client API or via Studio.
+
+* In this article:  
+  * [Backup recurrence](../backup/overview#backup-recurrence)
+     * [Periodic backup tasks](../backup/overview#periodic-backup-tasks)
+     * [One-time backup operation](../backup/overview#one-time-backup-operation)
+  * [Backup type](../backup/overview#backup-type)
+     * [Logical backup](../backup/overview#logical-backup)
+     * [Snapshot image](../backup/overview#snapshot-image)
+  * [Backup content](../backup/overview#backup-content)
+  * [Backup scope](../backup/overview#backup-scope)
+     * [Full backup](../backup/overview#full-backup)
+     * [Incremental backup](../backup/overview#incremental-backup)
+  * [Backup storage](../backup/overview#backup-storage)
+     * [Local and remote storage](../backup/overview#local-and-remote-storage)
+         * [Overriding storage settings with an external script](../backup/overview#overriding-storage-settings-with-an-external-script)
+     * [Naming and folder structure](../backup/overview#naming-and-folder-structure)
+     * [Encryption](../backup/overview#encryption)
+     * [Compression](../backup/overview#compression)
+     * [Retention policy](../backup/overview#retention-policy)
+  * [Server-wide backup](../backup/overview#server-wide-backup)
+  * [Backup on a sharded database](../backup/overview#backup-on-a-sharded-database)
+  * [Restoring from backup](../backup/overview#restoring-from-backup)
+  * [Recommended precautions](../backup/overview#recommended-precautions)
+
+</Admonition>
+
+<Panel heading="Backup recurrence">
+
+You can configure [periodic](../studio/database/tasks/ongoing-tasks/general-info) backup tasks that automatically create backups at predefined time intervals based on your schedule, type, scope, and other settings.  
+You can also execute a one-time backup when needed.
+
+<ContentFrame>
+
+### Periodic backup tasks
+
+Periodic backup tasks are a key tool in ensuring your data safety, as they run in the background and automatically create backups on a predefined schedule.  
+* When creating a backup task using the client API, backups are scheduled using [cron expressions](https://en.wikipedia.org/wiki/Cron).  
+  e.g.,  
+  - `0 */6 * * *` - _0 minutes past the hour, every 6 hours_
+  - `*/20 * * * *` - _every 20 minutes_
+* The execution of a running backup operation can be [delayed](../backup/create/periodic-tasks/database-backup#delaying-or-aborting-a-running-backup-operation) if needed. For example, while performing maintenance operations on the server.
+
+[Learn to define a periodic backup task using the client API](../backup/create/periodic-tasks/database-backup#creating-and-managing-periodic-backups-using-the-client-api)  
+[Learn to define a periodic backup task via Studio](../backup/create/periodic-tasks/database-backup#creating-and-managing-periodic-backups-via-studio)  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### One-time backup operation
+
+You can run an immediate one-time backup operation to safeguard your data, e.g., before performing a risky change on the database.  
+
+One-time backups are also useful when you want to create a backup at a specific point in time that doesn't fit the schedule of your periodic backup tasks.
+
+[Learn to create a one-time backup using the client API](../backup/create/one-time-backup#running-a-one-time-backup-operation-using-the-client-api)  
+[Learn to create a one-time backup via Studio](../backup/create/one-time-backup#running-a-one-time-backup-operation-using-studio)  
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Backup type">
+
+You can back up your data in a JSON-based [logical backup](../backup/overview#logical-backup), that is typically smaller and quicker to transfer, or as a binary [snapshot image](../backup/overview#snapshot-image), that is typically faster to restore.
+| Backup type | Format | Restore speed | Size |
+| ------ | ------ | --- | --- |
+| Logical backup |  Compressed textual data - JSON | Slower than a snapshot | Smaller than a snapshot |
+| Snapshot image | Compressed binary image | Faster than a logical backup | Larger than a logical backup |
+
+<ContentFrame>
+
+### Logical backup
+
+A logical backup is a compressed JSON dump of the database content at a given point in time, including documents, index definitions (but **not** the actual index data), ongoing tasks, and [additional data](../backup/overview#backup-content).  
+
+* Both [full](../backup/overview#full-backup) and [incremental](../backup/overview#incremental-backup) backups are stored in a JSON-based format.  
+* A full logical backup is typically much smaller than an equivalent snapshot image, but restore time is longer because documents and index definitions need to be inserted into the newly created database.  
+* Following the restore operation, the database is scanned and re-indexed according to the index definitions.  
+  This operation can be time-consuming when performed on large datasets.  
+  
+</ContentFrame>
+<ContentFrame>
+
+### Snapshot image
+
+A snapshot is a compressed binary image of the entire database structure at a given point in time, including document data, [journals](../server/storage/storage-engine/#transaction-support), indexes, ongoing tasks, and [additional data](../backup/overview#backup-content).  
+
+<Admonition type="note" title="">
+
+- [Learn more about the database directory structure](../server/storage/directory-structure.mdx)  
+- [See which licenses enable snapshot backup](https://ravendb.net/buy)
+</Admonition>
+
+* A snapshot is typically larger than an equivalent logical backup, but restore time is reduced because documents and index definitions do not need to be inserted into the database, and subsequent re-indexing is not required.  
+* [Incremental](../backup/overview#incremental-backup) backups following the initial complete snapshot are stored in **JSON format**, similar to logical backups. They do **not** carry index or change vectors data as the full snapshot does.  
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Backup Content">
+
+Backups contain both database-level and cluster-level content, as detailed below.  
+
+<ContentFrame>
+
+### Database-level data
+
+| Content | Included in [logical backups](../backup/overview#logical-backup) | Included in [snapshots](../backup/overview#snapshot-image) |
+|---- | ---- | ---- |
+| [Documents & Revisions](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling) | ✔ | ✔ |
+| [Attachments](../document-extensions/attachments/overview) | ✔ | ✔ |
+| [Counters](../document-extensions/counters/overview) | ✔ | ✔ |
+| [Time-Series](../document-extensions/timeseries/overview) | ✔ | ✔ |
+| [Change Vector data](../server/clustering/replication/change-vector.mdx#after-restoring-a-database-from-backup) | Change Vectors are not preserved,<br />but recreated after [restoring](../backup/restore). | ✔ |
+| [Tombstones](../glossary/tombstone.mdx) | ✔ | ✔ |
+| [Conflicts](../server/clustering/replication/replication-conflicts.mdx) | ✔ | ✔ |
+
+</ContentFrame>
+<ContentFrame>
+
+### Cluster-level data
+
+| Content | Included in [logical backups](../backup/overview#logical-backup) | Included in [snapshots](../backup/overview#snapshot-image) |
+|---- | ---- | ---- |
+| [Database Record](../studio/database/settings/database-record) | ✔ | ✔ |
+| [Compare-exchange values](../compare-exchange/overview) | ✔ | ✔ |
+| [Identities](../client-api/document-identifiers/working-with-document-identifiers#identities) | ✔ | ✔ |
+| [Indexes](../indexes/creating-and-deploying) | Indexes are not preserved,<br />but rebuilt after [restoring](../backup/restore)<br />from backed up index definitions. | ✔ |
+| [Ongoing Tasks configuration](../studio/database/tasks/ongoing-tasks/general-info.mdx) | ✔ | ✔ |
+| [Subscriptions](../client-api/data-subscriptions/what-are-data-subscriptions) | ✔ | ✔ |
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Backup scope">
+
+A backup task can create **full** and/or **incremental** backups.  
+- Each time a backup task (full or incremental) is executed, a single new backup file is added.  
+- Existing backup files are not modified or deleted by the task, unless a [retention policy](../backup/overview#retention-policy) is set.  
+
+<ContentFrame>
+
+### **Full Backup**  
+
+#### Full logical backup:
+
+A full [logical backup](../backup/overview#logical-backup) contains the whole database content, except for full indexes and change vectors.
+
+
+- A full backup, containing one compressed file with the entire database content, is always created in a new subfolder in the backup directory.  
+  e.g., a full backup created every 6 hours:  
+  `FullBackupFrequency = "0 */6 * * *"`  
+- An incremental backup, containing one compressed file with only the changes since the last backup, is always added to the folder of the last full backup.  
+  e.g., an incremental backup created every 20 minutes:  
+  `IncrementalBackupFrequency = "*/20 * * * *"`  
+
+* **Location**  
+  When stored locally, a full backup is always created in a new subfolder in the backup directory.  
+* **Format**:  
+  Compressed JSON dump.  
+* **Indexes**:  
+  The backup does **not** include the full index data, but just index definitions.  
+  When the database is restored, indexes are recreated from their definitions and rebuilt by indexing all documents relevant to each index.
+* **Change vectors**:  
+  Change vectors are not included in the backup, but recreated after restoring.  
+* **Task ownership**:  
+  There are no preliminary conditions for creating a full backup. Any node can perform this task.
+
+---
+
+#### Full snapshot image:
+
+A full [snapshot image](../backup/overview#snapshot-image) is a duplication of the entire database content.  
+  
+* **Location**  
+  When stored locally, a full backup is always created in a new subfolder in the backup directory.  
+* **Format**:  
+  Compressed binary image.  
+* **Indexes**:  
+  Included  
+* **Change vectors**:  
+  Included  
+* **Task ownership**:  
+  There are no preliminary conditions for creating a full backup. Any node can perform this task.
+
+</ContentFrame>
+<ContentFrame>
+
+### **Incremental Backup**  
+
+An incremental backup contains only **the changes** made to the database since the last backup, to save storage space and reduce backup time.
+
+<Admonition type="info" title="">
+When an incremental-backup task is executed, it checks for the existence of a backup file.  
+- If a backup file is not found, the task will create a [full backup](../backup/overview#full-backup).  
+- Subsequent backups will be incremental.  
+</Admonition>
+
+* **Location**  
+  When stored locally, incremental backups are always added to the folder of the last full backup they supplement.  
+  If no full backup is found, a full backup will be created first in a new subfolder, before starting with the regular incremental backup routine.  
+* **Format**:  
+  Compressed JSON dump.  
+  Incremental backups are always in **JSON** format, even when supplementing a binary snapshot image.  
+* **Indexes**:  
+  Incremental backups do **not** include the full index data, but just index definitions (if updated since the previous backup).  
+  When the dataset is restored, indexes are recreated from their definitions and rebuilt by indexing all documents relevant to each index.
+* **Change vectors**:  
+  Change vectors are not included in incremental backups, but recreated after restoring.  
+* **Task ownership**:  
+  The ownership of an incremental backup task is granted dynamically by the cluster.  
+  An incremental backup can be executed only by the same node that currently owns the backup task.  
+  A node can run an incremental backup only after running a full backup at least once.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Typical Configuration
+
+A typical backup configuration includes a full database backup at regular intervals and incremental backups at shorter intervals, stored locally as well as exported to a remote destination.  
+e.g.,  
+- A full backup created every 6 hours:  
+  `FullBackupFrequency = "0 */6 * * *"`  
+- And an incremental backup added every 20 minutes:  
+  `IncrementalBackupFrequency = "*/20 * * * *"`  
+
+If the need arises to restore from backup, a new database will be created and the backup folder provided to the restore procedure, which will automatically add to the new database the content of the full backup and all its subsequent incremental backups in the correct order.  
+
+---
+
+#### Overlap between full and incremental backup tasks:
+
+If a backup task creates both full and incremental backups, and their schedules overlap, the full backup will take precedence, and the incremental backup will be skipped.
+
+For example, if a full backup is scheduled to run every 6 hours and an incremental backup every 20 minutes, the incremental backup scheduled at the same time as the full backup will be skipped.
+
+</ContentFrame>
+</Panel>
+
+<Panel heading="Backup storage">
+
+<ContentFrame>
+
+### Local and remote storage
+
+You can store your backups in a **local directory** and/or in one or more **remote destinations**.  
+
+#### Available destinations:  
+* A local path  
+* An FTP/SFTP target  
+* Azure Storage  
+* Amazon S3  
+* Amazon Glacier  
+* Google Cloud  
+
+---
+
+#### Upload mode:
+
+When using a remote destination (like an FTP destination or an S3 bucket), you can select the **upload mode**.  
+
+- When set to **Default**, backups are **stored locally** and exported from the local directory.  
+  You may prefer this mode if you want to ensure that backup files are not lost even if uploading to the remote destination fails, or if you're storing backups locally anyway in addition to exporting them.  
+  <Admonition type="note" title="">
+  * If a [local folder](../backup/create/periodic-tasks/database-backup#e-choosing-where-to-store-the-backups) was selected to store backups locally, RavenDB will use it both for the transfer and as its permanent local backup location.  
+  * If a local folder wasn't selected, RavenDB will use the 
+    folder defined in its [Storage.TempPath](../server/configuration/storage-configuration.mdx#storagetemppath) setting.  
+    If `Storage.TempPath` is not defined, the temporary files 
+    will be kept in the same location as the RavenDB data file.  
+    In either case, the folder will be used for temporary storage, 
+    and the backup files **deleted from it** when the transfer is completed.  
+  </Admonition>
+
+- When set to **Direct upload**, backups are **transferred directly** to their remote destination without being stored locally first.  
+  You can use this mode if you want to avoid storing backups locally, e.g., for security reasons, or to save local storage space.  
+
+#### Overriding storage settings with an external script:
+
+An external script can be executed at runtime to override storage settings.  
+This can be useful, for example, if you want to fetch the credentials for the storage destination from a secure location, to avoid keeping secrets in the task configuration.
+
+- A script is defined for a specific storage destination.  
+  If defined for the **local storage**, for example, it can set **local path** to `D:\RavenDB\Backup`.  
+   - The script is executed before each backup operation, and is required to return the storage settings so the backup task can apply them.  
+   - The script needs to return a JSON output with the settings in a structure suitable for the storage destination.  
+     e.g., if intended for local storage, it must include a `FolderPath` property with the path as its value, and potentially a `ShardNumber` property.
+   - The script must be executed **on the node that runs the backup operation**.  
+- To use an external script, these parameters need to be provided:  
+  * `Exec` - The script **executor**.  
+    This is the application that runs the external script.  
+    For Windows, for example, the executor can be `powershell`, `bash`, or another application.  
+    <Admonition type="note" title="">
+    You can provide this parameter in the form of a path to the executor, or, if defined, as a system variable pointing at it.
+    </Admonition>
+    e.g.,  
+    `powershell` or `C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe` 
+  * `Arguments` - Flags or parameters required by the executor, including the path to the external script.  
+    e.g.,  
+     - Point powershell to a script kept in `D\RavenDB\Backups`:  
+       ```powershell
+       -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "D\RavenDB\Backups\local-settings.ps1"
+       ```
+     - Content of `local-settings.ps1`, which outputs the local storage path in JSON format:  
+       ```powershell
+       @{ FolderPath = "D:\RavenDB\Backups\fullBackups" } | ConvertTo-Json -Compress
+       ```
+  * `Timeout` - The maximum time (in ms) that RavenDB will wait for the executor to return the JSON output.  
+    If the time limit is exceeded, the backup operation will **fail**.  
+    e.g., `10000`
+
+</ContentFrame>
+<ContentFrame>
+
+### Naming and folder structure
+
+#### Naming:
+
+Backup folders and files are **named automatically**.  
+
+* The names are constructed of:  
+  - Current Date and Time  
+  - Backed-up Database Name  
+  - Owner-Node Tag  
+  - Backup Type ("backup" for a logical backup or "snapshot" for a snapshot image)  
+  - Backup Scope ("full-backup" or "incremental-backup")  
+
+* For example:  
+  * `2018-12-26-16-17.ravendb-Products-A-backup` - The name automatically given to a backup _folder_.  
+    - "**2018-12-26-16-17**" - Backup date and time  
+    - "**Products**" - Backed-up database name  
+    - "**A**" - Executing node's tag  
+    - "**backup**" - Backup type (backup/snapshot)  
+  * `2018-12-26-16-17.ravendb-full-backup` - The name automatically given to the full backup **file** within the folder.  
+    Subsequent incremental backups will be added to the folder with an "incremental-backup" suffix.
+
+---
+
+#### Folder Structure:
+
+A typical backup folder holds a single full backup file and a list of incremental-backup files that supplement it.  
+Each incremental backup file contains only the delta from the previous backup file.
+
+* For example -  
+  `2018-12-26-09-00.ravendb-full-backup`  
+  `2018-12-26-12-00.ravendb-incremental-backup`  
+  `2018-12-26-15-00.ravendb-incremental-backup`  
+  `2018-12-26-18-00.ravendb-incremental-backup`  
+
+</ContentFrame>
+<ContentFrame>
+
+### Encryption
+
+#### Logical backup encryption:
+
+When creating a [logical backup](../backup/overview#logical-backup), the following options are available:
+
+* If the database the backup is made for is **unencrypted**:  
+   - You can create an unencrypted backup.  
+   - You can create an encrypted backup using your own encryption key.  
+
+* If the database the backup is made for is **encrypted**:  
+   - You can create an unencrypted backup.  
+   - You can create an encrypted backup using the database encryption key.  
+   - You can create an encrypted backup using your own encryption key.  
+
+---
+
+#### Snapshot image encryption:
+
+A snapshot is an exact image of the database, and its encryption matches the database's encryption as well:  
+
+* If the database is unencrypted, its snapshots will also be unencrypted.  
+
+* If the database is encrypted, its snapshots will also be encrypted, using the database encryption key.  
+
+---
+
+#### Incremental backup encryption:
+
+The **Incremental backups** of an encrypted full backup (either a logical backup or a snapshot) are encrypted as well, using **the same encryption key** as the full backup.  
+
+[Learn to encrypt your backups using the client API](../backup/create/periodic-tasks/database-backup#setting-encryption)  
+[Learn to encrypt your backups via Studio](../backup/create/periodic-tasks/database-backup#d-setting-backup-encryption-options)  
+
+</ContentFrame>
+<ContentFrame>
+
+### Compression
+
+* A backup always consists of a **single compressed file**.  
+  This applies to both **full** (logical and snapshot) and **incremental** backups.
+* Backup files are compressed using [gzip](https://www.gzip.org/).  
+
+</ContentFrame>
+<ContentFrame>
+
+### Retention policy
+
+By default, backups are stored indefinitely. To prevent the accumulation of outdated backup files and keep storage usage under control, you can set a retention policy:  
+* A **retention period** is set.  
+* If a backup's age exceeds the set period, the backup will be deleted during the next scheduled backup task.  
+
+A full backup and its corresponding incremental backups are always deleted as a group when the age of all incremental backups exceeds the retention period.
+
+[Learn to set a retention policy using the client API](../backup/create/periodic-tasks/database-backup#setting-retention-policy)  
+[Learn to set a retention policy via Studio](../backup/create/periodic-tasks/database-backup#c-setting-backups-retention-policy)  
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Server-wide backup">
+
+Instead of defining an **individual backup task** for each database, you can define a single server-wide backup task that schedules periodic backups for **all** databases on the server.  
+- The same features available for single-database backup tasks are supported for server-wide backup tasks. For example, you can configure the task to create full and incremental backups and define a retention policy.
+
+In practice, the server keeps the server-wide configuration you define as a **template**, and uses it to define a derived backup task for each database.  
+- A derived backup task will also be created for any database added to the server **after** the server-wide task has been defined.  
+
+<Admonition type="note" title="">
+- Modifying, disabling, or deleting the main task applies to all derived database tasks.  
+- In addition, you can access each database task directly to check its schedule and other details or to create an immediate backup for the database.  
+</Admonition>
+
+<ContentFrame>
+
+### The server-wide configuration
+
+The configuration you set for a server-wide backup task is similar to the configuration of a [regular database backup task](../backup/create/periodic-tasks/database-backup), with the following changes:  
+
+---
+
+#### Excluding databases from the backup:
+
+By default, derived backup tasks are created for **all** databases to schedule a backup routine for the entire server.  
+You can, however, **exclude** specific databases from the backup in the task configuration.  
+
+e.g., you may prefer to exclude a certain database from the server-wide configuration and schedule a different backup routine for it, with a different storage destination and different time intervals, using a regular database backup task.
+
+---
+
+#### Server-wide backups storage:
+
+As multiple databases are backed up, the backups for each database are kept separately from those of other databases.  
+
+* **Local storage**  
+   - Use the task configuration to define a root **backup path**.  
+     e.g., `D:\RavenDB\Backups`
+   - Each database task will keep backups in a subfolder named after the database, under the root backup path.  
+     e.g., backups for the **Products** database will be stored under: `D:\RavenDB\Backups\Products`
+
+* **FTP destination**  
+  - Use the task configuration to define a root **URL**.  
+    e.g., `ftp://myserver.com/backups`
+  - Each database task will send backups to a subfolder named after the database, under the root URL.  
+    e.g., backups for the **Products** database will be sent to: `ftp://myserver.com/backups/Products`
+
+* **Other remote destinations** (`S3`, `Azure`, `Glacier`, `GoogleCloud`)
+  - Use the task configuration to define a root **remote folder name**.  
+    e.g., `ravendb/backups`
+   - Each database task will send backups to a subfolder named after the database, under the root folder name.  
+     e.g., backups for the **Products** database will be sent to: `ravendb/backups/Products`
+
+---
+
+#### Server-wide encryption settings:
+
+- When a derived database task is applied to an **unencrypted** database, it behaves similarly to a [regular database backup task](../backup/overview#encryption):  
+  - A **snapshot** will always be **unencrypted**.  
+  - A **logical backup** will comply with the configuration settings, and can be either unencrypted or encrypted using a user-provided key.  
+
+- When a derived database task is applied to an **encrypted** database, its behavior may differ from that of a regular backup task, and the following rule applies:  
+  Both **snapshots** and **logical backups** are **always encrypted using the database key**.  
+    - If the encryption settings set by the server-wide configuration contradict this rule (e.g., providing a logical backup with a user-provided encryption key), they will be **overridden** and backups will still be encrypted using the database key.  
+  <br />
+  <Admonition type="note" title="">
+  This behavior is by design, to ensure the safety of future databases joining the server-wide configuration.  
+  If you have an encrypted database, and you want its backups to be unencrypted or to be encrypted using a user-provided key, you can create a regular database backup task for this database and apply these options.
+  </Admonition>
+
+</ContentFrame>
+
+[Learn to create and manage server-wide backup tasks using the client API](../backup/create/periodic-tasks/server-wide-backup#creating-and-managing-server-wide-backup-tasks-using-the-client-api)  
+[Learn to create and manage server-wide backup tasks via Studio](../backup/create/periodic-tasks/server-wide-backup#creating-and-managing-server-wide-backup-tasks-via-studio)  
+
+</Panel>
+
+<Panel heading="Backup on a sharded database">
+
+On a [sharded](../sharding/overview.mdx) database, a single backup task is defined by the user for all shards, and RavenDB automatically defines sub-tasks that create backups per shard.  
+
+To restore a sharded database, paths to the individual shard backups are passed to the restore operation in their original order.  
+Shard backups can also be restored to non-sharded databases, either for a selective recovery of specific shards or for a complete restore.
+
+<Admonition type="note" title="">
+* The backup of a non-sharded database **cannot** be restored as a **new** sharded database.  
+* The backup of a non-sharded database **can**, however, be **imported** into an existing sharded database.  
+</Admonition>
+
+[Learn to create backups for a sharded database](../sharding/backup-and-restore/backup)  
+[Learn to restore shard backups](../sharding/backup-and-restore/restore)  
+
+</Panel>
+
+<Panel heading="Restoring from backup">
+
+A database is typically restored from backup to a single node, and then replicated to the other cluster nodes.
+
+When restored from a snapshot image, the database can be restored to multiple cluster nodes simultaneously. This is because snapshots retain document change vectors, allowing documents to be recognized across nodes without further replication.
+
+[Learn how to restore a database from backup using the client API](../backup/restore#restoring-from-backup-using-the-client-api)  
+[Learn how to restore a database from backup via Studio](../backup/restore#restoring-from-backup-using-studio)
+
+</Panel>
+
+<Panel heading="Recommended precautions">
+
+Consider the following precautions to ensure the reliability and safety of your data.
+
+<ContentFrame>
+
+#### Do not substitute the backup procedure with copying the database folder.
+The backup procedure addresses requirements that simply copying the database folder does not satisfy. For example:  
+* A reliable point-in-time freeze ensures that the backup captures the database in a consistent state.  
+* ACID compliance of the backed-up data, to ensure its integrity when restored.  
+
+</ContentFrame>
+
+<ContentFrame>
+
+#### Regularly remove old backup files.
+Define a [retention policy](../backup/overview#retention-policy) to automatically remove outdated files and free up storage space.  
+When setting the retention period, consider how long backups should be retained to balance storage needs and recovery requirements.
+
+</ContentFrame>
+
+<ContentFrame>
+
+#### Store backup files in a location other than your database's.
+If you save your backup files locally, verify they are not kept in the same directory as the database, to ensure there is enough storage space for both the backups and the database.
+
+</ContentFrame>
+
+</Panel>
