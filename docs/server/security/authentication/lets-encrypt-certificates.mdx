@@ -35,7 +35,7 @@ Once the renewed certificate is obtained, [it will be replaced](../../../server/
 Automatic certificate renewal is available only if you obtained your certificate using the Setup Wizard and got your free RavenDB domain. Self-obtained certificates will not renew automatically, even if issued by Let's Encrypt.
 </Admonition>
 
-When running as a cluster, the replacement process is a distributed operation. It involves sending the new certificate to all nodes, and requires all nodes to confirm that they have recieved and replaced the certificate.
+When running as a cluster, the replacement process is a distributed operation. It involves sending the new certificate to all nodes, and requires all nodes to confirm that they have received and replaced the certificate.
 
 Only when all nodes have confirmed will the cluster start using this new certificate. 
 
@@ -55,7 +55,7 @@ However, you can (quite easily) enable automatic renewals for your Let's Encrypt
 Certbot is not available in Windows, but you can use a c# client called [Certes](https://github.com/fszlin/certes/), or [other similar projects](https://letsencrypt.org/docs/client-options/) that automate the certificate process.  
 
 First, install and configure certbot on your machine. Here's a [nice tutorial](https://medium.com/prog-code/lets-encrypt-wildcard-certificate-configuration-with-aws-route-53-9c15adb936a7) to get you started.
-You should also download the apropriate DNS plugin for certbot. This example uses [Amazon's Route53](https://certbot-dns-route53.readthedocs.io/en/stable/), but [many other services](https://certbot.eff.org/docs/using.html#dns-plugins) are supported.
+You should also download the appropriate DNS plugin for certbot. This example uses [Amazon's Route53](https://certbot-dns-route53.readthedocs.io/en/stable/), but [many other services](https://certbot.eff.org/docs/using.html#dns-plugins) are supported.
 
 Set the credentials for your DNS service. In Route53 it's done by creating a user with an [IAM policy](https://certbot-dns-route53.readthedocs.io/en/stable/#sample-aws-policy-json) to allow changing DNS records. The credentials can then be set in the server as environment variables or via the AWS config file at `~/.aws/config`.
 
