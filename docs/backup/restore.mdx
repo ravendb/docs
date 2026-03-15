@@ -39,7 +39,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   * [Restoring a database to multiple cluster nodes](../backup/restore#restoring-a-database-to-multiple-cluster-nodes)
      * [Restoring to a single node and replicating to additional nodes](../backup/restore#restoring-to-a-single-node-and-replicating-to-additional-nodes)
      * [Restoring to multiple nodes simultaneously](../backup/restore#restoring-to-multiple-nodes-simultaneously)
-
+  * [Restoring from server-wide backups](../backup/restore#restoring-from-server-wide-backups)
 
 </Admonition>
 
@@ -841,5 +841,14 @@ To restore **from a snapshot** into multiple nodes simultaneously and join the d
 * On the node you didn't delete the database from, expand the database group (as [shown above](../backup/restore#using-studio)) to include all the other nodes.  
 
 </ContentFrame>
+
+</Panel>
+
+<Panel heading="Restoring from server-wide backups">
+
+Restoring databases backed up by a server-wide backup task **is identical** to restoring databases backed up by regular [database backup tasks](../backup/create/periodic-tasks/database-backup).  
+- Though a server-wide task creates backups for multiple databases, the backup for each database is restored separately into a new database.  
+- Note that each backup is stored in the backup location within its own folder, named after the database it belongs to.  
+  When restoring, make sure the correct backup folder is selected.
 
 </Panel>

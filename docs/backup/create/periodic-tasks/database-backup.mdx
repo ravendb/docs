@@ -19,7 +19,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * A periodic backup task automatically creates backups at predefined time intervals, based on a user-defined configuration that specifies the task schedule, backup type, and other settings.
 
-* You can create, update, and delay periodic backup tasks using either the client API or via Studio.  
+* You can create and manage periodic **backup tasks** using either the client API or Studio.  
+  A backup task runs **backup operations** on its defined schedule. Once a backup operation is running, you can also delay or abort it.
 
 * See the variety of backup configuration options and settings in:  
     [Backup overview](../../../backup/overview)  
@@ -33,8 +34,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
      * [Creating a periodic backup task](../../../backup/create/periodic-tasks/database-backup#creating-a-periodic-backup-task)
         * [Key configuration settings](../../../backup/create/periodic-tasks/database-backup#key-configuration-settings)
      * [Updating a periodic backup task](../../../backup/create/periodic-tasks/database-backup#updating-a-periodic-backup-task)
+     * [Deleting a periodic backup task](../../../backup/create/periodic-tasks/database-backup#deleting-a-periodic-backup-task)
      * [Managing backup operations](../../../backup/create/periodic-tasks/database-backup#managing-backup-operations)
-        * [Triggering an immediate backup creation](../../../backup/create/periodic-tasks/database-backup#triggering-an-immediate-backup-creation)
+        * [Triggering an immediate backup operation](../../../backup/create/periodic-tasks/database-backup#triggering-an-immediate-backup-operation)
         * [Delaying a running backup operation](../../../backup/create/periodic-tasks/database-backup#delaying-a-running-backup-operation)
         * [Aborting a running backup operation](../../../backup/create/periodic-tasks/database-backup#aborting-a-running-backup-operation)
      * [Syntax](../../../backup/create/periodic-tasks/database-backup#syntax)
@@ -49,7 +51,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
          * [Setting backup encryption options](../../../backup/create/periodic-tasks/database-backup#d-setting-backup-encryption-options)
          * [Choosing where to store the backups](../../../backup/create/periodic-tasks/database-backup#e-choosing-where-to-store-the-backups)
          * [Saving and managing the task](../../../backup/create/periodic-tasks/database-backup#f-saving-and-managing-the-task)
-      * [Creating a backup immediately](../../../backup/create/periodic-tasks/database-backup#creating-a-backup-immediately)
+      * [Running a backup operation immediately](../../../backup/create/periodic-tasks/database-backup#running-a-backup-operation-immediately)
       * [Delaying or aborting a running backup operation](../../../backup/create/periodic-tasks/database-backup#delaying-or-aborting-a-running-backup-operation)
 
 
@@ -119,8 +121,6 @@ To create a periodic backup task:
   ```
 
 </ContentFrame>
-
----
 
 <ContentFrame>
 
@@ -325,16 +325,47 @@ var updatedConfig = new PeriodicBackupConfiguration
 var updateOp = new UpdatePeriodicBackupOperation(updatedConfig);
 var updateResult = await store.Maintenance.SendAsync(updateOp);
 ```
+</ContentFrame>
+
+<ContentFrame>
+
+### Deleting a periodic backup task
+
+To delete an existing backup task:  
+ - If you don't know the ID of the task, retrieve the task by its name using `GetOngoingTaskInfoOperation` and extract `TaskId`.  
+  - Pass the task ID to `DeletePeriodicBackupOperation` to delete the task from the server.  
+
+#### Example:
+```csharp
+// Get the task info to retrieve the TaskId
+var backupTask = await store.Maintenance.SendAsync(
+    new GetOngoingTaskInfoOperation("FullAndIncrementalBackup", OngoingTaskType.Backup)) as OngoingTaskBackup;
+
+// Ensure the task exists
+if (backupTask == null)
+    throw new InvalidOperationException("The periodic backup task was not found.");
+
+// Delete the task using its TaskId
+await store.Maintenance.SendAsync(
+    new DeleteOngoingTaskOperation(backupTask.TaskId, OngoingTaskType.Backup));
+```
 
 </ContentFrame>
+
 
 ---
 
 ## Managing backup operations
 
+After defining a database backup task, it starts executing **backup operations** as scheduled.  
+You can:  
+- Trigger the **immediate execution** of a backup operation, outside of its task schedule.  
+- **Delay a backup operation** that the task has already started.  
+- **Abort a backup operation** that the task has already started.  
+
 <ContentFrame>
 
-### Triggering an immediate backup creation
+### Triggering an immediate backup operation
 
 To trigger the immediate creation of a backup using an existing periodic backup task:  
 - If you don't have the task ID, fetch it using `GetOngoingTaskInfoOperation`
@@ -1102,11 +1133,11 @@ After saving the task, it is listed at **Tasks** `>` **Backups**, where you can:
 
 ---
 
-## Creating a backup immediately
+## Running a backup operation immediately
 
 <ContentFrame>
 
-You can use a periodic backup task to create a backup immediately, outside of the tasks's defined schedule.  
+You can use a defined periodic backup task to create a backup immediately, outside of the tasks's defined schedule.  
 To do this, locate the task in **Tasks** `>` **Backups**, expand its details bar, and click **Backup now**.
 
 ![Backups view with tasks](./assets/database-periodic_backup-now.png)
