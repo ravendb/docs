@@ -29,6 +29,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Action tools](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#action-tools)
    * [Creating the Agent](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#creating-the-agent)
    * [Retrieving existing agent configurations](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#retrieving-existing-agent-configurations)
+   * [Deleting an agent](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#deleting-an-agent)
    * [Managing conversations](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#managing-conversations)
       * [Setting a conversation](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#setting-a-conversation)
       * [Processing action-tool requests](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#processing-action-tool-requests)
@@ -742,6 +743,36 @@ You can also retrieve the configurations of **all existing agents** using `GetAg
       public List<AiAgentConfiguration> AiAgents { get; set; }
   }
   ```
+
+</Panel>
+
+<Panel heading="Deleting an agent">
+
+You can delete an existing AI agent from the database using the `DeleteAgent` method.
+
+* **Example**
+  ```csharp
+  // Delete an agent by its ID
+  var deleteResult = await store.AI.DeleteAgentAsync("reward-productive-employee");
+  ```
+
+* `DeleteAgent` Overloads
+  ```csharp
+  // Synchronously deletes an AI agent from the database
+  AiAgentConfigurationResult DeleteAgent(string agentId)
+
+  // Asynchronously deletes an AI agent from the database
+  Task<AiAgentConfigurationResult> DeleteAgentAsync(string agentId, CancellationToken token = default)
+  ```
+
+* `DeleteAgent` Properties
+  | Property | Type | Description |
+  |----------|------|-------------|
+  | agentId | `string` | The ID of the AI agent to delete |
+
+  | Return value | Description |
+  |--------------|-------------|
+  | `AiAgentConfigurationResult` | The result of the delete operation |
 
 </Panel>
 
