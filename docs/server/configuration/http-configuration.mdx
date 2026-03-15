@@ -26,6 +26,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * [Http.Http2.KeepAlivePingTimeoutInSec](../../server/configuration/http-configuration.mdx#httphttp2keepalivepingtimeoutinsec)
   * [Http.Http2.KeepAlivePingDelayInSec](../../server/configuration/http-configuration.mdx#httphttp2keepalivepingdelayinsec)
   * [Http.Http2.MaxStreamsPerConnection](../../server/configuration/http-configuration.mdx#httphttp2maxstreamsperconnection)
+  * [Http.Http2.Profile](../../server/configuration/http-configuration.mdx#httphttp2profile)
+  * [Http.Http2.LatencyHint](../../server/configuration/http-configuration.mdx#httphttp2latencyhint)
+  * [Http.Http2.InitialConnectionWindowSizeInKb](../../server/configuration/http-configuration.mdx#httphttp2initialconnectionwindowsizeinkb)
+  * [Http.Http2.InitialStreamWindowSizeInKb](../../server/configuration/http-configuration.mdx#httphttp2initialstreamwindowsizeinkb)
+  * [Http.Http2.MaxFrameSizeInKb](../../server/configuration/http-configuration.mdx#httphttp2maxframesizeinkb)
   * [Http.UseResponseCompression](../../server/configuration/http-configuration.mdx#httpuseresponsecompression)
   * [Http.AllowResponseCompressionOverHttps](../../server/configuration/http-configuration.mdx#httpallowresponsecompressionoverhttps)
   * [Http.GzipResponseCompressionLevel](../../server/configuration/http-configuration.mdx#httpgzipresponsecompressionlevel)
@@ -134,6 +139,102 @@ Set Kestrel's HTTP2 keep alive ping delay.
 - **Default**: `null` (no limit)
 - **Scope**: Server-wide only
 - **Used for setting Kestrel property**: [MaxStreamsPerConnection](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel.core.http2limits.maxstreamsperconnection?view=aspnetcore-8.0#microsoft-aspnetcore-server-kestrel-core-http2limits-maxstreamsperconnection)
+
+
+
+## Http.Http2.Profile
+
+* Set the HTTP/2 performance profile that controls flow-control window sizes and max frame size.
+
+* Profiles determine how aggressively HTTP/2 connections use memory to maximize throughput:
+
+  | Profile | Connection Window | Stream Window | Max Frame Size | Use Case |
+  |---------|------------------|---------------|----------------|----------|
+  | `Performance` | 32 MB | 4 MB | 1 MB | Maximize throughput, uses more memory |
+  | `Balanced` | 16 MB | 2 MB | 256 KB | Good throughput without excessive memory |
+  | `Conservative` | 4 MB | 1 MB | 16 KB | Lower memory, may cap throughput on high RTT |
+
+* By default, the profile is set by the constructor of class `HttpConfiguration`
+  (that is what is meant by the value `"DefaultValueSetInConstructor"`).
+  64-bit runtimes default to `Balanced`. 32-bit runtimes default to `Conservative` to conserve address space.
+
+- **Type**: `enum Http2Profile` (`Performance`, `Balanced`, `Conservative`)
+- **Default**: `DefaultValueSetInConstructor`
+- **Scope**: Server-wide only
+
+
+
+## Http.Http2.LatencyHint
+
+* Set a latency hint that influences how the selected profile's window sizes are applied.
+
+* When set to `High`, the connection and stream window sizes derived from the selected profile are **doubled**
+  to handle larger round-trip times on WAN or cross-region links.
+
+* Use `High` when HTTP/2 throughput plateaus and improves after forcing HTTP/1.1 or increasing window sizes manually.
+
+- **Type**: `enum Http2LatencyHint` (`Default`, `High`)
+- **Default**: `Default`
+- **Scope**: Server-wide only
+
+| Value | Description |
+|-------|-------------|
+| `Default` | Low RTT — server and clients are collocated (same region/AZ). Uses profile window sizes as-is. |
+| `High` | WAN / cross-region — doubles the HTTP/2 flow-control windows to maintain throughput over larger RTTs. |
+
+<Admonition type="note" title="">
+The latency hint does **not** affect explicit overrides set via
+`Http.Http2.InitialConnectionWindowSizeInKb` or `Http.Http2.InitialStreamWindowSizeInKb`.
+</Admonition>
+
+
+
+## Http.Http2.InitialConnectionWindowSizeInKb
+
+* **EXPERT**: Override the Kestrel HTTP/2 per-connection receive window size.
+
+* Prefer using [Http.Http2.Profile](../../server/configuration/http-configuration.mdx#httphttp2profile) and
+  [Http.Http2.LatencyHint](../../server/configuration/http-configuration.mdx#httphttp2latencyhint)
+  unless you understand your bandwidth-delay product and memory tradeoffs.
+
+* Values are clamped to the RFC 9113 legal range (64 KB – 2,147,483,647 bytes).
+
+- **Type**: `int`
+- **Default**: `null` (determined by profile and latency hint)
+- **Scope**: Server-wide only
+- **Used for setting Kestrel property**: [InitialConnectionWindowSize](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel.core.http2limits.initialconnectionwindowsize?view=aspnetcore-8.0)
+
+
+
+## Http.Http2.InitialStreamWindowSizeInKb
+
+* **EXPERT**: Override the Kestrel HTTP/2 per-stream receive window size.
+
+* Prefer using [Http.Http2.Profile](../../server/configuration/http-configuration.mdx#httphttp2profile) and
+  [Http.Http2.LatencyHint](../../server/configuration/http-configuration.mdx#httphttp2latencyhint)
+  unless you are tuning for specific concurrency and RTT requirements.
+
+* Values are clamped to the RFC 9113 legal range (64 KB – 2,147,483,647 bytes).
+
+- **Type**: `int`
+- **Default**: `null` (determined by profile and latency hint)
+- **Scope**: Server-wide only
+- **Used for setting Kestrel property**: [InitialStreamWindowSize](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel.core.http2limits.initialstreamwindowsize?view=aspnetcore-8.0)
+
+
+
+## Http.Http2.MaxFrameSizeInKb
+
+* **EXPERT**: Override the Kestrel HTTP/2 maximum frame payload size.
+
+* Larger frames reduce per-frame overhead for bulk transfers but may delay small urgent frames.
+
+* Values are clamped to the RFC 9113 Section 4.2 legal range (16 KB – 16 MB).
+
+- **Type**: `int`
+- **Default**: `null` (determined by profile)
+- **Scope**: Server-wide only
+- **Used for setting Kestrel property**: [MaxFrameSize](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel.core.http2limits.maxframesize?view=aspnetcore-8.0)
 
 
 
