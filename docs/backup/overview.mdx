@@ -297,9 +297,9 @@ When using a remote destination (like an FTP destination or an S3 bucket), you c
 - When set to **Default**, backups are **stored locally** and exported from the local directory.  
   You may prefer this mode if you want to ensure that backup files are not lost even if uploading to the remote destination fails, or if you're storing backups locally anyway in addition to exporting them.  
   <Admonition type="note" title="">
-  * If a [local folder](../backup/create/periodic-tasks/database-backup#e-choosing-where-to-store-the-backups) was selected to store backups locally, RavenDB will use it both for the transfer and as its permanent local backup location.  
-  * If a local folder wasn't selected, RavenDB will use the 
-    folder defined in its [Storage.TempPath](../server/configuration/storage-configuration.mdx#storagetemppath) setting.  
+  * If a [local folder](../backup/create/periodic-tasks/database-backup#e-choosing-where-to-store-the-backups) was selected as one of the storage destinations, RavenDB will use it to store both the temporary backup files created during the upload process and the permanent backup files.  
+  * If a local folder **was not selected**, RavenDB will use the 
+    folder defined by the [Storage.TempPath](../server/configuration/storage-configuration.mdx#storagetemppath) configuration key.  
     If `Storage.TempPath` is not defined, the temporary files 
     will be kept in the same location as the RavenDB data file.  
     In either case, the folder will be used for temporary storage, 
