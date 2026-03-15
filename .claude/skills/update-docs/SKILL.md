@@ -5,7 +5,7 @@ description: >
   Use when you have a product PR URL and need to update docs to match code changes.
 argument-hint: <github-pr-url-or-number>
 disable-model-invocation: true
-allowed-tools: Read, Write, Edit, Bash(gh *), Bash(git *), Bash(mkdir *), Bash(rm -rf /tmp/ravendb-source), Glob, Grep
+allowed-tools: Read, Write, Edit, Bash(gh *), Bash(git *), Bash(mkdir *), Bash(rm -rf /tmp/ravendb-source-*), Glob, Grep
 ---
 
 # Update RavenDB Documentation from Product PR
@@ -27,7 +27,7 @@ Run these commands to gather context without flooding the context window:
 
 ```bash
 # Get structured PR metadata
-gh pr view <NUMBER> --repo ravendb/ravendb --json title,body,labels,state,baseRefName,files,additions,deletions,commits
+gh pr view <NUMBER> --repo ravendb/ravendb --json title,body,labels,state,baseRefName,headRefName,files,additions,deletions,commits
 
 # Get list of changed files (no diff content yet)
 gh pr diff <NUMBER> --repo ravendb/ravendb --name-only
@@ -44,23 +44,23 @@ Use a blobless clone — it downloads file contents lazily (only when you read t
 
 ```bash
 # Remove any previous clone
-rm -rf /tmp/ravendb-source
+rm -rf /tmp/ravendb-source-<NUMBER>
 
 # Blobless clone (fast — file contents downloaded on demand)
-git clone --filter=blob:none https://github.com/ravendb/ravendb.git /tmp/ravendb-source
+git clone --filter=blob:none https://github.com/ravendb/ravendb.git /tmp/ravendb-source-<NUMBER>
 
 # Checkout the PR branch
-cd /tmp/ravendb-source && gh pr checkout <NUMBER>
+cd /tmp/ravendb-source-<NUMBER> && gh pr checkout <NUMBER>
 ```
 
-After cloning, you have **full access** to the entire product codebase at `/tmp/ravendb-source/`.
+After cloning, you have **full access** to the entire product codebase at `/tmp/ravendb-source-<NUMBER>/`.
 Use `Read`, `Glob`, and `Grep` on this path to:
 - Read complete source files (not just diffs)
 - Browse related/unchanged code for context (base classes, interfaces, callers)
 - Search the entire codebase for patterns, usages, and references
 - Read test files for real usage examples and expected behavior
 
-**Important**: The docs repo remains your working directory (`D:\workspaces\docs`). The cloned product repo is read-only reference material at `/tmp/ravendb-source/`.
+**Important**: The docs repo remains your working directory (`D:\workspaces\docs`). The cloned product repo is read-only reference material at `/tmp/ravendb-source-<NUMBER>/`.
 
 ## Phase 3 — Classify Changes
 
@@ -138,16 +138,16 @@ Based on the changed files, classify the PR as one or more of:
 
 ## Phase 5 — Explore Source Code
 
-After user confirmation, use the cloned repo at `/tmp/ravendb-source/` to deeply understand the changes.
+After user confirmation, use the cloned repo at `/tmp/ravendb-source-<NUMBER>/` to deeply understand the changes.
 
 ### Read the changed files in full
 For each file identified in Phase 2, read the complete source file (not just the diff) to understand the full API surface:
 ```
-Read /tmp/ravendb-source/src/Raven.Client/Documents/Session/SomeNewFeature.cs
+Read /tmp/ravendb-source-<NUMBER>/src/Raven.Client/Documents/Session/SomeNewFeature.cs
 ```
 
 ### Browse related code for context
-Use `Glob` and `Grep` on `/tmp/ravendb-source/` to find:
+Use `Glob` and `Grep` on `/tmp/ravendb-source-<NUMBER>/` to find:
 - Base classes, interfaces, and abstract types that changed code extends
 - Other callers or usages of the modified API
 - Configuration key registrations and default values
@@ -156,7 +156,7 @@ Use `Glob` and `Grep` on `/tmp/ravendb-source/` to find:
 ### Get a high-level diff overview
 Use the base branch from the PR metadata (`baseRefName` from Phase 2) — it may be `v6.2`, `v7.1`, etc., not necessarily `main`:
 ```bash
-cd /tmp/ravendb-source && git diff origin/<BASE_BRANCH>...HEAD --stat
+cd /tmp/ravendb-source-<NUMBER> && git diff origin/<BASE_BRANCH>...HEAD --stat
 ```
 
 ### Prioritize reading
@@ -244,7 +244,30 @@ After making changes:
 
 ### Clean up the cloned repo
 ```bash
-rm -rf /tmp/ravendb-source
+rm -rf /tmp/ravendb-source-<NUMBER>
+```
+
+### Commit the changes
+
+The commit message **must** start with an issue number prefix:
+- **`RavenDB-XXXXX`** — extract from the PR title, branch name, or body (e.g., PR title "RavenDB-25962 - Add vector search support" → prefix is `RavenDB-25962`)
+- **`RDoc-XXXXX`** — if the documentation change has its own tracking issue
+
+To find the issue number, check (in order):
+1. The PR title (most common — e.g., "RavenDB-25962 - ...")
+2. The PR branch name (e.g., `RavenDB-25962-vector-search`)
+3. The PR body/description
+
+**If no issue number can be found**, ask the user to provide either a `RavenDB-XXXXX` or `RDoc-XXXXX` number before committing.
+
+Commit message format:
+```
+<ISSUE-NUMBER> - <short description of documentation changes>
+```
+
+Example:
+```
+RavenDB-25962 - Document vector search query API and configuration options
 ```
 
 ### Provide a summary
