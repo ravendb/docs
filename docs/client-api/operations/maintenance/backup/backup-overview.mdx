@@ -248,7 +248,10 @@ IncrementalBackupFrequency = "*/20 * * * *",
         AwsAccessKey = "your access key here",
         AwsSecretKey = "your secret key here",
         AwsRegionName = "OPTIONAL",
-        BucketName = "john-bucket"
+        BucketName = "john-bucket",
+
+        // Optional: set the S3 storage class (default is Standard)
+        StorageClass = S3StorageClass.Standard
     \},
 
     // Amazon Glacier settings.
@@ -307,6 +310,34 @@ var result = await docStore.Maintenance.SendAsync(operation);
 </CodeBlock>
 </TabItem>
  </Admonition>
+
+### S3 Storage Class
+
+When backing up to Amazon S3, you can specify the **storage class** to use for the uploaded backup files
+by setting the `StorageClass` property on `S3Settings`.
+If not set, S3 uses the `Standard` storage class by default.
+
+Choosing a different storage class allows you to optimize backup storage costs based on your access patterns and retention needs.
+
+| Storage Class | Enum Value | Description |
+| - | - | - |
+| **Standard** | `S3StorageClass.Standard` | Default. High durability, availability, and performance for frequently accessed data. |
+| **Intelligent Tiering** | `S3StorageClass.IntelligentTiering` | Automatically moves data between access tiers based on changing access patterns. |
+| **Standard-IA** | `S3StorageClass.StandardInfrequentAccess` | For long-lived, infrequently accessed data. Lower storage cost, retrieval fee applies. |
+| **One Zone-IA** | `S3StorageClass.OneZoneInfrequentAccess` | Similar to Standard-IA but stored in a single Availability Zone. Lower cost, less resilience. |
+| **Glacier Instant Retrieval** | `S3StorageClass.GlacierInstantRetrieval` | Archive storage with millisecond retrieval. For data accessed once per quarter. |
+| **Glacier Flexible Retrieval** | `S3StorageClass.Glacier` | Low-cost archive storage. Retrieval times range from minutes to hours. |
+| **Deep Archive** | `S3StorageClass.DeepArchive` | Lowest-cost storage for long-term archival. Retrieval time is 12–48 hours. |
+| **Reduced Redundancy** | `S3StorageClass.ReducedRedundancy` | Lower durability than Standard. For non-critical, reproducible data. |
+| **Express One Zone** | `S3StorageClass.ExpressOneZone` | Single-zone storage optimized for low-latency access. |
+
+<Admonition type="warning" title="Glacier and Deep Archive">
+
+When using Glacier-tier storage classes (`Glacier`, `DeepArchive`), backup files are not immediately available
+for restore. You must first initiate an archive retrieval (thaw) through the AWS console or API before
+RavenDB can restore from these backups.
+
+</Admonition>
 
 
 ## Backup Retention Policy
@@ -401,7 +432,10 @@ A server-wide backup configuration that sets multiple destinations:
         AwsSecretKey = "Amazon S3 Secret Key",
         AwsRegionName = "Amazon S3 Region Name",
         BucketName = "john-bucket",
-        RemoteFolderName = "john/backups"
+        RemoteFolderName = "john/backups",
+
+        // Optional: set the S3 storage class (default is Standard)
+        StorageClass = S3StorageClass.StandardInfrequentAccess
     \},
 
     //Amazon Glacier settings.
