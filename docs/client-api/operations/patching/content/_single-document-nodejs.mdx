@@ -41,6 +41,9 @@ import CodeBlock from '@theme/CodeBlock';
       * [Delete counter](../../../../client-api/operations/patching/single-document.mdx#delete-counter)  
       * [Get counter](../../../../client-api/operations/patching/single-document.mdx#get-counter)  
       * [Patching using inline string compilation](../../../../client-api/operations/patching/single-document.mdx#patching-using-inline-string-compilation)  
+      * [Generate a random UUID](../../../../client-api/operations/patching/single-document.mdx#generate-a-random-uuid)  
+      * [Store a SHA-256 hash of a field](../../../../client-api/operations/patching/single-document.mdx#store-a-sha-256-hash-of-a-field)  
+      * [Encrypt a field](../../../../client-api/operations/patching/single-document.mdx#encrypt-a-field)      
   
   * [Syntax](../../../../client-api/operations/patching/single-document.mdx#syntax)
       * [Session API syntax](../../../../client-api/operations/patching/single-document.mdx#session-api-syntax)
@@ -1368,6 +1371,187 @@ await documentStore.operations.send(patchOp);
 
 </Admonition>
 
+<Admonition type="note" title="">
+
+#### Generate a random UUID
+    
+Use `crypto.randomUUID()` to generate a UUID value and store it in a document field.   
+For the full list of supported cryptographic methods, see [JavaScript Engine - Cryptographic methods](../../../../server/kb/javascript-engine.mdx#cryptographic-methods).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```js
+// Generate a random UUID
+// ======================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = `
+    if (!this.ExternalId) {
+        this.ExternalId = crypto.randomUUID();
+    }
+`;
+
+// Define the 'PatchCommandData':
+const patchCommand = new PatchCommandData("companies/1-A", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```js
+// Generate a random UUID
+// ======================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = `
+    if (!this.ExternalId) {
+        this.ExternalId = crypto.randomUUID();
+    }
+`;
+
+// Define and send the 'PatchOperation':
+const patchOp = new PatchOperation("companies/1-A", null, patchRequest);
+await documentStore.operations.send(patchOp);
+```
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+#### Store a SHA-256 hash of a field
+    
+Use `crypto.digest()` to create a deterministic hash from a field value and store it in a separate field.  
+For the full list of supported cryptographic methods, see [JavaScript Engine - Cryptographic methods](../../../../server/kb/javascript-engine.mdx#cryptographic-methods).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```js
+// Store a SHA-256 hash of a field
+// ===============================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = `
+    // Create a hash from the email value
+    if (this.Email) {
+        var normalizedEmail = this.Email.trim().toLowerCase();
+        this.EmailHash = crypto.digest('SHA-256', normalizedEmail);
+        this.EmailHashAlgorithm = 'SHA-256';
+    }
+`;
+
+// Define the 'PatchCommandData':
+const patchCommand = new PatchCommandData("users/1", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```js
+// Store a SHA-256 hash of a field
+// ===============================
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = `
+    // Create a hash from the email value
+    if (this.Email) {
+        var normalizedEmail = this.Email.trim().toLowerCase();
+        this.EmailHash = crypto.digest('SHA-256', normalizedEmail);
+        this.EmailHashAlgorithm = 'SHA-256';
+    }
+`;
+
+// Define and send the 'PatchOperation':
+const patchOp = new PatchOperation("users/1", null, patchRequest);
+await documentStore.operations.send(patchOp);
+```
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+#### Encrypt a field    
+
+Use `crypto.encryptAesGcm()` to encrypt a field value, and store the generated _IV_ alongside the encrypted result.  
+For the full list of supported cryptographic methods, see [JavaScript Engine - Cryptographic methods](../../../../server/kb/javascript-engine.mdx#cryptographic-methods).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```js
+// Encrypt a field
+// ===============
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = `
+    // this.SensitiveData is the document field you want to encrypt
+    if (this.SensitiveData) {
+        var iv = crypto.getRandomValuesBase64(12);
+        var key = crypto.getRandomValuesBase64(32);
+ 
+       // Add fields to the document: 
+        this.SensitiveDataEncrypted = crypto.encryptAesGcm(
+            iv,
+            key,
+            this.SensitiveData
+        );
+        this.SensitiveDataIv = iv;
+ 
+       // You may wish to remove the original unencrypted field
+        delete this.SensitiveData;    
+    }
+`;
+
+// Define the 'PatchCommandData':
+const patchCommand = new PatchCommandData("users/1", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```js
+// Encrypt a field
+// ===============
+
+// Define the 'PatchRequest':
+const patchRequest = new PatchRequest();
+patchRequest.script = `
+    // this.SensitiveData is the document field you want to encrypt
+    if (this.SensitiveData) {
+        var iv = crypto.getRandomValuesBase64(12);
+        var key = crypto.getRandomValuesBase64(32);
+ 
+       // Add fields to the document: 
+        this.SensitiveDataEncrypted = crypto.encryptAesGcm(
+            iv,
+            key,
+            this.SensitiveData
+        );
+        this.SensitiveDataIv = iv;
+ 
+       // You may wish to remove the original unencrypted field
+        delete this.SensitiveData;    
+    }
+`;
+
+// Define and send the 'PatchOperation':
+const patchOp = new PatchOperation("users/1", null, patchRequest);
+await documentStore.operations.send(patchOp);
+```
+</TabItem>
+</Tabs>
+
+</Admonition>
 
 ## Syntax
 ### Session API syntax
