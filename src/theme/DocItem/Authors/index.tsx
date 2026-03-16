@@ -9,7 +9,7 @@ type Platform = "x" | "github" | "linkedin" | "email";
 
 type Author = {
     name: string;
-    title: string | null;
+    jobTitle: string | null;
     url: string | null;
     imageURL: string;
     socials: Record<string, string>;
@@ -24,7 +24,7 @@ function getAuthorData(authorKey: string): Author | null {
     }
     return {
         name: authorInfo.name,
-        title: authorInfo.title,
+        jobTitle: authorInfo.job_title,
         url: authorInfo.url,
         imageURL: authorInfo.image_url,
         socials: authorInfo.socials,
@@ -97,7 +97,7 @@ export default function DocItemAuthors() {
                                 author.name
                             )}
                         </div>
-                        {author.title && <div className="docAuthorTitle">{author.title}</div>}
+                        {author.jobTitle && <div className="docAuthorTitle">{author.jobTitle}</div>}
                         {author.socials && (
                             <div className="docAuthorSocials">
                                 {Object.entries(author.socials).map(([platform, handleOrUrl]) => {
