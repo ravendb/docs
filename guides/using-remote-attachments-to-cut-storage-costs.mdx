@@ -2,90 +2,98 @@
 title: "Using Remote Attachments to cut storage costs"
 tags: [document-extensions, attachments, data-governance, architecture, csharp]
 icon: "remote-attachment"
-description: "Learn more about offloading RavenDB attachments to remote storage buckets to slash your storage costs."
+description: "Store RavenDB attachments in Amazon S3 or Azure Blob Storage to reduce database storage costs. Step-by-step setup for Studio and C# code, including bulk migration of existing local attachments."
 publishedAt: 2026-02-01
 author: "Paweł Lachowski"
+proficiencyLevel: "Expert"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
 
-RavenDB's document [attachments](https://docs.ravendb.net/7.2/document-extensions/attachments/overview/) let you store any file with the corresponding document. No matter if it's a PDF, a video, an image, or something completely different, you can still keep it with the rest of the document, stored as bytes. The only problem is that some attachments can be large and numerous, while your storage space may be limited. 
+RavenDB's document [attachments](https://docs.ravendb.net/7.2/document-extensions/attachments/overview/) let you store any file with the corresponding document. No matter if it's a PDF, a video, an image, or something completely different, you can still keep it with the rest of the document, stored as bytes. The only problem is that some attachments can be large and numerous, while your storage space may be limited.
 
-There’s a simple solution \- you might want to store binary files at some cloud object storage, but transporting your data with custom scripts creates operational risk and adds another point of failure, not to mention implementation and maintenance costs.  
-      
-That's why remote attachments exist: an easy way to add and store attachments in the cloud storage service. In this guide, we will discuss how to add and utilize remote attachments. Let’s dive into the topic and learn how to utilize them with maximum efficiency.
+There's a simple solution \- you might want to store binary files at some cloud object storage, but transporting your data with custom scripts creates operational risk and adds another point of failure, not to mention implementation and maintenance costs.
 
-## Attachments overall
+That's why remote attachments exist: an easy way to add and store attachments in the cloud storage service. In this guide, we will discuss how to add and utilize remote attachments. Let's dive into the topic and learn how to utilize them with maximum efficiency.
 
-Let’s start with Voron \- RavenDB’s storage engine. Locally, when you store your attachment, Voron turns it into a single binary stream \- we only know where the file starts and how long it is. This allows the database to store any attachment, regardless of data type. This concept may seem basic, but that's what makes it work. What makes it awesome is the optimization part of the Voron itself, but the concept is easy to grasp, and it follows RavenDB’s attachment design principle: they are meant to be easy to understand and easy to use.
+## How does RavenDB store attachments locally?
 
-## Why use remote attachments
+RavenDB uses Voron, its own storage engine, to manage attachment data. When you store an attachment locally, Voron writes it as a single binary stream — the engine tracks only where the file starts and how long it is. This allows the database to store any attachment regardless of data type, with Voron's internal optimizations handling compression and I/O efficiency transparently.
 
-Remote attachments let you store large attachment data in external cloud storage instead of inside the database. This keeps your database small and fast, even when working with heavy files. Attachments are stored in your **own** cloud account (Azure Blob Storage, Amazon S3, or S3-compatible storage).
+## Why should you use remote attachments instead of local storage?
 
-From the application’s perspective, nothing changes. Attachments are accessed exactly the same way as before. The only difference is that the binary data lives outside the database. Existing attachments can be moved to remote storage without schema changes or application rewrites.
+Remote attachments let you store large attachment data in external cloud storage instead of inside the database. This keeps your database small and fast, even when working with heavy files. Attachments are stored in your **own** cloud account (Azure Blob Storage, Amazon S3, or S3-compatible storage such as MinIO, Wasabi, or Backblaze B2).
 
-RavenDB handles the entire process for you: uploads, retries, consistency, and monitoring. There are no custom scripts, no fragile migrations, and no application changes required. Let’s discover various destinations and describe how we can leverage them.
+From the application's perspective, nothing changes. Attachments are accessed exactly the same way as before. The only difference is that the binary data lives outside the database. Existing attachments can be moved to remote storage without schema changes or application rewrites.
 
-#### Cold storage
+RavenDB handles the entire process for you: uploads, retries, consistency, and monitoring. There are no custom scripts, no fragile migrations, and no application changes required. Let's discover various destinations and describe how we can leverage them.
 
-When data that is rarely accessed, but must be kept for long periods of time, e.g. invoices, medical documentation, or legal documents, you typically don’t need to access them immediately, as fast as possible. For those documents, we want to use cost-effective storage options, such as Glacier Instant or Glacier Deep Archive for AWS S3. What’s the difference between those classes?
-
-<Admonition type="note" title="Azure Blob">  
-S3 storage class can be configured in Studio, but if you want to configure Azure Blob storage behaviour you will need to do it yourself in Azure settings.  
+<Admonition type="warning" title="Sharding not supported">
+Remote attachments are not supported on sharded databases. If you are using [sharding](https://docs.ravendb.net/7.2/sharding/overview), attachments must remain local.
 </Admonition>
 
-Main differences between types of storage that we need to take into account are costs and retrieval time. Glacier Deep Archive can take time to retrieve an attachment, while Instant will bring it in a moment. So is Instant better? The difference is in price, as Deep Archive is cheaper per GB of data we retrieve. But are remote attachments only good for cold storage?
+### When should you use cold storage classes like Glacier?
 
-#### Latency-sensitive Data
+Cold storage classes are the right choice for remote attachments that are written once and rarely read — such as invoices, medical documentation, or legal documents. For those cases, you typically don't need immediate access. Cost-effective storage options such as Glacier Instant Retrieval or Glacier Deep Archive for AWS S3 are ideal. Deep Archive can cost roughly 90% less per GB than Standard storage, but retrieval takes minutes to hours instead of milliseconds.
 
-Not at all. If you select another class, like Standard or Intelligent-Tiering, you can easily store and retrieve data in a much more rapid manner. If you have a situation that needs fast retrievals, like product images or PDFs used repeatedly, you may prefer to select S3 Standard class.
-
-<Admonition type="note" title="">  
-Currently for this feature (RavenDB 7.2.0) Azure Blob, Amazon S3, and any S3-compatible services are supported. In this guide, we assume you already have your S3 or Blob.  
+<Admonition type="note" title="Azure Blob">
+S3 storage class can be configured in Studio, but if you want to configure Azure Blob storage behaviour you will need to do it yourself in Azure settings.
 </Admonition>
 
-### Setup in studio
+### Which S3 storage class is best for frequently accessed attachments?
 
-To pick a destination for your attachments, we first need to prepare a connection string. Open your database, open the Settings tab, and then the Remote Attachments settings.
+If your attachments need fast retrieval — such as product images or PDFs used repeatedly — choose S3 Standard or Intelligent-Tiering. Standard provides millisecond-level access with higher per-GB costs. Intelligent-Tiering automatically moves objects between access tiers based on usage patterns, optimizing cost without sacrificing retrieval speed.
 
-![](./assets/Remote1.png)
+<Admonition type="note" title="Supported providers">
+Currently (RavenDB 7.2), Azure Blob, Amazon S3, and any S3-compatible services (MinIO, Wasabi, Backblaze B2) are supported. In this guide, we assume you already have your S3 or Blob storage configured.
+</Admonition>
 
+### How do you set up remote attachments in Studio?
+
+To pick a destination for your attachments, first prepare a connection string. Open your database, open the Settings tab, and then the Remote Attachments settings.
+
+<Image img={require("./assets/Remote1.png")} alt="RavenDB Studio Settings tab showing the Remote Attachments configuration panel" />
 #### Amazon S3
 
-Configuration is straightforward. Pick the provider and enter a Destination identifier (your new Destination's unique name). Then we can go to AWS S3 and grab the needed information for the connection. First, enter the bucket you selected when creating S3, then select the remote folder (if needed) and the region that you can check on top right. Then go into IAM and create/enter your role with access key and secret key. 
+Configuration is straightforward:
 
-If you want to learn more about role creation in AWS’s IAM please refer to [documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html).
+1. Pick the provider and enter a Destination identifier (your new Destination's unique name).
+2. Enter the bucket name you selected when creating S3, then select the remote folder (if needed) and the region.
+3. Go to IAM and create or retrieve your role with access key and secret key. If you want to learn more about role creation in AWS's IAM please refer to [the AWS IAM documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html).
+4. Choose an S3 Storage Class. Those classes affect how your S3 will behave and how storage services will be priced. Depending on your needs, you can choose from:
 
-Next we need to choose S3 Storage class. Those classes affect how your S3 will behave and how storage services will be priced, as we spoke before. Depending on your needs, you might choose from different classes, which can be divided into four basic ones and then further subdivided. Those four are:
-
-* For frequent access, e.g. S3 Standard  
-* For occasional access, e.g. S3 Standard-IA  
-* For rare access, e.g. S3 Glacier Instant Retrieval  
+* For frequent access, e.g. S3 Standard
+* For occasional access, e.g. S3 Standard-IA
+* For rare access, e.g. S3 Glacier Instant Retrieval
 * Unpredictable/auto e.g. S3 Intelligent-Tiering
 
-If you want to learn more about them, you should look [here](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html). After choosing a class, you can Test credentials and then Apply Configuration. Then you switch on Remote Attachements and you are ready to add documents. 
+If you want to learn more about S3 storage classes, see the [AWS storage class documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html). After choosing a class, you can Test credentials and then Apply Configuration. Then switch on Remote Attachments and you are ready to add documents.
 
-![](./assets/Remote2.png)
-
+<Image img={require("./assets/Remote2.png")} alt="Amazon S3 remote attachments connection string configuration in RavenDB Studio" />
 #### Azure Blob
 
-Azure Blob Storage doesn’t have a class, so the setup is even simpler. You can just configure object storage itself on Azure’s page; from our perspective, you just connect and go.
+Azure Blob Storage doesn't have a storage class selector in Studio, so the setup is simpler. You configure storage tiers (Hot, Cool, Archive) directly in the Azure portal; from RavenDB's side, you just connect and go.
 
-![](./assets/Remote3.png)
+<Image img={require("./assets/Remote3.png")} alt="Azure Blob Storage remote attachments configuration form in RavenDB Studio" />
+To connect:
 
-To connect your Azure you need to go into your Security settings and into Access key. There you can copy both the Account name (Storage account name) and Account key. Then you just go to your Containers tab and create a new container. Copy the Account name, account key, and fill in the storage container name. Then just select name for the destination and save. After enabling Remote Attachements we are ready to add attachments. 
+1. In Azure, go to your Storage Account's Security settings and then Access keys. Copy both the Account name and Account key.
+2. Go to your Containers tab and create a new container (or use an existing one).
+3. In RavenDB Studio, enter the Account name, Account key, and storage container name. Then select a name for the destination and save.
+4. After enabling Remote Attachments, you are ready to add attachments.
 
-![Nazwa](./assets/Remote4.png)
+<Image img={require("./assets/Remote4.png")} alt="Azure Blob connection string details entered in RavenDB Studio configuration panel" />
+### How do you configure remote attachments from C# code?
 
-### Setup from code
+<Admonition type="warning" title="Configuration override behavior">
+Sending `ConfigureRemoteAttachmentsOperation` replaces the **entire** existing configuration. If you already have a destination configured and want to add a second one, first retrieve the current configuration, add your new destination to it, then send the updated configuration. Otherwise, the existing destination will be silently removed.
+</Admonition>
 
-If you prefer to configure your destination using code, you can do that easily. You can do that like this.
+You can configure an Amazon S3 destination like this:
 
 ```csharp
 var s3Settings = new RemoteAttachmentsS3Settings
@@ -123,7 +131,7 @@ await store.Maintenance.SendAsync(
 
 ```
 
-Or alternatively, for Azure, you can do this like this.
+Or alternatively, for Azure Blob Storage:
 
 ```csharp
 var azureSettings = new RemoteAttachmentsAzureSettings
@@ -159,19 +167,19 @@ await store.Maintenance.SendAsync(
 );
 ```
 
-### Add remote attachment \- Studio
+For more details on all configuration options, see the [remote attachments reference documentation](https://docs.ravendb.net/7.2/document-extensions/attachments/configure-remote-attachments).
 
-Once we are configured up let’s add a new remote attachment to a document. Enter your document you want to add attachment to and then select the attachments tab under the properties window. There, you want to click the arrow on the right to reveal ‘Add attachment to remote storage’
+### How do you add a remote attachment in Studio?
 
-![](./assets/Remote5.png)
+Once configured, you can add a new remote attachment to a document. Enter your document and select the attachments tab under the properties window. Click the arrow on the right to reveal 'Add attachment to remote storage'.
 
-Just add the file, select the destination you want to use, and set the time it is supposed to be moved to the destination. After saving, your attachment is added locally and will be transported to your remote storage when the scheduled time comes.
+<Image img={require("./assets/Remote5.png")} alt="Document attachments tab in RavenDB Studio with the expanded dropdown showing the Add attachment to remote storage option" />
+Add the file, select the destination you want to use, and set the time it is supposed to be moved to the destination. After saving, your attachment is added locally and will be transported to your remote storage when the scheduled time comes.
 
-![](./assets/Remote6.png)
+<Image img={require("./assets/Remote6.png")} alt="Remote attachment upload dialog showing destination selection and scheduled transfer time" />
+### How do you add a remote attachment from C# code?
 
-### Add remote attachment \- Code
-
-Adding remote attachments from code is nearly as easy as adding regular attachments. You can use such code:
+Adding remote attachments from code is nearly as easy as adding regular attachments:
 
 ```csharp
 using (var asyncSession = store.OpenAsyncSession())
@@ -204,14 +212,14 @@ using (var asyncSession = store.OpenAsyncSession())
             ContentType = "image/png"
         };
 
-        asyncSession.Advanced.Attachments.Store("products/999", storeParameters);
+        asyncSession.Advanced.Attachments.Store("products/1999", storeParameters);
 
         await asyncSession.SaveChangesAsync();
     }
 }
 ```
 
-Or alternatively you can do it using an `PutAttachmentOperation` operation like this: 
+Or alternatively you can do it using a `PutAttachmentOperation` operation:
 
 ```csharp
 var attachmentPath = @"C:\temp\image1.png";
@@ -240,11 +248,10 @@ await using (var stream = new FileStream(
 
 Then after one minute that has been requested with `DateTime.UtcNow.AddMinutes(1)`, we can see the attachments were automatically offloaded to our S3 bucket:
 
-![](./assets/Remote7.png)
+<Image img={require("./assets/Remote7.png")} alt="RavenDB Studio showing an attachment that has been offloaded to Amazon S3 remote storage with a remote storage indicator" />
+### How do you migrate existing local attachments to remote storage?
 
-### Moving all Local Attachments to Remote
-
-When moving to remote storage, you would probably also want to move old attachments. To do that we can use [patch operation](https://docs.ravendb.net/7.2/client-api/operations/patching/set-based#updating-all-documents):
+When moving to remote storage, you would probably also want to move old attachments. To do that we can use a [set-based patch operation](https://docs.ravendb.net/7.2/client-api/operations/patching/set-based#updating-all-documents):
 
 ```csharp
 from @all_docs
@@ -269,5 +276,17 @@ update
 ```
 
 After this script is executed, all attachments will be scheduled to be offloaded into the target destination.
+
+## Summary
+
+Remote attachments in RavenDB let you offload binary data to Amazon S3, Azure Blob Storage, or any S3-compatible service while keeping the same API access patterns. Key takeaways:
+
+- **Cold storage** (Glacier, Archive tiers) is ideal for rarely accessed compliance or archival data, reducing storage costs by up to 90%.
+- **Standard or Intelligent-Tiering** is best for frequently accessed attachments like product images.
+- Configuration is available through both Studio and C# code. The upload process is asynchronous — attachments are stored locally first, then transferred at the scheduled time.
+- Existing local attachments can be bulk-migrated using a set-based patch operation.
+- Remote attachments are **not supported on sharded databases**.
+
+For the full API reference, see the [remote attachments configuration documentation](https://docs.ravendb.net/document-extensions/attachments/configure-remote-attachments). To learn about storing remote attachments programmatically, see [store remote attachments](https://docs.ravendb.net/document-extensions/attachments/store-attachments/store-attachments-remote). For how remote attachments interact with replication, backups, and subscriptions, see [attachments and other features](https://docs.ravendb.net/document-extensions/attachments/attachments-and-other-features).
 
 Interested in RavenDB? Grab the developer license dedicated for testing under this link [here](https://ravendb.net/dev), or get a free cloud database [here](https://ravendb.net/cloud). If you have questions about this feature, or want to hang out and talk with the RavenDB team, join our Discord Community Server \- invitation link is [here](https://discord.com/invite/ravendb).

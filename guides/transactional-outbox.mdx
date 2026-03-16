@@ -1,5 +1,5 @@
 ---
-title: "Transactional Outbox Pattern with RavenDB Queue ETL"
+title: "Transactional Outbox with RavenDB Queue ETL"
 tags: [ongoing-tasks, architecture, csharp, integration]
 icon: "etl"
 description: "Learn to implement the transactional outbox pattern in C# using RavenDB data subscriptions or Queue ETL, with RabbitMQ and Kafka code examples."
@@ -19,57 +19,8 @@ see_also:
     source: "docs"
     path: "Client API > Data Subscriptions"
 author: "Paweł Lachowski"
+proficiencyLevel: "Expert"
 ---
-
-<script type="application/ld+json">{`
-{
-  "@context": "https://schema.org",
-  "@type": "TechArticle",
-  "headline": "Transactional Outbox Pattern with RavenDB Queue ETL",
-  "description": "Learn how to implement the transactional outbox pattern in C# using RavenDB data subscriptions or Queue ETL with RabbitMQ and Apache Kafka.",
-  "url": "https://docs.ravendb.net/guides/transactional-outbox/",
-  "datePublished": "2026-02-13",
-  "dateModified": "2026-02-13",
-  "inLanguage": "en",
-  "image": {
-    "@type": "ImageObject",
-    "url": "https://docs.ravendb.net/img/social-card.jpg",
-    "width": 1200,
-    "height": 630
-  },
-  "keywords": ["RavenDB", "transactional outbox", "Queue ETL", "RabbitMQ", "Kafka", "C#"],
-  "author": {
-    "@type": "Organization",
-    "@id": "https://ravendb.net/#organization",
-    "name": "RavenDB",
-    "url": "https://ravendb.net"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "@id": "https://ravendb.net/#organization",
-    "name": "RavenDB",
-    "url": "https://ravendb.net",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://docs.ravendb.net/img/social-card.jpg"
-    }
-  },
-  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://docs.ravendb.net/guides/transactional-outbox/" },
-  "proficiencyLevel": "Intermediate",
-  "programmingLanguage": "C#"
-}
-`}</script>
-
-<script type="application/ld+json">{`
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "Guides", "item": "https://docs.ravendb.net/guides/" },
-    { "@type": "ListItem", "position": 2, "name": "Transactional Outbox Pattern with RavenDB Queue ETL", "item": "https://docs.ravendb.net/guides/transactional-outbox/" }
-  ]
-}
-`}</script>
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
@@ -77,6 +28,7 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
 
 ## Distributed systems and their quirks
 
@@ -94,7 +46,7 @@ When it happens, we can end up with situations where the invoice exists, but no 
 
 At the same time, we can have the opposite situation: the queue receives our event, but the database doesn’t create an invoice. That’s how minor problems can change into real legal difficulties. We can’t have partial failure at all; it is worse than complete failure. Then how is it possible we have so many online services that work?
 
-### Solution
+### How the transactional outbox pattern works
 
 The reason systems like this can work at all is that they stop treating event sending or document creation separately. The moment an invoice is created is also the exact moment an event must be captured. There is no acceptable state in which only one of those happens.
 
@@ -114,7 +66,7 @@ await session.SaveChangesAsync(); // single atomic commit
 
 But in RavenDB particularly, there’s another way of achieving the same goal, using our Queue ETL feature. In the guide below, we’ll show how to achieve a transactional outbox pattern in RavenDB with ease, and then, we’ll show you how a transactional outbox pattern can be easily swapped with Queue ETL. Let’s dive into it\!
 
-## Setup
+## Implementing the outbox with data subscriptions
 
 We want to connect and save our documents to both collections as a single atomic transaction. To achieve that, we want to use the saveChanges() after storing both documents, to wrap both changes into a single transaction, as described in this [article](/7.2/client-api/faq/transaction-support#acid-for-document-operations).
 
@@ -383,21 +335,19 @@ With our app running, we can enter our queue’s interface or console.
 
 Both Kafka and RabbitMQ are receiving data. Kafka can be checked using a shell script:
 
-![Kafka terminal output showing invoice-created messages after the RavenDB subscription worker ran](./assets/outbox1.png)
-
+<Image img={require("./assets/outbox1.png")} alt="Kafka terminal output showing invoice-created messages after the RavenDB subscription worker ran" />
 And RabbitMQ can be checked in the GUI.
 
-![RabbitMQ management GUI showing the invoice-created queue with queued messages](./assets/outbox2.png)
-
+<Image img={require("./assets/outbox2.png")} alt="RabbitMQ management GUI showing the invoice-created queue with queued messages" />
 So this works perfectly, we’ve used various features of RavenDB, like ACID for document operations, or data subscriptions, to implement transactional outbox in no time.
 
 But RavenDB offers another way to help you achieve your goal. Instead of the Transactional Outbox pattern, we’ll use another durable ongoing task \- RavenDB Queue ETL\!
 
-## ETL Outbox
+## Simplifying the outbox with RavenDB Queue ETL
 
 We can simplify this further by using RavenDB Queue ETLs, making it trivial. RavenDB can put different messages inside your queue each time an Invoice document is created, or updated. 
 
-Instead of saving events in a collection, we can use ETL to queues like RabbitMQ or Apache Kafka as our outbox. It’s a durable, highly available task with decent observability. It eliminates the need for transactional outbox \- the ETL task state will be our transactional outbox now.
+Instead of saving events in a collection, we can use ETL to queues like RabbitMQ or Apache Kafka as our outbox. It’s a durable, highly available task with decent observability. The ETL task acts as the outbox infrastructure, removing the need to implement the pattern manually in application code.
 
 RavenDB monitors database changes, and the transformation script creates events based on them. RavenDB’s ETL takes care of everything else, like retries and journaling, for data that has already been processed.
 
@@ -407,14 +357,12 @@ Most importantly, we can do it without writing any application-level code\!
 
 Let’s show how to connect and configure this task:
 
-![RavenDB Studio Ongoing Tasks panel showing available ETL task types including RabbitMQ and Kafka](./assets/outbox3.png)
-
+<Image img={require("./assets/outbox3.png")} alt="RavenDB Studio Ongoing Tasks panel showing available ETL task types including RabbitMQ and Kafka" />
 ### Connecting RabbitMQ ETL
 
 Let’s connect to RabbitMQ. We enter the ongoing tasks creation menu and select RabbitMQ ETL. First, we need to create a connection string, which we can do easily:
 
-![RavenDB Studio RabbitMQ ETL connection string configuration form](./assets/outbox4.png)
-
+<Image img={require("./assets/outbox4.png")} alt="RavenDB Studio RabbitMQ ETL connection string configuration form" />
 Select a name for the task, then proceed and select a name for the new connection string. Then you need to add the actual connection string that connects RavenDB to RabbitMQ. Use this format:
 
 ```
@@ -425,8 +373,7 @@ amqp://user:password@host:10000/
 
 You can also do the same using Kafka ETL. We open the ongoing tasks menu in your database, then select Kafka ETL. Then you select your ETL name and name for your connection string. Enter your bootstrap server address (we’re running Kafka locally on port 9092):
 
-![RavenDB Studio Kafka ETL connection string form with bootstrap server address field](./assets/outbox5.png)
-
+<Image img={require("./assets/outbox5.png")} alt="RavenDB Studio Kafka ETL connection string form with bootstrap server address field" />
 After that, we can move to the transformation script.
 
 ### Transformation Script \- “T” in the ETL
@@ -454,16 +401,13 @@ loadToInvoiceCreated({
 
 Then you just select your collection from the list, in this example, collection Invoices, and it’s ready to be saved. Nothing more is needed for the connection between RavenDB and those queues.
 
-![RavenDB Studio ETL transformation script editor showing the loadToInvoiceCreated function with Invoices collection selected](./assets/outbox6.png)
-
+<Image img={require("./assets/outbox6.png")} alt="RavenDB Studio ETL transformation script editor showing the loadToInvoiceCreated function with Invoices collection selected" />
 Let’s check if the data is stored properly. Kafka:
 
-![Kafka terminal output confirming invoice-created events published via RavenDB Queue ETL](./assets/outbox7.png)
-
+<Image img={require("./assets/outbox7.png")} alt="Kafka terminal output confirming invoice-created events published via RavenDB Queue ETL" />
 And for RabbitMQ we can just look into the GUI.
 
-![RabbitMQ management GUI showing messages published via RavenDB Queue ETL](./assets/outbox8.png)
-
+<Image img={require("./assets/outbox8.png")} alt="RabbitMQ management GUI showing messages published via RavenDB Queue ETL" />
 This way, with RavenDB, you can address the actual need of publishing an event after invoice creation in **minutes**.
 
 RavenDB ETLs can be used in many different ways. If you are interested in ETL to AWS SQS, [read about RavenDB Amazon SQS ETL](https://ravendb.net/articles/new-in-7-0-ravendb-and-amazon-sqs-etl). You might also be interested in [The Library of Ravens sample repository](https://github.com/ravendb/samples-library), which uses ETL to handle timeouts.

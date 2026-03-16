@@ -1,8 +1,8 @@
 ---
 title: "Vibe Coding with RavenDB and Context7"
-tags: [getting-started, ai]
+tags: [getting-started, ai, integration]
 icon: "ai"
-description: "Learn how to set up Context7 MCP with OpenAI Codex in VS Code to give your AI assistant direct access to RavenDB documentation — faster, context-rich vibe coding with fewer interruptions."
+description: "Set up Context7 MCP with OpenAI Codex in VS Code to give your AI direct access to RavenDB docs — faster, context-rich vibe coding with fewer interruptions."
 keywords: [vibe coding, Context7, MCP, model context protocol, RavenDB, AI coding assistant, OpenAI Codex, VS Code, NoSQL prototype]
 publishedAt: 2026-03-09
 see_also:
@@ -15,35 +15,8 @@ see_also:
     source: "docs"
     path: "AI Integration > Generating Embeddings"
 author: "Paweł Lachowski"
+proficiencyLevel: "Beginner"
 ---
-
-<script type="application/ld+json">{`
-{
-  "@context": "https://schema.org",
-  "@type": "TechArticle",
-  "headline": "Vibe Coding with RavenDB and Context7",
-  "description": "Learn how to set up Context7 MCP with OpenAI Codex in VS Code to give your AI assistant direct access to RavenDB documentation — faster, context-rich vibe coding with fewer interruptions.",
-  "url": "https://docs.ravendb.net/guides/vibe-coding-with-ravendb-and-context7/",
-  "datePublished": "2026-03-09",
-  "inLanguage": "en",
-  "keywords": ["RavenDB", "Context7", "vibe coding", "MCP", "Model Context Protocol", "OpenAI Codex", "VS Code", "AI coding", "NoSQL"],
-  "author": { "@type": "Organization", "name": "RavenDB", "url": "https://ravendb.net" },
-  "publisher": { "@type": "Organization", "name": "RavenDB", "url": "https://ravendb.net" },
-  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://docs.ravendb.net/guides/vibe-coding-with-ravendb-and-context7/" },
-  "proficiencyLevel": "Beginner"
-}
-`}</script>
-
-<script type="application/ld+json">{`
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "Guides", "item": "https://docs.ravendb.net/guides/" },
-    { "@type": "ListItem", "position": 2, "name": "Vibe Coding with RavenDB and Context7", "item": "https://docs.ravendb.net/guides/vibe-coding-with-ravendb-and-context7/" }
-  ]
-}
-`}</script>
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
@@ -51,6 +24,7 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
 
 As AI tools become more capable, so-called “vibe coding” becomes a practical option in certain situations. It can be especially useful for fast PoC development and prototyping. When treated as just another tool in our toolbox, it fits naturally into a modern workflow. One of its strongest advantages is lowering the barrier to entry for technologies you are not yet comfortable with. With AI assistance, you can quickly prototype an idea and evaluate whether a chosen technology is appropriate before committing more time to it.
 
@@ -84,8 +58,7 @@ Before starting, make sure you have the following in place:
 
 First, we install the Codex extension in Visual Studio Code and log in to our Codex. Next, we open the Codex settings menu (the cog icon) and select MCP settings → Open config.toml.
 
-![OpenAI Codex settings menu showing the cog icon and MCP settings option in VS Code](./assets/context1.png)
-
+<Image img={require("./assets/context1.png")} alt="OpenAI Codex settings menu showing the cog icon and MCP settings option in VS Code" />
 Inside this file, we need to establish a connection with our MCP server. Using the [Context7 MCP setup guide for Codex](https://context7.com/docs/resources/all-clients#openai-codex), we copy and paste the configuration code. For Codex, it is:
 
 ```json
@@ -100,8 +73,7 @@ command = "npx"
 
 Then replace the `YOUR_API_KEY` argument with your Context7 API key.
 
-![config.toml file open in VS Code with the Context7 MCP server entry and API key field filled in](./assets/context2.png)
-
+<Image img={require("./assets/context2.png")} alt="config.toml file open in VS Code with the Context7 MCP server entry and API key field filled in" />
 After saving the config and restarting the IDE, you should be able to tell your AI assistant to use Context7. Now what is left is to go and check if it works.
 
 ## Building an E-Commerce Prototype with RavenDB
@@ -120,20 +92,16 @@ Using Context7, write the backend and frontend of an e-commerce website connecti
 
 Now we can check whether the assistant will provide the requested code and use Context7 for it. We easily check by just looking at the generated content, and we can also click on the AI tool call to see it used Context7:
 
-![AI assistant tool call panel showing Context7 was invoked to retrieve RavenDB library documentation](./assets/context3.png)
-
+<Image img={require("./assets/context3.png")} alt="AI assistant tool call panel showing Context7 was invoked to retrieve RavenDB library documentation" />
 As you can see, Context7 was called first to retrieve information about libraries. It gathered context from `ravendb/docs`. Of course, we don't need to call Context7 explicitly; the AI can use it on its own. We run a few more prompts to fix potential errors. While doing so, Codex fetches from Context7 on its own.
 
-![Codex autonomously calling Context7 to resolve a RavenDB client API error without being asked](./assets/context4.png)
-
+<Image img={require("./assets/context4.png")} alt="Codex autonomously calling Context7 to resolve a RavenDB client API error without being asked" />
 As you can see, we asked the AI to help with an error we received, and Codex called Context7 itself. After those fixes we have ready-to-run prototype code:
 
-![Generated e-commerce backend code using the RavenDB client API, connected to the live test server](./assets/context5.png)
-
+<Image img={require("./assets/context5.png")} alt="Generated e-commerce backend code using the RavenDB client API, connected to the live test server" />
 We can run the prepared code and verify it works and looks as expected.
 
-![Running e-commerce prototype web application showing a product listing page connected to RavenDB](./assets/context6.png)
-
+<Image img={require("./assets/context6.png")} alt="Running e-commerce prototype web application showing a product listing page connected to RavenDB" />
 Fast and easy to build a working prototype without much prior knowledge of RavenDB. But we want more features.
 
 ### Expanding the Prototype with a Sales Dashboard
@@ -146,12 +114,10 @@ Create a dashboard that analyzes orders and provides basic sales insights. Inclu
 
 After that, we have to wait a bit and let the AI work. We check and approve changes from time to time and issue additional prompts to fix errors and iterate on functionality (e.g., design or sorting logic) until we have working code.
 
-![Dashboard source code showing RavenDB queries for order aggregation and sales statistics](./assets/context7.png)
-
+<Image img={require("./assets/context7.png")} alt="Dashboard source code showing RavenDB queries for order aggregation and sales statistics" />
 We can of course restart the program to pick up the changes and see how it looks.
 
-![Sales analytics dashboard showing top products, best-selling days, top companies, revenue totals, and order counts](./assets/context8.png)
-
+<Image img={require("./assets/context8.png")} alt="Sales analytics dashboard showing top products, best-selling days, top companies, revenue totals, and order counts" />
 What AI created gives us information about top products, which day sells best, and which company is doing best, while also counting revenue, items sold, and orders. It is satisfactory at this point.
 
 ### Automated Email Support
@@ -164,12 +130,10 @@ Add email sending. When a customer completes the order form, an email with the o
 
 The assistant then generates the code with the ready logic and informs us we only need to change the required lines in the config file.
 
-![Generated email configuration file showing SMTP settings and order confirmation template](./assets/context9.png)
-
+<Image img={require("./assets/context9.png")} alt="Generated email configuration file showing SMTP settings and order confirmation template" />
 We enable email sending in the config and test it using a local SMTP server. We can see the message is generated and delivered.
 
-![Local SMTP server log showing an order confirmation email successfully received at the test address](./assets/context10.png)
-
+<Image img={require("./assets/context10.png")} alt="Local SMTP server log showing an order confirmation email successfully received at the test address" />
 ## Summary and Next Steps
 
 With an AI assistant at our side, we built a working RavenDB e-commerce prototype — complete with a product listing page, a sales analytics dashboard, and automated order email notifications — in a single session. Context7 kept the AI grounded in accurate RavenDB documentation throughout, reducing the need to search for context and keeping the workflow uninterrupted.

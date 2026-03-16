@@ -1,10 +1,25 @@
 ---
-title: "Points & Polygons: On Spatial Search in RavenDB"
-tags: [python, demo, querying, indexes]
+title: "Spatial Search in RavenDB: Radius, Polygon, and Reverse Queries"
+tags: [python, demo, querying, indexes, spatial, fastapi]
 icon: "spatial-map-view"
-description: "Explore Flat Finder demo with us and learn how to use spatial search in RavenDB."
+description: "Learn how to implement spatial search in RavenDB with Python. Covers radius queries, custom polygon shapes, WKT syntax, and reverse point-in-polygon lookup using the Flat Finder demo."
 author: "Paweł Lachowski"
 publishedAt: 2026-03-11
+proficiencyLevel: "Expert"
+keywords: ["spatial search", "geospatial query", "radius search", "polygon search", "WKT", "BoundingBox", "QuadPrefixTree", "GeoHashPrefixTree", "RavenDB Python"]
+see_also:
+  - title: "Indexing Spatial Data"
+    link: "indexes/indexing-spatial-data"
+    source: "docs"
+    path: "Indexes"
+  - title: "Spatial Queries"
+    link: "indexes/querying/spatial"
+    source: "docs"
+    path: "Indexes > Querying"
+  - title: "How to Make a Spatial Query"
+    link: "client-api/session/querying/how-to-make-a-spatial-query"
+    source: "docs"
+    path: "Client API > Session > Querying"
 ---
 
 import Admonition from '@theme/Admonition';
@@ -13,6 +28,11 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+<Admonition type="info" title="What is spatial search in RavenDB?">
+RavenDB offers native spatial search without external plugins. Store point coordinates or polygon shapes in your documents and query by radius, custom shapes, or reverse point-in-polygon lookup — using the same indexing workflow you use for all other fields. This guide walks through all three query types with a working Python demo.
+</Admonition>
 
 Spatial data tends to create an impression that you need to learn a dedicated tool from scratch before you can do anything useful with it. The technical concepts like storing coordinates and polygons may look simple at first, but once you dig a little deeper, they can become surprisingly hard to navigate through. Geospatial tools often do not help newcomers get started smoothly due to convoluted technical documentation.
 
@@ -40,7 +60,7 @@ Respectively, as we allow indexing points and WKT shapes, you can achieve anythi
 
 All those usages depend on how you use your indexes and queries, and there is, of course, more you can do. 
 
-#### Dynamic vs Static index
+### Dynamic vs Static index
 
 Queries over spatial data behave the same as regular RavenDB queries, so we can either let RavenDB generate an auto-index (dynamic) or create a predefined index (static) manually. Dynamic indexes are good if you are satisfied with the default search options, and you are fine with the first query being slower (while the index is being created).
 
@@ -107,11 +127,11 @@ Once your geometry is stored, you can run spatial queries on it. You can check i
 
 ## Demo \- How we use Spatial Search
 
-Now that we have covered the theory, let’s look at the demo and see how to build it with RavenDB. The demo is coded in Python and is available to clone via this [link](https://github.com/poissoncorp/samples.flats).
+Now that we have covered the theory, let’s look at the demo and see how to build it with RavenDB. The examples below use **RavenDB 7.2** and the **RavenDB Python client** with **FastAPI**. The demo is coded in Python and is available to clone via this [link](https://github.com/poissoncorp/samples.flats).
 
 Let’s start from the beginning. We `git clone` the repository and `uv sync` for dependencies, and then start it with `uv run python main.py`. What we get is this view.
 
-![](./assets/spatialsearch1.png)
+<Image img={require("./assets/spatialsearch1.png")} alt="Flat Finder demo application initial view after startup" />
 
 Now let's dive into the app and see what it's capable of. We will go through three demos:
 
@@ -125,11 +145,11 @@ Let’s start with the first function, searching by radius.
 
 This option is selected by default on the top left. All you need to do is click anywhere and select a radius if the default search radius does not suit you. This gives us points within the radius; in this demo, those are flats in Paris.
 
-![](./assets/spatialsearch2.png)
+<Image img={require("./assets/spatialsearch2.png")} alt="Radius search result showing two flats within the selected distance in Paris" />
 
 As you can see, a search by radius excludes any other flats outside the radius, leaving us with only two results. We also get information about the flats themselves and the distance to them from our point. This is how flat data looks inside.
 
-![](./assets/spatialsearch3.png)
+<Image img={require("./assets/spatialsearch3.png")} alt="Flat document detail showing coordinates and distance metadata" />
 
 But how do we map those flats on a map?
 
@@ -173,7 +193,7 @@ async def search_by_radius(request: SearchByRadiusRequest):
 
 First, we define the endpoint and open a session in order to communicate with RavenDB. Then we have this part of code that is querying using index we prepared that looks like this:
 
-![](./assets/spatialsearch4.png)
+<Image img={require("./assets/spatialsearch4.png")} alt="Flats_SpatialIndex definition in RavenDB Studio" />
 
 ```py
  query = session.query_index_type(Flats_SpatialIndex, Flat)
@@ -222,7 +242,7 @@ The second option in our demo allows us to search not by distance from a point, 
 
 Instead of saying “show me flats within 3 km of this point”, we now say “show me flats inside this exact area.”
 
-![](./assets/spatialsearch5.png)
+<Image img={require("./assets/spatialsearch5.png")} alt="Custom polygon drawn on the Paris map for shape-based flat search" />
 
 This is useful when the area you care about is not a perfect circle. Maybe you want to select only a specific neighborhood or exclude a specific zone. A polygon gives you full control.
 
@@ -324,7 +344,7 @@ Just like in Part 1, RavenDB stores spatial calculation results in metadata. We 
 
 We can also use similar logic and search all points inside the area.
 
-![](./assets/spatialsearch6.png)
+<Image img={require("./assets/spatialsearch6.png")} alt="Paris district overlays shown on the map for selecting arrondissement boundaries" />
 
 As you can see, those are districts that we had ready underneath it all. We can select them and see all flats in a specific area. How do we do this? Of course, we start with the endpoint and the opening session.
 
@@ -355,15 +375,15 @@ Then we can just connect search by shape type of code, and we can search all fla
 
 You might have noticed that if we click on any flat, the district (4th Arrondissement - Hôtel-de-Ville on the image) it is in is shown.
 
-![](./assets/spatialsearch7.png)
+<Image img={require("./assets/spatialsearch7.png")} alt="Flat detail showing reverse search result identifying the 4th Arrondissement" />
 
 This is a reverse search. We select a point, and RavenDB returns the area it is in. Data of our districts look like this:
 
-![](./assets/spatialsearch8.png)
+<Image img={require("./assets/spatialsearch8.png")} alt="District document structure showing name, population, and boundary_wkt fields" />
 
 All those districts were indexed in RavenDB, and a field was created to hold interpreted spatial data. Static index that holds it looks like this:
 
-![](./assets/spatialsearch9.png)
+<Image img={require("./assets/spatialsearch9.png")} alt="Districts_SpatialIndex definition with boundary field for spatial indexing" />
 
 The only thing that distinguishes this index from a non-spatial one is a single field: boundary. This is the field that contains our prepared spatial data.
 
@@ -454,6 +474,6 @@ raise HTTPException(
 
 ## Summary
 
-As you can see, RavenDB lets you query spatial data and use spatial search capabilities without becoming an expert in a completely new technology. Want to easily add more advanced capabilities to your application? You may consider combining semantic search with your spatial search to query by the best-matching description. You can find more about semantic search in RavenDB in [this](https://docs.ravendb.net/guides/semantic-search-with-ravendb-python-and-fastapi/) article.
+As you can see, RavenDB lets you query spatial data and use spatial search capabilities without becoming an expert in a completely new technology. Want to easily add more advanced capabilities to your application? You may consider combining semantic search with your spatial search to query by the best-matching description. You can find more about [semantic search in RavenDB with Python and FastAPI](/guides/semantic-search-with-ravendb-python-and-fastapi/) in the companion guide.
 
-Interested in RavenDB? Grab the developer license dedicated for testing under this link [here](https://ravendb.net/dev?_gl=1*x014vj*_gcl_au*NTAyODIzOTk4LjE3NzAwMTY5NTcuMzYwMzg1MDIwLjE3NzMwNDQ3NjcuMTc3MzA0NDc2Nw..), or get a free cloud database [here](https://ravendb.net/cloud?_gl=1*s4ciyf*_gcl_au*NTAyODIzOTk4LjE3NzAwMTY5NTcuMzYwMzg1MDIwLjE3NzMwNDQ3NjcuMTc3MzA0NDc2Nw..). If you have questions about this feature, or want to hang out and talk with the RavenDB team, join our Discord Community Server \- invitation link is [here](https://discord.com/invite/ravendb).
+Interested in RavenDB? Grab the [free developer license](https://ravendb.net/dev) for testing, or get a [free cloud database](https://ravendb.net/cloud). If you have questions about this feature, or want to hang out and talk with the RavenDB team, join our Discord Community Server \- invitation link is [here](https://discord.com/invite/ravendb).

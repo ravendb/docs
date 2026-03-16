@@ -5,6 +5,7 @@ icon: "guides"
 description: "RavenDB client certificates that renew automatically without re-registration using vault-backed key reuse patterns."
 publishedAt: 2026-02-12
 author: "Paweł Lachowski"
+proficiencyLevel: "Expert"
 ---
 
 import Admonition from '@theme/Admonition';
@@ -13,6 +14,7 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
 
 ## Overview
 
@@ -174,8 +176,7 @@ In the upload dialog, fill in the following fields:
 
 - **Expiration (optional)** \- If you want RavenDB to treat the certificate as expired earlier than its actual validity period.
 
-![](./assets/cert1.png)
-
+<Image img={require("./assets/cert1.png")} alt="" />
 <h3>  **Alternatively, register the certificate via the CLI** </h3>
 
 For automation or scripted deployments, you can perform the same registration using the admin REST API:
@@ -245,8 +246,7 @@ You can also inspect the registered certificates- and verify that both versions 
 Navigate to:  
 **Manage Server → Certificates → Manage Certificates**
 
-![](./assets/cert2.png)
-
+<Image img={require("./assets/cert2.png")} alt="" />
 **Alternatively, view certificate entries via CLI**
 
 ```bash showLineNumbers
@@ -401,8 +401,7 @@ In the upload dialog, fill in the following fields:
 
 - **Expiration (optional)** \- If you want RavenDB to treat the certificate as expired earlier than its actual validity period.
 
-![](./assets/cert1.png)
-
+<Image img={require("./assets/cert1.png")} alt="" />
 <h3>  Alternatively, register the certificate via the CLI </h3>
 
 ```bash showLineNumbers
@@ -467,8 +466,7 @@ You can also inspect the registered certificates- and verify that both versions 
 Navigate to:  
 **Manage Server → Certificates → Manage Certificates**
 
-![](./assets/cert2.png)
-
+<Image img={require("./assets/cert2.png")} alt="" />
 **Alternatively, view certificate entries via CLI**
 
 ```bash showLineNumbers
@@ -619,8 +617,7 @@ In the upload dialog, fill in the following fields:
 
 - **Expiration (optional)** \- If you want RavenDB to treat the certificate as expired earlier than its actual validity period.
 
-![](./assets/cert1.png)
-
+<Image img={require("./assets/cert1.png")} alt="" />
 <h3>  Alternatively, register the certificate via the CLI </h3>
 
 For automation or scripted deployments, you can perform the same registration using the admin REST API:
@@ -708,8 +705,7 @@ You can also inspect the registered certificates- and verify that both versions 
 Navigate to:  
 **Manage Server → Certificates → Manage Certificates**
 
-![](./assets/cert2.png)
-
+<Image img={require("./assets/cert2.png")} alt="" />
 **Alternatively, view certificate entries via CLI**
 
 ```bash showLineNumbers 

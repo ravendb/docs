@@ -6,6 +6,7 @@ description: "Learn about index definitions and thier optimization."
 publishedAt: 2025-09-17
 image: "https://ravendb.net/wp-content/uploads/2025/09/spotting-red-flags-article-image.png"
 author: "Paweł Lachowski"
+proficiencyLevel: "Expert"
 ---
 
 import Admonition from '@theme/Admonition';
@@ -14,6 +15,7 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
 
 Every database has a way of making data easier & faster to find. This role is often fulfilled by [indexes](https://docs.ravendb.net/studio/database/indexes/indexes-overview/#indexes---the-general-concept). Without them, every request would be like searching through a stack of papers one by one, hoping to stumble on the right page. With them, your queries can quickly jump over to the relevant results, going through compacted entries with only the data that the query cares about. 
 
@@ -165,8 +167,7 @@ And this one would return a negative response, as it should.
 
 But if we’d have order that matches this query, it works properly:
 
-![](./assets/indexdef1.png)
-
+<Image img={require("./assets/indexdef1.png")} alt="" />
 ## Map Reduce With Unique Values
 
 Sometimes you want to aggregate your data \- e.g. all profit generated from each customer, but you hold each purchase in separate documents. That is where [Map-Reduce](https://docs.ravendb.net/6.0/studio/database/indexes/create-map-reduce-index/) can help you. It aggregates all the data you want from your query under one key and combines them.
