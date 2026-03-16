@@ -5,20 +5,123 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* By default, each session tracks changes to all entities it has either stored, loaded, or queried for.  
-  All changes are then persisted when `SaveChanges` is called.  
+* By default, each session tracks changes to all entities it has either stored, loaded, or queried for.
+  All changes are then persisted when `SaveChanges` is called.
 
-* Tracking can be disabled at various scopes:  
-  for a specific entity, for entities returned by a query, for all entities in a session, or globally using conventions.
+* The session's tracking behavior can be configured using the `TrackingMode` option in `SessionOptions`.
+
+* Tracking can also be disabled at more granular scopes:
+  for a specific entity, for entities returned by a query, or globally using conventions.
 
 * In this article:
-  * [Disable tracking changes for a specific entity](../../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-changes-for-a-specific-entity)
+  * [Tracking mode](../../../../client-api/session/configuration/how-to-disable-tracking.mdx#tracking-mode)
+  * [Track all entities](../../../../client-api/session/configuration/how-to-disable-tracking.mdx#track-all-entities)
   * [Disable tracking all entities in session](../../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-all-entities-in-session)
+  * [Disable tracking changes for a specific entity](../../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-changes-for-a-specific-entity)
   * [Disable tracking query results](../../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-query-results)
   * [Customize tracking in conventions](../../../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions)
   * [Using 'Include' in a NoTracking session will throw](../../../../client-api/session/configuration/how-to-disable-tracking.mdx#using-)
 
 </Admonition>
+## Tracking mode
+
+* Use the `TrackingMode` option in `SessionOptions` to configure entity tracking behavior for the session.
+
+| Value                 | Description                                                                                                                                                                                                                                     |
+|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Default**           | Standard tracking. The session tracks changes only to entities that are stored, loaded, or queried. Modified entities are persisted when `SaveChanges` is called.                                                                                 |
+| **NoTracking**        | Tracking is disabled. Entities are not tracked. `Store` is not available. Each `Load` or `Query` call creates new entity instances. Equivalent to the deprecated `SessionOptions.NoTracking = true`.                                              |
+| **TrackAllEntities**  | Extended tracking. In addition to the default behavior, the session records the change vectors of **all** entities it encounters (loaded, queried, or included). On `SaveChanges`, these change vectors are sent to the server, which verifies that none of the tracked entities were modified by another session. A `ConcurrencyException` is thrown if a conflict is detected. |
+
+**Syntax**
+
+<TabItem value="syntax_tracking_mode" label="syntax_tracking_mode">
+<CodeBlock language="csharp">
+{`public enum TrackingMode
+{
+    Default,
+    NoTracking,
+    TrackAllEntities
+}`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="warning" title="Deprecation notice">
+
+The `SessionOptions.NoTracking` boolean property is deprecated and will be removed in a future major version.
+Use `SessionOptions.TrackingMode` instead. Setting both `NoTracking` and `TrackingMode` on the same `SessionOptions` object will throw an `InvalidOperationException`.
+
+</Admonition>
+
+<Admonition type="info" title="Limitation">
+
+`TrackingMode.TrackAllEntities` is not compatible with `TransactionMode.ClusterWide`.
+Setting both will throw an `InvalidOperationException`.
+
+</Admonition>
+
+
+
+## Track all entities
+
+* When `TrackingMode` is set to `TrackAllEntities`, the session tracks the change vectors of all entities it encounters -
+  not only those that are modified.
+* On `SaveChanges`, the session sends the tracked change vectors to the server as part of the batch operation.
+* The server validates that none of the tracked entities were modified by another session since they were loaded.
+* If a tracked entity was modified externally, a `ConcurrencyException` is thrown and none of the changes in the batch are persisted.
+* This provides **session-wide optimistic concurrency** - ensuring that the data you read has not changed by the time you save.
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (IDocumentSession session = store.OpenSession(new SessionOptions
+{
+    // Enable tracking for all entities
+    TrackingMode = TrackingMode.TrackAllEntities
+}))
+{
+    // Load two entities - the session records both change vectors
+    Employee employee1 = session.Load<Employee>("employees/1-A");
+    Employee employee2 = session.Load<Employee>("employees/2-A");
+
+    // Modify only employee2
+    employee2.FirstName = "New Name";
+
+    // On SaveChanges, the server verifies that BOTH employee1 and employee2
+    // have not been modified by another session since they were loaded.
+    // If either was modified externally, a ConcurrencyException is thrown.
+    session.SaveChanges();
+}`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession(new SessionOptions
+{
+    // Enable tracking for all entities
+    TrackingMode = TrackingMode.TrackAllEntities
+}))
+{
+    // Load two entities - the session records both change vectors
+    Employee employee1 = await asyncSession.LoadAsync<Employee>("employees/1-A");
+    Employee employee2 = await asyncSession.LoadAsync<Employee>("employees/2-A");
+
+    // Modify only employee2
+    employee2.FirstName = "New Name";
+
+    // On SaveChanges, the server verifies that BOTH employee1 and employee2
+    // have not been modified by another session since they were loaded.
+    // If either was modified externally, a ConcurrencyException is thrown.
+    await asyncSession.SaveChangesAsync();
+}`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
 ## Disable tracking changes for a specific entity
 
 * You can prevent the session from persisting changes made to a specific entity by using `IgnoreChangesFor`.
@@ -79,10 +182,10 @@ await asyncSession.SaveChangesAsync();
 
 ## Disable tracking all entities in session
 
-* Tracking can be disabled for all entities in the session's options.  
-* When tracking is disabled for the session:  
+* Tracking can be disabled for all entities in the session's options.
+* When tracking is disabled for the session:
   * Method `Store` will Not be available (an exception will be thrown if used).
-  * Calling `Load` or `Query` will generate a call to the server and create new entities instances.  
+  * Calling `Load` or `Query` will generate a call to the server and create new entities instances.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
@@ -90,19 +193,18 @@ await asyncSession.SaveChangesAsync();
 {`using (IDocumentSession session = store.OpenSession(new SessionOptions
 {
     // Disable tracking for all entities in the session's options
-    NoTracking = true
+    TrackingMode = TrackingMode.NoTracking
 }))
 {
     // Load any entity, it will Not be tracked by the session
     Employee employee1 = session.Load<Employee>("employees/1-A");
-    
+
     // Loading again from same document will result in a new entity instance
     Employee employee2 = session.Load<Employee>("employees/1-A");
-    
+
     // Entities instances are not the same
     Assert.NotEqual(employee1, employee2);
-}
-`}
+}`}
 </CodeBlock>
 </TabItem>
 <TabItem value="Async" label="Async">
@@ -110,19 +212,18 @@ await asyncSession.SaveChangesAsync();
 {`using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession(new SessionOptions
 {
     // Disable tracking for all entities in the session's options
-    NoTracking = true
+    TrackingMode = TrackingMode.NoTracking
 }))
 {
     // Load any entity, it will Not be tracked by the session
     Employee employee1 = await asyncSession.LoadAsync<Employee>("employees/1-A");
-    
+
     // Loading again from same document will result in a new entity instance
     Employee employee2 = await asyncSession.LoadAsync<Employee>("employees/1-A");
 
     // Entities instances are not the same
     Assert.NotEqual(employee1, employee2);
-}
-`}
+}`}
 </CodeBlock>
 </TabItem>
 </Tabs>
@@ -308,7 +409,7 @@ await asyncSession.SaveChangesAsync();
 {`using (IDocumentSession session = store.OpenSession(new SessionOptions
 {
     // Working with a non-tracking session
-    NoTracking = true
+    TrackingMode = TrackingMode.NoTracking
 }))
 {
     try
@@ -317,7 +418,7 @@ await asyncSession.SaveChangesAsync();
         Product product1 = session
             .Include<Product>(x => x.Supplier)
             .Load<Product>("products/1-A");
-        
+
         // The same applies when using the builder syntax:
         Product product2 = session.Load<Product>("products/1-A",
             builder => builder.IncludeDocuments(product => product.Supplier));
@@ -335,7 +436,7 @@ await asyncSession.SaveChangesAsync();
 {`using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession(new SessionOptions
        {
            // Working with a non-tracking session
-           NoTracking = true
+           TrackingMode = TrackingMode.NoTracking
        }))
 {
     try
@@ -367,7 +468,7 @@ await asyncSession.SaveChangesAsync();
 {`using (IDocumentSession session = store.OpenSession(new SessionOptions
        {
            // Working with a non-tracking session
-           NoTracking = true
+           TrackingMode = TrackingMode.NoTracking
        }))
 {
     try
@@ -391,7 +492,7 @@ await asyncSession.SaveChangesAsync();
 {`using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession(new SessionOptions
        {
            // Working with a non-tracking session
-           NoTracking = true
+           TrackingMode = TrackingMode.NoTracking
        }))
 {
     try
