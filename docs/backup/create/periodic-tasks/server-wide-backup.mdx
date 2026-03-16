@@ -17,22 +17,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* A server-wide backup task is a **backup configuration template** that you can populate with your backup preferences.  
-  - Once saved, the server applies your configuration by creating individual per-database backup tasks for **all databases on the server** except those **explicitly excluded** in the configuration.  
-  - An individual database backup task will also be automatically added to any database created **after** defining a server-wide backup task.  
-  <br />
-  <Admonition type="tip" title="">
-  Creating a server-wide backup task is useful when you want to define a backup configuration once and apply it to multiple databases, instead of manually creating an individual backup task for each database.
-  </Admonition>
+* By creating a server-wide backup task, you can **define the backup configuration once** and apply it to **multiple databases** as per-database backup tasks, instead of manually creating an individual backup task for each database.  
 
 * This article explains how to create and manage a server-wide backup configuration and its derived database tasks.  
   For detailed guidance on backup configuration options (such as backup types, scope, scheduling, storage, retention policy, and encryption), see the [periodic database-backup task](../../../backup/create/periodic-tasks/database-backup) article.  
 
-* Each derived database task acts as a regular periodic database-backup task. You can access each task to check its latest and next scheduled backups, or to trigger an immediate database backup.
-
-* The derived database tasks continue to share the configuration defined by the server-wide template.  
-   - Modifying the configuration or excluding databases from the backup can only be done through the parent server-wide task.  
-   - Deleting the server-wide task will remove all derived database tasks.  
 
 * In this article:  
   * [Creating and managing server-wide backup tasks using the client API](../../../backup/create/periodic-tasks/server-wide-backup#creating-and-managing-server-wide-backup-tasks-using-the-client-api)
@@ -57,6 +46,30 @@ import ContentFrame from "@site/src/components/ContentFrame";
     - [Delaying or aborting a running backup operation](../../../backup/create/periodic-tasks/server-wide-backup#delaying-or-aborting-a-running-backup-operation)
 
 </Admonition>
+
+<Panel heading="Overview">
+
+A server-wide backup task is a **backup configuration template** that is automatically applied to all your databases as multiple **per-database backup tasks**.  
+- An individual database backup task will also be automatically added to any database created **after** defining a server-wide backup task.  
+- When creating the task, you can exclude specific databases from the backup, so that the configuration will only be applied to the databases you want to back up.  
+
+Each derived **database task** is a persistent scheduled entity that runs **backup operations** on the schedule defined by the parent server-wide task.  
+- You can access each derived task to check its latest and next scheduled backups, or to trigger an immediate database backup.  
+- The derived tasks continue to share the configuration defined by the server-wide template.  
+   - Modifying the configuration or excluding databases from the backup can only be done through the parent server-wide task.  
+   - Deleting the server-wide task will remove all derived tasks.  
+
+A **backup operation** is the actual execution of a backup.  
+It starts, runs, and completes (or fails).  
+Once a backup operation is running, you can delay or abort it, e.g., to free up system resources.  
+
+For example:  
+- You create a **server-wide backup task** named `NightlyBackup` that defines a full backup each night at midnight.  
+- The server automatically applies your configuration as **per-database backup tasks**, naming each derived task `Server Wide Backup, NightlyBackup`.  
+- Each derived database task executes a **backup operation** every midnight.  
+
+</Panel>
+
 
 <Panel heading="Creating and managing server-wide backup tasks using the client API">
 
