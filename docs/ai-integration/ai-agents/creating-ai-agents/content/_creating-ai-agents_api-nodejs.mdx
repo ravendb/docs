@@ -784,14 +784,14 @@ chat.setUserPrompt(
     and store the results in the database`);
 
 // Run the conversation:
-const llmResponse = await chat.run();
+const response = await chat.run();
 
 // Check the LLM's response status    
-if (llmResponse.status === "Done") {
+if (response.status === "Done") {
     // The LLM successfully processed the user prompt and returned a response.
     // The performer's ID, profit, and suggested rewards were stored in the Performers
     // collection by the action tool, and are also included in the final LLM response.
-    const answer = llmResponse.answer;
+    const answer = response.answer;
 }
 ```
 </TabItem>
@@ -844,7 +844,7 @@ The status can be:
   let rewardText = "";
     
   // Call 'stream' to collect the streamed response
-  const streamAnswer = await chat.stream(
+  const response = await chat.stream(
     
       // The response property to stream
       "suggestedReward",
@@ -856,10 +856,10 @@ The status can be:
   });
   
   // Check the conversation status
-  if (llmResponse.status === "Done") {
+  if (response.status === "Done") {
   {
     // The full streamed property has been received and handled
-    console.log("Final streaming answer", streamAnswer);
+    console.log("Final streaming answer", response);
   }
   ```
 </ContentFrame>
@@ -1056,13 +1056,13 @@ chat.setUserPrompt(`
 
 // Run the chat/conversation:
 // ==========================
-const llmResponse = await chat.run()
+const response = await chat.run()
 
-if (llmResponse.status === "Done") {
+if (response.status === "Done") {
     // The LLM successfully processed the user prompt and returned a response.
     // The performer's ID, profit, and suggested rewards were stored in the Performers
     // collection by the action tool, and are also included in the final LLM response.
-    const answer = llmResponse.answer;
+    const answer = response.answer;
 }
 ```
 </Panel>

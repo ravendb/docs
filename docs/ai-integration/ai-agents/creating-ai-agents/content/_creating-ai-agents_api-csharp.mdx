@@ -1065,9 +1065,9 @@ Learn how to do this in the [Stream LLM responses](../../../../ai-integration/ai
 // Set the user prompt and run the conversation
 chat.SetUserPrompt("send a few suggestions to reward the employee that made the largest profit");
 
-var LLMResponse = await chat.RunAsync<Performer>(CancellationToken.None);
+var response = await chat.RunAsync<Performer>(CancellationToken.None);
 
-if (LLMResponse.Status == AiConversationResult.Done)
+if (response.Status == AiConversationResult.Done)
 {
     // The LLM successfully processed the user prompt and returned its response.
     // The performer's ID, profit, and suggested rewards were stored in the Performers
@@ -1093,7 +1093,7 @@ Streaming the response allows the client to start processing it before it is com
 
   // Using StreamAsync to collect the streamed response
   // The response property to stream is in this case `suggestedReward`
-  var LLMResponse = await chat.StreamAsync<Performer>(responseObj => responseObj.suggestedReward, str =>
+  var response = await chat.StreamAsync<Performer>(responseObj => responseObj.suggestedReward, str =>
   {
     // Callback invoked with the arrival of each incoming chunk of the processed property
 
@@ -1102,7 +1102,7 @@ Streaming the response allows the client to start processing it before it is com
 
   }, CancellationToken.None);
 
-  if (LLMResponse.Status == AiConversationResult.Done)
+  if (response.Status == AiConversationResult.Done)
   {
     // Handle the full response when ready
 
@@ -1314,9 +1314,9 @@ public async Task createAndRunAiAgent_full()
     // Set user prompt and run chat
     chat.SetUserPrompt("send a few suggestions to reward the employee that made the largest profit");
 
-    var LLMResponse = await chat.RunAsync<Performer>(CancellationToken.None);
+    var response = await chat.RunAsync<Performer>(CancellationToken.None);
 
-    if (LLMResponse.Status == AiConversationResult.Done)
+    if (response.Status == AiConversationResult.Done)
     {
         // The LLM successfully processed the user prompt and returned its response.
         // The performer's ID, profit, and suggested rewards were stored in the Performers

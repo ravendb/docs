@@ -1049,9 +1049,9 @@ Learn how to do this in the [Stream LLM responses](../../../../ai-integration/ai
 # Set the user prompt and run the conversation
 chat.set_user_prompt("send a few suggestions to reward the employee that made the largest profit")
 
-llm_response = chat.run()
+response = chat.run()
 
-if llm_response.status == AiConversationStatus.DONE:
+if response.status == AiConversationStatus.DONE:
   # The LLM successfully processed the user prompt and returned its response.
   # The performer's ID, profit, and suggested rewards were stored in the Performers
   # collection by the action tool, and are also returned in the final LLM response.
@@ -1077,9 +1077,9 @@ Streaming the response allows the client to start processing it before it is com
 
   # Using `stream` to collect the streamed response
   # The response property to stream is in this case `suggestedReward`
-  llm_response = chat.stream("suggestedReward", reward.append)
+  response = chat.stream("suggestedReward", reward.append)
 
-  if llm_response.status == AiConversationStatus.DONE:
+  if response.status == AiConversationStatus.DONE:
       # Handle the full response when ready
 
       # The streamed property was fully loaded and handled by the callback above,
@@ -1263,8 +1263,8 @@ def create_and_run_ai_agent_full():
     # Set user prompt and run chat
     chat.set_user_prompt("send a few suggestions to reward the employee that made the largest profit")
 
-    llm_response = chat.run()
-    if llm_response.status == AiConversationStatus.DONE:
+    response = chat.run()
+    if response.status == AiConversationStatus.DONE:
         # The LLM successfully processed the user prompt and returned its response.
         # The performer's ID, profit, and suggested rewards were stored in the Performers
         # collection by the action tool, and are also returned in the final LLM response.
