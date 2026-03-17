@@ -32,7 +32,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * In this page:
     * [Add a Kafka connection string](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#add-a-kafka-connection-string)
-        * [Exmaple](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#example)
+        * [Example](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#example)
         * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#syntax)
     * [Add a Kafka ETL task](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#add-a-kafka-etl-task)
         * [Example - basic](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#example-basic)
@@ -131,7 +131,7 @@ var res = store.Maintenance.Send(
     * Extract source documents from the "Orders" collection in RavenDB.
     * Process each "Order" document using a defined script that creates a new `orderData` object.
     * Load the `orderData` object to the "OrdersTopic" in a Kafka broker.
-* For more details about the script and the `loadTo` method, see the [transromation script](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#the-transformation-script) section below.
+* For more details about the script and the `loadTo` method, see the [transformation script](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#the-transformation-script) section below.
 
 <TabItem value="add_kafka_etl_task" label="add_kafka_etl_task">
 <CodeBlock language="csharp">

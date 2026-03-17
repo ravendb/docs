@@ -81,7 +81,7 @@ that messages would arrive in the same order they were sent or prevent their dup
 
 <Admonition type="info" title="">
 Use standard queueing when quick delivery takes precedence over messages order and 
-distinctness or the recepient can make up for them.  
+distinctness or the recipient can make up for them.  
 </Admonition>
 #### FIFO queueing
 
@@ -266,7 +266,7 @@ public class Basic
   * Extract source documents from the "Orders" collection in RavenDB.  
   * Process each "Order" document using a defined script that creates a new `orderData` object.  
   * Load the `orderData` object to the "OrdersQueue" queue on an SQS destination.  
-* For more details about the script and the `loadTo` method, see the transromation script section below.  
+* For more details about the script and the `loadTo` method, see the transformation script section below.  
 
 <TabItem value="add_amazon_sqs_etl_task" label="add_amazon_sqs_etl_task">
 <CodeBlock language="csharp">

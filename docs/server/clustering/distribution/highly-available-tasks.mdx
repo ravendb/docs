@@ -20,7 +20,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * Updating a `Rehab` or a `Promotable` [Database Node](../../../server/clustering/distribution/distributed-database.mdx#database-topology)  
 
 * There is no single coordinator handing out tasks to a specific node.  
-  Instaed, each node decides on its own if it is the [Reponsible Node](../../../server/clustering/distribution/highly-available-tasks.mdx#responsible-node) of the task.  
+  Instead, each node decides on its own if it is the [Responsible Node](../../../server/clustering/distribution/highly-available-tasks.mdx#responsible-node) of the task.  
 
 * Each node will re-evaluate its responsibilities with every change made to the [Database Record](../../../client-api/operations/server-wide/create-database.mdx),  
   such as defining a new _index_, configuring or modifying an _Ongoing Task_, any _Database Topology_ change, etc.  
@@ -46,7 +46,7 @@ to verify whether the Highly Available Tasks feature is activated in your databa
      * Data subscription  
      * All ETL types  
 
-* If your license does **not** provide highly available tasks, the responsibilites of a failed node will be 
+* If your license does **not** provide highly available tasks, the responsibilities of a failed node will be 
   resumed when the node returns online.  
  
 * Scenarios [below](../../../server/clustering/distribution/highly-available-tasks.mdx#tasks-relocation) 
