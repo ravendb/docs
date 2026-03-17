@@ -54,5 +54,11 @@
             "targetUrl": "/data-archival/overview",
             "minimumVersion": "6.2"
         }
+    },
+    {
+        "key": "/guides/from-zero-to-a-fully-secured-cluster",
+        "value": {
+            "targetUrl": "/guides/the-ravendb-kubernetes-operator-way"
+        }
     }
 ]

@@ -42,7 +42,26 @@ async function handler(event) {
     const request = event.request;
     const uri = request.uri;
 
-    if (uri.startsWith("/cloud") || uri.startsWith("/guides") || uri.startsWith("/templates")) {
+    if (uri.startsWith("/templates")) {
+        return request;
+    }
+
+    if (uri.startsWith("/guides") || uri.startsWith("/cloud")) {
+        try {
+            const redirectData = await kvsHandle.get(uri);
+            const redirectJsonValue = JSON.parse(redirectData);
+            if (redirectJsonValue.targetUrl) {
+                return {
+                    statusCode: 301,
+                    statusDescription: "Moved Permanently",
+                    headers: {
+                        location: { value: redirectJsonValue.targetUrl },
+                    },
+                };
+            }
+        } catch (_) {
+            // No redirect rule found — pass through as-is
+        }
         return request;
     }
 
