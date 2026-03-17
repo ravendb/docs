@@ -17,13 +17,14 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* By creating a server-wide backup task, you can **define the backup configuration once** and apply it to **multiple databases** as per-database backup tasks, instead of manually creating an individual backup task for each database.  
-
-* This article explains how to create and manage a server-wide backup configuration and its derived database tasks.  
+* Use a [server-wide backup task](../../../backup/overview#server-wide-backup) to define a **backup configuration** once and have RavenDB automatically apply it to **all your databases** as per-database backup tasks.
+  
+* This article explains how to create and manage the parent server-wide backup configuration and its derived database tasks.  
   For detailed guidance on backup configuration options (such as backup types, scope, scheduling, storage, retention policy, and encryption), see the [periodic database-backup task](../../../backup/create/periodic-tasks/database-backup) article.  
 
 
 * In this article:  
+  * [Overview](../../../backup/create/periodic-tasks/server-wide-backup#overview)
   * [Creating and managing server-wide backup tasks using the client API](../../../backup/create/periodic-tasks/server-wide-backup#creating-and-managing-server-wide-backup-tasks-using-the-client-api)
      * [Creating a server-wide backup task](../../../backup/create/periodic-tasks/server-wide-backup#creating-a-server-wide-backup-task)
      * [Updating a server-wide backup task](../../../backup/create/periodic-tasks/server-wide-backup#updating-a-server-wide-backup-task)
@@ -49,7 +50,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Panel heading="Overview">
 
-A server-wide backup task is a **backup configuration template** that is automatically applied to all your databases as multiple **per-database backup tasks**.  
+A server-wide backup task is a **backup configuration template** that is automatically applied to all your databases as **per-database backup tasks**.  
 - An individual database backup task will also be automatically added to any database created **after** defining a server-wide backup task.  
 - When creating the task, you can exclude specific databases from the backup, so that the configuration will only be applied to the databases you want to back up.  
 
@@ -208,7 +209,7 @@ await store.Maintenance.Server.SendAsync(
 
 ## Deleting a server-wide backup task
 
-To delete a server-wide backup task:
+To delete a server-wide backup task and remove all its derived database tasks:  
 - Use `DeleteServerWideTaskOperation` and pass the name of the server-wide backup task you want to delete.
 
 #### Example:

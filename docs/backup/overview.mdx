@@ -259,8 +259,6 @@ e.g.,
 - And an incremental backup added every 20 minutes:  
   `IncrementalBackupFrequency = "*/20 * * * *"`  
 
-If the need arises to restore from backup, a new database will be created and the backup folder provided to the restore procedure, which will automatically add to the new database the content of the full backup and all its subsequent incremental backups in the correct order.  
-
 ---
 
 #### Overlap between full and incremental backup tasks:
@@ -346,34 +344,40 @@ This can be useful, for example, if you want to fetch the credentials for the st
 </ContentFrame>
 <ContentFrame>
 
-### Naming and folder structure
+### Naming and backup folder content
+
+---
 
 #### Naming:
 
 Backup folders and files are **named automatically**.  
 
-* The names are constructed of:  
+* **Folder names** are constructed of:  
   - Current Date and Time  
   - Backed-up Database Name  
   - Owner-Node Tag  
   - Backup Type ("backup" for a logical backup or "snapshot" for a snapshot image)  
-  - Backup Scope ("full-backup" or "incremental-backup")  
 
+* **File names** are constructed of:  
+  - Current Date and Time  
+  - Backup Scope ("full-backup" or "incremental-backup")  
+  - Backup Type ("backup" for a logical backup or "snapshot" for a snapshot image)  
+  
 * For example:  
-  * `2018-12-26-16-17.ravendb-Products-A-backup` - The name automatically given to a backup _folder_.  
-    - "**2018-12-26-16-17**" - Backup date and time  
+  * `2025-12-26-16-17.ravendb-Products-A-backup` - The name automatically given to a backup **folder**.  
+    - "**2025-12-26-16-17**" - Backup date and time  
     - "**Products**" - Backed-up database name  
     - "**A**" - Executing node's tag  
     - "**backup**" - Backup type (backup/snapshot)  
-  * `2018-12-26-16-17.ravendb-full-backup` - The name automatically given to the full backup **file** within the folder.  
+  * `2025-12-26-16-17.ravendb-full-backup` - The name automatically given to the full backup **file** within the folder.  
     Subsequent incremental backups will be added to the folder with an "incremental-backup" suffix.
 
 ---
 
-#### Folder Structure:
+#### Backup folder content:
 
-A typical backup folder holds a single full backup file and a list of incremental-backup files that supplement it.  
-Each incremental backup file contains only the delta from the previous backup file.
+A backup folder always contains a single full-backup file, and optionally a list of incremental-backup files that supplement it.  
+Each incremental-backup file contains only the changes made in the database since the previous backup (full or incremental).
 
 * For example -  
   `2018-12-26-09-00.ravendb-full-backup`  
@@ -382,6 +386,7 @@ Each incremental backup file contains only the delta from the previous backup fi
   `2018-12-26-18-00.ravendb-incremental-backup`  
 
 </ContentFrame>
+
 <ContentFrame>
 
 ### Encryption
@@ -447,15 +452,18 @@ A full backup and its corresponding incremental backups are always deleted as a 
 
 <Panel heading="Server-wide backup">
 
-Instead of defining an **individual backup task** for each database, you can define a single server-wide backup task that schedules periodic backups for **all** databases on the server.  
-- The same features available for single-database backup tasks are supported for server-wide backup tasks. For example, you can configure the task to create full and incremental backups and define a retention policy.
 
-In practice, the server keeps the server-wide configuration you define as a **template**, and uses it to define a derived backup task for each database.  
-- A derived backup task will also be created for any database added to the server **after** the server-wide task has been defined.  
+A **database backup task** applies to one database only.  
+If your server hosts multiple databases, keeping a separate backup task for each of them may become difficult, especially if some databases require multiple backup tasks.  
+
+A **server-wide task** solves this difficulty by allowing you to define the backup configuration only once. The server then applies your configuration to all databases as derived per-database backup tasks.  
+
+- The same features available for single-database backup tasks are supported for server-wide derived tasks.  
+  For example, your configuration can set full and incremental backups, and define a retention policy.
 
 <Admonition type="note" title="">
-- Modifying, disabling, or deleting the main task applies to all derived database tasks.  
-- In addition, you can access each database task directly to check its schedule and other details or to create an immediate backup for the database.  
+- Modifying, disabling, or deleting the parent server-wide task applies to all derived database tasks.  
+- In addition, you can access each derived task directly to check its schedule and other details or to create an immediate backup for the database.  
 </Admonition>
 
 <ContentFrame>
@@ -540,12 +548,24 @@ Shard backups can also be restored to non-sharded databases, either for a select
 
 <Panel heading="Restoring from backup">
 
+<ContentFrame>
+When restoring from backup:  
+- A new database is created.  
+- The restore operation accesses the backup folder.  
+- The full backup and all subsequent incremental backups are automatically retrieved and their content added to the new database in the correct order.  
+
+[Learn how to restore a database from backup using the client API](../backup/restore#restoring-from-backup-using-the-client-api)  
+[Learn how to restore a database from backup via Studio](../backup/restore#restoring-from-backup-using-studio)
+</ContentFrame>
+
+<ContentFrame>
 A database is typically restored from backup to a single node, and then replicated to the other cluster nodes.
 
 When restored from a snapshot image, the database can be restored to multiple cluster nodes simultaneously. This is because snapshots retain document change vectors, allowing documents to be recognized across nodes without further replication.
 
-[Learn how to restore a database from backup using the client API](../backup/restore#restoring-from-backup-using-the-client-api)  
-[Learn how to restore a database from backup via Studio](../backup/restore#restoring-from-backup-using-studio)
+[Learn how to restore from backup to multiple cluster nodes](../backup/restore#restoring-a-database-to-multiple-cluster-nodes)  
+
+</ContentFrame>
 
 </Panel>
 
