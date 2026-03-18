@@ -25,7 +25,7 @@ export default function StartingPoints(): ReactNode {
 
     return (
         <section className="mb-8">
-            <Heading as="h3">Starting points</Heading>
+            <Heading as="h2">Starting points</Heading>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {startingPoints.map((props, idx) => (
                     <StartingPoint key={idx} {...props} />

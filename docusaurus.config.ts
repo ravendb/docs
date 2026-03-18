@@ -235,7 +235,7 @@ const config: Config = {
         metadata: [
             {
                 name: "keywords",
-                content: "nosql, document database",
+                content: "ravendb, nosql, document database, acid database, distributed database, .net database",
             },
             {
                 name: "description",
