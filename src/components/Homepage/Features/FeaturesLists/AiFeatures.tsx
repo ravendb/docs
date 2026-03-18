@@ -31,7 +31,7 @@ export default function AiFeaturesGrid() {
             title: "GenAI tasks",
             icon: "genai",
             url: `/${activeVersion.label}/ai-integration/gen-ai-integration/start`,
-            description: "Empower your application using intelligent task",
+            description: "Empower your application using intelligent tasks",
             minimumSupportedVersion: "7.1",
         },
         {
@@ -45,7 +45,7 @@ export default function AiFeaturesGrid() {
 
     return (
         <>
-            <Heading as="h4" className="!mb-2">
+            <Heading as="h3" className="!mb-2">
                 AI
             </Heading>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">

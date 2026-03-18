@@ -38,7 +38,7 @@ export default function ClustersFeaturesGrid() {
 
     return (
         <>
-            <Heading as="h4" className="!mb-2">
+            <Heading as="h3" className="!mb-2">
                 Clusters
             </Heading>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">

@@ -120,6 +120,127 @@ const config: Config = {
         ],
         require.resolve("./src/plugins/recent-guides-plugin"),
     ],
+    headTags: [
+        {
+            tagName: "link",
+            attributes: {
+                rel: "preconnect",
+                href: "https://GYTCYX561T-dsn.algolia.net",
+                crossorigin: "anonymous",
+            },
+        },
+        {
+            tagName: "link",
+            attributes: {
+                rel: "preconnect",
+                href: "https://www.googletagmanager.com",
+            },
+        },
+        {
+            tagName: "link",
+            attributes: {
+                rel: "preload",
+                href: "css/fonts/Inter[wght].woff2",
+                as: "font",
+                type: "font/woff2",
+                crossorigin: "anonymous",
+            },
+        },
+        {
+            tagName: "link",
+            attributes: {
+                rel: "preload",
+                href: "css/fonts/Inter-Italic[wght].woff2",
+                as: "font",
+                type: "font/woff2",
+                crossorigin: "anonymous",
+            },
+        },
+        {
+            tagName: "link",
+            attributes: {
+                rel: "preload",
+                href: "css/fonts/JetBrainsMono[wght].woff2",
+                as: "font",
+                type: "font/woff2",
+                crossorigin: "anonymous",
+            },
+        },
+        {
+            tagName: "link",
+            attributes: {
+                rel: "preload",
+                href: "css/fonts/JetBrainsMono-Italic[wght].woff2",
+                as: "font",
+                type: "font/woff2",
+                crossorigin: "anonymous",
+            },
+        },
+        {
+            tagName: "script",
+            attributes: { type: "application/ld+json" },
+            innerHTML: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                name: "RavenDB Documentation",
+                url: "https://docs.ravendb.net/",
+                description:
+                    "Official RavenDB documentation. Learn installation, querying, indexing, scaling, security, and every advanced feature of the fully ACID NoSQL database that combines performance with ease of use.",
+                publisher: {
+                    "@type": "Organization",
+                    name: "RavenDB",
+                    url: "https://ravendb.net/",
+                    logo: {
+                        "@type": "ImageObject",
+                        url: "https://docs.ravendb.net/img/social-card.jpg",
+                    },
+                },
+                potentialAction: {
+                    "@type": "SearchAction",
+                    target: {
+                        "@type": "EntryPoint",
+                        urlTemplate: "https://docs.ravendb.net/search?q={search_term_string}",
+                    },
+                    "query-input": "required name=search_term_string",
+                },
+            }),
+        },
+        {
+            tagName: "script",
+            attributes: { type: "application/ld+json" },
+            innerHTML: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                name: "RavenDB",
+                url: "https://ravendb.net/",
+                logo: {
+                    "@type": "ImageObject",
+                    url: "https://docs.ravendb.net/img/social-card.jpg",
+                },
+                sameAs: ["https://github.com/ravendb/ravendb", "https://www.youtube.com/@ravendb_net"],
+            }),
+        },
+        {
+            tagName: "script",
+            attributes: { type: "application/ld+json" },
+            innerHTML: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                name: "RavenDB",
+                applicationCategory: "DeveloperApplication",
+                operatingSystem: "Windows, Linux, macOS, Docker",
+                description:
+                    "A fully transactional NoSQL document database with ACID transactions, distributed clusters, and multi-model data support.",
+                url: "https://ravendb.net/",
+                softwareVersion: "7.2",
+                author: {
+                    "@type": "Organization",
+                    name: "RavenDB",
+                    url: "https://ravendb.net/",
+                },
+            }),
+        },
+    ],
     themeConfig: {
         docs: {
             sidebar: {
@@ -131,112 +252,7 @@ const config: Config = {
             maxHeadingLevel: 4,
         },
         image: "img/social-card.jpg",
-        headTags: [
-            {
-                tagName: "link",
-                attributes: {
-                    rel: "preconnect",
-                    href: "https://GYTCYX561T-dsn.algolia.net",
-                    crossorigin: "anonymous",
-                },
-            },
-            {
-                tagName: "link",
-                attributes: {
-                    rel: "preconnect",
-                    href: "https://www.googletagmanager.com",
-                },
-            },
-            {
-                tagName: "link",
-                attributes: {
-                    rel: "preload",
-                    href: "css/fonts/Inter[wght].woff2",
-                    as: "font",
-                    type: "font/woff2",
-                    crossorigin: "anonymous",
-                },
-            },
-            {
-                tagName: "link",
-                attributes: {
-                    rel: "preload",
-                    href: "css/fonts/Inter-Italic[wght].woff2",
-                    as: "font",
-                    type: "font/woff2",
-                    crossorigin: "anonymous",
-                },
-            },
-            {
-                tagName: "link",
-                attributes: {
-                    rel: "preload",
-                    href: "css/fonts/JetBrainsMono[wght].woff2",
-                    as: "font",
-                    type: "font/woff2",
-                    crossorigin: "anonymous",
-                },
-            },
-            {
-                tagName: "link",
-                attributes: {
-                    rel: "preload",
-                    href: "css/fonts/JetBrainsMono-Italic[wght].woff2",
-                    as: "font",
-                    type: "font/woff2",
-                    crossorigin: "anonymous",
-                },
-            },
-            {
-                tagName: "script",
-                attributes: { type: "application/ld+json" },
-                innerHTML: JSON.stringify({
-                    "@context": "https://schema.org",
-                    "@type": "WebSite",
-                    name: "RavenDB Documentation",
-                    url: "https://docs.ravendb.net/",
-                    description:
-                        "Official RavenDB documentation. Learn installation, querying, indexing, scaling, security, and every advanced feature of the fully ACID NoSQL database that combines performance with ease of use.",
-                    publisher: {
-                        "@type": "Organization",
-                        name: "RavenDB",
-                        url: "https://ravendb.net/",
-                        logo: {
-                            "@type": "ImageObject",
-                            url: "https://docs.ravendb.net/img/social-card.jpg",
-                        },
-                    },
-                    potentialAction: {
-                        "@type": "SearchAction",
-                        target: {
-                            "@type": "EntryPoint",
-                            urlTemplate: "https://docs.ravendb.net/search?q={search_term_string}",
-                        },
-                        "query-input": "required name=search_term_string",
-                    },
-                }),
-            },
-            {
-                tagName: "script",
-                attributes: { type: "application/ld+json" },
-                innerHTML: JSON.stringify({
-                    "@context": "https://schema.org",
-                    "@type": "Organization",
-                    name: "RavenDB",
-                    url: "https://ravendb.net/",
-                    logo: {
-                        "@type": "ImageObject",
-                        url: "https://docs.ravendb.net/img/social-card.jpg",
-                    },
-                    sameAs: ["https://github.com/ravendb/ravendb", "https://www.youtube.com/@ravendb_net"],
-                }),
-            },
-        ],
         metadata: [
-            {
-                name: "keywords",
-                content: "ravendb, nosql, document database, acid database, distributed database, .net database",
-            },
             {
                 name: "description",
                 content:

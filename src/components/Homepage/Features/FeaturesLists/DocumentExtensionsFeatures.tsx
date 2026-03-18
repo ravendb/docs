@@ -55,21 +55,21 @@ export default function DocumentExtensionsFeaturesGrid() {
             title: "Remote Attachments",
             icon: "remote-attachment",
             url: `/${activeVersion.label}/document-extensions/attachments/store-attachments/store-attachments-remote`,
-            description: "Simple, scalable, and conflict-free numeric counters",
+            description: "Offload large binaries to S3 or Azure Blob — zero code changes",
             minimumSupportedVersion: "7.2",
         },
         {
             title: "JSON Schema Validation",
             icon: "document-schema",
             url: `/${activeVersion.label}/documents/schema-validation/overview`,
-            description: "Simple, scalable, and conflict-free numeric counters",
+            description: "Structural data guarantees using JSON Schema — flexible enforcement levels",
             minimumSupportedVersion: "7.2",
         },
     ];
 
     return (
         <>
-            <Heading as="h4" className="!mb-2">
+            <Heading as="h3" className="!mb-2">
                 Document extensions
             </Heading>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
