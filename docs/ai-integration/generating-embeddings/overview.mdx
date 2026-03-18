@@ -2,7 +2,7 @@
 title: "Generating Embeddings - Overview"
 sidebar_label: "Overview"
 sidebar_position: 1
-supported_languages: ["csharp", "nodejs"]
+supported_languages: ["csharp", "nodejs", "python"]
 see_also:
      - title: "Vector search overview"
        link: "ai-integration/vector-search/overview"
@@ -63,11 +63,16 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import OverviewCsharp from './content/_overview-csharp.mdx';
 import OverviewNodejs from './content/_overview-nodejs.mdx';
+import OverviewPython from './content/_overview-python.mdx';
 
 <LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <OverviewCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <OverviewPython />
 </LanguageContent>
 
 <LanguageContent language="nodejs">
