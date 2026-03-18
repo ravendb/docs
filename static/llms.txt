@@ -1,227 +1,171 @@
-# RavenDB
+# RavenDB Documentation
 
-> RavenDB is a NoSQL document database designed for building high-performance, distributed applications. This is the official documentation site covering all product versions, cloud services, and community guides.
+> RavenDB is a fully ACID NoSQL document database. This is the official documentation site covering installation, client APIs, indexing, querying, AI integration, clustering, security, and administration across all supported versions.
 
-## General Information
-
-- [Home](https://docs.ravendb.net/): The main entry point for accessing all RavenDB documentation and resources.
-
-- [What's new](https://docs.ravendb.net/whats-new): Updates and new features introduced in the latest versions of RavenDB.
-
-- [RavenDB Cloud Documentation](https://docs.ravendb.net/cloud/): Specific documentation for RavenDB Cloud, detailing features and configurations.
+Documentation is versioned. The current version is 7.2. Use the `/7.2/` URL prefix for all doc pages.
 
 ## Getting Started
 
-- [Getting Started](https://docs.ravendb.net/start/getting-started): A guide for new users to set up and begin using RavenDB effectively.
+- [Getting Started](https://docs.ravendb.net/7.2/start/getting-started): Installation, first steps, and connecting to the server
+- [What's New](https://docs.ravendb.net/7.2/whats-new): Features and changes introduced in the latest version
+- [System Requirements](https://docs.ravendb.net/7.2/start/installation/system-requirements): Hardware and software prerequisites
+- [Running in Docker](https://docs.ravendb.net/7.2/start/containers/general-guide): Container deployment guide
+- [Playground Server](https://docs.ravendb.net/7.2/start/playground-server): Try RavenDB without installing
 
-## Version Information
+## Versions
 
-- [7.2 (Current)](https://docs.ravendb.net/): Documentation for the current version 7.2 of RavenDB.
+- [7.2 (Current)](https://docs.ravendb.net/7.2/): Current version
+- [7.1](https://docs.ravendb.net/7.1/): Previous stable release
+- [7.0](https://docs.ravendb.net/7.0/): First 7.x release
+- [6.2](https://docs.ravendb.net/6.2/): Long-term support
+- [6.0](https://docs.ravendb.net/6.0/): Previous LTS
 
-- [7.1](https://docs.ravendb.net/7.1): Documentation for version 7.1 of RavenDB.
+## Client API
 
-- [7.0](https://docs.ravendb.net/7.0): Documentation for version 7.0 of RavenDB.
+- [Document Store](https://docs.ravendb.net/7.2/client-api/what-is-a-document-store): Central client object for database access
+- [Session](https://docs.ravendb.net/7.2/client-api/session/what-is-a-session-and-how-does-it-work): Unit of work pattern for CRUD operations
+- [Querying](https://docs.ravendb.net/7.2/client-api/session/querying/how-to-query): Query documents using LINQ or RQL
+- [Bulk Insert](https://docs.ravendb.net/7.2/client-api/bulk-insert/how-to-work-with-bulk-insert-operation): Efficiently insert large volumes of data
+- [Data Subscriptions](https://docs.ravendb.net/7.2/client-api/data-subscriptions/what-are-data-subscriptions): Subscribe to document changes and trigger routines
+- [Changes API](https://docs.ravendb.net/7.2/client-api/changes/what-is-changes-api): Real-time notifications for document, index, and operation changes
+- [Conventions](https://docs.ravendb.net/7.2/client-api/configuration/conventions): Client configuration and customization
+- [REST API](https://docs.ravendb.net/7.2/client-api/rest-api/rest-api-intro): HTTP-based API for direct server interaction
+- [Patching](https://docs.ravendb.net/7.2/client-api/operations/patching/single-document): Transform documents with server-side scripts
+- [Smuggler](https://docs.ravendb.net/7.2/client-api/smuggler/what-is-smuggler): Import and export database content
 
-- [6.2](https://docs.ravendb.net/6.2): Documentation for version 6.2 of RavenDB.
+## Indexes
 
-- [6.0](https://docs.ravendb.net/6.0): Documentation for version 6.0 of RavenDB.
+- [What Are Indexes](https://docs.ravendb.net/7.2/indexes/what-are-indexes): Overview of indexing in RavenDB
+- [Map Indexes](https://docs.ravendb.net/7.2/indexes/map-indexes): Transform and index document fields
+- [Map-Reduce Indexes](https://docs.ravendb.net/7.2/indexes/map-reduce-indexes): Aggregate data across documents
+- [Multi-Map Indexes](https://docs.ravendb.net/7.2/indexes/multi-map-indexes): Query across multiple collections
+- [Full-Text Search](https://docs.ravendb.net/7.2/indexes/querying/searching): Built-in search engine capabilities
+- [Spatial Queries](https://docs.ravendb.net/7.2/indexes/querying/spatial): Geographic location-based search
+- [Faceted Search](https://docs.ravendb.net/7.2/indexes/querying/faceted-search): Navigate large datasets with facets
+- [Vector Search](https://docs.ravendb.net/7.2/indexes/querying/vector-search): Semantic similarity search using vector embeddings
+- [Suggestions](https://docs.ravendb.net/7.2/indexes/querying/suggestions): Did-you-mean style query suggestions
+- [MoreLikeThis](https://docs.ravendb.net/7.2/indexes/querying/morelikethis): Find similar documents based on content
 
-- [5.4](https://docs.ravendb.net/5.4): Documentation for version 5.4 of RavenDB.
+## Querying
 
-- [5.3](https://docs.ravendb.net/5.3): Documentation for version 5.3 of RavenDB.
+- [RQL Overview](https://docs.ravendb.net/7.2/querying/overview): Raven Query Language syntax and usage
 
-- [5.2](https://docs.ravendb.net/5.2): Documentation for version 5.2 of RavenDB.
+## AI Integration
 
-- [5.1](https://docs.ravendb.net/5.1): Documentation for version 5.1 of RavenDB.
+- [AI Integration Start](https://docs.ravendb.net/7.2/ai-integration/start): Getting started with AI features in RavenDB
+- [AI Agents](https://docs.ravendb.net/7.2/ai-integration/ai-agents/start): Database-native agents that query and act safely
+- [Vector Search](https://docs.ravendb.net/7.2/ai-integration/vector-search/start): Contextual similarity search using vectors
+- [GenAI Tasks](https://docs.ravendb.net/7.2/ai-integration/gen-ai-integration/start): Generative AI integration for intelligent tasks
+- [Embeddings Generation](https://docs.ravendb.net/7.2/ai-integration/generating-embeddings/start): Automatically convert data into AI-ready vectors
+- [AI Connection Strings](https://docs.ravendb.net/7.2/ai-integration/connection-strings/overview): Connect to OpenAI, Azure OpenAI, Google AI, Ollama, and more
 
-- [5.0](https://docs.ravendb.net/5.0): Documentation for version 5.0 of RavenDB.
+## Document Extensions
 
-- [4.2](https://docs.ravendb.net/4.2): Documentation for version 4.2 of RavenDB.
+- [Revisions](https://docs.ravendb.net/7.2/document-extensions/revisions/overview): Track and manage document change history
+- [Time Series](https://docs.ravendb.net/7.2/document-extensions/timeseries/overview): Store and query timestamped data natively
+- [Attachments](https://docs.ravendb.net/7.2/document-extensions/attachments/overview): Attach binary files directly to documents
+- [Counters](https://docs.ravendb.net/7.2/document-extensions/counters/overview): Distributed conflict-free numeric counters
+- [Remote Attachments](https://docs.ravendb.net/7.2/document-extensions/attachments/configure-remote-attachments): Store attachments in S3 or Azure Blob Storage
 
-- [4.1](https://docs.ravendb.net/4.1): Documentation for version 4.1 of RavenDB.
+## Server Administration
 
-- [4.0](https://docs.ravendb.net/4.0): Documentation for version 4.0 of RavenDB.
+- [Clustering Overview](https://docs.ravendb.net/7.2/server/clustering/overview): Distributed database cluster management
+- [Replication](https://docs.ravendb.net/7.2/server/clustering/replication/replication-overview): Keep clusters in sync for high availability
+- [Cluster Transactions](https://docs.ravendb.net/7.2/server/clustering/cluster-transactions): ACID transactions across cluster nodes
+- [Backup Overview](https://docs.ravendb.net/7.2/server/ongoing-tasks/backup-overview): Schedule full and incremental backups
+- [Documents Compression](https://docs.ravendb.net/7.2/server/storage/documents-compression): Automatic document compression for storage efficiency
+- [Expiration](https://docs.ravendb.net/7.2/server/extensions/expiration): Automatically schedule document cleanup
+- [Refresh](https://docs.ravendb.net/7.2/server/extensions/refresh): Re-trigger document processing on schedule
+- [Embedded Server](https://docs.ravendb.net/7.2/server/embedded): Run RavenDB in-process without a separate server
+- [Configuration Options](https://docs.ravendb.net/7.2/server/configuration/configuration-options): All server configuration settings
 
-- [3.5](https://docs.ravendb.net/3.5): Documentation for version 3.5 of RavenDB.
+## Security
 
-- [3.0](https://docs.ravendb.net/3.0): Documentation for version 3.0 of RavenDB.
-
-- [2.5](https://docs.ravendb.net/2.5): Documentation for version 2.5 of RavenDB.
-
-- [2.0](https://docs.ravendb.net/2.0): Documentation for version 2.0 of RavenDB.
-
-- [1.0](https://docs.ravendb.net/1.0): Documentation for version 1.0 of RavenDB.
-
-## Core Features
-
-- [Client API](https://docs.ravendb.net/client-api/what-is-a-document-store): Information on how to create a client, connect to the server, and handle documents.
-
-- [Indexes](https://docs.ravendb.net/indexes/querying/query-index): Overview of indexing capabilities in RavenDB.
-
-- [Document Extensions](https://docs.ravendb.net/document-extensions/overview): Details on extending document functionalities.
-
-- [Data Archival](https://docs.ravendb.net/data-archival/overview): Methods for archiving data in RavenDB.
-
-- [Compare-Exchange](https://docs.ravendb.net/compare-exchange/start): Mechanism for handling concurrent updates.
-
-- [Server](https://docs.ravendb.net/server/embedded): Information about server configurations and management.
-
-- [Studio](https://docs.ravendb.net/studio/overview): Overview of the RavenDB Studio interface for database management.
-
-- [Migration Guide](https://docs.ravendb.net/migration/client-api/client-breaking-changes): Guidance on migrating data to RavenDB.
-
-- [Integrations](https://docs.ravendb.net/integrations/postgresql-protocol/overview): Information on integrating RavenDB with other systems.
-
-- [AI Integration](https://docs.ravendb.net/ai-integration/start): Details on integrating AI capabilities with RavenDB.
-
-## Advanced Features
-
-- [AI agents](https://docs.ravendb.net/ai-integration/ai-agents/start): Database-native agents that query and act safely.
-
-- [Vector search](https://docs.ravendb.net/ai-integration/vector-search/start): Find contextually relevant data using vector search capabilities.
-
-- [GenAI tasks](https://docs.ravendb.net/ai-integration/gen-ai-integration/start): Empower applications using intelligent tasks.
-
-- [Embeddings generation](https://docs.ravendb.net/ai-integration/generating-embeddings/start): Automatically convert data into AI-ready vectors.
-
-- [Static indexes](https://docs.ravendb.net/indexes/creating-and-deploying): Control over precomputing and performance of indexes.
-
-- [Auto indexes](https://docs.ravendb.net/indexes/creating-and-deploying#auto-indexes): Self-optimizing database features requiring no manual effort.
-
-- [Raven Query Language](https://docs.ravendb.net/querying/rql/what-is-rql): SQL-style queries for data retrieval.
-
-- [Full-text search](https://docs.ravendb.net/client-api/session/querying/text-search/full-text-search): Integrated search engine for advanced querying.
-
-- [Patching](https://docs.ravendb.net/client-api/operations/patching/single-document): Transform documents at scale with scripts.
-
-- [Facets](https://docs.ravendb.net/indexes/querying/faceted-search): Navigate through large datasets effectively.
-
-- [MoreLikeThis](https://docs.ravendb.net/indexes/querying/morelikethis): Retrieve similar documents based on content.
-
-- [Spatial](https://docs.ravendb.net/indexes/querying/spatial): Search and sort data by geographic location.
-
-- [Revisions](https://docs.ravendb.net/document-extensions/revisions/overview): Track and manage changes to documents.
-
-- [Time series](https://docs.ravendb.net/document-extensions/timeseries/overview): Store and query timestamped data natively.
-
-- [Attachments](https://docs.ravendb.net/document-extensions/attachments/overview): Attach binary files directly to documents.
-
-- [Documents compression](https://docs.ravendb.net/server/storage/documents-compression): Automatically compress document content for storage efficiency.
-
-- [Counters](https://docs.ravendb.net/document-extensions/counters/overview): Scalable and conflict-free numeric counters.
-
-- [Expiration](https://docs.ravendb.net/server/extensions/expiration): Automatically schedule document cleanup.
-
-- [Refresh](https://docs.ravendb.net/server/extensions/refresh): Re-trigger documents as needed.
-
-## Clustering and Transactions
-
-- [Cluster-wide tasks](https://docs.ravendb.net/server/clustering/distribution/highly-available-tasks): Manage tasks across the cluster with auto-failover.
-
-- [Cluster-wide transactions](https://docs.ravendb.net/server/clustering/cluster-transactions): ACID transactions across partitions in a cluster.
-
-- [Replication](https://docs.ravendb.net/server/clustering/replication/replication-overview): Keep clusters in sync for high availability.
-
-- [Subscriptions](https://docs.ravendb.net/client-api/data-subscriptions/what-are-data-subscriptions): Subscribe to document changes and trigger routines.
-
-- [Periodic backups](https://docs.ravendb.net/server/ongoing-tasks/backup-overview): Schedule full and incremental backups for data safety.
-
-## Security and Monitoring
-
-- [Certificates](https://docs.ravendb.net/server/security/overview): Secure servers with X.509 certificates and access control.
-
-- [Encryption](https://docs.ravendb.net/server/security/encryption/encryption-at-rest): Transparent data security for at-rest and in-transit data.
-
-- [Audit Log](https://docs.ravendb.net/server/security/audit-log/audit-log-overview): Built-in audit trail for tracking user actions.
-
-- [Cluster dashboard](https://docs.ravendb.net/studio/cluster/cluster-dashboard/cluster-dashboard-overview): Live view of cluster health and performance.
-
-- [SNMP monitoring](https://docs.ravendb.net/server/administration/snmp/snmp-overview): Expose RavenDB metrics to monitoring tools.
-
-- [Telegraf and Grafana](https://docs.ravendb.net/server/administration/monitoring/telegraf): Push RavenDB metrics into dashboards via plugins.
+- [Security Overview](https://docs.ravendb.net/7.2/server/security/overview): X.509 certificates and access control
+- [Encryption at Rest](https://docs.ravendb.net/7.2/server/security/encryption/encryption-at-rest): Transparent data encryption
+- [Audit Log](https://docs.ravendb.net/7.2/server/security/audit-log/audit-log-overview): Built-in audit trail for user actions
+- [Certificate Management](https://docs.ravendb.net/7.2/server/security/authentication/certificate-management): Manage server and client certificates
 
 ## ETL and Data Movement
 
-- [RavenDB ETL](https://docs.ravendb.net/server/ongoing-tasks/etl/basics): Move and transform data between RavenDB databases.
+- [ETL Basics](https://docs.ravendb.net/7.2/server/ongoing-tasks/etl/basics): Extract, transform, and load data between systems
+- [RavenDB ETL](https://docs.ravendb.net/7.2/server/ongoing-tasks/etl/raven): Move data between RavenDB databases
+- [SQL ETL](https://docs.ravendb.net/7.2/server/ongoing-tasks/etl/sql): Send documents to SQL databases
+- [Elasticsearch ETL](https://docs.ravendb.net/7.2/server/ongoing-tasks/etl/elasticsearch): Stream data into Elasticsearch
+- [OLAP ETL](https://docs.ravendb.net/7.2/server/ongoing-tasks/etl/olap): Export data in Apache Parquet format
+- [Snowflake ETL](https://docs.ravendb.net/7.2/server/ongoing-tasks/etl/snowflake): Load data into Snowflake
+- [Kafka ETL](https://docs.ravendb.net/7.2/server/ongoing-tasks/etl/queue-etl/kafka): Publish documents to Kafka topics
+- [RabbitMQ ETL](https://docs.ravendb.net/7.2/server/ongoing-tasks/etl/queue-etl/rabbit-mq): Send data to RabbitMQ exchanges
+- [Amazon SQS ETL](https://docs.ravendb.net/7.2/server/ongoing-tasks/etl/queue-etl/amazon-sqs): Send messages to Amazon SQS
+- [Azure Queue Storage ETL](https://docs.ravendb.net/7.2/server/ongoing-tasks/etl/queue-etl/azure-queue): Send messages to Azure Queue Storage
+- [Kafka Sink](https://docs.ravendb.net/7.2/server/ongoing-tasks/queue-sink/kafka-queue-sink): Ingest messages from Kafka into RavenDB
+- [RabbitMQ Sink](https://docs.ravendb.net/7.2/server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink): Ingest messages from RabbitMQ into RavenDB
 
-- [OLAP ETL](https://docs.ravendb.net/server/ongoing-tasks/etl/olap): Export data for analytics in Apache Parquet format.
+## Sharding
 
-- [Elasticsearch ETL](https://docs.ravendb.net/server/ongoing-tasks/etl/elasticsearch): Stream data into Elasticsearch indices.
+- [Sharding Overview](https://docs.ravendb.net/7.2/sharding/overview): Horizontal data partitioning across nodes
+- [Sharding Queries](https://docs.ravendb.net/7.2/sharding/querying): Querying across shards
+- [Resharding](https://docs.ravendb.net/7.2/sharding/resharding): Rebalance data across shards
 
-- [SQL ETL](https://docs.ravendb.net/server/ongoing-tasks/etl/sql): Send documents to SQL databases with schema transformation.
+## Data Archival
 
-- [Kafka ETL](https://docs.ravendb.net/server/ongoing-tasks/etl/queue-etl/kafka): Publish documents into Kafka topics for real-time processing.
+- [Data Archival Overview](https://docs.ravendb.net/7.2/data-archival/overview): Archive old data to improve query performance
 
-- [RabbitMQ ETL](https://docs.ravendb.net/server/ongoing-tasks/etl/queue-etl/rabbit-mq): Send transformed data to RabbitMQ exchanges.
+## Compare-Exchange
 
-- [Snowflake ETL](https://docs.ravendb.net/server/ongoing-tasks/etl/snowflake): Load and transform data into Snowflake for analytics.
+- [Compare-Exchange Overview](https://docs.ravendb.net/7.2/compare-exchange/overview): Cluster-wide atomic compare-and-swap operations
 
-- [Amazon SQS ETL](https://docs.ravendb.net/server/ongoing-tasks/etl/queue-etl/amazon-sqs): Send CloudEvents messages to Amazon SQS.
+## Schema Validation
 
-- [Azure Queue Storage ETL](https://docs.ravendb.net/server/ongoing-tasks/etl/queue-etl/azure-queue): Send CloudEvents messages to Azure Queue Storage.
+- [Schema Validation Overview](https://docs.ravendb.net/7.2/documents/schema-validation/overview): Enforce document structure with JSON Schema
 
-- [RabbitMQ Sink](https://docs.ravendb.net/server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink): Ingest messages from RabbitMQ into RavenDB documents.
+## Studio
 
-- [Kafka Sink](https://docs.ravendb.net/server/ongoing-tasks/queue-sink/kafka-queue-sink): Receive data from Kafka streams into RavenDB.
+- [Studio Overview](https://docs.ravendb.net/7.2/studio/overview): Web-based database management UI
+- [AI Assistant](https://docs.ravendb.net/7.2/studio/ai-assistant): Built-in AI assistant in Studio
+
+## Monitoring
+
+- [Cluster Dashboard](https://docs.ravendb.net/7.2/studio/cluster/cluster-dashboard/cluster-dashboard-overview): Live view of cluster health and performance
+- [SNMP Monitoring](https://docs.ravendb.net/7.2/server/administration/snmp/snmp-overview): Expose metrics to monitoring tools via SNMP
+- [OpenTelemetry](https://docs.ravendb.net/7.2/server/administration/monitoring/open-telemetry): Export telemetry data using OpenTelemetry
+- [Telegraf and Grafana](https://docs.ravendb.net/7.2/server/administration/monitoring/telegraf): Push metrics into Grafana dashboards
 
 ## Integrations
 
-- [PowerBI](https://docs.ravendb.net/integrations/postgresql-protocol/power-bi): Connect RavenDB to Power BI for live reporting.
+- [PostgreSQL Protocol](https://docs.ravendb.net/7.2/integrations/postgresql-protocol/overview): Query RavenDB using PostgreSQL wire protocol
+- [Power BI](https://docs.ravendb.net/7.2/integrations/postgresql-protocol/power-bi): Connect RavenDB to Power BI for reporting
+- [Akka.NET Persistence](https://docs.ravendb.net/7.2/integrations/akka.net-persistence/integrating-with-akka-persistence): Use RavenDB as Akka.NET persistence store
+- [Terraform](https://docs.ravendb.net/7.2/integrations/terraform): Manage RavenDB infrastructure as code
 
-- [Akka.NET](https://docs.ravendb.net/integrations/akka.net-persistence/integrating-with-akka-persistence): Use RavenDB as storage for Akka.Persistence.
+## Migration
+
+- [Client Migration](https://docs.ravendb.net/7.2/migration/client-api/client-migration): Upgrade client SDK between versions
+- [Data Migration](https://docs.ravendb.net/7.2/migration/server/data-migration): Migrate data between RavenDB versions
+- [Breaking Changes](https://docs.ravendb.net/7.2/migration/server/server-breaking-changes): Server-side breaking changes by version
+
+## Cloud
+
+- [RavenDB Cloud Documentation](https://docs.ravendb.net/cloud/): Cloud service portal documentation
 
 ## Guides
 
-- [Guides Home](https://docs.ravendb.net/guides/home): Browse all community guides for RavenDB.
+- [Guides Home](https://docs.ravendb.net/guides/): Browse all community guides for RavenDB
+- [Semantic Search with Python and FastAPI](https://docs.ravendb.net/guides/semantic-search-with-ravendb-python-and-fastapi): Build semantic search using RavenDB with Python
+- [Spatial Search](https://docs.ravendb.net/guides/spatial-search-in-ravendb): Radius, polygon, and reverse spatial queries in Python
+- [Transactional Outbox Pattern](https://docs.ravendb.net/guides/transactional-outbox): Implement the outbox pattern with RavenDB Queue ETL, RabbitMQ, and Kafka
+- [Remote Attachments](https://docs.ravendb.net/guides/using-remote-attachments-to-cut-storage-costs): Store attachments in S3 or Azure Blob to reduce storage costs
+- [Data Archival](https://docs.ravendb.net/guides/employing-data-archival-guide): Set up and use data archival to improve query performance
+- [Schema Validation](https://docs.ravendb.net/guides/employing-schema-validation-to-standardize-your-data): Configure schema validation to standardize data
+- [Index Red Flags](https://docs.ravendb.net/guides/master-ravendb-spotting-red-flags-in-index-definitions-guide): Spot and fix common index definition issues
+- [Client Certificates with Vault](https://docs.ravendb.net/guides/ravendb-client-certificates): Auto-renewing client certificates using vault-backed key reuse
+- [Secured Cluster from Zero](https://docs.ravendb.net/guides/from-zero-to-a-fully-secured-cluster): Step-by-step guide to securing a cluster with Kubernetes Operator
+- [Vibe Coding with RavenDB and Context7](https://docs.ravendb.net/guides/vibe-coding-with-ravendb-and-context7): Set up Context7 MCP for AI-assisted RavenDB development
+- [Zabbix Monitoring](https://docs.ravendb.net/guides/zabbix-setup-guide): Set up Zabbix monitoring for RavenDB Cloud
 
-- [Using Remote Attachments to Cut Storage Costs](https://docs.ravendb.net/guides/using-remote-attachments-to-cut-storage-costs): Store attachments in Amazon S3 or Azure Blob Storage to reduce database storage costs.
+## Support
 
-- [Employing Data Archival](https://docs.ravendb.net/guides/employing-data-archival-guide): Set up and use data archival in RavenDB to improve query performance.
-
-- [AI Image Search with RavenDB](https://docs.ravendb.net/guides/ai-image-search-with-ravendb): Build AI-powered image search using vector search and embeddings.
-
-- [Embeddings Generation with RavenDB](https://docs.ravendb.net/guides/embeddings-generation-with-ravendb): Automatically generate vector embeddings from document data.
-
-- [Vector Search in RavenDB](https://docs.ravendb.net/guides/new-in-7-0-ravendbs-vector-search): Use vector search capabilities for semantic similarity queries.
-
-- [Practical Look at AI Agents with RavenDB](https://docs.ravendb.net/guides/practical-look-at-ai-agents-with-ravendb): Build database-native AI agents.
-
-- [GenAI: How We Make You Work Less](https://docs.ravendb.net/guides/genai-how-we-make-you-work-less): Leverage RavenDB's generative AI integration features.
-
-- [Setting Up RavenDB with ASP.NET Core 8](https://docs.ravendb.net/guides/how-to-setup-ravendb-with-asp-net-core-8-application): Connect and configure RavenDB in an ASP.NET Core 8 project.
-
-- [Querying with RavenDB and ASP.NET Core 9](https://docs.ravendb.net/guides/how-to-query-using-ravendb-and-asp-net-core-9): Query data using RavenDB in ASP.NET Core 9 applications.
-
-- [Integrating RavenDB into Next.js](https://docs.ravendb.net/guides/integrating-ravendb-into-next-js-app): Use RavenDB as the database for a Next.js web application.
-
-- [Integrate RavenDB into SvelteKit](https://docs.ravendb.net/guides/integrate-ravendb-into-sveltekit-app): Connect RavenDB to a SvelteKit application.
-
-- [Semantic Search with Python and FastAPI](https://docs.ravendb.net/guides/semantic-search-with-ravendb-python-and-fastapi): Build semantic search using RavenDB with Python and FastAPI.
-
-- [Spatial Search in RavenDB](https://docs.ravendb.net/guides/spatial-search-in-ravendb): Build radius, polygon, and reverse spatial search applications in Python using RavenDB's native geospatial indexing.
-
-- [Deploying RavenDB with Docker Compose](https://docs.ravendb.net/guides/ravendb-deployment-guide-docker-compose-cluster): Deploy a RavenDB cluster using Docker Compose.
-
-- [Setting Up RavenDB on AWS EKS](https://docs.ravendb.net/guides/setting-up-ravendb-cluster-on-aws-eks): Deploy RavenDB on Amazon Elastic Kubernetes Service.
-
-- [Deploying RavenDB with Helm Chart](https://docs.ravendb.net/guides/deploying-ravendb-with-helm-chart): Use Helm charts for Kubernetes deployment.
-
-- [Grafana Cloud with OpenTelemetry](https://docs.ravendb.net/guides/grafana-cloud-configuration-with-opentelemetry): Monitor RavenDB with Grafana Cloud via OpenTelemetry.
-
-- [Leverage RavenDB Observability with Datadog](https://docs.ravendb.net/guides/leverage-ravendb-observability-with-datadog): Integrate RavenDB monitoring with Datadog.
-
-- [Writing Unit Tests with .NET Test Driver](https://docs.ravendb.net/guides/writing-unit-tests-with-ravendb-net-test-driver): Test RavenDB applications using the .NET test driver.
-
-- [From Zero to a Fully Secured Cluster](https://docs.ravendb.net/guides/from-zero-to-a-fully-secured-cluster): Step-by-step guide to securing a RavenDB cluster.
-
-## Support and Resources
-
-- [Contact support](https://ravendb.net/support): Reach out for assistance with RavenDB.
-
-- [Product updates](https://ravendb.net/whats-new): Stay informed about the latest product updates.
-
-- [Check system status](https://status.ravendb.net/): Monitor the current status of RavenDB services.
-
-- [About us](https://ravendb.net/about): Learn more about the RavenDB team and mission.
-
-- [Legal](https://ravendb.net/legal): Access legal information related to RavenDB usage.
+- [Contact Support](https://ravendb.net/support): Get assistance with RavenDB
+- [Product Updates](https://ravendb.net/whats-new): Latest product updates and releases
+- [System Status](https://status.ravendb.net/): Monitor RavenDB service availability
+- [GitHub](https://github.com/ravendb/ravendb): Source code and issue tracker
