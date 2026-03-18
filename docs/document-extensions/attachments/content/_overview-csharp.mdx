@@ -17,12 +17,12 @@ import Panel from '@site/src/components/Panel';
 * Attachments can be stored **locally** on your RavenDB server,
   or **remotely** in external storage such as Amazon S3 or any S3-compatible storage service, or Azure Blob Storage.
 
-  * **Local storage**:  
+  * **LOCAL storage**:  
     By default, attachments are stored locally in RavenDB's internal storage.  
     They are stored separately from the document itself in a dedicated attachment storage.  
     This avoids bloating your JSON document with large binary content.    
     See [Store attachments in local storage](../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx).
-  * **Remote storage**:  
+  * **REMOTE storage**:  
     RavenDB does not enforce a hard limit on the size of locally stored attachments.  
     However, to reduce local disk usage, you can optionally configure RavenDB to offload attachments to remote storage.
     See [Store attachments in remote storage](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx).

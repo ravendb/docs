@@ -1,0 +1,121 @@
+﻿---
+title: "Attachments: FAQ"
+sidebar_label: "FAQ"
+sidebar_position: 8
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+    
+* In this article:
+  * [Is there a size limit for attachments?](../../document-extensions/attachments/faq.mdx#is-there-a-size-limit-for-attachments)
+  * [Does document compression affect attachments?](../../document-extensions/attachments/faq.mdx#does-document-compression-affect-attachments)
+  * [What happens to attachments when I delete a document?](../../document-extensions/attachments/faq.mdx#what-happens-to-attachments-when-i-delete-a-document)
+  * [Are REMOTE attachments included in backups?](../../document-extensions/attachments/faq.mdx#are-remote-attachments-included-in-backups)
+  * [Are REMOTE attachments cached locally after retrieval?](../../document-extensions/attachments/faq.mdx#are-remote-attachments-cached-locally-after-retrieval)
+  * [Are REMOTE attachments supported with sharded databases?](../../document-extensions/attachments/faq.mdx#are-remote-attachments-supported-with-sharded-databases)
+  * [What happens to REMOTE attachments if I delete my database?](../../document-extensions/attachments/faq.mdx#what-happens-to-remote-attachments-if-i-delete-my-database)
+
+</Admonition>
+
+<Panel heading="Is there a size limit for attachments?">
+
+RavenDB does **not** enforce a hard limit on attachment size, for either local or remote attachments.  
+However, keep the following in mind:
+
+* **Local attachments**:  
+    Very large attachments increase local disk usage and replication traffic,  
+    since the binary content is replicated to all nodes in the database group.
+    
+* **Remote attachments**:  
+  [Remote attachments](../../document-extensions/attachments/configure-remote-attachments.mdx) can help reduce local disk usage for large files, as only the metadata is stored locally and replicated between nodes.
+  The binary content is uploaded to external storage once and is not replicated.
+
+</Panel>
+
+<Panel heading="Does document compression affect attachments?">
+
+**No.**  
+    
+The [Documents Compression](../../server/storage/documents-compression.mdx) feature compresses only the content of documents and revisions stored within RavenDB's internal storage.
+It does Not apply to attachments, whether local or remote, and it also does not apply to counters or time series.    
+
+[Remote attachments](../../document-extensions/attachments/configure-remote-attachments.mdx) are binary files stored in external storage, such as Amazon S3 or Azure Blob Storage.
+RavenDB does not compress, modify, or transform their content in any way.
+If you need compression for remote attachment files, configure it at the cloud storage-provider level or compress the files before storing them as attachments.
+
+</Panel>
+
+<Panel heading="What happens to attachments when I delete a document?">
+
+When you [Delete a document](../../client-api/session/deleting-entities.mdx):
+
+* **Local attachments**  
+  All LOCAL attachments referenced by the document are also deleted from RavenDB's internal storage,  
+  as long as no other document references the same binary content.
+
+* **Remote attachments**  
+  RavenDB does **not** delete the binary content from the remote storage provider.  
+  You are responsible for removing the files from the remote storage yourself.    
+
+</Panel>
+
+<Panel heading="Are REMOTE attachments included in backups?">
+
+**Only the metadata is included; the binary content is not.**    
+
+When performing a [Backup](../../client-api/operations/maintenance/backup/backup-overview.mdx) or [Export](../../studio/database/tasks/export-database.mdx) operation:
+
+* The [remote attachment metadata](../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#the-attachment-metadata) is written to the backup/export file.
+* The actual **binary content** remains in the remote storage and is **not** downloaded or included in the backup.  
+  You are responsible for backing up and retaining the remote files using your cloud provider's backup and retention mechanisms.    
+
+When performing a [Restore](../../client-api/operations/maintenance/backup/restore.mdx) or [Import](../../studio/database/tasks/import-data/import-data-file.mdx) operation:
+
+* The remote attachment metadata is restored/imported from the dump into the database.
+* The binary content is expected to still be available at its original remote storage location.
+    
+Learn more in [Attachments & Export/import/backup/restore](../../document-extensions/attachments/attachments-and-other-features.mdx#attachments-export-import-backup-restore).    
+    
+</Panel>
+
+<Panel heading="Are REMOTE attachments cached locally after retrieval?">
+
+**No.**  
+    
+Remote attachments are **not** cached locally after they are downloaded.  
+Each time you [retrieve a remote attachment](../../document-extensions/attachments/get-attachments.mdx), RavenDB fetches the data from the remote storage again.
+
+If your application reads the same remote attachment frequently,  
+consider caching the content on the application side to reduce latency and remote storage access costs.
+
+</Panel>
+
+<Panel heading="Are REMOTE attachments supported with sharded databases?">
+
+**No.**  
+    
+Remote attachments are currently supported only in **non-sharded databases**.  
+Attempting to [configure remote attachments](../../document-extensions/attachments/configure-remote-attachments.mdx) on a [sharded database](../../sharding/overview) will throw an exception.
+
+</Panel>
+
+<Panel heading="What happens to REMOTE attachments if I delete my database?">
+
+When you [Delete a database](../../client-api/operations/server-wide/delete-database.mdx):
+
+* All local database data is removed, including documents, indexes, local attachments, and the metadata that references remote attachments.
+  The remote attachments configuration, which is stored in the database record, is also deleted.
+
+* **Remote attachments** stored in external storage (S3, Azure Blob, etc.) are **not** deleted.  
+  RavenDB does not connect to the remote storage to remove previously uploaded objects.    
+  The binary data remains in your cloud storage bucket/container.    
+
+This means that after deleting the database:
+
+* The binary files will remain in your cloud storage indefinitely, continuing to consume storage space and potentially incurring costs.
+* No RavenDB metadata will remain to indicate which remote files belonged to which documents.    
+    
+</Panel>
