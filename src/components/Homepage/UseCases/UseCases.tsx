@@ -10,6 +10,9 @@ const useCases = [
     {
         title: "Survive the AI tidal wave with RavenDB & GenAI",
         imgSrc: surviveTheAiTidalWaveWithRavenDBGenAiImg,
+        imgAlt: "RavenDB GenAI integration",
+        imgWidth: 640,
+        imgHeight: 194,
         description: (
             <>
                 Learn how to harness the power of Generative AI by pairing it with a high-performance document database.
@@ -20,6 +23,9 @@ const useCases = [
     {
         title: "Processing invoices using Data Subscriptions in RavenDB",
         imgSrc: processingInvoicesUsingDataSubscriptionsInRavenDbImg,
+        imgAlt: "Processing invoices with RavenDB Data Subscriptions",
+        imgWidth: 640,
+        imgHeight: 194,
         description: <>Learn how to process invoices in asynchronous manner using the data subscriptions feature</>,
         url: "https://ravendb.net/articles/processing-invoices-using-data-subscriptions-in-ravendb",
     },
@@ -29,7 +35,7 @@ export default function UseCases(): ReactNode {
     return (
         <section className="mb-8">
             <div className="flex justify-between items-baseline">
-                <Heading as="h3">Use cases</Heading>
+                <Heading as="h2">Use cases</Heading>
                 <Link to="https://ravendb.net/articles" className="inline-flex text-base/4 gap-2">
                     See all <Icon icon="newtab" size="xs" />
                 </Link>

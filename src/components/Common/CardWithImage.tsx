@@ -15,6 +15,8 @@ export interface CardWithImageProps {
     description: ReactNode;
     imgSrc?: string | { light: string; dark: string };
     imgAlt?: string;
+    imgWidth?: number;
+    imgHeight?: number;
     url: string;
     imgIcon?: IconName;
     tags?: Array<{ label: string; permalink: string }>;
@@ -27,6 +29,8 @@ export default function CardWithImage({
     description,
     imgSrc,
     imgAlt = "",
+    imgWidth,
+    imgHeight,
     url,
     imgIcon,
     tags = [],
@@ -73,6 +77,8 @@ export default function CardWithImage({
                         <LazyImage
                             imgSrc={imgSrc}
                             alt={imgAlt}
+                            width={imgWidth}
+                            height={imgHeight}
                             className={clsx(
                                 "pointer-events-none",
                                 "w-full h-full object-cover object-center",

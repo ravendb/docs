@@ -36,6 +36,7 @@ export default function MetadataWrapper(props: Props): ReactNode {
         canonicalUrl = canonicalUrl.concat("/");
     }
 
+    const isHomepage = metadata.slug === "/";
     const description = metadata.description || frontMatter.description || "";
     const title = metadata.title || "";
     const ogImageUrl = `${baseUrl}/img/social-card.jpg`;
@@ -46,7 +47,7 @@ export default function MetadataWrapper(props: Props): ReactNode {
                 <link rel="canonical" href={canonicalUrl} />
                 {description && <meta property="og:description" content={description} />}
                 {title && <meta property="og:title" content={title} />}
-                <meta property="og:type" content="article" />
+                <meta property="og:type" content={isHomepage ? "website" : "article"} />
                 <meta property="og:url" content={canonicalUrl} />
                 <meta property="og:image" content={ogImageUrl} />
                 <meta property="og:image:alt" content={title || "RavenDB Documentation"} />
