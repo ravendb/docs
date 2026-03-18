@@ -70,7 +70,7 @@ Operation<StartBackupOperationResult> op =
 
 #### Setting backup type:
 
-- Set the backup type using the backup configuration `BackupType` _enum_ property.  
+- Set the backup type using the backup configuration [BackupType](../../backup/create/one-time-backup#classes-and-enums-used-in-the-backup-configuration) _enum_ property.  
   You can assign it with `BackupType.Backup` to create logical backups,  
   or with `BackupType.Snapshot` for snapshot images.  
 
@@ -85,8 +85,6 @@ Operation<StartBackupOperationResult> op =
       // ...
   };
   ```
-
-- [See `BackupType` syntax](../../)
 
 ---
 
@@ -119,7 +117,7 @@ Operation<StartBackupOperationResult> op =
   };
   ```
 
-- [See destinations-related syntax](../../)
+- [See destinations-related syntax](../../backup/create/one-time-backup#backup-destinations-classes)
 
 ---
 
@@ -157,7 +155,7 @@ Set backup encryption using the backup configuration `BackupEncryptionSettings` 
      };
      ```
 
-* [See `BackupEncryptionSettings` and `EncryptionMode` syntax](../../)
+* [See `BackupEncryptionSettings` and `EncryptionMode` syntax](../../backup/create/one-time-backup#classes-and-enums-used-in-the-backup-configuration)
 
 </ContentFrame>
 
@@ -516,8 +514,7 @@ public string RemoteFolderName
 
 Each periodic backup task, including server-wide derived tasks, can be triggered to run a backup operation immediately, outside of its schedule.  
 
-[Triggering a regular backup task to run a backup operation immediately](../../backup/create/periodic-tasks/database-backup#triggering-an-immediate-backup-creation)  
-
+[Triggering a regular backup task to run a backup operation immediately](../../backup/create/periodic-tasks/database-backup#triggering-an-immediate-backup-operation)  
 [Triggering a server-wide derived task to run a backup operation immediately](../../backup/create/periodic-tasks/server-wide-backup#triggering-an-immediate-backup-operation)  
 
 </ContentFrame>
@@ -690,8 +687,7 @@ Click **Backup Now** to back up the database by your settings.
 Each periodic backup task, including server-wide derived tasks, can be triggered to run a backup operation immediately, outside of its schedule.  
 
 [Triggering a regular backup task to run a backup operation immediately](../../backup/create/periodic-tasks/database-backup#running-a-backup-operation-immediately)  
-
-[Triggering a server-wide derived task to run a backup operation immediately](../../backup/create/periodic-tasks/server-wide-backup#triggering-an-immediate-backup-operation-1)  
+[Triggering a server-wide derived task to run a backup operation immediately](../../backup/create/periodic-tasks/server-wide-backup#running-a-backup-operation-immediately)  
 
 </ContentFrame>
 

@@ -31,20 +31,20 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * In this article:  
   * [Creating and managing periodic backups using the client API](../../../backup/create/periodic-tasks/database-backup#creating-and-managing-periodic-backups-using-the-client-api)
-     * [Creating a periodic backup task](../../../backup/create/periodic-tasks/database-backup#creating-a-periodic-backup-task)
+     * [Creating a backup task](../../../backup/create/periodic-tasks/database-backup#creating-a-backup-task)
         * [Key configuration settings](../../../backup/create/periodic-tasks/database-backup#key-configuration-settings)
-     * [Updating a periodic backup task](../../../backup/create/periodic-tasks/database-backup#updating-a-periodic-backup-task)
-     * [Deleting a periodic backup task](../../../backup/create/periodic-tasks/database-backup#deleting-a-periodic-backup-task)
+     * [Getting backup task status](../../../backup/create/periodic-tasks/database-backup#getting-backup-task-status)
+     * [Updating a backup task](../../../backup/create/periodic-tasks/database-backup#updating-a-backup-task)
+     * [Deleting a backup task](../../../backup/create/periodic-tasks/database-backup#deleting-a-backup-task)
      * [Managing backup operations](../../../backup/create/periodic-tasks/database-backup#managing-backup-operations)
         * [Triggering an immediate backup operation](../../../backup/create/periodic-tasks/database-backup#triggering-an-immediate-backup-operation)
         * [Delaying a running backup operation](../../../backup/create/periodic-tasks/database-backup#delaying-a-running-backup-operation)
         * [Aborting a running backup operation](../../../backup/create/periodic-tasks/database-backup#aborting-a-running-backup-operation)
      * [Syntax](../../../backup/create/periodic-tasks/database-backup#syntax)
-        * [Backup configuration classes](../../../backup/create/periodic-tasks/database-backup#backup-configuration-classes)
-        * [Classes and enums used in the backup configuration](../../../backup/create/periodic-tasks/database-backup#classes-and-enums-used-in-the-backup-configuration)
-        * [Backup destinations classes](../../../backup/create/periodic-tasks/database-backup#backup-destinations-classes)
+        * [Methods](../../../backup/create/periodic-tasks/database-backup#methods)
+        * [Classes](../../../backup/create/periodic-tasks/database-backup#classes)
   * [Creating and managing periodic backups via Studio](../../../backup/create/periodic-tasks/database-backup#creating-and-managing-periodic-backups-via-studio)
-     * [Creating a periodic backup task](../../../backup/create/periodic-tasks/database-backup#creating-a-periodic-backup-task-1)
+     * [Creating a backup task](../../../backup/create/periodic-tasks/database-backup#creating-a-backup-task-1)
          * [Defining basic task options](../../../backup/create/periodic-tasks/database-backup#a-defining-basic-task-options)
          * [Scheduling full and incremental backups](../../../backup/create/periodic-tasks/database-backup#b-scheduling-full-and-incremental-backups)
          * [Setting backups retention policy](../../../backup/create/periodic-tasks/database-backup#c-setting-backups-retention-policy)
@@ -61,7 +61,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <ContentFrame>
 
-## Creating a periodic backup task
+## Creating a backup task
 
 To create a periodic backup task:  
 * Define a **backup configuration** using a `PeriodicBackupConfiguration` instance.  
@@ -282,7 +282,92 @@ Set backup encryption using the backup configuration `BackupEncryptionSettings` 
 
 <ContentFrame>
 
-## Updating a periodic backup task
+## Getting backup task status
+
+To retrieve the status of a backup task after its last run, use `GetPeriodicBackupStatusOperation` with the task ID.  
+The returned status reflects the **most recent completed backup run**, whether it was scheduled or [triggered manually](../../../backup/create/periodic-tasks/database-backup#triggering-an-immediate-backup-operation).
+
+#### Example:
+```csharp
+var operation = new UpdatePeriodicBackupOperation(config);
+var result = await store.Maintenance.SendAsync(operation);
+
+// Get the task ID
+var backupTaskForStatus = await store.Maintenance.SendAsync(
+    new GetOngoingTaskInfoOperation("FullAndIncrementalBackup",
+        OngoingTaskType.Backup)) as OngoingTaskBackup;
+
+long backupTaskId = backupTaskForStatus.TaskId;
+
+// Get the backup status for this task
+var statusResult = await store.Maintenance.SendAsync(
+    new GetPeriodicBackupStatusOperation(backupTaskId));
+
+var status = statusResult.Status;
+
+// Status is null if no backup has run yet
+if (status == null)
+{
+    // No backup has been executed yet for this task
+    return;
+}
+
+// Check for errors in the last backup run
+if (status.Error != null)
+{
+    // The last backup run failed
+    string errorMessage = status.Error.Exception;
+    DateTime errorTime = status.Error.At;
+}
+
+// Access last backup details
+bool wasFull = status.IsFull;
+long? lastEtag = status.LastEtag;
+long? durationMs = status.DurationInMs;
+DateTime? lastFullBackup = status.LastFullBackup;
+DateTime? lastIncrementalBackup = status.LastIncrementalBackup;
+
+// Access backup destination details
+string? localBackupDir = status.LocalBackup?.BackupDirectory;
+```
+<br />
+<Admonition type="note" title="">
+
+#### For a Sharded database:
+If your database is [sharded](../../../sharding/backup-and-restore/backup), use `GetShardedPeriodicBackupStatusOperation` instead.  
+It returns a separate `PeriodicBackupStatus` for **each shard**, in a dictionary keyed by shard number.
+
+* `GetPeriodicBackupStatusOperation` throws an `InvalidOperationException` if the database is **sharded**.
+* `GetShardedPeriodicBackupStatusOperation` throws an `InvalidOperationException` if the database is **not sharded**.
+
+```csharp
+// Get backup status for a sharded database
+var shardedResult = await store.Maintenance.SendAsync(
+    new GetShardedPeriodicBackupStatusOperation(backupTaskId));
+
+// Statuses is a Dictionary<int, PeriodicBackupStatus> keyed by shard number
+Dictionary<int, PeriodicBackupStatus> statuses = shardedResult.Statuses;
+
+// Iterate over each shard's backup status
+foreach (var (shardNumber, shardStatus) in statuses)
+{
+    DateTime? lastFull = shardStatus.LastFullBackup;
+    DateTime? lastIncremental = shardStatus.LastIncrementalBackup;
+    string? error = shardStatus.Error?.Exception;
+
+    // Each shard has its own backup destination details
+    string? localDir = shardStatus.LocalBackup?.BackupDirectory;
+}
+
+```
+
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+## Updating a backup task
 
 To update an existing backup task:  
 - If you don't know the ID of the task, retrieve the task by its name using `GetOngoingTaskInfoOperation` and extract `TaskId`.
@@ -329,7 +414,7 @@ var updateResult = await store.Maintenance.SendAsync(updateOp);
 
 <ContentFrame>
 
-### Deleting a periodic backup task
+### Deleting a backup task
 
 To delete an existing backup task:  
  - If you don't know the ID of the task, retrieve the task by its name using `GetOngoingTaskInfoOperation` and extract `TaskId`.  
@@ -388,16 +473,6 @@ bool isFullBackup = true; // false => incremental
 // Create backup immediately 
 var backupOperationId = await store.Maintenance.SendAsync(new StartBackupOperation(isFullBackup, existingTaskId));
 ```
-<br />
-#### `StartBackupOperation`:  
-```csharp
-public StartBackupOperation(bool isFullBackup, long taskId)
-```
-<br />
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| **isFullBackup** | `bool` | `true` - create a full backup<br />`false` - create an incremental backup |
-| **taskId** | `long` | The ID of the periodic backup task to use when creating the backup. |
 
 </ContentFrame>
 
@@ -479,7 +554,7 @@ await store.Maintenance.SendAsync(new DelayBackupOperation(
   await store.Commands().ExecuteAsync(new KillOperationCommand(runningOperationId));
   ```
 
-* To abort a backup that was triggered [manually](../../../backup/create/periodic-tasks/database-backup#triggering-an-immediate-backup-creation) using `StartBackupOperation`:  
+* To abort a backup that was triggered [manually](../../../backup/create/periodic-tasks/database-backup#triggering-an-immediate-backup-operation) using `StartBackupOperation`:  
   - Extract the backup operation ID from the result returned by `StartBackupOperation`.  
    - Use the backup operation ID to abort the operation.  
    - Also extract and use the responsible node tag to ensure that the operation is aborted on the correct cluster node.  
@@ -511,9 +586,257 @@ Note that after aborting the backup operation, you may need to **manually clean 
 
 </ContentFrame>
 
+</Panel>
+
+<Panel heading="Syntax">
+
+## Methods
+
+<ContentFrame>
+
+### Task management
+
+<Tabs groupId='task-methods'>
+<TabItem value="UpdatePeriodicBackupOperation" label="UpdatePeriodicBackupOperation">
+
+Creates or updates a periodic backup task.
+
+```csharp
+public UpdatePeriodicBackupOperation(PeriodicBackupConfiguration configuration)
+```
+<br />
+Usage:
+
+```csharp
+UpdatePeriodicBackupOperationResult result = await store.Maintenance.SendAsync(
+    new UpdatePeriodicBackupOperation(configuration));
+```
+<br />
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **configuration** | `PeriodicBackupConfiguration` | The backup configuration to create or update.<br />To update an existing task, set `TaskId` to the ID of the task to modify. |
+
+| Return value | |
+|-----------|-------------|
+| `UpdatePeriodicBackupOperationResult` | Contains `TaskId` (`long`) — the ID of the created or updated task. |
+
+</TabItem>
+<TabItem value="GetPeriodicBackupStatusOperation" label="GetPeriodicBackupStatusOperation">
+
+Retrieves the status of the most recent backup run for a periodic backup task.
+
+```csharp
+public GetPeriodicBackupStatusOperation(long taskId)
+```
+<br />
+Usage:
+
+```csharp
+GetPeriodicBackupStatusOperationResult result = await store.Maintenance.SendAsync(
+    new GetPeriodicBackupStatusOperation(taskId));
+```
+<br />
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **taskId** | `long` | The ID of the periodic backup task to retrieve status for. |
+
+| Return value | |
+|-----------|-------------|
+| `GetPeriodicBackupStatusOperationResult` | Contains `Status` (`PeriodicBackupStatus`) — the status of the last backup run.<br />`null` if no backup has been executed yet. |
+
+<br />
+**`PeriodicBackupStatus` properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **TaskId** | `long` | The ID of the periodic backup task. |
+| **BackupType** | `BackupType` | The backup type (`Backup` or `Snapshot`). |
+| **IsFull** | `bool` | `true` if the last run was a full backup, `false` if incremental. |
+| **NodeTag** | `string` | The tag of the cluster node that performed the backup. |
+| **LastFullBackup** | `DateTime?` | Timestamp of the last full backup. |
+| **LastIncrementalBackup** | `DateTime?` | Timestamp of the last incremental backup. |
+| **LastEtag** | `long?` | The last document etag included in the backup. |
+| **DurationInMs** | `long?` | Duration of the backup run, in milliseconds. |
+| **FolderName** | `string` | The name of the backup folder created for this run. |
+| **IsEncrypted** | `bool` | Whether the backup was encrypted. |
+| **Error** | `Error` | Error details if the last backup run failed, `null` otherwise.<br />Contains `Exception` (`string`) and `At` (`DateTime`). |
+| **LastOperationId** | `long?` | The operation ID of the last backup run. |
+| **DelayUntil** | `DateTime?` | If the backup was [delayed](../../../backup/create/periodic-tasks/database-backup#delaying-a-running-backup-operation), the time at which it will resume. |
+| **LocalBackup** | `LocalBackup` | Local backup details.<br />`BackupDirectory` (`string`) contains the local path if local storage was configured as a backup destination, or `null` if local storage was only used as a temporary staging area for remote uploads.<br />Also contains `FileName` (`string`) and `TempFolderUsed` (`bool`). |
+| **UploadToS3** | `UploadToS3` | Amazon S3 upload status. `null` if S3 was not configured as a destination. |
+| **UploadToGlacier** | `UploadToGlacier` | Amazon Glacier upload status. `null` if Glacier was not configured. |
+| **UploadToAzure** | `UploadToAzure` | Azure Blob Storage upload status. `null` if Azure was not configured. |
+| **UploadToGoogleCloud** | `UploadToGoogleCloud` | Google Cloud Storage upload status. `null` if Google Cloud was not configured. |
+| **UploadToFtp** | `UploadToFtp` | FTP upload status. `null` if FTP was not configured. |
+| **Version** | `long` | A counter that increments with each completed backup run for this task. |
+
+<Admonition type="note" title="Remote destination status properties">
+
+All remote destination status classes (`UploadToS3`, `UploadToGlacier`, `UploadToAzure`, `UploadToGoogleCloud`, `UploadToFtp`) share the same properties:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **Skipped** | `bool` | Whether the upload to this destination was skipped. |
+| **UploadProgress** | `UploadProgress` | Upload progress details, including `UploadState` (`PendingUpload`, `Uploading`, `PendingResponse`, `Done`), `UploadedInBytes`, `TotalInBytes`, `BytesPutsPerSec`, and `UploadTimeInMs`. |
+| **LastFullBackup** | `DateTime?` | Timestamp of the last full backup uploaded to this destination. |
+| **LastIncrementalBackup** | `DateTime?` | Timestamp of the last incremental backup uploaded to this destination. |
+| **FullBackupDurationInMs** | `long?` | Duration of the last full backup upload, in milliseconds. |
+| **IncrementalBackupDurationInMs** | `long?` | Duration of the last incremental backup upload, in milliseconds. |
+| **Exception** | `string` | Error message if the upload to this destination failed. |
+
+</Admonition>
+
+</TabItem>
+<TabItem value="DeleteOngoingTaskOperation" label="DeleteOngoingTaskOperation">
+
+Deletes an ongoing task by its ID.
+
+```csharp
+public DeleteOngoingTaskOperation(long taskId, OngoingTaskType taskType)
+```
+<br />
+Usage:
+
+```csharp
+ModifyOngoingTaskResult result = await store.Maintenance.SendAsync(
+    new DeleteOngoingTaskOperation(taskId, OngoingTaskType.Backup));
+```
+<br />
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **taskId** | `long` | The ID of the task to delete. |
+| **taskType** | `OngoingTaskType` | The type of the ongoing task.<br />Use `OngoingTaskType.Backup` for backup tasks. |
+
+| Return value | |
+|-----------|-------------|
+| `ModifyOngoingTaskResult` | Contains `TaskId` (`long`) and `ResponsibleNode` (`string`). |
+
+</TabItem>
+</Tabs>
+
+<Tabs groupId='sharded-task-methods'>
+<TabItem value="GetShardedPeriodicBackupStatusOperation" label="GetShardedPeriodicBackupStatusOperation">
+
+Retrieves the per-shard status of the most recent backup run for a periodic backup task in a [sharded database](../../../sharding/backup-and-restore/backup).  
+For non-sharded databases, use `GetPeriodicBackupStatusOperation` instead.
+
+```csharp
+public GetShardedPeriodicBackupStatusOperation(long taskId)
+
+```
+<br />
+Usage:
+
+```csharp
+GetShardedPeriodicBackupStatusOperationResult result = await store.Maintenance.SendAsync(
+    new GetShardedPeriodicBackupStatusOperation(taskId));
+
+```
+<br />
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **taskId** | `long` | The ID of the periodic backup task to retrieve status for. |
+
+| Return value | |
+|-----------|-------------|
+| `GetShardedPeriodicBackupStatusOperationResult` | Contains `Statuses` (`Dictionary<int, PeriodicBackupStatus>`) — a dictionary mapping each shard number to its backup status.<br />Each value is a `PeriodicBackupStatus` with the [same properties](../../../backup/create/periodic-tasks/database-backup#getting-backup-task-status) as the non-sharded result. |
+
+<Admonition type="note" title="">
+
+* `GetShardedPeriodicBackupStatusOperation` throws an `InvalidOperationException` if the database is **not sharded**.
+* `GetPeriodicBackupStatusOperation` throws an `InvalidOperationException` if the database **is sharded**.
+
+</Admonition>
+
+</TabItem>
+</Tabs>
+
 ---
 
-## Syntax
+### Operations
+
+<Tabs groupId='operation-methods'>
+<TabItem value="StartBackupOperation" label="StartBackupOperation">
+
+Triggers the immediate execution of a backup using an existing periodic backup task.
+
+```csharp
+public StartBackupOperation(bool isFullBackup, long taskId)
+```
+<br />
+Usage:
+
+```csharp
+OperationIdResult<StartBackupOperationResult> result =
+    await store.Maintenance.SendAsync<OperationIdResult<StartBackupOperationResult>>(
+        new StartBackupOperation(isFullBackup, taskId));
+```
+<br />
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **isFullBackup** | `bool` | `true` — create a full backup.<br />`false` — create an incremental backup. |
+| **taskId** | `long` | The ID of the periodic backup task to use. |
+
+| Return value | |
+|-----------|-------------|
+| `OperationIdResult<StartBackupOperationResult>` | `OperationId` (`long`) — the ID of the running backup operation.<br />`Result.ResponsibleNode` (`string`) — the tag of the node executing the backup. |
+
+</TabItem>
+<TabItem value="DelayBackupOperation" label="DelayBackupOperation">
+
+Delays a currently running backup operation by a specified duration.
+
+```csharp
+public DelayBackupOperation(long runningBackupTaskId, TimeSpan duration)
+```
+<br />
+Usage:
+
+```csharp
+await store.Maintenance.SendAsync(
+    new DelayBackupOperation(runningBackupTaskId, duration));
+```
+<br />
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **runningBackupTaskId** | `long` | The ID of the running backup operation to delay.<br />Obtained from `OngoingTaskBackup.OnGoingBackup.RunningBackupTaskId`. |
+| **duration** | `TimeSpan` | The duration to delay the backup operation. |
+
+</TabItem>
+<TabItem value="KillOperationCommand" label="KillOperationCommand">
+
+Aborts a running backup operation.
+
+```csharp
+public KillOperationCommand(long id)
+public KillOperationCommand(long id, string nodeTag)
+```
+<br />
+Usage:
+
+```csharp
+// Abort a scheduled backup (no node tag needed):
+await store.Commands().ExecuteAsync(
+    new KillOperationCommand(operationId));
+
+// Abort a manually started backup (specify the responsible node):
+await store.Commands().ExecuteAsync(
+    new KillOperationCommand(operationId, nodeTag));
+```
+<br />
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **id** | `long` | The ID of the operation to abort. |
+| **nodeTag** | `string` | _(Optional)_ The tag of the node running the operation.<br />Required when aborting a backup started via `StartBackupOperation`, to target the correct node. |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+---
+
+## Classes
 
 <ContentFrame>
 
@@ -665,8 +988,6 @@ class SnapshotSettings
 
 </TabItem>
 </Tabs>
-
----
 
 <Tabs groupId='encryption-settings'>
 <TabItem value="BackupEncryptionSettings" label="BackupEncryptionSettings">
@@ -896,14 +1217,13 @@ public sealed class GetBackupConfigurationScript
 </TabItem>
 </Tabs>
 
-
 </ContentFrame>
 
 </Panel>
 
 <Panel heading="Creating and managing periodic backups via Studio">
 
-## Creating a periodic backup task
+## Creating a backup task
 
 To create a periodic backup task, open **`Tasks` > `Backups` > `Create a periodic backup`**  
 
@@ -911,7 +1231,7 @@ To create a periodic backup task, open **`Tasks` > `Backups` > `Create a periodi
 
 And then define and save the new task to start the backup schedule.
 
-![Define periodic backup task](./assets/database-periodic_define-task.png)
+![Define a backup task](./assets/database-periodic_define-task.png)
     
 `A`. [Defining basic task options](../../../backup/create/periodic-tasks/database-backup#a-defining-basic-task-options)  
 `B`. [Scheduling full and incremental backups](../../../backup/create/periodic-tasks/database-backup#b-scheduling-full-and-incremental-backups)  

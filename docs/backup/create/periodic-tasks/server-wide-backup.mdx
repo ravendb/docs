@@ -27,6 +27,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   * [Overview](../../../backup/create/periodic-tasks/server-wide-backup#overview)
   * [Creating and managing server-wide backup tasks using the client API](../../../backup/create/periodic-tasks/server-wide-backup#creating-and-managing-server-wide-backup-tasks-using-the-client-api)
      * [Creating a server-wide backup task](../../../backup/create/periodic-tasks/server-wide-backup#creating-a-server-wide-backup-task)
+     * [Getting backup task status](../../../backup/create/periodic-tasks/server-wide-backup#getting-backup-task-status)
      * [Updating a server-wide backup task](../../../backup/create/periodic-tasks/server-wide-backup#updating-a-server-wide-backup-task)
      * [Deleting a server-wide backup task](../../../backup/create/periodic-tasks/server-wide-backup#deleting-a-server-wide-backup-task)
      * [Managing backup operations](../../../backup/create/periodic-tasks/server-wide-backup#managing-backup-operations)
@@ -34,16 +35,15 @@ import ContentFrame from "@site/src/components/ContentFrame";
         * [Delaying a running backup operation](../../../backup/create/periodic-tasks/server-wide-backup#delaying-a-running-backup-operation)
         * [Aborting a running backup operation](../../../backup/create/periodic-tasks/server-wide-backup#aborting-a-running-backup-operation)
      * [Syntax](../../../backup/create/periodic-tasks/server-wide-backup#syntax)
-        * [Backup configuration classes](../../../backup/create/periodic-tasks/server-wide-backup#backup-configuration-classes)
-        * [Classes and enums used in the backup configuration](../../../backup/create/periodic-tasks/server-wide-backup#classes-and-enums-used-in-the-backup-configuration)
-        * [Backup destinations classes](../../../backup/create/periodic-tasks/server-wide-backup#backup-destinations-classes)
+        * [Methods](../../../backup/create/periodic-tasks/server-wide-backup#methods)
+        * [Classes](../../../backup/create/periodic-tasks/server-wide-backup#classes)
 
   * [Creating and managing server-wide backup tasks via Studio](../../../backup/create/periodic-tasks/server-wide-backup#creating-and-managing-server-wide-backup-tasks-via-studio)
      * [Creating a server-wide backup task](../../../backup/create/periodic-tasks/server-wide-backup#creating-a-server-wide-backup-task)
      * [Managing server-wide tasks](../../../backup/create/periodic-tasks/server-wide-backup#managing-server-wide-tasks)
         - [Managing the parent server-wide task](../../../backup/create/periodic-tasks/server-wide-backup#managing-the-parent-server-wide-task)
         - [Managing derived database tasks](../../../backup/create/periodic-tasks/server-wide-backup#managing-derived-database-tasks)
-            - [Triggering an immediate backup operation](../../../backup/create/periodic-tasks/server-wide-backup#triggering-an-immediate-backup-operation)
+            - [Running a backup operation immediately](../../../backup/create/periodic-tasks/server-wide-backup#running-a-backup-operation-immediately)
     - [Delaying or aborting a running backup operation](../../../backup/create/periodic-tasks/server-wide-backup#delaying-or-aborting-a-running-backup-operation)
 
 </Admonition>
@@ -145,6 +145,70 @@ To create a server-wide backup task:
           serverWideBackupConfiguration));
   ```
 
+</ContentFrame>
+
+<ContentFrame>
+
+## Getting backup task status
+
+Since each derived database task runs independently, backup status is retrieved **per database**.  
+Use the derived task name to look up the task in a specific database, then retrieve its status using [GetPeriodicBackupStatusOperation](../../../backup/create/periodic-tasks/database-backup#getting-backup-task-status) as done for regular database backup tasks.
+
+#### Example:
+```csharp
+// Database name 
+var databaseName = "Products";
+
+// Server-wide task name 
+var serverWideTaskName = "FullAndIncrementalBackup";
+
+// Pass the server-wide task name to get the derived task name 
+var derivedTaskName = 
+    PutServerWideBackupConfigurationCommand.GetTaskName(serverWideTaskName);
+
+// Pass the derived task name to get the derived task info 
+var derivedTask = await store.Maintenance.ForDatabase(databaseName).SendAsync( 
+    new GetOngoingTaskInfoOperation(derivedTaskName, OngoingTaskType.Backup)) 
+    as OngoingTaskBackup;
+
+// Ensure the derived task exists for the chosen database 
+if (derivedTask == null) 
+{ 
+    throw new InvalidOperationException(
+        $"The server-wide periodic backup task '{derivedTaskName}' " + 
+        $"is not found in database '{databaseName}'."); 
+}
+
+// Get the backup status for this database's derived task 
+var statusResult = await store.Maintenance.ForDatabase(databaseName).SendAsync( 
+    new GetPeriodicBackupStatusOperation(derivedTask.TaskId));
+
+var status = statusResult.Status;
+
+// Status is null if no backup has run yet 
+if (status == null) 
+{ 
+    // No backup has been executed yet for this task 
+    return; 
+}
+
+// Check for errors in the last backup run 
+if (status.Error != null) 
+{ 
+    string errorMessage = status.Error.Exception; 
+    DateTime errorTime = status.Error.At; 
+}
+
+// Access last backup details 
+bool wasFull = status.IsFull; 
+long? lastEtag = status.LastEtag; 
+long? durationMs = status.DurationInMs; 
+DateTime? lastFullBackup = status.LastFullBackup; 
+DateTime? lastIncrementalBackup = status.LastIncrementalBackup;
+
+// Access backup destination details
+ string? localBackupDir = status.LocalBackup?.BackupDirectory;
+```
 </ContentFrame>
 
 <ContentFrame>
@@ -437,9 +501,138 @@ Note that after aborting the backup operation, you may need to **manually clean 
 
 </ContentFrame>
 
+</Panel>
+
+<Panel heading="Syntax">
+
+## Methods
+
+<ContentFrame>
+
+### Server-wide task management
+
+<Tabs groupId='server-wide-task-methods'>
+<TabItem value="PutServerWideBackupConfigurationOperation" label="PutServerWideBackupConfigurationOperation">
+
+Creates or updates a server-wide periodic backup task.
+
+
+```csharp
+public PutServerWideBackupConfigurationOperation(ServerWideBackupConfiguration configuration)
+
+```
+<br />
+Usage:
+
+
+```csharp
+PutServerWideBackupConfigurationResponse result = await store.Maintenance.Server.SendAsync(
+    new PutServerWideBackupConfigurationOperation(configuration));
+
+```
+<br />
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **configuration** | `ServerWideBackupConfiguration` | The server-wide backup configuration to create or update.<br />To update an existing task, retrieve the current configuration first (keeping its `TaskId` unchanged). |
+
+| Return value | |
+|-----------|-------------|
+| `PutServerWideBackupConfigurationResponse` | Contains `Name` (`string`) — the name of the created or updated server-wide task,<br />and `RaftCommandIndex` (`long`). |
+
+</TabItem>
+<TabItem value="GetServerWideBackupConfigurationOperation" label="GetServerWideBackupConfigurationOperation">
+
+Retrieves a single server-wide backup configuration by name.
+
+
+```csharp
+public GetServerWideBackupConfigurationOperation(string name)
+
+```
+<br />
+Usage:
+
+
+```csharp
+ServerWideBackupConfiguration config = await store.Maintenance.Server.SendAsync(
+    new GetServerWideBackupConfigurationOperation(name));
+
+```
+<br />
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **name** | `string` | The name of the server-wide backup task to retrieve. |
+
+| Return value | |
+|-----------|-------------|
+| `ServerWideBackupConfiguration` | The server-wide backup configuration, or `null` if no task with the given name exists. |
+
+</TabItem>
+</Tabs>
+
+<Tabs groupId='server-wide-task-methods-2'>
+<TabItem value="GetServerWideBackupConfigurationsOperation" label="GetServerWideBackupConfigurationsOperation">
+
+Retrieves all server-wide backup configurations.
+
+
+```csharp
+public GetServerWideBackupConfigurationsOperation()
+
+```
+<br />
+Usage:
+
+
+```csharp
+ServerWideBackupConfiguration[] configs = await store.Maintenance.Server.SendAsync(
+    new GetServerWideBackupConfigurationsOperation());
+
+```
+<br />
+| Return value | |
+|-----------|-------------|
+| `ServerWideBackupConfiguration[]` | An array of all server-wide backup configurations.<br />`null` if no server-wide backup tasks exist. |
+
+</TabItem>
+<TabItem value="DeleteServerWideTaskOperation" label="DeleteServerWideTaskOperation">
+
+Deletes a server-wide task by name, removing all its derived database tasks.
+
+
+```csharp
+public DeleteServerWideTaskOperation(string name, OngoingTaskType type)
+
+```
+<br />
+Usage:
+
+
+```csharp
+await store.Maintenance.Server.SendAsync(
+    new DeleteServerWideTaskOperation(name, OngoingTaskType.Backup));
+
+```
+<br />
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **name** | `string` | The name of the server-wide task to delete. |
+| **type** | `OngoingTaskType` | The type of the ongoing task.<br />Use `OngoingTaskType.Backup` for backup tasks. |
+
+</TabItem>
+</Tabs>
+
 ---
 
-## Syntax
+### Operations
+
+For syntax details on the operations used in the examples above to trigger, delay, and abort backup operations (`StartBackupOperation`, `DelayBackupOperation`, `KillOperationCommand`), see the [database backup operations syntax](../../../backup/create/periodic-tasks/database-backup#operations).
+
+</ContentFrame>
+
+---
+
+## Classes
 
 <ContentFrame>
 
@@ -529,314 +722,9 @@ class BackupConfiguration
 </TabItem>
 </Tabs>
 
----
-
-### Classes and enums used in the backup configuration
-
-<Tabs groupId='additional-classes'>
-<TabItem value="RetentionPolicy" label="RetentionPolicy">
-
-A backup configuration property that defines backups **retention policy**.
-```csharp
-class RetentionPolicy
-{
-    bool Disabled
-    TimeSpan? MinimumBackupAgeToKeep
-}
-```
-<br />
-| Property | Type | Description |
-|------------------|-----------------|-------------|
-| **Disabled** | `bool` | Indicates whether the retention policy is disabled.<br />Default: `false` |
-| **MinimumBackupAgeToKeep** | `TimeSpan?` | The retention threshold.<br />Backups older than this age will be deleted. |
-
-</TabItem>
-<TabItem value="BackupType" label="BackupType">
-
-A backup configuration property that defines the **backup type**.
-```csharp
-enum BackupType
-{
-    Backup,
-    Snapshot
-}
-```
-<br />
-| Property | Description |
-|----------|-------------|
-| **Backup** | Logical backup |
-| **Snapshot** | Snapshot image |
-
-</TabItem>
-<TabItem value="BackupUploadMode" label="BackupUploadMode">
-
-A backup configuration property that defines the backups **upload mode**.
-```csharp
-enum BackupUploadMode
-{
-    Default,
-    DirectUpload
-}
-```
-<br />
-| Property | Description |
-|----------|-------------|
-| **Default** | Store backup in local path and then upload to the destination |
-| **DirectUpload** | Upload backup directly to the destination without storing locally |
-
-
-</TabItem>
-<TabItem value="SnapshotSettings" label="SnapshotSettings">
-
-A backup configuration property that defines **snapshot images settings**.
-```csharp
-class SnapshotSettings
-{
-    SnapshotBackupCompressionAlgorithm? CompressionAlgorithm
-    CompressionLevel CompressionLevel
-    bool ExcludeIndexes
-}
-```
-<br />
-| Property | Type | Description |
-|----------|------|-------------|
-| **CompressionAlgorithm** | `SnapshotBackupCompressionAlgorithm?` | The compression algorithm used for the snapshot image.<br />`Zstd` or `Deflate` |
-| **CompressionLevel** | `CompressionLevel` | The level of compression applied to the snapshot image.<br /> `Optimal`, `Fastest`, `NoCompression`, or `SmallestSize`|
-| **ExcludeIndexes** | `bool` | Indicates whether indexes should be excluded from the snapshot image. |
-
-</TabItem>
-</Tabs>
-
----
-
-<Tabs groupId='encryption-settings'>
-<TabItem value="BackupEncryptionSettings" label="BackupEncryptionSettings">
-
-A backup configuration property that defines **backup encryption settings**.
-```csharp
-class BackupEncryptionSettings
-{
-    string Key
-    EncryptionMode EncryptionMode
-}
-```
-<br />
-| Property | Type | Description |
-|----------|------|-------------|
-| **Key** | `string` | An encryption key provided by the user.<br />Used only if `EncryptionMode.UseProvidedKey` is selected.<br />If `EncryptionMode.UseDatabaseKey` is selected, the database encryption key is used and **Key** is ignored. |
-| **EncryptionMode** | `EncryptionMode` | The mode of encryption applied to the backup.<br />`None` - No encryption.<br />`UseDatabaseKey` - Use the database key for encryption.<br />`UseProvidedKey` - Use a key provided by the user. |
-
-</TabItem>
-<TabItem value="EncryptionMode" label="EncryptionMode">
-
-A `BackupEncryptionSettings` property that defines the **encryption mode**.
-```csharp
-public enum EncryptionMode
-{
-  None,
-  UseDatabaseKey,
-  UseProvidedKey
-}
-```
-<br />
-| Property | Description |
-|----------|-------------|
-| **None** | No encryption. |
-| **UseDatabaseKey** | Use the database key for encryption. |
-| **UseProvidedKey** | Use a key provided by the user. |
-
-</TabItem>
-</Tabs>
-
----
-
-### Backup destinations classes
-
-<Tabs groupId='storage-settings'>
-<TabItem value="LocalSettings" label="LocalSettings">
-
-A backup configuration property that defines **local storage settings**.
-```csharp
-class LocalSettings : BackupSettings
-{
-    string FolderPath
-    int? ShardNumber
-}
-```
-<br />
-| Property | Type | Description |
-|----------|------|-----------------------------------------------------------------------------|
-| **FolderPath** | `string` | [Path to a local folder](../../../backup/overview#upload-mode). |
-| **ShardNumber** | `int?` | An optional shard number, so the backup can be kept in the local path of a specific shard when a [sharded database](../../../sharding/backup-and-restore/backup) is used. |
-
-</TabItem>
-
-<TabItem value="AzureSettings" label="AzureSettings">
-
-A backup configuration property that defines **Azure Blob Storage settings**.
-```csharp
-class AzureSettings : BackupSettings
-{
-    string StorageContainer
-    string RemoteFolderName
-    string AccountName
-    string AccountKey
-    string SasToken
-}
-```
-<br />
-| Property | Type | Description |
-|----------|------|-------------|
-| **StorageContainer** | `string` | The Azure Blob Storage container name. |
-| **RemoteFolderName** | `string` | A logical "folder" (prefix) inside the container. |
-| **AccountName** | `string` | The storage account name. |
-| **AccountKey** | `string` | The storage account access key. |
-| **SasToken** | `string` | A Shared Access Signature token used instead of the access key. |
-
-</TabItem>
-<TabItem value="FtpSettings" label="FtpSettings">
-
-A backup configuration property that defines **FTP storage settings**.
-```csharp
-class FtpSettings : BackupSettings
-{
-    string Url
-    string UserName
-    string Password
-    string CertificateAsBase64
-}
-```
-<br />
-| Property | Type | Description |
-|----------|------|-------------|
-| **Url** | `string` | URL for the FTP endpoint that backups are sent to. |
-| **UserName** | `string` | The FTP username. |
-| **Password** | `string` | The FTP password. |
-| **CertificateAsBase64** | `string` | A base64-encoded certificate to authenticate with when using FTPS. |
-
-</TabItem>
-<TabItem value="GoogleCloudSettings" label="GoogleCloudSettings">
-
-A backup configuration property that defines **Google Cloud Storage settings**.
-```csharp
-class GoogleCloudSettings
-{
-    string BucketName
-    string RemoteFolderName
-    string GoogleCredentialsJson
-}
-```
-<br />
-| Property | Type | Description |
-|----------|------|-------------|
-| **BucketName** | `string` | The name of the Google Cloud Storage bucket that backups are sent to. |
-| **RemoteFolderName** | `string` | A logical "folder" (prefix) inside the bucket. |
-| **GoogleCredentialsJson** | `string` | The service account credentials JSON (as a string) used to authenticate RavenDB to the Google Cloud Storage. |
-
-</TabItem>
-</Tabs>
-
-<Tabs groupId='AWSSettings'>
-<TabItem value="S3Settings" label="S3Settings">
-
-A backup configuration property that defines **Amazon S3 storage settings**.
-```csharp
-class S3Settings : AmazonSettings
-{
-    string BucketName
-    string CustomServerUrl
-    bool ForcePathStyle
-    S3StorageClass? StorageClass
-}
-```
-<br />
-| Property | Type | Description |
-|----------|------|-------------|
-| **BucketName** | `string` | S3 Bucket name. |
-| **CustomServerUrl** | `string` | Custom S3 server URL.<br />Used when targeting a custom server. |
-| **ForcePathStyle** | `bool` | Force path style in HTTP requests.<br />`false` - use **virtual host style**.<br />`true` - use **path style**. |
-| **StorageClass** | `S3StorageClass?` | Optional AWS S3 storage class for uploaded objects. |
-
-</TabItem>
-<TabItem value="GlacierSettings" label="GlacierSettings">
-
-A backup configuration property that defines **Amazon Glacier storage settings**.
-```csharp
-class GlacierSettings : AmazonSettings
-{
-    string VaultName
-}
-```
-<br />
-| Property | Type | Description |
-|----------|------|-------------|
-| **VaultName** | `string` | Amazon Glacier Vault name. |
-
-</TabItem>
-
-<TabItem value="AmazonSettings" label="AmazonSettings">
-
-A base class for **S3Settings** and **GlacierSettings**, providing additional AWS settings.
-```csharp
-class AmazonSettings : BackupSettings
-{
-public string AwsAccessKey
-public string AwsSecretKey
-public string AwsSessionToken
-public string AwsRegionName
-public string RemoteFolderName
-}
-```
-<br />
-| Property | Type | Description |
-|----------|------|-------------|
-| **AwsAccessKey** | `string` | The AWS access key (username part). |
-| **AwsSecretKey** | `string` | The AWS secret key (password part). |
-| **AwsSessionToken** | `string` | Optional session token. |
-| **AwsRegionName** | `string` | AWS region identifier, e.g., `us-east-1`, used to route requests to the specified regional endpoint. |
-| **RemoteFolderName** | `string` | A logical "folder" (prefix) inside the bucket or vault. |
-
-</TabItem>
-</Tabs>
-
-<Tabs groupId='external-script'>
-<TabItem value="BackupSettings" label="BackupSettings">
-
-A base class for all backup destination settings classes.
-```csharp
-class BackupSettings
-{
-    bool Disabled
-    GetBackupConfigurationScript GetBackupConfigurationScript
-}
-```
-<br />
-| Property | Type | Description |
-|----------|------|-------------|
-| **Disabled** | `bool` | Indicates whether this backup destination is disabled. |
-| **GetBackupConfigurationScript** | `GetBackupConfigurationScript` | An optional script that provides storage settings at runtime, overriding task configuration storage settings (for a specific backup destination). |
-</TabItem>
-
-<TabItem value="GetBackupConfigurationScript" label="GetBackupConfigurationScript">
-
-A class that defines an external script used to provide backup storage settings at runtime.
-```csharp
-public sealed class GetBackupConfigurationScript
-{
-    string Exec
-    string Arguments
-    int TimeoutInMs
-}
-```
-<br />
-| Property | Type | Description |
-|----------|------|-------------|
-| **Exec** | `string` | The script executor, e.g., `powershell`. |
-| **Arguments** | `string` | Arguments to be used by the executor, including the path to the external script that provides storage settings (for a specific backup destination). |
-| **TimeoutInMs** | `int` | Maximum time in milliseconds to wait for the script to return storage settings.<br />If the script does not return the storage settings within this time, the backup operation will be aborted. |
-</TabItem>
-</Tabs>
-
+<Admonition type="note" title="">
+For syntax details on all configuration classes, enums, and backup destination settings used in the properties above, see the [database backup syntax](../../../backup/create/periodic-tasks/database-backup#classes).
+</Admonition>
 
 </ContentFrame>
 
@@ -965,7 +853,7 @@ To manage a database backup task derived from a server-wide task:
 
 ---
 
-### Triggering an immediate backup operation
+### Running a backup operation immediately
 
 You can trigger the immediate creation of a backup for the database, without waiting for the next scheduled backup.  
 - Expand the task details bar as seen above, and click **Backup now**.  
