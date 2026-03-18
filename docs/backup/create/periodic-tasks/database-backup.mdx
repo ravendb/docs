@@ -43,6 +43,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
      * [Syntax](../../../backup/create/periodic-tasks/database-backup#syntax)
         * [Methods](../../../backup/create/periodic-tasks/database-backup#methods)
         * [Classes](../../../backup/create/periodic-tasks/database-backup#classes)
+  
   * [Creating and managing periodic backups via Studio](../../../backup/create/periodic-tasks/database-backup#creating-and-managing-periodic-backups-via-studio)
      * [Creating a backup task](../../../backup/create/periodic-tasks/database-backup#creating-a-backup-task-1)
          * [Defining basic task options](../../../backup/create/periodic-tasks/database-backup#a-defining-basic-task-options)
@@ -285,7 +286,11 @@ Set backup encryption using the backup configuration `BackupEncryptionSettings` 
 ## Getting backup task status
 
 To retrieve the status of a backup task after its last run, use `GetPeriodicBackupStatusOperation` with the task ID.  
-The returned status reflects the **most recent completed backup run**, whether it was scheduled or [triggered manually](../../../backup/create/periodic-tasks/database-backup#triggering-an-immediate-backup-operation).
+- If you don't have the task ID, you can get it using `GetOngoingTaskInfoOperation` with the task name.  
+- The retrieved status reflects the **most recent completed backup run**, whether it was scheduled or [triggered manually](../../../backup/create/periodic-tasks/database-backup#triggering-an-immediate-backup-operation).
+- The status includes the number of backups performed by the task, and details about the last backup such as the backup timestamp, duration, destination path, and error information (if any).  
+
+[See GetPeriodicBackupStatusOperation syntax](../../../backup/create/periodic-tasks/database-backup#task-management)
 
 #### Example:
 ```csharp
@@ -1130,14 +1135,63 @@ class S3Settings : AmazonSettings
 }
 ```
 <br />
+
 | Property | Type | Description |
 |----------|------|-------------|
 | **BucketName** | `string` | S3 Bucket name. |
 | **CustomServerUrl** | `string` | Custom S3 server URL.<br />Used when targeting a custom server. |
 | **ForcePathStyle** | `bool` | Force path style in HTTP requests.<br />`false` - use **virtual host style**.<br />`true` - use **path style**. |
-| **StorageClass** | `S3StorageClass?` | Optional AWS S3 storage class for uploaded objects. |
+| **StorageClass** | `S3StorageClass?` | Optional AWS S3 storage class for uploaded backup files.<br />When `null` (not set), the default AWS storage class (`Standard`) is used. |
 
 </TabItem>
+
+<TabItem value="S3StorageClass" label="S3StorageClass">
+
+An optional `S3Settings` property that defines an **AWS S3 storage class** for uploaded backup files.  
+
+```csharp
+enum S3StorageClass
+{
+    Standard,
+    StandardInfrequentAccess,
+    OneZoneInfrequentAccess,
+    IntelligentTiering,
+    ReducedRedundancy,
+    Glacier,
+    GlacierInstantRetrieval,
+    DeepArchive,
+    ExpressOneZone
+}
+```
+<br />
+
+| Enum value | Description |
+|-------|-------------|
+| **Standard** | Default storage class for S3. |
+| **StandardInfrequentAccess** | For long-lived, infrequently accessed objects such as backups and older data. |
+| **OneZoneInfrequentAccess** | For infrequently accessed objects.<br />Stores data within a single Availability Zone only. |
+| **IntelligentTiering** | Automatically moves objects between storage classes based on access patterns to optimize cost. |
+| **ReducedRedundancy** | Same availability as Standard but at lower durability.<br />Not recommended for new workloads. |
+| **Glacier** | Archival storage for objects that are rarely accessed.<br />**When used, a retrieval request is required before restore.** |
+| **GlacierInstantRetrieval** | Archival storage with millisecond retrieval. |
+| **DeepArchive** | Long-term archival for data that rarely, if ever, needs to be accessed. Lowest-cost storage class.<br />**When used, a retrieval request is required before restore.** |
+| **ExpressOneZone** | High-performance storage for latency-sensitive workloads. |
+
+<br />
+<Admonition type="warning" title="Restoring not immediately available for archival storage classes">
+
+Backups stored using `Glacier` or `DeepArchive` **cannot be restored directly**.  
+Files in these storage classes are not immediately accessible; AWS requires a **retrieval request** before the data can be read, which can take minutes to hours (`Glacier`) or up to 12 hours (`DeepArchive`).  
+
+To restore from these storage classes, you must first manually initiate an AWS retrieval request and wait for the files to become available, then run the restore operation.
+
+`GlacierInstantRetrieval` does **not** have this limitation, files are accessible immediately.
+
+</Admonition>
+<br />
+
+</TabItem>
+
 <TabItem value="GlacierSettings" label="GlacierSettings">
 
 A backup configuration property that defines **Amazon Glacier storage settings**.
@@ -1168,6 +1222,7 @@ public string RemoteFolderName
 }
 ```
 <br />
+
 | Property | Type | Description |
 |----------|------|-------------|
 | **AwsAccessKey** | `string` | The AWS access key (username part). |
@@ -1177,6 +1232,7 @@ public string RemoteFolderName
 | **RemoteFolderName** | `string` | A logical "folder" (prefix) inside the bucket or vault. |
 
 </TabItem>
+
 </Tabs>
 
 <Tabs groupId='external-script'>

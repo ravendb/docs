@@ -50,6 +50,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
      * [Retention policy](../backup/overview#retention-policy)
   * [Server-wide backup](../backup/overview#server-wide-backup)
   * [Backup on a sharded database](../backup/overview#backup-on-a-sharded-database)
+  * [Monitoring backup tasks](../backup/overview#monitoring-backup-tasks)
   * [Restoring from backup](../backup/overview#restoring-from-backup)
   * [Recommended precautions](../backup/overview#recommended-precautions)
 
@@ -545,6 +546,49 @@ Shard backups can also be restored to non-sharded databases, either for a select
 [Learn to restore shard backups](../sharding/backup-and-restore/restore)  
 
 </Panel>
+
+<Panel heading="Monitoring backup tasks">
+
+You can use **SNMP endpoints** to monitor your backup tasks and operations,  
+as well as **retrieve information from a backup task** using the API.  
+
+---
+
+### Backup SNMP endpoints
+
+RavenDB exposes SNMP endpoints for monitoring, including endpoints showing backups metrics.  
+
+| Scope | OID | Type | Description |
+| --- | --- | --- | --- |
+| Node | `1.13.1` | `Integer32` | Number of backup operations currently running. |
+| Node | `1.13.2` | `Integer32` | Max number of backup operations that can run concurrently. |
+| All cluster databases |  `5.1.3` | `TimeTicks` | Time elapsed since the oldest backup across all databases. |
+| All cluster databases | `5.1.11.15` | `Integer32` | Number of enabled backup tasks across all databases. |
+| All cluster databases |  `5.1.11.16` | `Integer32` | Number of active backup tasks across all databases.<br /><br />An **active** backup task is:<br />Enabled.<br />On a database that is loaded on this node.<br />On the node responsible for the task. |
+
+<Admonition type="note" title="">
+RavenDB's root OID is: `1.3.6.1.4.1.45751.1.1`  
+e.g.,  
+To check the number of backup operations currently running on this node,  
+use the **root OID** + `1.13.1`:  
+`1.3.6.1.4.1.45751.1.1.1.13.1`
+</Admonition>
+
+[Learn how to access RavenDB metrics via SNMP](../server/administration/snmp/snmp-overview/)
+
+---
+
+### Retrieving a backup task status
+
+You can retrieve a backup task's **status**, which reflects the task's **most recent completed backup run** (whether scheduled or [triggered manually](../backup/create/periodic-tasks/database-backup#triggering-an-immediate-backup-operation)).
+
+The retrieved status includes details such as the number of backups performed by the task and the lasy backup operation's timestamp, duration, destination path, and potentially error information.  
+
+[Learn to retrieve the status of a database backup task](../backup/create/periodic-tasks/database-backup#getting-backup-task-status)  
+[Learn to retrieve the status of a server-wide derived backup task](../backup/create/periodic-tasks/server-wide-backup#getting-a-derived-backup-task-status)  
+
+</Panel>
+
 
 <Panel heading="Restoring from backup">
 

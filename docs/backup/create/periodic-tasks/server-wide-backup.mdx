@@ -27,7 +27,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   * [Overview](../../../backup/create/periodic-tasks/server-wide-backup#overview)
   * [Creating and managing server-wide backup tasks using the client API](../../../backup/create/periodic-tasks/server-wide-backup#creating-and-managing-server-wide-backup-tasks-using-the-client-api)
      * [Creating a server-wide backup task](../../../backup/create/periodic-tasks/server-wide-backup#creating-a-server-wide-backup-task)
-     * [Getting backup task status](../../../backup/create/periodic-tasks/server-wide-backup#getting-backup-task-status)
+     * [Getting a derived backup task status](../../../backup/create/periodic-tasks/server-wide-backup#getting-a-derived-backup-task-status)
      * [Updating a server-wide backup task](../../../backup/create/periodic-tasks/server-wide-backup#updating-a-server-wide-backup-task)
      * [Deleting a server-wide backup task](../../../backup/create/periodic-tasks/server-wide-backup#deleting-a-server-wide-backup-task)
      * [Managing backup operations](../../../backup/create/periodic-tasks/server-wide-backup#managing-backup-operations)
@@ -149,10 +149,15 @@ To create a server-wide backup task:
 
 <ContentFrame>
 
-## Getting backup task status
+## Getting a derived backup task status
 
-Since each derived database task runs independently, backup status is retrieved **per database**.  
-Use the derived task name to look up the task in a specific database, then retrieve its status using [GetPeriodicBackupStatusOperation](../../../backup/create/periodic-tasks/database-backup#getting-backup-task-status) as done for regular database backup tasks.
+To retrieve the status of a derived database task after its last run, use `GetPeriodicBackupStatusOperation` with the task ID.  
+- If you don't have the task ID, you can get it using `GetOngoingTaskInfoOperation` with the names of the task and its database.  
+- The retrieved status reflects the **most recent completed backup run**, whether it was scheduled or [triggered manually](../../../backup/create/periodic-tasks/database-backup#triggering-an-immediate-backup-operation).
+- The status includes the number of backups performed by the task, and details about the last backup such as the backup timestamp, duration, destination path, and error information (if any).  
+
+[See GetPeriodicBackupStatusOperation syntax](../../../backup/create/periodic-tasks/database-backup#task-management)
+
 
 #### Example:
 ```csharp

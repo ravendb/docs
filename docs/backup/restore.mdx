@@ -378,24 +378,6 @@ class S3Settings : AmazonSettings, IS3Settings
     string BucketName
     string CustomServerUrl
     bool ForcePathStyle
-}
-```
-<br />
-
-| Property | Type | Description |
-|---|---|---|
-| **BucketName** | `string` | Name of the S3 bucket that stores the backup files. |
-| **CustomServerUrl** | `string` | Custom S3-compatible endpoint URL to use instead of AWS. |
-| **ForcePathStyle** | `bool` | When `true`, forces path-style bucket addressing. Commonly required by S3-compatible endpoints. |
-
-<br />
-
-```csharp
-public interface IS3Settings
-{
-    string BucketName
-    string CustomServerUrl
-    bool ForcePathStyle
     S3StorageClass? StorageClass
     string AwsAccessKey
     string AwsSecretKey
@@ -411,12 +393,56 @@ public interface IS3Settings
 | **BucketName** | `string` | Name of the S3 bucket that stores the backup files. |
 | **CustomServerUrl** | `string` | Custom S3-compatible endpoint URL to use instead of AWS. |
 | **ForcePathStyle** | `bool` | When `true`, forces path-style bucket addressing. Commonly required by S3-compatible endpoints. |
-| **StorageClass** | `S3StorageClass?` | S3 storage class. |
+| **StorageClass** | `S3StorageClass?` | Optional S3 storage class for the backup files.<br />`null` defaults to `Standard` storage.<br />**Note:** When set, if `Glacier` or `DeepArchive` is used, an **AWS retrieval request** is needed before restore is possible. |
 | **AwsAccessKey** | `string` | AWS Access Key ID. |
 | **AwsSecretKey** | `string` | AWS Secret Access Key. |
 | **AwsSessionToken** | `string` | AWS Session Token. |
 | **AwsRegionName** | `string` | AWS Region name. |
 | **RemoteFolderName** | `string` | Remote folder path. |
+
+<br />
+
+**S3 storage class**
+
+```csharp
+enum S3StorageClass
+{
+    Standard,
+    StandardInfrequentAccess,
+    OneZoneInfrequentAccess,
+    IntelligentTiering,
+    ReducedRedundancy,
+    Glacier,
+    GlacierInstantRetrieval,
+    DeepArchive,
+    ExpressOneZone
+}
+```
+<br />
+| Value | Description |
+|-------|-------------|
+| **Standard** | Default storage class for S3. |
+| **StandardInfrequentAccess** | For long-lived, infrequently accessed objects such as backups and older data. |
+| **OneZoneInfrequentAccess** | For infrequently accessed objects.<br />Stores data within a single Availability Zone only. |
+| **IntelligentTiering** | Automatically moves objects between storage classes based on access patterns to optimize cost. |
+| **ReducedRedundancy** | Same availability as Standard but at lower durability.<br />Not recommended for new workloads. |
+| **Glacier** | Archival storage for objects that are rarely accessed.<br />**When used, a retrieval request is required before restore.** |
+| **GlacierInstantRetrieval** | Archival storage with millisecond retrieval. |
+| **DeepArchive** | Long-term archival for data that rarely, if ever, needs to be accessed. Lowest-cost storage class.<br />**When used, a retrieval request is required before restore.** |
+| **ExpressOneZone** | High-performance storage for latency-sensitive workloads. |
+
+<Admonition type="warning" title="Glacier and DeepArchive require prior retrieval">
+
+If the backup was stored using the `Glacier` or `DeepArchive` storage classes, the backup files are **not immediately accessible**.  
+Before restoring, you must initiate a **retrieval request in AWS S3** and wait for it to complete.  
+
+RavenDB will throw an `InvalidOperationException` if:
+- No retrieval job has been initiated.
+- A retrieval is still in progress.
+
+`GlacierInstantRetrieval` does not have this limitation.
+
+</Admonition>
 
 </TabItem>
 
