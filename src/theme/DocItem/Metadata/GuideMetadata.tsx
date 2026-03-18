@@ -38,7 +38,7 @@ export default function GuideMetadata({
         image: { "@type": "ImageObject", url: ogImageUrl, width: 1200, height: 630 },
         ...(publishedAt ? { datePublished: publishedAt } : {}),
         ...(lastUpdatedAt
-            ? { dateModified: new Date(lastUpdatedAt * 1000).toISOString().split("T")[0] }
+            ? { dateModified: new Date(lastUpdatedAt > 1e12 ? lastUpdatedAt : lastUpdatedAt * 1000).toISOString().split("T")[0] }
             : publishedAt
               ? { dateModified: publishedAt }
               : {}),
@@ -72,29 +72,9 @@ export default function GuideMetadata({
         proficiencyLevel,
     });
 
-    const breadcrumbJsonLd = JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        itemListElement: [
-            {
-                "@type": "ListItem",
-                position: 1,
-                name: "Guides",
-                item: `${canonicalUrl.split("/guides/")[0]}/guides/`,
-            },
-            {
-                "@type": "ListItem",
-                position: 2,
-                name: title,
-                item: canonicalUrl,
-            },
-        ],
-    });
-
     return (
         <Head>
             <script type="application/ld+json">{techArticleJsonLd}</script>
-            <script type="application/ld+json">{breadcrumbJsonLd}</script>
         </Head>
     );
 }
