@@ -134,6 +134,10 @@ demo:
     label: "Demo"
     permalink: "/demo"
     description: "Content related to Demo."
+use-case:
+    label: "Use Case"
+    permalink: "/use-case"
+    description: "Real-world problems solved with RavenDB features."
 architecture:
     label: "Architecture"
     permalink: "/architecture"

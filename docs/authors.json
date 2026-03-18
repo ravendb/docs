@@ -12,5 +12,19 @@
         "url": null,
         "image_url": "https://ravendb.net/wp-content/uploads/2024/11/Default-author-thumbnail-150x150.png",
         "socials": {}
+    },
+    "Gracjan Sadowicz": {
+        "name": "Gracjan Sadowicz",
+        "job_title": "Software Engineer",
+        "url": null,
+        "image_url": "https://ravendb.net/wp-content/uploads/2022/01/Gracjan.jpg",
+        "socials": {}
+    },
+    "Egor Shamanaev": {
+        "name": "Egor Shamanaev",
+        "job_title": "Development Team Lead",
+        "url": null,
+        "image_url": "https://ravendb.net/wp-content/uploads/2021/01/egor_shamanaev.jpg",
+        "socials": {}
     }
 }
