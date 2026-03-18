@@ -1,10 +1,229 @@
 ---
 title: "Processing Invoices Using Data Subscriptions"
 tags: [demo, background-tasks, csharp]
-description: "Read about Processing Invoices Using Data Subscriptions on the RavenDB.net news section"
-externalUrl: "https://ravendb.net/articles/processing-invoices-using-data-subscriptions-in-ravendb"
+description: "Read about Processing Invoices Using Data Subscriptions"
 publishedAt: 2024-12-08
+author: "Paweł Lachowski"
 image: "https://ravendb.net/wp-content/uploads/2024/12/processing-invoices-article-cover.jpg"
 proficiencyLevel: "Expert"
 ---
 
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+In this article we will tackle the problem of processing invoices in asynchorious manner using the [RavenDB Data subscriptions](https://ravendb.net/docs/article-page/6.0/csharp/client-api/data-subscriptions/what-are-data-subscriptions) feature.  
+
+We will create a [data subscription](https://ravendb.net/docs/article-page/6.0/csharp/client-api/data-subscriptions/what-are-data-subscriptions) on `Orders` collection, and use a [Subscription Worker](https://ravendb.net/docs/article-page/6.0/csharp/client-api/data-subscriptions/consumption/how-to-consume-data-subscription) to process the newly added `Orders` documents, in this particullar article we are going to process in an ongoing fashion, but since `Subscriptions` state are persisted, it can be a process that runs in a timely fashion, like overnight or weekend.  
+
+In the subscription batch processing we will calculate the overall products cost, prepare the invoice PDF file and store it as an [Attachment](https://ravendb.net/docs/article-page/6.0/csharp/document-extensions/attachments/what-are-attachments) to the `Invoices` document.
+
+Additional subscription can be defined for processing the `Invoices` documents, and sending an email with an `Attachment` that was created.
+
+## Intro  
+Typically after paying for your goods on online store you would get the confirmation right away, but the invoice will be sent as a separate email afterwards. Did you ever wonder why it works this way? The reason is that the store want to confirm the purchase immediately, and do the actual processing of the order in the background, so you can return to the shop homepage and possible purchase even more stuff.  
+
+That's from the business point of view, but what with user experience point of view?  
+
+In case we would do the invoice processing in a sync manner in will likely bring to online store website responsiveness, long resonse time. Think about waiting few minutes for order confirmation, it may make the customer refresh or even close the page, which will cancel the order.
+
+## Breakdown
+After customer added a new order, and got confirmation with some order identifier, we would want to start the invoce processing.  
+
+Lets break down the invoice processing into steps:
+
+1. Get & start processing newly added `Order` document  
+2. Load the list of ordered products  
+3. Calculate order total sum  
+4. Generate PDF and save it to memory stream  
+5. Mark the `Order` document with `InvoiceCreated=true` (so it will get proceesed only once)  
+6. Add the PDF stream as attachment to the order document  
+7. Save changes to the RavenDB database   
+
+## Document model  
+We will have `Orders`, `Products` and `Invoices` collections. 
+
+```csharp showLineNumbers
+public class Order  
+{  
+    public string Id { get; set; }  
+    public List\<LineItem\> LineItems { get; set; }  
+    public string Address { get; set; }  
+    public DateTime OrderDateUtc { get; set; }  
+    public bool InvoiceCreated { get; set; }  
+    public string InvoiceId { get; set; }  
+}
+
+public class LineItem  
+{  
+    public string ProductId { get; set; }  
+    public decimal TotalPrice { get; set; }  
+    public int Quantity { get; set; }  
+}
+
+public class Product  
+{  
+    public string Id { get; set; }  
+    public string Name { get; set; }  
+    public string Description { get; set; }  
+    public decimal Price { get; set; }  
+}
+
+public class Invoice  
+{  
+    public string Id { get; set; }  
+    public string OrderId { get; set; }  
+    public bool EmailSent { get; set; }  
+}
+
+```
+
+## Subscription  
+The subscription task definition will be on `Orders` collection on documents that have `InvoiceCreated = false`. 
+
+```csharp showLineNumbers 
+await DocumentStore.Subscriptions.CreateAsync(new SubscriptionCreationOptions  
+{  
+    Name \= \_subsName,  
+    Query \= "from Orders where InvoiceCreated \= false"  
+});
+
+```
+
+The subscription worker (`subscription.Run()` method) will receive batch of `Orders` documents each time, inside this batch we will process each `Orders` document, and prepare a invoice pdf, please see the full code below.
+
+```csharp showLineNumbers  
+await using var subscription = DocumentStore.Subscriptions.GetSubscriptionWorker<Order>(_subsName);
+
+await subscription.Run(async batch =>
+{
+    var streams = new List<Stream>();
+    try
+    {
+        var session = batch.OpenAsyncSession();
+        foreach (var item in batch.Items)
+        {
+            var order = item.Result;
+            if (order.InvoiceCreated)
+            {
+                // in case of fail over we might get an already processed items 
+                // we have to check if we already created the invoice
+                continue;
+            }
+
+            order.InvoiceCreated = true;
+
+            if (order.LineItems.Count == 0)
+            {
+                // no products, we can't create an invoice, but need to save the order
+                continue;
+            }
+            else
+            {
+                // load products data
+                var products = await session.LoadAsync<Product>(order.LineItems.Select(x => x.ProductId));
+
+                var invoice = new Invoice()
+                {
+                    EmailSent = false,
+                    OrderId = order.Id
+                };
+                await session.StoreAsync(invoice);
+                var invoiceId = session.Advanced.GetDocumentId(invoice);
+                var mem = await CreateInvoiceForOrderAsync(invoiceId, order, products);
+                MemoryStream stream = new MemoryStream(mem);
+                streams.Add(stream);
+                session.Advanced.Attachments.Store(
+                    invoice,
+                    $"Invoice_{order.Id}_{order.OrderDateUtc}.pdf",
+                    stream,
+                    "application/pdf"
+                );
+            }
+        }
+        await session.SaveChangesAsync();
+    }
+    finally
+    {
+        foreach (var stream in streams)
+        {
+            await stream.DisposeAsync();
+        }
+    }
+});
+```
+
+The subscription worker is opened using default [SubscriptionWorkerOptions](https://ravendb.net/docs/article-page/6.0/csharp/client-api/data-subscriptions/consumption/api-overview#subscriptionworkeroptions), it means the subscription worker [strategy](https://ravendb.net/docs/article-page/6.0/csharp/client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay) is `OpenIfFree`.
+
+The code here is simply creation of subscription worker, additional example can be found in [Subscription Consumption Examples](https://ravendb.net/docs/article-page/6.0/csharp/client-api/data-subscriptions/consumption/examples#data-subscriptions-subscription-consumption-examples) documentation article. There is also example project with the full code attached (or put link to git?)
+
+In the batch processing code, we check for `order.InvoiceCreated` and if its `true` we skip the item, the reason for that is in case of [subscription connection failover](https://ravendb.net/docs/article-page/6.0/csharp/client-api/data-subscriptions/what-are-data-subscriptions#how-the-worker-communicates-with-the-server) we might get the item second time, thus we might get `Order` that we already created a invoce for it.  
+
+After checking the value of `order.InvoiceCreated`, we open a [Session](https://ravendb.net/docs/article-page/6.0/csharp/client-api/session/what-is-a-session-and-how-does-it-work) and load the related `Products` that were ordered.  
+
+Then we set the `order.InvoiceCreated` value to `true` we have to set this property to `true` the reason for that is that after we add the invoice, the `Order` document will be updated, setting `order.InvoiceCreated` value to `true` will make sure the updated `Order` document won't match the `Subscription` criteria.
+
+The session in subscription is bound to the processing node, we can be sure that editing the `Order` document in subscrition session we are editing the document on same server that is processing the subscription. 
+
+Afterwards, in case there are producs, we create an `Invoice` document, and call the `CreateInvoiceForOrderAsync()` method which will prepare the PDF file and return it (see the method code below), then we load the PDF file into a `MemoryStream` and store it as an attachment of the created `Invoice` document.  
+The last step is to call the `session.SaveChangesAsync()` method which will persist the changes into the database. 
+
+## Additions  
+The code of `CreateInvoiceForOrderAsync()` method, calculates the overall products costs, prepares the invoice PDF document and returns the PDF document `byte[]`. 
+
+```csharp showLineNumbers 
+private Task<byte[]> CreateInvoiceForOrderAsync(string invoiceId, Order order, Dictionary<string, Product> products)
+{
+    // we want to create a new pdf invoice for the order
+    // we will generate the pdf and save it as attachment to the order
+    // we will also update the order to mark that the invoice was created
+
+    using var memStream = new MemoryStream();
+    using var document = new Document(
+        new PdfDocument(
+            new PdfWriter(memStream, new WriterProperties())
+        )
+    );
+
+    document.Add(new Paragraph(new Text($"INVOICE '{invoiceId}':").SetBold()));
+    document.Add(new LineSeparator(new DottedLine()));
+    document.Add(new Paragraph(new Text("")));
+
+    document.Add(new Paragraph(new Text("ORDER").SetBold()));
+    document.Add(new Paragraph($"Order Id: {order.Id}"));
+    document.Add(new Paragraph($"Order Date: {order.OrderDateUtc}"));
+
+    document.Add(new LineSeparator(new DashedLine()));
+    document.Add(new Paragraph("PRODUCTS").SetBold());
+
+    var total = 0m;
+
+    foreach (var item in order.LineItems)
+    {
+        var product = products[item.ProductId];
+
+        document.Add(new Paragraph($"Quantity: {item.Quantity}"));
+        document.Add(new Paragraph($"Product Name: {product.Name}"));
+        document.Add(new Paragraph($"Product Description: {product.Description}"));
+        document.Add(new Paragraph($"Products Price: {item.TotalPrice}"));
+
+        total += item.TotalPrice;
+    }
+
+    document.Add(new LineSeparator(new DashedLine()));
+
+    var totalParagraph = new Paragraph();
+    totalParagraph.Add(new Text("TOTAL: ").SetBold());
+    totalParagraph.Add($"{total}$");
+
+    document.Add(totalParagraph);
+
+    document.Close();
+
+    return Task.FromResult(memStream.ToArray());
+}
+
+```
