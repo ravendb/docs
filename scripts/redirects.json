@@ -56,6 +56,12 @@
         }
     },
     {
+        "key": "/guides/from-zero-to-a-fully-secured-cluster",
+        "value": {
+            "targetUrl": "/guides/the-ravendb-kubernetes-operator-way"
+        }
+    },
+    {
         "key": "/server/ongoing-tasks/backup-overview",
         "value": {
             "targetUrl": "/backup/overview",
@@ -119,12 +125,6 @@
         }
     },
     {
-        "key": "/guides/from-zero-to-a-fully-secured-cluster",
-        "value": {
-            "targetUrl": "/guides/the-ravendb-kubernetes-operator-way"
-        }
-    },
-    {
         "key": "/client-api/session/querying/how-to-stream-query-results",
         "value": {
             "targetUrl": "/querying/stream-query-results"
@@ -148,5 +148,4 @@
             "targetUrl": "/ai-integration/configuration"
         }
     }
-
 ]
