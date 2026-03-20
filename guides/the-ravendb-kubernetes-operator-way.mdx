@@ -1,9 +1,9 @@
 ---
-title: "From Zero to a Fully Secured Cluster - The RavenDB Kubernetes Operator Way"
+title: "RavenDB Kubernetes Operator: Secured Cluster Setup Guide"
 tags: [deep-dive, kubernetes, docker, containers, deployment]
 icon: "toggle-on"
 publishedAt: 2026-02-23
-description: "How to set up a fully secured cluster with RavenDB Kubernetes Operator."
+description: "Step-by-step guide to deploying a fully secured RavenDB cluster on Kubernetes using the RavenDB Operator, covering TLS, cert-manager, storage, and rolling upgrades."
 author: "Omer Ratsaby"
 proficiencyLevel: "Expert"
 ---
@@ -20,64 +20,64 @@ import Image from "@theme/IdealImage";
 
 The RavenDB Kubernetes Operator is designed to take the day-to-day operational noise out of running RavenDB on Kubernetes: cluster bootstrapping, TLS wiring, external access, storage layout, rolling upgrades, and health reporting all converge on a single declarative object \- `RavenDBCluster`.
 
-We’re about to embark on a focused, practical series on the **RavenDB Kubernetes Operator** \- not as a black box you “just install”, but as an engineered system you actually understand.   
+We’re about to embark on a focused, practical series on the **RavenDB Kubernetes Operator** \- not as a black box you "just install", but as an engineered system you actually understand.   
 We’ll start from the ground up: standing up a local lab, preparing a certificates setup package and license, then layering on the operator, TLS modes, external access, storage, observability, and finally rolling upgrades.   
 By the time we’re done, you won’t just have a working cluster; you’ll know exactly *why* it works, what the operator is doing behind the scenes, and how to keep it behaving in production.
 
-## 📚Table of Contents
+## Table of Contents
 
-<h3>Prologue</h3>
-*Why this series exists, what problems it’s trying to solve, and what “operating RavenDB on Kubernetes” really means beyond YAML.*
+**Prologue**
+*Why this series exists, what problems it’s trying to solve, and what "operating RavenDB on Kubernetes" really means beyond YAML.*
 
-<h3>[Part 1: Setup & Operator Installation](#part-1-setup--operator-installation)</h3> 
+**[Part 1: Setup & Operator Installation](#part-1-setup--operator-installation)**
 
 *Preparing the environment from scratch: setup a K8s cluster, prerequisites, cert-manager, and installing the RavenDB Kubernetes Operator.*
 
-<h3>[Part 2: RavenDBCluster CRD](#part-2-ravendbcluster-crd)</h3> 
+**[Part 2: RavenDBCluster CRD](#part-2-ravendbcluster-crd)**
 
 *Understanding the RavenDBCluster resource as the single source of truth \- its structure, intent-based design, and how the operator interprets it.*
 
-<h3>[Part 3: External Access \- How Clients Reach the Cluster](#part-3-external-access---how-traffic-reaches-your-cluster)</h3>  
+**[Part 3: External Access \- How Clients Reach the Cluster](#part-3-external-access---how-traffic-reaches-your-cluster)**
 
 *Configuring external access using ingress controllers, load balancers and node-specific URLs, and mapping RavenDB’s networking model onto Kubernetes primitives.*
 
-<h3>[Part 4: TLS](#part-4-tls)</h3> 
+**[Part 4: TLS](#part-4-tls)**
 
-*Securing the cluster with Let’s Encrypt and self-signed certificates, DNS considerations, trust chains, and what “secure by default” really means.*
+*Securing the cluster with Let’s Encrypt and self-signed certificates, DNS considerations, trust chains, and what "secure by default" really means.*
 
-<h3>[Part 5: Storage](#part-5-storage)</h3>  
+**[Part 5: Storage](#part-5-storage)**
 
 *Defining persistent storage for data and logs, understanding StorageClasses and how RavenDB state survives Pod restarts and rescheduling.*
 
-<h3>[Part 6: Bringing the Cluster to Life](#part-6-bringing-the-cluster-to-life)</h3> 
+**[Part 6: Bringing the Cluster to Life](#part-6-bringing-the-cluster-to-life)**
 
 *Assembling the full manifest, creating prerequisites explicitly, applying the cluster, watching bootstrap and reconciliation in action, and accessing RavenDB Studio.*
 
-<h3>[Part 7: Events and Logging](#part-7-events-and-logging)</h3> 
+**[Part 7: Events and Logging](#part-7-events-and-logging)**
 
 *Learning how to observe the cluster through status, conditions, Kubernetes Events, and logs  \- and how to debug behavior by seeing what the operator sees.*
 
-<h3>[Part 8: Rolling Upgrades](#part-8-rolling-upgrades)</h3>
+**[Part 8: Rolling Upgrades](#part-8-rolling-upgrades)**
 
 *Safely upgrading RavenDB versions node by node, understanding upgrade gates, failure scenarios, recovery, and how the operator protects your data during change.*
 
-<h3>Operator Architecture Overview</h3>
+**Operator Architecture Overview**
 
 The RavenDB Kubernetes Operator is not a collection of manifests. It is a disciplined control system that ensures your RavenDB cluster is deployed securely, consistently, and without guesswork, by embedding RavenDB domain knowledge as code.
 
-Opposed to “assembling a car from parts” (traditional YAMLs), the RavenDB Operator “takes the specification and returns a car that works.”  
+Opposed to "assembling a car from parts" (traditional YAMLs), the RavenDB Operator "takes the specification and returns a car that works."  
 You provide the specification, and the operator builds the car.  
 And more importantly, unlike Helm charts, it keeps the car functioning exactly as you declared by executing complex workflows to respond to changes.
 
 This series assumes that you want not just a running cluster, but a **reproducible, upgradeable, and secure** one. So before anything else, let’s establish what the operator is, what it controls, and why nearly everything in this series flows from that mental model.
 
-<h3> What the Operator Actually Does</h3> 
+### What the Operator Actually Does
 
 User entrypoint is a single document: `RavenDBCluster` \-  the Custom Resource. You describe your cluster → You write it once →  You apply it once.
 
 Kubernetes and the operator take it from there. The operator then assembles everything needed to bring your RavenDB topology to life  \- and keep it alive.
 
-<h3> The Contract and the Enforcer</h3> 
+### The Contract and the Enforcer
 
 A useful way to think about the model: The `RavenDBCluster` is the **contract**. The operator is the **enforcer**. If your contract says:
 
@@ -95,7 +95,7 @@ The operator oversees that entire lifecycle.
 
 And before we dive into the details, here’s the architecture we’ll gradually build throughout the series. We won’t start with everything at once \- we’ll assemble it piece by piece, explain each component as it enters the picture, and by the end, you’ll understand exactly how the full system fits together:
 
-<Image img={require("./assets/fromzero1.png")} alt="" />
+<Image img={require("./assets/fromzero1.png")} alt="Architecture diagram showing the complete RavenDB Kubernetes deployment built throughout the guide series" />
 ## Part 1: Setup & Operator Installation
 
 This series begins by establishing the full baseline **before** we even think about CRDs. We’re building the foundation the rest of the series depends on.
@@ -106,9 +106,9 @@ By the end of Part 1, you will have:
 - cert-manager installed, providing TLS for the operator’s admission webhooks  
 - The RavenDB Operator deployed using Helm, Make, or OLM
 
-Once this groundwork is in place, everything else becomes “just” CRD design and incremental refinement.
+Once this groundwork is in place, everything else becomes "just" CRD design and incremental refinement.
 
-<h3> Lab Setup </h3>
+### Lab Setup 
 
 Before we talk about certificates, Secrets, or the Operator, we need a live Kubernetes cluster. This series supports three environments:
 
@@ -281,10 +281,10 @@ If all three workers nodes show different zones \- AZ distribution is correct.
 
 This is how our architecture looks like after successful setup:
 
-<Image img={require("./assets/fromzero2.png")} alt="" />
+<Image img={require("./assets/fromzero2.png")} alt="Architecture diagram showing Kubernetes lab setup with worker nodes distributed across availability zones" />
 Now, let’s deploy dependencies and RavenDB Operator itself.
 
-<h3> Cert-manager </h3>
+### Cert-manager 
 
 The RavenDB Kubernetes Operator requires a cert-manager to be installed in the cluster.
 
@@ -315,7 +315,7 @@ cert-manager-cainjector-966fc8fbc-lkqwg   1/1     Running   0          12m
 cert-manager-webhook-854cf5f458-sk8kx     1/1     Running   0          12m
 ```
 
-<h3> Deploy the RavenDB Operator </h3>
+### Deploy the RavenDB Operator 
 
 There are three supported ways to install the RavenDB Kubernetes Operator.  
  Each fits a different workflow:
@@ -399,7 +399,7 @@ More about OLM and OperatorHub:
 
 ```bash showLineNumbers
 # install olm
-$ curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.38.0/install.sh | bash showLineNumbers -s v0.38.0
+$ curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.38.0/install.sh | bash -s v0.38.0
 
 # install the RavenDB Operator via its bundle
 $ kubectl create -f https://operatorhub.io/install/ravendb-operator.yaml
@@ -423,7 +423,7 @@ Whatever installation path you choose, the end result is identical:
 Nothing cluster-specific happens yet \-  no Secrets, no RavenDB nodes.  
 This is just the operator itself, waiting for a `RavenDBCluster` definition.
 
-<Image img={require("./assets/fromzero3.png")} alt="" />
+<Image img={require("./assets/fromzero3.png")} alt="Architecture diagram showing the RavenDB Operator installed with namespace, controller, webhooks, and CRD registered" />
 With the operator installed and the baseline environment ready, you can now continue to **Part 2**, where we introduce the `RavenDBCluster` CRD \- the contract that defines what the Operator builds, validates, and enforces, and the foundation we’ll extend step by step throughout the rest of the series.
 
 ## Part 2: RavenDBCluster CRD
@@ -443,16 +443,16 @@ So in Part 2 we’ll do three things:
 
 3. Start a minimal CR skeleton we’ll expand gradually in later parts
 
-<h3>The CR File Header</h3> 
+### The CR File Header
 
-Every `RavenDBCluster` manifest starts with the same Kubernetes “header” fields:
+Every `RavenDBCluster` manifest starts with the same Kubernetes "header" fields:
 
 * `apiVersion` and `kind` tell Kubernetes which CRD this YAML belongs to  
 * `metadata.name` is the cluster’s identity inside Kubernetes  
 * `metadata.namespace` decides where the Operator will create and manage the cluster resources  
 * `metadata.labels` are optional but useful for consistency, tooling, and filtering
 
-```bash showLineNumbers
+```yaml showLineNumbers
 apiVersion: ravendb.ravendb.io/v1
 kind: RavenDBCluster
 metadata:
@@ -466,9 +466,9 @@ spec:
 
 At this stage, `spec` is intentionally empty. That’s the point: we’re building this in controlled increments.
 
-<h3>Image and Pull Policy</h3>
+### Image and Pull Policy
 
-```bash showLineNumbers
+```yaml showLineNumbers
 spec:
  image: ravendb/ravendb:7.1.3-ubuntu.22.04-x64
  imagePullPolicy: IfNotPresent
@@ -483,7 +483,7 @@ Once a cluster exists, image changes are validated to prevent accidental downgra
 Upgrades and re-applying the same version are allowed; moving backwards is not.   
 This protects the cluster from subtle data and compatibility issues that can arise when rolling back binaries against the existing state.
 
-In short: image selection is not “just a container reference.” It’s a controlled, validated input that the RavenDB Operator uses to reason safely about cluster lifecycle.
+In short: image selection is not "just a container reference." It’s a controlled, validated input that the RavenDB Operator uses to reason safely about cluster lifecycle.
 
 The `imagePullPolicy` controls how Kubernetes retrieves the container image. In this series we use: `imagePullPolicy: IfNotPresent`
 
@@ -492,7 +492,7 @@ Other policies are supported, but for stateful workloads, stability and repeatab
 
 Together, `image` and `imagePullPolicy` define *what* runs and *when it changes* \- and the Operator makes sure both happen deliberately, not accidentally.
 
-<h3>License Reference</h3>
+### License Reference
 
 RavenDB requires a valid license to run in any meaningful configuration. This is not something the Operator generates or manages for you \- it is an explicit dependency that must be provided by the user.
 
@@ -505,7 +505,7 @@ The license is expected to be stored as a Kubernetes Secret and referenced by na
 
 We express that intent by adding `licenseSecretRef` to the CR:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 spec:
   licenseSecretRef: ravendb-license
 ```
@@ -514,7 +514,7 @@ The CR now clearly states *what* it depends on, even though we haven’t satisfi
 
 In a later step, we’ll create the `ravendb-license` Secret from `license.json`. Once that Secret is present, the Operator will pick it up and inject the license during cluster provisioning.
 
-<h3>Environment Variables</h3>
+### Environment Variables
 
 The Operator allows you to pass RavenDB server configuration through environment variables using `spec.env`.   
 This is the most natural and declarative way to configure RavenDB in Kubernetes, without custom images or in-container file edits.
@@ -522,7 +522,7 @@ This is the most natural and declarative way to configure RavenDB in Kubernetes,
 RavenDB exposes its configuration via environment variables using a simple convention: configuration keys are prefixed with `RAVEN_`, and dots (`.`) are replaced with underscores (`_`).   
 For example:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 spec:
   env:
     RAVEN_Features_Availability: "Experimental"
@@ -532,7 +532,7 @@ Any supported RavenDB configuration option can be expressed this way and will be
 Changes here are intentional, explicit, and version-controlled as part of the cluster spec.
 
 The full list of available configuration options and naming rules is documented here:  
- [https://docs.ravendb.net/server/configuration/configuration-options/](https://docs.ravendb.net/server/configuration/configuration-options/?utm_source=chatgpt.com)
+ [https://docs.ravendb.net/server/configuration/configuration-options/](https://docs.ravendb.net/server/configuration/configuration-options/)
 
 At this point, we’ve deliberately resisted the temptation to define a full cluster.  
 We haven’t talked about nodes, storage, certificates, or networking yet \- and that’s intentional. What we *have* done is establish the first, non-negotiable pieces of the contract between you and the Operator:
@@ -544,7 +544,7 @@ We haven’t talked about nodes, storage, certificates, or networking yet \- and
 
 Here is the complete `RavenDBCluster` Custom Resource as it stands at the end of Part 2:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 apiVersion: ravendb.ravendb.io/v1
 kind: RavenDBCluster
 metadata:
@@ -560,7 +560,7 @@ spec:
     RAVEN_Features_Availability: "Experimental"
 ```
 
-With the `RavenDBCluster` contract now in place, we can move on to **Part 3**, where we focus on external access \- how traffic reaches your cluster, howURLs map to Kubernetes networking, and how the Operator wires ingress controllers or cloud load balancers into a secure RavenDB deployment.
+With the `RavenDBCluster` contract now in place, we can move on to **Part 3**, where we focus on external access \- how traffic reaches your cluster, how URLs map to Kubernetes networking, and how the Operator wires ingress controllers or cloud load balancers into a secure RavenDB deployment.
 
 ## Part 3: External Access \- How Traffic Reaches Your Cluster
 
@@ -570,16 +570,16 @@ This chapter answers a deceptively simple question:
 How does traffic reach a RavenDB node running inside Kubernetes?
 
 For RavenDB, this question matters more than usual.  
-A RavenDB cluster is not “just” an HTTP service. Each node exposes:
+A RavenDB cluster is not "just" an HTTP service. Each node exposes:
 
 * HTTPS (443) for Studio, client traffic, and REST APIs  
 * TCP (38888) for inter-node cluster communication
 
 Both must be reachable, stable, and correctly mapped to each node’s identity.
 
-<h3>The Operator’s Perspective on External Access</h3>
+### The Operator’s Perspective on External Access
 
-Operator won’t guess how your networking should look, especially it won’t auto-discover public IPs and “hope for the best.” It doesn’t hide networking decisions behind magic annotations.
+Operator won’t guess how your networking should look, especially it won’t auto-discover public IPs and "hope for the best." It doesn’t hide networking decisions behind magic annotations.
 
 The Operator supports two approaches to external access:
 
@@ -594,7 +594,7 @@ The Operator supports two approaches to external access:
 * [AWS Network Load Balancer (NLB](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html)) on EKS  
 * [Azure Load Balancer](https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-overview) on AKS
 
-Both consist of first-class, production-grade pathsm and are fully supported by the Operator, but they solve the problem differently. 
+Both consist of first-class, production-grade paths and are fully supported by the Operator, but they solve the problem differently. 
 
 The important part is that this choice is explicit. You tell the Operator which model you want to use, and it validates and enforces that choice.
 
@@ -607,13 +607,13 @@ That decision lives directly in the `RavenDBCluster` spec under `externalAccessC
 
 For example, choosing an ingress controller looks like this:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 spec:   externalAccessConfiguration:	type: ingress-controller
 ```
 
 At this stage, this is just a declaration of intent. The detailed configuration for each model is added incrementally later in this part.
 
-<h3>Ingress Controllers: One Entry Point, Many Routes</h3>
+### Ingress Controllers: One Entry Point, Many Routes
 
 Ingress-based setups are about **consolidation**.
 
@@ -636,13 +636,13 @@ And Teams already standardized on an ingress controller.
 
 The Operator integrates with ingress controllers by **generating the Kubernetes resources**, while respecting the controller’s native routing model.
 
-<h3>Load Balancers: One Entry Point per Node</h3>
+### Load Balancers: One Entry Point per Node
 
 Load-balancer-based setups are about explicitness and isolation.  
 Each RavenDB node gets its own externally reachable IP and its own direct network path  
 This model aligns well with cloud platforms.
 
-<h4>On AWS (EKS)</h4>
+#### On AWS (EKS)
 
 * One **NLB per RavenDB node**  
 * Each NLB:  
@@ -650,7 +650,7 @@ This model aligns well with cloud platforms.
   * Lives in a specific Availability Zone  
   * Uses a pre-allocated Elastic IP
 
-<h4>On Azure (AKS)</h4>
+#### On Azure (AKS)
 
 * A **single, zone-redundant Standard Load Balancer**  
 * Multiple public IP frontends  
@@ -668,7 +668,7 @@ If you are running locally or want maximum portability \- Use an ingress control
 
 </Admonition>
 
-<h3>Walking Through External Access</h3> 
+### Walking Through External Access
 
 We’ll start on Kind by installing an ingress controller only. At this stage, there are no RavenDB pods, no cluster, and no traffic flowing yet. The goal is simply to put the external access layer in place so it’s ready when the Operator later creates RavenDB resources.
 
@@ -679,7 +679,7 @@ Throughout this series, we will use the default RavenDB ports:
 
 These ports are configurable, and advanced setups may change them. All examples, manifests, and CRs in this series assume these ports unless explicitly stated otherwise.
 
-<h3>Ingress Controllers</h3> 
+### Ingress Controllers
 <Tabs>
 <TabItem value="traefik" label="Traefik">
 
@@ -695,7 +695,7 @@ $ helm repo update
 **2\. Create a minimal `values.yaml`**   
 This enables two entry points: `websecure` on :443 and `tcp` on :38888 Both are configured for TLS passthrough.
 
-```bash showLineNumbers
+```yaml showLineNumbers
 # values.yaml
 entryPoints:
   websecure:
@@ -741,7 +741,7 @@ At this point Traefik is installed and listening on **443** and **38888**, but i
 
 Finally, this is how the ingress controller is referenced from the `RavenDBCluster` spec:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 externalAccessConfiguration:
   type: ingress-controller
   ingressControllerContext:
@@ -751,7 +751,7 @@ externalAccessConfiguration:
 You can further fine-tune how the ingress controller behaves by passing controller-specific annotations through the `RavenDBCluster`  spec.   
 These annotations are applied directly to the generated ingress resources:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 externalAccessConfiguration:
   type: ingress-controller
   ingressControllerContext:
@@ -769,7 +769,7 @@ It exposes traffic directly through Kubernetes Services and relies on HAProxy’
 
 In this setup, HAProxy listens on HTTPS (443) and forwards traffic based on SNI, operating as a transparent routing layer rather than a TLS terminator.
 
-**1\) Add the Traefik Helm repo**
+**1\) Add the HAProxy Helm repo**
 
 ```bash showLineNumbers
 $ helm repo add haproxytech https://haproxytech.github.io/helm-charts
@@ -781,7 +781,7 @@ $ helm repo update
 We deploy HAProxy as a `DaemonSet` so that it runs on every node, and expose it via a `LoadBalancer` service on port 443 and 38888\.  
 HTTP (80) is enabled by default but will not be used for RavenDB.
 
-```bash showLineNumbers
+```yaml showLineNumbers
 # values.yaml
 controller:
   kind: DaemonSet
@@ -816,7 +816,7 @@ In the next steps, once we deploy a RavenDB cluster, the Operator will generate 
 
 Finally, this is how the ingress controller is referenced from the `RavenDBCluster` spec:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 externalAccessConfiguration:
   type: ingress-controller
   ingressControllerContext:
@@ -826,7 +826,7 @@ externalAccessConfiguration:
 You can further fine-tune how the ingress controller behaves by passing controller-specific annotations through the `RavenDBCluster`  spec.   
 These annotations are applied directly to the generated ingress resources:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 externalAccessConfiguration:
   type: ingress-controller
   ingressControllerContext:
@@ -840,7 +840,7 @@ externalAccessConfiguration:
 
 <TabItem value="nginx" label="NGINX">
 
-NGINX is the “classic” ingress option and is still widely deployed, which makes it a familiar baseline for many users.
+NGINX is the "classic" ingress option and is still widely deployed, which makes it a familiar baseline for many users.
 
 In this setup, NGINX acts as a simple ingress layer that exposes standard HTTP and HTTPS entry points. Just like with the other ingress controllers, at this stage **there are no RavenDB pods, no routes, and no traffic** \- we are only preparing the external access layer so the Operator can integrate with it later.
 
@@ -877,7 +877,7 @@ An example can be found here: [https://github.com/ravendb/ravendb-operator/tree/
 
 Finally, this is how the ingress controller is referenced from the `RavenDBCluster` spec:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 externalAccessConfiguration:
   type: ingress-controller
   ingressControllerContext:
@@ -887,11 +887,11 @@ externalAccessConfiguration:
 You can further fine-tune how the ingress controller behaves by passing controller-specific annotations through the `RavenDBCluster`  spec.   
 These annotations are applied directly to the generated ingress resources:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 externalAccessConfiguration:
   type: ingress-controller
   ingressControllerContext:
-    ingressClassName: haproxy
+    ingressClassName: nginx
     additionalAnnotations:
       nginx.ingress.kubernetes.io/limit-connections: "10"
       nginx.ingress.kubernetes.io/limit-rps: "5"
@@ -900,9 +900,9 @@ externalAccessConfiguration:
 </TabItem>
 </Tabs>
 
-<h3>MetalLB for Kind: Giving Your Ingress a Real External IP</h3>
+### MetalLB for Kind: Giving Your Ingress a Real External IP
 
-On cloud Kubernetes, `Service type=LoadBalancer` usually “just works” because the cloud provider provisions a real load balancer and assigns a public IP.
+On cloud Kubernetes, `Service type=LoadBalancer` usually "just works" because the cloud provider provisions a real load balancer and assigns a public IP.
 
 On real bare-metal clusters  there is no cloud provider (or in our case mock cluster via Kind) \-  so a `LoadBalancer` Service will sit there forever with `<pending>` EXTERNAL-IP unless you provide a load balancer implementation yourself:
 
@@ -935,7 +935,7 @@ speaker-vnsk2                 1/1     Running   0          3m48s
 
 Create a small config file (for example `metallb-ravendb-pool.yaml`) and apply it:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
@@ -969,16 +969,16 @@ traefik   LoadBalancer   10.96.226.105   172.19.255.200   80:31721/TCP,443:32123
 Copy the external IP you got and keep it nearby.  
 We’ll use the same IP in the next chapter when we introduce TLS and start binding certificates \+ hostnames to a real, reachable entry point.
 
-<h3>Load Balancers</h3>
+### Load Balancers
 
 <Tabs>
-<TabItem value="nginx" label="NGINX">
+<TabItem value="aws-nlb" label="AWS (EKS)">
 
-AWS NLB mode is the “cloud-native explicit” path: **one external entry point per RavenDB node**, each with a stable IP and a clear failure domain.
+AWS NLB mode is the "cloud-native explicit" path: **one external entry point per RavenDB node**, each with a stable IP and a clear failure domain.
 
 The Operator does **not** try to discover subnets, infer zones, or auto-assign public IPs. You provide an explicit mapping (node → subnet/AZ → EIP), and the Operator enforces it by configuring the per-node Services in a way that the AWS Load Balancer Controller can turn into real NLBs.
 
-<h3>Prerequisites</h3>
+### Prerequisites
 
 * A running EKS cluster with worker nodes spread across multiple AZs  
 * A VPC that spans **at least x subnets** in different AZs (x \= number of ravendb nodes)  
@@ -999,8 +999,7 @@ kube-system               aws-load-balancer-controller-76874bd966-qp8wc         
 Allocate 3 EIPs up front. These will become the static public IPs for nodes `a`, `b`, and `c`.  
 You can do that by navigating to: [**Elastic IPs**](https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#Addresses:) **EC2** console 
 
-<Image img={require("./assets/fromzero4.png")} alt="" />
-[eips.png](https://drive.google.com/open?id=12KMnVZMxU8x5O-wEHJWqQcwYBomaqKSK)
+<Image img={require("./assets/fromzero4.png")} alt="AWS EC2 console showing three allocated Elastic IP addresses for RavenDB nodes A, B, and C" />
 
 These will be pre-assigned to NLBs for node-level external access:
 
@@ -1036,7 +1035,7 @@ It makes the routing model explicit:
 
 Once this mapping is expressed in the `RavenDBCluster` spec, the networking layer becomes deterministic:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 spec:
  externalAccessConfiguration:
     type: aws-nlb
@@ -1088,8 +1087,7 @@ The Operator is designed to work *with* this model, not around it.
 Allocate 3 EIPs up front. These will become the static public IPs for nodes `a`, `b`, and `c`.  
 You can do that by navigating to: Network foundation | Public IP addresses view
 
-<Image img={require("./assets/fromzero5.png")} alt="" />
-[pips.png](https://drive.google.com/open?id=11PA7wN4uy6zE7H5LsYSGeI_XLxPtTUJs)
+<Image img={require("./assets/fromzero5.png")} alt="Azure portal showing three public IP addresses allocated for RavenDB nodes A, B, and C" />
 
 These will be pre-assigned to NLBs for node-level external access:
 
@@ -1110,10 +1108,10 @@ In this setup:
 
 There is no need to manually assign subnets or availability zones. Azure handles traffic distribution and zone resiliency automatically
 
-<Image img={require("./assets/fromzero6.png")} alt="" />
+<Image img={require("./assets/fromzero6.png")} alt="Azure Load Balancer architecture diagram showing zone-redundant public IPs routing to Kubernetes services" />
 The external access contract is intentionally simple. You only map RavenDB node tags to public IPs:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 spec:
   externalAccessConfiguration:
     type: azure-lb
@@ -1131,7 +1129,7 @@ spec:
 </TabItem>
 </Tabs>
 
-<Image img={require("./assets/fromzero7.png")} alt="" />
+<Image img={require("./assets/fromzero7.png")} alt="Architecture diagram showing completed external access configuration with load balancers and stable entry points" />
 With external access now clearly defined, the networking layer is no longer a black box.
 
 Ingress controllers, cloud load balancers, and MetalLB all serve the same purpose here: they give the Operator a concrete, stable entry point it can reason about.  At this stage, nothing is secured yet  and that’s intentional.   
@@ -1159,7 +1157,7 @@ You can supply certificates in **two supported ways**:
 Pick the option that fits your environment.  
 Both produce the same final artifacts: `server.pfx` files for nodes A/B/C and a `client.pfx` for administrative access.
 
-<h3>Let’s Encrypt (RavenDB Setup Package)</h3> 
+### Let’s Encrypt (RavenDB Setup Package)
 
 Let’s Encrypt is the recommended path whenever your environment allows it. It gives you publicly trusted certificates with zero manual cryptography.  
 RavenDB ships with the `rvn` CLI tool, which handles the entire flow:
@@ -1195,7 +1193,7 @@ We’ll start by creating `setup.json`.
 {
   "License": { "Id": "86b", "Name": "MyRavenDBLicense","Keys": ["hy3D7...",..]
   },
-  "Email": thegoldenplatypus@ravendb.net",
+  "Email": "thegoldenplatypus@ravendb.net",
   "Domain": "mydomain",
   "RootDomain": "development.run",
   "NodeSetupInfos": {
@@ -1248,7 +1246,7 @@ This model gives you a single, stable external entry point, clean TLS ownership 
 {
   "License": { "Id": "86b", "Name": "MyRavenDBLicense","Keys": ["hy3D7...",..]
   },
-  "Email": thegoldenplatypus@ravendb.net",
+  "Email": "thegoldenplatypus@ravendb.net",
   "Domain": "mydomain-aws",
   "RootDomain": "development.run",
   "NodeSetupInfos": {
@@ -1292,7 +1290,7 @@ With NLBs, TCP routing happens at L4 with no hostname inspection, so RavenDB’s
 {
   "License": { "Id": "86b", "Name": "MyRavenDBLicense","Keys": ["hy3D7...",..]
   },
-  "Email": thegoldenplatypus@ravendb.net",
+  "Email": "thegoldenplatypus@ravendb.net",
   "Domain": "mydomain-az",
   "RootDomain": "development.run",
   "NodeSetupInfos": {
@@ -1341,7 +1339,7 @@ We generate the package with the following command:
 
 ```bash showLineNumbers
 
-$ docker run --rm -v "/home/$USER/:/ravendb" ravendb/ravendb:latest /bin/bash showLineNumbers -c "cd /usr/lib/ravendb/server && ./rvn create-setup-package -m=lets-encrypt -s=/ravendb/setup.json -o=/ravendb/setup_package.zip"
+$ docker run --rm -v "/home/$USER/:/ravendb" ravendb/ravendb:latest /bin/bash -c "cd /usr/lib/ravendb/server && ./rvn create-setup-package -m=lets-encrypt -s=/ravendb/setup.json -o=/ravendb/setup_package.zip"
 ```
 
 This command runs a temporary RavenDB container to process the setup, requests Let’s Encrypt certificates, performs domain validation, handles DNS challenges, and finally outputs everything into a single setup package.  
@@ -1380,7 +1378,7 @@ Below we showcase how  the generated certificates are referenced in the `RavenDB
 <Tabs>
 <TabItem value="ingress-controller" label="Ingress controller (Traefik, HAProxy, NGINX)">
 
-```bash showLineNumbers
+```yaml showLineNumbers
 spec:
   nodes:
     - tag: a
@@ -1411,7 +1409,7 @@ spec:
 
 <TabItem value="eks" label="AWS (EKS)">
 
-```bash showLineNumbers
+```yaml showLineNumbers
 spec:
  nodes:
     - tag: a
@@ -1454,7 +1452,7 @@ spec:
 
 <TabItem value="aks" label="Azure(AKS)">
 
-```bash showLineNumbers
+```yaml showLineNumbers
 spec:
  nodes:
     - tag: a
@@ -1496,8 +1494,8 @@ The `mode`, `domain`, and `email` fields tell the Operator how TLS is managed (i
 At this stage, these fields are **declarative only**. They describe what certificates the cluster expects and how they are mapped to nodes, but no Secrets are required yet.   
 In later chapters, just before we apply the final CR, we’ll create the actual Secrets from the setup package. Once those Secrets exist, the Operator will pick them up automatically and wire TLS into the cluster during provisioning.
 
-<Image img={require("./assets/fromzero8.png")} alt="" />
-<h3>Self-signed certificates</h3> 
+<Image img={require("./assets/fromzero8.png")} alt="Architecture diagram showing TLS configuration with Let's Encrypt certificates mapped to RavenDB nodes" />
+### Self-signed certificates
 
 Self-signed TLS is supported, but it comes with more responsibility.
 
@@ -1513,7 +1511,7 @@ Unlike Let’s Encrypt, nothing here is automated. You own the full lifecycle: i
 
 With self-signed certificates, we still need to express our intent in the `RavenDBCluster` spec. Just like with Let’s Encrypt, we declare what certificates the cluster expects, not how they are created:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 spec:
   nodes:
     - tag: a
@@ -1554,7 +1552,7 @@ For example, a minimal wildcard certificate might include:
 As long as the SANs match the advertised node URLs, RavenDB doesn’t care whether traffic arrives via ingress controllers, cloud load balancers, or direct node IPs.   
 What matters is that identity, naming, and trust are consistent.
 
-<h3>DNS and Name Resolution</h3> 
+### DNS and Name Resolution
 
 Self-signed certificates still rely on **stable hostnames**. If your environment does not provide DNS resolution for those names, you must supply it yourself.
 
@@ -1581,8 +1579,8 @@ $ kubectl -n kube-system rollout restart deployment coredns
 
 This ensures that both RavenDB nodes and in-cluster clients can resolve the node URLs consistently.
 
-<Image img={require("./assets/fromzero9.png")} alt="" />
-<h3>Certificate Renewal and Rotation</h3> 
+<Image img={require("./assets/fromzero9.png")} alt="Architecture diagram showing DNS resolution configured for RavenDB nodes within the Kubernetes cluster" />
+### Certificate Renewal and Rotation
 
 TLS does not end once the cluster is up. Certificates expire, security requirements change, and rotations must happen without downtime. RavenDB is designed for this from day one, and the Operator builds on those guarantees rather than reinventing them.
 
@@ -1592,7 +1590,7 @@ TLS does not end once the cluster is up. Certificates expire, security requireme
 In Let’s Encrypt mode, renewal is fully automated.  
 When certificates approach expiration, RavenDB renews them and replaces the server certificates in-place. From Kubernetes’ perspective, this shows up as an updated Secret \- no manual intervention required.
 
-```bash showLineNumbers
+```yaml showLineNumbers
 # BEFORE
 $ kubectl get secret ravendb-certs-a -n ravendb -o yaml
 apiVersion: v1
@@ -1622,7 +1620,7 @@ The flow is:
 2. Call RavenDB’s Admin API to replace the cluster certificate  
 3. Let RavenDB propagate and activate the new certificate safely
 
-```bash showLineNumbers
+```yaml showLineNumbers
 # BEFORE
 $ kubectl get secret ravendb-certs-a -n ravendb -o yaml
 apiVersion: v1
@@ -1672,7 +1670,7 @@ That persistence is provided through [PersistentVolumeClaims (PVCs)](https://kub
 
 This is where **StorageClasses** come in.
 
-<h3>Storage classes</h3> 
+### Storage classes
 
 A StorageClass describes the characteristics of a volume  \- performance profile, replication behavior, availability zone binding  \- without exposing provider-specific details to the application. On AWS this might be `gp3` or `io2`, on Azure `managed-premium`, and in local or development environments something like `local-path`.   
 The Operator never creates or modifies StorageClasses; it only references them. This separation is intentional.   
@@ -1689,7 +1687,7 @@ We’ll start with the minimum required to make a RavenDB node durable, then lay
 
 Nothing here is mandatory beyond the first example. These are **composable options**, not mutually exclusive features.
 
-<h3>Persisting RavenDB Data</h3> 
+### Persisting RavenDB Data
 
 The RavenDB Kubernetes Operator addresses this by anchoring each node’s state to a PersistentVolumeClaim (PVC**)**. The PVC outlives Pods, survives restarts, and preserves the node’s identity across rescheduling.
 
@@ -1697,7 +1695,7 @@ Declare what kind of storage you want, and the Operator does the rest.
 
 At minimum, that means defining a data volume and referencing a StorageClass that matches your environment:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 storage:
   data:
     size: 10Gi
@@ -1713,7 +1711,7 @@ What each field means:
 
 Once this is applied, the Operator creates **one PVC per node**, binds it to the chosen StorageClass, and mounts it into the RavenDB container. From that point on, the node’s data is no longer tied to the lifecycle of the Pod \- only to the volume itself.
 
-<h3>Persisting Logs</h3> 
+### Persisting Logs
 
 By default, RavenDB logs are not persistent. If you do not explicitly configure log volumes under `storage.logs`, all RavenDB logs are written to the container filesystem.  That filesystem is ephemeral and will be lost whenever a Pod is restarted, rescheduled, or replaced. For production systems, this is usually unacceptable. Logs are critical for:
 
@@ -1723,7 +1721,7 @@ By default, RavenDB logs are not persistent. If you do not explicitly configure 
 
 To persist logs, you must declare dedicated PVCs for them:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 storage:
     data:
       size: 10Gi
@@ -1743,7 +1741,7 @@ If you omit this section entirely, the Operator makes no attempt to persist logs
 If you choose to persist logs, you may also control **where** RavenDB writes them.   
 When overriding log paths, intent must be explicit on both sides: the volume mount and the RavenDB configuration:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 env:
   RAVEN_LogPath: /home/thegoldenplatypus/logs
 
@@ -1761,7 +1759,7 @@ storage:
 
 Here, the Operator mounts the log volumes at `/home/thegoldenplatypus/logs`, and RavenDB is explicitly instructed to write logs to that location.
 
-<h3>Additional Volumes (Imports, Scripts, Backups)</h3> 
+### Additional Volumes (Imports, Scripts, Backups)
 
 So far, we’ve talked about *owned* storage: data volumes that define the node’s identity and log volumes that preserve operational history Additional volumes solve a different problem. They allow you to *inject external artifacts* into a RavenDB node without making them part of the node’s durable state.
 
@@ -1787,11 +1785,11 @@ The Operator supports three sources for additional volumes:
 
 All are declared under `storage.additionalVolumes`. 
 
-<h3>Mounting a Single File from a ConfigMap</h3> 
+### Mounting a Single File from a ConfigMap
 
 The most controlled form of this is mounting a single file from a [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/).  Imagine you want to import a CSV file into RavenDB. You don’t want to mount an entire directory, and you don’t want RavenDB to see anything except that one file. In that case, you can mount a single key from a ConfigMap directly to a specific path inside the container:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 storage:
   additionalVolumes:
     - name: csv-import
@@ -1805,7 +1803,7 @@ storage:
 Only the `orders.csv` key is mounted; it appears exactly at `/tmp/orders.csv`, nothing else from the ConfigMap is exposed.   
 The ConfigMap itself might look like this:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -1818,11 +1816,11 @@ data:
 
 From RavenDB’s perspective, this is just a file on disk. It doesn’t know (or care) that it came from Kubernetes. This pattern is ideal when you want *maximum control* and *minimal surface area*. 
 
-<h3>Mounting Multiple Files from a ConfigMap</h3> 
+### Mounting Multiple Files from a ConfigMap
 
 Sometimes, though, you don’t want a single file. You want a directory \-  for example, a set of scripts or helper files that belong together. In that case, you can mount the entire ConfigMap as a directory:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 storage:
   data:
     size: 10Gi
@@ -1839,12 +1837,12 @@ This is useful for operational workflows \- maintenance scripts, import helpers,
 One important thing to keep in mind: ConfigMap-backed volumes are read-only.   
 They’re not meant for anything RavenDB modifies or writes back to.
 
-<h3>Mounting Secrets (Sensitive Inputs)</h3> 
+### Mounting Secrets (Sensitive Inputs)
 
 When the content is sensitive, the pattern stays the same \- only the source changes.   
 Secrets can be mounted exactly like ConfigMaps, but with Kubernetes handling encryption and access control:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 storage:
   additionalVolumes:
     - name: import-volume
@@ -1862,11 +1860,11 @@ $ kubectl -n ravendb create secret generic salaries-ravendump --from-file=salari
 
 This is the preferred way to provide sensitive artifacts like credentials. The Operator never inspects the contents; it only ensures the file is mounted correctly. 
 
-<h3>Mounting an Existing PVC</h3> 
+### Mounting an Existing PVC
 
 The most powerful option is mounting an existing PersistentVolumeClaim. Here, you’re not injecting a file \-  you’re attaching storage that already exists:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 storage:
   additionalVolumes:
     - name: restore-volume
@@ -1880,7 +1878,7 @@ This is typically used for restore or migration workflows. The PVC might contain
 
 With storage fully defined, the cluster now has a place to persist its identity and state. Data, logs, and auxiliary files are no longer tied to ephemeral Pods, but to durable volumes managed explicitly by Kubernetes and enforced by the Operator.
 
-<Image img={require("./assets/fromzero10.png")} alt="" />
+<Image img={require("./assets/fromzero10.png")} alt="Architecture diagram showing storage layer fully defined with persistent volumes for data, logs, and auxiliary files" />
 In **Part 6**, we finally bring everything together. We’ll create the remaining Secrets, apply the completed `RavenDBCluster` resource, and watch the Operator reconcile intent into reality \-  provisioning nodes, attaching storage, wiring networking, and forming a live RavenDB cluster. 
 
 ## Part 6: Bringing the Cluster to Life
@@ -1907,18 +1905,18 @@ We gradually assembled the spec:
 
 Each part stood on its own, but none of them were *applied* yet. That wasn’t accidental. Understanding the YAML before applying it is the difference between *operating* Kubernetes and just *throwing manifests at it*. In this part, we finally join all those pieces into a single manifest and bring the cluster to life.
 
-From here on: we’ll demonstrate **Let’s Encrypt setup only.** Up until now we discussed both Let’s Encrypt and self-signed flows. From this point forward, we’ll run the demo using **Let’s Encrypt** for the cluster setup. The flow you’re about to see is the same idea for self-signed as well \- same prerequisites concept, same “create secrets first, reference them in the CR” pattern \- only the certificate source changes. 
+From here on: we’ll demonstrate **Let’s Encrypt setup only.** Up until now we discussed both Let’s Encrypt and self-signed flows. From this point forward, we’ll run the demo using **Let’s Encrypt** for the cluster setup. The flow you’re about to see is the same idea for self-signed as well \- same prerequisites concept, same "create secrets first, reference them in the CR" pattern \- only the certificate source changes. 
 
 From here on, we’ll run everything on a **local kind cluster**. We do this for simplicity and focus: a local kind cluster keeps the environment small, predictable, and easy to reason about. This lets us concentrate on the operator’s behavior and the cluster lifecycle, without introducing cloud-specific variables. 
 
-<h3>Prerequisites</h3> 
+### Prerequisites
 
-Before we apply the `RavenDBCluster`, there are two categories of “stuff” that must already exist in Kubernetes:
+Before we apply the `RavenDBCluster`, there are two categories of "stuff" that must already exist in Kubernetes:
 
 1. **A namespace** to hold everything  
 2. **Secrets** that the operator will *reference*, not generate (license, certs, client cert)
 
-We are going to do this manually because this series iis a demo and a learning path.
+We are going to do this manually because this series is a demo and a learning path.
 
 If you install via the [official RavenDB Operator Helm chart](https://artifacthub.io/packages/helm/ravendb-operator/ravendb-operator), there are installation paths where namespaces are created for you and some prerequisites are templated / automated.  
 That’s convenient for real installs.  
@@ -1926,13 +1924,13 @@ Here, we’re doing it manually on purpose  \- so you can see every moving part 
 
 So let’s create everything we need:
 
-<h3>Create the namespace</h3> 
+### Create the namespace
 
 ```bash showLineNumbers
 $ kubectl create namespace ravendb
 ```
 
-<h3>License secret</h3> 
+### License secret
 
 ```bash showLineNumbers
 $ kubectl create secret generic ravendb-license \
@@ -1940,7 +1938,7 @@ $ kubectl create secret generic ravendb-license \
   -n ravendb
 ```
 
-<h3>Server certificate secrets (per-node)</h3> 
+### Server certificate secrets (per-node)
 
 ```bash showLineNumbers
 $ kubectl create secret generic ravendb-certs-a --from-file=server.pfx=/path/to/node-a/server-cert.pfx -n ravendb
@@ -1950,7 +1948,7 @@ $ kubectl create secret generic ravendb-certs-b --from-file=server.pfx=/path/to/
 $ kubectl create secret generic ravendb-certs-c --from-file=server.pfx=/path/to/node-b/server-cert.pfx -n ravendb
 ```
 
-<h3>Client certificate secret (admin access)</h3> 
+### Client certificate secret (admin access)
 
 ```bash showLineNumbers
 $ kubectl create secret generic ravendb-client-cert --from-file=client.pfx=/path/to/admin-client-cert.pfx -n ravendb
@@ -1970,12 +1968,12 @@ ravendb-license       Opaque   1      26s
 
 At this point we’re ready to apply the *real*  `RavenDBCluster` manifest, because we’ve already put the identity material in place.
 
-<Image img={require("./assets/fromzero11.png")} alt="" />
-<h3>The full RavenDBCluster YAML</h3> 
+<Image img={require("./assets/fromzero11.png")} alt="Architecture diagram showing all Kubernetes secrets created and ready for the RavenDBCluster manifest deployment" />
+### The full RavenDBCluster YAML
 
 This is the moment where all the snippets collapse into a single manifest. You’ve seen every part of this YAML before \- just not all at once:
 
-```bash showLineNumbers
+```yaml showLineNumbers
 apiVersion: ravendb.ravendb.io/v1
 kind: RavenDBCluster
 metadata:
@@ -2023,7 +2021,7 @@ Nothing here is new \- it’s a composition of decisions you’ve already made a
 
 Although the operator supports many more options than what you’ll see in the manifest above , we’re keeping the configuration minimal for now. The goal here isn’t to showcase every feature we explored up to this point, but to demonstrate how a clean, well-understood manifest brings a fully secured RavenDB cluster to life. 
 
-<h3>Webhooks</h3> 
+### Webhooks
 
 Before we apply this manifest, it’s worth taking a short pause to talk about **admission webhooks**  \- because they are about to do a lot of work on your behalf.
 
@@ -2059,7 +2057,7 @@ spec.storage.additionalVolumes[1].name must be unique - 'scripts' is used more t
 This means you don’t end up with a half-created cluster or a messy rollback scenario.   
 Instead, you get a clear, aggregated rejection message explaining **everything that is invalid at once**. 
 
-<h3>Applying the manifest</h3> 
+### Applying the manifest
 
 With the prerequisites in place and the manifest validated by design, it’s time to actually bring the cluster to life.  
 Applying the cluster is intentionally boring \- and that’s a good sign. All the complexity has already been dealt with upfront:
@@ -2073,7 +2071,7 @@ From this point on, the reconciliation loop kicks in: StatefulSets, Services, In
 
 There’s no setup wizard to click through and no manual cluster formation step. The moment the manifest is accepted, Kubernetes and the operator take over and the cluster starts assembling itself.
 
-<Image img={require("./assets/fromzero12.png")} alt="" />
+<Image img={require("./assets/fromzero12.png")} alt="Architecture diagram showing the operator reconciliation loop creating StatefulSets, Services, and other resources" />
 You can watch the full layout by listing all resources under the ravendb namespace:
 
 ```bash showLineNumbers
@@ -2120,7 +2118,7 @@ persistentvolumeclaim/ravendb-data-ravendb-c-0   Bound    pvc-46a6ff68-ea92-43e5
 
 ```
 
-<h3>Watching the cluster form: the init job</h3> 
+### Watching the cluster form: the init job
 
 The real creation of the **RavenDB cluster** happens inside the **bootstrap job** created by the operator. This job is responsible for forming the initial RavenDB cluster, and it does so by actively validating that every node is reachable using the public URLs you defined in the RavenDBCluster spec. Concretely, it:
 
@@ -2139,8 +2137,8 @@ $ kubectl logs job/ravendb-cluster-init -n ravendb
 
 The logs are intentionally explicit. You’ll see DNS resolution, connectivity checks, and node additions logged step by step. When this job completes successfully, the cluster is fully formed \- no manual setup, no UI-driven registration, no follow-up actions required.
 
-<Image img={require("./assets/fromzero13.png")} alt="" />
-<h3>Accessing RavenDB Studio from your browser</h3> 
+<Image img={require("./assets/fromzero13.png")} alt="Architecture diagram showing completed cluster initialization with all nodes registered and cluster fully formed" />
+### Accessing RavenDB Studio from your browser
 
 At this point, the cluster is up, the bootstrap job has completed, and RavenDB is fully operational. Let’s access the RavenDB Studio.
 
@@ -2153,7 +2151,7 @@ Your local machine, however, may not know how to resolve the RavenDB hostnames t
 
 If your OS DNS does not already resolve them correctly, add temporary entries to `/etc/hosts`:
 
-```bash showLineNumbers
+```text showLineNumbers
 172.19.255.200 a.ravendb-operator-e2e.ravendb.run
 172.19.255.200 b.ravendb-operator-e2e.ravendb.run
 172.19.255.200 c.ravendb-operator-e2e.ravendb.run
@@ -2182,23 +2180,24 @@ Now open your browser and navigate to your URL.
 The browser will prompt you to select a client certificate. Choose the imported RavenDB client certificate.  
 If everything is wired correctly, RavenDB Studio loads immediately \- secured, clustered, and fully initialized.
 
-<Image img={require("./assets/fromzero14.png")} alt="" />
+<Image img={require("./assets/fromzero14.png")} alt="RavenDB Studio loaded in the browser showing the secured and clustered database management interface" />
 With the cluster now running, certificates in place, and the bootstrap process completed, RavenDB has fully transitioned from a declarative specification into a living system.
 
-<Image img={require("./assets/fromzero15.png")} alt="" />
+<Image img={require("./assets/fromzero15.png")} alt="Architecture diagram showing the fully operational RavenDB cluster with certificates and bootstrap completed" />
 At this point, the most important question is no longer *how* the cluster was created, but *how it tells you what’s happening*. In **Part 7**, we’ll shift focus to **events and logging** \-  how the operator communicates progress, surfaces problems, and explains its decisions through Kubernetes Events, structured logs, and status conditions. This is where observability replaces guesswork, and operating the cluster becomes predictable instead of reactive.
 
 ## Part 7: Events and Logging
-<h2>How the Operator Tells You the Truth</h2> 
 
-Once the cluster is alive, the hardest part isn’t “how to deploy” anymore  \- it’s how to understand what’s going on when something changes, slows down, or breaks. Kubernetes already has a strong debugging toolbox, but it’s fragmented: pods have logs, controllers have logs, objects have events, health signals live across multiple resources, and so on.
+### How the Operator Tells You the Truth
+
+Once the cluster is alive, the hardest part isn’t "how to deploy" anymore  \- it’s how to understand what’s going on when something changes, slows down, or breaks. Kubernetes already has a strong debugging toolbox, but it’s fragmented: pods have logs, controllers have logs, objects have events, health signals live across multiple resources, and so on.
 
 A good operator should collapse all that into a single place you can trust, while still letting you drill down when needed.
 
 That’s what this chapter is about: **reading the cluster state top-down**, then using **Events \+ logs as your time machine** to understand what happened, why, and what to do next.
 
-If you’ve ever debugged a broken rollout, you know the classic trap: pods might be “Running” but not “Ready”, Ingress might exist but has no address, PVCs might exist but never bind.  
-A bootstrap Job might be retrying while your nodes look “healthy”.
+If you’ve ever debugged a broken rollout, you know the classic trap: pods might be "Running" but not "Ready", Ingress might exist but has no address, PVCs might exist but never bind.  
+A bootstrap Job might be retrying while your nodes look "healthy".
 
 The operator’s status model is designed to prevent that confusion by giving you:
 
@@ -2207,7 +2206,7 @@ The operator’s status model is designed to prevent that confusion by giving yo
 * a truth table (`conditions[]`) that drives readiness  
 * Events emitted *only when something actually changes*
 
-<h3>How to read the CR status top-down</h3> 
+### How to read the CR status top-down
 
 Once the cluster exists, your instinct is usually to jump straight into pods:
 
@@ -2291,7 +2290,7 @@ Status:
 
 It’s your cluster’s status page \- written by the operator. And it’s structured so you can read it top-down.
 
-<h3>1\) Phase: the headline</h3> 
+### 1\) Phase: the headline
 
 At the bottom, you’ll see .status.phase.
 
@@ -2302,12 +2301,12 @@ Think of it as the title of the story the operator is currently telling:
 * **Error** \- something is degraded (failed bootstrap, unhealthy pods, repeated crashes, etc.).
 
 This matters because it prevents the classic failure mode of Kubernetes debugging:  
-“I see resources… therefore it’s working.”
+"I see resources… therefore it’s working."
 
 A cluster can have StatefulSets, Pods, Services, Ingresses \- and still be nowhere near ready.  
 Phase forces you to answer the right question first: *is the operator satisfied yet?*
 
-<h3>2\) Message: the human explanation</h3> 
+### 2\) Message: the human explanation
 
 Right next to phase (or just below it) is .status.message.
 
@@ -2316,13 +2315,13 @@ If the cluster isn’t ready, the message points to the first thing that blocks 
 
 In other words, `.status.message` is meant to be the line you paste into Slack. 
 
-<h3>3\) Conditions:</h3> 
+### 3\) Conditions:
 
-The truth table behind the story Phase and message are the summary. Conditions are the evidence. The operator tracks a set of conditions under `.status.conditions[]`. Some are “meta” signals:
+The truth table behind the story Phase and message are the summary. Conditions are the evidence. The operator tracks a set of conditions under `.status.conditions[]`. Some are "meta" signals:
 
 * Ready \- the final answer: can this cluster serve traffic?  
 * Progressing \- rollout is in flight  
-* Degraded \- something is unhealthy enough to consider the state “error”
+* Degraded \- something is unhealthy enough to consider the state "error"
 
 And some are the actual requirements the operator expects to become true:
 
@@ -2341,7 +2340,7 @@ Each condition comes with three pieces of information:
 
 This is the part most people ignore at first \-  and it’s exactly the part that makes the operator usable. Because conditions don’t just tell you *that something is wrong*.
 
-<h3>Events: turning status changes into a timeline</h3> 
+### Events: turning status changes into a timeline
 
 Status tells you *where you are*.  Events tell you *how you got there*.
 
@@ -2371,13 +2370,13 @@ $ kubectl get events.events.k8s.io -A -o json | jq -r '
     ] | @tsv'
 ```
 
-<Image img={require("./assets/fromzero16.png")} alt="" />
+<Image img={require("./assets/fromzero16.png")} alt="Kubernetes events timeline showing operator state changes from storage blocked through cluster ready" />
 You’re not looking at noise. You’re looking at a timeline of state changes.  
 This is especially powerful during rollouts, because you can literally watch readiness move from one requirement to the next:
 
 … → storage blocked → PVCs not bound → storage resolved → nodes still pending → nodes healthy → bootstrap still running → bootstrap completed → cluster ready.
 
-<h3>Operator logs: understanding why the state changed</h3> 
+### Operator logs: understanding why the state changed
 
 If Events are the operator’s timeline, then logs are its inner monologue. An Event tells you that something changed: storage became ready, nodes turned healthy, and bootstrap completed. 
 
@@ -2408,15 +2407,15 @@ In the final part of the series, **part 8**, we’ll build directly on that foun
 
 ## Part 8: Rolling Upgrades
 
-Upgrading a database cluster is one of those tasks that *looks* like a single-line change (“just bump the image tag”), but can turn ugly fast if you do it casually.  
+Upgrading a database cluster is one of those tasks that *looks* like a single-line change ("just bump the image tag"), but can turn ugly fast if you do it casually.  
 A RavenDB node restart is not the scary part \- the scary part is what *might be true at the moment you restart it*:
 
 Maybe one node is already unhealthy? Maybe the cluster can’t talk to itself cleanly?  
 Maybe one database has a placement/topology problem that you haven’t noticed yet?
 
-If you upgrade into that state, you’re not “upgrading” \- you’re applying pressure to a system that may already be cracked. That’s how you end up with downtime, surprise rebalances, or, in the worst case, you discover too late that your redundancy assumptions weren’t true.
+If you upgrade into that state, you’re not "upgrading" \- you’re applying pressure to a system that may already be cracked. That’s how you end up with downtime, surprise rebalances, or, in the worst case, you discover too late that your redundancy assumptions weren’t true.
 
-So before we even talk about “how the operator upgrades”, here’s the boring-but-non-negotiable rule: always back up your data before you perform an upgrade.
+So before we even talk about "how the operator upgrades", here’s the boring-but-non-negotiable rule: always back up your data before you perform an upgrade.
 
 In a real environment, that could mean:
 
@@ -2426,21 +2425,21 @@ In a real environment, that could mean:
 
 This chapter focuses on the operator mechanics and safety rails \- not on replacing your backup strategy. The operator’s job here is to upgrade safely, one node at a time, and refuse to proceed when the cluster isn’t safe to touch.
 
-<h3>What webhooks allow you to change</h3> 
+### What webhooks allow you to change
 
 A rolling upgrade starts the same way every operator-driven change starts: you update the CR (your declared intent), and reconciliation tries to converge the cluster to match it. In our case, the intent is simple:
 
-“Run the cluster on a newer RavenDB image.”
+"Run the cluster on a newer RavenDB image."
 
 So yes \- you *do* update `.spec.image`. But there’s a line the operator intentionally draws.
 
 Allowed You can move forward to a newer image version (for example, `6.2.x -> 7.1.x`) by patching the CR. The operator will detect image drift between the desired `.spec.image` and what each node is currently running, and it will begin a controlled upgrade process. 
 
-<h3>Not allowed</h3> 
+### Not allowed
 
 The image validator webhook was extended specifically to prevent **explicit version downgrade**. That matters because downgrades are a different class of risk: even if containers start, the data format/behavior expectations might not match. The operator chooses to *reject that intent early*. So if you try to set `.spec.image` to a lower version than what you already run, the webhook should block the request at admission time, before any rollout even starts.
 
-<h3>The upgrade model: serial, gated, resumable</h3> 
+### The upgrade model: serial, gated, resumable
 
 The operator upgrades **serially**: one node at a time, in the order you defined in the CR (`a`, then `b`, then `c`). If something goes wrong, it goes wrong while only **one** node is in motion.
 
@@ -2453,7 +2452,7 @@ The operator runs the same family of checks twice:
 * **Cluster connectivity** **check** \- are cluster links healthy  
 * **Database groups available excluding target** **check**:: for each replicated database, confirm the cluster can still serve it *without relying on this specific node*.
 
-<h3>What we’re going to do in this chapter</h3> 
+### What we’re going to do in this chapter
 
 We’ll run two upgrades back-to-back on our local cluster:
 
@@ -2464,7 +2463,7 @@ We’ll take a healthy cluster and bump it from:`<FROM_IMAGE>` → `<TO_IMAGE>`
 Then we’ll watch: node A upgrade first → then node B → then node C  
  with gates passing cleanly, and the cluster returning to `Ready=True` at the end.
 
-**B) “Bad” upgrade (and how the gates refuse to move)**
+**B) "Bad" upgrade (and how the gates refuse to move)**
 
 We’ll intentionally set up a situation where upgrading would be unsafe:
 
@@ -2474,7 +2473,7 @@ We’ll intentionally set up a situation where upgrading would be unsafe:
 
 What should happen (and what we want to prove):
 
-The operator begins normally → but one of the gates blocks (in this case, the “database availability” gate) → the upgrade stops **before it can cascade the damage** to more nodes.
+The operator begins normally → but one of the gates blocks (in this case, the "database availability" gate) → the upgrade stops **before it can cascade the damage** to more nodes.
 
 Then we’ll fix the underlying issue and demonstrate the core operator promise: reconciliation always pulls reality back toward intent. It means that once the cluster becomes healthy again, the operator will resume upgrading until the actual cluster matches the declared `.spec.image`.
 
@@ -2490,11 +2489,11 @@ $ kubectl -n ravendb get ravendbclusters
 
 This confirms that the operator currently considers the cluster fully reconciled and ready.
 
-Next, we establish a clear “before” snapshot of the running RavenDB version.   
+Next, we establish a clear "before" snapshot of the running RavenDB version.   
 Open RavenDB Studio in your browser and navigate to the **About** tab.   
 This shows the exact server version currently running on the cluster.
 
-<Image img={require("./assets/fromzero17.png")} alt="" />
+<Image img={require("./assets/fromzero17.png")} alt="RavenDB Studio About tab showing the current server version before the rolling upgrade" />
 With the baseline confirmed, we trigger the upgrade itself. In this demo, we change only one thing: the container image version. Nothing else in the manifest is touched:
 
 ```bash showLineNumbers
@@ -2511,13 +2510,13 @@ At this moment, nothing dramatic happens all at once. There is no mass restart, 
 As you monitor the pods in the `ravendb` namespace, you’ll see the story unfold one node at a time.  
  A single pod is terminated and recreated with the new image, while the remaining nodes continue running and serving traffic. Only after the upgraded node is fully started, healthy, and accepted back into the cluster does the operator move on to the next one:
 
-![](./assets/fromzero18.gif)
+![Animated view of pods being upgraded one at a time during a rolling restart in the ravendb namespace](./assets/fromzero18.gif)
 
 Once all pods have been updated and stabilized, the operator converges back to a steady state. No further changes are made, and the cluster returns to `Ready`.
 
 To close the loop, return to RavenDB Studio and revisit the **About** tab. You should now see the new RavenDB version reported. This final check confirms that the upgrade completed successfully across all nodes and that the running system matches the desired state you declared:
 
-<Image img={require("./assets/fromzero19.png")} alt="" />
+<Image img={require("./assets/fromzero19.png")} alt="RavenDB Studio About tab showing the updated server version after the rolling upgrade completed" />
 As the upgrade progresses, Pods alone only tell part of the story. They show *what* is restarting, but not *why* the operator decided it was safe to do so. For that, Kubernetes Events are the real source of truth.
 
 While the rolling upgrade is in progress \-  or immediately after it completes \-  open a second terminal and watch the events emitted by the operator:
@@ -2601,10 +2600,10 @@ From RavenDB’s point of view, this leaves the cluster in a fragile state: ther
 
 Before Sabotage:
 
-<Image img={require("./assets/fromzero20.png")} alt="" />
+<Image img={require("./assets/fromzero20.png")} alt="RavenDB Studio showing a healthy replicated database across all three nodes before sabotage" />
 After Sabotage:
 
-<Image img={require("./assets/fromzero21.png")} alt="" />
+<Image img={require("./assets/fromzero21.png")} alt="RavenDB Studio showing the database in a degraded state after sabotaging nodes A and C" />
 Now let’s trigger an upgrade and see what happens:
 
 ```bash showLineNumbers
@@ -2660,7 +2659,7 @@ Instead of pushing forward, the operator blocks the upgrade before any Pod is re
 
 From the outside, the cluster now looks a little uneven. One node has already been upgraded, while the others are still running the old version. That’s expected \-  and more importantly, it’s intentional. The operator never rolls anything back and never forces the cluster into symmetry at the cost of safety. It simply stops where it must.
 
-At this point, nothing is “broken.” The cluster is still running, serving traffic, and preserving data. The upgrade is paused, waiting for conditions to become safe again.
+At this point, nothing is "broken." The cluster is still running, serving traffic, and preserving data. The upgrade is paused, waiting for conditions to become safe again.
 
 Now let’s fix the underlying issue. We restore the damaged database state and ensure that replicas are once again properly distributed across the cluster. Once the data is safe and the health checks pass, we don’t need to retrigger anything or reapply the manifest.
 
@@ -2721,6 +2720,6 @@ This is where the journey comes full circle. What started as a blank Kubernetes 
 You’ve seen how intent flows from a single CR into real infrastructure, how safety is enforced before anything destructive happens, and how the operator behaves when reality doesn’t match the plan \-  by pausing, not panicking.
 
 More importantly, you’ve built intuition. You now know *why* certain steps exist, *what* the operator is protecting you from, and *how* to read the signals it exposes when something goes wrong.   
-That understanding is what turns an operator from “magic” into a tool you can trust.
+That understanding is what turns an operator from "magic" into a tool you can trust.
 
 From here, the mechanics don’t change \-  only the scale and the scenarios do. Whether you’re upgrading versions, expanding clusters, or recovering from failures, the same principles apply: declare your intent, observe the reconciliation, and let safety lead every step.
