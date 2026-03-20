@@ -38,7 +38,11 @@ export default function GuideMetadata({
         image: { "@type": "ImageObject", url: ogImageUrl, width: 1200, height: 630 },
         ...(publishedAt ? { datePublished: publishedAt } : {}),
         ...(lastUpdatedAt
-            ? { dateModified: new Date(lastUpdatedAt > 1e12 ? lastUpdatedAt : lastUpdatedAt * 1000).toISOString().split("T")[0] }
+            ? {
+                  dateModified: new Date(lastUpdatedAt > 1e12 ? lastUpdatedAt : lastUpdatedAt * 1000)
+                      .toISOString()
+                      .split("T")[0],
+              }
             : publishedAt
               ? { dateModified: publishedAt }
               : {}),
