@@ -170,8 +170,23 @@ if ($DryRun) {
 } else {
 
     Write-Host "Syncing to s3://$S3BucketName/ ..." -ForegroundColor Cyan
-    aws s3 sync $BuildDir "s3://$S3BucketName/" --delete
-    if ($LASTEXITCODE) { throw 'aws s3 sync failed' }
+
+    # Cache hashed assets (JS/CSS bundles) agressively 
+    Write-Host "  [1/2] Hashed assets (assets/*)" -ForegroundColor Gray
+    aws s3 sync $BuildDir "s3://$S3BucketName/" `
+        --exclude "*" `
+        --include "assets/*" `
+        --cache-control "public, max-age=31536000, immutable" `
+        --delete
+    if ($LASTEXITCODE) { throw 'aws s3 sync (hashed assets) failed' }
+
+    # 1 hour cache for everything else 
+    Write-Host "  [2/2] Other static files (HTML, images, icons, sitemap, robots.txt, etc.)" -ForegroundColor Gray
+    aws s3 sync $BuildDir "s3://$S3BucketName/" `
+        --exclude "assets/*" `
+        --cache-control "public, max-age=3600, must-revalidate" `
+        --delete
+    if ($LASTEXITCODE) { throw 'aws s3 sync (static files) failed' }
 
     Write-Host "Updating CloudFront KeyValueStore $CloudFrontDistributionId" -ForegroundColor Cyan
     Update-CloudFrontKVS
