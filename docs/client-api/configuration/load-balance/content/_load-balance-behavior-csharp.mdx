@@ -269,7 +269,7 @@ using (documentStore)
   (e.g., sessions for a specific user, tenant, or team) are routed to the same node,
   while other sessions are routed to different nodes - achieving effective load distribution.
 
-* In scenarios where [optimistic concurrency](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency/) is enabled,
+* In scenarios where [optimistic concurrency](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx) is enabled,
   routing sessions for the same entity to the same node can help reduce _Write_ conflicts,
   since concurrent updates tend to be coordinated on the same node.
   The node handling the write is also more likely to have the latest version of the document,
