@@ -36,7 +36,7 @@ function getMessage(icon: string, state: { pickedSrc: { size: number }; loadInfo
                     message: "Click to load{sizeMessage}",
                     description: "To prompt users to load the full image. sizeMessage is a parenthesized size figure.",
                 },
-                { sizeMessage },
+                { sizeMessage }
             );
         }
         case "offline":
