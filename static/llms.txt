@@ -151,6 +151,7 @@ Documentation is versioned. The current version is 7.2. Use the `/7.2/` URL pref
 ## Guides
 
 - [Guides Home](https://docs.ravendb.net/guides/): Browse all community guides for RavenDB
+- [RavenDB Kubernetes Operator Guide](https://docs.ravendb.net/guides/the-ravendb-kubernetes-operator-way): Deploying a fully secured RavenDB cluster on Kubernetes using the RavenDB Operator, covering TLS, cert-manager, storage, and rolling upgrades
 - [Semantic Search with Python and FastAPI](https://docs.ravendb.net/guides/semantic-search-with-ravendb-python-and-fastapi): Build semantic search using RavenDB with Python
 - [Spatial Search](https://docs.ravendb.net/guides/spatial-search-in-ravendb): Radius, polygon, and reverse spatial queries in Python
 - [Transactional Outbox Pattern](https://docs.ravendb.net/guides/transactional-outbox): Implement the outbox pattern with RavenDB Queue ETL, RabbitMQ, and Kafka

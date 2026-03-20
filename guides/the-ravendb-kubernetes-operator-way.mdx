@@ -6,6 +6,39 @@ publishedAt: 2026-02-23
 description: "Step-by-step guide to deploying a fully secured RavenDB cluster on Kubernetes using the RavenDB Operator, covering TLS, cert-manager, storage, and rolling upgrades."
 author: "Omer Ratsaby"
 proficiencyLevel: "Expert"
+see_also:
+  - title: "Container Deployment Guide"
+    link: "start/containers/general-guide"
+    source: "docs"
+    path: "Getting Started > Containers"
+  - title: "Container Deployment Guides"
+    link: "start/containers/deployment-guides"
+    source: "docs"
+    path: "Getting Started > Containers"
+  - title: "Security Overview"
+    link: "server/security/overview"
+    source: "docs"
+    path: "Server > Security"
+  - title: "Certificate Management"
+    link: "server/security/authentication/certificate-management"
+    source: "docs"
+    path: "Server > Security > Authentication"
+  - title: "Certificate Renewal and Rotation"
+    link: "server/security/authentication/certificate-renewal-and-rotation"
+    source: "docs"
+    path: "Server > Security > Authentication"
+  - title: "Clustering Overview"
+    link: "server/clustering/overview"
+    source: "docs"
+    path: "Server > Clustering"
+  - title: "Backup Overview"
+    link: "server/ongoing-tasks/backup-overview"
+    source: "docs"
+    path: "Server > Ongoing Tasks"
+  - title: "Configuration Options"
+    link: "server/configuration/configuration-options"
+    source: "docs"
+    path: "Server > Configuration"
 ---
 
 import Admonition from '@theme/Admonition';
@@ -140,7 +173,7 @@ This mirrors the architecture we’ll build throughout the series and gives the 
 
 Kind makes this trivial. All we need is a small configuration file describing the topology. Save the following as `ravendb-kind.yaml`:
 
-```
+```yaml
 # ravendb-kind.yaml
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
@@ -1242,7 +1275,7 @@ This model gives you a single, stable external entry point, clean TLS ownership 
 
 <TabItem value="eks" label="AWS(EKS)">
 
-```
+```json
 {
   "License": { "Id": "86b", "Name": "MyRavenDBLicense","Keys": ["hy3D7...",..]
   },
@@ -1286,7 +1319,7 @@ With NLBs, TCP routing happens at L4 with no hostname inspection, so RavenDB’s
 </TabItem>
 <TabItem value="aks" label="Azure (AKS)">
 
-```
+```json
 {
   "License": { "Id": "86b", "Name": "MyRavenDBLicense","Keys": ["hy3D7...",..]
   },
@@ -2477,7 +2510,7 @@ The operator begins normally → but one of the gates blocks (in this case, the 
 
 Then we’ll fix the underlying issue and demonstrate the core operator promise: reconciliation always pulls reality back toward intent. It means that once the cluster becomes healthy again, the operator will resume upgrading until the actual cluster matches the declared `.spec.image`.
 
-## Demo A: successful rolling upgrade
+### Demo A: successful rolling upgrade
 
 Before touching anything, we confirm that the cluster is in a clean, stable state. Rolling upgrades are deliberately conservative and only work as intended when the operator has a healthy baseline to start from.
 
@@ -2582,7 +2615,7 @@ After the Pod comes back, **post-upgrade gates** run to confirm the node rejoine
 This happens serially  \- A, then B, then C. If anything blocks progress, the event stream stops advancing and clearly shows which gate failed and why.  
 Reading the events top to bottom gives you a concise, chronological view of how the operator enforces safety during upgrades.
 
-## Demo B: a blocked upgrade and safe recovery
+### Demo B: a blocked upgrade and safe recovery
 
 This time, we’re going to do the opposite of Demo A. Instead of starting from a perfectly healthy cluster and watching a smooth upgrade, we’ll intentionally put the cluster into a risky state and observe how the operator refuses to proceed.
 
