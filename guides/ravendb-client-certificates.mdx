@@ -16,7 +16,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 import Image from "@theme/IdealImage";
 
-## Overview
+## What are RavenDB client certificates and why does key reuse matter?
 
 Certificate rotation is supposed to be routine. In practice, it often turns into an operational tax:  
 **new cert  → re-registration → rollout coordination → “why is prod locked out?”**
@@ -46,7 +46,7 @@ We’ll walk through three vault patterns, each showing a different way to renew
 - **HashiCorp Vault**:  Does not provide automatic key reuse, so we generate and store the private key and CSR ourselves. Renewal simply means asking Vault to sign that same CSR again.  
 - **AWS Private CA with Secrets Manager**: Follows the same model as HashiCorp Vault: store the private key and CSR once, then instruct PCA to issue fresh certificates by signing that same CSR, producing new certificates with the same identity key.
 
-## What “register once” means in RavenDB
+## How does RavenDB's register-once model work?
 
 When a certificate is renewed using the **same private key** and signed by the **same issuer**, it represents the same identity in every meaningful sense.  
 The metadata may change \- validity dates, serial number, thumbprint \- but the underlying identity and the authority vouching for it remain constant.
@@ -70,7 +70,7 @@ From RavenDB’s perspective, that means a new identity entirely \- which forces
 
 But as you’ll see next, if you renew in a way that preserves the **same key** and the **same issuer**, RavenDB no longer requires re-registration \- and certificate rotation becomes a seamless, fully operational practice.
 
-## Three Providers, One Principle: RavenDB Authentication Without Re-Registration \- Walkthrough Demo
+## How do I renew certificates without re-registration? Three providers, one principle
 
 In the next sections we’ll make this idea concrete with three full, end to end walkthroughs: one for **Azure Key Vault**, one for **HashiCorp Vault** and one for **AWS Private CA \+ Secrets Manager.**  
  Each tab follows the same pattern:
@@ -176,14 +176,14 @@ In the upload dialog, fill in the following fields:
 
 - **Expiration (optional)** \- If you want RavenDB to treat the certificate as expired earlier than its actual validity period.
 
-<Image img={require("./assets/cert1.png")} alt="" />
+<Image img={require("./assets/cert1.png")} alt="RavenDB Studio upload client certificate dialog showing Name, Security Clearance, and certificate file fields" />
 <h3>  **Alternatively, register the certificate via the CLI** </h3>
 
 For automation or scripted deployments, you can perform the same registration using the admin REST API:
 
 ```bash showLineNumbers
 $ export RAVEN_URL="https://a.vault-demo.ravendb.run"
-$ export ADMIN_CERT_PFX="./setup_package/admin.client.certificate.vault-demo.pfx
+$ export ADMIN_CERT_PFX="./setup_package/admin.client.certificate.vault-demo.pfx"
 
 $ curl --cert "$ADMIN_CERT_PFX" \
 --cert-type P12 \
@@ -246,7 +246,7 @@ You can also inspect the registered certificates- and verify that both versions 
 Navigate to:  
 **Manage Server → Certificates → Manage Certificates**
 
-<Image img={require("./assets/cert2.png")} alt="" />
+<Image img={require("./assets/cert2.png")} alt="RavenDB Studio certificate management view showing two certificate entries with different thumbprints under the same identity" />
 **Alternatively, view certificate entries via CLI**
 
 ```bash showLineNumbers
@@ -401,7 +401,7 @@ In the upload dialog, fill in the following fields:
 
 - **Expiration (optional)** \- If you want RavenDB to treat the certificate as expired earlier than its actual validity period.
 
-<Image img={require("./assets/cert1.png")} alt="" />
+<Image img={require("./assets/cert1.png")} alt="RavenDB Studio upload client certificate dialog showing Name, Security Clearance, and certificate file fields" />
 <h3>  Alternatively, register the certificate via the CLI </h3>
 
 ```bash showLineNumbers
@@ -429,7 +429,7 @@ Let’s try it by going through the renewal process.
 <h3> 6\. Renew the certificate by signing the exact same CSR again </h3>
 
 ```bash showLineNumbers
-# fetch the client.csr we stored erlier in the vault
+# fetch the client.csr we stored earlier in the vault
 $ vault kv get -field=client_csr_b64 kv/ravendb/client | base64 -d > client.csr
 
 # Sign the same CSR again : new cert, same key
@@ -466,7 +466,7 @@ You can also inspect the registered certificates- and verify that both versions 
 Navigate to:  
 **Manage Server → Certificates → Manage Certificates**
 
-<Image img={require("./assets/cert2.png")} alt="" />
+<Image img={require("./assets/cert2.png")} alt="RavenDB Studio certificate management view showing two certificate entries with different thumbprints under the same identity" />
 **Alternatively, view certificate entries via CLI**
 
 ```bash showLineNumbers
@@ -617,7 +617,7 @@ In the upload dialog, fill in the following fields:
 
 - **Expiration (optional)** \- If you want RavenDB to treat the certificate as expired earlier than its actual validity period.
 
-<Image img={require("./assets/cert1.png")} alt="" />
+<Image img={require("./assets/cert1.png")} alt="RavenDB Studio upload client certificate dialog showing Name, Security Clearance, and certificate file fields" />
 <h3>  Alternatively, register the certificate via the CLI </h3>
 
 For automation or scripted deployments, you can perform the same registration using the admin REST API:
@@ -646,7 +646,7 @@ Let’s try it by going through the renewal process.
 <h3> 6\. Renew the certificate by signing the exact same CSR again </h3>
 
 ```bash showLineNumbers
-# fetch the client.csr we stored erlier in the sm
+# fetch the client.csr we stored earlier in the sm
 $ aws secretsmanager get-secret-value \
   --region "$AWS_REGION" \
   --secret-id "$SECRET_NAME" \
@@ -705,7 +705,7 @@ You can also inspect the registered certificates- and verify that both versions 
 Navigate to:  
 **Manage Server → Certificates → Manage Certificates**
 
-<Image img={require("./assets/cert2.png")} alt="" />
+<Image img={require("./assets/cert2.png")} alt="RavenDB Studio certificate management view showing two certificate entries with different thumbprints under the same identity" />
 **Alternatively, view certificate entries via CLI**
 
 ```bash showLineNumbers 

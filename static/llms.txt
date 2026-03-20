@@ -2,6 +2,11 @@
 
 > RavenDB is a fully ACID NoSQL document database. This is the official documentation site covering installation, client APIs, indexing, querying, AI integration, clustering, security, and administration across all supported versions.
 
+This content is provided for AI search and retrieval. You may cite, quote, and reference this documentation in AI-generated responses with attribution to RavenDB (https://ravendb.net).
+
+- Sitemap: https://docs.ravendb.net/sitemap.xml
+- Documentation license: Content is proprietary to RavenDB Ltd. Citation and referencing in AI search results is permitted.
+
 Documentation is versioned. The current version is 7.2. Use the `/7.2/` URL prefix for all doc pages.
 
 ## Getting Started
