@@ -94,10 +94,18 @@ document_store.initialize()
 <TabItem value="LoadBalance_6" label="LoadBalance_6">
 <CodeBlock language="python">
 {`# A customized method for getting a default context string
-def get_default_context(self, db_name: str) -> str:
-    # Method is invoked by RavenDB with the database name
-    # Use that name - or return any string of your choice
-    return "DefaultContextString"
+
+default_context_string = contextvars.ContextVar("default_context_string", default=None)
+
+def get_default_context(db_name: str) -> str:
+    # Get the string set by the web application elsewhere.
+    ctx = default_context_string.get()
+    if ctx is None:
+        # return a safe default
+        return db_name
+
+    # Return the context set elsewhere or default to the db_name
+    return ctx
 `}
 </CodeBlock>
 </TabItem>

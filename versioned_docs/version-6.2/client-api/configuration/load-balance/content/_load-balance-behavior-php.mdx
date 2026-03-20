@@ -92,11 +92,19 @@ $documentStore->initialize();
 <TabItem value="LoadBalance_6" label="LoadBalance_6">
 <CodeBlock language="php">
 {`// A customized method for getting a default context string
+
+public static ?string $defaultContextString = null;
+
 private function GetDefaultContext(string $dbName): string
 \{
-    // Method is invoked by RavenDB with the database name
-    // Use that name - or return any string of your choice
-    return "DefaultContextString";
+    // Get the string set by the web application elsewhere.
+    if (self::$defaultContextString === null) \{
+        // return a safe default
+        return $dbName;
+    \}
+
+    // Return the context set elsewhere or default to the dbName
+    return self::$defaultContextString;
 \}
 `}
 </CodeBlock>

@@ -90,11 +90,20 @@ documentStore.initialize();
 </TabItem>
 <TabItem value="loadBalance_6" label="loadBalance_6">
 <CodeBlock language="js">
-{`// A customized method for getting a default context string 
+{`// A customized method for getting a default context string
+
+const DefaultContextStringKey = "DefaultContextString";
+
 const getDefaultContext = (dbName) => \{
-    // Method is invoked by RavenDB with the database name
-    // Use that name - or return any string of your choice
-    return "defaultContextString";
+    // Get the string set by the web application elsewhere.
+    const store = asyncLocalStorage.getStore();
+    if (!store) {
+        // return a safe default
+        return dbName;
+    }
+
+    // Return the context set elsewhere or default to the dbName
+    return store[DefaultContextStringKey] ?? dbName;
 \}
 `}
 </CodeBlock>
