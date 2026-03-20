@@ -61,6 +61,7 @@ import CodeBlock from '@theme/CodeBlock';
   This will set the load balance behavior for the default database that is set on the store.
 
 * This setting can be **overriden** by setting 'LoadBalanceBehavior' on the server, see [below](../../../../client-api/configuration/load-balance/load-balance-behavior.mdx#set-loadbalancebehavior-on-the-server).
+
 **Initialize conventions**:
 
 <TabItem value="LoadBalance_1" label="LoadBalance_1">
@@ -77,7 +78,7 @@ conventions = DocumentConventions()
 conventions.load_balance_behavior = LoadBalanceBehavior.USE_SESSION_CONTEXT
 
 # Assign a method that sets the default context string
-# This string will be used for sessions that do Not provide a context string
+# This method will be called to provide a default context string for sessions that do not set one explicitly
 # A sample GetDefaultContext method is defined below
 conventions.load_balancer_per_session_context_selector = get_default_context
 
@@ -93,10 +94,18 @@ document_store.initialize()
 <TabItem value="LoadBalance_6" label="LoadBalance_6">
 <CodeBlock language="python">
 {`# A customized method for getting a default context string
-def get_default_context(self, db_name: str) -> str:
-    # Method is invoked by RavenDB with the database name
-    # Use that name - or return any string of your choice
-    return "DefaultContextString"
+
+default_context_string = contextvars.ContextVar("default_context_string", default=None)
+
+def get_default_context(db_name: str) -> str:
+    # Get the string set by the web application elsewhere.
+    ctx = default_context_string.get()
+    if ctx is None:
+        # return a safe default
+        return db_name
+
+    # Return the context set elsewhere or default to the db_name
+    return ctx
 `}
 </CodeBlock>
 </TabItem>
@@ -116,12 +125,14 @@ with document_store.open_session() as session:
 <CodeBlock language="python">
 {`# Open a session that will use a UNIQUE context string:
 with document_store.open_session() as session:
-    # Call context, pass a unique context string for this session
-    session.advanced.session_info.context = "SomeOtherContext"
+    # Call 'context' to assign a dedicated context string for this session.
+    # For example: "team/9-A", representing the team that the employees loaded in this session belong to.
+    session.advanced.session_info.context = "team/9-A"
 
-    # For all Read & Write requests made in this session,
-    # node to access is calculated from the unique string & the seed defined on the store
-    employee = session.load("employees/1-A", Employee)
+    # For all Read & Write requests made in this session, including the following load calls,
+    # a node to access is calculated from the unique string & the seed defined on the store
+    employee1 = session.load("employees/1-A", Employee)
+    employee2 = session.load("employees/3-A", Employee)
 `}
 </CodeBlock>
 </TabItem>
@@ -236,16 +247,21 @@ with document_store:
 
 ## When to use 
 
-* Distributing _Read & Write_ requests among the cluster nodes can be beneficial  
-  when a set of sessions handle a specific set of documents or similar data.  
-  Load balancing can be achieved by routing requests from the sessions that handle similar topics to the same node, while routing other sessions to other nodes.  
- 
-* Another usage example can be setting the session's context to be the current user.  
-  Thus spreading the _Read & Write_ requests per user that logs into the application.  
+* Distributing _Read and Write_ requests among cluster nodes can be beneficial
+  when a set of sessions consistently handles a specific group of documents or related data.
+  By setting a context string per session, you can ensure that similar sessions
+  (e.g., sessions for a specific user, tenant, or team) are routed to the same node,
+  while other sessions are routed to different nodes - achieving effective load distribution.
 
-* Once setting the load balance to be per session-context,  
-  in the case when detecting that many or all sessions send requests to the same node,  
-  a further level of node randomization can be added by changing the seed.  
+* In scenarios where [optimistic concurrency](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx) is enabled,
+  routing sessions for the same entity to the same node can help reduce _Write_ conflicts,
+  since concurrent updates tend to be coordinated on the same node.
+  The node handling the write is also more likely to have the latest version of the document,
+  which helps avoid cross-node conflicts.
+
+* Once load balancing is configured to use the session context,
+  if many sessions still end up being routed to the same node,
+  you can introduce additional distribution by adjusting the context seed on the store.
 
 
 
