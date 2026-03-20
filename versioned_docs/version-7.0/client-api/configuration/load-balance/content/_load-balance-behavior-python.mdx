@@ -117,12 +117,14 @@ with document_store.open_session() as session:
 <CodeBlock language="python">
 {`# Open a session that will use a UNIQUE context string:
 with document_store.open_session() as session:
-    # Call context, pass a unique context string for this session
-    session.advanced.session_info.context = "SomeOtherContext"
+    # Call 'context' to assign a dedicated context string for this session.
+    # For example: "team/9-A", representing the team that the employees loaded in this session belong to.
+    session.advanced.session_info.context = "team/9-A"
 
-    # For all Read & Write requests made in this session,
-    # node to access is calculated from the unique string & the seed defined on the store
-    employee = session.load("employees/1-A", Employee)
+    # For all Read & Write requests made in this session, including the following load calls,
+    # a node to access is calculated from the unique string & the seed defined on the store
+    employee1 = session.load("employees/1-A", Employee)
+    employee2 = session.load("employees/3-A", Employee)
 `}
 </CodeBlock>
 </TabItem>

@@ -122,12 +122,14 @@ try \{
 {`// Open a session that will use a UNIQUE context string:
 $session = $documentStore->openSession();
 try \{
-    // Call SetContext, pass a unique context string for this session
-    $session->advanced()->getSessionInfo()->setContext("SomeOtherContext");
+    // Call 'setContext' to assign a dedicated context string for this session.
+    // For example: "team/9-A", representing the team that the employees loaded in this session belong to.
+    $session->advanced()->getSessionInfo()->setContext("team/9-A");
 
-    // For all Read & Write requests made in this session,
-    // node to access is calculated from the unique string & the seed defined on the store
-    $employee = $session->load(Employee::class, "employees/1-A");
+    // For all Read & Write requests made in this session, including the following load calls,
+    // a node to access is calculated from the unique string & the seed defined on the store
+    $employee1 = $session->load(Employee::class, "employees/1-A");
+    $employee2 = $session->load(Employee::class, "employees/3-A");
 \} finally \{
     $session->close();
 \}

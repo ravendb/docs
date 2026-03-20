@@ -117,12 +117,14 @@ const employee = await session.load("employees/1-A");
 {`// Open a session that will use a UNIQUE context string:
 const session = documentStore.openSession();
 
-// Call setContext, pass a unique context string for this session
-session.advanced.sessionInfo.setContext("SomeOtherContext");
+// Call 'setContext' to assign a dedicated context string for this session.
+// For example: "team/9-A", representing the team that the employees loaded in this session belong to.
+session.advanced.sessionInfo.setContext("team/9-A");
 
-// For all Read & Write requests made in this session,
-// node to access is calculated from the unique string & the seed defined on the store
-const employee = await session.load("employees/1-A");
+// For all Read & Write requests made in this session, including the following load calls,
+// a node to access is calculated from the unique string & the seed defined on the store
+const employee1 = await session.load("employees/1-A");
+const employee2 = await session.load("employees/3-A");
 `}
 </CodeBlock>
 </TabItem>
