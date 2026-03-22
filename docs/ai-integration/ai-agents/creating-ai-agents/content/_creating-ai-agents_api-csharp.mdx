@@ -873,15 +873,15 @@ chat.SetUserPrompt(@"
     and store the results in the database");
 
 // Run the conversation
-var LLMResponse = chat.Run<Performer>();
+var response = chat.Run<Performer>();
     
 // Check the LLM's response status    
-if (LLMResponse.Status == AiConversationResult.Done)
+if (response.Status == AiConversationResult.Done)
 {
     // The LLM successfully processed the user prompt and returned a response.
     // The performer's ID, profit, and suggested rewards were stored in the Performers
     // collection by the action tool, and are also included in the final LLM response.
-    var answer = LLMResponse.Answer;
+    var answer = response.Answer;
 }
 ```
 </TabItem>
@@ -893,15 +893,15 @@ chat.SetUserPrompt(@"
     and store the results in the database");
 
 // Run the conversation
-var LLMResponse = await chat.RunAsync<Performer>(CancellationToken.None);
+var response = await chat.RunAsync<Performer>(CancellationToken.None);
 
 // Check the LLM's response status    
-if (LLMResponse.Status == AiConversationResult.Done)
+if (response.Status == AiConversationResult.Done)
 {
     // The LLM successfully processed the user prompt and returned a response.
     // The performer's ID, profit, and suggested rewards were stored in the Performers
     // collection by the action tool, and are also included in the final LLM response.
-    var answer = LLMResponse.Answer;
+    var answer = response.Answer;
 }    
 ```
 </TabItem>
@@ -963,7 +963,7 @@ See [Stream LLM responses](../../../ai-integration/ai-agents/creating-ai-agents/
   var rewardText = new StringBuilder();
     
   // Call 'StreamAsync' to collect the streamed response
-  var LLMResponse = await chat.StreamAsync<Performer>(
+  var response = await chat.StreamAsync<Performer>(
       // The response property to stream
       responseObj => responseObj.SuggestedReward,
     
@@ -976,13 +976,13 @@ See [Stream LLM responses](../../../ai-integration/ai-agents/creating-ai-agents/
       CancellationToken.None);
     
   // Check the conversation status
-  if (LLMResponse.Status == AiConversationResult.Done)
+  if (response.Status == AiConversationResult.Done)
   {
       // The streamed property (`SuggestedReward`) was processed chunk by chunk above
       // and is fully received.
       // Other properties in the response (e.g., EmployeeId, Profit) are not streamed,
       // they will be available in the final response object once the conversation is complete.
-      var answer = LLMResponse.Answer;
+      var answer = response.Answer;
   }
   ```
 </ContentFrame>
@@ -1206,14 +1206,14 @@ public async Task createAndRunAiAgent_full()
 
     // Run the chat/conversation:
     // ==========================
-    var LLMResponse = await chat.RunAsync<Performer>(CancellationToken.None);
+    var response = await chat.RunAsync<Performer>(CancellationToken.None);
 
-    if (LLMResponse.Status == AiConversationResult.Done)
+    if (response.Status == AiConversationResult.Done)
     {
         // The LLM successfully processed the user prompt and returned a response.
         // The performer's ID, profit, and suggested rewards were stored in the Performers
         // collection by the action tool, and are also included in the final LLM response.
-        var answer = LLMResponse.Answer;
+        var answer = response.Answer;
     }
 }
 ```
