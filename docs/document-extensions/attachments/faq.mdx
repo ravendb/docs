@@ -58,7 +58,7 @@ When you [Delete a document](../../client-api/session/deleting-entities.mdx):
 
 * **Remote attachments**  
   RavenDB does **not** delete the binary content from the remote storage provider.  
-  You are responsible for removing the files from the remote storage yourself.    
+  The developer is responsible for removing the files from the remote storage.
 
 </Panel>
 
@@ -70,7 +70,7 @@ When performing a [Backup](../../client-api/operations/maintenance/backup/backup
 
 * The [remote attachment metadata](../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#the-attachment-metadata) is written to the backup/export file.
 * The actual **binary content** remains in the remote storage and is **not** downloaded or included in the backup.  
-  You are responsible for backing up and retaining the remote files using your cloud provider's backup and retention mechanisms.    
+  The developer is responsible for backing up and retaining the remote files using the cloud provider's backup and retention mechanisms.  
 
 When performing a [Restore](../../client-api/operations/maintenance/backup/restore.mdx) or [Import](../../studio/database/tasks/import-data/import-data-file.mdx) operation:
 
