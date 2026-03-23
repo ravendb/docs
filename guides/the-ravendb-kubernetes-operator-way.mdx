@@ -71,13 +71,13 @@ And more importantly, unlike Helm charts, it keeps the car functioning exactly a
 
 This series assumes that you want not just a running cluster, but a **reproducible, upgradeable, and secure** one. So before anything else, let’s establish what the operator is, what it controls, and why nearly everything in this series flows from that mental model.
 
-<h3> What the Operator Actually Does</h3> 
+### What the Operator Actually Does
 
 User entrypoint is a single document: `RavenDBCluster` \-  the Custom Resource. You describe your cluster → You write it once →  You apply it once.
 
 Kubernetes and the operator take it from there. The operator then assembles everything needed to bring your RavenDB topology to life  \- and keep it alive.
 
-<h3> The Contract and the Enforcer</h3> 
+### The Contract and the Enforcer
 
 A useful way to think about the model: The `RavenDBCluster` is the **contract**. The operator is the **enforcer**. If your contract says:
 
