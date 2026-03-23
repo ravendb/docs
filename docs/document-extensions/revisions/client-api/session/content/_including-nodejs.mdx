@@ -38,7 +38,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * Including revisions may be useful, for example, when an auditing application loads or queries for a document.  
   The document's past revisions can be included with the document to make the document's history available for instant inspection.  
 
-* Once loaded to the session, there are no additional trips to the server when accessing the included revisions.  
+* Once revisions are loaded into the session, accessing them requires no additional trips to the server.  
   [Getting](../../../../../document-extensions/revisions/client-api/session/loading.mdx) a revision that was included with the document will retrieve it directly from the session.  
   This also holds true when attempting to include revisions but none are found.
 
@@ -74,11 +74,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * To include SINGLE or MULTIPLE document revisions by their change vectors:   
 
   * When modifying the document, store its updated change vector in a property in the document.  
-    Can be done by [patching](../../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector) the document from the Client API or from the Studio.
+    This can be done by [patching](../../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector) the document from the Client API or from the Studio.
 
   * Specify the **path** to this property when including the revisions, see examples below.  
   
-  * e.g.:  
+  *For example:  
     Each time an employee's contract document is modified (e.g. when their salary is raised),  
     you can add the current change vector of the document to a dedicated property in the document.  
     Whenever the time comes to re-evaluate an employee's terms and their contract is loaded,  
@@ -392,11 +392,11 @@ The included revisions will be listed in a dedicated **Revisions Tab** under the
   rather than by [creation time](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-creation-time),  
   you need to specify the path to a document property that contains the revision change vector(s).  
 
-* The example below shows how to retrieve a revision's change vector and patch it into a document property,  
+* The example below shows how to retrieve a revision's change vector and patch it into a document property  
   so that it can later be used to include that revision.  
 
 <Tabs>
-<TabItem value="patch_the_document" label="path_the_document">
+<TabItem value="patch_the_document" label="patch_the_document">
 ```js
 // Get the revisions' metadata for document 'contracts/1-A'
 const contractRevisionsMetadata = await session
