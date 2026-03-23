@@ -42,10 +42,10 @@ Learn more about replication in [Replication overview](../../server/clustering/r
     
 For both internal and external replication:
  
-**Local attachments**:  
+**LOCAL attachments**:  
 The document is replicated along with the attachment's binary content, which will be stored on the target node.
 
-**Remote attachments**:  
+**REMOTE attachments**:  
 The document is replicated without the binary content, only the metadata is transferred.  
 The attachment's content resides in shared remote storage (e.g., S3, Azure Blob) and does not need to be copied between nodes.
 
@@ -67,10 +67,10 @@ The ETL task is triggered by document changes in the source database, including 
     
 ---
     
-**Local attachments**:  
+**LOCAL attachments**:  
 The document is sent to the target database along with the binary attachment stream.
 
-**Remote attachments**:  
+**REMOTE attachments**:  
 The document is sent without the binary stream, only the metadata is transferred, since the attachment content resides in remote storage.
 
   * **Remote destination configuration**:  
@@ -92,12 +92,12 @@ and [Restore from backup](../../studio/database/create-new-database/from-backup.
     
 ---    
     
-**Local attachments**:  
+**LOCAL attachments**:  
 The attachment metadata and the binary content are included in the operation:  
   * During export/backup, the binary stream is written to the dump file.  
   * During import/restore, the binary stream is loaded from the dump into the database.  
 
-**Remote attachments**:  
+**REMOTE attachments**:  
     
   * **Attachments metadata**:  
     * During **export/backup**:  
