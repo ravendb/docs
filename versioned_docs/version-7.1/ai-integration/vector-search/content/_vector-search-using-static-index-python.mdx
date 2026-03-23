@@ -1,6 +1,8 @@
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
@@ -11,6 +13,10 @@ import TabItem from '@theme/TabItem';
   while leveraging the advantages of RavenDB's [indexes](../../../indexes/what-are-indexes.mdx).
 
 * The vector search feature is only supported by indexes that use the [Corax search engine](../../../indexes/search-engine/corax.mdx).
+    
+* Vector fields are **not** supported in Map-Reduce indexes.  
+  See [Combining vector search with Map-Reduce indexes](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#combining-vector-search-with-map-reduce-indexes)
+  for a workaround that uses two separate indexes.
 
 * In this article:
     * [Indexing a vector field - Overview](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-a-vector-field---overview)
@@ -28,6 +34,7 @@ import TabItem from '@theme/TabItem';
     * [Indexing multiple field types](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-multiple-field-types)
     * [Querying the static index for similar documents](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#querying-the-static-index-for-similar-documents)
     * [Configure the vector field in Studio](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#configure-the-vector-field-in-studio)
+    * [Combining vector search with Map-Reduce indexes](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#combining-vector-search-with-map-reduce-indexes)
 
 </Admonition>
 
@@ -935,3 +942,41 @@ Running the above example on RavenDB’s sample data returns the following docum
    The number of candidates (potential neighboring vectors) that RavenDB evaluates during vector indexing.
 7. **Destination embedding type**  
    The quantization format for the embeddings that will be generated (Text, Single, Int8, or Binary).
+
+---
+
+## Combining vector search with Map-Reduce indexes
+
+Vectorized fields are currently **not** supported by Map-Reduce indexes.
+
+If you need to perform vector searches on aggregated data, you can use a **two-index workaround**.  
+This involves generating artificial documents with a Map-Reduce index, and then applying a standard Map index to those documents to perform the vector search.
+
+<ContentFrame>
+    
+### 1. Create a Map-Reduce index (without vector fields)
+
+This Map-Reduce index acts solely as a document generator.  
+Enable the [Output reduce results to collection](../../../studio/database/indexes/create-map-reduce-index.mdx#saving-map-reduce-results-in-a-collection-artificial-documents) feature
+so the reduce output is saved as artificial documents in your database.
+
+* **Do not include pre-made embeddings in the Map phase:**  
+  Vector embeddings are massive arrays of data.
+  Because of how RavenDB processes and groups data during the reduction phase, carrying these large arrays through the Map-Reduce pipeline will severely inflate your index storage size. 
+
+* **Propagate lightweight data instead:**  
+  Include only the minimal data needed to create the vectorized field later  
+  (for example, the document IDs required for `LoadVector`).
+
+* **Disable field indexing:**  
+  Since this Map-Reduce index acts only as a document generator and will not be queried directly,  
+  set the indexing behavior for all fields to `No` (e.g., `FieldIndexing.No` in code, or **No** in the Studio field options).  
+  This prevents unnecessary background work, saving significant disk space and CPU resources.  
+  See [Disabling indexing for index-field](../../../indexes/using-analyzers.mdx#disabling-indexing-for-index-field).  
+
+### 2. Create a Map index on the artificial collection
+
+Create a standard Map index on the artificial collection produced by the first index.  
+Because these are now regular documents, you can freely define vector fields and use all vector search APIs on this index to fulfill your query needs.
+    
+</ContentFrame>
