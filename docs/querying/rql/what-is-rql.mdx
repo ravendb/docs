@@ -355,6 +355,15 @@ where Lines[].ProductName in ("Chang", "Spegesild", "Unknown product name")
 ```
 </TabItem>
 
+To negate the `in` operator, you must check existance of the given field before validating it does not contain the passed values.
+
+<TabItem>
+```csharp
+from "Companies"
+where exists(Name) and not Name in ("The Big Cheese", "Unknown company name")
+```
+</TabItem>
+
 </ContentFrame>
     
 <ContentFrame>
