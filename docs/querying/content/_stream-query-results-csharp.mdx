@@ -2,67 +2,68 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* RavenDB supports __streaming data__ from the server to the client.  
+* RavenDB supports **streaming data** from the server to the client.  
   Streaming is useful when processing a large number of results.
 
 * The data streamed can be a result of a dynamic query, a static index query, or just filtered by a prefix.  
 
 * To stream results, use the `Stream` method from the `Advanced` session operations.
 
-* In this page:
-
-    * [Streaming overview](../../../../client-api/session/querying/how-to-stream-query-results.mdx#streaming-overview)
-     
-    * [Stream by query](../../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-by-query)
-        * [Stream a dynamic query](../../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-a-dynamic-query)
-        * [Stream a dynamic raw query](../../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-a-dynamic-raw-query)
-        * [Stream a projected query](../../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-a-projected-query)
-        * [Stream an index query](../../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-an-index-query)
-        * [Stream related documents](../../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-related-documents)
-        * [By query syntax](../../../../client-api/session/querying/how-to-stream-query-results.mdx#by-query-syntax)
-      
-    * [Stream by prefix](../../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-by-prefix)
-        * [Stream results by prefix](../../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-results-by-prefix)
-        * [By prefix syntax](../../../../client-api/session/querying/how-to-stream-query-results.mdx#by-prefix-syntax)
+* In this article:
+    * [Streaming overview](../../querying/stream-query-results.mdx#streaming-overview)     
+    * [Stream by query](../../querying/stream-query-results.mdx#stream-by-query)
+        * [Stream a dynamic query](../../querying/stream-query-results.mdx#stream-a-dynamic-query)
+        * [Stream a dynamic raw query](../../querying/stream-query-results.mdx#stream-a-dynamic-raw-query)
+        * [Stream a projected query](../../querying/stream-query-results.mdx#stream-a-projected-query)
+        * [Stream an index query](../../querying/stream-query-results.mdx#stream-an-index-query)
+        * [Stream related documents](../../querying/stream-query-results.mdx#stream-related-documents)
+        * [By query syntax](../../querying/stream-query-results.mdx#by-query-syntax)      
+    * [Stream by prefix](../../querying/stream-query-results.mdx#stream-by-prefix)
+        * [Stream results by prefix](../../querying/stream-query-results.mdx#stream-results-by-prefix)
+        * [By prefix syntax](../../querying/stream-query-results.mdx#by-prefix-syntax)
 
 </Admonition>
-## Streaming overview
 
-* __Immediate processing__:  
+<Panel heading="Streaming overview">
+
+* **Immediate processing**:  
   Neither the client nor the server holds the full response in memory.   
   Instead, as soon as the server has a single result, it sends it to the client.  
   Thus, your application can start processing results before the server sends them all.
 
-* __No tracking__:  
+* **No tracking**:  
   The stream results are Not tracked by the session.  
   Changes made to the resulting entities will not be sent to the server when _SaveChanges_ is called.
 
-* __A snapshot of the data__:  
+* **A snapshot of the data**:  
   The stream results are a snapshot of the data at the time when the query is computed by the server.  
   Results that match the query after it was already processed are Not streamed to the client.
 
-* __Query limitations:__:  
+* **Query limitations**:  
 
   * A streaming query does not wait for indexing by design.  
-    So calling [WaitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults) is Not supported and will result in an exception.   
+    So calling [WaitForNonStaleResults](../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults) is Not supported and will result in an exception.   
   
-  * Using [Include](../../../../client-api/how-to/handle-document-relationships.mdx#includes) to load a related document to the session in a streaming query is Not supported.  
-    Learn how to __stream related documents__ here [below](../../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-related-documents).
+  * Using [Include](../../client-api/how-to/handle-document-relationships.mdx#includes) to load a related document into the session in a streaming query is Not supported.  
+    Learn more in [Stream related documents](../../querying/stream-query-results.mdx#stream-related-documents).
 
+</Panel>
 
+<Panel heading="Stream by query">
 
-## Stream by query
-
-<Admonition type="note" title="">
-#### Stream a dynamic query
+<ContentFrame>
+    
+### Stream a dynamic query
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Query-Sync" label="Query-Sync">
-<CodeBlock language="csharp">
-{`// Define a query on a collection
+<TabItem value="Query_sync" label="Query_sync">
+```csharp
+// Define a query on a collection
 IRavenQueryable<Employee> query = session
     .Query<Employee>()
     .Where(x => x.FirstName == "Robert");
@@ -92,12 +93,11 @@ while (streamResults.MoveNext())
     // Get the Auto-Index that was used/created with this dynamic query
     string indexUsed = streamQueryStats.IndexName;
 }
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="Query-Async" label="Query-Async">
-<CodeBlock language="csharp">
-{`// Define a query on a collection
+<TabItem value="Query_async" label="Query_async">
+```csharp
+// Define a query on a collection
 IRavenQueryable<Employee> query = asyncSession
     .Query<Employee>()
     .Where(x => x.FirstName == "Robert");
@@ -128,12 +128,11 @@ await using (IAsyncEnumerator<StreamResult<Employee>> streamResults =
         string indexUsed = streamQueryStats.IndexName;
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="DocumentQuery-Sync" label="DocumentQuery-Sync">
-<CodeBlock language="csharp">
-{`// Define a document query on a collection
+<TabItem value="DocumentQuery_sync" label="DocumentQuery_sync">
+```csharp
+// Define a document query on a collection
 IDocumentQuery<Employee> query = session
     .Advanced
     .DocumentQuery<Employee>()
@@ -164,12 +163,11 @@ while (streamResults.MoveNext())
     // Get the Auto-Index that was used/created with this dynamic query
     string indexUsed = streamQueryStats.IndexName;
 }
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="DocumentQuery-Async" label="DocumentQuery-Async">
-<CodeBlock language="csharp">
-{`// Define a document query on a collection
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+// Define a document query on a collection
 IAsyncDocumentQuery<Employee> query = asyncSession
     .Advanced
     .AsyncDocumentQuery<Employee>()
@@ -201,20 +199,20 @@ await using (IAsyncEnumerator<StreamResult<Employee>> streamResults =
         string indexUsed = streamQueryStats.IndexName;
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>
 
-<Admonition type="note" title="">
-#### Stream a dynamic raw query
+<ContentFrame>
+    
+### Stream a dynamic raw query
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// Define a raw query using RQL
+```csharp
+// Define a raw query using RQL
 IRawDocumentQuery<Employee> query = session
     .Advanced
     .RawQuery<Employee>("from Employees where FirstName = 'Robert'");
@@ -227,12 +225,11 @@ while (streamResults.MoveNext())
     StreamResult<Employee> currentResult = streamResults.Current;
     Employee employee = streamResults.Current.Document;
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// Define a raw query using RQL
+```csharp
+// Define a raw query using RQL
 IAsyncRawDocumentQuery<Employee> query = asyncSession
     .Advanced
     .AsyncRawQuery<Employee>("from Employees where FirstName = 'Robert'");
@@ -247,20 +244,20 @@ await using (IAsyncEnumerator<StreamResult<Employee>> streamResults =
         Employee employee = streamResults.Current.Document;
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>
 
-<Admonition type="note" title="">
-#### Stream a projected query
+<ContentFrame>
+    
+### Stream a projected query
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// Define a query with projected results
+```csharp
+// Define a query with projected results
 // Each query result is not an Emplyee document but an entity of type 'NameProjection'.
 IRavenQueryable<NameProjection> query = session
     .Query<Employee>()
@@ -274,12 +271,11 @@ while (streamResults.MoveNext())
     StreamResult<NameProjection> currentResult = streamResults.Current;
     NameProjection employeeName = streamResults.Current.Document;
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// Define a query with projected results
+```csharp
+// Define a query with projected results
 // Each query result is not an Employee document but an entity of type 'NameProjection'.
 IRavenQueryable<NameProjection> query = asyncSession
     .Query<Employee>()
@@ -295,31 +291,30 @@ await using (IAsyncEnumerator<StreamResult<NameProjection>> streamResults =
         NameProjection employeeName = streamResults.Current.Document;
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="ProjectedClass" label="ProjectedClass">
-<CodeBlock language="csharp">
-{`// Each query result will be of this class type
+```csharp
+// Each query result will be of this class type
 public class NameProjection
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>
 
-<Admonition type="note" title="">
-#### Stream an index query
+<ContentFrame>
+    
+### Stream an index query
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// Define a query on an index
+```csharp
+// Define a query on an index
 IQueryable<Employee> query = session.Query<Employee, Employees_ByFirstName>()
     .Where(employee => employee.FirstName == "Robert");
 
@@ -331,12 +326,11 @@ while (streamResults.MoveNext())
     StreamResult<Employee> currentResult = streamResults.Current;
     Employee employee = streamResults.Current.Document;
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// Define a query on an index
+```csharp
+// Define a query on an index
 IQueryable<Employee> query = asyncSession.Query<Employee, Employees_ByFirstName>()
     .Where(employee => employee.FirstName == "Robert");
 
@@ -350,12 +344,11 @@ await using (IAsyncEnumerator<StreamResult<Employee>> streamResults =
         Employee employee = streamResults.Current.Document;
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="csharp">
-{`// The index:
+```csharp
+// The index:
 public class Employees_ByFirstName : AbstractIndexCreationTask<Employee>
 {
     public Employees_ByFirstName()
@@ -367,32 +360,33 @@ public class Employees_ByFirstName : AbstractIndexCreationTask<Employee>
             };
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>
 
-<Admonition type="note" title="">
-#### Stream related documents
-__Why streaming query results does not support 'include'__:
+<ContentFrame>
+    
+### Stream related documents
+    
+**Why streaming query results does not support 'include'**:
 
-* A document can reference [related documents](../../../../indexes/indexing-related-documents.mdx#what-are-related-documents).
-* An [Include](../../../../client-api/how-to/handle-document-relationships.mdx#includes) clause in a non-streamed query loads these related documents to the session  
+* A document can reference [related documents](../../indexes/indexing-related-documents.mdx#what-are-related-documents).
+* An [Include](../../client-api/how-to/handle-document-relationships.mdx#includes) clause in a non-streamed query loads these related documents to the session  
   so that they can be accessed without an additional query to the server.
 * Those included documents are sent to the client at the end of the query results.  
   This does not mesh well with streaming, which is designed to allow transferring massive amounts of data,  
   possibly over a significant amount of time.
 
-__How to stream related documents__:
+**How to stream related documents**:
 
-* Instead of using _include_, define the query so that it will return a [projection](../../../../indexes/querying/projections.mdx).
+* Instead of using _include_, define the query so that it will return a [projection](../../indexes/querying/projections.mdx).
 * The projected query results will not be just the documents from the queried collection.  
   Instead, each result will be an entity containing the related document entities in addition to the original queried document.
 * On the client side, you need to define a class that matches the projected query result.
 
-__Example__:
+**Example**:
 
 * The below example uses RawQuery.  
   However, the same logic can be applied to a Query, DocumentQuery, or when querying an index.
@@ -402,8 +396,8 @@ __Example__:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// Define a query with a 'select' clause to project the results.
+```csharp
+// Define a query with a 'select' clause to project the results.
 
 // The related Company & Employee documents are 'loaded',
 // and returned in the projection together with the Order document itself.
@@ -433,12 +427,11 @@ while (streamResults.MoveNext())
     Company theRelatedCompanyDoc = projection.Company;
     Employee theRelatedEmployeeDoc = projection.Employee;
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// Define a query with a 'select' clause to project the results.
+```csharp
+// Define a query with a 'select' clause to project the results.
 
 // The related Company & Employee documents are 'loaded',
 // and returned in the projection together with the Order document itself.
@@ -470,33 +463,30 @@ await using (IAsyncEnumerator<StreamResult<AllDocsProjection>> streamResults =
         Employee theRelatedEmployeeDoc = projection.Employee;
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="ProjectedClass" label="ProjectedClass">
-<CodeBlock language="csharp">
-{`// Each query result will be of this class type
+```csharp
+// Each query result will be of this class type
 public class AllDocsProjection
 {
     public Order Order { get; set; }
     public Employee Employee { get; set; }
     public Company Company { get; set; }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>
 
-
-
-<Admonition type="note" title="">
-#### By query syntax
+<ContentFrame>
+    
+### By query syntax
 
 <TabItem value="syntax" label="syntax">
-<CodeBlock language="csharp">
-{`// Stream by query:
+```csharp
+// Stream by query:
 IEnumerator<StreamResult<T>> Stream<T>(IQueryable<T> query);
 IEnumerator<StreamResult<T>> Stream<T>(IQueryable<T> query, out StreamQueryStatistics streamQueryStats);
 
@@ -505,32 +495,35 @@ IEnumerator<StreamResult<T>> Stream<T>(IDocumentQuery<T> query, out StreamQueryS
 
 IEnumerator<StreamResult<T>> Stream<T>(IRawDocumentQuery<T> query);
 IEnumerator<StreamResult<T>> Stream<T>(IRawDocumentQuery<T> query, out StreamQueryStatistics streamQueryStats);
-`}
-</CodeBlock>
+```
 </TabItem>
 
-| Parameters | type | description |
+| Parameter | type | description |
 | - | - | - |
-| **query** | [IQueryable](../../../../querying/overview.mdx#sessionquery), [IDocumentQuery](../../../../querying/overview.mdx#sessionadvanceddocumentquery) or [IRawDocumentQuery](../../../../querying/overview.mdx#sessionadvancedrawquery) | The query for which to stream results |
-| `out` **streamQueryStats** | [StreamQueryStatistics](../../../../glossary/stream-query-statistics.mdx) | Information about performed query |
+| **query** | [IQueryable](../../querying/overview.mdx#sessionquery), [IDocumentQuery](../../querying/overview.mdx#sessionadvanceddocumentquery) or [IRawDocumentQuery](../../querying/overview.mdx#sessionadvancedrawquery) | The query for which to stream results |
+| `out` **streamQueryStats** | [StreamQueryStatistics](../../glossary/stream-query-statistics.mdx) | Information about performed query |
 
 | Return Value | |
 | - | - |
-| IEnumerator&lt;[StreamResult&lt;T&gt;](../../../../glossary/stream-result.mdx)&gt; | Enumerator with resulting entities |
+| IEnumerator&lt;[StreamResult&lt;T&gt;](../../glossary/stream-result.mdx)&gt; | Enumerator with resulting entities |
 
-</Admonition>
+</ContentFrame>
+    
+</Panel>    
 
-## Stream by prefix
+<Panel heading="Stream by prefix">
 
-<Admonition type="note" title="">
-####  Stream results by prefix
-* Streamed data can also be filtered by an __ID prefix__ and by other __filtering options__, see syntax below.
+<ContentFrame>
+    
+### Stream results by prefix
+    
+* Streamed data can also be filtered by an **ID prefix** and by other **filtering options**, see syntax below.
 * Note: No auto-index is created when streaming results by a prefix.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`string idPrefix = "Orders/";
+```csharp
+string idPrefix = "Orders/";
 string matches = "*25-A|77?-A";
 
 // Filter streamed results by the passing 'prefix' and an optional 'matches' string
@@ -546,12 +539,11 @@ while (streamResults.MoveNext())
     StreamResult<Order> currentResult = streamResults.Current;
     Order order = currentResult.Document;
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`string idPrefix = "Orders/";
+```csharp
+string idPrefix = "Orders/";
 string matches = "*25-A|77?-A";
 
 // Filter streamed results by the passing 'prefix' and an optional 'matches' string
@@ -569,26 +561,25 @@ await using (IAsyncEnumerator<StreamResult<Order>> streamResults =
         Order order = currentResult.Document;
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>
 
-<Admonition type="note" title="">
-#### By prefix syntax
+<ContentFrame>
+    
+### By prefix syntax
 
-<TabItem value="syntax_2" label="syntax_2">
-<CodeBlock language="csharp">
-{`// Stream by prefix:
+<TabItem>
+```csharp
+// Stream by prefix:
 IEnumerator<StreamResult<T>> Stream<T>(string startsWith, string matches = null,
     int start = 0, int pageSize = int.MaxValue, string startAfter = null);
-`}
-</CodeBlock>
+```
 </TabItem>
 
-| Parameters | type | description |
+| Parameter | type | description |
 | - | - | - |
 | **startsWith** | `string` | Stream documents with this ID prefix |
 | **matches** | `string` | Filter the ID part that comes after the specified prefix.<br/>Use '?' for any character, '*' any characters.<br/>Use '&#124;' to separate rules. |
@@ -598,9 +589,8 @@ IEnumerator<StreamResult<T>> Stream<T>(string startsWith, string matches = null,
 
 | Return Value | |
 | - | - |
-| IEnumerator&lt;[StreamResult&lt;T&gt;](../../../../glossary/stream-result.mdx)&gt; | Enumerator with resulting entities |
+| IEnumerator&lt;[StreamResult&lt;T&gt;](../../glossary/stream-result.mdx)&gt; | Enumerator with resulting entities |
 
-</Admonition>
-
-
-
+</ContentFrame>
+    
+</Panel>     
