@@ -26,10 +26,10 @@ import Panel from '@site/src/components/Panel';
 * The entities returned by the query are 'loaded' and **tracked** by the [session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx).  
   Entities will Not be tracked when:  
     * Query returns a [projection](../../client-api/session/querying/how-to-project-query-results.mdx)  
-    * Tracking is [disabled](../../client-api/session/querying/how-to-customize-query.mdx#notracking)  
+    * Tracking is [disabled](../../querying/customize-query.mdx#notracking)  
 
 * Query results are **cached** by default.  
-  To disable query caching see [NoCaching](../../client-api/session/querying/how-to-customize-query.mdx#nocaching).
+  To disable query caching see [NoCaching](../../querying/customize-query.mdx#nocaching).
 
 * Queries are timed out after a configurable time period.  
   See [query timeout](../../server/configuration/database-configuration.mdx#databasesquerytimeoutinsec).
@@ -369,12 +369,12 @@ $employees = $session
 Available methods for the session's [query](../../querying/overview.mdx#session-query) method:    
     
 - AddOrder
-- [afterQueryExecuted](../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
-- [afterStreamExecuted](../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
+- [afterQueryExecuted](../../querying/customize-query.mdx#afterqueryexecuted)
+- [afterStreamExecuted](../../querying/customize-query.mdx#afterstreamexecuted)
 - [aggregateBy](../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
 - [aggregateUsing](../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
 - andAlso
-- [beforeQueryExecuted](../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
+- [beforeQueryExecuted](../../cquerying/customize-query.mdx#beforequeryexecuted)
 - [boost](../../client-api/session/querying/text-search/boost-search-results.mdx)
 - closeSubclause
 - cmpXchg
@@ -382,7 +382,7 @@ Available methods for the session's [query](../../querying/overview.mdx#session-
 - containsAny
 - [count](../../client-api/session/querying/how-to-count-query-results.mdx)
 - [countLazily](../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)
-- [customize](../../client-api/session/querying/how-to-customize-query.mdx)    
+- [customize](../../querying/customize-query.mdx)    
 - distinct
 - explainScores
 - first
@@ -404,8 +404,8 @@ Available methods for the session's [query](../../querying/overview.mdx#session-
 - [moreLikeThis](../../client-api/session/querying/how-to-use-morelikethis.mdx)
 - negateNext
 - [not](../../client-api/session/querying/document-query/how-to-use-not-operator.mdx)
-- [noCaching](../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
-- [noTracking](../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+- [noCaching](../../querying/customize-query.mdx#nocaching)
+- [noTracking](../../querying/customize-query.mdx#notracking)
 - [ofType](../../client-api/session/querying/how-to-project-query-results.mdx#oftype-(as)---simple-projection)
 - openSubclause
 - [orderBy](../../client-api/session/querying/sort-query-results.mdx)
@@ -415,10 +415,10 @@ Available methods for the session's [query](../../querying/overview.mdx#session-
 - [orderByScore](../../client-api/session/querying/sort-query-results.mdx#order-by-score)
 - [orderByScoreDescending](../../client-api/session/querying/sort-query-results.mdx#order-by-score)
 - orElse
-- [projection](../../client-api/session/querying/how-to-customize-query.mdx#projection)
+- [projection](../../querying/customize-query.mdx#projection)
 - [projectInto](../../client-api/session/querying/how-to-project-query-results.mdx)    
 - proximity
-- [randomOrdering](../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+- [randomOrdering](../../querying/customize-query.mdx#randomordering)
 - [relatesToShape](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-shape)
 - [search](../../client-api/session/querying/text-search/full-text-search.mdx)
 - selectFields
@@ -430,9 +430,9 @@ Available methods for the session's [query](../../querying/overview.mdx#session-
 - [statistics](../../client-api/session/querying/how-to-get-query-statistics.mdx)
 - [suggestUsing](../../client-api/session/querying/how-to-work-with-suggestions.mdx)
 - take
-- [timings](../../client-api/session/querying/how-to-customize-query.mdx#timings)
+- [timings](../../querying/customize-query.mdx#timings)
 - usingDefaultOperator
-- [waitForNonStaleResults](../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+- [waitForNonStaleResults](../../querying/customize-query.mdx#waitfornonstaleresults)
 - where
 - whereBetween
 - [whereEndsWith](../../client-api/session/querying/text-search/ends-with-query.mdx)
