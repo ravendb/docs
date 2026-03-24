@@ -1,8 +1,8 @@
 ---
-title: "Kubernetes Operator"
-sidebar_label: "Kubernetes Operator"
+title: "Kubernetes RavenDB Operator overview"
+sidebar_label: "Kubernetes RavenDB Operator overview"
 sidebar_position: 2
-description: "Set up, run, and use the RavenDB Kubernetes Operator."
+description: "Set up, run, and use the Kubernetes RavenDB Operator."
 ---
 
 import Admonition from '@theme/Admonition';
@@ -17,10 +17,10 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* This article serves as an overview page for the operator workflow: it explains what the RavenDB Kubernetes Operator is, how the operator-managed deployment works, and how to use the running cluster afterward.  
+* This article serves as an **overview** for the operator workflow: it explains what the Kubernetes RavenDB Operator is, how the operator-managed deployment works, and how to use the running cluster afterward.  
 
-* For the full end-to-end walkthrough, including the detailed setup, configuration, and bootstrap steps, see:  
-  [The RavenDB Kubernetes Operator Way](../../../guides/the-ravendb-kubernetes-operator-way#prologue)
+* For the **full end-to-end walkthrough**, including the detailed setup, configuration, and bootstrap steps, see:  
+  [The RavenDB Kubernetes Operator way](../../../guides/the-ravendb-kubernetes-operator-way#prologue)
 
 * In this article:  
   - [What the operator is](../../start/containers/kubernetes-operator#what-the-operator-is)
@@ -40,10 +40,10 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Panel heading="What the operator is">
 
-A Kubernetes operator is a component dedicated to managing a specific application.  
+A Kubernetes Operator is a component dedicated to managing a specific application.  
 In Kubernetes terms, the operator is a controller: a component that reads a declared configuration and carries out the work needed to make the actual deployment match it.
 
-The RavenDB Kubernetes Operator applies this pattern to a secure RavenDB cluster.  
+The Kubernetes RavenDB Operator applies this pattern to a secure RavenDB cluster.  
 The configuration you declare is a `RavenDBCluster` resource, that defines the RavenDB cluster you want Kubernetes to run.  
 When you apply this resource, the operator creates and maintains the Kubernetes resources needed for the cluster deployment.
 
@@ -75,7 +75,7 @@ In practice, the operator manages work such as:
 
 The following diagram shows the main components of an operator-managed RavenDB deployment, where they are located, and how they relate to each other.
 
-![RavenDB Kubernetes operator](./assets/ravendb-operator-diagram.png)
+![Kubernetes RavenDB Operator](./assets/ravendb-operator-diagram.png)
 *RavenDBCluster is stored in the Kubernetes API; The RavenDB Operator reads this resource and manages the Kubernetes objects needed for the deployment; RavenDB itself runs in Pods on worker nodes.*
 
 1. **Kubernetes API**  
