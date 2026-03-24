@@ -355,12 +355,21 @@ where Lines[].ProductName in ("Chang", "Spegesild", "Unknown product name")
 ```
 </TabItem>
 
-To negate the `in` operator, you must check existance of the given field before validating it does not contain the passed values.
+To negate the `in` operator, you can check the existence of the given field name before validating it does not contain the passed values.
 
 <TabItem>
 ```csharp
 from "Companies"
 where exists(Name) and not Name in ("The Big Cheese", "Unknown company name")
+```
+</TabItem>
+
+Or validate all documents where the key does not exist or is not the one provided by supplying `where true` instead.
+
+<TabItem>
+```csharp
+from "Companies"
+where true and not Name in ("The Big Cheese", "Unknown company name")
 ```
 </TabItem>
 
