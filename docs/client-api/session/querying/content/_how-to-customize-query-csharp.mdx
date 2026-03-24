@@ -229,7 +229,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Use `AfterStreamExecuted` to retrieve a raw (blittable) result of the streaming query.
 
-* Learn more in [how to stream query results](../../../../client-api/session/querying/how-to-stream-query-results.mdx).
+* Learn more in [how to stream query results](../../../../querying/stream-query-results.mdx).
 
 <Admonition type="note" title="">
 
@@ -793,7 +793,7 @@ IDocumentQueryCustomization RandomOrdering(string seed);
 * A `TimeoutException` will be thrown if the query is not able to return non-stale results within the specified  
   (or default) timeout.
  
-* Note: This feature is Not available when [streaming the query results](../../../../client-api/session/querying/how-to-stream-query-results.mdx).  
+* Note: This feature is Not available when [streaming the query results](../../../../querying/stream-query-results.mdx).  
   Calling _WaitForNonStaleResults_ with a streaming query will throw an exception.  
 
 * Learn more about stale results in [stale indexes](../../../../indexes/stale-indexes.mdx).

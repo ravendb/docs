@@ -60,5 +60,11 @@
         "value": {
             "targetUrl": "/guides/the-ravendb-kubernetes-operator-way"
         }
+    },
+    {
+        "key": "/client-api/session/querying/stream-query-results",
+        "value": {
+            "targetUrl": "/querying/stream-query-results"
+        }
     }
 ]

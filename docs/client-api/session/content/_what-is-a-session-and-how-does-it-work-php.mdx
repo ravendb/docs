@@ -285,7 +285,7 @@ To address this, the session API offers the concurrency control feature.
 
 #### Large query results
 * When query results are large and you don't want the overhead of keeping all results in memory,  
-  then you can [Stream query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
+  then you can [Stream query results](../../../querying/stream-query-results.mdx).  
   A single server call is executed and the client can handle the results one by one.  
 * [Paging](../../../indexes/querying/paging.mdx) also avoids getting all query results at one time,  
   however, multiple server calls are generated - one per page retrieved.  
