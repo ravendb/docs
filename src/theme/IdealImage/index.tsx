@@ -85,6 +85,7 @@ export default function IdealImage(props: Props): ReactNode {
                 src: image.path,
             }))}
             getMessage={getMessage}
+            className="mb-5"
         />
     );
 }

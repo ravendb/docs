@@ -84,7 +84,7 @@ export default function DocItemAuthors() {
                             src={author.imageURL}
                             alt={author.name}
                             className="docAuthorImg"
-                            minContentHeight={40}
+                            minContentHeight={32}
                         />
                     )}
                     <div>
