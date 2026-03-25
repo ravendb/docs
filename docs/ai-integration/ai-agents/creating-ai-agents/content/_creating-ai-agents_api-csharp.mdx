@@ -407,19 +407,21 @@ agent.Parameters.Add(new AiAgentParameter(
 
 ---
 
-#### Decide whether to expose parameter values to the LLM
+#### Setting parameter values visibility to the LLM (Configuration level)
 
 You can control whether to expose a parameter's value to the AI model, using the `SendToModel` property.  
 When set to `false`, the parameter value is **hidden** from the LLM but still available for query substitution.  
 This is useful for sensitive values like user IDs or tenant identifiers that should not be included in the model's context.
 
-**Example**  
-```csharp
-// Set an agent parameter that is hidden from the LLM
-agent.Parameters.Add(new AiAgentParameter(
-    "userId", "The current user's ID", sendToModel: false));
-```
-<br />
+* **Example**  
+  ```csharp
+  // Set an agent parameter that is hidden from the LLM
+  agent.Parameters.Add(new AiAgentParameter(
+      "userId", "The current user's ID", sendToModel: false));
+  ```
+
+* **Note** that the visibility of parameter values to the LLM can also be determined at the conversation level, [as explained here](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#setting-parameter-values-visibility-to-the-llm-conversation-level).
+
 See [AiAgentParameter](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#agent-configuration-classes) in the [Syntax](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#syntax) section.
 
 </ContentFrame>
@@ -766,7 +768,27 @@ See [DeleteAgent](../../../../ai-integration/ai-agents/creating-ai-agents/creati
       "Performers/",
       new AiConversationCreationOptions().AddParameter("country", "France"));
   ```
-<br />
+
+---
+
+#### Setting parameter values visibility to the LLM (Conversation level)
+
+* As [explained above](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#setting-parameter-values-visibility-to-the-llm-configuration-level), the visibility of a parameter's value to the LLM can be set in the agent configuration using the `SendToModel` property of `AiAgentParameter`.  
+  You can also control the value's visibility to the LLM **at the conversation level** by passing `sendToModel: false` to `AddParameter`.  
+  The final visibility is determined by **both** configuration-level and conversation-level settings: if **either** is `false`, the parameter is hidden from the model.
+
+* **Example**
+  ```csharp
+  var chat = store.AI.Conversation(
+      createResult.Identifier,
+      "Performers/",
+      new AiConversationCreationOptions()
+          .AddParameter("country", "France")
+          .AddParameter("userId", currentUserId, sendToModel: false));
+  ```
+
+---
+
 See [Conversation](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#conversation-execution), [SetUserPrompt](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#conversation-execution), and [AiConversationCreationOptions](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#conversation-and-response-classes) in the [Syntax](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#syntax) section.
 
 </ContentFrame>
@@ -778,7 +800,7 @@ During the conversation, the LLM can request the agent to trigger action tools.
 The agent will pass a requested action tool's name and parameters to the client, and it is then up to the client to process the request.  
 
 - The client can process an action-tool request using a [handler](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#action-tool-handlers) or a [receiver](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#action-tool-receivers).  
-- If an action-tool request arrives and there is no registered handler or receiver to process it, the client can catch it using `OnUnhandledAction` and decide how to address it.
+- If an action-tool request arrives and there is no registered handler or receiver to process it, the client can catch it using [OnUnhandledAction](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#catching-action-tool-calls-with-no-callback) and decide how to address it.
 
 ---
 
@@ -912,7 +934,8 @@ See [Receive](../../../../ai-integration/ai-agents/creating-ai-agents/creating-a
 If the LLM invokes an action tool that has no registered `Handle` or `Receive` callback, an exception is thrown by default.  
 
 To handle this gracefully instead, subscribe to the `OnUnhandledAction` event on the 
-conversation instance. The event provides the action request details, allowing you to respond to the LLM or log the unexpected invocation.
+conversation instance.  
+The event provides the action request details, allowing you to respond to the LLM or log the unexpected invocation.
 
 **Example**  
 ```csharp
@@ -1973,6 +1996,9 @@ public AiConversationCreationOptions(Dictionary<string, object> parameters)
 
 // Add a parameter value (fluent, returns this)
 public AiConversationCreationOptions AddParameter(string name, object value)
+
+// Add a parameter value with visibility control (fluent, returns this)
+public AiConversationCreationOptions AddParameter(string name, object value, bool sendToModel)
 ```
 <br />
 
@@ -1980,6 +2006,12 @@ public AiConversationCreationOptions AddParameter(string name, object value)
 |----------|------|-------------|
 | **Parameters** | `Dictionary<string, object>` | Values for agent parameters defined in the agent configuration. |
 | **ExpirationInSec** | `int?` | Optional. If the conversation is idle longer than this period (in seconds), it will be automatically deleted. |
+
+| `AddParameter` parameter | Type | Description |
+|----------|------|-------------|
+| **name** | `string` | The parameter name, matching a parameter defined in the agent configuration. |
+| **value** | `object` | The value to assign to the parameter. |
+| **sendToModel** | `bool` | Controls the visibility of this parameter value to the LLM for this conversation turn.<br /><br />The final visibility is determined by combining this value with the `SendToModel` setting on the matching `AiAgentParameter` in the agent configuration: if **either** is `false`, the parameter is hidden from the model.<br />`null` (default) means not specified - the configuration-level value alone decides. |
 
 </TabItem>
 <TabItem value="AiAgentActionRequest" label="AiAgentActionRequest">
