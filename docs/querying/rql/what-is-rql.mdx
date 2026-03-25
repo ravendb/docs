@@ -338,8 +338,8 @@ where PricePerUnit >= 10.5 and PricePerUnit <= 13.0 // Using >= and <=
 
 #### Operator: &nbsp;&nbsp; `in`
 
-The operator `in` is validating if a given field contains passed values.  
-It will return results if a given field matches **any** of the passed values.
+The `in` operator evaluates a field against a list of values.  
+It will return results if the field matches **any** of the items in that list.    
 
 <TabItem>
 ```csharp
@@ -354,24 +354,30 @@ from "Orders"
 where Lines[].ProductName in ("Chang", "Spegesild", "Unknown product name") 
 ```
 </TabItem>
+    
+---
 
-To negate the `in` operator, you can check the existence of the given field name before validating it does not contain the passed values.
-
+**To negate an `in` condition**, use the `NOT` operator.  
+However, in RQL, `NOT` is not used as a standalone operator at the start of a `where` expression.  
+Therefore, the negated condition must follow some **valid preceding expression**.  
+For example:    
+    
 <TabItem>
 ```csharp
-from "Companies"
-where exists(Name) and not Name in ("The Big Cheese", "Unknown company name")
+from "Companies" 
+where true and NOT Name in ("The Big Cheese", "The Cracker Box")
 ```
 </TabItem>
-
-Or validate all documents where the key does not exist or is not the one provided by supplying `where true` instead.
-
+    
+Instead of `where true`, any valid preceding expression can be used, even one that references a different field.  
+For example:    
+    
 <TabItem>
 ```csharp
-from "Companies"
-where true and not Name in ("The Big Cheese", "Unknown company name")
+from "Companies" 
+where exists(SomeFieldName) and NOT Name in ("The Big Cheese", "The Cracker Box")
 ```
-</TabItem>
+</TabItem>      
 
 </ContentFrame>
     
