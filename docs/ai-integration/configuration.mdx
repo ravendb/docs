@@ -1,0 +1,148 @@
+---
+title: "AI features configuration options"
+sidebar_label: Configuration options
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# AI features configuration options
+<Admonition type="note" title="">
+
+* Use the configuration keys listed below to set AI-related options for your RavenDB server.  
+* Learn how to apply these keys in the [Configuration overview](../server/configuration/configuration-options.mdx) article.
+* Find configuration keys related to **Studio's AI assistant** in the [Configuration options](../studio/configuration.mdx) page under the Studio documentation folder.
+
+* On this page:
+   * [Embeddings configuration keys](../ai-integration/configuration#embeddings-configuration-keys)  
+      * [Ai.Embeddings.MaxBatchSize](../ai-integration/configuration#aiembeddingsmaxbatchsize)  
+      * [Ai.Embeddings.MaxConcurrentBatches](../ai-integration/configuration#aiembeddingsmaxconcurrentbatches)  
+      * [Ai.Embeddings.MaxFallbackTimeInSec](../ai-integration/configuration#aiembeddingsmaxfallbacktimeinsec)  
+   * [AI Agents configuration keys](../ai-integration/configuration#ai-agents-configuration-keys)  
+      * [Ai.Agent.Tools.TokenUsageThreshold](../ai-integration/configuration#aiagenttoolstokenusagethreshold)  
+      * [Ai.Agent.Trimming.Summarization.SummarizationResultPrefix](../ai-integration/configuration#aiagenttrimmingsummarizationsummarizationresultprefix)  
+      * [Ai.Agent.Trimming.Summarization.SummarizationTaskBeginningPrompt](../ai-integration/configuration#aiagenttrimmingsummarizationsummarizationtaskbeginningprompt)  
+      * [Ai.Agent.Trimming.Summarization.SummarizationTaskEndPrompt](../ai-integration/configuration#aiagenttrimmingsummarizationsummarizationtaskendprompt)  
+
+</Admonition>
+
+<Panel heading="Embeddings configuration keys">
+
+The following configuration keys apply to integrating **AI-powered embeddings generation** into your RavenDB server.
+ 
+  * Embeddings can be generated from your document content via [AI-powered tasks](../ai-integration/generating-embeddings/overview.mdx) and stored in a dedicated collection in the database.  
+  * When performing vector search queries, embeddings are also generated from the search term to compare against the stored vectors.  
+
+---
+
+<ContentFrame>
+
+## Ai.Embeddings.MaxBatchSize
+
+The maximum number of documents processed in a single batch by an embeddings generation task.  
+Higher values may improve throughput but can increase latency and require more resources and higher limits from the embeddings generation service.
+
+- **Type**: `int`
+- **Default**: `128`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+<ContentFrame>
+
+## Ai.Embeddings.MaxConcurrentBatches
+
+The maximum number of **query embedding batches** that can be processed concurrently.  
+This setting controls the degree of parallelism when sending query embedding requests to AI providers.  
+Higher values may improve throughput but can increase resource usage and may trigger rate limits.
+
+- **Type**: `int`
+- **Default**: `4`
+- **Min value**: `1`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+<ContentFrame>
+
+## Ai.Embeddings.MaxFallbackTimeInSec
+
+The maximum time (in seconds) the embeddings generation task remains suspended (fallback mode) following a connection failure to the embeddings generation service.
+Once this time expires, the system will retry the connection automatically.
+
+- **Type**: `int`
+- **Default**: `60 * 15`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="AI Agents configuration keys">
+
+* Configuration keys listed below are used to change AI agents behavior.  
+* Configuration scope:  
+  * **Server-wide** configuration keys apply to agents on all databases.  
+  * **Per-database** configuration keys apply to all agents on a specific database,  
+     overriding server-wide settings for these agents.  
+  * To change the settings for a specific agent, edit its configuration using the [API](../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#defining-an-agent-configuration) or [Studio](../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#configure-basic-settings).  
+
+---
+
+<ContentFrame>
+
+## Ai.Agent.Tools.TokenUsageThreshold
+
+The recommended token threshold for a tool response to the LLM.  
+If the response exceeds this threshold, a notification will be raised.
+
+- **Type**: `int`
+- **Default**: 10000
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+<ContentFrame>
+
+## Ai.Agent.Trimming.Summarization.SummarizationResultPrefix
+
+The text prefix that precedes the summary of the previous conversation.
+
+- **Type**: `string`
+- **Default**: "Summary of previous conversation: "
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+<ContentFrame>
+
+## Ai.Agent.Trimming.Summarization.SummarizationTaskBeginningPrompt
+
+The instruction text that precedes the serialized conversation when requesting a summary.
+
+- **Type**: `string`
+- **Default**: @"Summarize the following AI conversation into a concise, linear narrative that 
+                 retains all critical information. Ensure the summary: 
+                  - Includes key identifiers, usernames, timestamps, and any reference codes
+                  - Preserves the original intent of both the user and the assistant in each exchange
+                  - Reflects decisions made, suggestions given, preferences expressed, and any changes in direction
+                  - Captures tone when relevant (e.g., sarcastic, formal, humorous, concerned)
+                  - Omits general filler or small talk unless it contributes to context or tone Format the output in a structured manner (such as bullet points or labeled sections) suitable for fitting into a limited context window. Do not discard any information that contributes to understanding the conversation's flow and outcome."
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+<ContentFrame>
+
+## Ai.Agent.Trimming.Summarization.SummarizationTaskEndPrompt
+
+The user-role message that triggers the conversation summarization process.
+
+- **Type**: `string`
+- **Default**: "Reminder - go over the entire previous conversation and summarize that according to the original instructions"
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+</Panel>

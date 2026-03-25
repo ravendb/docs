@@ -10,6 +10,8 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # AI agents: Overview
 <Admonition type="note" title="">
@@ -36,7 +38,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
-## Defining and running an AI agent
+<Panel heading="Defining and running an AI agent">
 
 AI agents can be created by RavenDB clients (providing they have database administration permissions).  
 They reside on a RavenDB server, and can be invoked by clients to, for example, handle user requests and respond to events tracked by the client.  
@@ -56,8 +58,11 @@ An agent can serve multiple clients concurrently.
 * [Learn to create an AI agent using Studio](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx)  
 </Admonition>
 
-### The main stages in defining an AI agent:
-To define an AI agent, the client needs to specify -  
+<ContentFrame>
+
+### The main stages in defining an AI agent
+
+To define an AI agent, the client needs to specify:  
 
 * A **connection string** to the AI model.  
   [Create a connection string using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#creating-a-connection-string)  
@@ -77,9 +82,11 @@ To define an AI agent, the client needs to specify -
       * **Read-only operations**  
         Query tools can apply **read operations** only.  
         To make changes in the database, use [action tools](../../ai-integration/ai-agents/overview.mdx#action-tools).  
+
         <Admonition type="note" title="">
         Note that actions can be performed only by the client. The LLM can just request the client to perform actions on its behalf.
         </Admonition>
+
       * **Database access**  
         The LLM has no direct access to the database. To use a query tool, it must send a query request to the agent, which will send the RQL query defined by the tool to the database and pass its results to the LLM.  
       * <a id="query-parameters"/> **Query parameters**  
@@ -98,7 +105,12 @@ To define an AI agent, the client needs to specify -
   * <a id="action-tools"/> Optional **action tools** that the LLM will be able to invoke freely.  
     The LLM will be able to use these tools to request the client to perform actions.  
 
-### What is a conversation:
+</ContentFrame>
+
+<ContentFrame>
+
+### What is a conversation
+
 A conversation is a communication session between the client, the agent, and the LLM that maintains the history of messages exchanged between these participants since the conversation began.  
 * The conversation starts when the client invokes the agent and provides it with an [initial context](../../ai-integration/ai-agents/overview.mdx#initiating-a-conversation).  
 * The conversation may include multiple "turns" of message exchanges between the client and the LLM, mediated by the agent.  
@@ -113,7 +125,12 @@ A conversation is a communication session between the client, the agent, and the
 [Initiate a conversation using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#managing-conversations)  
 [Initiate a conversation using Studio](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#start-new-chat)  
 
-### Initiating a conversation:
+</ContentFrame>
+
+<ContentFrame>
+
+### Initiating a conversation
+
 To start a conversation with the LLM, the agent will send it an **initial context** that includes -  
 
 * The pre-defined [agent configuration](../../ai-integration/ai-agents/overview.mdx#the-main-stages-in-defining-an-ai-agent) (automatically sent by the agent) with:  
@@ -146,9 +163,11 @@ To start a conversation with the LLM, the agent will send it an **initial contex
 
 * A **user prompt**, set by the client, that defines, for example, a question or a request for particular information.  
 
-<hr />
+</ContentFrame>
 
-## AI agent usage flowchart
+</Panel>
+
+<Panel heading="AI agent usage flowchart">
 
 The flowchart below illustrates interactions between the User, RavenDB client, AI agent, AI model, and RavenDB database.  
 
@@ -186,9 +205,9 @@ The flowchart below illustrates interactions between the User, RavenDB client, A
        * The final response to the user prompt, in the layout defined by the response object.  
          The agent will pass the response to the client (which doesn't need to reply to it).  
 
-<hr />
+</Panel>
 
-## Streaming LLM responses
+<Panel heading="Streaming LLM responses">
 
 Rather than wait for the LLM to finish generating a response and then pass it in its entirety to the client, the agent can stream response chunks (determined by the LLM, e.g. words or symbols) to the client one by one, immediately as each chunk is returned by the LLM, allowing the client to process and display the response gradually.  
 
@@ -198,9 +217,9 @@ Streaming is supported by most AI models, including OpenAI services like GPT-4 a
 
 [Streaming LLM responses using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#stream-llm-responses)  
 
-<hr />
+</Panel>
 
-## Reducing throughput and expediting LLM response
+<Panel heading="Reducing throughput and expediting LLM response">
 
 If throughput and LLM response time are considerations, the following suggestions can help optimize performance:  
 
@@ -213,15 +232,18 @@ To save traffic and tokens, you can summarize conversations using **chat trimmin
 [Configuring chat trimming using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#set-chat-trimming-configuration)  
 [Configuring chat trimming using Studio](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#configure-chat-trimming)  
 
-### Optimize query tools:
+<ContentFrame>
 
-When creating query tools -  
+### Optimize query tools
+
+When creating query tools:  
 * Provide the LLM with clear instructions on how to use each query tool effectively.  
-* Narrow your queries:  
+* Narrow your queries.  
    * Design queries to return only the data that is relevant to the agent's role and the user's prompt.  
    * You can limit the scope of a query both in the RQL statement itself and by using agent parameters to filter results.  
    * Avoid overly broad queries that return large datasets, as they can overwhelm the LLM and lead to slower response times.  
-   * Consider projecting only relevant properties and setting a limit on the number of results returned by each query to prevent excessive data transfer and processing, e.g. -  
+   * Consider projecting only relevant properties and setting a limit on the number of results returned by each query to prevent excessive data transfer and processing, e.g.:  
+
       <Tabs groupId='languageSyntax'>
       <TabItem value="no-limit" label="no-limit">
       ```rql
@@ -243,29 +265,47 @@ When creating query tools -
 [Creating query tools using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#query-tools)  
 [Creating query tools using Studio](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#add-query-tools)  
 
-### Set maximum number of querying iterations:
+</ContentFrame>
+
+<ContentFrame>
+
+### Set maximum number of querying iterations
 
 You can limit the number of times that the LLM is allowed to trigger database queries in response to a single user prompt.  
 
 [Setting iterations limit using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#set-maximum-number-of-iterations)  
 
-<hr />
+</ContentFrame>
 
-## Common use cases
+</Panel>
+
+<Panel heading="Common use cases">
 
 AI agents are designed to easily integrate AI capabilities into applications and workflows. They can interact with users, intelligently retrieve and process data from proprietary databases, and apply actions based on roles they are requested to take and the data they have access to. Some of the tasks and applications they can be tailored to perform include - 
 
-#### <u>Customer support chatbot agents</u>
+---
+
+#### Customer support chatbot agents:
 Agents can answer customer queries based on information stored in databases and internal knowledge bases, provide troubleshooting steps, and guide users through processes in real time.  
 
-#### <u>Data analysis and reporting agents</u>  
+---
+
+#### Data analysis and reporting agents:
 Agents can analyze large datasets to extract relevant data and present it in a user-friendly format, escalate customer issues and application output, create reports and highlight points of interest, and help businesses make informed decisions.  
 
-#### <u>Content generation agents</u>  
+---
+
+#### Content generation agents:
 Agents can generate summaries, add automated comments to articles and application-generated content, reference readers to related material, and create marketing content based on user input and stored information.
 
-#### <u>Workflow automation agents</u>  
+---
+
+#### Workflow automation agents:
 Agents can automate repetitive tasks like email sorting, spam filtering, form filling, or file organization.  
 
-#### <u>Intelligent recommendation agents</u>  
+---
+
+#### Intelligent recommendation agents:
 Agents can provide personalized recommendations based on user preferences and available data, e.g. a _library assistant_ suggesting books and other resources, an _HR office assistant_ recommending rewards for employees based on their performance and available facilities near their residence, or an _e-commerce assistant_ recommending products.
+
+</Panel>
