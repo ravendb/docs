@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
@@ -9,30 +11,27 @@ import CodeBlock from '@theme/CodeBlock';
 
 * The customization methods can be set for both **dynamic** and **index** queries.  
 
-* A query can be customized on the Store or Session level by calling various methods from the rich API.  
+* A query can be customized on the _Store_ or _Session_ level by calling various methods from the rich API.  
   Learn more in [Subscribing to Events](../../client-api/session/how-to/subscribe-to-events.mdx). 
 
 * Customization methods available:
-
   - [before_query_executed](../../querying/customize-query.mdx#before_query_executed)
   - [after_query_executed](../../querying/customize-query.mdx#after_query_executed)
   - [after_stream_executed](../../querying/customize-query.mdx#after_stream_executed)
   - [no_caching](../../querying/customize-query.mdx#no_caching)
   - [no_tracking](../../querying/customize-query.mdx#no_tracking)
-  - [projection](../../querying/customize-query.mdx#projection)
+  - [projection_behavior](../../querying/customize-query.mdx#projection_behavior)
   - [random_ordering](../../querying/customize-query.mdx#random_ordering)
   - [timings](../../querying/customize-query.mdx#timings)
   - [wait_for_non_stale_results](../../querying/customize-query.mdx#wait_for_non_stale_results)
 
 * [Methods return value](../../querying/customize-query.mdx#methods-return-value)
 
-
 </Admonition>
-## `before_query_executed`
 
-* Use `before_query_executed` to customize the query just before it is executed.
+<Panel heading="before_query_executed">
 
-<Admonition type="note" title="">
+Use `before_query_executed` to customize the query just before it is executed.
 
 **Example**
 
@@ -73,32 +72,24 @@ results = list(
 </TabItem>
 </Tabs>
 
-</Admonition>
-
-<Admonition type="note" title="">
-
 **Syntax**
 
-<TabItem value="customize_1_5" label="customize_1_5">
+<TabItem>
 <CodeBlock language="python">
 {`def add_before_query_executed_listener(self, action: Callable[[IndexQuery], None]) -> DocumentQuery[_T]: ...
 `}
 </CodeBlock>
 </TabItem>
 
-| Parameters | Type | Description                                                                                                                     |
+| Parameter  | Type | Description                                                                                                                     |
 |------------| ---- |---------------------------------------------------------------------------------------------------------------------------------|
 | **action** | `Callable[[IndexQuery], None]` | An _action_ method that operates on the query.<br/>The query is passed in the [IndexQuery](../../glossary/index-query.mdx) param. |
 
-</Admonition>
+</Panel>
 
+<Panel heading="after_query_executed">
 
-
-## `after_query_executed`
-
-* Use `after_query_executed` to access the raw query result after it is executed.
-
-<Admonition type="note" title="">
+Use `after_query_executed` to access the raw query result after it is executed.
 
 **Example**
 
@@ -137,61 +128,46 @@ result = list(
 </TabItem>
 </Tabs>
 
-</Admonition>
-
-<Admonition type="note" title="">
-
 **Syntax**
 
-<TabItem value="customize_2_5" label="customize_2_5">
+<TabItem>
 <CodeBlock language="python">
 {`def add_after_query_executed_listener(self, action: Callable[[QueryResult], None]) -> DocumentQuery[_T]: ...
 `}
 </CodeBlock>
 </TabItem>
 
-| Parameters | Type | Description                                                                                                                 |
+| Parameter  | Type | Description                                                                                                                 |
 |------------| ---- |-----------------------------------------------------------------------------------------------------------------------------|
 | **action** | `Callable[[QueryResult], None]` | An _action_ method that receives the raw query results.<br/>The query result is passed in the [QueryResult](../../glossary/query-result.mdx) param. |
 
-</Admonition>
+</Panel>
 
-
-
-## `after_stream_executed`
+<Panel heading="after_stream_executed">
 
 * Use `after_stream_executed` to retrieve a raw (blittable) result of the streaming query.
-
-* Learn more in [how to stream query results](../../querying/stream-query-results.mdx).
-
-<Admonition type="note" title="">
+* Learn more about streaming queries in [how to stream query results](../../querying/stream-query-results.mdx).
 
 **Syntax**
 
-<TabItem value="customize_3_5" label="customize_3_5">
+<TabItem>
 <CodeBlock language="python">
 {`def add_after_stream_executed_listener(self, action: Callable[[dict], None]) -> DocumentQuery[_T]: ...
 `}
 </CodeBlock>
 </TabItem>
 
-| Parameters | Type | Description                                                                                                                                                                                  |
+| Parameter  | Type | Description                                                                                                                                                                                  |
 |------------| ---- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **action** | `Callable[[dict], None])` | An _action_ method that recieves a single stream query result.<br/>The stream result is passed in the `dict` param. |
 
-</Admonition>
+</Panel>
 
-
-
-## `no_caching`
+<Panel heading="no_caching">
 
 * By default, query results are cached. 
-
 * You can use the `no_caching` customization method to disable query caching.
-
-* Learn more in [disable caching per session](../../client-api/session/configuration/how-to-disable-caching.mdx).
-
-<Admonition type="note" title="">
+* To disable caching for the entire session, see [disable caching per session](../../client-api/session/configuration/how-to-disable-caching.mdx).
 
 **Example**
 
@@ -218,32 +194,22 @@ result = list(
 </TabItem>
 </Tabs>
 
-</Admonition>
-
-<Admonition type="note" title="">
-
 **Syntax**
 
-<TabItem value="customize_4_5" label="customize_4_5">
+<TabItem>
 <CodeBlock language="python">
 {`def no_caching(self) -> DocumentQuery[_T]: ...
 `}
 </CodeBlock>
 </TabItem>
 
-</Admonition>
+</Panel>
 
-
-
-## `no_tracking`
+<Panel heading="no_tracking">
 
 * By default, the [Session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all changes made to all entities that it has either loaded, stored, or queried for.
-
-* You can use the `no_tracking` customization to disable entity tracking.  
-
+* You can use the `no_tracking` customization to disable tracking for entities returned by a query.  
 * See [disable entity tracking](../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
-
-<Admonition type="note" title="">
 
 **Example**
 
@@ -270,42 +236,33 @@ result = list(
 </TabItem>
 </Tabs>
 
-</Admonition>
-
-<Admonition type="note" title="">
-
 **Syntax**
 
-<TabItem value="customize_5_5" label="customize_5_5">
+<TabItem>
 <CodeBlock language="python">
 {`def no_tracking(self) -> DocumentQuery[_T]: ...
 `}
 </CodeBlock>
 </TabItem>
 
-</Admonition>
+</Panel>
 
+<Panel heading="projection_behavior">
 
-
-## `projection`
-
+* Projecting query results means that the query returns only specific document fields, rather than the entire document.  
+  Learn more about projections in:  
+  * [Project index query results](../../indexes/querying/projections.mdx)
+  * [Project dynamic query results](../../client-api/session/querying/how-to-project-query-results.mdx)    
+    
 * By default, when [querying an index](../../indexes/querying/query-index.mdx) and projecting query results,  
   the server will try to retrieve field values from the fields [stored in the index](../../indexes/storing-data-in-index.mdx).  
-  <Admonition type="note" title="">
-  Projecting means the query returns only specific document fields instead of the full document.  
-  </Admonition>
-
-* If these fields are not stored in the index, the field values will be retrieved from the documents.  
-
-* Use the `select_fields` method to customize and modify this behavior.  
-
+  If the index does Not store these fields, the fields' values will be retrieved from the documents.  
+  Use the `select_fields` method or the `projection` method (for raw queries) to customize and modify this behavior.
+    
 * Note:  
   Entities resulting from a projecting query are Not tracked by the session.  
-  Learn more about projections in:
-    * [Project index query results](../../indexes/querying/projections.mdx)
-    * [Project dynamic query results](../../client-api/session/querying/how-to-project-query-results.mdx)
 
-<Admonition type="note" title="">
+<ContentFrame>
 
 **Example**
 
@@ -319,7 +276,7 @@ result = list(
     .select_fields(
         Employees_ByFullName.IndexEntry,
         "full_name",
-        projection_behavior=ProjectionBehavior.FROM_INDEX_OR_THROW,
+        projection_behavior=ProjectionBehavior.FROM_DOCUMENT_OR_THROW,
     )
 )
 `}
@@ -362,19 +319,34 @@ In the above example:
   * An exception will be thrown since an _'Employee'_ document does not contain the _'full_name'_ property.  
     (based on the Northwind sample data).  
 
-</Admonition>
-
-
-<!--
-<Admonition type="note" title="">
+</ContentFrame>
+    
+<ContentFrame>
 
 **Syntax**
 
-<TabItem value="customize_6_5" label="customize_6_5">
+<TabItem>
 <CodeBlock language="python">
-{`def projection(self, projection_behavior: ProjectionBehavior) -> DocumentQuery[_T]: ...
+{`def select_fields(
+    self,
+    projection_class: Type[_TProjection],
+    *fields: str,
+    projection_behavior: Optional[ProjectionBehavior] = ProjectionBehavior.DEFAULT,
+) -> DocumentQuery[_TProjection]: ...
+`}
+</CodeBlock>
+</TabItem>
 
-class ProjectionBehavior(Enum):
+<TabItem>
+<CodeBlock language="python">
+{`def projection(self, projection_behavior: ProjectionBehavior) -> RawDocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem>
+<CodeBlock language="python">
+{`class ProjectionBehavior(Enum):
     DEFAULT = "Default"
     FROM_INDEX = "FromIndex"
     FROM_INDEX_OR_THROW = "FromIndexOrThrow"
@@ -401,18 +373,14 @@ class ProjectionBehavior(Enum):
   Retrieve values directly from the documents store.  
   An exception is thrown if the document does not contain the requested field.  
 
-</Admonition>
--->
+</ContentFrame>
+    
+</Panel>
 
-
-
-## `random_ordering`
-
+<Panel heading="random_ordering">
+    
 * Use `random_ordering` to order the query results randomly.  
-
-* Learn [here](../../client-api/session/querying/sort-query-results.mdx) about additional ordering options.  
-
-<Admonition type="note" title="">
+* For additional ordering options, see [Sort query results](../../client-api/session/querying/sort-query-results.mdx).  
 
 **Example**
 
@@ -439,39 +407,26 @@ class ProjectionBehavior(Enum):
 </TabItem>
 </Tabs>
 
-</Admonition>
-
-<Admonition type="note" title="">
-
 **Syntax**
 
-<TabItem value="customize_7_5" label="customize_7_5">
+<TabItem>
 <CodeBlock language="python">
 {`def random_ordering(self, seed: str = None) -> DocumentQuery[_T]: ...
 `}
 </CodeBlock>
 </TabItem>
 
-| Parameters | Type | Description                                                                                              |
-|------------| ------------- |-------------------------------------------------------------------------------------------------|
-| **seed**   | `str` | Order the search results randomly using this seed.<br/>Useful when executing repeated random queries. |
+| Parameter | Type  | Description |
+|-----------| ----- |-------------|
+| **seed**  | `str` | Order the search results randomly using this seed.<br/>Useful when executing repeated random queries. |
 
-</Admonition>
+</Panel>
 
+<Panel heading="timings">
 
-
-## `timings`
-
-* When executing a query, you can retrieve query statistics that include the time spent by the server on each part of the query.  
-
-* To do this, define a callback function that takes `QueryTimings` as an argument and applies whatever 
-  logic you want to apply.  
-
-* Then pass your function as an argument to the `query.timings` method and use the retrieved `QueryTimings` object.  
-
+* Use `timings` to get detailed stats of the time spent by the server on each part of the query.
+* The timing statistics will be included in the query results.
 * Learn more in [how to include query timings](../../client-api/session/querying/debugging/query-timings.mdx).
-
-<Admonition type="note" title="">
 
 **Example**
 
@@ -506,28 +461,22 @@ results = list(
 </TabItem>
 </Tabs>
 
-</Admonition>
-
-<Admonition type="note" title="">
-
 **Syntax**
 
-<TabItem value="customize_9_5" label="customize_9_5">
+<TabItem>
 <CodeBlock language="python">
 {`def timings(self, timings_callback: Callable[[QueryTimings], None]) -> DocumentQuery[_T]: ...
 `}
 </CodeBlock>
 </TabItem>
 
-| Parameters | Type | Description |
-|------------| ------------- | ----- |
+| Parameter            | Type                             | Description |
+|----------------------| -------------------------------- | ----------- |
 | **timings_callback** | `Callable[[QueryTimings], None]` | An _action_ that will be called with the timings results |
 
-</Admonition>
+</Panel>
 
-
-
-## `wait_for_non_stale_results`
+<Panel heading="wait_for_non_stale_results">
 
 * All RavenDB queries provide results using an index, even when an index is not specified.  
   See detailed explanation in [Queries always provide results using an index](../../querying/overview.mdx#queries-always-provide-results-using-an-index).
@@ -541,8 +490,6 @@ results = list(
   Calling `wait_for_non_stale_results` with a streaming query will throw an exception.  
 
 * Learn more about stale results in [stale indexes](../../indexes/stale-indexes.mdx).
-
-<Admonition type="note" title="">
 
 **Example**
 
@@ -569,35 +516,30 @@ results = list(
 </TabItem>
 </Tabs>
 
-</Admonition>
-
-<Admonition type="note" title="">
-
 **Syntax**
 
-<TabItem value="customize_8_5" label="customize_8_5">
+<TabItem>
 <CodeBlock language="python">
 {`def wait_for_non_stale_results(self, wait_timeout: timedelta = None) -> DocumentQuery[_T]: ...
 `}
 </CodeBlock>
 </TabItem>
 
-| Parameters | Type | Description |
-|------------| ------------- |-----------|
+| Parameter        | Type        | Description |
+|------------------|-------------|-------------|
 | **wait_timeout** | `timedelta` | Time to wait for non-stale results.<br/>Default: 15 seconds |
 
-</Admonition>
+</Panel>
 
-
-
-## `Methods return value`
+<Panel heading="Methods return value">
 
 All of the above customization methods return the following:
 
-| `document_query` return value | |
-|-------------------------------| ----- |
-| `DocumentQuery[_T]` | Returns self for easier method chaining |
+| Method called on   | Return value           |
+|--------------------|------------------------|
+| `DocumentQuery`    | `DocumentQuery[_T]`    |
+| `RawDocumentQuery` | `RawDocumentQuery[_T]` |
 
+Both return `self` for easier method chaining.
 
-
-
+</Panel>
