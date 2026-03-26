@@ -5,7 +5,7 @@ import type { WrapperProps } from "@docusaurus/types";
 import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Head from "@docusaurus/Head";
-import GuideMetadata from "./GuideMetadata";
+import TechArticleMetadata from "./TechArticleMetadata";
 
 type Props = WrapperProps<typeof MetadataType>;
 
@@ -69,6 +69,15 @@ export default function MetadataWrapper(props: Props): ReactNode {
                     permalink={permalink}
                 />
             )}
+            {(isVersionedDoc || isCloud) && !isHomepage && (
+                <TechArticleMetadata
+                    title={title}
+                    description={description}
+                    canonicalUrl={canonicalUrl}
+                    ogImageUrl={ogImageUrl}
+                    lastUpdatedAt={metadata.lastUpdatedAt}
+                />
+            )}
             <Metadata {...props} />
         </>
     );
@@ -103,7 +112,7 @@ function ValidatedGuideMetadata({
     }
 
     return (
-        <GuideMetadata
+        <TechArticleMetadata
             title={title}
             description={description || (frontMatter.description as string) || ""}
             proficiencyLevel={frontMatter.proficiencyLevel}
