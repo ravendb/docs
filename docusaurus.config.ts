@@ -140,7 +140,7 @@ const config: Config = {
             tagName: "link",
             attributes: {
                 rel: "preload",
-                href: "css/fonts/Inter[wght].woff2",
+                href: "/css/fonts/Inter[wght].woff2",
                 as: "font",
                 type: "font/woff2",
                 crossorigin: "anonymous",
@@ -150,7 +150,7 @@ const config: Config = {
             tagName: "link",
             attributes: {
                 rel: "preload",
-                href: "css/fonts/Inter-Italic[wght].woff2",
+                href: "/css/fonts/Inter-Italic[wght].woff2",
                 as: "font",
                 type: "font/woff2",
                 crossorigin: "anonymous",
@@ -160,7 +160,7 @@ const config: Config = {
             tagName: "link",
             attributes: {
                 rel: "preload",
-                href: "css/fonts/JetBrainsMono[wght].woff2",
+                href: "/css/fonts/JetBrainsMono[wght].woff2",
                 as: "font",
                 type: "font/woff2",
                 crossorigin: "anonymous",
@@ -170,7 +170,7 @@ const config: Config = {
             tagName: "link",
             attributes: {
                 rel: "preload",
-                href: "css/fonts/JetBrainsMono-Italic[wght].woff2",
+                href: "/css/fonts/JetBrainsMono-Italic[wght].woff2",
                 as: "font",
                 type: "font/woff2",
                 crossorigin: "anonymous",

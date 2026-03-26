@@ -174,13 +174,13 @@ pre[class*="language-"] {
     --color-pre-background: var(--ifm-pre-background);
 }
 
-/* Custom font-faces */
+/* Custom font-faces — fonts served from static/css/fonts/ (unhashed) so preload links work */
 @font-face {
     font-family: "Inter";
     font-style: normal;
     src:
-        url("fonts/Inter[wght].woff2") format("woff2 supports variations"),
-        url("fonts/Inter[wght].woff2") format("woff2-variations");
+        url("/css/fonts/Inter[wght].woff2") format("woff2 supports variations"),
+        url("/css/fonts/Inter[wght].woff2") format("woff2-variations");
     font-weight: 100 900;
 }
 
@@ -188,8 +188,8 @@ pre[class*="language-"] {
     font-family: "Inter";
     font-style: italic;
     src:
-        url("fonts/Inter-Italic[wght].woff2") format("woff2 supports variations"),
-        url("fonts/Inter-Italic[wght].woff2") format("woff2-variations");
+        url("/css/fonts/Inter-Italic[wght].woff2") format("woff2 supports variations"),
+        url("/css/fonts/Inter-Italic[wght].woff2") format("woff2-variations");
     font-weight: 100 900;
 }
 
@@ -197,8 +197,8 @@ pre[class*="language-"] {
     font-family: "JetBrains Mono";
     font-style: normal;
     src:
-        url("fonts/JetBrainsMono[wght].woff2") format("woff2 supports variations"),
-        url("fonts/JetBrainsMono[wght].woff2") format("woff2-variations");
+        url("/css/fonts/JetBrainsMono[wght].woff2") format("woff2 supports variations"),
+        url("/css/fonts/JetBrainsMono[wght].woff2") format("woff2-variations");
     font-weight: 100 900;
     font-display: swap;
 }
@@ -207,8 +207,8 @@ pre[class*="language-"] {
     font-family: "JetBrains Mono";
     font-style: italic;
     src:
-        url("fonts/JetBrainsMono-Italic[wght].woff2") format("woff2 supports variations"),
-        url("fonts/JetBrainsMono-Italic[wght].woff2") format("woff2-variations");
+        url("/css/fonts/JetBrainsMono-Italic[wght].woff2") format("woff2 supports variations"),
+        url("/css/fonts/JetBrainsMono-Italic[wght].woff2") format("woff2-variations");
     font-weight: 100 900;
     font-display: swap;
 }
