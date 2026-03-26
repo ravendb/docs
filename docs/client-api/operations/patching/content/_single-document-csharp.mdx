@@ -48,6 +48,9 @@ In this page:
   * [Delete counter](../../../../client-api/operations/patching/single-document.mdx#delete-counter)  
   * [Get counter](../../../../client-api/operations/patching/single-document.mdx#get-counter)  
   * [Patching using inline string compilation](../../../../client-api/operations/patching/single-document.mdx#patching-using-inline-string-compilation)  
+  * [Generate a random UUID](../../../../client-api/operations/patching/single-document.mdx#generate-a-random-uuid)  
+  * [Store a SHA-256 hash of a field](../../../../client-api/operations/patching/single-document.mdx#store-a-sha-256-hash-of-a-field)  
+  * [Encrypt a field](../../../../client-api/operations/patching/single-document.mdx#encrypt-a-field)  
 
 </Admonition>
 
@@ -1225,6 +1228,150 @@ store.Operations.Send(new PatchOperation("products/1-A", null, new PatchRequest
 </TabItem>
 </Tabs>
 
+### Generate a random UUID
+
+Use `crypto.randomUUID()` to generate a UUID value and store it in a document field.   
+For the full list of supported cryptographic methods, see [JavaScript Engine - Cryptographic methods](../../../../server/kb/javascript-engine.mdx#cryptographic-methods).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+var patchRequest = new PatchRequest
+{
+    Script = @"
+        if (!this.ExternalId) {
+            this.ExternalId = crypto.randomUUID();
+        }"
+};
+    
+session.Advanced.Defer(new PatchCommandData(
+    id: "companies/1-A",
+    changeVector: null,
+    patch: patchRequest,
+    patchIfMissing: null));
+    
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operation_syntax" label="Operation_syntax">
+```csharp
+store.Operations.Send(new PatchOperation("companies/1-A", null, new PatchRequest
+{
+    Script = @"
+        if (!this.ExternalId) {
+            this.ExternalId = crypto.randomUUID();
+        }"
+}));
+```
+</TabItem>
+</Tabs>
+
+### Store a SHA-256 hash of a field
+
+Use `crypto.digest()` to create a deterministic hash from a field value and store it in a separate field.  
+For the full list of supported cryptographic methods, see [JavaScript Engine - Cryptographic methods](../../../../server/kb/javascript-engine.mdx#cryptographic-methods).
 
 
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+var patchRequest = new PatchRequest
+{
+    Script = @"
+        // Create a hash from the email value
+        if (this.Email) {
+            var normalizedEmail = this.Email.trim().toLowerCase();
+            this.EmailHash = crypto.digest('SHA-256', normalizedEmail);
+            this.EmailHashAlgorithm = 'SHA-256';
+        }"
+};
+    
+session.Advanced.Defer(new PatchCommandData(
+    id: "users/1",
+    changeVector: null,
+    patch: patchRequest,
+    patchIfMissing: null
+));
+    
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operation_syntax" label="Operation_syntax">
+```csharp
+store.Operations.Send(new PatchOperation("companies/1", null, new PatchRequest
+{
+    Script = @"
+        // Create a hash from the email value
+        if (this.Email) {
+            var normalizedEmail = this.Email.trim().toLowerCase();
+            this.EmailHash = crypto.digest('SHA-256', normalizedEmail);
+            this.EmailHashAlgorithm = 'SHA-256';
+        }"
+}));
+```
+</TabItem>
+</Tabs>
 
+### Encrypt a field
+
+Use `crypto.encryptAesGcm()` to encrypt a field value, and store the generated _IV_ alongside the encrypted result.  
+For the full list of supported cryptographic methods, see [JavaScript Engine - Cryptographic methods](../../../../server/kb/javascript-engine.mdx#cryptographic-methods).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+var patchRequest = new PatchRequest
+{
+    Script = @"
+        // this.SensitiveData is the document field you want to encrypt
+        if (this.SensitiveData) {
+            var iv = crypto.getRandomValuesBase64(12);
+            var key = crypto.getRandomValuesBase64(32);
+    
+            // Add fields to the document: 
+            this.SensitiveDataEncrypted = crypto.encryptAesGcm(
+                iv,
+                key,
+                this.SensitiveData
+            );
+            this.SensitiveDataIv = iv;
+    
+            // You may wish to remove the original unencrypted field
+            delete this.SensitiveData;    
+        }"
+};
+    
+session.Advanced.Defer(new PatchCommandData(
+    id: "users/1",
+    changeVector: null,
+    patch: patchRequest,
+    patchIfMissing: null));
+    
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operation_syntax" label="Operation_syntax">
+```csharp
+store.Operations.Send(new PatchOperation("users/1", null, new PatchRequest
+{
+    Script = @"
+        // this.SensitiveData is the document field you want to encrypt
+        if (this.SensitiveData) {
+            var iv = crypto.getRandomValuesBase64(12);
+            var key = crypto.getRandomValuesBase64(32);
+    
+            // Add fields to the document: 
+            this.SensitiveDataEncrypted = crypto.encryptAesGcm(
+                iv,
+                key,
+                this.SensitiveData
+            );
+            this.SensitiveDataIv = iv;
+    
+            // You may wish to remove the original unencrypted field
+            delete this.SensitiveData;    
+        }"
+}));
+```
+</TabItem>
+</Tabs>
