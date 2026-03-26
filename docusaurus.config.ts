@@ -197,7 +197,13 @@ const config: Config = {
                     "@type": "ImageObject",
                     url: "https://docs.ravendb.net/img/social-card.jpg",
                 },
-                sameAs: ["https://github.com/ravendb/ravendb", "https://www.youtube.com/@ravendb_net"],
+                sameAs: [
+                    "https://github.com/ravendb/ravendb",
+                    "https://www.youtube.com/@ravendb_net",
+                    "https://en.wikipedia.org/wiki/RavenDB",
+                    "https://www.linkedin.com/company/ravendb",
+                    "https://stackoverflow.com/questions/tagged/ravendb",
+                ],
             }),
         },
         {
@@ -207,7 +213,7 @@ const config: Config = {
                 "@context": "https://schema.org",
                 "@type": "SoftwareApplication",
                 name: "RavenDB",
-                applicationCategory: "DeveloperApplication",
+                applicationCategory: "DeveloperTools",
                 operatingSystem: "Windows, Linux, macOS, Docker",
                 description:
                     "A fully transactional NoSQL document database with ACID transactions, distributed clusters, and multi-model data support.",
@@ -217,6 +223,12 @@ const config: Config = {
                     "@type": "Organization",
                     name: "RavenDB",
                     url: "https://ravendb.net/",
+                },
+                offers: {
+                    "@type": "Offer",
+                    price: "0",
+                    priceCurrency: "USD",
+                    url: "https://ravendb.net/download",
                 },
             }),
         },
