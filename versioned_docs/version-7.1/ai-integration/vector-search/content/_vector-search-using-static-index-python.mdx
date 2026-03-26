@@ -277,11 +277,10 @@ similar_products = list(
 </TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
-{`from index "Products/ByVector/Text"
+from index "Products/ByVector/Text"
 // Optionally, wrap the 'vector.search' query with 'exact()' to perform an exact search
 where exact(vector.search(vector_from_text, $searchTerm, 0.82, 20))
 { "searchTerm" : "italian food" }
-`}
 ```
 </TabItem>
 </Tabs>
@@ -377,11 +376,10 @@ similar_categories = list(
 </TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
-{`from index "Categories/ByPreMadeTextEmbeddings"
+from index "Categories/ByPreMadeTextEmbeddings"
 // Optionally, wrap the 'vector.search' query with 'exact()' to perform an exact search
 where exact(vector.search(vector_from_text_embeddings, $p0, 0.75, 20))
 { "p0": "candy" }
-`}
 ```
 </TabItem>
 </Tabs>
@@ -529,10 +527,9 @@ similar_movies = list(
 </TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
-{`from index "Movies/ByVector/Single"
+from index "Movies/ByVector/Single"
 where vector.search(vector_from_single, $queryVector)
 { "queryVector" : { "@vector" : [6.599999904632568, 7.699999809265137] }}
-`}
 ```
 </TabItem>
 </Tabs>
@@ -641,10 +638,9 @@ similar_movies = list(
 </TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
-{`from index "Movies/ByVector/Int8"
+from index "Movies/ByVector/Int8"
 where vector.search(vector_from_int8_arrays, $queryVector)
 { "queryVector" : [64, 127, -51, -52, 76, 62] }
-`}
 ```
 </TabItem>
 </Tabs>
@@ -855,12 +851,11 @@ results = list(
 </TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
-{`from index "Products/ByMultipleFields"
+from index "Products/ByMultipleFields"
 where price_per_unit > $minPrice
 or search(name, $searchTerm1)
 or vector.search(vector_from_text, $searchTerm2, 0.8)
 { "minPrice" : 200, "searchTerm1" : "Alice", "searchTerm2": "italian food" }
-`}
 ```
 </TabItem>
 </Tabs>
@@ -908,11 +903,10 @@ results = list(
 </TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
-{`from index "Products/ByVector/Text"
+from index "Products/ByVector/Text"
 // Pass a document ID to the 'forDoc' method to find similar documents
 where vector.search(vector_from_text, embedding.forDoc($documentID), 0.82)
 {"documentID" : "Products/7-A"}
-`}
 ```
 </TabItem>
 </Tabs>
