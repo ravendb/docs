@@ -10,6 +10,8 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # AI Agents Integration: Studio
 <Admonition type="note" title="">
@@ -32,11 +34,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
-<hr />
+<Panel heading="Create AI Agent">
 
-## Create AI Agent
-
-To create an AI agent, open **AI hub &gt; AI Agents** and click **Add new agent**.
+To create an AI agent, open: **AI hub &gt; AI Agents** and click **Add new agent**
 
 ![AI Agents View](./assets/ai-agents_ai-agents-view.png)
 
@@ -61,9 +61,9 @@ To create an AI agent, open **AI hub &gt; AI Agents** and click **Add new agent*
 5. **Defined agent**  
    After defining an agent, it is listed in this view, allowing you to run, edit, or remove the agent.
 
-<hr />
+</Panel>
 
-## Configure basic settings
+<Panel heading="Configure basic settings">
 
 ![Configure basic settings](./assets/ai-agents_config-basic-settings.png)
 
@@ -75,7 +75,10 @@ To create an AI agent, open **AI hub &gt; AI Agents** and click **Add new agent*
    Enter a unique identifier for the agent,  
    or click **Regenerate** to create it automatically.  
 
-3. **Connection String**  
+3. **Agent state**  
+   Enable or Disable the agent.
+
+4. **Connection String**  
 
       ![Select or Create a Connection String](./assets/ai-agents_connection-string_select-or-create.png)
    
@@ -86,10 +89,10 @@ To create an AI agent, open **AI hub &gt; AI Agents** and click **Add new agent*
    
       ![Connection String](./assets/ai-agents_connection-string.png)
 
-4. **System prompt**  
+5. **System prompt**  
    Enter a prompt that determines LLM characteristics like its role and purpose.  
 
-5. **Sample response object** and **Response JSON schema**  
+6. **Sample response object** and **Response JSON schema**  
    Define a response JSON object for the LLM reply, either as a sample object or as a formal schema.  
     - The response object guides the LLM in composing its replies, and can ease their parsing 
       by the client.  
@@ -98,16 +101,16 @@ To create an AI agent, open **AI hub &gt; AI Agents** and click **Add new agent*
       before sending it to the LLM, but if you prefer it you can define it yourself.  
     - After defining a sample object, you can open the schema tab and click the "View schema" 
       button to see the generated schema.  
+
       ![Configure basic settings](./assets/ai-agents_config-basic-settings_schema.png)
 
-<hr />
+</Panel>
 
-## Set agent parameters
+<Panel heading="Set agent parameters">
 
-Define **agent parameters**.  
-After defining an agent parameter, it can be included in query tools RQL queries.  
+After setting an agent parameter, it can be included in query tools RQL queries.  
 Values for agent parameters are provided by the client when a conversation is started.  
-[Read more about parameters](../../../ai-integration/ai-agents/overview.mdx#query-parameters).
+[Read more about agent parameters](../../../ai-integration/ai-agents/overview.mdx#query-parameters).
 
 ![Set agent parameters](./assets/ai-agents_set-agent-params.png)
 
@@ -123,9 +126,9 @@ Values for agent parameters are provided by the client when a conversation is st
 4. **Remove parameter**  
    Remove a defined parameter from the list.
 
-<hr />
+</Panel>
 
-## Define agent tools
+<Panel heading="Define agent tools">
 
 Define **Query** and **Action** agent tools.  
 
@@ -145,6 +148,8 @@ Define **Query** and **Action** agent tools.
 
 2. **Action tools**  
    Click to add a new action tool.  
+
+<ContentFrame>
 
 ### Add query tools:
 
@@ -189,6 +194,10 @@ Define **Query** and **Action** agent tools.
    Set a schema (as a sample object or a formal JSON schema) that allows the LLM to fill query parameters with values.  
    [Read more about query parameters](../../../ai-integration/ai-agents/overview.mdx#query-parameters)  
 
+</ContentFrame>
+
+<ContentFrame>
+
 ### Add action tools:
 
 ![Add new action tool](./assets/ai-agents_define-agent-tools_add-action-tool.png)
@@ -214,9 +223,11 @@ Define **Query** and **Action** agent tools.
    
       If you define both a sample response object and a schema, only the schema will be used.  
 
-<hr />
+</ContentFrame>
 
-## Configure chat trimming
+</Panel>
+
+<Panel heading="Configure chat trimming">
 
 LLMs have no memory of prior interactions.  
 To allow a continuous conversation, each time the agent sends to the LLM a new prompt or request, it sends along with it the whole conversation up to this point.  
@@ -242,9 +253,9 @@ To minimize the size of such messages, you can set the agent to summarize conver
        `@conversations-history` collection once their age exceeds the period 
        you set.  
 
-<hr />
+</Panel>
 
-## Save and Run your agent
+<Panel heading="Save and Run your agent">
 
 When you're done configuring your agent, save it using the **save** button at the bottom.  
 
@@ -259,6 +270,8 @@ You will find your agent in the main **AI Agents** view, where you can run or ed
 
 2. **Edit agent**  
    Click to edit the agent.  
+
+<ContentFrame>
 
 ### Start new chat:
 
@@ -289,21 +302,33 @@ to the agent what you expect from this session.
    Use the user prompt to explain to the agent, in natural language, what 
    this session is about.  
 
+</ContentFrame>
+
+<ContentFrame>
+
 ### Agent interaction:
         
 Running the agent presents its components and interactions.  
 
 Agent parameters and their values:
+
 ![Parameters](./assets/ai-agents_running_params.png)
 
 The system prompt set for the LLM and the user prompt:
+
 ![System and User prompts](./assets/ai-agents_running_prompts.png)
 
 The query tools and their activity:
+
 ![Query tool](./assets/ai-agents_running_query-tool.png)
 
 You can view the raw data of the agent's activity in JSON form as well:  
+
 ![Raw data](./assets/ai-agents_running_raw-data.png)
+
+</ContentFrame>
+
+<ContentFrame>
 
 ### Action tool dialog:
 
@@ -313,6 +338,10 @@ you to enter the results when you finish performing it.
 
 ![Action tool waiting for client response](./assets/ai-agents_running_action-tool.png)
 
+</ContentFrame>
+
+<ContentFrame>
+
 ### Agent results:
 
 And finally, when the AI model finishes its work and negotiations, you will be able to see its response.
@@ -320,9 +349,11 @@ As with all other dialog boxes, you can expand the view to see the content or mi
 
 ![LLM answer: minimized](./assets/ai-agents_running_llm-response-minimized.png)
 
-<hr />
+</ContentFrame>
 
-## Test your agent
+</Panel>
+
+<Panel heading="Test your agent">
 
 You can test your agent while creating or editing it, to examine its configuration and operability before you deploy it. The test interface resembles the one you see when you run your agent normally via Studio, but conversations are not kept in the `@conversations` or `@conversations-history` collections.  
 
@@ -348,6 +379,8 @@ To test your agent, click **Test** at the bottom of the agent configuration view
    You can keep sending prompts to the agent and receiving its replies in 
    a continuous conversation.  
 
+<ContentFrame>
+
 ### Runtime view and Test results:
 
 You will see the components that take part in the agent's run and be able 
@@ -361,16 +394,17 @@ When the LLM finishes processing, you will see its response.
 ![Test results: minimized](./assets/ai-agents_test-results_minimized.png)
 
 You can expand the dialog or copy the content to see the response in detail.
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`\{
-  "EmployeeID": "employees/1-A",
-  "EmployeeProfit": "1760",
-  "SuggestedRewards": "The employee lives in Redmond, WA, USA. For a special reward, consider a weekend getaway to the Pacific Northwest's scenic sites such as a stay at a luxury resort in Seattle or a relaxing wine tasting tour in Woodinville. Alternatively, you could offer gift cards for outdoor excursions in the Cascade Mountains or tickets to major cultural events in the Seattle area."
-\}
-`}
-</CodeBlock>
-</TabItem>
 
+```json
+{
+   "EmployeeID": "employees/1-A",
+   "EmployeeProfit": "1760",
+   "SuggestedRewards": "The employee lives in Redmond, WA, USA. For a special reward, consider a weekend getaway to the Pacific Northwest's scenic sites such as a stay at a luxury resort in Seattle or a relaxing wine tasting tour in Woodinville. Alternatively, you could offer gift cards for outdoor excursions in the Cascade Mountains or tickets to major cultural events in the Seattle area."
+}
+```
+
+</ContentFrame>
+
+</Panel>
 
 
