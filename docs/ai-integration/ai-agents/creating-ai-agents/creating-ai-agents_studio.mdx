@@ -75,7 +75,10 @@ To create an AI agent, open: **AI hub &gt; AI Agents** and click **Add new agent
    Enter a unique identifier for the agent,  
    or click **Regenerate** to create it automatically.  
 
-3. **Connection String**  
+3. **Agent state**  
+   Enable or Disable the agent.
+
+4. **Connection String**  
 
       ![Select or Create a Connection String](./assets/ai-agents_connection-string_select-or-create.png)
    
@@ -86,10 +89,10 @@ To create an AI agent, open: **AI hub &gt; AI Agents** and click **Add new agent
    
       ![Connection String](./assets/ai-agents_connection-string.png)
 
-4. **System prompt**  
+5. **System prompt**  
    Enter a prompt that determines LLM characteristics like its role and purpose.  
 
-5. **Sample response object** and **Response JSON schema**  
+6. **Sample response object** and **Response JSON schema**  
    Define a response JSON object for the LLM reply, either as a sample object or as a formal schema.  
     - The response object guides the LLM in composing its replies, and can ease their parsing 
       by the client.  
@@ -105,10 +108,9 @@ To create an AI agent, open: **AI hub &gt; AI Agents** and click **Add new agent
 
 <Panel heading="Set agent parameters">
 
-Define **agent parameters**.  
-After defining an agent parameter, it can be included in query tools RQL queries.  
+After setting an agent parameter, it can be included in query tools RQL queries.  
 Values for agent parameters are provided by the client when a conversation is started.  
-[Read more about parameters](../../../ai-integration/ai-agents/overview.mdx#query-parameters).
+[Read more about agent parameters](../../../ai-integration/ai-agents/overview.mdx#query-parameters).
 
 ![Set agent parameters](./assets/ai-agents_set-agent-params.png)
 
