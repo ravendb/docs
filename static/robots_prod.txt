@@ -80,5 +80,12 @@ Disallow: /2.0/
 Disallow: /1.0/
 Allow: /
 
+# Training-only crawlers (no search visibility benefit)
+User-agent: CCBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
 # Sitemaps
 Sitemap: https://docs.ravendb.net/sitemap.xml

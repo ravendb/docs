@@ -167,16 +167,6 @@ const config: Config = {
             },
         },
         {
-            tagName: "link",
-            attributes: {
-                rel: "preload",
-                href: "/css/fonts/JetBrainsMono-Italic[wght].woff2",
-                as: "font",
-                type: "font/woff2",
-                crossorigin: "anonymous",
-            },
-        },
-        {
             tagName: "script",
             attributes: { type: "application/ld+json" },
             innerHTML: JSON.stringify({
