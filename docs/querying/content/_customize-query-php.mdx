@@ -2,34 +2,38 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* Use the below methods to set customization options on a specific [query](../../../../querying/overview.mdx).  
+* Use the below methods to set customization options on a specific [query](../../querying/overview.mdx).  
   Customizations can be set for both **dynamic** and **index** queries.
 
-* A query can also be customized on the store or session level by 
-  [subscribing to `OnBeforeQuery`](../../../../client-api/session/how-to/subscribe-to-events.mdx). 
+* A query can also be customized on the _store_ or _session_ level by 
+  [subscribing to `OnBeforeQuery`](../../client-api/session/how-to/subscribe-to-events.mdx). 
 
 * Available customization methods :
-  - [`addBeforeQueryExecutedListener` and `removeBeforeQueryExecutedListener`](../../../../client-api/session/querying/how-to-customize-query.mdx#addbeforequeryexecutedlistener-and-removebeforequeryexecutedlistener)
-  - [`addAfterQueryExecutedListener` and `removeAfterQueryExecutedListener`](../../../../client-api/session/querying/how-to-customize-query.mdx#addafterqueryexecutedlistener-and-removeafterqueryexecutedlistener)
-  - [`noCaching`](../../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
-  - [`noTracking`](../../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
-  - [Projection](../../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
-  - [`randomOrdering`](../../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
-  - [`waitForNonStaleResults`](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
-* [Methods return value](../../../../client-api/session/querying/how-to-customize-query.mdx#methods-return-value)
-
+  - [addBeforeQueryExecutedListener & removeBeforeQueryExecutedListener](../../querying/customize-query.mdx#addbeforequeryexecutedlistener-removebeforequeryexecutedlistener)
+  - [addAfterQueryExecutedListener & removeAfterQueryExecutedListener](../../querying/customize-query.mdx#addafterqueryexecutedlistener-removeafterqueryexecutedlistener)
+  - [noCaching](../../querying/customize-query.mdx#nocaching)
+  - [noTracking](../../querying/customize-query.mdx#notracking)
+  - [Projection](../../querying/customize-query.mdx#projection)
+  - [randomOrdering](../../querying/customize-query.mdx#randomordering)
+  - [waitForNonStaleResults](../../querying/customize-query.mdx#waitfornonstaleresults)
+    
+* [Methods return value](../../querying/customize-query.mdx#methods-return-value)
 
 </Admonition>
-## `addBeforeQueryExecutedListener` and `removeBeforeQueryExecutedListener`
 
-* Use these methods to customize the query just before it is executed.
+<Panel heading="addBeforeQueryExecutedListener & removeBeforeQueryExecutedListener">
+
+Use `addBeforeQueryExecutedListener` and `removeBeforeQueryExecutedListener`  
+to customize the query just **before** it is executed.
 
 **Example**
 
-<TabItem value="customize_1_1" label="customize_1_1">
+<TabItem>
 <CodeBlock language="php">
 {`$session->advanced()->addBeforeQueryListener(function ($sender, BeforeQueryEventArgs $event) \{
     $event->getQueryCustomization()
@@ -44,11 +48,9 @@ $session->query(Employee::class)->toList();
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="">
-
 **Syntax**
 
-<TabItem value="customize_1_0" label="customize_1_0">
+<TabItem>
 <CodeBlock language="php">
 {`public function addBeforeQueryExecutedListener(Closure $action): DocumentQueryCustomizationInterface;
 public function removeBeforeQueryExecutedListener(Closure $action): DocumentQueryCustomizationInterface;
@@ -56,21 +58,20 @@ public function removeBeforeQueryExecutedListener(Closure $action): DocumentQuer
 </CodeBlock>
 </TabItem>
 
-| Parameters | Type | Description                                          |
-|------------| ---- |------------------------------------------------------|
+| Parameter   | Type      | Description                                    |
+|-------------| --------- |------------------------------------------------|
 | **$action** | `Closure` | An _$action_ method that operates on the query |
 
-</Admonition>
+</Panel>
 
+<Panel heading="addAfterQueryExecutedListener & removeAfterQueryExecutedListener">
 
-
-## `addAfterQueryExecutedListener` and `removeAfterQueryExecutedListener`
-
-* Use these methods to access the raw query result after it is executed.
+Use `addAfterQueryExecutedListener` and `removeAfterQueryExecutedListener`  
+to access the raw query result **after** it is executed.
 
 **Example**
 
-<TabItem value="customize_1_1_0" label="customize_1_1_0">
+<TabItem>
 <CodeBlock language="php">
 {`$queryDuration = null;
 
@@ -83,11 +84,9 @@ $session->query(Employee::class)
 </CodeBlock>
 </TabItem>
 
-<Admonition type="note" title="">
-
 **Syntax**
 
-<TabItem value="customize_1_0_0" label="customize_1_0_0">
+<TabItem>
 <CodeBlock language="php">
 {`public function addAfterQueryExecutedListener(Closure $action): DocumentQueryCustomizationInterface;
 public function removeAfterQueryExecutedListener(Closure $action): DocumentQueryCustomizationInterface;
@@ -95,25 +94,21 @@ public function removeAfterQueryExecutedListener(Closure $action): DocumentQuery
 </CodeBlock>
 </TabItem>
 
-| Parameters | Type | Description |
-|------------| ---- |-------------|
+| Parameter   | Type | Description |
+|-------------| ---- |-------------|
 | **$action** | `Closure` | An _Action_ method that receives the raw query result |
 
-</Admonition>
+</Panel>
 
+<Panel heading="noCaching"> 
 
-
-## `noCaching`
-
-* By default, query results are cached. 
-
+* By default, query results are cached.
 * You can use the `noCaching` customization to disable query caching.
-
-* Learn more in [disable caching per session](../../../../client-api/session/configuration/how-to-disable-caching.mdx).
+* To disable caching for the entire session, see [disable caching per session](../../client-api/session/configuration/how-to-disable-caching.mdx).
 
 **Example**
 
-<TabItem value="customize_2_1" label="customize_2_1">
+<TabItem>
 <CodeBlock language="php">
 {`$session->advanced()
     ->addBeforeQueryListener(function($sender, BeforeQueryEventArgs $event) \{
@@ -129,26 +124,24 @@ $results = $session->query(Employee::class)
 
 **Syntax**
 
-<TabItem value="customize_2_0" label="customize_2_0">
+<TabItem>
 <CodeBlock language="php">
 {`public function noCaching(): DocumentQueryCustomizationInterface
 `}
 </CodeBlock>
 </TabItem>
 
+</Panel>    
 
+<Panel heading="noTracking">
 
-## `noTracking`
-
-* By default, the [session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all changes made to all entities that it has either loaded, stored, or queried for.
-
-* You can use the `noTracking` customization to disable entity tracking.  
-
-* See [disable entity tracking](../../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
+* By default, the [session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all changes made to all entities that it has either loaded, stored, or queried for.
+* You can use the `noTracking` customization to disable tracking for entities returned by a query.  
+* See [disable entity tracking](../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
 
 **Example**
 
-<TabItem value="customize_3_1" label="customize_3_1">
+<TabItem>
 <CodeBlock language="php">
 {`$session->advanced()
     ->addBeforeQueryListener(function($sender, BeforeQueryEventArgs $event) \{
@@ -164,37 +157,33 @@ $results = $session->query(Employee::class)
 
 **Syntax**
 
-<TabItem value="customize_3_0" label="customize_3_0">
+<TabItem>
 <CodeBlock language="php">
 {`public function noTracking(): DocumentQueryCustomizationInterface
 `}
 </CodeBlock>
 </TabItem>
 
+</Panel>
 
+<Panel heading="projection">
 
-## Projection
-
-* By default, when [querying an index](../../../../indexes/querying/query-index.mdx) and projecting query results,  
-  the server will try to retrieve field values from the fields [stored in the index](../../../../indexes/storing-data-in-index.mdx).  
-  <Admonition type="note" title="">
-  Projecting means the query returns only specific document fields instead of the full document.  
-  </Admonition>
-
-* If the index does Not store these fields, the field values will be retrieved from the documents.
-
-* Use the `projection` method to customize and modify this behavior.
-
+* Projecting query results means that the query returns only specific document fields, rather than the entire document.  
+  Learn more about projections in:  
+  * [Project index query results](../../indexes/querying/projections.mdx)
+  * [Project dynamic query results](../../client-api/session/querying/how-to-project-query-results.mdx)    
+    
+* By default, when [querying an index](../../indexes/querying/query-index.mdx) and projecting query results,  
+  the server will try to retrieve field values from the fields [stored in the index](../../indexes/storing-data-in-index.mdx).  
+  If the index does Not store these fields, the fields' values will be retrieved from the documents.  
+  Use the `projection` method to customize and modify this behavior.    
+    
 * Note:  
   Entities resulting from a projecting query are Not tracked by the session.  
-  Learn more about projections in:
-  
-  * [Project index query results](../../../../indexes/querying/projections.mdx)
-  * [Project dynamic query results](../../../../client-api/session/querying/how-to-project-query-results.mdx)
 
 **Example**
 
-<TabItem value="projectionbehavior_query" label="projectionbehavior_query">
+<TabItem>
 <CodeBlock language="php">
 {`$session->advanced()
     ->addBeforeQueryListener(function($sender, BeforeQueryEventArgs $event) \{
@@ -210,7 +199,7 @@ $results = $session->query(Employee::class)
 
 **Syntax**
 
-<TabItem value="projectionbehavior" label="projectionbehavior">
+<TabItem>
 <CodeBlock language="php">
 {`public function projection(ProjectionBehavior $projectionBehavior): DocumentQueryCustomizationInterface;
 
@@ -243,17 +232,16 @@ class ProjectionBehavior
   Retrieve values directly from the documents store.  
   An exception is thrown if the document does not contain the requested field.  
 
+</Panel>
 
-
-## `randomOrdering`
+<Panel heading="randomOrdering">
 
 * Use `randomOrdering` to order the query results randomly.  
-
-* More ordering options are available in this [Sorting](../../../../client-api/session/querying/sort-query-results.mdx) article.  
+* For additional ordering options, see [Sort query results](../../client-api/session/querying/sort-query-results.mdx). 
 
 **Example**
 
-<TabItem value="customize_4_1" label="customize_4_1">
+<TabItem>
 <CodeBlock language="php">
 {`$session->advanced()
     ->addBeforeQueryListener(function($sender, BeforeQueryEventArgs $event) \{
@@ -270,7 +258,7 @@ $results = $session->query(Employee::class)
 
 **Syntax**
 
-<TabItem value="customize_4_0" label="customize_4_0">
+<TabItem>
 <CodeBlock language="php">
 {`public function randomOrdering(): DocumentQueryCustomizationInterface;
 public function randomOrdering(?string $seed): DocumentQueryCustomizationInterface;
@@ -278,29 +266,27 @@ public function randomOrdering(?string $seed): DocumentQueryCustomizationInterfa
 </CodeBlock>
 </TabItem>
 
-| Parameters | Type | Description                                                                                                |
-|------------| ------------- |---------------------------------------------------------------------------------------------------|
+| Parameter   | Type      | Description |
+|-------------| --------- |-------------|
 | **$seed**   | `?string` | Order the search results randomly using this seed.<br/>Useful when executing repeated random queries. |
 
-
-
-## `waitForNonStaleResults`
+</Panel>
+    
+<Panel heading="waitForNonStaleResults">
 
 * All queries in RavenDB provide results using an index, even when you don't specify one.  
-  See detailed explanation in [Queries always provide results using an index](../../../../querying/overview.mdx#queries-always-provide-results-using-an-index).
+  See detailed explanation in [Queries always provide results using an index](../../querying/overview.mdx#queries-always-provide-results-using-an-index).
 
 * Use `waitForNonStaleResults` to instruct the query to wait for non-stale results from the index.  
 
 * A `TimeoutException` will be thrown if the query is not able to return non-stale results within the specified  
   (or default) timeout.
  
-* Learn more about stale results in [stale indexes](../../../../indexes/stale-indexes.mdx).
-
-<Admonition type="note" title="">
+* Learn more about stale results in [stale indexes](../../indexes/stale-indexes.mdx).
 
 **Example**
 
-<TabItem value="customize_8_1" label="customize_8_1">
+<TabItem>
 <CodeBlock language="php">
 {`$session->advanced()
     ->addBeforeQueryListener(function($sender, BeforeQueryEventArgs $event) \{
@@ -314,13 +300,9 @@ $results = $session->query(Employee::class)
 </CodeBlock>
 </TabItem>
 
-</Admonition>
-
-<Admonition type="note" title="">
-
 **Syntax**
 
-<TabItem value="customize_8_0" label="customize_8_0">
+<TabItem>
 <CodeBlock language="php">
 {`public function waitForNonStaleResults(): DocumentQueryCustomizationInterface;
 public function waitForNonStaleResults(Duration $waitTimeout): DocumentQueryCustomizationInterface;
@@ -328,22 +310,18 @@ public function waitForNonStaleResults(Duration $waitTimeout): DocumentQueryCust
 </CodeBlock>
 </TabItem>
 
-| Parameters | Type | Description |
-|------------| ------------- |-----------|
+| Parameter        | Type       | Description |
+|------------------| -----------|-------------|
 | **$waitTimeout** | `Duration` | Time to wait for non-stale results. <br/>Default is 15 seconds. |
 
-</Admonition>
+</Panel>
 
-
-
-## Methods return value
+<Panel heading="Methods return value">
 
 All of the above customization methods return the following:
 
-| Return value         | |
-|-----------------------------| ----- |
+| Return value |     |
+|--------------| --- |
 | `DocumentQueryCustomizationInterface` | Returns self for easier method chaining |
 
-
-
-
+</Panel>    

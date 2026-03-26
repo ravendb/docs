@@ -62,9 +62,15 @@
         }
     },
     {
-        "key": "/client-api/session/querying/stream-query-results",
+        "key": "/client-api/session/querying/how-to-stream-query-results",
         "value": {
             "targetUrl": "/querying/stream-query-results"
+        }
+    },
+    {
+        "key": "/client-api/session/querying/how-to-customize-query",
+        "value": {
+            "targetUrl": "/querying/customize-query"
         }
     }
 ]

@@ -23,10 +23,10 @@ import CodeBlock from '@theme/CodeBlock';
 * The entities returned by the query are 'loaded' and **tracked** by the [session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx).  
   Entities will Not be tracked when:  
     * Query returns a [projection](../../../../client-api/session/querying/how-to-project-query-results.mdx)  
-    * Tracking is [disabled](../../../../client-api/session/querying/how-to-customize-query.mdx#notracking)  
+    * Tracking is [disabled](../../../../querying/customize-query.mdx#notracking)  
 
 * Query results are **cached** by default.  
-  To disable query caching see [NoCaching](../../../../client-api/session/querying/how-to-customize-query.mdx#nocaching).
+  To disable query caching see [NoCaching](../../../../querying/customize-query.mdx#nocaching).
 
 * Queries are timed out after a configurable time period.  
   See [query timeout](../../../../server/configuration/database-configuration.mdx#databasesquerytimeoutinsec).
@@ -375,7 +375,7 @@ Available custom methods for session's [query](../../../../client-api/session/qu
 - [aggregateBy](../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
 - [count](../../../../client-api/session/querying/how-to-count-query-results.mdx)
 - [countLazily](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
-- [customize](../../../../client-api/session/querying/how-to-customize-query.mdx)
+- [customize](../../../../querying/customize-query.mdx)
 - [highlight](../../../../client-api/session/querying/text-search/highlight-query-results.mdx)
 - [include](../../../../client-api/how-to/handle-document-relationships.mdx)
 - [intersect](../../../../client-api/session/querying/how-to-use-intersect.mdx)
