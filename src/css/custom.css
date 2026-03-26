@@ -182,6 +182,7 @@ pre[class*="language-"] {
         url("/css/fonts/Inter[wght].woff2") format("woff2 supports variations"),
         url("/css/fonts/Inter[wght].woff2") format("woff2-variations");
     font-weight: 100 900;
+    font-display: swap;
 }
 
 @font-face {
@@ -191,6 +192,7 @@ pre[class*="language-"] {
         url("/css/fonts/Inter-Italic[wght].woff2") format("woff2 supports variations"),
         url("/css/fonts/Inter-Italic[wght].woff2") format("woff2-variations");
     font-weight: 100 900;
+    font-display: swap;
 }
 
 @font-face {

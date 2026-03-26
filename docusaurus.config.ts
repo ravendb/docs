@@ -139,33 +139,8 @@ const config: Config = {
         {
             tagName: "link",
             attributes: {
-                rel: "preconnect",
-                href: "https://GYTCYX561T-dsn.algolia.net",
-                crossorigin: "anonymous",
-            },
-        },
-        {
-            tagName: "link",
-            attributes: {
-                rel: "preconnect",
-                href: "https://www.googletagmanager.com",
-            },
-        },
-        {
-            tagName: "link",
-            attributes: {
                 rel: "preload",
                 href: "/css/fonts/Inter[wght].woff2",
-                as: "font",
-                type: "font/woff2",
-                crossorigin: "anonymous",
-            },
-        },
-        {
-            tagName: "link",
-            attributes: {
-                rel: "preload",
-                href: "/css/fonts/Inter-Italic[wght].woff2",
                 as: "font",
                 type: "font/woff2",
                 crossorigin: "anonymous",
