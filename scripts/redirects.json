@@ -72,5 +72,17 @@
         "value": {
             "targetUrl": "/querying/customize-query"
         }
+    },
+    {
+        "key": "/ai-integration/ai-agents/ai-agents_security-concerns",
+        "value": {
+            "targetUrl": "/ai-integration/ai-agents/security-concerns"
+        }
+    },
+    {
+        "key": "/ai-integration/ai-agents/ai-agents_configuration",
+        "value": {
+            "targetUrl": "/ai-integration/configuration"
+        }
     }
 ]
