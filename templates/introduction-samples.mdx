@@ -1,0 +1,116 @@
+---
+title: "Samples: Introduction"
+hide_table_of_contents: false
+sidebar_label: Introduction
+see_also:
+    - title: "Adding new samples"
+      link: "/templates/new-samples"
+      source: "docs"
+      path: "Templates > Samples"
+    - title: "Sample tags"
+      link: "/templates/tags-samples"
+      source: "docs"
+      path: "Templates > Samples"
+---
+
+import Admonition from "@theme/Admonition";
+import Panel from "@site/src/components/Panel";
+
+<head>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+
+The Samples system provides a comprehensive platform for showcasing production-ready code samples, architecture patterns, and starter kits. It features a filterable hub page, detailed sample pages with metadata, and a plugin-based architecture for automatic indexing.
+
+## Architecture Overview
+
+The Samples system consists of three main parts:
+
+### 1. Samples Hub (`/samples`)
+
+A filterable, searchable landing page that displays all available samples with:
+- **Filter sidebar** with three tag categories (Challenges & Solutions, Features, Tech Stack)
+- **Sample cards** showing title, description, image, and tags
+- **Match logic toggle** (Any/All) for flexible filtering
+- **URL-based state** for shareable filtered views
+
+### 2. Sample Detail Pages
+
+Individual sample pages with a two-column layout:
+- **Main content area** for documentation, code examples, and feature descriptions
+- **Metadata sidebar** with actions, tags, and related resources
+
+### 3. Plugin System
+
+The `recent-samples-plugin` automatically:
+- Scans the `samples/` directory for `.mdx` files
+- Loads tag definitions from `samples/tags/` (organized by category)
+- Indexes samples with their metadata and tags
+- Exposes data via Docusaurus global plugin data
+
+## Key Components
+
+| Component | Purpose | Location |
+|---|---|---|
+| `SamplesHomePage` | Main hub page with filters and grid | `src/components/Samples/Hub/SamplesHomePage.tsx` |
+| `SampleCard` | Individual sample card in the grid | `src/components/Samples/Hub/Partials/SampleCard.tsx` |
+| `SamplesFilter` | Filter sidebar with categories | `src/components/Samples/Hub/Partials/SamplesFilter.tsx` |
+| `SampleLayout` | Two-column layout for detail pages | `src/components/Samples/Overview/SampleLayout.tsx` |
+| `SampleMetadataColumn` | Sidebar with tags and metadata | `src/components/Samples/Overview/Partials/SampleMetadataColumn.tsx` |
+| `ActionsCard` | GitHub and demo links | `src/components/Samples/Overview/Partials/ActionsCard.tsx` |
+| `RelatedResource` | Links to guides/docs | `src/components/Samples/Overview/Partials/RelatedResource.tsx` |
+| `FeatureAccordion` | Expandable feature descriptions | `src/components/Samples/Overview/Partials/FeatureAccordion.tsx` |
+
+## Tag System
+
+Samples use a **three-category tag system**:
+
+1. **Challenges & Solutions** (`samples/tags/challenges-solutions.yml`) - What business problems the sample solves
+   - Examples: `cloud-tax`, `semantic-search`, `integration-patterns`
+
+2. **Features** (`samples/tags/feature.yml`) - Which RavenDB features are demonstrated
+   - Examples: `vector-search`, `document-refresh`, `include`, `ai-agents`
+
+3. **Tech Stack** (`samples/tags/tech-stack.yml`) - Technologies and frameworks used
+   - Examples: `csharp`, `nodejs`, `aspire`, `azure-functions`
+
+<Admonition type="info" title="Tag Organization">
+    Unlike Guides which use a single `tags.yml` file, Samples organize tags into separate category files. This enables the filter UI to group tags logically and allows for "Any/All" matching within categories.
+</Admonition>
+
+## File Structure
+
+```
+samples/
+├── home.mdx                          # Hub page (uses SamplesHomePage component)
+├── the-ravens-library.mdx            # Example sample
+├── tags/
+│   ├── challenges-solutions.yml      # Challenges & solutions tags
+│   ├── feature.yml                   # RavenDB feature tags
+│   └── tech-stack.yml                # Technology stack tags
+└── ...                               # Additional sample files
+
+src/components/Samples/
+├── Hub/                              # Hub page components
+│   ├── SamplesHomePage.tsx
+│   └── Partials/
+│       ├── SampleCard.tsx
+│       ├── SamplesGrid.tsx
+│       ├── SamplesFilter.tsx
+│       ├── FilterCategory.tsx
+│       ├── SamplesHeader.tsx
+│       └── SamplesDecoration.tsx
+├── Overview/                         # Detail page components
+│   ├── SampleLayout.tsx
+│   └── Partials/
+│       ├── SampleMetadataColumn.tsx
+│       ├── ActionsCard.tsx
+│       ├── RelatedResource.tsx
+│       └── FeatureAccordion.tsx
+├── index.ts                          # Component exports
+└── types.ts                          # TypeScript types
+
+src/plugins/
+└── recent-samples-plugin.ts          # Indexing plugin
+```
+

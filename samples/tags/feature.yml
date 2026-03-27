@@ -1,0 +1,12 @@
+vector-search:
+    label: "Vector Search"
+document-refresh:
+    label: "Document Refresh"
+include:
+    label: "Include"
+azure-storage-queues-etl:
+    label: "Azure Storage Queues ETL"
+ai-agents:
+    label: "AI Agents"
+full-text-search:
+    label: "Full-Text Search"

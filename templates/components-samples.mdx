@@ -1,0 +1,296 @@
+---
+title: "Samples: Components"
+hide_table_of_contents: false
+sidebar_label: Components
+see_also:
+    - title: "Adding new samples"
+      link: "/templates/new-samples"
+      source: "docs"
+      path: "Templates > Samples"
+    - title: "Samples Introduction"
+      link: "/templates/introduction-samples"
+      source: "docs"
+      path: "Templates > Samples"
+---
+
+import Admonition from "@theme/Admonition";
+import Panel from "@site/src/components/Panel";
+
+<head>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+
+This guide documents all React components used in the Samples system.
+
+## Import Statement
+
+All sample components are exported from a single entry point:
+
+```tsx
+import {
+    // Layout
+    SampleLayout,
+    
+    // Metadata sidebar
+    SampleMetadataColumn,
+    ActionsCard,
+    RelatedResource,
+    
+    // Content
+    FeatureAccordion,
+    
+    // Hub (not imported in sample pages)
+    SamplesHomePage,
+    SampleCard,
+    SamplesGrid,
+    SamplesFilter,
+} from '@site/src/components/Samples';
+```
+
+## Layout Components
+
+### SampleLayout
+
+Two-column responsive layout for sample detail pages.
+
+**Location:** `src/components/Samples/Overview/SampleLayout.tsx`
+
+**Props:**
+
+| Prop | Type | Required | Description |
+|---|---|---|---|
+| `children` | `ReactNode` | ✅ | Main content area |
+| `details` | `ReactNode` | ✅ | Sidebar content (usually `SampleMetadataColumn`) |
+
+**Usage:**
+
+```tsx
+export const sampleDetails = (
+    <SampleMetadataColumn {...} />
+);
+
+<SampleLayout details={sampleDetails}>
+    {/* Main content */}
+</SampleLayout>
+```
+**Behavior:**
+- Desktop (lg+): Two columns, sidebar on right (300px fixed width)
+- Mobile: Stacked, sidebar appears above content
+
+---
+
+## Metadata Sidebar Components
+
+### SampleMetadataColumn
+
+Container for the metadata sidebar, displays tags, category, license, and related resources.
+
+**Location:** `src/components/Samples/Overview/Partials/SampleMetadataColumn.tsx`
+
+**Props:**
+
+| Prop | Type | Required | Description |
+|---|---|---|---|
+| `className` | `string` | ❌ | Additional CSS classes |
+| `actionsCard` | `ReactNode` | ❌ | Usually an `ActionsCard` component |
+| `relatedResources` | `ReactNode` | ❌ | Usually multiple `RelatedResource` components |
+
+**Usage:**
+
+```tsx
+<SampleMetadataColumn
+    actionsCard={<ActionsCard {...} />}
+    relatedResources={
+        <>
+            <RelatedResource {...} />
+            <RelatedResource {...} />
+        </>
+    }
+/>
+```
+**Auto-populated from frontmatter:**
+- Challenges & Solutions tags (`challengesSolutionsTags`)
+- Feature tags (`featureTags`)
+- Tech stack tags (`techStackTags`)
+- Category (`category`)
+- License (`license`)
+
+---
+
+### ActionsCard
+
+Displays GitHub repository and demo links.
+
+**Location:** `src/components/Samples/Overview/Partials/ActionsCard.tsx`
+
+**Props:**
+
+| Prop | Type | Required | Description |
+|---|---|---|---|
+| `className` | `string` | ❌ | Additional CSS classes |
+| `githubUser` | `string` | ❌ | GitHub username or organization |
+| `githubRepo` | `string` | ❌ | GitHub repository name |
+| `demoUrl` | `string` | ❌ | URL to live demo |
+
+**Usage:**
+
+```tsx
+<ActionsCard
+    githubUser="ravendb"
+    githubRepo="samples-library"
+    demoUrl="https://demo.ravendb.net"
+/>
+```
+
+**Rendered buttons:**
+- **Browse code** (if `githubUser` and `githubRepo` provided) - Links to `https://github.com/{user}/{repo}`
+- **View demo** (if `demoUrl` provided) - Links to demo URL
+
+---
+
+### RelatedResource
+
+Links to related guides or documentation.
+
+**Location:** `src/components/Samples/Overview/Partials/RelatedResource.tsx`
+
+**Props:**
+
+| Prop | Type | Required | Description |
+|---|---|---|---|
+| `className` | `string` | ❌ | Additional CSS classes |
+| `type` | `"guide"` \| `"documentation"` | ✅ | Resource type |
+| `documentationType` | `"docs"` \| `"cloud"` | ❌ | Documentation section (only for `type="documentation"`) |
+| `subtitle` | `string` | ✅ | Display text |
+| `articleKey` | `string` | ✅ | Path to article (without version prefix) |
+
+**Usage:**
+
+```tsx
+{/* Link to guide */}
+<RelatedResource
+    type="guide"
+    subtitle="Bookkeeping with RavenDB & ETLs"
+    articleKey="bookkeeping-with-ravendb"
+/>
+
+{/* Link to docs */}
+<RelatedResource
+    type="documentation"
+    documentationType="docs"
+    subtitle="Vector Search Overview"
+    articleKey="ai-integration/vector-search/overview"
+/>
+
+{/* Link to cloud docs */}
+<RelatedResource
+    type="documentation"
+    documentationType="cloud"
+    subtitle="Cloud Backup"
+    articleKey="portal-backup"
+/>
+```
+
+**Auto-versioning:**
+- For `type="documentation"` with `documentationType="docs"`, the current version is automatically prepended
+- Example: `ai-integration/vector-search/overview` → `/7.2/ai-integration/vector-search/overview`
+
+**Icons:**
+- `guide` → Guides icon
+- `documentation` (docs) → Database icon
+- `documentation` (cloud) → Cloud icon
+
+---
+
+## Content Components
+
+### FeatureAccordion
+
+Expandable accordion for describing RavenDB features used in the sample.
+
+**Location:** `src/components/Samples/Overview/Partials/FeatureAccordion.tsx`
+
+**Props:**
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `className` | `string` | ❌ | - | Additional CSS classes |
+| `title` | `string` | ✅ | - | Feature name |
+| `description` | `string` | ✅ | - | Short description (visible when collapsed) |
+| `icon` | `IconName` | ❌ | `"link"` | Icon name from icon gallery |
+| `children` | `ReactNode` | ❌ | - | Detailed content (visible when expanded) |
+| `defaultExpanded` | `boolean` | ❌ | `false` | Initial expanded state |
+
+**Usage:**
+
+```tsx
+<FeatureAccordion
+    title="Vector Search"
+    description="Semantic search using embeddings"
+    icon="vector-search"
+>
+    Detailed explanation of how vector search is used...
+
+    // Code example
+</FeatureAccordion>
+```
+
+**Behavior:**
+- Click header to expand/collapse
+- Smooth animation with Framer Motion
+- Chevron icon rotates on expand/collapse
+
+---
+
+## Hub Components
+
+These components power the `/samples` hub page. They are typically not used in individual sample pages.
+
+### SamplesHomePage
+
+Main hub page component with filters and grid.
+
+**Location:** `src/components/Samples/Hub/SamplesHomePage.tsx`
+
+**Usage:**
+
+```mdx
+---
+title: Samples
+slug: /
+---
+
+import { SamplesHomePage } from "@site/src/components/Samples";
+
+<SamplesHomePage />
+```
+**Features:**
+- URL-based filter state (`?tags=vector-search,include&match=all`)
+- Responsive filter sidebar
+- Sample grid with cards
+- Match logic toggle (Any/All)
+
+---
+
+### SampleCard
+
+Individual sample card in the grid.
+
+**Location:** `src/components/Samples/Hub/Partials/SampleCard.tsx`
+
+**Auto-rendered by `SamplesGrid`** - not typically used directly.
+
+---
+
+### SamplesFilter
+
+Filter sidebar with tag categories.
+
+**Location:** `src/components/Samples/Hub/Partials/SamplesFilter.tsx`
+
+**Auto-rendered by `SamplesHomePage`** - not typically used directly.
+
+<Admonition type="info" title="Component Exports">
+    All components are re-exported from `src/components/Samples/index.ts` for convenient importing.
+</Admonition>
+

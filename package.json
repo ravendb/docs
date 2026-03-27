@@ -30,10 +30,12 @@
         "@mdx-js/react": "^3.0.0",
         "autoprefixer": "^10.4.21",
         "clsx": "^2.1.1",
+        "framer-motion": "^12.38.0",
         "prettier": "^3.6.2",
         "prism-react-renderer": "^2.3.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
+        "react-github-btn": "^1.4.0",
         "yet-another-react-lightbox": "^3.24.0"
     },
     "devDependencies": {

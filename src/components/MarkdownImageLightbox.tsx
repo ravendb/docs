@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Lightbox from "yet-another-react-lightbox";
-import "yet-another-react-lightbox/styles.css";
-import Captions from "yet-another-react-lightbox/plugins/captions";
 import { useLocation } from "@docusaurus/router";
-import { Share } from "yet-another-react-lightbox/plugins";
+import Lightbox from "yet-another-react-lightbox";
+import Captions from "yet-another-react-lightbox/plugins/captions";
+import Download from "yet-another-react-lightbox/plugins/download";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import "yet-another-react-lightbox/styles.css";
+import "yet-another-react-lightbox/plugins/captions.css";
 
 type Slide = { src: string; description?: string };
 type CandidateElement = HTMLDivElement | HTMLImageElement;
@@ -132,11 +134,11 @@ export default function MarkdownImageLightbox() {
             close={() => setOpen(false)}
             index={currentIndex}
             slides={slides}
-            plugins={[Share, Captions]}
+            plugins={[Download, Captions, Zoom]}
             captions={{
-                descriptionTextAlign: "center",
+                descriptionTextAlign: "start",
                 descriptionMaxLines: 2,
-                showToggle: false,
+                showToggle: true,
             }}
         />
     );

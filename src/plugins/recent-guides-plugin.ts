@@ -40,7 +40,7 @@ function getFiles(dir: string, files: string[] = []) {
     return files;
 }
 
-const recentGuidesPlugin: Plugin = function recentGuidesPlugin(context, _options) {
+export default function recentGuidesPlugin(context, _options): Plugin {
     return {
         name: "recent-guides-plugin",
         async loadContent() {
@@ -160,6 +160,4 @@ const recentGuidesPlugin: Plugin = function recentGuidesPlugin(context, _options
             setGlobalData(content);
         },
     };
-};
-
-export default recentGuidesPlugin;
+}

@@ -10,6 +10,11 @@
     }
 }
 
+/* Hide TOC column for sample pages */
+.plugin-id-samples .col.col--3 {
+    display: none !important;
+}
+
 /* Custom animations for layout switcher */
 @keyframes slide-in-from-bottom {
     from {
@@ -252,16 +257,6 @@ pre[class*="language-"] {
     display: none;
 }
 
-/* Custom styling for lightbox */
-.yarl__flex_center {
-    @apply !p-[64px];
-    flex-direction: column;
-}
-
-.yarl__slide_description_container {
-    @apply mt-4 text-white;
-}
-
 /* Custom border for alerts */
 .alert {
     @apply border;
@@ -381,7 +376,7 @@ a.breadcrumbs__link:hover {
 }
 
 /* Custom border-radius for document images */
-.theme-doc-markdown img {
+.plugin-id-default .theme-doc-markdown img {
     @apply rounded-md;
 }
 
@@ -565,7 +560,8 @@ hr {
 /* Home Page full width override */
 .guides-home-page [class*="docItemCol"],
 .cloud-home-page [class*="docItemCol"],
-.docs-home-page [class*="docItemCol"] {
+.docs-home-page [class*="docItemCol"],
+.plugin-id-samples [class*="docItemCol"] {
     max-width: 100% !important;
 }
 
@@ -612,6 +608,16 @@ a {
     background-size: 350% 100%;
     border-radius: var(--radius-xl);
     animation: skeleton-loading 2000ms infinite linear;
+}
+
+/* Hide scrollbar utility */
+.scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
 }
 
 [data-theme="dark"] .skeleton {
@@ -671,7 +677,8 @@ a {
 
 /* Disable navigation for Docs */
 .plugin-id-default .pagination-nav,
-.plugin-id-cloud .pagination-nav {
+.plugin-id-cloud .pagination-nav,
+.plugin-id-samples .pagination-nav {
     display: none;
 }
 
@@ -737,4 +744,9 @@ a {
     @apply text-black/60 dark:text-white/60;
     font-size: 0.75rem;
     line-height: 1.2;
+}
+
+/* Hide TOC for Samples */
+.plugin-id-samples [class*="tocCollapsibleButton"] {
+    display: none;
 }

@@ -1,21 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
 import clsx from "clsx";
-import ThemedImage, { Props as ThemedImageProps } from "@theme/ThemedImage";
 
 export interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
-    imgSrc?: string | { light: string; dark: string };
+    imgSrc?: string;
     minContentHeight?: number;
+    isRounded?: boolean;
 }
 
 // @docusaurus/plugin-ideal-image transforms image imports into objects like
 // { src: { src: "/img/file.hash.png" } } instead of plain URL strings.
 // Extract the URL string from such objects.
 function toUrl(value: unknown): string | undefined {
-    if (typeof value === "string") return value;
-    if (!value || typeof value !== "object") return undefined;
+    if (typeof value === "string") {
+        return value;
+    }
+    if (!value || typeof value !== "object") {
+        return undefined;
+    }
     const { src } = value as Record<string, unknown>;
-    if (typeof src === "string") return src;
-    if (src && typeof src === "object") return (src as Record<string, unknown>).src as string;
+    if (typeof src === "string") {
+        return src;
+    }
+    if (src && typeof src === "object") {
+        return (src as Record<string, unknown>).src as string;
+    }
     return undefined;
 }
 
@@ -26,6 +34,7 @@ export default function LazyImage({
     className,
     style,
     minContentHeight = 100,
+    isRounded = true,
     ...props
 }: LazyImageProps) {
     const [isLoaded, setIsLoaded] = useState(false);
@@ -38,21 +47,29 @@ export default function LazyImage({
         }
     }, []);
 
-    const sources = getSources({ imgSrc, src });
+    const imageSrc = src || toUrl(imgSrc);
 
     return (
         <span
-            className={clsx("relative overflow-hidden inline-block w-full", className)}
+            className={clsx("relative overflow-hidden block w-full", className)}
             style={{
                 ...style,
                 minHeight: !isLoaded ? `${minContentHeight + "px"}` : undefined,
             }}
         >
-            {!isLoaded && <span className="absolute inset-0 skeleton rounded-[inherit] z-10" aria-hidden="true" />}
-            <ThemedImage
+            {!isLoaded && (
+                <span
+                    className={clsx(
+                        "absolute inset-0 skeleton z-10",
+                        isRounded ? "rounded-[inherit]" : "!rounded-none"
+                    )}
+                    aria-hidden="true"
+                />
+            )}
+            <img
                 {...props}
                 ref={imgRef}
-                sources={sources}
+                src={imageSrc}
                 alt={alt}
                 className={clsx(className, "transition-opacity duration-300", !isLoaded ? "opacity-0" : "opacity-100")}
                 onLoad={() => setIsLoaded(true)}
@@ -61,21 +78,4 @@ export default function LazyImage({
             />
         </span>
     );
-}
-
-function getSources({ imgSrc, src }: Pick<LazyImageProps, "imgSrc" | "src">): ThemedImageProps["sources"] {
-    if (src) {
-        return { light: src, dark: src };
-    }
-
-    if (imgSrc && typeof imgSrc === "object" && "light" in imgSrc && "dark" in imgSrc) {
-        return imgSrc;
-    }
-
-    const resolved = toUrl(imgSrc);
-    if (resolved) {
-        return { light: resolved, dark: resolved };
-    }
-
-    return imgSrc;
 }

@@ -1,0 +1,198 @@
+---
+title: "Samples: Adding new samples"
+hide_table_of_contents: false
+sidebar_label: Adding new samples
+see_also:
+    - title: "Samples Introduction"
+      link: "/templates/introduction-samples"
+      source: "docs"
+      path: "Templates > Samples"
+    - title: "Sample tags"
+      link: "/templates/tags-samples"
+      source: "docs"
+      path: "Templates > Samples"
+    - title: "Sample components"
+      link: "/templates/components-samples"
+      source: "docs"
+      path: "Templates > Samples"
+---
+
+import Admonition from "@theme/Admonition";
+import Panel from "@site/src/components/Panel";
+import Link from "@docusaurus/Link";
+
+<head>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+
+This guide explains how to create new sample pages in the Samples section.
+
+## Create the file
+
+Place the file under the `samples` directory:
+
+```
+samples/my-new-sample.mdx
+```
+
+## Frontmatter Schema
+
+<Panel heading="Complete frontmatter example">
+
+```mdx
+---
+title: "My Sample Application"
+description: "A production-ready example demonstrating RavenDB features."
+challengesSolutionsTags: [semantic-search, integration-patterns]
+featureTags: [vector-search, include, document-refresh]
+techStackTags: [csharp, aspire, azure-functions]
+category: "E-commerce"
+license: "MIT License"
+image: "/img/samples/my-sample/cover.webp"
+gallery:
+  - src: "/img/samples/my-sample/screenshot-1.webp"
+    alt: "Main interface"
+  - src: "/img/samples/my-sample/screenshot-2.webp"
+    alt: "Admin dashboard"
+---
+```
+
+</Panel>
+
+### Frontmatter Fields
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `title` | `string` | ✅ | Sample name displayed in cards and page header |
+| `description` | `string` | ✅ | Short summary shown in sample cards |
+| `challengesSolutionsTags` | `string[]` | ✅ | Challenges & solutions tags from `samples/tags/challenges-solutions.yml` |
+| `featureTags` | `string[]` | ✅ | RavenDB feature tags from `samples/tags/feature.yml` |
+| `techStackTags` | `string[]` | ✅ | Technology tags from `samples/tags/tech-stack.yml` |
+| `category` | `string` | ❌ | Business category (e.g., "E-commerce", "Healthcare") |
+| `license` | `string` | ❌ | License type (e.g., "MIT License", "Apache 2.0") |
+| `image` | `string` or `object` | ❌ | Cover image path or themed image object |
+| `gallery` | `array` | ❌ | Array of screenshot objects with `src` and `alt` |
+
+<Admonition type="warning" title="Tag Validation">
+    All tag keys must exist in their respective YAML files (`samples/tags/challenges-solutions.yml`, `feature.yml`, `tech-stack.yml`). Using undefined tags will cause them to be ignored in the UI.
+</Admonition>
+
+## Page Structure
+
+### Basic Layout
+
+<Panel heading="Complete sample page structure">
+
+```mdx
+---
+title: "My Sample"
+description: "Sample description"
+challengesSolutionsTags: [semantic-search]
+featureTags: [vector-search]
+techStackTags: [csharp]
+---
+
+import { ActionsCard, RelatedResource, FeatureAccordion, SampleMetadataColumn, SampleLayout } from '@site/src/components/Samples';
+import Gallery from '@site/src/components/Common/Gallery';
+
+export const sampleDetails = (
+    <SampleMetadataColumn
+        actionsCard={
+            <ActionsCard
+                githubUser="ravendb"
+                githubRepo="my-sample-repo"
+                demoUrl="https://demo.example.com"
+            />
+        }
+        relatedResources={
+            <>
+                <RelatedResource
+                    type="guide"
+                    subtitle="Related Guide Title"
+                    articleKey="guide-slug"
+                />
+                <RelatedResource
+                    type="documentation"
+                    documentationType="docs"
+                    subtitle="Vector Search Overview"
+                    articleKey="ai-integration/vector-search/overview"
+                />
+            </>
+        }
+    />
+);
+
+<SampleLayout
+    details={sampleDetails}
+    gallery={<Gallery images={frontMatter.gallery} />}
+>
+
+## Overview
+
+Describe what the sample does and what problems it solves...
+
+## Features used
+
+<FeatureAccordion
+    title="Vector Search"
+    description="Semantic search using embeddings"
+    icon="vector-search"
+>
+    Detailed explanation of how vector search is used in this sample...
+
+    // Code example
+</FeatureAccordion>
+
+</SampleLayout>
+```
+
+</Panel>
+
+<Admonition type="tip" title="Gallery Positioning">
+    The `gallery` prop on `SampleLayout` provides optimal responsive behavior:
+
+    - **Mobile**: Gallery appears at the top, right after the page title and above the ActionsCard
+    - **Desktop**: Gallery appears in the main content area, before the Overview section
+
+    **Usage:**
+    ```mdx
+    <SampleLayout
+        details={sampleDetails}
+        gallery={<Gallery images={frontMatter.gallery} />}
+    >
+        ## Overview
+        ...
+    </SampleLayout>
+    ```
+
+    The `gallery` prop is **optional**. If your sample doesn't have screenshots, simply omit it.
+</Admonition>
+
+<Admonition type="danger" title="Critical: No # Heading in Markdown">
+    **Do NOT add a `#` heading in your markdown content.**
+    
+    The `title` frontmatter is automatically rendered as the page heading. Adding a `#` heading breaks the layout.
+    
+    ✅ Correct:
+    ```mdx
+    ---
+    title: "My Sample"
+    ---
+    
+    ## Overview
+    
+    Content starts here...
+    ```
+    
+    ❌ Wrong:
+    ```mdx
+    ---
+    title: "My Sample"
+    ---
+    
+    # My Sample
+    
+    ## Overview
+    ```
+</Admonition>
+

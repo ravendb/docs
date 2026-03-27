@@ -26,15 +26,13 @@ import ContentFrame from '@site/src/components/ContentFrame';
 ```
 
 ### Basic usage
-````mdx
+```mdx
 <ContentFrame>
   Text, lists, images, and even code blocks.
 
-  ```ts
-  console.log('Hello world!')
-  ```
+  // Code example
 </ContentFrame>
-````
+```
 
 #### Live example
 
@@ -167,41 +165,31 @@ You can combine `Panel` and `ContentFrame`:
 
 ### Panels with code and tabs
 
-````mdx
+```mdx
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Panel heading="Example with tabs">
   <Tabs groupId="example">
     <TabItem value="sync" label="Sync">
-      ```csharp
-      // sample code
-      Console.WriteLine("Hello");
-      ```
+      // Code example 1
     </TabItem>
     <TabItem value="async" label="Async">
-      ```csharp
-      await Console.Out.WriteLineAsync("Hello");
-      ```
+      // Code example 2
     </TabItem>
   </Tabs>
 </Panel>
-````
+```
 
 #### Live example
 
 <Panel heading="Example with tabs">
   <Tabs groupId="example-live">
     <TabItem value="sync" label="Sync">
-      ```csharp
-      // sample code
-      Console.WriteLine("Hello");
-      ```
+      // Code example 1
     </TabItem>
     <TabItem value="async" label="Async">
-      ```csharp
-      await Console.Out.WriteLineAsync("Hello");
-      ```
+      // Code example 2
     </TabItem>
   </Tabs>
 </Panel>
