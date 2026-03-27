@@ -1,0 +1,8 @@
+cloud-tax:
+    label: "Cloud Tax"
+gen-ai-data-enrichment:
+    label: "Gen AI Data Enrichment"
+integration-patterns:
+    label: "Integration Patterns"
+semantic-search:
+    label: "Semantic Search"

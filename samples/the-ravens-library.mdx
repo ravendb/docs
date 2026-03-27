@@ -1,0 +1,154 @@
+---
+title: "The Library of Ravens"
+description: "A simple library management application. Built with RavenDB, Aspire, Azure Storage Queues, and Azure Functions. "
+challengesSolutionsTags: [cloud-tax, gen-ai-data-enrichment, integration-patterns, semantic-search]
+featureTags: [azure-storage-queues-etl, document-refresh, include, vector-search]
+techStackTags: [csharp, aspire, azure-storage-queues, azure-functions]
+category: "Ecommerce"
+license: "MIT License"
+image: "/img/samples/library-of-ravens/cover.webp"
+gallery:
+  - src: "/img/samples/library-of-ravens/01.webp"
+    alt: "The Library of Ravens - Main Interface"
+  - src: "/img/samples/library-of-ravens/02.webp"
+    alt: "The Library of Ravens - Author Profile"
+---
+
+import { ActionsCard, RelatedResource, FeatureAccordion, SampleMetadataColumn, SampleLayout } from '@site/src/components/Samples';
+import Gallery from '@site/src/components/Common/Gallery';
+
+export const sampleDetails = (
+    <SampleMetadataColumn
+        actionsCard={
+            <ActionsCard
+                githubUser="ravendb"
+                githubRepo="samples-library"
+                demoUrl="https://demo.ravendb.net"
+            />
+        }
+        relatedResources={
+            <>
+                <RelatedResource
+                    type="documentation"
+                    documentationType="docs"
+                    subtitle="Vector Search Overview"
+                    articleKey="ai-integration/vector-search/overview"
+                />
+                <RelatedResource
+                    type="documentation"
+                    documentationType="docs"
+                    subtitle="Azure Storage Queues ETL"
+                    articleKey="server/ongoing-tasks/etl/queue-etl/azure-queue"
+                />
+            </>
+        }
+    />
+);
+
+<SampleLayout details={sampleDetails} gallery={<Gallery images={frontMatter.gallery} />}>
+
+## Overview
+
+The Library of Ravens **solves the "architecture bloat"** of managing separate databases by **consolidating full-text and vector search into a single database**. Instead of wrestling with data synchronization across multiple platforms, you get a unified search experience that keeps your infrastructure lean and your development cycle fast.
+
+The app demonstrates **robust integration patterns using Azure Storage Queues**. By leveraging RavenDB’s change tracking and ETL services, the system ensures that critical library updates are never lost, providing architectural resilience.
+
+Finally, the app **addresses the "cloud tax" of high egress fees** by utilizing ETags and native HTTP caching driven by RavenDB’s metadata. This approach significantly reduces the volume of data sent over the wire, slashing public cloud billing while providing a snappier, more responsive experience for the end user through efficient data reuse.
+
+Built with [RavenDB](https://ravendb.net/), [Aspire](https://aspire.dev/), [Azure Storage Queues](https://github.com/ravendb/samples-library/blob/main/azure.microsoft.com/en-us/products/storage/queues), and [Azure Functions](https://azure.microsoft.com/en-us/products/functions).
+
+
+## Features used
+
+<FeatureAccordion
+    title="Include"
+    description="RavenDB's Include feature fetches related documents, solving N+1 issues."
+    icon="link"
+>
+    RavenDB's Include feature allows loading related documents in a single request, eliminating the N+1 query problem. In the Library application, when loading a book, we simultaneously fetch the author and category documents without additional roundtrips to the database.
+    
+    Implementation example:
+    
+    ```csharp
+    // Load a book with its related author in one request
+    using var session = store.OpenAsyncSession();
+    
+    var book = await session
+        .Include<Book>(b => b.AuthorId)
+        .Include<Book>(b => b.CategoryId)
+        .LoadAsync<Book>("books/1-A");
+    
+    // These are already loaded - no additional DB calls
+    var author = await session.LoadAsync<Author>(book.AuthorId);
+    var category = await session.LoadAsync<Category>(book.CategoryId);
+    
+    // Example: Loading multiple books with their authors
+    var books = await session.Query<Book>()
+        .Include(b => b.AuthorId)
+        .Where(b => b.IsAvailable)
+        .ToListAsync();
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Vector Search"
+    description="Semantic search powered by AI embeddings for intelligent content discovery."
+    icon="vector-search"
+>
+    Vector search enables semantic similarity matching, allowing users to find books based on meaning rather than just keywords.
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Azure Storage Queues ETL"
+    description="Reliable data integration with Azure Storage Queues."
+    icon="azure-queue-storage-etl"
+>
+    ETL to Azure Storage Queues ensures that all library updates are reliably propagated to downstream systems.
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Document Refresh"
+    description="Automatic document updates based on external data sources."
+    icon="document-refresh"
+>
+    Document Refresh keeps book metadata up-to-date by automatically fetching the latest information from external APIs.
+</FeatureAccordion>
+
+## Technologies
+
+The following technologies were used to build this application:
+
+- [RavenDB](https://ravendb.net/)
+- [.NET 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
+- [Aspire](https://aspire.dev/)
+- [Azure Functions](https://azure.microsoft.com/en-us/products/functions)
+- [Azure Storage Queues](https://azure.microsoft.com/products/storage/queues)
+- [SvelteKit](https://svelte.dev/)
+
+## Run locally
+
+If you want to run the application locally, please follow the steps:
+
+1. Check out the GIT repository
+2. Install prerequisites:
+    1. [.NET 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
+    2. [Aspire.dev](https://aspire.dev/get-started/install-cli/)
+    3. [nodejs](https://nodejs.org/)
+3. Request a [dev license](https://ravendb.net/license/request/dev-ai-agent-inside) and set it under `RAVEN_LICENSE` env variable
+4. Get the app running by opening `/src/RavenDB.Samples.Library.sln` and starting the `Aspire` `AppHost` project
+
+## Community & Support
+
+If you spot a bug, have an idea or a question, please let us know by raising an issue or creating a pull request.
+
+We do use a [Discord server](https://discord.gg/ravendb). If you have any doubts, don't hesitate to reach out!
+
+## Contributing
+
+We encourage you to contribute! Please read our [CONTRIBUTING](https://github.com/ravendb/samples-library/blob/main/CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+
+## License
+
+This project is licensed with the [MIT license](https://github.com/ravendb/samples-library/blob/main/LICENSE).
+
+</SampleLayout>
