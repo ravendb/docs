@@ -5,7 +5,7 @@ import type { WrapperProps } from "@docusaurus/types";
 import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Head from "@docusaurus/Head";
-import TechArticleMetadata from "./TechArticleMetadata";
+import DocPageMetadata from "./DocPageMetadata";
 
 type Props = WrapperProps<typeof MetadataType>;
 
@@ -20,7 +20,7 @@ export default function MetadataWrapper(props: Props): ReactNode {
     const isGuide = source?.startsWith("@site/guides/") || source?.startsWith("guides/") || false;
     const isCloud = source?.startsWith("@site/cloud/") || source?.startsWith("cloud/") || false;
     const isTemplate = source?.startsWith("@site/templates/") || source?.startsWith("templates/") || false;
-    const isVersionedDoc = !isGuide && !isCloud && !isTemplate;
+    const isDocumentationPage = !isGuide && !isCloud && !isTemplate;
 
     // Exclude landing pages (e.g. guides/home.mdx) from guide-specific metadata
     const fileName = source?.split("/").pop();
@@ -28,7 +28,7 @@ export default function MetadataWrapper(props: Props): ReactNode {
 
     // Strip trailing slash from base URL to avoid double slashes
     const baseUrl = (siteConfig.url as string).replace(/\/$/, "");
-    let canonicalUrl = isVersionedDoc
+    let canonicalUrl = isDocumentationPage
         ? `${baseUrl}/${siteConfig.customFields.latestVersion}${metadata.slug}`
         : `${baseUrl}${permalink}`;
 
@@ -59,7 +59,7 @@ export default function MetadataWrapper(props: Props): ReactNode {
                 <meta name="twitter:site" content="@RavenDB" />
             </Head>
             {isGuidePage && (
-                <ValidatedGuideMetadata
+                <ValidatedGuideDocPageMetadata
                     title={title}
                     description={description}
                     lastUpdatedAt={metadata.lastUpdatedAt}
@@ -69,8 +69,8 @@ export default function MetadataWrapper(props: Props): ReactNode {
                     permalink={permalink}
                 />
             )}
-            {(isVersionedDoc || isCloud) && !isHomepage && (
-                <TechArticleMetadata
+            {(isDocumentationPage || isCloud) && !isHomepage && (
+                <DocPageMetadata
                     title={title}
                     description={description}
                     canonicalUrl={canonicalUrl}
@@ -85,9 +85,9 @@ export default function MetadataWrapper(props: Props): ReactNode {
 
 /**
  * Validates required guide frontmatter fields at build time and passes
- * pre-validated data to GuideMetadata so it doesn't deal with optional types.
+ * pre-validated data to DocPageMetadata so it doesn't deal with optional types.
  */
-function ValidatedGuideMetadata({
+function ValidatedGuideDocPageMetadata({
     title,
     description,
     lastUpdatedAt,
@@ -112,7 +112,7 @@ function ValidatedGuideMetadata({
     }
 
     return (
-        <TechArticleMetadata
+        <DocPageMetadata
             title={title}
             description={description || (frontMatter.description as string) || ""}
             proficiencyLevel={frontMatter.proficiencyLevel}

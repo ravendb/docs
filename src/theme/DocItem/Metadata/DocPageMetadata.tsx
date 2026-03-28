@@ -9,7 +9,7 @@ function toDateString(timestamp: number): string {
     return new Date(ms).toISOString().split("T")[0];
 }
 
-export interface TechArticleMetadataProps {
+export interface DocPageMetadataProps {
     // Shared (required)
     title: string;
     description: string;
@@ -24,7 +24,7 @@ export interface TechArticleMetadataProps {
     keywords?: string[];
 }
 
-export default function TechArticleMetadata({
+export default function DocPageMetadata({
     title,
     description,
     canonicalUrl,
@@ -34,7 +34,7 @@ export default function TechArticleMetadata({
     authorKey,
     publishedAt,
     keywords,
-}: TechArticleMetadataProps): ReactNode {
+}: DocPageMetadataProps): ReactNode {
     const authorInfo = authorKey ? authorsData[authorKey as keyof typeof authorsData] : null;
 
     const techArticleJsonLd = JSON.stringify({
