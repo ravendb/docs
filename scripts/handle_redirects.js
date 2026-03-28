@@ -9,6 +9,10 @@ const staticAssetRegex =
 
 const versionRegex = /^\/(\d+\.\d+)(\/.*)?/;
 
+function stripTrailingSlash(uri) {
+    return uri.endsWith("/") ? uri.slice(0, -1) : uri;
+}
+
 function compareVersions(v1, v2) {
     const parts1 = v1.split(".");
     const parts2 = v2.split(".");
@@ -41,14 +45,21 @@ function compareVersions(v1, v2) {
 async function handler(event) {
     const request = event.request;
     const uri = request.uri;
+    const normalizedUri = stripTrailingSlash(uri);
 
-    if (uri.startsWith("/templates")) {
+    if (staticAssetRegex.test(uri)) {
         return request;
     }
 
-    if (uri.startsWith("/guides") || uri.startsWith("/cloud")) {
+    request.uri = normalizedUri + "/index.html";
+
+    if (normalizedUri.startsWith("/templates")) {
+        return request;
+    }
+
+    if (normalizedUri.startsWith("/guides") || normalizedUri.startsWith("/cloud")) {
         try {
-            const redirectData = await kvsHandle.get(uri);
+            const redirectData = await kvsHandle.get(normalizedUri);
             const redirectJsonValue = JSON.parse(redirectData);
             if (redirectJsonValue.targetUrl) {
                 return {
@@ -65,11 +76,7 @@ async function handler(event) {
         return request;
     }
 
-    if (staticAssetRegex.test(uri)) {
-        return request;
-    }
-
-    const versionMatch = uri.match(versionRegex);
+    const versionMatch = normalizedUri.match(versionRegex);
 
     let version, versionlessUri, targetUri;
     let redirectRequired = false;
@@ -79,7 +86,7 @@ async function handler(event) {
         versionlessUri = versionMatch[2] || "/";
     } else {
         version = defaultVersion;
-        versionlessUri = uri;
+        versionlessUri = normalizedUri;
         redirectRequired = true;
     }
 
