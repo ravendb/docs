@@ -185,6 +185,7 @@ more comprehensive list at [Knowledge Base: JavaScript Engine](../../../../serve
 | **counterRaw** | Document; counter name | Returns the specified counter in the specified document as a key-value pair |
 | **incrementCounter** | Document; counter name | Increases the value of the counter by one |
 | **deleteCounter** | Document; counter name | Deletes the counter |
+| **attachments** | Document; attachment name | Returns an attachment object providing `delete()`, `remote()`, and `copyFrom()` methods for managing the specified attachment via patching |
 
 
 
@@ -650,9 +651,12 @@ store.operations().send(new PatchOperation("employees/1-A", null, patchRequest))
 
   * When cloning a document via patching, only the document's fields are copied to the new document.
     Attachments, counters, time series data, and revisions from the source document will Not be copied automatically.
-  * To manage time series & counters via patching, you can use the pre-defined JavaScript methods listed here:
-    [Counters methods](../../../../server/kb/javascript-engine.mdx#counter-operations) & [Time series methods](../../../../server/kb/javascript-engine.mdx#time-series-operations).
-  * Note: When [Cloning a document via the Studio](../../../../studio/database/documents/create-new-document.mdx#clone-an-existing-document),
+  * To manage counters, time series, and attachments via patching, you can use the pre-defined JavaScript methods listed here:
+    * [Counters methods](../../../../server/kb/javascript-engine.mdx#counter-operations)  
+    * [Time series methods](../../../../server/kb/javascript-engine.mdx#time-series-operations).  
+    * [Attachments methods](../../../../server/kb/javascript-engine.mdx#attachment-operations).  
+  * Note:  
+    When [Cloning a document via the Studio](../../../../studio/database/documents/create-new-document.mdx#clone-an-existing-document),  
     attachments, counters, time Series, and revisions will be copied automatically.
 
 **Archived documents:**
