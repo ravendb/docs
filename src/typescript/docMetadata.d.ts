@@ -13,11 +13,16 @@ export interface CustomDocFrontMatter extends DocFrontMatter {
     see_also?: SeeAlsoItemType[];
     author?: string;
     icon?: IconName;
-    image?: string | { light: string; dark: string };
+    image?: string;
     publishedAt?: string;
     proficiencyLevel?: string;
     keywords?: string[];
     gallery?: GalleryImage[];
+    challengesSolutionsTags?: string[];
+    featureTags?: string[];
+    techStackTags?: string[];
+    category?: string;
+    license?: string;
 }
 
 type CustomDocContextValue = Omit<DocContextValue, "frontMatter" | "metadata"> & {

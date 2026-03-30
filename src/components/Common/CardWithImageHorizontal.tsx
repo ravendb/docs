@@ -10,7 +10,7 @@ import { clsx } from "clsx";
 export interface CardWithImageHorizontalProps {
     title: string;
     description: ReactNode;
-    imgSrc: string | { light: string; dark: string };
+    imgSrc: string;
     imgAlt?: string;
     url: string;
     iconName?: IconName;

@@ -1,10 +1,10 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import clsx from "clsx";
 import { Icon } from "./Icon";
 
 interface CheckboxProps {
     checked: boolean;
-    onChange: () => void;
+    onChange: (x: ChangeEvent<HTMLInputElement>) => void;
     label?: string;
     className?: string;
 }

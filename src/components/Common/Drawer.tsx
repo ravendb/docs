@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { motion, AnimatePresence, PanInfo } from "framer-motion";
+import { motion, AnimatePresence, type PanInfo } from "motion/react";
 import clsx from "clsx";
 import { Icon } from "./Icon";
 
@@ -12,18 +12,6 @@ interface DrawerProps {
 }
 
 export default function Drawer({ open, onClose, children, title, headerAction }: DrawerProps) {
-    useEffect(() => {
-        if (open) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "";
-        }
-
-        return () => {
-            document.body.style.overflow = "";
-        };
-    }, [open]);
-
     useEffect(() => {
         const handleEscape = (e: KeyboardEvent) => {
             if (e.key === "Escape" && open) {
@@ -49,6 +37,7 @@ export default function Drawer({ open, onClose, children, title, headerAction }:
                 <>
                     <motion.div
                         key="backdrop"
+                        data-drawer-open="true"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}

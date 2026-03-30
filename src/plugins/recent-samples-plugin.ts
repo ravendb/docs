@@ -23,7 +23,7 @@ export interface Sample {
     tags: { label: string; key: string; category: string }[];
     lastUpdatedAt: number;
     description?: string;
-    image?: string | { light: string; dark: string };
+    image?: string;
     icon?: IconName;
     externalUrl?: string;
 }
@@ -133,14 +133,14 @@ export default function recentSamplesPlugin(context, _options): Plugin {
                     });
                 }
 
-                const featureTags = data.featureTags || data.feature_tags || [];
+                const featureTags = data.featureTags;
                 if (Array.isArray(featureTags)) {
                     featureTags.forEach((tag: string) => {
                         allTagsArray.push({ key: tag, category: "feature" });
                     });
                 }
 
-                const techStackTags = data.techStackTags || data.tech_stack_tags || [];
+                const techStackTags = data.techStackTags;
                 if (Array.isArray(techStackTags)) {
                     techStackTags.forEach((tag: string) => {
                         allTagsArray.push({ key: tag, category: "tech-stack" });
@@ -152,7 +152,7 @@ export default function recentSamplesPlugin(context, _options): Plugin {
                 });
 
                 const formattedTags = allTagsArray.map(({ key, category }) => {
-                    const categoryTags = tagsByCategory[category] || {};
+                    const categoryTags = tagsByCategory[category];
                     const definedTag = categoryTags[key];
 
                     return {

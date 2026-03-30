@@ -13,7 +13,7 @@ import Tag from "@site/src/theme/Tag";
 export interface CardWithImageProps {
     title: string;
     description: ReactNode;
-    imgSrc?: string | { light: string; dark: string };
+    imgSrc?: string;
     imgAlt?: string;
     imgWidth?: number;
     imgHeight?: number;
