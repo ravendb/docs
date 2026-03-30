@@ -1,5 +1,5 @@
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { Icon } from "@site/src/components/Common/Icon";
 import Checkbox from "@site/src/components/Common/Checkbox";
 import useBoolean from "@site/src/hooks/useBoolean";
@@ -27,10 +27,20 @@ export default function FilterCategory({
     isExpanded,
     onToggleExpanded,
 }: FilterCategoryProps) {
-    const { value: isTagsExpanded, toggle: toggleTagsExpanded } = useBoolean(false);
+    const { value: isTagsExpanded, toggle: toggleTagsExpanded, setTrue: expandTags } = useBoolean(false);
 
     const visibleTags = isTagsExpanded ? tags : tags.slice(0, 5);
     const hiddenCount = Math.max(0, tags.length - 5);
+
+    useEffect(() => {
+        if (!isTagsExpanded && tags.length > 5) {
+            const hiddenTags = tags.slice(5);
+            const hasSelectedHiddenTag = hiddenTags.some((tag) => selectedTags.has(tag.key));
+            if (hasSelectedHiddenTag) {
+                expandTags();
+            }
+        }
+    }, [selectedTags, tags, isTagsExpanded, expandTags]);
 
     return (
         <div className="flex flex-col gap-2">

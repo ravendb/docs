@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import clsx from "clsx";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { Icon } from "@site/src/components/Common/Icon";
 import { IconName } from "@site/src/typescript/iconName";
 import useBoolean from "@site/src/hooks/useBoolean";

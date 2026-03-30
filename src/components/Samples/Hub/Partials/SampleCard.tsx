@@ -98,7 +98,7 @@ export default function SampleCard({
                             isRounded={false}
                         />
                         {languageTags.length > 0 && (
-                            <div className="absolute end-1 top-1 flex gap-1">
+                            <div className="absolute end-1 top-1 flex gap-1 z-10">
                                 {languageTags.map((tag) => (
                                     <LanguageTag
                                         key={tag.key}

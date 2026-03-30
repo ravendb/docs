@@ -10,6 +10,11 @@
     }
 }
 
+/* Prevent body scroll when drawer is open */
+body:has([data-drawer-open="true"]) {
+    overflow: hidden;
+}
+
 /* Hide TOC column for sample pages */
 .plugin-id-samples .col.col--3 {
     display: none !important;
@@ -557,10 +562,11 @@ hr {
     @apply !mt-8;
 }
 
-/* Home Page full width override */
-.guides-home-page [class*="docItemCol"],
-.cloud-home-page [class*="docItemCol"],
-.docs-home-page [class*="docItemCol"],
+/* Full width override */
+.guidesHomePage [class*="docItemCol"],
+.cloudHomePage [class*="docItemCol"],
+.docsHomePage [class*="docItemCol"],
+.samplesHomePage [class*="docItemCol"],
 .plugin-id-samples [class*="docItemCol"] {
     max-width: 100% !important;
 }

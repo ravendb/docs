@@ -49,6 +49,10 @@ export default function LazyImage({
 
     const imageSrc = src || toUrl(imgSrc);
 
+    if (!imageSrc) {
+        return null;
+    }
+
     return (
         <span
             className={clsx("relative overflow-hidden block w-full", className)}

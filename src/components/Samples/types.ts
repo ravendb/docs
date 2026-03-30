@@ -10,7 +10,7 @@ export interface Sample {
     title: string;
     description?: string;
     permalink: string;
-    image?: string | { light: string; dark: string };
+    image?: string;
     tags: Array<{ label: string; key: string; category?: string }>;
 }
 
