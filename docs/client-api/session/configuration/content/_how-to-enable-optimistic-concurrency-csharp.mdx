@@ -2,150 +2,588 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* By default, optimistic concurrency checks are **disabled**. Changes made outside of the session object will be overwritten. 
-  Concurrent changes to the same document will use the _Last Write Wins_ strategy so a lost update anomaly is possible 
-  with the default configuration of the [session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx).
+* This article explains **optimistic concurrency** in RavenDB,
+  focusing on how optimistic concurrency behaves in sessions operating with [single-node transactions](../../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction) and how to configure it.    
+    
+* By default, single-node sessions do not perform concurrency checks,  
+  so concurrent updates to the same document follow the "Last Write Wins" strategy, which may lead to lost updates.
+    
+* Enabling optimistic concurrency ensures RavenDB detects and prevents conflicting updates,  
+  preserving data integrity by rejecting changes when a document has been modified by another session.  
 
-* Optimistic concurrency can be **enabled** for:
-   * A specific document  
-   * A specific session (enable on a per-session basis)  
-   * All sessions (enable globally, at the document store level)  
+* RavenDB supports three [modes of optimistic concurrency](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#optimistic-concurrency-modes),  
+  allowing you to choose a level of conflict validation that suits your application.
+    
+* The optimistic concurrency mode can be configured at different scopes:
+  * Globally, for all sessions under a document store.
+  * Per session, to apply it selectively.
+  * Per document, to override the session-level settings.  
 
-* With optimistic concurrency enabled, RavenDB will generate a concurrency exception (and abort all modifications in 
-  the current transaction) when trying to save a document that has been modified on the server side after the client 
-  loaded and modified it.
-
-* The `ConcurrencyException` that might be thrown upon the `SaveChanges` call needs to be handled by the caller. 
-  The operation can be retried (the document needs to be reloaded since it got changed meanwhile) or handle the error 
-  in a way that is suitable in a given scenario.
-
-* In this page:
-  * [Enable for specific session](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#enable-for-specific-session)
-  * [Enable globally](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#enable-globally)
-  * [Disable for specific document (when enabled on session)](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#disable-for-specific-document-(when-enabled-on-session))
-  * [Enable for specific document (when disabled on session)](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#enable-for-specific-document-(when-disabled-on-session)) 
-
-<Admonition type="warning" title="">
-
-* Note that the `UseOptimisticConcurrency` setting only applies to documents that have been modified by the current session. 
-  E.g., if you load documents `users/1-A` and `users/2-A` in a session, make modifications only to `users/1-A`, and then call `SaveChanges`, 
-  the operation will succeed regardless of the optimistic concurrency setting, even if `users/2-A` has been changed by another process in the meantime.
-
-* However, if you modify both documents and attempt to save changes with optimistic concurrency enabled, an exception will be raised 
-  if `users/2-A` has been modified externally.  
-  In this case, the updates to both `users/1-A` and `users/2-A` will be cancelled.
-
-</Admonition>
-
-<Admonition type="info" title="">
-
-A detailed description of transactions and concurrency control in RavenDB is available here: 
-[Transaction support in RavenDB](../../../../client-api/faq/transaction-support.mdx)
+---
+    
+* In this article:
+  * [Optimistic concurrency - Overview](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#optimistic-concurrency-overview)
+    * [Default concurrency behavior with single-node transactions](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#default-concurrency-behavior-with-single-node-transactions)
+    * [Optimistic concurrency with single-node transactions](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#optimistic-concurrency-with-single-node-transactions)
+    * [Concurrency control in cluster-wide transactions](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#concurrency-control-in-cluster-wide-transactions)
+  * [Optimistic concurrency - Modes](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#optimistic-concurrency-modes)  
+  * [Configure globally](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#configure-globally)
+  * [Configure per session](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#configure-per-session)
+  * [Disable for specific document (when enabled on the session)](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#disable-for-specific-document-when-enabled-on-session)  
+  * [Enable for specific document (when disabled on the session)](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#enable-for-specific-document-when-disabled-on-session)
+  * [Constraints](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#constraints)    
+  * [Syntax](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#syntax)
 
 </Admonition>
 
+<Panel heading="Optimistic concurrency - Overview">
+
+* A session in RavenDB typically follows these steps:
+
+  <ContentFrame>    
+      
+  1. **Load or query** for documents from the database.  
+     Unless [Tracking is explicitly disabled](../../../../client-api/session/configuration/how-to-disable-tracking.mdx), these documents are automatically [Tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern).   
+     When tracked, the session stores the document's [Change vector](../../../../server/clustering/replication/change-vector.mdx) (a unique version identifier) in memory.
+      
+       <Admonition type="note" title="">
+       Tracking applies to:  
+       * **Loaded documents**:  
+         Retrieved explicitly using methods like `session.Load()` or `session.LoadStartingWith()`.
+       * **Queried documents**:  
+         Returned as part of query results using `session.Query()`.
+       * **Included documents**:  
+         Retrieved as part of an `Include()` clause, where related documents are included alongside results.
+       * **Created documents**:  
+         Stored in the session via `session.Store()`.  
+         Note: Created documents are tracked but have no change vector until saved to the database.  
+         On save, the server verifies that no document with the same ID already exists.
+       </Admonition>
+      
+  2. **Modify documents** in memory, such as allowing the user to edit them via application forms.
+      
+  3. **Save changes** with `SaveChanges()`, persisting updates to the database.
+  
+  </ContentFrame>      
+
+* Because these actions span **multiple requests** (loading/querying happens separately from saving),
+  another session may modify the same documents during this time - between when you loaded the document into your session and when the changes are saved.  
+    
+* This can cause your changes to unintentionally overwrite newer updates, resulting in a lost update.  
+  **Optimistic concurrency** offers a mechanism to detect and prevent conflicts, ensuring your changes are only saved if the document hasn’t been modified elsewhere since it was loaded by your session.
+
+---
+    
+<Admonition type="note" title="">
+    
+### Default concurrency behavior with single-node transactions
+    
+By default, sessions using [single-node transactions](../../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction) do not perform optimistic concurrency checks:
+    
+* **Silent overwrites**:  
+  Documents are saved without validating whether the version loaded by the session is still current,  
+  allowing updates to be applied unconditionally.    
+    
+* **Last write wins**:  
+  If two sessions modify the same document, the last `SaveChanges()` call overwrites earlier changes.
+    
+* **Suitability**:  
+  This approach works well when overwriting changes is acceptable,  
+  but it can cause lost updates if concurrent modifications go undetected.
+
+</Admonition>  
+    
+<Admonition type="note" title="">
+    
+### Optimistic concurrency with single-node transactions
+
+To prevent lost updates and conflicting writes,  
+sessions operating with single-node transactions can enable optimistic concurrency checks:
+
+* **Change vector validation**:  
+  When `SaveChanges()` is called, the session sends the document’s change vector to the server.
+  The server compares the change vector stored in the database against the one provided by your session to determine whether the document has been modified by another client or session since it was loaded into your session.    
+
+* **Conflict detection**:  
+  If the document has been modified by another session/client during this time, RavenDB rejects the operation and raises a `ConcurrencyException`. 
+  This gives your application control over how to handle the conflict - whether by reloading the document, merging the changes, or canceling the operation.    
+    
+* **Optimistic concurrency modes**:   
+  Optimistic concurrency can be configured to validate only modified documents or both modified and read-only documents.
+  Learn more in the [Optimistic concurrency modes](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#optimistic-concurrency-modes) section below.   
+
 </Admonition>
-## Enable for specific session
+    
+<Admonition type="note" title="">
+    
+### Concurrency control in cluster-wide transactions
+    
+When the session operates in [Cluster-wide mode](../../../../client-api/session/cluster-transaction/overview.mdx),  
+concurrency control is managed by the cluster transaction mechanism:
+    
+* RavenDB coordinates cluster-wide writes through the Raft protocol and validates document changes as part of the transaction process. 
+  To ensure consistency across the cluster, document writes use [Atomic guards](../../../../compare-exchange/atomic-guards.mdx).  
+  If another cluster-wide transaction modifies the same document first, `SaveChanges()` will fail with a `ConcurrencyException`, allowing your application to handle the conflict.    
 
-<TabItem value="optimistic_concurrency_1" label="optimistic_concurrency_1">
-<CodeBlock language="csharp">
-{`using (IDocumentSession session = store.OpenSession())
-\{
-    // Enable optimistic concurrency for this session
-    session.Advanced.UseOptimisticConcurrency = true;
+* For more information, see [Cluster Transaction - Overview](../../../../client-api/session/cluster-transaction/overview.mdx).
 
-    // Save a document in this session
-    Product product = new Product \{ Name = "Some Name" \};
+</Admonition>
+    
+</Panel>
+
+<Panel heading="Optimistic concurrency - Modes">
+
+* When working with a session that uses [Single-node transactions](../../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction), 
+  you can configure optimistic concurrency to determine whether the server validates document versions and raises exceptions for conflicting updates.
+    
+* RavenDB offers three modes, each providing a different level of conflict protection.    
+ 
+---
+    
+<ContentFrame>
+    
+### `None`&nbsp;(Default behavior, Last write wins)
+    
+In the default mode, `OptimisticConcurrencyMode.None`, no version checks are performed.
+    
+  * **Unconditional saves**:  
+    Each PUT and DELETE operation sent during `SaveChanges()` is transmitted without a change vector,  
+    allowing the server to apply changes unconditionally.
+
+  * **Last write wins**:  
+    If two sessions modify the same document and both call `SaveChanges()`,  
+    the most recent save silently overwrites earlier changes, potentially resulting in a lost update.
+
+Choose this mode when:
+  * Write conflicts are rare or acceptable.
+  * High throughput is more important than enforcing strict concurrency checks.
+
+</ContentFrame>
+    
+<ContentFrame>
+       
+### `Writes`
+
+When using `OptimisticConcurrencyMode.Writes`,  
+the session performs version checks on all **modified** documents:
+    
+* **Change vector inclusion**:  
+  The session sends the document’s change vector with all PUT and DELETE operations during `SaveChanges()`.
+    
+* **Conflict Detection**:  
+  The server compares the change vector sent by the session with the document's current version in the database. 
+  If the document has been modified by another session in the meantime, the server rejects the operation and raises a `ConcurrencyException`.
+    
+* **Protection against overwrites**:  
+  Changes are persisted only if the document's change vector matches the version it had when it was loaded into your session, ensuring no unintended overwrites occur.
+      
+This mode is ideal for most scenarios requiring write protection as it:
+  * Detects and prevents conflicting updates effectively.
+  * Maintains good performance by not sending change vectors for documents that were loaded but not modified in the session.
+    
+</ContentFrame>
+    
+<ContentFrame>
+           
+### `WritesAndReads`
+    
+When using `OptimisticConcurrencyMode.WritesAndReads`,  
+the session extends the behavior of _Writes_ to include ALL tracked documents, even those that were **not modified**.    
+
+* **Change vector inclusion**:  
+  During `SaveChanges()`, the session sends the change vector of ALL tracked documents to the server,  
+  including both modified and unmodified documents.
+
+* **Conflict Detection**:  
+  If the server detects that a tracked document - whether modified or not - has been updated by another session, 
+  it rejects the save operation and throws a `ConcurrencyException`. This prevents unintended reliance on outdated read-only documents.
+
+* **Strict Consistency**:  
+  This mode ensures consistency across all documents tracked by the session, protecting against subtle issues caused by documents that were only "read" in your session but were modified externally.
+ 
+Use this mode in scenarios where:    
+  * The correctness of business operations relies on the state of read-only documents.
+  * Strict protection against concurrent changes is required for both modified and unmodified documents.
+  * Consistency and correctness are prioritized over performance.
+
+</ContentFrame>
+    
+</Panel>
+
+<Panel heading="Configure globally">
+
+* Use the [store.Conventions.OptimisticConcurrencyMode](../../../../client-api/configuration/conventions.mdx#optimisticconcurrencymode) convention 
+ to set the default optimistic concurrency mode for ALL sessions created under the same document store.
+
+* You can override this setting for individual sessions if needed. See [Configure per session](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#configure-per-session) for more details.    
+
+<TabItem>
+```csharp
+// Set optimistic concurrency mode for all sessions opened under this document store
+// Set to 'Writes' mode    
+store.Conventions.OptimisticConcurrencyMode = OptimisticConcurrencyMode.Writes;
+    
+// Sessions that do not set an explicit mode will inherit from the conventions 
+using (IDocumentSession session = store.OpenSession())
+{
+    OptimisticConcurrencyMode mode = session.Advanced.OptimisticConcurrencyMode;
+    // returns 'Writes'
+}
+```
+</TabItem>
+
+</Panel>
+
+<Panel heading="Configure per session">
+    
+* Optimistic concurrency can be configured for a specific session,  
+  overriding the mode inherited from the document store conventions.
+    
+* Two ways to set the mode for a session:
+  * Set `OptimisticConcurrencyMode` via `SessionOptions` when opening the session.
+  * Set `session.Advanced.OptimisticConcurrencyMode` on an already-opened session.
+
+---
+    
+### Setting mode to &nbsp; `Writes`    
+
+<Tabs>
+<TabItem value="set_via_session_options" label="set_via_session_options">
+```csharp
+// Configure optimistic concurrency mode for this session only
+using (IDocumentSession session = store.OpenSession(new SessionOptions
+{
+    // Set to 'Writes' mode in the session options
+    OptimisticConcurrencyMode = OptimisticConcurrencyMode.Writes
+}))
+{
+    // Store a new document and save it
+    // On save, the server verifies that no document with that ID already exists
+    Product product = new Product { Name = "Some Name" };
     session.Store(product, "products/999");
     session.SaveChanges();
 
-    // Modify the document 'externally' by another session 
+    // The document is modified externally by another session
     using (IDocumentSession otherSession = store.OpenSession())
-    \{
+    {
         Product otherProduct = otherSession.Load<Product>("products/999");
         otherProduct.Name = "Other Name";
         otherSession.SaveChanges();
-    \}
+    }
 
-    // Trying to modify the document without reloading it first will throw
+    // Attempting to save 'products/999' without reloading 
+    // will throw a 'ConcurrencyException' because the document was modified 
+    // by another session since it was last saved in this session.
     product.Name = "Better Name";
-    session.SaveChanges(); // This will throw a ConcurrencyException
-\}
-`}
-</CodeBlock>
+    session.SaveChanges(); // Throws 'ConcurrencyException'
+}
+```
 </TabItem>
+<TabItem value="session_options_async" label="session_options_async">
+```csharp
+// Configure optimistic concurrency mode for this session only    
+using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession(new SessionOptions
+{
+     // Set to 'Writes' mode in the session options
+    OptimisticConcurrencyMode = OptimisticConcurrencyMode.Writes
+}))
+{
+    // Store a new document and save it
+    // On save, the server verifies that no document with that ID already exists
+    Product product = new Product { Name = "Some Name" };
+    await asyncSession.StoreAsync(product, "products/999");
+    await asyncSession.SaveChangesAsync();
 
-<Admonition type="warning" title="">
+    // The document is modified externally by another session
+    using (IAsyncDocumentSession otherAsyncSession = store.OpenAsyncSession())
+    {
+        Product otherProduct = await otherAsyncSession.LoadAsync<Product>("products/999");
+        otherProduct.Name = "Other Name";
+        await otherAsyncSession.SaveChangesAsync();
+    }
 
-* Enabling optimistic concurrency in a session will ensure that changes made to a document will only be persisted 
-  if the version of the document sent in the `SaveChanges()` call matches its version from the time it was initially read (loaded from the server).
- 
-* Note that it's necessary to enable optimistic concurrency for ALL sessions that modify the documents for which you want to guarantee that no writes will be silently discarded.
-  If optimistic concurrency is enabled in some sessions but not in others, and they modify the same documents, the risk of the lost update anomaly still exists.
-
-</Admonition>
-
-
-
-## Enable globally
-
-* Optimistic concurrency can also be _enabled_ for all sessions that are opened under a document store.
-
-* Use the [store.Conventions.UseOptimisticConcurrency](../../../../client-api/configuration/conventions.mdx#useoptimisticconcurrency) convention to enable globally.
-
-<TabItem value="optimistic_concurrency_2" label="optimistic_concurrency_2">
-<CodeBlock language="csharp">
-{`// Enable for all sessions that will be opened within this document store
-store.Conventions.UseOptimisticConcurrency = true;
-
+    // Attempting to save 'products/999' without reloading 
+    // will throw a 'ConcurrencyException' because the document was modified 
+    // by another session since it was last saved in this session.
+    product.Name = "Better Name";
+    await asyncSession.SaveChangesAsync(); // Throws 'ConcurrencyException'
+}
+```    
+</TabItem>    
+<TabItem value="set_via_advanced_properties" label="set_via_advanced_properties">
+```csharp
+// Configure optimistic concurrency mode for this session only
 using (IDocumentSession session = store.OpenSession())
-\{
-    bool isSessionUsingOptimisticConcurrency = session.Advanced.UseOptimisticConcurrency; // will return true
-\}
-`}
-</CodeBlock>
+{
+    // Set to 'Writes' mode in the 'session.Advanced' properties
+    session.Advanced.OptimisticConcurrencyMode = OptimisticConcurrencyMode.Writes;
+
+    // Store a new document and save it
+    // On save, the server verifies that no document with that ID already exists
+    Product product = new Product { Name = "Some Name" };
+    session.Store(product, "products/999");
+    session.SaveChanges();
+
+    // The document is modified externally by another session
+    using (IDocumentSession otherSession = store.OpenSession())
+    {
+        Product otherProduct = otherSession.Load<Product>("products/999");
+        otherProduct.Name = "Other Name";
+        otherSession.SaveChanges();
+    }
+
+    // Attempting to save 'products/999' without reloading 
+    // will throw a 'ConcurrencyException' because the document was modified 
+    // by another session since it was last saved in this session.
+    product.Name = "Better Name";
+    session.SaveChanges(); // Throws 'ConcurrencyException'
+}
+```
 </TabItem>
+<TabItem value="session_advanced_async" label="session_advanced_async">
+```csharp
+// Configure optimistic concurrency mode for this session only
+using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
+{
+    // Set to 'Writes' mode in the 'session.Advanced' properties
+    asyncSession.Advanced.OptimisticConcurrencyMode = OptimisticConcurrencyMode.Writes;
 
+    // Store a new document and save it
+    // On save, the server verifies that no document with that ID already exists
+    Product product = new Product { Name = "Some Name" };
+    await asyncSession.StoreAsync(product, "products/999");
+    await asyncSession.SaveChangesAsync();
 
+    // The document is modified externally by another session
+    using (IAsyncDocumentSession otherAsyncSession = store.OpenAsyncSession())
+    {
+        Product otherProduct = await otherAsyncSession.LoadAsync<Product>("products/999");
+        otherProduct.Name = "Other Name";
+        await otherAsyncSession.SaveChangesAsync();
+    }
 
-## Disable for specific document (when enabled on session)
+    // Attempting to save 'products/999' without reloading 
+    // will throw a 'ConcurrencyException' because the document was modified 
+    // by another session since it was last saved in this session.
+    product.Name = "Better Name";
+    await asyncSession.SaveChangesAsync(); // Throws 'ConcurrencyException'
+}
+```    
+</TabItem>        
+</Tabs>    
+    
+---
+    
+### Setting mode to &nbsp; `WritesAndReads` 
+    
+<Tabs>    
+<TabItem value="set_via_session_options" label="set_via_session_options">
+```csharp
+// Configure optimistic concurrency mode for this session only  
+using (IDocumentSession session = store.OpenSession(new SessionOptions
+{       
+    // 'WritesAndReads' checks all tracked documents, both modified and unmodified
+    OptimisticConcurrencyMode = OptimisticConcurrencyMode.WritesAndReads
+}))
+{
+    // Load documents, the session will track them
+    
+    // 'products/999' is tracked, will Not be modified
+    Product readOnlyProduct = session.Load<Product>("products/999");
+       
+    // 'products/111' is tracked, will be modified
+    Product productToUpdate = session.Load<Product>("products/111")
+        
+    productToUpdate.Name = "Updated Name"; 
 
-* Optimistic concurrency can be _disabled when **storing** a specific document,  
+    // Document 'products/999' is modified externally by another session
+    using (IDocumentSession otherSession = store.OpenSession())
+    {
+        Product otherProduct = otherSession.Load<Product>("products/999");
+        otherProduct.Name = "Other Name";
+        otherSession.SaveChanges();
+    }
+            
+    // Attempting to save will throw a 'ConcurrencyException'
+    // because even though 'products/999' was Not modified in this session,
+    // it was modified by another session since it was loaded.
+    session.SaveChanges(); // Throws 'ConcurrencyException'
+}
+```
+</TabItem>
+<TabItem value="session_options_async" label="session_options_async">
+```csharp
+// Configure optimistic concurrency mode for this session only     
+using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession(new SessionOptions
+{
+    // 'WritesAndReads' also checks unmodified tracked documents
+    OptimisticConcurrencyMode = OptimisticConcurrencyMode.WritesAndReads
+}))
+{
+    // Load documents, the session will track them
+    
+    // 'products/999' is tracked, will Not be modified
+    Product readOnlyProduct = await asyncSession.LoadAsync<Product>("products/999");
+    
+    // 'products/111' is tracked, will be modified
+    Product productToUpdate = await asyncSession.LoadAsync<Product>("products/111");        
+    productToUpdate.Name = "Updated Name";
+
+    // Document 'products/999' is modified externally by another session
+    using (IAsyncDocumentSession otherAsyncSession = store.OpenAsyncSession())
+    {
+        Product otherProduct = await otherAsyncSession.LoadAsync<Product>("products/999");
+        otherProduct.Name = "Other Name";
+        await otherAsyncSession.SaveChangesAsync();
+    }
+
+    // Attempting to save will throw a 'ConcurrencyException'
+    // because even though 'products/999' was Not modified in this session,
+    // it was modified by another session since it was loaded.
+    await asyncSession.SaveChangesAsync(); // Throws 'ConcurrencyException'
+}
+```
+</TabItem>
+<TabItem value="set_via_advanced_properties" label="set_via_advanced_properties">
+```csharp
+// Configure optimistic concurrency mode for this session only  
+using (IDocumentSession session = store.OpenSession())
+{
+    // Load documents, the session will track them
+    
+    // 'WritesAndReads' also checks unmodified tracked documents    
+    session.Advanced.OptimisticConcurrencyMode = OptimisticConcurrencyMode.WritesAndReads;
+
+    // 'products/999' is tracked, will Not be modified
+    Product readOnlyProduct = session.Load<Product>("products/999");
+    
+    // 'products/111' is tracked, will be modified
+    Product productToUpdate = session.Load<Product>("products/111");
+    productToUpdate.Name = "Updated Name"; 
+
+    // Document 'products/999' is modified externally by another session
+    using (IDocumentSession otherSession = store.OpenSession())
+    {
+        Product otherProduct = otherSession.Load<Product>("products/999");
+        otherProduct.Name = "Other Name";
+        otherSession.SaveChanges();
+    }
+
+    // Attempting to save will throw a 'ConcurrencyException'
+    // because even though 'products/999' was Not modified in this session,
+    // it was modified by another session since it was loaded.
+    session.SaveChanges(); // Throws 'ConcurrencyException'
+}
+```
+</TabItem>
+<TabItem value="session_advanced_async" label="session_advanced_async">
+```csharp
+// Configure optimistic concurrency mode for this session only     
+using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
+{
+    // Load documents, the session will track them
+    
+    // 'WritesAndReads' also checks unmodified tracked documents    
+    asyncSession.Advanced.OptimisticConcurrencyMode = OptimisticConcurrencyMode.WritesAndReads;
+
+    // 'products/999' is tracked, will Not be modified
+    Product readOnlyProduct = await asyncSession.LoadAsync<Product>("products/999");
+    
+    // 'products/111' is tracked, will be modified
+    Product productToUpdate = await asyncSession.LoadAsync<Product>("products/111");
+    productToUpdate.Name = "Updated Name";
+
+    // Document 'products/999' is modified externally by another session
+    using (IAsyncDocumentSession otherAsyncSession = store.OpenAsyncSession())
+    {
+        Product otherProduct = await otherAsyncSession.LoadAsync<Product>("products/999");
+        otherProduct.Name = "Other Name";
+        await otherAsyncSession.SaveChangesAsync();
+    }
+
+    // Attempting to save will throw a 'ConcurrencyException'
+    // because even though 'products/999' was Not modified in this session,
+    // it was modified by another session since it was loaded.
+    await asyncSession.SaveChangesAsync();
+}
+```
+</TabItem>    
+</Tabs>    
+
+</Panel>
+    
+<Panel heading="Disable for specific document (when enabled on session)">    
+
+* Optimistic concurrency can be _disabled_ when **storing** a specific document,  
   even when it is _enabled_ for an entire session (or globally).
 
 * This is done by passing `null` as a change vector value to the [Store](../../../../client-api/session/storing-entities.mdx) method.
 
-<TabItem value="optimistic_concurrency_3" label="optimistic_concurrency_3">
-<CodeBlock language="csharp">
-{`using (IDocumentSession session = store.OpenSession())
-\{
-    // Store document 'products/999'
-    session.Store(new Product \{ Name = "Some Name" \}, id: "products/999");
+<Tabs>   
+<TabItem value="Sync" label="Sync">
+```csharp
+using (IDocumentSession session = store.OpenSession())
+{
+    // Store new document 'products/999'
+    session.Store(new Product { Name = "Some Name" }, id: "products/999");
     session.SaveChanges();
-\}
+}
 
 using (IDocumentSession session = store.OpenSession())
-\{
+{
     // Enable optimistic concurrency for the session
-    session.Advanced.UseOptimisticConcurrency = true;
+    session.Advanced.OptimisticConcurrencyMode = OptimisticConcurrencyMode.Writes;
 
     // Store the same document
-    // Pass 'null' as the changeVector to turn OFF optimistic concurrency for this document
-    session.Store(new Product \{ Name = "Some Other Name" \}, changeVector: null, id: "products/999");
+    // Pass 'null' as the change vector to turn OFF optimistic concurrency for this document
+    session.Store(
+        new Product { Name = "Some Other Name" },
+        changeVector: null,
+        id: "products/999"
+    );
     
     // This will NOT throw a ConcurrencyException, and the document will be saved
     session.SaveChanges();
-\}
-`}
-</CodeBlock>
+}
+```
 </TabItem>
+<TabItem value="Async" label="Async">
+```csharp
+using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
+{
+    // Store new document 'products/999'
+    await asyncSession.StoreAsync(new Product { Name = "Some Name" }, id: "products/999");
+    await asyncSession.SaveChangesAsync();
+}
 
+using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
+{
+    // Enable optimistic concurrency for the session
+    asyncSession.Advanced.OptimisticConcurrencyMode = OptimisticConcurrencyMode.Writes;
 
+    // Store the same document
+    // Pass 'null' as the change vector to turn OFF optimistic concurrency for this document
+    await asyncSession.StoreAsync(
+        new Product { Name = "Some Other Name" },
+        changeVector: null,
+        id: "products/999"
+    );
+    
+    // This will NOT throw a ConcurrencyException, and the document will be saved
+    await asyncSession.SaveChangesAsync();
+}
+```
+</TabItem>
+</Tabs>
 
-## Enable for specific document (when disabled on session)
+</Panel>
+
+<Panel heading="Enable for specific document (when disabled on session)">
 
 * Optimistic concurrency can be _enabled_ when **storing** a specific document,  
   even when it is _disabled_ for an entire session (or globally).
@@ -154,35 +592,233 @@ using (IDocumentSession session = store.OpenSession())
   Setting the change vector to an empty string will cause RavenDB to ensure that this document is a new one and doesn't already exist.
   A `ConcurrencyException` will be thrown if the document already exists. 
 
-* If you do not provide a change vector or if the change vector is `null`, optimistic concurrency will be disabled.  
+* If you do not provide a change vector or if the change vector is `null`, optimistic concurrency will be _disabled_.  
 
-* Setting optimistic concurrency for a specific document overrides the `UseOptimisticConcurrency` property from the `Advanced` session operations.
-
-<TabItem value="optimistic_concurrency_4" label="optimistic_concurrency_4">
-<CodeBlock language="csharp">
-{`using (IDocumentSession session = store.OpenSession())
-\{
-    // Store document 'products/999'
-    session.Store(new Product \{ Name = "Some Name" \}, id: "products/999");
+<Tabs>    
+<TabItem value="Sync" label="Sync">
+```csharp
+using (IDocumentSession session = store.OpenSession())
+{
+    // Store new document 'products/999'
+    session.Store(new Product { Name = "Some Name" }, id: "products/999");
     session.SaveChanges();
-\}
+}
 
 using (IDocumentSession session = store.OpenSession())
-\{
+{
     // Disable optimistic concurrency for the session 
-    session.Advanced.UseOptimisticConcurrency = false; // This is also the default value
+    // This is also the default value
+    session.Advanced.OptimisticConcurrencyMode = OptimisticConcurrencyMode.None;
 
     // Store the same document
-    // Pass 'string.Empty' as the changeVector to turn ON optimistic concurrency for this document
-    session.Store(new Product \{ Name = "Some Other Name" \}, changeVector: string.Empty, id: "products/999");
+    // Pass 'string.Empty' as the change vector 
+    // to turn ON optimistic concurrency for this document
+    session.Store(
+        new Product { Name = "Some Other Name" },
+        changeVector: string.Empty,
+        id: "products/999");
     
     // This will throw a ConcurrencyException, and the document will NOT be saved
     session.SaveChanges();
-\}
-`}
-</CodeBlock>
+}
+```
 </TabItem>
+<TabItem value="Async" label="Async">
+```csharp
+using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
+{
+    // Store new document 'products/999'
+    await asyncSession.StoreAsync(new Product { Name = "Some Name" }, id: "products/999");
+    await asyncSession.SaveChangesAsync();
+}
 
+using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
+{
+    // Disable optimistic concurrency for the session
+    // This is also the default value
+    asyncSession.Advanced.OptimisticConcurrencyMode = OptimisticConcurrencyMode.None;
 
+    // Store the same document
+    // Pass 'string.Empty' as the change vector 
+    // to turn ON optimistic concurrency for this document
+    await asyncSession.StoreAsync(
+        new Product { Name = "Some Other Name" },
+        changeVector: string.Empty,
+        id: "products/999");
+    
+    // This will throw a ConcurrencyException, and the document will NOT be saved
+    await asyncSession.SaveChangesAsync();
+}
+```
+</TabItem>    
+</Tabs>    
+    
+</Panel>
 
+<Panel heading="Constraints">
 
+* [Cannot combine _Writes_ and _WritesAndReads_ with _NoTracking_](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#cannot-combinewritesandwritesandreadswithnotracking).
+* [Cannot combine _Writes_ and _WritesAndReads_ with _TransactionMode.ClusterWide_](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#cannot-combineewritesandwritesandreadswithtransactionmodeclusterwide).
+* [_UseOptimisticConcurrency_ is deprecated](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#useoptimisticconcurrencyis-deprecated).
+* _WritesAndReads_ mode is not supported with [Sharding](../../../../sharding/overview.mdx).
+    
+---
+
+<ContentFrame>
+    
+### Cannot combine&nbsp;_Writes_&nbsp;and&nbsp;_WritesAndReads_&nbsp;with&nbsp;_NoTracking_
+    
+* If you [Disable tracking](../../../../client-api/session/configuration/how-to-disable-tracking.mdx),
+  the session does Not track documents or retain their change vectors.  
+  As a result, _Writes_ and _WritesAndReads_ modes cannot be used.    
+
+* Setting `NoTracking` to `true` while using `Writes` or `WritesAndReads` mode will throw an `InvalidOperationException`.
+  The exception is thrown by whichever property is set second.
+
+<Tabs>
+<TabItem value="NoTracking_first" label="NoTracking_first">
+```csharp
+using (IDocumentSession session = store.OpenSession(new SessionOptions
+{
+    NoTracking = true,
+    
+    // Setting this will throw an 'InvalidOperationException'
+    OptimisticConcurrencyMode = OptimisticConcurrencyMode.Writes
+}))
+{
+}
+```
+</TabItem>
+<TabItem value="Mode_first" label="Mode_first">
+```csharp
+using (IDocumentSession session = store.OpenSession(new SessionOptions
+{
+    OptimisticConcurrencyMode = OptimisticConcurrencyMode.Writes,
+    
+    // Setting this will throw an 'InvalidOperationException'
+    NoTracking = true
+}))
+{
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+    
+<ContentFrame>
+    
+### Cannot combinee&nbsp;_Writes_&nbsp;and&nbsp;_WritesAndReads_&nbsp;with&nbsp;_TransactionMode.ClusterWide_
+    
+* [Cluster-wide sessions](../../../../client-api/session/cluster-transaction/overview.mdx) cannot apply _Writes_ or _WritesAndReads_ modes.    
+
+* Setting `Writes` or `WritesAndReads` mode on a cluster-wide session will throw an `InvalidOperationException`.  
+  The exception is thrown by whichever property is set second.
+
+<Tabs>
+<TabItem value="Clusterwide_first" label="ClusterWide_first">
+```csharp
+using (IDocumentSession session = store.OpenSession(new SessionOptions
+{
+    TransactionMode = TransactionMode.ClusterWide,
+    
+    // Setting this will throw an 'InvalidOperationException'
+    OptimisticConcurrencyMode = OptimisticConcurrencyMode.Writes
+}))
+{
+}
+```
+</TabItem>
+<TabItem value="Mode_first" label="Mode_first">
+```csharp
+using (IDocumentSession session = store.OpenSession(new SessionOptions
+{
+    OptimisticConcurrencyMode = OptimisticConcurrencyMode.Writes,
+    
+    // Setting this will throw an 'InvalidOperationException'
+    TransactionMode = TransactionMode.ClusterWide
+}))
+{
+}
+```
+</TabItem>
+</Tabs>
+    
+</ContentFrame>
+    
+<ContentFrame>   
+    
+### _UseOptimisticConcurrency_&nbsp;is deprecated
+    
+* The `UseOptimisticConcurrency` property is deprecated and will be removed in a future major version.    
+  Use `OptimisticConcurrencyMode` instead. 
+    
+* `OptimisticConcurrencyMode` and the deprecated `UseOptimisticConcurrency` property cannot be used together on the same session. 
+  Setting one after the other will throw an `InvalidOperationException`.
+
+<Tabs>
+<TabItem value="UseOptimisticConcurrency_first" label="UseOptimisticConcurrency_first">
+```csharp
+using (IDocumentSession session = store.OpenSession())
+{
+    session.Advanced.UseOptimisticConcurrency = true;
+    
+    // Setting this will throw an 'InvalidOperationException'
+    session.Advanced.OptimisticConcurrencyMode = OptimisticConcurrencyMode.Writes;
+}
+```
+</TabItem>
+<TabItem value="Mode_first" label="Mode_first">
+```csharp
+using (IDocumentSession session = store.OpenSession())
+{
+    session.Advanced.OptimisticConcurrencyMode = OptimisticConcurrencyMode.Writes;
+    
+    // Setting this will throw an 'InvalidOperationException'
+    session.Advanced.UseOptimisticConcurrency = true;
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+    
+<Admonition type="info" title="">
+    
+**Note**:  
+In all cases above, the exception is also thrown if the conflicting condition is inherited from the [store conventions](../../../../configuration/conventions.mdx)  
+rather than set explicitly in the session.
+    
+</Admonition>
+
+</Panel>
+
+<Panel heading="Syntax"> 
+
+```csharp
+// SessionOptions    
+public OptimisticConcurrencyMode? OptimisticConcurrencyMode { get; set; }
+    
+// session.Advanced    
+public OptimisticConcurrencyMode OptimisticConcurrencyMode { get; set; }
+    
+// Deprecated - use OptimisticConcurrencyMode instead
+[Obsolete]
+public bool UseOptimisticConcurrency { get; set; }
+    
+// OptimisticConcurrencyMode enum    
+public enum OptimisticConcurrencyMode
+{
+    // Default - no concurrency checks are performed (Last Write Wins)
+    None,
+
+    // Concurrency checks are performed only for modified or deleted entities
+    Writes,
+
+    // Concurrency checks are performed for ALL tracked entities, 
+    // both modified and unmodified
+    WritesAndReads
+}
+```
+    
+</Panel>

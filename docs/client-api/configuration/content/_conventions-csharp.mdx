@@ -41,6 +41,7 @@ import CodeBlock from '@theme/CodeBlock';
       [MaxNumberOfRequestsPerSession](../../../client-api/configuration/conventions.mdx#maxnumberofrequestspersession)  
       [Modify serialization of property name](../../../client-api/configuration/conventions.mdx#modify-serialization-of-property-name)  
       [OperationStatusFetchMode](../../../client-api/configuration/conventions.mdx#operationstatusfetchmode)  
+      [OptimisticConcurrencyMode](../../../client-api/configuration/conventions.mdx#optimisticconcurrencymode)  
       [PreserveDocumentPropertiesNotFoundOnModel](../../../client-api/configuration/conventions.mdx#preservedocumentpropertiesnotfoundonmodel)  
       [ReadBalanceBehavior](../../../client-api/configuration/conventions.mdx#readbalancebehavior)  
       [RequestTimeout](../../../client-api/configuration/conventions.mdx#requesttimeout)  
@@ -54,7 +55,6 @@ import CodeBlock from '@theme/CodeBlock';
       [UseHttpCompression](../../../client-api/configuration/conventions.mdx#usehttpcompression)  
       [UseHttpDecompression](../../../client-api/configuration/conventions.mdx#usehttpdecompression)  
       [HttpCompressionAlgorithm](../../../client-api/configuration/conventions.mdx#httpcompressionalgorithm)  
-      [UseOptimisticConcurrency](../../../client-api/configuration/conventions.mdx#useoptimisticconcurrency)  
       [WaitForIndexesAfterSaveChangesTimeout](../../../client-api/configuration/conventions.mdx#waitforindexesaftersavechangestimeout)  
       [WaitForNonStaleResultsTimeout](../../../client-api/configuration/conventions.mdx#waitfornonstaleresultstimeout)  
       [WaitForReplicationAfterSaveChangesTimeout](../../../client-api/configuration/conventions.mdx#waitforreplicationaftersavechangestimeout)
@@ -913,6 +913,40 @@ public OperationStatusFetchMode OperationStatusFetchMode \{ get; set; \}
 </TabItem>
 
 </Admonition>
+
+<Admonition type="note" title="">
+
+#### OptimisticConcurrencyMode
+
+* Use the `OptimisticConcurrencyMode` convention to set the default optimistic concurrency mode for ALL sessions opened under the document store.
+  Sessions that do not explicitly set `OptimisticConcurrencyMode` in their `SessionOptions` will inherit this value.
+
+* Learn more about optimistic concurrency modes and how to configure them in [Configure optimistic concurrency](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx).
+
+* DEFAULT: `OptimisticConcurrencyMode.None`
+
+<TabItem>
+```csharp
+// Syntax:
+public OptimisticConcurrencyMode OptimisticConcurrencyMode { get; set; }
+
+// Available modes:
+public enum OptimisticConcurrencyMode
+{
+    None,           // Default - no concurrency checks (Last Write Wins)
+    Writes,         // Checks modified documents only
+    WritesAndReads  // Checks all tracked documents (modified and not modified)
+}
+```
+</TabItem>
+    
+    <Admonition type="warning" title="">
+    The `UseOptimisticConcurrency` boolean convention is obsolete and will be removed in a future major version.  
+    Use `OptimisticConcurrencyMode` instead.
+    </Admonition>    
+    
+</Admonition>
+
 <Admonition type="note" title="">
 
 #### PreserveDocumentPropertiesNotFoundOnModel
@@ -1163,28 +1197,6 @@ public HttpCompressionAlgorithm HttpCompressionAlgorithm \{ get; set; \}
 
 </Admonition>
 
-
-<Admonition type="note" title="">
-
-#### UseOptimisticConcurrency
-* When setting the `UseOptimisticConcurrency` convention to `true`,  
-  Optimistic Concurrency checks will be applied for all sessions opened from the Document Store.
-
-* Learn more about Optimistic Concurrency and the various ways to enable it in the 
-  [how to enable optimistic concurrency](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx) 
-  article.  
-
-* DEFAULT: `false`
-
-<TabItem value="UseOptimisticConcurrencySyntax" label="UseOptimisticConcurrencySyntax">
-<CodeBlock language="csharp">
-{`// Syntax:
-public bool UseOptimisticConcurrency \{ get; set; \}
-`}
-</CodeBlock>
-</TabItem>
-
-</Admonition>
 <Admonition type="note" title="">
 
 #### WaitForIndexesAfterSaveChangesTimeout

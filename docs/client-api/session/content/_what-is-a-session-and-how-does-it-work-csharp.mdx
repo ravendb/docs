@@ -2,13 +2,15 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">  
 
 * The **Session**, which is obtained from the [Document Store](../../../client-api/what-is-a-document-store.mdx),  
   is the primary interface your application will interact with.
 
-* In this page:
+* In this article:
   * [Session overview](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#session-overview)  
   * [Unit of work pattern](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern)  
       * [Tracking changes](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes)
@@ -17,13 +19,14 @@ import CodeBlock from '@theme/CodeBlock';
   * [Identity map pattern](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#identity-map-pattern)
   * [Batching & Transactions](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#batching--transactions)
   * [Concurrency control](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#concurrency-control)
-  * [Reducing server calls (best practices) for:](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#reducing-server-calls-(best-practices)-for:)  
+  * [Reducing server calls (best practices)](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#reducing-server-calls-best-practices)  
       * [The N+1 problem](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#the-select-n1-problem)    
       * [Large query results](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#large-query-results)    
       * [Retrieving results on demand (Lazy)](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#retrieving-results-on-demand-lazy)
 
 </Admonition>  
-## Session overview
+
+<Panel heading="Session overview">
 
 * **What is the session**:  
     
@@ -59,11 +62,11 @@ import CodeBlock from '@theme/CodeBlock';
   It is _not_ an Object–relational mapping (ORM) tool. Although if you're familiar with NHibernate of Entity Framework ORMs you'll recognize that
   the session is equivalent of NHibernate's session and Entity Framework's DataContext which implement UoW pattern as well.
 
-  
+</Panel>
 
-## Unit of work pattern  
+<Panel heading="Unit of work pattern">
 
-#### Tracking changes
+### Tracking changes
 
 * Using the Session, perform needed operations on your documents.  
   e.g. create a new document, modify an existing document, query for documents, etc.
@@ -81,7 +84,9 @@ import CodeBlock from '@theme/CodeBlock';
     * [Clear session](../../../client-api/session/how-to/clear-a-session.mdx)
     * [Evict a single entity](../../../client-api/session/how-to/evict-entity-from-a-session.mdx)
 
-#### Create document example
+---
+    
+### Create document example
 
 * The Client API, and the Session in particular, is designed to be as straightforward as possible.  
   Open the session, do some operations, and apply the changes to the RavenDB server.  
@@ -89,8 +94,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// Obtain a Session from your Document Store
+```csharp
+// Obtain a Session from your Document Store
 using (IDocumentSession session = store.OpenSession())
 {
     // Create a new entity
@@ -105,12 +110,11 @@ using (IDocumentSession session = store.OpenSession())
     // At this point the entity is persisted to the database as a new document.
     // Since no database was specified when opening the Session, the Default Database is used.
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// Obtain a Session from your Document Store
+```csharp
+// Obtain a Session from your Document Store
 using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
 {
     // Create a new entity
@@ -125,18 +129,20 @@ using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
     // At this point the entity is persisted to the database as a new document.
     // Since no database was specified when opening the Session, the Default Database is used.
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-#### Modify document example  
+---
+    
+### Modify document example
+
 * The following example modifies the content of an existing document.  
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// Open a session
+```csharp
+// Open a session
 using (IDocumentSession session = store.OpenSession())
 {
     // Load an existing document to the Session using its ID
@@ -149,12 +155,11 @@ using (IDocumentSession session = store.OpenSession())
     session.SaveChanges();
     // At this point, the change made is persisted to the existing document in the database
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// Open a Session
+```csharp
+// Open a Session
 using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
 {
     // Load an existing document to the Session using its ID
@@ -167,14 +172,13 @@ using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
     asyncSession.SaveChangesAsync();
     // At this point, the change made is persisted to the existing document in the database
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-  
+</Panel>
 
-## Identity map pattern  
+<Panel heading="Identity map pattern"> 
 
 * The session implements the [Identity Map Pattern](https://martinfowler.com/eaaCatalog/identityMap.html).
 * The first `Load()` call goes to the server and fetches the document from the database.  
@@ -184,8 +188,8 @@ using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// A document is fetched from the server
+```csharp
+// A document is fetched from the server
 Company entity1 = session.Load<Company>(companyId);
 
 // Loading the same document will now retrieve its entity from the Session's map
@@ -193,12 +197,11 @@ Company entity2 = session.Load<Company>(companyId);
 
 // This command will Not throw an exception
 Assert.Same(entity1, entity2);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// A document is fetched from the server
+```csharp
+// A document is fetched from the server
 Company entity1 = await asyncSession.LoadAsync<Company>(companyId);
 
 // Loading the same document will now retrieve its entity from the Session's map
@@ -206,8 +209,7 @@ Company entity2 = await asyncSession.LoadAsync<Company>(companyId);
 
 // This command will Not throw an exception
 Assert.Same(entity1, entity2);
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
@@ -215,9 +217,9 @@ Assert.Same(entity1, entity2);
   To override this behavior and force `Load()` to fetch the latest changes from the server see: 
   [Refresh an entity](../../../client-api/session/how-to/refresh-entity.mdx).  
 
+</Panel>
 
-
-## Batching & Transactions
+<Panel heading="Batching & Transactions">
 
 <Admonition type="note" title="">
 
@@ -229,6 +231,7 @@ Assert.Same(entity1, entity2);
   These changes are then combined into a single batch that is sent to the server in a **single remote call** and executed as a single ACID transaction.  
 
 </Admonition>
+    
 <Admonition type="note" title="">
 
 #### Transactions
@@ -258,6 +261,7 @@ Assert.Same(entity1, entity2);
   This can be done either with the usage of a [JavaScript patch](../../../client-api/operations/patching/single-document.mdx) syntax or [JSON Patch](../../../client-api/operations/patching/json-patch-syntax.mdx) syntax.
 
 </Admonition>
+
 <Admonition type="note" title="">
 
 #### Transaction mode
@@ -274,64 +278,35 @@ Assert.Same(entity1, entity2);
 </Admonition>
 
 <Admonition type="info" title="Transactions in RavenDB" id="transactions-in-ravendb" href="#transactions-in-ravendb">
-For a detailed description of transactions in RavenDB please refer to the [Transaction support in RavenDB](../../../client-api/faq/transaction-support.mdx) article. 
+    
+For a detailed description of transactions in RavenDB please refer to the [Transaction support in RavenDB](../../../client-api/faq/transaction-support.mdx) article.
+    
 </Admonition>
 
+</Panel>
 
+<Panel heading="Concurrency control">
 
-## Concurrency control
+A session may load documents, modify them in memory, and save the changes back to the database.  
+Since loading/querying and saving occur in **separate requests**, other sessions or clients may modify the same documents during this time -
+between when your session loads the document and when `SaveChanges()` is called.    
+    
+By default, sessions do not detect these conflicts and use a "Last Write Wins" strategy,
+where the most recent `SaveChanges()` call overwrites any prior changes made by other sessions.    
 
-The typical usage model of the session is:
+If your application requires detecting and preventing conflicting updates rather than silently overwriting them,
+you can enable **optimistic concurrency**, which ensures documents have not been modified by other sessions since they were loaded into your session.
 
-  * Load documents
-  * Modify the documents
-  * Save changes
+See [Enable optimistic concurrency](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx) for detailed behavior and configuration options.     
 
-For example, a real case scenario would be:  
+</Panel>
 
-  * Load an entity from a database.
-  * Display an Edit form on the screen.
-  * Update the entity after the user completes editing.
-
-When using the session, the interaction with the database is divided into two parts - the load part and save changes part. 
-Each of these parts is executed separately, via its own HTTP request.  
-Consequently, data that was loaded and edited could potentially be changed by another user in the meantime.  
-To address this, the session API offers the concurrency control feature.
-
-#### Default strategy on single node
-
-* By default, concurrency checks are turned off. 
-  This means that with the default configuration of the session, concurrent changes to the same document will use the Last Write Wins strategy.   
- 
-* The second write of an updated document will override the previous version, causing potential data loss. 
-  This behavior should be considered when using the session with single node transaction mode.
-
-#### Optimistic concurrency on single node
-
-* The modification or editing stage can extend over a considerable time period or may occur offline.  
-  To prevent conflicting writes, where a document is modified while it is being edited by another user or client,  
-  the session can be configured to employ [optimistic concurrency](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx).
-
-* Once optimistic concurrency is enabled, the session performs version tracking to ensure that any document modified within the session has not been altered in the database since it was loaded into the session.  
-  The version is tracked using a [change vector](../../../server/clustering/replication/change-vector.mdx).
-
-* When `SaveChanges()` is called, the session additionally transmits the version of the modified documents to the database, allowing it to verify if any changes have occurred in the meantime.  
-  If modifications are detected, the transaction will be aborted with a `ConcurrencyException`,  
-  providing the caller with an opportunity to retry or handle the error as needed.
-
-#### Concurrency control in cluster-wide transactions
-
-* In a cluster-wide transaction scenario, RavenDB server tracks a cluster-wide version for each modified document, updating it through the Raft protocol. 
-  This means that when using a session with the cluster-wide transaction mode, a `ConcurrencyException` will be triggered upon calling `SaveChanges()` 
-  if another user has modified a document and saved it in a separate cluster-wide transaction in the meantime.
-
-* More information about cluster transactions can be found in [Cluster Transaction - Overview](../../../client-api/session/cluster-transaction/overview.mdx).
-
-
-
-## Reducing server calls (best practices) for:
+<Panel heading="Reducing server calls (best practices)">
+    
+Reducing server calls (best practices) for:
 
 #### The select N+1 problem
+    
 * The Select N+1 problem is common 
   with all ORMs and ORM-like APIs.  
   It results in an excessive number of remote calls to the server, which makes a query very expensive.  
@@ -339,6 +314,7 @@ To address this, the session API offers the concurrency control feature.
   See: [Document relationships](../../../client-api/how-to/handle-document-relationships.mdx)  
 
 #### Large query results
+    
 * When query results are large and you don't want the overhead of keeping all results in memory,  
   then you can [Stream query results](../../../querying/stream-query-results.mdx).  
   A single server call is executed and the client can handle the results one by one.  
@@ -346,9 +322,8 @@ To address this, the session API offers the concurrency control feature.
   however, multiple server calls are generated - one per page retrieved.  
 
 #### Retrieving results on demand (Lazy)
+    
 * Query calls to the server can be delayed and executed on-demand as needed using `Lazily()`
 * See [Perform queries lazily](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
 
-
-
-
+</Panel>
