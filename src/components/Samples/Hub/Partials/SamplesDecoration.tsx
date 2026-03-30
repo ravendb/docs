@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 
+const defaultColors = {
+    lightest: "#86BAF2",
+    darkest: "#2382E7",
+    lighter: "#5FA4ED",
+};
+
 export default function SamplesDecoration() {
-    const [colors, setColors] = useState({
-        lightest: "#86BAF2",
-        darkest: "#2382E7",
-        lighter: "#5FA4ED",
-    });
+    const [colors, setColors] = useState(defaultColors);
 
     useEffect(() => {
         const getColorValue = (varName: string, fallback: string): string => {
@@ -16,9 +18,9 @@ export default function SamplesDecoration() {
 
         const updateColors = () => {
             setColors({
-                lightest: getColorValue("--ifm-color-primary-lightest", "#86BAF2"),
-                darkest: getColorValue("--ifm-color-primary-darkest", "#2382E7"),
-                lighter: getColorValue("--ifm-color-primary-lighter", "#5FA4ED"),
+                lightest: getColorValue("--ifm-color-primary-lightest", defaultColors.lightest),
+                darkest: getColorValue("--ifm-color-primary-darkest", defaultColors.darkest),
+                lighter: getColorValue("--ifm-color-primary-lighter", defaultColors.lighter),
             });
         };
 

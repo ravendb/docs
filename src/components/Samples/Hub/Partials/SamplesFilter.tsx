@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Heading from "@theme/Heading";
 import clsx from "clsx";
 import Toggle from "@site/src/components/Common/Toggle";
@@ -37,6 +37,23 @@ export default function SamplesFilter({
 }: SamplesFilterProps) {
     const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(categories.map((c) => c.name)));
     const [searchQuery, setSearchQuery] = useState("");
+
+    useEffect(() => {
+        const categoriesToExpand = new Set(expandedCategories);
+        let hasChanges = false;
+
+        categories.forEach((category) => {
+            const hasSelectedTag = category.tags.some((tag) => selectedTags.has(tag.key));
+            if (hasSelectedTag && !categoriesToExpand.has(category.name)) {
+                categoriesToExpand.add(category.name);
+                hasChanges = true;
+            }
+        });
+
+        if (hasChanges) {
+            setExpandedCategories(categoriesToExpand);
+        }
+    }, [selectedTags, categories]);
 
     const toggleCategory = (categoryName: string) => {
         const newExpanded = new Set(expandedCategories);

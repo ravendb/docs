@@ -8,6 +8,13 @@ import useBoolean from "@site/src/hooks/useBoolean";
 import Button from "@site/src/components/Common/Button";
 import clsx from "clsx";
 
+const categoryLabels: Record<string, string> = {
+    "tech-stack": "Tech Stack",
+    "challenges-solutions": "Challenges & Solutions",
+    "feature": "Features",
+    "other": "Other",
+};
+
 export default function SamplesHomePage() {
     const pluginData = usePluginData("recent-samples-plugin") as PluginData | undefined;
     const history = useHistory();
@@ -38,14 +45,7 @@ export default function SamplesHomePage() {
             if (!categoryMap[category]) {
                 categoryMap[category] = {
                     name: category,
-                    label:
-                        category === "tech-stack"
-                            ? "Tech Stack"
-                            : category === "challenges-solutions"
-                              ? "Challenges & Solutions"
-                              : category === "feature"
-                                ? "Features"
-                                : "Other",
+                    label: categoryLabels[category] || "Other",
                     tags: [],
                 };
             }
@@ -93,7 +93,13 @@ export default function SamplesHomePage() {
     };
 
     const handleTagClick = (tagKey: string) => {
-        setSelectedTags(new Set([tagKey]));
+        const newSelected = new Set(selectedTags);
+        if (newSelected.has(tagKey)) {
+            newSelected.delete(tagKey);
+        } else {
+            newSelected.add(tagKey);
+        }
+        setSelectedTags(newSelected);
     };
 
     const { value: isFilterDrawerOpen, setTrue: openFilterDrawer, setFalse: closeFilterDrawer } = useBoolean(false);

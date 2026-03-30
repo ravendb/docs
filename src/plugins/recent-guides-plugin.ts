@@ -12,7 +12,7 @@ export interface Guide {
     tags: { label: string; permalink: string }[];
     lastUpdatedAt: number;
     description?: string;
-    image?: string | { light: string; dark: string };
+    image?: string;
     icon?: IconName;
     externalUrl?: string;
 }

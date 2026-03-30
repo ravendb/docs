@@ -88,12 +88,11 @@ export default function SampleMetadataColumn({ className, actionsCard, relatedRe
         };
     }, [pluginData]);
 
-    const challengesSolutionsTagKeys = ((frontMatter as any).challengesSolutionsTags ||
-        (frontMatter as any).challengesSolutionsTags) as string[];
-    const featureTagKeys = (frontMatter as any).featureTags as string[];
-    const techStackTagKeys = (frontMatter as any).techStackTags as string[];
-    const category = (frontMatter as any).category as string;
-    const license = (frontMatter as any).license as string;
+    const challengesSolutionsTagKeys = frontMatter.challengesSolutionsTags;
+    const featureTagKeys = frontMatter.featureTags;
+    const techStackTagKeys = frontMatter.techStackTags;
+    const category = frontMatter.category;
+    const license = frontMatter.license;
 
     const challengesSolutionsTags = getTagsWithLabels(challengesSolutionsTagKeys, challengesSolutionsTagsData);
     const featureTags = getTagsWithLabels(featureTagKeys, featureTagsData);
