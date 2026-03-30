@@ -171,24 +171,29 @@ if ($DryRun) {
 
     Write-Host "Syncing to s3://$S3BucketName/ ..." -ForegroundColor Cyan
 
-    # Cache hashed assets (JS/CSS bundles) agressively 
-    Write-Host "  [1/2] Hashed assets (assets/*)" -ForegroundColor Gray
+    # Phase 1 — upload new hashed assets without --delete so old bundles remain
+    # on S3 while CloudFront still serves the old index.html from edge cache
+    # cached aggresively 
+    Write-Host "  [1/4] Upload: hashed assets (assets/*)" -ForegroundColor Gray
     aws s3 sync $BuildDir "s3://$S3BucketName/" `
         --exclude "*" `
         --include "assets/*" `
-        --cache-control "public, max-age=31536000, immutable" `
-        --delete
-    if ($LASTEXITCODE) { throw 'aws s3 sync (hashed assets) failed' }
+        --cache-control "public, max-age=31536000, immutable"
+    if ($LASTEXITCODE) { throw 'aws s3 sync (hashed assets – upload) failed' }
 
-    # 1 hour cache for everything else 
-    Write-Host "  [2/2] Other static files (HTML, images, icons, sitemap, robots.txt, etc.)" -ForegroundColor Gray
+    # Phase 2 — replace HTML and other static files; --delete is safe here because
+    # these files share the same URLs across deploys (no hashing), so the only
+    # deletions are pages intentionally removed from the docs
+    Write-Host "  [2/4] Sync: static files with --delete (HTML, images, icons, sitemap, robots.txt, etc.)" -ForegroundColor Gray
     aws s3 sync $BuildDir "s3://$S3BucketName/" `
         --exclude "assets/*" `
         --cache-control "public, max-age=3600, must-revalidate" `
         --delete
     if ($LASTEXITCODE) { throw 'aws s3 sync (static files) failed' }
 
-    Write-Host "Updating CloudFront KeyValueStore $CloudFrontDistributionId" -ForegroundColor Cyan
+    # Phase 3 — invalidate CloudFront so every edge location fetches the new
+    # index.html, which references the new hashed asset filenames
+    Write-Host "Updating CloudFront KeyValueStore" -ForegroundColor Cyan
     Update-CloudFrontKVS
 
     if ($CloudFrontDistributionId) {
@@ -196,6 +201,16 @@ if ($DryRun) {
         aws cloudfront create-invalidation --distribution-id $CloudFrontDistributionId --paths '/*' | Out-Null
         if ($LASTEXITCODE) { throw 'CloudFront invalidation failed' }
     }
+
+    # Phase 4 — CloudFront now serves only the new index.html, so old hashed
+    # bundles are no longer referenced and can be safely removed
+    Write-Host "  [4/4] Cleanup: removing stale hashed assets from S3" -ForegroundColor Gray
+    aws s3 sync $BuildDir "s3://$S3BucketName/" `
+        --exclude "*" `
+        --include "assets/*" `
+        --cache-control "public, max-age=31536000, immutable" `
+        --delete
+    if ($LASTEXITCODE) { throw 'aws s3 sync (hashed assets – cleanup) failed' }
 
 }
 
