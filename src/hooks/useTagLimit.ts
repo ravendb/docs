@@ -12,11 +12,12 @@ export interface UseTagLimitReturn {
     expandTags: () => void;
 }
 
-export function useTagLimit({ tags, defaultLimit = 3 }: UseTagLimitOptions): UseTagLimitReturn {
+export function useTagLimit({ tags, defaultLimit = 2 }: UseTagLimitOptions): UseTagLimitReturn {
     const [isExpanded, setIsExpanded] = useState(false);
     const [limit, setLimit] = useState(defaultLimit);
 
-    const visibleTags = isExpanded ? tags : tags.slice(0, limit);
+    const effectiveLimit = !isExpanded && tags.length === limit + 1 ? limit + 1 : limit;
+    const visibleTags = isExpanded ? tags : tags.slice(0, effectiveLimit);
     const hiddenCount = tags.length - visibleTags.length;
 
     const expandTags = () => {

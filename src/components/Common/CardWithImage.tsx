@@ -105,8 +105,9 @@ export default function CardWithImage({
                     </Heading>
                 </div>
                 <p className="!mb-0 text-sm pt-2">{description}</p>
+                <div className="flex-grow" />
                 {(hasTags || hasDate) && (
-                    <div className="flex flex-wrap justify-between pt-2 gap-3 z-2">
+                    <div className="flex flex-wrap flex-col 2xl:flex-row xl:flex-nowrap justify-between pt-2 gap-3 z-2">
                         {hasTags && (
                             <div className="flex gap-1 items-center flex-wrap">
                                 {visibleTags.map((tag) => (
