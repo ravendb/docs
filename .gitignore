@@ -9,6 +9,7 @@
 .cache-loader
 .idea
 src/typescript/iconName.ts
+scripts/ai/*.json
 
 # Misc
 .DS_Store

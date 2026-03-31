@@ -80,10 +80,7 @@ Disallow: /2.0/
 Disallow: /1.0/
 Allow: /
 
-# Training-only crawlers (no search visibility benefit)
-User-agent: CCBot
-Disallow: /
-
+# Block Bytespider (TikTok scraper with no search or training benefit)
 User-agent: Bytespider
 Disallow: /
 

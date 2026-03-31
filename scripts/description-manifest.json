@@ -1,9 +1,0 @@
-[
-    {
-        "file": "docs/document-extensions/attachments/faq.mdx",
-        "title": "Faq",
-        "section": "Document Extensions > Attachments",
-        "top_section": "docs/document-extensions",
-        "excerpt": "﻿---\ntitle: \"Attachments: FAQ\"\ndescription: \"Answers to common questions about RavenDB attachments: size limits, compression, deletion behavior, remote storage backups, caching, and sharding support.\"\nsidebar_label: \"FAQ\"\nsidebar_position: 8\n---\n<Admonition type=\"note\" title=\"\">\n* In this article:\n  * [Is there a size limit for attachments?](../../document-extensions/attachments/faq.mdx#is-there-a-size-limit-for-attachments)\n  * [Does document compression affect attachments?](../../document-extensions/attachments/faq.mdx#does-document-compression-affect-attachments)\n  * [What happens to attachments when I delete a document?](../../document-extensions/attachments/faq.mdx#what-happens-to-attachments-when-i-delete-a-document)\n  * [Are REMOTE attachments included in backups?](../../document-extensions/attachments/faq.mdx#are-remote-attachments-included-in-backups)\n  * [Are REMOTE attachments cached locally after retrieval?](../../document-extensions/attachments/faq.mdx#are-remote-attachments-cached-locally-after-retrieval)\n  * [Are REMOTE attachments supported with sharded databases?](../../document-extensions/attachments/faq.mdx#are-remote-attachments-supported-with-sharded-databases)\n  * [What happens to REMOTE attachments if I delete my database?](../../document-extensions/attachments/faq.mdx#what-happens-to-remote-attachments-if-i-delete-my-database)\n</Admonition>\n<Panel heading=\"Is there a size limit for attachments?\">\nRavenDB does **not** enforce a hard limit on attachment "
-    }
-]
