@@ -3,7 +3,7 @@ title: "The Embeddings Generation Task"
 sidebar_label: "The Embeddings Generation Task"
 description: "Configure and deploy an embeddings generation task in RavenDB to automatically create vector embeddings for specified document collections."
 sidebar_position: 2
-supported_languages: ["csharp", "nodejs"]
+supported_languages: ["csharp", "nodejs", "python"]
 see_also:
      - title: "Vector search overview"
        link: "ai-integration/vector-search/overview"
@@ -64,12 +64,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import EmbeddingsGenerationTaskCsharp from './content/_embeddings-generation-task-csharp.mdx';
 import EmbeddingsGenerationTaskNodejs from './content/_embeddings-generation-task-nodejs.mdx';
+import EmbeddingsGenerationTaskPython from './content/_embeddings-generation-task-python.mdx';
 
 
 <LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <EmbeddingsGenerationTaskCsharp />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <EmbeddingsGenerationTaskPython />
 </LanguageContent>
 
 <LanguageContent language="nodejs">
