@@ -12,7 +12,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 * In this page:  
    * [Create subscription - for all documents in a collection](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---for-all-documents-in-a-collection)  
-   * [Create subscription - filter documents](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-documents)  
+   * [Create subscription - filter documents](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-documents)
+   * [Create subscription - filter documents using regex](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-documents-using-regex)
    * [Create subscription - filter and project fields](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-and-project-fields)  
    * [Create subscription - project data from a related document](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---project-data-from-a-related-document)  
    * [Create subscription - include documents](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-documents)  
@@ -85,6 +86,56 @@ Only documents that match this condition will be sent from the server to a clien
 </CodeBlock>
 </TabItem>
 </Tabs>
+
+
+
+## Create subscription - filter documents using regex
+
+Here we create a subscription for documents from the _Orders_ collection where the `ShipTo.City` field matches a regular expression pattern.
+You can use `Regex.IsMatch` within the subscription's LINQ filter expression to perform server-side pattern matching.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Generic-syntax" label="Generic-syntax">
+<CodeBlock language="csharp">
+{`// Filter using Regex.IsMatch in the subscription's LINQ filter
+subscriptionName = store.Subscriptions.Create<Order>(x =>
+    Regex.IsMatch(x.ShipTo.City, "^New"));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-syntax" label="RQL-syntax">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"From Orders
+              Where regex(ShipTo.City, '^New')"
+});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+You can pass supported `RegexOptions` as a third argument:
+
+<CodeBlock language="csharp">
+{`// Filter with case-insensitive regex matching
+subscriptionName = store.Subscriptions.Create<Order>(x =>
+    Regex.IsMatch(x.ShipTo.City, "^new", RegexOptions.IgnoreCase));
+`}
+</CodeBlock>
+
+<Admonition type="note" title="Supported RegexOptions">
+
+The following `RegexOptions` are supported:
+* `RegexOptions.IgnoreCase`
+* `RegexOptions.Multiline`
+* `RegexOptions.Singleline`
+
+Other `RegexOptions` values (e.g. `Compiled`, `ExplicitCapture`) and the timeout overload are **not supported** and will throw a `NotSupportedException`.
+
+The regex pattern must be a **constant expression** — it cannot be a variable computed at runtime from document fields.
+
+</Admonition>
 
 
 
