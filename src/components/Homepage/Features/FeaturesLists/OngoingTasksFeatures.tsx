@@ -30,7 +30,10 @@ export default function OngoingTasksFeaturesGrid() {
         {
             title: "Periodic backups",
             icon: "periodic-backup",
-            url: `/${activeVersion.label}/backup/overview`,
+            url:
+                activeVersion.label >= "7.2"
+                    ? `/${activeVersion.label}/backup/overview`
+                    : `/${activeVersion.label}/server/ongoing-tasks/backup-overview`,
             description: "Scheduled full & incremental backups",
             minimumSupportedVersion: "4.0",
         },
