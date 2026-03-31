@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes RavenDB Operator overview"
-sidebar_label: "Kubernetes RavenDB Operator overview"
+title: "Kubernetes Operator"
+sidebar_label: "Kubernetes Operator"
 sidebar_position: 2
 description: "Set up, run, and use the Kubernetes RavenDB Operator."
 ---
@@ -12,8 +12,6 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 import Panel from "@site/src/components/Panel";
 import ContentFrame from "@site/src/components/ContentFrame";
-
-### Deploy and operate RavenDB clusters on Kubernetes with the RavenDB Operator.
 
 <Admonition type="note" title="">
 
@@ -44,7 +42,7 @@ A Kubernetes Operator is a component dedicated to managing a specific applicatio
 In Kubernetes terms, the operator is a controller: a component that reads a declared configuration and carries out the work needed to make the actual deployment match it.
 
 The Kubernetes RavenDB Operator applies this pattern to a secure RavenDB cluster.  
-The configuration you declare is a `RavenDBCluster` resource, that defines the RavenDB cluster you want Kubernetes to run.  
+The configuration you declare is a `RavenDBCluster` custom resource, that defines the RavenDB cluster you want Kubernetes to run.  
 When you apply this resource, the operator creates and maintains the Kubernetes resources needed for the cluster deployment.
 
 <ContentFrame>
@@ -76,7 +74,7 @@ In practice, the operator manages work such as:
 The following diagram shows the main components of an operator-managed RavenDB deployment, where they are located, and how they relate to each other.
 
 ![Kubernetes RavenDB Operator](./assets/ravendb-operator-diagram.png)
-*RavenDBCluster is stored in the Kubernetes API; The RavenDB Operator reads this resource and manages the Kubernetes objects needed for the deployment; RavenDB itself runs in Pods on worker nodes.*
+*RavenDBCluster is stored in etcd and exposed via the Kubernetes API server; The RavenDB Operator watches this custom resource and reconciles it by creating and managing the required Kubernetes objects; RavenDB itself runs in Pod-assigned containers on worker nodes.*
 
 1. **Kubernetes API**  
    The control-plane component that accepts and serves Kubernetes objects.
@@ -117,47 +115,16 @@ The following diagram shows the main components of an operator-managed RavenDB d
 
 <Panel heading="Before you start">
 
-
 Before setting up the operator, make sure the Kubernetes environment can support a secure RavenDB cluster and that the required materials are ready.
 
-<ContentFrame>
+* To deploy a RavenDB cluster using the operator, you need the license and certificates from the generated setup package.
 
-### Kubernetes environment
-
-You need a running Kubernetes cluster, `kubectl`, Helm, and `cert-manager`.
-
-The operator uses admission webhooks, and those webhooks need TLS certificates.  
+* **Kubernetes environment**  
+   - You need a running Kubernetes cluster, `kubectl`, Helm, and `cert-manager`.
+   - The operator uses admission webhooks to validate and mutate resources during creation and updates; these webhooks require TLS certificates managed by `cert-manager`.  
 `cert-manager` is used to issue and manage those certificates.
 
-</ContentFrame>
-
-<ContentFrame>
-
-### Compute, licensing, networking, security, and storage
-
-Review these requirements before you begin:
-
-- [Compute](../../start/containers/requirements/compute)  
-  Make sure the cluster can provide enough CPU and memory for RavenDB nodes and the operator.
-
-- [Licensing](../../start/containers/requirements/licensing)  
-  RavenDB must be able to read a valid license from the cluster.
-
-- [Networking](../../start/containers/requirements/networking)  
-  RavenDB uses both HTTPS and TCP.  
-  Each node needs public URLs that clients and other nodes can actually reach, and RavenDB must also be able to reach itself through those addresses.
-
-- [Security](../../start/containers/requirements/security)  
-  Decide whether the cluster will use Let's Encrypt or self-signed certificates.  
-  Both modes require an admin client certificate for bootstrap.
-
-- [Storage](../../start/containers/requirements/storage)  
-  RavenDB is stateful.  
-  Each node needs persistent storage that survives Pod restarts and rescheduling.
-
-</ContentFrame>
-
-For the full environment setup, including the lab layout, `cert-manager`, and operator installation, see [Part 1: Setup & Operator Installation](../../../guides/the-ravendb-kubernetes-operator-way#part-1-setup--operator-installation).
+* For the full environment setup, `cert-manager`, and operator installation, see [Part 1: Setup & Operator Installation](../../../guides/the-ravendb-kubernetes-operator-way#part-1-setup--operator-installation).
 
 </Panel>
 
@@ -187,24 +154,24 @@ For the full installation flow, including Helm, `make deploy`, and OLM, see [Par
 <Panel heading="Prepare the namespace and Secrets">
 
 
-After the operator is installed, create a namespace for the cluster and prepare the Secrets that the `RavenDBCluster` will reference.
+After the operator is installed, create a namespace for the cluster and prepare the **Secrets** that the `RavenDBCluster` will reference.
 
 ```bash
 kubectl create namespace ravendb
 ```
-<br />
-At a minimum, you need:
 
+<ContentFrame>
+
+<Admonition type="note" title="">
+Learn more about the deployment of secrets in the operator [readme file](https://github.com/ravendb/ravendb-operator?tab=readme-ov-file#installation).
+</Admonition>
+
+At a minimum, you need:
 - A license Secret
 - A client certificate Secret
 - Server certificate Secrets for the RavenDB nodes
 
-<ContentFrame>
-
-### What these Secrets are for
-
-Each Secret has a different role:
-
+Each Secret has a different role.
 - The **license Secret** makes the RavenDB license available to the cluster.
 - The **client certificate Secret** contains the `ClusterAdmin` certificate used by the bootstrap job when it calls RavenDB management APIs during the initial cluster formation.
 - The **server certificate Secrets** contain the certificates used by the RavenDB nodes themselves.
@@ -473,7 +440,6 @@ For example, once a three-node cluster is already running, the following changes
 - Changing the intended member layout
 
 Plan the initial topology before the first bootstrap.  
-If you later need to add or remove nodes, handle that change through RavenDB cluster management rather than by editing the custom resource.
 
 For RavenDB clustering background, see [Clustering Overview](../../server/clustering/overview).
 
