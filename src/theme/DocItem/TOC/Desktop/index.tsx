@@ -9,7 +9,7 @@ export default function DocItemTOCDesktop(): ReactNode {
     const filteredToc = useFilteredToc(toc);
 
     return (
-        <div className="sticky top-[160px]">
+        <div className="sticky top-[110px]">
             <p className="!mb-1 font-semibold">In this article</p>
             <TOC
                 toc={filteredToc}
