@@ -2,30 +2,39 @@ import React, { type ReactNode } from "react";
 import Head from "@docusaurus/Head";
 import authorsData from "@site/docs/authors.json";
 
-/** Pre-validated guide frontmatter — all required fields are non-optional. */
-export interface GuideMetadataProps {
+/** Converts a Docusaurus lastUpdatedAt timestamp to YYYY-MM-DD. */
+function toDateString(timestamp: number): string {
+    // Docusaurus may provide seconds or milliseconds — normalize to ms
+    const ms = timestamp > 1e12 ? timestamp : timestamp * 1000;
+    return new Date(ms).toISOString().split("T")[0];
+}
+
+export interface DocPageMetadataProps {
+    // Shared (required)
     title: string;
     description: string;
-    proficiencyLevel: string;
     canonicalUrl: string;
     ogImageUrl: string;
+    // Shared (optional)
+    lastUpdatedAt?: number;
+    // Guide-only (optional)
+    proficiencyLevel?: string;
     authorKey?: string;
     publishedAt?: string;
     keywords?: string[];
-    lastUpdatedAt?: number;
 }
 
-export default function GuideMetadata({
+export default function DocPageMetadata({
     title,
     description,
-    proficiencyLevel,
     canonicalUrl,
     ogImageUrl,
+    lastUpdatedAt,
+    proficiencyLevel,
     authorKey,
     publishedAt,
     keywords,
-    lastUpdatedAt,
-}: GuideMetadataProps): ReactNode {
+}: DocPageMetadataProps): ReactNode {
     const authorInfo = authorKey ? authorsData[authorKey as keyof typeof authorsData] : null;
 
     const techArticleJsonLd = JSON.stringify({
@@ -38,11 +47,7 @@ export default function GuideMetadata({
         image: { "@type": "ImageObject", url: ogImageUrl, width: 1200, height: 630 },
         ...(publishedAt ? { datePublished: publishedAt } : {}),
         ...(lastUpdatedAt
-            ? {
-                  dateModified: new Date(lastUpdatedAt > 1e12 ? lastUpdatedAt : lastUpdatedAt * 1000)
-                      .toISOString()
-                      .split("T")[0],
-              }
+            ? { dateModified: toDateString(lastUpdatedAt) }
             : publishedAt
               ? { dateModified: publishedAt }
               : {}),
@@ -73,7 +78,17 @@ export default function GuideMetadata({
             url: "https://ravendb.net",
             logo: { "@type": "ImageObject", url: ogImageUrl },
         },
-        proficiencyLevel,
+        ...(proficiencyLevel ? { proficiencyLevel } : {}),
+        about: {
+            "@type": "SoftwareApplication",
+            name: "RavenDB",
+            url: "https://ravendb.net/",
+        },
+        isPartOf: {
+            "@type": "WebSite",
+            name: "RavenDB Documentation",
+            url: "https://docs.ravendb.net/",
+        },
     });
 
     return (

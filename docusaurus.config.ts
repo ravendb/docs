@@ -67,8 +67,23 @@ const config: Config = {
                 },
                 sitemap: {
                     lastmod: "date",
-                    changefreq: "weekly",
+                    changefreq: null,
                     priority: null,
+                    ignorePatterns: [
+                        "/1.0/**",
+                        "/2.0/**",
+                        "/2.5/**",
+                        "/3.0/**",
+                        "/3.5/**",
+                        "/4.0/**",
+                        "/4.1/**",
+                        "/4.2/**",
+                        "/5.0/**",
+                        "/5.1/**",
+                        "/5.2/**",
+                        "/5.3/**",
+                        "/5.4/**",
+                    ],
                 },
                 googleTagManager: {
                     containerId: "GTM-TDH4JWF2",
@@ -124,23 +139,8 @@ const config: Config = {
         {
             tagName: "link",
             attributes: {
-                rel: "preconnect",
-                href: "https://GYTCYX561T-dsn.algolia.net",
-                crossorigin: "anonymous",
-            },
-        },
-        {
-            tagName: "link",
-            attributes: {
-                rel: "preconnect",
-                href: "https://www.googletagmanager.com",
-            },
-        },
-        {
-            tagName: "link",
-            attributes: {
                 rel: "preload",
-                href: "css/fonts/Inter[wght].woff2",
+                href: "/css/fonts/Inter[wght].woff2",
                 as: "font",
                 type: "font/woff2",
                 crossorigin: "anonymous",
@@ -150,27 +150,7 @@ const config: Config = {
             tagName: "link",
             attributes: {
                 rel: "preload",
-                href: "css/fonts/Inter-Italic[wght].woff2",
-                as: "font",
-                type: "font/woff2",
-                crossorigin: "anonymous",
-            },
-        },
-        {
-            tagName: "link",
-            attributes: {
-                rel: "preload",
-                href: "css/fonts/JetBrainsMono[wght].woff2",
-                as: "font",
-                type: "font/woff2",
-                crossorigin: "anonymous",
-            },
-        },
-        {
-            tagName: "link",
-            attributes: {
-                rel: "preload",
-                href: "css/fonts/JetBrainsMono-Italic[wght].woff2",
+                href: "/css/fonts/JetBrainsMono[wght].woff2",
                 as: "font",
                 type: "font/woff2",
                 crossorigin: "anonymous",
@@ -217,7 +197,13 @@ const config: Config = {
                     "@type": "ImageObject",
                     url: "https://docs.ravendb.net/img/social-card.jpg",
                 },
-                sameAs: ["https://github.com/ravendb/ravendb", "https://www.youtube.com/@ravendb_net"],
+                sameAs: [
+                    "https://github.com/ravendb/ravendb",
+                    "https://www.youtube.com/@ravendb_net",
+                    "https://en.wikipedia.org/wiki/RavenDB",
+                    "https://www.linkedin.com/company/ravendb",
+                    "https://stackoverflow.com/questions/tagged/ravendb",
+                ],
             }),
         },
         {
@@ -227,7 +213,7 @@ const config: Config = {
                 "@context": "https://schema.org",
                 "@type": "SoftwareApplication",
                 name: "RavenDB",
-                applicationCategory: "DeveloperApplication",
+                applicationCategory: "DeveloperTools",
                 operatingSystem: "Windows, Linux, macOS, Docker",
                 description:
                     "A fully transactional NoSQL document database with ACID transactions, distributed clusters, and multi-model data support.",
@@ -237,6 +223,12 @@ const config: Config = {
                     "@type": "Organization",
                     name: "RavenDB",
                     url: "https://ravendb.net/",
+                },
+                offers: {
+                    "@type": "Offer",
+                    price: "0",
+                    priceCurrency: "USD",
+                    url: "https://ravendb.net/download",
                 },
             }),
         },

@@ -80,5 +80,9 @@ Disallow: /2.0/
 Disallow: /1.0/
 Allow: /
 
+# Block Bytespider (TikTok scraper with no search or training benefit)
+User-agent: Bytespider
+Disallow: /
+
 # Sitemaps
 Sitemap: https://docs.ravendb.net/sitemap.xml
