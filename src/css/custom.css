@@ -567,6 +567,11 @@ hr {
     max-width: 100% !important;
 }
 
+/* Docs Home Page custom h1 margin */
+.docs-doc-id-home h1 {
+    @apply !mb-0;
+}
+
 /* Reset default Docusaurus transition for a */
 a {
     transition: none;
