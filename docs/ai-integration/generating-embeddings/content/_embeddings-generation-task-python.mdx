@@ -271,55 +271,55 @@ add_ai_integration_task_result = store.maintenance.send(add_embeddings_generatio
 
 * For example:
 
-<TabItem value="create_embeddings_task_2" label="create_embeddings_task_2">
-```python
-from ravendb.documents.operations.ai import EmbeddingsTransformation
+  <TabItem value="create_embeddings_task_2" label="create_embeddings_task_2">
+  ```python
+  from ravendb.documents.operations.ai import EmbeddingsTransformation
 
-# Source collection:
-collection="Categories",
+  # Source collection:
+  collection="Categories",
 
-# Use 'EmbeddingsTransformation':
-embeddings_transformation=EmbeddingsTransformation(
-    # Define the script:
-    script="""embeddings.generate({
+  # Use 'EmbeddingsTransformation':
+  embeddings_transformation=EmbeddingsTransformation(
+      # Define the script:
+      script="""embeddings.generate({
 
-        // Process the document 'Name' field using method text.split().
-        // The text content will be split into chunks of up to 2048 tokens.
-        Name: text.split(this.Name, 2048),
+          // Process the document 'Name' field using method text.split().
+          // The text content will be split into chunks of up to 2048 tokens.
+          Name: text.split(this.Name, 2048),
 
-        // Process the document 'Description' field using method text.splitParagraphs().
-        // The text content will be split into chunks of up to 2048 tokens.
-        // 128 overlapping tokens will be repeated at the start of each chunk
-        // from the end of the previous one.
-        Description: text.splitParagraphs(this.Description, 2048, 128)
-    });"""
-),
-```
-</TabItem>
+          // Process the document 'Description' field using method text.splitParagraphs().
+          // The text content will be split into chunks of up to 2048 tokens.
+          // 128 overlapping tokens will be repeated at the start of each chunk
+          // from the end of the previous one.
+          Description: text.splitParagraphs(this.Description, 2048, 128)
+      });"""
+  ),
+  ```
+  </TabItem>
 
 * If no chunking method is provided in the script, you can set default values as follows:
 
-<TabItem value="create_embeddings_task_3" label="create_embeddings_task_3">
-```python
-from ravendb.documents.operations.ai import ChunkingOptions, ChunkingMethod, EmbeddingsTransformation
+  <TabItem value="create_embeddings_task_3" label="create_embeddings_task_3">
+  ```python
+  from ravendb.documents.operations.ai import ChunkingOptions, ChunkingMethod, EmbeddingsTransformation
 
-collection="Categories",
-embeddings_transformation=EmbeddingsTransformation(
-    script="""embeddings.generate({
+  collection="Categories",
+  embeddings_transformation=EmbeddingsTransformation(
+      script="""embeddings.generate({
 
-        // No chunking method is specified here
-        Name: this.Name,
-        Description: this.Description
-    });""",
+          // No chunking method is specified here
+          Name: this.Name,
+          Description: this.Description
+      });""",
 
-    # Specify the default chunking options to use in the script
-    chunking_options=ChunkingOptions(
-        chunking_method=ChunkingMethod.PLAIN_TEXT_SPLIT,
-        max_tokens_per_chunk=2048,
-    ),
-),
-```
-</TabItem>
+      # Specify the default chunking options to use in the script
+      chunking_options=ChunkingOptions(
+          chunking_method=ChunkingMethod.PLAIN_TEXT_SPLIT,
+          max_tokens_per_chunk=2048,
+      ),
+  ),
+  ```
+  </TabItem>
 
 </ContentFrame>
 
