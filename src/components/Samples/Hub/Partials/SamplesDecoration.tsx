@@ -11,7 +11,6 @@ export default function SamplesDecoration() {
 
     useEffect(() => {
         const getColorValue = (varName: string, fallback: string): string => {
-            // eslint-disable-next-line no-undef
             const value = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
             return value || fallback;
         };
@@ -26,7 +25,6 @@ export default function SamplesDecoration() {
 
         updateColors();
 
-        // eslint-disable-next-line no-undef
         const observer = new MutationObserver(updateColors);
         observer.observe(document.documentElement, {
             attributes: true,
