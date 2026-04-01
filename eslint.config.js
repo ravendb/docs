@@ -102,6 +102,12 @@ module.exports = [
         },
     },
     {
+        files: ["**/*.ts", "**/*.tsx"],
+        rules: {
+            "no-undef": "off",
+        },
+    },
+    {
         ignores: [
             "node_modules/",
             "build/",

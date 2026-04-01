@@ -23,7 +23,6 @@ export default function Drawer({ open, onClose, children, title, headerAction }:
         return () => document.removeEventListener("keydown", handleEscape);
     }, [open, onClose]);
 
-    // eslint-disable-next-line no-undef
     const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
         const shouldClose = info.velocity.y > 500 || info.offset.y > 150;
         if (shouldClose) {
