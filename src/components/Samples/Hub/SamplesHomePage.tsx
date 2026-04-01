@@ -11,8 +11,8 @@ import clsx from "clsx";
 const categoryLabels: Record<string, string> = {
     "tech-stack": "Tech Stack",
     "challenges-solutions": "Challenges & Solutions",
-    "feature": "Features",
-    "other": "Other",
+    feature: "Features",
+    other: "Other",
 };
 
 export default function SamplesHomePage() {
@@ -21,14 +21,12 @@ export default function SamplesHomePage() {
     const location = useLocation();
 
     const [selectedTags, setSelectedTags] = useState<Set<string>>(() => {
-        // eslint-disable-next-line no-undef
         const params = new URLSearchParams(location.search);
         const tagsParam = params.get("tags");
         return tagsParam ? new Set(tagsParam.split(",")) : new Set();
     });
 
     const [matchLogic, setMatchLogic] = useState<"any" | "all">(() => {
-        // eslint-disable-next-line no-undef
         const params = new URLSearchParams(location.search);
         const logicParam = params.get("match");
         return logicParam === "all" ? "all" : "any";
@@ -60,7 +58,6 @@ export default function SamplesHomePage() {
     }, [allTags]);
 
     useEffect(() => {
-        // eslint-disable-next-line no-undef
         const params = new URLSearchParams();
 
         if (selectedTags.size > 0) {
