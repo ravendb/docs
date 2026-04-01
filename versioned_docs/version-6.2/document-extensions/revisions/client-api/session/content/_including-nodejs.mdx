@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
@@ -10,31 +12,33 @@ import CodeBlock from '@theme/CodeBlock';
     * **Loading a document** (`session.load`) from the server
 
 * The revisions to include can be specified by:
-    * **Creation time**
-    * **Change vector**
+    * **Creation time** - use this to include a **single** revision
+    * **Change vector** - use this to include **one or more** revisions
 
-* In this page:
+* In this article:
   * [Overview:](../../../../../document-extensions/revisions/client-api/session/including.mdx#overview)
-      * [Why include revisions](../../../../../document-extensions/revisions/client-api/session/including.mdx#why-include)
-      * [Including by creation time](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-by-time)
-      * [Including by change vector](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-by-change-vector)
-  * [Include revisions:](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-loading-document)  
-      * [When Loading document](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-loading-document)
-      * [When making a Query](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-query)
-      * [When making a Raw Query](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-raw-query)
-  * [Syntax](../../../../../document-extensions/revisions/client-api/session/including.mdx#syntax)
+      * [Why include revisions](../../../../../document-extensions/revisions/client-api/session/including.mdx#why-include-revisions)
+      * [Including by creation time](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-creation-time)
+      * [Including by change vector](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-change-vector)
+  * [Include revisions when Loading](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-loading)
+  * [Include revisions when Querying - High-level query](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-querying-high-level-query)
+  * [Include revisions when Querying - Raw query](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-querying-raw-query)
+  * [View included revisions in Studio](../../../../../document-extensions/revisions/client-api/session/including.mdx#view-included-revisions-in-studio)
   * [Patching the revision change vector](../../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector)
+  * [Syntax](../../../../../document-extensions/revisions/client-api/session/including.mdx#syntax)
 
 </Admonition>
-## Overview
+
+<Panel heading="Overview">
 
 <Admonition type="note" title="">
 
-<a id="why-include"/> **Why include revisions**:
+#### Why include revisions:
+
 * Including revisions may be useful, for example, when an auditing application loads or queries for a document.  
   The document's past revisions can be included with the document to make the document's history available for instant inspection.  
 
-* Once loaded to the session, there are no additional trips to the server when accessing the revisions.  
+* Once revisions are loaded into the session, accessing them requires no additional trips to the server.  
   [Getting](../../../../../document-extensions/revisions/client-api/session/loading.mdx) a revision that was included with the document will retrieve it directly from the session.  
   This also holds true when attempting to include revisions but none are found.
 
@@ -42,10 +46,12 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-<a id="include-by-time"/> **Including by Creation Time**:
-* You can include a single revision by specifying its creation time, see examples below.
+#### Including by creation time:
 
-* You can pass local time or UTC, either way the server will  convert it to UTC.  
+* When specifying a creation time, only a SINGLE revision can be included per document.  
+  To include MULTIPLE revisions, use [change vectors](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-change-vector) instead.
+
+* You can pass local time or UTC, either way the server will convert it to UTC.  
 
 * **If the provided time matches** the creation time of a document revision, this revision will be included.
 
@@ -55,20 +61,24 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-<a id="include-by-change-vector"/> **Including by Change Vector**:
+#### Including by change vector:
+
+* Unlike using [creation time](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-creation-time), which limits you to a **single** revision,  
+  including by change vector allows you to include **one or more** revisions per document.
+
 * Each time a document is modified, its [Change Vector](../../../../../server/clustering/replication/change-vector.mdx) is updated.  
 
 * When a revision is created,  
   the revision's change vector is the change vector of the document at the time of the revision's creation.  
 
-* To include single or multiple document revisions by their change vectors:   
+* To include SINGLE or MULTIPLE document revisions by their change vectors:   
 
   * When modifying the document, store its updated change vector in a property in the document.  
-    Can be done by [patching](../../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector) the document from the Client API or from the Studio.
+    This can be done by [patching](../../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector) the document from the Client API or from the Studio.
 
   * Specify the **path** to this property when including the revisions, see examples below.  
   
-  * e.g.:  
+  *For example:  
     Each time an employee's contract document is modified (e.g. when their salary is raised),  
     you can add the current change vector of the document to a dedicated property in the document.  
     Whenever the time comes to re-evaluate an employee's terms and their contract is loaded,  
@@ -76,45 +86,53 @@ import CodeBlock from '@theme/CodeBlock';
 
 </Admonition>
 
+</Panel>
 
+<Panel heading="Include revisions when Loading">
 
-## Include revisions when Loading document
+#### Include a revision by creation time:
 
-**Include a revision by Time**
-
-<TabItem value="include_1" label="include_1">
-<CodeBlock language="js">
-{`// The revision creation time
+<TabItem>
+```js
+// The revision creation time
 // For example - looking for a revision from last month
 const creationTime = new Date();
 creationTime.setMonth(creationTime.getMonth() - 1).toLocaleString();
 
-// Load a document:
-const order = await session.load("orders/1-A", \{
-    // Pass the revision creation time to 'includeRevisions'
-    // The revision will be 'loaded' to the session along with the document
+// Load a document and include its revision from the specified time
+const order = await session.load("orders/1-A", {
+    // * Pass the revision creation time to 'includeRevisions'.
+    //   The revision will be 'loaded' to the session along with the document.
+    // * If no revision was created at this exact time,
+    //   then the first revision preceding it will be included.
     includes: builder => builder.includeRevisions(creationTime)
-\});
+});
 
 // Get the revision by creation time - it will be retrieved from the SESSION
-// No additional trip to the server is made
+// No additional trip to the server is made.
 const revision = await session
     .advanced.revisions.get("orders/1-A", creationTime);
-`}
-</CodeBlock>
+```
 </TabItem>
-**Include revisions by Change Vector**
 
-<TabItem value="include_2" label="include_2">
-<CodeBlock language="js">
-{`// Load a document:
-const contract = await session.load("contracts/1-A", \{
+#### Include revisions by change vector:
+
+<Tabs>
+<TabItem value="Load_and_include_revisions" label="Load_and_include_revisions">
+```js
+// Load a document:
+const contract = await session.load("contracts/1-A", {
     includes: builder => builder
-        // Pass the path to the document property that contains the revision change vector(s)
-        // The revision(s) will be 'loaded' to the session along with the document
+        // To include a SINGLE revision, 
+        // pass the path to the document property that contains the revision change vector.
         .includeRevisions("revisionChangeVector")  // Include a single revision
+        
+        // To include MULTIPLE revisions, 
+        // pass the path to the document property that contains the list of change vectors.
         .includeRevisions("revisionChangeVectors") // Include multiple revisions
-\});
+});
+
+// The revision(s) will be 'loaded' to the session along with the document.
 
 // Get the revision(s) by change vectors - it will be retrieved from the SESSION
 // No additional trip to the server is made
@@ -122,88 +140,130 @@ const revision = await session
     .advanced.revisions.get(contract.revisionChangeVector);
 const revisions = await session
     .advanced.revisions.get(contract.revisionChangeVectors);
-`}
-</CodeBlock>
+```
 </TabItem>
-
-<a id="sample-document"/>
-<TabItem value="sample_document" label="sample_document">
-<CodeBlock language="js">
-{`// Sample Contract document
-class Contract \{
-    id: string;
-    name: string;
-    revisionChangeVector: string;
-    revisionChangeVectors: string[];
-\}
-`}
-</CodeBlock>
+<TabItem value="Sample_document" label="Sample document">
+```js
+// Sample Contract document
+class Contract {
+    constructor() {
+        this.id = null;
+        this.name = null;
+        
+        // A property that will hold a single change vector
+        this.revisionChangeVector = null;
+        
+        // A property that will hold a list of change vectors
+        this.revisionChangeVectors = [];
+    }
+}
+```
 </TabItem>
+</Tabs>
 
+</Panel>
 
+<Panel heading="Include revisions when Querying - High-level query">
 
-## Include revisions when making a Query
+#### Include revisions by creation time:
 
-**Include revisions by Time**
-
-<TabItem value="include_3" label="include_3">
-<CodeBlock language="js">
-{`// The revision creation time
-// For example - looking for a revision from last month
+<Tabs>
+<TabItem value="Query_and_include_revisions" label="Query_and_include_revisions">
+```js
+// The revision creation time
+// For example - looking for revisions from last month
 const creationTime = new Date();
 creationTime.setMonth(creationTime.getMonth() - 1).toLocaleString();
 
 // Define the query:
-const query = session.query(\{collection: "Orders"\})
+const query = session.query({ collection: "Orders" })
     .whereEquals("ShipTo.Country", "Canada")
-    // Pass the revision creation time to 'includeRevisions'
+    // * Pass the revision creation time to 'includeRevisions'
+    // * If no revision was created at this exact time,
+    //   then the first revision preceding it will be included.
     .include(builder => builder.includeRevisions(creationTime));
 
 // Execute the query:
 // For each document in the query results,
-// the matching revision will be 'loaded' to the session along with the document
+// the matching revision will be 'loaded' to the session along with the document.
 const orderDocuments = await query.all();
 
-// Get a revision by its creation time for a document from the query results
-// It will be retrieved from the SESSION - no additional trip to the server is made
+// When getting a revision by its creation time for a document from the query results,
+// the revision will be retrieved from the SESSION - no additional trip to the server is made.
 const revision = await session
     .advanced.revisions.get(orderDocuments[0].id, creationTime);
-`}
-</CodeBlock>
+```
 </TabItem>
-**Include revisions by Change Vector**
+<TabItem value="RQL" label="RQL">
+```sql
+from "Orders"
+where ShipTo.Country = $p0
+include revisions('2026-02-23T07:40:54.2513729Z')
+{"p0":"Canada"}
+```
+</TabItem>
+</Tabs>
+    
+#### Include revisions by change vector:
 
-<TabItem value="include_4" label="include_4">
-<CodeBlock language="js">
-{`// Define the query:
-const query = session.query(\{collection: "Contracts"\})
+<Tabs>
+<TabItem value="Query_and_include_revisions" label="Query_and_include_revisions">
+```js
+// Define the query:
+const query = session.query({ collection: "Contracts"})
     // Pass the path to the document property that contains the revision change vector(s)
-    .include(builder => \{
+    .include(builder => {
         builder
+            // To include a SINGLE revision, 
+            // pass the path to the document property that contains the revision change vector.
             .includeRevisions("revisionChangeVector")  // Include a single revision
+            
+            // To include MULTIPLE revisions, 
+            // pass the path to the document property that contains the list of change vectors.
             .includeRevisions("revisionChangeVectors") // Include multiple revisions
-    \});
+    });
 
 // Execute the query:
 // For each document in the query results,
-// the matching revisions will be 'loaded' to the session along with the document
+// the matching revisions will be 'loaded' to the session along with the document.
 const orderDocuments = await query.all();
 
-// Get the revision(s) by change vectors - it will be retrieved from the SESSION
-// No additional trip to the server is made
+// When getting the revision(s) by change vectors for documents from the query results,
+// they will be retrieved from the SESSION - no additional trips to the server are made.
 const revision = await session
     .advanced.revisions.get(orderDocuments[0].revisionChangeVector);
 const revisions = await session
     .advanced.revisions.get(orderDocuments[0].revisionChangeVectors);
-`}
-</CodeBlock>
+```
 </TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Contracts"
+include revisions('RevisionChangeVector'), revisions('RevisionChangeVectors')
+```
+</TabItem>
+<TabItem value="Sample_document" label="Sample document">
+```js
+// Sample Contract document
+class Contract {
+    constructor() {
+        this.id = null;
+        this.name = null;
+        
+        // A property that will hold a single change vector
+        this.revisionChangeVector = null;
+        
+        // A property that will hold a list of change vectors
+        this.revisionChangeVectors = [];
+    }
+}
+```
+</TabItem>
+</Tabs>
 
-* See the _Contract_ class definition [above](../../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document). 
+</Panel>
 
-
-
-## Include revisions when making a Raw Query
+<Panel heading="Include revisions when Querying - Raw query">
 
 * Use `include revisions` in your RQL when making a raw query.  
 
@@ -211,12 +271,14 @@ const revisions = await session
   RavenDB will figure out the parameter type passed and include the revisions accordingly.    
 
 * Aliases (e.g. `from Users as U`) are Not supported by raw queries that include revisions.
-**Include revisions by Time**
 
-<TabItem value="include_5" label="include_5">
-<CodeBlock language="js">
-{`// The revision creation time
-// For example - looking for a revision from last month
+#### Include revisions by Time:
+
+<Tabs>
+<TabItem value="Query_and_include_revisions" label="Query_and_include_revisions">
+```js
+// The revision creation time
+// For example - looking for revisions from last month
 const creationTime = new Date();
 creationTime.setMonth(creationTime.getMonth() - 1).toLocaleString();
 
@@ -236,14 +298,22 @@ const orderDocuments = await rawQuery.all();
 // It will be retrieved from the SESSION - no additional trip to the server is made
 const revision = await session
     .advanced.revisions.get(orderDocuments[0].Id, creationTime);
-`}
-</CodeBlock>
+```
 </TabItem>
-**Include revisions by Change Vector**
+<TabItem value="RQL" label="RQL">
+```sql
+from "Orders"
+include revisions('2026-02-23T07:40:54.2513729Z')
+```
+</TabItem>
+</Tabs>
 
-<TabItem value="include_6" label="include_6">
-<CodeBlock language="js">
-{`// Define the Raw Query:
+#### Include revisions by Change Vector:
+
+<Tabs>
+<TabItem value="Query_and_include_revisions" label="Query_and_include_revisions">
+```js
+// Define the Raw Query:
 const rawQuery = session.advanced
     // Use 'include revisions' in the RQL
     .rawQuery("from Contracts include revisions($p0, $p1)")
@@ -262,50 +332,78 @@ const revision = await session
     .advanced.revisions.get(orderDocuments[0].revisionChangeVector);
 const revisions = await session
     .advanced.revisions.get(orderDocuments[0].revisionChangeVectors);
-`}
-</CodeBlock>
+```
 </TabItem>
-
-* See the _Contract_ class definition [above](../../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document).
-
-
-
-## Syntax
-
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="js">
-{`object includeRevisions(before);
-object includeRevisions(path);
-`}
-</CodeBlock>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Contracts"
+include revisions('RevisionChangeVector'), revisions('RevisionChangeVectors')
+```
 </TabItem>
+<TabItem value="Sample_document" label="Sample document">
+```js
+// Sample Contract document
+class Contract {
+    constructor() {
+        this.id = null;
+        this.name = null;
+        
+        // A property that will hold a single change vector
+        this.revisionChangeVector = null;
+        
+        // A property that will hold a list of change vectors
+        this.revisionChangeVectors = [];
+    }
+}
+```
+</TabItem>
+</Tabs>
 
-| Parameters | Type | Description |
-| - | - | - |
-| **before** | `string` | &lt;ul&gt;&lt;li&gt;Creation time of the revision to be included.&lt;/li&gt;&lt;li&gt;Pass local time or UTC.<br/>The server will convert the param to UTC.&lt;/li&gt;&lt;li&gt;If no revision was created at this time then the first revision that precedes it is returned.&lt;/li&gt;&lt;/ul&gt; |
-| **path** | `string` | &lt;ul&gt;&lt;li&gt;The path to the document property that contains <br/> **a single change vector** or **an array of change vectors** <br/>of the revisions to be included.&lt;/li&gt;&lt;/ul&gt; |
+</Panel>
 
-| Return value | |
-| - | - |
-| `object` | &lt;ul&gt;&lt;li&gt;When **loading** a document:<br/>A builder object that is used to build the include part in the Load request.&lt;/il&gt;&lt;li&gt;When **querying** for a document:<br/>A builder object that is used to build the include part in the Query RQL expression.&lt;/li&gt;&lt;li&gt;Can be used in chaining.&lt;/li&gt;&lt;/ul&gt; |
+<Panel heading="View included revisions in Studio">
 
+Included revisions can be viewed in the Studio's [Query View](../../../../../studio/database/queries/query-view.mdx).  
+Run a query that includes revisions, for example:
+```sql
+from "Orders"
+where ShipTo.Country == "Canada" and Freight < 5
+include revisions('2019-02-23T07:40:54.2513729Z')
+```
+The included revisions will be listed in a dedicated **Revisions Tab** under the query results.
+    
+---    
 
+**The resulting documents**:
+    
+![Query results](../assets/including-revisions-1.png)
+    
+---
+    
+**The included revisions**:    
+    
+![Query results - the included revisions](../assets/including-revisions-2.png)
 
-## Patching the revision change vector
+</Panel>
 
-* To include revisions when making a query or a raw query,  
-  you need to specify the path to the document property that contains the revision change vector(s).
+<Panel heading="Patching the revision change vector">
 
-* The below example shows how to get and patch a revision change vector to a document property.
+* When [including revisions by change vector](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-change-vector)
+  rather than by [creation time](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-creation-time),  
+  you need to specify the path to a document property that contains the revision change vector(s).  
 
-<TabItem value="include_7" label="include_7">
-<CodeBlock language="js">
-{`// Get the revisions' metadata for document 'contracts/1-A'
+* The example below shows how to retrieve a revision's change vector and patch it into a document property  
+  so that it can later be used to include that revision.  
+
+<Tabs>
+<TabItem value="patch_the_document" label="patch_the_document">
+```js
+// Get the revisions' metadata for document 'contracts/1-A'
 const contractRevisionsMetadata = await session
     .advanced.revisions.getMetadataFor("contracts/1-A");
 
 // Get a change vector from the metadata
-const metadata = orderRevisionsMetadata[0];
+const metadata = contractRevisionsMetadata[0];
 const changeVector = metadata[CONSTANTS.Documents.Metadata.CHANGE_VECTOR];
 
 // Patch the document - add the revision change vector to a specific document property
@@ -313,12 +411,45 @@ await session.advanced.patch("contracts/1-A", "revisionChangeVector", changeVect
 
 // Save your changes
 await session.saveChanges();
-`}
-</CodeBlock>
+```
+</TabItem>
+<TabItem value="Sample_document" label="Sample document">
+```js
+// Sample Contract document
+class Contract {
+    constructor() {
+        this.id = null;
+        this.name = null;
+        
+        // A property that will hold a single change vector
+        this.revisionChangeVector = null;
+        
+        // A property that will hold a list of change vectors
+        this.revisionChangeVectors = [];
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Syntax">
+
+<TabItem>
+```js
+object includeRevisions(before);
+object includeRevisions(path);
+```
 </TabItem>
 
-* See the _Contract_ class definition [above](../../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document).
+| Parameter | Type | Description |
+| - | - | - |
+| **before** | `string` | Creation time of the revision to be included.<br/>Pass local time or UTC. The server will convert the param to UTC.<br/><br/>If no revision was created at this time then the first revision that precedes it is returned. |
+| **path** | `string` | The path to the document property that contains <br/> **a single change vector** or **an array of change vectors** <br/>of the revisions to be included. |
 
+| Return value | |
+| - | - |
+| `object` | When **loading** a document:<br/>A builder object that is used to build the include part in the Load request.<br/><br/>When **querying** for a document:<br/>A builder object that is used to build the include part in the Query RQL expression.<br/>Can be used in chaining. |
 
-
-
+</Panel>

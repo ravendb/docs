@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
@@ -10,118 +12,146 @@ import CodeBlock from '@theme/CodeBlock';
   * **Loading a document** (`Session.Load`) from the server  
 
 * The revisions to include can be specified by:
-  * **Creation time**
-  * **Change vector**
+  * **Creation time** - use this to include a **single** revision
+  * **Change vector** - use this to include **one or more** revisions
 
-* In this page:
+* In this article:
   * [Overview:](../../../../../document-extensions/revisions/client-api/session/including.mdx#overview)
       * [Why include revisions](../../../../../document-extensions/revisions/client-api/session/including.mdx#why-include-revisions)
       * [Including by creation time](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-creation-time)
       * [Including by change vector](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-change-vector)
-  * [Include revisions:](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-loading-document)  
-      * [When Loading document](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-loading-document)
-      * [When making a Query](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-query)
-      * [When making a Raw Query](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-raw-query)
-  * [Syntax](../../../../../document-extensions/revisions/client-api/session/including.mdx#syntax)
+  * [Include revisions when Loading](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-loading)
+  * [Include revisions when Querying - High-level query](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-querying-high-level-query)
+  * [Include revisions when Querying - Raw query](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-querying-raw-query)
+  * [View included revisions in Studio](../../../../../document-extensions/revisions/client-api/session/including.mdx#view-included-revisions-in-studio)
   * [Patching the revision change vector](../../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector)
+  * [Syntax](../../../../../document-extensions/revisions/client-api/session/including.mdx#syntax)
 
 </Admonition>
-## Overview
 
+<Panel heading="Overview">
+
+<Admonition type="note" title="">
+    
 #### Why include revisions:
 
 * Including revisions may be useful, for example, when an auditing application loads or queries for a document.  
   The document's past revisions can be included with the document to make the document's history available for instant inspection.  
 
-* Once loaded to the session, there are no additional trips to the server when accessing the revisions.  
+* Once revisions are loaded into the session, accessing them requires no additional trips to the server.  
   [Getting](../../../../../document-extensions/revisions/client-api/session/loading.mdx) a revision that was included with the document will retrieve it directly from the session.  
   This also holds true when attempting to include revisions but none are found.
-#### Including by Creation Time:
+    
+</Admonition>
+    
+<Admonition type="note" title="">    
+    
+#### Including by creation time:
 
-* You can include a single revision by specifying its creation time, see examples below.
+* When specifying a creation time, only a SINGLE revision can be included per document.  
+  To include MULTIPLE revisions, use [change vectors](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-change-vector) instead.
 
-* You can pass local time or UTC, either way the server will  convert it to UTC.  
+* You can pass local time or UTC, either way the server will convert it to UTC.  
 
 * **If the provided time matches** the creation time of a document revision, this revision will be included.
 
 * **If no exact match is found**, then the first revision that precedes the specified time will be returned.
-#### Including by Change Vector:
+
+</Admonition>
+    
+<Admonition type="note" title="">
+    
+#### Including by change vector:
+
+* Unlike using [creation time](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-creation-time), which limits you to a **single** revision,  
+  including by change vector allows you to include **one or more** revisions per document.
 
 * Each time a document is modified, its [Change Vector](../../../../../server/clustering/replication/change-vector.mdx) is updated.  
 
 * When a revision is created,  
   the revision's change vector is the change vector of the document at the time of the revision's creation.  
 
-* To include single or multiple document revisions by their change vectors:   
+* To include SINGLE or MULTIPLE document revisions by their change vectors:   
 
   * When modifying the document, store its updated change vector in a property in the document.  
-    Can be done by [patching](../../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector) the document from the Client API or from the Studio.  
+    This can be done by [patching](../../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector) the document from the Client API or from the Studio.  
   
   * Specify the **path** to this property when including the revisions, see examples below.  
   
-  * e.g.:  
+  * For example:  
     Each time an employee's contract document is modified (e.g. when their salary is raised),  
     you can add the current change vector of the document to a dedicated property in the document.  
     Whenever the time comes to re-evaluate an employee's terms and their contract is loaded,  
     its past revisions can be easily included with it by their change vectors.
 
+</Admonition>
+    
+</Panel>
 
+<Panel heading="Include revisions when Loading">
 
-## Include revisions when Loading document
-
-#### Include a revision by Time:
+#### Include a revision by creation time:
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// The revision creation time
+<TabItem value="Load_sync" label="Load_sync">
+```csharp
+// The revision creation time
 // For example - looking for a revision from last month
 var creationTime = DateTime.Now.AddMonths(-1);
 
-// Load a document:
+// Load a document and include its revision from the specified time
 var order = session.Load<Order>("orders/1-A", builder => builder
-    // Pass the revision creation time to 'IncludeRevisions'
-    // The revision will be 'loaded' to the session along with the document
+    // * Pass the revision creation time to 'IncludeRevisions'.
+    //   The revision will be 'loaded' to the session along with the document.
+    // * If no revision was created at this exact time,
+    //   then the first revision preceding it will be included.
     .IncludeRevisions(creationTime));
 
 // Get the revision by creation time - it will be retrieved from the SESSION
-// No additional trip to the server is made
+// No additional trip to the server is made.
 var revision = session
     .Advanced.Revisions.Get<Order>("orders/1-A", creationTime);
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// The revision creation time
+<TabItem value="Load_async" label="Load_async">
+```csharp
+// The revision creation time
 // For example - looking for a revision from last month
 var creationTime = DateTime.Now.AddMonths(-1);
 
-// Load a document:
+// Load a document and include its revision from the specified time
 var order = await asyncSession.LoadAsync<Order>("orders/1-A", builder => builder
-    // Pass the revision creation time to 'IncludeRevisions'
-    // The revision will be 'loaded' to the session along with the document
+    // * Pass the revision creation time to 'IncludeRevisions'.
+    //   The revision will be 'loaded' to the session along with the document.
+    // * If no revision was created at this exact time,
+    //   then the first revision preceding it will be included.
     .IncludeRevisions(creationTime));
 
 // Get the revision by creation time - it will be retrieved from the SESSION
-// No additional trip to the server is made
+// No additional trip to the server is made.
 var revision = await asyncSession
     .Advanced.Revisions.GetAsync<Order>("orders/1-A", creationTime);
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
-#### Include revisions by Change Vector:
+
+#### Include revisions by change vector:
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// Load a document:
+<TabItem value="Load_sync" label="Load_sync">
+```csharp
+// Load a document:
 var contract = session.Load<Contract>("contracts/1-A", builder => builder
-     // Pass the path to the document property that contains the revision change vector(s)
-     // The revision(s) will be 'loaded' to the session along with the document
-    .IncludeRevisions(x => x.RevisionChangeVector)    // Include a single revision
+    
+     // To include a SINGLE revision, 
+     // pass the path to the document property that contains the revision change vector.
+    .IncludeRevisions(x => x.RevisionChangeVector) // Include a single revision
+    
+     // To include MULTIPLE revisions, 
+     // pass the path to the document property that contains the list of change vectors.
     .IncludeRevisions(x => x.RevisionChangeVectors)); // Include multiple revisions
+    
+     // The revision(s) will be 'loaded' to the session along with the document.    
 
 // Get the revision(s) by change vectors - it will be retrieved from the SESSION
 // No additional trip to the server is made
@@ -129,17 +159,22 @@ var revision = session
     .Advanced.Revisions.Get<Contract>(contract.RevisionChangeVector);
 var revisions = session
     .Advanced.Revisions.Get<Contract>(contract.RevisionChangeVectors);
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// Load a document:
+<TabItem value="Load_async" label="Load_async">
+```csharp
+// Load a document:
 var contract = await asyncSession.LoadAsync<Contract>("contracts/1-A",builder => builder
-    // Pass the path to the document property that contains the revision change vector(s)
-    // The revision(s) will be 'loaded' to the session along with the document
-    .IncludeRevisions(x => x.RevisionChangeVector)    // Include a single revision
+    
+     // To include a SINGLE revision, 
+     // pass the path to the document property that contains the revision change vector.
+    .IncludeRevisions(x => x.RevisionChangeVector) // Include a single revision
+    
+     // To include MULTIPLE revisions, 
+     // pass the path to the document property that contains the list of change vectors.
     .IncludeRevisions(x => x.RevisionChangeVectors)); // Include multiple revisions
+    
+     // The revision(s) will be 'loaded' to the session along with the document.    
 
 // Get the revision(s) by change vectors - it will be retrieved from the SESSION
 // No additional trip to the server is made
@@ -147,130 +182,175 @@ var revision = await asyncSession
     .Advanced.Revisions.GetAsync<Contract>(contract.RevisionChangeVector);
 var revisions = await asyncSession
     .Advanced.Revisions.GetAsync<Contract>(contract.RevisionChangeVectors);
-`}
-</CodeBlock>
+```
+</TabItem>
+<TabItem value="Sample_document" label="Sample_document">
+```csharp
+// Sample Contract document
+private class Contract
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+    
+    // A property that will hold a single change vector
+    public string RevisionChangeVector { get; set; }
+    
+    // A property that will hold a list of change vectors
+    public List<string> RevisionChangeVectors { get; set; }
+}
+```
 </TabItem>
 </Tabs>
 
-<a id="sample-document"/>
-<TabItem value="sample_document" label="sample_document">
-<CodeBlock language="csharp">
-{`// Sample Contract document
-private class Contract
-\{
-    public string Id \{ get; set; \}
-    public string Name \{ get; set; \}
-    public string RevisionChangeVector \{ get; set; \}        // A single change vector
-    public List<string> RevisionChangeVectors \{ get; set; \} // A list of change vectors
-\}
-`}
-</CodeBlock>
-</TabItem>
+</Panel>
 
-
-
-## Include revisions when making a Query
-
-#### Include revisions by Time:
+<Panel heading="Include revisions when Querying - High-level query">
+    
+#### Include revisions by creation time:
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// The revision creation time
+<TabItem value="Query_sync" label="Query_sync">
+```csharp
+// The revision creation time
 // For example - looking for revisions from last month
 var creationTime = DateTime.Now.AddMonths(-1);
 
 // Query for documents:
 var orderDocuments = session.Query<Order>()
     .Where(x => x.ShipTo.Country == "Canada")
-     // Pass the revision creation time to 'IncludeRevisions'
+     // * Pass the revision creation time to 'IncludeRevisions'
+     // * If no revision was created at this exact time,
+     //   then the first revision preceding it will be included.
     .Include(builder => builder.IncludeRevisions(creationTime))
-     // For each document in the query results,
-     // the matching revision will be 'loaded' to the session along with the document
     .ToList();
+    
+     // For each document in the query results,
+     // the matching revision will be 'loaded' to the session along with the document.
 
-// Get a revision by its creation time for a document from the query results
-// It will be retrieved from the SESSION - no additional trip to the server is made
+// When getting a revision by its creation time for a document from the query results,
+// the revision will be retrieved from the SESSION - no additional trip to the server is made.
 var revision = session
     .Advanced.Revisions.Get<Order>(orderDocuments[0].Id, creationTime);
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// The revision creation time
+<TabItem value="Query_async" label="Query_async">
+```csharp
+// The revision creation time
 // For example - looking for revisions from last month
 var creationTime = DateTime.Now.AddMonths(-1);
 
 // Query for documents:
 var orderDocuments = await asyncSession.Query<Order>()
     .Where(x => x.ShipTo.Country == "Canada")
-     // Pass the revision creation time to 'IncludeRevisions'
+     // * Pass the revision creation time to 'IncludeRevisions'
+     // * If no revision was created at this exact time,
+     //   then the first revision preceding it will be included.
     .Include(builder => builder.IncludeRevisions(creationTime))
-     // For each document in the query results,
-     // the matching revision will be 'loaded' to the session along with the document
     .ToListAsync();
+    
+     // For each document in the query results,
+     // the matching revision will be 'loaded' to the session along with the document.
 
-// Get a revision by its creation time for a document from the query results
-// It will be retrieved from the SESSION - no additional trip to the server is made
+// When getting a revision by its creation time for a document from the query results,
+// the revision will be retrieved from the SESSION - no additional trip to the server is made.
 var revision = await asyncSession
     .Advanced.Revisions.GetAsync<Order>(orderDocuments[0].Id, creationTime);
-`}
-</CodeBlock>
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Orders"
+where ShipTo.Country = $p0
+include revisions('2026-02-23T07:40:54.2513729Z')
+{"p0":"Canada"}
+```
 </TabItem>
 </Tabs>
-#### Include revisions by Change Vector:
+    
+#### Include revisions by change vector:
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// Query for documents:
-var orderDocuments = session.Query<Contract>()
-     // Pass the path to the document property that contains the revision change vector(s)
+<TabItem value="Query_sync" label="Query_sync">
+```csharp
+// Query for documents:
+var orderDocuments = session.Query<Contract>()    
     .Include(builder => builder
-        .IncludeRevisions(x => x.RevisionChangeVector)   // Include a single revision
-        .IncludeRevisions(x => x.RevisionChangeVectors)) // Include multiple revisions
-     // For each document in the query results,
-     // the matching revisions will be 'loaded' to the session along with the document
+    
+         // To include a SINGLE revision, 
+         // Pass the path to the document property that contains the revision change vector.
+        .IncludeRevisions(x => x.RevisionChangeVector)
+    
+         // To include MULTIPLE revisions, 
+         // pass the path to the document property that contains the list of change vectors.
+        .IncludeRevisions(x => x.RevisionChangeVectors))
+    
     .ToList();
+    
+     // For each document in the query results,
+     // the matching revision will be 'loaded' to the session along with the document.
 
-// Get the revision(s) by change vectors - it will be retrieved from the SESSION
-// No additional trip to the server is made
+// When getting the revision(s) by change vectors for documents from the query results,
+// they will be retrieved from the SESSION - no additional trips to the server are made.
 var revision = session.
     Advanced.Revisions.Get<Contract>(orderDocuments[0].RevisionChangeVector);
 var revisions = session
     .Advanced.Revisions.Get<Contract>(orderDocuments[0].RevisionChangeVectors);
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// Query for documents:
+<TabItem value="Query_async" label="Query_async">
+```csharp
+// Query for documents:
 var orderDocuments = await asyncSession.Query<Contract>()
-    // Pass the path to the document property that contains the revision change vector(s)
     .Include(builder => builder
-        .IncludeRevisions(x => x.RevisionChangeVector)   // Include a single revision
-        .IncludeRevisions(x => x.RevisionChangeVectors)) // Include multiple revisions
-    // For each document in the query results,
-    // the matching revisions will be 'loaded' to the session along with the document
+    
+         // To include a SINGLE revision, 
+         // Pass the path to the document property that contains the revision change vector.
+        .IncludeRevisions(x => x.RevisionChangeVector)
+    
+         // To include MULTIPLE revisions, 
+         // pass the path to the document property that contains the list of change vectors.
+        .IncludeRevisions(x => x.RevisionChangeVectors))
+    
     .ToListAsync();
+    
+     // For each document in the query results,
+     // the matching revision will be 'loaded' to the session along with the document.
 
-// Get the revision(s) by change vectors - it will be retrieved from the SESSION
-// No additional trip to the server is made
+// When getting the revision(s) by change vectors for documents from the query results,
+// they will be retrieved from the SESSION - no additional trips to the server are made.
 var revision = await asyncSession.
     Advanced.Revisions.GetAsync<Contract>(orderDocuments[0].RevisionChangeVector);
 var revisions = await asyncSession
     .Advanced.Revisions.GetAsync<Contract>(orderDocuments[0].RevisionChangeVectors);
-`}
-</CodeBlock>
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Contracts"
+include revisions('RevisionChangeVector'), revisions('RevisionChangeVectors')
+```
+</TabItem>
+<TabItem value="Sample_document" label="Sample_document">
+```csharp
+// Sample Contract document
+private class Contract
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+    
+    // A property that will hold a single change vector
+    public string RevisionChangeVector { get; set; }
+    
+    // A property that will hold a list of change vectors
+    public List<string> RevisionChangeVectors { get; set; }
+}
+```
 </TabItem>
 </Tabs>
 
-* See the _Contract_ class definition [above](../../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document). 
-
-
-
-## Include revisions when making a Raw Query
+</Panel>
+    
+<Panel heading="Include revisions when Querying - Raw query"> 
 
 * Use `include revisions` in your RQL when making a raw query.   
 
@@ -278,12 +358,13 @@ var revisions = await asyncSession
   RavenDB will figure out the parameter type passed and include the revisions accordingly.  
 
 * Aliases (e.g. `from Users as U`) are Not supported by raw queries that include revisions.
+
 #### Include revisions by Time:
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// The revision creation time
+<TabItem value="Query_sync" label="Query_sync">
+```csharp
+// The revision creation time
 // For example - looking for revisions from last month
 var creationTime = DateTime.Now.AddMonths(-1);
 
@@ -301,12 +382,11 @@ var orderDocuments = session.Advanced
 // It will be retrieved from the SESSION - no additional trip to the server is made
 var revision = session
     .Advanced.Revisions.Get<Order>(orderDocuments[0].Id, creationTime);
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// The revision creation time
+<TabItem value="Query_async" label="Query_async">
+```csharp
+// The revision creation time
 // For example - looking for revisions from last month
 var creationTime = DateTime.Now.AddMonths(-1);
 
@@ -324,22 +404,28 @@ var orderDocuments = await asyncSession.Advanced
 // It will be retrieved from the SESSION - no additional trip to the server is made
 var revision = await asyncSession
     .Advanced.Revisions.GetAsync<Order>(orderDocuments[0].Id, creationTime);
-`}
-</CodeBlock>
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Orders"
+include revisions('2026-02-23T07:40:54.2513729Z')
+```
 </TabItem>
 </Tabs>
+
 #### Include revisions by Change Vector:
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`// Query for documents with Raw Query:
+<TabItem value="Query_sync" label="Query_sync">
+```csharp
+// Query for documents with Raw Query:
 var orderDocuments = session.Advanced
      // Use 'include revisions' in the RQL   
     .RawQuery<Contract>("from Contracts include revisions($p0, $p1)")
      // Pass the path to the document properties containing the change vectors
-    .AddParameter("p0", "RevisionChangeVector")
-    .AddParameter("p1", "RevisionChangeVectors")
+    .AddParameter("p0", "RevisionChangeVector")  // Include a single revision
+    .AddParameter("p1", "RevisionChangeVectors") // Include multiple revisions
      // For each document in the query results,
      // the matching revisions will be 'loaded' to the session along with the document
     .ToList();
@@ -350,18 +436,17 @@ var revision = session.
     Advanced.Revisions.Get<Contract>(orderDocuments[0].RevisionChangeVector);
 var revisions = session
     .Advanced.Revisions.Get<Contract>(orderDocuments[0].RevisionChangeVectors);
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`// Query for documents with Raw Query:
+<TabItem value="Query_async" label="Query_async">
+```csharp
+// Query for documents with Raw Query:
 var orderDocuments = await asyncSession.Advanced
     // Use 'include revisions' in the RQL   
     .AsyncRawQuery<Contract>("from Contracts include revisions($p0, $p1)")
     // Pass the path to the document properties containing the change vectors
-    .AddParameter("p0", "RevisionChangeVector")
-    .AddParameter("p1", "RevisionChangeVectors")
+    .AddParameter("p0", "RevisionChangeVector")  // Include a single revision
+    .AddParameter("p1", "RevisionChangeVectors") // Include multiple revisions
     // For each document in the query results,
     // the matching revisions will be 'loaded' to the session along with the document
     .ToListAsync();
@@ -372,54 +457,72 @@ var revision = await asyncSession.
     Advanced.Revisions.GetAsync<Contract>(orderDocuments[0].RevisionChangeVector);
 var revisions = await asyncSession
     .Advanced.Revisions.GetAsync<Contract>(orderDocuments[0].RevisionChangeVectors);
-`}
-</CodeBlock>
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Contracts"
+include revisions('RevisionChangeVector'), revisions('RevisionChangeVectors')
+```
+</TabItem>
+<TabItem value="Sample_document" label="Sample_document">
+```csharp
+// Sample Contract document
+private class Contract
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+    
+    // A property that will hold a single change vector
+    public string RevisionChangeVector { get; set; }
+    
+    // A property that will hold a list of change vectors
+    public List<string> RevisionChangeVectors { get; set; }
+}
+```
 </TabItem>
 </Tabs>
 
-* See the _Contract_ class definition [above](../../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document).
+</Panel>
 
+<Panel heading="View included revisions in Studio">
 
+Included revisions can be viewed in the Studio's [Query View](../../../../../studio/database/queries/query-view.mdx).  
+Run a query that includes revisions, for example:
+```sql
+from "Orders"
+where ShipTo.Country == "Canada" and Freight < 5
+include revisions('2019-02-23T07:40:54.2513729Z')
+```
+The included revisions will be listed in a dedicated **Revisions Tab** under the query results.
+    
+---    
 
-## Syntax
+**The resulting documents**:
+    
+![Query results](../assets/including-revisions-1.png)
+    
+---
+    
+**The included revisions**:    
+    
+![Query results - the included revisions](../assets/including-revisions-2.png)
 
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="csharp">
-{`// Include a single revision by Time
-TBuilder IncludeRevisions(DateTime before);
+</Panel>
 
-// Include a single revision by Change Vector
-TBuilder IncludeRevisions(Expression<Func<T, string>> path);
+<Panel heading="Patching the revision change vector">
 
-// Include an array of revisions by Change Vectors
-TBuilder IncludeRevisions(Expression<Func<T, IEnumerable<string>>> path);
-`}
-</CodeBlock>
-</TabItem>
+* When [including revisions by change vector](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-change-vector)
+  rather than by [creation time](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-creation-time),  
+  you need to specify the path to a document property that contains the revision change vector(s).  
 
-| Parameters | Type | Description |
-| - | - | - |
-| **before** | `DateTime` | &lt;ul&gt;&lt;li&gt;Creation time of the revision to be included.&lt;/li&gt;&lt;li&gt;Pass local time or UTC.<br/>The server will convert the param to UTC.&lt;/li&gt;&lt;li&gt;If no revision was created at this time then the first revision that precedes it is returned.&lt;/li&gt;&lt;/ul&gt; |
-| **path** | `Expression<Func<T, string>>` | &lt;ul&gt;&lt;li&gt;The path to the document property that contains<br/> **a single change vector** of the revision to be included.&lt;/li&gt;&lt;/ul&gt; |
-| **path** | `Expression<Func<T, IEnumerable<string>>>` | &lt;ul&gt;&lt;li&gt;The path to the document property that contains<br/> **an array of change vectors** of the revisions to be included.&lt;/li&gt;&lt;/ul&gt; |
-
-| Return value | |
-| - | - |
-| `TBuilder` | &lt;ul&gt;&lt;li&gt;When **loading** a document:<br/>A builder object that is used to build the include part in the Load request.&lt;/il&gt;&lt;li&gt;When **querying** for a document:<br/>A builder object that is used to build the include part in the Query RQL expression.&lt;/li&gt;&lt;li&gt;Can be used in chaining.&lt;/li&gt;&lt;/ul&gt; |
-
-
-
-## Patching the revision change vector
-
-* To include revisions when making a query or a raw query,  
-  you need to specify the path to the document property that contains the revision change vector(s).  
-
-* The below example shows how to get and patch a revision change vector to a document property.  
+* The example below shows how to retrieve a revision's change vector and patch it into a document property  
+  so that it can later be used to include that revision.  
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`using (var session = store.OpenSession())
+```csharp
+using (var session = store.OpenSession())
 {
     // Get the revisions' metadata for document 'contracts/1-A'
     List<IMetadataDictionary> contractRevisionsMetadata =
@@ -436,12 +539,11 @@ TBuilder IncludeRevisions(Expression<Func<T, IEnumerable<string>>> path);
     // Save your changes
     session.SaveChanges();
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`using (var asyncSession = store.OpenAsyncSession())
+```csharp
+using (var asyncSession = store.OpenAsyncSession())
 {
     // Get the revisions' metadata for document 'contracts/1-A'
     List<IMetadataDictionary> contractRevisionsMetadata =  
@@ -458,13 +560,51 @@ TBuilder IncludeRevisions(Expression<Func<T, IEnumerable<string>>> path);
     // Save your changes
     await asyncSession.SaveChangesAsync();
 }
-`}
-</CodeBlock>
+```
+</TabItem>
+<TabItem value="Sample_document" label="Sample_document">
+```csharp
+// Sample Contract document
+private class Contract
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+    
+    // A property that will hold a single change vector
+    public string RevisionChangeVector { get; set; }
+    
+    // A property that will hold a list of change vectors
+    public List<string> RevisionChangeVectors { get; set; }
+}
+```
 </TabItem>
 </Tabs>
 
-* See the _Contract_ class definition [above](../../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document).
+</Panel>
 
+<Panel heading="Syntax">
 
+<TabItem>
+```csharp
+// Include a SINGLE revision by Time
+TBuilder IncludeRevisions(DateTime before);
 
+// Include a SINGLE revision by change vector
+TBuilder IncludeRevisions(Expression<Func<T, string>> path);
 
+// Include an ARRAY of revisions by change vectors
+TBuilder IncludeRevisions(Expression<Func<T, IEnumerable<string>>> path);
+```
+</TabItem>
+
+| Parameter  | Type       | Description |
+| ---------- | ---------- | ----------- |
+| **before** | `DateTime` | Creation time of the revision to be included.<br/>Pass local time or UTC. The server will convert the param to UTC.<br/><br/>If no revision was created at this time then the first revision that precedes it is returned. |
+| **path**   | `Expression<Func<T, string>>` | The path to the document property that contains<br/> **a single change vector** of the revision to be included. |
+| **path**   | `Expression<Func<T, IEnumerable<string>>>` | The path to the document property that contains<br/> **an array of change vectors** of the revisions to be included. |
+
+| Return value | |
+| - | - |
+| `TBuilder` | When **loading** a document:<br/>A builder object that is used to build the include part in the Load request.<br/><br/>When **querying** for a document:<br/>A builder object that is used to build the include part in the Query RQL expression.<br/>Can be used in chaining. |
+
+</Panel>
