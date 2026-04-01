@@ -129,10 +129,11 @@ RavenDB provides the following set of predefined functions:
 
 ### **Attachment operations**:
 
-| Method Signature                                                            | Return type | Description                                                                                                     |
-|-----------------------------------------------------------------------------|-------------|-----------------------------------------------------------------------------------------------------------------| 
-| **attachments(document, attachmentName).remote(destinationID, uploadTime)** | `void`      | Updates the document's metadata with remote parameters to schedule the attachment for upload to remote storage.<br/>See [Schedule attachment for remote upload](../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#schedule-existing-attachments-for-remote-upload). |
-| **attachments(document, attachmentName).delete()**                          | `void`      | Deletes the specified attachment from the document.<br/>See [Delete attachment via patching](../../document-extensions/attachments/delete-attachment.mdx#delete-attachment---via-a-patch).                                                            |
+| Method Signature                                                                 | Return type | Description                                                                                                     |
+|----------------------------------------------------------------------------------|-------------|-----------------------------------------------------------------------------------------------------------------| 
+| **attachments(document, attachmentName)<br/>.remote(destinationID, uploadTime)** | `void`      | Updates the document's metadata with remote parameters to schedule the attachment for upload to remote storage.<br/>See [Schedule attachment for remote upload](../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#schedule-existing-attachments-for-remote-upload). |
+| **attachments(document, attachmentName)<br/>.delete()**                          | `void`      | Deletes the specified attachment from the document.<br/>See [Delete attachment via patching](../../document-extensions/attachments/delete-attachment.mdx#delete-attachment---via-a-patch).                                                            |
+| **attachments(targetDocument, targetAttachmentName)<br/>.copyFrom(sourceDocId, sourceName)** | `boolean` | Copies an attachment from a source document to the target document with the specified name.<br/>Returns `true` on success, `false` if the source attachment does not exist.<br/>See [Copy attachment via patching](../../document-extensions/attachments/copy-move-rename.mdx#copy-attachments---via-patching). |
 
 ---
     

@@ -300,6 +300,7 @@ See the more comprehensive list at [Knowledge Base: JavaScript Engine](../../../
 | **deleteCounter**    | Document; counter name                              | Deletes the counter                                                                                                                                                                                                                                    |
 | **spatial.distance** | Two points by latitude and longitude; spatial units | Find the distance between to points on the earth                                                                                                                                                                                                       |
 | **timeseries**       | Document; the time series' name                     | Returns the specified time series object                                                                                                                                                                                                               |
+| **attachments**      | Document; attachment name                           | Returns an attachment object providing `delete()`, `remote()`, and `copyFrom()` methods for managing the specified attachment via patching                                                                                                             |
 
 
 
@@ -997,9 +998,12 @@ session.SaveChanges();
 
   * When cloning a document via patching, only the document's fields are copied to the new document.  
     Attachments, counters, time series data, and revisions from the source document will Not be copied automatically. 
-  * To manage time series & counters via patching, you can use the pre-defined JavaScript methods listed here:
-    [Counters methods](../../../../server/kb/javascript-engine.mdx#counter-operations) & [Time series methods](../../../../server/kb/javascript-engine.mdx#time-series-operations).  
-  * Note: When [Cloning a document via the Studio](../../../../studio/database/documents/create-new-document.mdx#clone-an-existing-document),
+  * To manage counters, time series, and attachments via patching, you can use the pre-defined JavaScript methods listed here:
+    * [Counters methods](../../../../server/kb/javascript-engine.mdx#counter-operations)  
+    * [Time series methods](../../../../server/kb/javascript-engine.mdx#time-series-operations).  
+    * [Attachments methods](../../../../server/kb/javascript-engine.mdx#attachment-operations).  
+  * Note:  
+    When [Cloning a document via the Studio](../../../../studio/database/documents/create-new-document.mdx#clone-an-existing-document),  
     attachments, counters, time Series, and revisions will be copied automatically.
 
 **Archived documents:**
