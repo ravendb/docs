@@ -65,27 +65,46 @@ function getMessage(icon: string, state: { pickedSrc: { size: number }; loadInfo
     }
 }
 
+function isDevImg(img: Props["img"]): img is string | { default: string } {
+    return typeof img === "string" || "default" in img;
+}
+
+function RegularImg(props: Omit<Props, "img"> & { img: string | { default: string } }) {
+    const { img, alt = "", ...propsRest } = props;
+
+    const src = typeof img === "string" ? img : img.default;
+
+    return (
+        <div className="ideal-image-lightbox-host" data-lightbox-src={src} data-lightbox-description={alt}>
+            <img src={src} alt={alt} {...propsRest} />
+        </div>
+    );
+}
+
 export default function IdealImage(props: Props): ReactNode {
-    const { img, ...propsRest } = props;
+    const { img, alt = "", ...propsRest } = props;
 
     // In dev env just use regular img with original file
-    if (typeof img === "string" || "default" in img) {
-        return <img src={typeof img === "string" ? img : img.default} {...propsRest} />;
+    if (isDevImg(img)) {
+        return <RegularImg img={img} alt={alt} {...propsRest} />;
     }
 
     return (
-        <ReactIdealImage
-            {...propsRest}
-            height={img.src.height ?? 100}
-            width={img.src.width ?? 100}
-            placeholder={{ lqip: img.preSrc }}
-            src={img.src.src}
-            srcSet={img.src.images.map((image) => ({
-                ...image,
-                src: image.path,
-            }))}
-            getMessage={getMessage}
-            className="mb-5"
-        />
+        <div className="ideal-image-lightbox-host" data-lightbox-src={img.src.src} data-lightbox-description={alt}>
+            <ReactIdealImage
+                {...propsRest}
+                alt={alt}
+                height={img.src.height ?? 100}
+                width={img.src.width ?? 100}
+                placeholder={{ lqip: img.preSrc }}
+                src={img.src.src}
+                srcSet={img.src.images.map((image) => ({
+                    ...image,
+                    src: image.path,
+                }))}
+                getMessage={getMessage}
+                className="mb-5"
+            />
+        </div>
     );
 }

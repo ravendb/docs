@@ -3,6 +3,7 @@ const tseslint = require("@typescript-eslint/eslint-plugin");
 const tsparser = require("@typescript-eslint/parser");
 const reactPlugin = require("eslint-plugin-react");
 const reactHooksPlugin = require("eslint-plugin-react-hooks");
+const globals = require("globals");
 
 module.exports = [
     js.configs.recommended,
@@ -18,30 +19,10 @@ module.exports = [
                 sourceType: "module",
             },
             globals: {
-                browser: true,
-                es2021: true,
-                node: true,
-                window: "readonly",
-                document: "readonly",
-                navigator: "readonly",
-                console: "readonly",
-                require: "readonly",
-                module: "readonly",
-                exports: "readonly",
-                __dirname: "readonly",
-                __filename: "readonly",
-                process: "readonly",
-                Buffer: "readonly",
-                global: "readonly",
-                atob: "readonly",
-                btoa: "readonly",
-                HTMLButtonElement: "readonly",
-                HTMLDivElement: "readonly",
-                HTMLLIElement: "readonly",
-                HTMLImageElement: "readonly",
-                MouseEvent: "readonly",
-                KeyboardEvent: "readonly",
-                Node: "readonly",
+                ...globals.browser,
+                ...globals.node,
+                ...globals.es2021,
+                EventListener: "readonly",
             },
         },
         plugins: {
