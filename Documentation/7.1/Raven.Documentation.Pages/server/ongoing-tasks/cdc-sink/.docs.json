@@ -1,0 +1,108 @@
+[
+  {
+    "Path": "overview.markdown",
+    "Name": "Overview",
+    "DiscussionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "Mappings": []
+  },
+  {
+    "Path": "how-it-works.markdown",
+    "Name": "How It Works",
+    "DiscussionId": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+    "Mappings": []
+  },
+  {
+    "Path": "schema-design.markdown",
+    "Name": "Schema Design",
+    "DiscussionId": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+    "Mappings": []
+  },
+  {
+    "Path": "embedded-tables.markdown",
+    "Name": "Embedded Tables",
+    "DiscussionId": "d4e5f6a7-b8c9-0123-def0-234567890123",
+    "Mappings": []
+  },
+  {
+    "Path": "linked-tables.markdown",
+    "Name": "Linked Tables",
+    "DiscussionId": "e5f6a7b8-c9d0-1234-ef01-345678901234",
+    "Mappings": []
+  },
+  {
+    "Path": "column-mapping.markdown",
+    "Name": "Column Mapping",
+    "DiscussionId": "f6a7b8c9-d0e1-2345-f012-456789012345",
+    "Mappings": []
+  },
+  {
+    "Path": "patching.markdown",
+    "Name": "Patching",
+    "DiscussionId": "a7b8c9d0-e1f2-3456-0123-567890123456",
+    "Mappings": []
+  },
+  {
+    "Path": "delete-strategies.markdown",
+    "Name": "Delete Strategies",
+    "DiscussionId": "b8c9d0e1-f2a3-4567-1234-678901234567",
+    "Mappings": []
+  },
+  {
+    "Path": "property-retention.markdown",
+    "Name": "Property Retention",
+    "DiscussionId": "c9d0e1f2-a3b4-5678-2345-789012345678",
+    "Mappings": []
+  },
+  {
+    "Path": "attachment-handling.markdown",
+    "Name": "Attachment Handling",
+    "DiscussionId": "d0e1f2a3-b4c5-6789-3456-890123456789",
+    "Mappings": []
+  },
+  {
+    "Path": "configuration-reference.markdown",
+    "Name": "Configuration Reference",
+    "DiscussionId": "e1f2a3b4-c5d6-7890-4567-901234567890",
+    "Mappings": []
+  },
+  {
+    "Path": "api-reference.markdown",
+    "Name": "API Reference",
+    "DiscussionId": "f2a3b4c5-d6e7-8901-5678-012345678901",
+    "Mappings": []
+  },
+  {
+    "Path": "server-configuration.markdown",
+    "Name": "Server Configuration",
+    "DiscussionId": "a3b4c5d6-e7f8-9012-6789-123456789012",
+    "Mappings": []
+  },
+  {
+    "Path": "monitoring.markdown",
+    "Name": "Monitoring",
+    "DiscussionId": "b4c5d6e7-f8a9-0123-7890-234567890123",
+    "Mappings": []
+  },
+  {
+    "Path": "failover-and-consistency.markdown",
+    "Name": "Failover and Consistency",
+    "DiscussionId": "c5d6e7f8-a9b0-1234-8901-345678901234",
+    "Mappings": []
+  },
+  {
+    "Path": "troubleshooting.markdown",
+    "Name": "Troubleshooting",
+    "DiscussionId": "d6e7f8a9-b0c1-2345-9012-456789012345",
+    "Mappings": []
+  },
+  {
+    "Path": "/postgres",
+    "Name": "PostgreSQL",
+    "Mappings": []
+  },
+  {
+    "Path": "/sql-server",
+    "Name": "SQL Server",
+    "Mappings": []
+  }
+]

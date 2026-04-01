@@ -1,0 +1,61 @@
+[
+  {
+    "Path": "prerequisites-checklist.markdown",
+    "Name": "Prerequisites Checklist",
+    "DiscussionId": "e7f8a9b0-c1d2-3456-a012-567890123456",
+    "Mappings": []
+  },
+  {
+    "Path": "wal-configuration.markdown",
+    "Name": "WAL Configuration",
+    "DiscussionId": "f8a9b0c1-d2e3-4567-b123-678901234567",
+    "Mappings": []
+  },
+  {
+    "Path": "permissions-and-roles.markdown",
+    "Name": "Permissions and Roles",
+    "DiscussionId": "a9b0c1d2-e3f4-5678-c234-789012345678",
+    "Mappings": []
+  },
+  {
+    "Path": "initial-setup.markdown",
+    "Name": "Initial Setup",
+    "DiscussionId": "b0c1d2e3-f4a5-6789-d345-890123456789",
+    "Mappings": []
+  },
+  {
+    "Path": "replica-identity.markdown",
+    "Name": "REPLICA IDENTITY",
+    "DiscussionId": "c1d2e3f4-a5b6-7890-e456-901234567890",
+    "Mappings": []
+  },
+  {
+    "Path": "replica-identity-manual-setup.markdown",
+    "Name": "Manual REPLICA IDENTITY Setup",
+    "DiscussionId": "d2e3f4a5-b6c7-8901-f567-012345678901",
+    "Mappings": []
+  },
+  {
+    "Path": "cleanup-and-maintenance.markdown",
+    "Name": "Cleanup and Maintenance",
+    "DiscussionId": "e3f4a5b6-c7d8-9012-0678-123456789012",
+    "Mappings": []
+  },
+  {
+    "Path": "monitoring-postgres.markdown",
+    "Name": "Monitoring PostgreSQL",
+    "DiscussionId": "f4a5b6c7-d8e9-0123-1789-234567890123",
+    "Mappings": []
+  },
+  {
+    "Path": "studio-ui.markdown",
+    "Name": "Studio UI",
+    "DiscussionId": "a5b6c7d8-e9f0-1234-2890-345678901234",
+    "Mappings": []
+  },
+  {
+    "Path": "/examples",
+    "Name": "Examples",
+    "Mappings": []
+  }
+]

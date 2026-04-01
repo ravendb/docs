@@ -35,5 +35,10 @@
         "Path": "/queue-sink",
         "Name": "Queue Sink",
         "Mappings": []
+    },
+    {
+        "Path": "/cdc-sink",
+        "Name": "CDC Sink",
+        "Mappings": []
     }
 ]

@@ -1,0 +1,26 @@
+[
+  {
+    "Path": "example-simple-migration.markdown",
+    "Name": "Simple Table Migration",
+    "DiscussionId": "b6c7d8e9-f0a1-2345-3901-456789012345",
+    "Mappings": []
+  },
+  {
+    "Path": "example-denormalization.markdown",
+    "Name": "Denormalization with Embedded Tables",
+    "DiscussionId": "c7d8e9f0-a1b2-3456-4012-567890123456",
+    "Mappings": []
+  },
+  {
+    "Path": "example-event-sourcing.markdown",
+    "Name": "Event Sourcing with Aggregation",
+    "DiscussionId": "d8e9f0a1-b2c3-4567-5123-678901234567",
+    "Mappings": []
+  },
+  {
+    "Path": "example-complex-nesting.markdown",
+    "Name": "Complex Nesting with Linked Tables",
+    "DiscussionId": "e9f0a1b2-c3d4-5678-6234-789012345678",
+    "Mappings": []
+  }
+]
