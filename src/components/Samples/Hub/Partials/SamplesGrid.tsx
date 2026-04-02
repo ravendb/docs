@@ -58,15 +58,15 @@ export default function SamplesGrid({ samples, selectedTags, matchLogic, onTagCl
                 </span>
             </div>
             <div className={clsx("grid grid-cols-1 md:grid-cols-2 gap-4", "animate-in fade-in")}>
-                {sortedSamples.map((sample, index) => (
+                {sortedSamples.map((sample) => (
                     <SampleCard
                         key={sample.id}
                         title={sample.title}
                         description={sample.description}
                         url={sample.permalink}
                         imgSrc={sample.image}
+                        imgAlt={sample.img_alt}
                         tags={sample.tags as any}
-                        animationDelay={index * 50}
                         onTagClick={onTagClick}
                         selectedTags={selectedTags}
                     />

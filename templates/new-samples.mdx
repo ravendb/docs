@@ -39,12 +39,16 @@ samples/my-new-sample.mdx
 ---
 title: "My Sample Application"
 description: "A production-ready example demonstrating RavenDB features."
-challengesSolutionsTags: [semantic-search, integration-patterns]
-featureTags: [vector-search, include, document-refresh]
-techStackTags: [csharp, aspire, azure-functions]
-category: "E-commerce"
-license: "MIT License"
+challenges_solutions_tags: [semantic-search, integration-patterns]
+feature_tags: [vector-search, include, document-refresh]
+tech_stack_tags: [csharp, aspire, azure-functions]
 image: "/img/samples/my-sample/cover.webp"
+img_alt: "My Sample Application Screenshot"
+category: "Ecommerce"
+license: "MIT License"
+license_url: "https://opensource.org/licenses/MIT"
+repository_url: "https://github.com/ravendb/my-sample-repo"
+languages: ["C#"]
 gallery:
   - src: "/img/samples/my-sample/screenshot-1.webp"
     alt: "Main interface"
@@ -61,16 +65,20 @@ gallery:
 |---|---|---|---|
 | `title` | `string` | ✅ | Sample name displayed in cards and page header |
 | `description` | `string` | ✅ | Short summary shown in sample cards |
-| `challengesSolutionsTags` | `string[]` | ✅ | Challenges & solutions tags from `samples/tags/challenges-solutions.yml` |
-| `featureTags` | `string[]` | ✅ | RavenDB feature tags from `samples/tags/feature.yml` |
-| `techStackTags` | `string[]` | ✅ | Technology tags from `samples/tags/tech-stack.yml` |
-| `category` | `string` | ❌ | Business category (e.g., "E-commerce", "Healthcare") |
-| `license` | `string` | ❌ | License type (e.g., "MIT License", "Apache 2.0") |
-| `image` | `string` | ❌ | Cover image path |
-| `gallery` | `array` | ❌ | Array of screenshot objects with `src` and `alt` |
+| `challenges_solutions_tags` | `string[]` | ✅ | Challenges & solutions tags from `samples/tags/challenges-solutions.yml` (kebab-case) |
+| `feature_tags` | `string[]` | ✅ | RavenDB feature tags from `samples/tags/feature.yml` (kebab-case) |
+| `tech_stack_tags` | `string[]` | ✅ | Technology tags from `samples/tags/tech-stack.yml` (kebab-case) |
+| `image` | `string` | ❌ | Cover image path (shown in sample cards) |
+| `img_alt` | `string` | ❌ | Alt text for the cover image |
+| `category` | `string` | ❌ | Business category (e.g., "Ecommerce", "Healthcare") - displayed in metadata sidebar |
+| `license` | `string` | ❌ | License type (e.g., "MIT License", "Apache 2.0") - displayed in metadata sidebar |
+| `license_url` | `string` | ❌ | License URL (e.g., `https://opensource.org/licenses/MIT`) - links the sidebar label and feeds JSON-LD |
+| `repository_url` | `string` | ❌ | GitHub repository URL - used in `SoftwareSourceCode` JSON-LD for SEO |
+| `languages` | `string[]` | ❌ | Programming languages (e.g., `["C#"]`) - used in `SoftwareSourceCode` JSON-LD for SEO |
+| `gallery` | `array` | ❌ | Array of screenshot objects with `src` and `alt` properties |
 
 <Admonition type="warning" title="Tag Validation">
-    All tag keys must exist in their respective YAML files (`samples/tags/challenges-solutions.yml`, `feature.yml`, `tech-stack.yml`). Using undefined tags will cause them to be ignored in the UI.
+    All tag keys must exist in their respective YAML files (`samples/tags/challenges-solutions.yml`, `feature.yml`, `tech-stack.yml`). Using undefined tags will cause them to display with their raw key value instead of a formatted label.
 </Admonition>
 
 ## Page Structure
@@ -83,9 +91,13 @@ gallery:
 ---
 title: "My Sample"
 description: "Sample description"
-challengesSolutionsTags: [semantic-search]
-featureTags: [vector-search]
-techStackTags: [csharp]
+challenges_solutions_tags: [semantic-search]
+feature_tags: [vector-search]
+tech_stack_tags: [csharp]
+license: "MIT License"
+license_url: "https://opensource.org/licenses/MIT"
+repository_url: "https://github.com/ravendb/my-sample-repo"
+languages: ["C#"]
 ---
 
 import { ActionsCard, RelatedResource, FeatureAccordion, SampleMetadataColumn, SampleLayout } from '@site/src/components/Samples';

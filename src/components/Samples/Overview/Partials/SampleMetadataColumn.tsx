@@ -88,11 +88,12 @@ export default function SampleMetadataColumn({ className, actionsCard, relatedRe
         };
     }, [pluginData]);
 
-    const challengesSolutionsTagKeys = frontMatter.challengesSolutionsTags;
-    const featureTagKeys = frontMatter.featureTags;
-    const techStackTagKeys = frontMatter.techStackTags;
+    const challengesSolutionsTagKeys = frontMatter.challenges_solutions_tags;
+    const featureTagKeys = frontMatter.feature_tags;
+    const techStackTagKeys = frontMatter.tech_stack_tags;
     const category = frontMatter.category;
     const license = frontMatter.license;
+    const licenseUrl = frontMatter.license_url;
 
     const challengesSolutionsTags = getTagsWithLabels(challengesSolutionsTagKeys, challengesSolutionsTagsData);
     const featureTags = getTagsWithLabels(featureTagKeys, featureTagsData);
@@ -120,7 +121,19 @@ export default function SampleMetadataColumn({ className, actionsCard, relatedRe
                     <Heading as="h5" className="!mb-0 text-sm font-semibold">
                         License
                     </Heading>
-                    <p className="text-sm text-black dark:text-white !mb-0">{license}</p>
+                    <p className="text-sm text-black dark:text-white !mb-0">
+                        {licenseUrl ? (
+                            <a
+                                href={licenseUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                {license}
+                            </a>
+                        ) : (
+                            license
+                        )}
+                    </p>
                 </div>
             )}
 

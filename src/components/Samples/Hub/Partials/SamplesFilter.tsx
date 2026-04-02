@@ -36,6 +36,7 @@ export default function SamplesFilter({
     showHeader = true,
 }: SamplesFilterProps) {
     const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(categories.map((c) => c.name)));
+    const [manuallyCollapsed, setManuallyCollapsed] = useState<Set<string>>(new Set());
     const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
@@ -44,7 +45,7 @@ export default function SamplesFilter({
 
         categories.forEach((category) => {
             const hasSelectedTag = category.tags.some((tag) => selectedTags.has(tag.key));
-            if (hasSelectedTag && !categoriesToExpand.has(category.name)) {
+            if (hasSelectedTag && !categoriesToExpand.has(category.name) && !manuallyCollapsed.has(category.name)) {
                 categoriesToExpand.add(category.name);
                 hasChanges = true;
             }
@@ -53,16 +54,21 @@ export default function SamplesFilter({
         if (hasChanges) {
             setExpandedCategories(categoriesToExpand);
         }
-    }, [selectedTags, categories]);
+    }, [selectedTags, categories, manuallyCollapsed, expandedCategories]);
 
     const toggleCategory = (categoryName: string) => {
         const newExpanded = new Set(expandedCategories);
+        const newManuallyCollapsed = new Set(manuallyCollapsed);
+
         if (newExpanded.has(categoryName)) {
             newExpanded.delete(categoryName);
+            newManuallyCollapsed.add(categoryName);
         } else {
             newExpanded.add(categoryName);
+            newManuallyCollapsed.delete(categoryName);
         }
         setExpandedCategories(newExpanded);
+        setManuallyCollapsed(newManuallyCollapsed);
     };
 
     const filteredCategories = categories
