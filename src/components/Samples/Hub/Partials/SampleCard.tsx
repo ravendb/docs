@@ -21,7 +21,6 @@ export interface SampleCardProps {
     imgHeight?: number;
     url: string;
     tags?: TagWithCategory[];
-    animationDelay?: number;
     onTagClick?: (tagKey: string) => void;
     selectedTags?: Set<string>;
 }
@@ -33,7 +32,6 @@ export default function SampleCard({
     imgAlt = "",
     url,
     tags = [],
-    animationDelay = 0,
     onTagClick,
     selectedTags,
 }: SampleCardProps) {
@@ -69,13 +67,8 @@ export default function SampleCard({
                 "group-hover:border-black/20 dark:group-hover:border-white/20",
                 "group-hover:!bg-black/10 dark:group-hover:!bg-white/10",
                 "!transition-all",
-                "animate-in fade-in slide-in-from-bottom-4"
+                "animate-in fade-in"
             )}
-            style={{
-                animationDelay: `${animationDelay}ms`,
-                animationDuration: "400ms",
-                animationFillMode: "backwards",
-            }}
         >
             <div
                 className={clsx(

@@ -14,15 +14,20 @@ export interface CustomDocFrontMatter extends DocFrontMatter {
     author?: string;
     icon?: IconName;
     image?: string;
-    publishedAt?: string;
-    proficiencyLevel?: string;
+    img_alt?: string;
+    published_at?: string;
+    proficiency_level?: string;
     keywords?: string[];
     gallery?: GalleryImage[];
-    challengesSolutionsTags?: string[];
-    featureTags?: string[];
-    techStackTags?: string[];
+    challenges_solutions_tags?: string[];
+    feature_tags?: string[];
+    tech_stack_tags?: string[];
     category?: string;
     license?: string;
+    license_url?: string;
+    repository_url?: string;
+    languages?: string[];
+    external_url?: string;
 }
 
 type CustomDocContextValue = Omit<DocContextValue, "frontMatter" | "metadata"> & {

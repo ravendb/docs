@@ -74,7 +74,7 @@ module.exports = [
             "@typescript-eslint/no-explicit-any": "off",
             "@typescript-eslint/prefer-namespace-keyword": "off",
 
-            "no-console": "warn",
+            "no-console": ["warn", { allow: ["warn", "error"] }],
             "no-debugger": "error",
             "no-alert": "warn",
             "no-var": "error",

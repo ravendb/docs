@@ -5,6 +5,7 @@ export interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement
     imgSrc?: string;
     minContentHeight?: number;
     isRounded?: boolean;
+    aspectRatio?: string;
 }
 
 // @docusaurus/plugin-ideal-image transforms image imports into objects like
@@ -35,9 +36,12 @@ export default function LazyImage({
     style,
     minContentHeight = 100,
     isRounded = true,
+    loading = "lazy",
+    aspectRatio,
     ...props
 }: LazyImageProps) {
-    const [isLoaded, setIsLoaded] = useState(false);
+    const isEager = loading === "eager";
+    const [isLoaded, setIsLoaded] = useState(isEager);
     const imgRef = useRef<HTMLImageElement>(null);
 
     // Check if image is already loaded after hydration
@@ -58,7 +62,8 @@ export default function LazyImage({
             className={clsx("relative overflow-hidden block w-full", className)}
             style={{
                 ...style,
-                minHeight: !isLoaded ? `${minContentHeight + "px"}` : undefined,
+                aspectRatio: !isLoaded ? aspectRatio : undefined,
+                minHeight: !isLoaded && !aspectRatio ? `${minContentHeight}px` : undefined,
             }}
         >
             {!isLoaded && (
@@ -78,7 +83,7 @@ export default function LazyImage({
                 className={clsx(className, "transition-opacity duration-300", !isLoaded ? "opacity-0" : "opacity-100")}
                 onLoad={() => setIsLoaded(true)}
                 onError={() => setIsLoaded(true)}
-                loading="lazy"
+                loading={loading}
             />
         </span>
     );
