@@ -1,12 +1,16 @@
 import React, { ReactNode } from "react";
+import SampleMetadataColumn from "./Partials/SampleMetadataColumn";
+import Gallery from "@site/src/components/Common/Gallery";
+import { useDoc } from "@docusaurus/plugin-content-docs/client";
 
 interface SampleLayoutProps {
     children: ReactNode;
-    details: ReactNode;
-    gallery?: ReactNode;
 }
 
-export default function SampleLayout({ children, details, gallery }: SampleLayoutProps) {
+export default function SampleLayout({ children }: SampleLayoutProps) {
+    const { frontMatter } = useDoc();
+    const gallery = frontMatter.gallery?.length ? <Gallery images={frontMatter.gallery} /> : null;
+
     return (
         <div className="flex flex-col-reverse lg:flex-row flex-wrap gap-8">
             <div className="flex-1 min-w-0">
@@ -15,7 +19,7 @@ export default function SampleLayout({ children, details, gallery }: SampleLayou
             </div>
             <div className="lg:w-[300px] shrink-0">
                 <div className="lg:hidden">{gallery}</div>
-                {details}
+                <SampleMetadataColumn />
             </div>
         </div>
     );

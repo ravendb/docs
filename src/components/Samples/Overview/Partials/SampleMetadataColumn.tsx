@@ -1,15 +1,15 @@
-import React, { ReactNode, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import { usePluginData } from "@docusaurus/useGlobalData";
 import clsx from "clsx";
 import Heading from "@theme/Heading";
 import Tag from "@site/src/theme/Tag";
 import type { PluginData } from "@site/src/components/Samples/types";
+import ActionsCard from "./ActionsCard";
+import RelatedResource from "./RelatedResource";
 
 export interface SampleMetadataColumnProps {
     className?: string;
-    actionsCard?: ReactNode;
-    relatedResources?: ReactNode;
 }
 
 interface TagData {
@@ -59,7 +59,7 @@ function TagSection({ title, tags }: TagSectionProps) {
     );
 }
 
-export default function SampleMetadataColumn({ className, actionsCard, relatedResources }: SampleMetadataColumnProps) {
+export default function SampleMetadataColumn({ className }: SampleMetadataColumnProps) {
     const { frontMatter } = useDoc();
     const pluginData = usePluginData("recent-samples-plugin") as PluginData | undefined;
 
@@ -94,6 +94,9 @@ export default function SampleMetadataColumn({ className, actionsCard, relatedRe
     const category = frontMatter.category;
     const license = frontMatter.license;
     const licenseUrl = frontMatter.license_url;
+    const repositoryUrl = frontMatter.repository_url;
+    const demoUrl = frontMatter.demo_url;
+    const relatedResourceItems = frontMatter.related_resources;
 
     const challengesSolutionsTags = getTagsWithLabels(challengesSolutionsTagKeys, challengesSolutionsTagsData);
     const featureTags = getTagsWithLabels(featureTagKeys, featureTagsData);
@@ -101,7 +104,7 @@ export default function SampleMetadataColumn({ className, actionsCard, relatedRe
 
     return (
         <div className={clsx("sticky top-[90px] flex flex-col gap-4", className)}>
-            {actionsCard}
+            {(repositoryUrl || demoUrl) && <ActionsCard githubUrl={repositoryUrl} demoUrl={demoUrl} />}
 
             <TagSection title="Challenges & Solutions" tags={challengesSolutionsTags} />
             <TagSection title="Feature" tags={featureTags} />
@@ -123,11 +126,7 @@ export default function SampleMetadataColumn({ className, actionsCard, relatedRe
                     </Heading>
                     <p className="text-sm text-black dark:text-white !mb-0">
                         {licenseUrl ? (
-                            <a
-                                href={licenseUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
+                            <a href={licenseUrl} target="_blank" rel="noopener noreferrer">
                                 {license}
                             </a>
                         ) : (
@@ -137,12 +136,23 @@ export default function SampleMetadataColumn({ className, actionsCard, relatedRe
                 </div>
             )}
 
-            {relatedResources && (
+            {relatedResourceItems && relatedResourceItems.length > 0 && (
                 <div className="flex flex-col gap-2">
                     <Heading as="h5" className="!mb-0 text-sm font-semibold">
                         Related Resources
                     </Heading>
-                    <div className="flex flex-col gap-1">{relatedResources}</div>
+                    <div className="flex flex-col gap-1">
+                        {relatedResourceItems.map((resource, index) => (
+                            <RelatedResource
+                                key={index}
+                                type={resource.type}
+                                documentationType={resource.documentation_type}
+                                subtitle={resource.subtitle}
+                                articleKey={resource.article_key}
+                                externalUrl={resource.url}
+                            />
+                        ))}
+                    </div>
                 </div>
             )}
         </div>

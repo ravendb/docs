@@ -91,16 +91,6 @@ export default function SamplesHomePage() {
         setSelectedTags(newSelected);
     };
 
-    const handleTagClick = (tagKey: string) => {
-        const newSelected = new Set(selectedTags);
-        if (newSelected.has(tagKey)) {
-            newSelected.delete(tagKey);
-        } else {
-            newSelected.add(tagKey);
-        }
-        setSelectedTags(newSelected);
-    };
-
     const { value: isFilterDrawerOpen, setTrue: openFilterDrawer, setFalse: closeFilterDrawer } = useBoolean(false);
 
     const hasActiveFilters = selectedTags.size > 0 || matchLogic !== "any";
@@ -116,8 +106,7 @@ export default function SamplesHomePage() {
         "@type": "CollectionPage",
         "@id": samplesUrl,
         name: "RavenDB Code Samples",
-        description:
-            "Production-ready code samples, architecture patterns, and starter kits built with RavenDB.",
+        description: "Production-ready code samples, architecture patterns, and starter kits built with RavenDB.",
         url: samplesUrl,
         isPartOf: { "@type": "WebSite", "@id": `${siteUrl}/` },
         breadcrumb: {
@@ -218,10 +207,10 @@ export default function SamplesHomePage() {
 
                 <div className="lg:col-span-3">
                     <SamplesGrid
-                        samples={samples.filter((s) => s.id !== "home")}
+                        samples={filteredSamples}
                         selectedTags={selectedTags}
                         matchLogic={matchLogic}
-                        onTagClick={handleTagClick}
+                        onTagClick={handleTagToggle}
                     />
                 </div>
             </div>

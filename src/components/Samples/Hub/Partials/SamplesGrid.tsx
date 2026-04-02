@@ -28,11 +28,7 @@ export default function SamplesGrid({ samples, selectedTags, matchLogic, onTagCl
         });
     }, [samples, selectedTags, matchLogic]);
 
-    const sortedSamples = useMemo(() => {
-        return filteredSamples;
-    }, [filteredSamples]);
-
-    if (sortedSamples.length === 0) {
+    if (filteredSamples.length === 0) {
         return (
             <div className="flex items-center justify-center py-12">
                 <p className="text-center text-black/60 dark:text-white/60">No samples found matching your filters.</p>
@@ -54,11 +50,11 @@ export default function SamplesGrid({ samples, selectedTags, matchLogic, onTagCl
                         "dark:bg-white/20 dark:text-white"
                     )}
                 >
-                    {sortedSamples.length}
+                    {filteredSamples.length}
                 </span>
             </div>
             <div className={clsx("grid grid-cols-1 md:grid-cols-2 gap-4", "animate-in fade-in")}>
-                {sortedSamples.map((sample) => (
+                {filteredSamples.map((sample) => (
                     <SampleCard
                         key={sample.id}
                         title={sample.title}

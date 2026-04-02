@@ -24,17 +24,12 @@ All sample components are exported from a single entry point:
 
 ```tsx
 import {
-    // Layout
+    // Layout (includes sidebar and gallery automatically)
     SampleLayout,
-    
-    // Metadata sidebar
-    SampleMetadataColumn,
-    ActionsCard,
-    RelatedResource,
-    
+
     // Content
     FeatureAccordion,
-    
+
     // Hub (not imported in sample pages)
     SamplesHomePage,
     SampleCard,
@@ -47,7 +42,7 @@ import {
 
 ### SampleLayout
 
-Two-column responsive layout for sample detail pages.
+Two-column responsive layout for sample detail pages. Renders the metadata sidebar and gallery automatically from frontmatter — no props needed beyond `children`.
 
 **Location:** `src/components/Samples/Overview/SampleLayout.tsx`
 
@@ -56,22 +51,22 @@ Two-column responsive layout for sample detail pages.
 | Prop | Type | Required | Description |
 |---|---|---|---|
 | `children` | `ReactNode` | ✅ | Main content area |
-| `details` | `ReactNode` | ✅ | Sidebar content (usually `SampleMetadataColumn`) |
 
 **Usage:**
 
 ```tsx
-export const sampleDetails = (
-    <SampleMetadataColumn {...} />
-);
-
-<SampleLayout details={sampleDetails}>
+<SampleLayout>
     {/* Main content */}
 </SampleLayout>
 ```
+
+**Auto-rendered from frontmatter:**
+- Sidebar — `SampleMetadataColumn` (tags, actions, license, related resources)
+- Gallery — `gallery` field; omitted automatically when the field is absent
+
 **Behavior:**
-- Desktop (lg+): Two columns, sidebar on right (300px fixed width)
-- Mobile: Stacked, sidebar appears above content
+- Desktop (lg+): Two columns, sidebar on right (300px fixed width); gallery above content
+- Mobile: Stacked, sidebar and gallery appear above content
 
 ---
 
@@ -79,7 +74,7 @@ export const sampleDetails = (
 
 ### SampleMetadataColumn
 
-Container for the metadata sidebar, displays tags, category, license, and related resources.
+Container for the metadata sidebar. Reads all data from frontmatter — no props required.
 
 **Location:** `src/components/Samples/Overview/Partials/SampleMetadataColumn.tsx`
 
@@ -88,113 +83,54 @@ Container for the metadata sidebar, displays tags, category, license, and relate
 | Prop | Type | Required | Description |
 |---|---|---|---|
 | `className` | `string` | ❌ | Additional CSS classes |
-| `actionsCard` | `ReactNode` | ❌ | Usually an `ActionsCard` component |
-| `relatedResources` | `ReactNode` | ❌ | Usually multiple `RelatedResource` components |
 
 **Usage:**
 
 ```tsx
-<SampleMetadataColumn
-    actionsCard={<ActionsCard {...} />}
-    relatedResources={
-        <>
-            <RelatedResource {...} />
-            <RelatedResource {...} />
-        </>
-    }
-/>
-```
-**Auto-populated from frontmatter:**
-- Challenges & Solutions tags (`challenges_solutions_tags`)
-- Feature tags (`feature_tags`)
-- Tech stack tags (`tech_stack_tags`)
-- Category (`category`) - optional, displayed in sidebar
-- License (`license`) - optional, displayed in sidebar
-
----
-
-### ActionsCard
-
-Displays GitHub repository and demo links.
-
-**Location:** `src/components/Samples/Overview/Partials/ActionsCard.tsx`
-
-**Props:**
-
-| Prop | Type | Required | Description |
-|---|---|---|---|
-| `className` | `string` | ❌ | Additional CSS classes |
-| `githubUser` | `string` | ❌ | GitHub username or organization |
-| `githubRepo` | `string` | ❌ | GitHub repository name |
-| `demoUrl` | `string` | ❌ | URL to live demo |
-
-**Usage:**
-
-```tsx
-<ActionsCard
-    githubUser="ravendb"
-    githubRepo="samples-library"
-    demoUrl="https://demo.ravendb.net"
-/>
+<SampleMetadataColumn />
 ```
 
-**Rendered buttons:**
-- **Browse code** (if `githubUser` and `githubRepo` provided) - Links to `https://github.com/{user}/{repo}`
-- **View demo** (if `demoUrl` provided) - Links to demo URL
+**Populated from frontmatter:**
+- `repository_url` — renders "Browse code" button
+- `demo_url` — renders "View demo" button
+- `challenges_solutions_tags` — Challenges & Solutions tag pills
+- `feature_tags` — Feature tag pills
+- `tech_stack_tags` — Tech stack tag pills
+- `category` — optional, displayed in sidebar
+- `license` / `license_url` — optional, displayed in sidebar
+- `related_resources` — renders linked resource items (see schema below)
 
----
+**`related_resources` item schema (frontmatter):**
 
-### RelatedResource
-
-Links to related guides or documentation.
-
-**Location:** `src/components/Samples/Overview/Partials/RelatedResource.tsx`
-
-**Props:**
-
-| Prop | Type | Required | Description |
+| Field | Type | Required | Description |
 |---|---|---|---|
-| `className` | `string` | ❌ | Additional CSS classes |
 | `type` | `"guide"` \| `"documentation"` | ✅ | Resource type |
-| `documentationType` | `"docs"` \| `"cloud"` | ❌ | Documentation section (only for `type="documentation"`) |
+| `documentation_type` | `"docs"` \| `"cloud"` | ❌ | Documentation section |
 | `subtitle` | `string` | ✅ | Display text |
-| `articleKey` | `string` | ✅ | Path to article (without version prefix) |
+| `article_key` | `string` | ✅ | Article path without version prefix |
 
-**Usage:**
+**Example frontmatter:**
 
-```tsx
-{/* Link to guide */}
-<RelatedResource
-    type="guide"
-    subtitle="Bookkeeping with RavenDB & ETLs"
-    articleKey="bookkeeping-with-ravendb"
-/>
-
-{/* Link to docs */}
-<RelatedResource
-    type="documentation"
-    documentationType="docs"
-    subtitle="Vector Search Overview"
-    articleKey="ai-integration/vector-search/overview"
-/>
-
-{/* Link to cloud docs */}
-<RelatedResource
-    type="documentation"
-    documentationType="cloud"
-    subtitle="Cloud Backup"
-    articleKey="portal-backup"
-/>
+```yaml
+repository_url: "https://github.com/ravendb/my-sample-repo"
+demo_url: "https://demo.example.com"
+related_resources:
+  - type: guide
+    subtitle: "Bookkeeping with RavenDB & ETLs"
+    article_key: "bookkeeping-with-ravendb"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Vector Search Overview"
+    article_key: "ai-integration/vector-search/overview"
+  - type: documentation
+    documentation_type: cloud
+    subtitle: "Cloud Backup"
+    article_key: "portal-backup"
 ```
 
-**Auto-versioning:**
-- For `type="documentation"` with `documentationType="docs"`, the current version is automatically prepended
+**Auto-versioning for docs links:**
+- `documentation_type: docs` → current version is automatically prepended
 - Example: `ai-integration/vector-search/overview` → `/7.2/ai-integration/vector-search/overview`
-
-**Icons:**
-- `guide` → Guides icon
-- `documentation` (docs) → Database icon
-- `documentation` (cloud) → Cloud icon
 
 ---
 

@@ -4,14 +4,11 @@ import Button from "@site/src/components/Common/Button";
 
 export interface ActionsCardProps {
     className?: string;
-    githubUser?: string;
-    githubRepo?: string;
+    githubUrl?: string;
     demoUrl?: string;
 }
 
-export default function ActionsCard({ className, githubUser, githubRepo, demoUrl }: ActionsCardProps) {
-    const githubUrl = githubUser && githubRepo ? `https://github.com/${githubUser}/${githubRepo}` : undefined;
-
+export default function ActionsCard({ className, githubUrl, demoUrl }: ActionsCardProps) {
     return (
         <div
             className={clsx(

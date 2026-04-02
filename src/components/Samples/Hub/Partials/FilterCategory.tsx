@@ -27,11 +27,7 @@ export default function FilterCategory({
     isExpanded,
     onToggleExpanded,
 }: FilterCategoryProps) {
-    const {
-        value: isTagsExpanded,
-        setTrue: expandTags,
-        setFalse: collapseTags,
-    } = useBoolean(false);
+    const { value: isTagsExpanded, setTrue: expandTags, setFalse: collapseTags } = useBoolean(false);
     const [manuallyCollapsed, setManuallyCollapsed] = React.useState(false);
 
     const visibleTags = isTagsExpanded ? tags : tags.slice(0, 5);

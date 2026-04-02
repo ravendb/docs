@@ -113,16 +113,20 @@ Use `FeatureAccordion` components for each major feature:
 
 ## Component Usage
 
-### ActionsCard
+### Sidebar (frontmatter-driven)
 
-**Always provide:**
-- GitHub repository link (if code is public)
-- Demo URL (if available)
+The metadata sidebar is fully driven by frontmatter — no JSX props needed.
 
-**Don't:**
-- Link to private repositories
-- Use broken or outdated demo URLs
-- Include download links (use GitHub releases instead)
+**Actions (repository_url / demo_url):**
+- Always provide `repository_url` if the code is public
+- Add `demo_url` only if a live demo is available and maintained
+- Don't link to private repositories or broken demo URLs
+
+**Related resources (related_resources):**
+- Link to 2–3 related resources
+- Mix guides and documentation
+- Verify links are correct and current; use descriptive `subtitle` values
+- Don't link to deprecated documentation, use vague subtitles like "Related Article", or duplicate links
 
 ### FeatureAccordion
 
@@ -133,18 +137,6 @@ Use `FeatureAccordion` components for each major feature:
 **Don't:**
 - Leave children empty (omit the accordion instead)
 - Include broken code examples
-
-### RelatedResource
-
-**Do:**
-- Verify links are correct and current
-- Use descriptive subtitles
-
-**Don't:**
-- Link to deprecated documentation
-- Use vague subtitles like "Related Article"
-- Link to external sites without context
-- Duplicate links
 
 ## Tag Management
 

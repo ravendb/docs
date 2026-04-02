@@ -208,18 +208,27 @@ category: "Ecommerce"
 license: "MIT License"
 license_url: "https://opensource.org/licenses/MIT"
 repository_url: "https://github.com/ravendb/sample-repo"
+demo_url: "https://demo.example.com"
 languages: ["C#"]
 gallery:
   - src: "/img/samples/my-sample/screenshot-1.webp"
     alt: "Main interface"
   - src: "/img/samples/my-sample/screenshot-2.webp"
     alt: "Admin dashboard"
+related_resources:
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Vector Search Overview"
+    article_key: "ai-integration/vector-search/overview"
+  - type: guide
+    subtitle: "Related Guide Title"
+    article_key: "guide-slug"
 ---
 ```
 
 **Required fields**: `title`, `description`, `challenges_solutions_tags`, `feature_tags`, `tech_stack_tags`
 
-**Optional fields**: `image`, `img_alt`, `category`, `license`, `license_url`, `repository_url`, `languages`, `gallery`
+**Optional fields**: `image`, `img_alt`, `category`, `license`, `license_url`, `repository_url`, `demo_url`, `languages`, `gallery`, `related_resources`
 
 **SEO**: `repository_url` and `languages` feed `SoftwareSourceCode` JSON-LD schema for better search visibility.
 
