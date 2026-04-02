@@ -7,6 +7,7 @@
 
 * In this page:
   * [CdcSinkConfiguration](../../../server/ongoing-tasks/cdc-sink/configuration-reference#cdcsinkconfiguration)
+  * [CdcSinkPostgresSettings](../../../server/ongoing-tasks/cdc-sink/configuration-reference#cdcsinkpostgressettings)
   * [CdcSinkTableConfig](../../../server/ongoing-tasks/cdc-sink/configuration-reference#cdcsinktableconfig)
   * [CdcSinkEmbeddedTableConfig](../../../server/ongoing-tasks/cdc-sink/configuration-reference#cdcsinkembeddedtableconfig)
   * [CdcSinkLinkedTableConfig](../../../server/ongoing-tasks/cdc-sink/configuration-reference#cdcsinklinkedtableconfig)
@@ -26,10 +27,39 @@ The top-level configuration object for a CDC Sink task.
 | `Name` | `string` | ✓ | Unique task name |
 | `ConnectionStringName` | `string` | ✓ | Name of the SQL connection string |
 | `Tables` | `List<CdcSinkTableConfig>` | ✓ | Root table configurations (at least one required) |
+| `Postgres` | `CdcSinkPostgresSettings` | | PostgreSQL-specific settings (slot and publication names) |
+| `SkipInitialLoad` | `bool` | | When `true`, skip the initial full-table scan and start streaming CDC changes immediately. Only applies on first startup — has no effect once the initial load has completed. Default: `false` |
 | `Disabled` | `bool` | | Pause the task without deleting it. Default: `false` |
 | `MentorNode` | `string` | | Preferred cluster node for execution |
 | `PinToMentorNode` | `bool` | | Pin the task to the mentor node. Default: `false` |
 | `TaskId` | `long` | | Set by the server on creation |
+
+{PANEL/}
+
+---
+
+{PANEL: CdcSinkPostgresSettings}
+
+PostgreSQL-specific settings. Assigned to `CdcSinkConfiguration.Postgres`.
+Leave `null` for non-PostgreSQL connections.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `SlotName` | `string` | Name of the PostgreSQL logical replication slot. If omitted on creation, a deterministic hash-based name is used. Immutable once set. Max 63 characters, alphanumeric and underscores only. |
+| `PublicationName` | `string` | Name of the PostgreSQL publication. Same auto-fill and immutability rules as `SlotName`. |
+
+Setting these explicitly is useful when:
+- A database administrator pre-creates the slot and publication with human-readable names
+- Migrating from a previous CDC Sink task and reusing an existing slot
+- Running multiple environments (dev/staging/prod) with predictable names
+
+See [Initial Setup](../../../server/ongoing-tasks/cdc-sink/postgres/initial-setup) for details.
+
+{NOTE: }
+For embedded tables where the join columns are not part of the primary key, the
+PostgreSQL table must have `REPLICA IDENTITY` configured so that DELETE events include
+the join column values. See [REPLICA IDENTITY](../../../server/ongoing-tasks/cdc-sink/postgres/replica-identity).
+{NOTE/}
 
 {PANEL/}
 

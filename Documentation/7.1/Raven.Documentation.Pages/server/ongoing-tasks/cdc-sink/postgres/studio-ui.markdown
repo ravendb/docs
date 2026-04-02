@@ -61,9 +61,16 @@ To edit a task, click its name in the Ongoing Tasks list. The same configuration
 form used for creation opens in edit mode.
 
 {WARNING: }
-Adding or removing tables from the task configuration changes the replication slot
-and publication names. The old slot and publication will become orphaned and must
-be dropped manually by a database administrator.
+If the task uses **auto-generated** slot and publication names (no custom
+`CdcSinkPostgresSettings`), adding or removing tables changes the hash and therefore
+the names. A new slot and publication are created under the new names, and the old
+ones become orphaned.
+
+If you specified **custom names** via `CdcSinkPostgresSettings.SlotName` and
+`PublicationName`, the slot name stays the same but the publication may need to be
+updated by a database administrator to include the new tables.
+
+Orphaned slots and publications must be dropped manually by the database administrator.
 See [Cleanup and Maintenance](../../../../server/ongoing-tasks/cdc-sink/postgres/cleanup-and-maintenance).
 {WARNING/}
 

@@ -133,7 +133,7 @@ case-sensitive.
 {PANEL: Deep Nesting}
 
 Embedded tables can contain their own `EmbeddedTables`, creating hierarchies
-of 3 or more levels.
+with multiple levels.
 
 **Key constraint:** Every descendant table must carry the **root table's primary key**
 as a denormalized column. This is required because CDC Sink routes each row to its
@@ -160,8 +160,8 @@ directly joins to `departments`:
 When a CDC Sink event arrives for an `employees` row, CDC Sink needs to:
 
 1. Find the root document: `Companies/{company_id}`
-2. Navigate to the correct `Departments` array item: `Departments[dept_id]`
-3. Add or update the `Employees` array item: `Employees[emp_id]`
+2. Navigate to the correct `Departments` array item: `Departments.find(d => d.dept_id == dept_id)`
+3. Add or update the `Employees` array item: `Employees.find(e => e.emp_id == emp_id)`
 
 Without `company_id` in the event, CDC Sink cannot identify the root document
 without an additional lookup, which is not supported.

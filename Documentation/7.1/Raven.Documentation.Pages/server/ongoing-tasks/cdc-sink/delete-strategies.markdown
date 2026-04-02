@@ -28,7 +28,8 @@
 When `OnDelete` is `null` (or not set):
 
 * **Root table DELETE** — The corresponding RavenDB document is deleted
-* **Embedded table DELETE** — The item is removed from the parent document's array or map
+* **Embedded table DELETE (Array/Map)** — The item is removed from the parent document's array or map
+* **Embedded table DELETE (Value)** — The `Value`-type property on the parent document is set to `null`
 
 {PANEL/}
 
@@ -51,6 +52,13 @@ When `OnDelete` is `null` (or not set):
 * If `Patch` is set, it runs **before** the delete decision is made
 * If `IgnoreDeletes = true`, the deletion is skipped after the patch runs
 * If `IgnoreDeletes = false` (default), the deletion proceeds after the patch runs
+
+{NOTE: }
+When `IgnoreDeletes = true`, CDC Sink skips the delete but still **saves any changes
+made to `this`** in the patch. This means a patch can modify the document (e.g.,
+set an `Archived` flag) and those changes are written to RavenDB even though the
+document is not deleted.
+{NOTE/}
 
 {PANEL/}
 
@@ -77,29 +85,30 @@ field to exclude archived records.
 
 ---
 
-{PANEL: Pattern: Audit Trail}
+{PANEL: Pattern: Audit Trail (Root Document)}
 
-Allow the deletion to proceed, but first capture the deleted state as a separate
-audit record or as data on the document before it disappears.
+When a root document is deleted, write an audit record to a separate RavenDB
+collection using `put()` before the deletion proceeds.
 
-Since the goal is to allow the delete to proceed, set `IgnoreDeletes = false`
-(the default — omit the field entirely):
+The document is deleted after the patch runs, so any writes to `this` are lost.
+Use `put()` to create a document that survives the deletion:
 
     OnDelete = new CdcSinkOnDeleteConfig
     {
         // IgnoreDeletes defaults to false — delete proceeds after patch
         Patch = @"
-            // $row contains the deleted row's column values
-            // $old contains the document's last known state
-            // Record what was deleted as a separate document or side effect
-            this.DeletedAt = new Date().toISOString();
-            this.FinalState = { Name: $old?.Name, Status: $old?.Status };
+            // Create a permanent audit record in a separate collection
+            put('DeletedOrders/' + this.Id, {
+                OriginalId: this.Id,
+                Customer: this.Customer,
+                Total: this.Total,
+                DeletedAt: new Date().toISOString()
+            });
         "
     }
 
-The patch runs, then the document is deleted. Any logic you need to run before
-the document disappears (such as writing an audit entry via a subscription) should
-read from the document before the delete takes effect.
+The patch creates a document in `DeletedOrders/` before `this` is deleted.
+The audit record persists permanently.
 
 {PANEL/}
 
@@ -161,6 +170,31 @@ Rather than removing a deleted line item from the array, move it to a separate
 With `IgnoreDeletes = true`, CDC Sink does not automatically remove the item —
 the patch takes full control of both the `Lines` array and the `DeletedLines` audit trail.
 
+**Example: Run a patch but still remove the item**
+
+To run some logic on DELETE while still removing the item from the array,
+use `IgnoreDeletes = false` (default) — CDC Sink handles the removal, and the patch
+runs before it:
+
+    new CdcSinkEmbeddedTableConfig
+    {
+        SourceTableName = "order_lines",
+        PropertyName = "Lines",
+        // ...
+        OnDelete = new CdcSinkOnDeleteConfig
+        {
+            // IgnoreDeletes = false (default) — CDC Sink removes the item after patch
+            Patch = @"
+                // Log total for the line being removed
+                this.RemovedTotal = (this.RemovedTotal || 0)
+                    + ($old?.UnitPrice || 0) * ($old?.Qty || 0);
+            "
+        }
+    }
+
+The `Lines` item is removed by CDC Sink. The patch only needs to handle the
+side-effect logic.
+
 {PANEL/}
 
 ---
@@ -184,7 +218,15 @@ For CDC Sink to route a DELETE event to the correct document or embedded item,
 the source database must include the necessary column values in the DELETE event.
 
 For embedded tables where the join column is not in the primary key, the source
-database may need additional configuration. See:
+database may need additional configuration.
+
+{NOTE: }
+The REPLICA IDENTITY requirement described below is **PostgreSQL-specific**.
+Other databases may have different requirements or may not need any extra
+configuration for DELETE routing.
+{NOTE/}
+
+See:
 
 * [REPLICA IDENTITY](../../../server/ongoing-tasks/cdc-sink/postgres/replica-identity) (PostgreSQL)
 

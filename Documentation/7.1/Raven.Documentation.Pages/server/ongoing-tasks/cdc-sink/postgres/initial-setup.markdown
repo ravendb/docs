@@ -12,7 +12,8 @@
 * In this page:
   * [Automatic Setup](../../../../server/ongoing-tasks/cdc-sink/postgres/initial-setup#automatic-setup)
   * [Manual Setup](../../../../server/ongoing-tasks/cdc-sink/postgres/initial-setup#manual-setup)
-  * [Slot and Publication Naming](../../../../server/ongoing-tasks/cdc-sink/postgres/initial-setup#slot-and-publication-naming)
+  * [Specifying Custom Slot and Publication Names](../../../../server/ongoing-tasks/cdc-sink/postgres/initial-setup#specifying-custom-slot-and-publication-names)
+  * [Slot and Publication Naming (Auto-generated)](../../../../server/ongoing-tasks/cdc-sink/postgres/initial-setup#slot-and-publication-naming-auto-generated)
   * [Verifying Setup](../../../../server/ongoing-tasks/cdc-sink/postgres/initial-setup#verifying-setup)
 
 {NOTE/}
@@ -43,11 +44,16 @@ publications, a database administrator must create them before the task is start
 
 **Step 1: Determine the slot and publication names**
 
-CDC Sink derives names deterministically from the task configuration.
-See [Slot and Publication Naming](../../../../server/ongoing-tasks/cdc-sink/postgres/initial-setup#slot-and-publication-naming)
-below for the naming scheme.
+The simplest approach is to specify the names explicitly in `CdcSinkPostgresSettings`
+so both you and the database administrator know what names to use.
+See [Specifying Custom Slot and Publication Names](../../../../server/ongoing-tasks/cdc-sink/postgres/initial-setup#specifying-custom-slot-and-publication-names).
 
-You can find the names CDC Sink expects by creating the task (it will fail to start)
+If using auto-generated names (no `Postgres` settings), CDC Sink derives names
+deterministically from the task configuration.
+See [Slot and Publication Naming](../../../../server/ongoing-tasks/cdc-sink/postgres/initial-setup#slot-and-publication-naming-auto-generated)
+for the naming scheme.
+
+You can also find the names CDC Sink expects by creating the task (it will fail to start)
 and reading the error message, which includes the expected names.
 
 **Step 2: Create the publication**
@@ -83,9 +89,46 @@ See [Cleanup and Maintenance](../../../../server/ongoing-tasks/cdc-sink/postgres
 
 ---
 
-{PANEL: Slot and Publication Naming}
+{PANEL: Specifying Custom Slot and Publication Names}
 
-CDC Sink uses deterministic names derived from the task configuration:
+You can explicitly specify the replication slot and publication names by setting
+`CdcSinkPostgresSettings` on the task configuration:
+
+    var config = new CdcSinkConfiguration
+    {
+        Name = "OrdersSync",
+        ConnectionStringName = "MyPostgresConnection",
+        Postgres = new CdcSinkPostgresSettings
+        {
+            SlotName = "orders_sync_slot",
+            PublicationName = "orders_sync_pub"
+        },
+        Tables = [ ... ]
+    };
+
+Custom names are useful when:
+
+* A database administrator pre-creates the slot and publication with human-readable
+  names before starting the task
+* You are migrating from a previous CDC Sink task and want to reuse an existing slot
+  to avoid re-reading history
+* You need predictable names across environments (dev/staging/prod)
+
+**Constraints:** Names must be valid PostgreSQL identifiers — alphanumeric characters
+and underscores only, maximum 63 characters.
+
+**Immutability:** Once set, `SlotName` and `PublicationName` cannot be changed. The
+slot and publication names are fixed for the lifetime of the task. If you need to
+rename them, delete the task and create a new one.
+
+{PANEL/}
+
+---
+
+{PANEL: Slot and Publication Naming (Auto-generated)}
+
+When `CdcSinkPostgresSettings` is not set (or `SlotName`/`PublicationName` are null),
+CDC Sink generates deterministic names:
 
 * **Slot name**: `rvn_cdc_s_<hash>`
 * **Publication name**: `rvn_cdc_p_<hash>`
@@ -110,8 +153,9 @@ a specific task.
 {NOTE: }
 Because the hash is derived from the task name, database name, and table names,
 changing any of these values produces a different hash and therefore a different
-slot name. This allows multiple CDC Sink tasks to run on the same PostgreSQL
-instance without naming conflicts.
+slot name. This prevents naming conflicts between multiple CDC Sink tasks on the
+same PostgreSQL instance, but means that renaming a task or adding/removing tables
+produces a new slot — the old one becomes orphaned.
 {NOTE/}
 
 {PANEL/}

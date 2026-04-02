@@ -52,7 +52,8 @@ of changes in the source database. Consider:
 
 * Increasing `CdcSink.MaxBatchSize` to process more changes per batch
 * Reducing load on the source database
-* Checking for patch scripts that are slow or make many `get()` calls
+* Checking the per-table processing statistics in the Management Studio for slow scripts —
+  complex patch scripts are a common cause of processing slowdowns
 
 {PANEL/}
 

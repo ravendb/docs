@@ -59,6 +59,31 @@ being read from the source database, keeping both systems busy.
 then embedded tables. This minimises the number of stub documents created (see
 [Child Before Parent](../../../server/ongoing-tasks/cdc-sink/how-it-works#child-before-parent) below).
 
+{NOTE: }
+**CDC is initialized before the initial load begins.**
+The replication slot is created and CDC Sink starts capturing changes *before*
+the first row is read. This guarantees that no change made during the (potentially
+long) initial load phase is lost — all such changes are queued in the replication
+stream and applied once the initial load completes.
+
+For very large databases this means the source database must retain sufficient
+change history for the duration of the initial load (e.g., enough disk for WAL
+accumulation on PostgreSQL, or a long enough retention window on SQL Server's CDC
+tables). Plan accordingly before starting the initial load on large tables.
+{NOTE/}
+
+{NOTE: }
+**New rows added mid-load become stub documents.**
+If a new row is inserted into the source during the initial load — and CDC Sink has
+not yet reached that key via keyset pagination — it will appear in the replication
+stream before the initial load scans past it. CDC Sink applies the CDC event first,
+creating a full document. When the initial load later reaches that key, it merges
+the scanned row onto the document. No data is lost or duplicated.
+
+If the CDC event arrives *after* the initial load has scanned past the key, the
+document is written by the initial load and then the CDC event is applied on top.
+{NOTE/}
+
 {PANEL/}
 
 ---
@@ -67,6 +92,12 @@ then embedded tables. This minimises the number of stub documents created (see
 
 After the initial load completes, CDC Sink opens a streaming connection to the
 source database and begins receiving changes in real time.
+
+{NOTE: }
+The starting position for CDC streaming is the position captured **before** the
+initial load began — not after. This is what ensures changes made during the
+initial load are not missed.
+{NOTE/}
 
 Changes arrive grouped by source database transaction, preserving the exact order
 of operations. A transaction is only applied to RavenDB after it is fully committed

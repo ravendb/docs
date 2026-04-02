@@ -33,6 +33,19 @@ This can lead to:
 
 A database administrator must drop unused replication slots.
 
+{NOTE: }
+**Why RavenDB does not drop slots automatically:**
+
+There are valid reasons to keep a slot after a task is deleted. For example, you
+may want to create a new CDC Sink task that resumes from the same position (by
+reusing the existing slot), or you may want to review what changes are pending
+before cleaning up. The CDC Sink user may also not have the permissions required
+to drop replication slots, even if it had the permissions to create them.
+
+For these reasons, slot and publication lifecycle management is the responsibility
+of the database administrator.
+{NOTE/}
+
 {PANEL/}
 
 ---

@@ -55,28 +55,28 @@ history, and `Balance` is maintained using patch logic.
     {
         Name = "AccountsSync",
         ConnectionStringName = "MyPostgresConnection",
-        Tables = new List<CdcSinkTableConfig>
-        {
+        Tables =
+        [
             new CdcSinkTableConfig
             {
                 Name = "Accounts",
                 SourceTableName = "accounts",
-                PrimaryKeyColumns = new List<string> { "account_id" },
+                PrimaryKeyColumns = ["account_id"],
                 ColumnsMapping = new Dictionary<string, string>
                 {
                     { "account_id", "AccountId" },
                     { "owner",      "Owner" },
                     { "currency",   "Currency" }
                 },
-                EmbeddedTables = new List<CdcSinkEmbeddedTableConfig>
-                {
+                EmbeddedTables =
+                [
                     new CdcSinkEmbeddedTableConfig
                     {
                         SourceTableName = "transactions",
                         PropertyName = "Transactions",
                         Type = CdcSinkRelationType.Array,
-                        JoinColumns = new List<string> { "account_id" },
-                        PrimaryKeyColumns = new List<string> { "txn_id" },
+                        JoinColumns = ["account_id"],
+                        PrimaryKeyColumns = ["txn_id"],
                         ColumnsMapping = new Dictionary<string, string>
                         {
                             { "txn_id",     "TxnId" },
@@ -85,7 +85,7 @@ history, and `Balance` is maintained using patch logic.
                             { "created_at", "CreatedAt" }
                         },
                         // Patch runs on the parent document for INSERT/UPDATE
-                        Patch = @"
+                        Patch = """
                             const oldAmount = $old?.Amount || 0;
                             const newAmount = $row.amount || 0;
                             const sign = $row.type === 'credit' ? 1 : -1;
@@ -93,19 +93,19 @@ history, and `Balance` is maintained using patch logic.
                             this.Balance = (this.Balance || 0)
                                 - (oldSign * oldAmount)
                                 + (sign * newAmount);
-                        ",
+                            """,
                         OnDelete = new CdcSinkOnDeleteConfig
                         {
-                            Patch = @"
+                            Patch = """
                                 const deletedAmount = $old?.Amount || 0;
                                 const sign = $old?.Type === 'credit' ? 1 : -1;
                                 this.Balance = (this.Balance || 0) - (sign * deletedAmount);
-                            "
+                                """
                         }
                     }
-                }
+                ]
             }
-        }
+        ]
     };
 
     await store.Maintenance.SendAsync(new AddCdcSinkOperation(config));

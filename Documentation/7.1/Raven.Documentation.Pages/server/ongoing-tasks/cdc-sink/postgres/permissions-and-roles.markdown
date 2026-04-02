@@ -67,6 +67,14 @@ For production environments, prefer granting only the specific privileges listed
 above rather than `SUPERUSER`.
 {WARNING/}
 
+{NOTE: }
+For added security in production, consider having your database administrator create
+the replication slot and publication manually with the minimal permissions shown above,
+rather than granting CDC Sink the ability to manage them automatically. The CDC Sink
+user then only needs `REPLICATION` privilege and `SELECT` on the relevant tables.
+See [Initial Setup](../../../../server/ongoing-tasks/cdc-sink/postgres/initial-setup).
+{NOTE/}
+
 {PANEL/}
 
 ---

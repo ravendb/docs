@@ -39,7 +39,7 @@
 
     CREATE TABLE variant_attributes (
         attr_id    SERIAL PRIMARY KEY,
-        product_id INT NOT NULL,    -- denormalized root PK (required for deep nesting)
+        product_id INT NOT NULL REFERENCES products(product_id),  -- denormalized root PK (required for deep nesting)
         variant_id INT NOT NULL REFERENCES product_variants(variant_id),
         attr_name  TEXT NOT NULL,
         attr_value TEXT NOT NULL
@@ -52,10 +52,23 @@
 {PANEL: REPLICA IDENTITY Setup}
 
 Both `product_variants` and `variant_attributes` have surrogate PKs with join
-columns that are not part of their primary keys:
+columns that are not part of their primary keys. Rather than `REPLICA IDENTITY FULL`
+(which includes all columns), we use targeted unique indexes covering just the join
+and PK columns:
 
-    ALTER TABLE product_variants REPLICA IDENTITY FULL;
-    ALTER TABLE variant_attributes REPLICA IDENTITY FULL;
+    -- product_variants: join column is product_id, PK is variant_id
+    CREATE UNIQUE INDEX product_variants_replica_idx
+        ON product_variants (product_id, variant_id);
+    ALTER TABLE product_variants
+        REPLICA IDENTITY USING INDEX product_variants_replica_idx;
+
+    -- variant_attributes: join columns are product_id + variant_id, PK is attr_id
+    CREATE UNIQUE INDEX variant_attributes_replica_idx
+        ON variant_attributes (product_id, variant_id, attr_id);
+    ALTER TABLE variant_attributes
+        REPLICA IDENTITY USING INDEX variant_attributes_replica_idx;
+
+See [REPLICA IDENTITY](../../../../../server/ongoing-tasks/cdc-sink/postgres/replica-identity) for more details.
 
 {PANEL/}
 
@@ -67,39 +80,39 @@ columns that are not part of their primary keys:
     {
         Name = "ProductCatalogSync",
         ConnectionStringName = "MyPostgresConnection",
-        Tables = new List<CdcSinkTableConfig>
-        {
+        Tables =
+        [
             new CdcSinkTableConfig
             {
                 Name = "Products",
                 SourceTableName = "products",
-                PrimaryKeyColumns = new List<string> { "product_id" },
+                PrimaryKeyColumns = ["product_id"],
                 ColumnsMapping = new Dictionary<string, string>
                 {
                     { "product_id", "ProductId" },
                     { "name",       "Name" }
                 },
                 // Linked table: category_id FK → document ID in Categories collection
-                LinkedTables = new List<CdcSinkLinkedTableConfig>
-                {
+                LinkedTables =
+                [
                     new CdcSinkLinkedTableConfig
                     {
                         SourceTableName = "categories",
                         PropertyName = "Category",
                         LinkedCollectionName = "Categories",
                         Type = CdcSinkRelationType.Value,
-                        JoinColumns = new List<string> { "category_id" }
+                        JoinColumns = ["category_id"]
                     }
-                },
-                EmbeddedTables = new List<CdcSinkEmbeddedTableConfig>
-                {
+                ],
+                EmbeddedTables =
+                [
                     new CdcSinkEmbeddedTableConfig
                     {
                         SourceTableName = "product_variants",
                         PropertyName = "Variants",
                         Type = CdcSinkRelationType.Array,
-                        JoinColumns = new List<string> { "product_id" },
-                        PrimaryKeyColumns = new List<string> { "variant_id" },
+                        JoinColumns = ["product_id"],
+                        PrimaryKeyColumns = ["variant_id"],
                         ColumnsMapping = new Dictionary<string, string>
                         {
                             { "variant_id", "VariantId" },
@@ -107,16 +120,16 @@ columns that are not part of their primary keys:
                             { "price",      "Price" }
                         },
                         // Deep-nested: attributes within each variant
-                        EmbeddedTables = new List<CdcSinkEmbeddedTableConfig>
-                        {
+                        EmbeddedTables =
+                        [
                             new CdcSinkEmbeddedTableConfig
                             {
                                 SourceTableName = "variant_attributes",
                                 PropertyName = "Attributes",
                                 Type = CdcSinkRelationType.Array,
                                 // JoinColumns must include the ROOT PK for deep nesting
-                                JoinColumns = new List<string> { "product_id", "variant_id" },
-                                PrimaryKeyColumns = new List<string> { "attr_id" },
+                                JoinColumns = ["product_id", "variant_id"],
+                                PrimaryKeyColumns = ["attr_id"],
                                 ColumnsMapping = new Dictionary<string, string>
                                 {
                                     { "attr_id",    "AttrId" },
@@ -124,11 +137,11 @@ columns that are not part of their primary keys:
                                     { "attr_value", "Value" }
                                 }
                             }
-                        }
+                        ]
                     }
-                }
+                ]
             }
-        }
+        ]
     };
 
     await store.Maintenance.SendAsync(new AddCdcSinkOperation(config));

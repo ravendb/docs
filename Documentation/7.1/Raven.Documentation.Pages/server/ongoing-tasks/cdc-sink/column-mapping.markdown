@@ -32,6 +32,19 @@ name to a RavenDB document property name:
 **Key:** SQL column name (case-insensitive match against the column names in CDC events)
 **Value:** Property name in the RavenDB document
 
+{NOTE: }
+The primary key column(s) do not need to be mapped. When included in `ColumnsMapping`,
+they become a regular document property. When omitted, the PK values are still used
+to build the document ID — they just won't appear as a named property.
+
+Including the PK in the mapping is generally useful so the document carries its own
+identifier, but it is not required.
+{NOTE/}
+
+**Type conversions:** SQL numeric, boolean, and date types are converted to their
+JSON equivalents. SQL `NULL` becomes JSON `null`. If you need custom type handling
+or derived values, use a `Patch` script.
+
 **At least one mapping is required.** An empty `ColumnsMapping` is a validation error.
 
 The same rules apply to embedded table column mappings.
@@ -57,6 +70,16 @@ This allows you to use data for computations without permanently storing raw SQL
 
 In this example, `base_price` and `tax_rate` are available during the patch but
 not stored as document properties. Only the computed `FinalPrice` is stored.
+
+{NOTE: }
+**Naming context:**
+Property names (the values in `ColumnsMapping`) become properties on the RavenDB
+document — accessible as `this.FinalPrice` inside a patch script.
+
+Column names (the keys in `ColumnsMapping`, plus any unmapped columns) are accessible
+in patch scripts via `$row.base_price` (for the current row's values) and
+`$old?.base_price` (for the previous row's values on UPDATE events).
+{NOTE/}
 
 {PANEL/}
 

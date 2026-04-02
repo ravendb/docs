@@ -81,10 +81,22 @@ Pass the full updated configuration including the `TaskId`:
         new UpdateCdcSinkOperation(taskId, config));
 
 {WARNING: }
-Adding or removing tables, or changing table names, changes the hash used to generate
-the replication slot and publication names. This results in a new slot and publication
-being created and the old ones becoming orphaned. The database administrator must
-drop the old slot and publication manually.
+**PostgreSQL — table changes affect the replication slot:**
+
+* **Adding tables** to the task requires updating the publication to include the
+  new tables. If the slot and publication were auto-named (hash-based), this causes
+  a new slot/publication to be created under a new hash, and the old ones become
+  orphaned.
+* **Removing tables** from the task means the old publication includes tables that
+  are no longer needed. The slot keeps receiving updates for those tables
+  unnecessarily.
+
+If you specified explicit `SlotName` and `PublicationName` in `CdcSinkPostgresSettings`,
+you can update the publication manually to add/remove tables without affecting the slot.
+See [Initial Setup](../../../server/ongoing-tasks/cdc-sink/postgres/initial-setup) for
+guidance on manual slot management.
+
+Orphaned slots and publications must be dropped by the database administrator.
 See [Cleanup and Maintenance](../../../server/ongoing-tasks/cdc-sink/postgres/cleanup-and-maintenance).
 {WARNING/}
 
@@ -114,6 +126,14 @@ Pause or resume a CDC Sink task using `ToggleOngoingTaskStateOperation`:
     // Resume the task
     await store.Maintenance.SendAsync(
         new ToggleOngoingTaskStateOperation(taskId, OngoingTaskType.CdcSink, disable: false));
+
+{WARNING: }
+**PostgreSQL:** Pausing a CDC Sink task stops the replication slot from being consumed.
+PostgreSQL retains WAL segments for unconsumed slots, so pausing for an extended period
+causes WAL to accumulate on disk. Monitor disk usage if a task is paused for more than
+a short time.
+See [Monitoring PostgreSQL](../../../server/ongoing-tasks/cdc-sink/postgres/monitoring-postgres).
+{WARNING/}
 
 {PANEL/}
 

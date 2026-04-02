@@ -40,8 +40,7 @@ Use `AttachmentNameMapping` to map a binary SQL column to a RavenDB attachment:
     }
 
 The binary `content` column is stored as an attachment named `"file"` on the document.
-The attachment content type is determined from the binary data or left as
-`application/octet-stream` if it cannot be detected.
+The attachment is stored with content type `application/octet-stream`.
 
 {PANEL/}
 
@@ -83,7 +82,7 @@ the primary key value.
 
 The attachment name is exactly the value you specify in `AttachmentNameMapping`.
 
-    AttachmentNameMapping = { { "content", "file" } }
+    AttachmentNameMapping = { ["content"] = "file" }
     → Attachment name: "file"
 
 **Embedded table attachments:**
