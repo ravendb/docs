@@ -22,7 +22,6 @@ module.exports = [
                 ...globals.browser,
                 ...globals.node,
                 ...globals.es2021,
-                EventListener: "readonly",
             },
         },
         plugins: {
@@ -92,6 +91,14 @@ module.exports = [
                 fragment: "Fragment",
                 version: "detect",
             },
+        },
+    },
+    // `no-undef` is a JS rule and produces false positives for TS type-only globals  like EventListener.
+    // In TS files, unresolved symbols are handled by TypeScript.
+    {
+        files: ["**/*.ts", "**/*.tsx"],
+        rules: {
+            "no-undef": "off",
         },
     },
     {
