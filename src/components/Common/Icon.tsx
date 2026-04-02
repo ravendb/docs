@@ -26,7 +26,8 @@ export function Icon({ icon, size = "sm", className }: IconProps) {
 
 function getSvg(base64String: string, sizeClass: string): string {
     const svgContent = atob(base64String.split("base64,")[1]);
-    const sanitizedSvg = svgContent.replace(/fill="[^"]*"/g, 'fill="currentColor"');
+    const withoutXmlDecl = svgContent.replace(/<\?xml[^?]*\?>\s*/g, "");
+    const sanitizedSvg = withoutXmlDecl.replace(/fill="[^"]*"/g, 'fill="currentColor"');
     const svgWithClasses = sanitizedSvg.replace(/<svg([^>]*)>/, `<svg$1 class="${sizeClass} ">`);
     return svgWithClasses;
 }
