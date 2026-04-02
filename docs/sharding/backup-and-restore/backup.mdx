@@ -11,47 +11,47 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Sharding: Backup
+
 <Admonition type="note" title="">
 
 * Sharded databases are backed up using user-defined periodic 
-  [backup tasks](../../server/ongoing-tasks/backup-overview.mdx).  
+  [backup tasks](../../backup/overview).  
 
 * Shards can store backup files **locally** (each shard using its 
   own node machine storage) and/or **remotely** (all shards sending 
   backup files to a common remote destination like an AWS S3 bucket).  
 
-* Both [Full](../../server/ongoing-tasks/backup-overview.mdx#full-backup) 
-  and [Incremental](../../server/ongoing-tasks/backup-overview.mdx#incremental-backup) 
+* Both [Full](../../backup/overview#full-backup) 
+  and [Incremental](../../backup/overview#incremental-backup) 
   backups can be created for a sharded database.  
 
-* A [logical](../../server/ongoing-tasks/backup-overview.mdx#logical-backup) 
-  backup **can** be created for a sharded database and restored into either 
-  a sharded or a non-sharded database.  
+* A [logical](../../backup/overview#logical-backup) backup **can** be:  
+   - Created for a sharded database.  
+   - Restored into either a sharded or a non-sharded database.  
 
-* A [snapshot](../../server/ongoing-tasks/backup-overview.mdx#snapshot) 
-  backup **cannot** be created for a sharded database.  
+* A [snapshot](../../backup/overview#snapshot-image) 
+  **cannot** be created for a sharded database.  
 
-* A manual [one-time](../../studio/database/tasks/backup-task.mdx#manually-creating-one-time-backups) 
-  backup **can** be created for a sharded database.  
+* A [one-time](../../backup/create/one-time-backup) backup **can** be created for a sharded database.  
 
 * In this page:  
-  * [Backup](../../sharding/backup-and-restore/backup.mdx#backup)  
-     * [Sharded and Non-Sharded Backup Tasks](../../sharding/backup-and-restore/backup.mdx#sharded-and-non-sharded-backup-tasks)  
-     * [Backup Storage: Local and Remote](../../sharding/backup-and-restore/backup.mdx#backup-storage-local-and-remote)  
-     * [Backup Files Extension and Structure](../../sharding/backup-and-restore/backup.mdx#backup-files-extension-and-structure)  
-     * [Backup Type](../../sharding/backup-and-restore/backup.mdx#backup-type)  
-     * [Backup Scope](../../sharding/backup-and-restore/backup.mdx#backup-scope)  
-     * [Naming Convention](../../sharding/backup-and-restore/backup.mdx#naming-convention)  
-     * [Server-Wide Backup](../../sharding/backup-and-restore/backup.mdx#server-wide-backup)  
-     * [Example](../../sharding/backup-and-restore/backup.mdx#example)  
-  * [Backup Options Summary](../../sharding/backup-and-restore/backup.mdx#backup-options-summary)  
+   * [Sharded and non-sharded backup tasks](../../sharding/backup-and-restore/backup.mdx#sharded-and-non-sharded-backup-tasks)  
+   * [Backup storage: local and remote](../../sharding/backup-and-restore/backup.mdx#backup-storage-local-and-remote)  
+   * [Backup files extension and structure](../../sharding/backup-and-restore/backup.mdx#backup-files-extension-and-structure)  
+   * [Backup type](../../sharding/backup-and-restore/backup.mdx#backup-type)  
+   * [Backup scope](../../sharding/backup-and-restore/backup.mdx#backup-scope)  
+   * [Naming convention](../../sharding/backup-and-restore/backup.mdx#naming-convention)  
+   * [Server-wide backup](../../sharding/backup-and-restore/backup.mdx#server-wide-backup)  
+   * [Example](../../sharding/backup-and-restore/backup.mdx#example)  
+   * [Backup options summary](../../sharding/backup-and-restore/backup.mdx#backup-options-summary)  
 
 </Admonition>
-## Backup
 
-## Sharded and Non-Sharded Backup Tasks
+<Panel heading="Sharded and non-sharded backup tasks">
 
 From a user's perspective, backing up a sharded database is done by 
 defining and running **a single backup task**, just like it is done 
@@ -64,7 +64,7 @@ Distributing the backup responsibility between the shards allows
 RavenDB to speed up the backup process and keep backup files in 
 manageable proportions no matter what the overall database size is.  
 
-### Non-Sharded DB Backup Tasks
+### Non-sharded DB backup tasks
 
 * A complete replica of the database is kept by each cluster node.  
 * Any node can therefore be made 
@@ -73,7 +73,7 @@ manageable proportions no matter what the overall database size is.
 * The responsible node runs the backup task periodically to create 
   a backup of the entire database.  
   
-### Sharded DB Backup Tasks
+### Sharded DB backup tasks
 
 * Each shard hosts a unique part of the database, so no single node 
   can create a backup of the entire database.  
@@ -87,44 +87,50 @@ manageable proportions no matter what the overall database size is.
   locally (on the shard machine), and/or remotely (on one 
   or more cloud destinations).  
 * A backup task can store backups on multiple destinations, 
-  e.g. locally, on an S3 bucket, and on an Azure blob.  
+  e.g., locally, on an S3 bucket, and on an Azure blob.  
 * To [restore](../../sharding/backup-and-restore/restore.mdx) 
-  the entire database, the restore process is provided with 
+  the entire database, the restore operation is provided with 
   the locations of the backup folders used by all shards.  
 * When restoring the database, the user doesn't have to restore 
   all shard backups. It is possible, for example, to restore only 
   one of the shards. Using this flexibility, a sharded database 
   can easily be split into several databases.  
 
-## Backup Storage: Local and Remote
+</Panel>
+
+<Panel heading="Backup storage: local and remote">
 
 Backup files can be stored locally and remotely.  
 Find a code example [here](../../sharding/backup-and-restore/backup.mdx#example).  
 
-* **Local Backup**  
+* **Local backup**  
   A shard's backup task may keep backup data locally, 
   using the node's local storage.  
 
     [Restoring](../../sharding/backup-and-restore/restore.mdx#section-2) 
     backup files that were stored locally requires the user to provide 
-    the restore process with the location of the backup folder on each 
+    the restore operation with the location of the backup folder on each 
     shard's node.  
 
 * **Remote location**  
   Backups can also be kept remotely. All shards will transfer 
   the backup files to a common location, using one of the currently 
   supported platforms:  
-   * Azure Blob Storage  
-   * Amazon S3 Storage  
-   * Google Cloud Platform  
+   * An FTP/SFTP target  
+   * Azure Storage  
+   * Amazon S3  
+   * Amazon Glacier  
+   * Google Cloud  
 
     [Restoring](../../sharding/backup-and-restore/restore.mdx#section-2) 
     backup files that were stored remotely requires the user to provide 
-    the restore process with each shard's backup folder location.  
+    the restore operation with each shard's backup folder location.  
 
-## Backup Files Extension and Structure
+</Panel>
 
-backup files use the same internal structure as the `.ravendbdump` 
+<Panel heading="Backup files extension and structure">
+
+Backup files use the same internal structure as the `.ravendbdump` 
 files that [Studio](../../studio/database/tasks/export-database.mdx) 
 and [Smuggler](../../client-api/smuggler/what-is-smuggler.mdx) 
 create when **exporting** data.  
@@ -135,34 +141,41 @@ Read more about this feature [here](../../sharding/import-and-export.mdx#import)
 
 
 <Admonition type="note" title="">
+
 Backed-up data includes both 
-[database-level and cluster-level content](../../server/ongoing-tasks/backup-overview.mdx#backup-contents).  
+[database-level and cluster-level content](../../backup/overview#backup-content).  
 </Admonition>
 
-## Backup Type
+</Panel>
+
+<Panel heading="Backup type">
 
 A shard backup task can create a 
-[Logical backup](../../server/ongoing-tasks/backup-overview.mdx#logical-backup) 
+[Logical backup](../../backup/overview#logical-backup) 
 only.  
 
-A [Snapshot](../../server/ongoing-tasks/backup-overview.mdx#snapshot) 
+A [Snapshot](../../backup/overview#snapshot-image) 
 backup **cannot** be created for a sharded database.  
 
 `Logical` backups created for a sharded database can be restored into 
 both sharded and non-sharded databases.  
 
-## Backup Scope
+</Panel>
+
+<Panel heading="Backup scope">
 
 A shard backup task can create 
-a [Full backup](../../server/ongoing-tasks/backup-overview.mdx#full-backup) 
+a [Full backup](../../backup/overview#full-backup) 
 with the entire content of the shard, or an 
-[Incremental Backup](../../server/ongoing-tasks/backup-overview.mdx#incremental-backup) 
+[Incremental Backup](../../backup/overview#incremental-backup) 
 with just the difference between the current database data and the last backed-up data.  
 
-## Naming Convention
+</Panel>
 
-* Backup files created for a sharded database generally follow the same naming 
-  [convention](../../server/ongoing-tasks/backup-overview.mdx#backup-name-and-folder-structure) 
+<Panel heading="Naming convention">
+
+* Backup files created for a sharded database generally follow the same [naming 
+  convention](../../backup/overview#naming-and-folder-structure) 
   as non-sharded database backups.  
 
 * Each shard keeps its backup files in a folder whose name consists of:  
@@ -177,9 +190,11 @@ with just the difference between the current database data and the last backed-u
       `2023-02-05-16-17.Books$1` for shard 1  
       `2023-02-05-16-17.Books$2` for shard 2  
 
-## Server-Wide Backup
+</Panel>
 
-[Server-wide backup](../../client-api/operations/maintenance/backup/backup-overview.mdx#server-wide-backup) 
+<Panel heading="Server-wide backup">
+
+[Server-wide backup](../../backup/overview#server-wide-backup) 
 backs up all the databases hosted by the cluster, by creating a backup 
 task for each database and executing all tasks at a scheduled time.  
 
@@ -189,75 +204,75 @@ task for each database and executing all tasks at a scheduled time.
   define and execute a backup task for each shard, behaving as if it was 
   defined manually.  
 
-## Example
+</Panel>
+
+<Panel heading="Example">
 
 The backup task that we define here is similar to the task we 
 would define for a non-sharded database. As part of a sharded 
 database, however, this task will be re-defined automatically 
 by the orchestrator for each shard.  
-<TabItem value="backup_remote_destinations" label="backup_remote_destinations">
-<CodeBlock language="csharp">
-{`var config = new PeriodicBackupConfiguration
-\{
+
+```csharp
+var config = new PeriodicBackupConfiguration
+{
+    // Task name 
+    Name = "FullAndIncrementalBackup",
+
+    // Create a logical backup
+    BackupType = BackupType.Backup,
+
+    // Run a full backup every 6 hours
+    FullBackupFrequency = "0 */6 * * *",
+
+    // Run an incremental backup every 20 minutes
+    IncrementalBackupFrequency = "*/20 * * * *",
+
+    // Keep backups locally
     LocalSettings = new LocalSettings
-    \{
-        FolderPath = @"E:/RavenBackups"
-    \},
+    {
+        FolderPath = backupPath
+    },
 
-    //Azure Backup settings
+    // Also upload backups to Azure
     AzureSettings = new AzureSettings
-    \{
-        StorageContainer = "storageContainer",
-        RemoteFolderName = "remoteFolder",
-        AccountName = "JohnAccount",
-        AccountKey = "key"
-    \},
+    {
+        // Use your Azure credentials here
+    },
 
-    //Amazon S3 bucket settings
-    S3Settings = new S3Settings
-    \{
-        AwsAccessKey = "your access key here",
-        AwsSecretKey = "your secret key here",
-        AwsRegionName = "OPTIONAL",
-        BucketName = "john-bucket"
-    \},
-
-    // Google Cloud bucket settings
-    GoogleCloudSettings = new GoogleCloudSettings
-    \{
-        BucketName = "your bucket name here",
-        RemoteFolderName = "remoteFolder",
-        GoogleCredentialsJson = "your credentials here"
-    \}
-\};
+    // Keep backups for 7 days
+    RetentionPolicy = new RetentionPolicy
+    {
+        Disabled = false,
+        MinimumBackupAgeToKeep = TimeSpan.FromDays(7)
+    },
+};
 
 var operation = new UpdatePeriodicBackupOperation(config);
-var result = await docStore.Maintenance.SendAsync(operation);
-`}
-</CodeBlock>
-</TabItem>
+var result = await store.Maintenance.SendAsync(operation);
+```
 
 <Admonition type="warning" title="Casting Backup Results" id="casting-backup-results" href="#casting-backup-results">
-In a sharded database, results are returned by Backup in a `ShardedBackupResult` type.
-This type is specific to a sharded database, and casting it using a non-sharded type
-[will fail](../../migration/client-api/previous-versions-client-breaking-changes.mdx#casting-smuggler-results).
+In a sharded database, results are returned by Backup in a `ShardedBackupResult` type.  
+This type is specific to a sharded database, and casting it using a non-sharded type 
+[will fail](../../migration/client-api/previous-versions-client-breaking-changes#casting-smuggler-results).  
 </Admonition>
 
+</Panel>
 
-
-## Backup Options Summary
+<Panel heading="Backup Options Summary">
 
 | Option | Available on a Sharded Database | Comment |
 | -------------------- | --------------- | --------------------- |
 | Store backup files created by shards in **local shard machine storage** | **Yes** | Shards can store the backups they create locally. |
 | Store backup files of sharded databases [remotely](../../sharding/backup-and-restore/backup.mdx#backup-storage-local-and-remote) | **Yes** | Shards can store the backups they create on remote S3, Azure, or Google Cloud destinations. |
-| Create [Full](../../server/ongoing-tasks/backup-overview.mdx#full-backup) backups for sharded databases | **Yes** |  |
-| Create [Incremental](../../server/ongoing-tasks/backup-overview.mdx#incremental-backup) backups for sharded databases | **Yes** |  |
-| Create [Logical](../../server/ongoing-tasks/backup-overview.mdx#logical-backup) backups for sharded databases | **Yes** |  |
-| Create [Snapshot](../../server/ongoing-tasks/backup-overview.mdx#snapshot) backups for sharded databases | **No** | Snapshot backups CANNOT be created for (nor restored to) sharded databases. |
+| Create [Full](../../backup/overview#full-backup) backups for sharded databases | **Yes** |  |
+| Create [Incremental](../../backup/overview#incremental-backup) backups for sharded databases | **Yes** |  |
+| Create [Logical](../../backup/overview#logical-backup) backups for sharded databases | **Yes** |  |
+| Create [Snapshot](../../backup/overview#snapshot-image) backups for sharded databases | **No** | Snapshot backups CANNOT be created for (nor restored to) sharded databases. |
 | Create **periodic backup tasks** for sharded databases | **Yes** |  |
-| Run a manual [one-time](../../studio/database/tasks/backup-task.mdx#manually-creating-one-time-backups) backup operation on a sharded database | **Yes** |  |
+| Run a manual [one-time](../../backup/create/one-time-backup) backup operation on a sharded database | **Yes** |  |
 | Include sharded databases in a [server-wide backup operation](../../sharding/backup-and-restore/backup.mdx#server-wide-backup) | **Yes** | A server-wide backup operation will create backups for all databases, including the sharded ones. |
 
-
+</Panel>
 

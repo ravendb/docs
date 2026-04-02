@@ -321,11 +321,15 @@ Task<Operation> SendAsync(IMaintenanceOperation<OperationIdResult> operation,
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdatePullReplicationAsSinkOperation
 
 * **Backup**:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BackupOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetPeriodicBackupStatusOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StartBackupOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdatePeriodicBackupOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [BackupOperation ](../../../backup/create/one-time-backup.mdx#defining-and-running-a-one-time-backup-operation)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [UpdatePeriodicBackupOperation](../../../backup/create/periodic-tasks/database-backup.mdx#creating-a-backup-task)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetPeriodicBackupStatusOperation](../../../backup/create/periodic-tasks/database-backup.mdx#getting-backup-task-status)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StartBackupOperation](../../../backup/create/periodic-tasks/database-backup.mdx#triggering-an-immediate-backup-operation)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DelayBackupOperation](../../../backup/create/periodic-tasks/database-backup.mdx#delaying-a-running-backup-operation)  
 
+* **Restore**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [RestoreBackupOperation](../../../backup/restore.mdx#restoring-a-database-from-backup)
+  
 * **Connection strings**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutConnectionStringOperation](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [RemoveConnectionStringOperation](../../../client-api/operations/maintenance/connection-strings/remove-connection-string.mdx)  
@@ -494,10 +498,9 @@ Task<Operation> SendAsync(IServerOperation<OperationIdResult> operation,
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideExternalReplicationsOperation  
 
 * **Server-wide backup tasks**:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideBackupConfigurationOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideBackupConfigurationOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideBackupConfigurationsOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RestoreBackupOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideBackupConfigurationOperation](../../../backup/create/periodic-tasks/server-wide-backup.mdx#creating-a-server-wide-backup-task)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetServerWideBackupConfigurationOperation](../../../backup/create/periodic-tasks/server-wide-backup.mdx#updating-a-server-wide-backup-task)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetServerWideBackupConfigurationsOperation](../../../backup/create/periodic-tasks/server-wide-backup.mdx#updating-a-server-wide-backup-task)  
 
 * **Server-wide analyzers**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideAnalyzersOperation](../../../indexes/using-analyzers.mdx#add-custom-analyzer-via-client-api)  

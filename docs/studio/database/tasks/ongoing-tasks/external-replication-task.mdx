@@ -33,7 +33,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   You can read more about this option in the sharding documentation [external replication](../../../../sharding/external-replication.mdx) and [migration](../../../../sharding/migration.mdx) sections.  
 
 * The External Replication task **does _not_ create a backup** of your data and indexes.  
-  See more in [Backup -vs- Replication](../../../../studio/database/tasks/backup-task.mdx#backup-task--vs--replication-task)
+  See more in [Backup -vs- Replication](../../../../backup/faq#is-an-external-replication-task-a-good-substitute-for-a-backup-task)
 
 * In this page:  
   * [General Information about External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#general-information-about-external-replication-task)
@@ -62,7 +62,7 @@ Server and cluster level features.
 * [Identities](../../../../server/kb/document-identifier-generation.mdx#strategy--3)  
 * Ongoing tasks
    * [ETL](../../../../server/ongoing-tasks/etl/basics.mdx)
-   * [Backup](../../../../studio/database/tasks/backup-task.mdx)
+   * [Backup](../../../../backup/create/periodic-tasks/database-backup#creating-and-managing-periodic-backups-via-studio)
    * [Hub/Sink Replication](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)
 
 <Admonition type="note" title="Why are cluster-level features not replicated?" id="why-are-cluster-level-features-not-replicated" href="#why-are-cluster-level-features-not-replicated">
@@ -140,7 +140,7 @@ f. Click **External Replication** to access the following interface.
 3. **Set Replication Delay Time** (Optional)  
    * If a delay time is set then data will be replicated only after this time period has passed for each data change.  
    * Having a delayed instance of a database allows you to "go back in time" and undo contamination to your data due to an attack, faulty patch script, or other human errors.  
-     * This doesn't replace the need to [safely backup your databases](../../../../studio/database/tasks/backup-task.mdx), but it does provide a way to stay online while repairing.  
+     * This doesn't replace the need to [safely backup your databases](../../../../backup/create/periodic-tasks/database-backup#creating-and-managing-periodic-backups-via-studio), but it does provide a way to stay online while repairing.  
 
 4. **Set Preferred Responsible Node** (Optional)  
   * Select a preferred mentor node from the [Database Group](../../../../studio/database/settings/manage-database-group.mdx) to be the responsible node for this External Replication Task  

@@ -105,7 +105,7 @@ and casting it using a non-sharded type [will fail](../migration/client-api/prev
   Regardless of the extension, the internal structure of backup 
   files is similar to that of `.ravendbdump` files.  
   It **is** therefore possible to import backup files.  
-* Unlike the [restore](../client-api/operations/maintenance/backup/restore.mdx) operation, 
+* Unlike the [restore](../backup/restore) operation, 
   which creates a new database from the backup files, importing 
   a backup file adds the imported data to data already stored in 
   the database.  
@@ -120,7 +120,7 @@ and casting it using a non-sharded type [will fail](../migration/client-api/prev
      shard into a newly created (sharded or not) database.  
 
 <Admonition type="note" title="">
-[Incremental backups](../server/ongoing-tasks/backup-overview.mdx#backup-scope:-full-or-incremental) 
+[Incremental backups](../backup/overview#backup-scope) 
 contain only the changes that have been made in the database since the last full backup.  
 Import the full backup first, and then the incremental backups that complement it.  
 </Admonition>

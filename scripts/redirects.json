@@ -62,6 +62,69 @@
         }
     },
     {
+        "key": "/server/ongoing-tasks/backup-overview",
+        "value": {
+            "targetUrl": "/backup/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/server/configuration/backup-configuration",
+        "value": {
+            "targetUrl": "/backup/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/maintenance/backup/backup-overview",
+        "value": {
+            "targetUrl": "/backup/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/maintenance/backup/restore",
+        "value": {
+            "targetUrl": "/backup/restore",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/maintenance/backup/encrypted-backup",
+        "value": {
+            "targetUrl": "backup/create/periodic-tasks/database-backup",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/maintenance/backup/faq",
+        "value": {
+            "targetUrl": "/backup/faq",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/server-wide/restore-backup",
+        "value": {
+            "targetUrl": "/backup/restore",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/server/server-wide-backup",
+        "value": {
+            "targetUrl": "/backup/create/periodic-tasks/server-wide-backup",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/database/tasks/backup-task",
+        "value": {
+            "targetUrl": "/backup/create/periodic-tasks/database-backup",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/client-api/session/querying/how-to-stream-query-results",
         "value": {
             "targetUrl": "/querying/stream-query-results"

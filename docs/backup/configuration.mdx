@@ -1,0 +1,177 @@
+---
+title: "Backup configuration options"
+sidebar_label: "Configuration options"
+sidebar_position: 85
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Backup configuration options
+
+<Admonition type="note" title="">
+
+Use the configuration keys listed below to set backup-related options for your RavenDB server.  
+Learn how to apply these keys in the [Configuration Overview](../server/configuration/configuration-options) article.
+
+
+* In this article:  
+    * [Backup.TempPath](../backup/configuration#backuptemppath)  
+    * [Backup.LocalRootPath](../backup/configuration#backuplocalrootpath)  
+    * [Backup.AllowedDestinations](../backup/configuration#backupalloweddestinations)  
+    * [Backup.AllowedAwsRegions](../backup/configuration#backupallowedawsregions)  
+    * [Backup.MaxNumberOfConcurrentBackups](../backup/configuration#backupmaxnumberofconcurrentbackups)  
+    * [Backup.ConcurrentBackupsDelayInSec](../backup/configuration#backupconcurrentbackupsdelayinsec)  
+    * [Backup.LowMemoryBackupDelayInMin](../backup/configuration#backuplowmemorybackupdelayinmin)  
+    * [Server.CpuCredits.ExhaustionBackupDelayInMin](../backup/configuration#servercpucreditsexhaustionbackupdelayinmin)
+
+</Admonition>
+
+<Panel heading="Configuration keys">
+
+<ContentFrame>
+
+### Backup.TempPath
+
+Use this key to specify the local path where temporary backup files are stored.  
+
+<Admonition type="info" title="">
+
+- By default, temporary backup files are stored under the server Database directory (or under [Storage.TempPath](../server/configuration/storage-configuration.mdx) if set).  
+- If `Backup.TempPath` is set, temporary backup files will be stored under the path it specifies.  
+- If a backup task is configured to store backups in a local folder, `Backup.TempPath` will be ignored and temporary files will be stored alongside the backups.  
+</Admonition>
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Backup.LocalRootPath
+
+Use this key to set a root path for local backups.  
+When set, backup tasks are restricted to storing backups under this path. An attempt to store backups outside it will fail with an exception. 
+
+- **Type**: `string`  
+- **Default**: `null`  
+- **Scope**: Server-wide only  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Backup.AllowedDestinations
+
+Semicolon-separated list of allowed backup destinations.  
+If not specified, all destinations are allowed.   
+
+e.g.,   
+```json
+"Backup.AllowedDestinations": "Local;Azure;FTP"
+```
+
+- **Type**: `string`  
+- **Default**: `null`  
+- **Scope**: Server-wide only  
+
+Possible values:  
+
+- `None`  
+- `Local`  
+- `Azure`  
+- `AmazonGlacier`  
+- `AmazonS3`  
+- `GoogleCloud`  
+- `FTP`  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Backup.AllowedAwsRegions
+
+Semicolon-separated list of allowed AWS regions.  
+If not specified, all regions are allowed.  
+
+e.g.,   
+```json
+"Backup.AllowedAwsRegions": "US_EAST_1;US_WEST_2"
+```
+
+- **Type**: `string`  
+- **Default**: `null`  
+- **Scope**: Server-wide only  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Backup.MaxNumberOfConcurrentBackups
+
+Maximum number of concurrent backup tasks.  
+
+- **Type**: `int`  
+- **Default**: `null`  
+  By default, the maximum number of concurrent backup tasks is half the number of CPU cores assigned to the node, rounded down, with a minimum of 1.  
+  For example:  
+  A server with 1, 2, or 3 CPU cores can run 1 backup operation at a time,  
+  A server with 4 or 5 cores can run 2 backup operations at a time,  
+  A server with 6 or 7 cores can run 3 backup operations at a time.  
+- **Scope**: Server-wide only  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Backup.ConcurrentBackupsDelayInSec
+
+Number of seconds to delay the backup when the [concurrent backups limit](../backup/configuration#backupmaxnumberofconcurrentbackups) is reached.  
+
+- **Type**: `TimeSetting`  
+- **TimeUnit**: `TimeUnit.Seconds`  
+- **Default**: `30`  
+- **Scope**: Server-wide only  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Backup.LowMemoryBackupDelayInMin
+
+Number of minutes to delay the backup if the server enters a low-memory state.  
+
+- **Type**: `TimeSetting`  
+- **TimeUnit**: `TimeUnit.Minutes`  
+- **Default**: `10`  
+- **Scope**: Server-wide only  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Server.CpuCredits.ExhaustionBackupDelayInMin
+
+EXPERT: When CPU credits are exhausted, backup tasks are cancelled.  
+This key determines how many minutes the server will wait before retrying the backup task.  
+
+- **Type**: `TimeSetting`  
+- **TimeUnit**: `TimeUnit.Minutes`  
+- **Default**: `10`  
+- **Scope**: Server-wide only  
+
+<Admonition type="info" title="">
+If you have an enterprise license, you can access information about CPU credits using [SNMP](../server/administration/snmp/snmp-overview.mdx).  
+</Admonition>
+
+</ContentFrame>
+
+</Panel>
