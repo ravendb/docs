@@ -23,6 +23,7 @@ import CodeBlock from '@theme/CodeBlock';
   * [Dynamic vector search - exact search](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#dynamic-vector-search---exact-search)
   * [Quantization options](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#quantization-options)
   * [Querying vector fields and regular data in the same query](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#querying-vector-fields-and-regular-data-in-the-same-query)
+    * [How filtered vector search works](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#how-filtered-vector-search-works)   
   * [Combining multiple vector searches in the same query](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#combining-multiple-vector-searches-in-the-same-query)
   * [Syntax](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#syntax)
     
@@ -1415,35 +1416,38 @@ and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))
 </TabItem>
 </Tabs>
 
-<Admonition type="info" title="">
+<Admonition type="note" title="">
+    
+### How filtered vector search works    
 
-**Impact of _NumberOfCandidates_ on query results**:  
+When a vector search query is combined with a filtering condition using _AND_ (e.g., `where vector.search(...) and PricePerUnit > 35`),
+RavenDB integrates the filter into the vector search process rather than running the vector search independently and discarding non-matching results afterward.  
 
-* When combining a vector search with a filtering condition, the filter applies only to the documents retrieved within the `NumberOfCandidates` param limit.
-  Increasing or decreasing _NumberOfCandidates_ can affect the query results.
-  A larger _NumberOfCandidates_ increases the pool of documents considered,
-  improving the chances of finding results that match both the vector search and the filter condition.
+**Internal Strategies**   
+RavenDB first evaluates the filter to determine how many documents match and then dynamically selects a strategy:    
+    
+* **Exact search over filtered documents:**  
+  This mode is triggered when any of the following conditions is true:    
+    
+  * The filter match count is **below** the scanning threshold (default: `1024`).  
+    Can be customized via the [Indexing.Corax.VectorSearch.VectorSearchScanningThreshold](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchvectorsearchscanningthreshold) configuration key.
+  * An [Exact search](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#dynamic-vector-search---exact-search) is explicitly requested.  
+  * The requested _number of candidates_ exceeds half the filter match count.  
+    Learn about the _number of candidates_ param in [The query parameters](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#the-dynamic-query-parameters).
+    
+  In this mode, an exact nearest-neighbor search is performed over **only** the documents that match the filter.   
 
-* For example, in the above query, the vector search executes with: Similarity `0.75f` and NumberOfCandidates `16`.
-  Running this query on RavenDB's sample data returns **2** documents. 
-
-* However, if you increase _NumberOfCandidates_, the query will retrieve more candidate documents before applying the filtering condition.
-  If you run the following query:
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="RQL" label="RQL">
-```sql
-from "Products"
-where (PricePerUnit > $minPrice)
-// Run vector search with similarity 0.75 and NumberOfCandidates 25
-and (vector.search(embedding.text(Name), $searchTerm, 0.75, 25))
-{ "minPrice" : 35.0, "searchTerm" : "italian food" }
-```
-</TabItem>
-</Tabs>
-
-    now the query returns **4** documents instead of **2**.
-
+* **Approximate search:**  
+  When none of the conditions above apply, RavenDB uses approximate HNSW graph traversal to find the nearest vectors to the search term.
+  The filter is then applied to the results.  
+  If the number of results that pass the filter is **less** than the requested _number of candidates_,
+  RavenDB increases the internal candidate count and continues the HNSW search.  
+  This is an iterative process that ensures that enough results matching both vector similarity and the filtering condition are found.
+    
+  Note:    
+  Re-search rounds are efficient because RavenDB caches the HNSW graph's internal state (including previously computed results), 
+  avoiding redundant distance calculations for previously visited nodes.    
+    
 </Admonition>
 
 ## Combining multiple vector searches in the same query

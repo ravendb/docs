@@ -1,6 +1,6 @@
 ---
 title: "Migration: Server Breaking Changes"
-sidebar_label: Server Breaking Changes
+sidebar_label: "Server Breaking Changes"
 sidebar_position: 2
 ---
 
@@ -10,61 +10,75 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-# Migration: Server Breaking Changes
 <Admonition type="note" title="">
+    
 The features listed on this page were available in former RavenDB versions.  
-In RavenDB `7.0.x`, they are either unavailable or their behavior is inconsistent 
-with their behavior in previous versions.  
+In RavenDB `7.1.x`, they are either unavailable or their behavior is inconsistent with their behavior in previous versions.  
 
-* In this page:  
+* In this article:  
    * [RavenDB now incorporates NLog as its logging system](../../migration/server/server-breaking-changes.mdx#ravendb-incorporates-nlog-as-its-logging-system)  
    * [Removed obsolete properties](../../migration/server/server-breaking-changes.mdx#removed-obsolete-properties)  
+   * [Filtered vector search behavior](../../migration/server/server-breaking-changes.mdx#filtered-vector-search-behavior)  
 
 </Admonition>
 
-## RavenDB incorporates NLog as its logging system
+<Panel heading="RavenDB incorporates NLog as its logging system">
 
-RavenDB's logging system has changed; the server now incorporates the 
-NLog logging framework and writes all log data through it.  
-One of the changes that NLog brings to RavenDB is the richer set 
-of logging levels, visible right away through Studio's [admin-logs view](../../studio/server/debug/admin-logs.mdx).  
-Read more about Nlog [in the dedicated article](../../server/troubleshooting/logging.mdx).
-If you migrate to RavenDB `7.x` from an earlier version, please 
-read the section related to NLog in the [migration page](../../migration/server/data-migration.mdx).  
+* RavenDB's logging system has changed; the server now incorporates the NLog logging framework and writes all log data through it.  
+* One of the changes that NLog brings to RavenDB is the richer set of logging levels, visible right away through Studio's [admin-logs view](../../studio/server/debug/admin-logs.mdx).  
+* Read more about Nlog [in the dedicated article](../../server/troubleshooting/logging.mdx).  
+  If you migrate to RavenDB `7.x` from an earlier version, please read the section related to NLog in the [migration page](../../migration/server/data-migration.mdx).  
 
+</Panel>
 
-## Removed obsolete properties
-The following properties are no longer in use, and have been removed from RavenDB `7.0`.  
+<Panel heading="Removed obsolete properties">
 
-* `ServerOptions`'s `AcceptEula` property is no longer used,  
+The following properties are no longer in use and have been removed in RavenDB `7.1`.  
+
+* `ServerOptions`'s `AcceptEula` property is no longer used.  
   Please use `Licensing.EulaAccepted` instead.  
 
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`// Removed 
-c bool AcceptEula
-`}
-</CodeBlock>
-</TabItem>
+      <TabItem>
+      ```csharp
+      // Removed 
+      bool AcceptEula
+      ```
+      </TabItem>
 
-* The `MemoryInfoResult` struct no longer includes these classes:  
-   - `MemoryUsageIntervals`  
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`// Removed 
-c sealed class MemoryUsageIntervals  
-`}
-</CodeBlock>
-</TabItem>
-   - `MemoryUsageLowHigh`  
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`// Removed 
-c sealed class MemoryUsageLowHigh  
-`}
-</CodeBlock>
-</TabItem>
+* The `MemoryInfoResult` struct no longer includes these classes:
 
+   - `MemoryUsageIntervals`
 
+      <TabItem>
+      ```csharp
+      // Removed 
+      sealed class MemoryUsageIntervals  
+      ```
+      </TabItem>
 
+   - `MemoryUsageLowHigh`
+
+      <TabItem>
+      ```csharp
+      // Removed 
+      sealed class MemoryUsageLowHigh  
+      ```
+      </TabItem>
+
+</Panel>
+
+<Panel heading="Filtered vector search behavior">
+    
+In RavenDB `7.0`:  
+When combining a vector search with a filtering condition using _AND_, the filter was applied **after** the vector search completed within the _NumberOfCandidates_ limit.
+As a result, increasing _NumberOfCandidates_ was often necessary, since the filter could discard many of the retrieved candidates.    
+
+In RavenDB `7.1`:    
+The filter is now integrated into the vector search process.  
+RavenDB automatically ensures that enough results matching both the vector similarity and the filtering condition are found, without requiring manual adjustments to _NumberOfCandidates_.
+Learn more in [How filtered vector search works](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#how-filtered-vector-search-works).    
+
+</Panel>

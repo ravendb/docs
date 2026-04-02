@@ -74,6 +74,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
     [Indexing.Corax.VectorSearch.DefaultNumberOfEdges](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofedges)  
     [Indexing.Corax.VectorSearch.MaximumConcurrentBatchesForHnswAcceleration](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchmaximumconcurrentbatchesforhnswacceleration)  
     [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchorderbyscoreautomatically)  
+    [Indexing.Corax.VectorSearch.VectorSearchScanningThreshold](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchvectorsearchscanningthreshold)  
     [Indexing.Encrypted.TransactionSizeLimitInMb](../../server/configuration/indexing-configuration.mdx#indexingencryptedtransactionsizelimitinmb)  
     [Indexing.IndexEmptyEntries](../../server/configuration/indexing-configuration.mdx#indexingindexemptyentries)  
     [Indexing.IndexMissingFieldsAsNull](../../server/configuration/indexing-configuration.mdx#indexingindexmissingfieldsasnull)  
@@ -648,6 +649,25 @@ Order by score automatically when `vector.search` is inside a query.
 
 - **Type**: `bool`
 - **Default**: `true`
+- **Scope**: Server-wide, or per database, or per index
+
+
+
+## Indexing.Corax.VectorSearch.VectorSearchScanningThreshold
+
+EXPERT ONLY:
+
+* The threshold of filter match count for exact scanning instead of approximate search.
+
+* When a vector search query is combined with a filtering condition using _AND_, the filter is integrated directly into the vector search. 
+  If the number of documents matching the filter is **below** this threshold, an exact search is performed over the filtered documents rather than using the HNSW approximate search.
+
+* Learn more in [How filtered vector search works](../../ai-integration/vector-search/vector-search-using-static-index.mdx#how-filtered-vector-search-works).
+
+---
+
+- **Type**: `int`
+- **Default**: `1024`
 - **Scope**: Server-wide, or per database, or per index
 
 
