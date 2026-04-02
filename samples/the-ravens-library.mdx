@@ -18,39 +18,23 @@ gallery:
     alt: "The Library of Ravens - Author Profile"
   - src: "/img/samples/library-of-ravens/03.webp"
     alt: "The Library of Ravens - User Profile"
+related_resources:
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Vector Search Overview"
+    article_key: "ai-integration/vector-search/overview"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Azure Storage Queues ETL"
+    article_key: "server/ongoing-tasks/etl/queue-etl/azure-queue"
+  - type: video
+    subtitle: "Learn How to Build a Modern .NET App with ease: Azure Functions and Aspire with RavenDB"
+    url: "https://www.youtube.com/watch?v=TEvBGNMSq9g"
 ---
 
-import { ActionsCard, RelatedResource, FeatureAccordion, SampleMetadataColumn, SampleLayout } from '@site/src/components/Samples';
-import Gallery from '@site/src/components/Common/Gallery';
+import { FeatureAccordion, SampleLayout } from '@site/src/components/Samples';
 
-export const sampleDetails = (
-    <SampleMetadataColumn
-        actionsCard={
-            <ActionsCard
-                githubUser="ravendb"
-                githubRepo="samples-library"
-            />
-        }
-        relatedResources={
-            <>
-                <RelatedResource
-                    type="documentation"
-                    documentationType="docs"
-                    subtitle="Vector Search Overview"
-                    articleKey="ai-integration/vector-search/overview"
-                />
-                <RelatedResource
-                    type="documentation"
-                    documentationType="docs"
-                    subtitle="Azure Storage Queues ETL"
-                    articleKey="server/ongoing-tasks/etl/queue-etl/azure-queue"
-                />
-            </>
-        }
-    />
-);
-
-<SampleLayout details={sampleDetails} gallery={<Gallery images={frontMatter.gallery} />}>
+<SampleLayout>
 
 ## Overview
 

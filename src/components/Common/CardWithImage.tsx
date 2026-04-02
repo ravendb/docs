@@ -104,7 +104,12 @@ export default function CardWithImage({
                         {hasTags && (
                             <div className="flex gap-1 items-center flex-wrap">
                                 {visibleTags.map((tag) => (
-                                    <Tag key={tag.label} size="xs" permalink={tag.permalink} className="pointer-events-auto">
+                                    <Tag
+                                        key={tag.label}
+                                        size="xs"
+                                        permalink={tag.permalink}
+                                        className="pointer-events-auto"
+                                    >
                                         {tag.label}
                                     </Tag>
                                 ))}
