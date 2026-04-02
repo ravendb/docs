@@ -42,7 +42,13 @@ const sectionMap = {
 };
 
 // Minimum version to include in sitemaps (versions below this are legacy)
-const MIN_VERSION = 6.0;
+const MIN_VERSION = [6, 0];
+
+/** Compare two "major.minor" version strings numerically (e.g. "7.11" > "7.2"). */
+function isVersionAtLeast(version, minVersion) {
+    const [major, minor] = version.split(".").map(Number);
+    return major > minVersion[0] || (major === minVersion[0] && minor >= minVersion[1]);
+}
 
 function getSitemapFile(loc) {
     const urlPath = loc.replace("https://docs.ravendb.net/", "");
@@ -53,8 +59,7 @@ function getSitemapFile(loc) {
     }
     // Version-prefixed docs (e.g. 7.2/*, 6.2/*, 7.1/*)
     if (/^\d+\.\d+$/.test(firstSegment)) {
-        const version = parseFloat(firstSegment);
-        if (version < MIN_VERSION) {
+        if (!isVersionAtLeast(firstSegment, MIN_VERSION)) {
             return null; // Exclude legacy versions
         }
         return `sitemap-docs-${firstSegment}.xml`;
