@@ -48,12 +48,21 @@ category: "Ecommerce"
 license: "MIT License"
 license_url: "https://opensource.org/licenses/MIT"
 repository_url: "https://github.com/ravendb/my-sample-repo"
+demo_url: "https://demo.example.com"
 languages: ["C#"]
 gallery:
   - src: "/img/samples/my-sample/screenshot-1.webp"
     alt: "Main interface"
   - src: "/img/samples/my-sample/screenshot-2.webp"
     alt: "Admin dashboard"
+related_resources:
+  - type: guide
+    subtitle: "Related Guide Title"
+    article_key: "guide-slug"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Vector Search Overview"
+    article_key: "ai-integration/vector-search/overview"
 ---
 ```
 
@@ -73,9 +82,20 @@ gallery:
 | `category` | `string` | ❌ | Business category (e.g., "Ecommerce", "Healthcare") - displayed in metadata sidebar |
 | `license` | `string` | ❌ | License type (e.g., "MIT License", "Apache 2.0") - displayed in metadata sidebar |
 | `license_url` | `string` | ❌ | License URL (e.g., `https://opensource.org/licenses/MIT`) - links the sidebar label and feeds JSON-LD |
-| `repository_url` | `string` | ❌ | GitHub repository URL - used in `SoftwareSourceCode` JSON-LD for SEO |
+| `repository_url` | `string` | ❌ | GitHub repository URL - renders "Browse code" button; used in `SoftwareSourceCode` JSON-LD for SEO |
+| `demo_url` | `string` | ❌ | Live demo URL - renders "View demo" button in the sidebar |
 | `languages` | `string[]` | ❌ | Programming languages (e.g., `["C#"]`) - used in `SoftwareSourceCode` JSON-LD for SEO |
 | `gallery` | `array` | ❌ | Array of screenshot objects with `src` and `alt` properties |
+| `related_resources` | `array` | ❌ | Related guides and docs shown in the sidebar — see schema below |
+
+Each `related_resources` item accepts:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `type` | `"guide"` \| `"documentation"` | ✅ | Resource type |
+| `documentation_type` | `"docs"` \| `"cloud"` | ❌ | Documentation section (only for `type: documentation`) |
+| `subtitle` | `string` | ✅ | Display text |
+| `article_key` | `string` | ✅ | Article path without version prefix (e.g., `ai-integration/vector-search/overview`) |
 
 <Admonition type="warning" title="Tag Validation">
     All tag keys must exist in their respective YAML files (`samples/tags/challenges-solutions.yml`, `feature.yml`, `tech-stack.yml`). Using undefined tags will cause them to display with their raw key value instead of a formatted label.
@@ -98,42 +118,19 @@ license: "MIT License"
 license_url: "https://opensource.org/licenses/MIT"
 repository_url: "https://github.com/ravendb/my-sample-repo"
 languages: ["C#"]
+related_resources:
+  - type: guide
+    subtitle: "Related Guide Title"
+    article_key: "guide-slug"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Vector Search Overview"
+    article_key: "ai-integration/vector-search/overview"
 ---
 
-import { ActionsCard, RelatedResource, FeatureAccordion, SampleMetadataColumn, SampleLayout } from '@site/src/components/Samples';
-import Gallery from '@site/src/components/Common/Gallery';
+import { FeatureAccordion, SampleLayout } from '@site/src/components/Samples';
 
-export const sampleDetails = (
-    <SampleMetadataColumn
-        actionsCard={
-            <ActionsCard
-                githubUser="ravendb"
-                githubRepo="my-sample-repo"
-                demoUrl="https://demo.example.com"
-            />
-        }
-        relatedResources={
-            <>
-                <RelatedResource
-                    type="guide"
-                    subtitle="Related Guide Title"
-                    articleKey="guide-slug"
-                />
-                <RelatedResource
-                    type="documentation"
-                    documentationType="docs"
-                    subtitle="Vector Search Overview"
-                    articleKey="ai-integration/vector-search/overview"
-                />
-            </>
-        }
-    />
-);
-
-<SampleLayout
-    details={sampleDetails}
-    gallery={<Gallery images={frontMatter.gallery} />}
->
+<SampleLayout>
 
 ## Overview
 
@@ -162,18 +159,7 @@ Describe what the sample does and what problems it solves...
     - **Mobile**: Gallery appears at the top, right after the page title and above the ActionsCard
     - **Desktop**: Gallery appears in the main content area, before the Overview section
 
-    **Usage:**
-    ```mdx
-    <SampleLayout
-        details={sampleDetails}
-        gallery={<Gallery images={frontMatter.gallery} />}
-    >
-        ## Overview
-        ...
-    </SampleLayout>
-    ```
-
-    The `gallery` prop is **optional**. If your sample doesn't have screenshots, simply omit it.
+    `SampleLayout` reads `gallery` from the `gallery` frontmatter field automatically. If the field is absent or empty, no gallery is rendered.
 </Admonition>
 
 <Admonition type="danger" title="Critical: No # Heading in Markdown">
