@@ -1,0 +1,153 @@
+---
+title: "CDC Sink: Attachment Handling"
+sidebar_label: Attachment Handling
+description: "Explains how to store binary SQL columns as RavenDB attachments using AttachmentNameMapping on root and embedded table configurations."
+sidebar_position: 9
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# CDC Sink: Attachment Handling
+
+<Admonition type="note" title="">
+
+* Binary SQL columns can be stored as RavenDB **attachments** instead of document
+  properties using `AttachmentNameMapping`.
+
+* This applies to both root tables and embedded tables.
+
+* In this page:
+  * [Root Table Attachments](#root-table-attachments)
+  * [Embedded Table Attachments](#embedded-table-attachments)
+  * [Attachment Naming](#attachment-naming)
+  * [Attachment Lifecycle](#attachment-lifecycle)
+
+</Admonition>
+
+---
+
+## Root Table Attachments
+
+Use `AttachmentNameMapping` to map a binary SQL column to a RavenDB attachment:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`new CdcSinkTableConfig
+\{
+    Name = "Files",
+    SourceTableName = "files",
+    PrimaryKeyColumns = ["id"],
+    ColumnsMapping = new Dictionary<string, string>
+    \{
+        ["id"]        = "Id",
+        ["filename"]  = "Filename",
+        ["mime_type"] = "MimeType"
+    \},
+    AttachmentNameMapping = new Dictionary<string, string>
+    \{
+        ["content"] = "file"   // SQL column "content" → attachment named "file"
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The binary `content` column is stored as an attachment named `"file"` on the document.
+The attachment is stored with content type `application/octet-stream`.
+
+---
+
+## Embedded Table Attachments
+
+Binary columns on embedded tables are stored as attachments on the **parent** document.
+The attachment name is automatically prefixed to ensure uniqueness:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`new CdcSinkEmbeddedTableConfig
+\{
+    SourceTableName = "photos",
+    PropertyName = "Photos",
+    PrimaryKeyColumns = ["photo_num"],
+    JoinColumns = ["product_id"],
+    ColumnsMapping = new Dictionary<string, string>
+    \{
+        ["photo_num"] = "PhotoNum",
+        ["caption"]   = "Caption"
+    \},
+    AttachmentNameMapping = new Dictionary<string, string>
+    \{
+        ["thumbnail"] = "thumb"
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+A photo with `photo_num = 1` creates an attachment named `"Photos/1/thumb"` on the
+parent document. The prefix `"Photos/1/"` is generated from the `PropertyName` and
+the primary key value.
+
+---
+
+## Attachment Naming
+
+**Root table attachments:**
+
+The attachment name is exactly the value you specify in `AttachmentNameMapping`.
+
+```
+AttachmentNameMapping = { ["content"] = "file" }
+→ Attachment name: "file"
+```
+
+**Embedded table attachments:**
+
+The attachment name is prefixed with `{PropertyName}/{pkValue}/`:
+
+```
+PropertyName = "Photos"
+PrimaryKeyColumns = ["photo_num"]  → photo_num = 1
+AttachmentNameMapping = { ["thumbnail"] = "thumb" }
+→ Attachment name: "Photos/1/thumb"
+```
+
+For composite primary keys, all key values are joined:
+
+```
+PrimaryKeyColumns = ["date", "seq"]  → date='2024-01', seq=3
+→ Attachment name: "Photos/2024-01/3/thumb"
+```
+
+---
+
+## Attachment Lifecycle
+
+* **INSERT** — Attachment is created on the document
+* **UPDATE** — Attachment is replaced with the new binary data
+* **DELETE (embedded item)** — All attachments for that item are automatically removed
+  from the parent document
+* **DELETE (root document)** — Document and all its attachments are deleted
+
+---
+
+## Related Articles
+
+### CDC Sink
+
+- [Column Mapping](./column-mapping.mdx)
+- [Embedded Tables](./embedded-tables.mdx)
+- [Configuration Reference](./configuration-reference.mdx)
+
+### Document Extensions
+
+- [Attachments: What are Attachments](../../../document-extensions/attachments/what-are-attachments)

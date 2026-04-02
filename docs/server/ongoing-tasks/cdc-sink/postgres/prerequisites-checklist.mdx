@@ -1,0 +1,157 @@
+---
+title: "CDC Sink for PostgreSQL: Prerequisites Checklist"
+sidebar_label: Prerequisites Checklist
+description: "Verify all requirements before creating a CDC Sink task for PostgreSQL, including WAL configuration, user permissions, table requirements, and network access."
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# CDC Sink for PostgreSQL: Prerequisites Checklist
+
+<Admonition type="note" title="">
+
+* Before creating a CDC Sink task for PostgreSQL, verify that each of these requirements
+  is in place.
+
+* In this page:
+  * [Source Database Requirements](#source-database-requirements)
+  * [User Permissions](#user-permissions)
+  * [Table Requirements](#table-requirements)
+  * [Network Access](#network-access)
+
+</Admonition>
+
+---
+
+## Source Database Requirements
+
+* **PostgreSQL version**: 10 or later (logical replication introduced in version 10)
+
+* **WAL level**: `wal_level` must be set to `logical`
+
+  Verify with:
+
+<Tabs>
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`SHOW wal_level;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+  If the result is not `logical`, see [WAL Configuration](./wal-configuration.mdx).
+
+* **`max_replication_slots`**: Must be at least 1 (one slot per CDC Sink task)
+
+  Verify with:
+
+<Tabs>
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`SHOW max_replication_slots;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* **`max_wal_senders`**: Must be at least 1
+
+  Verify with:
+
+<Tabs>
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`SHOW max_wal_senders;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+---
+
+## User Permissions
+
+The database user in the connection string must have sufficient permissions.
+
+**Minimum required permissions:**
+
+<Tabs>
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`-- Replication privilege (required for logical replication)
+ALTER USER cdc_user REPLICATION;
+
+-- SELECT on each table CDC Sink will read
+GRANT SELECT ON TABLE orders TO cdc_user;
+GRANT SELECT ON TABLE order_lines TO cdc_user;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+**Optional (allows CDC Sink to configure replication automatically):**
+
+<Tabs>
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`-- Create/drop replication slots
+-- This requires SUPERUSER or membership in pg_replication_slot_admin (PG 14+)
+
+-- Create/drop publications
+-- This requires ownership of the tables being published, or SUPERUSER
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+If the CDC Sink user does not have permission to create publications and replication
+slots, a database administrator must set them up manually.
+See [Initial Setup](./initial-setup.mdx).
+
+Full details: [Permissions and Roles](./permissions-and-roles.mdx).
+
+---
+
+## Table Requirements
+
+* **Primary key**: Each root table and each embedded table must have a primary key
+  (or a unique index used as a replica identity).
+
+* **REPLICA IDENTITY**: For embedded tables where the join columns are not part of
+  the primary key, the table must have `REPLICA IDENTITY FULL` or a replica identity
+  index that includes the join columns. Without this, DELETE events will not include
+  the old row values, and CDC Sink cannot identify which embedded item to remove.
+
+  See [REPLICA IDENTITY](./replica-identity.mdx).
+
+* **Published columns**: All columns referenced in `PrimaryKeyColumns`, `JoinColumns`,
+  and `ColumnsMapping` must exist in the SQL table.
+
+---
+
+## Network Access
+
+* The RavenDB server must be able to open a TCP connection to the PostgreSQL host
+  on the configured port (default: 5432).
+
+* The connection must remain open for the duration of the replication stream.
+  Ensure that firewalls, proxies, and load balancers do not terminate idle or
+  long-lived connections.
+
+---
+
+## Related Articles
+
+### CDC Sink for PostgreSQL
+
+- [WAL Configuration](./wal-configuration.mdx)
+- [Permissions and Roles](./permissions-and-roles.mdx)
+- [Initial Setup](./initial-setup.mdx)
+- [REPLICA IDENTITY](./replica-identity.mdx)

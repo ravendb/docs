@@ -1,0 +1,202 @@
+---
+title: "CDC Sink Example: Denormalization with Embedded Tables"
+sidebar_label: Denormalization with Embedded Tables
+description: "How to merge a normalized SQL schema (orders + order_lines) into denormalized RavenDB documents with embedded arrays using CDC Sink."
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# CDC Sink Example: Denormalization with Embedded Tables
+
+<Admonition type="note" title="">
+
+* This example shows how to merge a normalized SQL schema (orders + order_lines)
+  into denormalized RavenDB documents with embedded arrays.
+
+* In this page:
+  * [Source Schema](#source-schema)
+  * [REPLICA IDENTITY Setup](#replica-identity-setup)
+  * [Task Configuration](#task-configuration)
+  * [Resulting Documents](#resulting-documents)
+  * [What Happens on Change Events](#what-happens-on-change-events)
+
+</Admonition>
+
+## Source Schema
+
+<Tabs>
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`CREATE TABLE orders (
+    order_id   SERIAL PRIMARY KEY,
+    customer   TEXT NOT NULL,
+    status     TEXT NOT NULL DEFAULT 'pending',
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE order_lines (
+    line_id    SERIAL PRIMARY KEY,
+    order_id   INT NOT NULL REFERENCES orders(order_id),
+    product    TEXT NOT NULL,
+    qty        INT NOT NULL,
+    unit_price NUMERIC(10,2) NOT NULL
+);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## REPLICA IDENTITY Setup
+
+`order_lines` has a surrogate PK (`line_id`). The join column `order_id` is not
+part of the primary key. Without `REPLICA IDENTITY FULL`, DELETE events for
+`order_lines` rows would not include `order_id`, and CDC Sink could not find
+the parent document.
+
+<Tabs>
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`ALTER TABLE order_lines REPLICA IDENTITY FULL;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+See [REPLICA IDENTITY](../replica-identity.mdx).
+
+## Task Configuration
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`var config = new CdcSinkConfiguration
+\{
+    Name = "OrdersSync",
+    ConnectionStringName = "MyPostgresConnection",
+    Tables = new List<CdcSinkTableConfig>
+    \{
+        new CdcSinkTableConfig
+        \{
+            Name = "Orders",
+            SourceTableName = "orders",
+            PrimaryKeyColumns = new List<string> \{ "order_id" \},
+            ColumnsMapping = new Dictionary<string, string>
+            \{
+                ["order_id"]   = "OrderId",
+                ["customer"]   = "Customer",
+                ["status"]     = "Status",
+                ["created_at"] = "CreatedAt"
+            \},
+            EmbeddedTables = new List<CdcSinkEmbeddedTableConfig>
+            \{
+                new CdcSinkEmbeddedTableConfig
+                \{
+                    SourceTableName = "order_lines",
+                    PropertyName = "Lines",
+                    Type = CdcSinkRelationType.Array,
+                    JoinColumns = new List<string> \{ "order_id" \},
+                    PrimaryKeyColumns = new List<string> \{ "line_id" \},
+                    ColumnsMapping = new Dictionary<string, string>
+                    \{
+                        ["line_id"]    = "LineId",
+                        ["product"]    = "Product",
+                        ["qty"]        = "Qty",
+                        ["unit_price"] = "UnitPrice"
+                    \}
+                \}
+            \}
+        \}
+    \}
+\};
+
+await store.Maintenance.SendAsync(new AddCdcSinkOperation(config));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Resulting Documents
+
+SQL rows:
+
+<Tabs>
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`orders:      order_id=1, customer='Acme Corp', status='pending'
+order_lines: line_id=1, order_id=1, product='Widget A', qty=3, unit_price=9.99
+order_lines: line_id=2, order_id=1, product='Widget B', qty=1, unit_price=24.99
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+RavenDB document `orders/1`:
+
+<Tabs>
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+    "OrderId": 1,
+    "Customer": "Acme Corp",
+    "Status": "pending",
+    "CreatedAt": "2024-06-01T09:00:00+00:00",
+    "Lines": [
+        \{
+            "LineId": 1,
+            "Product": "Widget A",
+            "Qty": 3,
+            "UnitPrice": 9.99
+        \},
+        \{
+            "LineId": 2,
+            "Product": "Widget B",
+            "Qty": 1,
+            "UnitPrice": 24.99
+        \}
+    ],
+    "@metadata": \{ "@collection": "Orders" \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## What Happens on Change Events
+
+**INSERT into `order_lines`:**
+A new item is appended to the `Lines` array.
+
+**UPDATE to `order_lines`:**
+CDC Sink finds the item by `line_id` within the `Lines` array and updates its properties.
+
+**DELETE from `order_lines`:**
+CDC Sink finds the item by `line_id` and removes it from the array.
+(Requires `REPLICA IDENTITY FULL` as configured above.)
+
+**UPDATE to `orders`:**
+Only the root document properties (`Status`, etc.) are updated. The `Lines` array
+is not affected.
+
+**DELETE from `orders`:**
+The entire `orders/1` document is deleted, including all embedded lines.
+
+---
+
+## Related Articles
+
+### CDC Sink Examples
+
+- [Simple Migration](./example-simple-migration.mdx)
+- [Complex Nesting](./example-complex-nesting.mdx)
+
+### CDC Sink
+
+- [Embedded Tables](../../embedded-tables.mdx)
+- [REPLICA IDENTITY](../replica-identity.mdx)
+- [Delete Strategies](../../delete-strategies.mdx)

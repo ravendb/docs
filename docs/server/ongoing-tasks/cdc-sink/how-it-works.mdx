@@ -1,0 +1,206 @@
+---
+title: "CDC Sink: How It Works"
+sidebar_label: How It Works
+description: "Describes the internal operation of CDC Sink — how it connects to the source database, loads initial data, streams changes, and handles failover."
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# CDC Sink: How It Works
+
+<Admonition type="note" title="">
+
+* This page describes the internal operation of CDC Sink — how it connects to the
+  source database, loads initial data, streams changes, and handles failover.
+
+* Understanding these mechanics is important when designing patches, planning for
+  failover, and setting up monitoring.
+
+* In this page:
+  * [Startup and Verification](#startup-and-verification)
+  * [Initial Load](#initial-load)
+  * [Change Streaming](#change-streaming)
+  * [Transaction Ordering](#transaction-ordering)
+  * [State Persistence and Failover](#state-persistence-and-failover)
+  * [Child Before Parent](#child-before-parent)
+
+</Admonition>
+
+---
+
+## Startup and Verification
+
+When a CDC Sink task starts, it first verifies that the source database is properly
+configured. For PostgreSQL, this includes checking:
+
+* WAL level is set to `logical`
+* The connecting user has sufficient privileges
+* REPLICA IDENTITY is configured correctly for embedded tables that need delete routing
+
+If any check fails, CDC Sink reports the exact issue and the SQL an administrator
+needs to run to fix it. The task does not start until all checks pass.
+
+After verification, CDC Sink creates the necessary change-tracking infrastructure
+in the source database, then begins the initial load.
+
+See the [PostgreSQL Prerequisites Checklist](./postgres/prerequisites-checklist.mdx)
+for the full list of requirements.
+
+---
+
+## Initial Load
+
+Before streaming live changes, CDC Sink performs a full scan of every configured table
+(root, embedded, and linked) using keyset pagination ordered by primary key.
+
+**Progress tracking:** Initial load progress is persisted per-table as a document in
+RavenDB. If the task is restarted, it resumes from the last processed key rather than
+re-scanning the entire table.
+
+**Batch pipelining:** While one batch is being written to RavenDB, the next batch is
+being read from the source database, keeping both systems busy.
+
+**Ordering:** Tables are scanned in dependency order. Root tables are loaded first,
+then embedded tables. This minimises the number of stub documents created (see
+[Child Before Parent](#child-before-parent) below).
+
+<Admonition type="note" title="">
+**Change tracking is set up before the initial load begins — but CDC streaming does
+not start until after the initial load completes.** The sequence is:
+
+1. Change-tracking infrastructure is created in the source database (e.g., a replication
+   slot and publication for PostgreSQL, or CDC capture for SQL Server)
+2. The full initial table scan runs — changes made during this time are captured by the
+   source database but not yet consumed
+3. Once the initial load is complete, CDC streaming starts from the position captured in step 1
+
+This guarantees no changes are missed: anything that happened during the initial load
+is retained by the source database and will be processed immediately after.
+
+For very large databases this means the source database must retain sufficient change
+history for the duration of the initial load (e.g., enough WAL disk space on PostgreSQL,
+or a long enough retention window on SQL Server CDC tables). Plan accordingly before
+starting the initial load on large tables.
+</Admonition>
+
+---
+
+## Change Streaming
+
+After the initial load completes, CDC Sink begins consuming changes from the source
+database's change log, starting from the position captured **before** the initial load began.
+
+Changes arrive grouped by source database transaction, preserving the exact order
+of operations. A transaction is only applied to RavenDB after it is fully committed
+in the source database — partial transactions are never written.
+
+**Document merging:** When an UPDATE arrives, CDC Sink merges the new column values
+onto the existing RavenDB document. Properties that are not part of the column mapping
+are preserved. This allows RavenDB-side annotations and computed fields to coexist with
+CDC-managed properties.
+
+See [Property Retention](./property-retention.mdx) for details.
+
+---
+
+## Transaction Ordering
+
+CDC Sink preserves the full order of operations within a source database transaction.
+If a single transaction performs multiple operations on the same row, all operations
+are applied in order.
+
+**Example:** A source transaction that does:
+
+<Tabs>
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`BEGIN;
+INSERT INTO items (id, name) VALUES (1, 'Alpha');
+UPDATE items SET name = 'Beta' WHERE id = 1;
+DELETE FROM items WHERE id = 1;
+INSERT INTO items (id, name) VALUES (1, 'Gamma');
+UPDATE items SET name = 'Delta' WHERE id = 1;
+COMMIT;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+CDC Sink applies all five operations in order. The final document state is `name = 'Delta'`.
+
+Multiple documents modified in the same transaction are also applied atomically within
+a single RavenDB batch.
+
+---
+
+## State Persistence and Failover
+
+### State Storage
+
+CDC Sink persists its progress as a **document in RavenDB**, alongside your data.
+This document records:
+
+* The last acknowledged position in the source database's change log (LSN for PostgreSQL)
+* Per-table initial load progress (which tables completed, and the last key scanned)
+
+Like any RavenDB document, this state document is subject to normal replication behavior.
+Different nodes in a cluster may have different versions of this document at any point in time.
+
+### Failover Behavior
+
+When the cluster elects a new mentor node for the CDC Sink task, the new node reads
+the **replicated** state document — which may be older than the work the previous
+mentor had completed but not yet replicated.
+
+The new mentor resumes from that replicated state. This means:
+
+* **No data is lost** — CDC Sink resumes from a known position and the source database
+  retains all changes from that position onward
+* **Some changes may be re-read** — Changes between the replicated state and the
+  previous mentor's actual progress will be processed again
+
+Re-reading is normal and expected. The document merge strategy means that re-applying
+the same INSERT or UPDATE is safe — column values are simply overwritten with the same values.
+
+<Admonition type="warning" title="">
+Patches that are not idempotent can produce incorrect results if the same change is
+re-read after a failover. Design patches to handle re-processing safely.
+See [Patching](./patching.mdx) for guidance.
+</Admonition>
+
+---
+
+## Child Before Parent
+
+If an embedded row arrives before its parent row exists in RavenDB — which can happen
+during initial load when tables are scanned in parallel, or due to relaxed foreign key
+constraints in the source database — CDC Sink creates a **stub document** containing
+only the embedded data.
+
+When the parent row arrives later, its columns are merged onto the stub document.
+The final document contains both the parent fields and all embedded items that arrived earlier.
+
+This ensures no data is lost regardless of the order in which rows are processed.
+
+---
+
+## Related Articles
+
+### CDC Sink
+
+- [Overview](./overview.mdx)
+- [Schema Design](./schema-design.mdx)
+- [Patching](./patching.mdx)
+- [Property Retention](./property-retention.mdx)
+- [Failover and Consistency](./failover-and-consistency.mdx)
+
+### PostgreSQL
+
+- [Prerequisites Checklist](./postgres/prerequisites-checklist.mdx)
+- [Initial Setup](./postgres/initial-setup.mdx)
