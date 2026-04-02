@@ -5,8 +5,6 @@ sidebar_position: 0
 ---
 
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
@@ -101,7 +99,6 @@ Read more about RavenDB configuration options [here](../../configuration/configu
 
 For example, this is a typical [settings.json](../../configuration/configuration-options.mdx#json) for a manual setup:
 
-<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "ServerUrl": "https://rvn-srv-1:8080",
@@ -111,10 +108,9 @@ For example, this is a typical [settings.json](../../configuration/configuration
         "Path": "/home/secrets/server.pfx",
         "Password": "s3cr7t p@$$w0rd"
     \}
-\} 
+\}
 `}
 </CodeBlock>
-</TabItem>
 
 
 
@@ -136,7 +132,6 @@ Let's look at an example -
 To use `Security.Certificate.Load.Exec` with a PowerShell script, the [settings.json](../../configuration/configuration-options.mdx#json) 
 must be stored in each node's `Server` folder and will look something like this:
 
-<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "ServerUrl": "https://rvn-srv-1:8080",
@@ -147,11 +142,9 @@ must be stored in each node's `Server` folder and will look something like this:
 \}
 `}
 </CodeBlock>
-</TabItem>
 
 A sample powershell script called `give_me_cert.ps1` that matches the `settings.json` configuration:
 
-<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`try
 \{
@@ -168,7 +161,6 @@ catch
 \}
 `}
 </CodeBlock>
-</TabItem>
 
 
 
@@ -215,21 +207,17 @@ In all secure configurations, the `ServerUrl` must contain the same domain name 
 
 5. The PowerShell CLI window will be running the server terminal. The last line should read `ravendb>`. 
   In the CLI, run the [generateClientCert](../../../server/administration/cli.mdx#generateclientcert) command to generate a client certificate.  
-   - The following is a generic RavenDB CLI command.  
-<TabItem value="plain" label="plain">
+   - The following is a generic RavenDB CLI command.
 <CodeBlock language="plain">
 {`ravendb> generateClientCert <your-client-certificate-name> <path-to-output-folder> <number of months> [optional password]
 `}
 </CodeBlock>
-</TabItem>  
    - In the following example the certificate will be named RavenDBClient, will be stored at C:\Users\administrator\Documents, will be valid for 60 months, and will have no password. 
      If a password is required add it to the end of the command.  
-<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> generateClientCert RavenDBClient C:\\Users\\administrator\\Documents 60
 `}
 </CodeBlock>
-</TabItem>  
    - A few seconds after running this command, a `.zip` file will download into the output folder that you defined.  
 
 6. Extract the contents of the .zip file generated into the folders where your nodes live.  
@@ -246,8 +234,11 @@ In all secure configurations, the `ServerUrl` must contain the same domain name 
 
 8. To set up as an OS service, run PowerShell as an administrator and navigate to the root `Server` folder where the `settings.json` is located.  
    Copy and paste the following command `.\rvn.exe windows-service register --service-name RavenDB`.
-   <Admonition type="note" title=""> It will set up the cluster as an OS service, which [will launch the server automatically](../../../start/installation/running-as-service.mdx) every time the machine starts, 
-    but will fail to start if the Local Service account doesn't have access to all the required resources.  </Admonition>
+
+   <Admonition type="note" title="">
+   It will set up the cluster as an OS service, which [will launch the server automatically](../../../start/installation/running-as-service.mdx) every time the machine starts,
+   but will fail to start if the Local Service account doesn't have access to all the required resources.
+   </Admonition>
    - Open the "Services" manager for Windows. Make sure that the "RavenDB" service is there and that the Startup Type is "Automatic".  
 
 9. Now the service should run whenever the machine starts and the Studio should be accessible by the user with the client certificate.  

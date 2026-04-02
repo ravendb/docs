@@ -641,7 +641,7 @@ That decision lives directly in the `RavenDBCluster` spec under `externalAccessC
 For example, choosing an ingress controller looks like this:
 
 ```yaml showLineNumbers
-spec:   externalAccessConfiguration:	type: ingress-controller
+spec:    externalAccessConfiguration: 	type: ingress-controller
 ```
 
 At this stage, this is just a declaration of intent. The detailed configuration for each model is added incrementally later in this part.
@@ -1990,7 +1990,7 @@ $ kubectl create secret generic ravendb-client-cert --from-file=client.pfx=/path
 You can check the secrets were properly created by:
 
 ```bash showLineNumbers
-$ kubectl get secrets -n ravendb
+$ kubectl get secrets -n ravendb 
 NAME                  TYPE     DATA   AGE
 ravendb-certs-a       Opaque   1      21s
 ravendb-certs-b       Opaque   1      18s
@@ -2165,7 +2165,7 @@ You can watch this process in real time:
 
 ```bash showLineNumbers
 $ kubectl logs job/ravendb-cluster-init -n ravendb
->> Starting RavenDB cluster bootstrapper...[11:55:08] === Starting Discoverability Checks ===[11:55:08] Checking if kubectl is already installed...[11:55:08] Downloading and installing kubectl...[11:55:42] kubectl installed successfully.[11:55:42] Waiting for all RavenDB pods to be in 'Running' state...[11:55:42] Pod readiness check: attempt 1/30[11:55:42] All RavenDB pods are running.[11:55:42] Checking HTTPS (Studio) reachability of RavenDB nodes...[11:55:42] [a] curl -k https://a.ravendb-operator-e2e.ravendb.run:443[11:55:42] [a] Studio redirect detected - looks good[11:55:42] [b] curl -k https://b.ravendb-operator-e2e.ravendb.run:443[11:55:42] [b] Studio redirect detected - looks good[11:55:42] [c] curl -k https://c.ravendb-operator-e2e.ravendb.run:443[11:55:42] [c] Studio redirect detected - looks good[11:55:42] === Discoverability Checks Completed ===[11:55:42] === Starting Cluster Initialization ===[11:55:53] Registering Admin client certificate...[11:55:53] Registering client cert via rvn on first node...[11:55:53] Client cert registered on the first node.[11:55:54] [B] added as Member[11:55:58] [C] added as Member[11:56:01] Cluster topology:{  "Leader": "A",  "CurrentState": "Leader",  "CurrentTerm": 1,  "TopologyId": "76d152b9-f968-499d-af74-2307ca8c37ac",  "Members": "A B C"}[11:56:01] === Cluster Initialization Complete ===
+>> Starting RavenDB cluster bootstrapper... [11:55:08] === Starting Discoverability Checks === [11:55:08] Checking if kubectl is already installed... [11:55:08] Downloading and installing kubectl... [11:55:42] kubectl installed successfully. [11:55:42] Waiting for all RavenDB pods to be in 'Running' state... [11:55:42] Pod readiness check: attempt 1/30 [11:55:42] All RavenDB pods are running. [11:55:42] Checking HTTPS (Studio) reachability of RavenDB nodes... [11:55:42] [a] curl -k https://a.ravendb-operator-e2e.ravendb.run:443 [11:55:42] [a] Studio redirect detected - looks good [11:55:42] [b] curl -k https://b.ravendb-operator-e2e.ravendb.run:443 [11:55:42] [b] Studio redirect detected - looks good [11:55:42] [c] curl -k https://c.ravendb-operator-e2e.ravendb.run:443 [11:55:42] [c] Studio redirect detected - looks good [11:55:42] === Discoverability Checks Completed === [11:55:42] === Starting Cluster Initialization === [11:55:53] Registering Admin client certificate... [11:55:53] Registering client cert via rvn on first node... [11:55:53] Client cert registered on the first node. [11:55:54] [B] added as Member [11:55:58] [C] added as Member [11:56:01] Cluster topology: {   "Leader": "A",   "CurrentState": "Leader",   "CurrentTerm": 1,   "TopologyId": "76d152b9-f968-499d-af74-2307ca8c37ac",   "Members": "A B C" } [11:56:01] === Cluster Initialization Complete ===
 ```
 
 The logs are intentionally explicit. You’ll see DNS resolution, connectivity checks, and node additions logged step by step. When this job completes successfully, the cluster is fully formed \- no manual setup, no UI-driven registration, no follow-up actions required.
