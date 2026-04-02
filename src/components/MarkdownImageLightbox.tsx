@@ -5,49 +5,125 @@ import Captions from "yet-another-react-lightbox/plugins/captions";
 import { useLocation } from "@docusaurus/router";
 import { Share } from "yet-another-react-lightbox/plugins";
 
+type Slide = { src: string; description?: string };
+type CandidateElement = HTMLDivElement | HTMLImageElement;
+type GalleryItem = { element: CandidateElement; slide: Slide };
+
 function decodeHTML(html: string) {
     const txt = document.createElement("textarea");
     txt.innerHTML = html;
     return txt.value;
 }
 
+function isIdealImageHost(element: unknown): element is HTMLDivElement {
+    return element instanceof HTMLDivElement && element.classList.contains("ideal-image-lightbox-host");
+}
+
+function isImageElement(element: unknown): element is HTMLImageElement {
+    return element instanceof HTMLImageElement;
+}
+
+function getLightboxCandidates(): CandidateElement[] {
+    const candidatesElements = Array.from(
+        document.querySelectorAll(".theme-doc-markdown img, .theme-doc-markdown .ideal-image-lightbox-host")
+    );
+
+    return candidatesElements.filter((element) => isImageElement(element) || isIdealImageHost(element));
+}
+
+function getLightboxSrc(element: CandidateElement): string | null {
+    if (isImageElement(element)) {
+        return element.currentSrc || element.getAttribute("src");
+    }
+
+    return element.getAttribute("data-lightbox-src");
+}
+
+function getLightboxDescription(element: CandidateElement): string {
+    if (isImageElement(element)) {
+        return decodeHTML(element.getAttribute("alt") || "");
+    }
+
+    return element.getAttribute("data-lightbox-description") || "";
+}
+
+function buildGallery(candidates: CandidateElement[]): GalleryItem[] {
+    return candidates.reduce<GalleryItem[]>((gallery, candidate) => {
+        const src = getLightboxSrc(candidate);
+        if (!src) {
+            return gallery;
+        }
+
+        gallery.push({
+            element: candidate,
+            slide: {
+                src,
+                description: getLightboxDescription(candidate),
+            },
+        });
+
+        return gallery;
+    }, []);
+}
+
 export default function MarkdownImageLightbox() {
     const [open, setOpen] = useState(false);
-    const [slides, setSlides] = useState<{ src: string; description?: string }[]>([]);
+    const [slides, setSlides] = useState<Slide[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const location = useLocation();
 
     useEffect(() => {
-        const images = Array.from(document.querySelectorAll(".theme-doc-markdown img"));
+        const boundElements = new Map<CandidateElement, EventListener>();
 
-        const imageList: { src: string; description?: string }[] = [];
+        const openGallery = (target: CandidateElement) => {
+            const gallery = buildGallery(getLightboxCandidates());
+            const index = gallery.findIndex(({ element }) => element === target);
 
-        images.forEach((img, index) => {
-            const src = img.getAttribute("src");
-            if (!src) {
+            if (index === -1) {
                 return;
             }
 
-            const altRaw = img.getAttribute("alt") || "";
-            const alt = decodeHTML(altRaw);
+            setSlides(gallery.map(({ slide }) => slide));
+            setCurrentIndex(index);
+            setOpen(true);
+        };
 
-            imageList.push({ src, description: alt });
+        const bindCandidates = () => {
+            getLightboxCandidates().forEach((candidate) => {
+                if (boundElements.has(candidate)) {
+                    return;
+                }
 
-            if (img.classList.contains("lightbox-bound")) {
-                return;
-            }
+                candidate.style.cursor = "zoom-in";
 
-            img.setAttribute("style", "cursor: zoom-in");
-            img.classList.add("lightbox-bound");
+                const clickHandler: EventListener = (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    openGallery(candidate);
+                };
 
-            img.addEventListener("click", (e) => {
-                e.preventDefault();
-                setCurrentIndex(index);
-                setOpen(true);
+                candidate.addEventListener("click", clickHandler);
+                boundElements.set(candidate, clickHandler);
             });
+        };
+
+        bindCandidates();
+
+        const observer = new window.MutationObserver(() => {
+            bindCandidates();
         });
 
-        setSlides(imageList);
+        document.querySelectorAll(".theme-doc-markdown").forEach((root) => {
+            observer.observe(root, { childList: true, subtree: true });
+        });
+
+        return () => {
+            observer.disconnect();
+
+            boundElements.forEach((clickHandler, element) => {
+                element.removeEventListener("click", clickHandler);
+            });
+        };
     }, [location.pathname]);
 
     return (
