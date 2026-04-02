@@ -1,0 +1,141 @@
+---
+title: "Server: Ongoing Tasks: CDC Sink: Linked Tables"
+sidebar_label: Linked Tables
+description: "How to create document ID references from foreign keys using linked table configuration in CDC Sink."
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Server: Ongoing Tasks: CDC Sink: Linked Tables
+
+<Admonition type="note" title="">
+
+* A **linked table** creates a document ID reference in the parent document rather
+  than embedding data. A foreign key value becomes a RavenDB document ID pointing
+  to a related collection.
+
+* In this page:
+  * [Basic Configuration](#basic-configuration)
+  * [Composite Foreign Keys](#composite-foreign-keys)
+  * [Array References](#array-references)
+  * [Linked vs Embedded](#linked-vs-embedded)
+
+</Admonition>
+
+---
+
+## Basic Configuration
+
+`CdcSinkLinkedTableConfig` is placed inside a root table's `LinkedTables` list:
+
+```csharp
+new CdcSinkTableConfig
+{
+    Name = "Orders",
+    SourceTableName = "orders",
+    PrimaryKeyColumns = ["id"],
+    ColumnsMapping = { { "id", "Id" }, { "customer_id", "CustomerId" } },
+    LinkedTables =
+    [
+        new CdcSinkLinkedTableConfig
+        {
+            SourceTableName = "customers",
+            PropertyName = "Customer",              // Property name in document
+            LinkedCollectionName = "Customers",     // Target collection for ID
+            Type = CdcSinkRelationType.Value,       // Single reference
+            JoinColumns = ["customer_id"]           // FK used to build the document ID
+        }
+    ]
+}
+```
+
+With `customer_id = 42`, the Orders document gets:
+
+```json
+{
+    "Id": 1,
+    "CustomerId": 42,
+    "Customer": "Customers/42"
+}
+```
+
+The `Customer` property is a RavenDB document ID. Load the referenced document using
+[includes](../../../client-api/session/loading-entities#load-with-includes) to avoid
+a second network call.
+
+---
+
+## Composite Foreign Keys
+
+When the target table has a composite primary key, the linked reference includes
+all parts of that key:
+
+```csharp
+new CdcSinkLinkedTableConfig
+{
+    SourceTableName = "customers",
+    PropertyName = "Customer",
+    LinkedCollectionName = "Customers",
+    Type = CdcSinkRelationType.Value,
+    JoinColumns = ["customer_region", "customer_id"]  // Must match Customers PK order
+}
+```
+
+With `customer_region = 'US'` and `customer_id = 42`, the document gets:
+
+```json
+"Customer": "Customers/US/42"
+```
+
+---
+
+## Array References
+
+Use `Type = CdcSinkRelationType.Array` for one-to-many references, where a parent
+row has multiple foreign keys pointing to the same collection:
+
+```csharp
+new CdcSinkLinkedTableConfig
+{
+    SourceTableName = "tags",
+    PropertyName = "Tags",
+    LinkedCollectionName = "Tags",
+    Type = CdcSinkRelationType.Array,
+    JoinColumns = ["tag_id"]
+}
+```
+
+This creates an array of document references:
+
+```json
+{
+    "Tags": ["Tags/primary", "Tags/urgent", "Tags/follow-up"]
+}
+```
+
+---
+
+## Linked vs Embedded
+
+| Consideration | Embedded | Linked |
+|--------------|----------|--------|
+| Data stored | Full nested object/array inside document | Document ID reference only |
+| Load pattern | Single document load | Load parent + include references |
+| Document size | Grows with embedded items | Parent document stays small |
+| Updates to referenced data | Reflected via CDC | Reflected via CDC on the referenced collection |
+| Independence | Child has no meaning without parent | Referenced entity exists independently |
+| Typical use | Orders own LineItems | Orders reference Customers |
+
+**Choose embedded** when the child data belongs to the parent and is always read
+together with it.
+
+**Choose linked** when the referenced entity is independently meaningful and shared
+across many parents, and you want to avoid duplicating data.
+
+---

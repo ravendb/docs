@@ -1,0 +1,104 @@
+---
+title: "Server: Ongoing Tasks: CDC Sink: PostgreSQL: Studio UI"
+sidebar_label: Studio UI
+description: "How to create and manage CDC Sink tasks for PostgreSQL through the RavenDB Management Studio."
+sidebar_position: 8
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Server: Ongoing Tasks: CDC Sink: PostgreSQL: Studio UI
+
+<Admonition type="note" title="">
+
+* CDC Sink tasks are created and managed through the **Ongoing Tasks** section of the
+  Management Studio.
+
+* In this page:
+  * [Creating a CDC Sink Task](#creating-a-cdc-sink-task)
+  * [Monitoring Task State](#monitoring-task-state)
+  * [Editing a Task](#editing-a-task)
+
+</Admonition>
+
+---
+
+## Creating a CDC Sink Task
+
+<Admonition type="info" title="TODO">
+
+Screenshot needed — "Ongoing Tasks" list view showing the CDC Sink task type in the "Add Task" dropdown.
+Reference ETL documentation screenshots for style (e.g., server/ongoing-tasks/etl/raven/defining-raven-etl-task.markdown).
+
+</Admonition>
+
+To create a CDC Sink task in the Studio:
+
+1. Navigate to **Databases** → your database → **Ongoing Tasks**
+2. Click **Add Task** and select **CDC Sink**
+3. Configure the connection string pointing to the PostgreSQL source
+4. Add one or more root tables with their column mappings
+5. (Optional) Add embedded tables and linked tables for each root table
+6. (Optional) Configure patches for INSERT/UPDATE/DELETE events
+7. Click **Save**
+
+<Admonition type="info" title="TODO">
+
+Screenshot needed — CDC Sink task creation form, showing the connection string field, table configuration panel, and column mapping editor.
+
+</Admonition>
+
+---
+
+## Monitoring Task State
+
+<Admonition type="info" title="TODO">
+
+Screenshot needed — Ongoing Tasks list view with a running CDC Sink task, showing state badge ("Active"), responsible node, and the expand button for details.
+
+</Admonition>
+
+The task list shows:
+
+* **Task name** and **connection string name**
+* **State** — Active, Disabled, Error, or FallbackMode
+* **Responsible node** — the cluster node currently running the task
+* **Progress** — during initial load, shows which tables have been scanned
+
+Clicking on a task opens the detail view with per-table statistics.
+
+<Admonition type="info" title="TODO">
+
+Screenshot needed — CDC Sink task detail view, showing per-table row counts, last processed position, and the initial load progress per table.
+
+</Admonition>
+
+---
+
+## Editing a Task
+
+To edit a task, click its name in the Ongoing Tasks list. The same configuration
+form used for creation opens in edit mode.
+
+<Admonition type="warning" title="">
+
+If the task uses **auto-generated** slot and publication names (no custom
+`CdcSinkPostgresSettings`), adding or removing tables changes the hash and therefore
+the names. A new slot and publication are created under the new names, and the old
+ones become orphaned.
+
+If you specified **custom names** via `CdcSinkPostgresSettings.SlotName` and
+`PublicationName`, the slot name stays the same but the publication may need to be
+updated by a database administrator to include the new tables.
+
+Orphaned slots and publications must be dropped manually by the database administrator.
+See [Cleanup and Maintenance](./cleanup-and-maintenance.mdx).
+
+</Admonition>
+
+---

@@ -1,0 +1,307 @@
+---
+title: "Server: Ongoing Tasks: CDC Sink: Patching"
+sidebar_label: Patching
+description: "JavaScript patches in CDC Sink — available variables, patch scope, aggregation, delta computations, metadata, loading related documents, and idempotency."
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Server: Ongoing Tasks: CDC Sink: Patching
+
+<Admonition type="note" title="">
+
+* A **patch** is a JavaScript snippet that runs on a document after column mapping is applied.
+  Patches let you transform data, compute derived fields, maintain aggregates, load related
+  documents, and control document metadata.
+
+* Patches are defined per-table (root or embedded) and per-operation (INSERT/UPDATE
+  or DELETE via `OnDelete.Patch`).
+
+* In this page:
+  * [When Patches Run](#when-patches-run)
+  * [Available Variables](#available-variables)
+  * [Patch Scope: Root vs Embedded](#patch-scope-root-vs-embedded)
+  * [Scenario: Column Transformation](#scenario-column-transformation)
+  * [Scenario: Aggregation with Embedded Tables](#scenario-aggregation-with-embedded-tables)
+  * [Scenario: Delta Computations](#scenario-delta-computations)
+  * [Scenario: Computed Derived Fields](#scenario-computed-derived-fields)
+  * [Scenario: Document Metadata](#scenario-document-metadata)
+  * [Scenario: Loading Related Documents](#scenario-loading-related-documents)
+  * [Idempotency and Failover](#idempotency-and-failover)
+  * [Step Limit](#step-limit)
+  * [Capabilities and Limitations](#capabilities-and-limitations)
+
+</Admonition>
+
+---
+
+## When Patches Run
+
+| Event | Patch property | Runs? |
+|-------|---------------|-------|
+| INSERT | `Patch` | ✓ After column mapping |
+| UPDATE | `Patch` | ✓ After column mapping, on merged document |
+| DELETE (root table) | `OnDelete.Patch` | ✓ Before document is deleted |
+| DELETE (embedded table) | `OnDelete.Patch` | ✓ On parent document before item is removed |
+
+The `Patch` property on a table handles INSERT and UPDATE.
+The `OnDelete.Patch` on `CdcSinkOnDeleteConfig` handles DELETE separately.
+
+---
+
+## Available Variables
+
+| Variable | Available | Type | Description |
+|----------|-----------|------|-------------|
+| `this` | Always | object | The document being modified (root or parent for embedded) |
+| `$row` | Always | object | All SQL columns from the CDC event (mapped and unmapped) |
+| `$old` | UPDATE only | object \| null | Previous state of the item; null for INSERT |
+| `get(id)` | Always | function | Load a RavenDB document by ID |
+
+---
+
+## Patch Scope: Root vs Embedded
+
+**Root table patches** operate on the root document:
+
+```javascript
+Patch = "this.Status = $row.is_active ? 'Active' : 'Inactive';"
+```
+
+`this` is the Orders (or whatever root collection) document.
+
+**Embedded table patches** operate on the **parent** document, not the embedded item:
+
+```javascript
+// Patch on order_lines embedded table
+Patch = "this.TotalQuantity = (this.Lines || []).reduce((s, l) => s + l.Quantity, 0);"
+```
+
+`this` is the parent Orders document. This lets you recompute parent-level aggregates
+whenever an embedded item changes.
+
+---
+
+## Scenario: Column Transformation
+
+Transform or combine SQL columns into RavenDB properties:
+
+```javascript
+this.FullName = ($row.first_name + ' ' + $row.last_name).trim();
+this.Status = $row.is_active ? 'Active' : 'Inactive';
+this.CreatedAt = new Date($row.created_unix * 1000).toISOString();
+```
+
+---
+
+## Scenario: Aggregation with Embedded Tables
+
+Recompute parent-level totals whenever an embedded item is added or updated.
+
+<Admonition type="warning" title="">
+
+If you use a `Patch` to maintain an aggregate, you **must** also provide an
+`OnDelete.Patch` that reverses the aggregate when an item is deleted.
+Without it, deletes will leave the aggregate in an incorrect state.
+
+</Admonition>
+
+```csharp
+new CdcSinkEmbeddedTableConfig
+{
+    SourceTableName = "order_lines",
+    PropertyName = "Lines",
+    PrimaryKeyColumns = ["line_id"],
+    JoinColumns = ["order_id"],
+    ColumnsMapping = { { "line_id", "LineId" }, { "quantity", "Quantity" } },
+
+    // Runs on INSERT and UPDATE — recomputes total from current Lines array
+    Patch = @"
+        this.TotalQuantity = (this.Lines || [])
+            .reduce((sum, line) => sum + (line.Quantity || 0), 0);
+    ",
+
+    // REQUIRED: Runs on DELETE — recomputes after item is removed from array
+    OnDelete = new CdcSinkOnDeleteConfig
+    {
+        Patch = @"
+            this.TotalQuantity = (this.Lines || [])
+                .reduce((sum, line) => sum + (line.Quantity || 0), 0);
+        "
+    }
+}
+```
+
+The OnDelete patch runs after the item has already been removed from the array,
+so re-summing `this.Lines` gives the correct post-deletion total.
+
+---
+
+## Scenario: Delta Computations
+
+Use `$old` to compute a delta when an embedded item changes, keeping a running total
+without recomputing from scratch.
+
+<Admonition type="warning" title="">
+
+Running total patches using `$old` must have a matching `OnDelete.Patch` that subtracts
+the deleted item's value. Without it, deletes leave the running total incorrect.
+
+</Admonition>
+
+```csharp
+new CdcSinkEmbeddedTableConfig
+{
+    SourceTableName = "invoice_lines",
+    PropertyName = "Lines",
+    PrimaryKeyColumns = ["line_id"],
+    JoinColumns = ["invoice_id"],
+    ColumnsMapping = { { "line_id", "LineId" }, { "amount", "Amount" } },
+
+    // INSERT: $old is null, so delta = new amount (0 → new)
+    // UPDATE: $old has previous Amount, delta = new - old
+    Patch = @"
+        const oldAmount = $old?.Amount || 0;
+        const newAmount = $row.amount || 0;
+        this.RunningTotal = (this.RunningTotal || 0) + (newAmount - oldAmount);
+    ",
+
+    // REQUIRED: Subtract the deleted item's amount using $old
+    OnDelete = new CdcSinkOnDeleteConfig
+    {
+        Patch = @"
+            const deletedAmount = $old?.Amount || 0;
+            this.RunningTotal = (this.RunningTotal || 0) - deletedAmount;
+        "
+    }
+}
+```
+
+The `$old` variable in the OnDelete patch contains the item's last known state before deletion.
+
+---
+
+## Scenario: Computed Derived Fields
+
+Compute fields from unmapped columns that you don't want to store directly:
+
+```javascript
+// base_price and tax_rate are NOT in ColumnsMapping
+this.FinalPrice = $row.base_price * (1 + $row.tax_rate);
+this.Discount = $row.is_vip ? $row.base_price * 0.1 : 0;
+```
+
+---
+
+## Scenario: Document Metadata
+
+Patches can set RavenDB document metadata, including expiration:
+
+```javascript
+this['@metadata'] = this['@metadata'] || {};
+
+if ($row.expires_at) {
+    this['@metadata']['@expires'] = new Date($row.expires_at).toISOString();
+}
+
+this['@metadata']['SourceTable'] = 'orders';
+```
+
+---
+
+## Scenario: Loading Related Documents
+
+Use `get()` to load a related RavenDB document and denormalize its data:
+
+```javascript
+const customer = get('Customers/' + $row.customer_id);
+
+if (customer) {
+    this.CustomerName = customer.Name;
+    this.CustomerEmail = customer.Email;
+    this.CustomerTier = customer.Tier;
+} else {
+    // Document doesn't exist yet — race condition or not yet synced
+    this.CustomerName = null;
+    this.CustomerEmail = null;
+}
+```
+
+`get()` returns `null` if the document does not exist or has not yet been created
+by CDC Sink (race condition when multiple tables are loading in parallel).
+Always check for null before accessing properties.
+
+**When to use `get()`:**
+
+* Denormalizing slowly-changing reference data (customer name, category, region)
+* Capturing a snapshot of related data at insert time
+
+**Prefer linked tables** for simple foreign key references — they are cleaner and
+do not have the null-handling complexity of `get()`.
+
+---
+
+## Idempotency and Failover
+
+After a failover, CDC Sink resumes from the replicated state, which may be older
+than the last work the previous mentor node completed. Some changes may be re-read
+and re-applied.
+
+**Patches that are not idempotent can produce incorrect results when re-applied.**
+
+```javascript
+// NOT idempotent — increments again on re-read
+this.ViewCount = (this.ViewCount || 0) + 1;
+
+// Idempotent — absolute value from SQL source
+this.ViewCount = $row.view_count;
+
+// Idempotent — delta via $old (both first-read and re-read produce same result)
+const oldVal = $old?.Amount || 0;
+const newVal = $row.amount || 0;
+this.RunningTotal = (this.RunningTotal || 0) + (newVal - oldVal);
+```
+
+Column mapping itself is idempotent — overwriting a property with the same value
+is always safe.
+
+---
+
+## Step Limit
+
+Patch scripts are bounded by a **step quota** rather than a time limit. Each operation
+in the script (assignment, loop iteration, function call) consumes steps.
+
+The limit is controlled by the `Patching.MaxStepsForScript` configuration setting.
+See [Patching Configuration](../../../server/configuration/patching-configuration).
+
+If a patch exceeds the limit, the CDC operation fails and is retried.
+
+Keep patches focused and efficient — prefer `.filter()` + `.reduce()` over nested loops.
+
+---
+
+## Capabilities and Limitations
+
+**What patches can do:**
+
+* Access `this`, `$row`, `$old`
+* Load related documents with `get()`
+* Compute and transform property values
+* Set and modify document metadata
+* Conditional logic, loops, array methods
+* Use built-in JavaScript: `Date`, `Math`, `JSON`, `Array`
+
+**What patches cannot do:**
+
+* Make HTTP calls or API requests
+* Access the file system
+* Load documents from other RavenDB databases
+
+---
