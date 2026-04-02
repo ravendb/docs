@@ -569,12 +569,7 @@ hr {
 
 /* Docs Home Page custom h1 margin */
 .docs-doc-id-home h1 {
-    @apply !mb-1;
-}
-
-/* Docs Home Page subtitle */
-.docs-doc-id-home .home-subtitle {
-    @apply !text-lg !leading-relaxed !mb-5 text-black/70 dark:text-white/60 !font-normal;
+    @apply !mb-0;
 }
 
 /* Reset default Docusaurus transition for a */
