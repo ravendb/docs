@@ -21,27 +21,6 @@ body:has([data-drawer-open="true"]) {
 }
 
 /* Custom animations for layout switcher */
-@keyframes slide-in-from-bottom {
-    from {
-        opacity: 0;
-        transform: translateY(16px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes slide-in-from-left {
-    from {
-        opacity: 0;
-        transform: translateX(-16px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
 
 @keyframes fade-in {
     from {
@@ -58,14 +37,7 @@ body:has([data-drawer-open="true"]) {
 
 .fade-in {
     animation-name: fade-in;
-}
-
-.slide-in-from-bottom-4 {
-    animation-name: slide-in-from-bottom;
-}
-
-.slide-in-from-left-4 {
-    animation-name: slide-in-from-left;
+    animation-duration: 400ms;
 }
 
 /* Custom selection */

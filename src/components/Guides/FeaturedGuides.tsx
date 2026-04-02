@@ -33,16 +33,15 @@ export default function FeaturedGuides({ guidesTitles }: FeaturedGuidesProps) {
                 Featured guides
             </Heading>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {featuredGuides.map((guide, index) => (
+                {featuredGuides.map((guide) => (
                     <CardWithImage
                         key={guide.permalink}
                         title={guide.title}
                         description={guide.description}
                         imgSrc={guide.image}
                         imgIcon={guide.icon}
-                        url={guide.externalUrl || guide.permalink}
+                        url={guide.external_url || guide.permalink}
                         tags={guide.tags}
-                        animationDelay={index * 50}
                     />
                 ))}
             </div>

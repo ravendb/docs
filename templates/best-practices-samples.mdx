@@ -39,9 +39,9 @@ Guidelines and recommendations for creating high-quality sample documentation.
 **Example:**
 
 ```yaml
-challengesSolutionsTags: [semantic-search, integration-patterns]
-featureTags: [vector-search, include, document-refresh, azure-storage-queues-etl]
-techStackTags: [csharp, aspire, azure-storage-queues, azure-functions]
+challenges_solutions_tags: [semantic-search, integration-patterns]
+feature_tags: [vector-search, include, document-refresh, azure-storage-queues-etl]
+tech_stack_tags: [csharp, aspire, azure-storage-queues, azure-functions]
 ```
 
 ### Images
@@ -187,9 +187,13 @@ title: "My Sample"
 ---
 title: "My Sample"
 description: "Complete description"
-challengesSolutionsTags: [semantic-search]
-featureTags: [vector-search]
-techStackTags: [csharp]
+challenges_solutions_tags: [semantic-search]
+feature_tags: [vector-search]
+tech_stack_tags: [csharp]
+license: "MIT License"
+license_url: "https://opensource.org/licenses/MIT"
+repository_url: "https://github.com/ravendb/my-sample-repo"
+languages: ["C#"]
 ---
 ```
 
@@ -218,13 +222,13 @@ title: "My Sample"
 ### ❌ Undefined Tags
 
 ```yaml
-challengesSolutionsTags: [nonexistent-tag]  # Tag doesn't exist in YAML
+challenges_solutions_tags: [nonexistent-tag]  # Tag doesn't exist in YAML
 ```
 
 ### ✅ Valid Tags
 
 ```yaml
-challengesSolutionsTags: [semantic-search]  # Tag exists in samples/tags/challenges-solutions.yml
+challenges_solutions_tags: [semantic-search]  # Tag exists in samples/tags/challenges-solutions.yml
 ```
 
 ### ❌ Empty FeatureAccordion
@@ -248,6 +252,7 @@ challengesSolutionsTags: [semantic-search]  # Tag exists in samples/tags/challen
 Before publishing a sample:
 
 - [ ] All frontmatter fields are present and valid
+- [ ] `repository_url` and `languages` are set (feeds `SoftwareSourceCode` JSON-LD)
 - [ ] All tags exist in their respective YAML files
 - [ ] Cover image loads correctly
 - [ ] Gallery images load and have alt text

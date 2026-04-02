@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import clsx from "clsx";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import { Icon } from "@site/src/components/Common/Icon";
 import { IconName } from "@site/src/typescript/iconName";
 import useBoolean from "@site/src/hooks/useBoolean";
@@ -27,7 +27,7 @@ export default function FeatureAccordion({
     return (
         <div
             className={clsx(
-                "flex flex-col gap-3",
+                "flex flex-col",
                 "p-3 rounded-xl !mb-4",
                 "bg-black/5 dark:bg-white/5",
                 "border border-black/10 dark:border-white/10",
@@ -59,21 +59,20 @@ export default function FeatureAccordion({
                     <Icon icon="chevron-down" size="xs" className="text-black dark:text-white" />
                 </motion.div>
             </button>
-            <AnimatePresence initial={false}>
-                {isExpanded && children && (
-                    <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2, ease: "easeInOut" }}
-                        className="overflow-hidden"
-                    >
-                        <div className="border-t border-black/10 dark:border-white/10 pt-3 [&>*:last-child]:!mb-0">
+            {children && (
+                <div
+                    className={clsx(
+                        "overflow-hidden transition-all duration-200 ease-in-out",
+                        isExpanded ? "grid grid-rows-[1fr] opacity-100" : "grid grid-rows-[0fr] opacity-0"
+                    )}
+                >
+                    <div className="min-h-0">
+                        <div className="border-t border-black/10 dark:border-white/10 mt-3 pt-3 [&>*:last-child]:!mb-0">
                             {children}
                         </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

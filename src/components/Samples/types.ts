@@ -11,6 +11,7 @@ export interface Sample {
     description?: string;
     permalink: string;
     image?: string;
+    img_alt?: string;
     tags: Array<{ label: string; key: string; category?: string }>;
 }
 

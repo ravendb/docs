@@ -1,17 +1,23 @@
 ---
 title: "The Library of Ravens"
 description: "A simple library management application. Built with RavenDB, Aspire, Azure Storage Queues, and Azure Functions. "
-challengesSolutionsTags: [cloud-tax, gen-ai-data-enrichment, integration-patterns, semantic-search]
-featureTags: [azure-storage-queues-etl, document-refresh, include, vector-search]
-techStackTags: [csharp, aspire, azure-storage-queues, azure-functions]
+challenges_solutions_tags: [cloud-tax, gen-ai-data-enrichment, integration-patterns, semantic-search]
+feature_tags: [azure-storage-queues-etl, document-refresh, include, vector-search]
+tech_stack_tags: [csharp, aspire, azure-storage-queues, azure-functions]
 category: "Ecommerce"
 license: "MIT License"
+license_url: "https://github.com/ravendb/samples-library/blob/main/LICENSE"
+repository_url: "https://github.com/ravendb/samples-library"
+languages: ["C#"]
 image: "/img/samples/library-of-ravens/cover.webp"
+img_alt: "The Library of Ravens App Screenshot"
 gallery:
   - src: "/img/samples/library-of-ravens/01.webp"
     alt: "The Library of Ravens - Main Interface"
   - src: "/img/samples/library-of-ravens/02.webp"
     alt: "The Library of Ravens - Author Profile"
+  - src: "/img/samples/library-of-ravens/03.webp"
+    alt: "The Library of Ravens - User Profile"
 ---
 
 import { ActionsCard, RelatedResource, FeatureAccordion, SampleMetadataColumn, SampleLayout } from '@site/src/components/Samples';
@@ -23,7 +29,6 @@ export const sampleDetails = (
             <ActionsCard
                 githubUser="ravendb"
                 githubRepo="samples-library"
-                demoUrl="https://demo.ravendb.net"
             />
         }
         relatedResources={
@@ -72,16 +77,16 @@ Built with [RavenDB](https://ravendb.net/), [Aspire](https://aspire.dev/), [Azur
     ```csharp
     // Load a book with its related author in one request
     using var session = store.OpenAsyncSession();
-    
+
     var book = await session
         .Include<Book>(b => b.AuthorId)
         .Include<Book>(b => b.CategoryId)
         .LoadAsync<Book>("books/1-A");
-    
+
     // These are already loaded - no additional DB calls
     var author = await session.LoadAsync<Author>(book.AuthorId);
     var category = await session.LoadAsync<Category>(book.CategoryId);
-    
+
     // Example: Loading multiple books with their authors
     var books = await session.Query<Book>()
         .Include(b => b.AuthorId)
@@ -95,7 +100,40 @@ Built with [RavenDB](https://ravendb.net/), [Aspire](https://aspire.dev/), [Azur
     description="Semantic search powered by AI embeddings for intelligent content discovery."
     icon="vector-search"
 >
-    Vector search enables semantic similarity matching, allowing users to find books based on meaning rather than just keywords.
+    RavenDB's Vector Search enables semantic similarity queries for discovering related books. The Library uses AI-generated embeddings to power a 'Similar Books' feature, finding conceptually related titles even when they share no common keywords.
+    
+    Implementation example:
+    
+    ```csharp
+    // Define a vector index for book embeddings
+    public class Books_ByEmbedding : AbstractIndexCreationTask<Book>
+    {
+        public Books_ByEmbedding()
+    {
+        Map = books => from book in books
+        select new
+    {
+        book.Title,
+        book.Description,
+        // Vector field for semantic search
+        Embedding = CreateField("Embedding",
+        book.Embedding,
+        stored: false,
+        indexing: FieldIndexing.Default)
+    };
+    }
+    }
+
+    // Find similar books using vector search
+    var similarBooks = await session
+    .Query<Book, Books_ByEmbedding>()
+    .VectorSearch(
+    field: b => b.Embedding,
+    queryVector: currentBook.Embedding,
+    minimumSimilarity: 0.7f)
+    .Take(5)
+    .ToListAsync();
+    ```
 </FeatureAccordion>
 
 <FeatureAccordion
@@ -103,7 +141,34 @@ Built with [RavenDB](https://ravendb.net/), [Aspire](https://aspire.dev/), [Azur
     description="Reliable data integration with Azure Storage Queues."
     icon="azure-queue-storage-etl"
 >
-    ETL to Azure Storage Queues ensures that all library updates are reliably propagated to downstream systems.
+    RavenDB's ETL (Extract, Transform, Load) to Azure Storage Queues enables real-time data streaming. Combined with @refresh, the Library sends notifications about expiring book loans to Azure Functions for processing email reminders.
+    
+    Implementation example:
+    
+    ```csharp
+    // RavenDB ETL Script for Azure Storage Queues
+    // Configured in RavenDB Studio
+
+    // This script runs when documents are refreshed
+    loadToAzureQueueStorage('expiring-loans', {
+    BookId: id(this),
+    Title: this.Title,
+    BorrowerId: this.CurrentLoan.BorrowerId,
+    DueDate: this.CurrentLoan.DueDate,
+    BorrowerEmail: load(this.CurrentLoan.BorrowerId).Email
+});
+
+    // Azure Function triggered by the queue message
+    [Function("ProcessExpiringLoan")]
+    public async Task Run(
+    [QueueTrigger("expiring-loans")] LoanNotification notification)
+    {
+        await _emailService.SendReminderAsync(
+            notification.BorrowerEmail,
+            notification.Title,
+            notification.DueDate);
+    }
+    ```
 </FeatureAccordion>
 
 <FeatureAccordion
@@ -111,7 +176,30 @@ Built with [RavenDB](https://ravendb.net/), [Aspire](https://aspire.dev/), [Azur
     description="Automatic document updates based on external data sources."
     icon="document-refresh"
 >
-    Document Refresh keeps book metadata up-to-date by automatically fetching the latest information from external APIs.
+    Document Refresh enables automatic re-indexing of documents at specified times using the @refresh metadata. The Library uses this for handling book loan timeouts - when a book's return date approaches, RavenDB automatically refreshes the document, triggering downstream processes.
+    
+    Implementation example:
+    
+    ```csharp
+    // Set a document to refresh at a specific time
+    public async Task SetBookReturnReminder(
+    string bookId,
+    DateTime returnDate)
+    {
+        using var session = store.OpenAsyncSession();
+        var book = await session.LoadAsync<Book>(bookId);
+
+        // Set the @refresh metadata
+        var metadata = session.Advanced.GetMetadataFor(book);
+        metadata["@refresh"] = returnDate.AddDays(-1); // Day before due
+
+        await session.SaveChangesAsync();
+    }
+
+    // The document will be re-indexed when refresh time arrives,
+    // triggering any subscriptions or ETL processes watching for
+    // books with approaching due dates
+    ```
 </FeatureAccordion>
 
 ## Technologies

@@ -52,7 +52,7 @@ Intro paragraph...
 **Fields explained**
 
 - `title` – main page title displayed in the header.
-- `publishedAt` – publication date (YYYY-MM-DD format). Displayed in the article header.
+- `published_at` – publication date (YYYY-MM-DD format). Displayed in the article header.
 - `author` – name of the guide author (single author only). Displayed in the article header below the title. Must match exactly with a key in `docs/authors.json`.
 - `tags` – keys from `guides/tags.yml` (see <Link to="/templates/tags">Tags</Link>). Displayed below the title.
 - `image` – banner image displayed at the top of the article; can be a string or a themed image object (see <Link to="/templates/themed-images">Themed Images</Link> template). If not provided, a gradient background with icon is shown.
@@ -100,11 +100,11 @@ Use this pattern when the actual content lives elsewhere but you still want it l
 ```mdx
 ---
 title: "Begin analysis with OLAP ETL"
-publishedAt: 2025-12-23
+published_at: 2025-12-23
 author: "Author Name"
 tags: [integration, getting-started]
 description: "Short description shown in cards and lists."
-externalUrl: "https://ravendb.net/articles/begin-analysis-with-olap-etl"
+external_url: "https://ravendb.net/articles/begin-analysis-with-olap-etl"
 image: "https://ravendb.net/wp-content/uploads/2025/12/OLAP-article-image.svg"
 ---
 

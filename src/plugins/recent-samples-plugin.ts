@@ -2,7 +2,6 @@ import type { Plugin } from "@docusaurus/types";
 import path from "path";
 import fs from "fs";
 import matter from "gray-matter";
-import type { IconName } from "../typescript/iconName";
 const yaml = require("js-yaml");
 
 interface TagDefinition {
@@ -21,11 +20,9 @@ export interface Sample {
     title: string;
     permalink: string;
     tags: { label: string; key: string; category: string }[];
-    lastUpdatedAt: number;
     description?: string;
     image?: string;
-    icon?: IconName;
-    externalUrl?: string;
+    imgAlt?: string;
 }
 
 export interface PluginData {
@@ -73,7 +70,6 @@ export default function recentSamplesPlugin(context, _options): Plugin {
                         const fileContent = fs.readFileSync(filePath, "utf8");
                         tagsByCategory[category] = (yaml.load(fileContent) as any) || {};
                     } catch (e) {
-                        // eslint-disable-next-line no-console
                         console.error(`Failed to load tags/${file}`, e);
                     }
                 }
@@ -92,7 +88,6 @@ export default function recentSamplesPlugin(context, _options): Plugin {
             const samples = files.map((filePath) => {
                 const fileContent = fs.readFileSync(filePath, "utf-8");
                 const { data } = matter(fileContent);
-                const stats = fs.statSync(filePath);
 
                 const relativePath = path.relative(samplesDir, filePath);
                 const relativePathNormalized = relativePath.split(path.sep).join("/");
@@ -101,31 +96,9 @@ export default function recentSamplesPlugin(context, _options): Plugin {
                 const slug = baseName.endsWith("/index") ? baseName.replace(/\/index$/, "") : baseName;
                 const permalink = `/samples/${slug === "index" ? "" : slug}`;
 
-                const externalUrl: string | undefined = (data as any).externalUrl || (data as any).external_url;
-                const frontmatterDate: unknown = (data as any).publishedAt;
-
-                let lastUpdatedAt: number;
-                if (frontmatterDate) {
-                    let millis: number | null = null;
-                    if (typeof frontmatterDate === "string") {
-                        const parsed = Date.parse(frontmatterDate);
-                        if (!Number.isNaN(parsed)) {
-                            millis = parsed;
-                        }
-                    } else if (frontmatterDate instanceof Date) {
-                        millis = frontmatterDate.getTime();
-                    } else if (typeof frontmatterDate === "number") {
-                        millis = frontmatterDate > 1e12 ? frontmatterDate : frontmatterDate * 1000;
-                    }
-
-                    lastUpdatedAt = millis ? Math.floor(millis / 1000) : Math.floor(stats.mtimeMs / 1000);
-                } else {
-                    lastUpdatedAt = Math.floor(stats.mtimeMs / 1000);
-                }
-
                 const allTagsArray: Array<{ key: string; category: string }> = [];
 
-                const challengesSolutionsTags = data.challengesSolutionsTags;
+                const challengesSolutionsTags = data.challenges_solutions_tags;
 
                 if (Array.isArray(challengesSolutionsTags)) {
                     challengesSolutionsTags.forEach((tag: string) => {
@@ -133,14 +106,14 @@ export default function recentSamplesPlugin(context, _options): Plugin {
                     });
                 }
 
-                const featureTags = data.featureTags;
+                const featureTags = data.feature_tags;
                 if (Array.isArray(featureTags)) {
                     featureTags.forEach((tag: string) => {
                         allTagsArray.push({ key: tag, category: "feature" });
                     });
                 }
 
-                const techStackTags = data.techStackTags;
+                const techStackTags = data.tech_stack_tags;
                 if (Array.isArray(techStackTags)) {
                     techStackTags.forEach((tag: string) => {
                         allTagsArray.push({ key: tag, category: "tech-stack" });
@@ -164,14 +137,12 @@ export default function recentSamplesPlugin(context, _options): Plugin {
 
                 return {
                     id: path.basename(filePath, path.extname(filePath)),
-                    title: data.title || path.basename(filePath, path.extname(filePath)),
+                    title: data.title,
                     permalink: data.slug || permalink,
                     tags: formattedTags,
-                    lastUpdatedAt,
                     description: data.description,
                     image: data.image,
-                    icon: data.icon,
-                    externalUrl,
+                    img_alt: data.img_alt,
                 };
             });
 
@@ -194,7 +165,7 @@ export default function recentSamplesPlugin(context, _options): Plugin {
             });
 
             return {
-                samples: samples.sort((a, b) => b.lastUpdatedAt - a.lastUpdatedAt),
+                samples: samples,
                 tags: allTags,
             };
         },

@@ -2,6 +2,8 @@ import React, { useState, useMemo, useEffect } from "react";
 import { SamplesHeader, SamplesFilter, SamplesGrid } from "@site/src/components/Samples";
 import { usePluginData } from "@docusaurus/useGlobalData";
 import { useHistory, useLocation } from "@docusaurus/router";
+import Head from "@docusaurus/Head";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import type { Tag, PluginData } from "../types";
 import Drawer from "@site/src/components/Common/Drawer";
 import useBoolean from "@site/src/hooks/useBoolean";
@@ -103,8 +105,57 @@ export default function SamplesHomePage() {
 
     const hasActiveFilters = selectedTags.size > 0 || matchLogic !== "any";
 
+    const { siteConfig } = useDocusaurusContext();
+    const siteUrl = siteConfig.url;
+    const samplesUrl = `${siteUrl}/samples`;
+
+    const filteredSamples = samples.filter((s) => s.id !== "home");
+
+    const collectionPageJsonLd = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "@id": samplesUrl,
+        name: "RavenDB Code Samples",
+        description:
+            "Production-ready code samples, architecture patterns, and starter kits built with RavenDB.",
+        url: samplesUrl,
+        isPartOf: { "@type": "WebSite", "@id": `${siteUrl}/` },
+        breadcrumb: {
+            "@type": "BreadcrumbList",
+            itemListElement: [
+                {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "RavenDB Documentation",
+                    item: `${siteUrl}/`,
+                },
+                {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: "Samples",
+                    item: samplesUrl,
+                },
+            ],
+        },
+        mainEntity: {
+            "@type": "ItemList",
+            name: "RavenDB Code Samples",
+            numberOfItems: filteredSamples.length,
+            itemListElement: filteredSamples.map((sample, index) => ({
+                "@type": "ListItem",
+                position: index + 1,
+                url: `${siteUrl}${sample.permalink}`,
+                name: sample.title,
+                ...(sample.description ? { description: sample.description } : {}),
+            })),
+        },
+    });
+
     return (
         <>
+            <Head>
+                <script type="application/ld+json">{collectionPageJsonLd}</script>
+            </Head>
             <SamplesHeader />
             <div className="lg:hidden mb-4">
                 <Button
