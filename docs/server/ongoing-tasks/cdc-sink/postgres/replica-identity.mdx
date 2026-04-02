@@ -1,0 +1,144 @@
+---
+title: "Server: Ongoing Tasks: CDC Sink: PostgreSQL: REPLICA IDENTITY"
+sidebar_label: REPLICA IDENTITY
+description: "Why PostgreSQL REPLICA IDENTITY matters for CDC Sink embedded table deletes, when it is required, how to check the current setting, and automatic vs manual configuration."
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Server: Ongoing Tasks: CDC Sink: PostgreSQL: REPLICA IDENTITY
+
+<Admonition type="note" title="">
+
+* **REPLICA IDENTITY** controls what column values PostgreSQL includes in DELETE
+  (and UPDATE) events in the logical replication stream.
+
+* CDC Sink requires old row values in DELETE events to identify which embedded
+  item to remove from a parent document. Without them, embedded table deletes
+  cannot be routed correctly.
+
+* In this page:
+  * [Why REPLICA IDENTITY Matters](#why-replica-identity-matters)
+  * [REPLICA IDENTITY Options](#replica-identity-options)
+  * [When Is REPLICA IDENTITY Required?](#when-is-replica-identity-required)
+  * [Checking Current Setting](#checking-current-setting)
+  * [Automatic vs Manual Configuration](#automatic-vs-manual-configuration)
+
+</Admonition>
+
+---
+
+## Why REPLICA IDENTITY Matters
+
+When CDC Sink receives a DELETE event for an embedded table, it needs to:
+
+1. Find the parent document (using the join column values from the old row)
+2. Find the matching item within the embedded array or map (using the PK column values)
+3. Remove it
+
+If the DELETE event does not include old row values for the join columns and PK
+columns, CDC Sink cannot perform steps 1 or 2.
+
+By default, PostgreSQL only includes the primary key columns in DELETE events.
+If the embedded table's join columns are part of the primary key, this is sufficient.
+If they are not — which is the common case when a table has a surrogate PK — the
+DELETE event will be missing the columns needed to route it.
+
+---
+
+## REPLICA IDENTITY Options
+
+PostgreSQL supports four REPLICA IDENTITY modes:
+
+| Mode | What's included in DELETE/UPDATE events | Notes |
+|------|----------------------------------------|-------|
+| `DEFAULT` | Primary key columns only | Default for tables with a PK |
+| `FULL` | All columns | Works for any table structure; increases WAL size |
+| `INDEX` | Columns covered by a specific unique index | More targeted than FULL |
+| `NOTHING` | No old values | Insufficient for CDC Sink embedded table deletes |
+
+For CDC Sink, `FULL` is the simplest and most compatible choice.
+`INDEX` works if the index covers both the join columns and PK columns.
+
+---
+
+## When Is REPLICA IDENTITY Required?
+
+| Scenario | REPLICA IDENTITY needed? |
+|----------|------------------------|
+| Root table deletes | No — root documents are deleted by document ID |
+| Embedded table deletes where join columns ARE part of the PK | No — `DEFAULT` is sufficient |
+| Embedded table deletes where join columns are NOT part of the PK | **Yes** — `DEFAULT` is insufficient |
+| Deep-nested embedded tables | Depends on the join column placement |
+
+**Example where REPLICA IDENTITY is needed:**
+
+```sql
+-- order_lines has a surrogate PK (line_id), with order_id as foreign key
+-- order_id is NOT part of the primary key
+CREATE TABLE order_lines (
+    line_id   SERIAL PRIMARY KEY,   -- PK
+    order_id  INT NOT NULL,         -- FK to orders (not part of PK)
+    product   TEXT,
+    qty       INT
+);
+
+-- Without REPLICA IDENTITY FULL, a DELETE event only contains line_id.
+-- CDC Sink cannot determine which parent document (order_id) to update.
+ALTER TABLE order_lines REPLICA IDENTITY FULL;
+```
+
+**Example where REPLICA IDENTITY is NOT needed:**
+
+```sql
+-- If order_id is part of a composite PK, DEFAULT is sufficient
+CREATE TABLE order_lines (
+    order_id  INT NOT NULL,
+    line_num  INT NOT NULL,
+    product   TEXT,
+    qty       INT,
+    PRIMARY KEY (order_id, line_num)
+);
+```
+
+---
+
+## Checking Current Setting
+
+```sql
+SELECT c.relname, c.relreplident
+FROM pg_class c
+JOIN pg_namespace n ON n.oid = c.relnamespace
+WHERE c.relkind = 'r'
+  AND n.nspname = 'public'
+ORDER BY c.relname;
+```
+
+The `relreplident` column:
+
+| Value | Meaning |
+|-------|---------|
+| `d` | DEFAULT (primary key only) |
+| `f` | FULL (all columns) |
+| `i` | INDEX (specific unique index) |
+| `n` | NOTHING |
+
+---
+
+## Automatic vs Manual Configuration
+
+If the CDC Sink user has sufficient permissions (table ownership or `SUPERUSER`),
+CDC Sink will automatically set `REPLICA IDENTITY FULL` on embedded tables that
+require it.
+
+If the CDC Sink user does not have permission to alter tables, a database
+administrator must configure `REPLICA IDENTITY` before starting the task.
+See [Manual Setup](./replica-identity-manual-setup.mdx).
+
+---

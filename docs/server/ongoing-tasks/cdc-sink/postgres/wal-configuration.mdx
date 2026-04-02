@@ -1,0 +1,97 @@
+---
+title: "Server: Ongoing Tasks: CDC Sink: PostgreSQL: WAL Configuration"
+sidebar_label: WAL Configuration
+description: "How to verify and enable PostgreSQL logical replication (wal_level = logical) and configure max_replication_slots and max_wal_senders."
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Server: Ongoing Tasks: CDC Sink: PostgreSQL: WAL Configuration
+
+<Admonition type="note" title="">
+
+* CDC Sink uses PostgreSQL **logical replication**, which requires the Write-Ahead Log
+  (WAL) to be configured at the `logical` level.
+
+* This page explains how to verify the current setting and change it if needed.
+
+* In this page:
+  * [Check Current WAL Level](#check-current-wal-level)
+  * [Enable Logical Replication](#enable-logical-replication)
+  * [Other Required Settings](#other-required-settings)
+
+</Admonition>
+
+---
+
+## Check Current WAL Level
+
+Connect to your PostgreSQL instance and run:
+
+```sql
+SHOW wal_level;
+```
+
+If the result is `logical`, no changes are needed.
+
+If the result is `replica` or `minimal`, logical replication is not enabled and
+must be configured before CDC Sink can run.
+
+---
+
+## Enable Logical Replication
+
+Edit `postgresql.conf` and set the following:
+
+```
+wal_level = logical
+```
+
+This change requires a **PostgreSQL restart**.
+
+After restarting, verify the change took effect:
+
+```sql
+SHOW wal_level;
+-- Should return: logical
+```
+
+<Admonition type="warning" title="">
+
+Changing `wal_level` requires a full server restart, not just a configuration reload.
+Plan for a brief maintenance window.
+
+</Admonition>
+
+---
+
+## Other Required Settings
+
+CDC Sink uses one replication slot per task. Ensure the following settings are
+sufficient for the number of CDC Sink tasks you plan to run:
+
+```
+max_replication_slots = 10   -- at least 1 per CDC Sink task
+max_wal_senders = 10         -- at least 1 per active replication connection
+```
+
+The defaults in a standard PostgreSQL installation are typically sufficient for
+a small number of tasks, but you may need to increase them if you have many
+concurrent CDC Sink tasks or other replication consumers.
+
+Check current values:
+
+```sql
+SHOW max_replication_slots;
+SHOW max_wal_senders;
+```
+
+These settings also require a **server restart** if changed.
+
+---

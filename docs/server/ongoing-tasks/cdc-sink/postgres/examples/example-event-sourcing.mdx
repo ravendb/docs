@@ -1,0 +1,168 @@
+---
+title: "Server: Ongoing Tasks: CDC Sink: PostgreSQL: Example: Event Sourcing with Aggregation"
+sidebar_label: Event Sourcing
+description: "Using CDC Sink patches to maintain a computed aggregate (running balance) on a RavenDB document as individual event rows arrive from PostgreSQL."
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Server: Ongoing Tasks: CDC Sink: PostgreSQL: Example: Event Sourcing with Aggregation
+
+<Admonition type="note" title="">
+
+* This example shows how to use CDC Sink patches to maintain a computed aggregate
+  on a RavenDB document as individual event rows arrive from PostgreSQL.
+
+* In this page:
+  * [Source Schema](#source-schema)
+  * [Goal](#goal)
+  * [Task Configuration](#task-configuration)
+  * [Resulting Documents](#resulting-documents)
+  * [Handling Deletes](#handling-deletes)
+
+</Admonition>
+
+---
+
+## Source Schema
+
+An accounts table and a transactions table:
+
+```sql
+CREATE TABLE accounts (
+    account_id SERIAL PRIMARY KEY,
+    owner      TEXT NOT NULL,
+    currency   TEXT NOT NULL DEFAULT 'USD'
+);
+
+CREATE TABLE transactions (
+    txn_id     SERIAL PRIMARY KEY,
+    account_id INT NOT NULL REFERENCES accounts(account_id),
+    amount     NUMERIC(12,2) NOT NULL,
+    type       TEXT NOT NULL,   -- 'credit' or 'debit'
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+```
+
+---
+
+## Goal
+
+Store each account as a RavenDB document with a `Balance` field that reflects the
+running total of all transactions. Transaction rows are embedded as an array for
+history, and `Balance` is maintained using patch logic.
+
+---
+
+## Task Configuration
+
+```csharp
+var config = new CdcSinkConfiguration
+{
+    Name = "AccountsSync",
+    ConnectionStringName = "MyPostgresConnection",
+    Tables =
+    [
+        new CdcSinkTableConfig
+        {
+            Name = "Accounts",
+            SourceTableName = "accounts",
+            PrimaryKeyColumns = ["account_id"],
+            ColumnsMapping = new Dictionary<string, string>
+            {
+                { "account_id", "AccountId" },
+                { "owner",      "Owner" },
+                { "currency",   "Currency" }
+            },
+            EmbeddedTables =
+            [
+                new CdcSinkEmbeddedTableConfig
+                {
+                    SourceTableName = "transactions",
+                    PropertyName = "Transactions",
+                    Type = CdcSinkRelationType.Array,
+                    JoinColumns = ["account_id"],
+                    PrimaryKeyColumns = ["txn_id"],
+                    ColumnsMapping = new Dictionary<string, string>
+                    {
+                        { "txn_id",     "TxnId" },
+                        { "amount",     "Amount" },
+                        { "type",       "Type" },
+                        { "created_at", "CreatedAt" }
+                    },
+                    // Patch runs on the parent document for INSERT/UPDATE
+                    Patch = """
+                        const oldAmount = $old?.Amount || 0;
+                        const newAmount = $row.amount || 0;
+                        const sign = $row.type === 'credit' ? 1 : -1;
+                        const oldSign = $old?.Type === 'credit' ? 1 : -1;
+                        this.Balance = (this.Balance || 0)
+                            - (oldSign * oldAmount)
+                            + (sign * newAmount);
+                        """,
+                    OnDelete = new CdcSinkOnDeleteConfig
+                    {
+                        Patch = """
+                            const deletedAmount = $old?.Amount || 0;
+                            const sign = $old?.Type === 'credit' ? 1 : -1;
+                            this.Balance = (this.Balance || 0) - (sign * deletedAmount);
+                            """
+                    }
+                }
+            ]
+        }
+    ]
+};
+
+await store.Maintenance.SendAsync(new AddCdcSinkOperation(config));
+```
+
+---
+
+## Resulting Documents
+
+After three transactions (credit 100, debit 30, credit 50):
+
+```json
+{
+    "AccountId": 1,
+    "Owner": "Alice",
+    "Currency": "USD",
+    "Balance": 120.00,
+    "Transactions": [
+        { "TxnId": 1, "Amount": 100.00, "Type": "credit", "CreatedAt": "..." },
+        { "TxnId": 2, "Amount": 30.00,  "Type": "debit",  "CreatedAt": "..." },
+        { "TxnId": 3, "Amount": 50.00,  "Type": "credit", "CreatedAt": "..." }
+    ],
+    "@metadata": { "@collection": "Accounts" }
+}
+```
+
+---
+
+## Handling Deletes
+
+The `OnDelete.Patch` reverses the contribution of the deleted transaction to
+`Balance`. This uses `$old` (the embedded item's last known state) rather than
+`$row`, because for a DELETE event the embedded item's mapped values are in `$old`.
+
+Without the `OnDelete.Patch`, deleting a transaction row from SQL would remove
+it from the `Transactions` array but leave `Balance` stale. The delete patch
+keeps `Balance` consistent.
+
+<Admonition type="note" title="">
+
+The patch uses delta logic (`$old` → `$row`) for idempotency. If a change is
+re-applied after a failover, `$old` still reflects the state before the original
+update, so the delta produces the same result.
+See [Failover and Consistency](../../failover-and-consistency.mdx).
+
+</Admonition>
+
+---
