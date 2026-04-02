@@ -1,0 +1,217 @@
+---
+title: "CDC Sink for PostgreSQL: Initial Setup"
+sidebar_label: Initial Setup
+description: "How CDC Sink creates and verifies the replication slot and publication on startup, with options for automatic or manual setup and custom naming."
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# CDC Sink for PostgreSQL: Initial Setup
+
+<Admonition type="note" title="">
+
+* When CDC Sink starts, it verifies and (if it has the necessary permissions) creates
+  the **replication slot** and **publication** required for logical replication.
+
+* If the CDC Sink user does not have permission to create these objects, a database
+  administrator must create them manually before the task can start.
+
+* In this page:
+  * [Automatic Setup](#automatic-setup)
+  * [Manual Setup](#manual-setup)
+  * [Specifying Custom Slot and Publication Names](#specifying-custom-slot-and-publication-names)
+  * [Slot and Publication Naming (Auto-generated)](#slot-and-publication-naming-auto-generated)
+  * [Verifying Setup](#verifying-setup)
+
+</Admonition>
+
+---
+
+## Automatic Setup
+
+If the CDC Sink user has the required permissions (see
+[Permissions and Roles](./permissions-and-roles.mdx)),
+CDC Sink will:
+
+1. Generate the replication slot and publication names (a GUID-based identifier) and store them with the task
+2. Check whether they already exist
+3. Create them if they do not exist
+4. Begin the initial load
+
+No manual database administration is needed in this case.
+
+---
+
+## Manual Setup
+
+If the CDC Sink user does not have permission to create replication slots or
+publications, a database administrator must create them before the task is started.
+
+**Step 1: Determine the slot and publication names**
+
+The simplest approach is to specify the names explicitly in `CdcSinkPostgresSettings`
+so both you and the database administrator know what names to use.
+See [Specifying Custom Slot and Publication Names](#specifying-custom-slot-and-publication-names).
+
+If using auto-generated names (no `Postgres` settings), CDC Sink generates names
+using the `rvn_cdc_s_` and `rvn_cdc_p_` prefixes followed by a GUID.
+See [Slot and Publication Naming](#slot-and-publication-naming-auto-generated)
+for the naming scheme.
+
+You can also find the names CDC Sink expects by creating the task (it will fail to start)
+and reading the error message, which includes the expected names.
+
+**Step 2: Create the publication**
+
+Create a publication that includes all the tables CDC Sink will replicate:
+
+<Tabs>
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`CREATE PUBLICATION rvn_cdc_p_<guid>
+FOR TABLE orders, order_lines, customers;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The publication must include all tables from the task's root and embedded table
+configurations.
+
+**Step 3: Create the replication slot**
+
+<Tabs>
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`SELECT pg_create_logical_replication_slot(
+    'rvn_cdc_s_<guid>',
+    'pgoutput'
+);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+**Step 4: Start the CDC Sink task**
+
+Once the slot and publication exist, CDC Sink will detect them on startup and
+proceed with the initial load.
+
+<Admonition type="note" title="">
+The slot and publication names are determined at task creation time and do not change
+when you later modify the task. If you created these objects manually, the same names
+will continue to be used regardless of subsequent configuration changes.
+</Admonition>
+
+---
+
+## Specifying Custom Slot and Publication Names
+
+You can explicitly specify the replication slot and publication names by setting
+`CdcSinkPostgresSettings` on the task configuration:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`var config = new CdcSinkConfiguration
+\{
+    Name = "OrdersSync",
+    ConnectionStringName = "MyPostgresConnection",
+    Postgres = new CdcSinkPostgresSettings
+    \{
+        SlotName = "orders_sync_slot",
+        PublicationName = "orders_sync_pub"
+    \},
+    Tables = [ ... ]
+\};
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Custom names are useful when:
+
+* A database administrator pre-creates the slot and publication with human-readable
+  names before starting the task
+* You are migrating from a previous CDC Sink task and want to reuse an existing slot
+  to avoid re-reading history
+* You need predictable names across environments (dev/staging/prod)
+
+**Immutability:** Once set, `SlotName` and `PublicationName` are fixed for the
+lifetime of the task. If you need different names, delete the task and create a new one.
+
+---
+
+## Slot and Publication Naming (Auto-generated)
+
+When `CdcSinkPostgresSettings` is not set (or `SlotName`/`PublicationName` are null),
+CDC Sink generates unique names at task creation time using a GUID:
+
+* **Slot name**: `rvn_cdc_s_<guid>`
+* **Publication name**: `rvn_cdc_p_<guid>`
+
+The GUID is generated once when the task is first created and stored with the task.
+
+**Example:**
+
+<Tabs>
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`rvn_cdc_s_a3f1b2c4d5e6f7a8b9c0d1e2f3a4b5c6
+rvn_cdc_p_a3f1b2c4d5e6f7a8b9c0d1e2f3a4b5c6
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The slot and publication share the same identifier, making it easy to match them to
+a specific task.
+
+<Admonition type="note" title="">
+The slot and publication names are generated **once at task creation** and then stored
+with the task. Subsequent modifications to the task (adding tables, changing mappings,
+etc.) do not change the slot or publication names — the original names are always used.
+</Admonition>
+
+---
+
+## Verifying Setup
+
+To verify the slot and publication were created:
+
+<Tabs>
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`-- View CDC Sink replication slots
+SELECT slot_name, plugin, slot_type, active
+FROM pg_replication_slots
+WHERE slot_name LIKE 'rvn_cdc_s_%';
+
+-- View CDC Sink publications
+SELECT p.pubname, c.relname AS table_name
+FROM pg_publication p
+JOIN pg_publication_rel pr ON pr.prpubid = p.oid
+JOIN pg_class c ON c.oid = pr.prrelid
+WHERE p.pubname LIKE 'rvn_cdc_p_%'
+ORDER BY p.pubname, c.relname;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+---
+
+## Related Articles
+
+### CDC Sink for PostgreSQL
+
+- [Prerequisites Checklist](./prerequisites-checklist.mdx)
+- [Permissions and Roles](./permissions-and-roles.mdx)
+- [REPLICA IDENTITY](./replica-identity.mdx)
+- [Cleanup and Maintenance](./cleanup-and-maintenance.mdx)
