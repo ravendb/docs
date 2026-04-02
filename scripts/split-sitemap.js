@@ -98,10 +98,7 @@ for (const file of sitemapFiles) {
 
 // Write sitemap index, replacing the original sitemap.xml
 const indexEntries = sitemapFiles
-    .map(
-        (file) =>
-            `<sitemap><loc>https://docs.ravendb.net/${file}</loc><lastmod>${today}</lastmod></sitemap>`
-    )
+    .map((file) => `<sitemap><loc>https://docs.ravendb.net/${file}</loc><lastmod>${today}</lastmod></sitemap>`)
     .join("\n");
 
 const sitemapIndex =
