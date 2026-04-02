@@ -28,13 +28,9 @@ export default function MetadataWrapper(props: Props): ReactNode {
 
     // Strip trailing slash from base URL to avoid double slashes
     const baseUrl = (siteConfig.url as string).replace(/\/$/, "");
-    let canonicalUrl = isDocumentationPage
+    const canonicalUrl = isDocumentationPage
         ? `${baseUrl}/${siteConfig.customFields.latestVersion}${metadata.slug}`
         : `${baseUrl}${permalink}`;
-
-    if (!canonicalUrl.endsWith("/")) {
-        canonicalUrl = canonicalUrl.concat("/");
-    }
 
     const isHomepage = metadata.slug === "/";
     const description = metadata.description || frontMatter.description || "";
