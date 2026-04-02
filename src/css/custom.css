@@ -537,9 +537,16 @@ hr {
 }
 
 /* Custom styling for TOC */
+.toc-desktop {
+    --toc-desktop-top: 110px;
+    --toc-desktop-bottom-offset: 4rem;
+    position: sticky;
+    top: var(--toc-desktop-top);
+}
+
 .table-of-contents {
     @apply p-0 overflow-y-auto;
-    max-height: calc(100vh - 110px - 4rem);
+    max-height: calc(100vh - var(--toc-desktop-top) - var(--toc-desktop-bottom-offset));
 }
 
 .table-of-contents__link {
