@@ -93,7 +93,7 @@ specific failure reason.
 3. **Primary key mismatch** — the columns listed in `PrimaryKeyColumns` must match the
    actual SQL primary key. If they don't match, CDC Sink cannot generate a document ID.
 
-4. **ColumnsMapping is empty** — at least one column must be mapped. A table with no
+4. **Columns list is empty** — at least one column must be mapped. A table with no
    column mappings will produce empty documents.
 
 5. **Task is paused** — check that the task state is `Active`, not `Disabled`.

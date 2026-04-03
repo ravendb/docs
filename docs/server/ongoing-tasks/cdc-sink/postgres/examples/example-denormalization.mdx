@@ -86,13 +86,13 @@ See [REPLICA IDENTITY](../replica-identity.mdx).
             Name = "Orders",
             SourceTableName = "orders",
             PrimaryKeyColumns = new List<string> \{ "order_id" \},
-            ColumnsMapping = new Dictionary<string, string>
-            \{
-                ["order_id"]   = "OrderId",
-                ["customer"]   = "Customer",
-                ["status"]     = "Status",
-                ["created_at"] = "CreatedAt"
-            \},
+            Columns =
+            [
+                new() \{ Column = "order_id",   Name = "OrderId" \},
+                new() \{ Column = "customer",   Name = "Customer" \},
+                new() \{ Column = "status",     Name = "Status" \},
+                new() \{ Column = "created_at", Name = "CreatedAt" \},
+            ],
             EmbeddedTables = new List<CdcSinkEmbeddedTableConfig>
             \{
                 new CdcSinkEmbeddedTableConfig
@@ -102,13 +102,13 @@ See [REPLICA IDENTITY](../replica-identity.mdx).
                     Type = CdcSinkRelationType.Array,
                     JoinColumns = new List<string> \{ "order_id" \},
                     PrimaryKeyColumns = new List<string> \{ "line_id" \},
-                    ColumnsMapping = new Dictionary<string, string>
-                    \{
-                        ["line_id"]    = "LineId",
-                        ["product"]    = "Product",
-                        ["qty"]        = "Qty",
-                        ["unit_price"] = "UnitPrice"
-                    \}
+                    Columns =
+                    [
+                        new() \{ Column = "line_id",    Name = "LineId" \},
+                        new() \{ Column = "product",    Name = "Product" \},
+                        new() \{ Column = "qty",        Name = "Qty" \},
+                        new() \{ Column = "unit_price", Name = "UnitPrice" \},
+                    ]
                 \}
             \}
         \}

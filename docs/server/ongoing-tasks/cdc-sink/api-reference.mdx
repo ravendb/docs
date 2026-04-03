@@ -48,12 +48,12 @@ Use `AddCdcSinkOperation` to create a new CDC Sink task:
             Name = "Orders",
             SourceTableName = "orders",
             PrimaryKeyColumns = new List<string> \{ "id" \},
-            ColumnsMapping = new Dictionary<string, string>
-            \{
-                ["id"]            = "Id",
-                ["customer_name"] = "CustomerName",
-                ["total"]         = "Total"
-            \}
+            Columns =
+            [
+                new() \{ Column = "id",            Name = "Id" \},
+                new() \{ Column = "customer_name", Name = "CustomerName" \},
+                new() \{ Column = "total",         Name = "Total" \},
+            ]
         \}
     \}
 \};
@@ -90,12 +90,12 @@ config.Tables.Add(new CdcSinkTableConfig
     Name = "Customers",
     SourceTableName = "customers",
     PrimaryKeyColumns = new List<string> \{ "id" \},
-    ColumnsMapping = new Dictionary<string, string>
-    \{
-        ["id"]    = "Id",
-        ["name"]  = "Name",
-        ["email"] = "Email"
-    \}
+    Columns =
+    [
+        new() \{ Column = "id",    Name = "Id" \},
+        new() \{ Column = "name",  Name = "Name" \},
+        new() \{ Column = "email", Name = "Email" \},
+    ]
 \});
 
 await store.Maintenance.SendAsync(

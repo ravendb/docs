@@ -47,12 +47,12 @@ becomes one document.
     SourceTableSchema = "public",         // SQL schema (optional, default: "public")
     SourceTableName = "orders",           // SQL table name
     PrimaryKeyColumns = ["id"],           // Used for document ID generation
-    ColumnsMapping = new Dictionary<string, string>
-    \{
-        ["id"]            = "Id",
-        ["customer_name"] = "CustomerName",
-        ["total"]         = "Total"
-    \}
+    Columns =
+    [
+        new() \{ Column = "id",            Name = "Id" \},
+        new() \{ Column = "customer_name", Name = "CustomerName" \},
+        new() \{ Column = "total",         Name = "Total" \},
+    ]
 \}
 `}
 </CodeBlock>
@@ -63,7 +63,7 @@ becomes one document.
 A row with `id = 42` and collection `Orders` becomes document `Orders/42`.
 A composite PK `(region, id)` with values `(US, 42)` becomes `Orders/US/42`.
 
-**Column mapping:** Only mapped columns appear in the document. Unmapped columns are
+**Column mapping:** Only columns listed in `Columns` appear in the document. Unmapped columns are
 still available in patch scripts via `$row` but are not stored in the document.
 
 ---
@@ -81,7 +81,7 @@ SQL `order_lines` table becomes an array inside each `Orders` document.
     Name = "Orders",
     SourceTableName = "orders",
     PrimaryKeyColumns = ["id"],
-    ColumnsMapping = \{ ["id"] = "Id", ["customer_name"] = "CustomerName" \},
+    Columns = [ new() \{ Column = "id", Name = "Id" \}, new() \{ Column = "customer_name", Name = "CustomerName" \} ],
     EmbeddedTables =
     [
         new CdcSinkEmbeddedTableConfig
@@ -91,12 +91,12 @@ SQL `order_lines` table becomes an array inside each `Orders` document.
             Type = CdcSinkRelationType.Array,         // Array of items
             JoinColumns = ["order_id"],               // FK referencing parent's PK
             PrimaryKeyColumns = ["line_id"],          // Used to match items on update/delete
-            ColumnsMapping =
-            \{
-                ["line_id"]  = "LineId",
-                ["product"]  = "Product",
-                ["quantity"] = "Quantity"
-            \}
+            Columns =
+            [
+                new() \{ Column = "line_id",  Name = "LineId" \},
+                new() \{ Column = "product",  Name = "Product" \},
+                new() \{ Column = "quantity", Name = "Quantity" \},
+            ]
         \}
     ]
 \}
@@ -139,7 +139,7 @@ A foreign key in the source row becomes a RavenDB document ID.
     Name = "Orders",
     SourceTableName = "orders",
     PrimaryKeyColumns = ["id"],
-    ColumnsMapping = \{ ["id"] = "Id", ["customer_id"] = "CustomerId" \},
+    Columns = [ new() \{ Column = "id", Name = "Id" \}, new() \{ Column = "customer_id", Name = "CustomerId" \} ],
     LinkedTables =
     [
         new CdcSinkLinkedTableConfig
@@ -211,7 +211,7 @@ Embedded tables can themselves have embedded tables, creating arbitrarily deep h
     Name = "Companies",
     SourceTableName = "companies",
     PrimaryKeyColumns = ["company_id"],
-    ColumnsMapping = \{ ["company_id"] = "CompanyId", ["name"] = "Name" \},
+    Columns = [ new() \{ Column = "company_id", Name = "CompanyId" \}, new() \{ Column = "name", Name = "Name" \} ],
     EmbeddedTables =
     [
         new CdcSinkEmbeddedTableConfig
@@ -221,7 +221,7 @@ Embedded tables can themselves have embedded tables, creating arbitrarily deep h
             Type = CdcSinkRelationType.Array,
             JoinColumns = ["company_id"],              // Root FK
             PrimaryKeyColumns = ["dept_id"],
-            ColumnsMapping = \{ ["dept_id"] = "DeptId", ["dept_name"] = "DeptName" \},
+            Columns = [ new() \{ Column = "dept_id", Name = "DeptId" \}, new() \{ Column = "dept_name", Name = "DeptName" \} ],
             EmbeddedTables =
             [
                 new CdcSinkEmbeddedTableConfig
@@ -231,7 +231,7 @@ Embedded tables can themselves have embedded tables, creating arbitrarily deep h
                     Type = CdcSinkRelationType.Array,
                     JoinColumns = ["company_id", "dept_id"],  // Root FK + parent FK
                     PrimaryKeyColumns = ["emp_id"],
-                    ColumnsMapping = \{ ["emp_id"] = "EmpId", ["emp_name"] = "EmpName" \}
+                    Columns = [ new() \{ Column = "emp_id", Name = "EmpId" \}, new() \{ Column = "emp_name", Name = "EmpName" \} ]
                 \}
             ]
         \}

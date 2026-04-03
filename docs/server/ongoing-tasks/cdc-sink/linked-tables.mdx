@@ -42,7 +42,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
     Name = "Orders",
     SourceTableName = "orders",
     PrimaryKeyColumns = ["id"],
-    ColumnsMapping = \{ ["id"] = "Id", ["customer_id"] = "CustomerId" \},
+    Columns =
+    [
+        new() \{ Column = "id",          Name = "Id" \},
+        new() \{ Column = "customer_id", Name = "CustomerId" \},
+    ],
     LinkedTables =
     [
         new CdcSinkLinkedTableConfig

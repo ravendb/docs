@@ -49,12 +49,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
     Type = CdcSinkRelationType.Array,     // Array, Map, or Value
     JoinColumns = ["order_id"],           // FK to parent's PrimaryKeyColumns
     PrimaryKeyColumns = ["line_id"],      // Used to match items on UPDATE/DELETE
-    ColumnsMapping = new Dictionary<string, string>
-    \{
-        ["line_id"]  = "LineId",
-        ["product"]  = "Product",
-        ["quantity"] = "Quantity"
-    \}
+    Columns =
+    [
+        new() \{ Column = "line_id",  Name = "LineId" \},
+        new() \{ Column = "product",  Name = "Product" \},
+        new() \{ Column = "quantity", Name = "Quantity" \},
+    ]
 \}
 `}
 </CodeBlock>
@@ -226,8 +226,8 @@ without an additional lookup, which is not supported.
 
 ## Attachments on Embedded Items
 
-Binary columns from embedded tables can be stored as RavenDB attachments using
-`AttachmentNameMapping`.
+Binary columns from embedded tables can be stored as RavenDB attachments by adding
+them to `Columns` with `Type = CdcColumnType.Attachment`.
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
@@ -238,8 +238,12 @@ Binary columns from embedded tables can be stored as RavenDB attachments using
     PropertyName = "Photos",
     PrimaryKeyColumns = ["photo_num"],
     JoinColumns = ["product_id"],
-    ColumnsMapping = \{ ["photo_num"] = "PhotoNum", ["caption"] = "Caption" \},
-    AttachmentNameMapping = \{ ["thumbnail"] = "thumb" \}
+    Columns =
+    [
+        new() \{ Column = "photo_num", Name = "PhotoNum" \},
+        new() \{ Column = "caption",   Name = "Caption" \},
+        new() \{ Column = "thumbnail", Name = "thumb", Type = CdcColumnType.Attachment \},
+    ]
 \}
 `}
 </CodeBlock>

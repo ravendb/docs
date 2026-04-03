@@ -103,6 +103,27 @@ making it straightforward to diagnose the root cause.
 
 ---
 
+## Error Handling
+
+CDC Sink tolerates individual document processing errors — each failure is logged
+and recorded, but processing continues for the remaining documents in the batch.
+The CDC position advances as long as the error ratio stays within acceptable bounds.
+
+**Error threshold:**
+When cumulative errors reach **100** and also exceed the number of successes,
+the batch throws and the task enters fallback mode.
+
+**Fallback mode on error:**
+The task enters exponential backoff, starting at 5 seconds and doubling on each
+retry, up to the limit set by `CdcSink.MaxFallbackTimeInSec` (default 15 minutes).
+See [Server Configuration](./server-configuration.mdx) and [Fallback Mode](#fallback-mode).
+
+**Patch errors:**
+Patch errors — including `MaxSteps exceeded` — fail only the affected document.
+The rest of the batch continues normally.
+
+---
+
 ## Related Articles
 
 ### CDC Sink
