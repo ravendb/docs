@@ -76,8 +76,18 @@ that controls how the SQL value is stored in RavenDB:
 {`Columns =
 [
     new CdcColumnMapping() \{ Column = "order_id",  Name = "OrderId" \},
-    new CdcColumnMapping() \{ Column = "metadata",  Name = "Metadata",     Type = CdcColumnType.Json \},       // Parsed as native JSON
-    new CdcColumnMapping() \{ Column = "receipt",   Name = "receipt.pdf",  Type = CdcColumnType.Attachment \}, // Stored as attachment
+    // Parsed as a native JSON value
+    new CdcColumnMapping()
+    \{
+        Column = "metadata", Name = "Metadata",
+        Type = CdcColumnType.Json
+    \},
+    // Stored as an attachment
+    new CdcColumnMapping()
+    \{
+        Column = "receipt", Name = "receipt.pdf",
+        Type = CdcColumnType.Attachment
+    \},
 ]
 `}
 </CodeBlock>
