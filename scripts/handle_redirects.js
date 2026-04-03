@@ -9,10 +9,6 @@ const staticAssetRegex =
 
 const versionRegex = /^\/(\d+\.\d+)(\/.*)?/;
 
-function stripTrailingSlash(uri) {
-    return uri.endsWith("/") ? uri.slice(0, -1) : uri;
-}
-
 function compareVersions(v1, v2) {
     const parts1 = v1.split(".");
     const parts2 = v2.split(".");
@@ -45,21 +41,29 @@ function compareVersions(v1, v2) {
 async function handler(event) {
     const request = event.request;
     const uri = request.uri;
-    const normalizedUri = stripTrailingSlash(uri);
-
     if (staticAssetRegex.test(uri)) {
         return request;
     }
 
-    request.uri = normalizedUri + "/index.html";
+    if (uri !== "/" && uri.endsWith("/")) {
+        return {
+            statusCode: 301,
+            statusDescription: "Moved Permanently",
+            headers: {
+                location: { value: uri.slice(0, -1) },
+            },
+        };
+    }
 
-    if (normalizedUri.startsWith("/templates")) {
+    request.uri = uri + "/index.html";
+
+    if (uri.startsWith("/templates")) {
         return request;
     }
 
-    if (normalizedUri.startsWith("/guides") || normalizedUri.startsWith("/cloud")) {
+    if (uri.startsWith("/guides") || uri.startsWith("/cloud")) {
         try {
-            const redirectData = await kvsHandle.get(normalizedUri);
+            const redirectData = await kvsHandle.get(uri);
             const redirectJsonValue = JSON.parse(redirectData);
             if (redirectJsonValue.targetUrl) {
                 return {
@@ -76,17 +80,17 @@ async function handler(event) {
         return request;
     }
 
-    const versionMatch = normalizedUri.match(versionRegex);
+    const versionMatch = uri.match(versionRegex);
 
     let version, versionlessUri, targetUri;
     let redirectRequired = false;
 
     if (versionMatch) {
         version = versionMatch[1];
-        versionlessUri = versionMatch[2] || "/";
+        versionlessUri = versionMatch[2] || "";
     } else {
         version = defaultVersion;
-        versionlessUri = normalizedUri;
+        versionlessUri = uri === "/" ? "" : uri;
         redirectRequired = true;
     }
 
