@@ -94,11 +94,32 @@ that controls how the SQL value is stored in RavenDB:
 </TabItem>
 </Tabs>
 
-| Type | Behavior |
-|------|----------|
-| `Default` | Standard type conversion: int→long, decimal→double, date→DateOnly, timestamp→DateTime, uuid→string, varchar/text→string. SQL arrays→JSON arrays. JSON/JSONB stored as plain string. This is the default when `Type` is omitted. |
-| `Json` | Parses the string value as a native JSON value (object, array, string, number, boolean, etc.) in the document. Use for PostgreSQL `json`/`jsonb` or SQL Server `nvarchar(max)` with JSON content. |
-| `Attachment` | Stores the raw column value as a RavenDB attachment. `byte[]`→binary (`application/octet-stream`), `string`→UTF-8 text (`text/plain`), `float[]`/`double[]`→raw vector data. The `Name` field becomes the attachment name. |
+**`CdcColumnType.Default`** — Standard SQL-to-JSON type conversion. This is the default when `Type` is omitted.
+Type conversions are source-database-specific. For PostgreSQL:
+
+* `smallint` / `integer` / `oid` → `long`
+* `bigint` → `long`
+* `real` → `float`
+* `double precision` → `double`
+* `numeric` / `decimal` → `decimal`
+* `boolean` → `bool`
+* `date` → `DateOnly`
+* `timestamp` / `timestamptz` → `DateTime` (UTC)
+* `uuid` → `string`
+* `varchar` / `text` / `char` → `string`
+* `json` / `jsonb` → `string` (raw JSON text, not parsed)
+* SQL arrays → JSON arrays
+* `vector` (pgvector) → `float[]`
+
+See [PostgreSQL Type Mapping](./postgres/type-mapping.mdx) for the full reference table.
+
+**`CdcColumnType.Json`** — Parses the string value as a native JSON value (object, array,
+string, number, boolean, etc.) in the document. Use for PostgreSQL `json`/`jsonb` or
+SQL Server `nvarchar(max)` with JSON content.
+
+**`CdcColumnType.Attachment`** — Stores the raw column value as a RavenDB attachment.
+`byte[]` → binary (`application/octet-stream`), `string` → UTF-8 text (`text/plain`),
+`float[]`/`double[]` → raw vector data. The `Name` field becomes the attachment name.
 
 ---
 
@@ -181,3 +202,7 @@ For most PostgreSQL setups using the default `public` schema, this can be omitte
 - [Patching](./patching.mdx)
 - [Attachment Handling](./attachment-handling.mdx)
 - [Configuration Reference](./configuration-reference.mdx)
+
+### PostgreSQL
+
+- [Type Mapping](./postgres/type-mapping.mdx)

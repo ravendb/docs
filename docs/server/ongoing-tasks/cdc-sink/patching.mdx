@@ -26,6 +26,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * In this page:
   * [When Patches Run](#when-patches-run)
   * [Available Variables](#available-variables)
+  * [$row and $old: Names and Types](#row-and-old-names-and-types)
+  * [$row Column Types](#row-column-types)
   * [Patch Scope: Root vs Embedded](#patch-scope-root-vs-embedded)
   * [Scenario: Column Transformation](#scenario-column-transformation)
   * [Scenario: Aggregation with Embedded Tables](#scenario-aggregation-with-embedded-tables)
@@ -63,6 +65,127 @@ The `OnDelete.Patch` on `CdcSinkOnDeleteConfig` handles DELETE separately.
 | `$row` | Always | object | All SQL columns from the CDC event (mapped and unmapped) |
 | `$old` | Always | object \| null | Previous state of the document (root patches) or embedded item (embedded patches). Null on INSERT. |
 | `get(id)` | Always | function | Load a RavenDB document by ID |
+
+---
+
+## $row and $old: Names and Types
+
+`$row` and `$old` look similar but represent fundamentally different things:
+
+| | `$row` | `$old` |
+|--|--------|--------|
+| **Contains** | The incoming SQL row from the CDC event | The previous state of the RavenDB document (or embedded item) |
+| **Property names** | Original SQL column names (`customer_name`) | Mapped RavenDB property names (`CustomerName`) |
+| **Value types** | Raw SQL types (see [$row Column Types](#row-column-types)) | Stored JSON types (whatever was last written to RavenDB) |
+| **Available on INSERT** | ✓ | ✗ (null) |
+| **Available on UPDATE** | ✓ | ✓ |
+| **Available on DELETE** | ✓ | ✓ |
+
+Given this column mapping:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`Columns =
+[
+    new CdcColumnMapping() \{ Column = "customer_name", Name = "CustomerName" \},
+    new CdcColumnMapping() \{ Column = "amount",        Name = "Amount" \},
+]
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+In the patch script:
+
+<Tabs>
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`// $row — SQL column names, raw SQL types
+$row.customer_name   // string
+$row.amount          // number (from numeric/decimal column)
+
+// $old — mapped property names, stored JSON types
+$old.CustomerName    // string (as stored in RavenDB)
+$old.Amount          // number (as stored in RavenDB)
+
+// this — the document after column mapping has been applied for this event
+this.CustomerName    // string (just set from $row.customer_name)
+this.Amount          // number (just set from $row.amount)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+Unmapped columns — those not listed in `Columns` — appear in `$row` but are never
+written to the document and therefore never appear in `$old`.
+</Admonition>
+
+---
+
+## $row Column Types
+
+`$row` exposes all SQL columns using their **original column names** (not the mapped
+RavenDB property names). The JavaScript type of each value depends on the source
+database type.
+
+### PostgreSQL
+
+| PostgreSQL Type | JavaScript Type in `$row` | Notes |
+|----------------|--------------------------|-------|
+| `integer` / `bigint` | `number` | |
+| `real` / `double precision` | `number` | |
+| `numeric` | `number` | |
+| `boolean` | `boolean` | |
+| `date` / `timestamp` / `timestamptz` | `string` | Formatted date string |
+| `uuid` | `string` | |
+| `varchar` / `text` / `char` | `string` | |
+| `bytea` | `string` | Base64-encoded |
+| `json` / `jsonb` | `string` | Raw JSON text — call `JSON.parse()` to access as an object / array |
+| `text[]` / `varchar[]` / `int[]` / etc. | `Array` | Elements are always strings, even for numeric array types |
+| `vector` (pgvector) | `Array` | Elements are JavaScript numbers (floats) |
+
+**JSON/JSONB columns require explicit parsing:**
+
+<Tabs>
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`var meta = JSON.parse($row.metadata);
+this.Priority = meta.priority;
+this.Label = meta.label;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+**Array columns:**
+
+<Tabs>
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`this.TagCount = $row.tags.length;
+this.FirstTag = $row.tags[0];
+this.Tags = $row.tags;
+
+// INT[] elements are strings — parse explicitly if numeric arithmetic is needed
+var first = parseInt($row.scores[0], 10);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+**pgvector columns (elements are numbers, not strings):**
+
+<Tabs>
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`this.EmbeddingSum = $row.embedding.reduce(function(a, b) \{ return a + b; \}, 0);
+this.Embedding = $row.embedding;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
 
 ---
 
@@ -372,6 +495,10 @@ Keep patches focused and efficient — prefer `.filter()` + `.reduce()` over nes
 - [Column Mapping](./column-mapping.mdx)
 - [Property Retention](./property-retention.mdx)
 - [Failover and Consistency](./failover-and-consistency.mdx)
+
+### PostgreSQL
+
+- [Type Mapping](./postgres/type-mapping.mdx)
 
 ### Server
 

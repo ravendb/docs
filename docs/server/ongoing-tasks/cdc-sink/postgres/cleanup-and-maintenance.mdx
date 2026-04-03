@@ -180,37 +180,20 @@ WHERE active = false;
 
 ---
 
-## Configuration Changes That Rename Slots
+## Slot and Publication Names Are Immutable
 
-The replication slot name is derived from the task name, database name, and table
-names. If you update a CDC Sink task in a way that changes any of these — such as
-adding a table, removing a table, or renaming the task — the expected slot and
-publication names change.
+The replication slot name and publication name are generated **once at task creation**
+using a GUID and stored with the task. They do not change when you modify the task —
+adding or removing tables, renaming the task, or changing any other configuration
+always reuses the same slot and publication.
 
-What happens:
+Attempting to specify a different `SlotName` or `PublicationName` when updating a
+task results in an error.
 
-* CDC Sink will look for a slot/publication with the new name
-* If it has permissions, it will create them
-* The old slot and publication are **not deleted** — they become orphaned
-
-After updating a task configuration that changes table membership:
-
-1. Let the task restart and create the new slot/publication
-2. Identify the old slot (it will be inactive):
-
-<Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`SELECT slot_name, active
-FROM pg_replication_slots
-WHERE slot_name LIKE 'rvn_cdc_s_%'
-  AND active = false;
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-3. Drop the old slot and publication
+If you need to use a different slot or publication, delete the task and create a new one.
+The old slot and publication from the deleted task must then be cleaned up manually —
+see [Dropping a Replication Slot](#dropping-a-replication-slot) and
+[Dropping a Publication](#dropping-a-publication) below.
 
 ---
 
