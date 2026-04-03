@@ -1,0 +1,195 @@
+---
+title: "CDC Sink: Troubleshooting"
+sidebar_label: Troubleshooting
+description: "Covers common problems encountered when running CDC Sink tasks and how to resolve them, including startup failures, error states, and missing documents."
+sidebar_position: 14
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# CDC Sink: Troubleshooting
+
+<Admonition type="note" title="">
+
+* This page covers common problems encountered when running CDC Sink tasks and how
+  to resolve them.
+
+* In this page:
+  * [Task Won't Start](#task-wont-start)
+  * [Task Enters Error State](#task-enters-error-state)
+  * [Documents Not Appearing](#documents-not-appearing)
+  * [Embedded Items Missing or Incorrect](#embedded-items-missing-or-incorrect)
+  * [DELETE Not Applied](#delete-not-applied)
+  * [Patch Errors](#patch-errors)
+
+</Admonition>
+
+---
+
+## Task Won't Start
+
+**Symptom:** Task remains in `Error` state immediately after creation.
+
+**Common causes:**
+
+* **Invalid connection string** — verify the connection string name matches one defined
+  in the SQL connection strings section of the Management Studio.
+
+* **Connection refused** — the source database is unreachable from the RavenDB server.
+  Verify host, port, and firewall rules.
+
+* **Authentication failure** — the credentials in the connection string are incorrect
+  or the user does not have the required permissions.
+  See the PostgreSQL [Permissions and Roles](./postgres/permissions-and-roles.mdx) page.
+
+* **WAL level not set to `logical`** — CDC Sink requires logical replication enabled
+  on the source.
+  See [WAL Configuration](./postgres/wal-configuration.mdx).
+
+Check the error message in the Notification Center (bell icon in Studio) for the
+specific failure reason.
+
+---
+
+## Task Enters Error State
+
+**Symptom:** Task was running, then stopped with an error.
+
+**Common causes:**
+
+* **Replication slot dropped** — if the PostgreSQL replication slot was dropped
+  externally, CDC Sink cannot resume. The task must be deleted and recreated (a new
+  slot will be created on next start).
+
+* **Source table schema changed** — adding or removing columns from the SQL table
+  may cause mapping errors. Update the task configuration to match the new schema.
+
+* **Replication lag too large** — if CDC Sink falls behind significantly, PostgreSQL
+  may retain WAL segments that fill the disk. See your PostgreSQL documentation on
+  `wal_keep_size` and replication slot lag.
+
+* **Exceeded fallback timeout** — the source was unreachable for longer than
+  `CdcSink.MaxFallbackTimeInSec`. The task moves to error state after this timeout.
+  Restore connectivity and re-enable the task.
+
+---
+
+## Documents Not Appearing
+
+**Symptom:** SQL rows exist but corresponding RavenDB documents are not created.
+
+**Check:**
+
+1. **Initial load in progress** — CDC Sink performs a full table scan before streaming.
+   For large tables this can take time. Check the task progress in Studio.
+
+2. **Table is disabled** — verify `Disabled` is not set to `true` on the `CdcSinkTableConfig`.
+
+3. **Primary key mismatch** — the columns listed in `PrimaryKeyColumns` must match the
+   actual SQL primary key. If they don't match, CDC Sink cannot generate a document ID.
+
+4. **Columns list is empty** — at least one column must be mapped. A table with no
+   column mappings will produce empty documents.
+
+5. **Task is paused** — check that the task state is `Active`, not `Disabled`.
+
+---
+
+## Embedded Items Missing or Incorrect
+
+**Symptom:** Parent document exists but embedded array/map is empty or items are missing.
+
+**Check:**
+
+1. **JoinColumns mismatch** — the `JoinColumns` in `CdcSinkEmbeddedTableConfig` must
+   reference the same columns (by name) that the SQL foreign key uses. Verify these
+   match the parent table's `PrimaryKeyColumns`.
+
+2. **PrimaryKeyColumns wrong** — the embedded table's `PrimaryKeyColumns` are used to
+   match items on UPDATE and DELETE. If they're wrong, new items may be created as
+   duplicates or existing items may not be found.
+
+3. **DELETE not reflected** — if embedded item rows are being deleted in SQL but the
+   items remain in RavenDB, check whether `REPLICA IDENTITY` is configured for the
+   embedded table. Without it, PostgreSQL does not include the old row values in the
+   DELETE event, and CDC Sink cannot identify which item to remove.
+   See [REPLICA IDENTITY](./postgres/replica-identity.mdx).
+
+4. **Type mismatch (Array vs Map)** — if the `Type` was changed from `Array` to `Map`
+   or vice versa after documents were already created, existing documents retain the
+   old structure. Re-process from scratch or migrate existing documents.
+
+---
+
+## DELETE Not Applied
+
+**Symptom:** A row was deleted from SQL but the RavenDB document still exists.
+
+**Check:**
+
+1. **`IgnoreDeletes = true`** — if `OnDelete.IgnoreDeletes` is set to `true`, the
+   delete is intentionally discarded. Verify this is the intended behavior.
+
+2. **Missing REPLICA IDENTITY (embedded tables)** — for embedded table items,
+   PostgreSQL must include old row values in DELETE events so CDC Sink knows which
+   parent document to update. If `REPLICA IDENTITY` is not set to `FULL` (or to
+   an index that includes join columns), the DELETE event may be missing the columns
+   needed to route it.
+   See [REPLICA IDENTITY](./postgres/replica-identity.mdx).
+
+3. **Custom patch returns without deleting** — if an `OnDelete.Patch` is configured
+   that does not allow the delete to proceed (combined with `IgnoreDeletes = true`),
+   the document is kept. Review the patch logic.
+
+---
+
+## Patch Errors
+
+**Symptom:** Task enters error state with a message referencing a JavaScript patch failure.
+
+**Check:**
+
+1. **Script syntax error** — test the patch script in the Management Studio's patch
+   editor before using it in CDC Sink.
+
+2. **Null reference** — `$row` properties and `$old` may be `null` for certain event
+   types. Use optional chaining: `$old?.Amount || 0`.
+
+3. **`load()` returns null** — a document loaded with `load()` may not exist yet if CDC
+   Sink processes tables out of dependency order. Guard with a null check:
+
+<Tabs>
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`const related = load("Collection/123");
+if (related) \{ ... \}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+4. **Step limit exceeded** — patch scripts have a step quota. If the script is very
+   long-running or loops over large arrays, it may hit `Patching.MaxStepsForScript`.
+   See the [configuration reference](../../../server/configuration/patching-configuration) for this setting.
+
+---
+
+## Related Articles
+
+### CDC Sink
+
+- [How It Works](./how-it-works.mdx)
+- [Monitoring](./monitoring.mdx)
+- [Patching](./patching.mdx)
+- [Failover and Consistency](./failover-and-consistency.mdx)
+
+### PostgreSQL
+
+- [WAL Configuration](./postgres/wal-configuration.mdx)
+- [Permissions and Roles](./postgres/permissions-and-roles.mdx)
+- [REPLICA IDENTITY](./postgres/replica-identity.mdx)

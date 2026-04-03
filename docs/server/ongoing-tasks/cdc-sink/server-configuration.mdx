@@ -1,0 +1,79 @@
+---
+title: "CDC Sink: Server Configuration"
+sidebar_label: Server Configuration
+description: "Documents the RavenDB server configuration keys that control CDC Sink task behavior, including batch size, fallback timeout, and poll interval."
+sidebar_position: 15
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# CDC Sink: Server Configuration
+
+<Admonition type="note" title="">
+
+* This page documents the RavenDB server configuration keys that control CDC Sink
+  task behavior.
+
+* In this page:
+  * [Configuration Keys](#configuration-keys)
+
+</Admonition>
+
+---
+
+## Configuration Keys
+
+These keys can be set in `settings.json` or passed as environment variables.
+See [Configuration Overview](../../../server/configuration/configuration-options).
+
+---
+
+#### `CdcSink.MaxBatchSize`
+
+**Default:** `1024`
+
+The maximum number of change events processed in a single batch. Larger values
+increase throughput but also increase memory usage per batch.
+
+---
+
+#### `CdcSink.MaxFallbackTimeInSec`
+
+**Default:** `900` (15 minutes)
+
+How long the task will remain in fallback mode (continuously retrying) after losing
+connection to the source database before reporting an error.
+
+Set to `0` to disable fallback mode entirely — the task will move to error state
+immediately on connection failure.
+
+---
+
+#### `CdcSink.PollIntervalInSec`
+
+**Default:** `1`
+
+How frequently CDC Sink polls the source database for new change events when the
+stream is idle. A shorter interval reduces latency but increases polling load on
+the source.
+
+PostgreSQL uses logical replication streaming and ignores this setting.
+
+---
+
+## Related Articles
+
+### CDC Sink
+
+- [Overview](./overview.mdx)
+- [Monitoring](./monitoring.mdx)
+- [Failover and Consistency](./failover-and-consistency.mdx)
+
+### Server Configuration
+
+- [Configuration Overview](../../../server/configuration/configuration-options)

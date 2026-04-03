@@ -1,0 +1,222 @@
+---
+title: "CDC Sink: API Reference"
+sidebar_label: API Reference
+description: "Documents the Client API operations for creating, updating, querying, toggling, and deleting CDC Sink tasks programmatically."
+sidebar_position: 11
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# CDC Sink: API Reference
+
+<Admonition type="note" title="">
+
+* CDC Sink tasks can be created, updated, and managed programmatically using
+  the RavenDB Client API.
+
+* In this page:
+  * [Add a CDC Sink Task](#add-a-cdc-sink-task)
+  * [Update a CDC Sink Task](#update-a-cdc-sink-task)
+  * [Get Task Info](#get-task-info)
+  * [Toggle Task State](#toggle-task-state)
+  * [Delete a Task](#delete-a-task)
+
+</Admonition>
+
+---
+
+## Add a CDC Sink Task
+
+Use `AddCdcSinkOperation` to create a new CDC Sink task:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`var config = new CdcSinkConfiguration
+\{
+    Name = "OrdersSync",
+    ConnectionStringName = "MyPostgresConnection",
+    Tables = new List<CdcSinkTableConfig>
+    \{
+        new CdcSinkTableConfig
+        \{
+            Name = "Orders",
+            SourceTableName = "orders",
+            PrimaryKeyColumns = new List<string> \{ "id" \},
+            Columns =
+            [
+                new CdcColumnMapping() \{ Column = "id",            Name = "Id" \},
+                new CdcColumnMapping() \{ Column = "customer_name", Name = "CustomerName" \},
+                new CdcColumnMapping() \{ Column = "total",         Name = "Total" \},
+            ]
+        \}
+    \}
+\};
+
+var result = await store.Maintenance.SendAsync(
+    new AddCdcSinkOperation(config));
+
+long taskId = result.TaskId;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+`AddCdcSinkOperationResult`:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `TaskId` | `long` | Assigned task ID |
+| `RaftCommandIndex` | `long` | Raft index of the command |
+
+---
+
+## Update a CDC Sink Task
+
+Use `UpdateCdcSinkOperation` to modify an existing task.
+Pass the full updated configuration including the `TaskId`:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`config.TaskId = taskId;        // Must be set
+config.Tables.Add(new CdcSinkTableConfig
+\{
+    Name = "Customers",
+    SourceTableName = "customers",
+    PrimaryKeyColumns = new List<string> \{ "id" \},
+    Columns =
+    [
+        new CdcColumnMapping() \{ Column = "id",    Name = "Id" \},
+        new CdcColumnMapping() \{ Column = "name",  Name = "Name" \},
+        new CdcColumnMapping() \{ Column = "email", Name = "Email" \},
+    ]
+\});
+
+await store.Maintenance.SendAsync(
+    new UpdateCdcSinkOperation(taskId, config));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="">
+**PostgreSQL — table changes affect the publication:**
+
+The replication slot and publication names are fixed at task creation and do not
+change when you update the task. However, the **publication** controls which tables
+CDC Sink receives changes for, so table changes require database-level updates:
+
+* **Adding tables** — If CDC Sink has the necessary permissions, it will automatically
+  run `ALTER PUBLICATION <name> ADD TABLE <new_table>;` when the task is updated. If it
+  does not have permissions, a database administrator must run this manually.
+* **Removing tables** — `ALTER PUBLICATION <name> DROP TABLE <removed_table>;` must be
+  run manually by a database administrator. CDC Sink does not remove tables from the
+  publication automatically.
+
+If the slot and publication were auto-named, a database administrator can look up
+the current names from the task error log or from PostgreSQL:
+
+```sql
+SELECT slot_name FROM pg_replication_slots WHERE slot_name LIKE 'rvn_cdc_s_%';
+SELECT pubname FROM pg_publication WHERE pubname LIKE 'rvn_cdc_p_%';
+```
+
+See [Initial Setup](./postgres/initial-setup.mdx) for
+guidance on slot and publication management.
+
+Dropped or orphaned slots and publications must be cleaned up manually by the
+database administrator.
+See [Cleanup and Maintenance](./postgres/cleanup-and-maintenance.mdx).
+</Admonition>
+
+---
+
+## Get Task Info
+
+Use `GetOngoingTaskInfoOperation` to retrieve the current state of a CDC Sink task:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`var taskInfo = await store.Maintenance.SendAsync(
+    new GetOngoingTaskInfoOperation(taskId, OngoingTaskType.CdcSink));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+---
+
+## Toggle Task State
+
+Pause or resume a CDC Sink task using `ToggleOngoingTaskStateOperation`:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`// Pause the task
+await store.Maintenance.SendAsync(
+    new ToggleOngoingTaskStateOperation(taskId, OngoingTaskType.CdcSink, disable: true));
+
+// Resume the task
+await store.Maintenance.SendAsync(
+    new ToggleOngoingTaskStateOperation(taskId, OngoingTaskType.CdcSink, disable: false));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="">
+**PostgreSQL:** Pausing a CDC Sink task stops the replication slot from being consumed.
+PostgreSQL retains WAL segments for unconsumed slots, so pausing for an extended period
+causes WAL to accumulate on disk. Monitor disk usage if a task is paused for more than
+a short time.
+See [Monitoring PostgreSQL](./postgres/monitoring-postgres.mdx).
+
+**SQL Server:** Pausing a CDC Sink task for an extended period (days) may cause SQL Server
+to trim the CDC change tables, removing rows that have not yet been consumed. A short
+pause is safe. If the task is paused long enough that trimming occurs, CDC Sink will
+report an error on resume — the task may need to be recreated rather than simply resumed.
+</Admonition>
+
+---
+
+## Delete a Task
+
+Use `DeleteOngoingTaskOperation` to delete a CDC Sink task:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`await store.Maintenance.SendAsync(
+    new DeleteOngoingTaskOperation(taskId, OngoingTaskType.CdcSink));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="">
+Deleting the task in RavenDB does **not** drop the replication slot or publication
+in the source database. These must be cleaned up manually by the database administrator.
+See [Cleanup and Maintenance](./postgres/cleanup-and-maintenance.mdx).
+</Admonition>
+
+---
+
+## Related Articles
+
+### CDC Sink
+
+- [Configuration Reference](./configuration-reference.mdx)
+- [Overview](./overview.mdx)
+
+### Client API
+
+- [Operations: How to Send Operations](../../../client-api/operations/how-to/send-multiple-operations)
+- [Ongoing Task Operations](../../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations)

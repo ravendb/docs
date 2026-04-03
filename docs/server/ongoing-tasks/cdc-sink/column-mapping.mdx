@@ -1,0 +1,183 @@
+---
+title: "CDC Sink: Column Mapping"
+sidebar_label: Column Mapping
+description: "Explains how to control which SQL columns appear in RavenDB documents and under what property names using the Columns list of CdcColumnMapping entries."
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# CDC Sink: Column Mapping
+
+<Admonition type="note" title="">
+
+* Column mapping controls which SQL columns appear in the RavenDB document,
+  under what property names, and how they are stored. It uses a `Columns` list
+  of `CdcColumnMapping` objects (not a dictionary).
+
+* In this page:
+  * [Mapping Columns to Properties](#mapping-columns-to-properties)
+  * [Column Types](#column-types)
+  * [Unmapped Columns](#unmapped-columns)
+  * [Validation Rules](#validation-rules)
+  * [Schema (Source Table Schema)](#schema-source-table-schema)
+
+</Admonition>
+
+---
+
+## Mapping Columns to Properties
+
+`Columns` is a `List<CdcColumnMapping>` where each entry maps a SQL column
+to a RavenDB document property:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`Columns =
+[
+    new CdcColumnMapping() \{ Column = "id",            Name = "Id" \},
+    new CdcColumnMapping() \{ Column = "customer_name", Name = "CustomerName" \},
+    new CdcColumnMapping() \{ Column = "order_date",    Name = "OrderDate" \},
+    new CdcColumnMapping() \{ Column = "total_amount",  Name = "TotalAmount" \},
+]
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+**`Column`:** SQL column name (case-insensitive match against the column names in CDC events)
+**`Name`:** Property name in the RavenDB document
+
+<Admonition type="note" title="">
+The primary key column(s) do not need to be mapped. When included in `Columns`,
+they become a regular document property. When omitted, the PK values are still used
+to build the document ID — they just won't appear as a named property.
+
+Including the PK in the mapping is generally useful so the document carries its own
+identifier, but it is not required.
+</Admonition>
+
+---
+
+## Column Types
+
+Each `CdcColumnMapping` entry has an optional `Type` property of type `CdcColumnType`
+that controls how the SQL value is stored in RavenDB:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`Columns =
+[
+    new CdcColumnMapping() \{ Column = "order_id",  Name = "OrderId" \},
+    // Parsed as a native JSON value
+    new CdcColumnMapping()
+    \{
+        Column = "metadata", Name = "Metadata",
+        Type = CdcColumnType.Json
+    \},
+    // Stored as an attachment
+    new CdcColumnMapping()
+    \{
+        Column = "receipt", Name = "receipt.pdf",
+        Type = CdcColumnType.Attachment
+    \},
+]
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Type | Behavior |
+|------|----------|
+| `Default` | Standard type conversion: int→long, decimal→double, date→DateOnly, timestamp→DateTime, uuid→string, varchar/text→string. SQL arrays→JSON arrays. JSON/JSONB stored as plain string. This is the default when `Type` is omitted. |
+| `Json` | Parses the string value as a native JSON value (object, array, string, number, boolean, etc.) in the document. Use for PostgreSQL `json`/`jsonb` or SQL Server `nvarchar(max)` with JSON content. |
+| `Attachment` | Stores the raw column value as a RavenDB attachment. `byte[]`→binary (`application/octet-stream`), `string`→UTF-8 text (`text/plain`), `float[]`/`double[]`→raw vector data. The `Name` field becomes the attachment name. |
+
+---
+
+## Unmapped Columns
+
+Columns not listed in `Columns` are **not stored** in the document, but they
+are available in patch scripts via `$row`.
+
+This allows you to use data for computations without permanently storing raw SQL values:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`Columns =
+[
+    new CdcColumnMapping() \{ Column = "id",   Name = "Id" \},
+    new CdcColumnMapping() \{ Column = "name", Name = "Name" \},
+    // base_price and tax_rate are NOT mapped — won't appear in document
+],
+Patch = "this.FinalPrice = $row.base_price * (1 + $row.tax_rate);"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+In this example, `base_price` and `tax_rate` are available during the patch but
+not stored as document properties. Only the computed `FinalPrice` is stored.
+
+<Admonition type="note" title="">
+**Naming context:**
+Property names (the `Name` values in `Columns`) become properties on the RavenDB
+document — accessible as `this.FinalPrice` inside a patch script.
+
+Column names (the `Column` values in `Columns`, plus any unmapped columns) are accessible
+in patch scripts via `$row.base_price` (for the current row's values) and
+`$old?.base_price` (for the previous row's values on UPDATE events).
+</Admonition>
+
+---
+
+## Validation Rules
+
+The following rules apply to both root table and embedded table column mappings:
+
+- Each `Column` name must be unique within a table (no duplicate SQL column entries).
+- Each `Name` must be unique within a table (no duplicate property or attachment names).
+- Both `Column` and `Name` are required and must be non-empty strings.
+- At least one entry is required — an empty `Columns` list is a validation error.
+
+---
+
+## Schema (Source Table Schema)
+
+`SourceTableSchema` specifies the SQL schema containing the table. It defaults to
+`"public"` for PostgreSQL if omitted.
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`new CdcSinkTableConfig
+\{
+    SourceTableSchema = "sales",    // Table is in the "sales" schema
+    SourceTableName = "orders",
+    // ...
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+For most PostgreSQL setups using the default `public` schema, this can be omitted.
+
+---
+
+## Related Articles
+
+### CDC Sink
+
+- [Schema Design](./schema-design.mdx)
+- [Patching](./patching.mdx)
+- [Attachment Handling](./attachment-handling.mdx)
+- [Configuration Reference](./configuration-reference.mdx)
