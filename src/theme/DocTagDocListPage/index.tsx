@@ -87,7 +87,7 @@ function DocTagDocListPageContent({ tag }: Props): ReactNode {
                                                 "animate-in fade-in"
                                             )}
                                         >
-                                            {sortedItems.map((doc, index) => {
+                                            {sortedItems.map((doc) => {
                                                 const guide = guides.find((g: Guide) => g.permalink === doc.permalink);
                                                 const formattedDate = guide?.lastUpdatedAt
                                                     ? new Date(guide.lastUpdatedAt * 1000).toLocaleDateString("en-US", {
@@ -101,19 +101,18 @@ function DocTagDocListPageContent({ tag }: Props): ReactNode {
                                                         key={doc.id}
                                                         title={doc.title}
                                                         description={doc.description}
-                                                        url={guide?.externalUrl || doc.permalink}
+                                                        url={guide?.external_url || doc.permalink}
                                                         imgSrc={guide?.image}
                                                         imgIcon={guide?.icon}
                                                         tags={guide?.tags}
                                                         date={formattedDate}
-                                                        animationDelay={index * 50}
                                                     />
                                                 );
                                             })}
                                         </div>
                                     ) : (
                                         <div className={clsx("flex flex-col", "animate-in fade-in")}>
-                                            {sortedItems.map((doc, index) => {
+                                            {sortedItems.map((doc) => {
                                                 const guide = guides.find((g: Guide) => g.permalink === doc.permalink);
                                                 const formattedDate = guide?.lastUpdatedAt
                                                     ? new Date(guide.lastUpdatedAt * 1000).toLocaleDateString("en-US", {
@@ -123,18 +122,10 @@ function DocTagDocListPageContent({ tag }: Props): ReactNode {
                                                       })
                                                     : undefined;
                                                 return (
-                                                    <div
-                                                        key={doc.id}
-                                                        className="animate-in fade-in slide-in-from-left-4"
-                                                        style={{
-                                                            animationDelay: `${index * 30}ms`,
-                                                            animationDuration: "300ms",
-                                                            animationFillMode: "backwards",
-                                                        }}
-                                                    >
+                                                    <div key={doc.id} className="animate-in fade-in">
                                                         <GuideListItem
                                                             title={doc.title}
-                                                            url={guide?.externalUrl || doc.permalink}
+                                                            url={guide?.external_url || doc.permalink}
                                                             tags={guide?.tags}
                                                             date={formattedDate}
                                                         />

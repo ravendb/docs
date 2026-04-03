@@ -72,7 +72,7 @@ function AllGuidesPageContent(): ReactNode {
                                                 "animate-in fade-in"
                                             )}
                                         >
-                                            {sortedGuides.map((guide, index) => {
+                                            {sortedGuides.map((guide) => {
                                                 const formattedDate = guide.lastUpdatedAt
                                                     ? new Date(guide.lastUpdatedAt * 1000).toLocaleDateString("en-US", {
                                                           month: "short",
@@ -85,19 +85,18 @@ function AllGuidesPageContent(): ReactNode {
                                                         key={guide.id}
                                                         title={guide.title}
                                                         description={guide.description}
-                                                        url={guide.externalUrl || guide.permalink}
+                                                        url={guide.external_url || guide.permalink}
                                                         imgSrc={guide.image}
                                                         imgIcon={guide.icon}
                                                         tags={guide.tags}
                                                         date={formattedDate}
-                                                        animationDelay={index * 50}
                                                     />
                                                 );
                                             })}
                                         </div>
                                     ) : (
                                         <div className={clsx("flex flex-col", "animate-in fade-in")}>
-                                            {sortedGuides.map((guide, index) => {
+                                            {sortedGuides.map((guide) => {
                                                 const formattedDate = guide.lastUpdatedAt
                                                     ? new Date(guide.lastUpdatedAt * 1000).toLocaleDateString("en-US", {
                                                           month: "short",
@@ -106,18 +105,10 @@ function AllGuidesPageContent(): ReactNode {
                                                       })
                                                     : undefined;
                                                 return (
-                                                    <div
-                                                        key={guide.id}
-                                                        className="animate-in fade-in slide-in-from-left-4"
-                                                        style={{
-                                                            animationDelay: `${index * 30}ms`,
-                                                            animationDuration: "300ms",
-                                                            animationFillMode: "backwards",
-                                                        }}
-                                                    >
+                                                    <div key={guide.id} className="animate-in fade-in">
                                                         <GuideListItem
                                                             title={guide.title}
-                                                            url={guide.externalUrl || guide.permalink}
+                                                            url={guide.external_url || guide.permalink}
                                                             tags={guide.tags}
                                                             date={formattedDate}
                                                         />

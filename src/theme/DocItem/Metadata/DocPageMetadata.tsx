@@ -17,11 +17,16 @@ export interface DocPageMetadataProps {
     ogImageUrl: string;
     // Shared (optional)
     lastUpdatedAt?: number;
+    keywords?: string[];
     // Guide-only (optional)
     proficiencyLevel?: string;
     authorKey?: string;
     publishedAt?: string;
-    keywords?: string[];
+    // Sample-only (optional)
+    schemaType?: "TechArticle" | "SoftwareSourceCode";
+    repositoryUrl?: string;
+    licenseUrl?: string;
+    languages?: string[];
 }
 
 export default function DocPageMetadata({
@@ -34,9 +39,46 @@ export default function DocPageMetadata({
     authorKey,
     publishedAt,
     keywords,
+    schemaType = "TechArticle",
+    repositoryUrl,
+    licenseUrl,
+    languages,
 }: DocPageMetadataProps): ReactNode {
     const authorInfo = authorKey ? authorsData[authorKey as keyof typeof authorsData] : null;
 
+    // Generate SoftwareSourceCode schema for samples
+    if (schemaType === "SoftwareSourceCode") {
+        const softwareSourceCodeJsonLd = JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareSourceCode",
+            name: title,
+            ...(description ? { description } : {}),
+            url: canonicalUrl,
+            ...(repositoryUrl ? { codeRepository: repositoryUrl } : {}),
+            ...(licenseUrl ? { license: licenseUrl } : {}),
+            ...(languages?.length ? { programmingLanguage: languages } : {}),
+            ...(keywords?.length ? { keywords } : {}),
+            runtimePlatform: "RavenDB",
+            publisher: {
+                "@type": "Organization",
+                name: "RavenDB",
+                url: "https://ravendb.net",
+            },
+            isPartOf: {
+                "@type": "CollectionPage",
+                "@id": `${canonicalUrl.split("/samples/")[0]}/samples`,
+                name: "RavenDB Code Samples",
+            },
+        });
+
+        return (
+            <Head>
+                <script type="application/ld+json">{softwareSourceCodeJsonLd}</script>
+            </Head>
+        );
+    }
+
+    // Generate TechArticle schema for guides and docs
     const techArticleJsonLd = JSON.stringify({
         "@context": "https://schema.org",
         "@type": "TechArticle",

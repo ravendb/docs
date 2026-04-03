@@ -3,10 +3,7 @@ import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import type { Props as DocusaurusTagProps } from "@theme/Tag";
 
-export interface Props
-    extends Partial<DocusaurusTagProps>,
-        // eslint-disable-next-line no-undef
-        React.HTMLAttributes<HTMLSpanElement> {
+export interface Props extends Partial<DocusaurusTagProps>, React.HTMLAttributes<HTMLSpanElement> {
     children?: React.ReactNode;
     to?: string;
     size?: "xs" | "default";

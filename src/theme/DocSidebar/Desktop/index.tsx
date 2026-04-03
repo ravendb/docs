@@ -30,6 +30,8 @@ function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
     const pathType = getPathType(path);
     const landingPagePath = getLandingPagePath(pathType, versionLabel);
 
+    const shouldDisplayContent = pathType !== PathType.Guides && pathType !== PathType.Samples;
+
     return (
         <div
             className={clsx(
@@ -48,6 +50,14 @@ function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
                 {pathType !== PathType.Guides && (
                     <Link to="/guides" className="menu__link group">
                         <Icon icon="guides" size="xs" className="me-2" /> Guides
+                        <small className="flex items-center ms-auto gap-1 text-[0.675rem] opacity-0 group-hover:opacity-100 !transition-all">
+                            Switch <Icon icon="arrow-thin-right" size="xs" />
+                        </small>
+                    </Link>
+                )}
+                {pathType !== PathType.Samples && (
+                    <Link to="/samples" className="menu__link group">
+                        <Icon icon="create-sample-data" size="xs" className="me-2" /> Samples
                         <small className="flex items-center ms-auto gap-1 text-[0.675rem] opacity-0 group-hover:opacity-100 !transition-all">
                             Switch <Icon icon="arrow-thin-right" size="xs" />
                         </small>
@@ -83,9 +93,9 @@ function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
                     </Link>
                 )}
             </div>
-            {pathType !== PathType.Guides && <hr className="!my-0 !mx-3 !bg-black/10 dark:!bg-white/10" />}
+            {shouldDisplayContent && <hr className="!my-0 !mx-3 !bg-black/10 dark:!bg-white/10" />}
             {pathType === PathType.Documentation && <SidebarVersionDropdown />}
-            {pathType !== PathType.Guides && <Content path={path} sidebar={sidebar} />}
+            {shouldDisplayContent && <Content path={path} sidebar={sidebar} />}
             {hideable && <CollapseButton onClick={onCollapse} />}
         </div>
     );

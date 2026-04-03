@@ -3,6 +3,7 @@ export const PathType = {
     Guides: "GUIDES",
     Documentation: "DOCUMENTATION",
     Templates: "TEMPLATES",
+    Samples: "SAMPLES",
 } as const;
 
 export type PathTypeValue = (typeof PathType)[keyof typeof PathType];
@@ -13,6 +14,9 @@ export function getPathType(path: string): PathTypeValue {
     }
     if (path.includes("/guides")) {
         return PathType.Guides;
+    }
+    if (path.includes("/samples")) {
+        return PathType.Samples;
     }
     if (path.includes("/templates")) {
         return PathType.Templates;
@@ -26,6 +30,9 @@ export function getLandingPagePath(pathType: PathTypeValue, versionLabel: string
     }
     if (pathType === PathType.Guides) {
         return "/guides";
+    }
+    if (pathType === PathType.Samples) {
+        return "/samples";
     }
     if (pathType === PathType.Templates) {
         return "/templates";

@@ -16,10 +16,6 @@ see_also:
 import Admonition from "@theme/Admonition";
 import Panel from "@site/src/components/Panel";
 
-<head>
-    <meta name="robots" content="noindex, nofollow" />
-</head>
-
 # Featured guides
 
 ## Mark a guide as featured
@@ -50,7 +46,7 @@ import FeaturedGuides from "@site/src/components/Guides/FeaturedGuides";
     ```mdx
     ---
     title: "Example Guide"
-    publishedAt: 2026-02-27
+    published_at: 2026-02-27
     author: "Author Name"
     tags: [ai, demo]
     image: "/img/guides-ai-agents.webp"
@@ -71,5 +67,5 @@ import FeaturedGuides from "@site/src/components/Guides/FeaturedGuides";
    section will update automatically.
 
 <Admonition type="info" title="Without guidesTitles">
-    If you omit the `guidesTitles` prop, `FeaturedGuides` will fall back to showing the two most recently updated guides based on file timestamps or `publishedAt`.
+    If you omit the `guidesTitles` prop, `FeaturedGuides` will fall back to showing the two most recently updated guides based on file timestamps or `published_at`.
 </Admonition>
