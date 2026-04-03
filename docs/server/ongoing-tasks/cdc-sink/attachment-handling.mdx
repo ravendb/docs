@@ -34,8 +34,23 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ## Root Table Attachments
 
-Set `Type = CdcColumnType.Attachment` on a `Columns` entry to store a binary SQL
-column as a RavenDB attachment:
+Given a SQL table with a binary column:
+
+<Tabs>
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`CREATE TABLE files (
+    id        SERIAL PRIMARY KEY,
+    filename  TEXT        NOT NULL,
+    mime_type TEXT        NOT NULL,
+    content   BYTEA       NOT NULL   -- binary attachment
+);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Set `Type = CdcColumnType.Attachment` on the `content` column entry:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
@@ -58,7 +73,7 @@ column as a RavenDB attachment:
 </TabItem>
 </Tabs>
 
-The binary `content` column is stored as an attachment named `"file"` on the document.
+The `content` column is stored as an attachment named `"file"` on the document.
 The `Name` value becomes the attachment name. The attachment is stored with content
 type `application/octet-stream`.
 
@@ -67,7 +82,31 @@ type `application/octet-stream`.
 ## Embedded Table Attachments
 
 Binary columns on embedded tables are stored as attachments on the **parent** document.
-The attachment name is automatically prefixed to ensure uniqueness:
+The attachment name is automatically prefixed to ensure uniqueness.
+
+Given a parent `products` table and a child `photos` table:
+
+<Tabs>
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`CREATE TABLE products (
+    product_id  SERIAL PRIMARY KEY,
+    name        TEXT NOT NULL
+);
+
+CREATE TABLE photos (
+    product_id  INT  NOT NULL REFERENCES products(product_id),
+    photo_num   INT  NOT NULL,
+    caption     TEXT,
+    thumbnail   BYTEA,          -- binary attachment
+    PRIMARY KEY (product_id, photo_num)
+);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Configure the embedded table with `Type = CdcColumnType.Attachment` on the binary column:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
