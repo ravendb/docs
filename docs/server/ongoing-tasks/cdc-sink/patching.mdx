@@ -134,7 +134,7 @@ Without it, deletes will leave the aggregate in an incorrect state.
     PropertyName = "Lines",
     PrimaryKeyColumns = ["line_id"],
     JoinColumns = ["order_id"],
-    Columns = [ new() \{ Column = "line_id", Name = "LineId" \}, new() \{ Column = "quantity", Name = "Quantity" \} ],
+    Columns = [ new CdcColumnMapping() \{ Column = "line_id", Name = "LineId" \}, new CdcColumnMapping() \{ Column = "quantity", Name = "Quantity" \} ],
 
     // Runs on INSERT and UPDATE — recomputes total from current Lines array
     Patch = @"
@@ -180,7 +180,7 @@ the deleted item's value. Without it, deletes leave the running total incorrect.
     PropertyName = "Lines",
     PrimaryKeyColumns = ["line_id"],
     JoinColumns = ["invoice_id"],
-    Columns = [ new() \{ Column = "line_id", Name = "LineId" \}, new() \{ Column = "amount", Name = "Amount" \} ],
+    Columns = [ new CdcColumnMapping() \{ Column = "line_id", Name = "LineId" \}, new CdcColumnMapping() \{ Column = "amount", Name = "Amount" \} ],
 
     // INSERT: $old is null, so delta = new amount (0 → new)
     // UPDATE: $old has previous Amount, delta = new - old
@@ -215,7 +215,7 @@ Compute fields from unmapped columns that you don't want to store directly:
 <Tabs>
 <TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
-{`Columns = [ new() \{ Column = "id", Name = "Id" \}, new() \{ Column = "name", Name = "Name" \} ],
+{`Columns = [ new CdcColumnMapping() \{ Column = "id", Name = "Id" \}, new CdcColumnMapping() \{ Column = "name", Name = "Name" \} ],
 // base_price and tax_rate are NOT in Columns
 Patch = @"
     this.FinalPrice = $row.base_price * (1 + $row.tax_rate);

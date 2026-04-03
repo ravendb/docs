@@ -77,9 +77,9 @@ history, and `Balance` is maintained using patch logic.
             PrimaryKeyColumns = ["account_id"],
             Columns =
             [
-                new() \{ Column = "account_id", Name = "AccountId" \},
-                new() \{ Column = "owner",      Name = "Owner" \},
-                new() \{ Column = "currency",   Name = "Currency" \},
+                new CdcColumnMapping() \{ Column = "account_id", Name = "AccountId" \},
+                new CdcColumnMapping() \{ Column = "owner",      Name = "Owner" \},
+                new CdcColumnMapping() \{ Column = "currency",   Name = "Currency" \},
             ],
             EmbeddedTables =
             [
@@ -92,10 +92,10 @@ history, and `Balance` is maintained using patch logic.
                     PrimaryKeyColumns = ["txn_id"],
                     Columns =
                     [
-                        new() \{ Column = "txn_id",     Name = "TxnId" \},
-                        new() \{ Column = "amount",     Name = "Amount" \},
-                        new() \{ Column = "type",       Name = "Type" \},
-                        new() \{ Column = "created_at", Name = "CreatedAt" \},
+                        new CdcColumnMapping() \{ Column = "txn_id",     Name = "TxnId" \},
+                        new CdcColumnMapping() \{ Column = "amount",     Name = "Amount" \},
+                        new CdcColumnMapping() \{ Column = "type",       Name = "Type" \},
+                        new CdcColumnMapping() \{ Column = "created_at", Name = "CreatedAt" \},
                     ],
                     // Patch runs on the parent document for INSERT/UPDATE
                     Patch = """

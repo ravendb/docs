@@ -1,7 +1,7 @@
 ---
 title: "CDC Sink: Attachment Handling"
 sidebar_label: Attachment Handling
-description: "Explains how to store binary SQL columns as RavenDB attachments using CdcColumnType.Attachment on root and embedded table configurations."
+description: "Explains how to store binary or text SQL columns as RavenDB attachments using CdcColumnType.Attachment on root and embedded table configurations."
 sidebar_position: 9
 ---
 
@@ -16,8 +16,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 <Admonition type="note" title="">
 
-* Binary SQL columns (bytea, varbinary, etc.) can be stored as RavenDB **attachments**
-  by setting `Type = CdcColumnType.Attachment` on the column mapping entry.
+* SQL columns — binary (`bytea`, `varbinary`, etc.) or text (`text`, `nvarchar`, etc.)
+  — can be stored as RavenDB **attachments** by setting `Type = CdcColumnType.Attachment`
+  on the column mapping entry.
 
 * This applies to both root tables and embedded tables.
 
@@ -46,10 +47,10 @@ column as a RavenDB attachment:
     PrimaryKeyColumns = ["id"],
     Columns =
     [
-        new() \{ Column = "id",        Name = "Id" \},
-        new() \{ Column = "filename",  Name = "Filename" \},
-        new() \{ Column = "mime_type", Name = "MimeType" \},
-        new() \{ Column = "content",   Name = "file", Type = CdcColumnType.Attachment \},
+        new CdcColumnMapping() \{ Column = "id",        Name = "Id" \},
+        new CdcColumnMapping() \{ Column = "filename",  Name = "Filename" \},
+        new CdcColumnMapping() \{ Column = "mime_type", Name = "MimeType" \},
+        new CdcColumnMapping() \{ Column = "content",   Name = "file", Type = CdcColumnType.Attachment \},
     ]
 \}
 `}
@@ -79,9 +80,9 @@ The attachment name is automatically prefixed to ensure uniqueness:
     JoinColumns = ["product_id"],
     Columns =
     [
-        new() \{ Column = "photo_num", Name = "PhotoNum" \},
-        new() \{ Column = "caption",   Name = "Caption" \},
-        new() \{ Column = "thumbnail", Name = "thumb", Type = CdcColumnType.Attachment \},
+        new CdcColumnMapping() \{ Column = "photo_num", Name = "PhotoNum" \},
+        new CdcColumnMapping() \{ Column = "caption",   Name = "Caption" \},
+        new CdcColumnMapping() \{ Column = "thumbnail", Name = "thumb", Type = CdcColumnType.Attachment \},
     ]
 \}
 `}

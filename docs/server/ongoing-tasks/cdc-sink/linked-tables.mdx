@@ -44,8 +44,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
     PrimaryKeyColumns = ["id"],
     Columns =
     [
-        new() \{ Column = "id",          Name = "Id" \},
-        new() \{ Column = "customer_id", Name = "CustomerId" \},
+        new CdcColumnMapping() \{ Column = "id",          Name = "Id" \},
+        new CdcColumnMapping() \{ Column = "customer_id", Name = "CustomerId" \},
     ],
     LinkedTables =
     [

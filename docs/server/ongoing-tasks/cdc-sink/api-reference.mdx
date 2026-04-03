@@ -50,9 +50,9 @@ Use `AddCdcSinkOperation` to create a new CDC Sink task:
             PrimaryKeyColumns = new List<string> \{ "id" \},
             Columns =
             [
-                new() \{ Column = "id",            Name = "Id" \},
-                new() \{ Column = "customer_name", Name = "CustomerName" \},
-                new() \{ Column = "total",         Name = "Total" \},
+                new CdcColumnMapping() \{ Column = "id",            Name = "Id" \},
+                new CdcColumnMapping() \{ Column = "customer_name", Name = "CustomerName" \},
+                new CdcColumnMapping() \{ Column = "total",         Name = "Total" \},
             ]
         \}
     \}
@@ -92,9 +92,9 @@ config.Tables.Add(new CdcSinkTableConfig
     PrimaryKeyColumns = new List<string> \{ "id" \},
     Columns =
     [
-        new() \{ Column = "id",    Name = "Id" \},
-        new() \{ Column = "name",  Name = "Name" \},
-        new() \{ Column = "email", Name = "Email" \},
+        new CdcColumnMapping() \{ Column = "id",    Name = "Id" \},
+        new CdcColumnMapping() \{ Column = "name",  Name = "Name" \},
+        new CdcColumnMapping() \{ Column = "email", Name = "Email" \},
     ]
 \});
 
