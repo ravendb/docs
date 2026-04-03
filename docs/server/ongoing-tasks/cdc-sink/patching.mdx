@@ -61,7 +61,7 @@ The `OnDelete.Patch` on `CdcSinkOnDeleteConfig` handles DELETE separately.
 |----------|-----------|------|-------------|
 | `this` | Always | object | The document being modified (root or parent for embedded) |
 | `$row` | Always | object | All SQL columns from the CDC event (mapped and unmapped) |
-| `$old` | UPDATE only | object \| null | Previous state of the item; null for INSERT |
+| `$old` | Always | object \| null | Previous state of the document (root patches) or embedded item (embedded patches). Null on INSERT. |
 | `get(id)` | Always | function | Load a RavenDB document by ID |
 
 ---
@@ -134,7 +134,7 @@ Without it, deletes will leave the aggregate in an incorrect state.
     PropertyName = "Lines",
     PrimaryKeyColumns = ["line_id"],
     JoinColumns = ["order_id"],
-    ColumnsMapping = \{ ["line_id"] = "LineId", ["quantity"] = "Quantity" \},
+    Columns = [ new() \{ Column = "line_id", Name = "LineId" \}, new() \{ Column = "quantity", Name = "Quantity" \} ],
 
     // Runs on INSERT and UPDATE — recomputes total from current Lines array
     Patch = @"
@@ -180,7 +180,7 @@ the deleted item's value. Without it, deletes leave the running total incorrect.
     PropertyName = "Lines",
     PrimaryKeyColumns = ["line_id"],
     JoinColumns = ["invoice_id"],
-    ColumnsMapping = \{ ["line_id"] = "LineId", ["amount"] = "Amount" \},
+    Columns = [ new() \{ Column = "line_id", Name = "LineId" \}, new() \{ Column = "amount", Name = "Amount" \} ],
 
     // INSERT: $old is null, so delta = new amount (0 → new)
     // UPDATE: $old has previous Amount, delta = new - old
@@ -215,8 +215,8 @@ Compute fields from unmapped columns that you don't want to store directly:
 <Tabs>
 <TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
-{`ColumnsMapping = \{ ["id"] = "Id", ["name"] = "Name" \},
-// base_price and tax_rate are NOT in ColumnsMapping
+{`Columns = [ new() \{ Column = "id", Name = "Id" \}, new() \{ Column = "name", Name = "Name" \} ],
+// base_price and tax_rate are NOT in Columns
 Patch = @"
     this.FinalPrice = $row.base_price * (1 + $row.tax_rate);
     this.Discount = $row.is_vip ? $row.base_price * 0.1 : 0;
@@ -337,6 +337,8 @@ Keep patches focused and efficient — prefer `.filter()` + `.reduce()` over nes
 
 * Access `this`, `$row`, `$old`
 * Load related documents with `get()`
+* Create or replace documents with `put()`
+* Delete documents with `del()`
 * Compute and transform property values
 * Set and modify document metadata
 * Conditional logic, loops, array methods

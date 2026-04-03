@@ -60,13 +60,13 @@ A simple customers table:
             Name = "Customers",
             SourceTableName = "customers",
             PrimaryKeyColumns = new List<string> \{ "id" \},
-            ColumnsMapping = new Dictionary<string, string>
-            \{
-                ["id"]         = "Id",
-                ["name"]       = "Name",
-                ["email"]      = "Email",
-                ["created_at"] = "CreatedAt"
-            \}
+            Columns =
+            [
+                new() \{ Column = "id",         Name = "Id" \},
+                new() \{ Column = "name",       Name = "Name" \},
+                new() \{ Column = "email",      Name = "Email" \},
+                new() \{ Column = "created_at", Name = "CreatedAt" \},
+            ]
         \}
     \}
 \};
