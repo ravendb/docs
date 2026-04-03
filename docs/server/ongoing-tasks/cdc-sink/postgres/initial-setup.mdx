@@ -42,7 +42,8 @@ CDC Sink will:
 1. Generate the replication slot and publication names (a GUID-based identifier) and store them with the task
 2. Check whether they already exist
 3. Create them if they do not exist
-4. Begin the initial load
+4. If configured tables are missing from the publication, CDC Sink attempts `ALTER PUBLICATION ... ADD TABLE` automatically (requires the user to have publication ownership or superuser access)
+5. Begin the initial load
 
 No manual database administration is needed in this case.
 

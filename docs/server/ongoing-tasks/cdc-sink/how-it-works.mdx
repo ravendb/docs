@@ -24,6 +24,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * In this page:
   * [Startup and Verification](#startup-and-verification)
+    * [PostgreSQL](#postgresql)
   * [Initial Load](#initial-load)
   * [Change Streaming](#change-streaming)
   * [Transaction Ordering](#transaction-ordering)
@@ -36,18 +37,20 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ## Startup and Verification
 
-When a CDC Sink task starts, it first verifies that the source database is properly
-configured. For PostgreSQL, this includes checking:
+When a CDC Sink task starts, it verifies that the source database is properly configured
+before doing anything else. If any check fails, CDC Sink reports the exact issue and the
+SQL an administrator needs to run to fix it. The task does not start until all checks pass.
+
+After verification, CDC Sink creates the necessary change-tracking infrastructure
+in the source database, then begins the initial load.
+
+### PostgreSQL
+
+CDC Sink checks:
 
 * WAL level is set to `logical`
 * The connecting user has sufficient privileges
 * REPLICA IDENTITY is configured correctly for embedded tables that need delete routing
-
-If any check fails, CDC Sink reports the exact issue and the SQL an administrator
-needs to run to fix it. The task does not start until all checks pass.
-
-After verification, CDC Sink creates the necessary change-tracking infrastructure
-in the source database, then begins the initial load.
 
 See the [PostgreSQL Prerequisites Checklist](./postgres/prerequisites-checklist.mdx)
 for the full list of requirements.
@@ -178,15 +181,18 @@ See [Patching](./patching.mdx) for guidance.
 
 ## Child Before Parent
 
-If an embedded row arrives before its parent row exists in RavenDB — which can happen
-during initial load when tables are scanned in parallel, or due to relaxed foreign key
-constraints in the source database — CDC Sink creates a **stub document** containing
-only the embedded data.
+Tables are scanned one at a time during the initial load. This means a child table can
+contain rows that reference a parent row inserted *after* the parent table scan had
+already completed. For example: Orders are fully scanned, then while scanning OrderLines,
+an OrderLine is encountered that points to an Order that was inserted after the Orders
+scan finished.
 
-When the parent row arrives later, its columns are merged onto the stub document.
-The final document contains both the parent fields and all embedded items that arrived earlier.
+In this case, CDC Sink creates a **stub document** for the parent containing only the
+embedded child data. When CDC streaming begins after the initial load, it picks up the
+missing parent row and merges its columns onto the stub document.
 
-This ensures no data is lost regardless of the order in which rows are processed.
+The final document will contain both the parent fields and all embedded items. No data
+is lost — the brief intermediate state is resolved automatically once streaming starts.
 
 ---
 

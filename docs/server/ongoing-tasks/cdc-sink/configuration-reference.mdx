@@ -26,6 +26,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * [CdcSinkLinkedTableConfig](#cdcsinklinkedtableconfig)
   * [CdcSinkOnDeleteConfig](#cdcsinkondeleteconfig)
   * [CdcSinkRelationType](#cdcsinkrelationtype)
+  * [CdcColumnMapping](#cdccolumnmapping)
+  * [CdcColumnType](#cdccolumntype)
+  * [REST API Endpoints](#rest-api-endpoints)
 
 </Admonition>
 
@@ -56,13 +59,16 @@ Leave `null` for non-PostgreSQL connections.
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `SlotName` | `string` | Name of the PostgreSQL logical replication slot. If omitted on creation, a deterministic hash-based name is used. Immutable once set. Max 63 characters, alphanumeric and underscores only. |
-| `PublicationName` | `string` | Name of the PostgreSQL publication. Same auto-fill and immutability rules as `SlotName`. |
+| `SlotName` | `string` | Name of the PostgreSQL logical replication slot. If omitted on creation, auto-generated as `rvn_cdc_s_{guid}` on task creation. Immutable once set. Max 63 characters, alphanumeric and underscores only. |
+| `PublicationName` | `string` | Name of the PostgreSQL publication. Same auto-generated naming and immutability rules as `SlotName`. |
 
 Setting these explicitly is useful when:
 - A database administrator pre-creates the slot and publication with human-readable names
 - Migrating from a previous CDC Sink task and reusing an existing slot
 - Running multiple environments (dev/staging/prod) with predictable names
+
+If tables are missing from the publication, CDC Sink attempts `ALTER PUBLICATION ... ADD TABLE`
+automatically on startup (requires sufficient permissions).
 
 See [Initial Setup](./postgres/initial-setup.mdx) for details.
 
@@ -84,8 +90,7 @@ Configures a root table — one SQL table mapped to one RavenDB collection.
 | `SourceTableName` | `string` | ✓ | SQL table name (e.g., `"orders"`) |
 | `SourceTableSchema` | `string` | | SQL schema name. Default: `"public"` |
 | `PrimaryKeyColumns` | `List<string>` | ✓ | SQL columns used for document ID generation |
-| `ColumnsMapping` | `Dictionary<string, string>` | ✓ | SQL column → document property |
-| `AttachmentNameMapping` | `Dictionary<string, string>` | | Binary SQL column → attachment name |
+| `Columns` | `List<CdcColumnMapping>` | ✓ | Column mappings — each entry defines a SQL column, its document property name, and how to store it |
 | `Patch` | `string` | | JavaScript patch for INSERT and UPDATE |
 | `OnDelete` | `CdcSinkOnDeleteConfig` | | Delete behavior. Default: delete document |
 | `EmbeddedTables` | `List<CdcSinkEmbeddedTableConfig>` | | Nested table configurations |
@@ -106,8 +111,7 @@ Configures a table whose rows are embedded as nested objects within a parent doc
 | `Type` | `CdcSinkRelationType` | ✓ | `Array`, `Map`, or `Value` |
 | `JoinColumns` | `List<string>` | ✓ | FK columns referencing parent's `PrimaryKeyColumns` |
 | `PrimaryKeyColumns` | `List<string>` | ✓ | PK columns for matching items on UPDATE/DELETE |
-| `ColumnsMapping` | `Dictionary<string, string>` | ✓ | SQL column → embedded property |
-| `AttachmentNameMapping` | `Dictionary<string, string>` | | Binary SQL column → attachment name |
+| `Columns` | `List<CdcColumnMapping>` | ✓ | Column mappings — each entry defines a SQL column, its document property name, and how to store it |
 | `Patch` | `string` | | JavaScript patch on **parent** document for INSERT/UPDATE |
 | `OnDelete` | `CdcSinkOnDeleteConfig` | | Delete behavior for embedded items |
 | `CaseSensitiveKeys` | `bool` | | Case-sensitive PK matching. Default: `false` |
@@ -128,6 +132,30 @@ Configures a foreign key reference that becomes a document ID in the parent docu
 | `LinkedCollectionName` | `string` | ✓ | Target RavenDB collection for ID generation (e.g., `"Customers"`) |
 | `Type` | `CdcSinkRelationType` | ✓ | `Value` (single reference) or `Array` (multiple references) |
 | `JoinColumns` | `List<string>` | ✓ | FK columns used to build the referenced document ID |
+
+---
+
+## CdcColumnMapping
+
+A single column mapping entry within a `Columns` list.
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `Column` | `string` | ✓ | SQL column name (case-insensitive) |
+| `Name` | `string` | ✓ | Document property name (or attachment name when `Type = Attachment`) |
+| `Type` | `CdcColumnType` | | How to store the value. Default: `Default` |
+
+---
+
+## CdcColumnType
+
+Controls how a SQL column value is stored in RavenDB.
+
+| Value | Behavior |
+|-------|----------|
+| `Default` | Standard type conversion: int→long, decimal→double, date→DateOnly, timestamp→DateTime, uuid→string, varchar/text→string. SQL arrays→JSON arrays. JSON/JSONB stored as plain string. |
+| `Json` | Parses the string value as a native JSON object or array in the document. Use for PostgreSQL `json`/`jsonb` or SQL Server `nvarchar(max)` with JSON content. |
+| `Attachment` | Stores the raw column value as a RavenDB attachment. `byte[]`→binary, `string`→UTF-8 text, `float[]`/`double[]`→raw vector data. The `Name` field becomes the attachment name. |
 
 ---
 
@@ -166,6 +194,19 @@ Specifies the structure of embedded or linked data in the document.
 | `Array` | One-to-many: stored as a JSON array. Items matched by PK for UPDATE/DELETE |
 | `Map` | One-to-many: stored as a JSON object keyed by PK value(s) |
 | `Value` | Many-to-one: stored as a single embedded object or document reference |
+
+---
+
+## REST API Endpoints
+
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| PUT | `/databases/{db}/admin/cdc-sink` | DatabaseAdmin | Create CDC Sink task |
+| PUT | `/databases/{db}/admin/cdc-sink?id={taskId}` | DatabaseAdmin | Update CDC Sink task |
+| POST | `/databases/{db}/admin/cdc-sink/test` | DatabaseAdmin | Test a patch script |
+| POST | `/databases/{db}/admin/cdc-sink/verify` | DatabaseAdmin | Verify source database connectivity and CDC setup |
+| GET | `/databases/{db}/cdc-sink/performance` | ValidUser | Get performance stats |
+| GET | `/databases/{db}/cdc-sink/performance/live` | ValidUser | WebSocket for live performance stats |
 
 ---
 

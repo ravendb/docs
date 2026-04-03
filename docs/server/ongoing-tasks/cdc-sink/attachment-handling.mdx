@@ -1,7 +1,7 @@
 ---
 title: "CDC Sink: Attachment Handling"
 sidebar_label: Attachment Handling
-description: "Explains how to store binary SQL columns as RavenDB attachments using AttachmentNameMapping on root and embedded table configurations."
+description: "Explains how to store binary SQL columns as RavenDB attachments using CdcColumnType.Attachment on root and embedded table configurations."
 sidebar_position: 9
 ---
 
@@ -16,8 +16,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 <Admonition type="note" title="">
 
-* Binary SQL columns can be stored as RavenDB **attachments** instead of document
-  properties using `AttachmentNameMapping`.
+* Binary SQL columns (bytea, varbinary, etc.) can be stored as RavenDB **attachments**
+  by setting `Type = CdcColumnType.Attachment` on the column mapping entry.
 
 * This applies to both root tables and embedded tables.
 
@@ -33,7 +33,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ## Root Table Attachments
 
-Use `AttachmentNameMapping` to map a binary SQL column to a RavenDB attachment:
+Set `Type = CdcColumnType.Attachment` on a `Columns` entry to store a binary SQL
+column as a RavenDB attachment:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
@@ -43,16 +44,13 @@ Use `AttachmentNameMapping` to map a binary SQL column to a RavenDB attachment:
     Name = "Files",
     SourceTableName = "files",
     PrimaryKeyColumns = ["id"],
-    ColumnsMapping = new Dictionary<string, string>
-    \{
-        ["id"]        = "Id",
-        ["filename"]  = "Filename",
-        ["mime_type"] = "MimeType"
-    \},
-    AttachmentNameMapping = new Dictionary<string, string>
-    \{
-        ["content"] = "file"   // SQL column "content" → attachment named "file"
-    \}
+    Columns =
+    [
+        new() \{ Column = "id",        Name = "Id" \},
+        new() \{ Column = "filename",  Name = "Filename" \},
+        new() \{ Column = "mime_type", Name = "MimeType" \},
+        new() \{ Column = "content",   Name = "file", Type = CdcColumnType.Attachment \},
+    ]
 \}
 `}
 </CodeBlock>
@@ -60,7 +58,8 @@ Use `AttachmentNameMapping` to map a binary SQL column to a RavenDB attachment:
 </Tabs>
 
 The binary `content` column is stored as an attachment named `"file"` on the document.
-The attachment is stored with content type `application/octet-stream`.
+The `Name` value becomes the attachment name. The attachment is stored with content
+type `application/octet-stream`.
 
 ---
 
@@ -78,15 +77,12 @@ The attachment name is automatically prefixed to ensure uniqueness:
     PropertyName = "Photos",
     PrimaryKeyColumns = ["photo_num"],
     JoinColumns = ["product_id"],
-    ColumnsMapping = new Dictionary<string, string>
-    \{
-        ["photo_num"] = "PhotoNum",
-        ["caption"]   = "Caption"
-    \},
-    AttachmentNameMapping = new Dictionary<string, string>
-    \{
-        ["thumbnail"] = "thumb"
-    \}
+    Columns =
+    [
+        new() \{ Column = "photo_num", Name = "PhotoNum" \},
+        new() \{ Column = "caption",   Name = "Caption" \},
+        new() \{ Column = "thumbnail", Name = "thumb", Type = CdcColumnType.Attachment \},
+    ]
 \}
 `}
 </CodeBlock>
@@ -103,10 +99,11 @@ the primary key value.
 
 **Root table attachments:**
 
-The attachment name is exactly the value you specify in `AttachmentNameMapping`.
+The attachment name is exactly the `Name` value on the mapping entry with
+`Type = CdcColumnType.Attachment`.
 
 ```
-AttachmentNameMapping = { ["content"] = "file" }
+Column = "content", Name = "file", Type = CdcColumnType.Attachment
 → Attachment name: "file"
 ```
 
@@ -117,7 +114,7 @@ The attachment name is prefixed with `{PropertyName}/{pkValue}/`:
 ```
 PropertyName = "Photos"
 PrimaryKeyColumns = ["photo_num"]  → photo_num = 1
-AttachmentNameMapping = { ["thumbnail"] = "thumb" }
+Column = "thumbnail", Name = "thumb", Type = CdcColumnType.Attachment
 → Attachment name: "Photos/1/thumb"
 ```
 

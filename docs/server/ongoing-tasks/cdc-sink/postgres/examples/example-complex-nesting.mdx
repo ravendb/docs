@@ -107,11 +107,11 @@ See [REPLICA IDENTITY](../replica-identity.mdx) for more details.
             Name = "Products",
             SourceTableName = "products",
             PrimaryKeyColumns = ["product_id"],
-            ColumnsMapping = new Dictionary<string, string>
-            \{
-                ["product_id"] = "ProductId",
-                ["name"]       = "Name"
-            \},
+            Columns =
+            [
+                new() \{ Column = "product_id", Name = "ProductId" \},
+                new() \{ Column = "name",       Name = "Name" \},
+            ],
             // Linked table: category_id FK → document ID in Categories collection
             LinkedTables =
             [
@@ -133,12 +133,12 @@ See [REPLICA IDENTITY](../replica-identity.mdx) for more details.
                     Type = CdcSinkRelationType.Array,
                     JoinColumns = ["product_id"],
                     PrimaryKeyColumns = ["variant_id"],
-                    ColumnsMapping = new Dictionary<string, string>
-                    \{
-                        ["variant_id"] = "VariantId",
-                        ["sku"]        = "Sku",
-                        ["price"]      = "Price"
-                    \},
+                    Columns =
+                    [
+                        new() \{ Column = "variant_id", Name = "VariantId" \},
+                        new() \{ Column = "sku",        Name = "Sku" \},
+                        new() \{ Column = "price",      Name = "Price" \},
+                    ],
                     // Deep-nested: attributes within each variant
                     EmbeddedTables =
                     [
@@ -150,12 +150,12 @@ See [REPLICA IDENTITY](../replica-identity.mdx) for more details.
                             // JoinColumns must include the ROOT PK for deep nesting
                             JoinColumns = ["product_id", "variant_id"],
                             PrimaryKeyColumns = ["attr_id"],
-                            ColumnsMapping = new Dictionary<string, string>
-                            \{
-                                ["attr_id"]    = "AttrId",
-                                ["attr_name"]  = "Name",
-                                ["attr_value"] = "Value"
-                            \}
+                            Columns =
+                            [
+                                new() \{ Column = "attr_id",    Name = "AttrId" \},
+                                new() \{ Column = "attr_name",  Name = "Name" \},
+                                new() \{ Column = "attr_value", Name = "Value" \},
+                            ]
                         \}
                     ]
                 \}

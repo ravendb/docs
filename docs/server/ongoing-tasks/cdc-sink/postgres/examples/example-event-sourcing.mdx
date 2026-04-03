@@ -75,12 +75,12 @@ history, and `Balance` is maintained using patch logic.
             Name = "Accounts",
             SourceTableName = "accounts",
             PrimaryKeyColumns = ["account_id"],
-            ColumnsMapping = new Dictionary<string, string>
-            \{
-                ["account_id"] = "AccountId",
-                ["owner"]      = "Owner",
-                ["currency"]   = "Currency"
-            \},
+            Columns =
+            [
+                new() \{ Column = "account_id", Name = "AccountId" \},
+                new() \{ Column = "owner",      Name = "Owner" \},
+                new() \{ Column = "currency",   Name = "Currency" \},
+            ],
             EmbeddedTables =
             [
                 new CdcSinkEmbeddedTableConfig
@@ -90,13 +90,13 @@ history, and `Balance` is maintained using patch logic.
                     Type = CdcSinkRelationType.Array,
                     JoinColumns = ["account_id"],
                     PrimaryKeyColumns = ["txn_id"],
-                    ColumnsMapping = new Dictionary<string, string>
-                    \{
-                        ["txn_id"]     = "TxnId",
-                        ["amount"]     = "Amount",
-                        ["type"]       = "Type",
-                        ["created_at"] = "CreatedAt"
-                    \},
+                    Columns =
+                    [
+                        new() \{ Column = "txn_id",     Name = "TxnId" \},
+                        new() \{ Column = "amount",     Name = "Amount" \},
+                        new() \{ Column = "type",       Name = "Type" \},
+                        new() \{ Column = "created_at", Name = "CreatedAt" \},
+                    ],
                     // Patch runs on the parent document for INSERT/UPDATE
                     Patch = """
                         const oldAmount = $old?.Amount || 0;
