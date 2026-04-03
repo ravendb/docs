@@ -41,10 +41,10 @@ to a RavenDB document property:
 <CodeBlock language="csharp">
 {`Columns =
 [
-    new() \{ Column = "id",            Name = "Id" \},
-    new() \{ Column = "customer_name", Name = "CustomerName" \},
-    new() \{ Column = "order_date",    Name = "OrderDate" \},
-    new() \{ Column = "total_amount",  Name = "TotalAmount" \},
+    new CdcColumnMapping() \{ Column = "id",            Name = "Id" \},
+    new CdcColumnMapping() \{ Column = "customer_name", Name = "CustomerName" \},
+    new CdcColumnMapping() \{ Column = "order_date",    Name = "OrderDate" \},
+    new CdcColumnMapping() \{ Column = "total_amount",  Name = "TotalAmount" \},
 ]
 `}
 </CodeBlock>
@@ -75,9 +75,9 @@ that controls how the SQL value is stored in RavenDB:
 <CodeBlock language="csharp">
 {`Columns =
 [
-    new() \{ Column = "order_id",  Name = "OrderId" \},
-    new() \{ Column = "metadata",  Name = "Metadata",     Type = CdcColumnType.Json \},       // Parsed as native JSON
-    new() \{ Column = "receipt",   Name = "receipt.pdf",  Type = CdcColumnType.Attachment \}, // Stored as attachment
+    new CdcColumnMapping() \{ Column = "order_id",  Name = "OrderId" \},
+    new CdcColumnMapping() \{ Column = "metadata",  Name = "Metadata",     Type = CdcColumnType.Json \},       // Parsed as native JSON
+    new CdcColumnMapping() \{ Column = "receipt",   Name = "receipt.pdf",  Type = CdcColumnType.Attachment \}, // Stored as attachment
 ]
 `}
 </CodeBlock>
@@ -104,8 +104,8 @@ This allows you to use data for computations without permanently storing raw SQL
 <CodeBlock language="csharp">
 {`Columns =
 [
-    new() \{ Column = "id",   Name = "Id" \},
-    new() \{ Column = "name", Name = "Name" \},
+    new CdcColumnMapping() \{ Column = "id",   Name = "Id" \},
+    new CdcColumnMapping() \{ Column = "name", Name = "Name" \},
     // base_price and tax_rate are NOT mapped — won't appear in document
 ],
 Patch = "this.FinalPrice = $row.base_price * (1 + $row.tax_rate);"

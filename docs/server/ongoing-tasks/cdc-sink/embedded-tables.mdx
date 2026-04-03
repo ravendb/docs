@@ -51,9 +51,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
     PrimaryKeyColumns = ["line_id"],      // Used to match items on UPDATE/DELETE
     Columns =
     [
-        new() \{ Column = "line_id",  Name = "LineId" \},
-        new() \{ Column = "product",  Name = "Product" \},
-        new() \{ Column = "quantity", Name = "Quantity" \},
+        new CdcColumnMapping() \{ Column = "line_id",  Name = "LineId" \},
+        new CdcColumnMapping() \{ Column = "product",  Name = "Product" \},
+        new CdcColumnMapping() \{ Column = "quantity", Name = "Quantity" \},
     ]
 \}
 `}
@@ -240,9 +240,9 @@ them to `Columns` with `Type = CdcColumnType.Attachment`.
     JoinColumns = ["product_id"],
     Columns =
     [
-        new() \{ Column = "photo_num", Name = "PhotoNum" \},
-        new() \{ Column = "caption",   Name = "Caption" \},
-        new() \{ Column = "thumbnail", Name = "thumb", Type = CdcColumnType.Attachment \},
+        new CdcColumnMapping() \{ Column = "photo_num", Name = "PhotoNum" \},
+        new CdcColumnMapping() \{ Column = "caption",   Name = "Caption" \},
+        new CdcColumnMapping() \{ Column = "thumbnail", Name = "thumb", Type = CdcColumnType.Attachment \},
     ]
 \}
 `}
