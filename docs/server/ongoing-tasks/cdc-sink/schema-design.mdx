@@ -49,9 +49,9 @@ becomes one document.
     PrimaryKeyColumns = ["id"],           // Used for document ID generation
     Columns =
     [
-        new() \{ Column = "id",            Name = "Id" \},
-        new() \{ Column = "customer_name", Name = "CustomerName" \},
-        new() \{ Column = "total",         Name = "Total" \},
+        new CdcColumnMapping() \{ Column = "id",            Name = "Id" \},
+        new CdcColumnMapping() \{ Column = "customer_name", Name = "CustomerName" \},
+        new CdcColumnMapping() \{ Column = "total",         Name = "Total" \},
     ]
 \}
 `}
@@ -81,7 +81,7 @@ SQL `order_lines` table becomes an array inside each `Orders` document.
     Name = "Orders",
     SourceTableName = "orders",
     PrimaryKeyColumns = ["id"],
-    Columns = [ new() \{ Column = "id", Name = "Id" \}, new() \{ Column = "customer_name", Name = "CustomerName" \} ],
+    Columns = [ new CdcColumnMapping() \{ Column = "id", Name = "Id" \}, new CdcColumnMapping() \{ Column = "customer_name", Name = "CustomerName" \} ],
     EmbeddedTables =
     [
         new CdcSinkEmbeddedTableConfig
@@ -93,9 +93,9 @@ SQL `order_lines` table becomes an array inside each `Orders` document.
             PrimaryKeyColumns = ["line_id"],          // Used to match items on update/delete
             Columns =
             [
-                new() \{ Column = "line_id",  Name = "LineId" \},
-                new() \{ Column = "product",  Name = "Product" \},
-                new() \{ Column = "quantity", Name = "Quantity" \},
+                new CdcColumnMapping() \{ Column = "line_id",  Name = "LineId" \},
+                new CdcColumnMapping() \{ Column = "product",  Name = "Product" \},
+                new CdcColumnMapping() \{ Column = "quantity", Name = "Quantity" \},
             ]
         \}
     ]
@@ -139,7 +139,7 @@ A foreign key in the source row becomes a RavenDB document ID.
     Name = "Orders",
     SourceTableName = "orders",
     PrimaryKeyColumns = ["id"],
-    Columns = [ new() \{ Column = "id", Name = "Id" \}, new() \{ Column = "customer_id", Name = "CustomerId" \} ],
+    Columns = [ new CdcColumnMapping() \{ Column = "id", Name = "Id" \}, new CdcColumnMapping() \{ Column = "customer_id", Name = "CustomerId" \} ],
     LinkedTables =
     [
         new CdcSinkLinkedTableConfig
@@ -211,7 +211,7 @@ Embedded tables can themselves have embedded tables, creating arbitrarily deep h
     Name = "Companies",
     SourceTableName = "companies",
     PrimaryKeyColumns = ["company_id"],
-    Columns = [ new() \{ Column = "company_id", Name = "CompanyId" \}, new() \{ Column = "name", Name = "Name" \} ],
+    Columns = [ new CdcColumnMapping() \{ Column = "company_id", Name = "CompanyId" \}, new CdcColumnMapping() \{ Column = "name", Name = "Name" \} ],
     EmbeddedTables =
     [
         new CdcSinkEmbeddedTableConfig
@@ -221,7 +221,7 @@ Embedded tables can themselves have embedded tables, creating arbitrarily deep h
             Type = CdcSinkRelationType.Array,
             JoinColumns = ["company_id"],              // Root FK
             PrimaryKeyColumns = ["dept_id"],
-            Columns = [ new() \{ Column = "dept_id", Name = "DeptId" \}, new() \{ Column = "dept_name", Name = "DeptName" \} ],
+            Columns = [ new CdcColumnMapping() \{ Column = "dept_id", Name = "DeptId" \}, new CdcColumnMapping() \{ Column = "dept_name", Name = "DeptName" \} ],
             EmbeddedTables =
             [
                 new CdcSinkEmbeddedTableConfig
@@ -231,7 +231,7 @@ Embedded tables can themselves have embedded tables, creating arbitrarily deep h
                     Type = CdcSinkRelationType.Array,
                     JoinColumns = ["company_id", "dept_id"],  // Root FK + parent FK
                     PrimaryKeyColumns = ["emp_id"],
-                    Columns = [ new() \{ Column = "emp_id", Name = "EmpId" \}, new() \{ Column = "emp_name", Name = "EmpName" \} ]
+                    Columns = [ new CdcColumnMapping() \{ Column = "emp_id", Name = "EmpId" \}, new CdcColumnMapping() \{ Column = "emp_name", Name = "EmpName" \} ]
                 \}
             ]
         \}

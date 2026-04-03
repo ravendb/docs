@@ -88,10 +88,10 @@ See [REPLICA IDENTITY](../replica-identity.mdx).
             PrimaryKeyColumns = new List<string> \{ "order_id" \},
             Columns =
             [
-                new() \{ Column = "order_id",   Name = "OrderId" \},
-                new() \{ Column = "customer",   Name = "Customer" \},
-                new() \{ Column = "status",     Name = "Status" \},
-                new() \{ Column = "created_at", Name = "CreatedAt" \},
+                new CdcColumnMapping() \{ Column = "order_id",   Name = "OrderId" \},
+                new CdcColumnMapping() \{ Column = "customer",   Name = "Customer" \},
+                new CdcColumnMapping() \{ Column = "status",     Name = "Status" \},
+                new CdcColumnMapping() \{ Column = "created_at", Name = "CreatedAt" \},
             ],
             EmbeddedTables = new List<CdcSinkEmbeddedTableConfig>
             \{
@@ -104,10 +104,10 @@ See [REPLICA IDENTITY](../replica-identity.mdx).
                     PrimaryKeyColumns = new List<string> \{ "line_id" \},
                     Columns =
                     [
-                        new() \{ Column = "line_id",    Name = "LineId" \},
-                        new() \{ Column = "product",    Name = "Product" \},
-                        new() \{ Column = "qty",        Name = "Qty" \},
-                        new() \{ Column = "unit_price", Name = "UnitPrice" \},
+                        new CdcColumnMapping() \{ Column = "line_id",    Name = "LineId" \},
+                        new CdcColumnMapping() \{ Column = "product",    Name = "Product" \},
+                        new CdcColumnMapping() \{ Column = "qty",        Name = "Qty" \},
+                        new CdcColumnMapping() \{ Column = "unit_price", Name = "UnitPrice" \},
                     ]
                 \}
             \}
