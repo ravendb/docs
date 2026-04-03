@@ -160,13 +160,13 @@ specific failure reason.
 2. **Null reference** — `$row` properties and `$old` may be `null` for certain event
    types. Use optional chaining: `$old?.Amount || 0`.
 
-3. **`get()` returns null** — a document loaded with `get()` may not exist yet if CDC
+3. **`load()` returns null** — a document loaded with `load()` may not exist yet if CDC
    Sink processes tables out of dependency order. Guard with a null check:
 
 <Tabs>
 <TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
-{`const related = get("Collection/123");
+{`const related = load("Collection/123");
 if (related) \{ ... \}
 `}
 </CodeBlock>

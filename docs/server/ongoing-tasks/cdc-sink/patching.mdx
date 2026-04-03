@@ -251,12 +251,12 @@ this['@metadata']['SourceTable'] = 'orders';
 
 ## Scenario: Loading Related Documents
 
-Use `get()` to load a related RavenDB document and denormalize its data:
+Use `load()` to load a related RavenDB document and denormalize its data:
 
 <Tabs>
 <TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
-{`const customer = get('Customers/' + $row.customer_id);
+{`const customer = load('Customers/' + $row.customer_id);
 
 if (customer) \{
     this.CustomerName = customer.Name;
@@ -272,17 +272,17 @@ if (customer) \{
 </TabItem>
 </Tabs>
 
-`get()` returns `null` if the document does not exist or has not yet been created
+`load()` returns `null` if the document does not exist or has not yet been created
 by CDC Sink (race condition when multiple tables are loading in parallel).
 Always check for null before accessing properties.
 
-**When to use `get()`:**
+**When to use `load()`:**
 
 * Denormalizing slowly-changing reference data (customer name, category, region)
 * Capturing a snapshot of related data at insert time
 
 **Prefer linked tables** for simple foreign key references — they are cleaner and
-do not have the null-handling complexity of `get()`.
+do not have the null-handling complexity of `load()`.
 
 ---
 
@@ -336,7 +336,7 @@ Keep patches focused and efficient — prefer `.filter()` + `.reduce()` over nes
 **What patches can do:**
 
 * Access `this`, `$row`, `$old`
-* Load related documents with `get()`
+* Load related documents with `load()`
 * Create or replace documents with `put()`
 * Delete documents with `del()`
 * Compute and transform property values
