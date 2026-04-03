@@ -53,7 +53,8 @@ CREATE TABLE product_variants (
 
 CREATE TABLE variant_attributes (
     attr_id    SERIAL PRIMARY KEY,
-    product_id INT NOT NULL REFERENCES products(product_id),  -- denormalized root PK (required for deep nesting)
+    -- denormalized root PK (required for deep nesting)
+    product_id INT NOT NULL REFERENCES products(product_id),
     variant_id INT NOT NULL REFERENCES product_variants(variant_id),
     attr_name  TEXT NOT NULL,
     attr_value TEXT NOT NULL
