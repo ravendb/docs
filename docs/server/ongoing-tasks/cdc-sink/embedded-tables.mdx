@@ -242,7 +242,11 @@ them to `Columns` with `Type = CdcColumnType.Attachment`.
     [
         new CdcColumnMapping() \{ Column = "photo_num", Name = "PhotoNum" \},
         new CdcColumnMapping() \{ Column = "caption",   Name = "Caption" \},
-        new CdcColumnMapping() \{ Column = "thumbnail", Name = "thumb", Type = CdcColumnType.Attachment \},
+        new CdcColumnMapping()
+        \{
+            Column = "thumbnail", Name = "thumb",
+            Type = CdcColumnType.Attachment
+        \},
     ]
 \}
 `}

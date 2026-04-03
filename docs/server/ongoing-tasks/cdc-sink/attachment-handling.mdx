@@ -65,7 +65,11 @@ Set `Type = CdcColumnType.Attachment` on the `content` column entry:
         new CdcColumnMapping() \{ Column = "id",        Name = "Id" \},
         new CdcColumnMapping() \{ Column = "filename",  Name = "Filename" \},
         new CdcColumnMapping() \{ Column = "mime_type", Name = "MimeType" \},
-        new CdcColumnMapping() \{ Column = "content",   Name = "file", Type = CdcColumnType.Attachment \},
+        new CdcColumnMapping()
+        \{
+            Column = "content", Name = "file",
+            Type = CdcColumnType.Attachment
+        \},
     ]
 \}
 `}
@@ -122,7 +126,11 @@ Configure the embedded table with `Type = CdcColumnType.Attachment` on the binar
     [
         new CdcColumnMapping() \{ Column = "photo_num", Name = "PhotoNum" \},
         new CdcColumnMapping() \{ Column = "caption",   Name = "Caption" \},
-        new CdcColumnMapping() \{ Column = "thumbnail", Name = "thumb", Type = CdcColumnType.Attachment \},
+        new CdcColumnMapping()
+        \{
+            Column = "thumbnail", Name = "thumb",
+            Type = CdcColumnType.Attachment
+        \},
     ]
 \}
 `}
