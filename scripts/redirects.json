@@ -127,25 +127,85 @@
     {
         "key": "/client-api/session/querying/how-to-stream-query-results",
         "value": {
-            "targetUrl": "/querying/stream-query-results"
+            "targetUrl": "/querying/stream-query-results",
+            "minimumVersion": "7.2"
         }
     },
     {
         "key": "/client-api/session/querying/how-to-customize-query",
         "value": {
-            "targetUrl": "/querying/customize-query"
+            "targetUrl": "/querying/customize-query",
+            "minimumVersion": "7.2"
         }
     },
     {
         "key": "/ai-integration/ai-agents/ai-agents_security-concerns",
         "value": {
-            "targetUrl": "/ai-integration/ai-agents/security-concerns"
+            "targetUrl": "/ai-integration/ai-agents/security-concerns",
+            "minimumVersion": "7.1"
         }
     },
     {
         "key": "/ai-integration/ai-agents/ai-agents_configuration",
         "value": {
-            "targetUrl": "/ai-integration/configuration"
+            "targetUrl": "/ai-integration/configuration",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/compare-exchange/overview",
+        "value": {
+            "targetUrl": "/compare-exchange/overview",
+            "minimumVersion": "7.1"
+        }
+    },
+    {
+        "key": "/client-api/operations/compare-exchange/put-compare-exchange-value",
+        "value": {
+            "targetUrl": "/compare-exchange/create-cmpxchg-items",
+            "minimumVersion": "7.1"
+        }
+    },
+    {
+        "key": "/client-api/operations/compare-exchange/delete-compare-exchange-value",
+        "value": {
+            "targetUrl": "/compare-exchange/delete-cmpxchg-items",
+            "minimumVersion": "7.1"
+        }
+    },
+    {
+        "key": "/client-api/operations/compare-exchange/get-compare-exchange-value",
+        "value": {
+            "targetUrl": "/compare-exchange/get-cmpxchg-item",
+            "minimumVersion": "7.1"
+        }
+    },
+    {
+        "key": "/client-api/operations/compare-exchange/get-compare-exchange-values",
+        "value": {
+            "targetUrl": "/compare-exchange/get-cmpxchg-items",
+            "minimumVersion": "7.1"
+        }
+    },
+    {
+        "key": "/client-api/operations/compare-exchange/include-compare-exchange",
+        "value": {
+            "targetUrl": "/compare-exchange/include-cmpxchg-items",
+            "minimumVersion": "7.1"
+        }
+    },
+    {
+        "key": "/client-api/operations/compare-exchange/compare-exchange-expiration",
+        "value": {
+            "targetUrl": "/compare-exchange/cmpxchg-expiration",
+            "minimumVersion": "7.1"
+        }
+    },
+    {
+        "key": "/client-api/operations/compare-exchange/compare-exchange-metadata",
+        "value": {
+            "targetUrl": "/compare-exchange/overview",
+            "minimumVersion": "7.1"
         }
     }
 ]
