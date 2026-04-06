@@ -207,16 +207,21 @@ heavy load on both the source database and RavenDB.
 * If using Smuggler or the REST API for selective export/import, ensure system
   documents are included.
 * If state loss has already occurred and the data in RavenDB is already up to date,
-  consider disabling the task before import, then deleting and recreating it with
-  `SkipInitialLoad = true` to skip the full table scan and begin streaming from the
-  current position.
+  you can delete and recreate the task with `SkipInitialLoad = true` to skip the full
+  table scan and begin streaming from the current position. Note that imported tasks
+  are restored in a **disabled** state by default — you must explicitly enable the task
+  after import. This gives you the opportunity to inspect and correct the configuration
+  before the task starts processing.
 
 <Admonition type="warning" title="">
 
-There is no way to manually set the last LSN position. If the state document is lost,
-CDC Sink must either re-read from the beginning or be recreated with `SkipInitialLoad`
-(which skips the initial load but may miss changes that occurred between the export
-and the recreation).
+There is no _supported_ way to manually set the last LSN position. While the state
+document in `@cdc-states` can technically be edited, doing so is risky: setting an
+incorrect LSN can cause CDC Sink to skip over changes (data loss) or land in the
+middle of a transaction boundary, producing errors or inconsistent documents. If the
+state document is lost, the safest options are to re-read from the beginning or to
+recreate the task with `SkipInitialLoad` (which skips the initial load but may miss
+changes that occurred between the export and the recreation).
 
 </Admonition>
 
