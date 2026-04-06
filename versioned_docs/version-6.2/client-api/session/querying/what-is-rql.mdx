@@ -347,12 +347,13 @@ where PricePerUnit >= 10.5 and PricePerUnit <= 13.0 // Using >= and <=
 </TabItem>
 
 </Admonition>
+
 <Admonition type="note" title="">
 
 #### Operator: &nbsp;&nbsp; `in`
 
-The operator `in` is validating if a given field contains passed values.  
-It will return results if a given field matches **any** of the passed values.
+The `in` operator evaluates a field against a list of values.  
+It will return results if the field matches **any** of the items in that list.
 
 <TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
@@ -369,8 +370,28 @@ where Lines[].ProductName in ("Chang", "Spegesild", "Unknown product name")
 `}
 </CodeBlock>
 </TabItem>
+    
+---
+
+**To negate an `in` condition**, use the `NOT` operator.  
+In RQL, `NOT` cannot start a `where` clause; it must follow a **valid preceding expression.**
+
+To ensure accuracy, especially when fields might be missing from some documents,  
+use `exists(fieldName)` as the anchor:
+    
+<TabItem>
+```csharp
+from "Companies" 
+where exists(Name) and NOT Name in ("The Big Cheese", "The Cracker Box")
+```
+</TabItem>
+
+**Note:**  
+Avoid using `where true` or an `exists()` check on a *different* field.  
+If a document is missing the field you're filtering on, these anchors may return unexpected results.
 
 </Admonition>
+
 <Admonition type="note" title="">
 
 #### Operator: &nbsp;&nbsp; `all in`
