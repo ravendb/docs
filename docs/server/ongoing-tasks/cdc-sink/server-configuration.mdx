@@ -37,8 +37,9 @@ See [Configuration Overview](../../../server/configuration/configuration-options
 
 **Default:** `1024`
 
-The maximum number of change events processed in a single batch. Larger values
-increase throughput but also increase memory usage per batch.
+Target number of change rows processed in a single batch before writing to RavenDB. A batch may exceed this size when a source database transaction contains more rows, since transactions are never split across batches.
+
+Larger values increase throughput but also increase memory usage per batch.
 
 ---
 
@@ -46,11 +47,9 @@ increase throughput but also increase memory usage per batch.
 
 **Default:** `900` (15 minutes)
 
-How long the task will remain in fallback mode (continuously retrying) after losing
-connection to the source database before reporting an error.
+Maximum number of seconds the CDC Sink process will stay in fallback mode after a failure before retrying. Fallback duration doubles on each consecutive failure, up to this cap.
 
-Set to `0` to disable fallback mode entirely — the task will move to error state
-immediately on connection failure.
+Set to `0` to disable fallback mode entirely — the task will retry immediately on each failure without exponential backoff.
 
 ---
 
@@ -58,11 +57,9 @@ immediately on connection failure.
 
 **Default:** `1`
 
-How frequently CDC Sink polls the source database for new change events when the
-stream is idle. A shorter interval reduces latency but increases polling load on
-the source.
+How frequently (in seconds) the CDC Sink polls the source database for new change rows. This setting applies to **SQL Server** only, which uses polling-based change capture.
 
-PostgreSQL uses logical replication streaming and ignores this setting.
+PostgreSQL and MySQL use streaming replication and ignore this setting.
 
 ---
 

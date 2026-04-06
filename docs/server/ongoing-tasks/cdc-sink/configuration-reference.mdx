@@ -1,7 +1,7 @@
 ---
 title: "CDC Sink: Configuration Reference"
 sidebar_label: Configuration Reference
-description: "Documents all configuration classes used to define a CDC Sink task, including CdcSinkConfiguration, table configs, and relation types."
+description: "Documents all configuration classes used to define a CDC Sink task, including CdcSinkConfiguration, table configs, CdcColumnMapping, and related types."
 sidebar_position: 10
 ---
 
@@ -24,10 +24,10 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * [CdcSinkTableConfig](#cdcsinktableconfig)
   * [CdcSinkEmbeddedTableConfig](#cdcsinkembeddedtableconfig)
   * [CdcSinkLinkedTableConfig](#cdcsinklinkedtableconfig)
-  * [CdcSinkOnDeleteConfig](#cdcsinkondeleteconfig)
-  * [CdcSinkRelationType](#cdcsinkrelationtype)
   * [CdcColumnMapping](#cdccolumnmapping)
   * [CdcColumnType](#cdccolumntype)
+  * [CdcSinkOnDeleteConfig](#cdcsinkondeleteconfig)
+  * [CdcSinkRelationType](#cdcsinkrelationtype)
   * [REST API Endpoints](#rest-api-endpoints)
 
 </Admonition>
@@ -41,7 +41,7 @@ The top-level configuration object for a CDC Sink task.
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
 | `Name` | `string` | ✓ | Unique task name |
-| `ConnectionStringName` | `string` | ✓ | Name of the SQL connection string |
+| `ConnectionStringName` | `string` | ✓ | Name of the SQL connection string (uses the existing `SqlConnectionString` type — the same as SQL ETL). The connection string's `FactoryName` determines the source database engine. |
 | `Tables` | `List<CdcSinkTableConfig>` | ✓ | Root table configurations (at least one required) |
 | `Postgres` | `CdcSinkPostgresSettings` | | PostgreSQL-specific settings (slot and publication names) |
 | `SkipInitialLoad` | `bool` | | When `true`, skip the initial full-table scan and start streaming CDC changes immediately. Only applies on first startup — has no effect once the initial load has completed. Default: `false` |
@@ -49,6 +49,14 @@ The top-level configuration object for a CDC Sink task.
 | `MentorNode` | `string` | | Preferred cluster node for execution |
 | `PinToMentorNode` | `bool` | | Pin the task to the mentor node. Default: `false` |
 | `TaskId` | `long` | | Set by the server on creation |
+
+**Supported `FactoryName` values (set on the connection string):**
+
+| FactoryName | Database Engine |
+|-------------|-----------------|
+| `Npgsql` | PostgreSQL |
+| `System.Data.SqlClient` or `Microsoft.Data.SqlClient` | SQL Server |
+| `MySql.Data.MySqlClient` or `MySqlConnector.MySqlConnectorFactory` | MySQL / MariaDB |
 
 ---
 
@@ -86,7 +94,7 @@ Configures a root table — one SQL table mapped to one RavenDB collection.
 
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
-| `Name` | `string` | ✓ | RavenDB collection name (e.g., `"Orders"`) |
+| `CollectionName` | `string` | ✓ | RavenDB collection name (e.g., `"Orders"`) |
 | `SourceTableName` | `string` | ✓ | SQL table name (e.g., `"orders"`) |
 | `SourceTableSchema` | `string` | | SQL schema name. Default: `"public"` |
 | `PrimaryKeyColumns` | `List<string>` | ✓ | SQL columns used for document ID generation |
@@ -116,7 +124,7 @@ Configures a table whose rows are embedded as nested objects within a parent doc
 | `OnDelete` | `CdcSinkOnDeleteConfig` | | Delete behavior for embedded items |
 | `CaseSensitiveKeys` | `bool` | | Case-sensitive PK matching. Default: `false` |
 | `EmbeddedTables` | `List<CdcSinkEmbeddedTableConfig>` | | Nested embedded tables |
-| `Disabled` | `bool` | | Skip this table. Default: `false` |
+| `LinkedTables` | `List<CdcSinkLinkedTableConfig>` | | Linked tables within embedded items |
 
 ---
 
@@ -130,7 +138,6 @@ Configures a foreign key reference that becomes a document ID in the parent docu
 | `SourceTableSchema` | `string` | | SQL schema name. Default: `"public"` |
 | `PropertyName` | `string` | ✓ | Property name in the parent document (e.g., `"Customer"`) |
 | `LinkedCollectionName` | `string` | ✓ | Target RavenDB collection for ID generation (e.g., `"Customers"`) |
-| `Type` | `CdcSinkRelationType` | ✓ | `Value` (single reference) or `Array` (multiple references) |
 | `JoinColumns` | `List<string>` | ✓ | FK columns used to build the referenced document ID |
 
 ---
@@ -187,13 +194,13 @@ Controls how DELETE events are handled for a table or embedded table.
 
 ## CdcSinkRelationType
 
-Specifies the structure of embedded or linked data in the document.
+Specifies the structure of embedded data in the document.
 
 | Value | Description |
 |-------|-------------|
 | `Array` | One-to-many: stored as a JSON array. Items matched by PK for UPDATE/DELETE |
 | `Map` | One-to-many: stored as a JSON object keyed by PK value(s) |
-| `Value` | Many-to-one: stored as a single embedded object or document reference |
+| `Value` | Many-to-one: stored as a single embedded object |
 
 ---
 

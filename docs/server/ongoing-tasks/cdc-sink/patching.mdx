@@ -64,7 +64,7 @@ The `OnDelete.Patch` on `CdcSinkOnDeleteConfig` handles DELETE separately.
 | `this` | Always | object | The document being modified (root or parent for embedded) |
 | `$row` | Always | object | All SQL columns from the CDC event (mapped and unmapped) |
 | `$old` | Always | object \| null | Previous state of the document (root patches) or embedded item (embedded patches). Null on INSERT. |
-| `get(id)` | Always | function | Load a RavenDB document by ID |
+| `load(id)` | Always | function | Load a RavenDB document by ID |
 
 ---
 
@@ -471,9 +471,9 @@ Keep patches focused and efficient — prefer `.filter()` + `.reduce()` over nes
 **What patches can do:**
 
 * Access `this`, `$row`, `$old`
-* Load related documents with `load()`
-* Create or replace documents with `put()`
-* Delete documents with `del()`
+* Load related documents with `load(id)`
+* Create or replace documents with `put(id, document)`
+* Delete documents with `del(id)`
 * Compute and transform property values
 * Set and modify document metadata
 * Conditional logic, loops, array methods

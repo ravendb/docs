@@ -28,7 +28,6 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * [Matching Items on Update and Delete](#matching-items-on-update-and-delete)
   * [Deep Nesting](#deep-nesting)
   * [Attachments on Embedded Items](#attachments-on-embedded-items)
-  * [Disabling an Embedded Table](#disabling-an-embedded-table)
 
 </Admonition>
 
@@ -259,31 +258,6 @@ parent document. The attachment name is prefixed with the embedded path and PK t
 ensure uniqueness within the document.
 
 When the embedded item is deleted, its attachments are automatically removed.
-
----
-
-## Disabling an Embedded Table
-
-Set `Disabled = true` to pause processing for a specific embedded table without
-removing it from the configuration:
-
-<Tabs>
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`new CdcSinkEmbeddedTableConfig
-\{
-    SourceTableName = "audit_log",
-    PropertyName = "AuditLog",
-    Disabled = true,
-    // ... other config
-\}
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-Changes from the source table are ignored while `Disabled = true`. When re-enabled,
-CDC Sink resumes from the current position — it does not backfill missed events.
 
 ---
 
