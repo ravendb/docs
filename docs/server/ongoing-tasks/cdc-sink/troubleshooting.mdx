@@ -26,6 +26,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * [Embedded Items Missing or Incorrect](#embedded-items-missing-or-incorrect)
   * [DELETE Not Applied](#delete-not-applied)
   * [Patch Errors](#patch-errors)
+  * [Source Schema Changes](#source-schema-changes)
+  * [Partial Export/Import and State Loss](#partial-exportimport-and-state-loss)
 
 </Admonition>
 
@@ -67,7 +69,7 @@ specific failure reason.
   slot will be created on next start).
 
 * **Source table schema changed** — adding or removing columns from the SQL table
-  may cause mapping errors. Update the task configuration to match the new schema.
+  may cause mapping errors. See [Source Schema Changes](#source-schema-changes) below.
 
 * **Replication lag too large** — if CDC Sink falls behind significantly, PostgreSQL
   may retain WAL segments that fill the disk. See your PostgreSQL documentation on
@@ -176,6 +178,168 @@ if (related) \{ ... \}
 4. **Step limit exceeded** — patch scripts have a step quota. If the script is very
    long-running or loops over large arrays, it may hit `Patching.MaxStepsForScript`.
    See the [configuration reference](../../../server/configuration/patching-configuration) for this setting.
+
+---
+
+## Source Schema Changes
+
+CDC Sink resolves column metadata (names, types, positions) when the task starts or
+restarts. **Schema changes on the source table while the task is running are not
+detected mid-stream.** The behavior depends on the type of change and the database
+engine.
+
+### Adding a Column (Unmapped)
+
+If a new column is added to the source table but is not referenced in the CDC Sink
+configuration, it is **silently ignored** across all database engines. No action is
+needed — the new column simply does not appear in the RavenDB document.
+
+The new column is still available in patch scripts via `$row` after the task is
+restarted.
+
+### Removing a Mapped Column
+
+If a column that is referenced in the `Columns` mapping is dropped from the source
+table:
+
+* **On next restart:** CDC Sink validates all mapped column names against the source
+  table and raises an error: `"Column 'X' not found in source columns"`. The task
+  enters error state and retries with exponential backoff until the configuration is
+  updated to remove the missing column.
+
+* **Mid-stream (before restart):** Behavior varies by engine:
+  * **PostgreSQL** — the cached column list from the replication stream becomes stale.
+    This may cause incorrect value mapping or errors. The task will recover the correct
+    state on the next restart.
+  * **SQL Server** — the CDC change table is independent of the source table schema and
+    still contains the old column, so no immediate error occurs. The column continues
+    to appear in change rows until the capture instance is recreated.
+  * **MySQL** — the missing column is silently treated as null in the document. No error
+    is raised until the task restarts.
+
+**Resolution:** Update the CDC Sink task configuration to remove the column from the
+`Columns` list, then re-enable the task.
+
+### Renaming a Column
+
+A column rename is effectively a remove + add. The old mapped column name will fail
+validation on restart (same as removing a mapped column). Update the `Columns` mapping
+to use the new column name.
+
+### SQL Server: Capture Instance Limitations
+
+SQL Server CDC uses **capture instances** — snapshots of the table schema at the time
+`sp_cdc_enable_table` was executed. The CDC change tables reflect the schema as it
+was when the capture instance was created, **not** the current table schema.
+
+This means:
+
+* **Adding a column** to the source table does not add it to the CDC change table.
+  To capture the new column, you must create a new capture instance:
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+<CodeBlock language="sql">
+{`-- Disable the old capture instance
+EXEC sys.sp_cdc_disable_table
+    @source_schema = N'dbo',
+    @source_name = N'orders',
+    @capture_instance = N'dbo_orders';
+
+-- Re-enable with the updated schema
+EXEC sys.sp_cdc_enable_table
+    @source_schema = N'dbo',
+    @source_name = N'orders',
+    @role_name = NULL;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+  After recreating the capture instance, restart the CDC Sink task so it picks up the
+  new column list.
+
+* **Removing a column** from the source table does not remove it from the existing
+  capture instance — the change table still reports the old column with null values
+  for new rows. No immediate error occurs, but the data is stale.
+
+<Admonition type="tip" title="">
+
+When planning schema migrations on a SQL Server source database, account for the
+capture instance lifecycle. The recommended sequence is:
+
+1. Disable the CDC Sink task in RavenDB
+2. Apply the schema change (`ALTER TABLE`)
+3. Recreate the capture instance (`sp_cdc_disable_table` + `sp_cdc_enable_table`)
+4. Update the CDC Sink task configuration if column mappings changed
+5. Re-enable the CDC Sink task
+
+</Admonition>
+
+### General Recommendation
+
+For any schema change on the source database that affects mapped columns:
+
+1. Disable the CDC Sink task
+2. Apply the schema change on the source database
+3. Update the CDC Sink task configuration to match
+4. Re-enable the task
+
+This avoids mid-stream mismatches and ensures a clean restart with validated column
+metadata.
+
+---
+
+## Partial Export/Import and State Loss
+
+**Symptom:** After importing a database export, CDC Sink re-reads all data from the
+source database from the beginning, performing a full initial load even though the
+task configuration is present and the data already exists in RavenDB.
+
+**Cause:**
+
+CDC Sink stores two separate pieces of information:
+
+* **Task configuration** — stored in the cluster-wide **database record**. This is
+  always included in any export/import because it is part of the database definition.
+* **Processing state (last LSN)** — stored as a **document** in the `@cdc-states`
+  system collection. This tracks the last position read from the source database
+  (e.g., the PostgreSQL LSN or SQL Server change tracking version). It also tracks
+  per-table initial load progress.
+
+If you export and import the database but **skip importing documents** (or skip system
+documents), the task configuration is restored from the database record — but the
+processing state document is missing. CDC Sink sees a valid configuration with no
+recorded position and starts from the beginning: performing a full initial load of
+every configured table, then streaming all changes from the start.
+
+For large source databases, this can take a significant amount of time and place
+heavy load on both the source database and RavenDB.
+
+**How to avoid this:**
+
+* When exporting a database that has CDC Sink tasks, always include documents in the
+  export — specifically the `@cdc-states` collection.
+* If using Smuggler or the REST API for selective export/import, ensure system
+  documents are included.
+* If state loss has already occurred and the data in RavenDB is already up to date,
+  you can delete and recreate the task with `SkipInitialLoad = true` to skip the full
+  table scan and begin streaming from the current position. Note that imported tasks
+  are restored in a **disabled** state by default — you must explicitly enable the task
+  after import. This gives you the opportunity to inspect and correct the configuration
+  before the task starts processing.
+
+<Admonition type="warning" title="">
+
+There is no _supported_ way to manually set the last LSN position. While the state
+document in `@cdc-states` can technically be edited, doing so is risky: setting an
+incorrect LSN can cause CDC Sink to skip over changes (data loss) or land in the
+middle of a transaction boundary, producing errors or inconsistent documents. If the
+state document is lost, the safest options are to re-read from the beginning or to
+recreate the task with `SkipInitialLoad` (which skips the initial load but may miss
+changes that occurred between the export and the recreation).
+
+</Admonition>
 
 ---
 
