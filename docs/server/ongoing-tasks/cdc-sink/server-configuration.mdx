@@ -63,8 +63,8 @@ each failure without exponential backoff.
 **Default:** `1`
 
 How frequently (in seconds) the CDC Sink polls the source database for new change rows.
-This setting applies to SQL Server and MySQL, which use polling-based change capture.
+This setting applies to **SQL Server** only, which uses polling-based change capture.
 
-PostgreSQL uses streaming replication and ignores this setting.
+PostgreSQL and MySQL use streaming replication and ignore this setting.
 
 ---

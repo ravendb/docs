@@ -26,6 +26,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * [Embedded Items Missing or Incorrect](#embedded-items-missing-or-incorrect)
   * [DELETE Not Applied](#delete-not-applied)
   * [Patch Errors](#patch-errors)
+  * [Partial Export/Import and State Loss](#partial-exportimport-and-state-loss)
 
 </Admonition>
 
@@ -160,15 +161,63 @@ specific failure reason.
 2. **Null reference** — `$row` properties and `$old` may be `null` for certain event
    types. Use optional chaining: `$old?.Amount || 0`.
 
-3. **`get()` returns null** — a document loaded with `get()` may not exist yet if CDC
+3. **`load()` returns null** — a document loaded with `load()` may not exist yet if CDC
    Sink processes tables out of dependency order. Guard with a null check:
    ```javascript
-   const related = get("Collection/123");
+   const related = load("Collection/123");
    if (related) { ... }
    ```
 
 4. **Step limit exceeded** — patch scripts have a step quota. If the script is very
    long-running or loops over large arrays, it may hit `Patching.MaxStepsForScript`.
    See the [configuration reference](../../../server/configuration/patching-configuration) for this setting.
+
+---
+
+## Partial Export/Import and State Loss
+
+**Symptom:** After importing a database export, CDC Sink re-reads all data from the
+source database from the beginning, performing a full initial load even though the
+task configuration is present and the data already exists in RavenDB.
+
+**Cause:**
+
+CDC Sink stores two separate pieces of information:
+
+* **Task configuration** — stored in the cluster-wide **database record**. This is
+  always included in any export/import because it is part of the database definition.
+* **Processing state (last LSN)** — stored as a **document** in the `@cdc-states`
+  system collection. This tracks the last position read from the source database
+  (e.g., the PostgreSQL LSN or SQL Server change tracking version). It also tracks
+  per-table initial load progress.
+
+If you export and import the database but **skip importing documents** (or skip system
+documents), the task configuration is restored from the database record — but the
+processing state document is missing. CDC Sink sees a valid configuration with no
+recorded position and starts from the beginning: performing a full initial load of
+every configured table, then streaming all changes from the start.
+
+For large source databases, this can take a significant amount of time and place
+heavy load on both the source database and RavenDB.
+
+**How to avoid this:**
+
+* When exporting a database that has CDC Sink tasks, always include documents in the
+  export — specifically the `@cdc-states` collection.
+* If using Smuggler or the REST API for selective export/import, ensure system
+  documents are included.
+* If state loss has already occurred and the data in RavenDB is already up to date,
+  consider disabling the task before import, then deleting and recreating it with
+  `SkipInitialLoad = true` to skip the full table scan and begin streaming from the
+  current position.
+
+<Admonition type="warning" title="">
+
+There is no way to manually set the last LSN position. If the state document is lost,
+CDC Sink must either re-read from the beginning or be recreated with `SkipInitialLoad`
+(which skips the initial load but may miss changes that occurred between the export
+and the recreation).
+
+</Admonition>
 
 ---
