@@ -45,7 +45,7 @@ Use `AddCdcSinkOperation` to create a new CDC Sink task:
     \{
         new CdcSinkTableConfig
         \{
-            Name = "Orders",
+            CollectionName = "Orders",
             SourceTableName = "orders",
             PrimaryKeyColumns = new List<string> \{ "id" \},
             Columns =
@@ -87,7 +87,7 @@ Pass the full updated configuration including the `TaskId`:
 {`config.TaskId = taskId;        // Must be set
 config.Tables.Add(new CdcSinkTableConfig
 \{
-    Name = "Customers",
+    CollectionName = "Customers",
     SourceTableName = "customers",
     PrimaryKeyColumns = new List<string> \{ "id" \},
     Columns =
