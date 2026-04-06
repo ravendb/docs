@@ -1,7 +1,7 @@
 ---
 title: "Server: Ongoing Tasks: CDC Sink: Column Mapping"
 sidebar_label: Column Mapping
-description: "How to map SQL columns to RavenDB document properties, handle unmapped columns, store binary columns as attachments, and specify source table schemas."
+description: "How to map SQL columns to RavenDB document properties using CdcColumnMapping, handle unmapped columns, store JSON columns, store binary columns as attachments, and specify source table schemas."
 sidebar_position: 5
 ---
 
@@ -22,6 +22,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * In this page:
   * [Mapping Columns to Properties](#mapping-columns-to-properties)
   * [Unmapped Columns](#unmapped-columns)
+  * [JSON Columns](#json-columns)
   * [Attachment Mapping](#attachment-mapping)
   * [Schema (Source Table Schema)](#schema-source-table-schema)
 
@@ -31,25 +32,28 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ## Mapping Columns to Properties
 
-`ColumnsMapping` is a `Dictionary<string, string>` where each entry maps a SQL column
-name to a RavenDB document property name:
+The `Columns` property is a `List<CdcColumnMapping>` where each entry maps a SQL column
+to a RavenDB document property:
 
 ```csharp
-ColumnsMapping = new Dictionary<string, string>
+Columns = new List<CdcColumnMapping>
 {
-    { "id",            "Id" },
-    { "customer_name", "CustomerName" },
-    { "order_date",    "OrderDate" },
-    { "total_amount",  "TotalAmount" }
+    new CdcColumnMapping { Column = "id",            Name = "Id" },
+    new CdcColumnMapping { Column = "customer_name", Name = "CustomerName" },
+    new CdcColumnMapping { Column = "order_date",    Name = "OrderDate" },
+    new CdcColumnMapping { Column = "total_amount",  Name = "TotalAmount" }
 }
 ```
 
-**Key:** SQL column name (case-insensitive match against the column names in CDC events)
-**Value:** Property name in the RavenDB document
+Each `CdcColumnMapping` has:
+
+* **`Column`** — SQL column name (case-insensitive match against the column names in CDC events)
+* **`Name`** — Property name in the RavenDB document
+* **`Type`** — `CdcColumnType` controlling how the value is handled (default: `Default`)
 
 <Admonition type="note" title="">
 
-The primary key column(s) do not need to be mapped. When included in `ColumnsMapping`,
+The primary key column(s) do not need to be mapped. When included in `Columns`,
 they become a regular document property. When omitted, the PK values are still used
 to build the document ID — they just won't appear as a named property.
 
@@ -62,7 +66,7 @@ identifier, but it is not required.
 JSON equivalents. SQL `NULL` becomes JSON `null`. If you need custom type handling
 or derived values, use a `Patch` script.
 
-**At least one mapping is required.** An empty `ColumnsMapping` is a validation error.
+**At least one mapping is required.** An empty `Columns` list is a validation error.
 
 The same rules apply to embedded table column mappings.
 
@@ -70,16 +74,16 @@ The same rules apply to embedded table column mappings.
 
 ## Unmapped Columns
 
-Columns not listed in `ColumnsMapping` are **not stored** in the document, but they
+Columns not listed in `Columns` are **not stored** in the document, but they
 are available in patch scripts via `$row`.
 
 This allows you to use data for computations without permanently storing raw SQL values:
 
 ```csharp
-ColumnsMapping = new Dictionary<string, string>
+Columns = new List<CdcColumnMapping>
 {
-    { "id",   "Id" },
-    { "name", "Name" }
+    new CdcColumnMapping { Column = "id",   Name = "Id" },
+    new CdcColumnMapping { Column = "name", Name = "Name" }
     // base_price and tax_rate are NOT mapped — won't appear in document
 },
 Patch = "this.FinalPrice = $row.base_price * (1 + $row.tax_rate);"
@@ -91,10 +95,10 @@ not stored as document properties. Only the computed `FinalPrice` is stored.
 <Admonition type="note" title="">
 
 **Naming context:**
-Property names (the values in `ColumnsMapping`) become properties on the RavenDB
+Property names (the `Name` in each `CdcColumnMapping`) become properties on the RavenDB
 document — accessible as `this.FinalPrice` inside a patch script.
 
-Column names (the keys in `ColumnsMapping`, plus any unmapped columns) are accessible
+Column names (the `Column` in each mapping, plus any unmapped columns) are accessible
 in patch scripts via `$row.base_price` (for the current row's values) and
 `$old?.base_price` (for the previous row's values on UPDATE events).
 
@@ -102,21 +106,42 @@ in patch scripts via `$row.base_price` (for the current row's values) and
 
 ---
 
+## JSON Columns
+
+SQL columns that contain JSON data (e.g., PostgreSQL `jsonb`, SQL Server `nvarchar`
+with JSON content) can be parsed into native JSON objects or arrays using
+`CdcColumnType.Json`:
+
+```csharp
+Columns = new List<CdcColumnMapping>
+{
+    new CdcColumnMapping { Column = "id",       Name = "Id" },
+    new CdcColumnMapping { Column = "name",     Name = "Name" },
+    new CdcColumnMapping { Column = "metadata", Name = "Metadata", Type = CdcColumnType.Json }
+}
+```
+
+Without `CdcColumnType.Json`, the JSON column value would be stored as a raw string.
+With it, the value is parsed and stored as a nested object or array in the document.
+
+---
+
 ## Attachment Mapping
 
-Binary SQL columns (e.g., PostgreSQL `BYTEA`) can be stored as RavenDB attachments
-instead of document properties using `AttachmentNameMapping`:
+Binary SQL columns (e.g., PostgreSQL `BYTEA`, SQL Server `VARBINARY`) can be stored
+as RavenDB attachments instead of document properties using `CdcColumnType.Attachment`:
 
 ```csharp
 new CdcSinkTableConfig
 {
-    Name = "Files",
+    CollectionName = "Files",
     SourceTableName = "files",
     PrimaryKeyColumns = ["id"],
-    ColumnsMapping = { { "id", "Id" }, { "filename", "Filename" } },
-    AttachmentNameMapping = new Dictionary<string, string>
+    Columns = new List<CdcColumnMapping>
     {
-        { "content", "file" }   // SQL column "content" → attachment named "file"
+        new CdcColumnMapping { Column = "id",       Name = "Id" },
+        new CdcColumnMapping { Column = "filename", Name = "Filename" },
+        new CdcColumnMapping { Column = "content",  Name = "file", Type = CdcColumnType.Attachment }
     }
 }
 ```
@@ -134,7 +159,13 @@ new CdcSinkEmbeddedTableConfig
     SourceTableName = "photos",
     PropertyName = "Photos",
     PrimaryKeyColumns = ["photo_num"],
-    AttachmentNameMapping = { { "thumbnail", "thumb" } }
+    JoinColumns = ["product_id"],
+    Columns = new List<CdcColumnMapping>
+    {
+        new CdcColumnMapping { Column = "photo_num", Name = "PhotoNum" },
+        new CdcColumnMapping { Column = "caption",   Name = "Caption" },
+        new CdcColumnMapping { Column = "thumbnail", Name = "thumb", Type = CdcColumnType.Attachment }
+    }
 }
 ```
 

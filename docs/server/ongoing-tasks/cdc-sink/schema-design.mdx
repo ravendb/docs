@@ -41,15 +41,15 @@ becomes one document.
 ```csharp
 new CdcSinkTableConfig
 {
-    Name = "Orders",                      // RavenDB collection name
-    SourceTableSchema = "public",         // SQL schema (optional, default: "public")
-    SourceTableName = "orders",           // SQL table name
-    PrimaryKeyColumns = ["id"],           // Used for document ID generation
-    ColumnsMapping = new Dictionary<string, string>
+    CollectionName = "Orders",                // RavenDB collection name
+    SourceTableSchema = "public",             // SQL schema (optional, default: "public")
+    SourceTableName = "orders",               // SQL table name
+    PrimaryKeyColumns = ["id"],               // Used for document ID generation
+    Columns = new List<CdcColumnMapping>
     {
-        { "id", "Id" },
-        { "customer_name", "CustomerName" },
-        { "total", "Total" }
+        new CdcColumnMapping { Column = "id",            Name = "Id" },
+        new CdcColumnMapping { Column = "customer_name", Name = "CustomerName" },
+        new CdcColumnMapping { Column = "total",         Name = "Total" }
     }
 }
 ```
@@ -71,10 +71,14 @@ SQL `order_lines` table becomes an array inside each `Orders` document.
 ```csharp
 new CdcSinkTableConfig
 {
-    Name = "Orders",
+    CollectionName = "Orders",
     SourceTableName = "orders",
     PrimaryKeyColumns = ["id"],
-    ColumnsMapping = { { "id", "Id" }, { "customer_name", "CustomerName" } },
+    Columns = new List<CdcColumnMapping>
+    {
+        new CdcColumnMapping { Column = "id",            Name = "Id" },
+        new CdcColumnMapping { Column = "customer_name", Name = "CustomerName" }
+    },
     EmbeddedTables =
     [
         new CdcSinkEmbeddedTableConfig
@@ -84,11 +88,11 @@ new CdcSinkTableConfig
             Type = CdcSinkRelationType.Array,         // Array of items
             JoinColumns = ["order_id"],               // FK referencing parent's PK
             PrimaryKeyColumns = ["line_id"],          // Used to match items on update/delete
-            ColumnsMapping =
+            Columns = new List<CdcColumnMapping>
             {
-                { "line_id", "LineId" },
-                { "product", "Product" },
-                { "quantity", "Quantity" }
+                new CdcColumnMapping { Column = "line_id",  Name = "LineId" },
+                new CdcColumnMapping { Column = "product",  Name = "Product" },
+                new CdcColumnMapping { Column = "quantity", Name = "Quantity" }
             }
         }
     ]
@@ -119,10 +123,14 @@ A foreign key in the source row becomes a RavenDB document ID.
 ```csharp
 new CdcSinkTableConfig
 {
-    Name = "Orders",
+    CollectionName = "Orders",
     SourceTableName = "orders",
     PrimaryKeyColumns = ["id"],
-    ColumnsMapping = { { "id", "Id" }, { "customer_id", "CustomerId" } },
+    Columns = new List<CdcColumnMapping>
+    {
+        new CdcColumnMapping { Column = "id",          Name = "Id" },
+        new CdcColumnMapping { Column = "customer_id", Name = "CustomerId" }
+    },
     LinkedTables =
     [
         new CdcSinkLinkedTableConfig
@@ -130,7 +138,6 @@ new CdcSinkTableConfig
             SourceTableName = "customers",
             PropertyName = "Customer",                // Property in parent document
             LinkedCollectionName = "Customers",       // Target collection for ID
-            Type = CdcSinkRelationType.Value,         // Single reference
             JoinColumns = ["customer_id"]             // FK used to build the ID
         }
     ]
@@ -186,10 +193,14 @@ Embedded tables can themselves have embedded tables, creating arbitrarily deep h
 ```csharp
 new CdcSinkTableConfig
 {
-    Name = "Companies",
+    CollectionName = "Companies",
     SourceTableName = "companies",
     PrimaryKeyColumns = ["company_id"],
-    ColumnsMapping = { { "company_id", "CompanyId" }, { "name", "Name" } },
+    Columns = new List<CdcColumnMapping>
+    {
+        new CdcColumnMapping { Column = "company_id", Name = "CompanyId" },
+        new CdcColumnMapping { Column = "name",       Name = "Name" }
+    },
     EmbeddedTables =
     [
         new CdcSinkEmbeddedTableConfig
@@ -199,7 +210,11 @@ new CdcSinkTableConfig
             Type = CdcSinkRelationType.Array,
             JoinColumns = ["company_id"],              // Root FK
             PrimaryKeyColumns = ["dept_id"],
-            ColumnsMapping = { { "dept_id", "DeptId" }, { "dept_name", "DeptName" } },
+            Columns = new List<CdcColumnMapping>
+            {
+                new CdcColumnMapping { Column = "dept_id",   Name = "DeptId" },
+                new CdcColumnMapping { Column = "dept_name", Name = "DeptName" }
+            },
             EmbeddedTables =
             [
                 new CdcSinkEmbeddedTableConfig
@@ -209,7 +224,11 @@ new CdcSinkTableConfig
                     Type = CdcSinkRelationType.Array,
                     JoinColumns = ["company_id", "dept_id"],  // Root FK + parent FK
                     PrimaryKeyColumns = ["emp_id"],
-                    ColumnsMapping = { { "emp_id", "EmpId" }, { "emp_name", "EmpName" } }
+                    Columns = new List<CdcColumnMapping>
+                    {
+                        new CdcColumnMapping { Column = "emp_id",   Name = "EmpId" },
+                        new CdcColumnMapping { Column = "emp_name", Name = "EmpName" }
+                    }
                 }
             ]
         }
@@ -243,13 +262,13 @@ configuration — the default DELETE events include all PK columns.
 
 ## Relation Types
 
-The `Type` property on embedded and linked tables controls the document structure:
+The `Type` property on embedded tables controls the document structure:
 
 | Type | Use Case | Document Structure |
 |------|----------|--------------------|
 | `Array` | One-to-many: parent has many children | `"Lines": [{ ... }, { ... }]` |
 | `Map` | One-to-many with direct key lookup | `"Lines": { "1": { ... }, "2": { ... } }` |
-| `Value` | Many-to-one: parent has one child/reference | `"Customer": { ... }` or `"Customer": "Customers/42"` |
+| `Value` | Many-to-one: parent has one child | `"Customer": { ... }` |
 
 **Array** — Items are matched by `PrimaryKeyColumns` for UPDATE and DELETE.
 Use when you need to iterate over all items.
@@ -257,7 +276,7 @@ Use when you need to iterate over all items.
 **Map** — Items are stored as a JSON object keyed by the primary key value(s).
 Use when you need fast direct-key access within the document.
 
-**Value** — Stores a single embedded object or document reference.
+**Value** — Stores a single embedded object.
 Use for many-to-one relationships (many orders share one customer).
 
 ---

@@ -28,7 +28,6 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * [Matching Items on Update and Delete](#matching-items-on-update-and-delete)
   * [Deep Nesting](#deep-nesting)
   * [Attachments on Embedded Items](#attachments-on-embedded-items)
-  * [Disabling an Embedded Table](#disabling-an-embedded-table)
 
 </Admonition>
 
@@ -47,11 +46,11 @@ new CdcSinkEmbeddedTableConfig
     Type = CdcSinkRelationType.Array,     // Array, Map, or Value
     JoinColumns = ["order_id"],           // FK to parent's PrimaryKeyColumns
     PrimaryKeyColumns = ["line_id"],      // Used to match items on UPDATE/DELETE
-    ColumnsMapping = new Dictionary<string, string>
+    Columns = new List<CdcColumnMapping>
     {
-        { "line_id", "LineId" },
-        { "product", "Product" },
-        { "quantity", "Quantity" }
+        new CdcColumnMapping { Column = "line_id",  Name = "LineId" },
+        new CdcColumnMapping { Column = "product",  Name = "Product" },
+        new CdcColumnMapping { Column = "quantity", Name = "Quantity" }
     }
 }
 ```
@@ -192,7 +191,7 @@ without an additional lookup, which is not supported.
 ## Attachments on Embedded Items
 
 Binary columns from embedded tables can be stored as RavenDB attachments using
-`AttachmentNameMapping`.
+`CdcColumnType.Attachment` in the column mapping.
 
 ```csharp
 new CdcSinkEmbeddedTableConfig
@@ -201,8 +200,12 @@ new CdcSinkEmbeddedTableConfig
     PropertyName = "Photos",
     PrimaryKeyColumns = ["photo_num"],
     JoinColumns = ["product_id"],
-    ColumnsMapping = { { "photo_num", "PhotoNum" }, { "caption", "Caption" } },
-    AttachmentNameMapping = { { "thumbnail", "thumb" } }
+    Columns = new List<CdcColumnMapping>
+    {
+        new CdcColumnMapping { Column = "photo_num", Name = "PhotoNum" },
+        new CdcColumnMapping { Column = "caption",   Name = "Caption" },
+        new CdcColumnMapping { Column = "thumbnail", Name = "thumb", Type = CdcColumnType.Attachment }
+    }
 }
 ```
 
@@ -211,25 +214,5 @@ parent document. The attachment name is prefixed with the embedded path and PK t
 ensure uniqueness within the document.
 
 When the embedded item is deleted, its attachments are automatically removed.
-
----
-
-## Disabling an Embedded Table
-
-Set `Disabled = true` to pause processing for a specific embedded table without
-removing it from the configuration:
-
-```csharp
-new CdcSinkEmbeddedTableConfig
-{
-    SourceTableName = "audit_log",
-    PropertyName = "AuditLog",
-    Disabled = true,
-    // ... other config
-}
-```
-
-Changes from the source table are ignored while `Disabled = true`. When re-enabled,
-CDC Sink resumes from the current position — it does not backfill missed events.
 
 ---

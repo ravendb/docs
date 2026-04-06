@@ -119,7 +119,11 @@ new CdcSinkEmbeddedTableConfig
     PropertyName = "Lines",
     PrimaryKeyColumns = ["line_id"],
     JoinColumns = ["order_id"],
-    ColumnsMapping = { { "line_id", "LineId" }, { "quantity", "Quantity" } },
+    Columns = new List<CdcColumnMapping>
+    {
+        new CdcColumnMapping { Column = "line_id",  Name = "LineId" },
+        new CdcColumnMapping { Column = "quantity", Name = "Quantity" }
+    },
 
     // Runs on INSERT and UPDATE — recomputes total from current Lines array
     Patch = @"
@@ -162,7 +166,11 @@ new CdcSinkEmbeddedTableConfig
     PropertyName = "Lines",
     PrimaryKeyColumns = ["line_id"],
     JoinColumns = ["invoice_id"],
-    ColumnsMapping = { { "line_id", "LineId" }, { "amount", "Amount" } },
+    Columns = new List<CdcColumnMapping>
+    {
+        new CdcColumnMapping { Column = "line_id", Name = "LineId" },
+        new CdcColumnMapping { Column = "amount",  Name = "Amount" }
+    },
 
     // INSERT: $old is null, so delta = new amount (0 → new)
     // UPDATE: $old has previous Amount, delta = new - old
@@ -192,7 +200,7 @@ The `$old` variable in the OnDelete patch contains the item's last known state b
 Compute fields from unmapped columns that you don't want to store directly:
 
 ```javascript
-// base_price and tax_rate are NOT in ColumnsMapping
+// base_price and tax_rate are NOT in Columns
 this.FinalPrice = $row.base_price * (1 + $row.tax_rate);
 this.Discount = $row.is_vip ? $row.base_price * 0.1 : 0;
 ```
@@ -292,7 +300,9 @@ Keep patches focused and efficient — prefer `.filter()` + `.reduce()` over nes
 **What patches can do:**
 
 * Access `this`, `$row`, `$old`
-* Load related documents with `get()`
+* Load related documents with `get(id)`
+* Create or replace documents with `put(id, document)`
+* Delete documents with `del(id)`
 * Compute and transform property values
 * Set and modify document metadata
 * Conditional logic, loops, array methods

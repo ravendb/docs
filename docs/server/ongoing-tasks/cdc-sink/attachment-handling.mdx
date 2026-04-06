@@ -1,7 +1,7 @@
 ---
 title: "Server: Ongoing Tasks: CDC Sink: Attachment Handling"
 sidebar_label: Attachment Handling
-description: "How to store binary SQL columns as RavenDB attachments using AttachmentNameMapping on root and embedded tables."
+description: "How to store binary SQL columns as RavenDB attachments using CdcColumnType.Attachment on root and embedded tables."
 sidebar_position: 9
 ---
 
@@ -17,7 +17,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="">
 
 * Binary SQL columns can be stored as RavenDB **attachments** instead of document
-  properties using `AttachmentNameMapping`.
+  properties by setting `Type = CdcColumnType.Attachment` on the column mapping.
 
 * This applies to both root tables and embedded tables.
 
@@ -33,23 +33,21 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ## Root Table Attachments
 
-Use `AttachmentNameMapping` to map a binary SQL column to a RavenDB attachment:
+Set `Type = CdcColumnType.Attachment` on a `CdcColumnMapping` to store a binary SQL
+column as a RavenDB attachment:
 
 ```csharp
 new CdcSinkTableConfig
 {
-    Name = "Files",
+    CollectionName = "Files",
     SourceTableName = "files",
     PrimaryKeyColumns = ["id"],
-    ColumnsMapping = new Dictionary<string, string>
+    Columns = new List<CdcColumnMapping>
     {
-        { "id",       "Id" },
-        { "filename", "Filename" },
-        { "mime_type","MimeType" }
-    },
-    AttachmentNameMapping = new Dictionary<string, string>
-    {
-        { "content", "file" }   // SQL column "content" → attachment named "file"
+        new CdcColumnMapping { Column = "id",       Name = "Id" },
+        new CdcColumnMapping { Column = "filename", Name = "Filename" },
+        new CdcColumnMapping { Column = "mime_type", Name = "MimeType" },
+        new CdcColumnMapping { Column = "content",  Name = "file", Type = CdcColumnType.Attachment }
     }
 }
 ```
@@ -71,14 +69,11 @@ new CdcSinkEmbeddedTableConfig
     PropertyName = "Photos",
     PrimaryKeyColumns = ["photo_num"],
     JoinColumns = ["product_id"],
-    ColumnsMapping = new Dictionary<string, string>
+    Columns = new List<CdcColumnMapping>
     {
-        { "photo_num", "PhotoNum" },
-        { "caption",   "Caption" }
-    },
-    AttachmentNameMapping = new Dictionary<string, string>
-    {
-        { "thumbnail", "thumb" }
+        new CdcColumnMapping { Column = "photo_num", Name = "PhotoNum" },
+        new CdcColumnMapping { Column = "caption",   Name = "Caption" },
+        new CdcColumnMapping { Column = "thumbnail", Name = "thumb", Type = CdcColumnType.Attachment }
     }
 }
 ```
@@ -93,10 +88,10 @@ the primary key value.
 
 **Root table attachments:**
 
-The attachment name is exactly the value you specify in `AttachmentNameMapping`.
+The attachment name is exactly the `Name` you specify in the `CdcColumnMapping`.
 
 ```
-AttachmentNameMapping = { ["content"] = "file" }
+{ Column = "content", Name = "file", Type = CdcColumnType.Attachment }
 → Attachment name: "file"
 ```
 
@@ -107,7 +102,7 @@ The attachment name is prefixed with `{PropertyName}/{pkValue}/`:
 ```
 PropertyName = "Photos"
 PrimaryKeyColumns = ["photo_num"]  → photo_num = 1
-AttachmentNameMapping = { { "thumbnail", "thumb" } }
+{ Column = "thumbnail", Name = "thumb", Type = CdcColumnType.Attachment }
 → Attachment name: "Photos/1/thumb"
 ```
 

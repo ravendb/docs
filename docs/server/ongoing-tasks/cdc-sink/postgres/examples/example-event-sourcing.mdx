@@ -71,14 +71,14 @@ var config = new CdcSinkConfiguration
     [
         new CdcSinkTableConfig
         {
-            Name = "Accounts",
+            CollectionName = "Accounts",
             SourceTableName = "accounts",
             PrimaryKeyColumns = ["account_id"],
-            ColumnsMapping = new Dictionary<string, string>
+            Columns = new List<CdcColumnMapping>
             {
-                { "account_id", "AccountId" },
-                { "owner",      "Owner" },
-                { "currency",   "Currency" }
+                new CdcColumnMapping { Column = "account_id", Name = "AccountId" },
+                new CdcColumnMapping { Column = "owner",      Name = "Owner" },
+                new CdcColumnMapping { Column = "currency",   Name = "Currency" }
             },
             EmbeddedTables =
             [
@@ -89,12 +89,12 @@ var config = new CdcSinkConfiguration
                     Type = CdcSinkRelationType.Array,
                     JoinColumns = ["account_id"],
                     PrimaryKeyColumns = ["txn_id"],
-                    ColumnsMapping = new Dictionary<string, string>
+                    Columns = new List<CdcColumnMapping>
                     {
-                        { "txn_id",     "TxnId" },
-                        { "amount",     "Amount" },
-                        { "type",       "Type" },
-                        { "created_at", "CreatedAt" }
+                        new CdcColumnMapping { Column = "txn_id",     Name = "TxnId" },
+                        new CdcColumnMapping { Column = "amount",     Name = "Amount" },
+                        new CdcColumnMapping { Column = "type",       Name = "Type" },
+                        new CdcColumnMapping { Column = "created_at", Name = "CreatedAt" }
                     },
                     // Patch runs on the parent document for INSERT/UPDATE
                     Patch = """

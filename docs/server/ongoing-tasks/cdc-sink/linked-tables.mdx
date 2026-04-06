@@ -23,7 +23,6 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * In this page:
   * [Basic Configuration](#basic-configuration)
   * [Composite Foreign Keys](#composite-foreign-keys)
-  * [Array References](#array-references)
   * [Linked vs Embedded](#linked-vs-embedded)
 
 </Admonition>
@@ -32,15 +31,19 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ## Basic Configuration
 
-`CdcSinkLinkedTableConfig` is placed inside a root table's `LinkedTables` list:
+`CdcSinkLinkedTableConfig` is placed inside a root table's (or embedded table's) `LinkedTables` list:
 
 ```csharp
 new CdcSinkTableConfig
 {
-    Name = "Orders",
+    CollectionName = "Orders",
     SourceTableName = "orders",
     PrimaryKeyColumns = ["id"],
-    ColumnsMapping = { { "id", "Id" }, { "customer_id", "CustomerId" } },
+    Columns = new List<CdcColumnMapping>
+    {
+        new CdcColumnMapping { Column = "id",          Name = "Id" },
+        new CdcColumnMapping { Column = "customer_id", Name = "CustomerId" }
+    },
     LinkedTables =
     [
         new CdcSinkLinkedTableConfig
@@ -48,7 +51,6 @@ new CdcSinkTableConfig
             SourceTableName = "customers",
             PropertyName = "Customer",              // Property name in document
             LinkedCollectionName = "Customers",     // Target collection for ID
-            Type = CdcSinkRelationType.Value,       // Single reference
             JoinColumns = ["customer_id"]           // FK used to build the document ID
         }
     ]
@@ -82,7 +84,6 @@ new CdcSinkLinkedTableConfig
     SourceTableName = "customers",
     PropertyName = "Customer",
     LinkedCollectionName = "Customers",
-    Type = CdcSinkRelationType.Value,
     JoinColumns = ["customer_region", "customer_id"]  // Must match Customers PK order
 }
 ```
@@ -91,32 +92,6 @@ With `customer_region = 'US'` and `customer_id = 42`, the document gets:
 
 ```json
 "Customer": "Customers/US/42"
-```
-
----
-
-## Array References
-
-Use `Type = CdcSinkRelationType.Array` for one-to-many references, where a parent
-row has multiple foreign keys pointing to the same collection:
-
-```csharp
-new CdcSinkLinkedTableConfig
-{
-    SourceTableName = "tags",
-    PropertyName = "Tags",
-    LinkedCollectionName = "Tags",
-    Type = CdcSinkRelationType.Array,
-    JoinColumns = ["tag_id"]
-}
-```
-
-This creates an array of document references:
-
-```json
-{
-    "Tags": ["Tags/primary", "Tags/urgent", "Tags/follow-up"]
-}
 ```
 
 ---

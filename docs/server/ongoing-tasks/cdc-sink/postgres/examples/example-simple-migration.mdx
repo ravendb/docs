@@ -54,15 +54,15 @@ var config = new CdcSinkConfiguration
     {
         new CdcSinkTableConfig
         {
-            Name = "Customers",
+            CollectionName = "Customers",
             SourceTableName = "customers",
             PrimaryKeyColumns = new List<string> { "id" },
-            ColumnsMapping = new Dictionary<string, string>
+            Columns = new List<CdcColumnMapping>
             {
-                { "id",         "Id" },
-                { "name",       "Name" },
-                { "email",      "Email" },
-                { "created_at", "CreatedAt" }
+                new CdcColumnMapping { Column = "id",         Name = "Id" },
+                new CdcColumnMapping { Column = "name",       Name = "Name" },
+                new CdcColumnMapping { Column = "email",      Name = "Email" },
+                new CdcColumnMapping { Column = "created_at", Name = "CreatedAt" }
             }
         }
     }

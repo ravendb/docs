@@ -77,15 +77,15 @@ var config = new CdcSinkConfiguration
     {
         new CdcSinkTableConfig
         {
-            Name = "Orders",
+            CollectionName = "Orders",
             SourceTableName = "orders",
             PrimaryKeyColumns = new List<string> { "order_id" },
-            ColumnsMapping = new Dictionary<string, string>
+            Columns = new List<CdcColumnMapping>
             {
-                { "order_id",   "OrderId" },
-                { "customer",   "Customer" },
-                { "status",     "Status" },
-                { "created_at", "CreatedAt" }
+                new CdcColumnMapping { Column = "order_id",   Name = "OrderId" },
+                new CdcColumnMapping { Column = "customer",   Name = "Customer" },
+                new CdcColumnMapping { Column = "status",     Name = "Status" },
+                new CdcColumnMapping { Column = "created_at", Name = "CreatedAt" }
             },
             EmbeddedTables = new List<CdcSinkEmbeddedTableConfig>
             {
@@ -96,12 +96,12 @@ var config = new CdcSinkConfiguration
                     Type = CdcSinkRelationType.Array,
                     JoinColumns = new List<string> { "order_id" },
                     PrimaryKeyColumns = new List<string> { "line_id" },
-                    ColumnsMapping = new Dictionary<string, string>
+                    Columns = new List<CdcColumnMapping>
                     {
-                        { "line_id",    "LineId" },
-                        { "product",    "Product" },
-                        { "qty",        "Qty" },
-                        { "unit_price", "UnitPrice" }
+                        new CdcColumnMapping { Column = "line_id",    Name = "LineId" },
+                        new CdcColumnMapping { Column = "product",    Name = "Product" },
+                        new CdcColumnMapping { Column = "qty",        Name = "Qty" },
+                        new CdcColumnMapping { Column = "unit_price", Name = "UnitPrice" }
                     }
                 }
             }

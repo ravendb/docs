@@ -98,13 +98,13 @@ var config = new CdcSinkConfiguration
     [
         new CdcSinkTableConfig
         {
-            Name = "Products",
+            CollectionName = "Products",
             SourceTableName = "products",
             PrimaryKeyColumns = ["product_id"],
-            ColumnsMapping = new Dictionary<string, string>
+            Columns = new List<CdcColumnMapping>
             {
-                { "product_id", "ProductId" },
-                { "name",       "Name" }
+                new CdcColumnMapping { Column = "product_id", Name = "ProductId" },
+                new CdcColumnMapping { Column = "name",       Name = "Name" }
             },
             // Linked table: category_id FK → document ID in Categories collection
             LinkedTables =
@@ -114,7 +114,6 @@ var config = new CdcSinkConfiguration
                     SourceTableName = "categories",
                     PropertyName = "Category",
                     LinkedCollectionName = "Categories",
-                    Type = CdcSinkRelationType.Value,
                     JoinColumns = ["category_id"]
                 }
             ],
@@ -127,11 +126,11 @@ var config = new CdcSinkConfiguration
                     Type = CdcSinkRelationType.Array,
                     JoinColumns = ["product_id"],
                     PrimaryKeyColumns = ["variant_id"],
-                    ColumnsMapping = new Dictionary<string, string>
+                    Columns = new List<CdcColumnMapping>
                     {
-                        { "variant_id", "VariantId" },
-                        { "sku",        "Sku" },
-                        { "price",      "Price" }
+                        new CdcColumnMapping { Column = "variant_id", Name = "VariantId" },
+                        new CdcColumnMapping { Column = "sku",        Name = "Sku" },
+                        new CdcColumnMapping { Column = "price",      Name = "Price" }
                     },
                     // Deep-nested: attributes within each variant
                     EmbeddedTables =
@@ -144,11 +143,11 @@ var config = new CdcSinkConfiguration
                             // JoinColumns must include the ROOT PK for deep nesting
                             JoinColumns = ["product_id", "variant_id"],
                             PrimaryKeyColumns = ["attr_id"],
-                            ColumnsMapping = new Dictionary<string, string>
+                            Columns = new List<CdcColumnMapping>
                             {
-                                { "attr_id",    "AttrId" },
-                                { "attr_name",  "Name" },
-                                { "attr_value", "Value" }
+                                new CdcColumnMapping { Column = "attr_id",    Name = "AttrId" },
+                                new CdcColumnMapping { Column = "attr_name",  Name = "Name" },
+                                new CdcColumnMapping { Column = "attr_value", Name = "Value" }
                             }
                         }
                     ]
