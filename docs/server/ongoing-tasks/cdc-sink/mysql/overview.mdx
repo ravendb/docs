@@ -1,0 +1,110 @@
+---
+title: "CDC Sink for MySQL: Overview"
+sidebar_label: Overview
+description: "CDC Sink support for MySQL and MariaDB — using binlog replication to stream changes into RavenDB in real time."
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# CDC Sink for MySQL: Overview
+
+<Admonition type="note" title="">
+
+* CDC Sink supports MySQL and MariaDB as source databases using
+  [binary log (binlog) replication](https://dev.mysql.com/doc/refman/8.0/en/replication.html).
+
+* MySQL streams row-level changes in real time through the binlog. CDC Sink consumes
+  this stream and applies INSERTs, UPDATEs, and DELETEs to RavenDB documents as they
+  occur.
+
+</Admonition>
+
+---
+
+## Connection String
+
+Use a `SqlConnectionString` with `FactoryName` set to `"MySql.Data.MySqlClient"` or
+`"MySqlConnector.MySqlConnectorFactory"`:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new PutConnectionStringOperation<SqlConnectionString>(
+    new SqlConnectionString
+    \{
+        Name = "MyMySqlConnection",
+        FactoryName = "MySqlConnector.MySqlConnectorFactory",
+        ConnectionString = "Server=myserver;Port=3306;Database=mydb;User=ravendb_cdc;Password=..."
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+---
+
+## Prerequisites
+
+MySQL must have binary logging enabled with row-based format:
+
+<Tabs>
+<TabItem value="ini" label="my.cnf">
+<CodeBlock language="ini">
+{`# my.cnf / my.ini
+[mysqld]
+log-bin = mysql-bin
+binlog_format = ROW
+binlog_row_image = FULL
+server-id = 1
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The CDC Sink user needs the following privileges:
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+<CodeBlock language="sql">
+{`GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'ravendb_cdc'@'%';
+GRANT SELECT ON mydb.* TO 'ravendb_cdc'@'%';
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* `REPLICATION SLAVE` — required to read the binlog stream
+* `REPLICATION CLIENT` — required to query binlog status
+* `SELECT` — required for the initial full-table load
+
+---
+
+## Streaming Behavior
+
+Like PostgreSQL, MySQL CDC Sink uses streaming replication (via the binlog), not
+polling. The `CdcSink.PollIntervalInSec` server configuration setting does not
+apply to MySQL.
+
+---
+
+## Configuration
+
+The CDC Sink task configuration is the same across all database engines.
+See [Configuration Reference](../configuration-reference.mdx) for full details.
+
+The `SourceTableSchema` corresponds to the MySQL database name.
+
+---
+
+## Related Articles
+
+### CDC Sink
+
+- [Overview](../overview.mdx)
+- [Configuration Reference](../configuration-reference.mdx)
