@@ -55,9 +55,9 @@ import Panel from '@site/src/components/Panel';
 
 We differentiate between the following **3 query scenarios**:
 
-1. [Index query](../../querying/overview.mdx#indexquery)
-2. [Dynamic query](../../querying/overview.mdx#dynamicquery)
-3. [Full collection query](../../querying/overview.mdx#collectionquery)
+  1. [Query an existing index](../../querying/overview.mdx#1-query-an-existing-index)  
+  2. [Query a collection - with filtering](../../querying/overview.mdx#2-query-a-collection---with-filtering)  
+  3. [Query a collection - query full collection | query by ID](../../querying/overview.mdx#3-query-a-collection---query-full-collection--query-by-id)
 
 For each scenario, a different index type is used, as described below.
 
@@ -65,8 +65,7 @@ For each scenario, a different index type is used, as described below.
     
 <Admonition type="note" title="">
 
-<a id="indexQuery"/> 
-**1. Query an existing index**:
+### 1. Query an existing index
 
 *  **Query type**: Index query  
    **Index used**: Static-index
@@ -83,8 +82,7 @@ For each scenario, a different index type is used, as described below.
     
 <Admonition type="note" title="">
 
-<a id="dynamicQuery"/> 
-**2. Query a collection - with filtering (Dynamic Query)**:
+### 2. Query a collection - with filtering 
 
 *  **Query type**: Dynamic Query  
    **Index used**: Auto-index
@@ -120,8 +118,7 @@ For each scenario, a different index type is used, as described below.
     
 <Admonition type="note" title="">
 
-<a id="collectionQuery"/> 
-**3. Query a collection - no filtering**:
+### 3. Query a collection - query full collection | query by ID
 
 * **Query type**: Full collection Query  
   **Index used**: The raw collection (internal storage indexes)
@@ -138,10 +135,11 @@ For each scenario, a different index type is used, as described below.
 
 * Query by document ID:
  
-  * When querying a collection only by document ID or IDs,  
+  * When querying a collection filtering only by document ID or IDs,  
     then similar to the full collection query, no auto-index is created.  
   
-  * RavenDB uses the raw collection documents as the source for this query.
+  * On the server side, this type of query opens a single read transaction and extracts the documents directly from the raw collection storage.
+    No search engine index (Lucene or Corax) is involved in this process.
   
   * Example RQL: &nbsp; `from Employees where id() == "employees/1-A"`  
     See more examples [below](../../querying/overview.mdx#session-query).
