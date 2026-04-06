@@ -24,6 +24,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * [Mapping Columns to Properties](#mapping-columns-to-properties)
   * [Column Types](#column-types)
   * [Unmapped Columns](#unmapped-columns)
+  * [JSON Columns](#json-columns)
   * [Validation Rules](#validation-rules)
   * [Schema (Source Table Schema)](#schema-source-table-schema)
 
@@ -157,6 +158,35 @@ Column names (the `Column` values in `Columns`, plus any unmapped columns) are a
 in patch scripts via `$row.base_price` (for the current row's values) and
 `$old?.base_price` (for the previous row's values on UPDATE events).
 </Admonition>
+
+---
+
+## JSON Columns
+
+SQL columns that contain JSON data (e.g., PostgreSQL `jsonb`, SQL Server `nvarchar`
+with JSON content) can be parsed into native JSON objects or arrays using
+`CdcColumnType.Json`:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`Columns =
+[
+    new CdcColumnMapping() \{ Column = "id",       Name = "Id" \},
+    new CdcColumnMapping() \{ Column = "name",     Name = "Name" \},
+    new CdcColumnMapping()
+    \{
+        Column = "metadata", Name = "Metadata",
+        Type = CdcColumnType.Json
+    \},
+]
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Without `CdcColumnType.Json`, the JSON column value would be stored as a raw string.
+With it, the value is parsed and stored as a nested object or array in the document.
 
 ---
 

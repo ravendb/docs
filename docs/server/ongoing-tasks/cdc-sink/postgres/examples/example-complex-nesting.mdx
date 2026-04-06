@@ -105,7 +105,7 @@ See [REPLICA IDENTITY](../replica-identity.mdx) for more details.
     [
         new CdcSinkTableConfig
         \{
-            Name = "Products",
+            CollectionName = "Products",
             SourceTableName = "products",
             PrimaryKeyColumns = ["product_id"],
             Columns =
@@ -121,7 +121,6 @@ See [REPLICA IDENTITY](../replica-identity.mdx) for more details.
                     SourceTableName = "categories",
                     PropertyName = "Category",
                     LinkedCollectionName = "Categories",
-                    Type = CdcSinkRelationType.Value,
                     JoinColumns = ["category_id"]
                 \}
             ],

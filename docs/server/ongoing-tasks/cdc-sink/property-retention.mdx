@@ -79,7 +79,7 @@ Document after CDC UPDATE:
 </TabItem>
 </Tabs>
 
-`Email` is updated from SQL, while `InternalNotes` (not in `the `Columns` list`) is preserved.
+`Email` is updated from SQL, while `InternalNotes` (not in the `Columns` list) is preserved.
 
 ---
 
@@ -87,15 +87,15 @@ Document after CDC UPDATE:
 
 **Preserved across CDC updates:**
 
-* Properties not listed in `the `Columns` list`
+* Properties not listed in the `Columns` list
 * Properties set in RavenDB directly (annotations, computed values, flags)
 * Document metadata (unless the patch explicitly modifies it)
 
 **Overwritten on CDC update:**
 
-* Any property mapped via `the `Columns` list` — always updated to match the current SQL value
+* Any property mapped via the `Columns` list — always updated to match the current SQL value
 
-If you manually edit a property that is part of `the `Columns` list`, the next CDC UPDATE
+If you manually edit a property that is part of the `Columns` list, the next CDC UPDATE
 for that row will overwrite your edit with the SQL value.
 
 ---
@@ -120,7 +120,7 @@ You can safely add properties to CDC-managed documents:
 </TabItem>
 </Tabs>
 
-Properties managed by CDC (those in `the `Columns` list`) will be overwritten on
+Properties managed by CDC (those in the `Columns` list) will be overwritten on
 the next UPDATE from the source database. Do not rely on manual edits to mapped
 properties surviving future CDC updates.
 
@@ -133,11 +133,11 @@ RavenDB-only property for your annotation and leaving the SQL-mapped property as
 ## Implications for Patches
 
 Patches run after column mapping and can set additional properties that are not
-from `the `Columns` list`. These patch-computed properties follow the same merge rules:
+from the `Columns` list. These patch-computed properties follow the same merge rules:
 
 * If a patch sets `this.ComputedField = ...`, that value persists across future events
   where the patch doesn't explicitly change it
-* If a patch sets a property that is also in `the `Columns` list`, the column mapping
+* If a patch sets a property that is also in the `Columns` list, the column mapping
   value takes precedence (mapping is applied before patching)
 
 For aggregates maintained via patches (e.g., `RunningTotal`), the patch itself

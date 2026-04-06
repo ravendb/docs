@@ -57,7 +57,7 @@ Set `Type = CdcColumnType.Attachment` on the `content` column entry:
 <CodeBlock language="csharp">
 {`new CdcSinkTableConfig
 \{
-    Name = "Files",
+    CollectionName = "Files",
     SourceTableName = "files",
     PrimaryKeyColumns = ["id"],
     Columns =

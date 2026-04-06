@@ -43,7 +43,7 @@ becomes one document.
 <CodeBlock language="csharp">
 {`new CdcSinkTableConfig
 \{
-    Name = "Orders",                      // RavenDB collection name
+    CollectionName = "Orders",                      // RavenDB collection name
     SourceTableSchema = "public",         // SQL schema (optional, default: "public")
     SourceTableName = "orders",           // SQL table name
     PrimaryKeyColumns = ["id"],           // Used for document ID generation
@@ -78,7 +78,7 @@ SQL `order_lines` table becomes an array inside each `Orders` document.
 <CodeBlock language="csharp">
 {`new CdcSinkTableConfig
 \{
-    Name = "Orders",
+    CollectionName = "Orders",
     SourceTableName = "orders",
     PrimaryKeyColumns = ["id"],
     Columns =
@@ -140,7 +140,7 @@ A foreign key in the source row becomes a RavenDB document ID.
 <CodeBlock language="csharp">
 {`new CdcSinkTableConfig
 \{
-    Name = "Orders",
+    CollectionName = "Orders",
     SourceTableName = "orders",
     PrimaryKeyColumns = ["id"],
     Columns =
@@ -155,7 +155,6 @@ A foreign key in the source row becomes a RavenDB document ID.
             SourceTableName = "customers",
             PropertyName = "Customer",                // Property in parent document
             LinkedCollectionName = "Customers",       // Target collection for ID
-            Type = CdcSinkRelationType.Value,         // Single reference
             JoinColumns = ["customer_id"]             // FK used to build the ID
         \}
     ]
@@ -216,7 +215,7 @@ Embedded tables can themselves have embedded tables, creating arbitrarily deep h
 <CodeBlock language="csharp">
 {`new CdcSinkTableConfig
 \{
-    Name = "Companies",
+    CollectionName = "Companies",
     SourceTableName = "companies",
     PrimaryKeyColumns = ["company_id"],
     Columns =
@@ -293,13 +292,13 @@ configuration — the default DELETE events include all PK columns.
 
 ## Relation Types
 
-The `Type` property on embedded and linked tables controls the document structure:
+The `Type` property on embedded tables controls the document structure:
 
 | Type | Use Case | Document Structure |
 |------|----------|--------------------|
 | `Array` | One-to-many: parent has many children | `"Lines": [\{ ... \}, \{ ... \}]` |
 | `Map` | One-to-many with direct key lookup | `"Lines": \{ "1": \{ ... \}, "2": \{ ... \} \}` |
-| `Value` | Many-to-one: parent has one child/reference | `"Customer": \{ ... \}` or `"Customer": "Customers/42"` |
+| `Value` | Many-to-one: parent has one child | `"Customer": \{ ... \}` |
 
 **Array** — Items are matched by `PrimaryKeyColumns` for UPDATE and DELETE.
 Use when you need to iterate over all items.
@@ -307,7 +306,7 @@ Use when you need to iterate over all items.
 **Map** — Items are stored as a JSON object keyed by the primary key value(s).
 Use when you need fast direct-key access within the document.
 
-**Value** — Stores a single embedded object or document reference.
+**Value** — Stores a single embedded object.
 Use for many-to-one relationships (many orders share one customer).
 
 ---

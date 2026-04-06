@@ -83,7 +83,7 @@ See [REPLICA IDENTITY](../replica-identity.mdx).
     \{
         new CdcSinkTableConfig
         \{
-            Name = "Orders",
+            CollectionName = "Orders",
             SourceTableName = "orders",
             PrimaryKeyColumns = new List<string> \{ "order_id" \},
             Columns =
