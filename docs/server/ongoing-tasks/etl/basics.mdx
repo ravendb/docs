@@ -11,8 +11,9 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-# Ongoing Tasks: ETL Basics
 <Admonition type="note" title="">
 
 * **ETL (Extract, Transform & Load)** is a three-stage RavenDB process that transfers data from a RavenDB database to an external target. 
@@ -28,16 +29,18 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * ETL can be used on [sharded](../../../sharding/etl.mdx) and non-sharded databases alike.  
   Learn more about how ETL works on a sharded database [here](../../../sharding/etl.mdx).
 
-* In this page:  
+* In this article:  
   * [Why use ETL](../../../server/ongoing-tasks/etl/basics.mdx#why-use-etl)  
   * [Defining ETL Tasks](../../../server/ongoing-tasks/etl/basics.mdx#defining-etl-tasks)  
   * [ETL Stages:](../../../server/ongoing-tasks/etl/basics.mdx#etl-stages)  
       * [Extract](../../../server/ongoing-tasks/etl/basics.mdx#extract)  
       * [Transform](../../../server/ongoing-tasks/etl/basics.mdx#transform)  
       * [Load](../../../server/ongoing-tasks/etl/basics.mdx#load)  
-  * [Troubleshooting](../../../server/ongoing-tasks/etl/basics.mdx#troubleshooting)  
+  * [Troubleshooting](../../../server/ongoing-tasks/etl/basics.mdx#troubleshooting)
+    
 </Admonition>
-## Why use ETL
+
+<Panel heading="Why use ETL">
 
 * **Share relevant data**  
   Send data in a well-defined format to match specific requirements, ensuring only relevant data is transmitted  
@@ -59,9 +62,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Data sent from multiple locations can be aggregated in a central server  
   (e.g., aggregating sales data from point of sales systems for centralized calculations).
 
+</Panel>
 
-
-## Defining ETL Tasks
+<Panel heading="Defining ETL Tasks"> 
 
 * The following ETL tasks can be defined:  
   * [RavenDB ETL](../../../server/ongoing-tasks/etl/raven.mdx) - send data to another _RavenDB database_  
@@ -77,20 +80,23 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * All ETL tasks can be defined from the Client API or from the [Studio](../../../studio/database/tasks/ongoing-tasks/general-info.mdx).
 
 * The destination address and access options are set using a pre-defined **connection string**, simplifying deployment across different environments. 
-  For example, with RavenDB ETL, multiple URLs can be configured in the connection string since the target database can reside on multiple nodes within the Database Group of the destination cluster. 
+  For example, with RavenDB ETL, multiple URLs can be configured in the connection string since the target database can reside on multiple nodes within the Database Group of the destination cluster.  
   If one of the destination nodes is unavailable, RavenDB automatically executes the ETL process against another node specified in the connection string. 
   Learn more in the [Connection Strings](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx) article.  
 
+</Panel>
 
-
-## ETL Stages
+<Panel heading="ETL Stages">     
 
 ETL's three stages are:  
 
 * [Extract](../../../server/ongoing-tasks/etl/basics.mdx#extract) - Extract the documents from the database  
 * [Transform](../../../server/ongoing-tasks/etl/basics.mdx#transform) - Transform & filter the documents data according to the supplied script (optional)  
 * [Load](../../../server/ongoing-tasks/etl/basics.mdx#load) - Load (write) the transformed data into the target destination  
-### Extract
+
+---
+    
+## Extract
 
 The ETL process starts with retrieving the documents from the database.  
 You can choose which documents will be processed by the next two stages (Transform and Load).  
@@ -100,7 +106,10 @@ The possible options are:
 * Documents from a single collection  
 * Documents from multiple collections  
 * All documents
-### Transform
+    
+---
+
+## Transform
 
 * This stage transforms and filters the extracted documents according to a provided script.  
   Any transformation can be done so that only relevant data is shared.  
@@ -112,77 +121,81 @@ The possible options are:
 * You can do any transformation and send only data you are interested in sharing.  
   The following is an example of RavenDB ETL script processing documents from the "Employees" collection:
 
-<TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`var managerName = null;
+<TabItem>
+```js
+var managerName = null;
 
+// 'this' refers to the source document being processed    
 if (this.ReportsTo !== null)
-\{
+{
     var manager = load(this.ReportsTo);
     managerName = manager.FirstName + " " + manager.LastName;
-\}
+}
 
-// Load the object to a target destination by the name of "EmployeesWithManager"
-loadToEmployeesWithManager(\{
+// Load the object to a target database destination (to collection "EmployeesWithManager")
+loadToEmployeesWithManager({
     Name: this.FirstName + " " + this.LastName,
-    Title: this.Title ,
+    Title: this.Title,
     BornOn: new Date(this.Birthday).getFullYear(),
     Manager: managerName
-\});
-`}
-</CodeBlock>
+});
+```
 </TabItem>
-
+    
 <Admonition type="note" title="">
 
-#### Syntax
+### Syntax
 
-In addition to the ECMAScript 5.1 API,  
-RavenDB introduces the following functions and members that can be used in the transformation script:  
+The transformation script has access to all predefined JavaScript functions available in RavenDB's scripting engine.  
+See the [Predefined JavaScript functions](../../../server/kb/javascript-engine.mdx#predefined-javascript-functions) article for the complete reference.
 
-| Member / Function | Type     | Description                                                                                                                                                       |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `this`            | object   | The current document (with metadata)                                                                                                                              |
-| `id(document)`    | function | Returns the document ID                                                                                                                                           |
-| `load(id)`        | function | Load another document. <br/> This will increase the maximum number of allowed steps in a script. <br/> **Note**: <br/> Changes made to the other _loaded_ document will Not trigger the ETL process. |
+The script context exposes the following members for working with the current document:
 
-Specific ETL functions:  
+| Member / Function | Type     | Description                                                                                                                                                        |
+|-------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `this`            | object   | The current document being processed (including its metadata).                                                                                                     |
+| `id(document)`    | function | Returns the document's string ID. Pass `this` to get the ID of the current document.                                                                               |
+| `load(id)`        | function | Loads and returns another document by its ID.<br/>**Note:**<br/>Loading a document increases the allowed script step count.<br/>Changes to a related document that is loaded do **not** trigger the ETL process. |
 
-| Function / Member                       | Type     | Description                                                                                                                                                                                                 |
-|-----------------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `loadTo`                                | function | Load an object to the specified target. <br/> This command has several syntax options, <br/> see details [below](../../../server/ongoing-tasks/etl/basics.mdx#themethod). <br/> **Note:** An object will only be sent to the destination if the `loadTo` method is called. |
-| **Attachments:**                        |          |                                                                                                                                                                                                             |
-| `loadAttachment(name)`                  | function | Load an attachment of the current document.                                                                                                                                                                 |
-| `hasAttachment(name)`                   | function | Check if an attachment with a given name exists for the current document.                                                                                                                                    |
-| `getAttachments()`                      | function | Get a collection of attachments details for the current document. Each item has the following properties: <br/> `Name`, `Hash`, `ContentType`, `Size`.                                                        |
-| `<doc>.addAttachment([name,] attachmentRef)` | function | Add an attachment to a transformed document that will be sent to a target (`<doc>`). <br/> For details specific to Raven ETL, refer to this [section](../../../server/ongoing-tasks/etl/raven.mdx#attachments). |
+In addition, the following ETL-specific functions are available.  
+These are not part of the general JavaScript engine and **apply to ETL scripts only**:
+
+| Function / Member                             | Type     | Description                                                                                                                                                                                                 |
+|-----------------------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `loadTo`                                      | function | Loads an object to the specified target. An object will only be sent to the destination if this method is called.<br/>This command has several syntax options,<br/>see [The loadTo method](../../../server/ongoing-tasks/etl/basics.mdx#theloadtomethod) below. |
+| **Attachments:**                              |          |                                                                                                                                                                                                             |
+| `loadAttachment(name)`                        | function | Loads an attachment of the current document.                                                                                                                                                                |
+| `hasAttachment(name)`                         | function | Returns `true` if an attachment with the given name exists on the current document.                                                                                                                         |
+| `getAttachments()`                            | function | Returns a collection of attachment details for the current document.<br/>Each item has: `Name`, `Hash`, `ContentType`, `Size`.                                                                   |
+| `<doc>.addAttachment([name,] attachmentRef)`  | function | Adds an attachment to a transformed document (`<doc>`) that will be sent to the target. <br/> For RavenDB ETL specifics, see this [section](../../../server/ongoing-tasks/etl/raven.mdx#attachments).       |
 
 </Admonition>
 
 <Admonition type="note" title="">
 
-#### The&nbsp;`loadTo`&nbsp;method
+### The&nbsp;`loadTo`&nbsp;method
 
 <Admonition type="info" title="">
 An object will only be sent to the destination if the `loadTo` method is called.
 </Admonition>
 
 To specify which target to load the data into, use either of the following overloads in your script.  
-The two methods are equivalent, offering alternative syntax.
+**Two equivalent syntax options are available**:
 
 * **`loadTo<TargetName>(obj, {attributes})`**  
-  * Here the target is specified as part of the function name.  
-  * The _&lt;TargetName&gt;_ in this syntax is Not a variable and cannot be used as one,  
-    it is simply a string literal of the target's name.
+  * Here the target name, _&lt;TargetName&gt;_, is embedded directly in the function name as a string literal.
+  * _&lt;TargetName&gt;_ is Not a variable and cannot be used as one.
 
 * **`loadTo('TargetName', obj, {attributes})`**  
-  * Here the target is passed as an argument to the method.  
+  * Here the target name is passed as an argument to the _loadTo_ method.  
   * Separating the target name from the `loadTo` function name makes it possible to include symbols like `'-'` and `'.'` in target names. 
     This is not possible when the `loadTo<TargetName>` syntax is used because including special characters in the name of a JavaScript function makes it invalid.
-  * This syntax may vary for some ETL types.  
-    Find the accurate syntax for each ETL type in the type's specific documentation.
-For each ETL type, the target must be:   
+  * Note that this syntax may vary for some ETL types - refer to each type's documentation for the exact form.
 
+---
+        
+The `TargetName` must correspond to the appropriate target entity for the ETL type:
+        
   * RavenDB ETL: a _collection_ name
   * SQL ETL: a _table_ name
   * OLAP ETL: a _folder_ name
@@ -195,7 +208,7 @@ For each ETL type, the target must be:
 
 <Admonition type="info" title="">
 
-#### Batch processing
+### Batch processing
 
 Documents are extracted and transformed by the ETL process in a batch manner.  
 The number of documents processed depends on the following configuration limits:
@@ -213,7 +226,10 @@ The number of documents processed depends on the following configuration limits:
   Maximum size of an ETL batch in MB.
 
 </Admonition>
-### Load
+    
+---
+    
+## Load
 
 * Loading the results to the target destination is the last stage.
 
@@ -228,7 +244,7 @@ The number of documents processed depends on the following configuration limits:
 
 <Admonition type="note" title="">
 
-**Securing ETL Processes for Encrypted Databases**:  
+**Securing ETL processes for encrypted databases**:  
 
 If your RavenDB database is encrypted, then you must not send data in an ETL process using a non-encrypted channel by default.
 It means that the connection to the target must be secured:
@@ -243,9 +259,9 @@ Please note that in such cases, your data encrypted at rest _won't_ be protected
 
 </Admonition>
 
+</Panel>
 
-
-## Troubleshooting
+<Panel heading="Troubleshooting">
 
 ETL errors and warnings are [logged to files](../../../server/troubleshooting/logging.mdx) and displayed in the notification center panel.  
 You will be notified if any of the following events happen:
@@ -256,14 +272,12 @@ You will be notified if any of the following events happen:
 - Load error
 - Slow SQL was detected
 
-
 **Fallback Mode**:  
-If the ETL cannot proceed the load stage (e.g. it can't connect to the destination) then it enters the fallback mode.  
+If the ETL cannot proceed with the load stage (e.g. it can't connect to the destination) then it enters the fallback mode.  
 The fallback mode means suspending the process and retrying it periodically.  
 The fallback time starts from 5 seconds and it's doubled on every consecutive error according to the time passed since the last error,
 but it never crosses [`ETL.MaxFallbackTimeInSec`](../../../server/configuration/etl-configuration.mdx#etlmaxfallbacktimeinsec) configuration (default: 900 sec).  
 
 Once the process is in the fallback mode, then the _Reconnect_ state is shown in the Studio.
-
-
-
+    
+</Panel>
