@@ -54,11 +54,10 @@ PostgreSQL logical replication sends `RelationMessage` events inline in the WAL 
 whenever the schema changes. CDC Sink detects these automatically and rebuilds its
 column mapping on the fly. This makes PostgreSQL the **most resilient** to schema changes.
 
-* **Adding or dropping unmapped columns** — transparent. CDC Sink auto-rebuilds and
-  continues without interruption.
+* **Adding or dropping unmapped columns** — transparent.
 
 * **Changing a column type** — usually transparent. A new `RelationMessage` triggers
-  an automatic rebuild of type categories.
+  an update to the internal columns mapping inside the sink. 
 
 * **Dropping or renaming a mapped column** — CDC Sink enters fallback because the
   mapped column name is no longer found in the new schema. Update the task
@@ -95,6 +94,8 @@ positions against the expected types from `INFORMATION_SCHEMA`. If they don't ma
 the process detects a schema change.
 
 * **Adding or dropping unmapped columns** — transparent. The unmapped column is ignored.
+  The CDC Sink may restart itself to re-resovle the current schema from `INFORMATION_SCHEMA`, 
+  but normal operations will resume momentarily.
 
 * **Changing a column type** — CDC Sink detects the type change via binlog column types,
   restarts, re-resolves from `INFORMATION_SCHEMA`, and continues.
@@ -102,6 +103,19 @@ the process detects a schema change.
 * **Dropping or renaming a mapped column** — CDC Sink enters fallback because the
   mapped column is no longer found. Update the task configuration to match the new
   schema.
+
+<Admonition type="warning" title="">
+
+**Apply schema changes one at a time.** MySQL CDC Sink detects schema changes by
+comparing column types at specific positions. If multiple changes are applied in a
+single `ALTER TABLE` statement (e.g., `ADD COLUMN ... AFTER ...`, or adding and
+removing columns together), the positional shifts can compound and make it difficult
+for CDC Sink to resolve the new schema correctly.
+
+Apply one schema change, let CDC Sink catch up and confirm it is processing normally,
+then apply the next change. This ensures each change is simple and isolated.
+
+</Admonition>
 
 ### MySQL Examples
 
