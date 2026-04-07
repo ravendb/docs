@@ -29,6 +29,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * [Change Streaming](#change-streaming)
   * [Transaction Ordering](#transaction-ordering)
   * [State Persistence and Failover](#state-persistence-and-failover)
+  * [Updating the Task Configuration](#updating-the-task-configuration)
   * [Child Before Parent](#child-before-parent)
 
 </Admonition>
@@ -179,7 +180,39 @@ See [Patching](./patching.mdx) for guidance.
 
 ---
 
-## Child Before Parent
+## Updating the Task Configuration
+
+When you update a CDC Sink task configuration — for example, adding or removing columns
+from the `Columns` list, changing a `Patch` script, or modifying embedded table
+configuration — the changes take effect **only for new CDC events going forward**.
+
+CDC Sink does not retroactively re-process existing documents. Documents that were
+already created retain their current structure. This means:
+
+* **Adding a new column mapping** — Existing documents will not have the new property.
+  Only documents created or updated by a subsequent CDC event will include it.
+* **Removing a column mapping** — Existing documents retain the property. It will no
+  longer be updated by CDC events, but it is not removed from existing documents.
+* **Changing a patch script** — The new patch runs on future events only. Existing
+  documents reflect the results of the previous patch.
+* **Adding an embedded or linked table** — Existing parent documents will not have the
+  new embedded data until a CDC event for the embedded table row arrives.
+
+<Admonition type="tip" title="">
+
+To apply configuration changes to **all** documents (not just new events), delete
+the CDC Sink task and recreate it. The new task will perform a fresh initial load,
+re-processing all rows with the updated configuration.
+
+If you only need to backfill a specific property on existing documents, you can also
+use a RavenDB [patch by query](../../../client-api/operations/patching/set-based)
+to update existing documents independently of the CDC Sink task.
+
+</Admonition>
+
+---
+
+
 
 Tables are scanned one at a time during the initial load. This means a child table can
 contain rows that reference a parent row inserted *after* the parent table scan had

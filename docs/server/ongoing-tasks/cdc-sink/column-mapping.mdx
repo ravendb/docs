@@ -112,7 +112,7 @@ Type conversions are source-database-specific. For PostgreSQL:
 * SQL arrays → JSON arrays
 * `vector` (pgvector) → `float[]`
 
-See [PostgreSQL Type Mapping](./postgres/type-mapping.mdx) for the full reference table.
+See [Patching: $row Column Types](./patching.mdx#row-column-types) for the full reference table.
 
 **`CdcColumnType.Json`** — Parses the string value as a native JSON value (object, array,
 string, number, boolean, etc.) in the document. Use for PostgreSQL `json`/`jsonb` or
@@ -235,4 +235,4 @@ For most PostgreSQL setups using the default `public` schema, this can be omitte
 
 ### PostgreSQL
 
-- [Type Mapping](./postgres/type-mapping.mdx)
+- [Patching: $row Column Types](./patching.mdx#row-column-types)
