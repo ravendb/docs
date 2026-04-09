@@ -245,10 +245,68 @@ This feature is available only for *RavenDB* **7.0 and newer**.
 
 ## Automatic Storage Extension
 
-*RavenDB Cloud* allows you to automatically extend your *RavenDB Cloud* instances disk storage upon reaching set threshold of used memory percentage.
+*RavenDB Cloud* can automatically extend the disk storage of your instances when usage exceeds 
+a configured threshold. This helps prevent running out of disk space without manual intervention.
 
-Click **Configure** Button in *Automatic Storage Extension* feature row in order to configure the threshold.
+The feature is **enabled by default** on all eligible products with a threshold of **90%** used disk space, 
+and is available **free of charge**.
 
-!["Autoscaling Configuration"](./assets/product-features-automatic-storage-extension-configuration.png)
+<Admonition type="info" title="Availability">
+Automatic Storage Extension is available for **Development** and **Production** tier products.  
+It is **not** available for Free tier products, Dev10 instance types, or PN-type instances.
+</Admonition>
+
+### How It Works
+
+Disk usage is monitored periodically on each instance node. When the used disk space exceeds the configured 
+threshold, the system automatically extends the disk to the next available size for your instance type.
+
+You will receive an email notification when storage is successfully extended, including the previous size, 
+new size, and maximum available size.
+
+### Configuration
+
+Click the **Configure** button in the *Automatic Storage Extension* feature row to view and adjust the threshold.
+
+| Parameter | Description |
+|---|---|
+| Disk Space Used Threshold | The percentage of used disk space that triggers automatic storage extension. Range: **70%** to **95%**. Default: **90%**. |
+
+!["Automatic Storage Extension Configuration"](./assets/product-features-automatic-storage-extension-configuration.png)
+
+Click the **Edit** button to change the threshold.
+
+!["Automatic Storage Extension Edit Configuration"](./assets/PLACEHOLDER-product-features-automatic-storage-extension-configuration-edit.png)
+
+{/* TODO: Screenshot needed — capture the Automatic Storage Extension configuration modal in edit mode, showing the threshold input field (70-95%), Save and Cancel buttons */}
+
+### Enabling and Disabling
+
+Automatic Storage Extension is enabled by default on all eligible products. 
+To disable or re-enable it, use the toggle in the *Automatic Storage Extension* feature row on the product page.
+
+<Admonition type="warning" title="Yearly Contracts">
+For products on a **yearly contract**, the Automatic Storage Extension feature cannot be toggled on or off, 
+and its threshold cannot be changed through the portal. Please contact [support](../cloud/cloud-support.mdx) 
+to make changes.
+</Admonition>
+
+### Storage Extension Limits
+
+In some cases, automatic storage extension cannot proceed. When this happens, you will receive an email 
+notification explaining the reason.
+
+<Admonition type="warning" title="Extension Constraints">
+
+Storage will **not** be automatically extended in the following cases:
+
+- **Maximum disk size for instance type reached** — the largest disk size available for your current 
+  instance type has been reached. Upgrade to a higher instance type to allow further extension.
+- **Maximum root disk size exceeded** — the cloud provider's maximum root disk size has been reached 
+  (AWS: 1,000 GB, Azure: 1,024 GB, GCP: 1,000 GB). Consider migrating to a 
+  [Data Disk](../cloud/cloud-scaling.mdx#data-disks) for storage beyond this limit.
+- **Yearly contracts** — automatic storage extension is blocked for products on yearly contracts.
+
+</Admonition>
 
 
