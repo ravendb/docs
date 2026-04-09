@@ -982,7 +982,7 @@ RavenDB first evaluates the filter to determine how many documents match and the
   * The requested _number of candidates_ exceeds half the filter match count.  
     Learn about the _number of candidates_ param in [The query parameters](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#the-dynamic-query-parameters).
     
-  In this mode, an exact nearest-neighbor search is performed over **only** the documents that match the filter.   
+  In this mode, an exact search is performed over **only** the documents that match the filter.   
 
 * **Approximate search:**  
   When none of the conditions above apply, RavenDB uses approximate HNSW graph traversal to find the nearest vectors to the search term.
