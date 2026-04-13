@@ -72,9 +72,9 @@ import Panel from '@site/src/components/Panel';
 
 * When configuring a chat model, the UI displays the same base fields as those used for [text embedding models](../../../ai-integration/connection-strings/azure-open-ai.mdx#configuring-a-text-embedding-model),  
   including the connection string _Name_, optional _Identifier_, _API Key_, _Endpoint_, _Deployment Name_, and _Model_ name.
-
-* One additional setting is specific to chat models: _Temperature_.
-
+    
+* Additional settings specific to chat models are: _Prompt Cache Key_ & _Temperature_.
+    
 ![connection string to azure open ai](../assets/azure-open-ai-2.png)
 
 1. **Model Type**  
@@ -83,7 +83,31 @@ import Panel from '@site/src/components/Panel';
 2. **Model**  
    Enter the name of the Azure OpenAI model to use for chat completions.
 
-3. **Temperature** (optional)  
+3. **Prompt Cache Key** (optional)
+    
+   * Controls whether RavenDB includes the `prompt_cache_key` field in chat completion 
+     requests sent to the AI provider when using [AI Agents](../../../ai-integration/ai-agents/overview.mdx).
+    
+   * When enabled (set to _True_), RavenDB sends the [Conversation's document ID](../../../ai-integration/ai-agents/overview.mdx#what-is-a-conversation) 
+     in the `prompt_cache_key` field with each request.
+     This can help the AI provider identify requests that belong to the same conversation and reuse a previously cached prompt prefix (system prompt + prior messages).
+   
+   * Why this helps:  
+     AI providers typically process requests on many servers.
+     **Without a cache key**, consecutive requests from the same conversation may be handled by different servers, each reprocessing the entire conversation from scratch.
+     **With the cache key**, the provider can route the request to the same machine that handled the previous turn, where the computed prefix is likely still in memory.
+     The provider then only needs to process the new messages, reducing latency and cost. 
+    
+   * The full conversation content is still sent with every request.
+     The cache key is only a provider-side optimization hint. RavenDB does not control the provider's caching behavior.
+    
+   * **Options:**
+     * `Default` - `True` (Enabled for Azure OpenAI).  
+     * `True` - Always send the cache key.  
+     * `False` - Never send the cache key.  
+        Set to _False_ if your provider does not support the field and returns errors instead of ignoring it.  
+    
+4. **Temperature** (optional)  
    The temperature setting controls the randomness and creativity of the model’s output.  
    Valid values typically range from `0.0` to `2.0`:  
      * Higher values (e.g., `1.0` or above) produce more diverse and creative responses.
@@ -161,6 +185,9 @@ using (var store = new DocumentStore())
             
             // Optionally, set the model's temperature
             Temperature = 0.4
+    
+            // Optionally, enable or disable prompt prefix caching
+            EnablePromptCache = true
         }
     };
     
@@ -204,6 +231,12 @@ public class AzureOpenAiSettings : AbstractAiSettings
     // Lower values (e.g., 0.2) result in more focused and deterministic output.
     // If set to 'null', the temperature is not sent and the model's default will be used.
     public double? Temperature { get; set; }
+    
+    // Relevant only for CHAT models:
+    // Controls whether the 'prompt_cache_key' field is included in chat completion requests.
+    // When enabled, the conversation's document ID is sent as the cache key to the AI provider.
+    // Default: enabled (true) for Azure OpenAI
+    public bool? EnablePromptCache { get; set; } // optional
 }
 
 public class AbstractAiSettings
