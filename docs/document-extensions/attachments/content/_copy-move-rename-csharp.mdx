@@ -12,6 +12,8 @@ import Panel from '@site/src/components/Panel';
  
 * In this article:
   * [Copy attachment to another document](../../../document-extensions/attachments/copy-move-rename.mdx#copy-attachment-to-another-document)  
+    * [Copy attachment - via the session](../../../document-extensions/attachments/copy-move-rename.mdx#copy-attachments---via-the-session)  
+    * [Copy attachment - via patching](../../../document-extensions/attachments/copy-move-rename.mdx#copy-attachments---via-patching)  
   * [Move attachment to another document](../../../document-extensions/attachments/copy-move-rename.mdx#move-attachment-to-another-document)
   * [Rename attachment](../../../document-extensions/attachments/copy-move-rename.mdx#rename-attachment)
   * [Syntax](../../../document-extensions/attachments/copy-move-rename.mdx#syntax)  
@@ -19,9 +21,6 @@ import Panel from '@site/src/components/Panel';
 </Admonition>
 
 <Panel heading="Copy attachment to another document">
-    
-* Use the session's `Advanced.Attachments.Copy` method to copy an attachment from one document to another.
-  You can assign any name to the copied attachment in the target document, it doesn't have to match the source name.
     
 * **Copying LOCAL attachments**:  
   The target document's metadata is updated to reference the same attachment.  
@@ -33,7 +32,14 @@ import Panel from '@site/src/components/Panel';
   The attachment is Not re-uploaded or duplicated in the remote destination,  
   even if the copied attachment has a different name in the target document.
     
-* An exception is thrown in any of the following cases:  
+---    
+    
+### Copy attachments - via the session
+    
+* Use the session's `Advanced.Attachments.Copy` method to copy an attachment from one document to another.
+  You can assign any name to the copied attachment in the target document, it doesn't have to match the source name.
+    
+* **An exception is thrown** in any of the following cases:  
   * The source document does not exist.  
   * The destination document does not exist.  
   * The specified attachment is not found in the source document.  
@@ -84,6 +90,84 @@ using (var asyncSession = store.OpenAsyncSession())
 </TabItem>
 </Tabs>
     
+---
+    
+### Copy attachments - via patching
+
+* Use `attachments(targetDocument, targetAttachmentName).copyFrom(sourceDocId, sourceAttachmentName)` to copy an attachment between documents within a patch script.
+  The method copies the attachment from the source document and assigns it to the target document under the specified name.
+    
+* In both [single-document patches](../../../client-api/operations/patching/single-document.mdx)
+  and [patch-by-query operations](../../../client-api/operations/patching/set-based.mdx),
+  the copy is performed entirely server-side,  
+  without requiring the attachment to be downloaded and re-uploaded through the client.        
+    
+* **An exception is thrown** in the following case:  
+  * An attachment with the specified name already exists on the target document.
+    
+* **No exception is thrown** in the following cases:  
+  * The source document does not exist.  
+  * The destination document does not exist.   
+  * The specified attachment is not found in the source document.      
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Copy_attachment_via_patch" label="Copy_attachment_via_patch">
+```csharp
+// Define the patch request
+var patchRequest = new PatchRequest
+{
+    // Copy attachment 'photo.jpg' from 'employees/1' to the patched document
+    // and name it 'photo-copy.jpg' in the target document
+    Script = "attachments(this, args.targetName).copyFrom(args.sourceDocId, args.sourceName);",
+    Values =
+    {
+        { "sourceDocId", "employees/1" },
+        { "sourceName", "photo.jpg" },
+        { "targetName", "photo-copy.jpg" }
+    }
+};
+
+// Execute the patch operation on the target document
+store.Operations.Send(new PatchOperation("employees/2", null, patchRequest));
+```
+</TabItem>
+<TabItem value="Copy_attachment_via_patch_async" label="Copy_attachment_via_patch_async">
+```csharp
+// Define the patch request
+var patchRequest = new PatchRequest
+{
+    // Copy attachment 'photo.jpg' from 'employees/1' to the patched document
+    // and name it 'photo-copy.jpg' in the target document
+    Script = "attachments(this, args.targetName).copyFrom(args.sourceDocId, args.sourceName);",
+    Values =
+    {
+        { "sourceDocId", "employees/1" },
+        { "sourceName", "photo.jpg" },
+        { "targetName", "photo-copy.jpg" }
+    }
+};
+
+// Execute the patch operation asynchronously on the target document
+await store.Operations.SendAsync(new PatchOperation("employees/2", null, patchRequest));
+```
+</TabItem>
+<TabItem value="Copy_attachment_via_patch_by_query" label="Copy_attachment_via_patch_by_query">
+```csharp
+// Copy an attachment to ALL documents in a collection using a patch-by-query operation
+var op = store.Operations.Send(new PatchByQueryOperation(new IndexQuery
+{
+    Query = @"
+        from Employees as e
+        update {
+            attachments(e, 'photo-copy.jpg').copyFrom('employees/1', 'photo.jpg');
+        }"
+}));
+
+op.WaitForCompletion();
+```
+</TabItem>
+</Tabs>
+
 </Panel>
 
 <Panel heading="Move attachment to another document">
@@ -260,5 +344,29 @@ void Rename(string documentId, string name, string newName);
 | **documentId** | `string` | The document ID that holds the attachment. |
 | **name**       | `string` | The current name of the attachment. |
 | **newName**    | `string` | The new name to assign to the attachment. |
+
+---
+
+#### Copy attachment via patch script
+
+<TabItem>
+```javascript
+attachments(document, attachmentName).copyFrom(sourceDocId, sourceName)
+```
+</TabItem>
+
+| Parameter          | Type     | Description |
+|--------------------|----------|-------------|
+| **document**       | `object` | The target document entity (use `this` for the current document being patched). |
+| **attachmentName** | `string` | The name to assign to the copied attachment in the target document. |
+| **sourceDocId**    | `string` | The ID of the source document that holds the attachment to copy. |
+| **sourceName**     | `string` | The name of the attachment to copy from the source document. |
+
+| Return value | Description |
+|--------------|-------------|
+| `true`       | The attachment was copied successfully. |
+| `false`      | The source document, the destination document, or the source attachment was not found.<br/>No exception is thrown. |
+
+See [JavaScript engine](../../../server/kb/javascript-engine.mdx) for the full list of JavaScript methods available in RavenDB.
     
 </Panel>
