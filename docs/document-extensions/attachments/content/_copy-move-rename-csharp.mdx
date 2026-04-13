@@ -107,8 +107,8 @@ using (var asyncSession = store.OpenAsyncSession())
     
 * **No exception is thrown** in the following cases:  
   * The source document does not exist.  
-  * The source attachment does not exist.  
   * The destination document does not exist.   
+  * The specified attachment is not found in the source document.      
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Copy_attachment_via_patch" label="Copy_attachment_via_patch">
@@ -365,7 +365,7 @@ attachments(document, attachmentName).copyFrom(sourceDocId, sourceName)
 | Return value | Description |
 |--------------|-------------|
 | `true`       | The attachment was copied successfully. |
-| `false`      | The source document or the source attachment was not found. No exception is thrown. |
+| `false`      | The source document, the destination document, or the source attachment was not found.<br/>No exception is thrown. |
 
 See [JavaScript engine](../../../server/kb/javascript-engine.mdx) for the full list of JavaScript methods available in RavenDB.
     
