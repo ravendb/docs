@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import Heading from "@theme/Heading";
 import clsx from "clsx";
 import Toggle from "@site/src/components/Common/Toggle";
@@ -39,28 +39,22 @@ export default function SamplesFilter({
     const [manuallyCollapsed, setManuallyCollapsed] = useState<Set<string>>(new Set());
     const [searchQuery, setSearchQuery] = useState("");
 
-    useEffect(() => {
-        const categoriesToExpand = new Set(expandedCategories);
-        let hasChanges = false;
-
+    const effectiveExpanded = useMemo(() => {
+        const result = new Set(expandedCategories);
         categories.forEach((category) => {
             const hasSelectedTag = category.tags.some((tag) => selectedTags.has(tag.key));
-            if (hasSelectedTag && !categoriesToExpand.has(category.name) && !manuallyCollapsed.has(category.name)) {
-                categoriesToExpand.add(category.name);
-                hasChanges = true;
+            if (hasSelectedTag && !manuallyCollapsed.has(category.name)) {
+                result.add(category.name);
             }
         });
-
-        if (hasChanges) {
-            setExpandedCategories(categoriesToExpand);
-        }
-    }, [selectedTags, categories, manuallyCollapsed, expandedCategories]);
+        return result;
+    }, [expandedCategories, categories, selectedTags, manuallyCollapsed]);
 
     const toggleCategory = (categoryName: string) => {
         const newExpanded = new Set(expandedCategories);
         const newManuallyCollapsed = new Set(manuallyCollapsed);
 
-        if (newExpanded.has(categoryName)) {
+        if (effectiveExpanded.has(categoryName)) {
             newExpanded.delete(categoryName);
             newManuallyCollapsed.add(categoryName);
         } else {
@@ -138,7 +132,7 @@ export default function SamplesFilter({
                         tags={category.tags}
                         selectedTags={selectedTags}
                         onTagToggle={onTagToggle}
-                        isExpanded={expandedCategories.has(category.name)}
+                        isExpanded={effectiveExpanded.has(category.name)}
                         onToggleExpanded={() => toggleCategory(category.name)}
                     />
                 ))
