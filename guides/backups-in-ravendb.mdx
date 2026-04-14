@@ -1,0 +1,229 @@
+---
+title: "Backups in RavenDB: How to keep your database safe"
+tags: [administration, security, clusters, background-tasks, csharp]
+icon: "backup"
+publishedAt: 2026-03-20
+description: "Learn how RavenDB backups work, when to use logical backups versus snapshots, and how to configure scheduled and server-wide backup tasks via Studio and C# code."
+see_also:
+  - title: "Backup Overview"
+    link: "backup/overview"
+    source: "docs"
+    path: "Backup > Overview"
+  - title: "Periodic Backup Tasks"
+    link: "backup/create/periodic-tasks/database-backup"
+    source: "docs"
+    path: "Backup > Create and manage backups > Periodic Backup Tasks > Database backup"
+  - title: "Server Wide Backup"
+    link: "backup/create/periodic-tasks/server-wide-backup"
+    source: "docs"
+    path: "Backup > Create and manage backups > Periodic Backup Tasks > Server-wide backup"
+  - title: "Backup Frequently Asked Questions"
+    link: "backup/faq"
+    source: "docs"
+    path: "Backup > FAQ"
+author: "Paweł Lachowski"
+proficiencyLevel: "Intermediate"
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+
+Modern systems are getting better and better, but data can be corrupted by faulty scripts, misconfigurations, or even automated processes that behave incorrectly. At the same time, threats like ransomware continue to evolve, using automation and AI-driven techniques to get into systems and make data unusable.
+
+This is where backups become important. A backup is a saved state of your database at a specific point in time. It gives you a reliable way to return to a known state, rather than trying to revert accidental, possibly massive, data modifications or corruptions. RavenDB provides built-in tools to create and manage backups, whether you want a simple safety net or a more structured recovery strategy. You can customize it as much as you need and then just switch it on instead of building a safety mechanism yourself. In this guide, we will cover how backups work, which backup type is best for you, how RavenDB's backup mechanisms work, and how to use them in practice. The Studio walkthrough and code examples in this guide were prepared with RavenDB 7.2.
+
+## Why should you back up your RavenDB database?
+
+Backups are often treated as optional, but in practice, they are the most basic way to prevent data loss. They can protect your database from a myriad of problems ranging from small to catastrophic. Data might get deleted or corrupted, and without a backup, there might be no easy way to recover it if you are working on a single node. Without a backup, you can count on revisions only if you have them. If you have no backup, this is where things get bad.
+
+Backups also increase your security. They protect your data not only from mistakes but also from threats such as basic ransomware, hardware failures, or unexpected system issues. Even if your live data becomes unavailable or compromised, a backup gives you a way to restore it to previous versions. This is why many teams follow the 3-2-1 backup rule: keep at least three copies of your data, store them on two different types of media, and ensure one copy is kept offsite.
+
+### What is the difference between a scheduled backup and a single backup?
+
+Backups are not just about having one restore point, but about having recent ones when you actually need them. This is where the difference between scheduled and single backups becomes important.
+
+A single backup is created manually, usually before a risky operation. You might trigger it before running a migration, applying a large patch, or making structural changes to your database. It gives you a clear restore point, but only for that specific moment.
+
+Scheduled backups, on the other hand, run automatically at defined intervals. They continuously capture the state of your database, creating a timeline you can restore from. This is especially important for issues that are not noticed immediately, such as gradual data corruption or a bug that affects data over time.
+
+Relying only on single backups means you are protected only when you remember to create one. Scheduled backups remove that dependency, ensuring that even unexpected problems have a recovery point waiting for you.
+
+|  | Single Backup | Scheduled Backup |
+| :---- | :---- | :---- |
+| Trigger | Manual | Automatic after setup |
+| Timing | One specific moment | Runs at regular intervals |
+| Use case | Before risky changes | Ongoing protection |
+| Coverage | Single restore point | With time, multiple restore points (multiple files) |
+| Reliability | Depends on you remembering | Consistent, covers unexpected issues |
+
+### What is the difference between a logical backup and a snapshot?
+
+We also have two types of backup. When creating a backup in RavenDB, you can choose between a logical backup and a snapshot. Both achieve the same goal, but they do it in very different ways.
+
+A logical backup stores your data in a structured, portable format. It includes documents, index definitions, and ongoing tasks, all saved as compressed JSON files. During restoration, RavenDB rebuilds the database by inserting the data again and re-running indexing based on the stored definitions. This makes logical backups smaller and more flexible, but also slower to restore.
+
+A different approach is snapshots. A snapshot is a compressed binary copy of the entire database at a specific point in time. Instead of storing data in a portable format, it captures the database exactly as it exists on disk, including data files, indexes, and internal structures. As a result, restoring from a snapshot is much faster. RavenDB does not need to reindex documents since everything is already prepared. This makes snapshots especially useful in situations where minimizing downtime is critical.
+
+The trade-off is that snapshots are larger and less flexible than logical backups. They are also available only for Enterprise licenses. Logical backups are smaller, but they require more work from the database during restoration.
+
+The choice comes down to priorities. Logical backups are a good default for regular use and efficient storage, while snapshots are better suited for fast recovery scenarios where time matters most. If you want to read more about backup types, you can look into the [RavenDB backup contents documentation](https://docs.ravendb.net/server/ongoing-tasks/backup-overview/#backup-contents).
+
+### How long does RavenDB store backups by default?
+
+By default, backups are stored indefinitely. If you don’t clean up your disks, new backups will be stored on disk, which can quickly add up in storage usage over time. To control this, you can define a backup retention policy. This allows you to specify how long backups should be kept before they are automatically deleted. Once a backup exceeds the defined retention period, it is removed during the next scheduled backup task.
+
+The retention policy is configured as part of the periodic backup task. You can either disable it entirely, which keeps backups forever, or define a minimum age that each backup must reach before it becomes eligible for automatic deletion.
+
+This lets you balance safety and storage space. Keeping backups for longer gives you more recovery options, but also requires more space. Setting a reasonable retention period ensures you have enough history to recover from issues without letting storage grow uncontrollably.
+
+### What are incremental backups and when should you use them?
+
+If space is even more of an issue, a backup task can create both full and incremental backups. A full backup captures the entire state of the database at a given point in time, while an incremental backup stores only the changes made since the last backup. Instead of copying the entire dataset every time, RavenDB saves only what has changed, while still creating a new backup file for each run.
+
+This makes incremental backups much faster and significantly reduces storage usage, especially in systems where data is updated frequently. In practice, incremental backups are used together with full backups. A common approach is to run a full backup less frequently, for example, once per day, and run incremental backups more often in between. This creates a sequence of restore points, allowing you to return to a more precise moment in time without repeatedly storing the entire dataset.
+
+Incremental backups always depend on an initial full backup. The first time the task runs, RavenDB creates a full backup, and only after that does it begin producing incremental backups. During restoration, the process is reversed: the full backup is applied first, followed by all related incremental backups in order to reconstruct the final state.
+
+From a technical perspective, incremental backups are always stored in JSON format and include data changes and index definitions, but not fully built indexes. After restoration, RavenDB rebuilds indexes according to those definitions, which can take additional time with larger datasets. This is a trade-off for the reduced size and speed of incremental backups during normal operation.
+
+This approach is particularly useful in systems where data changes frequently and losing even a small amount of recent data would be a problem. By running incremental backups more often, you reduce the gap between restore points and limit the amount of data that can be lost in the event of an issue.
+
+<Admonition type="note" title="Retention applies to full+incremental, not individual files">
+  A full backup and all of its related incremental backups are treated as a single retention unit. A full backup will only be deleted after all its incremental backups have also exceeded the retention period. Plan your retention window accordingly to avoid unexpected storage growth.
+</Admonition>
+
+## How do you back up your RavenDB database?
+
+### Using Studio
+
+We have a database that stores user data and is updated constantly. Because of this, even a small mistake in an update or script can affect a portion of users. We want to make sure that, at any point, we can return to a recent or previous state. A daily backup with incremental updates in between is what we will need in this case.
+
+1. Open RavenDB Studio and navigate to the chosen database.
+2. Go to Tasks → Backups.
+
+<Image img={require("./assets/backups-ravendb1.webp")} alt="RavenDB Studio Tasks and Backups navigation menu" />
+
+3. Click Add a periodic backup task. (You can create one-time backups too, but periodic backups provide ongoing protection and more configuration options.)
+
+<Image img={require("./assets/backups-ravendb2.webp")} alt="Creating a new periodic backup task in RavenDB Studio" />
+
+4. Enter a name to identify the task, and optionally toggle whether the task is active.
+5. Choose the Backup Upload Mode this determines whether the backup is written locally first (temporarily if the local destination is off) or uploaded directly to remote storage.
+6. Select the backup type (logical backup or snapshot) and optionally assign a responsible node and a read operations per second limit.
+7. Define the schedule. Run a full backup once per day and incremental backups more frequently. Incremental backups store only changes since the last backup, making them faster and smaller.
+8. Configure the retention policy so old backups do not accumulate indefinitely.
+9. Select one or more storage destinations. RavenDB supports local paths and remote destinations such as Amazon S3, Azure, Google Cloud, and FTP. When a backup runs, it is first written to the local path and then uploaded to all configured remote destinations in parallel.
+
+<Admonition type="warning" title="Upload failure marks the entire backup as failed">
+  If any remote destination upload fails, the entire backup run is marked as failed, even if the local write succeeded. Make sure all configured remote destinations are reachable before saving the task.
+</Admonition>
+
+10. Save the task. From that point on, RavenDB will execute backups automatically according to the defined schedule.
+
+### Using code
+
+If you prefer to configure backups programmatically, RavenDB lets you create a periodic backup task directly from code. This can be useful when you want to automate deployment and keep backup settings consistent across different machines. The examples below are in C#.
+
+To do that, create a PeriodicBackupConfiguration, define where the backup should be stored, choose the backup type, and set how often full and incremental backups should run. Then send that configuration to the server.
+
+```csharp
+var config = new PeriodicBackupConfiguration
+{
+    Name = "daily-backup",
+
+    LocalSettings = new LocalSettings
+    {
+        FolderPath = @"E:\RavenBackups"
+    },
+
+    FullBackupFrequency = "0 0 * * *",
+
+    IncrementalBackupFrequency = "0 */3 * * *",
+
+    BackupType = BackupType.Backup
+};
+
+var operation = new UpdatePeriodicBackupOperation(config);
+var result = await store.Maintenance.SendAsync(operation);
+```
+
+This example creates a periodic logical backup task that stores files in a local folder, runs a full backup once per day, and creates incremental backups every 3 hours.
+
+If you want to create a snapshot instead, you only need to change the backup type by replacing `BackupType = BackupType.Backup` with `BackupType = BackupType.Snapshot`
+
+## How do you restore a RavenDB database from a backup?
+
+Restoring a backup in RavenDB is done directly from the Studio. You can access this option in two places. From the Databases view, open the dropdown next to New Database and select New database from backup. Alternatively, go to Tasks \-\> Backups and use the Restore a database from a backup button.
+
+<Image img={require("./assets/backups-ravendb3.webp")} alt="RavenDB Studio restore database from backup option in the Databases view" />
+
+The restoration process always creates a new database. You start by giving it a name and selecting the source of the backup. This can be a local directory or a cloud storage location such as S3, which requires additional credentials and configuration.
+
+<Image img={require("./assets/backups-ravendb4.webp")} alt="Configuring backup source and restore point in RavenDB Studio" />
+
+Next, you choose the backup directory and the restore point. This allows you to decide exactly which version of the backup should be used. If you are working with incremental backups, this effectively lets you restore the database to a specific moment in time.
+
+There are also a few options you might consider. You can disable ongoing tasks, which may be useful if you want to review the database before resuming background processes. You can also skip indexes, which will make the restore faster initially, but require rebuilding indexes afterward. Another option is to set max read operations and to also encrypt the new database at rest.
+
+After restoration, the database exists only on the node where the operation was performed. If you are working in a cluster, you can then expand it by adding the database to other nodes.
+
+## How do server-wide backups work in RavenDB?
+
+So far, we have focused on backups created per database. However, RavenDB also allows you to define a server-wide backup task that covers all databases in your cluster.
+
+Instead of configuring backups for each database separately, a server-wide backup automatically applies the same backup strategy across the entire server. At the scheduled time, RavenDB runs a backup for each database, ensuring consistent coverage without additional manual work. You can set that up in Manage Server \-\> Server-wide Tasks menu.
+
+<Image img={require("./assets/backups-ravendb5.webp")} alt="Server-wide backup task configuration in RavenDB Studio Manage Server menu" />
+
+Server-wide backups support the same options as regular backups. You can choose between logical backups and snapshots, define full and incremental backups, and configure retention and storage destinations. If needed, specific databases can be excluded from the task.
+
+Backups created this way are organized into separate folders per database under a shared root location. This keeps data structured while still being managed by a single task. Restoration works exactly the same as with regular backups. Even though the backup task runs server-wide, each database is restored individually by selecting its specific backup files. 
+
+Server-wide backups are useful when you want a simple and consistent backup strategy across your cluster, without the need to manage each database separately.
+
+Just like per-database backups, server-wide backups can also be toggled with code. This allows you to apply a consistent backup policy across all databases as part of your server setup.
+
+```csharp
+var config = new ServerWideBackupConfiguration
+{
+    Disabled = false,
+
+    FullBackupFrequency = "0 0 * * *",
+
+    IncrementalBackupFrequency = "0 */3 * * *",
+
+    LocalSettings = new LocalSettings
+    {
+        FolderPath = @"E:\RavenBackups"
+    }
+};
+
+var operation = new PutServerWideBackupConfigurationOperation(config);
+
+var result = await store.Maintenance.Server.SendAsync(operation);
+
+var serverWideConfiguration =
+    await store.Maintenance.Server.SendAsync(
+        new GetServerWideBackupConfigurationOperation(result.Name)
+    );
+
+```
+
+This creates a server-wide backup task that runs automatically and applies to all databases in the cluster. They run a full backup once per day, followed by incremental backups every three hours.
+
+## Summary
+
+- Use scheduled backups, not just single ones. Single backups only protect the moment you remember to create them. Scheduled backups run automatically and cover issues you didn't anticipate.
+- Choose logical backup by default; use snapshots when restore speed matters. Logical backups are smaller and portable. Snapshots restore faster but are larger and require an Enterprise license.
+- Set a retention policy. Backups accumulate indefinitely by default. A retention policy controls storage growth, but note that a full backup is only deleted once all its incrementals have also aged out.
+- Use server-wide backups for multi-database clusters. A single task covers all databases consistently, without per-database configuration.
+
+Now that you have a backup to keep your data safe, maybe you might want to learn how to reduce the size of what you keep in your indexes? Look into data archival, the RavenDB feature that lets you keep your data inside the database without indexing unnecessary data. We have a [guide on employing data archival](https://docs.ravendb.net/guides/employing-data-archival-guide).
+
+Interested in RavenDB? Grab the [developer license dedicated for testing](https://ravendb.net/dev), or get a [free cloud database](https://ravendb.net/cloud). If you have questions about this feature, or want to hang out and talk with the RavenDB team, join our [RavenDB Discord community](https://discord.com/invite/ravendb).
