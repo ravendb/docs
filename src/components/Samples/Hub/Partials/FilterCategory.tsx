@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Icon } from "@site/src/components/Common/Icon";
 import Checkbox from "@site/src/components/Common/Checkbox";
@@ -30,21 +30,14 @@ export default function FilterCategory({
     const { value: isTagsExpanded, setTrue: expandTags, setFalse: collapseTags } = useBoolean(false);
     const [manuallyCollapsed, setManuallyCollapsed] = React.useState(false);
 
-    const visibleTags = isTagsExpanded ? tags : tags.slice(0, 5);
+    const hasSelectedHiddenTag =
+        tags.length > 5 && tags.slice(5).some((tag) => selectedTags.has(tag.key));
+    const showAllTags = isTagsExpanded || (!manuallyCollapsed && hasSelectedHiddenTag);
+    const visibleTags = showAllTags ? tags : tags.slice(0, 5);
     const hiddenCount = Math.max(0, tags.length - 5);
 
-    useEffect(() => {
-        if (!isTagsExpanded && !manuallyCollapsed && tags.length > 5) {
-            const hiddenTags = tags.slice(5);
-            const hasSelectedHiddenTag = hiddenTags.some((tag) => selectedTags.has(tag.key));
-            if (hasSelectedHiddenTag) {
-                expandTags();
-            }
-        }
-    }, [selectedTags, tags, isTagsExpanded, expandTags, manuallyCollapsed]);
-
     const handleToggleTagsExpanded = () => {
-        if (isTagsExpanded) {
+        if (showAllTags) {
             setManuallyCollapsed(true);
             collapseTags();
         } else {
@@ -93,13 +86,13 @@ export default function FilterCategory({
                                     className="flex items-center gap-2 text-xs hover:text-black dark:hover:text-white cursor-pointer mt-1"
                                 >
                                     <Icon
-                                        icon={isTagsExpanded ? "minus" : "plus"}
+                                        icon={showAllTags ? "minus" : "plus"}
                                         size="2xs"
                                         className="text-black/30 dark:text-white/30"
                                     />
                                     <span>
-                                        {isTagsExpanded ? "Less" : "More "}
-                                        {!isTagsExpanded && (
+                                        {showAllTags ? "Less" : "More "}
+                                        {!showAllTags && (
                                             <span className="text-black/30 dark:text-white/30">({hiddenCount})</span>
                                         )}
                                     </span>
