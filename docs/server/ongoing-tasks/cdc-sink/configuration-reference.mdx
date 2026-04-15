@@ -160,7 +160,7 @@ Controls how a SQL column value is stored in RavenDB.
 
 | Value | Behavior |
 |-------|----------|
-| `Default` | Standard type conversion: int→long, decimal→double, date→DateOnly, timestamp→DateTime, uuid→string, varchar/text→string. SQL arrays→JSON arrays. JSON/JSONB stored as plain string. |
+| `Default` | Standard type conversion: int→long, numeric/decimal→decimal, real→float, double precision→double, date→DateOnly, timestamp→DateTime, uuid→string, varchar/text→string. SQL arrays→JSON arrays. JSON/JSONB stored as plain string. |
 | `Json` | Parses the string value as a native JSON value (object, array, string, number, boolean, etc.) in the document. Use for PostgreSQL `json`/`jsonb` or SQL Server `nvarchar(max)` with JSON content. |
 | `Attachment` | Stores the raw column value as a RavenDB attachment. `byte[]`→binary (`application/octet-stream`), `string`→UTF-8 text (`text/plain`), `float[]`/`double[]`→raw vector data. The `Name` field becomes the attachment name. |
 
