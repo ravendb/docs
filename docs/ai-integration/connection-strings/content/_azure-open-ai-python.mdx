@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -10,15 +12,15 @@ import CodeBlock from '@theme/CodeBlock';
   [Gen AI tasks](../../../ai-integration/gen-ai-integration/overview.mdx), and [AI agents](../../../ai-integration/ai-agents/overview.mdx).    
     
 * In this article:
-  * [Define the connection string - from Studio](../../../ai-integration/connection-strings/azure-open-ai.mdx#define-the-connection-string---from-studio)
+  * [Define the connection string - from Studio](../../../ai-integration/connection-strings/azure-open-ai.mdx#define-the-connection-string-from-studio)
     * [Configuring a text embedding model](../../../ai-integration/connection-strings/azure-open-ai.mdx#configuring-a-text-embedding-model)
     * [Configuring a chat model](../../../ai-integration/connection-strings/azure-open-ai.mdx#configuring-a-chat-model)
-  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/azure-open-ai.mdx#define-the-connection-string---from-the-client-api)
+  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/azure-open-ai.mdx#define-the-connection-string-from-the-client-api)
   * [Syntax](../../../ai-integration/connection-strings/azure-open-ai.mdx#syntax) 
     
 </Admonition>
 
-## Define the connection string - from Studio
+<Panel heading="Define the connection string - from Studio">
 
 ### Configuring a text embedding model
 
@@ -64,13 +66,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 12. Click **Save** to store the connection string or **Cancel** to discard changes.
 
+---
+    
 ### Configuring a chat model
 
 * When configuring a chat model, the UI displays the same base fields as those used for [text embedding models](../../../ai-integration/connection-strings/azure-open-ai.mdx#configuring-a-text-embedding-model),  
   including the connection string _Name_, optional _Identifier_, _API Key_, _Endpoint_, _Deployment Name_, and _Model_ name.
 
-* One additional setting is specific to chat models: _Temperature_.
-
+* Additional settings specific to chat models are: _Prompt Cache Key_ & _Temperature_.
+    
 ![connection string to azure open ai](../assets/azure-open-ai-2.png)
 
 1. **Model Type**  
@@ -79,7 +83,31 @@ import CodeBlock from '@theme/CodeBlock';
 2. **Model**  
    Enter the name of the Azure OpenAI model to use for chat completions.
 
-3. **Temperature** (optional)  
+3. **Prompt Cache Key** (optional)
+    
+   * Controls whether RavenDB includes the `prompt_cache_key` field in chat completion 
+     requests sent to the AI provider when using [AI Agents](../../../ai-integration/ai-agents/overview.mdx).
+    
+   * When enabled (set to _True_), RavenDB sends the [Conversation's document ID](../../../ai-integration/ai-agents/overview.mdx#what-is-a-conversation) 
+     in the `prompt_cache_key` field with each request.
+     This can help the AI provider identify requests that belong to the same conversation and reuse a previously cached prompt prefix (system prompt + prior messages).
+   
+   * Why this helps:  
+     AI providers typically process requests on many servers.
+     **Without a cache key**, consecutive requests from the same conversation may be handled by different servers, each reprocessing the entire conversation from scratch.
+     **With the cache key**, the provider can route the request to the same machine that handled the previous turn, where the computed prefix is likely still in memory.
+     The provider then only needs to process the new messages, reducing latency and cost. 
+    
+   * The full conversation content is still sent with every request.
+     The cache key is only a provider-side optimization hint. RavenDB does not control the provider's caching behavior.
+    
+   * **Options:**
+     * `Default` - `True` (Enabled for Azure OpenAI).  
+     * `True` - Always send the cache key.  
+     * `False` - Never send the cache key.  
+        Set to _False_ if your provider does not support the field and returns errors instead of ignoring it.  
+
+4. **Temperature** (optional)  
    The temperature setting controls the randomness and creativity of the model’s output.  
    Valid values typically range from `0.0` to `2.0`:  
      * Higher values (e.g., `1.0` or above) produce more diverse and creative responses.
@@ -87,9 +115,9 @@ import CodeBlock from '@theme/CodeBlock';
      * If not explicitly set, Azure OpenAI uses a default temperature of `1.0`.  
        See [Azure OpenAI chat completions parameters](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/reference#request-body-2).
 
----
+</Panel>
 
-## Define the connection string - from the Client API
+<Panel heading="Define the connection string - from Client API">    
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Connection_string_for_text_embedding_model" label="Connection_string_for_text_embedding_model">
@@ -153,7 +181,9 @@ put_connection_string_result = store.maintenance.send(put_connection_string_op)
 </TabItem>
 </Tabs>
 
-## Syntax
+</Panel>
+
+<Panel heading="Syntax"> 
 
 <TabItem value="azure_open_ai_settings" label="azure_open_ai_settings">
 ```python
@@ -207,3 +237,5 @@ class AbstractAiSettings:
         ...
 ```
 </TabItem>
+    
+</Panel>
