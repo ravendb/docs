@@ -88,7 +88,7 @@ GRANT SELECT ON mydb.* TO 'ravendb_cdc'@'%';
 ## Streaming Behavior
 
 Like PostgreSQL, MySQL CDC Sink uses streaming replication (via the binlog), not
-polling. The `CdcSink.PollIntervalInSec` server configuration setting does not
+polling. The `CdcSink.SqlServer.PollIntervalInSec` server configuration setting does not
 apply to MySQL.
 
 ---
