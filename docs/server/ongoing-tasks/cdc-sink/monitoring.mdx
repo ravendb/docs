@@ -56,8 +56,8 @@ In fallback mode:
 * No changes are applied while the connection is down
 * The task automatically resumes streaming once the source is reachable again
 
-The maximum time the task will remain in fallback mode before reporting an error
-is controlled by the `CdcSink.MaxFallbackTimeInSec` configuration key.
+Retry delay doubles on each consecutive failure, up to the cap set by
+`CdcSink.MaxFallbackTimeInSec` (default 15 minutes).
 See [Server Configuration](./server-configuration.mdx).
 
 ---

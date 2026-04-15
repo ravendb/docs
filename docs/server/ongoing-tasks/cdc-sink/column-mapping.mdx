@@ -155,8 +155,11 @@ Property names (the `Name` values in `Columns`) become properties on the RavenDB
 document — accessible as `this.FinalPrice` inside a patch script.
 
 Column names (the `Column` values in `Columns`, plus any unmapped columns) are accessible
-in patch scripts via `$row.base_price` (for the current row's values) and
-`$old?.base_price` (for the previous row's values on UPDATE events).
+in patch scripts via `$row.base_price` (for the current row's values).
+
+`$old` contains the previous state of the document and uses **mapped property names**
+(the `Name` values), not SQL column names. Unmapped columns do not appear in `$old`.
+See [Patching: $row and $old](./patching.mdx#row-and-old-names-and-types) for details.
 </Admonition>
 
 ---

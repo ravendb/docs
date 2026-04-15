@@ -77,7 +77,8 @@ With `customer_id = 42`, the Orders document gets:
 </TabItem>
 </Tabs>
 
-The `Customer` property is a RavenDB document ID. Load the referenced document using
+The `Customer` property is a RavenDB document ID, built from the `LinkedCollectionName`
+and the join column values. Load the referenced document using
 [includes](../../../client-api/session/loading-entities#load-with-includes) to avoid
 a second network call.
 

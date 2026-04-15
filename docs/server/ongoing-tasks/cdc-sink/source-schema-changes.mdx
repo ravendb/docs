@@ -94,7 +94,7 @@ positions against the expected types from `INFORMATION_SCHEMA`. If they don't ma
 the process detects a schema change.
 
 * **Adding or dropping unmapped columns** — transparent. The unmapped column is ignored.
-  The CDC Sink may restart itself to re-resovle the current schema from `INFORMATION_SCHEMA`, 
+  The CDC Sink may restart itself to re-resolve the current schema from `INFORMATION_SCHEMA`, 
   but normal operations will resume momentarily.
 
 * **Changing a column type** — CDC Sink detects the type change via binlog column types,
