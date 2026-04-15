@@ -77,7 +77,7 @@ The SQL Server Agent service must be running for CDC to function.
 ## Polling Behavior
 
 Unlike PostgreSQL (which uses streaming replication), SQL Server CDC Sink uses polling.
-The `CdcSink.PollIntervalInSec` server configuration key controls how frequently
+The `CdcSink.SqlServer.PollIntervalInSec` server configuration key controls how frequently
 the task polls for new changes. See [Server Configuration](../server-configuration.mdx).
 
 ---
