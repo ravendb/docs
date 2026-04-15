@@ -62,6 +62,7 @@ becomes one document.
 **Document ID generation:** `\{CollectionName\}/\{pk1\}/\{pk2\}/...`
 A row with `id = 42` and collection `Orders` becomes document `Orders/42`.
 A composite PK `(region, id)` with values `(US, 42)` becomes `Orders/US/42`.
+CDC Sink uses the `CollectionName` verbatim as the document ID prefix.
 
 **Column mapping:** Only columns listed in `Columns` appear in the document. Unmapped columns are
 still available in patch scripts via `$row` but are not stored in the document.
@@ -182,7 +183,7 @@ An embedded table needs:
 * **PrimaryKeyColumns** — Used to match items within the parent's array for UPDATE and DELETE
 * **JoinColumns** — Foreign key referencing the parent's `PrimaryKeyColumns`
 
-The `JoinColumns` must exactly match the parent's `PrimaryKeyColumns`:
+The `JoinColumns` must correspond 1:1 (same count and order) to the parent's `PrimaryKeyColumns`:
 
 | Parent PK | Required JoinColumns | Valid? |
 |-----------|---------------------|--------|

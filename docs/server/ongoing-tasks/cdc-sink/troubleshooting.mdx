@@ -75,9 +75,10 @@ specific failure reason.
   may retain WAL segments that fill the disk. See your PostgreSQL documentation on
   `wal_keep_size` and replication slot lag.
 
-* **Exceeded fallback timeout** — the source was unreachable for longer than
-  `CdcSink.MaxFallbackTimeInSec`. The task moves to error state after this timeout.
-  Restore connectivity and re-enable the task.
+* **Persistent connection failure** — the source has been unreachable through multiple
+  retry cycles. Retry delay doubles on each failure up to the `CdcSink.MaxFallbackTimeInSec`
+  cap (default 15 minutes). Restore connectivity and the task resumes automatically
+  on the next retry.
 
 ---
 
