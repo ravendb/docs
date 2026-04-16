@@ -557,7 +557,7 @@ hr {
 
 /* Custom scroll margin and word break for headers */
 .theme-doc-markdown :is(h1, h2, h3, h4, h5, h6) {
-    @apply scroll-mt-[10rem] break-all;
+    @apply scroll-mt-[10rem] break-words;
 }
 
 /* Override custom word break for headers inside <header> tag */
