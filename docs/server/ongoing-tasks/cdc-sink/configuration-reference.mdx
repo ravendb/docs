@@ -1,0 +1,229 @@
+---
+title: "CDC Sink: Configuration Reference"
+sidebar_label: Configuration Reference
+description: "Documents all configuration classes used to define a CDC Sink task, including CdcSinkConfiguration, table configs, CdcColumnMapping, and related types."
+sidebar_position: 10
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# CDC Sink: Configuration Reference
+
+<Admonition type="note" title="">
+
+* This page documents all configuration classes used to define a CDC Sink task.
+
+* In this page:
+  * [CdcSinkConfiguration](#cdcsinkconfiguration)
+  * [CdcSinkPostgresSettings](#cdcsinkpostgressettings)
+  * [CdcSinkTableConfig](#cdcsinktableconfig)
+  * [CdcSinkEmbeddedTableConfig](#cdcsinkembeddedtableconfig)
+  * [CdcSinkLinkedTableConfig](#cdcsinklinkedtableconfig)
+  * [CdcColumnMapping](#cdccolumnmapping)
+  * [CdcColumnType](#cdccolumntype)
+  * [CdcSinkOnDeleteConfig](#cdcsinkondeleteconfig)
+  * [CdcSinkRelationType](#cdcsinkrelationtype)
+  * [REST API Endpoints](#rest-api-endpoints)
+
+</Admonition>
+
+---
+
+## CdcSinkConfiguration
+
+The top-level configuration object for a CDC Sink task.
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `Name` | `string` | ✓ | Unique task name |
+| `ConnectionStringName` | `string` | ✓ | Name of the SQL connection string (uses the existing `SqlConnectionString` type — the same as SQL ETL). The connection string's `FactoryName` determines the source database engine. |
+| `Tables` | `List<CdcSinkTableConfig>` | ✓ | Root table configurations (at least one required) |
+| `Postgres` | `CdcSinkPostgresSettings` | | PostgreSQL-specific settings (slot and publication names) |
+| `SkipInitialLoad` | `bool` | | When `true`, skip the initial full-table scan and start streaming CDC changes immediately. Only applies on first startup — has no effect once the initial load has completed. Default: `false` |
+| `Disabled` | `bool` | | Pause the task without deleting it. Default: `false` |
+| `MentorNode` | `string` | | Preferred cluster node for execution |
+| `PinToMentorNode` | `bool` | | Pin the task to the mentor node. Default: `false` |
+| `TaskId` | `long` | | Set by the server on creation |
+
+**Supported `FactoryName` values (set on the connection string):**
+
+| FactoryName | Database Engine |
+|-------------|-----------------|
+| `Npgsql` | PostgreSQL |
+| `System.Data.SqlClient` or `Microsoft.Data.SqlClient` | SQL Server |
+| `MySql.Data.MySqlClient` or `MySqlConnector.MySqlConnectorFactory` | MySQL / MariaDB |
+
+---
+
+## CdcSinkPostgresSettings
+
+PostgreSQL-specific settings. Assigned to `CdcSinkConfiguration.Postgres`.
+Leave `null` for non-PostgreSQL connections.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `SlotName` | `string` | Name of the PostgreSQL logical replication slot. If omitted on creation, auto-generated as `rvn_cdc_s_{guid}` on task creation. Immutable once set. Max 63 characters, alphanumeric and underscores only. |
+| `PublicationName` | `string` | Name of the PostgreSQL publication. Same auto-generated naming and immutability rules as `SlotName`. |
+
+Setting these explicitly is useful when:
+- A database administrator pre-creates the slot and publication with human-readable names
+- Migrating from a previous CDC Sink task and reusing an existing slot
+- Running multiple environments (dev/staging/prod) with predictable names
+
+If tables are missing from the publication, CDC Sink attempts `ALTER PUBLICATION ... ADD TABLE`
+automatically on startup (requires sufficient permissions).
+
+See [Initial Setup](./postgres/initial-setup.mdx) for details.
+
+<Admonition type="note" title="">
+For embedded tables where the join columns are not part of the primary key, the
+PostgreSQL table must have `REPLICA IDENTITY` configured so that DELETE events include
+the join column values. See [REPLICA IDENTITY](./postgres/replica-identity.mdx).
+</Admonition>
+
+---
+
+## CdcSinkTableConfig
+
+Configures a root table — one SQL table mapped to one RavenDB collection.
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `CollectionName` | `string` | ✓ | RavenDB collection name (e.g., `"Orders"`) |
+| `SourceTableName` | `string` | ✓ | SQL table name (e.g., `"orders"`) |
+| `SourceTableSchema` | `string` | | SQL schema name. Default: `"public"` |
+| `PrimaryKeyColumns` | `List<string>` | ✓ | SQL columns used for document ID generation |
+| `Columns` | `List<CdcColumnMapping>` | ✓ | Column mappings — each entry defines a SQL column, its document property name, and how to store it |
+| `Patch` | `string` | | JavaScript patch for INSERT and UPDATE |
+| `OnDelete` | `CdcSinkOnDeleteConfig` | | Delete behavior. Default: delete document |
+| `EmbeddedTables` | `List<CdcSinkEmbeddedTableConfig>` | | Nested table configurations |
+| `LinkedTables` | `List<CdcSinkLinkedTableConfig>` | | Foreign key reference configurations |
+| `Disabled` | `bool` | | Skip this table. Default: `false` |
+
+---
+
+## CdcSinkEmbeddedTableConfig
+
+Configures a table whose rows are embedded as nested objects within a parent document.
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `SourceTableName` | `string` | ✓ | SQL table name |
+| `SourceTableSchema` | `string` | | SQL schema name. Default: `"public"` |
+| `PropertyName` | `string` | ✓ | Property name in the parent document (e.g., `"Lines"`) |
+| `Type` | `CdcSinkRelationType` | ✓ | `Array`, `Map`, or `Value` |
+| `JoinColumns` | `List<string>` | ✓ | FK columns referencing parent's `PrimaryKeyColumns` |
+| `PrimaryKeyColumns` | `List<string>` | ✓ | PK columns for matching items on UPDATE/DELETE |
+| `Columns` | `List<CdcColumnMapping>` | ✓ | Column mappings — each entry defines a SQL column, its document property name, and how to store it |
+| `Patch` | `string` | | JavaScript patch on **parent** document for INSERT/UPDATE |
+| `OnDelete` | `CdcSinkOnDeleteConfig` | | Delete behavior for embedded items |
+| `CaseSensitiveKeys` | `bool` | | Case-sensitive PK matching. Default: `false` |
+| `EmbeddedTables` | `List<CdcSinkEmbeddedTableConfig>` | | Nested embedded tables |
+| `LinkedTables` | `List<CdcSinkLinkedTableConfig>` | | Linked tables within embedded items |
+
+---
+
+## CdcSinkLinkedTableConfig
+
+Configures a foreign key reference that becomes a document ID in the parent document.
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `SourceTableName` | `string` | ✓ | SQL table name of the referenced table |
+| `SourceTableSchema` | `string` | | SQL schema name. Default: `"public"` |
+| `PropertyName` | `string` | ✓ | Property name in the parent document (e.g., `"Customer"`) |
+| `LinkedCollectionName` | `string` | ✓ | Target RavenDB collection for ID generation (e.g., `"Customers"`) |
+| `JoinColumns` | `List<string>` | ✓ | FK columns used to build the referenced document ID |
+
+---
+
+## CdcColumnMapping
+
+A single column mapping entry within a `Columns` list.
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `Column` | `string` | ✓ | SQL column name (case-insensitive) |
+| `Name` | `string` | ✓ | Document property name (or attachment name when `Type = Attachment`) |
+| `Type` | `CdcColumnType` | | How to store the value. Default: `Default` |
+
+---
+
+## CdcColumnType
+
+Controls how a SQL column value is stored in RavenDB.
+
+| Value | Behavior |
+|-------|----------|
+| `Default` | Standard type conversion: int→long, numeric/decimal→decimal, real→float, double precision→double, date→DateOnly, timestamp→DateTime, uuid→string, varchar/text→string. SQL arrays→JSON arrays. JSON/JSONB stored as plain string. |
+| `Json` | Parses the string value as a native JSON value (object, array, string, number, boolean, etc.) in the document. Use for PostgreSQL `json`/`jsonb` or SQL Server `nvarchar(max)` with JSON content. |
+| `Attachment` | Stores the raw column value as a RavenDB attachment. `byte[]`→binary (`application/octet-stream`), `string`→UTF-8 text (`text/plain`), `float[]`/`double[]`→raw vector data. The `Name` field becomes the attachment name. |
+
+---
+
+## CdcSinkOnDeleteConfig
+
+Controls how DELETE events are handled for a table or embedded table.
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `Patch` | `string` | null | JavaScript patch that runs when a DELETE event arrives |
+| `IgnoreDeletes` | `bool` | `false` | When `true`, skip the delete — document/item is kept |
+
+**Available patch variables for OnDelete:**
+
+* `this` — the document (root or parent for embedded)
+* `$row` — all SQL columns from the DELETE event
+* `$old` — the embedded item's last known state (for embedded tables)
+
+**Behavior matrix:**
+
+| IgnoreDeletes | Patch | Result |
+|---------------|-------|--------|
+| `false` | null | Normal delete (default) |
+| `false` | set | Patch runs, then delete proceeds |
+| `true` | null | DELETE discarded silently |
+| `true` | set | Patch runs, delete skipped |
+
+---
+
+## CdcSinkRelationType
+
+Specifies the structure of embedded data in the document.
+
+| Value | Description |
+|-------|-------------|
+| `Array` | One-to-many: stored as a JSON array. Items matched by PK for UPDATE/DELETE |
+| `Map` | One-to-many: stored as a JSON object keyed by PK value(s) |
+| `Value` | Many-to-one: stored as a single embedded object |
+
+---
+
+## REST API Endpoints
+
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| PUT | `/databases/{db}/admin/cdc-sink` | DatabaseAdmin | Create CDC Sink task |
+| PUT | `/databases/{db}/admin/cdc-sink?id={taskId}` | DatabaseAdmin | Update CDC Sink task |
+| POST | `/databases/{db}/admin/cdc-sink/test` | DatabaseAdmin | Test a patch script |
+| POST | `/databases/{db}/admin/cdc-sink/verify` | DatabaseAdmin | Verify source database connectivity and CDC setup |
+| GET | `/databases/{db}/cdc-sink/performance` | ValidUser | Get performance stats |
+| GET | `/databases/{db}/cdc-sink/performance/live` | ValidUser | WebSocket for live performance stats |
+
+---
+
+## Related Articles
+
+### CDC Sink
+
+- [Schema Design](./schema-design.mdx)
+- [Embedded Tables](./embedded-tables.mdx)
+- [Linked Tables](./linked-tables.mdx)
+- [Patching](./patching.mdx)
+- [Delete Strategies](./delete-strategies.mdx)
+- [API Reference](./api-reference.mdx)

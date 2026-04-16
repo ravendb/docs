@@ -1,0 +1,86 @@
+---
+title: "CDC Sink: Server Configuration"
+sidebar_label: Server Configuration
+description: "Documents the RavenDB server configuration keys that control CDC Sink task behavior, including batch size, fallback timeout, and poll interval."
+sidebar_position: 15
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# CDC Sink: Server Configuration
+
+<Admonition type="note" title="">
+
+* This page documents the RavenDB server configuration keys that control CDC Sink
+  task behavior.
+
+* In this page:
+  * [Configuration Keys](#configuration-keys)
+
+</Admonition>
+
+---
+
+## Configuration Keys
+
+These keys can be set in `settings.json` or passed as environment variables.
+See [Configuration Overview](../../../server/configuration/configuration-options).
+
+---
+
+#### `CdcSink.MaxBatchSize`
+
+**Default:** `1024`
+
+Target number of change rows processed in a single batch before writing to RavenDB. A batch may exceed this size when a source database transaction contains more rows, since transactions are never split across batches.
+
+Larger values increase throughput but also increase memory usage per batch.
+
+---
+
+#### `CdcSink.MaxFallbackTimeInSec`
+
+**Default:** `900` (15 minutes)
+
+Maximum number of seconds the CDC Sink process will stay in fallback mode after a failure before retrying. Fallback duration doubles on each consecutive failure, up to this cap.
+
+Set to `0` to disable fallback mode entirely — the task will retry immediately on each failure without exponential backoff.
+
+---
+
+#### `CdcSink.SqlServer.PollIntervalInSec`
+
+**Default:** `1`
+
+How frequently (in seconds) the SQL Server CDC Sink polls for new change rows. Lower values reduce latency but increase load on the source database.
+
+PostgreSQL and MySQL use streaming replication and ignore this setting.
+
+---
+
+#### `CdcSink.Postgres.ReplicationTimeoutInSec`
+
+**Default:** `10`
+
+Timeout (in seconds) for the PostgreSQL replication connection. Controls both the server-side `wal_sender_timeout` (keepalives arrive at roughly half this interval) and the client-side `WalReceiverTimeout`. Lower values detect dead connections faster but increase keepalive traffic.
+
+SQL Server and MySQL ignore this setting.
+
+---
+
+## Related Articles
+
+### CDC Sink
+
+- [Overview](./overview.mdx)
+- [Monitoring](./monitoring.mdx)
+- [Failover and Consistency](./failover-and-consistency.mdx)
+
+### Server Configuration
+
+- [Configuration Overview](../../../server/configuration/configuration-options)

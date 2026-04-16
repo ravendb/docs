@@ -1,0 +1,267 @@
+---
+title: "CDC Sink: Source Schema Changes"
+sidebar_label: Source Schema Changes
+description: "How to safely modify your source database schema while a CDC Sink task is running — behavior per database engine, recovery, and the SQL Server capture instance procedure."
+sidebar_position: 13
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# CDC Sink: Source Schema Changes
+
+<Admonition type="note" title="">
+
+* This page explains how CDC Sink handles schema changes (columns added, removed,
+  renamed, or retyped) on the source database tables while the task is running.
+
+* The behavior differs by database engine. PostgreSQL is the most resilient,
+  MySQL detects most changes automatically, and SQL Server requires an explicit
+  procedure for every schema change.
+
+* In this page:
+  * [Quick Reference](#quick-reference)
+  * [PostgreSQL](#postgresql)
+  * [MySQL](#mysql)
+  * [SQL Server](#sql-server)
+  * [Recovery From Errors](#recovery-from-errors)
+  * [General Recommendation](#general-recommendation)
+
+</Admonition>
+
+---
+
+## Quick Reference
+
+| Change | MySQL | PostgreSQL | SQL Server |
+|--------|-------|------------|------------|
+| Add column (unmapped) | Transparent | Transparent | Requires [procedure](#sql-server-schema-change-procedure) |
+| Add column (mapped) | Update config + restart | Update config + restart | Requires [procedure](#sql-server-schema-change-procedure) + config update |
+| Drop unmapped column | Transparent | Transparent | Requires [procedure](#sql-server-schema-change-procedure) |
+| Drop mapped column | Enters fallback (config error) | Enters fallback (config error) | Requires [procedure](#sql-server-schema-change-procedure) |
+| Change column type | Restarts, usually recovers | Transparent (auto-rebuild) | Requires [procedure](#sql-server-schema-change-procedure) |
+| Rename mapped column | Enters fallback | Enters fallback | Requires [procedure](#sql-server-schema-change-procedure) |
+
+---
+
+## PostgreSQL
+
+PostgreSQL logical replication sends `RelationMessage` events inline in the WAL stream
+whenever the schema changes. CDC Sink detects these automatically and rebuilds its
+column mapping on the fly. This makes PostgreSQL the **most resilient** to schema changes.
+
+* **Adding or dropping unmapped columns** — transparent.
+
+* **Changing a column type** — usually transparent. A new `RelationMessage` triggers
+  an update to the internal columns mapping inside the sink. 
+
+* **Dropping or renaming a mapped column** — CDC Sink enters fallback because the
+  mapped column name is no longer found in the new schema. Update the task
+  configuration to match the new column name, and CDC Sink recovers on the next retry.
+
+### PostgreSQL Examples
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+<CodeBlock language="sql">
+{`-- Transparent: adding an unmapped column
+ALTER TABLE orders ADD COLUMN internal_notes TEXT;
+-- CDC Sink auto-rebuilds and continues
+
+-- Transparent: changing a column type
+ALTER TABLE orders ALTER COLUMN status TYPE VARCHAR(100);
+-- CDC Sink auto-rebuilds and continues
+
+-- Requires config update: renaming a mapped column
+ALTER TABLE orders RENAME COLUMN name TO full_name;
+-- CDC Sink enters fallback. Update column mapping from 'name' to 'full_name'.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+---
+
+## MySQL
+
+MySQL CDC uses binlog replication. Each row event is preceded by a `TableMapEvent`
+containing column type information. CDC Sink compares the column types at mapped
+positions against the expected types from `INFORMATION_SCHEMA`. If they don't match,
+the process detects a schema change.
+
+* **Adding or dropping unmapped columns** — transparent. The unmapped column is ignored.
+  The CDC Sink may restart itself to re-resolve the current schema from `INFORMATION_SCHEMA`, 
+  but normal operations will resume momentarily.
+
+* **Changing a column type** — CDC Sink detects the type change via binlog column types,
+  restarts, re-resolves from `INFORMATION_SCHEMA`, and continues.
+
+* **Dropping or renaming a mapped column** — CDC Sink enters fallback because the
+  mapped column is no longer found. Update the task configuration to match the new
+  schema.
+
+<Admonition type="warning" title="">
+
+**Apply schema changes one at a time.** MySQL CDC Sink detects schema changes by
+comparing column types at specific positions. If multiple changes are applied in a
+single `ALTER TABLE` statement (e.g., `ADD COLUMN ... AFTER ...`, or adding and
+removing columns together), the positional shifts can compound and make it difficult
+for CDC Sink to resolve the new schema correctly.
+
+Apply one schema change, let CDC Sink catch up and confirm it is processing normally,
+then apply the next change. This ensures each change is simple and isolated.
+
+</Admonition>
+
+### MySQL Examples
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+<CodeBlock language="sql">
+{`-- Transparent: adding an unmapped column
+ALTER TABLE orders ADD COLUMN internal_notes TEXT;
+-- CDC Sink continues without interruption
+
+-- Auto-recovers: changing a column type
+ALTER TABLE orders MODIFY COLUMN status VARCHAR(100);
+-- CDC Sink detects change, restarts, and recovers automatically
+
+-- Requires config update: dropping a mapped column
+ALTER TABLE orders DROP COLUMN legacy_field;
+-- CDC Sink enters fallback. Update the config to remove 'legacy_field' from Columns.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+---
+
+## SQL Server
+
+SQL Server CDC uses **capture instances** — immutable snapshots of the table schema
+at the time `sp_cdc_enable_table` was executed. The CDC change tables reflect the
+schema as it was when the capture instance was created, **not** the current table
+schema. This means **any** schema change on a CDC-tracked table requires creating
+a new capture instance.
+
+SQL Server supports at most **two** capture instances per table at a time. The CDC
+Sink always reads from the oldest active instance. When the old instance is dropped,
+CDC Sink detects this (via `fn_cdc_get_min_lsn` returning all zeros), restarts, and
+picks up the new instance.
+
+### SQL Server Schema Change Procedure
+
+For **any** schema change on a SQL Server CDC-tracked table, follow this procedure:
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+<CodeBlock language="sql">
+{`-- Step 1: ALTER the table
+ALTER TABLE dbo.orders ADD priority INT DEFAULT 0;
+
+-- Step 2: Create a NEW capture instance (the old one still exists)
+EXEC sys.sp_cdc_enable_table
+    @source_schema = N'dbo',
+    @source_name = N'orders',
+    @capture_instance = N'dbo_orders_v2',
+    @role_name = NULL;
+
+-- Step 3: WAIT — let CDC Sink drain the OLD capture instance.
+-- The sink reads from the oldest instance and processes all remaining changes.
+-- Monitor the CDC Sink task status in Studio to confirm it has caught up.
+
+-- Step 4: Drop the OLD capture instance
+EXEC sys.sp_cdc_disable_table
+    @source_schema = N'dbo',
+    @source_name = N'orders',
+    @capture_instance = N'dbo_orders';
+
+-- CDC Sink detects the drop, restarts, and picks up dbo_orders_v2.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+**What happens at each step:**
+
+1. **After step 2** — Two capture instances exist. CDC Sink continues reading from the
+   oldest one (`dbo_orders`). New changes are captured by both instances.
+2. **After step 3** — CDC Sink has processed all changes from the old instance. It's
+   safe to drop it.
+3. **After step 4** — `fn_cdc_get_min_lsn('dbo_orders')` returns all zeros. CDC Sink
+   detects this on the next poll cycle, enters fallback, and restarts against the new
+   instance.
+
+If the schema change also affects column mappings, update the CDC Sink task
+configuration after the new capture instance is active.
+
+<Admonition type="warning" title="">
+
+Do not drop the old capture instance before CDC Sink has drained it — you may lose
+changes that were captured in the old instance but not yet processed.
+
+</Admonition>
+
+### SQL Server Agent
+
+CDC requires SQL Server Agent to be running. The capture job (which populates change
+tables) and cleanup job (which purges old changes) are Agent jobs.
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+<CodeBlock language="sql">
+{`-- Check Agent status
+SELECT * FROM sys.dm_server_services WHERE servicename LIKE '%Agent%';
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Without the Agent, changes are never captured and CDC Sink polls indefinitely without
+finding data.
+
+---
+
+## Recovery From Errors
+
+All three providers use the same recovery mechanism:
+
+1. **Error detected** — process enters fallback mode with exponential backoff (starting
+   at 5 seconds, up to `CdcSink.MaxFallbackTimeInSec`)
+2. **On each retry** — process restarts: re-resolves schema, re-opens connections
+3. **If the error persists** (e.g., mapped column still missing) — retries continue
+   with increasing backoff. A notification is raised for each error, visible in Studio.
+4. **After fixing the configuration** — the process recovers automatically on the next
+   retry cycle. No manual restart is needed.
+
+---
+
+## General Recommendation
+
+For schema changes that affect mapped columns on any database engine:
+
+1. Update the CDC Sink task configuration to match the new schema
+2. Apply the schema change on the source database
+3. For SQL Server: follow the [capture instance procedure](#sql-server-schema-change-procedure) above
+
+CDC Sink will detect the change and recover automatically. Disabling the task
+beforehand is not required but can avoid a brief fallback cycle.
+
+---
+
+## Related Articles
+
+### CDC Sink
+
+- [Configuration Reference](./configuration-reference.mdx)
+- [Column Mapping](./column-mapping.mdx)
+- [How It Works: Updating the Task Configuration](./how-it-works.mdx#updating-the-task-configuration)
+- [Troubleshooting](./troubleshooting.mdx)
+
+### SQL Server
+
+- [SQL Server Overview](./sql-server/overview.mdx)
