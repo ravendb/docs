@@ -132,7 +132,7 @@ A conversation is a communication session between the client, the agent, and the
 
 ### Initiating a conversation
 
-To start a conversation with the LLM, the agent will send it an **initial context** that includes -  
+To start a conversation with the LLM, the agent will send to the LLM an **initial context** that includes -  
 
 * The pre-defined [agent configuration](../../ai-integration/ai-agents/overview.mdx#the-main-stages-in-defining-an-ai-agent) (automatically sent by the agent) with:  
    * The system prompt  
@@ -163,6 +163,10 @@ To start a conversation with the LLM, the agent will send it an **initial contex
   The conversation will remain available in the `@conversations` collection even after it ends, so it can be resumed at any future time.  
 
 * A **user prompt**, set by the client, that defines, for example, a question or a request for particular information.  
+
+* Optional **file attachments**, provided by the client alongside the user prompt.  
+  The client can attach files (e.g., PDFs, images) to any conversation turn, allowing the LLM to analyze the attachment content as part of its response.  
+  [Learn to add attachments using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#adding-attachments)  
 
 </ContentFrame>
 

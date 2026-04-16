@@ -39,6 +39,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Injecting artificial tool context](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#injecting-artificial-tool-context)
       * [Conversation response](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#conversation-response)
       * [Setting user prompt and running the conversation](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#setting-user-prompt-and-running-the-conversation)
+      * [Adding attachments](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#adding-attachments)
    * [Stream LLM responses](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#stream-llm-responses)
    * [Full Example](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#full-example)
    * [Syntax](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#syntax)
@@ -1042,6 +1043,76 @@ See [RunAsync](../../../../ai-integration/ai-agents/creating-ai-agents/creating-
 See the full example [below](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#full-example).  
 
 </ContentFrame>
+
+<ContentFrame>
+
+### Adding attachments
+
+You can attach files to a conversation turn to allow the LLM to analyze file content as part of its response. Attachments are scoped to the current turn and are cleared after each `RunAsync` or `StreamAsync` call.
+
+Two methods are available:
+
+* **`AddAttachment`**  
+  attaches a file from a `Stream`. Use this when the file content is available in memory or read from disk.
+* **`CopyAttachmentFrom`**  
+  copies an existing attachment from a RavenDB document into the conversation turn.  
+  Use this when the file is already stored as a document attachment in RavenDB.
+
+<Admonition type="note" title="">
+Note that the LLM must support multimodal input (e.g., vision-capable models such as GPT-4o) for image attachments to be processed. Confirm attachment support with your LLM provider before use.
+</Admonition>
+
+---
+
+#### Example: Attaching a file from disk
+
+```csharp
+// Open a file and attach it to the conversation turn
+using var fileStream = File.OpenRead("monthly-report.pdf");
+chat.AddAttachment("monthly-report.pdf", fileStream, "application/pdf");
+
+// Set the user prompt
+chat.SetUserPrompt("Summarize the key findings in this report.");
+
+var response = await chat.RunAsync<ReportSummary>(CancellationToken.None);
+```
+
+---
+
+#### Example: Copying an attachment from a RavenDB document
+
+```csharp
+// Copy an attachment that is already stored in a RavenDB document
+chat.CopyAttachmentFrom("products/42-A", "spec-sheet.pdf");
+
+// Set the user prompt
+chat.SetUserPrompt("List the technical specifications from this document.");
+
+var response = await chat.RunAsync<SpecList>(CancellationToken.None);
+```
+
+---
+
+#### Example: Combining multiple attachments in one turn
+
+```csharp
+// Attach a file from disk
+using var contract = File.OpenRead("contract.pdf");
+chat.AddAttachment("contract.pdf", contract, "application/pdf");
+
+// Also copy an existing RavenDB document attachment
+chat.CopyAttachmentFrom("products/42-A", "spec-sheet.pdf");
+
+// Set the user prompt
+chat.SetUserPrompt("Does the contract cover all items listed in the spec sheet?");
+
+var response = await chat.RunAsync<ComplianceResult>(CancellationToken.None);
+```
+
+<br />
+See [AddAttachment](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#conversation-execution) and [CopyAttachmentFrom](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#conversation-execution) in the [Syntax](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#syntax) section.
+
+</ContentFrame>
 </Panel>
 
 <Panel heading="Stream LLM responses">
@@ -1311,7 +1382,7 @@ var result = await store.AI.CreateAgentAsync(configuration, sampleObject);
 
 | Return value | |
 |-----------|-------------|
-| `AiAgentConfigurationResult` | Contains `Identifier` (`string`) — the unique ID of the created or updated agent. |
+| `AiAgentConfigurationResult` | Contains `Identifier` (`string`) - the unique ID of the created or updated agent. |
 
 </TabItem>
 <TabItem value="DeleteAgent" label="DeleteAgent">
@@ -1340,7 +1411,7 @@ var result = await store.AI.DeleteAgentAsync("reward-productive-employee");
 
 | Return value | |
 |-----------|-------------|
-| `AiAgentConfigurationResult` | Contains `Identifier` (`string`) — the ID of the deleted agent. |
+| `AiAgentConfigurationResult` | Contains `Identifier` (`string`) - the ID of the deleted agent. |
 
 </TabItem>
 </Tabs>
@@ -1397,7 +1468,7 @@ List<AiAgentConfiguration> agents = response.AiAgents;
 
 | Return value | |
 |-----------|-------------|
-| `GetAiAgentsResponse` | Contains `AiAgents` (`List<AiAgentConfiguration>`) — the list of all agent configurations. |
+| `GetAiAgentsResponse` | Contains `AiAgents` (`List<AiAgentConfiguration>`) - the list of all agent configurations. |
 
 </TabItem>
 </Tabs>
@@ -1442,7 +1513,7 @@ var chat = store.AI.Conversation(
 </TabItem>
 <TabItem value="SetUserPrompt" label="SetUserPrompt">
 
-Sets the user prompt to send to the AI agent on the next conversation turn.
+Sets the user prompt for the next conversation turn, replacing any previously added prompt parts.
 
 ```csharp
 void SetUserPrompt(string userPrompt)
@@ -1457,7 +1528,71 @@ chat.SetUserPrompt("find the employee that made the largest profit");
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| **userPrompt** | `string` | The text of the user's message. |
+| **userPrompt** | `string` | The text of the user's message. Replaces any previously added prompt parts. |
+
+</TabItem>
+<TabItem value="AddUserPrompt" label="AddUserPrompt">
+
+Appends one or more text parts to the user prompt for the next conversation turn, without replacing parts that were previously added.
+
+```csharp
+void AddUserPrompt(params IEnumerable<string> userPrompt)
+```
+<br />
+Usage:
+
+```csharp
+chat.AddUserPrompt("Summarize the findings for France.", "Focus on Q4 data.");
+```
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **userPrompt** | `IEnumerable<string>` | One or more text strings to append as prompt parts. |
+
+</TabItem>
+<TabItem value="AddAttachment" label="AddAttachment">
+
+Attaches a file to the current conversation turn. The attachment is sent to the LLM together with the user prompt when `RunAsync` or `StreamAsync` is called, and is cleared afterwards.
+
+```csharp
+void AddAttachment(string name, Stream stream, string contentType)
+```
+<br />
+Usage:
+
+```csharp
+using var fileStream = File.OpenRead("monthly-report.pdf");
+chat.AddAttachment("monthly-report.pdf", fileStream, "application/pdf");
+```
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **name** | `string` | A descriptive name for the attachment (e.g., `"monthly-report.pdf"`). A descriptive name is recommended as it helps the LLM understand the file's context. |
+| **stream** | `Stream` | The data stream of the file to attach. |
+| **contentType** | `string` | The MIME type of the attachment content (e.g., `"application/pdf"`, `"image/png"`). |
+
+</TabItem>
+<TabItem value="CopyAttachmentFrom" label="CopyAttachmentFrom">
+
+Copies an attachment from an existing RavenDB document into the current conversation turn. The attachment is sent to the LLM together with the user prompt when `RunAsync` or `StreamAsync` is called, and is cleared afterwards.
+
+```csharp
+void CopyAttachmentFrom(string sourceDocumentId, string fileName)
+```
+<br />
+Usage:
+
+```csharp
+chat.CopyAttachmentFrom("products/42-A", "spec-sheet.pdf");
+```
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **sourceDocumentId** | `string` | The ID of the document in RavenDB that contains the attachment. |
+| **fileName** | `string` | The name of the file attached to the source document. This name is also used to identify the file in the conversation context. |
 
 </TabItem>
 <TabItem value="RunAsync" label="RunAsync / Run">
@@ -1590,7 +1725,7 @@ chat.Handle("store-performer-details", (Performer performer) =>
 |-----------|------|-------------|
 | **actionName** | `string` | The name of the action tool to handle. |
 | **action** | `Func<TArgs, Task<TResult>>`, `Func<TArgs, object>`, `Func<AiAgentActionRequest, TArgs, Task<TResult>>`, or `Func<AiAgentActionRequest, TArgs, object>` | The handler function that processes the action request and returns a response to the LLM. |
-| **aiHandleError** | `AiHandleErrorStrategy` | Error handling strategy.<br />`SendErrorsToModel` — send errors to the model as text.<br />`RaiseImmediately` — throw exceptions to the caller. |
+| **aiHandleError** | `AiHandleErrorStrategy` | Error handling strategy.<br />`SendErrorsToModel` - send errors to the model as text.<br />`RaiseImmediately` - throw exceptions to the caller. |
 
 </TabItem>
 <TabItem value="Receive" label="Receive">
@@ -1630,7 +1765,7 @@ chat.Receive("store-performer-details", (AiAgentActionRequest request, Performer
 |-----------|------|-------------|
 | **actionName** | `string` | The name of the action tool to handle. |
 | **action** | `Func<AiAgentActionRequest, TArgs, Task>` or `Action<AiAgentActionRequest, TArgs>` | The receiver function that processes the action request. Must call `AddActionResponse` when done. |
-| **aiHandleError** | `AiHandleErrorStrategy` | Error handling strategy.<br />`SendErrorsToModel` — send errors to the model as text.<br />`RaiseImmediately` — throw exceptions to the caller. |
+| **aiHandleError** | `AiHandleErrorStrategy` | Error handling strategy.<br />`SendErrorsToModel` - send errors to the model as text.<br />`RaiseImmediately` - throw exceptions to the caller. |
 
 </TabItem>
 <TabItem value="AddActionResponse" label="AddActionResponse">
@@ -1802,7 +1937,7 @@ public AiAgentParameter(string name, string description, bool sendToModel)
 |----------|------|-------------|
 | **Name** | `string` | The parameter name as referenced by tools and queries. |
 | **Description** | `string` | Human-readable description explaining what value the parameter expects. |
-| **SendToModel** | `bool?` | Whether the parameter value is exposed to the AI model.<br />`true` or `null` (default) — the parameter is exposed.<br />`false` — the parameter is hidden from the model (useful for sensitive values like userId or tenant). |
+| **SendToModel** | `bool?` | Whether the parameter value is exposed to the AI model.<br />`true` or `null` (default) - the parameter is exposed.<br />`false` - the parameter is hidden from the model (useful for sensitive values like userId or tenant). |
 
 </TabItem>
 </Tabs>
@@ -1938,8 +2073,8 @@ class AiAgentToolQueryOptions
 
 | Property | Type | Description |
 |----------|------|-------------|
-| **AllowModelQueries** | `bool?` | `true` — the LLM can trigger this query on demand.<br />`false` — the LLM cannot trigger this query.<br />`null` — server-side defaults apply. |
-| **AddToInitialContext** | `bool?` | `true` — the query runs when the conversation starts and its results are added to the initial context.<br />`false` — the query does not run at conversation start.<br />`null` — server-side defaults apply. |
+| **AllowModelQueries** | `bool?` | `true` - the LLM can trigger this query on demand.<br />`false` - the LLM cannot trigger this query.<br />`null` - server-side defaults apply. |
+| **AddToInitialContext** | `bool?` | `true` - the query runs when the conversation starts and its results are added to the initial context.<br />`false` - the query does not run at conversation start.<br />`null` - server-side defaults apply. |
 
 </TabItem>
 <TabItem value="AiAgentToolAction" label="AiAgentToolAction">
