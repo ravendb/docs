@@ -58,7 +58,7 @@ conversation.AddAttachment(bill.ImageResourceName, imageStream, "image/png");
 
 Of course, this is a simplified version to illustrate the idea, as we already have specific files locally, but you can use it with any binary stream provided by the user. If we wanted to support this without RavenDB’s built-in method, we’d have to rely on a few tools or design our own file-handling mechanism. In practice, that means adding extra components solely to handle file uploads, processing, and retrieval. Compared to a method that works out of the box, the difference is immediately visible.
 
-## How it works
+## Storage and token efficiency
 
 This is not only about allowing you to upload a file into chat. When you add a file to the conversation with the Agent, it is added as a RavenDB document Attachment.
 
@@ -78,7 +78,7 @@ This method tells RavenDB which document to copy the attachment from and specifi
 
 But how does it look in practice? Let’s look at the demo.
 
-### Demo
+### Demo: HR Chatbot
 
 <Admonition type="note" title="Run This Demo Yourself"> 
 Before we begin, if you want to run this demo yourself, you can find the [samples-hr repository on GitHub](https://github.com/ravendb/samples-hr). Instructions for launching it are included.
