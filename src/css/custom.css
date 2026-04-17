@@ -565,12 +565,9 @@ hr {
     overflow-wrap: break-word;
 }
 
-/* Inline code inside headings: no background box, allow mid-identifier breaks
-   when the identifier alone wouldn't fit on a line. */
+/* Inline code inside headings: allow mid-identifier breaks when the
+   identifier alone wouldn't fit on a line. */
 .theme-doc-markdown :is(h1, h2, h3, h4, h5, h6) :is(code, kbd, samp) {
-    background: none;
-    border: none;
-    padding: 0;
     overflow-wrap: anywhere;
     word-break: break-all;
 }
