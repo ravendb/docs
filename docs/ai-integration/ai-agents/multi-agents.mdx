@@ -1,0 +1,510 @@
+---
+title: "AI agents: Multi-agents"
+sidebar_label: "Multi-agents"
+description: "Compose RavenDB AI agents into hierarchies so specialist sub-agents handle focused tasks while a root agent routes requests, conversations, and parameters."
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# AI agents: Multi-agents
+
+<Admonition type="note" title="">
+
+* A **multi-agents setup** composes several AI agents into a hierarchy.
+  A **root agent** receives the client's conversation and delegates focused tasks
+  to one or more **sub-agents**. Each sub-agent is itself a full AI agent that can
+  run its own queries, request actions, and call its own sub-agents.  
+
+* Multi-agents are useful when a single agent would carry too much in one conversation.
+  Splitting responsibilities keeps each agent's system prompt and context window focused on one specialty, which makes tool selection more reliable and reduces token usage.  
+
+* The root agent and its sub-agents exchange only a narrow summary per sub-call.
+  The root conversation stays clean, while each sub-agent's detailed exchange is
+  kept in its own sub-conversation document.  
+
+* Multi-agents are wired by **identifier**. Sub-agents are created the same way any
+  agent is created, and are then referenced from a parent agent's configuration.
+  An agent cannot create another agent at runtime.  
+
+* In this article:
+   * [What is a multi-agents hierarchy](../../ai-integration/ai-agents/multi-agents.mdx#what-is-a-multi-agents-hierarchy)
+      * [Root, sub-agents, and the specialist pattern](../../ai-integration/ai-agents/multi-agents.mdx#root-sub-agents-and-the-specialist-pattern)
+      * [When to use a multi-agents hierarchy](../../ai-integration/ai-agents/multi-agents.mdx#when-to-use-a-multi-agents-hierarchy)
+      * [What a multi-agents hierarchy is not](../../ai-integration/ai-agents/multi-agents.mdx#what-a-multi-agents-hierarchy-is-not)
+   * [How a multi-agents hierarchy runs](../../ai-integration/ai-agents/multi-agents.mdx#how-a-multi-agents-hierarchy-runs)
+      * [Conversation flow across the hierarchy](../../ai-integration/ai-agents/multi-agents.mdx#conversation-flow-across-the-hierarchy)
+      * [Conversation documents and sub-conversation isolation](../../ai-integration/ai-agents/multi-agents.mdx#conversation-documents-and-sub-conversation-isolation)
+      * [Action tool routing back to the client](../../ai-integration/ai-agents/multi-agents.mdx#action-tool-routing-back-to-the-client)
+   * [Passing parameters through the hierarchy](../../ai-integration/ai-agents/multi-agents.mdx#passing-parameters-through-the-hierarchy)
+      * [Parameter propagation by name](../../ai-integration/ai-agents/multi-agents.mdx#parameter-propagation-by-name)
+      * [Parameters not declared on the root agent](../../ai-integration/ai-agents/multi-agents.mdx#parameters-not-declared-on-the-root-agent)
+      * [Parameter visibility to the LLM](../../ai-integration/ai-agents/multi-agents.mdx#parameter-visibility-to-the-llm)
+      * [Forbidding the parent from generating a parameter value](../../ai-integration/ai-agents/multi-agents.mdx#forbidding-the-parent-from-generating-a-parameter-value)
+   * [Security considerations specific to multi-agent setups](../../ai-integration/ai-agents/multi-agents.mdx#security-considerations-specific-to-multi-agent-setups)
+   * [Limitations](../../ai-integration/ai-agents/multi-agents.mdx#limitations)
+   * [Example](../../ai-integration/ai-agents/multi-agents.mdx#example)
+
+</Admonition>
+
+<Panel heading="What is a multi-agents hierarchy">
+
+<ContentFrame>
+
+### Root, sub-agents, and the specialist pattern
+
+A multi-agents hierarchy is a set of AI agents arranged so that one agent - the **root** - calls other agents - its **sub-agents** - as if they were tools.  
+Each sub-agent is a standalone agent: it has its own system prompt, its own query and action tools, its own parameters, and it can itself reference further sub-agents.  
+
+Wiring is done by **identifier**. A parent agent declares, in its configuration, a list of sub-agents, each entry holding the target agent's identifier and a short description.  
+The description is what the LLM reads when it decides whether to delegate to this sub-agent.  
+
+Because wiring is done by identifier, every agent in the hierarchy must already exist:
+create each sub-agent first, then reference it from the parent's configuration.
+An agent cannot spawn a new agent at runtime.  
+
+The resulting shape is typically a tree - one root, specialist sub-agents beneath it,
+possibly with further sub-sub-agents. The same specialist may be referenced from more
+than one parent if needed.
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### When to use a multi-agents hierarchy
+
+Consider splitting a single complex agent into a hierarchy when one or more of the following apply:  
+
+* **The agent's system prompt is becoming crowded.**  
+  A single prompt trying to cover many unrelated responsibilities tends to make the LLM
+  less accurate at tool selection. Giving each responsibility its own specialist sub-agent, each with its own focused prompt, makes the model's decisions clearer and easier to audit.  
+
+* **Tool counts are growing.**  
+  An agent with many query and action tools forces the LLM to choose among too many options for every message. Grouping related tools under a sub-agent reduces the set of tools the model sees at any given level.  
+
+* **Context-window pressure on the root conversation.**  
+  When a sub-agent is called, only its summarized result is returned to the root. The
+  detailed back-and-forth the sub-agent had with the LLM stays in the sub-agent's own
+  conversation, so the root's context window grows more slowly.  
+
+* **Separation of concerns matters for safety or policy.**  
+  A validator, a data fetcher, and a response generator can be built as separate agents
+  with different prompts and different tool sets, so that a change to one does not risk
+  altering the others.  
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### What a multi-agents hierarchy is not
+
+* **It is not recursion.**  
+  Each agent is invoked as a sub-tool of its parent. The agent run itself follows the hierarchy you wire; it does not re-enter the root from a sub-agent.  
+
+* **It is not runtime graph manipulation.**  
+  The wiring is part of the agent configuration. Creating or modifying a sub-agent happens the same way any agent is created or modified: through the client API or Studio, not from within a conversation.  
+
+* **It is not cross-database.**  
+  Sub-agents live in the same database as their parent. An agent cannot reference an agent defined in another database.  
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="How a multi-agents hierarchy runs">
+
+<ContentFrame>
+
+### Conversation flow across the hierarchy
+
+When a client starts a conversation with the root agent:  
+
+1. The client starts the conversation using the root agent's identifier, optionally passing parameter values.  
+
+2. The root agent processes the user's message. It decides, based on the message and the descriptions of its sub-agents, whether to invoke a sub-agent.  
+
+3. When the root agent invokes a sub-agent, the server opens a **sub-conversation** scoped to this sub-agent. The sub-agent receives the parameters it needs (see
+   [Parameter propagation by name](../../ai-integration/ai-agents/multi-agents.mdx#parameter-propagation-by-name)) and runs its own cycle: querying, reasoning, possibly invoking further sub-agents or action tools.  
+
+4. The sub-agent returns a concise result to the root agent. The root's LLM sees this result, not the sub-agent's full exchange with the model.  
+
+5. The root agent may call additional sub-agents as needed, then produces the final response that is returned to the client.  
+
+The entire run is bounded by the root agent's `MaxModelIterationsPerCall` setting: it caps the number of tool-call rounds the model may produce per user message, regardless of whether those tools are queries, actions, or sub-agent invocations.  
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Conversation documents and sub-conversation isolation
+
+Each agent in a hierarchy writes its own conversation document. The naming scheme is
+hierarchical:  
+
+* Root conversation document: `chats/<conversationId>`  
+* Depth-2 sub-agent document: `chats/<conversationId>/<sub-agent-id>`  
+* Depth-3 sub-agent document: `chats/<conversationId>/<sub-agent-id>/<sub-sub-agent-id>`  
+* And so on.  
+
+This structure has two practical consequences:  
+
+* The root conversation document stays focused on the user-facing exchange. It does not
+  include the message-by-message back-and-forth between sub-agents and the LLM.  
+
+* Each sub-agent's history is preserved in its own document, so you can audit it
+  independently - for example, to see exactly what a validator agent decided and why.  
+
+Parameter values travel with the conversation. All parameters provided when the conversation was started are stored on each conversation document in the chain, so a sub-agent can read the parameters it needs without the parent having to pass them explicitly each time.  
+What the LLM _sees_ is a separate question, covered in [Parameter visibility to the LLM](../../ai-integration/ai-agents/multi-agents.mdx#parameter-visibility-to-the-llm).  
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Action tool routing back to the client
+
+Action tools in a multi-agents hierarchy behave like action tools in a single-agent setup: the agent asks the LLM to fill in the action's parameters, the action is not executed on the server, and the client is responsible for handling the request.  
+
+The difference is in the **handler path**. When an action is declared on a sub-agent,
+its handler path is prefixed with the path to this sub-agent in the hierarchy:  
+
+* Action on the root agent: `"<action-name>"`  
+* Action on a depth-2 sub-agent: `"<sub-agent-id>/<action-name>"`  
+* Action on a depth-3 sub-agent: `"<sub-agent-id>/<sub-sub-agent-id>/<action-name>"`  
+
+The client registers one handler per path:  
+
+```csharp
+// Action on a depth-2 sub-agent:
+chat.Handle<ChangeUserNameRequest, ActionToolResult>(
+    "user-info-agent/ChangeUserName",
+    request => HandleChangeUserName(store, request));
+
+// Action on a depth-3 sub-agent:
+chat.Handle<ChangeUserNameRequest, ActionToolResult>(
+    "user-info-agent-1/user-info-agent-3/ChangeUserName",
+    request => HandleChangeUserName(store, request));
+```
+
+<br />
+
+The action tool request still bubbles all the way back to the client code - it is not
+handled by the parent agent.  
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Passing parameters through the hierarchy">
+
+<ContentFrame>
+
+### Parameter propagation by name
+
+Parameters flow through the hierarchy **by name**. When a sub-agent is invoked, any
+parameter the sub-agent has declared in its configuration is resolved as follows:  
+
+* If the **parent agent** has a parameter with the same name, the parent's value is
+  inherited by the sub-agent.  
+
+* If the parent does not have a matching parameter, and the conversation-creation options include a parameter with this name, that value is used (see
+  [Parameters not declared on the root agent](../../ai-integration/ai-agents/multi-agents.mdx#parameters-not-declared-on-the-root-agent)).  
+
+* Otherwise, the LLM on the parent side is asked to generate a value, unless the
+  sub-agent's parameter is marked with `ForbidModelGeneration` (see [Forbidding the parent from generating a parameter value](../../ai-integration/ai-agents/multi-agents.mdx#forbidding-the-parent-from-generating-a-parameter-value)).  
+
+The propagation is based on the parameter **name**: nothing else needs to be repeated. Two agents that declare a parameter called `userId` will naturally share values for this parameter when one invokes the other.  
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Parameters not declared on the root agent
+
+A parameter can be passed when starting a conversation even if the **root agent** does not declare it, as long as at least one sub-agent in the hierarchy declares it.  
+
+This is useful when a specialist sub-agent needs an input that the root agent has no reason to know about - for example, a filter that applies only to this sub-agent's queries.  
+
+#### Example: passing a root-level parameter and a sub-agent-only parameter
+
+```csharp
+var chat = store.AI.Conversation(rootAgentId, "chats/",
+    new AiConversationCreationOptions()
+        // Used by the root (and any sub-agent that also declares "userId"):
+        .AddParameter("userId", "Users/1")
+        // Not declared on the root; used by a sub-agent that declares "productType":
+        .AddParameter("productType", "Laptop"));
+```
+
+<br />
+
+The parameter is written into the conversation documents of agents that need it; whether the LLM at each level can see the value is governed by the rules in [Parameter visibility to the LLM](../../ai-integration/ai-agents/multi-agents.mdx#parameter-visibility-to-the-llm).  
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Parameter visibility to the LLM
+
+RavenDB controls whether a parameter value is exposed to the LLM on two levels.  
+Both must allow the value through for the LLM to see it, forming an **AND gate**.  
+
+* **Configuration level** - on `AiAgentParameter.SendToModel`.  
+  Set by the agent's author when declaring the parameter.  
+  When `false`, the value stays available to queries, actions, and sub-agents but is never included in the prompt sent to the model.  
+  When unset (the default), the parameter is exposed.  
+
+* **Conversation level** - on `AiConversationParameter.SendToModel`.  
+  Set by the client when starting a conversation.  
+  When `false`, the value is hidden from the LLM for this conversation, regardless of what the configuration allows.  
+  When `true` (the default), the value is exposed, subject to the configuration-level setting.  
+
+The LLM sees a parameter only if **both** settings permit it. Either one being `false` is enough to hide the value.  
+
+This two-level control matters in multi-agent setups because the conversation-level setting applies to every agent in the chain. A parameter hidden at conversation creation is hidden from the LLMs of the root agent, its sub-agents, and any deeper descendants - while still remaining usable by query and action tools throughout the hierarchy.  
+
+#### Example: hiding a sensitive value at the conversation level
+
+```csharp
+var chat = store.AI.Conversation(rootAgentId, "chats/",
+    new AiConversationCreationOptions()
+        .AddParameter("country", "France")
+        .AddParameter("userId", currentUserId,
+            new AiConversationParameterOptions { SendToModel = false }));
+```
+
+<br />
+
+In this example, `country` is visible to the LLM (subject to any per-agent configuration setting), and `userId` is hidden from every LLM in the hierarchy for this conversation.  
+
+<Admonition type="note" title="">
+The configuration-level `SendToModel` and the conversation-level `SendToModel` serve different roles.  
+The configuration-level setting expresses a rule the **agent's author** enforces for every conversation.  
+The conversation-level setting expresses a decision the **caller** makes for a specific conversation.  
+The AND gate ensures that a caller cannot override an author's restriction, and an author cannot force exposure when the caller chose to hide the value.
+</Admonition>
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Forbidding the parent from generating a parameter value
+
+When a sub-agent is invoked and it needs a parameter that has no inherited value, the
+default behavior is for the parent's LLM to generate one. This is convenient, but it is not always safe: for some parameters - a user identifier, an account number, an email address - you want the value to come from a trusted source, never from the model.  
+
+`AiAgentParameter` has a policy flag, `AiAgentParameterPolicy.ForbidModelGeneration`, that blocks this.  
+When a sub-agent declares a parameter with this flag:  
+
+* A value is accepted only if it is **inherited** - from a matching parameter on the parent agent or from a matching parameter provided when starting a conversation.  
+
+* If no matching value can be inherited, invoking the sub-agent fails with `MissingAiAgentParameterException`. The parent's LLM is not allowed to invent a value.  
+
+This is the mechanism used to keep sensitive values under human control while still
+benefiting from the multi-agent structure. It is declared **on the sub-agent's parameter**, which lets each agent state its own trust requirements independently of its parents.  
+
+#### Example: declaring a trusted parameter on a sub-agent
+
+```csharp
+var userAgent = new AiAgentConfiguration(
+    "user-info-agent",
+    "OpenAi_ConnectionString",
+    systemPrompt);
+
+userAgent.Parameters.Add(new AiAgentParameter(
+    name: "userId",
+    description: "The id of the current user",
+    sendToModel: false,
+    policy: AiAgentParameterPolicy.ForbidModelGeneration));
+```
+
+<br />
+
+In this example, `userId` is both hidden from the LLM (`sendToModel: false`) and protected against model-generated values (`ForbidModelGeneration`). A parent that wants to use this sub-agent must provide a `userId` parameter of its own, or accept a `userId` passed when starting the conversation.  
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Security considerations specific to multi-agent setups">
+
+Multi-agent setups do not introduce a new access-control surface: the scope limits already documented for AI agents apply at every level of the hierarchy. Sub-agents live in the same database as their parent, are created under the same administrative controls, and use the same connection strings.  
+
+What a hierarchy does change is **how data flows**. A parameter passed to the root may be read by any sub-agent that declares a matching parameter; a value exposed to the LLM at the root may be exposed to the LLMs of its sub-agents as well. Two controls, used together, keep the data flow tight:  
+
+* **Hide from the LLM what the LLM does not need.**  
+  Use `AiAgentParameter.SendToModel = false` at the configuration level, and
+  `SendToModel = false` on `AiConversationParameterOptions` at the conversation level, to keep sensitive values out of every prompt in the chain while still letting queries and action tools consume them.  
+
+* **Prevent model-generated values for trust-critical parameters.**  
+  Use `AiAgentParameterPolicy.ForbidModelGeneration` on parameters whose values must come from a trusted source - a user identifier, a session token, an account number - so the parent agent's LLM cannot fabricate a value for the sub-agent.  
+
+General AI agent concerns - unauthorized database access, data compromise in transit, audit logging, prompt injection - are covered in [Security concerns](../../ai-integration/ai-agents/security-concerns.mdx) and apply to multi-agent setups unchanged.  
+
+</Panel>
+
+<Panel heading="Limitations">
+
+* **Agents cannot create agents.**  
+  Every agent in a hierarchy must be created in advance, either through the client API or through Studio.  
+  There is no facility for an agent to define a new sub-agent during a conversation.  
+
+* **All wiring is static.**  
+  Sub-agent references and parameter declarations live in the agent configuration.  
+  Changing the hierarchy requires updating the configuration and re-deploying, not a runtime decision.  
+
+* **Sub-agents are scoped to one database.**  
+  A sub-agent must be defined in the same database as its parent.  
+  Cross-database composition is not supported.  
+
+</Panel>
+
+<Panel heading="Example">
+
+In this example we create a root agent that answers general company questions, and one specialist sub-agent that looks up the caller's own employee record.  
+We use the Northwind `Employees` collection to illustrate sub-agent wiring, parameter propagation by name, and two security controls: hiding a sensitive value from every LLM, and preventing the parent's LLM from generating this value itself.  
+
+---
+
+#### The hierarchy
+
+```
+company-assistant-agent        (root)
+|- employee-profile-agent      (looks up the caller's own record)
+```
+
+---
+
+#### Step 1 - Define the sub-agent
+
+The sub-agent's job is narrow: given the caller's employee id, read that
+employee's document and return a short summary.  
+
+The `userId` parameter is declared with two safeguards:  
+* `sendToModel: false` keeps the value out of every prompt.  
+* `AiAgentParameterPolicy.ForbidModelGeneration` prevents any parent's LLM
+  from fabricating a value - the sub-agent accepts `userId` only if it was
+  inherited from a parameter provided when the conversation was started.  
+
+```csharp
+var profileAgent = new AiAgentConfiguration(
+    "employee-profile-agent",
+    "OpenAi_ConnectionString",
+    "You look up a single employee record and return a brief profile. " +
+    "The employee id is provided by the system; do not ask the user for it.");
+
+profileAgent.Parameters.Add(new AiAgentParameter(
+    name: "userId",
+    description: "The id of the signed-in employee",
+    sendToModel: false,
+    policy: AiAgentParameterPolicy.ForbidModelGeneration));
+
+profileAgent.Queries.Add(new AiAgentToolQuery
+{
+    Name = "get-my-record",
+    Description = "Returns the signed-in employee's record.",
+    Query = "from Employees as E where id() == $userId " +
+            "select E.FirstName, E.LastName, E.Title, E.ReportsTo, E.Territories"
+});
+
+await store.AI.CreateAgentAsync(profileAgent, new AssistantReply
+{
+    message = "A natural-language reply for the parent agent."
+});
+```
+
+---
+
+#### Step 2 - Define the root agent and wire the sub-agent
+
+The root answers general company questions and delegates to
+`employee-profile-agent` when the user asks about themselves.  
+Wiring is done by identifier, so the sub-agent must already exist.  
+
+```csharp
+var rootAgent = new AiAgentConfiguration(
+    "company-assistant-agent",
+    "OpenAi_ConnectionString",
+    "You are the company's front-desk assistant. " +
+    "When the user asks about themselves - their manager, their territory, " +
+    "their title - call the employee-profile sub-agent. " +
+    "For anything else, answer directly.")
+{
+    SubAgents =
+    [
+        new AiAgentToolSubAgent
+        {
+            Identifier = "employee-profile-agent",
+            Description = "Looks up the signed-in employee's own record."
+        }
+    ]
+};
+
+await store.AI.CreateAgentAsync(rootAgent, new AssistantReply
+{
+    message = "A natural-language reply for the user."
+});
+```
+
+---
+
+#### Step 3 - Start a conversation
+
+The client provides `userId` at conversation start, even though the **root agent**
+does not declare it. The value is delivered to the sub-agent (which declares it)
+by name. Because the sub-agent set `SendToModel = false`, the LLM at every level
+is told that the parameter exists but never sees its value.  
+
+```csharp
+using var chat = store.AI.Conversation(
+    "company-assistant-agent", "chats/",
+    new AiConversationCreationOptions()
+        .AddParameter("userId", "employees/3-A"));
+
+chat.SetUserPrompt("Who is my manager?");
+var response = await chat.RunAsync<AssistantReply>();
+```
+
+---
+
+#### Response schema used above
+
+Both agents use the same response schema: a single natural-language message.
+
+```csharp
+public class AssistantReply
+{
+    public string message;
+}
+```
+
+---
+
+#### Related:
+
+[Create and configure an agent using the client API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx)  
+[Create and configure an agent using Studio](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx)  
+[Security concerns](../../ai-integration/ai-agents/security-concerns.mdx)  
+
+</Panel>

@@ -425,6 +425,69 @@ This is useful for sensitive values like user IDs or tenant identifiers that sho
 
 See [AiAgentParameter](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#agent-configuration-classes) in the [Syntax](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#syntax) section.
 
+---
+
+#### Forbidding model-generated parameter values
+
+When this agent is used as a **sub-agent** and a parent agent invokes it without
+supplying a value for one of its parameters, the default behavior is for the
+parent's LLM to generate a value. For parameters that represent trusted values - a
+user identifier, a session token, an account number - this is not safe: the model
+can invent a value.  
+
+Use `AiAgentParameterPolicy.ForbidModelGeneration` on the parameter to block this.
+A parameter marked with this policy accepts a value only if it is **inherited**
+from the parent (a parent-side parameter with the same name, or a parameter passed
+at conversation start). If no inherited value can be found, invoking the sub-agent
+fails with `MissingAiAgentParameterException`.  
+
+The flag is declared on the sub-agent's own parameter, so each agent controls its
+own trust requirements regardless of which parent invokes it.  
+
+* **Example**  
+  ```csharp
+  // Declare a user identifier that must come from a trusted source
+  // and is not exposed to the LLM.
+  agent.Parameters.Add(new AiAgentParameter(
+      name: "userId",
+      description: "The id of the current user",
+      sendToModel: false,
+      policy: AiAgentParameterPolicy.ForbidModelGeneration));
+  ```
+
+* **Note** that this policy is only meaningful when the agent is used as a
+  sub-agent. On a root agent, the value is always supplied at conversation start.  
+
+See [Multi-agents](../../../../ai-integration/ai-agents/multi-agents.mdx#forbidding-the-parent-from-generating-a-parameter-value)
+for the full picture, including an end-to-end example.  
+
+---
+
+#### Declaring a parameter's value type
+
+`AiAgentParameter` can declare an expected JSON value type for the parameter.
+When a type is set, the server validates the value supplied at conversation start
+against the declared type and rejects mismatches; when the type is left at its
+default, no type validation is performed.  
+
+Declaring a type is most useful in multi-agent setups, where a parameter may flow
+from one agent to another by name and the agent's author wants to guarantee that
+inherited values are of the right shape.  
+
+* **Example**  
+  ```csharp
+  // Declare an age parameter that must be a number.
+  agent.Parameters.Add(new AiAgentParameter(
+      name: "age",
+      description: "User age")
+  {
+      Type = AiAgentParameterValueType.Number
+  });
+  ```
+
+See [AiAgentParameterValueType](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#enums)
+in the [Syntax](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#syntax) section.  
+
 </ContentFrame>
 
 <ContentFrame>
@@ -657,6 +720,50 @@ See [AiAgentToolAction](../../../../ai-integration/ai-agents/creating-ai-agents/
 
 </ContentFrame>
 
+<ContentFrame>
+
+### Sub-agents as tools
+
+An agent can invoke other agents as sub-tools. To do this, reference the target
+agents from the parent agent's `SubAgents` list. Each entry contains the
+**identifier** of an existing agent and a short **description** the LLM uses when
+deciding whether to delegate to that sub-agent.  
+
+For the full conceptual picture - parameter propagation, sub-conversation
+isolation, action-tool path routing, and security considerations - see
+[Multi-agents](../../../../ai-integration/ai-agents/multi-agents.mdx).  
+
+**Example**  
+```csharp
+// Reference existing agents as sub-agents of this agent.
+// Each sub-agent must have been created first (store.AI.CreateAgentAsync)
+// so its identifier is available here.
+agent.SubAgents =
+[
+    new AiAgentToolSubAgent
+    {
+        Identifier = "pharma-input-validator-agent",
+        Description = "Validates whether the user prompt is allowed and age-appropriate."
+    },
+    new AiAgentToolSubAgent
+    {
+        Identifier = "pharma-assistant-agent",
+        Description = "Provides a cautious general pharma answer."
+    }
+];
+```
+
+<Admonition type="note" title="">
+Sub-agents live in the same database as their parent and must be created before
+they can be referenced. An agent cannot spawn a new agent at runtime.
+</Admonition>
+
+<br />
+See [AiAgentToolSubAgent](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#agent-tool-classes) in the [Syntax](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#syntax) section.  
+See [Multi-agents](../../../../ai-integration/ai-agents/multi-agents.mdx) for the end-to-end picture.  
+
+</ContentFrame>
+
 </Panel>
 
 <Panel heading="Creating the Agent">
@@ -851,6 +958,33 @@ Handlers are typically used for simple, immediate operations like storing a docu
       public string profit;
   }
   ```
+
+<Admonition type="note" title="">
+
+When an action tool is declared on a **sub-agent**, the client still handles the
+action - but the handler is registered under a path that reflects where the
+sub-agent sits in the hierarchy. Use `<sub-agent-id>/<action-name>` for a
+depth-two sub-agent, and add additional identifiers to the prefix for deeper
+levels.  
+
+* **Example**  
+  ```csharp
+  // Action declared on a depth-two sub-agent:
+  chat.Handle<ChangeUserNameRequest, ActionToolResult>(
+      "user-info-agent/ChangeUserName",
+      request => HandleChangeUserName(store, request));
+
+  // Action declared on a depth-three sub-agent:
+  chat.Handle<ChangeUserNameRequest, ActionToolResult>(
+      "user-info-agent-1/user-info-agent-3/ChangeUserName",
+      request => HandleChangeUserName(store, request));
+  ```
+
+See [Multi-agents: Action tool routing back to the client](../../../../ai-integration/ai-agents/multi-agents.mdx#action-tool-routing-back-to-the-client)
+for the full picture.
+
+</Admonition>
+
 <br />
 See [Handle](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#action-tool-processing) in the [Syntax](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#syntax) section.
 
@@ -1877,6 +2011,7 @@ class AiAgentConfiguration
     string OutputSchema
     List<AiAgentToolQuery> Queries
     List<AiAgentToolAction> Actions
+    List<AiAgentToolSubAgent> SubAgents
     List<AiAgentParameter> Parameters
     AiAgentChatTrimmingConfiguration ChatTrimming
     int? MaxModelIterationsPerCall
@@ -1902,6 +2037,7 @@ public AiAgentConfiguration(string name, string connectionStringName, string sys
 | **OutputSchema** | `string` | A formal JSON schema describing the expected LLM response structure. If both `SampleObject` and `OutputSchema` are defined, only the schema is used. |
 | **Queries** | `List<AiAgentToolQuery>` | Query tools that the LLM can use (through the agent) to retrieve data from the database. |
 | **Actions** | `List<AiAgentToolAction>` | Action tools that the LLM can use to trigger the client to action. |
+| **SubAgents** | `List<AiAgentToolSubAgent>` | Other agents that this agent can invoke as sub-agents. See [Sub-agents as tools](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#sub-agents-as-tools). |
 | **Parameters** | `List<AiAgentParameter>` | Agent parameters whose values are provided by the client when a conversation is started. |
 | **ChatTrimming** | `AiAgentChatTrimmingConfiguration` | Configuration for summarizing the conversation to reduce token usage. |
 | **MaxModelIterationsPerCall** | `int?` | Maximum number of times the LLM can request tool usage in response to a single user prompt. |
@@ -1918,6 +2054,8 @@ class AiAgentParameter
     string Name
     string Description
     bool? SendToModel
+    AiAgentParameterPolicy Policy
+    AiAgentParameterValueType Type
 }
 ```
 <br />
@@ -1925,11 +2063,20 @@ class AiAgentParameter
 Constructors:
 
 ```csharp
-// Initialize with name and description 
+// Initialize with name and description
 public AiAgentParameter(string name, string description)
 
-// Initialize with name, description, and a flag to control model visibility 
+// Initialize with name, description, and a flag to control model visibility
 public AiAgentParameter(string name, string description, bool sendToModel)
+
+// Initialize with name, description, and a policy
+public AiAgentParameter(string name, string description, AiAgentParameterPolicy policy)
+
+// Initialize with name, description, visibility flag, and a policy
+public AiAgentParameter(string name, string description, bool sendToModel, AiAgentParameterPolicy policy)
+
+// Initialize with name, description, visibility flag, policy, and value type
+public AiAgentParameter(string name, string description, bool sendToModel, AiAgentParameterPolicy policy, AiAgentParameterValueType type)
 ```
 <br />
 
@@ -1938,6 +2085,8 @@ public AiAgentParameter(string name, string description, bool sendToModel)
 | **Name** | `string` | The parameter name as referenced by tools and queries. |
 | **Description** | `string` | Human-readable description explaining what value the parameter expects. |
 | **SendToModel** | `bool?` | Whether the parameter value is exposed to the AI model.<br />`true` or `null` (default) - the parameter is exposed.<br />`false` - the parameter is hidden from the model (useful for sensitive values like userId or tenant). |
+| **Policy** | `AiAgentParameterPolicy` | Policy flags for this parameter. When this agent is used as a sub-agent, `ForbidModelGeneration` prevents the parent from generating a value for the parameter; the value must be inherited from the parent's parameters or supplied at conversation start. Default: `Default` (no special behavior). |
+| **Type** | `AiAgentParameterValueType` | Expected JSON value type of the parameter. When set to a concrete value, the server validates the supplied value against it. `Default` disables type validation. |
 
 </TabItem>
 </Tabs>
@@ -2100,6 +2249,28 @@ class AiAgentToolAction
 | **ParametersSchema** | `string` | A formal JSON schema for the parameters. If both a sample object and a schema are defined, only the schema is used. |
 
 </TabItem>
+
+<TabItem value="AiAgentToolSubAgent" label="AiAgentToolSubAgent">
+
+**A reference to another agent that this agent can invoke as a sub-agent.**
+
+```csharp
+class AiAgentToolSubAgent
+{
+    string Identifier
+    string Description
+}
+```
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **Identifier** | `string` | The identifier of an existing agent that this agent may invoke as a sub-agent.<br />The referenced agent must be created in the same database. |
+| **Description** | `string` | A short description the LLM reads when deciding whether to delegate to this sub-agent. |
+
+See [Multi-agents](../../../../ai-integration/ai-agents/multi-agents.mdx) for the full picture, including parameter propagation and sub-conversation isolation.
+
+</TabItem>
 </Tabs>
 
 ---
@@ -2114,8 +2285,9 @@ class AiAgentToolAction
 ```csharp
 class AiConversationCreationOptions
 {
-    Dictionary<string, object> Parameters
+    Dictionary<string, AiConversationParameter> Parameters
     int? ExpirationInSec
+    int? MaxModelIterationsPerCall
 }
 ```
 <br />
@@ -2126,29 +2298,70 @@ Constructors and methods:
 // Create with no parameters
 public AiConversationCreationOptions()
 
-// Create with a set of parameter values
+// Create with a set of parameter values (all defaulting to SendToModel = true)
 public AiConversationCreationOptions(Dictionary<string, object> parameters)
 
-// Add a parameter value (fluent, returns this)
-public AiConversationCreationOptions AddParameter(string name, object value)
+// Create with a set of fully specified conversation parameters
+public AiConversationCreationOptions(Dictionary<string, AiConversationParameter> parameters)
 
-// Add a parameter value with visibility control (fluent, returns this)
-public AiConversationCreationOptions AddParameter(string name, object value, bool sendToModel)
+// Add a parameter value (fluent, returns this)
+public AiConversationCreationOptions AddParameter(
+    string name, object value, AiConversationParameterOptions options = null)
 ```
 <br />
 
 | Property | Type | Description |
 |----------|------|-------------|
-| **Parameters** | `Dictionary<string, object>` | Values for agent parameters defined in the agent configuration. |
+| **Parameters** | `Dictionary<string, AiConversationParameter>` | Values for agent parameters defined in the agent configuration, keyed by parameter name. |
 | **ExpirationInSec** | `int?` | Optional. If the conversation is idle longer than this period (in seconds), it will be automatically deleted. |
+| **MaxModelIterationsPerCall** | `int?` | Optional per-conversation override of the agent configuration's `MaxModelIterationsPerCall`. |
 
 | `AddParameter` parameter | Type | Description |
 |----------|------|-------------|
-| **name** | `string` | The parameter name, matching a parameter defined in the agent configuration. |
+| **name** | `string` | The parameter name. Matches a parameter defined in the agent configuration, or supplies a value for a sub-agent's parameter that the root does not declare. |
 | **value** | `object` | The value to assign to the parameter. |
-| **sendToModel** | `bool` | Controls the visibility of this parameter value to the LLM for this conversation turn.<br /><br />The final visibility is determined by combining this value with the `SendToModel` setting on the matching `AiAgentParameter` in the agent configuration: if **either** is `false`, the parameter is hidden from the model.<br />`null` (default) means not specified - the configuration-level value alone decides. |
+| **options** | `AiConversationParameterOptions` | Optional. Controls conversation-level behavior of this parameter, currently limited to `SendToModel` (whether the value is exposed to the LLM for this conversation). When `null`, defaults apply. |
 
 </TabItem>
+
+<TabItem value="AiConversationParameter" label="AiConversationParameter">
+
+**A single conversation-level parameter, including its value and conversation-level visibility.**
+
+```csharp
+class AiConversationParameter
+{
+    object Value
+    bool SendToModel
+}
+```
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **Value** | `object` | The parameter value. |
+| **SendToModel** | `bool` | Conversation-level visibility to the LLM. When `false`, the value is hidden from every LLM in the hierarchy for this conversation, regardless of the agent configuration. Combined with `AiAgentParameter.SendToModel` as an AND gate: the LLM sees the value only if both permit it. Default: `true`. |
+
+</TabItem>
+
+<TabItem value="AiConversationParameterOptions" label="AiConversationParameterOptions">
+
+**Options for a conversation parameter when using `AddParameter`.**
+
+```csharp
+class AiConversationParameterOptions
+{
+    bool SendToModel
+}
+```
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **SendToModel** | `bool` | Controls conversation-level visibility of this parameter to the LLM. When `false`, the value is hidden from every LLM in the hierarchy for this conversation. The final visibility is the AND of this flag and the matching `AiAgentParameter.SendToModel` on the agent configuration. Default: `true`. |
+
+</TabItem>
+
 <TabItem value="AiAgentActionRequest" label="AiAgentActionRequest">
 
 **Contains the details of an action request sent by the LLM to the agent.**
@@ -2321,6 +2534,59 @@ enum AiHandleErrorStrategy
 |-------|-------------|
 | **SendErrorsToModel** | Convert the error to a textual message and send it back to the model as the tool response. |
 | **RaiseImmediately** | Throw the exception immediately to the caller instead of sending it to the model. |
+
+</TabItem>
+
+<TabItem value="AiAgentParameterPolicy" label="AiAgentParameterPolicy">
+
+**Policy flags that control how an agent parameter behaves across parent and sub-agent boundaries.**
+
+```csharp
+[Flags]
+enum AiAgentParameterPolicy
+{
+    Default = 0,
+    ForbidModelGeneration = 1
+}
+```
+<br />
+
+| Value | Description |
+|-------|-------------|
+| **Default** | No special behavior. The parent's LLM may generate a value for this parameter if no inherited value is available. |
+| **ForbidModelGeneration** | When this agent is used as a sub-agent, prevents the parent from generating a value for the parameter. The value must be inherited from the parent's parameters or supplied at conversation start; otherwise `MissingAiAgentParameterException` is thrown. |
+
+</TabItem>
+
+<TabItem value="AiAgentParameterValueType" label="AiAgentParameterValueType">
+
+**The expected JSON value type of an agent parameter, used for validation.**
+
+```csharp
+enum AiAgentParameterValueType
+{
+    Default,
+    String,
+    Number,
+    Boolean,
+    ArrayOfString,
+    ArrayOfNumber,
+    ArrayOfBoolean,
+    Null
+}
+```
+<br />
+
+| Value | Description |
+|-------|-------------|
+| **Default** | No type validation (backward compatibility). |
+| **String** | The value must be a JSON string. |
+| **Number** | The value must be a JSON number. |
+| **Boolean** | The value must be a JSON boolean. |
+| **ArrayOfString** | The value must be a JSON array whose items are all strings. |
+| **ArrayOfNumber** | The value must be a JSON array whose items are all numbers. |
+| **ArrayOfBoolean** | The value must be a JSON array whose items are all booleans. |
+| **Null** | The value must be JSON null. |
 
 </TabItem>
 </Tabs>
