@@ -430,16 +430,15 @@ See [AiAgentParameter](../../../../ai-integration/ai-agents/creating-ai-agents/c
 #### Forbidding model-generated parameter values
 
 When this agent is used as a **sub-agent** and a parent agent invokes it without
-supplying a value for one of its parameters, the default behavior is for the
-parent's LLM to generate a value. For parameters that represent trusted values - a
-user identifier, a session token, an account number - this is not safe: the model
-can invent a value.  
+providing a value for one of its parameters, the default behavior is for the
+parent's LLM to generate a value.  
+For parameters that represent trusted values - a user identifier, a session token, an account number - this is not safe: the model can invent a value.  
 
-Use `AiAgentParameterPolicy.ForbidModelGeneration` on the parameter to block this.
+Use `AiAgentParameterPolicy.ForbidModelGeneration` on the parameter to block this.  
 A parameter marked with this policy accepts a value only if it is **inherited**
 from the parent (a parent-side parameter with the same name, or a parameter passed
-at conversation start). If no inherited value can be found, invoking the sub-agent
-fails with `MissingAiAgentParameterException`.  
+when the conversation starts).  
+If no inherited value can be found, invoking the sub-agent fails with `MissingAiAgentParameterException`.  
 
 The flag is declared on the sub-agent's own parameter, so each agent controls its
 own trust requirements regardless of which parent invokes it.  
@@ -456,7 +455,7 @@ own trust requirements regardless of which parent invokes it.
   ```
 
 * **Note** that this policy is only meaningful when the agent is used as a
-  sub-agent. On a root agent, the value is always supplied at conversation start.  
+  sub-agent. On a root agent, the value is always provided when the conversation is started.  
 
 See [Multi-agents](../../../../ai-integration/ai-agents/multi-agents.mdx#forbidding-the-parent-from-generating-a-parameter-value)
 for the full picture, including an end-to-end example.  
@@ -465,10 +464,11 @@ for the full picture, including an end-to-end example.
 
 #### Declaring a parameter's value type
 
-`AiAgentParameter` can declare an expected JSON value type for the parameter.
-When a type is set, the server validates the value supplied at conversation start
-against the declared type and rejects mismatches; when the type is left at its
-default, no type validation is performed.  
+`AiAgentParameter` can declare an expected JSON value type for the parameter.  
+When a type is set, the server validates the value provided when the conversation 
+is started against the declared type.  
+Mismatches are rejected with a `InvalidCastException` and a descriptive message and the conversation start is aborted.  
+When the type is left at its default, no type validation is performed.  
 
 Declaring a type is most useful in multi-agent setups, where a parameter may flow
 from one agent to another by name and the agent's author wants to guarantee that
@@ -635,8 +635,7 @@ A query tool includes a natural-language **description** that explains the LLM w
 #### <u>Initial-context queries</u>
 
 * You can set a query tool as an [initial-context query](../../../../ai-integration/ai-agents/overview.mdx#initial-context-queries) using its `Options.AddToInitialContext` property, to execute the query and provide the LLM with its results immediately when the agent is started.  
-   * An initial-context query is **not allowed** to use LLM parameters, since the query 
-     runs before the conversation starts, earlier than the first communication with the LLM, and the LLM will have no opportunity to fill the parameters with values.  
+   * An initial-context query is **not allowed** to use LLM parameters, since the query runs before the conversation starts, earlier than the first communication with the LLM, and the LLM will have no opportunity to fill the parameters with values.  
    * An initial-context query **is** allowed to use agent parameters, whose values are provided by the user even before the query is executed.  
 
 *  You can use the `Options.AllowModelQueries` property to Enable or Disable a query tool .  
@@ -2085,8 +2084,8 @@ public AiAgentParameter(string name, string description, bool sendToModel, AiAge
 | **Name** | `string` | The parameter name as referenced by tools and queries. |
 | **Description** | `string` | Human-readable description explaining what value the parameter expects. |
 | **SendToModel** | `bool?` | Whether the parameter value is exposed to the AI model.<br />`true` or `null` (default) - the parameter is exposed.<br />`false` - the parameter is hidden from the model (useful for sensitive values like userId or tenant). |
-| **Policy** | `AiAgentParameterPolicy` | Policy flags for this parameter. When this agent is used as a sub-agent, `ForbidModelGeneration` prevents the parent from generating a value for the parameter; the value must be inherited from the parent's parameters or supplied at conversation start. Default: `Default` (no special behavior). |
-| **Type** | `AiAgentParameterValueType` | Expected JSON value type of the parameter. When set to a concrete value, the server validates the supplied value against it. `Default` disables type validation. |
+| **Policy** | `AiAgentParameterPolicy` | Policy flags for this parameter. When this agent is used as a sub-agent, `ForbidModelGeneration` prevents the parent from generating a value for the parameter; the value must be inherited from the parent's parameters or provided when the conversation is started. Default: `Default` (no special behavior). |
+| **Type** | `AiAgentParameterValueType` | Expected JSON value type of the parameter. When set to a concrete value, the server validates the provided value against it.<br />`Default` disables type validation. |
 
 </TabItem>
 </Tabs>
@@ -2318,7 +2317,7 @@ public AiConversationCreationOptions AddParameter(
 
 | `AddParameter` parameter | Type | Description |
 |----------|------|-------------|
-| **name** | `string` | The parameter name. Matches a parameter defined in the agent configuration, or supplies a value for a sub-agent's parameter that the root does not declare. |
+| **name** | `string` | The parameter name. Matches a parameter defined in the agent configuration, or provides a value for a sub-agent's parameter that the root agent does not declare. |
 | **value** | `object` | The value to assign to the parameter. |
 | **options** | `AiConversationParameterOptions` | Optional. Controls conversation-level behavior of this parameter, currently limited to `SendToModel` (whether the value is exposed to the LLM for this conversation). When `null`, defaults apply. |
 
@@ -2554,7 +2553,7 @@ enum AiAgentParameterPolicy
 | Value | Description |
 |-------|-------------|
 | **Default** | No special behavior. The parent's LLM may generate a value for this parameter if no inherited value is available. |
-| **ForbidModelGeneration** | When this agent is used as a sub-agent, prevents the parent from generating a value for the parameter. The value must be inherited from the parent's parameters or supplied at conversation start; otherwise `MissingAiAgentParameterException` is thrown. |
+| **ForbidModelGeneration** | When this agent is used as a sub-agent, prevents the parent from generating a value for the parameter. The value must be inherited from the parent's parameters or provided when the conversation is started; otherwise `MissingAiAgentParameterException` is thrown. |
 
 </TabItem>
 
