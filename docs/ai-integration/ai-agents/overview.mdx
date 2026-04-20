@@ -305,30 +305,21 @@ You can limit the number of times that the LLM is allowed to trigger database qu
 
 <Panel heading="Multi-agents">
 
-An AI agent can invoke other agents as sub-tools, forming a **multi-agents
-hierarchy**. A root agent delegates focused tasks to specialist sub-agents;
-each sub-agent is itself a full agent that can run queries, request actions,
-and call its own sub-agents.  
+An AI agent can invoke other agents as tools, forming a **multi-agents hierarchy**.  
+A root agent delegates focused tasks to specialist sub-agents; each sub-agent is itself a full agent that can run queries, request actions, and call its own sub-agents.  
 
 Use a multi-agents hierarchy when:  
 
 * **A single agent's system prompt is becoming crowded.**  
-  Giving each responsibility its own focused prompt makes tool selection more
-  reliable and easier to audit.  
+  Giving each responsibility its own focused prompt makes tool selection more reliable and easier to audit.  
 
 * **Tool counts are growing.**  
-  Grouping related tools under a sub-agent reduces the number of options the
-  LLM has to choose among at any given level.  
+  Grouping related tools under a sub-agent reduces the number of options the LLM has to choose among at any given level.  
 
 * **The root conversation is under context-window pressure.**  
-  Sub-calls return a concise result to the root. The detailed exchange a
-  sub-agent had with the LLM stays in the sub-agent's own conversation.  
+  Sub-calls return a concise result to the root. The detailed exchange a sub-agent had with the LLM stays in the sub-agent's own conversation.  
 
-Each agent in the hierarchy has its own conversation document; parameters can
-be shared across the hierarchy by name; parameter values can be hidden from
-the LLM at either the configuration or conversation level; and parameters
-that must come from a trusted source can be marked so that the parent's LLM
-is not allowed to generate a value for them.  
+Each agent in the hierarchy has its own conversation document; parameters can be shared across the hierarchy by name; parameter values can be hidden from the LLM at either the configuration or conversation level; and parameters whose values must be provided by the caller can be marked so that the parent's LLM is not allowed to generate a value for them.  
 
 [Learn more about multi-agents](../../ai-integration/ai-agents/multi-agents.mdx)  
 

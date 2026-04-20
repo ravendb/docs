@@ -110,7 +110,7 @@ Consider splitting a single complex agent into a hierarchy when one or more of t
 ### What a multi-agents hierarchy is not
 
 * **It is not recursion.**  
-  Each agent is invoked as a sub-tool of its parent. The agent run itself follows the hierarchy you wire; it does not re-enter the root from a sub-agent.  
+  Each agent is invoked as a tool of its parent. The agent run itself follows the hierarchy you wire; it does not re-enter the root from a sub-agent.  
 
 * **It is not runtime graph manipulation.**  
   The wiring is part of the agent configuration. Creating or modifying a sub-agent happens the same way any agent is created or modified: through the client API or Studio, not from within a conversation.  
@@ -193,11 +193,6 @@ The client registers one handler per path:
 // Action on a depth-2 sub-agent:
 chat.Handle<ChangeUserNameRequest, ActionToolResult>(
     "user-info-agent/ChangeUserName",
-    request => HandleChangeUserName(store, request));
-
-// Action on a depth-3 sub-agent:
-chat.Handle<ChangeUserNameRequest, ActionToolResult>(
-    "user-info-agent-1/user-info-agent-3/ChangeUserName",
     request => HandleChangeUserName(store, request));
 ```
 
@@ -357,8 +352,9 @@ What a hierarchy does change is **how data flows**. A parameter passed to the ro
   Use `AiAgentParameter.SendToModel = false` at the configuration level, and
   `SendToModel = false` on `AiConversationParameterOptions` at the conversation level, to keep sensitive values out of every prompt in the chain while still letting queries and action tools consume them.  
 
-* **Prevent model-generated values for trust-critical parameters.**  
-  Use `AiAgentParameterPolicy.ForbidModelGeneration` on parameters whose values must come from a trusted source - a user identifier, a session token, an account number - so the parent agent's LLM cannot fabricate a value for the sub-agent.  
+* **Prevent model-generated values for trusted parameters.**  
+  Use `AiAgentParameterPolicy.ForbidModelGeneration` on parameters whose values must come from a trusted source - for example, a user identifier that scopes queries to the caller's own data, a session token, or an account number.  
+  Without this policy, the parent's LLM could pick a plausible-looking value belonging to a different caller, and the sub-agent would run its scoped queries against that caller's data.  
 
 General AI agent concerns - unauthorized database access, data compromise in transit, audit logging, prompt injection - are covered in [Security concerns](../../ai-integration/ai-agents/security-concerns.mdx) and apply to multi-agent setups unchanged.  
 

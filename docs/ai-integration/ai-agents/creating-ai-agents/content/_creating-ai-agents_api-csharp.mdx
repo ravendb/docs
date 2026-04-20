@@ -429,10 +429,11 @@ See [AiAgentParameter](../../../../ai-integration/ai-agents/creating-ai-agents/c
 
 #### Forbidding model-generated parameter values
 
-When this agent is used as a **sub-agent** and a parent agent invokes it without
+When an agent is used as a **sub-agent** and a parent agent invokes it without
 providing a value for one of its parameters, the default behavior is for the
 parent's LLM to generate a value.  
-For parameters that represent trusted values - a user identifier, a session token, an account number - this is not safe: the model can invent a value.  
+This is unsafe whenever the parameter's value must come from a trusted source - for example, a user identifier that scopes queries to the caller's own data, a session token, or an account number.  
+A parent LLM that is free to invent the value can return a plausible-looking id that belongs to a different user, causing the sub-agent to run its scoped queries against that user's records.  
 
 Use `AiAgentParameterPolicy.ForbidModelGeneration` on the parameter to block this.  
 A parameter marked with this policy accepts a value only if it is **inherited**
@@ -464,11 +465,10 @@ for the full picture, including an end-to-end example.
 
 #### Declaring a parameter's value type
 
-`AiAgentParameter` can declare an expected JSON value type for the parameter.  
-When a type is set, the server validates the value provided when the conversation 
-is started against the declared type.  
-Mismatches are rejected with a `InvalidCastException` and a descriptive message and the conversation start is aborted.  
-When the type is left at its default, no type validation is performed.  
+You can declare the expected value type of an agent parameter.  
+When a type is declared, the server validates the value provided when the conversation starts against this type.  
+On a mismatch, the server throws an `InvalidCastException` with a descriptive message and aborts the conversation start.  
+When no type is declared, no validation is performed.  
 
 Declaring a type is most useful in multi-agent setups, where a parameter may flow
 from one agent to another by name and the agent's author wants to guarantee that
@@ -723,10 +723,10 @@ See [AiAgentToolAction](../../../../ai-integration/ai-agents/creating-ai-agents/
 
 ### Sub-agents as tools
 
-An agent can invoke other agents as sub-tools. To do this, reference the target
+An agent can invoke other agents as tools. To do this, reference the target
 agents from the parent agent's `SubAgents` list. Each entry contains the
 **identifier** of an existing agent and a short **description** the LLM uses when
-deciding whether to delegate to that sub-agent.  
+deciding whether to delegate to that sub-agent.
 
 For the full conceptual picture - parameter propagation, sub-conversation
 isolation, action-tool path routing, and security considerations - see
@@ -968,16 +968,13 @@ levels.
 
 * **Example**  
   ```csharp
-  // Action declared on a depth-two sub-agent:
-  chat.Handle<ChangeUserNameRequest, ActionToolResult>(
-      "user-info-agent/ChangeUserName",
-      request => HandleChangeUserName(store, request));
-
-  // Action declared on a depth-three sub-agent:
-  chat.Handle<ChangeUserNameRequest, ActionToolResult>(
-      "user-info-agent-1/user-info-agent-3/ChangeUserName",
-      request => HandleChangeUserName(store, request));
+    // Action declared on a depth-two sub-agent:
+    chat.Handle<ChangeUserNameRequest, ActionToolResult>(
+        "pharma-input-validator-agent/ChangeUserName",
+        request => HandleChangeUserName(store, request));
   ```
+
+<br />
 
 See [Multi-agents: Action tool routing back to the client](../../../../ai-integration/ai-agents/multi-agents.mdx#action-tool-routing-back-to-the-client)
 for the full picture.
@@ -1098,7 +1095,7 @@ This will make the LLM believe that a specific tool was already called and retur
 
 The tool name does not need to be registered in the agent configuration.  
 
-This is useful, for example, when you want to pre-load the conversation with contextual information that would normally be retrieved by a tool, such as user preferences, permissions, or other data that is already available to the client and doesn't require a real tool call to be obtained.  
+This is useful, for example, when you want to pre-load the conversation with contextual information that would normally be retrieved by a tool, such as user preferences, permissions, or other data that is already available to the client and does not require a real tool call to be obtained.  
 
 * **Example**  
   In this example, the client already knows the user's allergies and injects them 
@@ -2084,8 +2081,8 @@ public AiAgentParameter(string name, string description, bool sendToModel, AiAge
 | **Name** | `string` | The parameter name as referenced by tools and queries. |
 | **Description** | `string` | Human-readable description explaining what value the parameter expects. |
 | **SendToModel** | `bool?` | Whether the parameter value is exposed to the AI model.<br />`true` or `null` (default) - the parameter is exposed.<br />`false` - the parameter is hidden from the model (useful for sensitive values like userId or tenant). |
-| **Policy** | `AiAgentParameterPolicy` | Policy flags for this parameter. When this agent is used as a sub-agent, `ForbidModelGeneration` prevents the parent from generating a value for the parameter; the value must be inherited from the parent's parameters or provided when the conversation is started. Default: `Default` (no special behavior). |
-| **Type** | `AiAgentParameterValueType` | Expected JSON value type of the parameter. When set to a concrete value, the server validates the provided value against it.<br />`Default` disables type validation. |
+| **Policy** | `AiAgentParameterPolicy` | Policy flags for this parameter. When an agent is used as a sub-agent, `ForbidModelGeneration` prevents the parent from generating a value for the parameter; the value must be inherited from the parent's parameters or provided when the conversation is started. Default: `Default` (no special behavior). |
+| **Type** | `AiAgentParameterValueType` | Expected value type of the parameter. When set to a concrete value, the server validates the provided value against it.<br />`Default` disables type validation. |
 
 </TabItem>
 </Tabs>
@@ -2553,13 +2550,13 @@ enum AiAgentParameterPolicy
 | Value | Description |
 |-------|-------------|
 | **Default** | No special behavior. The parent's LLM may generate a value for this parameter if no inherited value is available. |
-| **ForbidModelGeneration** | When this agent is used as a sub-agent, prevents the parent from generating a value for the parameter. The value must be inherited from the parent's parameters or provided when the conversation is started; otherwise `MissingAiAgentParameterException` is thrown. |
+| **ForbidModelGeneration** | When an agent is used as a sub-agent, prevents the parent from generating a value for the parameter. The value must be inherited from the parent's parameters or provided when the conversation is started; otherwise `MissingAiAgentParameterException` is thrown. |
 
 </TabItem>
 
 <TabItem value="AiAgentParameterValueType" label="AiAgentParameterValueType">
 
-**The expected JSON value type of an agent parameter, used for validation.**
+**The expected value type of an agent parameter, used for validation.**
 
 ```csharp
 enum AiAgentParameterValueType
@@ -2579,13 +2576,13 @@ enum AiAgentParameterValueType
 | Value | Description |
 |-------|-------------|
 | **Default** | No type validation (backward compatibility). |
-| **String** | The value must be a JSON string. |
-| **Number** | The value must be a JSON number. |
-| **Boolean** | The value must be a JSON boolean. |
-| **ArrayOfString** | The value must be a JSON array whose items are all strings. |
-| **ArrayOfNumber** | The value must be a JSON array whose items are all numbers. |
-| **ArrayOfBoolean** | The value must be a JSON array whose items are all booleans. |
-| **Null** | The value must be JSON null. |
+| **String** | The value must be a string. |
+| **Number** | The value must be a number. |
+| **Boolean** | The value must be a boolean. |
+| **ArrayOfString** | The value must be an array of strings. |
+| **ArrayOfNumber** | The value must be an array of numbers. |
+| **ArrayOfBoolean** | The value must be an array of booleans. |
+| **Null** | The value must be null. |
 
 </TabItem>
 </Tabs>

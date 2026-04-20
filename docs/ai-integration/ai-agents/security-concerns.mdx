@@ -90,7 +90,7 @@ This page covers potential security concerns related to AI agents and the mitiga
 #### Concern: Sensitive data might inadvertently be memorized and reproduced by the AI model.
 
 * **Mitigation: Free selection of AI model**  
-  RavenDB doesn't enforce the usage of specific providers or AI models, but gives you free choice of the services that best suit your needs and security requirements.  
+  RavenDB does not enforce the usage of specific providers or AI models, but gives you free choice of the services that best suit your needs and security requirements.  
   When using the service of your choice, it is your responsibility to define safe queries and expose only the data that it is in your interest to share with the AI model.  
 
 * **Mitigation: Agent parameters**  
@@ -124,16 +124,21 @@ When an agent is composed with [sub-agents](../../ai-integration/ai-agents/multi
    A parameter passed at conversation start flows by name to any sub-agent that declares it, and is exposed to every LLM in the chain unless explicitly hidden.  
 
 2. **Model-fabricated parameter values.**  
-   When a sub-agent needs a parameter with no inherited value, the parent's LLM is allowed by default to generate one. For trust-critical parameters (a user identifier, a session token, an account number), this means the model could fabricate a value on behalf of the sub-agent.  
+   When a sub-agent needs a parameter with no inherited value, the parent's LLM is allowed by default to generate one.  
+   This is unsafe for parameters that must come from a trusted source - for example, a user identifier that scopes queries to the caller's own data, a session token, or an account number.  
+   The parent's LLM could then pick a plausible-looking value belonging to a different caller, and the sub-agent would run its scoped queries against that caller's data.
 
 * **Mitigation: Hide values from the LLM at configuration level**  
-  Set `SendToModel = false` on `AiAgentParameter` for parameters that must not reach any LLM. The value remains available to queries, action tools, and sub-agents, but is never included in prompts.  
+  Set `SendToModel = false` on `AiAgentParameter` for parameters that must not reach any LLM.  
+  The value remains available to queries, action tools, and sub-agents, but is never included in prompts.  
 
 * **Mitigation: Hide values from the LLM at conversation level**  
-  Pass `new AiConversationParameterOptions { SendToModel = false }` to `AddParameter` when creating a conversation. This hides the value from every LLM in the hierarchy for the duration of the conversation, in addition to any restriction set by the agent configuration. Visibility is the AND of both levels.  
+  Pass `new AiConversationParameterOptions { SendToModel = false }` to `AddParameter` when creating a conversation.  
+  This hides the value from every LLM in the hierarchy for the duration of the conversation, in addition to any restriction set by the agent configuration. Visibility is the AND of both levels.  
 
 * **Mitigation: Forbid model-generated values for trusted parameters**  
-  Mark the sub-agent's parameter with `AiAgentParameterPolicy.ForbidModelGeneration`. The parent's LLM is then blocked from generating a value for that parameter; a value must be inherited from a parent-side parameter of the same name or supplied at conversation start, otherwise invoking the sub-agent fails with `MissingAiAgentParameterException`.  
+  Mark the sub-agent's parameter with `AiAgentParameterPolicy.ForbidModelGeneration`.  
+  The parent's LLM is then blocked from generating a value for that parameter; a value must be inherited from a parent-side parameter of the same name or provided at conversation start, otherwise invoking the sub-agent fails with `MissingAiAgentParameterException`.  
 
 A multi-agents hierarchy does not introduce new access-control concerns: sub-agents live in the same database as their parent, are created under the same administrative controls, and use the same connection strings, so all other mitigations on this page apply to sub-agents too.
 
