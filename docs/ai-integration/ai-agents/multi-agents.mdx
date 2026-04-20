@@ -141,7 +141,7 @@ When a client starts a conversation with the root agent:
 
 5. The root agent may call additional sub-agents as needed, then produces the final response that is returned to the client.  
 
-The entire run is bounded by the root agent's `MaxModelIterationsPerCall` setting: it caps the number of tool-call rounds the model may produce per user message, regardless of whether those tools are queries, actions, or sub-agent invocations.  
+The entire run is bounded by the root agent's `MaxModelIterationsPerCall` setting: it caps the number of model iterations per user message (an iteration being one round in which the model issues a query, action, or sub-agent call).
 
 </ContentFrame>
 
@@ -349,7 +349,7 @@ In this example, `userId` is both hidden from the LLM (`sendToModel: false`) and
 
 <Panel heading="Security considerations specific to multi-agent setups">
 
-Multi-agent setups do not introduce a new access-control surface: the scope limits already documented for AI agents apply at every level of the hierarchy. Sub-agents live in the same database as their parent, are created under the same administrative controls, and use the same connection strings.  
+Multi-agent setups do not introduce new access-control concerns: the scope limits already documented for AI agents apply at every level of the hierarchy. Sub-agents live in the same database as their parent, are created under the same administrative controls, and use the same connection strings.  
 
 What a hierarchy does change is **how data flows**. A parameter passed to the root may be read by any sub-agent that declares a matching parameter; a value exposed to the LLM at the root may be exposed to the LLMs of its sub-agents as well. Two controls, used together, keep the data flow tight:  
 
@@ -377,6 +377,12 @@ General AI agent concerns - unauthorized database access, data compromise in tra
 * **Sub-agents are scoped to one database.**  
   A sub-agent must be defined in the same database as its parent.  
   Cross-database composition is not supported.  
+
+* **No hard cap on hierarchy depth.**  
+  The server does not enforce a maximum nesting depth for sub-agents. Any depth that completes within the root agent's `MaxModelIterationsPerCall` limit is permitted.  
+
+* **No cycle detection.**  
+  Two agents (or more) can reference each other as sub-agents. Such a configuration is not rejected at create time, and the cycle is not detected at invocation time. The run is bounded only by the root agent's `MaxModelIterationsPerCall`. Set this limit carefully if your hierarchy is deep or may contain cycles.
 
 </Panel>
 
