@@ -28,6 +28,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [Configure chat trimming](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#configure-chat-trimming)
    * [Save and Run your agent](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#save-and-run-your-agent)
       * [Start new chat](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#start-new-chat)
+      * [Adding file attachments](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#adding-file-attachments)
       * [Agent interaction](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#agent-interaction)
       * [Action tool dialog](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#action-tool-dialog)
       * [Agent results](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#agent-results)
@@ -340,6 +341,53 @@ to the agent what you expect from this session.
 4. **User prompt**  
    Use the user prompt to explain to the agent, in natural language, what 
    this session is about.  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Adding file attachments:
+
+You can attach files to any conversation turn, allowing the LLM to analyze the file content as part of its response. Attachments are sent to the LLM together with the user prompt when you submit the message.
+
+<Admonition type="note" title="">
+Note that the LLM must support multimodal input for image attachments to be processed. Confirm attachment support with your LLM provider before use.
+</Admonition>
+
+To add an attachment, click the **attachment icon** in the prompt bar.
+
+![Attachment button](./assets/ai-agents_chat-attachment-button.png)
+
+---
+
+A menu opens, allowing you to choose the attachments source.
+
+![Attachments source menu](./assets/ai-agents_chat-attachment-source.png)
+
+1. **Local files**  
+   Use this option to open a file picker and select one or more files from your computer.  
+   Supported file types: `.pdf`, `.txt`, `.jpg`, `.jpeg`, `.png`, `.gif`, `.webp`
+
+   <Admonition type="note" title="">
+   You can also drag files from your file system directly onto the chat window,  
+   or paste files from the clipboard.  
+   </Admonition>
+
+2. **Document attachments**  
+   Use this option to copy an attachment that is already stored in a RavenDB document.  
+    * Select a document whose attachments you want to send to the LLM.
+      ![Document selection](./assets/ai-agents_chat-attachment-document-select.png)
+    * Select one or more of the document's attachments.
+      ![Select and add the attachment](./assets/ai-agents_chat-attachment-document-select_add.png)
+
+---
+
+Selected attachments are added as pending badges above the prompt input.  
+Click **×** to remove an attachment before sending.
+![Attachment badges](./assets/ai-agents_chat-attachment-badges.png)
+
+After you send the message, attachments appear as downloadable badges in the conversation history alongside the message they were sent with. Click a badge to download the file.
+![Attachments in conversation history](./assets/ai-agents_chat-attachment-history.png)
 
 </ContentFrame>
 
