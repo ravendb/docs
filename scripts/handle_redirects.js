@@ -9,10 +9,6 @@ const staticAssetRegex =
 
 const versionRegex = /^\/(\d+\.\d+)(\/.*)?/;
 
-function stripTrailingSlash(uri) {
-    return uri.endsWith("/") ? uri.slice(0, -1) : uri;
-}
-
 function compareVersions(v1, v2) {
     const parts1 = v1.split(".");
     const parts2 = v2.split(".");
@@ -42,18 +38,32 @@ function compareVersions(v1, v2) {
     }
 }
 
+function redirect(targetUrl) {
+    return {
+        statusCode: 301,
+        statusDescription: "Moved Permanently",
+        headers: {
+            location: { value: targetUrl },
+        },
+    };
+}
+
 async function handler(event) {
     const request = event.request;
     const uri = request.uri;
-    const normalizedUri = stripTrailingSlash(uri);
 
     if (staticAssetRegex.test(uri)) {
         return request;
     }
 
-    request.uri = normalizedUri + "/index.html";
+    const hasTrailingSlash = uri !== "/" && uri.endsWith("/");
+    const normalizedUri = hasTrailingSlash ? uri.slice(0, -1) : uri;
 
     if (normalizedUri.startsWith("/templates")) {
+        if (hasTrailingSlash) {
+            return redirect(normalizedUri);
+        }
+        request.uri = uri + "/index.html";
         return request;
     }
 
@@ -62,31 +72,29 @@ async function handler(event) {
             const redirectData = await kvsHandle.get(normalizedUri);
             const redirectJsonValue = JSON.parse(redirectData);
             if (redirectJsonValue.targetUrl) {
-                return {
-                    statusCode: 301,
-                    statusDescription: "Moved Permanently",
-                    headers: {
-                        location: { value: redirectJsonValue.targetUrl },
-                    },
-                };
+                return redirect(redirectJsonValue.targetUrl);
             }
         } catch (_) {
-            // No redirect rule found — pass through as-is
+            // No redirect rule found
         }
+        if (hasTrailingSlash) {
+            return redirect(normalizedUri);
+        }
+        request.uri = uri + "/index.html";
         return request;
     }
 
     const versionMatch = normalizedUri.match(versionRegex);
 
     let version, versionlessUri, targetUri;
-    let redirectRequired = false;
+    let redirectRequired = hasTrailingSlash;
 
     if (versionMatch) {
         version = versionMatch[1];
-        versionlessUri = versionMatch[2] || "/";
+        versionlessUri = versionMatch[2] || "";
     } else {
         version = defaultVersion;
-        versionlessUri = normalizedUri;
+        versionlessUri = normalizedUri === "/" ? "" : normalizedUri;
         redirectRequired = true;
     }
 
@@ -109,14 +117,9 @@ async function handler(event) {
     }
 
     if (redirectRequired) {
-        return {
-            statusCode: 301,
-            statusDescription: "Moved Permanently",
-            headers: {
-                location: { value: targetUri },
-            },
-        };
+        return redirect(targetUri);
     }
 
+    request.uri = normalizedUri + "/index.html";
     return request;
 }
