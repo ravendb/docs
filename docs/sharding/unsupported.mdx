@@ -14,12 +14,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 <Admonition type="note" title="">
 
-* A sharded RavenDB database generally provides the same services that 
-  a non-sharded database offers, so clients of older versions and non-sharded 
-  database are supported and existing queries, subscriptions, patches, 
-  and so on, require no modification.  
-* Find below a list of yet unimplemented features, that are currently 
-  supported by non-sharded RavenDB databases but not by sharded ones.  
+* A sharded RavenDB database generally provides the same services as a non-sharded database,  
+  so existing applications, queries, subscriptions, patches, and similar operations typically require no modification.
+    
+* However, some features that are supported in non-sharded databases are not yet supported in sharded databases.  
+  The list below details these unsupported features.    
   
 * In this article:  
   * [Unsupported Indexing Features](../sharding/unsupported.mdx#unsupported-indexing-features)  
@@ -37,12 +36,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ## Unsupported Indexing Features
 
-| Unsupported Feature                                  | Comment |
-| ---------------------------------------------------- | ------- |
-| **Rolling index deployment**                         | [Rolling index deployment](../indexes/rolling-index-deployment.mdx) is not supported in a sharded database. |
-| **Loading a document that resides on another shard** | [Loading a document during indexing](../indexes/indexing-related-documents.mdx) is possible only if the document resides on the shard. |
-| **Outputting map-reduce results to a collection**    | Outputting map-reduce index results to an [artificial documents collection](../indexes/map-reduce-indexes.mdx#map-reduce-output-documents) is not supported in a sharded database. |
-| **Custom sorters**                                   | [Custom sorters](../indexes/querying/sorting.mdx#creating-a-custom-sorter) are not supported in a sharded database. |
+| Unsupported Feature                              | Comment |
+| ------------------------------------------------ | ------- |
+| Rolling index deployment                         | [Rolling index deployment](../indexes/rolling-index-deployment.mdx) is not supported in a sharded database. |
+| Loading a document that resides on another shard | [Loading a document during indexing](../indexes/indexing-related-documents.mdx) is possible only if the document resides on the shard. |
+| Outputting map-reduce results to a collection    | Outputting map-reduce index results to an [artificial documents collection](../indexes/map-reduce-indexes.mdx#map-reduce-output-documents) is not supported in a sharded database. |
+| Custom sorters                                   | [Custom sorters](../indexes/querying/sorting.mdx#creating-a-custom-sorter) are not supported in a sharded database. |
 
 Reference: [Unsupported indexing features](../sharding/indexing.mdx#unsupported-indexing-features).
 
@@ -50,18 +49,18 @@ Reference: [Unsupported indexing features](../sharding/indexing.mdx#unsupported-
 
 ## Unsupported Querying Features
 
-| Unsupported Feature                                               | Comment |
-| ----------------------------------------------------------------- | ------- |
-| **Loading a document that resides on another shard**              | A query can only load a document if it resides on the same shard. Loading a document that resides on a different shard will return _null_. |
-| **Loading a document within a Map-Reduce projection**             | Learn more in [Loading a document within a projection](../sharding/querying.mdx#loading-a-document-within-a-projection). |
-| **Includes and loads are not supported in streaming queries**     | Learn more in [Streaming query results - Limitations](../sharding/querying.mdx#limitations). |
-| **Ordering streamed Map-Reduce results by non-reduce-key fields** | Learn more in [Streaming query results - Limitations](../sharding/querying.mdx#limitations). |
-| **Querying with limit in patch/delete by query operations**       | Attempting to set a `limit` with [PatchByQueryOperation](../client-api/operations/patching/set-based.mdx#patchbyqueryoperation) or [DeleteByQueryOperation](../client-api/operations/common/delete-by-query.mdx) will throw _NotSupportedInShardingException_. |
-| **OrderByDistance**                                               | [OrderByDistance](../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting) is not supported for map-reduce indexes in sharded databases. Only supported for regular (map) indexes in a sharded database. |
-| **OrderByScore**                                                  | [OrderByScore](../indexes/querying/sorting.mdx#ordering-by-score) is not supported in a sharded database. |
-| **MoreLikeThis**                                                  | Method [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis.mdx) is not supported in a sharded database. |
-| **Highlighting**                                                  | [Highlighting](../indexes/querying/highlighting.mdx) is not supported in a sharded database. |
-| **Intersection**                                                  | [Intersection](../indexes/querying/intersection.mdx) is not supported in a sharded database. |
+| Unsupported Feature                                           | Comment |
+| ------------------------------------------------------------- | ------- |
+| Loading a document that resides on another shard              | A query can only load a document if it resides on the same shard. Loading a document that resides on a different shard will return _null_. |
+| Loading a document within a Map-Reduce projection             | Learn more in [Loading a document within a projection](../sharding/querying.mdx#loading-a-document-within-a-projection). |
+| Includes and loads are not supported in streaming queries     | Learn more in [Streaming query results - Limitations](../sharding/querying.mdx#limitations). |
+| Ordering streamed Map-Reduce results by non-reduce-key fields | Learn more in [Streaming query results - Limitations](../sharding/querying.mdx#limitations). |
+| Querying with limit in patch/delete by query operations       | Attempting to set a `limit` with [PatchByQueryOperation](../client-api/operations/patching/set-based.mdx#patchbyqueryoperation) or [DeleteByQueryOperation](../client-api/operations/common/delete-by-query.mdx) will throw _NotSupportedInShardingException_. |
+| OrderByDistance                                               | [OrderByDistance](../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting) is not supported for map-reduce indexes in sharded databases. Only supported for regular (map) indexes in a sharded database. |
+| OrderByScore                                                  | [OrderByScore](../indexes/querying/sorting.mdx#ordering-by-score) is not supported in a sharded database. |
+| MoreLikeThis                                                  | Method [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis.mdx) is not supported in a sharded database. |
+| Highlighting                                                  | [Highlighting](../indexes/querying/highlighting.mdx) is not supported in a sharded database. |
+| Intersection                                                  | [Intersection](../indexes/querying/intersection.mdx) is not supported in a sharded database. |
 
 Reference: [Unsupported querying features](../sharding/indexing.mdx#unsupported-querying-features).
 
