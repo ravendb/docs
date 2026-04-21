@@ -34,7 +34,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [`filter`](../sharding/querying.mdx#filter)
       * [`where` vs `filter` recommendations](../sharding/querying.mdx#wherevsfilterrecommendations)
   * [Loading a document within a projection](../sharding/querying.mdx#loading-a-document-within-a-projection)  
-  * [`order by` and `limit` in a Map-Reduce index query](../sharding/querying.mdx#order-by-and-limit-in-a-map-reduce-index-query)  
+  * [`order by` and `limit` in a Map-Reduce query](../sharding/querying.mdx#order-by-and-limit-in-a-map-reduce-query)  
   * [Timing queries](../sharding/querying.mdx#timing-queries)
   * [Unsupported querying features](../sharding/querying.mdx#unsupported-querying-features)  
   
@@ -727,7 +727,7 @@ select {
 
 </Panel>
 
-<Panel heading="order by and limit in a Map-Reduce index query">
+<Panel heading="order by and limit in a Map-Reduce query">
 
 When a **Map-Reduce** index is queried in a sharded database, each shard first returns its locally reduced results to the orchestrator, 
 which then merges and re-reduces them to produce the final result set.  
@@ -735,7 +735,7 @@ which then merges and re-reduces them to produce the final result set.
 Because of this two-stage process, `order by` and `limit` may behave differently than they do in a non-sharded database.
 This depends on whether `limit` is used, and on which field `order by` is applied to.      
 
-The following rules apply to **Map-Reduce** queries only - both static Map-Reduce index queries and dynamic auto-Map-Reduce (`group by`) queries.  
+The following rules apply only to **Map-Reduce** queries, whether they are static Map-Reduce index queries or dynamic auto-Map-Reduce (`group by`) queries.  
     
 For Map index queries, `order by` and `limit` behave as they do on a non-sharded database.    
 
