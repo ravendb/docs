@@ -53,10 +53,11 @@ Map-reduce indexes in a sharded database work in two stages:
 2. **At query time**:  
    When a query uses a map-reduce index, the orchestrator distributes the query to the shards,  
    gathers the partial reduce results returned from each shard, and reduces them to produce the final query result.  
-   The exact amount of data retrieved from the shards depends on the query shape - learn more in [todo...](../todo..).
+   The data retrieved from the shards depends on the query shape.  
+   See [order by and limit in a Map-Reduce query](../sharding/querying.mdx#order-by-and-limit-in-a-map-reduce-query) for details.
   
 <Admonition type="note" title="">
-Learn more about querying map-reduce indexes in a sharded database in [Querying map-reduce indexes](../sharding/querying.mdx#querying-map-reduce-indexes).  
+Learn more about querying map-reduce indexes in a sharded database in [Sharding: querying](../sharding/querying.mdx).  
 </Admonition>
 
 </Panel>
