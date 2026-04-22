@@ -94,10 +94,6 @@ function Get-EnvBool([string]$Name) {
     return @('1','true','yes','y','on') -contains ($v.ToString().ToLower())
 }
 
-# robots.txt is generated post-build by scripts/generate-robots.js (wired into
-# the `npm run build` script). The RAVENDB_DOCS_TEST_BUILD env var is honored
-# there to pick between the prod and test template variants.
-
 function Update-CloudFrontKVS {
     $kvsArn = $env:KVS_ARN
 

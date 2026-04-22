@@ -1,8 +1,6 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
-// Single source of truth for the current + legacy version list. See
-// scripts/lib/version-policy.js for the policy and its downstream consumers.
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { CURRENT_VERSION, LEGACY_VERSIONS } = require("./scripts/lib/version-policy.js") as {
     CURRENT_VERSION: string;
@@ -127,12 +125,7 @@ const config: Config = {
             },
         ],
         require.resolve("./src/plugins/recent-guides-plugin"),
-        // Runs late in postBuild order (plugins are invoked in array order) so
-        // content-docs has already emitted every HTML file with its initial
-        // canonical tag. See src/plugins/canonical-redirects-plugin/index.ts.
         require.resolve("./src/plugins/canonical-redirects-plugin"),
-        // Injects noindex meta tag into built template HTML. Defense-in-depth
-        // with robots.txt's Disallow: /templates/ — only touches build/templates/**.
         require.resolve("./src/plugins/templates-noindex-plugin"),
     ],
     headTags: [

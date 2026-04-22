@@ -1,18 +1,5 @@
 import cf from "cloudfront";
 
-// ---------------------------------------------------------------------------
-// CloudFront Functions deploy note
-// ---------------------------------------------------------------------------
-// The CloudFront Functions runtime uploads a single self-contained file. The
-// only resolvable import is the runtime-provided "cloudfront" module — no
-// project-local imports. Two values therefore mirror what lives in the
-// repo's single-source-of-truth modules:
-//   - CURRENT_VERSION          ← scripts/lib/version-policy.js
-//   - function compareVersions ← src/plugins/canonical-redirects-plugin/lib/compare-versions.ts
-// Both are guarded by parity tests under the plugin's __tests__/ so drift
-// fails CI before it can ship.
-// ---------------------------------------------------------------------------
-
 const CURRENT_VERSION = "7.2";
 
 function compareVersions(v1, v2) {
@@ -103,11 +90,6 @@ async function handler(event) {
 
     targetUri = `/${version}${versionlessUri}`;
 
-    // Collapse an N-hop chain into exactly one 301. Cycles are impossible here
-    // (validateNoCycles runs in CI + the plugin's loadContent), so no visited
-    // set. The minimumVersion guard is belt-and-braces: versionless rules
-    // short-circuit above this loop, so in practice every rule seen here
-    // carries the field.
     let current = versionlessUri;
     while (true) {
         let rule;
