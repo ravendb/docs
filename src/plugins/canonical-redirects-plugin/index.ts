@@ -171,8 +171,8 @@ const canonicalRedirectsPlugin = function canonicalRedirectsPlugin(
             let scanned = 0;
             let rewritten = 0;
             let chainsResolved = 0;
-            let missingCanonicalCount = 0;
             let noindexInjectedCount = 0;
+            let missingCanonicalCount = 0;
 
             walk(outDir, (filePath) => {
                 if (!filePath.endsWith(".html")) return;
@@ -208,14 +208,23 @@ const canonicalRedirectsPlugin = function canonicalRedirectsPlugin(
                         fileVersion: info.version,
                     });
                 } else {
-                    // Versioned page emitted without a <link rel="canonical">. Docusaurus
-                    // stamps one on every page today, so a miss here usually signals its
-                    // HTML emission changed and CANONICAL_TAG_REGEX in lib/rewrite.ts needs
-                    // updating. Log at warn level so it surfaces in the build output.
                     missingCanonicalCount++;
-                    log.warn(`no <link rel="canonical"> found in versioned file: ${rel}`);
                 }
             });
+
+            log.info(
+                `scanned ${scanned} versioned HTML file(s), rewrote ${rewritten}, chains resolved ${chainsResolved}, missing canonicals ${missingCanonicalCount}, noindex injected ${noindexInjectedCount}`
+            );
+
+            // Missing canonicals signal a plugin-level regression (Docusaurus
+            // changed its HTML emission and CANONICAL_TAG_REGEX in lib/rewrite.ts
+            // is now stale), not a per-file data problem. Throw fast — no need
+            // to enumerate every affected file when the fix is one regex.
+            if (missingCanonicalCount > 0) {
+                const msg = `canonical-redirects-plugin: ${missingCanonicalCount} versioned HTML file(s) emitted without <link rel="canonical"> — update CANONICAL_TAG_REGEX in lib/rewrite.ts`;
+                if (options.failOnInvalidCanonical) throw new Error(msg);
+                log.warn(msg);
+            }
 
             const issues = verifyCanonicals({
                 records,
@@ -224,10 +233,6 @@ const canonicalRedirectsPlugin = function canonicalRedirectsPlugin(
                 legacyVersions: LEGACY_VERSIONS,
                 baseUrl: BASE_URL,
             });
-
-            log.info(
-                `scanned ${scanned} versioned HTML file(s), rewrote ${rewritten}, chains resolved ${chainsResolved}, missing canonicals ${missingCanonicalCount}, noindex injected ${noindexInjectedCount}`
-            );
 
             if (issues.length > 0) {
                 const maxShow = 10;
