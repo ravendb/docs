@@ -140,6 +140,7 @@ test("handler 301s /templates/foo/ → /templates/foo (trailing slash)", async (
 // ---------------------------------------------------------------------------
 
 test("handler 301s /guides/* to its KVS redirect target when one exists", async () => {
+    // /guides rules are versionless — no minimumVersion on the KVS payload.
     const kvs = new Map<string, KvsRule>([["/guides/old-guide", { targetUrl: "/guides/new-guide" }]]);
     const handler = buildHandler(kvs);
     const result = await handler(makeEvent("/guides/old-guide"));
@@ -162,6 +163,7 @@ test("handler 301s /guides/*/ to strip the trailing slash", async () => {
 });
 
 test("handler applies the same KVS-first logic under /cloud", async () => {
+    // /cloud rules are versionless — no minimumVersion on the KVS payload.
     const kvs = new Map<string, KvsRule>([["/cloud/legacy", { targetUrl: "/cloud/current" }]]);
     const handler = buildHandler(kvs);
     const hit = await handler(makeEvent("/cloud/legacy"));
@@ -275,9 +277,12 @@ test("handler stops chaining when a hop's minimumVersion fails the resolving ver
 });
 
 test("handler treats a rule with no minimumVersion as unconditional", async () => {
-    // Matches the plugin's resolveChain semantics: an unset minimumVersion
-    // gate means "always apply". validateRedirects permits this shape
-    // (minimumVersion is optional in the schema).
+    // Versionless content areas (/guides, /cloud) short-circuit above the
+    // chain loop, so in practice the chain loop only sees docs-area keys
+    // whose minimumVersion is validated present. The `rule.minimumVersion`
+    // guard in the chain loop is a cheap belt-and-braces for the
+    // versionless shape — if one ever reaches the loop, "absent" means
+    // "always apply". This test pins that semantics.
     const kvs = new Map<string, KvsRule>([["/always", { targetUrl: "/everywhere" }]]);
     const handler = buildHandler(kvs);
     const result = await handler(makeEvent("/6.2/always"));

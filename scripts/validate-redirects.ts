@@ -17,10 +17,12 @@ import {
     loadRedirects,
     validateNoCycles,
     validateRedirects,
+    validateTargetsExist,
 } from "../src/plugins/canonical-redirects-plugin/lib/redirects.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const redirectsPath = path.join(__dirname, "redirects.json");
+const projectRoot = path.join(__dirname, "..");
 
 if (!fs.existsSync(redirectsPath)) {
     console.error(`validate-redirects: file not found: ${redirectsPath}`);
@@ -37,13 +39,18 @@ try {
 }
 
 const structuralErrors = validateRedirects(rules);
-// Cycle detection requires the rules to be structurally sound (every key a
-// string, every targetUrl a string). Skip if we already have structural
-// errors — the rendered output would mix apples and oranges.
-const errors =
-    structuralErrors.length > 0 ? structuralErrors : validateNoCycles(rules as Parameters<typeof validateNoCycles>[0]);
+// Cycle + target-existence checks require the rules to be structurally sound
+// (every key a string, every targetUrl a string). Skip them if we already
+// have structural errors — the rendered output would mix apples and oranges.
+let errors = structuralErrors;
 if (errors.length === 0) {
-    console.log(`validate-redirects: OK (${rules.length} rule${rules.length === 1 ? "" : "s"}, no cycles)`);
+    const typedRules = rules as Parameters<typeof validateNoCycles>[0];
+    errors = [...validateNoCycles(typedRules), ...validateTargetsExist(typedRules, projectRoot)];
+}
+if (errors.length === 0) {
+    console.log(
+        `validate-redirects: OK (${rules.length} rule${rules.length === 1 ? "" : "s"}, no cycles, all targets resolve)`
+    );
     process.exit(0);
 }
 
