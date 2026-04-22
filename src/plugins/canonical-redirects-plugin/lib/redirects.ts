@@ -136,7 +136,9 @@ export function validateNoCycles(rules: RedirectRule[]): ValidationError[] {
     const explored = new Set<string>();
 
     for (const rule of rules) {
-        if (explored.has(rule.key)) continue;
+        if (explored.has(rule.key)) {
+            continue;
+        }
 
         const path: string[] = [];
         const visited = new Set<string>();
@@ -152,7 +154,9 @@ export function validateNoCycles(rules: RedirectRule[]): ValidationError[] {
                     key: cycleKeys[0],
                     message: `redirect cycle detected: ${cycle}`,
                 });
-                for (const k of path) explored.add(k);
+                for (const k of path) {
+                    explored.add(k);
+                }
                 break;
             }
             visited.add(current);
@@ -164,7 +168,9 @@ export function validateNoCycles(rules: RedirectRule[]): ValidationError[] {
         // explored so a later starting key won't re-trace the same
         // tail.
         if (!map.has(current)) {
-            for (const k of path) explored.add(k);
+            for (const k of path) {
+                explored.add(k);
+            }
         }
     }
 

@@ -93,7 +93,9 @@ export function splitSitemap(options: SplitOptions): SplitResult | SplitSucceede
 
     for (const block of urlBlocks) {
         const locMatch = block.match(/<loc>(.*?)<\/loc>/);
-        if (!locMatch) continue;
+        if (!locMatch) {
+            continue;
+        }
         const file = getSitemapFile(locMatch[1], legacySet, baseUrl);
         if (!file) {
             skippedLegacy++;

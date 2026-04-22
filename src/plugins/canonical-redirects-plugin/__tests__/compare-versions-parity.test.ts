@@ -39,7 +39,7 @@ function extractEdgeCompareVersions(): (v1: string, v2: string) => number {
         .map((p) => p.trim())
         .filter(Boolean);
     const body = match[2];
-    // eslint-disable-next-line @typescript-eslint/no-implied-eval
+
     return new Function(...params, body) as (v1: string, v2: string) => number;
 }
 

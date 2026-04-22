@@ -82,7 +82,6 @@ function buildHandler(kvs: Map<string, KvsRule>, currentVersion = "7.2"): Handle
         return handler;
     `;
 
-    // eslint-disable-next-line @typescript-eslint/no-implied-eval
     const factory = new Function("__kvs", "__currentVersion", wrapper) as (
         kvs: Map<string, KvsRule>,
         currentVersion: string

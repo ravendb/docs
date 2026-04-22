@@ -74,8 +74,12 @@ export function buildUniverse(routePaths: readonly string[], currentVersion: str
  */
 function deriveVersionlessPath(canonicalPath: string, currentVersion: string): string {
     const prefix = `/${currentVersion}`;
-    if (canonicalPath === prefix) return "/";
-    if (canonicalPath.startsWith(`${prefix}/`)) return canonicalPath.slice(prefix.length);
+    if (canonicalPath === prefix) {
+        return "/";
+    }
+    if (canonicalPath.startsWith(`${prefix}/`)) {
+        return canonicalPath.slice(prefix.length);
+    }
     return canonicalPath;
 }
 

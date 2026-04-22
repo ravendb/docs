@@ -10,6 +10,7 @@
  * See plan RDoc-3786 for the full design.
  */
 
+import docusaurusLogger from "@docusaurus/logger";
 import type { LoadContext, Plugin } from "@docusaurus/types";
 import fs from "fs";
 import path from "path";
@@ -60,20 +61,30 @@ function resolveOptions(opts: CanonicalRedirectsPluginOptions | undefined, siteD
 
 function logger(level: ResolvedOptions["logLevel"]) {
     const shouldLog = (lvl: "info" | "verbose") => {
-        if (level === "silent") return false;
-        if (level === "info") return lvl === "info";
+        if (level === "silent") {
+            return false;
+        }
+        if (level === "info") {
+            return lvl === "info";
+        }
         return true; // verbose
     };
     return {
         info: (msg: string) => {
-            if (shouldLog("info")) console.log(`[canonical-redirects] ${msg}`);
+            if (shouldLog("info")) {
+                docusaurusLogger.info(`[canonical-redirects] ${msg}`);
+            }
         },
         verbose: (msg: string) => {
-            if (shouldLog("verbose")) console.log(`[canonical-redirects] ${msg}`);
+            if (shouldLog("verbose")) {
+                docusaurusLogger.info(`[canonical-redirects] ${msg}`);
+            }
         },
         warn: (msg: string) => {
             // Always show warnings (unless fully silent).
-            if (level !== "silent") console.warn(`[canonical-redirects] ${msg}`);
+            if (level !== "silent") {
+                docusaurusLogger.warn(`[canonical-redirects] ${msg}`);
+            }
         },
     };
 }
@@ -105,7 +116,9 @@ function extractVersionInfo(relPath: string): { version: string; versionlessPath
     // Strip trailing /index.html
     const noIndex = relPath.replace(/\/index\.html$/i, "");
     const match = noIndex.match(VERSION_SEGMENT_REGEX);
-    if (!match) return null;
+    if (!match) {
+        return null;
+    }
     const version = match[1];
     const tail = match[2] ?? "";
     // versionlessPath: leading slash, no trailing slash (except for version root "/")
@@ -169,10 +182,14 @@ const canonicalRedirectsPlugin = function canonicalRedirectsPlugin(
             let missingCanonicalCount = 0;
 
             walk(outDir, (filePath) => {
-                if (!filePath.endsWith(".html")) return;
+                if (!filePath.endsWith(".html")) {
+                    return;
+                }
                 const rel = path.relative(outDir, filePath).split(path.sep).join("/");
                 const info = extractVersionInfo(rel);
-                if (!info) return; // non-versioned file (search, cloud, guides, templates, root)
+                if (!info) {
+                    return;
+                } // non-versioned file (search, cloud, guides, templates, root)
 
                 scanned++;
 
@@ -192,8 +209,12 @@ const canonicalRedirectsPlugin = function canonicalRedirectsPlugin(
                     fs.writeFileSync(filePath, result.html, "utf8");
                     rewritten++;
                 }
-                if (result.chainResolved) chainsResolved++;
-                if (result.noindexInjected) noindexInjectedCount++;
+                if (result.chainResolved) {
+                    chainsResolved++;
+                }
+                if (result.noindexInjected) {
+                    noindexInjectedCount++;
+                }
 
                 if (result.newCanonical) {
                     records.push({
@@ -213,7 +234,9 @@ const canonicalRedirectsPlugin = function canonicalRedirectsPlugin(
             // Missing canonicals mean CANONICAL_TAG_REGEX is stale — fix the regex, not each file.
             if (missingCanonicalCount > 0) {
                 const msg = `canonical-redirects-plugin: ${missingCanonicalCount} versioned HTML file(s) emitted without <link rel="canonical"> — update CANONICAL_TAG_REGEX in lib/rewrite.ts`;
-                if (options.failOnInvalidCanonical) throw new Error(msg);
+                if (options.failOnInvalidCanonical) {
+                    throw new Error(msg);
+                }
                 log.warn(msg);
             }
 
@@ -232,7 +255,9 @@ const canonicalRedirectsPlugin = function canonicalRedirectsPlugin(
                 const body = shown
                     .map((i) => {
                         const base = `  - ${i.file}\n      canonical: ${i.canonical}\n      reason: ${i.reason}`;
-                        if (!i.fix) return base;
+                        if (!i.fix) {
+                            return base;
+                        }
                         // Indent the fix block two extra spaces under the issue bullet
                         // so it reads as a sub-block in the terminal.
                         const indentedFix = i.fix

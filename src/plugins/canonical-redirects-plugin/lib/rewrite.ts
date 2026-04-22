@@ -71,7 +71,9 @@ const NOINDEX_META_TAG = `<meta name="robots" content="noindex,follow">`;
 
 function extractHref(tag: string): string | null {
     const m = tag.match(HREF_ATTR_REGEX);
-    if (!m) return null;
+    if (!m) {
+        return null;
+    }
     return m[1] ?? m[2] ?? m[3] ?? null;
 }
 

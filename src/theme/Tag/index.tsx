@@ -5,7 +5,7 @@ import type { Props as DocusaurusTagProps } from "@theme/Tag";
 
 export interface Props
     extends Partial<DocusaurusTagProps>,
-        // eslint-disable-next-line no-undef
+
         React.HTMLAttributes<HTMLSpanElement> {
     children?: React.ReactNode;
     to?: string;

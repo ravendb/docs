@@ -20,11 +20,19 @@ export function compareVersions(v1: string, v2: string): number {
     const minor1 = parseInt(parts1[1], 10);
     const minor2 = parseInt(parts2[1], 10);
     if (major1 === major2) {
-        if (minor1 > minor2) return 1;
-        if (minor1 < minor2) return -1;
+        if (minor1 > minor2) {
+            return 1;
+        }
+        if (minor1 < minor2) {
+            return -1;
+        }
         return 0;
     }
-    if (major1 > major2) return 1;
-    if (major1 < major2) return -1;
+    if (major1 > major2) {
+        return 1;
+    }
+    if (major1 < major2) {
+        return -1;
+    }
     return 0;
 }
