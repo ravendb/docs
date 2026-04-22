@@ -28,6 +28,14 @@ export interface VerifierIssue {
     canonical: string;
     canonicalPath: string;
     reason: string;
+    /**
+     * Optional ready-to-paste remediation snippet. Populated for
+     * "not in universe" failures — the fix is almost always adding a
+     * redirects.json entry mapping the stale versionless path onto its
+     * current-version home. The renderer prints this block below each
+     * issue when present.
+     */
+    fix?: string;
 }
 
 export interface VerifyInput {
@@ -64,8 +72,43 @@ export function buildUniverse(routePaths: readonly string[], currentVersion: str
     return universe;
 }
 
+/**
+ * Derive the versionless path from a canonical URL, given the current version.
+ * `https://host/7.2/foo/bar` → `/foo/bar`. Falls back to the full path when
+ * the canonical doesn't start with the expected /<version>/ prefix (that's
+ * already a different flavor of failure, signalled by the "does not point at
+ * baseUrl" reason).
+ */
+function deriveVersionlessPath(canonicalPath: string, currentVersion: string): string {
+    const prefix = `/${currentVersion}`;
+    if (canonicalPath === prefix) return "/";
+    if (canonicalPath.startsWith(`${prefix}/`)) return canonicalPath.slice(prefix.length);
+    return canonicalPath;
+}
+
+/** Build the remediation block printed under each "not in universe" issue. */
+function buildUniverseFix(canonicalPath: string, currentVersion: string): string {
+    const versionlessPath = deriveVersionlessPath(canonicalPath, currentVersion);
+    const snippet = JSON.stringify(
+        {
+            key: versionlessPath,
+            value: {
+                targetUrl: "<new-target-path>",
+                minimumVersion: currentVersion,
+            },
+        },
+        null,
+        2
+    );
+    return [
+        "add an entry to scripts/redirects.json:",
+        ...snippet.split("\n").map((l) => `    ${l}`),
+        "then run: npm run validate-redirects",
+    ].join("\n");
+}
+
 export function verifyCanonicals(input: VerifyInput): VerifierIssue[] {
-    const { records, universe, legacyVersions, baseUrl } = input;
+    const { records, universe, currentVersion, legacyVersions, baseUrl } = input;
 
     const issues: VerifierIssue[] = [];
 
@@ -93,6 +136,7 @@ export function verifyCanonicals(input: VerifyInput): VerifierIssue[] {
                 canonical,
                 canonicalPath,
                 reason: "canonical path is not in the current-version route universe",
+                fix: buildUniverseFix(canonicalPath, currentVersion),
             });
         }
     }

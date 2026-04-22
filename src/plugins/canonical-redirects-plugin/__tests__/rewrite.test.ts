@@ -11,8 +11,8 @@ const BASE_URL = "https://docs.ravendb.net";
 
 const RULES: RedirectRule[] = [
     { key: "/old/a", value: { targetUrl: "/new/a", minimumVersion: "7.2" } },
-    { key: "/old/b", value: { targetUrl: "/mid/b" } },
-    { key: "/mid/b", value: { targetUrl: "/new/b" } },
+    { key: "/old/b", value: { targetUrl: "/mid/b", minimumVersion: "7.2" } },
+    { key: "/mid/b", value: { targetUrl: "/new/b", minimumVersion: "7.2" } },
 ];
 const MAP = buildRedirectMap(RULES);
 
@@ -181,6 +181,90 @@ test("rewriteHtml respects minimumVersion gating when the file's version gates t
     assert.equal(result.newCanonical, `${BASE_URL}/${CURRENT}/future`);
 });
 
+// --- Legacy noindex meta injection ---
+
+test("rewriteHtml injects noindex,follow into legacy page with no robots meta", () => {
+    const html = `<!doctype html><html><head><link rel="canonical" href="${BASE_URL}/${CURRENT}/x"><title>t</title></head><body>x</body></html>`;
+    const result = rewriteHtml({
+        html,
+        fileVersion: "4.2",
+        versionlessPath: "/x",
+        currentVersion: CURRENT,
+        legacyVersions: LEGACY,
+        redirects: MAP,
+        baseUrl: BASE_URL,
+    });
+    assert.equal(result.changed, true);
+    assert.equal(result.noindexInjected, true);
+    assert.match(result.html, /<meta name="robots" content="noindex,follow">/);
+    // Sanity: meta lives right after <head>, canonical was also rewritten to self.
+    assert.match(result.html, /<head><meta name="robots" content="noindex,follow">/);
+    assert.match(result.html, /href="https:\/\/docs\.ravendb\.net\/4\.2\/x"/);
+});
+
+test("rewriteHtml leaves existing robots meta alone on legacy page", () => {
+    const html =
+        `<!doctype html><html><head>` +
+        `<meta name="robots" content="noindex,nofollow">` +
+        `<link rel="canonical" href="${BASE_URL}/${CURRENT}/x">` +
+        `</head><body>x</body></html>`;
+    const result = rewriteHtml({
+        html,
+        fileVersion: "4.2",
+        versionlessPath: "/x",
+        currentVersion: CURRENT,
+        legacyVersions: LEGACY,
+        redirects: MAP,
+        baseUrl: BASE_URL,
+    });
+    assert.equal(result.noindexInjected, false);
+    // Original meta is preserved, and no second meta was added.
+    assert.match(result.html, /content="noindex,nofollow"/);
+    const metaCount = (result.html.match(/<meta name="robots"/gi) ?? []).length;
+    assert.equal(metaCount, 1);
+});
+
+test("rewriteHtml never injects noindex on current/indexed-version pages", () => {
+    const html = `<!doctype html><html><head><link rel="canonical" href="${BASE_URL}/${CURRENT}/x"></head><body>x</body></html>`;
+    const result = rewriteHtml({
+        html,
+        fileVersion: CURRENT,
+        versionlessPath: "/x",
+        currentVersion: CURRENT,
+        legacyVersions: LEGACY,
+        redirects: MAP,
+        baseUrl: BASE_URL,
+    });
+    assert.equal(result.noindexInjected, false);
+    assert.ok(!/name="robots"/.test(result.html));
+});
+
+test("rewriteHtml noindex injection is idempotent when run twice on legacy", () => {
+    const html = `<!doctype html><html><head><link rel="canonical" href="${BASE_URL}/${CURRENT}/x"></head></html>`;
+    const first = rewriteHtml({
+        html,
+        fileVersion: "4.2",
+        versionlessPath: "/x",
+        currentVersion: CURRENT,
+        legacyVersions: LEGACY,
+        redirects: MAP,
+        baseUrl: BASE_URL,
+    });
+    const second = rewriteHtml({
+        html: first.html,
+        fileVersion: "4.2",
+        versionlessPath: "/x",
+        currentVersion: CURRENT,
+        legacyVersions: LEGACY,
+        redirects: MAP,
+        baseUrl: BASE_URL,
+    });
+    assert.equal(first.noindexInjected, true);
+    assert.equal(second.noindexInjected, false);
+    assert.equal(second.changed, false);
+    assert.equal(second.html, first.html);
+});
+
 // --- Verifier ---
 
 test("buildUniverse keeps only current-version routes", () => {
@@ -206,6 +290,13 @@ test("verifyCanonicals reports canonicals pointing outside the universe", () => 
     assert.equal(issues.length, 1);
     assert.equal(issues[0].file, "b.html");
     assert.match(issues[0].reason, /universe/);
+    // Issue should carry an actionable fix block naming the versionless path
+    // and the validate command so the author can paste + edit in one go.
+    assert.ok(issues[0].fix, "expected fix block on universe miss");
+    assert.match(issues[0].fix!, /scripts\/redirects\.json/);
+    assert.match(issues[0].fix!, /"key": "\/does-not-exist"/);
+    assert.match(issues[0].fix!, /"minimumVersion": "7\.2"/);
+    assert.match(issues[0].fix!, /npm run validate-redirects/);
 });
 
 test("verifyCanonicals skips legacy-version files (self-canonical is trivially valid)", () => {

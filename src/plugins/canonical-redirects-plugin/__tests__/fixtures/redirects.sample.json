@@ -9,13 +9,15 @@
     {
         "key": "/old/b",
         "value": {
-            "targetUrl": "/mid/b"
+            "targetUrl": "/mid/b",
+            "minimumVersion": "7.2"
         }
     },
     {
         "key": "/mid/b",
         "value": {
-            "targetUrl": "/new/b"
+            "targetUrl": "/new/b",
+            "minimumVersion": "7.2"
         }
     },
     {

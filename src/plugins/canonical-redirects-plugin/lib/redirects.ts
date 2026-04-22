@@ -9,6 +9,7 @@
  */
 
 import fs from "fs";
+import path from "path";
 // Plugin-local copy of compareVersions. The edge handler
 // (scripts/handle_redirects.js) inlines its own copy because CloudFront
 // Functions can't resolve imports at runtime; a parity test in __tests__/
@@ -19,11 +20,38 @@ export interface RedirectRule {
     key: string;
     value: {
         targetUrl: string;
+        /**
+         * Lowest version at which the rule applies. A reader on an older
+         * version hitting the rule's key stops there instead of hopping to
+         * a page that didn't exist yet on their version.
+         *
+         * Required on versioned (docs) keys; forbidden on versionless
+         * keys — `/guides/…` and `/cloud/…` — since those areas have
+         * no version axis at all (the edge handler's /guides and /cloud
+         * branches redirect without consulting minimumVersion).
+         * See validateRedirects for the enforced rule.
+         */
         minimumVersion?: string;
     };
 }
 
 export type RedirectMap = Map<string, { targetUrl: string; minimumVersion?: string }>;
+
+/**
+ * A redirect's `key` lives in a versionless content area when it starts
+ * with one of these prefixes. Used by validateRedirects to decide whether
+ * minimumVersion is required (versioned docs keys) or forbidden
+ * (versionless keys).
+ *
+ * `/templates` is deliberately excluded: it's an internal authoring area
+ * with no public routes, so redirects under it aren't expected and
+ * shouldn't need special-casing.
+ */
+const VERSIONLESS_KEY_PREFIXES = ["/guides/", "/cloud/"] as const;
+
+function isVersionlessKey(key: string): boolean {
+    return VERSIONLESS_KEY_PREFIXES.some((p) => key.startsWith(p));
+}
 
 export interface ValidationError {
     index: number;
@@ -96,8 +124,20 @@ export function validateRedirects(rules: unknown): ValidationError[] {
             });
         }
 
-        if (value.minimumVersion !== undefined) {
-            if (typeof value.minimumVersion !== "string" || !VERSION_REGEX.test(value.minimumVersion)) {
+        // minimumVersion is required on versioned docs keys (version
+        // gating is load-bearing for chain resolution on old versions).
+        // Versionless keys (/guides, /cloud) are exempt — they have no
+        // version axis, so the edge's /guides and /cloud branches redirect
+        // without consulting minimumVersion. A stray minimumVersion on a
+        // versionless entry isn't flagged here; PR review will catch it.
+        if (!isVersionlessKey(key)) {
+            if (value.minimumVersion === undefined) {
+                errors.push({
+                    index,
+                    key,
+                    message: `'value.minimumVersion' is required on versioned keys and must be a "MAJOR.MINOR" string`,
+                });
+            } else if (typeof value.minimumVersion !== "string" || !VERSION_REGEX.test(value.minimumVersion)) {
                 errors.push({
                     index,
                     key,
@@ -176,6 +216,69 @@ export function validateNoCycles(rules: RedirectRule[]): ValidationError[] {
 }
 
 /**
+ * Map a versionless redirect targetUrl to the filesystem content root that
+ * would serve it. Kept in sync with docusaurus.config.ts:
+ *   - /guides/…    → <projectRoot>/guides/
+ *   - /cloud/…     → <projectRoot>/cloud/
+ *   - anything else → <projectRoot>/docs/ (the current-version content tree)
+ *
+ * `/templates` is excluded — it's an internal authoring area, not routed
+ * publicly, and shouldn't appear as a redirect target.
+ */
+function resolveContentPath(targetUrl: string, projectRoot: string): { root: string; rel: string[] } {
+    const segments = targetUrl.split("/").filter(Boolean);
+    const first = segments[0];
+    if (first === "guides" || first === "cloud") {
+        return { root: path.join(projectRoot, first), rel: segments.slice(1) };
+    }
+    return { root: path.join(projectRoot, "docs"), rel: segments };
+}
+
+/**
+ * Verify that every redirect's `targetUrl` maps to a real .mdx/.md file in
+ * the content tree. Runs after structural + cycle validation and returns
+ * the same `ValidationError[]` shape so callers can print all three kinds
+ * uniformly.
+ *
+ * Why this lives in validation: previously a broken target only surfaced
+ * at `postBuild` via the canonical verifier — and only for pages that
+ * actually emitted a canonical resolving through the dead rule. Direct
+ * filesystem resolution at `validate-redirects` time gives authors the
+ * feedback the moment they edit redirects.json, before any build work.
+ *
+ * A target matches if any of these exist:
+ *   - <root>/<rel>.mdx
+ *   - <root>/<rel>.md
+ *   - <root>/<rel>/index.mdx
+ *   - <root>/<rel>/index.md
+ * Pure directory-with-_category_.json entries aren't accepted — redirect
+ * targets should always resolve to a concrete page.
+ */
+export function validateTargetsExist(rules: RedirectRule[], projectRoot: string): ValidationError[] {
+    const errors: ValidationError[] = [];
+    for (let index = 0; index < rules.length; index++) {
+        const rule = rules[index];
+        const target = rule.value.targetUrl;
+        const { root, rel } = resolveContentPath(target, projectRoot);
+        const basePath = path.join(root, ...rel);
+        const candidates = [
+            `${basePath}.mdx`,
+            `${basePath}.md`,
+            path.join(basePath, "index.mdx"),
+            path.join(basePath, "index.md"),
+        ];
+        if (!candidates.some((p) => fs.existsSync(p))) {
+            errors.push({
+                index,
+                key: rule.key,
+                message: `targetUrl does not resolve to an existing document: ${target}`,
+            });
+        }
+    }
+    return errors;
+}
+
+/**
  * Transitively follow redirect hops, gating each hop by its minimumVersion
  * against the resolving version.
  *
@@ -184,8 +287,17 @@ export function validateNoCycles(rules: RedirectRule[]): ValidationError[] {
  * calls here. Adding a runtime `visited` set would re-check an invariant
  * that can't break and mask any real bug with a silent early return.
  *
- * Today's redirects.json has zero chains (all 30 targets are terminal) — the
- * implementation handles multi-hop so future authoring doesn't silently break.
+ * Today's redirects.json has zero chains — all targets are terminal. The
+ * implementation handles multi-hop so future authoring doesn't silently
+ * break.
+ *
+ * minimumVersion handling: the rewriter only calls resolveChain with
+ * versioned-docs paths, and validateRedirects requires a minimumVersion
+ * on every docs-area rule — so in practice `rule.minimumVersion` is
+ * always a string here. The `rule.minimumVersion &&` guard stays as a
+ * cheap belt-and-braces for the versionless-key shape: if a /guides or
+ * /cloud rule ever reaches this function, "absent minimumVersion" is
+ * treated as "always apply", matching the schema intent.
  *
  * @param map     Built from redirects.json
  * @param startPath  Versionless path starting with '/'
