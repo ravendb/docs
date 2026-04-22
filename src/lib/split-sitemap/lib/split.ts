@@ -56,11 +56,7 @@ const URLSET_OPEN =
     'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" ' +
     'xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">';
 
-function getSitemapFile(
-    loc: string,
-    legacySet: Set<string>,
-    baseUrl: string
-): string | null {
+function getSitemapFile(loc: string, legacySet: Set<string>, baseUrl: string): string | null {
     const prefix = `${baseUrl}/`;
     const urlPath = loc.startsWith(prefix) ? loc.slice(prefix.length) : loc.replace(/^\//, "");
     const firstSegment = urlPath.split("/")[0];

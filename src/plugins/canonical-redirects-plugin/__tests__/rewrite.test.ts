@@ -164,9 +164,7 @@ test("rewriteHtml respects minimumVersion gating when the file's version gates t
     // Rewriter resolves against currentVersion (7.2), not fileVersion, so the
     // gate at /old/a (minVersion 7.2) applies. For completeness, verify a rule
     // that's gated higher than current doesn't hop.
-    const gatedMap = buildRedirectMap([
-        { key: "/future", value: { targetUrl: "/future-new", minimumVersion: "9.9" } },
-    ]);
+    const gatedMap = buildRedirectMap([{ key: "/future", value: { targetUrl: "/future-new", minimumVersion: "9.9" } }]);
     const html = htmlWithCanonical(`${BASE_URL}/${CURRENT}/future`);
     const result = rewriteHtml({
         html,
@@ -301,9 +299,7 @@ test("verifyCanonicals reports canonicals pointing outside the universe", () => 
 
 test("verifyCanonicals skips legacy-version files (self-canonical is trivially valid)", () => {
     const universe = buildUniverse(["/7.2/foo"], CURRENT);
-    const records: CanonicalRecord[] = [
-        { file: "legacy.html", canonical: `${BASE_URL}/4.2/foo`, fileVersion: "4.2" },
-    ];
+    const records: CanonicalRecord[] = [{ file: "legacy.html", canonical: `${BASE_URL}/4.2/foo`, fileVersion: "4.2" }];
     const issues = verifyCanonicals({
         records,
         universe,

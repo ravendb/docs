@@ -47,9 +47,7 @@ test("validateRedirects flags duplicate keys", () => {
 });
 
 test("validateRedirects flags malformed minimumVersion", () => {
-    const bad: RedirectRule[] = [
-        { key: "/ok", value: { targetUrl: "/fine", minimumVersion: "seven-two" } },
-    ];
+    const bad: RedirectRule[] = [{ key: "/ok", value: { targetUrl: "/fine", minimumVersion: "seven-two" } }];
     const errors = validateRedirects(bad);
     assert.equal(errors.length, 1);
     assert.match(errors[0].message, /minimumVersion/);

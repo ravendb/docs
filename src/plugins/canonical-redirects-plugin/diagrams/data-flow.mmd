@@ -1,0 +1,57 @@
+sequenceDiagram
+    autonumber
+    participant D as Docusaurus core
+    participant P as canonical-redirects plugin
+    participant FS as outDir<br/>(emitted HTML)
+    participant V as verifier
+
+    Note over D,P: loadContent — pre-build
+    D->>P: routesPaths
+    P->>P: read scripts/redirects.json
+    P->>P: validateRedirects (schema)
+    P->>P: validateNoCycles
+    P->>P: validateTargetsExist
+    P->>P: buildRedirectMap() [once]
+
+    Note over D,P: postBuild — post-emission
+    D->>FS: emit HTML files
+    P->>P: buildUniverse(routesPaths, CURRENT) [once]
+
+    loop walk(outDir) — each .html
+        P->>FS: read file
+        P->>P: extractVersionInfo(rel)
+        alt not version-prefixed
+            P-->>P: skip (cloud/guides/templates/root)
+        else version-prefixed
+            P->>P: rewriteHtml(...)
+            alt legacy version
+                P->>P: canonical = self + inject noindex,follow meta
+            else current / indexed version
+                P->>P: resolveChain → rewrite canonical href
+            else no canonical tag
+                P-->>P: log.warn + counter
+            end
+            opt changed
+                P->>FS: write file
+            end
+            P->>V: record canonical
+        end
+    end
+
+    P->>V: verifyCanonicals(records, universe)
+    loop each record
+        alt legacy file
+            V-->>P: skip (self-canonical trivially valid)
+        else canonical ¬ startsWith(baseUrl)
+            V-->>P: issue + fix hint
+        else canonical path ∉ universe
+            V-->>P: issue + fix hint
+        end
+    end
+
+    P->>P: report summary
+    alt issues && strict mode
+        P-->>D: throw — fail build
+    else
+        P-->>D: done
+    end
