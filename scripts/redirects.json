@@ -92,7 +92,7 @@
     {
         "key": "/client-api/operations/maintenance/backup/encrypted-backup",
         "value": {
-            "targetUrl": "backup/create/periodic-tasks/database-backup",
+            "targetUrl": "/backup/create/periodic-tasks/database-backup",
             "minimumVersion": "7.2"
         }
     },
@@ -206,6 +206,188 @@
         "value": {
             "targetUrl": "/compare-exchange/overview",
             "minimumVersion": "7.1"
+        }
+    },
+    {
+        "key": "/start/licensing/activate-license",
+        "value": {
+            "targetUrl": "/licensing/activate-license",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/start/licensing/force-update",
+        "value": {
+            "targetUrl": "/licensing/force-update",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/start/licensing/license-under-docker",
+        "value": {
+            "targetUrl": "/licensing/license-under-docker",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/start/licensing/licensing-faq",
+        "value": {
+            "targetUrl": "/licensing/faq",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/start/licensing/renew-license",
+        "value": {
+            "targetUrl": "/licensing/renew-license",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/start/licensing/replace-license",
+        "value": {
+            "targetUrl": "/licensing/replace-license",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/document-extensions/overview-extensions",
+        "value": {
+            "targetUrl": "/document-extensions/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/document-extensions/attachments/bulk-insert",
+        "value": {
+            "targetUrl": "/document-extensions/attachments/store-attachments/bulk-insert",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/document-extensions/attachments/copying-moving-renaming",
+        "value": {
+            "targetUrl": "/document-extensions/attachments/copy-move-rename",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/document-extensions/attachments/deleting",
+        "value": {
+            "targetUrl": "/document-extensions/attachments/delete-attachment",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/document-extensions/attachments/indexing",
+        "value": {
+            "targetUrl": "/document-extensions/attachments/indexing-attachments",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/document-extensions/attachments/loading",
+        "value": {
+            "targetUrl": "/document-extensions/attachments/get-attachments",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/document-extensions/attachments/storing",
+        "value": {
+            "targetUrl": "/document-extensions/attachments/store-attachments/store-attachments-local",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/document-extensions/attachments/what-are-attachments",
+        "value": {
+            "targetUrl": "/document-extensions/attachments/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/attachments/delete-attachment",
+        "value": {
+            "targetUrl": "/document-extensions/attachments/delete-attachment",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/attachments/get-attachment",
+        "value": {
+            "targetUrl": "/document-extensions/attachments/get-attachments",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/attachments/put-attachment",
+        "value": {
+            "targetUrl": "/document-extensions/attachments/store-attachments/store-attachments-local",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/migration/client-api/client-breaking-changes",
+        "value": {
+            "targetUrl": "/migration/client-api/previous-versions-client-breaking-changes",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/migration/embedded/testdriver-breaking-changes",
+        "value": {
+            "targetUrl": "/migration/client-api/previous-versions-client-breaking-changes",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/session/cluster-transaction/atomic-guards",
+        "value": {
+            "targetUrl": "/compare-exchange/atomic-guards",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/session/cluster-transaction/compare-exchange",
+        "value": {
+            "targetUrl": "/compare-exchange/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/glossary/delete-compare-exchange-command-data",
+        "value": {
+            "targetUrl": "/compare-exchange/delete-cmpxchg-items",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/glossary/put-compare-exchange-command-data",
+        "value": {
+            "targetUrl": "/compare-exchange/create-cmpxchg-items",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/indexes/indexing-compare-exchange-values",
+        "value": {
+            "targetUrl": "/compare-exchange/indexing-cmpxchg-values",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/database/document-extensions/revisions",
+        "value": {
+            "targetUrl": "/studio/database/document-extensions/revisions/revisions-overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/database/documents/compare-exchange-view",
+        "value": {
+            "targetUrl": "/compare-exchange/api-studio-quick-links/studio-references",
+            "minimumVersion": "7.2"
         }
     }
 ]
