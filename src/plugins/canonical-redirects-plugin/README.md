@@ -67,7 +67,7 @@ Same file, two readers, one HTTP hop per request regardless of chain depth.
 
 ## Failure modes
 
-- **`missing canonicals N > 0`** in the summary. Docusaurus changed its HTML emission. Inspect a versioned HTML file and update `CANONICAL_TAG_REGEX` in `lib/rewrite.ts`.
+- **`no <link rel="canonical"> tag found in emitted HTML`** in the verifier output. Docusaurus stamps a canonical on every page today, so a miss means its HTML emission changed. Inspect a versioned file and update `CANONICAL_TAG_REGEX` in `lib/rewrite.ts` to match the new shape. Strict builds fail on this.
 - **`invalid canonical` / `canonical path is not in the current-version route universe`**. A page moved or renamed without a matching redirect. Paste the `fix:` block from the error output into `scripts/redirects.json`, set `targetUrl` to the new path, re-run `npm run validate-redirects`, then the strict build.
 - **`redirect cycle detected: /a → /b → /a`** from `validateNoCycles`. Two or more rules point at each other. Fix the offending chain in `redirects.json`.
 - **`targetUrl does not resolve to an existing document`** from `validateTargetsExist`. The target path has no `.mdx` / `.md` file under the expected content root. Either correct the target or create the landing page.
