@@ -134,6 +134,10 @@ const config: Config = {
             },
         ],
         require.resolve("./src/plugins/recent-guides-plugin"),
+        // Runs late in postBuild order (plugins are invoked in array order) so
+        // content-docs has already emitted every HTML file with its initial
+        // canonical tag. See src/plugins/canonical-redirects-plugin/index.ts.
+        require.resolve("./src/plugins/canonical-redirects-plugin"),
     ],
     headTags: [
         {

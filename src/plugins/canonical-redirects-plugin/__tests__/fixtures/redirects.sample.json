@@ -1,0 +1,28 @@
+[
+    {
+        "key": "/old/a",
+        "value": {
+            "targetUrl": "/new/a",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/old/b",
+        "value": {
+            "targetUrl": "/mid/b"
+        }
+    },
+    {
+        "key": "/mid/b",
+        "value": {
+            "targetUrl": "/new/b"
+        }
+    },
+    {
+        "key": "/gated",
+        "value": {
+            "targetUrl": "/gated-new",
+            "minimumVersion": "7.2"
+        }
+    }
+]
