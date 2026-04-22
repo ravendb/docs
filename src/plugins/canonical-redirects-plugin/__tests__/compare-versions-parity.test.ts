@@ -34,7 +34,10 @@ function extractEdgeCompareVersions(): (v1: string, v2: string) => number {
                 `Function signature may have changed — update the extractor regex.`
         );
     }
-    const params = match[1].split(",").map((p) => p.trim()).filter(Boolean);
+    const params = match[1]
+        .split(",")
+        .map((p) => p.trim())
+        .filter(Boolean);
     const body = match[2];
     // eslint-disable-next-line @typescript-eslint/no-implied-eval
     return new Function(...params, body) as (v1: string, v2: string) => number;
@@ -68,21 +71,9 @@ test("edge + plugin compareVersions agree across the case table", () => {
     for (const [a, b, expected] of CASES) {
         const edge = edgeFn(a, b);
         const plugin = tsCompareVersions(a, b);
-        assert.equal(
-            edge,
-            expected,
-            `edge compareVersions(${a}, ${b}) = ${edge}, expected ${expected}`
-        );
-        assert.equal(
-            plugin,
-            expected,
-            `plugin compareVersions(${a}, ${b}) = ${plugin}, expected ${expected}`
-        );
-        assert.equal(
-            edge,
-            plugin,
-            `drift detected: edge(${a}, ${b}) = ${edge}, plugin = ${plugin}`
-        );
+        assert.equal(edge, expected, `edge compareVersions(${a}, ${b}) = ${edge}, expected ${expected}`);
+        assert.equal(plugin, expected, `plugin compareVersions(${a}, ${b}) = ${plugin}, expected ${expected}`);
+        assert.equal(edge, plugin, `drift detected: edge(${a}, ${b}) = ${edge}, plugin = ${plugin}`);
     }
 });
 

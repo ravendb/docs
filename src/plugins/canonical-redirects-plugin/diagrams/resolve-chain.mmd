@@ -1,0 +1,9 @@
+flowchart TD
+    Start([startPath, version]) --> Init["current = startPath"]
+    Init --> CheckMap{"map.has(current)?"}
+    CheckMap -- no --> ReturnTerminal([return current])
+    CheckMap -- yes --> GetRule["rule = map.get(current)"]
+    GetRule --> CheckVer{"rule.minimumVersion AND<br/>compareVersions(version,<br/>rule.minimumVersion) &lt; 0?"}
+    CheckVer -- yes --> ReturnTerminal
+    CheckVer -- no --> Advance["current = rule.targetUrl"]
+    Advance --> CheckMap

@@ -19,8 +19,7 @@
  * canonical is the search-signalling field that matters.
  */
 
-import type { RedirectMap } from "./redirects.js";
-import { resolveChain } from "./redirects.js";
+import { resolveChain, type RedirectMap } from "./redirects.js";
 
 export interface RewriteInput {
     /** The HTML document text. */
@@ -61,14 +60,12 @@ export interface RewriteResult {
 // quoting. Docusaurus emits quoted attributes; the swc minifier used by
 // @docusaurus/faster strips quotes where legal, so post-minified HTML contains
 // `rel=canonical href=https://…` — we must recognize both forms.
-const CANONICAL_TAG_REGEX =
-    /<link\b[^>]*\brel\s*=\s*(?:"canonical"|'canonical'|canonical(?=[\s/>]))[^>]*>/i;
+const CANONICAL_TAG_REGEX = /<link\b[^>]*\brel\s*=\s*(?:"canonical"|'canonical'|canonical(?=[\s/>]))[^>]*>/i;
 const HREF_ATTR_REGEX = /\bhref\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/i;
 // Detects an existing <meta name="robots" ...> — any form / quoting. If one
 // already exists we leave it alone, even if it says "index,follow", because
 // the author presumably overrode the default intentionally.
-const ROBOTS_META_REGEX =
-    /<meta\b[^>]*\bname\s*=\s*(?:"robots"|'robots'|robots(?=[\s/>]))[^>]*>/i;
+const ROBOTS_META_REGEX = /<meta\b[^>]*\bname\s*=\s*(?:"robots"|'robots'|robots(?=[\s/>]))[^>]*>/i;
 const HEAD_OPEN_REGEX = /<head\b[^>]*>/i;
 const NOINDEX_META_TAG = `<meta name="robots" content="noindex,follow">`;
 
