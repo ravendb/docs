@@ -30,7 +30,18 @@ jobs:
       - name: Prettier
         run: npm run prettier
 
+      - name: Validate redirects.json
+        run: npm run validate-redirects
+
+      - name: Unit tests
+        run: npm test
+
       - name: Build Docusaurus & Check Internal Links
+        # DOCUSAURUS_STRICT=true enforces Docusaurus's own strict checks (broken
+        # links, missing translations, etc.). The canonical-redirects plugin
+        # uses a separate gate, DOCUSAURUS_STRICT_CANONICALS, because failing
+        # on a broken canonical also requires redirects.json to be populated
+        # for every moved/renamed page. Flip it on once the backfill PR lands.
         run: npx cross-env DOCUSAURUS_VERSIONS='6.2, 7.1, current' DOCUSAURUS_STRICT=true npm run build
 
       - name: Upload build artifacts

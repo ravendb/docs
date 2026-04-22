@@ -18,6 +18,8 @@ npm run prettier           # Check formatting
 npm run prettier-fix       # Auto-format
 npm run typecheck          # TypeScript validation
 npm run generate-icon-types # Regenerate icon types after adding SVGs to static/icons/
+npm run validate-redirects # Validate scripts/redirects.json schema
+npm test                   # Run unit tests (custom Docusaurus plugins)
 ```
 
 ---
@@ -54,6 +56,14 @@ versions.json                # Active version list
 - `versioned_docs/` are read-only snapshots managed by Docusaurus.
 - `versions.json` lists all active versions.
 - CI uses `onlyIncludeVersions` env var to build specific versions (e.g., 6.2, 7.1, current).
+- **Version policy** lives in `scripts/lib/version-policy.js` (`CURRENT_VERSION`, `LEGACY_VERSIONS`). When a version ages out of support, move it into `LEGACY_VERSIONS` — `docusaurus.config.ts`, sitemaps, robots.txt, the canonical rewriter, and the edge handler all derive from that single list.
+
+---
+
+## Custom Docusaurus Plugins (`src/plugins/`)
+- `tailwind-config` — registers Tailwind CSS 4 via PostCSS.
+- `recent-guides-plugin` — indexes `guides/*.mdx`, exposes sorted list + tag counts.
+- `canonical-redirects-plugin` — rewrites `<link rel="canonical">` in built HTML to the current-version URL, resolving redirect chains from `scripts/redirects.json`. Legacy-version files get a self-canonical. Verifies every rewritten canonical against the Docusaurus route universe; fails strict builds on a dead target. Registered **after** all `content-docs` instances so HTML is already emitted when it runs.
 
 ---
 
