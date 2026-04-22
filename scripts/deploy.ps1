@@ -94,21 +94,9 @@ function Get-EnvBool([string]$Name) {
     return @('1','true','yes','y','on') -contains ($v.ToString().ToLower())
 }
 
-function Prepare-RobotsTxt {
-    $root      = Join-Path -Path $PSScriptRoot -ChildPath '..'
-    $staticDir = Join-Path -Path (Resolve-Path $root) -ChildPath 'static'
-    if (-not (Test-Path -LiteralPath $staticDir)) { throw "Static folder not found at $staticDir" }
-
-    $isTest  = Get-EnvBool 'RAVENDB_DOCS_TEST_BUILD'
-    $srcName = if ($isTest) { 'robots_test.txt' } else { 'robots_prod.txt' }
-    $src     = Join-Path -Path $staticDir -ChildPath $srcName
-    $dest    = Join-Path -Path $staticDir -ChildPath 'robots.txt'
-
-    if (-not (Test-Path -LiteralPath $src)) { throw "Robots source not found: $src" }
-
-    Copy-Item -LiteralPath $src -Destination $dest -Force
-    Write-Host "robots.txt -> using '$srcName'" -ForegroundColor Cyan
-}
+# robots.txt is generated post-build by scripts/generate-robots.js (wired into
+# the `npm run build` script). The RAVENDB_DOCS_TEST_BUILD env var is honored
+# there to pick between the prod and test template variants.
 
 function Update-CloudFrontKVS {
     $kvsArn = $env:KVS_ARN
@@ -155,8 +143,6 @@ if (-not (Test-Path package.json)) { throw 'package.json not found' }
 
 npm ci --no-audit --fund false
 if ($LASTEXITCODE) { throw 'npm ci failed' }
-
-Prepare-RobotsTxt
 
 Write-Host "Running 'npm run build'..." -ForegroundColor Gray
 npm run build
