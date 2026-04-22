@@ -1,0 +1,33 @@
+# robots.txt for RavenDB Documentation
+User-agent: *
+Disallow: /templates/
+{{DISALLOW_LEGACY_VERSIONS}}
+Allow: /
+
+# AI Search Crawlers
+User-agent: GPTBot
+Disallow: /templates/
+{{DISALLOW_LEGACY_VERSIONS}}
+Allow: /
+
+User-agent: OAI-SearchBot
+Disallow: /templates/
+{{DISALLOW_LEGACY_VERSIONS}}
+Allow: /
+
+User-agent: ClaudeBot
+Disallow: /templates/
+{{DISALLOW_LEGACY_VERSIONS}}
+Allow: /
+
+User-agent: PerplexityBot
+Disallow: /templates/
+{{DISALLOW_LEGACY_VERSIONS}}
+Allow: /
+
+# Block Bytespider (TikTok scraper with no search or training benefit)
+User-agent: Bytespider
+Disallow: /
+
+# Sitemaps
+Sitemap: https://docs.ravendb.net/sitemap.xml
