@@ -5,8 +5,13 @@
  *   - docusaurus.config.ts (customFields, versions.current, softwareVersion, sitemap ignorePatterns)
  *   - scripts/generate-robots.js (legacy-version Disallow blocks)
  *   - scripts/split-sitemap.js / split-sitemap plugin (exclude legacy from index)
- *   - scripts/handle_redirects.js (default version fallback at the edge)
  *   - src/plugins/canonical-redirects-plugin (self-canonical rule for legacy)
+ *
+ * Mirrored (value duplicated, guarded by a parity test — CloudFront Functions
+ * can't resolve project-local imports at edge time):
+ *   - scripts/handle_redirects.js (inlines CURRENT_VERSION as the default
+ *     fallback; parity test lives in the canonical-redirects plugin's
+ *     __tests__/compare-versions-parity.test.ts)
  *
  * When a version ages out of support, move it from versions.json into LEGACY_VERSIONS
  * here. All downstream consumers update on the next build.

@@ -15,6 +15,7 @@ import { fileURLToPath } from "node:url";
 
 import {
     loadRedirects,
+    validateNoCycles,
     validateRedirects,
 } from "../src/plugins/canonical-redirects-plugin/lib/redirects.js";
 
@@ -35,9 +36,14 @@ try {
     process.exit(1);
 }
 
-const errors = validateRedirects(rules);
+const structuralErrors = validateRedirects(rules);
+// Cycle detection requires the rules to be structurally sound (every key a
+// string, every targetUrl a string). Skip if we already have structural
+// errors — the rendered output would mix apples and oranges.
+const errors =
+    structuralErrors.length > 0 ? structuralErrors : validateNoCycles(rules as Parameters<typeof validateNoCycles>[0]);
 if (errors.length === 0) {
-    console.log(`validate-redirects: OK (${rules.length} rule${rules.length === 1 ? "" : "s"})`);
+    console.log(`validate-redirects: OK (${rules.length} rule${rules.length === 1 ? "" : "s"}, no cycles)`);
     process.exit(0);
 }
 

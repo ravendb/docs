@@ -17,6 +17,7 @@ import path from "path";
 import {
     buildRedirectMap,
     loadRedirects,
+    validateNoCycles,
     validateRedirects,
     type RedirectMap,
 } from "./lib/redirects.js";
@@ -136,7 +137,12 @@ const canonicalRedirectsPlugin = function canonicalRedirectsPlugin(
             }
 
             const rules = loadRedirects(options.redirectsPath);
-            const errors = validateRedirects(rules);
+            // Structural validation first, then cycle detection on the
+            // structurally-sound rule set. Cycles are a build-time error
+            // because the edge handler trusts this pre-gate and doesn't
+            // carry its own cycle guard.
+            const structuralErrors = validateRedirects(rules);
+            const errors = structuralErrors.length > 0 ? structuralErrors : validateNoCycles(rules);
             if (errors.length > 0) {
                 const rendered = errors
                     .map((e) => `  [${e.index}] ${e.key ? `'${e.key}' — ` : ""}${e.message}`)
