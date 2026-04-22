@@ -37,12 +37,6 @@ jobs:
         run: npm test
 
       - name: Build Docusaurus & Check Internal Links
-        # DOCUSAURUS_STRICT=true enforces Docusaurus's own strict checks
-        # (broken links, missing translations, etc.). DOCUSAURUS_STRICT_CANONICALS
-        # is a separate gate for the canonical-redirects plugin — it fails the
-        # build on any canonical URL that doesn't resolve to a real current-
-        # version route, catching missing redirects.json entries whenever a
-        # page is moved or renamed.
         run: npx cross-env DOCUSAURUS_VERSIONS='6.2, 7.1, current' DOCUSAURUS_STRICT=true DOCUSAURUS_STRICT_CANONICALS=true npm run build
 
       - name: Upload build artifacts

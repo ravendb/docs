@@ -64,6 +64,7 @@ versions.json                # Active version list
 - `tailwind-config` — registers Tailwind CSS 4 via PostCSS.
 - `recent-guides-plugin` — indexes `guides/*.mdx`, exposes sorted list + tag counts.
 - `canonical-redirects-plugin` — rewrites `<link rel="canonical">` in built HTML to the current-version URL, resolving redirect chains from `scripts/redirects.json`. Legacy-version files get a self-canonical. Verifies every rewritten canonical against the Docusaurus route universe; fails strict builds on a dead target. Registered **after** all `content-docs` instances so HTML is already emitted when it runs.
+- `templates-noindex-plugin` — injects `<meta name="robots" content="noindex,nofollow">` into built `/templates/**` HTML so the authoring-reference area doesn't appear in search results.
 
 ---
 

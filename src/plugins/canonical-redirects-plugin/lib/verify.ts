@@ -28,13 +28,6 @@ export interface VerifierIssue {
     canonical: string;
     canonicalPath: string;
     reason: string;
-    /**
-     * Optional ready-to-paste remediation snippet. Populated for
-     * "not in universe" failures — the fix is almost always adding a
-     * redirects.json entry mapping the stale versionless path onto its
-     * current-version home. The renderer prints this block below each
-     * issue when present.
-     */
     fix?: string;
 }
 

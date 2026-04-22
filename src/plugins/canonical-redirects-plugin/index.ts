@@ -31,13 +31,7 @@ import { CURRENT_VERSION, LEGACY_VERSIONS } from "../../../scripts/lib/version-p
 export interface CanonicalRedirectsPluginOptions {
     /** Absolute or site-relative path to redirects.json. */
     redirectsPath?: string;
-    /**
-     * When true, the build fails if the verifier reports any issues. Defaults
-     * to `process.env.DOCUSAURUS_STRICT_CANONICALS === "true"` — a dedicated
-     * gate separate from Docusaurus's own `DOCUSAURUS_STRICT` because canonical
-     * correctness depends on the content of redirects.json, not just on the
-     * plugin's internal correctness.
-     */
+    /** When true, verifier issues fail the build. Defaults to `DOCUSAURUS_STRICT_CANONICALS === "true"`. */
     failOnInvalidCanonical?: boolean;
     /** "silent" | "info" | "verbose" (default "info"). */
     logLevel?: "silent" | "info" | "verbose";
@@ -216,10 +210,7 @@ const canonicalRedirectsPlugin = function canonicalRedirectsPlugin(
                 `scanned ${scanned} versioned HTML file(s), rewrote ${rewritten}, chains resolved ${chainsResolved}, missing canonicals ${missingCanonicalCount}, noindex injected ${noindexInjectedCount}`
             );
 
-            // Missing canonicals signal a plugin-level regression (Docusaurus
-            // changed its HTML emission and CANONICAL_TAG_REGEX in lib/rewrite.ts
-            // is now stale), not a per-file data problem. Throw fast — no need
-            // to enumerate every affected file when the fix is one regex.
+            // Missing canonicals mean CANONICAL_TAG_REGEX is stale — fix the regex, not each file.
             if (missingCanonicalCount > 0) {
                 const msg = `canonical-redirects-plugin: ${missingCanonicalCount} versioned HTML file(s) emitted without <link rel="canonical"> — update CANONICAL_TAG_REGEX in lib/rewrite.ts`;
                 if (options.failOnInvalidCanonical) throw new Error(msg);
