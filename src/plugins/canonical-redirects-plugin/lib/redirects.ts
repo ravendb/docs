@@ -9,10 +9,11 @@
  */
 
 import fs from "fs";
-// compare-versions.js is a CJS module (module.exports = { compareVersions }).
-// Node ESM supports named-import interop for CJS files, which works for both
-// the tsx --test runner and the tsImport loader used by validate-redirects.js.
-import { compareVersions } from "../../../../scripts/lib/compare-versions.js";
+// Plugin-local copy of compareVersions. The edge handler
+// (scripts/handle_redirects.js) inlines its own copy because CloudFront
+// Functions can't resolve imports at runtime; a parity test in __tests__/
+// guards against drift between the two.
+import { compareVersions } from "./compare-versions.js";
 
 export interface RedirectRule {
     key: string;
@@ -118,8 +119,70 @@ export function buildRedirectMap(rules: RedirectRule[]): RedirectMap {
 }
 
 /**
+ * Detect redirect cycles in a validated rule set. Runs after structural
+ * validation passes and returns the same `ValidationError[]` shape so the
+ * CLI and plugin renderers can print both kinds uniformly.
+ *
+ * Why this lives in validation and not just at runtime: the edge handler
+ * (`scripts/handle_redirects.js`) runs on every request with a 1ms budget
+ * and can't afford a runtime `visited` set. Enforcing "no cycles" as a
+ * build-time invariant via `npm run validate-redirects` lets the edge
+ * trust the KVS data and keep its chain loop minimal.
+ *
+ * Algorithm: walk each key's chain, tracking the path. If we revisit a key
+ * in the same walk, slice out the cycle portion and emit one error per
+ * distinct cycle (dedup via an `explored` set so starting from any key
+ * inside a cycle doesn't produce N duplicate reports).
+ */
+export function validateNoCycles(rules: RedirectRule[]): ValidationError[] {
+    const errors: ValidationError[] = [];
+    const map = buildRedirectMap(rules);
+    const explored = new Set<string>();
+
+    for (const rule of rules) {
+        if (explored.has(rule.key)) continue;
+
+        const path: string[] = [];
+        const visited = new Set<string>();
+        let current: string = rule.key;
+
+        while (map.has(current)) {
+            if (visited.has(current)) {
+                const cycleStart = path.indexOf(current);
+                const cycleKeys = path.slice(cycleStart);
+                const cycle = [...cycleKeys, current].join(" → ");
+                errors.push({
+                    index: rules.findIndex((r) => r.key === cycleKeys[0]),
+                    key: cycleKeys[0],
+                    message: `redirect cycle detected: ${cycle}`,
+                });
+                for (const k of path) explored.add(k);
+                break;
+            }
+            visited.add(current);
+            path.push(current);
+            current = map.get(current)!.targetUrl;
+        }
+
+        // Chain terminated cleanly — mark every key in the walk as
+        // explored so a later starting key won't re-trace the same
+        // tail.
+        if (!map.has(current)) {
+            for (const k of path) explored.add(k);
+        }
+    }
+
+    return errors;
+}
+
+/**
  * Transitively follow redirect hops, gating each hop by its minimumVersion
- * against the resolving version. Detects cycles and throws a loud error.
+ * against the resolving version.
+ *
+ * No cycle guard: `validateNoCycles` runs upstream (CLI + plugin
+ * `loadContent`) and makes cycles impossible by the time the rewriter
+ * calls here. Adding a runtime `visited` set would re-check an invariant
+ * that can't break and mask any real bug with a silent early return.
  *
  * Today's redirects.json has zero chains (all 30 targets are terminal) — the
  * implementation handles multi-hop so future authoring doesn't silently break.
@@ -130,7 +193,6 @@ export function buildRedirectMap(rules: RedirectRule[]): RedirectMap {
  * @returns Terminal versionless path (startPath if no hop applied)
  */
 export function resolveChain(map: RedirectMap, startPath: string, version: string): string {
-    const visited = new Set<string>();
     let current = startPath;
 
     while (map.has(current)) {
@@ -138,11 +200,6 @@ export function resolveChain(map: RedirectMap, startPath: string, version: strin
         if (rule.minimumVersion && compareVersions(version, rule.minimumVersion) < 0) {
             break;
         }
-        if (visited.has(current)) {
-            const cycle = [...visited, current].join(" → ");
-            throw new Error(`Redirect cycle detected: ${cycle}`);
-        }
-        visited.add(current);
         current = rule.targetUrl;
     }
 

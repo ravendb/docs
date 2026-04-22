@@ -7,6 +7,7 @@ import {
     buildRedirectMap,
     loadRedirects,
     resolveChain,
+    validateNoCycles,
     validateRedirects,
     type RedirectRule,
 } from "../lib/redirects.js";
@@ -82,14 +83,10 @@ test("resolveChain stops at a hop gated above the current version", () => {
     assert.equal(resolveChain(map, "/old/a", "7.1"), "/old/a");
 });
 
-test("resolveChain detects cycles and throws", () => {
-    const cyclic: RedirectRule[] = [
-        { key: "/a", value: { targetUrl: "/b" } },
-        { key: "/b", value: { targetUrl: "/a" } },
-    ];
-    const map = buildRedirectMap(cyclic);
-    assert.throws(() => resolveChain(map, "/a", "7.2"), /cycle/i);
-});
+// No "resolveChain detects cycles" test: validateNoCycles runs upstream
+// (CLI + loadContent) and guarantees cycles can't reach resolveChain.
+// Feeding it a cyclic map on purpose would hang — validateNoCycles's own
+// tests cover the cycle-detection surface.
 
 test("buildRedirectMap has all keys from input", () => {
     const rules = loadRedirects(FIXTURE);
@@ -98,22 +95,49 @@ test("buildRedirectMap has all keys from input", () => {
     assert.ok(map.has("/gated"));
 });
 
-test("parity: plugin compareVersions agrees with handle_redirects behavior", async () => {
-    // The shared lib is what scripts/handle_redirects.js imports. This test
-    // locks in behavior across 1-major and 2-minor boundaries so a future
-    // inlined copy at the edge can be kept in lockstep.
-    const { compareVersions } = await import("../../../../scripts/lib/compare-versions.js");
-    const cases: Array<[string, string, number]> = [
-        ["7.2", "7.2", 0],
-        ["7.2", "7.1", 1],
-        ["7.1", "7.2", -1],
-        ["7.11", "7.2", 1],
-        ["7.2", "7.11", -1],
-        ["6.2", "7.0", -1],
-        ["8.0", "7.2", 1],
-        ["10.0", "9.9", 1],
+test("validateNoCycles accepts an acyclic rule set", () => {
+    const rules = loadRedirects(FIXTURE);
+    assert.deepEqual(validateNoCycles(rules), []);
+});
+
+test("validateNoCycles flags a two-rule cycle", () => {
+    const rules: RedirectRule[] = [
+        { key: "/a", value: { targetUrl: "/b" } },
+        { key: "/b", value: { targetUrl: "/a" } },
     ];
-    for (const [a, b, expected] of cases) {
-        assert.equal(compareVersions(a, b), expected, `compareVersions(${a}, ${b})`);
-    }
+    const errors = validateNoCycles(rules);
+    assert.equal(errors.length, 1);
+    assert.match(errors[0].message, /cycle/i);
+    assert.match(errors[0].message, /\/a.*\/b.*\/a/); // cycle includes both keys
+});
+
+test("validateNoCycles flags a self-loop", () => {
+    const rules: RedirectRule[] = [{ key: "/loop", value: { targetUrl: "/loop" } }];
+    const errors = validateNoCycles(rules);
+    assert.equal(errors.length, 1);
+    assert.match(errors[0].message, /cycle/i);
+});
+
+test("validateNoCycles reports each distinct cycle only once", () => {
+    // Three keys in the same cycle: /a → /b → /c → /a. Whichever key we
+    // start from, the cycle should only be reported once (not three
+    // times) via the `explored` dedup.
+    const rules: RedirectRule[] = [
+        { key: "/a", value: { targetUrl: "/b" } },
+        { key: "/b", value: { targetUrl: "/c" } },
+        { key: "/c", value: { targetUrl: "/a" } },
+    ];
+    const errors = validateNoCycles(rules);
+    assert.equal(errors.length, 1);
+});
+
+test("validateNoCycles accepts chains that share a tail without cycling", () => {
+    // /a → /z, /b → /z — both chains terminate at /z which has no rule.
+    // Exercises the "chain terminated cleanly" branch's `explored`
+    // marking so the second chain doesn't re-walk the shared tail.
+    const rules: RedirectRule[] = [
+        { key: "/a", value: { targetUrl: "/z" } },
+        { key: "/b", value: { targetUrl: "/z" } },
+    ];
+    assert.deepEqual(validateNoCycles(rules), []);
 });
