@@ -11,11 +11,11 @@ export interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement
 // { src: { src: "/img/file.hash.png" } } instead of plain URL strings.
 // Extract the URL string from such objects.
 function toUrl(value: unknown): string | undefined {
-    if (typeof value === "string") return value;
-    if (!value || typeof value !== "object") return undefined;
+    if (typeof value === "string") {return value;}
+    if (!value || typeof value !== "object") {return undefined;}
     const { src } = value as Record<string, unknown>;
-    if (typeof src === "string") return src;
-    if (src && typeof src === "object") return (src as Record<string, unknown>).src as string;
+    if (typeof src === "string") {return src;}
+    if (src && typeof src === "object") {return (src as Record<string, unknown>).src as string;}
     return undefined;
 }
 

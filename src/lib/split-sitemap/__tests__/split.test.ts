@@ -51,7 +51,9 @@ test("splitSitemap groups URLs by section and version", () => {
         fs.writeFileSync(path.join(dir, "sitemap.xml"), buildSitemap(urls));
         const result = splitSitemap({ buildDir: dir, legacyVersions: LEGACY, baseUrl: BASE_URL });
         assert.equal(result.skipped, false);
-        if (result.skipped) return;
+        if (result.skipped) {
+            return;
+        }
         const names = result.files.map((f) => f.name).sort();
         assert.deepEqual(names, [
             "sitemap-cloud.xml",
@@ -71,7 +73,9 @@ test("splitSitemap excludes legacy-version URLs", () => {
         fs.writeFileSync(path.join(dir, "sitemap.xml"), buildSitemap(urls));
         const result = splitSitemap({ buildDir: dir, legacyVersions: LEGACY, baseUrl: BASE_URL });
         assert.equal(result.skipped, false);
-        if (result.skipped) return;
+        if (result.skipped) {
+            return;
+        }
         assert.equal(result.includedUrls, 1);
         assert.equal(result.skippedLegacyUrls, 2);
         assert.ok(!result.files.some((f) => f.name.includes("4.2") || f.name.includes("5.4")));

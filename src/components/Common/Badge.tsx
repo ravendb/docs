@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { Icon } from "./Icon";
 import { IconName } from "@site/src/typescript/iconName";
 
-// eslint-disable-next-line no-undef
+
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
     children: React.ReactNode;
     className?: string;

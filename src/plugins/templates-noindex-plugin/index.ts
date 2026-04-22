@@ -14,6 +14,7 @@
  * content="noindex,nofollow">` into <head> if not already present.
  */
 
+import docusaurusLogger from "@docusaurus/logger";
 import type { LoadContext, Plugin } from "@docusaurus/types";
 import fs from "node:fs";
 import path from "node:path";
@@ -21,11 +22,16 @@ import path from "node:path";
 const META_TAG = '<meta name="robots" content="noindex,nofollow">';
 
 function walk(dir: string, cb: (p: string) => void): void {
-    if (!fs.existsSync(dir)) return;
+    if (!fs.existsSync(dir)) {
+        return;
+    }
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
         const full = path.join(dir, entry.name);
-        if (entry.isDirectory()) walk(full, cb);
-        else if (entry.isFile()) cb(full);
+        if (entry.isDirectory()) {
+            walk(full, cb);
+        } else if (entry.isFile()) {
+            cb(full);
+        }
     }
 }
 
@@ -43,16 +49,22 @@ const templatesNoindexPlugin = function templatesNoindexPlugin(_context: LoadCon
         name: "templates-noindex-plugin",
         async postBuild({ outDir }) {
             const templatesDir = path.join(outDir, "templates");
-            if (!fs.existsSync(templatesDir)) return;
+            if (!fs.existsSync(templatesDir)) {
+                return;
+            }
 
             let scanned = 0;
             let injected = 0;
 
             walk(templatesDir, (file) => {
-                if (!file.endsWith(".html")) return;
+                if (!file.endsWith(".html")) {
+                    return;
+                }
                 scanned++;
                 const original = fs.readFileSync(file, "utf8");
-                if (hasRobotsMeta(original)) return;
+                if (hasRobotsMeta(original)) {
+                    return;
+                }
                 const updated = inject(original);
                 if (updated !== original) {
                     fs.writeFileSync(file, updated, "utf8");
@@ -60,7 +72,7 @@ const templatesNoindexPlugin = function templatesNoindexPlugin(_context: LoadCon
                 }
             });
 
-            console.log(
+            docusaurusLogger.info(
                 `[templates-noindex] scanned ${scanned} template HTML file(s), injected noindex into ${injected}`
             );
         },
