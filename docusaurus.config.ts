@@ -35,8 +35,13 @@ const config: Config = {
     baseUrl: "/",
 
     onBrokenLinks: isStrict ? "throw" : "warn",
-    onBrokenMarkdownLinks: isStrict ? "throw" : "warn",
     onBrokenAnchors: "ignore",
+
+    markdown: {
+        hooks: {
+            onBrokenMarkdownLinks: isStrict ? "throw" : "warn",
+        },
+    },
 
     i18n: {
         defaultLocale: "en",
