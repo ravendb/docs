@@ -35,7 +35,11 @@ function importDocSearchModalIfNeeded() {
         return Promise.resolve();
     }
     return Promise.all([
-        import("@docsearch/react/modal") as Promise<typeof import("@docsearch/react")>,
+        // The /modal entrypoint only re-exports DocSearchModal, while the
+        // default export of @docsearch/react re-exports more (DocSearch,
+        // DocSearchButton, useDocSearchKeyboardEvents, version). Typing this
+        // as the full module is incorrect — narrow to what we actually use.
+        import("@docsearch/react/modal") as Promise<{ DocSearchModal: typeof DocSearchModalType }>,
         import("@docsearch/react/style"),
         import("./styles.css"),
     ]).then(([{ DocSearchModal: Modal }]) => {
@@ -199,6 +203,10 @@ function DocSearch({ externalUrlRegex, ...props }: DocSearchProps) {
         onClose: closeModal,
         onInput: handleInput,
         searchButtonRef,
+        // DocSearch v4 added AskAI support; we don't use it, so pass a
+        // permanent-off state and a no-op toggle. The hook requires both.
+        isAskAiActive: false,
+        onAskAiToggle: () => {},
     });
 
     return (

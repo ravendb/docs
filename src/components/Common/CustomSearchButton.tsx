@@ -41,6 +41,10 @@ export default function CustomSearchButton({
         onOpen: onClick,
         onClose: () => {},
         searchButtonRef: buttonRef,
+        // DocSearch v4 added AskAI support; we don't use it, so pass a
+        // permanent-off state and a no-op toggle. The hook requires both.
+        isAskAiActive: false,
+        onAskAiToggle: () => {},
     });
 
     return (

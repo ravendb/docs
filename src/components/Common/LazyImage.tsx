@@ -77,5 +77,11 @@ function getSources({ imgSrc, src }: Pick<LazyImageProps, "imgSrc" | "src">): Th
         return { light: resolved, dark: resolved };
     }
 
-    return imgSrc;
+    // Every realistic branch returned above: a string imgSrc flows through
+    // toUrl() and gets wrapped; an object with {light,dark} is returned at
+    // the guard above; the ideal-image plugin's nested {src:{src}} shape is
+    // unwrapped by toUrl. The remainder is imgSrc === undefined, for which
+    // ThemedImage expects string fields — return empty strings so the type
+    // holds and the broken <img> surfaces in DOM rather than crashing here.
+    return { light: "", dark: "" };
 }
