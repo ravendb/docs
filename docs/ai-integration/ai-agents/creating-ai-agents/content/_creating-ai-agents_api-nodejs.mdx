@@ -306,7 +306,7 @@ The values for these parameters are Not set by the LLM -
 you must provide the actual value at [conversation startup](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#setting-a-conversation).
 
 When the agent is requested to execute a query that references an agent parameter,   
-it replaces each placeholder with the corresponding value you supplied at chat startup, before running the query.    
+it replaces each placeholder with the corresponding value you provided at chat startup, before running the query.    
     
 ```js
 // Set agent parameters    
@@ -331,7 +331,7 @@ agentConfiguration.maxModelIterationsPerCall = 3;
 </TabItem>    
     
 <Admonition type="note" title="">
-* Note that you can reduce Time To First Byte (TTFB) by streaming the LLM response as it's being generated.  
+* Note that you can reduce Time To First Byte (TTFB) by streaming the LLM response as it is being generated.  
   This allows the LLM to return selected fields in chunks before the full response is complete.  
 * Find more about streaming in [Streaming LLM responses - overview](../../../../ai-integration/ai-agents/overview.mdx#streaming-llm-responses) 
   and in [Stream LLM responses](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#stream-llm-responses) below.  
@@ -401,7 +401,7 @@ agentConfiguration.chatTrimming = {
     * Before executing the query, the agent will replace the placeholders with the provided values.
   * **Passing values from the LLM**:  
     You can define parameters that the LLM will fill in dynamically based on the conversation context when it invokes the query.
-    To do this, define a sample object (or a formal JSON schema) that describes the parameters the LLM is expected to supply when requesting the agent to run the query.    
+    To do this, define a sample object (or a formal JSON schema) that describes the parameters the LLM is expected to provide when requesting the agent to run the query.    
     * If both a sample object and a JSON schema are defined, the schema is used.  
     * If only a sample object is provided, RavenDB will convert it into a JSON schema.  
     * When the LLM triggers the tool, it will fill in values for the defined parameters based on the conversation.
@@ -475,8 +475,8 @@ agentConfiguration.chatTrimming = {
   so that it executes immediately when the agent starts, before the LLM receives any user input.  
   The results are provided to the LLM as part of the initial conversation context.
  
-   * An initial-context query is **not allowed** to use LLM parameters because the LLM has no opportunity to supply values - the query runs before the conversation starts.
-   * An initial-context query **can use** agent parameters, since their values are supplied by the client at conversation startup.
+   * An initial-context query is **not allowed** to use LLM parameters because the LLM has no opportunity to provide values - the query runs before the conversation starts.
+   * An initial-context query **can use** agent parameters, since their values are provided by the client at conversation startup.
 
 *  Use the `options.allowModelQueries` property to control whether the LLM is allowed to trigger the query tool later in the conversation.
    * If `allowModelQueries` is _true_, the LLM can trigger the query anytime during the conversation.
@@ -841,7 +841,7 @@ The status can be:
 ### Stream LLM responses
 
 * Instead of calling `run`, which returns the LLM's response to the client when it is fully prepared,  
-  you can call `stream` to [Stream llm responses](../../../../ai-integration/ai-agents/overview.mdx#streaming-llm-responses),
+  you can call `stream` to [Stream LLM responses](../../../../ai-integration/ai-agents/overview.mdx#streaming-llm-responses),
   and receive the LLM's response in real time as it is being generated.
 
 * Streaming allows the client to start processing the response before it is complete,  
@@ -1235,7 +1235,7 @@ const result = await documentStore.ai.deleteAgent("reward-productive-employee");
     // This helps the LLM understand when to trigger this action.
     description, // string
     
-    // Define the format in which the LLM will supply data for the requested action
+    // Define the format in which the LLM will provide data for the requested action
     // when it decides to trigger this action tool.
     // The LLM will fill in values for the specified fields based on the conversation context
     // and any relevant data it has access to.

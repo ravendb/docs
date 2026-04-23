@@ -35,6 +35,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [AI agent usage flowchart](../../ai-integration/ai-agents/overview.mdx#ai-agent-usage-flowchart)
    * [Streaming LLM responses](../../ai-integration/ai-agents/overview.mdx#streaming-llm-responses)
    * [Reducing throughput and expediting LLM response](../../ai-integration/ai-agents/overview.mdx#reducing-throughput-and-expediting-llm-response)
+   * [Multi-agents](../../ai-integration/ai-agents/overview.mdx#multi-agents)
    * [Common use cases](../../ai-integration/ai-agents/overview.mdx#common-use-cases)  
 
 </Admonition>
@@ -132,7 +133,7 @@ A conversation is a communication session between the client, the agent, and the
 
 ### Initiating a conversation
 
-To start a conversation with the LLM, the agent will send it an **initial context** that includes -  
+To start a conversation with the LLM, the agent will send to the LLM an **initial context** that includes -  
 
 * The pre-defined [agent configuration](../../ai-integration/ai-agents/overview.mdx#the-main-stages-in-defining-an-ai-agent) (automatically sent by the agent) with:  
    * The system prompt  
@@ -156,6 +157,18 @@ To start a conversation with the LLM, the agent will send it an **initial contex
      Providing query values when starting a conversation gives the client the ability to shape and limit the scope of LLM queries by its objectives.  
      </Admonition>
 
+<Admonition type="note" title="">
+
+When the agent has [sub-agents](../../ai-integration/ai-agents/multi-agents.mdx),
+parameter values passed at conversation start flow to any sub-agent that
+declares a parameter with the same name. You can also pass a parameter that the
+**root** agent does not declare - it will still be delivered to a sub-agent that
+declares it. See
+[Passing parameters through the hierarchy](../../ai-integration/ai-agents/multi-agents.mdx#passing-parameters-through-the-hierarchy)
+for the full rules, including LLM visibility controls.
+
+</Admonition>
+
 * **Stored conversation messages**  
   Since the LLM keeps no record of previous messages, the agent is responsible for allowing a continuous conversation.  
   It achieves this by automatically recording all messages of each conversation in a dedicated document in the `@conversations` collection.  
@@ -163,6 +176,10 @@ To start a conversation with the LLM, the agent will send it an **initial contex
   The conversation will remain available in the `@conversations` collection even after it ends, so it can be resumed at any future time.  
 
 * A **user prompt**, set by the client, that defines, for example, a question or a request for particular information.  
+
+* Optional **file attachments**, provided by the client alongside the user prompt.  
+  The client can attach files (e.g., PDFs, images) to any conversation turn, allowing the LLM to analyze the attachment content as part of its response.  
+  [Learn to add attachments using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#adding-attachments)  
 
 </ContentFrame>
 
@@ -233,6 +250,12 @@ To save traffic and tokens, you can summarize conversations using **chat trimmin
 [Configuring chat trimming using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#set-chat-trimming-configuration)  
 [Configuring chat trimming using Studio](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#configure-chat-trimming)  
 
+You can also distribute work across a
+[multi-agents hierarchy](../../ai-integration/ai-agents/multi-agents.mdx)
+so each agent's context window stays focused on its own specialty. The root
+agent sees only a concise result from each sub-agent, not the sub-agent's full
+exchange with the LLM, which keeps token usage on the root conversation low.  
+
 <ContentFrame>
 
 ### Optimize query tools
@@ -277,6 +300,28 @@ You can limit the number of times that the LLM is allowed to trigger database qu
 [Setting iterations limit using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#set-maximum-number-of-iterations)  
 
 </ContentFrame>
+
+</Panel>
+
+<Panel heading="Multi-agents">
+
+An AI agent can invoke other agents as tools, forming a **multi-agents hierarchy**.  
+A root agent delegates focused tasks to specialist sub-agents; each sub-agent is itself a full agent that can run queries, request actions, and call its own sub-agents.  
+
+Use a multi-agents hierarchy when:  
+
+* **A single agent's system prompt is becoming crowded.**  
+  Giving each responsibility its own focused prompt makes tool selection more reliable and easier to audit.  
+
+* **Tool counts are growing.**  
+  Grouping related tools under a sub-agent reduces the number of options the LLM has to choose among at any given level.  
+
+* **The root conversation is under context-window pressure.**  
+  Sub-calls return a concise result to the root. The detailed exchange a sub-agent had with the LLM stays in the sub-agent's own conversation.  
+
+Each agent in the hierarchy has its own conversation document; parameters can be shared across the hierarchy by name; parameter values can be hidden from the LLM at either the configuration or conversation level; and parameters whose values must be provided by the caller can be marked so that the parent's LLM is not allowed to generate a value for them.  
+
+[Learn more about multi-agents](../../ai-integration/ai-agents/multi-agents.mdx)  
 
 </Panel>
 

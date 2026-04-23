@@ -39,6 +39,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Injecting artificial tool context](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#injecting-artificial-tool-context)
       * [Conversation response](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#conversation-response)
       * [Setting user prompt and running the conversation](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#setting-user-prompt-and-running-the-conversation)
+      * [Adding attachments](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#adding-attachments)
    * [Stream LLM responses](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#stream-llm-responses)
    * [Full Example](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#full-example)
    * [Syntax](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#syntax)
@@ -424,6 +425,69 @@ This is useful for sensitive values like user IDs or tenant identifiers that sho
 
 See [AiAgentParameter](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#agent-configuration-classes) in the [Syntax](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#syntax) section.
 
+---
+
+#### Forbidding model-generated parameter values
+
+When an agent is used as a **sub-agent** and a parent agent invokes it without
+providing a value for one of its parameters, the default behavior is for the
+parent's LLM to generate a value.  
+This is unsafe whenever the parameter's value must come from a trusted source - for example, a user identifier that scopes queries to the caller's own data, a session token, or an account number.  
+A parent LLM that is free to invent the value can return a plausible-looking id that belongs to a different user, causing the sub-agent to run its scoped queries against that user's records.  
+
+Use `AiAgentParameterPolicy.ForbidModelGeneration` on the parameter to block this.  
+A parameter marked with this policy accepts a value only if it is **inherited**
+from the parent (a parent-side parameter with the same name, or a parameter passed
+when the conversation starts).  
+If no inherited value can be found, invoking the sub-agent fails with `MissingAiAgentParameterException`.  
+
+The flag is declared on the sub-agent's own parameter, so each agent controls its
+own trust requirements regardless of which parent invokes it.  
+
+* **Example**  
+  ```csharp
+  // Declare a user identifier that must come from a trusted source
+  // and is not exposed to the LLM.
+  agent.Parameters.Add(new AiAgentParameter(
+      name: "userId",
+      description: "The id of the current user",
+      sendToModel: false,
+      policy: AiAgentParameterPolicy.ForbidModelGeneration));
+  ```
+
+* **Note** that this policy is only meaningful when the agent is used as a
+  sub-agent. On a root agent, the value is always provided when the conversation is started.  
+
+See [Multi-agents](../../../../ai-integration/ai-agents/multi-agents.mdx#forbidding-the-parent-from-generating-a-parameter-value)
+for the full picture, including an end-to-end example.  
+
+---
+
+#### Declaring a parameter's value type
+
+You can declare the expected value type of an agent parameter.  
+When a type is declared, the server validates the value provided when the conversation starts against this type.  
+On a mismatch, the server throws an `InvalidCastException` with a descriptive message and aborts the conversation start.  
+When no type is declared, no validation is performed.  
+
+Declaring a type is most useful in multi-agent setups, where a parameter may flow
+from one agent to another by name and the agent's author wants to guarantee that
+inherited values are of the right shape.  
+
+* **Example**  
+  ```csharp
+  // Declare an age parameter that must be a number.
+  agent.Parameters.Add(new AiAgentParameter(
+      name: "age",
+      description: "User age")
+  {
+      Type = AiAgentParameterValueType.Number
+  });
+  ```
+
+See [AiAgentParameterValueType](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#enums)
+in the [Syntax](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#syntax) section.  
+
 </ContentFrame>
 
 <ContentFrame>
@@ -571,8 +635,7 @@ A query tool includes a natural-language **description** that explains the LLM w
 #### <u>Initial-context queries</u>
 
 * You can set a query tool as an [initial-context query](../../../../ai-integration/ai-agents/overview.mdx#initial-context-queries) using its `Options.AddToInitialContext` property, to execute the query and provide the LLM with its results immediately when the agent is started.  
-   * An initial-context query is **not allowed** to use LLM parameters, since the query 
-     runs before the conversation starts, earlier than the first communication with the LLM, and the LLM will have no opportunity to fill the parameters with values.  
+   * An initial-context query is **not allowed** to use LLM parameters, since the query runs before the conversation starts, earlier than the first communication with the LLM, and the LLM will have no opportunity to fill the parameters with values.  
    * An initial-context query **is** allowed to use agent parameters, whose values are provided by the user even before the query is executed.  
 
 *  You can use the `Options.AllowModelQueries` property to Enable or Disable a query tool .  
@@ -653,6 +716,50 @@ agent.Actions =
 ```
 <br />
 See [AiAgentToolAction](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#agent-tool-classes) in the [Syntax](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#syntax) section.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Sub-agents as tools
+
+An agent can invoke other agents as tools. To do this, reference the target
+agents from the parent agent's `SubAgents` list. Each entry contains the
+**identifier** of an existing agent and a short **description** the LLM uses when
+deciding whether to delegate to that sub-agent.
+
+For the full conceptual picture - parameter propagation, sub-conversation
+isolation, action-tool path routing, and security considerations - see
+[Multi-agents](../../../../ai-integration/ai-agents/multi-agents.mdx).  
+
+**Example**  
+```csharp
+// Reference existing agents as sub-agents of this agent.
+// Each sub-agent must have been created first (store.AI.CreateAgentAsync)
+// so its identifier is available here.
+agent.SubAgents =
+[
+    new AiAgentToolSubAgent
+    {
+        Identifier = "pharma-input-validator-agent",
+        Description = "Validates whether the user prompt is allowed and age-appropriate."
+    },
+    new AiAgentToolSubAgent
+    {
+        Identifier = "pharma-assistant-agent",
+        Description = "Provides a cautious general pharma answer."
+    }
+];
+```
+
+<Admonition type="note" title="">
+Sub-agents live in the same database as their parent and must be created before
+they can be referenced. An agent cannot spawn a new agent at runtime.
+</Admonition>
+
+<br />
+See [AiAgentToolSubAgent](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#agent-tool-classes) in the [Syntax](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#syntax) section.  
+See [Multi-agents](../../../../ai-integration/ai-agents/multi-agents.mdx) for the end-to-end picture.  
 
 </ContentFrame>
 
@@ -850,6 +957,30 @@ Handlers are typically used for simple, immediate operations like storing a docu
       public string profit;
   }
   ```
+
+<Admonition type="note" title="">
+
+When an action tool is declared on a **sub-agent**, the client still handles the
+action - but the handler is registered under a path that reflects where the
+sub-agent sits in the hierarchy. Use `<sub-agent-id>/<action-name>` for a
+depth-two sub-agent, and add additional identifiers to the prefix for deeper
+levels.  
+
+* **Example**  
+  ```csharp
+    // Action declared on a depth-two sub-agent:
+    chat.Handle<ChangeUserNameRequest, ActionToolResult>(
+        "pharma-input-validator-agent/ChangeUserName",
+        request => HandleChangeUserName(store, request));
+  ```
+
+<br />
+
+See [Multi-agents: Action tool routing back to the client](../../../../ai-integration/ai-agents/multi-agents.mdx#action-tool-routing-back-to-the-client)
+for the full picture.
+
+</Admonition>
+
 <br />
 See [Handle](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#action-tool-processing) in the [Syntax](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#syntax) section.
 
@@ -964,7 +1095,7 @@ This will make the LLM believe that a specific tool was already called and retur
 
 The tool name does not need to be registered in the agent configuration.  
 
-This is useful, for example, when you want to pre-load the conversation with contextual information that would normally be retrieved by a tool, such as user preferences, permissions, or other data that is already available to the client and doesn't require a real tool call to be obtained.  
+This is useful, for example, when you want to pre-load the conversation with contextual information that would normally be retrieved by a tool, such as user preferences, permissions, or other data that is already available to the client and does not require a real tool call to be obtained.  
 
 * **Example**  
   In this example, the client already knows the user's allergies and injects them 
@@ -1040,6 +1171,76 @@ if (response.Status == AiConversationResult.Done)
 See [RunAsync](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#conversation-execution) in the [Syntax](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#syntax) section.
 
 See the full example [below](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#full-example).  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Adding attachments
+
+You can attach files to a conversation turn to allow the LLM to analyze file content as part of its response. Attachments are scoped to the current turn and are cleared after each `RunAsync` or `StreamAsync` call.
+
+Two methods are available:
+
+* **`AddAttachment`**  
+  attaches a file from a `Stream`. Use this when the file content is available in memory or read from disk.
+* **`CopyAttachmentFrom`**  
+  copies an existing attachment from a RavenDB document into the conversation turn.  
+  Use this when the file is already stored as a document attachment in RavenDB.
+
+<Admonition type="note" title="">
+Note that the LLM must support multimodal input (e.g., vision-capable models such as GPT-4o) for image attachments to be processed. Confirm attachment support with your LLM provider before use.
+</Admonition>
+
+---
+
+#### Example: Attaching a file from disk
+
+```csharp
+// Open a file and attach it to the conversation turn
+using var fileStream = File.OpenRead("monthly-report.pdf");
+chat.AddAttachment("monthly-report.pdf", fileStream, "application/pdf");
+
+// Set the user prompt
+chat.SetUserPrompt("Summarize the key findings in this report.");
+
+var response = await chat.RunAsync<ReportSummary>(CancellationToken.None);
+```
+
+---
+
+#### Example: Copying an attachment from a RavenDB document
+
+```csharp
+// Copy an attachment that is already stored in a RavenDB document
+chat.CopyAttachmentFrom("products/42-A", "spec-sheet.pdf");
+
+// Set the user prompt
+chat.SetUserPrompt("List the technical specifications from this document.");
+
+var response = await chat.RunAsync<SpecList>(CancellationToken.None);
+```
+
+---
+
+#### Example: Combining multiple attachments in one turn
+
+```csharp
+// Attach a file from disk
+using var contract = File.OpenRead("contract.pdf");
+chat.AddAttachment("contract.pdf", contract, "application/pdf");
+
+// Also copy an existing RavenDB document attachment
+chat.CopyAttachmentFrom("products/42-A", "spec-sheet.pdf");
+
+// Set the user prompt
+chat.SetUserPrompt("Does the contract cover all items listed in the spec sheet?");
+
+var response = await chat.RunAsync<ComplianceResult>(CancellationToken.None);
+```
+
+<br />
+See [AddAttachment](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#conversation-execution) and [CopyAttachmentFrom](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#conversation-execution) in the [Syntax](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#syntax) section.
 
 </ContentFrame>
 </Panel>
@@ -1311,7 +1512,7 @@ var result = await store.AI.CreateAgentAsync(configuration, sampleObject);
 
 | Return value | |
 |-----------|-------------|
-| `AiAgentConfigurationResult` | Contains `Identifier` (`string`) — the unique ID of the created or updated agent. |
+| `AiAgentConfigurationResult` | Contains `Identifier` (`string`) - the unique ID of the created or updated agent. |
 
 </TabItem>
 <TabItem value="DeleteAgent" label="DeleteAgent">
@@ -1340,7 +1541,7 @@ var result = await store.AI.DeleteAgentAsync("reward-productive-employee");
 
 | Return value | |
 |-----------|-------------|
-| `AiAgentConfigurationResult` | Contains `Identifier` (`string`) — the ID of the deleted agent. |
+| `AiAgentConfigurationResult` | Contains `Identifier` (`string`) - the ID of the deleted agent. |
 
 </TabItem>
 </Tabs>
@@ -1397,7 +1598,7 @@ List<AiAgentConfiguration> agents = response.AiAgents;
 
 | Return value | |
 |-----------|-------------|
-| `GetAiAgentsResponse` | Contains `AiAgents` (`List<AiAgentConfiguration>`) — the list of all agent configurations. |
+| `GetAiAgentsResponse` | Contains `AiAgents` (`List<AiAgentConfiguration>`) - the list of all agent configurations. |
 
 </TabItem>
 </Tabs>
@@ -1442,7 +1643,7 @@ var chat = store.AI.Conversation(
 </TabItem>
 <TabItem value="SetUserPrompt" label="SetUserPrompt">
 
-Sets the user prompt to send to the AI agent on the next conversation turn.
+Sets the user prompt for the next conversation turn, replacing any previously added prompt parts.
 
 ```csharp
 void SetUserPrompt(string userPrompt)
@@ -1457,7 +1658,71 @@ chat.SetUserPrompt("find the employee that made the largest profit");
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| **userPrompt** | `string` | The text of the user's message. |
+| **userPrompt** | `string` | The text of the user's message. Replaces any previously added prompt parts. |
+
+</TabItem>
+<TabItem value="AddUserPrompt" label="AddUserPrompt">
+
+Appends one or more text parts to the user prompt for the next conversation turn, without replacing parts that were previously added.
+
+```csharp
+void AddUserPrompt(params IEnumerable<string> userPrompt)
+```
+<br />
+Usage:
+
+```csharp
+chat.AddUserPrompt("Summarize the findings for France.", "Focus on Q4 data.");
+```
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **userPrompt** | `IEnumerable<string>` | One or more text strings to append as prompt parts. |
+
+</TabItem>
+<TabItem value="AddAttachment" label="AddAttachment">
+
+Attaches a file to the current conversation turn. The attachment is sent to the LLM together with the user prompt when `RunAsync` or `StreamAsync` is called, and is cleared afterwards.
+
+```csharp
+void AddAttachment(string name, Stream stream, string contentType)
+```
+<br />
+Usage:
+
+```csharp
+using var fileStream = File.OpenRead("monthly-report.pdf");
+chat.AddAttachment("monthly-report.pdf", fileStream, "application/pdf");
+```
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **name** | `string` | A descriptive name for the attachment (e.g., `"monthly-report.pdf"`). A descriptive name is recommended as it helps the LLM understand the file's context. |
+| **stream** | `Stream` | The data stream of the file to attach. |
+| **contentType** | `string` | The MIME type of the attachment content (e.g., `"application/pdf"`, `"image/png"`). |
+
+</TabItem>
+<TabItem value="CopyAttachmentFrom" label="CopyAttachmentFrom">
+
+Copies an attachment from an existing RavenDB document into the current conversation turn. The attachment is sent to the LLM together with the user prompt when `RunAsync` or `StreamAsync` is called, and is cleared afterwards.
+
+```csharp
+void CopyAttachmentFrom(string sourceDocumentId, string fileName)
+```
+<br />
+Usage:
+
+```csharp
+chat.CopyAttachmentFrom("products/42-A", "spec-sheet.pdf");
+```
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **sourceDocumentId** | `string` | The ID of the document in RavenDB that contains the attachment. |
+| **fileName** | `string` | The name of the file attached to the source document. This name is also used to identify the file in the conversation context. |
 
 </TabItem>
 <TabItem value="RunAsync" label="RunAsync / Run">
@@ -1590,7 +1855,7 @@ chat.Handle("store-performer-details", (Performer performer) =>
 |-----------|------|-------------|
 | **actionName** | `string` | The name of the action tool to handle. |
 | **action** | `Func<TArgs, Task<TResult>>`, `Func<TArgs, object>`, `Func<AiAgentActionRequest, TArgs, Task<TResult>>`, or `Func<AiAgentActionRequest, TArgs, object>` | The handler function that processes the action request and returns a response to the LLM. |
-| **aiHandleError** | `AiHandleErrorStrategy` | Error handling strategy.<br />`SendErrorsToModel` — send errors to the model as text.<br />`RaiseImmediately` — throw exceptions to the caller. |
+| **aiHandleError** | `AiHandleErrorStrategy` | Error handling strategy.<br />`SendErrorsToModel` - send errors to the model as text.<br />`RaiseImmediately` - throw exceptions to the caller. |
 
 </TabItem>
 <TabItem value="Receive" label="Receive">
@@ -1630,7 +1895,7 @@ chat.Receive("store-performer-details", (AiAgentActionRequest request, Performer
 |-----------|------|-------------|
 | **actionName** | `string` | The name of the action tool to handle. |
 | **action** | `Func<AiAgentActionRequest, TArgs, Task>` or `Action<AiAgentActionRequest, TArgs>` | The receiver function that processes the action request. Must call `AddActionResponse` when done. |
-| **aiHandleError** | `AiHandleErrorStrategy` | Error handling strategy.<br />`SendErrorsToModel` — send errors to the model as text.<br />`RaiseImmediately` — throw exceptions to the caller. |
+| **aiHandleError** | `AiHandleErrorStrategy` | Error handling strategy.<br />`SendErrorsToModel` - send errors to the model as text.<br />`RaiseImmediately` - throw exceptions to the caller. |
 
 </TabItem>
 <TabItem value="AddActionResponse" label="AddActionResponse">
@@ -1742,6 +2007,7 @@ class AiAgentConfiguration
     string OutputSchema
     List<AiAgentToolQuery> Queries
     List<AiAgentToolAction> Actions
+    List<AiAgentToolSubAgent> SubAgents
     List<AiAgentParameter> Parameters
     AiAgentChatTrimmingConfiguration ChatTrimming
     int? MaxModelIterationsPerCall
@@ -1767,6 +2033,7 @@ public AiAgentConfiguration(string name, string connectionStringName, string sys
 | **OutputSchema** | `string` | A formal JSON schema describing the expected LLM response structure. If both `SampleObject` and `OutputSchema` are defined, only the schema is used. |
 | **Queries** | `List<AiAgentToolQuery>` | Query tools that the LLM can use (through the agent) to retrieve data from the database. |
 | **Actions** | `List<AiAgentToolAction>` | Action tools that the LLM can use to trigger the client to action. |
+| **SubAgents** | `List<AiAgentToolSubAgent>` | Other agents that this agent can invoke as sub-agents. See [Sub-agents as tools](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#sub-agents-as-tools). |
 | **Parameters** | `List<AiAgentParameter>` | Agent parameters whose values are provided by the client when a conversation is started. |
 | **ChatTrimming** | `AiAgentChatTrimmingConfiguration` | Configuration for summarizing the conversation to reduce token usage. |
 | **MaxModelIterationsPerCall** | `int?` | Maximum number of times the LLM can request tool usage in response to a single user prompt. |
@@ -1783,6 +2050,8 @@ class AiAgentParameter
     string Name
     string Description
     bool? SendToModel
+    AiAgentParameterPolicy Policy
+    AiAgentParameterValueType Type
 }
 ```
 <br />
@@ -1790,11 +2059,20 @@ class AiAgentParameter
 Constructors:
 
 ```csharp
-// Initialize with name and description 
+// Initialize with name and description
 public AiAgentParameter(string name, string description)
 
-// Initialize with name, description, and a flag to control model visibility 
+// Initialize with name, description, and a flag to control model visibility
 public AiAgentParameter(string name, string description, bool sendToModel)
+
+// Initialize with name, description, and a policy
+public AiAgentParameter(string name, string description, AiAgentParameterPolicy policy)
+
+// Initialize with name, description, visibility flag, and a policy
+public AiAgentParameter(string name, string description, bool sendToModel, AiAgentParameterPolicy policy)
+
+// Initialize with name, description, visibility flag, policy, and value type
+public AiAgentParameter(string name, string description, bool sendToModel, AiAgentParameterPolicy policy, AiAgentParameterValueType type)
 ```
 <br />
 
@@ -1802,7 +2080,9 @@ public AiAgentParameter(string name, string description, bool sendToModel)
 |----------|------|-------------|
 | **Name** | `string` | The parameter name as referenced by tools and queries. |
 | **Description** | `string` | Human-readable description explaining what value the parameter expects. |
-| **SendToModel** | `bool?` | Whether the parameter value is exposed to the AI model.<br />`true` or `null` (default) — the parameter is exposed.<br />`false` — the parameter is hidden from the model (useful for sensitive values like userId or tenant). |
+| **SendToModel** | `bool?` | Whether the parameter value is exposed to the AI model.<br />`true` or `null` (default) - the parameter is exposed.<br />`false` - the parameter is hidden from the model (useful for sensitive values like userId or tenant). |
+| **Policy** | `AiAgentParameterPolicy` | Policy flags for this parameter. When an agent is used as a sub-agent, `ForbidModelGeneration` prevents the parent from generating a value for the parameter; the value must be inherited from the parent's parameters or provided when the conversation is started. Default: `Default` (no special behavior). |
+| **Type** | `AiAgentParameterValueType` | Expected value type of the parameter. When set to a concrete value, the server validates the provided value against it.<br />`Default` disables type validation. |
 
 </TabItem>
 </Tabs>
@@ -1938,8 +2218,8 @@ class AiAgentToolQueryOptions
 
 | Property | Type | Description |
 |----------|------|-------------|
-| **AllowModelQueries** | `bool?` | `true` — the LLM can trigger this query on demand.<br />`false` — the LLM cannot trigger this query.<br />`null` — server-side defaults apply. |
-| **AddToInitialContext** | `bool?` | `true` — the query runs when the conversation starts and its results are added to the initial context.<br />`false` — the query does not run at conversation start.<br />`null` — server-side defaults apply. |
+| **AllowModelQueries** | `bool?` | `true` - the LLM can trigger this query on demand.<br />`false` - the LLM cannot trigger this query.<br />`null` - server-side defaults apply. |
+| **AddToInitialContext** | `bool?` | `true` - the query runs when the conversation starts and its results are added to the initial context.<br />`false` - the query does not run at conversation start.<br />`null` - server-side defaults apply. |
 
 </TabItem>
 <TabItem value="AiAgentToolAction" label="AiAgentToolAction">
@@ -1965,6 +2245,28 @@ class AiAgentToolAction
 | **ParametersSchema** | `string` | A formal JSON schema for the parameters. If both a sample object and a schema are defined, only the schema is used. |
 
 </TabItem>
+
+<TabItem value="AiAgentToolSubAgent" label="AiAgentToolSubAgent">
+
+**A reference to another agent that this agent can invoke as a sub-agent.**
+
+```csharp
+class AiAgentToolSubAgent
+{
+    string Identifier
+    string Description
+}
+```
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **Identifier** | `string` | The identifier of an existing agent that this agent may invoke as a sub-agent.<br />The referenced agent must be created in the same database. |
+| **Description** | `string` | A short description the LLM reads when deciding whether to delegate to this sub-agent. |
+
+See [Multi-agents](../../../../ai-integration/ai-agents/multi-agents.mdx) for the full picture, including parameter propagation and sub-conversation isolation.
+
+</TabItem>
 </Tabs>
 
 ---
@@ -1979,8 +2281,9 @@ class AiAgentToolAction
 ```csharp
 class AiConversationCreationOptions
 {
-    Dictionary<string, object> Parameters
+    Dictionary<string, AiConversationParameter> Parameters
     int? ExpirationInSec
+    int? MaxModelIterationsPerCall
 }
 ```
 <br />
@@ -1991,29 +2294,70 @@ Constructors and methods:
 // Create with no parameters
 public AiConversationCreationOptions()
 
-// Create with a set of parameter values
+// Create with a set of parameter values (all defaulting to SendToModel = true)
 public AiConversationCreationOptions(Dictionary<string, object> parameters)
 
-// Add a parameter value (fluent, returns this)
-public AiConversationCreationOptions AddParameter(string name, object value)
+// Create with a set of fully specified conversation parameters
+public AiConversationCreationOptions(Dictionary<string, AiConversationParameter> parameters)
 
-// Add a parameter value with visibility control (fluent, returns this)
-public AiConversationCreationOptions AddParameter(string name, object value, bool sendToModel)
+// Add a parameter value (fluent, returns this)
+public AiConversationCreationOptions AddParameter(
+    string name, object value, AiConversationParameterOptions options = null)
 ```
 <br />
 
 | Property | Type | Description |
 |----------|------|-------------|
-| **Parameters** | `Dictionary<string, object>` | Values for agent parameters defined in the agent configuration. |
+| **Parameters** | `Dictionary<string, AiConversationParameter>` | Values for agent parameters defined in the agent configuration, keyed by parameter name. |
 | **ExpirationInSec** | `int?` | Optional. If the conversation is idle longer than this period (in seconds), it will be automatically deleted. |
+| **MaxModelIterationsPerCall** | `int?` | Optional per-conversation override of the agent configuration's `MaxModelIterationsPerCall`. |
 
 | `AddParameter` parameter | Type | Description |
 |----------|------|-------------|
-| **name** | `string` | The parameter name, matching a parameter defined in the agent configuration. |
+| **name** | `string` | The parameter name. Matches a parameter defined in the agent configuration, or provides a value for a sub-agent's parameter that the root agent does not declare. |
 | **value** | `object` | The value to assign to the parameter. |
-| **sendToModel** | `bool` | Controls the visibility of this parameter value to the LLM for this conversation turn.<br /><br />The final visibility is determined by combining this value with the `SendToModel` setting on the matching `AiAgentParameter` in the agent configuration: if **either** is `false`, the parameter is hidden from the model.<br />`null` (default) means not specified - the configuration-level value alone decides. |
+| **options** | `AiConversationParameterOptions` | Optional. Controls conversation-level behavior of this parameter, currently limited to `SendToModel` (whether the value is exposed to the LLM for this conversation). When `null`, defaults apply. |
 
 </TabItem>
+
+<TabItem value="AiConversationParameter" label="AiConversationParameter">
+
+**A single conversation-level parameter, including its value and conversation-level visibility.**
+
+```csharp
+class AiConversationParameter
+{
+    object Value
+    bool SendToModel
+}
+```
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **Value** | `object` | The parameter value. |
+| **SendToModel** | `bool` | Conversation-level visibility to the LLM. When `false`, the value is hidden from every LLM in the hierarchy for this conversation, regardless of the agent configuration. Combined with `AiAgentParameter.SendToModel` as an AND gate: the LLM sees the value only if both permit it. Default: `true`. |
+
+</TabItem>
+
+<TabItem value="AiConversationParameterOptions" label="AiConversationParameterOptions">
+
+**Options for a conversation parameter when using `AddParameter`.**
+
+```csharp
+class AiConversationParameterOptions
+{
+    bool SendToModel
+}
+```
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **SendToModel** | `bool` | Controls conversation-level visibility of this parameter to the LLM. When `false`, the value is hidden from every LLM in the hierarchy for this conversation. The final visibility is the AND of this flag and the matching `AiAgentParameter.SendToModel` on the agent configuration. Default: `true`. |
+
+</TabItem>
+
 <TabItem value="AiAgentActionRequest" label="AiAgentActionRequest">
 
 **Contains the details of an action request sent by the LLM to the agent.**
@@ -2186,6 +2530,59 @@ enum AiHandleErrorStrategy
 |-------|-------------|
 | **SendErrorsToModel** | Convert the error to a textual message and send it back to the model as the tool response. |
 | **RaiseImmediately** | Throw the exception immediately to the caller instead of sending it to the model. |
+
+</TabItem>
+
+<TabItem value="AiAgentParameterPolicy" label="AiAgentParameterPolicy">
+
+**Policy flags that control how an agent parameter behaves across parent and sub-agent boundaries.**
+
+```csharp
+[Flags]
+enum AiAgentParameterPolicy
+{
+    Default = 0,
+    ForbidModelGeneration = 1
+}
+```
+<br />
+
+| Value | Description |
+|-------|-------------|
+| **Default** | No special behavior. The parent's LLM may generate a value for this parameter if no inherited value is available. |
+| **ForbidModelGeneration** | When an agent is used as a sub-agent, prevents the parent from generating a value for the parameter. The value must be inherited from the parent's parameters or provided when the conversation is started; otherwise `MissingAiAgentParameterException` is thrown. |
+
+</TabItem>
+
+<TabItem value="AiAgentParameterValueType" label="AiAgentParameterValueType">
+
+**The expected value type of an agent parameter, used for validation.**
+
+```csharp
+enum AiAgentParameterValueType
+{
+    Default,
+    String,
+    Number,
+    Boolean,
+    ArrayOfString,
+    ArrayOfNumber,
+    ArrayOfBoolean,
+    Null
+}
+```
+<br />
+
+| Value | Description |
+|-------|-------------|
+| **Default** | No type validation (backward compatibility). |
+| **String** | The value must be a string. |
+| **Number** | The value must be a number. |
+| **Boolean** | The value must be a boolean. |
+| **ArrayOfString** | The value must be an array of strings. |
+| **ArrayOfNumber** | The value must be an array of numbers. |
+| **ArrayOfBoolean** | The value must be an array of booleans. |
+| **Null** | The value must be null. |
 
 </TabItem>
 </Tabs>
