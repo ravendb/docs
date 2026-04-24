@@ -207,5 +207,487 @@
             "targetUrl": "/compare-exchange/overview",
             "minimumVersion": "7.1"
         }
+    },
+    {
+        "key": "/server/clustering/replication/replication",
+        "value": {
+            "targetUrl": "/server/clustering/replication/replication-overview",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/document-extensions/timeseries",
+        "value": {
+            "targetUrl": "/document-extensions/timeseries/overview",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/server/extensions/revisions",
+        "value": {
+            "targetUrl": "/document-extensions/revisions/overview",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/client-api/session/cluster-transaction",
+        "value": {
+            "targetUrl": "/client-api/session/cluster-transaction/overview",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/studio/server/cluster/cluster-view",
+        "value": {
+            "targetUrl": "/studio/cluster/cluster-view",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/start/installation/running-in-docker-container",
+        "value": {
+            "targetUrl": "/start/containers/general-guide",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/client-api/session/querying/how-to-use-fuzzy",
+        "value": {
+            "targetUrl": "/client-api/session/querying/text-search/fuzzy-search",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/client-api/session/querying/how-to-perform-proximity-search",
+        "value": {
+            "targetUrl": "/client-api/session/querying/text-search/proximity-search",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/client-api/session/querying/how-to-use-search",
+        "value": {
+            "targetUrl": "/client-api/session/querying/text-search/full-text-search",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/client-api",
+        "value": {
+            "targetUrl": "/client-api/what-is-a-document-store",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/client-api/operations",
+        "value": {
+            "targetUrl": "/client-api/operations/what-are-operations",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/maintenance",
+        "value": {
+            "targetUrl": "/client-api/operations/maintenance/get-stats",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/maintenance/indexes",
+        "value": {
+            "targetUrl": "/client-api/operations/maintenance/indexes/get-index",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/patching",
+        "value": {
+            "targetUrl": "/client-api/operations/patching/single-document",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/client-api/data-subscriptions",
+        "value": {
+            "targetUrl": "/client-api/data-subscriptions/what-are-data-subscriptions",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/client-api/document-identifiers",
+        "value": {
+            "targetUrl": "/client-api/document-identifiers/working-with-document-identifiers",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/client-api/session/querying",
+        "value": {
+            "targetUrl": "/querying/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/rest-api/document-commands",
+        "value": {
+            "targetUrl": "/client-api/rest-api/document-commands/put-documents",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/client-api/commands/what-are-commands",
+        "value": {
+            "targetUrl": "/client-api/commands/overview",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/client-api/configuration/identifier-generation",
+        "value": {
+            "targetUrl": "/client-api/configuration/identifier-generation/global",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/server",
+        "value": {
+            "targetUrl": "/server/clustering/overview",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/server/clustering",
+        "value": {
+            "targetUrl": "/server/clustering/overview",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/server/storage",
+        "value": {
+            "targetUrl": "/server/storage/storage-engine",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/server/troubleshooting",
+        "value": {
+            "targetUrl": "/server/troubleshooting/logging",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/server/administration/monitoring",
+        "value": {
+            "targetUrl": "/server/administration/monitoring/prometheus",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/server/extensions",
+        "value": {
+            "targetUrl": "/server/extensions/expiration",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/server/ongoing-tasks",
+        "value": {
+            "targetUrl": "/server/ongoing-tasks/external-replication",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/server/ongoing-tasks/general-info",
+        "value": {
+            "targetUrl": "/studio/database/tasks/ongoing-tasks/general-info",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/start",
+        "value": {
+            "targetUrl": "/start/getting-started",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/start/installation",
+        "value": {
+            "targetUrl": "/start/installation/manual",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/start/installation/gnu-linux",
+        "value": {
+            "targetUrl": "/start/installation/gnu-linux/deb",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/start/installation/setup-examples",
+        "value": {
+            "targetUrl": "/start/installation/setup-examples/aws-linux-vm",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/start/installation/setup-examples/aws-docker-linux-vm",
+        "value": {
+            "targetUrl": "/start/installation/setup-examples/aws-linux-vm",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/start/containers",
+        "value": {
+            "targetUrl": "/start/containers/general-guide",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/start/containers/dockerfile",
+        "value": {
+            "targetUrl": "/start/containers/dockerfile/dockerfile-overview",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/start/containers/requirements",
+        "value": {
+            "targetUrl": "/start/containers/requirements/compute",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/studio",
+        "value": {
+            "targetUrl": "/studio/overview",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/studio/database",
+        "value": {
+            "targetUrl": "/studio/database/databases-list-view",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/studio/database/tasks",
+        "value": {
+            "targetUrl": "/studio/database/tasks/create-sample-data",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/studio/database/tasks/import-data",
+        "value": {
+            "targetUrl": "/studio/database/tasks/import-data/import-data-file",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/studio/database/tasks/ongoing-tasks",
+        "value": {
+            "targetUrl": "/studio/database/tasks/ongoing-tasks/general-info",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/studio/server/debug",
+        "value": {
+            "targetUrl": "/studio/server/debug/admin-js-console",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/studio/server/server-dashboard",
+        "value": {
+            "targetUrl": "/studio/cluster/cluster-dashboard/cluster-dashboard-overview",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/glossary",
+        "value": {
+            "targetUrl": "/glossary/etag",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/users-issues",
+        "value": {
+            "targetUrl": "/users-issues/emergency-access",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/indexes",
+        "value": {
+            "targetUrl": "/indexes/what-are-indexes",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/sharding/administration",
+        "value": {
+            "targetUrl": "/sharding/administration/api-admin",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/document-extensions/counters",
+        "value": {
+            "targetUrl": "/document-extensions/counters/overview",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/document-extensions/revisions",
+        "value": {
+            "targetUrl": "/document-extensions/revisions/overview",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/document-extensions/timeseries/incremental-time-series",
+        "value": {
+            "targetUrl": "/document-extensions/timeseries/incremental-time-series/overview",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/document-extensions/timeseries/incremental-time-series/client-api",
+        "value": {
+            "targetUrl": "/document-extensions/timeseries/incremental-time-series/client-api/javascript-support",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/document-extensions/timeseries/incremental-time-series/client-api/session",
+        "value": {
+            "targetUrl": "/document-extensions/timeseries/incremental-time-series/client-api/session/overview",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/document-extensions/timeseries/client-api",
+        "value": {
+            "targetUrl": "/document-extensions/timeseries/client-api/overview",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/document-extensions/timeseries/client-api/operations",
+        "value": {
+            "targetUrl": "/document-extensions/timeseries/client-api/operations/append-and-delete",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/document-extensions/timeseries/client-api/session",
+        "value": {
+            "targetUrl": "/document-extensions/timeseries/client-api/session/append",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/document-extensions/revisions/client-api/operations/revert-document-to-revision",
+        "value": {
+            "targetUrl": "/document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/document-extensions/revisions/revert-revisions",
+        "value": {
+            "targetUrl": "/document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/ai-integration/vector-search/ravendb-as-vector-database",
+        "value": {
+            "targetUrl": "/ai-integration/vector-search/start",
+            "minimumVersion": "7.0"
+        }
+    },
+    {
+        "key": "/ai-integration/ravendb-as-vector-database",
+        "value": {
+            "targetUrl": "/ai-integration/vector-search/start",
+            "minimumVersion": "7.0"
+        }
+    },
+    {
+        "key": "/ai-integration/gen-ai-integration/gen-ai-overview",
+        "value": {
+            "targetUrl": "/ai-integration/gen-ai-integration/start",
+            "minimumVersion": "7.1"
+        }
+    },
+    {
+        "key": "/ai-integration/gen-ai-integration/gen-ai-studio",
+        "value": {
+            "targetUrl": "/ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio",
+            "minimumVersion": "7.1"
+        }
+    },
+    {
+        "key": "/ai-integration/gen-ai-integration/gen-ai-api",
+        "value": {
+            "targetUrl": "/ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api",
+            "minimumVersion": "7.1"
+        }
+    },
+    {
+        "key": "/ai-integration/ai-agents/ai-agents-studio",
+        "value": {
+            "targetUrl": "/ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio",
+            "minimumVersion": "7.1"
+        }
+    },
+    {
+        "key": "/ai-integration/data-types-for-vector-search",
+        "value": {
+            "targetUrl": "/ai-integration/vector-search/data-types-for-vector-search",
+            "minimumVersion": "7.0"
+        }
+    },
+    {
+        "key": "/ai-integration/vector-search-using-dynamic-query",
+        "value": {
+            "targetUrl": "/ai-integration/vector-search/vector-search-using-dynamic-query",
+            "minimumVersion": "7.0"
+        }
+    },
+    {
+        "key": "/ai-integration/connection-strings",
+        "value": {
+            "targetUrl": "/ai-integration/connection-strings/overview",
+            "minimumVersion": "7.0"
+        }
+    },
+    {
+        "key": "/indexes/converting-to-json-and-accessing-metadata",
+        "value": {
+            "targetUrl": "/indexes/indexing-metadata",
+            "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/maintenance/backup/backup",
+        "value": {
+            "targetUrl": "/backup/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/cloud/portal",
+        "value": {
+            "targetUrl": "/cloud/portal/cloud-portal-home-tab"
+        }
     }
 ]
