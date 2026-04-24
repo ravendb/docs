@@ -689,5 +689,47 @@
         "value": {
             "targetUrl": "/cloud/portal/cloud-portal-home-tab"
         }
+    },
+    {
+        "key": "/Indexes/creating-and-deploying",
+        "value": {
+            "targetUrl": "/indexes/creating-and-deploying",
+            "minimumVersion": "6.0"
+        }
+    },
+    {
+        "key": "/server/Embedded",
+        "value": {
+            "targetUrl": "/server/embedded",
+            "minimumVersion": "6.0"
+        }
+    },
+    {
+        "key": "/server/ongoing-tasks/etl/OLAP",
+        "value": {
+            "targetUrl": "/server/ongoing-tasks/etl/olap",
+            "minimumVersion": "6.0"
+        }
+    },
+    {
+        "key": "/server/administration/SNMP/snmp",
+        "value": {
+            "targetUrl": "/server/administration/snmp/snmp-overview",
+            "minimumVersion": "6.0"
+        }
+    },
+    {
+        "key": "/server/administration/SNMP/setup-zabbix",
+        "value": {
+            "targetUrl": "/server/administration/snmp/setup-zabbix",
+            "minimumVersion": "6.0"
+        }
+    },
+    {
+        "key": "/client-api/operations/maintenance/Sorters/put-sorter",
+        "value": {
+            "targetUrl": "/client-api/operations/maintenance/sorters/put-sorter",
+            "minimumVersion": "6.0"
+        }
     }
 ]
