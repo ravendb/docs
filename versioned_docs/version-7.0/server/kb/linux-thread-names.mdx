@@ -1,0 +1,176 @@
+---
+title: "Linux: Thread names"
+sidebar_label: "Linux: Thread names"
+description: "Understand how RavenDB names its threads on Linux to work within the kernel's 15-character limit, and how to interpret thread names when monitoring the server process."
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Linux: Thread names
+
+<Admonition type="note" title="">
+
+* In this article:
+   * [Overview](linux-thread-names.mdx#overview)
+   * [Listing RavenDB threads](linux-thread-names.mdx#listing-ravendb-threads)
+   * [Thread name reference](linux-thread-names.mdx#thread-name-reference)
+      * [Indexing](linux-thread-names.mdx#indexing)
+      * [Transaction merging](linux-thread-names.mdx#transaction-merging)
+      * [Replication](linux-thread-names.mdx#replication)
+      * [ETL and queue sink](linux-thread-names.mdx#etl-and-queue-sink)
+      * [Backup](linux-thread-names.mdx#backup)
+      * [Cluster transactions](linux-thread-names.mdx#cluster-transactions)
+      * [Rachis consensus](linux-thread-names.mdx#rachis-consensus)
+
+</Admonition>
+
+<Panel heading="Overview">
+
+<ContentFrame>
+
+## Overview
+
+The Linux kernel enforces a hard limit of **15 characters** on thread names (16 bytes including the null terminator). Thread names longer than 15 characters are silently truncated when the thread is created. This makes identifying RavenDB threads difficult when monitoring the server process.  
+For example, a thread named `"Indexing of Orders of NorthWind"` is truncated to `"Indexing of Ord"` in `ps` output, giving no indication of which index or database it belongs to.
+
+RavenDB addresses this by maintaining two names for every thread it creates:
+
+- A **full name** - the human-readable name used internally and returned by the API (for example, `"Indexing of Orders of NorthWind"`).
+- A **short name** - a structured abbreviated format used as the actual kernel thread name on Linux and macOS (for example, `"Idx NorthWind Orders"`).
+
+On Windows, the full name is used directly, since Windows does not enforce a 15-character limit.
+
+The full name is always accessible via the `/admin/debug/threads/runaway` endpoint, regardless of operating system.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Listing RavenDB threads">
+
+<ContentFrame>
+
+## Listing RavenDB threads
+
+To list all threads in the RavenDB server process together with their kernel thread names, use `ps`:
+
+```bash
+ps -L -o pid,lwp,pri,nice,start,stat,bsdtime,cmd,comm -C Raven.Server
+```
+
+<br />
+
+The `COMMAND` column displays the kernel thread name. On Linux this is the short name; on Windows the full name is shown.
+
+To retrieve full thread names at any time, query the debug endpoint:
+
+```
+GET /admin/debug/threads/runaway
+```
+
+<br />
+
+This endpoint returns all threads sorted by CPU duration and reports the full name for each thread, regardless of what the operating system exposes.  
+See [Debug Endpoints](../../server/troubleshooting/debug-routes.mdx#debug-endpoints).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Thread name reference">
+
+<ContentFrame>
+
+## Thread name reference
+
+The tables below list the short name format used on Linux for each thread type. Variables enclosed in `{}` are substituted at runtime with the actual values for that thread instance.  
+For example, `Idx {dbName} {idxName}` for an indexing thread on database `NorthWind` running index `Orders/ByCompany` becomes `Idx NorthWind Orders/ByCompany` at runtime.
+
+<Admonition type="note" title="">
+
+Note that the short name formats shown here can themselves exceed 15 characters once the runtime variables are filled in. The kernel will truncate them further.  
+For example, `Idx NorthWind Orders/ByCompany` becomes `Idx NorthWind O` in `ps` output. The practical value of the prefix (e.g. `Idx`, `TxMrgr`, `IncRep`) is that it always fits within the 15-character window and identifies the thread type.
+
+To get the full name of a thread you spotted in `ps`, use the OS thread ID shown in the `LWP` column (`LWP` stands for Light Weight Process, which is the Linux kernel's term for a thread):
+
+1. Call `GET /admin/debug/threads/runaway`.
+2. Find the entry where `Id` matches the `LWP` value.
+3. Read the `Name` field - this is the full name for that thread.
+
+</Admonition>
+
+### Indexing
+
+| Short name format | Description |
+|---|---|
+| `Idx {dbName} {idxName}` | An indexing thread processing index `{idxName}` in database `{dbName}`. |
+
+---
+
+### Transaction merging
+
+| Short name format | Description |
+|---|---|
+| `TxMrgr {name}` | A transaction merger thread for database or resource `{name}`. |
+
+---
+
+### Replication
+
+| Short name format | Description |
+|---|---|
+| `IncRep {dbName} from {sourceDbName}` | An incoming replication thread receiving data from `{sourceDbName}` into `{dbName}`. |
+| `OutRpl {dbName} to {destination}` | An outgoing replication thread sending data from `{dbName}` to `{destination}`. |
+| `PllRepHb {dbName} to {destination}` | An outgoing pull replication thread acting as hub, sending from `{dbName}` to `{destination}`. |
+| `PllRepSnk {dbName} at {url}` | A pull replication thread acting as sink, connecting `{dbName}` to the hub at `{url}`. |
+
+---
+
+### ETL and queue sink
+
+| Short name format | Description |
+|---|---|
+| `Etl {tag} {name}` | An ETL process thread for task `{name}` identified by connection tag `{tag}`. |
+| `QuSnk {tag} {name}` | A queue sink process thread for task `{name}` identified by connection tag `{tag}`. |
+
+---
+
+### Backup
+
+| Short name format | Description |
+|---|---|
+| `BkpTsk {dbName}` | A backup task coordinator thread for database `{dbName}`. |
+| `Bkp {dbName}` | A backup execution thread for database `{dbName}`. |
+| `UpBkp {dbName} to {targetName}` | A thread uploading a backup file for `{dbName}` to backup target `{targetName}`. |
+| `DlBkp {dbName} from {targetName}` | A thread deleting a backup file for `{dbName}` from backup target `{targetName}`. |
+
+---
+
+### Cluster transactions
+
+| Short name format | Description |
+|---|---|
+| `ClstrTx {dbName}` | A cluster transaction processing thread for database `{dbName}`. |
+
+---
+
+### Rachis consensus
+
+| Short name format | Description |
+|---|---|
+| `CnsnsLdr-{engineTag} IT {term}` | The Rachis consensus leader for engine `{engineTag}` at term `{term}`. (`IT` = in term.) |
+| `Cnddte for {engineTag}` | A candidate thread participating in leader election for engine `{engineTag}`. |
+| `CndAm for {engineTag}>{tag}` | A candidate ambassador thread communicating with node `{tag}` during election for `{engineTag}`. |
+| `Fllwr {connection}` | A follower thread handling replication from the cluster leader via connection `{connection}`. |
+| `FllwrAmb {tag}` | A follower ambassador thread maintaining communication with node `{tag}`. |
+| `Elctr {source}` | An elector thread processing election messages from `{source}`. |
+| `Observer {term}` | The cluster observer thread monitoring cluster health at term `{term}`. |
+| `HrtbtSpv {serverTag} to {clusterTag}` | A heartbeat supervisor thread from node `{serverTag}` to cluster node `{clusterTag}`. |
+| `HrtbtWrkr {leader} IT {term}` | A heartbeat worker thread communicating with leader `{leader}` at term `{term}`. (`IT` = in term.) |
+
+</ContentFrame>
+
+</Panel>

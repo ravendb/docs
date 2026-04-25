@@ -1,6 +1,7 @@
 ---
 title: "Troubleshooting: Debug Endpoints"
 sidebar_label: Debug Endpoints
+description: "Access RavenDB debug HTTP endpoints to inspect server internals including memory usage, thread pools, queries, and cluster state."
 sidebar_position: 0
 ---
 
@@ -42,11 +43,11 @@ For the endpoints that begin with `/databases/*/`, replace `*` with the name of 
 | /admin/debug/proc/meminfo | GET | | Return /proc/&lt;RavenDB ProcNum&gt;/meminfo | Available only on Linux |
 | /admin/debug/proc/stats | GET | | Return /proc/&lt;RavenDB ProcNum&gt;/stats | Available only on Linux |
 | /admin/debug/proc/status | GET | | Return /proc/&lt;RavenDB ProcNum&gt;/status | Available only on Linux |
-| /admin/debug/threads/runaway | GET | | List all threads and their names, sorted by duration | |
+| /admin/debug/threads/runaway | GET | | List all threads and their names, sorted by duration. Returns full thread names even on Linux, where the OS shows abbreviated names. See [Linux: Thread names](../kb/linux-thread-names.mdx). | |
 | /build/version | GET | | Returns product build number, major version, commit hash and full version number | |
 | /databases/*/admin/debug/cluster/txinfo | GET | <ul><li>`from` (Optional)<br />Number of results to skip</li><li>`take` (Optional)<br />Number of results to take</li></ul> | List the incomplete [cluster transaction commands](../clustering/cluster-transactions.mdx#cluster--cluster-wide-transactions) | |
 | /databases/*/admin/debug/txinfo | GET | | List | |
-| /databases/*/debug/documents/huge | GET | | List IDs of documents which exceed `PerformanceHints.`&lt;br /&gt;`Documents.`&lt;br /&gt;`HugeDocumentSizeInMb` setting | |
+| /databases/*/debug/documents/huge | GET | | List IDs of documents which exceed `PerformanceHints.`<br />`Documents.`<br />`HugeDocumentSizeInMb` setting | |
 | /databases/*/debug/identities | GET | | | |
 | /databases/*/debug/info-package | GET | | Save debug package information for later analysis | |
 | /databases/*/debug/io-metrics | GET | | Get current IO metrics: "Writes, Flush, Sync" for each storage environment | |
