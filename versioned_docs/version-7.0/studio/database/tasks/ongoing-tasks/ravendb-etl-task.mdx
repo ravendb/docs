@@ -61,10 +61,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
     
 5. **HTTP Request Timeout** (Optional)  
    * Sets the maximum time in seconds that the source server will wait for the destination server to process and acknowledge a batch of documents during the Load stage.
-     If the destination does not respond within this time, the request is canceled and the ETL task enters fallback mode and retries.
-   * If not set, no per-request timeout is enforced,  
-     the global HTTP client timeout of 12 hours applies as the only backstop.  
-   * Consider setting this if the destination server is slow or under heavy load,  
+     If the destination does not respond within this time, the request is canceled and the ETL task enters fallback mode and retries.    
+   * Default: `300` seconds.  
+     This is the global default, set by the [ETL.Raven.LoadRequestTimeoutInSec](../../../../server/configuration/etl-configuration.mdx#etlravenloadrequesttimeoutinsec) configuration key.  
+     You can override it for a specific ETL task in the Studio, or in the client API by setting the `LoadRequestTimeoutInSec` property in the Raven ETL configuration.    
+   * Consider increasing this value if the destination server is slow or under heavy load,  
      or if batches are large and take a long time to process.
 
 </Panel>
