@@ -91,18 +91,24 @@ To enable the script, add the following to settings.json:
 </TabItem>
 
 <Admonition type="info" title="Implicit Trust" id="implicit-trust" href="#implicit-trust">
-If two different RavenDB clusters are communicating securely, and the source cluster has its certificate renewed, the destination cluster could 
-still trust this new certificate - provided that the new certificate is signed with the same private key as the original, and was issued by the 
-same certificate authority. This is accomplished using a [public key pinning hash](../../../server/security/authentication/certificate-renewal-and-rotation.mdx#implicit-trust-by-public-key-pinning-hash).  
+If two different RavenDB clusters are communicating securely, and the source cluster has its certificate renewed, the destination cluster could still trust this new certificate - provided that the new certificate is signed with the same private key as the original, and was issued by the same certificate authority.  
+This is accomplished using a [public key pinning hash](../../../server/security/authentication/certificate-renewal-and-rotation.mdx#implicit-trust-by-public-key-pinning-hash).  
 </Admonition>
 
 ## Manual Renewal
 
-When using RavenDB's Let's Encrypt support, you can initiate the renewal process manually by going to the certificate view in the studio and clicking 
-`Renew` on the server certificate. This will trigger the same certificate replacement process which was described [above](../../../server/security/authentication/lets-encrypt-certificates.mdx##automatic-renewal-for-lets-encrypt-certificates-obtained-via-ravendb).
+When your server uses a Let's Encrypt certificate obtained via the Setup Wizard, you can trigger the certificate renewal process manually in two ways:
 
-If a node is down and you click `Renew`, the cluster will complete the operation without the node that is down. **When bringing that node up, the 
-certificate must be replaced manually.**
+* Go to the certificate view in Studio and click `Renew` on the server certificate.
+* Run the following command via [`rvn admin-channel`](../../../server/administration/cli.mdx#rvn):
+
+```
+ravendb> triggerCertificateRefresh [-replaceImmediately]
+```
+
+Both methods trigger the same certificate replacement process described [above](../../../server/security/authentication/lets-encrypt-certificates.mdx#automatic-renewal-for-lets-encrypt-certificates-obtained-via-ravendb).
+
+If a node is down when renewal is triggered, the cluster will complete the operation without that node. **When bringing that node up, the certificate must be replaced manually.**
 
 
 ## Updating DNS records
