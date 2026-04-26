@@ -1,0 +1,134 @@
+---
+title: "Traffic Watch"
+sidebar_label: Traffic Watch
+description: "Monitor all HTTP, TCP, and PostgreSQL requests made to a RavenDB server in real time via a WebSocket stream, or log them persistently to file."
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* Traffic Watch is a server-wide monitoring feature that records all **HTTP**, **TCP**, and **PostgreSQL** requests made to the RavenDB server.  
+  For each request it captures: HTTP method, URL, database name, response status code, request and response sizes, elapsed time, change type, and client certificate thumbprint.
+
+* A client with [Operator-level](../../server/security/authorization/security-clearance-and-permissions.mdx) access can connect to the Traffic Watch WebSocket endpoint to receive a **live stream** of requests.  
+  The stream is active only while a client is connected; no data is persisted through it.
+
+* Independently, Traffic Watch can be configured to **log requests persistently to file** via the  
+  [`TrafficWatch.Mode`](../../server/configuration/traffic-watch-configuration.mdx#trafficwatchmode) configuration key (`Off` by default, set to `ToLogFile` to enable).  
+  Both the live stream and log-to-file can be active at the same time.
+
+* In this page:
+  * [Accessing Traffic Watch](../../server/troubleshooting/traffic-watch.mdx#accessing-traffic-watch)
+  * [Performance impact](../../server/troubleshooting/traffic-watch.mdx#performance-impact)
+
+</Admonition>
+
+## Accessing Traffic Watch
+
+<Panel heading="Accessing Traffic Watch">
+
+<ContentFrame>
+
+**From Studio:**  
+* Go to _Manage Server → Traffic Watch_ ([Operator-level](../../server/security/authorization/security-clearance-and-permissions.mdx) access is required).  
+* The Traffic Watch view can also be reached by clicking a node tag in the [Traffic Per Database Widget](../../studio/cluster/cluster-dashboard/cluster-dashboard-widgets.mdx#traffic-per-database-widget) from the cluster dashboard.
+
+</ContentFrame>
+
+<ContentFrame>
+
+**From the API:**  
+* `GET /admin/traffic-watch` - WebSocket endpoint that streams live traffic events to the connected client.  
+* `GET /admin/traffic-watch/configuration` - retrieves the current log-to-file configuration.  
+* `POST /admin/traffic-watch/configuration` - updates the log-to-file configuration at runtime.  
+  The change takes effect immediately without restarting the server.  
+  To make the change persist across server restarts, include `"Persist": true` in the request payload.  
+  This endpoint is useful for automation scripts or monitoring pipelines that need to enable, disable,  
+  or adjust Traffic Watch logging dynamically.
+
+  **Example:** Enable log-to-file for the _Northwind_ database, persisted across restarts:
+  ```json
+  POST /admin/traffic-watch/configuration
+  {
+      "TrafficWatchMode": "ToLogFile",
+      "Databases": ["Northwind"],
+      "Persist": true
+  }
+  ```
+
+  The Client API exposes equivalent operations: `GetTrafficWatchConfigurationOperation` and `PutTrafficWatchConfigurationOperation`.
+
+  **Example:** Enable log-to-file for the _Northwind_ database, persisted across restarts:
+  ```csharp
+  await store.Maintenance.Server.SendAsync(
+      new PutTrafficWatchConfigurationOperation(
+          new PutTrafficWatchConfigurationOperation.Parameters
+          {
+              TrafficWatchMode = TrafficWatchMode.ToLogFile,
+              Databases = new List<string> { "Northwind" },
+              Persist = true
+          }));
+  ```
+
+<Admonition type="note" title="">
+For the full list of configuration keys that control log-to-file filtering (by database, HTTP method, status code, change type, etc.), see [Configuration: Traffic Watch Options](../../server/configuration/traffic-watch-configuration.mdx).
+</Admonition>
+
+</ContentFrame>
+
+</Panel>
+
+---
+
+## Performance impact
+
+When neither log-to-file is enabled nor any client is connected to the WebSocket endpoint, no Traffic Watch code executes during request processing - there is no performance overhead.
+
+<Panel heading="Performance impact">
+
+<ContentFrame>
+
+**When a client is connected to the live stream:**
+
+* **CPU overhead**: Minimal.  
+  Per request, Traffic Watch iterates over connected clients, enqueues the event into each client's message queue, and signals an async send. This is lightweight and non-blocking for request-handling threads.
+
+* **Memory**: Each connected client maintains an in-memory message queue. Under very high request rates this queue can grow if messages are produced faster than the client can consume them.
+
+</ContentFrame>
+
+<ContentFrame>
+
+**When log-to-file is enabled (`TrafficWatch.Mode = ToLogFile`):**
+
+* **CPU & memory overhead**: Negligible.  
+  Traffic Watch logging is processed asynchronously by NLog's `AsyncTargetWrapper`.  
+  Request-handling threads are never blocked, so request latency and throughput are not affected.
+
+* **I/O overhead**: Minor.  
+  Traffic Watch entries are written to the same server log file as all other RavenDB log entries (`server.log` by default).  
+  Writes are buffered and asynchronous, and generally do not create I/O bottlenecks.  
+  However, in environments already under heavy storage load, disk I/O is the most significant factor to monitor.
+
+* **Disk storage**: Proportional to request volume.  
+  Because Traffic Watch shares the server log file with all other log data, high request volumes can increase log file size and cause it to archive more frequently.  
+  When a log file reaches the size limit, it is archived and a new file is started. Old archives are deleted once they exceed the configured age or count limit.  
+  These limits are set by the standard [logging configuration](../../server/configuration/logs-configuration.mdx):  
+  [`Logs.ArchiveAboveSizeInMb`](../../server/configuration/logs-configuration.mdx#logsarchiveabovesizeinmb) (default: 128 MB),  
+  [`Logs.MaxArchiveDays`](../../server/configuration/logs-configuration.mdx#logsmaxarchivedays) (default: 3 days),  
+  [`Logs.MaxArchiveFiles`](../../server/configuration/logs-configuration.mdx#logsmaxarchivefiles).  
+  Archived log files that exceed the configured retention limits are deleted automatically.
+
+</ContentFrame>
+
+<Admonition type="tip" title="">
+Use the [filter configuration options](../../server/configuration/traffic-watch-configuration.mdx) (databases, HTTP methods, status codes, change types, minimum duration, etc.)
+to limit the number of logged entries and reduce storage impact in high-traffic environments.
+</Admonition>
+
+</Panel>
