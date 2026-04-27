@@ -12,9 +12,10 @@ export interface Guide {
     tags: { label: string; permalink: string }[];
     lastUpdatedAt: number;
     description?: string;
-    image?: string | { light: string; dark: string };
+    image?: string;
+    img_alt?: string;
     icon?: IconName;
-    externalUrl?: string;
+    external_url?: string;
 }
 
 export interface PluginData {
@@ -40,7 +41,7 @@ function getFiles(dir: string, files: string[] = []) {
     return files;
 }
 
-const recentGuidesPlugin: Plugin = function recentGuidesPlugin(context, _options) {
+export default function recentGuidesPlugin(context, _options): Plugin {
     return {
         name: "recent-guides-plugin",
         async loadContent() {
@@ -57,7 +58,6 @@ const recentGuidesPlugin: Plugin = function recentGuidesPlugin(context, _options
                     const fileContent = fs.readFileSync(tagsYmlPath, "utf8");
                     predefinedTags = (yaml.load(fileContent) as any) || {};
                 } catch (e) {
-                    // eslint-disable-next-line no-console
                     console.error("Failed to load tags.yml", e);
                 }
             }
@@ -85,9 +85,9 @@ const recentGuidesPlugin: Plugin = function recentGuidesPlugin(context, _options
                 const slug = baseName.endsWith("/index") ? baseName.replace(/\/index$/, "") : baseName;
                 const permalink = `/guides/${slug === "index" ? "" : slug}`;
 
-                const externalUrl: string | undefined = (data as any).externalUrl || (data as any).external_url;
+                const externalUrl: string | undefined = (data as any).external_url;
 
-                const frontmatterDate: unknown = (data as any).publishedAt;
+                const frontmatterDate: unknown = (data as any).published_at;
 
                 let lastUpdatedAt: number;
                 if (frontmatterDate) {
@@ -133,14 +133,15 @@ const recentGuidesPlugin: Plugin = function recentGuidesPlugin(context, _options
 
                 return {
                     id: path.basename(filePath, path.extname(filePath)),
-                    title: data.title || path.basename(filePath, path.extname(filePath)),
+                    title: data.title,
                     permalink: data.slug || permalink,
                     tags: formattedTags,
                     lastUpdatedAt,
                     description: data.description,
                     image: data.image,
+                    img_alt: data.img_alt,
                     icon: data.icon,
-                    externalUrl,
+                    external_url: externalUrl,
                 };
             });
 
@@ -160,6 +161,4 @@ const recentGuidesPlugin: Plugin = function recentGuidesPlugin(context, _options
             setGlobalData(content);
         },
     };
-};
-
-export default recentGuidesPlugin;
+}

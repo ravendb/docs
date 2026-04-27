@@ -1,0 +1,274 @@
+---
+title: "Samples: Best practices"
+hide_table_of_contents: false
+sidebar_label: Best practices
+see_also:
+    - title: "Adding new samples"
+      link: "/templates/new-samples"
+      source: "docs"
+      path: "Templates > Samples"
+    - title: "Samples Introduction"
+      link: "/templates/introduction-samples"
+      source: "docs"
+      path: "Templates > Samples"
+---
+
+import Admonition from "@theme/Admonition";
+import Panel from "@site/src/components/Panel";
+
+Guidelines and recommendations for creating high-quality sample documentation.
+
+## Content Guidelines
+
+### Tag Selection
+
+**Challenges & Solutions Tags:**
+- Focus on primary business problems
+- Be specific: `semantic-search` not just `search`
+
+**Feature Tags:**
+- Select key RavenDB features
+- Prioritize features with code examples
+- Include both basic and advanced features
+
+**Tech Stack Tags:**
+- List all major technologies
+- Include language, framework, and cloud services
+- Order by importance: language first, then frameworks
+
+**Example:**
+
+```yaml
+challenges_solutions_tags: [semantic-search, integration-patterns]
+feature_tags: [vector-search, include, document-refresh, azure-storage-queues-etl]
+tech_stack_tags: [csharp, aspire, azure-storage-queues, azure-functions]
+```
+
+### Images
+
+**Cover Image:**
+- Recommended size: 1200x630px
+- Format: WebP for best compression
+- Show the app in action, not just a logo
+- Use high-quality screenshots
+- Ensure text is readable
+
+**Gallery Screenshots:**
+- At least 2 images showing key features
+- Consistent size and aspect ratio
+- Add descriptive alt text
+- Show different parts of the app
+- Highlight unique features
+
+**File organization:**
+
+```
+static/img/samples/{sample-name}/
+├── cover.webp           # Main cover image
+├── 01.webp              # Gallery image 1
+├── 02.webp              # Gallery image 2
+└── 03.webp              # Gallery image 3
+```
+
+## Structure Guidelines
+
+### Features Section
+
+Use `FeatureAccordion` components for each major feature:
+
+**Guidelines:**
+- 3-5 accordions per sample
+- Order by importance
+
+**Template:**
+
+```mdx
+## Features used
+
+<FeatureAccordion
+    title="[Feature Name]"
+    description="[One-line benefit]"
+    icon="[icon-name]"
+>
+    [Detailed explanation of how and why this feature is used]
+    
+    Implementation example:
+
+    // Code showing the feature in action
+    
+    [Additional context or benefits]
+</FeatureAccordion>
+```
+
+### Related Resources
+
+**Guidelines:**
+- Link to 2-3 related resources
+- Mix guides and documentation
+
+**Priority order:**
+1. Related guides (how-to articles)
+2. Feature documentation (RavenDB docs)
+3. Cloud documentation (if applicable)
+
+## Component Usage
+
+### Sidebar (frontmatter-driven)
+
+The metadata sidebar is fully driven by frontmatter — no JSX props needed.
+
+**Actions (repository_url / demo_url):**
+- Always provide `repository_url` if the code is public
+- Add `demo_url` only if a live demo is available and maintained
+- Don't link to private repositories or broken demo URLs
+
+**Related resources (related_resources):**
+- Link to 2–3 related resources
+- Mix guides and documentation
+- Verify links are correct and current; use descriptive `subtitle` values
+- Don't link to deprecated documentation, use vague subtitles like "Related Article", or duplicate links
+
+### FeatureAccordion
+
+**Do:**
+- Use descriptive icons matching the feature
+- Keep descriptions to one sentence
+
+**Don't:**
+- Leave children empty (omit the accordion instead)
+- Include broken code examples
+
+## Tag Management
+
+### Adding New Tags
+
+**Before adding a tag:**
+1. Check if a similar tag exists
+2. Verify it fits the category (challenges-solutions/feature/tech-stack)
+3. Ensure it will be used by multiple samples
+4. Use consistent naming conventions
+
+**Naming conventions:**
+- Use kebab-case: `azure-storage-queues` not `AzureStorageQueues`
+- Be specific: `azure-storage-queues-etl` not `etl`
+- Avoid abbreviations: `semantic-search` not `sem-search`
+- Use full names: `csharp` not `cs`
+
+### Tag Maintenance
+
+**Periodically review:**
+- Unused tags (count = 0)
+- Duplicate or similar tags
+- Outdated technology tags
+- Inconsistent naming
+
+## Common Mistakes
+
+### ❌ Missing Required Frontmatter
+
+```yaml
+---
+title: "My Sample"
+# Missing description, tags
+---
+```
+
+### ✅ Complete Frontmatter
+
+```yaml
+---
+title: "My Sample"
+description: "Complete description"
+challenges_solutions_tags: [semantic-search]
+feature_tags: [vector-search]
+tech_stack_tags: [csharp]
+license: "MIT License"
+license_url: "https://opensource.org/licenses/MIT"
+repository_url: "https://github.com/ravendb/my-sample-repo"
+languages: ["C#"]
+---
+```
+
+### ❌ Adding H1 Heading
+
+```mdx
+---
+title: "My Sample"
+---
+
+# My Sample  <!-- DON'T DO THIS -->
+
+## Overview
+```
+
+### ✅ Start with H2
+
+```mdx
+---
+title: "My Sample"
+---
+
+## Overview  <!-- Correct -->
+```
+
+### ❌ Undefined Tags
+
+```yaml
+challenges_solutions_tags: [nonexistent-tag]  # Tag doesn't exist in YAML
+```
+
+### ✅ Valid Tags
+
+```yaml
+challenges_solutions_tags: [semantic-search]  # Tag exists in samples/tags/challenges-solutions.yml
+```
+
+### ❌ Empty FeatureAccordion
+
+```tsx
+<FeatureAccordion title="Feature" description="Description">
+    {/* Empty - don't do this */}
+</FeatureAccordion>
+```
+
+### ✅ Complete FeatureAccordion
+
+```tsx
+<FeatureAccordion title="Feature" description="Description">
+    Detailed explanation with code examples...
+</FeatureAccordion>
+```
+
+## Testing Checklist
+
+Before publishing a sample:
+
+- [ ] All frontmatter fields are present and valid
+- [ ] `repository_url` and `languages` are set (feeds `SoftwareSourceCode` JSON-LD)
+- [ ] All tags exist in their respective YAML files
+- [ ] Cover image loads correctly
+- [ ] Gallery images load and have alt text
+- [ ] GitHub repository link works
+- [ ] Demo URL works (if provided)
+- [ ] All related resource links work
+- [ ] Code examples are syntactically correct
+- [ ] Sample appears in hub page grid
+- [ ] Filtering works with all tags
+- [ ] Metadata sidebar displays correctly
+- [ ] No console errors or warnings
+
+## Performance Tips
+
+**Images:**
+- Use WebP format for smaller file sizes
+- Optimize images before committing
+- Use appropriate dimensions (don't serve 4K images)
+
+**Code Examples:**
+- Keep examples concise
+- Use syntax highlighting
+
+**Content:**
+- Keep descriptions brief
+- Link to external resources instead of duplicating content
+

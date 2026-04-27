@@ -3,15 +3,41 @@ import { DocsLanguage } from "@site/src/components/LanguageStore";
 import { SeeAlsoItemType } from "@site/src/components/SeeAlso/types";
 import { IconName } from "@site/src/typescript/iconName";
 
+export interface GalleryImage {
+    src: string;
+    alt?: string;
+}
+
+export interface RelatedResourceFrontMatter {
+    type: "guide" | "documentation" | "video";
+    documentation_type?: "docs" | "cloud";
+    subtitle: string;
+    article_key?: string;
+    url?: string;
+}
+
 export interface CustomDocFrontMatter extends DocFrontMatter {
     supported_languages?: DocsLanguage[];
     see_also?: SeeAlsoItemType[];
     author?: string;
     icon?: IconName;
-    image?: string | { light: string; dark: string };
-    publishedAt?: string;
-    proficiencyLevel?: string;
+    image?: string;
+    img_alt?: string;
+    published_at?: string;
+    proficiency_level?: string;
     keywords?: string[];
+    gallery?: GalleryImage[];
+    challenges_solutions_tags?: string[];
+    feature_tags?: string[];
+    tech_stack_tags?: string[];
+    category?: string;
+    license?: string;
+    license_url?: string;
+    repository_url?: string;
+    demo_url?: string;
+    languages?: string[];
+    external_url?: string;
+    related_resources?: RelatedResourceFrontMatter[];
 }
 
 type CustomDocContextValue = Omit<DocContextValue, "frontMatter" | "metadata"> & {

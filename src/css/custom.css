@@ -10,28 +10,17 @@
     }
 }
 
-/* Custom animations for layout switcher */
-@keyframes slide-in-from-bottom {
-    from {
-        opacity: 0;
-        transform: translateY(16px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Prevent body scroll when drawer is open */
+body:has([data-drawer-open="true"]) {
+    overflow: hidden;
 }
 
-@keyframes slide-in-from-left {
-    from {
-        opacity: 0;
-        transform: translateX(-16px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+/* Hide TOC column for sample pages */
+.plugin-id-samples .col.col--3 {
+    display: none !important;
 }
+
+/* Custom animations for layout switcher */
 
 @keyframes fade-in {
     from {
@@ -48,14 +37,7 @@
 
 .fade-in {
     animation-name: fade-in;
-}
-
-.slide-in-from-bottom-4 {
-    animation-name: slide-in-from-bottom;
-}
-
-.slide-in-from-left-4 {
-    animation-name: slide-in-from-left;
+    animation-duration: 400ms;
 }
 
 /* Custom selection */
@@ -252,16 +234,6 @@ pre[class*="language-"] {
     display: none;
 }
 
-/* Custom styling for lightbox */
-.yarl__flex_center {
-    @apply !p-[64px];
-    flex-direction: column;
-}
-
-.yarl__slide_description_container {
-    @apply mt-4 text-white;
-}
-
 /* Custom border for alerts */
 .alert {
     @apply border;
@@ -381,7 +353,7 @@ a.breadcrumbs__link:hover {
 }
 
 /* Custom border-radius for document images */
-.theme-doc-markdown img {
+.plugin-id-default .theme-doc-markdown img {
     @apply rounded-md;
 }
 
@@ -570,10 +542,12 @@ hr {
     @apply !mt-8;
 }
 
-/* Home Page full width override */
-.guides-home-page [class*="docItemCol"],
-.cloud-home-page [class*="docItemCol"],
-.docs-home-page [class*="docItemCol"] {
+/* Full width override */
+.guidesHomePage [class*="docItemCol"],
+.cloudHomePage [class*="docItemCol"],
+.docsHomePage [class*="docItemCol"],
+.samplesHomePage [class*="docItemCol"],
+.plugin-id-samples [class*="docItemCol"] {
     max-width: 100% !important;
 }
 
@@ -625,6 +599,16 @@ a {
     background-size: 350% 100%;
     border-radius: var(--radius-xl);
     animation: skeleton-loading 2000ms infinite linear;
+}
+
+/* Hide scrollbar utility */
+.scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
 }
 
 [data-theme="dark"] .skeleton {
@@ -689,7 +673,8 @@ a {
 
 /* Disable navigation for Docs */
 .plugin-id-default .pagination-nav,
-.plugin-id-cloud .pagination-nav {
+.plugin-id-cloud .pagination-nav,
+.plugin-id-samples .pagination-nav {
     display: none;
 }
 
@@ -755,4 +740,9 @@ a {
     @apply text-black/60 dark:text-white/60;
     font-size: 0.75rem;
     line-height: 1.2;
+}
+
+/* Hide TOC for Samples */
+.plugin-id-samples [class*="tocCollapsibleButton"] {
+    display: none;
 }

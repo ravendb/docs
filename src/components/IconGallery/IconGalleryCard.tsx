@@ -15,7 +15,6 @@ export default function IconGalleryCard({ iconName }: IconGalleryCardProps) {
             setCopied(true);
             window.setTimeout(() => setCopied(false), 2000);
         } catch (err) {
-            // eslint-disable-next-line no-console
             console.error("Failed to copy icon name to clipboard:", err);
         }
     };

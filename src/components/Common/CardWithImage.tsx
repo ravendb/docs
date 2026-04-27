@@ -13,7 +13,7 @@ import Tag from "@site/src/theme/Tag";
 export interface CardWithImageProps {
     title: string;
     description: ReactNode;
-    imgSrc?: string | { light: string; dark: string };
+    imgSrc?: string;
     imgAlt?: string;
     imgWidth?: number;
     imgHeight?: number;
@@ -21,7 +21,6 @@ export interface CardWithImageProps {
     imgIcon?: IconName;
     tags?: Array<{ label: string; permalink: string }>;
     date?: string;
-    animationDelay?: number;
 }
 
 export default function CardWithImage({
@@ -35,7 +34,6 @@ export default function CardWithImage({
     imgIcon,
     tags = [],
     date,
-    animationDelay = 0,
 }: CardWithImageProps) {
     const hasImage = Boolean(imgSrc);
     const hasTags = tags.length > 0;
@@ -46,25 +44,20 @@ export default function CardWithImage({
     });
 
     return (
-        <article className="card-wrapper group">
-            <Link to={url} className={clsx("absolute inset-0 z-1", "!transition-all")} />
+        <article className="card-wrapper group relative">
             <div
                 className={clsx(
-                    "card flex h-full flex-col",
+                    "card flex h-full flex-col relative",
                     "p-4 overflow-hidden rounded-2xl",
                     "border border-black/10 dark:border-white/10",
                     "!bg-black/5 dark:!bg-white/5 text-inherit group-hover:no-underline",
                     "group-hover:border-black/20 dark:group-hover:border-white/20",
                     "group-hover:!bg-black/10 dark:group-hover:!bg-white/10",
                     "!transition-all",
-                    "animate-in fade-in slide-in-from-bottom-4"
+                    "animate-in fade-in"
                 )}
-                style={{
-                    animationDelay: `${animationDelay}ms`,
-                    animationDuration: "400ms",
-                    animationFillMode: "backwards",
-                }}
             >
+                <Link to={url} className={clsx("absolute inset-0 z-1", "!transition-all")} />
                 <div
                     className={clsx(
                         "flex items-center justify-center",
@@ -107,11 +100,16 @@ export default function CardWithImage({
                 <p className="!mb-0 text-sm pt-2">{description}</p>
                 <div className="flex-grow" />
                 {(hasTags || hasDate) && (
-                    <div className="flex flex-wrap flex-col 2xl:flex-row xl:flex-nowrap justify-between pt-2 gap-3 z-2">
+                    <div className="flex flex-wrap flex-col 2xl:flex-row xl:flex-nowrap justify-between pt-2 gap-3 z-2 relative">
                         {hasTags && (
                             <div className="flex gap-1 items-center flex-wrap">
                                 {visibleTags.map((tag) => (
-                                    <Tag key={tag.label} size="xs" permalink={tag.permalink}>
+                                    <Tag
+                                        key={tag.label}
+                                        size="xs"
+                                        permalink={tag.permalink}
+                                        className="pointer-events-auto"
+                                    >
                                         {tag.label}
                                     </Tag>
                                 ))}
@@ -124,6 +122,7 @@ export default function CardWithImage({
                                             expandTags();
                                         }}
                                         title="Show all tags"
+                                        className="pointer-events-auto"
                                     >
                                         +{hiddenCount} more
                                     </Tag>

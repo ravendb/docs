@@ -149,6 +149,11 @@ Documentation is versioned. The current version is 7.2. Use the `/7.2/` URL pref
 - [Data Migration](https://docs.ravendb.net/7.2/migration/server/data-migration): Migrate data between RavenDB versions
 - [Breaking Changes](https://docs.ravendb.net/7.2/migration/server/server-breaking-changes): Server-side breaking changes by version
 
+## Sample Applications
+
+- [Samples Home](https://docs.ravendb.net/samples/): Browse production-ready code samples, architecture patterns, and starter kits built with RavenDB
+- [The Library of Ravens](https://docs.ravendb.net/samples/the-ravens-library): Library management app demonstrating vector search, Azure Storage Queues ETL, Include for N+1 elimination, and Document Refresh — built with C#, Aspire, and Azure Functions
+
 ## Cloud
 
 - [RavenDB Cloud Documentation](https://docs.ravendb.net/cloud/): Cloud service portal documentation

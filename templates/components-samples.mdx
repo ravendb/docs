@@ -1,0 +1,228 @@
+---
+title: "Samples: Components"
+hide_table_of_contents: false
+sidebar_label: Components
+see_also:
+    - title: "Adding new samples"
+      link: "/templates/new-samples"
+      source: "docs"
+      path: "Templates > Samples"
+    - title: "Samples Introduction"
+      link: "/templates/introduction-samples"
+      source: "docs"
+      path: "Templates > Samples"
+---
+
+import Admonition from "@theme/Admonition";
+import Panel from "@site/src/components/Panel";
+
+This guide documents all React components used in the Samples system.
+
+## Import Statement
+
+All sample components are exported from a single entry point:
+
+```tsx
+import {
+    // Layout (includes sidebar and gallery automatically)
+    SampleLayout,
+
+    // Content
+    FeatureAccordion,
+
+    // Hub (not imported in sample pages)
+    SamplesHomePage,
+    SampleCard,
+    SamplesGrid,
+    SamplesFilter,
+} from '@site/src/components/Samples';
+```
+
+## Layout Components
+
+### SampleLayout
+
+Two-column responsive layout for sample detail pages. Renders the metadata sidebar and gallery automatically from frontmatter — no props needed beyond `children`.
+
+**Location:** `src/components/Samples/Overview/SampleLayout.tsx`
+
+**Props:**
+
+| Prop | Type | Required | Description |
+|---|---|---|---|
+| `children` | `ReactNode` | ✅ | Main content area |
+
+**Usage:**
+
+```tsx
+<SampleLayout>
+    {/* Main content */}
+</SampleLayout>
+```
+
+**Auto-rendered from frontmatter:**
+- Sidebar — `SampleMetadataColumn` (tags, actions, license, related resources)
+- Gallery — `gallery` field; omitted automatically when the field is absent
+
+**Behavior:**
+- Desktop (lg+): Two columns, sidebar on right (300px fixed width); gallery above content
+- Mobile: Stacked, sidebar and gallery appear above content
+
+---
+
+## Metadata Sidebar Components
+
+### SampleMetadataColumn
+
+Container for the metadata sidebar. Reads all data from frontmatter — no props required.
+
+**Location:** `src/components/Samples/Overview/Partials/SampleMetadataColumn.tsx`
+
+**Props:**
+
+| Prop | Type | Required | Description |
+|---|---|---|---|
+| `className` | `string` | ❌ | Additional CSS classes |
+
+**Usage:**
+
+```tsx
+<SampleMetadataColumn />
+```
+
+**Populated from frontmatter:**
+- `repository_url` — renders "Browse code" button
+- `demo_url` — renders "View demo" button
+- `challenges_solutions_tags` — Challenges & Solutions tag pills
+- `feature_tags` — Feature tag pills
+- `tech_stack_tags` — Tech stack tag pills
+- `category` — optional, displayed in sidebar
+- `license` / `license_url` — optional, displayed in sidebar
+- `related_resources` — renders linked resource items (see schema below)
+
+**`related_resources` item schema (frontmatter):**
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `type` | `"guide"` \| `"documentation"` | ✅ | Resource type |
+| `documentation_type` | `"docs"` \| `"cloud"` | ❌ | Documentation section |
+| `subtitle` | `string` | ✅ | Display text |
+| `article_key` | `string` | ✅ | Article path without version prefix |
+
+**Example frontmatter:**
+
+```yaml
+repository_url: "https://github.com/ravendb/my-sample-repo"
+demo_url: "https://demo.example.com"
+related_resources:
+  - type: guide
+    subtitle: "Bookkeeping with RavenDB & ETLs"
+    article_key: "bookkeeping-with-ravendb"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Vector Search Overview"
+    article_key: "ai-integration/vector-search/overview"
+  - type: documentation
+    documentation_type: cloud
+    subtitle: "Cloud Backup"
+    article_key: "portal-backup"
+```
+
+**Auto-versioning for docs links:**
+- `documentation_type: docs` → current version is automatically prepended
+- Example: `ai-integration/vector-search/overview` → `/7.2/ai-integration/vector-search/overview`
+
+---
+
+## Content Components
+
+### FeatureAccordion
+
+Expandable accordion for describing RavenDB features used in the sample.
+
+**Location:** `src/components/Samples/Overview/Partials/FeatureAccordion.tsx`
+
+**Props:**
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `className` | `string` | ❌ | - | Additional CSS classes |
+| `title` | `string` | ✅ | - | Feature name |
+| `description` | `string` | ✅ | - | Short description (visible when collapsed) |
+| `icon` | `IconName` | ❌ | `"link"` | Icon name from icon gallery |
+| `children` | `ReactNode` | ❌ | - | Detailed content (visible when expanded) |
+| `defaultExpanded` | `boolean` | ❌ | `false` | Initial expanded state |
+
+**Usage:**
+
+```tsx
+<FeatureAccordion
+    title="Vector Search"
+    description="Semantic search using embeddings"
+    icon="vector-search"
+>
+    Detailed explanation of how vector search is used...
+
+    // Code example
+</FeatureAccordion>
+```
+
+**Behavior:**
+- Click header to expand/collapse
+- Smooth animation with Framer Motion
+- Chevron icon rotates on expand/collapse
+
+---
+
+## Hub Components
+
+These components power the `/samples` hub page. They are typically not used in individual sample pages.
+
+### SamplesHomePage
+
+Main hub page component with filters and grid.
+
+**Location:** `src/components/Samples/Hub/SamplesHomePage.tsx`
+
+**Usage:**
+
+```mdx
+---
+title: Samples
+slug: /
+---
+
+import { SamplesHomePage } from "@site/src/components/Samples";
+
+<SamplesHomePage />
+```
+**Features:**
+- URL-based filter state (`?tags=vector-search,include&match=all`)
+- Responsive filter sidebar
+- Sample grid with cards
+- Match logic toggle (Any/All)
+
+---
+
+### SampleCard
+
+Individual sample card in the grid.
+
+**Location:** `src/components/Samples/Hub/Partials/SampleCard.tsx`
+
+**Auto-rendered by `SamplesGrid`** - not typically used directly.
+
+---
+
+### SamplesFilter
+
+Filter sidebar with tag categories.
+
+**Location:** `src/components/Samples/Hub/Partials/SamplesFilter.tsx`
+
+**Auto-rendered by `SamplesHomePage`** - not typically used directly.
+
+<Admonition type="info" title="Component Exports">
+    All components are re-exported from `src/components/Samples/index.ts` for convenient importing.
+</Admonition>
+
