@@ -2,14 +2,16 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
 * When making a query, the server will return the results **sorted** only if explicitly requested by the query.  
   If no sorting method is specified when issuing the query then results will not be sorted.
   
-    * Note: An exception to the above rule is when [Boosting](../../../../indexes/boosting.mdx) is involved in the query.  
-      Learn more in [Automatic score-based ordering](../../../../indexes/boosting.mdx#automatic-score-based-ordering).  
+    * Note: An exception to the above rule is when [Boosting](../../../indexes/boosting.mdx) is involved in the query.  
+      Learn more in [Automatic score-based ordering](../../../indexes/boosting.mdx#automatic-score-based-ordering).  
 
 * Sorting is applied by the server after the query filtering stage.  
   Applying filtering is recommended as it reduces the number of results RavenDB needs to sort  
@@ -18,24 +20,24 @@ import CodeBlock from '@theme/CodeBlock';
 * Multiple sorting actions can be chained.
 
 * This article provides examples of sorting query results when making a **dynamic-query**.  
-  For sorting results when querying a **static-index** see [sort index query results](../../../../indexes/querying/sorting.mdx).
+  For sorting results when querying a **static-index** see [sort index query results](../../../indexes/querying/sorting.mdx).
 
-* In this page:
-    * [Order by field value](../../../../client-api/session/querying/sort-query-results.mdx#order-by-field-value)  
-    * [Order by score](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)  
-        * [Get resulting score](../../../../client-api/session/querying/sort-query-results.mdx#get-resulting-score)     
-    * [Order by random](../../../../client-api/session/querying/sort-query-results.mdx#order-by-random)        
-    * [Order by spatial](../../../../client-api/session/querying/sort-query-results.mdx#order-by-spatial)          
-    * [Order by count (aggregation query)](../../../../client-api/session/querying/sort-query-results.mdx#order-by-count-aggregation-query)  
-    * [Order by sum (aggregation query)](../../../../client-api/session/querying/sort-query-results.mdx#order-by-sum-aggregation-query)   
-    * [Force ordering type](../../../../client-api/session/querying/sort-query-results.mdx#force-ordering-type)     
-    * [Chain ordering](../../../../client-api/session/querying/sort-query-results.mdx#chain-ordering)     
-    * [Custom sorters](../../../../client-api/session/querying/sort-query-results.mdx#custom-sorters)     
-    * [Syntax](../../../../client-api/session/querying/sort-query-results.mdx#syntax)
+* In this article:
+    * [Order by field value](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-field-value)  
+    * [Order by score](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-score)  
+        * [Get resulting score](../../../querying/sorting-query-results/sort-query-results.mdx#get-resulting-score)     
+    * [Order by random](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-random)        
+    * [Order by spatial](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-spatial)          
+    * [Order by count (aggregation query)](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-count-aggregation-query)  
+    * [Order by sum (aggregation query)](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-sum-aggregation-query)   
+    * [Force ordering type](../../../querying/sorting-query-results/sort-query-results.mdx#force-ordering-type)     
+    * [Chain ordering](../../../querying/sorting-query-results/sort-query-results.mdx#chain-ordering)     
+    * [Custom sorters](../../../querying/sorting-query-results/sort-query-results.mdx#custom-sorters)     
+    * [Syntax](../../../querying/sorting-query-results/sort-query-results.mdx#syntax)
 
 </Admonition>
 
-## Order by field value
+<Panel heading="Order by field value">
 
 * Use `orderBy` or `orderByDescending` (see below) to order the results by the specified document field.
 
@@ -94,13 +96,13 @@ order by UnitsInStock as long
 * E.g. in the above example, ordering by `UnitsInStock` will result in `OrderingType::long`  
   because this property's data type is integer.
 
-* Different ordering can be forced - see [Force ordering type](../../../../client-api/session/querying/sort-query-results.mdx#force-ordering-type) below.
+* Different ordering can be forced - see [Force ordering type](../../../querying/sorting-query-results/sort-query-results.mdx#force-ordering-type) below.
 
 </Admonition>
 
+</Panel>
 
-
-## Order by score
+<Panel heading="Order by score">
 
 * When querying with some filtering conditions, a basic score is calculated for each item in the results  
   by the underlying indexing engine. (Read more about Lucene scoring [here](https://lucene.apache.org/core/3_3_0/scoring.html)).
@@ -159,12 +161,13 @@ order by score()
 <Admonition type="info" title="">
 
 #### Get resulting score:
+    
 The score details can be retrieved by either:  
  
   * **Request to include explanations**:  
     You can get the score details and see how it was calculated by requesting to include explanations in the query. 
     Currently, this is only available when using Lucene as the underlying indexing engine.  
-    Learn more in [Include query explanations](../../../../client-api/session/querying/debugging/include-explanations.mdx).
+    Learn more in [Include query explanations](../../../client-api/session/querying/debugging/include-explanations.mdx).
    
   * **Get score from metadata**:  
     The score is available in the `INDEX_SCORE` metadata property within each result.  
@@ -196,9 +199,9 @@ $score = $metadata[DocumentsMetadata::INDEX_SCORE];
 
 </Admonition>
 
+</Panel>
 
-
-## Order by random
+<Panel heading="Order by random">
 
 * Use `randomOrdering` to randomize the order of the query results.
 
@@ -247,20 +250,20 @@ order by random()
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Order by spatial
+<Panel heading="Order by spatial">
 
 * If your data contains geographical locations,  
   spatial query results can be sorted based on their distance from a specific point.
 
-* See detailed explanation in [Spatial Sorting](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting).
+* See detailed explanation in [Spatial Sorting](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting).
 
+</Panel>
 
+<Panel heading="Order by count (aggregation query)">
 
-## Order by count (aggregation query)
-
-* The results of a [group-by query](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx) can be sorted by the `Count` aggregation operation used in the query.
+* The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query.mdx) can be sorted by the `Count` aggregation operation used in the query.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -312,11 +315,11 @@ select key() as "Category", count()
 </TabItem>
 </Tabs>
 
+</Panel>
 
+<Panel heading="Order by sum (aggregation query)">
 
-## Order by sum (aggregation query)
-
-* The results of a [group-by query](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx) can be sorted by the `Sum` aggregation operation used in the query.
+* The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query.mdx) can be sorted by the `Sum` aggregation operation used in the query.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -367,9 +370,9 @@ select key() as 'Category', sum(UnitsInStock) as Sum
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Force ordering type
+<Panel heading="Force ordering type">
 
 * By default, the `orderBy` methods will determine the `OrderingType` from the property path expression  
   and specify that ordering type in the generated RQL that is sent to the server.
@@ -432,9 +435,9 @@ order by QuantityPerUnit as alphanumeric
 
 </Admonition>
 
+</Panel>
 
-
-## Chain ordering
+<Panel heading="Chain ordering">
 
 * It is possible to chain multiple orderings in the query.  
   Any combination of secondary sorting is possible as the fields are indexed independently of one another.
@@ -444,7 +447,7 @@ order by QuantityPerUnit as alphanumeric
   
   **When using the Corax search engine** -  
   a maximum of `16` _order by_ clauses is allowed per query. If this limit is exceeded, an exception will be thrown.  
-  To resolve this, simplify your query or switch to the Lucene engine. See [Selecting the search engine](../../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).  
+  To resolve this, simplify your query or switch to the Lucene engine. See [Selecting the search engine](../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).  
   
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -497,16 +500,16 @@ order by UnitsInStock as long desc, score(), Name
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Custom sorters 
+<Panel heading="Custom sorters">
 
 * The Lucene indexing engine allows you to create your own custom sorters.  
   Custom sorters can be deployed to the server by either:  
 
-     * Sending the [Put Sorters Operation](../../../../client-api/operations/maintenance/sorters/put-sorter.mdx) from your code.
+     * Sending the [Put Sorters Operation](../../../client-api/operations/maintenance/sorters/put-sorter.mdx) from your code.
   
-     * Uploading a custom sorter from Studio, see [Custom Sorters View](../../../../studio/database/settings/custom-sorters.mdx).
+     * Uploading a custom sorter from Studio, see [Custom Sorters View](../../../studio/database/settings/custom-sorters.mdx).
 
 * Once the custom sorter is deployed, you can sort the query results with it.
 
@@ -551,9 +554,9 @@ order by custom(UnitsInStock, "MySorter")
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Syntax
+<Panel heading="Syntax">
 
 <TabItem value="syntax" label="syntax">
 <CodeBlock language="php">
@@ -585,6 +588,4 @@ function orderByDescending(string $field, $sorterNameOrOrdering = null): Documen
 | **$field** | `string` | The field to sort by |
 | **$sorterNameOrOrdering** | `string` | The ordering type to sort the results by:<br/>`OrderingType::long`<br/>`OrderingType::double`<br/>`OrderingType::alphaNumeric`<br/>`OrderingType::string` (default) |
 
-
-
-
+</Panel>
