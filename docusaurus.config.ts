@@ -1,6 +1,11 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { CURRENT_VERSION, LEGACY_VERSIONS } = require("./scripts/lib/version-policy.js") as {
+    CURRENT_VERSION: string;
+    LEGACY_VERSIONS: string[];
+};
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -28,7 +33,7 @@ const config: Config = {
     },
 
     customFields: {
-        latestVersion: "7.2",
+        latestVersion: CURRENT_VERSION,
     },
 
     url: "https://docs.ravendb.net/",
@@ -54,8 +59,8 @@ const config: Config = {
                     lastVersion: "current",
                     versions: {
                         current: {
-                            label: "7.2",
-                            path: "7.2",
+                            label: CURRENT_VERSION,
+                            path: CURRENT_VERSION,
                         },
                     },
                     onlyIncludeVersions: getOnlyIncludeVersions(),
@@ -69,21 +74,7 @@ const config: Config = {
                     lastmod: "date",
                     changefreq: null,
                     priority: null,
-                    ignorePatterns: [
-                        "/1.0/**",
-                        "/2.0/**",
-                        "/2.5/**",
-                        "/3.0/**",
-                        "/3.5/**",
-                        "/4.0/**",
-                        "/4.1/**",
-                        "/4.2/**",
-                        "/5.0/**",
-                        "/5.1/**",
-                        "/5.2/**",
-                        "/5.3/**",
-                        "/5.4/**",
-                    ],
+                    ignorePatterns: LEGACY_VERSIONS.map((v) => `/${v}/**`),
                 },
                 googleTagManager: {
                     containerId: "GTM-TDH4JWF2",
@@ -134,6 +125,8 @@ const config: Config = {
             },
         ],
         require.resolve("./src/plugins/recent-guides-plugin"),
+        require.resolve("./src/plugins/canonical-redirects-plugin"),
+        require.resolve("./src/plugins/templates-noindex-plugin"),
     ],
     headTags: [
         {
@@ -218,7 +211,7 @@ const config: Config = {
                 description:
                     "A fully transactional NoSQL document database with ACID transactions, distributed clusters, and multi-model data support.",
                 url: "https://ravendb.net/",
-                softwareVersion: "7.2",
+                softwareVersion: CURRENT_VERSION,
                 author: {
                     "@type": "Organization",
                     name: "RavenDB",
