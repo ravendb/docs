@@ -1,5 +1,5 @@
 ---
-title: "One Chat, Many Agents: RavenDB Multi Agents"
+title: "One Chat, Many Agents: RavenDB Multi-Agents"
 tags: [ai, demo, use-case, csharp]
 icon: "ai-agents"
 description: "Learn how to connect multiple RavenDB AI Agents into a multi-agent system, where specialized sub-agents handle focused tasks while a coordinator routes work between them."
@@ -63,19 +63,19 @@ Let’s step into Mike Thompson’s role by selecting him at the top of the chat
 
 We upload the TechConf 2026 receipt and ask to submit the expense. Once the message is sent, the HR Agent understands the request and decides which specialist should handle it next. It hands the task to the Expense Manager Agent, which focuses solely on expenses and is equipped with the tools needed to create and update records in RavenDB. All of this coordination happens quietly in the background, with no extra steps or complexity exposed to the user. From the employee’s perspective, it feels like a single smooth conversation, while specialized agents handle the work behind the scenes.
 
-<Image img={require("./assets/Multi-Agents1.webp")} alt="HR Assistant chatbot showing Mike Thompson's conversation: the user uploaded a TechConf 2026 receipt for $199 and asked to report it. The agent replied with a full expense summary including vendor, receipt ID, date, line items, payment method, and pending-review status." />
+<Image img={require("./assets/Multi-Agents1.webp")} alt="HR Assistant chatbot with Mike Thompson's expense submission for a TechConf 2026 receipt, showing the agent's structured expense summary." />
 
 Let’s go to the database and look at how that was handled. As you can see in the conversation, we have two chats saved instead of one. 
 
-<Image img={require("./assets/Multi-Agents1A.webp")} alt="RavenDB Studio showing the HRAssistant collection with two saved conversation documents for Mike Thompson: one belonging to the hr-assistant agent and one to the expense-manager agent, each with its own CreatedAt and LastMessageAt timestamps." />
+<Image img={require("./assets/Multi-Agents1A.webp")} alt="RavenDB Studio HRAssistant collection showing two separate conversation documents: one for hr-assistant and one for expense-manager." />
 
 One of those is from the HR Manager, and the other one is from someone called Expense Manager. Agents communicated automatically as the HR manager decided it should contact Expense Manager. 
 
-<Image img={require("./assets/Multi-Agents2A.webp")} alt="RavenDB Studio showing the HR Manager's conversation log with two sub-agent call sequences: the first calls expense-manager to extract receipt data and returns a structured answer with follow-up options; the second confirms the user's intent and returns a success response indicating the expense record was created." />
+<Image img={require("./assets/Multi-Agents2A.webp")} alt="RavenDB Studio showing the HR Manager's conversation log with two sub-agent call sequences delegating work to the expense-manager." />
 
 We can go into the business trip bills collection and check if it is saved.
 
-<Image img={require("./assets/Multi-Agents2.webp")} alt="RavenDB Studio showing the BusinessTripBills/1-A document created by the expense-manager agent, containing the extracted fields: EmployeeId, Vendor (TechConf 2026), Category (Conference), Amount (199 USD), ExpenseDate, Description, ReportedAt, and collection metadata." />
+<Image img={require("./assets/Multi-Agents2.webp")} alt="RavenDB Studio showing the BusinessTripBills/1-A document created by the expense-manager agent with extracted expense fields." />
 
 As you can see, our document has been created, and the data has been extracted. But how did the agent decide it needed to use Expense Manager's tools? Let’s look into the agents themselves.
 
@@ -83,22 +83,68 @@ As you can see, our document has been created, and the data has been extracted. 
 
 We enter the AI Hub and select the AI Agents section. There we can see our two agents. 
 
-<Image img={require("./assets/Multi-Agents3.webp")} alt="RavenDB AI Hub showing the AI Agents section with two agent cards: Business Trip Expense Manager (identifier: expense-manager) and HR Assistant (identifier: hr-assistant), each displaying a short system prompt preview and a Start new chat button." />
+<Image img={require("./assets/Multi-Agents3.webp")} alt="RavenDB AI Hub showing two agent cards: Business Trip Expense Manager and HR Assistant with their identifiers." />
 
 As we mentioned before, they are normal agents that are just connected. Let’s enter one of them and look into how it works. In the HR manager, the part we want to look at is located in the Sub-Agents section, which requires scrolling down. 
 
-<Image img={require("./assets/Multi-Agents4.webp")} alt="RavenDB Studio showing the Define sub-agents panel with a single configured sub-agent: Agent identifier set to expense-manager and a description reading 'Manages business trip expenses: analyzing receipts/bills, reporting expenses, and retrieving monthly expense summaries.'" />
+<Image img={require("./assets/Multi-Agents4.webp")} alt="RavenDB Studio Define sub-agents panel with expense-manager configured as a sub-agent with its identifier and description." />
 
 You can see that we have selected the sub-agent's Agent Identifier and description. An identifier is chosen from a list of existing agents, and we must provide a sub-agent description. The description is what the main Agent uses to determine whether to use its sub-agent. With that added, both agents are connected, and the main Agent can call its sub-agent.
 
-<Image img={require("./assets/Multi-Agents5.webp")} alt="RavenDB Studio showing the HR Manager's raw conversation document, with a tool_calls entry invoking the expense-manager function and a sub-agent-action-call entry recording the delegated call to expense-manager/ReportBusinessTripExpense along with its sub-conversation ID." />
+<Image img={require("./assets/Multi-Agents5.webp")} alt="RavenDB Studio showing the HR Manager's conversation document with a sub-agent-action-call delegating to expense-manager/ReportBusinessTripExpense." />
 
 We can notice a sub-agent call from our expense manager, so we configured the sub-agent correctly. Nothing more to do, just add another part of the system.  
 Seeing it work, you can start to think that in real environments, we rarely configure a single instance by hand. Teams often need the same agent setup across multiple environments, servers, or customer deployments. We can look into how we set this up in code in this demo.
 
-<Image img={require("./assets/Multi-Agents6.webp")} alt="C# code showing AiAgentConfiguration for the HR Assistant, with two highlighted sections: the top box covers Name, Identifier, ConnectionStringName, and SystemPrompt; the bottom box covers the SubAgents array containing an AiAgentToolSubAgent with Identifier and Description fields." />
+``` csharp showLineNumbers>
+public static Task Create(IDocumentStore store)
+{
+    return store.AI.CreateAgentAsync(
+        new AiAgentConfiguration
+        {
+// highlight-start
+            Name = "HR Assistant",
+            Identifier = AgentIdentifier,
+            ConnectionStringName = ConnectionStringName,
+// highlight-end
+            SystemPrompt = @"You are an HR assistant.
+Provide info on benefits, policies, and departments.
+Be professional and cheery.
 
-The two most important elements for us are the Indetifier and the sub-agents section. As we mentioned before, identifiers are important. It is a basic way RavenDB uses to identify which agent is which.
+You can answer in markdown format, make sure to use ticks (\`) whenever you discuss identifiers.
+Do not suggest actions that are not explicitly allowed by the tools available to you.
+Do NOT discuss non-HR topics. Answer only for the current employee.
+",
+
+            Parameters = [new AiAgentParameter(EmployeeIdParameter, "Employee ID; answer only for this employee")],
+            SampleObject = JsonConvert.SerializeObject(new Reply
+            {
+                Answer = "Detailed answer to query",
+                Followups = ["Likely follow-ups"],
+            }),
+// highlight-start
+            SubAgents =
+            [
+                new AiAgentToolSubAgent
+                {
+                    Identifier = ExpenseAgentIdentifier,
+                    Description = "Manages business trip expenses: analyzing receipts/bills, reporting expenses, and retrieving monthly expense summaries."
+                }
+            ],
+// highlight-end
+            Queries =
+            [
+                new AiAgentToolQuery
+                {
+                    Name = "GetEmployeeInfo",
+                    Description = "Retrieve employee details",
+                    Query = $"from Employees where id() = \${EmployeeIdParameter}",
+                    ParametersSampleObject = "{}"
+                },
+`}
+```
+
+The two most important elements for us are the Identifier and the sub-agents section. As we mentioned before, identifiers are important as they are basic way RavenDB uses to identify which agent is which.
 
 Those identifiers are used later when we want to add a sub-agent to the main agent. We add the `SubAgents` and add an identifier and description. Those are enough to assign an agent as a sub-agent. If you want to find this fragment yourself in the demo, please check: [`SamplesHR.Backend/Infrastructure/RavenDB/HumanResourcesAgentCreator.cs`](https://github.com/ravendb/samples-hr/blob/main/SamplesHR.Backend/Infrastructure/RavenDB/HumanResourcesAgentCreator.cs#L96-L120)
 
