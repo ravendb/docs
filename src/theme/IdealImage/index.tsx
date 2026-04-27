@@ -76,7 +76,7 @@ function RegularImg(props: Omit<Props, "img"> & { img: string | { default: strin
 
     return (
         <div className="ideal-image-lightbox-host" data-lightbox-src={src} data-lightbox-description={alt}>
-            <img src={src} alt={alt} {...propsRest} />
+            <img src={src} alt={alt} className="mb-5" {...propsRest} />
         </div>
     );
 }
