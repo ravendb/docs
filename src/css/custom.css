@@ -556,13 +556,35 @@ hr {
 }
 
 /* Custom scroll margin and word break for headers */
+/* Docusaurus sets `.anchor { display: flex }` which blockifies inline children
+   (like <code>), making text wrap around them in columns. Restore block display
+   so inline elements flow naturally. */
 .theme-doc-markdown :is(h1, h2, h3, h4, h5, h6) {
-    @apply scroll-mt-[10rem] break-all;
+    @apply scroll-mt-[10rem];
+    display: block;
+    overflow-wrap: break-word;
+}
+
+/* Inline code inside headings: allow mid-identifier breaks when the
+   identifier alone wouldn't fit on a line. */
+.theme-doc-markdown :is(h1, h2, h3, h4, h5, h6) :is(code, kbd, samp) {
+    overflow-wrap: anywhere;
+    word-break: break-all;
+}
+
+/* The Docusaurus hash-link (#) is `display: flex` so it lays out as a flex
+   item inside the default `.anchor { display: flex }` heading. Once we flip
+   the heading to `display: block`, a block-level flex container would claim
+   a full-width new line (24 px, opacity: 0) under every heading. Restore
+   inline-flex so it sits next to the heading text as before. */
+.theme-doc-markdown :is(h1, h2, h3, h4, h5, h6) > a.hash-link {
+    display: inline-flex;
 }
 
 /* Override custom word break for headers inside <header> tag */
 .theme-doc-markdown header :is(h1, h2, h3, h4, h5, h6) {
     @apply break-normal;
+    overflow-wrap: normal;
 }
 
 /* Smaller margin-top for pagination-nav */
