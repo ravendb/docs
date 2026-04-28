@@ -128,7 +128,7 @@ The operator oversees that entire lifecycle.
 
 And before we dive into the details, here’s the architecture we’ll gradually build throughout the series. We won’t start with everything at once \- we’ll assemble it piece by piece, explain each component as it enters the picture, and by the end, you’ll understand exactly how the full system fits together:
 
-<Image img={require("./assets/fromzero1.png")} alt="Architecture diagram showing the complete RavenDB Kubernetes deployment built throughout the guide series" />
+<Image img={require("./assets/fromzero1.webp")} alt="Architecture diagram showing the complete RavenDB Kubernetes deployment built throughout the guide series" />
 ## Part 1: Setup & Operator Installation
 
 This series begins by establishing the full baseline **before** we even think about CRDs. We’re building the foundation the rest of the series depends on.
@@ -314,7 +314,7 @@ If all three workers nodes show different zones \- AZ distribution is correct.
 
 This is how our architecture looks like after successful setup:
 
-<Image img={require("./assets/fromzero2.png")} alt="Architecture diagram showing Kubernetes lab setup with worker nodes distributed across availability zones" />
+<Image img={require("./assets/fromzero2.webp")} alt="Architecture diagram showing Kubernetes lab setup with worker nodes distributed across availability zones" />
 Now, let’s deploy dependencies and RavenDB Operator itself.
 
 ### Cert-manager 
@@ -456,7 +456,7 @@ Whatever installation path you choose, the end result is identical:
 Nothing cluster-specific happens yet \-  no Secrets, no RavenDB nodes.  
 This is just the operator itself, waiting for a `RavenDBCluster` definition.
 
-<Image img={require("./assets/fromzero3.png")} alt="Architecture diagram showing the RavenDB Operator installed with namespace, controller, webhooks, and CRD registered" />
+<Image img={require("./assets/fromzero3.webp")} alt="Architecture diagram showing the RavenDB Operator installed with namespace, controller, webhooks, and CRD registered" />
 With the operator installed and the baseline environment ready, you can now continue to **Part 2**, where we introduce the `RavenDBCluster` CRD \- the contract that defines what the Operator builds, validates, and enforces, and the foundation we’ll extend step by step throughout the rest of the series.
 
 ## Part 2: RavenDBCluster CRD
@@ -1032,7 +1032,7 @@ kube-system               aws-load-balancer-controller-76874bd966-qp8wc         
 Allocate 3 EIPs up front. These will become the static public IPs for nodes `a`, `b`, and `c`.  
 You can do that by navigating to: [**Elastic IPs**](https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#Addresses:) **EC2** console 
 
-<Image img={require("./assets/fromzero4.png")} alt="AWS EC2 console showing three allocated Elastic IP addresses for RavenDB nodes A, B, and C" />
+<Image img={require("./assets/fromzero4.webp")} alt="AWS EC2 console showing three allocated Elastic IP addresses for RavenDB nodes A, B, and C" />
 
 These will be pre-assigned to NLBs for node-level external access:
 
@@ -1120,7 +1120,7 @@ The Operator is designed to work *with* this model, not around it.
 Allocate 3 EIPs up front. These will become the static public IPs for nodes `a`, `b`, and `c`.  
 You can do that by navigating to: Network foundation | Public IP addresses view
 
-<Image img={require("./assets/fromzero5.png")} alt="Azure portal showing three public IP addresses allocated for RavenDB nodes A, B, and C" />
+<Image img={require("./assets/fromzero5.webp")} alt="Azure portal showing three public IP addresses allocated for RavenDB nodes A, B, and C" />
 
 These will be pre-assigned to NLBs for node-level external access:
 
@@ -1141,7 +1141,7 @@ In this setup:
 
 There is no need to manually assign subnets or availability zones. Azure handles traffic distribution and zone resiliency automatically
 
-<Image img={require("./assets/fromzero6.png")} alt="Azure Load Balancer architecture diagram showing zone-redundant public IPs routing to Kubernetes services" />
+<Image img={require("./assets/fromzero6.webp")} alt="Azure Load Balancer architecture diagram showing zone-redundant public IPs routing to Kubernetes services" />
 The external access contract is intentionally simple. You only map RavenDB node tags to public IPs:
 
 ```yaml showLineNumbers
@@ -1162,7 +1162,7 @@ spec:
 </TabItem>
 </Tabs>
 
-<Image img={require("./assets/fromzero7.png")} alt="Architecture diagram showing completed external access configuration with load balancers and stable entry points" />
+<Image img={require("./assets/fromzero7.webp")} alt="Architecture diagram showing completed external access configuration with load balancers and stable entry points" />
 With external access now clearly defined, the networking layer is no longer a black box.
 
 Ingress controllers, cloud load balancers, and MetalLB all serve the same purpose here: they give the Operator a concrete, stable entry point it can reason about.  At this stage, nothing is secured yet  and that’s intentional.   
@@ -1527,7 +1527,7 @@ The `mode`, `domain`, and `email` fields tell the Operator how TLS is managed (i
 At this stage, these fields are **declarative only**. They describe what certificates the cluster expects and how they are mapped to nodes, but no Secrets are required yet.   
 In later chapters, just before we apply the final CR, we’ll create the actual Secrets from the setup package. Once those Secrets exist, the Operator will pick them up automatically and wire TLS into the cluster during provisioning.
 
-<Image img={require("./assets/fromzero8.png")} alt="Architecture diagram showing TLS configuration with Let's Encrypt certificates mapped to RavenDB nodes" />
+<Image img={require("./assets/fromzero8.webp")} alt="Architecture diagram showing TLS configuration with Let's Encrypt certificates mapped to RavenDB nodes" />
 ### Self-signed certificates
 
 Self-signed TLS is supported, but it comes with more responsibility.
@@ -1612,7 +1612,7 @@ $ kubectl -n kube-system rollout restart deployment coredns
 
 This ensures that both RavenDB nodes and in-cluster clients can resolve the node URLs consistently.
 
-<Image img={require("./assets/fromzero9.png")} alt="Architecture diagram showing DNS resolution configured for RavenDB nodes within the Kubernetes cluster" />
+<Image img={require("./assets/fromzero9.webp")} alt="Architecture diagram showing DNS resolution configured for RavenDB nodes within the Kubernetes cluster" />
 ### Certificate Renewal and Rotation
 
 TLS does not end once the cluster is up. Certificates expire, security requirements change, and rotations must happen without downtime. RavenDB is designed for this from day one, and the Operator builds on those guarantees rather than reinventing them.
@@ -1911,7 +1911,7 @@ This is typically used for restore or migration workflows. The PVC might contain
 
 With storage fully defined, the cluster now has a place to persist its identity and state. Data, logs, and auxiliary files are no longer tied to ephemeral Pods, but to durable volumes managed explicitly by Kubernetes and enforced by the Operator.
 
-<Image img={require("./assets/fromzero10.png")} alt="Architecture diagram showing storage layer fully defined with persistent volumes for data, logs, and auxiliary files" />
+<Image img={require("./assets/fromzero10.webp")} alt="Architecture diagram showing storage layer fully defined with persistent volumes for data, logs, and auxiliary files" />
 In **Part 6**, we finally bring everything together. We’ll create the remaining Secrets, apply the completed `RavenDBCluster` resource, and watch the Operator reconcile intent into reality \-  provisioning nodes, attaching storage, wiring networking, and forming a live RavenDB cluster. 
 
 ## Part 6: Bringing the Cluster to Life
@@ -2001,7 +2001,7 @@ ravendb-license       Opaque   1      26s
 
 At this point we’re ready to apply the *real*  `RavenDBCluster` manifest, because we’ve already put the identity material in place.
 
-<Image img={require("./assets/fromzero11.png")} alt="Architecture diagram showing all Kubernetes secrets created and ready for the RavenDBCluster manifest deployment" />
+<Image img={require("./assets/fromzero11.webp")} alt="Architecture diagram showing all Kubernetes secrets created and ready for the RavenDBCluster manifest deployment" />
 ### The full RavenDBCluster YAML
 
 This is the moment where all the snippets collapse into a single manifest. You’ve seen every part of this YAML before \- just not all at once:
@@ -2104,7 +2104,7 @@ From this point on, the reconciliation loop kicks in: StatefulSets, Services, In
 
 There’s no setup wizard to click through and no manual cluster formation step. The moment the manifest is accepted, Kubernetes and the operator take over and the cluster starts assembling itself.
 
-<Image img={require("./assets/fromzero12.png")} alt="Architecture diagram showing the operator reconciliation loop creating StatefulSets, Services, and other resources" />
+<Image img={require("./assets/fromzero12.webp")} alt="Architecture diagram showing the operator reconciliation loop creating StatefulSets, Services, and other resources" />
 You can watch the full layout by listing all resources under the ravendb namespace:
 
 ```bash showLineNumbers
@@ -2170,7 +2170,7 @@ $ kubectl logs job/ravendb-cluster-init -n ravendb
 
 The logs are intentionally explicit. You’ll see DNS resolution, connectivity checks, and node additions logged step by step. When this job completes successfully, the cluster is fully formed \- no manual setup, no UI-driven registration, no follow-up actions required.
 
-<Image img={require("./assets/fromzero13.png")} alt="Architecture diagram showing completed cluster initialization with all nodes registered and cluster fully formed" />
+<Image img={require("./assets/fromzero13.webp")} alt="Architecture diagram showing completed cluster initialization with all nodes registered and cluster fully formed" />
 ### Accessing RavenDB Studio from your browser
 
 At this point, the cluster is up, the bootstrap job has completed, and RavenDB is fully operational. Let’s access the RavenDB Studio.
@@ -2213,10 +2213,10 @@ Now open your browser and navigate to your URL.
 The browser will prompt you to select a client certificate. Choose the imported RavenDB client certificate.  
 If everything is wired correctly, RavenDB Studio loads immediately \- secured, clustered, and fully initialized.
 
-<Image img={require("./assets/fromzero14.png")} alt="RavenDB Studio loaded in the browser showing the secured and clustered database management interface" />
+<Image img={require("./assets/fromzero14.webp")} alt="RavenDB Studio loaded in the browser showing the secured and clustered database management interface" />
 With the cluster now running, certificates in place, and the bootstrap process completed, RavenDB has fully transitioned from a declarative specification into a living system.
 
-<Image img={require("./assets/fromzero15.png")} alt="Architecture diagram showing the fully operational RavenDB cluster with certificates and bootstrap completed" />
+<Image img={require("./assets/fromzero15.webp")} alt="Architecture diagram showing the fully operational RavenDB cluster with certificates and bootstrap completed" />
 At this point, the most important question is no longer *how* the cluster was created, but *how it tells you what’s happening*. In **Part 7**, we’ll shift focus to **events and logging** \-  how the operator communicates progress, surfaces problems, and explains its decisions through Kubernetes Events, structured logs, and status conditions. This is where observability replaces guesswork, and operating the cluster becomes predictable instead of reactive.
 
 ## Part 7: Events and Logging
@@ -2403,7 +2403,7 @@ $ kubectl get events.events.k8s.io -A -o json | jq -r '
     ] | @tsv'
 ```
 
-<Image img={require("./assets/fromzero16.png")} alt="Kubernetes events timeline showing operator state changes from storage blocked through cluster ready" />
+<Image img={require("./assets/fromzero16.webp")} alt="Kubernetes events timeline showing operator state changes from storage blocked through cluster ready" />
 You’re not looking at noise. You’re looking at a timeline of state changes.  
 This is especially powerful during rollouts, because you can literally watch readiness move from one requirement to the next:
 
@@ -2526,7 +2526,7 @@ Next, we establish a clear "before" snapshot of the running RavenDB version.
 Open RavenDB Studio in your browser and navigate to the **About** tab.   
 This shows the exact server version currently running on the cluster.
 
-<Image img={require("./assets/fromzero17.png")} alt="RavenDB Studio About tab showing the current server version before the rolling upgrade" />
+<Image img={require("./assets/fromzero17.webp")} alt="RavenDB Studio About tab showing the current server version before the rolling upgrade" />
 With the baseline confirmed, we trigger the upgrade itself. In this demo, we change only one thing: the container image version. Nothing else in the manifest is touched:
 
 ```bash showLineNumbers
@@ -2549,7 +2549,7 @@ Once all pods have been updated and stabilized, the operator converges back to a
 
 To close the loop, return to RavenDB Studio and revisit the **About** tab. You should now see the new RavenDB version reported. This final check confirms that the upgrade completed successfully across all nodes and that the running system matches the desired state you declared:
 
-<Image img={require("./assets/fromzero19.png")} alt="RavenDB Studio About tab showing the updated server version after the rolling upgrade completed" />
+<Image img={require("./assets/fromzero19.webp")} alt="RavenDB Studio About tab showing the updated server version after the rolling upgrade completed" />
 As the upgrade progresses, Pods alone only tell part of the story. They show *what* is restarting, but not *why* the operator decided it was safe to do so. For that, Kubernetes Events are the real source of truth.
 
 While the rolling upgrade is in progress \-  or immediately after it completes \-  open a second terminal and watch the events emitted by the operator:
@@ -2633,10 +2633,10 @@ From RavenDB’s point of view, this leaves the cluster in a fragile state: ther
 
 Before Sabotage:
 
-<Image img={require("./assets/fromzero20.png")} alt="RavenDB Studio showing a healthy replicated database across all three nodes before sabotage" />
+<Image img={require("./assets/fromzero20.webp")} alt="RavenDB Studio showing a healthy replicated database across all three nodes before sabotage" />
 After Sabotage:
 
-<Image img={require("./assets/fromzero21.png")} alt="RavenDB Studio showing the database in a degraded state after sabotaging nodes A and C" />
+<Image img={require("./assets/fromzero21.webp")} alt="RavenDB Studio showing the database in a degraded state after sabotaging nodes A and C" />
 Now let’s trigger an upgrade and see what happens:
 
 ```bash showLineNumbers

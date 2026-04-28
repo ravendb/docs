@@ -34,8 +34,8 @@ Using FastAPI, we can quickly build a web AI search endpoint to demonstrate how 
 
 See, we query for “Cheese” and we get all kinds of cheese products from our database:
 
-<Image img={require("./assets/semsearch1.png")} alt="" />
-<Image img={require("./assets/semsearch2.png")} alt="" />
+<Image img={require("./assets/semsearch1.webp")} alt="" />
+<Image img={require("./assets/semsearch2.webp")} alt="" />
 Under the hood, the application translates our query term “Cheese” to an embedding (vector) on the fly and compares other vectors within the database, finding the closest “meanings”. Let’s show how to build that.
 
 Without the query implementation, our application looks like this:
@@ -203,7 +203,7 @@ Adding automatic embeddings generation starts in the AI Hub. We will automate th
 ### AI Connection String
 
 Create a new [AI connection string](https://ravendb.net/docs/ai-integration/connection-strings/connection-strings-overview) in RavenDB Studio:  
-<Image img={require("./assets/semsearch3.png")} alt="" />
+<Image img={require("./assets/semsearch3.webp")} alt="" />
 Define your custom name and identifier and pick the service you want to use; we chose OpenAI. Then, in the new fields, select the endpoint & model, and paste your API key. Other fields are optional and not currently relevant to us.
 
 You can test the connection to ensure everything works properly.
@@ -212,7 +212,7 @@ You can test the connection to ensure everything works properly.
 
 We can connect to the OpenAI model, but we need to create a task that generates embeddings. Go back to the AI Hub and choose ‘AI Tasks’. Create a new embeddings generation task and fill in its name and identifier. Select our new connection string. We select the ‘Products’ collection and type ‘Name’ for a path just beneath the collection. Just save it, and it’s ready.
 
-<Image img={require("./assets/semsearch4.png")} alt="" />
+<Image img={require("./assets/semsearch4.webp")} alt="" />
 Look how easy and short it is. Using RavenDB, we don’t need to worry about adding new fields; query logic is already thinner, and all connections to AI are already handled without the need for additional stuff.
 
 ### Application code
@@ -274,10 +274,10 @@ This way we get:
 
 Works perfectly:
 
-<Image img={require("./assets/semsearch5.png")} alt="" />
-<Image img={require("./assets/semsearch6.png")} alt="" />
+<Image img={require("./assets/semsearch5.webp")} alt="" />
+<Image img={require("./assets/semsearch6.webp")} alt="" />
 In the studio, RavenDB created a separate collection for embeddings and cached terms:  
-<Image img={require("./assets/semsearch7.png")} alt="" />
+<Image img={require("./assets/semsearch7.webp")} alt="" />
 Everything’s working on its own, and our semantic search can be delivered much quicker.
 
 ## Summary
