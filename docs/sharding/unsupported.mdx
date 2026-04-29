@@ -45,7 +45,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 | [Rolling index deployment](../indexes/rolling-index-deployment.mdx) |  |
 | [Load Document from another shard](../sharding/indexing.mdx#unsupported-indexing-features) | Loading a document during indexing is possible only if the document resides on the shard. |
 | **Map-Reduce Output Documents** | Using [OutputReduceToCollection](../indexes/map-reduce-indexes.mdx#map-reduce-output-documents) to output the results of a map-reduce index to a collection is not supported in a Sharded Database. |
-| [Custom Sorters](../indexes/querying/sorting.mdx#creating-a-custom-sorter) |  |
+| [Custom Sorters](../querying/sorting-query-results/custom-sorters.mdx) |  |
 
 ## Unsupported Querying Features
 
@@ -57,7 +57,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 | **Stream Includes and Loads** | [Streaming](../querying/stream-query-results.mdx#stream-an-index-query) Includes and Loads is not supported in a Sharded Database. |
 | Use `limit` with [PatchByQueryOperation](../client-api/operations/patching/set-based.mdx#patchbyqueryoperation) or [DeleteByQueryOperation](../client-api/operations/common/delete-by-query.mdx) | [Unsupported Querying Features](../sharding/querying.mdx#unsupported-querying-features) |
 | [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis.mdx) |  |
-| [OrderByScore](../indexes/querying/sorting.mdx#ordering-by-score) |  |
+| [OrderByScore](../querying/sorting-query-results/sort-query-results.mdx#order-by-score) |  |
 | [OrderByDistance](../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting) | Not supported in spatial map reduce indexes |
 | [Highlighting](../indexes/querying/highlighting.mdx) |  |
 | [Intersection](../indexes/querying/intersection.mdx) |  |
