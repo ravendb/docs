@@ -2,14 +2,14 @@
  * HTML canonical-link rewriter.
  *
  * Strategy:
- *   - For HTML files under /LEGACY/*  → canonical = self, plus inject
- *     <meta name="robots" content="noindex,follow"> into <head> if a robots
- *     meta isn't already present. Docusaurus emits a current-version
- *     canonical for every version; legacy pages are disallowed in
- *     robots.txt but we still stamp a self-canonical so any accidental
- *     crawl points back at the legacy URL rather than a 404, and the
- *     noindex meta is the belt to robots.txt's braces for crawlers that
- *     ignore robots.txt.
+ *   - For HTML files under /LEGACY/*  → canonical = self. Docusaurus would
+ *     otherwise emit a current-version canonical for every version; we stamp
+ *     a self-canonical so any accidental crawl points back at the legacy URL
+ *     rather than at a current-version URL that may have moved or 404'd.
+ *     Noindex on legacy pages is handled natively by Docusaurus via the
+ *     `versions[v].noIndex: true` flag in docusaurus.config.ts — the
+ *     DocVersionRoot theme component emits the meta tag during SSR, so this
+ *     plugin no longer needs to splice one in.
  *   - For HTML files under /INDEXED/* → canonical = current-version URL,
  *     resolved through the redirect chain. This is the core fix: when a
  *     page moves or renames in the current version, every older version
@@ -41,19 +41,12 @@ export interface RewriteInput {
 export interface RewriteResult {
     /** Rewritten HTML (or input unchanged if no rewrite was required). */
     html: string;
-    /** True when a change was made (either canonical or meta injection). */
+    /** True when the canonical href was rewritten. */
     changed: boolean;
     /** The canonical URL after this pass, or null if no canonical was found. */
     newCanonical: string | null;
     /** True when the redirect map resolved at least one hop for this file. */
     chainResolved: boolean;
-    /**
-     * True when a `<meta name="robots" content="noindex,follow">` tag was
-     * injected into this legacy page's `<head>`. False for current/indexed
-     * versions, for legacy pages that already had a robots meta, and for
-     * pages without a `<head>` tag.
-     */
-    noindexInjected: boolean;
 }
 
 // Matches canonical links regardless of attribute order, self-closing style, or
@@ -62,12 +55,6 @@ export interface RewriteResult {
 // `rel=canonical href=https://…` — we must recognize both forms.
 const CANONICAL_TAG_REGEX = /<link\b[^>]*\brel\s*=\s*(?:"canonical"|'canonical'|canonical(?=[\s/>]))[^>]*>/i;
 const HREF_ATTR_REGEX = /\bhref\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/i;
-// Detects an existing <meta name="robots" ...> — any form / quoting. If one
-// already exists we leave it alone, even if it says "index,follow", because
-// the author presumably overrode the default intentionally.
-const ROBOTS_META_REGEX = /<meta\b[^>]*\bname\s*=\s*(?:"robots"|'robots'|robots(?=[\s/>]))[^>]*>/i;
-const HEAD_OPEN_REGEX = /<head\b[^>]*>/i;
-const NOINDEX_META_TAG = `<meta name="robots" content="noindex,follow">`;
 
 function extractHref(tag: string): string | null {
     const m = tag.match(HREF_ATTR_REGEX);
@@ -104,7 +91,6 @@ export function rewriteHtml(input: RewriteInput): RewriteResult {
             changed: false,
             newCanonical: null,
             chainResolved: false,
-            noindexInjected: false,
         };
     }
 
@@ -139,25 +125,10 @@ export function rewriteHtml(input: RewriteInput): RewriteResult {
         workingHtml = html.replace(originalTag, newTag);
     }
 
-    // Legacy-only: inject noindex,follow after <head> if no robots meta exists.
-    // Idempotent — a second pass finds the tag we just wrote and skips.
-    let noindexInjected = false;
-    if (legacy && !ROBOTS_META_REGEX.test(workingHtml)) {
-        const headMatch = workingHtml.match(HEAD_OPEN_REGEX);
-        if (headMatch) {
-            const headTag = headMatch[0];
-            workingHtml = workingHtml.replace(headTag, `${headTag}${NOINDEX_META_TAG}`);
-            noindexInjected = true;
-        }
-    }
-
-    const changed = canonicalNeedsUpdate || noindexInjected;
-
     return {
         html: workingHtml,
-        changed,
+        changed: canonicalNeedsUpdate,
         newCanonical: desiredCanonical,
         chainResolved,
-        noindexInjected,
     };
 }

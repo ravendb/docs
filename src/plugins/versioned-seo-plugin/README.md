@@ -1,12 +1,16 @@
-# canonical-redirects-plugin
+# versioned-seo-plugin
 
-Build-time Docusaurus plugin that rewrites `<link rel="canonical">` across every emitted HTML file so a page which moved or renamed in the current version advertises its new home, and legacy-version pages self-canonicalise. After rewriting, every canonical is verified against the real Docusaurus route universe — a strict build fails on a dead target.
+Build-time Docusaurus plugin with two responsibilities, both running on the same `postBuild` walk of versioned HTML files:
 
-Source of truth: `scripts/redirects.json`, read by both this plugin (build time) and `scripts/handle_redirects.js` (CloudFront Function at request time).
+1. **Canonical rewrite + verify** — rewrites `<link rel="canonical">` so a page that moved or renamed in the current version advertises its new home, and legacy-version pages self-canonicalise. After rewriting, every canonical is verified against the real Docusaurus route universe — a strict build fails on a dead target.
+
+2. **Legacy noindex audit** — Docusaurus injects `<meta name="robots" content="noindex, nofollow">` natively for any version configured with `noIndex: true` in the docs preset. The plugin doesn't write that tag itself; it asserts every legacy-version page actually carries it. A typo in the version map, a forgotten `LEGACY_VERSIONS` entry, or a swizzled `DocVersionRoot` that drops the meta tag fails the build instead of silently leaking legacy pages into search engines.
+
+Source of truth: `scripts/redirects.json` (canonical rewriting), read by both this plugin (build time) and `scripts/handle_redirects.js` (CloudFront Function at request time); and `scripts/lib/version-policy.js`'s `LEGACY_VERSIONS` (noindex audit).
 
 ## Why a plugin, not a script
 
-A plugin gets `routesPaths` from Docusaurus directly. A post-build script would have to walk the filesystem, parse emitted HTML to guess what's valid, and duplicate version bookkeeping. The plugin also runs `loadContent` **before any HTML is written**, so a malformed `redirects.json` fails the build fast rather than partway through emission. `postBuild` integrates cleanly with `DOCUSAURUS_STRICT` and the separate `DOCUSAURUS_STRICT_CANONICALS` gate.
+A plugin gets `routesPaths` from Docusaurus directly. A post-build script would have to walk the filesystem, parse emitted HTML to guess what's valid, and duplicate version bookkeeping. The plugin also runs `loadContent` **before any HTML is written**, so a malformed `redirects.json` fails the build fast rather than partway through emission. `postBuild` integrates cleanly with `DOCUSAURUS_STRICT` and the separate `DOCUSAURUS_STRICT_SEO` gate.
 
 ## Validation gates
 
@@ -69,6 +73,7 @@ Same file, two readers, one HTTP hop per request regardless of chain depth.
 
 - **`no <link rel="canonical"> tag found in emitted HTML`** in the verifier output. Docusaurus stamps a canonical on every page today, so a miss means its HTML emission changed. Inspect a versioned file and update `CANONICAL_TAG_REGEX` in `lib/rewrite.ts` to match the new shape. Strict builds fail on this.
 - **`invalid canonical` / `canonical path is not in the current-version route universe`**. A page moved or renamed without a matching redirect. Paste the `fix:` block from the error output into `scripts/redirects.json`, set `targetUrl` to the new path, re-run `npm run validate-redirects`, then the strict build.
+- **`legacy-version page(s) missing <meta name="robots" content="noindex,...">`**. Docusaurus didn't inject the noindex meta on at least one legacy page. Either the version is missing from the docs preset's `versions:` map (add `"X.Y": { noIndex: true }`), `LEGACY_VERSIONS` and the `versions:` map have drifted apart, or someone swizzled `@theme/DocVersionRoot` and lost the `version.noIndex && <meta>` line. The error message includes the affected versions and a sample of files.
 - **`redirect cycle detected: /a → /b → /a`** from `validateNoCycles`. Two or more rules point at each other. Fix the offending chain in `redirects.json`.
 - **`targetUrl does not resolve to an existing document`** from `validateTargetsExist`. The target path has no `.mdx` / `.md` file under the expected content root. Either correct the target or create the landing page.
 - **`'value.minimumVersion' is required and must be a "MAJOR.MINOR" string`** from `validateRedirects`. Add `"minimumVersion": "7.2"` (or whichever version applies) to the offending entry.
@@ -81,7 +86,7 @@ Single-pass. `redirectMap` is built once in `loadContent`. `universe` is built o
 
 `scripts/handle_redirects.js` is a CloudFront Function running at the edge. Both it and this plugin read the same `scripts/redirects.json`, but they run in different environments:
 
-|                          | Canonical plugin (build time)                                           | Edge function (request time)                                                                |
+|                          | Versioned-SEO plugin (build time)                                       | Edge function (request time)                                                                |
 | ------------------------ | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | Scope                    | Rewrites `<link rel="canonical">` in emitted HTML                       | Returns 301 on live HTTP requests                                                           |
 | Chain handling           | Resolves the whole chain in-process; emits the **terminal** URL         | Unbounded `while(true)` loop collapsing N-hop chains into **one 301**                       |
@@ -98,11 +103,11 @@ Both sides are intentionally minimal: two invariants (no cycles, `targetUrl` is 
 npm test                     # unit tests for redirects, rewrite, verifier, parity, edge handler
 npm run validate-redirects   # schema + cycles + target-existence on scripts/redirects.json
 
-# strict build — fails if any canonical doesn't resolve
+# strict build — fails on any unresolved canonical or any legacy page missing noindex
 DOCUSAURUS_VERSIONS='6.2, 7.1, current' \
   DOCUSAURUS_STRICT=true \
-  DOCUSAURUS_STRICT_CANONICALS=true \
+  DOCUSAURUS_STRICT_SEO=true \
   npm run build
 ```
 
-The two strict gates are deliberately separate: `DOCUSAURUS_STRICT` is Docusaurus's own (broken links, missing translations); `DOCUSAURUS_STRICT_CANONICALS` gates this plugin. The split lets you turn the plugin on without blocking the build while `redirects.json` is being backfilled, then flip the canonical gate once the verifier reports zero issues.
+The two strict gates are deliberately separate: `DOCUSAURUS_STRICT` is Docusaurus's own (broken links, missing translations); `DOCUSAURUS_STRICT_SEO` gates this plugin's two assertions (canonical verifier and legacy-noindex audit). The split lets you turn the plugin on without blocking the build while `redirects.json` is being backfilled, then flip the SEO gate once both assertions report zero issues.

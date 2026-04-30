@@ -2,7 +2,7 @@
 /**
  * Standalone validator for scripts/redirects.json.
  *
- * Wraps the same validateRedirects function used by the canonical-redirects
+ * Wraps the same validateRedirects function used by the versioned-seo
  * plugin at loadContent time, but runs without a full Docusaurus build so it
  * can be wired into CI as a fast pre-gate.
  *
@@ -18,7 +18,7 @@ import {
     validateNoCycles,
     validateRedirects,
     validateTargetsExist,
-} from "../src/plugins/canonical-redirects-plugin/lib/redirects.js";
+} from "../src/plugins/versioned-seo-plugin/lib/redirects.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const redirectsPath = path.join(__dirname, "redirects.json");

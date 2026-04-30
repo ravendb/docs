@@ -1,7 +1,7 @@
 sequenceDiagram
     autonumber
     participant D as Docusaurus core
-    participant P as canonical-redirects plugin
+    participant P as versioned-seo plugin
     participant FS as outDir<br/>(emitted HTML)
     participant V as verifier
 
@@ -14,7 +14,7 @@ sequenceDiagram
     P->>P: buildRedirectMap() [once]
 
     Note over D,P: postBuild — post-emission
-    D->>FS: emit HTML files
+    D->>FS: emit HTML files (noindex meta already SSR'd by Docusaurus<br/>for any version with noIndex: true)
     P->>P: buildUniverse(routesPaths, CURRENT) [once]
 
     loop walk(outDir) — each .html
@@ -23,9 +23,12 @@ sequenceDiagram
         alt not version-prefixed
             P-->>P: skip (cloud/guides/templates/root)
         else version-prefixed
+            opt legacy version
+                P->>P: hasNoindexRobotsMeta(html)?<br/>collect file if missing
+            end
             P->>P: rewriteHtml(...)
             alt legacy version
-                P->>P: canonical = self + inject noindex,follow meta
+                P->>P: canonical = self
             else current / indexed version
                 P->>P: resolveChain → rewrite canonical href
             else no canonical tag
@@ -49,8 +52,8 @@ sequenceDiagram
         end
     end
 
-    P->>P: report summary
-    alt issues && strict mode
+    P->>P: report summary (canonical + noindex)
+    alt any assertion failed && strict mode
         P-->>D: throw — fail build
     else
         P-->>D: done

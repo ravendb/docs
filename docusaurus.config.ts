@@ -21,6 +21,11 @@ function getOnlyIncludeVersions(): string[] | undefined {
 
 const isStrict = process.env.DOCUSAURUS_STRICT === "true";
 
+// Per-version `noIndex: true` - Docusaurus injects noindex meta
+const legacyVersionsAsNoIndex: Record<string, { noIndex: true }> = Object.fromEntries(
+    LEGACY_VERSIONS.map((v) => [v, { noIndex: true }])
+);
+
 const config: Config = {
     title: "RavenDB Documentation",
     tagline: "High-performance NoSQL database that just works.",
@@ -58,10 +63,8 @@ const config: Config = {
                     includeCurrentVersion: true,
                     lastVersion: "current",
                     versions: {
-                        current: {
-                            label: CURRENT_VERSION,
-                            path: CURRENT_VERSION,
-                        },
+                        current: { label: CURRENT_VERSION, path: CURRENT_VERSION },
+                        ...legacyVersionsAsNoIndex,
                     },
                     onlyIncludeVersions: getOnlyIncludeVersions(),
                     editUrl: "https://github.com/ravendb/docs/edit/main/",
@@ -125,8 +128,7 @@ const config: Config = {
             },
         ],
         require.resolve("./src/plugins/recent-guides-plugin"),
-        require.resolve("./src/plugins/canonical-redirects-plugin"),
-        require.resolve("./src/plugins/templates-noindex-plugin"),
+        require.resolve("./src/plugins/versioned-seo-plugin"),
     ],
     headTags: [
         {

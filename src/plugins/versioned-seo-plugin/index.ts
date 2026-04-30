@@ -1,11 +1,25 @@
 /**
- * Canonical redirects plugin.
+ * Versioned-SEO plugin.
  *
- * Rewrites <link rel="canonical"> URLs in every emitted HTML file so that
- * pages moved or renamed in the current (=latest indexed) version advertise
- * their new home rather than a stale URL that 404s. Legacy versions get a
- * self-canonical. After rewriting, canonicals are verified against the
- * Docusaurus route universe so strict builds fail loudly on bad targets.
+ * Two responsibilities, both running during postBuild on the same walk of
+ * versioned HTML files:
+ *
+ * 1. Canonical rewrite + verify
+ *    - Rewrites `<link rel="canonical">` URLs so pages moved or renamed in
+ *      the current version advertise their new home rather than a stale
+ *      URL that 404s. Legacy versions get a self-canonical.
+ *    - After rewriting, every emitted canonical is checked against the
+ *      Docusaurus route universe so strict builds fail loudly on bad
+ *      targets.
+ *
+ * 2. Legacy-version noindex assertion
+ *    - Docusaurus injects `<meta name="robots" content="noindex, nofollow">`
+ *      natively for any version configured with `noIndex: true` in the
+ *      docs preset. This plugin doesn't write that tag itself; instead it
+ *      asserts every legacy-version page actually carries it. A typo, a
+ *      missing entry in `versions:`, or a swizzled `DocVersionRoot` that
+ *      drops the meta tag fails the build instead of silently leaking
+ *      legacy pages into search engines.
  *
  * See plan RDoc-3786 for the full design.
  */
@@ -24,26 +38,28 @@ import {
     type RedirectMap,
 } from "./lib/redirects.js";
 import { rewriteHtml } from "./lib/rewrite.js";
-import { buildUniverse, verifyCanonicals, type CanonicalRecord } from "./lib/verify.js";
+import { buildUniverse, hasNoindexRobotsMeta, verifyCanonicals, type CanonicalRecord } from "./lib/verify.js";
 // version-policy.js is CJS; named-import interop lets both tsx --test and
 // the Docusaurus webpack loader resolve it without a shim.
 import { CURRENT_VERSION, LEGACY_VERSIONS } from "../../../scripts/lib/version-policy.js";
 
-export interface CanonicalRedirectsPluginOptions {
+export interface VersionedSeoPluginOptions {
     /** Absolute or site-relative path to redirects.json. */
     redirectsPath?: string;
-    /** When true, verifier issues fail the build. Defaults to `DOCUSAURUS_STRICT_CANONICALS === "true"`. */
-    failOnInvalidCanonical?: boolean;
+    /** When true, verifier issues fail the build. Defaults to `DOCUSAURUS_STRICT_SEO === "true"`. */
+    failOnInvalidSeo?: boolean;
     /** "silent" | "info" | "verbose" (default "info"). */
     logLevel?: "silent" | "info" | "verbose";
 }
 
-type ResolvedOptions = Required<CanonicalRedirectsPluginOptions>;
+type ResolvedOptions = Required<VersionedSeoPluginOptions>;
 
 const BASE_URL = "https://docs.ravendb.net";
 const VERSION_SEGMENT_REGEX = /^(\d+\.\d+)(\/.*)?$/;
+const PLUGIN_NAME = "versioned-seo-plugin";
+const LOG_PREFIX = "[versioned-seo]";
 
-function resolveOptions(opts: CanonicalRedirectsPluginOptions | undefined, siteDir: string): ResolvedOptions {
+function resolveOptions(opts: VersionedSeoPluginOptions | undefined, siteDir: string): ResolvedOptions {
     const userOpts = opts ?? {};
     const providedPath = userOpts.redirectsPath;
     const redirectsPath = providedPath
@@ -54,7 +70,7 @@ function resolveOptions(opts: CanonicalRedirectsPluginOptions | undefined, siteD
 
     return {
         redirectsPath,
-        failOnInvalidCanonical: userOpts.failOnInvalidCanonical ?? process.env.DOCUSAURUS_STRICT_CANONICALS === "true",
+        failOnInvalidSeo: userOpts.failOnInvalidSeo ?? process.env.DOCUSAURUS_STRICT_SEO === "true",
         logLevel: userOpts.logLevel ?? "info",
     };
 }
@@ -72,18 +88,18 @@ function logger(level: ResolvedOptions["logLevel"]) {
     return {
         info: (msg: string) => {
             if (shouldLog("info")) {
-                docusaurusLogger.info(`[canonical-redirects] ${msg}`);
+                docusaurusLogger.info(`${LOG_PREFIX} ${msg}`);
             }
         },
         verbose: (msg: string) => {
             if (shouldLog("verbose")) {
-                docusaurusLogger.info(`[canonical-redirects] ${msg}`);
+                docusaurusLogger.info(`${LOG_PREFIX} ${msg}`);
             }
         },
         warn: (msg: string) => {
             // Always show warnings (unless fully silent).
             if (level !== "silent") {
-                docusaurusLogger.warn(`[canonical-redirects] ${msg}`);
+                docusaurusLogger.warn(`${LOG_PREFIX} ${msg}`);
             }
         },
     };
@@ -126,19 +142,19 @@ function extractVersionInfo(relPath: string): { version: string; versionlessPath
     return { version, versionlessPath };
 }
 
-const canonicalRedirectsPlugin = function canonicalRedirectsPlugin(
+const versionedSeoPlugin = function versionedSeoPlugin(
     context: LoadContext,
-    pluginOptions?: CanonicalRedirectsPluginOptions
+    pluginOptions?: VersionedSeoPluginOptions
 ): Plugin<{ redirectMap: RedirectMap }> {
     const options = resolveOptions(pluginOptions, context.siteDir);
     const log = logger(options.logLevel);
 
     return {
-        name: "canonical-redirects-plugin",
+        name: PLUGIN_NAME,
 
         async loadContent() {
             if (!fs.existsSync(options.redirectsPath)) {
-                throw new Error(`canonical-redirects-plugin: redirects file not found at ${options.redirectsPath}`);
+                throw new Error(`${PLUGIN_NAME}: redirects file not found at ${options.redirectsPath}`);
             }
 
             const rules = loadRedirects(options.redirectsPath);
@@ -155,7 +171,7 @@ const canonicalRedirectsPlugin = function canonicalRedirectsPlugin(
                 const rendered = errors
                     .map((e) => `  [${e.index}] ${e.key ? `'${e.key}' — ` : ""}${e.message}`)
                     .join("\n");
-                throw new Error(`canonical-redirects-plugin: redirects.json failed validation:\n${rendered}`);
+                throw new Error(`${PLUGIN_NAME}: redirects.json failed validation:\n${rendered}`);
             }
 
             log.info(`loaded ${rules.length} redirect rule(s) from ${options.redirectsPath}`);
@@ -178,8 +194,9 @@ const canonicalRedirectsPlugin = function canonicalRedirectsPlugin(
             let scanned = 0;
             let rewritten = 0;
             let chainsResolved = 0;
-            let noindexInjectedCount = 0;
             let missingCanonicalCount = 0;
+            let legacyChecked = 0;
+            const legacyMissingNoindex: { file: string; fileVersion: string }[] = [];
 
             walk(outDir, (filePath) => {
                 if (!filePath.endsWith(".html")) {
@@ -194,6 +211,16 @@ const canonicalRedirectsPlugin = function canonicalRedirectsPlugin(
                 scanned++;
 
                 const originalHtml = fs.readFileSync(filePath, "utf8");
+
+                // Legacy-noindex assertion runs against the HTML Docusaurus
+                // emitted, before our rewrite touches the canonical href —
+                // that's the surface we're auditing.
+                if (LEGACY_VERSIONS.includes(info.version)) {
+                    legacyChecked++;
+                    if (!hasNoindexRobotsMeta(originalHtml)) {
+                        legacyMissingNoindex.push({ file: rel, fileVersion: info.version });
+                    }
+                }
 
                 const result = rewriteHtml({
                     html: originalHtml,
@@ -212,9 +239,6 @@ const canonicalRedirectsPlugin = function canonicalRedirectsPlugin(
                 if (result.chainResolved) {
                     chainsResolved++;
                 }
-                if (result.noindexInjected) {
-                    noindexInjectedCount++;
-                }
 
                 if (result.newCanonical) {
                     records.push({
@@ -228,16 +252,47 @@ const canonicalRedirectsPlugin = function canonicalRedirectsPlugin(
             });
 
             log.info(
-                `scanned ${scanned} versioned HTML file(s), rewrote ${rewritten}, chains resolved ${chainsResolved}, missing canonicals ${missingCanonicalCount}, noindex injected ${noindexInjectedCount}`
+                `scanned ${scanned} versioned HTML file(s), rewrote ${rewritten}, chains resolved ${chainsResolved}, missing canonicals ${missingCanonicalCount}, legacy noindex checked ${legacyChecked} (missing ${legacyMissingNoindex.length})`
             );
 
             // Missing canonicals mean CANONICAL_TAG_REGEX is stale — fix the regex, not each file.
             if (missingCanonicalCount > 0) {
-                const msg = `canonical-redirects-plugin: ${missingCanonicalCount} versioned HTML file(s) emitted without <link rel="canonical"> — update CANONICAL_TAG_REGEX in lib/rewrite.ts`;
-                if (options.failOnInvalidCanonical) {
+                const msg = `${PLUGIN_NAME}: ${missingCanonicalCount} versioned HTML file(s) emitted without <link rel="canonical"> — update CANONICAL_TAG_REGEX in lib/rewrite.ts`;
+                if (options.failOnInvalidSeo) {
                     throw new Error(msg);
                 }
                 log.warn(msg);
+            }
+
+            // Legacy noindex assertion — Docusaurus owns the injection; we own the audit.
+            if (legacyMissingNoindex.length > 0) {
+                const versions = [...new Set(legacyMissingNoindex.map((r) => r.fileVersion))].sort();
+                const maxShow = 10;
+                const shown = legacyMissingNoindex.slice(0, maxShow);
+                const header = `${PLUGIN_NAME}: ${legacyMissingNoindex.length} legacy-version page(s) missing <meta name="robots" content="noindex,...">`;
+                const versionsLine = `  affected versions: ${versions.join(", ")}`;
+                const fixHint = versions.map((v) => `      versions: { "${v}": { noIndex: true }, ... }`).join("\n");
+                const fix = [
+                    "  fix:",
+                    `      check that each version above has \`noIndex: true\` in the docs preset's \`versions:\` map in docusaurus.config.ts:`,
+                    fixHint,
+                    `      and that no swizzle of @theme/DocVersionRoot drops the \`version.noIndex && <meta>\` line.`,
+                ].join("\n");
+                const body = shown.map((r) => `  - ${r.file} (version ${r.fileVersion})`).join("\n");
+                const tail =
+                    legacyMissingNoindex.length > maxShow
+                        ? `\n  … and ${legacyMissingNoindex.length - maxShow} more`
+                        : "";
+                const message = `${header}\n${versionsLine}\n${body}${tail}\n${fix}`;
+
+                if (options.failOnInvalidSeo) {
+                    throw new Error(message);
+                }
+                log.warn(message);
+            } else if (legacyChecked > 0) {
+                log.info(
+                    `all ${legacyChecked} legacy-version page(s) carry <meta name="robots" content="noindex,...">`
+                );
             }
 
             const issues = verifyCanonicals({
@@ -251,7 +306,7 @@ const canonicalRedirectsPlugin = function canonicalRedirectsPlugin(
             if (issues.length > 0) {
                 const maxShow = 10;
                 const shown = issues.slice(0, maxShow);
-                const header = `canonical-redirects-plugin: ${issues.length} invalid canonical${issues.length === 1 ? "" : "s"} detected`;
+                const header = `${PLUGIN_NAME}: ${issues.length} invalid canonical${issues.length === 1 ? "" : "s"} detected`;
                 const body = shown
                     .map((i) => {
                         const base = `  - ${i.file}\n      canonical: ${i.canonical}\n      reason: ${i.reason}`;
@@ -270,7 +325,7 @@ const canonicalRedirectsPlugin = function canonicalRedirectsPlugin(
                 const tail = issues.length > maxShow ? `\n  … and ${issues.length - maxShow} more` : "";
                 const message = `${header}\n${body}${tail}`;
 
-                if (options.failOnInvalidCanonical) {
+                if (options.failOnInvalidSeo) {
                     throw new Error(message);
                 }
                 log.warn(message);
@@ -281,4 +336,4 @@ const canonicalRedirectsPlugin = function canonicalRedirectsPlugin(
     };
 };
 
-export default canonicalRedirectsPlugin;
+export default versionedSeoPlugin;

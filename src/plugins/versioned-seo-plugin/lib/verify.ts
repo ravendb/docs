@@ -1,18 +1,51 @@
 /**
- * Canonical verifier.
+ * Build-time SEO verifiers for versioned pages.
  *
- * After the rewriter has run across every HTML file, confirms that each
- * emitted canonical URL actually resolves to a page in the final site —
- * i.e. the canonical's path is in the Docusaurus `routes` universe.
+ * Two assertions, both run during the postBuild walk:
  *
- * Scope: only non-legacy (indexed) pages. Legacy pages are self-canonical
- * and can't point at a dead URL by construction.
+ * 1. Canonical verifier — for every non-legacy (indexed) page, confirm the
+ *    emitted canonical URL resolves to a page in the final site (i.e. its
+ *    path is in the Docusaurus `routes` universe). Legacy pages are
+ *    self-canonical and can't point at a dead URL by construction, so
+ *    they're skipped here.
  *
- * A strict build that fails this check catches:
- *   - redirects.json entries whose targetUrl typo-es or diverges from 7.2
+ * 2. Legacy noindex assertion — for every legacy-version page, confirm
+ *    Docusaurus injected `<meta name="robots" content="noindex,...">`.
+ *    The injection is delegated to Docusaurus' native per-version
+ *    `noIndex` config; this assertion is the build-time guarantee that
+ *    a typo, a forgotten LEGACY_VERSIONS entry, or a swizzled
+ *    `DocVersionRoot` that drops the meta tag fails the build instead
+ *    of silently leaking legacy pages into search engines.
+ *
+ * A strict build that fails the canonical check catches:
+ *   - redirects.json entries whose targetUrl typo-es or diverges from current
  *   - pages whose slug changed without a matching redirect rule
  *   - broken chains (terminal target doesn't exist)
+ *
+ * A strict build that fails the noindex check catches:
+ *   - a legacy version missing from `versions[v].noIndex: true` in docusaurus.config.ts
+ *   - a swizzled `DocVersionRoot` that omits the meta tag
  */
+
+/**
+ * Matches `<meta name="robots" content="...noindex...">` regardless of attribute
+ * order, quoting style (double, single, unquoted), or whitespace. The content
+ * attribute must contain `noindex` somewhere; we don't care whether it pairs
+ * with `follow` or `nofollow`. Docusaurus emits `noindex, nofollow`; older
+ * hand-rolled tags used `noindex,follow`. Both pass.
+ */
+const ROBOTS_NOINDEX_REGEX =
+    /<meta\b[^>]*\bname\s*=\s*(?:"robots"|'robots'|robots(?=[\s/>]))[^>]*\bcontent\s*=\s*(?:"[^"]*\bnoindex\b[^"]*"|'[^']*\bnoindex\b[^']*'|[^\s"'=<>`]*\bnoindex\b[^\s"'=<>`]*)[^>]*>/i;
+
+/**
+ * Pure predicate: does this HTML carry a `<meta name="robots">` tag whose
+ * content includes `noindex`? Tag order in `<head>` doesn't matter — we scan
+ * the whole document. Used by the postBuild assertion that every legacy
+ * page got Docusaurus' native noindex injection.
+ */
+export function hasNoindexRobotsMeta(html: string): boolean {
+    return ROBOTS_NOINDEX_REGEX.test(html);
+}
 
 export interface CanonicalRecord {
     /** Absolute path to the HTML file (relative paths also accepted, stored as-is). */

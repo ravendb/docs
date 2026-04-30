@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 
 import { buildRedirectMap, type RedirectRule } from "../lib/redirects.js";
 import { rewriteHtml } from "../lib/rewrite.js";
-import { buildUniverse, verifyCanonicals, type CanonicalRecord } from "../lib/verify.js";
+import { buildUniverse, hasNoindexRobotsMeta, verifyCanonicals, type CanonicalRecord } from "../lib/verify.js";
 
 const CURRENT = "7.2";
 const LEGACY = ["5.4", "5.3", "4.2"];
@@ -179,90 +179,6 @@ test("rewriteHtml respects minimumVersion gating when the file's version gates t
     assert.equal(result.newCanonical, `${BASE_URL}/${CURRENT}/future`);
 });
 
-// --- Legacy noindex meta injection ---
-
-test("rewriteHtml injects noindex,follow into legacy page with no robots meta", () => {
-    const html = `<!doctype html><html><head><link rel="canonical" href="${BASE_URL}/${CURRENT}/x"><title>t</title></head><body>x</body></html>`;
-    const result = rewriteHtml({
-        html,
-        fileVersion: "4.2",
-        versionlessPath: "/x",
-        currentVersion: CURRENT,
-        legacyVersions: LEGACY,
-        redirects: MAP,
-        baseUrl: BASE_URL,
-    });
-    assert.equal(result.changed, true);
-    assert.equal(result.noindexInjected, true);
-    assert.match(result.html, /<meta name="robots" content="noindex,follow">/);
-    // Sanity: meta lives right after <head>, canonical was also rewritten to self.
-    assert.match(result.html, /<head><meta name="robots" content="noindex,follow">/);
-    assert.match(result.html, /href="https:\/\/docs\.ravendb\.net\/4\.2\/x"/);
-});
-
-test("rewriteHtml leaves existing robots meta alone on legacy page", () => {
-    const html =
-        `<!doctype html><html><head>` +
-        `<meta name="robots" content="noindex,nofollow">` +
-        `<link rel="canonical" href="${BASE_URL}/${CURRENT}/x">` +
-        `</head><body>x</body></html>`;
-    const result = rewriteHtml({
-        html,
-        fileVersion: "4.2",
-        versionlessPath: "/x",
-        currentVersion: CURRENT,
-        legacyVersions: LEGACY,
-        redirects: MAP,
-        baseUrl: BASE_URL,
-    });
-    assert.equal(result.noindexInjected, false);
-    // Original meta is preserved, and no second meta was added.
-    assert.match(result.html, /content="noindex,nofollow"/);
-    const metaCount = (result.html.match(/<meta name="robots"/gi) ?? []).length;
-    assert.equal(metaCount, 1);
-});
-
-test("rewriteHtml never injects noindex on current/indexed-version pages", () => {
-    const html = `<!doctype html><html><head><link rel="canonical" href="${BASE_URL}/${CURRENT}/x"></head><body>x</body></html>`;
-    const result = rewriteHtml({
-        html,
-        fileVersion: CURRENT,
-        versionlessPath: "/x",
-        currentVersion: CURRENT,
-        legacyVersions: LEGACY,
-        redirects: MAP,
-        baseUrl: BASE_URL,
-    });
-    assert.equal(result.noindexInjected, false);
-    assert.ok(!/name="robots"/.test(result.html));
-});
-
-test("rewriteHtml noindex injection is idempotent when run twice on legacy", () => {
-    const html = `<!doctype html><html><head><link rel="canonical" href="${BASE_URL}/${CURRENT}/x"></head></html>`;
-    const first = rewriteHtml({
-        html,
-        fileVersion: "4.2",
-        versionlessPath: "/x",
-        currentVersion: CURRENT,
-        legacyVersions: LEGACY,
-        redirects: MAP,
-        baseUrl: BASE_URL,
-    });
-    const second = rewriteHtml({
-        html: first.html,
-        fileVersion: "4.2",
-        versionlessPath: "/x",
-        currentVersion: CURRENT,
-        legacyVersions: LEGACY,
-        redirects: MAP,
-        baseUrl: BASE_URL,
-    });
-    assert.equal(first.noindexInjected, true);
-    assert.equal(second.noindexInjected, false);
-    assert.equal(second.changed, false);
-    assert.equal(second.html, first.html);
-});
-
 // --- Verifier ---
 
 test("buildUniverse keeps only current-version routes", () => {
@@ -308,4 +224,56 @@ test("verifyCanonicals skips legacy-version files (self-canonical is trivially v
         baseUrl: BASE_URL,
     });
     assert.deepEqual(issues, []);
+});
+
+// --- hasNoindexRobotsMeta predicate ---
+
+test("hasNoindexRobotsMeta detects Docusaurus default form", () => {
+    // What @docusaurus/theme-classic's DocVersionRoot emits today.
+    const html = `<!doctype html><html><head><meta name="robots" content="noindex, nofollow" /></head></html>`;
+    assert.equal(hasNoindexRobotsMeta(html), true);
+});
+
+test("hasNoindexRobotsMeta detects the legacy hand-rolled form (noindex,follow no space)", () => {
+    // The form our removed templates-noindex-plugin used to inject — should
+    // still be recognised so a brownfield build during the transition passes.
+    const html = `<!doctype html><html><head><meta name="robots" content="noindex,follow"></head></html>`;
+    assert.equal(hasNoindexRobotsMeta(html), true);
+});
+
+test("hasNoindexRobotsMeta detects unquoted attributes (post-minified HTML)", () => {
+    // The swc minifier under @docusaurus/faster strips quotes where legal.
+    const html = `<!doctype html><html><head><meta name=robots content="noindex, nofollow"></head></html>`;
+    assert.equal(hasNoindexRobotsMeta(html), true);
+});
+
+test("hasNoindexRobotsMeta detects single-quoted attributes", () => {
+    const html = `<!doctype html><html><head><meta name='robots' content='noindex, nofollow' /></head></html>`;
+    assert.equal(hasNoindexRobotsMeta(html), true);
+});
+
+test("hasNoindexRobotsMeta is case-insensitive on the directive value", () => {
+    // Some tooling emits NOINDEX. The regex carries the /i flag so this passes.
+    const html = `<!doctype html><html><head><meta name="robots" content="NOINDEX, NOFOLLOW"></head></html>`;
+    assert.equal(hasNoindexRobotsMeta(html), true);
+});
+
+test("hasNoindexRobotsMeta returns false when no robots meta exists", () => {
+    const html = `<!doctype html><html><head><title>x</title><meta name="description" content="y"></head></html>`;
+    assert.equal(hasNoindexRobotsMeta(html), false);
+});
+
+test("hasNoindexRobotsMeta returns false when robots meta lacks 'noindex'", () => {
+    // A page with index,follow should fail the audit — that's the bug the
+    // assertion is here to catch (legacy version not actually noindex'd).
+    const html = `<!doctype html><html><head><meta name="robots" content="index, follow"></head></html>`;
+    assert.equal(hasNoindexRobotsMeta(html), false);
+});
+
+test("hasNoindexRobotsMeta requires 'noindex' as a whole word, not a substring", () => {
+    // Defensive: a hypothetical attribute value of "noindexing" (no such
+    // directive exists, but make sure the regex doesn't accept partial
+    // matches that could mask a real bug).
+    const html = `<!doctype html><html><head><meta name="robots" content="noindexing"></head></html>`;
+    assert.equal(hasNoindexRobotsMeta(html), false);
 });

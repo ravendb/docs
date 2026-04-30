@@ -5,7 +5,7 @@ Mermaid source + generated SVGs for the plugin README.
 ## Regenerating
 
 ```bash
-cd src/plugins/canonical-redirects-plugin/diagrams
+cd src/plugins/versioned-seo-plugin/diagrams
 npx -p @mermaid-js/mermaid-cli mmdc -i data-flow.mmd -o data-flow.svg -b transparent
 npx -p @mermaid-js/mermaid-cli mmdc -i resolve-chain.mmd -o resolve-chain.svg -b transparent
 ```
