@@ -578,16 +578,20 @@ order by UnitsInStock as long desc, score(), Name
 
 <Panel heading="Custom sorters">
 
-* The Lucene indexing engine allows you to create your own custom sorters.  
+* The **Lucene** indexing engine allows you to define custom sorters,  
+  so you can apply your own logic when ordering query results.  
   Custom sorters are not supported by [Corax](../../../indexes/search-engine/corax.mdx).  
  
-* Custom sorters can be deployed to the server by either:  
-
-     * Sending the [Put Sorters Operation](../../../client-api/operations/maintenance/sorters/put-sorter.mdx) from your code.
-  
-     * Uploading a custom sorter from Studio, see [Custom Sorters View](../../../studio/database/settings/custom-sorters.mdx).
-
-* Once the custom sorter is deployed, you can sort the query results with it.
+* Custom sorters can be deployed at either the database level or the server-wide level:  
+  * **Database-level**  
+    Custom sorters can be used only by queries made on that database.  
+    Learn how to deploy a database-level custom sorter in: [Database-level custom sorters](../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx).    
+    
+  * **Server-wide**  
+    Custom sorters can be used by queries made on any database in your cluster.  
+    Learn how to deploy a server-wide custom sorter in: [Server-wide custom sorters](../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx).
+    
+* Once deployed, a custom sorter can be specified in a query to sort the results.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -595,11 +599,11 @@ order by UnitsInStock as long desc, score(), Name
 {`products = list(
     session.query(object_type=Product).where_greater_than("units_in_stock", 10)
     # Order by field 'units_in_stock', pass the name of your custom sorter class
-    .order_by("units_in_stock", "MySorter")
+    .order_by("units_in_stock", "MyCustomSorter")
 )
 
 # Results will be sorted by the 'units_in_stock' value
-# according to the logic from 'MySorter' class
+# according to the logic from 'MyCustomSorter' class
 `}
 </CodeBlock>
 </TabItem>
@@ -607,7 +611,10 @@ order by UnitsInStock as long desc, score(), Name
 <CodeBlock language="sql">
 {`from "Products"
 where UnitsInStock > 10
-order by custom(UnitsInStock, "MySorter")
+order by custom(UnitsInStock, "MyCustomSorter")
+    
+# Results will be sorted by the 'units_in_stock' value
+# according to the logic from 'MyCustomSorter' class    
 `}
 </CodeBlock>
 </TabItem>
@@ -632,9 +639,9 @@ def order_by_descending(
 </CodeBlock>
 </TabItem>
 
-| Parameter      | Type                          | Description                                                                                                                                                                |
-|----------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **field**       | `str`                      | The name of the field to sort by                                                                                                                                           |
-| **sorter_name_or_ordering_type**       | `Union[str, OrderingType]` | The custom sorter class name<br/>**-or-**<br/>The results sorting ordering type<br/>Can be:<br/>`OrderingType.LONG`<br/>`OrderingType.DOUBLE`<br/>`OrderingType.ALPHA_NUMERIC`<br/>`OrderingType.STRING` (default) |
+| Parameter      | Type            | Description                                                                                                                                                                |
+|----------------|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **field**      | `str`           | The name of the field to sort by                                                                                                                                           |
+| **sorter_name_or_ordering_type** | `Union[str, OrderingType]` | The custom sorter class name<br/>**-or-**<br/>The results sorting ordering type<br/>Can be:<br/>`OrderingType.LONG`<br/>`OrderingType.DOUBLE`<br/>`OrderingType.ALPHA_NUMERIC`<br/>`OrderingType.STRING` (default) |
 
 </Panel>
