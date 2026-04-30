@@ -10,9 +10,9 @@ import ContentFrame from '@site/src/components/ContentFrame';
 * By default, the RavenDB client caches every HTTP response and revalidates it with the server using ETags and `304 Not Modified` on every read.
 
 * Aggressive caching skips that revalidation round trip:  
-   inside an aggressive caching scope, the client serves the cached response straight from local memory and never asks the server.
+   inside an aggressive caching scope, the client serves the cached response straight from local memory without contacting the server.
 
-* Use aggressive caching on read-heavy paths, on reference data that changes rarely, and on any code path where end-to-end latency matters more than absolute freshness.
+* Use aggressive caching where the same documents are read many times, where reference data changes rarely, and where end-to-end latency matters more than absolute freshness.
 
 * Cached entries are invalidated automatically through the [Changes API](../../../client-api/changes/what-is-changes-api.mdx).  
    A short notification delay can briefly cause stale reads inside the scope.
@@ -70,7 +70,7 @@ For workloads that read the same documents over and over, that single round trip
 ## Aggressive caching
 
 Aggressive caching skips the round trip entirely.  
-While a request runs inside an aggressive caching scope, the client serves the cached response straight from local memory and never asks the server.  
+While a request runs inside an aggressive caching scope, the client serves the cached response straight from local memory without contacting the server.  
 This is the right choice for read-heavy paths where the same documents are fetched many times, for reference data that changes rarely, and for any code path where end-to-end latency matters more than absolute freshness.
 
 The trade-off is staleness.  
@@ -118,19 +118,18 @@ When the `using` block exits, the previous configuration is restored automatical
 
 Call `AggressivelyCacheFor` with a duration and wrap the code that should use the cache in a `using` block over the returned object:
 
-<CodeBlock language="csharp">
-{`using (documentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5)))
-\{
+```csharp
+using (documentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5)))
+{
     using (var session = documentStore.OpenSession())
-    \{
+    {
         // Reads in this scope are served from the local cache when the
         // cached entry is younger than 5 minutes and has not been
         // invalidated by a change notification from the server.
         var order = session.Load<Order>("orders/1");
-    \}
-\}
-`}
-</CodeBlock>
+    }
+}
+```
 
 <br />
 
@@ -151,28 +150,27 @@ The same rules apply to queries that run inside the scope.
 If most of your aggressive caching scopes use the same duration and mode, set them once on the document store and call `AggressivelyCache()` (no arguments) instead.  
 The no-argument call reads the duration and mode from `Conventions.AggressiveCache`.
 
-<CodeBlock language="csharp">
-{`var documentStore = new DocumentStore
-\{
-    Urls = new[] \{ "http://localhost:8080" \},
+```csharp
+var documentStore = new DocumentStore
+{
+    Urls = new[] { "http://localhost:8080" },
     Database = "Northwind",
     Conventions =
-    \{
+    {
         AggressiveCache =
-        \{
+        {
             Duration = TimeSpan.FromMinutes(5),
             Mode = AggressiveCacheMode.TrackChanges
-        \}
-    \}
-\};
+        }
+    }
+};
 documentStore.Initialize();
 
 using (documentStore.AggressivelyCache())
-\{
+{
     // Uses Conventions.AggressiveCache.Duration and .Mode.
-\}
-`}
-</CodeBlock>
+}
+```
 
 <br />
 
@@ -197,14 +195,13 @@ Where each value comes from depends on which form of the call you use:
 
 If aggressive caching is the right policy for the whole application, open one scope at startup and call `Dispose()` on the returned object during shutdown:
 
-<CodeBlock language="csharp">
-{`var aggressiveScope = documentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5));
+```csharp
+var aggressiveScope = documentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5));
 
 // ... the application runs and serves requests ...
 
 aggressiveScope.Dispose(); // typically called when the application shuts down
-`}
-</CodeBlock>
+```
 
 <br />
 
@@ -244,15 +241,14 @@ Cached entries are served for the entire `Duration` of the scope without any rev
 Use this mode when the Changes API is unavailable, for example in some embedded scenarios.  
 You can also choose it when you explicitly accept stale reads in exchange for the lower bookkeeping cost of not maintaining a Changes connection.
 
-<CodeBlock language="csharp">
-{`using (documentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5),
+```csharp
+using (documentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5),
                                           AggressiveCacheMode.DoNotTrackChanges))
-\{
+{
     // Reads here are served from the cache for up to 5 minutes
     // and ignore any changes published by the server.
-\}
-`}
-</CodeBlock>
+}
+```
 
 </ContentFrame>
 
@@ -267,21 +263,20 @@ You can also choose it when you explicitly accept stale reads in exchange for th
 To force a specific request to reach the server even though aggressive caching is in effect, wrap that request in a `using` block over `DisableAggressiveCaching()`.  
 When the inner block exits, the enclosing aggressive scope is restored.
 
-<CodeBlock language="csharp">
-{`using (documentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5)))
-\{
+```csharp
+using (documentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5)))
+{
     using (var session = documentStore.OpenSession())
-    \{
+    {
         var cached = session.Load<Order>("orders/1"); // may be served from the cache
 
         using (documentStore.DisableAggressiveCaching())
-        \{
+        {
             var fresh = session.Load<Order>("orders/1"); // forced server round trip
-        \}
-    \}
-\}
-`}
-</CodeBlock>
+        }
+    }
+}
+```
 
 <br />
 
@@ -354,8 +349,8 @@ See [Disable Caching per Session](../../../client-api/session/configuration/how-
 
 Open an aggressive caching scope for the calling code.
 
-<CodeBlock language="csharp">
-{`IDisposable AggressivelyCacheFor(TimeSpan cacheDuration, string database = null);
+```csharp
+IDisposable AggressivelyCacheFor(TimeSpan cacheDuration, string database = null);
 
 IDisposable AggressivelyCacheFor(TimeSpan cacheDuration,
                                  AggressiveCacheMode mode,
@@ -367,24 +362,22 @@ ValueTask<IDisposable> AggressivelyCacheForAsync(TimeSpan cacheDuration,
 ValueTask<IDisposable> AggressivelyCacheForAsync(TimeSpan cacheDuration,
                                                  AggressiveCacheMode mode,
                                                  string database = null);
-`}
-</CodeBlock>
+```
 
 <br />
 
 Usage:
 
-<CodeBlock language="csharp">
-{`using (documentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5),
+```csharp
+using (documentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5),
                                           AggressiveCacheMode.TrackChanges))
-\{
+{
     using (var session = documentStore.OpenSession())
-    \{
+    {
         var order = session.Load<Order>("orders/1");
-    \}
-\}
-`}
-</CodeBlock>
+    }
+}
+```
 
 <br />
 
@@ -403,24 +396,22 @@ Usage:
 
 Open an aggressive caching scope using the duration and mode from `Conventions.AggressiveCache`.
 
-<CodeBlock language="csharp">
-{`IDisposable AggressivelyCache(string database = null);
+```csharp
+IDisposable AggressivelyCache(string database = null);
 
 ValueTask<IDisposable> AggressivelyCacheAsync(string database = null);
-`}
-</CodeBlock>
+```
 
 <br />
 
 Usage:
 
-<CodeBlock language="csharp">
-{`using (documentStore.AggressivelyCache())
-\{
+```csharp
+using (documentStore.AggressivelyCache())
+{
     // Uses Conventions.AggressiveCache.Duration and .Mode.
-\}
-`}
-</CodeBlock>
+}
+```
 
 <br />
 
@@ -437,25 +428,23 @@ Usage:
 
 Suppress aggressive caching inside an enclosing scope. Standard HTTP caching is unaffected.
 
-<CodeBlock language="csharp">
-{`IDisposable DisableAggressiveCaching(string database = null);
-`}
-</CodeBlock>
+```csharp
+IDisposable DisableAggressiveCaching(string database = null);
+```
 
 <br />
 
 Usage:
 
-<CodeBlock language="csharp">
-{`using (documentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5)))
-\{
+```csharp
+using (documentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5)))
+{
     using (documentStore.DisableAggressiveCaching())
-    \{
+    {
         // Requests issued in this inner scope reach the server.
-    \}
-\}
-`}
-</CodeBlock>
+    }
+}
+```
 
 <br />
 
@@ -481,17 +470,16 @@ Usage:
 <Tabs groupId='aggressive-caching-classes'>
 <TabItem value="AggressiveCacheOptions" label="AggressiveCacheOptions">
 
-<CodeBlock language="csharp">
-{`public sealed class AggressiveCacheOptions
-\{
+```csharp
+public sealed class AggressiveCacheOptions
+{
     public AggressiveCacheOptions(TimeSpan duration, AggressiveCacheMode mode);
 
-    public TimeSpan Duration \{ get; set; \}
+    public TimeSpan Duration { get; set; }
 
-    public AggressiveCacheMode Mode \{ get; set; \}
-\}
-`}
-</CodeBlock>
+    public AggressiveCacheMode Mode { get; set; }
+}
+```
 
 <br />
 
@@ -503,14 +491,13 @@ Usage:
 </TabItem>
 <TabItem value="AggressiveCacheMode" label="AggressiveCacheMode">
 
-<CodeBlock language="csharp">
-{`public enum AggressiveCacheMode
-\{
+```csharp
+public enum AggressiveCacheMode
+{
     TrackChanges = 0,
     DoNotTrackChanges = 1
-\}
-`}
-</CodeBlock>
+}
+```
 
 <br />
 

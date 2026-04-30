@@ -10,9 +10,9 @@ import ContentFrame from '@site/src/components/ContentFrame';
 * By default, the RavenDB client caches every HTTP response and revalidates it with the server using ETags and `304 Not Modified` on every read.
 
 * Aggressive caching skips that revalidation round trip:  
-   inside an aggressive caching scope, the client serves the cached response straight from local memory and never asks the server.
+   inside an aggressive caching scope, the client serves the cached response straight from local memory without contacting the server.
 
-* Use aggressive caching on read-heavy paths, on reference data that changes rarely, and on any code path where end-to-end latency matters more than absolute freshness.
+* Use aggressive caching where the same documents are read many times, where reference data changes rarely, and where end-to-end latency matters more than absolute freshness.
 
 * Cached entries are invalidated automatically through the [Changes API](../../../client-api/changes/what-is-changes-api.mdx).  
    A short notification delay can briefly cause stale reads inside the scope.
@@ -70,7 +70,7 @@ For workloads that read the same documents over and over, that single round trip
 ## Aggressive caching
 
 Aggressive caching skips the round trip entirely.  
-While a request runs inside an aggressive caching scope, the client serves the cached response straight from local memory and never asks the server.  
+While a request runs inside an aggressive caching scope, the client serves the cached response straight from local memory without contacting the server.  
 This is the right choice for read-heavy paths where the same documents are fetched many times, for reference data that changes rarely, and for any code path where end-to-end latency matters more than absolute freshness.
 
 The trade-off is staleness.  
@@ -118,17 +118,16 @@ When the block exits, the previous configuration is restored automatically.
 
 Call `aggressivelyCacheFor` with a duration and wrap the code that should use the cache in a `try`-with-resources block over the returned `CleanCloseable`:
 
-<CodeBlock language="java">
-{`try (CleanCloseable scope = documentStore.aggressivelyCacheFor(Duration.ofMinutes(5))) \{
-    try (IDocumentSession session = documentStore.openSession()) \{
+```java
+try (CleanCloseable scope = documentStore.aggressivelyCacheFor(Duration.ofMinutes(5))) {
+    try (IDocumentSession session = documentStore.openSession()) {
         // Reads in this scope are served from the local cache when the
         // cached entry is younger than 5 minutes and has not been
         // invalidated by a change notification from the server.
         Order order = session.load(Order.class, "orders/1");
-    \}
-\}
-`}
-</CodeBlock>
+    }
+}
+```
 
 <br />
 
@@ -149,9 +148,9 @@ The same rules apply to queries that run inside the scope.
 If most of your aggressive caching scopes use the same duration and mode, set them once on the document store and call `aggressivelyCache()` (no arguments) instead.  
 The no-argument call reads the duration and mode from the `aggressiveCache()` convention.
 
-<CodeBlock language="java">
-{`DocumentStore documentStore = new DocumentStore();
-documentStore.setUrls(new String[] \{ "http://localhost:8080" \});
+```java
+DocumentStore documentStore = new DocumentStore();
+documentStore.setUrls(new String[] { "http://localhost:8080" });
 documentStore.setDatabase("Northwind");
 
 DocumentConventions conventions = documentStore.getConventions();
@@ -160,11 +159,10 @@ conventions.aggressiveCache().setMode(AggressiveCacheMode.TRACK_CHANGES);
 
 documentStore.initialize();
 
-try (CleanCloseable scope = documentStore.aggressivelyCache()) \{
+try (CleanCloseable scope = documentStore.aggressivelyCache()) {
     // Uses the duration and mode from aggressiveCache() conventions.
-\}
-`}
-</CodeBlock>
+}
+```
 
 <br />
 
@@ -189,14 +187,13 @@ Where each value comes from depends on which form of the call you use:
 
 If aggressive caching is the right policy for the whole application, open one scope at startup and call `close()` on the returned `CleanCloseable` during shutdown:
 
-<CodeBlock language="java">
-{`CleanCloseable aggressiveScope = documentStore.aggressivelyCacheFor(Duration.ofMinutes(5));
+```java
+CleanCloseable aggressiveScope = documentStore.aggressivelyCacheFor(Duration.ofMinutes(5));
 
 // ... the application runs and serves requests ...
 
 aggressiveScope.close(); // typically called when the application shuts down
-`}
-</CodeBlock>
+```
 
 <br />
 
@@ -236,14 +233,13 @@ Cached entries are served for the entire `Duration` of the scope without any rev
 Use this mode when the Changes API is unavailable, for example in some embedded scenarios.  
 You can also choose it when you explicitly accept stale reads in exchange for the lower bookkeeping cost of not maintaining a Changes connection.
 
-<CodeBlock language="java">
-{`try (CleanCloseable scope = documentStore.aggressivelyCacheFor(Duration.ofMinutes(5),
-                                                              AggressiveCacheMode.DO_NOT_TRACK_CHANGES)) \{
+```java
+try (CleanCloseable scope = documentStore.aggressivelyCacheFor(Duration.ofMinutes(5),
+                                                              AggressiveCacheMode.DO_NOT_TRACK_CHANGES)) {
     // Reads here are served from the cache for up to 5 minutes
     // and ignore any changes published by the server.
-\}
-`}
-</CodeBlock>
+}
+```
 
 </ContentFrame>
 
@@ -258,18 +254,17 @@ You can also choose it when you explicitly accept stale reads in exchange for th
 To force a specific request to reach the server even though aggressive caching is in effect, wrap that request in a `try`-with-resources block over `disableAggressiveCaching()`.  
 When the inner block exits, the enclosing aggressive scope is restored.
 
-<CodeBlock language="java">
-{`try (CleanCloseable outerScope = documentStore.aggressivelyCacheFor(Duration.ofMinutes(5))) \{
-    try (IDocumentSession session = documentStore.openSession()) \{
+```java
+try (CleanCloseable outerScope = documentStore.aggressivelyCacheFor(Duration.ofMinutes(5))) {
+    try (IDocumentSession session = documentStore.openSession()) {
         Order cached = session.load(Order.class, "orders/1"); // may be served from the cache
 
-        try (CleanCloseable bypass = documentStore.disableAggressiveCaching()) \{
+        try (CleanCloseable bypass = documentStore.disableAggressiveCaching()) {
             Order fresh = session.load(Order.class, "orders/1"); // forced server round trip
-        \}
-    \}
-\}
-`}
-</CodeBlock>
+        }
+    }
+}
+```
 
 <br />
 
@@ -342,30 +337,28 @@ See [Disable Caching per Session](../../../client-api/session/configuration/how-
 
 Open an aggressive caching scope for the calling code.
 
-<CodeBlock language="java">
-{`CleanCloseable aggressivelyCacheFor(Duration cacheDuration);
+```java
+CleanCloseable aggressivelyCacheFor(Duration cacheDuration);
 
 CleanCloseable aggressivelyCacheFor(Duration cacheDuration, String database);
 
 CleanCloseable aggressivelyCacheFor(Duration cacheDuration, AggressiveCacheMode mode);
 
 CleanCloseable aggressivelyCacheFor(Duration cacheDuration, AggressiveCacheMode mode, String database);
-`}
-</CodeBlock>
+```
 
 <br />
 
 Usage:
 
-<CodeBlock language="java">
-{`try (CleanCloseable scope = documentStore.aggressivelyCacheFor(Duration.ofMinutes(5),
-                                                              AggressiveCacheMode.TRACK_CHANGES)) \{
-    try (IDocumentSession session = documentStore.openSession()) \{
+```java
+try (CleanCloseable scope = documentStore.aggressivelyCacheFor(Duration.ofMinutes(5),
+                                                              AggressiveCacheMode.TRACK_CHANGES)) {
+    try (IDocumentSession session = documentStore.openSession()) {
         Order order = session.load(Order.class, "orders/1");
-    \}
-\}
-`}
-</CodeBlock>
+    }
+}
+```
 
 <br />
 
@@ -384,23 +377,21 @@ Usage:
 
 Open an aggressive caching scope using the duration and mode from the `aggressiveCache()` convention.
 
-<CodeBlock language="java">
-{`CleanCloseable aggressivelyCache();
+```java
+CleanCloseable aggressivelyCache();
 
 CleanCloseable aggressivelyCache(String database);
-`}
-</CodeBlock>
+```
 
 <br />
 
 Usage:
 
-<CodeBlock language="java">
-{`try (CleanCloseable scope = documentStore.aggressivelyCache()) \{
+```java
+try (CleanCloseable scope = documentStore.aggressivelyCache()) {
     // Uses the duration and mode from aggressiveCache() conventions.
-\}
-`}
-</CodeBlock>
+}
+```
 
 <br />
 
@@ -417,25 +408,23 @@ Usage:
 
 Suppress aggressive caching inside an enclosing scope. Standard HTTP caching is unaffected.
 
-<CodeBlock language="java">
-{`CleanCloseable disableAggressiveCaching();
+```java
+CleanCloseable disableAggressiveCaching();
 
 CleanCloseable disableAggressiveCaching(String database);
-`}
-</CodeBlock>
+```
 
 <br />
 
 Usage:
 
-<CodeBlock language="java">
-{`try (CleanCloseable outerScope = documentStore.aggressivelyCacheFor(Duration.ofMinutes(5))) \{
-    try (CleanCloseable bypass = documentStore.disableAggressiveCaching()) \{
+```java
+try (CleanCloseable outerScope = documentStore.aggressivelyCacheFor(Duration.ofMinutes(5))) {
+    try (CleanCloseable bypass = documentStore.disableAggressiveCaching()) {
         // Requests issued in this inner scope reach the server.
-    \}
-\}
-`}
-</CodeBlock>
+    }
+}
+```
 
 <br />
 
@@ -461,8 +450,8 @@ Usage:
 <Tabs groupId='aggressive-caching-classes'>
 <TabItem value="AggressiveCacheOptions" label="AggressiveCacheOptions">
 
-<CodeBlock language="java">
-{`public class AggressiveCacheOptions \{
+```java
+public class AggressiveCacheOptions {
 
     public AggressiveCacheOptions(Duration duration, AggressiveCacheMode mode);
 
@@ -471,9 +460,8 @@ Usage:
 
     public AggressiveCacheMode getMode();
     public void setMode(AggressiveCacheMode mode);
-\}
-`}
-</CodeBlock>
+}
+```
 
 <br />
 
@@ -485,13 +473,12 @@ Usage:
 </TabItem>
 <TabItem value="AggressiveCacheMode" label="AggressiveCacheMode">
 
-<CodeBlock language="java">
-{`public enum AggressiveCacheMode \{
+```java
+public enum AggressiveCacheMode {
     TRACK_CHANGES,
     DO_NOT_TRACK_CHANGES
-\}
-`}
-</CodeBlock>
+}
+```
 
 <br />
 
