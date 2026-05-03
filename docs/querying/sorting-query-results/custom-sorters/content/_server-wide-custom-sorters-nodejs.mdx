@@ -106,7 +106,7 @@ order by custom(UnitsInStock, "MyServerWideCustomSorter")
 1. The **sorter name** must be the same as the class name of your sorter. 
 2. You can load the sorter's code from a `*.cs` file.
 3. Or, you can enter the code manually in this editor.    
-   The **sorter code** must be compilable and include all necessary `using` statements.  
+   The sorter code must be compilable and include all necessary `using` statements.  
    The sorter's class should inherit from [Lucene.Net.Search.FieldComparator](https://lucenenet.apache.org/docs/3.0.3/df/d91/class_lucene_1_1_net_1_1_search_1_1_field_comparator.html).  
    Learn more in [How to write a custom sorter](../../../../querying/sorting-query-results/custom-sorters/overview.mdx#how-to-write-a-custom-sorter).   
 4. Save your server-wide sorter or discard.    

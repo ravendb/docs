@@ -924,14 +924,14 @@
     {
         "key": "/client-api/operations/maintenance/sorters/put-sorter",
         "value": {
-            "targetUrl": "/querying/sorting-query-results/custom-sorters/overview",
+            "targetUrl": "/querying/sorting-query-results/custom-sorters/database-level-custom-sorters",
             "minimumVersion": "7.2"
         }
     },
     {
         "key": "/client-api/operations/server-wide/sorters/put-sorter-server-wide",
         "value": {
-            "targetUrl": "/querying/sorting-query-results/custom-sorters/overview",
+            "targetUrl": "/querying/sorting-query-results/custom-sorters/server-wide-custom-sorters",
             "minimumVersion": "7.2"
         }
     }
