@@ -915,6 +915,20 @@
         }
     },
     {
+        "key": "/client-api/session/querying/sort-query-results",
+        "value": {
+            "targetUrl": "/querying/sorting-query-results/sort-query-results",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/indexes/querying/sorting",
+        "value": {
+            "targetUrl": "/querying/sorting-query-results/sort-query-results",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/studio/database/settings/custom-sorters",
         "value": {
             "targetUrl": "/querying/sorting-query-results/custom-sorters/overview",
