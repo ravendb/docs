@@ -34,6 +34,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
    * [`trustServerCert`](../../server/administration/cli.mdx#trustservercert)  
    * [`trustClientCert`](../../server/administration/cli.mdx#trustclientcert)  
    * [`replaceClusterCert`](../../server/administration/cli.mdx#replaceclustercert)  
+   * [`triggerCertificateRefresh`](../../server/administration/cli.mdx#triggercertificaterefresh)  
    * [`clear`](../../server/administration/cli.mdx#clear)  
    * [`prompt`](../../server/administration/cli.mdx#prompt)  
    * [`logout`](../../server/administration/cli.mdx#logout)  
@@ -365,6 +366,29 @@ certificate in those nodes. Use with care.
 | `name` | The name of the new cluster certificate. |
 | `path to pfx` | The path to the certificate. |
 | `password` | The certificate's password, if it has one. |
+
+
+
+## `triggerCertificateRefresh`
+
+Manually trigger a certificate refresh cycle.  
+Normally, RavenDB checks for certificate renewal once an hour automatically.  
+This command runs that same check immediately on demand.
+
+When the server is configured to use a Let's Encrypt certificate obtained via the [Setup Wizard](../../start/installation/setup-wizard/overview.mdx),
+this command contacts Let's Encrypt and renews the certificate if it is within 30 days of expiry,
+then distributes the new certificate across all cluster nodes.
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`ravendb> triggerCertificateRefresh [-replaceImmediately]
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Description |
+| - | - |
+| `-replaceImmediately` | Force immediate replacement across the cluster, even if some nodes are not responding.<br />Optional, use with caution. |
 
 
 

@@ -87,7 +87,9 @@ var sqlConStr = new SqlConnectionString
     Name = "sql-connection-string-name",
 
     // Define destination factory name
-    FactoryName = "MySql.Data.MySqlClient",
+    // Note: "MySql.Data.MySqlClient" is deprecated. Use "MySqlConnector.MySqlConnectorFactory" instead.
+    // Existing configurations using "MySql.Data.MySqlClient" still work for backward compatibility.
+    FactoryName = "MySqlConnector.MySqlConnectorFactory",
 
     // Define the destination database
     // May also need to define authentication and encryption parameters

@@ -302,6 +302,29 @@ If **replaceImmediately** is specified, RavenDB will replace the certificate by 
 
 
 
+## triggerCertificateRefresh
+
+Manually trigger a certificate refresh cycle.  
+Normally, RavenDB checks for certificate renewal once an hour automatically.  
+This command runs that same check immediately on demand.
+
+When the server is configured to use a Let's Encrypt certificate obtained via the Setup Wizard,
+this command contacts Let's Encrypt and renews the certificate if it is within 30 days of expiry,
+then distributes the new certificate across all cluster nodes.
+
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`ravendb> triggerCertificateRefresh [-replaceImmediately]
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Description |
+| - | - |
+| `-replaceImmediately` | Force immediate replacement across the cluster, even if some nodes are not responding.<br />Optional, use with caution. |
+
+
+
 ---
 
 ## clear
