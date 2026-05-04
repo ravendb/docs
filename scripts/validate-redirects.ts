@@ -19,6 +19,7 @@ import {
     validateRedirects,
     validateTargetsExist,
 } from "../src/plugins/versioned-seo-plugin/lib/redirects.js";
+import { BUILT_VERSIONS, CURRENT_VERSION } from "./lib/version-policy.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const redirectsPath = path.join(__dirname, "redirects.json");
@@ -45,7 +46,10 @@ const structuralErrors = validateRedirects(rules);
 let errors = structuralErrors;
 if (errors.length === 0) {
     const typedRules = rules as Parameters<typeof validateNoCycles>[0];
-    errors = [...validateNoCycles(typedRules), ...validateTargetsExist(typedRules, projectRoot)];
+    errors = [
+        ...validateNoCycles(typedRules),
+        ...validateTargetsExist(typedRules, projectRoot, CURRENT_VERSION, BUILT_VERSIONS),
+    ];
 }
 if (errors.length === 0) {
     console.log(

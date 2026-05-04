@@ -41,7 +41,7 @@ import { rewriteHtml } from "./lib/rewrite.js";
 import { buildUniverse, hasNoindexRobotsMeta, verifyCanonicals, type CanonicalRecord } from "./lib/verify.js";
 // version-policy.js is CJS; named-import interop lets both tsx --test and
 // the Docusaurus webpack loader resolve it without a shim.
-import { CURRENT_VERSION, LEGACY_VERSIONS } from "../../../scripts/lib/version-policy.js";
+import { BUILT_VERSIONS, CURRENT_VERSION, LEGACY_VERSIONS } from "../../../scripts/lib/version-policy.js";
 
 export interface VersionedSeoPluginOptions {
     /** Absolute or site-relative path to redirects.json. */
@@ -158,15 +158,14 @@ const versionedSeoPlugin = function versionedSeoPlugin(
             }
 
             const rules = loadRedirects(options.redirectsPath);
-            // Structural validation first, then cycle detection + target-
-            // existence on the structurally-sound rule set. Cycles and dead
-            // targets are build-time errors because the edge handler trusts
-            // this pre-gate and doesn't carry its own guards.
             const structuralErrors = validateRedirects(rules);
             const errors =
                 structuralErrors.length > 0
                     ? structuralErrors
-                    : [...validateNoCycles(rules), ...validateTargetsExist(rules, context.siteDir)];
+                    : [
+                          ...validateNoCycles(rules),
+                          ...validateTargetsExist(rules, context.siteDir, CURRENT_VERSION, BUILT_VERSIONS),
+                      ];
             if (errors.length > 0) {
                 const rendered = errors
                     .map((e) => `  [${e.index}] ${e.key ? `'${e.key}' — ` : ""}${e.message}`)
