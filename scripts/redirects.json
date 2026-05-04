@@ -142,7 +142,7 @@
         "key": "/ai-integration/ai-agents/ai-agents_security-concerns",
         "value": {
             "targetUrl": "/ai-integration/ai-agents/security-concerns",
-            "minimumVersion": "7.1"
+            "minimumVersion": "7.2"
         }
     },
     {
@@ -611,14 +611,14 @@
         "key": "/ai-integration/vector-search/ravendb-as-vector-database",
         "value": {
             "targetUrl": "/ai-integration/vector-search/start",
-            "minimumVersion": "7.0"
+            "minimumVersion": "7.1"
         }
     },
     {
         "key": "/ai-integration/ravendb-as-vector-database",
         "value": {
             "targetUrl": "/ai-integration/vector-search/start",
-            "minimumVersion": "7.0"
+            "minimumVersion": "7.1"
         }
     },
     {
@@ -667,7 +667,7 @@
         "key": "/ai-integration/connection-strings",
         "value": {
             "targetUrl": "/ai-integration/connection-strings/overview",
-            "minimumVersion": "7.0"
+            "minimumVersion": "7.1"
         }
     },
     {

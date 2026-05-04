@@ -14,6 +14,7 @@ import {
     validateTargetsExist,
     type RedirectRule,
 } from "../lib/redirects.js";
+import { BUILT_VERSIONS, CURRENT_VERSION } from "../../../../scripts/lib/version-policy.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FIXTURE = path.join(__dirname, "fixtures", "redirects.sample.json");
@@ -188,13 +189,13 @@ test("validateTargetsExist accepts a flat .mdx target", () => {
     const rules: RedirectRule[] = [
         { key: "/old/licensing", value: { targetUrl: "/licensing/overview", minimumVersion: "7.2" } },
     ];
-    assert.deepEqual(validateTargetsExist(rules, root), []);
+    assert.deepEqual(validateTargetsExist(rules, root, "7.2", ["7.2"]), []);
 });
 
 test("validateTargetsExist accepts an index.md target (directory-as-page)", () => {
     const root = makeTempProject();
     const rules: RedirectRule[] = [{ key: "/old/q", value: { targetUrl: "/querying", minimumVersion: "7.2" } }];
-    assert.deepEqual(validateTargetsExist(rules, root), []);
+    assert.deepEqual(validateTargetsExist(rules, root, "7.2", ["7.2"]), []);
 });
 
 test("validateTargetsExist routes /guides/* to guides/ content root", () => {
@@ -202,7 +203,7 @@ test("validateTargetsExist routes /guides/* to guides/ content root", () => {
     const rules: RedirectRule[] = [
         { key: "/old/guide", value: { targetUrl: "/guides/kubernetes", minimumVersion: "7.2" } },
     ];
-    assert.deepEqual(validateTargetsExist(rules, root), []);
+    assert.deepEqual(validateTargetsExist(rules, root, "7.2", ["7.2"]), []);
 });
 
 test("validateTargetsExist flags a target with no matching file", () => {
@@ -210,7 +211,7 @@ test("validateTargetsExist flags a target with no matching file", () => {
     const rules: RedirectRule[] = [
         { key: "/old/dead", value: { targetUrl: "/nowhere/to/be/found", minimumVersion: "7.2" } },
     ];
-    const errors = validateTargetsExist(rules, root);
+    const errors = validateTargetsExist(rules, root, "7.2", ["7.2"]);
     assert.equal(errors.length, 1);
     assert.match(errors[0].message, /does not resolve/);
     assert.match(errors[0].message, /\/nowhere\/to\/be\/found/);
@@ -224,7 +225,7 @@ test("validateTargetsExist reports each broken target independently", () => {
         { key: "/broken-a", value: { targetUrl: "/does-not-exist-a", minimumVersion: "7.2" } },
         { key: "/broken-b", value: { targetUrl: "/does-not-exist-b", minimumVersion: "7.2" } },
     ];
-    const errors = validateTargetsExist(rules, root);
+    const errors = validateTargetsExist(rules, root, "7.2", ["7.2"]);
     assert.equal(errors.length, 2);
     assert.equal(errors[0].key, "/broken-a");
     assert.equal(errors[0].index, 1);
@@ -241,7 +242,7 @@ test("validateTargetsExist rejects a bare directory with no index file", () => {
     fs.mkdirSync(path.join(root, "docs", "bare-category"), { recursive: true });
     fs.writeFileSync(path.join(root, "docs", "bare-category", "_category_.json"), '{"label": "Bare"}');
     const rules: RedirectRule[] = [{ key: "/old", value: { targetUrl: "/bare-category", minimumVersion: "7.2" } }];
-    const errors = validateTargetsExist(rules, root);
+    const errors = validateTargetsExist(rules, root, "7.2", ["7.2"]);
     assert.equal(errors.length, 1);
 });
 
@@ -251,5 +252,102 @@ test("validateTargetsExist resolves against the real project (smoke)", () => {
     const projectRoot = path.join(__dirname, "..", "..", "..", "..");
     const redirectsPath = path.join(projectRoot, "scripts", "redirects.json");
     const rules = loadRedirects(redirectsPath);
-    assert.deepEqual(validateTargetsExist(rules, projectRoot), []);
+    assert.deepEqual(validateTargetsExist(rules, projectRoot, CURRENT_VERSION, BUILT_VERSIONS), []);
+});
+
+// --- validateTargetsExist (multi-version) -------------------------------
+//
+// Catches redirects whose target only exists on newer versions: a rule with
+// minimumVersion=7.0 pointing at a 7.1-only page passes the structural check
+// but ships a redirect-to-404 for 7.0 readers.
+
+function makeMultiVersionProject(): string {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "redirects-multi-"));
+    // current 7.2 — has vector-search/start
+    fs.mkdirSync(path.join(root, "docs", "ai", "vector-search"), { recursive: true });
+    fs.writeFileSync(path.join(root, "docs", "ai", "vector-search", "start.mdx"), "");
+    // 7.1 — also has start
+    fs.mkdirSync(path.join(root, "versioned_docs", "version-7.1", "ai", "vector-search"), { recursive: true });
+    fs.writeFileSync(path.join(root, "versioned_docs", "version-7.1", "ai", "vector-search", "start.mdx"), "");
+    // 7.0 — directory exists but no start.mdx (the bug shape)
+    fs.mkdirSync(path.join(root, "versioned_docs", "version-7.0", "ai", "vector-search"), { recursive: true });
+    // versionless /guides — has kubernetes
+    fs.mkdirSync(path.join(root, "guides"), { recursive: true });
+    fs.writeFileSync(path.join(root, "guides", "kubernetes.mdx"), "");
+    return root;
+}
+
+test("validateTargetsExist multi-version: flags target missing on a version >= minimumVersion", () => {
+    const root = makeMultiVersionProject();
+    const rules: RedirectRule[] = [
+        { key: "/ai/old", value: { targetUrl: "/ai/vector-search/start", minimumVersion: "7.0" } },
+    ];
+    const errors = validateTargetsExist(rules, root, "7.2", ["7.2", "7.1", "7.0"]);
+    assert.equal(errors.length, 1);
+    assert.match(errors[0].message, /version 7\.0/);
+    assert.equal(errors[0].key, "/ai/old");
+});
+
+test("validateTargetsExist multi-version: respects minimumVersion (versions below the gate are skipped)", () => {
+    const root = makeMultiVersionProject();
+    // minVer 7.1 — 7.0 isn't checked even though target is missing there.
+    const rules: RedirectRule[] = [
+        { key: "/ai/old", value: { targetUrl: "/ai/vector-search/start", minimumVersion: "7.1" } },
+    ];
+    assert.deepEqual(validateTargetsExist(rules, root, "7.2", ["7.2", "7.1", "7.0"]), []);
+});
+
+test("validateTargetsExist multi-version: versionless /guides keys are checked once, not per-version", () => {
+    // /guides content has no version axis. Even with multi-version mode on,
+    // the rule should be checked exactly once against guides/ — and pass.
+    const root = makeMultiVersionProject();
+    const rules: RedirectRule[] = [{ key: "/guides/old", value: { targetUrl: "/guides/kubernetes" } }];
+    assert.deepEqual(validateTargetsExist(rules, root, "7.2", ["7.2", "7.1", "7.0"]), []);
+});
+
+test("validateTargetsExist multi-version: follows redirect chains per version", () => {
+    // /ai/old → /ai/vector-search/start → /ai/restructured (only on 7.2).
+    // For 7.2, chain resolves to /ai/restructured (must exist on 7.2).
+    // For 7.1, second hop's gate fails — chain stops at /ai/vector-search/start
+    // (must exist on 7.1).
+    const root = makeMultiVersionProject();
+    fs.writeFileSync(path.join(root, "docs", "ai", "restructured.mdx"), "");
+    const rules: RedirectRule[] = [
+        { key: "/ai/old", value: { targetUrl: "/ai/vector-search/start", minimumVersion: "7.0" } },
+        { key: "/ai/vector-search/start", value: { targetUrl: "/ai/restructured", minimumVersion: "7.2" } },
+    ];
+    // 7.0 isn't in versions list — gate skips it. 7.1 chain stops at start.mdx
+    // (which exists on 7.1 in the fixture). 7.2 walks to /ai/restructured (which
+    // we just wrote in current docs). All clean.
+    assert.deepEqual(validateTargetsExist(rules, root, "7.2", ["7.2", "7.1"]), []);
+});
+
+test("validateTargetsExist multi-version: chain miss reports terminus in the message", () => {
+    // Chain target on 7.2 doesn't exist — error should mention both the
+    // original target and the chain terminus so authors can locate the bug.
+    const root = makeMultiVersionProject();
+    const rules: RedirectRule[] = [
+        { key: "/ai/old", value: { targetUrl: "/ai/vector-search/start", minimumVersion: "7.2" } },
+        { key: "/ai/vector-search/start", value: { targetUrl: "/ai/nowhere", minimumVersion: "7.2" } },
+    ];
+    const errors = validateTargetsExist(rules, root, "7.2", ["7.2"]);
+    assert.equal(errors.length, 2);
+    const chainErr = errors.find((e) => e.key === "/ai/old")!;
+    assert.match(chainErr.message, /chain → \/ai\/nowhere/);
+});
+
+// --- version-policy ↔ versions.json drift -------------------------------
+//
+// version-policy.js hand-curates the BUILT_VERSIONS list; Docusaurus
+// auto-manages versions.json. When a snapshot is added or removed, both
+// have to move together. This test fails loudly the first time they drift.
+
+test("BUILT_VERSIONS matches versions.json contents (drift gate)", () => {
+    const projectRoot = path.join(__dirname, "..", "..", "..", "..");
+    const versionsJsonPath = path.join(projectRoot, "versions.json");
+    const versionsJson = JSON.parse(fs.readFileSync(versionsJsonPath, "utf8")) as string[];
+    // BUILT_VERSIONS = [CURRENT_VERSION, ...non-current versions]; versions.json
+    // is just the non-current list. Compare as sets to avoid order coupling.
+    const policyNonCurrent = BUILT_VERSIONS.filter((v) => v !== CURRENT_VERSION);
+    assert.deepEqual([...policyNonCurrent].sort(), [...versionsJson].sort());
 });

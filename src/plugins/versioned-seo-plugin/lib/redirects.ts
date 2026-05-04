@@ -177,36 +177,74 @@ export function validateNoCycles(rules: RedirectRule[]): ValidationError[] {
     return errors;
 }
 
-/** Map a targetUrl to its filesystem content root: /guides, /cloud, or /docs (default). */
-function resolveContentPath(targetUrl: string, projectRoot: string): { root: string; rel: string[] } {
-    const segments = targetUrl.split("/").filter(Boolean);
-    const first = segments[0];
-    if (first === "guides" || first === "cloud") {
-        return { root: path.join(projectRoot, first), rel: segments.slice(1) };
-    }
-    return { root: path.join(projectRoot, "docs"), rel: segments };
+/** /guides and /cloud are versionless content roots; everything else lives under docsRoot. */
+function targetBasePath(target: string, projectRoot: string, docsRoot: string): string {
+    const [first, ...rest] = target.split("/").filter(Boolean);
+    return first === "guides" || first === "cloud"
+        ? path.join(projectRoot, first, ...rest)
+        : path.join(docsRoot, first ?? "", ...rest);
 }
 
-/** Verify every targetUrl maps to a real .mdx/.md file (or an index.* under a directory). */
-export function validateTargetsExist(rules: RedirectRule[], projectRoot: string): ValidationError[] {
+function fileExists(basePath: string): boolean {
+    return [
+        `${basePath}.mdx`,
+        `${basePath}.md`,
+        path.join(basePath, "index.mdx"),
+        path.join(basePath, "index.md"),
+    ].some((p) => fs.existsSync(p));
+}
+
+/**
+ * Check every targetUrl resolves to a real page. Versionless rules
+ * (/guides, /cloud) are checked once; versioned rules are checked against
+ * every version in `versions` where their `minimumVersion` gate fires.
+ *
+ * Targets are walked through `resolveChain` first — if a rule's target is
+ * itself another rule's source, the chain terminus is what we verify.
+ * Mirrors the edge function's runtime behaviour.
+ */
+export function validateTargetsExist(
+    rules: RedirectRule[],
+    projectRoot: string,
+    currentVersion: string,
+    versions: string[]
+): ValidationError[] {
+    const map = buildRedirectMap(rules);
+    const currentDocsRoot = path.join(projectRoot, "docs");
     const errors: ValidationError[] = [];
-    for (let index = 0; index < rules.length; index++) {
-        const rule = rules[index];
+
+    for (const [index, rule] of rules.entries()) {
         const target = rule.value.targetUrl;
-        const { root, rel } = resolveContentPath(target, projectRoot);
-        const basePath = path.join(root, ...rel);
-        const candidates = [
-            `${basePath}.mdx`,
-            `${basePath}.md`,
-            path.join(basePath, "index.mdx"),
-            path.join(basePath, "index.md"),
-        ];
-        if (!candidates.some((p) => fs.existsSync(p))) {
-            errors.push({
-                index,
-                key: rule.key,
-                message: `targetUrl does not resolve to an existing document: ${target}`,
-            });
+
+        if (isVersionlessKey(rule.key)) {
+            // Versionless rule: target has no version axis, check once.
+            // Edge does single-hop for /guides + /cloud, so we don't chain.
+            if (!fileExists(targetBasePath(target, projectRoot, currentDocsRoot))) {
+                errors.push({
+                    index,
+                    key: rule.key,
+                    message: `targetUrl ${target} does not resolve to an existing document`,
+                });
+            }
+            continue;
+        }
+
+        for (const version of versions) {
+            if (compareVersions(version, rule.value.minimumVersion!) < 0) continue;
+            const finalTarget = resolveChain(map, target, version);
+            const docsRoot =
+                version === currentVersion
+                    ? currentDocsRoot
+                    : path.join(projectRoot, "versioned_docs", `version-${version}`);
+            if (!fileExists(targetBasePath(finalTarget, projectRoot, docsRoot))) {
+                errors.push({
+                    index,
+                    key: rule.key,
+                    message: `targetUrl ${target} does not resolve to an existing document in version ${version}${
+                        finalTarget === target ? "" : ` (chain → ${finalTarget})`
+                    }`,
+                });
+            }
         }
     }
     return errors;
