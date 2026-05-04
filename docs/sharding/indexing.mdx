@@ -1,7 +1,7 @@
 ---
 title: "Sharding: Indexing"
 description: "Understand how RavenDB indexes work with sharded databases — local shard indexes, map-reduce across shards, and query coordination."
-sidebar_label: Indexing
+sidebar_label: "Indexing"
 sidebar_position: 4
 ---
 
@@ -11,84 +11,124 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-# Sharding: Indexing
 <Admonition type="note" title="">
 
-* Indexing a sharded database is performed locally, per shard.  
-  There is no multi-shard indexing process.  
+* Indexes in a sharded database are defined and deployed the same way as in a non-sharded database,  
+  using the same syntax and the same client API.      
+    
+* Most indexing features available in a non-sharded database are also available in a sharded database.  
+  Unsupported features are listed below.  
 
-* Indexes use the same syntax in sharded and non-sharded databases.  
-
-* Most indexing features supported by non-sharded databases 
-  are also supported by sharded databases. Unsupported features are listed below.  
-
-* In this page:  
-  * [Indexing](../sharding/indexing.mdx#indexing)  
-  * [Map-Reduce Indexes on a Sharded Database](../sharding/indexing.mdx#map-reduce-indexes-on-a-sharded-database)  
-  * [Unsupported Indexing Features](../sharding/indexing.mdx#unsupported-indexing-features)  
+* In this article:  
+  * [Indexing in a sharded database](../sharding/indexing.mdx#indexing-in-a-sharded-database)  
+  * [Map-Reduce indexes in a sharded database](../sharding/indexing.mdx#map-reduce-indexes-in-a-sharded-database)  
+  * [Unsupported indexing features](../sharding/indexing.mdx#unsupported-indexing-features)  
 
 </Admonition>
-## Indexing
 
-Indexing each database shard is basically similar to indexing a non-sharded database.  
-As each shard holds and manages a unique dataset, indexing is performed 
-per-shard and indexes are stored only on the shard that created and uses them.  
+<Panel heading="Indexing in a sharded database">
+    
+* The same index definition is deployed across the database to all shards.  
+  However, **each shard indexes only its own local data** - there is no cross-shard indexing process.  
+  Each shard executes the index definition independently on the documents it stores locally.  
+    
+* As a result, each shard maintains its own **local index entries** for the data stored on that shard.  
+  There is no indexing stage that reads documents from multiple shards and builds a single shared index.      
+    
+* Querying a sharded index is coordinated by the orchestrator, which combines results from all shards.    
+  The orchestrator is a RavenDB server that mediates all communication between the client and the database shards.  
+  Learn more in [Clinet-server connumication](../sharding/overview.mdx#client-server-communication).  
+    
+</Panel>
 
-## Map-Reduce Indexes on a Sharded Database
+<Panel heading="Map-Reduce indexes in a sharded database">    
 
-Map-reduce indexes on a sharded database are used to reduce data both over each 
-shard during indexation, and on the orchestrator machine each time a query uses them.  
-
-1. **Reduction by each shard during indexation**  
-   Similarly to non-sharded databases, when shards index their data they reduce 
-   the results by map-reduce indexes.  
-2. **Reduction by the orchestrator during queries**  
-   When a query is executed over map-reduce indexes the orchestrator 
-   distributes the query to the shards, collects and combines the results, 
-   and then reduces them again.  
+Map-reduce indexes in a sharded database work in two stages:   
+    
+1. **At indexing time**:  
+   During indexing, each shard maps and reduces only the documents it stores locally,  
+   just as a non-sharded database reduces its local data.     
+2. **At query time**:  
+   When a query uses a map-reduce index, the orchestrator distributes the query to the shards,  
+   gathers the partial reduce results returned from each shard, and reduces them to produce the final query result.  
+   The data retrieved from the shards depends on the query shape.  
+   See [order by and limit in a Map-Reduce query](../sharding/querying.mdx#order-by-and-limit-in-a-map-reduce-query) for details.
   
 <Admonition type="note" title="">
-Learn about **querying map-reduce indexes** in a sharded database [here](../sharding/querying.mdx#orderby-in-a-map-reduce-index).  
+Learn more about querying map-reduce indexes in a sharded database in [Sharding: querying](../sharding/querying.mdx).  
 </Admonition>
 
-## Unsupported Indexing Features
+</Panel>
 
-Unsupported or yet-unimplemented indexing features include: 
+<Panel heading="Unsupported indexing features">
 
-* **Rolling index deployment**  
-  [Rolling index deployment](../indexes/rolling-index-deployment.mdx) 
-  is not supported in a Sharded Database.  
-* **Loading documents from other shards**  
-  Loading a document during indexing is possible only if the document 
-  resides on the shard.  
-  Consider the below index, for example, that attempts to load a document.  
-  If the requested document is stored on a different shard, the load operation 
-  will be ignored.  
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`Map = products => from product in products
-                        select new Result
-                        \{
-                            CategoryName = LoadDocument<Category>(product.Category).Name
-                        \};
-`}
-</CodeBlock>
-</TabItem>
-  <Admonition type="note" title="">
-  You can make sure that documents share a bucket, and 
-  can therefore locate and load each other, using the 
-  [$ syntax](../sharding/administration/anchoring-documents.mdx).  
-  </Admonition>
-* **Map-Reduce Output Documents**  
-  Using [OutputReduceToCollection](../indexes/map-reduce-indexes.mdx#map-reduce-output-documents) 
-  to output the results of a map-reduce index to a collection 
-  is not supported in a Sharded Database.  
-* [Custom Sorters](../indexes/querying/sorting.mdx#creating-a-custom-sorter) 
-  are not supported in a Sharded Database.  
+Unsupported or not-yet-implemented indexing features include:
+    
+* **Custom sorters**:  
+  [Custom sorters](../indexes/querying/sorting.mdx#creating-a-custom-sorter) are not supported in a sharded database.  
+    
+* **Rolling index deployment**:  
+  [Rolling index deployment](../indexes/rolling-index-deployment.mdx) is not supported in a sharded database.
+    
+* **Outputting Map-Reduce results to a collection**:  
+  Outputting map-reduce index results to an [artificial documents collection](../indexes/map-reduce-indexes.mdx#map-reduce-output-documents) 
+  is not supported in a sharded database.      
+    
+* **Loading a document from another shard**:  
+  Loading a document during indexing is possible only if the document resides on the same shard where the index is running.
+  If the requested document is stored on a different shard, `LoadDocument` will return `null`.
+    
+  For example, consider the following index, which attempts to load a related _Category_ document.        
+  To ensure that all documents are properly indexed - including those whose related document resides on another shard -
+  handle this _null_ case **explicitly** in your index definition, as shown below:    
+    
+    <TabItem>
+    ```csharp
+    public class Products_ByCategoryName : 
+        AbstractIndexCreationTask<Product, Products_ByCategoryName.IndexEntry>
+    {   
+        public class IndexEntry
+        { 
+            public string CategoryName { get; set; }
+        }
 
+        public Products_ByCategoryName()
+        {
+            Map = products =>
+                from product in products
+                // In a sharded database, LoadDocument returns null
+                // if the related document resides on a different shard.
+                let category = LoadDocument<Category>(product.Category)
+                select new IndexEntry
+                {
+                    // Handle the null case explicitly:
+                    CategoryName = category != null ? category.Name : null
+                };
+        }
+    }    
+    ```
+    </TabItem>
+    
+    <Admonition type="note" title="">        
+    #### Why the explicit null check matters:  
+        
+    Without the explicit null check (e.g., assigning `category.Name` directly to `CategoryName`),  
+    RavenDB treats the resulting _null_ as an **implicit null** and omits the field entirely from the index entry.  
+    Products whose category resides on another shard would then be missing the `CategoryName` field in the index,  
+    making them invisible to queries that filter on this field (including `where CategoryName == null`).  
+      
+    Using `category != null ? category.Name : null` stores an **explicit null** in the index entry,  
+    keeping those products queryable.
+    </Admonition>
+    
+    <Admonition type="note" title="">
+    #### Storing documents in the same shard:
+        
+    You can make sure related documents are stored in the same bucket, and therefore on the same shard,  
+    by using the `$` syntax. Learn more in [Anchoring documents to a bucket](../sharding/administration/anchoring-documents.mdx).  
+    </Admonition>
 
-
-
-
-
+</Panel>
