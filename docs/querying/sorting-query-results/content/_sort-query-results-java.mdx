@@ -5,7 +5,9 @@ import CodeBlock from '@theme/CodeBlock';
 
 ## Basics
 
-Starting from RavenDB 4.0, the server will determine possible sorting capabilities automatically from the indexed value, but sorting will **not be applied** until you request it by using the appropriate methods. The following queries will not return ordered results:
+Starting from RavenDB 4.0, the server will determine possible sorting capabilities automatically from the indexed value,  
+but sorting will **not be applied** until you request it by using the appropriate methods.  
+The following queries will not return ordered results:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Java" label="Java">
@@ -372,5 +374,3 @@ order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1
 </CodeBlock>
 </TabItem>
 </Tabs>
-
-

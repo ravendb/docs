@@ -8,38 +8,43 @@ import Panel from '@site/src/components/Panel';
 <Admonition type="note" title="">
 
 * When making a query, the server will return the results **sorted** only if explicitly requested by the query.  
-  If no sorting method is specified when issuing the query then results will not be sorted.
+  If no sorting method is specified when issuing the query, results will not be sorted.
 
-    * Note: An exception to the above rule is when [Boosting](../../../../indexes/boosting.mdx) is involved in the query.  
-      Learn more in [Automatic score-based ordering](../../../../indexes/boosting.mdx#automatic-score-based-ordering).
+    * Note: An exception to the above rule is when [Boosting](../../../indexes/boosting.mdx) is involved in the query.  
+      Learn more in [Automatic score-based ordering](../../../indexes/boosting.mdx#automatic-score-based-ordering).
 
-* Sorting is applied by the server after the query filtering stage.  
-  Applying filtering is recommended as it reduces the number of results RavenDB needs to sort  
-  when querying a large dataset.
+* Sorting is applied by the server after the query filtering stage.
+  Filtering is recommended, as it reduces the number of results RavenDB needs to sort when querying a large dataset.
 
-* Multiple sorting actions can be chained.
-
-* This article provides examples of sorting query results when making a **dynamic-query**.  
-  For sorting results when querying a **static-index** see [sort index query results](../../../../indexes/querying/sorting.mdx).
-
-* In this page:
-    * [Order by field value](../../../../client-api/session/querying/sort-query-results.mdx#order-by-field-value) 
-    * [Order by score](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
-        * [Get resulting score](../../../../client-api/session/querying/sort-query-results.mdx#get-resulting-score)  
-    * [Order by random](../../../../client-api/session/querying/sort-query-results.mdx#order-by-random)   
-    * [Order by spatial](../../../../client-api/session/querying/sort-query-results.mdx#order-by-spatial)     
-    * [Order by count (aggregation query)](../../../../client-api/session/querying/sort-query-results.mdx#order-by-count-aggregation-query)  
-    * [Order by sum (aggregation query)](../../../../client-api/session/querying/sort-query-results.mdx#order-by-sum-aggregation-query)
-    * [Force ordering type](../../../../client-api/session/querying/sort-query-results.mdx#force-ordering-type)
-    * [Chain ordering](../../../../client-api/session/querying/sort-query-results.mdx#chain-ordering)
-    * [Custom sorters](../../../../client-api/session/querying/sort-query-results.mdx#custom-sorters)
-    * [Syntax](../../../../client-api/session/querying/sort-query-results.mdx#syntax)
+* Multiple sorting operations can be [chained](../../../querying/sorting-query-results/sort-query-results.mdx#chain-ordering).
+    
+* All sorting capabilities available for **dynamic queries** can also be used when querying a **static-index**.  
+  The same syntax used with dynamic queries also applies when querying indexes.
+    
+* In this article:
+    * [Order by field value](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-field-value) 
+        * [Ordering type](../../../querying/sorting-query-results/sort-query-results.mdx#ordering-type) 
+    * [Order by searchable fields](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-searchable-fields)
+    * [Order by score](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-score)
+        * [Get resulting score](../../../querying/sorting-query-results/sort-query-results.mdx#get-resulting-score)  
+    * [Order by random](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-random)   
+    * [Order by spatial](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-spatial)     
+    * [Order by count (aggregation query)](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-count-aggregation-query)  
+    * [Order by sum (aggregation query)](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-sum-aggregation-query)
+    * [Force ordering type](../../../querying/sorting-query-results/sort-query-results.mdx#force-ordering-type)
+    * [Chain ordering](../../../querying/sorting-query-results/sort-query-results.mdx#chain-ordering)
+    * [Custom sorters](../../../querying/sorting-query-results/sort-query-results.mdx#custom-sorters)
+    * [Syntax](../../../querying/sorting-query-results/sort-query-results.mdx#syntax)
 
 </Admonition>
 
 <Panel heading="Order by field value">
+    
+<ContentFrame>
+    
+### Order by field value - dynamic query    
 
-* Use `OrderBy` or `OrderByDescending` to order the results by the specified document-field.
+Use `OrderBy` or `OrderByDescending` to order the results by the specified document-field.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -96,9 +101,97 @@ order by UnitsInStock as long
 </TabItem>
 </Tabs>
 
+</ContentFrame>
+    
+<ContentFrame>
+    
+### Order by field value - querying a static-index 
+    
+Use `OrderBy` or `OrderByDescending` to order the results by the specified index-field.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+List<Product> products = session
+     // Query the index
+    .Query<Products_ByUnitsInStock.IndexEntry, Products_ByUnitsInStock>()
+     // Apply filtering (optional)
+    .Where(x => x.UnitsInStock > 10)
+     // Call 'OrderByDescending', pass the index-field by which to order the results
+    .OrderByDescending(x => x.UnitsInStock)
+    .OfType<Product>() 
+    .ToList();
+
+// Results will be sorted by the 'UnitsInStock' value in descending order,
+// with higher values listed first.
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+List<Product> products = await asyncSession
+     // Query the index
+    .Query<Products_ByUnitsInStock.IndexEntry, Products_ByUnitsInStock>()
+     // Apply filtering (optional)
+    .Where(x => x.UnitsInStock > 10)
+     // Call 'OrderByDescending', pass the index-field by which to order the results
+    .OrderByDescending(x => x.UnitsInStock)
+    .OfType<Product>() 
+    .ToListAsync();
+
+// Results will be sorted by the 'UnitsInStock' value in descending order,
+// with higher values listed first.
+```
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+List<Product> products = session.Advanced
+     // Query the index
+    .DocumentQuery<Products_ByUnitsInStock.IndexEntry, Products_ByUnitsInStock>()
+     // Apply filtering (optional)
+    .WhereGreaterThan(x => x.UnitsInStock, 10)
+     // Call 'OrderByDescending', pass the index-field by which to order the results
+    .OrderByDescending(x => x.UnitsInStock)
+    .OfType<Product>() 
+    .ToList();
+
+// Results will be sorted by the 'UnitsInStock' value in descending order,
+// with higher values listed first.
+```
+</TabItem>
+<TabItem value="Index" label="Index">
+```csharp
+public class Products_ByUnitsInStock : AbstractIndexCreationTask<Product>
+{
+    public class IndexEntry
+    {
+        public int UnitsInStock { get; set; }
+    }
+    
+    public Products_ByUnitsInStock()
+    {
+        Map = products => from product in products
+            select new IndexEntry()
+            {
+                UnitsInStock = product.UnitsInStock
+            };
+    }
+}
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+order by UnitsInStock as long desc
+```
+</TabItem>
+</Tabs>    
+    
+</ContentFrame>
+    
 <Admonition type="info" title="">
 
-**Ordering Type**:
+### Ordering Type
 
 * By default, the `OrderBy` methods will determine the `OrderingType` from the property path expression  
   and specify that ordering type in the generated RQL that is sent to the server.  
@@ -106,10 +199,223 @@ order by UnitsInStock as long
 * E.g. in the above example, ordering by `x => x.UnitsInStock` will result in `OrderingType.Long`  
   because that property data type is an integer.
 
-* Different ordering can be forced - see [Force ordering type](../../../../client-api/session/querying/sort-query-results.mdx#force-ordering-type) below.
+* Different ordering can be forced - see [Force ordering type](../../../querying/sorting-query-results/sort-query-results.mdx#force-ordering-type) below.
 
 </Admonition>
 
+</Panel>
+
+<Panel heading="Order by searchable fields">
+    
+<ContentFrame>
+    
+### Order by searchable field - dynamic query
+
+When making a [full-text search with a dynamic query](../../../client-api/session/querying/text-search/full-text-search.mdx),  
+RavenDB automatically creates an **auto-index** that contains two index-fields for the queried field:  
+  * one for the tokenized terms (used for searching), 
+  * and one for the original value (used for ordering and other operations).
+
+For example, consider the following dynamic query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+List<Product> products = session
+    .Query<Product>()
+     // Call 'Search':
+     // Search for productes with a name that contains 'sauce'
+    .Search(x => x.Name, "sauce")
+     // Call 'OrderBy':
+     // Order the results by the original value of field 'Name'.
+    .OrderBy(x => x.Name)
+    .ToList();
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+List<Product> products = await asyncSession
+    .Query<Product>()
+     // Call 'Search':
+     // Search for products with a name that contains 'sauce'.
+    .Search(x => x.Name, "sauce")
+     // Call 'OrderBy':
+     // Order the results by the original value of field 'Name'.
+    .OrderBy(x => x.Name)
+    .ToListAsync();
+```
+</TabItem>    
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+List<Product> products = session.Advanced
+    .DocumentQuery<Product>()
+     // Call 'Search':
+     // Search for products with a name that contains 'sauce'.
+    .Search("Name", "sauce")
+     // Call 'OrderBy':
+     // Order the results by the original value of field 'Name'.
+    .OrderBy("Name")
+    .ToList();
+```
+</TabItem>     
+<TabItem value="RQL" label="RQL">
+```sql
+from Products
+where search(Name, "sauce")
+order by Name
+```
+</TabItem>
+</Tabs>
+    
+For this query, RavenDB creates the `Auto/Products/BySearch(Name)` auto-index,  
+which contains the following two index-fields:    
+    
+* `search(Name)`  
+  Used for the full-text search.  
+  The field content is tokenized at indexing time according to the analyzer in use,  
+  and the `search()` clause in the query is matched against these tokenized terms.  
+    
+* `Name`  
+  Used for ordering the results.  
+  This field stores the original field value (non-tokenized),  
+  so the `order by` clause sorts results by the original text rather than by individual terms.
+
+*Note**:   
+This behavior is different from querying a static-index, where you must explicitly define an additional non-searchable index-field if you want to sort by the original value.
+See the following static-index example.    
+    
+</ContentFrame>    
+
+<ContentFrame>
+    
+### Order by searchable field - querying a static-index
+    
+* **When configuring an index-field** for [full-text search](../../../indexes/querying/searching.mdx),
+  the content of the index-field is broken down into terms at indexing time. 
+  The specific tokenization depends on the [analyzer](../../../indexes/using-analyzers.mdx) used.
+
+* **When querying such an index**, if you order by that searchable index-field, 
+  results will come back sorted based on the indexed terms, not based on the original text value of the field.
+  
+* To overcome this and order results by the original text value,  
+  you can define another index-field with the same content, leave it non-searchable, and order by that field.       
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+```csharp
+public class Products_BySearchName : AbstractIndexCreationTask<Product>
+{
+    public class IndexEntry
+    {
+        // Index-field 'Name' will be configured below for full-text search
+        public string Name { get; set; }
+        
+        // Index-field 'NameForSorting' will be used for ordering query results 
+        public string NameForSorting { get; set; }
+    }
+
+    public Products_BySearchName()
+    {
+        Map = products => from product in products
+            select new
+            {
+                // Both index-fields are assigned the same content (the 'Name' from the document)
+                Name = product.Name,
+                NameForSorting = product.Name 
+            };
+
+        // Configure only the 'Name' index-field for FTS
+        Indexes.Add(x => x.Name, FieldIndexing.Search);
+    }
+}
+```
+</TabItem>
+<TabItem value="Query" label="Query">
+```csharp
+List<Product> products = session
+     // Query the index 
+    .Query<Products_BySearchName.IndexEntry, Products_BySearchName>()
+     // Call 'Search':
+     // Pass the index-field that was configured for FTS and the term to search for.
+     // Here we search for terms that start with "ch" within index-field 'Name'.
+    .Search(x => x.Name, "ch*")
+     // Call 'OrderBy':
+     // Pass the other index-field by which to order the results.
+    .OrderBy(x => x.NameForSorting)
+    .OfType<Product>()
+    .ToList();
+
+// Running the above query on the NorthWind sample data, ordering by 'NameForSorting' field,
+// we get the following order:
+// =========================================================================================
+
+// "Chai"
+// "Chang"
+// "Chartreuse verte"
+// "Chef Anton's Cajun Seasoning"
+// "Chef Anton's Gumbo Mix"
+// "Chocolade"
+// "Jack's New England Clam Chowder"
+// "Pâté chinois"
+// "Teatime Chocolate Biscuits"
+
+// While ordering by the searchable 'Name' field would have produced the following order:
+// ======================================================================================
+
+// "Chai"
+// "Chang"
+// "Chartreuse verte"
+// "Chef Anton's Cajun Seasoning"
+// "Pâté chinois"
+// "Chocolade"
+// "Teatime Chocolate Biscuits"
+// "Chef Anton's Gumbo Mix"
+// "Jack's New England Clam Chowder"
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+List<Product> products = await asyncSession
+     // Query the index 
+    .Query<Products_BySearchName.IndexEntry, Products_BySearchName>()
+     // Call 'Search':
+     // Pass the index-field that was configured for FTS and the term to search for.
+     // Here we search for terms that start with "ch" within index-field 'Name'.
+    .Search(x => x.Name, "ch*")
+     // Call 'OrderBy':
+     // Pass the other index-field by which to order the results.
+    .OrderBy(x => x.NameForSorting)
+    .OfType<Product>()
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+List<Product> products = session.Advanced
+     // Query the index
+    .DocumentQuery<Products_BySearchName.IndexEntry, Products_BySearchName>()
+     // Call 'Search':
+     // Pass the index-field that was configured for FTS and the term to search for.
+     // Here we search for terms that start with "ch" within index-field 'Name'.
+    .Search("Name", "ch*")
+     // Call 'OrderBy':
+     // Pass the other index-field by which to order the results.
+    .OrderBy("NameForSorting")
+    .OfType<Product>()
+    .ToList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Products/BySearchName" 
+where search(Name, "ch*")
+order by NameForSorting
+```
+</TabItem>
+</Tabs>
+    
+</ContentFrame>
+    
 </Panel>
 
 <Panel heading="Order by score">
@@ -184,7 +490,7 @@ The score details can be retrieved by either:
 * **Request to include explanations**:  
   You can get the score details and see how it was calculated by requesting to include explanations in the query.
   Currently, this is only available when using Lucene as the underlying indexing engine.  
-  Learn more in [Include query explanations](../../../../client-api/session/querying/debugging/include-explanations.mdx).
+  Learn more in [Include query explanations](../../../client-api/session/querying/debugging/include-explanations.mdx).
 
 * **Get score from metadata**:    
 
@@ -197,12 +503,12 @@ The score details can be retrieved by either:
 
       * When using **Corax**:  
           In order to enhance performance, this metadata property is Not included in the results by default.  
-          To get this metadata property you must set the [Indexing.Corax.IncludeDocumentScore](../../../../server/configuration/indexing-configuration.mdx#indexingcoraxincludedocumentscore) configuration value to _true_.  
-          Learn about the available methods for setting an indexing configuration key in this [indexing-configuration](../../../../server/configuration/indexing-configuration.mdx) article.
+          To get this metadata property you must set the [Indexing.Corax.IncludeDocumentScore](../../../server/configuration/indexing-configuration.mdx#indexingcoraxincludedocumentscore) configuration value to _true_.  
+          Learn about the available methods for setting an indexing configuration key in this [indexing-configuration](../../../server/configuration/indexing-configuration.mdx) article.
 
     * The following example shows how to get the score from the metadata of the resulting entities that were loaded to the session:  
 
-<TabItem value="get_score_from_metadata" label="get_score_from_metadata">
+<TabItem>
 ```csharp
 // Make a query:
 // =============
@@ -294,13 +600,13 @@ order by random()
 * If your data contains geographical locations,  
   spatial query results can be sorted based on their distance from a specific point.
 
-* See detailed explanation in [Spatial Sorting](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting).
+* See detailed explanation in [Spatial Sorting](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting).
 
 </Panel>
 
 <Panel heading="Order by count (aggregation query)">
 
-* The results of a [group-by query](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx) can be sorted by the `Count` aggregation operation used in the query.
+* The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query.mdx) can be sorted by the `Count` aggregation operation used in the query.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -377,7 +683,7 @@ select key() as "Category", count()
 
 <Panel heading="Order by sum (aggregation query)">
 
-* The results of a [group-by query](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx) can be sorted by the `Sum` aggregation operation used in the query.
+* The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query.mdx) can be sorted by the `Sum` aggregation operation used in the query.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -523,7 +829,7 @@ order by QuantityPerUnit as alphanumeric
 </TabItem>
 </Tabs>
 
-<TabItem value="sort_16_results" label="sort_16_results">
+<TabItem>
 ```csharp
 // Running the above query on the NorthWind sample data,
 // would produce the following order for the QuantityPerUnit field:
@@ -564,7 +870,7 @@ order by QuantityPerUnit as alphanumeric
   
   **When using the Corax search engine** -  
   a maximum of `16` _order by_ clauses is allowed per query. If this limit is exceeded, an exception will be thrown.  
-  To resolve this, simplify your query or switch to the Lucene engine. See [Selecting the search engine](../../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).  
+  To resolve this, simplify your query or switch to the Lucene engine. See [Selecting the search engine](../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).  
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -634,16 +940,20 @@ order by UnitsInStock as long desc, score(), Name
 
 <Panel heading="Custom sorters">
 
-* The Lucene indexing engine allows you to create your own custom sorters.  
-  Custom sorters are not supported by [Corax](../../../../indexes/search-engine/corax.mdx).  
+* The **Lucene** indexing engine allows you to define custom sorters,  
+  so you can apply your own logic when ordering query results.  
+  Custom sorters are not supported by [Corax](../../../indexes/search-engine/corax.mdx).  
  
-* Custom sorters can be deployed to the server by either:  
-
-     * Sending the [Put Sorters Operation](../../../../client-api/operations/maintenance/sorters/put-sorter.mdx) from your code.
-  
-     * Uploading a custom sorter from Studio, see [Custom Sorters View](../../../../studio/database/settings/custom-sorters.mdx).
-
-* Once the custom sorter is deployed, you can sort the query results with it.
+* Custom sorters can be deployed at either the database level or the server-wide level:  
+  * **Database-level**  
+    Custom sorters can be used only by queries made on that database.  
+    Learn how to deploy a database-level custom sorter in: [Database-level custom sorters](../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx).    
+    
+  * **Server-wide**  
+    Custom sorters can be used by queries made on any database in your cluster.  
+    Learn how to deploy a server-wide custom sorter in: [Server-wide custom sorters](../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx).
+    
+* Once deployed, a custom sorter can be specified in a query to sort the results.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -652,11 +962,11 @@ List<Product> products = session
     .Query<Product>()
     .Where(x => x.UnitsInStock > 10)
      // Order by field 'UnitsInStock', pass the name of your custom sorter class
-    .OrderBy(x => x.UnitsInStock, "MySorter")
+    .OrderBy(x => x.UnitsInStock, "MyCustomSorter")
     .ToList();
 
 // Results will be sorted by the 'UnitsInStock' value
-// according to the logic from 'MySorter' class
+// according to the logic from 'MyCustomSorter' class
 ```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
@@ -665,11 +975,11 @@ List<Product> products = await asyncSession
     .Query<Product>()
     .Where(x => x.UnitsInStock > 10)
      // Order by field 'UnitsInStock', pass the name of your custom sorter class
-    .OrderBy(x => x.UnitsInStock, "MySorter")
+    .OrderBy(x => x.UnitsInStock, "MyCustomSorter")
     .ToListAsync();
 
 // Results will be sorted by the 'UnitsInStock' value
-// according to the logic from 'MySorter' class
+// according to the logic from 'MyCustomSorter' class
 ```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
@@ -678,18 +988,21 @@ List<Product> products = session.Advanced
     .DocumentQuery<Product>()
     .WhereGreaterThan(x => x.UnitsInStock, 10)
      // Order by field 'UnitsInStock', pass the name of your custom sorter class
-    .OrderBy(x => x.UnitsInStock, "MySorter")
+    .OrderBy(x => x.UnitsInStock, "MyCustomSorter")
     .ToList();
 
 // Results will be sorted by the 'UnitsInStock' value
-// according to the logic from 'MySorter' class
+// according to the logic from 'MyCustomSorter' class
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
 where UnitsInStock > 10
-order by custom(UnitsInStock, "MySorter")
+order by custom(UnitsInStock, "MyCustomSorter")
+    
+// Results will be sorted by the 'UnitsInStock' value
+// according to the logic from 'MyCustomSorter' class    
 ```
 </TabItem>
 </Tabs>
@@ -698,7 +1011,7 @@ order by custom(UnitsInStock, "MySorter")
 
 <Panel heading="Syntax">
 
-<TabItem value="syntax" label="syntax">
+<TabItem>
 ```csharp
 // OrderBy overloads:
 IOrderedQueryable<T> OrderBy<T>(string path, OrderingType ordering);
@@ -718,7 +1031,7 @@ IOrderedQueryable<T> OrderByDescending<T>(Expression<Func<T, object>> path, stri
 |----------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **path**       | `string`                      | The name of the field to sort by                                                                                                                                           |
 | **path**       | `Expression<Func<T, object>>` | A lambda expression to the field by which to sort                                                                                                                          |
-| **ordering**   | `QueryStatistics`             | The ordering type that will be used to sort the results:<br/>`OrderingType.Long`<br/>`OrderingType.Double`<br/>`OrderingType.AlphaNumeric`<br/>`OrderingType.String` (default) |
+| **ordering**   | `OrderingType`                | The ordering type that will be used to sort the results:<br/>`OrderingType.Long`<br/>`OrderingType.Double`<br/>`OrderingType.AlphaNumeric`<br/>`OrderingType.String` (default) |
 | **sorterName** | `string`                      | The name of your custom sorter class                                                                                                                                       |
 
 </Panel>

@@ -1,0 +1,36 @@
+---
+title: "Server-wide Custom Sorters"
+sidebar_label: "Server-wide Custom Sorters"
+description: "Learn how to add, delete, and test server-wide custom sorters in RavenDB — sorters that can be used to sort query results in any database on the server."
+sidebar_position: 2
+supported_languages: ["csharp", "nodejs"]
+see_also:
+     - title: "Query Overview"
+       link: "querying/overview"
+       source: "docs"
+       path: "Querying"
+     - title: "Sort Query Results"
+       link: "querying/sorting-query-results/sort-query-results"
+       source: "docs"
+       path: "Querying > Sorting Query Results"
+     - title: "What are operations"
+       link: "client-api/operations/what-are-operations"
+       source: "docs"
+       path: "Client API > Operations"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ServerWideCustomSortersCsharp from './content/_server-wide-custom-sorters-csharp.mdx';
+import ServerWideCustomSortersNodejs from './content/_server-wide-custom-sorters-nodejs.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <ServerWideCustomSortersCsharp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <ServerWideCustomSortersNodejs />
+</LanguageContent>

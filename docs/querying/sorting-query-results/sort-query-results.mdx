@@ -1,9 +1,9 @@
 ---
 title: "Sort Query Results"
-sidebar_label: Sort Query Results
+sidebar_label: "Sort Query Results"
 description: "Sort RavenDB query results by one or more fields with support for ascending, descending, custom sorters, and random ordering."
-sidebar_position: 5
-supported_languages: ["csharp", "python", "php", "nodejs"]
+sidebar_position: 0
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 see_also:
      - title: "Query Overview"
        link: "querying/overview"
@@ -31,15 +31,19 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 import SortQueryResultsCsharp from './content/_sort-query-results-csharp.mdx';
+import SortQueryResultsJava from './content/_sort-query-results-java.mdx';
 import SortQueryResultsPython from './content/_sort-query-results-python.mdx';
 import SortQueryResultsPhp from './content/_sort-query-results-php.mdx';
 import SortQueryResultsNodejs from './content/_sort-query-results-nodejs.mdx';
-
 
 <LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <SortQueryResultsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <SortQueryResultsJava />
 </LanguageContent>
 
 <LanguageContent language="python">
@@ -53,6 +57,3 @@ import SortQueryResultsNodejs from './content/_sort-query-results-nodejs.mdx';
 <LanguageContent language="nodejs">
    <SortQueryResultsNodejs />
 </LanguageContent>
-
-
-
