@@ -466,6 +466,11 @@ code {
     @apply mb-0;
 }
 
+/* Scale down hash link for admonition headings */
+.theme-admonition .hash-link {
+    transform: scale(0.9);
+}
+
 /* Frames for documentation content */
 .content-frame {
     @apply rounded-md border border-black/10 dark:border-white/10 p-4;
