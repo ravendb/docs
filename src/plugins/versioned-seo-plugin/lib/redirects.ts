@@ -198,6 +198,10 @@ function fileExists(basePath: string): boolean {
  * Check every targetUrl resolves to a real page. Versionless rules
  * (/guides, /cloud) are checked once; versioned rules are checked against
  * every version in `versions` where their `minimumVersion` gate fires.
+ *
+ * Targets are walked through `resolveChain` first — if a rule's target is
+ * itself another rule's source, the chain terminus is what we verify.
+ * Mirrors the edge function's runtime behaviour.
  */
 export function validateTargetsExist(
     rules: RedirectRule[],
@@ -205,6 +209,7 @@ export function validateTargetsExist(
     currentVersion: string,
     versions: string[]
 ): ValidationError[] {
+    const map = buildRedirectMap(rules);
     const currentDocsRoot = path.join(projectRoot, "docs");
     const errors: ValidationError[] = [];
 
@@ -213,6 +218,7 @@ export function validateTargetsExist(
 
         if (isVersionlessKey(rule.key)) {
             // Versionless rule: target has no version axis, check once.
+            // Edge does single-hop for /guides + /cloud, so we don't chain.
             if (!fileExists(targetBasePath(target, projectRoot, currentDocsRoot))) {
                 errors.push({
                     index,
@@ -225,15 +231,18 @@ export function validateTargetsExist(
 
         for (const version of versions) {
             if (compareVersions(version, rule.value.minimumVersion!) < 0) continue;
+            const finalTarget = resolveChain(map, target, version);
             const docsRoot =
                 version === currentVersion
                     ? currentDocsRoot
                     : path.join(projectRoot, "versioned_docs", `version-${version}`);
-            if (!fileExists(targetBasePath(target, projectRoot, docsRoot))) {
+            if (!fileExists(targetBasePath(finalTarget, projectRoot, docsRoot))) {
                 errors.push({
                     index,
                     key: rule.key,
-                    message: `targetUrl ${target} does not resolve to an existing document in version ${version}`,
+                    message: `targetUrl ${target} does not resolve to an existing document in version ${version}${
+                        finalTarget === target ? "" : ` (chain → ${finalTarget})`
+                    }`,
                 });
             }
         }

@@ -305,6 +305,37 @@ test("validateTargetsExist multi-version: versionless /guides keys are checked o
     assert.deepEqual(validateTargetsExist(rules, root, "7.2", ["7.2", "7.1", "7.0"]), []);
 });
 
+test("validateTargetsExist multi-version: follows redirect chains per version", () => {
+    // /ai/old → /ai/vector-search/start → /ai/restructured (only on 7.2).
+    // For 7.2, chain resolves to /ai/restructured (must exist on 7.2).
+    // For 7.1, second hop's gate fails — chain stops at /ai/vector-search/start
+    // (must exist on 7.1).
+    const root = makeMultiVersionProject();
+    fs.writeFileSync(path.join(root, "docs", "ai", "restructured.mdx"), "");
+    const rules: RedirectRule[] = [
+        { key: "/ai/old", value: { targetUrl: "/ai/vector-search/start", minimumVersion: "7.0" } },
+        { key: "/ai/vector-search/start", value: { targetUrl: "/ai/restructured", minimumVersion: "7.2" } },
+    ];
+    // 7.0 isn't in versions list — gate skips it. 7.1 chain stops at start.mdx
+    // (which exists on 7.1 in the fixture). 7.2 walks to /ai/restructured (which
+    // we just wrote in current docs). All clean.
+    assert.deepEqual(validateTargetsExist(rules, root, "7.2", ["7.2", "7.1"]), []);
+});
+
+test("validateTargetsExist multi-version: chain miss reports terminus in the message", () => {
+    // Chain target on 7.2 doesn't exist — error should mention both the
+    // original target and the chain terminus so authors can locate the bug.
+    const root = makeMultiVersionProject();
+    const rules: RedirectRule[] = [
+        { key: "/ai/old", value: { targetUrl: "/ai/vector-search/start", minimumVersion: "7.2" } },
+        { key: "/ai/vector-search/start", value: { targetUrl: "/ai/nowhere", minimumVersion: "7.2" } },
+    ];
+    const errors = validateTargetsExist(rules, root, "7.2", ["7.2"]);
+    assert.equal(errors.length, 2);
+    const chainErr = errors.find((e) => e.key === "/ai/old")!;
+    assert.match(chainErr.message, /chain → \/ai\/nowhere/);
+});
+
 // --- version-policy ↔ versions.json drift -------------------------------
 //
 // version-policy.js hand-curates the BUILT_VERSIONS list; Docusaurus
