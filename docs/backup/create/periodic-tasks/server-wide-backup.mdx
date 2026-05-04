@@ -1,6 +1,7 @@
 ---
 title: "Server-wide backup"
 sidebar_label: "Server-wide backup"
+description: "Create and manage a server-wide backup task that automatically applies a backup configuration to all databases as per-database backup tasks."
 sidebar_position: 30
 ---
 
@@ -152,7 +153,7 @@ To create a server-wide backup task:
 ## Getting a derived backup task status
 
 To retrieve the status of a derived database task after its last run, use `GetPeriodicBackupStatusOperation` with the task ID.  
-- If you don't have the task ID, you can get it using `GetOngoingTaskInfoOperation` with the names of the task and its database.  
+- If you do not have the task ID, you can get it using `GetOngoingTaskInfoOperation` with the names of the task and its database.  
 - The retrieved status reflects the **most recent completed backup run**, whether it was scheduled or [triggered manually](../../../backup/create/periodic-tasks/database-backup#triggering-an-immediate-backup-operation).
 - The status includes the number of backups performed by the task, and details about the last backup such as the backup timestamp, duration, destination path, and error information (if any).  
 
@@ -542,7 +543,7 @@ PutServerWideBackupConfigurationResponse result = await store.Maintenance.Server
 
 | Return value | |
 |-----------|-------------|
-| `PutServerWideBackupConfigurationResponse` | Contains `Name` (`string`) — the name of the created or updated server-wide task,<br />and `RaftCommandIndex` (`long`). |
+| `PutServerWideBackupConfigurationResponse` | Contains `Name` (`string`) - the name of the created or updated server-wide task,<br />and `RaftCommandIndex` (`long`). |
 
 </TabItem>
 <TabItem value="GetServerWideBackupConfigurationOperation" label="GetServerWideBackupConfigurationOperation">
@@ -682,7 +683,7 @@ class PeriodicBackupConfiguration : BackupConfiguration
 | **Name** | `string` | The name of the periodic backup task. |
 | **TaskId** | `long` | The unique identifier for the backup task. |
 | **Disabled** | `bool` | Indicates whether the backup task is disabled. |
-| **MentorNode** | `string` | The mentor node responsible for executing the backup task. |
+| **MentorNode** | `string` | The mentor node responsible for executing the backup task. When set for a server-wide backup task, this node is applied to all derived database tasks. If this node is not in the database group of a specific database, the cluster will automatically assign a node from that database's group as the responsible node for that database's derived task. |
 | **PinToMentorNode** | `bool` | Determines if the backup task should always run on the mentor node. |
 | **RetentionPolicy** | `RetentionPolicy` | The retention policy associated with the backup task. |
 | **CreatedAt** | `DateTime?` | The timestamp when the backup task was created. |
@@ -752,7 +753,7 @@ To create a periodic server-wide backup task:
   ![Create server-wide task](./assets/server-wide-task_create-task.png)
 
 * Define the backup configuration as explained in the [periodic database-backup task](../../../backup/create/periodic-tasks/database-backup#a-defining-basic-task-options) article  
-  and **exclude** any database that you don't want to schedule backups for.
+  and **exclude** any database that you do not want to schedule backups for.
 
   ![Task configuration](./assets/server-wide-task_configuration.png)
 
@@ -763,6 +764,15 @@ To create a periodic server-wide backup task:
     By default, the server will create a derived database backup task and schedule a backup routine for **all databases on the server**.  
     To exclude databases from the backup, enable the **Exclude databases** option and select the databases you want to exclude.  
 
+  * **Set responsible node**  
+
+    You can select a cluster node to be responsible for all derived database backup tasks.  
+    If no node is selected, the responsible node for each derived task is assigned automatically by the cluster.  
+    
+    <Admonition type="note" title="">
+    If you select a responsible node for all databases, and this node is not in the database group of a specific database, the cluster will automatically assign a node from that database's group as the responsible node for that database's derived task.
+    </Admonition>
+    
   * **Backups storage**  
 
     ![Storage settings](./assets/database-periodic_storage_local.png)
