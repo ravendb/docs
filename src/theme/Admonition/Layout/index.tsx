@@ -25,10 +25,11 @@ function AdmonitionContainer({
 
 function AdmonitionHeading({ title, id, href }: Pick<Props, "title" | "id" | "href">) {
     return (
-        <div>
-            <a id={id} href={href}>
+        <div className="inline-flex">
+            <h4 className="!mb-0 !leading-[24px]" id={id}>
                 {title}
-            </a>
+            </h4>
+            <a href={href} className="hash-link" aria-labelledby={id} />
         </div>
     );
 }
