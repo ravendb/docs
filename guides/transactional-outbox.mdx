@@ -67,7 +67,7 @@ But in RavenDB particularly, there’s another way of achieving the same goal, u
 
 ## Implementing the outbox with data subscriptions
 
-We want to connect and save our documents to both collections as a single atomic transaction. To achieve that, we want to use the saveChanges() after storing both documents, to wrap both changes into a single transaction, as described in this [article](/7.2/client-api/faq/transaction-support#acid-for-document-operations).
+We want to connect and save our documents to both collections as a single atomic transaction. To achieve that, we want to use the saveChanges() after storing both documents, to wrap both changes into a single transaction, as described in this [article](/client-api/faq/transaction-support#acid-for-document-operations).
 
 ```csharp
 var invoice = new Invoice
@@ -174,7 +174,7 @@ await worker.Run(async batch =>
 });
 ```
 
-In the end whole part of this code looks like this:
+Here is the complete code:
 
 ```csharp showLineNumbers
 using (var store = new DocumentStore())
@@ -278,7 +278,7 @@ await worker.Run(async batch =>
 });
 ```
 
-In the end whole part of this code looks like this:
+Here is the complete code:
 
 ```csharp showLineNumbers
 using (var store = new DocumentStore())
@@ -408,6 +408,13 @@ And for RabbitMQ we can just look into the GUI.
 
 <Image img={require("./assets/outbox8.webp")} alt="RabbitMQ management GUI showing messages published via RavenDB Queue ETL" />
 This way, with RavenDB, you can address the actual need of publishing an event after invoice creation in **minutes**.
+
+## Summary
+
+- Treating the invoice and its outbox message as a single atomic commit eliminates a whole class of distributed system bugs. Partial failure (data saved, event not sent) is harder to recover from than total failure because it produces silent inconsistencies rather than visible errors.
+- Data subscriptions track acknowledgment per worker, so if your application crashes mid-batch, RavenDB resumes from where processing stopped. You get at-least-once delivery guarantees without writing any retry logic yourself.
+- Queue ETL moves the reliability boundary into the database server. Because RavenDB owns both the data and the delivery, it journals processed documents and skips re-sending them after a restart, removing a whole category of application-level state management.
+- Queue ETL is the right default unless your messages need custom logic such as conditional publishing, payload enrichment, or fan-out to multiple queues. Starting with ETL and switching to data subscriptions only when needed keeps the codebase smaller and the failure surface narrower.
 
 RavenDB ETLs can be used in many different ways. If you are interested in ETL to AWS SQS, [read about RavenDB Amazon SQS ETL](https://ravendb.net/articles/new-in-7-0-ravendb-and-amazon-sqs-etl). You might also be interested in [The Library of Ravens sample repository](https://github.com/ravendb/samples-library), which uses ETL to handle timeouts.
 

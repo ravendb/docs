@@ -1,11 +1,24 @@
 ---
-title: "Employing Schema Validation to standardize your data"
+title: "Employing Schema Validation to Standardize Your Data"
 tags: [data-governance, csharp, use-case]
 icon: "document-schema"
-description: "Learn more about configuring schema validation in RavenDB to incrase trust in your data across teams."
+description: "Configure JSON schema validation in RavenDB to enforce data consistency across teams. Learn how to audit documents against a schema or block invalid writes at the database level."
 publishedAt: 2026-02-01
 author: "Paweł Lachowski"
-proficiencyLevel: "Expert"
+proficiencyLevel: "Intermediate"
+see_also:
+  - title: "Schema Validation Overview"
+    link: "documents/schema-validation/overview"
+    source: "docs"
+    path: "Documents > Schema Validation"
+  - title: "Schema Validation Configuration"
+    link: "documents/schema-validation/configuration"
+    source: "docs"
+    path: "Documents > Schema Validation"
+  - title: "Auditing Document Compliance: API"
+    link: "documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api"
+    source: "docs"
+    path: "Documents > Schema Validation > Auditing Document Compliance"
 ---
 
 import Admonition from '@theme/Admonition';
@@ -16,7 +29,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 import Image from "@theme/IdealImage";
 
-When working with any type of data, things usually go smoothly when a single team owns the entire system. When an organisation adds new teams that work on the same data, it can quickly become a mess without proper governance. You may find yourself being frustrated that the other team is saving as a string what breaks your system from time to time.  Data must be tracked, and dataset version changes must be enforced precisely. You need to keep the same data model between all documents. Thankfully, we now have a tool to handle those situation and you don’t need to prepare for the worst by preparing boundaries. This tool is a schema validation.
+When working with any type of data, things usually go smoothly when a single team owns the entire system. When an organisation adds new teams that work on the same data, it can quickly become a mess without proper governance. You may find yourself being frustrated that the other team is saving a value as a string that ends up breaking your system from time to time. Data must be tracked, and dataset version changes must be enforced precisely. You need to keep the same data model between all documents. Thankfully, we now have a tool to handle those situations. This tool is schema validation.
 
 Schema validation ensures your documents conform to the defined data model. Whether you need a single check after a model change or migration, or to run it continuously, RavenDB’s JSON schema validation keeps your data model predictable and consistent, even in the era of rapid development, increasing trust in your data across multiple teams. 
 
@@ -26,28 +39,40 @@ Your team just doesn’t have time to prepare for all possible errors caused by 
 
 You can also use schema validation after migration or for general big data changes. You can just run schema validation and check all the documents. Just create a schema, validate it in schema validation, and run the process to avoid stress if everything transfers without data corruption.
 
-On the other hand, if you can pick a more restricted way and block non-fitting documents. It reduces the manual work you'll need later and shortens planning time for possibilities you don’t want. 
+On the other hand, you can pick a more restricted approach and block non-fitting documents outright, reducing the manual work you’ll need later and shortening planning time for edge cases you don’t want.
 
 But how does it work in RavenDB? Let’s look into it.
 
 ## How it works in RavenDB
 
-Mode 1: Non-blocking validation  
+### Mode 1: Non-blocking validation
+
 You define a schema and validate documents occasionally using an audit operation, or rely on an index that collects schema errors. Neither approach blocks writes. Audit operations check documents when you execute them. The index-based approach also allows all documents, matching or not, to be stored, and simply records any issues for later querying.
 
-Mode 2: Strict validation  
+### Mode 2: Strict validation
+
 You enable schema validation on every write. In this mode, RavenDB blocks any document that does not match the schema, ensuring that only valid data is accepted.
 
 These two modes give you flexibility: you can use schema validation as a diagnostic tool that never interferes with writes, or enforce it strictly to guarantee schema correctness at all times.  
 It gives you a guarantee that no invalid document will make it into the database. 
 
-The best thing is that you don’t need to write any line of code to define how the database should react to finding schema errors. If any issues are found with your documents, you will receive a clear response with documents ID and the exact reason they failed to verify against the schema.
+| | Mode 1: Audit (non-blocking) | Mode 2: Strict (blocking) |
+|---|---|---|
+| **Blocks writes?** | No | Yes |
+| **How errors surface** | Audit operation results or index query | Write error returned immediately |
+| **When to trigger** | On demand or via background index | Every document write |
+| **Best for** | Post-migration checks, diagnostics, gradual rollout | Enforcing a guaranteed data contract |
+| **Requires schema enabled?** | No (index can carry its own schema) | Yes |
+
+The best thing is that you don’t need to write any line of code to define how the database should react to finding schema errors. If any issues are found with your documents, you will receive a clear response with each document's ID and the exact reason it failed to verify against the schema.
+
+See [Write Validation: API](https://docs.ravendb.net/documents/schema-validation/write-validation/write-validation_api) for the full list of available JSON Schema restrictions.
 
 ## Quick usage from Studio
 
 ### Audit Operation
 
-About the modes we mentioned, we can divide the audit operation into two modes. One works automatically, and the other requires you to manually trigger it. When schema validation is enabled, RavenDB will check all modified documents after enabling it. There is few different triggers for schema validation, and those are:
+Schema validation in Studio operates in two ways: it can run automatically on every write, or you can trigger it manually. When enabled, RavenDB will check all modified documents. There are a few different triggers for schema validation, and those are:
 
 * Inserting documents via session and via bulk insert.  
 * Inserting documents via patch by query  
@@ -57,24 +82,24 @@ About the modes we mentioned, we can divide the audit operation into two modes. 
 
 If the schema is triggered, it will block the document from being stored and return an error. 
 
-If you want to input only a few documents or use schema validation as a one-time scan, you can disable schema validation while leaving global schema validation enabled. You can also trigger a collection-wide scan to test all documents, not just new ones. We will use a basic schema to scan if all our Orders have the Company and Employee fields. Click on the testing button and then on the bottom-right corner, press run test. It will return all errors in the table.
-<Image img={require("./assets/Validation1.webp")} alt="" />
-<Image img={require("./assets/Validation2.webp")} alt="" />
+If you want to input only a few documents or use schema validation as a one-time scan, you can disable schema validation while leaving global schema validation enabled. You can also trigger a collection-wide scan to test all documents, not just new ones. We will use a basic schema to scan whether all our Orders have the Company and Employee fields. Click on the testing button and then on the bottom-right corner, press run test. It will return all errors in the table.
+<Image img={require("./assets/Validation1.webp")} alt="RavenDB Studio schema validation audit results table showing validation errors per document" />
+<Image img={require("./assets/Validation2.webp")} alt="Audit result detail showing an Orders document missing the required Employee field" />
 As you can see, one of our orders is missing the Employee field.
 
 ### Index
 
-Once your schema is ready, we can also create an index to store all documents that do not fit the schema in one place. With index, prepared you can just query your documents:
+Once your schema is ready, we can also create an index to store all documents that do not fit the schema in one place. With the index prepared, you can just query your documents:
 
-<Image img={require("./assets/Validation3.webp")} alt="" />
-And after clicking eye icon in preview you can learn more information about this document.
+<Image img={require("./assets/Validation3.webp")} alt="RavenDB index query results listing documents that failed schema validation" />
+And after clicking the eye icon in preview you can learn more information about this document.
 
-<Image img={require("./assets/Validation4.webp")} alt="" />
+<Image img={require("./assets/Validation4.webp")} alt="Document preview panel showing the schema validation error details for a specific document" />
 ## How to use it with code?
 
 ### Audit Operation
 
-Of course, we can do the same checks with code. We can run a quick scan of all documents from code. To do that, we can use such code.
+Of course, we can do the same checks with code. We can run a quick scan of all documents from code. To do that, we can use code like this:
 
 ```csharp
 var parameters = new StartSchemaValidationOperation.Parameters
@@ -100,10 +125,10 @@ foreach (var error in result.Errors)
 ```
 
 After that, we get a response like this.  
-<Image img={require("./assets/Validation5.webp")} alt="" />
+<Image img={require("./assets/Validation5.webp")} alt="Console output of the StartSchemaValidationOperation showing validated document count and error messages" />
 ### Index
 
-Of course, querying from code is an option too; you just need to prepare the required index beforehand. To query such an index, you can usea  script like this one:
+Of course, querying from code is an option too; you just need to prepare the required index beforehand. To query such an index, you can use a script like this one:
 
 ```csharp
 using (var session = store.OpenAsyncSession())
@@ -131,7 +156,7 @@ using (var session = store.OpenAsyncSession())
 }
 ```
 
-How do you create such index? Can we make it from code? Let’s get into configuration. 
+How do you create such an index? Can we make it from code? Let’s get into configuration.
 
 ## Configure it from studio
 
@@ -139,8 +164,8 @@ How do you create such index? Can we make it from code? Let’s get into configu
 
 To configure schema validation in Studio, first enter the database you want to set it for, then navigate to Settings \> Document Schema. Add a new schema. This gives us two fields. One to select the collection and another to write our schema in.
 
-<Image img={require("./assets/Validation6.webp")} alt="" />
-After you selected collection, you can proceed to write your schema. Schemas are built using [JSON Schema](https://json-schema.org/), a popular vocabulary for JSON files. Basic schema on orders collection can look like this:
+<Image img={require("./assets/Validation6.webp")} alt="RavenDB Studio Settings > Document Schema page with the Add Schema form open showing collection selector and schema editor fields" />
+After you select a collection, you can proceed to write your schema. Schemas are built using [JSON Schema](https://json-schema.org/), a popular vocabulary for JSON files. Basic schema on orders collection can look like this:
 
 ```json
 {
@@ -233,7 +258,7 @@ This schema is simple. What it does is define the fields Company and Employee mu
 }
 ```
 
-There are many different properties that full list of constants is available [here](https://docs.ravendb.net/documents/schema-validation/write-validation/write-validation_api#available-constraints). Now what it checks is not only if the Company and Employee fields are ther,e but also if Freight is a number, Lines with nested fields, and more. To make it even more strict, we can enforce additionalProperties false to tell the schema to catch any writes for documents that have any additional field other than those present in the schema.
+There are many different properties; the full list of constraints is available in the [Write Validation: API](/documents/schema-validation/write-validation/write-validation_api#available-constraints) reference. Now what it checks is not only if the Company and Employee fields are there, but also if Freight is a number, Lines with nested fields, and more. To make it even more strict, we can enforce additionalProperties false to tell the schema to catch any writes for documents that have any additional field other than those present in the schema.
 
 ### Index
 
@@ -254,7 +279,7 @@ select new
 
 We need to add Errors to stored values. We can easily do that in the fields section.
 
-<Image img={require("./assets/Validation7.webp")} alt="" />
+<Image img={require("./assets/Validation7.webp")} alt="RavenDB Studio index editor Fields section with the Errors field added to stored values" />
 If you want to make this index to only gather errors from one collection, change the first line to:
 
 ```
@@ -263,14 +288,14 @@ from doc in docs.ChosenCollection //change ChosenCollection to your collection
 
 We can save the index, and if we have any documents not matching the schema in database, we can notice they are added to the index.
 
-<Image img={require("./assets/Validation8.webp")} alt="" />
+<Image img={require("./assets/Validation8.webp")} alt="RavenDB index list view showing the Orders_WithValidation index with schema-invalid documents indexed" />
 ### Dedicated index schema
 
 Because our schema is enabled, writes will be blocked. But we can create an index that does not require enabling the schema. We switch to a different section on the same bar where we were selecting Fields to add the Errors field, and switch to Schema Definitions. There, we can write a definition dedicated to this index.
 
 In there, we select our desired collection and input our schema.
 
-<Image img={require("./assets/Validation9.webp")} alt="" />
+<Image img={require("./assets/Validation9.webp")} alt="RavenDB Studio index Schema Definitions tab with collection selector and dedicated schema definition editor" />
 After saving it if you didn’t do it before, you can delete or disable the schema in the **database** setting. Now let’s do this from code.
 
 ## Configure it from code
@@ -372,99 +397,11 @@ await store.Maintenance.SendAsync(new ConfigureSchemaValidationOperation(configu
 
 ```
 
-If we wanted to use this only as scans we manually trigger, we would change the schema definition to enabled so it doesn’t block our documents. Full code in the end looks like this:
-
-```csharp
-var schemaJson = @"{
-  ""additionalProperties"": true,
-
-  ""properties"": {
-    ""Company"": {
-      ""type"": ""string""
-    },
-
-    ""Freight"": {
-      ""type"": ""number"",
-      ""minimum"": 0
-    },
-
-    ""Lines"": {
-      ""type"": ""array"",
-      ""items"": {
-        ""type"": ""object"",
-        ""additionalProperties"": true,
-        ""properties"": {
-          ""Product"": { ""type"": ""string"" },
-          ""Quantity"": { ""type"": ""integer"", ""minimum"": 1 },
-          ""PricePerUnit"": { ""type"": ""number"" },
-          ""Discount"": { ""type"": ""number"", ""minimum"": 0, ""maximum"": 1 }
-        },
-        ""required"": [""Product"", ""Quantity"", ""PricePerUnit""]
-      }
-    },
-
-    ""OrderedAt"": {
-      ""type"": ""string"",
-      ""pattern"": ""^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{7}$""
-    },
-
-    ""RequireAt"": {
-      ""type"": ""string"",
-      ""pattern"": ""^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{7}$""
-    },
-
-    ""ShipTo"": {
-      ""type"": ""object"",
-      ""additionalProperties"": true,
-      ""properties"": {
-        ""City"":    { ""type"": ""string"" },
-        ""Country"": { ""type"": ""string"" },
-        ""Line1"":   { ""type"": ""string"" },
-        ""Line2"":   { ""type"": [""string"", ""null""] }
-      }
-    },
-
-    ""ShipVia"": {
-      ""type"": ""string""
-    },
-
-    ""ShippedAt"": {
-      ""type"": [""string"", ""null""],
-      ""pattern"": ""^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{7}$""
-    }
-  },
-
-  ""required"": [
-    ""Company"",
-    ""Freight"",
-    ""Lines"",
-    ""OrderedAt"",
-    ""RequireAt"",
-    ""ShipTo"",
-    ""ShipVia""
-  ]
-}";
-
-var configuration = new SchemaValidationConfiguration
-{
-   Disabled = false, // Enables global schema validation
-   ValidatorsPerCollection = new Dictionary<string, SchemaDefinition>
-   {
-     { "Orders", new SchemaDefinition 
-       { 
-          Disabled = false, // Enables this schema definition
-          Schema = schemaJson 
-       } 
-     }
-   }
-};
-
-await store.Maintenance.SendAsync(new ConfigureSchemaValidationOperation(configuration));
-```
+To use this only as manually triggered scans without blocking writes, set `Disabled = true` on the `SchemaDefinition` instead.
 
 ### Index
 
-After making a schema, we can also make an index from code. We start by defining our schema and index map. Nex,t we connect the schema to a specific collection. We are still using the same example so orders collection. We will use a simple short schema here.
+After making a schema, we can also make an index from code. We start by defining our schema and index map. Next, we connect the schema to a specific collection. We are still using the same example so orders collection. We will use a simple short schema here.
 
 ```csharp
  string schemaDefinition = @"{
@@ -523,4 +460,11 @@ public class IndexResult
 
 This code creates an index with dedicated index schema validation, allowing you to write even incorrect documents while still allowing you to query it. All of that from code, making it quicker to set up on multiple devices instead of going into the studio on each of them.
 
-Interested in RavenDB? Grab the developer license dedicated for testing under this link [here](https://ravendb.net/dev), or get a free cloud database [here](https://ravendb.net/cloud). If you have questions about this feature, or want to hang out and talk with the RavenDB team, join our Discord Community Server \- invitation link is [here](https://discord.com/invite/ravendb).
+## Summary
+
+- Schema validation enforces a consistent data model across all documents in a collection, catching type mismatches and missing required fields before they cause problems in production.
+- Two modes give you flexibility. Non-blocking audit mode lets you scan existing data without interrupting writes, while strict mode rejects any document that does not conform to the schema at write time.
+- No code required to get started, as the Studio's Document Schema settings let you define a JSON Schema, run collection-wide audits, and review errors in a table without touching the API.
+- A dedicated validation index can be configured to collect schema violations from all indexed documents, letting you query non-conforming records at any time without blocking writes.
+
+Interested in RavenDB? [Grab a free developer license](https://ravendb.net/dev) for testing, or [start a free cloud database](https://ravendb.net/cloud). If you have questions about this feature or want to talk with the RavenDB team, [join our Discord Community Server](https://discord.com/invite/ravendb).

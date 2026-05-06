@@ -4,7 +4,7 @@ tags: [data-governance, csharp, use-case]
 icon: "real-time-statistics"
 image: "https://ravendb.net/wp-content/uploads/2025/10/employing-data-archival-article.svg"
 publishedAt: 2025-11-17
-description: "How to set up and use data archival in RavenDB"
+description: "Use RavenDB Data Archival to exclude historical documents from indexes and queries, keeping performance high without deleting data you need to retain."
 author: "Paweł Lachowski"
 proficiencyLevel: "Expert"
 ---
@@ -25,7 +25,7 @@ Queries providing different financial analytics (e.g., previous month summaries)
 
 You start to investigate and realise it’s not just a spike caused by traffic or a software bug slowing you down. It’s the sheer volume of data that you need to index. 
 
-You can’t just delete older data  with [expiration](https://docs.ravendb.net/7.1/studio/database/settings/document-expiration/) to free space. It’s prohibited by the legal restrictions. Being forced to keep large amounts of required but rarely used documents, only to suffer through slower queries as a result, feels like a torture for your business.
+You can’t just delete older data  with [expiration](https://docs.ravendb.net/studio/database/settings/document-expiration/) to free space. It’s prohibited by the legal restrictions. Being forced to keep large amounts of required but rarely used documents, only to suffer through slower queries as a result, feels like a torture for your business.
 
 ## What is the problem?
 
@@ -39,8 +39,8 @@ from index "InvoicesByIssueDate" where issue_date >= "2025-06-25T10:21:56.1500Z"
 
 A query (not so complex) alone took over 1200ms. Exploring the data by the user takes a lot of time, reducing the quality of service and making interacting with your application frustrating.
 
-<Image img={require("./assets/archival1.webp")} alt="" />
-<Image img={require("./assets/archival2.webp")} alt="" />
+<Image img={require("./assets/archival1.webp")} alt="RavenDB Studio query result showing over 1200ms execution time on the InvoicesByIssueDate index before archival" />
+<Image img={require("./assets/archival2.webp")} alt="RavenDB Studio index view showing a large number of entries due to unarchived historical invoice documents" />
 Not mentioning overhead of the rest of the system. Forget about instant filtering \- you’re indexing all of the data, even though your users don’t care about the old stuff.
 
 This creates a huge problem as all those files from seven years ago are still being viewed and filtered during the query.
@@ -63,7 +63,10 @@ To trigger this feature, you can take one of two approaches: from code or the st
 
 **If you’re using RavenDB Cloud,** make sure to enable Data Archival in the Product Features section before continuing.
 
-<Image img={require("./assets/archival3.webp")} alt="" />
+<Image img={require("./assets/archival3.webp")} alt="RavenDB Cloud portal Product Features section with the Data Archival toggle enabled" />
+
+### From Code
+
 To enable and trigger data archival from your application, we need to define which collection should be archived and set up the archival configuration. That’s how we do that:
 
 ```csharp showLineNumbers
@@ -93,6 +96,8 @@ This code triggers archival in the Invoices database. We set it to check every h
 
 Note: You can make a synchronous version by deleting await in the apply configuration and changing store.Maintenance.SendAsync to just store.Maintenance.Send.
 
+### From Studio
+
 Or we can trigger it from the studio easily, we just need to:
 
 1. Go to Settings \=\> Data Archival.  
@@ -101,14 +106,16 @@ Or we can trigger it from the studio easily, we just need to:
 4. Optionally, toggle to customize the maximum number of documents the archiving task will process in a single run.  
 5. Click Save to apply your settings.
 
-<Image img={require("./assets/archival4.webp")} alt="" />
+<Image img={require("./assets/archival4.webp")} alt="RavenDB Studio Data Archival settings panel showing the frequency and maximum documents per run configuration options" />
 But this is only the beginning. We have only triggered our archival, but now we need to tell RavenDB which files we want to archive.
 
 ## Sorting Through the Piles: Choosing What to Archive
 
 Now that our archivist is working, they need to know what we want to archive, and we have numerous invoices for them to review. Now we just need to tell them to archive what we need. For our invoices, we want to archive those older than 90 days. 
 
-We can take different approaches to achieving that. We will start with the simplest. First, let's do it in the studio, and later we will make it from code. 
+We can take different approaches to achieving that. We will start with the simplest. First, let’s do it in the studio, and later we will make it from code.
+
+### Using Studio Patch
 
 Let’s enter the studio, select our database, and then the Documents tab. In there, we want to enter the Patch menu. In there, we will use a patch on files to archive files older than 90 days. This patch would look like this:
 
@@ -117,14 +124,16 @@ from "Invoices"
 update {
     var archiveDate = new Date(this.issue_date);
     archiveDate.setDate(archiveDate.getDate() + 90);
-
+    var archiveDateString = archiveDate.toISOString();
     archived.archiveAt(this, archiveDateString);
 }
 ```
 
 This code calculates our gap 90 days from the `issue_date` of each file. Then it converts it to an ISO string, allowing us to use and archive it using this calculated value. RavenDB will process all documents in the Invoices collection.
 
-<Image img={require("./assets/archival5.webp")} alt="" />
+<Image img={require("./assets/archival5.webp")} alt="RavenDB Studio Patch view executing a patch on the Invoices collection to set the archive-at date 90 days from each document's issue date" />
+### Using Code
+
 Alternatively, we can do it with patchByQuery from code:
 
 ```csharp showLineNumbers
@@ -150,6 +159,8 @@ store.Operations.Send(patchByQueryOp);
 
 With this update, we take the `issue_date` of our invoices, add 90 days to it, and convert it to an ISO string. The data archivist that we set up before will see these entries and schedule them for archiving. 
 
+### At Write Time
+
 If you want to add an archiving flag to the document when it arrives at the database, you can do that with this additional code after adding this document. For example, it would look like this.
 
 ```csharp showLineNumbers
@@ -163,9 +174,9 @@ using (var session = store.OpenSession())
         // ... other properties
     };
 
-    session.Store(newCompany);
+    session.Store(newInvoice);
 
-    var metadata = session.Advanced.GetMetadataFor(newCompany);
+    var metadata = session.Advanced.GetMetadataFor(newInvoice);
 
     // Set the archival date to 90 days in the future (in UTC)
     var archiveDate = SystemTime.UtcNow.AddDays(90);
@@ -179,13 +190,13 @@ using (var session = store.OpenSession())
 
 How does archival affect this problem? After setting up the archival, documents only 90 days old or newer will be made available by default for all indexes. Because indexes are interconnected with other parts of the system, this affects your whole system. After archiving our files, changes are made to the metadata.
 
-<Image img={require("./assets/archival6.webp")} alt="" />
+<Image img={require("./assets/archival6.webp")} alt="RavenDB document metadata view showing the @archived flag set to true after the archival process ran" />
 And the index becomes smaller, containing fewer files.
 
-<Image img={require("./assets/archival7.webp")} alt="" />
+<Image img={require("./assets/archival7.webp")} alt="RavenDB Studio index view showing a reduced entry count after old invoices were archived and excluded from indexing" />
 This will affect queries by reducing the time they need to search through data. After all, a big part of the documents isn’t in the indexes.
 
-<Image img={require("./assets/archival8.webp")} alt="" />
+<Image img={require("./assets/archival8.webp")} alt="RavenDB Studio query result showing significantly reduced execution time on the InvoicesByIssueDate index after archival" />
 Query performance improved, but the data is still in the database. Perfect of two worlds.
 
 ## Archive behaviour
@@ -194,17 +205,24 @@ With added archival to documents, they will be ignored by default during specifi
 
 When you have archival enabled during index creation, you can choose the behavior the index should take with archived files. This allows you to choose if you want to exclude those documents, include them, or query only on archived ones.
 
+### Indexes
+
 In indexes, you do that at the bottom of the index in the configuration.
 
-<Image img={require("./assets/archival9.webp")} alt="" />
+<Image img={require("./assets/archival9.webp")} alt="RavenDB Studio index configuration panel showing the archived document behavior dropdown with options to exclude, include, or query only archived documents" />
+
+### Subscriptions
+
 Or if you are using subscriptions, you can change this setting directly under subscription RQL. 
 
-<Image img={require("./assets/archival10.webp")} alt="" />
-More information about behaviour can be found in our documentation under this [link](https://docs.ravendb.net/7.1/data-archival/archived-documents-and-other-features).
+<Image img={require("./assets/archival10.webp")} alt="RavenDB Studio subscription task editor showing the archived document behavior setting below the RQL query" />
+More information about behaviour can be found in [Archived Documents and Other Features](https://docs.ravendb.net/data-archival/archived-documents-and-other-features) in our documentation.
 
 ## Taking documents out
 
-If you need to unarchive a document, it can be done in one of two simple ways. This can be done either in the studio using a patch:
+If you need to unarchive a document, it can be done in one of two simple ways.
+
+### From Studio
 
 ```
 from Invoices as o
@@ -213,6 +231,8 @@ update {
     archived.unarchive(this)
 }
 ```
+
+### From Code
 
 Or in code using this auto-index patchByQuery function:
 
@@ -235,6 +255,11 @@ Note: Don’t try to just remove `@archived: true` manually in the document. Thi
 
 ## Summary
 
-Data archival gives you more control over your database. By excluding unnecessary documents from queries, it makes them run smoother. If you’re also looking to reduce storage costs for binary data, check out our guide on [using remote attachments to cut storage costs](https://docs.ravendb.net/guides/using-remote-attachments-to-cut-storage-costs). But there’s so much more to RavenDB, like GenAI support, which you can read about [here](https://ravendb.net/articles/survive-the-ai-tidal-wave-with-ravendb-genai) and so many other features.
+- Data Archival flags documents as archived, keeping them in the database while excluding them from indexes and queries by default, so you retain data without paying the performance cost.
+- Enable archival via `ConfigureDataArchivalOperation` in code or through Settings > Data Archival in RavenDB Studio.
+- Mark individual documents or whole collections for archival by setting the `@archive-at` metadata field, either at write time or retroactively with a patch operation.
+- Archived documents can be selectively included in specific indexes or subscriptions, and can be unarchived at any time using `archived.unarchive(this)`.
 
-Interested in testing this feature before taking a production licence? Grab the developer license dedicated to testing under this link [here](https://ravendb.net/dev). Any questions about this feature or just want to hang out and talk with the RavenDB team? Join our Discord Community Server \- invitation link is [here](https://discord.com/invite/ravendb).
+Data archival gives you more control over your database. By excluding unnecessary documents from queries, it makes them run smoother. If you’re also looking to reduce storage costs for binary data, check out our guide on [using remote attachments to cut storage costs](https://docs.ravendb.net/guides/using-remote-attachments-to-cut-storage-costs). But there’s so much more to RavenDB, like [GenAI support](https://ravendb.net/articles/survive-the-ai-tidal-wave-with-ravendb-genai) and so many other features.
+
+Interested in testing this feature before taking a production licence? Grab the [RavenDB developer license](https://ravendb.net/dev) dedicated to testing. Any questions about this feature or just want to hang out and talk with the RavenDB team? Join our [RavenDB Discord Community Server](https://discord.com/invite/ravendb).
