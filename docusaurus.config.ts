@@ -227,6 +227,11 @@ const config: Config = {
                 },
             }),
         },
+        {
+            tagName: "script",
+            attributes: { type: "text/javascript" },
+            innerHTML: `!function(){if(location.hostname!=="docs.ravendb.net")return;var e,t,n;e="151dc5b0493a177",t=function(){Reo.init({clientID:"151dc5b0493a177"})},n=document.createElement("script"),n.src="https://static.reo.dev/"+e+"/reo.js",n.defer=!0,n.onload=t,document.head.appendChild(n)}();`,
+        },
     ],
     themeConfig: {
         docs: {
