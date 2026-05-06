@@ -258,7 +258,7 @@ This schema is simple. What it does is define the fields Company and Employee mu
 }
 ```
 
-There are many different properties; the full list of constraints is available in the [Write Validation: API](/documents/schema-validation/write-validation/write-validation_api#available-constraints) reference. Now what it checks is not only if the Company and Employee fields are there, but also if Freight is a number, Lines with nested fields, and more. To make it even more strict, we can enforce additionalProperties false to tell the schema to catch any writes for documents that have any additional field other than those present in the schema.
+There are many different properties; the full list of constraints is available in the [Write Validation: API](https://docs.ravendb.net/documents/schema-validation/write-validation/write-validation_api) reference. Now what it checks is not only if the Company and Employee fields are there, but also if Freight is a number, Lines with nested fields, and more. To make it even more strict, we can enforce additionalProperties false to tell the schema to catch any writes for documents that have any additional field other than those present in the schema.
 
 ### Index
 
