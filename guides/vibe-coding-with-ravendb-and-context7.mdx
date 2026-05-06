@@ -26,7 +26,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 import Image from "@theme/IdealImage";
 
-As AI tools become more capable, so-called “vibe coding” becomes a practical option in certain situations. It can be especially useful for fast PoC development and prototyping. When treated as just another tool in our toolbox, it fits naturally into a modern workflow. One of its strongest advantages is lowering the barrier to entry for technologies you are not yet comfortable with. With AI assistance, you can quickly prototype an idea and evaluate whether a chosen technology is appropriate before committing more time to it.
+Vibe coding is what happens when you stop writing every line yourself and start describing what you want instead. You steer the direction, the AI writes the code, and you review what comes back. It works especially well for prototyping when the goal is to test an idea quickly rather than build something perfect.
 
 Overall, AI has improved steadily over time. Models are faster and can handle more context; they have become a standard to provide web search access to find missing information. Many of these LLMs can now be integrated into the IDE, helping you stay focused on the code rather than constantly switching applications. In most cases, this makes work faster and smoother, and the user enters a flow state.
 
@@ -138,4 +138,9 @@ We enable email sending in the config and test it using a local SMTP server. We 
 
 With an AI assistant at our side, we built a working RavenDB e-commerce prototype — complete with a product listing page, a sales analytics dashboard, and automated order email notifications — in a single session. Context7 kept the AI grounded in accurate RavenDB documentation throughout, reducing the need to search for context and keeping the workflow uninterrupted.
 
-From here you can extend the prototype with additional RavenDB features, use it as a basis for evaluating whether RavenDB fits your project's requirements, or explore RavenDB's built-in AI integration capabilities for embeddings and vector search in production applications.
+## Summary
+
+- MCP shifts documentation lookup off your plate. Once Context7 is configured, the AI fetches RavenDB docs on its own when it hits an unfamiliar [client API](/docs/client-api/what-is-a-document-store). You do not need to invoke it explicitly or paste reference material into the chat.
+- Vibe coding is a surprisingly honest technology evaluator. Building a prototype this way reveals which parts of a database are intuitive to describe in plain language and which require precise API knowledge, giving you a low-cost signal before committing to a technology.
+- Token efficiency matters more than it looks. Mid-session web searches fill the context window with noise. MCP-sourced documentation is targeted and compact, so the AI spends fewer tokens finding context and more time generating useful code.
+- Review AI-generated queries before going further. [RavenDB queries](/docs/querying/overview) and [index definitions](/docs/indexes/what-are-indexes) produced during vibe coding are a good starting point, but validate them against your actual data shape and index configuration before treating them as production-ready.

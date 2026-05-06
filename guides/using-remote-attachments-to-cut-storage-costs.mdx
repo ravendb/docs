@@ -253,7 +253,7 @@ Then after one minute that has been requested with `DateTime.UtcNow.AddMinutes(1
 
 When moving to remote storage, you would probably also want to move old attachments. To do that we can use a [set-based patch operation](https://docs.ravendb.net/7.2/client-api/operations/patching/set-based#updating-all-documents):
 
-```csharp
+```sql
 from @all_docs
 update
 {
@@ -289,4 +289,4 @@ Remote attachments in RavenDB let you offload binary data to Amazon S3, Azure Bl
 
 For the full API reference, see the [remote attachments configuration documentation](https://docs.ravendb.net/document-extensions/attachments/configure-remote-attachments). To learn about storing remote attachments programmatically, see [store remote attachments](https://docs.ravendb.net/document-extensions/attachments/store-attachments/store-attachments-remote). For how remote attachments interact with replication, backups, and subscriptions, see [attachments and other features](https://docs.ravendb.net/document-extensions/attachments/attachments-and-other-features).
 
-Interested in RavenDB? Grab the developer license dedicated for testing under this link [here](https://ravendb.net/dev), or get a free cloud database [here](https://ravendb.net/cloud). If you have questions about this feature, or want to hang out and talk with the RavenDB team, join our Discord Community Server \- invitation link is [here](https://discord.com/invite/ravendb).
+Interested in RavenDB? [Grab a free developer license](https://ravendb.net/dev) for testing, or [start a free RavenDB Cloud database](https://ravendb.net/cloud). If you have questions about this feature, or want to hang out and talk with the RavenDB team, [join the RavenDB Discord Community](https://discord.com/invite/ravendb).
