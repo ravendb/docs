@@ -42,7 +42,7 @@ In this article, we will dive into the world of atomic transactions, queues, and
 
 Publishing events based on data changes and hoping everything works out is only good until the first failure. We have [fallacies of distributed computing](https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing) to remind us of the basic problems of distributed systems. The database might be ACID-compliant, but those guarantees end at the database. If the data is saved in the database but the event is not sent due to a crash, network issue, or power outage, we just lose the data. 
 
-When it happens, we can end up with situations where the invoice exists, but no microservice responds to it. For example, in an e-commerce system, this can mean that payment is accepted, but no realisation process is started. The order is never prepared or shipped, and from the user’s perspective, it simply disappears. This is how technical problems turn into lost trust. 
+When it happens, we can end up with situations where the invoice exists, but no microservice responds to it. For example, in an e-commerce system, this can mean that payment is accepted, but no realization process is started. The order is never prepared or shipped, and from the user’s perspective, it simply disappears. This is how technical problems turn into lost trust. 
 
 At the same time, we can have the opposite situation: the queue receives our event, but the database doesn’t create an invoice. That’s how minor problems can change into real legal difficulties. We can’t have partial failure at all; it is worse than complete failure. Then how is it possible we have so many online services that work?
 
@@ -50,7 +50,7 @@ At the same time, we can have the opposite situation: the queue receives our eve
 
 The reason systems like this can work at all is that they stop treating event sending or document creation separately. The moment an invoice is created is also the exact moment an event must be captured. There is no acceptable state in which only one of those happens.
 
-This is how the concept of the [transactional outbox](https://en.wikipedia.org/wiki/Inbox_and_outbox_pattern#The_outbox_pattern) pattern was born. Instead of sending an event directly to the queue, the system first records the intent to publish that event together with the business data. The invoice and its corresponding event are stored in the database as part of the same transaction. If the transaction succeeds, both exist. If it fails, neither does. In practice, this usually means introducing an outbox as a separate collection and queuing its documents via a data subscription. We create documents simultaneously in both collections. In RavenDB, it would look like this:
+This is how the concept of the [transactional outbox](https://microservices.io/patterns/data/transactional-outbox.html) pattern was born. Instead of sending an event directly to the queue, the system first records the intent to publish that event together with the business data. The invoice and its corresponding event are stored in the database as part of the same transaction. If the transaction succeeds, both exist. If it fails, neither does. In practice, this usually means introducing an outbox as a separate collection and queuing its documents via a data subscription. We create documents simultaneously in both collections. In RavenDB, it would look like this:
 
 ```csharp
 using (var session = store.OpenAsyncSession())
