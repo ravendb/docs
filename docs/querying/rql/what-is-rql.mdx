@@ -210,7 +210,7 @@ The following options are available:
 #### Query a specific collection: &nbsp;&nbsp; `from <collection-name>`
 
 <TabItem>
-```csharp
+```sql
 // Full collection query 
 // Data source: The raw collection documents (Auto-index is Not created)
 from "Employees"
@@ -218,7 +218,7 @@ from "Employees"
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 // Collection query - by ID 
 // Data source: The raw collection documents (Auto-index is Not created)
 from "Employees" where id() = "employees/1-A"
@@ -226,7 +226,7 @@ from "Employees" where id() = "employees/1-A"
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 // Dynamic query - with filtering
 // Data source: Auto-index (server uses an existing auto-index or creates a new one)
 from "Employees" where FirstName = "Laura"
@@ -240,7 +240,7 @@ from "Employees" where FirstName = "Laura"
 #### Query all documents: &nbsp;&nbsp; `from @all_docs`
 
 <TabItem>
-```csharp
+```sql
 // All collections query
 // Data source: All raw collections (Auto-index is Not created)
 from @all_docs
@@ -248,7 +248,7 @@ from @all_docs
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 // Dynamic query - with filtering 
 // Data source: Auto-index (server uses an existing auto-index or creates a new one)
 from @all_docs where FirstName = "Laura"
@@ -262,7 +262,7 @@ from @all_docs where FirstName = "Laura"
 #### Query an index: &nbsp;&nbsp; `from index <index-name>`
 
 <TabItem>
-```csharp
+```sql
 // Index query
 // Data source: The specified index
 from index "Employees/ByFirstName"
@@ -270,7 +270,7 @@ from index "Employees/ByFirstName"
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 // Index query - with filtering
 // Data source: The specified index
 from index "Employees/ByFirstName" where FirstName = "Laura"
@@ -294,7 +294,7 @@ For example, you can return every document from the [Companies collection](../..
 whose _field value_ **=** _a given input_.  
 
 <TabItem>
-```csharp
+```sql
 from "Companies"
 where Name == "The Big Cheese" // Can use either '=' or'==' 
 ```
@@ -304,7 +304,7 @@ Filtering on **nested properties** is also supported.
 So in order to return all companies from 'Albuquerque' we need to execute following query:  
 
 <TabItem>
-```csharp
+```sql
 from "Companies"
 where Address.City = "Albuquerque"
 ```
@@ -320,14 +320,14 @@ The operator `between` returns results inclusively, and the type of border value
 It works on both 'numbers' and 'strings' and can be substituted with the `>=` and `<=` operators.
 
 <TabItem>
-```csharp
+```sql
 from "Products" 
 where PricePerUnit between 10.5 and 13.0 // Using between
 ```
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 from "Products" 
 where PricePerUnit >= 10.5 and PricePerUnit <= 13.0 // Using >= and <=
 ```
@@ -343,14 +343,14 @@ The `in` operator evaluates a field against a list of values.
 It will return results if the field matches **any** of the items in that list.    
 
 <TabItem>
-```csharp
+```sql
 from "Companies" 
 where Name in ("The Big Cheese", "Unknown company name")
 ```
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 from "Orders" 
 where Lines[].ProductName in ("Chang", "Spegesild", "Unknown product name") 
 ```
@@ -365,7 +365,7 @@ To ensure accuracy, especially when fields might be missing from some documents,
 use `exists(fieldName)` as the anchor:
     
 <TabItem>
-```csharp
+```sql
 from "Companies" 
 where exists(Name) and NOT Name in ("The Big Cheese", "The Cracker Box")
 ```
@@ -387,7 +387,7 @@ Due to its mechanics, it is only useful when used on array fields.
 The following query will yield no results in contrast to the `in` operator.
 
 <TabItem>
-```csharp
+```sql
 from "Orders" 
 where Lines[].ProductName all in ("Chang", "Spegesild", "Unknown product name")
 ```
@@ -397,7 +397,7 @@ Removing 'Unknown product name' will return only orders that contain products wi
 'Chang' and 'Spegesild' names.
 
 <TabItem>
-```csharp
+```sql
 from "Orders" 
 where Lines[].ProductName all in ("Chang", "Spegesild") 
 ```
@@ -407,32 +407,57 @@ where Lines[].ProductName all in ("Chang", "Spegesild")
     
 <ContentFrame>
 
-#### Binary Operators: &nbsp;&nbsp; `AND`, `OR`, `NOT`
+#### Binary operators: &nbsp;&nbsp; `AND`, `OR`, `NOT`
 
 Binary operators can be used to build more complex statements.  
 The `NOT` operator can only be used with one of the other binary operators creating `OR NOT` or `AND NOT` ones.
 
 <TabItem>
-```csharp
+```sql
 from "Companies"
 where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
 ```
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 from "Orders"
 where Freight > 500 AND ShippedAt > '1998-01-01'
 ```
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 from "Orders"
 where Freight > 500 AND ShippedAt > '1998-01-01' AND NOT Freight = 830.75
 ```
 </TabItem>
 
+</ContentFrame>
+    
+<ContentFrame>
+    
+#### Methods: &nbsp;&nbsp; `today()`, `now()` 
+
+Use `today()` and `now()` to compare date/time fields with the current server date or current server time.  
+Learn more in [Filter by date and time](../../querying/filtering-query-results/filter-by-date-and-time.mdx).    
+
+<TabItem>
+```sql    
+// Find orders that were shipped before the current date    
+from "Orders"
+where ShippedAt < today()
+```    
+</TabItem>
+    
+<TabItem>
+```sql
+// Find orders that are required at or after the current date and time
+from "Orders"
+where RequiredAt >= now()
+```    
+</TabItem>
+    
 </ContentFrame>
     
 <ContentFrame>
@@ -495,7 +520,7 @@ Specify the number of items to **skip** from the beginning of the result set and
 This is useful when [paging](../../indexes/querying/paging.mdx) results.
 
 <TabItem>
-```csharp
+```sql
 // Available syntax options:
 // =========================
 
@@ -525,7 +550,7 @@ For more information, please refer to this [patching](../../client-api/operation
 Single-line comments start with `//` and end at the end of that line.
 
 <TabItem>
-```csharp
+```sql
 // This is a single-line comment.
 from "Companies" 
 where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
@@ -533,7 +558,7 @@ where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 from "Companies"
 where Name = "The Big Cheese" // OR Name = "Richter Supermarkt"
 ```
@@ -548,7 +573,7 @@ where Name = "The Big Cheese" // OR Name = "Richter Supermarkt"
 Multiline comments start with `/*` and end with `*/`.
 
 <TabItem>
-```csharp
+```sql
 /*
 This is a multiline comment.
 Any text here will be ignored.
@@ -559,7 +584,7 @@ where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 from "Companies"
 where Name = "The Big Cheese" /* this part is a comment */ OR Name = "Richter Supermarkt"
 ```
