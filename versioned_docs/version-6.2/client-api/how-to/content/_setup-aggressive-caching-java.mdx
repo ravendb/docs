@@ -71,7 +71,7 @@ For workloads that read the same documents over and over, that single round trip
 
 Aggressive caching skips the round trip entirely.  
 While a request runs inside an aggressive caching scope, the client serves the cached response straight from local memory without contacting the server.  
-This is the right choice for read-heavy paths where the same documents are fetched many times, for reference data that changes rarely, and for any code path where end-to-end latency matters more than absolute freshness.
+This is the right choice when the same documents are read many times, when reference data changes rarely, and when end-to-end latency matters more than absolute freshness.
 
 The trade-off is staleness.  
 Because the client does not revalidate on every read, a document that was modified on the server can briefly be served from the local cache until the change is propagated back to the client.  
@@ -89,16 +89,20 @@ The first time aggressive caching is enabled for a database, the client opens a 
 The subscription stays open for as long as the document store is alive and is shared by every aggressive scope opened against the same database.
 
 When a document or index is modified on the server, the server publishes a change notification on that subscription.  
-The client receives the notification and removes the matching entries from the local cache.  
-The next read of any of those entries fetches a fresh copy from the server, after which subsequent reads are served from the cache again until the next change notification arrives.  
+The client treats that as a signal that the local cache may be stale and marks every aggressively-cached entry for revalidation.  
+The next read of each entry sends a single conditional request (`If-None-Match`) and is served from the cache as soon as the server confirms the entry is unchanged with `304 Not Modified`.  
+Entries that are not read again stay marked until they are.  
 No application code is required for any of this; the client wires up the listener for you.
+
+If the Changes API connection drops, the client invalidates the entire cache as a safety measure.  
+The next read of any aggressively cached entry is sent to the server for revalidation.
 
 <Admonition type="warning" title="">
 
 There is a short delay between the moment a document is modified on the server and the moment the change notification reaches the client.  
 A read that hits the aggressive cache during that window will return the previous value of the document.  
 Use aggressive caching only when this small staleness window is acceptable for the calling code.  
-For paths that must always see the most recent committed state, use the bypass options under [Opt out for a single call](../../../client-api/how-to/setup-aggressive-caching.mdx#opt-out-for-a-single-call) and [Requests that are never aggressively cached](../../../client-api/how-to/setup-aggressive-caching.mdx#requests-that-are-never-aggressively-cached).
+For requests that must always see the most recent committed state, use the bypass options under [Opt out for a single call](../../../client-api/how-to/setup-aggressive-caching.mdx#opt-out-for-a-single-call) and [Requests that are never aggressively cached](../../../client-api/how-to/setup-aggressive-caching.mdx#requests-that-are-never-aggressively-cached).
 
 </Admonition>
 
@@ -136,6 +140,9 @@ While the entry is younger than this value, the client serves it locally.
 Once it ages past the value, or when a change notification invalidates it earlier, the client fetches a fresh copy from the server on the next read.
 
 The same rules apply to queries that run inside the scope.
+
+The right `Duration` depends on how stale the calling code can tolerate the data being if the change notification is delayed or missed.  
+Reference data that changes rarely is a good fit for hours or days; hot reads where you still want some safety net work well at minutes; when the calling code must always see the latest committed value, do not use aggressive caching at all and rely on the standard 304 cache instead.
 
 </ContentFrame>
 
@@ -230,8 +237,8 @@ This is the right mode for most applications: aggressive caching skips the round
 The client does not open a Changes API connection.  
 Cached entries are served for the entire `Duration` of the scope without any revalidation, no matter what happens on the server.
 
-Use this mode when the Changes API is unavailable, for example in some embedded scenarios.  
-You can also choose it when you explicitly accept stale reads in exchange for the lower bookkeeping cost of not maintaining a Changes connection.
+Use this mode when you explicitly accept stale reads in exchange for not maintaining a Changes API connection.  
+For example, when the duration is short enough that staleness is bounded by it, or when the client is running in an environment where the Changes WebSocket is undesirable.
 
 ```java
 try (CleanCloseable scope = documentStore.aggressivelyCacheFor(Duration.ofMinutes(5),
@@ -251,8 +258,8 @@ try (CleanCloseable scope = documentStore.aggressivelyCacheFor(Duration.ofMinute
 
 ## Opt out for a single call
 
-To force a specific request to reach the server even though aggressive caching is in effect, wrap that request in a `try`-with-resources block over `disableAggressiveCaching()`.  
-When the inner block exits, the enclosing aggressive scope is restored.
+When your code runs inside an aggressive scope opened higher up the call stack and one specific read needs to reach the server anyway (for example, right after a write you just performed), wrap that read in a `try`-with-resources block over `disableAggressiveCaching()`.  
+The `CleanCloseable` restores the enclosing aggressive configuration when the inner scope ends.
 
 ```java
 try (CleanCloseable outerScope = documentStore.aggressivelyCacheFor(Duration.ofMinutes(5))) {
@@ -288,7 +295,7 @@ Some requests bypass aggressive caching regardless of the active scope:
 | Query without `waitForNonStaleResults()` | Yes | Default behavior. |
 | Query with `waitForNonStaleResults()` | No | Aggressive caching is suppressed because the caller explicitly asked for non-stale data. |
 | Query with `noCaching()` | No | Caching is disabled for the request entirely, both standard and aggressive. |
-| Lazy query, lazy suggestion query | Same rule as the non-lazy form | Bypassed when `waitForNonStaleResults()` or `noCaching()` is set. Lazy operations are bundled into a single batched request and each one keeps its own cache rules, so a batch can have some operations served from the cache and others sent through. See [Perform queries lazily](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx). |
+| Lazy query, lazy suggestion query | Same rule as the non-lazy form | Lazy operations are bundled into a single MultiGet request. Aggressive caching can only short-circuit the batch when every operation in it is aggressively cacheable; if any one operation has `waitForNonStaleResults()` or `noCaching()` set, the entire batch is sent to the server (individual operations can still be served from the standard 304 cache on the response path). See [Perform queries lazily](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx). |
 | Internal cluster bookkeeping | No | Topology and similar maintenance traffic is never aggressively cached. |
 
 A session opened with `sessionOptions.setNoCaching(true)` disables HTTP caching for every request that session issues, including aggressive caching.  
@@ -306,7 +313,7 @@ See [Disable Caching per Session](../../../client-api/session/configuration/how-
 
 * Forgetting to close the returned `CleanCloseable`.  
    The `CleanCloseable` returned by `aggressivelyCacheFor` controls the lifetime of the scope.  
-   Without a `try`-with-resources block, or an explicit call to `close()`, the scope leaks into whatever code runs next.
+   Without a `try`-with-resources block, or an explicit `close()` call, the scope stays attached to the current thread (`ThreadLocal`-based) and applies to whatever runs on it next, including subsequent requests in long-lived hosts where threads are recycled.
 
 * Expecting the scope to be tied to a specific `IDocumentSession`.  
    The configuration lives on the request executor, not on the session.  
