@@ -1,9 +1,1064 @@
 ---
-title: "RavenDB Deployment Guide – Docker Compose Cluster"
-tags: [deployment, getting-started, docker, containers]
-description: "Read about RavenDB Deployment Guide – Docker Compose Cluster on the RavenDB.net news section"
-externalUrl: "https://ravendb.net/articles/ravendb-deployment-guide-docker-compose-cluster"
-publishedAt: 2025-03-10
+title: "RavenDB Deployment Guide: Docker Compose Cluster"
+tags: [deployment, getting-started, docker, containers, clusters, security]
 image: "https://ravendb.net/wp-content/uploads/2025/03/docker-ravendb-integration-article-cover.jpg"
-proficiencyLevel: "Beginner"
+description: "Deploy a 3-node RavenDB cluster with Docker Compose across three security levels: unsecured HTTP for local development, TLS with self-signed certificates for internal environments, and production-grade Let's Encrypt automation."
+publishedAt: 2025-03-10
+see_also:
+  - title: "RavenDB Docker Images on Docker Hub"
+    link: "https://hub.docker.com/r/ravendb/ravendb"
+    source: "external"
+  - title: "RavenDB Configuration Options"
+    link: "https://ravendb.net/docs/article-page/latest/csharp/server/configuration/configuration-options"
+    source: "external"
+author: "Omer Ratsaby"
+proficiencyLevel: "Intermediate"
 ---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+## Introduction
+
+Databases are traditionally stateful applications, requiring persistent storage and consistent uptime to ensure data integrity. On the other hand, containers are ephemeral by design, meaning they can be created and destroyed dynamically. 
+
+Despite this contrast, containerizing databases have become increasingly popular.
+So why use containers for a database? The answer is **Simplicity**, **Isolation**, and **Portability.** 
+
+RavenDB is well-suited for containerized environments due to its built-in clustering capabilities and support for multi-node deployments. The official RavenDB Docker images enable rapid deployment and scaling of a fully functional NoSQL document database within Docker Compose.  
+By containerizing RavenDB, we achieve portability, scalability, and simplified management while maintaining data persistence through properly configured storage solutions.
+
+This guide provides a comprehensive approach to deploying a RavenDB cluster using Docker Compose, covering three distinct configurations:
+
+* **Unsecured Deployment** – A basic setup without encryption. For local development and testing.  
+    
+* **Secured Deployment with Self-Signed Certificates** – A configuration that enables encryption using self-generated certificates, ensuring secure communication within the cluster.  
+    
+* **Secured Deployment with Let's Encrypt** – A *production-ready* setup that automates SSL certificate management using Let's Encrypt, providing robust security with minimal manual intervention.
+
+Each section includes detailed instructions, configuration files, and best practices to facilitate a seamless deployment.   
+By the end of this guide, you will have a fully functional RavenDB cluster tailored to your security and operational requirements.
+
+RavenDB provides official Docker images that can be pulled from Docker Hub. These images support both Linux and Windows containers, ensuring broad compatibility across different systems.   
+The images are available in two repositories:
+
+[ravendb/ravendb](https://hub.docker.com/r/ravendb/ravendb) – contains images of stable releases.  
+[ravendb/ravendb-nightly](https://hub.docker.com/r/ravendb/ravendb-nightly) – contains images of nightly development builds.
+
+In this tutorial, we will use the multi-platform image ravendb/ravendb:latest.  
+
+## Unsecured Deployment
+
+The unsecured RavenDB cluster setup provides a straightforward deployment suitable for local development and testing environments.   
+In this configuration, nodes communicate over HTTP without encryption, eliminating the complexity of managing SSL certificates.  
+While this setup simplifies the initial deployment and facilitates debugging, it is not recommended for production use due to the lack of security measures.
+
+## Setting Up the Environment
+
+Before deploying the cluster, we need to prepare the environment by creating directories for each RavenDB node and setting the correct ownership:
+
+```bash
+mkdir -p ~/ravendb/data/node1 ~/ravendb/data/node2 ~/ravendb/data/node3
+sudo chown -R 999:999 ~/ravendb/
+```
+
+The chown command changes the ownership of all files and directories under ~/ravendb/ to UID 999 and GID 999.  
+999 commonly used because some Docker containers (including the RavenDB container) run as a non-root user with UID 999 by default.  
+This is necessary because running containers as root is not recommended for security reasons. Changing ownership ensures that the RavenDB process inside the container has proper access without requiring root privileges.
+
+### Setup
+
+With the environment prepared, we can start building our docker-compose file:
+
+#### 1. Container Name and Image
+
+Each node is assigned a unique container name, ensuring easier identification when managing containers:
+
+```yaml
+container_name: ravendb-node1
+	image: ravendb/ravendb:latest
+
+	container_name: ravendb-node2
+	image: ravendb/ravendb:latest
+
+	container_name: ravendb-node3
+	image: ravendb/ravendb:latest
+```
+
+#### 2. Port Mapping
+
+Each node exposes two ports:  
+	
+
+```yaml
+ports:
+ - 8080:8080
+ - 38888:38888
+```
+
+*  8080 (HTTP Port) – Used for the RavenDB Web Studio and API.  
+* 38888 (TCP Port) – Used for internal cluster communication between nodes.
+
+For the second and third nodes, the ports are incremented to avoid conflicts:
+
+```yaml
+ravendb-node2:
+ ports:
+  - 8081:8080
+  - 38889:38888
+
+ravendb-node3:
+ ports:
+  - 8082:8080
+  - 38890:38888
+
+```
+
+#### 3. Data Persistence (Volumes)
+
+Each node maps a dedicated data directory on the host machine to the container's default data location:
+
+```yaml
+- /home/${USER}/ravendb/data/node1:/var/lib/ravendb/data
+```
+
+* Containers are ephemeral, meaning they can be stopped, removed, or restarted anytime. Databases, however, are stateful applications that require data to persist beyond the lifecycle of a single container instance.
+
+      	By binding a host directory to the container's data directory, we ensure that the data remains   
+intact even if the container is recreated.  
+	Without this, all stored data would be lost whenever a container restarts.  
+#### 4. Environment Variables
+
+ Each node is configured using environment variables that define its behavior:
+
+```yaml
+environment:
+   - RAVEN_Security_UnsecuredAccessAllowed=PublicNetwork
+   - RAVEN_Setup_Mode=None
+   - RAVEN_License_Eula_Accepted=true
+   - RAVEN_ServerUrl=http://0.0.0.0:8080
+   - RAVEN_PublicServerUrl=http://${HOST_IP}:8080"
+   - RAVEN_ServerUrl_Tcp=tcp://0.0.0.0:38888
+   - RAVEN_PublicServerUrl_Tcp=tcp://${HOST_IP}:38888
+   - RAVEN_License='{Put your license here}'
+
+```
+
+* RAVEN_Security_UnsecuredAccessAllowed=PublicNetwork - Allows unsecured access to the RavenDB server, making it accessible over a public network.  
+    
+* RAVEN_Setup_Mode=None - Disables the initial setup wizard, enabling immediate use of the cluster.  
+    
+* RAVEN_License_Eula_Accepted=true - Confirms acceptance of the RavenDB license agreement (required for automated deployments).  
+    
+*  RAVEN_ServerUrl and RAVEN_PublicServerUrl - Define the node's internal and external HTTP URLs.  
+    
+* RAVEN_ServerUrl_Tcp and RAVEN_PublicServerUrl_Tcp - Define the internal and external TCP URLs for inter-node communication.  
+    
+* RAVEN_License - Specifies the RavenDB license string.
+
+  
+These environment variables allow for precise control over the RavenDB server's network settings, security configurations, and deployment behavior, making it adaptable for various deployment scenarios.   
+For more detailed guidance, refer to the 	RavenDB documentation: [https://ravendb.net/docs/article-page/latest/csharp/server/configuration/configuration-options](https://ravendb.net/docs/article-page/latest/csharp/server/configuration/configuration-options)
+
+The final version of docker-compose.yml should look like this:
+
+```yaml
+services:
+  ravendb-node1:
+    container_name: ravendb-node1
+    image: ravendb/ravendb:latest
+    ports:
+      - 8080:8080
+      - 38888:38888
+    volumes:
+      - /home/${USER}/ravendb/data/node1:/var/lib/ravendb/data
+    environment:
+      - RAVEN_Security_UnsecuredAccessAllowed=PublicNetwork
+      - RAVEN_Setup_Mode=None
+      - RAVEN_License_Eula_Accepted=true
+      - RAVEN_ServerUrl=http://0.0.0.0:8080
+      - RAVEN_PublicServerUrl=http://${HOST_IP}:8080
+      - RAVEN_ServerUrl_Tcp=tcp://0.0.0.0:38888
+      - RAVEN_PublicServerUrl_Tcp=tcp://${HOST_IP}:38888
+	  - RAVEN_License='{Put your license here}'
+
+  ravendb-node2:
+    container_name: ravendb-node2
+    image: ravendb/ravendb:latest
+    ports:
+      - 8081:8080
+      - 38889:38888
+    volumes:
+      - /home/${USER}/ravendb/data/node2:/var/lib/ravendb/data
+    environment:
+      - RAVEN_Security_UnsecuredAccessAllowed=PublicNetwork
+      - RAVEN_Setup_Mode=None
+      - RAVEN_License_Eula_Accepted=true
+      - RAVEN_ServerUrl=http://0.0.0.0:8080
+      - RAVEN_PublicServerUrl=http://${HOST_IP}:8081
+      - RAVEN_ServerUrl_Tcp=tcp://0.0.0.0:38888
+      - RAVEN_PublicServerUrl_Tcp=tcp://${HOST_IP}:38889
+	  - RAVEN_License='{Put your license here}'
+
+  ravendb-node3:
+    container_name: ravendb-node3
+    image: ravendb/ravendb:latest
+    ports:
+      - 8082:8080
+      - 38890:38888
+    volumes:
+      - /home/${USER}/ravendb/data/node3:/var/lib/ravendb/data
+    environment:
+      - RAVEN_Security_UnsecuredAccessAllowed=PublicNetwork
+      - RAVEN_Setup_Mode=None
+      - RAVEN_License_Eula_Accepted=true
+      - RAVEN_ServerUrl=http://0.0.0.0:8080
+      - RAVEN_PublicServerUrl=http://${HOST_IP}:8082
+      - RAVEN_ServerUrl_Tcp=tcp://0.0.0.0:38888
+      - RAVEN_PublicServerUrl_Tcp=tcp://${HOST_IP}:38890
+	  - RAVEN_License='{Put your license here}'
+
+```
+
+## Starting RavenDB
+
+First, we need to determine the host machine's IP address, which the nodes will use for external access:
+
+```bash
+export HOST_IP=$(hostname -I | awk '{print $1}')
+```
+
+With the environment set up, we can now start the containers using Docker Compose:
+
+```bash
+docker compose -f ~/ravendb/docker-compose.yml up -d --force-recreate --wait
+```
+
+Once running, we should see three containers, one for each RavenDB node:
+
+```text
+$ docker compose ls
+NAME                STATUS              CONFIG FILES
+ravendb             running(3)          ~/ravendb/docker-compose.yml
+
+```
+
+## Forming the Cluster
+
+We have three standalone RavenDB nodes that are not yet connected as a cluster at this stage. Setting up clustering is a simple process:
+
+1. Access RavenDB Studio: Open a browser and navigate to the first node, which will act as the cluster leader: `http://${HOST_IP}:8080`, and go to **Manage Server** \> **Cluster**.
+
+2. Initialize the Cluster: Click the **Bootstrap Cluster** button to initialize the cluster.
+
+3. Add Nodes: Use **Add Node to Cluster** to add: `http://${HOST_IP}:8081` and `http://${HOST_IP}:8082`.
+
+Once both nodes are added, the RavenDB cluster is fully operational.
+
+<Image img={require("./assets/docker-compose4.webp")} alt="RavenDB Studio Cluster view showing three active nodes A (Leader), B (Member), and C (Member) connected over unsecured HTTP on ports 8080, 8081, and 8082" />
+
+---
+
+### Secured Deployment with Self-Signed Certificates
+
+The secured RavenDB cluster with self-signed certificates setup enhances security by encrypting communication between nodes and clients.   
+Instead of running in an unsecured mode, this configuration ensures that all data transmitted is protected via TLS (Transport Layer Security) using self-generated certificates.   
+This setup is ideal for testing secure environments and internal deployments where using a trusted Certificate Authority (CA) is not required.
+
+While this approach secures communication, it requires manual certificate generation and distribution among nodes. This section will guide you through creating self-signed certificates, configuring RavenDB to use them, and deploying a secure multi-node cluster with Docker Compose. 
+
+### Setting Up the Environment
+
+Before deploying the cluster, we must prepare the environment by creating directories for each RavenDB node.   
+This time, we will also create a dedicated security directory to store all necessary files for establishing a secure connection.
+
+```bash
+mkdir -p ~/ravendb/security
+mkdir -p ~/ravendb/data/node1 ~/ravendb/data/node2 ~/ravendb/data/node3
+```
+
+### Generating Self-Signed Certificates for a Secure RavenDB Deployment
+
+To enable secure communication within our RavenDB cluster, we must generate and configure TLS certificates.   
+Since we are not using a publicly trusted Certificate Authority (CA), we will create our own CA, issue a certificate for the cluster, and configure the nodes to trust it.  
+This process ensures:
+
+* Encrypted communication between clients and nodes.  
+* Authentication of nodes within the cluster.  
+* Proper certificate validation using a self-managed CA.
+
+First, navigate to the **security directory**, where we will store all necessary files for secure communication:
+
+```bash
+cd ~/ravendb/security
+```
+
+#### 1. Creating a Certificate Authority (CA)
+
+First, we generate a private key for our CA, which will be used to sign certificates for the RavenDB cluster.  
+It will generate a 4096-bit RSA private key (ca.key), the root authority for signing certificates.
+
+```bash
+sudo openssl genrsa -out ca.key 4096
+```
+
+Next, we create a self-signed CA certificate valid for 10 years (3650 days):  
+in this example, I will specify the Common name for the CA as RavenDB Local CA  
+and we will get the ca.crt, which will be will be the trusted certificate for signing cluster certificates:
+
+```bash
+sudo openssl req -x509 -new -nodes -key ca.key -sha256 -days 3650 -out ca.crt -subj "/CN=RavenDB Local CA"
+```
+
+#### 2. Defining Certificate Configuration for the Cluster
+
+We need to define a custom OpenSSL configuration file to set up the cluster certificate properties:
+
+```bash
+cat <<EOF > ~/ravendb/security/openssl.cnf
+[ req ]
+default_bits       = 4096
+prompt             = no
+default_md         = sha256
+distinguished_name = req_distinguished_name
+req_extensions     = req_ext
+
+[ req_distinguished_name ]
+CN = ravendb.local
+
+[ req_ext ]
+keyUsage = critical, digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth, clientAuth
+subjectAltName = DNS:node1.local, DNS:node2.local, DNS:node3.local
+EOF
+```
+
+This configuration ensures that:
+
+*  The certificate is 4096-bit RSA.  
+*  The Common Name (CN) is set to ravendb.local.  
+*  The keyUsage allows both digital signatures and encryption.  
+*  The extendedKeyUsage allows the certificate to be used for server authentication and client authentication.  
+*  The subjectAltName (SAN) includes all RavenDB nodes (node1.local, node2.local, node3.local), ensuring they are trusted within the cluster. 
+
+#### 3. Generating the Cluster Certificate
+
+Now, we generate a private key and a Certificate Signing Request (CSR) for the cluster.  
+First, create the private key (my-cluster.key) for the cluster certificate:
+
+```bash
+sudo openssl genrsa -out my-cluster.key 4096
+```
+
+Then, generate a **CSR** (my-cluster.csr) using the OpenSSL configuration file (openssl.cnf):
+
+```bash
+sudo openssl req -new -key my-cluster.key -out my-cluster.csr -config openssl.cnf
+```
+
+This **CSR** contains all the necessary certificate details but has **not yet been signed**.
+
+#### 4. Signing the Cluster Certificate with Our CA
+
+Now, we use our self-signed CA to sign the CSR, issuing a 10-year certificate for the cluster:
+
+```bash
+sudo openssl x509 -req -in my-cluster.csr -CA ~/ravendb/security/ca.crt -CAkey ~/ravendb/security/ca.key -CAcreateserial -out my-cluster.crt -days 3650 -sha256 -extfile openssl.cnf -extensions req_ext
+```
+
+*  -CA ~/ravendb/security/ca.crt: Uses our self-signed CA to issue the certificate..  
+*  -CAkey ~/ravendb/security/ca.key: Sign it with the CA's private key.  
+*  -extfile openssl.cnf -extensions req_ext: Ensures the certificate includes SAN entries and correct usage policies
+
+At this point, we have a valid certificate (my-cluster.crt) that RavenDB nodes will use.
+
+#### 5. Converting to PFX Format
+
+RavenDB requires certificates in PKCS#12 (PFX) format, so we package the certificate and key:
+
+```bash
+sudo openssl pkcs12 -export -out my-cluster.pfx -inkey my-cluster.key -in my-cluster.crt -certfile ~/ravendb/security/ca.crt -name "RavenDB Cluster Cert"
+```
+
+This PFX bundle includes:
+
+* The private key (my-cluster.key).  
+* The signed certificate (my-cluster.crt).  
+* The CA certificate (ca.crt) to establish trust.
+
+To ensure proper read access while preventing unauthorized modifications, update the file permissions:
+
+```bash
+sudo chmod 644 ~/ravendb/security/my-cluster.pfx
+```
+
+#### 6. Registering the CA Certificate
+
+To ensure the system trusts our CA, we add it to the OS's trusted certificate store:
+
+```bash
+sudo cp ~/ravendb/security/ca.crt
+/usr/local/share/ca-certificates/ravendb-ca.crt
+
+sudo update-ca-certificates
+```
+
+This allows all nodes and clients to recognize and trust **any certificates issued by this CA**.
+
+#### Final Steps Before Deployment
+
+With the certificates in place, we need to set the correct ownership to ensure RavenDB has the necessary permissions:
+
+```bash
+sudo chown -R 999:999 ~/ravendb/
+```
+
+At this stage, we have:
+
+✅ A self-signed CA to issue trusted certificates.  
+✅ A signed cluster certificate with the correct properties.  
+✅ A PKCS#12 (PFX) file, ready for RavenDB.  
+✅ The CA registered on the system, ensuring trust.
+
+Now, we can configure RavenDB to use this certificate for a fully secured deployment.
+
+### Setup
+
+With the environment and certificates prepared, we can define the Docker Compose configuration for our secured RavenDB cluster.
+
+#### 1. Container Name and Image
+
+Similar to the unsecured setup, we assign a unique container name to each node for easier management:
+
+```yaml
+container_name: ravendb-node1
+	image: ravendb/ravendb:latest
+
+	container_name: ravendb-node2
+	image: ravendb/ravendb:latest
+
+	container_name: ravendb-node3
+	image: ravendb/ravendb:latest
+```
+
+#### 2. Port Mapping
+
+Unlike the unsecured setup, where we exposed the **HTTP port (8080)**, we now expose the **HTTPS port (443)** for secure access:  
+	
+
+```yaml
+ports: 
+ - "443:443" 
+ - "38888:38888"
+```
+
+#### 3. Data Persistence (Volumes)
+
+Similar to the unsecured setup, we mount data directories for each node. However, we now also mount the security directory, which contains the TLS certificates:
+
+```yaml
+volumes: 
+  - /home/${USER}/ravendb/data/node1:/var/lib/ravendb/data 
+  - /home/${USER}/ravendb/security:/security
+```
+
+#### 4. Environment Variables
+
+In contrast to the unsecured setup, we make key modifications to support secure connections:
+
+```yaml
+environment: 
+  - RAVEN_PublicServerUrl=https://node1.local 
+  - RAVEN_ServerUrl_Tcp=tcp://0.0.0.0:38888 
+  - RAVEN_PublicServerUrl_Tcp=tcp://node1.local:38888
+  - RAVEN_Security_Certificate_Path=/security/my-cluster.pfx
+   - RAVEN_License='{Put your license here}'
+```
+
+* RAVEN_PublicServerUrl=https://node1.local - Now points to an **HTTPS** address instead of an **HTTP** one, ensuring encrypted communication.  
+    
+* RAVEN_Security_Certificate_Path=/security/my-cluster.pfx - Specifies the **TLS** **certificate file** (my-cluster.pfx) required for secure authentication.
+
+Each additional node follows a similar configuration, changing only the hostname (node2.local, node3.local).
+
+#### 5. Networking Configuration
+
+We use Docker Compose networks to enable hostname-based communication between RavenDB nodes. This ensures that each container can resolve the other nodes by hostname, avoiding reliance on IP addresses.
+
+```yaml
+networks: 
+  default: 
+    aliases: 
+      - node1.local
+```
+
+Each node is assigned a unique network alias, allowing containers to communicate via hostnames instead of dynamic IPs. This is essential because container IPs may change upon restarts, whereas hostnames remain consistent.
+
+The final version of docker-compose.yml should look like this:
+
+```yaml
+services:
+  ravendb-node1:
+    container_name: ravendb-node1
+    image: ravendb/ravendb:latest
+    volumes:
+      - /home/${USER}/ravendb/data/node1:/var/lib/ravendb/data
+      - /home/${USER}/ravendb/security:/security
+    ports:
+      - "443:443"
+      - "38888:38888"
+    environment:
+      - RAVEN_Setup_Mode=None
+      - RAVEN_License_Eula_Accepted=true
+      - RAVEN_ServerUrl=https://0.0.0.0
+      - RAVEN_PublicServerUrl=https://node1.local
+      - RAVEN_ServerUrl_Tcp=tcp://0.0.0.0:38888
+      - RAVEN_PublicServerUrl_Tcp=tcp://node1.local:38888
+      - RAVEN_Security_Certificate_Path=/security/my-cluster.pfx
+      - RAVEN_License='{Put your license here}'
+    networks:
+      default:
+        aliases:
+          - node1.local
+
+  ravendb-node2:
+    container_name: ravendb-node2
+    image: ravendb/ravendb:latest
+    volumes:
+      - /home/${USER}/ravendb/data/node2:/var/lib/ravendb/data
+      - /home/${USER}/ravendb/security:/security
+    ports:
+      - "444:443"
+      - "38889:38888"
+    environment:
+      - RAVEN_Setup_Mode=None
+      - RAVEN_License_Eula_Accepted=true
+      - RAVEN_ServerUrl=https://0.0.0.0
+      - RAVEN_PublicServerUrl=https://node2.local
+      - RAVEN_ServerUrl_Tcp=tcp://0.0.0.0:38888
+      - RAVEN_PublicServerUrl_Tcp=tcp://node2.local:38888
+      - RAVEN_Security_Certificate_Path=/security/my-cluster.pfx
+      - RAVEN_License='{Put your license here}'
+    networks:
+      default:
+        aliases:
+          - node2.local
+
+  ravendb-node3:
+    container_name: ravendb-node3
+    image: ravendb/ravendb:latest
+    volumes:
+      - /home/${USER}/ravendb/data/node3:/var/lib/ravendb/data
+      - /home/${USER}/ravendb/security:/security
+    ports:
+      - "445:443"
+      - "38890:38888"
+    environment:
+      - RAVEN_Setup_Mode=None
+      - RAVEN_License_Eula_Accepted=true
+      - RAVEN_ServerUrl=https://0.0.0.0
+      - RAVEN_PublicServerUrl=https://node3.local
+      - RAVEN_ServerUrl_Tcp=tcp://0.0.0.0:38888
+      - RAVEN_PublicServerUrl_Tcp=tcp://node3.local:38888
+      - RAVEN_Security_Certificate_Path=/security/my-cluster.pfx
+      - RAVEN_License='{Put your license here}'
+    networks:
+      default:
+        aliases:
+          - node3.local
+
+```
+
+### Starting RavenDB
+
+Before starting our secured RavenDB nodes, we need to take one additional step.  
+Since this is a local deployment, there is no built-in DNS server to resolve hostnames like node1.local, node2.local, and node3.local. While Docker provides internal DNS resolution within its network, external tools and browsers may not automatically recognize these hostnames.
+
+To ensure that each node can be accessed by its hostname, we must manually map each container's internal IP address in /etc/hosts. Run the following command:
+
+```bash
+for node in node1 node2 node3; do
+  ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ravendb-$node)
+  echo "$ip   ${node}.local" | sudo tee -a /etc/hosts
+done
+
+```
+
+#### What This Command Does
+
+* Iterates over the three RavenDB nodes (ravendb-node1, ravendb-node2, ravendb-node3).  
+* Extracts the internal IP address of each container.  
+* Appends the hostname mapping to /etc/hosts, ensuring external tools and browsers can resolve them correctly.
+
+#### Why Is This Necessary?
+
+* No Built-in DNS for Local Machines – Without a DNS server, external tools like cURL or web browsers cannot resolve node1.local unless manually mapped.  
+    
+* Ensures Stable Communication – Even if containers restart and get new internal IPs, this setup provides a reliable way to access them by hostname.
+
+With the environment set up, we can now start the containers using Docker Compose:
+
+```bash
+docker compose -f ~/ravendb/docker-compose.yml up -d --force-recreate --wait
+```
+
+### Configuring the Browser for Secure Access
+
+Since RavenDB uses client authentication certificates, we must import the client certificate via a browser before accessing the RavenDB Studio.
+
+1. Open Chrome and navigate to chrome://settings/  
+2. Go to **Manage Certificates**.  
+3. Import the **client certificate** from ~/ravendb/security/my-cluster.pfx.  
+4. Go to the **Authorities** tab and add the **CA certificate** from ~/ravendb/security/ca.crt.
+
+<Image img={require("./assets/docker-compose2.webp")} alt="Chrome Settings Manage Certificates page on the Your Certificates tab showing an imported org-ravendb.local certificate with an Import button visible" />
+
+<Image img={require("./assets/docker-compose7.webp")} alt="Chrome certificate authority trust dialog for RavenDB Local CA with three unchecked trust options for websites, email users, and software makers" />
+
+Once imported, when navigating to https://node1.local/, a "**Select a Certificate**" prompt will appear. Choose the client certificate, and you'll be securely connected to your RavenDB instance:
+
+<Image img={require("./assets/docker-compose5.webp")} alt="Chrome Select a Certificate dialog prompting authentication to node1.local:443 with a ravendb.local certificate issued by RavenDB Local CA selected" />
+
+### Forming the Cluster
+
+At this stage, we have three standalone RavenDB nodes that are not yet connected as a cluster. Setting up clustering is a simple process:
+
+4. Access RavenDB Studio: Open a browser and navigate to the first node, which will act as the cluster leader: [https://node1.local](https://node1.local) and go to **Manage Server** \> **Cluster**.
+
+5. Initialize the Cluster: Click the **Bootstrap Cluster** button to initialize the cluster.
+
+6. Add Nodes: Use **Add Node to Cluster** to add :  
+   [https://node2.local](https://node2.local) and [https://node3.local](https://node3.local).
+
+Once both nodes are added, the RavenDB-secured self-signed cluster is fully operational.
+
+<Image img={require("./assets/docker-compose3.webp")} alt="RavenDB Studio Cluster view showing three active nodes A (Leader), B (Member), and C (Member) connected over HTTPS using self-signed certificates on node1.local, node2.local, and node3.local" />
+
+---
+
+## Secured Deployment with Let's Encrypt
+
+The secured RavenDB cluster with Let's Encrypt certificates provides automated TLS encryption for secure communication between nodes and clients. Unlike self-signed certificates, Let's Encrypt acts as a trusted Certificate Authority (CA), ensuring that your certificates are publicly trusted without manual distribution or configuration.
+
+**This setup is ideal for production environments**, where a globally recognized CA enhances security and simplifies client access. By leveraging Let's Encrypt's automated certificate provisioning, RavenDB can request, validate, and deploy valid SSL certificates dynamically, removing the complexity of manual certificate management. Certificates are automatically renewed before expiration, eliminating the need for manual rotation and ensuring the cluster remains continuously secure without planned downtime.
+
+This section will guide you through automating the setup with Let's Encrypt, configuring RavenDB to use trusted certificates, and deploying a fully secured multi-node cluster using Docker Compose.
+
+### Setting Up the Environment
+
+Before deploying the cluster, we must prepare the environment by creating directories for each RavenDB node.   
+Unlike previous setups, this configuration requires a dedicated setupctl directory, which will be used to generate and store the setup package provided by RavenDB.
+
+#### What is the rvn Project and Why Does It Matter?
+
+RavenDB simplifies cluster setup with its rvn CLI tool, an official utility designed to automate and streamline database deployment. This tool enables users to:
+
+* Generate secured setup packages tailored for their cluster.  
+* Request and validate Let's Encrypt certificates dynamically.  
+* Automatically configure settings for each node.
+
+Instead of manually generating certificates and configuring security settings, RavenDB does the heavy lifting through the rvn create-setup-package command. This significantly reduces setup complexity, especially for production environments requiring trusted SSL certificates.
+
+```bash
+sudo mkdir -p ~/ravendb/setupctl
+mkdir -p ~/ravendb/data/node1 ~/ravendb/data/node2 ~/ravendb/data/node3
+```
+
+#### What is the Purpose of the setupctl Directory?  
+The setupctl directory acts as a workspace for storing Configuration files, Auto-generated RavenDB settings, and Certificates and security files  
+Before generating the **setup package**, we need to create a **JSON** configuration file that defines the secured RavenDB cluster structure. This file includes essential details such as license information, domain settings, and node-specific configurations.
+
+To create the configuration file, run:
+
+```bash
+sudo nano ~/ravendb/setupctl/setup.json
+```
+
+Then, add the following content:
+
+```json
+{
+  "License": { "Id": "", "Name": "","Keys": [] },
+  "Email": "user@ravendb.net",
+  "Domain": "my-domain",
+  "RootDomain": "development.run",
+  "NodeSetupInfos": {
+    "A": {
+      "PublicServerUrl": "https://a.my-domain.development.run:443",
+      "PublicTcpServerUrl": "tcp://a.my-domain.development.run:38888",
+      "Port": 443,
+      "TcpPort": 38888,
+      "Addresses": ["172.19.0.2"]
+    },
+    "B": {
+      "PublicServerUrl": "https://b.my-domain.development.run:4433",
+      "PublicTcpServerUrl": "tcp://b.my-domain.development.run:38889",
+      "Port": 4433,
+      "TcpPort": 38889,
+      "Addresses": ["172.19.0.3"]
+    },
+    "C": {
+      "PublicServerUrl": "https://c.my-domain.development.run:4434",
+      "PublicTcpServerUrl": "tcp://c.my-domain.development.run:38890",
+      "Port": 4434,
+      "TcpPort": 38890,
+      "Addresses": ["172.19.0.4"]
+    }
+  }
+}
+
+
+```
+
+#### What Does This Configuration Define?
+
+1. License Information  
+     
+   The "License" section holds the RavenDB license details. You should fill in your actual license ID   
+   and keys before proceeding.  
+   You can obtain a license from [https://ravendb.net/buy#developer](https://ravendb.net/buy#developer). There is a free developer license available.  
+ 
+
+
+2. User and Domain Information
+
+* "Email" – Specifies the email address used for Let's Encrypt certificate validation.  
+* "Domain" – Defines the custom domain where the cluster will be hosted.  
+* "RootDomain" – Specifies the parent domain, which is required for Let's Encrypt validation.
+
+3. Node Setup Formation
+
+* Each node (A, B, C) is assigned a **unique public** server URL (e.g.,[https://a.my-domain.development.run](https://a.my-domain.development.run)).  
+* The corresponding public **TCP URL** is also defined.  
+* Ports are unique for each node to avoid conflicts (443, 4433, 4434 for HTTPS).  
+* Each node is assigned a **static** **Docker IP** to ensure consistent internal communication.
+
+#### Important Notes
+
+* Ensure that **each node has a unique port assignment** to prevent conflicts.  
+* The **domain specified must be publicly resolvable**, as Let's Encrypt will validate ownership before issuing certificates.
+
+With this structured configuration, we are now ready to generate the setup package and proceed with deploying the secured RavenDB cluster.  
+But first,  we need to set the correct ownership to ensure RavenDB has the necessary permissions:
+
+```bash
+sudo chown -R 999:999 ~/ravendb/
+```
+
+Now comes the exciting part—automating the secure cluster setup. Instead of manually configuring certificates and settings, RavenDB streamlines the process by generating a setup package that includes everything needed for deployment.
+
+To do this, we will temporarily run a RavenDB container, which will use the setup JSON we just created to request Let's Encrypt certificates and prepare the required configuration files. This process is fully automated and significantly simplifies the setup.
+
+Run the following command:
+
+```bash
+docker run --rm -v "/home/$USER/ravendb/setupctl:/ravendb" ravendb/ravendb:latest   /bin/bash -c "cd /usr/lib/ravendb/server && ./rvn create-setup-package -m=lets-encrypt -s=/ravendb/setup.json -o=/ravendb/setup_package.zip"
+```
+
+What This Command Does:
+
+✅ Runs a **temporary RavenDB container** to process the setup.  
+✅ Uses the **setup.json** file as input to define the cluster configuration.  
+✅ Requests **Let's Encrypt certificates**, performs domain validation, and handles DNS challenges.  
+✅ Generates **node-specific settings** and the required **TLS certificates**.  
+✅ Outputs everything into a **single setup package** (setup_package.zip).
+
+During execution, you will see log messages indicating progress:
+
+```text
+[13:23:34 INFO] Setting up RavenDB in Let's Encrypt security mode.
+...
+[13:24:07 INFO] Successfully updated DNS record(s) and challenge(s) in my-domain.development.run
+...
+[13:24:12 INFO] Adding node 'A' to the cluster.
+[13:24:12 INFO] Adding node 'B' to the cluster.
+[13:24:12 INFO] Adding node 'C' to the cluster.
+[13:24:12 INFO] Generating the client certificate.
+...
+[13:24:17 INFO] ZIP file was successfully added to this location: /ravendb/setup_package.zip
+
+```
+
+Now that we have successfully obtained the setup package, the next step is to extract it so we can access the necessary configuration files:
+
+```bash
+sudo unzip ~/ravendb/setupctl/setup_package.zip
+```
+
+At this point, all required files are in place. RavenDB has done the heavy lifting by creating the certificates and settings for each node:
+
+```text
+$ tree
+.
+├── A
+│   ├── cluster.server.certificate.my-domain.pfx
+│   └── settings.json
+├── B
+│   ├── cluster.server.certificate.my-domain.pfx
+│   └── settings.json
+├── C
+│   ├── cluster.server.certificate.my-domain.pfx
+│   └── settings.json
+├── admin.client.certificate.my-domain.crt
+├── admin.client.certificate.my-domain.key
+├── admin.client.certificate.my-domain.pfx
+├── license.json
+├── readme.txt
+├── setup.json
+```
+
+Just like in previous setups, we need to create dedicated directories for each node to store persistent data and ensure proper ownership settings:
+
+```bash
+sudo mkdir -p ~/ravendb/node1/data ~/ravendb/node2/data ~/ravendb/node3/data sudo chown -R 999:999 ~/ravendb/
+```
+
+### Setup
+
+With the environment prepared and Let's Encrypt certificates generated, we can now define the Docker Compose configuration to deploy our secured RavenDB cluster.
+
+#### 1. Container Name and Image
+
+Similar to previous setups, we assign a unique container name to each node for easy identification and management:
+
+```yaml
+container_name: ravendb-node1
+	image: ravendb/ravendb:latest
+
+	container_name: ravendb-node2
+	image: ravendb/ravendb:latest
+
+	container_name: ravendb-node3
+	image: ravendb/ravendb:latest
+```
+
+#### 2. Port Mapping
+
+As in the self-signed secured setup, we expose the **HTTPS** **port** (443) for secure access. However, in this case, we must ensure that each node's port configuration matches the details specified in setup.json, which were used when generating the Let's Encrypt certificates.  
+	
+
+```yaml
+ravendb-node1:
+  ports: 
+    - "443:443" 
+   - "38888:38888"
+
+ravendb-node2:
+  ports: 
+    - "4433:443" 
+   - "38889:38888"
+
+ravendb-node3:
+  ports: 
+    - "4434:443" 
+   - "38890:38888"
+```
+
+#### 3. Data Persistence (Volumes)
+
+As before, we mount data directories for each node to ensure persistent storage. However, in this setup, we also mount the Let's Encrypt certificates and settings files that RavenDB generated during the setup package creation.
+
+```yaml
+ravendb-node1:
+  volumes: 
+    - /home/${USER}/ravendb/data/node1:/var/lib/ravendb/data 
+    - /home/${USER}/ravendb/setupctl/A/cluster.server.certificate.my-domain.pfx
+      :/usr/lib/ravendb/server/cluster.server.certificate.my-domain.pfx
+    - /home/${USER}/ravendb/setupctl/A/settings.json:/etc/ravendb/settings.json
+
+ravendb-node2:
+  volumes: 
+    - /home/${USER}/ravendb/data/node2:/var/lib/ravendb/data 
+    - /home/${USER}/ravendb/setupctl/B/cluster.server.certificate.my-domain.pfx
+      :/usr/lib/ravendb/server/cluster.server.certificate.my-domain.pfx
+    - /home/${USER}/ravendb/setupctl/B/settings.json:/etc/ravendb/settings.json
+
+ravendb-node3:
+  volumes: 
+    - /home/${USER}/ravendb/data/node3:/var/lib/ravendb/data 
+    - /home/${USER}/ravendb/setupctl/C/cluster.server.certificate.my-domain.pfx
+      :/usr/lib/ravendb/server/cluster.server.certificate.my-domain.pfx
+    - /home/${USER}/ravendb/setupctl/C/settings.json:/etc/ravendb/settings.json
+```
+
+#### 4. Networking Configuration
+
+Unlike previous setups where hostnames were used for networking, here we assign static IP addresses to each node, exactly as defined in setup.json. This ensures that each node maintains a consistent internal IP for communication within the cluster.
+
+```yaml
+networks: 
+  ravendb_network: 
+    external: true 
+
+ravendb-node1:
+  networks: 
+    ravendb_network: 
+      ipv4_address: 172.19.0.2
+
+ravendb-node2:
+  networks: 
+    ravendb_network: 
+      ipv4_address: 172.19.0.3
+
+ravendb-node3:
+  networks: 
+    ravendb_network: 
+      ipv4_address: 172.19.0.4
+```
+
+The final version of docker-compose.yml should look like this:
+
+```yaml
+networks:
+  ravendb_network:
+    external: true
+
+services:
+  ravendb-node1:
+    container_name: ravendb-node1
+    image: ravendb/ravendb:latest
+    ports:
+      - 443:443
+      - 38888:38888
+    volumes:
+      - /home/${USER}/ravendb/node1/data:/var/lib/ravendb/data
+      - /home/${USER}/ravendb/setupctl/A/cluster.server.certificate.my-domain.pfx:/usr/lib/ravendb/server/cluster.server.certificate.my-domain.pfx
+      - /home/${USER}/ravendb/setupctl/A/settings.json:/etc/ravendb/settings.json
+    environment:
+      - RAVEN_Setup_Mode=None
+      - RAVEN_License_Eula_Accepted=true
+    networks:
+      ravendb_network:
+        ipv4_address: 172.19.0.2
+
+  ravendb-node2:
+    container_name: ravendb-node2
+    image: ravendb/ravendb:latest
+    ports:
+      - 4433:443
+      - 38889:38888
+    volumes:
+      - /home/${USER}/ravendb/node2/data:/var/lib/ravendb/data
+      - /home/${USER}/ravendb/setupctl/B/cluster.server.certificate.my-domain.pfx:/usr/lib/ravendb/server/cluster.server.certificate.my-domain.pfx
+      - /home/${USER}/ravendb/setupctl/B/settings.json:/etc/ravendb/settings.json
+    environment:
+      - RAVEN_Setup_Mode=None
+      - RAVEN_License_Eula_Accepted=true
+    networks:
+      ravendb_network:
+        ipv4_address: 172.19.0.3
+  ravendb-node3:
+    container_name: ravendb-node3
+    image: ravendb/ravendb:latest
+    ports:
+      - 4434:443
+      - 38890:38888
+    volumes:
+      - /home/${USER}/ravendb/node3/data:/var/lib/ravendb/data
+      - /home/${USER}/ravendb/setupctl/C/cluster.server.certificate.my-domain.pfx:/usr/lib/ravendb/server/cluster.server.certificate.my-domain.pfx
+      - /home/${USER}/ravendb/setupctl/C/settings.json:/etc/ravendb/settings.json
+    environment:
+      - RAVEN_Setup_Mode=None
+      - RAVEN_License_Eula_Accepted=true
+    networks:
+      ravendb_network:
+        ipv4_address: 172.19.0.4
+
+```
+
+### Starting RavenDB
+
+With the environment set up, we can now start the containers using Docker Compose:
+
+```bash
+docker compose -f ~/ravendb/docker-compose.yml up -d --force-recreate --wait
+```
+
+At this point, our containers are running, but before we can use RavenDB, one additional step is required:  
+We must register our client certificate with the server to enable administrative access.
+
+Since RavenDB provides **PKCS#12** (.pfx) certificates, we need to extract the public certificate and private key separately.
+
+#### 1. Extract the Public Certificate
+
+
+```bash
+sudo openssl pkcs12 -in ./A/cluster.server.certificate.my-domain.pfx -clcerts -nokeys -out ./A/cluster.server.certificate.pem -legacy -passin pass:
+```
+
+*  Extracts only the public certificate from the .pfx bundle.
+
+
+#### 2. Extract the Private Key
+
+
+```bash
+sudo openssl pkcs12 -in ./A/cluster.server.certificate.my-domain.pfx -nocerts -nodes -out ./A/cluster.server.certificate.key -legacy -passin pass:
+```
+
+* Extracts only the private key from the .pfx bundle.
+
+#### 3. Adjusting File Permissions
+
+Before proceeding, we must set the permissions for the admin client certificate to ensure secure access.
+
+
+```bash
+sudo chmod 640 ~/ravendb/setupctl/admin.client.certificate.my-domain.pfx
+```
+
+#### 4. Registering the Client Certificate with RavenDB
+
+Now, we register the admin client certificate with the first node ([a.my-domain.development.run](http://a.my-domain.development.run)) to enable full administrative access.
+
+
+```bash
+sudo curl -X PUT "https://a.my-domain.development.run/admin/certificates" \
+  -H "Content-Type: application/json" \
+  --cert ./A/cluster.server.certificate.pem \
+  --key ./A/cluster.server.certificate.key \
+  -d '{ "Name": "AdminClientCert", "Certificate": "'"$(cat ./admin.client.certificate.my-domain.pfx | base64 -w 0)"'", "SecurityClearance": "ClusterAdmin" }'
+```
+
+Once this step is complete, the client certificate will be registered, and our Let's Encrypt-secured RavenDB cluster will be fully operational. However, we can't access the studio just yet.
+
+### Configuring the Browser for Secure Access
+
+Since RavenDB uses client authentication certificates, we must import the client certificate via a browser before accessing the RavenDB Studio.
+
+5. Open Chrome and navigate to chrome://settings/  
+6. Go to **Manage Certificates**.  
+7. Import the **client certificate** from ~/ravendb/security/admin.client.certificate.my-domain.pfx.  
+
+Once imported, when navigating to a.my-domain.development.run, a "**Select a Certificate**" prompt will appear. Choose the client certificate, and you'll be securely connected to your RavenDB instance:
+
+<Image img={require("./assets/docker-compose6.webp")} alt="Chrome Select a Certificate dialog prompting authentication to a.my-domain.development.run:443 showing two available certificates: ravendb.local and my-domain.client.certificate" />
+
+### Forming the Cluster
+
+At this stage, we have three standalone RavenDB nodes, but they are not yet connected as a cluster. Setting up clustering is a simple process:
+
+7. Access RavenDB Studio: Open a browser and navigate to the first node, which will act as the cluster leader: [https://a.my-domain.development.run](https://a.my-domain.development.run) and go to **Manage Server** \> **Cluster**.
+
+8. Initialize the Cluster: Click the **Bootstrap Cluster** button to initialize the cluster.
+
+9. Add Nodes: Use **Add Node to Cluster** to add :  
+   [https://b.my-domain.development.run:4433](https://b.my-domain.development.run) and [https://c.my-domain.development.run:4434](https://c.my-domain.development.run:4434) .
+
+Once both nodes are added, the RavenDB secured self-signed cluster is fully operational.
+
+<Image img={require("./assets/docker-compose1.webp")} alt="RavenDB Studio Cluster view showing three active nodes A (Leader), B (Member), and C (Member) connected over HTTPS using Let's Encrypt certificates on a.my-domain.development.run, b.my-domain.development.run, and c.my-domain.development.run" />
+
+## Summary
+
+This guide covered deploying a 3-node RavenDB cluster with Docker Compose across three progressively secure configurations: unsecured HTTP for local development, self-signed TLS for internal environments, and fully automated Let's Encrypt for production.
+
+- Docker volume mounts are what give a stateful database persistence across container restarts, making them non-negotiable in any containerized RavenDB setup.
+- Unsecured mode is appropriate only for local development; exposing RavenDB over a public network without TLS is a significant security risk.
+- Self-signed certificates work well for staging or internal environments where you control which clients need to trust the CA, without the requirement of a publicly resolvable domain.
+- The rvn create-setup-package command handles the most complex part of a Let's Encrypt deployment, automating DNS challenges, certificate issuance, and per-node settings generation in a single step.
