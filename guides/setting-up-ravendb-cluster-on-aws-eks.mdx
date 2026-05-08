@@ -1,9 +1,304 @@
 ---
 title: "Setting Up RavenDB Cluster on AWS EKS"
-tags: [deployment, getting-started, containers, kubernetes]
-description: "Read about Setting Up RavenDB Cluster on AWS EKS on the RavenDB.net news section"
-externalUrl: "https://ravendb.net/articles/setting-up-ravendb-cluster-on-aws-eks"
-publishedAt: 2025-03-09
+tags: [deployment, kubernetes, clusters, getting-started]
+description: "Step-by-step guide to deploying a production-ready RavenDB cluster on Amazon EKS, covering IAM roles, VPC networking, node groups, EBS storage provisioning, Load Balancer Controller, and ExternalDNS for stable external access."
 image: "https://ravendb.net/wp-content/uploads/2025/03/kubernetes-aws-ravendb-article-cover.jpg"
+publishedAt: 2025-03-09
+see_also:
+  - title: "RavenDB on AWS EKS"
+    link: "https://ravendb.net/docs/article-page/latest/csharp/start/installation/setup-examples/kubernetes/aws-eks"
+    source: "external"
+    path: "Start > Installation > Setup Examples > Kubernetes > AWS EKS"
+  - title: "Containers: General Deployment Guide"
+    link: "https://ravendb.net/docs/article-page/latest/csharp/start/containers/general-guide"
+    source: "external"
+    path: "Start > Containers > General Guide"
+  - title: "Security Overview"
+    link: "https://ravendb.net/docs/article-page/latest/csharp/server/security/overview"
+    source: "external"
+    path: "Server > Security > Overview"
+author: "Gracjan Sadowicz"
 proficiencyLevel: "Expert"
 ---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+
+## Introduction
+
+Deploying **RavenDB** in a **Kubernetes** environment, particularly on **Amazon EKS**, offers a **scalable and resilient** database solution. 
+
+Setting up any database in Kubernetes is… well… complex. It's a stateless world, and databases are stateful. Databases need to have a fixed setup and configuration. Auto-recovery indicates that things won't permanently be fixed but more fluid. These things don't mix well, as you can see. 
+
+However, many software solutions cover these pain points. We use *controllers* to ensure fixed setup and configuration within a fluid environment. They will ensure that automatic instance re-creation won't break your cluster logic and that everything will return to normal after recovery.
+
+Also, remember that with great power comes great responsibility. EKS is an expansive tool that requires careful configuration to maximize its potential without any hiccups. This guide will walk you through the steps to deploy RavenDB on EKS, ensuring a secure, performant, and adequately connected setup.
+
+## Understanding the Key Concepts
+
+Before we dive into the deployment steps, let's briefly cover some **core concepts** you'll work with in this guide:
+
+### Basics
+
+* **Declarative Infrastructure:** Kubernetes operates on a declarative model, meaning you define the desired state of your infrastructure, and Kubernetes ensures it remains in that state.  
+* **Resources:** These include **pods, services, storage volumes, roles, and networking components** that make up your cluster.  
+* **Controllers:** Components like **EBS CSI (storage), Load Balancer Controller (LBC), and networking controllers** that automate various cluster operations. They operate on your cluster to achieve configured goals, like automatically linking storage disks, assigning pod VPC IP address, or load balancer creation & connecting to re-created Kubernetes pods. It can even control your Route53 to ensure a valid DNS configuration for new load balancers.
+
+### Amazon EKS
+
+* **EKS (Elastic Kubernetes Service):** AWS-managed Kubernetes service that simplifies cluster management.  
+* **EKS Cluster Add-ons:** Pre-packaged AWS-managed components that extend cluster functionality. Available to quick-add from UI.
+
+<Admonition type="note">
+  Manually installed controllers (not Add-ons) often require specific **IAM roles and service accounts** to operate correctly and ensure proper resource access. You can usually assign an IAM role to a controller pod by Pod Role Association, but most guides recommend setting up OIDC. By the end of this guide, we'll cover that.
+</Admonition>
+
+## Guide to Boot-up: Preparing Your EKS Cluster
+
+This guide showcases the required components and actions to build a healthy cluster. We'll try to show how you can set it up using AWS Web UI. However, some steps will require you to use commands from your terminal. To preserve this article, we will link resources that should be updated, like official AWS documentation, to go through particular setup steps. 
+
+We will provide detailed instructions on setting the cluster up. That's why **most of the space of this guide is taken by screenshots for a step-by-step guide**. 
+
+You'll need more **manual intervention** when installing the Load Balancer Controller and ExternalDNS, but we will provide our know-how and link external & updated deployment guides that match our case here. If you want to deploy the .yaml, LBC, and ExternalDNS, *scroll down to point 3*.
+
+### 0\. Prerequisites
+
+Before starting, ensure you have:
+
+* **An AWS Account** with sufficient permissions.  
+* **kubectl** installed and configured for EKS.  
+* **eksctl** (useful for some steps).  
+* Registered private **domain** (for internet exposure)
+
+### 1\. Create a new EKS cluster
+
+Go to EKS \> Clusters and create a new cluster.  
+First, we will need to give the new EKS cluster privileges so it can control AWS resources. In the configuration, let's name the cluster and create the IAM role. Click "Create Recommended Role."  
+<Image img={require("./assets/aws-eks14.webp")} alt="AWS EKS Create cluster page showing the Configure cluster step with cluster name ravendb-guide, Custom configuration selected, and the Create recommended role button" />
+
+Let's pick the EKS - Cluster Use case.  
+<Image img={require("./assets/aws-eks36.webp")} alt="AWS IAM Create role Select trusted entity step with AWS service selected and EKS - Cluster use case chosen" />
+
+Then, click Next.  
+<Image img={require("./assets/aws-eks34.webp")} alt="AWS IAM Add permissions step showing AmazonEKSClusterPolicy pre-selected as the required policy for the new EKS cluster role" />
+
+Review and save.
+
+<Image img={require("./assets/aws-eks25.webp")} alt="AWS IAM Create role review page for AmazonEKSAutoClusterRole showing the eks.amazonaws.com trust policy and AmazonEKSClusterPolicy permission" />
+
+Well - as you can see, the recommended role ain't working…  
+Let's fix this - Click Edit in the IAM console.  
+<Image img={require("./assets/aws-eks11.webp")} alt="AWS EKS cluster IAM role validation showing two warnings: missing required managed policies and missing sts:TagSession in the trust policy" />
+
+Attach policies to your role. Click Add permissions \> Attach policies. Select the listed policies and save.
+
+<Image img={require("./assets/aws-eks38.webp")} alt="AWS IAM Attach policy page for AmazonEKSAutoClusterRole with AmazonEKSNetworkingPolicy, AmazonEKSLoadBalancingPolicy, and AmazonEKSComputePolicy checked" />  
+Policies added successfully - it should look like this:  
+<Image img={require("./assets/aws-eks18.webp")} alt="AWS IAM role page for AmazonEKSAutoClusterRole showing a success banner and five attached managed policies including AmazonEKSBlockStoragePolicy and AmazonEKSNetworkingPolicy" />
+
+Head back to the cluster creator.
+
+<Image img={require("./assets/aws-eks16.webp")} alt="AWS EKS cluster IAM role field showing AmazonEKSAutoClusterRole selected with a warning that the trust policy is missing the required sts:TagSession action" />
+
+Well, we need to add trust policies, too. Let's fix this  
+Open the previous view (Edit in IAM console). Click "Trust relationships", then "Edit trust policy".
+
+<Image img={require("./assets/aws-eks13.webp")} alt="AWS IAM Edit trust policy page for AmazonEKSAutoClusterRole with the TagSession action visible in the right-hand panel search results" />
+
+The policy editor will open. In the panel on the right, search for "TagSession." Click the checkbox, save, and go back.
+
+We leave those options up to you:  
+<Image img={require("./assets/aws-eks41.webp")} alt="AWS EKS Create cluster page showing lower cluster configuration options: Kubernetes v1.31, cluster access settings, secrets encryption toggle, and ARC Zonal shift" />  
+Go next to the 'Networking' section.
+
+We recommend creating a separate VPC for the EKS cluster. For details, visit this page: [https://docs.aws.amazon.com/vpc/latest/userguide/create-vpc.html](https://docs.aws.amazon.com/vpc/latest/userguide/create-vpc.html)
+
+Let's create three subnets in our VPC. We will assign 256 IP addresses each. **Each one should have a different AZ.**  
+<Image img={require("./assets/aws-eks21.webp")} alt="AWS Create subnet page configuring two of three subnets: ravendb-a with 10.0.0.0/24 and ravendb-b with 10.0.1.0/24, both in vpc-eks-guide" /> 
+
+Success:
+
+<Image img={require("./assets/aws-eks26.webp")} alt="AWS VPC Subnets list filtered to show ravendb-a, ravendb-b, and ravendb-c, all Available in vpc-eks-guide with 10.0.x.0/24 CIDR blocks" />
+
+We've also created a security group that allows all traffic. You can modify it to achieve better **(any)** security. 
+
+<Image img={require("./assets/aws-eks23.webp")} alt="AWS security group guide-eks detail showing one inbound rule allowing all traffic from all sources (0.0.0.0/0)" />
+
+Now, we have a **very important step.**  
+We need to modify the subnets we've just created to be publicly available. This is our part of the setup, where we make **public** subnets. You can go **private** if you need to. 
+
+For more information on public and private subnets and overall cluster networking, visit this page:   
+[https://aws.amazon.com/blogs/containers/de-mystifying-cluster-networking-for-amazon-eks-worker-nodes/](https://aws.amazon.com/blogs/containers/de-mystifying-cluster-networking-for-amazon-eks-worker-nodes/)
+
+Open your subnets overview.  
+<Image img={require("./assets/aws-eks40.webp")} alt="AWS subnet detail for ravendb-a before enabling public IP assignment, showing auto-assign public IPv4 set to No and only the local route in the route table" />
+
+First, go to Actions\>Edit subnet settings.  
+Enable Automatic IPv4 assignment. 
+
+<Image img={require("./assets/aws-eks2.webp")} alt="AWS Edit subnet settings page with auto-assign public IPv4 address enabled for the ravendb-a subnet" />  
+Save. Then, we need to edit the route tables, as our subnets won't be able to exchange traffic from the Internet. First, let's create an Internet Gateway. We will need it to configure the route tables.
+
+Search for Internet Gateways, open their panel, and create a new one.  
+<Image img={require("./assets/aws-eks33.webp")} alt="AWS Create internet gateway form with the name igw-guide entered and the Create internet gateway button" />
+
+Name it appropriately, and click Create. The green bar "Attach to VPC" should appear. 
+
+<Image img={require("./assets/aws-eks28.webp")} alt="AWS Internet Gateway detail page for igw-guide showing State: Detached immediately after creation, with the Attach to a VPC banner" />  
+Click it and select your VPC.
+
+<Image img={require("./assets/aws-eks32.webp")} alt="AWS Attach Internet Gateway to VPC dialog with vpc-0076d6fc824beef1b selected and the Attach internet gateway button" />  
+Success.
+
+<Image img={require("./assets/aws-eks5.webp")} alt="AWS Internet Gateway detail page for igw-guide showing State: Attached to vpc-eks-guide with a success banner" />
+
+Let's go back to our subnets.  
+Click "Route tables", and go to the bound route table by clicking its name (highlighted in image).  
+<Image img={require("./assets/aws-eks3.webp")} alt="AWS subnet detail page for ravendb-a showing the Route table tab with a single local route for 10.0.0.0/16" />  
+It automatically searched for a valid route table.
+
+<Image img={require("./assets/aws-eks31.webp")} alt="AWS Route table subnet associations tab showing ravendb-a, ravendb-b, and ravendb-c implicitly associated with route table rtb-0291c44aafe07e216" />
+
+Click its ID (2nd column).  
+<Image img={require("./assets/aws-eks43.webp")} alt="AWS Route tables list filtered to route table rtb-0291c44aafe07e216, showing it is the main route table for vpc-eks-guide" />
+
+As you can see, the route table is bound to all of our subnets.  
+Let's modify its routes.  
+<Image img={require("./assets/aws-eks1.webp")} alt="AWS VPC Edit routes dialog adding a 0.0.0.0/0 route targeting the igw-guide Internet Gateway" />  
+Add 0.0.0.0/0 Destination with a target being the Internet Gateway we've just created. Save changes.
+
+<Image img={require("./assets/aws-eks12.webp")} alt="AWS Route table detail showing two Active routes: 0.0.0.0/0 targeting the Internet Gateway and 10.0.0.0/16 targeting local, after a successful update" />
+
+**Let's go back to the EKS cluster configuration.**
+
+Our cluster networking should look like this:  
+<Image img={require("./assets/aws-eks8.webp")} alt="AWS EKS cluster creation Specify networking step showing VPC vpc-eks-guide, three ravendb subnets, security group guide-eks, and Public endpoint access selected" />
+
+Configure observability up to your needs; we'll leave it default:  
+<Image img={require("./assets/aws-eks17.webp")} alt="AWS EKS cluster creation Configure observability step showing Prometheus and CloudWatch metrics disabled and all control plane log types turned off" />  
+Next, to "Add-ons," we'll install defaults and the EBS CSI Driver. We'll need all of them for proper networking; EBS CSI is a controller that we'll need for dynamic storage space provisioning.
+
+<Image img={require("./assets/aws-eks20.webp")} alt="AWS EKS Create cluster Select add-ons step with CoreDNS, Node monitoring agent, kube-proxy, Amazon VPC CNI, and Amazon EKS Pod Identity Agent checked" />
+
+<Image img={require("./assets/aws-eks37.webp")} alt="AWS EKS Select add-ons page showing Amazon EBS CSI Driver checked under AWS add-ons and Metrics Server checked under Community add-ons" />
+
+Don't forget to create a dedicated IAM Role for EBS CSI 
+
+<Image img={require("./assets/aws-eks6.webp")} alt="AWS IAM Add permissions step with AmazonEBSCSIDriverPolicy found and checked after searching for ebs" />
+
+<Image img={require("./assets/aws-eks35.webp")} alt="AWS EKS add-on configuration for Amazon EBS CSI Driver showing version v1.40.0-eksbuild.1 and the IAM role AmazonEKSPodIdentityAmazonEBSCSIDriverRole selected" />  
+Create your cluster. You should get a new cluster dashboard. Head to Add-ons. Verify this view   
+<Image img={require("./assets/aws-eks19.webp")} alt="AWS EKS cluster ravendb-guide Add-ons tab showing seven add-ons in Creating state, including Amazon VPC CNI, kube-proxy, EKS Pod Identity Agent, and Metrics Server" />
+
+### 2\. Compute resources - node group
+
+Create a node group with at least 3 machines that will serve your cluster as host machines to all these add-ons… and, of course, your RavenDB instances 😉
+
+<Image img={require("./assets/aws-eks42.webp")} alt="AWS EKS cluster ravendb-guide Compute tab showing 0 nodes and no node groups immediately after cluster creation" />
+
+Click "Add node group".  
+<Image img={require("./assets/aws-eks24.webp")} alt="AWS EKS Add node group form with empty name and IAM role fields, plus collapsed Kubernetes labels, taints, and tags sections" />  
+Let's create a recommended role, just like previously.  
+Use Case now is "EC2".
+
+<Image img={require("./assets/aws-eks30.webp")} alt="AWS IAM Create role review page for EKS_NG_Role showing EC2 trust policy and three attached policies: AmazonEC2ContainerRegistryReadOnly, AmazonEKS_CNI_Policy, AmazonEKSWorkerNodePolicy" />
+
+Let's use it.
+
+<Image img={require("./assets/aws-eks4.webp")} alt="AWS EKS Configure node group Step 1 with node group name ravendb-guide-ng and IAM role EKS_NG_Role selected" />
+
+Then go Next.  
+Select the machine type you want to use. RavenDB supports both X64 and ARM architectures. If you wish to spread RavenDB instances across the cluster, increase the number of machines to a minimum of 3\.  
+
+<Image img={require("./assets/aws-eks29.webp")} alt="AWS EKS node group compute and scaling configuration: Amazon Linux 2023 x86_64 AMI, t3.medium instance type, 30 GB disk, desired 4 / min 3 / max 5 nodes" />
+
+Go Next and select previously created **Subnets**.
+
+<Image img={require("./assets/aws-eks39.webp")} alt="AWS EKS node group Specify networking step with subnets ravendb-b (us-east-1b), ravendb-a (us-east-1a), and ravendb-c (us-east-1c) selected" />
+
+Go next, review your config, and click **Create.**  
+Your node group should be up after a while.
+
+<Image img={require("./assets/aws-eks22.webp")} alt="AWS EKS cluster ravendb-guide Compute tab showing four t3.medium nodes in Ready state managed by node group ravendb-guideng" />
+
+**We created and configured the EKS Kubernetes cluster with a node group attached. Now, let's deploy RavenDB on it.**
+
+### 3\. Connect with kubectl, and deploy your RavenDB.yaml
+
+Now, let's deploy [**this RavenDB cluster in a .yaml**](https://gist.github.com/poissoncorp/0bda321ce7b20724539bcd5fbf0d8020). It has a defined separate namespace, RBAC on a secret, a config map with scripts, a storage class based on EBS…  
+All of this is to run the RavenDB cluster on your node group. 
+
+**Necessary: The linked .yaml has many "todo" items. Before deploying, you must fill them with your domain, license, certificates, and other information.** 
+
+To deploy it, you need to bind your **kubectl** to your EKS cluster.  
+Here's the guide on how to do it: [https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html)
+
+Let's try to get all pods:  
+<Image img={require("./assets/aws-eks10.webp")} alt="Terminal output of kubectl get pods showing all kube-system pods Running, including aws-node, coredns, ebs-csi, kube-proxy, and metrics-server" />
+
+It works! Now you see why we assigned so many IP addresses. Each pod network interface has a separate IP!  
+Now let's deploy the file:  
+<Image img={require("./assets/aws-eks9.webp")} alt="Terminal output of kubectl apply -f ravendb-setup.yaml listing all created resources including namespace, storageclass, services, PVCs, and statefulsets for ravendb-a/b/c" />
+
+Command "kubectl logs" should show RavenDB Server starting:
+
+<Image img={require("./assets/aws-eks7.webp")} alt="Terminal output of kubectl logs showing RavenDB Server v7.0 ASCII logo and startup messages confirming the server is listening" />
+
+*The next steps will focus on exposing your instance since it is currently in a black box on Kubernetes' internal network. Even though it's running, there's no way to reach your server yet.* 
+
+### 4\. Setup LBC (load-balancer-controller) 
+
+We will use Network Load Balancing, an AWS feature, to route external traffic inside the cluster.  
+Long story short, it can route *complete* traffic (OSI Layer 4\) and won't drop the TLS payload containing the client's access certificate. 
+
+But to do so, we need a fixed target to which the *load* should be *balanced*. It's kind of the opposite of K8's fluid nature, right? **Right…** We need another controller, the load balancer controller. It will detect changes in our Kubernetes cluster and re-configure Network Load Balancers on every change to maintain connectivity.
+
+**We'll need to install it from "hand" as no LBC Add-on is currently available.**
+
+Follow the guide using *eksctl* and *helm to* automate some setup parts. The *eksctl* usually deploys components using Amazon CloudFormation. The *helm* is a package manager for Kubernetes. More info here: [https://helm.sh/](https://helm.sh/)
+
+Here are guides that you should follow:
+
+1. First, create an OIDC provider, which will be needed for the AWS Load Balancer Controller. Follow this guide: [https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html)
+
+2. Follow the steps from this tutorial to install the AWS Load Balancer Controller: [https://docs.aws.amazon.com/eks/latest/userguide/lbc-helm.html](https://docs.aws.amazon.com/eks/latest/userguide/lbc-helm.html)
+
+*(optionally)* Here, you can also make sure the guide is up to date with the newest release: [https://github.com/kubernetes-sigs/aws-load-balancer-controller/releases/](https://github.com/kubernetes-sigs/aws-load-balancer-controller/releases/)
+
+This way, your Services of type "LoadBalancer" will have a connection to the outside world, as LBC will provision Network Load Balancers.
+
+Your network load balancers will have random domain names that will change upon failure. To keep things solid, we need **the last controller**, which will allow you to:
+
+- Connect to your instances by **your domain name**, always the same  
+- Connect your nodes into a cluster, as your assigned **PublicServerUrl** will officially work, and other nodes will use it to talk to each other without problem. 
+
+### 5\. Setup ExternalDNS
+
+Installing ExternalDNS in the cluster is relatively easy if you installed LBC by yourself, but also by another long step, which we won't cover here, as there are official guides to follow, and our article would grow at an uncontrollable speed. [https://kubernetes-sigs.github.io/external-dns/latest/docs/tutorials/aws/](https://kubernetes-sigs.github.io/external-dns/latest/docs/tutorials/aws/)
+
+Long story short? After you install ExternalDNS in your cluster, you'll be able to **annotate your Service** component like this (take a look at the line with comment):  
+<Image img={require("./assets/aws-eks27.webp")} alt="Kubernetes Service YAML for ravendb-a of type LoadBalancer with ExternalDNS hostname annotation, NLB annotations, and ports 4443 and 38888 defined" />
+
+It will allow you to ***rely on your instance address***. This is an absolute game-changer: now, you can connect RavenDB nodes in a cluster in a completely fluid and autonomous environment.
+
+It should **spawn DNS records** like this, routing traffic from your domain to LBC-dynamically spawned Network Load Balancer:  
+<Image img={require("./assets/aws-eks15.webp")} alt="JSON snippet of a Route 53 DNS A record aliasing yourdomain.example.com to an AWS Elastic Load Balancer endpoint in eu-central-1" />
+
+### Conclusion
+
+Setting up a database on EKS from scratch may seem complicated, but this guide provides the know-how to make the journey less painful. Here's what we built:
+
+- EKS cluster with a dedicated VPC, three public subnets across separate AZs, and an Internet Gateway
+- IAM roles for the cluster control plane and the EC2 node group, with correct policies and trust relationships
+- 3-node RavenDB StatefulSet deployed via a custom YAML with RBAC, a ConfigMap, EBS-backed PersistentVolumeClaims, and a dedicated namespace
+- EBS CSI Driver for dynamic storage provisioning
+- AWS Load Balancer Controller to provision Network Load Balancers on demand
+- ExternalDNS to maintain stable Route 53 DNS records pointing to your NLB endpoints
+
+The result is a fully automated RavenDB cluster where storage, compute, networking, and external access are all managed by controllers.
