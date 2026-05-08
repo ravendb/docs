@@ -4,6 +4,19 @@ sidebar_label: ...setup aggressive caching
 description: "Enable aggressive caching in the RavenDB client to serve requests from local cache and reduce server round trips for read-heavy workloads."
 sidebar_position: 0
 supported_languages: ["csharp", "java"]
+see_also:
+     - title: "Conventions"
+       link: "client-api/configuration/conventions"
+       source: "docs"
+       path: "Client API > Configuration"
+     - title: "Disable Caching per Session"
+       link: "client-api/session/configuration/how-to-disable-caching"
+       source: "docs"
+       path: "Client API > Session > Configuration"
+     - title: "What is the Changes API"
+       link: "client-api/changes/what-is-changes-api"
+       source: "docs"
+       path: "Client API > Changes"
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,7 +24,6 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import SetupAggressiveCachingCsharp from './content/_setup-aggressive-caching-csharp.mdx';
 import SetupAggressiveCachingJava from './content/_setup-aggressive-caching-java.mdx';
-
 
 <LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
@@ -22,8 +34,3 @@ import SetupAggressiveCachingJava from './content/_setup-aggressive-caching-java
 <LanguageContent language="java">
    <SetupAggressiveCachingJava />
 </LanguageContent>
-
-
-<!--
-
--->
