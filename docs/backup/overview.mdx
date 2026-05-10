@@ -226,9 +226,9 @@ A full [snapshot image](../backup/overview#snapshot-image) is a duplication of t
 An incremental backup contains only **the changes** made to the database since the last backup, to save storage space and reduce backup time.
 
 <Admonition type="info" title="">
-When an incremental-backup task is executed, it checks for the existence of a backup file.  
-- If a backup file is not found, the task will create a [full backup](../backup/overview#full-backup).  
-- Subsequent backups will be incremental.  
+When an incremental-backup task is executed:  
+- If no backup file is found, the task creates a [full backup](../backup/overview#full-backup) first. Subsequent backups will be incremental.  
+- If the database has not changed since the last backup, the task is skipped - no backup file is produced.  
 </Admonition>
 
 * **Location**  
