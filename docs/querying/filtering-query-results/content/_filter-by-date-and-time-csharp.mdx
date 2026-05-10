@@ -90,6 +90,8 @@ List<Employee> employees = await asyncSession.Advanced
 </TabItem>
 <TabItem value="RawQuery" label="RawQuery">
 ```csharp
+var cutoff = new DateTime(1995, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+    
 List<Employee> employees = session.Advanced
     .RawQuery<Employee>("from Employees where HiredAt >= $cutoff")
     .AddParameter("cutoff", new DateTime(1995, 1, 1, 0, 0, 0, DateTimeKind.Utc))
@@ -98,6 +100,8 @@ List<Employee> employees = session.Advanced
 </TabItem>
 <TabItem value="RawQuery_async" label="RawQuery_async">
 ```csharp
+var cutoff = new DateTime(1995, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+    
 List<Employee> employees = await asyncSession.Advanced
     .AsyncRawQuery<Employee>("from Employees where HiredAt >= $cutoff")
     .AddParameter("cutoff", new DateTime(1995, 1, 1, 0, 0, 0, DateTimeKind.Utc))
@@ -350,14 +354,14 @@ where HiredAt between "1995-01-01T00:00:00.0000000Z"
     </Tabs>
 
 * All comparison operators are supported (`=`, `!=`, `<`, `<=`, `>`, `>=`).    
-  For example, the following query returns orders whose _RequiredAt_ date is **after** the current server time:
+  For example, the following query returns orders whose _RequireAt_ date is **after** the current server time:
 
     <Tabs groupId='languageSyntax'>
     <TabItem value="Query" label="Query">
     ```csharp
     List<Order> orders = session
         .Query<Order>()
-        .Where(o => o.RequiredAt > RavenQuery.Now())
+        .Where(o => o.RequireAt > RavenQuery.Now())
         .ToList();
     ```
     </TabItem>
@@ -365,7 +369,7 @@ where HiredAt between "1995-01-01T00:00:00.0000000Z"
     ```csharp
     List<Order> orders = await asyncSession
         .Query<Order>()
-        .Where(o => o.RequiredAt > RavenQuery.Now())
+        .Where(o => o.RequireAt > RavenQuery.Now())
         .ToListAsync();
     ```
     </TabItem>
@@ -373,7 +377,7 @@ where HiredAt between "1995-01-01T00:00:00.0000000Z"
     ```csharp
     List<Order> orders = session.Advanced
         .DocumentQuery<Order>()
-        .WhereGreaterThan("RequiredAt", RavenDocumentQuery.Now())
+        .WhereGreaterThan("RequireAt", RavenDocumentQuery.Now())
         .ToList();
     ```
     </TabItem>
@@ -381,28 +385,28 @@ where HiredAt between "1995-01-01T00:00:00.0000000Z"
     ```csharp
     List<Order> orders = await asyncSession.Advanced
         .AsyncDocumentQuery<Order>()
-        .WhereGreaterThan("RequiredAt", RavenDocumentQuery.Now())
+        .WhereGreaterThan("RequireAt", RavenDocumentQuery.Now())
         .ToListAsync();
     ```
     </TabItem>
     <TabItem value="RawQuery" label="RawQuery">
     ```csharp
     List<Order> orders = session.Advanced
-        .RawQuery<Order>("from Orders where RequiredAt > now()")
+        .RawQuery<Order>("from Orders where RequireAt > now()")
         .ToList();
     ```
     </TabItem>
     <TabItem value="RawQuery_async" label="RawQuery_async">
     ```csharp
     List<Order> orders = await asyncSession.Advanced
-        .AsyncRawQuery<Order>("from Orders where RequiredAt > now()")
+        .AsyncRawQuery<Order>("from Orders where RequireAt > now()")
         .ToListAsync();
     ```
     </TabItem>
     <TabItem value="RQL" label="RQL">
     ```sql
     from Orders
-    where RequiredAt > now()
+    where RequireAt > now()
     ```
     </TabItem>
     </Tabs>
@@ -592,24 +596,24 @@ where HiredAt between "1995-01-01T00:00:00.0000000Z"
 
       **Shift**: `2026-05-10T14:37:22Z + 7 days` => `2026-05-17T14:37:22Z`  
       **Round down to the day**: `2026-05-17T14:37:22Z` => `2026-05-17T00:00:00Z`  
-      **So this predicate**: `RequiredAt <= now('+7d')`  
-      **effectively becomes**: `RequiredAt <= 2026-05-17T00:00:00Z`
+      **So this predicate**: `RequireAt <= now('+7d')`  
+      **effectively becomes**: `RequireAt <= 2026-05-17T00:00:00Z`
 
-* The following query returns orders whose _RequiredAt_ value is earlier than or equal to 7 days from now,  
+* The following query returns orders whose _RequireAt_ value is earlier than or equal to 7 days from now,  
   rounded down to the day:
     
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 ```csharp
 List<Order> orders = session.Query<Order>()
-    .Where(o => o.RequiredAt <= RavenQuery.Now("+7d"))
+    .Where(o => o.RequireAt <= RavenQuery.Now("+7d"))
     .ToList();
 ```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
 ```csharp
 List<Order> orders = await asyncSession.Query<Order>()
-    .Where(o => o.RequiredAt <= RavenQuery.Now("+7d"))
+    .Where(o => o.RequireAt <= RavenQuery.Now("+7d"))
     .ToListAsync();
 ```
 </TabItem>
@@ -617,7 +621,7 @@ List<Order> orders = await asyncSession.Query<Order>()
 ```csharp
 List<Order> orders = session.Advanced
     .DocumentQuery<Order>()
-    .WhereLessThanOrEqual("RequiredAt", RavenDocumentQuery.Now("+7d"))
+    .WhereLessThanOrEqual("RequireAt", RavenDocumentQuery.Now("+7d"))
     .ToList();
 ```
 </TabItem>
@@ -625,7 +629,7 @@ List<Order> orders = session.Advanced
 ```csharp
 List<Order> orders = await asyncSession.Advanced
     .AsyncDocumentQuery<Order>()
-    .WhereLessThanOrEqual("RequiredAt", RavenDocumentQuery.Now("+7d"))
+    .WhereLessThanOrEqual("RequireAt", RavenDocumentQuery.Now("+7d"))
     .ToListAsync();
 ```
 </TabItem>
@@ -633,13 +637,13 @@ List<Order> orders = await asyncSession.Advanced
 ```csharp
 // Using raw RQL - the offset string is passed directly to now()
 List<Order> orders = session.Advanced
-    .RawQuery<Order>("from Orders where RequiredAt <= now('+7d')")
+    .RawQuery<Order>("from Orders where RequireAt <= now('+7d')")
     .ToList();
 
 // Using parameter - the offset string is supplied via AddParameter().
 // Note: with a parameter, repeated calls won't return 304 Not Modified.
 List<Order> ordersParam = session.Advanced
-    .RawQuery<Order>("from Orders where RequiredAt <= now($offset)")
+    .RawQuery<Order>("from Orders where RequireAt <= now($offset)")
     .AddParameter("offset", "+7d")
     .ToList();
 ```
@@ -648,13 +652,13 @@ List<Order> ordersParam = session.Advanced
 ```csharp
 // Using raw RQL - the offset string is passed directly to now()
 List<Order> orders = await asyncSession.Advanced
-    .AsyncRawQuery<Order>("from Orders where RequiredAt <= now('+7d')")
+    .AsyncRawQuery<Order>("from Orders where RequireAt <= now('+7d')")
     .ToListAsync();
 
 // Using parameter - the offset string is supplied via AddParameter().
 // Note: with a parameter, repeated calls won't return 304 Not Modified.
 List<Order> ordersParam = await asyncSession.Advanced
-    .AsyncRawQuery<Order>("from Orders where RequiredAt <= now($offset)")
+    .AsyncRawQuery<Order>("from Orders where RequireAt <= now($offset)")
     .AddParameter("offset", "+7d")
     .ToListAsync();
 ```
@@ -663,12 +667,12 @@ List<Order> ordersParam = await asyncSession.Advanced
 ```sql
 // Offset string is passed as a literal string:
 from Orders
-where RequiredAt <= now('+7d')
+where RequireAt <= now('+7d')
 
 // Offset string is passed as a parameter:
 // Note: with a parameter, repeated calls won't return 304 Not Modified.
 from Orders
-where RequiredAt <= now($offset)
+where RequireAt <= now($offset)
 { "offset": "+7d" }
 ```
 </TabItem>
