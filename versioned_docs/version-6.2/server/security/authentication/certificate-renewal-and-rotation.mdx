@@ -25,13 +25,13 @@ You can also ignore these limits and replace the certificates immediately but be
 
 To manually replace the server certificate you can either edit [settings.json](../../configuration/configuration-options.mdx#json) with a new certificate path and restart the server or you can overwrite the existing certificate file and the server will pick it up within one hour without requiring a restart.
 
-<Admonition type="danger" title="">
+<Admonition type="warning" title="">
 The new certificate must contain all of the cluster domain names in the CN or ASN properties of the certificate. Otherwise you will get an authentication error because SSL/TLS requires the domain in the certificate to match with the actual domain being used.
 </Admonition>
 
-## Replace the Cluster Certificate Using the Studio
+## Replace the Server Certificate Using Studio
 
-Access the certificate view, click on `Cluster certificate` -&gt; `Replace cluster certificate` and upload the new certificate PFX file.
+Access the [certificate view](../../../studio/server/certificates/server-management-certificates-view.mdx), click on `Server certificate` -&gt; `Replace server certificate` and upload the new certificate PFX file.
 
 This will start the certificate replacement process.
 
@@ -47,9 +47,9 @@ If a node is not responding during the replacement, the operation will not compl
 
 * `Replace immediately` is chosen. In this case, the cluster will complete the operation without the node which is down. When bringing that node up, the certificate must be replaced manually.
 
-During the process you will receive alerts in the studio and in the logs indicating the status of the operation and any errors if they occur. The alerts are displayed for each node independently.
+During the process you will receive alerts in Studio and in the logs indicating the status of the operation and any errors if they occur. The alerts are displayed for each node independently.
 
-## Replace the Cluster Certificate Using Powershell
+## Replace the Server Certificate Using Powershell
 
 Here is a little example of using the REST API directly with powershell to replace the cluster certificate:  
 
