@@ -32,6 +32,8 @@ import CodeBlock from '@theme/CodeBlock';
       [FindPropertyNameForIndex](../../../client-api/configuration/conventions.mdx#findpropertynameforindex)  
       [FirstBroadcastAttemptTimeout](../../../client-api/configuration/conventions.mdx#firstbroadcastattempttimeout)  
       [HttpClientType](../../../client-api/configuration/conventions.mdx#httpclienttype)  
+      [HttpPooledConnectionIdleTimeout](../../../client-api/configuration/conventions.mdx#httppooledconnectionidletimeout)  
+      [HttpPooledConnectionLifetime](../../../client-api/configuration/conventions.mdx#httppooledconnectionlifetime)  
       [HttpVersion](../../../client-api/configuration/conventions.mdx#httpversion)  
       [IdentityPartsSeparator](../../../client-api/configuration/conventions.mdx#identitypartsseparator)  
       [LoadBalanceBehavior](../../../client-api/configuration/conventions.mdx#loadbalancebehavior)  
@@ -723,6 +725,50 @@ HttpClientType = typeof(MyHttpClient)
 <CodeBlock language="csharp">
 {`// Syntax:
 public Type HttpClientType \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### HttpPooledConnectionIdleTimeout
+* Available for `.NET Core 3.1` and later.
+
+* Use the `HttpPooledConnectionIdleTimeout` convention to set how long an idle HTTP connection  
+  can remain in the connection pool before it is closed.  
+  This maps to `SocketsHttpHandler.PooledConnectionIdleTimeout`.
+
+* DEFAULT: `null` — the .NET framework default applies (1 minute).
+
+<TabItem value="HttpPooledConnectionIdleTimeoutSyntax" label="HttpPooledConnectionIdleTimeoutSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public TimeSpan? HttpPooledConnectionIdleTimeout \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### HttpPooledConnectionLifetime
+* Available for `.NET Core 3.1` and later.
+
+* Use the `HttpPooledConnectionLifetime` convention to set the maximum lifetime of an HTTP connection  
+  in the connection pool.  
+  After this duration elapses, the connection is closed and replaced on its next use.  
+  This maps to `SocketsHttpHandler.PooledConnectionLifetime`.
+
+* Setting a finite lifetime is useful in environments where DNS records change,  
+  as it forces the client to pick up new DNS resolutions periodically.
+
+* DEFAULT: `null` — connections are not recycled based on age.
+
+<TabItem value="HttpPooledConnectionLifetimeSyntax" label="HttpPooledConnectionLifetimeSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public TimeSpan? HttpPooledConnectionLifetime \{ get; set; \}
 `}
 </CodeBlock>
 </TabItem>
