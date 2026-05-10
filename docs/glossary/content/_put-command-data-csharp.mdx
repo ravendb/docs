@@ -11,6 +11,7 @@ import CodeBlock from '@theme/CodeBlock';
 | **ChangeVector** | string | Document change-vector |
 | **Document** | DynamicJsonValue | Document to put |
 | **Type** | CommandType | The Command Type (PUT) |
+| **ForceRevisionCreationStrategy** | `ForceRevisionStrategy` | Strategy for forcing a revision when the document is stored. `None` (default): no forced revision is created; `Before`: a forced revision is created from the document as it currently exists in the store, before applying changes. |
 
 ### Methods
 
