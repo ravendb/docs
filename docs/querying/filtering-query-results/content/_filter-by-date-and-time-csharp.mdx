@@ -885,7 +885,7 @@ and no documents in the queried collection have been added, modified, or deleted
 
 ### Aggressive caching bypasses server re-evaluation
     
-* **When the request runs inside an [Aggressive caching](../../../client-api/configuration/aggressive-caching.mdx) scope**,  
+* **When the request runs inside an [Aggressive caching](../../../client-api/how-to/setup-aggressive-caching.mdx) scope**,  
   the client can return the previously cached response without contacting the server at all, as long as:
     * the cached entry is younger than the duration passed to `AggressivelyCacheFor(...)`,
     * the query does not use `WaitForNonStaleResults` and was not issued with `NoCaching()`, and
