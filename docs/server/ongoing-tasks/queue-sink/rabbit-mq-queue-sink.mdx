@@ -52,6 +52,11 @@ Read [here](../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink.mdx
 about adding a connection string using Studio.  
 #### Retrieving messages from RabbitMQ queues
 
+<Admonition type="note" title="">
+While a queue sink task is running, it prevents the host database from being unloaded due to idle operations.  
+This ensures that message consumption from RabbitMQ queues continues uninterrupted, even if the database would otherwise go idle.
+</Admonition>
+
 When a message is sent to a RabbitMQ broker by a producer, it is pushed to 
 the tail of a queue. As preceding messages are pulled, the message advances 
 up the queue until it reaches its head and can be consumed by RavenDB's sink.  
