@@ -36,7 +36,19 @@ Upgrading a RavenDB instance to a new version is very simple. To do so:
     * These steps are strictly necessary when updating to version 5.1.  
       To update to lower versions, overriding the old binaries may be sufficient - although removing them is recommended.  
 
-4. Copy the new binaries.  
+4. Copy the new binaries.
+
+   <Admonition type="note" title="">
+
+   On Linux, if the server uses a privileged port (below 1024, e.g. port `443`),
+   re-apply the `setcap` capability to the new binary.
+   Linux does not preserve file capabilities when a binary is replaced:
+
+   ```bash
+   sudo setcap CAP_NET_BIND_SERVICE=+eip ./RavenDB/Server/Raven.Server
+   ```
+
+   </Admonition>
 
 5. Restart the server.  
 
@@ -53,7 +65,7 @@ However, sometimes our adjustments require changing the file format ("schema ver
 If RavenDB finds during startup that the stored database uses an old format, it 
 will automatically perform this kind of migration.  
 
-<Admonition type="warning" title="">
+<Admonition type="note" title="">
 Migrating data files is only one type of migration.  
 If you try to downgrade to an older RavenDB version after making any changes in data files 
 format, RavenDB will fail to start with a detailed error message.  
