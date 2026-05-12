@@ -1,0 +1,144 @@
+---
+title: "CDC Sink: Linked Tables"
+sidebar_label: Linked Tables
+description: "Explains how linked tables create document ID references in parent documents by converting foreign key values into RavenDB document IDs."
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# CDC Sink: Linked Tables
+
+<Admonition type="note" title="">
+
+* A **linked table** creates a document ID reference in the parent document rather
+  than embedding data. A foreign key value becomes a RavenDB document ID pointing
+  to a related collection.
+
+* In this page:
+  * [Basic Configuration](#basic-configuration)
+  * [Composite Foreign Keys](#composite-foreign-keys)
+  * [Linked vs Embedded](#linked-vs-embedded)
+
+</Admonition>
+
+---
+
+## Basic Configuration
+
+`CdcSinkLinkedTableConfig` is placed inside a root table's (or embedded table's) `LinkedTables` list:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`new CdcSinkTableConfig
+\{
+    CollectionName = "Orders",
+    SourceTableName = "orders",
+    PrimaryKeyColumns = ["id"],
+    Columns =
+    [
+        new CdcColumnMapping() \{ Column = "id",          Name = "Id" \},
+        new CdcColumnMapping() \{ Column = "customer_id", Name = "CustomerId" \},
+    ],
+    LinkedTables =
+    [
+        new CdcSinkLinkedTableConfig
+        \{
+            SourceTableName = "customers",
+            PropertyName = "Customer",              // Property name in document
+            LinkedCollectionName = "Customers",     // Target collection for ID
+            JoinColumns = ["customer_id"]           // FK used to build the document ID
+        \}
+    ]
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+With `customer_id = 42`, the Orders document gets:
+
+<Tabs>
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+    "Id": 1,
+    "CustomerId": 42,
+    "Customer": "Customers/42"
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The `Customer` property is a RavenDB document ID, built from the `LinkedCollectionName`
+and the join column values. Load the referenced document using
+[includes](../../../client-api/session/loading-entities#load-with-includes) to avoid
+a second network call.
+
+---
+
+## Composite Foreign Keys
+
+When the target table has a composite primary key, the linked reference includes
+all parts of that key:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`new CdcSinkLinkedTableConfig
+\{
+    SourceTableName = "customers",
+    PropertyName = "Customer",
+    LinkedCollectionName = "Customers",
+    JoinColumns = ["customer_region", "customer_id"]  // Must match Customers PK order
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+With `customer_region = 'US'` and `customer_id = 42`, the document gets:
+
+```
+"Customer": "Customers/US/42"
+```
+
+---
+
+## Linked vs Embedded
+
+| Consideration | Embedded | Linked |
+|--------------|----------|--------|
+| Data stored | Full nested object/array inside document | Document ID reference only |
+| Load pattern | Single document load | Load parent + include references |
+| Document size | Grows with embedded items | Parent document stays small |
+| Updates to referenced data | Reflected via CDC | Reflected via CDC on the referenced collection |
+| Independence | Child has no meaning without parent | Referenced entity exists independently |
+| Typical use | Orders own LineItems | Orders reference Customers |
+
+**Choose embedded** when the child data belongs to the parent and is always read
+together with it.
+
+**Choose linked** when the referenced entity is independently meaningful and shared
+across many parents, and you want to avoid duplicating data.
+
+---
+
+## Related Articles
+
+### CDC Sink
+
+- [Schema Design](./schema-design.mdx)
+- [Embedded Tables](./embedded-tables.mdx)
+- [Configuration Reference](./configuration-reference.mdx)
+
+### Client API
+
+- [Load with Includes](../../../client-api/session/loading-entities#load-with-includes)

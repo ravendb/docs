@@ -1,0 +1,123 @@
+---
+title: "CDC Sink for PostgreSQL: Overview"
+sidebar_label: Overview
+description: "CDC Sink support for PostgreSQL — using logical replication to stream changes into RavenDB in real time."
+sidebar_position: -1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# CDC Sink for PostgreSQL: Overview
+
+<Admonition type="note" title="">
+
+* CDC Sink supports PostgreSQL as a source database using
+  [logical replication](https://www.postgresql.org/docs/current/logical-replication.html).
+
+* PostgreSQL streams row-level changes in real time through a logical replication slot.
+  CDC Sink consumes this stream and applies INSERTs, UPDATEs, and DELETEs to RavenDB
+  documents as they occur.
+
+</Admonition>
+
+---
+
+## Connection String
+
+Use a `SqlConnectionString` with `FactoryName` set to `"Npgsql"`:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new PutConnectionStringOperation<SqlConnectionString>(
+    new SqlConnectionString
+    \{
+        Name = "MyPostgresConnection",
+        FactoryName = "Npgsql",
+        ConnectionString = "Host=myserver;Port=5432;Database=mydb;Username=ravendb_cdc;Password=..."
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+---
+
+## How It Works
+
+PostgreSQL CDC Sink uses logical replication, which provides a continuous stream of
+changes without polling. This gives low-latency, near-real-time replication.
+
+Key PostgreSQL concepts:
+
+* **Replication slot** — a server-side cursor that tracks how far a consumer has read.
+  CDC Sink creates and manages one automatically.
+* **Publication** — defines which tables are included in the replication stream.
+  CDC Sink creates one automatically for the configured tables.
+* **WAL (Write-Ahead Log)** — PostgreSQL retains WAL segments as long as a replication
+  slot has not consumed them. An inactive or paused task causes WAL to accumulate.
+
+---
+
+## Prerequisites
+
+PostgreSQL requires several configuration settings and permissions before CDC Sink
+can connect. See [Prerequisites Checklist](./prerequisites-checklist.mdx) for the
+full list, including:
+
+* WAL level set to `logical`
+* Sufficient `max_replication_slots` and `max_wal_senders`
+* A database user with `REPLICATION` privilege
+* `REPLICA IDENTITY` configuration for embedded tables with surrogate keys
+
+---
+
+## PostgreSQL-Specific Settings
+
+The `CdcSinkPostgresSettings` object on `CdcSinkConfiguration` controls the replication
+slot and publication names:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`Postgres = new CdcSinkPostgresSettings
+\{
+    SlotName = "my_slot",
+    PublicationName = "my_publication"
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+If omitted, GUID-based names are generated automatically on first use.
+See [Initial Setup](./initial-setup.mdx) for details.
+
+---
+
+## Configuration
+
+The CDC Sink task configuration is the same across all database engines.
+See [Configuration Reference](../configuration-reference.mdx) for full details.
+
+The `SourceTableSchema` defaults to `"public"` when using PostgreSQL.
+
+---
+
+## In This Section
+
+* [Prerequisites Checklist](./prerequisites-checklist.mdx) — what to verify before creating a task
+* [Initial Setup](./initial-setup.mdx) — creating the replication slot and publication
+* [WAL Configuration](./wal-configuration.mdx) — PostgreSQL WAL settings
+* [Permissions and Roles](./permissions-and-roles.mdx) — required database permissions
+* [REPLICA IDENTITY](./replica-identity.mdx) — configuring DELETE event content
+* [Monitoring PostgreSQL](./monitoring-postgres.mdx) — replication lag and WAL monitoring
+* [Cleanup and Maintenance](./cleanup-and-maintenance.mdx) — dropping orphaned slots
+* [Studio UI](./studio-ui.mdx) — creating tasks through the Studio interface
+
+---

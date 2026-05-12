@@ -1,0 +1,96 @@
+---
+title: "CDC Sink for PostgreSQL: Studio UI"
+sidebar_label: Studio UI
+description: "How to create, monitor, and edit CDC Sink tasks for PostgreSQL through the RavenDB Management Studio Ongoing Tasks interface."
+sidebar_position: 8
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# CDC Sink for PostgreSQL: Studio UI
+
+<Admonition type="note" title="">
+
+* CDC Sink tasks are created and managed through the **Ongoing Tasks** section of the
+  Management Studio.
+
+* In this page:
+  * [Creating a CDC Sink Task](#creating-a-cdc-sink-task)
+  * [Monitoring Task State](#monitoring-task-state)
+  * [Editing a Task](#editing-a-task)
+
+</Admonition>
+
+---
+
+## Creating a CDC Sink Task
+
+To create a CDC Sink task in the Studio:
+
+1. Navigate to **Databases** → your database → **Ongoing Tasks**
+2. Click **Add Task** and select **CDC Sink**
+3. Configure the connection string pointing to the PostgreSQL source
+4. Add one or more root tables with their column mappings
+5. (Optional) Add embedded tables and linked tables for each root table
+6. (Optional) Configure patches for INSERT/UPDATE/DELETE events
+7. Click **Save**
+
+---
+
+## Monitoring Task State
+
+The task list shows:
+
+* **Task name** and **connection string name**
+* **State** — Active, Disabled, Error, or FallbackMode
+* **Responsible node** — the cluster node currently running the task
+* **Progress** — during initial load, shows which tables have been scanned
+
+Clicking on a task opens the detail view with per-table statistics.
+
+---
+
+## Editing a Task
+
+To edit a task, click its name in the Ongoing Tasks list. The same configuration
+form used for creation opens in edit mode.
+
+<Admonition type="warning" title="">
+The replication slot and publication names are **fixed at task creation** and do not
+change when you edit the task — regardless of whether names were auto-generated or
+specified explicitly.
+
+When you add or remove tables, CDC Sink continues using the same slot and publication
+names. The **publication** in PostgreSQL controls which tables are replicated and must
+be kept in sync with the task configuration:
+
+* **Adding a table:** If CDC Sink has the necessary permissions, it will automatically
+  run `ALTER PUBLICATION <name> ADD TABLE <table>;` when the task is saved. If it does
+  not have permissions, a database administrator must run this manually.
+* **Removing a table:** `ALTER PUBLICATION <name> DROP TABLE <table>;` must be run
+  manually by a database administrator — CDC Sink does not remove tables from the
+  publication automatically.
+
+Orphaned slots and publications must be dropped manually by the database administrator.
+See [Cleanup and Maintenance](./cleanup-and-maintenance.mdx).
+</Admonition>
+
+---
+
+## Related Articles
+
+### CDC Sink for PostgreSQL
+
+- [Initial Setup](./initial-setup.mdx)
+- [Cleanup and Maintenance](./cleanup-and-maintenance.mdx)
+
+### CDC Sink
+
+- [Monitoring](../monitoring.mdx)
+- [API Reference](../api-reference.mdx)
+- [Configuration Reference](../configuration-reference.mdx)
