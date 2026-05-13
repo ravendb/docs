@@ -29,6 +29,11 @@ import Admonition from '@theme/Admonition';
 
 # C# Code Analyzers
 
+<Admonition type="note">
+This page covers **compile-time C# code analyzers** that catch client-code mistakes at build time.
+If you're looking for **text-analysis analyzers** used in index definitions for full-text search (tokenizers, stemmers, language analyzers), see [Using Analyzers in Indexes](../../indexes/using-analyzers.mdx).
+</Admonition>
+
 RavenDB ships a set of C# code analyzers embedded in the `RavenDB.Client` NuGet package. They run at compile time inside any project that references the client and catch common misuse patterns before tests, staging, or production.
 
 ## Distribution
