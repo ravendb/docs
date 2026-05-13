@@ -10,20 +10,66 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Linux: Setting memlock when using encrypted database
-Encrypted database uses extensively sodium library which requires high values of locked memory limits.
-`memlock` refers to memory that will not be paged out, and it's limit can be viewed usign `ulimit -l`.
-The modification of `memlock` limit settings can be achieved by in running session with `prlimit`:
 
-Example, for 1MB limit:
-```
-prlimit -p pid --memlock 1MB:1MB
+<Admonition type="note" title="">
+
+* When [encryption at rest](../security/encryption/encryption-at-rest.mdx) is enabled, RavenDB uses the libsodium library to lock certain memory regions in order to prevent plaintext data from being swapped to disk.  
+  Linux imposes a per-process limit on how much memory the process can lock (`memlock`).  
+  If this limit is too low, RavenDB cannot open the encrypted database and throws an `InsufficientMemoryException`.
+
+* The exception message includes the exact `prlimit` command needed to raise the limit, with the required size in bytes already filled in.
+
+* In this article:
+   * [Raising the limit for a running process](linux-setting-memlock.mdx#raising-the-limit-for-a-running-process)
+   * [Setting the limit persistently](linux-setting-memlock.mdx#setting-the-limit-persistently)
+
+</Admonition>
+
+<Panel heading="Raising the limit for a running process">
+
+Run the command shown in the exception message, replacing `<pid>` with the RavenDB process ID  
+and `<size-in-bytes>` with the value from the error:
+
+```bash
+sudo prlimit --pid <pid> --memlock=<size-in-bytes>
 ```
 
-Persistant settings can be achieved by adding to `/etc/security/limits.conf` the following:
-```
-* soft     memlock         1000
-* hard     memlock         1000
+<br />
+
+This takes effect immediately but does not persist across restarts.
+
+</Panel>
+
+<Panel heading="Setting the limit persistently">
+
+Add the following to `/etc/security/limits.conf`:
+
+```text
+* soft     memlock         unlimited
+* hard     memlock         unlimited
 ```
 
+<br />
+
+Log out and back in (or restart the service) for the change to take effect.  
+Verify the new limit with:
+
+```bash
+ulimit -l
+```
+
+<Admonition type="note" title="">
+If RavenDB runs as a `systemd` service, set the memory lock limit in the service unit file instead of `limits.conf`:
+
+```ini
+[Service]
+LimitMEMLOCK=infinity
+```
+
+</Admonition>
+
+</Panel>
