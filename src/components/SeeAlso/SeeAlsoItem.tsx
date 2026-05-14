@@ -18,6 +18,7 @@ export function SeeAlsoItem({ item }: SeeAlsoItemProps) {
     return (
         <Link
             href={getVersionedLink(item)}
+            data-seealso={item.source}
             className={clsx(
                 "flex items-center py-3 px-2 gap-4",
                 "border-b border-black/10 dark:border-white/10 !text-inherit",
