@@ -477,14 +477,18 @@ where HiredAt between "1995-01-01T00:00:00.0000000Z"
 
 <Panel heading="Filter using now() with offset">
 
-* `now()` can accept an optional positive or negative offset string, such as `+7d`, `-3d`, or `+1d5h`.  
-
-* When an offset is provided, RavenDB first **shifts the current time** by the specified amount  
-  and then **rounds the generated time value down** to the start of the smallest unit in the offset.
+<Admonition type="note" title="">
     
-* This keeps the generated time value stable for the duration of the smallest unit in the offset,    
-  allowing identical queries to benefit from the server query cache and return `304 Not Modified` when applicable.    
-  Learn more about caching in: [Result caching with time functions](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#result-caching-with-time-functions).  
+    * `now()` can accept an optional positive or negative offset string, such as `+7d`, `-3d`, or `+1d5h`.  
+    
+    * When an offset is provided, RavenDB first **SHIFTS the current time** by the specified amount  
+      and then **ROUNDS the generated time value down** to the start of the smallest unit in the offset.
+    
+    * This keeps the generated time value stable for the duration of the smallest unit in the offset,    
+      allowing identical queries to benefit from the server query cache and return `304 Not Modified` when applicable.
+      Learn more about caching in: [Result caching with time functions](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#result-caching-with-time-functions).  
+    
+</Admonition>
     
 ---
     
@@ -802,36 +806,50 @@ where RequireAt <= now($offset)
 
 <Panel heading="Restrictions">
 
-* **Unsupported query contexts**  
-  Both `now()` and `today()` are not supported in:
-  * [Exploration queries](../../../indexes/querying/exploration-queries.mdx)
-  * [Subscription queries](../../../client-api/data-subscriptions/creation/examples.mdx)    
-
-  For example, the following queries are not allowed:
+* **Exploration queries**  
+  Both `now()` and `today()` are not supported in [exploration queryies](../../../indexes/querying/exploration-queries.mdx).  
+  For example, the following query is not allowed:
     
     <TabItem>    
     ```sql    
     // Not allowed: now() / today() are not supported in exploration query filter clauses
     from Employees
     filter HiredAt <= now()
-    ```
+    ```    
     </TabItem>
+    
+  In exploration queries, these functions are blocked in `filter` clauses because `filter` expressions are evaluated as JavaScript expressions.
+  Since `now()` and `today()` depend on the query execution time, using them in this context produces time-dependent results that conflict with the query result caching mechanism.  
+    
+  [Filtering by an explicit date](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#filter-by-an-explicit-date) is fully supported in exploration queries.
+
+---
+    
+* **Subscription queries**  
+  Both `now()` and `today()` are not supported in [subscription queries](../../../client-api/data-subscriptions/creation/examples.mdx).  
+  For example, the following query is not allowed:
     
     <TabItem>       
     ```sql     
-    // Not allowed: now() / today() are not supported in subscription RQL   
+    // Not allowed: now() / today() are not supported in subscription queries   
     from Employees
     where HiredAt <= now()
-    ```
+    ```    
     </TabItem>
+    
+  In subscription queries, these functions are blocked because a subscription is an ongoing task.
+  Using `now()` or `today()` would make the matching results depend on when the subscription task evaluates each document,  
+  yielding nondeterministic results: the set of matching documents could change dynamically even when the documents themselves have not changed.  
+    
+  [Filtering by an explicit date](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#filter-by-an-explicit-date) is fully supported in subscription queries.    
 
-  This restriction applies only to the `now()` and `today()` functions.  
-  These functions are blocked in exploration and subscription queries because their value depends on when the expression is evaluated, which can lead to caching correctness issues.  
-  [Filtering by an explicit date](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#filter-by-an-explicit-date) is **fully supported** in both exploration and subscription queries.    
+---
     
 * **`today()` does not accept arguments**  
   To filter relative to another day, use `now()` with an offset instead, for example `now('+1d')`.
 
+---
+    
 * **Invalid `now()` offset values**  
   When using `now()` with an offset, the offset must be a non-empty string in a valid offset format.
 
