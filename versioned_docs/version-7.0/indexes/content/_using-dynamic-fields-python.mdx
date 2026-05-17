@@ -1,490 +1,886 @@
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* In RavenDB different documents can have different shapes.  
-  Documents are schemaless - new fields can be added or removed as needed.
+* In RavenDB, different documents can have different shapes.  
+  Documents are schemaless - new fields can be added or removed as needed.  
+  For such dynamic data, you can define indexes with **dynamic-index-fields**.
 
-* For such dynamic data, you can define indexes with **dynamic-index-fields**.
+* Dynamic-index-fields are created at indexing time, with names and values derived from document content,  
+  rather than being predefined as fixed index fields in the index definition.    
+  This allows you to query the index by fields that are not known at index definition or deployment time,  
+  which is very useful when working with highly dynamic systems.
 
-* This allows querying the index on fields that aren't yet known at index creation time,  
-  which is very useful when working on highly dynamic systems.
+* Any value type can be indexed, string, number, date, etc.  
+  An index definition can contain both dynamic-index-fields and regular-index-fields.
 
-* Any value type can be indexed, string, number, date, etc.
-
-* An index definition can contain both dynamic-index-fields and regular-index-fields.
-
-* In this page:
-
-    * [Indexing documents fields KEYS](../../indexes/using-dynamic-fields.mdx#indexing-documents-fields-keys)
-        * [Example - index any field under object](../../indexes/using-dynamic-fields.mdx#example---index-any-field-under-object)
-        * [Example - index any field](../../indexes/using-dynamic-fields.mdx#example---index-any-field)
-    * [Indexing documents fields VALUES](../../indexes/using-dynamic-fields.mdx#indexing-documents-fields-values)
-        * [Example - basic](../../indexes/using-dynamic-fields.mdx#example---basic)
-        * [Example - list](../../indexes/using-dynamic-fields.mdx#example---list)
-    * [CreateField syntax](../../indexes/using-dynamic-fields.mdx#createfield-syntax)
-    * [Indexed fields & terms view](../../indexes/using-dynamic-fields.mdx#indexed-fields--terms-view)
+* In this article:
+  * [Indexing field KEYS](../../indexes/using-dynamic-fields.mdx#indexing-field-keys)
+      * [Example - index every field under an object](../../indexes/using-dynamic-fields.mdx#example---index-every-field-under-an-object)
+      * [Example - index every field](../../indexes/using-dynamic-fields.mdx#example---index-every-field)
+  * [Indexing field VALUES](../../indexes/using-dynamic-fields.mdx#indexing-field-values)
+      * [Example - basic](../../indexes/using-dynamic-fields.mdx#example---basic)
+      * [Example - list](../../indexes/using-dynamic-fields.mdx#example---list)
+  * [Indexing dynamic fields for full-text search](../../indexes/using-dynamic-fields.mdx#indexing-dynamic-fields-for-full-text-search)
+      * [Configuring analyzers for dynamic fields](../../indexes/using-dynamic-fields.mdx#configuring-analyzers-for-dynamic-fields)
+      * [Which analyzer is used for the query term?](../../indexes/using-dynamic-fields.mdx#which-analyzer-is-used-for-the-query-term)
+  * [`CreateField` syntax](../../indexes/using-dynamic-fields.mdx#createfield-syntax)
+  * [Indexed fields & terms view](../../indexes/using-dynamic-fields.mdx#indexed-fields-terms-view)
 
 </Admonition>
 
-## Indexing documents fields KEYS
+<Panel heading="Indexing field KEYS">
 
-## Example - index any field under object
+<ContentFrame>
+    
+### Example - index every field under an object
 
-<Admonition type="note" title="The following example allows you to:" id="the-following-example-allows-you-to" href="#the-following-example-allows-you-to">
-
-* Index any field that is under the some object from the document.  
-* After index is deployed, any new field added to the this object will be indexed as well.
-
+<Admonition type="note" title="">
+The following example allows you to:    
+  * Index any field that is under the same object from the document.  
+  * After index is deployed, any new field added to this object will be indexed as well.
 </Admonition>
 
 * **The document**:  
-<TabItem value="dynamic_fields_1" label="dynamic_fields_1">
-<CodeBlock language="python">
-{`class Product:
-    def __init__(self, Id: str = None, attributes: Dict[str, object] = None):
-        self.Id = Id
-
-        # The KEYS under the Attributes object will be dynamically indexed
-        # Fields added to this object after index creation time will also get indexed
-        self.attributes = attributes
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`// Sample document content
-\{
-    "Attributes": \{
-        "Color": "Red",
-        "Size": 42
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+    
+    <TabItem>
+    ```python
+    class Product:
+        def __init__(self, Id: str = None, Attributes: Dict[str, object] = None):
+            self.Id = Id
+            
+            # The KEYS under the Attributes object will be dynamically indexed 
+            # Fields added to this object after index creation time will also get indexed
+            self.Attributes = Attributes
+    ```
+    </TabItem>
+        
+    <TabItem>
+    ```json
+    // Sample document content
+    {
+        "Attributes": {
+            "Color": "Red",
+            "Size": 42
+        }
+    }
+    ```
+    </TabItem>
 
 * **The index**:  
-  The below index will index any field under the `Attributes` object from the document,  
+    
+  The following index will index any field under the `Attributes` object from the document,  
   a dynamic-index-field will be created for each such field.  
   New fields added to the object after index creation time will be dynamically indexed as well.  
   
-     The actual dynamic-index-field name on which you can query will be the attribute field **key**.  
-     E.g., Keys `Color` & `Size` will become the actual dynamic-index-fields.  
+    The actual dynamic-index-field name on which you can query will be the attribute field **key**.  
+    E.g., Keys `Color` & `Size` will become the actual dynamic-index-fields.  
 
-<Tabs groupId='languageSyntax'>
-<TabItem value="Index" label="Index">
-<CodeBlock language="python">
-{`class Products_ByAttributeKey(AbstractIndexCreationTask):
-    def __init__(self):
-        super().__init__()
-        self.map = (
-            "from p in docs.Products select new {"
-            "_ = p.attributes.Select(item => CreateField(item.Key, item.Value))"
-            "}"
-        )
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="JavaScript-index" label="JavaScript-index">
-<CodeBlock language="python">
-{`class Products_ByAttributeKey_JS(AbstractJavaScriptIndexCreationTask):
-    def __init__(self):
-        super().__init__()
-        self.maps = {
-            """
-            map('Products', function (p) {
-                        return {
-                            _: Object.keys(p.attributes).map(key => createField(key, p.attributes[key],
-                                { indexing: 'Search', storage: true, termVector: null }))
-                        };
-                    })
-            """
-        }
-`}
-</CodeBlock>
-</TabItem>
-     </Tabs>
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="Index" label="Index">
+    ```python
+    class Products_ByAttributeKey(AbstractIndexCreationTask):
+        def __init__(self):
+            super().__init__()
+            self.map = (
+                "from p in docs.Products select new { "
+                # Call 'CreateField' to generate dynamic-index-fields
+                # from the Attributes object keys.
 
+                # Using '_' is just a convention.
+                # Any other string can be used instead of '_'
+
+                # The actual field name will be 'item.Key'
+                # The actual field terms will be derived from 'item.Value'
+                "_ = p.Attributes.Select(item => CreateField(item.Key, item.Value)) "
+                "}"
+            )
+    ```
+    </TabItem>
+    <TabItem value="JavaScript_index" label="JavaScript_index">
+    ```python
+    class Products_ByAttributeKey_JS(AbstractJavaScriptIndexCreationTask):
+        def __init__(self):
+            super().__init__()
+            self.maps = [
+                """
+                map('Products', function (p) {
+                    return {
+                        // The field name will be the key
+                        // The field terms will be derived from the corresponding value
+                        _: Object.keys(p.Attributes)
+                                 .map(key => createField(key, p.Attributes[key]))
+                    };
+                })
+                """
+            ]
+    ```
+    </TabItem>
+    </Tabs>
 
 * **The query**:  
-   * You can now query the generated dynamic-index fields.  
-   * To get all documents with some 'size' use:
-<Tabs groupId='languageSyntax'>
-<TabItem value="Query" label="Query">
-<CodeBlock language="python">
-{`matching_documents = list(
-    session.query_index_type(Products_ByAttributeKey, Product)
-    # 'size' is a dynamic-index-field that was indexed from the attributes object
-    .where_equals("size", 42)
-)
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// 'Size' is a dynamic-index-field that was indexed from the Attributes object
-from index 'Products/ByAttributeKey' where Size = 42
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
+    
+  You can now query the generated dynamic-index fields.  
+  The `_` property is Not queryable but used only in the index definition syntax.  
+    
+    To get all documents with a specific _Size_ use:  
+    
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="DocumentQuery" label="DocumentQuery">
+    ```python
+    matching_documents = list(
+        session.advanced
+            .document_query_from_index_type(Products_ByAttributeKey, Product)
+             # 'Size' is a dynamic-index-field that was indexed from the Attributes object
+            .where_equals("Size", 42)
+    )
+    ```
+    </TabItem>
+    <TabItem value="RQL" label="RQL">
+    ```sql
+    // 'Size' is a dynamic-index-field that was indexed from the Attributes object
+    from index 'Products/ByAttributeKey' where Size = 42
+    ```
+    </TabItem>
+    </Tabs>
+    
+    <Admonition type="info" title="">
+    Dynamic index fields are queried with _document_query_ or _RQL_ because the field names (e.g. `Size`, `Color`)  
+    are generated at indexing time and are not properties on the _Product_ class.
+    
+    Use the string-based `where_equals("Size", 42)` or RQL `where Size = 42`.
+    </Admonition>
 
-## Example - index any field
+</ContentFrame>    
 
-<Admonition type="note" title="The following example allows you to:" id="the-following-example-allows-you-to" href="#the-following-example-allows-you-to">
+<ContentFrame>
+    
+### Example - index every field
 
+<Admonition type="note" title="">
+The following example allows you to:    
   * Define an index on a collection **without** needing any common structure between the indexed documents.  
-  * After index is deployed, any new field added to the document will be indexed as well.  
-
+  * After the index is deployed, any new field added to any document in the collection will be indexed as well.
 </Admonition>
-
+    
 <Admonition type="info" title="">
-Consider whether this is really necessary, as indexing every single field can end up costing time and disk space.  
+* Use this approach with care.  
+* Indexing every field can increase indexing time, memory usage, and disk space,  
+  especially for large or frequently updated documents.
 </Admonition>
 
 * **The document**:  
-<TabItem value="dynamic_fields_4" label="dynamic_fields_4">
-<CodeBlock language="python">
-{`class Product:
-    def __init__(self, Id: str = None, first_name: str = None, last_name: str = None, title: str = None):
-        self.Id = Id
+    
+    <TabItem>
+    ```python
+    class Product:
+        def __init__(
+            self,
+            Id: str = None,
+            FirstName: str = None,
+            LastName: str = None,
+            Title: str = None,
+        ):
+            self.Id = Id
+        
+            # All KEYS in the document will be dynamically indexed 
+            # Fields added to the document after index creation time will also get indexed
+            self.FirstName = FirstName
+            self.LastName = LastName
+            self.Title = Title
+            # ...
+    ```
+    </TabItem>
 
-        # All KEYS in the document will be dynamically indexes
-        # Fields added to the document after index creation time wil also get indexed
-        self.first_name = first_name
-        self.last_name = last_name
-        self.title = title
-        # ...
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`// Sample document content
-    \{
+    <TabItem>
+    ```json
+    // Sample document content
+    {
         "FirstName": "John",
         "LastName": "Doe",
         "Title": "Engineer",
         // ...
-\}
-`}
-</CodeBlock>
-</TabItem>
+    }
+    ```
+    </TabItem>
 
 * **The index**:  
-  The below index will index any field from the document,  
+    
+  The following index will index any field from the document,  
   a dynamic-index-field will be created for each field.  
   New fields added to the document after index creation time will be dynamically indexed as well.  
   
-     The actual dynamic-index-field name on which you can query will be the field **key**.  
-     E.g., Keys `FirstName` & `LastName` will become the actual dynamic-index-fields.  
+    The actual dynamic-index-field name on which you can query will be the field **key**.  
+    E.g., Keys `FirstName` & `LastName` will become the actual dynamic-index-fields.  
+    
+    The example uses a JavaScript index because it enumerates all top-level document fields at indexing time with `Object.keys(...)`.
+    LINQ indexes typically create dynamic fields from a known enumerable structure, such as a dictionary or collection.
 
-<Tabs groupId='languageSyntax'>
-<TabItem value="JavaScript-index" label="JavaScript-index">
-<CodeBlock language="python">
-{`class Products_ByAnyField_JS(AbstractJavaScriptIndexCreationTask):
-    def __init__(self):
-        super().__init__()
-        # This will index EVERY FIELD under the top level of the document
-        self.maps = {
-            """
-            map('Products', function (p) {
-                return {
-                    _: Object.keys(p).map(key => createField(key, p[key],
-                        { indexing: 'Search', storage: true, termVector: null }))
-                }
-            })
-            """
-        }
-`}
-</CodeBlock>
-</TabItem>
-     </Tabs>
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="JavaScript_index" label="JavaScript_index">
+    ```python
+    class Products_ByAnyField_JS(AbstractJavaScriptIndexCreationTask):
+        def __init__(self):
+            super().__init__()
+            # This will index EVERY FIELD under the top level of the document
+            self.maps = [
+                """
+                map('Products', function (p) {
+                    return {
+                        _: Object.keys(p).map(key => createField(key, p[key]))
+                    };
+                })
+                """
+            ]
+    ```
+    </TabItem>
+    </Tabs>
 
 * **The query**:
-   * To get all documents with some 'LastName' use:
-<Tabs groupId='languageSyntax'>
-<TabItem value="Query" label="Query">
-<CodeBlock language="python">
-{`# 'last_name' is a dynamic-index-field that was indexed from the document
-matching_documents = list(
-    session.query_index_type(Products_ByAnyField_JS, Product).where_equals("last_name", "Doe")
-)
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// 'LastName' is a dynamic-index-field that was indexed from the document
-from index 'Products/ByAnyField/JS' where LastName = "Doe"
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
+    
+  To get all documents with a specific _LastName_ use:  
+    
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="DocumentQuery" label="DocumentQuery">
+    ```python
+    matching_documents = list(
+        session.advanced
+            .document_query_from_index_type(Products_ByAnyField_JS, Product)
+             # 'LastName' is a dynamic-index-field that was indexed from the document
+            .where_equals("LastName", "Doe")
+    )
+    ```
+    </TabItem>
+    <TabItem value="RQL" label="RQL">
+    ```sql
+    // 'LastName' is a dynamic-index-field that was indexed from the document
+    from index 'Products/ByAnyField/JS' where LastName = "Doe"
+    ```
+    </TabItem>
+    </Tabs>
+    
+</ContentFrame>
+    
+</Panel>    
 
+<Panel heading="Indexing field VALUES">
 
+<ContentFrame>
+    
+### Example - basic
 
-## Indexing documents fields VALUES
-
-## Example - basic
-
-<Admonition type="note" title="The following example shows:" id="the-following-example-shows" href="#the-following-example-shows">
-
-* Only the **basic concept** of creating a dynamic-index-field from the **value** of a document field.  
-* Documents can then be queried based on those indexed values.  
-
+<Admonition type="note" title="">    
+The following example shows:    
+  * Only the **basic concept** of creating a dynamic-index-field from the **value** of a document field.  
+  * Documents can then be queried based on those indexed values.  
+  * For a more practical usage see the [Example](../../indexes/using-dynamic-fields.mdx#example---list) below.  
 </Admonition>
 
 * **The document**:  
-<TabItem value="dynamic_fields_7" label="dynamic_fields_7">
-<CodeBlock language="python">
-{`class Product:
-    def __init__(self, Id: str = None, product_type: str = None, price_per_unit: float = None):
-        self.Id = Id
-
-        # The VALUE of ProductType will be dynamically indexed
-        self.product_type = product_type
-        self.price_per_unit = price_per_unit
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`// Sample document content
-\{
-    "ProductType": "Electronics",
-    "PricePerUnit": 23
-\}
-`}
-</CodeBlock>
-</TabItem>
+    
+    <TabItem>
+    ```python
+    class Product:
+        def __init__(self, Id: str = None, ProductType: str = None, PricePerUnit: int = None):
+            self.Id = Id
+            
+            # The VALUE of ProductType will be dynamically indexed
+            self.ProductType = ProductType
+            self.PricePerUnit = PricePerUnit
+    ```
+    </TabItem>
+    
+    <TabItem>
+    ```json
+    // Sample document content
+    {
+        "ProductType": "Electronics",
+        "PricePerUnit": 23
+    }
+    ```
+    </TabItem>
 
 * **The index**:  
-  The below index will index the **value** of document field 'ProductType'.  
+    
+  The following index will index the **value** of document field 'ProductType'.  
   
-     This value will be the dynamic-index-field name on which you can query.  
-     E.g., Field value `Electronics` will be the dynamic-index-field.  
+    This value will be the dynamic-index-field name on which you can query.  
+    E.g., Field value `Electronics` will be the dynamic-index-field.  
 
-<Tabs groupId='languageSyntax'>
-<TabItem value="Index" label="Index">
-<CodeBlock language="python">
-{`class Products_ByProductType(AbstractIndexCreationTask):
-    def __init__(self):
-        super().__init__()
-
-        # Call 'CreateField' to generate the dynamic-index-fields
-        # The field name will be the value of document field 'product_type'
-        # The field terms will be derived from document field 'price_per_unit'
-        self.map = "from p in docs.Products select new { _ = CreateField(p.product_type, p.price_per_unit)}"
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="JavaScript-index" label="JavaScript-index">
-<CodeBlock language="python">
-{`class Products_ByProductType_JS(AbstractJavaScriptIndexCreationTask):
-    def __init__(self):
-        super().__init__()
-        self.maps = {
-            """
-            map('Products', function (p) {
-                return {
-                    _: createField(p.product_type, p.price_per_unit,
-                        { indexing: 'Search', storage: true, termVector: null })
-                };
-            })
-            """
-        }
-`}
-</CodeBlock>
-</TabItem>
-     </Tabs>
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="Index" label="Index">
+    ```python
+    class Products_ByProductType(AbstractIndexCreationTask):
+        def __init__(self):
+            super().__init__()
+            self.map = (
+                "from p in docs.Products select new { "
+                # Call 'CreateField' to generate the dynamic-index-fields
+                # The field name will be the value of document field 'ProductType'
+                # The field terms will be derived from document field 'PricePerUnit'
+                "_ = CreateField(p.ProductType, p.PricePerUnit) "
+                "}"
+            )
+    ```
+    </TabItem>
+    <TabItem value="JavaScript_index" label="JavaScript_index">
+    ```python
+    class Products_ByProductType_JS(AbstractJavaScriptIndexCreationTask):
+        def __init__(self):
+            super().__init__()
+            self.maps = [
+                """
+                map('Products', function (p) {
+                    return {
+                        // The field name will be the value of document field 'ProductType'
+                        // The field terms will be derived from document field 'PricePerUnit'
+                        _: createField(p.ProductType, p.PricePerUnit)
+                    };
+                })
+                """
+            ]
+    ```
+    </TabItem>
+    </Tabs>
 
 * **The query**:  
-   * To get all documents of some product type having a specific price per unit use:
-<Tabs groupId='languageSyntax'>
-<TabItem value="Query" label="Query">
-<CodeBlock language="python">
-{`# 'electronics' is the dynamic-index-field that was indexed from the document 'product_type'
-matching_documents = list(
-    session.advanced.document_query_from_index_type(Products_ByProductType, Product).where_equals(
-        "electronics", 23
+    
+  To get all documents of some product type having a specific price per unit use:  
+    
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="DocumentQuery" label="DocumentQuery">
+    ```python
+    matching_documents = list(
+        session.advanced
+            .document_query_from_index_type(Products_ByProductType, Product)
+             # 'Electronics' is the dynamic-index-field that was indexed
+             # from document field 'ProductType'
+            .where_equals("Electronics", 23)
     )
-)
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// 'Electronics' is the dynamic-index-field that was indexed from document field 'ProductType'
-from index 'Products/ByProductType' where Electronics = 23
-`}
-</CodeBlock>
-</TabItem>
-</Tabs>
+    ```
+    </TabItem>
+    <TabItem value="RQL" label="RQL">
+    ```sql
+    // 'Electronics' is the dynamic-index-field that was indexed
+    // from document field 'ProductType'
+    from index 'Products/ByProductType' where Electronics = 23
+    ```
+    </TabItem>
+    </Tabs>
+    
+</ContentFrame>    
+    
+<ContentFrame>  
 
-## Example - list
+### Example - list
 
-<Admonition type="note" title="The following example allows you to:" id="the-following-example-allows-you-to" href="#the-following-example-allows-you-to">
-
-* Index **values** from items in a list
-* After index is deployed, any item added this list in the document will be dynamically indexed as well.
-
+<Admonition type="note" title="">
+The following example allows you to:    
+  * Index **values** from items in a list
+  * After index is deployed, any item added to this list in the document will be dynamically indexed as well.
 </Admonition>
 
 * **The document**:  
-<TabItem value="dynamic_fields_10" label="dynamic_fields_10">
-<CodeBlock language="python">
-{`class Attribute:
-    def __init__(self, prop_name: str = None, prop_value: str = None):
-        self.prop_name = prop_name
-        self.prop_value = prop_value
+    
+    <TabItem>
+    ```python
+    class Attribute:
+        def __init__(self, PropName: str = None, PropValue: str = None):
+            self.PropName = PropName
+            self.PropValue = PropValue
 
 
-class Product:
-    def __init__(self, Id: str = None, name: str = None, attributes: List[Attribute] = None):
-        self.Id = Id
-        self.name = name
-        # For each element in this list, the VALUE of property 'prop_name' will be dynamically indexed
-        # e.g. color, width, length (in ex. below) will become dynamic-index-field
-        self.attributes = attributes
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`// Sample document content
-\{
-Name": "SomeName",
-Attributes": [
-   \{  
-       "PropName": "Color",
-       "PropValue": "Blue"
-   \},
-   \{
-       "PropName": "Width",
-       "PropValue": "10"
-   \},
-   \{
-       "PropName": "Length",
-       "PropValue": "20"
-   \},
-   ...
-
-\}
-`}
-</CodeBlock>
-</TabItem>
+    class Product:
+        def __init__(self, Id: str = None, Name: str = None, Attributes: List[Attribute] = None):
+            self.Id = Id
+            self.Name = Name
+            
+            # For each element in this list,
+            # the VALUE of property 'PropName' will be dynamically indexed.
+            # e.g. Color, Width, Length (in ex. below) will become dynamic-index-fields.
+            self.Attributes = Attributes
+    ```
+    </TabItem>
+    
+    <TabItem>
+    ```json
+    // Sample document content
+    {
+        "Name": "SomeName",
+        "Attributes": [
+            {  
+                "PropName": "Color",
+                "PropValue": "Blue"
+            },
+            {
+                "PropName": "Width",
+                "PropValue": "10"
+            },
+            {
+                "PropName": "Length",
+                "PropValue": "20"
+            },
+            // ...
+        ]
+    }
+    ```
+    </TabItem>
 
 * **The index**:  
-  The below index will create a dynamic-index-field per item in the document's `Attributes` list.  
+    
+  The following index will create a dynamic-index-field per item in the document's `Attributes` list.  
   New items added to the Attributes list after index creation time will be dynamically indexed as well.  
   
-     The actual dynamic-index-field name on which you can query will be the item's PropName **value**.  
-     E.g., 'PropName' value `width` will be a dynamic-index-field.  
+    The actual dynamic-index-field name on which you can query will be the item's PropName **value**.  
+    E.g., 'PropName' value `Width` will be a dynamic-index-field.  
+
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="Index" label="Index">
+    ```python
+    class Attributes_ByName(AbstractIndexCreationTask):
+        def __init__(self):
+            super().__init__()
+            self.map = (
+                "from a in docs.Products select new { "
+                # Define the dynamic-index-fields by calling 'CreateField'
+                # A dynamic-index-field will be generated for each item in 'Attributes'
+
+                # For each item, the field name will be the value of field 'PropName'
+                # The field terms will be derived from field 'PropValue'
+                "_ = a.Attributes.Select(item => CreateField(item.PropName, item.PropValue)), "
+
+                # A regular index field can be defined as well:
+                "Name = a.Name "
+                "}"
+            )
+    ```
+    </TabItem>
+    <TabItem value="JavaScript_index" label="JavaScript_index">
+    ```python
+    class Attributes_ByName_JS(AbstractJavaScriptIndexCreationTask):
+        def __init__(self):
+            super().__init__()
+            self.maps = [
+                """
+                map('Products', function (p) {
+                    return {
+                        // For each item,
+                        // the field name will be the value of field 'PropName'
+                        // The field terms will be derived from field 'PropValue'
+                        _: p.Attributes.map(item => createField(item.PropName, item.PropValue)),
+
+                        // A regular index field can be defined as well:
+                        Name: p.Name
+                    };
+                })
+                """
+            ]
+    ```
+    </TabItem>
+    </Tabs>
+
+* **The query**:  
+    
+  To get all documents matching a specific attribute property use:  
+    
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="DocumentQuery" label="DocumentQuery">
+    ```python
+    matching_documents = list(
+        session.advanced
+            .document_query_from_index_type(Attributes_ByName, Product)
+             # 'Width' is a dynamic-index-field that was indexed from the Attributes list
+            .where_equals("Width", 10)
+    )
+    ```
+    </TabItem>
+    <TabItem value="RQL" label="RQL">
+    ```sql
+    // 'Width' is a dynamic-index-field that was indexed from the Attributes list
+    from index 'Attributes/ByName' where Width = 10
+    ```
+    </TabItem>
+    </Tabs>
+
+</ContentFrame>
+    
+</Panel>
+
+<Panel heading="Indexing dynamic fields for full-text search">
+    
+<Admonition type="note" title="">    
+
+Dynamic fields can be indexed for [Full-text search](../../indexes/querying/searching.mdx) by setting `FieldIndexing.Search` in `CreateFieldOptions`.
+
+* **At indexing time**:      
+  At indexing time, RavenDB analyzes the dynamic field value and creates the indexed terms.  
+  The analyzer used at indexing time is resolved from the index definition.  
+  You can configure an analyzer for a specific generated field name, or configure `ALL_FIELDS` as a fallback.  
+  See [Configuring analyzers for dynamic fields](../../indexes/using-dynamic-fields.mdx#configuring-analyzers-for-dynamic-fields) below.    
+
+    * If the generated dynamic field name has an explicit analyzer configuration, that analyzer is used.  
+    * Otherwise, if `ALL_FIELDS` has an analyzer configuration, RavenDB uses it as a fallback.
+    * If no analyzer is configured for the field, RavenDB uses the [Default search analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer).
+
+* **At querying time**:  
+  For full-text search to return the expected results, the analyzer used at indexing time and the analyzer used for the query term should produce compatible terms.  
+
+    When a `search()` query targets a dynamic field that does **not** have an explicit analyzer configuration for its generated field name,
+    RavenDB uses the [Default analyzer](../../indexes/using-analyzers.mdx#using-the-default-analyzer) to analyze the query term by default.
+
+    Set the [Indexing.Querying.UseSearchAnalyzerForDynamicFieldsIfNotSetExplicitlyInSearchQuery](../../server/configuration/indexing-configuration.mdx#indexingqueryingusesearchanalyzerfordynamicfieldsifnotsetexplicitlyinsearchquery)  
+    configuration key to `true` to make RavenDB use the [Default search analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer) as the fallback analyzer for the query term instead.
+
+    This configuration can be set at different scopes: server-wide, per database, or per index.  
+    The example below sets it at the index scope, in the index definition.
+
+    For a summary of how RavenDB resolves the analyzer used for the query term,  
+    see [Which analyzer is used for the query term](../../indexes/using-dynamic-fields.mdx#which-analyzer-is-used-for-the-query-term) below.
+
+</Admonition>
+    
+---    
+    
+The following example indexes localized product descriptions as dynamic fields and queries one of those generated fields using full-text search:    
+    
+* **The document**:
+
+    <TabItem>
+    ```python
+    class Product:
+        def __init__(self, Id: str = None, Descriptions: Dict[str, str] = None):
+            self.Id = Id
+            self.Descriptions = Descriptions
+    ```
+    </TabItem>
+
+    <TabItem>
+    ```json
+    // Sample document content
+    {
+        "Descriptions": {
+            "English": "North wind jacket",
+            "French": "Veste vent du nord"
+        }
+    }
+    ```
+    </TabItem>
+
+* **The index**:
+
+    The following index creates one dynamic field for each entry in the `Descriptions` dictionary.  
+    For example, the key `English` creates the dynamic field `Description_English`.
+
+    Each generated dynamic field is indexed for **full-text search**.
+
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="Index" label="Index">
+    ```python
+    class Products_ByLocalizedDescription(AbstractIndexCreationTask):
+        USE_SEARCH_ANALYZER_FOR_DYNAMIC_FIELDS = (
+            "Indexing.Querying.UseSearchAnalyzerForDynamicFieldsIfNotSetExplicitlyInSearchQuery"
+        )
+
+        def __init__(self):
+            super().__init__()
+            self.map = (
+                "from product in docs.Products select new { "
+                "    _ = product.Descriptions.Select(x => "
+                "            CreateField("
+                "                \"Description_\" + x.Key, "
+                "                x.Value, "
+                # Index each generated dynamic field for FTS
+                "                new CreateFieldOptions { "
+                "                    Indexing = FieldIndexing.Search, "
+                "                    Storage = FieldStorage.No "
+                "                })) "
+                "}"
+            )
+
+            self._store_all_fields(FieldStorage.NO)
+
+            # Set this configuration key to true so that search() queries on dynamic fields
+            # will use the 'Default Search Analyzer' when the generated field name
+            # has no explicit analyzer configuration.
+            self.configuration = {
+                Products_ByLocalizedDescription.USE_SEARCH_ANALYZER_FOR_DYNAMIC_FIELDS: "true"
+            }
+    ```
+    </TabItem>
+    <TabItem value="JavaScript_index" label="JavaScript_index">
+    ```python
+    class Products_ByLocalizedDescription_JS(AbstractJavaScriptIndexCreationTask):
+        USE_SEARCH_ANALYZER_FOR_DYNAMIC_FIELDS = (
+            "Indexing.Querying.UseSearchAnalyzerForDynamicFieldsIfNotSetExplicitlyInSearchQuery"
+        )
+
+        def __init__(self):
+            super().__init__()
+            self.maps = [
+                """
+                map('Products', function (product) {
+                    return {
+                        _: Object.keys(product.Descriptions).map(function (key) {
+                            return createField(
+                                'Description_' + key,
+                                product.Descriptions[key],
+                                {
+                                    // Index each generated dynamic field for FTS
+                                    indexing: 'Search',
+                                    storage: 'No'
+                                });
+                        })
+                    };
+                })
+                """
+            ]
+
+            # Apply a storage default to every generated field
+            self.fields = {
+                constants.Documents.Indexing.Fields.ALL_FIELDS:
+                    IndexFieldOptions(storage=FieldStorage.NO)
+            }
+
+            # Set this configuration key to true so that search() queries on dynamic fields
+            # will use the 'Default Search Analyzer' when the generated field name
+            # has no explicit analyzer configuration.
+            self.configuration = {
+                Products_ByLocalizedDescription_JS.USE_SEARCH_ANALYZER_FOR_DYNAMIC_FIELDS: "true"
+            }
+    ```
+    </TabItem>
+    </Tabs>
+
+* **Full-text search query**:
+
+    Query the generated dynamic field by its field name.
+
+    In this example, the query targets the generated field `Description_English`.
+
+    Since `Indexing.Querying.UseSearchAnalyzerForDynamicFieldsIfNotSetExplicitlyInSearchQuery` is set to `true`,  
+    the searched term `"north wind"` is analyzed with the [Default search analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer).
+
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="DocumentQuery" label="DocumentQuery">
+    ```python
+    results = list(
+        session.advanced
+            .document_query_from_index_type(Products_ByLocalizedDescription, Product)
+            .search("Description_English", "north wind")
+    )
+    ```
+    </TabItem>
+
+    <TabItem value="RQL" label="RQL">
+    ```sql
+    from index "Products/ByLocalizedDescription"
+    where search(Description_English, "north wind")
+    ```
+    </TabItem>
+    </Tabs>    
+
+---    
+
+<Admonition type="note" title="">
+    
+### Configuring analyzers for dynamic fields    
+
+`CreateFieldOptions` does **not** let you specify a custom analyzer directly.  
+However, you can still configure which analyzer RavenDB will use for dynamic fields in the index definition by either:
+    
+* Configuring an analyzer for a specific generated dynamic field name.
+* Configuring `ALL_FIELDS` as a fallback for fields that do not have their own explicit analyzer configuration.
+    
+Use `ALL_FIELDS` with care, since it can affect any field that does not have its own explicit analyzer configuration.    
+
+---
+
+#### Configure analyzer for a specific dynamic field
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Index" label="Index">
-<CodeBlock language="python">
-{`class Attributes_ByName(AbstractIndexCreationTask):
+```python
+class Products_ByLocalizedDescription(AbstractIndexCreationTask):
     def __init__(self):
         super().__init__()
         self.map = (
-            "from a in docs.Products select new "
-            "{ _ = a.attributes.Select( item => CreateField(item.prop_name, item.prop_value)), name = a.name "
+            "from product in docs.Products select new { "
+            "    _ = product.Descriptions.Select(x => "
+            "            CreateField("
+            "                \"Description_\" + x.Key, "
+            "                x.Value, "
+            "                new CreateFieldOptions { "
+            "                    Indexing = FieldIndexing.Search, "
+            "                    Storage = FieldStorage.No "
+            "                })) "
             "}"
         )
-`}
-</CodeBlock>
+
+        self._store_all_fields(FieldStorage.NO)
+
+        # Configure an analyzer for a known generated dynamic field name
+        # ==============================================================
+        self._analyze("Description_English", "StopAnalyzer")
+```    
 </TabItem>
-<TabItem value="JavaScript-index" label="JavaScript-index">
-<CodeBlock language="python">
-{`class Attributes_ByName_JS(AbstractJavaScriptIndexCreationTask):
+<TabItem value="JavaScript_index" label="JavaScript_index">
+```python
+class Products_ByLocalizedDescription_JS(AbstractJavaScriptIndexCreationTask):
     def __init__(self):
         super().__init__()
-        self.maps = {
+        self.maps = [
             """
-            map('Products', function (p) {
+            map('Products', function (product) {
                 return {
-                    _: p.Attributes.map(item => createField(item.PropName, item.PropValue,
-                        { indexing: 'Search', storage: true, termVector: null })),
-                   Name: p.Name
+                    _: Object.keys(product.Descriptions).map(function (key) {
+                        return createField(
+                            'Description_' + key,
+                            product.Descriptions[key],
+                            {
+                                indexing: 'Search',
+                                storage: 'No'
+                            });
+                    })
                 };
             })
             """
-        }
-`}
-</CodeBlock>
-</TabItem>
-     </Tabs>
+        ]
 
-* **The query**:  
-  To get all documents matching a specific attribute property use:
-<Tabs groupId='languageSyntax'>
-<TabItem value="Query" label="Query">
-<CodeBlock language="python">
-{`matching_documents = list(
-    session.advanced.document_query_from_index_type(Attributes_ByName, Product).where_equals(
-        "width", 10
-    )
-)
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// 'Width' is a dynamic-index-field that was indexed from the Attributes list
-from index 'Attributes/ByName' where Width = 10
-`}
-</CodeBlock>
+        # Configure an analyzer for a known generated dynamic field name
+        # ==============================================================
+        self.fields = {
+            constants.Documents.Indexing.Fields.ALL_FIELDS:
+                IndexFieldOptions(storage=FieldStorage.NO),
+            "Description_English":
+                IndexFieldOptions(analyzer="StopAnalyzer")
+        }
+```    
 </TabItem>
 </Tabs>
 
+#### Configure a fallback analyzer for all fields
 
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+```python
+class Products_ByLocalizedDescription(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "from product in docs.Products select new { "
+            "    _ = product.Descriptions.Select(x => "
+            "            CreateField("
+            "                \"Description_\" + x.Key, "
+            "                x.Value, "
+            "                new CreateFieldOptions { "
+            "                    Indexing = FieldIndexing.Search, "
+            "                    Storage = FieldStorage.No "
+            "                })) "
+            "}"
+        )
 
-## CreateField syntax
+        self._store_all_fields(FieldStorage.NO)
+
+        # Use this as a fallback for fields that do not have
+        # their own explicit analyzer configuration
+        # ==================================================
+        self._analyze(constants.Documents.Indexing.Fields.ALL_FIELDS, "StopAnalyzer")
+```    
+</TabItem>
+<TabItem value="JavaScript_index" label="JavaScript_index">
+```python
+class Products_ByLocalizedDescription_JS(AbstractJavaScriptIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.maps = [
+            """
+            map('Products', function (product) {
+                return {
+                    _: Object.keys(product.Descriptions).map(function (key) {
+                        return createField(
+                            'Description_' + key,
+                            product.Descriptions[key],
+                            {
+                                indexing: 'Search',
+                                storage: 'No'
+                            });
+                    })
+                };
+            })
+            """
+        ]
+
+        # Use this as a fallback for fields that do not have
+        # their own explicit analyzer configuration
+        # ==================================================
+        self.fields = {
+            constants.Documents.Indexing.Fields.ALL_FIELDS:
+                IndexFieldOptions(storage=FieldStorage.NO, analyzer="StopAnalyzer")
+        }
+```    
+</TabItem>
+</Tabs>
+
+</Admonition> 
+    
+<Admonition type="note" title="">
+    
+### Which analyzer is used for the query term?    
+
+The following applies when a `search()` query targets a **dynamic field**:
+
+| Index configuration | [Configuration key](../../server/configuration/indexing-configuration.mdx#indexingqueryingusesearchanalyzerfordynamicfieldsifnotsetexplicitlyinsearchquery) | Analyzer used for the query term |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| No analyzer is explicitly configured for the generated field name | `false` | The [Default analyzer](../../indexes/using-analyzers.mdx#using-the-default-analyzer)                |
+| No analyzer is explicitly configured for the generated field name | `true`  | The [Default search analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer)  |
+| `ALL_FIELDS` is configured with a specific analyzer,<br/>e.g. `WhitespaceAnalyzer` | `false` | The analyzer resolved by the normal field fallback path,<br/>e.g. `WhitespaceAnalyzer` |
+| `ALL_FIELDS` is configured with a specific analyzer,<br/>e.g. `WhitespaceAnalyzer` | `true`  | The [Default search analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer) |
+| The generated field name is explicitly configured,<br/>e.g. `self._analyze("Description_English", "StopAnalyzer")` | `false` | The explicitly configured analyzer,<br/>e.g. `StopAnalyzer` |
+| The generated field name is explicitly configured,<br/>e.g. `self._analyze("Description_English", "StopAnalyzer")` | `true`  | The explicitly configured analyzer,<br/>e.g. `StopAnalyzer` |
+
+</Admonition>    
+
+</Panel>
+
+<Panel heading="CreateField syntax">
 
 #### Syntax for Index:
 
-<TabItem value="syntax" label="syntax">
-<CodeBlock language="python">
-{`object CreateField(string name, object value);
+<TabItem>
+```python
+CreateField(name, value)
 
-object CreateField(string name, object value, bool stored, bool analyzed);
+CreateField(name, value, stored, analyzed)
 
-object CreateField(string name, object value, CreateFieldOptions options);
-`}
-</CodeBlock>
+CreateField(name, value, CreateFieldOptions)
+```
 </TabItem>
 
 #### Syntax for JavaScript-index:
 
-<TabItem value="syntax_JS" label="syntax_JS">
-<CodeBlock language="js">
-{`createField(fieldName, fieldValue, options); // returns object
-`}
-</CodeBlock>
+<TabItem>
+```js
+createField(fieldName, fieldValue, options); // returns object
+```
 </TabItem>
 
-| Parameters | Type                | Description                                                                                                                                                     |
-|------------|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **name**   | `string`            | Name of the dynamic-index-field                                                                                                                                 |
-| **value**  | `object`            | Value of the dynamic-index-field <br/> The field Terms are derived from this value.                                                                             |
-| **stored** | `bool`              | Sets [FieldStorage](../../indexes/storing-data-in-index.mdx) <br/><br/> `False` - will set `FieldStorage.NO` (default value) <br/> `True` - will set `FieldStorate.YES` |
-| **analyzed** | `bool`            | Sets [FieldIndexing](../../indexes/using-analyzers.mdx) <br/><br/> `None` - `FieldIndexing.Default` (default value) <br/> `False` - `FieldIndexing.Exact` <br/> `True` - `FieldIndexing.Search` |
-| **options**  | `CreateFieldOptions` | Dynamic-index-field options                                                                                                                                     |
+| Parameters     | Type                 | Description                                                                                                                                                         |
+|----------------|----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **fieldName**  | `string`             | Name of the dynamic-index-field                                                                                                                                     |
+| **fieldValue** | `object`             | Value of the dynamic-index-field <br/> The field terms are derived from this value.                                                                                 |
+| **stored**     | `bool`               | Sets [FieldStorage](../../indexes/storing-data-in-index.mdx) <br/><br/> `false` - will set `FieldStorage.No` (default value) <br/> `true` - will set `FieldStorage.Yes` |
+| **analyzed**   | `bool`               | Sets [FieldIndexing](../../indexes/using-analyzers.mdx) <br/><br/> `null` - `FieldIndexing.Default` (default value) <br/> `false` - `FieldIndexing.Exact` <br/> `true` - `FieldIndexing.Search` |
+| **options**    | `CreateFieldOptions` | Dynamic-index-field options                                                                                                                                         |
 
-| CreateFieldOptions |                    |                                                                            |
-|--------------------|--------------------|----------------------------------------------------------------------------|
+| CreateFieldOptions |                    |                                                                                   |
+|--------------------|--------------------|-----------------------------------------------------------------------------------|
 | **Storage**        | `FieldStorage?`    | Learn about [storing data](../../indexes/storing-data-in-index.mdx) in the index. |
-| **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../../indexes/using-analyzers.mdx) in the index.    |
-| **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../../indexes/using-term-vectors.mdx) in the index.    |
+| **Indexing**       | `FieldIndexing?`   | Sets the field indexing behavior.<br/>Learn about [using analyzers](../../indexes/using-analyzers.mdx) in the index.    |
+| **TermVector**     | `FieldTermVector?` | Sets the field term-vector behavior.<br/>Learn about [term vectors](../../indexes/using-term-vectors.mdx) in the index. |
 
 <Admonition type="info" title="">
 
@@ -496,17 +892,15 @@ object CreateField(string name, object value, CreateFieldOptions options);
 
 </Admonition>
 
+</Panel>    
+    
+<Panel heading="Indexed fields & terms view">
 
-
-## Indexed fields & terms view
-
-The generated dynamic-index-fields and their indexed terms can be viewed in the **Terms View**.  
-Below are sample index fields & their terms generated from the last example.
+The generated dynamic index fields and their indexed terms can be viewed in the **Terms View** in Studio.  
+Below are sample index fields & their terms generated from [this example](../../indexes/using-dynamic-fields.mdx#example---list).
 
 ![Figure 1. Go to terms view](../assets/dynamic-index-fields-1.png)
 
 ![Figure 2. Indexed fields & terms](../assets/dynamic-index-fields-2.png)
-
-
-
-
+    
+</Panel>
