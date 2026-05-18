@@ -1,7 +1,7 @@
 ---
 title: "Processing Invoices Using Data Subscriptions"
 tags: [demo, background-tasks, csharp, use-case]
-description: "Read about Processing Invoices Using Data Subscriptions"
+description: "See how RavenDB Data Subscriptions let you offload invoice processing to a background worker in C#, with PDF generation and attachment storage included."
 publishedAt: 2024-12-08
 author: "Egor Shamanaev"
 image: "https://ravendb.net/wp-content/uploads/2024/12/processing-invoices-article-cover.jpg"
@@ -15,31 +15,31 @@ import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
-In this article we will tackle the problem of processing invoices in asynchorious manner using the [RavenDB Data subscriptions](https://ravendb.net/docs/article-page/6.0/csharp/client-api/data-subscriptions/what-are-data-subscriptions) feature.  
+In this article we will tackle the problem of processing invoices in an asynchronous manner using the [RavenDB Data subscriptions](https://ravendb.net/docs/article-page/latest/csharp/client-api/data-subscriptions/what-are-data-subscriptions) feature.  
 
-We will create a [data subscription](https://ravendb.net/docs/article-page/6.0/csharp/client-api/data-subscriptions/what-are-data-subscriptions) on `Orders` collection, and use a [Subscription Worker](https://ravendb.net/docs/article-page/6.0/csharp/client-api/data-subscriptions/consumption/how-to-consume-data-subscription) to process the newly added `Orders` documents, in this particullar article we are going to process in an ongoing fashion, but since `Subscriptions` state are persisted, it can be a process that runs in a timely fashion, like overnight or weekend.  
+We will create a [data subscription](https://ravendb.net/docs/article-page/latest/csharp/client-api/data-subscriptions/what-are-data-subscriptions) on `Orders` collection, and use a [Subscription Worker](https://ravendb.net/docs/article-page/latest/csharp/client-api/data-subscriptions/consumption/how-to-consume-data-subscription) to process the newly added `Orders` documents. In this particular article we are going to process in an ongoing fashion, but since `Subscriptions` state is persisted, it can be a process that runs on a schedule, like overnight or on weekends.  
 
-In the subscription batch processing we will calculate the overall products cost, prepare the invoice PDF file and store it as an [Attachment](https://ravendb.net/docs/article-page/6.0/csharp/document-extensions/attachments/what-are-attachments) to the `Invoices` document.
+In the subscription batch processing we will calculate the overall products cost, prepare the invoice PDF file and store it as an [Attachment](https://ravendb.net/docs/article-page/latest/csharp/document-extensions/attachments/what-are-attachments) to the `Invoices` document.
 
 Additional subscription can be defined for processing the `Invoices` documents, and sending an email with an `Attachment` that was created.
 
 ## Intro  
-Typically after paying for your goods on online store you would get the confirmation right away, but the invoice will be sent as a separate email afterwards. Did you ever wonder why it works this way? The reason is that the store want to confirm the purchase immediately, and do the actual processing of the order in the background, so you can return to the shop homepage and possible purchase even more stuff.  
+Typically after paying for your goods on an online store you would get the confirmation right away, but the invoice will be sent as a separate email afterwards. Did you ever wonder why it works this way? The reason is that the store wants to confirm the purchase immediately, and do the actual processing of the order in the background, so you can return to the shop homepage and possibly purchase even more.  
 
-That's from the business point of view, but what with user experience point of view?  
+That's from the business point of view, but what about user experience?  
 
-In case we would do the invoice processing in a sync manner in will likely bring to online store website responsiveness, long resonse time. Think about waiting few minutes for order confirmation, it may make the customer refresh or even close the page, which will cancel the order.
+Processing invoices synchronously would hurt online store responsiveness, leading to long response times. Think about waiting a few minutes for order confirmation. The customer may refresh or even close the page, which would cancel the order.
 
 ## Breakdown
-After customer added a new order, and got confirmation with some order identifier, we would want to start the invoce processing.  
+After a customer adds a new order and gets confirmation with an order identifier, we want to start the invoice processing.  
 
-Lets break down the invoice processing into steps:
+Let's break down the invoice processing into steps:
 
 1. Get & start processing newly added `Order` document  
 2. Load the list of ordered products  
 3. Calculate order total sum  
 4. Generate PDF and save it to memory stream  
-5. Mark the `Order` document with `InvoiceCreated=true` (so it will get proceesed only once)  
+5. Mark the `Order` document with `InvoiceCreated=true` (so it will get processed only once)  
 6. Add the PDF stream as attachment to the order document  
 7. Save changes to the RavenDB database   
 
@@ -93,7 +93,7 @@ await DocumentStore.Subscriptions.CreateAsync(new SubscriptionCreationOptions
 
 ```
 
-The subscription worker (`subscription.Run()` method) will receive batch of `Orders` documents each time, inside this batch we will process each `Orders` document, and prepare a invoice pdf, please see the full code below.
+The subscription worker (`subscription.Run()` method) will receive a batch of `Orders` documents each time. Inside this batch we will process each `Orders` document and prepare an invoice PDF. Please see the full code below.
 
 ```csharp showLineNumbers  
 await using var subscription = DocumentStore.Subscriptions.GetSubscriptionWorker<Order>(_subsName);
@@ -156,23 +156,23 @@ await subscription.Run(async batch =>
 });
 ```
 
-The subscription worker is opened using default [SubscriptionWorkerOptions](https://ravendb.net/docs/article-page/6.0/csharp/client-api/data-subscriptions/consumption/api-overview#subscriptionworkeroptions), it means the subscription worker [strategy](https://ravendb.net/docs/article-page/6.0/csharp/client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay) is `OpenIfFree`.
+The subscription worker is opened using default [SubscriptionWorkerOptions](https://ravendb.net/docs/article-page/latest/csharp/client-api/data-subscriptions/consumption/api-overview#subscriptionworkeroptions), which means the subscription worker [strategy](https://ravendb.net/docs/article-page/latest/csharp/client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay) is `OpenIfFree`.
 
-The code here is simply creation of subscription worker, additional example can be found in [Subscription Consumption Examples](https://ravendb.net/docs/article-page/6.0/csharp/client-api/data-subscriptions/consumption/examples#data-subscriptions-subscription-consumption-examples) documentation article. There is also example project with the full code attached (or put link to git?)
+The code here is simply creation of a subscription worker. Additional examples can be found in the [Subscription Consumption Examples](https://ravendb.net/docs/article-page/latest/csharp/client-api/data-subscriptions/consumption/examples#data-subscriptions-subscription-consumption-examples) documentation article.
 
-In the batch processing code, we check for `order.InvoiceCreated` and if its `true` we skip the item, the reason for that is in case of [subscription connection failover](https://ravendb.net/docs/article-page/6.0/csharp/client-api/data-subscriptions/what-are-data-subscriptions#how-the-worker-communicates-with-the-server) we might get the item second time, thus we might get `Order` that we already created a invoce for it.  
+In the batch processing code, we check `order.InvoiceCreated` and if it is `true` we skip the item. The reason for that is that in case of [subscription connection failover](https://ravendb.net/docs/article-page/latest/csharp/client-api/data-subscriptions/what-are-data-subscriptions#how-the-worker-communicates-with-the-server) we might receive an item a second time, meaning we could get an `Order` that we already created an invoice for.  
 
-After checking the value of `order.InvoiceCreated`, we open a [Session](https://ravendb.net/docs/article-page/6.0/csharp/client-api/session/what-is-a-session-and-how-does-it-work) and load the related `Products` that were ordered.  
+After checking the value of `order.InvoiceCreated`, we open a [Session](https://ravendb.net/docs/article-page/latest/csharp/client-api/session/what-is-a-session-and-how-does-it-work) and load the related `Products` that were ordered.  
 
-Then we set the `order.InvoiceCreated` value to `true` we have to set this property to `true` the reason for that is that after we add the invoice, the `Order` document will be updated, setting `order.InvoiceCreated` value to `true` will make sure the updated `Order` document won't match the `Subscription` criteria.
+Then we set `order.InvoiceCreated` to `true`. We have to set this property to `true` because after we add the invoice, the `Order` document will be updated, and setting `order.InvoiceCreated` to `true` ensures the updated `Order` document will no longer match the `Subscription` criteria.
 
-The session in subscription is bound to the processing node, we can be sure that editing the `Order` document in subscrition session we are editing the document on same server that is processing the subscription. 
+The session in a subscription is bound to the processing node, so we can be sure that editing the `Order` document in the subscription session edits the document on the same server that is processing the subscription. 
 
-Afterwards, in case there are producs, we create an `Invoice` document, and call the `CreateInvoiceForOrderAsync()` method which will prepare the PDF file and return it (see the method code below), then we load the PDF file into a `MemoryStream` and store it as an attachment of the created `Invoice` document.  
-The last step is to call the `session.SaveChangesAsync()` method which will persist the changes into the database. 
+Afterwards, if there are products, we create an `Invoice` document and call the `CreateInvoiceForOrderAsync()` method, which prepares the PDF file and returns it (see the method code below). We then load the PDF file into a `MemoryStream` and store it as an attachment of the created `Invoice` document.  
+The last step is to call `session.SaveChangesAsync()`, which persists the changes to the database. 
 
-## Additions  
-The code of `CreateInvoiceForOrderAsync()` method, calculates the overall products costs, prepares the invoice PDF document and returns the PDF document `byte[]`. 
+## PDF Generation Implementation  
+The `CreateInvoiceForOrderAsync()` method calculates the overall product costs, prepares the invoice PDF document, and returns it as a `byte[]`. 
 
 ```csharp showLineNumbers 
 private Task<byte[]> CreateInvoiceForOrderAsync(string invoiceId, Order order, Dictionary<string, Product> products)
@@ -227,3 +227,10 @@ private Task<byte[]> CreateInvoiceForOrderAsync(string invoiceId, Order order, D
 }
 
 ```
+
+## Summary
+
+- Why async invoice processing matters: Synchronous invoice generation hurts store responsiveness and risks order cancellations. Offloading it to a background worker keeps confirmation instant.
+- Subscription setup: A RavenDB Data Subscription on the `Orders` collection filters for documents where `InvoiceCreated = false`, ensuring each order is picked up exactly once.
+- Batch processing: The subscription worker loads related `Products`, calculates the order total, generates a PDF using iText, and stores it as an attachment on the corresponding `Invoice` document.
+- Reliability and scheduling: Subscription state is persisted in RavenDB, so the worker handles connection failovers safely and can run continuously or on a timed schedule such as overnight.

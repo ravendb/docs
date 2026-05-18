@@ -1,11 +1,24 @@
 ---
 title: "Semantic Search with RavenDB, Python, and FastAPI"
 tags: [python, fastapi, ai, demo, use-case]
-description: "Read about Semantic Search with RavenDB and Python"
+description: "Build a semantic search API with RavenDB, Python, and FastAPI. Learn manual and automatic embedding generation with OpenAI, and run vector similarity search in under 50 lines of application code."
 publishedAt: 2025-07-22
 image: "https://ravendb.net/wp-content/uploads/2025/07/Semantic-Search-cover.png"
 author: "Paweł Lachowski"
 proficiencyLevel: "Expert"
+see_also:
+  - title: "Vector Search Overview"
+    link: "ai-integration/vector-search/overview"
+    source: "docs"
+    path: "AI Integration > Vector Search"
+  - title: "Embeddings Generation Overview"
+    link: "ai-integration/generating-embeddings/overview"
+    source: "docs"
+    path: "AI Integration > Generating Embeddings"
+  - title: "AI Connection Strings"
+    link: "ai-integration/connection-strings/overview"
+    source: "docs"
+    path: "AI Integration > Connection Strings"
 ---
 
 import Admonition from '@theme/Admonition';
@@ -22,7 +35,7 @@ Semantic search is a more intuitive way for your users to find the content they 
 
 To achieve this, your data needs to be vectorized into AI model embeddings, as they are a digital representation of the meaning of your data within a specific model.
 
-To reduce data logistics and the amount of code to be written and maintained, RavenDB offers automatic embedding generation. If you don’t need another custom solution for that and want to ship faster, this is the way. Automatic embedding generation with RavenDB handles your data logistics out of the box, simplifying app development.
+To reduce data logistics and the amount of code to be written and maintained, RavenDB offers automatic embedding generation. If you don't need another custom solution for that and want to ship faster, this is the way. Automatic embedding generation with RavenDB handles your data logistics out of the box, simplifying app development.
 
 In this article, we will create a sample FastAPI application to show you how vector search works. We will implement both *manual* and *automatic* embedding generation.
 
@@ -30,17 +43,17 @@ In this article, we will create a sample FastAPI application to show you how vec
 
 ### Application
 
-Using FastAPI, we can quickly build a web AI search endpoint to demonstrate how semantic search works. We’ll use a built-in OpenAPI interface to picture that.
+Using FastAPI, we can quickly build a web AI search endpoint to demonstrate how semantic search works. We'll use a built-in OpenAPI interface to picture that.
 
-See, we query for “Cheese” and we get all kinds of cheese products from our database:
+See, we query for "Cheese" and we get all kinds of cheese products from our database:
 
-<Image img={require("./assets/semsearch1.webp")} alt="" />
-<Image img={require("./assets/semsearch2.webp")} alt="" />
-Under the hood, the application translates our query term “Cheese” to an embedding (vector) on the fly and compares other vectors within the database, finding the closest “meanings”. Let’s show how to build that.
+<Image img={require("./assets/semsearch1.webp")} alt="FastAPI Swagger UI with a 'Cheese' query entered into the search endpoint" />
+<Image img={require("./assets/semsearch2.webp")} alt="FastAPI Swagger UI response showing cheese products returned by RavenDB vector search" />
+Under the hood, the application translates our query term "Cheese" to an embedding (vector) on the fly and compares other vectors within the database, finding the closest "meanings". Let's show how to build that.
 
 Without the query implementation, our application looks like this:
 
-```
+```python showLineNumbers
 from fastapi import FastAPI
 from pydantic import BaseModel
 from ravendb import DocumentStore
@@ -76,9 +89,9 @@ if __name__ == "__main__":
     uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)
 ```
 
-To make it work, we need a few Python packages:.
+To make it work, we need a few Python packages:
 
-```
+```bash
 pip install fastapi
 pip install uvicorn
 pip install ravendb
@@ -88,9 +101,9 @@ pip install ravendb
 - uvicorn: ASGI web server  
 - ravendb: Python SDK for RavenDB
 
-This fragment sets up RavenDB. It connects to a database running on our local machine with the Northwind [sample data set](https://ravendb.net/docs/article-page/7.0/csharp/studio/database/tasks/create-sample-data).
+This fragment sets up RavenDB. It connects to a database running on our local machine with the Northwind [sample data set](https://ravendb.net/docs/studio/database/tasks/create-sample-data).
 
-```py
+```python showLineNumbers
 # RavenDB setup
 document_store = DocumentStore(
     urls=["http://127.0.0.1:8080"],
@@ -99,9 +112,9 @@ document_store = DocumentStore(
 document_store.initialize()
 ```
 
-Then, we create the Product class to represent the JSON document schema for documents in the Products collection of the [“Northwind”](https://ravendb.net/docs/studio/database/tasks/create-sample-data) database. This allows us to work with Product documents as objects.
+Then, we create the Product class to represent the JSON document schema for documents in the Products collection of the ["Northwind"](https://ravendb.net/docs/studio/database/tasks/create-sample-data) database. This allows us to work with Product documents as objects.
 
-```
+```python showLineNumbers
 # Northwind Product schema
 class Product(BaseModel):
     name: str
@@ -115,9 +128,9 @@ class Product(BaseModel):
     reorder_level: int
 ```
 
-Next, we define endpoints to query products. We’ll add the detailed query logic once we have embeddings set up.
+Next, we define endpoints to query products. We'll add the detailed query logic once we have embeddings set up.
 
-```
+```python showLineNumbers
 @app.get("/products")
 async def search_products(query: str):
     ...
@@ -125,7 +138,7 @@ async def search_products(query: str):
 
 The last step is to use [Uvicorn](https://www.uvicorn.org/) to launch this app. It handles your web requests, allowing them to reach our application. Uvicorn serves as a simple bridge between the network and your application.
 
-```
+```python showLineNumbers
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)
@@ -133,9 +146,9 @@ if __name__ == "__main__":
 
 ### Vector Search with manual embeddings generation
 
-We can generate embeddings manually, but it requires more effort on our part. We need to take care of data logistics and structure, and we may still be missing some more advanced functionalities, for example, caching or chunking. Let’s show how to generate embeddings using the popular OpenAI embedding model ["text-embedding-3-small"](https://platform.openai.com/docs/guides/embeddings).
+We can generate embeddings manually, but it requires more effort on our part. We need to take care of data logistics and structure, and we may still be missing some more advanced functionalities, for example, caching or chunking. Let's show how to generate embeddings using the popular OpenAI embedding model ["text-embedding-3-small"](https://platform.openai.com/docs/guides/embeddings).
 
-```
+```python showLineNumbers
 import openai
 
 def get_embedding(text: str) -> list[float]:
@@ -148,7 +161,7 @@ embedding = get_embedding("Example product name")
 
 We need to install and use the *openai* Python package. This allows us to interact with AI models from OpenAI. Next, we generate embeddings with `get_embedding` for the entire Products collection. Then we put the vector in the vector\_embedding field. We will query all Products, add the field `vector_embedding`, and then call `save_changes`.
 
-```
+```python showLineNumbers
 with document_store.open_session() as session:
     products = list(session.query(object_type=Product))
     for product in products:
@@ -157,11 +170,11 @@ with document_store.open_session() as session:
     session.save_changes()
 ```
 
-Note: The Northwind database is relatively small, allowing us to query and update the documents directly. However, for larger datasets, you’d need to explore a more effective strategy. If that’s your case, see how to use automatic embeddings generation later in this article.
+Note: The Northwind database is relatively small, allowing us to query and update the documents directly. However, for larger datasets, you'd need to explore a more effective strategy. If that's your case, see how to use automatic embeddings generation later in this article.
 
 Products now have an embedding field, allowing us to run RavenDB Vector Search. But to compare vectors, we also need an embedding vector for the query search term. We use the same function to generate embeddings for incoming search terms on the fly using the same method (`get_embedding`).
 
-```
+```python showLineNumbers
 query_embedding = get_embedding("search term")
 
 with document_store.open_session() as session:
@@ -194,32 +207,43 @@ This way we need to:
 
 … and we still lack features like caching repetitive search terms and text chunking.
 
+| Aspect | **Manual embeddings** | **Automatic embeddings** |
+|---|---|---|
+| **Embedding generation** | Your code calls OpenAI directly | RavenDB calls the model via a configured task |
+| **Initial data vectorization** | You loop through documents and save vectors yourself | RavenDB handles the backfill automatically |
+| **Query-time vectorization** | Your code calls `get_embedding()` on each request | `vector_search_text_using_task` handles it internally |
+| **Caching repeated queries** | Not included; you build it yourself | Built in |
+| **Chunking support** | Not included; you build it yourself | Built in |
+| **Switching AI models** | Requires code changes and re-vectorization | Change the connection string in Studio |
+| **Application code size** | ~50 lines including OpenAI setup | ~30 lines, no AI client code |
+| **Best for** | Full control over embedding logic | Faster delivery, less maintenance overhead |
+
 ### Vector search with automatic embeddings
 
-Now, let’s try automatic embeddings generation in RavenDB. The code will be the same as starting one, but reduced by manual communication with OpenAI. We just need to add the embeddings generation in RavenDB Studio. 
+Now, let's try automatic embeddings generation in RavenDB. The code will be the same as starting one, but reduced by manual communication with OpenAI. We just need to add the embeddings generation in RavenDB Studio. 
 
 Adding automatic embeddings generation starts in the AI Hub. We will automate the communication with the external AI model. To do so, we need to define which model we want to use.
 
-### AI Connection String
+#### AI Connection String
 
 Create a new [AI connection string](https://ravendb.net/docs/ai-integration/connection-strings/connection-strings-overview) in RavenDB Studio:  
-<Image img={require("./assets/semsearch3.webp")} alt="" />
+<Image img={require("./assets/semsearch3.webp")} alt="RavenDB Studio form for creating a new AI connection string, with the OpenAI provider selected" />
 Define your custom name and identifier and pick the service you want to use; we chose OpenAI. Then, in the new fields, select the endpoint & model, and paste your API key. Other fields are optional and not currently relevant to us.
 
 You can test the connection to ensure everything works properly.
 
-### AI Task
+#### AI Task
 
-We can connect to the OpenAI model, but we need to create a task that generates embeddings. Go back to the AI Hub and choose ‘AI Tasks’. Create a new embeddings generation task and fill in its name and identifier. Select our new connection string. We select the ‘Products’ collection and type ‘Name’ for a path just beneath the collection. Just save it, and it’s ready.
+We can connect to the OpenAI model, but we need to create a task that generates embeddings. Go back to the AI Hub and choose 'AI Tasks'. Create a new embeddings generation task and fill in its name and identifier. Select our new connection string. We select the 'Products' collection and type 'Name' for a path just beneath the collection. Just save it, and it's ready.
 
-<Image img={require("./assets/semsearch4.webp")} alt="" />
-Look how easy and short it is. Using RavenDB, we don’t need to worry about adding new fields; query logic is already thinner, and all connections to AI are already handled without the need for additional stuff.
+<Image img={require("./assets/semsearch4.webp")} alt="RavenDB Studio form for a new embeddings generation task, targeting the Products collection Name field" />
+The task configuration is minimal: just a name, a connection string, the target collection, and the field path. RavenDB handles everything else: scheduling, API calls, and storing the resulting vectors.
 
-### Application code
+#### Application code
 
 All the required parts for your own embeddings generation and adding the field can be removed, making the code smaller.
 
-```
+```python showLineNumbers
 from fastapi import FastAPI
 from pydantic import BaseModel
 from ravendb import DocumentStore
@@ -231,7 +255,7 @@ document_store = DocumentStore(
 )
 document_store.initialize()
 
-# Northwind Product schema based on your example
+# Northwind Product schema
 class Product(BaseModel):
     name: str
     supplier: str
@@ -263,7 +287,7 @@ if __name__ == "__main__":
     uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)
 ```
 
-Look how easy and short it is. Using RavenDB, we don’t need to worry about adding new fields; the query endpoint logic is already more straightforward, and connection to the AI model is already handled without the need for additional stuff.
+Compared to the manual approach, the application code no longer needs to manage an OpenAI client, generate embeddings per document, or store them in a separate field. The `vector_search_text_using_task` call replaces the full manual pipeline: RavenDB resolves the task, vectorizes the query on the fly, and returns ranked results.
 
 This way we get:
 
@@ -274,12 +298,19 @@ This way we get:
 
 Works perfectly:
 
-<Image img={require("./assets/semsearch5.webp")} alt="" />
-<Image img={require("./assets/semsearch6.webp")} alt="" />
+<Image img={require("./assets/semsearch5.webp")} alt="FastAPI Swagger UI showing a semantic search query returning relevant products using automatic RavenDB embeddings" />
+<Image img={require("./assets/semsearch6.webp")} alt="FastAPI Swagger UI response body with product results returned by automatic vector search" />
 In the studio, RavenDB created a separate collection for embeddings and cached terms:  
-<Image img={require("./assets/semsearch7.webp")} alt="" />
-Everything’s working on its own, and our semantic search can be delivered much quicker.
+<Image img={require("./assets/semsearch7.webp")} alt="RavenDB Studio collections view showing an auto-generated embeddings collection and cached query terms" />
+Everything's working on its own, and our semantic search can be delivered much quicker.
 
 ## Summary
 
-Now that you know how to handle Vector Search with RavenDB, you may have some cool projects to share\! In this case, we would like to invite you to our Discord \- RavenDB Developers Community. Check it out [here](https://discord.com/invite/ravendb).
+In this article, you built a semantic search endpoint using RavenDB, Python, and FastAPI, twice.
+
+- Manual approach: You vectorized the Products collection yourself using `openai.embeddings.create`, stored the vectors in a document field, and queried them with `vector_search`. This gives you full control but requires managing API calls, data updates, and lacks built-in caching.
+- Automatic approach: You configured an embeddings generation task in RavenDB Studio and called `vector_search_text_using_task` in a single line. RavenDB handles vectorization, storage, caching, and query-time embedding, with no OpenAI client code needed in the application.
+
+For most projects, the automatic approach is the better starting point: less code, easier to maintain, and caching included out of the box.
+
+Built something with RavenDB? Share it with the community on [Discord](https://discord.com/invite/ravendb).

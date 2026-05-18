@@ -5,7 +5,7 @@ icon: "spatial-map-view"
 description: "Learn how to implement spatial search in RavenDB with Python. Covers radius queries, custom polygon shapes, WKT syntax, and reverse point-in-polygon lookup using the Flat Finder demo."
 author: "Paweł Lachowski"
 publishedAt: 2026-03-11
-proficiencyLevel: "Expert"
+proficiencyLevel: "Intermediate"
 keywords: ["spatial search", "geospatial query", "radius search", "polygon search", "WKT", "BoundingBox", "QuadPrefixTree", "GeoHashPrefixTree", "RavenDB Python"]
 see_also:
   - title: "Indexing Spatial Data"
@@ -31,7 +31,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import Image from "@theme/IdealImage";
 
 <Admonition type="info" title="What is spatial search in RavenDB?">
-RavenDB offers native spatial search without external plugins. Store point coordinates or polygon shapes in your documents and query by radius, custom shapes, or reverse point-in-polygon lookup — using the same indexing workflow you use for all other fields. This guide walks through all three query types with a working Python demo.
+RavenDB offers native spatial search without external plugins. Store point coordinates or polygon shapes in your documents and query by radius, custom shapes, or reverse point-in-polygon lookup, using the same indexing workflow you use for all other fields. This guide walks through all three query types with a working Python demo.
 </Admonition>
 
 Spatial data tends to create an impression that you need to learn a dedicated tool from scratch before you can do anything useful with it. The technical concepts like storing coordinates and polygons may look simple at first, but once you dig a little deeper, they can become surprisingly hard to navigate through. Geospatial tools often do not help newcomers get started smoothly due to convoluted technical documentation.
@@ -40,13 +40,13 @@ Yet many applications only require a handful of straightforward operations. Your
 
 These are simple ideas that do not require advanced infrastructure, and RavenDB keeps this approachable. You can store points or shapes directly in your documents and query them with the same workflow you use for other fields. This makes spatial search feel like a natural extension of the database rather than a separate feature you need to learn from scratch.
 
-## Why Use RavenDB for Spatial Search
+## Why use RavenDB for spatial search
 
-RavenDB offers native spatial search without external plugins, unlike many other popular databases. RavenDB is designed to make it as fast as possible to go from inserting data to querying it. Once your data is stored in the correct format, you can query it immediately.
+Most databases require a dedicated geospatial extension or a separate service to handle spatial search. In RavenDB, spatial search is built in. Once your documents store coordinates or shapes in the correct format, you can query them immediately using the same session and index workflow you already use for everything else.
 
-While the system is easy to learn, we also focused on keeping it as precise as possible. This even lets you point to specific rooms in bigger buildings. RavenDB supports three systems for geographical data, and two of them also work with Cartesian systems (more about precision and the systems we use later in this guide \- to skip there, you can click [here](#cartesian-and-geographical)).
+The system is also designed for precision. RavenDB supports three indexing strategies for spatial data, two of which work with Cartesian systems as well as geographical ones, giving you accuracy down to roughly 2.5 meters. That is precise enough to distinguish individual rooms in a building. More on the strategies and how they differ [here](#cartesian-and-geographical).
 
-Alright, it’s flexible, precise, and easy to use, but what can we do with it?
+So it’s built in, precise, and fits naturally into your existing workflow. What can you actually do with it?
 
 ## Spatial search capabilities
 
@@ -56,11 +56,11 @@ Another subfeature is [*querying by shape*](#part-2-search-by-shape). You define
 
 You can also [*search using polygons*](#part-3-reverse-search) defined in the same way as the second method. If you pre-define shapes like districts, you can point to space and then return the district it’s in.
 
-Respectively, as we allow indexing points and WKT shapes, you can achieve anything you need with spatial indexes \- even shape-by-shape search. RavenDB's spatial search capability is ready for any use case, both simple and more advanced. 
+Respectively, as we allow indexing points and WKT shapes, you can achieve anything you need with spatial indexes, including shape-by-shape search. RavenDB's spatial search capability is ready for any use case, both simple and more advanced. 
 
 All those usages depend on how you use your indexes and queries, and there is, of course, more you can do. 
 
-### Dynamic vs Static index
+### Dynamic vs static index
 
 Queries over spatial data behave the same as regular RavenDB queries, so we can either let RavenDB generate an auto-index (dynamic) or create a predefined index (static) manually. Dynamic indexes are good if you are satisfied with the default search options, and you are fine with the first query being slower (while the index is being created).
 
@@ -72,11 +72,11 @@ But what do we have under the hood?
 
 ## How this system works
 
-This section discusses the technical details of RavenDB and the components that make it work. If you prefer to view the demo first, click this [link](#demo---how-we-use-spatial-search).
+This section discusses the technical details of RavenDB and the components that make it work. If you prefer to view the demo first, click this [link](#demo-how-we-use-spatial-search).
 
-### Cartesian and Geographical
+### Cartesian and geographical
 
-RavenDB has two systems \- Cartesian and geographical. Both systems mostly support the same strategies. Geographical, that is the default one, can work with three indexing strategies. 
+RavenDB has two systems: Cartesian and geographical. Both systems mostly support the same strategies. Geographical, that is the default one, can work with three indexing strategies. 
 
 * BoundingBox  
 * QuadPrefixTree  
@@ -90,13 +90,19 @@ QuadPrefixTree uses a hierarchical grid that becomes more detailed with each lev
 
 GeoHashPrefixTree works similarly, but instead of grid cells, it uses geohashes. A geohash is a compact string that represents a location. Each additional character increases precision and zooms in on a smaller part of the map. RavenDB stores these prefixes in the index. When you perform a spatial search, RavenDB converts your search region into a set of geohash prefixes and immediately filters the entries that match them. Since nearby locations produce similar prefixes, this system is very efficient for geographical data. It is tied to Earth's coordinate system, so it is used only in geographic mode, not in Cartesian mode.
 
-All three strategies support the same spatial search features. The difference lies in how they use space and how they query your data. BoundingBox keeps things simple and light. QuadPrefixTree provides precision at the grid level. GeoHashPrefixTree provides compact indexing that naturally works with real-world coordinates. When it comes to precision, both QuadPrefixTree and GeoHashPrefixTree have around 2.5 meters of precision, but QuadPrefixTree uses more bytes. Why GeoHash is more compact? It needs only 9 levels of depth to reach same precision QuadPrefixTree reaches in 23 levels.
+All three strategies support the same spatial search features. The difference lies in how they use space and how they query your data. BoundingBox keeps things simple and light. QuadPrefixTree provides precision at the grid level. GeoHashPrefixTree provides compact indexing that naturally works with real-world coordinates. When it comes to precision, both QuadPrefixTree and GeoHashPrefixTree have around 2.5 meters of precision, but QuadPrefixTree uses more bytes. Why GeoHash is more compact? It needs only 9 levels of depth to reach the same precision QuadPrefixTree reaches in 23 levels.
+
+| Strategy | Coordinate systems | Precision | Depth levels | Best for |
+|---|---|---|---|---|
+| BoundingBox | Geographic + Cartesian | Rectangle bounds | N/A | General use, simple shapes, fastest queries |
+| QuadPrefixTree | Geographic + Cartesian | ~2.5 m | 23 | Large areas, dense point clusters |
+| GeoHashPrefixTree | Geographic only | ~2.5 m | 9 | Real-world coordinates, most compact storage |
 
 ### How to describe point and polygon
 
 The first thing we need to understand is how we describe points. We do that with basic coordinates. In both Cartesian and geographic systems, you input longitude and latitude to describe where your point is. The same numbers work regardless of the indexing strategy. A point is simply a location with two values.
 
-To define a shape, we use a “[well-known text](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)” markup language called in short WKT. If you are not familiar with it, let us briefly describe how it works. You describe your geometry with a simple keyword followed by a list of coordinates. The structure is built to be readable by, so even a long shape is easy to understand at a glance.
+To define a shape, we use a “[well-known text](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)” markup language called in short WKT. If you are not familiar with it, let us briefly describe how it works. You describe your geometry with a simple keyword followed by a list of coordinates. The structure is built to be human-readable, so even a long shape is easy to understand at a glance.
 
 We use mainly two shapes:
 
@@ -104,28 +110,33 @@ We use mainly two shapes:
 
 A closed shape defined by a list of coordinates. The first coordinate must match the last one to indicate that the shape is closed.
 
-Example:  
+```wkt
 POLYGON((10 10, 20 10, 20 20, 10 20, 10 10))
+```
 
-When defining a polygon, list the points in counterclockwise order. That way, the system understands that the area inside the shape is what you want. If you list the points clockwise instead, some systems may interpret it the opposite way, selecting everything outside the polygon instead of the area inside it. 
+When defining a polygon, list the points in counterclockwise order. That way, the system understands that the area inside the shape is what you want. If you list the points clockwise instead, some systems may interpret it the opposite way, selecting everything outside the polygon instead of the area inside it.
 
 A polygon can also contain a hole. This is done by adding a second set of coordinates, this time clockwise, after the outer boundary.
 
-Example with a hole:  
+```wkt
 POLYGON((0 0, 10 0, 10 10, 0 10, 0 0), (3 3, 7 3, 7 7, 3 7, 3 3))
+```
 
 * CIRCLE
 
-RavenDB accepts circles and format works similarly to the polygon syntax.  
-Example:  
-CIRCLE(12.4924 41.8902, 5\)  
+RavenDB accepts circles; the format works similarly to the polygon syntax.
+
+```wkt
+CIRCLE(12.4924 41.8902, 5)
+```
+
 Here, the first part describes the center, and the second part, divided by a comma, describes the radius.
 
 WKT lets you describe your shapes consistently. When you put a polygon or a circle into the index, RavenDB converts that shape into whatever structure your indexing strategy needs. You only provide coordinates. After that, the index handles precision, grid subdivision, and comparisons.
 
 Once your geometry is stored, you can run spatial queries on it. You can check if a point is inside a polygon. You can search within a radius. You can define districts or regions and return the area that contains a specific coordinate. Everything begins with a WKT definition.
 
-## Demo \- How we use Spatial Search
+## Demo: how we use spatial search
 
 Now that we have covered the theory, let’s look at the demo and see how to build it with RavenDB. The examples below use **RavenDB 7.2** and the **RavenDB Python client** with **FastAPI**. The demo is coded in Python and is available to clone via this [link](https://github.com/poissoncorp/samples.flats).
 
@@ -141,7 +152,7 @@ Now let's dive into the app and see what it's capable of. We will go through thr
 
 Let’s start with the first function, searching by radius.
 
-### Part 1: Search in radius
+### Part 1: search in radius
 
 This option is selected by default on the top left. All you need to do is click anywhere and select a radius if the default search radius does not suit you. This gives us points within the radius; in this demo, those are flats in Paris.
 
@@ -153,7 +164,7 @@ As you can see, a search by radius excludes any other flats outside the radius, 
 
 But how do we map those flats on a map?
 
-### Part 1 Setup
+### Part 1 setup
 
 Let’s walk through the code and find the piece responsible for the radius search. The part we are looking for looks like this.
 
@@ -196,16 +207,15 @@ First, we define the endpoint and open a session in order to communicate with Ra
 <Image img={require("./assets/spatialsearch4.webp")} alt="Flats_SpatialIndex definition in RavenDB Studio" />
 
 ```py
- query = session.query_index_type(Flats_SpatialIndex, Flat)
+query = session.query_index_type(Flats_SpatialIndex, Flat)
 
-        query = query.within_radius_of(
-            "location",
-            request.radius_km,
-            request.latitude,
-            request.longitude,
-            SpatialUnits.KILOMETERS,
-        )
-
+query = query.within_radius_of(
+    "location",
+    request.radius_km,
+    request.latitude,
+    request.longitude,
+    SpatialUnits.KILOMETERS,
+)
 ```
 
 Additionally, we provide information for our query. Location selects the field with spatial data in, latitude and longitude define the center of the radius, meanwhile, `radius_km` tells RavenDB how big the radius is. Last line `SpatialUnits.KILOMETERS` simply tells RavenDB to use kilometers.
@@ -226,17 +236,17 @@ To keep everything sorted, we let the user select price or distance, then query 
 ```py
 results = list(query)
 
-        response = []
-        for flat in results:
-            metadata = session.advanced.get_metadata_for(flat)
-            distance = metadata.get("@spatial", {}).get("Distance")
-            response.append(convert_to_response(flat, distance))
-        return response
+response = []
+for flat in results:
+    metadata = session.advanced.get_metadata_for(flat)
+    distance = metadata.get("@spatial", {}).get("Distance")
+    response.append(convert_to_response(flat, distance))
+return response
 ```
 
 …we execute the query and retrieve the distance to the selected point from the metadata, so we can display it alongside the flat data. This is all the code you need to search by radius. Fast and easy without the need for any advanced concepts, just a simple query by field generated by the index. All we had to do was provide the coordinates and the desired range. Let’s go and query by any shape.
 
-### Part 2: Search by shape
+### Part 2: search by shape
 
 The second option in our demo allows us to search not by distance from a point, but by a custom shape.
 
@@ -248,7 +258,7 @@ This is useful when the area you care about is not a perfect circle. Maybe you w
 
 Let’s walk through how this works in code.
 
-### Part 2 Setup
+### Part 2 setup
 
 The code used for the polygon includes elements we have encountered before, so we will mainly stop at places where new content is introduced. Part 2 code looks like this.
 
@@ -308,8 +318,8 @@ We are again using our predefined spatial index. What changes is how we filter t
 
 ```py
 query = query.spatial(
-"location",
-lambda criteria: criteria.within(request.wkt)
+    "location",
+    lambda criteria: criteria.within(request.wkt)
 )
 ```
 
@@ -318,10 +328,10 @@ We use RavenDB’s spatial search to return points within our polygon. We simply
 Just like in Part 1 before, we give the user sorting options, but with a twist.
 
 ```py
-       if request.sort_by == "price":
-            query = query.order_by("price_per_month")
-        elif request.center_latitude is not None and request.center_longitude is not None:
-            query = query.order_by_distance("location", request.center_latitude, request.center_longitude)
+if request.sort_by == "price":
+    query = query.order_by("price_per_month")
+elif request.center_latitude is not None and request.center_longitude is not None:
+    query = query.order_by_distance("location", request.center_latitude, request.center_longitude)
 ```
 
 A polygon does not have a defined “center”, so if we want to sort by distance, we must explicitly provide one. Next, we get our center and run our query.
@@ -329,15 +339,15 @@ A polygon does not have a defined “center”, so if we want to sort by distanc
 ```py
 results = list(query)
 
-        response = []
-        for flat in results:
-            distance = None
-            if request.center_latitude is not None and request.center_longitude is not None:
-                metadata = session.advanced.get_metadata_for(flat)
-                distance = metadata.get("@spatial", {}).get("Distance")
-            response.append(convert_to_response(flat, distance))
+response = []
+for flat in results:
+    distance = None
+    if request.center_latitude is not None and request.center_longitude is not None:
+        metadata = session.advanced.get_metadata_for(flat)
+        distance = metadata.get("@spatial", {}).get("Distance")
+    response.append(convert_to_response(flat, distance))
 
-        return response
+return response
 ```
 
 Just like in Part 1, RavenDB stores spatial calculation results in metadata. We do not compute the distance ourselves. We simply read what the database already calculated for us. RavenDB returns only flats that are inside the polygon, then sends them to the client.
@@ -351,27 +361,27 @@ As you can see, those are districts that we had ready underneath it all. We can 
 ```py
 @app.get("/api/districts")
 async def get_all_districts():
-with store.open_session() as session:
+    with store.open_session() as session:
 ```
 
 And then we simply query our districts and create a response for our app.
 
 ```py
-   with store.open_session() as session:
-        districts = list(session.query(object_type=District))
+with store.open_session() as session:
+    districts = list(session.query(object_type=District))
 
-        return [{
-            "name": district.name,
-            "arrondissement_number": district.arrondissement_number,
-            "description": district.description,
-            "population": district.population,
-            "boundary_wkt": district.boundary_wkt
-        } for district in districts]
+    return [{
+        "name": district.name,
+        "arrondissement_number": district.arrondissement_number,
+        "description": district.description,
+        "population": district.population,
+        "boundary_wkt": district.boundary_wkt
+    } for district in districts]
 ```
 
 Then we can just connect search by shape type of code, and we can search all flats in the selected district.
 
-### Part 3: Reverse search
+### Part 3: reverse search
 
 You might have noticed that if we click on any flat, the district (4th Arrondissement - Hôtel-de-Ville on the image) it is in is shown.
 
@@ -389,7 +399,7 @@ The only thing that distinguishes this index from a non-spatial one is a single 
 
 But how do we do this?
 
-### Part 3 Setup
+### Part 3 setup
 
 The whole code that searches the district from a point for us looks like this:
 
@@ -430,7 +440,7 @@ We start with our endpoint and session.
 ```py
 @app.post("/api/district/by-point", response_model=DistrictResponse)
 async def get_district_by_point(request: GetDistrictByPointRequest):
-with store.open_session() as session:
+    with store.open_session() as session:
 ```
 
 Then we query using a spatial index for districts with a point written in WKT. RavenDB will take its coordinates and convert them into a point in space.
@@ -444,8 +454,8 @@ Then we find the districts that contain the flat, in other words, we look for a 
 
 ```py
 query = query.spatial(
-"boundary",
-lambda criteria: criteria.within(point_wkt)
+    "boundary",
+    lambda criteria: criteria.within(point_wkt)
 )
 ```
 
@@ -476,4 +486,4 @@ raise HTTPException(
 
 As you can see, RavenDB lets you query spatial data and use spatial search capabilities without becoming an expert in a completely new technology. Want to easily add more advanced capabilities to your application? You may consider combining semantic search with your spatial search to query by the best-matching description. You can find more about [semantic search in RavenDB with Python and FastAPI](/guides/semantic-search-with-ravendb-python-and-fastapi/) in the companion guide.
 
-Interested in RavenDB? Grab the [free developer license](https://ravendb.net/dev) for testing, or get a [free cloud database](https://ravendb.net/cloud). If you have questions about this feature, or want to hang out and talk with the RavenDB team, join our Discord Community Server \- invitation link is [here](https://discord.com/invite/ravendb).
+Interested in RavenDB? Grab the [free developer license](https://ravendb.net/dev) for testing, or get a [free cloud database](https://ravendb.net/cloud). If you have questions about this feature, or want to hang out and talk with the RavenDB team, join our Discord Community Server. The invitation link is [here](https://discord.com/invite/ravendb).
