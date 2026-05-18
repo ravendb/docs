@@ -17,7 +17,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="">
 
 - Use your portal's [Products tab](../cloud/portal/cloud-portal-products-tab.mdx) to raise or modify 
-a Free node, a Development node, or a Production cluster.  
+a Free node, a Development node, a Production cluster, or a Serverless product.  
 - Free and Development nodes, as well as Production "basic" grade clusters, are operated by 
 [burstable instances](../cloud/cloud-overview.mdx#burstable-vs-reserved-clusters).  
 - The Production cluster grades [Standard](../cloud/cloud-instances.mdx#standard-grade-production-cluster) 
@@ -32,6 +32,10 @@ In this page:
    - [Basic-grade Production Cluster](../cloud/cloud-instances.mdx#1-basic-grade-production-cluster)  
    - [Standard-grade Production Cluster](../cloud/cloud-instances.mdx#2-standard-grade-production-cluster)  
    - [Performance-grade Production Cluster](../cloud/cloud-instances.mdx#3-performance-grade-production-cluster)  
+* [A Serverless Cloud Product](../cloud/cloud-instances.mdx#a-serverless-cloud-product)  
+   - [Autoscaling](../cloud/cloud-instances.mdx#autoscaling)  
+   - [Billing](../cloud/cloud-instances.mdx#billing)  
+   - [Switching to Regular Deployment](../cloud/cloud-instances.mdx#switching-to-regular-deployment)  
 </Admonition>
 ## A Free Cloud Node
 
@@ -181,4 +185,41 @@ Local NVMe drives on PN clusters are encrypted by default using hardware-based e
 
 
 
+## A Serverless Cloud Product
+
+A Serverless product is a fully managed RavenDB cluster that automatically adjusts its size based on
+your actual workload — without you having to choose or change an instance type manually.
+
+It is available for both the **Development** and **Production** tiers and is suited for:
+
+* Proofs of concept and evaluation.
+* Small production environments with irregular or unpredictable load patterns.
+* On-Demand billing users who prefer to pay only for what they use.
+
+<Admonition type="info" title="">
+Serverless is available on **On-Demand** billing only. It is not available for yearly contracts.
+</Admonition>
+
+For instructions on how to create a Serverless product, see
+[Provisioning a New Product](../cloud/portal/cloud-portal-products-tab.mdx#provisioning-a-new-product).
+
+!["Serverless Product Details"](./portal/assets/portal-product-details-serverless.png)
+
+### Autoscaling
+
+The cluster scales up and down automatically within a fixed band, driven by sustained signals:
+CPU load average, available memory, and disk queue depth. Scaling moves one step at a time.
+Grace periods are applied before each step to prevent flapping caused by short load spikes.
+
+### Billing
+
+Serverless products are billed the same way as regular products — by effective daily usage.
+Each day, the actual instance size, backup storage, and support are metered into your daily cost.
+The billing period closes on the **25th of each month (UTC)**.
+
+
+### Switching to Regular Deployment
+
+For instructions on how to convert a Serverless product to a regular deployment, see
+[Maintenance and Danger Zones](../cloud/portal/cloud-portal-products-tab.mdx#maintenance-and-danger-zones).
 
