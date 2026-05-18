@@ -38,7 +38,7 @@ export default function RecentGuides() {
         .filter((doc) => doc.id !== "home")
         .map((doc: any) => ({
             title: doc.title || doc.id,
-            url: doc.externalUrl || doc.permalink,
+            url: doc.external_url || doc.permalink,
             tags: doc.tags || [],
             time: doc.lastUpdatedAt ? getRelativeTime(doc.lastUpdatedAt) : "Recently",
             lastUpdatedAt: doc.lastUpdatedAt || 0,

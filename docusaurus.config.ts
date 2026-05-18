@@ -118,6 +118,15 @@ const config: Config = {
             },
         ],
         [
+            "content-docs",
+            {
+                id: "samples",
+                path: "samples",
+                routeBasePath: "samples",
+                sidebarPath: require.resolve("./sidebarsSamples.js"),
+            },
+        ],
+        [
             "@docusaurus/plugin-ideal-image",
             {
                 max: 1200,
@@ -129,6 +138,7 @@ const config: Config = {
         ],
         require.resolve("./src/plugins/recent-guides-plugin"),
         require.resolve("./src/plugins/versioned-seo-plugin"),
+        require.resolve("./src/plugins/recent-samples-plugin"),
     ],
     headTags: [
         {

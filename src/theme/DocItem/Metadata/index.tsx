@@ -21,10 +21,12 @@ export default function MetadataWrapper(props: Props): ReactNode {
     const isCloud = source?.startsWith("@site/cloud/") || source?.startsWith("cloud/") || false;
     const isTemplate = source?.startsWith("@site/templates/") || source?.startsWith("templates/") || false;
     const isDocumentationPage = !isGuide && !isCloud && !isTemplate;
+    const isSample = source?.startsWith("@site/samples/") || source?.startsWith("samples/") || false;
 
-    // Exclude landing pages (e.g. guides/home.mdx) from guide-specific metadata
+    // Exclude landing pages (e.g. guides/home.mdx, samples/home.mdx) from type-specific metadata
     const fileName = source?.split("/").pop();
     const isGuidePage = isGuide && fileName !== "home.mdx";
+    const isSamplePage = isSample && fileName !== "home.mdx";
 
     // Strip trailing slash from base URL to avoid double slashes
     const baseUrl = (siteConfig.url as string).replace(/\/$/, "");
@@ -76,6 +78,23 @@ export default function MetadataWrapper(props: Props): ReactNode {
                     lastUpdatedAt={metadata.lastUpdatedAt}
                 />
             )}
+            {isSamplePage && (
+                <DocPageMetadata
+                    title={title}
+                    description={description}
+                    canonicalUrl={canonicalUrl}
+                    ogImageUrl={ogImageUrl}
+                    schemaType="SoftwareSourceCode"
+                    repositoryUrl={frontMatter.repository_url}
+                    licenseUrl={frontMatter.license_url}
+                    languages={frontMatter.languages}
+                    keywords={[
+                        ...(frontMatter.challenges_solutions_tags ?? []),
+                        ...(frontMatter.feature_tags ?? []),
+                        ...(frontMatter.tech_stack_tags ?? []),
+                    ].map((tag) => tag.replace(/-/g, " "))}
+                />
+            )}
             <Metadata {...props} />
         </>
     );
@@ -105,19 +124,19 @@ function ValidatedGuideDocPageMetadata({
     if (!title) {
         throw new Error(`Guide "${permalink}" is missing a required "title" in frontmatter.`);
     }
-    if (!frontMatter.proficiencyLevel) {
-        throw new Error(`Guide "${permalink}" is missing a required "proficiencyLevel" in frontmatter.`);
+    if (!frontMatter.proficiency_level) {
+        throw new Error(`Guide "${permalink}" is missing a required "proficiency_level" in frontmatter.`);
     }
 
     return (
         <DocPageMetadata
             title={title}
             description={description || (frontMatter.description as string) || ""}
-            proficiencyLevel={frontMatter.proficiencyLevel}
+            proficiencyLevel={frontMatter.proficiency_level}
             canonicalUrl={canonicalUrl}
             ogImageUrl={ogImageUrl}
             authorKey={frontMatter.author}
-            publishedAt={frontMatter.publishedAt}
+            publishedAt={frontMatter.published_at}
             keywords={frontMatter.keywords}
             lastUpdatedAt={lastUpdatedAt}
         />

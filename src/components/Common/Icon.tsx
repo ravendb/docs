@@ -2,7 +2,7 @@ import React from "react";
 import { IconName } from "../../typescript/iconName";
 import clsx from "clsx";
 
-export type IconSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+export type IconSize = "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 export interface IconProps {
     icon: IconName;
@@ -34,6 +34,8 @@ function getSvg(base64String: string, sizeClass: string): string {
 
 function getSizeClass(size?: IconSize): `w-${number} h-${number}` {
     switch (size) {
+        case "2xs":
+            return "w-3 h-3";
         case "xs":
             return "w-4 h-4";
         case "sm":
