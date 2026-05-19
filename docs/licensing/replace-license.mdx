@@ -28,7 +28,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * In this article:
     * [Replace your license using a configuration key](../licensing/replace-license.mdx#replace-your-license-using-a-configuration-key)  
     * [Replace your license via Studio](../licensing/replace-license.mdx#replace-your-license-via-studio)  
-    * [Maintain auto-renewal of Let's Encrypt certificates](../licensing/replace-license.mdx#maintain-auto-renewal-of-let-s-encrypt-certificates)  
+    * [Let's Encrypt certificate renewal after a license replacement](../licensing/replace-license.mdx#let-s-encrypt-certificate-renewal-after-a-license-replacement)  
     * [Upgrade a license older than 6.x](../licensing/replace-license.mdx#upgrade-a-license-older-than-6-x)
 
 </Admonition>
@@ -64,10 +64,11 @@ To replace your existing license with a new one, open the **About** view and cli
 
 </Panel>
 
-<Panel heading="Maintain auto-renewal of Let's Encrypt certificates">
+<Panel heading="Let's Encrypt certificate renewal after a license replacement">
 
-* If you installed RavenDB using the [Setup Wizard](../start/installation/setup-wizard/overview.mdx) and applied a Let's Encrypt certificate, contact [customer support](https://ravendb.net/contact) before replacing your license to keep automatic certificate renewal working.  
-* Otherwise, the change in your license ID will cause a mismatch between your new ID and the ID that Let's Encrypt expects during certificate renewal.  
+When you replace your license on a server that was set up using the [Setup Wizard](../start/installation/setup-wizard/overview.mdx) 
+with a Let's Encrypt certificate, RavenDB automatically updates its records to associate your domain with the new license before activating it.  
+Certificate auto-renewal will continue to work without any manual steps.  
 
 </Panel>
 
