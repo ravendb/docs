@@ -104,8 +104,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
     [Indexing.OrderByTicksAutomaticallyWhenDatesAreInvolved](../../server/configuration/indexing-configuration.mdx#indexingorderbyticksautomaticallywhendatesareinvolved)  
     [Indexing.QueryClauseCache.Disabled](../../server/configuration/indexing-configuration.mdx#indexingqueryclausecachedisabled)  
     [Indexing.QueryClauseCache.RepeatedQueriesTimeFrameInSec](../../server/configuration/indexing-configuration.mdx#indexingqueryclausecacherepeatedqueriestimeframeinsec)  
-    [Indexing.Querying.UseSearchAnalyzerForDynamicFieldsIfNotSetExplicitlyInSearchQuery](../../server/configuration/indexing-configuration.mdx#indexingqueryingusesearchanalyzerfordynamicfieldsifnotsetexplicitlyinsearchquery)  
-    [Indexing.ScratchSpaceLimitInMb](../../server/configuration/indexing-configuration.mdx#indexingscratchspacelimitinmb)  
+    [Indexing.Querying.Corax.NullFirst](../../server/configuration/indexing-configuration.mdx#indexingqueryingcoraxnullfirst)  
+    [Indexing.Querying.Corax.NullsSortMode](../../server/configuration/indexing-configuration.mdx#indexingqueryingcoraxnullssortmode)  
+    [Indexing.Querying.UseSearchAnalyzerForDynamicFieldsIfNotSetExplicitlyInSearchQuery](../../server/configuration/indexing-configuration.mdx#indexingqueryingusesearchanalyzerfordynamicfieldsifnotsetexplicitlyinsearchquery)      [Indexing.ScratchSpaceLimitInMb](../../server/configuration/indexing-configuration.mdx#indexingscratchspacelimitinmb)  
     [Indexing.Static.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexingstaticsearchenginetype)  
     [Indexing.Throttling.TimeIntervalInMs](../../server/configuration/indexing-configuration.mdx#indexingthrottlingtimeintervalinms)  
     [Indexing.TimeSinceLastQueryAfterWhichDeepCleanupCanBeExecutedInMin](../../server/configuration/indexing-configuration.mdx#indexingtimesincelastqueryafterwhichdeepcleanupcanbeexecutedinmin)  
@@ -1006,6 +1007,51 @@ Queries that repeat within this time frame will be considered worth caching.
 
 - **Type**: `int`
 - **Default**: `300`
+- **Scope**: Server-wide, or per database, or per index
+
+
+
+## Indexing.Querying.Corax.NullFirst
+
+OBSOLETE.  
+This key is kept only for backward compatibility.    
+Use [Indexing.Querying.Corax.NullsSortMode](../../server/configuration/indexing-configuration.mdx#indexingqueryingcoraxnullssortmode) instead.
+
+* When set, RavenDB maps its value to `Indexing.Querying.Corax.NullsSortMode`:
+  * `true` maps to `NullsSmallest`
+  * `false` maps to `NullsLargest`
+
+* When unset (`null`), RavenDB uses the default value of `Indexing.Querying.Corax.NullsSortMode`.
+
+---
+
+- **Type**: `bool?`
+- **Default**: `null`
+- **Scope**: Server-wide, or per database, or per index
+
+
+
+## Indexing.Querying.Corax.NullsSortMode
+
+* This configuration applies only to the [Corax](../../indexes/search-engine/corax.mdx) search engine.
+
+* Controls the default placement of matching documents that have `null` or missing values in the field being sorted.  
+
+    * **`NullsSmallest`**  
+      `null` values are treated as the smallest possible key.  
+      They will sort **first** in ascending order and **last** in descending order.
+
+    * **`NullsLargest`**  
+      `null` values are treated as the largest possible key.  
+      They will sort **last** in ascending order and **first** in descending order.
+
+* This setting only affects the default null placement behavior.
+  If a query uses `nulls first` or `nulls last` for a specific field in an `order by` clause, that query setting **overrides** this configuration for that field.
+
+---
+
+- **Type**: `enum NullsSortMode` (`NullsSmallest`, `NullsLargest`)
+- **Default**: `NullsSmallest`
 - **Scope**: Server-wide, or per database, or per index
 
 
