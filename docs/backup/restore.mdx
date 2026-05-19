@@ -23,6 +23,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * If your backup consists of full and incremental backup files, you can restore the database up to a specific point in time by selecting the last incremental backup file to restore.  
 
+* To import backup files into an **existing** database instead of creating a new one, see [Importing into an existing database](../backup/restore#importing-into-an-existing-database).  
+
 * On a [sharded](../sharding/overview.mdx) database, restore is performed per shard, using the backups created by the shards.  
   [Learn to restore a sharded database.](../sharding/backup-and-restore/restore.mdx)  
 
@@ -40,6 +42,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
      * [Restoring to a single node and replicating to additional nodes](../backup/restore#restoring-to-a-single-node-and-replicating-to-additional-nodes)
      * [Restoring to multiple nodes simultaneously](../backup/restore#restoring-to-multiple-nodes-simultaneously)
   * [Restoring from server-wide backups](../backup/restore#restoring-from-server-wide-backups)
+  * [Importing into an existing database](../backup/restore#importing-into-an-existing-database)
 
 </Admonition>
 
@@ -876,5 +879,16 @@ Restoring databases backed up by a server-wide backup task **is identical** to r
 - Though a server-wide task creates backups for multiple databases, the backup for each database is restored separately into a new database.  
 - Note that each backup is stored in the backup location within its own folder, named after the database it belongs to.  
   When restoring, make sure the correct backup folder is selected.
+
+</Panel>
+
+<Panel heading="Importing into an existing database">
+
+The restore operation described on this page always creates a **new** database.  
+If you need to import backup files from a backup folder into an **existing** database instead, use `store.Smuggler.ImportIncrementalAsync`.
+
+This method accepts the path to a backup folder, finds all backup files it contains, orders them chronologically, and imports them in sequence — without creating a new database.
+
+[Learn about `ImportIncrementalAsync` in the Smuggler documentation.](../client-api/smuggler/what-is-smuggler.mdx#importincrementalasync)
 
 </Panel>
