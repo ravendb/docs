@@ -39,12 +39,14 @@ data tracking dashboard. But this feature is flexible - Telegraf can output data
 
 ## Monitoring Endpoints
 
-The monitoring endpoints output data in JSON format. There are four endpoints:  
+The monitoring endpoints output data in JSON format. There are six endpoints:  
 
 * `<your server URL>/admin/monitoring/v1/server`  
 * `<your server URL>/admin/monitoring/v1/databases`  
 * `<your server URL>/admin/monitoring/v1/indexes`  
 * `<your server URL>/admin/monitoring/v1/collections`  
+* `<your server URL>/admin/monitoring/v1/etls`  
+* `<your server URL>/admin/monitoring/v1/ai-tasks`  
 
 ## JSON Fields Returned by the Endpoints
 
@@ -52,6 +54,11 @@ The following is a list of JSON fields returned by the endpoints:
 
 | Endpoint Suffix | Field Name | Description |
 | - | - | - |
+| `ai-tasks` | `process_name` | The AI task name |
+| `ai-tasks` | `errors_count` | Number of errors recorded for the AI task |
+| `ai-tasks` | `health_status` | AI task health status (`Healthy`, `Impaired`, or `Failed`) |
+| `ai-tasks` | `last_successful_batch_time_in_sec` | Time since the AI task's last successful batch, in seconds |
+| `ai-tasks` | `documents_processed_per_second` | Documents processed per second by the AI task (one minute rate) |
 | `collections` | `collection_name` | Collection name |
 | `collections` | `database_name` | Name of this collection's database |
 | `collections` | `documents_count` | Number of documents in collection |
@@ -96,6 +103,11 @@ The following is a list of JSON fields returned by the endpoints:
 | `databases` | `storage_queue_length` | Storage queue length<br/>Optional, Linux only |
 | `databases` | `time_since_last_backup_in_sec` | LastBackup |
 | `databases` | `uptime_in_sec` | Database up-time |
+| `etls` | `process_name` | The ETL task name |
+| `etls` | `errors_count` | Number of errors recorded for the ETL task |
+| `etls` | `health_status` | ETL task health status (`Healthy`, `Impaired`, or `Failed`) |
+| `etls` | `last_successful_batch_time_in_sec` | Time since the ETL task's last successful batch, in seconds |
+| `etls` | `documents_processed_per_second` | Documents processed per second by the ETL task (one minute rate) |
 | `indexes` | `entries_count` | Number of entries in the index |
 | `indexes` | `errors` | Number of index errors |
 | `indexes` | `index_name` | Index name |

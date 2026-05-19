@@ -1,0 +1,213 @@
+---
+title: "Task errors: Studio views"
+sidebar_label: "Studio views"
+description: "Inspect task errors and health states for ETL and AI tasks from the Task Errors view in Studio."
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Task errors: Studio views
+
+<Admonition type="note" title="">
+
+* **`Tasks` > `Task Errors`**  
+  Open the `Task Errors` view from the `Tasks` menu to inspect errors raised by ETL and AI tasks.  
+  You can browse all errors in a unified list or group them by task, apply various filters, 
+  select an error to view it in detail, and see how task health is impacted by recent errors.  
+
+* **`AI Hub` > `AI Task Errors`**  
+  The `AI Task Errors` view, opened from the `AI Hub`, is a pre-filtered subset of the `Task Errors` view.  
+  Use this view to inspect errors raised by `Embeddings Generation` and `GenAI` tasks (AI tasks 
+  built around the ETL processing model).  
+
+* Both views display the same errors for listed tasks; deleting a task's errors from one view is reflected
+  in the other.  
+
+* To learn about task errors and how they impact task health, see the
+  [Overview](../../monitoring/task-errors/overview.mdx) page.  
+
+* In this article:
+   * [Task Errors view](../../monitoring/task-errors/studio-views.mdx#task-errors-view)
+      * [Opening the view](../../monitoring/task-errors/studio-views.mdx#opening-the-view)
+      * [Task filters](../../monitoring/task-errors/studio-views.mdx#task-filters)
+      * [Task health indicators](../../monitoring/task-errors/studio-views.mdx#task-health-indicators)
+      * [Task errors](../../monitoring/task-errors/studio-views.mdx#task-errors)
+   * [AI Task Errors view](../../monitoring/task-errors/studio-views.mdx#ai-task-errors-view)
+
+</Admonition>
+
+<Panel heading="Task Errors view">
+
+In its default layout, `Task Errors` groups errors into per-task segments, each showing the
+task's errors in a sortable table.  
+
+<ContentFrame>
+
+### Opening the view
+
+Open the `Task Errors` view from the `Tasks` menu. By default it will open with no filters applied, 
+showing a segment for every ETL or AI task that currently has any errors.  
+
+![Task Errors view](./assets/task-errors_task-errors-view.png)
+
+* **A.** Click to open the Tasks menu.  
+
+* **B.** Click to open the Task Errors view.  
+
+* **C.** [Task filters](../../monitoring/task-errors/studio-views.mdx#task-filters) (see below).
+
+* **D.** [Task health indicators](../../monitoring/task-errors/studio-views.mdx#task-health-indicators) (see below).
+
+* **E.** Toggle to **group errors by task** or display them in a unified list.
+
+* **F.** [Task errors](../../monitoring/task-errors/studio-views.mdx#task-errors) (see below).
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Task filters
+
+Use the filters bar to narrow the listing to specific tasks and errors. 
+
+![Filters bar](./assets/task-errors_filter-bar.png)
+
+* **`Filter by task/script name`**  
+  Type a task or script name to narrow the listing to matching tasks.  
+
+* **`Filter by node`**  
+  Pick one or more cluster nodes to show only the errors raised on the selected nodes.
+
+* **`Filter by task type`**  
+  Pick one or more task types (e.g., Kafka ETL) to show only the errors raised by the selected types.  
+
+* **`Filter by task health`**  
+  Pick one or more health states to show only tasks currently in the selected states.  
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Task health indicators
+
+The indicators' colors represent task health states: Green for `Healthy`, yellow for 
+`Impaired`, and red for `Failed`.  
+* Hover an indicator to trigger a popup summary of tasks whose health currently matches 
+  the selected state.  
+* The summary details the nodes that each task runs on, and the number of errors each 
+  task raised per node.  
+
+![Task health indicators](./assets/task-errors_health-indicators.png)
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Task errors
+
+The image below shows one of the task segments displayed in the task errors view when errors 
+are grouped by task.  
+
+![Task Errors - per-task segment](./assets/task-errors_task-segment.png)
+
+1. **Task name**  
+   The name of the ETL or AI task whose errors are displayed here.  
+
+2. **Delete errors**  
+   Click to **remove all errors raised by this task**, including both item and process errors.  
+   <Admonition type="note" title="">
+   Deleting a task's errors does not, on its own, reset the task's health state.  
+   Health is driven by the running error rate, not by the rows in the error tables.  
+   A task in `Impaired` or `Failed` state will recover only as new batches complete 
+   successfully and its error rate falls back below the configured thresholds.  
+   See the [Overview](../../monitoring/task-errors/overview.mdx#health-states) 
+   for more.  
+   </Admonition>
+
+3. **Task metadata row**
+    * A toggle to collapse or expand all errors related to this task.
+    * Task type.  
+    * Error count for this task.
+    * The number of scripts that this task runs.
+    * Task's current health state (`Healthy`, `Impaired`, or `Failed`).
+    * Tag/s of the cluster node/s currently running the task.
+
+4. **Script sub-segment details**  
+   Errors for each script the task runs appear in their own sub-segment, with a header showing 
+   the script's name and error count and a toggle to collapse or expand the errors related to this script.  
+
+5. **Errors table**  
+   The script's errors, one row per error.  
+
+    * **Column headers**  
+      You can filter or sort the table by the content of each column, using the 
+      funnel (filter) or arrow (sort) icons at the column header.  
+
+    * **`Show` column**  
+      Click the eye icon for a specific error to open an error-details dialog with the full error
+      message.  
+
+    * **`Error type` column**  
+      Marks the row as `Item Error` (a single document failure the task skipped past) or
+      `Process Error` (a batch-scope failure that may affect multiple documents).  
+
+    * **`Error step` column**  
+      The processing step the error occurred at: `Configuration`, `Extraction`,
+      `Transformation`, `Load`, `Model Inference`, `Persistence`, or `Unknown`.  
+      See the [Error steps](../../monitoring/task-errors/overview.mdx#error-steps) reference on the
+      overview.  
+
+    * **`Document` column**  
+      For item errors, the ID of the document being processed when the error occurred,
+      rendered as a hyperlink to the document.  
+      For process errors, the column shows `-` because the error is not bound to a single document.  
+
+    * **`Date` column**  
+      The error's creation timestamp, shown in date form and in relation to the current time 
+      (e.g., "4 hours ago").  
+
+    * **`Affected Documents` column**  
+      For process errors, the number of documents the failing batch attempted to process.  
+      Empty for item errors.  
+
+    * **`Error` column**  
+      The error message, truncated to one line.  
+
+    * **`Node` column**  
+      The tag of the cluster node that recorded the error.  
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="AI Task Errors view">
+
+The `AI Task Errors` view lists the same errors listed by the `Task Errors` view, 
+with the same layout, controls, and data, but applies a predefined filter to show only 
+`Embeddings Generation` and `GenAI` task errors.  
+
+All options documented under
+[Task Errors view](../../monitoring/task-errors/studio-views.mdx#task-errors-view)
+above apply here without change.  
+
+![AI Task Errors view](./assets/task-errors_ai-task-errors-view.png)
+
+1. Click to open the **AI Hub**.  
+
+2. Click to open the AI Task Errors view.  
+
+</Panel>

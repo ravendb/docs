@@ -38,6 +38,8 @@ SNMP support is available for [Enterprise](../../../licensing/overview.mdx#enter
       * [Index OIDs](../../../server/administration/snmp/snmp-overview.mdx#index-oids)
       * [General OIDs](../../../server/administration/snmp/snmp-overview.mdx#general-oids)
       * [Ongoing tasks OIDs](../../../server/administration/snmp/snmp-overview.mdx#ongoing-tasks-oids)
+      * [Per-task ETL OIDs](../../../server/administration/snmp/snmp-overview.mdx#per-task-etl-oids)
+      * [Per-task AI OIDs](../../../server/administration/snmp/snmp-overview.mdx#per-task-ai-oids)
 
 </Admonition>
 ## Overview
@@ -268,6 +270,7 @@ curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1
       `3` - **a background collection** (this is always a generation 2 collection)  
     * `D` - **Database number**  
     * `I` - **Index number**  
+    * `T` - **Task number** (used for per-task ETL and per-task AI OIDs)  
 
 </Admonition>
 
@@ -361,6 +364,18 @@ curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1
 | <a id="value-1.17.2"/> 1.17.2                       | Number of current map files in '/proc/self/maps'                                                                                                                                                                                                                               |
 | <a id="value-1.17.3"/> 1.17.3                       | Value of the '/proc/sys/kernel/threads-max' parameter                                                                                                                                                                                                                          |
 | <a id="value-1.17.4"/> 1.17.4                       | Number of current threads                                                                                                                                                                                                                                                      |
+| <a id="value-1.20.1"/> 1.20.1                       | Total number of ETL errors                                                                                                                                                                                                                                                     |
+| <a id="value-1.20.2"/> 1.20.2                       | Number of ETL tasks with `Healthy` health status                                                                                                                                                                                                                               |
+| <a id="value-1.20.3"/> 1.20.3                       | Number of ETL tasks with `Impaired` health status                                                                                                                                                                                                                              |
+| <a id="value-1.20.4"/> 1.20.4                       | Number of ETL tasks with `Failed` health status                                                                                                                                                                                                                                |
+| <a id="value-1.20.5"/> 1.20.5                       | Total number of ETL tasks                                                                                                                                                                                                                                                      |
+| <a id="value-1.20.6"/> 1.20.6                       | Number of active ETL tasks (processed at least one batch in the last minute)                                                                                                                                                                                                   |
+| <a id="value-1.21.1"/> 1.21.1                       | Total number of AI task errors                                                                                                                                                                                                                                                 |
+| <a id="value-1.21.2"/> 1.21.2                       | Number of AI tasks with `Healthy` health status                                                                                                                                                                                                                                |
+| <a id="value-1.21.3"/> 1.21.3                       | Number of AI tasks with `Impaired` health status                                                                                                                                                                                                                               |
+| <a id="value-1.21.4"/> 1.21.4                       | Number of AI tasks with `Failed` health status                                                                                                                                                                                                                                 |
+| <a id="value-1.21.5"/> 1.21.5                       | Total number of AI tasks                                                                                                                                                                                                                                                       |
+| <a id="value-1.21.6"/> 1.21.6                       | Number of active AI tasks (processed at least one batch in the last minute)                                                                                                                                                                                                    |
 
 <a id="cluster-oids"/>
 
@@ -390,6 +405,8 @@ curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1
 | <a id="value-5.2.D.1.14"/> 5.2.`D`.1.14 | Number of rehabs                                                         |
 | <a id="value-5.2.D.1.15"/> 5.2.`D`.1.15 | Number of performance hints                                              |
 | <a id="value-5.2.D.1.16"/> 5.2.`D`.1.16 | Number of indexing errors                                                |
+| <a id="value-5.2.D.1.17"/> 5.2.`D`.1.17 | Total number of ETL errors in the database                               |
+| <a id="value-5.2.D.1.18"/> 5.2.`D`.1.18 | Total number of AI task errors in the database                           |
 | <a id="value-5.2.D.2.1"/> 5.2.`D`.2.1   | Documents storage allocated size in MB                                   |
 | <a id="value-5.2.D.2.2"/> 5.2.`D`.2.2   | Documents storage used size in MB                                        |
 | <a id="value-5.2.D.2.3"/> 5.2.`D`.2.3   | Index storage allocated size in MB                                       |
@@ -417,6 +434,18 @@ curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1
 | <a id="value-5.2.D.5.7"/> 5.2.`D`.5.7   | Number of faulty indexes                                                 |
 | <a id="value-5.2.D.6.1"/> 5.2.`D`.6.1   | Number of writes (documents, attachments, counters, timeseries)          |
 | <a id="value-5.2.D.6.2"/> 5.2.`D`.6.2   | Number of bytes written (documents, attachments, counters, timeseries)   |
+| <a id="value-5.2.D.7.1"/> 5.2.`D`.7.1   | Number of ETL tasks with `Healthy` health status in the database         |
+| <a id="value-5.2.D.7.2"/> 5.2.`D`.7.2   | Number of ETL tasks with `Impaired` health status in the database        |
+| <a id="value-5.2.D.7.3"/> 5.2.`D`.7.3   | Number of ETL tasks with `Failed` health status in the database          |
+| <a id="value-5.2.D.7.4"/> 5.2.`D`.7.4   | Total number of ETL tasks in the database                                |
+| <a id="value-5.2.D.7.5"/> 5.2.`D`.7.5   | Number of active ETL tasks in the database                               |
+| <a id="value-5.2.D.7.6"/> 5.2.`D`.7.6   | ETL documents processed per second in the database (one minute rate)     |
+| <a id="value-5.2.D.8.1"/> 5.2.`D`.8.1   | Number of AI tasks with `Healthy` health status in the database          |
+| <a id="value-5.2.D.8.2"/> 5.2.`D`.8.2   | Number of AI tasks with `Impaired` health status in the database         |
+| <a id="value-5.2.D.8.3"/> 5.2.`D`.8.3   | Number of AI tasks with `Failed` health status in the database           |
+| <a id="value-5.2.D.8.4"/> 5.2.`D`.8.4   | Total number of AI tasks in the database                                 |
+| <a id="value-5.2.D.8.5"/> 5.2.`D`.8.5   | Number of active AI tasks in the database                                |
+| <a id="value-5.2.D.8.6"/> 5.2.`D`.8.6   | AI task documents processed per second in the database (one minute rate) |
 
 <a id="index-oids"/>
 
@@ -490,6 +519,27 @@ curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1
 | <a id="value-5.1.11.24"/> 5.1.11.24 | Number of active Snowflake ETL tasks for all databases             |
 | <a id="value-5.1.11.25"/> 5.1.11.25 | Number of enabled Embeddings Generation tasks for all databases    |
 | <a id="value-5.1.11.26"/> 5.1.11.26 | Number of active Embeddings Generation tasks for all databases     |
+| <a id="value-5.1.12.1"/> 5.1.12.1   | Total ETL documents processed per second across all databases (one minute rate)     |
+| <a id="value-5.1.12.2"/> 5.1.12.2   | Total AI task documents processed per second across all databases (one minute rate) |
 
+<a id="per-task-etl-oids"/>
+
+| OID                                                  | Metric (Per-task ETL)                                                |
+|------------------------------------------------------|----------------------------------------------------------------------|
+| <a id="value-5.2.D.1.T.1"/> 5.2.`D`.1.`T`.1               | Number of errors for the ETL task                                    |
+| <a id="value-5.2.D.1.T.2"/> 5.2.`D`.1.`T`.2               | Health status of the ETL task (`Healthy`, `Impaired`, or `Failed`)    |
+| <a id="value-5.2.D.1.T.3"/> 5.2.`D`.1.`T`.3               | Time of the last successful batch processed by the ETL task          |
+| <a id="value-5.2.D.1.T.4"/> 5.2.`D`.1.`T`.4               | Documents processed per second by the ETL task (one minute rate)     |
+| <a id="value-5.2.D.1.T.5"/> 5.2.`D`.1.`T`.5               | Responsible node tag for the ETL task                                |
+
+<a id="per-task-ai-oids"/>
+
+| OID                                                  | Metric (Per-task AI)                                                 |
+|------------------------------------------------------|----------------------------------------------------------------------|
+| <a id="value-5.2.D.2.T.1"/> 5.2.`D`.2.`T`.1               | Number of errors for the AI task                                     |
+| <a id="value-5.2.D.2.T.2"/> 5.2.`D`.2.`T`.2               | Health status of the AI task (`Healthy`, `Impaired`, or `Failed`)     |
+| <a id="value-5.2.D.2.T.3"/> 5.2.`D`.2.`T`.3               | Time of the last successful batch processed by the AI task           |
+| <a id="value-5.2.D.2.T.4"/> 5.2.`D`.2.`T`.4               | Documents processed per second by the AI task (one minute rate)      |
+| <a id="value-5.2.D.2.T.5"/> 5.2.`D`.2.`T`.5               | Responsible node tag for the AI task                                 |
 
 

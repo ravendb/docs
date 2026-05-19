@@ -1,0 +1,250 @@
+---
+title: "Task errors: Overview"
+sidebar_label: "Overview"
+description: "Track errors raised by ETL and AI tasks, evaluate their impact on each task's health, and clear or retry as needed."
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Task errors: Overview
+
+<Admonition type="note" title="">
+
+* Task errors are raised and stored whenever an ETL task or an AI task fails to process an
+  item or a batch. Each error records the task name, the time of failure, the processing
+  step the error occurred at, and the error message.  
+
+* Throughout this section, "AI tasks" means [Embeddings Generation](../../ai-integration/generating-embeddings/overview.mdx)
+  and [GenAI](../../ai-integration/gen-ai-integration/overview.mdx) tasks. Both are built
+  around the ETL processing model, naturally sharing the
+  [`Task Errors` view](../../monitoring/task-errors/studio-views.mdx) with ETL tasks.  
+
+* Errors are persisted on disk per task. Each task keeps its own error history and that history
+  survives moves between nodes and server restarts.  
+
+* Each task also has a health classification - `Healthy`, `Impaired`, or `Failed` - that reflects
+  its recent error rate, independently of the raw number of errors stored.  
+
+* Task errors and the health states they drive are exposed in
+  [Studio](../../monitoring/task-errors/studio-views.mdx),
+  in the [HTTP endpoints](../../server/troubleshooting/debug-routes.mdx#debug-endpoints),
+  in the [SNMP OIDs](../../server/administration/snmp/snmp-overview.mdx#list-of-oids),
+  in the [Prometheus metrics](../../server/administration/monitoring/prometheus.mdx#metrics-provided-by-the-prometheus-endpoint),
+  and in the [JSON monitoring endpoints](../../server/administration/monitoring/telegraf.mdx#monitoring-endpoints).  
+
+* In this article:
+   * [What task errors are](../../monitoring/task-errors/overview.mdx#what-task-errors-are)
+      * [Error types](../../monitoring/task-errors/overview.mdx#error-types)
+      * [Error steps](../../monitoring/task-errors/overview.mdx#error-steps)
+   * [Where task errors are stored](../../monitoring/task-errors/overview.mdx#where-task-errors-are-stored)
+   * [Task health](../../monitoring/task-errors/overview.mdx#task-health)
+      * [Health states](../../monitoring/task-errors/overview.mdx#health-states)
+      * [How health is computed](../../monitoring/task-errors/overview.mdx#how-health-is-computed)
+   * [Where to view and manage task errors](../../monitoring/task-errors/overview.mdx#where-to-view-and-manage-task-errors)
+
+</Admonition>
+
+<Panel heading="What task errors are">
+
+Task errors are recorded for every ETL provider (RavenDB ETL, SQL, OLAP, ElasticSearch, Kafka,
+RabbitMQ, Azure Queue Storage, Amazon SQS, Snowflake) and for AI tasks (Embeddings Generation,
+GenAI). Whenever one of these tasks fails to process an item or a batch, an error is added to
+the task's error history.  
+
+Every error carries the same set of core fields: the task name, the time the error was created,
+the processing step the error occurred at, and the error message. Different error types carry
+additional fields specific to what went wrong.  
+
+<ContentFrame>
+
+### Error types
+
+RavenDB classifies every task error as one of two types, based on the scope of what went wrong.  
+
+* **Item error**  
+  An error that occurred while processing a single document. The document was skipped and the
+  task moved on to the remaining documents in the batch. The error record includes the
+  document ID.  
+
+* **Process error**  
+  An error that occurred while processing a batch as a whole and may affect multiple documents,
+  such as a failure to send the batch to its destination. The error record includes the number
+  of documents the failing batch attempted to handle.  
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Error steps
+
+Every error records the processing step it occurred at. The available steps depend on the task
+type.  
+
+* **Configuration**  
+  The task's configuration was rejected. Typical causes include an invalid script or a missing
+  destination setting.  
+
+* **Extraction**  
+  The task could not read its source data. This is rare and usually indicates a transient
+  storage issue.  
+
+* **Transformation**  
+  The transformation script raised an exception while running, such as an unhandled
+  JavaScript error or a reference to a missing property.  
+
+* **Load**  
+  The task could not send its transformed data to the destination. Typical causes include the
+  destination being unreachable or rejecting the data.  
+
+* **Model Inference** (AI tasks only)  
+  The task could not communicate with the AI model. Typical causes include the model service
+  being unreachable or returning an error.  
+
+* **Persistence** (AI tasks only)  
+  The task could not save its results back to the database. Typical causes include write
+  conflicts or storage errors.  
+
+* **Unknown**  
+  The processing step could not be determined.  
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Where task errors are stored">
+
+Task errors are stored on disk per task in two dedicated tables: one for item errors and one
+for process errors. Each table is capped at 500 entries per task. When a new error needs to be
+recorded after the cap is reached, the oldest entry in that table is evicted to make room.  
+
+The retention is per task and per table, so a single noisy task cannot push errors out of an
+unrelated task. The cap is not configurable.  
+
+Errors are also included in the server's debug package as `etl.errors.json`, so support
+engineers can capture a full error history without going through Studio or the HTTP
+endpoints.  
+
+</Panel>
+
+<Panel heading="Task health">
+
+Each ETL and AI task carries a health state that summarizes how well it has been processing
+recent batches. The health state is exposed everywhere task errors are
+(see [Where to view and manage task errors](../../monitoring/task-errors/overview.mdx#where-to-view-and-manage-task-errors))
+and is used by automated monitoring to decide when a task needs attention.  
+
+<ContentFrame>
+
+### Health states
+
+A task is in one of three health states at any time.  
+
+* **Healthy**  
+  No errors recently, or only an occasional one. The task is processing batches normally.  
+
+* **Impaired**  
+  Errors are accumulating at a rate that warrants attention. The task is still making
+  progress, but it should be looked at.  
+
+* **Failed**  
+  Errors dominate recent batches. The task is effectively not progressing and needs
+  intervention.  
+
+A task recovers automatically as new batches complete. The health state transitions from
+`Failed` back to `Impaired`, and from `Impaired` back to `Healthy`, as the running error rate
+falls below each threshold. There is no manual "reset" action.  
+
+<Admonition type="note" title="">
+Deleting a task's stored errors clears the rows from the error tables but does not, on its own,
+reset the task's health state.  
+Health is driven by the running error rate, not by the rows in the error tables. A task in
+the `Failed` state will recover only when its error rate falls back below the
+[configured thresholds](../../monitoring/task-errors/configuration.mdx).  
+</Admonition>
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### How health is computed
+
+RavenDB watches the ratio between a task's failed items and the total number of items the
+task has attempted to process. The ratio is computed as an EWMA (Exponentially Weighted
+Moving Average) and is updated continuously as new batches complete.  
+
+In plain terms, more recent batches weigh more in the calculation than older ones. A fresh
+string of failures pushes the ratio up faster than the raw error count would suggest, and a
+clean stretch of batches pulls it back down, again with the most recent batches having the
+strongest effect.  
+
+The ratio is bounded between `0` and `1`, where `0` means no recent failures and `1` means
+recent batches have all failed. Two thresholds determine the transitions between states:  
+
+* The task is classified as `Impaired` when the ratio exceeds
+  `ETL.ProcessHealthStatusImpairedThreshold` (default `0.1`).  
+* The task is classified as `Failed` when the ratio exceeds
+  `ETL.ProcessHealthStatusFailedThreshold` (default `0.9`).  
+
+Both thresholds are configurable, server-wide or per database, and apply to AI tasks as well
+as ETL tasks despite the keys `ETL` prefix.  
+
+[Task errors configuration](../../monitoring/task-errors/configuration.mdx) covers the two
+keys, their valid ranges, and guidance for choosing values.  
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Where to view and manage task errors">
+
+Task errors and the resulting health states are exposed in several places. Most users will
+start with Studio; automated monitoring tools usually pull from SNMP OIDs, Prometheus
+metrics, or JSON monitoring endpoints.  
+
+[Inspect and manage task errors via the HTTP endpoints](../../server/troubleshooting/debug-routes.mdx)  
+[Inspect and manage task errors via Studio](../../monitoring/task-errors/studio-views.mdx)  
+
+Where to find them in detail:  
+
+* **HTTP endpoints**  
+  `GET /databases/*/tasks/errors` returns errors across all ETL and AI tasks.  
+  `GET /databases/*/etl/errors` and `GET /databases/*/ai/errors` return errors per category.  
+  `DELETE` variants of each path remove errors in bulk, optionally filtered by task name or
+  category. For example, `DELETE /databases/*/etl/errors?name=<task-name>` clears the errors
+  of one specific ETL task.  
+  `POST /databases/*/etl/retry-batch` forces an immediate retry of an ETL task currently in
+  fallback mode.  
+  See [Debug Endpoints](../../server/troubleshooting/debug-routes.mdx#debug-endpoints) for the full reference.  
+
+* **Studio views**  
+  The `Task Errors` view is reachable from `Tasks` **>** `Task Errors` and from
+  `AI Hub` **>** `AI Task Errors` (the same view, pre-filtered to AI tasks).  
+  See [Task errors Studio views](../../monitoring/task-errors/studio-views.mdx).  
+
+* **SNMP OIDs**  
+  Dedicated OIDs for server-level, database-level, and per-task error counts and health
+  states.  
+  See [List of OIDs](../../server/administration/snmp/snmp-overview.mdx#list-of-oids).  
+
+* **Prometheus metrics**  
+  Metrics for server, database, and per-task scopes, mirroring the SNMP set.  
+  See [Prometheus integration](../../server/administration/monitoring/prometheus.mdx).  
+
+* **JSON monitoring endpoints**  
+  `/admin/monitoring/v1/etls` and `/admin/monitoring/v1/ai-tasks` return per-task health and
+  error counts as JSON.  
+  See [Monitoring endpoints](../../server/administration/monitoring/telegraf.mdx#monitoring-endpoints).  
+
+</Panel>
