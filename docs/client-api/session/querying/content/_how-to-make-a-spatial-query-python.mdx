@@ -21,7 +21,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * When making a dynamic spatial query from Studio,  
   results are also displayed on the global map. See [spatial queries map view](../../../../studio/database/queries/spatial-queries-map-view.mdx).
-* In this page:
+* In this article:
 
   * [Search by radius](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-radius)  
   * [Search by shape](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-shape)
@@ -529,7 +529,7 @@ def order_by_distance_descending_wkt(
 | **field_or_field_name** | `Union[str, DynamicSpatialField]` |  `Str` - Path to spatial field in an index (when querying an index)<br/><br/>**-or-**<br/><br/>`DynamicSpatialField` - Object that contains the document's spatial fields, either `PointField` or `WktField`(when making a dynamic query). |
 | **latitude** | `float` | The latitude of the point from which the distance is measured |
 | **longitude** | `float` | The longitude of the point from which the distance is measured |
-| **round_factor** (Optional) | `float` | A distance interval in kilometers.<br/>The distance from the point is rounded up to the nearest interval.<br/>The results within the same interval can be sorted by a secondary order.<br/>If no other order was specified, then by ascending order of document Id. |
+| **round_factor** (Optional) | `float` | A distance interval in kilometers.<br/>The distance from the point is rounded up to the nearest interval.<br/>The results within the same interval can be sorted by a secondary order.<br/>If no other ordering was specified, results are ordered by document ID in ascending order. |
 | **shape_wkt** | `str` | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape used in query criteria |
 
 
