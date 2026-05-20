@@ -11,6 +11,8 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Ongoing Tasks - Overview
 <Admonition type="note" title="">
@@ -19,40 +21,74 @@ import LanguageContent from "@site/src/components/LanguageContent";
  
 * Each task is assigned a responsible node from the [Database Group nodes](../../../../studio/database/settings/manage-database-group.mdx) to handle the work.  
     * If not specified by the user, the cluster decides which node will be responsible for the task. See [Members Duties](../../../../studio/database/settings/manage-database-group.mdx#database-group-topology---members-duties).  
-    * If a node is down, the cluster will reassign the work to another node for the duration.  
+    * If a node is down, the cluster will reassign the work to another node.  
 
-* Once enabled, an **ongoing task** runs in the background,  
-  and its responsible node executes the defined task work whenever relevant data changes occur.
+* Once enabled, an **ongoing task** runs in the background and executes its defined 
+  work whenever relevant data changes occur.
 
-* In this page:
+* Ongoing tasks can also be managed via the Client API.  
+  See [Ongoing tasks operations](../../../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations.mdx).
+
+* In this article:
     * [The ongoing tasks](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx#the-ongoing-tasks)
-    * [The ongoing tasks list - View](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx#the-ongoing-tasks-list---view)
-    * [The ongoing tasks list - Actions](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx#the-ongoing-tasks-list---actions)
+       * [Creating a new task](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx#creating-a-new-task)
+       * [Available task types](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx#available-task-types)
+    * [The ongoing tasks list](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx#the-ongoing-tasks-list)
 
 </Admonition>
-## The ongoing tasks
+<Panel heading="The ongoing tasks">
 
-The available ongoing tasks are:
+<ContentFrame>
 
-![Figure 3. Ongoing Tasks New Task](./assets/task-list-1.png)
+### Creating a new task
+
+To create a new database task open the **Ongoing Tasks** view, click the **Add a Database Task** button,
+and select a task type.
+
+![Open the Ongoing Tasks view](./assets/task-list-0.png)
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Available task types
+
+The following task types are available:
+
+![Available task types](./assets/task-list-1.png)
+
+**AI:**
+
+* **[GenAI](../../../../ai-integration/gen-ai-integration/overview.mdx)**  
+    Analyze and enrich your documents using an LLM.  
+* **[Embeddings Generation](../../../../ai-integration/generating-embeddings/overview.mdx)**  
+    Automatically generate embeddings from your document content.  
 
 **Replication:**
 
 * **[External Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx)**  
     Create a live replica of your database in another RavenDB database in another cluster.  
     This replication is initiated by the source database.  
-* **[Hub/Sink Replication](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)**  
-    Create a live replica of your database, or a part of it, in another RavenDB database.  
-    The replication is initiated by the *Sink* task.  
-    The replication can be *bidirectional* or limited to a *single direction*.  
-    The replication can be *filtered* to allow the delivery of selected documents.  
+* **[Replication Hub](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-hub-task.mdx)**  
+    Replicate documents to and/or from one or more `Replication Sink` tasks in other RavenDB
+    databases across different clusters.  
+* **[Replication Sink](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task.mdx)**  
+    Connect to a central `Replication Hub` in another RavenDB cluster to receive documents,
+    and optionally replicate back.  
+    The replication can be *bidirectional* or limited to a *single direction*,
+    and can be *filtered* to allow the delivery of selected documents.  
 
-**Backups & Subscriptions:**
+**Backups:**
 
 * **[Backup](../../../../backup/create/periodic-tasks/database-backup.mdx)**  
     Schedule a backup or a snapshot of the database at a specified point in time.  
+
+**Subscriptions:**
+
 * **[Subscription](../../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)**  
-    Send batches of documents that match a pre-defined query for processing on a client.
+    Send batches of documents that match a pre-defined query for processing on a client.  
 
 **ETL (RavenDB =&gt; Target):**
 
@@ -61,6 +97,9 @@ The available ongoing tasks are:
     Data can be filtered and modified with transformation scripts.  
 * **[SQL ETL](../../../../server/ongoing-tasks/etl/sql.mdx)**  
     Write the database data to a relational database.  
+    Data can be filtered and modified with transformation scripts.  
+* **[Snowflake ETL](../../../../studio/database/tasks/ongoing-tasks/snowflake-etl-task.mdx)**  
+    Write all or chosen database documents to a Snowflake database.  
     Data can be filtered and modified with transformation scripts.  
 * **[OLAP ETL](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx)**  
     Convert database data to the _Parquet_ file format for OLAP purposes.  
@@ -77,8 +116,11 @@ The available ongoing tasks are:
 * **[Azure Queue Storage ETL](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl.mdx)**  
     Write all or chosen database documents to Azure Queue Storage.  
     Data can be filtered and modified with transformation scripts.  
+* **[Amazon SQS ETL](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl.mdx)**  
+    Write all or chosen database documents to Amazon SQS queues.  
+    Data can be filtered and modified with transformation scripts.  
 
-**Sink (Source =&gt; RavendB)**
+**Sink (Source =&gt; RavenDB):**
 
 * **[Kafka Sink](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink.mdx)**  
     Consume and process incoming messages from Kafka topics.  
@@ -87,32 +129,39 @@ The available ongoing tasks are:
     Consume and process incoming messages from RabbitMQ queues.  
     Add scripts to Load, Put, or Delete documents in RavenDB based on the incoming messages.  
 
+</ContentFrame>
 
+</Panel>
 
-## The ongoing tasks list - View
+<Panel heading="The ongoing tasks list">
 
-![Figure 1. Ongoing Tasks View](./assets/task-list-2.png)
+The tasks you create are listed in the Ongoing Tasks view, where you can see their status at a glance,
+expand task bars for further details, perform basic actions like disabling or deleting tasks, and open
+any task for editing.
 
-1. Navigate to **Tasks &gt; Ongoing Tasks**
+![Ongoing Tasks list](./assets/task-list-2.png)
 
-2. The list of the current tasks defined for the database.  
+1. **Filter by name**  
+   Enter a string to list only tasks whose name includes this string.  
 
-3. The task name. 
+2. **Filter by type**  
+   Click **All** to see tasks of all types.  
+   Click a specific task type, e.g. `ETL`, to add tasks of this type to the view.  
 
-4. The node that is currently responsible for executing the task.
+3. **Selection boxes**  
+   Select all tasks using the "select all" checkbox at the top.  
+   Select individual tasks using task-specific checkboxes.  
+   Selecting tasks opens an action bar. Use **Set state** to enable or disable the selected tasks,
+   or **Delete** to remove them.  
+   ![Selection action bar](./assets/task-list_action-bar.png)
 
+4. **Task bar**  
+    * Each defined task is represented by a task bar.  
+    * A task bar always shows the task's name and type, whether it is enabled, and which cluster node is responsible for running it.  
+      ![Task bar - info elements](./assets/task-list_task-bar_info.png)
+    * You can enable, disable, edit, or delete the task.  
+      You can also expand each task bar for additional details and options related to the task.  
+      ![Task bar - actions](./assets/task-list_task-bar_actions.png)
+    * Other details and available actions vary by task type.
 
-
-## The ongoing tasks list - Actions
-
-![Figure 2. Ongoing Tasks Actions](./assets/task-list-3.png)
-
-1. **Add Task** - Create a new task for the database.
-2. **Enable / Disable** the task.
-3. **Details** - Click to see a short task details summary in this view.
-4. **Edit** - Click to edit the task.
-5. **Delete** the task.
-
-The ongoing tasks can also be managed via the Client API. See [Ongoing tasks operations](../../../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations.mdx).
-
-
+</Panel>
