@@ -127,6 +127,14 @@ The production tier offers three instance levels:
 1. [Basic](../cloud/cloud-instances.mdx#1-basic-grade-production-cluster)  
 2. [Standard](../cloud/cloud-instances.mdx#2-standard-grade-production-cluster)  
 3. [Performance](../cloud/cloud-instances.mdx#3-performance-grade-production-cluster)  
+
+<Admonition type="note" title="Backup resource requirements">
+The tier you select must have sufficient compute, memory, and disk resources to run backups on top
+of your normal workload. Undersized tiers can cause backup jobs to fail.  
+See [Tier Requirements and Failure Disclaimer](../cloud/cloud-backup-and-restore.mdx#tier-requirements-and-failure-disclaimer)
+for details.
+</Admonition>
+
 #### 1. Basic-grade Production Cluster
 Basic production clusters are [burstable](../cloud/cloud-overview.mdx#burstable-instances).  
 While suitable for low to medium workloads, they trade-off peak efficiency for lower costs.  

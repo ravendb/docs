@@ -25,6 +25,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * In this page:  
   * [The Mandatory-Backup Routine](../cloud/cloud-backup-and-restore.mdx#the-mandatory-backup-routine)  
+    * [Tier Requirements and Failure Disclaimer](../cloud/cloud-backup-and-restore.mdx#tier-requirements-and-failure-disclaimer)  
   * [Backup storage](../cloud/cloud-backup-and-restore.mdx#backup-storage)  
   * [Charging For Backup storage](../cloud/cloud-backup-and-restore.mdx#charging-for-backup-storage)  
   * [Backup Encryption](../cloud/cloud-backup-and-restore.mdx#backup-encryption)  
@@ -55,6 +56,46 @@ To view or activate the mandatory backup task, open your product's management st
 * Click the "Server Wide Backup" task.  
 
 !["Backup Task"](./assets/backup-and-restore-001-backup-task.png)  
+
+#### Tier Requirements and Failure Disclaimer
+
+Backups in RavenDB Cloud run **on the instance itself**, using the product's own compute, memory,
+and disk resources. Your selected tier must be sufficient to handle a full backup of every database
+hosted on that product.
+
+<Admonition type="warning" title="Ensure your tier can sustain backup operations">
+
+Key constraints to keep in mind:
+
+- The instance needs enough **free disk space** to stage the backup.
+- The backup process places **additional I/O and memory pressure** on the instance on top of
+  existing workloads during its run.
+- On undersized tiers the backup job may time out, be terminated due to memory exhaustion,
+  or fail mid-run — leaving you without a usable recovery point.
+
+**Example:** A product running on a **PS10** (entry-level Performance tier) that hosts a
+**500 GB database** will reliably fail to complete backups. The instance does not have enough
+resources — disk IOPS, memory, or both — to snapshot a database of that size. Customers in this
+situation must upgrade to a higher tier before backups can succeed.
+
+</Admonition>
+
+<Admonition type="warning" title="Liability disclaimer">
+
+RavenDB is **not liable** for backup failures caused by a product tier that is insufficient for
+the size of the databases it hosts. It is the **customer's responsibility** to ensure the selected
+tier can sustain backup operations given their data volume.
+
+Monitor backup health via the **RavenDB Studio notification center** and the available
+monitoring facilities ([SNMP](../docs/server/administration/snmp/snmp-overview.mdx),
+[OpenTelemetry](../docs/server/administration/monitoring/open-telemetry.mdx), and others).
+If backups stop completing on small tiers, the most common cause is the instance running out
+of resources during the backup run. Upgrade your product tier to resolve the issue.
+
+</Admonition>
+
+See [Tiers and Instances](../cloud/cloud-instances.mdx) for a full comparison of available tiers
+and their resource allocations.
 
 
 ## Backup storage
