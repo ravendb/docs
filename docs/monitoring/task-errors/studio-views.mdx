@@ -106,8 +106,8 @@ The indicators' colors represent task health states: Green for `Healthy`, yellow
 `Impaired`, and red for `Failed`.  
 * Hover an indicator to trigger a popup summary of tasks whose health currently matches 
   the selected state.  
-* The summary details the nodes that each task runs on, and the number of errors each 
-  task raised per node.  
+* The summary lists only the node currently running the task and any nodes that recorded
+  errors for it, with the error count per node.  
 
 ![Task health indicators](./assets/task-errors_health-indicators.png)
 
@@ -167,7 +167,7 @@ are grouped by task.
 
     * **`Error step` column**  
       The processing step the error occurred at: `Configuration`, `Extraction`,
-      `Transformation`, `Load`, `Model Inference`, `Persistence`, or `Unknown`.  
+      `Transformation`, `Load`, `Persistence`, `Model Inference`, or `Unknown`.  
       See the [Error steps](../../monitoring/task-errors/overview.mdx#error-steps) reference on the
       overview.  
 

@@ -106,13 +106,13 @@ type.
   The task could not send its transformed data to the destination. Typical causes include the
   destination being unreachable or rejecting the data.  
 
+* **Persistence**  
+  The task could not save its results back to the database, or could not update its own
+  process state. Typical causes include write conflicts or storage errors.  
+
 * **Model Inference** (AI tasks only)  
   The task could not communicate with the AI model. Typical causes include the model service
   being unreachable or returning an error.  
-
-* **Persistence** (AI tasks only)  
-  The task could not save its results back to the database. Typical causes include write
-  conflicts or storage errors.  
 
 * **Unknown**  
   The processing step could not be determined.  
@@ -123,16 +123,20 @@ type.
 
 <Panel heading="Where task errors are stored">
 
-Task errors are stored on disk per task in two dedicated tables: one for item errors and one
-for process errors. Each table is capped at 500 entries per task. When a new error needs to be
-recorded after the cap is reached, the oldest entry in that table is evicted to make room.  
+* Each task keeps two dedicated tables on disk: one for item errors and one for process
+  errors.  
+  ETL and AI task errors are kept in separate storage and don't share these tables.  
 
-The retention is per task and per table, so a single noisy task cannot push errors out of an
-unrelated task. The cap is not configurable.  
+* Each table is capped at 500 entries per task. When a new error needs to be recorded
+  after the cap is reached, the oldest entry in that table is evicted to make room.
+  The cap is not configurable.  
 
-Errors are also included in the server's debug package as `etl.errors.json`, so support
-engineers can capture a full error history without going through Studio or the HTTP
-endpoints.  
+* Retention is per task and per table, so a single noisy task cannot push errors out of
+  an unrelated task.  
+
+* Errors are also included in the server's debug package as `etl.errors.json`, so
+  support engineers can capture a full error history without going through Studio or
+  the HTTP endpoints.  
 
 </Panel>
 
@@ -162,7 +166,9 @@ A task is in one of three health states at any time.
 
 A task recovers automatically as new batches complete. The health state transitions from
 `Failed` back to `Impaired`, and from `Impaired` back to `Healthy`, as the running error rate
-falls below each threshold. There is no manual "reset" action.  
+falls below each threshold.  
+
+Updating the task's configuration also resets the health state to `Healthy`.  
 
 <Admonition type="note" title="">
 Deleting a task's stored errors clears the rows from the error tables but does not, on its own,
@@ -219,13 +225,14 @@ metrics, or JSON monitoring endpoints.
 Where to find them in detail:  
 
 * **HTTP endpoints**  
-  `GET /databases/*/tasks/errors` returns errors across all ETL and AI tasks.  
-  `GET /databases/*/etl/errors` and `GET /databases/*/ai/errors` return errors per category.  
-  `DELETE` variants of each path remove errors in bulk, optionally filtered by task name or
-  category. For example, `DELETE /databases/*/etl/errors?name=<task-name>` clears the errors
-  of one specific ETL task.  
-  `POST /databases/*/etl/retry-batch` forces an immediate retry of an ETL task currently in
-  fallback mode.  
+    * `GET /databases/*/tasks/errors` returns errors across all ETL and AI tasks.  
+    * `GET /databases/*/etl/errors` and `GET /databases/*/ai/errors` return errors per category.  
+    * `DELETE` variants of each path remove errors in bulk, optionally filtered by task name or
+      category. For example, `DELETE /databases/*/etl/errors?name=<task-name>` clears the
+      errors of one specific ETL task.  
+    * `POST /databases/*/etl/retry-batch` forces an immediate retry of an ETL task currently in
+      fallback mode.  
+  
   See [Debug Endpoints](../../server/troubleshooting/debug-routes.mdx#debug-endpoints) for the full reference.  
 
 * **Studio views**  
