@@ -31,9 +31,11 @@ import Panel from '@site/src/components/Panel';
     * [Order by spatial](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-spatial)     
     * [Order by count (aggregation query)](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-count-aggregation-query)  
     * [Order by sum (aggregation query)](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-sum-aggregation-query)
+    * [Order by metadata](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-metadata)
     * [Force ordering type](../../../querying/sorting-query-results/sort-query-results.mdx#force-ordering-type)
     * [Chain ordering](../../../querying/sorting-query-results/sort-query-results.mdx#chain-ordering)
     * [Custom sorters](../../../querying/sorting-query-results/sort-query-results.mdx#custom-sorters)
+    * [Performance notes](../../../querying/sorting-query-results/sort-query-results.mdx#performance-notes)
     * [Syntax](../../../querying/sorting-query-results/sort-query-results.mdx#syntax)
 
 </Admonition>
@@ -641,21 +643,59 @@ select key() as 'Category', sum(UnitsInStock) as Sum
 
 </Panel>
 
+<Panel heading="Order by metadata">
+
+* Documents contain server-maintained metadata fields, such as `@last-modified`.  
+  You can order query results by these fields directly in RQL, or by using `documentQuery`.
+
+* When no ordering type is specified, metadata fields are ordered lexicographically.  
+  For `@last-modified`, this produces the correct chronological order because the timestamp format is lexically sortable: `yyyy-MM-ddTHH:mm:ss.fffffff`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="php">
+{`/** @var array<Order> $recent */
+$recent = $session->advanced()
+    ->documentQuery(Order::class)
+    // Order by the document's last modification time,
+    // with the most recently modified documents listed first
+    ->orderByDescending("@metadata.@last-modified")
+    ->take(20)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders"
+order by "@metadata.@last-modified" desc
+limit 20
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Panel>
+
 <Panel heading="Force ordering type">
 
 * By default, the `orderBy` methods will determine the `OrderingType` from the property path expression  
   and specify that ordering type in the generated RQL that is sent to the server.
 
-* A different ordering can be forced by passing the ordering type explicitly to `orderBy` or `orderByDescending`.
-
-* The following ordering types are available:
+* You can force a different ordering type by passing it explicitly to `orderBy` or `orderByDescending`.   
+  The following ordering types are available:
 
     * `OrderingType::long`
     * `OrderingType::double`
     * `OrderingType::alphaNumeric`
     * `OrderingType::string` (lexicographic ordering)
+    
+* Use the appropriate ordering type for the field value.  
+  For example, ordering numeric values as strings can produce lexicographic order, where `"10"` comes before `"9"`.  
+  Use a numeric ordering type when ordering numeric fields explicitly.    
 
-* When using RQL directly, if no ordering type is specified, then the server defaults to lexicographic ordering.
+* When using RQL directly, if no ordering type is specified, the server uses the default ordering for the field.  
+  To force a specific ordering type, specify `as long`, `as double`, `as string`, or `as alphanumeric`.
 
 <Admonition type="note" title="">
 
@@ -665,8 +705,8 @@ select key() as 'Category', sum(UnitsInStock) as Sum
   then comparison is done character by character based on the Unicode values.  
   For example, "Abc9" will come after "Abc10" since 9 is greater than 1.
 
-* If you want the digit characters to be ordered as numbers then use alphanumeric ordering  
-  where "Abc10" will result after "Abc9".
+* If you want the digit characters to be ordered as numbers, use alphanumeric ordering.  
+  In that case, `"Abc10"` will come after `"Abc9"`.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -831,6 +871,20 @@ order by custom(UnitsInStock, "MyCustomSorter")
 </CodeBlock>
 </TabItem>
 </Tabs>
+
+</Panel>
+
+<Panel heading="Performance notes">
+
+* **Filter before you sort.**  
+  Sorting cost is proportional to the number of matched documents, not the size of the collection.  
+  A `where` clause that reduces the candidate set materially cheapens the sort.
+    
+* **Sorting requires an indexed field.**  
+  In a dynamic query, if the field you order by is not already available in the auto-index,  
+  RavenDB may create or extend an auto-index to include that field.  
+  This adds indexing work before the sort can be served efficiently.  
+  On hot paths, prefer a static index that already contains the sortable field.    
 
 </Panel>
 
