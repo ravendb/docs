@@ -5,7 +5,20 @@ icon: "cluster-dashboard"
 publishedAt: 2026-03-20
 description: "Learn how to use RavenDB Studio's Cluster Dashboard, Traffic Watch, Admin Logs, and other built-in tools to diagnose and investigate database performance issues."
 author: "Paweł Lachowski"
-proficiency_level: "Beginner"
+proficiencyLevel: "Beginner"
+see_also:
+  - title: "Cluster Dashboard Overview"
+    link: "studio/cluster/cluster-dashboard/cluster-dashboard-overview"
+    source: "docs"
+    path: "Studio > Cluster > Cluster Dashboard"
+  - title: "Admin Logs"
+    link: "studio/server/debug/admin-logs"
+    source: "docs"
+    path: "Studio > Server > Debug"
+  - title: "Statistics"
+    link: "server/administration/statistics"
+    source: "docs"
+    path: "Server > Administration"
 ---
 
 import Admonition from '@theme/Admonition';
@@ -71,7 +84,7 @@ Problems it identifies:
 
 The Cluster Dashboard is the view that RavenDB Studio opens by default. It provides a modular overview of the server and cluster, allowing you to quickly check the current state of the system.
 
-The [Cluster Dashboard](https://docs.ravendb.net/7.2/studio/cluster/cluster-dashboard/cluster-dashboard-overview) is composed of widgets, which can be added or removed from the bottom-right corner. 
+The [Cluster Dashboard](https://docs.ravendb.net/studio/cluster/cluster-dashboard/cluster-dashboard-overview) is composed of widgets, which can be added or removed from the bottom-right corner. 
 
 <Image img={require("./assets/database-today3.webp")} alt="RavenDB Cluster Dashboard displaying CPU, traffic, IO, and GC metric widgets" />
 <br />
@@ -107,13 +120,13 @@ Problems it identifies:
 
 Sometimes the issue is not related to workload but to the cluster itself. A node might be unavailable, recovering, or not participating correctly in cluster operations. Even when a node is missing, the rest of the cluster may continue running.
 
-The [Cluster Status view](https://docs.ravendb.net/7.2/studio/cluster/cluster-view/) helps you inspect the health of individual nodes and their topology. It shows how nodes relate to each other and whether any of them are unavailable or experiencing problems. By reviewing this view, you can quickly notice situations where a node is down or under heavy memory pressure.
+The [Cluster Status view](https://docs.ravendb.net/studio/cluster/cluster-view) helps you inspect the health of individual nodes and their topology. It shows how nodes relate to each other and whether any of them are unavailable or experiencing problems. By reviewing this view, you can quickly notice situations where a node is down or under heavy memory pressure.
 
-For example, if the cluster has nodes in different geographical locations, the failure of one node may change response times for users located closer to that server. For users who are away from the rest of the servers, or if [load balancing](https://docs.ravendb.net/7.2/client-api/configuration/load-balance/read-balance-behavior/) is used, it can affect your database behaviour \- e.g., the fastest node can change.
+For example, if the cluster has nodes in different geographical locations, the failure of one node may change response times for users located closer to that server. For users who are away from the rest of the servers, or if [load balancing](https://docs.ravendb.net/client-api/configuration/load-balance/read-balance-behavior/) is used, it can affect your database behaviour \- e.g., the fastest node can change.
 
 <Image img={require("./assets/database-today7.webp")} alt="RavenDB Studio Cluster Status view showing node topology and individual node health" />
 
-If you see your nodes having uneven workloads, you might want to change the [load balance behavior](https://docs.ravendb.net/7.2/client-api/configuration/load-balance/load-balance-behavior/). To further investigate differences in node behavior, you can use Cluster Debug, which provides detailed insights into the cluster’s communication status.
+If you see your nodes having uneven workloads, you might want to change the [load balance behavior](https://docs.ravendb.net/client-api/configuration/load-balance/load-balance-behavior/). To further investigate differences in node behavior, you can use Cluster Debug, which provides detailed insights into the cluster’s communication status.
 
 ## Traffic Watch
 
@@ -153,7 +166,7 @@ Problems it identifies:
 
 Some problems happen deeper inside the server and are not visible through metrics. Internal tasks, background processes, or unexpected errors may leave their traces only in the logs.
 
-[Admin Logs](https://docs.ravendb.net/7.2/studio/server/debug/admin-logs/) provide detailed information about what the database is doing internally. By reviewing them, you can observe server activity and identify operations that may be consuming unusually high amounts of resources. So if your query sometimes doesn’t respond and Traffic Watch doesn’t give you enough information, Admin Logs are a great place to check.
+[Admin Logs](https://docs.ravendb.net/studio/server/debug/admin-logs/) provide detailed information about what the database is doing internally. By reviewing them, you can observe server activity and identify operations that may be consuming unusually high amounts of resources. So if your query sometimes doesn’t respond and Traffic Watch doesn’t give you enough information, Admin Logs are a great place to check.
 
 In addition to performance-related information, the logs can reveal errors, warnings, or unexpected behavior that might not immediately appear in the UI. This makes them especially useful when you don’t know exactly what happened in the database that caused the issue. It is also a useful tool if you need to check later what led to problems, as you can download your logs to the disk after setup.
 

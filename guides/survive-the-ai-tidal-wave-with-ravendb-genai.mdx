@@ -5,7 +5,20 @@ description: "Learn how to use RavenDB's GenAI feature to automatically summariz
 publishedAt: 2025-07-07
 author: "Gracjan Sadowicz"
 image: "https://ravendb.net/wp-content/uploads/2025/06/article-cover-genai.png"
-proficiency_level: "Expert"
+proficiencyLevel: "Expert"
+see_also:
+  - title: "GenAI Integration Overview"
+    link: "ai-integration/gen-ai-integration/overview"
+    source: "docs"
+    path: "AI Integration > GenAI Integration"
+  - title: "Create GenAI Task: Studio"
+    link: "ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio"
+    source: "docs"
+    path: "AI Integration > GenAI Integration > Create GenAI Task"
+  - title: "AI Connection Strings"
+    link: "ai-integration/connection-strings/overview"
+    source: "docs"
+    path: "AI Integration > Connection Strings"
 ---
 
 import Admonition from '@theme/Admonition';
@@ -47,7 +60,7 @@ RavenDB takes the burden of AI off your shoulders, keeping all AI data logistics
 
 The surge for building custom AI solutions is no longer needed. **Basic prompting skills are enough**. You can take advantage of the AI opportunity and empower your system in any way imaginable, with almost no work around it. Everything stays in the database\!
 
-One of our new tools is a powerful RavenDB [**GenAI**](https://docs.ravendb.net/7.2/ai-integration/gen-ai-integration/overview) feature. It's super easy to set up and requires minimal coding to work. You just define the context, write a prompt, and it works, without leaving the RavenDB Studio. Any developer can set it up ridiculously fast. 
+One of our new tools is a powerful RavenDB [**GenAI**](https://docs.ravendb.net/ai-integration/gen-ai-integration/overview) feature. It's super easy to set up and requires minimal coding to work. You just define the context, write a prompt, and it works, without leaving the RavenDB Studio. Any developer can set it up ridiculously fast. 
 
 It’s not just an AI connector; it’s the entire process, complete with a ready-to-use template. It reads, processes, and updates documents you attach it to. It can even be configured to re-process documents upon changes, letting you create intelligent processes. You can use any model, even offline ones, so when ChatGPT goes down, you're still up.
 
@@ -128,7 +141,7 @@ In the big picture, it’s just fetching tickets to your browser. We’re trimmi
 
 Returning to the ticket, as you might have seen in the schema, it has a summary, priority, and needs\_sales flag. It’s prepared to be fulfilled not by humans but by AI.
 
-To achieve that with RavenDB, first, we created an [OpenAI connection string](https://docs.ravendb.net/7.2/ai-integration/connection-strings/open-ai) to the LLM so we could use it and the new task. 
+To achieve that with RavenDB, first, we created an [OpenAI connection string](https://docs.ravendb.net/ai-integration/connection-strings/open-ai) to the LLM so we could use it and the new task. 
 
 <Image img={require("./assets/ai-wave4.webp")} alt="RavenDB Studio showing the OpenAI connection string configuration screen for the GenAI ongoing task" />
 <br />
@@ -184,7 +197,7 @@ Look how nice it is.
 <br />
 
 Then we got an idea—why shouldn’t the issues be searchable by generated summaries, not by matched text, but by meaning?  
-We quickly set up an [embeddings generation task](https://docs.ravendb.net/7.2/ai-integration/generating-embeddings/embeddings-generation-task) on the summary field, which GenAI has generated.
+We quickly set up an [embeddings generation task](https://docs.ravendb.net/ai-integration/generating-embeddings/embeddings-generation-task) on the summary field, which GenAI has generated.
 
 We prepared another OpenAI connection string \- now to the embeddings model. See:
 
@@ -217,6 +230,6 @@ Here's the short version of what we covered:
 - GenAI writes the summaries, the embeddings task indexes them, and suddenly you have semantic search across your entire ticket history without touching a single query.
 - You don't need to understand how AI works under the hood to use it. GenAI is configured like any other RavenDB Ongoing Task, supports commercial and offline models, and the whole setup lives inside RavenDB Studio.
 
-If you are unfamiliar with RavenDB, we encourage you to explore what we can do for you. GenAI isn’t our only feature that will make your life easier. Another thing you might be interested in is [native vector search](https://docs.ravendb.net/7.2/ai-integration/vector-search/overview) or [automatic embeddings generation](https://docs.ravendb.net/7.2/ai-integration/generating-embeddings/overview).
+If you are unfamiliar with RavenDB, we encourage you to explore what we can do for you. GenAI isn’t our only feature that will make your life easier. Another thing you might be interested in is [native vector search](https://docs.ravendb.net/ai-integration/vector-search/overview) or [automatic embeddings generation](https://docs.ravendb.net/ai-integration/generating-embeddings/overview).
 
 If you and your team have **gained some free time** by letting AI do the work, you may have a moment to chat with us on our Discord. RavenDB Team and our community are chronically online there. Check out our [Discord server](https://discord.com/invite/ravendb).

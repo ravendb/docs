@@ -6,7 +6,24 @@ description: "Discover 7 common RavenDB index anti-patterns, including misusing 
 publishedAt: 2025-09-17
 image: "https://ravendb.net/wp-content/uploads/2025/09/spotting-red-flags-article-image.png"
 author: "Paweł Lachowski"
-proficiency_level: "Expert"
+proficiencyLevel: "Expert"
+see_also:
+  - title: "What are Indexes"
+    link: "indexes/what-are-indexes"
+    source: "docs"
+    path: "Indexes"
+  - title: "Storing Data in Index"
+    link: "indexes/storing-data-in-index"
+    source: "docs"
+    path: "Indexes"
+  - title: "Indexing Related Documents"
+    link: "indexes/indexing-related-documents"
+    source: "docs"
+    path: "Indexes"
+  - title: "Map-Reduce Indexes"
+    link: "indexes/map-reduce-indexes"
+    source: "docs"
+    path: "Indexes"
 ---
 
 import Admonition from '@theme/Admonition';
@@ -17,7 +34,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 import Image from "@theme/IdealImage";
 
-Every database has a way of making data easier & faster to find. This role is often fulfilled by [indexes](https://docs.ravendb.net/studio/database/indexes/indexes-overview/#indexes---the-general-concept). Without them, every request would be like searching through a stack of papers one by one, hoping to stumble on the right page. With them, your queries can quickly jump over to the relevant results, going through compacted entries with only the data that the query cares about. 
+Every database has a way of making data easier & faster to find. This role is often fulfilled by [indexes](https://docs.ravendb.net/studio/database/indexes/indexes-overview). Without them, every request would be like searching through a stack of papers one by one, hoping to stumble on the right page. With them, your queries can quickly jump over to the relevant results, going through compacted entries with only the data that the query cares about. 
 
 Indexes are not just an optimization; they’re fundamental to how RavenDB works. They shape how queries are executed and how well the system performs as your data grows. A well-designed index can make even complex queries return results almost instantly, whereas a poorly designed one can cause performance issues that impact the entire application.
 
@@ -75,7 +92,7 @@ Storing fields in RavenDB basically means keeping certain data from your indexed
 
 This is why you don’t just mark every field as “stored” thinking it’ll make everything fast. The more fields you store, the heavier your indexes get, and the less truly fast your queries become. Store only what you really need for quick access or query efficiency. Making all fields ‘fast’ makes none truly fast. 
 
-You can find more information about storing fields here: [storing data in an index](https://docs.ravendb.net/indexes/storing-data-in-index/).
+You can find more information about storing fields here: [storing data in an index](https://docs.ravendb.net/indexes/storing-data-in-index).
 
 ## Misusing LoadDocument in Indexes
 
