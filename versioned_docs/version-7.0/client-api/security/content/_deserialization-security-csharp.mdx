@@ -7,9 +7,12 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* Deserializing data can trigger the execution of gadgets that may initiate RCE (Remote Code Execution) attacks on the client machine.  
-* To handle this threat, RavenDB's default deserializer blocks the deserialization of known [.NET RCE gadgets](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html#known-net-rce-gadgets).  
-* Users can customize the list of namespaces and types for which deserialization is forbidden or allowed.  
+* Deserializing data can trigger the execution of gadgets that may initiate
+  RCE (Remote Code Execution) attacks on the client machine.  
+* To handle this threat, RavenDB's default deserializer blocks the deserialization
+  of known [.NET RCE gadgets](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html#known-net-rce-gadgets).  
+* Users can customize the list of namespaces and types for which deserialization
+  is forbidden or allowed.  
 
 * In this article:  
    * [Securing deserialization](../../../client-api/security/deserialization-security.mdx#securing-deserialization)  
@@ -29,12 +32,14 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 ## The deserialization risk
 
-* When a RavenDB client uses the [Newtonsoft library](https://www.newtonsoft.com/json/help/html/SerializingJSON.htm) to deserialize a JSON string to a .NET object,  
-  the object may include a reference to a **gadget** (a code segment) and the deserialization process may execute it.  
-* Some gadgets attempt to exploit the deserialization process and initiate an RCE (Remote Code Execution) attack that may,  
-  for example, inject the system with malicious code, steal information, or take control of the machine.  
-* To prevent such exploitation, RavenDB's default deserializer blocks deserialization for the `Microsoft.VisualStudio` namespace  
-  and for the following known .NET RCE gadgets:
+* When a RavenDB client uses the [Newtonsoft library](https://www.newtonsoft.com/json/help/html/SerializingJSON.htm)
+  to deserialize a JSON string to a .NET object, the object may include a reference
+  to a **gadget** (a code segment) and the deserialization process may execute it.  
+* Some gadgets attempt to exploit the deserialization process and initiate an
+  RCE (Remote Code Execution) attack that may, for example, inject the system
+  with malicious code, steal information, or take control of the machine.  
+* To prevent such exploitation, RavenDB's default deserializer blocks deserialization
+  for the `Microsoft.VisualStudio` namespace and for the following known .NET RCE gadgets:
 
   - `System.Configuration.Install.AssemblyInstaller`  
   - `System.Activities.Presentation.WorkflowDesigner`  
@@ -47,7 +52,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
   - `System.Xml.XmlDataDocument`  
   - `System.Management.Automation.PSObject`  
 
-* Users can [customize](../../../client-api/security/deserialization-security.mdx#defaultravenserializationbinder) the list of namespaces and types for which deserialization is forbidden or allowed.  
+* Users can [customize](../../../client-api/security/deserialization-security.mdx#defaultravenserializationbinder)
+  the list of namespaces and types for which deserialization is forbidden or allowed.  
 
 </ContentFrame>
 
@@ -58,7 +64,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 ## Direct vs. indirect gadget loading
 
 **Directly-loaded gadgets cannot be blocked** using `DefaultRavenSerializationBinder`.  
-When a gadget is loaded directly, its execution during deserialization is permitted regardless of the binder's forbidden list.  
+When a gadget is loaded directly, its execution during deserialization is permitted
+regardless of the binder's forbidden list.  
 
 For example, the following `Load` call will succeed regardless of the binder configuration:
 
@@ -71,9 +78,11 @@ session.Load<object>("Gadget");
 <br />
 
 **Indirectly-loaded gadgets can be blocked** using `DefaultRavenSerializationBinder`.  
-When a gadget type name is embedded as a value inside a JSON string, it is resolved only at deserialization time. At that point the binder can intercept and block it.  
+When a gadget type name is embedded as a value inside a JSON string, it is resolved
+only at deserialization time. At that point the binder can intercept and block it.  
 
-For example, in the following payload (taken from [this source](https://book.hacktricks.xyz/pentesting-web/deserialization/basic-.net-deserialization-objectdataprovider-gadgets-expandedwrapper-and-json.net#abusing-json.net)), the type is not loaded directly but appears as a JSON value and is resolved only during deserialization:
+For example, in the following payload, the type is not loaded directly but appears
+as a JSON value and is resolved only during deserialization:
 
 ```json
 {
@@ -91,7 +100,8 @@ For example, in the following payload (taken from [this source](https://book.hac
 
 <br />
 
-Including `System.Windows.Data.ObjectDataProvider` in the forbidden list prevents this payload from being deserialized and executed.
+Including `System.Windows.Data.ObjectDataProvider` in the forbidden list prevents
+this payload from being deserialized and executed.
 
 </ContentFrame>
 
@@ -99,11 +109,13 @@ Including `System.Windows.Data.ObjectDataProvider` in the forbidden list prevent
 
 <Panel heading="DefaultRavenSerializationBinder">
 
-Use `DefaultRavenSerializationBinder` and its methods to block the deserialization of suspicious namespaces and types,  
-or to explicitly allow the deserialization of trusted types.  
+Use `DefaultRavenSerializationBinder` and its methods to block the deserialization
+of suspicious namespaces and types, or to explicitly allow the deserialization of
+trusted types.  
 
-Create a new `DefaultRavenSerializationBinder` instance, call the registration methods to define your overrides,  
-then configure the instance as a serialization convention as shown in the [example](../../../client-api/security/deserialization-security.mdx#example).  
+Create a new `DefaultRavenSerializationBinder` instance, call the registration
+methods to define your overrides, then configure the instance as a serialization
+convention as shown in the [example](../../../client-api/security/deserialization-security.mdx#example).  
 
 <Admonition type="note" title="">
 
@@ -112,7 +124,8 @@ Calling any registration method after the binder has been used throws:
 `InvalidOperationException: "Cannot perform this operation, because binder was already used."`
 
 Note that `DefaultRavenSerializationBinder.Instance` is a shared static singleton.  
-Always create your own `new DefaultRavenSerializationBinder()` instance; do not call registration methods on the static instance.  
+Always create your own `new DefaultRavenSerializationBinder()` instance; do not call
+registration methods on the static instance.  
 
 </Admonition>
 
@@ -120,7 +133,8 @@ Always create your own `new DefaultRavenSerializationBinder()` instance; do not 
 
 ## RegisterForbiddenNamespace
 
-Use `RegisterForbiddenNamespace` to prevent the deserialization of any type belonging to the given namespace.
+Use `RegisterForbiddenNamespace` to prevent the deserialization of any type
+belonging to the given namespace.
 
 ```csharp
 public void RegisterForbiddenNamespace(string @namespace)
@@ -136,6 +150,10 @@ public void RegisterForbiddenNamespace(string @namespace)
 
 Attempting to deserialize a type whose namespace is forbidden throws:  
 `InvalidOperationException: "Cannot resolve type '<FullName>' because the namespace is on a blacklist due to security reasons. Please customize json deserializer in the conventions and override SerializationBinder with your own logic if you want to allow this type."`
+
+If the forbidden type appears as a generic argument (e.g. `List<System.Xml.XmlDocument>`),
+a containing exception is thrown, with the original wrapped as its inner exception:  
+`InvalidOperationException: "Generic type: <FullName>, contains a generic argument <FullName> that is blocked from serialization"`
 
 </Admonition>
 
@@ -164,6 +182,10 @@ public void RegisterForbiddenType(Type type)
 Attempting to deserialize a forbidden type throws:  
 `InvalidOperationException: "Cannot resolve type '<FullName>' because the type is on a blacklist due to security reasons. Please customize json deserializer in the conventions and override SerializationBinder with your own logic if you want to allow this type."`
 
+If the forbidden type appears as a generic argument (e.g. `List<SuspiciousClass>`),
+a containing exception is thrown, with the original wrapped as its inner exception:  
+`InvalidOperationException: "Generic type: <FullName>, contains a generic argument <FullName> that is blocked from serialization"`
+
 </Admonition>
 
 </ContentFrame>
@@ -174,7 +196,9 @@ Attempting to deserialize a forbidden type throws:
 
 ## RegisterSafeType
 
-Use `RegisterSafeType` to explicitly allow the deserialization of a specific type, overriding any namespace-level block that would otherwise apply.
+Use `RegisterSafeType` to explicitly allow the deserialization of a specific type.  
+A type registered as safe bypasses all restrictions, including user-registered forbidden
+namespaces, user-registered forbidden types, and the built-in hardcoded forbidden-types list.
 
 ```csharp
 public void RegisterSafeType(Type type)
@@ -192,7 +216,9 @@ public void RegisterSafeType(Type type)
 
 <Panel heading="Example">
 
-The following example creates a `DefaultRavenSerializationBinder` instance, registers a forbidden namespace, a forbidden type, and a trusted type, then applies it to the document store:
+The following example creates a `DefaultRavenSerializationBinder` instance, registers
+a forbidden namespace, a forbidden type, and a trusted type, then applies it to the
+document store:
 
 ```csharp
 // Create a new deserialization binder instance
@@ -204,7 +230,7 @@ binder.RegisterForbiddenNamespace("SuspiciousNamespace");
 // Block a specific type
 binder.RegisterForbiddenType(typeof(SuspiciousClass));
 
-// Explicitly allow a specific type (overrides any namespace block)
+// Explicitly allow a specific type (overrides all restrictions)
 binder.RegisterSafeType(typeof(TrustedClass));
 
 var store = new DocumentStore
