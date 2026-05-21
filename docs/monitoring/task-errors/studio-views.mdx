@@ -31,6 +31,10 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * Both views display the same errors for listed tasks; deleting a task's errors from one view is reflected
   in the other.  
 
+* **`Tasks` > `Ongoing Tasks`**  
+  Each ETL and AI task bar on the `Ongoing Tasks` view shows the task's health state
+  and error count; expanding the bar reveals additional detail.  
+
 * To learn about task errors and how they impact task health, see the
   [Overview](../../monitoring/task-errors/overview.mdx) page.  
 
@@ -41,6 +45,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Task health indicators](../../monitoring/task-errors/studio-views.mdx#task-health-indicators)
       * [Task errors](../../monitoring/task-errors/studio-views.mdx#task-errors)
    * [AI Task Errors view](../../monitoring/task-errors/studio-views.mdx#ai-task-errors-view)
+   * [Task health on the Ongoing Tasks view](../../monitoring/task-errors/studio-views.mdx#task-health-on-the-ongoing-tasks-view)
+      * [Collapsed view](../../monitoring/task-errors/studio-views.mdx#collapsed-view)
+      * [Expanded view](../../monitoring/task-errors/studio-views.mdx#expanded-view)
 
 </Admonition>
 
@@ -209,5 +216,68 @@ above apply here without change.
 1. Click to open the **AI Hub**.  
 
 2. Click to open the AI Task Errors view.  
+
+</Panel>
+
+<Panel heading="Task health on the Ongoing Tasks view">
+
+On the `Ongoing Tasks` view, each ETL or AI task bar displays the task's current health
+state and the number of errors recorded for the task. Expanding the bar reveals these
+details per node, along with the node's `Connection status`.  
+
+<ContentFrame>
+
+### Collapsed view
+
+![Ongoing Tasks view](./assets/task-errors_ongoing-tasks-view.png)
+
+1. **Click to open the `Tasks` menu.**
+
+2. **Click to open the `Ongoing Tasks` view.**
+
+3. **Task bar**
+
+4. **Expand details**  
+   Click to expand the bar - see the per-node breakdown below.  
+
+5. **Task health and error count**  
+   * `Health Status` - the task's current state (`Healthy`, `Impaired`, or `Failed`).  
+   * `Errors` - the number of errors currently recorded for the task.  
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Expanded view
+
+![Ongoing Tasks task bar - expanded](./assets/task-errors_ongoing-tasks-bar-expanded.png)
+
+Each relevant node has its own column showing how the task is doing on that node. Only
+the node currently running the task, and any other nodes that recorded errors for it,
+are shown.
+
+* `Connection status` - the state of the node's connection to the task's destination.
+  The value is `Active` while the connection is up, and `Reconnect` after a failure
+  while the task waits to retry.  
+  To retry the failing batch immediately, hover `Reconnect` and click the **Retry now**
+  button that appears.  
+
+* `Errors` - the number of errors the task has raised on this node.  
+
+* `Health status` - the task's classification on this node (`Healthy`, `Impaired`,
+  or `Failed`).  
+
+* `State` - the task's processing state on this node (such as `UP TO DATE` or
+  `0% RUNNING`).  
+
+</ContentFrame>
+
+<br />
+
+See the [Ongoing Tasks - Overview](../../studio/database/tasks/ongoing-tasks/general-info.mdx#the-ongoing-tasks-list)
+page for a full walkthrough of the view, including filters, selection, and per-task
+actions.  
 
 </Panel>
