@@ -84,6 +84,26 @@ Learn more [here](../../../server/clustering/distribution/distributed-database.m
 about database nodes' relations and states. 
 </Admonition>
 
+<Admonition type="note" title="">
+
+**Backup tasks are an exception** to the local-decision model described above.  
+
+For backup tasks, the responsible node is either picked when the task is created
+(via the **Set responsible node** option in Studio, or `MentorNode` via the API),
+or chosen by the [cluster observer](../../../server/clustering/distribution/cluster-observer.mdx)
+when no explicit choice was made.  
+Either way, the choice is persisted cluster-wide,
+so all nodes agree on a single responsible node.  
+
+When the current responsible node enters the `Rehab` state,
+the cluster observer waits a configurable grace period (30 minutes by default)
+before moving the task to another node.  
+This prevents the same backup from running on two nodes at once.  
+The grace period is set by
+[Backup.MoveToNewResponsibleNodeGracePeriodInMin](../../../backup/configuration.mdx#backupmovetonewresponsiblenodegraceperiodinmin).
+
+</Admonition>
+
 
 
 ## Tasks Relocation

@@ -1,6 +1,7 @@
 ---
 title: "FAQ"
 sidebar_label: "FAQ"
+description: "Frequently asked questions about backup and restore in RavenDB: one-time backups, server-wide backups, retention, failure handling, and behavior in a cluster."
 sidebar_position: 90
 ---
 
@@ -152,7 +153,27 @@ For example, you can set a backup task to keep backups locally as well as send t
 
 ### What happens if the node responsible for a backup task is down?
 
-When the responsible node is down during the scheduled time, another node from the database group will assume ownership of the task, so there will be no gaps in the backup schedule.
+When the responsible node enters the
+[Rehab state](../server/clustering/distribution/distributed-database.mdx#database-topology),
+the [cluster observer](../server/clustering/distribution/cluster-observer.mdx)
+does not move the backup task immediately.  
+Instead, it waits a grace period (30 minutes by default) before reassigning the task
+to another database-group member.  
+The grace period gives the original node a chance to recover,
+and prevents the same backup from running on two nodes at once.  
+
+When you create a backup task, you can pick the responsible node yourself,
+or leave it for the cluster to decide.  
+The choice (yours or the cluster's) is persisted cluster-wide,
+so all nodes agree on a single responsible node for the task.  
+
+If the current responsible node is in Rehab due to resource constraints on the host machine,
+the cluster observer will leave the backup task on the same node rather than reassign it.  
+The backup will run on that node once it recovers,
+or be reassigned to another node if this one is eventually removed from the database group.  
+
+The grace period is configurable via
+[Backup.MoveToNewResponsibleNodeGracePeriodInMin](../backup/configuration#backupmovetonewresponsiblenodegraceperiodinmin).
 
 </ContentFrame>
 
