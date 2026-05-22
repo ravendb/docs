@@ -134,9 +134,9 @@ type.
 * Retention is per task and per table, so a single noisy task cannot push errors out of
   an unrelated task.  
 
-* Errors are also included in the server's debug package as `etl.errors.json`, so
-  support engineers can capture a full error history without going through Studio or
-  the HTTP endpoints.  
+* Errors are also included in the server's debug package as `etl.errors.json` (for
+  ETL task errors) and `ai.errors.json` (for AI task errors), so support engineers
+  can capture a full error history without going through Studio or the HTTP endpoints.  
 
 </Panel>
 
