@@ -188,6 +188,21 @@ Choose where to restore the backup from by using a restore configuration that ma
 
 [See details in the syntax section.](../backup/restore#restore-configuration-classes)
 
+<Admonition type="note" title="">
+
+When restoring from a remote destination (Amazon S3, Azure Blob Storage, or Google Cloud
+Storage), RavenDB downloads the backup file to local disk before reading the file.  
+The first defined path in this list is used for the download:
+
+- [`Backup.TempPath`](../backup/configuration.mdx#backuptemppath)
+- [`Storage.TempPath`](../server/configuration/storage-configuration.mdx#storagetemppath)
+- The database directory
+
+Before the download starts, RavenDB checks that the chosen path has enough free space.  
+If there is not enough space, the restore fails with a `DiskFullException`.
+
+</Admonition>
+
 **Example: Restore from S3**
 ```csharp
 var restoreConfigS3 = new RestoreFromS3Configuration
