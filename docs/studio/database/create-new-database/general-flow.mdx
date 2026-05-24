@@ -77,6 +77,27 @@ From the database list view, click the **'New database'** button.
    If no node is checked, then the replication nodes will be selected randomly from the cluster.  
 </Admonition>
 
+<Admonition type="note" title="">
+
+**Sizing the database group**
+
+When choosing a **Replication Factor**, use at least three nodes for high
+availability - that way the database survives losing a node and stays
+synchronized through
+[internal replication](../../../server/clustering/replication/replication-overview.mdx#internal-replication).
+
+If the database also uses
+[cluster-wide transactions](../../../server/clustering/cluster-transactions.mdx),
+prefer an odd group size (3, 5, or 7).  
+A cluster-wide transaction commits only after a majority of the database group's
+voting members accept it, and an odd group size means that majority is always
+a clean (n/2 + 1) - never a tie.
+
+For the full reasoning, see
+[Cluster: Best Practices](../../../server/clustering/cluster-best-practice-and-configuration.mdx#clusters-should-have-an-odd-number-of-at-least-3-nodes).
+
+</Admonition>
+
 
 ## 4. Configure Path
 
