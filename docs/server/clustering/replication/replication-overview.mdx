@@ -63,7 +63,7 @@ If the database also uses
 [cluster-wide transactions](../cluster-transactions.mdx),
 prefer an odd group size (3, 5, or 7).  
 A cluster-wide transaction commits only after a majority of the database
-group's voting members accept it, and an odd group size means that majority
+group's voting members have accepted it, and an odd group size means that majority
 is always a clean (n/2 + 1) - never a tie.
 
 For the full reasoning, see
