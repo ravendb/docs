@@ -1,0 +1,128 @@
+---
+title: "CDC Sink Example: Simple Table Migration"
+sidebar_label: Simple Table Migration
+description: "Minimal setup to replicate a single SQL table into a RavenDB collection using CDC Sink."
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# CDC Sink Example: Simple Table Migration
+
+<Admonition type="note" title="">
+
+* This example shows the minimal setup to replicate a single SQL table into a
+  RavenDB collection.
+
+* In this page:
+  * [Source Schema](#source-schema)
+  * [Task Configuration](#task-configuration)
+  * [Resulting Documents](#resulting-documents)
+
+</Admonition>
+
+## Source Schema
+
+A simple customers table:
+
+<Tabs>
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`CREATE TABLE customers (
+    id         SERIAL PRIMARY KEY,
+    name       TEXT NOT NULL,
+    email      TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Task Configuration
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`var config = new CdcSinkConfiguration
+\{
+    Name = "CustomersSync",
+    ConnectionStringName = "MyPostgresConnection",
+    Tables = new List<CdcSinkTableConfig>
+    \{
+        new CdcSinkTableConfig
+        \{
+            CollectionName = "Customers",
+            SourceTableName = "customers",
+            PrimaryKeyColumns = new List<string> \{ "id" \},
+            Columns =
+            [
+                new CdcColumnMapping() \{ Column = "id",         Name = "Id" \},
+                new CdcColumnMapping() \{ Column = "name",       Name = "Name" \},
+                new CdcColumnMapping() \{ Column = "email",      Name = "Email" \},
+                new CdcColumnMapping() \{ Column = "created_at", Name = "CreatedAt" \},
+            ]
+        \}
+    \}
+\};
+
+await store.Maintenance.SendAsync(new AddCdcSinkOperation(config));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Resulting Documents
+
+SQL row:
+
+<Tabs>
+<TabItem value="plain" label="plain">
+<CodeBlock language="plain">
+{`id=1, name='Alice', email='alice@example.com', created_at='2024-01-15 10:30:00+00'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+RavenDB document in collection `Customers` with ID `customers/1`:
+
+<Tabs>
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+    "Id": 1,
+    "Name": "Alice",
+    "Email": "alice@example.com",
+    "CreatedAt": "2024-01-15T10:30:00+00:00",
+    "@metadata": \{
+        "@collection": "Customers"
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Document IDs are generated as `{collection}/{pk}` — for example, `customers/1`
+for a row with `id = 1`.
+
+---
+
+## Related Articles
+
+### CDC Sink Examples
+
+- [Denormalization](./example-denormalization.mdx)
+- [Event Sourcing](./example-event-sourcing.mdx)
+- [Complex Nesting](./example-complex-nesting.mdx)
+
+### CDC Sink
+
+- [Schema Design](../../schema-design.mdx)
+- [Column Mapping](../../column-mapping.mdx)

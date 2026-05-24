@@ -1,0 +1,199 @@
+---
+title: "CDC Sink: Attachment Handling"
+sidebar_label: Attachment Handling
+description: "Explains how to store binary or text SQL columns as RavenDB attachments using CdcColumnType.Attachment on root and embedded table configurations."
+sidebar_position: 9
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# CDC Sink: Attachment Handling
+
+<Admonition type="note" title="">
+
+* SQL columns — binary (`bytea`, `varbinary`, etc.) or text (`text`, `nvarchar`, etc.)
+  — can be stored as RavenDB **attachments** by setting `Type = CdcColumnType.Attachment`
+  on the column mapping entry.
+
+* This applies to both root tables and embedded tables.
+
+* In this page:
+  * [Root Table Attachments](#root-table-attachments)
+  * [Embedded Table Attachments](#embedded-table-attachments)
+  * [Attachment Naming](#attachment-naming)
+  * [Attachment Lifecycle](#attachment-lifecycle)
+
+</Admonition>
+
+---
+
+## Root Table Attachments
+
+Given a SQL table with a binary column:
+
+<Tabs>
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`CREATE TABLE files (
+    id        SERIAL PRIMARY KEY,
+    filename  TEXT        NOT NULL,
+    mime_type TEXT        NOT NULL,
+    content   BYTEA       NOT NULL   -- binary attachment
+);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Set `Type = CdcColumnType.Attachment` on the `content` column entry:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`new CdcSinkTableConfig
+\{
+    CollectionName = "Files",
+    SourceTableName = "files",
+    PrimaryKeyColumns = ["id"],
+    Columns =
+    [
+        new CdcColumnMapping() \{ Column = "id",        Name = "Id" \},
+        new CdcColumnMapping() \{ Column = "filename",  Name = "Filename" \},
+        new CdcColumnMapping() \{ Column = "mime_type", Name = "MimeType" \},
+        new CdcColumnMapping()
+        \{
+            Column = "content", Name = "file",
+            Type = CdcColumnType.Attachment
+        \},
+    ]
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The `content` column is stored as an attachment named `"file"` on the document.
+The `Name` value becomes the attachment name. The content type is determined by the
+SQL column type: `application/octet-stream` for binary columns, `text/plain` for
+text columns.
+
+---
+
+## Embedded Table Attachments
+
+Binary columns on embedded tables are stored as attachments on the **parent** document.
+The attachment name is automatically prefixed to ensure uniqueness.
+
+Given a parent `products` table and a child `photos` table:
+
+<Tabs>
+<TabItem value="sql" label="sql">
+<CodeBlock language="sql">
+{`CREATE TABLE products (
+    product_id  SERIAL PRIMARY KEY,
+    name        TEXT NOT NULL
+);
+
+CREATE TABLE photos (
+    product_id  INT  NOT NULL REFERENCES products(product_id),
+    photo_num   INT  NOT NULL,
+    caption     TEXT,
+    thumbnail   BYTEA,          -- binary attachment
+    PRIMARY KEY (product_id, photo_num)
+);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Configure the embedded table with `Type = CdcColumnType.Attachment` on the binary column:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`new CdcSinkEmbeddedTableConfig
+\{
+    SourceTableName = "photos",
+    PropertyName = "Photos",
+    PrimaryKeyColumns = ["photo_num"],
+    JoinColumns = ["product_id"],
+    Columns =
+    [
+        new CdcColumnMapping() \{ Column = "photo_num", Name = "PhotoNum" \},
+        new CdcColumnMapping() \{ Column = "caption",   Name = "Caption" \},
+        new CdcColumnMapping()
+        \{
+            Column = "thumbnail", Name = "thumb",
+            Type = CdcColumnType.Attachment
+        \},
+    ]
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+A photo with `photo_num = 1` creates an attachment named `"Photos/1/thumb"` on the
+parent document. The prefix `"Photos/1/"` is generated from the `PropertyName` and
+the primary key value.
+
+---
+
+## Attachment Naming
+
+**Root table attachments:**
+
+The attachment name is exactly the `Name` value on the mapping entry with
+`Type = CdcColumnType.Attachment`.
+
+```
+Column = "content", Name = "file", Type = CdcColumnType.Attachment
+→ Attachment name: "file"
+```
+
+**Embedded table attachments:**
+
+The attachment name is prefixed with `{PropertyName}/{pkValue}/`:
+
+```
+PropertyName = "Photos"
+PrimaryKeyColumns = ["photo_num"]  → photo_num = 1
+Column = "thumbnail", Name = "thumb", Type = CdcColumnType.Attachment
+→ Attachment name: "Photos/1/thumb"
+```
+
+For composite primary keys, all key values are joined:
+
+```
+PrimaryKeyColumns = ["date", "seq"]  → date='2024-01', seq=3
+→ Attachment name: "Photos/2024-01/3/thumb"
+```
+
+---
+
+## Attachment Lifecycle
+
+* **INSERT** — Attachment is created on the document
+* **UPDATE** — Attachment is replaced with the new binary data
+* **DELETE (embedded item)** — All attachments for that item are automatically removed
+  from the parent document
+* **DELETE (root document)** — Document and all its attachments are deleted
+
+---
+
+## Related Articles
+
+### CDC Sink
+
+- [Column Mapping](./column-mapping.mdx)
+- [Embedded Tables](./embedded-tables.mdx)
+- [Configuration Reference](./configuration-reference.mdx)
+
+### Document Extensions
+
+- [Attachments Overview](../../../document-extensions/attachments/overview)
