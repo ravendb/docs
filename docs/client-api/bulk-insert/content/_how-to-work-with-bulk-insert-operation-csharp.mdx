@@ -21,7 +21,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [`BulkInsertOptions`](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#bulkinsertoptions)
       * [CompressionLevel](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#compressionlevel)
       * [SkipOverwriteIfUnchanged](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#skipoverwriteifunchanged)
+   * [Track progress with OnProgress](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#track-progress-with-onprogress)
    * [Syntax](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#syntax)
+      * [Method signatures](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#method-signatures)
+      * [Event signature](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#event-signature)
+      * [Classes](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#classes)
 
 </Admonition>
 
@@ -210,9 +214,60 @@ using (var bulk = store.BulkInsert(new BulkInsertOptions
 
 </Panel>
 
+<Panel heading="Track progress with OnProgress">
+
+A long-running bulk insert can take some time to complete. To track its progress -
+for example, to show a progress bar or to log how many documents have been inserted
+so far - subscribe to the `OnProgress` event.
+
+The bulk insert delivers a progress snapshot to your handler each time the server
+reports new progress, with counters such as `DocumentsProcessed`, `BatchCount`, and
+the ID of the document processed most recently (`LastProcessedId`).  
+See [Classes](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#classes)
+for the full property list.
+
+* Updates arrive asynchronously over the
+  [Changes](../../../client-api/changes/what-is-changes-api.mdx)
+  stream that the server opens for the operation.  
+  Your handler is invoked by the server's progress reports, not by your `Store`
+  calls - a single progress event typically covers many `Store` calls at once.
+* The subscription opens after the first `Store` call. Attach the handler before
+  storing anything to avoid missing early updates.
+* Each snapshot is **cumulative** from the start of the bulk insert. `DocumentsProcessed`,
+  `BatchCount`, `Total`, and the other counters grow over time and do not reset between
+  events.  
+  To find the number of documents added between two consecutive events, subtract the
+  older snapshot's `DocumentsProcessed` from the newer one's. For example, if event A
+  reports `DocumentsProcessed = 1000` and event B reports `DocumentsProcessed = 1500`,
+  then 500 documents were added in the interval.
+
+#### Example: Print progress to the console
+
+```csharp
+using (BulkInsertOperation bulkInsert = store.BulkInsert())
+{
+    // Attach the handler before the first Store call so early updates are not missed.
+    bulkInsert.OnProgress += (sender, args) =>
+    {
+        // Each event carries a cumulative snapshot since the bulk insert started.
+        Console.WriteLine(
+            $"Processed {args.Progress.DocumentsProcessed} documents " +
+            $"(last: {args.Progress.LastProcessedId})");
+    };
+
+    // Each employee inserted here advances the counters reported to the handler above.
+    foreach (var employee in employees)
+    {
+        bulkInsert.Store(employee);
+    }
+}
+```
+
+</Panel>
+
 <Panel heading="Syntax">
 
-### Methods
+### Method signatures
 
 <Tabs groupId='bulkInsertOverloads'>
 <TabItem value="bulkInsert" label="BulkInsert">
@@ -325,6 +380,90 @@ using (var bulkInsert = store.BulkInsert(new BulkInsertOptions
 | Return value | |
 |-----------|-------------|
 | `BulkInsertOperation` | Instance of `BulkInsertOperation` used for interaction. |
+
+</TabItem>
+</Tabs>
+
+---
+
+### Event signature
+
+<Tabs groupId='bulkInsertEvents'>
+<TabItem value="onProgress" label="OnProgress">
+
+Raised while a bulk insert is running, each time the server reports new progress.
+Each invocation carries a cumulative progress snapshot since the start of the
+operation.
+
+```csharp
+public event EventHandler<BulkInsertOnProgressEventArgs> OnProgress;
+```
+
+<br />
+
+Usage:
+
+```csharp
+bulkInsert.OnProgress += (sender, args) =>
+{
+    // Read args.Progress for the current snapshot.
+};
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Classes
+
+<Tabs groupId='bulkInsertEventClasses'>
+<TabItem value="BulkInsertOnProgressEventArgs" label="BulkInsertOnProgressEventArgs">
+
+The event arguments delivered to an `OnProgress` handler.
+
+```csharp
+public class BulkInsertOnProgressEventArgs : EventArgs
+{
+    public BulkInsertProgress Progress { get; }
+}
+```
+
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **Progress** | `BulkInsertProgress` | The cumulative progress snapshot for this update. |
+
+</TabItem>
+<TabItem value="BulkInsertProgress" label="BulkInsertProgress">
+
+A cumulative snapshot of the bulk insert's progress, reported by the server.
+
+```csharp
+public class BulkInsertProgress
+{
+    public long Total { get; set; }
+    public long BatchCount { get; set; }
+    public string LastProcessedId { get; set; }
+    public long DocumentsProcessed { get; set; }
+    public long AttachmentsProcessed { get; set; }
+    public long CountersProcessed { get; set; }
+    public long TimeSeriesProcessed { get; set; }
+}
+```
+
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **Total** | `long` | Total items processed since the bulk insert started, across documents, attachments, counters, and time series. |
+| **BatchCount** | `long` | Number of server-side batches processed so far. |
+| **LastProcessedId** | `string` | The identifier of the document that was processed most recently. |
+| **DocumentsProcessed** | `long` | Number of documents inserted so far. |
+| **AttachmentsProcessed** | `long` | Number of attachments stored so far. |
+| **CountersProcessed** | `long` | Number of counters created or modified so far. |
+| **TimeSeriesProcessed** | `long` | Number of time series entries appended so far. |
 
 </TabItem>
 </Tabs>
