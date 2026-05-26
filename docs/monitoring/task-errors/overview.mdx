@@ -33,10 +33,10 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * Task errors and the health states they drive are exposed in
   [Studio](../../monitoring/task-errors/studio-views.mdx),
-  in the [HTTP endpoints](../../server/troubleshooting/debug-routes.mdx#debug-endpoints),
-  in the [SNMP OIDs](../../server/administration/snmp/snmp-overview.mdx#list-of-oids),
-  in the [Prometheus metrics](../../server/administration/monitoring/prometheus.mdx#metrics-provided-by-the-prometheus-endpoint),
-  and in the [JSON monitoring endpoints](../../server/administration/monitoring/telegraf.mdx#monitoring-endpoints).  
+  [HTTP endpoints](../../server/troubleshooting/debug-routes.mdx#debug-endpoints),
+  [SNMP OIDs](../../server/administration/snmp/snmp-overview.mdx#list-of-oids),
+  [Prometheus metrics](../../server/administration/monitoring/prometheus.mdx#metrics-provided-by-the-prometheus-endpoint),
+  and [monitoring endpoints](../../server/administration/monitoring/telegraf.mdx#monitoring-endpoints).  
 
 * In this article:
    * [What task errors are](../../monitoring/task-errors/overview.mdx#what-task-errors-are)
@@ -76,6 +76,7 @@ RavenDB classifies every task error as one of two types, based on the scope of w
   An error that occurred while processing a batch as a whole and may affect multiple documents,
   such as a failure to send the batch to its destination. The error record includes the number
   of documents the failing batch attempted to handle.  
+  After a process error, the task enters fallback mode and retries the batch periodically.  
 
 </ContentFrame>
 
@@ -106,7 +107,7 @@ type.
 
 * **Persistence**  
   The task could not save its results back to the database, or could not update its own
-  process state. Typical causes include write conflicts or storage errors.  
+  process state. Usually caused by storage errors.  
 
 * **Model Inference** (AI tasks only)  
   The task could not communicate with the AI model. Typical causes include the model service
@@ -121,9 +122,8 @@ type.
 
 <Panel heading="Where task errors are stored">
 
-* Each task keeps two dedicated tables on disk: one for item errors and one for process
-  errors.  
-  ETL and AI task errors are kept in separate storage and don't share these tables.  
+* Each ETL or AI task keeps its errors in two dedicated tables on disk: one for item errors
+  and one for process errors.  
 
 * Each table is capped at 500 entries per task. When a new error needs to be recorded
   after the cap is reached, the oldest entry in that table is evicted to make room.
@@ -132,9 +132,9 @@ type.
 * Retention is per task and per table, so a single noisy task cannot push errors out of
   an unrelated task.  
 
-* Errors are also included in the server's debug package as `etl.errors.json` (for
-  ETL task errors) and `ai.errors.json` (for AI task errors), so support engineers
-  can capture a full error history without going through Studio or the HTTP endpoints.  
+* Task errors are also included in the server's debug package, with separate files for ETL
+  and AI task errors, so support engineers can capture a full error history without going
+  through Studio or the HTTP endpoints.  
 
 </Panel>
 
@@ -185,8 +185,9 @@ the `Failed` state will recover only when its error rate falls back below the
 ### How health is computed
 
 RavenDB watches the ratio between a task's failed items and the total number of items the
-task has attempted to process. The ratio is computed as an EWMA (Exponentially Weighted
-Moving Average) and is updated continuously as new batches complete.  
+task has attempted to process. The ratio is computed as a time-independent EWMA
+(Exponentially Weighted Moving Average) - the weight of each batch decays as more batches
+complete, not as time passes - and is updated continuously as new batches complete.  
 
 In plain terms, more recent batches weigh more in the calculation than older ones. A fresh
 string of failures pushes the ratio up faster than the raw error count would suggest, and a
@@ -215,7 +216,7 @@ keys, their valid ranges, and guidance for choosing values.
 
 Task errors and the resulting health states are exposed in several places. Most users will
 start with Studio; automated monitoring tools usually pull from SNMP OIDs, Prometheus
-metrics, or JSON monitoring endpoints.  
+metrics, or monitoring endpoints.  
 
 [Inspect and manage task errors via the HTTP endpoints](../../server/troubleshooting/debug-routes.mdx)  
 [Inspect and manage task errors via Studio](../../monitoring/task-errors/studio-views.mdx)  
@@ -248,7 +249,7 @@ Where to find them in detail:
   Metrics for server, database, and per-task scopes, mirroring the SNMP set.  
   See [Prometheus integration](../../server/administration/monitoring/prometheus.mdx).  
 
-* **JSON monitoring endpoints**  
+* **Monitoring Endpoints**  
   `/admin/monitoring/v1/etls` and `/admin/monitoring/v1/ai-tasks` return per-task health and
   error counts as JSON.  
   See [Monitoring endpoints](../../server/administration/monitoring/telegraf.mdx#monitoring-endpoints).  
