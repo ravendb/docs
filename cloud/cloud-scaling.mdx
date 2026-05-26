@@ -145,8 +145,6 @@ control over storage performance and cost.
 
 !["Figure - Azure Premium SSD v2 storage edit form with editable IOPS and Throughput"](./assets/portal-product-details-edit-storage-premium-ssd-v2.png)
 
-{/* TODO: Screenshot needed — open a Production Tier Azure product on a region that supports Premium SSD v2, go to Manage > Change Storage, and capture the storage edit form showing the editable IOPS and Throughput fields for a Premium SSD v2 disk. */}
-
 **Availability and constraints:**
 
 * Available **only as a data disk** — it cannot be used as the OS disk. This means **Premium SSD v2**
@@ -176,15 +174,13 @@ There are two ways to start using **Premium SSD v2**:
 1. **Migrate the storage to a Data Disk** — when the product's region supports **Premium SSD v2**,
    the new data disk is automatically created as **Premium SSD v2**. The migration modal indicates
    when this is the case. See [Data disks](#data-disks).
-2. **Upgrade an existing Premium disk to Premium SSD v2** — if your product already runs on a
-   **Premium** data disk and is eligible, the **Upgrade to Premium V2** button is shown in the
-   *Storage* section of the product page. See
+2. **Upgrade an existing Premium Single Data disk to Premium SSD v2** — if your product already
+   runs on a **Premium** *Single Data Disk* and is eligible, the **Upgrade to Premium V2** button
+   is shown in the *Storage* section of the product page. See
    [Managing an Existing Product](../cloud/portal/cloud-portal-products-tab.mdx#change-instance-type-and-storage)
    in the portal documentation.
 
 !["Figure - Upgrade to Azure Premium SSD v2 modal with IOPS and Throughput fields"](./assets/portal-product-details-upgrade-to-premium-v2-modal.png)
-
-{/* TODO: Screenshot needed — capture the "Upgrade to Premium V2" modal that opens after clicking the Upgrade to Premium V2 button on the product page. The modal should show the IOPS and Throughput fields used to configure the new Premium SSD v2 disk. */}
 
 The upgrade is performed **node by node**. Each node being migrated is briefly unavailable, and the
 full operation may take **multiple hours** to complete. The action creates a **support request** —
@@ -205,8 +201,6 @@ The use of a data disk is mandatory for deployments requiring more than 1TB of s
 **Data Disk** can be selected during instance creation or migrated to on already existing instances.
 
 !["Figure - Migrate to data disk modal showing Premium SSD v2 information"](./assets/portal-product-details-migrate-to-data-disk-premium-v2.png)
-
-{/* TODO: Screenshot needed — on an Azure Production Tier product in a region that supports Premium SSD v2, open Manage > Change Storage > Migrate disk and capture the migration modal. The modal should clearly show the note indicating that the new data disk will be created as Azure Premium SSD v2. */}
 
 <Admonition type="info" title="Azure: data disk created as Premium SSD v2">
 On **Azure**, when the product's region supports **Premium SSD v2**, migrating to a Data Disk
