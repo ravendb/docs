@@ -159,8 +159,6 @@ The login page shows **Login via GitHub** and **Login via Google** buttons below
 
 !["Figure 8 - Login page with GitHub and Google buttons"](./assets/login-page-oauth-buttons.png)
 
-{/* TODO: Screenshot needed — capture the login page (https://cloud.ravendb.net/user/login) showing the email field and the "Login via GitHub" and "Login via Google" buttons below it, separated by the "or" divider. */}
-
 - Click **Login via GitHub** or **Login via Google**.
 - Authorize RavenDB Cloud at the chosen provider.
 - You are returned to RavenDB Cloud and signed in to the account whose email address matches the one
@@ -172,8 +170,7 @@ succeed when the email reported by the provider matches the email of an existing
 </Admonition>
 
 <Admonition type="info" title="2FA">
-If [2FA](../cloud/cloud-security.mdx#enable-mfa) is enabled on your account, you will be prompted
-for the second factor after authorizing at GitHub or Google, just like with the magic link.
+Users are responsible for enabling and maintaining Two-Factor Authentication (2FA) on their designated Single Sign-On (SSO) provider.
 </Admonition>
 
 **No Cloud account for the email**
@@ -183,26 +180,6 @@ If no RavenDB Cloud account exists for the email returned by GitHub or Google, y
 link opens the registration form with the email pre-filled, so you can finish creating the account.
 
 !["Figure 9 - Check your inbox page"](./assets/login-oauth-check-email-page.png)
-
-{/* TODO: Screenshot needed — capture the "Check your inbox" page that appears after attempting to sign in via GitHub or Google with an email that has no associated Cloud account. */}
-
-**Possible errors**
-
-If sign in cannot complete, a message is shown on the login page. The possible cases are:
-
-| Message | Cause |
-|---|---|
-| **GitHub authentication failed** | The GitHub authorization step did not complete successfully. |
-| **Google authentication failed** | The Google authorization step did not complete successfully. |
-| **The selected account does not expose a verified email address** | The provider account does not expose a usable email address. Make sure the account has a verified primary email. |
-| **This account is temporarily locked** | Too many recent failed sign-in attempts. Try again later. |
-| **We could not sign you in** | A generic sign-in failure. Retry the sign in. |
-
-!["Figure 10 - Login page with an OAuth error alert"](./assets/login-oauth-error-alert.png)
-
-{/* TODO: Screenshot needed — capture the login page showing the warning alert displayed when an OAuth sign-in attempt fails (e.g. "GitHub authentication failed. Please try again."). */}
-
-
 
 ## RavenDB on the Cloud
 
