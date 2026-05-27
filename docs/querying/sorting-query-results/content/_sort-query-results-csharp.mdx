@@ -985,36 +985,6 @@ select key() as 'Category', sum(UnitsInStock) as Sum
 
 </Panel>
 
-<Panel heading="Order by a metadata">
-
-* Documents carry server-maintained metadata such as `@last-modified` and `@collection`.  
-  You can sort by these fields directly in RQL, and via `DocumentQuery` in C#.
-
-* Note: ordering by metadata uses **string** ordering by default. 
-  For `@last-modified` the timestamp format is lexically sortable (`yyyy-MM-ddTHH:mm:ss.fffffffZ`), so default string ordering produces the correct chronological result.
-
-<Tabs groupId='languageSyntax'>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-```csharp
-List<Order> recent = session.Advanced
-    .DocumentQuery<Order>()
-     // Most-recently-modified documents first
-    .OrderByDescending("@metadata.@last-modified")
-    .Take(20)
-    .ToList();
-```
-</TabItem>
-<TabItem value="RQL" label="RQL">
-```sql
-from "Orders"
-order by "@metadata.@last-modified" desc
-limit 20
-```
-</TabItem>
-</Tabs>
-
-</Panel>   
-
 <Panel heading="Order by metadata">
 
 * Documents contain server-maintained metadata fields, such as `@last-modified`.  
@@ -1038,7 +1008,7 @@ List<Order> recent = session.Advanced
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Orders"
-order by "@metadata.@last-modified" desc
+order by @metadata.@last-modified desc
 limit 20
 ```
 </TabItem>

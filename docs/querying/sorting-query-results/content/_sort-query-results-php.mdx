@@ -668,7 +668,7 @@ $recent = $session->advanced()
 <TabItem value="RQL" label="RQL">
 <CodeBlock language="sql">
 {`from "Orders"
-order by "@metadata.@last-modified" desc
+order by @metadata.@last-modified desc
 limit 20
 `}
 </CodeBlock>
