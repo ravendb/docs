@@ -11,10 +11,4 @@ import CodeBlock from '@theme/CodeBlock';
 | **ChangeVector** | string | Document change-vector |
 | **Document** | DynamicJsonValue | Document to put |
 | **Type** | CommandType | The Command Type (PUT) |
-
-### Methods
-
-| Signature | Description |
-| ---------- | ----------- |
-| **DynamicJsonValue ToJson(DocumentConventions conventions, JsonOperationContext context)** | Translate this instance to Json. |
-
+| **ForceRevisionCreationStrategy** | `ForceRevisionStrategy` | Strategy for forcing a revision when the document is stored. `None` (default): no forced revision is created; `Before`: a forced revision 

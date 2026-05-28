@@ -5,7 +5,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Prior to reading this article, please refer to [full-Text search with dynamic queries](../../../client-api/session/querying/text-search/full-text-search.mdx) 
+* Prior to reading this article, please refer to [Full-Text search with dynamic queries](../../../client-api/session/querying/text-search/full-text-search.mdx) 
   to learn about the `search` method.  
 
 * **All capabilities** provided by `search` with a dynamic query can also be used when querying a static-index.
@@ -17,14 +17,17 @@ import CodeBlock from '@theme/CodeBlock';
       See examples below.  
       
     * You can configure which analyzer will be used to tokenize this field.  
-      See [selecting an analyzer](../../../indexes/using-analyzers.mdx#selecting-an-analyzer-for-a-field).    
+      Learn more in [Setting analyzer for index-field](../../../indexes/using-analyzers.mdx#setting-analyzer-for-index-field).    
+    
 * In this article:
   * [Indexing single field for FTS](../../../indexes/querying/searching.mdx#indexing-single-field-for-fts)
   * [Indexing multiple fields for FTS](../../../indexes/querying/searching.mdx#indexing-multiple-fields-for-fts)
-  * [Indexing all fields for FTS (using AsJson)](../../../indexes/querying/searching.mdx#indexing-all-fields-for-fts-(using-asjson))
+  * [Indexing all fields for FTS (using AsJson)](../../../indexes/querying/searching.mdx#indexing-all-fields-for-fts-using-asjson)
+  * [Indexing dynamic fields for FTS](../../../indexes/querying/searching.mdx#indexing-dynamic-fields-for-fts)
   * [Boosting search results](../../../indexes/querying/searching.mdx#boosting-search-results)
 
 </Admonition>
+
 ## Indexing single field for FTS
 
 #### The index:
@@ -253,7 +256,7 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
 
 ## Indexing all fields for FTS (using AsJson)
 
-* To search across ALL fields in a document without defining each one explicitly, use the `AsJson` method,
+* To search across ALL fields in a document without defining each one explicitly, use the `AsJson` method,  
   which is available in the **C# LINQ string** that is assigned to the `map` property in the PHP index class,
   as shown in the example below.
 
@@ -331,6 +334,15 @@ where search(allValues, "tofu")
 </TabItem>
 </Tabs>
 
+
+## Indexing dynamic fields for FTS
+
+* [Dynamic index fields](../../../indexes/using-dynamic-fields.mdx) are created at indexing time, with names and values derived from document content,  
+  rather than being predefined as fixed index fields in the index definition.  
+  This allows you to query the index by fields that are not known at index definition or deployment time.
+
+* Dynamic index fields can be configured for full-text search just like regular index fields.  
+  Learn more in [Indexing dynamic fields for full-text search](../../../indexes/using-dynamic-fields.mdx#indexing-dynamic-fields-for-full-text-search).
 
 
 ## Boosting search results
