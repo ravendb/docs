@@ -1,6 +1,7 @@
 ---
 title: "Queue ETL: Apache Kafka"
 sidebar_label: Kafka ETL
+description: "Stream RavenDB document changes to Apache Kafka topics using ETL tasks with JavaScript transformations and custom partitioning."
 sidebar_position: 1
 ---
 
@@ -35,19 +36,40 @@ import ContentFrame from "@site/src/components/ContentFrame";
   For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx).
 
 * In this article:
+  * [Setup workflow](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#setup-workflow)
   * [Creating a Kafka ETL task using the Client API](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#creating-a-kafka-etl-task-using-the-client-api)
     * [Add a Kafka connection string](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#add-a-kafka-connection-string)
+      * [Example: connecting to a secure Kafka cluster](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#example-secure-kafka-cluster)
+    * [Use RavenDB Certificate](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#use-ravendb-certificate)
     * [Add a Kafka ETL task](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#add-a-kafka-etl-task)
       * [Example: basic](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#example-basic)
       * [Example: delete processed documents](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#delete-processed-documents)
     * [The transformation script](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#the-transformation-script)
       * [The loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#the-loadto-method)
   * [Prerequisites for a secure Kafka server](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#prerequisites-for-a-secure-kafka-server)
+    * [What needs to be granted](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#what-needs-to-be-granted)
+    * [Computing the transactional IDs](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#computing-the-transactional-ids)
+      * [Example: building the transactional ID](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#example-building-the-transactional-id)
+    * [Entering the grants on the Kafka cluster](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#entering-the-grants-on-the-kafka-cluster)
+    * [Single-node Kafka cluster](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#single-node-kafka-cluster)
   * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#syntax)
     * [Connection string classes](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#connection-string-classes)
     * [ETL task classes](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#etl-task-classes)
 
 </Admonition>
+
+<Panel heading="Setup workflow">
+
+* **If your Kafka cluster does not use ACLs (Access Control Lists):**  
+  Deploy the task as described in [Creating a Kafka ETL task using the Client API](#creating-a-kafka-etl-task-using-the-client-api) below.
+
+* **If your Kafka cluster does use ACLs:**
+
+  1. Prepare the task configuration as described in [Creating a Kafka ETL task using the Client API](#creating-a-kafka-etl-task-using-the-client-api) below, but do not deploy the task yet.
+  2. Compute the transactional IDs and set up the ACL grants as described in [Prerequisites for a secure Kafka server](#prerequisites-for-a-secure-kafka-server) below.
+  3. Deploy the task as described in the [Creating](#creating-a-kafka-etl-task-using-the-client-api) section.
+
+</Panel>
 
 <Panel heading="Creating a Kafka ETL task using the Client API">
 
@@ -61,7 +83,6 @@ Before setting up the ETL task, define a connection string that the task will us
 
 ```csharp
 // Prepare the connection string:
-// ==============================
 var conStr = new QueueConnectionString
 {
     // Provide a name for this connection string
@@ -76,10 +97,74 @@ var conStr = new QueueConnectionString
 };
 
 // Deploy (send) the connection string to the server via the PutConnectionStringOperation:
-// =======================================================================================
 var res = store.Maintenance.Send(
     new PutConnectionStringOperation<QueueConnectionString>(conStr));
 ```
+
+---
+
+<a id="example-secure-kafka-cluster"/>
+#### Example: connecting to a secure Kafka cluster
+
+For a secure Kafka cluster, set the authentication and TLS keys on the optional
+`ConnectionOptions` dictionary.
+
+See [Prerequisites for a secure Kafka server](#prerequisites-for-a-secure-kafka-server)
+for the matching cluster-side ACL setup.
+
+```csharp
+// Prepare a connection string for a secure Kafka cluster:
+var conStr = new QueueConnectionString
+{
+    Name = "secureKafkaConStr",
+    BrokerType = QueueBrokerType.Kafka,
+    KafkaConnectionSettings = new KafkaConnectionSettings
+    {
+        BootstrapServers = "broker.example.com:9092",
+
+        // Authentication via SASL/PLAIN over SSL/TLS
+        ConnectionOptions = new Dictionary<string, string>
+        {
+            { "security.protocol", "SASL_SSL" },
+            { "sasl.mechanism", "PLAIN" },
+            { "sasl.username", "<your-username>" },
+            { "sasl.password", "<your-password>" }
+        }
+    }
+};
+
+// Deploy the connection string via PutConnectionStringOperation:
+var res = store.Maintenance.Send(
+    new PutConnectionStringOperation<QueueConnectionString>(conStr));
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+## Use RavenDB Certificate
+
+If your RavenDB cluster has been set up securely, you can authenticate to Kafka
+using RavenDB's cluster-wide certificate (the one defined at RavenDB setup) by
+setting `UseRavenCertificate` to `true` on the `KafkaConnectionSettings`.
+
+```csharp
+KafkaConnectionSettings = new KafkaConnectionSettings
+{
+    BootstrapServers = "broker.example.com:9092",
+    UseRavenCertificate = true
+}
+```
+
+<br />
+
+With this enabled, the Kafka connection runs over SSL/TLS, and RavenDB
+authenticates with its own cluster-wide certificate. This replaces the TLS
+keys you would otherwise add to `ConnectionOptions`.
+
+To complete the setup, register RavenDB's cluster-wide certificate in
+[Kafka's truststore](https://kafka.apache.org/documentation/streams/developer-guide/security.html)
+on the target machine(s).
 
 </ContentFrame>
 
@@ -100,7 +185,6 @@ For more details about the script and the `loadTo` method, see [The transformati
 
 ```csharp
 // Define a transformation script for the task:
-// ============================================
 Transformation transformation = new Transformation
 {
     // Define the input collections
@@ -110,7 +194,6 @@ Transformation transformation = new Transformation
     // The transformation script
     Name = "scriptName",
     Script = @"// Create an orderData object
-               // ==========================
                var orderData = {
                    Id: id(this),
                    OrderLinesCount: this.Lines.length,
@@ -118,7 +201,6 @@ Transformation transformation = new Transformation
                };
 
                // Update the orderData's TotalCost field
-               // ======================================
                for (var i = 0; i < this.Lines.length; i++) {
                    var line = this.Lines[i];
                    var cost = (line.Quantity * line.PricePerUnit) * ( 1 - line.Discount);
@@ -126,7 +208,6 @@ Transformation transformation = new Transformation
                }
 
                // Load the object to the 'OrdersTopic' in Kafka
-               // =============================================
                loadToOrdersTopic(orderData, {
                    Id: id(this),
                    PartitionKey: id(this),
@@ -136,7 +217,6 @@ Transformation transformation = new Transformation
 };
 
 // Define the Kafka ETL task:
-// ==========================
 var etlTask = new QueueEtlConfiguration()
 {
     BrokerType = QueueBrokerType.Kafka,
@@ -151,7 +231,6 @@ var etlTask = new QueueEtlConfiguration()
 };
 
 // Deploy (send) the task to the server via the AddEtlOperation:
-// =============================================================
 store.Maintenance.Send(new AddEtlOperation<QueueConnectionString>(etlTask));
 ```
 
@@ -210,7 +289,7 @@ The two methods are equivalent, offering alternative syntax:
 * **`loadTo<TopicName>(obj, {attributes})`**
   * Here the target is specified as part of the function name.
   * The target _&lt;TopicName&gt;_ in this syntax is not a variable and cannot be used as one,  
-    it is simply a string literal of the target's name.
+    it is a string literal of the target's name.
 
 * **`loadTo('TopicName', obj, {attributes})`**
   * Here the target is passed as an argument to the method.
@@ -232,7 +311,6 @@ A sample script that processes documents from the Orders collection:
 
 ```javascript
 // Create an orderData object
-// ==========================
 var orderData = {
     Id: id(this),
     OrderLinesCount: this.Lines.length,
@@ -240,7 +318,6 @@ var orderData = {
 };
 
 // Update the orderData's TotalCost field
-// ======================================
 for (var i = 0; i < this.Lines.length; i++) {
     var line = this.Lines[i];
     var cost = (line.Quantity * line.PricePerUnit) * ( 1 - line.Discount);
@@ -248,7 +325,6 @@ for (var i = 0; i < this.Lines.length; i++) {
 }
 
 // Load the object to the "OrdersTopic" in Kafka
-// =============================================
 loadToOrders(orderData, {
     Id: id(this),
     PartitionKey: id(this),
@@ -263,59 +339,136 @@ loadToOrders(orderData, {
 
 <Panel heading="Prerequisites for a secure Kafka server">
 
-When the target Kafka cluster uses ACLs (Access Control Lists), valid credentials  
-in the connection string are not enough on their own. The Kafka broker's ACL  
-rules must also grant those credentials explicit permissions on **topics** and  
-on **transactional IDs** before the ETL task can produce messages.
-
-The reason is how RavenDB writes to Kafka. The producer is **idempotent and  
-transactional**: each transformation script gets its own producer with its own  
-transactional ID, and each batch of messages is sent inside a Kafka  
-transaction. Both the topic write and the transaction initialization are  
-checked against the broker's ACL rules.
-
-Grant the following on the Kafka side:
-
-* **WRITE** on each target topic.  
-  One topic per `loadTo<TopicName>` call in the transformation script.
-
-* **WRITE** and **DESCRIBE** on the producer's transactional ID.  
-  One transactional ID per transformation script. The value is built as  
-  `{task-name}/{script-name}-{database-group-id}`, with any `/` replaced by `_`.  
-  Wildcard or prefixed ACLs are a practical way to cover all scripts in a task  
-  at once.
-
 <ContentFrame>
 
-#### Example: how the transactional ID is built
+### What needs to be granted
 
-For a Kafka ETL task named `OrdersToKafka` with a transformation script named  
-`Promote`, on a database whose database-group ID is `a1b2c3d4`, the producer's  
-transactional ID is:
+When the Kafka cluster uses ACLs (Access Control Lists), two kinds of ACL grants must
+be set up on the cluster:
 
-`OrdersToKafka_Promote-a1b2c3d4`
+* **WRITE** on each target topic.
+* **WRITE** and **DESCRIBE** on each RavenDB transformation script **transactional ID**.
 
-The `/` between the task name and the script name has been replaced by `_`.  
-The ACL grant must target this exact string (or a matching wildcard or prefix  
-pattern).
+The transactional ID is generated by RavenDB per transformation script, see
+[Computing the transactional IDs](#computing-the-transactional-ids) below for the
+transactional ID format and how to compute it.
 
 </ContentFrame>
 
+---
+
+<ContentFrame>
+
+### Computing the transactional IDs
+
+A transformation script's transactional ID follows this format:
+
+`{task-name}/{script-name}-{database-group-id}`
+
+When RavenDB builds the actual transactional ID from this template, every `/` in
+the resulting string is replaced by `_`, since Kafka does not accept `/` in
+transactional ID values.
+
+You set the task name and the script name yourself when you build the
+`QueueEtlConfiguration`.  
+The database-group ID is the ID of the database group that runs the task (send
+`GetDatabaseRecordOperation` to fetch the database record and read the ID from
+its `Topology.DatabaseTopologyIdBase64` property).  
+With the ID in hand, you can compute every transactional ID before deploying the task.
+
+<a id="example-building-the-transactional-id"/>
+#### Example: building the transactional ID
+
+```csharp
+// Fetch the database-group ID from the database record
+var record = store.Maintenance.Server.Send(
+    new GetDatabaseRecordOperation(store.Database));
+var databaseGroupId = record.Topology.DatabaseTopologyIdBase64;
+
+// Compute the transactional ID for a transformation script
+// Build the ID from the template and replace '/' with '_' to match
+// what RavenDB will use when registering the producer with Kafka.
+var taskName = "OrdersToKafka";
+var scriptName = "Promote";
+var transactionalId = $"{taskName}/{scriptName}-{databaseGroupId}".Replace("/", "_");
+
+// For databaseGroupId = "a1b2c3d4", transactionalId is:
+// "OrdersToKafka_Promote-a1b2c3d4"
+```
+
+<br />
+
 <Admonition type="note" title="">
-If you are running a single-node Kafka cluster, also set  
-`transaction.state.log.replication.factor=1` and  
-`transaction.state.log.min.isr=1` on the broker. These are not security  
-requirements, but transactions cannot initialize on a single-node cluster  
-without them.
+
+Another way to learn a transactional ID is to read it from RavenDB's exception
+text when a grant is missing or a transactional ID does not match. The exception
+message names the missing resource and the operation (**WRITE** or **DESCRIBE**),
+and includes the actual transactional ID RavenDB built.
+
+For example, if the **WRITE** and **DESCRIBE** grants on a transactional ID are
+missing, the exception message includes:
+
+```
+ETL process: myKafkaEtlTaskName. Failed to initialize transactions for the producer
+instance. Error code: 'TransactionalIdAuthorizationFailed'. Error reason: '...'.
+Add the required ACL permissions to your API Key that will make WRITE and DESCRIBE
+operations possible for transactional ID 'OrdersToKafka_Promote-a1b2c3d4'.
+```
+
 </Admonition>
 
-When an ACL grant is missing, RavenDB raises an exception whose message names  
-the missing resource (the topic or the transactional ID) and the operation  
-(WRITE or DESCRIBE). Reading the exception is the fastest way to confirm which  
-grant is still needed.
+</ContentFrame>
 
-For background on the broader rule set, see Confluent's  
+---
+
+<ContentFrame>
+
+### Entering the grants on the Kafka cluster
+
+Configure the grants on the Kafka cluster using its admin tools. The example below
+uses Apache Kafka's CLI; the same operations are available in vendor UIs like
+Confluent Cloud, AKHQ, or kafka-ui.
+
+```bash
+# Grant WRITE on a target topic
+kafka-acls --bootstrap-server <broker> --add \
+  --allow-principal User:<principal> \
+  --operation Write --topic <topic-name>
+
+# Grant WRITE and DESCRIBE on a transactional ID
+kafka-acls --bootstrap-server <broker> --add \
+  --allow-principal User:<principal> \
+  --operation Write --operation Describe \
+  --transactional-id <transactional-id>
+```
+
+<br />
+
+For more on the broker rule set, see Confluent's
 [Authorization for Idempotent and Transactional APIs](https://docs.confluent.io/platform/current/kafka/authorization.html#enable-authorization-for-idempotent-and-transactional-apis).
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Single-node Kafka cluster
+
+On a single-node Kafka cluster, set the following on the broker  
+(in `server.properties`), so that Kafka transactions can initialize:
+
+```properties
+transaction.state.log.replication.factor=1
+transaction.state.log.min.isr=1
+```
+
+<br />
+
+These are not security requirements, but RavenDB's Kafka ETL uses a transactional
+producer, which cannot initialize on a single-node cluster without them.
+
+</ContentFrame>
 
 </Panel>
 
@@ -367,7 +520,7 @@ public class KafkaConnectionSettings
     // A string containing comma-separated keys of "host:port" URLs to Kafka brokers
     public string BootstrapServers { get; set; }
 
-    // Various configuration options
+    // librdkafka client config keys, passed through to the Kafka producer
     public Dictionary<string, string> ConnectionOptions { get; set; }
 
     public bool UseRavenCertificate { get; set; }
