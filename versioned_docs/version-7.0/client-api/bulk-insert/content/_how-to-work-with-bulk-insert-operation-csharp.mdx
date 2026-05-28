@@ -64,12 +64,12 @@ The following methods can be used when creating a bulk insert.
 | Signature | Description |
 | ----------| ----- |
 | **void Abort()** | Abort the operation |
-| **void Store(object entity, IMetadataDictionary metadata = null)** | Store the entity, identifier will be generated automatically on client-side. Optional, metadata can be provided for the stored entity. |
+| **string Store(object entity, IMetadataDictionary metadata = null)** | Store the entity, identifier will be generated automatically on client-side. Optional, metadata can be provided for the stored entity. |
 | **void Store(object entity, string id, IMetadataDictionary metadata = null)** | Store the entity, with `id` parameter to explicitly declare the entity identifier. Optional, metadata can be provided for the stored entity.|
-| **void StoreAsync(object entity, IMetadataDictionary metadata = null)** | Store the entity in an async manner, identifier will be generated automatically on client-side. Optional, metadata can be provided for the stored entity. |
-| **void StoreAsync(object entity, string id, IMetadataDictionary metadata = null)** | Store the entity in an async manner, with `id` parameter to explicitly declare the entity identifier. Optional, metadata can be provided for the stored entity.|
+| **Task&lt;string&gt; StoreAsync(object entity, IMetadataDictionary metadata = null)** | Store the entity in an async manner, identifier will be generated automatically on client-side. Optional, metadata can be provided for the stored entity. |
+| **Task StoreAsync(object entity, string id, IMetadataDictionary metadata = null)** | Store the entity in an async manner, with `id` parameter to explicitly declare the entity identifier. Optional, metadata can be provided for the stored entity.|
 | **void Dispose()** | Dispose of an object |
-| **void DisposeAsync()** | Dispose of an object in an async manner |
+| **ValueTask DisposeAsync()** | Dispose of an object in an async manner |
 
 </ContentFrame>
 
