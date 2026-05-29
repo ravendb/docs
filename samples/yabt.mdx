@@ -1,0 +1,164 @@
+---
+title: "YABT"
+description: "RavenDB fits cleanly into layered .NET business applications with tenant-aware sessions, static indexes, set-based updates, and real integration tests."
+challenges_solutions_tags: [enterprise-app-architecture, multi-tenant-data-access, testable-data-access, document-reference-updates]
+feature_tags: [document-session, static-indexes, patch-by-query, test-driver]
+tech_stack_tags: [csharp, dotnet, aspnet-core, angular]
+category: "Enterprise Applications"
+license: "MIT License"
+license_url: "https://github.com/ravendb/samples-yabt/blob/master/LICENSE"
+repository_url: "https://github.com/ravendb/samples-yabt"
+demo_url: "https://yabt.ravendb.net"
+languages: ["C#"]
+image: "/img/samples/yabt/cover.png"
+img_alt: "YABT backlog items list showing filters, tags, assignees, and item states"
+gallery:
+  - src: "/img/samples/yabt/cover.png"
+    alt: "YABT backlog items list showing filters, tags, assignees, and item states"
+  - src: "/img/samples/yabt/projects-diagram.png"
+    alt: "YABT solution diagram showing WebAPI, Domain, Database, and shared database common projects"
+  - src: "/img/samples/yabt/apikey-auth.png"
+    alt: "YABT Swagger API key authentication prompt"
+related_resources:
+  - type: documentation
+    documentation_type: docs
+    subtitle: "What is a Session"
+    article_key: "client-api/session/what-is-a-session-and-how-does-it-work"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Set-Based Patching"
+    article_key: "client-api/operations/patching/set-based"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Creating and Deploying Indexes"
+    article_key: "indexes/creating-and-deploying"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Test Driver"
+    article_key: "start/test-driver"
+  - type: guide
+    subtitle: "Writing Unit Tests with RavenDB .NET Test Driver"
+    article_key: "writing-unit-tests-with-ravendb-net-test-driver"
+  - type: guide
+    subtitle: "How to Setup RavenDB with ASP.NET Core"
+    article_key: "how-to-setup-ravendb-with-asp-net-core-8-application"
+---
+
+import { FeatureAccordion, SampleLayout } from '@site/src/components/Samples';
+
+<SampleLayout>
+
+## Overview
+
+YABT shows how RavenDB fits into a layered .NET business application without forcing database details through every layer. The document store is registered once, domain code works through a database abstraction, tenant rules live in the session wrapper, and the API layer stays focused on application behavior.
+
+For teams evaluating RavenDB in custom line-of-business systems, the sample highlights the pieces that matter in real projects: tenant-aware document access, static indexes for application screens, patch-by-query updates for denormalized references, and tests that run against a real RavenDB database instead of mocked persistence.
+
+## Features used
+
+<FeatureAccordion
+    title="DocumentStore and tenanted sessions"
+    description="Registers RavenDB once and exposes scoped sessions that apply tenant rules consistently."
+    icon="database"
+>
+    YABT registers `IDocumentStore` as the application-wide RavenDB entry point and exposes a scoped `IAsyncTenantedDocumentSession` to the domain layer. The session wrapper centralizes tenant behavior instead of spreading tenant filters across every query handler.
+
+    ```csharp
+    services.AddSingleton<IDocumentStore>(x =>
+    {
+        var config = x.GetRequiredService<DatabaseSettings>();
+        return SetupDocumentStore.GetDocumentStore(config, customInit);
+    });
+
+    services.AddScoped<IAsyncTenantedDocumentSession>(x =>
+        new AsyncTenantedDocumentSession(docStore, getCurrentTenantIdFunc));
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Static indexes"
+    description="Keeps list screens and tag filtering explicit, queryable, and easy to test."
+    icon="index"
+>
+    The database project owns the document models and index definitions. Tests create those indexes against RavenDB before exercising domain behavior, so query behavior is verified against the same index model the application uses.
+
+    ```csharp
+    protected override void PreInitialize(IDocumentStore store)
+    {
+        store.PreInitializeDocumentStore();
+        store.Conventions.MaxNumberOfRequestsPerSession = 200;
+        base.PreInitialize(store);
+    }
+
+    IndexCreation.CreateIndexes(typeof(SetupDocumentStore).Assembly, store);
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Patch by query"
+    description="Updates related document references with server-side set-based operations."
+    icon="patch"
+>
+    YABT queues deferred `IndexQuery` patches and sends them as `PatchByQueryOperation` after saving the main session changes. That pattern is useful when denormalized document references need to stay consistent without loading every matching document into application code.
+
+    ```csharp
+    while (_deferredPatchQueries.TryDequeue(out var queryIndex))
+    {
+        queryIndex.WaitForNonStaleResults = true;
+
+        await DbSession.Advanced.DocumentStore.Operations.SendAsync(
+            new PatchByQueryOperation(queryIndex),
+            DbSession.Advanced.SessionInfo,
+            token);
+    }
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="RavenDB Test Driver"
+    description="Runs domain tests against a real RavenDB database instead of mocking document behavior."
+    icon="test"
+>
+    The test project uses RavenDB's test driver, creates the application's indexes, and opens no-cache sessions with index-waiting settings. The result is fast feedback while still testing real persistence, indexing, tenant filtering, and query behavior.
+
+    ```csharp
+    services.AddScoped(c =>
+    {
+        var docStore = c.GetRequiredService<IDocumentStore>();
+        return new AsyncTenantedDocumentSession(
+            docStore,
+            GetCurrentTenantId,
+            TimeSpan.FromSeconds(30),
+            true,
+            new SessionOptions { NoCaching = true });
+    });
+    ```
+</FeatureAccordion>
+
+## Technologies
+
+- [RavenDB](https://ravendb.net/)
+- [ASP.NET Core 8](https://dotnet.microsoft.com/apps/aspnet)
+- [.NET 8](https://dotnet.microsoft.com/download)
+- [Angular 14](https://angular.io/)
+- [Swagger / OpenAPI](https://swagger.io/)
+
+## Run locally
+
+1. Check out the repository.
+2. Install the .NET 8 SDK.
+3. Create a RavenDB database locally, in Docker, or in RavenDB Cloud.
+4. Import `documentation/exported_data.ravendbdump`.
+5. Set the database name and server URL in `back-end/WebApi/appsettings.Development.json`.
+6. Run the `WebAPI` project and open `https://localhost:5001/swagger`.
+7. Follow the front-end README to run the Angular UI.
+
+## Community & Support
+
+If you spot a bug, have an idea, or want to ask a question, open an issue or pull request in the repository.
+
+## License
+
+This project is licensed with the [MIT license](https://github.com/ravendb/samples-yabt/blob/master/LICENSE).
+
+</SampleLayout>

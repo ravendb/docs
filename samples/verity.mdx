@@ -1,0 +1,191 @@
+---
+title: "Verity: The Fiscal Truth Engine"
+description: "RavenDB keeps regulated filing workflows auditable from ingestion through AI analysis, downstream delivery, and lifecycle controls."
+challenges_solutions_tags: [regulated-document-workflows, auditable-data-history, ai-governance, lifecycle-governance, azure-native-integration]
+feature_tags: [gen-ai-tasks, ai-agents, remote-attachments, azure-storage-queues-etl, revisions, data-subscriptions, hub-sink-replication, document-expiration, data-archival]
+tech_stack_tags: [csharp, dotnet, aspire, nodejs, svelte, azure-storage, azure-functions]
+category: "Finance"
+license: "MIT License"
+license_url: "https://github.com/ravendb/samples-verity/blob/main/LICENSE"
+repository_url: "https://github.com/ravendb/samples-verity"
+languages: ["C#"]
+image: "/img/samples/verity/cover.png"
+img_alt: "Verity financial reporting dashboard showing SEC filing data and revenue charts"
+gallery:
+  - src: "/img/samples/verity/cover.png"
+    alt: "Verity financial reporting dashboard showing quarterly SEC filing metrics"
+related_resources:
+  - type: documentation
+    documentation_type: docs
+    subtitle: "GenAI Integration"
+    article_key: "ai-integration/gen-ai-integration/start"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "AI Agents"
+    article_key: "ai-integration/ai-agents/start"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Remote Attachments"
+    article_key: "document-extensions/attachments/store-attachments/store-attachments-remote"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Data Archival"
+    article_key: "data-archival/overview"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Data Subscriptions"
+    article_key: "client-api/data-subscriptions/what-are-data-subscriptions"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Azure Queue Storage ETL"
+    article_key: "server/ongoing-tasks/etl/queue-etl/azure-queue"
+  - type: guide
+    subtitle: "Processing Invoices Using Data Subscriptions"
+    article_key: "processing-invoices-using-data-subscriptions-in-ravendb"
+  - type: guide
+    subtitle: "Using Remote Attachments to Cut Storage Costs"
+    article_key: "using-remote-attachments-to-cut-storage-costs"
+  - type: video
+    subtitle: "RavenDB GenAI Tasks Webinar"
+    url: "https://www.youtube.com/watch?v=NgvyeHwwVjM"
+---
+
+import { FeatureAccordion, SampleLayout } from '@site/src/components/Samples';
+
+<SampleLayout>
+
+## Overview
+
+Verity shows how RavenDB supports regulated document workflows where ingestion, AI analysis, auditability, and downstream delivery all need to stay traceable. SEC EDGAR filings are imported into RavenDB, large payloads are stored as remote attachments, and database-managed AI tasks analyze filing chunks and profitability signals.
+
+The business value is accountability. RavenDB keeps the operational records, revisions, subscriptions, queue delivery, replication setup, and AI configuration connected, so teams can see what changed, what was analyzed, and what downstream consumers received. Azure Storage and Azure Queues support the workflow without becoming competing operational records.
+
+## Features used
+
+<FeatureAccordion
+    title="GenAI tasks configured in RavenDB"
+    description="Creates RavenDB-managed AI tasks for filing chunk analysis and profitability extraction."
+    icon="genai"
+>
+    Verity configures the OpenAI connection and adds GenAI tasks during database migration. The tasks are part of the RavenDB database setup, so analysis is tied to document changes instead of being a detached worker convention.
+
+    ```csharp
+    DocumentStore.Maintenance.Send(new PutConnectionStringOperation<AiConnectionString>(
+        new AiConnectionString { Name = connectionName, ModelType = AiModelType.Chat }
+    ));
+
+    DocumentStore.Maintenance.Send(new AddGenAiOperation(new ChunkAnalysisTask(connectionName)));
+    DocumentStore.Maintenance.Send(new AddGenAiOperation(new ProfitabilityTask(connectionName)));
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="AI Agents"
+    description="Adds a controlled assistant layer for reviewing filings and answering finance-oriented questions."
+    icon="ai-agents"
+>
+    The assistant layer is configured from the same RavenDB AI connection string as the GenAI tasks. That keeps interactive review close to the governed database instead of letting a separate chatbot copy filings into its own store.
+
+    ```csharp
+    VerityAgentCreator
+        .Create(DocumentStore, connectionName)
+        .GetAwaiter()
+        .GetResult();
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Remote Attachments"
+    description="Stores large filing payloads in Azure Storage while keeping document metadata in RavenDB."
+    icon="remote-attachment"
+>
+    SEC filings and derived artifacts can be large. Remote Attachments let the application keep those files in Azure Storage while RavenDB maintains the document relationship, metadata, and retrieval flow. This keeps the database model coherent without forcing every byte of filing content into local database files.
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Queue ETL for audit revisions"
+    description="Streams selected RavenDB changes to Azure Queue Storage for integration and audit processing."
+    icon="azure-queue-storage-etl"
+>
+    Verity configures RavenDB Queue ETL with Azure Queue Storage. RavenDB can project relevant revision or audit data into a queue without custom polling code watching every document change.
+
+    ```csharp
+    DocumentStore.Maintenance.Send(new PutConnectionStringOperation<QueueConnectionString>(
+        new QueueConnectionString
+        {
+            BrokerType = QueueBrokerType.AzureQueueStorage,
+            AzureQueueStorageConnectionSettings = new AzureQueueStorageConnectionSettings
+            {
+                ConnectionString = context.AzureStorageConnectionString
+            }
+        }));
+
+    DocumentStore.Maintenance.Send(new AddEtlOperation<QueueConnectionString>(
+        AuditRevisionQueueEtlTask.Create()));
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Data subscriptions for analyzed reports"
+    description="Lets a worker react to newly analyzed filings through RavenDB subscription batches."
+    icon="data-subscriptions"
+>
+    The subscription app watches selected companies and receives report notifications from RavenDB. The worker can stay simple because RavenDB handles delivery, batching, and subscription ownership.
+
+    ```csharp
+    var worker = store.Subscriptions.GetSubscriptionWorker<ReportNotification>(
+        new SubscriptionWorkerOptions(subscriptionName)
+        {
+            Strategy = SubscriptionOpeningStrategy.WaitForFree
+        });
+
+    await worker.Run(batch =>
+    {
+        foreach (var item in batch.Items)
+            AnsiConsole.MarkupLine($"[cyan]Analyzed:[/] {item.Result.Filing}");
+    }, ct);
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Revisions, expiration, and archival"
+    description="Preserves accountability while keeping old records manageable."
+    icon="data-archival"
+>
+    Financial reports are not disposable notes. Verity uses RavenDB revisions for historical accountability, document expiration for cleanup, and data archival for records that should remain retrievable without staying active in indexes and subscriptions.
+</FeatureAccordion>
+
+## Technologies
+
+- [RavenDB](https://ravendb.net/)
+- [.NET 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
+- [Aspire](https://aspire.dev/)
+- [Node.js 22](https://nodejs.org/)
+- [Svelte](https://svelte.dev/)
+- [Azure Storage](https://azure.microsoft.com/en-us/products/storage)
+- [Azure Functions](https://azure.microsoft.com/en-us/products/functions)
+
+## Run locally
+
+1. Check out the repository.
+2. Install Docker, .NET 10.x, Node.js 22.x, Aspire, and Azure Functions Core Tools.
+3. Run `aspire run`.
+4. When Aspire prompts for parameters, provide a SEC user agent, an OpenAI API key, an Azure Storage connection string, and a RavenDB license.
+
+## Notes
+
+Verity focuses on U.S.-based companies because the workflow expects 10-K and 10-Q reports from SEC EDGAR.
+
+## Community & Support
+
+If you spot a bug, have an idea, or want to ask a question, open an issue or pull request in the repository. The RavenDB team also hangs out on the [RavenDB Discord server](https://discord.gg/ravendb).
+
+## Contributing
+
+Contributions are welcome. See the repository's [CONTRIBUTING](https://github.com/ravendb/samples-verity/blob/main/CONTRIBUTING.md) file for details.
+
+## License
+
+This project is licensed with the [MIT license](https://github.com/ravendb/samples-verity/blob/main/LICENSE).
+
+</SampleLayout>

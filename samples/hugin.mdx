@@ -1,0 +1,162 @@
+---
+title: "Hugin"
+description: "RavenDB brings fast full-text search to tiny edge hardware, serving over 2.6 million Stack Exchange Q&As from a compressed local database on a 512MB device."
+challenges_solutions_tags: [constrained-hardware-performance, large-dataset-on-edge, offline-data-access, local-first-search, self-contained-appliance]
+feature_tags: [full-text-search, corax, map-reduce-indexes, document-compression, include]
+tech_stack_tags: [nodejs, react, express, raspberry-pi]
+category: "Offline Search"
+repository_url: "https://github.com/ravendb/samples-hugin"
+languages: ["Node.js"]
+image: "/img/samples/hugin/cover.png"
+img_alt: "Hugin offline knowledge base homepage with RavenDB search"
+gallery:
+  - src: "/img/samples/hugin/cover.png"
+    alt: "Hugin offline knowledge base homepage with RavenDB search"
+related_resources:
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Full-Text Search"
+    article_key: "client-api/session/querying/text-search/full-text-search"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Corax"
+    article_key: "indexes/search-engine/corax"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Map-Reduce Indexes"
+    article_key: "indexes/map-reduce-indexes"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Documents Compression"
+    article_key: "server/storage/documents-compression"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Includes"
+    article_key: "client-api/how-to/handle-document-relationships"
+  - type: guide
+    subtitle: "Diacritic-Sensitive Search in RavenDB"
+    article_key: "diacritic-sensitive-search-in-ravendb"
+  - type: guide
+    subtitle: "Master RavenDB Indexing Staleness"
+    article_key: "master-ravendb-indexing-staleness"
+---
+
+import { FeatureAccordion, SampleLayout } from '@site/src/components/Samples';
+
+<SampleLayout>
+
+## Overview
+
+Hugin shows RavenDB making large local data practical on tiny hardware. The appliance runs on a Raspberry Pi Zero 2 W with a 1GHz CPU and 512MB of RAM, yet it serves a searchable offline knowledge base with over 2.6 million Stack Exchange Q&As and 4.3 million documents.
+
+For teams building edge, field, kiosk, or offline experiences, the point is simple: RavenDB can keep a large compressed data set queryable close to the user, even without cloud access. The sample keeps indexes, full-text search, includes, statistics, and document relationships available on a microSD-backed device, with query timings visible in the application.
+
+## Features used
+
+<FeatureAccordion
+    title="Corax full-text search"
+    description="Keeps millions of Q&As searchable locally on Raspberry Pi-class hardware."
+    icon="full-text-search"
+>
+    Hugin defines a JavaScript static index for questions and marks the combined title/tag field with RavenDB's full-text search mode. The index uses Corax, so the appliance can provide keyword search locally without a separate search service or a network connection.
+
+    ```javascript
+    this.map('Questions', q => ({
+      Community: q.Community,
+      Tags: q.Tags,
+      CreationDate: q.CreationDate,
+      ViewCount: q.ViewCount,
+      Query: [q.Title, q.Tags]
+    }));
+
+    this.index('Query', 'Search');
+    this.searchEngineType = 'Corax';
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Map-reduce tag counts"
+    description="Maintains tag statistics for the corpus inside RavenDB instead of building a separate cache."
+    icon="map-reduce"
+>
+    Hugin uses a map-reduce index to count tags across the imported question corpus and split those counts by community. That turns the tag browser into a maintained RavenDB projection instead of a hand-built cache.
+
+    ```javascript
+    this.map("Questions", q => q.Tags.map(t => {
+      const communities = {};
+      communities[q.Community] = 1;
+      return { Tag: t, Count: 1, Communities: communities };
+    }));
+
+    this.reduce(g => g.groupBy(x => x.Tag).aggregate(g => ({
+      Tag: g.key,
+      Count: g.values.reduce((count, val) => val.Count + count, 0)
+    })));
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Document compression"
+    description="Stores a multi-million-document corpus in a form that fits the appliance."
+    icon="documents-compression"
+>
+    The included Stack Exchange data set contains 4.3 million documents and over 2.6 million Q&As while using just over 5GB of disk space with RavenDB document compression. Without compression, the same data is about 11GB. On a microSD-backed device, that saves storage and reduces disk I/O.
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Includes and batched loads"
+    description="Loads related users, answers, and comments without turning each page into a chain of roundtrips."
+    icon="link"
+>
+    Question detail pages use includes for owners, answer owners, and comment users, then batch-load the remaining user documents. That keeps the document model natural while avoiding the usual relationship-loading tax.
+
+    ```javascript
+    const question = await session
+      .include("Owner")
+      .include("Answers[].Owner")
+      .include("Answers[].Comments[].User")
+      .load(req.query.id);
+
+    const users = await session.load(userIds);
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Small-device performance"
+    description="Runs RavenDB, the application, and the data set on the same 512MB edge appliance."
+    icon="database"
+>
+    The appliance runs RavenDB locally, stores the Stack Exchange data on the device, and serves the React application through the same offline environment. Hugin warms common RavenDB queries after startup because cold microSD I/O is expensive, then keeps the user experience fast enough to make the hardware constraints visible in the best possible way.
+
+    ```javascript
+    for (const community of communities) {
+      await session.query({ indexName: QuestionsSearch.name })
+        .whereEquals("Community", community.id)
+        .orderByDescending("CreationDate")
+        .take(15)
+        .all();
+    }
+    ```
+</FeatureAccordion>
+
+## Technologies
+
+- [RavenDB](https://ravendb.net/)
+- [Node.js](https://nodejs.org/)
+- [Express](https://expressjs.com/)
+- [React](https://react.dev/)
+- [Raspberry Pi OS](https://www.raspberrypi.com/software/)
+
+## Run the appliance
+
+1. Power on the Hugin device.
+2. Connect to the `Hugin (ravendb)` Wi-Fi network.
+3. Open `http://start.ravendb`.
+
+The repository also contains the Raspberry Pi setup files, RavenDB service configuration, and application source if you want to inspect or adapt the appliance.
+
+## Community & Support
+
+If you spot a bug, have an idea, or want to ask a question, open an issue or pull request in the repository. The RavenDB team also hangs out on the [RavenDB Discord server](https://discord.gg/ravendb).
+
+</SampleLayout>
