@@ -31,6 +31,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
   * Using the session's [RawQuery](../../querying/overview.mdx#session-advanced-rawquery) method in the Client API.  
   * Writing a query in the [Query view](../../studio/database/queries/query-view.mdx) in Studio, where [RQL code assistance](../../querying/rql/rql-code-assistance.mdx) is available.
 
+* **RQL keywords are case-insensitive**:  
+  For example, `SELECT`, `select`, and `Select` are equivalent.
+    
+---
+    
 * In this article:
   * [The query pipeline](../../querying/rql/what-is-rql.mdx#the-query-pipeline)  
   * [RQL keywords and methods](../../querying/rql/what-is-rql.mdx#rql-keywords-and-methods)  
@@ -132,10 +137,10 @@ The following keywords and methods are available in RQL:
         - [long](../../querying/sorting-query-results/sort-query-results.mdx)
         - [double](../../querying/sorting-query-results/sort-query-results.mdx)
         - [alphaNumeric](../../querying/sorting-query-results/sort-query-results.mdx)
+    - [NULLS FIRST | NULLS LAST](../../querying/sorting-query-results/sort-query-results.mdx) // TODO...
     - [random()](../../querying/sorting-query-results/sort-query-results.mdx#order-by-random)
     - [score()](../../querying/sorting-query-results/sort-query-results.mdx#order-by-score)
     - [spatial.distance()](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting)
-- [LOAD](../../querying/rql/what-is-rql.mdx#load)
 - [SELECT](../../querying/rql/what-is-rql.mdx#select)
     - DISTINCT
     - key()
@@ -144,6 +149,7 @@ The following keywords and methods are available in RQL:
     - [facet()](../../indexes/querying/faceted-search.mdx)
     - [timeseries()](../../document-extensions/timeseries/querying/overview-and-syntax.mdx#syntax)
     - [counter()](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries)
+- [LOAD](../../querying/rql/what-is-rql.mdx#load)
 - [LIMIT](../../querying/rql/what-is-rql.mdx#limit)
 - [UPDATE](../../querying/rql/what-is-rql.mdx#update)
 - [INCLUDE](../../querying/rql/what-is-rql.mdx#include)
@@ -494,9 +500,106 @@ The keyword `include` has been introduced to support:
 
 ## `order by`
 
-Use `order by` to perform sorting.  
-Learn more in this [sorting](../../querying/sorting-query-results/sort-query-results.mdx) article.  
+Use `order by` to sort the query results by one or more fields.  
+Learn more about sorting in the [Sort query results](../../querying/sorting-query-results/sort-query-results.mdx) article.
+    
+RQL syntax:  
+    
+<TabItem>
+```sql
+ORDER BY <expression> [AS <type>] [ASC | DESC] [NULLS FIRST | NULLS LAST]
+```
+</TabItem>
+    
+By default, results are sorted in ascending order.
 
+<TabItem>
+```sql
+from "Employees"
+order by FirstName // ascending order
+```
+</TabItem>
+    
+To specify the sort direction, add `asc`, `ascending`, `desc`, or `descending`.
+
+<TabItem>
+```sql
+from "Employees"
+order by FirstName desc // descending order
+```
+</TabItem>
+
+You can also specify the sort type by adding `as <type>`.    
+<TabItem>
+```sql
+from "Products"
+order by UnitsInStock as long desc
+```
+</TabItem> 
+
+Use `nulls first` or `nulls last` to control where matching documents with `null` or missing values in the sorted field will appear in the query results.
+This is supported only by the [Corax](../../indexes/search-engine/corax.mdx) search engine.     
+    
+The `nulls first` and `nulls last` options are absolute.
+They place those documents before or after matching documents with non-null values, regardless of whether the query sorts in ascending or descending order:
+
+  * `nulls first` places those documents **before** matching documents with non-null values.
+  * `nulls last` places those documents **after** matching documents with non-null values.   
+    
+<TabItem>
+```csharp
+// Place documents whose ReportsTo field is null (or missing) at the top of the results
+from "Employees"
+order by ReportsTo nulls first
+```
+</TabItem>
+
+<TabItem>
+```csharp
+// Cast + direction + null placement on a single key
+from "Products"
+order by UnitsInStock as long desc nulls last
+```
+</TabItem>
+
+<TabItem>
+```csharp
+// Works with method expressions
+from "Employees"
+order by id() as string nulls last
+```
+</TabItem>
+
+<TabItem>
+```csharp
+// Works with spatial sorting
+from "Employees"
+order by spatial.distance(Address.Location, spatial.point(0, 0)) nulls first
+```
+</TabItem>
+
+<TabItem>
+```csharp
+// Per-clause control on a multi-key sort.
+// Each clause sets its own null placement.
+from "Products"
+order by Name nulls first,
+         UnitsInStock desc, // omitted: uses default
+         PricePerUnit as double nulls last
+```
+</TabItem>   
+
+    
+<Admonition type="info" title="">
+    
+* If `nulls first` / `nulls last` is Not specified, RavenDB uses the configured default behavior.  
+  See [Indexing.Querying.Corax.NullsSortMode](../../server/configuration/indexing-configuration.mdx#indexingqueryingcoraxnullssortmode).      
+
+* The `nulls first` / `nulls last` clause is supported only by the [Corax](../../indexes/search-engine/corax.mdx) search engine.  
+  Issuing a query that contains this clause against a Lucene index will return an `InvalidQueryException`.
+    
+</Admonition>
+    
 ---
 
 ## `select`
@@ -508,7 +611,7 @@ Learn more in this [projection](../../indexes/querying/projections.mdx) article.
 
 ## `load`
 
-Use `load`when you need to use data from a related document in projection.  
+Use `load` when you need to use data from a related document in projection.  
 See an example in this [projection](../../indexes/querying/projections.mdx#example-viii---projection-using-a-loaded-document) article.
 
 ---
