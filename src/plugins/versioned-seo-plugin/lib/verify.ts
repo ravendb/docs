@@ -82,10 +82,10 @@ function normalizeRoute(route: string): string {
     return stripTrailingSlash(route);
 }
 
-// Map<scope, Set<route>>. Scope keys: currently-maintained version strings, "cloud", "guides".
+// Map<scope, Set<route>>. Scope keys: currently-maintained version strings, "cloud", "guides", "samples".
 // Legacy versions, /templates, and root are excluded — invalid see_also targets, no slice needed.
 const VERSION_PREFIX_REGEX = /^\/(\d+\.\d+)(\/|$)/;
-const SECTION_PREFIX_REGEX = /^\/(cloud|guides)(\/|$)/;
+const SECTION_PREFIX_REGEX = /^\/(cloud|guides|samples)(\/|$)/;
 
 export function buildScopedRoutes(
     routePaths: readonly string[],

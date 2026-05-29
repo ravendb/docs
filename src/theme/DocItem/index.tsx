@@ -5,6 +5,7 @@ import type { WrapperProps } from "@docusaurus/types";
 import DocsTopbar from "@site/src/components/DocsTopbar";
 import { CustomDocFrontMatter } from "@site/src/typescript/docMetadata";
 import { useActivePlugin } from "@docusaurus/plugin-content-docs/client";
+import Head from "@docusaurus/Head";
 
 type Props = WrapperProps<typeof DocItemType>;
 
@@ -33,9 +34,9 @@ export default function DocItemWrapper(props: Props): ReactNode {
     return (
         <>
             {isTemplatesPlugin && (
-                <head>
+                <Head>
                     <meta name="robots" content="noindex, nofollow" />
-                </head>
+                </Head>
             )}
             {showTopbar && <DocsTopbar title={title} supportedLanguages={supportedLanguages} />}
             <div className="wrapper row">

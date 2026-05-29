@@ -96,7 +96,7 @@ export default function SamplesHomePage() {
     const hasActiveFilters = selectedTags.size > 0 || matchLogic !== "any";
 
     const { siteConfig } = useDocusaurusContext();
-    const siteUrl = siteConfig.url;
+    const siteUrl = siteConfig.url.replace(/\/$/, "");
     const samplesUrl = `${siteUrl}/samples`;
 
     const filteredSamples = samples.filter((s) => s.id !== "home");

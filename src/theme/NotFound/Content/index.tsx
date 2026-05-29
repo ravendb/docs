@@ -14,6 +14,9 @@ export default function NotFoundContent({ className }: Props): ReactNode {
     const versionLabel = activeVersion?.label ?? latestVersion.label;
     const { pathname } = useLocation();
     const isCloudPath = pathname.includes("/cloud");
+    const isGuidesPath = pathname.includes("/guides");
+    const isSamplesPath = pathname.includes("/samples");
+    const homeUrl = isCloudPath ? "/cloud" : isGuidesPath ? "/guides" : isSamplesPath ? "/samples" : `/${versionLabel}`;
     return (
         <main className={clsx("container margin-vert--xl", className)}>
             <div className="row">
@@ -65,7 +68,7 @@ export default function NotFoundContent({ className }: Props): ReactNode {
                         <CardWithIcon
                             title="Homepage"
                             description="Feeling lost? Start at the very beginning"
-                            url={isCloudPath ? "/cloud" : `/${versionLabel}`}
+                            url={homeUrl}
                             icon="home"
                         />
                         <CardWithIcon

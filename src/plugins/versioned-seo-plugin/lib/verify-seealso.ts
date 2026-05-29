@@ -65,7 +65,14 @@ export function verifySeeAlsoLinks(input: VerifySeeAlsoInput): SeeAlsoIssue[] {
         }
 
         const expectedVersion = record.articleVersion ?? latestVersion;
-        const scopeKey = record.source === "cloud" ? "cloud" : record.source === "guides" ? "guides" : expectedVersion;
+        const scopeKey =
+            record.source === "cloud"
+                ? "cloud"
+                : record.source === "guides"
+                  ? "guides"
+                  : record.source === "samples"
+                    ? "samples"
+                    : expectedVersion;
 
         if (routesByScope.get(scopeKey)?.has(record.href)) {
             continue;
@@ -75,7 +82,7 @@ export function verifySeeAlsoLinks(input: VerifySeeAlsoInput): SeeAlsoIssue[] {
             articlePath: record.articlePath,
             href: record.href,
             reason: `see_also href ${record.href} does not resolve in scope "${scopeKey}"`,
-            fix: `edit ${record.articlePath}: link: must be versionless and point at a real page in ${scopeKey === "cloud" || scopeKey === "guides" ? `/${scopeKey}/` : `version ${scopeKey}`}.`,
+            fix: `edit ${record.articlePath}: link: must be versionless and point at a real page in ${scopeKey === "cloud" || scopeKey === "guides" || scopeKey === "samples" ? `/${scopeKey}/` : `version ${scopeKey}`}.`,
         });
     }
 

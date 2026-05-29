@@ -193,10 +193,10 @@ const versionedSeoPlugin = function versionedSeoPlugin(
                 const info = extractVersionInfo(rel);
                 const originalHtml = fs.readFileSync(filePath, "utf8");
 
-                // SeeAlso audit: currently-maintained versioned pages + /cloud + /guides articles.
+                // SeeAlso audit: currently-maintained versioned pages + unversioned content sections.
                 const shouldAuditSeeAlso =
                     (info && !LEGACY_VERSIONS.includes(info.version)) ||
-                    (!info && (rel.startsWith("cloud/") || rel.startsWith("guides/")));
+                    (!info && (rel.startsWith("cloud/") || rel.startsWith("guides/") || rel.startsWith("samples/")));
                 if (shouldAuditSeeAlso) {
                     seeAlsoRecords.push(
                         ...fanoutSeeAlsoRecords(

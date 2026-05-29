@@ -20,8 +20,8 @@ export default function MetadataWrapper(props: Props): ReactNode {
     const isGuide = source?.startsWith("@site/guides/") || source?.startsWith("guides/") || false;
     const isCloud = source?.startsWith("@site/cloud/") || source?.startsWith("cloud/") || false;
     const isTemplate = source?.startsWith("@site/templates/") || source?.startsWith("templates/") || false;
-    const isDocumentationPage = !isGuide && !isCloud && !isTemplate;
     const isSample = source?.startsWith("@site/samples/") || source?.startsWith("samples/") || false;
+    const isDocumentationPage = !isGuide && !isCloud && !isTemplate && !isSample;
 
     // Exclude landing pages (e.g. guides/home.mdx, samples/home.mdx) from type-specific metadata
     const fileName = source?.split("/").pop();
