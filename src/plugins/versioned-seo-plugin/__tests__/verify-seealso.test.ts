@@ -79,6 +79,15 @@ test("verifySeeAlsoLinks routes source: guides hrefs to the guides slice", () =>
     assert.deepEqual(issues, []);
 });
 
+test("verifySeeAlsoLinks routes source: samples hrefs to the samples slice", () => {
+    const issues = verifySeeAlsoLinks({
+        records: [record({ source: "samples", href: "/samples/fit-assistant" })],
+        routesByScope: scoped({ "7.1": [], samples: ["/samples/fit-assistant"] }),
+        latestVersion: CURRENT,
+    });
+    assert.deepEqual(issues, []);
+});
+
 test("verifySeeAlsoLinks reports a guides href whose target doesn't exist", () => {
     const issues = verifySeeAlsoLinks({
         records: [record({ source: "guides", href: "/guides/nonexistent" })],

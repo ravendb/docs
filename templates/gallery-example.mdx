@@ -1,0 +1,97 @@
+---
+title: "Gallery Component Example"
+description: "Example of using the Gallery component with multiple images"
+gallery:
+  - src: "/img/samples/library-of-ravens/01.webp"
+    alt: "First example image"
+  - src: "/img/samples/library-of-ravens/02.webp"
+    alt: "Second example image"
+  - src: "/img/samples/library-of-ravens/03.webp"
+    alt: "Third example image"
+  - src: "/img/discord.webp"
+    alt: "Fourth example image"
+  - src: "/img/webinar.webp"
+    alt: "Fifth example image"
+---
+
+import Gallery from '@site/src/components/Common/Gallery';
+
+# Gallery Component Example
+
+This page demonstrates how to use the Gallery component with images defined in frontmatter.
+
+## Basic Usage
+
+The Gallery component provides responsive layouts optimized for each device:
+
+### Desktop (≥ lg breakpoint)
+- One large image on the left (taking ~2/3 of the width)
+- Two smaller images stacked on the right (taking ~1/3 of the width)
+- If there are more than 3 images, a "+x" overlay appears on the third image
+
+### Mobile (< lg breakpoint)
+- Single-image carousel with swipe navigation
+- All images accessible via horizontal scroll
+- Dot indicators showing current position
+- Tap dots to jump to specific images
+- Images display in their natural aspect ratio
+
+### Example Gallery
+
+<Gallery images={frontMatter.gallery} />
+
+## How to Use
+
+### 1. Define images in frontmatter
+
+```yaml
+---
+title: "Your Page Title"
+gallery:
+  - src: "/img/path/to/image1.png"
+    alt: "Description of first image"
+  - src: "/img/path/to/image2.png"
+    alt: "Description of second image"
+  - src: "/img/path/to/image3.png"
+    alt: "Description of third image"
+  - src: "/img/path/to/image4.png"
+    alt: "Description of fourth image"
+---
+```
+
+### 2. Import and use the Gallery component
+
+#### Standalone Usage
+```mdx
+import Gallery from '@site/src/components/Common/Gallery';
+
+<Gallery images={frontMatter.gallery} />
+```
+
+#### With SampleLayout
+```mdx
+import { SampleLayout } from '@site/src/components/Samples';
+import Gallery from '@site/src/components/Common/Gallery';
+
+<SampleLayout
+    details={sampleDetails}
+    gallery={<Gallery images={frontMatter.gallery} />}
+>
+    ## Overview
+    ...
+</SampleLayout>
+```
+
+When using the `gallery` prop with `SampleLayout`:
+- **Mobile**: Gallery appears at the top, right after the title and above the ActionsCard
+- **Desktop**: Gallery appears in the main content area before the Overview section
+
+
+## Customization
+
+You can pass a custom className to adjust the gallery styling:
+
+```mdx
+<Gallery images={frontMatter.gallery} className="my-8" />
+```
+

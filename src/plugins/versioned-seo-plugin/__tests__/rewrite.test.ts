@@ -183,7 +183,17 @@ test("rewriteHtml respects minimumVersion gating when the file's version gates t
 
 test("buildScopedRoutes partitions routes by version and section, skipping legacy/templates/root", () => {
     const map = buildScopedRoutes(
-        ["/7.2/a", "/7.2/b/", "/6.2/c", "/4.2/legacy", "/cloud/x", "/guides/y", "/templates/z", "/"],
+        [
+            "/7.2/a",
+            "/7.2/b/",
+            "/6.2/c",
+            "/4.2/legacy",
+            "/cloud/x",
+            "/guides/y",
+            "/samples/fit-assistant",
+            "/templates/z",
+            "/",
+        ],
         LEGACY
     );
     assert.equal(map.get("7.2")?.size, 2);
@@ -194,6 +204,7 @@ test("buildScopedRoutes partitions routes by version and section, skipping legac
     assert.equal(map.get("4.2"), undefined, "legacy versions should not appear in the map");
     assert.equal(map.get("cloud")?.size, 1);
     assert.equal(map.get("guides")?.size, 1);
+    assert.equal(map.get("samples")?.size, 1);
     assert.equal(map.get("templates"), undefined, "templates are never valid see_also targets");
     assert.equal(map.get("root"), undefined, "root is never a valid see_also target");
 });

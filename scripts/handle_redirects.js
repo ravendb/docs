@@ -57,7 +57,11 @@ async function handler(event) {
         return request;
     }
 
-    if (normalizedUri.startsWith("/guides") || normalizedUri.startsWith("/cloud")) {
+    if (
+        normalizedUri.startsWith("/guides") ||
+        normalizedUri.startsWith("/cloud") ||
+        normalizedUri.startsWith("/samples")
+    ) {
         try {
             const redirectData = await kvsHandle.get(normalizedUri);
             const redirectJsonValue = JSON.parse(redirectData);
