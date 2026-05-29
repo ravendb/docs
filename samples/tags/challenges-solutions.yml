@@ -4,26 +4,18 @@ cloud-tax:
     label: "Cloud Tax"
 gen-ai-data-enrichment:
     label: "Gen AI Data Enrichment"
-semantic-search:
-    label: "Semantic Search"
-ai-governance:
-    label: "AI Governance"
-human-in-the-loop-ai:
-    label: "Human-in-the-Loop AI"
-action-approval-workflow:
-    label: "Action Approval Workflow"
-live-operational-updates:
-    label: "Live Operational Updates"
-durable-event-delivery:
-    label: "Durable Event Delivery"
+semantic-discovery:
+    label: "Semantic Discovery"
+governed-ai-workflows:
+    label: "Governed AI Workflows"
+event-driven-workflows:
+    label: "Event-Driven Workflows"
 reporting-offload:
     label: "Reporting Offload"
 azure-native-integration:
     label: "Azure-Native Integration"
 cloud-cost-control:
     label: "Cloud Cost Control"
-document-lifecycle:
-    label: "Document Lifecycle"
 regulated-document-workflows:
     label: "Regulated Document Workflows"
 integration-patterns:
@@ -38,29 +30,19 @@ resilient-integrations:
     label: "Resilient Integrations"
 search-consolidation:
     label: "Search Consolidation"
-semantic-discovery:
-    label: "Semantic Discovery"
 single-database-ai:
     label: "Single-Database AI"
 natural-language-actions:
     label: "Natural-Language Actions"
-offline-data-access:
-    label: "Offline Data Access"
-local-first-search:
-    label: "Local-First Search"
 edge-deployment:
     label: "Edge Deployment"
 self-contained-appliance:
     label: "Self-Contained Appliance"
-constrained-hardware-performance:
-    label: "Constrained Hardware Performance"
-large-dataset-on-edge:
-    label: "Large Dataset on Edge"
+edge-data-performance:
+    label: "Edge Data Performance"
 enterprise-app-architecture:
     label: "Enterprise App Architecture"
 multi-tenant-data-access:
     label: "Multi-Tenant Data Access"
 testable-data-access:
     label: "Testable Data Access"
-document-reference-updates:
-    label: "Document Reference Updates"

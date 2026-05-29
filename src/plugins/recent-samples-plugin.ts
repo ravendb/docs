@@ -155,10 +155,15 @@ export default function recentSamplesPlugin(context, _options): Plugin {
 
             Object.entries(tagsByCategory).forEach(([category, tags]) => {
                 Object.entries(tags).forEach(([key, value]) => {
+                    const count = tagCounts[key] || 0;
+                    if (count === 0) {
+                        return;
+                    }
+
                     allTags.push({
                         label: value.label,
                         key,
-                        count: tagCounts[key] || 0,
+                        count,
                         category,
                     });
                 });
