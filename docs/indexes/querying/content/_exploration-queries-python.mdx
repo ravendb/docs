@@ -26,7 +26,7 @@ import CodeBlock from '@theme/CodeBlock';
 
     * [Limit](../../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries) 
       the number of records that an exploration query filters.  
-    * Use [where](../../../indexes/querying/filtering.mdx) in recurring queries, 
+    * Use [where](../../../querying/filtering-query-results/filter-query-results.mdx) in recurring queries, 
       so the query would [use an index](../../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries).  
 
     </Admonition>
@@ -50,7 +50,7 @@ In Python, exploration queries can be applied via RQL using the `filter` keyword
 The added filtering is parsed and executed by RavenDB's Javascript engine.  
 
 The provided filtering operations resemble those implemented by 
-[where](../../../indexes/querying/filtering.mdx) and can be further enhanced 
+[where](../../../querying/filtering-query-results/filter-query-results.mdx) and can be further enhanced 
 by Javascript functions of your own.  
 Read [here](../../../indexes/querying/exploration-queries.mdx#with-user-defined-javascript-functions-) 
 about creating and using your own Javascript function in your filters.  
@@ -121,7 +121,7 @@ filter_limit 500 // limit the number of filtered records
 `}
 </CodeBlock>
 </TabItem>
-* Use [where](../../../indexes/querying/filtering.mdx) rather than `filter` for recurring filtering.  
+* Use [where](../../../querying/filtering-query-results/filter-query-results.mdx) rather than `filter` for recurring filtering.  
   `where` will use an index, creating it if necessary, to accelerate the filtering 
   in subsequent queries.  
 </Admonition>

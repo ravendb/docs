@@ -948,5 +948,12 @@
             "targetUrl": "/querying/sorting-query-results/custom-sorters/server-wide-custom-sorters",
             "minimumVersion": "7.2"
         }
+    },
+    {
+        "key": "/indexes/querying/filtering",
+        "value": {
+            "targetUrl": "/querying/filtering-query-results/filter-query-results",
+            "minimumVersion": "7.2"
+        }
     }
 ]
