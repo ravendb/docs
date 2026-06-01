@@ -1,0 +1,423 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+    
+* Conditional filtering lets a single RQL query handle different combinations of search criteria based on query parameter values,
+  instead of composing different query strings on the client.    
+
+* Query parameters are values passed separately from the query text and referenced in RQL with `$`,  
+  such as `$title` or `$country`.
+
+* This feature is available only in **RQL**. It is not exposed through LINQ queries or DocumentQuery.
+
+* The RQL `when(condition, predicate)` function applies a query predicate only when `condition` is true.
+    * **If `condition` evaluates to `true`** -  
+      the predicate is applied.
+    * **If `condition` evaluates to `false`** -  
+      the `when(...)` clause is removed from the query expression and the predicate is not applied.
+
+* The `condition` is evaluated **server-side** before documents are matched.  
+  It is not evaluated per document and cannot inspect document fields.  
+  The second argument, `predicate`, is a regular query predicate that is matched against documents.    
+
+* In this article:
+    * [When to use conditional filtering](../../../querying/filtering-query-results/conditional-filtering.mdx#when-to-use-conditional-filtering)
+    * [Basic example](../../../querying/filtering-query-results/conditional-filtering.mdx#basic-example)
+    * [Combine `when` with `and`, `or`, and `not`](../../../querying/filtering-query-results/conditional-filtering.mdx#combine-when-with-and-or-and-not)
+    * [Parameter and null handling](../../../querying/filtering-query-results/conditional-filtering.mdx#parameter-and-null-handling)
+    * [Type handling](../../../querying/filtering-query-results/conditional-filtering.mdx#type-handling)
+    * [Logical expressions in the condition](../../../querying/filtering-query-results/conditional-filtering.mdx#logical-expressions-in-the-condition)
+    * [Using `in` and `all in` in the condition](../../../querying/filtering-query-results/conditional-filtering.mdx#using-in-and-all-in-in-the-condition)
+    * [Restrictions](../../../querying/filtering-query-results/conditional-filtering.mdx#restrictions)
+    * [Syntax](../../../querying/filtering-query-results/conditional-filtering.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="When to use conditional filtering">
+
+* Use conditional filtering when one query needs to support several **optional** search criteria,
+  such as title, country, status, or date range.    
+
+* **Without `when`**, the client often builds the RQL dynamically, adding predicates only for parameters that were supplied.  
+  Doing so creates many query-text variations and makes the query harder to read, test, and maintain.
+
+* **With `when`**, the client can pass all optional values as query parameters and keep one stable RQL query.  
+  Each optional predicate is applied only when its corresponding condition is `true`.
+
+* Conditional filtering is useful when missing or `null` parameters should simply skip the specified predicate,  
+  rather than require a different query string.    
+
+</Panel>
+
+<Panel heading="Basic example">
+
+* The following query searches employees and conditionally applies two predicates:  
+  one for _title_ and one for _country_.
+
+* The values are passed as query parameters.  
+  In RQL, `$title` uses the value passed by `.AddParameter("title", title)`,  
+  and `$country` uses the value passed by `.AddParameter("country", country)`.
+
+* The query text stays the same for every request. Only the parameter values change.    
+
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="RawQuery" label="RawQuery">
+    ```csharp
+    string? title = "Sales Representative"; // Use null to skip the title predicate.
+    string? country = "USA";                // Use null to skip the country predicate.
+
+    List<Employee> employees = session.Advanced
+        .RawQuery<Employee>(@"
+            from Employees
+            where when($title != null, Title == $title)
+              and when($country != null, Address.Country == $country)")
+        .AddParameter("title", title)
+        .AddParameter("country", country)
+        .ToList();
+    ```
+    </TabItem>
+    <TabItem value="RawQuery_async" label="RawQuery_async">
+    ```csharp
+    string? title = "Sales Representative"; // Use null to skip the title predicate.
+    string? country = "USA";                // Use null to skip the country predicate.
+
+    List<Employee> employees = await asyncSession.Advanced
+        .AsyncRawQuery<Employee>(@"
+            from Employees
+            where when($title != null, Title == $title)
+              and when($country != null, Address.Country == $country)")
+        .AddParameter("title", title)
+        .AddParameter("country", country)
+        .ToListAsync();
+    ```
+    </TabItem>
+    <TabItem value="RQL" label="RQL">
+    ```sql
+    from Employees
+    where when($title != null, Title == $title)
+      and when($country != null, Address.Country == $country)
+
+    { "title": "Sales Representative", "country": "USA" }
+    ```
+    </TabItem>
+    </Tabs>
+    
+* **When both parameters are non-null**, both predicates are applied and the query behaves like:    
+
+    ```sql
+    from Employees
+    where Title == $title and Address.Country == $country
+    ```
+
+* **When only `$country` is non-null**, the _title_ predicate is skipped and the query behaves like:    
+
+    ```sql
+    from Employees
+    where Address.Country == $country
+    ```
+
+* **When only `$title` is non-null**, the _country_ predicate is skipped and the query behaves like:    
+
+    ```sql
+    from Employees
+    where Title == $title
+    ```
+
+* **When both parameters are `null` or missing**,  
+  both conditional predicates are skipped and the query returns all employees, i.e.:   
+    
+    ```sql
+    from Employees
+    ```
+
+</Panel>
+
+<Panel heading="Combine when with 'and', 'or', and 'not'">
+
+* A `when` clause can be combined with standard `and`, `or`, and `not` operators.
+    
+* **When the condition is `true`** -  
+  the predicate inside `when` participates in the surrounding boolean expression.
+    
+  **When the condition is `false`** -  
+  that predicate is skipped.
+    
+* The following table summarizes the resulting behavior:
+
+    | Expression                                       | When condition is true          | When condition is false   |
+    |--------------------------------------------------|---------------------------------|---------------------------|
+    | `when(condition, Predicate1) and Predicate2`     | `Predicate1 and Predicate2`     | `Predicate2`              |
+    | `when(condition, Predicate1) or Predicate2`      | `Predicate1 or Predicate2`      | `Predicate2`              |
+    | `when(condition, Predicate1) and not Predicate2` | `Predicate1 and not Predicate2` | `not Predicate2`          |
+    | `Predicate2 and not when(condition, Predicate1)` | `Predicate2 and not Predicate1` | `Predicate2`              |
+    
+* **If every predicate in the `where` clause is skipped** -  
+  the query behaves as if it has no `where` clause and returns all documents from the queried collection or index.    
+    
+* **Example** - combine optional search criteria with a required predicate using `and`:    
+
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="RawQuery" label="RawQuery">
+    ```csharp
+    List<Product> products = session.Advanced
+        .RawQuery<Product>(@"
+            from Products
+            where when($onlyInStock == true, UnitsInStock > 0)
+              and Discontinued == false")
+        .AddParameter("onlyInStock", true)
+        .ToList();
+    ```
+    </TabItem>
+    <TabItem value="RawQuery_async" label="RawQuery_async">
+    ```csharp
+    List<Product> products = await asyncSession.Advanced
+        .AsyncRawQuery<Product>(@"
+            from Products
+            where when($onlyInStock == true, UnitsInStock > 0)
+              and Discontinued == false")
+        .AddParameter("onlyInStock", true)
+        .ToListAsync();
+    ```
+    </TabItem>
+    <TabItem value="RQL" label="RQL">
+    ```sql
+    from Products
+    where when($onlyInStock == true, UnitsInStock > 0)
+      and Discontinued == false
+
+    { "onlyInStock": true }
+    ```
+    </TabItem>
+    </Tabs>
+
+    * When `$onlyInStock` is `true`:  
+      the `UnitsInStock > 0` predicate is applied, so the query returns non-discontinued products that are in stock.
+    
+    * When `$onlyInStock` is `false`:  
+      the `UnitsInStock > 0` predicate is skipped, so the query returns all non-discontinued products.
+
+</Panel>
+
+<Panel heading="Parameter and null handling">
+
+* The condition compares **query parameters** (e.g. `$title`, `$country`) against literal values.  
+  The left-hand side of each comparison must be a parameter reference (a `$`-prefixed name).
+
+* **Missing parameters are treated as `null`.**  
+  A parameter that was never supplied behaves exactly like a parameter explicitly set to `null`.
+
+* You can test for parameters that are `null` or missing with `== null` and `!= null`:    
+
+    ```sql
+    // Apply the Title predicate only when $title is non-null:
+    from Employees
+    where when($title != null, Title == $title)
+    
+    // Apply a "no title set" predicate only when $title is null or missing:
+    from Employees
+    where when($title == null, Title == null)
+    ```
+
+* When a parameter is `null` (or missing) and it is compared against a **non-null** value,  
+  only `!=` evaluates to `true`; all other operators evaluate to `false`.  
+  For example, if `$p` is missing: `$p != 5` is `true`, while `$p == 5`, `$p > 5`, etc. are all `false`.
+
+</Panel>
+
+<Panel heading="Type handling">
+
+* Comparisons in the condition are **strictly typed**. Comparing incompatible types
+  (for example, a string parameter against a number, or a boolean against a string) throws a `RavenException`.
+    
+* **Numbers** - integer and floating-point values can be compared.  
+  RavenDB converts between `Long` and `Double` when evaluating the condition,  
+  so for example, `1` and `1.0` compare as equal.    
+
+* **Strings** - all string value comparisons are **case-insensitive** (ordinal, ignore-case).  
+  For example, a `$status` parameter equal to `"active"` matches the literal `'ACTIVE'`.    
+
+* **Booleans** - only the equality operators `==` and `!=` are supported.  
+  Using an inequality operator (`<`, `<=`, `>`, `>=`) on a boolean throws a `RavenException`.
+
+    ```sql
+    // Valid - RavenDB converts between Long and Double:
+    where when($quantity >= 10, ...)
+
+    // Valid - strings compare case-insensitively:
+    where when($status == 'active', ...)
+
+    // Valid - booleans with == / !=:
+    where when($includeArchived == false, ...)
+
+    // Throws RavenException - inequality on a boolean:
+    where when($includeArchived > false, ...)
+
+    // Throws RavenException - incompatible types ($quantity is a number):
+    where when($quantity == 'ten', ...)
+    ```
+
+</Panel>
+
+<Panel heading="Logical expressions in the condition">
+    
+* The condition can combine several parameter checks with `and`, `or`, `not`, and parentheses.  
+  Use parentheses to make the intended grouping explicit.    
+
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="RawQuery" label="RawQuery">
+    ```csharp
+    List<Employee> employees = session.Advanced
+        .RawQuery<Employee>(@"
+            from Employees
+            where when(($title == 'Sales Representative' or $title == 'Sales Manager')
+                       and not ($includeAllTitles == true),
+                       Title == $title)")
+        .AddParameter("title", "Sales Representative")
+        .AddParameter("includeAllTitles", false)
+        .ToList();
+    ```
+    </TabItem>
+    <TabItem value="RawQuery_async" label="RawQuery_async">
+    ```csharp
+    List<Employee> employees = await asyncSession.Advanced
+        .AsyncRawQuery<Employee>(@"
+            from Employees
+            where when(($title == 'Sales Representative' or $title == 'Sales Manager')
+                       and not ($includeAllTitles == true),
+                       Title == $title)")
+        .AddParameter("title", "Sales Representative")
+        .AddParameter("includeAllTitles", false)
+        .ToListAsync();
+    ```
+    </TabItem>
+    <TabItem value="RQL" label="RQL">
+    ```sql
+    from Employees
+    where when(($title == 'Sales Representative' or $title == 'Sales Manager')
+               and not ($includeAllTitles == true),
+               Title == $title)
+
+    { "title": "Sales Representative", "includeAllTitles": false }
+    ```
+    </TabItem>
+    </Tabs>
+
+    * When `$title` is `"Sales Representative"` OR `"Sales Manager"` AND `$includeAllTitles` is `false`:  
+      the `Title == $title` predicate is **applied**.
+    
+    * When `$includeAllTitles` is `true`, OR `$title` has another value:  
+      the `Title == $title` predicate is **skipped**.
+
+</Panel>
+
+<Panel heading="Using 'in' and 'all in' in the condition">
+
+* The condition can also use `in` and `all in` to test a parameter against a set of values.
+    
+* **`in`** -  
+  the condition is `true` when the parameter value matches **any** of the listed values.  
+  When the parameter is an array, the condition is `true` when the array shares **at least one** value with the list.    
+    
+* **`all in`** -  
+  when the parameter is an array, the condition is `true` only when **every** value
+  in the parameter array is contained in the listed values.
+
+* **Example** - apply an in-stock predicate only when the requested categories include `"Beverages"` or `"Condiments"`:    
+
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="RawQuery" label="RawQuery">
+    ```csharp
+    List<Product> products = session.Advanced
+        .RawQuery<Product>(@"
+            from Products
+            where when($categories in ('Beverages', 'Condiments'),
+                       UnitsInStock > 0)")
+        .AddParameter("categories", new[] { "Beverages", "Seafood" })
+        .ToList();
+    ```
+    </TabItem>
+    <TabItem value="RawQuery_async" label="RawQuery_async">
+    ```csharp
+    List<Product> products = await asyncSession.Advanced
+        .AsyncRawQuery<Product>(@"
+            from Products
+            where when($categories in ('Beverages', 'Condiments'),
+                       UnitsInStock > 0)")
+        .AddParameter("categories", new[] { "Beverages", "Seafood" })
+        .ToListAsync();
+    ```
+    </TabItem>
+    <TabItem value="RQL" label="RQL">
+    ```sql
+    from Products
+    where when($categories in ('Beverages', 'Condiments'),
+               UnitsInStock > 0)
+
+    { "categories": ["Beverages", "Seafood"] }
+    ```
+    </TabItem>
+    </Tabs>
+
+    * When `$categories` contains `"Beverages"` or `"Condiments"`:  
+      the `UnitsInStock > 0` predicate is **applied**.
+    
+    * Otherwise:  
+      the `UnitsInStock > 0` predicate is **skipped**, and all products are returned.
+
+* As with scalar string comparisons, string value matching in `in` and `all in` conditions is **case-insensitive**.    
+
+</Panel>
+
+<Panel heading="Restrictions">
+
+* **A `when` condition cannot contain another `when`**  
+  The condition (the first argument) of `when(condition, predicate)` cannot include another `when(...)` call.  
+  Attempting to use `when` inside the condition, for example, `when(when($b == 2, Number == 2), Number == 1)`, raises a parse error.    
+
+* **The condition operates on parameters, not document fields**  
+  The left-hand side of each comparison in the condition must be a query parameter (a `$`-prefixed name).  
+  The condition is evaluated once, at query-planning time, against the supplied parameters - it does not inspect document data.
+  Document matching is done by the second argument, the predicate.
+    
+* **AI agent parameter names**   
+  When the query is issued by an [AI agent](../../../ai-integration/ai-agents/overview.mdx),
+  parameter names in the condition are **case-sensitive**.  
+  This applies to parameter names only; string comparisons remain case-insensitive.    
+    
+</Panel>
+
+<Panel heading="Syntax">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RQL" label="RQL">
+```sql
+when(<condition>, <predicate>)
+```
+</TabItem>
+</Tabs>
+
+| Parameter       | Description |
+|-----------------|-------------|
+| **condition**   | A boolean expression evaluated server-side against **query parameters**.<br/>Each comparison has the form `$param <operator> value`.<br/>Supports `==`, `!=`, `<`, `<=`, `>`, `>=`, `in`, `all in`, combined with `and`, `or`, `not`, and parentheses. |
+| **predicate**   | A regular query predicate, matched against the **documents**.<br/>Applied when `condition` is `true`; skipped when `condition` is `false`. |
+
+---
+
+* The function name is **case-insensitive** in RQL:  
+  `when(...)` and `WHEN(...)` are equivalent.    
+    
+* **Operator support per type**:
+
+    | Type    | Supported operators                              | Notes |
+    |---------|--------------------------------------------------|-------|
+    | Number  | `==`, `!=`, `<`, `<=`, `>`, `>=`, `in`, `all in` | RavenDB converts between `Long` and `Double` (`1 == 1.0`).      |
+    | String  | `==`, `!=`, `<`, `<=`, `>`, `>=`, `in`, `all in` | String value matching is **case-insensitive**<br/>(ordinal, ignore-case). |
+    | Boolean | `==`, `!=`                                       | Using inequality operators throws a `RavenException`.           |
+    | Null    | `== null`, `!= null`                             | A missing parameter is treated as `null`.                       |
+
+</Panel>
