@@ -1,174 +1,202 @@
 ---
 title: "Import data from .ravendbdump file"
 sidebar_label: Import from File (.ravendbdump)
-description: "Import a .ravendbdump file into a RavenDB database through Studio with collection filtering and transform script options."
+description: "Import a .ravendbdump file into a RavenDB database through Studio, with collection filtering and transform script options."
 sidebar_position: 0
 ---
 
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Import data from .ravendbdump file
 <Admonition type="note" title="">
 
-* `.ravendbdump` is RavenDB's format for [exportation of data](../export-database.mdx) 
-  into and from files.  
+* `.ravendbdump` is RavenDB's format for [exporting data](../export-database.mdx) into and out of files.  
 
-* RavenDB dump files can be used to easily migrate data from one database 
-  to another.  They are commonly used when the database is upgraded.  
+* A `.ravendbdump` file can be used to migrate data from one database to another.  
+  It is commonly used when a database is upgraded.  
 
-* an exported `.ravendbdump` file can be used to migrate the data stored 
-  in a non-sharded database into a sharded database.  
-  Learn more about this operation in the [section dedicated to it](../../../../sharding/import-and-export.mdx#import).  
+* An exported `.ravendbdump` file can also migrate data from a non-sharded database into a sharded database.  
+  Learn more in the [section dedicated to this operation](../../../../sharding/import-and-export.mdx#import).  
 
-In this page:
-
-* [Import data to destination server from file](../../../../studio/database/tasks/import-data/import-data-file.mdx#import-data-to-destination-server-from-file)  
-* [Import options](../../../../studio/database/tasks/import-data/import-data-file.mdx#import-options)  
-* [Advanced import options](../../../../studio/database/tasks/import-data/import-data-file.mdx#advanced-import-options)  
-    * [Transform Script](../../../../studio/database/tasks/import-data/import-data-file.mdx#transform-script)  
-    * [Customize Configuration and Ongoing Tasks](../../../../studio/database/tasks/import-data/import-data-file.mdx#customize-configuration-and-ongoing-tasks)  
-    * [Copy command as PowerShell](../../../../studio/database/tasks/import-data/import-data-file.mdx#copy-command-as-powershell)  
+* In this article:
+   * [Import data from a file](../../../../studio/database/tasks/import-data/import-data-file.mdx#import-data-from-a-file)  
+   * [Import options](../../../../studio/database/tasks/import-data/import-data-file.mdx#import-options)  
+   * [Advanced import options](../../../../studio/database/tasks/import-data/import-data-file.mdx#advanced-import-options)  
+      * [Import all collections](../../../../studio/database/tasks/import-data/import-data-file.mdx#1-import-all-collections)  
+      * [Use Transform script](../../../../studio/database/tasks/import-data/import-data-file.mdx#2-use-transform-script)  
+      * [Customize Configuration and Ongoing Tasks](../../../../studio/database/tasks/import-data/import-data-file.mdx#3-customize-configuration-and-ongoing-tasks)  
+      * [Set Max Read Operations Per Second](../../../../studio/database/tasks/import-data/import-data-file.mdx#4-set-max-read-operations-per-second)  
+      * [Import Command](../../../../studio/database/tasks/import-data/import-data-file.mdx#5-import-command)  
 
 </Admonition>
 
+<Panel heading="Import data from a file">
 
-## Import data to destination server from file
-  
-If you have already [exported a database](../export-database.mdx), follow these steps in the studio when you're ready to import from file.  
+If you have already [exported a database](../export-database.mdx), follow these steps in Studio when you are ready to import from the file.  
 
-![Figure 1. Importing Database From File ](./assets/studio-view-import-fromfile-steps.png)
+![Importing a database from a file](./assets/studio-view-import-fromfile-steps.png)
 
-1. **Tasks**  
-   In the destination server, click Tasks tab.  
-2. **Import Data**.  
-   Click to see various impoprt options.  
-3. **From file (.ravendbdump)**  
-   Seclect to import from a source database which has previously been [exported](../export-database.mdx).  
-4. **Warning**  
-   *Make sure that you are not writing over data that you want to keep*.  
-   One option is [to start a new database with the studio](https://ravendb.net/docs/article-page/5.2/csharp/studio/database/create-new-database/general-flow).  
-5. **Select file**  
-   Select the `.ravendbdump` file that you previously exported from the source server.  
-6. **Documents and Extensions**  
-  Select desired [options](../../tasks/import-data/import-data-file.mdx#import-options).  
-  *If you encrypted while exporting* make sure to select **imported file is encrypted**.  
-  You will need to paste the encryption key that you saved when creating the encrypted database.  
+1. Select the **Tasks menu**.  
+
+2. Open the **Import data** view.  
+
+3. **From file** tab.  
+   Select the **From file (.ravendbdump)** tab to import from a database that was previously [exported](../export-database.mdx) to a file.  
+
+4. **Overwrite warning**.  
+   Be aware that importing from a file will overwrite any existing documents and indexes that share the same IDs.  
+   To avoid rewriting your data, you can [create a new database](../../create-new-database/general-flow.mdx) and import into it.  
+
+5. **Select file**.  
+   Choose the exported `.ravendbdump` file that you want to import data from, by entering the file name or browsing your file system.  
+
+6. **Import options**  
+   Select the data to import from the file. See [Import options](../../../../studio/database/tasks/import-data/import-data-file.mdx#import-options) below.  
+   If you exported an encrypted file, enable **Imported file is encrypted** and provide the encryption key.  
+
 7. **Advanced**  
-   Click to configure [advanced import options]  
+   Present [advanced import options](../../../../studio/database/tasks/import-data/import-data-file.mdx#advanced-import-options).  
+
 8. **Import Database**  
-   Click after configuring the new database to finalize the import task.  
+   Click to import the selected data.  
 
+</Panel>
 
+<Panel heading="Import options">
 
+![Import options](./assets/import-from-file-options.png)
 
+Select the entities that you want to import:
 
-## Import options 
+| 1. Documents and Extensions | 2. Cluster Entities |
+|-----------------------------|---------------------|
+| [Documents](../../../../studio/database/documents/document-view.mdx) | [Indexes](../../../../indexes/what-are-indexes.mdx) |
+| &nbsp;&nbsp;&nbsp;[Attachments](../../../../document-extensions/attachments/overview.mdx) | &nbsp;&nbsp;&nbsp;[Index history](../../../../studio/database/indexes/index-history.mdx) |
+| &nbsp;&nbsp;&nbsp;[Legacy attachments](../../../../studio/database/create-new-database/from-legacy-files.mdx) | &nbsp;&nbsp;&nbsp;[Remove analyzers](../../../../indexes/using-analyzers.mdx) |
+| &nbsp;&nbsp;&nbsp;[Counters](../../../../document-extensions/counters/overview.mdx) | [Identities](../../../../client-api/document-identifiers/working-with-document-identifiers.mdx) |
+| &nbsp;&nbsp;&nbsp;[Time series](../../../../document-extensions/timeseries/overview.mdx) | [Subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) |
+| &nbsp;&nbsp;&nbsp;[Revisions](../../../../document-extensions/revisions/overview.mdx) | [Configuration and Ongoing Tasks](../../../../studio/database/tasks/import-data/import-data-file.mdx#3-customize-configuration-and-ongoing-tasks) |
+| [Artificial documents](../../../../studio/database/indexes/create-map-reduce-index.mdx#artificial-documents--vs--regular-documents) | [Compare exchange items](../../../../compare-exchange/overview.mdx) |
+| [Archived documents](../../../../data-archival/overview.mdx) | Compare exchange tombstones |
+| [Expired documents](../../../../server/extensions/expiration.mdx) | |
+| [Conflicts](../../../../client-api/cluster/document-conflicts-in-client-side.mdx) | |
+| [Document tombstones](../../../../glossary/tombstone.mdx) | |
+| Time-series deleted ranges | |
 
-Here you can filter the data you want to import, select configuration and apply a transform script on your documents.
+Options that are selected but have no matching items in the imported file are skipped during import.  
 
-![Figure 2. Import Options](./assets/import-from-file-options.png)
+**3. Imported file is encrypted**  
+Enable this option when importing from an encrypted file, and provide the decryption key.  
+Make sure that **Encrypt exported file** was enabled when exporting from the source database.  
 
+</Panel>
 
-1. [Include Documents](../../../../studio/database/documents/document-view.mdx)  
-   Toggle to include documents and to enable inclusion of the following document related items:  
-    - [Include Attachments](../../../../document-extensions/attachments/overview.mdx)  
-    - [Include Legacy Attachments](../../../../studio/database/create-new-database/from-legacy-files.mdx)  
-     Determines whether or not legacy attachments contained in the file should be imported where legacy attachments refers to v2.x and v3.x attachments.  
-    - [Include Counters](../../../../document-extensions/counters/overview.mdx)  
-    - [Include Legacy Files](../../../../studio/database/create-new-database/from-legacy-files.mdx)  
-    - [Include Artificial Documents](../../../../studio/database/indexes/create-map-reduce-index.mdx#artificial-documents--vs--regular-documents)  
-    - [Include Expired Documents](../../../../server/extensions/expiration.mdx)  
-    - [Include Revisions](../../../../document-extensions/revisions/overview.mdx)  
-    - [Include Conflicts](../../../../client-api/cluster/document-conflicts-in-client-side.mdx)  
-       
-2. [Include Indexes](../../../../indexes/what-are-indexes.mdx)  
-    - [Remove Analyzers](../../../../indexes/using-analyzers.mdx)  
-    - [Include Identities](../../../../client-api/document-identifiers/working-with-document-identifiers.mdx)  
-    - [Include Compare Exchange](../../../../compare-exchange/overview.mdx)  
-    - [Include Subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)  
-    - [Include Configuration and OngoingTasks](../../../../studio/database/tasks/import-data/import-from-ravendb.mdx#customize-configuration-and-ongoing-tasks) 
-  
-  
-3. [Imported file is encrypted](../../../../server/security/overview.mdx#encryption)  
- Toggle to include the decryption key when importing data from encrypted file.  
- Make sure that **Encrypt exported file** option was selected when exporting from source database so that the encryption key is included.
+<Panel heading="Advanced import options">
 
- <Admonition type="note" title="Import settings for items that don't exist in source database" id="import-settings-for-items-that-don-t-exist-in-source-database" href="#import-settings-for-items-that-don-t-exist-in-source-database">
-If any of the options is set but the source database doesn't contain any items of that type, the item will be skipped.
+Click **Advanced** to reveal the following options.  
+
+![Advanced import options](./assets/import-from-file-advanced-transform-options.png)
+
+<ContentFrame>
+
+#### 1. Import all collections
+
+![Import specific collections](./assets/import-from-file-import-all-collections.png)
+
+By default, **all** exported collections are imported.  
+To import only specific collections, disable **Import all collections**, enter the name of each collection that you want to import, and click **Add collection**.  
+Enter collection names exactly as they appear in the source database.  
+
+</ContentFrame>
+
+<ContentFrame>
+
+#### 2. Use Transform script
+
+![Use transform script](./assets/import-from-file-advanced-transform-script.png)
+
+Enable this option to provide a JavaScript transform script that runs on each document imported from the file.  
+
+The current document is available under the `this` variable.  
+The `@change-vector`, `@id`, and `@last-modified` metadata fields are not available to the script.  
+
+For example, use the following script to skip discontinued products and stamp every imported document with the time it was imported:
+
+```javascript
+// Skip documents you don't want to import
+// (throwing 'skip' filters the document out)
+if (this.Discontinued === true) {
+    throw 'skip';
+}
+
+// Add or modify regular fields on the imported document
+this.ImportedAt = new Date().toISOString();
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+#### 3. Customize Configuration and Ongoing Tasks
+
+![Customize configuration and ongoing tasks](./assets/import-from-file-advanced-configuration-ongoing-tasks.png)
+
+Use this option to select ongoing tasks, configurations, and connection strings to import.  
+Selected options with no matching items in the imported file will be skipped during import.  
+
+| Ongoing tasks | Other | Connection Strings |
+|---------------|-------|--------------------|
+| [Periodic backups](../../../../backup/create/periodic-tasks/database-backup.mdx) | [Settings](../../../../studio/database/settings/database-settings.mdx) | RavenDB connection strings |
+| [External replications](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx) | [Conflict solver configuration](../../../../client-api/operations/server-wide/modify-conflict-solver.mdx) | SQL connection strings |
+| [RavenDB ETLs](../../../../server/ongoing-tasks/etl/raven.mdx) | [Client configuration](../../../../studio/server/client-configuration.mdx) | Snowflake connection strings |
+| [SQL ETLs](../../../../server/ongoing-tasks/etl/sql.mdx) | [Revisions configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx) | OLAP connection strings |
+| [Snowflake ETLs](../../../../server/ongoing-tasks/etl/snowflake.mdx) | [Document refresh](../../../../server/extensions/refresh.mdx) | Elasticsearch connection strings |
+| [OLAP ETLs](../../../../server/ongoing-tasks/etl/olap.mdx) | [Document expiration](../../../../server/extensions/expiration.mdx) | Queue connection strings (Kafka, RabbitMQ, Azure queue storage) |
+| [Elasticsearch ETLs](../../../../server/ongoing-tasks/etl/elasticsearch.mdx) | [Documents compression](../../../../server/storage/documents-compression.mdx) | [AI connection strings](../../../../ai-integration/connection-strings/overview.mdx) |
+| [Queue ETLs](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx) (Kafka, RabbitMQ, Azure queue storage) | [Time series configuration](../../../../studio/database/settings/time-series-settings.mdx) | |
+| [Replication hubs](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx) | [Custom sorters](../../../../querying/sorting-query-results/custom-sorters/overview.mdx) | |
+| [Replication sinks](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx) | [Custom analyzers](../../../../studio/database/settings/custom-analyzers.mdx) | |
+| [Embeddings Generation](../../../../ai-integration/generating-embeddings/overview.mdx) | [PostgreSQL integration](../../../../integrations/postgresql-protocol/overview.mdx) | |
+| [GenAI](../../../../ai-integration/gen-ai-integration/overview.mdx) | [AI agents](../../../../ai-integration/ai-agents/overview.mdx) | |
+| | [Remote attachments](../../../../document-extensions/attachments/configure-remote-attachments.mdx) | |
+
+<Admonition type="note" title="">
+Imported ongoing tasks are **disabled** by default.
 </Admonition>
 
+</ContentFrame>
 
+<ContentFrame>
 
+#### 4. Set Max Read Operations Per Second
 
+![Set max read operations per second](./assets/import-from-file-max-read-ops-per-second.png)
 
-## Advanced import options
+Enable this option to set a maximum number of read operations per second for the import.  
+Capping this rate makes the import lighter on the server, leaving more capacity for other work running on the database while the import is in progress, at the cost of a slower import.  
 
-Click the **Advanced** button at the bottom of the options view for the following import features.
+</ContentFrame>
 
-### Transform Script
+<ContentFrame>
 
-In the Studio, select **database** &gt; click **Task** tab &gt; select **Import** &gt; select **From file (.ravendbdump)** &gt; click the **Advanced** button at the bottom &gt; toggle **Use Transform script**.  
+#### 5. Import Command
 
-![Figure 3. Advanced Import Options - Transform Script](./assets/import-from-file-advanced-transform-script.png)
+![Import command](./assets/import-command-powershell.png)
 
-- **Use Transform Script**  
-  Enabling this **advanced** option allows you to provide a transform javascript, that would operate on each document imported from the file.  
+Studio can generate a ready-to-run command that performs this same import from a command line, using the options you configured above.  
+This is useful for repeating the import later or running it from a script.  
 
-  Sample transform javascript:  
+Select the format you need, **PowerShell**, **Cmd**, or **Bash**, then click the copy icon to copy the generated command to the clipboard.  
 
-<TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`delete this['@metadata']['@change-vector']
-// The script above will delete the change-vector from imported documents
-// and will generate new change vectors during import. 
-// This is very helpfull if the data is imported from a diffrent database group
-// and you want to avoid adding old change vector entries to a new environment. 
-`}
-</CodeBlock>
-</TabItem>
-### Customize Configuration and Ongoing Tasks
+The command uses `curl` to send your `.ravendbdump` file and the selected options to the database's import endpoint.  
+For example, the generated PowerShell command looks similar to this:  
 
-This **advanced** option enables you to choose whether to import various ongoing tasks, connection strings and advanced configurations.
+```powershell
+curl.exe -F 'importOptions={\"OperateOnTypes\":\"Documents,Indexes\",\"IncludeExpired\":true}' -F 'file=@.\Northwind.ravendbdump' http://127.0.0.1:8080/databases/Northwind/smuggler/import
+```
 
-In the Studio, select **database** &gt; click **Task** tab &gt; select **Import** &gt; select **From file (.ravendbdump)** &gt; click the **Advanced** button at the bottom &gt; toggle **Customize configuration and Ongoing Tasks**.  
+</ContentFrame>
 
-![Figure 4. Advanced Import Options - Customize Configuration and Ongoing Tasks](./assets/import-from-file-advanced-configuration-ongoing-tasks.png)
-
-Toggle to include the following configurations and ongoing tasks.  
-If a task is included but doesn't exist in your source database, it will be skipped.  
-
-**Ongoing tasks:**
-
-- [Periodic Backups](../../../../backup/create/periodic-tasks/database-backup#creating-and-managing-periodic-backups-via-studio)  
-- [External replications](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx)  
-- [ETL Tasks - Extract, Transform, Load](../../../../server/ongoing-tasks/etl/basics.mdx)  
-- [Pull Replication Sinks](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)  
-- [Pull Replication Hubs](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)  
-
-**Other:**
-
-- [Settings](../../../../studio/database/settings/database-settings.mdx)  
-- [Conflict Solver Configuration](../../../../client-api/operations/server-wide/modify-conflict-solver.mdx)  
-- [Revisions Configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx)  
-- [Document Expiration](../../../../server/extensions/expiration.mdx)  
-- [Client Configuration](../../../../studio/server/client-configuration.mdx)  
-- [Custom Sorters](../../../../querying/sorting-query-results/custom-sorters/overview.mdx)  
-
-**Connection Strings:**
-
-- [Connection Strings](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx) used by ETL tasks to authenticate and connect to external databases will be imported.
-### Copy command as PowerShell
-
-In the Studio, select **database** &gt; click **Task** tab &gt; select **Import** &gt; select **From file (.ravendbdump)** &gt; click the **Advanced** button at the bottom.  
-
-![Figure 5. Import Command Powershell](./assets/import-command-powershell.png)
-
-- Generates the commands to run the importing logic from PowerShell based on your configurations above.  
-
-
-
+</Panel>
