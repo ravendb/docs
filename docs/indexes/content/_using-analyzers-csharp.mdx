@@ -566,7 +566,8 @@ Learn more in this [Custom analyzers](../../studio/database/settings/custom-anal
 ##### Add custom analyzer via Client API
 
 First, create a class that inherits from the abstract `Lucene.Net.Analysis.Analyzer` class.  
-(you need to reference `Lucene.Net.dll`, which is included with the RavenDB Server package).   
+To do this, reference `Lucene.Net.dll`, found at `Server/Lucene.Net.dll` in the RavenDB server package available from the [RavenDB download page](https://ravendb.net/download).  
+Use the DLL from the server package so that its version matches the Lucene build your server runs, rather than a copy from NuGet.   
 For example:  
 
 <TabItem value="my_custom_analyzer" label="my_custom_analyzer">

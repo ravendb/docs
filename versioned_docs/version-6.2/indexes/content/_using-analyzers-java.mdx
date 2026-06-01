@@ -109,7 +109,7 @@ The analyzer you are referencing to has to be available to the RavenDB server in
 
 You can create a custom analyzer on your own and deploy it to RavenDB server. To do that pefrom the following steps:
 
-- create a class that inherits from abstract `Lucene.Net.Analysis.Analyzer` (you need to reference `Lucene.Net.dll` supplied with RavenDB Server package),
+- create a class that inherits from abstract `Lucene.Net.Analysis.Analyzer` (reference `Lucene.Net.dll`, found at `Server/Lucene.Net.dll` in the RavenDB server package available from the [RavenDB download page](https://ravendb.net/download); take it from the server package, not from NuGet, so its version matches the Lucene build your server runs),
 - your DLL needs to be placed next to RavenDB binaries (note it needs to be compatible with .NET Core 2.0 e.g. .NET Standard 2.0 assembly)
 - the fully qualified name needs to be specified for an indexing field that is going to be tokenized by the analyzer
 
