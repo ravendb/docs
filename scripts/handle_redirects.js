@@ -98,7 +98,8 @@ async function handler(event) {
     while (true) {
         let rule;
         try {
-            rule = JSON.parse(await kvsHandle.get(current));
+            const redirectData = await kvsHandle.get(current);
+            rule = JSON.parse(redirectData);
         } catch (_) {
             break; // no rule → terminal
         }
