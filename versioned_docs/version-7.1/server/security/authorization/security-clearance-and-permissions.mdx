@@ -27,9 +27,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
    * [Cluster Admin](../../../server/security/authorization/security-clearance-and-permissions.mdx#cluster-admin)
    * [Operator](../../../server/security/authorization/security-clearance-and-permissions.mdx#operator)
    * [User](../../../server/security/authorization/security-clearance-and-permissions.mdx#user)  
-      * [Admin](../../../server/security/authorization/security-clearance-and-permissions.mdx#section)  
-      * [Read/Write](../../../server/security/authorization/security-clearance-and-permissions.mdx#section-1) 
-      * [Read Only](../../../server/security/authorization/security-clearance-and-permissions.mdx#section-2)
+      * [Admin](../../../server/security/authorization/security-clearance-and-permissions.mdx#admin)  
+      * [Read/Write](../../../server/security/authorization/security-clearance-and-permissions.mdx#readwrite) 
+      * [Read Only](../../../server/security/authorization/security-clearance-and-permissions.mdx#read-only)
 
 ## Cluster Admin
 
@@ -109,6 +109,12 @@ A `User` certificate with a `Read/Write` access level can perform all operations
     To configure a server or database so that only Admin certificates will be able to deploy JavaScript static indexes,  
     set [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../../../server/configuration/indexing-configuration.mdx#indexingstaticrequireadmintodeployjavascriptindexes) 
     to `true`.
+
+  * **Data subscriptions access**  
+    A `User` certificate with a `Read/Write` access level can create, edit, delete,
+    and enable or disable [data subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx).  
+    Subscriptions are an exception among ongoing tasks: managing other ongoing tasks
+    requires a higher access level, while subscriptions can be managed with `Read/Write` access.
 ### `Read Only`
 
 The `ReadOnly` access level **allows** clients to: 
