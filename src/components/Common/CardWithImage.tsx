@@ -7,8 +7,7 @@ import Badge from "@site/src/components/Common/Badge";
 import LazyImage from "@site/src/components/Common/LazyImage";
 import isInternalUrl from "@docusaurus/isInternalUrl";
 import clsx from "clsx";
-import { useTagLimit } from "@site/src/hooks/useTagLimit";
-import Tag from "@site/src/theme/Tag";
+import OverflowTagRow from "@site/src/components/Common/OverflowTagRow";
 
 export interface CardWithImageProps {
     title: string;
@@ -38,10 +37,6 @@ export default function CardWithImage({
     const hasImage = Boolean(imgSrc);
     const hasTags = tags.length > 0;
     const hasDate = date !== undefined;
-
-    const { visibleTags, hiddenCount, isExpanded, expandTags } = useTagLimit({
-        tags,
-    });
 
     return (
         <article className="card-wrapper group relative">
@@ -100,35 +95,8 @@ export default function CardWithImage({
                 <p className="!mb-0 text-sm pt-2">{description}</p>
                 <div className="flex-grow" />
                 {(hasTags || hasDate) && (
-                    <div className="flex flex-wrap flex-col 2xl:flex-row xl:flex-nowrap justify-between pt-2 gap-3 z-2 relative">
-                        {hasTags && (
-                            <div className="flex gap-1 items-center flex-wrap">
-                                {visibleTags.map((tag) => (
-                                    <Tag
-                                        key={tag.label}
-                                        size="xs"
-                                        permalink={tag.permalink}
-                                        className="pointer-events-auto"
-                                    >
-                                        {tag.label}
-                                    </Tag>
-                                ))}
-                                {!isExpanded && hiddenCount > 0 && (
-                                    <Tag
-                                        size="xs"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            expandTags();
-                                        }}
-                                        title="Show all tags"
-                                        className="pointer-events-auto"
-                                    >
-                                        +{hiddenCount} more
-                                    </Tag>
-                                )}
-                            </div>
-                        )}
+                    <div className="flex flex-col 2xl:flex-row 2xl:items-center justify-between pt-2 gap-x-3 gap-y-1 z-2 relative">
+                        {hasTags && <OverflowTagRow tags={tags} className="min-w-0 2xl:flex-1" />}
                         {hasDate && <p className="!mb-0 text-xs flex-shrink-0 leading-[20px]">{date}</p>}
                     </div>
                 )}

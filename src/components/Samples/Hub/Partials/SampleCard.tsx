@@ -4,7 +4,7 @@ import Heading from "@theme/Heading";
 import LazyImage from "@site/src/components/Common/LazyImage";
 import clsx from "clsx";
 import LanguageTag from "@site/src/components/Samples/Hub/Partials/LanguageTag";
-import OverflowTagRow from "@site/src/components/Samples/Hub/Partials/OverflowTagRow";
+import OverflowTagRow from "@site/src/components/Common/OverflowTagRow";
 
 interface TagWithCategory {
     label: string;

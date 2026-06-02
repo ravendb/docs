@@ -6,7 +6,8 @@ const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffec
 
 export interface OverflowTagItem {
     label: string;
-    key: string;
+    key?: string;
+    permalink?: string;
     category?: string;
 }
 
@@ -14,11 +15,14 @@ interface OverflowTagRowProps {
     tags: OverflowTagItem[];
     onTagClick?: (e: React.MouseEvent, tag: OverflowTagItem) => void;
     isTagSelected?: (tag: OverflowTagItem) => boolean;
+    className?: string;
 }
 
 const GAP_PX = 4;
 
-export default function OverflowTagRow({ tags, onTagClick, isTagSelected }: OverflowTagRowProps) {
+const tagKey = (tag: OverflowTagItem) => tag.key ?? tag.permalink ?? tag.label;
+
+export default function OverflowTagRow({ tags, onTagClick, isTagSelected, className }: OverflowTagRowProps) {
     const measureRef = useRef<HTMLDivElement>(null);
     const [visibleCount, setVisibleCount] = useState(tags.length);
     const [expanded, setExpanded] = useState(false);
@@ -75,6 +79,9 @@ export default function OverflowTagRow({ tags, onTagClick, isTagSelected }: Over
             }
         };
 
+        // The mirror's box width tracks the container, but its contents reflow
+        // when fonts finish loading after hydration — and that reflow doesn't
+        // resize the mirror, so recompute now, next frame, and once fonts settle.
         const observer = new ResizeObserver(run);
         observer.observe(el);
         run();
@@ -96,11 +103,12 @@ export default function OverflowTagRow({ tags, onTagClick, isTagSelected }: Over
 
     const renderTag = (tag: OverflowTagItem) => (
         <Tag
-            key={tag.key}
+            key={tagKey(tag)}
             size="xs"
+            permalink={tag.permalink}
             onClick={onTagClick ? (e) => onTagClick(e, tag) : undefined}
             className={clsx(
-                "shrink-0 whitespace-nowrap",
+                "shrink-0 whitespace-nowrap pointer-events-auto",
                 onTagClick && "cursor-pointer",
                 isTagSelected && !isTagSelected(tag) && "opacity-50"
             )}
@@ -114,14 +122,15 @@ export default function OverflowTagRow({ tags, onTagClick, isTagSelected }: Over
     const hiddenTags = tags.slice(visibleCount);
 
     return (
-        <div className="relative">
+        <div className={clsx("relative", className)}>
+            {/* Off-flow mirror used only for measurement: every tag + a worst-case pill. */}
             <div
                 ref={measureRef}
                 aria-hidden="true"
                 className="invisible pointer-events-none absolute inset-x-0 top-0 flex flex-nowrap gap-1 overflow-hidden"
             >
                 {tags.map((tag) => (
-                    <Tag key={tag.key} size="xs" className="shrink-0 whitespace-nowrap">
+                    <Tag key={tagKey(tag)} size="xs" className="shrink-0 whitespace-nowrap">
                         {tag.label}
                     </Tag>
                 ))}
@@ -129,8 +138,10 @@ export default function OverflowTagRow({ tags, onTagClick, isTagSelected }: Over
                     +{tags.length} more
                 </Tag>
             </div>
+
             <div className={clsx("flex gap-1", expanded ? "flex-wrap" : "flex-nowrap overflow-hidden")}>
                 {visibleTags.map(renderTag)}
+
                 {!expanded && hiddenCount > 0 && (
                     <button
                         type="button"
@@ -141,7 +152,7 @@ export default function OverflowTagRow({ tags, onTagClick, isTagSelected }: Over
                             setExpanded(true);
                         }}
                         className={clsx(
-                            "relative z-10 inline-flex items-center shrink-0 select-none cursor-pointer rounded-full border",
+                            "relative z-10 inline-flex items-center shrink-0 select-none cursor-pointer rounded-full border pointer-events-auto",
                             "h-5 px-2 text-[11px] font-medium leading-4 whitespace-nowrap",
                             "bg-black/5 dark:bg-white/5 border-black/10 dark:border-white/10",
                             "text-black/60 dark:text-white/60",
