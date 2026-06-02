@@ -5,13 +5,17 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Use the low-level `SingleNodeBatchCommand` to send **multiple commands** in a **single request** to the server.  
+* Use the low-level `SingleNodeBatchCommand` to send **multiple commands** in a **single request** to a cluster node.  
   This reduces the number of remote calls and allows several operations to share the same transaction.
 
-* All the commands sent in the batch are executed as a **single transaction** on the node the client communicated with.
+* All the commands sent in the batch are executed as a **single transaction** on the node the client communicated with.  
   If any command fails, the entire batch is rolled back, ensuring data integrity.
 
 * The commands are replicated to other nodes in the cluster only AFTER the transaction is successfully completed on that node.
+
+* To run multiple commands as a **cluster-wide** transaction, do not use `SingleNodeBatchCommand`,
+  but open the session with `transactionMode: "ClusterWide"` and call `saveChanges`.  
+  See [Open a cluster-wide session](../../../../client-api/session/cluster-transaction/overview.mdx#open-a-cluster-transaction).
 
 * In this page:
     * [Examples](../../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#examples)
