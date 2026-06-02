@@ -1,0 +1,77 @@
+---
+title: "C# Code Analyzers"
+sidebar_label: Overview
+sidebar_position: 0
+see_also:
+     - title: "Query Overview"
+       link: "querying/overview"
+       source: "docs"
+       path: "Querying"
+     - title: "Performing Operations Lazily"
+       link: "client-api/session/how-to/perform-operations-lazily"
+       source: "docs"
+       path: "Client API > Session > How To"
+     - title: "Data Subscriptions"
+       link: "client-api/data-subscriptions/what-are-data-subscriptions"
+       source: "docs"
+       path: "Client API > Data Subscriptions"
+---
+
+import Admonition from '@theme/Admonition';
+
+# C# Code Analyzers
+
+<Admonition type="note">
+This page covers **compile-time C# code analyzers** that catch client-code mistakes at build time.
+If you're looking for **text-analysis analyzers** used in index definitions for full-text search (tokenizers, stemmers, language analyzers), see [Using Analyzers in Indexes](../../indexes/using-analyzers.mdx).
+</Admonition>
+
+RavenDB ships a set of C# code analyzers embedded in the `RavenDB.Client` NuGet package. They run at compile time inside any project that references the client and catch common misuse patterns before tests, staging, or production.
+
+## Distribution
+
+Both analyzer assemblies (`Raven.Analyzers.dll` and `Raven.Analyzers.CodeFixes.dll`) are embedded in `RavenDB.Client.nupkg` under `analyzers/dotnet/cs/`. No separate install is required. The analyzers activate automatically on every build once the client package is referenced.
+
+## Severity
+
+<Admonition type="info" title="Severity defaults to Info — existing builds are unaffected">
+
+All rules ship at **`DiagnosticSeverity.Info`** by default. They appear as informational hints in the IDE and in build output but **do not break existing builds on upgrade**.
+
+Teams can promote individual rules to `Warning` or `Error` via `.editorconfig` once existing occurrences have been addressed:
+
+```ini
+[*.cs]
+dotnet_diagnostic.RVN012.severity = warning
+dotnet_diagnostic.RVN013.severity = error
+```
+
+</Admonition>
+
+## Code Fixes
+
+<Admonition type="tip" title="Two rules ship with automated code fixes">
+
+- **[RVN011](./RVN011.mdx)** — rewrites `store.OpenSession()` to `batch.OpenSession()` inside a subscription `Run` lambda.
+- **[RVN012](./RVN012.mdx)** — rewrites a block of independent eager `Load` / `Query` calls into lazy registrations followed by a single `ExecuteAllPendingLazyOperations[Async]()` call.
+
+</Admonition>
+
+## Rules
+
+| ID | Title | Category | Code Fix |
+|----|-------|----------|----------|
+| [RVN001](./RVN001.mdx) | Index Map or Reduce assigned outside constructor | Index definition | No |
+| [RVN002](./RVN002.mdx) | RavenDB query operator after projection | Query | No |
+| [RVN003](./RVN003.mdx) | ProjectInto called more than once in a query chain | Query | No |
+| [RVN004](./RVN004.mdx) | AbstractIndexCreationTask subclass is missing a Map assignment | Index definition | No |
+| [RVN005](./RVN005.mdx) | Multi-map index has no AddMap call in any constructor | Index definition | No |
+| [RVN006](./RVN006.mdx) | Multi-map index uses only a single AddMap | Index definition | No |
+| [RVN007](./RVN007.mdx) | Query field not present in the index projection | Query | No |
+| [RVN008](./RVN008.mdx) | Projected field not retrievable under the applied ProjectionBehavior | Query | No |
+| [RVN009](./RVN009.mdx) | Unsupported method call inside index Map/Reduce expression | Index definition | No |
+| [RVN010](./RVN010.mdx) | Unsupported method call inside RavenDB query expression | Query | No |
+| [RVN011](./RVN011.mdx) | Use batch.OpenSession inside a subscription Run delegate | Subscriptions | Yes |
+| [RVN012](./RVN012.mdx) | Batch independent session operations using the lazy API | Session | Yes |
+| [RVN013](./RVN013.mdx) | Query result is not bounded by Take() | Query | No |
+| [RVN014](./RVN014.mdx) | Index Map fans out over a collection | Index definition | No |
