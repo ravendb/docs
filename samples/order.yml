@@ -1,0 +1,14 @@
+# Curated display order for the /samples hub.
+#
+# Each entry is a sample id — the file name without its .mdx extension
+# (e.g. "verity" for samples/verity.mdx). Samples are rendered top-to-bottom
+# in this order. Any sample not listed here is shown afterwards, sorted
+# alphabetically by title. Reorder freely; this is the single source of truth
+# for the gallery order.
+- verity
+- human-resources-assistant
+- the-ravens-library
+- brain-slop
+- fit-assistant
+- hugin
+- yabt
