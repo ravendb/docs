@@ -93,7 +93,7 @@ The RavenDB template is published in the Zabbix community-templates repository. 
 
 After the import, the template appears in the Templates list as `RavenDB server`:
 
-![Imported RavenDB template](./assets/monitoring-zabbix-template-imported.PNG)
+![Imported RavenDB template](./assets/monitoring-zabbix-template-imported.png)
 
 The template's full inventory is documented in the 
 [community template README](https://github.com/zabbix/community-templates/blob/main/Databases/RavenDB/template_ravendb_server/6.0/README.md). 
@@ -140,14 +140,14 @@ for the RavenDB-side settings.
 
 Set the SNMP version to `SNMPv2` and the community string to whatever RavenDB expects (the RavenDB default is `ravendb`):
 
-![Host configuration with SNMPv2c interface](./assets/monitoring-zabbix-host-snmpv2c.PNG)
+![Host configuration with SNMPv2c interface](./assets/monitoring-zabbix-host-snmpv2c.png)
 
 #### Example: SNMPv3 interface
 
 Set the SNMP version to `SNMPv3` and fill in the `Security name`, `Security level`, the authentication settings 
 (protocol and passphrase), and the privacy settings (protocol and passphrase). Each field must match what RavenDB accepts:
 
-![Host configuration with SNMPv3 interface](./assets/monitoring-zabbix-host-snmpv3.PNG)
+![Host configuration with SNMPv3 interface](./assets/monitoring-zabbix-host-snmpv3.png)
 
 </ContentFrame>
 
@@ -177,7 +177,7 @@ The default values are conservative. For a production host, the community-templa
 To override on a host, open the host's `Macros` tab, switch to `Inherited and host macros`, and select 
 `Change` next to each macro to set a host-specific value. For a 16 GB RAM host this might look like:
 
-![Host macros tab with the three thresholds overridden](./assets/monitoring-zabbix-host-macros.PNG)
+![Host macros tab with the three thresholds overridden](./assets/monitoring-zabbix-host-macros.png)
 
 </ContentFrame>
 
@@ -191,7 +191,7 @@ Each item has its own polling interval; most produce a first value within a minu
 To see the metrics arriving, open `Monitoring` > `Latest data`. Each row is one item, 
 showing the most recent value Zabbix received and how recently. Set the `Hosts` filter to your RavenDB host and select `Apply`:
 
-![Latest data view showing live RavenDB metrics](./assets/monitoring-zabbix-latest-data.PNG)
+![Latest data view showing live RavenDB metrics](./assets/monitoring-zabbix-latest-data.png)
 
 Server-level items such as uptime, CPU usage, memory, disk, cluster state, and certificate expiration 
 show values as soon as the RavenDB process is running, even if no databases exist on the server.  
@@ -224,7 +224,7 @@ the host, providing you with a working set of alerts so you don't have to define
 
 To view the triggers attached to your host, open `Data collection` > `Hosts` and select the `Triggers` count on the host's row:
 
-![Triggers included with the RavenDB template](./assets/monitoring-zabbix-triggers.PNG)
+![Triggers included with the RavenDB template](./assets/monitoring-zabbix-triggers.png)
 
 Grouped by type:
 
@@ -275,7 +275,7 @@ avg(/RavenDB dev playground/server.requests.persecond,5m)>1000
 Replace `RavenDB dev playground` with your host's name, `server.requests.persecond` with the item you want to watch, and `1000` with your threshold.  
 Zabbix evaluates the expression each time a new value arrives for the item, and raises the trigger to `PROBLEM` when the expression matches, exactly as it does for the template's own triggers.
 
-![Custom trigger on the host's Triggers page](./assets/monitoring-zabbix-custom-trigger.PNG)
+![Custom trigger on the host's Triggers page](./assets/monitoring-zabbix-custom-trigger.png)
 
 </ContentFrame>
 
@@ -300,7 +300,7 @@ To set up notifications, configure three things:
   On the `Action` tab, give the action a name.  
   On the `Operations` tab, select `Add` and create a `Send message` operation: set `Send to users` and `Send to media type`.
 
-![Trigger action that sends a message on a RavenDB problem](./assets/monitoring-zabbix-trigger-action.PNG)
+![Trigger action that sends a message on a RavenDB problem](./assets/monitoring-zabbix-trigger-action.png)
 
 Once the action is enabled, Zabbix sends a message every time a matching trigger switches to `PROBLEM`, and again on recovery if you add a recovery operation.  
 For the full set of options, including escalation steps and message templating, see Zabbix's [notifications documentation](https://www.zabbix.com/documentation/current/en/manual/config/notifications).
