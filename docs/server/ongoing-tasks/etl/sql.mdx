@@ -75,6 +75,23 @@ Define the target tables where the SQL ETL task will load data.
 * For each table, you must specify a column that will store the document ID column.
   RavenDB will populate this column with the source document ID, enabling the handling of document updates and deletions.
 
+  <Admonition type="info" title="">
+
+  The document ID column should use a **case-insensitive collation** in the destination database.
+
+  When a document is deleted, RavenDB lowercases its ID in the generated DELETE
+  statement, for example:  
+  `DELETE FROM "Orders" WHERE "Id" IN ('orders/1-a')`
+
+  If the document ID column uses a case-sensitive collation, this lowercase ID will not
+  match the row that was stored with its original casing (such as `Orders/1-A`), so the
+  DELETE removes nothing and the row remains in the table as an orphaned record.
+
+  This affects deletions only: when a document is created or updated, RavenDB sends the
+  ID in its original casing, so the row matches and is removed or replaced correctly.
+
+  </Admonition>
+
 * Note that the specified column does not need to be the primary key of the table.
 
 * For performance reasons, you should define indexes on the SQL tables on the relational database side,  
