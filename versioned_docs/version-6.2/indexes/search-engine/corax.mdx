@@ -89,27 +89,7 @@ Use these configuration options to select the search engine:
     
 * To make an existing index use a different engine, [reset the index](../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) after changing the relevant search engine setting.
     
-</Admonition>
-
-<Admonition type="note" title="">
-    
-**Corax-only cases**      
-Some features require Corax regardless of the default search engine configuration:
-
-* **Vector search**  
-  [Vector search](../../ai-integration/vector-search/overview) is supported only by Corax.  
-  Auto-indexes created for vector search queries use Corax automatically,  
-  even if the configured default engine is Lucene.
-
-* **Static indexes with vector fields**  
-  Static indexes that define vector fields must use Corax.  
-  If such an index is configured to use Lucene, RavenDB rejects the index.
-
-* **Auto-index to static-index conversion**  
-  When RavenDB converts an auto-index with vector fields to a static index definition,  
-  the resulting static index is set to Corax as well.
-
-</Admonition>    
+</Admonition>   
 
 ---
     
