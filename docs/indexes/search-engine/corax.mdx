@@ -200,7 +200,7 @@ Available values are `SearchEngineType.Lucene` and `SearchEngineType.Corax`.
                               };
     
             // Set the search engine type 
-            SearchEngineType = SearchEngineType.Corax;
+            SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Corax;
         }
     }
     
@@ -360,7 +360,7 @@ This can make projections faster, but increases index storage size.
                                 order.ShipTo.Location
                             };
 
-            SearchEngineType = SearchEngineType.Corax;
+            SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Corax;
 
             // Disable indexing for the field
             // Do not index the complex object as a searchable field
@@ -594,7 +594,7 @@ private class Products_ByCategoryAndUnitsInStock :
                 UnitsInStock = product.UnitsInStock
             };
 
-           SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Corax;
+        SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Corax;
 
         // Add a compound index-field to optimize queries
         // that filter by Category and order by UnitsInStock.
