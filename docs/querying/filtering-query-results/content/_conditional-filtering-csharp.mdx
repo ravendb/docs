@@ -230,37 +230,62 @@ import Panel from '@site/src/components/Panel';
 </Panel>
 
 <Panel heading="Type handling">
-
-* Comparisons in the condition are **strictly typed**. Comparing incompatible types
-  (for example, a string parameter against a number, or a boolean against a string) throws a `RavenException`.
     
-* **Numbers** - integer and floating-point values can be compared.  
-  RavenDB converts between `Long` and `Double` when evaluating the condition,  
-  so for example, `1` and `1.0` compare as equal.    
+* Comparisons are evaluated based on the type of the literal value being compared against,  
+  and the parameter value is converted to match when a sensible conversion exists.   
+  When no such conversion exists, the query fails with `RavenException`.
+    
+* **Comparing against a number literal**:   
+  When comparing against a number literal, RavenDB converts between `Long` and `Double`  
+  (1 and 1.0 compare as equal), and all operators (`==`, `!=`, `<`, `<=`, `>`, `>=`) are supported.  
+  A string parameter that holds a numeric value (e.g. "10") is parsed and compared as a number.  
+  A parameter that cannot be converted to a number (a non-numeric string or a boolean) throws `RavenException`.      
 
-* **Strings** - all string value comparisons are **case-insensitive** (ordinal, ignore-case).  
-  For example, a `$status` parameter equal to `"active"` matches the literal `'ACTIVE'`.    
-
-* **Booleans** - only the equality operators `==` and `!=` are supported.  
-  Using an inequality operator (`<`, `<=`, `>`, `>=`) on a boolean throws a `RavenException`.
-
-    ```sql
+    ```sql    
     // Valid - RavenDB converts between Long and Double:
-    where when($quantity >= 10, ...)
-
+    where when($longParam >= 10, ...)
+    
+    // Valid - a numeric string parameter is compared as a number:
+    where when($numericStringParam == 10, ...)
+    ```    
+    
+* **Comparing against a string literal**:  
+  When comparing against a string literal, the parameter must be a string.  
+  A number or boolean parameter compared against a string literal throws `RavenException`.  
+  String value comparisons are case-insensitive (ordinal, ignore-case).
+    
+    ```sql
     // Valid - strings compare case-insensitively:
-    where when($status == 'active', ...)
+    where when($stringParam == 'active', ...)
 
-    // Valid - booleans with == / !=:
-    where when($includeArchived == false, ...)
-
-    // Throws RavenException - inequality on a boolean:
-    where when($includeArchived > false, ...)
-
-    // Throws RavenException - incompatible types ($quantity is a number):
-    where when($quantity == 'ten', ...)
+    // Throws RavenException - 
+    // string literal requires comparing against a string param
+    where when($numberParam == 'ten', ...)
     ```
 
+* **Comparing against a boolean literal**:  
+  When comparing against a boolean literal, only the equality operators `==` and `!=` are supported.  
+  Using an inequality operator (`<`, `<=`, `>`, `>=`) throws `RavenException`.  
+  The parameter must also be a boolean; a non-boolean parameter throws `RavenException`.
+
+    ```sql 
+    // Valid - booleans with == / !=:
+    where when($booleanParam == false, ...)
+
+    // Throws RavenException - inequality on a boolean:
+    where when($booleanParam > false, ...)
+    ```
+
+* **Comparing against `null`**:  
+  A parameter is `null` if it is explicitly `null` or not supplied.  
+    
+  When comparing against a `null` literal, only `==` and `!=` are supported (other operators return `false`):  
+  `$param == null` matches a null/missing parameter;  
+  `$param != null` matches any non-null value.  
+    
+  When comparing against a **non-null** literal, a null/missing parameter makes `!=` return `true`  
+  and every other operator (including `==`) return `false` - it never raises a type error.    
+    
 </Panel>
 
 <Panel heading="Logical expressions in the condition">
@@ -370,6 +395,14 @@ import Panel from '@site/src/components/Panel';
       the `UnitsInStock > 0` predicate is **skipped**, and all products are returned.
 
 * As with scalar string comparisons, string value matching in `in` and `all in` conditions is **case-insensitive**.    
+    
+* `in` and `all in` compare formatted string values, so some mixed parameter and list value types can match.  
+  For example, a parameter value of `"1"` can match `in (1, 2, 3)`,  
+  and a parameter value of `1` can match `in ('1', '2', '3')`.    
+    
+  The comparison is textual: each value is formatted as a string before comparison.  
+  Values that are numerically equal but have different string representations,  
+  such as the string `"1.0"` and the number `1` (formatted as `"1"`), are not considered a match.    
 
 </Panel>
 
