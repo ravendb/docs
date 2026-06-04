@@ -1,0 +1,813 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* A **subscription worker** is the client-side component that consumes a subscription.  
+
+* The worker connects to the server, receives a batch of documents, hands the batch to your processing code, and
+  when done, acknowledges its progress to the server so the server can keep track and provide the next batch.  
+
+* This page explains how to create and run a subscription worker using the client API.  
+
+* In this article:
+   * [Creating a subscription worker](../../data-subscriptions/consuming-subscription.mdx#creating-a-subscription-worker)
+   * [Running the worker](../../data-subscriptions/consuming-subscription.mdx#running-the-worker)
+   * [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)
+   * [Error handling](../../data-subscriptions/consuming-subscription.mdx#error-handling)
+   * [Examples](../../data-subscriptions/consuming-subscription.mdx#examples)
+   * [Syntax](../../data-subscriptions/consuming-subscription.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Creating a subscription worker">
+
+Create a worker using the store's `Subscriptions.GetSubscriptionWorker` method, passing either the
+subscription name or a [SubscriptionWorkerOptions](../../data-subscriptions/consuming-subscription.mdx#classes) object.
+
+```csharp
+subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
+```
+
+This constructs the worker but does not run it yet.
+
+</Panel>
+
+<Panel heading="Running the worker">
+
+To start processing the documents the server sends, call the worker's `Run` method, passing the
+logic that handles each batch:
+
+```csharp
+subscriptionRuntimeTask = subscriptionWorker.Run(batch =>
+{
+    // your batch-processing logic here
+});
+```
+
+<br />
+
+From this point on, the worker receives and processes document batches, acknowledging each batch 
+so the server can keep track of the subscription's progress and provide the next batch if available.  
+
+`Run` returns a task that stays alive while the worker is processing. If processing is aborted,
+this task completes with an exception.
+
+</Panel>
+
+<Panel heading="Worker strategies">
+
+A worker is configured with a strategy, set in the 
+[SubscriptionWorkerOptions](../../data-subscriptions/consuming-subscription.mdx#classes) 
+`Strategy` property, that decides whether the worker may connect to the subscription 
+and how it behaves toward a worker that is already connected.
+
+The following strategies allow only one worker connected at a time:
+
+* **`OpenIfFree`**  
+  The server lets the worker connect only if no other worker is connected.  
+  If another worker is already connected, the incoming worker throws a `SubscriptionInUseException`.  
+* **`WaitForFree`**  
+  If the subscription is in use, the worker waits for the connected worker to disconnect, 
+  then takes its place.  
+  This suits failover, where a standby worker waits to take over from the active one.  
+* **`TakeOver`**  
+  The incoming worker tries to take over the existing connection.  
+  It succeeds if the connected worker does not itself use `TakeOver`.  
+   - If the takeover succeeds, the worker that has been taken over throws a `SubscriptionInUseException`.  
+   - If the takeover fails, the incoming worker throws the exception instead.  
+
+To let several workers consume the same subscription at the same time, use the `Concurrent` strategy.
+See [Concurrent subscriptions](../../data-subscriptions/concurrent-subscriptions.mdx).
+
+</Panel>
+
+<Panel heading="Error handling">
+
+<ContentFrame>
+
+### Connection failures
+
+When an unexpected error occurs during communication with the server, the worker tries to
+reconnect.  
+It stops without reconnecting in these cases:
+
+* The subscription no longer exists.  
+* Another worker took over the subscription (see [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)).  
+* The worker cannot connect to any of the servers.  
+* The worker could not learn which node is responsible for the task (e.g., when the cluster
+  has no leader).  
+* An authorization error occurred.  
+* An error occurred while establishing the connection.  
+* The database does not exist.  
+
+---
+
+When an unexpected error interrupts the worker's connection to the server, the
+`OnUnexpectedSubscriptionError` event fires and then the worker automatically attempts to
+reconnect.  
+Subscribe to this event to log worker connection errors:
+
+```csharp
+// Subscribe to the worker's connection-error event
+subscriptionWorker.OnUnexpectedSubscriptionError += exception =>
+{
+    // Log the error
+    Logger.Error("Subscription connection error: " + subscriptionName, exception);
+};
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Errors while processing a batch
+
+When your batch-processing code throws, the `IgnoreSubscriberErrors` option in
+`SubscriptionWorkerOptions` determines what happens:
+
+* **`false`** (default)  
+  Processing stops. The worker wraps the exception in a `SubscriberErrorException` and rethrows
+  it without acknowledging progress, so the task returned by `Run` completes in error.  
+* **`true`**  
+  The failed batch is acknowledged without a retry, and the worker continues with the next
+  batches.  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Reconnection and timeouts
+
+These `SubscriptionWorkerOptions` properties govern reconnection and connection timeouts:
+
+* **`TimeToWaitBeforeConnectionRetry`**  
+  How long the worker waits before each reconnect attempt.  
+  Default: 5 seconds.  
+* **`MaxErroneousPeriod`**  
+  How long the connection may stay in an erroneous state before the worker stops retrying.  
+  Default: 5 minutes.  
+* **`ConnectionStreamTimeout`**  
+  How long the worker waits after losing connectivity before timing out.  
+  Default: 30 seconds. Cannot be set below 15 seconds.  
+
+```csharp
+var options = new SubscriptionWorkerOptions(subscriptionName);
+
+// Set the worker's timeout period
+options.ConnectionStreamTimeout = TimeSpan.FromSeconds(45);
+```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Examples">
+
+<ContentFrame>
+
+### Example: Full exception handling with retries
+
+In this example, the client handles the exceptions the worker may throw, 
+recreating the worker to resume processing when the error is recoverable.
+
+```csharp
+while (true)
+{
+    // Create the worker:
+    var options = new SubscriptionWorkerOptions(subscriptionName);
+
+    // Configure the worker:
+    // Allow a downtime of up to 2 hours,
+    // and wait 2 minutes before reconnecting
+    options.MaxErroneousPeriod = TimeSpan.FromHours(2);
+    options.TimeToWaitBeforeConnectionRetry = TimeSpan.FromMinutes(2);
+
+    subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(options);
+
+    try
+    {
+        // Subscribe to connection retry events
+        // and log any exceptions that occur during processing
+        subscriptionWorker.OnSubscriptionConnectionRetry += exception =>
+        {
+            Logger.Error("Error during subscription processing: " + subscriptionName,
+                exception);
+        };
+
+        // Run the worker:
+        await subscriptionWorker.Run(batch =>
+        {
+            foreach (var item in batch.Items)
+            {
+                // Forcefully stop subscription processing if the order's Company is "companies/2-A"
+                // and throw an exception to let external logic handle the specific case
+                if (item.Result.Company == "companies/2-A")
+                {
+                    // The custom exception thrown from here
+                    // will be wrapped by `SubscriberErrorException`
+                    throw new UnsupportedCompanyException(
+                        "Company ID cannot be 'companies/2-A', please fix");
+                }
+
+                // Process the order document - provide your own logic
+                ProcessOrder(item.Result);
+            }
+        }, cancellationToken);
+
+        // The Run method will stop if the subscription worker is disposed,
+        // exiting the while loop
+        return;
+    }
+    catch (Exception e)
+    {
+        Logger.Error("Failure in subscription: " + subscriptionName, e);
+
+        // The following exceptions are not recoverable
+        if (e is DatabaseDoesNotExistException ||
+            e is SubscriptionDoesNotExistException ||
+            e is SubscriptionInvalidStateException ||
+            e is AuthorizationException)
+            throw;
+
+        if (e is SubscriptionClosedException)
+            // Subscription probably closed explicitly by admin
+            return;
+
+        if (e is SubscriberErrorException se)
+        {
+            // For UnsupportedCompanyException we want to throw an exception,
+            // otherwise, continue processing
+            if (se.InnerException != null && se.InnerException is UnsupportedCompanyException)
+            {
+                throw;
+            }
+
+            // Call continue to skip the current while(true) iteration and try reconnecting
+            // in the next one, allowing the worker to process future batches.
+            continue;
+        }
+
+        // Handle this depending on the subscription opening strategy
+        if (e is SubscriptionInUseException)
+            continue;
+
+        // Call return to exit the while(true) loop,
+        // dispose of the worker (via finally), and stop the subscription.
+        return;
+    }
+    finally
+    {
+        subscriptionWorker.Dispose();
+    }
+}
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Set the batch size
+
+In this example, the worker sets the maximum number of documents the server sends in each batch.
+
+```csharp
+var workerWBatch = store.Subscriptions.GetSubscriptionWorker<Order>(
+    new SubscriptionWorkerOptions(subscriptionName)
+    {
+        MaxDocsPerBatch = 20
+    });
+
+_ = workerWBatch.Run(x =>
+{
+    // your custom logic
+});
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Process documents in a session
+
+In this example, the subscription sends `Orders` that have no shipping date.  
+The worker sets each document's `ShippedAt` field and saves it back through a session.
+
+<Admonition type="info" title="">
+Open the session using `batch.OpenSession`, not `store.OpenSession`.
+</Admonition>
+
+```csharp
+// Create the subscription task on the server:
+var subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"from Orders as o where o.ShippedAt = null"
+});
+
+// Create the subscription worker that will consume the documents:
+var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
+_ = subscriptionWorker.Run(batch =>
+{
+    // Open a session using 'batch.OpenSession'
+    using (var session = batch.OpenSession())
+    {
+        foreach (var order in batch.Items.Select(x => x.Result))
+        {
+            TransferOrderToShipmentCompany(order); // call your custom method
+            order.ShippedAt = DateTime.UtcNow;     // update the document field
+        }
+
+        // Save the updated Order documents
+        session.SaveChanges();
+    }
+});
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Process dynamic objects
+
+In this example, the subscription projects each `Order` into a dynamic shape, and the worker processes the
+dynamic objects it receives.
+
+```csharp
+// Create the subscription task on the server:
+var subscriptionName = "My dynamic subscription";
+store.Subscriptions.Create(new SubscriptionCreationOptions<Order>()
+{
+    Name = subscriptionName,
+    Projection = order =>
+        new { DynamicField_1 = "Company: " + order.Company + " Employee: " + order.Employee }
+});
+
+// Create the subscription worker that will consume the documents:
+var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker(subscriptionName);
+_ = subscriptionWorker.Run(batch =>
+{
+    foreach (var item in batch.Items)
+    {
+        // Access the dynamic field in the document
+        dynamic field = item.Result.DynamicField_1;
+
+        // Call your custom method
+        ProcessItem(field);
+    }
+});
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Process a blittable object
+
+In this example, the worker processes documents as low-level blittable objects.
+
+<Admonition type="warning" title="">
+Working with blittable objects directly can help in extreme high-performance scenarios, but is
+risky because it uses unmanaged memory directly.
+</Admonition>
+
+```csharp
+// Create the subscription task on the server:
+var subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions<Order>
+{
+    Projection = x => new
+    {
+        x.Employee
+    }
+});
+
+// Create the subscription worker that will consume the documents:
+var subscriptionWorker =
+    // Specify `BlittableJsonReaderObject` as the generic type parameter
+    store.Subscriptions.GetSubscriptionWorker<BlittableJsonReaderObject>(subscriptionName);
+
+_ = subscriptionWorker.Run(batch =>
+{
+    foreach (var item in batch.Items)
+    {
+        // Access the Employee field within the blittable object
+        var employeeField = item.Result["Employee"].ToString();
+
+        ProcessItem(employeeField); // call your custom method
+    }
+});
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: End when no documents are left
+
+In this example, the worker runs until no new documents remain, which suits ad-hoc, single-use processing where
+you need every matching document processed once.  
+Set `CloseWhenNoDocsLeft` to `true`; the worker then throws a `SubscriptionClosedException` when
+it finishes.
+
+```csharp
+// Create the subscription task on the server:
+var subscriptionName = store.Subscriptions.Create<Order>(
+    new SubscriptionCreationOptions<Order>
+    {
+        Filter = order => order.Lines.Sum(line => line.PricePerUnit * line.Quantity) > 10000,
+        Projection = order => new OrderAndCompany
+        {
+            OrderId = order.Id,
+            Company = RavenQuery.Load<Company>(order.Company)
+        }
+    });
+
+// Create the subscription worker that will consume the documents:
+var highValueOrdersWorker = store.Subscriptions.GetSubscriptionWorker<OrderAndCompany>(
+    new SubscriptionWorkerOptions(subscriptionName)
+    {
+        // Here we set the worker to stop when there are no more documents left to send
+        // Will throw SubscriptionClosedException when it finishes its job
+        CloseWhenNoDocsLeft = true
+    });
+
+try
+{
+    await highValueOrdersWorker.Run(batch =>
+    {
+        foreach (var item in batch.Items)
+        {
+            SendThankYouNoteToCompany(item.Result); // call your custom method
+        }
+    });
+}
+catch (SubscriptionClosedException)
+{
+    // That's expected, no more documents to process
+}
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Use included documents
+
+In this example, the subscription sends every `Order` and includes in the batch `Product`
+documents referenced in the order.  
+When the worker accesses an included `Product`, the product's data has already arrived in the batch,
+so the worker doesn't need to fetch it from the server.
+
+```csharp
+// Create the subscription task on the server:
+var subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    // Include the referenced Product documents for each Order document
+    Query = @"from Orders include Lines[].Product"
+});
+
+// Create the subscription worker that will consume the documents:
+var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
+_ = subscriptionWorker.Run(batch =>
+{
+    // Open a session using 'batch.OpenSession' to access the Product documents
+    using (var session = batch.OpenSession())
+    {
+        foreach (var order in batch.Items.Select(x => x.Result))
+        {
+            foreach (var orderLine in order.Lines)
+            {
+                // Calling Load will not generate a request to the server,
+                // since orderLine.Product was included in the batch
+                var product = session.Load<Product>(orderLine.Product);
+
+                ProcessOrderAndProduct(order, product); // call your custom method
+            }
+        }
+    }
+});
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Fail over to another node
+
+With the `WaitForFree` strategy, any available node can create a worker, and another node takes
+over if the worker fails.
+
+```csharp
+var worker = store.Subscriptions.GetSubscriptionWorker<Order>(
+    new SubscriptionWorkerOptions(subscriptionName)
+    {
+        // WaitForFree: wait and take over if the connected worker fails
+        Strategy = SubscriptionOpeningStrategy.WaitForFree
+    });
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Primary and secondary workers
+
+In this example, the two workers form an active-standby pair: the primary, using `TakeOver`, establishes the
+connection; the secondary, using `WaitForFree`, waits to take over if the primary fails.
+
+The primary worker:
+
+```csharp
+var primaryWorker = store.Subscriptions.GetSubscriptionWorker<Order>(
+    new SubscriptionWorkerOptions(subscriptionName)
+    {
+        Strategy = SubscriptionOpeningStrategy.TakeOver
+    });
+
+while (true)
+{
+    try
+    {
+        await primaryWorker.Run(x =>
+        {
+            // your logic
+        });
+    }
+    catch (Exception)
+    {
+        // retry
+    }
+}
+```
+
+<br />
+
+The secondary worker:
+
+```csharp
+var secondaryWorker = store.Subscriptions.GetSubscriptionWorker<Order>(
+    new SubscriptionWorkerOptions(subscriptionName)
+    {
+        Strategy = SubscriptionOpeningStrategy.WaitForFree
+    });
+
+while (true)
+{
+    try
+    {
+        await secondaryWorker.Run(x =>
+        {
+            // your logic
+        });
+    }
+    catch (Exception)
+    {
+        // retry
+    }
+}
+```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Syntax">
+
+<ContentFrame>
+
+### Methods
+
+<Tabs groupId='subscriptionWorkerMethods'>
+<TabItem value="get-worker" label="GetSubscriptionWorker">
+
+Create a subscription worker through `store.Subscriptions`.
+
+```csharp
+SubscriptionWorker<dynamic> GetSubscriptionWorker(
+    string subscriptionName, string database = null);
+
+SubscriptionWorker<dynamic> GetSubscriptionWorker(
+    SubscriptionWorkerOptions options, string database = null);
+
+SubscriptionWorker<T> GetSubscriptionWorker<T>(
+    string subscriptionName, string database = null) where T : class;
+
+SubscriptionWorker<T> GetSubscriptionWorker<T>(
+    SubscriptionWorkerOptions options, string database = null) where T : class;
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **subscriptionName** | `string` | The name of the subscription the worker connects to. |
+| **options** | `SubscriptionWorkerOptions` | Options that affect how the worker interacts with the subscription. They do not change the subscription's own definition. |
+| **database** | `string` | The database where the subscription task resides. If `null`, the document store's default database is used. |
+
+| Return value | |
+|-----------|-------------|
+| `SubscriptionWorker` | The created worker. It is idle until you call `Run`. |
+
+</TabItem>
+<TabItem value="run" label="Run">
+
+Start the worker's batch processing. Pass the delegate that processes each received batch.
+
+```csharp
+Task Run(Action<SubscriptionBatch<T>> processDocuments,
+    CancellationToken ct = default(CancellationToken));
+
+Task Run(Func<SubscriptionBatch<T>, Task> processDocuments,
+    CancellationToken ct = default(CancellationToken));
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **processDocuments** | `Action<SubscriptionBatch<T>>` | Delegate for synchronous batch processing. |
+| **processDocuments** | `Func<SubscriptionBatch<T>, Task>` | Delegate for asynchronous batch processing. |
+| **ct** | `CancellationToken` | A token used to halt the worker. |
+
+| Return value | |
+|-----------|-------------|
+| `Task` | A task that stays alive while the worker is processing or trying to. If processing is aborted, the task completes with an exception. |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Classes
+
+<Tabs groupId='workerOptionClasses'>
+<TabItem value="worker-options" label="SubscriptionWorkerOptions">
+
+When you create a worker using `SubscriptionWorkerOptions`, the only required property is
+`SubscriptionName`; the rest fall back to their defaults.
+
+```csharp
+public class SubscriptionWorkerOptions
+{
+    public string SubscriptionName { get; }
+    public int MaxDocsPerBatch { get; set; }
+    public int SendBufferSizeInBytes { get; set; }
+    public int ReceiveBufferSizeInBytes { get; set; }
+    public bool IgnoreSubscriberErrors { get; set; }
+    public bool CloseWhenNoDocsLeft { get; set; }
+    public TimeSpan TimeToWaitBeforeConnectionRetry { get; set; }
+    public TimeSpan ConnectionStreamTimeout { get; set; }
+    public TimeSpan MaxErroneousPeriod { get; set; }
+    public SubscriptionOpeningStrategy Strategy { get; set; }
+}
+```
+
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **SubscriptionName** | `string` | The name of the subscription the worker connects to. |
+| **MaxDocsPerBatch** | `int` | The maximum number of documents the server tries to send in a batch. If it finds fewer, it sends what it has without waiting. Default: 4096. |
+| **SendBufferSizeInBytes** | `int` | The size of the TCP socket buffer used for sending data. Default: 32,768 bytes (32 KiB). |
+| **ReceiveBufferSizeInBytes** | `int` | The size of the TCP socket buffer used for receiving data. Default: 32,768 bytes (32 KiB). |
+| **IgnoreSubscriberErrors** | `bool` | Whether processing continues when your batch-handling code throws. `true` continues; `false` (default) aborts. |
+| **CloseWhenNoDocsLeft** | `bool` | Whether the connection closes when no new documents remain. `true` processes all available documents and then throws a `SubscriptionClosedException` (useful for one-time processing); `false` (default) keeps the worker waiting for new documents. |
+| **TimeToWaitBeforeConnectionRetry** | `TimeSpan` | The wait before each reconnect attempt after a non-aborting failure. Default: 5 seconds. |
+| **ConnectionStreamTimeout** | `TimeSpan` | How long the worker waits after losing connectivity before timing out. Default: 30 seconds. |
+| **MaxErroneousPeriod** | `TimeSpan` | The maximum time the connection may stay in an erroneous state before it is terminated. Default: 5 minutes. |
+| **Strategy** | `SubscriptionOpeningStrategy` | How the server handles this worker's connection attempt. Default: `OpenIfFree`. |
+
+</TabItem>
+<TabItem value="opening-strategy" label="SubscriptionOpeningStrategy">
+
+The strategy that decides whether a worker may connect to a subscription. See
+[Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies).
+
+```csharp
+public enum SubscriptionOpeningStrategy
+{
+    // Connect if no other worker is connected
+    OpenIfFree,
+
+    // Take over the connection
+    TakeOver,
+
+    // Wait for the currently connected worker to disconnect
+    WaitForFree,
+
+    // Connect concurrently
+    Concurrent
+}
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs groupId='batchClasses'>
+<TabItem value="batch" label="SubscriptionBatch&lt;T&gt;">
+
+The batch passed to your `Run` delegate.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **Items** | `List<SubscriptionBatch<T>.Item>` | The items in the batch. |
+| **NumberOfItemsInBatch** | `int` | The number of items in the batch. |
+
+| Method | Return value | Description |
+|--------|--------------|-------------|
+| **OpenSession()** | `IDocumentSession` | Opens a session that tracks all items and their included items in the current batch. |
+| **OpenAsyncSession()** | `IAsyncDocumentSession` | The asynchronous version of `OpenSession()`. |
+
+<Admonition type="info" title="">
+As long as no exception occurs, the worker keeps addressing the server it received the first
+batch from.  
+If it cannot reach that node, it fails over to another node from the session's topology, see
+[load balancing](../../client-api/configuration/load-balance/overview.mdx). The node it reaches
+then tells it which node currently handles data subscriptions.
+</Admonition>
+
+</TabItem>
+<TabItem value="batch-item" label="SubscriptionBatch&lt;T&gt;.Item">
+
+A single item in a subscription batch.
+
+```csharp
+public struct Item
+{
+    public T Result { get; internal set; }
+    public string ExceptionMessage { get; internal set; }
+    public string Id { get; internal set; }
+    public string ChangeVector { get; internal set; }
+    public bool Projection { get; internal set; }
+    public bool Revision { get; internal set; }
+    public BlittableJsonReaderObject RawResult { get; internal set; }
+    public BlittableJsonReaderObject RawMetadata { get; internal set; }
+    public IMetadataDictionary Metadata { get; internal set; }
+}
+```
+
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **Result** | `T` | The batch item. If `T` is `BlittableJsonReaderObject`, no deserialization takes place. |
+| **ExceptionMessage** | `string` | The exception message thrown while processing the document on the server side. |
+| **Id** | `string` | The document ID of the item's underlying document. |
+| **ChangeVector** | `string` | The change vector of the item's underlying document. |
+| **Projection** | `bool` | `true` when the item is a projection produced by the subscription query rather than a full document. |
+| **Revision** | `bool` | `true` when the item is a document revision, for a subscription that streams revisions. |
+| **RawResult** | `BlittableJsonReaderObject` | The item before serialization to `T`. |
+| **RawMetadata** | `BlittableJsonReaderObject` | The metadata of the item's underlying document. |
+| **Metadata** | `IMetadataDictionary` | The item's underlying metadata values. |
+
+<Admonition type="warning" title="">
+Use this struct only within the subscription's `Run` delegate. Using it outside that scope may
+cause unexpected behavior.
+</Admonition>
+
+</TabItem>
+</Tabs>
+
+<Tabs groupId='workerClass'>
+<TabItem value="worker" label="SubscriptionWorker&lt;T&gt;">
+
+The worker returned by `GetSubscriptionWorker`.
+
+**Methods**
+
+| Method | Return type | Description |
+|--------|-------------|-------------|
+| **Dispose()** | `void` | Aborts the worker, waiting for the task returned by `Run` to finish. |
+| **DisposeAsync()** | `ValueTask` | The asynchronous version of `Dispose()`. |
+| **Dispose(bool waitForSubscriptionTask)** | `void` | Aborts the worker, letting you choose whether to wait for the `Run` task. |
+| **DisposeAsync(bool waitForSubscriptionTask)** | `ValueTask` | The asynchronous version of `Dispose(bool waitForSubscriptionTask)`. |
+| **Run (overloads)** | `Task` | Starts the worker's batch processing. See [Run](../../data-subscriptions/consuming-subscription.mdx#methods) above. |
+
+**Events**
+
+| Event | Type | Description |
+|-------|------|-------------|
+| **AfterAcknowledgment** | `AfterAcknowledgmentAction` | Fires after the server acknowledges the progress of a processed batch. |
+| **OnSubscriptionConnectionRetry** | `Action<Exception>` | Fires when the worker tries to reconnect after a failure. Receives the exception that interrupted processing. |
+| **OnUnexpectedSubscriptionError** | `Action<Exception>` | Fires when an unexpected error interrupts the worker's connection to the server, before the worker reconnects automatically. Receives the exception. |
+| **OnDisposed** | `Action<SubscriptionWorker<T>>` | Fires after the worker is disposed. |
+
+**Properties**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **CurrentNodeTag** | `string` | The node tag of the RavenDB server currently handling the subscription. |
+| **SubscriptionName** | `string` | The name of the subscription being processed. |
+| **WorkerId** | `string` | The worker ID. |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>
