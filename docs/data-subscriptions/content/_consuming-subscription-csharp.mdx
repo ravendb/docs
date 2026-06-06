@@ -282,7 +282,7 @@ var workerWBatch = store.Subscriptions.GetSubscriptionWorker<Order>(
         MaxDocsPerBatch = 20
     });
 
-_ = workerWBatch.Run(x =>
+var subscriptionRuntimeTask = workerWBatch.Run(x =>
 {
     // your custom logic
 });
@@ -310,7 +310,7 @@ var subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOption
 
 // Create the subscription worker that will consume the documents:
 var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
-_ = subscriptionWorker.Run(batch =>
+var subscriptionRuntimeTask = subscriptionWorker.Run(batch =>
 {
     // Open a session using 'batch.OpenSession'
     using (var session = batch.OpenSession())
@@ -348,7 +348,7 @@ store.Subscriptions.Create(new SubscriptionCreationOptions<Order>()
 
 // Create the subscription worker that will consume the documents:
 var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker(subscriptionName);
-_ = subscriptionWorker.Run(batch =>
+var subscriptionRuntimeTask = subscriptionWorker.Run(batch =>
 {
     foreach (var item in batch.Items)
     {
@@ -389,7 +389,7 @@ var subscriptionWorker =
     // Specify `BlittableJsonReaderObject` as the generic type parameter
     store.Subscriptions.GetSubscriptionWorker<BlittableJsonReaderObject>(subscriptionName);
 
-_ = subscriptionWorker.Run(batch =>
+var subscriptionRuntimeTask = subscriptionWorker.Run(batch =>
 {
     foreach (var item in batch.Items)
     {
@@ -471,7 +471,7 @@ var subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOption
 
 // Create the subscription worker that will consume the documents:
 var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
-_ = subscriptionWorker.Run(batch =>
+var subscriptionRuntimeTask = subscriptionWorker.Run(batch =>
 {
     // Open a session using 'batch.OpenSession' to access the Product documents
     using (var session = batch.OpenSession())
