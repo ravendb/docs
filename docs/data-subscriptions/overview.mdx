@@ -132,7 +132,7 @@ connection request through the processing and acknowledgment of each batch:
 
 <Admonition type="note" title="">
 When the node responsible for the subscription goes down, the subscription can continue on another
-node. If your license includes [Highly Available Tasks](../server/clustering/distribution/highly-available-tasks.mdx),
+node. If your license includes [highly available tasks](../server/clustering/distribution/highly-available-tasks.mdx),
 the cluster reassigns the subscription to another node automatically. Otherwise, the subscription
 resumes on its original node once that node is back online.
 </Admonition>
@@ -161,7 +161,7 @@ You can set these options while creating a subscription:
 
 * **Revisions**  
   Process consecutive pairs of document revisions instead of current documents, so the worker can
-  act on what changed between versions.  
+  act on what changed between revisions.  
   [Revisions support](../data-subscriptions/revisions-support.mdx)  
 
 </Panel>
