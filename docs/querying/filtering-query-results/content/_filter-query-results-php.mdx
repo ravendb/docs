@@ -531,6 +531,8 @@ function whereGreaterThanOrEqual(string $fieldName, $value, bool $exact = false)
 function whereLessThan(string $fieldName, $value, bool $exact = false): DocumentQueryInterface;
 function whereLessThanOrEqual(string $fieldName, $value, bool $exact = false): DocumentQueryInterface;
 
+function whereBetween(string $fieldName, $start, $end, bool $exact = false): DocumentQueryInterface;
+
 // Collection / set matching
 function whereIn(string $fieldName, Collection|array $values, bool $exact = false): DocumentQueryInterface;
 

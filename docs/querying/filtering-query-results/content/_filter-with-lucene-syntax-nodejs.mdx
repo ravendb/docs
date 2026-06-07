@@ -1,0 +1,584 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* Use the **Lucene query syntax** when you want direct access to Lucene's query-parser syntax,  
+  for example, to use Lucene-specific wildcard syntax such as `?`, or to reuse an existing Lucene query string.
+    
+* In the client API, use `whereLucene` from a query.  
+  In raw RQL, use the corresponding `lucene()` method.    
+
+* Filtering with `whereLucene` / `lucene()` is supported only by indexes that use the **Lucene search engine**  
+  (this applies to both static-indexes and auto-indexes).
+  If the target index uses [Corax](../../../indexes/search-engine/corax.mdx), the query throws an exception.  
+    
+* In this article:
+    * [Basic usage](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#basic-usage)
+    * [Common Lucene clauses](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#common-lucene-clauses)
+        * [Wildcards](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#wildcards)
+        * [Boolean operators](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#boolean-operators)
+        * [Phrase and proximity search](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#phrase-and-proximity-search)
+        * [Fuzzy search](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#fuzzy-search)
+        * [Boosting terms](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#boosting-terms)
+        * [Range clauses](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#range-clauses)
+    * [Filter on multiple fields](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#filter-on-multiple-fields)
+    * [Case-sensitive matching](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#case-sensitive-matching)
+    * [Combine with other filtering methods](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#combine-with-other-filtering-methods)
+    * [Escaping special characters](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#escaping-special-characters)
+    * [Restrictions](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#restrictions)
+    * [Syntax](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Basic usage">
+
+* `whereLucene(fieldName, whereClause)` takes 2 parameters:
+    
+    * **Field name**:  
+      The field name tells Lucene which field to search when the clause does not specify a field explicitly.  
+      In `.whereLucene("Name", "bistro")`, the term `bistro` is searched in the `Name` field.
+    
+    * **Where clause**:  
+      The where clause is a string written in Lucene query syntax.  
+      RavenDB parses this string on the server with Lucene's query parser.
+    
+* **When making a dynamic query on a collection**:  
+  RavenDB creates or reuses an auto-index with a **full-text search** field for the requested field.  
+  This field uses the [default search analyzer](../../../indexes/using-analyzers.mdx#using-the-default-search-analyzer).
+  By default, this is `RavenStandardAnalyzer`, which lowercases and tokenizes the text, so matching is case-insensitive (e.g. bistro matches "Bistro du Centre").
+
+* **When querying a static index**:  
+  The Lucene query clause is parsed using the analyzer configured for the target index field.  
+  Configure the analyzer in the index definition, for example with `analyze(...)`.  
+  If a `Search` field has no analyzer configured, RavenDB uses the default search analyzer.    
+
+---
+    
+The following query returns all companies whose _Name_ field contains the term `bistro`:       
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+const companies = await session
+    .query({ collection: "Companies" })
+    .whereLucene("Name", "bistro")
+    .all();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```javascript
+const companies = await session.advanced
+    .rawQuery("from Companies where lucene(Name, $clause)")
+    .addParameter("clause", "bistro")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Companies
+where lucene(Name, "bistro")
+```
+</TabItem>
+</Tabs>
+
+If no suitable index already exists for this dynamic query,
+RavenDB creates an auto-index for `Companies` with `Name` indexed as a full-text search field, for example, `Auto/Companies/BySearch(Name)`.       
+    
+</Panel>
+
+<Panel heading="Common Lucene clauses">
+    
+The `whereClause` argument specifies the filtering predicate in Lucene query syntax.  
+Common clause types include:    
+
+    | Clause type               | Example clause                   | Meaning |
+    |---------------------------|----------------------------------|---------|
+    | Single term               | `bistro`                         | Match documents whose field contains the term `bistro`. |
+    | Wildcards                 | `bist*`                          | Match terms that start with `bist`.                     |
+    | Single-character wildcard | `b?stro`                         | Match one character at the `?` position.                |
+    | Boolean operators         | `(bistro OR cafe) AND NOT grill` | Combine terms with `AND`, `OR`, `NOT`, and parentheses. |
+    | Phrase                    | `"sales representative"`         | Match the exact phrase, with terms in order.            |
+    | Proximity                 | `"fluent french"~5`              | Match both terms within 5 words of each other.          |
+    | Fuzzy                     | `bistor~`                        | Match terms similar to `bistor`, such as minor typos.   |
+    | Term boost                | `bistro^2 OR cafe`               | Match both terms, but rank `bistro` matches higher when ordering by score.     |
+    | Term range                | `[apple TO banana]`              | Match terms in the inclusive term range.<br/>Use `{...}` for exclusive bounds. |
+
+---
+
+### Wildcards
+
+Use `*` to match any number of characters and `?` to match exactly one character:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+// Matches "bistro", "bistros", "bistrot", ...
+const companies = await session
+    .query({ collection: "Companies" })
+    .whereLucene("Name", "bist*")
+    .all();
+
+// Matches terms such as "bistro" and "bystro"
+const companiesWithSingleCharacterWildcard = await session
+    .query({ collection: "Companies" })
+    .whereLucene("Name", "b?stro")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// Matches "bistro", "bistros", "bistrot", ...    
+from Companies
+where lucene(Name, "bist*")
+    
+// Matches terms such as "bistro" and "bystro"     
+from Companies
+where lucene(Name, "b?stro")    
+```
+</TabItem>
+</Tabs>
+    
+<Admonition type="note" title="">
+    
+#### Leading wildcards    
+
+Leading wildcards (e.g. `*stro`) are allowed as well.  
+Note that a leading wildcard forces the server to scan all terms of the field, which can be slow on large indexes.    
+
+</Admonition>
+
+---
+
+### Boolean operators
+    
+Use `AND`, `OR`, `NOT`, and parentheses to combine terms inside the Lucene clause.  
+Lucene operator keywords are case-sensitive, so they must be written in UPPERCASE.
+
+The following query matches companies whose `Name` field contains `bistro` OR `cafe`,  
+but excludes names that contain `grill`: 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+const companies = await session
+    .query({ collection: "Companies" })
+    .whereLucene("Name", "(bistro OR cafe) AND NOT grill")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Companies
+where lucene(Name, '(bistro OR cafe) AND NOT grill')
+```
+</TabItem>
+</Tabs>
+
+---
+
+### Phrase and proximity search
+
+Surround multiple terms with double quotes to match a phrase.  
+In JavaScript, wrap the clause in single quotes (e.g. `'"sales representative"'`),  
+or escape the inner quote characters with `\"`.    
+
+Add `~<number>` after the closing quote to perform a proximity search:  
+the terms must appear near each other within the specified proximity distance.    
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+// Exact phrase:
+const employees = await session
+    .query({ collection: "Employees" })
+    .whereLucene("Notes", '"sales representative"')
+    .all();
+
+// Proximity - "sales" and "french" within a distance of 10 words:
+const employeesProx = await session
+    .query({ collection: "Employees" })
+    .whereLucene("Notes", '"sales french"~10')
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// Exact phrase:
+from Employees
+where lucene(Notes, '"sales representative"')
+
+// Proximity - "sales" and "french" within a distance of 10 words:
+from Employees
+where lucene(Notes, '"sales french"~10')
+```
+</TabItem>
+</Tabs>
+
+---
+
+### Fuzzy search
+
+Append `~` to a single term to match indexed terms that are similar to it, for example, to tolerate minor typos.    
+    
+You can add a minimum similarity value after `~`, such as `bistor~0.7`.  
+The value is between `0` and `1` (default: `0.5`); higher values require closer similarity:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+// Matches "bistro" although the searched term is misspelled
+const companies = await session
+    .query({ collection: "Companies" })
+    .whereLucene("Name", "bistor~")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// Matches "bistro" although the searched term is misspelled    
+from Companies
+where lucene(Name, 'bistor~')
+```
+</TabItem>
+</Tabs>
+
+---
+
+### Boosting terms
+
+Append `^<number>` to a term to increase its relevance score.       
+        
+Boosting does not change which documents match the clause.  
+It only affects ranking when results are ordered by score:  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+// When ordered by score, 
+// companies matching "bistro" rank higher than those matching "cafe"    
+const companies = await session
+    .query({ collection: "Companies" })
+    .whereLucene("Name", "bistro^2 OR cafe")
+    .orderByScore()
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// When ordered by score, 
+// companies matching "bistro" rank higher than those matching "cafe"    
+from Companies
+where lucene(Name, 'bistro^2 OR cafe')
+order by score()    
+```
+</TabItem>
+</Tabs>
+        
+---
+        
+### Range clauses
+
+Use square brackets for an inclusive range and curly braces for an exclusive range.  
+Lucene range clauses compare indexed terms lexicographically:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+// Match company names from "bistro" through "cafe", inclusive
+const companies = await session
+    .query({ collection: "Companies" })
+    .whereLucene("Name", "[bistro TO cafe]")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// Match company names from "bistro" through "cafe", inclusive 
+from Companies
+where lucene(Name, '[bistro TO cafe]')
+```
+</TabItem>
+</Tabs>
+        
+<Admonition type="note" title="">
+    
+#### Numeric and date ranges    
+    
+For range queries over numeric or date fields, prefer strongly typed methods:  
+use [comparison operators](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-numeric-value) such as `whereGreaterThan` / `whereLessThan`,
+or [whereBetween](../../../querying/filtering-query-results/filter-query-results.mdx#syntax).
+    
+A Lucene range clause compares string terms lexicographically,  
+so numeric and date ranges can produce unexpected results.
+
+</Admonition>  
+
+</Panel>
+
+<Panel heading="Filter on multiple fields">
+    
+* In `whereLucene(fieldName, whereClause)`, the `fieldName` argument is Lucene's default field:  
+  terms in the clause that are not prefixed with another field name are checked against this field.    
+
+* Inside the Lucene `whereClause`, prefix a term with `<FieldName>:` to search another indexed field.    
+
+* Use this pattern when querying a **static index** that defines the fields referenced in the Lucene clause.  
+  RavenDB creates or chooses an auto-index from the `fieldName` argument;  
+  it does not infer additional fields from inside the raw Lucene clause.
+    
+---
+    
+Assume the following static index exists:   
+    
+```javascript
+class Companies_ByNameAndPhone extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map("Companies", company => {
+            return {
+                Name: company.Name,
+                Phone: company.Phone
+            };
+        });
+
+        this.index("Name", "Search");
+        this.index("Phone", "Search");
+    }
+}
+```
+<br/>        
+    
+The following query targets both the _Name_ and _Phone_ fields:
+  * `bistro` is not prefixed, so it is checked against the default field, `Name`.
+  * `Phone:981*` is prefixed with `Phone:`, so it is checked against the `Phone` field.        
+        
+The query matches companies whose `Name` contains `bistro`  
+and whose `Phone` field contains a term that starts with `981`.        
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+const companies = await session
+    .query({ indexName: "Companies/ByNameAndPhone" })
+    .whereLucene("Name", "bistro AND Phone:981*")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index 'Companies/ByNameAndPhone'
+where lucene(Name, 'bistro AND Phone:981*')
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Case-sensitive matching">
+
+To keep query terms unchanged, pass `true` for the `exact` parameter in the client API, or wrap `lucene()` with `exact(...)` in RQL.
+RavenDB then parses the Lucene clause with Lucene's `KeywordAnalyzer`.    
+
+For case-sensitive matching, the indexed field must also preserve casing.    
+The example below uses a static index that defines `Name` as an exact field.
+
+```javascript
+class Companies_ByNameExact extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map("Companies", company => {
+            return {
+                Name: company.Name
+            };
+        });
+
+        this.index("Name", "Exact");
+    }
+}
+```
+<br/>    
+    
+Query the index with:    
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+// Matches "Bistro...", but not "bistro..." or "BISTRO..."
+const companies = await session
+    .query({ indexName: "Companies/ByNameExact" })
+    .whereLucene("Name", "Bistro*", true) // exact: true
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// Matches "Bistro...", but not "bistro..." or "BISTRO..."    
+from index 'Companies/ByNameExact'
+where exact(lucene(Name, 'Bistro*'))
+```
+</TabItem>
+</Tabs>
+    
+<Admonition type="note" title="">
+    
+#### Exact analyzer    
+
+Indexing a field with the `Exact` option uses the [default exact analyzer](../../../indexes/using-analyzers#using-the-default-exact-analyzer).  
+The default is `KeywordAnalyzer`.
+
+`whereLucene(..., true)` and `exact(lucene(...))` use the `KeywordAnalyzer` at query time.  
+If you configure a different exact analyzer for indexing, make sure the query terms can still match the indexed terms.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Combine with other filtering methods">
+
+You can combine a Lucene clause with other document-query filters.  
+Use `andAlso()`, `orElse()`, and `not()` to compose filters outside the Lucene clause:    
+    
+The following query matches companies whose `Name` contains `bistro` or `cafe`, and whose country is `France`.    
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+const companies = await session
+    .query({ collection: "Companies" })
+    .whereLucene("Name", "bistro OR cafe")
+    .andAlso()
+    .whereEquals("Address.Country", "France")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Companies
+where lucene(Name, 'bistro OR cafe') and Address.Country = 'France'
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Escaping special characters">
+    
+The following characters are part of Lucene query syntax.  
+To match them as literal characters, escape them with a backslash (`\`):
+  
+`+`  `-`  `&&`  `||`  `!`  `(`  `)`  `{`  `}`  `[`  `]`  `^`  `"`  `~`  `*`  `?`  `:`  `\`
+    
+For example, the following clause searches for the literal text `(171)` in the `Phone` field:    
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+// The JavaScript string "\\(" becomes \( in the Lucene clause
+const companies = await session
+    .query({ collection: "Companies" })
+    .whereLucene("Phone", "\\(171\\)")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Companies
+where lucene(Phone, '\\(171\\)')
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+    
+#### Escape user input    
+
+The `whereClause` is parsed as Lucene query syntax on the server.
+
+If you build the clause from user input, escape or validate the user-provided value before embedding it.  
+Otherwise, characters such as `*`, `?`, `:`, or operators such as `OR` can change the meaning of the query.
+
+For example, a user value that contains `OR Name:*` could turn a literal search value into a broader Lucene query.
+
+</Admonition> 
+
+</Panel>
+
+<Panel heading="Restrictions">
+
+* **Lucene search engine only**  
+  `whereLucene` / `lucene()` is supported only by indexes that use the **Lucene search engine**.  
+  Running the query against an index that uses [Corax](../../../indexes/search-engine/corax.mdx) throws an exception.
+    
+  The search engine in use is determined by the 
+  [Indexing.Auto.SearchEngineType](../../../server/configuration/indexing-configuration.mdx#indexingautosearchenginetype) 
+  and [Indexing.Static.SearchEngineType](../../../server/configuration/indexing-configuration.mdx#indexingstaticsearchenginetype)
+  configuration keys, or per index (static indexes).
+
+---
+
+* **Document query only**  
+  In the client API, `whereLucene` is available on document queries
+  (`session.query` / `session.advanced.documentQuery`). In raw RQL, use `lucene()`.    
+
+---
+
+* **The clause must be a string or `null`**  
+  The `whereClause` argument, or the value passed to `lucene()` in RQL, must be a string or `null`.  
+  Passing any other value type throws an exception.  
+  A `null` clause is treated as a null-value query for the specified field.    
+
+---
+
+* **The clause must be valid Lucene syntax**  
+  The clause is parsed by Lucene's query parser when the query executes.  
+  Invalid Lucene syntax fails the query with a parse error.
+
+---    
+
+* **Use static indexes for multi-field Lucene clauses**  
+  In a dynamic query, RavenDB creates or chooses an auto-index based on the field passed as the first argument.  
+  Field prefixes inside the raw Lucene clause, such as `Phone:981*`, are not used to infer additional auto-index fields.  
+  Use a static index when the Lucene clause references fields other than the first-argument field.  
+    
+    ```sql
+    from Companies
+    where lucene(Name, 'bistro AND Phone:981*')
+    ```
+    <br/>
+    
+    In this dynamic query, Name is the field RavenDB can infer for the auto-index.  
+    Phone appears only inside the Lucene clause string, so define a static index that maps both Name and Phone.
+    
+</Panel>
+
+<Panel heading="Syntax">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+whereLucene(fieldName, whereClause);
+whereLucene(fieldName, whereClause, exact);
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+lucene(fieldName, whereClause)
+exact(lucene(fieldName, whereClause))
+```
+</TabItem>    
+</Tabs>
+
+| Parameter       | Type      | Description |
+|-----------------|-----------|-------------|
+| **fieldName**   | `string`  | Name of the field the clause is checked against (the Lucene _default field_). Terms inside the clause can target other fields using the `<FieldName>:` prefix. |
+| **whereClause** | `string`  | A predicate written in Lucene query syntax. |
+| **exact**       | `boolean` | `true` - parse the clause with `KeywordAnalyzer` for exact matching.<br/>Default: `false`. |
+
+</Panel>

@@ -955,5 +955,12 @@
             "targetUrl": "/querying/filtering-query-results/filter-query-results",
             "minimumVersion": "7.2"
         }
+    },
+    {
+        "key": "/client-api/session/querying/document-query/how-to-use-lucene",
+        "value": {
+            "targetUrl": "/querying/filtering-query-results/filter-with-lucene-syntax",
+            "minimumVersion": "7.2"
+        }
     }
 ]

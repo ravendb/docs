@@ -1,0 +1,719 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* Use the **Lucene query syntax** when you want direct access to Lucene's query-parser syntax,  
+  for example, to use Lucene-specific wildcard syntax such as `?`, or to reuse an existing Lucene query string.
+    
+* In the client API, use `WhereLucene` from `DocumentQuery` / `AsyncDocumentQuery`.  
+  In raw RQL, use the corresponding `lucene()` method.    
+
+* Filtering with `WhereLucene` / `lucene()` is supported only by indexes that use the **Lucene search engine**  
+  (this applies to both static-indexes and auto-indexes).
+  If the target index uses [Corax](../../../indexes/search-engine/corax.mdx), the query throws an exception.  
+    
+* In this article:
+    * [Basic usage](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#basic-usage)
+    * [Common Lucene clauses](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#common-lucene-clauses)
+        * [Wildcards](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#wildcards)
+        * [Boolean operators](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#boolean-operators)
+        * [Phrase and proximity search](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#phrase-and-proximity-search)
+        * [Fuzzy search](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#fuzzy-search)
+        * [Boosting terms](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#boosting-terms)
+        * [Range clauses](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#range-clauses)
+    * [Filter on multiple fields](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#filter-on-multiple-fields)
+    * [Case-sensitive matching](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#case-sensitive-matching)
+    * [Combine with other filtering methods](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#combine-with-other-filtering-methods)
+    * [Escaping special characters](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#escaping-special-characters)
+    * [Restrictions](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#restrictions)
+    * [Syntax](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Basic usage">
+
+* `WhereLucene(string fieldName, string whereClause)` takes 2 parameters:
+    
+    * **Field name**:  
+      The field name tells Lucene which field to search when the clause does not specify a field explicitly.  
+      In `.WhereLucene("Name", "bistro")`, the term `bistro` is searched in the `Name` field.
+    
+    * **Where clause**:  
+      The where clause is a string written in Lucene query syntax.  
+      RavenDB parses this string on the server with Lucene's query parser.
+    
+* **When making a dynamic query on a collection**:  
+  RavenDB creates or reuses an auto-index with a **full-text search** field for the requested field.  
+  This field uses the [default search analyzer](../../../indexes/using-analyzers.mdx#using-the-default-search-analyzer).
+  By default, this is `RavenStandardAnalyzer`, which lowercases and tokenizes the text, so matching is case-insensitive (e.g. bistro matches "Bistro du Centre").
+
+* **When querying a static index**:  
+  The Lucene query clause is parsed using the analyzer configured for the target index field.  
+  Configure the analyzer in the index definition, for example with `Analyze(...)`.  
+  If a `Search` field has no analyzer configured, RavenDB uses the default search analyzer.    
+
+---
+    
+The following query returns all companies whose _Name_ field contains the term `bistro`:       
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+List<Company> companies = session.Advanced
+    .DocumentQuery<Company>()
+    .WhereLucene("Name", "bistro")
+    .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Company> companies = await asyncSession.Advanced
+    .AsyncDocumentQuery<Company>()
+    .WhereLucene("Name", "bistro")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Company> companies = session.Advanced
+    .RawQuery<Company>("from Companies where lucene(Name, $clause)")
+    .AddParameter("clause", "bistro")
+    .ToList();
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Company> companies = await asyncSession.Advanced
+    .AsyncRawQuery<Company>("from Companies where lucene(Name, $clause)")
+    .AddParameter("clause", "bistro")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Companies
+where lucene(Name, "bistro")
+```
+</TabItem>
+</Tabs>
+
+If no suitable index already exists for this dynamic query,
+RavenDB creates an auto-index for `Companies` with `Name` indexed as a full-text search field, for example, `Auto/Companies/BySearch(Name)`.       
+    
+</Panel>
+
+<Panel heading="Common Lucene clauses">
+    
+The `whereClause` argument specifies the filtering predicate in Lucene query syntax.  
+Common clause types include:    
+
+    | Clause type               | Example clause                   | Meaning |
+    |---------------------------|----------------------------------|---------|
+    | Single term               | `bistro`                         | Match documents whose field contains the term `bistro`. |
+    | Wildcards                 | `bist*`                          | Match terms that start with `bist`.                     |
+    | Single-character wildcard | `b?stro`                         | Match one character at the `?` position.                |
+    | Boolean operators         | `(bistro OR cafe) AND NOT grill` | Combine terms with `AND`, `OR`, `NOT`, and parentheses. |
+    | Phrase                    | `"sales representative"`         | Match the exact phrase, with terms in order.            |
+    | Proximity                 | `"fluent french"~5`              | Match both terms within 5 words of each other.          |
+    | Fuzzy                     | `bistor~`                        | Match terms similar to `bistor`, such as minor typos.   |
+    | Term boost                | `bistro^2 OR cafe`               | Match both terms, but rank `bistro` matches higher when ordering by score.     |
+    | Term range                | `[apple TO banana]`              | Match terms in the inclusive term range.<br/>Use `{...}` for exclusive bounds. |
+
+---
+
+### Wildcards
+
+Use `*` to match any number of characters and `?` to match exactly one character:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+// Matches "bistro", "bistros", "bistrot", ...
+List<Company> companies = session.Advanced
+    .DocumentQuery<Company>()
+    .WhereLucene("Name", "bist*")
+    .ToList();
+        
+// Matches terms such as "bistro" and "bystro"
+List<Company> companiesWithSingleCharacterWildcard = session.Advanced
+    .DocumentQuery<Company>()
+    .WhereLucene("Name", "b?stro")
+    .ToList();        
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+// Matches "bistro", "bistros", "bistrot", ...
+List<Company> companies = await asyncSession.Advanced
+    .AsyncDocumentQuery<Company>()
+    .WhereLucene("Name", "bist*")
+    .ToListAsync();
+        
+// Matches terms such as "bistro" and "bystro"        
+List<Company> companiesWithSingleCharacterWildcard = await asyncSession.Advanced
+    .AsyncDocumentQuery<Company>()
+    .WhereLucene("Name", "b?stro")
+    .ToListAsync();        
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// Matches "bistro", "bistros", "bistrot", ...    
+from Companies
+where lucene(Name, "bist*")
+    
+// Matches terms such as "bistro" and "bystro"     
+from Companies
+where lucene(Name, "b?stro")    
+```
+</TabItem>
+</Tabs>
+    
+<Admonition type="note" title="">
+    
+#### Leading wildcards    
+
+Leading wildcards (e.g. `*stro`) are allowed as well.  
+Note that a leading wildcard forces the server to scan all terms of the field, which can be slow on large indexes.    
+
+</Admonition>
+
+---
+
+### Boolean operators
+    
+Use `AND`, `OR`, `NOT`, and parentheses to combine terms inside the Lucene clause.  
+Lucene operator keywords are case-sensitive, so they must be written in UPPERCASE.
+
+The following query matches companies whose `Name` field contains `bistro` OR `cafe`,  
+but excludes names that contain `grill`: 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+List<Company> companies = session.Advanced
+    .DocumentQuery<Company>()
+    .WhereLucene("Name", "(bistro OR cafe) AND NOT grill")
+    .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Company> companies = await asyncSession.Advanced
+    .AsyncDocumentQuery<Company>()
+    .WhereLucene("Name", "(bistro OR cafe) AND NOT grill")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Companies
+where lucene(Name, '(bistro OR cafe) AND NOT grill')
+```
+</TabItem>
+</Tabs>
+
+---
+
+### Phrase and proximity search
+
+Surround multiple terms with double quotes to match a phrase.  
+In C# string literals, escape those quote characters with `\"`.    
+
+Add `~<number>` after the closing quote to perform a proximity search:  
+the terms must appear near each other within the specified proximity distance.    
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+// Exact phrase:
+List<Employee> employees = session.Advanced
+    .DocumentQuery<Employee>()
+    .WhereLucene("Notes", "\"sales representative\"")
+    .ToList();
+
+// Proximity - "sales" and "french" within a distance of 10 words:
+List<Employee> employeesProx = session.Advanced
+    .DocumentQuery<Employee>()
+    .WhereLucene("Notes", "\"sales french\"~10")
+    .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+// Exact phrase:
+List<Employee> employees = await asyncSession.Advanced
+    .AsyncDocumentQuery<Employee>()
+    .WhereLucene("Notes", "\"sales representative\"")
+    .ToListAsync();
+
+// Proximity - "sales" and "french" within a distance of 10 words:
+List<Employee> employeesProx = await asyncSession.Advanced
+    .AsyncDocumentQuery<Employee>()
+    .WhereLucene("Notes", "\"sales french\"~10")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// Exact phrase:
+from Employees
+where lucene(Notes, '"sales representative"')
+
+// Proximity - "sales" and "french" within a distance of 10 words:
+from Employees
+where lucene(Notes, '"sales french"~10')
+```
+</TabItem>
+</Tabs>
+
+---
+
+### Fuzzy search
+
+Append `~` to a single term to match indexed terms that are similar to it, for example, to tolerate minor typos.    
+    
+You can add a minimum similarity value after `~`, such as `bistor~0.7`.  
+The value is between `0` and `1` (default: `0.5`); higher values require closer similarity:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+// Matches "bistro" although the searched term is misspelled
+List<Company> companies = session.Advanced
+    .DocumentQuery<Company>()
+    .WhereLucene("Name", "bistor~")
+    .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+// Matches "bistro" although the searched term is misspelled
+List<Company> companies = await asyncSession.Advanced
+    .AsyncDocumentQuery<Company>()
+    .WhereLucene("Name", "bistor~")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// Matches "bistro" although the searched term is misspelled    
+from Companies
+where lucene(Name, 'bistor~')
+```
+</TabItem>
+</Tabs>
+
+---
+
+### Boosting terms
+
+Append `^<number>` to a term to increase its relevance score.       
+        
+Boosting does not change which documents match the clause.  
+It only affects ranking when results are ordered by score:  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+// When ordered by score, 
+// companies matching "bistro" rank higher than those matching "cafe"    
+List<Company> companies = session.Advanced
+    .DocumentQuery<Company>()
+    .WhereLucene("Name", "bistro^2 OR cafe")
+    .OrderByScore()
+    .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+// When ordered by score, 
+// companies matching "bistro" rank higher than those matching "cafe"    
+List<Company> companies = await asyncSession.Advanced
+    .AsyncDocumentQuery<Company>()
+    .WhereLucene("Name", "bistro^2 OR cafe")
+    .OrderByScore()
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// When ordered by score, 
+// companies matching "bistro" rank higher than those matching "cafe"    
+from Companies
+where lucene(Name, 'bistro^2 OR cafe')
+order by score()    
+```
+</TabItem>
+</Tabs>
+        
+---
+        
+### Range clauses
+
+Use square brackets for an inclusive range and curly braces for an exclusive range.  
+Lucene range clauses compare indexed terms lexicographically:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+// Match company names from "bistro" through "cafe", inclusive
+List<Company> companies = session.Advanced
+    .DocumentQuery<Company>()
+    .WhereLucene("Name", "[bistro TO cafe]")
+    .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+// Match company names from "bistro" through "cafe", inclusive 
+List<Company> companies = await asyncSession.Advanced
+    .AsyncDocumentQuery<Company>()
+    .WhereLucene("Name", "[bistro TO cafe]")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// Match company names from "bistro" through "cafe", inclusive 
+from Companies
+where lucene(Name, '[bistro TO cafe]')
+```
+</TabItem>
+</Tabs>
+        
+<Admonition type="note" title="">
+    
+#### Numeric and date ranges    
+    
+For range queries over numeric or date fields, prefer strongly typed methods:  
+use [comparison operators](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-numeric-value) such as `WhereGreaterThan` / `WhereLessThan`,
+or [WhereBetween](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#filter-by-date-range-using-between).
+    
+A Lucene range clause compares string terms lexicographically,  
+so numeric and date ranges can produce unexpected results.
+
+</Admonition>  
+
+</Panel>
+
+<Panel heading="Filter on multiple fields">
+    
+* In `WhereLucene(fieldName, whereClause)`, the `fieldName` argument is Lucene's default field:  
+  terms in the clause that are not prefixed with another field name are checked against this field.    
+
+* Inside the Lucene `whereClause`, prefix a term with `<FieldName>:` to search another indexed field.    
+
+* Use this pattern when querying a **static index** that defines the fields referenced in the Lucene clause.  
+  RavenDB creates or chooses an auto-index from the `fieldName` argument;  
+  it does not infer additional fields from inside the raw Lucene clause.
+    
+---
+    
+Assume the following static index exists:   
+    
+```csharp
+public class Companies_ByNameAndPhone : AbstractIndexCreationTask<Company, Companies_ByNameAndPhone.IndexEntry>
+{
+    public class IndexEntry
+    {
+        public string Name { get; set; }
+        public string Phone { get; set; }
+    }
+
+    public Companies_ByNameAndPhone()
+    {
+        Map = companies => from company in companies
+                           select new IndexEntry
+                           {
+                               Name = company.Name,
+                               Phone = company.Phone
+                           };
+
+        Index(x => x.Name, FieldIndexing.Search);
+        Index(x => x.Phone, FieldIndexing.Search);
+    }
+}
+```
+<br/>        
+    
+The following query targets both the _Name_ and _Phone_ fields:
+  * `bistro` is not prefixed, so it is checked against the default field, `Name`.
+  * `Phone:981*` is prefixed with `Phone:`, so it is checked against the `Phone` field.        
+        
+The query matches companies whose `Name` contains `bistro`  
+and whose `Phone` field contains a term that starts with `981`.        
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+List<Company> companies = session.Advanced
+    .DocumentQuery<Company>("Companies/ByNameAndPhone")
+    .WhereLucene("Name", "bistro AND Phone:981*")
+    .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Company> companies = await asyncSession.Advanced
+    .AsyncDocumentQuery<Company>("Companies/ByNameAndPhone")
+    .WhereLucene("Name", "bistro AND Phone:981*")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index 'Companies/ByNameAndPhone'
+where lucene(Name, 'bistro AND Phone:981*')
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Case-sensitive matching">
+
+To keep query terms unchanged, use `exact: true` in the client API, or wrap `lucene()` with `exact(...)` in RQL.  
+RavenDB then parses the Lucene clause with Lucene's `KeywordAnalyzer`.    
+
+For case-sensitive matching, the indexed field must also preserve casing.    
+The example below uses a static index that defines `Name` as an exact field.
+
+```csharp
+public class Companies_ByNameExact : AbstractIndexCreationTask<Company, Companies_ByNameExact.IndexEntry>
+{
+    public class IndexEntry
+    {
+        public string Name { get; set; }
+    }
+
+    public Companies_ByNameExact()
+    {
+        Map = companies => from company in companies
+                           select new IndexEntry
+                           {
+                               Name = company.Name
+                           };
+
+        Index(x => x.Name, FieldIndexing.Exact);
+    }
+}    
+```
+<br/>    
+    
+Query the index with:    
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+// Matches "Bistro...", but not "bistro..." or "BISTRO..."
+List<Company> companies = session.Advanced
+    .DocumentQuery<Company>("Companies/ByNameExact")
+    .WhereLucene("Name", "Bistro*", exact: true)
+    .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+// Matches "Bistro...", but not "bistro..." or "BISTRO..."
+List<Company> companies = await asyncSession.Advanced
+    .AsyncDocumentQuery<Company>("Companies/ByNameExact")
+    .WhereLucene("Name", "Bistro*", exact: true)
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// Matches "Bistro...", but not "bistro..." or "BISTRO..."    
+from index 'Companies/ByNameExact'
+where exact(lucene(Name, 'Bistro*'))
+```
+</TabItem>
+</Tabs>
+    
+<Admonition type="note" title="">
+    
+#### Exact analyzer    
+
+`FieldIndexing.Exact` indexes the field with the [default exact analyzer](../../../indexes/using-analyzers#using-the-default-exact-analyzer).  
+The default is `KeywordAnalyzer`.
+
+`WhereLucene(..., exact: true)` and `exact(lucene(...))` use the `KeywordAnalyzer` at query time.  
+If you configure a different exact analyzer for indexing, make sure the query terms can still match the indexed terms.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Combine with other filtering methods">
+
+You can combine a Lucene clause with other `DocumentQuery` filters.  
+Use `AndAlso()`, `OrElse()`, and the `Not` modifier to compose filters outside the Lucene clause:    
+    
+The following query matches companies whose `Name` contains `bistro` or `cafe`, and whose country is `France`.    
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+List<Company> companies = session.Advanced
+    .DocumentQuery<Company>()
+    .WhereLucene("Name", "bistro OR cafe")
+    .AndAlso()
+    .WhereEquals("Address.Country", "France")
+    .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Company> companies = await asyncSession.Advanced
+    .AsyncDocumentQuery<Company>()
+    .WhereLucene("Name", "bistro OR cafe")
+    .AndAlso()
+    .WhereEquals("Address.Country", "France")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Companies
+where lucene(Name, 'bistro OR cafe') and Address.Country = 'France'
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Escaping special characters">
+    
+The following characters are part of Lucene query syntax.  
+To match them as literal characters, escape them with a backslash (`\`):
+  
+`+`  `-`  `&&`  `||`  `!`  `(`  `)`  `{`  `}`  `[`  `]`  `^`  `"`  `~`  `*`  `?`  `:`  `\`
+    
+For example, the following clause searches for the literal text `(171)` in the `Phone` field:    
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+// The C# string "\\(" becomes \( in the Lucene clause
+List<Company> companies = session.Advanced
+    .DocumentQuery<Company>()
+    .WhereLucene("Phone", "\\(171\\)")
+    .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+// The C# string "\\(" becomes \( in the Lucene clause
+List<Company> companies = await asyncSession.Advanced
+    .AsyncDocumentQuery<Company>()
+    .WhereLucene("Phone", "\\(171\\)")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Companies
+where lucene(Phone, '\\(171\\)')
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+    
+#### Escape user input    
+
+The `whereClause` is parsed as Lucene query syntax on the server.
+
+If you build the clause from user input, escape or validate the user-provided value before embedding it.  
+Otherwise, characters such as `*`, `?`, `:`, or operators such as `OR` can change the meaning of the query.
+
+For example, a user value that contains `OR Name:*` could turn a literal search value into a broader Lucene query.
+
+</Admonition> 
+
+</Panel>
+
+<Panel heading="Restrictions">
+
+* **Lucene search engine only**  
+  `WhereLucene` / `lucene()` is supported only by indexes that use the **Lucene search engine**.  
+  Running the query against an index that uses [Corax](../../../indexes/search-engine/corax.mdx) throws an exception.
+    
+  The search engine in use is determined by the 
+  [Indexing.Auto.SearchEngineType](../../../server/configuration/indexing-configuration.mdx#indexingautosearchenginetype) 
+  and [Indexing.Static.SearchEngineType](../../../server/configuration/indexing-configuration.mdx#indexingstaticsearchenginetype)
+  configuration keys, or per index (static indexes).
+
+---
+
+* **DocumentQuery only**  
+  In the client API, `WhereLucene` is available in `DocumentQuery` / `AsyncDocumentQuery`
+  and has no LINQ (`session.Query`) equivalent. In raw RQL, use `lucene()`.    
+
+---
+
+* **The clause must be a string or `null`**  
+  The `whereClause` argument, or the value passed to `lucene()` in RQL, must be a string or `null`.  
+  Passing any other value type throws an exception.  
+  A `null` clause is treated as a null-value query for the specified field.    
+
+---
+
+* **The clause must be valid Lucene syntax**  
+  The clause is parsed by Lucene's query parser when the query executes.  
+  Invalid Lucene syntax fails the query with a parse error.
+
+---    
+
+* **Use static indexes for multi-field Lucene clauses**  
+  In a dynamic query, RavenDB creates or chooses an auto-index based on the field passed as the first argument.  
+  Field prefixes inside the raw Lucene clause, such as `Phone:981*`, are not used to infer additional auto-index fields.  
+  Use a static index when the Lucene clause references fields other than the first-argument field.  
+    
+    ```sql
+    from Companies
+    where lucene(Name, 'bistro AND Phone:981*')
+    ```
+    <br/>
+    
+    In this dynamic query, Name is the field RavenDB can infer for the auto-index.  
+    Phone appears only inside the Lucene clause string, so define a static index that maps both Name and Phone.
+    
+</Panel>
+
+<Panel heading="Syntax">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+IDocumentQuery<T> WhereLucene(string fieldName, string whereClause);
+IDocumentQuery<T> WhereLucene(string fieldName, string whereClause, bool exact);
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+IAsyncDocumentQuery<T> WhereLucene(string fieldName, string whereClause);
+IAsyncDocumentQuery<T> WhereLucene(string fieldName, string whereClause, bool exact);
+```        
+</TabItem>    
+<TabItem value="RQL" label="RQL">
+```sql
+lucene(fieldName, whereClause)
+exact(lucene(fieldName, whereClause))
+```
+</TabItem>    
+</Tabs>
+
+| Parameter       | Type     | Description |
+|-----------------|----------|-------------|
+| **fieldName**   | `string` | Name of the field the clause is checked against (the Lucene _default field_). Terms inside the clause can target other fields using the `<FieldName>:` prefix. |
+| **whereClause** | `string` | A predicate written in Lucene query syntax. |
+| **exact**       | `bool`   | `true` - parse the clause with `KeywordAnalyzer` for exact matching.<br/>Default: `false`. |
+
+</Panel>
