@@ -21,14 +21,23 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [Updating a subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#updating-a-subscription)
    * [Subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#subscription-query)
    * [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples)
+      * [Sending an entire collection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-sending-an-entire-collection)
+      * [Filtering documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-documents)
+      * [Filtering with a regular expression](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-with-a-regular-expression)
+      * [Filtering and projecting fields](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-and-projecting-fields)
+      * [Projecting from a related document](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-projecting-from-a-related-document)
+      * [Including documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-documents)
+      * [Including counters](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-counters)
+      * [Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-creating-a-subscription-via-update)
+      * [Updating an existing subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-updating-an-existing-subscription)
    * [Syntax](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#syntax)
 
 </Admonition>
 
 <Panel heading="Creating a subscription">
 
-To create a subscription, define which documents the server should send, then register this
-definition with the server using the `Create` method on the document store's `Subscriptions`
+To create a subscription, define which documents the server should send to the worker, then register
+this definition with the server using the `Create` method on the document store's `Subscriptions`
 property.
 
 You can define a subscription in three ways:
@@ -201,9 +210,9 @@ To create a subscription over document revisions, see
 
 <ContentFrame>
 
-### Example: Send an entire collection
+### Example: Sending an entire collection
 
-In this example, the subscription sends every document in the `Orders` collection, with no filter or projection.
+In this example, the subscription sends to the worker every document in the `Orders` collection, with no filter or projection.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="generic" label="Generic API">
@@ -229,9 +238,9 @@ subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
 
 <ContentFrame>
 
-### Example: Filter documents
+### Example: Filtering documents
 
-In this example, the subscription sends only `Orders` whose total revenue exceeds 100.  
+In this example, the subscription sends to the worker only `Orders` whose total revenue exceeds 100.  
 The server evaluates the filter and sends just the matching documents.
 
 <Tabs groupId='languageSyntax'>
@@ -269,7 +278,7 @@ subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
 
 <ContentFrame>
 
-### Example: Filter with a regular expression
+### Example: Filtering with a regular expression
 
 In this example, the subscription filters documents with a regular expression.  
 Use `Regex.IsMatch` inside the filter expression to match a field against a pattern on the
@@ -325,7 +334,7 @@ document fields.
 
 <ContentFrame>
 
-### Example: Filter and project fields
+### Example: Filtering and projecting fields
 
 In this example, the subscription filters `Orders` by total revenue, and projects only two fields into each item
 sent to the client: the document ID and the computed total.
@@ -382,7 +391,7 @@ subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
 
 <ContentFrame>
 
-### Example: Project from a related document
+### Example: Projecting from a related document
 
 In this example, the subscription projects fields from each `Order` and also pulls data from a
 [related document](../../../indexes/indexing-related-documents.mdx#what-are-related-documents),
@@ -450,7 +459,7 @@ subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
 
 <ContentFrame>
 
-### Example: Include documents
+### Example: Including documents
 
 In this example, the subscription sends every `Order` and includes the `Product` documents related to the order
 in the same batch, so the consuming worker can later read each `Product` without an extra call to
@@ -522,10 +531,10 @@ projected fields rather than the original document.
 
 <ContentFrame>
 
-### Example: Include counters
+### Example: Including counters
 
-In this example, the subscription sends every `Order` and includes the values of the named counters in the
-batch.
+In this example, the subscription sends to the worker every `Order` and includes the values of the
+named counters in the batch.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="builder" label="Builder">
@@ -599,7 +608,7 @@ Adding a new counter to the document, or removing one, does trigger re-sending t
 
 <ContentFrame>
 
-### Example: Create a subscription via update
+### Example: Creating a subscription via update
 
 When the subscription you update does not exist, set `CreateNew` to `true` to create it instead,
 using the provided query.
@@ -620,7 +629,7 @@ subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
 
 <ContentFrame>
 
-### Example: Update an existing subscription
+### Example: Updating an existing subscription
 
 You can change a subscription's definition after creation. Target it by name, or by the ID the
 server assigned it at creation. The ID also lets you rename the subscription.

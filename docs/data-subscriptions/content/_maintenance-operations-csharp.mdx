@@ -1,0 +1,168 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* After creating a subscription, your client can manage it using the document store's `Subscriptions` property.  
+* You can enable or disable a subscription, read its state, delete it, or drop worker connections.  
+
+* In this article:
+   * [Deleting a subscription](../../data-subscriptions/maintenance-operations.mdx#deleting-a-subscription)
+   * [Enabling and disabling a subscription](../../data-subscriptions/maintenance-operations.mdx#enabling-and-disabling-a-subscription)
+   * [Dropping a connection](../../data-subscriptions/maintenance-operations.mdx#dropping-a-connection)
+   * [Listing subscriptions](../../data-subscriptions/maintenance-operations.mdx#listing-subscriptions)
+   * [Getting a subscription state](../../data-subscriptions/maintenance-operations.mdx#getting-a-subscription-state)
+   * [Updating a subscription](../../data-subscriptions/maintenance-operations.mdx#updating-a-subscription)
+
+</Admonition>
+
+<Panel heading="Deleting a subscription">
+
+Removing subscriptions from the database can be helpful when, for example, many single-use subscriptions
+have accumulated and managing them becomes hard.  
+
+```csharp
+void Delete(string name, string database = null);
+Task DeleteAsync(string name, string database = null, CancellationToken token = default);
+```
+
+<br />
+
+Usage:
+
+```csharp
+store.Subscriptions.Delete(subscriptionName);
+```
+
+</Panel>
+
+<Panel heading="Enabling and disabling a subscription">
+
+Disable a subscription to stop it from accepting worker connections, or enable it to resume.  
+A disabled subscription keeps its definition and progress; only its ability to connect is shut down.  
+
+```csharp
+void Disable(string name, string database = null);
+Task DisableAsync(string name, string database = null, CancellationToken token = default);
+
+void Enable(string name, string database = null);
+Task EnableAsync(string name, string database = null, CancellationToken token = default);
+```
+
+<br />
+
+Usage:
+
+```csharp
+store.Subscriptions.Disable(subscriptionName);
+store.Subscriptions.Enable(subscriptionName);
+```
+
+</Panel>
+
+<Panel heading="Dropping a connection">
+
+Drop a subscription's active connections using `DropConnection`, passing the subscription name.  
+Dropping connections ends each worker's `Run` task. To resume, run a worker again, 
+as the subscription stays enabled. To stop the subscription from accepting workers, 
+[disable it](../../data-subscriptions/maintenance-operations.mdx#enabling-and-disabling-a-subscription).  
+
+```csharp
+void DropConnection(string name, string database = null);
+Task DropConnectionAsync(string name, string database = null, CancellationToken token = default);
+```
+
+<br />
+
+Usage:
+
+```csharp
+store.Subscriptions.DropConnection(subscriptionName);
+```
+
+<Admonition type="note" title="">
+To disconnect a specific concurrent worker, use `DropSubscriptionWorker`.  
+See [Concurrent subscriptions](../../data-subscriptions/concurrent-subscriptions.mdx#dropping-a-worker).
+</Admonition>
+
+</Panel>
+
+<Panel heading="Listing subscriptions">
+
+Retrieve the database's subscriptions using `GetSubscriptions`.  
+The method returns a `List<SubscriptionState>`, one entry per subscription, each holding the state
+described in [Getting a subscription state](../../data-subscriptions/maintenance-operations.mdx#getting-a-subscription-state) below.  
+Use `start` to set how many subscriptions to skip and `take` to set the maximum number to return.
+
+```csharp
+List<SubscriptionState> GetSubscriptions(int start, int take, string database = null);
+Task<List<SubscriptionState>> GetSubscriptionsAsync(int start, int take,
+    string database = null, CancellationToken token = default);
+```
+
+<br />
+
+Usage:
+
+```csharp
+// List the first 10 subscriptions
+List<SubscriptionState> firstSubscriptions = store.Subscriptions.GetSubscriptions(0, 10);
+
+// List all subscriptions
+List<SubscriptionState> allSubscriptions = store.Subscriptions.GetSubscriptions(0, int.MaxValue);
+```
+
+</Panel>
+
+<Panel heading="Getting a subscription state">
+
+To retrieve the state of a single subscription from the server use `GetSubscriptionState`, passing it the subscription's name.  
+The returned `SubscriptionState` lets you inspect the subscription. For example, read
+`LastBatchAckTime` to see when the server last acknowledged progress,
+`ChangeVectorForNextBatchStartingPoint` to see where it will resume, or `Disabled` to check whether
+it currently accepts workers.
+
+```csharp
+SubscriptionState GetSubscriptionState(string subscriptionName, string database = null);
+Task<SubscriptionState> GetSubscriptionStateAsync(string subscriptionName,
+    string database = null, CancellationToken token = default);
+```
+
+<br />
+
+Usage:
+
+```csharp
+SubscriptionState subscriptionState = store.Subscriptions.GetSubscriptionState(subscriptionName);
+```
+
+<br />
+
+Its properties:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **Query** | `string` | The subscription's RQL query. |
+| **SubscriptionName** | `string` | The subscription's name, which is also its unique identifier. |
+| **SubscriptionId** | `long` | The subscription's internal identifier, assigned by the cluster at creation. |
+| **MentorNode** | `string` | The mentor node, if one was set manually. |
+| **NodeTag** | `string` | The tag of the server node processing the subscription. |
+| **ChangeVectorForNextBatchStartingPoint** | `string` | The change vector from which the subscription will begin sending documents to the worker. Updated on batch acknowledgment, and can also be set manually. |
+| **LastBatchAckTime** | `DateTime?` | The last time the server acknowledged progress on the subscription's documents. |
+| **LastClientConnectionTime** | `DateTime?` | The last time a client connected (retained after the connection ends). |
+| **Disabled** | `bool` | When `true`, the subscription does not allow workers to connect. |
+| **ArchivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior?` | Whether archived documents are included in the subscription. |
+
+</Panel>
+
+<Panel heading="Updating a subscription">
+
+Change the definition of an existing subscription using `Update` / `UpdateAsync`.  
+See [Updating a subscription](../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#updating-a-subscription) 
+on the Creating a data subscription page.
+
+</Panel>

@@ -20,6 +20,15 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)
    * [Error handling](../../data-subscriptions/consuming-subscription.mdx#error-handling)
    * [Examples](../../data-subscriptions/consuming-subscription.mdx#examples)
+      * [Full exception handling with retries](../../data-subscriptions/consuming-subscription.mdx#example-full-exception-handling-with-retries)
+      * [Setting the batch size](../../data-subscriptions/consuming-subscription.mdx#example-setting-the-batch-size)
+      * [Processing documents in a session](../../data-subscriptions/consuming-subscription.mdx#example-processing-documents-in-a-session)
+      * [Processing dynamic objects](../../data-subscriptions/consuming-subscription.mdx#example-processing-dynamic-objects)
+      * [Processing a blittable object](../../data-subscriptions/consuming-subscription.mdx#example-processing-a-blittable-object)
+      * [End when no documents are left](../../data-subscriptions/consuming-subscription.mdx#example-end-when-no-documents-are-left)
+      * [Including documents in the batch](../../data-subscriptions/consuming-subscription.mdx#example-including-documents-in-the-batch)
+      * [Failing over to another node](../../data-subscriptions/consuming-subscription.mdx#example-failing-over-to-another-node)
+      * [Primary and secondary workers](../../data-subscriptions/consuming-subscription.mdx#example-primary-and-secondary-workers)
    * [Syntax](../../data-subscriptions/consuming-subscription.mdx#syntax)
 
 </Admonition>
@@ -271,7 +280,7 @@ while (true)
 
 <ContentFrame>
 
-### Example: Set the batch size
+### Example: Setting the batch size
 
 In this example, the worker sets the maximum number of documents the server sends in each batch.
 
@@ -292,9 +301,9 @@ var subscriptionRuntimeTask = workerWBatch.Run(x =>
 
 <ContentFrame>
 
-### Example: Process documents in a session
+### Example: Processing documents in a session
 
-In this example, the subscription sends `Orders` that have no shipping date.  
+In this example, the subscription sends to the worker `Orders` that have no shipping date.  
 The worker sets each document's `ShippedAt` field and saves it back through a session.
 
 <Admonition type="info" title="">
@@ -331,7 +340,7 @@ var subscriptionRuntimeTask = subscriptionWorker.Run(batch =>
 
 <ContentFrame>
 
-### Example: Process dynamic objects
+### Example: Processing dynamic objects
 
 In this example, the subscription projects each `Order` into a dynamic shape, and the worker processes the
 dynamic objects it receives.
@@ -365,7 +374,7 @@ var subscriptionRuntimeTask = subscriptionWorker.Run(batch =>
 
 <ContentFrame>
 
-### Example: Process a blittable object
+### Example: Processing a blittable object
 
 In this example, the worker processes documents as low-level blittable objects.
 
@@ -454,10 +463,10 @@ catch (SubscriptionClosedException)
 
 <ContentFrame>
 
-### Example: Use included documents
+### Example: Including documents in the batch
 
-In this example, the subscription sends every `Order` and includes in the batch `Product`
-documents referenced in the order.  
+In this example, the subscription sends to the worker every `Order` and includes in the batch
+`Product` documents referenced in the order.  
 When the worker accesses an included `Product`, the product's data has already arrived in the batch,
 so the worker doesn't need to fetch it from the server.
 
@@ -495,10 +504,10 @@ var subscriptionRuntimeTask = subscriptionWorker.Run(batch =>
 
 <ContentFrame>
 
-### Example: Fail over to another node
+### Example: Failing over to another node
 
 With the `WaitForFree` strategy, any available node can create a worker, and another node takes
-over if the worker fails.
+over the connection if the worker fails.
 
 ```csharp
 var worker = store.Subscriptions.GetSubscriptionWorker<Order>(

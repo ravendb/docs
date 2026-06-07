@@ -40,7 +40,7 @@ whose `Strategy` is `SubscriptionOpeningStrategy.Concurrent`, and
 [run it](../../data-subscriptions/consuming-subscription.mdx#running-the-worker) as you would any
 other worker.
 
-#### Example: Run two concurrent workers
+#### Example: Running two concurrent workers
 
 ```csharp
 // Two workers, both using the Concurrent strategy,
@@ -85,7 +85,7 @@ To forcefully disconnect a worker from its subscription, pass the worker object 
 `Subscriptions.DropSubscriptionWorker`.  
 The documents the worker was processing then become available for reassignment to the remaining workers.
 
-#### Example: Drop one worker
+#### Example: Dropping one worker
 
 ```csharp
 // Disconnect worker2; its documents become available to the other workers
@@ -104,8 +104,8 @@ See [Maintenance operations](../../data-subscriptions/maintenance-operations.mdx
 
 When a concurrent worker's connection ends unexpectedly, the server may reassign the documents the
 worker was processing to the subscription's other available workers.  
-A worker that reconnects after a failure receives a new batch, which is not guaranteed to hold the
-documents it was processing before.
+A worker that reconnects to the subscription after a failure receives a new batch, which is not
+guaranteed to hold the documents it was processing before.
 
 Because a worker can disconnect before acknowledging the documents it already handled, the same
 document can be processed more than once: first by the worker that dropped, and again by the worker
