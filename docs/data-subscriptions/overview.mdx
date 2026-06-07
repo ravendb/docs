@@ -56,8 +56,10 @@ Two definitions shape every subscription:
   size, the processing logic, and how the worker interacts with other workers of the same
   subscription.  
 
-To get started, [create a data subscription using the Client API](../data-subscriptions/creating-subscription/creating-subscription_api.mdx)
-and [consume it using a worker](../data-subscriptions/consuming-subscription.mdx).  
+To get started, create a data subscription using the
+[Client API](../data-subscriptions/creating-subscription/creating-subscription_api.mdx) or
+[Studio](../data-subscriptions/creating-subscription/creating-subscription_studio.mdx), and
+[consume it using a worker](../data-subscriptions/consuming-subscription.mdx).  
 
 </Panel>
 
@@ -123,6 +125,11 @@ The server also uses the connection to tell whether a worker is active. The conn
 and monitored with heartbeat messages. If the connection breaks, processing of the current batch
 restarts.  
 
+The diagram below traces the full lifecycle of a subscription connection, from the worker's
+connection request through the processing and acknowledgment of each batch:
+
+![Subscription document-processing lifecycle](./assets/subscriptions_document-processing.png)
+
 <Admonition type="note" title="">
 When the node responsible for the subscription goes down, the subscription can continue on another
 node. If your license includes [Highly Available Tasks](../server/clustering/distribution/highly-available-tasks.mdx),
@@ -177,6 +184,10 @@ These options and operations control how a subscription is consumed and managed:
   You can list, update, enable, disable, and delete subscriptions, and drop their active
   connections.  
   [Maintenance operations](../data-subscriptions/maintenance-operations.mdx)  
+
+* **Monitoring**  
+  Watch a running subscription's status, connected clients, and performance in Studio.  
+  [Monitoring](../data-subscriptions/monitoring.mdx)  
 
 * **Configuration**  
   Set server-wide or per-database defaults, such as how archived documents are handled and the
