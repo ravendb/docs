@@ -12,60 +12,79 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Creating a data subscription: Studio
 <Admonition type="note" title="">
 
-* This page explains how to create a data subscription task from Studio.  
-  To create one using the Client API, see
-  [Creating a data subscription: API](../../data-subscriptions/creating-subscription/creating-subscription_api.mdx).  
+* This page explains how to create a data subscription using Studio.  
+  You can also [create a subscription using the Client API](../../data-subscriptions/creating-subscription/creating-subscription_api.mdx).  
 
 * In this article:
    * [Defining the subscription task](../../data-subscriptions/creating-subscription/creating-subscription_studio.mdx#defining-the-subscription-task)
-   * [Testing the subscription](../../data-subscriptions/creating-subscription/creating-subscription_studio.mdx#testing-the-subscription)
 
 </Admonition>
 
 <Panel heading="Defining the subscription task">
 
-To create a subscription task, open **`Tasks` > `Ongoing Tasks`**, add a new task, and choose
-**Subscription**.  
+<ContentFrame>
+
+To create a subscription, open **`Tasks` > `Ongoing Tasks` > `Add a database task`** and select **Subscription**.  
+
+![Open the ongoing tasks view](./assets/subscriptions_ongoing-tasks-view.png)
+
+1. Open the **Tasks** menu.
+2. Select **Ongoing Tasks**.
+3. Click **Add a database task** and select **Subscription**.
+   ![Open the ongoing tasks view](./assets/subscriptions_subscription-task-selection.png)
+
+</ContentFrame>
+
+<ContentFrame>
+
 Enter a task name, then define the subscription:
 
-![Defining the subscription task](./assets/subscriptions-1.png)
+![Defining the subscription task](./assets/subscriptions_define-task.png)
 
-1. **Subscription RQL**  
-   The RQL query that selects which documents the subscription sends to the client.  
-   Click **Syntax** for query assistance.  
+1. **Task name**  
+   Enter a name for the subscription task.  
 
-2. **Use a defined starting point**  
-   Set the point from which the first batch is sent:  
-   * **Beginning of Time** (default): send all documents matching the query, regardless of when
-     they were created.  
-   * **Latest Document**: start from the first document created after the subscription is created.  
-   * **Change Vector**: start from a document change vector you specify.  
+2. **Task state**  
+   Enable or disable the task.  
 
-3. **Choose a preferred mentor node manually**  
-   Select the node you want to be responsible for the subscription task.  
+3. **Subscription RQL**  
+   The RQL query that defines the documents the server sends to the worker.  
+   e.g., `from Orders`  
+   Click **Syntax** for help writing the query.  
 
-4. **Test Subscription**  
-   Preview which documents match the query before saving. See
-   [Testing the subscription](../../data-subscriptions/creating-subscription/creating-subscription_studio.mdx#testing-the-subscription) below.  
+4. **Archived data processing behavior**  
+   ![Defining the subscription task](./assets/subscriptions_archived-data-processing.png)
+   Set how the subscription processes archived documents.  
+   * **Default**: use the archived-data behavior [configured for the server or database](../../data-subscriptions/configuration.mdx#subscriptionsarchiveddataprocessingbehavior).  
+   * **Exclude archived**: Only non-archived documents will be included in processing.  
+   * **Include archived**: Both archived and non-archived documents will be included in processing.
+   * **Archived only**: Only archived documents will be included in processing.  
+  
+5. **Use a defined starting point**  
+   ![Defining the subscription task](./assets/subscriptions_use-defined-starting-point.png)
+   Set the point from which the server sends the first batch.  
+   * **Beginning of Time** (default): the server sends every document matching the query, regardless of its creation time.  
+   * **Latest Document**: start from the first document added after the subscription is created.  
+   * **Change Vector**: start from a specified document change vector.  
+
+6. **Set responsible node**  
+   ![Defining the subscription task](./assets/subscriptions_set-responsible-node.png)
+   Toggle **Set responsible node** to choose the responsible node yourself.  
+   By default, the server selects the responsible node. If that node goes down and your license includes
+   [Highly Available Tasks](../../server/clustering/distribution/highly-available-tasks.mdx), the server
+   automatically reassigns the subscription to another node.  
+    * When you select a responsible node manually, you can also **pin** it to the task. Pinning prevents
+      another node from taking over if the responsible node goes down.  
+      ![Defining the subscription task](./assets/subscriptions_set-responsible-node_pin-node.png)
+
+7. **Test subscription**  
+   ![Testing the subscription](./assets/subscriptions_test-subscription.png)
+   Testing shows the documents that match the subscription's query, so you can verify it before saving the task.  
+   * **A. Results limit** - The maximum number of documents to retrieve for the test.  
+   * **B. Time limit** - The test run time, in seconds. Default: 15.  
+   * **C. Run Test** - Click to run the test and preview the matching documents in the results table.  
 
 Click **Save** to create the task, or **Cancel** to discard it.
 
-</Panel>
-
-<Panel heading="Testing the subscription">
-
-Testing shows which documents match the subscription query, so you can verify the query before
-you save the task.
-
-![Testing the subscription](./assets/subscriptions-2.png)
-
-1. **Results limit**  
-   The maximum number of documents to retrieve for the test.  
-
-2. **Time limit**  
-   How long, in seconds, the test runs before stopping automatically. Default: 15.  
-
-3. **Run Test**  
-   Run the test and preview the matching documents in the results table.  
-
+</ContentFrame>
 </Panel>

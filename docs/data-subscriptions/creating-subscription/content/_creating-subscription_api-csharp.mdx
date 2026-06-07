@@ -157,7 +157,7 @@ A subscription query can have these parts:
   These functions can hold any JavaScript code, and support `load` and `include` operations.  
 * **A `from` clause** naming the document source, for example `from Orders`.  
   This clause can address only a collection; indexes are not supported.  
-* **A `where` clause** deciding which documents are sent to the worker.  
+* **A `where` clause** deciding the documents the server sends to the worker.  
   This clause supports RQL equality operators (`=`, `==`), plain JavaScript expressions,
   and calls to declared functions, so you can express complex filtering.  
   Subscription RQL does not support RQL's search keywords.  
