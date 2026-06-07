@@ -112,8 +112,9 @@ document can be processed more than once: first by the worker that dropped, and 
 the document is reassigned to.
 
 <Admonition type="note" title="">
-Plan for at-least-once delivery. Make each worker's processing idempotent, so reprocessing a
-document the server reassigns has no unintended effect.
+Plan for [at-least-once delivery](../../data-subscriptions/consuming-subscription.mdx#at-least-once-delivery).
+Make each worker's processing idempotent, so reprocessing a document the server reassigns has no
+unintended effect.
 </Admonition>
 
 </Panel>

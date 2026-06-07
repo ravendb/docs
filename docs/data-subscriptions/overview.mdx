@@ -32,6 +32,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [How the worker communicates with the server](../data-subscriptions/overview.mdx#how-the-worker-communicates-with-the-server)
    * [What the worker receives](../data-subscriptions/overview.mdx#what-the-worker-receives)
    * [Consuming and managing the subscription](../data-subscriptions/overview.mdx#consuming-and-managing-the-subscription)
+   * [Security considerations](../data-subscriptions/overview.mdx#security-considerations)
    * [Usage example](../data-subscriptions/overview.mdx#usage-example)
 
 </Admonition>
@@ -181,6 +182,32 @@ These options and operations control how a subscription is consumed and managed:
   Set server-wide or per-database defaults, such as how archived documents are handled and the
   maximum number of concurrent connections per subscription.  
   [Configuration](../data-subscriptions/configuration.mdx)  
+
+</Panel>
+
+<Panel heading="Security considerations">
+
+Two things shape a subscription's security: who is allowed to manage and consume it, and what its
+query exposes to a consumer.
+
+* **Access control**  
+  Unlike most ongoing tasks, which require database admin clearance to manage, a data subscription
+  can be created, updated, and deleted by any client with
+  [Read/Write access](../server/security/authorization/security-clearance-and-permissions.mdx#readwrite)
+  to the database, and consumed by any client with
+  [Read Only access](../server/security/authorization/security-clearance-and-permissions.mdx#read-only).
+  There is no permission specific to the subscription itself.  
+
+* **Connection security**  
+  On a secure server, a worker authenticates with a
+  [client certificate](../server/security/authentication/client-certificate-usage.mdx), and its
+  connection to the server is encrypted like any other client connection.  
+
+* **Data exposure**  
+  Because a subscription's filter, projection, and includes run on the server, a consumer receives
+  whatever the query exposes: not only the matching documents but also any related documents and
+  counters the query loads alongside them. Define the query to expose only the data its consumers
+  are meant to see.  
 
 </Panel>
 

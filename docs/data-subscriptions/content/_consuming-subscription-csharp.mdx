@@ -17,6 +17,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * In this article:
    * [Creating a subscription worker](../../data-subscriptions/consuming-subscription.mdx#creating-a-subscription-worker)
    * [Running the worker](../../data-subscriptions/consuming-subscription.mdx#running-the-worker)
+   * [At-least-once delivery](../../data-subscriptions/consuming-subscription.mdx#at-least-once-delivery)
    * [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)
    * [Error handling](../../data-subscriptions/consuming-subscription.mdx#error-handling)
    * [Examples](../../data-subscriptions/consuming-subscription.mdx#examples)
@@ -65,6 +66,21 @@ so the server can keep track of the subscription's progress and provide the next
 
 `Run` returns a task that stays alive while the worker is processing. If processing is aborted,
 this task completes with an exception.
+
+</Panel>
+
+<Panel heading="At-least-once delivery">
+
+The server advances a subscription's progress only when the worker acknowledges a batch.  
+If a worker stops (or its connection fails) before acknowledging a batch, the server will re-send the
+same batch the next time a worker connects to the subscription.
+
+Delivery is therefore at-least-once: documents may be processed more than once, but none are skipped.
+Make your processing idempotent to make sure that reprocessing a document has no unintended effect.
+
+[Concurrent subscriptions](../../data-subscriptions/concurrent-subscriptions.mdx#connection-failure-and-reassignment)
+add another way a document can be reprocessed, by reassigning a dropped worker's documents to the
+other workers.
 
 </Panel>
 
