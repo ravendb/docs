@@ -104,6 +104,17 @@ The grace period is set by
 
 </Admonition>
 
+<Admonition type="note" title="">
+
+A backup task that is **pinned** to its mentor node (via `PinToMentorNode`)
+is an exception to all of the above.  
+A pinned task is not subject to the grace period.  
+It stays on its node even while the node is in Rehab,
+and only moves when its pinned node is removed from the database group.  
+See [Pinning a Task](#pinning-a-task) below for the full behavior.
+
+</Admonition>
+
 
 
 ## Tasks Relocation
@@ -152,6 +163,12 @@ The failover of a task to another responsible node can be prevented by **pinning
   [cluster.timebeforeaddingreplicainsec](../../../server/configuration/cluster-configuration.mdx#clustertimebeforeaddingreplicainsec), 
   the cluster observer will attempt to select an available node to replace it in the database group 
   and redistribute the fallen node's tasks, including pinned ones, among database group members.  
+* A pinned **backup task** is also not subject to the
+  [grace period](../../../backup/configuration.mdx#backupmovetonewresponsiblenodegraceperiodinmin)
+  that the cluster observer otherwise applies before reassigning a backup task.  
+  The pinned backup stays on its node even while the node is in Rehab,
+  and only moves when the cluster eventually replaces the node as described above.  
+
 A task can be pinned to a selected node via Studio or using code.  
 
 #### Pinning via Studio
