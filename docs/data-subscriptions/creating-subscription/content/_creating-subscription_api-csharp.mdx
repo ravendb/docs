@@ -94,8 +94,9 @@ the same name in the same database.
 
 <Panel heading="Responsible node">
 
-When a subscription is created, the cluster assigns one node to manage it on the server side.
-That node stays responsible for the subscription as long as it is available.
+When a subscription is created, the cluster assigns one node to manage it. As long as this node is available, 
+it remains responsible for the subscription. If a worker connects to another node, that node will redirect it 
+to the responsible node.  
 
 If the responsible node goes down and your license includes
 [highly available tasks](../../../server/clustering/distribution/highly-available-tasks.mdx),
@@ -168,7 +169,7 @@ A subscription query can have these parts:
 <Admonition type="info" title="">
 Although a subscription query has an RQL-like structure, it supports only the `declare`,
 `select`, and `where` keywords; no other RQL keywords are supported. JavaScript ES5 syntax is
-supported.
+supported. For more details, see [JavaScript engine](../../../server/kb/javascript-engine.mdx).
 </Admonition>
 
 <Admonition type="info" title="">
@@ -854,7 +855,7 @@ public class SubscriptionUpdateOptions : SubscriptionCreationOptions
 | **Disabled** | `bool` | `true` creates the task in a disabled state; `false` creates it enabled. |
 | **MentorNode** | `string` | The tag of the node you want to handle the subscription. Useful when you prefer a specific server for its hardware, its proximity to clients, or other reasons. |
 | **PinToMentorNode** | `bool` | `true` pins the task to the responsible node; `false` lets another node run it if the responsible node is down. |
-| **ArchivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior?` | Whether archived documents are included in the subscription. |
+| **ArchivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior?` | Whether archived documents are included in the subscription. See [Archived documents and subscriptions](../../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions). |
 
 <br />
 

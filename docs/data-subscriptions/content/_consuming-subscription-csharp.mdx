@@ -109,6 +109,20 @@ The following strategies allow only one worker connected at a time:
 To let several workers consume the same subscription at the same time, use the `Concurrent` strategy.
 See [Concurrent subscriptions](../../data-subscriptions/concurrent-subscriptions.mdx).
 
+<ContentFrame>
+
+### First worker to connect sets the subscription mode
+
+The first worker to connect sets whether the subscription runs in single-worker or concurrent mode,
+and this mode holds until all workers disconnect:
+
+* A subscription running concurrent workers admits only other concurrent workers. A worker that uses
+  a single-worker strategy is rejected with `SubscriptionInUseException`.
+* A subscription running a single-worker strategy admits no concurrent worker until the connected
+  worker disconnects. A concurrent worker is rejected with `SubscriptionInUseException`.
+
+</ContentFrame>
+
 </Panel>
 
 <Panel heading="Error handling">

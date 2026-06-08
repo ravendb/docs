@@ -23,7 +23,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * In this article:
    * [Subscription details](../data-subscriptions/monitoring.mdx#subscription-details)
+      * [Status and connected clients](../data-subscriptions/monitoring.mdx#status-and-connected-clients)
    * [Subscription performance](../data-subscriptions/monitoring.mdx#subscription-performance)
+      * [Connection event indicators](../data-subscriptions/monitoring.mdx#connection-event-indicators)
 
 </Admonition>
 
@@ -107,6 +109,39 @@ in each phase. Hover any bar for its metrics:
 
 * **Waiting for ACK**  
   Within a batch, the time spent waiting for the worker to acknowledge the batch.  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Connection event indicators
+
+In the stats view, **connection event indicators** signify events related to the initiation, state,
+or termination of a worker's connection.  
+
+Available indicators:  
+
+| Indicator | Meaning |
+|:---:|---|
+| ![Connection initiated](./assets/subscriptions_task-stats_indicator-initiated.png) | **Connection initiated.** A worker has connected to the subscription. |
+| ![Connection aborted](./assets/subscriptions_task-stats_indicator-aborted.png) | **Connection aborted.** The worker forcibly closed its connection. |
+| ![Connection rejected](./assets/subscriptions_task-stats_indicator-rejected.png) | **Connection rejected.** A worker using the [OpenIfFree](../data-subscriptions/consuming-subscription.mdx#worker-strategies) strategy tried to connect while another worker held the subscription, so the server rejected it. |
+| ![Pending connection](./assets/subscriptions_task-stats_indicator-pending.png) | **Pending connection.** A worker using the [WaitForFree](../data-subscriptions/consuming-subscription.mdx#worker-strategies) strategy tried to connect while another worker held the subscription. Instead of being rejected, it waits for the current worker to disconnect, then connects. |
+
+---
+
+Example:
+
+![Connection event indicators on the timeline](./assets/subscriptions_task-stats_indicators-pending.png)
+
+In this example:
+
+1. Worker **A**, using the `OpenIfFree` strategy, connects to the subscription.
+2. Worker **B**, using the `WaitForFree` strategy, attempts to connect to the same subscription.  
+   Because A holds the subscription, B does not connect immediately and transitions to a **pending** state.
+3. Worker **A** ends its connection with the subscription.
+4. Worker **B** now connects.
+5. Worker **B** aborts its connection.
 
 </ContentFrame>
 

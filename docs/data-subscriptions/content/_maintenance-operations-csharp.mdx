@@ -7,7 +7,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* After creating a subscription, your client can manage it using the document store's `Subscriptions` property.  
+* After creating a subscription, your client can manage it using the document store's `Subscriptions` property, of type `DocumentSubscriptions`.  
 * You can enable or disable a subscription, read its state, delete it, or drop worker connections.  
 
 * In this article:
@@ -67,8 +67,9 @@ store.Subscriptions.Enable(subscriptionName);
 <Panel heading="Dropping a connection">
 
 Drop a subscription's active connections using `DropConnection`, passing the subscription name.  
-Dropping connections ends each worker's `Run` task. To resume, run a worker again, 
-as the subscription stays enabled. To stop the subscription from accepting workers, 
+Dropping a connection ends the worker's `Run` task, but leaves the subscription enabled. 
+Once dropped, the worker will not reconnect on its own. To resume, run it again. 
+To stop the subscription from accepting workers, 
 [disable it](../../data-subscriptions/maintenance-operations.mdx#enabling-and-disabling-a-subscription).  
 
 ```csharp
