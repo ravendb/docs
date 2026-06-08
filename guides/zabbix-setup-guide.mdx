@@ -2,11 +2,15 @@
 title: "Set up Zabbix Monitoring for RavenDB Cloud"
 tags: [monitoring]
 icon: "real-time-statistics"
-description: "How to set up your Zabbix to monitor your RavenDB Cloud"
+description: "Deploy Zabbix with Docker, connect it to RavenDB Cloud via SNMPv3, and configure custom SNMP items to monitor ETL errors and AI task failures in real time."
 published_at: 2025-11-16
 image: "https://ravendb.net/wp-content/uploads/2025/11/zabbix-article-image.svg"
 author: "Paweł Lachowski"
 proficiency_level: "Beginner"
+see_also:
+  - title: "ETL Troubleshooting with RavenDB ETL Errors View"
+    link: "etl-troubleshooting-with-ravendb-etl-errors-view"
+    source: "guides"
 ---
 
 import Admonition from '@theme/Admonition';
@@ -172,11 +176,11 @@ We can add an expression in two ways. Either use the editor by pressing add or j
 nodata(/RavenDB4/server.uptime,1800)=1
 ```
 
-This gives you a trigger; now, you can add an option to send a message to your email address. If you want to learn how to do it you can check Zabbix documentation [here](https://www.zabbix.com/documentation/3.4/en/manual/config/notifications/media/email). 
+This gives you a trigger; now, you can add an option to send a message to your email address. If you want to learn how to do it you can check Zabbix documentation [here](https://www.zabbix.com/documentation/7.4/en/manual/config/notifications/media/email). 
 
 That gives you a basic alerting setup for your RavenDB instance. Of course that's not all as Zabbix gives you the ability to create informative dashboards. RavenDB template gives you one with basic capabilities, but we can expand it.
 
-## Adding new Items
+## Adding New Items
 
 If your system depends on ETL or AI tasks, you probably want to know the moment something starts malfunctioning. That is exactly what the ETL Errors and AI Task Errors metrics are meant for.
 
@@ -218,6 +222,11 @@ The third graph shows how many ETL tasks are actively processing work at any giv
 
 ## Summary
 
-Setting up monitoring data with Zabbix can be a useful tool to monitor the work of your database. If you are interested in monitoring your on-premise database, you can try using Datadog. You can check the connection tutorial [here](https://ravendb.net/articles/leverage-ravendb-observability-with-datadog).
+- The full Zabbix stack runs as four Docker containers on an isolated network: a PostgreSQL database, an SNMP trap receiver, the Zabbix server, and an Nginx web frontend.
+- RavenDB Cloud exposes SNMP monitoring through a built-in product feature that provides an SNMPv3 authentication username, authentication password, and privacy password for secure integration.
+- Importing the community RavenDB template from the Zabbix GitHub repository gives you a ready-made set of triggers and a dashboard without manually defining every metric.
+- Custom SNMP items for ETL Errors, Impaired ETL Tasks, and Failed AI Tasks can be added to the template using OIDs from the `/monitoring/snmp/oids` endpoint, then wired to triggers and dashboard graphs for proactive alerting before users notice a problem.
+
+If you are interested in monitoring your on-premise database, you can try using Datadog. You can check the connection tutorial [here](https://ravendb.net/articles/leverage-ravendb-observability-with-datadog).
 
 Interested in RavenDB? Grab the developer license dedicated to testing [here](https://ravendb.net/dev) or get a free cloud database [here](https://ravendb.net/cloud). Any questions about this feature or just want to hang out and talk with the RavenDB team? Join our Discord Community Server - invitation link is [here](https://discord.com/invite/ravendb).
