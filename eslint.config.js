@@ -74,7 +74,7 @@ module.exports = [
             "@typescript-eslint/no-explicit-any": "off",
             "@typescript-eslint/prefer-namespace-keyword": "off",
 
-            "no-console": "warn",
+            "no-console": ["warn", { allow: ["warn", "error"] }],
             "no-debugger": "error",
             "no-alert": "warn",
             "no-var": "error",
@@ -95,6 +95,12 @@ module.exports = [
     },
     // `no-undef` is a JS rule and produces false positives for TS type-only globals  like EventListener.
     // In TS files, unresolved symbols are handled by TypeScript.
+    {
+        files: ["**/*.ts", "**/*.tsx"],
+        rules: {
+            "no-undef": "off",
+        },
+    },
     {
         files: ["**/*.ts", "**/*.tsx"],
         rules: {

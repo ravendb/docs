@@ -21,7 +21,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * When making a dynamic spatial query from Studio,  
   results are also displayed on the global map. See [spatial queries map view](../../../../studio/database/queries/spatial-queries-map-view.mdx).
-* In this page:
+* In this article:
 
   * [Search by radius](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-radius)  
   * [Search by shape](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-shape)
@@ -383,7 +383,7 @@ const metadata = session.advanced.getMetadataFor(employeesSortedByDistance[0]);
 const spatialResults = metadata["@spatial"];
 
 const distance = spatialResults.Distance;   // The distance of the entity from the queried location
-const latitude = spatialResults.Latitude;   // The entity's longitude value
+const latitude = spatialResults.Latitude;   // The entity's latitude value
 const longitude = spatialResults.Longitude; // The entity's longitude value
 `}
 </CodeBlock>
@@ -501,13 +501,13 @@ orderByDistanceDescending(fieldName, shapeWkt);
 </CodeBlock>
 </TabItem>
 
-| Parameter                    | Type                  | Description                                                                                                                                                                                                                                                      |
-|------------------------------|-----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __fieldName__                | `string`              | Path to spatial field in index<br/>(when querying an index).                                                                                                                                                                                                      |
-| __field__                    | `DynamicSpatialField` | Object that contains the document's spatial fields,<br/>either `PointField` or `WktField`<br/>(when making a dynamic query).                                                                                                                                       |
-| __shapeWkt__                 | `string`              | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference.            |
-| __latitude__ / __longitude__ | `number`              | Used to define a point from which distance will be measured                                                                                                                                                                                                      |
-| __roundFactor__              | `number`              | A distance interval in kilometers.<br/>The distance from the point is rounded up to the nearest interval.<br/>The results within the same interval can be sorted by a secondary order.<br/>If no other order was specified, then by ascending order of document Id. |
+| Parameter                    | Type                  | Description                                                                                                                                                                                                                                            
+|------------------------------|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| __fieldName__                | `string`              | Path to spatial field in index<br/>(when querying an index).                                                                                                                                                                                          |
+| __field__                    | `DynamicSpatialField` | Object that contains the document's spatial fields,<br/>either `PointField` or `WktField`<br/>(when making a dynamic query).                                                                                                                          |
+| __shapeWkt__                 | `string`              | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
+| __latitude__ / __longitude__ | `number`              | Used to define a point from which distance will be measured                                                                                                                                                                                           |
+| __roundFactor__              | `number`              | A distance interval in kilometers.<br/>The distance from the point is rounded up to the nearest interval.<br/>Use `orderBy` to apply a secondary sort to results within the same distance interval.                                                   |
 
 
 

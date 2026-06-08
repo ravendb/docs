@@ -82,20 +82,40 @@ function normalizeRoute(route: string): string {
     return stripTrailingSlash(route);
 }
 
-/**
- * Build a universe Set from Docusaurus `routesPaths`, scoped to the current
- * version. Only current-version routes are valid canonical targets for
- * non-legacy pages.
- */
-export function buildUniverse(routePaths: readonly string[], currentVersion: string): Set<string> {
-    const prefix = `/${currentVersion}`;
-    const universe = new Set<string>();
-    for (const p of routePaths) {
-        if (p === prefix || p.startsWith(`${prefix}/`)) {
-            universe.add(normalizeRoute(p));
+// Map<scope, Set<route>>. Scope keys: currently-maintained version strings, "cloud", "guides", "samples".
+// Legacy versions, /templates, and root are excluded — invalid see_also targets, no slice needed.
+const VERSION_PREFIX_REGEX = /^\/(\d+\.\d+)(\/|$)/;
+const SECTION_PREFIX_REGEX = /^\/(cloud|guides|samples)(\/|$)/;
+
+export function buildScopedRoutes(
+    routePaths: readonly string[],
+    legacyVersions: readonly string[]
+): Map<string, Set<string>> {
+    const legacy = new Set(legacyVersions);
+    const routesByScope = new Map<string, Set<string>>();
+    const addRoute = (scope: string, route: string) => {
+        let set = routesByScope.get(scope);
+        if (!set) {
+            set = new Set();
+            routesByScope.set(scope, set);
+        }
+        set.add(route);
+    };
+    for (const routePath of routePaths) {
+        const normalisedPath = normalizeRoute(routePath);
+        const versionMatch = routePath.match(VERSION_PREFIX_REGEX);
+        if (versionMatch) {
+            if (!legacy.has(versionMatch[1])) {
+                addRoute(versionMatch[1], normalisedPath);
+            }
+            continue;
+        }
+        const sectionMatch = routePath.match(SECTION_PREFIX_REGEX);
+        if (sectionMatch) {
+            addRoute(sectionMatch[1], normalisedPath);
         }
     }
-    return universe;
+    return routesByScope;
 }
 
 /**

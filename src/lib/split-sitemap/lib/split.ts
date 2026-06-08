@@ -6,8 +6,9 @@
  * per-version sitemap size small enough to satisfy search-engine limits
  * and lets us re-ping only changed sections on deploy.
  *
- *   /cloud/*  → sitemap-cloud.xml
- *   /guides/* → sitemap-guides.xml
+ *   /cloud/*   → sitemap-cloud.xml
+ *   /guides/*  → sitemap-guides.xml
+ *   /samples/* → sitemap-samples.xml
  *   /X.Y/*    → sitemap-docs-X.Y.xml  (if X.Y isn't legacy)
  *   other     → sitemap-misc.xml      (search, root pages, etc.)
  *
@@ -46,6 +47,7 @@ export interface SplitSucceeded {
 const SECTION_MAP: Record<string, string> = {
     cloud: "sitemap-cloud.xml",
     guides: "sitemap-guides.xml",
+    samples: "sitemap-samples.xml",
 };
 
 const XML_HEADER = '<?xml version="1.0" encoding="UTF-8"?>';

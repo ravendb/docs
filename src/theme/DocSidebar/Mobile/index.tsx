@@ -22,6 +22,8 @@ function DocSidebarMobileSecondaryMenu({ sidebar, path }: DocSidebarProps) {
     const pathType = getPathType(path);
     const landingPagePath = getLandingPagePath(pathType, versionLabel);
 
+    const shouldDisplayContent = pathType !== PathType.Guides && pathType !== PathType.Samples;
+
     return (
         <ul className={clsx(ThemeClassNames.docs.docSidebarMenu, "menu__list")}>
             <li className="menu__list-item">
@@ -47,6 +49,14 @@ function DocSidebarMobileSecondaryMenu({ sidebar, path }: DocSidebarProps) {
                     </small>
                 </Link>
             )}
+            {pathType !== PathType.Samples && (
+                <Link to="/samples" className="menu__link group">
+                    <Icon icon="create-sample-data" size="xs" className="me-2" /> Samples
+                    <small className="flex items-center ms-auto gap-1 text-[0.675rem]">
+                        Switch <Icon icon="arrow-thin-right" size="xs" />
+                    </small>
+                </Link>
+            )}
             {pathType !== PathType.Cloud && (
                 <Link to="/cloud" className="menu__link group">
                     <Icon icon="cloud" size="xs" className="me-2" /> RavenDB Cloud Docs
@@ -59,7 +69,7 @@ function DocSidebarMobileSecondaryMenu({ sidebar, path }: DocSidebarProps) {
                 <Icon icon="community" size="xs" className="me-2" /> Community
                 <Icon icon="newtab" size="xs" className="ms-auto" />
             </Link>
-            {pathType !== PathType.Cloud && pathType !== PathType.Guides && (
+            {pathType === PathType.Documentation && (
                 <li className="menu__list-item">
                     <Link
                         to={`/${versionLabel}/whats-new`}
@@ -70,18 +80,17 @@ function DocSidebarMobileSecondaryMenu({ sidebar, path }: DocSidebarProps) {
                     </Link>
                 </li>
             )}
-            {pathType !== PathType.Guides && (
+            {shouldDisplayContent && (
                 <li className="menu__list-item !my-3">
                     <hr className="!my-0 !mx-3 !bg-black/10 dark:!bg-white/10" />
                 </li>
             )}
-            {pathType !== PathType.Cloud && pathType !== PathType.Guides && <SidebarVersionDropdown />}
-            {pathType !== PathType.Guides && (
+            {pathType === PathType.Documentation && <SidebarVersionDropdown />}
+            {shouldDisplayContent && (
                 <DocSidebarItems
                     items={sidebar}
                     activePath={path}
                     onItemClick={(item) => {
-                        // Mobile sidebar should only be closed if the category has a link
                         if (item.type === "category" && item.href) {
                             mobileSidebar.toggle();
                         }

@@ -1,28 +1,8 @@
-/**
- * Versioned-SEO plugin.
- *
- * Two responsibilities, both running during postBuild on the same walk of
- * versioned HTML files:
- *
- * 1. Canonical rewrite + verify
- *    - Rewrites `<link rel="canonical">` URLs so pages moved or renamed in
- *      the current version advertise their new home rather than a stale
- *      URL that 404s. Legacy versions get a self-canonical.
- *    - After rewriting, every emitted canonical is checked against the
- *      Docusaurus route universe so strict builds fail loudly on bad
- *      targets.
- *
- * 2. Legacy-version noindex assertion
- *    - Docusaurus injects `<meta name="robots" content="noindex, nofollow">`
- *      natively for any version configured with `noIndex: true` in the
- *      docs preset. This plugin doesn't write that tag itself; instead it
- *      asserts every legacy-version page actually carries it. A typo, a
- *      missing entry in `versions:`, or a swizzled `DocVersionRoot` that
- *      drops the meta tag fails the build instead of silently leaking
- *      legacy pages into search engines.
- *
- * See plan RDoc-3786 for the full design.
- */
+// Versioned-SEO plugin — three postBuild assertions over emitted HTML:
+//   1. canonical rewrite + verify (current-version slice)
+//   2. legacy-version noindex audit (Docusaurus injects, we assert)
+//   3. see_also link audit (existence + versionless format)
+// See RDoc-3786 / RDoc-3789 for full design.
 
 import docusaurusLogger from "@docusaurus/logger";
 import type { LoadContext, Plugin } from "@docusaurus/types";
@@ -38,7 +18,8 @@ import {
     type RedirectMap,
 } from "./lib/redirects.js";
 import { rewriteHtml } from "./lib/rewrite.js";
-import { buildUniverse, hasNoindexRobotsMeta, verifyCanonicals, type CanonicalRecord } from "./lib/verify.js";
+import { buildScopedRoutes, hasNoindexRobotsMeta, verifyCanonicals, type CanonicalRecord } from "./lib/verify.js";
+import { fanoutSeeAlsoRecords, verifySeeAlsoLinks, type SeeAlsoRecord } from "./lib/verify-seealso.js";
 // version-policy.js is CJS; named-import interop lets both tsx --test and
 // the Docusaurus webpack loader resolve it without a shim.
 import { BUILT_VERSIONS, CURRENT_VERSION, LEGACY_VERSIONS } from "../../../scripts/lib/version-policy.js";
@@ -186,10 +167,17 @@ const versionedSeoPlugin = function versionedSeoPlugin(
             }
 
             const { outDir, routesPaths } = props;
-            const universe = buildUniverse(routesPaths, CURRENT_VERSION);
-            log.verbose(`current-version universe: ${universe.size} routes`);
+            const routesByScope = buildScopedRoutes(routesPaths, LEGACY_VERSIONS);
+            const latestVersionRoutes = routesByScope.get(CURRENT_VERSION);
+            if (!latestVersionRoutes) {
+                throw new Error(
+                    `${PLUGIN_NAME}: CURRENT_VERSION ${CURRENT_VERSION} produced no routes — DOCUSAURUS_VERSIONS must include 'current'`
+                );
+            }
+            log.verbose(`current-version universe: ${latestVersionRoutes.size} routes`);
 
-            const records: CanonicalRecord[] = [];
+            const canonicalRecords: CanonicalRecord[] = [];
+            const seeAlsoRecords: SeeAlsoRecord[] = [];
             let scanned = 0;
             let rewritten = 0;
             let chainsResolved = 0;
@@ -203,13 +191,27 @@ const versionedSeoPlugin = function versionedSeoPlugin(
                 }
                 const rel = path.relative(outDir, filePath).split(path.sep).join("/");
                 const info = extractVersionInfo(rel);
+                const originalHtml = fs.readFileSync(filePath, "utf8");
+
+                // SeeAlso audit: currently-maintained versioned pages + unversioned content sections.
+                const shouldAuditSeeAlso =
+                    (info && !LEGACY_VERSIONS.includes(info.version)) ||
+                    (!info && (rel.startsWith("cloud/") || rel.startsWith("guides/") || rel.startsWith("samples/")));
+                if (shouldAuditSeeAlso) {
+                    seeAlsoRecords.push(
+                        ...fanoutSeeAlsoRecords(
+                            originalHtml,
+                            "/" + rel.replace(/\/index\.html$/i, "").replace(/\.html$/i, ""),
+                            info?.version ?? null
+                        )
+                    );
+                }
+
                 if (!info) {
                     return;
                 } // non-versioned file (search, cloud, guides, templates, root)
 
                 scanned++;
-
-                const originalHtml = fs.readFileSync(filePath, "utf8");
 
                 // Legacy-noindex assertion runs against the HTML Docusaurus
                 // emitted, before our rewrite touches the canonical href —
@@ -240,7 +242,7 @@ const versionedSeoPlugin = function versionedSeoPlugin(
                 }
 
                 if (result.newCanonical) {
-                    records.push({
+                    canonicalRecords.push({
                         file: rel,
                         canonical: result.newCanonical,
                         fileVersion: info.version,
@@ -250,8 +252,14 @@ const versionedSeoPlugin = function versionedSeoPlugin(
                 }
             });
 
+            const seeAlsoBroken = verifySeeAlsoLinks({
+                records: seeAlsoRecords,
+                routesByScope,
+                latestVersion: CURRENT_VERSION,
+            });
+
             log.info(
-                `scanned ${scanned} versioned HTML file(s), rewrote ${rewritten}, chains resolved ${chainsResolved}, missing canonicals ${missingCanonicalCount}, legacy noindex checked ${legacyChecked} (missing ${legacyMissingNoindex.length})`
+                `scanned ${scanned} versioned HTML file(s), rewrote ${rewritten}, chains resolved ${chainsResolved}, missing canonicals ${missingCanonicalCount}, legacy noindex checked ${legacyChecked} (missing ${legacyMissingNoindex.length}), see_also fanned out ${seeAlsoRecords.length} (broken ${seeAlsoBroken.length})`
             );
 
             // Missing canonicals mean CANONICAL_TAG_REGEX is stale — fix the regex, not each file.
@@ -295,18 +303,21 @@ const versionedSeoPlugin = function versionedSeoPlugin(
             }
 
             const issues = verifyCanonicals({
-                records,
-                universe,
+                records: canonicalRecords,
+                universe: latestVersionRoutes,
                 currentVersion: CURRENT_VERSION,
                 legacyVersions: LEGACY_VERSIONS,
                 baseUrl: BASE_URL,
             });
 
+            // Always emit the full report via log.warn so it surfaces in build output regardless of
+            // failOnInvalidSeo. failOnInvalidSeo only controls whether the build dies; the report is
+            // unconditional, and a canonical failure can't suppress the seeAlso report (or vice versa).
+            const fatalCount = issues.length + seeAlsoBroken.length;
+
             if (issues.length > 0) {
-                const maxShow = 10;
-                const shown = issues.slice(0, maxShow);
                 const header = `${PLUGIN_NAME}: ${issues.length} invalid canonical${issues.length === 1 ? "" : "s"} detected`;
-                const body = shown
+                const body = issues
                     .map((i) => {
                         const base = `  - ${i.file}\n      canonical: ${i.canonical}\n      reason: ${i.reason}`;
                         if (!i.fix) {
@@ -321,15 +332,28 @@ const versionedSeoPlugin = function versionedSeoPlugin(
                         return `${base}\n      fix:\n${indentedFix}`;
                     })
                     .join("\n");
-                const tail = issues.length > maxShow ? `\n  … and ${issues.length - maxShow} more` : "";
-                const message = `${header}\n${body}${tail}`;
-
-                if (options.failOnInvalidSeo) {
-                    throw new Error(message);
-                }
-                log.warn(message);
+                log.warn(`${header}\n${body}`);
             } else {
                 log.info("all canonicals verified against the current-version route universe");
+            }
+
+            // SeeAlso audit.
+            if (seeAlsoBroken.length > 0) {
+                const noun = seeAlsoBroken.length === 1 ? "link" : "links";
+                const header = `${PLUGIN_NAME}: ${seeAlsoBroken.length} broken see_also ${noun} detected`;
+                const body = seeAlsoBroken
+                    .map(
+                        (i) =>
+                            `  - ${i.articlePath}\n      href: ${i.href}\n      reason: ${i.reason}\n      fix: ${i.fix}`
+                    )
+                    .join("\n");
+                log.warn(`${header}\n${body}`);
+            }
+
+            if (fatalCount > 0 && options.failOnInvalidSeo) {
+                throw new Error(
+                    `${PLUGIN_NAME}: ${fatalCount} SEO issue${fatalCount === 1 ? "" : "s"} detected (see warnings above)`
+                );
             }
         },
     };

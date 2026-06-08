@@ -42,9 +42,50 @@ export default {
                     ],
                 },
                 {
+                    type: "category",
+                    label: "Samples authoring",
+                    items: [
+                        {
+                            type: "doc",
+                            id: "introduction-samples",
+                            label: "Introduction",
+                        },
+                        {
+                            type: "doc",
+                            id: "new-samples",
+                            label: "Adding new samples",
+                        },
+                        {
+                            type: "doc",
+                            id: "components-samples",
+                            label: "Components",
+                        },
+                        {
+                            type: "doc",
+                            id: "filtering-samples",
+                            label: "Filtering",
+                        },
+                        {
+                            type: "doc",
+                            id: "tags-samples",
+                            label: "Tags",
+                        },
+                        {
+                            type: "doc",
+                            id: "best-practices-samples",
+                            label: "Best practices",
+                        },
+                    ],
+                },
+                {
                     type: "doc",
                     id: "frames",
                     label: "Frames",
+                },
+                {
+                    type: "doc",
+                    id: "gallery-example",
+                    label: "Gallery example",
                 },
                 {
                     type: "doc",
