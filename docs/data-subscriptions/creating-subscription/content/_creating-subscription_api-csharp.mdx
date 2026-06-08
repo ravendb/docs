@@ -28,6 +28,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Projecting from a related document](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-projecting-from-a-related-document)
       * [Including documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-documents)
       * [Including counters](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-counters)
+      * [Including time series](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-time-series)
       * [Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-creating-a-subscription-via-update)
       * [Updating an existing subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-updating-an-existing-subscription)
    * [Syntax](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#syntax)
@@ -609,6 +610,52 @@ Adding a new counter to the document, or removing one, does trigger re-sending t
 
 <ContentFrame>
 
+### Example: Including time series
+
+In this example, the subscription sends every `Order` and includes time-series entries for each
+document in the batch, so the worker has those entries without issuing additional requests to the server.
+
+```csharp
+subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>()
+{
+    Includes = builder => builder
+        // Include the last 10 entries of each document's "HeartRate" time series
+        .IncludeTimeSeries("HeartRate", TimeSeriesRangeType.Last, 10)
+});
+```
+
+<br />
+
+`ISubscriptionIncludeBuilder` includes time series through these methods:
+
+```csharp
+// Include entries of a named time series, by a time range or by a number of entries
+ISubscriptionIncludeBuilder<T> IncludeTimeSeries(string name, TimeSeriesRangeType type, TimeValue time);
+ISubscriptionIncludeBuilder<T> IncludeTimeSeries(string name, TimeSeriesRangeType type, int count);
+
+// The same, for several named time series
+ISubscriptionIncludeBuilder<T> IncludeTimeSeries(string[] names, TimeSeriesRangeType type, TimeValue time);
+ISubscriptionIncludeBuilder<T> IncludeTimeSeries(string[] names, TimeSeriesRangeType type, int count);
+
+// Include all time series
+ISubscriptionIncludeBuilder<T> IncludeAllTimeSeries(TimeSeriesRangeType type, TimeValue time);
+ISubscriptionIncludeBuilder<T> IncludeAllTimeSeries(TimeSeriesRangeType type, int count);
+ISubscriptionIncludeBuilder<T> IncludeAllTimeSeries(DateTime? from, DateTime? to);
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **name** / **names** | `string` / `string[]` | The time series to include. |
+| **type** | `TimeSeriesRangeType` | The range type: `None` or `Last`. |
+| **time** | `TimeValue` | A time range to include, for example the last 7 days. |
+| **count** | `int` | A number of entries to include, counted from the most recent. |
+
+</ContentFrame>
+
+<ContentFrame>
+
 ### Example: Creating a subscription via update
 
 When the subscription you update does not exist, set `CreateNew` to `true` to create it instead,
@@ -850,7 +897,7 @@ public class SubscriptionUpdateOptions : SubscriptionCreationOptions
 | **Query** | `string` | An RQL query that defines the subscription. Supports JavaScript functions inside the `where` clause and special semantics for subscriptions on document revisions. |
 | **Filter** | `Expression<Func<T, bool>>` | A lambda expression defining the subscription's filter. Translated to a JavaScript function. |
 | **Projection** | `Expression<Func<T, object>>` | A lambda expression defining the projection sent for each matching document. Translated to a JavaScript function. |
-| **Includes** | `Action<ISubscriptionIncludeBuilder<T>>` | An action defining the subscription's include clauses. Included documents and counters are part of the batch the subscription sends. The include methods can be chained. |
+| **Includes** | `Action<ISubscriptionIncludeBuilder<T>>` | An action defining the subscription's include clauses. Included documents, counters, and time series are part of the batch the subscription sends. The include methods can be chained. |
 | **ChangeVector** | `string` | A change vector marking where the subscription starts processing. See the note below. |
 | **Disabled** | `bool` | `true` creates the task in a disabled state; `false` creates it enabled. |
 | **MentorNode** | `string` | The tag of the node you want to handle the subscription. Useful when you prefer a specific server for its hardware, its proximity to clients, or other reasons. |

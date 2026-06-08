@@ -55,9 +55,12 @@ Expand a subscription bar to view its current status and connected clients.
 3. **Change vector for next batch**  
    The point from which the server sends the next batch. Hover the info icon for the value.  
 
-4. **Status**  
-   The responsible node, the connection status (**Active** while a worker is connected, otherwise
-   not active), any error, and the task's overall state.  
+4. **Task details**  
+   * **Node** - the node in the database group responsible for running the subscription, shown in
+     the database group topology.  
+   * **Status** - whether a worker is connected: **Active** when one is, otherwise not active.  
+   * **Error** - any error reported for the task; a dash when there are none.  
+   * **State** - the task's overall state, shown as **OK** when the task is healthy.  
 
 5. **Connected clients**  
    The workers currently consuming the subscription.  
@@ -137,11 +140,11 @@ Example:
 In this example:
 
 1. Worker **A**, using the `OpenIfFree` strategy, connects to the subscription.
-2. Worker **B**, using the `WaitForFree` strategy, attempts to connect to the same subscription.  
-   Because A holds the subscription, B does not connect immediately and transitions to a **pending** state.
-3. Worker **A** ends its connection with the subscription.
-4. Worker **B** now connects.
-5. Worker **B** aborts its connection.
+2. Worker **B**, using the `WaitForFree` strategy, attempts to connect to the same subscription and rejected.  
+3. Because A holds the subscription, B does not connect immediately and transitions to a **pending** state.
+4. Worker **A** ends its connection with the subscription.
+5. Worker **B** now connects.
+6. Worker **B** aborts its connection.
 
 </ContentFrame>
 
