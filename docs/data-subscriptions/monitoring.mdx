@@ -1,0 +1,151 @@
+---
+title: "Data subscriptions: Monitoring"
+sidebar_label: "Monitoring"
+description: "Monitor a running data subscription in RavenDB Studio: track its status, connected clients, and progress in the Ongoing Tasks view, and its connection activity over time in the Ongoing Task Stats graph."
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Monitoring a data subscription
+
+<Admonition type="note" title="">
+
+* This page explains how to monitor a running data subscription using Studio.  
+
+* The Ongoing Tasks view shows a subscription's current status, its progress, and the clients
+  currently connected to it.  
+
+* The Ongoing Task Stats graph tracks a subscription's activity over time, from each client
+  connection down to the individual batches and the time spent on each.  
+
+* In this article:
+   * [Subscription details](../data-subscriptions/monitoring.mdx#subscription-details)
+      * [Status and connected clients](../data-subscriptions/monitoring.mdx#status-and-connected-clients)
+   * [Subscription performance](../data-subscriptions/monitoring.mdx#subscription-performance)
+      * [Connection event indicators](../data-subscriptions/monitoring.mdx#connection-event-indicators)
+
+</Admonition>
+
+<Panel heading="Subscription details">
+
+<ContentFrame>
+
+Open **`Tasks` > `Ongoing Tasks`**, where subscription tasks are listed under **Subscriptions**.  
+Expand a subscription bar to view its current status and connected clients.
+
+![Find the subscription in the ongoing tasks view](./assets/subscriptions_ongoing-tasks_task-bar_collapsed.png)
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Status and connected clients
+
+![Subscription details](./assets/subscriptions_ongoing-tasks_task-bar_expanded.png)
+
+1. **Last batch acknowledgment time**  
+   The last time a worker acknowledged a batch.  
+
+2. **Last client connection time**  
+   The last time a worker connected to the subscription.  
+
+3. **Change vector for next batch**  
+   The point from which the server sends the next batch. Hover the info icon for the value.  
+
+4. **Task details**  
+   * **Node** - the node in the database group responsible for running the subscription, shown in
+     the database group topology.  
+   * **Status** - whether a worker is connected: **Active** when one is, otherwise not active.  
+   * **Error** - any error reported for the task; a dash when there are none.  
+   * **State** - the task's overall state, shown as **OK** when the task is healthy.  
+
+5. **Connected clients**  
+   The workers currently consuming the subscription.  
+   The **subscription mode** is shown (here **Concurrent**), and each connected worker is listed with
+   its connection strategy and client URI. Click **Disconnect** to drop an individual worker.  
+
+For the API equivalents of disconnecting, see
+[Dropping a worker](../data-subscriptions/concurrent-subscriptions.mdx#dropping-a-worker)
+and [Dropping a connection](../data-subscriptions/maintenance-operations.mdx#dropping-a-connection).  
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Subscription performance">
+
+<ContentFrame>
+
+Open **`Stats` > `Ongoing Task Stats`**, where a bar on the performance timeline shows the
+subscription's activity.
+
+![The subscription on the ongoing task stats timeline](./assets/subscriptions_task-stats_collapsed.png)
+
+1. **Subscription bar**  
+   The subscription's bar on the performance timeline. Click it to open the breakdown below.  
+
+2. **Query**  
+   The server-side query that selects the documents. Click the eye icon to view it.  
+
+</ContentFrame>
+
+<ContentFrame>
+
+Expanding the bar breaks each client connection into the batches it processed and the time spent
+in each phase. Hover any bar for its metrics:
+
+![The expanded subscription bar](./assets/subscriptions_task-stats_expanded.png)
+
+* **Client connection**  
+  The worker's entire connection: duration, client URI, strategy, number of batches acknowledged,
+  and the total size of all batches.  
+
+* **Documents batch**  
+  A single batch the server sent: total duration, the number and size of documents sent, and the
+  number and size of any included documents, counters, and time-series entries.  
+
+* **Sending documents**  
+  Within a batch, the time the server spent sending the documents to the worker.  
+
+* **Waiting for ACK**  
+  Within a batch, the time spent waiting for the worker to acknowledge the batch.  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Connection event indicators
+
+In the stats view, **connection event indicators** signify events related to the initiation, state,
+or termination of a worker's connection.  
+
+Available indicators:  
+
+| Indicator | Meaning |
+|:---:|---|
+| ![Connection initiated](./assets/subscriptions_task-stats_indicator-initiated.png) | **Connection initiated.** A worker has connected to the subscription. |
+| ![Connection aborted](./assets/subscriptions_task-stats_indicator-aborted.png) | **Connection aborted.** The worker forcibly closed its connection. |
+| ![Connection rejected](./assets/subscriptions_task-stats_indicator-rejected.png) | **Connection rejected.** A worker using the [OpenIfFree](../data-subscriptions/consuming-subscription.mdx#worker-strategies) strategy tried to connect while another worker held the subscription, so the server rejected it. |
+| ![Pending connection](./assets/subscriptions_task-stats_indicator-pending.png) | **Pending connection.** A worker using the [WaitForFree](../data-subscriptions/consuming-subscription.mdx#worker-strategies) strategy tried to connect while another worker held the subscription. Instead of being rejected, it waits for the current worker to disconnect, then connects. |
+
+---
+
+Example:
+
+![Connection event indicators on the timeline](./assets/subscriptions_task-stats_indicators-pending.png)
+
+In this example:
+
+1. Worker **A**, using the `OpenIfFree` strategy, connects to the subscription.
+2. Worker **B**, using the `WaitForFree` strategy, attempts to connect to the same subscription and rejected.  
+3. Because A holds the subscription, B does not connect immediately and transitions to a **pending** state.
+4. Worker **A** ends its connection with the subscription.
+5. Worker **B** now connects.
+6. Worker **B** aborts its connection.
+
+</ContentFrame>
+
+</Panel>

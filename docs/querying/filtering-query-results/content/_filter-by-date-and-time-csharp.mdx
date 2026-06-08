@@ -39,7 +39,7 @@ import Panel from '@site/src/components/Panel';
   In the C# examples below, [DateTimeKind](https://learn.microsoft.com/dotnet/api/system.datetimekind) is passed to the `DateTime` constructor to mark the value as UTC.  
     
 * Unlike the [Restrictions](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#restrictions) on `now()` and `today()`,  
-  explicit date values are deterministic and **can be used** in [Exploration queries](../../../indexes/querying/exploration-queries.mdx) and [Subscription queries](../../../client-api/data-subscriptions/creation/examples.mdx).       
+  explicit date values are deterministic and **can be used** in [Exploration queries](../../../indexes/querying/exploration-queries.mdx) and [Subscription queries](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx).       
 
 ---
     
@@ -826,7 +826,7 @@ where RequireAt <= now($offset)
 ---
     
 * **Subscription queries**  
-  Both `now()` and `today()` are not supported in [subscription queries](../../../client-api/data-subscriptions/creation/examples.mdx).  
+  Both `now()` and `today()` are not supported in [subscription queries](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx).  
   For example, the following query is not allowed:
     
     <TabItem>       

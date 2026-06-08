@@ -314,6 +314,97 @@
         }
     },
     {
+        "key": "/client-api/data-subscriptions/what-are-data-subscriptions",
+        "value": {
+            "targetUrl": "/data-subscriptions/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/data-subscriptions/concurrent-subscriptions",
+        "value": {
+            "targetUrl": "/data-subscriptions/concurrent-subscriptions",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/data-subscriptions/creation/how-to-create-data-subscription",
+        "value": {
+            "targetUrl": "/data-subscriptions/creating-subscription/creating-subscription_api",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/data-subscriptions/creation/api-overview",
+        "value": {
+            "targetUrl": "/data-subscriptions/creating-subscription/creating-subscription_api",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/data-subscriptions/creation/examples",
+        "value": {
+            "targetUrl": "/data-subscriptions/creating-subscription/creating-subscription_api",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/data-subscriptions/consumption/how-to-consume-data-subscription",
+        "value": {
+            "targetUrl": "/data-subscriptions/consuming-subscription",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/data-subscriptions/consumption/api-overview",
+        "value": {
+            "targetUrl": "/data-subscriptions/consuming-subscription",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/data-subscriptions/consumption/examples",
+        "value": {
+            "targetUrl": "/data-subscriptions/consuming-subscription",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/data-subscriptions/advanced-topics/maintenance-operations",
+        "value": {
+            "targetUrl": "/data-subscriptions/maintenance-operations",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/data-subscriptions/advanced-topics/subscription-with-revisioning",
+        "value": {
+            "targetUrl": "/data-subscriptions/revisions-support",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/database/tasks/ongoing-tasks/subscription-task",
+        "value": {
+            "targetUrl": "/data-subscriptions/creating-subscription/creating-subscription_studio",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/database/stats/ongoing-tasks-stats/subscription-stats",
+        "value": {
+            "targetUrl": "/data-subscriptions/monitoring",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/server/configuration/subscription-configuration",
+        "value": {
+            "targetUrl": "/data-subscriptions/configuration",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/client-api/document-identifiers",
         "value": {
             "targetUrl": "/client-api/document-identifiers/working-with-document-identifiers",

@@ -1,0 +1,608 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* A **subscription worker** is the client-side component that consumes a subscription.  
+
+* The worker connects to the server, receives a batch of documents, hands the batch to your processing code, and
+  when done, acknowledges its progress to the server so the server can keep track and provide the next batch.  
+
+* This page explains how to create and run a subscription worker using the client API.  
+
+* In this article:
+   * [Creating a subscription worker](../../data-subscriptions/consuming-subscription.mdx#creating-a-subscription-worker)
+   * [Running the worker](../../data-subscriptions/consuming-subscription.mdx#running-the-worker)
+   * [At-least-once delivery](../../data-subscriptions/consuming-subscription.mdx#at-least-once-delivery)
+   * [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)
+   * [Error handling](../../data-subscriptions/consuming-subscription.mdx#error-handling)
+   * [Examples](../../data-subscriptions/consuming-subscription.mdx#examples)
+      * [Full exception handling with retries](../../data-subscriptions/consuming-subscription.mdx#example-full-exception-handling-with-retries)
+      * [Setting the batch size](../../data-subscriptions/consuming-subscription.mdx#example-setting-the-batch-size)
+      * [Processing documents in a session](../../data-subscriptions/consuming-subscription.mdx#example-processing-documents-in-a-session)
+      * [Processing dynamic objects](../../data-subscriptions/consuming-subscription.mdx#example-processing-dynamic-objects)
+      * [End when no documents are left](../../data-subscriptions/consuming-subscription.mdx#example-end-when-no-documents-are-left)
+      * [Failing over to another node](../../data-subscriptions/consuming-subscription.mdx#example-failing-over-to-another-node)
+      * [Primary and secondary workers](../../data-subscriptions/consuming-subscription.mdx#example-primary-and-secondary-workers)
+   * [Syntax](../../data-subscriptions/consuming-subscription.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Creating a subscription worker">
+
+Create a worker using the store's `subscriptions.get_subscription_worker` method (or
+`get_subscription_worker_by_name` for default options), passing the document type together with the
+subscription name or a [SubscriptionWorkerOptions](../../data-subscriptions/consuming-subscription.mdx#classes) object.
+
+```python
+subscription_worker = store.subscriptions.get_subscription_worker_by_name(subscription_name, Order)
+```
+
+This constructs the worker but does not run it yet.
+
+</Panel>
+
+<Panel heading="Running the worker">
+
+To start processing the documents the server sends, call the worker's `run` method, passing a
+function that handles each batch:
+
+```python
+def process_batch(batch):
+    # your batch-processing logic here
+    ...
+
+subscription_worker.run(process_batch)
+```
+
+<br />
+
+From this point on, the worker receives and processes document batches, acknowledging each batch 
+so the server can keep track of the subscription's progress and provide the next batch if available.  
+
+`run` returns a `Future` that stays alive while the worker is processing. If processing is aborted,
+the future completes with an exception.
+
+</Panel>
+
+<Panel heading="At-least-once delivery">
+
+The server advances a subscription's progress only when the worker acknowledges a batch.  
+If a worker stops (or its connection fails) before acknowledging a batch, the server will re-send the
+same batch the next time a worker connects to the subscription.
+
+Delivery is therefore at-least-once: documents may be processed more than once, but none are skipped.
+Make your processing idempotent to make sure that reprocessing a document has no unintended effect.
+
+</Panel>
+
+<Panel heading="Worker strategies">
+
+A worker is configured with a strategy, set in the 
+[SubscriptionWorkerOptions](../../data-subscriptions/consuming-subscription.mdx#classes) 
+`strategy` property, that decides whether the worker may connect to the subscription 
+and how it behaves toward a worker that is already connected:
+
+* **`OPEN_IF_FREE`**  
+  The server lets the worker connect only if no other worker is connected.  
+  If another worker is already connected, the incoming worker throws a `SubscriptionInUseException`.  
+* **`WAIT_FOR_FREE`**  
+  If the subscription is in use, the worker waits for the connected worker to disconnect, 
+  then takes its place.  
+  This suits failover, where a standby worker waits to take over from the active one.  
+* **`TAKE_OVER`**  
+  The incoming worker tries to take over the existing connection.  
+  It succeeds if the connected worker does not itself use `TAKE_OVER`.  
+   - If the takeover succeeds, the worker that has been taken over throws a `SubscriptionInUseException`.  
+   - If the takeover fails, the incoming worker throws the exception instead.  
+
+</Panel>
+
+<Panel heading="Error handling">
+
+<ContentFrame>
+
+### Connection failures
+
+When an unexpected error occurs during communication with the server, the worker tries to
+reconnect.  
+It stops without reconnecting in these cases:
+
+* The subscription no longer exists.  
+* Another worker took over the subscription (see [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)).  
+* The worker cannot connect to any of the servers.  
+* The worker could not learn which node is responsible for the task (e.g., when the cluster
+  has no leader).  
+* An authorization error occurred.  
+* An error occurred while establishing the connection.  
+* The database does not exist.  
+
+---
+
+When the worker tries to reconnect after a failure, the registered connection-retry handler is
+called. Register one to log worker connection errors:
+
+```python
+# Log connection-retry errors
+subscription_worker.add_on_subscription_connection_retry(
+    lambda exception: logger.error(
+        f"Subscription connection error: {subscription_name}", exc_info=exception
+    )
+)
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Errors while processing a batch
+
+When your batch-processing code throws, the `ignore_subscriber_errors` option in
+`SubscriptionWorkerOptions` determines what happens:
+
+* **`False`** (default)  
+  Processing stops. The worker wraps the exception in a `SubscriberErrorException` and rethrows
+  it without acknowledging progress, so the future returned by `run` completes in error.  
+* **`True`**  
+  The failed batch is acknowledged without a retry, and the worker continues with the next
+  batches.  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Reconnection and timeouts
+
+These `SubscriptionWorkerOptions` properties govern reconnection after a failure:
+
+* **`time_to_wait_before_connection_retry`**  
+  How long the worker waits before each reconnect attempt.  
+  Default: 5 seconds.  
+* **`max_erroneous_period`**  
+  How long the connection may stay in an erroneous state before the worker stops retrying.  
+  Default: 5 minutes.  
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Examples">
+
+<ContentFrame>
+
+### Example: Full exception handling with retries
+
+In this example, the client handles the exceptions the worker may throw, 
+recreating the worker to resume processing when the error is recoverable.
+
+```python
+while True:
+    options = SubscriptionWorkerOptions(subscription_name)
+
+    # Allow a downtime of up to 2 hours, and wait 2 minutes before reconnecting
+    options.max_erroneous_period = timedelta(hours=2)
+    options.time_to_wait_before_connection_retry = timedelta(minutes=2)
+
+    subscription_worker = store.subscriptions.get_subscription_worker(options, Order)
+
+    try:
+        # Log any exception that occurs during processing
+        subscription_worker.add_on_subscription_connection_retry(
+            lambda exception: logger.error(
+                f"Error during subscription processing: {subscription_name}", exc_info=exception
+            )
+        )
+
+        def _process_documents_callback(batch):
+            for item in batch.items:
+                # Forcefully stop processing for a specific case,
+                # and raise an exception to let external logic handle it
+                if item.result.company == "companies/2-A":
+                    # The exception raised here will be wrapped by `SubscriberErrorException`
+                    raise UnsupportedCompanyException(
+                        "Company Id can't be 'companies/2-A', you must fix this"
+                    )
+                process_order(item.result)
+
+        # Block on the run future so processing exceptions surface here
+        subscription_worker.run(_process_documents_callback).result()
+
+        # run completes normally if you have disposed the subscription
+        return
+    except Exception as e:
+        logger.error(f"Failure in subscription: {subscription_name}", exc_info=e)
+        exception_type = type(e)
+
+        # The following exceptions are not recoverable
+        if exception_type in (
+            DatabaseDoesNotExistException,
+            SubscriptionDoesNotExistException,
+            SubscriptionInvalidStateException,
+            AuthorizationException,
+        ):
+            raise
+
+        if exception_type is SubscriptionClosedException:
+            # Subscription probably closed explicitly by admin
+            return
+
+        if exception_type is SubscriberErrorException:
+            # For UnsupportedCompanyException we want to raise, otherwise continue processing
+            if e.args[1] is not None and type(e.args[1]) is UnsupportedCompanyException:
+                raise
+            continue
+
+        # Handle this depending on the subscription opening strategy
+        if exception_type is SubscriptionInUseException:
+            continue
+
+        return
+    finally:
+        subscription_worker.close(False)
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Setting the batch size
+
+In this example, the worker sets the maximum number of documents the server sends in each batch.
+
+```python
+worker_w_batch = store.subscriptions.get_subscription_worker(
+    SubscriptionWorkerOptions(subscription_name, max_docs_per_batch=20), Order
+)
+
+# Pass a function that takes a SubscriptionBatch[Order], with your logic in it
+worker_w_batch.run(lambda batch: ...)
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Processing documents in a session
+
+In this example, the subscription sends to the worker `Orders` that have no shipping date.  
+The worker sets each document's `shipped_at` field and saves it back through a session.
+
+<Admonition type="info" title="">
+Open the session using `batch.open_session`, not `store.open_session`.
+</Admonition>
+
+```python
+# Create the subscription task on the server:
+subscription_name = store.subscriptions.create_for_options(
+    SubscriptionCreationOptions(query="from Orders as o where o.ShippedAt = null")
+)
+
+# Create the subscription worker that will consume the documents:
+subscription_worker = store.subscriptions.get_subscription_worker_by_name(subscription_name, Order)
+
+def _transfer_order_callback(batch):
+    # Open a session using 'batch.open_session'
+    with batch.open_session() as session:
+        for order in (item.result for item in batch.items):
+            transfer_order_to_shipment_company(order)  # call your custom method
+            order.shipped_at = datetime.utcnow()        # update the document field
+
+        # Save the updated Order documents
+        session.save_changes()
+
+subscription_worker.run(_transfer_order_callback)
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Processing dynamic objects
+
+In this example, the subscription projects each `Order` into a dynamic shape, and the worker processes the
+dynamic objects it receives.
+
+```python
+# Create the subscription task on the server:
+subscription_name = "My dynamic subscription"
+store.subscriptions.create_for_class(
+    Order,
+    SubscriptionCreationOptions(
+        subscription_name,
+        query="""
+        from Orders as o
+        select {
+            dynamic_field_1: "Company: " + o.Company + " Employee: " + o.Employee
+        }
+        """,
+    ),
+)
+
+# Create the subscription worker that will consume the documents:
+subscription_worker = store.subscriptions.get_subscription_worker_by_name(subscription_name)
+
+def _raise_notification_callback(batch):
+    for item in batch.items:
+        # Access the dynamic field in the document
+        raise_notification(item.result.dynamic_field_1)  # call your custom method
+
+subscription_worker.run(_raise_notification_callback)
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: End when no documents are left
+
+In this example, the worker runs until no new documents remain, which suits ad-hoc, single-use processing where
+you need every matching document processed once.  
+Set `close_when_no_docs_left` to `True`; the worker then throws a `SubscriptionClosedException` when
+it finishes.
+
+```python
+high_value_orders_worker = store.subscriptions.get_subscription_worker(
+    SubscriptionWorkerOptions(
+        subscription_name,
+        # Stop when there are no more documents left to send,
+        # throwing a SubscriptionClosedException when it finishes
+        close_when_no_docs_left=True,
+    ),
+    OrderAndCompany,
+)
+
+try:
+    def _subscription_batch_callback(batch):
+        for item in batch.items:
+            send_thank_you_note_to_company(item.result)  # call your custom method
+
+    high_value_orders_worker.run(_subscription_batch_callback).result()
+except SubscriptionClosedException:
+    # That's expected, no more documents to process
+    ...
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Failing over to another node
+
+With the `WAIT_FOR_FREE` strategy, any available node can create a worker, and another node takes
+over the connection if the worker fails.
+
+```python
+worker = store.subscriptions.get_subscription_worker(
+    SubscriptionWorkerOptions(subscription_name, strategy=SubscriptionOpeningStrategy.WAIT_FOR_FREE),
+    Order,
+)
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Primary and secondary workers
+
+In this example, the two workers form an active-standby pair: the primary, using `TAKE_OVER`, establishes the
+connection; the secondary, using `WAIT_FOR_FREE`, waits to take over if the primary fails.
+
+The primary worker:
+
+```python
+primary_worker = store.subscriptions.get_subscription_worker(
+    SubscriptionWorkerOptions(subscription_name, strategy=SubscriptionOpeningStrategy.TAKE_OVER),
+    Order,
+)
+
+while True:
+    try:
+        primary_worker.run(lambda batch: ...).result()  # your logic
+    except Exception:
+        ...  # retry
+```
+
+<br />
+
+The secondary worker:
+
+```python
+secondary_worker = store.subscriptions.get_subscription_worker(
+    SubscriptionWorkerOptions(subscription_name, strategy=SubscriptionOpeningStrategy.WAIT_FOR_FREE),
+    Order,
+)
+
+while True:
+    try:
+        secondary_worker.run(lambda batch: ...).result()  # your logic
+    except Exception:
+        ...  # retry
+```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Syntax">
+
+<ContentFrame>
+
+### Methods
+
+<Tabs groupId='subscriptionWorkerMethods'>
+<TabItem value="get-worker" label="get_subscription_worker">
+
+Create a subscription worker through `store.subscriptions`.
+
+```python
+def get_subscription_worker(self, options: SubscriptionWorkerOptions,
+                            object_type: Optional[Type[_T]] = None,
+                            database: Optional[str] = None) -> SubscriptionWorker[_T]: ...
+
+def get_subscription_worker_by_name(self, subscription_name: Optional[str] = None,
+                                    object_type: Optional[Type[_T]] = None,
+                                    database: Optional[str] = None) -> SubscriptionWorker[_T]: ...
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **options** | `SubscriptionWorkerOptions` | Options that affect how the worker interacts with the subscription. They do not change the subscription's own definition. See the [Classes](../../data-subscriptions/consuming-subscription.mdx#classes) below. |
+| **subscription_name** | `str` | The name of the subscription the worker connects to. |
+| **object_type** | `Type[_T]` | The document class the worker deserializes items into. |
+| **database** | `str` | The database where the subscription task resides. If `None`, the document store's default database is used. |
+
+| Return value | |
+|-----------|-------------|
+| `SubscriptionWorker` | The created worker. It is idle until you call `run`. |
+
+</TabItem>
+<TabItem value="run" label="run">
+
+Start the worker's batch processing. Pass the function that processes each received batch.
+
+```python
+def run(self, process_documents: Optional[Callable[[SubscriptionBatch[_T]], Any]]) -> Future: ...
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **process_documents** | `Callable[[SubscriptionBatch[_T]], Any]` | Function for batch processing. |
+
+| Return value | |
+|-----------|-------------|
+| `Future` | A future that stays alive while the worker is processing or trying to. If processing is aborted, the future completes with an exception. |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Classes
+
+<Tabs groupId='workerOptionClasses'>
+<TabItem value="worker-options" label="SubscriptionWorkerOptions">
+
+When you create a worker using `SubscriptionWorkerOptions`, the only required property is
+`subscription_name`; the rest fall back to their defaults.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **subscription_name** | `str` | The name of the subscription the worker connects to. |
+| **max_docs_per_batch** | `int` | The maximum number of documents the server tries to send in a batch. If it finds fewer, it sends what it has without waiting. Default: 4096. |
+| **send_buffer_size** | `int` | The size of the TCP socket buffer used for sending data. Default: 32,768 bytes (32 KiB). |
+| **receive_buffer_size** | `int` | The size of the TCP socket buffer used for receiving data. Default: 32,768 bytes (32 KiB). |
+| **ignore_subscriber_errors** | `bool` | Whether processing continues when your batch-handling code throws. `True` continues; `False` (default) aborts. |
+| **close_when_no_docs_left** | `bool` | Whether the connection closes when no new documents remain. `True` processes all available documents and then throws a `SubscriptionClosedException` (useful for one-time processing); `False` (default) keeps the worker waiting for new documents. |
+| **time_to_wait_before_connection_retry** | `timedelta` | The wait before each reconnect attempt after a non-aborting failure. Default: 5 seconds. |
+| **max_erroneous_period** | `timedelta` | The maximum time the connection may stay in an erroneous state before it is terminated. Default: 5 minutes. |
+| **strategy** | `SubscriptionOpeningStrategy` | How the server handles this worker's connection attempt. Default: `OPEN_IF_FREE`. |
+
+</TabItem>
+<TabItem value="opening-strategy" label="SubscriptionOpeningStrategy">
+
+The strategy that decides whether a worker may connect to a subscription. See
+[Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies).
+
+```python
+class SubscriptionOpeningStrategy(Enum):
+    # Connect if no other worker is connected
+    OPEN_IF_FREE = "OpenIfFree"
+
+    # Take over the connection
+    TAKE_OVER = "TakeOver"
+
+    # Wait for the currently connected worker to disconnect
+    WAIT_FOR_FREE = "WaitForFree"
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs groupId='batchClasses'>
+<TabItem value="batch" label="SubscriptionBatch[_T]">
+
+The batch passed to your `run` function.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **items** | `Item[]` | The items in the batch. |
+| **number_of_items_in_batch** | `int` | The number of items in the batch. |
+
+| Method | Return value | Description |
+|--------|--------------|-------------|
+| **open_session()** | `DocumentSession` | Opens a session that tracks all items and their included items in the current batch. |
+
+<Admonition type="info" title="">
+As long as no exception occurs, the worker keeps addressing the server it received the first
+batch from.  
+If it cannot reach that node, it fails over to another node from the session's topology, see
+[load balancing](../../client-api/configuration/load-balance/overview.mdx). The node it reaches
+then tells it which node currently handles data subscriptions.
+</Admonition>
+
+</TabItem>
+<TabItem value="batch-item" label="Item">
+
+A single item in a subscription batch.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **result** | `_T` | The batch item. |
+| **key** | `str` | The document ID of the item's underlying document. |
+| **change_vector** | `str` | The change vector of the item's underlying document. |
+| **is_projection** | `bool` | `True` when the item is a projection produced by the subscription query rather than a full document. |
+| **is_revision** | `bool` | `True` when the item is a document revision, for a subscription that streams revisions. |
+| **raw_result** | `Dict` | The item before deserialization. |
+| **raw_metadata** | `Dict` | The metadata of the item's underlying document. |
+| **metadata** | `MetadataAsDictionary` | The item's underlying metadata values. |
+
+<Admonition type="warning" title="">
+Use these values only within the subscription's `run` function. Using them outside that scope may
+cause unexpected behavior.
+</Admonition>
+
+</TabItem>
+</Tabs>
+
+<Tabs groupId='workerClass'>
+<TabItem value="worker" label="SubscriptionWorker[_T]">
+
+The worker returned by `get_subscription_worker`.
+
+**Methods**
+
+| Method | Return type | Description |
+|--------|-------------|-------------|
+| **close(wait_for_subscription_task=True)** | `None` | Aborts the worker, optionally waiting for the future returned by `run` to finish. |
+| **run(process_documents)** | `Future` | Starts the worker's batch processing. See [run](../../data-subscriptions/consuming-subscription.mdx#methods) above. |
+
+**Events**
+
+| Event | Type | Description |
+|-------|------|-------------|
+| **add_on_subscription_connection_retry** | `Callable[[Exception], None]` | Fires when the worker tries to reconnect after a failure. Receives the exception that interrupted processing. |
+| **after_acknowledgment** | `Callable[[SubscriptionBatch[_T]], None]` | Fires after the server acknowledges the progress of a processed batch. |
+
+**Properties**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **current_node_tag** | `str` | The node tag of the RavenDB server currently handling the subscription. |
+| **subscription_name** | `str` | The name of the subscription being processed. |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>
