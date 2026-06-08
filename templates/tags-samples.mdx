@@ -1,0 +1,176 @@
+---
+title: "Samples: Tags"
+hide_table_of_contents: false
+sidebar_label: Tags
+see_also:
+    - title: "Adding new samples"
+      link: "/templates/new-samples"
+      source: "docs"
+      path: "Templates > Samples"
+    - title: "Samples Introduction"
+      link: "/templates/introduction-samples"
+      source: "docs"
+      path: "Templates > Samples"
+---
+
+import Admonition from "@theme/Admonition";
+import Panel from "@site/src/components/Panel";
+
+Samples use a **three-category tag system** to enable powerful filtering and discovery. Unlike Guides which use a single flat tag list, Samples organize tags into separate category files.
+
+## Tag Categories
+
+### 1. Challenges & Solutions Tags (`samples/tags/challenges-solutions.yml`)
+
+These tags describe **what business problems** the sample solves.
+
+**Location:** `samples/tags/challenges-solutions.yml`
+
+**Some of the existing tags:**
+- `cloud-tax`
+- `gen-ai-data-enrichment`
+- `integration-patterns`
+- `semantic-search`
+
+**Example usage in frontmatter:**
+```yaml
+challenges_solutions_tags: [semantic-search, integration-patterns]
+```
+
+### 2. Feature Tags (`samples/tags/feature.yml`)
+
+These tags indicate **which RavenDB features** are demonstrated.
+
+**Location:** `samples/tags/feature.yml`
+
+**Some of the existing tags:**
+- `vector-search`
+- `document-refresh`
+- `include`
+- `azure-storage-queues-etl`
+- `ai-agents`
+- `full-text-search`
+
+**Example usage in frontmatter:**
+```yaml
+feature_tags: [vector-search, include, document-refresh]
+```
+
+### 3. Tech Stack Tags (`samples/tags/tech-stack.yml`)
+
+These tags specify **technologies and frameworks** used in the sample.
+
+**Location:** `samples/tags/tech-stack.yml`
+
+**Some of the existing tags:**
+- `csharp`
+- `nodejs`
+- `python`
+- `java`
+- `php`
+- `aspire`
+- `azure-storage-queues`
+- `azure-functions`
+
+**Example usage in frontmatter:**
+```yaml
+tech_stack_tags: [csharp, aspire, azure-functions]
+```
+
+## Adding New Tags
+
+### Step 1: Choose the correct category
+
+Determine which category your tag belongs to:
+- **Challenges & Solutions** - Business problem or use case
+- **Feature** - RavenDB feature or capability
+- **Tech Stack** - Programming language, framework, or service
+
+### Step 2: Edit the appropriate YAML file
+
+<Panel heading="Adding a challenges & solutions tag">
+
+Edit `samples/tags/challenges-solutions.yml`:
+
+```yaml
+cloud-tax:
+    label: "Cloud Tax"
+gen-ai-data-enrichment:
+    label: "Gen AI Data Enrichment"
+# Add your new tag:
+real-time-analytics:
+    label: "Real-Time Analytics"
+```
+
+</Panel>
+
+<Panel heading="Adding a feature tag">
+
+Edit `samples/tags/feature.yml`:
+
+```yaml
+vector-search:
+    label: "Vector Search"
+document-refresh:
+    label: "Document Refresh"
+# Add your new tag:
+time-series:
+    label: "Time Series"
+```
+
+</Panel>
+
+<Panel heading="Adding a tech stack tag">
+
+Edit `samples/tags/tech-stack.yml`:
+
+```yaml
+csharp:
+    label: "C#"
+nodejs:
+    label: "Node.js"
+# Add your new tag:
+nextjs:
+    label: "Next.js"
+```
+
+</Panel>
+
+### Step 3: Use the tag in a sample
+
+Reference the tag key in your sample's frontmatter:
+
+```mdx
+---
+title: "My Sample"
+challenges_solutions_tags: [real-time-analytics]
+feature_tags: [time-series]
+tech_stack_tags: [nextjs]
+---
+```
+
+<Admonition type="info" title="Tag Format">
+    Each tag entry requires only a `label` field. The key (e.g., `cloud-tax`) is used in frontmatter, while the label (e.g., "Cloud Tax") is displayed in the UI.
+</Admonition>
+
+## Tag Guidelines
+
+<Admonition type="tip" title="Best Practices">
+    - **Be specific**: Use `azure-storage-queues-etl` instead of just `etl`
+    - **Use kebab-case**: `gen-ai-data-enrichment` not `GenAIDataEnrichment`
+    - **Keep labels concise**: "Vector Search" not "Vector Search Functionality"
+    - **Avoid duplicates**: Check existing tags before adding new ones
+    - **Stay consistent**: Follow naming patterns of existing tags
+</Admonition>
+
+<Admonition type="warning" title="Language Tags">
+    The following tech stack tags are treated specially as "language tags" and displayed with colored badges:
+    - `csharp`
+    - `java`
+    - `python`
+    - `php`
+    - `nodejs`
+    
+    These should only be used for the primary programming language of the sample.
+</Admonition>
+

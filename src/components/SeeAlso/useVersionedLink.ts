@@ -35,14 +35,17 @@ export function useVersionedLink() {
             return link;
         }
 
-        const isUnversionedSection = /^\/(cloud|guides|templates)(\/|$)/.test(link);
+        const isUnversionedSection = /^\/(cloud|guides|samples|templates)(\/|$)/.test(link);
 
         if (isUnversionedSection) {
             return link;
         }
 
         const versionToUse =
-            currentPluginId === "cloud" || currentPluginId === "guides" || currentPluginId === "templates"
+            currentPluginId === "cloud" ||
+            currentPluginId === "guides" ||
+            currentPluginId === "samples" ||
+            currentPluginId === "templates"
                 ? latestVersion
                 : currentVersionPath;
 

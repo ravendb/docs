@@ -57,7 +57,11 @@ async function handler(event) {
         return request;
     }
 
-    if (normalizedUri.startsWith("/guides") || normalizedUri.startsWith("/cloud")) {
+    if (
+        normalizedUri.startsWith("/guides") ||
+        normalizedUri.startsWith("/cloud") ||
+        normalizedUri.startsWith("/samples")
+    ) {
         try {
             const redirectData = await kvsHandle.get(normalizedUri);
             const redirectJsonValue = JSON.parse(redirectData);
@@ -94,7 +98,8 @@ async function handler(event) {
     while (true) {
         let rule;
         try {
-            rule = JSON.parse(await kvsHandle.get(current));
+            const redirectData = await kvsHandle.get(current);
+            rule = JSON.parse(redirectData);
         } catch (_) {
             break; // no rule → terminal
         }

@@ -6,7 +6,7 @@ import { IconName } from "@site/src/typescript/iconName";
 import LazyImage from "@site/src/components/Common/LazyImage";
 
 export interface BannerImageProps {
-    imgSrc?: string | { light: string; dark: string };
+    imgSrc?: string;
     imgAlt?: string;
     imgIcon?: IconName;
     className?: string;

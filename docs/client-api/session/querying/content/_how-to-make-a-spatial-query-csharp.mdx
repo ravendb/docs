@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -21,8 +23,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 * When making a dynamic spatial query from Studio,  
   results are also displayed on the global map. See [spatial queries map view](../../../../studio/database/queries/spatial-queries-map-view.mdx).
-* In this page:
-
+    
+* In this article:
   * [Search by radius](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-radius)  
   * [Search by shape](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-shape)
       * [Circle](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#circle)
@@ -31,6 +33,7 @@ import CodeBlock from '@theme/CodeBlock';
       * [Order by distance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#order-by-distance)
       * [Order by distance descending](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#order-by-distance-descending)
       * [Sort results by rounded distance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#sort-results-by-rounded-distance)
+      * [Control null placement when sorting by distance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#control-null-placement-when-sorting-by-distance)
       * [Get resulting distance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#get-resulting-distance)
   * [Spatial API](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-api)
       * [`Spatial`](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#section)
@@ -40,15 +43,16 @@ import CodeBlock from '@theme/CodeBlock';
       * [`OrderByDistanceDescending`](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#section-4)
 
 </Admonition>
-## Search by radius
+
+<Panel heading="Search by radius">
 
 Use the `WithinRadius` method to search for all documents containing spatial data that is located  
 within the specified distance from the given center point.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`// This query will return all matching employee entities
+```csharp
+// This query will return all matching employee entities
 // that are located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
@@ -66,12 +70,11 @@ List<Employee> employeesWithinRadius = session
         // Call 'WithinRadius', pass the radius and the center points coordinates  
         criteria => criteria.WithinRadius(20, 47.623473, -122.3060097))
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`// This query will return all matching employee entities
+```csharp
+// This query will return all matching employee entities
 // that are located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
@@ -89,12 +92,11 @@ List<Employee> employeesWithinRadius = await asyncSession
         // Call 'WithinRadius', pass the radius and the center points coordinates  
         criteria => criteria.WithinRadius(20, 47.623473, -122.3060097))
     .ToListAsync();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`// This query will return all matching employee entities
+```csharp
+// This query will return all matching employee entities
 // that are located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
@@ -112,12 +114,11 @@ List<Employee> employeesWithinRadius = session.Advanced
         // Call 'WithinRadius', pass the radius and the center points coordinates  
         criteria => criteria.WithinRadius(20, 47.623473, -122.3060097))
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// This query will return all matching employee entities
+```sql
+// This query will return all matching employee entities
 // that are located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
@@ -126,14 +127,13 @@ where spatial.within(
     spatial.point(Address.Location.Latitude, Address.Location.Longitude),
     spatial.circle(20, 47.623473, -122.3060097)
 )
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Search by shape
+<Panel heading="Search by shape"> 
 
 * Use the `RelatesToShape` method to search for all documents containing spatial data that is located  
   in the specified relation to the given shape.
@@ -141,12 +141,15 @@ where spatial.within(
 * The shape is specified as either a **circle** or a **polygon** in a [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format.
 
 * The relation to the shape can be one of: `Within`, `Contains`, `Disjoint`, `Intersects`.
-#### Circle
+
+---
+    
+### Circle
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`// This query will return all matching employee entities
+```csharp
+// This query will return all matching employee entities
 // that are located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
@@ -169,12 +172,11 @@ List<Employee> employeesWithinShape = session
             // Optional: customize radius units (default is Kilometers)
             units: SpatialUnits.Miles))  
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`// This query will return all matching employee entities
+```csharp
+// This query will return all matching employee entities
 // that are located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
@@ -197,12 +199,11 @@ List<Employee> employeesWithinShape = await asyncSession
             // Optional: customize radius units (default is Kilometers)
             units: SpatialUnits.Miles))  
     .ToListAsync();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`// This query will return all matching employee entities
+```csharp
+// This query will return all matching employee entities
 // that are located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
@@ -225,12 +226,11 @@ List<Employee> employeesWithinShape = session.Advanced
             // Optional: customize radius units (default is Kilometers)
             units: SpatialUnits.Miles))  
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// This query will return all matching employee entities
+```sql
+// This query will return all matching employee entities
 // that are located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
@@ -239,16 +239,16 @@ where spatial.within(
     spatial.point(Address.Location.Latitude, Address.Location.Longitude),
     spatial.wkt("CIRCLE(-122.3060097 47.623473 d=20)", "miles")
 )
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
-#### Polygon
+
+### Polygon
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`// This query will return all matching company entities
+```csharp
+// This query will return all matching company entities
 // that are located within the specified polygon.
 
 // Define a dynamic query on Companies collection
@@ -276,12 +276,11 @@ List<Company> companiesWithinShape = session
             // Specify the relation between the WKT shape and the documents spatial data
             relation: SpatialRelation.Within))  
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`// This query will return all matching company entities
+```csharp
+// This query will return all matching company entities
 // that are located within the specified polygon.
 
 // Define a dynamic query on Companies collection
@@ -309,12 +308,11 @@ List<Company> companiesWithinShape = await asyncSession
             // Specify the relation between the WKT shape and the documents spatial data
             relation: SpatialRelation.Within))  
     .ToListAsync();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`// This query will return all matching company entities
+```csharp
+// This query will return all matching company entities
 // that are located within the specified polygon.
 
 // Define a dynamic query on Companies collection
@@ -342,12 +340,11 @@ List<Company> companiesWithinShape = session.Advanced
             // Specify the relation between the WKT shape and the documents spatial data
             relation: SpatialRelation.Within))  
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// This query will return all matching company entities
+```sql
+// This query will return all matching company entities
 // that are located within the specified polygon.
 
 from companies
@@ -362,8 +359,7 @@ where spatial.within(
         -118.7406746 32.7853769,
         -118.6527948 32.7114894))")
 )
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
@@ -376,21 +372,24 @@ where spatial.within(
 ![WKT polygon](../assets/spatial_1.png)
 
 </Admonition>
+    
+</Panel>
 
-
-
-## Spatial sorting
+<Panel heading="Spatial sorting">   
 
 * Use `OrderByDistance` or `OrderByDistanceDescending` to sort the results by distance from a given point.
 
 * By default, distance is measured by RavenDB in **kilometers**.  
   The distance can be rounded to a specific range.  
+
+---
+    
 #### Order by distance
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`// Return all matching employee entities located within 20 kilometers radius
+```csharp
+// Return all matching employee entities located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
 // Sort the results by their distance from a specified point,
@@ -415,12 +414,11 @@ List<Employee> employeesSortedByDistance = session
         // Sort the results by their distance from this point: 
         47.623473, -122.3060097)
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`// Return all matching employee entities located within 20 kilometers radius
+```csharp
+// Return all matching employee entities located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
 // Sort the results by their distance from a specified point,
@@ -445,12 +443,11 @@ List<Employee> employeesSortedByDistance = await asyncSession
         // Sort the results by their distance from this point: 
         47.623473, -122.3060097)
     .ToListAsync();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`// Return all matching employee entities located within 20 kilometers radius
+```csharp
+// Return all matching employee entities located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
 // Sort the results by their distance from a specified point,
@@ -475,12 +472,11 @@ List<Employee> employeesSortedByDistance = session.Advanced
         // Sort the results by their distance from this point: 
         47.623473, -122.3060097)
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// Return all matching employee entities located within 20 kilometers radius
+```sql
+// Return all matching employee entities located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
 // Sort the results by their distance from a specified point,
@@ -495,16 +491,18 @@ order by spatial.distance(
     spatial.point(Address.Location.Latitude, Address.Location.Longitude),
     spatial.point(47.623473, -122.3060097)
 )
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
+
+---
+    
 #### Order by distance descending
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`// Return all employee entities sorted by their distance from a specified point.
+```csharp
+// Return all employee entities sorted by their distance from a specified point.
 // The farthest results will be listed first.
 
 List<Employee> employeesSortedByDistanceDesc = session
@@ -519,12 +517,11 @@ List<Employee> employeesSortedByDistanceDesc = session
         // Sort the results by their distance (descending) from this point: 
         47.623473, -122.3060097)
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`// Return all employee entities sorted by their distance from a specified point.
+```csharp
+// Return all employee entities sorted by their distance from a specified point.
 // The farthest results will be listed first.
 
 List<Employee> employeesSortedByDistanceDesc = await asyncSession
@@ -539,12 +536,11 @@ List<Employee> employeesSortedByDistanceDesc = await asyncSession
         // Sort the results by their distance (descending) from this point: 
         47.623473, -122.3060097)
     .ToListAsync();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`// Return all employee entities sorted by their distance from a specified point.
+```csharp
+// Return all employee entities sorted by their distance from a specified point.
 // The farthest results will be listed first.
 
 List<Employee> employeesSortedByDistanceDesc = session.Advanced
@@ -559,12 +555,11 @@ List<Employee> employeesSortedByDistanceDesc = session.Advanced
         // Sort the results by their distance (descending) from this point: 
         47.623473, -122.3060097)
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// Return all employee entities sorted by their distance from a specified point.
+```sql
+// Return all employee entities sorted by their distance from a specified point.
 // The farthest results will be listed first.
 
 from Employees
@@ -572,16 +567,18 @@ order by spatial.distance(
     spatial.point(Address.Location.Latitude, Address.Location.Longitude),
     spatial.point(47.623473, -122.3060097)
 ) desc
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
+    
+---    
+
 #### Sort results by rounded distance
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`// Return all employee entities.
+```csharp
+// Return all employee entities.
 // Results are sorted by their distance to a specified point rounded to the nearest 100 km interval.
 // A secondary sort can be applied within the 100 km range, e.g. by field LastName.
 
@@ -600,12 +597,11 @@ List<Employee> employeesSortedByRoundedDistance = session
      // A secondary sort can be applied
     .ThenBy(x => x.LastName)
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`// Return all employee entities.
+```csharp
+// Return all employee entities.
 // Results are sorted by their distance to a specified point rounded to the nearest 100 km interval.
 // A secondary sort can be applied within the 100 km range, e.g. by field LastName.
 
@@ -624,12 +620,11 @@ List<Employee> employeesSortedByRoundedDistance = await asyncSession
      // A secondary sort can be applied
     .ThenBy(x => x.LastName)
     .ToListAsync();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`// Return all employee entities.
+```csharp
+// Return all employee entities.
 // Results are sorted by their distance to a specified point rounded to the nearest 100 km interval.
 // A secondary sort can be applied within the 100 km range, e.g. by field LastName.
 
@@ -648,12 +643,11 @@ List<Employee> employeesSortedByRoundedDistance = session.Advanced
      // A secondary sort can be applied
     .OrderBy(x => x.LastName)
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// Return all employee entities.
+```sql
+// Return all employee entities.
 // Results are sorted by their distance to a specified point rounded to the nearest 100 km interval.
 // A secondary sort can be applied within the 100 km range, e.g. by field LastName.
 
@@ -663,10 +657,109 @@ order by spatial.distance(
     spatial.point(47.623473, -122.3060097),
     100
 ), LastName
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
+
+---
+    
+#### Control null placement when sorting by distance    
+
+* Some documents may have `null` or missing spatial values.  
+  When sorting by distance with the [Corax](../../../../indexes/search-engine/corax.mdx) search engine,  
+  you can control whether these documents appear first or last in the sorted results.
+    
+* Use:
+  * `NullsOrdering.First`  
+    to place documents with `null` or missing spatial values **before** documents with spatial values.
+  * `NullsOrdering.Last`  
+    to place documents with `null` or missing spatial values **after** documents with spatial values.
+  * `NullsOrdering.Default`  
+    to use the default configuration, which is set by the [Indexing.Querying.Corax.NullsSortMode](../../../../server/configuration/indexing-configuration.mdx#indexingqueryingcoraxnullssortmode) configuration key.
+
+* The requested null placement is independent of the sorting direction.  
+  For example, `NullsOrdering.Last` will place documents with `null` or missing spatial values last when using either `OrderByDistance` or `OrderByDistanceDescending`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+// Return all employee entities sorted by their distance from a specified point.
+// Documents with null or missing spatial values will be placed last.
+
+List<Employee> employeesSortedByDistance = session
+    .Query<Employee>()
+     // Call 'OrderByDistance'
+    .OrderByDistance(
+        factory => factory.Point(
+            // Pass the path to the document fields containing the spatial data
+            x => x.Address.Location.Latitude,
+            x => x.Address.Location.Longitude
+        ),
+        // Sort the results by their distance from this point
+        47.623473, -122.3060097,
+        // Place documents with null or missing spatial values last
+        NullsOrdering.Last)
+    .ToList();
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+// Return all employee entities sorted by their distance from a specified point.
+// Documents with null or missing spatial values will be placed last.
+
+List<Employee> employeesSortedByDistance = await asyncSession
+    .Query<Employee>()
+     // Call 'OrderByDistance'
+    .OrderByDistance(
+        factory => factory.Point(
+            // Pass the path to the document fields containing the spatial data
+            x => x.Address.Location.Latitude,
+            x => x.Address.Location.Longitude
+        ),
+        // Sort the results by their distance from this point
+        47.623473, -122.3060097,
+        // Place documents with null or missing spatial values last
+        NullsOrdering.Last)
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+// Return all employee entities sorted by their distance from a specified point.
+// Documents with null or missing spatial values will be placed last.
+
+List<Employee> employeesSortedByDistance = session.Advanced
+    .DocumentQuery<Employee>()
+     // Call 'OrderByDistance'
+    .OrderByDistance(
+        factory => factory.Point(
+            // Pass the path to the document fields containing the spatial data
+            x => x.Address.Location.Latitude,
+            x => x.Address.Location.Longitude
+        ),
+        // Sort the results by their distance from this point
+        47.623473, -122.3060097,
+        // Place documents with null or missing spatial values last
+        NullsOrdering.Last)
+    .ToList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// Return all employee entities sorted by their distance from a specified point.
+// Documents with null or missing spatial values will be placed last.
+
+from Employees
+order by spatial.distance(
+    spatial.point(Address.Location.Latitude, Address.Location.Longitude),
+    spatial.point(47.623473, -122.3060097)
+) nulls last
+```
+</TabItem>
+</Tabs>    
+    
+---
+    
 #### Get resulting distance
 
 * The distance is available in the `@spatial` metadata property within each result.
@@ -678,9 +771,9 @@ order by spatial.distance(
       To get this metadata property you must set the [Indexing.Corax.IncludeSpatialDistance](../../../../server/configuration/indexing-configuration.mdx#indexingcoraxincludespatialdistance) configuration value to _true_.  
       Learn about the available methods for setting an indexing configuration key in this [indexing-configuration](../../../../server/configuration/indexing-configuration.mdx) article.
 
-<TabItem value="spatial_4_getDistance" label="spatial_4_getDistance">
-<CodeBlock language="csharp">
-{`// Get the distance of the results:
+<TabItem>
+```csharp
+// Get the distance of the results:
 // ================================
 
 // Call 'GetMetadataFor', pass an entity from the resulting employees list
@@ -690,21 +783,20 @@ var metadata = session.Advanced.GetMetadataFor(employeesSortedByDistance[0]);
 var spatialResults = (IDictionary<string, object>)metadata[Constants.Documents.Metadata.SpatialResult];
 
 var distance = spatialResults["Distance"];   // The distance of the entity from the queried location
-var latitude = spatialResults["Latitude"];   // The entity's longitude value
+var latitude = spatialResults["Latitude"];   // The entity's latitude value
 var longitude = spatialResults["Longitude"]; // The entity's longitude value
-`}
-</CodeBlock>
+```
 </TabItem>
 
+</Panel>
 
+<Panel heading="Spatial API">
 
-## Spatial API
+### `Spatial`
 
-#### `Spatial`
-
-<TabItem value="spatial_7" label="spatial_7">
-<CodeBlock language="csharp">
-{`IRavenQueryable<T> Spatial<T>(
+<TabItem>
+```csharp
+IRavenQueryable<T> Spatial<T>(
     Expression<Func<T, object>> path,
     Func<SpatialCriteriaFactory, SpatialCriteria> clause);
 
@@ -719,8 +811,7 @@ IRavenQueryable<T> Spatial<T>(
 IRavenQueryable<T> Spatial<T>(
     DynamicSpatialField field,
     Func<SpatialCriteriaFactory, SpatialCriteria> clause);
-`}
-</CodeBlock>
+```
 </TabItem>
 
 | Parameters    | Type                                                                                      | Description                                                                                                              |
@@ -729,27 +820,28 @@ IRavenQueryable<T> Spatial<T>(
 | **fieldName** | `string`                                                                                  | Path to spatial field in an index<br/>(when querying an index)                                                            |
 | **field**     | `Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField>`<br/>or<br/>`DynamicSpatialField` | Factory or field that points to a document field<br/>(when making a dynamic query).<br/>Either `PointField` or `WktField`. |
 | **clause**    | `Func<SpatialCriteriaFactory, SpatialCriteria>`                                           | Spatial criteria that will be executed on a given spatial field                                                          |
-#### `DynamicSpatialFieldFactory`
+    
+### `DynamicSpatialFieldFactory`
 
-<TabItem value="spatial_8" label="spatial_8">
-<CodeBlock language="csharp">
-{`PointField Point(
+<TabItem>
+```csharp
+PointField Point(
     Expression<Func<T, object>> latitudePath,
     Expression<Func<T, object>> longitudePath);
 
 WktField Wkt(Expression<Func<T, object>> wktPath);
-`}
-</CodeBlock>
+```
 </TabItem>
 
 | Parameters                                         | Type                          | Description                                                                  |
 |----------------------------------------------------|-------------------------------|------------------------------------------------------------------------------|
 | **latitudePath** / **longitudePath** / **wktPath** | `Expression<Func<T, object>>` | Path to the field in a document containing either longitude, latitude or WKT |
-#### `SpatialCriteriaFactory`
+    
+### `SpatialCriteriaFactory`
 
-<TabItem value="spatial_9" label="spatial_9">
-<CodeBlock language="csharp">
-{`SpatialCriteria RelatesToShape(
+<TabItem>
+```csharp
+SpatialCriteria RelatesToShape(
     string shapeWkt,
     SpatialRelation relation,
     double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
@@ -802,8 +894,7 @@ SpatialCriteria WithinRadius(
     double longitude,
     SpatialUnits? radiusUnits = null,
     double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
-`}
-</CodeBlock>
+```
 </TabItem>
 
 | Parameter                                 | Type              | Description                                                                                                                         |
@@ -813,11 +904,12 @@ SpatialCriteria WithinRadius(
 | **distErrorPercent**                      | `double`          | Maximum distance error tolerance in percents. Default: 0.025                                                                        |
 | **radius** / **latitude** / **longitude** | `double`          | Used to define a radius of a circle                                                                                                 |
 | **radiusUnits** / **units**               | `SpatialUnits`    | Determines if circle or shape should be calculated in `Kilometers` or `Miles`.<br/>By default, distances are measured in kilometers. |
-#### `OrderByDistance`
+    
+### `OrderByDistance`
 
-<TabItem value="spatial_10" label="spatial_10">
-<CodeBlock language="csharp">
-{`// From point
+<TabItem>
+```csharp
+// From point
 IOrderedQueryable<T> OrderByDistance<T>(
     Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField> field,
     double latitude,
@@ -877,14 +969,14 @@ IOrderedQueryable<T> OrderByDistance<T>(
     string fieldName,
     string shapeWkt,
     double roundFactor);
-`}
-</CodeBlock>
+```
 </TabItem>
-#### `OrderByDistanceDescending`
+    
+### `OrderByDistanceDescending`
 
-<TabItem value="spatial_11" label="spatial_11">
-<CodeBlock language="csharp">
-{`// From point
+<TabItem>
+```csharp
+// From point
 IOrderedQueryable<T> OrderByDistanceDescending<T>(
     Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField> field,
     double latitude,
@@ -944,19 +1036,45 @@ IOrderedQueryable<T> OrderByDistanceDescending<T>(
     string fieldName,
     string shapeWkt,
     double roundFactor);
-`}
-</CodeBlock>
+```
 </TabItem>
+    
+<Admonition type="note" title="">    
 
-| Parameter                    | Type                                                                                       | Description                                                                                                                                                                                                                                                      |
-|------------------------------|--------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **path**                     | `Expression<Func<T, object>>`                                                              | Path to spatial field in index<br/>(when querying an index)                                                                                                                                                                                                       |
-| **fieldName**                | `string`                                                                                   | Path to spatial field in index<br/>(when querying an index)                                                                                                                                                                                                       |
-| **field**                    | `Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField>`<br/>or<br/>`DynamicSpatialField`  | Factory or field that points to a document field<br/>(when making a dynamic query).<br/>Either `PointField` or `WktField`.                                                                                                                                         |
-| **shapeWkt**                 | `string`                                                                                   | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference.            |
-| **latitude** / **longitude** | `double`                                                                                   | Used to define a point from which distance will be measured                                                                                                                                                                                                      |
-| **roundFactor**              | `double`                                                                                   | A distance interval in kilometers.<br/>The distance from the point is rounded up to the nearest interval.<br/>The results within the same interval can be sorted by a secondary order.<br/>If no other order was specified, then by ascending order of document Id. |
+* Each `OrderByDistance` and `OrderByDistanceDescending` overload has a matching overload that accepts a `NullsOrdering nulls` parameter.
+    
+* When using the Corax search engine, use this parameter to control whether documents with `null` or missing spatial values appear first or last in the sorted results.
+  
+* The `nulls` parameter is added as the **last** parameter in the method signature.  
+  For example:
+    
+    ```csharp
+    // Existing overload:
+    IOrderedQueryable<T> OrderByDistance<T>(
+        string fieldName,
+        double latitude,
+        double longitude,
+        double roundFactor);
+    
+    // Matching overload with null placement:
+    IOrderedQueryable<T> OrderByDistance<T>(
+        string fieldName,
+        double latitude,
+        double longitude,
+        double roundFactor,
+        NullsOrdering nulls);    
+    ```
+        
+</Admonition>    
 
-
-
-
+| Parameter                    | Type                                                                                        | Description                                                                                                                                                                                                                                            |
+|------------------------------|---------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **path**                     | `Expression<Func<T, object>>`                                                               | Path to spatial field in index<br/>(when querying an index)                                                                                                                                                                                            |
+| **fieldName**                | `string`                                                                                    | Path to spatial field in index<br/>(when querying an index)                                                                                                                                                                                            |
+| **field**                    | `Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField>`<br/>or<br/>`DynamicSpatialField` | Factory or field that points to a document field<br/>(when making a dynamic query).<br/>Either `PointField` or `WktField`.                                                                                                                             |
+| **shapeWkt**                 | `string`                                                                                    | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference.  |
+| **latitude** / **longitude** | `double`                                                                                    | Used to define a point from which distance will be measured                                                                                                                                                                                            |
+| **roundFactor**              | `double`                                                                                    | A distance interval in kilometers.<br/>The distance from the point is rounded up to the nearest interval.<br/>Use `ThenBy` to apply a secondary sort to results within the same distance interval.                                                     |
+| **nulls**                    | `NullsOrdering`                                                                             | Optional. Controls whether documents with `null` or missing spatial values appear first or last in the sorted results.<br/>Possible values: `NullsOrdering.Default`, `NullsOrdering.First`, `NullsOrdering.Last`.<br/>Supported only when using Corax. |        
+    
+</Panel>

@@ -1,7 +1,7 @@
 ---
 title: "Configuration: Memory Options"
 sidebar_label: Memory Configuration
-description: "Control RavenDB server memory usage with configuration options for memory limits, low memory thresholds, and cache management."
+description: "Control RavenDB server memory usage with configuration options for memory limits, low memory thresholds, and large object heap compaction."
 sidebar_position: 13
 ---
 
@@ -11,10 +11,30 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Configuration: Memory Options
+<Admonition type="note" title="">
 
-## Memory.LowMemoryLimitInMb
+Use the configuration keys listed below to control how your RavenDB server manages memory.  
+Learn how to apply these keys in the [Configuration Overview](../../server/configuration/configuration-options.mdx) article.
+
+* On this page:  
+   * [Configuration keys](../../server/configuration/memory-configuration.mdx#configuration-keys)
+      * [Memory.LowMemoryLimitInMb](../../server/configuration/memory-configuration.mdx#memorylowmemorylimitinmb)
+      * [Memory.LowMemoryCommitLimitInMb](../../server/configuration/memory-configuration.mdx#memorylowmemorycommitlimitinmb)
+      * [Memory.MinimumFreeCommittedMemoryPercentage](../../server/configuration/memory-configuration.mdx#memoryminimumfreecommittedmemorypercentage)
+      * [Memory.MaxFreeCommittedMemoryToKeepInMb](../../server/configuration/memory-configuration.mdx#memorymaxfreecommittedmemorytokeepinmb)
+      * [Memory.GC.LargeObjectHeapCompactionThresholdPercentage](../../server/configuration/memory-configuration.mdx#memorygclargeobjectheapcompactionthresholdpercentage)
+
+</Admonition>
+
+<Panel heading="Configuration keys">
+
+<ContentFrame>
+
+### Memory.LowMemoryLimitInMb
 
 The minimum amount of available memory RavenDB will attempt to achieve (free memory lower than this value will trigger low memory behavior). Value is in MB.
 
@@ -22,9 +42,11 @@ The minimum amount of available memory RavenDB will attempt to achieve (free mem
 - **Default**: minimum of either `10% of total physical memory` or `2048`
 - **Scope**: Server-wide only
 
+</ContentFrame>
 
+<ContentFrame>
 
-## Memory.LowMemoryCommitLimitInMb
+### Memory.LowMemoryCommitLimitInMb
 
 The minimum amount of available committed memory RavenDB will attempt to achieve (free committed memory lower than this value will trigger low memory behavior). Value is in MB.
 
@@ -32,24 +54,85 @@ The minimum amount of available committed memory RavenDB will attempt to achieve
 - **Default**: `512`
 - **Scope**: Server-wide only
 
+</ContentFrame>
 
+<ContentFrame>
 
-## Memory.MinimumFreeCommittedMemoryPercentage
+### Memory.MinimumFreeCommittedMemoryPercentage
 
-EXPERT: The minimum amount of committed memory that RavenDB will attempt to ensure remains available. Reducing this value too much may cause RavenDB to fail if there is not enough memory available for the operation system to handle operations.
+**Expert level**
+
+The minimum amount of committed memory that RavenDB will attempt to ensure remains available.  
+Reducing this value too much may cause RavenDB to fail if there is not enough memory available
+for the operating system to handle operations.
 
 - **Type**: `float`
 - **Default**: `0.05f`
 - **Scope**: Server-wide only
 
+</ContentFrame>
 
+<ContentFrame>
 
-## Memory.MaxFreeCommittedMemoryToKeepInMb
+### Memory.MaxFreeCommittedMemoryToKeepInMb
 
-EXPERT: The maximum amount of committed memory that RavenDB will attempt to ensure remains available. Reducing this value too much may cause RavenDB to fail if there is not enough memory available for the operation system to handle operations. Value is in MB.
+**Expert level**
+
+The maximum amount of committed memory that RavenDB will attempt to ensure remains available.  
+Reducing this value too much may cause RavenDB to fail if there is not enough memory available
+for the operating system to handle operations. Value is in MB.
 
 - **Type**: `int`
 - **Default**: `128`
 - **Scope**: Server-wide only
 
+</ContentFrame>
 
+<ContentFrame>
+
+### Memory.GC.LargeObjectHeapCompactionThresholdPercentage
+
+**Expert level**
+
+Sets the threshold, as a percentage of the installed physical memory, above which RavenDB
+forces the .NET LOH ([Large Object Heap](https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/large-object-heap)) to be compacted.  
+While in [low memory mode](#ravendb-low-memory-mode), RavenDB checks the size of the LOH after each
+.NET [garbage collection](https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals).  
+When the LOH grows larger than this threshold, RavenDB requests a one-time compaction
+that runs during the next blocking [generation 2 garbage collection](#net-generation-2-garbage-collection).  
+Compacting the LOH is costly, but it reclaims fragmented space and can keep the server
+from running out of memory.
+
+Set this value to `0` to disable this behavior.
+
+- **Type**: `float`
+- **Default**: `0.25f` (25% of the installed physical memory)
+- **Scope**: Server-wide only
+
+<Admonition type="info" title="Terms">
+
+<br />
+
+#### .NET GC (Garbage Collection):
+The .NET runtime's automatic reclaiming of memory held by objects the server no longer uses.  
+See [Fundamentals of garbage collection](https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals).
+
+#### .NET generation 2 garbage collection:
+The most thorough and most costly collection level, which examines all long-lived objects.  
+A blocking collection pauses the server's threads while it runs, which is required to move large objects safely.
+
+#### .NET LOH (Large Object Heap):
+The part of the managed heap that holds large objects, 85,000 bytes and up.  
+It is not compacted by default, so freeing large objects leaves reusable gaps behind (fragmentation).  
+See [The large object heap](https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/large-object-heap).
+
+#### RavenDB low memory mode:
+The state RavenDB enters when available memory drops below the configured limit,
+in which it sheds caches and buffers to avoid an out-of-memory crash.  
+Controlled by the threshold settings above.
+
+</Admonition>
+
+</ContentFrame>
+
+</Panel>

@@ -46,6 +46,8 @@ test("splitSitemap groups URLs by section and version", () => {
             `${BASE_URL}/6.2/baz`,
             `${BASE_URL}/cloud/account`,
             `${BASE_URL}/guides/intro`,
+            `${BASE_URL}/samples`,
+            `${BASE_URL}/samples/fit-assistant`,
             `${BASE_URL}/search`,
         ];
         fs.writeFileSync(path.join(dir, "sitemap.xml"), buildSitemap(urls));
@@ -61,7 +63,10 @@ test("splitSitemap groups URLs by section and version", () => {
             "sitemap-docs-7.2.xml",
             "sitemap-guides.xml",
             "sitemap-misc.xml",
+            "sitemap-samples.xml",
         ]);
+        const samples = result.files.find((f) => f.name === "sitemap-samples.xml");
+        assert.equal(samples?.urls, 2);
         const docs72 = result.files.find((f) => f.name === "sitemap-docs-7.2.xml");
         assert.equal(docs72?.urls, 2);
     });

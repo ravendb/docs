@@ -1,0 +1,50 @@
+vector-search:
+    label: "Vector Search"
+document-refresh:
+    label: "Document Refresh"
+include:
+    label: "Include"
+ai-agents:
+    label: "AI Agents"
+full-text-search:
+    label: "Full-Text Search"
+gen-ai-tasks:
+    label: "GenAI Tasks"
+gen-ai:
+    label: "GenAI"
+remote-attachments:
+    label: "Remote Attachments"
+revisions:
+    label: "Revisions"
+data-subscriptions:
+    label: "Data Subscriptions"
+queue-etl:
+    label: "Queue ETL"
+olap-etl:
+    label: "OLAP ETL"
+hub-sink-replication:
+    label: "Hub/Sink Replication"
+document-expiration:
+    label: "Document Expiration"
+data-archival:
+    label: "Data Archival"
+time-series:
+    label: "Time Series"
+attachments:
+    label: "Attachments"
+counters:
+    label: "Counters"
+corax:
+    label: "Corax"
+map-reduce-indexes:
+    label: "Map-Reduce Indexes"
+static-indexes:
+    label: "Static Indexes"
+document-session:
+    label: "Document Session"
+patch-by-query:
+    label: "Patch by Query"
+test-driver:
+    label: "Test Driver"
+document-compression:
+    label: "Document Compression"
