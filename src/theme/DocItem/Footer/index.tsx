@@ -16,7 +16,7 @@ const getEditUrlWithLanguage = (url: string, language: DocsLanguage, supportedLa
     const path = url.substring(0, lastSlashIndex + 1);
     const filename = url.substring(lastSlashIndex + 1).replace(".mdx", "");
 
-    return `${path}_${filename}-${language}.mdx`;
+    return `${path}content/_${filename}-${language}.mdx`;
 };
 
 export default function DocItemFooter(): ReactNode {

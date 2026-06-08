@@ -1,0 +1,941 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* Queries can include a `where` clause to **filter the results** returned from a collection or an index.
+    
+* Filtering is performed on the server: the `where` clause is sent as part of the query, evaluated against an index (static or auto), 
+  and only documents that match the specified condition are returned to the client.   
+
+  For example, when querying a collection of products, you can filter the results to return only products that are in stock, or only products whose price is above a specified value.
+    
+* You can filter by simple field values, numeric ranges, nested fields, values inside collections, document IDs, and more.
+    
+* The examples in this article mostly demonstrate **dynamic queries** (queries that don't specify which index to query).  
+  You can use the same filtering syntax when querying a **static index**,
+  as explained below in [Filtering when querying static indexes](../../../querying/filtering-query-results/filter-query-results.mdx#filtering-when-querying-static-indexes).
+
+* In this article:    
+  * [Filtering and index usage](../../../querying/filtering-query-results/filter-query-results.mdx#filtering-and-index-usage)
+  * [Filter by field value](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-field-value)
+  * [Filter by numeric value](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-numeric-value)
+  * [Filter by nested field](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-nested-field)
+  * [Filter by values in a collection](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-values-in-a-collection)
+  * [Filter by multiple possible values](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-multiple-possible-values)
+  * [Filter by matching any value in a collection](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-matching-any-value-in-a-collection)
+  * [Filter by matching all values in a collection](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-matching-all-values-in-a-collection)
+  * [Filter by string prefix or suffix](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-string-prefix-or-suffix)
+  * [Filter by field presence](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-field-presence)
+  * [Filter by document ID](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-document-id)
+  * [Filtering when querying static indexes](../../../querying/filtering-query-results/filter-query-results.mdx#filtering-when-querying-static-indexes)
+  * [Syntax](../../../querying/filtering-query-results/filter-query-results.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Filtering and index usage">
+    
+* **When querying a collection with a filtering condition without specifying an index**,  
+  RavenDB treats the query as a dynamic query and will use an **AUTO-index** to process the filter.
+    
+  If no suitable auto-index exists yet, RavenDB will create one automatically based on the fields used in the query.
+  Later queries that need the same indexed fields will reuse the same auto-index.  
+  To learn more about dynamic queries and auto-indexes, see [Query overview](../../../querying/overview.mdx#2-query-a-collection---with-filtering).    
+    
+* **When querying a STATIC index**, RavenDB will use the specified index to process the filter.  
+  The filtering condition is evaluated against the fields indexed by that index, and no auto-index is created. 
+    
+</Panel>
+
+<Panel heading="Filter by field value">
+    
+Use `Where` to return only documents where a field has the specified value.  
+For example, the following query will return all _Employee_ documents where `FirstName` is `"Robert"`.    
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+List<Employee> employees = session
+    .Query<Employee>()                   // Query the Employees collection
+    .Where(e => e.FirstName == "Robert") // Apply the filter predicate
+    .ToList();                           // Execute the query and return the results
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+List<Employee> employees = await asyncSession
+    .Query<Employee>()
+    .Where(e => e.FirstName == "Robert")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+List<Employee> employees = session.Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(e => e.FirstName, "Robert")
+    .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Employee> employees = await asyncSession.Advanced
+    .AsyncDocumentQuery<Employee>()
+    .WhereEquals(e => e.FirstName, "Robert")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Employee> employees = session.Advanced
+    .RawQuery<Employee>("from Employees where FirstName = $firstName")
+    .AddParameter("firstName", "Robert")
+    .ToList();
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Employee> employees = await asyncSession.Advanced
+    .AsyncRawQuery<Employee>("from Employees where FirstName = $firstName")
+    .AddParameter("firstName", "Robert")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Employees
+where FirstName = "Robert"
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/Employees/ByFirstName`  
+> The auto-index is derived from the `FirstName` field referenced in the `where` clause.  
+    
+</Panel>   
+
+<Panel heading="Filter by numeric value">
+
+You can filter numeric fields using comparison operators.  
+For example, the following query returns all products that have more than `50` units in stock.   
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+
+```csharp
+List<Product> products = session
+    .Query<Product>()
+    .Where(p => p.UnitsInStock > 50)
+    .ToList();
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+List<Product> products = await asyncSession
+    .Query<Product>()
+    .Where(p => p.UnitsInStock > 50)
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+List<Product> products = session.Advanced
+    .DocumentQuery<Product>()
+    .WhereGreaterThan(p => p.UnitsInStock, 50)
+    .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+    .AsyncDocumentQuery<Product>()
+    .WhereGreaterThan(p => p.UnitsInStock, 50)
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Product> products = session.Advanced
+    .RawQuery<Product>("from Products where UnitsInStock > $units")
+    .AddParameter("units", 50)
+    .ToList();
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+    .AsyncRawQuery<Product>("from Products where UnitsInStock > $units")
+    .AddParameter("units", 50)
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Products
+where UnitsInStock > 50
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/Products/ByUnitsInStock`  
+> The auto-index is derived from the `UnitsInStock` field referenced in the `where` clause.  
+>    
+> The auto-index name does not depend on the comparison operator (`=`, `>`, `<`, ...),  
+> so the same auto-index serves any comparison on `UnitsInStock`.
+    
+You can use the following comparison operators:
+
+| Operator | Description              |
+| -------- | ------------------------ |
+| `=`      | Equal to                 |
+| `!=`     | Not equal to             |
+| `>`      | Greater than             |
+| `>=`     | Greater than or equal to |
+| `<`      | Less than                |
+| `<=`     | Less than or equal to    |
+
+</Panel>
+
+<Panel heading="Filter by nested field">
+    
+To filter by a nested field, specify the full path to the field.  
+For example, the following query returns all orders that were shipped to `Albuquerque`.    
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+List<Order> orders = session
+    .Query<Order>()
+    .Where(o => o.ShipTo.City == "Albuquerque") // Filter by the nested field's full path
+    .ToList();
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+List<Order> orders = await asyncSession
+    .Query<Order>()
+    .Where(o => o.ShipTo.City == "Albuquerque")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+List<Order> orders = session.Advanced
+    .DocumentQuery<Order>()
+    .WhereEquals(o => o.ShipTo.City, "Albuquerque")
+    .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Order> orders = await asyncSession.Advanced
+    .AsyncDocumentQuery<Order>()
+    .WhereEquals(o => o.ShipTo.City, "Albuquerque")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Order> orders = session.Advanced
+    .RawQuery<Order>("from Orders where ShipTo.City = $city")
+    .AddParameter("city", "Albuquerque")
+    .ToList();
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Order> orders = await asyncSession.Advanced
+    .AsyncRawQuery<Order>("from Orders where ShipTo.City = $city")
+    .AddParameter("city", "Albuquerque")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Orders
+where ShipTo.City = "Albuquerque"
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/Orders/ByShipTo.City`  
+> The auto-index is derived from the nested field path `ShipTo.City` referenced in the `where` clause.  
+>
+> The full dotted path is preserved in the auto-index name.
+    
+</Panel>
+
+<Panel heading="Filter by values in a collection">
+    
+Use `Any` when the field you want to filter by is inside a collection.
+
+For example, each _Order_ document contains a `Lines` collection.  
+The following query returns every _Order_ document that contains at least one order line for  
+`Teatime Chocolate Biscuits`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+List<Order> orders = session
+    .Query<Order>()
+    .Where(o => o.Lines.Any(line =>
+        line.ProductName == "Teatime Chocolate Biscuits"))
+    .ToList();
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+List<Order> orders = await asyncSession
+    .Query<Order>()
+    .Where(o => o.Lines.Any(line =>
+        line.ProductName == "Teatime Chocolate Biscuits"))
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+List<Order> orders = session.Advanced
+    .DocumentQuery<Order>()
+    .WhereEquals("Lines.ProductName", "Teatime Chocolate Biscuits")
+    .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Order> orders = await asyncSession.Advanced
+    .AsyncDocumentQuery<Order>()
+    .WhereEquals("Lines.ProductName", "Teatime Chocolate Biscuits")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Order> orders = session.Advanced
+    .RawQuery<Order>("from Orders where Lines[].ProductName = $productName")
+    .AddParameter("productName", "Teatime Chocolate Biscuits")
+    .ToList();
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Order> orders = await asyncSession.Advanced
+    .AsyncRawQuery<Order>("from Orders where Lines[].ProductName = $productName")
+    .AddParameter("productName", "Teatime Chocolate Biscuits")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Orders
+where Lines[].ProductName = "Teatime Chocolate Biscuits"
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/Orders/ByLines[].ProductName`  
+> The auto-index is derived from the array-element path `Lines[].ProductName` referenced in the `where` clause.
+>    
+> The `[]` notation in the auto-index name indicates that `Lines` is a collection and that the index is built over each element's `ProductName`.
+    
+</Panel>
+
+<Panel heading="Filter by multiple possible values">
+
+Use `In` when a field can match any value from a specified list.      
+For example, the following query returns _Employee_ documents whose first name is either `Robert` or `Nancy`. 
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+List<Employee> employees = session
+    .Query<Employee>()
+     // Requires: using Raven.Client.Documents.Linq;
+    .Where(e => e.FirstName.In("Robert", "Nancy"))
+    .ToList();
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+List<Employee> employees = await asyncSession
+    .Query<Employee>()
+     // Requires: using Raven.Client.Documents.Linq;
+    .Where(e => e.FirstName.In("Robert", "Nancy"))
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+List<Employee> employees = session.Advanced
+    .DocumentQuery<Employee>()
+    .WhereIn(e => e.FirstName, new[] { "Robert", "Nancy" })
+    .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Employee> employees = await asyncSession.Advanced
+    .AsyncDocumentQuery<Employee>()
+    .WhereIn(e => e.FirstName, new[] { "Robert", "Nancy" })
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Employee> employees = session.Advanced
+    .RawQuery<Employee>("from Employees where FirstName in ($names)")
+    .AddParameter("names", new[] { "Robert", "Nancy" })
+    .ToList();
+```
+
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Employee> employees = await asyncSession.Advanced
+    .AsyncRawQuery<Employee>("from Employees where FirstName in ($names)")
+    .AddParameter("names", new[] { "Robert", "Nancy" })
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Employees
+where FirstName in ("Robert", "Nancy")
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/Employees/ByFirstName`
+> The auto-index is derived from the `FirstName` field referenced in the `where` clause.
+>    
+> The same auto-index serves both equality (`FirstName = "Robert"`) and `in` queries on this field -  
+> the operator does not affect the auto-index name.  
+> This means the auto-index created in [Filter by field value](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-field-value) is reused here,
+  and no new auto-index is created.
+    
+</Panel>
+
+<Panel heading="Filter by matching any value in a collection">
+    
+Use `ContainsAny` to return documents where a collection field contains at least one value from the specified list.  
+    
+Assume the following `BlogPost` class:    
+ 
+<TabItem>
+```csharp
+public class BlogPost
+{
+    public string Id { get; set; }
+    public string Title { get; set; }
+    public string[] Tags { get; set; }
+}
+```    
+</TabItem> 
+    
+The following query returns all blog posts that contain either the `Development` tag or the `Research` tag.  
+The query will return a document if the `Tags` collection contains at least one of the specified values.
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+List<BlogPost> posts = session
+    .Query<BlogPost>()
+     // Requires: using Raven.Client.Documents.Linq;        
+    .Where(p => p.Tags.ContainsAny(new[] { "Development", "Research" }))
+    .ToList();
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+List<BlogPost> posts = await asyncSession
+    .Query<BlogPost>()
+     // Requires: using Raven.Client.Documents.Linq;        
+    .Where(p => p.Tags.ContainsAny(new[] { "Development", "Research" }))
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+List<BlogPost> posts = session.Advanced
+    .DocumentQuery<BlogPost>()
+    .ContainsAny("Tags", new[] { "Development", "Research" })
+    .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<BlogPost> posts = await asyncSession.Advanced
+    .AsyncDocumentQuery<BlogPost>()
+    .ContainsAny("Tags", new[] { "Development", "Research" })
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<BlogPost> posts = session.Advanced
+    .RawQuery<BlogPost>("from BlogPosts where Tags in ($tags)")
+    .AddParameter("tags", new[] { "Development", "Research" })
+    .ToList();
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+
+```csharp
+List<BlogPost> posts = await asyncSession.Advanced
+    .AsyncRawQuery<BlogPost>("from BlogPosts where Tags in ($tags)")
+    .AddParameter("tags", new[] { "Development", "Research" })
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from BlogPosts
+where Tags in ("Development", "Research")
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/BlogPosts/ByTags`  
+> The auto-index is derived from the `Tags` collection field referenced in the `where` clause.
+    
+</Panel>
+
+<Panel heading="Filter by matching all values in a collection">
+    
+Use `ContainsAll` to return documents where a collection field contains all values from the specified list.
+For example, the following query returns only blog posts where the `Tags` collection contains both `Development` and `Research`.    
+ 
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+List<BlogPost> posts = session
+    .Query<BlogPost>()
+     // Requires: using Raven.Client.Documents.Linq;        
+    .Where(p => p.Tags.ContainsAll(new[] { "Development", "Research" }))
+    .ToList();
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+List<BlogPost> posts = await asyncSession
+    .Query<BlogPost>()
+     // Requires: using Raven.Client.Documents.Linq;
+    .Where(p => p.Tags.ContainsAll(new[] { "Development", "Research" }))
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+List<BlogPost> posts = session.Advanced
+    .DocumentQuery<BlogPost>()
+    .ContainsAll("Tags", new[] { "Development", "Research" })
+    .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<BlogPost> posts = await asyncSession.Advanced
+    .AsyncDocumentQuery<BlogPost>()
+    .ContainsAll("Tags", new[] { "Development", "Research" })
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<BlogPost> posts = session.Advanced
+    .RawQuery<BlogPost>("from BlogPosts where Tags all in ($tags)")
+    .AddParameter("tags", new[] { "Development", "Research" })
+    .ToList();
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<BlogPost> posts = await asyncSession.Advanced
+    .AsyncRawQuery<BlogPost>("from BlogPosts where Tags all in ($tags)")
+    .AddParameter("tags", new[] { "Development", "Research" })
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from BlogPosts
+where Tags all in ("Development", "Research")
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/BlogPosts/ByTags`  
+> The auto-index is derived from the `Tags` collection field referenced in the `where` clause.
+>    
+> `ContainsAny` (`in`) and `ContainsAll` (`all in`) produce the same auto-index name;  
+> the operator only affects which documents match, not which auto-index is created or used.  
+> This means the auto-index created for [Filter by matching any value in a collection](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-matching-any-value-in-a-collection) is reused here.
+    
+</Panel>
+
+<Panel heading="Filter by string prefix or suffix">    
+    
+    Use `StartsWith` to return documents where a string field starts with the specified value.  
+    Learn more in [Starts-with query](../../../client-api/session/querying/text-search/starts-with-query.mdx).
+    
+    Use `EndsWith` to return documents where a string field ends with the specified value.  
+    Learn more in [Ends-with query](../../../client-api/session/querying/text-search/ends-with-query.mdx).
+    
+</Panel>
+
+<Panel heading="Filter by field presence">
+    
+To find all documents in a collection that have a specified field, see [How to Filter by Field Presence](../../../client-api/session/querying/how-to-filter-by-field.mdx).  
+
+To find all documents in a collection that don't have a specified field, see [How to Filter by Non-Existing Field](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx).
+    
+</Panel>
+
+<Panel heading="Filter by document ID">
+   
+You can filter by document ID or by an ID prefix.
+When the query only filters by the document ID, RavenDB does not need to create an auto-index.
+Instead, the query is served directly by the storage engine.
+
+This applies when the property used in the `Where` clause is recognized as the identity property of the entity type,
+according to the [`FindIdentityProperty` convention](../../../client-api/configuration/identifier-generation/global.mdx#findidentityproperty),
+and no other fields are involved in the query.
+
+Such queries are considered [Collection queries](../../../querying/overview.mdx#3-query-a-collection---query-full-collection--query-by-id).
+Simple collection queries that ask for documents by ID, or by an ID prefix, and do not require additional handling such as ordering or full-text search, have no additional indexing cost.
+
+In terms of efficiency, querying by ID is the same as loading documents using [`session.Load`](../../../client-api/session/loading-entities.mdx).
+
+---
+    
+For example, the following query returns the order whose document ID is `orders/1-A`.    
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+Order order = session
+    .Query<Order>()
+    .Where(o => o.Id == "orders/1-A")
+    .FirstOrDefault();
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+Order order = await asyncSession
+    .Query<Order>()
+    .Where(o => o.Id == "orders/1-A")
+    .FirstOrDefaultAsync();
+```
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+Order order = session.Advanced
+    .DocumentQuery<Order>()
+    .WhereEquals(o => o.Id, "orders/1-A")
+    .FirstOrDefault();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+Order order = await asyncSession.Advanced
+    .AsyncDocumentQuery<Order>()
+    .WhereEquals(o => o.Id, "orders/1-A")
+    .FirstOrDefaultAsync();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+Order order = session.Advanced
+    .RawQuery<Order>("from Orders where id() = $id")
+    .AddParameter("id", "orders/1-A")
+    .FirstOrDefault();
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+Order order = await asyncSession.Advanced
+    .AsyncRawQuery<Order>("from Orders where id() = $id")
+    .AddParameter("id", "orders/1-A")
+    .FirstOrDefaultAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Orders
+where id() = "orders/1-A"
+```
+</TabItem>
+</Tabs>
+
+> **No auto-index is created**.  
+> Filtering only by document ID is served directly by the storage engine.
+    
+---
+    
+You can also filter by an ID prefix to return all documents whose IDs start with a specified value:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+List<Order> orders = session
+    .Query<Order>()
+    .Where(o => o.Id.StartsWith("orders/"))
+    .ToList();
+```
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+```csharp
+List<Order> orders = await asyncSession
+    .Query<Order>()
+    .Where(o => o.Id.StartsWith("orders/"))
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```csharp
+List<Order> orders = session.Advanced
+    .DocumentQuery<Order>()
+    .WhereStartsWith(o => o.Id, "orders/")
+    .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Order> orders = await asyncSession.Advanced
+    .AsyncDocumentQuery<Order>()
+    .WhereStartsWith(o => o.Id, "orders/")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Order> orders = session.Advanced
+    .RawQuery<Order>("from Orders where startsWith(id(), $prefix)")
+    .AddParameter("prefix", "orders/")
+    .ToList();
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Order> orders = await asyncSession.Advanced
+    .AsyncRawQuery<Order>("from Orders where startsWith(id(), $prefix)")
+    .AddParameter("prefix", "orders/")
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Orders
+where startsWith(id(), "orders/")
+```
+</TabItem>
+</Tabs>
+
+> **No auto-index is created**.  
+> Filtering by an ID prefix is also handled directly by the storage engine.
+    
+</Panel>
+
+<Panel heading="Filtering when querying static indexes">
+
+All filtering methods shown above can also be used when querying a **static index**.     
+However, when querying a static index, the filter must reference fields that are defined by the index.    
+
+For example, consider the following index:
+
+<TabItem>
+```csharp
+public class Employees_ByFirstAndLastName :  AbstractIndexCreationTask<Employee>
+{
+    public class IndexEntry
+    {
+        // The index fields
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
+    
+    public Employees_ByFirstAndLastName()
+    {
+        Map = employees => from employee in employees
+                           select new IndexEntry
+                           {
+                               FirstName = employee.FirstName,
+                               LastName  = employee.LastName
+                           };
+    }
+}
+```
+</TabItem>
+
+You can query the index and filter the resulting documents by the index fields.        
+The following example queries the index for _Employee_ documents and filters them by the index field `FirstName`.
+  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+
+```csharp
+List<Employee> employees = session
+    .Query<Employee, Employees_ByFirstAndLastName>()
+    .Where(e => e.FirstName == "Robert")
+    .ToList();
+```
+
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+
+```csharp
+List<Employee> employees = await asyncSession
+    .Query<Employee, Employees_ByFirstAndLastName>()
+    .Where(e => e.FirstName == "Robert")
+    .ToListAsync();
+```
+
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+
+```csharp
+List<Employee> employees = session.Advanced
+    .DocumentQuery<Employee, Employees_ByFirstAndLastName>()
+    .WhereEquals(e => e.FirstName, "Robert")
+    .ToList();
+```
+
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+
+```csharp
+List<Employee> employees = await asyncSession.Advanced
+    .AsyncDocumentQuery<Employee, Employees_ByFirstAndLastName>()
+    .WhereEquals(e => e.FirstName, "Robert")
+    .ToListAsync();
+```
+
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+
+```csharp
+List<Employee> employees = session.Advanced
+    .RawQuery<Employee>(
+        "from index 'Employees/ByFirstAndLastName' where FirstName = $firstName")
+    .AddParameter("firstName", "Robert")
+    .ToList();
+```
+
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+
+```csharp
+List<Employee> employees = await asyncSession.Advanced
+    .AsyncRawQuery<Employee>(
+        "from index 'Employees/ByFirstAndLastName' where FirstName = $firstName")
+    .AddParameter("firstName", "Robert")
+    .ToListAsync();
+```
+
+</TabItem>
+<TabItem value="RQL" label="RQL">
+
+```sql
+from index "Employees/ByFirstAndLastName"
+where FirstName = "Robert"
+```
+
+</TabItem>
+</Tabs>    
+    
+</Panel>
+
+<Panel heading="Syntax">
+
+**LINQ extension methods** (`Raven.Client.Documents.Linq`)
+
+<TabItem>    
+```csharp
+// Match if the field equals any of the provided values.
+public static bool In<T>(this T field, params T[] values);
+public static bool In<T>(this T field, IEnumerable<T> values);
+
+// Match if the collection field shares at least one value with the provided values.
+public static bool ContainsAny<T>(this IEnumerable<T> list, IEnumerable<T> items);
+
+// Match if the collection field contains every provided value.
+public static bool ContainsAll<T>(this IEnumerable<T> list, IEnumerable<T> items);
+```
+</TabItem>
+                
+These methods exist as placeholders for the LINQ provider and are only meaningful inside a query expression.  
+Calling them outside a `Where` will throw.
+
+---
+    
+**`DocumentQuery` / `AsyncDocumentQuery` filtering methods**
+
+Each filter method below has two overloads:  
+one taking a `string` field name (useful for nested or array paths such as `"ShipTo.City"` or `"Lines.ProductName"`),  
+and one taking an `Expression<Func<T, TValue>>` property selector.
+                
+The optional `exact` parameter (default `false`) controls case sensitivity for string comparisons.
+
+<TabItem>     
+```csharp
+// Equality and comparison
+TSelf WhereEquals(string fieldName, object value, bool exact = false);
+TSelf WhereEquals<TValue>(Expression<Func<T, TValue>> propertySelector, TValue value, bool exact = false);
+
+TSelf WhereNotEquals(string fieldName, object value, bool exact = false);
+TSelf WhereNotEquals<TValue>(Expression<Func<T, TValue>> propertySelector, TValue value, bool exact = false);
+
+TSelf WhereGreaterThan(string fieldName, object value, bool exact = false);
+TSelf WhereGreaterThan<TValue>(Expression<Func<T, TValue>> propertySelector, TValue value, bool exact = false);
+
+TSelf WhereGreaterThanOrEqual(string fieldName, object value, bool exact = false);
+TSelf WhereGreaterThanOrEqual<TValue>(Expression<Func<T, TValue>> propertySelector, TValue value, bool exact = false);
+
+TSelf WhereLessThan(string fieldName, object value, bool exact = false);
+TSelf WhereLessThan<TValue>(Expression<Func<T, TValue>> propertySelector, TValue value, bool exact = false);
+
+TSelf WhereLessThanOrEqual(string fieldName, object value, bool exact = false);
+TSelf WhereLessThanOrEqual<TValue>(Expression<Func<T, TValue>> propertySelector, TValue value, bool exact = false);
+
+// Collection / set matching
+TSelf WhereIn(string fieldName, IEnumerable<object> values, bool exact = false);
+TSelf WhereIn<TValue>(Expression<Func<T, TValue>> propertySelector, IEnumerable<TValue> values, bool exact = false);
+
+TSelf ContainsAny(string fieldName, IEnumerable<object> values);
+TSelf ContainsAny<TValue>(Expression<Func<T, IEnumerable<TValue>>> propertySelector, IEnumerable<TValue> values);
+
+TSelf ContainsAll(string fieldName, IEnumerable<object> values);
+TSelf ContainsAll<TValue>(Expression<Func<T, IEnumerable<TValue>>> propertySelector, IEnumerable<TValue> values);
+
+// Prefix
+TSelf WhereStartsWith(string fieldName, object value, bool exact);
+TSelf WhereStartsWith<TValue>(Expression<Func<T, TValue>> propertySelector, TValue value, bool exact);
+```
+</TabItem>
+    
+---    
+                                                    
+**`RawQuery` / `AsyncRawQuery`**
+
+```csharp
+// Submit an RQL string directly.
+IRawDocumentQuery<T>      RawQuery<T>(string query);
+IAsyncRawDocumentQuery<T> AsyncRawQuery<T>(string query);
+
+// Bind a value to an RQL parameter referenced as $paramName.
+TSelf AddParameter(string name, object value);
+```
+
+| Parameter            | Type                                          | Description                                                                                                          |
+|----------------------|-----------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| **fieldName**        | `string`                                      | The name of the field to filter on. Use a dotted path for nested fields (e.g. `"ShipTo.City"`, `"Lines.ProductName"`). |
+| **propertySelector** | `Expression<Func<T, TValue>>`                 | A lambda expression selecting the field to filter on.                                                                |
+| **value**            | `object` / `TValue`                           | The value to compare against.                                                                                        |
+| **values**           | `IEnumerable<object>` / `IEnumerable<TValue>` | The set of values to compare against.                                                                                |
+| **exact**            | `bool`                                        | When `true`, string comparison is case-sensitive.<br/>Default: `false`.                                              |
+| **query**            | `string`                                      | An RQL string. Use `$paramName` placeholders for values supplied via `AddParameter`.                                 |
+| **name**             | `string`                                      | The name of an RQL parameter (no `$` prefix).                                                                        |
+
+</Panel>

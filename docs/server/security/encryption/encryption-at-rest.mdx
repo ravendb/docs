@@ -35,14 +35,14 @@ Once a request is made, RavenDB will start a transaction (either read or write) 
 request, and when the transaction is finished, modified pages are encrypted and written back to the datafile. The data is 
 [locked](../../../server/security/encryption/encryption-at-rest.mdx#locking-memory) during the transaction by default, and it is zeroed when the transaction completes.  
 
-<Admonition type="danger" title="Important things to be aware of:" id="important-things-to-be-aware-of" href="#important-things-to-be-aware-of">
+<Admonition type="warning" title="Important things to be aware of:" id="important-things-to-be-aware-of" href="#important-things-to-be-aware-of">
 1. RavenDB makes sure that **no data is written to disk as plain text**. It will always be encrypted.  
 2. Indexed fields (the actual terms and values being indexed) will reside in memory as plain text.  
 3. Data of the current transaction will reside in memory as plain text and only for the duration of the transaction. When the transaction ends, the used memory is safely zeroed.  
 4. Loading documents from the database (using the Studio, the Client API, REST API) means that they will be decrypted to plain text on the server and then sent to the client (securely) by HTTPS. Once the data is received on the client side it is no longer encrypted. RavenDB does not provide encryption on the client side.
 </Admonition>
 
-<Admonition type="danger" title="Indexing transaction size" id="indexing-transaction-size" href="#indexing-transaction-size">
+<Admonition type="warning" title="Indexing transaction size" id="indexing-transaction-size" href="#indexing-transaction-size">
 Indexing is most efficient when it is performed in the largest transactions possible. However, using encryption can be very memory intensive, and if memory 
 runs out before the transaction completes, the entire transaction will fail. To avoid this, you can limit the size of indexing batches in encrypted 
 databases using [Indexing.Encrypted.TransactionSizeLimitInMb](../../../server/configuration/indexing-configuration.mdx#indexingencryptedtransactionsizelimitinmb). 
@@ -77,7 +77,8 @@ In **Linux**, it is the admin's responsibility to configure higher limits manual
 </CodeBlock>
 </TabItem>
 
-To figure out what the new limit should be, look at the exception thrown by RavenDB, which includes this size.
+To figure out what the new limit should be, look at the exception thrown by RavenDB, which includes this size.  
+For persistent and service-level configuration, see [Linux: Setting memlock when using encrypted database](../../kb/linux-setting-memlock.mdx).
 
 ## What about Encryption in Transit?
 

@@ -294,7 +294,7 @@ b. **Upload** ([import](../../../server/security/authentication/certificate-mana
 
 ![Importing and Exporting Certificates](./assets/importing-and-exporting-certificate.png)
 
- 1. Click **Manage Server** and select **Certificates** to access the Studio - Certificates Management screen.  
+ 1. Click **Manage Server** and select **Certificates** to access Studio - Certificates Management screen.  
  2. Click **Server certificates** in the source server.  
    ![Server Certificates Button Options](./assets/server-certificates-button-options.png)
    * **Export server certificates**  
@@ -352,7 +352,7 @@ When uploading a `.pfx` file with multiple certificates, RavenDB will add all of
 and will allow access to all these certificates explicitly by their thumbprint.
 ### Generating Client Certificates Via Command Line Interface
 
-* RavenDB provides an intuitive certificates management GUI in the Studio.  
+* RavenDB provides an intuitive certificates management GUI in Studio.  
 
 * All of the operations which are described below are also available in Command Line Interface (CLI).  
   - Be sure to configure the `SecurityClearance` for each client certificate because the default is [cluster admin](../../../server/security/authorization/security-clearance-and-permissions.mdx#cluster-admin) which has full access.
@@ -384,7 +384,7 @@ and is explained here only to show how to view the full chain in Windows. The ri
 
 ![Figure 7. Client Certificate Chain](./assets/client-cert.png)
 
-Because client certificates are managed by RavenDB directly and not through any PKI infrastructure **this is perfectly acceptable**. 
+Because client certificates are managed by RavenDB directly and [not through any PKI infrastructure](../overview.mdx#important) **this is perfectly acceptable**. 
 Authenticating a client certificate is done explicitly by looking for the thumbprint in the registered certificates list in the server 
 and not by validating the chain of trust. 
 

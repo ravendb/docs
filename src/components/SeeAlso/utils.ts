@@ -9,6 +9,8 @@ export const getIconName = (source: SeeAlsoItemType["source"]): IconName => {
             return "cloud";
         case "guides":
             return "guides";
+        case "samples":
+            return "code";
         case "external":
             return "newtab";
         default:
