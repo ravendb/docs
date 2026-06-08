@@ -1,0 +1,43 @@
+---
+title: "Filter with Lucene Syntax"
+sidebar_label: "Filter with Lucene Syntax"
+description: "Write RavenDB queries using raw Lucene syntax through the DocumentQuery API for advanced full-text search with wildcards and boolean operators."
+sidebar_position: 7
+supported_languages: ["csharp", "java", "nodejs", "python", "php"]
+see_also:
+     - title: "What is Document Query"
+       link: "querying/document-query/what-is-document-query"
+       source: "docs"
+       path: "Querying > DocumentQuery"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import FilterWithLuceneSyntaxCsharp from './content/_filter-with-lucene-syntax-csharp.mdx';
+import FilterWithLuceneSyntaxJava from './content/_filter-with-lucene-syntax-java.mdx';
+import FilterWithLuceneSyntaxNodejs from './content/_filter-with-lucene-syntax-nodejs.mdx';
+import FilterWithLuceneSyntaxPython from './content/_filter-with-lucene-syntax-python.mdx';
+import FilterWithLuceneSyntaxPhp from './content/_filter-with-lucene-syntax-php.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <FilterWithLuceneSyntaxCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <FilterWithLuceneSyntaxJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <FilterWithLuceneSyntaxNodejs />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <FilterWithLuceneSyntaxPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <FilterWithLuceneSyntaxPhp />
+</LanguageContent>
