@@ -107,11 +107,11 @@ Those four containers are the whole Zabbix environment. Now we need to connect i
 
 Let's first log in to Zabbix with default credentials. You can enter the web UI by clicking the port next to the web container or by navigating to [`http://localhost:80`](http://localhost:80).
 
-<Image img={require("./assets/zabbix1.webp")} alt="" />
+<Image img={require("./assets/zabbix1.webp")} alt="Zabbix web UI login page at localhost:80" />
 
 You should be greeted with a sight like this:
 
-<Image img={require("./assets/zabbix2.webp")} alt="" />
+<Image img={require("./assets/zabbix2.webp")} alt="Zabbix login form prompting for username and password" />
 
 There, you want to input default login credentials: 
 
@@ -120,29 +120,29 @@ Password: zabbix
 
 Once we log in, it's worth changing the default credentials to something more secure. Let's select User Settings on the left, then the profile tab and change your password.
 
-<Image img={require("./assets/zabbix3.webp")} alt="" />
+<Image img={require("./assets/zabbix3.webp")} alt="Zabbix User Settings profile tab with password change option" />
 
 Let's add a RavenDB template we will use later. Templates can be downloaded from [Zabbix community github](https://github.com/zabbix/community-templates/blob/main/Databases/RavenDB/template_ravendb_server/6.0/template_ravendb_server.yaml). With the file downloaded, enter Data Collection and Templates. On the top right corner click import and select our file.
 
-<Image img={require("./assets/zabbix4.webp")} alt="" />
+<Image img={require("./assets/zabbix4.webp")} alt="Zabbix Data Collection Templates page with the Import button highlighted" />
 
 ## Connecting to RavenDB
 
 Now that we have the base for what we want to do let's connect your RavenDB Cloud. First we need to turn on the monitoring product feature. You can do it in the Manage page of your chosen RavenDB Cloud instance.
 
-<Image img={require("./assets/zabbix5.webp")} alt="" />
+<Image img={require("./assets/zabbix5.webp")} alt="RavenDB Cloud instance Manage page showing product features" />
 
 In the product features, find the Monitoring option and enable it. We need SNMP credentials to connect with Zabbix. Just follow the configuration menu that you can open by pressing the button that will appear under where the enable button was.
 
-<Image img={require("./assets/zabbix6.webp")} alt="" />
+<Image img={require("./assets/zabbix6.webp")} alt="RavenDB Cloud Monitoring option enabled with the SNMP configuration button visible" />
 
 Inside, you want to copy three things: authentication username, authentication password and privacy password. RavenDB is designed to be safe, so to ensure that we use SNMPv3, we use two passwords. Also, add IP you will be connecting to on top. 
 
-<Image img={require("./assets/zabbix7.webp")} alt="" />
+<Image img={require("./assets/zabbix7.webp")} alt="RavenDB Cloud SNMP configuration showing authentication username, authentication password, and privacy password fields" />
 
 Now we go back to Zabbix and click on monitoring on the left bar and hosts. Then on the top right corner of the screen, hit create host.
 
-<Image img={require("./assets/zabbix8.webp")} alt="" />
+<Image img={require("./assets/zabbix8.webp")} alt="Zabbix Monitoring Hosts list with the Create Host button in the top-right corner" />
 
 What you need to do here is (In brackets, you have RavenDB Cloud configuration names):
 
@@ -158,13 +158,13 @@ What you need to do here is (In brackets, you have RavenDB Cloud configuration n
 10. Select AES128 and add your Privacy passphrase (Privacy password)  
 11. Save
 
-<Image img={require("./assets/zabbix9.webp")} alt="" />
+<Image img={require("./assets/zabbix9.webp")} alt="Zabbix Create Host form filled with RavenDB SNMPv3 connection settings including host name, template, interface, and credentials" />
 
 That's it. If done correctly, you should be able to go into the latest data, select everything, and at the bottom of the page, click execute now. After a few seconds and a refresh, you should have data in your Zabbix. You can check all monitored metrics at this page.
 
 Let's go to data collection and hosts. There are click triggers at your new host. You can see that we already have some triggers inside from the template. If they satisfy your needs, you are done; if not, let's add a new one. On the top right corner of the screen, press Create Trigger.
 
-<Image img={require("./assets/zabbix10.webp")} alt="" />
+<Image img={require("./assets/zabbix10.webp")} alt="Zabbix host Triggers list showing existing template triggers with the Create Trigger button" />
 
 We can add an expression in two ways. Either use the editor by pressing add or just typing it. We want to create information that will inform us that our database has been down for the last 30 minutes. Our expression will look like this.
 
@@ -192,7 +192,7 @@ Next, find the OID (Object Identifier) you want to monitor. In our case, it is l
 
 After filling in the remaining settings, your item configuration should look similar to this:
 
-<Image img={require("./assets/zabbix11.webp")} alt="" />
+<Image img={require("./assets/zabbix11.webp")} alt="Zabbix Create Item form configured as an SNMP Agent item for monitoring ETL errors, showing the item name, key, and SNMP OID fields" />
 
 This gives us an item that monitors all ETL errors on the server. Depending on your system's needs, you might also want to add additional items, such as Impaired ETL Tasks or Failed AI Tasks. Those items can be used for triggers we showed you earlier or be added to Dashboard.
 
@@ -204,13 +204,13 @@ last(/YourHostName/server_etlErrors)>0
 
 If we add more ETL related items in dashboards it can present itself like this.
 
-<Image img={require("./assets/zabbix12.webp")} alt="" />
+<Image img={require("./assets/zabbix12.webp")} alt="Zabbix dashboard showing graphs for AI Task and ETL error counts, ETL task health states, and active ETL task count over time" />
 
 What you can see here is the result of our tests. The first graph shows the AI Task and ETL error counts across all databases. This is also the graph you can influence the most directly. Those sharp drops in the error count are not automatic; they correspond to us clearing errors in the ETL Errors view in RavenDB Studio.
 
 We can then open the database and confirm that the errors are indeed present there.
 
-<Image img={require("./assets/zabbix13.webp")} alt="" />
+<Image img={require("./assets/zabbix13.webp")} alt="RavenDB Studio ETL Errors view showing ETL errors present in a database" />
 
 Going back to Zabbix, we can also see additional information there. The status graph represents the health states of our ETL tasks, so there's no need to open RavenDB Studio just to check how many tasks are affected.
 
