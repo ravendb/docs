@@ -62,7 +62,7 @@ const socialIconMap: Record<Platform, IconName> = {
 
 export default function DocItemAuthors() {
     const { frontMatter } = useDoc();
-    const { publishedAt, author: authorKey } = frontMatter;
+    const { published_at: publishedAt, author: authorKey } = frontMatter;
 
     if (!authorKey && !publishedAt) {
         return null;
