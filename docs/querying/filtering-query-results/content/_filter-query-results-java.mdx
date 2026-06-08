@@ -538,6 +538,9 @@ TSelf whereLessThan(String fieldName, Object value, boolean exact);
 TSelf whereLessThanOrEqual(String fieldName, Object value);
 TSelf whereLessThanOrEqual(String fieldName, Object value, boolean exact);
 
+TSelf whereBetween(String fieldName, Object start, Object end);
+TSelf whereBetween(String fieldName, Object start, Object end, boolean exact);
+
 // Collection / set matching
 TSelf whereIn(String fieldName, Collection<?> values);
 TSelf whereIn(String fieldName, Collection<?> values, boolean exact);

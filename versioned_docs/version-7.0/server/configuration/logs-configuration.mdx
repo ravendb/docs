@@ -24,6 +24,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
       [Logs.EnableArchiveFileCompression](../../server/configuration/logs-configuration.mdx#logsenablearchivefilecompression)  
       [Logs.MaxArchiveDays](../../server/configuration/logs-configuration.mdx#logsmaxarchivedays)  
       [Logs.MaxArchiveFiles](../../server/configuration/logs-configuration.mdx#logsmaxarchivefiles)  
+      [Logs.Microsoft.Enabled](../../server/configuration/logs-configuration.mdx#logsmicrosoftenabled)  
       [Logs.Microsoft.MinLevel](../../server/configuration/logs-configuration.mdx#logsmicrosoftminlevel)  
       [Logs.MinLevel](../../server/configuration/logs-configuration.mdx#logsminlevel)  
       [Logs.NuGet.AdditionalPackages](../../server/configuration/logs-configuration.mdx#logsnugetadditionalpackages)  
@@ -98,9 +99,22 @@ Set to `null` to keep log files indefinitely.
 
 
 
+## Logs.Microsoft.Enabled
+
+Determines whether [Microsoft logs](../../server/troubleshooting/logging.mdx#microsoft-logs) are enabled.  
+When enabled, RavenDB captures the diagnostic logs that .NET and Kestrel (RavenDB's web server)
+emit internally, and writes them to RavenDB's log output.  
+Note that enabling this setting can affect request latency under certain conditions.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+
+
 ## Logs.Microsoft.MinLevel
 
-The minimum logging level for Microsoft logs.
+The minimum logging level for [Microsoft logs](../../server/troubleshooting/logging.mdx#microsoft-logs).
 
 - **Type**: `enum LogLevel` (`Trace`, `Debug`, `Info`, `Warn`, `Error`, `Fatal`, `Off`)
 - **Default**: `LogLevel.Error`

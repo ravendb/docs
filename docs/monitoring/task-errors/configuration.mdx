@@ -1,0 +1,140 @@
+---
+title: "Task errors: Configuration"
+sidebar_label: "Configuration options"
+description: "Configuration keys for task error monitoring."
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Task errors: Configuration
+
+<Admonition type="note" title="">
+
+* This page covers the configuration keys that control task error monitoring.  
+
+* To learn how to apply these keys (where to set them, scope, syntax), see the
+  [Configuration Overview](../../server/configuration/configuration-options.mdx).  
+
+* To learn about task errors and how task health is determined, see the
+  [Task errors overview](../../monitoring/task-errors/overview.mdx).  
+
+* In this article:
+   * [Task health thresholds](../../monitoring/task-errors/configuration.mdx#task-health-thresholds)
+      * [ETL.ProcessHealthStatusImpairedThreshold](../../monitoring/task-errors/configuration.mdx#etlprocesshealthstatusimpairedthreshold)
+      * [ETL.ProcessHealthStatusFailedThreshold](../../monitoring/task-errors/configuration.mdx#etlprocesshealthstatusfailedthreshold)
+      * [Tuning the thresholds](../../monitoring/task-errors/configuration.mdx#tuning-the-thresholds)
+      * [Validation rules](../../monitoring/task-errors/configuration.mdx#validation-rules)
+
+</Admonition>
+
+<Panel heading="Task health thresholds">
+
+Two configuration keys define the boundaries between the three task health states
+(`Healthy`, `Impaired`, and `Failed`). Each task is classified by its error ratio
+(described on the
+[Task errors overview](../../monitoring/task-errors/overview.mdx#how-health-is-computed)):
+`Healthy` below the Impaired threshold, `Impaired` between the two thresholds, and
+`Failed` above the Failed threshold. A task moves between states as the ratio crosses
+each threshold.  
+
+Both keys can be set server-wide or per database, and both apply to AI tasks
+(Embeddings Generation, GenAI) as well as ETL tasks despite their `ETL.` prefix.  
+
+<ContentFrame>
+
+### ETL.ProcessHealthStatusImpairedThreshold
+
+* Error-rate threshold above which a task's health is classified as `Impaired`.  
+* A task whose recent error rate exceeds this value transitions from `Healthy` to `Impaired`.  
+
+- **Type**: `float`
+- **Default**: `0.1`
+- **Range**: `[0, 1]`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### ETL.ProcessHealthStatusFailedThreshold
+
+* Error-rate threshold above which a task's health is classified as `Failed`.  
+* A task whose recent error rate exceeds this value transitions from `Impaired` to `Failed`.  
+
+- **Type**: `float`
+- **Default**: `0.9`
+- **Range**: `[0, 1]`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Tuning the thresholds
+
+The defaults are tuned for typical workloads where most tasks should run cleanly and any
+sustained error rate is meaningful. Two situations commonly call for adjusting them:
+workloads that legitimately accept a high item-failure rate, and operational environments
+that need earlier escalation.  
+
+A per-database setting always overrides the server-wide setting, so different workloads on
+the same server can use different sensitivity.  
+
+#### Tuning the Impaired threshold
+
+The default of `0.1` is conservative. Even a small ratio of recent failures flips a task to
+`Impaired`, which makes sense when failures are expected to be rare and the goal is to flag
+a task as soon as it starts misbehaving.  
+
+* Raise the threshold (for example to `0.2` or `0.3`) when the workload routinely produces
+  item errors that you do not want to escalate. A typical case is an ETL or AI task
+  processing user-generated data that often fails validation; the task is doing its job,
+  the failures are not actionable, and flipping to `Impaired` on every batch is noisy.  
+
+* Lower the threshold (for example to `0.05`) when you want earlier alerting on tasks that
+  are starting to slip. The cost is more frequent `Impaired` classifications and the alerts
+  that ride on them.  
+
+#### Tuning the Failed threshold
+
+The default of `0.9` is permissive. A task only flips to `Failed` when its recent error
+rate is overwhelming - effectively, when most of its recent batches have failed.  
+
+* Raise the threshold (for example to `0.95`) when you want `Failed` to mean "essentially
+  broken" and tolerate substantial impairment without escalating. Useful when `Failed`
+  triggers automated responses that should be reserved for genuinely catastrophic states.  
+
+* Lower the threshold (for example to `0.7`) when you want stronger and earlier escalation
+  on degraded tasks. The cost is more frequent `Failed` classifications and the automated
+  responses that ride on them.  
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Validation rules
+
+RavenDB validates both keys at server startup. The server refuses to start if any of the
+following is violated:  
+
+* Each threshold value must be between `0` and `1`, inclusive.  
+* `ETL.ProcessHealthStatusFailedThreshold` must be strictly greater than
+  `ETL.ProcessHealthStatusImpairedThreshold`. Equal values are rejected.  
+
+</ContentFrame>
+
+</Panel>

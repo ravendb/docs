@@ -11,6 +11,18 @@ see_also:
   - title: "ETL Troubleshooting with RavenDB ETL Errors View"
     link: "etl-troubleshooting-with-ravendb-etl-errors-view"
     source: "guides"
+  - title: "SNMP Overview"
+    link: "server/administration/snmp/snmp-overview"
+    source: "docs"
+    path: "Server > Administration > SNMP"
+  - title: "Prometheus Monitoring"
+    link: "server/administration/monitoring/prometheus"
+    source: "docs"
+    path: "Server > Administration > Monitoring"
+  - title: "OpenTelemetry Monitoring"
+    link: "server/administration/monitoring/open-telemetry"
+    source: "docs"
+    path: "Server > Administration > Monitoring"
 ---
 
 import Admonition from '@theme/Admonition';
@@ -32,7 +44,7 @@ Before we start deploying Zabbix in Docker, make sure you have the following pre
 * **Docker** installed and running on your machine (this article was tested with Docker version 28.1.1)  
 * **RavenDB Cloud** instance
 
-If you encounter any problems installing or starting Docker, refer to the [official Docker documentation](https://docs.docker.com/get-started/). RavenDB Cloud instance is available [here](https://ravendb.net/cloud). In this article, we are using Windows. Remember to change commands if needed according to your operating system.
+If you encounter any problems installing or starting Docker, refer to the [official Docker documentation](https://docs.docker.com/get-started/). A RavenDB Cloud instance is available at [ravendb.net/cloud](https://ravendb.net/cloud). In this article, we are using Windows. Remember to change commands if needed according to your operating system.
 
 </Admonition>
 
@@ -40,19 +52,23 @@ If you encounter any problems installing or starting Docker, refer to the [offic
 
 To set it all up, we will use a few Docker commands. Docker will make it easier for us to set up everything. Let's start by creating a dedicated network for all Zabbix components. Our Zabbix environment is made of several pieces that collect, process, and present monitoring data. The core components are: server, PostgreSQL database (stores configuration/history), Web frontend (GUI), agent (collects/forwards data)
 
+### Create the Docker network
+
 Open your terminal and run the following command:
 
-``` showLineNumbers
+```bash showLineNumbers
 docker network create --subnet 172.20.0.0/16 --ip-range 172.20.240.0/20 zabbix-net
 ```
 
 This creates an isolated Docker network named *zabbix-net*, ensuring all containers can communicate internally without interfering with other services.
 
+### Deploy the containers
+
 Next, we want to create Zabbix containers inside Docker. We will need four containers, each setup with the command in the command prompt. 
 
 The first container will contain a PostgreSQL server. We create it using the following command, so we can collect our data and Zabbix config files:
 
-``` showLineNumbers
+```powershell showLineNumbers
 docker run --name postgres-server -t `
       -e POSTGRES_USER="zabbix" `
       -e POSTGRES_PASSWORD="zabbix_pwd" `
@@ -64,19 +80,19 @@ docker run --name postgres-server -t `
 
 Next, we need an SNMP trap agent to extract the logs. SNMP is a protocol we use for communication and trap notification, which our agent will receive. We also need to expose port 162 for the trap to communicate. We will use the Alpine version of the Zabbix SNMP traps container.
 
-``` showLineNumbers
-docker run --name zabbix-snmptraps -t `
-  -v /zbx_instance/snmptraps:/var/lib/zabbix/snmptraps:rw `
-  -v /var/lib/zabbix/mibs:/usr/share/snmp/mibs:ro `
-  --network=zabbix-net `
-  -p 162:1162/udp `
-  --restart unless-stopped `
+```bash showLineNumbers
+docker run --name zabbix-snmptraps -t \
+  -v /zbx_instance/snmptraps:/var/lib/zabbix/snmptraps:rw \
+  -v /var/lib/zabbix/mibs:/usr/share/snmp/mibs:ro \
+  --network=zabbix-net \
+  -p 162:1162/udp \
+  --restart unless-stopped \
   -d zabbix/zabbix-snmptraps:alpine-7.4-latest
 ```
 
 Then we need a Zabbix server as a main component for Zabbix logic. It will connect the previous two containers, obtain data from Zabbix traps, and store them in the PostgreSQL server.
 
-``` showLineNumbers
+```powershell showLineNumbers
 docker run --name zabbix-server-pgsql -t `
       -e DB_SERVER_HOST="postgres-server" `
       -e POSTGRES_USER="zabbix" `
@@ -92,7 +108,7 @@ docker run --name zabbix-server-pgsql -t `
 
 And the last thing we need is a web interface so we can interact with this. It's added with the last container.
 
-``` showLineNumbers
+```powershell showLineNumbers
 docker run --name zabbix-web-nginx-pgsql -t `
       -e ZBX_SERVER_HOST="zabbix-server-pgsql" `
       -e DB_SERVER_HOST="postgres-server" `
@@ -109,14 +125,14 @@ docker run --name zabbix-web-nginx-pgsql -t `
 
 Those four containers are the whole Zabbix environment. Now we need to connect it to our RavenDB Cloud instance.
 
-Let's first log in to Zabbix with default credentials. You can enter the web UI by clicking the port next to the web container or by navigating to [`http://localhost:80`](http://localhost:80).
+### Log in to Zabbix
 
-<Image img={require("./assets/zabbix1.webp")} alt="Zabbix web UI login page at localhost:80" />
+Let's first log in to Zabbix with default credentials. You can enter webUI clicking at port next to the web container or by navigating to `http://localhost:80`.
 
-You should be greeted with a sight like this:
+<Image img={require("./assets/zabbix1.webp")} alt="Docker Desktop showing the Zabbix web container with a port link to open the web UI" />
+You should see something like this:  
 
-<Image img={require("./assets/zabbix2.webp")} alt="Zabbix login form prompting for username and password" />
-
+<Image img={require("./assets/zabbix2.webp")} alt="Zabbix login screen with username and password fields" />
 There, you want to input default login credentials: 
 
 Username: Admin  
@@ -172,7 +188,7 @@ Let's go to data collection and hosts. There are click triggers at your new host
 
 We can add an expression in two ways. Either use the editor by pressing add or just typing it. We want to create information that will inform us that our database has been down for the last 30 minutes. Our expression will look like this.
 
-``` showLineNumbers
+```text showLineNumbers
 nodata(/RavenDB4/server.uptime,1800)=1
 ```
 
