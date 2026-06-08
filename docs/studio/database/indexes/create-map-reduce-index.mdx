@@ -196,7 +196,7 @@ to edit them manually since any index results update would overwrite all manual 
 
 * You can set up a [RavenDB ETL Task](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx) 
   on the Artificial Documents collection to a dedicated database on a separate cluster for further processing, 
-  as well as other ongoing tasks such as: [SQL ETL](../../../server/ongoing-tasks/etl/sql.mdx) and [Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx).
+  as well as other ongoing tasks such as: [SQL ETL](../../../server/ongoing-tasks/etl/sql.mdx) and [Subscriptions](../../../data-subscriptions/overview.mdx).
 </Admonition>
 
 <Admonition type="note" title="">
@@ -217,7 +217,7 @@ to edit them manually since any index results update would overwrite all manual 
   each node in the database group has its own (independent) copy of the index results.  
   Therefore:
 
-  1. It is recommended to use artificial documents with [Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) only on a _single_ node.  
+  1. It is recommended to use artificial documents with [Subscriptions](../../../data-subscriptions/overview.mdx) only on a _single_ node.  
      A Subscription failover to another node may cause the subscription to send Artificial Documents  
      that the subscription has already acknowledged.  
 
