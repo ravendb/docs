@@ -415,7 +415,6 @@ These methods determine how input text is split before being sent to the provide
 </Admonition>
 **Chunking method syntax for the JavaScript scripts**:  
 
-<TabItem value="javascript" label="javascript">
 ```js
 // Available text-splitting methods:
 // =================================
@@ -437,7 +436,7 @@ html.strip(htmlText | [htmlText], maxTokensPerChunk);
 <string | [string]>.withContextPrefix(contextPrefix);
 embeddings.generate({ ... }).withContextPrefix(contextPrefix);
 ```
-</TabItem>
+<br/>
 
 | Parameter                                | Type      | Description                                                       |
 |------------------------------------------|-----------|------------------------------------------------------------------ |
@@ -453,7 +452,8 @@ embeddings.generate({ ... }).withContextPrefix(contextPrefix);
 
 <Panel heading="Adding a context prefix to chunks">
 
-Use `withContextPrefix(contextPrefix)` in a SCRIPT-based embeddings task to prepend context to the text sent to the embedding model.
+Use `withContextPrefix(contextPrefix)` in a [SCRIPT-based](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-script)
+embeddings task to prepend context to the text sent to the embedding model.
 This is useful when individual chunks omit identifying document information, such as a title, category, or company name.
 
 In a script, `contextPrefix` can be a string literal, a document field such as `this.Title`, or any string expression produced by the script.
@@ -492,19 +492,19 @@ embeddings.generate({
 ---    
    
 #### SCRIPT vs PATHS context prefixes
-    
-Use the **SCRIPT** option with `withContextPrefix(...)` when the prefix must be computed per document,  
-for example from `this.Title`.
 
-For source paths configured through the **PATHS** option in the Client API, 
-the same feature is available through `ChunkingOptions.ContextPrefix` on the relevant `EmbeddingPathConfiguration`.  
-This sets a constant prefix for that path.
+Use the [SCRIPT option](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-script)
+with `withContextPrefix(...)` when the prefix must be computed per document,  
+for example from `this.Title` or `this.Category`.
 
-Unlike the SCRIPT option, a PATHS prefix cannot be derived from each document being processed.
-For example, it cannot use the current document's own title or category.
+For source paths configured through the [PATHS option](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-paths) in the Client API,
+you can set a constant prefix with the `ChunkingOptions.ContextPrefix` property in the relevant `EmbeddingPathConfiguration`.
+
+Unlike the SCRIPT option, the PATHS option applies the same prefix text to every document for that path.  
+It cannot use values from the document being processed, such as the document's own title or category.  
 For dynamic, per-document prefixes, use the SCRIPT option.
 
-This property is currently not exposed in the Studio for path configurations. Set it through the Client API.  
+This property is currently not exposed in the Studio for path configurations. You can set it through the Client API.  
 For example:
 
 ```csharp
