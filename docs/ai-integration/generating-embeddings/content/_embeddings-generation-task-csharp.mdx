@@ -469,11 +469,12 @@ You can apply the prefix in a script at three levels:
   The string, or each string in the array, is emitted without chunking and with the prefix prepended.
 
 * **For all generated fields**:  
-  Chain `withContextPrefix(...)` onto the `embeddings.generate({...})` call to apply the same prefix to every generated field.  
+  Chain `withContextPrefix(...)` onto the `embeddings.generate({...})` call to apply the same prefix to every generated field.
   A field-level prefix takes priority and is not overwritten by this object-wide prefix.    
     
 ```js
 embeddings.generate({
+    
     // Per field - on a chunked value:
     // Prepend the document's category to every chunk generated from the Content field.
     Content: text.splitParagraphs(this.Content, 512).withContextPrefix(this.Category),
@@ -488,8 +489,6 @@ embeddings.generate({
     
 }).withContextPrefix(this.Title); // Object-wide prefix
 ```
-<br/>
-    
 ---    
    
 #### SCRIPT vs PATHS context prefixes
@@ -505,8 +504,7 @@ Unlike the SCRIPT option, a PATHS prefix cannot be derived from each document be
 For example, it cannot use the current document's own title or category.
 For dynamic, per-document prefixes, use the SCRIPT option.
 
-This property is currently not exposed in the Studio for path configurations. Set it through the Client API.
-
+This property is currently not exposed in the Studio for path configurations. Set it through the Client API.  
 For example:
 
 ```csharp
