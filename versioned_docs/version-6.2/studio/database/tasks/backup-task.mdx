@@ -126,7 +126,7 @@ Select the content to back up. Note: Both incremental and full backups can be sc
     The Full Backup that is done the first time will be either a 'Backup' or a 'Snapshot', depending on the type selected.  
     * Data that is backed up in **Incremental Backup** is _always_ of type 'Backup' - even if the Backup Task Type is 'Snapshot'.  
     'Backup' types save index definitions, but not the fully built indexes.  
-    * If the database has not changed since the last backup, the incremental backup task is skipped - no backup file is produced.  
+    * If the database has not changed since the last backup, the incremental backup is skipped - no backup file is produced.  
 
  Schedule the Backup Tasks to occur at regular intervals (daily, monthly, hourly, every minute) at specific times.  
 

@@ -228,7 +228,7 @@ An incremental backup contains only **the changes** made to the database since t
 <Admonition type="info" title="">
 When an incremental-backup task is executed:  
 - If no backup file is found, the task creates a [full backup](../backup/overview#full-backup) first. Subsequent backups will be incremental.  
-- If the database has not changed since the last backup, the task is skipped - no backup file is produced.  
+- If the database has not changed since the last backup, the backup is skipped - no backup file is produced.  
 </Admonition>
 
 * **Location**  
