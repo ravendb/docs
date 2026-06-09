@@ -107,22 +107,22 @@ When neither log-to-file is enabled nor any client is connected to the WebSocket
 **When log-to-file is enabled (`TrafficWatch.Mode = ToLogFile`):**
 
 * **CPU & memory overhead**: Negligible.  
-  Traffic Watch logging is processed asynchronously by NLog's `AsyncTargetWrapper`.  
+  Traffic Watch logging is processed asynchronously by RavenDB's logging pipeline.  
   Request-handling threads are never blocked, so request latency and throughput are not affected.
 
 * **I/O overhead**: Minor.  
-  Traffic Watch entries are written to the same server log file as all other RavenDB log entries (`server.log` by default).  
+  Traffic Watch entries are written to the same log file as all other RavenDB log entries.  
   Writes are buffered and asynchronous, and generally do not create I/O bottlenecks.  
   However, in environments already under heavy storage load, disk I/O is the most significant factor to monitor.
 
 * **Disk storage**: Proportional to request volume.  
-  Because Traffic Watch shares the server log file with all other log data, high request volumes can increase log file size and cause it to archive more frequently.  
-  When a log file reaches the size limit, it is archived and a new file is started. Old archives are deleted once they exceed the configured age or count limit.  
+  Because Traffic Watch shares the log file with all other log data, high request volumes can increase log file size and cause more frequent log rollover.  
+  When a log file reaches the size limit, a new log file is started. Old log files are deleted once they exceed the configured age or size limit.  
   These limits are set by the standard [logging configuration](../../server/configuration/logs-configuration.mdx):  
-  [`Logs.ArchiveAboveSizeInMb`](../../server/configuration/logs-configuration.mdx#logsarchiveabovesizeinmb) (default: 128 MB),  
-  [`Logs.MaxArchiveDays`](../../server/configuration/logs-configuration.mdx#logsmaxarchivedays) (default: 3 days),  
-  [`Logs.MaxArchiveFiles`](../../server/configuration/logs-configuration.mdx#logsmaxarchivefiles).  
-  Archived log files that exceed the configured retention limits are deleted automatically.
+  [`Logs.MaxFileSizeInMb`](../../server/configuration/logs-configuration.mdx#logsmaxfilesizeinmb) (default: 128 MB),  
+  [`Logs.RetentionTimeInHrs`](../../server/configuration/logs-configuration.mdx#logsretentiontimeinhrs) (default: 72 hours),  
+  [`Logs.RetentionSizeInMb`](../../server/configuration/logs-configuration.mdx#logsretentionsizeinmb) (no limit unless set).  
+  Old log files that exceed the configured retention limits are deleted automatically.
 
 </ContentFrame>
 
