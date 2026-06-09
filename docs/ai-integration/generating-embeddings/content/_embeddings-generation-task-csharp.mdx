@@ -432,7 +432,7 @@ markdown.splitParagraphs(line | [line], maxTokensPerLine, overlapTokens?);
 // HTML processing:
 html.strip(htmlText | [htmlText], maxTokensPerChunk);
 
-// Add context before embedding:
+// Optional: prepend context before embedding:
 <chunking-method>(...).withContextPrefix(contextPrefix);
 <string | [string]>.withContextPrefix(contextPrefix);
 embeddings.generate({ ... }).withContextPrefix(contextPrefix);
@@ -447,7 +447,7 @@ embeddings.generate({ ... }).withContextPrefix(contextPrefix);
 | **htmlText**                             | `string`  | A string containing HTML content to process.                      |
 | **maxTokensPerChunk / maxTokensPerLine** | `number`  | The maximum number of tokens allowed per chunk.<br/>Default is `512`. |
 | **overlapTokens**                        | `number` (optional) | The number of tokens to overlap between consecutive chunks. Helps preserve context continuity across chunks (e.g., between paragraphs).<br/>Default is `0`. |
-| **contextPrefix**                        | `string`  | Optional text prepended to chunks before they are sent to the embedding model.<br/>Cannot be empty or whitespace-only. |
+| **contextPrefix**                        | `string`  | Text that is prepended to chunks before they are sent to the embedding model. Required when `withContextPrefix(...)` is used. Cannot be empty or whitespace-only.<br/>Learn more in [Adding a context prefix to chunks](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#adding-a-context-prefix-to-chunks). |
 
 </Panel>
 
@@ -489,11 +489,16 @@ embeddings.generate({
 }).withContextPrefix(this.Title); // Object-wide prefix
 ```
 <br/>
+    
+---    
    
-Use the **SCRIPT** option with `withContextPrefix(...)` when the prefix must be computed per document, for example from `this.Title`.
+#### SCRIPT vs PATHS context prefixes
+    
+Use the **SCRIPT** option with `withContextPrefix(...)` when the prefix must be computed per document,  
+for example from `this.Title`.
 
 For source paths configured through the **PATHS** option in the Client API, 
-the same feature is available through `ChunkingOptions.ContextPrefix` on the relevant `EmbeddingPathConfiguration`.
+the same feature is available through `ChunkingOptions.ContextPrefix` on the relevant `EmbeddingPathConfiguration`.  
 This sets a constant prefix for that path.
 
 Unlike the SCRIPT option, a PATHS prefix cannot be derived from each document being processed.
@@ -546,7 +551,7 @@ In that case, the string, or each string in the array, is emitted without chunki
 Use a context prefix when important document-level information may be absent from individual chunks.  
 Common examples are a title, category, company name, product name, or other identifier that appears once in the document but is needed to interpret later chunks.
 
-A context prefix is especially useful for specific queries that include, or depend on, that identifying context.
+A context prefix is especially useful for specific queries that include, or depend on, that identifying context.  
 For example, if users search for information about a particular company, adding the company name to each chunk can make matching more precise and help the relevant document rank higher.
 
 There is a trade-off.
@@ -557,8 +562,9 @@ Keep the prefix short and focused on the missing context.
 Do not use it to summarize the whole document.  
 For chunked input, the prefix consumes part of the token budget and may increase the number of generated chunks.
 
-If you are unsure whether to use a prefix, test it on a small sample of your own data.
-Create two otherwise identical embeddings generation tasks, one with a context prefix and one without, then compare precision, recall, and F1 for the queries your users actually issue. 
+If you are unsure whether to use a prefix, test it on a small sample of your own data.  
+Create two otherwise identical embeddings generation tasks, one with a context prefix and one without,  
+then compare precision, recall, or other relevant metrics for the queries your users actually issue.     
     
 </Panel>
 
@@ -614,8 +620,10 @@ public class ChunkingOptions
     // 'PlainTextSplitParagraphs' or 'MarkDownSplitParagraphs'
     public int OverlapTokens { get; set; } = 0;
 
-    // Optional text prepended to each produced chunk before it is sent
-    // to the embedding model. Its tokens count against 'MaxTokensPerChunk'.
+    // Text prepended to each produced chunk before it is sent
+    // to the embedding model.
+    // Leave null to generate embeddings without a context prefix.
+    // Its tokens count against 'MaxTokensPerChunk'.
     public string ContextPrefix { get; set; }
 }
 
