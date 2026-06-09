@@ -93,8 +93,9 @@ Use these configuration options to select the search engine:
 
 <Admonition type="note" title="">
     
-**Corax-only cases**      
-Some features require Corax regardless of the default search engine configuration:
+**Corax-only cases**  
+
+Some features are available only with Corax:    
 
 * **Vector search**  
   [Vector search](../../ai-integration/vector-search/overview.mdx) is supported only by Corax.  
@@ -102,12 +103,20 @@ Some features require Corax regardless of the default search engine configuratio
   even if the configured default engine is Lucene.
 
 * **Static indexes with vector fields**  
-  Static indexes that define vector fields must use Corax.  
-  If such an index is configured to use Lucene, RavenDB rejects the index.
+  A static index that defines vector fields must use Corax.  
+  If such an index is configured to use Lucene, deploying it fails with a `NotSupportedException`.
 
 * **Auto-index to static-index conversion**  
   When RavenDB converts an auto-index with vector fields to a static index definition,  
-  the resulting static index is set to Corax as well.
+  the resulting static index is set to Corax as well, regardless of the default search engine configuration.
+    
+* **Control null placement when sorting**  
+  The `order by ... nulls first` and `order by ... nulls last` clauses are supported only by Corax.  
+  RavenDB does not automatically select Corax for these clauses;  
+  running such a query against a Lucene index throws an `InvalidQueryException`.
+    
+    Learn more in [Control position of null values](../../querying/sorting-query-results/sort-query-results.mdx#control-position-of-null-values).  
+    For spatial sorting, see [Control null placement when sorting by distance](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#control-null-placement-when-sorting-by-distance).
 
 </Admonition>    
 
