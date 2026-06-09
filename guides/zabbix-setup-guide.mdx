@@ -2,12 +2,15 @@
 title: "Set up Zabbix Monitoring for RavenDB Cloud"
 tags: [monitoring]
 icon: "real-time-statistics"
-description: "Step-by-step guide to deploying Zabbix in Docker and connecting it to a RavenDB Cloud instance using SNMPv3 for real-time database monitoring."
+description: "Deploy Zabbix with Docker, connect it to RavenDB Cloud via SNMPv3, and configure custom SNMP items to monitor ETL errors and AI task failures in real time."
 published_at: 2025-11-16
 image: "https://ravendb.net/wp-content/uploads/2025/11/zabbix-article-image.svg"
 author: "Paweł Lachowski"
 proficiency_level: "Beginner"
 see_also:
+  - title: "ETL Troubleshooting with RavenDB ETL Errors View"
+    link: "etl-troubleshooting-with-ravendb-etl-errors-view"
+    source: "guides"
   - title: "SNMP Overview"
     link: "server/administration/snmp/snmp-overview"
     source: "docs"
@@ -137,30 +140,30 @@ Password: zabbix
 
 Once we log in, it's worth changing the default credentials to something more secure. Let's select User Settings on the left, then the profile tab and change your password.
 
-<Image img={require("./assets/zabbix3.webp")} alt="Zabbix User Settings profile tab with the Change Password option" />
-### Import the RavenDB template
+<Image img={require("./assets/zabbix3.webp")} alt="Zabbix User Settings profile tab with password change option" />
 
-Let's add a RavenDB template we will use later. Templates can be downloaded from the [Zabbix community GitHub](https://github.com/zabbix/community-templates/blob/main/Databases/RavenDB/template_ravendb_server/6.0/template_ravendb_server.yaml). With the file downloaded, enter Data Collection and Templates. On the top right corner click import and select our file.
+Let's add a RavenDB template we will use later. Templates can be downloaded from [Zabbix community github](https://github.com/zabbix/community-templates/blob/main/Databases/RavenDB/template_ravendb_server/6.0/template_ravendb_server.yaml). With the file downloaded, enter Data Collection and Templates. On the top right corner click import and select our file.
 
-<Image img={require("./assets/zabbix4.webp")} alt="Zabbix Data Collection Templates page with the Import button in the top-right corner" />
+<Image img={require("./assets/zabbix4.webp")} alt="Zabbix Data Collection Templates page with the Import button highlighted" />
+
 ## Connecting to RavenDB
-
-### Enable SNMP monitoring
 
 Now that we have the base for what we want to do let's connect your RavenDB Cloud. First we need to turn on the monitoring product feature. You can do it in the Manage page of your chosen RavenDB Cloud instance.
 
-<Image img={require("./assets/zabbix5.webp")} alt="RavenDB Cloud instance Manage page showing the Product Features section" />
+<Image img={require("./assets/zabbix5.webp")} alt="RavenDB Cloud instance Manage page showing product features" />
+
 In the product features, find the Monitoring option and enable it. We need SNMP credentials to connect with Zabbix. Just follow the configuration menu that you can open by pressing the button that will appear under where the enable button was.
 
-<Image img={require("./assets/zabbix6.webp")} alt="RavenDB Cloud Monitoring configuration panel showing the SNMP credentials section" />
+<Image img={require("./assets/zabbix6.webp")} alt="RavenDB Cloud Monitoring option enabled with the SNMP configuration button visible" />
+
 Inside, you want to copy three things: authentication username, authentication password and privacy password. RavenDB is designed to be safe, so to ensure that we use SNMPv3, we use two passwords. Also, add IP you will be connecting to on top. 
 
-<Image img={require("./assets/zabbix7.webp")} alt="RavenDB Cloud SNMP credentials showing authentication username, authentication password, and privacy password fields" />
-### Configure the Zabbix host
+<Image img={require("./assets/zabbix7.webp")} alt="RavenDB Cloud SNMP configuration showing authentication username, authentication password, and privacy password fields" />
 
 Now we go back to Zabbix and click on monitoring on the left bar and hosts. Then on the top right corner of the screen, hit create host.
 
-<Image img={require("./assets/zabbix8.webp")} alt="Zabbix Monitoring Hosts page with the Create Host button in the top-right corner" />
+<Image img={require("./assets/zabbix8.webp")} alt="Zabbix Monitoring Hosts list with the Create Host button in the top-right corner" />
+
 What you need to do here is (In brackets, you have RavenDB Cloud configuration names):
 
 1. Add Host Name  
@@ -175,31 +178,71 @@ What you need to do here is (In brackets, you have RavenDB Cloud configuration n
 10. Select AES128 and add your Privacy passphrase (Privacy password)  
 11. Save
 
-<Image img={require("./assets/zabbix9.webp")} alt="Zabbix Create Host form configured with RavenDB host name, template, SNMP interface, and SNMPv3 authPriv credentials" />
-That's it. If done correctly, you should be able to go into the latest data, select everything, and at the bottom of the page, click execute now. After a few seconds and a refresh, you should have data in your Zabbix. You can check all monitored metrics at this page.
+<Image img={require("./assets/zabbix9.webp")} alt="Zabbix Create Host form filled with RavenDB SNMPv3 connection settings including host name, template, interface, and credentials" />
 
-### Add a trigger
+That's it. If done correctly, you should be able to go into the latest data, select everything, and at the bottom of the page, click execute now. After a few seconds and a refresh, you should have data in your Zabbix. You can check all monitored metrics at this page.
 
 Let's go to data collection and hosts. There are click triggers at your new host. You can see that we already have some triggers inside from the template. If they satisfy your needs, you are done; if not, let's add a new one. On the top right corner of the screen, press Create Trigger.
 
-<Image img={require("./assets/zabbix10.webp")} alt="Zabbix Create Trigger form showing the expression editor" />
+<Image img={require("./assets/zabbix10.webp")} alt="Zabbix host Triggers list showing existing template triggers with the Create Trigger button" />
+
 We can add an expression in two ways. Either use the editor by pressing add or just typing it. We want to create information that will inform us that our database has been down for the last 30 minutes. Our expression will look like this.
 
 ```text showLineNumbers
 nodata(/RavenDB4/server.uptime,1800)=1
 ```
 
-This gives you a trigger; now, you can add an option to send a message to your email address. If you want to learn how to do it you can check the [Zabbix email notification documentation](https://www.zabbix.com/documentation/3.4/en/manual/config/notifications/media/email). 
+This gives you a trigger; now, you can add an option to send a message to your email address. If you want to learn how to do it you can check Zabbix documentation [here](https://www.zabbix.com/documentation/7.4/en/manual/config/notifications/media/email). 
+
+That gives you a basic alerting setup for your RavenDB instance. Of course that's not all as Zabbix gives you the ability to create informative dashboards. RavenDB template gives you one with basic capabilities, but we can expand it.
+
+## Adding New Items
+
+If your system depends on ETL or AI tasks, you probably want to know the moment something starts malfunctioning. That is exactly what the ETL Errors and AI Task Errors metrics are meant for.
+
+Those metrics become especially useful in production environments. RavenDB Studio already provides dedicated [ETL Errors and AI Task Errors views](./etl-troubleshooting-with-ravendb-etl-errors-view.mdx) that make troubleshooting much easier than relying on notifications alone, but monitoring solves a different problem: finding out about failures before your users do. Having your users notice problems before you might already create new ones as you lose reputation, so you want to find issues before anyone notices. With monitoring in place, you can detect those failures immediately, receive alerts as soon as problems start appearing, and then move to RavenDB Studio to investigate the exact cause in detail.
+
+To add those metrics to Zabbix, go to Data Collection, then Templates and open your template's Items section. Click Create Item, then provide the item name and key (used, for example, in expressions while configuring triggers), and change the type to SNMP Agent. Next, open RavenDB Studio and modify the URL so it ends with `/monitoring/snmp/oids`, for example:
+
+``` showLineNumbers
+http://[YOUR_URL]/monitoring/snmp/oids
+```
+
+Next, find the OID (Object Identifier) you want to monitor. In our case, it is listed under "Number of ETL Errors" in the Server section. Copy that value and paste it into the SNMP OID field.
+
+After filling in the remaining settings, your item configuration should look similar to this:
+
+<Image img={require("./assets/zabbix11.webp")} alt="Zabbix Create Item form configured as an SNMP Agent item for monitoring ETL errors, showing the item name, key, and SNMP OID fields" />
+
+This gives us an item that monitors all ETL errors on the server. Depending on your system's needs, you might also want to add additional items, such as Impaired ETL Tasks or Failed AI Tasks. Those items can be used for triggers we showed you earlier or be added to Dashboard.
+
+Trigger expression that would be using such item would look like:
+
+``` showLineNumbers
+last(/YourHostName/server_etlErrors)>0
+```
+
+If we add more ETL related items in dashboards it can present itself like this.
+
+<Image img={require("./assets/zabbix12.webp")} alt="Zabbix dashboard showing graphs for AI Task and ETL error counts, ETL task health states, and active ETL task count over time" />
+
+What you can see here is the result of our tests. The first graph shows the AI Task and ETL error counts across all databases. This is also the graph you can influence the most directly. Those sharp drops in the error count are not automatic; they correspond to us clearing errors in the ETL Errors view in RavenDB Studio.
+
+We can then open the database and confirm that the errors are indeed present there.
+
+<Image img={require("./assets/zabbix13.webp")} alt="RavenDB Studio ETL Errors view showing ETL errors present in a database" />
+
+Going back to Zabbix, we can also see additional information there. The status graph represents the health states of our ETL tasks, so there's no need to open RavenDB Studio just to check how many tasks are affected.
+
+The third graph shows how many ETL tasks are actively processing work at any given moment. If a task stops working because of an issue, you will notice it here immediately. With tools like these, you can keep track of your RavenDB environment without even opening Studio.
 
 ## Summary
 
-Here's what you built and why each piece matters:
+- The full Zabbix stack runs as four Docker containers on an isolated network: a PostgreSQL database, an SNMP trap receiver, the Zabbix server, and an Nginx web frontend.
+- RavenDB Cloud exposes SNMP monitoring through a built-in product feature that provides an SNMPv3 authentication username, authentication password, and privacy password for secure integration.
+- Importing the community RavenDB template from the Zabbix GitHub repository gives you a ready-made set of triggers and a dashboard without manually defining every metric.
+- Custom SNMP items for ETL Errors, Impaired ETL Tasks, and Failed AI Tasks can be added to the template using OIDs from the `/monitoring/snmp/oids` endpoint, then wired to triggers and dashboard graphs for proactive alerting before users notice a problem.
 
-- RavenDB Cloud does not broadcast SNMP data by default. You have to explicitly enable the Monitoring feature per instance in the Manage page. That same step also generates the SNMP credentials Zabbix needs, so skipping it means the host in Zabbix will never receive any data.
-- The Zabbix server reads trap data through a shared volume, not a network call. The `--volumes-from zabbix-snmptraps` flag mounts the SNMP container's filesystem directly into the server container, which is why both must run on the same Docker host.
-- RavenDB Cloud enforces two separate SNMP passwords by design. One authenticates the sender (SHA1), the other encrypts the payload (AES128). Both are generated for you in the Cloud portal and both are required when configuring `authPriv` security level in Zabbix.
-- The imported RavenDB template already ships with triggers. Before writing a custom trigger, check the template defaults first. The `nodata()` example in this guide is only needed when the built-in triggers do not cover your specific alerting requirements.
+If you are interested in monitoring your on-premise database, you can try using Datadog. You can check the connection tutorial [here](https://ravendb.net/articles/leverage-ravendb-observability-with-datadog).
 
-If you are interested in monitoring your on-premise database, you can try to use Datadog. You can check the [RavenDB with Datadog tutorial](https://ravendb.net/articles/leverage-ravendb-observability-with-datadog).
-
-Interested in RavenDB? Grab a [free RavenDB developer license](https://ravendb.net/dev) or spin up a [free RavenDB Cloud database](https://ravendb.net/cloud). Any questions about this feature or just want to hang out and talk with the RavenDB team? Join the [RavenDB Discord Community Server](https://discord.com/invite/ravendb).
+Interested in RavenDB? Grab the developer license dedicated to testing [here](https://ravendb.net/dev) or get a free cloud database [here](https://ravendb.net/cloud). Any questions about this feature or just want to hang out and talk with the RavenDB team? Join our Discord Community Server - invitation link is [here](https://discord.com/invite/ravendb).
