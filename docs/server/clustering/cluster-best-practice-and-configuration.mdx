@@ -11,18 +11,26 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Cluster: Best Practices
 <Admonition type="note" title="">
 
 * In this page:
-   * [Clusters should have an odd number of at least 3 nodes](../../server/clustering/cluster-best-practice-and-configuration.mdx#clusters-should-have-an-odd-number-of-at-least-3-nodes)
+   * [Recommended cluster and database group size](../../server/clustering/cluster-best-practice-and-configuration.mdx#recommended-cluster-and-database-group-size)
+     * [Clusters should have an odd number of at least 3 nodes](../../server/clustering/cluster-best-practice-and-configuration.mdx#clusters-should-have-an-odd-number-of-at-least-3-nodes)
+     * [Database groups follow the same rule when you use cluster-wide transactions](../../server/clustering/cluster-best-practice-and-configuration.mdx#database-groups-follow-the-same-rule-when-you-use-cluster-wide-transactions)
    * [Avoid different cluster configurations among the cluster's nodes](../../server/clustering/cluster-best-practice-and-configuration.mdx#avoid-different-cluster-configurations-among-the-clusters-nodes)
 
 </Admonition>
 
 
+<Panel heading="Recommended cluster and database group size">
+
 ### Clusters should have an odd number of at least 3 nodes
+
+<ContentFrame>
 
 We recommend setting up clusters with an odd number of nodes equal to or greater than 3.
 
@@ -40,15 +48,46 @@ command will be created, although any database on the surviving node will still 
 For ACID guarantees, a majority of the nodes must agree on every [cluster-wide transaction](../../server/clustering/cluster-transactions.mdx), 
 so having an odd number of nodes makes achieving the majority easier.
 
+</ContentFrame>
 
+---
 
+### Database groups follow the same rule when you use cluster-wide transactions
 
+<ContentFrame>
 
-### Avoid different cluster configurations among the cluster's nodes
+The recommendation above relates to the cluster itself - the nodes that vote on
+Raft commands. The same odd-numbered sizing matters for an individual
+**[database group](../../glossary/database-group.mdx)** when the database uses
+[cluster-wide transactions](../../server/clustering/cluster-transactions.mdx)
+(or the [atomic guards](../../compare-exchange/atomic-guards.mdx) that wrap them).
+
+A cluster-wide transaction commits only after a majority of the database
+group's voting members have accepted it. With three members, two must accept; with
+five, three must accept; with seven, four. An odd size keeps that count well-
+defined and keeps a single node failure inside the majority.
+
+If the database does not use cluster-wide transactions, you do not have to
+keep the group size odd. The database is kept in sync by
+[internal replication](../../server/clustering/replication/replication-overview.mdx#internal-replication),
+which keeps writes flowing on any node that is up - so a group of two members
+already lets the database survive losing a node.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Avoid different cluster configurations among the cluster's nodes">
+
+<ContentFrame>
 
 Configuration mismatches tend to cause interaction problems between nodes.
 
 If you must set [cluster configurations](../../server/configuration/cluster-configuration.mdx) differently in separate nodes,  
 **we recommend first testing it** in a development environment to see that each node interacts properly with the others.
+
+</ContentFrame>
+
+</Panel>
 
 
