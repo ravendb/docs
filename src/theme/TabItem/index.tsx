@@ -7,11 +7,7 @@ import type { Props } from "@theme/TabItem";
  * <Tabs> ancestor.  Visibility is driven by the `hidden` prop that the parent
  * <Tabs> component injects via cloneElement.
  */
-export default function TabItem({
-    children,
-    className,
-    hidden,
-}: Props & { hidden?: boolean }): ReactNode {
+export default function TabItem({ children, className, hidden }: Props & { hidden?: boolean }): ReactNode {
     return (
         <div role="tabpanel" hidden={hidden} className={className}>
             {children}
