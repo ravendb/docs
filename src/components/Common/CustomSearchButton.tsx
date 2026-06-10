@@ -42,7 +42,7 @@ export default function CustomSearchButton({
         onClose: () => {},
         searchButtonRef: buttonRef,
         isAskAiActive: false,
-        onAskAiToggle: () => {},
+        onAskAiToggle: (_toggle: boolean) => {},
     });
 
     return (

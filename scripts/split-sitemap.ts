@@ -30,14 +30,15 @@ const result = splitSitemap({ buildDir, legacyVersions: LEGACY_VERSIONS, baseUrl
 if (result.skipped) {
     console.log(`[split-sitemap] skipped: ${result.reason}`);
     process.exit(0);
+} else {
+    // Discriminated-union narrowing on boolean literals requires strictNullChecks, which
+    // this project's tsconfig does not enable. process.exit() above makes the cast safe.
+    const { files, includedUrls, skippedLegacyUrls } = result as SplitSucceeded;
+    for (const { name, urls } of files) {
+        console.log(`[split-sitemap]   ${name}: ${urls} URLs`);
+    }
+    console.log(
+        `[split-sitemap] split into ${files.length} sub-sitemaps ` +
+            `(${includedUrls} URLs included, ${skippedLegacyUrls} legacy URLs excluded)`
+    );
 }
-
-// process.exit above prevents reaching here when skipped; cast to the success type
-const { files, includedUrls, skippedLegacyUrls } = result as SplitSucceeded;
-for (const { name, urls } of files) {
-    console.log(`[split-sitemap]   ${name}: ${urls} URLs`);
-}
-console.log(
-    `[split-sitemap] split into ${files.length} sub-sitemaps ` +
-        `(${includedUrls} URLs included, ${skippedLegacyUrls} legacy URLs excluded)`
-);

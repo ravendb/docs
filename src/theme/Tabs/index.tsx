@@ -129,9 +129,9 @@ function TabContent({ lazy, children, selectedValue }: TabContentProps) {
     }
     return (
         <div className="p-4 bg-pre-background">
-            {childTabs.map((tabItem, i) =>
+            {childTabs.map((tabItem) =>
                 cloneElement(tabItem, {
-                    key: i,
+                    key: tabItem.props.value,
                     hidden: tabItem.props.value !== selectedValue,
                 })
             )}

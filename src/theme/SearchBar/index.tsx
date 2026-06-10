@@ -200,7 +200,7 @@ function DocSearch({ externalUrlRegex, ...props }: DocSearchProps) {
         onInput: handleInput,
         searchButtonRef,
         isAskAiActive: false,
-        onAskAiToggle: () => {},
+        onAskAiToggle: (_toggle: boolean) => {},
     });
 
     return (
