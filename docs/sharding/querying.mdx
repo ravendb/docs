@@ -52,7 +52,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
     * Each shard runs the query over its own data, using its own indexes.  
       Once the data is retrieved, the shard transfers it to the orchestrator.
     * The orchestrator combines the data it receives from all shards into a single dataset and may perform additional operations on it.
-      For example, when querying a [Map-Reduce index](../sharding/indexing.mdx#map-reduce-indexes-on-a-sharded-database), each shard returns results that were already reduced locally.
+      For example, when querying a [Map-Reduce index](../sharding/indexing.mdx#map-reduce-indexes-in-a-sharded-database), each shard returns results that were already reduced locally.
       After receiving all shard results, the orchestrator reduces the full dataset once again.    
     * Finally, the orchestrator returns the combined dataset to the client.
     
@@ -348,9 +348,9 @@ public class Products_ByUnitsInStock : AbstractIndexCreationTask<Product>
   * Hand page 8 to the client (results 701 to 800).
 
 <Admonition type="note" title="">
-The shards sort the reults by modification order before sending them to the orchestrator.  
+The shards sort the results by modification order before sending them to the orchestrator.  
 For example, if a shard needs to send 800 results to the orchestrator,
-the first result will be the most recently modified document, and the last result will be the ealiest document modified.
+the first result will be the most recently modified document, and the last result will be the earliest document modified.
 </Admonition>
 
 </Panel>
@@ -476,7 +476,7 @@ Both static index queries and dynamic queries (auto-indexes) are supported.
     }                
     ```
     </TabItem>
-    <TabItem value="Index_OrdersByComapny" label="Index_OrdersByComapny">
+    <TabItem value="Index_OrdersByCompany" label="Index_OrdersByCompany">
     ```csharp
     // Map-Reduce index definition
     public class OrdersByCompany : AbstractIndexCreationTask<Order, OrdersByCompany.IndexEntry>
@@ -954,10 +954,10 @@ Querying features that are not supported or not yet implemented in sharded datab
   Read more about this topic in [Loading a document within a projection](../sharding/querying.mdx#loading-a-document-within-a-projection) above.      
     
 * **Ordering streamed Map-Reduce results by _non-reduce-key_ fields**  
-  Read more about this topic in [Streaming results](../sharding/querying.mdx#streaming-results) above.
+  Read more about this topic in [Streaming query results](../sharding/querying.mdx#streaming-query-results) above.
     
 * **_Includes_ and _loads_ are not supported in sharded streaming queries**  
-  Read more about this topic in [Streaming results](../sharding/querying.mdx#streaming-results) above.
+  Read more about this topic in [Streaming query results](../sharding/querying.mdx#streaming-query-results) above.
     
 * **Querying for similar documents with _MoreLikeThis_**  
   [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis.mdx) is not supported in a sharded database.
