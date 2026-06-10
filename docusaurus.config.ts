@@ -37,6 +37,17 @@ const config: Config = {
         faster: true,
     },
 
+    // future.v4 enables mdx1CompatDisabledByDefault in 3.10+, which turns off HTML
+    // comments and {#id} heading anchors. Re-enable them explicitly: read-only
+    // versioned_docs/ snapshots use both and cannot be edited.
+    markdown: {
+        mdx1Compat: {
+            comments: true,
+            headingIds: true,
+            admonitions: true,
+        },
+    },
+
     customFields: {
         latestVersion: CURRENT_VERSION,
     },
