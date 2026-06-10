@@ -122,11 +122,17 @@ var conStr = new QueueConnectionString
     {
         BootstrapServers = "broker.example.com:9092",
 
-        // Authentication via SASL/PLAIN over SSL/TLS
         ConnectionOptions = new Dictionary<string, string>
         {
+            // Transport protocol. SASL_SSL combines SASL auth with SSL/TLS encryption.
+            // Other values: PLAINTEXT, SSL (mTLS only), SASL_PLAINTEXT.
             { "security.protocol", "SASL_SSL" },
+
+            // SASL mechanism. PLAIN sends credentials as cleartext (safe only over TLS).
+            // Other common values: SCRAM-SHA-256, SCRAM-SHA-512.
             { "sasl.mechanism", "PLAIN" },
+
+            // Credentials issued by the Kafka cluster admin.
             { "sasl.username", "<your-username>" },
             { "sasl.password", "<your-password>" }
         }
@@ -146,7 +152,8 @@ var res = store.Maintenance.Send(
 
 If your RavenDB cluster has been set up securely, you can authenticate to Kafka
 using RavenDB's cluster-wide certificate (the one defined at RavenDB setup) by
-setting `UseRavenCertificate` to `true` on the `KafkaConnectionSettings`.
+setting `UseRavenCertificate` to `true` on the
+[KafkaConnectionSettings](#connection-string-classes).
 
 ```csharp
 KafkaConnectionSettings = new KafkaConnectionSettings
@@ -159,8 +166,12 @@ KafkaConnectionSettings = new KafkaConnectionSettings
 <br />
 
 With this enabled, the Kafka connection runs over SSL/TLS, and RavenDB
-authenticates with its own cluster-wide certificate. This replaces the TLS
-keys you would otherwise add to `ConnectionOptions`.
+authenticates with a client certificate derived from its cluster setup. The
+certificate is either the cluster server certificate itself (if it carries the
+client-auth EKU, the X.509 extension that permits acting as a TLS client) or
+a separate certificate that RavenDB issues from the server certificate's key
+pair. Either way, this replaces the TLS keys you would otherwise add to
+`ConnectionOptions`.
 
 To complete the setup, register RavenDB's cluster-wide certificate in
 [Kafka's truststore](https://kafka.apache.org/documentation/streams/developer-guide/security.html)

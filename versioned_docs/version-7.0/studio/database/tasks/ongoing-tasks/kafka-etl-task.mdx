@@ -128,13 +128,26 @@ If RavenDB has been set up **securely**, another option will show up: **Use Rave
 
 ![Use RavenDB Certificate](./assets/kafka_use-ravenDB-certificate.png)
 
-If enabled, the Kafka connection runs over SSL/TLS, and RavenDB authenticates to Kafka using the cluster-wide certificate defined during setup.
+If enabled, the Kafka connection runs over SSL/TLS, and RavenDB authenticates with a
+client certificate derived from its cluster setup. The certificate is either the
+cluster server certificate itself (if it carries the client-auth EKU, the X.509
+extension that permits acting as a TLS client) or a separate certificate that
+RavenDB issues from the server certificate's key pair.
 
-* If you do that, you will no longer need to define your security options manually  
-  (using [Add new connection option](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#define-kafka-etl-task)).
+Enabling **Use RavenDB Certificate** replaces the security options you would
+otherwise enter via [Add new connection option](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#define-kafka-etl-task).
 
-* **Note**, however, that to complete the process you still need to register RavenDB's cluster-wide certificate  
-  in [Kafka's truststore](https://kafka.apache.org/documentation/streams/developer-guide/security.html) on the target machine/s.
+<Admonition type="warning" title="">
+
+A [Kafka truststore](https://kafka.apache.org/documentation/streams/developer-guide/security.html)
+is the broker's pool of certificates trusted for client TLS handshakes;
+a client certificate is accepted only if it chains back to an entry in the truststore.
+
+To complete the setup, register RavenDB's cluster-wide certificate in
+Kafka's truststore on the target machine(s). The connection will fail until
+this registration is in place.
+
+</Admonition>
 
 </ContentFrame>
 
