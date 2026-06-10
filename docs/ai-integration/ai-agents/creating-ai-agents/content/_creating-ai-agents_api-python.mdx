@@ -1,4 +1,4 @@
-import Admonition from '@theme/Admonition';
+﻿import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
@@ -25,9 +25,7 @@ import Panel from "@site/src/components/Panel";
       * [Set chat trimming configuration](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#set-chat-trimming-configuration)
    * [Adding agent tools](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#adding-agent-tools)
       * [Query tools](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#query-tools)
-<!---
-         * [Initial-context queries](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#initial-context-queries)
--->
+
       * [Action tools](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#action-tools)
    * [Creating the Agent](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#creating-the-agent)
    * [Retrieving existing agent configurations](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#retrieving-existing-agent-configurations)
@@ -535,67 +533,6 @@ A query tool includes a natural-language **description** that explains the LLM w
 
 </ContentFrame>
 
-<!---
-#### <u>Initial-context queries</u>
-
-* You can set a query tool as an [initial-context query](../../../../ai-integration/ai-agents/overview.mdx#initial-context-queries) using its `Options.AddToInitialContext` property, to execute the query and provide the LLM with its results immediately when the agent is started.  
-   * An initial-context query is **not allowed** to use LLM parameters, since the query 
-     runs before the conversation starts, earlier than the first communication with the LLM, and the LLM will have no opportunity to fill the parameters with values.  
-   * An initial-context query **is** allowed to use agent parameters, whose values are provided by the user even before the query is executed.  
-
-*  You can use the `options.allow_model_queries` property to Enable or Disable a query tool .  
-   * When a query tool is enabled, the LLM can freely trigger its execution.  
-   * When a query tool is disabled, the LLM cannot trigger its execution.  
-   * If a query tool is set as an initial-context query, it will be executed when the conversation 
-     starts even if disabled using `options.allow_model_queries`.  
-
-* **Example**  
-  Set a query tool that runs when the agent is started and retrieves all the orders sent everywhere.
-  ```csharp
-  new AiAgentToolQuery
-  {
-     Name = "retrieve-orders-sent-to-all-countries",
-     Description = "a query tool that allows you to retrieve all orders sent to all countries.",
-     Query = "from Orders as O select O.Employee, O.Lines.Quantity",
-     ParametersSampleObject = "{}"
-
-     Options = new AiAgentToolQueryOptions
-     {
-         // The LLM is allowed to trigger the execution of this query during the conversation
-         allow_model_queries = true,
-
-         // The query will be executed when the conversation starts 
-         // and its results will be added to the initial context
-         add_to_initial_context = true
-      }
-  }
-  ```
-
-* **Syntax**  
-  ```csharp
-  public class AiAgentToolQueryOptions : IDynamicJson
-  {
-      public bool? allow_model_queries { get; set; }
-      public bool? add_to_initial_context { get; set; }
-  }
-    ```
-
-      |Property|Type|Description|
-      |--------|----|-----------|
-      |`allow_model_queries`|`bool`| `true`: the LLM can trigger the execution of this query tool.<br />`false`: the LLM cannot trigger the execution of this query tool.<br />`null`: server-side defaults apply.|
-      |`add_to_initial_context`|`bool`| `true`: the query will be executed when the conversation starts and its results added to the initial context.<br />`false`: the query will not be executed when the conversation starts.<br />`null`: server-side defaults apply.|
-
-      <Admonition type="note" title="">
-      Note: the two flags can be set regardless of each other.  
-        * Setting `add_to_initial_context` to `true` and `allow_model_queries` to `false`  
-          will cause the query to be executed when the conversation starts,  
-          but the LLM will not be able to trigger its execution later in the conversation.  
-        * Setting `add_to_initial_context` to `true` and `allow_model_queries` to `true`  
-          will cause the query to be executed when the conversation starts,  
-          and the LLM will also be able to trigger its execution later in the conversation.  
-      </Admonition>
--->
-
 <ContentFrame>
 
 ### Action tools
@@ -707,7 +644,6 @@ You can retrieve the configuration of **existing agents** using `get_agents`.
   | Return value | Description |
   |--------------|-------------|
   | `GetAiAgentsResponse` | A list of agent configurations |
-
 
 * `GetAiAgentsResponse` class  
   ```python
@@ -974,7 +910,6 @@ Receivers are typically used asynchronously for multi-step or delayed operations
   | action_id | `str` | The action request unique ID |
   | action_response | `str` | The response to send back to the LLM through the agent |
 
-
 * `AiAgentActionRequest` class  
   Contains the action request details, sent by the LLM to the agent and passed to the receiver when invoked.  
   ```python
@@ -1010,7 +945,6 @@ The LLM response is returned by the agent to the client in an `AiAnswer` object,
   class AiConversationStatus(enum.Enum):
     DONE = "Done"
     ACTION_REQUIRED = "ActionRequired"
-
 
   class AiAnswer(Generic[TAnswer]):
       def __init__(

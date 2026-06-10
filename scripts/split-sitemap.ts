@@ -15,7 +15,7 @@
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { splitSitemap } from "../src/lib/split-sitemap/lib/split.js";
+import { splitSitemap, type SplitSucceeded } from "../src/lib/split-sitemap/lib/split.js";
 import { LEGACY_VERSIONS } from "./lib/version-policy.js";
 
 const BASE_URL = "https://docs.ravendb.net";
@@ -32,10 +32,12 @@ if (result.skipped) {
     process.exit(0);
 }
 
-for (const { name, urls } of result.files) {
+// process.exit above prevents reaching here when skipped; cast to the success type
+const { files, includedUrls, skippedLegacyUrls } = result as SplitSucceeded;
+for (const { name, urls } of files) {
     console.log(`[split-sitemap]   ${name}: ${urls} URLs`);
 }
 console.log(
-    `[split-sitemap] split into ${result.files.length} sub-sitemaps ` +
-        `(${result.includedUrls} URLs included, ${result.skippedLegacyUrls} legacy URLs excluded)`
+    `[split-sitemap] split into ${files.length} sub-sitemaps ` +
+        `(${includedUrls} URLs included, ${skippedLegacyUrls} legacy URLs excluded)`
 );

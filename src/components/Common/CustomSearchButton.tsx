@@ -41,6 +41,8 @@ export default function CustomSearchButton({
         onOpen: onClick,
         onClose: () => {},
         searchButtonRef: buttonRef,
+        isAskAiActive: false,
+        onAskAiToggle: () => {},
     });
 
     return (
