@@ -34,6 +34,8 @@ like adding or removing nodes, and run recurring tasks like backing up your data
     * [Your Account](../cloud/cloud-overview.mdx#your-account)
         - [Register](../cloud/cloud-overview.mdx#register-your-account)
         - [Login](../cloud/cloud-overview.mdx#login-to-your-account)
+            - [Login with a magic link](../cloud/cloud-overview.mdx#login-with-a-magic-link)
+            - [Login with GitHub or Google](../cloud/cloud-overview.mdx#login-with-github-or-google)
     * [RavenDB on the Cloud](../cloud/cloud-overview.mdx#ravendb-on-the-cloud)
         * [Instances, Provisioning and RavenDB Products](../cloud/cloud-overview.mdx#instances-provisioning-and-ravendb-products)
         * [RavenDB Tiers: Free, Development and Production](../cloud/cloud-overview.mdx#ravendb-tiers)
@@ -67,6 +69,14 @@ as soon as you finish registering, so you can immediately start creating and han
 
 To create a new account, enter [https://cloud.ravendb.net/user/register](https://cloud.ravendb.net/user/register)
 and allow the wizard to walk you through the 5 simple stages of the registration procedure:
+
+<Admonition type="info" title="">
+You can also start registration by clicking **Login via GitHub** or **Login via Google** on the
+[login page](../cloud/cloud-overview.mdx#login-to-your-account). If no Cloud account exists yet for
+the email reported by the provider, a registration link is sent to that address and the registration
+form opens with the email already filled in.
+See [Login with GitHub or Google](../cloud/cloud-overview.mdx#login-with-github-or-google).
+</Admonition>
 
 1. **Email**
 2. **Account information**
@@ -118,7 +128,10 @@ Click the **Skip Billing Information** button if you prefer to evaluate the clou
 ## Login To Your Account
 
 To access your account, click [https://cloud.ravendb.net/user/login](https://cloud.ravendb.net/user/login).
-#### Login
+
+You can sign in either with a **magic link** sent to your email, or by using your
+**GitHub** or **Google** account.
+#### Login with a magic link
 !["Figure 7 - Login page"](./assets/login-page-email.png)
 
 - Enter the same email address you provided during registration, confirm you're not a robot, and
@@ -139,7 +152,34 @@ To access your account, click [https://cloud.ravendb.net/user/login](https://clo
   We advise you to enable 2FA. Setup is described [here](../cloud/cloud-security.mdx#enable-mfa).  
   </Admonition>
 
+#### Login with GitHub or Google
 
+In addition to the magic link, you can sign in using your **GitHub** or **Google** account.
+The login page shows **Login via GitHub** and **Login via Google** buttons below the magic-link form.
+
+!["Figure 8 - Login page with GitHub and Google buttons"](./assets/login-page-oauth-buttons.png)
+
+- Click **Login via GitHub** or **Login via Google**.
+- Authorize RavenDB Cloud at the chosen provider.
+- You are returned to RavenDB Cloud and signed in to the account whose email address matches the one
+  reported by the provider.
+
+<Admonition type="note" title="">
+Your RavenDB Cloud account is identified by **email address**. GitHub and Google sign in only
+succeed when the email reported by the provider matches the email of an existing Cloud account.
+</Admonition>
+
+<Admonition type="info" title="2FA">
+Users are responsible for enabling and maintaining Two-Factor Authentication (2FA) on their designated Single Sign-On (SSO) provider.
+</Admonition>
+
+**No Cloud account for the email**
+
+If no RavenDB Cloud account exists for the email returned by GitHub or Google, you are taken to a
+**Check your inbox** page and an email with a sign-in link is sent to that address. Following the
+link opens the registration form with the email pre-filled, so you can finish creating the account.
+
+!["Figure 9 - Check your inbox page"](./assets/login-oauth-check-email-page.png)
 
 ## RavenDB on the Cloud
 
