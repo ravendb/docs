@@ -3,6 +3,11 @@ title: "Search Engine: Corax"
 sidebar_label: Corax
 description: "Corax is RavenDB's native search engine, offering faster indexing and querying performance as an alternative to the Lucene engine."
 sidebar_position: 0
+see_also:
+     - title: "Hugin"
+       link: "/samples/hugin"
+       source: "samples"
+       path: "Samples > Offline Search"
 ---
 
 import Admonition from '@theme/Admonition';
@@ -202,7 +207,7 @@ Read more about this [below](../../indexes/search-engine/corax.mdx#handling-of-c
 
 #### Unsupported `WHERE` methods/terms:  
 
-* [lucene()](../../client-api/session/querying/document-query/how-to-use-lucene.mdx)  
+* [lucene()](../../querying/filtering-query-results/filter-with-lucene-syntax.mdx)  
 * [intersect()](../../indexes/querying/intersection.mdx)  
 ### Unimplemented methods
 
@@ -597,7 +602,6 @@ Corax indexes will **not** train compression dictionaries if they are created in
 [Test Index](../../studio/database/indexes/create-map-index.mdx#test-index) interface, 
 because the testing interface is designed for indexing prototyping and the training 
 process will add unnecessary overhead.
-
 
 
 

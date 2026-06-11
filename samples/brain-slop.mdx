@@ -1,0 +1,156 @@
+---
+title: "BrainSlop"
+description: "RavenDB keeps AI-suggested project changes governed, approved, and recorded as normal document updates."
+challenges_solutions_tags: [governed-ai-workflows, single-database-ai]
+feature_tags: [ai-agents, gen-ai-tasks, document-session, revisions]
+tech_stack_tags: [nodejs, nextjs, typescript]
+category: "Project Management"
+license: "MIT License"
+license_url: "https://github.com/ravendb/samples-brain-slop/blob/main/LICENSE"
+repository_url: "https://github.com/ravendb/samples-brain-slop"
+languages: ["Node.js"]
+image: "/img/samples/brain-slop/cover.png"
+img_alt: "BrainSlop project-management interface with AI-created tasks"
+gallery:
+  - src: "/img/samples/brain-slop/cover.png"
+    alt: "BrainSlop turns free-form chat input into organized project tasks"
+related_resources:
+  - type: documentation
+    documentation_type: docs
+    subtitle: "AI Agents"
+    article_key: "ai-integration/ai-agents/start"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "GenAI Integration"
+    article_key: "ai-integration/gen-ai-integration/start"
+  - type: guide
+    subtitle: "Multi-Agent Collaboration with RavenDB"
+    article_key: "multi-agents"
+  - type: video
+    subtitle: "RavenDB AI Agents Webinar"
+    url: "https://www.youtube.com/watch?v=A17GSLGN-cQ"
+---
+
+import { FeatureAccordion, SampleLayout } from '@site/src/components/Samples';
+
+<SampleLayout>
+
+## Overview
+
+BrainSlop shows how RavenDB helps applications turn messy AI-assisted input into controlled business changes. A user can describe project work in plain language, while RavenDB AI Agents resolve the request against current project and task documents and return proposed actions for the application to approve.
+
+The value is governance without slowing the user down. Conversations, pending tool calls, approved changes, project documents, task documents, and generated titles all stay in RavenDB, so AI can help move work forward while validation, approval, history, and persistence remain application-owned.
+
+## Features used
+
+<FeatureAccordion
+    title="AI Agents with query and action tools"
+    description="Lets the model inspect RavenDB documents and propose application actions through explicit tools."
+    icon="ai-agents"
+>
+    BrainSlop configures one RavenDB AI Agent with RQL query tools for projects and tasks plus action tools for mutations. The agent can answer from RavenDB data, but writes are represented as tool calls first.
+
+    ```typescript
+    await store.maintenance.send(new AddOrUpdateAiAgentOperation({
+        identifier: "assistant",
+        name: "Assistant",
+        connectionStringName: "OpenAI",
+        systemPrompt: SYSTEM_PROMPT,
+        queries: AGENT_QUERIES,
+        actions: AGENT_ACTIONS,
+        disabled: false,
+    }));
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="GenAI task for conversation metadata"
+    description="Uses a RavenDB GenAI task to enrich stored conversation documents."
+    icon="genai"
+>
+    BrainSlop also configures a GenAI task over the `@conversations` collection. RavenDB watches the stored conversation, sends a compact context object to the model, and writes the generated title back into the same document.
+
+    ```typescript
+    const genAiConfig = new GenAiConfiguration();
+    genAiConfig.name = "Conversation Title Generator";
+    genAiConfig.collection = "@conversations";
+    genAiConfig.prompt = "Create a concise title summarizing the main topic of this conversation.";
+    genAiConfig.sampleObject = '{"Title": "The title of the conversation"}';
+    genAiConfig.updateScript = "this.Title = $output.Title";
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Human-approved tool execution"
+    description="Keeps AI-generated changes under application control before RavenDB documents are updated."
+    icon="ai-agents"
+>
+    The application extracts open AI action calls, validates their arguments with typed schemas, and only then runs the matching repository operation. Approval or rejection is sent back into the RavenDB AI conversation as a tool response.
+
+    ```typescript
+    export async function executeAction(chatId: string, action: Action, onChunk: (chunk: string) => void) {
+        const executionResponse = await executeMappedAction(action);
+
+        return await sendToolMessage(
+            chatId,
+            { toolId: action.id, response: executionResponse },
+            onChunk
+        );
+    }
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="RavenDB document model"
+    description="Keeps projects, tasks, conversations, and pending actions in the operational database."
+    icon="database"
+>
+    RavenDB keeps the project-management state in ordinary documents. AI output becomes typed application input that updates those documents through repository code, so teams can add assistance without creating a second state model for the assistant.
+
+    ```typescript
+    const executors = {
+        CreateProject: executeCreateProjectAction,
+        AddNewTask: executeAddNewTaskAction,
+        EditTask: executeEditTaskAction,
+        EditProject: executeEditProjectAction,
+        DeleteProject: executeDeleteProjectAction,
+        DeleteTask: executeDeleteTaskAction
+    };
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Revisions for AI-assisted changes"
+    description="Keeps a database-native history for documents changed through agent workflows."
+    icon="index-history"
+>
+    Revisions are valuable when AI is allowed near business data. BrainSlop demonstrates a workflow where changes are still normal RavenDB document updates, so the same revision history used for human edits can also cover AI-assisted edits.
+</FeatureAccordion>
+
+## Technologies
+
+- [RavenDB](https://ravendb.net/)
+- [Next.js](https://nextjs.org/)
+- [Node.js](https://nodejs.org/)
+
+## Run locally
+
+1. Check out the repository.
+2. Install Node.js and RavenDB.
+3. Start RavenDB in unsecured mode for local development.
+4. Run `npm install`.
+5. Run `npm run dev`.
+
+## Community & Support
+
+If you spot a bug, have an idea, or want to ask a question, open an issue or pull request in the repository. The RavenDB team also hangs out on the [RavenDB Discord server](https://discord.gg/ravendb).
+
+## Contributing
+
+Contributions are welcome. See the repository's [CONTRIBUTING](https://github.com/ravendb/samples-brain-slop/blob/main/CONTRIBUTING.md) file for details.
+
+## License
+
+This project is licensed with the [MIT license](https://github.com/ravendb/samples-brain-slop/blob/main/LICENSE).
+
+</SampleLayout>

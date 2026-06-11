@@ -34,7 +34,18 @@ const config: Config = {
     // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
     future: {
         v4: true, // Improve compatibility with the upcoming Docusaurus v4
-        experimental_faster: true,
+        faster: true,
+    },
+
+    // future.v4 enables mdx1CompatDisabledByDefault in 3.10+, which turns off HTML
+    // comments and {#id} heading anchors. Re-enable them explicitly: read-only
+    // versioned_docs/ snapshots use both and cannot be edited.
+    markdown: {
+        mdx1Compat: {
+            comments: true,
+            headingIds: true,
+            admonitions: true,
+        },
     },
 
     customFields: {
@@ -118,6 +129,15 @@ const config: Config = {
             },
         ],
         [
+            "content-docs",
+            {
+                id: "samples",
+                path: "samples",
+                routeBasePath: "samples",
+                sidebarPath: require.resolve("./sidebarsSamples.js"),
+            },
+        ],
+        [
             "@docusaurus/plugin-ideal-image",
             {
                 max: 1200,
@@ -129,6 +149,7 @@ const config: Config = {
         ],
         require.resolve("./src/plugins/recent-guides-plugin"),
         require.resolve("./src/plugins/versioned-seo-plugin"),
+        require.resolve("./src/plugins/recent-samples-plugin"),
     ],
     headTags: [
         {
@@ -226,6 +247,11 @@ const config: Config = {
                     url: "https://ravendb.net/download",
                 },
             }),
+        },
+        {
+            tagName: "script",
+            attributes: { type: "text/javascript" },
+            innerHTML: `!function(){if(location.hostname!=="docs.ravendb.net")return;var e,t,n;e="151dc5b0493a177",t=function(){Reo.init({clientID:"151dc5b0493a177"})},n=document.createElement("script"),n.src="https://static.reo.dev/"+e+"/reo.js",n.defer=!0,n.onload=t,document.head.appendChild(n)}();`,
         },
     ],
     themeConfig: {

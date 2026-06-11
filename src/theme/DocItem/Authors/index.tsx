@@ -18,7 +18,6 @@ type Author = {
 function getAuthorData(authorKey: string): Author | null {
     const authorInfo = authorsData[authorKey];
     if (!authorInfo) {
-        // eslint-disable-next-line no-console
         console.warn(`No author data found for key '${authorKey}' in authors.json`);
         return null;
     }
@@ -63,7 +62,7 @@ const socialIconMap: Record<Platform, IconName> = {
 
 export default function DocItemAuthors() {
     const { frontMatter } = useDoc();
-    const { publishedAt, author: authorKey } = frontMatter;
+    const { published_at: publishedAt, author: authorKey } = frontMatter;
 
     if (!authorKey && !publishedAt) {
         return null;

@@ -16,11 +16,13 @@ import CodeBlock from '@theme/CodeBlock';
       See examples below.  
       
     * You can configure which analyzer will be used to tokenize this field.  
-      See [selecting an analyzer](../../../indexes/using-analyzers.mdx#selecting-an-analyzer-for-a-field).    
+      Learn more in [Setting analyzer for index-field](../../../indexes/using-analyzers.mdx#setting-analyzer-for-index-field).    
+    
 * In this article:
   * [Indexing single field for FTS](../../../indexes/querying/searching.mdx#indexing-single-field-for-fts)
   * [Indexing multiple fields for FTS](../../../indexes/querying/searching.mdx#indexing-multiple-fields-for-fts)
-  * [Indexing all fields for FTS (using AsJson)](../../../indexes/querying/searching.mdx#indexing-all-fields-for-fts-(using-asjson))
+  * [Indexing all fields for FTS (using AsJson)](../../../indexes/querying/searching.mdx#indexing-all-fields-for-fts-using-asjson)
+  * [Indexing dynamic fields for FTS](../../../indexes/querying/searching.mdx#indexing-dynamic-fields-for-fts)
   * [Boosting search results](../../../indexes/querying/searching.mdx#boosting-search-results)
   * [Searching with wildcards](../../../indexes/querying/searching.mdx#searching-with-wildcards)
       * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](../../../indexes/querying/searching.mdx#when-usingoror)
@@ -28,6 +30,7 @@ import CodeBlock from '@theme/CodeBlock';
       * [When using the Exact analyzer](../../../indexes/querying/searching.mdx#when-using-the-exact-analyzer)
 
 </Admonition>
+
 ## Indexing single field for FTS
 
 #### The index:
@@ -262,7 +265,7 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
 
 ## Indexing all fields for FTS (using AsJson)
 
-* To search across ALL fields in a document without defining each one explicitly,
+* To search across ALL fields in a document without defining each one explicitly,  
   use the `AsJson` method in the _Map_ function to extract all property values and index them in a single searchable field.
 
 * This approach makes the index robust to changes in the document schema.  
@@ -377,7 +380,14 @@ where search(AllValues, "tofu")
 </TabItem>
 </Tabs>
 
+## Indexing dynamic fields for FTS
 
+* [Dynamic index fields](../../../indexes/using-dynamic-fields.mdx) are created at indexing time, with names and values derived from document content,  
+  rather than being predefined as fixed index fields in the index definition.  
+  This allows you to query the index by fields that are not known at index definition or deployment time.
+
+* Dynamic index fields can be configured for full-text search just like regular index fields.  
+  Learn more in [Indexing dynamic fields for full-text search](../../../indexes/using-dynamic-fields.mdx#indexing-dynamic-fields-for-full-text-search).
 
 ## Boosting search results
 
@@ -405,6 +415,12 @@ where search(AllValues, "tofu")
 
 * When using [Corax](../../../indexes/search-engine/corax.mdx) as the search engine,  
   this behavior will only apply to indexes that are newly created or have been reset.
+
+* Note that the `Search` method supports only the **multi-character** wildcard `*`.  
+  To match a **single character** using the `?` wildcard, use Lucene syntax instead.  
+  This requires the target index to use the Lucene search engine.
+  Learn more in [Filter with Lucene syntax](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#wildcards).
+
 <Admonition type="note" title="">
 
 ##### When using&nbsp;`RavenStandardAnalyzer`&nbsp;or`StandardAnalyzer`&nbsp;or&nbsp;`NGramAnalyzer`:

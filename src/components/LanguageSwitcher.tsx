@@ -1,20 +1,7 @@
 ﻿import React, { useEffect } from "react";
 import { useLanguage, type DocsLanguage } from "./LanguageStore";
+import { languageConfig } from "./languageConfig";
 import clsx from "clsx";
-
-interface LanguageOption {
-    label: string;
-    value: DocsLanguage;
-    brand: string;
-}
-
-const languageOptions: LanguageOption[] = [
-    { label: "C#", value: "csharp", brand: "#9179E4" },
-    { label: "Java", value: "java", brand: "#f89820" },
-    { label: "Python", value: "python", brand: "#fbcb24" },
-    { label: "PHP", value: "php", brand: "#8993be" },
-    { label: "Node.js", value: "nodejs", brand: "#3c873a" },
-];
 
 type LanguageSwitcherProps = {
     supportedLanguages: DocsLanguage[];
@@ -35,7 +22,7 @@ export default function LanguageSwitcher({ supportedLanguages, flush = false }: 
 
     return (
         <div className={clsx("flex flex-wrap gap-2", { "mb-8": !flush })}>
-            {languageOptions
+            {languageConfig
                 .filter((lang) => supportedLanguages.includes(lang.value))
                 .map((lang) => {
                     const isActive = language === lang.value;

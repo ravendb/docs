@@ -1,0 +1,173 @@
+---
+title: "Samples: Filtering"
+hide_table_of_contents: false
+sidebar_label: Filtering
+see_also:
+    - title: "Samples Introduction"
+      link: "/templates/introduction-samples"
+      source: "docs"
+      path: "Templates > Samples"
+    - title: "Sample tags"
+      link: "/templates/tags-samples"
+      source: "docs"
+      path: "Templates > Samples"
+---
+
+import Admonition from "@theme/Admonition";
+import Panel from "@site/src/components/Panel";
+
+The Samples hub page features a powerful filtering system with URL-based state, multi-category tag selection, and flexible match logic.
+
+## Features
+
+### 1. Multi-Category Filtering
+
+Tags are organized into three categories:
+- **Challenges & Solutions** - Business problems solved
+- **Features** - RavenDB features demonstrated
+- **Tech Stack** - Technologies used
+
+Users can select tags from any or all categories simultaneously.
+
+### 2. Match Logic Toggle
+
+Two matching modes:
+- **Any** (OR logic) - Show samples matching *any* selected tag
+- **All** (AND logic) - Show samples matching *all* selected tags
+
+### 3. URL-Based State
+
+Filter state is stored in URL query parameters for:
+- Shareable filtered views
+- Browser back/forward navigation
+- Bookmarkable searches
+
+**Example URLs:**
+```
+/samples?tags=vector-search
+/samples?tags=vector-search,include&match=all
+/samples?tags=csharp,aspire
+```
+
+### 4. Tag Search
+
+Filter sidebar includes a search box to quickly find tags by name.
+
+### 5. Expandable Categories
+
+Each category can be expanded/collapsed independently. Categories with many tags show only the first 5 by default with a "More" button.
+
+## User Flows
+
+### Flow 1: Browse and Filter
+
+1. User visits `/samples`
+2. Sees all samples in grid
+3. Clicks "Vector Search" tag in filter sidebar
+4. URL updates to `/samples?tags=vector-search`
+5. Grid filters to show only samples with vector search
+6. User clicks "Include" tag
+7. URL updates to `/samples?tags=vector-search,include`
+8. Grid shows samples with *either* tag (Any mode)
+
+### Flow 2: Refine with AND Logic
+
+1. User has selected `vector-search` and `include` tags
+2. Switches match logic from "Any" to "All"
+3. URL updates to `/samples?tags=vector-search,include&match=all`
+4. Grid shows only samples with *both* tags
+
+### Flow 3: Quick Filter from Card
+
+1. User sees a sample card with "C#" language badge
+2. Clicks the "C#" badge
+3. All filters clear, only "C#" is selected
+4. URL updates to `/samples?tags=csharp`
+5. Grid shows all C# samples
+
+### Flow 4: Share Filtered View
+
+1. User has filtered to `csharp,aspire` with "All" logic
+2. Copies URL: `/samples?tags=csharp,aspire&match=all`
+3. Shares URL with colleague
+4. Colleague opens URL and sees the same filtered view
+
+## UI Components
+
+### SamplesFilter
+
+**Features:**
+- Search box for filtering tags by name
+- Match logic toggle (Any/All)
+- Clear filters button
+- Expandable categories
+- Tag checkboxes with counts
+
+**Props:**
+
+```typescript
+interface SamplesFilterProps {
+    categories: FilterCategoryData[];
+    selectedTags: Set<string>;
+    onTagToggle: (tagKey: string) => void;
+    matchLogic: "any" | "all";
+    onMatchLogicChange: (logic: "any" | "all") => void;
+    onClearFilters?: () => void;
+}
+```
+
+### FilterCategory
+
+**Features:**
+- Collapsible category header
+- Shows first 5 tags by default
+- "More" button to expand remaining tags
+- Checkbox for each tag with label
+
+**Props:**
+
+```typescript
+interface FilterCategoryProps {
+    name: string;
+    label: string;
+    tags: FilterTag[];
+    selectedTags: Set<string>;
+    onTagToggle: (tagKey: string) => void;
+    isExpanded: boolean;
+    onToggleExpanded: () => void;
+}
+```
+
+### SamplesGrid
+
+**Features:**
+- Displays filtered samples
+- Shows sample count badge
+- Responsive grid (1 column mobile, 2 columns desktop)
+- Staggered animation on load
+
+**Props:**
+
+```typescript
+interface SamplesGridProps {
+    samples: Sample[];
+    selectedTags: Set<string>;
+    matchLogic: "any" | "all";
+    onTagClick?: (tagKey: string) => void;
+}
+```
+
+## Styling
+
+### Active Tag State
+
+Selected tags are highlighted in the filter sidebar:
+
+```tsx
+<Checkbox
+    key={tag.key}
+    checked={selectedTags.has(tag.key)}
+    onChange={() => onTagToggle(tag.key)}
+    label={tag.label}
+/>
+```

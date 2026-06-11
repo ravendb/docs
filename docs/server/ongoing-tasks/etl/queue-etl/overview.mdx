@@ -3,6 +3,15 @@ title: "Queue ETL Overview"
 sidebar_label: Overview
 description: "Send RavenDB document changes to message queues like Kafka, RabbitMQ, Amazon SQS, and Azure Queue using queue ETL tasks."
 sidebar_position: 0
+see_also:
+  - title: "Sample: Fit Assistant"
+    link: "/samples/fit-assistant"
+    source: "samples"
+    path: "Samples > Durable Event Delivery"
+  - title: "Sample: Verity"
+    link: "/samples/verity"
+    source: "samples"
+    path: "Samples > Durable Event Delivery"
 ---
 
 import Admonition from '@theme/Admonition';
@@ -112,12 +121,20 @@ The above ETL tasks:
     | **type**        | `string` | [Event type](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#type)                      | "ravendb.etl.put"                                    |
     | **source**      | `string` | [Event context](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#source-1)               | `<ravendb-node-url>/<database-name>/<etl-task-name>` |
 
-* The optional 'partitionkey' attribute can also be added.  
-  Currently, it is only implemented by [Kafka ETL](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx).  
+* The following [optional attributes](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#optional-attributes) can also be specified:  
 
-    | Optional Attribute   | Type       | Description                                                                                                                                  | Default Value    |
-    |----------------------|------------|----------------------------------------------------------------------------------------------------------------------------------------------|------------------|
-    | **partitionkey**     | `string`   | [Events relationship/grouping definition](https://github.com/cloudevents/spec/blob/main/cloudevents/extensions/partitioning.md#partitionkey) | The document ID  |
+    | Optional Attribute | Type        | Description                                                                                                                                          | Default Value   |
+    |--------------------|-------------|------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
+    | **partitionkey**   | `string`    | [Events relationship/grouping definition](https://github.com/cloudevents/spec/blob/main/cloudevents/extensions/partitioning.md#partitionkey)        | The document ID |
+    | **dataschema**     | `URI`       | [Identifies the schema that data adheres to](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#dataschema)                          | None            |
+    | **subject**        | `string`    | [Describes the subject of the event in the context of the event producer](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#subject) | None            |
+    | **time**           | `Timestamp` | [Timestamp of when the occurrence happened](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#time)                                 | None            |
+
+<Admonition type="note" title="">
+The `partitionkey` attribute is a [CloudEvents partitioning extension](https://github.com/cloudevents/spec/blob/main/cloudevents/extensions/partitioning.md).  
+For [Kafka ETL](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx), it controls which partition the message is routed to.  
+For other queue brokers, it is included as message metadata but has no routing effect.  
+</Admonition>
 
 
 
@@ -127,7 +144,6 @@ Use the Studio [Ongoing tasks stats](../../../../studio/database/stats/ongoing-t
 to see various statistics related to data extraction, transformation, and loading to the target broker.  
 
 ![Queue Brokers Stats](./assets/overview_stats.png)
-
 
 
 

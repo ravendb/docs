@@ -64,7 +64,7 @@ or to `false` to include it.
 `skipCollectionsMetrics`  
 
 E.g., to skip indexing metrics use -  
-http://localhost:8080/admin/monitoring/v1/prometheus?skipIndexesMetrics=true
+http://localhost:8080/admin/monitoring/v1/prometheus?skipIndexesMetrics=true  
 And to skip both indexing and server metrics use -  
 http://localhost:8080/admin/monitoring/v1/prometheus?skipIndexesMetrics=true&skipServerMetrics=true
 
@@ -74,6 +74,10 @@ Here is the list of metrics made available by the `/admin/monitoring/v1/promethe
 
 | Metrics | Description |
 | - | - |
+| ai_task_documents_processed_per_second | Documents processed per second by the AI task (one minute rate) |
+| ai_task_errors_count | Number of errors recorded for the AI task |
+| ai_task_health_status | AI task health status + `0`/`1`/`2` <br/> 0 =&gt; Healthy <br/> 1 =&gt; Impaired <br/> 2 =&gt; Failed |
+| ai_task_last_successful_batch_time_in_seconds | Time since the AI task's last successful batch, in seconds |
 | archived_data_processing_behavior | Archived data processing behavior + `0`/`1`/`2` <br/> 0 =&gt; ExcludeArchived <br/> 1 =&gt; IncludeArchived <br/> 2 =&gt; ArchivedOnly |
 | backup_current_number_of_running_backups | Number of currently running backups |
 | backup_max_number_of_concurrent_backups | Maximum number of concurrent backups |
@@ -93,9 +97,19 @@ Here is the list of metrics made available by the `/admin/monitoring/v1/promethe
 | cpu_processor_count | Number of processors on the machine |
 | cpu_thread_pool_available_completion_port_threads | Number of available completion port threads in the thread pool |
 | cpu_thread_pool_available_worker_threads | Number of available worker threads in the thread pool |
+| database_ai_tasks_count | Number of AI tasks in the database |
+| database_ai_tasks_errors_count | Total number of AI task errors in the database |
+| database_ai_tasks_failed_count | Number of AI tasks with `Failed` health status in the database |
+| database_ai_tasks_healthy_count | Number of AI tasks with `Healthy` health status in the database |
+| database_ai_tasks_impaired_count | Number of AI tasks with `Impaired` health status in the database |
 | database_alerts_count | Number of alerts |
 | database_attachments_count | Number of attachments |
 | database_documents_count | Number of documents |
+| database_etls_count | Number of ETL tasks in the database |
+| database_etls_errors_count | Total number of ETL errors in the database |
+| database_etls_failed_count | Number of ETL tasks with `Failed` health status in the database |
+| database_etls_healthy_count | Number of ETL tasks with `Healthy` health status in the database |
+| database_etls_impaired_count | Number of ETL tasks with `Impaired` health status in the database |
 | database_indexes_auto_count | Number of auto indexes |
 | database_indexes_count | Number of indexes |
 | database_indexes_errored_count | Number of error indexes |
@@ -131,6 +145,10 @@ Here is the list of metrics made available by the `/admin/monitoring/v1/promethe
 | database_uptime_seconds | Database up-time |
 | databases_loaded_count | Number of loaded databases |
 | databases_total_count | Number of all databases |
+| etl_documents_processed_per_second | Documents processed per second by the ETL task (one minute rate) |
+| etl_errors_count | Number of errors recorded for the ETL task |
+| etl_health_status | ETL task health status + `0`/`1`/`2` <br/> 0 =&gt; Healthy <br/> 1 =&gt; Impaired <br/> 2 =&gt; Failed |
+| etl_last_successful_batch_time_in_seconds | Time since the ETL task's last successful batch, in seconds |
 | index_entries_count | Number of entries in the index |
 | index_errors | Number of index errors |
 | index_is_invalid | Indicates if index is invalid |
@@ -161,9 +179,19 @@ Here is the list of metrics made available by the `/admin/monitoring/v1/promethe
 | network_requests_per_second | Number of requests per second (one minute rate) |
 | network_tcp_active_connections | Number of active TCP connections |
 | network_total_requests | Total number of requests since server startup |
+| server_ai_tasks_count | Total number of AI tasks across all databases |
+| server_ai_tasks_errors_count | Total number of AI task errors across all databases |
+| server_ai_tasks_failed_count | Number of AI tasks with `Failed` health status across all databases |
+| server_ai_tasks_healthy_count | Number of AI tasks with `Healthy` health status across all databases |
+| server_ai_tasks_impaired_count | Number of AI tasks with `Impaired` health status across all databases |
 | server_disk_remaining_storage_space_percentage | Remaining server storage disk space in % |
 | server_disk_system_store_total_data_file_size_bytes | Server storage total size |
 | server_disk_system_store_used_data_file_size_bytes | Server storage used size |
+| server_etls_count | Total number of ETL tasks across all databases |
+| server_etls_errors_count | Total number of ETL errors across all databases |
+| server_etls_failed_count | Number of ETL tasks with `Failed` health status across all databases |
+| server_etls_healthy_count | Number of ETL tasks with `Healthy` health status across all databases |
+| server_etls_impaired_count | Number of ETL tasks with `Impaired` health status across all databases |
 | server_info | Server Info |
 | server_process_id | Server process ID |
 | server_storage_io_read_operations | Disk IO Read operations |

@@ -3,9 +3,22 @@ title: "Using Remote Attachments to cut storage costs"
 tags: [document-extensions, attachments, data-governance, architecture, csharp, use-case]
 icon: "remote-attachment"
 description: "Store RavenDB attachments in Amazon S3 or Azure Blob Storage to cut costs. Studio and C# setup guide with bulk migration of existing attachments."
-publishedAt: 2026-02-01
+published_at: 2026-02-01
 author: "Paweł Lachowski"
-proficiencyLevel: "Expert"
+proficiency_level: "Expert"
+see_also:
+  - title: "Attachments Overview"
+    link: "document-extensions/attachments/overview"
+    source: "docs"
+    path: "Document Extensions > Attachments"
+  - title: "Store Remote Attachments"
+    link: "document-extensions/attachments/store-attachments/store-attachments-remote"
+    source: "docs"
+    path: "Document Extensions > Attachments > Store Attachments"
+  - title: "Configure Remote Attachments"
+    link: "document-extensions/attachments/configure-remote-attachments"
+    source: "docs"
+    path: "Document Extensions > Attachments"
 ---
 
 import Admonition from '@theme/Admonition';
@@ -14,7 +27,7 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import Image from "@theme/IdealImage";
 
-RavenDB's document [attachments](https://docs.ravendb.net/7.2/document-extensions/attachments/overview/) let you store any file with the corresponding document. No matter if it's a PDF, a video, an image, or something completely different, you can still keep it with the rest of the document, stored as bytes. The only problem is that some attachments can be large and numerous, while your storage space may be limited.
+RavenDB's document [attachments](https://docs.ravendb.net/document-extensions/attachments/overview) let you store any file with the corresponding document. No matter if it's a PDF, a video, an image, or something completely different, you can still keep it with the rest of the document, stored as bytes. The only problem is that some attachments can be large and numerous, while your storage space may be limited.
 
 There's a simple solution \- you might want to store binary files at some cloud object storage, but transporting your data with custom scripts creates operational risk and adds another point of failure, not to mention implementation and maintenance costs.
 
@@ -33,7 +46,7 @@ From the application's perspective, nothing changes. Attachments are accessed ex
 RavenDB handles the entire process for you: uploads, retries, consistency, and monitoring. There are no custom scripts, no fragile migrations, and no application changes required. Let's discover various destinations and describe how we can leverage them.
 
 <Admonition type="warning" title="Sharding not supported">
-Remote attachments are not supported on sharded databases. If you are using [sharding](https://docs.ravendb.net/7.2/sharding/overview), attachments must remain local.
+Remote attachments are not supported on sharded databases. If you are using [sharding](https://docs.ravendb.net/sharding/overview), attachments must remain local.
 </Admonition>
 
 ### When should you use cold storage classes like Glacier?
@@ -167,7 +180,7 @@ await store.Maintenance.SendAsync(
 );
 ```
 
-For more details on all configuration options, see the [remote attachments reference documentation](https://docs.ravendb.net/7.2/document-extensions/attachments/configure-remote-attachments).
+For more details on all configuration options, see the [remote attachments reference documentation](https://docs.ravendb.net/document-extensions/attachments/configure-remote-attachments).
 
 ### How do you add a remote attachment in Studio?
 
@@ -251,9 +264,9 @@ Then after one minute that has been requested with `DateTime.UtcNow.AddMinutes(1
 <Image img={require("./assets/Remote7.webp")} alt="RavenDB Studio showing an attachment that has been offloaded to Amazon S3 remote storage with a remote storage indicator" />
 ### How do you migrate existing local attachments to remote storage?
 
-When moving to remote storage, you would probably also want to move old attachments. To do that we can use a [set-based patch operation](https://docs.ravendb.net/7.2/client-api/operations/patching/set-based#updating-all-documents):
+When moving to remote storage, you would probably also want to move old attachments. To do that we can use a [set-based patch operation](https://docs.ravendb.net/client-api/operations/patching/set-based#updating-all-documents):
 
-```csharp
+```sql
 from @all_docs
 update
 {
@@ -289,4 +302,4 @@ Remote attachments in RavenDB let you offload binary data to Amazon S3, Azure Bl
 
 For the full API reference, see the [remote attachments configuration documentation](https://docs.ravendb.net/document-extensions/attachments/configure-remote-attachments). To learn about storing remote attachments programmatically, see [store remote attachments](https://docs.ravendb.net/document-extensions/attachments/store-attachments/store-attachments-remote). For how remote attachments interact with replication, backups, and subscriptions, see [attachments and other features](https://docs.ravendb.net/document-extensions/attachments/attachments-and-other-features).
 
-Interested in RavenDB? Grab the developer license dedicated for testing under this link [here](https://ravendb.net/dev), or get a free cloud database [here](https://ravendb.net/cloud). If you have questions about this feature, or want to hang out and talk with the RavenDB team, join our Discord Community Server \- invitation link is [here](https://discord.com/invite/ravendb).
+Interested in RavenDB? [Grab a free developer license](https://ravendb.net/dev) for testing, or [start a free RavenDB Cloud database](https://ravendb.net/cloud). If you have questions about this feature, or want to hang out and talk with the RavenDB team, [join the RavenDB Discord Community](https://discord.com/invite/ravendb).

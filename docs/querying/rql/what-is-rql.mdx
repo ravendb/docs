@@ -31,6 +31,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
   * Using the session's [RawQuery](../../querying/overview.mdx#session-advanced-rawquery) method in the Client API.  
   * Writing a query in the [Query view](../../studio/database/queries/query-view.mdx) in Studio, where [RQL code assistance](../../querying/rql/rql-code-assistance.mdx) is available.
 
+* **RQL keywords are case-insensitive**:  
+  For example, `SELECT`, `select`, and `Select` are equivalent.
+    
+---
+    
 * In this article:
   * [The query pipeline](../../querying/rql/what-is-rql.mdx#the-query-pipeline)  
   * [RQL keywords and methods](../../querying/rql/what-is-rql.mdx#rql-keywords-and-methods)  
@@ -114,7 +119,7 @@ The following keywords and methods are available in RQL:
     - [regex()](../../client-api/session/querying/text-search/using-regex.mdx)
     - [startsWith()](../../client-api/session/querying/text-search/starts-with-query.mdx)
     - [endsWith()](../../client-api/session/querying/text-search/ends-with-query.mdx)
-    - [lucene()](../../client-api/session/querying/document-query/how-to-use-lucene.mdx)
+    - [lucene()](../../querying/filtering-query-results/filter-with-lucene-syntax.mdx)
     - [exists()](../../client-api/session/querying/how-to-filter-by-field.mdx)
     - [exact()](../../client-api/session/querying/text-search/exact-match-query.mdx)
     - [intersect()](../../indexes/querying/intersection.mdx)
@@ -132,10 +137,10 @@ The following keywords and methods are available in RQL:
         - [long](../../querying/sorting-query-results/sort-query-results.mdx)
         - [double](../../querying/sorting-query-results/sort-query-results.mdx)
         - [alphaNumeric](../../querying/sorting-query-results/sort-query-results.mdx)
+    - [NULLS FIRST | NULLS LAST](../../querying/sorting-query-results/sort-query-results.mdx) // TODO...
     - [random()](../../querying/sorting-query-results/sort-query-results.mdx#order-by-random)
     - [score()](../../querying/sorting-query-results/sort-query-results.mdx#order-by-score)
     - [spatial.distance()](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting)
-- [LOAD](../../querying/rql/what-is-rql.mdx#load)
 - [SELECT](../../querying/rql/what-is-rql.mdx#select)
     - DISTINCT
     - key()
@@ -144,6 +149,7 @@ The following keywords and methods are available in RQL:
     - [facet()](../../indexes/querying/faceted-search.mdx)
     - [timeseries()](../../document-extensions/timeseries/querying/overview-and-syntax.mdx#syntax)
     - [counter()](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries)
+- [LOAD](../../querying/rql/what-is-rql.mdx#load)
 - [LIMIT](../../querying/rql/what-is-rql.mdx#limit)
 - [UPDATE](../../querying/rql/what-is-rql.mdx#update)
 - [INCLUDE](../../querying/rql/what-is-rql.mdx#include)
@@ -210,7 +216,7 @@ The following options are available:
 #### Query a specific collection: &nbsp;&nbsp; `from <collection-name>`
 
 <TabItem>
-```csharp
+```sql
 // Full collection query 
 // Data source: The raw collection documents (Auto-index is Not created)
 from "Employees"
@@ -218,7 +224,7 @@ from "Employees"
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 // Collection query - by ID 
 // Data source: The raw collection documents (Auto-index is Not created)
 from "Employees" where id() = "employees/1-A"
@@ -226,7 +232,7 @@ from "Employees" where id() = "employees/1-A"
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 // Dynamic query - with filtering
 // Data source: Auto-index (server uses an existing auto-index or creates a new one)
 from "Employees" where FirstName = "Laura"
@@ -240,7 +246,7 @@ from "Employees" where FirstName = "Laura"
 #### Query all documents: &nbsp;&nbsp; `from @all_docs`
 
 <TabItem>
-```csharp
+```sql
 // All collections query
 // Data source: All raw collections (Auto-index is Not created)
 from @all_docs
@@ -248,7 +254,7 @@ from @all_docs
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 // Dynamic query - with filtering 
 // Data source: Auto-index (server uses an existing auto-index or creates a new one)
 from @all_docs where FirstName = "Laura"
@@ -262,7 +268,7 @@ from @all_docs where FirstName = "Laura"
 #### Query an index: &nbsp;&nbsp; `from index <index-name>`
 
 <TabItem>
-```csharp
+```sql
 // Index query
 // Data source: The specified index
 from index "Employees/ByFirstName"
@@ -270,7 +276,7 @@ from index "Employees/ByFirstName"
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 // Index query - with filtering
 // Data source: The specified index
 from index "Employees/ByFirstName" where FirstName = "Laura"
@@ -294,7 +300,7 @@ For example, you can return every document from the [Companies collection](../..
 whose _field value_ **=** _a given input_.  
 
 <TabItem>
-```csharp
+```sql
 from "Companies"
 where Name == "The Big Cheese" // Can use either '=' or'==' 
 ```
@@ -304,7 +310,7 @@ Filtering on **nested properties** is also supported.
 So in order to return all companies from 'Albuquerque' we need to execute following query:  
 
 <TabItem>
-```csharp
+```sql
 from "Companies"
 where Address.City = "Albuquerque"
 ```
@@ -320,14 +326,14 @@ The operator `between` returns results inclusively, and the type of border value
 It works on both 'numbers' and 'strings' and can be substituted with the `>=` and `<=` operators.
 
 <TabItem>
-```csharp
+```sql
 from "Products" 
 where PricePerUnit between 10.5 and 13.0 // Using between
 ```
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 from "Products" 
 where PricePerUnit >= 10.5 and PricePerUnit <= 13.0 // Using >= and <=
 ```
@@ -343,14 +349,14 @@ The `in` operator evaluates a field against a list of values.
 It will return results if the field matches **any** of the items in that list.    
 
 <TabItem>
-```csharp
+```sql
 from "Companies" 
 where Name in ("The Big Cheese", "Unknown company name")
 ```
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 from "Orders" 
 where Lines[].ProductName in ("Chang", "Spegesild", "Unknown product name") 
 ```
@@ -365,7 +371,7 @@ To ensure accuracy, especially when fields might be missing from some documents,
 use `exists(fieldName)` as the anchor:
     
 <TabItem>
-```csharp
+```sql
 from "Companies" 
 where exists(Name) and NOT Name in ("The Big Cheese", "The Cracker Box")
 ```
@@ -387,7 +393,7 @@ Due to its mechanics, it is only useful when used on array fields.
 The following query will yield no results in contrast to the `in` operator.
 
 <TabItem>
-```csharp
+```sql
 from "Orders" 
 where Lines[].ProductName all in ("Chang", "Spegesild", "Unknown product name")
 ```
@@ -397,7 +403,7 @@ Removing 'Unknown product name' will return only orders that contain products wi
 'Chang' and 'Spegesild' names.
 
 <TabItem>
-```csharp
+```sql
 from "Orders" 
 where Lines[].ProductName all in ("Chang", "Spegesild") 
 ```
@@ -407,32 +413,57 @@ where Lines[].ProductName all in ("Chang", "Spegesild")
     
 <ContentFrame>
 
-#### Binary Operators: &nbsp;&nbsp; `AND`, `OR`, `NOT`
+#### Binary operators: &nbsp;&nbsp; `AND`, `OR`, `NOT`
 
 Binary operators can be used to build more complex statements.  
 The `NOT` operator can only be used with one of the other binary operators creating `OR NOT` or `AND NOT` ones.
 
 <TabItem>
-```csharp
+```sql
 from "Companies"
 where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
 ```
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 from "Orders"
 where Freight > 500 AND ShippedAt > '1998-01-01'
 ```
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 from "Orders"
 where Freight > 500 AND ShippedAt > '1998-01-01' AND NOT Freight = 830.75
 ```
 </TabItem>
 
+</ContentFrame>
+    
+<ContentFrame>
+    
+#### Methods: &nbsp;&nbsp; `today()`, `now()` 
+
+Use `today()` and `now()` to compare date/time fields with the current server date or current server time.  
+Learn more in [Filter by date and time](../../querying/filtering-query-results/filter-by-date-and-time.mdx).    
+
+<TabItem>
+```sql    
+// Find orders that were shipped before the current date    
+from "Orders"
+where ShippedAt < today()
+```    
+</TabItem>
+    
+<TabItem>
+```sql
+// Find orders that are required at or after the current date and time
+from "Orders"
+where RequiredAt >= now()
+```    
+</TabItem>
+    
 </ContentFrame>
     
 <ContentFrame>
@@ -469,9 +500,106 @@ The keyword `include` has been introduced to support:
 
 ## `order by`
 
-Use `order by` to perform sorting.  
-Learn more in this [sorting](../../querying/sorting-query-results/sort-query-results.mdx) article.  
+Use `order by` to sort the query results by one or more fields.  
+Learn more about sorting in the [Sort query results](../../querying/sorting-query-results/sort-query-results.mdx) article.
+    
+RQL syntax:  
+    
+<TabItem>
+```sql
+ORDER BY <expression> [AS <type>] [ASC | DESC] [NULLS FIRST | NULLS LAST]
+```
+</TabItem>
+    
+By default, results are sorted in ascending order.
 
+<TabItem>
+```sql
+from "Employees"
+order by FirstName // ascending order
+```
+</TabItem>
+    
+To specify the sort direction, add `asc`, `ascending`, `desc`, or `descending`.
+
+<TabItem>
+```sql
+from "Employees"
+order by FirstName desc // descending order
+```
+</TabItem>
+
+You can also specify the sort type by adding `as <type>`.    
+<TabItem>
+```sql
+from "Products"
+order by UnitsInStock as long desc
+```
+</TabItem> 
+
+Use `nulls first` or `nulls last` to control where matching documents with `null` or missing values in the sorted field will appear in the query results.
+This is supported only by the [Corax](../../indexes/search-engine/corax.mdx) search engine.     
+    
+The `nulls first` and `nulls last` options are absolute.
+They place those documents before or after matching documents with non-null values, regardless of whether the query sorts in ascending or descending order:
+
+  * `nulls first` places those documents **before** matching documents with non-null values.
+  * `nulls last` places those documents **after** matching documents with non-null values.   
+    
+<TabItem>
+```csharp
+// Place documents whose ReportsTo field is null (or missing) at the top of the results
+from "Employees"
+order by ReportsTo nulls first
+```
+</TabItem>
+
+<TabItem>
+```csharp
+// Cast + direction + null placement on a single key
+from "Products"
+order by UnitsInStock as long desc nulls last
+```
+</TabItem>
+
+<TabItem>
+```csharp
+// Works with method expressions
+from "Employees"
+order by id() as string nulls last
+```
+</TabItem>
+
+<TabItem>
+```csharp
+// Works with spatial sorting
+from "Employees"
+order by spatial.distance(Address.Location, spatial.point(0, 0)) nulls first
+```
+</TabItem>
+
+<TabItem>
+```csharp
+// Per-clause control on a multi-key sort.
+// Each clause sets its own null placement.
+from "Products"
+order by Name nulls first,
+         UnitsInStock desc, // omitted: uses default
+         PricePerUnit as double nulls last
+```
+</TabItem>   
+
+    
+<Admonition type="info" title="">
+    
+* If `nulls first` / `nulls last` is Not specified, RavenDB uses the configured default behavior.  
+  See [Indexing.Querying.Corax.NullsSortMode](../../server/configuration/indexing-configuration.mdx#indexingqueryingcoraxnullssortmode).      
+
+* The `nulls first` / `nulls last` clause is supported only by the [Corax](../../indexes/search-engine/corax.mdx) search engine.  
+  Issuing a query that contains this clause against a Lucene index will return an `InvalidQueryException`.
+    
+</Admonition>
+    
 ---
 
 ## `select`
@@ -483,7 +611,7 @@ Learn more in this [projection](../../indexes/querying/projections.mdx) article.
 
 ## `load`
 
-Use `load`when you need to use data from a related document in projection.  
+Use `load` when you need to use data from a related document in projection.  
 See an example in this [projection](../../indexes/querying/projections.mdx#example-viii---projection-using-a-loaded-document) article.
 
 ---
@@ -495,7 +623,7 @@ Specify the number of items to **skip** from the beginning of the result set and
 This is useful when [paging](../../indexes/querying/paging.mdx) results.
 
 <TabItem>
-```csharp
+```sql
 // Available syntax options:
 // =========================
 
@@ -525,7 +653,7 @@ For more information, please refer to this [patching](../../client-api/operation
 Single-line comments start with `//` and end at the end of that line.
 
 <TabItem>
-```csharp
+```sql
 // This is a single-line comment.
 from "Companies" 
 where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
@@ -533,7 +661,7 @@ where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 from "Companies"
 where Name = "The Big Cheese" // OR Name = "Richter Supermarkt"
 ```
@@ -548,7 +676,7 @@ where Name = "The Big Cheese" // OR Name = "Richter Supermarkt"
 Multiline comments start with `/*` and end with `*/`.
 
 <TabItem>
-```csharp
+```sql
 /*
 This is a multiline comment.
 Any text here will be ignored.
@@ -559,7 +687,7 @@ where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
 </TabItem>
 
 <TabItem>
-```csharp
+```sql
 from "Companies"
 where Name = "The Big Cheese" /* this part is a comment */ OR Name = "Richter Supermarkt"
 ```
