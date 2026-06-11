@@ -34,7 +34,18 @@ const config: Config = {
     // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
     future: {
         v4: true, // Improve compatibility with the upcoming Docusaurus v4
-        experimental_faster: true,
+        faster: true,
+    },
+
+    // future.v4 enables mdx1CompatDisabledByDefault in 3.10+, which turns off HTML
+    // comments and {#id} heading anchors. Re-enable them explicitly: read-only
+    // versioned_docs/ snapshots use both and cannot be edited.
+    markdown: {
+        mdx1Compat: {
+            comments: true,
+            headingIds: true,
+            admonitions: true,
+        },
     },
 
     customFields: {

@@ -1,7 +1,7 @@
 # RavenDB Documentation — Claude Context
 
 ## Project Overview
-Official RavenDB documentation site. Built with **Docusaurus 3.9** + React 19 + TypeScript 5.6.
+Official RavenDB documentation site. Built with **Docusaurus 3.10** + React 19 + TypeScript 5.6.
 Serves 18+ product versions simultaneously across four content areas: main docs (current: 7.2), cloud, guides, templates.
 
 ---
@@ -513,7 +513,7 @@ Style guide and live examples for documentation building blocks: ContentFrame/Pa
 ---
 
 ## Tech Stack Summary
-- Docusaurus 3.9.2 · React 19 · TypeScript 5.6
+- Docusaurus 3.10.1 · React 19 · TypeScript 5.6
 - Tailwind CSS 4.1 (via custom PostCSS plugin)
 - Algolia search · Google Tag Manager · Sitemap auto-generation
 - Prism React Renderer for code syntax highlighting
