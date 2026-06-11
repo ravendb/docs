@@ -21,6 +21,7 @@ import Panel from '@site/src/components/Panel';
       * [Define source using PATHS](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-paths)
       * [Define source using SCRIPT](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-script)
     * [Chunking methods and tokens](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#chunking-methods-and-tokens)
+    * [Adding a context prefix to chunks](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#adding-a-context-prefix-to-chunks)
     * [Syntax](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#syntax)
 
 </Admonition>
@@ -432,6 +433,11 @@ markdown.splitParagraphs(line | [line], maxTokensPerLine, overlapTokens?);
 
 // HTML processing:
 html.strip(htmlText | [htmlText], maxTokensPerChunk);
+
+// Optional: prepend context before embedding:
+text.splitParagraphs(...).withContextPrefix(contextPrefix);
+stringOrStringArray.withContextPrefix(contextPrefix);
+embeddings.generate({ ... }).withContextPrefix(contextPrefix);
 ```
 </TabItem>
 
@@ -443,6 +449,86 @@ html.strip(htmlText | [htmlText], maxTokensPerChunk);
 | **htmlText**                             | `string`  | A string containing HTML content to process.                      |
 | **maxTokensPerChunk / maxTokensPerLine** | `number`  | The maximum number of tokens allowed per chunk.<br/>Default is `512`. |
 | **overlapTokens**                        | `number` (optional) | The number of tokens to overlap between consecutive chunks. Helps preserve context continuity across chunks (e.g., between paragraphs).<br/>Default is `0`. |
+| **contextPrefix**                        | `string`  | Text that is prepended to chunks before they are sent to the embedding model. Required when `withContextPrefix(...)` is used. Cannot be empty or whitespace-only.<br/>Learn more in [Adding a context prefix to chunks](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#adding-a-context-prefix-to-chunks). |
+
+</Panel>
+
+<Panel heading="Adding a context prefix to chunks">
+
+Use `withContextPrefix(contextPrefix)` in a [SCRIPT-based](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-script) embeddings task to prepend context to the text sent to the embedding model.
+This is useful when individual chunks omit identifying document information, such as a title, category, or company name.
+
+In a script, `contextPrefix` can be a string literal, a document field such as `this.Title`, or any string expression produced by the script.
+RavenDB trims trailing whitespace from the prefix and inserts a single space between the prefix and the chunk content.
+
+You can apply the prefix in a script at three levels:
+
+* **Per chunked field**:  
+  Chain `withContextPrefix(...)` onto any chunking method result to prepend the prefix to every chunk generated from that field.
+
+* **Per non-chunked field**:  
+  Chain `withContextPrefix(...)` directly onto a raw string or string array.
+  The string, or each string in the array, is emitted without chunking and with the prefix prepended.
+
+* **For all generated fields**:  
+  Chain `withContextPrefix(...)` onto the `embeddings.generate({...})` call to apply the same prefix to every generated field.
+  A field-level prefix takes priority and is not overwritten by this object-wide prefix.
+
+```js
+embeddings.generate({
+    // Per field - on a chunked value:
+    // Prepend the document's category to every chunk generated from the Content field.
+    Content: text.splitParagraphs(this.Content, 512).withContextPrefix(this.Category),
+
+    // No field-level prefix is defined here,
+    // so the object-wide prefix below will apply to this field.
+    Summary: text.splitParagraphs(this.Summary, 512),
+
+    // Per field - on a non-chunked value:
+    // Emit the Title field without chunking, with a literal prefix prepended.
+    Title: this.Title.withContextPrefix('Article title:')
+
+}).withContextPrefix(this.Title); // Object-wide prefix
+```
+<br/>
+
+---
+
+#### Context prefix and the token budget
+
+When a context prefix is applied to chunked input, its tokens count against the configured _Max tokens per chunk_.
+RavenDB also accounts for the separating space inserted between the prefix and the chunk content.
+
+This means the effective token budget available for the original chunk content is reduced by the prefix.
+Keep the prefix short and focused on the missing context, such as a title, category, or company name.
+
+If the prefix leaves no room for chunk content, the task fails with an error.
+The task also fails if _Overlap tokens_ is greater than or equal to the remaining effective chunk budget after the prefix is accounted for.
+
+This token-budget reduction does not apply when `withContextPrefix(...)` is used in a script on a non-chunked raw string or string array.
+In that case, the string, or each string in the array, is emitted without chunking and with the prefix prepended.
+
+---
+
+#### When to use a context prefix
+
+Use a context prefix when important document-level information may be absent from individual chunks.
+Common examples are a title, category, company name, product name, or other identifier that appears once in the document but is needed to interpret later chunks.
+
+A context prefix is especially useful for specific queries that include, or depend on, that identifying context.
+For example, if users search for information about a particular company, adding the company name to each chunk can make matching more precise and help the relevant document rank higher.
+
+There is a trade-off.
+Because the prefix becomes part of the embedding input, it can make search results more focused, but it can also push borderline-relevant chunks lower.
+For broad category-level queries where users expect an exhaustive set of relevant results, this may reduce recall.
+
+Keep the prefix short and focused on the missing context.
+Do not use it to summarize the whole document.
+For chunked input, the prefix consumes part of the token budget and may increase the number of generated chunks.
+
+If you are unsure whether to use a prefix, test it on a small sample of your own data.  
+Create two otherwise identical embeddings generation tasks, one with a context prefix and one without,  
+then compare precision, recall, or other relevant metrics for the queries your users actually issue.  
 
 </Panel>
 
