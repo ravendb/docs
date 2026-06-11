@@ -21,7 +21,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * In this article:
     * [Indexing a vector field - Overview](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-a-vector-field---overview)
        * [Defining a vector field in a static index](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#defining-a-vector-field-in-a-static-index)
-       * [Parameters defined at index definition](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#parameters-defined-at-index-definition)
+       * [Parameters defined in the index definition](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#parameters-defined-in-the-index-definition)
        * [Behavior during indexing](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#behavior-during-indexing)
        * [Parameters used at query time](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#parameters-used-at-query-time)
        * [Behavior when documents are deleted](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#vector-behavior-when-documents-are-deleted)
@@ -59,7 +59,7 @@ To define a vector index-field in your static-index definition:
     An example is available in [Indexing raw text](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-raw-text).  
 
 * **From Studio**:  
-  See [Define a vector field in Studio](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#configure-the-vector-field-in-studio).  
+  See [Configure the vector field in Studio](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#configure-the-vector-field-in-studio).  
 
 The **source data types** that can be used for vector search are detailed in [Data types for vector search](../../../ai-integration/vector-search/data-types-for-vector-search.mdx).
 
@@ -67,7 +67,7 @@ The **source data types** that can be used for vector search are detailed in [Da
 
 <Admonition type="note" title="">
 
-#### Parameters defined at index definition  
+#### Parameters defined in the index definition  
 
 The following params can be defined for the vector index-field in the index definition:  
 
@@ -162,7 +162,7 @@ The documents that correspond to the resulting vectors are then returned to the 
 
 By default, the resulting documents will be ordered by their score.
 You can modify this behavior using the [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchorderbyscoreautomatically) configuration key.  
-In addition, you can apply any of the 'order by' methods to your query, as explained in [sort query results](../../../client-api/session/querying/sort-query-results.mdx).
+In addition, you can apply any of the 'order by' methods to your query, as explained in [sort query results](../../../querying/sorting-query-results/sort-query-results.mdx).
 
 </Admonition>
 

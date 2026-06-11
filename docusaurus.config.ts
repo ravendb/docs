@@ -1,6 +1,11 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { CURRENT_VERSION, LEGACY_VERSIONS } = require("./scripts/lib/version-policy.js") as {
+    CURRENT_VERSION: string;
+    LEGACY_VERSIONS: string[];
+};
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -16,6 +21,11 @@ function getOnlyIncludeVersions(): string[] | undefined {
 
 const isStrict = process.env.DOCUSAURUS_STRICT === "true";
 
+// Per-version `noIndex: true` - Docusaurus injects noindex meta
+const legacyVersionsAsNoIndex: Record<string, { noIndex: true }> = Object.fromEntries(
+    LEGACY_VERSIONS.map((v) => [v, { noIndex: true }])
+);
+
 const config: Config = {
     title: "RavenDB Documentation",
     tagline: "High-performance NoSQL database that just works.",
@@ -24,11 +34,22 @@ const config: Config = {
     // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
     future: {
         v4: true, // Improve compatibility with the upcoming Docusaurus v4
-        experimental_faster: true,
+        faster: true,
+    },
+
+    // future.v4 enables mdx1CompatDisabledByDefault in 3.10+, which turns off HTML
+    // comments and {#id} heading anchors. Re-enable them explicitly: read-only
+    // versioned_docs/ snapshots use both and cannot be edited.
+    markdown: {
+        mdx1Compat: {
+            comments: true,
+            headingIds: true,
+            admonitions: true,
+        },
     },
 
     customFields: {
-        latestVersion: "7.2",
+        latestVersion: CURRENT_VERSION,
     },
 
     url: "https://docs.ravendb.net/",
@@ -53,10 +74,8 @@ const config: Config = {
                     includeCurrentVersion: true,
                     lastVersion: "current",
                     versions: {
-                        current: {
-                            label: "7.2",
-                            path: "7.2",
-                        },
+                        current: { label: CURRENT_VERSION, path: CURRENT_VERSION },
+                        ...legacyVersionsAsNoIndex,
                     },
                     onlyIncludeVersions: getOnlyIncludeVersions(),
                     editUrl: "https://github.com/ravendb/docs/edit/main/",
@@ -69,21 +88,7 @@ const config: Config = {
                     lastmod: "date",
                     changefreq: null,
                     priority: null,
-                    ignorePatterns: [
-                        "/1.0/**",
-                        "/2.0/**",
-                        "/2.5/**",
-                        "/3.0/**",
-                        "/3.5/**",
-                        "/4.0/**",
-                        "/4.1/**",
-                        "/4.2/**",
-                        "/5.0/**",
-                        "/5.1/**",
-                        "/5.2/**",
-                        "/5.3/**",
-                        "/5.4/**",
-                    ],
+                    ignorePatterns: LEGACY_VERSIONS.map((v) => `/${v}/**`),
                 },
                 googleTagManager: {
                     containerId: "GTM-TDH4JWF2",
@@ -124,6 +129,15 @@ const config: Config = {
             },
         ],
         [
+            "content-docs",
+            {
+                id: "samples",
+                path: "samples",
+                routeBasePath: "samples",
+                sidebarPath: require.resolve("./sidebarsSamples.js"),
+            },
+        ],
+        [
             "@docusaurus/plugin-ideal-image",
             {
                 max: 1200,
@@ -134,6 +148,8 @@ const config: Config = {
             },
         ],
         require.resolve("./src/plugins/recent-guides-plugin"),
+        require.resolve("./src/plugins/versioned-seo-plugin"),
+        require.resolve("./src/plugins/recent-samples-plugin"),
     ],
     headTags: [
         {
@@ -218,7 +234,7 @@ const config: Config = {
                 description:
                     "A fully transactional NoSQL document database with ACID transactions, distributed clusters, and multi-model data support.",
                 url: "https://ravendb.net/",
-                softwareVersion: "7.2",
+                softwareVersion: CURRENT_VERSION,
                 author: {
                     "@type": "Organization",
                     name: "RavenDB",
@@ -231,6 +247,11 @@ const config: Config = {
                     url: "https://ravendb.net/download",
                 },
             }),
+        },
+        {
+            tagName: "script",
+            attributes: { type: "text/javascript" },
+            innerHTML: `!function(){if(location.hostname!=="docs.ravendb.net")return;var e,t,n;e="151dc5b0493a177",t=function(){Reo.init({clientID:"151dc5b0493a177"})},n=document.createElement("script"),n.src="https://static.reo.dev/"+e+"/reo.js",n.defer=!0,n.onload=t,document.head.appendChild(n)}();`,
         },
     ],
     themeConfig: {

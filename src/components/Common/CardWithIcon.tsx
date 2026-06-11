@@ -10,10 +10,9 @@ export interface CardWithIconProps {
     icon: IconName;
     description?: ReactNode;
     url: string;
-    animationDelay?: number;
 }
 
-export default function CardWithIcon({ title, icon, description, url, animationDelay = 0 }: CardWithIconProps) {
+export default function CardWithIcon({ title, icon, description, url }: CardWithIconProps) {
     return (
         <Link to={url} className="card-wrapper">
             <div
@@ -25,13 +24,8 @@ export default function CardWithIcon({ title, icon, description, url, animationD
                     "hover:border-black/20 dark:hover:border-white/20",
                     "hover:!bg-black/10 dark:hover:!bg-white/10",
                     "!transition-all",
-                    "animate-in fade-in slide-in-from-bottom-4"
+                    "animate-in fade-in"
                 )}
-                style={{
-                    animationDelay: `${animationDelay}ms`,
-                    animationDuration: "400ms",
-                    animationFillMode: "backwards",
-                }}
             >
                 <div className="flex flex-col gap-2">
                     <Icon icon={icon} />

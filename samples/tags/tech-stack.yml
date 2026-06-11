@@ -1,0 +1,46 @@
+csharp:
+    label: "C#"
+dotnet:
+    label: ".NET"
+nodejs:
+    label: "Node.js"
+nextjs:
+    label: "Next.js"
+python:
+    label: "Python"
+java:
+    label: "Java"
+php:
+    label: "PHP"
+aspire:
+    label: "Aspire"
+azure-storage-queues:
+    label: "Azure Storage Queues"
+azure-storage:
+    label: "Azure Storage"
+azure-functions:
+    label: "Azure Functions"
+react:
+    label: "React"
+signalr:
+    label: "SignalR"
+svelte:
+    label: "Svelte"
+sveltekit:
+    label: "SvelteKit"
+typescript:
+    label: "TypeScript"
+express:
+    label: "Express"
+raspberry-pi:
+    label: "Raspberry Pi"
+aspnet-core:
+    label: "ASP.NET Core"
+angular:
+    label: "Angular"
+rabbitmq:
+    label: "RabbitMQ"
+minio:
+    label: "MinIO"
+duckdb:
+    label: "DuckDB"

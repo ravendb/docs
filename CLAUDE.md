@@ -1,7 +1,7 @@
 # RavenDB Documentation — Claude Context
 
 ## Project Overview
-Official RavenDB documentation site. Built with **Docusaurus 3.9** + React 19 + TypeScript 5.6.
+Official RavenDB documentation site. Built with **Docusaurus 3.10** + React 19 + TypeScript 5.6.
 Serves 18+ product versions simultaneously across four content areas: main docs (current: 7.2), cloud, guides, templates.
 
 ---
@@ -18,6 +18,8 @@ npm run prettier           # Check formatting
 npm run prettier-fix       # Auto-format
 npm run typecheck          # TypeScript validation
 npm run generate-icon-types # Regenerate icon types after adding SVGs to static/icons/
+npm run validate-redirects # Validate scripts/redirects.json schema
+npm test                   # Run unit tests (custom Docusaurus plugins)
 ```
 
 ---
@@ -54,6 +56,19 @@ versions.json                # Active version list
 - `versioned_docs/` are read-only snapshots managed by Docusaurus.
 - `versions.json` lists all active versions.
 - CI uses `onlyIncludeVersions` env var to build specific versions (e.g., 6.2, 7.1, current).
+- **Version policy** lives in `scripts/lib/version-policy.js` (`CURRENT_VERSION`, `LEGACY_VERSIONS`). When a version ages out of support, move it into `LEGACY_VERSIONS` — `docusaurus.config.ts`, sitemaps, robots.txt, the canonical rewriter, and the edge handler all derive from that single list.
+
+---
+
+## Custom Docusaurus Plugins (`src/plugins/`)
+- `tailwind-config` — registers Tailwind CSS 4 via PostCSS.
+- `recent-guides-plugin` — indexes `guides/*.mdx`, exposes sorted list + tag counts.
+- `versioned-seo-plugin` — two responsibilities, both running during `postBuild` on the same walk of versioned HTML files:
+  - rewrites `<link rel="canonical">` in built HTML to the current-version URL, resolving redirect chains from `scripts/redirects.json`. Legacy-version files get a self-canonical. Verifies every rewritten canonical against the Docusaurus route universe.
+  - asserts every legacy-version page carries `<meta name="robots" content="noindex,...">`. The injection itself is delegated to Docusaurus' native per-version `noIndex` config (see `docusaurus.config.ts`); the plugin only audits.
+  - Both checks fail the build under `DOCUSAURUS_STRICT_SEO=true`. Registered **after** all `content-docs` instances so HTML is already emitted when it runs.
+
+Noindex for legacy versions is set declaratively in `docusaurus.config.ts` (`versions[v].noIndex: true`); template pages are marked `unlisted: true` in frontmatter. No custom plugin writes the meta tag — the versioned-seo-plugin only verifies it landed.
 
 ---
 
@@ -135,10 +150,102 @@ Each folder contains `_category_.json`:
 
 ---
 
+## Frontmatter Naming Convention
+**CRITICAL RULE**: All custom frontmatter fields MUST use `snake_case`. Never use camelCase for custom frontmatter.
+- ✅ Correct: `published_at`, `proficiency_level`, `external_url`, `img_alt`, `repository_url`, `license_url`
+- ❌ Wrong: `publishedAt`, `proficiencyLevel`, `externalUrl`, `imgAlt`, `repositoryUrl`, `licenseUrl`
+- Standard Docusaurus fields (e.g., `title`, `description`, `slug`) remain as-is.
+- Tag values in guides and samples MUST use `kebab-case` (e.g., `vector-search`, `azure-storage-queues-etl`).
+
+---
+
 ## Guides
 - Tags defined in `guides/tags.yml` (~40 predefined tags — do not invent new ones without adding there first).
-- Guide-specific frontmatter: `tags`, `description`, `icon`, `image`, `publishedAt` (ISO date), `externalUrl`.
+- Guide-specific frontmatter: `tags`, `description`, `icon`, `image`, `published_at` (ISO date), `external_url`, `proficiency_level`, `author`.
 - Indexed and sorted by `src/plugins/recent-guides-plugin.ts`.
+
+### Guides Frontmatter Example
+```yaml
+---
+title: "Guide Title"
+published_at: 2026-04-02
+author: "Author Name"
+tags: [ai, vector-search, getting-started]
+description: "Short description shown in cards."
+image: "/img/guides-example.webp"
+proficiency_level: "Beginner"
+---
+```
+
+For external guides (linking to blog posts):
+```yaml
+---
+title: "External Article Title"
+published_at: 2026-04-02
+tags: [integration]
+description: "Short description."
+external_url: "https://ravendb.net/articles/example"
+image: "https://ravendb.net/path/to/image.jpg"
+---
+```
+
+---
+
+## Samples
+- Production-ready code samples demonstrating RavenDB features and architecture patterns.
+- Located in `samples/` directory.
+- Three-category tag system: Challenges & Solutions, Features, Tech Stack.
+- Tags defined in `samples/tags/` YAML files — do not invent new ones without adding there first.
+- Indexed by `src/plugins/recent-samples-plugin.ts`.
+- Hub page at `/samples` with filtering by tags.
+
+### Sample Tag Categories
+1. **Challenges & Solutions** (`samples/tags/challenges-solutions.yml`) - Business problems the sample solves
+   - Examples: `semantic-search`, `integration-patterns`, `cloud-tax`, `gen-ai-data-enrichment`
+
+2. **Features** (`samples/tags/feature.yml`) - RavenDB features demonstrated
+   - Examples: `vector-search`, `document-refresh`, `include`, `azure-storage-queues-etl`
+
+3. **Tech Stack** (`samples/tags/tech-stack.yml`) - Technologies used
+   - Examples: `csharp`, `aspire`, `azure-functions`, `nodejs`, `nextjs`
+
+### Sample Frontmatter Example
+```yaml
+---
+title: "Sample Application Name"
+description: "Brief description for sample cards."
+challenges_solutions_tags: [semantic-search, integration-patterns]
+feature_tags: [vector-search, document-refresh, include]
+tech_stack_tags: [csharp, aspire, azure-functions]
+image: "/img/samples/my-sample/cover.webp"
+img_alt: "Screenshot of the application"
+category: "Ecommerce"
+license: "MIT License"
+license_url: "https://opensource.org/licenses/MIT"
+repository_url: "https://github.com/ravendb/sample-repo"
+demo_url: "https://demo.example.com"
+languages: ["C#"]
+gallery:
+  - src: "/img/samples/my-sample/screenshot-1.webp"
+    alt: "Main interface"
+  - src: "/img/samples/my-sample/screenshot-2.webp"
+    alt: "Admin dashboard"
+related_resources:
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Vector Search Overview"
+    article_key: "ai-integration/vector-search/overview"
+  - type: guide
+    subtitle: "Related Guide Title"
+    article_key: "guide-slug"
+---
+```
+
+**Required fields**: `title`, `description`, `challenges_solutions_tags`, `feature_tags`, `tech_stack_tags`
+
+**Optional fields**: `image`, `img_alt`, `category`, `license`, `license_url`, `repository_url`, `demo_url`, `languages`, `gallery`, `related_resources`
+
+**SEO**: `repository_url` and `languages` feed `SoftwareSourceCode` JSON-LD schema for better search visibility.
 
 ---
 
@@ -377,16 +484,36 @@ Each folder contains `_category_.json`:
 ### `cloud/` — RavenDB Cloud service documentation (~24 files)
 Account management, instance configuration, security (TLS, MFA, certificates), pricing/billing, scaling, backup/restore, migration, AWS/Azure Marketplace setup, and the cloud portal UI (home, products, billing, backups, support tabs).
 
-### `guides/` — Practical how-to guides (~63 files, flat structure)
-Community guides covering: connecting specific frameworks (ASP.NET Core, Next.js, SvelteKit, FastAPI), AI/ML integration, DevOps (Docker, Kubernetes/EKS, Helm, Ansible), observability (Datadog, Grafana/OpenTelemetry), data pipelines (Elasticsearch, Azure Queue, OLAP ETL), testing (unit test drivers for .NET/Java/Python), and troubleshooting specific problems. Tags defined in `guides/tags.yml`.
+### `guides/` — Practical how-to guides (~64 files, flat structure)
+Community guides covering: connecting specific frameworks (ASP.NET Core, Next.js, SvelteKit, FastAPI), AI/ML integration, DevOps (Docker, Kubernetes/EKS, Helm, Ansible), observability (Datadog, Grafana/OpenTelemetry), data pipelines (Elasticsearch, Azure Queue, OLAP ETL), testing (unit test drivers for .NET/Java/Python), and troubleshooting specific problems.
+
+**Frontmatter**: `title`, `published_at`, `author`, `tags`, `description`, `icon`, `image`, `proficiency_level`, `external_url` (for external guides).
+
+**Tags**: Defined in `guides/tags.yml` (~40 predefined tags — do not invent new ones without adding there first). All tag values use kebab-case.
+
+**Indexed by**: `src/plugins/recent-guides-plugin.ts`
+
+### `samples/` — Production-ready code samples (~1+ files)
+Production-ready code samples, architecture patterns, and starter kits demonstrating RavenDB features and integration scenarios. Hub page at `/samples` with tag-based filtering.
+
+**Frontmatter**: `title`, `description`, `challenges_solutions_tags`, `feature_tags`, `tech_stack_tags`, `image`, `img_alt`, `category`, `license`, `license_url`, `repository_url`, `languages`, `gallery`.
+
+**Tags**: Three categories defined in `samples/tags/`:
+- `challenges-solutions.yml` - Business problems solved (e.g., `semantic-search`, `integration-patterns`)
+- `feature.yml` - RavenDB features demonstrated (e.g., `vector-search`, `document-refresh`)
+- `tech-stack.yml` - Technologies used (e.g., `csharp`, `aspire`, `azure-functions`)
+
+All tag values use kebab-case.
+
+**Indexed by**: `src/plugins/recent-samples-plugin.ts`
 
 ### `templates/` — Authoring reference templates (~9 files)
-Style guide and live examples for documentation building blocks: ContentFrame/Panel layouts, icon gallery, themed images, tag reference, see-also cross-links, featured/new guide blocks.
+Style guide and live examples for documentation building blocks: ContentFrame/Panel layouts, icon gallery, themed images, tag reference, see-also cross-links, featured/new guide blocks, sample authoring templates.
 
 ---
 
 ## Tech Stack Summary
-- Docusaurus 3.9.2 · React 19 · TypeScript 5.6
+- Docusaurus 3.10.1 · React 19 · TypeScript 5.6
 - Tailwind CSS 4.1 (via custom PostCSS plugin)
 - Algolia search · Google Tag Manager · Sitemap auto-generation
 - Prism React Renderer for code syntax highlighting

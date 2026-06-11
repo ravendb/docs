@@ -1,0 +1,27 @@
+---
+title: "Conditional Filtering"
+sidebar_label: "Conditional Filtering"
+description: "Learn how to apply a query filter only when a condition holds, using the RQL when(condition, filter) operator, including its behavior, composition with and/or/not, parameter and null handling, type safety, and in / all in support."
+sidebar_position: 6
+supported_languages: ["csharp"]
+see_also:
+     - title: "Query Overview"
+       link: "querying/overview"
+       source: "docs"
+       path: "Querying"
+     - title: "Filter by Date and Time"
+       link: "querying/filtering-query-results/filter-by-date-and-time"
+       source: "docs"
+       path: "Querying > Filtering Query Results"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ConditionalFilteringCsharp from './content/_conditional-filtering-csharp.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <ConditionalFilteringCsharp />
+</LanguageContent>

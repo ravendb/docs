@@ -298,8 +298,8 @@ def send_async(self, operation: MaintenanceOperation[OperationIdResult]) -> Oper
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetRemoteAttachmentsConfigurationOperation  
 
 * **Sorters**:   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutSortersOperation](../../../client-api/operations/maintenance/sorters/put-sorter.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteSorterOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutSortersOperation](../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx#add-database-level-custom-sorter-via-the-client-api)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteSorterOperation](../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx#delete-database-level-custom-sorter)   
 
 * **Sharding**:   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [AddPrefixedShardingSettingOperation](../../../sharding/administration/sharding-by-prefix.mdx#add-prefixes-after-database-creation)  
@@ -422,8 +422,8 @@ with self.embedded_server.get_document_store("WhatAreOperations") as store:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideAnalyzerOperation  
 
 * **Server-wide sorters**:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideSortersOperation](../../../client-api/operations/server-wide/sorters/put-sorter-server-wide.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideSorterOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideSortersOperation](../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx#add-server-wide-custom-sorter-via-the-client-api)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteServerWideSorterOperation](../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx#delete-server-wide-custom-sorter)  
 
 * **Logs & debug**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetLogsConfigurationOperation  

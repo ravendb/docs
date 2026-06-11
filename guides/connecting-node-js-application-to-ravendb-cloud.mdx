@@ -1,9 +1,230 @@
 ---
 title: "Connecting Node.js application to RavenDB Cloud"
 tags: [nodejs, getting-started]
-description: "Read about Connecting Node.js application to RavenDB Cloud on the RavenDB.net news section."
-externalUrl: "https://ravendb.net/articles/connecting-node-js-application-to-ravendb-cloud"
-publishedAt: 2025-02-25
 image: "https://ravendb.net/wp-content/uploads/2025/01/connecting-nodejs-to-ravendb-article-cover.jpg"
-proficiencyLevel: "Beginner"
+description: "Step-by-step guide to creating a RavenDB Cloud account, provisioning a free instance, downloading the TLS certificate, and connecting a Node.js application using DocumentStore with PFX authentication."
+published_at: 2025-02-25
+see_also:
+  - title: "What is a Document Store"
+    link: "client-api/what-is-a-document-store"
+    source: "docs"
+    path: "Client API"
+  - title: "Creating a Document Store"
+    link: "client-api/creating-document-store"
+    source: "docs"
+    path: "Client API"
+  - title: "Security Overview"
+    link: "server/security/overview"
+    source: "docs"
+    path: "Server > Security"
+  - title: "What is a Session and How Does it Work"
+    link: "client-api/session/what-is-a-session-and-how-does-it-work"
+    source: "docs"
+    path: "Client API > Session"
+author: "Paweł Lachowski"
+proficiency_level: "Beginner"
 ---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+## What you will learn
+
+* How to create a RavenDB Cloud account and provision a free instance
+* How to download and install the TLS certificate for secure access
+* How to configure `DocumentStore` with PFX authentication in Node.js
+* How to verify the connection by loading a document from the database
+
+## Introduction
+
+RavenDB Cloud is a secure fully managed cloud database ready to launch in minutes. It serves as database hosting, management studio, and managed services of backing up data. All in one place. Connecting your Node.js console application to RavenDB Cloud is a simple process. By the end of this tutorial, we will connect your Node.js app to the RavenDB Cloud database and be ready to integrate it into your projects. Whether you're new to using RavenDB or simply looking for a straightforward setup, this tutorial will smoothly guide you through.
+
+## Prerequisites 
+
+What you will need:
+
+* [Node.js](https://nodejs.org/en) installed on your machine. This article uses 22.10.0.  
+* [RavenDB Cloud Cluster & Certificate](https://ravendb.net/cloud) for secure connection  
+* [Database in RavenDB Cloud](https://ravendb.net/cloud)
+
+Let's ensure that we have all the prerequisites to connect your application to the RavenDB Cloud instance. First, you need to download and install [Node.js](https://nodejs.org/en). This tutorial uses Node.js in version 22.10.0. To check if your Node.js installation was successful, open a terminal and run the following command.
+
+```bash
+node -v
+```
+
+If you see the Node.js version in your output, it means the installation was successful. If this command doesn't output your version, download Node.js from the link above.
+
+With your Node.js set up, let's turn our attention to the RavenDB Cloud. We'll need a RavenDB Cloud instance and a certificate necessary to encrypt the connection between the database and your application. RavenDB Cloud generates the certificate automatically for your instance. If you're new to RavenDB Cloud, don't worry - in this guide, we will also cover how to get started with RavenDB Cloud and how to claim your free instance. 
+
+To create your [account](https://ravendb.net/cloud):
+
+1. Click '*Get Started Free*'.
+2. To use a free account, click *'Start'* without making any changes.
+3. Select '*Register Here*' and enter your email address.
+4. Enter the domain name you want and complete the billing steps.
+5. Review the summary to finish. You will receive an activation link at your email address.
+
+<Image img={require("./assets/nodejs-cloud1.webp")} alt="RavenDB Cloud account creation flow showing homepage, pricing plans, email input, and domain registration" />
+
+We've successfully created a RavenDB Cloud account. Now, let's create a free instance. An instance is like your personal database server. RavenDB Cloud handles setup, maintenance, and other time-consuming tasks to let you focus on the code. To create an instance, click '*Add Product*' on the right of the *'Products'* page or just click '*Add new product to start*' at the center of the page. 
+
+<Image img={require("./assets/nodejs-cloud2.webp")} alt="RavenDB Cloud Products page with the Add Product button highlighted" />
+
+To set up a free instance:
+
+1. Scroll down and click *'Next'* without changing anything.
+2. Enter your account information and complete the billing steps.
+3. In the *'Customize'* step, enter the display name for your instance and configure IP access. Leave `0.0.0.0/0` to allow access from anywhere, or click '*Add my IP*' to restrict access to your IP only. You can change this later. If you want to learn more about CIDR notation, [read more here](https://aws.amazon.com/what-is/cidr/#:~:text=CIDR%20notation%20represents%20an%20IP,1.0%2F22.).
+4. Click *'Next'*, review the summary, and click *'Create'*.
+
+For more details on adding a new product, [click here](https://ravendb.net/docs/article-page/latest/csharp/cloud/portal/cloud-portal-products-tab#manage-product-the-security-tab).
+
+<Image img={require("./assets/nodejs-cloud3.webp")} alt="RavenDB Cloud instance configuration showing account information form and Allowed IPs settings" />
+
+After configuring your product you will need to wait for the instance to complete the provisioning process before you can access your studio. You will also need a certificate installed.
+
+For a secure connection with RavenDB Studio, let's get a TLS certificate for your instance. We'll also use it in our app later. You can download it by going to the *'Products'* tab on the left bar. Then you select the green button '*Download Certificate*' on your chosen instance and follow the instructions you get in the pop-up. This pop-up includes a certificate download button and instructions for installing certificates for both Windows and Linux. If you clicked too quickly and got an authentication error, please reload your browser and try again.
+
+Remember to restart your browser after installing the certificate to ensure it recognizes the new certificate.
+
+<Image img={require("./assets/nodejs-cloud4.webp")} alt="RavenDB Cloud Products page showing the active instance with the Download Certificate button" />
+<Image img={require("./assets/nodejs-cloud5.webp")} alt="Certificate installation popup with steps to download the client certificate package and install it on Windows or Linux" />
+
+In order to access RavenDB Studio you require a working certificate. While using RavenDB Cloud, the RavenDB Studio is secured by default - you'll need a certificate to access the server UI. You'll also need it to connect to your database within the application code, so this step cannot be skipped. Use your certificate to authorize against RavenDB Studio. Just choose your certificate from the popup window that your browser will display. Once doing so, you should be able to see the UI. Now, let's create a new database for your application. Select the *'Databases'* tab and press '*New database*' to create a new one. 
+
+<Image img={require("./assets/nodejs-cloud6.webp")} alt="RavenDB Studio Databases page with the New database button" />
+
+For the purpose of testing, you can also create [Sample Data](https://ravendb.net/docs/article-page/latest/csharp/studio/database/tasks/create-sample-data) by clicking your database and selecting *'Tasks'* on the left bar where you can find the option to create it. This data will come in handy later if you want to test the connection between your application and the database.
+
+<Image img={require("./assets/nodejs-cloud7.webp")} alt="RavenDB Studio Create Sample Data task under the Tasks menu" />
+
+## Writing the Connection Code
+
+We've prepared everything you need: a functional Node.js environment for building your app and a RavenDB database running on RavenDB Cloud to manage your application's data. Let's try to connect a test application to our instance. In this guide, we are going to create the app from scratch. First, we will create a new directory for the application. Next, we need to create your application file. You can do this by opening the terminal inside the previously created directory, and executing the following command:
+
+```bash
+npm init -y
+```
+
+Next, we'll need the RavenDB Client package to communicate with our database within the code. You have to add  it to your project by executing the following command:
+
+```bash
+npm install --save ravendb
+```
+
+Then, we need to edit *package.json* manually and add  `"type": "module"`. Applying this prevents an error message, minimizing output during testing. Your file should look like this:
+
+```json
+{
+  "name": "node.js_tutorial",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "description": "",
+  "dependencies": {
+    "ravendb": "^6.0.0"
+  }
+}
+```
+
+<Admonition type="note">
+  Check <a href="https://www.npmjs.com/package/ravendb">npm</a> for the latest version of the ravendb package — the version shown above may be outdated.
+</Admonition>
+
+Now let's create the main file for your Node.js application, named '`index.js'`. Let's open it and start writing some code. 
+
+To establish connection with RavenDB Cloud instance, you have to import *DocumentStore*. *DocumentStore* is the base for all RavenDB actions. It communicates with your cluster and can handle multiple databases. It's important to have a single instance of *DocumentStore* in place, to maintain a single connection definition to your database. You can learn more about *DocumentStore* [here](https://ravendb.net/docs/article-page/nodejs/client-api/what-is-a-document-store) or [here](https://ravendb.net/docs/article-page/nodejs/client-api/creating-document-store).
+
+```javascript
+import { DocumentStore } from "ravendb";
+import * as fs from "fs";
+```
+
+We are also importing an *fs* module used for file manipulation. It will come in handy to get our certificate from your file system. The next step is to use the certificate. You can do it using the following code:
+
+```javascript
+const authOptions = {
+    certificate: fs.readFileSync("C:\\path_to_your_pfx_file\\cert.pfx"),
+    type: "pfx", // or "pem"
+};
+
+const store = new DocumentStore("https://your_RavenDB_server_URL", "your_database_name", authOptions);
+```
+
+*authOptions* lets you specify which database you want to access. You are also using a certificate you get from RavenDB Cloud. If you want to learn more about the security certificate you can check it in the [documentation](https://ravendb.net/docs/article-page/nodejs/server/security/overview). Remember to change sample data from the code above and don't forget to call `store.initialize()` - a critical step as it initializes the connection to the database. Your complete code should resemble the following:
+
+```javascript
+import { DocumentStore } from "ravendb";
+import * as fs from "fs";
+
+const authOptions = {
+    certificate: fs.readFileSync("C:\\path_to_your_pfx_file\\cert.pfx"),
+    type: "pfx", // or "pem"
+};
+
+const store = new DocumentStore("https://your_RavenDB_server_URL", "your_database_name", authOptions);
+store.initialize();
+```
+
+Let's check the connection by loading a document from your database in the RavenDB Cloud. We use *DocumentSession* to interact with *document*. *Session* is a basic mechanism that is used to modify, load, create, and keep track of *documents*. If you wish to learn more about *Sessions* you can read more in the [documentation](https://ravendb.net/docs/article-page/nodejs/client-api/session/what-is-a-session-and-how-does-it-work). In the RavenDB Studio choose one of the *documents* you want to use. For this example, let's load a single Employee document and write its details in the console. Check the code below:
+
+```javascript
+const session = store.openSession('Tutorial');
+
+const employee = await session.load('employees/1-A');
+console.log("Employee LastName:", employee.LastName);
+```
+
+The code above loads our employee with a selected ID and downloads its information. Let's also add this:
+
+```javascript
+store.dispose();
+```
+
+This disposes the `DocumentStore` and closes the underlying connection. In a real application, keep the store alive for the application's lifetime and let sessions close naturally. With this addition, your code should look like this:
+   
+```javascript
+import { DocumentStore } from "ravendb";
+import * as fs from "fs";
+
+const authOptions = {
+    certificate: fs.readFileSync("C:\\path_to_your_pfx_file\\cert.pfx"),
+    type: "pfx", // or "pem"
+};
+
+const store = new DocumentStore("https://your_RavenDB_server_URL", "Tutorial", authOptions);
+store.initialize();
+
+const session = store.openSession('Tutorial');
+
+const employee = await session.load('employees/1-A');
+console.log("Employee LastName:", employee.LastName);
+
+store.dispose();
+```
+
+Now using the terminal type `node index.js` and wait a few seconds. In the case of using sample data and using this *ID,* you should receive *Davolio*. This indicates that our connection is set and we can hook it up to other code.   
+<Image img={require("./assets/nodejs-cloud8.webp")} alt="Terminal output showing node index.js command and Employee LastName: Davolio result" />
+
+As an ending tip, I would like to remind you that if everything is working properly you should delete sample data from your database so it is clean and ready for your data, or just create a new one, dedicated for your app.
+
+## Summary and Next Steps
+
+This guide walked through setting up a RavenDB Cloud account, provisioning a free instance, downloading a TLS certificate, and connecting a Node.js app to the database using DocumentStore with PFX authentication.
+
+- RavenDB Cloud handles provisioning, maintenance, and backups automatically, so your setup effort is limited to configuring connection credentials.
+- The same TLS certificate used to access RavenDB Studio is also required in your application code - download it once and reference it in `authOptions`.
+- DocumentStore should be instantiated once and reused across your application to avoid opening multiple connection pools.
+- Testing against sample data before building your own data model confirms the connection is working before you invest time in application logic.

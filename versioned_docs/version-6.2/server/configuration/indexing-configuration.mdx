@@ -95,6 +95,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
     [Indexing.OrderByTicksAutomaticallyWhenDatesAreInvolved](../../server/configuration/indexing-configuration.mdx#indexingorderbyticksautomaticallywhendatesareinvolved)  
     [Indexing.QueryClauseCache.Disabled](../../server/configuration/indexing-configuration.mdx#indexingqueryclausecachedisabled)  
     [Indexing.QueryClauseCache.RepeatedQueriesTimeFrameInSec](../../server/configuration/indexing-configuration.mdx#indexingqueryclausecacherepeatedqueriestimeframeinsec)  
+    [Indexing.Querying.UseSearchAnalyzerForDynamicFieldsIfNotSetExplicitlyInSearchQuery](../../server/configuration/indexing-configuration.mdx#indexingqueryingusesearchanalyzerfordynamicfieldsifnotsetexplicitlyinsearchquery)  
     [Indexing.ScratchSpaceLimitInMb](../../server/configuration/indexing-configuration.mdx#indexingscratchspacelimitinmb)  
     [Indexing.Static.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexingstaticsearchenginetype)  
     [Indexing.Throttling.TimeIntervalInMs](../../server/configuration/indexing-configuration.mdx#indexingthrottlingtimeintervalinms)  
@@ -889,6 +890,33 @@ Queries that repeat within this time frame will be considered worth caching.
 
 - **Type**: `int`
 - **Default**: `300`
+- **Scope**: Server-wide, or per database, or per index
+
+
+
+## Indexing.Querying.UseSearchAnalyzerForDynamicFieldsIfNotSetExplicitlyInSearchQuery
+
+* This setting controls which analyzer is used for the **query term** when a **`search()` query** targets a [Dynamic index field](../../indexes/using-dynamic-fields.mdx#indexing-dynamic-fields-for-full-text-search)  
+  that was indexed for full-text search, and no analyzer is explicitly configured for that field in the index definition.
+
+    * `false` (default):  
+      The [Default analyzer](../../indexes/using-analyzers.mdx#using-the-default-analyzer) is used to analyze the **query term**.  
+      This analyzer can be configured via the [Indexing.Analyzers.Default](../../server/configuration/indexing-configuration.mdx#indexinganalyzersdefault) configuration key.  
+    
+    * `true`:  
+      The [Default search analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer) is used to analyze the **query term**.   
+      This analyzer can be configured via the [Indexing.Analyzers.Search.Default](../../server/configuration/indexing-configuration.mdx#indexinganalyzerssearchdefault) configuration key.  
+
+* See the table in [Which analyzer is used for the query term?](../../indexes/using-dynamic-fields.mdx#which-analyzer-is-used-for-the-query-term)
+  for the complete analyzer-selection rules based on this configuration key and the analyzer configured for the dynamic index field.
+
+* This configuration applies to both the Lucene and Corax search engines.  
+  The default is `false` to preserve backward compatibility.   
+
+---
+
+- **Type**: `bool`
+- **Default**: `false`
 - **Scope**: Server-wide, or per database, or per index
 
 

@@ -1,15 +1,12 @@
 ---
 title: "See also"
+unlisted: true
 hide_table_of_contents: false
 sidebar_label: See also
 ---
 
 import Admonition from "@theme/Admonition";
 import SeeAlso from "@site/src/components/SeeAlso";
-
-<head>
-    <meta name="robots" content="noindex, nofollow" />
-</head>
 
 # See also
 
@@ -31,6 +28,10 @@ see_also:
       link: "/guides/sso-setup"
       source: "guides"
       path: "Security > Authentication"
+    - title: "Fit Assistant"
+      link: "/samples/fit-assistant"
+      source: "samples"
+      path: "Samples > AI & Time Series"
     - title: "Website"
       link: "https://web.site"
       source: "external"
@@ -44,7 +45,7 @@ see_also:
 | :------- | :------- | :------------------------------------------------------------------------------------------------------------------------------ |
 | `title`  | `string` | The title of the related article.                                                                                               |
 | `link`   | `string` | The URL or internal path. For `docs`, it's automatically versioned.                                                             |
-| `source` | `Enum`   | Icons are assigned based on the source: `docs`, `cloud`, `guides`, or `external`.                                               |
+| `source` | `Enum`   | Icons are assigned based on the source: `docs`, `cloud`, `guides`, `samples`, or `external`.                                    |
 | `path`   | `string` | Breadcrumb-style path (e.g., `Category > Subcategory`). The first part is shown by default, and the full path appears on hover. |
 
 ## Features
@@ -56,6 +57,7 @@ The component automatically selects an icon based on the `source` property:
 - `docs`: Document icon
 - `cloud`: Cloud icon
 - `guides`: Guides icon
+- `samples`: Samples icon
 - `external`: External link icon
 
 ### 2. Versioned Documentation Links
@@ -64,6 +66,7 @@ For items with `source: "docs"`, the component automatically prepends the curren
 
 - If you are on version `7.1` of the docs, a link like `/api/basics` becomes `/7.1/api/basics`.
 - If the link already starts with a version (e.g., `/8.0/api/basics`), it is used as is.
+- Links to `/cloud`, `/guides`, `/samples`, and `/templates` stay unversioned.
 
 ### 3. Progressive Path Display
 

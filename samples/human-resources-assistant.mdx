@@ -1,0 +1,161 @@
+---
+title: "Human Resources Assistant"
+description: "RavenDB grounds enterprise AI assistants in governed business data, semantic search, usage limits, and document lifecycle controls."
+challenges_solutions_tags: [single-database-ai, usage-governance, semantic-discovery, lifecycle-governance]
+feature_tags: [ai-agents, time-series, vector-search, attachments, counters, document-expiration]
+tech_stack_tags: [csharp, dotnet, aspire, nodejs, react, signalr]
+category: "Enterprise AI"
+license: "MIT License"
+license_url: "https://github.com/ravendb/samples-hr/blob/main/LICENSE"
+repository_url: "https://github.com/ravendb/samples-hr"
+languages: ["C#"]
+image: "/img/samples/hr/cover.png"
+img_alt: "Human Resources Assistant chat interface"
+gallery:
+  - src: "/img/samples/hr/cover.png"
+    alt: "Human Resources Assistant answering an employee vacation question"
+  - src: "/img/samples/hr/usage-limit.png"
+    alt: "Human Resources Assistant API usage dashboard"
+related_resources:
+  - type: documentation
+    documentation_type: docs
+    subtitle: "AI Agents"
+    article_key: "ai-integration/ai-agents/start"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Vector Search"
+    article_key: "ai-integration/vector-search/start"
+  - type: guide
+    subtitle: "Practical Look at AI Agents with RavenDB"
+    article_key: "practical-look-at-ai-agents-with-ravendb"
+  - type: video
+    subtitle: "AI Agents and Attachments"
+    url: "https://www.youtube.com/watch?v=QphtDGe23WE"
+---
+
+import { FeatureAccordion, SampleLayout } from '@site/src/components/Samples';
+
+<SampleLayout>
+
+## Overview
+
+Human Resources Assistant shows how RavenDB keeps an enterprise AI assistant grounded in governed business data. Employee records, HR policies, signature documents, expenses, conversations, and usage telemetry live together, so answers and actions come from the same operational record the application already trusts.
+
+That matters when an assistant is allowed near internal workflows. RavenDB AI Agents limit what the model can query or do, Vector Search finds the right policies by meaning, Time Series and Counters support usage governance, and Document Expiration cleans up sessions without adding another service.
+
+## Features used
+
+<FeatureAccordion
+    title="AI Agents with scoped HR tools"
+    description="Defines the assistant's allowed RavenDB queries, actions, parameters, and sub-agent handoffs."
+    icon="ai-agents"
+>
+    The HR assistant is created as a RavenDB AI Agent with an employee ID parameter, RQL query tools, tool actions, and an expense-management sub-agent. The model can answer HR questions only through the application-defined surface.
+
+    ```csharp
+    return store.AI.CreateAgentAsync(new AiAgentConfiguration
+    {
+        Identifier = AgentIdentifier,
+        Parameters = [new AiAgentParameter(EmployeeIdParameter, "Employee ID; answer only for this employee")],
+        SubAgents = [new AiAgentToolSubAgent { Identifier = ExpenseAgentIdentifier }],
+        Queries = [new AiAgentToolQuery { Name = "GetEmployeeInfo" }],
+        Actions = [new AiAgentToolAction { Name = RaiseIssueAction }]
+    });
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Vector Search"
+    description="Finds relevant HR policies and internal documents by meaning, not only keywords."
+    icon="vector-search"
+>
+    HR policies and employee questions rarely use the same words. The agent uses RavenDB vector search directly in RQL to retrieve policies, issues, and signature documents by semantic similarity before answering.
+
+    ```csharp
+    Query = @"
+        from HRPolicies
+        where (vector.search(embedding.text(Title), $query)
+            or vector.search(embedding.text(Content), $query))
+        limit 5"
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Time Series usage windows"
+    description="Tracks request activity per session for live AI usage limits."
+    icon="new-time-series"
+>
+    Each AI request appends a point to a RavenDB time series on the session usage document. That gives the application a database-native way to enforce limits over rolling windows and display usage without exporting metrics elsewhere.
+
+    ```csharp
+    session.TimeSeriesFor(doc, Constants.TimeSeries.Requests)
+        .Append(DateTime.UtcNow, 1);
+
+    await session.SaveChangesAsync();
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Counters for token accounting"
+    description="Tracks prompt, completion, and cached token totals on RavenDB usage documents."
+    icon="new-counter"
+>
+    Token totals are counters on the same session usage document. RavenDB keeps the operational record and the accumulating usage numbers together, which makes live dashboards and limits much simpler.
+
+    ```csharp
+    session.CountersFor(doc)
+        .Increment("TotalCompletionTokens", usage.CompletionTokens);
+
+    session.CountersFor(doc)
+        .Increment("TotalPromptTokens", usage.PromptTokens);
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Attachments for document workflows"
+    description="Keeps receipts, signatures, and HR documents attached to the records that use them."
+    icon="attachment"
+>
+    The expense sub-agent can inspect receipt images attached to the conversation and turn confirmed receipts into business-trip expense records. Signature flows use RavenDB documents and attachments together, so the assistant can find the right document and ask for a controlled action.
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Document Expiration"
+    description="Cleans up expired sessions and conversations automatically."
+    icon="document-expiration"
+>
+    Conversation and session data should not live forever by accident. Document Expiration gives the sample a database-native cleanup mechanism without a separate cron service.
+</FeatureAccordion>
+
+## Technologies
+
+- [RavenDB](https://ravendb.net/)
+- [.NET Aspire](https://learn.microsoft.com/en-us/dotnet/aspire/)
+- [.NET 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
+- [ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/)
+- [Node.js 22](https://nodejs.org/)
+- [React](https://react.dev/)
+- [SignalR](https://learn.microsoft.com/en-us/aspnet/core/signalr/introduction)
+
+## Run locally
+
+1. Check out the repository.
+2. Install .NET 10.x, Node.js 22.x, and Aspire.
+3. Provide the required Aspire parameters: `openai-api-key` and `ravendb-license`.
+4. Run `npm install` in `/sampleshr-frontend`.
+5. Start the .NET Aspire AppHost with `aspire run`.
+6. Open the Aspire dashboard and use the seed data action to populate the sample database.
+
+## Community & Support
+
+If you spot a bug, have an idea, or want to ask a question, open an issue or pull request in the repository. The RavenDB team also hangs out on the [RavenDB Discord server](https://discord.gg/ravendb).
+
+## Contributing
+
+Contributions are welcome. See the repository's [CONTRIBUTING](https://github.com/ravendb/samples-hr/blob/main/CONTRIBUTING.md) file for details.
+
+## License
+
+This project is licensed with the [MIT license](https://github.com/ravendb/samples-hr/blob/main/LICENSE).
+
+</SampleLayout>

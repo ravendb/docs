@@ -1,0 +1,723 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* When making a query, the server will return the results **sorted** only if explicitly requested by the query.  
+  If no sorting method is specified when issuing the query, results will not be sorted.
+
+    * Note: An exception to the above rule is when [Boosting](../../../indexes/boosting.mdx) is involved in the query.  
+      Learn more in [Automatic score-based ordering](../../../indexes/boosting.mdx#automatic-score-based-ordering).
+
+* Sorting is applied by the server after the query filtering stage.
+  Filtering is recommended, as it reduces the number of results RavenDB needs to sort when querying a large dataset.
+
+* Multiple sorting operations can be [chained](../../../querying/sorting-query-results/sort-query-results.mdx#chain-ordering).
+    
+* All sorting capabilities available for **dynamic queries** can also be used when querying a **static-index**.  
+  The same syntax used with dynamic queries also applies when querying indexes.
+
+* In this article:
+    * [Order by field value](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-field-value) 
+        * [Ordering type](../../../querying/sorting-query-results/sort-query-results.mdx#ordering-type) 
+    * [Order by searchable fields](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-searchable-fields)
+    * [Order by score](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-score)
+        * [Get resulting score](../../../querying/sorting-query-results/sort-query-results.mdx#get-resulting-score)  
+    * [Order by random](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-random)   
+    * [Order by spatial](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-spatial)     
+    * [Order by count (aggregation query)](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-count-aggregation-query)  
+    * [Order by sum (aggregation query)](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-sum-aggregation-query)
+    * [Order by metadata](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-metadata)
+    * [Force ordering type](../../../querying/sorting-query-results/sort-query-results.mdx#force-ordering-type)
+    * [Chain ordering](../../../querying/sorting-query-results/sort-query-results.mdx#chain-ordering)
+    * [Custom sorters](../../../querying/sorting-query-results/sort-query-results.mdx#custom-sorters)
+    * [Performance notes](../../../querying/sorting-query-results/sort-query-results.mdx#performance-notes)
+    * [Syntax](../../../querying/sorting-query-results/sort-query-results.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Order by field value">
+
+<ContentFrame>
+    
+### Order by field value - dynamic query   
+
+Use `orderBy` or `orderByDescending` to order the results by the specified document-field.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const products = await session
+     // Make a dynamic query on the 'products' collection    
+    .query({ collection: "products" })
+     // Apply filtering (optional)
+    .whereGreaterThan("UnitsInStock", 10)
+     // Call 'orderBy'
+     // Pass the document-field by which to order the results and the ordering type
+    .orderBy("UnitsInStock", "Long")
+    .all(); 
+
+// Results will be sorted by the 'UnitsInStock' value in ascending order,
+// with smaller values listed first.
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Products"
+where UnitsInStock > 10
+order by UnitsInStock as long
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>   
+    
+<ContentFrame>
+    
+### Order by field value - querying a static-index   
+    
+Use `orderBy` or `orderByDescending` to order the results by the specified index-field.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const products = await session
+     // Query the index
+    .query({ indexName: "Products/ByUnitsInStock" })
+     // Apply filtering (optional)
+    .whereGreaterThan("unitsInStock", 10)
+     // Call 'orderByDescending'
+     // Pass the index-field by which to order the results and the ordering type
+    .orderByDescending("unitsInStock", "Long")
+    .all();
+
+// Results will be sorted by the 'unitsInStock' value in descending order,
+// with higher values listed first.
+```
+</TabItem>
+<TabItem value="Index" label="Index">
+```js
+class Products_ByUnitsInStock extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map("Products", p => {
+            return {
+                unitsInStock: p.UnitsInStock
+            };
+        });
+    }
+}
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Products/ByUnitsInStock"
+where unitsInStock > 10
+order by unitsInStock as long desc
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<Admonition type="info" title="">
+
+### Ordering Type
+
+* If no ordering type is specified in the query then the server will apply the default lexicographical ordering.
+
+* In the above example, the ordering type was set to `Long`.
+
+* Different ordering can be forced - see [Force ordering type](../../../querying/sorting-query-results/sort-query-results.mdx#force-ordering-type) below.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Order by searchable fields">
+    
+<ContentFrame>
+    
+### Order by searchable field - dynamic query
+
+When making a [full-text search with a dynamic query](../../../client-api/session/querying/text-search/full-text-search.mdx),  
+RavenDB automatically creates an **auto-index** that contains two index-fields for the queried field:  
+  * one for the tokenized terms (used for searching), 
+  * and one for the original value (used for ordering and other operations).
+
+For example, consider the following dynamic query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const products = await session
+    .query({ collection: "Products" })
+     // Call 'search':
+     // Search for products with a name that contains 'sauce'.
+    .search("Name", "sauce")
+     // Call 'orderBy':
+     // Order the results by the original value of field 'Name'.
+    .orderBy("Name")
+    .all();
+```
+</TabItem>   
+<TabItem value="RQL" label="RQL">
+```sql
+from Products
+where search(Name, "sauce")
+order by Name
+```
+</TabItem>
+</Tabs>
+    
+For this query, RavenDB creates the `Auto/Products/BySearch(Name)` auto-index,  
+which contains the following two index-fields:    
+    
+* `search(Name)`  
+  Used for the full-text search.  
+  The field content is tokenized at indexing time according to the analyzer in use,  
+  and the `search()` clause in the query is matched against these tokenized terms.  
+    
+* `Name`  
+  Used for ordering the results.  
+  This field stores the original field value (non-tokenized),  
+  so the `order by` clause sorts results by the original text rather than by individual terms.
+
+**Note**:  
+This behavior is different from querying a static-index, where you must explicitly define an additional non-searchable index-field if you want to sort by the original value.
+See the following static-index example.    
+    
+</ContentFrame>    
+
+<ContentFrame>
+    
+### Order by searchable field - querying a static-index
+    
+* **When configuring an index-field** for [full-text search](../../../indexes/querying/searching.mdx),
+  the content of the index-field is broken down into terms at indexing time. 
+  The specific tokenization depends on the [analyzer](../../../indexes/using-analyzers.mdx) used.
+
+* **When querying such an index**, if you order by that searchable index-field, 
+  results will come back sorted based on the indexed terms, not based on the original text value of the field.
+  
+* To overcome this and order results by the original text value,  
+  you can define another index-field with the same content, leave it non-searchable, and order by that field.       
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+```js
+class Products_BySearchName extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map("Products", p => {
+            return {
+                // Index-field 'name' will be configured below for full-text search
+                name: p.Name,
+                
+                // Index-field 'nameForSorting' will be used for ordering query results 
+                nameForSorting: p.Name
+
+                // Note:
+                // Both index-fields are assigned the same content (the 'Name' from the document)
+            };
+        });
+
+        // Configure only the 'name' index-field for FTS
+        this.index("name", "Search");
+    }
+}
+```
+</TabItem>
+<TabItem value="Query" label="Query">
+```js
+const products = await session
+    // Query the index
+    .query({ indexName: "Products/BySearchName"})
+    // Call 'search':
+    // Pass the index-field that was configured for FTS and the term to search for.
+    // Here we search for terms that start with "ch" within index-field 'name'.
+    .search("name", "ch*")
+    // Call 'orderBy':
+    // Pass the other index-field by which to order the results.
+    .orderBy("nameForSorting")
+    .all();
+
+// Running the above query on the NorthWind sample data, ordering by 'NameForSorting' field,
+// we get the following order:
+// =========================================================================================
+
+// "Chai"
+// "Chang"
+// "Chartreuse verte"
+// "Chef Anton's Cajun Seasoning"
+// "Chef Anton's Gumbo Mix"
+// "Chocolade"
+// "Jack's New England Clam Chowder"
+// "Pâté chinois"
+// "Teatime Chocolate Biscuits"
+
+// While ordering by the searchable 'Name' field would have produced the following order:
+// ======================================================================================
+
+// "Chai"
+// "Chang"
+// "Chartreuse verte"
+// "Chef Anton's Cajun Seasoning"
+// "Pâté chinois"
+// "Chocolade"
+// "Teatime Chocolate Biscuits"
+// "Chef Anton's Gumbo Mix"
+// "Jack's New England Clam Chowder"
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Products/BySearchName" 
+where search(name, "ch*")
+order by nameForSorting
+```
+</TabItem>
+</Tabs>
+    
+</ContentFrame>
+    
+</Panel>
+
+<Panel heading="Order by score">
+
+* When querying with some filtering conditions, a basic score is calculated for each item in the results  
+  by the underlying indexing engine.
+
+* The higher the score value the better the match.  
+
+* Use `orderByScore` or `orderByScoreDescending` to order by this score.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const products = await session
+    .query({ collection: "products" })
+     // Apply filtering
+    .whereLessThan("UnitsInStock", 5)
+    .orElse()
+    .whereEquals("Discontinued", true)
+     // Call 'orderByScore'
+    .orderByScore()
+    .all();
+
+// Results will be sorted by the score value
+// with best matching documents (higher score values) listed first.
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Products"
+where UnitsInStock < 5 or Discontinued == true
+order by score()
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="">
+
+#### Get resulting score:
+    
+The score details can be retrieved by either:
+
+* **Request to include explanations**:  
+  You can get the score details and see how it was calculated by requesting to include explanations in the query.
+  Currently, this is only available when using Lucene as the underlying indexing engine.  
+  Learn more in [Include query explanations](../../../client-api/session/querying/debugging/include-explanations.mdx).
+
+* **Get score from metadata**:
+
+    * The score is available in the `@index-score` metadata property within each result.  
+      Note the following difference between the underlying indexing engines:
+
+        * When using **Lucene**:  
+          This metadata property is always available in the results.  
+          Read more about Lucene scoring [here](https://lucene.apache.org/core/3_3_0/scoring.html).
+
+        * When using **Corax**:  
+          In order to enhance performance, this metadata property is Not included in the results by default.  
+          To get this metadata property you must set the [Indexing.Corax.IncludeDocumentScore](../../../server/configuration/indexing-configuration.mdx#indexingcoraxincludedocumentscore) configuration value to _true_.  
+          Learn about the available methods for setting an indexing configuration key in this [indexing-configuration](../../../server/configuration/indexing-configuration.mdx) article.
+
+    * The following example shows how to get the score from the metadata of the resulting entities that were loaded to the session:
+
+<TabItem>
+```js
+// Make a query:
+// =============
+
+const employees = await session
+    .query({ collection: "Employees"})
+    .search('Notes', 'English')
+    .search('Notes', 'Italian')
+    .boost(10)
+    .all();
+
+// Get the score:
+// ==============
+
+// Call 'getMetadataFor', pass an entity from the resulting employees list
+const metadata = session.advanced.getMetadataFor(employees[0]);
+
+// Score is available in the '@index-score' metadata property
+const score = metadata[CONSTANTS.Documents.Metadata.INDEX_SCORE];
+```
+</TabItem>
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Order by random">
+
+* Use `randomOrdering` to randomize the order of the query results.
+
+* An optional seed parameter can be passed.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const products = await session
+    .query({ collection: "products" })
+    .whereGreaterThan("UnitsInStock", 10)
+     // Call 'randomOrdering'
+    .randomOrdering()
+     // An optional seed can be passed, e.g.:
+     // .randomOrdering("someSeed")
+    .all();
+
+// Results will be randomly ordered.
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Products"
+where UnitsInStock > 10
+order by random()
+// order by random(someSeed)
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Order by spatial">
+
+* If your data contains geographical locations,  
+  spatial query results can be sorted based on their distance from a specific point.
+
+* See detailed explanation in [Spatial Sorting](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting).
+
+</Panel>
+
+<Panel heading="Order by count (aggregation query)">
+
+* The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query.mdx) can be sorted by the `count` aggregation operation used in the query.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const numberOfProductsPerCategory = await session
+    .query({ collection: "products" })
+     // Group by category
+    .groupBy("Category")
+    .selectKey("Category")
+     // Count the number of product documents per category
+    .selectCount()
+     // Order by the count value
+    .orderBy("count", "Long")
+    .all();
+
+// Results will contain the number of Product documents per category
+// ordered by that count in ascending order.
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Products"
+group by Category
+order by count() as long
+select key() as "Category", count()
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Order by sum (aggregation query)">
+
+* The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query.mdx) can be sorted by the `sum` aggregation operation used in the query.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const numberOfUnitsInStockPerCategory = await session
+    .query({ collection: "products" })
+     // Group by category
+    .groupBy("Category")
+    .selectKey("Category")
+     // Sum the number of units in stock per category
+    .selectSum(new GroupByField("UnitsInStock", "sum"))
+     // Order by the sum value
+    .orderBy("sum", "Long")
+    .all();
+
+// Results will contain the total number of units in stock per category
+// ordered by that number in ascending order.
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Products"
+group by Category
+order by sum as long
+select key() as 'Category', sum(UnitsInStock) as sum
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Order by metadata">
+
+* Documents contain server-maintained metadata fields, such as `@last-modified`.  
+  You can order query results by these fields directly in RQL, or by using `documentQuery`.
+
+* When no ordering type is specified, metadata fields are ordered lexicographically.  
+  For `@last-modified`, this produces the correct chronological order because the timestamp format is lexically sortable: `yyyy-MM-ddTHH:mm:ss.fffffff`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+```js
+const recent = await session.advanced
+    .documentQuery({ collection: "Orders" })
+     // Order by the document's last modification time,
+     // with the most recently modified documents listed first
+    .orderByDescending("@metadata.@last-modified")
+    .take(20)
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Orders"
+order by @metadata.@last-modified desc
+limit 20
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Force ordering type">
+
+* If no ordering type is specified in the query then the server will apply the default lexicographical ordering.
+
+* You can force a different ordering type by passing it explicitly to `orderBy` or `orderByDescending`.   
+  The following ordering types are available:
+
+    * `Long`
+    * `Double`
+    * `AlphaNumeric`
+    * `String` (lexicographic ordering)
+    
+* Use the appropriate ordering type for the field value.  
+  For example, ordering numeric values as strings can produce lexicographic order, where `"10"` comes before `"9"`.  
+  Use a numeric ordering type when ordering numeric fields explicitly.    
+    
+* When using RQL directly, if no ordering type is specified, the server uses the default ordering for the field.  
+  To force a specific ordering type, specify `as long`, `as double`, `as string`, or `as alphanumeric`.    
+
+<Admonition type="note" title="">
+
+**Using alphanumeric ordering example**:
+
+* When ordering mixed-character strings by the default lexicographical ordering  
+  then comparison is done character by character based on the Unicode values.  
+  For example, "Abc9" will come after "Abc10" since 9 is greater than 1.
+
+* If you want the digit characters to be ordered as numbers, use alphanumeric ordering.  
+  In that case, `"Abc10"` will come after `"Abc9"`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const products = await session
+    .query({ collection: "products" })
+     // Call 'OrderBy', order by field 'QuantityPerUnit'
+     // Pass a second param, requesting to order the text alphanumerically
+    .orderBy("QuantityPerUnit", "AlphaNumeric")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Products"
+order by QuantityPerUnit as alphanumeric
+```
+</TabItem>
+</Tabs>
+
+<TabItem>
+```js
+// Running the above query on the NorthWind sample data,
+// would produce the following order for the QuantityPerUnit field:
+// ================================================================
+
+// "1 kg pkg."
+// "1k pkg."
+// "2 kg box."
+// "4 - 450 g glasses"
+// "5 kg pkg."
+// ...
+
+// While running with the default Lexicographical ordering would have produced:
+// ============================================================================
+
+// "1 kg pkg."
+// "10 - 200 g glasses"
+// "10 - 4 oz boxes"
+// "10 - 500 g pkgs."
+// "10 - 500 g pkgs."
+// ...
+```
+</TabItem>
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Chain ordering">
+
+* It is possible to chain multiple orderings in the query.  
+  Any combination of secondary sorting is possible as the fields are indexed independently of one another.
+    
+* **When using the Lucene search engine** -  
+  there is no limit on the number of sorting actions that can be chained in a query.  
+  
+  **When using the Corax search engine** -  
+  a maximum of `16` _order by_ clauses is allowed per query. If this limit is exceeded, an exception will be thrown.  
+  To resolve this, simplify your query or switch to the Lucene engine. See [Selecting the search engine](../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const products = await session
+    .query({ collection: "products" })
+    .whereGreaterThan("UnitsInStock", 10)
+     // Apply the primary sort by 'UnitsInStock'
+    .orderByDescending("UnitsInStock", "Long")
+     // Apply a secondary sort by the score
+    .orderByScore()
+     // Apply another sort by 'Name'
+    .orderBy("Name")
+    .all();
+
+// Results will be sorted by the 'UnitsInStock' value (descending),
+// then by score,
+// and then by 'Name' (ascending).
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Products"
+where UnitsInStock > 10
+order by UnitsInStock as long desc, score(), Name
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Custom sorters">
+
+* The **Lucene** indexing engine allows you to define custom sorters,  
+  so you can apply your own logic when ordering query results.  
+  Custom sorters are not supported by [Corax](../../../indexes/search-engine/corax.mdx).  
+ 
+* Custom sorters can be deployed at either the database level or the server-wide level:  
+  * **Database-level**  
+    Custom sorters can be used only by queries made on that database.  
+    Learn how to deploy a database-level custom sorter in: [Database-level custom sorters](../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx).    
+    
+  * **Server-wide**  
+    Custom sorters can be used by queries made on any database in your cluster.  
+    Learn how to deploy a server-wide custom sorter in: [Server-wide custom sorters](../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx).
+    
+* Once deployed, a custom sorter can be specified in a query to sort the results.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const products = await session
+    .query({ collection: "products" })
+    .whereGreaterThan("UnitsInStock", 10)
+     // Order by field 'UnitsInStock', pass the name of your custom sorter class
+    .orderBy("UnitsInStock", { sorterName: "MyCustomSorter" })
+    .all();
+
+// Results will be sorted by the 'UnitsInStock' value
+// according to the logic from 'MyCustomSorter' class
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Products"
+where UnitsInStock > 10
+order by custom(UnitsInStock, "MyCustomSorter")
+    
+// Results will be sorted by the 'UnitsInStock' value
+// according to the logic from 'MyCustomSorter' class    
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Performance notes">
+
+* **Filter before you sort.**  
+  Sorting cost is proportional to the number of matched documents, not the size of the collection.  
+  A `where` clause that reduces the candidate set materially cheapens the sort.
+    
+* **Sorting requires an indexed field.**  
+  In a dynamic query, if the field you order by is not already available in the auto-index,  
+  RavenDB may create or extend an auto-index to include that field.    
+  This adds indexing work before the sort can be served efficiently.  
+  On hot paths, prefer a static index that already contains the sortable field.    
+
+</Panel>
+
+<Panel heading="Syntax">
+
+<TabItem>
+```js
+// orderBy overloads:
+orderBy(field);
+orderBy(field, ordering);
+orderBy(field, options);
+
+// orderByDescending overloads:
+orderByDescending(field);
+orderByDescending(field, ordering);
+orderByDescending(field, options);
+```
+</TabItem>
+
+| Parameter    | Type     | Description                                                                                                                |
+|--------------|----------|----------------------------------------------------------------------------------------------------------------------------|
+| **field**    | `string` | The name of the field to sort by                                                                                           |
+| **ordering** | `string` | The ordering type that will be used to sort the results:<br/>`Long`<br/>`Double`<br/>`AlphaNumeric`<br/>`String` (default) |
+| **options**  | `object` | An object that specifies the custom `sorterName`                                                                           |
+
+</Panel>

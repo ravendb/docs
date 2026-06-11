@@ -1,0 +1,580 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* Queries can include a `where` clause to **filter the results** returned from a collection or an index.
+    
+* Filtering is performed on the server: the `where` clause is sent as part of the query, evaluated against an index (static or auto), 
+  and only documents that match the specified condition are returned to the client.   
+
+  For example, when querying a collection of products, you can filter the results to return only products that are in stock, or only products whose price is above a specified value.
+    
+* You can filter by simple field values, numeric ranges, nested fields, values inside collections, document IDs, and more.
+    
+* The examples in this article mostly demonstrate **dynamic queries** (queries that don't specify which index to query).  
+  You can use the same filtering syntax when querying a **static index**,
+  as explained below in [Filtering when querying static indexes](../../../querying/filtering-query-results/filter-query-results.mdx#filtering-when-querying-static-indexes).
+
+* In this article:    
+  * [Filtering and index usage](../../../querying/filtering-query-results/filter-query-results.mdx#filtering-and-index-usage)
+  * [Filter by field value](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-field-value)
+  * [Filter by numeric value](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-numeric-value)
+  * [Filter by nested field](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-nested-field)
+  * [Filter by values in a collection](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-values-in-a-collection)
+  * [Filter by multiple possible values](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-multiple-possible-values)
+  * [Filter by matching any value in a collection](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-matching-any-value-in-a-collection)
+  * [Filter by matching all values in a collection](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-matching-all-values-in-a-collection)
+  * [Filter by string prefix or suffix](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-string-prefix-or-suffix)
+  * [Filter by field presence](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-field-presence)
+  * [Filter by document ID](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-document-id)
+  * [Filtering when querying static indexes](../../../querying/filtering-query-results/filter-query-results.mdx#filtering-when-querying-static-indexes)
+  * [Syntax](../../../querying/filtering-query-results/filter-query-results.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Filtering and index usage">
+    
+* **When querying a collection with a filtering condition without specifying an index**,  
+  RavenDB treats the query as a dynamic query and will use an **AUTO-index** to process the filter.
+    
+  If no suitable auto-index exists yet, RavenDB will create one automatically based on the fields used in the query.
+  Later queries that need the same indexed fields will reuse the same auto-index.  
+  To learn more about dynamic queries and auto-indexes, see [Query overview](../../../querying/overview.mdx#2-query-a-collection---with-filtering).    
+    
+* **When querying a STATIC index**, RavenDB will use the specified index to process the filter.  
+  The filtering condition is evaluated against the fields indexed by that index, and no auto-index is created. 
+    
+</Panel>
+
+<Panel heading="Filter by field value">
+    
+Use `whereEquals` to return only documents where a field has the specified value.  
+For example, the following query will return all _Employee_ documents where `FirstName` is `"Robert"`.    
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<Employee> employees = session
+    .query(Employee.class)                // Query the Employees collection
+    .whereEquals("FirstName", "Robert")   // Apply the filter predicate
+    .toList();                            // Execute the query and return the results
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Employee> employees = session.advanced()
+    .rawQuery(Employee.class, "from Employees where FirstName = $firstName")
+    .addParameter("firstName", "Robert")
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Employees
+where FirstName = "Robert"
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/Employees/ByFirstName`  
+> The auto-index is derived from the `FirstName` field referenced in the `where` clause.  
+    
+</Panel>   
+
+<Panel heading="Filter by numeric value">
+
+You can filter numeric fields using comparison operators.  
+For example, the following query returns all products that have more than `50` units in stock.   
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+
+```java
+List<Product> products = session
+    .query(Product.class)
+    .whereGreaterThan("UnitsInStock", 50)
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Product> products = session.advanced()
+    .rawQuery(Product.class, "from Products where UnitsInStock > $units")
+    .addParameter("units", 50)
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Products
+where UnitsInStock > 50
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/Products/ByUnitsInStock`  
+> The auto-index is derived from the `UnitsInStock` field referenced in the `where` clause.  
+>    
+> The auto-index name does not depend on the comparison operator (`=`, `>`, `<`, ...),  
+> so the same auto-index serves any comparison on `UnitsInStock`.
+    
+You can use the following comparison operators:
+
+| Operator | Description              |
+| -------- | ------------------------ |
+| `=`      | Equal to                 |
+| `!=`     | Not equal to             |
+| `>`      | Greater than             |
+| `>=`     | Greater than or equal to |
+| `<`      | Less than                |
+| `<=`     | Less than or equal to    |
+
+</Panel>
+
+<Panel heading="Filter by nested field">
+    
+To filter by a nested field, specify the full path to the field.  
+For example, the following query returns all orders that were shipped to `Albuquerque`.    
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<Order> orders = session
+    .query(Order.class)
+    .whereEquals("ShipTo.City", "Albuquerque") // Filter by the nested field's full path
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Order> orders = session.advanced()
+    .rawQuery(Order.class, "from Orders where ShipTo.City = $city")
+    .addParameter("city", "Albuquerque")
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Orders
+where ShipTo.City = "Albuquerque"
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/Orders/ByShipTo.City`  
+> The auto-index is derived from the nested field path `ShipTo.City` referenced in the `where` clause.  
+>
+> The full dotted path is preserved in the auto-index name.
+    
+</Panel>
+
+<Panel heading="Filter by values in a collection">
+    
+Use `whereEquals` with the collection's field path when the field you want to filter by is inside a collection.
+
+For example, each _Order_ document contains a `Lines` collection.  
+The following query returns every _Order_ document that contains at least one order line for  
+`Teatime Chocolate Biscuits`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<Order> orders = session
+    .query(Order.class)
+    .whereEquals("Lines[].ProductName", "Teatime Chocolate Biscuits")
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Order> orders = session.advanced()
+    .rawQuery(Order.class, "from Orders where Lines[].ProductName = $productName")
+    .addParameter("productName", "Teatime Chocolate Biscuits")
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Orders
+where Lines[].ProductName = "Teatime Chocolate Biscuits"
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/Orders/ByLines[].ProductName`  
+> The auto-index is derived from the array-element path `Lines[].ProductName` referenced in the `where` clause.
+>    
+> The `[]` notation in the auto-index name indicates that `Lines` is a collection and that the index is built over each element's `ProductName`.
+    
+</Panel>
+
+<Panel heading="Filter by multiple possible values">
+
+Use `whereIn` when a field can match any value from a specified list.      
+For example, the following query returns _Employee_ documents whose first name is either `Robert` or `Nancy`. 
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<Employee> employees = session
+    .query(Employee.class)
+    .whereIn("FirstName", Arrays.asList("Robert", "Nancy"))
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Employee> employees = session.advanced()
+    .rawQuery(Employee.class, "from Employees where FirstName in ($names)")
+    .addParameter("names", Arrays.asList("Robert", "Nancy"))
+    .toList();
+```
+
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Employees
+where FirstName in ("Robert", "Nancy")
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/Employees/ByFirstName`
+> The auto-index is derived from the `FirstName` field referenced in the `where` clause.
+>    
+> The same auto-index serves both equality (`FirstName = "Robert"`) and `in` queries on this field -  
+> the operator does not affect the auto-index name.  
+> This means the auto-index created in [Filter by field value](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-field-value) is reused here,
+  and no new auto-index is created.
+    
+</Panel>
+
+<Panel heading="Filter by matching any value in a collection">
+    
+Use `containsAny` to return documents where a collection field contains at least one value from the specified list.  
+    
+Assume the following `BlogPost` class:    
+ 
+<TabItem>
+```java
+public class BlogPost
+{
+    private String id;
+    private String title;
+    private String[] tags;
+
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+
+    public String[] getTags() { return tags; }
+    public void setTags(String[] tags) { this.tags = tags; }
+}
+```    
+</TabItem> 
+    
+The following query returns all blog posts that contain either the `Development` tag or the `Research` tag.  
+The query will return a document if the `Tags` collection contains at least one of the specified values.
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<BlogPost> posts = session
+    .query(BlogPost.class)
+    .containsAny("tags", Arrays.asList("Development", "Research"))
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<BlogPost> posts = session.advanced()
+    .rawQuery(BlogPost.class, "from BlogPosts where tags in ($tags)")
+    .addParameter("tags", Arrays.asList("Development", "Research"))
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from BlogPosts
+where tags in ("Development", "Research")
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/BlogPosts/ByTags`  
+> The auto-index is derived from the `Tags` collection field referenced in the `where` clause.
+    
+</Panel>
+
+<Panel heading="Filter by matching all values in a collection">
+    
+Use `containsAll` to return documents where a collection field contains all values from the specified list.
+For example, the following query returns only blog posts where the `Tags` collection contains both `Development` and `Research`.    
+ 
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<BlogPost> posts = session
+    .query(BlogPost.class)
+    .containsAll("tags", Arrays.asList("Development", "Research"))
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<BlogPost> posts = session.advanced()
+    .rawQuery(BlogPost.class, "from BlogPosts where tags all in ($tags)")
+    .addParameter("tags", Arrays.asList("Development", "Research"))
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from BlogPosts
+where Tags all in ("Development", "Research")
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/BlogPosts/ByTags`  
+> The auto-index is derived from the `Tags` collection field referenced in the `where` clause.
+>    
+> `containsAny` (`in`) and `containsAll` (`all in`) produce the same auto-index name;  
+> the operator only affects which documents match, not which auto-index is created or used.  
+> This means the auto-index created for [Filter by matching any value in a collection](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-matching-any-value-in-a-collection) is reused here.
+    
+</Panel>
+
+<Panel heading="Filter by string prefix or suffix">    
+    
+    Use `whereStartsWith` to return documents where a string field starts with the specified value.  
+    Learn more in [Starts-with query](../../../client-api/session/querying/text-search/starts-with-query.mdx).
+    
+    Use `whereEndsWith` to return documents where a string field ends with the specified value.  
+    Learn more in [Ends-with query](../../../client-api/session/querying/text-search/ends-with-query.mdx).
+    
+</Panel>
+
+<Panel heading="Filter by field presence">
+    
+To find all documents in a collection that have a specified field, see [How to Filter by Field Presence](../../../client-api/session/querying/how-to-filter-by-field.mdx).  
+
+To find all documents in a collection that don't have a specified field, see [How to Filter by Non-Existing Field](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx).
+    
+</Panel>
+
+<Panel heading="Filter by document ID">
+   
+You can filter by document ID or by an ID prefix.
+When the query only filters by the document ID, RavenDB does not need to create an auto-index.
+Instead, the query is served directly by the storage engine.
+
+This applies when the field used in the `whereEquals` clause is recognized as the identity property of the entity type,
+according to the [`findIdentityProperty` convention](../../../client-api/configuration/identifier-generation/global.mdx#findidentityproperty),
+and no other fields are involved in the query.
+
+Such queries are considered [Collection queries](../../../querying/overview.mdx#3-query-a-collection---query-full-collection--query-by-id).
+Simple collection queries that ask for documents by ID, or by an ID prefix, and do not require additional handling such as ordering or full-text search, have no additional indexing cost.
+
+In terms of efficiency, querying by ID is the same as loading documents using [`session.load`](../../../client-api/session/loading-entities.mdx).
+
+---
+    
+For example, the following query returns the order whose document ID is `orders/1-A`.    
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+Order order = session
+    .query(Order.class)
+    .whereEquals("id", "orders/1-A")
+    .firstOrDefault();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+Order order = session.advanced()
+    .rawQuery(Order.class, "from Orders where id() = $id")
+    .addParameter("id", "orders/1-A")
+    .firstOrDefault();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Orders
+where id() = "orders/1-A"
+```
+</TabItem>
+</Tabs>
+
+> **No auto-index is created**.  
+> Filtering only by document ID is served directly by the storage engine.
+    
+---
+    
+You can also filter by an ID prefix to return all documents whose IDs start with a specified value:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<Order> orders = session
+    .query(Order.class)
+    .whereStartsWith("id", "orders/")
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Order> orders = session.advanced()
+    .rawQuery(Order.class, "from Orders where startsWith(id(), $prefix)")
+    .addParameter("prefix", "orders/")
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Orders
+where startsWith(id(), "orders/")
+```
+</TabItem>
+</Tabs>
+
+> **No auto-index is created**.  
+> Filtering by an ID prefix is also handled directly by the storage engine.
+    
+</Panel>
+
+<Panel heading="Filtering when querying static indexes">
+
+All filtering methods shown above can also be used when querying a **static index**.     
+However, when querying a static index, the filter must reference fields that are defined by the index.    
+
+For example, consider the following index:
+
+<TabItem>
+```java
+public class Employees_ByFirstAndLastName extends AbstractIndexCreationTask
+{
+    public Employees_ByFirstAndLastName()
+    {
+        // The index fields are FirstName and LastName
+        map = "from employee in docs.Employees " +
+              "select new { employee.FirstName, employee.LastName }";
+    }
+}
+```
+</TabItem>
+
+You can query the index and filter the resulting documents by the index fields.        
+The following example queries the index for _Employee_ documents and filters them by the index field `FirstName`.
+  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+
+```java
+List<Employee> employees = session
+    .query(Employee.class, Employees_ByFirstAndLastName.class)
+    .whereEquals("FirstName", "Robert")
+    .toList();
+```
+
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+
+```java
+List<Employee> employees = session.advanced()
+    .rawQuery(Employee.class,
+        "from index 'Employees/ByFirstAndLastName' where FirstName = $firstName")
+    .addParameter("firstName", "Robert")
+    .toList();
+```
+
+</TabItem>
+<TabItem value="RQL" label="RQL">
+
+```sql
+from index "Employees/ByFirstAndLastName"
+where FirstName = "Robert"
+```
+
+</TabItem>
+</Tabs>    
+    
+</Panel>
+
+<Panel heading="Syntax">
+
+**`DocumentQuery` filtering methods**
+
+Each filter method below takes a `String` field name  
+(use a dotted path for nested or array paths such as `"ShipTo.City"` or `"Lines[].ProductName"`).
+                
+The optional `exact` parameter (default `false`) controls case sensitivity for string comparisons.
+
+<TabItem>     
+```java
+// Equality and comparison
+TSelf whereEquals(String fieldName, Object value);
+TSelf whereEquals(String fieldName, Object value, boolean exact);
+
+TSelf whereNotEquals(String fieldName, Object value);
+TSelf whereNotEquals(String fieldName, Object value, boolean exact);
+
+TSelf whereGreaterThan(String fieldName, Object value);
+TSelf whereGreaterThan(String fieldName, Object value, boolean exact);
+
+TSelf whereGreaterThanOrEqual(String fieldName, Object value);
+TSelf whereGreaterThanOrEqual(String fieldName, Object value, boolean exact);
+
+TSelf whereLessThan(String fieldName, Object value);
+TSelf whereLessThan(String fieldName, Object value, boolean exact);
+
+TSelf whereLessThanOrEqual(String fieldName, Object value);
+TSelf whereLessThanOrEqual(String fieldName, Object value, boolean exact);
+
+TSelf whereBetween(String fieldName, Object start, Object end);
+TSelf whereBetween(String fieldName, Object start, Object end, boolean exact);
+
+// Collection / set matching
+TSelf whereIn(String fieldName, Collection<?> values);
+TSelf whereIn(String fieldName, Collection<?> values, boolean exact);
+
+TSelf containsAny(String fieldName, Collection<?> values);
+
+TSelf containsAll(String fieldName, Collection<?> values);
+
+// Prefix
+TSelf whereStartsWith(String fieldName, Object value);
+TSelf whereStartsWith(String fieldName, Object value, boolean exact);
+```
+</TabItem>
+    
+---    
+                                                    
+**`RawQuery`**
+
+```java
+// Submit an RQL string directly.
+IRawDocumentQuery<T> rawQuery(Class<T> clazz, String query);
+
+// Bind a value to an RQL parameter referenced as $paramName.
+TSelf addParameter(String name, Object value);
+```
+
+| Parameter            | Type                                          | Description                                                                                                          |
+|----------------------|-----------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| **fieldName**        | `String`                                      | The name of the field to filter on. Use a dotted path for nested fields (e.g. `"ShipTo.City"`, `"Lines[].ProductName"`). |
+| **clazz**            | `Class<T>`                                    | The entity class to map the results to (e.g. `Employee.class`).                                                      |
+| **value**            | `Object`                                      | The value to compare against.                                                                                        |
+| **values**           | `Collection<?>`                               | The set of values to compare against.                                                                                |
+| **exact**            | `boolean`                                     | When `true`, string comparison is case-sensitive.<br/>Default: `false`.                                              |
+| **query**            | `String`                                      | An RQL string. Use `$paramName` placeholders for values supplied via `addParameter`.                                 |
+| **name**             | `String`                                      | The name of an RQL parameter (no `$` prefix).                                                                        |
+
+</Panel>

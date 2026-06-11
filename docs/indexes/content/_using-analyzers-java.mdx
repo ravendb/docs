@@ -2,6 +2,10 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
 
 RavenDB uses indexes to facilitate fast queries powered by [**Lucene**](http://lucene.apache.org/), the full-text search engine.
 
@@ -11,7 +15,18 @@ The **Tokenization** process uses an object called an Analyzer underneath.
 
 The indexing process and its results can be controlled by various field options and Analyzers.
 
-## Understanding Analyzers
+* In this article:
+   * [Understanding Analyzers](../../indexes/using-analyzers.mdx#understanding-analyzers)
+   * [RavenDB Default Analyzer](../../indexes/using-analyzers.mdx#ravendb-default-analyzer)
+   * [Full-Text Search](../../indexes/using-analyzers.mdx#full-text-search)
+   * [Using Non-Default Analyzer](../../indexes/using-analyzers.mdx#using-non-default-analyzer)
+   * [Creating Own Analyzer](../../indexes/using-analyzers.mdx#creating-own-analyzer)
+   * [Manipulating Field Indexing Behavior](../../indexes/using-analyzers.mdx#manipulating-field-indexing-behavior)
+   * [Ordering When Field is Searchable](../../indexes/using-analyzers.mdx#ordering-when-field-is-searchable)
+
+</Admonition>
+
+<Panel heading="Understanding Analyzers">
 
 Lucene offers several out of the box Analyzers, and the new ones can be created easily. Various analyzers differ in the way they split the text stream ("tokenize"), and in the way they process those tokens in post-tokenization.
 
@@ -45,7 +60,9 @@ For example, given this sample text:
    You can override NGram analyzer default token lengths by configuring `Indexing.Analyzers.NGram.MinGram` and `Indexing.Analyzers.NGram.MaxGram` per index e.g. setting them to 3 and 4 accordingly will generate:  
    `[.co]  [.com]  [123]  [1234]  [234]  [2343]  [343]  [3432]  [432]  [@ho]  [@hot]  [ail]  [ail.]  [azy]  [b@h]  [b@ho]  [bob]  [bob@]  [bro]  [brow]  [com]  [dog]  [dogs]  [fox]  [hot]  [hotm]  [ick]  [il.]  [il.c]  [jum]  [jump]  [l.c]  [l.co]  [laz]  [lazy]  [mai]  [mail]  [mpe]  [mped]  [ob@]  [ob@h]  [ogs]  [otm]  [otma]  [ove]  [over]  [own]  [ped]  [qui]  [quic]  [row]  [rown]  [tma]  [tmai]  [uic]  [uick]  [ump]  [umpe]  [ver]  `  
 
-## RavenDB Default Analyzer
+</Panel>
+
+<Panel heading="RavenDB Default Analyzer">
 
 By default, RavenDB uses the custom analyzer called `LowerCaseKeywordAnalyzer` for all indexed content. Its implementation behaves like Lucene's KeywordAnalyzer, but it also performs case normalization by converting all characters to lower case. 
 
@@ -55,7 +72,9 @@ RavenDB stores the entire term as a single token, in a lower cased form. Given t
 
 This default analyzer allows you to perform exact searches which is exactly what you would expect. However, it doesn't allow you to perform full-text searches. For that purposes, a different analyzer should be used.
 
-## Full-Text Search
+</Panel>
+
+<Panel heading="Full-Text Search">
 
 To allow full-text search on the text fields, you can use the analyzers provided out of the box with Lucene. These are available as part of the Lucene library which ships with RavenDB.
 
@@ -64,14 +83,17 @@ For most cases, Lucene's `StandardAnalyzer` would be your analyzer of choice. As
 For languages other than English, or if you need a custom analysis process, you can roll your own `Analyzer`. It is quite simple and may be already available as a contrib package for Lucene. 
 There are also `Collation analyzers` available (you can read more about them [here](../../indexes/sorting-and-collation.mdx#collation)).
 
-## Using Non-Default Analyzer
+</Panel>
+
+<Panel heading="Using Non-Default Analyzer">
 
 To make a document property indexed using a specific Analyzer, all you need to do is to match it with the name of the property:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
-<CodeBlock language="java">
-{`public static class BlogPosts_ByTagsAndContent extends AbstractIndexCreationTask {
+
+```java
+public static class BlogPosts_ByTagsAndContent extends AbstractIndexCreationTask {
     public BlogPosts_ByTagsAndContent() {
         map = "docs.Posts.Select(post => new { " +
             "    tags = post.tags, " +
@@ -81,12 +103,12 @@ To make a document property indexed using a specific Analyzer, all you need to d
         analyze("content", "Raven.Sample.SnowballAnalyzer");
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Operation" label="Operation">
-<CodeBlock language="java">
-{`IndexDefinitionBuilder builder = new IndexDefinitionBuilder("BlogPosts/ByTagsAndContent");
+
+```java
+IndexDefinitionBuilder builder = new IndexDefinitionBuilder("BlogPosts/ByTagsAndContent");
     builder.setMap( "docs.Posts.Select(post => new { " +
         "    tags = post.tags, " +
         "    content = post.content " +
@@ -96,8 +118,7 @@ To make a document property indexed using a specific Analyzer, all you need to d
 
  store.maintenance()
     .send(new PutIndexesOperation(builder.toIndexDefinition(store.getConventions())));
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
@@ -105,89 +126,85 @@ To make a document property indexed using a specific Analyzer, all you need to d
 The analyzer you are referencing to has to be available to the RavenDB server instance. When using analyzers that do not come with the default Lucene.NET distribution, you need to drop all the necessary DLLs into the RavenDB working directory (where `Raven.Server` executable is located), and use their fully qualified type name (including the assembly name).
 </Admonition>
 
-## Creating Own Analyzer
+</Panel>
 
-You can create a custom analyzer on your own and deploy it to RavenDB server. To do that pefrom the following steps:
+<Panel heading="Creating Own Analyzer">
 
-- create a class that inherits from abstract `Lucene.Net.Analysis.Analyzer` (you need to reference `Lucene.Net.dll` supplied with RavenDB Server package),
+You can create a custom analyzer on your own and deploy it to RavenDB server. To do that perform the following steps:
+
+- create a class that inherits from abstract `Lucene.Net.Analysis.Analyzer` (reference `Lucene.Net.dll`, found at `Server/Lucene.Net.dll` in the RavenDB server package available from the [RavenDB download page](https://ravendb.net/download); take it from the server package, not from NuGet, so its version matches the Lucene build your server runs),
 - your DLL needs to be placed next to RavenDB binaries (note it needs to be compatible with .NET Core 2.0 e.g. .NET Standard 2.0 assembly)
 - the fully qualified name needs to be specified for an indexing field that is going to be tokenized by the analyzer
 
-<TabItem value="my_custom_analyzer" label="my_custom_analyzer">
-<CodeBlock language="csharp">
-{`public class MyAnalyzer : Lucene.Net.Analysis.Analyzer
-\{
+```csharp
+public class MyAnalyzer : Lucene.Net.Analysis.Analyzer
+{
     public override TokenStream TokenStream(string fieldName, TextReader reader)
-    \{
+    {
         // Implement your analyzer's logic
         throw new CodeOmitted();
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+    }
+}
+```
 
-## Manipulating Field Indexing Behavior
+</Panel>
+
+<Panel heading="Manipulating Field Indexing Behavior">
 
 By default, each indexed field is analyzed using the `LowerCaseKeywordAnalyzer` which indexes a field as a single, lower cased term.
 
 This behavior can be changed by turning off the field analysis (setting the `FieldIndexing` option for this field to `Exact`). This causes all the properties to be treated as a single token and the matches must be exact (case sensitive), similarly to using the `KeywordAnalyzer` on this field.
 
-<TabItem value="analyzers_3" label="analyzers_3">
-<CodeBlock language="java">
-{`public static class Employees_ByFirstAndLastName extends AbstractIndexCreationTask \{
-    public Employees_ByFirstAndLastName() \{
-        map = "docs.Employees.Select(employee => new \{ " +
+```java
+public static class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+    public Employees_ByFirstAndLastName() {
+        map = "docs.Employees.Select(employee => new { " +
             "    LastName = employee.LastName, " +
             "    FirstName = employee.FirstName " +
-            "\})";
+            "})";
 
         index("FirstName", FieldIndexing.EXACT);
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+    }
+}
+```
+<br />
 
 `FieldIndexing.SEARCH` allows performing full text search operations against the field:
 
-<TabItem value="analyzers_4" label="analyzers_4">
-<CodeBlock language="java">
-{`public static class BlogPosts_ByContent extends AbstractIndexCreationTask \{
-    public BlogPosts_ByContent() \{
-        map = "docs.Posts.Select(post => new \{ " +
+```java
+public static class BlogPosts_ByContent extends AbstractIndexCreationTask {
+    public BlogPosts_ByContent() {
+        map = "docs.Posts.Select(post => new { " +
             "    tags = post.tags, " +
             "    content = post.content " +
-            "\})";
+            "})";
 
         index("content", FieldIndexing.SEARCH);
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+    }
+}
+```
+<br />
 
 If you want to disable indexing on a particular field, use the `FieldIndexing.NO` option. This can be useful when you want to [store](../../indexes/storing-data-in-index.mdx) field data in the index, but don't want to make it available for querying, however it will available for extraction by projections:
 
-<TabItem value="analyzers_5" label="analyzers_5">
-<CodeBlock language="java">
-{`public static class BlogPosts_ByTitle extends AbstractIndexCreationTask \{
-    public BlogPosts_ByTitle() \{
-        map = "docs.Posts.Select(post => new \{ " +
+```java
+public static class BlogPosts_ByTitle extends AbstractIndexCreationTask {
+    public BlogPosts_ByTitle() {
+        map = "docs.Posts.Select(post => new { " +
             "    tags = post.tags, " +
             "    content = post.content " +
-            "\})";
+            "})";
 
         index("content", FieldIndexing.NO);
         store("content", FieldStorage.YES);
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+    }
+}
+```
 
-## Ordering When Field is Searchable
+</Panel>
 
-When field is marked as `SEARCH` sorting must be done using additional field. More [here](../../indexes/querying/sorting.mdx#ordering-when-a-field-is-searchable).
+<Panel heading="Ordering When Field is Searchable">
 
+When field is marked as `SEARCH` sorting must be done using additional field. More [here](../../querying/sorting-query-results/sort-query-results.mdx#ordering-when-a-field-is-searchable).
 
+</Panel>

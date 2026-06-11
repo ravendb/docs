@@ -94,44 +94,66 @@ function Get-EnvBool([string]$Name) {
     return @('1','true','yes','y','on') -contains ($v.ToString().ToLower())
 }
 
-function Prepare-RobotsTxt {
-    $root      = Join-Path -Path $PSScriptRoot -ChildPath '..'
-    $staticDir = Join-Path -Path (Resolve-Path $root) -ChildPath 'static'
-    if (-not (Test-Path -LiteralPath $staticDir)) { throw "Static folder not found at $staticDir" }
+# CloudFront KVS UpdateKeys is hard-capped at ~50 operations and ~3 KB body
+$KvsBatchSize = 25
 
-    $isTest  = Get-EnvBool 'RAVENDB_DOCS_TEST_BUILD'
-    $srcName = if ($isTest) { 'robots_test.txt' } else { 'robots_prod.txt' }
-    $src     = Join-Path -Path $staticDir -ChildPath $srcName
-    $dest    = Join-Path -Path $staticDir -ChildPath 'robots.txt'
+function Split-IntoBatches {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)] [object[]] $Items,
+        [Parameter(Mandatory)] [int]      $BatchSize
+    )
+    for ($i = 0; $i -lt $Items.Count; $i += $BatchSize) {
+        $end = [Math]::Min($i + $BatchSize - 1, $Items.Count - 1)
+        # Comma-prefix preserves the inner array as a single pipeline item.
+        ,@($Items[$i..$end])
+    }
+}
 
-    if (-not (Test-Path -LiteralPath $src)) { throw "Robots source not found: $src" }
+function Push-KvsBatch {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)] [string]   $KvsArn,
+        [Parameter(Mandatory)] [string]   $Etag,
+        [Parameter(Mandatory)] [object[]] $Batch
+    )
 
-    Copy-Item -LiteralPath $src -Destination $dest -Force
-    Write-Host "robots.txt -> using '$srcName'" -ForegroundColor Cyan
+    $payload = $Batch | ConvertTo-Json -Compress -Depth 5 -AsArray
+    $newEtag = aws cloudfront-keyvaluestore update-keys `
+        --kvs-arn $KvsArn --if-match $Etag --puts $payload `
+        --query 'ETag' --output text
+    if ($LASTEXITCODE -ne 0) {
+        throw "aws update-keys failed (exit $LASTEXITCODE)"
+    }
+    return $newEtag
 }
 
 function Update-CloudFrontKVS {
     $kvsArn = $env:KVS_ARN
-
     if (-not $kvsArn) {
         Write-Error "Environment variable KVS_ARN is not set."
         exit 1
     }
 
-    $redirectsData = Get-Content -Path $RedirectsFilePath | ConvertFrom-Json
-
-    $transformedRedirects = $redirectsData | ForEach-Object {
-        @{
-            Key   = $_.key
-            Value = ($_.value | ConvertTo-Json -Compress)
-        }
+    $redirects = Get-Content -Path $RedirectsFilePath | ConvertFrom-Json | ForEach-Object {
+        @{ Key = $_.key; Value = ($_.value | ConvertTo-Json -Compress) }
     }
 
-    $encodedPayload = $transformedRedirects | ConvertTo-Json -Compress
+    $batches = @(Split-IntoBatches -Items $redirects -BatchSize $KvsBatchSize)
+    $etag = aws cloudfront-keyvaluestore describe-key-value-store `
+        --kvs-arn $kvsArn --query 'ETag' --output text
 
-    $kvsEtag = aws cloudfront-keyvaluestore describe-key-value-store --kvs-arn $kvsArn --query 'ETag' --output text
+    Write-Host "Pushing $($redirects.Count) keys in $($batches.Count) batch(es) of up to $KvsBatchSize" -ForegroundColor Cyan
 
-    aws cloudfront-keyvaluestore update-keys --kvs-arn $kvsArn --if-match $kvsEtag --puts $encodedPayload
+    for ($i = 0; $i -lt $batches.Count; $i++) {
+        Write-Host "  batch $($i + 1)/$($batches.Count) ($($batches[$i].Count) keys)" -ForegroundColor Cyan
+        try {
+            $etag = Push-KvsBatch -KvsArn $kvsArn -Etag $etag -Batch $batches[$i]
+        } catch {
+            Write-Error "KVS batch $($i + 1)/$($batches.Count) failed: $_"
+            exit 1
+        }
+    }
 }
 
 Ensure-Dependencies
@@ -155,8 +177,6 @@ if (-not (Test-Path package.json)) { throw 'package.json not found' }
 
 npm ci --no-audit --fund false
 if ($LASTEXITCODE) { throw 'npm ci failed' }
-
-Prepare-RobotsTxt
 
 Write-Host "Running 'npm run build'..." -ForegroundColor Gray
 npm run build

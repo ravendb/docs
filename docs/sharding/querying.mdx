@@ -363,7 +363,7 @@ the first result will be the most recently modified document, while the last res
 
 ## Filtering results
 
-* Data can be filtered using the [where](../indexes/querying/filtering.mdx#where) 
+* Data can be filtered using the [where](../querying/filtering-query-results/filter-query-results.mdx#where) 
   and [filter](../indexes/querying/exploration-queries.mdx#filter) keywords on both non-sharded and sharded databases.  
 
 * There **are**, however, differences in the behavior of these commands on sharded and non-sharded databases.  
@@ -480,7 +480,7 @@ Unlike Map-Reduce index projections, projections of queries that use no index an
 
 ### OrderBy in a Map-Reduce index query
 
-Similar to its behavior under a non-sharded database, [OrderBy](../indexes/querying/sorting.mdx) is used in an index query or a dynamic query to sort the retrieved dataset by a given order.  
+Similar to its behavior under a non-sharded database, [OrderBy](../querying/sorting-query-results/sort-query-results.mdx) is used in an index query or a dynamic query to sort the retrieved dataset by a given order.  
 
 But under a sharded database, when `OrderBy` is used in a Map-Reduce index and [limit](../indexes/querying/paging.mdx#example-ii---basic-paging) 
 is applied to restrict the number of retrieved results, there are scenarios in which **all** the results will still be retrieved from all shards.  

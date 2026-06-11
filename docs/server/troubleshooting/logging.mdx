@@ -36,6 +36,7 @@ import Panel from '@site/src/components/Panel';
   * [Available logging levels](../../server/troubleshooting/logging.mdx#available-logging-levels)  
       * [Customizing logging level after Migration](../../server/troubleshooting/logging.mdx#customizing-logging-level-after-migration)  
   * [Default values](../../server/troubleshooting/logging.mdx#default-values)  
+  * [Microsoft logs](../../server/troubleshooting/logging.mdx#microsoft-logs)  
   * [CLI customization: immediate temporary changes](../../server/troubleshooting/logging.mdx#cli-customization-immediate-temporary-changes)  
   * [Configuring and using NLog](../../server/troubleshooting/logging.mdx#configuring-and-using-nlog)  
      * [Configure RavenDB to use an external NLog configuration file](../../server/troubleshooting/logging.mdx#1-configure-ravendb-to-use-an-external-nlog-configuration-file)  
@@ -196,6 +197,32 @@ You **will** need to update the logging settings if you want to take advantage o
   The default values provided for settings in the [NLog configuration file template](../../server/troubleshooting/logging.mdx#an-available-template) 
   are **identical** to those used by RavenDB's internal configuration keys.
   See the full list in: [Logging configuration keys and their default values](../../server/configuration/logs-configuration.mdx).  
+
+## Microsoft logs
+
+Beyond its own log entries, RavenDB can capture the diagnostic logs that .NET and Kestrel
+(RavenDB's web server) emit internally.  
+These entries come from the `Microsoft.Extensions.Logging` infrastructure and cover events such as
+ASP.NET Core hosting, Kestrel connections, and the start and finish of each request.  
+They can help you investigate connection-level or HTTP-level behavior that RavenDB's own logs do not describe.
+
+These entries are collectively called **Microsoft logs**, and they are disabled by default.  
+Capturing them can affect request latency under certain conditions, so enable them only when you need them,
+typically while diagnosing a specific problem.
+
+To enable Microsoft logs, set the following configuration keys and restart the server:
+
+* [Logs.Microsoft.Enabled](../../server/configuration/logs-configuration.mdx#logsmicrosoftenabled)  
+  Set to `true` to capture Microsoft logs.
+* [Logs.Microsoft.MinLevel](../../server/configuration/logs-configuration.mdx#logsmicrosoftminlevel)  
+  Set the minimum level of the Microsoft entries that are logged. The default is `Error`.
+
+<Admonition type="note" title="">
+
+Once Microsoft logs are enabled, you can adjust their minimum level at runtime, without restarting the server,
+using the [SetLogsConfigurationOperation](../../client-api/operations/server-wide/logs/set-logs-configuration.mdx) in the Client API.
+
+</Admonition>
 
 ## CLI customization: immediate temporary changes
 

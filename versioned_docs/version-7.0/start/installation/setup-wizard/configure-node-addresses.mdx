@@ -51,7 +51,20 @@ import Panel from '@site/src/components/Panel';
    Enter the private HTTPS port that the node will listen on (used by clients and browsers to connect to this server).  
    By default, this is set to `443`.    
    When using port 443, make sure it is not already used by other applications (such as IIS, Apache, Skype, etc.).  
+   <Admonition type="note" title="">
+
    On Linux, you might need to allow non-root processes to listen on port 443.  
+   Run the following command to grant the server permission to bind to privileged ports:
+
+   ```bash
+   sudo setcap CAP_NET_BIND_SERVICE=+eip ./RavenDB/Server/Raven.Server
+   ```
+
+   <br />
+
+   Note that this must be re-applied after every upgrade, as Linux does not preserve file capabilities when a binary is replaced.
+
+   </Admonition>
    If you choose a different port, remember to include it in the URL when accessing the server  
    (for example, `https://a.yourdomainname.development.run:8443`).     
 3. **TCP port**:   
