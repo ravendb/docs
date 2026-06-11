@@ -1,6 +1,7 @@
 ---
 title: "Backup configuration options"
 sidebar_label: "Configuration options"
+description: "Server-wide configuration keys that control backup behavior: paths, allowed destinations, concurrency, low-memory delays, and the responsible-node grace period."
 sidebar_position: 85
 ---
 
@@ -29,6 +30,7 @@ Learn how to apply these keys in the [Configuration Overview](../server/configur
     * [Backup.MaxNumberOfConcurrentBackups](../backup/configuration#backupmaxnumberofconcurrentbackups)  
     * [Backup.ConcurrentBackupsDelayInSec](../backup/configuration#backupconcurrentbackupsdelayinsec)  
     * [Backup.LowMemoryBackupDelayInMin](../backup/configuration#backuplowmemorybackupdelayinmin)  
+    * [Backup.MoveToNewResponsibleNodeGracePeriodInMin](../backup/configuration#backupmovetonewresponsiblenodegraceperiodinmin)  
     * [Server.CpuCredits.ExhaustionBackupDelayInMin](../backup/configuration#servercpucreditsexhaustionbackupdelayinmin)
 
 </Admonition>
@@ -152,6 +154,26 @@ Number of minutes to delay the backup if the server enters a low-memory state.
 - **Type**: `TimeSetting`  
 - **TimeUnit**: `TimeUnit.Minutes`  
 - **Default**: `10`  
+- **Scope**: Server-wide only  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Backup.MoveToNewResponsibleNodeGracePeriodInMin
+
+Number of minutes the [cluster observer](../server/clustering/distribution/cluster-observer.mdx) waits
+before reassigning a backup task to a new responsible node,
+when the current responsible node has entered the
+[Rehab state](../server/clustering/distribution/distributed-database.mdx#database-topology).  
+
+During this grace period, the task remains assigned to its current responsible node.  
+This gives the node a chance to recover, and prevents a duplicate backup
+from starting elsewhere in the cluster.  
+
+- **Type**: `TimeSetting`  
+- **TimeUnit**: `TimeUnit.Minutes`  
+- **Default**: `30`  
 - **Scope**: Server-wide only  
 
 </ContentFrame>
