@@ -129,6 +129,7 @@ The following keywords and methods are available in RQL:
     - [spatial.intersects()](../../indexes/querying/spatial.mdx)
     - [moreLikeThis()](../../client-api/session/querying/how-to-use-morelikethis.mdx)
     - [vector.search()](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx)
+    - [when()](../../querying/filtering-query-results/conditional-filtering.mdx)
 - [ORDER BY](../../querying/rql/what-is-rql.mdx#order-by)
     - [ASC | ASCENDING](../../querying/sorting-query-results/sort-query-results.mdx)
     - [DESC | DESCENDING](../../querying/sorting-query-results/sort-query-results.mdx)
@@ -466,6 +467,26 @@ where RequiredAt >= now()
     
 </ContentFrame>
     
+<ContentFrame>
+
+#### Method: &nbsp;&nbsp; `when()`
+
+Use `when(condition, predicate)` to apply a predicate only when `condition` is `true`.  
+    
+The condition is evaluated server-side, before documents are matched, using query parameters and not document fields.
+This lets a single RQL query support optional search criteria without dynamically composing query strings on the client.
+
+This feature is available in RQL only - it is not exposed through LINQ queries or DocumentQuery.  
+Learn more in [Conditional filtering](../../querying/filtering-query-results/conditional-filtering.mdx).
+
+```sql
+// Apply the Country predicate only when the $country parameter is non-null
+from "Employees"
+where when($country != null, Address.Country == $country)
+```    
+    
+</ContentFrame>    
+
 <ContentFrame>
 
 #### Subclauses: &nbsp;&nbsp; `(`, `)`
