@@ -129,6 +129,7 @@ The following keywords and methods are available in RQL:
     - [spatial.intersects()](../../indexes/querying/spatial.mdx)
     - [moreLikeThis()](../../client-api/session/querying/how-to-use-morelikethis.mdx)
     - [vector.search()](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx)
+    - [when()](../../querying/filtering-query-results/conditional-filtering.mdx)
 - [ORDER BY](../../querying/rql/what-is-rql.mdx#order-by)
     - [ASC | ASCENDING](../../querying/sorting-query-results/sort-query-results.mdx)
     - [DESC | DESCENDING](../../querying/sorting-query-results/sort-query-results.mdx)
@@ -187,7 +188,6 @@ And the following values:
 You can use the `declare` keyword to create a JavaScript function that can then be called from a `select` clause when using a projection. 
 JavaScript functions add flexibility to your queries as they can be used to manipulate and format retrieved results.  
 
-<TabItem>
 ```javascript
 // Declare a JavaScript function 
 declare function output(employee) {
@@ -199,7 +199,7 @@ declare function output(employee) {
 // Query with projection calling the 'output' JavaScript function
 from Employees as employee select output(employee)
 ```
-</TabItem>
+<br/>
 
 Values are returned from a declared Javascript function as a set of values rather than in a nested array to ease the projection of retrieved values.
 See an example for this usage [here](../../document-extensions/timeseries/querying/overview-and-syntax.mdx#combine-time-series-and-javascript-functions).  
@@ -215,29 +215,25 @@ The following options are available:
 
 #### Query a specific collection: &nbsp;&nbsp; `from <collection-name>`
 
-<TabItem>
 ```sql
 // Full collection query 
 // Data source: The raw collection documents (Auto-index is Not created)
 from "Employees"
 ```
-</TabItem>
+<br/>
 
-<TabItem>
 ```sql
 // Collection query - by ID 
 // Data source: The raw collection documents (Auto-index is Not created)
 from "Employees" where id() = "employees/1-A"
 ```
-</TabItem>
+<br/>
 
-<TabItem>
 ```sql
 // Dynamic query - with filtering
 // Data source: Auto-index (server uses an existing auto-index or creates a new one)
 from "Employees" where FirstName = "Laura"
 ```
-</TabItem>
 
 </ContentFrame>
 
@@ -245,21 +241,18 @@ from "Employees" where FirstName = "Laura"
 
 #### Query all documents: &nbsp;&nbsp; `from @all_docs`
 
-<TabItem>
 ```sql
 // All collections query
 // Data source: All raw collections (Auto-index is Not created)
 from @all_docs
 ```
-</TabItem>
+<br/>
 
-<TabItem>
 ```sql
 // Dynamic query - with filtering 
 // Data source: Auto-index (server uses an existing auto-index or creates a new one)
 from @all_docs where FirstName = "Laura"
 ```
-</TabItem>
 
 </ContentFrame>
 
@@ -267,21 +260,18 @@ from @all_docs where FirstName = "Laura"
 
 #### Query an index: &nbsp;&nbsp; `from index <index-name>`
 
-<TabItem>
 ```sql
 // Index query
 // Data source: The specified index
 from index "Employees/ByFirstName"
 ```
-</TabItem>
+<br/>
 
-<TabItem>
 ```sql
 // Index query - with filtering
 // Data source: The specified index
 from index "Employees/ByFirstName" where FirstName = "Laura"
 ```
-</TabItem>
 
 </ContentFrame>
    
@@ -299,22 +289,19 @@ These basic operators can be used with all value types, including 'numbers' and 
 For example, you can return every document from the [Companies collection](../../client-api/faq/what-is-a-collection.mdx) 
 whose _field value_ **=** _a given input_.  
 
-<TabItem>
 ```sql
 from "Companies"
 where Name == "The Big Cheese" // Can use either '=' or'==' 
 ```
-</TabItem>
+<br/>
 
 Filtering on **nested properties** is also supported.  
 So in order to return all companies from 'Albuquerque' we need to execute following query:  
 
-<TabItem>
 ```sql
 from "Companies"
 where Address.City = "Albuquerque"
 ```
-</TabItem>
 
 </ContentFrame>
     
@@ -325,19 +312,16 @@ where Address.City = "Albuquerque"
 The operator `between` returns results inclusively, and the type of border values used must match.  
 It works on both 'numbers' and 'strings' and can be substituted with the `>=` and `<=` operators.
 
-<TabItem>
 ```sql
 from "Products" 
 where PricePerUnit between 10.5 and 13.0 // Using between
 ```
-</TabItem>
+<br/>
 
-<TabItem>
 ```sql
 from "Products" 
 where PricePerUnit >= 10.5 and PricePerUnit <= 13.0 // Using >= and <=
 ```
-</TabItem>
 
 </ContentFrame>
     
@@ -348,20 +332,17 @@ where PricePerUnit >= 10.5 and PricePerUnit <= 13.0 // Using >= and <=
 The `in` operator evaluates a field against a list of values.  
 It will return results if the field matches **any** of the items in that list.    
 
-<TabItem>
 ```sql
 from "Companies" 
 where Name in ("The Big Cheese", "Unknown company name")
 ```
-</TabItem>
+<br/>
 
-<TabItem>
 ```sql
 from "Orders" 
 where Lines[].ProductName in ("Chang", "Spegesild", "Unknown product name") 
 ```
-</TabItem>
-    
+
 ---
 
 **To negate an `in` condition**, use the `NOT` operator.  
@@ -370,12 +351,11 @@ In RQL, `NOT` cannot start a `where` clause; it must follow a **valid preceding 
 To ensure accuracy, especially when fields might be missing from some documents,  
 use `exists(fieldName)` as the anchor:
     
-<TabItem>
 ```sql
 from "Companies" 
 where exists(Name) and NOT Name in ("The Big Cheese", "The Cracker Box")
 ```
-</TabItem>
+<br/>
 
 **Note:**  
 Avoid using `where true` or an `exists()` check on a *different* field.  
@@ -392,22 +372,19 @@ Due to its mechanics, it is only useful when used on array fields.
 
 The following query will yield no results in contrast to the `in` operator.
 
-<TabItem>
 ```sql
 from "Orders" 
 where Lines[].ProductName all in ("Chang", "Spegesild", "Unknown product name")
 ```
-</TabItem>
+<br/>
 
 Removing 'Unknown product name' will return only orders that contain products with both  
 'Chang' and 'Spegesild' names.
 
-<TabItem>
 ```sql
 from "Orders" 
 where Lines[].ProductName all in ("Chang", "Spegesild") 
 ```
-</TabItem>
 
 </ContentFrame>
     
@@ -418,26 +395,22 @@ where Lines[].ProductName all in ("Chang", "Spegesild")
 Binary operators can be used to build more complex statements.  
 The `NOT` operator can only be used with one of the other binary operators creating `OR NOT` or `AND NOT` ones.
 
-<TabItem>
 ```sql
 from "Companies"
 where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
 ```
-</TabItem>
+<br/>
 
-<TabItem>
 ```sql
 from "Orders"
 where Freight > 500 AND ShippedAt > '1998-01-01'
 ```
-</TabItem>
+<br/>
 
-<TabItem>
 ```sql
 from "Orders"
 where Freight > 500 AND ShippedAt > '1998-01-01' AND NOT Freight = 830.75
 ```
-</TabItem>
 
 </ContentFrame>
     
@@ -448,24 +421,42 @@ where Freight > 500 AND ShippedAt > '1998-01-01' AND NOT Freight = 830.75
 Use `today()` and `now()` to compare date/time fields with the current server date or current server time.  
 Learn more in [Filter by date and time](../../querying/filtering-query-results/filter-by-date-and-time.mdx).    
 
-<TabItem>
 ```sql    
 // Find orders that were shipped before the current date    
 from "Orders"
 where ShippedAt < today()
 ```    
-</TabItem>
+<br/>
     
-<TabItem>
 ```sql
 // Find orders that are required at or after the current date and time
 from "Orders"
 where RequiredAt >= now()
 ```    
-</TabItem>
     
 </ContentFrame>
     
+<ContentFrame>
+    
+#### Method: &nbsp;&nbsp; `when()`
+
+Use `when(condition, predicate)` to conditionally apply a predicate in a `where` clause.  
+The `condition` is evaluated server-side against query parameters, not document fields, before documents are matched.
+When the condition is `true`, the predicate is applied; when it is `false`, the predicate is skipped.
+
+This is useful for optional search criteria, without building different query strings on the client.
+
+This feature is available in RQL only - it is not exposed through LINQ queries or DocumentQuery.  
+Learn more in [Conditional filtering](../../querying/filtering-query-results/conditional-filtering.mdx).
+
+```sql
+// Apply the Country predicate only when the $country parameter is non-null
+from "Employees"
+where when($country != null, Address.Country == $country)
+```    
+    
+</ContentFrame>    
+
 <ContentFrame>
 
 #### Subclauses: &nbsp;&nbsp; `(`, `)`
@@ -505,37 +496,33 @@ Learn more about sorting in the [Sort query results](../../querying/sorting-quer
     
 RQL syntax:  
     
-<TabItem>
 ```sql
 ORDER BY <expression> [AS <type>] [ASC | DESC] [NULLS FIRST | NULLS LAST]
 ```
-</TabItem>
+<br/>
     
 By default, results are sorted in ascending order.
 
-<TabItem>
 ```sql
 from "Employees"
 order by FirstName // ascending order
 ```
-</TabItem>
+<br/>
     
 To specify the sort direction, add `asc`, `ascending`, `desc`, or `descending`.
 
-<TabItem>
 ```sql
 from "Employees"
 order by FirstName desc // descending order
 ```
-</TabItem>
+<br/>
 
 You can also specify the sort type by adding `as <type>`.    
-<TabItem>
 ```sql
 from "Products"
 order by UnitsInStock as long desc
 ```
-</TabItem> 
+<br/>
 
 Use `nulls first` or `nulls last` to control where matching documents with `null` or missing values in the sorted field will appear in the query results.
 This is supported only by the [Corax](../../indexes/search-engine/corax.mdx) search engine.     
@@ -546,39 +533,34 @@ They place those documents before or after matching documents with non-null valu
   * `nulls first` places those documents **before** matching documents with non-null values.
   * `nulls last` places those documents **after** matching documents with non-null values.   
     
-<TabItem>
 ```csharp
 // Place documents whose ReportsTo field is null (or missing) at the top of the results
 from "Employees"
 order by ReportsTo nulls first
 ```
-</TabItem>
+<br/>
 
-<TabItem>
 ```csharp
 // Cast + direction + null placement on a single key
 from "Products"
 order by UnitsInStock as long desc nulls last
 ```
-</TabItem>
+<br/>
 
-<TabItem>
 ```csharp
 // Works with method expressions
 from "Employees"
 order by id() as string nulls last
 ```
-</TabItem>
+<br/>
 
-<TabItem>
 ```csharp
 // Works with spatial sorting
 from "Employees"
 order by spatial.distance(Address.Location, spatial.point(0, 0)) nulls first
 ```
-</TabItem>
+<br/>
 
-<TabItem>
 ```csharp
 // Per-clause control on a multi-key sort.
 // Each clause sets its own null placement.
@@ -587,8 +569,7 @@ order by Name nulls first,
          UnitsInStock desc, // omitted: uses default
          PricePerUnit as double nulls last
 ```
-</TabItem>   
-
+<br/>
     
 <Admonition type="info" title="">
     
@@ -622,7 +603,6 @@ Use `limit` to limit the number of results returned by the query.
 Specify the number of items to **skip** from the beginning of the result set and the number of items to **take** (return).  
 This is useful when [paging](../../indexes/querying/paging.mdx) results.
 
-<TabItem>
 ```sql
 // Available syntax options:
 // =========================
@@ -633,7 +613,6 @@ from "Products" limit 10 offset 5 // skip 5, take 10
 
 from "Products" offset 5          // skip 5, take all the rest
 ```
-</TabItem>
 
 ---
 
@@ -652,20 +631,17 @@ For more information, please refer to this [patching](../../client-api/operation
 
 Single-line comments start with `//` and end at the end of that line.
 
-<TabItem>
 ```sql
 // This is a single-line comment.
 from "Companies" 
 where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
 ```
-</TabItem>
+<br/>
 
-<TabItem>
 ```sql
 from "Companies"
 where Name = "The Big Cheese" // OR Name = "Richter Supermarkt"
 ```
-</TabItem>
 
 </ContentFrame>
 
@@ -675,7 +651,6 @@ where Name = "The Big Cheese" // OR Name = "Richter Supermarkt"
 
 Multiline comments start with `/*` and end with `*/`.
 
-<TabItem>
 ```sql
 /*
 This is a multiline comment.
@@ -684,14 +659,12 @@ Any text here will be ignored.
 from "Companies"
 where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
 ```
-</TabItem>
+<br/>
 
-<TabItem>
 ```sql
 from "Companies"
 where Name = "The Big Cheese" /* this part is a comment */ OR Name = "Richter Supermarkt"
 ```
-</TabItem>
 
 </ContentFrame>
     
