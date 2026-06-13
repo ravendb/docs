@@ -123,9 +123,11 @@ A conversation is a communication session between the client, the agent, and the
      or be the final LLM response and end the conversation.
 * The agent maintains the continuity of the conversation by [storing all messages](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#setting-a-conversation) exchanged since the conversation began in a dedicated document in the `@conversation` collection and providing all stored messages to the LLM with each new agent message.  
 * The conversation ends when the LLM provides the agent with its final response.  
+* The stored messages remain available after the conversation ends. You can read them back as a single, time-ordered timeline using the client API, for example to populate a chatbot view or a tracing interface.  
 
 [Initiate a conversation using the API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#managing-conversations)  
 [Initiate a conversation using Studio](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#start-new-chat)  
+[Read conversation history using the API](../../ai-integration/ai-agents/reading-conversation-history.mdx)  
 
 </ContentFrame>
 
