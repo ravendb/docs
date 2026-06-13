@@ -10,11 +10,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * AI agent conversations can be read using the `GetConversationMessages` method.  
 
 * By default, the method returns the whole conversation in one call, oldest first.  
-  A long conversation can be read in fixed-size pages instead, by paging back through earlier 
+  A long conversation can be read in fixed-size pages instead, by paging back through earlier
   history or forward to newer messages.  
 
 * Even a long conversation that has been trimmed over time is returned as a single chronological
-  list of messages, oldest first.  
+  list of messages.  
 
 * This page covers: reading and paging through a conversation's messages, choosing the level of
   detail, and inspecting tool calls and sub-conversations.  
@@ -38,16 +38,16 @@ and pass the conversation document ID.
 
 `GetConversationMessages` returns an [AiConversationMessagesResult](../../../ai-integration/ai-agents/reading-conversation-history.mdx#conversation-history-classes) object that includes a `Messages`
 list, holding the conversation's messages in chronological order, oldest first.  
-If no conversation with the given ID exists, the method returns `null`.
+If no conversation with the given ID exists, the method returns `null`.  
 
 Passing only a conversation ID returns the whole conversation in one call: `PageSize`, the maximum
 number of messages in a page, defaults to `int.MaxValue`, so no page limit applies.  
 To read the conversation in fixed-size pages, set `PageSize` and read it a page at a time, as explained in
-[Page through the conversation](../../../ai-integration/ai-agents/reading-conversation-history.mdx#page-through-the-conversation).
+[Page through the conversation](../../../ai-integration/ai-agents/reading-conversation-history.mdx#page-through-the-conversation).  
 
-At the default `Simple` detail level, the result holds the messages between the user and the LLM. 
+At the default `Simple` detail level, the result holds the messages between the user and the LLM.  
 See [Control the level of detail](../../../ai-integration/ai-agents/reading-conversation-history.mdx#control-the-level-of-detail)
-for the other detail levels and the message types each level includes. 
+for the other detail levels and the message types each level includes.
 
 
 #### Example: Read a conversation
@@ -159,7 +159,7 @@ in the [Syntax](../../../ai-integration/ai-agents/reading-conversation-history.m
 Use the `DetailLevel` option to control the level of detail in the result.  
 `Simple`, the default, returns only the messages between the user and the LLM, the visible
 part of the conversation.  
-The higher levels include additional detail: system prompts, tool calls, summaries, 
+The higher levels include additional detail: system prompts, tool calls, summaries,
 and internal messages.  
 Raise the level when debugging an agent or inspecting its steps.
 
@@ -168,8 +168,8 @@ Each level includes a different set of messages:
 | Detail level | Messages returned |
 |--------------|-----------------|
 | `Simple` | User messages (including those that carry only an attachment) and the LLM's messages that have content. System prompts, tool calls, summaries, and internal messages are excluded. |
-| `Detailed` | Everything in `Simple`, plus system prompts, tool calls with their results, and per-message token usage. Summaries and internal messages are excluded. |
-| `Full` | No filtering. Includes every message: system, tool calls, summaries, and internal messages. Intended for debugging. |
+| `Detailed` | Everything in `Simple`, plus system prompts and tool calls with their results. Summaries and internal messages are excluded. |
+| `Full` | Everything in `Detailed`, plus summaries and internal messages. Intended for debugging. |
 
 #### Example: Request the detailed view
 
@@ -235,6 +235,8 @@ foreach (AiConversationMessage message in trace.Messages)
                     ConversationId = toolCall.SubConversationId,
                     DetailLevel = AiConversationDetailLevel.Detailed
                 });
+
+            Console.WriteLine($"  sub-conversation with {subConversation.Messages.Count} messages");
         }
     }
 }
@@ -391,11 +393,11 @@ class AiConversationMessage
 
 | Property | Type | Description |
 |----------|------|-------------|
-| **Role** | `AiMessageRole` | What the message is: a system prompt, a user message, a message from the LLM, a summary, or an internal message.<br />See `AiMessageRole`. |
+| **Role** | `AiMessageRole` | What the message is: a system prompt, a user message, a message from the LLM, a summary, or an internal message.<br />See [AiMessageRole](../../../ai-integration/ai-agents/reading-conversation-history.mdx#enums). |
 | **Content** | `string` | The text content. When the stored message has several text parts, they are joined with line breaks. `null` for a message from the LLM that only initiated tool calls. |
 | **Attachments** | `List<string>` | Names of the attachments associated with this message, if any. |
 | **Timestamp** | `DateTime` | The time the message was recorded (UTC). Unique within the conversation and rising in message order, so a `Timestamp` value can be used to page through the conversation. |
-| **ToolCalls** | `List<AiToolCallResult>` | Tool calls initiated by the LLM in this message, with their results inlined. Empty when the message has no tool calls. |
+| **ToolCalls** | `List<AiToolCallResult>` | Tool calls initiated by the LLM in this message, with their results inlined. `null` when the message has no tool calls. |
 | **Usage** | `AiUsage` | Token usage for this message, or `null` for messages the LLM did not generate (such as user messages and system prompts).<br />See [AiUsage](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#conversation-and-response-classes). |
 | **SubConversationId** | `string` | For an `Internal` role message, the ID of the sub-conversation the message relates to. |
 
@@ -422,7 +424,7 @@ class AiToolCallResult
 | **Name** | `string` | The tool name. |
 | **Arguments** | `string` | The arguments the LLM passed, as a JSON string. |
 | **Result** | `string` | The tool's response content. `null` if the tool call is still pending. |
-| **SubConversationId** | `string` | If the tool call invoked a sub-agent, the ID of the spawned sub-conversation. Can be read separately using `GetConversationMessages`. |
+| **SubConversationId** | `string` | If the tool call invoked a sub-agent, the ID of the spawned sub-conversation. The sub-conversation can be read separately using `GetConversationMessages`. |
 
 </TabItem>
 </Tabs>
@@ -455,8 +457,8 @@ enum AiConversationDetailLevel
 | Value | Description |
 |-------|-------------|
 | **Simple** | User messages (including those that carry only an attachment) and the LLM's messages that have content. System prompts, tool calls, summaries, and internal messages are excluded. |
-| **Detailed** | Adds system prompts, tool calls with their results, and per-message usage. Summaries and internal messages are excluded. |
-| **Full** | No filtering. Includes all messages: system, tool calls, summaries, and internal. Intended for debugging. |
+| **Detailed** | Adds system prompts and tool calls with their results. Summaries and internal messages are excluded. |
+| **Full** | Everything in `Detailed`, plus summaries and internal messages. Intended for debugging. |
 
 </TabItem>
 <TabItem value="AiMessageRole" label="AiMessageRole">
