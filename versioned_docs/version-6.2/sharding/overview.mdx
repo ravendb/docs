@@ -79,6 +79,12 @@ The client remains unaware of this process and uses the same API used by non-sha
 
 Note that this additional communication between the client and the orchestrator, as well as between the orchestrator and the shards,
 introduces some overhead compared to using a non-sharded database.  
+
+The HTTP traffic between the orchestrator and the shards can be compressed  
+(see [Sharding.ShardExecutor.UseHttpCompression](../sharding/configuration.mdx#shardingshardexecutorusehttpcompression)
+and [Sharding.ShardExecutor.UseHttpDecompression](../sharding/configuration.mdx#shardingshardexecutorusehttpdecompression)),  
+and a timeout can be set on the orchestrator's requests to the shards (see [Sharding.OrchestratorTimeoutInMin](../sharding/configuration.mdx#shardingorchestratortimeoutinmin)).
+
 #### When should sharding be used?
 
 While sharding solves many issues related to the storage and management of high-volume databases,  

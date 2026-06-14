@@ -1,0 +1,77 @@
+---
+title: "Sharding: Configuration Options"
+description: "Configure RavenDB sharding options for sharded import stream compression, orchestrator request timeouts, and shard executor HTTP compression."
+sidebar_label: Configuration
+sidebar_position: 13
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* The following configuration options control sharded import stream compression and HTTP communication between the orchestrator and the shards.
+    
+  Learn how to apply configuration options in [Configuration Overview](../server/configuration/configuration-options.mdx).    
+
+* In this article:  
+    * [Sharding.Import.CompressionLevel](../sharding/configuration.mdx#shardingimportcompressionlevel)
+    * [Sharding.OrchestratorTimeoutInMin](../sharding/configuration.mdx#shardingorchestratortimeoutinmin)
+    * [Sharding.ShardExecutor.UseHttpCompression](../sharding/configuration.mdx#shardingshardexecutorusehttpcompression)
+    * [Sharding.ShardExecutor.UseHttpDecompression](../sharding/configuration.mdx#shardingshardexecutorusehttpdecompression)
+
+</Admonition>
+
+<ContentFrame>
+
+## Sharding.Import.CompressionLevel
+
+The compression level used when the orchestrator sends imported data to the shards during a smuggler import.    
+
+- **Type**: `CompressionLevel` (`NoCompression`, `Optimal`, `Fastest`, `SmallestSize`)
+- **Default**: `NoCompression`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+<ContentFrame>
+
+## Sharding.OrchestratorTimeoutInMin
+    
+* Sets the maximum timeout, in minutes, for HTTP requests that the orchestrator sends to shards.
+* By default, this timeout is infinite, so no timeout is enforced by this setting.    
+
+---
+
+- **Type**: `int` (minutes)
+- **Default**: `Infinite` (no timeout)    
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+## Sharding.ShardExecutor.UseHttpCompression
+
+Compress HTTP request content sent by the orchestrator to the shards.    
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+## Sharding.ShardExecutor.UseHttpDecompression
+  
+Allow the orchestrator to accept and decompress compressed HTTP responses from the shards.     
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+</ContentFrame>
