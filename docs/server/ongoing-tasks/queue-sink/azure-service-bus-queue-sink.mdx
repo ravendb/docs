@@ -454,8 +454,15 @@ AzureServiceBusSinkSource.Subscription("orders-topic", "ravendb-sub")
 <Tabs>
 <TabItem value="QueueConnectionString" label="QueueConnectionString" default>
 
+**The connection string a sink task uses to reach an Azure Service Bus namespace.**
+
 ```csharp
-public sealed class QueueConnectionString : ConnectionString
+class QueueConnectionString
+{
+    string Name
+    QueueBrokerType BrokerType
+    AzureServiceBusConnectionSettings AzureServiceBusConnectionSettings
+}
 ```
 <br />
 
@@ -465,21 +472,6 @@ public sealed class QueueConnectionString : ConnectionString
 | **BrokerType** | `QueueBrokerType` | Set to `QueueBrokerType.AzureServiceBus` for an Azure Service Bus connection string |
 | **AzureServiceBusConnectionSettings** | `AzureServiceBusConnectionSettings` | The namespace and authentication details |
 
-The `BrokerType` property uses the `QueueBrokerType` enum:
-
-```csharp
-public enum QueueBrokerType
-{
-    None,
-    Kafka,
-    RabbitMq,
-    AzureQueueStorage,
-    AmazonSqs,
-    AzureServiceBus
-}
-```
-<br />
-
 `QueueConnectionString` is shared by all queue brokers, so it also defines settings for the other
 broker types (`KafkaConnectionSettings`, `RabbitMqConnectionSettings`,
 `AzureQueueStorageConnectionSettings`, `AmazonSqsConnectionSettings`).  
@@ -488,12 +480,17 @@ Set only the one matching `BrokerType`.
 </TabItem>
 <TabItem value="AzureServiceBusConnectionSettings" label="AzureServiceBusConnectionSettings">
 
+**The authentication details for an Azure Service Bus connection. Set exactly one of its properties.**
+
 ```csharp
-public sealed class AzureServiceBusConnectionSettings
+class AzureServiceBusConnectionSettings
+{
+    string ConnectionString
+    AzureServiceBusEntraId EntraId
+    AzureServiceBusPasswordless Passwordless
+}
 ```
 <br />
-
-Set exactly one of these properties:
 
 | Property | Type | Description |
 |---|---|---|
@@ -509,8 +506,16 @@ Set exactly one of these properties:
 <Tabs>
 <TabItem value="AzureServiceBusEntraId" label="AzureServiceBusEntraId" default>
 
+**Entra ID application credentials for connecting to a namespace.**
+
 ```csharp
-public sealed class AzureServiceBusEntraId
+class AzureServiceBusEntraId
+{
+    string Namespace
+    string TenantId
+    string ClientId
+    string ClientSecret
+}
 ```
 <br />
 
@@ -524,8 +529,13 @@ public sealed class AzureServiceBusEntraId
 </TabItem>
 <TabItem value="AzureServiceBusPasswordless" label="AzureServiceBusPasswordless">
 
+**A managed-identity connection to a namespace; stores no secret.**
+
 ```csharp
-public sealed class AzureServiceBusPasswordless
+class AzureServiceBusPasswordless
+{
+    string Namespace
+}
 ```
 <br />
 
@@ -541,8 +551,20 @@ public sealed class AzureServiceBusPasswordless
 <Tabs>
 <TabItem value="QueueSinkConfiguration" label="QueueSinkConfiguration" default>
 
+**The configuration of an Azure Service Bus sink task.**
+
 ```csharp
-public class QueueSinkConfiguration
+class QueueSinkConfiguration
+{
+    string Name
+    string ConnectionStringName
+    QueueBrokerType BrokerType
+    List<QueueSinkScript> Scripts
+    bool Disabled
+    string MentorNode
+    bool PinToMentorNode
+    long TaskId
+}
 ```
 <br />
 
@@ -560,8 +582,16 @@ public class QueueSinkConfiguration
 </TabItem>
 <TabItem value="QueueSinkScript" label="QueueSinkScript">
 
+**A script that turns the messages from its sources into RavenDB documents.**
+
 ```csharp
-public class QueueSinkScript
+class QueueSinkScript
+{
+    string Name
+    List<string> Queues
+    string Script
+    bool Disabled
+}
 ```
 <br />
 
@@ -571,6 +601,34 @@ public class QueueSinkScript
 | **Queues** | `List<string>` | The sources to consume from, each built with `AzureServiceBusSinkSource` |
 | **Script** | `string` | The JavaScript that processes each message |
 | **Disabled** | `bool` | Whether the script is disabled |
+
+</TabItem>
+</Tabs>
+
+### Enums
+
+<Tabs>
+<TabItem value="QueueBrokerType" label="QueueBrokerType" default>
+
+**Identifies the message broker that a connection string and sink task use.**
+
+```csharp
+enum QueueBrokerType
+{
+    None,
+    Kafka,
+    RabbitMq,
+    AzureQueueStorage,
+    AmazonSqs,
+    AzureServiceBus
+}
+```
+<br />
+
+| Value | Description |
+|---|---|
+| **AzureServiceBus** | Selects Azure Service Bus. Use this value for an Azure Service Bus connection string and sink task. |
+| **None, Kafka, RabbitMq, AzureQueueStorage, AmazonSqs** | The other broker types, used by the remaining Queue Sink and Queue ETL brokers. |
 
 </TabItem>
 </Tabs>
