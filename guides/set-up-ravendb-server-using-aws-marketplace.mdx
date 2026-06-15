@@ -1,9 +1,105 @@
 ---
 title: "Set up RavenDB Server using AWS Marketplace"
-tags: [getting-started, deployment]
-description: "Read about Set up RavenDB Server using AWS Marketplace on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/set-up-ravendb-server-using-aws-marketplace"
-published_at: 2025-11-13
+tags: [getting-started, deployment, administration]
 image: "https://ravendb.net/wp-content/uploads/2025/11/aws-ravendb-article.png"
+description: "Step-by-step walkthrough of deploying a RavenDB server on AWS Marketplace, covering EC2 instance configuration, security group rules, SSH port-forwarding, and initial RavenDB Studio access."
+published_at: 2025-11-13
+see_also:
+  - title: "Setup Wizard Overview"
+    link: "start/installation/setup-wizard/overview"
+    source: "docs"
+  - title: "Security Overview"
+    link: "server/security/overview"
+    source: "docs"
+author: "Paweł Lachowski"
 proficiency_level: "Beginner"
 ---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+There are many ways to run and manage RavenDB. Every one of them has different characteristics and might be perfect for you depending on your needs. In this guide, we’ll focus specifically on how to run RavenDB using AWS Marketplace. This approach is ideal if you already rely on AWS services and want more control over the servers that run your database.
+
+## Why Use AWS Marketplace?
+
+With AWS Marketplace, you can quickly provision RavenDB on cloud servers hosted in AWS. You select the instance type, configure your environment, and bring your own RavenDB license. AWS will take care of managing its servers and network.
+
+With this guide, we will walk you through getting started with your instance on AWS Marketplace and the options available to you. 
+
+## Prerequisites
+
+Before we begin, make sure you have:
+
+* [AWS account](https://aws.amazon.com/free/)  
+* RavenDB license, which you can get on the [RavenDB pricing page](https://ravendb.net/buy)
+
+## Setup
+
+### Subscribe on AWS Marketplace
+
+To begin the deployment, log in to [AWS Marketplace](https://aws.amazon.com/marketplace) and search for RavenDB. We will use version 7.1
+
+<Image img={require("./assets/aws-marketplace1.webp")} alt="AWS Marketplace search results showing the RavenDB listing" />
+
+Then, find the orange button ‘View purchase options’ and under the Purchase Details section, click the ‘Subscribe’ (for you it will be orange) button.
+
+<Image img={require("./assets/aws-marketplace2.webp")} alt="AWS Marketplace View Purchase Options page with the Subscribe button" />
+
+<Image img={require("./assets/aws-marketplace3.webp")} alt="Purchase confirmation page showing the Subscribe button highlighted in the Purchase Details section" />
+
+### Launch from EC2 Console
+
+After pressing Subscribe you will need to wait for processing. After it has been processed on top of the page you will find the ‘Launch your software’ button. In the new window we will choose ‘Launch from EC2 Console’. We also choose our version and region here.
+
+<Image img={require("./assets/aws-marketplace4.webp")} alt="Launch your software page showing Launch from EC2 Console option with version and region selection" />
+
+Once you’ve chosen your options, click the orange ‘Launch from EC2’. In the following menu, we configure more. We choose the server name, select the instance type, create a new key pair (it will be automatically downloaded to your machine after creation), select a security group, and whatever else you are interested in.
+
+<Image img={require("./assets/aws-marketplace5.webp")} alt="EC2 instance configuration screen with server name, instance type, key pair, and security group settings" />
+
+After you fill in your data, click the orange ‘Launch Instance’ button on the right. After a moment of waiting for AWS to set up your instance, you get a page on which you want to select to view all instances.
+
+### Configure Security Group
+
+Then click on your instance ID to enter its summary. We will establish a connection with our instance using forwarding to connect to it quickly. In summary, open your ‘Security’ option, select your security group, and click on your security group.
+
+<Image img={require("./assets/aws-marketplace6.webp")} alt="EC2 instance Security tab showing the security group details with inbound rules link" />
+
+In there you want to add two new rules to open connections. Click on ‘Edit inbound rules’ and add a new rule. We add *All TCP* and *All UDP* and set them to our IP, so we can test without worrying about outside connections. We also change SSH to our IP. Then we just save our rules on the bottom right of this menu.
+
+<Admonition type="warning" title="Development setup only">
+Opening All TCP and All UDP, even restricted to your own IP, is a broad ruleset suitable only for initial testing. Before moving to production, replace these rules with the minimum ports your application actually needs (typically 443 for HTTPS and 8080 for RavenDB Studio).
+</Admonition>
+
+<Image img={require("./assets/aws-marketplace7.webp")} alt="Security group Edit inbound rules screen with All TCP, All UDP, and SSH rules restricted to a specific IP" />
+
+### Connect via SSH Port Forwarding
+
+Then we open the command prompt of your machine and run the following command.
+
+```
+ssh -i Your_Key.pem -N -L localhost:8080:localhost:53700 ubuntu@Your_Instance_Address
+```
+
+All you need to change in this command is your pem filename to match yours and add IP of your instance, which you can find in the summary of your server. 
+
+Then we can connect to our instance like normal RavenDB using localhost 8080. After each reboot of your machine, when wanting to connect to the server remember to put this command into the command prompt. Now you can run RavenDB on AWS Marketplace alongside the rest of your apps. 
+
+
+## Summary
+
+Running RavenDB on an AWS server can speed things up, but maybe you don't need the whole database on AWS? You can instead connect your RavenDB to Amazon SQS using the [RavenDB Amazon SQS ETL](./new-in-7-0-ravendb-and-amazon-sqs-etl).
+
+Here's what we covered in this guide:
+
+- AWS Marketplace handles infrastructure provisioning while you supply your own license, giving you full control over the server without bare-metal management overhead.
+- Opening the EC2 security group only to your own IP keeps the instance safe during setup; restrict these rules further before moving to production.
+- The SSH port-forwarding command must be re-run after every machine reboot, consider adding it to a startup script or an SSH config entry to avoid forgetting it.
+- If you need only event-driven data flow rather than a full hosted database, RavenDB's Amazon SQS ETL lets you stream data between your application and AWS queues without keeping RavenDB on EC2.
+
+Any questions about RavenDB features or just want to hang out and talk with the RavenDB team? Join our [Discord Community Server](https://discord.com/invite/ravendb).
