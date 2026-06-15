@@ -14,7 +14,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 # Installation: System Configuration Recommendations
 
-## Linux - Ubuntu 16.04
+## Linux
 
 RavenDB uses the resources of the machine it is running on, limited to the configuration limitation. In order to benefit from higher resources usage, consider the following setup:
 
@@ -81,6 +81,55 @@ For details on current swapping partitions and priorities use:
 `}
 </CodeBlock>
 </TabItem>
+### Tune block-device settings for random-access workloads (`read_ahead_kb`, `scheduler`, `rotational`)
+
+`read_ahead_kb` controls how much data the kernel prefetches on each read. RavenDB's typical workload is random-access over 8 KB Voron pages, so a high `read_ahead_kb` amplifies I/O - small random reads get fused into large ones, wasting disk bandwidth and page cache and raising latency under load (most visible with many databases or large datasets). Lowering it keeps each read close to what RavenDB actually requested, which is what this random-access workload usually wants.
+
+The trade-off is database startup: when a database loads, RavenDB reads its journal files sequentially, and a low `read_ahead_kb` slows that read down. RavenDB mitigates this internally - it hints the kernel to read the journals sequentially during load (controlled by [`Storage.UseSequentialReadAheadHintForJournalRecovery`](../../server/configuration/storage-configuration.mdx#storageusesequentialreadaheadhintforjournalrecovery)) - so you can keep `read_ahead_kb` low without a large startup penalty.
+
+For random-access SSD/NVMe workloads, values in the 8-64 KB range are worth experimenting with, versus the common 128 KB default.
+
+Check the current value (`<device>` is e.g. `sda` or `nvme0n1`):
+
+<TabItem value="bash" label="bash">
+<CodeBlock language="bash">
+{`cat /sys/block/<device>/queue/read_ahead_kb
+`}
+</CodeBlock>
+</TabItem>
+
+Set it at runtime (requires root, resets on reboot):
+
+<TabItem value="bash" label="bash">
+<CodeBlock language="bash">
+{`echo 32 > /sys/block/<device>/queue/read_ahead_kb
+`}
+</CodeBlock>
+</TabItem>
+
+RavenDB captures the device's read-ahead value when it opens its files, so restart the server (or reload the databases) for a runtime change to take effect on already-open storage.
+
+Also check `rotational` and `scheduler`. They matter most on virtualized disks (Azure managed disks in particular), which are often misreported as `rotational` even when backed by SSD/NVMe, so the kernel picks HDD-oriented defaults. Bare-metal SSD/NVMe is usually detected correctly. For SSD/NVMe, `rotational=0` and `scheduler=none` are usually better.
+
+Persist these across reboots with a udev rule:
+
+<TabItem value="bash" label="bash">
+<CodeBlock language="bash">
+{`# /etc/udev/rules.d/99-ravendb.rules
+ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}="0"
+ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/scheduler}="none"
+ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/read_ahead_kb}="32"
+ACTION=="add|change", KERNEL=="nvme*", ATTR{queue/read_ahead_kb}="32"
+
+# apply without reboot:
+# sudo udevadm control --reload-rules && sudo udevadm trigger
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="When to tune read_ahead_kb">
+The common 128 KB default works well for the majority of deployments - it is what RavenDB instances typically run with - and a lower value is worth pursuing only when heavy random-access load (many databases or large datasets on one host) shows up as high I/O wait or memory pressure. There is no universally correct `read_ahead_kb`. It depends on your disk, workload, and available memory, so test candidate values in your own environment and verify their effect on request/response times under real load before committing to one. RavenDB raises a startup warning when a block device's `read_ahead_kb` is above [`Storage.ReadAheadKbAlertThresholdInKb`](../../server/configuration/storage-configuration.mdx#storagereadaheadkbalertthresholdinkb) (default 128 KB), since an unusually high read-ahead causes the I/O amplification described above.
+</Admonition>
 
 
 

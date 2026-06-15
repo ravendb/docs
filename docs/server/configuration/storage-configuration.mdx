@@ -168,3 +168,23 @@ Enables memory prefetching mechanism if OS supports it.
 
 
 
+## Storage.ReadAheadKbAlertThresholdInKb
+
+On Linux, RavenDB raises a startup warning when any block device's `read_ahead_kb` is above this threshold. A high `read_ahead_kb` amplifies I/O for the random-access database workload - see [System Configuration Recommendations](../../start/installation/system-configuration-recommendations.mdx) for guidance on tuning it. Set to `null` to disable the check. Has no effect on Windows or macOS.
+
+- **Type**: `int?`
+- **Default**: `128`
+- **Scope**: Server-wide only
+
+
+
+## Storage.UseSequentialReadAheadHintForJournalRecovery
+
+On Linux, hints the kernel (`posix_fadvise` with `POSIX_FADV_SEQUENTIAL`) to read journal files sequentially while a database loads, so a low `read_ahead_kb` tuned for the random-access workload causes a smaller startup slowdown. Set to `false` to opt out. Has no effect on Windows or macOS.
+
+- **Type**: `bool`
+- **Default**: `true` on Linux, `false` on other platforms
+- **Scope**: Server-wide or per database
+
+
+
