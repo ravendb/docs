@@ -34,7 +34,19 @@ const config: Config = {
     // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
     future: {
         v4: true, // Improve compatibility with the upcoming Docusaurus v4
-        faster: true,
+        // All faster flags except rspackPersistentCache, which intermittently emits
+        // 0-byte assets while the build still succeeds, breaking the deployed site.
+        faster: {
+            swcJsLoader: true,
+            swcJsMinimizer: true,
+            swcHtmlMinimizer: true,
+            lightningCssMinimizer: true,
+            mdxCrossCompilerCache: true,
+            rspackBundler: true,
+            ssgWorkerThreads: true,
+            gitEagerVcs: true,
+            rspackPersistentCache: false,
+        },
     },
 
     // future.v4 enables mdx1CompatDisabledByDefault in 3.10+, which turns off HTML
