@@ -185,6 +185,10 @@ if ($LASTEXITCODE) { throw 'Docusaurus build failed' }
 $BuildDir = [IO.Path]::Combine($PSScriptRoot, '..', 'build')
 if (-not (Test-Path $BuildDir)) { throw "Build folder not produced ($BuildDir)" }
 
+# Rspack's persistent cache can emit 0-byte assets while the build still succeeds; abort before sync
+$Empty = Get-ChildItem $BuildDir -Recurse -File | Where-Object { $_.Length -eq 0 -and $_.Name -ne '.nojekyll' }
+if ($Empty) { throw "Empty build artifact(s): $($Empty.Name -join ', '). Re-run a clean build." }
+
 if ($DryRun) {
     Write-Host "Dry run mode enabled. Skipping sync to s3://$S3BucketName/, CloudFront KeyValueStore update and CloudFront invalidation." -ForegroundColor Yellow
 } else {
