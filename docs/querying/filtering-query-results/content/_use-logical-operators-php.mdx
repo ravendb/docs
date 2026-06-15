@@ -1,0 +1,424 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+    
+* A query's `where` clause can combine multiple filtering conditions with logical operators.  
+  This lets you express richer predicates than a single condition, for example:  
+  _"products that are in stock **and** cost more than 50"_, or _"employees whose first name is Robert **or** Nancy"_.    
+    
+* This article covers the logical operators available when filtering query results:  
+  **AND**, **OR**, and **NOT**, as well as how to **group conditions** to control operator precedence.    
+  The examples are shown with:  
+    * **Query**  
+      the high-level query API (`$session->query`), using methods such as `whereEquals`, `whereNotEquals`, `andAlso`, `orElse`, and `not()`.  
+    * **RawQuery**  
+      the client API for executing an RQL string directly, with query parameters supplied by `addParameter`.  
+    * **RQL**  
+      the raw query language, using `and`, `or`, `not (...)`, and comparison operators such as `!=`.  
+      RQL keywords are case-insensitive; the examples below use lowercase.
+    
+* The same logical-operator rules apply when querying a collection dynamically
+  and when [querying a static index](../../../querying/filtering-query-results/use-logical-operators.mdx#logical-operators-when-querying-a-static-index).  
+    
+* For filtering by field value, numeric value, nested field, collection, document ID, and other basic conditions,  
+  see [Filter query results](../../../querying/filtering-query-results/filter-query-results.mdx).    
+
+---
+    
+* In this article:
+    * [Combine conditions with AND](../../../querying/filtering-query-results/use-logical-operators.mdx#combine-conditions-with-and)
+    * [Combine conditions with OR](../../../querying/filtering-query-results/use-logical-operators.mdx#combine-conditions-with-or)
+    * [Negate a condition with NOT](../../../querying/filtering-query-results/use-logical-operators.mdx#negate-a-condition-with-not)
+    * [Negate a group of conditions](../../../querying/filtering-query-results/use-logical-operators.mdx#negate-a-group-of-conditions)
+    * [Group conditions to control precedence](../../../querying/filtering-query-results/use-logical-operators.mdx#group-conditions-to-control-precedence)
+    * [Logical operators when querying a static index](../../../querying/filtering-query-results/use-logical-operators.mdx#logical-operators-when-querying-a-static-index)
+    * [Operator precedence and defaults](../../../querying/filtering-query-results/use-logical-operators.mdx#operator-precedence-and-defaults)
+
+</Admonition>
+
+<Panel heading="Combine conditions with AND">
+
+Use the **AND** operator to return only documents that satisfy **all** conditions.    
+
+For example, the following query returns _Employee_ documents where `FirstName` is `"Robert"` **and** `LastName` is `"King"`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```php
+$employees = $session
+    ->query(Employee::class)
+    ->whereEquals("FirstName", "Robert")
+    ->andAlso() // Combine the two predicates with 'andAlso'
+    ->whereEquals("LastName", "King")
+    ->toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```php
+$employees = $session->advanced()
+    ->rawQuery(Employee::class,
+        "from Employees where FirstName = \$firstName and LastName = \$lastName")
+    ->addParameter("firstName", "Robert")
+    ->addParameter("lastName", "King")
+    ->toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Employees
+where FirstName = "Robert" and LastName = "King"
+```
+</TabItem>
+</Tabs>
+    
+> **Auto-index used:** `Auto/Employees/ByFirstNameAndLastName`.  
+> The auto-index is derived from the _FirstName_ and _LastName_ fields referenced in the _where_ clause.    
+    
+---
+    
+<Admonition type="note" title="">
+
+#### Chaining conditions uses AND    
+
+Consecutive `where*` predicates are combined with AND by default.  
+For example:  
+`->whereEquals("FirstName", "Robert")->whereEquals("LastName", "King")`  
+is equivalent to:  
+`->whereEquals("FirstName", "Robert")->andAlso()->whereEquals("LastName", "King")`.
+
+</Admonition>
+    
+</Panel>
+
+<Panel heading="Combine conditions with OR">
+
+Use the **OR** operator to return documents that satisfy **at least one** of the specified conditions.
+
+For example, the following query returns _Employee_ documents where `FirstName` is either `"Robert"` **or** `"Nancy"`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```php
+$employees = $session
+    ->query(Employee::class)
+    ->whereEquals("FirstName", "Robert")
+    ->orElse() // Combine the two predicates with 'orElse'
+    ->whereEquals("FirstName", "Nancy")
+    ->toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```php
+$employees = $session->advanced()
+    ->rawQuery(Employee::class,
+        "from Employees where FirstName = \$firstName1 or FirstName = \$firstName2")
+    ->addParameter("firstName1", "Robert")
+    ->addParameter("firstName2", "Nancy")
+    ->toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Employees
+where FirstName = "Robert" or FirstName = "Nancy"
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/Employees/ByFirstName`  
+> The auto-index is derived from the _FirstName_ field referenced in the _where_ clause.
+    
+---
+    
+<Admonition type="note" title="">
+
+#### Use IN for multiple values on the same field    
+
+When the same field is compared against multiple possible values, as in the example above,  
+you can use `whereIn` instead of repeating OR conditions.
+See [Filter by multiple possible values](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-multiple-possible-values).
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Negate a condition with NOT">
+
+Use the **NOT** operator to return only documents that do **not** satisfy the specified condition.    
+
+For example, the following query returns _Employee_ documents where `FirstName` is **not** `"Robert"`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```php
+$employees = $session
+    ->query(Employee::class)
+    ->not() // Negate the next predicate
+    ->whereEquals("FirstName", "Robert")
+    ->toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```php
+$employees = $session->advanced()
+    ->rawQuery(Employee::class, "from Employees where FirstName != \$firstName")
+    ->addParameter("firstName", "Robert")
+    ->toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Employees
+where FirstName != "Robert"
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/Employees/ByFirstName`  
+> The auto-index is derived from the _FirstName_ field referenced in the _where_ clause.
+
+---
+    
+<Admonition type="note" title="">
+
+#### Using whereNotEquals
+
+* The `not()` operator negates only the next predicate or subclause.  
+  It cannot be used on its own; it must be followed by a predicate or by `openSubclause()`.
+
+* For a single equality condition, you can use `whereNotEquals` instead of `not()->whereEquals`.   
+  For example:  
+  ```php
+  $employees = $session
+      ->query(Employee::class)
+      ->whereNotEquals("FirstName", "Robert")
+      ->toList();
+  ```        
+  is equivalent to:  
+  ```php
+  $employees = $session
+      ->query(Employee::class)
+      ->not()
+      ->whereEquals("FirstName", "Robert")
+      ->toList();
+  ```
+
+</Admonition>
+    
+</Panel>
+
+<Panel heading="Negate a group of conditions">
+
+Use **NOT** with grouping to negate multiple conditions as a single unit.  
+    
+For example, the following query returns _Employee_ documents that are **not**  
+(`FirstName` is `"Robert"` **and** `LastName` is `"King"`).  
+    
+In the query API, call `not()` before `openSubclause()` to negate the whole group.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```php
+$employees = $session
+    ->query(Employee::class)
+    ->not()             // Negate the whole group that follows
+    ->openSubclause()   // Open the group
+    ->whereEquals("FirstName", "Robert")
+    ->andAlso()
+    ->whereEquals("LastName", "King")
+    ->closeSubclause()  // Close the group
+    ->toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```php
+$employees = $session->advanced()
+    ->rawQuery(Employee::class,
+        "from Employees where true and not (FirstName = \$firstName and LastName = \$lastName)")
+    ->addParameter("firstName", "Robert")
+    ->addParameter("lastName", "King")
+    ->toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Employees
+where true and not (FirstName = "Robert" and LastName = "King")   
+  
+// In RQL, NOT cannot start a where clause; it must follow a valid preceding expression.
+// Use true and not (...) when the whole where clause starts with a negated group.
+```
+</TabItem>
+</Tabs>
+    
+> **Auto-index used:** `Auto/Employees/ByFirstNameAndLastName`  
+> The auto-index is derived from the _FirstName_ and _LastName_ fields referenced in the _where_ clause.  
+
+---
+    
+<Admonition type="note" title="">
+    
+#### Alternative syntax    
+
+* `not (A and B)` is equivalent to `not A or not B`.  
+  For example, the query above:  
+  `not (FirstName = "Robert" and LastName = "King")`
+  can also be expressed as:  
+  `FirstName != "Robert" or LastName != "King"`.
+
+* In the query API, this is:  
+  `->whereNotEquals("FirstName", "Robert")->orElse()->whereNotEquals("LastName", "King")`.
+
+* In **RQL**, this is:  
+  `from Employees where FirstName != "Robert" or LastName != "King"`. 
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Group conditions to control precedence">
+
+When you mix **AND** and **OR** in the same query, use grouping to control which conditions are evaluated together.  
+In the query API, group conditions with `openSubclause()` and `closeSubclause()`;  
+in _RQL_, use parentheses.    
+
+For example, the following query returns _Employee_ documents whose `Title` is `"Sales Representative"`  
+**and** whose `FirstName` is either `"Robert"` **or** `"Nancy"`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```php
+$employees = $session
+    ->query(Employee::class)
+    ->whereEquals("Title", "Sales Representative")
+    ->andAlso()
+    ->openSubclause()  // Group the OR conditions so they are evaluated together
+    ->whereEquals("FirstName", "Robert")
+    ->orElse()
+    ->whereEquals("FirstName", "Nancy")
+    ->closeSubclause()
+    ->toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```php
+$employees = $session->advanced()
+    ->rawQuery(Employee::class,
+        "from Employees where Title = \$title and (FirstName = \$firstName1 or FirstName = \$firstName2)")
+    ->addParameter("title", "Sales Representative")
+    ->addParameter("firstName1", "Robert")
+    ->addParameter("firstName2", "Nancy")
+    ->toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Employees
+where Title = "Sales Representative" and (FirstName = "Robert" or FirstName = "Nancy")
+```
+</TabItem>
+</Tabs>
+    
+> **Auto-index used:** `Auto/Employees/ByFirstNameAndTitle`  
+> The auto-index is derived from the _Title_ and _FirstName_ fields referenced in the _where_ clause.    
+
+---
+    
+<Admonition type="note" title="">
+    
+#### Grouping matters    
+
+Without the grouping, the query:  
+`Title = "Sales Representative" and FirstName = "Robert" or FirstName = "Nancy"`  
+is evaluated as:  
+`(Title = "Sales Representative" and FirstName = "Robert") or FirstName = "Nancy"`,  
+because **AND** has higher precedence than **OR** (see [Operator precedence and defaults](../../../querying/filtering-query-results/use-logical-operators.mdx#operator-precedence-and-defaults)).  
+This returns a different set of documents than the grouped query.    
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Logical operators when querying a static index">
+
+The logical operators work the same way when querying a static index.  
+The conditions in the `where` clause are evaluated against the index-fields.
+
+For example, if a static index defines `FirstName`, `LastName`, and `Title` fields,
+you can combine conditions on those fields just as you would in a dynamic query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+```php
+class Employees_ByNameAndTitle extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        // The index fields are FirstName, LastName, and Title
+        $this->map = "from employee in docs.Employees " .
+                     "select new { employee.FirstName, employee.LastName, employee.Title }";
+    }
+}
+```    
+</TabItem>    
+<TabItem value="Query" label="Query">
+```php
+$employees = $session
+    ->query(Employee::class, Employees_ByNameAndTitle::class)
+    ->whereEquals("Title", "Sales Representative")
+    ->andAlso()
+    ->openSubclause()
+    ->whereEquals("FirstName", "Robert")
+    ->orElse()
+    ->whereEquals("FirstName", "Nancy")
+    ->closeSubclause()
+    ->toList();
+```    
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```php
+$employees = $session->advanced()
+    ->rawQuery(Employee::class,
+        "from index 'Employees/ByNameAndTitle' " .
+        "where Title = \$title and (FirstName = \$firstName1 or FirstName = \$firstName2)")
+    ->addParameter("title", "Sales Representative")
+    ->addParameter("firstName1", "Robert")
+    ->addParameter("firstName2", "Nancy")
+    ->toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Employees/ByNameAndTitle"
+where Title = "Sales Representative"
+      and (FirstName = "Robert" or FirstName = "Nancy")
+```
+</TabItem>
+</Tabs>
+    
+</Panel>
+
+<Panel heading="Operator precedence and defaults">
+
+* **Precedence:**  
+  When AND and OR appear together without grouping, **AND is evaluated before OR**.  
+  In other words, `a and b or c` is interpreted as `(a and b) or c`.  
+  Use grouping (`openSubclause` / `closeSubclause` or parentheses) whenever you need a different evaluation order.    
+
+* **Default operator:**  
+  When consecutive `where*` predicates are written without an explicit  
+  `andAlso` or `orElse` between them, they are combined with **AND** by default.  
+  Use `andAlso` to make the implicit AND explicit, or `orElse` when you need OR.    
+
+* **NOT requires a following predicate or subclause:**  
+  The `not()` operator negates the predicate or subclause that comes immediately after it.  
+  It cannot be used on its own.
+
+</Panel>
