@@ -17,7 +17,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* Database backups are typically scheduled using [periodic backup tasks](../../backup/create/periodic-tasks/database-backup) and created automatically according to the defined schedule.  
+* Database backups are typically scheduled using [periodic backup tasks](../../backup/create/periodic-tasks/database-backup.mdx) and created automatically according to the defined schedule.  
 However, you can also back up any database on demand, whenever needed.  
 
 - You can define a **one-time backup configuration** and run it to create a backup immediately.
@@ -25,13 +25,13 @@ However, you can also back up any database on demand, whenever needed.
 - You can also trigger any **periodic backup task** defined for your database, to create a backup now.  
 
 * In this article:  
-  * [Running a one-time backup operation using the client API](../../backup/create/one-time-backup#running-a-one-time-backup-operation-using-the-client-api)
-     * [Defining and running a one-time backup operation](../../backup/create/one-time-backup#defining-and-running-a-one-time-backup-operation)
-     * [Triggering a backup task to run a backup operation immediately](../../backup/create/one-time-backup#triggering-a-backup-task-to-run-a-backup-operation-immediately)
+  * [Running a one-time backup operation using the client API](../../backup/create/one-time-backup.mdx#running-a-one-time-backup-operation-using-the-client-api)
+     * [Defining and running a one-time backup operation](../../backup/create/one-time-backup.mdx#defining-and-running-a-one-time-backup-operation)
+     * [Triggering a backup task to run a backup operation immediately](../../backup/create/one-time-backup.mdx#triggering-a-backup-task-to-run-a-backup-operation-immediately)
 
-  * [Running a one-time backup operation using Studio](../../backup/create/one-time-backup#running-a-one-time-backup-operation-using-studio)
-     * [Defining and running a one-time backup operation](../../backup/create/one-time-backup#defining-and-running-a-one-time-backup-operation-1)
-     * [Triggering a backup task to run a backup operation immediately](../../backup/create/one-time-backup#triggering-a-backup-task-to-run-a-backup-operation-immediately-1)
+  * [Running a one-time backup operation using Studio](../../backup/create/one-time-backup.mdx#running-a-one-time-backup-operation-using-studio)
+     * [Defining and running a one-time backup operation](../../backup/create/one-time-backup.mdx#defining-and-running-a-one-time-backup-operation-1)
+     * [Triggering a backup task to run a backup operation immediately](../../backup/create/one-time-backup.mdx#triggering-a-backup-task-to-run-a-backup-operation-immediately-1)
 
 
 </Admonition>
@@ -70,7 +70,7 @@ Operation<StartBackupOperationResult> op =
 
 #### Setting backup type:
 
-- Set the backup type using the backup configuration [BackupType](../../backup/create/one-time-backup#classes-and-enums-used-in-the-backup-configuration) _enum_ property.  
+- Set the backup type using the backup configuration [BackupType](../../backup/create/one-time-backup.mdx#classes-and-enums-used-in-the-backup-configuration) _enum_ property.  
   You can assign it with `BackupType.Backup` to create logical backups,  
   or with `BackupType.Snapshot` for snapshot images.  
 
@@ -117,7 +117,7 @@ Operation<StartBackupOperationResult> op =
   };
   ```
 
-- [See destinations-related syntax](../../backup/create/one-time-backup#backup-destinations-classes)
+- [See destinations-related syntax](../../backup/create/one-time-backup.mdx#backup-destinations-classes)
 
 ---
 
@@ -125,9 +125,9 @@ Operation<StartBackupOperationResult> op =
 
 Set backup encryption using the backup configuration `BackupEncryptionSettings` property.  
 
-* [Snapshots](../../backup/overview#snapshot-image-encryption) are exact images of the database, and as such are automatically encrypted when the database is encrypted (using the same encryption key as the database) or unencrypted when the database is not encrypted.  
+* [Snapshots](../../backup/overview.mdx#snapshot-image-encryption) are exact images of the database, and as such are automatically encrypted when the database is encrypted (using the same encryption key as the database) or unencrypted when the database is not encrypted.  
 
-* [Logical backups](../../backup/overview#logical-backup-encryption) can be encrypted or not, regardless of the database encryption.  
+* [Logical backups](../../backup/overview.mdx#logical-backup-encryption) can be encrypted or not, regardless of the database encryption.  
    - Use `BackupEncryptionSettings.EncryptionMode` to select if and how backups should be encrypted.  
    Available options are:  
       - `EncryptionMode.None` - Do not encrypt backups
@@ -155,7 +155,7 @@ Set backup encryption using the backup configuration `BackupEncryptionSettings` 
      };
      ```
 
-* [See `BackupEncryptionSettings` and `EncryptionMode` syntax](../../backup/create/one-time-backup#classes-and-enums-used-in-the-backup-configuration)
+* [See `BackupEncryptionSettings` and `EncryptionMode` syntax](../../backup/create/one-time-backup.mdx#classes-and-enums-used-in-the-backup-configuration)
 
 </ContentFrame>
 
@@ -371,8 +371,8 @@ class LocalSettings : BackupSettings
 <br />
 | Property | Type | Description |
 |----------|------|-----------------------------------------------------------------------------|
-| **FolderPath** | `string` | Path to a local folder.<br />When set, backups are kept in this path and will [not be deleted](../../backup/overview#upload-mode). |
-| **ShardNumber** | `int?` | An optional shard number, so the backup can be kept in the local path of a specific shard when a [sharded database](../../sharding/backup-and-restore/backup) is used. |
+| **FolderPath** | `string` | Path to a local folder.<br />When set, backups are kept in this path and will [not be deleted](../../backup/overview.mdx#upload-mode). |
+| **ShardNumber** | `int?` | An optional shard number, so the backup can be kept in the local path of a specific shard when a [sharded database](../../sharding/backup-and-restore/backup.mdx) is used. |
 
 </TabItem>
 
@@ -514,8 +514,8 @@ public string RemoteFolderName
 
 Each periodic backup task, including server-wide derived tasks, can be triggered to run a backup operation immediately, outside of its schedule.  
 
-[Triggering a regular backup task to run a backup operation immediately](../../backup/create/periodic-tasks/database-backup#triggering-an-immediate-backup-operation)  
-[Triggering a server-wide derived task to run a backup operation immediately](../../backup/create/periodic-tasks/server-wide-backup#triggering-an-immediate-backup-operation)  
+[Triggering a regular backup task to run a backup operation immediately](../../backup/create/periodic-tasks/database-backup.mdx#triggering-an-immediate-backup-operation)  
+[Triggering a server-wide derived task to run a backup operation immediately](../../backup/create/periodic-tasks/server-wide-backup.mdx#triggering-an-immediate-backup-operation)  
 
 </ContentFrame>
 
@@ -539,10 +539,10 @@ To back up a database immediately:
 
   ![Define and run backup operation](./assets/one-time-backup_define-config.png)
     
-  `A`. [Define basic backup options](../../backup/create/one-time-backup#a-define-basic-backup-options)  
-  `B`. [Set backup encryption options](../../backup/create/one-time-backup#b-set-backup-encryption-options)  
-  `C`. [Choose where to store the backup](../../backup/create/one-time-backup#c-choose-where-to-store-the-backup)  
-  `D`. [Run the backup operation](../../backup/create/one-time-backup#d-run-the-backup-operation)
+  `A`. [Define basic backup options](../../backup/create/one-time-backup.mdx#a-define-basic-backup-options)  
+  `B`. [Set backup encryption options](../../backup/create/one-time-backup.mdx#b-set-backup-encryption-options)  
+  `C`. [Choose where to store the backup](../../backup/create/one-time-backup.mdx#c-choose-where-to-store-the-backup)  
+  `D`. [Run the backup operation](../../backup/create/one-time-backup.mdx#d-run-the-backup-operation)
 
 ---
 
@@ -561,8 +561,8 @@ To back up a database immediately:
 
 2. **Backup type**  
    Select the type of backup to create:
-    - **Backup** - create a [logical backup](../../backup/overview#logical-backup).  
-    - **Snapshot** - create a [snapshot image](../../backup/overview#snapshot-image).  
+    - **Backup** - create a [logical backup](../../backup/overview.mdx#logical-backup).  
+    - **Snapshot** - create a [snapshot image](../../backup/overview.mdx#snapshot-image).  
 
       When **snapshot** is selected, a few additional options are available:  
       - **Compression algorithm**  
@@ -624,7 +624,7 @@ Use this section to configure encryption options for a **logical backup** (when 
 
   ![Enable encryption](./assets/one-time-backup_define-config_encryption_enable.png)
 
-* If the [database is encrypted](../../studio/database/create-new-database/encrypted), you will be given the choice to use either the database encryption key or your own key.  
+* If the [database is encrypted](../../studio/database/create-new-database/encrypted.mdx), you will be given the choice to use either the database encryption key or your own key.  
   
    - Use the database encryption key for simplicity, as you won't need to manage a separate encryption key for backups.
 
@@ -660,7 +660,7 @@ You can select one or more storage locations for the backup, both local and remo
 
   ![Local storage settings](./assets/one-time-backup_storage_local.png)
 
-* The **Backup Upload Mode** setting defined [above](../../backup/create/one-time-backup#a-define-basic-backup-options) determines whether to store the backup locally before sending it to any remote destination.
+* The **Backup Upload Mode** setting defined [above](../../backup/create/one-time-backup.mdx#a-define-basic-backup-options) determines whether to store the backup locally before sending it to any remote destination.
 
 </ContentFrame>
 
@@ -686,8 +686,8 @@ Click **Backup Now** to back up the database by your settings.
 
 Each periodic backup task, including server-wide derived tasks, can be triggered to run a backup operation immediately, outside of its schedule.  
 
-[Triggering a regular backup task to run a backup operation immediately](../../backup/create/periodic-tasks/database-backup#running-a-backup-operation-immediately)  
-[Triggering a server-wide derived task to run a backup operation immediately](../../backup/create/periodic-tasks/server-wide-backup#running-a-backup-operation-immediately)  
+[Triggering a regular backup task to run a backup operation immediately](../../backup/create/periodic-tasks/database-backup.mdx#running-a-backup-operation-immediately)  
+[Triggering a server-wide derived task to run a backup operation immediately](../../backup/create/periodic-tasks/server-wide-backup.mdx#running-a-backup-operation-immediately)  
 
 </ContentFrame>
 
