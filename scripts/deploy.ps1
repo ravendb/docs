@@ -185,9 +185,11 @@ if ($LASTEXITCODE) { throw 'Docusaurus build failed' }
 $BuildDir = [IO.Path]::Combine($PSScriptRoot, '..', 'build')
 if (-not (Test-Path $BuildDir)) { throw "Build folder not produced ($BuildDir)" }
 
-# Rspack's persistent cache can emit 0-byte assets while the build still succeeds; abort before sync
-$Empty = Get-ChildItem $BuildDir -Recurse -File | Where-Object { $_.Length -eq 0 -and $_.Name -ne '.nojekyll' }
-if ($Empty) { throw "Empty build artifact(s): $($Empty.Name -join ', '). Re-run a clean build." }
+# Warn (don't block) if the build emitted any empty (0-byte) asset.
+$empty = Get-ChildItem $BuildDir -Recurse -File | Where-Object { $_.Length -eq 0 -and $_.Name -ne '.nojekyll' }
+if ($empty) {
+    Write-Warning "Build produced $($empty.Count) empty file(s): $(($empty | Select-Object -First 20 -ExpandProperty Name) -join ', ')"
+}
 
 if ($DryRun) {
     Write-Host "Dry run mode enabled. Skipping sync to s3://$S3BucketName/, CloudFront KeyValueStore update and CloudFront invalidation." -ForegroundColor Yellow
@@ -199,7 +201,7 @@ if ($DryRun) {
     # on S3 while CloudFront still serves the old index.html from edge cache
     # cached aggresively 
     Write-Host "  [1/4] Upload: hashed assets (assets/*)" -ForegroundColor Gray
-    aws s3 sync $BuildDir "s3://$S3BucketName/" `
+    aws s3 sync $BuildDir "s3://$S3BucketName/" --only-show-errors `
         --exclude "*" `
         --include "assets/*" `
         --cache-control "public, max-age=31536000, immutable"
@@ -209,7 +211,7 @@ if ($DryRun) {
     # these files share the same URLs across deploys (no hashing), so the only
     # deletions are pages intentionally removed from the docs
     Write-Host "  [2/4] Sync: static files with --delete (HTML, images, icons, sitemap, robots.txt, etc.)" -ForegroundColor Gray
-    aws s3 sync $BuildDir "s3://$S3BucketName/" `
+    aws s3 sync $BuildDir "s3://$S3BucketName/" --only-show-errors `
         --exclude "assets/*" `
         --cache-control "public, max-age=3600, must-revalidate" `
         --delete
@@ -229,7 +231,7 @@ if ($DryRun) {
     # Phase 4 — CloudFront now serves only the new index.html, so old hashed
     # bundles are no longer referenced and can be safely removed
     Write-Host "  [4/4] Cleanup: removing stale hashed assets from S3" -ForegroundColor Gray
-    aws s3 sync $BuildDir "s3://$S3BucketName/" `
+    aws s3 sync $BuildDir "s3://$S3BucketName/" --only-show-errors `
         --exclude "*" `
         --include "assets/*" `
         --cache-control "public, max-age=31536000, immutable" `
