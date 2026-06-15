@@ -788,38 +788,111 @@ select Name, Phone
 
 ## Single projection per query
 
-* As of RavenDB v6.0, only a single projection request can be made per Query (and DocumentQuery).
+* As of RavenDB v6.0, each client-side `Query` or `DocumentQuery` instance can define its projection only once.  
+  Projection methods modify the underlying query object by defining the shape of the results,  
+  so applying another projection on the **same query instance** will throw an exception.  
+  The validation is performed by the client before the query is sent to the server.
 
-* Attempting multiple projection executions in the same query will result in an exception.
+* The single-projection rule applies to the client query APIs:
 
     * Query:  
-      Multiple `Select` calls or a combination of `ProjectInto` with a `Select` call will result in an exception.
-   
+      Multiple `Select` calls, multiple `ProjectInto` calls, or a combination of `ProjectInto` with `Select`  
+      will result in an exception.
+
     * DocumentQuery:  
       Multiple `SelectFields` calls will result in an exception.
 
-<TabItem value="projections_13" label="projections_13">
-<CodeBlock language="csharp">
-{`// For example:
-try
-\{
-    var projectedResults = session
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="Query" label="Query">
+    ```csharp
+    // For example:
+    try
+    {
+        var projectedResults = session
+            .Query<Company>()
+            // Make first projection
+            .ProjectInto<ContactDetails>()
+            // A second projection is not supported and will throw
+            .Select(x => new {Name = x.Name})
+            .ToList();
+    }
+    catch (Exception e)
+    {
+        // The following exception will be thrown:
+        // "Projection is already done. You should not project your result twice."
+    }
+    ```
+    </TabItem>
+    <TabItem value="DocumentQuery" label="DocumentQuery">
+    ```csharp
+    // For example:
+    try
+    {
+        var projectedResults = session.Advanced
+            .DocumentQuery<Company>()
+            // Make first projection
+            .SelectFields<ContactDetails>()
+            // A second projection is not supported and will throw
+            .SelectFields<ContactDetails>()
+            .ToList();
+    }
+    catch (Exception e)
+    {
+        // The following exception will be thrown:
+        // "Projection is already done. You should not project your result twice."
+    }
+    ```
+    </TabItem>
+    </Tabs>
+
+---
+
+<Admonition type="note" title="">
+    
+#### Reusing the same base query for multiple projections
+    
+* In the client API, if you need to run the same base query with projections more than once,  
+  keep the unprojected base query as a `DocumentQuery`,  
+  and call `ToQueryable()` before each projection so that each projection is applied to a separate query instance:
+
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="Query" label="Query">
+    ```csharp
+    // Build a single base query without a projection
+        
+    var baseQuery = session
         .Query<Company>()
-        // Make first projection
-        .ProjectInto<ContactDetails>()
-        // A second projection is not supported and will throw
-        .Select(x => new \{Name = x.Name\})
-        .ToList();
-\}
-catch (Exception e)
-\{
-    // The following exception will be thrown:
-    // "Projection is already done. You should not project your result twice."
-\}
-`}
-</CodeBlock>
-</TabItem>
+        .ToDocumentQuery();
+    
+    // Call 'ToQueryable()' before each projection
+        
+    var results1 = baseQuery.ToQueryable()
+        .ProjectInto<ContactDetails>().ToList();
+            
+    var results2 = baseQuery.ToQueryable()
+        .ProjectInto<ContactDetails>().ToList();
+    ```
+    </TabItem>
+    <TabItem value="Query_async" label="Query_async">
+    ```csharp
+    // Build a single base query without a projection
+        
+    var baseQuery = asyncSession
+        .Query<Company>()
+        .ToAsyncDocumentQuery();
+    
+    // Call 'ToQueryable()' before each projection
+        
+    var results1 = await baseQuery.ToQueryable()
+        .ProjectInto<ContactDetails>().ToListAsync();
+            
+    var results2 = await baseQuery.ToQueryable()
+        .ProjectInto<ContactDetails>().ToListAsync();
+    ```
+    </TabItem>
+    </Tabs>
 
+* In RQL, the projection is part of the query text and is defined by the `select` clause.  
+  To use a different projection, run a separate RQL query with a different `select` clause.    
 
-
-
+</Admonition>

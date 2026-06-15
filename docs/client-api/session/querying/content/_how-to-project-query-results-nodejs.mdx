@@ -15,10 +15,13 @@ import CodeBlock from '@theme/CodeBlock';
     * [Projections overview](../../../../client-api/session/querying/how-to-project-query-results.mdx#projections-overview)
     * [SelectFields](../../../../client-api/session/querying/how-to-project-query-results.mdx#selectfields)  
     * [Projecting nested object types](../../../../client-api/session/querying/how-to-project-query-results.mdx#projecting-nested-object-types)  
+    * [Single projection per query](../../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query)  
     * [Syntax](../../../../client-api/session/querying/how-to-project-query-results.mdx#syntax)
 
 </Admonition>
+
 ## Projections overview
+
 **What are projections**:
 
 * A projection refers to the **transformation of query results** into a customized structure,  
@@ -32,6 +35,7 @@ import CodeBlock from '@theme/CodeBlock';
 * Content from inner objects and arrays can be projected in addition to [projecting the nested object types](../../../../client-api/session/querying/how-to-project-query-results.mdx#projecting-nested-object-types).
 
 * An alias name can be given to the projected fields, and any calculations can be applied within the projection.
+
 **When to use projections**:
 
 * Projections allow you to tailor the query results specifically to your needs.  
@@ -48,11 +52,13 @@ import CodeBlock from '@theme/CodeBlock';
 
 * However, when you need to actively work with the complete set of data on the client side,  
   then do use a query without a projection to retrieve the full document from the server.
+
 **Projections are not tracked by the session**:
 
 * On the client side, the resulting projected entities returned by the query are Not tracked by the Session.
 
 * Any modification made to a projection entity will not modify the corresponding document on the server when _SaveChanges_ is called.
+
 **Projections are the final stage in the query pipeline**:
 
 * Projections are applied as the last stage in the query pipeline,  
@@ -63,6 +69,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Within the projection you can only filter what data will be returned from the matching documents,  
   but you cannot filter which documents will be returned. That has already been determined earlier in the query pipeline.
+
 **The cost of projections**:
 
 * Queries in RavenDB do not allow any computation to occur during the query phase.  
@@ -74,8 +81,6 @@ import CodeBlock from '@theme/CodeBlock';
   Exceeding this time limit will fail the query. This is configurable, see the following configuration keys:  
   * [Databases.QueryTimeoutInSec](../../../../server/configuration/database-configuration.mdx#databasesquerytimeoutinsec)
   * [Databases.QueryOperationTimeoutInSec](../../../../server/configuration/database-configuration.mdx#databasesqueryoperationtimeoutinsec)
-
-
 
 ## SelectFields
 
@@ -425,7 +430,6 @@ include Supplier, Category
 
 </Admonition>
 
-
 ## Projecting nested object types
 
 In the Node.js client, when projecting query results using the `selectFields` method (not via the `rawQuery` syntax),  
@@ -501,7 +505,56 @@ select name, @metadata.@nested-object-types as **PROJECTED_NESTED_OBJECT_TYPES**
 </CodeBlock>
 </TabItem>
 
+## Single projection per query
 
+As of RavenDB v6.0, each client-side query instance can define its projection only once.  
+The `selectFields` method modifies the underlying query object by defining the shape of the results,  
+so applying another projection on the **same query instance** will throw an exception.  
+The validation is performed by the client before the query is sent to the server.
+
+```js
+// For example:
+try {
+    const baseQuery = session.query({ collection: "Companies" });
+
+    // Make first projection
+    const results1 = await baseQuery.selectFields("Name").all();
+
+    // A second projection on the same query is not supported and will throw
+    const results2 = await baseQuery.selectFields("Phone").all();
+} catch (err) {
+    // The following exception will be thrown:
+    // "Projection is already done. You should not project your result twice."
+}
+```
+
+---
+
+<Admonition type="note" title="">
+    
+#### Running the same query criteria with multiple projections
+
+* In the client API, if you need to run the same query criteria with different projections,  
+  build a new query instance for each projection:
+
+    ```js
+    const baseQuery = () => session
+        .query({ collection: "Companies" })
+        .whereEquals("Address.Country", "USA");
+    
+    const results1 = await baseQuery()
+        .selectFields("Name")
+        .all();
+    
+    const results2 = await baseQuery()
+        .selectFields("Phone")
+        .all();
+    ```
+
+* In RQL, the projection is part of the query text and is defined by the `select` clause.  
+  To use a different projection, run a separate RQL query with a different `select` clause.
+
+</Admonition>
 
 ## Syntax
 
@@ -527,7 +580,3 @@ selectFields(queryData, projectionClass, projectionBehavior);
 | **queryData**          | `QueryData` | Object with projection query definitions                                                                                                                |
 | **projectionClass**    | `object`    | The class type of the projected fields                                                                                                                  |
 | **projectionBehavior** | `string`    | Projection behavior is useful when querying a static-index.<br/>Learn more in [projection behavior with indexes](../../../../indexes/querying/projections.mdx). |
-
-
-
-
