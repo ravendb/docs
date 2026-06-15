@@ -190,8 +190,9 @@ Choose where to restore the backup from by using a restore configuration that ma
 
 <Admonition type="note" title="">
 
-When restoring from a remote destination (Amazon S3, Azure Blob Storage, or Google Cloud
-Storage), RavenDB downloads the backup file to local disk before reading the file.  
+When restoring a snapshot from a remote destination (Amazon S3, Azure Blob Storage, or
+Google Cloud Storage), RavenDB downloads the snapshot file to local disk before reading
+the file.  
 The first defined path in this list is used for the download:
 
 - [`Backup.TempPath`](../backup/configuration.mdx#backuptemppath)
@@ -200,6 +201,9 @@ The first defined path in this list is used for the download:
 
 Before the download starts, RavenDB checks that the chosen path has enough free space.  
 If there is not enough space, the restore fails with a `DiskFullException`.
+
+Full and incremental backups are streamed directly from the destination during restore
+and do not use this temp path.
 
 </Admonition>
 
