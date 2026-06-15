@@ -5,15 +5,12 @@ image: "https://ravendb.net/wp-content/uploads/2025/11/aws-ravendb-article.png"
 description: "Step-by-step walkthrough of deploying a RavenDB server on AWS Marketplace, covering EC2 instance configuration, security group rules, SSH port-forwarding, and initial RavenDB Studio access."
 published_at: 2025-11-13
 see_also:
-  - title: "Running RavenDB on an AWS Linux VM"
-    link: "https://ravendb.net/docs/article-page/latest/csharp/start/installation/setup-examples/aws-linux-vm"
-    source: "external"
-  - title: "Running RavenDB on an AWS Windows VM"
-    link: "https://ravendb.net/docs/article-page/latest/csharp/start/installation/setup-examples/aws-windows-vm"
-    source: "external"
-  - title: "Containers: General Guide"
-    link: "https://ravendb.net/docs/article-page/latest/csharp/start/containers/general-guide"
-    source: "external"
+  - title: "Setup Wizard Overview"
+    link: "start/installation/setup-wizard/overview"
+    source: "docs"
+  - title: "Security Overview"
+    link: "server/security/overview"
+    source: "docs"
 author: "Paweł Lachowski"
 proficiency_level: "Beginner"
 ---
@@ -96,7 +93,7 @@ Then we can connect to our instance like normal RavenDB using localhost 8080. Af
 
 ## Summary
 
-Running RavenDB on an AWS server can speed things up, but maybe you don't need the whole database on AWS? You can instead connect your RavenDB to Amazon SQS using the [RavenDB Amazon SQS ETL](https://ravendb.net/articles/new-in-7-0-ravendb-and-amazon-sqs-etl).
+Running RavenDB on an AWS server can speed things up, but maybe you don't need the whole database on AWS? You can instead connect your RavenDB to Amazon SQS using the [RavenDB Amazon SQS ETL](./new-in-7-0-ravendb-and-amazon-sqs-etl).
 
 Here's what we covered in this guide:
 
