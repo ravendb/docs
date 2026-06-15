@@ -19,7 +19,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * Restore a database from backup using Studio's restore wizard or the client API.  
 
-* The restore operation will create a **new database**, load backup files from the backup folder you provide it, and populate the database with the [backed up content](../backup/overview#backup-content).  
+* The restore operation will create a **new database**, load backup files from the backup folder you provide it, and populate the database with the [backed up content](../backup/overview.mdx#backup-content).  
 
 * If your backup consists of full and incremental backup files, you can restore the database up to a specific point in time by selecting the last incremental backup file to restore.  
 
@@ -27,19 +27,19 @@ import ContentFrame from "@site/src/components/ContentFrame";
   [Learn to restore a sharded database.](../sharding/backup-and-restore/restore.mdx)  
 
 * In this article:  
-  * [Restoring from backup using the client API](../backup/restore#restoring-from-backup-using-the-client-api)
-     * [Restoring a database from backup](../backup/restore#restoring-a-database-from-backup)
-     * [Key configuration settings](../backup/restore#key-configuration-settings)
-        * [Setting restore points](../backup/restore#lastfilenametorestore---setting-restore-points)
-        * [Encryption settings](../backup/restore#encryptionkey--backupencryptionsettings---encryption-settings)
-        * [Backup location settings](../backup/restore#restorebackupconfiguration---backup-location-settings)
-     * [Syntax](../backup/restore#syntax)
-  * [Restoring from backup using Studio](../backup/restore#restoring-from-backup-using-studio)
-      * [Set restore options](../backup/restore#set-restore-options)
-  * [Restoring a database to multiple cluster nodes](../backup/restore#restoring-a-database-to-multiple-cluster-nodes)
-     * [Restoring to a single node and replicating to additional nodes](../backup/restore#restoring-to-a-single-node-and-replicating-to-additional-nodes)
-     * [Restoring to multiple nodes simultaneously](../backup/restore#restoring-to-multiple-nodes-simultaneously)
-  * [Restoring from server-wide backups](../backup/restore#restoring-from-server-wide-backups)
+  * [Restoring from backup using the client API](../backup/restore.mdx#restoring-from-backup-using-the-client-api)
+     * [Restoring a database from backup](../backup/restore.mdx#restoring-a-database-from-backup)
+     * [Key configuration settings](../backup/restore.mdx#key-configuration-settings)
+        * [Setting restore points](../backup/restore.mdx#lastfilenametorestore---setting-restore-points)
+        * [Encryption settings](../backup/restore.mdx#encryptionkey--backupencryptionsettings---encryption-settings)
+        * [Backup location settings](../backup/restore.mdx#restorebackupconfiguration---backup-location-settings)
+     * [Syntax](../backup/restore.mdx#syntax)
+  * [Restoring from backup using Studio](../backup/restore.mdx#restoring-from-backup-using-studio)
+      * [Set restore options](../backup/restore.mdx#set-restore-options)
+  * [Restoring a database to multiple cluster nodes](../backup/restore.mdx#restoring-a-database-to-multiple-cluster-nodes)
+     * [Restoring to a single node and replicating to additional nodes](../backup/restore.mdx#restoring-to-a-single-node-and-replicating-to-additional-nodes)
+     * [Restoring to multiple nodes simultaneously](../backup/restore.mdx#restoring-to-multiple-nodes-simultaneously)
+  * [Restoring from server-wide backups](../backup/restore.mdx#restoring-from-server-wide-backups)
 
 </Admonition>
 
@@ -157,7 +157,7 @@ await store.Maintenance.Server
 
 * `BackupEncryptionSettings`  
   Use this property to **decrypt an encrypted backup**.  
-  [See details in the syntax section.](../backup/restore#additional-restore-classes)
+  [See details in the syntax section.](../backup/restore.mdx#additional-restore-classes)
 
 **Example:**  
 
@@ -186,7 +186,7 @@ Choose where to restore the backup from by using a restore configuration that ma
 * `RestoreFromAzureConfiguration` - To restore from Azure Blob Storage.  
 * `RestoreFromGoogleCloudConfiguration` - To restore from Google Cloud Storage.
 
-[See details in the syntax section.](../backup/restore#restore-configuration-classes)
+[See details in the syntax section.](../backup/restore.mdx#restore-configuration-classes)
 
 **Example: Restore from S3**
 ```csharp
@@ -627,7 +627,7 @@ To restore a database from backup using Studio:
 * Choose the **new database's location** on the server machine.  
 
 <Admonition type="note" title="">
-The restore operation will conclude the process by creating a **new database** on the server and populating it with the [backup content](../backup/overview#backup-content).  
+The restore operation will conclude the process by creating a **new database** on the server and populating it with the [backup content](../backup/overview.mdx#backup-content).  
 </Admonition>
 
 <ContentFrame>
@@ -726,7 +726,7 @@ Choose a folder on the server machine for the new database.
 
 #### After restoring:
 
-The new database will be available in the Databases view with the restored [content](../backup/overview#backup-content).
+The new database will be available in the Databases view with the restored [content](../backup/overview.mdx#backup-content).
 
 ![Restore options](./assets/restore_after-restore.png)
 
@@ -747,8 +747,8 @@ However, when restored from backup, a database is always restored only to the si
 Use the following methods to extend the database to additional cluster nodes after restoration, if needed.
 
 The instructions below assume you have a multiple node cluster.  
-[Learn to add cluster nodes using the cluster API](../server/clustering/cluster-api)  
-[Learn to add cluster nodes using Studio](../studio/cluster/cluster-view#cluster-view-operations)
+[Learn to add cluster nodes using the cluster API](../server/clustering/cluster-api.mdx)  
+[Learn to add cluster nodes using Studio](../studio/cluster/cluster-view.mdx#cluster-view-operations)
 
 <ContentFrame>
 
@@ -855,7 +855,7 @@ To restore **from a snapshot** into multiple nodes simultaneously and join the d
    - From Studio:  
      While deleting a database from the **Databases** view, select **Delete and keep files**.  
    - Using the client API:  
-     [Learn to delete a database.](../client-api/operations/server-wide/delete-database)  
+     [Learn to delete a database.](../client-api/operations/server-wide/delete-database.mdx)  
      e.g., to soft-delete the database named "TemporaryDatabaseName1" from node `B`:  
      ```csharp
      // soft-delete a database from one node
@@ -864,7 +864,7 @@ To restore **from a snapshot** into multiple nodes simultaneously and join the d
            fromNode: "B", timeToWaitForConfirmation: null));
      ```
 * **Rename** the deleted database's folder on each respective node to match the name of the remaining database.  
-* On the node you didn't delete the database from, expand the database group (as [shown above](../backup/restore#using-studio)) to include all the other nodes.  
+* On the node you didn't delete the database from, expand the database group (as [shown above](../backup/restore.mdx#using-studio)) to include all the other nodes.  
 
 </ContentFrame>
 
@@ -872,7 +872,7 @@ To restore **from a snapshot** into multiple nodes simultaneously and join the d
 
 <Panel heading="Restoring from server-wide backups">
 
-Restoring databases backed up by a server-wide backup task **is identical** to restoring databases backed up by regular [database backup tasks](../backup/create/periodic-tasks/database-backup).  
+Restoring databases backed up by a server-wide backup task **is identical** to restoring databases backed up by regular [database backup tasks](../backup/create/periodic-tasks/database-backup.mdx).  
 - Though a server-wide task creates backups for multiple databases, the backup for each database is restored separately into a new database.  
 - Note that each backup is stored in the backup location within its own folder, named after the database it belongs to.  
   When restoring, make sure the correct backup folder is selected.

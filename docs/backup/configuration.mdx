@@ -19,19 +19,19 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Admonition type="note" title="">
 
 Use the configuration keys listed below to set backup-related options for your RavenDB server.  
-Learn how to apply these keys in the [Configuration Overview](../server/configuration/configuration-options) article.
+Learn how to apply these keys in the [Configuration Overview](../server/configuration/configuration-options.mdx) article.
 
 
 * In this article:  
-    * [Backup.TempPath](../backup/configuration#backuptemppath)  
-    * [Backup.LocalRootPath](../backup/configuration#backuplocalrootpath)  
-    * [Backup.AllowedDestinations](../backup/configuration#backupalloweddestinations)  
-    * [Backup.AllowedAwsRegions](../backup/configuration#backupallowedawsregions)  
-    * [Backup.MaxNumberOfConcurrentBackups](../backup/configuration#backupmaxnumberofconcurrentbackups)  
-    * [Backup.ConcurrentBackupsDelayInSec](../backup/configuration#backupconcurrentbackupsdelayinsec)  
-    * [Backup.LowMemoryBackupDelayInMin](../backup/configuration#backuplowmemorybackupdelayinmin)  
-    * [Backup.MoveToNewResponsibleNodeGracePeriodInMin](../backup/configuration#backupmovetonewresponsiblenodegraceperiodinmin)  
-    * [Server.CpuCredits.ExhaustionBackupDelayInMin](../backup/configuration#servercpucreditsexhaustionbackupdelayinmin)
+    * [Backup.TempPath](../backup/configuration.mdx#backuptemppath)  
+    * [Backup.LocalRootPath](../backup/configuration.mdx#backuplocalrootpath)  
+    * [Backup.AllowedDestinations](../backup/configuration.mdx#backupalloweddestinations)  
+    * [Backup.AllowedAwsRegions](../backup/configuration.mdx#backupallowedawsregions)  
+    * [Backup.MaxNumberOfConcurrentBackups](../backup/configuration.mdx#backupmaxnumberofconcurrentbackups)  
+    * [Backup.ConcurrentBackupsDelayInSec](../backup/configuration.mdx#backupconcurrentbackupsdelayinsec)  
+    * [Backup.LowMemoryBackupDelayInMin](../backup/configuration.mdx#backuplowmemorybackupdelayinmin)  
+    * [Backup.MoveToNewResponsibleNodeGracePeriodInMin](../backup/configuration.mdx#backupmovetonewresponsiblenodegraceperiodinmin)  
+    * [Server.CpuCredits.ExhaustionBackupDelayInMin](../backup/configuration.mdx#servercpucreditsexhaustionbackupdelayinmin)
 
 </Admonition>
 
@@ -136,7 +136,7 @@ Maximum number of concurrent backup tasks.
 
 ### Backup.ConcurrentBackupsDelayInSec
 
-Number of seconds to delay the backup when the [concurrent backups limit](../backup/configuration#backupmaxnumberofconcurrentbackups) is reached.  
+Number of seconds to delay the backup when the [concurrent backups limit](../backup/configuration.mdx#backupmaxnumberofconcurrentbackups) is reached.  
 
 - **Type**: `TimeSetting`  
 - **TimeUnit**: `TimeUnit.Seconds`  
