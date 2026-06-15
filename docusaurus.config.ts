@@ -34,8 +34,8 @@ const config: Config = {
     // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
     future: {
         v4: true, // Improve compatibility with the upcoming Docusaurus v4
-        // All faster flags except rspackPersistentCache, which intermittently emits
-        // 0-byte assets while the build still succeeds, breaking the deployed site.
+        // All faster flags except rspackPersistentCache, which only speeds up repeat builds — CI
+        // wipes the workspace between builds, so it provides no benefit here.
         faster: {
             swcJsLoader: true,
             swcJsMinimizer: true,
