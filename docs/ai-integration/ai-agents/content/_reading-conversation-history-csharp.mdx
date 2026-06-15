@@ -13,7 +13,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   A long conversation can be read in fixed-size pages instead, by paging back through earlier
   history or forward to newer messages.  
 
-* Even a long conversation that has been trimmed over time is returned as a single chronological
+* Even a long conversation that has been trimmed or summarized over time is returned as a single chronological
   list of messages.  
 
 * This page covers: reading and paging through a conversation's messages, choosing the level of
@@ -92,8 +92,9 @@ conversation ID:
 * Set `Before` to a timestamp to read the page of messages immediately before it.  
 * Set `After` to a timestamp to read the page of messages immediately after it.  
 
-A call sets either `Before` or `After`, never both. The returned page is always ordered oldest to
-newest. `Before`, `After`, and `PageSize` decide only the messages a page covers, not their order.
+`Before` and `After` are mutually exclusive: a call sets one or the other, never both.  
+
+The returned page is always ordered oldest to newest. `Before`, `After`, and `PageSize` decide only the messages a page covers, not their order.
 
 #### Example: Page back through a conversation
 
@@ -185,7 +186,7 @@ var detailed = await store.AI.GetConversationMessagesAsync(
 ```
 <br />
 
-See [AiConversationDetailLevel](../../../ai-integration/ai-agents/reading-conversation-history.mdx#enums)
+See [AiConversationDetailLevel](../../../ai-integration/ai-agents/reading-conversation-history.mdx#conversation-history-enums)
 in the [Syntax](../../../ai-integration/ai-agents/reading-conversation-history.mdx#syntax) section.
 
 </Panel>
@@ -393,7 +394,7 @@ class AiConversationMessage
 
 | Property | Type | Description |
 |----------|------|-------------|
-| **Role** | `AiMessageRole` | What the message is: a system prompt, a user message, a message from the LLM, a summary, or an internal message.<br />See [AiMessageRole](../../../ai-integration/ai-agents/reading-conversation-history.mdx#enums). |
+| **Role** | `AiMessageRole` | What the message is: a system prompt, a user message, a message from the LLM, a summary, or an internal message.<br />See [AiMessageRole](../../../ai-integration/ai-agents/reading-conversation-history.mdx#conversation-history-enums). |
 | **Content** | `string` | The text content. When the stored message has several text parts, they are joined with line breaks. `null` for a message from the LLM that only initiated tool calls. |
 | **Attachments** | `List<string>` | Names of the attachments associated with this message, if any. |
 | **Timestamp** | `DateTime` | The time the message was recorded (UTC). Unique within the conversation and rising in message order, so a `Timestamp` value can be used to page through the conversation. |
@@ -437,7 +438,7 @@ class AiToolCallResult
 
 <ContentFrame>
 
-### Enums
+### Conversation history enums
 
 <Tabs groupId='conversation-history-enums'>
 <TabItem value="AiConversationDetailLevel" label="AiConversationDetailLevel">
