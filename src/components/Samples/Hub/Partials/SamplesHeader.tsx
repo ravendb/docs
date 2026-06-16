@@ -16,7 +16,7 @@ export default function SamplesHeader() {
         >
             <div className="z-1">
                 <Heading as="h1" className="!mb-0">
-                    Explore Samples
+                    Explore RavenDB Code Samples
                 </Heading>
                 <p className="!mb-0">Production-ready code samples, architecture patterns, and starter kits.</p>
             </div>
