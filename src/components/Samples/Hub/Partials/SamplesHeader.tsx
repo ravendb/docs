@@ -16,10 +16,10 @@ export default function SamplesHeader() {
         >
             <div className="z-1">
                 <Heading as="h1" className="!mb-0">
-                    Explore RavenDB Code Samples
+                    Explore RavenDB Sample Apps
                 </Heading>
                 <p className="!mb-0">
-                    Production-ready, fully runnable applications built with RavenDB — each pairs a working codebase
+                    Production-ready, fully runnable applications built with RavenDB. Each one pairs a working codebase
                     with a documented architecture and a step-by-step setup guide. Clone a repository to explore
                     real-world patterns like vector search, AI integration, and ETL, or use one as a starting point for
                     your own project.
