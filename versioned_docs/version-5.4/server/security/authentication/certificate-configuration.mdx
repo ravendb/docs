@@ -246,8 +246,8 @@ In all secure configurations, the `ServerUrl` must contain the same domain name 
 
 8. To set up as an OS service, run PowerShell as an administrator and navigate to the root `Server` folder where the `settings.json` is located.  
    Copy and paste the following command `.\rvn.exe windows-service register --service-name RavenDB`.
-   <Admonition type="note" title=""> It will set up the cluster as an OS service, which [will launch the server automatically](../../../start/installation/running-as-service.mdx) every time the machine starts, 
-    but will fail to start if the Local Service account doesn't have access to all the required resources.  </Admonition>
+   It will set up the cluster as an OS service, which [will launch the server automatically](../../../start/installation/running-as-service.mdx) every time the machine starts, 
+    but will fail to start if the Local Service account doesn't have access to all the required resources.
    - Open the "Services" manager for Windows. Make sure that the "RavenDB" service is there and that the Startup Type is "Automatic".  
 
 9. Now the service should run whenever the machine starts and the Studio should be accessible by the user with the client certificate.  
