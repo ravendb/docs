@@ -127,6 +127,8 @@ ACTION=="add|change", KERNEL=="nvme*", ATTR{queue/read_ahead_kb}="32"
 </CodeBlock>
 </TabItem>
 
+This rule matches every `sd*` and `nvme*` device on the host. If other workloads share the machine, scope it to the disks RavenDB actually uses (find the device behind a path with `df <path>` or `lsblk`) so you don't retune unrelated disks.
+
 <Admonition type="note" title="When to tune read_ahead_kb">
 The common 128 KB default works well for the majority of deployments - it is what RavenDB instances typically run with - and a lower value is worth pursuing only when heavy random-access load (many databases or large datasets on one host) shows up as high I/O wait or memory pressure. There is no universally correct `read_ahead_kb`. It depends on your disk, workload, and available memory, so test candidate values in your own environment and verify their effect on request/response times under real load before committing to one. RavenDB raises a startup warning when a block device's `read_ahead_kb` is above [`Storage.ReadAheadKbAlertThresholdInKb`](../../server/configuration/storage-configuration.mdx#storagereadaheadkbalertthresholdinkb) (default 128 KB), since an unusually high read-ahead causes the I/O amplification described above.
 </Admonition>
