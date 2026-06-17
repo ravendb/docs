@@ -185,10 +185,10 @@ if ($LASTEXITCODE) { throw 'Docusaurus build failed' }
 $BuildDir = [IO.Path]::Combine($PSScriptRoot, '..', 'build')
 if (-not (Test-Path $BuildDir)) { throw "Build folder not produced ($BuildDir)" }
 
-# Warn (don't block) if the build emitted any empty (0-byte) asset.
-$empty = Get-ChildItem $BuildDir -Recurse -File | Where-Object { $_.Length -eq 0 -and $_.Name -ne '.nojekyll' }
+# Warn on empty (0-byte) assets under build/assets/ (static/ files may be 0 bytes on purpose).
+$empty = Get-ChildItem (Join-Path $BuildDir 'assets') -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -eq 0 }
 if ($empty) {
-    Write-Warning "Build produced $($empty.Count) empty file(s): $(($empty | Select-Object -First 20 -ExpandProperty Name) -join ', ')"
+    Write-Warning "Build produced $($empty.Count) empty (0-byte) asset(s) under assets/, e.g.: $(($empty | Select-Object -First 10 -ExpandProperty Name) -join ', ')"
 }
 
 if ($DryRun) {
@@ -199,7 +199,7 @@ if ($DryRun) {
 
     # Phase 1 — upload new hashed assets without --delete so old bundles remain
     # on S3 while CloudFront still serves the old index.html from edge cache
-    # cached aggresively 
+    # cached aggresively
     Write-Host "  [1/4] Upload: hashed assets (assets/*)" -ForegroundColor Gray
     aws s3 sync $BuildDir "s3://$S3BucketName/" --only-show-errors `
         --exclude "*" `
