@@ -29,7 +29,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   backup **can** be created for a sharded database and restored into either 
   a sharded or a non-sharded database.  
 
-* A [snapshot](../../backup/overview#snapshot-image) **cannot** be created for a sharded database  
+* A [snapshot](../../server/ongoing-tasks/backup-overview.mdx#snapshot) **cannot** be created for a sharded database  
   (and sharded databases are automatically excluded from server-wide **snapshot** backups).    
 
 * A manual [one-time](../../studio/database/tasks/backup-task.mdx#manually-creating-one-time-backups) 
@@ -178,7 +178,7 @@ with just the difference between the current database data and the last backed-u
 
 ## Server-Wide Backup
 
-[Server-wide backup](../../backup/overview#server-wide-backup) creates and runs the required backup tasks
+[Server-wide backup](../../studio/server/server-wide-backup.mdx) creates and runs the required backup tasks
 for the databases hosted by the cluster at the scheduled time.
     
 * A server-wide **logical** backup creates backups for both non-sharded and sharded databases.  

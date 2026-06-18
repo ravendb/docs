@@ -21,17 +21,17 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * Shards can store backup files **locally** (each shard using its own node machine storage)  
   and/or **remotely** (all shards sending backup files to a common remote destination like an AWS S3 bucket).  
 
-* Both [Full](../../backup/overview#full-backup) and [Incremental](../../backup/overview#incremental-backup) 
+* Both [Full](../../backup/overview.mdx#full-backup) and [Incremental](../../backup/overview#incremental-backup) 
   backups can be created for a sharded database.  
 
-* A [logical](../../backup/overview#logical-backup) backup **can** be:  
+* A [logical](../../backup/overview.mdx#logical-backup) backup **can** be:  
    - Created for a sharded database.  
    - Restored into either a sharded or a non-sharded database.  
 
-* A [snapshot](../../backup/overview#snapshot-image) **cannot** be created for a sharded database  
+* A [snapshot](../../backup/overview.mdx#snapshot-image) **cannot** be created for a sharded database  
   (and sharded databases are automatically excluded from server-wide **snapshot** backups).    
 
-* A [one-time](../../backup/create/one-time-backup) backup **can** be created for a sharded database.  
+* A [one-time](../../backup/create/one-time-backup.mdx) backup **can** be created for a sharded database.  
 
 * In this article:  
    * [Sharded and non-sharded backup tasks](../../sharding/backup-and-restore/backup.mdx#sharded-and-non-sharded-backup-tasks)  
