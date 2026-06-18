@@ -232,6 +232,7 @@ Learn how to handle this issue [here](../../server/security/authentication/solve
 * [Getting the full error using PowerShell](../../server/security/common-errors-and-faq.mdx#getting-the-full-error-using-powershell)  
 * [Not using TLS](../../server/security/common-errors-and-faq.mdx#not-using-tls)  
 * [How to regain access to a server when you have physical access but no client certificate](../../server/security/common-errors-and-faq.mdx#how-to-regain-access-to-a-server-when-you-have-physical-access-but-no-client-certificate)  
+* ["Could not create SSL/TLS secure channel" error under an IIS webhost](../../server/security/common-errors-and-faq.mdx#could-not-create-ssltls-secure-channel-error-under-an-iis-webhost)  
 * [Certificate is not recognized when setting up on Azure App Services](../../server/security/common-errors-and-faq.mdx#certificate-is-not-recognized-when-setting-up-on-azure-app-services)  
 * [Automatic cluster certificate renewal following migration to 4.2](../../server/security/common-errors-and-faq.mdx#automatic-cluster-certificate-renewal-following-migration-to-42)  
 ### Authentication Error Occurred using Edge
@@ -455,6 +456,41 @@ Use either the [generateClientCert](../../server/administration/cli.mdx#generate
 
 Another way to gain access for an existing certificate is to add the [Security.WellKnownCertificates.Admin](../../server/configuration/security-configuration.mdx#securitywellknowncertificatesadmin) configuration to `settings.json` with your existing certificate's thumbprint.
 In this case, a server restart is required.
+### "Could not create SSL/TLS secure channel" error under an IIS webhost
+
+Custom code that connects to RavenDB from an IIS-hosted application can fail with the
+following error, even though the same code works when run directly (for example, from a
+unit test):
+
+```
+The request was aborted: Could not create SSL/TLS secure channel.
+```
+
+This message is generic and does not reveal the real cause.  
+The underlying error is `Keyset does not exist`: the IIS worker process runs under a
+restricted identity (`IIS_IUSRS`, or the application pool identity `IIS AppPool\<PoolName>`)
+that has no read access to the private key of the client certificate.  
+Run directly, the same code loads the certificate under your own user account, which does
+have that access.
+
+To fix this, grant the IIS identity read access to the certificate's private key:
+
+1. Open the Local Computer certificate store by running `certlm.msc` as an administrator.
+2. Under `Personal` > `Certificates`, right-click your client certificate and select
+   `All Tasks` > `Manage Private Keys`.
+3. Add the IIS identity (`IIS_IUSRS`, or `IIS AppPool\<PoolName>` when the pool uses its own
+   identity) and grant it `Read` permission.
+
+<Admonition type="info" title="">
+
+Microsoft documents the same `Manage Private Keys` dialog, in the context of a SQL Server
+service account, in [Encrypt connections to SQL Server by importing a certificate](https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/configure-sql-server-encryption).
+
+As an alternative, you can load the certificate into the machine key store programmatically
+with the `MachineKeySet` flag, as shown for [Azure App Services](../../server/security/common-errors-and-faq.mdx#certificate-is-not-recognized-when-setting-up-on-azure-app-services).
+
+</Admonition>
+
 ### Certificate is not recognized when setting up on Azure App Services
 
 You may have gotten an error message like:
