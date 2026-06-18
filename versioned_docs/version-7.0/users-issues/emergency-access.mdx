@@ -21,6 +21,10 @@ If your RavenDB instance connection is lost in the following situations:
 There's a way to restore the connectivity, but it requires a manual intervention. 
 In this guide we will describe how to do it using `rvn admin-channel`.
 
+<Admonition type="note" title="">
+If the server certificate has expired, see [recover from an expired certificate](../server/security/authentication/recover-from-expired-certificate.mdx).
+</Admonition>
+
 ### 1. Create a new .pfx certificate
 
 You'll need to generate a new client certificate. Either:
