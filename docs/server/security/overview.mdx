@@ -47,6 +47,21 @@ In Studio, administrators can use the [Certificates View](../../server/security/
 
 
 
+## Single Sign-On (SSO)
+
+RavenDB can accept users authenticated by GitHub, Google, Microsoft/Entra ID, or Windows/Kerberos through a
+dedicated SSO reverse-proxy application. The cluster maps each SSO identity to a security clearance and per-database
+permissions, without distributing X.509 client certificates per user.
+
+**Read more:**
+
+- [SSO Overview](../../server/security/sso/overview.mdx)
+- [Deploying the SSO Application](../../server/security/sso/deploying-sso-app.mdx)
+- [SSO Configuration Reference](../../server/security/sso/sso-configuration.mdx)
+- [Configuring RavenDB for SSO](../../server/security/sso/configuring-ravendb-for-sso.mdx)
+
+
+
 ## Authorization
 
 Authorization in RavenDB is based on the same X.509 certificates.

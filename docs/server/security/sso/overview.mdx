@@ -1,0 +1,71 @@
+---
+title: "SSO: Overview"
+sidebar_label: Overview
+description: "Authenticate RavenDB users through GitHub, Google, Microsoft/Entra ID, or Kerberos/AD via the RavenDB SSO reverse proxy."
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+
+# SSO: Overview
+
+RavenDB SSO lets users access a cluster using their existing identity provider — GitHub, Google,
+Microsoft/Entra ID, or Windows/Kerberos — instead of distributing X.509 client certificates per user.
+Authentication is handled by a dedicated **SSO application** (an authenticating reverse proxy) that sits
+in front of one or more RavenDB clusters. RavenDB itself only needs to know which SSO servers it trusts
+and how to map an SSO identity to a security clearance and database permissions.
+
+![SSO login page](./assets/login-page-all-providers.png)
+
+## Components
+
+| Component | Role |
+|---|---|
+| **SSO application** | Nginx + .NET 10 sidecar packaged as `ravendb/sso`. Terminates TLS, runs OAuth2 / Kerberos, issues a per-user ECDSA client certificate, and proxies to RavenDB over mTLS. |
+| **`oauth2-proxy`** | Bundled inside the SSO image. Handles the OAuth2 dance for GitHub, Google, and Microsoft. |
+| **RavenDB cluster** | Trusts the SSO server's certificate and resolves the SSO identity (embedded in the per-user cert) to a registered SSO user entry. |
+
+## Authentication flow
+
+1. The browser hits the SSO URL — for example `https://my-cluster.sso.example.com/studio/`.
+2. Nginx checks for a valid JWT cookie. If none is present, it redirects to upstream auth:
+   - `/auth` — Kerberos/AD (`auth_gss`), or
+   - `/oauth` — `oauth2-proxy` for GitHub, Google, or Microsoft.
+3. After upstream auth succeeds, Nginx forwards the authenticated username to the .NET sidecar at `/auth`
+   via the `X-Auth-User` header.
+4. The sidecar generates a unique ECDSA client certificate for that user (cached by thumbprint) and issues
+   a JWT cookie containing the certificate and key paths.
+5. Nginx validates the JWT and uses the referenced certificate to open an mTLS connection to RavenDB.
+6. RavenDB sees a client certificate whose subject carries an **SSO identity extension**
+   (`Provider`, `Domain`, `Identifier` — `Domain` is only populated when `Provider = Windows`, where it
+   carries the Kerberos realm). It looks up a matching **SSO user entry** in the cluster and applies that
+   entry's security clearance and database permissions.
+
+## Trust model
+
+Two new certificate kinds are stored in the cluster:
+
+- **`Usage = SsoServer`** — the public certificate of a trusted SSO deployment. Registered once per SSO server.
+- **`Usage = SsoClient`** — an **SSO user entry**: one or more `SsoIdentifier` tuples
+  (`Provider` + `Domain` + `Identifier`, where `Domain` is only used for Windows/Kerberos) plus the
+  RavenDB permissions to grant. Each entry either:
+  - pins to specific SSO servers via `SsoServerPublicKeyPinningHashes`, or
+  - sets `AllowAnySsoServer = true` to accept the identity from any trusted SSO server.
+
+This means a single SSO user entry can grant the same RavenDB permissions to a user who logs in through
+multiple SSO deployments (production and staging, for example) by listing several pinning hashes.
+
+## Licensing
+
+<Admonition type="warning" title="Commercial feature">
+SSO is gated by the RavenDB license. Both registering an SSO server certificate and creating an SSO user
+entry will fail with a license error if your license does not permit SSO. Registering an SSO server
+certificate also requires the **Cluster Admin** security clearance — creating SSO user entries only requires
+**Operator** clearance.
+</Admonition>
+
+## Next steps
+
+- [Deploying the SSO application](./deploying-sso-app.mdx) — interactive `install.sh` / `install.ps1` installer (recommended), plus the equivalent manual Docker Compose setup.
+- [SSO application configuration](./sso-configuration.mdx) — full reference of `settings.json` keys and `RAVENDBSSO_*` environment variables.
+- [Configuring RavenDB for SSO](./configuring-ravendb-for-sso.mdx) — registering SSO server certificates and SSO user entries in your cluster.

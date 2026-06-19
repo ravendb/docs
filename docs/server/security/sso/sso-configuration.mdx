@@ -1,0 +1,149 @@
+---
+title: "SSO: Configuration Reference"
+sidebar_label: Configuration Reference
+description: "Full reference of settings.json keys and RAVENDBSSO_* environment variables consumed by the RavenDB SSO application."
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# SSO: Configuration Reference
+
+The SSO application reads its configuration from two sources, layered in this order (later sources override
+earlier ones):
+
+1. `config/settings.json` (optional).
+2. Environment variables prefixed with `RAVENDBSSO_` (or `RAVENDBSSO.`).
+
+In addition, the bundled `oauth2-proxy` and `certbot` containers read their own environment variables.
+
+## Environment-variable convention
+
+Every SSO setting can be expressed as a `RAVENDBSSO_*` environment variable. The mapping rules are:
+
+- Strip the `RAVENDBSSO_` (or `RAVENDBSSO.`) prefix.
+- Each remaining underscore becomes a `:` to denote a nested configuration key.
+- If the value parses as a JSON object or array, it is automatically flattened into nested keys.
+
+For example, `RAVENDBSSO_Clusters` containing a JSON array is equivalent to a top-level `Clusters` entry in
+`settings.json`.
+
+## SSO application settings
+
+These map to properties on `SsoSettings`:
+
+| Setting | Environment variable | Default | Required | Description |
+|---|---|---|---|---|
+| `Url` | `RAVENDBSSO_Url` | — | **Yes** | Public SSO URL, e.g. `https://sso.example.com`. Used as the CORS origin and as the basis for the host log messages. |
+| `CertificatePath` | `RAVENDBSSO_CertificatePath` | _falls back to Let's Encrypt certs in `./certs`_ | No | Path to the TLS certificate (PEM, full chain). |
+| `CertificateKeyPath` | `RAVENDBSSO_CertificateKeyPath` | _falls back to Let's Encrypt certs in `./certs`_ | No | Path to the TLS private key. |
+| `CertificateFlags` | `RAVENDBSSO_CertificateFlags` | — | No | `X509KeyStorageFlags` to use when loading the certificate. |
+| `Clusters` | `RAVENDBSSO_Clusters` | `[]` | **At least one** | List of clusters to proxy. Each entry: `{ ClusterUrls: ["https://a.host", ...], ClusterAlias: "alias" }`. Each cluster is exposed at `<alias>.<sso-domain>`. |
+| `UserCertsDir` | `RAVENDBSSO_UserCertsDir` | `/app/users-certs` | No | Directory where per-user ECDSA client certificates are written. |
+| `JwtKeyPath` | `RAVENDBSSO_JwtKeyPath` | `/app/certs/jwt/jwt.key` | No | Path to the JWT signing (private) key. |
+| `JwtPubPath` | `RAVENDBSSO_JwtPubPath` | `/app/certs/jwt/jwt.pub` | No | Path to the JWT verification (public) key. |
+| `InternalAuthSecret` | `RAVENDBSSO_InternalAuthSecret` | _injected by `start.sh`_ | No | Shared secret that Nginx attaches as the `X-Internal-Auth` header on internal mint/validate endpoints. When set, the sidecar rejects requests that don't present it; left empty in local/dev/test runs without Nginx, in which case the check is skipped. Generated automatically inside the container — you don't normally set this yourself. |
+
+### Defining clusters
+
+<Tabs>
+<TabItem value="env" label="Environment variable">
+
+```bash
+# single cluster
+RAVENDBSSO_Clusters=[{"ClusterUrls":["https://a.my-cluster.example.com"],"ClusterAlias":"my-cluster"}]
+
+# multiple clusters
+RAVENDBSSO_Clusters=[{"ClusterUrls":["https://a.prod.example.com"],"ClusterAlias":"prod"},{"ClusterUrls":["https://a.dev.example.com"],"ClusterAlias":"dev"}]
+```
+
+</TabItem>
+<TabItem value="json" label="settings.json">
+
+```json
+{
+  "Clusters": [
+    {
+      "ClusterUrls": ["https://a.my-cluster.example.com"],
+      "ClusterAlias": "my-cluster"
+    }
+  ]
+}
+```
+
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Path restrictions">
+On Linux the SSO process rejects `JwtKeyPath`, `JwtPubPath`, `UserCertsDir`, `CertificatePath`, and
+`CertificateKeyPath` if they resolve outside `/app` (the SSO image's working tree) or `/etc/nginx`. This
+prevents environment-variable path injection — keep your customized paths under those directories.
+</Admonition>
+
+### CLI flags
+
+| Flag | Purpose |
+|---|---|
+| `--generate-keys` | Generate the JWT keypair at `JwtKeyPath` / `JwtPubPath` and exit. Used once during initial setup or when rotating keys. |
+
+## OAuth2 / `oauth2-proxy` environment variables
+
+| Variable | Required | Description |
+|---|---|---|
+| `OAUTH2_PROXY_COOKIE_SECRET` | **Yes** | Cookie-encryption secret. **16, 24, or 32 characters** (or a 32-byte base64 value for the single-container quick-start). Generate with `openssl rand -hex 16` or `openssl rand -base64 32`. |
+| `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | One of three providers | GitHub OAuth app credentials. |
+| `GITHUB_ALLOWED_ORGANIZATIONS` | No | Comma-separated GitHub org slugs (e.g. `my-org,another-org`). Users must be public org members, or the OAuth app must be approved via GitHub's *OAuth App Access Policy*. Empty = allow all. |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | One of three providers | Google OAuth credentials. |
+| `GOOGLE_ALLOWED_EMAIL_DOMAINS` | No | Comma-separated permitted email domains (e.g. `example.com,corp.example.com`). Empty = allow all. |
+| `MICROSOFT_CLIENT_ID` / `MICROSOFT_CLIENT_SECRET` | One of three providers | Azure AD / Entra ID app credentials. The SSO image uses oauth2-proxy's `entra-id` provider. |
+| `MICROSOFT_TENANT` | One of three providers | A tenant GUID for **single-tenant** apps, or `common` / `organizations` / `consumers` for **multi-tenant**. `common` accepts any organization plus personal Microsoft accounts; `organizations` accepts any org but excludes personal accounts. Multi-tenant values automatically disable OIDC issuer verification (tokens come from many issuers). The Azure app registration's *Supported account types* must match, and `email` must be added as an optional ID-token claim so organizational accounts emit it (it becomes the username). |
+| `MICROSOFT_ALLOWED_TENANTS` | No | Optional tenant allowlist for multi-tenant apps — comma-separated tenant GUIDs. Empty = allow all. The personal-accounts tenant id is `9188040d-6c67-4c5b-b112-36a304b66dad`. |
+| `MICROSOFT_ALLOWED_EMAIL_DOMAINS` | No | Comma-separated permitted email domains for Microsoft sign-in. With a multi-tenant `MICROSOFT_TENANT` and an empty allowlist, **any organization's users can log in** — combine this with `MICROSOFT_ALLOWED_TENANTS` to scope access. |
+
+At least one OAuth provider must be configured unless you exclusively use Kerberos (see
+[Deploying the SSO Application](./deploying-sso-app.mdx#kerberos--active-directory)).
+
+## Certbot environment variables (Let's Encrypt example)
+
+These are read by the bundled `certbot/dns-route53` container in `Raven.Sso/example/docker-compose.yml`.
+
+| Variable | Required | Description |
+|---|---|---|
+| `SSO_DOMAIN` | **Yes** | Must resolve to the same host as `RAVENDBSSO_Url`. |
+| `CERT_EMAIL` | **Yes** | Email registered with Let's Encrypt. |
+| `AWS_ACCESS_KEY_ID` | **Yes** | AWS access key for the Route53 DNS-01 challenge. |
+| `AWS_SECRET_ACCESS_KEY` | **Yes** | Matching secret key. |
+| `AWS_SESSION_TOKEN` | No | Only for temporary AWS credentials. |
+| `AWS_REGION` | No | Default `us-east-1`. |
+| `LETSENCRYPT_STAGING` | No | Set to `true` to use Let's Encrypt's staging issuer for testing (avoids production rate limits). |
+
+## Putting it together
+
+A minimal `sso.env` for a production deployment using Google and Microsoft sign-in:
+
+```bash
+RAVENDBSSO_Url=https://sso.example.com
+RAVENDBSSO_Clusters=[{"ClusterUrls":["https://a.my-cluster.example.com"],"ClusterAlias":"my-cluster"}]
+
+OAUTH2_PROXY_COOKIE_SECRET=$(openssl rand -hex 16)
+
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+GOOGLE_ALLOWED_EMAIL_DOMAINS=example.com
+
+MICROSOFT_CLIENT_ID=...
+MICROSOFT_CLIENT_SECRET=...
+MICROSOFT_TENANT=common
+MICROSOFT_ALLOWED_EMAIL_DOMAINS=example.com
+```
+
+And the matching `certbot.env`:
+
+```bash
+SSO_DOMAIN=https://sso.example.com
+CERT_EMAIL=ops@example.com
+AWS_ACCESS_KEY_ID=...
+AWS_SECRET_ACCESS_KEY=...
+```
