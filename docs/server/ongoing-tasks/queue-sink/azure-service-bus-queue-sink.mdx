@@ -32,9 +32,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
   using one of three authentication methods:
    * a SAS (Shared Access Signature) connection string
    * Entra ID application credentials
-   * a managed identity
+   * passwordless authentication (using a managed identity)
 
 * This page explains how to define an Azure Service Bus sink task using the client API.  
+  To configure this task in Studio, see the
+  [Azure Service Bus Queue Sink Task](../../../studio/database/tasks/ongoing-tasks/azure-service-bus-queue-sink.mdx) page.  
   To learn about RavenDB queue sinks in general, see the
   [Queue Sink overview](../../../server/ongoing-tasks/queue-sink/overview.mdx).
 
@@ -217,7 +219,7 @@ Create a `QueueConnectionString` object configured for Azure Service Bus, and pa
 `PutConnectionStringOperation`.
 
 An Azure Service Bus connection authenticates in one of three modes: a SAS connection string,
-Entra ID application credentials, or a managed identity.  
+Entra ID application credentials, or passwordless authentication.  
 Set exactly one of them in the connection string's `AzureServiceBusConnectionSettings` object:
 
 <Tabs>
@@ -266,7 +268,7 @@ store.Maintenance.Send(
 ```
 
 </TabItem>
-<TabItem value="passwordless" label="Managed identity">
+<TabItem value="passwordless" label="Passwordless">
 
 ```csharp
 var connectionString = new QueueConnectionString
