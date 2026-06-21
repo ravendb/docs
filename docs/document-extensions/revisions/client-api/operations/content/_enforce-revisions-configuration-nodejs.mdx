@@ -17,6 +17,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * By default, the operation is applied to the [default database](../../../../../client-api/setting-up-default-database.mdx).  
   To operate on a different database, see [switch operations to a different database](../../../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
+    
+* This article explains how to run the operation from the Client API.  
+  To run it from Studio, see [Enforce configuration](../../../../../studio/database/settings/document-revisions.mdx#enforce-configuration) in the Document Revisions settings view.        
 
 * In this article:
   * [Enforce configuration on all collections](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#enforce-configuration-on-all-collections)
@@ -29,9 +32,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="warning" title="Resource consumption">
 
-* A large database may contain many revisions that exceed the current configuration limits.
-  Running this operation can delete many revisions in a single operation and may require substantial server resources.
-  Schedule it accordingly.
+* Large databases may contain many revisions that will be deleted when the current configuration is enforced.  
+  Running the operation can delete them all in a single enforcement run and may require substantial server resources.
+  Schedule it accordingly.    
 
 * On large datasets, use `maxOpsPerSecond` to [throttle the operation](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#throttle-the-operation)
   and reduce its resource consumption.
