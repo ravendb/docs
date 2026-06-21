@@ -252,17 +252,27 @@ private void OnTopologyUpdatedEvent(object sender, TopologyUpdatedEventArgs args
 ```
 <br />
 
-#### Example: act on topology changes
+You can also use this event to rewrite the URLs the client will use: change the `Url` of any
+node in `args.Topology.Nodes`, and the client will route its requests to the new address.  
+This is useful when the node URLs registered in the cluster are not the addresses reachable
+from where the client runs.  
+A common case is a cluster whose nodes use hostnames that resolve only inside the cluster's
+network, while an external client must reach those same nodes through publicly reachable
+hostnames.  
+You can then map each internal hostname to its public counterpart, so the client connects
+through reachable addresses.  
+RavenDB invokes your `OnTopologyUpdated` handler on every topology update, so your URL mapping
+is re-applied to each new topology the client receives.
+
+#### Example: remap node URLs
 
 ```csharp
 void OnTopologyUpdatedEvent(object sender, TopologyUpdatedEventArgs args)
 {
-    var topology = args.Topology;
-    if (topology == null)
-        return;
-    for (var i = 0; i < topology.Nodes.Count; i++)
+    foreach (var node in args.Topology.Nodes)
     {
-        // perform relevant operations on the nodes after the topology was updated
+        // Map each node's internal hostname to one reachable from this client
+        node.Url = node.Url.Replace("internal.example.com", "public.example.com");
     }
 }
 ```
