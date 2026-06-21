@@ -61,7 +61,20 @@ Setting this to _false_ does not prevent you from enabling compression later, af
 
 ## Databases.ConcurrentLoadTimeoutInSec
 
-The time (in seconds) to wait for a database to start loading (and become available) when the system is under load - when many different databases are being loaded concurrently.
+The time (in seconds) that a database waits for a free loading slot before the
+load attempt times out.
+
+RavenDB limits the number of databases that load at the same time
+(set by [Databases.MaxConcurrentLoads](../../server/configuration/database-configuration.mdx#databasesmaxconcurrentloads)).  
+When this limit is reached, each additional database that needs to load waits
+for a slot to free up.  
+This can happen when a burst of requests accesses many idle databases at once.
+
+If no slot frees up within this period, RavenDB raises a warning notification and retries
+the load on the next request that accesses the database.  
+The server keeps running, and the database loads on that next request.  
+Note that if you see this warning regularly, you can raise this value, raise
+`Databases.MaxConcurrentLoads`, or both.
 
 - **Type**: `int`
 - **Default**: `60`
@@ -81,7 +94,9 @@ The interval (in seconds) at which the system checks for idle databases.
 
 ## Databases.MaxConcurrentLoads
 
-Specifies the maximum number of databases that can be loaded concurrently.
+Specifies the maximum number of databases that can be loaded concurrently.  
+If more databases need to load at the same time, each database waits for a free slot
+for the period set by [Databases.ConcurrentLoadTimeoutInSec](../../server/configuration/database-configuration.mdx#databasesconcurrentloadtimeoutinsec).
 
 - **Type**: `int`
 - **Default**: `8`
