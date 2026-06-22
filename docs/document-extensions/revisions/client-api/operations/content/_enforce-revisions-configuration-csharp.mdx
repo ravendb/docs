@@ -60,7 +60,7 @@ var enforceConfigurationOp = new EnforceRevisionsConfigurationOperation();
 Operation operation = store.Operations.Send(enforceConfigurationOp);
 
 // Wait for the operation to complete and get its result
-var result = (EnforceConfigurationResult)operation.WaitForCompletion(TimeSpan.FromSeconds(30));
+var result = operation.WaitForCompletion<EnforceConfigurationResult>(TimeSpan.FromSeconds(30));
 ```
 </TabItem>
 <TabItem value="Async" label="Async">
@@ -73,7 +73,7 @@ var enforceConfigurationOp = new EnforceRevisionsConfigurationOperation();
 Operation operation = await store.Operations.SendAsync(enforceConfigurationOp);
 
 // Wait for the operation to complete and get its result
-var result = (EnforceConfigurationResult)await operation.WaitForCompletionAsync(TimeSpan.FromSeconds(30));
+var result = await operation.WaitForCompletionAsync<EnforceConfigurationResult>(TimeSpan.FromSeconds(30));
 ```
 </TabItem>
 </Tabs>
@@ -239,11 +239,22 @@ public class RevisionsOperationParameters
 | **MaxOpsPerSecond**        | `int?`                                     | Limits the number of documents processed per second.<br/>`null` (default) - no throttling.<br/>Must be greater than `0`, otherwise an `InvalidOperationException` is thrown. |    
 | **Collections**            | `string[]`                                 | The collections the operation applies to.<br/>`null` or empty array - the operation applies to all collections. |
 | **ContinuationParameters** | `RevisionsOperationContinuationParameters` | Optional state used to resume a previous revisions operation.<br/>Populate it from the previous result's `LastProcessedEtags`, `EtagBarriersUsed`, and `NodeTags`. |    
-<br/>
     
-`ContinuationParameters` is only needed when resuming a previous revisions operation.  
-Because etags are node-local, a resumed operation must run on the same database node that produced the continuation values.
-Use the `NodeTags` returned in the previous result to route the resumed operation to the correct node.    
+<ContentFrame>
+    
+`ContinuationParameters` is only needed when resuming an **interrupted** run (e.g. server restart, timeout, or a cancelled long-running operation).
+A run that completed successfully does not need to be resumed.    
+
+Because an interrupted run does not return a final result,  
+capture the continuation values from the operation's **progress** while it runs:   
+  * Subscribe to `Operation.OnProgressChanged` and keep the latest `EnforceConfigurationResult` value.  
+  * `EnforceConfigurationResult` is reported as progress and carries `LastProcessedEtags`, `EtagBarriersUsed`, and `NodeTags`.    
+
+Because etags are node-local, a resumed operation must run on the same node that produced them.  
+Keep the `NodeTags` values from the progress result;  
+they identify the node that produced the continuation values, and the server validates them on resume.
+    
+</ContentFrame>
 
 ```csharp
 public class RevisionsOperationContinuationParameters
