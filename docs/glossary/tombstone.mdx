@@ -1,41 +1,67 @@
 ---
 title: "Glossary: Tombstones"
-description: "Definition of RavenDB tombstones — markers for deleted documents, attachments, and revisions used to propagate deletions across cluster nodes."
+description: "Definition of RavenDB tombstones, markers for deleted documents, attachments, and revisions used to propagate deletions across cluster nodes."
 sidebar_label: Tombstone
 sidebar_position: 4
 ---
 
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
 
 # Glossary: Tombstones
+<Admonition type="note" title="">
 
-When a document is deleted, RavenDB will leave behind a "delete marker" which is called a Tombstone. 
-  
-### Where are They Used?
+* When a document is deleted, RavenDB replaces it with a "delete marker" called a **Tombstone**.
 
-* Replication and ETL - this is needed so delete operations can be replicated to other nodes
-* Indexes use tombstones in order to delete no longer relevant entries that refer to deleted documents
-* Periodic Backup uses tombstones in order to backup "deletions" of documents
+* Keep track of tombstone cleanup using Studio's [Tombstones view](../studio/database/settings/tombstones.mdx).
 
-### Tombstone Cleaning
+* In this article:
+   * [Where are tombstones used?](../glossary/tombstone.mdx#where-are-tombstones-used)
+   * [Tombstone cleanup](../glossary/tombstone.mdx#tombstone-cleanup)
 
-The tombstones are periodically cleaned.  
+</Admonition>
 
-Cleaning will occur only for tombstones that were already processed by the modules where they are used:
+<Panel heading="Where are tombstones used?">
 
-* Replication
-* Indexes
-* ETL 
-* Periodic Backup
+* **Replication and ETL**  
+  [Replication](../server/clustering/replication/replication-overview.mdx) uses tombstones to propagate deletions to other nodes, and [ETL](../server/ongoing-tasks/etl/basics.mdx) uses them to apply those deletions at the ETL destination.
+* **Indexes**  
+  [Indexes](../indexes/what-are-indexes.mdx) use tombstones to delete no-longer-relevant entries that refer to deleted documents.
+* **Periodic backup**  
+  [Periodic backup](../backup/overview.mdx) tasks use tombstones to back up document deletions.
+
+</Panel>
+
+<Panel heading="Tombstone cleanup">
+
+RavenDB removes tombstones automatically through a periodic cleanup.
+
+A tombstone is not removed as soon as its document is deleted, because the processes that
+rely on tombstones may not have handled the deletion yet.  
+Replication, ETL, indexes, and periodic backup each advance through a collection's tombstones
+in [Etag](./etag.mdx) order, processing the deletion that each tombstone represents.  
+Cleanup removes a collection's tombstones only up to the lowest Etag that all of these
+processes have reached, so a tombstone is removed only once every process that uses it has
+handled it.
+
+While a process is disabled, errored, or paused, it stops at its current Etag,
+so the tombstones it has not yet processed cannot be cleaned up.  
+This can be tolerated when the interruption is short, but a process left disabled lets tombstones
+accumulate and consume disk space.  
+For example, a periodic backup task that is disabled rather than deleted keeps holding every
+tombstone it has not yet backed up.
+
+When the cleanup detects that a process is holding tombstones back, RavenDB raises a
+**Blockage in tombstone deletion** notification that lists the blocking processes and the
+collections they affect.  
+To inspect this state at any time, including how far cleanup can proceed for each collection
+and process, open the [Tombstones view](../studio/database/settings/tombstones.mdx).
 
 <Admonition type="note" title="">
 
-* The tombstone retaining period is configurable with config entry name = 
-  [Tombstones.CleanupIntervalInMin](../server/configuration/tombstone-configuration.mdx)  
-* By default, the configuration value it is 5 minutes.  
+* The interval between tombstone cleanups is configurable using the 
+  [Tombstones.CleanupIntervalInMin](../server/configuration/tombstone-configuration.mdx) configuration key.  
+* By default, `Tombstones.CleanupIntervalInMin` is set to **5 minutes**.  
 </Admonition>
+
+</Panel>
