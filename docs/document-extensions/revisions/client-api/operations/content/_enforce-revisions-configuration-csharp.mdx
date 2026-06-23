@@ -327,11 +327,8 @@ Console.WriteLine($"Removed {finalResult.RemovedRevisions} revisions");
 * Operation progress notifications are delivered through the [Changes API](../../../../../client-api/changes/what-is-changes-api.mdx).   
   `Operation.OnProgressChanged` is the simple way to consume it.     
     
-* Because the handler above is attached after the operation starts,  
-  the earliest progress notifications can be missed.
-    
-* To capture progress from the very beginning, which matters most when you rely on it to resume,  
-  subscribe to operation changes via the Changes API before starting the operation.  
+* Because the handler above is attached after the operation starts, the earliest progress notifications can be missed.
+  To capture progress from the very beginning, subscribe to operation changes via the Changes API before starting the operation.
   Learn more in [How to subscribe to operation changes](../../../../../client-api/changes/how-to-subscribe-to-operation-changes.mdx).    
 
 </Admonition>    
