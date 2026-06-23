@@ -79,6 +79,10 @@ Your test class like `BasicTest` should be inheriting `RavenTestDriver` from `Ra
 #### Step 2: Creating a test case equipped with RavenTestDriver
 
 ```csharp
+using Raven.TestDriver;
+using Raven.Client.Documents;
+using Xunit;
+
 public class BasicTest : RavenTestDriver
 {
     [Fact]
@@ -132,6 +136,16 @@ class BasicTest : RavenTestDriver
 ```
 
 ### 3. Using Test Driver to get database instance
+
+Before writing your first test, define the entity class you want to store:
+
+```csharp
+public class Contractor
+{
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+}
+```
 
 Now, you can write new tests or replace mocks in existing tests with real database instances. Your [document store](/7.2/client-api/what-is-a-document-store) *IDocumentStore* is available by calling the GetDocumentStore() method. It's the one from *RavenDB.Client* NuGet package, our .NET database client with powerful API. Interact with the docs and other entities in your database instance, like in the .NET C# client.
 
@@ -316,6 +330,4 @@ The framework 'Microsoft.AspNetCore.App', version '5.0.13' (arm64) was not found
 
 ### Conclusion
 
-Integrating RavenDB into your .NET integration tests using the *RavenDB.TestDriver* package offers a convenient way to move beyond mocking and interact with a real database instance. By following the steps outlined in this guide, you can seamlessly incorporate RavenDB into your testing workflow, leading to more robust and reliable tests.
-
-The ability to work with real database instances provides a more accurate representation of your application's behavior in a production environment, ultimately improving the quality of your software. Embrace the power of real database testing with RavenDB.TestDriver and elevate your testing practices to new heights.
+The *RavenDB.TestDriver* package lets you run tests against a real in-memory RavenDB instance with minimal setup. You get isolated databases per test, automatic cleanup, and the same client API you use in production, so your tests reflect actual database behavior rather than mock assumptions.
