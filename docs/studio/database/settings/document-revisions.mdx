@@ -1,6 +1,6 @@
 ---
 title: "Document Revisions"
-sidebar_label: Document Revisions
+sidebar_label: "Document Revisions"
 description: "Configure document revision policies in RavenDB Studio with per-collection settings for retention limits, age, and purge behavior."
 sidebar_position: 5
 ---
@@ -11,15 +11,16 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-# Document Revisions
 <Admonition type="note" title="">
  
 * Revisions configuration settings can be managed from the **Document Revisions** view.  
 
 * Learn more about revisions [here](../../../document-extensions/revisions/overview.mdx).
 
-* In this page:
+* In this article:
   * [Document revisions view](../../../studio/database/settings/document-revisions.mdx#document-revisions-view)  
   * [Revisions configuration](../../../studio/database/settings/document-revisions.mdx#revisions-configuration)  
   * [Define default configuration](../../../studio/database/settings/document-revisions.mdx#define-default-configuration)  
@@ -28,9 +29,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
      * [Conflicting documents example](../../../studio/database/settings/document-revisions.mdx#conflicting-documents-example)  
   * [Enforce configuration](../../../studio/database/settings/document-revisions.mdx#enforce-configuration)  
 
-
 </Admonition>
-## Document revisions view
+
+<Panel heading="Document revisions view">
 
 ![Document Revisions View](./assets/document-revisions-view.png)
 
@@ -70,13 +71,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
 8. **The defined Revisions configuration**  
    Read more [below](../../../studio/database/settings/document-revisions.mdx#revisions-configuration).  
 
-
-
-## Revisions configuration
+</Panel>    
+<Panel heading="Revisions configuration">    
 
 * The Revisions configuration can include:  
-  * __Default configuration__ - applies to all document collections.  
-  * __Collection-specific configurations__ - override the default settings for these collections.  
+  * **Default configuration** - applies to all document collections.  
+  * **Collection-specific configurations** - override the default settings for these collections.  
 
 * When no default configuration or collection-specific configurations are defined and enabled,  
   no revisions will be created for any document.
@@ -98,9 +98,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
     * The Conflicting Document Defaults configuration cannot be removed.  
     * You can [modify](../../../studio/database/settings/document-revisions.mdx#edit-conflicting-document-defaults) this configuration,  
       or disable it if not interested in tracking document conflicts using revisions.  
-    * When "Document Defaults configuration" is defined, it __overrides__ these conflict defaults.  
+    * When "Document Defaults configuration" is defined, it **overrides** these conflict defaults.  
     * When a "Collection-specific configuration" is defined,  
-      it also __overrides__ these conflict defaults for the collection defined.  
+      it also **overrides** these conflict defaults for the collection defined.  
 
 3. **Collections**  
    These are optional collection-specific configurations whose settings override the Document Defaults  
@@ -118,9 +118,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
     * **Edit** - Click to modify the configuration.  
     * **Remove** - Click to remove the configuration.  
 
-
-
-## Define default configuration
+</Panel>    
+<Panel heading="Define default configuration">     
 
 ![Define Default Settings](./assets/define-default-settings.png)
 
@@ -141,6 +140,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
        <br/>
        ![Maximum Number of Revisions to Purge](./assets/maximum-revisions-to-purge.png)   
        Enable to limit the number of revisions that RavenDB is allowed to purge per document modification.  
+
        <Admonition type="info" title="">
        This will be the maximum number of revisions that RavenDB will purge per document modification,  
        even if the number of revisions that pend purging is greater.  
@@ -153,19 +153,19 @@ import LanguageContent from "@site/src/components/LanguageContent";
    Enable to set a revisions age limit.  
    Revisions older than the defined retention time will be purged when their parent document is modified.  
 
-   * Enabling the age limit setting will also display the __Set # of revisions to delete upon document update__   
+   * Enabling the age limit setting will also display the **Set # of revisions to delete upon document update**   
      (see above).  
    
 5. Click **OK** to keep these default settings, or **Cancel**.  
    Confirming will add the new settings to the revisions configuration **Defaults** section:  
    ![Defined Default Settings](./assets/defined-default-settings.png)
-   <Admonition type="info" title="">
-   Click __Save__ when done.
+
+   <Admonition type="info" title="">       
+   Click **Save** when done.       
    </Admonition>
 
-
-
-## Define collection-specific configuration
+</Panel>    
+<Panel heading="Define collection-specific configuration">   
 
 ![Define collection-specific configurations](./assets/define-collection-specific-configuration.png)
 
@@ -181,19 +181,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
    These options are similar to those explained above for the [default configuration](../../../studio/database/settings/document-revisions.mdx#define-default-configuration),  
    the only difference is the configuration scope.  
 
-4. Click __OK__ to keep the configuration, or __Cancel__.  
+4. Click **OK** to keep the configuration, or **Cancel**.  
    Confirming will add the new configuration to the **Collections** section:  
    ![Defined Configuration](./assets/defined-collection-specific-configuration.png)  
    <Admonition type="info" title="">
-   Click __Save__ when done.
+   Click **Save** when done.
    </Admonition>
-
-
 
 <a id="editing-the-conflicting-document-defaults"/>
 ## Edit conflicting document defaults
 
-* Click the __Edit__ button to edit the default configuration for conflicting documents.  
+* Click the **Edit** button to edit the default configuration for conflicting documents.  
 
 ![Conflicting Document Defaults](./assets/conflicting-document-defaults.png)
 
@@ -201,7 +199,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * The settings options are similar to those explained above for the [default configuration](../../../studio/database/settings/document-revisions.mdx#define-default-configuration).   
   
-* Note: the __Limit # of revisions to keep by age__ value is set to `45 Days` by default.  
+* Note: the **Limit # of revisions to keep by age** value is set to `45 Days` by default.  
   This means that revisions created for conflicting documents will start to be purged after 45 days,  
   whenever their parent documents are modified.  
 
@@ -223,9 +221,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * To see these revisions, open the document's [Revisions tab](../../../document-extensions/revisions/overview.mdx#how-it-works).  
   The revision state is indicated by:  
-    * A red __title__ at the top (i.e. "Conflict revision" or "Resolved revision").  
-    * An __icon__ next to the revision's creation time in the right Properties pane.  
-    * A __flag__ in the revision's `@flags` metadata property (i.e. "Conflicted" or "Resolved").  
+    * A red **title** at the top (i.e. "Conflict revision" or "Resolved revision").  
+    * An **icon** next to the revision's creation time in the right Properties pane.  
+    * A **flag** in the revision's `@flags` metadata property (i.e. "Conflicted" or "Resolved").  
 
 </Admonition>
 
@@ -235,44 +233,84 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ![3. Conflict Resolved](./assets/conflict-revisions-3.png)
 
+</Panel>    
+<Panel heading="Enforce configuration">   
 
+The revision configuration rules are usually applied to a document's revisions only when the document is modified.   
+Use **Enforce configuration** to apply the current revision configuration rules to existing revisions, without waiting for each document to be modified.  
 
-## Enforce configuration
+---
 
-![Enforce Configuration](./assets/enforce-configuration-1.png)
+### Opening the dialog:  
+In the **Document Revisions** settings view, click **Enforce configuration** (top-right, next to **Revert revisions**).
 
-* The revision configuration rules are usually applied to the revisions of a document when the document is modified.  
-* Executing __Enforce__ will apply the current revision configuration rules on ALL existing revisions for ALL documents at once.  
+![Enforce Configuration - button](./assets/enforce-configuration-1.png)
 
-<Admonition type="note" title="">
+---
 
-__For collections that have a specific revision configuration__:  
+### The Enforce Configuration dialog:
 
-  * The collection-specific configuration will be executed per collection.  
-  * Revisions that pend purging (according to the configuration) will be __deleted__.
-</Admonition>
+![Enforce Configuration - popup](./assets/enforce-configuration-2.png)
 
-<Admonition type="note" title=""> 
+1. **Collections scope**  
+   Toggle between **All collections** (enforce on the revisions of all collections)  
+   and **Selected collections** (enforce only on the collections you choose).
 
-__For collections that DON'T have a specific revision configuration__:  
+2. **Select collection** / **Add all**  
+   When **Selected collections** is active, choose collections from the **Select collection** dropdown,  
+   or click **Add all** to include them all. 
+    
+3. **Selected collections**  
+   The selected collections will be displayed here. 
 
-  * Non-conflicting documents:  
-      * If Document Defaults are defined & enabled, they will be applied.  
-      * If NOT defined, or if disabled, ALL non-conflicting document revisions will be __deleted__.  
-  * Conflicting documents:  
-      * If Conflicting Document Defaults are enabled, they will be applied to the conflicting document revisions.  
-      * If disabled, ALL conflicting document revisions will be __deleted__.  
-</Admonition>
+4. **Include Force Created Revisions**  
+     * ON - [Force-created revisions](../../../document-extensions/revisions/overview.mdx#force-revision-creation) may also be removed by the operation.
+     * OFF (default) - force-created revisions are preserved.    
 
-<Admonition type="warning" title="">
+5. **Max operations per second**  
+   Limit the number of documents processed per second to throttle the operation and reduce its resource consumption on large datasets.
+   Leave the field empty (**No limit**, the default) to apply no throttling.
 
-* Large databases may contain numerous revisions pending purging that Enforcing will purge all at once.  
-  Be aware that this operation may require substantial server resources, and time it accordingly.  
-* Revisions that no configuration currently applies to will be deleted.  
-  Make sure your configuration includes the default settings and collection-specific configurations  
-  that will keep the revisions you want to keep intact.  
+6. Click **Enforce Configuration** to run the operation, or **Cancel** to close the dialog without enforcing.
 
-</Admonition>
+    Clicking **Enforce Configuration** applies the current revision configuration definitions to existing revisions in the database, per collection.
+    Revisions might be removed depending on the current configuration rules.
 
-
-
+    <Admonition type="note" title="">
+    
+    **For collections that HAVE a specific revision configuration**:
+    
+      * The collection-specific configuration is applied per collection.  
+      * Revisions that should be purged according to the configuration are **deleted**.
+    
+    </Admonition>
+    
+    <Admonition type="note" title="">
+    
+    **For collections that DON'T have a specific revision configuration**:
+    
+      * Non-conflicting documents:  
+          * If Document Defaults are defined & enabled, they are applied.  
+          * If NOT defined, or if disabled, ALL non-conflicting document revisions are **deleted**.  
+      * Conflicting documents:  
+          * If Conflicting Document Defaults are enabled, they are applied to the conflicting document revisions.  
+          * If disabled, ALL conflicting document revisions are **deleted**.
+    
+    </Admonition>
+    
+    <Admonition type="warning" title="">
+        
+    * Large databases may contain many revisions that will be deleted when the current configuration is enforced.  
+      Running the operation can delete them all in a single enforcement run and may require substantial server resources.
+      Schedule it accordingly.
+        
+    * On large datasets, use the **Max operations per second** field to throttle the operation and reduce its resource consumption.  
+      The same throttling is available programmatically via the `MaxOpsPerSecond` parameter.   
+      See [Enforce revisions configuration operation](../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx).
+        
+    * Revisions in collections that no current configuration applies to may be deleted.  
+      Make sure your configuration includes the default settings and collection-specific configurations needed to keep the revisions you want to preserve.        
+    
+    </Admonition>
+    
+</Panel>

@@ -1,0 +1,77 @@
+---
+title: "Enforce Revisions Configuration Operation"
+description: "Apply the current revisions configuration to all existing revisions using the EnforceRevisionsConfigurationOperation, with optional throttling via MaxOpsPerSecond."
+sidebar_label: "Enforce Configuration"
+sidebar_position: 4
+supported_languages: ["csharp", "java", "nodejs"]
+see_also:
+     - title: "Revisions Overview"
+       link: "document-extensions/revisions/overview"
+       source: "docs"
+       path: "Document Extensions > Revisions"
+     - title: "Delete Revisions"
+       link: "document-extensions/revisions/client-api/operations/delete-revisions"
+       source: "docs"
+       path: "Document Extensions > Revisions > Client API > Operations"
+     - title: "Revert Revisions"
+       link: "document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-time"
+       source: "docs"
+       path: "Document Extensions > Revisions"
+     - title: "Revisions and Other Features"
+       link: "document-extensions/revisions/revisions-and-other-features"
+       source: "docs"
+       path: "Document Extensions > Revisions"
+     - title: "Revisions: API Overview"
+       link: "document-extensions/revisions/client-api/overview"
+       source: "docs"
+       path: "Document Extensions > Revisions > Client API"
+     - title: "Session: Loading Revisions"
+       link: "document-extensions/revisions/client-api/session/loading"
+       source: "docs"
+       path: "Document Extensions > Revisions > Client API > Session"
+     - title: "Session: Including Revisions"
+       link: "document-extensions/revisions/client-api/session/including"
+       source: "docs"
+       path: "Document Extensions > Revisions > Client API > Session"
+     - title: "Session: Counting Revisions"
+       link: "document-extensions/revisions/client-api/session/counting"
+       source: "docs"
+       path: "Document Extensions > Revisions > Client API > Session"
+     - title: "What Are Operations"
+       link: "client-api/operations/what-are-operations"
+       source: "docs"
+       path: "Client API > Operations"
+     - title: "Switch Operation Database"
+       link: "client-api/operations/how-to/switch-operations-to-a-different-database"
+       source: "docs"
+       path: "Client API > Operations > How to..."
+     - title: "Settings: Document Revisions"
+       link: "studio/database/settings/document-revisions"
+       source: "docs"
+       path: "Studio > Database Management > Settings"
+     - title: "Document Extensions: Revisions"
+       link: "studio/database/document-extensions/revisions/revisions-overview"
+       source: "docs"
+       path: "Studio > Database Management > Document Extensions > Revisions"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import EnforceRevisionsConfigurationCsharp from './content/_enforce-revisions-configuration-csharp.mdx';
+import EnforceRevisionsConfigurationJava from './content/_enforce-revisions-configuration-java.mdx';
+import EnforceRevisionsConfigurationNodejs from './content/_enforce-revisions-configuration-nodejs.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <EnforceRevisionsConfigurationCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <EnforceRevisionsConfigurationJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <EnforceRevisionsConfigurationNodejs />
+</LanguageContent>

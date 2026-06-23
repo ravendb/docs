@@ -1,0 +1,176 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* The revision configuration rules are usually applied to a document's revisions only when the document is modified.  
+  Use `EnforceRevisionsConfigurationOperation` to apply the current [revisions configuration](../../../../../studio/database/settings/document-revisions.mdx)
+  to existing revisions, instead of waiting for each document to be modified.
+
+* Running this operation scans existing revisions and enforces the current rules immediately,
+  **deleting** eligible revisions that should be purged according to the configuration.
+
+* The operation can be applied to all collections (default) or to a specified set of collections.
+
+* By default, the operation is applied to the [default database](../../../../../client-api/setting-up-default-database.mdx).  
+  To operate on a different database, see [switch operations to a different database](../../../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
+    
+* This article explains how to run the operation from the Client API.  
+  To run it from Studio, see [Enforce configuration](../../../../../studio/database/settings/document-revisions.mdx#enforce-configuration) in the Document Revisions settings view.        
+
+* In this article:
+  * [Enforce configuration on all collections](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#enforce-configuration-on-all-collections)
+  * [Enforce configuration on specific collections](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#enforce-configuration-on-specific-collections)
+  * [Include force-created revisions](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#include-force-created-revisions)
+  * [Throttle the operation](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#throttle-the-operation)
+  * [Syntax](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#syntax)
+
+</Admonition>
+
+<Admonition type="warning" title="Resource consumption">
+
+* Large databases may contain many revisions that will be deleted when the current configuration is enforced.  
+  Running the operation can delete them all in a single enforcement run and may require substantial server resources.
+  Schedule it accordingly.    
+
+* On large datasets, use `maxOpsPerSecond` to [throttle the operation](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#throttle-the-operation)
+  and reduce its resource consumption.
+
+* Revisions in collections that no current configuration applies to may be deleted.
+  Make sure your revisions configuration includes the default settings and collection-specific configurations needed to keep the revisions you want to preserve.
+  Force-created revisions may also be removed when `includeForceCreated` is set to `true`.    
+
+</Admonition>
+
+<Panel heading="Enforce configuration on all collections">
+
+In this example, the current revisions configuration is enforced on the revisions of all collections.
+
+```js
+// Define the enforce revisions configuration operation
+const enforceConfigurationOp = new EnforceRevisionsConfigurationOperation();
+
+// Execute the operation by passing it to operations.send
+// 'send' returns the operation id result: { operationId, operationNodeTag }
+const operationIdResult = await documentStore.operations.send(enforceConfigurationOp);
+```
+
+</Panel>
+
+<Panel heading="Enforce configuration on specific collections">
+
+Set the `collections` parameter to enforce the configuration only on revisions in the specified collections.  
+When `collections` is not set, is `null`, or is an empty array, the operation is applied to all collections.
+
+```js
+const enforceConfigurationOp = new EnforceRevisionsConfigurationOperation({
+    includeForceCreated: false,
+    // The configuration will be enforced only on these collections
+    collections: ["Users", "Products"]
+});
+
+const operationIdResult = await documentStore.operations.send(enforceConfigurationOp);
+```
+
+</Panel>
+
+<Panel heading="Include force-created revisions">
+
+By default, [force-created revisions](../../../../../document-extensions/revisions/overview.mdx#force-revision-creation)
+are preserved and are not removed by the operation.     
+    
+Set `includeForceCreated` to `true` to allow those force-created revisions to be removed as well.  
+
+```js
+const enforceConfigurationOp = new EnforceRevisionsConfigurationOperation({
+    // Force-created revisions will also be subject to the configuration rules
+    includeForceCreated: true
+});
+
+const operationIdResult = await documentStore.operations.send(enforceConfigurationOp);
+```
+
+</Panel>
+
+<Panel heading="Throttle the operation"> 
+
+Running the operation on a large database may consume substantial server resources and affect server performance.    
+
+Set `maxOpsPerSecond` to limit the number of documents processed per second,  
+throttling the operation to reduce its resource consumption.    
+
+```js
+const enforceConfigurationOp = new EnforceRevisionsConfigurationOperation({
+    includeForceCreated: false,
+    // Process at most 100 documents per second
+    maxOpsPerSecond: 100
+});
+
+const operationIdResult = await documentStore.operations.send(enforceConfigurationOp);
+```
+<br/>    
+
+<Admonition type="warning" title="">
+
+`maxOpsPerSecond` must be greater than `0`.  
+Setting it to `0` or a negative value throws an `InvalidOperationException`.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Syntax">
+
+```js
+// Available overloads:
+// ====================
+
+// Enforce the configuration using default parameters (all collections)
+new EnforceRevisionsConfigurationOperation();
+
+// Enforce the configuration using the specified parameters
+new EnforceRevisionsConfigurationOperation(parameters);
+```
+<br/>
+    
+| Parameter        | Type                         | Description                                                                         |
+|------------------|------------------------------|-------------------------------------------------------------------------------------|
+| **parameters**   | `EnforceRevisionsParameters` | The parameters defining how the configuration is enforced. See the interface below. |
+
+```js
+interface EnforceRevisionsParameters {
+    includeForceCreated: boolean; // required when passing parameters
+    collections?: string[];
+    maxOpsPerSecond?: number;
+}
+```
+<br/>    
+
+| Parameter               | Type       | Description                                                                                                                                                                                                          |
+|-------------------------|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **includeForceCreated** | `boolean`  | **Required when passing a parameters object** (the no-argument constructor defaults it to `false`).<br/>`true` - [Force-created revisions](../../../../../document-extensions/revisions/overview.mdx#force-revision-creation) may also be removed by the operation.<br/>`false` - Force-created revisions are not included in deletion paths that explicitly protect them. |
+| **collections**         | `string[]` | The collections the operation applies to.<br/>When omitted or `null`, the operation applies to all collections.                                                                                                       |
+| **maxOpsPerSecond**     | `number`   | Limits the number of documents processed per second, throttling the operation to reduce resource consumption.<br/>When omitted, no throttling is applied.<br/>Must be greater than `0`, otherwise an `InvalidOperationException` is thrown. |
+
+<Admonition type="note" title="">
+
+`includeForceCreated` is a **required** field of `EnforceRevisionsParameters`.  
+When you pass a parameters object you must set it explicitly (usually to `false`).  
+To rely on its default value (`false`), call the no-argument constructor instead:  
+`new EnforceRevisionsConfigurationOperation()`.
+
+</Admonition>
+
+The `send` method returns an `OperationIdResult` object:
+
+```js
+interface OperationIdResult {
+    operationId: number;
+    operationNodeTag: string;
+}
+```
+    
+</Panel>
