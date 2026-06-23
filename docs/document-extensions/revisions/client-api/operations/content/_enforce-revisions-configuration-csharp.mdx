@@ -26,6 +26,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   * [Enforce configuration on specific collections](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#enforce-configuration-on-specific-collections)
   * [Include force-created revisions](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#include-force-created-revisions)
   * [Throttle the operation](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#throttle-the-operation)
+  * [Resume an interrupted operation](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#resume-an-interrupted-operation)
   * [Syntax](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#syntax)
 
 </Admonition>
@@ -200,6 +201,143 @@ Setting it to `0` or a negative value throws an `InvalidOperationException`.
 
 </Panel>
 
+<Panel heading="Resume an interrupted operation">
+    
+* On a large database, enforcing the revisions configuration can take a long time.
+  If the run is interrupted before it completes, for example by a server restart or by cancelling the operation, it does not return a final result.
+
+* To avoid starting over from the beginning, you can resume the operation from the latest progress values reported before the interruption.
+  To do this, capture these values from the operation's progress while it runs:
+  * Subscribe to `Operation.OnProgressChanged` and keep the latest `EnforceConfigurationResult` value.
+  * Each progress update is an `EnforceConfigurationResult` that includes:  
+    `LastProcessedEtags`, `EtagBarriersUsed`, and `NodeTags`.
+
+* Progress is reported periodically, so an operation run that was interrupted very early may not yet have usable values to resume from.
+
+* Because etags are node-local, a resumed operation must run on the same node that produced them.    
+  Keep the `NodeTags` values from the progress; they identify that node, and the server validates them on resume  
+  (throwing if the operation runs on a different node).     
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+```csharp
+EnforceConfigurationResult latestProgress = null;
+EnforceConfigurationResult finalResult;
+
+// Start the operation
+var operation = store.Operations.Send(
+    new EnforceRevisionsConfigurationOperation());
+
+// Capture progress as it streams in, so we have continuation values if the run is interrupted.    
+// EnforceConfigurationResult is reported as progress and carries the continuation values.
+operation.OnProgressChanged += (_, progress) =>
+{
+    if (progress is EnforceConfigurationResult result)
+        latestProgress = result;
+};
+    
+try
+{
+    finalResult = operation.WaitForCompletion<EnforceConfigurationResult>();
+}
+catch (Exception)
+{
+    // The run was interrupted and returned no final result.
+    // If we captured progress before the interruption, resume from the latest values.
+    if (latestProgress is null)
+        throw;
+
+    var resumeOperation = new EnforceRevisionsConfigurationOperation(
+        new EnforceRevisionsConfigurationOperation.Parameters
+        {
+            ContinuationParameters = new RevisionsOperationContinuationParameters
+            {
+                StartFromEtags = latestProgress.LastProcessedEtags,
+                EtagBarriers   = latestProgress.EtagBarriersUsed,
+                // NodeTags are validated on resume: the operation must run on the
+                // node that produced the etags, since etags are node-local.
+                NodeTags       = latestProgress.NodeTags
+            }
+        });
+
+    finalResult = store.Operations
+        .Send(resumeOperation)
+        .WaitForCompletion<EnforceConfigurationResult>();
+}
+        
+// finalResult holds the outcome from whichever path completed (initial run or resume)
+Console.WriteLine($"Removed {finalResult.RemovedRevisions} revisions");        
+```
+</TabItem>
+<TabItem value="Async" label="Async">
+```csharp
+EnforceConfigurationResult latestProgress = null;
+EnforceConfigurationResult finalResult;
+
+// Start the operation
+var operation = await store.Operations.SendAsync(
+    new EnforceRevisionsConfigurationOperation());
+
+// Capture progress as it streams in, so we have continuation values if the run is interrupted.
+// EnforceConfigurationResult is reported as progress and carries the continuation values.
+operation.OnProgressChanged += (_, progress) =>
+{
+    if (progress is EnforceConfigurationResult result)
+        latestProgress = result;
+};
+
+try
+{
+    finalResult = await operation.WaitForCompletionAsync<EnforceConfigurationResult>();
+}
+catch (Exception)
+{
+    // The run was interrupted and returned no final result.
+    // If we captured progress before the interruption, resume from the latest values.
+    if (latestProgress is null)
+        throw;
+
+    var resumeOperation = new EnforceRevisionsConfigurationOperation(
+        new EnforceRevisionsConfigurationOperation.Parameters
+        {
+            ContinuationParameters = new RevisionsOperationContinuationParameters
+            {
+                StartFromEtags = latestProgress.LastProcessedEtags,
+                EtagBarriers   = latestProgress.EtagBarriersUsed,
+                // NodeTags are validated on resume: the operation must run on the
+                // node that produced the etags, since etags are node-local.
+                NodeTags       = latestProgress.NodeTags
+            }
+        });
+
+    var resumedOperation = await store.Operations.SendAsync(resumeOperation);
+    finalResult = await resumedOperation.WaitForCompletionAsync<EnforceConfigurationResult>();
+}
+
+// finalResult holds the outcome from whichever path completed (initial run or resume)
+Console.WriteLine($"Removed {finalResult.RemovedRevisions} revisions");
+```    
+</TabItem>
+</Tabs>
+    
+<Admonition type="note" title="">
+
+#### Capture early progress
+    
+* Operation progress notifications are delivered through the [Changes API](../../../../../client-api/changes/what-is-changes-api.mdx).   
+  `Operation.OnProgressChanged` is the simple way to consume it.     
+    
+* Because the handler above is attached after the operation starts,  
+  the earliest progress notifications can be missed.
+    
+* To capture progress from the very beginning, which matters most when you rely on it to resume,  
+  subscribe to operation changes via the Changes API before starting the operation.  
+  Learn more in [How to subscribe to operation changes](../../../../../client-api/changes/how-to-subscribe-to-operation-changes.mdx).    
+
+</Admonition>    
+    
+</Panel>
+
 <Panel heading="Syntax">
 
 ```csharp
@@ -238,23 +376,7 @@ public class RevisionsOperationParameters
 | **IncludeForceCreated**    | `bool`                                     | `true` - [Force-created revisions](../../../../../document-extensions/revisions/overview.mdx#force-revision-creation) may also be removed by the operation.<br/>`false` (default) - Force-created revisions are not included in deletion paths that protect them. |  
 | **MaxOpsPerSecond**        | `int?`                                     | Limits the number of documents processed per second.<br/>`null` (default) - no throttling.<br/>Must be greater than `0`, otherwise an `InvalidOperationException` is thrown. |    
 | **Collections**            | `string[]`                                 | The collections the operation applies to.<br/>`null` or empty array - the operation applies to all collections. |
-| **ContinuationParameters** | `RevisionsOperationContinuationParameters` | Optional state used to resume a previous revisions operation.<br/>Populate it from the previous result's `LastProcessedEtags`, `EtagBarriersUsed`, and `NodeTags`. |    
-    
-<ContentFrame>
-    
-`ContinuationParameters` is only needed when resuming an **interrupted** run (e.g. server restart, timeout, or a cancelled long-running operation).
-A run that completed successfully does not need to be resumed.    
-
-Because an interrupted run does not return a final result,  
-capture the continuation values from the operation's **progress** while it runs:   
-  * Subscribe to `Operation.OnProgressChanged` and keep the latest `EnforceConfigurationResult` value.  
-  * `EnforceConfigurationResult` is reported as progress and carries `LastProcessedEtags`, `EtagBarriersUsed`, and `NodeTags`.    
-
-Because etags are node-local, a resumed operation must run on the same node that produced them.  
-Keep the `NodeTags` values from the progress result;  
-they identify the node that produced the continuation values, and the server validates them on resume.
-    
-</ContentFrame>
+| **ContinuationParameters** | `RevisionsOperationContinuationParameters` | Optional state used to resume an interrupted revisions operation. See [Resume an interrupted operation](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#resume-an-interrupted-operation). |    
 
 ```csharp
 public class RevisionsOperationContinuationParameters
