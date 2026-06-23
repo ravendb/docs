@@ -494,6 +494,41 @@ embeddings.generate({
 
 ---
 
+#### SCRIPT vs PATHS context prefixes
+
+Use the [SCRIPT option](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-script)
+with `withContextPrefix(...)` when the prefix must be computed per document,
+for example from `this.Title` or `this.Category`.
+
+For source paths configured through the [PATHS option](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-paths) in the Client API,
+you can set a constant prefix with the `context_prefix` property in the `chunking_options` of the relevant `EmbeddingPathConfiguration`.
+
+Unlike the SCRIPT option, the PATHS option applies the same prefix text to every document for that path.
+It cannot use values from the document being processed, such as the document's own title or category.
+For dynamic, per-document prefixes, use the SCRIPT option.
+
+This property is currently not exposed in the Studio for path configurations. You can set it through the Client API.
+For example:
+
+```python
+EmbeddingPathConfiguration(
+    path="Description",
+    chunking_options=ChunkingOptions(
+        chunking_method=ChunkingMethod.PLAIN_TEXT_SPLIT_PARAGRAPHS,
+        max_tokens_per_chunk=2048,
+        overlap_tokens=128,
+
+        # Prepended to every chunk produced from this path.
+        # In PATHS, this is the same constant text for every processed document.
+        # Its tokens count against 'max_tokens_per_chunk'.
+        context_prefix="Category description:",
+    ),
+)
+```
+<br/>
+
+---
+
 #### Context prefix and the token budget
 
 When a context prefix is applied to chunked input, its tokens count against the configured _Max tokens per chunk_.
@@ -578,6 +613,12 @@ class ChunkingOptions:
     # 'overlap_tokens' is only applicable when chunking_method is
     # PLAIN_TEXT_SPLIT_PARAGRAPHS or MARK_DOWN_SPLIT_PARAGRAPHS
     overlap_tokens: int              # default: 0
+
+    # Text prepended to each produced chunk before it is sent
+    # to the embedding model.
+    # Leave None to generate embeddings without a context prefix.
+    # Its tokens count against 'max_tokens_per_chunk'.
+    context_prefix: Optional[str]    # default: None
 
 class ChunkingMethod(Enum):
     PLAIN_TEXT_SPLIT = "PlainTextSplit"
