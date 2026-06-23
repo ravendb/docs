@@ -1,7 +1,8 @@
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -13,7 +14,7 @@ import CodeBlock from '@theme/CodeBlock';
       An auto-index will be created by the server.  
 
     * **Spatial index query**  
-      Index your documents' spatial data in a static-index (see [indexing spatial data](../../../../indexes/indexing-spatial-data.mdx)) 
+      Index your documents' spatial data in a static-index (see [indexing spatial data](../../../../indexes/indexing-spatial-data.mdx))  
       and then make a spatial query on this index (see [query a spatial index](../../../../indexes/querying/spatial.mdx)).  
 
 * To perform a spatial search,  
@@ -21,6 +22,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * When making a dynamic spatial query from Studio,  
   results are also displayed on the global map. See [spatial queries map view](../../../../studio/database/queries/spatial-queries-map-view.mdx).
+    
 * In this article:
 
   * [Search by radius](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-radius)  
@@ -31,6 +33,7 @@ import CodeBlock from '@theme/CodeBlock';
       * [Order by distance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#order-by-distance)
       * [Order by distance descending](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#order-by-distance-descending)
       * [Sort results by rounded distance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#sort-results-by-rounded-distance)
+      * [Control null placement when sorting by distance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#control-null-placement-when-sorting-by-distance)
       * [Get resulting distance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#get-resulting-distance)
   * [Spatial API](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-api)
       * [`spatial`](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#section)
@@ -40,15 +43,16 @@ import CodeBlock from '@theme/CodeBlock';
       * [`order_by_distance_descending`, `order_by_distance_descending_wkt`](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#section-4)
 
 </Admonition>
-## Search by radius
+
+<Panel heading="Search by radius">
 
 Use the `within_radius` method to search for all documents containing spatial data that is located  
 within the specified distance from the given center point.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="python">
-{`# This query will return all matching employee entities
+```python
+# This query will return all matching employee entities
 # that are located within 20 kilometers radius
 # from point (47.623473 latitude, -122.3060097 longitude).
 
@@ -65,12 +69,11 @@ employees_within_radius = list(
         lambda criteria: criteria.within_radius(20, 47.623473, -122.3060097),
     )
 )
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// This query will return all matching employee entities
+```sql
+// This query will return all matching employee entities
 // that are located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
@@ -79,14 +82,13 @@ where spatial.within(
     spatial.point(Address.Location.Latitude, Address.Location.Longitude),
     spatial.circle(20, 47.623473, -122.3060097)
 )
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Search by shape
+<Panel heading="Search by shape"> 
 
 * Use the `relates_to_shape` method to search for all documents containing spatial data that is located  
   in the specified relation to the given shape.
@@ -94,12 +96,15 @@ where spatial.within(
 * The shape is specified as either a **circle** or a **polygon** in a [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format.
 
 * The relation to the shape can be one of: `WITHIN`, `CONTAINS`, `DISJOINT`, `INTERSECTS`.
-#### Circle
+
+---    
+    
+### Circle
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="python">
-{`# This query will return all matching employee entities
+```python
+# This query will return all matching employee entities
 # that are located within 20 kilometers radius
 # from point (47.623473 latitude, -122.3060097 longitude).
 
@@ -122,12 +127,11 @@ employees_within_shape = list(
         ),
     )
 )
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// This query will return all matching employee entities
+```sql
+// This query will return all matching employee entities
 // that are located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
@@ -136,16 +140,16 @@ where spatial.within(
     spatial.point(Address.Location.Latitude, Address.Location.Longitude),
     spatial.wkt("CIRCLE(-122.3060097 47.623473 d=20)", "miles")
 )
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
-#### Polygon
+
+### Polygon
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="python">
-{`# This query will return all matching company entities
+```python
+# This query will return all matching company entities
 # that are located within the specified polygon.
 
 # Define a query on Companies collection
@@ -173,12 +177,11 @@ companies_within_shape = list(
         ),
     )
 )
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// This query will return all matching company entities
+```sql
+// This query will return all matching company entities
 // that are located within the specified polygon.
 
 from companies
@@ -193,8 +196,7 @@ where spatial.within(
         -118.7406746 32.7853769,
         -118.6527948 32.7114894))")
 )
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
@@ -210,20 +212,23 @@ where spatial.within(
 
 </Admonition>
 
+</Panel>
 
-
-## Spatial sorting
+<Panel heading="Spatial sorting">  
 
 * Use `order_by_distance` or `order_by_distance_descending` to sort the results by distance from a given point.
 
 * By default, distance is measured by RavenDB in **kilometers**.  
   The distance can be rounded to a specific range.  
+
+---
+    
 #### Order by distance
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="python">
-{`# Return all matching employee entities located within 20 kilometers radius
+```python
+# Return all matching employee entities located within 20 kilometers radius
 # from point (47.623473 latitude, -122.3060097 longitude)
 
 # Sort the results by their distance from a specified point,
@@ -241,12 +246,11 @@ employees_sorted_by_distance = list(
         PointField("Address.Location.Latitude", "Address.Location.Longitude"), 47.623473, -122.3060097
     )
 )
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// Return all matching employee entities located within 20 kilometers radius
+```sql
+// Return all matching employee entities located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
 // Sort the results by their distance from a specified point,
@@ -261,16 +265,18 @@ order by spatial.distance(
     spatial.point(Address.Location.Latitude, Address.Location.Longitude),
     spatial.point(47.623473, -122.3060097)
 )
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
+    
+---
+    
 #### Order by distance descending
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="python">
-{`# Return all employee entities sorted by their distance from a specified point.
+```python
+# Return all employee entities sorted by their distance from a specified point.
 # The farthest results will be listed first.
 
 employees_sorted_by_distance_desc = list(
@@ -284,12 +290,11 @@ employees_sorted_by_distance_desc = list(
         -122.3060097,
     )
 )
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// Return all employee entities sorted by their distance from a specified point.
+```sql
+// Return all employee entities sorted by their distance from a specified point.
 // The farthest results will be listed first.
 
 from Employees
@@ -297,17 +302,20 @@ order by spatial.distance(
     spatial.point(Address.Location.Latitude, Address.Location.Longitude),
     spatial.point(47.623473, -122.3060097)
 ) desc
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
+
+---    
+
 #### Sort results by rounded distance
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="python">
-{`# Return all employee entities.
-# Results are sorted by their distance to a specified point rounded to the nearest 100 km interval.
+```python
+# Return all employee entities.
+# Results are sorted by their distance to a specified point
+# rounded to the nearest 100 km interval.
 # A secondary sort can be applied within the 100 km range, e.g. by field LastName.
 
 employees_sorted_by_rounded_distance = list(
@@ -325,23 +333,13 @@ employees_sorted_by_rounded_distance = list(
         "LastName"
     )
 )
-
-pass
-
-o:
-gion spatial_7
-spatial(
-self,
-field_name_or_field: Union[str, DynamicSpatialField],
-clause: Callable[[SpatialCriteriaFactory], SpatialCriteria],
-..
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// Return all employee entities.
-// Results are sorted by their distance to a specified point rounded to the nearest 100 km interval.
+```sql
+// Return all employee entities.
+// Results are sorted by their distance to a specified point
+// rounded to the nearest 100 km interval.
 // A secondary sort can be applied within the 100 km range, e.g. by field LastName.
 
 from Employees
@@ -350,10 +348,66 @@ order by spatial.distance(
     spatial.point(47.623473, -122.3060097),
     100
 ), LastName
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
+
+---
+    
+#### Control null placement when sorting by distance    
+
+* Some documents may have `null` or missing spatial values.  
+  When sorting by distance with the [Corax](../../../../indexes/search-engine/corax.mdx) search engine,  
+  you can control whether these documents appear first or last in the sorted results.
+
+* Use:
+  * `NullsOrdering.FIRST`  
+    to place documents with `null` or missing spatial values **before** documents with non-null spatial values.
+  * `NullsOrdering.LAST`  
+    to place documents with `null` or missing spatial values **after** documents with non-null spatial values.
+  * `NullsOrdering.DEFAULT`  
+    to use the default configuration, which is set by the [Indexing.Querying.Corax.NullsSortMode](../../../../server/configuration/indexing-configuration.mdx#indexingqueryingcoraxnullssortmode) configuration key.
+
+* The requested null placement is independent of the sorting direction.  
+  For example, `NullsOrdering.LAST` will place documents with `null` or missing spatial values last when using either `order_by_distance` or `order_by_distance_descending`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```python
+# Return all employee entities sorted by their distance from a specified point.
+# Documents with null or missing spatial values will be placed last.
+
+employees_sorted_by_distance = list(
+    session.query(object_type=Employee)
+    # Call 'order_by_distance'
+    .order_by_distance(
+        # Pass the path to the document fields containing the spatial data
+        PointField("Address.Location.Latitude", "Address.Location.Longitude"),
+        # Sort the results by their distance from this point
+        47.623473,
+        -122.3060097,
+        # Place documents with null or missing spatial values last
+        nulls=NullsOrdering.LAST,
+    )
+)
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// Return all employee entities sorted by their distance from a specified point.
+// Documents with null or missing spatial values will be placed last.
+
+from Employees
+order by spatial.distance(
+    spatial.point(Address.Location.Latitude, Address.Location.Longitude),
+    spatial.point(47.623473, -122.3060097)
+) nulls last
+```
+</TabItem>
+</Tabs>
+
+---
+    
 #### Get resulting distance
 
 * The distance is available in the `@spatial` metadata property within each result.
@@ -365,9 +419,8 @@ order by spatial.distance(
       To get this metadata property you must set the [Indexing.Corax.IncludeSpatialDistance](../../../../server/configuration/indexing-configuration.mdx#indexingcoraxincludespatialdistance) configuration value to _true_.  
       Learn about the available methods for setting an indexing configuration key in this [indexing-configuration](../../../../server/configuration/indexing-configuration.mdx) article.
 
-<TabItem value="spatial_4_getDistance" label="spatial_4_getDistance">
-<CodeBlock language="python">
-{`# Get the distance of the results:
+```python
+# Get the distance of the results:
 # ================================
 
 # Call 'get_metadata_for', pass an entity from the resulting employees list
@@ -379,54 +432,49 @@ spatial_results = metadata["@spatial"]
 distance = spatial_results["Distance"]  # The distance of the entity from the queried location
 latitude = spatial_results["Latitude"]  # The entity's latitude value
 longitude = spatial_results["Longitude"]  # The entity's longitude value
-`}
-</CodeBlock>
-</TabItem>
+```
 
+</Panel>
 
+<Panel heading="Spatial API">
 
-## Spatial API
+### `spatial`
 
-#### `spatial`
-
-<TabItem value="spatial_7" label="spatial_7">
-<CodeBlock language="python">
-{`def spatial(
+```python
+def spatial(
     self,
     field_name_or_field: Union[str, DynamicSpatialField],
     clause: Callable[[SpatialCriteriaFactory], SpatialCriteria],
 ): ...
-`}
-</CodeBlock>
-</TabItem>
+```    
+<br/>
 
-| Parameters    | Type                                                                                       | Description                                                                                                                |
-|---------------|--------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| Parameters              | Type | Description |
+|-------------------------|------|-------------|
 | **field_name_or_field** | `Union[str, DynamicSpatialField]` | `Str` - Path to spatial field in an index (when querying an index)<br/><br/>**-or-**<br/><br/>`DynamicSpatialField` - Object that contains the document's spatial fields, either `PointField` or `WktField`(when making a dynamic query). |
-| **clause**    | `Callable[[SpatialCriteriaFactory], SpatialCriteria]` | Callback taking leverage of SpatialCriteriaFactory that comes as an argument, allowing to build SpatialCriteria. |
-#### `DynamicSpatialField`
+| **clause**              | `Callable[[SpatialCriteriaFactory], SpatialCriteria]` | Callback taking leverage of SpatialCriteriaFactory that comes as an argument, allowing to build SpatialCriteria. |
 
-<TabItem value="spatial_8" label="spatial_8">
-<CodeBlock language="python">
-{`class PointField(DynamicSpatialField):
+### `DynamicSpatialField`
+
+```python
+class PointField(DynamicSpatialField):
     def __init__(self, latitude: str, longitude: str): ...
 
 class WktField(DynamicSpatialField):
     def __init__(self, wkt: str): ...
-`}
-</CodeBlock>
-</TabItem>
+```
+<br/>
 
-| Parameters    | Type  | Description                                               |
-|---------------|-------|-----------------------------------------------------------|
-| **latitude**  | `str` | Path to a document point field that contains the latitude |
+| Parameters    | Type  | Description                                                |
+|---------------|-------|------------------------------------------------------------|
+| **latitude**  | `str` | Path to a document point field that contains the latitude  |
 | **longitude** | `str` | Path to a document point field that contains the longitude |
-| **wkt** | `str` | Path to a document wkt field that contains the WKT string |
-#### `SpatialCriteria`
+| **wkt**       | `str` | Path to a document wkt field that contains the WKT string  |
 
-<TabItem value="spatial_9" label="spatial_9">
-<CodeBlock language="python">
-{`def relates_to_shape(
+### `SpatialCriteria`
+
+```python
+def relates_to_shape(
     self,
     shape_wkt: str,
     relation: SpatialRelation,
@@ -470,9 +518,8 @@ def within_radius(
     radius_units: Optional[SpatialUnits] = None,
     dist_error_percent: Optional[float] = constants.Documents.Indexing.Spatial.DEFAULT_DISTANCE_ERROR_PCT,
 ) -> SpatialCriteria: ...
-`}
-</CodeBlock>
-</TabItem>
+```
+<br/>
 
 | Parameter     | Type  | Description        |
 |---------------|-------|--------------------|
@@ -481,11 +528,11 @@ def within_radius(
 | **units** / **radius_units** | `SpatialUnits` | Determines if circle or shape should be calculated in `KILOMETERS` or `MILES`.<br/>By default, distances are measured in kilometers. |
 | **dist_error_percent** (Optional) | `float` | Maximum distance error tolerance in percents.<br/>**Default: 0.025** |
 | **radius** / **latitude** / **longitude** | `float` | Used to define a radius of a circle |
-#### `order_by_distance`, `order_by_distance_wkt`
 
-<TabItem value="spatial_10" label="spatial_10">
-<CodeBlock language="python">
-{`# From point & rounding
+### `order_by_distance`, `order_by_distance_wkt`
+
+```python
+# From point & rounding
 
 def order_by_distance(
     self,
@@ -493,21 +540,23 @@ def order_by_distance(
     latitude: float,
     longitude: float,
     round_factor: Optional[float] = 0.0,
+    nulls: NullsOrdering = NullsOrdering.DEFAULT,
 ) -> DocumentQuery[_T]: ...
 
 # From center of WKT shape
 
 def order_by_distance_wkt(
-    self, field_or_field_name: Union[str, DynamicSpatialField], shape_wkt: str
+    self,
+    field_or_field_name: Union[str, DynamicSpatialField],
+    shape_wkt: str,
+    nulls: NullsOrdering = NullsOrdering.DEFAULT,
 ) -> DocumentQuery[_T]: ...
-`}
-</CodeBlock>
-</TabItem>
-#### `order_by_distance_descending`, `order_by_distance_descending_wkt`
+```
 
-<TabItem value="spatial_11" label="spatial_11">
-<CodeBlock language="python">
-{`# From point & rounding
+### `order_by_distance_descending`, `order_by_distance_descending_wkt`
+
+```python
+# From point & rounding
 
 def order_by_distance_descending(
     self,
@@ -515,25 +564,27 @@ def order_by_distance_descending(
     latitude: float,
     longitude: float,
     round_factor: Optional[float] = 0.0,
+    nulls: NullsOrdering = NullsOrdering.DEFAULT,
 ) -> DocumentQuery[_T]: ...
 
 # From center of WKT shape
 
 def order_by_distance_descending_wkt(
-    self, field_or_field_name: Union[str, DynamicSpatialField], shape_wkt: str
+    self,
+    field_or_field_name: Union[str, DynamicSpatialField],
+    shape_wkt: str,
+    nulls: NullsOrdering = NullsOrdering.DEFAULT,
 ) -> DocumentQuery[_T]: ...
-`}
-</CodeBlock>
-</TabItem>
+```
+<br/>
 
 | Parameter                    | Type                                                                                       | Description                                                                                                                                                                                                                                                      |
 |------------------------------|--------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **field_or_field_name** | `Union[str, DynamicSpatialField]` |  `Str` - Path to spatial field in an index (when querying an index)<br/><br/>**-or-**<br/><br/>`DynamicSpatialField` - Object that contains the document's spatial fields, either `PointField` or `WktField`(when making a dynamic query). |
+| **field_or_field_name** | `Union[str, DynamicSpatialField]` |  `str` - Path to spatial field in an index (when querying an index)<br/><br/>**-or-**<br/><br/>`DynamicSpatialField` - Object that contains the document's spatial fields, either `PointField` or `WktField`(when making a dynamic query). |
 | **latitude** | `float` | The latitude of the point from which the distance is measured |
 | **longitude** | `float` | The longitude of the point from which the distance is measured |
 | **round_factor** (Optional) | `float` | A distance interval in kilometers.<br/>The distance from the point is rounded up to the nearest interval.<br/>Use `order_by` to apply a secondary sort to results within the same distance interval. |
 | **shape_wkt** | `str` | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape used in query criteria |
+| **nulls** (Optional) | `NullsOrdering` | Controls whether documents with `null` or missing spatial values appear first or last in the sorted results.<br/>Possible values: `NullsOrdering.DEFAULT`, `NullsOrdering.FIRST`, `NullsOrdering.LAST`.<br/>Supported only when using [Corax](../../../../indexes/search-engine/corax.mdx). |
 
-
-
-
+</Panel>
