@@ -64,7 +64,7 @@ We've successfully created a RavenDB Cloud account. Now, let's create a free ins
 
 <Image img={require("./assets/connecting-c-application-cloud-2.webp")} alt="Adding a new product on the Products page" />
 
-If you would like a free instance, don't change anything - just scroll down and click *'Next'(1)*. Enter your account information(2) and then go through billing. Next, you have a *'Customize'* step(3), where you need to put in the display name of your instance. You also need to set the instance as open to the world (Leave 0.0.0.0/0 if you want it to be open to the world) or delete IP 0.0.0.0/0 and click '*Add my IP*', to make this only accessible with your IP. You can also change it later so don't be afraid to delete 0.0.0.0/0. If you want to learn more about CIDR notation, you can read more [here](https://aws.amazon.com/what-is/cidr/). Then, just hit *'Next'*, review the summary and if all looks good, click *'Create'*. For more details on adding a new product, [click here](https://ravendb.net/docs/article-page/7.2/csharp/cloud/portal/cloud-portal-products-tab#manage-product-the-security-tab).
+If you would like a free instance, don't change anything - just scroll down and click *'Next'(1)*. Enter your account information(2) and then go through billing. Next, you have a *'Customize'* step(3), where you need to put in the display name of your instance. You also need to set the instance as open to the world (Leave 0.0.0.0/0 if you want it to be open to the world) or delete IP 0.0.0.0/0 and click '*Add my IP*', to make this only accessible with your IP. You can also change it later so don't be afraid to delete 0.0.0.0/0. If you want to learn more about CIDR notation, you can read more [here](https://aws.amazon.com/what-is/cidr/). Then, just hit *'Next'*, review the summary and if all looks good, click *'Create'*. For more details on adding a new product, [click here](https://ravendb.net/docs/article-page/csharp/cloud/portal/cloud-portal-products-tab#manage-product-the-security-tab).
 
 <Image img={require("./assets/connecting-c-application-cloud-3.webp")} alt="Configuring a new RavenDB Cloud instance" />
 
@@ -81,7 +81,7 @@ In order to access RavenDB Studio you require a working certificate. While using
 
 <Image img={require("./assets/connecting-c-application-cloud-6.webp")} alt="Creating a new database in RavenDB Studio" />
 
-For the purpose of testing, you can also create [Sample Data](https://ravendb.net/docs/article-page/7.2/csharp/studio/database/tasks/create-sample-data) by clicking your database and selecting *'Tasks'* on the left bar where you can find the option to create it. This data will come in handy later if you want to test the connection between your application and the database.
+For the purpose of testing, you can also create [Sample Data](https://docs.ravendb.net/studio/database/tasks/create-sample-data) by clicking your database and selecting *'Tasks'* on the left bar where you can find the option to create it. This data will come in handy later if you want to test the connection between your application and the database.
 
 <Image img={require("./assets/connecting-c-application-cloud-7.webp")} alt="Creating sample data in RavenDB Studio" />
 
@@ -107,7 +107,7 @@ dotnet add package RavenDB.Client
 
 ### Configure the DocumentStore
 
-Let's take a look inside our brand new Program.cs file. To establish the connection to your cloud server, we need to tell the client where it should connect, providing the database server address (URL), database name, and the certificate for it to be authorized. Just declare a few strings and write the connection code. Create an instance of X509Certificate that loads a path to your certificate file. Don't worry, RavenDB will automatically dispose of it from your app conveniently when it won't be needed. If you want to learn more about the security certificate you can check it in the [documentation](https://ravendb.net/docs/article-page/7.2/csharp/server/security/overview). You can see the example code for this section below:
+Let's take a look inside our brand new Program.cs file. To establish the connection to your cloud server, we need to tell the client where it should connect, providing the database server address (URL), database name, and the certificate for it to be authorized. Just declare a few strings and write the connection code. Create an instance of X509Certificate that loads a path to your certificate file. Don't worry, RavenDB will automatically dispose of it from your app conveniently when it won't be needed. If you want to learn more about the security certificate you can check it in the [documentation](https://ravendb.net/docs/article-page/csharp/server/security/overview). You can see the example code for this section below:
 
 ```csharp
 string serverURL = "https://your_RavenDB_server_URL";
@@ -124,7 +124,7 @@ IDocumentStore documentStore = new DocumentStore
 };
 ```
 
-Ensure `using` statements for correct compilation, and spin up your *DocumentStore* by calling `documentStore.Initialize()` at the bottom to finish off the code. It's a crucial part that connects to your database—without it, your code simply won't work. *DocumentStore* is the base for all RavenDB actions. It communicates with your cluster and can handle multiple databases. It's important to have a single instance of *DocumentStore* in place, to maintain a single connection definition to your database. You can learn more about *DocumentStore* [here](https://ravendb.net/docs/article-page/7.2/csharp/client-api/what-is-a-document-store) or [here](https://ravendb.net/docs/article-page/7.2/csharp/client-api/creating-document-store).
+Ensure `using` statements for correct compilation, and spin up your *DocumentStore* by calling `documentStore.Initialize()` at the bottom to finish off the code. It's a crucial part that connects to your database—without it, your code simply won't work. *DocumentStore* is the base for all RavenDB actions. It communicates with your cluster and can handle multiple databases. It's important to have a single instance of *DocumentStore* in place, to maintain a single connection definition to your database. You can learn more about *DocumentStore* [here](https://ravendb.net/docs/article-page/csharp/client-api/what-is-a-document-store) or [here](https://ravendb.net/docs/article-page/csharp/client-api/creating-document-store).
 
 In the end, the code should look like this.
 
@@ -151,7 +151,7 @@ documentStore.Initialize();
 
 ### Verify the connection
 
-Let's check the connection by loading a document from your database in the RavenDB Cloud. We will use Document*Session* to interact with *document*. *Session* is a basic mechanism that is used to modify, load, create, and keep track of *documents*. If you wish to learn more about *Sessions* you can read more in the [documentation](https://ravendb.net/docs/article-page/7.2/csharp/client-api/session/what-is-a-session-and-how-does-it-work). In the RavenDB Studio choose one of the *documents* you want to use. For this example, let's load a single Employee document and write its details in the console. Check the code below:
+Let's check the connection by loading a document from your database in the RavenDB Cloud. We will use Document*Session* to interact with *document*. *Session* is a basic mechanism that is used to modify, load, create, and keep track of *documents*. If you wish to learn more about *Sessions* you can read more in the [documentation](https://ravendb.net/docs/article-page/csharp/client-api/session/what-is-a-session-and-how-does-it-work). In the RavenDB Studio choose one of the *documents* you want to use. For this example, let's load a single Employee document and write its details in the console. Check the code below:
 
 ```csharp
 using (var session = documentStore.OpenSession()) 
