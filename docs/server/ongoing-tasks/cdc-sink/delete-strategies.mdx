@@ -40,9 +40,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 When `OnDelete` is `null` (or not set):
 
-* **Root table DELETE** — The corresponding RavenDB document is deleted
-* **Embedded table DELETE (Array/Map)** — The item is removed from the parent document's array or map
-* **Embedded table DELETE (Value)** — The `Value`-type property on the parent document is set to `null`
+* **Root table DELETE** - The corresponding RavenDB document is deleted
+* **Embedded table DELETE (Array/Map)** - The item is removed from the parent document's array or map
+* **Embedded table DELETE (Value)** - The `Value`-type property on the parent document is set to `null`
 
 ---
 
@@ -59,7 +59,7 @@ When `OnDelete` is `null` (or not set):
     // Available variables: this, $row, $old
     public string Patch \{ get; set; \}
 
-    // When true, the delete is not applied — document/item is kept
+    // When true, the delete is not applied - document/item is kept
     public bool IgnoreDeletes \{ get; set; \}
 \}
 `}
@@ -119,7 +119,7 @@ Use `put()` to create a document that survives the deletion:
 <CodeBlock language="csharp">
 {`OnDelete = new CdcSinkOnDeleteConfig
 \{
-    // IgnoreDeletes defaults to false — delete proceeds after patch
+    // IgnoreDeletes defaults to false - delete proceeds after patch
     Patch = @"
         // Create a permanent audit record in a separate collection
         put('DeletedOrders/' + this.Id, \{
@@ -151,7 +151,7 @@ where deletes should never result in document removal:
 {`OnDelete = new CdcSinkOnDeleteConfig
 \{
     IgnoreDeletes = true
-    // No patch — DELETE events are silently discarded
+    // No patch - DELETE events are silently discarded
 \}
 `}
 </CodeBlock>
@@ -205,13 +205,13 @@ Rather than removing a deleted line item from the array, move it to a separate
 </TabItem>
 </Tabs>
 
-With `IgnoreDeletes = true`, CDC Sink does not automatically remove the item —
+With `IgnoreDeletes = true`, CDC Sink does not automatically remove the item -
 the patch takes full control of both the `Lines` array and the `DeletedLines` audit trail.
 
 **Example: Run a patch but still remove the item**
 
 To run some logic on DELETE while still removing the item from the array,
-use `IgnoreDeletes = false` (default) — CDC Sink handles the removal, and the patch
+use `IgnoreDeletes = false` (default) - CDC Sink handles the removal, and the patch
 runs before it:
 
 <Tabs>
@@ -224,7 +224,7 @@ runs before it:
     // ...
     OnDelete = new CdcSinkOnDeleteConfig
     \{
-        // IgnoreDeletes = false (default) — CDC Sink removes the item after patch
+        // IgnoreDeletes = false (default) - CDC Sink removes the item after patch
         Patch = @"
             // Log total for the line being removed
             this.RemovedTotal = (this.RemovedTotal || 0)

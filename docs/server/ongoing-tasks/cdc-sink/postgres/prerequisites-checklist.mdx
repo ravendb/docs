@@ -129,7 +129,7 @@ Full details: [Permissions and Roles](./permissions-and-roles.mdx).
   index that includes the join columns. Without this, DELETE events will not include
   the old row values, and CDC Sink cannot identify which embedded item to remove.
   Alternatively, set `OnDelete.IgnoreDeletes = true` on the embedded table to skip
-  delete processing entirely — then no `REPLICA IDENTITY` change is required.
+  delete processing entirely - then no `REPLICA IDENTITY` change is required.
 
   See [REPLICA IDENTITY](./replica-identity.mdx).
 

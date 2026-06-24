@@ -16,8 +16,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 <Admonition type="note" title="">
 
-* SQL columns — binary (`bytea`, `varbinary`, etc.) or text (`text`, `nvarchar`, etc.)
-  — can be stored as RavenDB **attachments** by setting `Type = CdcColumnType.Attachment`
+* SQL columns - binary (`bytea`, `varbinary`, etc.) or text (`text`, `nvarchar`, etc.)
+  - can be stored as RavenDB **attachments** by setting `Type = CdcColumnType.Attachment`
   on the column mapping entry.
 
 * This applies to both root tables and embedded tables.
@@ -178,11 +178,11 @@ PrimaryKeyColumns = ["date", "seq"]  → date='2024-01', seq=3
 
 ## Attachment Lifecycle
 
-* **INSERT** — Attachment is created on the document
-* **UPDATE** — Attachment is replaced with the new binary data
-* **DELETE (embedded item)** — All attachments for that item are automatically removed
+* **INSERT** - Attachment is created on the document
+* **UPDATE** - Attachment is replaced with the new binary data
+* **DELETE (embedded item)** - All attachments for that item are automatically removed
   from the parent document
-* **DELETE (root document)** — Document and all its attachments are deleted
+* **DELETE (root document)** - Document and all its attachments are deleted
 
 ---
 

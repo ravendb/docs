@@ -17,7 +17,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="">
 
 * When a CDC Sink task is deleted from RavenDB, the associated PostgreSQL objects
-  — the replication slot and publication — are **not** automatically removed.
+  - the replication slot and publication - are **not** automatically removed.
 
 * These must be cleaned up manually by a database administrator.
 
@@ -77,7 +77,7 @@ WHERE slot_name LIKE 'rvn_cdc_s_%';
 </Tabs>
 
 An `active = false` slot is not being consumed. Compare the list to your active CDC
-Sink tasks in RavenDB — any slot whose corresponding task no longer exists is orphaned.
+Sink tasks in RavenDB - any slot whose corresponding task no longer exists is orphaned.
 
 List all CDC Sink publications:
 
@@ -126,7 +126,7 @@ task must be stopped or deleted in RavenDB before the slot can be dropped.
 </TabItem>
 </Tabs>
 
-Publications are not consumed like slots — they do not accumulate data or hold WAL
+Publications are not consumed like slots - they do not accumulate data or hold WAL
 segments. However, they should still be dropped to keep the database clean.
 
 ---
@@ -183,7 +183,7 @@ WHERE active = false;
 ## Slot and Publication Names Are Immutable
 
 The replication slot name and publication name are generated **once at task creation**
-using a GUID and stored with the task. They do not change when you modify the task —
+using a GUID and stored with the task. They do not change when you modify the task -
 adding or removing tables, renaming the task, or changing any other configuration
 always reuses the same slot and publication.
 
@@ -191,7 +191,7 @@ Attempting to specify a different `SlotName` or `PublicationName` when updating 
 task results in an error.
 
 If you need to use a different slot or publication, delete the task and create a new one.
-The old slot and publication from the deleted task must then be cleaned up manually —
+The old slot and publication from the deleted task must then be cleaned up manually -
 see [Dropping a Replication Slot](#dropping-a-replication-slot) and
 [Dropping a Publication](#dropping-a-publication) below.
 

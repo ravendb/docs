@@ -47,9 +47,9 @@ To create a CDC Sink task in the Studio:
 The task list shows:
 
 * **Task name** and **connection string name**
-* **State** — Active, Disabled, Error, or FallbackMode
-* **Responsible node** — the cluster node currently running the task
-* **Progress** — during initial load, shows which tables have been scanned
+* **State** - Active, Disabled, Error, or FallbackMode
+* **Responsible node** - the cluster node currently running the task
+* **Progress** - during initial load, shows which tables have been scanned
 
 Clicking on a task opens the detail view with per-table statistics.
 
@@ -62,7 +62,7 @@ form used for creation opens in edit mode.
 
 <Admonition type="warning" title="">
 The replication slot and publication names are **fixed at task creation** and do not
-change when you edit the task — regardless of whether names were auto-generated or
+change when you edit the task - regardless of whether names were auto-generated or
 specified explicitly.
 
 When you add or remove tables, CDC Sink continues using the same slot and publication
@@ -73,7 +73,7 @@ be kept in sync with the task configuration:
   run `ALTER PUBLICATION <name> ADD TABLE <table>;` when the task is saved. If it does
   not have permissions, a database administrator must run this manually.
 * **Removing a table:** `ALTER PUBLICATION <name> DROP TABLE <table>;` must be run
-  manually by a database administrator — CDC Sink does not remove tables from the
+  manually by a database administrator - CDC Sink does not remove tables from the
   publication automatically.
 
 Orphaned slots and publications must be dropped manually by the database administrator.
