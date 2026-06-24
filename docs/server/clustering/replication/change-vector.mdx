@@ -74,7 +74,7 @@ This happens when on document creation and
 any modification such as `PUT`, `PATCH`, `DELETE` or their bulk versions. 
 A delete operation will also cause RavenDB to update the document change vector, 
 however, at that point, the change vector will belong to
-the document tombstone (since the document itself has already been deleted).
+the [document tombstone](../../../monitoring/tombstones/overview.mdx) (since the document itself has already been deleted).
 
 A change vector is present in the document's metadata and each time
 a document is updated, the server will update the change vector. 
