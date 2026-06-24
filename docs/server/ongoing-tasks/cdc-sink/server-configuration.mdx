@@ -49,7 +49,7 @@ Larger values increase throughput but also increase memory usage per batch.
 
 Maximum number of seconds the CDC Sink process will stay in fallback mode after a failure before retrying. Fallback duration doubles on each consecutive failure, up to this cap.
 
-Set to `0` to disable fallback mode entirely — the task will retry immediately on each failure without exponential backoff.
+The first retry after a failure waits 5 seconds; subsequent retries grow toward this cap (roughly doubling based on the time since the last error), with a small random jitter added to avoid synchronized retries across multiple tasks.
 
 ---
 
