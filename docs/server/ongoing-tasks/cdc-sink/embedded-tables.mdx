@@ -203,7 +203,7 @@ directly joins to `departments`:
 <TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// Configuration for the employees embedded table:
-JoinColumns = ["company_id", "dept_id"]   // Root PK + parent PK
+JoinColumns = ["dept_id"]                 // FK to the direct parent (departments) PK
 PrimaryKeyColumns = ["emp_id"]
 `}
 </CodeBlock>
