@@ -34,6 +34,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
        * [Creating a new task](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx#creating-a-new-task)
        * [Available task types](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx#available-task-types)
     * [The ongoing tasks list](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx#the-ongoing-tasks-list)
+       * [Disabling tasks and tombstone cleanup](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx#disabling-tasks-and-tombstone-cleanup)
 
 </Admonition>
 <Panel heading="The ongoing tasks">
@@ -163,5 +164,28 @@ any task for editing.
       You can also expand each task bar for additional details and options related to the task.  
       ![Task bar - actions](./assets/task-list_task-bar_actions.png)
     * Other details and available actions vary by task type.
+
+---
+
+<ContentFrame>
+
+#### Disabling tasks and tombstone cleanup
+
+Disabling a task that processes tombstones (replication, ETL, or periodic backup) prevents
+[tombstone cleanup](../../../../monitoring/tombstones/overview.mdx#tombstone-cleanup) from removing 
+the tombstones the task would have processed, causing the accumulation of the unprocessed 
+tombstones until the task is re-enabled or deleted.
+
+Studio will warn you before disabling such a task:  
+
+![Warning when disabling a tombstone-processing task](./assets/task-list_disable-tombstone-warning.png)
+
+<Admonition type="note" title="">
+
+Subscriptions **do not process tombstones**, so disabling a subscription will show no warning.
+
+</Admonition>
+
+</ContentFrame>
 
 </Panel>
