@@ -147,8 +147,9 @@ See [REPLICA IDENTITY](../replica-identity.mdx) for more details.
                             SourceTableName = "variant_attributes",
                             PropertyName = "Attributes",
                             Type = CdcSinkRelationType.Array,
-                            // JoinColumns must include the ROOT PK for deep nesting
-                            JoinColumns = ["product_id", "variant_id"],
+                            // FK to the direct parent (product_variants) PK.
+                            // The root PK (product_id) must exist as a denormalized column but is NOT listed here.
+                            JoinColumns = ["variant_id"],
                             PrimaryKeyColumns = ["attr_id"],
                             Columns =
                             [

@@ -245,7 +245,7 @@ Embedded tables can themselves have embedded tables, creating arbitrarily deep h
                     SourceTableName = "employees",
                     PropertyName = "Employees",
                     Type = CdcSinkRelationType.Array,
-                    JoinColumns = ["company_id", "dept_id"],  // Root FK + parent FK
+                    JoinColumns = ["dept_id"],                // FK to the direct parent (departments) PK
                     PrimaryKeyColumns = ["emp_id"],
                     Columns =
                     [
