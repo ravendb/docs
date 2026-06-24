@@ -179,7 +179,7 @@ await store.Maintenance.SendAsync(new AddCdcSinkOperation(config));
 {`\{
     "ProductId": 42,
     "Name": "Hiking Boot",
-    "Category": "categories/3",
+    "Category": "Categories/3",
     "Variants": [
         \{
             "VariantId": 101,
@@ -209,7 +209,7 @@ await store.Maintenance.SendAsync(new AddCdcSinkOperation(config));
 
 <Admonition type="note" title="">
 The `Categories` collection is also synced by CDC Sink (it would be a separate
-root table configuration). `"categories/3"` is a standard RavenDB document ID
+root table configuration). `"Categories/3"` is a standard RavenDB document ID
 that enables the use of RavenDB includes when querying products.
 </Admonition>
 
