@@ -37,9 +37,9 @@ table whose join columns are not part of the primary key. This requires:
 * The CDC Sink user owns the table, **or**
 * The CDC Sink user has `SUPERUSER`
 
-If neither condition is met, CDC Sink will start but embedded table deletes may
-not work correctly. A database administrator must configure `REPLICA IDENTITY`
-manually.
+If neither condition is met, the CDC Sink task fails to start and reports a
+permissions error. A database administrator must configure `REPLICA IDENTITY`
+manually before the task can run.
 
 ---
 
