@@ -211,7 +211,7 @@ Specifies the structure of embedded data in the document.
 | PUT | `/databases/{db}/admin/cdc-sink` | DatabaseAdmin | Create CDC Sink task |
 | PUT | `/databases/{db}/admin/cdc-sink?id={taskId}` | DatabaseAdmin | Update CDC Sink task |
 | POST | `/databases/{db}/admin/cdc-sink/test` | DatabaseAdmin | Test a patch script |
-| POST | `/databases/{db}/admin/cdc-sink/verify` | DatabaseAdmin | Verify source database connectivity and CDC setup |
+| POST | `/databases/{db}/admin/cdc-sink/schema` | DatabaseAdmin | Discover the source schema (tables, columns, primary keys, foreign keys) |
 | GET | `/databases/{db}/cdc-sink/performance` | ValidUser | Get performance stats |
 | GET | `/databases/{db}/cdc-sink/performance/live` | ValidUser | WebSocket for live performance stats |
 
