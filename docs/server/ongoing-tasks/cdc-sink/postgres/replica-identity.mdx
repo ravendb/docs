@@ -47,7 +47,7 @@ columns, CDC Sink cannot perform steps 1 or 2.
 
 By default, PostgreSQL only includes the primary key columns in DELETE events.
 If the embedded table's join columns are part of the primary key, this is sufficient.
-If they are not — which is the common case when a table has a surrogate PK — the
+If they are not - which is the common case when a table has a surrogate PK - the
 DELETE event will be missing the columns needed to route it.
 
 ---
@@ -72,10 +72,10 @@ For CDC Sink, `FULL` is the simplest and most compatible choice.
 
 | Scenario | REPLICA IDENTITY needed? |
 |----------|------------------------|
-| Root table deletes | No — root documents are deleted by document ID |
-| Embedded table deletes where join columns ARE part of the PK | No — `DEFAULT` is sufficient |
-| Embedded table deletes where join columns are NOT part of the PK | **Yes** — `DEFAULT` is insufficient |
-| Embedded table where `OnDelete.IgnoreDeletes = true` is set | No — deletes are skipped, so delete routing isn't needed |
+| Root table deletes | No - root documents are deleted by document ID |
+| Embedded table deletes where join columns ARE part of the PK | No - `DEFAULT` is sufficient |
+| Embedded table deletes where join columns are NOT part of the PK | **Yes** - `DEFAULT` is insufficient |
+| Embedded table where `OnDelete.IgnoreDeletes = true` is set | No - deletes are skipped, so delete routing isn't needed |
 | Deep-nested embedded tables | Depends on the join column placement |
 
 **Example where REPLICA IDENTITY is needed:**

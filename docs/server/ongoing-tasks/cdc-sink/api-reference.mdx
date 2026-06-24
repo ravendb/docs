@@ -106,16 +106,16 @@ await store.Maintenance.SendAsync(
 </Tabs>
 
 <Admonition type="warning" title="">
-**PostgreSQL — table changes affect the publication:**
+**PostgreSQL - table changes affect the publication:**
 
 The replication slot and publication names are fixed at task creation and do not
 change when you update the task. However, the **publication** controls which tables
 CDC Sink receives changes for, so table changes require database-level updates:
 
-* **Adding tables** — If CDC Sink has the necessary permissions, it will automatically
+* **Adding tables** - If CDC Sink has the necessary permissions, it will automatically
   run `ALTER PUBLICATION <name> ADD TABLE <new_table>;` when the task is updated. If it
   does not have permissions, a database administrator must run this manually.
-* **Removing tables** — `ALTER PUBLICATION <name> DROP TABLE <removed_table>;` must be
+* **Removing tables** - `ALTER PUBLICATION <name> DROP TABLE <removed_table>;` must be
   run manually by a database administrator. CDC Sink does not remove tables from the
   publication automatically.
 
@@ -182,7 +182,7 @@ See [Monitoring PostgreSQL](./postgres/monitoring-postgres.mdx).
 **SQL Server:** Pausing a CDC Sink task for an extended period (days) may cause SQL Server
 to trim the CDC change tables, removing rows that have not yet been consumed. A short
 pause is safe. If the task is paused long enough that trimming occurs, CDC Sink will
-report an error on resume — the task may need to be recreated rather than simply resumed.
+report an error on resume - the task may need to be recreated rather than simply resumed.
 </Admonition>
 
 ---

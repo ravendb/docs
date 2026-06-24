@@ -1,7 +1,7 @@
 ---
 title: "CDC Sink: How It Works"
 sidebar_label: How It Works
-description: "Describes the internal operation of CDC Sink — how it connects to the source database, loads initial data, streams changes, and handles failover."
+description: "Describes the internal operation of CDC Sink - how it connects to the source database, loads initial data, streams changes, and handles failover."
 sidebar_position: 1
 ---
 
@@ -16,7 +16,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 <Admonition type="note" title="">
 
-* This page describes the internal operation of CDC Sink — how it connects to the
+* This page describes the internal operation of CDC Sink - how it connects to the
   source database, loads initial data, streams changes, and handles failover.
 
 * Understanding these mechanics is important when designing patches, planning for
@@ -75,12 +75,12 @@ then embedded tables. This minimises the number of stub documents created (see
 [Child Before Parent](#child-before-parent) below).
 
 <Admonition type="note" title="">
-**Change tracking is set up before the initial load begins — but CDC streaming does
+**Change tracking is set up before the initial load begins - but CDC streaming does
 not start until after the initial load completes.** The sequence is:
 
 1. Change-tracking infrastructure is created in the source database (e.g., a replication
    slot and publication for PostgreSQL, or CDC capture for SQL Server)
-2. The full initial table scan runs — changes made during this time are captured by the
+2. The full initial table scan runs - changes made during this time are captured by the
    source database but not yet consumed
 3. Once the initial load is complete, CDC streaming starts from the position captured in step 1
 
@@ -102,7 +102,7 @@ database's change log, starting from the position captured **before** the initia
 
 Changes arrive grouped by source database transaction, preserving the exact order
 of operations. A transaction is only applied to RavenDB after it is fully committed
-in the source database — partial transactions are never written.
+in the source database - partial transactions are never written.
 
 **Document merging:** When an UPDATE arrives, CDC Sink merges the new column values
 onto the existing RavenDB document. Properties that are not part of the column mapping
@@ -159,18 +159,18 @@ Different nodes in a cluster may have different versions of this document at any
 ### Failover Behavior
 
 When the cluster elects a new mentor node for the CDC Sink task, the new node reads
-the **replicated** state document — which may be older than the work the previous
+the **replicated** state document - which may be older than the work the previous
 mentor had completed but not yet replicated.
 
 The new mentor resumes from that replicated state. This means:
 
-* **No data is lost** — CDC Sink resumes from a known position and the source database
+* **No data is lost** - CDC Sink resumes from a known position and the source database
   retains all changes from that position onward
-* **Some changes may be re-read** — Changes between the replicated state and the
+* **Some changes may be re-read** - Changes between the replicated state and the
   previous mentor's actual progress will be processed again
 
 Re-reading is normal and expected. The document merge strategy means that re-applying
-the same INSERT or UPDATE is safe — column values are simply overwritten with the same values.
+the same INSERT or UPDATE is safe - column values are simply overwritten with the same values.
 
 <Admonition type="warning" title="">
 Patches that are not idempotent can produce incorrect results if the same change is
@@ -182,20 +182,20 @@ See [Patching](./patching.mdx) for guidance.
 
 ## Updating the Task Configuration
 
-When you update a CDC Sink task configuration — for example, adding or removing columns
+When you update a CDC Sink task configuration - for example, adding or removing columns
 from the `Columns` list, changing a `Patch` script, or modifying embedded table
-configuration — the changes take effect **only for new CDC events going forward**.
+configuration - the changes take effect **only for new CDC events going forward**.
 
 CDC Sink does not retroactively re-process existing documents. Documents that were
 already created retain their current structure. This means:
 
-* **Adding a new column mapping** — Existing documents will not have the new property.
+* **Adding a new column mapping** - Existing documents will not have the new property.
   Only documents created or updated by a subsequent CDC event will include it.
-* **Removing a column mapping** — Existing documents retain the property. It will no
+* **Removing a column mapping** - Existing documents retain the property. It will no
   longer be updated by CDC events, but it is not removed from existing documents.
-* **Changing a patch script** — The new patch runs on future events only. Existing
+* **Changing a patch script** - The new patch runs on future events only. Existing
   documents reflect the results of the previous patch.
-* **Adding an embedded or linked table** — Existing parent documents will not have the
+* **Adding an embedded or linked table** - Existing parent documents will not have the
   new embedded data until a CDC event for the embedded table row arrives.
 
 <Admonition type="tip" title="">
@@ -225,7 +225,7 @@ embedded child data. When CDC streaming begins after the initial load, it picks 
 missing parent row and merges its columns onto the stub document.
 
 The final document will contain both the parent fields and all embedded items. No data
-is lost — the brief intermediate state is resolved automatically once streaming starts.
+is lost - the brief intermediate state is resolved automatically once streaming starts.
 
 ---
 

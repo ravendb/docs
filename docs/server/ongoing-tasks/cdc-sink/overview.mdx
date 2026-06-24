@@ -24,13 +24,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
   The relational database is the source of truth; RavenDB receives a continuously-updated
   document model derived from it.
 
-* CDC Sink maps normalized relational tables into rich, nested RavenDB documents —
+* CDC Sink maps normalized relational tables into rich, nested RavenDB documents -
   automatically and in real time.
 
 * Supported source databases:
-  * **PostgreSQL** — via logical replication
-  * **SQL Server** — via native CDC (polling change tables)
-  * **MySQL / MariaDB** — via binlog replication
+  * **PostgreSQL** - via logical replication
+  * **SQL Server** - via native CDC (polling change tables)
+  * **MySQL / MariaDB** - via binlog replication
 
 * In this page:
   * [Why Use CDC Sink](#why-use-cdc-sink)
@@ -49,7 +49,7 @@ without requiring changes to the source system.
 
 * **Migrate from SQL to RavenDB**
   Transform normalized SQL tables (orders, order_lines, customers) into rich RavenDB
-  documents where an Order contains embedded LineItems and a reference to the Customer —
+  documents where an Order contains embedded LineItems and a reference to the Customer -
   automatically and continuously, without changing your SQL application.
 
 * **Build a read-optimized view**
@@ -63,7 +63,7 @@ without requiring changes to the source system.
 
 * **Event-driven side effects**
   Using JavaScript patches, every INSERT, UPDATE, or DELETE in the source database can
-  trigger custom logic in RavenDB — computing derived fields, maintaining running totals,
+  trigger custom logic in RavenDB - computing derived fields, maintaining running totals,
   or writing custom transformations.
 
 ---
@@ -86,7 +86,7 @@ from where it left off rather than re-scanning.
 
 After the initial load, CDC Sink switches to streaming changes in real time.
 Changes are grouped into transactions, preserving the exact order of operations
-from the source database. Partial transactions are never written to RavenDB —
+from the source database. Partial transactions are never written to RavenDB -
 all changes within a source database transaction are applied together.
 
 ### Document Model
@@ -103,21 +103,21 @@ See [Schema Design](./schema-design.mdx) for details.
 
 ## Task Lifecycle
 
-1. **Create** — Define the task in Studio or via the Client API
+1. **Create** - Define the task in Studio or via the Client API
    Specify the connection string, table mappings, and transformation options
 
-2. **Verify** — CDC Sink verifies the source database is properly configured
+2. **Verify** - CDC Sink verifies the source database is properly configured
    Checks permissions, replication prerequisites, and table configuration
 
-3. **Initial Load** — Full table scan populates RavenDB with current data
+3. **Initial Load** - Full table scan populates RavenDB with current data
    Progress is tracked per-table and persists across restarts
 
-4. **Stream** — Real-time change streaming begins
+4. **Stream** - Real-time change streaming begins
    All INSERTs, UPDATEs, and DELETEs are applied to RavenDB documents as they occur
 
-5. **Monitor** — View statistics, errors, and progress in Studio
+5. **Monitor** - View statistics, errors, and progress in Studio
 
-6. **Retire** — Delete the task in RavenDB when no longer needed
+6. **Retire** - Delete the task in RavenDB when no longer needed
    PostgreSQL artifacts (replication slot, publication) must be cleaned up by
    the database administrator separately
 

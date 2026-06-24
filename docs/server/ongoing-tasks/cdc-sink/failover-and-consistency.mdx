@@ -47,7 +47,7 @@ Different nodes in a cluster may have different versions of this document at any
 ## Failover Behavior
 
 When the cluster elects a new mentor node for a CDC Sink task, the new node reads
-the **replicated state** — which may be older than the work the previous mentor
+the **replicated state** - which may be older than the work the previous mentor
 completed but had not yet replicated.
 
 **Example:**
@@ -56,9 +56,9 @@ completed but had not yet replicated.
 <TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`Before failure:
-├─ Node A (Mentor)  — Processed up to position X, state document not yet replicated
-├─ Node B (Replica) — State document shows position X-100 (older, replicated state)
-└─ Node C (Replica) — State document shows position X-100
+├─ Node A (Mentor)  - Processed up to position X, state document not yet replicated
+├─ Node B (Replica) - State document shows position X-100 (older, replicated state)
+└─ Node C (Replica) - State document shows position X-100
 
 Node A crashes.
 Node B is elected new mentor.
@@ -81,12 +81,12 @@ them either way.
 
 When the new mentor resumes from an older position:
 
-* Changes that were already processed and fully replicated — re-applied (idempotent merge)
-* Changes that were processed but not yet replicated — applied for the "first time" on new node
-* New changes not yet seen — applied normally
+* Changes that were already processed and fully replicated - re-applied (idempotent merge)
+* Changes that were processed but not yet replicated - applied for the "first time" on new node
+* New changes not yet seen - applied normally
 
 Re-reading is normal and expected. The document merge strategy ensures that re-applying
-an INSERT or UPDATE with the same values is safe — properties are simply overwritten
+an INSERT or UPDATE with the same values is safe - properties are simply overwritten
 with the same values they already have.
 
 <Admonition type="warning" title="">
@@ -104,7 +104,7 @@ CDC Sink provides **at-least-once delivery** with **eventual consistency**:
 * ✓ Changes are applied in source transaction order
 * ✓ After failover, progress resumes from the last replicated state
 * ✓ Idempotent patches ensure re-reads are safe
-* ✗ No "exactly once" guarantee — the same change may be applied more than once
+* ✗ No "exactly once" guarantee - the same change may be applied more than once
 
 This is the same model used by other ongoing tasks in RavenDB.
 
@@ -115,7 +115,7 @@ This is the same model used by other ongoing tasks in RavenDB.
 A patch is **idempotent** if applying it multiple times produces the same result as
 applying it once.
 
-**Column mapping is always idempotent** — overwriting a property with the same value
+**Column mapping is always idempotent** - overwriting a property with the same value
 is a no-op.
 
 **Patches that use absolute values are idempotent:**
@@ -123,7 +123,7 @@ is a no-op.
 <Tabs>
 <TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
-{`// Idempotent — always sets to the current SQL value
+{`// Idempotent - always sets to the current SQL value
 this.Status = $row.is_active ? 'Active' : 'Inactive';
 this.ViewCount = $row.view_count;
 `}
@@ -136,7 +136,7 @@ this.ViewCount = $row.view_count;
 <Tabs>
 <TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
-{`// NOT idempotent — increments again on re-read
+{`// NOT idempotent - increments again on re-read
 this.ViewCount = (this.ViewCount || 0) + 1;
 `}
 </CodeBlock>
@@ -149,7 +149,7 @@ embedded item state, not the document's accumulated value:
 <Tabs>
 <TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
-{`// Idempotent — delta is recomputed correctly on re-read
+{`// Idempotent - delta is recomputed correctly on re-read
 const oldAmount = $old?.Amount || 0;
 const newAmount = $row.amount || 0;
 this.RunningTotal = (this.RunningTotal || 0) + (newAmount - oldAmount);
@@ -159,7 +159,7 @@ this.RunningTotal = (this.RunningTotal || 0) + (newAmount - oldAmount);
 </Tabs>
 
 On re-read, `$old` still reflects the state before the update, and `$row` still
-reflects the new state — so the delta is the same as on the first read.
+reflects the new state - so the delta is the same as on the first read.
 
 ---
 

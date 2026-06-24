@@ -101,15 +101,15 @@ In the patch script:
 <Tabs>
 <TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
-{`// $row — SQL column names, raw SQL types
+{`// $row - SQL column names, raw SQL types
 $row.customer_name   // string
 $row.amount          // number (from numeric/decimal column)
 
-// $old — mapped property names, stored JSON types
+// $old - mapped property names, stored JSON types
 $old.CustomerName    // string (as stored in RavenDB)
 $old.Amount          // number (as stored in RavenDB)
 
-// this — the document after column mapping has been applied for this event
+// this - the document after column mapping has been applied for this event
 this.CustomerName    // string (just set from $row.customer_name)
 this.Amount          // number (just set from $row.amount)
 `}
@@ -118,7 +118,7 @@ this.Amount          // number (just set from $row.amount)
 </Tabs>
 
 <Admonition type="note" title="">
-Unmapped columns — those not listed in `Columns` — appear in `$row` but are never
+Unmapped columns - those not listed in `Columns` - appear in `$row` but are never
 written to the document and therefore never appear in `$old`.
 </Admonition>
 
@@ -142,7 +142,7 @@ database type.
 | `uuid` | `string` | |
 | `varchar` / `text` / `char` | `string` | |
 | `bytea` | `string` | Base64-encoded |
-| `json` / `jsonb` | `string` | Raw JSON text — call `JSON.parse()` to access as an object / array |
+| `json` / `jsonb` | `string` | Raw JSON text - call `JSON.parse()` to access as an object / array |
 | `text[]` / `varchar[]` / `int[]` / etc. | `Array` | Elements are always strings, even for numeric array types |
 | `vector` (pgvector) | `Array` | Elements are JavaScript numbers (floats) |
 
@@ -168,7 +168,7 @@ this.Label = meta.label;
 this.FirstTag = $row.tags[0];
 this.Tags = $row.tags;
 
-// INT[] elements are strings — parse explicitly if numeric arithmetic is needed
+// INT[] elements are strings - parse explicitly if numeric arithmetic is needed
 var first = parseInt($row.scores[0], 10);
 `}
 </CodeBlock>
@@ -263,13 +263,13 @@ Without it, deletes will leave the aggregate in an incorrect state.
         new CdcColumnMapping() \{ Column = "quantity", Name = "Quantity" \},
     ],
 
-    // Runs on INSERT and UPDATE — recomputes total from current Lines array
+    // Runs on INSERT and UPDATE - recomputes total from current Lines array
     Patch = @"
         this.TotalQuantity = (this.Lines || [])
             .reduce((sum, line) => sum + (line.Quantity || 0), 0);
     ",
 
-    // REQUIRED: Runs on DELETE — recomputes after item is removed from array
+    // REQUIRED: Runs on DELETE - recomputes after item is removed from array
     OnDelete = new CdcSinkOnDeleteConfig
     \{
         Patch = @"
@@ -398,7 +398,7 @@ if (customer) \{
     this.CustomerEmail = customer.Email;
     this.CustomerTier = customer.Tier;
 \} else \{
-    // Document doesn't exist yet — race condition or not yet synced
+    // Document doesn't exist yet - race condition or not yet synced
     this.CustomerName = null;
     this.CustomerEmail = null;
 \}
@@ -416,7 +416,7 @@ Always check for null before accessing properties.
 * Denormalizing slowly-changing reference data (customer name, category, region)
 * Capturing a snapshot of related data at insert time
 
-**Prefer linked tables** for simple foreign key references — they are cleaner and
+**Prefer linked tables** for simple foreign key references - they are cleaner and
 do not have the null-handling complexity of `load()`.
 
 ---
@@ -432,13 +432,13 @@ and re-applied.
 <Tabs>
 <TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
-{`// NOT idempotent — increments again on re-read
+{`// NOT idempotent - increments again on re-read
 this.ViewCount = (this.ViewCount || 0) + 1;
 
-// Idempotent — absolute value from SQL source
+// Idempotent - absolute value from SQL source
 this.ViewCount = $row.view_count;
 
-// Idempotent — delta via $old (both first-read and re-read produce same result)
+// Idempotent - delta via $old (both first-read and re-read produce same result)
 const oldVal = $old?.Amount || 0;
 const newVal = $row.amount || 0;
 this.RunningTotal = (this.RunningTotal || 0) + (newVal - oldVal);
@@ -447,7 +447,7 @@ this.RunningTotal = (this.RunningTotal || 0) + (newVal - oldVal);
 </TabItem>
 </Tabs>
 
-Column mapping itself is idempotent — overwriting a property with the same value
+Column mapping itself is idempotent - overwriting a property with the same value
 is always safe.
 
 ---
@@ -462,7 +462,7 @@ See [Patching Configuration](../../../server/configuration/patching-configuratio
 
 If a patch exceeds the limit, the CDC operation fails and is retried.
 
-Keep patches focused and efficient — prefer `.filter()` + `.reduce()` over nested loops.
+Keep patches focused and efficient - prefer `.filter()` + `.reduce()` over nested loops.
 
 ---
 

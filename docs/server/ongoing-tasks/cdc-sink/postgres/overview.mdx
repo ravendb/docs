@@ -1,7 +1,7 @@
 ---
 title: "CDC Sink for PostgreSQL: Overview"
 sidebar_label: Overview
-description: "CDC Sink support for PostgreSQL — using logical replication to stream changes into RavenDB in real time."
+description: "CDC Sink support for PostgreSQL - using logical replication to stream changes into RavenDB in real time."
 sidebar_position: -1
 ---
 
@@ -55,11 +55,11 @@ changes without polling. This gives low-latency, near-real-time replication.
 
 Key PostgreSQL concepts:
 
-* **Replication slot** — a server-side cursor that tracks how far a consumer has read.
+* **Replication slot** - a server-side cursor that tracks how far a consumer has read.
   CDC Sink creates and manages one automatically.
-* **Publication** — defines which tables are included in the replication stream.
+* **Publication** - defines which tables are included in the replication stream.
   CDC Sink creates one automatically for the configured tables.
-* **WAL (Write-Ahead Log)** — PostgreSQL retains WAL segments as long as a replication
+* **WAL (Write-Ahead Log)** - PostgreSQL retains WAL segments as long as a replication
   slot has not consumed them. An inactive or paused task causes WAL to accumulate.
 
 ---
@@ -111,13 +111,13 @@ The `SourceTableSchema` defaults to `"public"` when using PostgreSQL.
 
 ## In This Section
 
-* [Prerequisites Checklist](./prerequisites-checklist.mdx) — what to verify before creating a task
-* [Initial Setup](./initial-setup.mdx) — creating the replication slot and publication
-* [WAL Configuration](./wal-configuration.mdx) — PostgreSQL WAL settings
-* [Permissions and Roles](./permissions-and-roles.mdx) — required database permissions
-* [REPLICA IDENTITY](./replica-identity.mdx) — configuring DELETE event content
-* [Monitoring PostgreSQL](./monitoring-postgres.mdx) — replication lag and WAL monitoring
-* [Cleanup and Maintenance](./cleanup-and-maintenance.mdx) — dropping orphaned slots
-* [Studio UI](./studio-ui.mdx) — creating tasks through the Studio interface
+* [Prerequisites Checklist](./prerequisites-checklist.mdx) - what to verify before creating a task
+* [Initial Setup](./initial-setup.mdx) - creating the replication slot and publication
+* [WAL Configuration](./wal-configuration.mdx) - PostgreSQL WAL settings
+* [Permissions and Roles](./permissions-and-roles.mdx) - required database permissions
+* [REPLICA IDENTITY](./replica-identity.mdx) - configuring DELETE event content
+* [Monitoring PostgreSQL](./monitoring-postgres.mdx) - replication lag and WAL monitoring
+* [Cleanup and Maintenance](./cleanup-and-maintenance.mdx) - dropping orphaned slots
+* [Studio UI](./studio-ui.mdx) - creating tasks through the Studio interface
 
 ---

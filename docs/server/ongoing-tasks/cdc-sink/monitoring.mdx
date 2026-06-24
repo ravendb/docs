@@ -1,7 +1,7 @@
 ---
 title: "CDC Sink: Monitoring"
 sidebar_label: Monitoring
-description: "Explains how to monitor a CDC Sink task — its running state, progress, fallback behavior, and statistics available through Management Studio and the API."
+description: "Explains how to monitor a CDC Sink task - its running state, progress, fallback behavior, and statistics available through Management Studio and the API."
 sidebar_position: 12
 ---
 
@@ -16,7 +16,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 <Admonition type="note" title="">
 
-* This page explains how to monitor a CDC Sink task — its running state, progress,
+* This page explains how to monitor a CDC Sink task - its running state, progress,
   fallback behavior, and statistics available through the Management Studio and API.
 
 * In this page:
@@ -35,7 +35,7 @@ A CDC Sink task can be in one of the following states:
 
 | State | Description |
 |-------|-------------|
-| `Active` | Running normally — streaming changes or waiting for new changes |
+| `Active` | Running normally - streaming changes or waiting for new changes |
 | `ActiveByAnotherNode` | Another cluster node is the mentor; this node is a replica |
 | `Disabled` | Manually disabled via Studio or API |
 | `Error` | The task encountered an error and stopped |
@@ -85,7 +85,7 @@ The returned object includes:
 | `ResponsibleNode` | Node currently running the task |
 | `Error` | Error message if the task is in error state |
 
-Detailed per-table statistics — including row counts and last processed position —
+Detailed per-table statistics - including row counts and last processed position -
 are available through the Management Studio's ongoing tasks detail view.
 
 ---
@@ -105,7 +105,7 @@ making it straightforward to diagnose the root cause.
 
 ## Error Handling
 
-CDC Sink tolerates individual document processing errors — each failure is logged
+CDC Sink tolerates individual document processing errors - each failure is logged
 and recorded, but processing continues for the remaining documents in the batch.
 The CDC position advances as long as the error ratio stays within acceptable bounds.
 
@@ -119,7 +119,7 @@ retry, up to the limit set by `CdcSink.MaxFallbackTimeInSec` (default 15 minutes
 See [Server Configuration](./server-configuration.mdx) and [Fallback Mode](#fallback-mode).
 
 **Patch errors:**
-Patch errors — including `MaxSteps exceeded` — fail only the affected document.
+Patch errors - including `MaxSteps exceeded` - fail only the affected document.
 The rest of the batch continues normally.
 
 ---

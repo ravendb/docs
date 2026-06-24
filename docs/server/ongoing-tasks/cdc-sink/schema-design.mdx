@@ -17,8 +17,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="">
 
 * CDC Sink maps a relational schema to a RavenDB document model through configuration.
-  This page explains the three building blocks — root tables, embedded tables, and
-  linked tables — and how to combine them.
+  This page explains the three building blocks - root tables, embedded tables, and
+  linked tables - and how to combine them.
 
 * In this page:
   * [Root Tables](#root-tables)
@@ -180,8 +180,8 @@ All PK columns must be present in every INSERT, UPDATE, and DELETE event.
 
 An embedded table needs:
 
-* **PrimaryKeyColumns** — Used to match items within the parent's array for UPDATE and DELETE
-* **JoinColumns** — Foreign key referencing the parent's `PrimaryKeyColumns`
+* **PrimaryKeyColumns** - Used to match items within the parent's array for UPDATE and DELETE
+* **JoinColumns** - Foreign key referencing the parent's `PrimaryKeyColumns`
 
 The `JoinColumns` must correspond 1:1 (same count and order) to the parent's `PrimaryKeyColumns`:
 
@@ -287,7 +287,7 @@ in a single pass, without additional lookups.
 </Tabs>
 
 Including all routing columns in the primary key also avoids the need for REPLICA IDENTITY
-configuration — the default DELETE events include all PK columns.
+configuration - the default DELETE events include all PK columns.
 
 ---
 
@@ -301,13 +301,13 @@ The `Type` property on embedded tables controls the document structure:
 | `Map` | One-to-many with direct key lookup | `"Lines": \{ "1": \{ ... \}, "2": \{ ... \} \}` |
 | `Value` | Many-to-one: parent has one child | `"Customer": \{ ... \}` |
 
-**Array** — Items are matched by `PrimaryKeyColumns` for UPDATE and DELETE.
+**Array** - Items are matched by `PrimaryKeyColumns` for UPDATE and DELETE.
 Use when you need to iterate over all items.
 
-**Map** — Items are stored as a JSON object keyed by the primary key value(s).
+**Map** - Items are stored as a JSON object keyed by the primary key value(s).
 Use when you need fast direct-key access within the document.
 
-**Value** — Stores a single embedded object.
+**Value** - Stores a single embedded object.
 Use for many-to-one relationships (many orders share one customer).
 
 ---
