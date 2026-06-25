@@ -115,7 +115,7 @@ const config: Config = {
                     lastmod: "date",
                     changefreq: null,
                     priority: null,
-                    ignorePatterns: LEGACY_VERSIONS.map((v) => `/${v}/**`),
+                    ignorePatterns: [...ACTIVE_VERSIONS, ...LEGACY_VERSIONS].map((v) => `/${v}/**`),
                 },
                 googleTagManager: {
                     containerId: "GTM-TDH4JWF2",
