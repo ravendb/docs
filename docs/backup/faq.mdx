@@ -1,6 +1,7 @@
 ---
 title: "FAQ"
 sidebar_label: "FAQ"
+description: "Frequently asked questions about backup and restore in RavenDB: one-time backups, server-wide backups, retention, failure handling, and behavior in a cluster."
 sidebar_position: 90
 ---
 
@@ -39,13 +40,13 @@ import ContentFrame from "@site/src/components/ContentFrame";
 ### Is there a one-time backup?
 
 Yes, you can create a backup for any database immediately.  
-It is recommended to run [periodic backup tasks](../backup/create/periodic-tasks/database-backup) that continuously create backups at predefined time intervals, but it is also possible to create one-time backups whenever needed.  
+It is recommended to run [periodic backup tasks](../backup/create/periodic-tasks/database-backup.mdx) that continuously create backups at predefined time intervals, but it is also possible to create one-time backups whenever needed.  
 
 There are two ways to create a backup immediately:
 * Configuring and running a one-time backup operation.  
 * Triggering any existing database backup task to create a backup immediately, outside its schedule.  
 
-[Learn to create a one-time backup via the client API or Studio](../backup/create/one-time-backup)
+[Learn to create a one-time backup via the client API or Studio](../backup/create/one-time-backup.mdx)
 
 </ContentFrame>
 
@@ -58,14 +59,14 @@ Yes, instead of creating a backup task for each database individually, you can d
 - The server will apply your backup configuration to all databases by creating per-database backup tasks.  
   Even databases added **after** the server-wide task was defined will be included in the backup when they are created.  
 
-- Backups will be kept for each database separately, containing [the same content](../backup/overview#backup-content) as regular database backups.  
+- Backups will be kept for each database separately, containing [the same content](../backup/overview.mdx#backup-content) as regular database backups.  
 
-- After backing up all databases, you can rebuild the [cluster configuration and nodes setup](../start/getting-started.mdx#installation--setup) and [restore the databases](../backup/restore) one by one.  
+- After backing up all databases, you can rebuild the [cluster configuration and nodes setup](../start/getting-started.mdx#installation--setup) and [restore the databases](../backup/restore.mdx) one by one.  
 
-- You can **prevent downtime** while rebuilding the cluster by [replicating any database](../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview).  
+- You can **prevent downtime** while rebuilding the cluster by [replicating any database](../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx).  
   This will keep a live version of the database and maintain the replica as a failover.  
 
-[Learn to create a periodic server-wide backup task](../backup/create/periodic-tasks/server-wide-backup)
+[Learn to create a periodic server-wide backup task](../backup/create/periodic-tasks/server-wide-backup.mdx)
 
 </ContentFrame>
 
@@ -73,7 +74,7 @@ Yes, instead of creating a backup task for each database individually, you can d
 
 ### Is an External Replication task a good substitute for a backup task?  
 
-Although [external replication](../studio/database/tasks/ongoing-tasks/external-replication-task) and [backup](../backup/create/periodic-tasks/database-backup) tasks are both ongoing routines that safeguard your data, their aims and methods are very different.  
+Although [external replication](../studio/database/tasks/ongoing-tasks/external-replication-task.mdx) and [backup](../backup/create/periodic-tasks/database-backup.mdx) tasks are both ongoing routines that safeguard your data, their aims and methods are very different.  
 
 * An external replication task provides you with a live off-site copy of a database, instantly replicating any changes to the database content.  
    Having a replica ready to immediately take over can help when:  
@@ -120,7 +121,7 @@ It also lacks many advantages of periodic backup tasks, including:
 
 By default, RavenDB does **not** automatically delete old backups. Backups are stored indefinitely, and will only be deleted when you remove them.  
 
-You can, however, set a [retention policy](../backup/overview#retention-policy) that defines an expiration age for backups. Backups whose age exceeds this limit will be automatically deleted.
+You can, however, set a [retention policy](../backup/overview.mdx#retention-policy) that defines an expiration age for backups. Backups whose age exceeds this limit will be automatically deleted.
 
 </ContentFrame>
 
@@ -131,7 +132,7 @@ You can, however, set a [retention policy](../backup/overview#retention-policy) 
 It is recommended **not** to store backups on the same drive as your database data files, since both the database and the backups would be exposed to the same risks.  
 For example, disk space may run low as backups accumulate or the database grows.  
 
-One-time backup operations and periodic backup tasks can keep backups in a [variety of destinations](../backup/overview#backup-storage), including a local path, an FTP target, and cloud destinations like Azure storage or Google Cloud.  
+One-time backup operations and periodic backup tasks can keep backups in a [variety of destinations](../backup/overview.mdx#backup-storage), including a local path, an FTP target, and cloud destinations like Azure storage or Google Cloud.  
 For example, you can set a backup task to keep backups locally as well as send them to an Amazon S3 bucket. 
 
 </ContentFrame>
@@ -152,7 +153,39 @@ For example, you can set a backup task to keep backups locally as well as send t
 
 ### What happens if the node responsible for a backup task is down?
 
-When the responsible node is down during the scheduled time, another node from the database group will assume ownership of the task, so there will be no gaps in the backup schedule.
+When the responsible node enters the
+[Rehab state](../server/clustering/distribution/distributed-database.mdx#database-topology),
+the [cluster observer](../server/clustering/distribution/cluster-observer.mdx)
+does not move the backup task immediately.  
+Instead, it waits a grace period (30 minutes by default) before reassigning the task
+to another database-group member.  
+The grace period gives the original node a chance to recover,
+and prevents the same backup from running on two nodes at once.  
+
+* **Who picks the responsible node:**  
+  When you create a backup task, you can pick the responsible node yourself,
+  or leave it for the cluster to decide.  
+  The choice (yours or the cluster's) is persisted cluster-wide,
+  so all nodes agree on a single responsible node for the task.  
+
+* **If the node is in Rehab due to resource constraints on the host machine:**  
+  The cluster observer will leave the backup task on the same node rather than reassign it.  
+  The backup will run on that node once it recovers,
+  or be reassigned to another node if this one is eventually removed from the database group.  
+
+The grace period is configurable via
+[Backup.MoveToNewResponsibleNodeGracePeriodInMin](../backup/configuration.mdx#backupmovetonewresponsiblenodegraceperiodinmin).
+
+<Admonition type="note" title="">
+
+A backup task that is **pinned** to its mentor node (via `PinToMentorNode`)
+is an exception to the behavior described above.  
+A pinned task is not subject to the grace period.  
+It stays on its node even while the node is in Rehab,
+and only moves to another node when its pinned node is removed from the database group.  
+See [Pinning a Task](../server/clustering/distribution/highly-available-tasks.mdx#pinning-a-task) for the full behavior.
+
+</Admonition>
 
 </ContentFrame>
 

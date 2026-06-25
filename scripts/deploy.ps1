@@ -185,6 +185,12 @@ if ($LASTEXITCODE) { throw 'Docusaurus build failed' }
 $BuildDir = [IO.Path]::Combine($PSScriptRoot, '..', 'build')
 if (-not (Test-Path $BuildDir)) { throw "Build folder not produced ($BuildDir)" }
 
+# Warn on empty (0-byte) assets under build/assets/ (static/ files may be 0 bytes on purpose).
+$empty = Get-ChildItem (Join-Path $BuildDir 'assets') -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -eq 0 }
+if ($empty) {
+    Write-Warning "Build produced $($empty.Count) empty (0-byte) asset(s) under assets/, e.g.: $(($empty | Select-Object -First 10 -ExpandProperty Name) -join ', ')"
+}
+
 if ($DryRun) {
     Write-Host "Dry run mode enabled. Skipping sync to s3://$S3BucketName/, CloudFront KeyValueStore update and CloudFront invalidation." -ForegroundColor Yellow
 } else {
@@ -193,9 +199,9 @@ if ($DryRun) {
 
     # Phase 1 — upload new hashed assets without --delete so old bundles remain
     # on S3 while CloudFront still serves the old index.html from edge cache
-    # cached aggresively 
+    # cached aggresively
     Write-Host "  [1/4] Upload: hashed assets (assets/*)" -ForegroundColor Gray
-    aws s3 sync $BuildDir "s3://$S3BucketName/" `
+    aws s3 sync $BuildDir "s3://$S3BucketName/" --only-show-errors `
         --exclude "*" `
         --include "assets/*" `
         --cache-control "public, max-age=31536000, immutable"
@@ -205,7 +211,7 @@ if ($DryRun) {
     # these files share the same URLs across deploys (no hashing), so the only
     # deletions are pages intentionally removed from the docs
     Write-Host "  [2/4] Sync: static files with --delete (HTML, images, icons, sitemap, robots.txt, etc.)" -ForegroundColor Gray
-    aws s3 sync $BuildDir "s3://$S3BucketName/" `
+    aws s3 sync $BuildDir "s3://$S3BucketName/" --only-show-errors `
         --exclude "assets/*" `
         --cache-control "public, max-age=3600, must-revalidate" `
         --delete
@@ -225,7 +231,7 @@ if ($DryRun) {
     # Phase 4 — CloudFront now serves only the new index.html, so old hashed
     # bundles are no longer referenced and can be safely removed
     Write-Host "  [4/4] Cleanup: removing stale hashed assets from S3" -ForegroundColor Gray
-    aws s3 sync $BuildDir "s3://$S3BucketName/" `
+    aws s3 sync $BuildDir "s3://$S3BucketName/" --only-show-errors `
         --exclude "*" `
         --include "assets/*" `
         --cache-control "public, max-age=31536000, immutable" `

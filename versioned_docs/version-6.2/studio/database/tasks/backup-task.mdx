@@ -126,6 +126,7 @@ Select the content to back up. Note: Both incremental and full backups can be sc
     The Full Backup that is done the first time will be either a 'Backup' or a 'Snapshot', depending on the type selected.  
     * Data that is backed up in **Incremental Backup** is _always_ of type 'Backup' - even if the Backup Task Type is 'Snapshot'.  
     'Backup' types save index definitions, but not the fully built indexes.  
+    * If the database has not changed since the last backup, the incremental backup is skipped - no backup file is produced.  
 
  Schedule the Backup Tasks to occur at regular intervals (daily, monthly, hourly, every minute) at specific times.  
 
@@ -150,6 +151,9 @@ Old backups are deleted after the defined time period during the next scheduled 
  1. Enable / disable the retention policy. If disabled, the backups are stored indefinitely, which may use a lot of storage.  
     **We recommend enabling** it so that the deletion of obsolete backups can be scheduled.  
  2. Select the retention period.  
+
+* The retention policy treats a **full backup** and its **incremental backups** as one unit.  
+  The group is only deleted when the **newest incremental backup** in the group exceeds the retention period.  
 
 <Admonition type="info" title="">
 

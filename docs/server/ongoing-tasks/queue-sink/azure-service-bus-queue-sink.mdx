@@ -1,0 +1,638 @@
+---
+title: "Queue Sink: Azure Service Bus"
+sidebar_label: "Azure Service Bus Queue Sink"
+description: "Consume messages from Azure Service Bus queues and topic subscriptions and write them into RavenDB documents using queue sink tasks with JavaScript processing scripts."
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Queue Sink: Azure Service Bus
+
+<Admonition type="note" title="">
+
+* **Azure Service Bus** is Microsoft Azure's fully managed message broker.  
+  The broker carries messages between applications (like microservices,
+  or a web app and its background workers) through queues or topics
+  with subscriptions.
+
+* RavenDB can consume messages from Azure Service Bus by running an ongoing
+  **sink task**.  
+  The task reads JSON-formatted messages from a queue or a topic subscription,
+  runs a user-defined script over each message, and stores the documents the
+  script produces in RavenDB collections.
+
+* The sink task connects to an Azure Service Bus
+  [namespace](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview#namespaces)
+  using one of three authentication methods:
+   * a SAS (Shared Access Signature) connection string
+   * Entra ID application credentials
+   * passwordless authentication (using a managed identity)
+
+* This page explains how to define an Azure Service Bus sink task using the client API.  
+  To configure this task in Studio, see the
+  [Azure Service Bus Queue Sink Task](../../../studio/database/tasks/ongoing-tasks/azure-service-bus-queue-sink.mdx) page.  
+  To learn about RavenDB queue sinks in general, see the
+  [Queue Sink overview](../../../server/ongoing-tasks/queue-sink/overview.mdx).
+
+* In this article:
+  * [The Azure Service Bus Sink Task](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#the-azure-service-bus-sink-task)
+     * [Connecting an Azure Service Bus namespace](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#connecting-an-azure-service-bus-namespace)
+     * [Selecting message sources](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#selecting-message-sources)
+     * [Retrieving enqueued messages](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#retrieving-enqueued-messages)
+     * [Running user-defined scripts](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#running-user-defined-scripts)
+     * [Storing documents in RavenDB collections](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#storing-documents-in-ravendb-collections)
+  * [Client API](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#client-api)
+     * [Adding an Azure Service Bus connection string](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#adding-an-azure-service-bus-connection-string)
+     * [Adding an Azure Service Bus sink task](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#adding-an-azure-service-bus-sink-task)
+  * [Configuration Options](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#configuration-options)
+  * [Syntax](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#syntax)
+     * [Methods](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#methods)
+     * [Classes](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#classes)
+
+</Admonition>
+
+<Panel heading="The Azure Service Bus Sink Task">
+
+<ContentFrame>
+
+### Connecting an Azure Service Bus namespace
+
+A RavenDB sink task is a **consumer** in the Azure Service Bus architecture, reading
+the messages that producer applications place on the broker.
+
+The task connects to an Azure Service Bus namespace using a connection string that you
+register with RavenDB. The connection string identifies the namespace and holds the
+credentials that the task authenticates with.
+
+Read [below](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#adding-an-azure-service-bus-connection-string)
+about adding a connection string via the client API.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Selecting message sources
+
+Each sink script lists one or more **sources**.
+
+A source is either:
+
+* a **queue**, identified by its name, or
+* a **topic subscription**, identified by its topic and subscription names.
+
+One script can read from several sources, and a sink task can run several scripts, so a
+single task can consume from any mix of queues and subscriptions in the same namespace.
+
+Learn [below](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#adding-an-azure-service-bus-sink-task)
+how to specify each source via the client API.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Retrieving enqueued messages
+
+<Admonition type="note" title="">
+
+A running sink task prevents RavenDB from unloading its host database due to inactivity,
+so consumption from Azure Service Bus continues uninterrupted even when the database
+would otherwise go idle.
+
+</Admonition>
+
+A producer places a message on a queue or publishes it to a topic, where it waits to be
+consumed.  
+The sink task receives the messages available on each of its sources and hands
+each message to a script.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Running user-defined scripts
+
+A sink script is a JavaScript segment that turns each consumed message into one or
+more RavenDB documents.
+
+The simplest script stores the message as it arrives, using the `put` command:
+
+```javascript
+// Set the @collection metadata to store the document in a collection;
+// without it, the document is stored in the @empty collection.
+this['@metadata']['@collection'] = 'Orders';
+
+// Store the message as-is, reusing its Id property as the document ID.
+put(this.Id.toString(), this);
+```
+<br />
+
+A script can also reshape a message into a different document.  
+e.g., for a message like this one:
+
+```json
+{
+   "Id": 13,
+   "FirstName": "John",
+   "LastName": "Doe"
+}
+```
+<br />
+
+the following script adds a `FullName` field and stores the document in the `Users`
+collection:
+
+```javascript
+var item = {
+    Id: this.Id,
+    FirstName: this.FirstName,
+    LastName: this.LastName,
+    FullName: this.FirstName + ' ' + this.LastName,
+    "@metadata": {
+        "@collection": "Users"
+    }
+};
+
+// Pass the Id as a string, even when Azure Service Bus delivers it as a number.
+put(this.Id.toString(), item);
+```
+<br />
+
+Beyond `put`, a script can call `load` to read an existing RavenDB document
+(e.g., to enrich a message with related data), `del` to delete a document, and
+[various other commands](../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Storing documents in RavenDB collections
+
+The sink task processes a batch of messages and stores the resulting documents in a single transaction,
+either the whole batch or none of it.
+
+<Admonition type="note" title="Exceptions to this rule">
+
+Some script processing errors are allowed. When such an error occurs, RavenDB skips the
+affected message, logs the event, and raises an alert, but continues processing the rest
+of the batch.
+
+</Admonition>
+
+Only after the batch is stored does the task acknowledge its messages to Azure Service
+Bus, which then removes them from the queue or subscription.  
+Because the task acknowledges a message only after its document is persisted, every message
+is processed **at least once**, even if the sink fails partway through a batch.
+
+The number of messages in a batch is
+[configurable](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#configuration-options).
+
+<Admonition type="warning" title="Handle duplicate messages">
+
+At-least-once processing means the same message can be delivered more than once. This
+happens when a producer enqueues a message more than once, or when a batch takes longer
+than the message's **lock duration** (the time Azure Service Bus reserves a message for
+the sink): once the lock expires, Azure Service Bus redelivers the message.
+
+If processing each message only once matters to the consumer, it is the consumer's
+responsibility to handle the duplicates. Often this needs no extra work: as long as a
+message keeps the same `Id`, the script's `put(id, ...)` command overwrites the earlier
+document, so only one copy remains.
+
+</Admonition>
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Client API">
+
+### Adding an Azure Service Bus connection string
+
+Before defining a sink task, add an Azure Service Bus connection string for the task to use.  
+Create a `QueueConnectionString` object configured for Azure Service Bus, and pass it to
+`PutConnectionStringOperation`.
+
+An Azure Service Bus connection authenticates in one of three modes: a SAS connection string,
+Entra ID application credentials, or passwordless authentication.  
+Set exactly one of them in the connection string's `AzureServiceBusConnectionSettings` object:
+
+<Tabs>
+<TabItem value="sas" label="SAS connection string" default>
+
+```csharp
+var connectionString = new QueueConnectionString
+{
+    Name = "AzureServiceBusConStr",
+    BrokerType = QueueBrokerType.AzureServiceBus,
+    AzureServiceBusConnectionSettings = new AzureServiceBusConnectionSettings
+    {
+        // A Service Bus SAS connection string, copied from the Azure portal
+        ConnectionString = "Endpoint=sb://<namespace>.servicebus.windows.net/;" +
+                           "SharedAccessKeyName=<key-name>;SharedAccessKey=<key>"
+    }
+};
+
+store.Maintenance.Send(
+    new PutConnectionStringOperation<QueueConnectionString>(connectionString));
+```
+
+</TabItem>
+<TabItem value="entra" label="Entra ID">
+
+```csharp
+var connectionString = new QueueConnectionString
+{
+    Name = "AzureServiceBusConStr",
+    BrokerType = QueueBrokerType.AzureServiceBus,
+    AzureServiceBusConnectionSettings = new AzureServiceBusConnectionSettings
+    {
+        // Authenticate using an Entra ID application registration (tenant, client ID, and secret)
+        EntraId = new AzureServiceBusEntraId
+        {
+            Namespace = "<namespace>.servicebus.windows.net",
+            TenantId = "<tenant-id>",
+            ClientId = "<client-id>",
+            ClientSecret = "<client-secret>"
+        }
+    }
+};
+
+store.Maintenance.Send(
+    new PutConnectionStringOperation<QueueConnectionString>(connectionString));
+```
+
+</TabItem>
+<TabItem value="passwordless" label="Passwordless">
+
+```csharp
+var connectionString = new QueueConnectionString
+{
+    Name = "AzureServiceBusConStr",
+    BrokerType = QueueBrokerType.AzureServiceBus,
+    AzureServiceBusConnectionSettings = new AzureServiceBusConnectionSettings
+    {
+        // Authenticate using the host's managed identity; no secret is stored
+        Passwordless = new AzureServiceBusPasswordless
+        {
+            Namespace = "<namespace>.servicebus.windows.net"
+        }
+    }
+};
+
+store.Maintenance.Send(
+    new PutConnectionStringOperation<QueueConnectionString>(connectionString));
+```
+
+</TabItem>
+</Tabs>
+
+For the full property reference, see the
+[Connection string](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#connection-string)
+and
+[Authentication credentials](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#authentication-credentials)
+classes in the Syntax section.
+
+---
+
+### Adding an Azure Service Bus sink task
+
+To define the sink task, prepare a `QueueSinkConfiguration` object and pass it to
+`AddQueueSinkOperation`.  
+The configuration needs to name the connection string to use, set the broker type to Azure
+Service Bus, and hold one or more `QueueSinkScript` objects.
+
+* Each script lists its sources in the `Queues` property, where each entry is a single string:
+   * A **queue** source is just the queue name.  
+     e.g., `orders`
+   * A **topic-subscription** source is the topic name and the subscription name joined by a semicolon.  
+     e.g., `orders-topic;ravendb-sub`  
+     The semicolon is an unambiguous separator: Service Bus queue, topic, and subscription names can
+     never contain a semicolon, so it cannot be mistaken for part of either name.
+* `AzureServiceBusSinkSource` is a helper class that builds and validates these entries, so you don't
+  have to build the `topicName;subscriptionName` form yourself and can't pass an invalid name:
+   * Use `AzureServiceBusSinkSource.Queue(queueName)` for a queue source.
+   * Use `AzureServiceBusSinkSource.Subscription(topicName, subscriptionName)` for a topic-subscription source.
+
+<ContentFrame>
+
+#### Example: Reading from a queue
+
+```csharp
+// Read from a single Service Bus queue
+var script = new QueueSinkScript
+{
+    Name = "orders",
+    Queues = new List<string> { AzureServiceBusSinkSource.Queue("orders") },
+    // Store each message as an Orders document
+    Script = @"this['@metadata']['@collection'] = 'Orders';
+               put(this.Id.toString(), this)"
+};
+
+var config = new QueueSinkConfiguration
+{
+    Name = "AzureServiceBusSink",
+    // The connection string added above
+    ConnectionStringName = "AzureServiceBusConStr",
+    BrokerType = QueueBrokerType.AzureServiceBus,
+    Scripts = { script }
+};
+
+store.Maintenance.Send(new AddQueueSinkOperation<QueueConnectionString>(config));
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+#### Example: Reading from multiple sources
+
+A script can list any mix of queues and subscriptions in its `Queues` property:
+
+```csharp
+Queues = new List<string>
+{
+    AzureServiceBusSinkSource.Queue("orders"),
+    AzureServiceBusSinkSource.Subscription("orders-topic", "ravendb-sub")
+}
+```
+
+</ContentFrame>
+
+For the `QueueSinkConfiguration` and `QueueSinkScript` property reference, see the
+[Sink task](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#sink-task)
+classes in the Syntax section.
+
+</Panel>
+
+<Panel heading="Configuration Options">
+
+Use these configuration options for finer control over the sink task:
+
+* [QueueSink.MaxBatchSize](../../../server/configuration/queue-sink-configuration.mdx#queuesinkmaxbatchsize)  
+  The maximum number of messages consumed in a single batch.
+* [QueueSink.MaxFallbackTimeInSec](../../../server/configuration/queue-sink-configuration.mdx#queuesinkmaxfallbacktimeinsec)  
+  The maximum time, in seconds, that the sink stays in fallback mode (suspended) after a connection failure.
+
+</Panel>
+
+<Panel heading="Syntax">
+
+## Methods
+
+The `AzureServiceBusSinkSource` methods build and validate the entries stored in a script's `Queues` list.
+
+<Tabs>
+<TabItem value="Queue" label="Queue" default>
+
+Validates a queue name and returns it as a sink source entry.
+
+```csharp
+public static string Queue(string queueName)
+```
+<br />
+
+**Usage:**
+
+```csharp
+AzureServiceBusSinkSource.Queue("orders")
+```
+<br />
+
+**Parameters:**
+
+| Parameter | Type | Description |
+|---|---|---|
+| **queueName** | `string` | The Service Bus queue to consume from |
+
+**Return value:**
+
+| Type | Description |
+|---|---|
+| `string` | The source entry to add to `QueueSinkScript.Queues` |
+
+</TabItem>
+<TabItem value="Subscription" label="Subscription">
+
+Joins a topic name and a subscription name into a sink source entry, `topicName;subscriptionName`.
+
+```csharp
+public static string Subscription(string topicName, string subscriptionName)
+```
+<br />
+
+**Usage:**
+
+```csharp
+AzureServiceBusSinkSource.Subscription("orders-topic", "ravendb-sub")
+```
+<br />
+
+**Parameters:**
+
+| Parameter | Type | Description |
+|---|---|---|
+| **topicName** | `string` | The Service Bus topic |
+| **subscriptionName** | `string` | The subscription on that topic to consume from |
+
+**Return value:**
+
+| Type | Description |
+|---|---|
+| `string` | The `topicName;subscriptionName` source entry to add to `QueueSinkScript.Queues` |
+
+</TabItem>
+</Tabs>
+
+## Classes
+
+### Connection string
+
+<Tabs>
+<TabItem value="QueueConnectionString" label="QueueConnectionString" default>
+
+**The connection string a sink task uses to reach an Azure Service Bus namespace.**
+
+```csharp
+class QueueConnectionString
+{
+    string Name
+    QueueBrokerType BrokerType
+    AzureServiceBusConnectionSettings AzureServiceBusConnectionSettings
+}
+```
+<br />
+
+| Property | Type | Description |
+|---|---|---|
+| **Name** | `string` | The connection string name |
+| **BrokerType** | `QueueBrokerType` | Set to `QueueBrokerType.AzureServiceBus` for an Azure Service Bus connection string |
+| **AzureServiceBusConnectionSettings** | `AzureServiceBusConnectionSettings` | The namespace and authentication details |
+
+`QueueConnectionString` is shared by all queue brokers, so it also defines settings for the other
+broker types (`KafkaConnectionSettings`, `RabbitMqConnectionSettings`,
+`AzureQueueStorageConnectionSettings`, `AmazonSqsConnectionSettings`).  
+Set only the one matching `BrokerType`.
+
+</TabItem>
+<TabItem value="AzureServiceBusConnectionSettings" label="AzureServiceBusConnectionSettings">
+
+**The authentication details for an Azure Service Bus connection. Set exactly one of its properties.**
+
+```csharp
+class AzureServiceBusConnectionSettings
+{
+    string ConnectionString
+    AzureServiceBusEntraId EntraId
+    AzureServiceBusPasswordless Passwordless
+}
+```
+<br />
+
+| Property | Type | Description |
+|---|---|---|
+| **ConnectionString** | `string` | A Service Bus SAS connection string |
+| **EntraId** | `AzureServiceBusEntraId` | Entra ID application credentials |
+| **Passwordless** | `AzureServiceBusPasswordless` | A managed-identity connection that stores no secret |
+
+</TabItem>
+</Tabs>
+
+### Authentication credentials
+
+<Tabs>
+<TabItem value="AzureServiceBusEntraId" label="AzureServiceBusEntraId" default>
+
+**Entra ID application credentials for connecting to a namespace.**
+
+```csharp
+class AzureServiceBusEntraId
+{
+    string Namespace
+    string TenantId
+    string ClientId
+    string ClientSecret
+}
+```
+<br />
+
+| Property | Type | Description |
+|---|---|---|
+| **Namespace** | `string` | The fully qualified namespace, e.g. `mynamespace.servicebus.windows.net` |
+| **TenantId** | `string` | The Entra ID tenant ID |
+| **ClientId** | `string` | The application (client) ID |
+| **ClientSecret** | `string` | The application's client secret |
+
+</TabItem>
+<TabItem value="AzureServiceBusPasswordless" label="AzureServiceBusPasswordless">
+
+**A managed-identity connection to a namespace; stores no secret.**
+
+```csharp
+class AzureServiceBusPasswordless
+{
+    string Namespace
+}
+```
+<br />
+
+| Property | Type | Description |
+|---|---|---|
+| **Namespace** | `string` | The fully qualified namespace, e.g. `mynamespace.servicebus.windows.net` |
+
+</TabItem>
+</Tabs>
+
+### Sink task
+
+<Tabs>
+<TabItem value="QueueSinkConfiguration" label="QueueSinkConfiguration" default>
+
+**The configuration of an Azure Service Bus sink task.**
+
+```csharp
+class QueueSinkConfiguration
+{
+    string Name
+    string ConnectionStringName
+    QueueBrokerType BrokerType
+    List<QueueSinkScript> Scripts
+    bool Disabled
+    string MentorNode
+    bool PinToMentorNode
+    long TaskId
+}
+```
+<br />
+
+| Property | Type | Description |
+|---|---|---|
+| **Name** | `string` | The sink task name |
+| **ConnectionStringName** | `string` | The name of the Azure Service Bus connection string the task uses |
+| **BrokerType** | `QueueBrokerType` | Set to `QueueBrokerType.AzureServiceBus` (must match the connection string's broker type) |
+| **Scripts** | `List<QueueSinkScript>` | The scripts the task runs |
+| **Disabled** | `bool` | Whether the task is created in a disabled state |
+| **MentorNode** | `string` | The preferred responsible node for the task, if any |
+| **PinToMentorNode** | `bool` | Whether to pin the task to its mentor node |
+| **TaskId** | `long` | The task's identifier, assigned by the server |
+
+</TabItem>
+<TabItem value="QueueSinkScript" label="QueueSinkScript">
+
+**A script that turns the messages from its sources into RavenDB documents.**
+
+```csharp
+class QueueSinkScript
+{
+    string Name
+    List<string> Queues
+    string Script
+    bool Disabled
+}
+```
+<br />
+
+| Property | Type | Description |
+|---|---|---|
+| **Name** | `string` | The script name |
+| **Queues** | `List<string>` | The sources to consume from, each built with `AzureServiceBusSinkSource` |
+| **Script** | `string` | The JavaScript that processes each message |
+| **Disabled** | `bool` | Whether the script is disabled |
+
+</TabItem>
+</Tabs>
+
+### Enums
+
+<Tabs>
+<TabItem value="QueueBrokerType" label="QueueBrokerType" default>
+
+**Identifies the message broker that a connection string and sink task use.**
+
+```csharp
+enum QueueBrokerType
+{
+    None,
+    Kafka,
+    RabbitMq,
+    AzureQueueStorage,
+    AmazonSqs,
+    AzureServiceBus
+}
+```
+<br />
+
+| Value | Description |
+|---|---|
+| **AzureServiceBus** | Selects Azure Service Bus. Use this value for an Azure Service Bus connection string and sink task. |
+| **None, Kafka, RabbitMq, AzureQueueStorage, AmazonSqs** | The other broker types, used by the remaining Queue Sink and Queue ETL brokers. |
+
+</TabItem>
+</Tabs>
+
+</Panel>

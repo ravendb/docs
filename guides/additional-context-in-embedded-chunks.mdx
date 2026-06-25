@@ -178,9 +178,7 @@ If your users want the single best answer, that can be a worthwhile trade. If th
 
 If you are unsure whether to use it, test it on a small piece of your own data. Create two embedding tasks, use the same chunking strategy for both, enable `withContextPrefix(...)` on one of them, and compare the results using the metrics that actually matter for your application. We wanted to know whether adding a small amount of document-level context would make a difference. The answer for us was yes, but the answer can change depending on your system.
 
-Any questions about RavenDB features, or just want to hang out and talk with the RavenDB team? Join our [Discord Community Server](https://discord.com/invite/ravendb).
-
-## Summary and Next Steps
+## Summary
 
 `withContextPrefix(...)` injects document-level metadata into every embedding chunk, helping the model understand which document a fragment belongs to even when that information is absent from the chunk itself.
 
@@ -188,3 +186,5 @@ Any questions about RavenDB features, or just want to hang out and talk with the
 - The context prefix acts as a confidence amplifier: it narrows result sets and improves precision, but it can also drop borderline-relevant documents that would have otherwise ranked inside the top 10, so recall may fall for broad category queries.
 - Token budget is a real constraint: every token given to the prefix is unavailable for chunk content, so keep prefixes short and focused on the single piece of missing context rather than trying to summarize the whole document.
 - Before committing to the feature, run a controlled test on your own data: create two identical embedding tasks that differ only in the presence of `withContextPrefix(...)`, then compare precision, recall, and F1 for the query types your users actually issue.
+
+Any questions about RavenDB features, or just want to hang out and talk with the RavenDB team? Join our [Discord Community Server](https://discord.com/invite/ravendb).

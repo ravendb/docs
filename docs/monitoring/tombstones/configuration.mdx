@@ -1,0 +1,106 @@
+---
+title: "Tombstones: Configuration"
+sidebar_label: "Configuration options"
+description: "Configuration keys that control RavenDB's tombstone cleanup."
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Tombstones: Configuration
+<Admonition type="note" title="">
+
+* This page covers the configuration keys that control tombstone cleanup.  
+
+* To learn how to apply these keys, see the
+  [Configuration Overview](../../server/configuration/configuration-options.mdx).  
+
+* To learn about tombstones and how their cleanup works, see the
+  [Tombstones overview](../../monitoring/tombstones/overview.mdx).  
+
+* In this article:
+   * [Tombstone cleanup settings](../../monitoring/tombstones/configuration.mdx#tombstone-cleanup-settings)
+      * [Tombstones.CleanupIntervalInMin](../../monitoring/tombstones/configuration.mdx#tombstonescleanupintervalinmin)
+      * [Pull replication hub keys](../../monitoring/tombstones/configuration.mdx#pull-replication-hub-keys)
+         * [Tombstones.RetentionTimeWithReplicationHubInHrs](../../monitoring/tombstones/configuration.mdx#tombstonesretentiontimewithreplicationhubinhrs)
+         * [Tombstones.CleanupIntervalWithReplicationHubInMin](../../monitoring/tombstones/configuration.mdx#tombstonescleanupintervalwithreplicationhubinmin)
+
+</Admonition>
+
+<Panel heading="Tombstone cleanup settings">
+
+<ContentFrame>
+
+### Tombstones.CleanupIntervalInMin
+
+The time interval between tombstone cleanups. This applies to every database.
+
+- **Type**: `TimeUnit.Minutes`
+- **Default**: `5`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Pull replication hub keys
+
+Tombstones held by a [pull replication hub](../../server/ongoing-tasks/hub-sink-replication.mdx)
+are meant to be processed by sink tasks.  
+But the sink tasks may take their time before reconnecting to the hub; they may even never
+reconnect.  
+Therefore, waiting for all sinks to connect and consume the tombstones before cleaning 
+them up could cause the hub to accumulate tombstones indefinitely.  
+Instead, the hub uses a **retention period** for tombstone cleanup, set by a dedicated 
+configuration key (to **14 days** by default).  
+
+* A sink that reconnects with the hub within the retention period will receive all deletion
+  operations.
+* A sink that stays offline longer than the retention period misses the deletions whose
+  tombstones have already been removed.  
+
+<Admonition type="note" title="Example: tombstone retention on a hub">
+
+* A pull replication hub task runs on the database of a head-office, with its cleanup retention
+  time set to 10 days.
+* Offices in other countries run sink tasks that connect to the hub only occasionally.
+* Since tombstones are kept for 10 days, an office that connects every week or so will receive
+  every deletion held by the hub.
+* An office that connects after two weeks, though, may miss some of the deletions whose
+  tombstones were already removed.  
+
+</Admonition>
+
+<Admonition type="info" title="Other processes still apply">
+
+Even after the retention period passes, a tombstone is not cleaned up while any other process
+(indexing, ETL, backup, and so on) still needs it.  
+
+</Admonition>
+
+---
+
+### Tombstones.RetentionTimeWithReplicationHubInHrs
+
+On a pull replication hub, the time a tombstone is kept before it becomes eligible for removal.
+
+- **Type**: `TimeUnit.Hours`
+- **Default**: `336` (14 days)
+- **Scope**: Server-wide or per database
+
+---
+
+### Tombstones.CleanupIntervalWithReplicationHubInMin
+
+On a pull replication hub, the interval at which the hub checks for tombstones that have aged
+past the retention period.
+
+- **Type**: `TimeUnit.Minutes`
+- **Default**: `1440` (1 day)
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+</Panel>

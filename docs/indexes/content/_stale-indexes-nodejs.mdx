@@ -116,7 +116,7 @@ misunderstanding of the querying concepts in RavenDB.
 ## Cutoff Point
 
 If a query sent to the server specifies that it needs to wait for non-stale results then RavenDB sets the cutoff Etag for the staleness check.
-It is the Etag of the last document (or document tombstone), from the collection(s) processed by the index, as of the query arrived to the server.
+It is the Etag of the last document (or [document tombstone](../../monitoring/tombstones/overview.mdx)), from the collection(s) processed by the index, as of the query arrived to the server.
 This way the server won't be waiting forever for the non-stale results even though documents are constantly updated meanwhile.
 
 If the last Etag processed by the index is greater than the cutoff, then the results are considered as non-stale.

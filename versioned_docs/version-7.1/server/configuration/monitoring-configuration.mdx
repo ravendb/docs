@@ -1,6 +1,6 @@
 ---
 title: "Configuration: Monitoring Options"
-sidebar_label: Monitoring Configuration
+sidebar_label: "Monitoring Configuration"
 sidebar_position: 14
 ---
 
@@ -11,10 +11,9 @@ import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
-# Configuration: Monitoring Options
 <Admonition type="note" title="">
 
-* In this page:
+* In this article:
     * OpenTelemetry monitoring:  
       [Monitoring.OpenTelemetry.ConsoleExporter](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryconsoleexporter)  
       [Monitoring.OpenTelemetry.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryenabled)  
@@ -35,6 +34,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
       [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Protocol](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocolprotocol)  
       [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Timeout](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocoltimeout)    
       [Monitoring.OpenTelemetry.ServiceInstanceId](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryserviceinstanceid)    
+      [Monitoring.OpenTelemetry.ServiceName](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryservicename)    
+      [Monitoring.OpenTelemetry.ServiceNamespace](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryservicenamespace)   
     * SNMP monitoring  
       [Monitoring.Snmp.AuthenticationPassword](../../server/configuration/monitoring-configuration.mdx#monitoringsnmpauthenticationpassword)  
       [Monitoring.Snmp.AuthenticationPassword.Secondary](../../server/configuration/monitoring-configuration.mdx#monitoringsnmpauthenticationpasswordsecondary)  
@@ -57,6 +58,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
       [Monitoring.Disk.ReadStatsDebounceTimeInMs](../../server/configuration/monitoring-configuration.mdx#monitoringdiskreadstatsdebouncetimeinms)  
 
 </Admonition>
+
 ## Monitoring.OpenTelemetry.ConsoleExporter
 
 Indicates if metrics should be exported to the console output.
@@ -246,6 +248,40 @@ OpenTelemetryProtocol timeout value.
   If the public hostname is unavailable, RavenDB will use the node tag as the identifier.
 - **Type**: `string`
 - **Default**: `null`
+- **Scope**: Server-wide only
+
+
+
+## Monitoring.OpenTelemetry.ServiceName
+
+* Sets the OpenTelemetry **service name**.
+  This value is reported as the `service.name` resource attribute and is used to identify the RavenDB service in observability tools, such as the .NET Aspire dashboard.
+
+* If [Monitoring.OpenTelemetry.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryenabled) is set to `true`,
+  the effective value must not be `null`, empty, or whitespace.  
+  Otherwise, the server will fail to start.
+
+---
+
+- **Type**: `string`
+- **Default**: `server`
+- **Scope**: Server-wide only
+
+
+
+## Monitoring.OpenTelemetry.ServiceNamespace
+
+* Sets the OpenTelemetry **service namespace**.
+  This value is reported as the `service.namespace` resource attribute and is used to group related services together in observability tools.  
+
+* If [Monitoring.OpenTelemetry.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryenabled) is set to `true`,
+  the effective value must not be `null`, empty, or whitespace.  
+  Otherwise, the server will fail to start.
+
+---
+
+- **Type**: `string`
+- **Default**: `ravendb`
 - **Scope**: Server-wide only
 
 

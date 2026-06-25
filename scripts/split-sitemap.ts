@@ -15,7 +15,7 @@
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { splitSitemap } from "../src/lib/split-sitemap/lib/split.js";
+import { splitSitemap, type SplitSucceeded } from "../src/lib/split-sitemap/lib/split.js";
 import { LEGACY_VERSIONS } from "./lib/version-policy.js";
 
 const BASE_URL = "https://docs.ravendb.net";
@@ -30,12 +30,15 @@ const result = splitSitemap({ buildDir, legacyVersions: LEGACY_VERSIONS, baseUrl
 if (result.skipped) {
     console.log(`[split-sitemap] skipped: ${result.reason}`);
     process.exit(0);
+} else {
+    // Discriminated-union narrowing on boolean literals requires strictNullChecks, which
+    // this project's tsconfig does not enable. process.exit() above makes the cast safe.
+    const { files, includedUrls, skippedLegacyUrls } = result as SplitSucceeded;
+    for (const { name, urls } of files) {
+        console.log(`[split-sitemap]   ${name}: ${urls} URLs`);
+    }
+    console.log(
+        `[split-sitemap] split into ${files.length} sub-sitemaps ` +
+            `(${includedUrls} URLs included, ${skippedLegacyUrls} legacy URLs excluded)`
+    );
 }
-
-for (const { name, urls } of result.files) {
-    console.log(`[split-sitemap]   ${name}: ${urls} URLs`);
-}
-console.log(
-    `[split-sitemap] split into ${result.files.length} sub-sitemaps ` +
-        `(${result.includedUrls} URLs included, ${result.skippedLegacyUrls} legacy URLs excluded)`
-);

@@ -12,7 +12,6 @@ import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
-# Sharding: Import and Export
 <Admonition type="note" title="">
 
 * Smuggler is a RavenDB interface with which data can be 
@@ -34,12 +33,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
   done with a non-sharded database.  
   Behind the scenes, Studio uses Smuggler to perform these operations.  
 
-* In this page:  
+* In this article:  
   * [Export](../sharding/import-and-export.mdx#export)  
   * [Import](../sharding/import-and-export.mdx#import)  
   * [Export and Import Options Summary](../sharding/import-and-export.mdx#export-and-import-options-summary)  
 
 </Admonition>
+
 ## Export
 
 When smuggler is called to 
@@ -63,18 +63,17 @@ in a `ShardedSmugglerResult` type. This type is specific to a sharded database,
 and casting it using a non-sharded type [will fail](../migration/client-api/previous-versions-client-breaking-changes.mdx#casting-smuggler-results).
 </Admonition>
 
-
-
 ## Import
 
 Smuggler can be used to [import](../client-api/smuggler/what-is-smuggler.mdx#import) 
 data into a database from either a [.ravendbdump](../sharding/import-and-export.mdx#export) 
 file or from backup files (full or incremental).  
 
-When data is imported into a sharded database one of the shard nodes 
-is appointed **orchestrator**; the orchestrator retrieves items from 
-the `.ravendbdump` or backup files, gathers the imported items into 
-batches, and distributes them among the shards.  
+When data is imported into a sharded database one of the shard nodes is appointed **orchestrator**; the orchestrator retrieves items from 
+the `.ravendbdump` or backup files, gathers the imported items into batches, and distributes them among the shards.  
+
+The compression level applied to the import streams the orchestrator sends to the shards can be set with the
+[Sharding.Import.CompressionLevel](../sharding/configuration.mdx#shardingimportcompressionlevel) configuration key.
 
 ## Importing data from a `.ravendbdump` file
 
@@ -125,8 +124,6 @@ contain only the changes that have been made in the database since the last full
 Import the full backup first, and then the incremental backups that complement it.  
 </Admonition>
 
-
-
 ## Export and Import Options Summary
 
 | Option | Available on a Sharded Database | Comment |
@@ -140,7 +137,3 @@ Import the full backup first, and then the incremental backups that complement i
 | Import from **Backup files** | **Yes** | **Importing** data from a backup file does **not** create a new database like running the [restore process](../sharding/backup-and-restore/restore.mdx) over the backup file would, but **adds the data** to the existing database by distributing it among the shards. |
 | Import from **Full backup files** | **Yes** |  |
 | Import from **Incremental backup files** | **Yes** |  |
-
-
-
-

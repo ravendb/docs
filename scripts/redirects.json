@@ -1,5 +1,26 @@
 [
     {
+        "key": "/glossary/tombstone",
+        "value": {
+            "targetUrl": "/monitoring/tombstones/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/database/settings/tombstones",
+        "value": {
+            "targetUrl": "/monitoring/tombstones/tombstones-view",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/server/configuration/tombstone-configuration",
+        "value": {
+            "targetUrl": "/monitoring/tombstones/configuration",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/client-api/session/querying/what-is-rql",
         "value": {
             "targetUrl": "/querying/rql/what-is-rql",
@@ -960,6 +981,13 @@
         "key": "/client-api/session/querying/document-query/how-to-use-lucene",
         "value": {
             "targetUrl": "/querying/filtering-query-results/filter-with-lucene-syntax",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/session/querying/document-query/how-to-use-not-operator",
+        "value": {
+            "targetUrl": "/querying/filtering-query-results/use-logical-operators",
             "minimumVersion": "7.2"
         }
     }

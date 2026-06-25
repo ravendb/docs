@@ -23,6 +23,8 @@ export interface SampleCardProps {
     tags?: TagWithCategory[];
     onTagClick?: (tagKey: string) => void;
     selectedTags?: Set<string>;
+    /** Eager-load + high fetch priority for above-the-fold cards (LCP). */
+    priority?: boolean;
 }
 
 export default function SampleCard({
@@ -30,10 +32,13 @@ export default function SampleCard({
     description,
     imgSrc,
     imgAlt = "",
+    imgWidth,
+    imgHeight,
     url,
     tags = [],
     onTagClick,
     selectedTags,
+    priority = false,
 }: SampleCardProps) {
     const hasImage = Boolean(imgSrc);
 
@@ -92,6 +97,10 @@ export default function SampleCard({
                         <LazyImage
                             imgSrc={imgSrc}
                             alt={imgAlt}
+                            width={imgWidth}
+                            height={imgHeight}
+                            loading={priority ? "eager" : "lazy"}
+                            fetchPriority={priority ? "high" : undefined}
                             className={clsx(
                                 "pointer-events-none",
                                 "w-full h-full object-cover object-center",
@@ -116,7 +125,7 @@ export default function SampleCard({
                 )}
             </div>
             <article className="p-4">
-                <Link to={url} className={clsx("absolute inset-0 z-1", "!transition-all")} />
+                <Link to={url} aria-label={title} className={clsx("absolute inset-0 z-1", "!transition-all")} />
                 <div>
                     <div className="flex flex-col gap-0.5">
                         <Heading as="h4" className="!mb-0 !text-base !font-bold !leading-5 !break-normal">

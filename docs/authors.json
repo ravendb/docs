@@ -27,11 +27,18 @@
         "image_url": "https://ravendb.net/wp-content/uploads/2021/01/egor_shamanaev.jpg",
         "socials": {}
     },
-        "Damian Olszewski": {
+    "Damian Olszewski": {
         "name": "Damian Olszewski",
         "job_title": "Frontend developer",
         "url": null,
         "image_url": "https://ravendb.net/wp-content/uploads/2022/01/Damian.jpg",
+        "socials": {}
+    },
+    "Bartosz Piekarski": {
+        "name": "Bartosz Piekarski",
+        "job_title": "Software Developer",
+        "url": null,
+        "image_url": "https://ravendb.net/wp-content/uploads/2022/01/Bartosz.jpg",
         "socials": {}
     }
 }

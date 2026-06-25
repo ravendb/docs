@@ -2,15 +2,33 @@ import React, { cloneElement, type ReactElement, type ReactNode } from "react";
 import clsx from "clsx";
 import {
     useScrollPositionBlocker,
-    useTabs,
+    useTabsContextValue,
     sanitizeTabsChildren,
+    type TabValue,
     type TabItemProps,
 } from "@docusaurus/theme-common/internal";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import type { Props } from "@theme/Tabs";
 import styles from "./styles.module.css";
 
-function TabList({ className, block, selectedValue, selectValue, tabValues }: Props & ReturnType<typeof useTabs>) {
+// TabItem elements enhanced with the `hidden` prop that Tabs injects
+type TabItemElement = ReactElement<TabItemProps & { hidden?: boolean }>;
+
+interface TabListProps {
+    className?: string;
+    block: boolean;
+    selectedValue: string;
+    selectValue: (value: string) => void;
+    tabValues: readonly TabValue[];
+}
+
+interface TabContentProps {
+    lazy: boolean;
+    selectedValue: string;
+    children: ReactNode;
+}
+
+function TabList({ className, block, selectedValue, selectValue, tabValues }: TabListProps) {
     const tabRefs: (HTMLLIElement | null)[] = [];
     const { blockElementScrollPositionUntilNextRender } = useScrollPositionBlocker();
 
@@ -97,8 +115,8 @@ function TabList({ className, block, selectedValue, selectValue, tabValues }: Pr
     );
 }
 
-function TabContent({ lazy, children, selectedValue }: Props & ReturnType<typeof useTabs>) {
-    const childTabs = (Array.isArray(children) ? children : [children]).filter(Boolean) as ReactElement<TabItemProps>[];
+function TabContent({ lazy, children, selectedValue }: TabContentProps) {
+    const childTabs = (Array.isArray(children) ? children : [children]).filter(Boolean) as TabItemElement[];
     if (lazy) {
         const selectedTabItem = childTabs.find((tabItem) => tabItem.props.value === selectedValue);
         if (!selectedTabItem) {
@@ -111,9 +129,9 @@ function TabContent({ lazy, children, selectedValue }: Props & ReturnType<typeof
     }
     return (
         <div className="p-4 bg-pre-background">
-            {childTabs.map((tabItem, i) =>
+            {childTabs.map((tabItem) =>
                 cloneElement(tabItem, {
-                    key: i,
+                    key: tabItem.props.value,
                     hidden: tabItem.props.value !== selectedValue,
                 })
             )}
@@ -122,7 +140,7 @@ function TabContent({ lazy, children, selectedValue }: Props & ReturnType<typeof
 }
 
 function TabsComponent(props: Props): ReactNode {
-    const tabs = useTabs(props);
+    const tabs = useTabsContextValue(props);
     return (
         <div
             className={clsx(
@@ -130,8 +148,16 @@ function TabsComponent(props: Props): ReactNode {
                 styles.tabList
             )}
         >
-            <TabList {...tabs} {...props} />
-            <TabContent {...tabs} {...props} />
+            <TabList
+                className={props.className}
+                block={tabs.block}
+                selectedValue={tabs.selectedValue}
+                selectValue={tabs.selectValue}
+                tabValues={tabs.tabValues}
+            />
+            <TabContent lazy={tabs.lazy} selectedValue={tabs.selectedValue}>
+                {props.children}
+            </TabContent>
         </div>
     );
 }

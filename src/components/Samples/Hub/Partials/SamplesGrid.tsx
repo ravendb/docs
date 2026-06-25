@@ -54,7 +54,7 @@ export default function SamplesGrid({ samples, selectedTags, matchLogic, onTagCl
                 </span>
             </div>
             <div className={clsx("grid grid-cols-1 md:grid-cols-2 gap-4", "animate-in fade-in")}>
-                {filteredSamples.map((sample) => (
+                {filteredSamples.map((sample, index) => (
                     <SampleCard
                         key={sample.id}
                         title={sample.title}
@@ -62,6 +62,9 @@ export default function SamplesGrid({ samples, selectedTags, matchLogic, onTagCl
                         url={sample.permalink}
                         imgSrc={sample.image}
                         imgAlt={sample.img_alt}
+                        imgWidth={sample.imgWidth}
+                        imgHeight={sample.imgHeight}
+                        priority={index < 2}
                         tags={sample.tags as any}
                         onTagClick={onTagClick}
                         selectedTags={selectedTags}

@@ -13,7 +13,7 @@ import Panel from "@site/src/components/Panel";
 
 * Once the agent is created, the client can initiate or resume conversations, get LLM responses, and perform actions based on LLM insights.  
 
-* This page provides a step-by-step guide to creating an AI agent and interacting with it using the Client API.  
+* This page provides a step-by-step guide to creating an AI agent and interacting with it using the client API.  
 
 * In this article:
    * [Creating a connection string](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#creating-a-connection-string)  
@@ -708,7 +708,6 @@ You can retrieve the configuration of **existing agents** using `get_agents`.
   |--------------|-------------|
   | `GetAiAgentsResponse` | A list of agent configurations |
 
-
 * `GetAiAgentsResponse` class  
   ```python
   class GetAiAgentsResponse:
@@ -974,7 +973,6 @@ Receivers are typically used asynchronously for multi-step or delayed operations
   | action_id | `str` | The action request unique ID |
   | action_response | `str` | The response to send back to the LLM through the agent |
 
-
 * `AiAgentActionRequest` class  
   Contains the action request details, sent by the LLM to the agent and passed to the receiver when invoked.  
   ```python
@@ -1010,7 +1008,6 @@ The LLM response is returned by the agent to the client in an `AiAnswer` object,
   class AiConversationStatus(enum.Enum):
     DONE = "Done"
     ACTION_REQUIRED = "ActionRequired"
-
 
   class AiAnswer(Generic[TAnswer]):
       def __init__(

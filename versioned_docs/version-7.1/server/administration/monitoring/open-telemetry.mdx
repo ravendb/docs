@@ -11,7 +11,6 @@ import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
-# OpenTelemetry Support
 <Admonition type="note" title="">
 
 * [OpenTelemetry](https://opentelemetry.io) is an open-source observability framework that provides a set of APIs, SDKs, and tools 
@@ -26,10 +25,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Learn more [below](../../../server/administration/monitoring/open-telemetry.mdx#retrieve-data-from-prometheus).
 
 * OpenTelemetry support is provided for RavenDB instances both on-premises and in the cloud.
-* In this page:
+    
+* In this article:
   * [Enabling OpenTelemetry in RavenDB](../../../server/administration/monitoring/open-telemetry.mdx#enabling-opentelemetry-in-ravendb)
   * [RavenDB OpenTelemetry meters](../../../server/administration/monitoring/open-telemetry.mdx#ravendb-opentelemetry-meters)
   * [Server identification in metrics](../../../server/administration/monitoring/open-telemetry.mdx#server-identification-in-metrics)
+  * [Service name and namespace](../../../server/administration/monitoring/open-telemetry.mdx#service-name-and-namespace)
   * [The metric instruments](../../../server/administration/monitoring/open-telemetry.mdx#the-metric-instruments)
   * [Metrics export options](../../../server/administration/monitoring/open-telemetry.mdx#metrics-export-options)
       * [Console](../../../server/administration/monitoring/open-telemetry.mdx#console)
@@ -39,6 +40,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
       * [Retrieve data from Prometheus](../../../server/administration/monitoring/open-telemetry.mdx#retrieve-data-from-prometheus)
 
 </Admonition>
+
 ## Enabling OpenTelemetry in RavenDB
 
 * To enable the OpenTelemetry metrics in RavenDB,  
@@ -119,7 +121,26 @@ RavenDB also supports exposing meters developed by Microsoft for AspNetCore and 
     4. **Initialization Failure**  
        If none of the above options are available, OpenTelemetry will Not be initialized.
 
+## Service name and namespace
 
+* RavenDB's OpenTelemetry metrics are emitted with an OpenTelemetry resource that includes the `service.name` and `service.namespace` attributes.
+  Observability tools, such as the .NET Aspire dashboard, can use these values to identify and group RavenDB metrics.
+
+* By default, RavenDB uses `server` as the service name and `ravendb` as the service namespace.
+
+* These values are configured through RavenDB configuration, not through OpenTelemetry environment variables.  
+  To override these values, use the following configuration keys:  
+    * [Monitoring.OpenTelemetry.ServiceName](../../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryservicename)
+    * [Monitoring.OpenTelemetry.ServiceNamespace](../../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryservicenamespace)
+
+<Admonition type="note" title="">
+
+When RavenDB OpenTelemetry monitoring is enabled by setting
+[Monitoring.OpenTelemetry.Enabled](../../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryenabled) to `true`,  
+the effective service name and service namespace values must not be `null`, empty, or whitespace.  
+Otherwise, the server will fail to start.
+
+</Admonition>
 
 ## The metric instruments
 
