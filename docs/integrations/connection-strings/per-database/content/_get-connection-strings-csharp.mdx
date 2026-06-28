@@ -1,0 +1,227 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+
+<Admonition type="note" title="">
+
+* Use `GetConnectionStringsOperation` to retrieve a specific connection string,  
+  or all connection strings defined in the database.
+
+* This operation reads connection strings from a single database's record.   
+  To get connection strings defined at the cluster level, see [Get server-wide connection strings](../../../../integrations/connection-strings/server-wide/get-connection-strings.mdx).
+
+* Learn more about per-database connection strings in [Per-database connection strings - Overview](../../../../integrations/connection-strings/per-database/overview.mdx).  
+  To create or update a connection string, see [Add or update a connection string](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx).
+
+* In this article:
+  * [Get connection string by name and type](../../../../integrations/connection-strings/per-database/get-connection-strings.mdx#get-connection-string-by-name-and-type)
+  * [Get all connection strings](../../../../integrations/connection-strings/per-database/get-connection-strings.mdx#get-all-connection-strings)
+  * [Syntax](../../../../integrations/connection-strings/per-database/get-connection-strings.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Get connection string by name and type">
+
+The following example retrieves a `Raven` connection string in the current database:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+```csharp
+using (var store = new DocumentStore())
+{
+    // Request a specific connection string, pass its name and type:
+    // =============================================================
+    var getRavenConStrOp = new GetConnectionStringsOperation(
+        "ravendb-connection-string-name", ConnectionStringType.Raven);
+    
+    GetConnectionStringsResult connectionStrings = store.Maintenance.Send(getRavenConStrOp);
+    
+    // Access results:
+    // ===============
+    Dictionary<string, RavenConnectionString> ravenConnectionStrings = 
+        connectionStrings.RavenConnectionStrings;
+    
+    var numberOfRavenConnectionStrings = ravenConnectionStrings.Count;
+    var ravenConStr = ravenConnectionStrings["ravendb-connection-string-name"];
+    
+    var targetUrls = ravenConStr.TopologyDiscoveryUrls;
+    var targetDatabase = ravenConStr.Database;
+}
+```
+</TabItem>
+<TabItem value="Async" label="Async">
+```csharp
+using (var store = new DocumentStore())
+{
+    // Request a specific connection string, pass its name and type:
+    // =============================================================
+    var getRavenConStrOp = new GetConnectionStringsOperation(
+        "ravendb-connection-string-name", ConnectionStringType.Raven);
+    
+    GetConnectionStringsResult connectionStrings = await store.Maintenance.SendAsync(getRavenConStrOp);
+    
+    // Access results:
+    // ===============
+    Dictionary<string, RavenConnectionString> ravenConnectionStrings = 
+        connectionStrings.RavenConnectionStrings;
+    
+    var numberOfRavenConnectionStrings = ravenConnectionStrings.Count;
+    var ravenConStr = ravenConnectionStrings["ravendb-connection-string-name"];
+    
+    var targetUrls = ravenConStr.TopologyDiscoveryUrls;
+    var targetDatabase = ravenConStr.Database;
+}
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Get all connection strings">
+    
+The following example retrieves all connection strings defined in the database:    
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+```csharp
+using (var store = new DocumentStore())
+{
+    // Get all connection strings:
+    // ===========================
+    var getAllConStrOp = new GetConnectionStringsOperation();
+    GetConnectionStringsResult allConnectionStrings = store.Maintenance.Send(getAllConStrOp);
+    
+    // Access results by connection string type:
+    // =========================================
+    
+    // Raven
+    Dictionary<string, RavenConnectionString> ravenConnectionStrings = 
+        allConnectionStrings.RavenConnectionStrings;
+    
+    // SQL
+    Dictionary<string, SqlConnectionString> sqlConnectionStrings = 
+        allConnectionStrings.SqlConnectionStrings;
+    
+    // OLAP
+    Dictionary<string, OlapConnectionString> olapConnectionStrings = 
+        allConnectionStrings.OlapConnectionStrings;
+    
+    // Elasticsearch
+    Dictionary<string, ElasticSearchConnectionString> elasticsearchConnectionStrings = 
+        allConnectionStrings.ElasticSearchConnectionStrings;
+    
+    // Queue
+    Dictionary<string, QueueConnectionString> queueConnectionStrings = 
+        allConnectionStrings.QueueConnectionStrings;
+    
+    // Snowflake
+    Dictionary<string, SnowflakeConnectionString> snowflakeConnectionStrings = 
+        allConnectionStrings.SnowflakeConnectionStrings;
+    
+    // AI
+    Dictionary<string, AiConnectionString> aiConnectionStrings = 
+        allConnectionStrings.AiConnectionStrings;
+}
+```
+</TabItem>
+<TabItem value="Async" label="Async">
+```csharp
+using (var store = new DocumentStore())
+{
+    // Get all connection strings:
+    // ===========================
+    var getAllConStrOp = new GetConnectionStringsOperation();
+    GetConnectionStringsResult allConnectionStrings = await 
+        store.Maintenance.SendAsync(getAllConStrOp);
+    
+    // Access results by connection string type:
+    // =========================================
+    
+    // Raven
+    Dictionary<string, RavenConnectionString> ravenConnectionStrings = 
+        allConnectionStrings.RavenConnectionStrings;
+    
+    // SQL
+    Dictionary<string, SqlConnectionString> sqlConnectionStrings = 
+        allConnectionStrings.SqlConnectionStrings;
+    
+    // OLAP
+    Dictionary<string, OlapConnectionString> olapConnectionStrings = 
+        allConnectionStrings.OlapConnectionStrings;
+    
+    // Elasticsearch
+    Dictionary<string, ElasticSearchConnectionString> elasticsearchConnectionStrings = 
+        allConnectionStrings.ElasticSearchConnectionStrings;
+    
+    // Queue
+    Dictionary<string, QueueConnectionString> queueConnectionStrings = 
+        allConnectionStrings.QueueConnectionStrings;
+    
+    // Snowflake
+    Dictionary<string, SnowflakeConnectionString> snowflakeConnectionStrings = 
+        allConnectionStrings.SnowflakeConnectionStrings;
+    
+    // AI
+    Dictionary<string, AiConnectionString> aiConnectionStrings = 
+        allConnectionStrings.AiConnectionStrings;
+}
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Syntax">
+
+```csharp
+public GetConnectionStringsOperation()
+public GetConnectionStringsOperation(string connectionStringName, ConnectionStringType type)
+```
+<br/>    
+
+| Parameter                | Type                   | Description                                                                    |
+|--------------------------|------------------------|--------------------------------------------------------------------------------|
+| **connectionStringName** | `string`               | Connection string name                                                         |
+| **type**                 | `ConnectionStringType` | Connection string type:<br/>`Raven`, `Sql`, `Olap`, `ElasticSearch`, `Queue`, `Snowflake`, or `Ai` |
+
+```csharp
+public enum ConnectionStringType
+{
+    None,
+    Raven,
+    Sql,
+    Olap,
+    ElasticSearch,
+    Queue,
+    Snowflake,
+    Ai
+}
+```
+<br/>    
+
+| Operation result             | Description                                                   |
+|------------------------------|---------------------------------------------------------------|
+| `GetConnectionStringsResult` | Class holding all connection strings defined in the database. |
+
+```csharp
+public sealed class GetConnectionStringsResult
+{
+    public Dictionary<string, RavenConnectionString> RavenConnectionStrings { get; set; }
+    public Dictionary<string, SqlConnectionString> SqlConnectionStrings { get; set; }
+    public Dictionary<string, OlapConnectionString> OlapConnectionStrings { get; set; }
+    public Dictionary<string, 
+        ElasticSearchConnectionString> ElasticSearchConnectionStrings { get; set; }
+    public Dictionary<string, QueueConnectionString> QueueConnectionStrings { get; set; }
+    public Dictionary<string, SnowflakeConnectionString> SnowflakeConnectionStrings { get; set; }
+    public Dictionary<string, AiConnectionString> AiConnectionStrings { get; set; }
+}
+```
+<br/>
+    
+<Admonition type="note" title="">
+Connection string type-specific fields and complete examples are documented in the task or feature articles listed under
+[Connection string per type](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#connection-string-per-type).
+</Admonition>
+
+</Panel>

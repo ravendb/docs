@@ -12,8 +12,6 @@ import CodeBlock from '@theme/CodeBlock';
 import Panel from "@site/src/components/Panel";
 import ContentFrame from "@site/src/components/ContentFrame";
 
-# Queue Sink: Azure Service Bus
-
 <Admonition type="note" title="">
 
 * **Azure Service Bus** is Microsoft Azure's fully managed message broker.  
@@ -214,22 +212,52 @@ document, so only one copy remains.
 
 ### Adding an Azure Service Bus connection string
 
-Before defining a sink task, add an Azure Service Bus connection string for the task to use.  
-Create a `QueueConnectionString` object configured for Azure Service Bus, and pass it to
-`PutConnectionStringOperation`.
+* An Azure Service Bus queue sink task uses an **Azure Service Bus connection string** to connect to its source Azure Service Bus namespace.
+  The connection string stores the namespace endpoint and the authentication settings used to access queues or topic subscriptions.
 
-An Azure Service Bus connection authenticates in one of three modes: a SAS connection string,
-Entra ID application credentials, or passwordless authentication.  
-Set exactly one of them in the connection string's `AzureServiceBusConnectionSettings` object:
+* The sink task does not store these connection details directly.  
+  Instead, its configuration references the connection string by name through the `ConnectionStringName` property.
+
+* An Azure Service Bus connection string can be created in any of these ways:
+  * **From the Client API**:
+    [per-database](../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api)
+    or [server-wide](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api).
+  * **From Studio**:
+    [per-database](../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    [server-wide](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    or while creating an [Azure Service Bus queue sink task](../../../studio/database/tasks/ongoing-tasks/azure-service-bus-queue-sink.mdx#define-an-azure-service-bus-sink-task).
+
+* The example below adds a **per-database** Azure Service Bus connection string from the **Client API**.  
+  The connection string is stored in the current database record and can be used by tasks in that database.
+
+#### Authentication methods
+
+An Azure Service Bus connection string authenticates in one of three modes.  
+Set exactly one of these properties in `AzureServiceBusConnectionSettings`:
+
+* **ConnectionString**:  
+  A SAS connection string for the namespace, copied from the Azure portal.
+* **EntraId**:   
+  Microsoft Entra ID application credentials: `Namespace`, `TenantId`, `ClientId`, and `ClientSecret`.
+* **Passwordless**:  
+  Passwordless machine authentication using `Namespace`.
+
+#### Example
 
 <Tabs>
-<TabItem value="sas" label="SAS connection string" default>
-
+<TabItem value="sync" label="Sync">
 ```csharp
-var connectionString = new QueueConnectionString
+// Define an Azure Service Bus connection string
+// =============================================
+var azureServiceBusConnectionString = new QueueConnectionString
 {
-    Name = "AzureServiceBusConStr",
+    // The name used by the Azure Service Bus queue sink task configuration
+    Name = "azure-service-bus-connection-string-name",
+
+    // Set the queue broker type to Azure Service Bus
     BrokerType = QueueBrokerType.AzureServiceBus,
+
+    // Configure the Azure Service Bus namespace connection
     AzureServiceBusConnectionSettings = new AzureServiceBusConnectionSettings
     {
         // A Service Bus SAS connection string, copied from the Azure portal
@@ -238,57 +266,44 @@ var connectionString = new QueueConnectionString
     }
 };
 
-store.Maintenance.Send(
-    new PutConnectionStringOperation<QueueConnectionString>(connectionString));
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<QueueConnectionString>(azureServiceBusConnectionString);
+
+PutConnectionStringResult connectionStringResult =
+    store.Maintenance.Send(putConnectionStringOp);
 ```
-
 </TabItem>
-<TabItem value="entra" label="Entra ID">
-
+<TabItem value="async" label="Async">
 ```csharp
-var connectionString = new QueueConnectionString
+// Define an Azure Service Bus connection string
+// =============================================
+var azureServiceBusConnectionString = new QueueConnectionString
 {
-    Name = "AzureServiceBusConStr",
+    // The name used by the Azure Service Bus queue sink task configuration
+    Name = "azure-service-bus-connection-string-name",
+
+    // Set the queue broker type to Azure Service Bus
     BrokerType = QueueBrokerType.AzureServiceBus,
+
+    // Configure the Azure Service Bus namespace connection
     AzureServiceBusConnectionSettings = new AzureServiceBusConnectionSettings
     {
-        // Authenticate using an Entra ID application registration (tenant, client ID, and secret)
-        EntraId = new AzureServiceBusEntraId
-        {
-            Namespace = "<namespace>.servicebus.windows.net",
-            TenantId = "<tenant-id>",
-            ClientId = "<client-id>",
-            ClientSecret = "<client-secret>"
-        }
+        // A Service Bus SAS connection string, copied from the Azure portal
+        ConnectionString = "Endpoint=sb://<namespace>.servicebus.windows.net/;" +
+                           "SharedAccessKeyName=<key-name>;SharedAccessKey=<key>"
     }
 };
 
-store.Maintenance.Send(
-    new PutConnectionStringOperation<QueueConnectionString>(connectionString));
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<QueueConnectionString>(azureServiceBusConnectionString);
+
+PutConnectionStringResult connectionStringResult =
+    await store.Maintenance.SendAsync(putConnectionStringOp);
 ```
-
-</TabItem>
-<TabItem value="passwordless" label="Passwordless">
-
-```csharp
-var connectionString = new QueueConnectionString
-{
-    Name = "AzureServiceBusConStr",
-    BrokerType = QueueBrokerType.AzureServiceBus,
-    AzureServiceBusConnectionSettings = new AzureServiceBusConnectionSettings
-    {
-        // Authenticate using the host's managed identity; no secret is stored
-        Passwordless = new AzureServiceBusPasswordless
-        {
-            Namespace = "<namespace>.servicebus.windows.net"
-        }
-    }
-};
-
-store.Maintenance.Send(
-    new PutConnectionStringOperation<QueueConnectionString>(connectionString));
-```
-
 </TabItem>
 </Tabs>
 

@@ -11,8 +11,8 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
-
-# AI Connection Strings - Overview
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
     
@@ -37,39 +37,51 @@ import LanguageContent from "@site/src/components/LanguageContent";
   or to RavenDB’s [embedded model (_bge-micro-v2_)](../../ai-integration/connection-strings/embedded.mdx).
 
 * While each task can have only one connection string,  
-  you can define multiple connection strings in your database to support different providers or configurations.  
+  you can define multiple connection strings to support different providers or configurations.  
   A single connection string can also be reused across multiple tasks in the database.
 
-* The AI connection strings can be created from:  
-  * The **AI Connection Strings view in Studio** -  
-    where you can create, edit, and delete connection strings that are not in use.
-  * The **Client API** -  
-    examples are available in the dedicated articles for each provider.
+* AI connection strings can be created from **Studio** or from the **Client API**,  
+  either as [Per-database connection strings](../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx)
+  or as [Server-wide connection strings](../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx).    
+  For provider-specific configuration details, see the dedicated provider articles.    
 
 ---
  
 * In this article:
-  * [The AI Connection Strings view](../../ai-integration/connection-strings/overview.mdx#the-ai-connection-strings-view)
+  * [The AI connection strings view](../../ai-integration/connection-strings/overview.mdx#the-ai-connection-strings-view)
   * [Creating an AI connection string (from Studio)](../../ai-integration/connection-strings/overview.mdx#creating-an-ai-connection-string-from-studio)
     
 </Admonition>
 
-## The AI Connection Strings view
-
+<Panel heading="The AI connection strings view">
+    
 ![connection strings view](./assets/connection-strings-view.png)
 
 1. Go to the **AI Hub** menu.
 
 2. Open the **AI Connection Strings** view.
 
-3. Click **"Add new"** to create a new connection string.
+3. Click **"Add new"** to create a new connection string.  
+   See [Creating an AI connection string (from Studio)](../../ai-integration/connection-strings/overview.mdx#creating-an-ai-connection-string-from-studio) below.
 
 4. View the list of all AI connection strings that have been defined.
 
 5. Edit or delete a connection string.  
    Only connection strings that are not in use by a task can be deleted.
+    
+---
+    
+<Admonition type="info" title="">   
+    
+* The **AI Connection Strings** view is used to define AI connection strings for the **current database**.  
+* AI connection strings can also be defined **server-wide**, so the same provider and model configuration can be shared across databases.
+  See [Add a server-wide connection string](../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx).
 
-## Creating an AI connection string (from Studio)
+</Admonition>    
+
+</Panel>
+
+<Panel heading="Creating an AI connection string (from Studio)">
 
 ![create connection string](./assets/create-connection-string.png)
 
@@ -119,3 +131,5 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 6. Once you complete all configurations for the selected provider in the dialog,  
    save the connection string definition.
+
+</Panel>

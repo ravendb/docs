@@ -14,8 +14,6 @@ import LanguageContent from "@site/src/components/LanguageContent";
 import Panel from "@site/src/components/Panel";
 import ContentFrame from "@site/src/components/ContentFrame";
 
-# Queue ETL: Apache Kafka
-
 <Admonition type="note" title="">
 
 * Apache Kafka is a distributed, high-performance, transactional messaging platform that remains performant
@@ -39,7 +37,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   * [Setup workflow](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#setup-workflow)
   * [Creating a Kafka ETL task using the Client API](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#creating-a-kafka-etl-task-using-the-client-api)
     * [Add a Kafka connection string](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#add-a-kafka-connection-string)
-      * [Example: connecting to a secure Kafka cluster](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#example-secure-kafka-cluster)
+      * [Example: connecting to a secure Kafka cluster](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#example-connecting-to-a-secure-kafka-cluster)
     * [Use RavenDB Certificate](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#use-ravendb-certificate)
     * [Add a Kafka ETL task](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#add-a-kafka-etl-task)
       * [Example: basic](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#example-basic)
@@ -78,47 +76,109 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 ## Add a Kafka connection string
 
-Before setting up the ETL task, define a connection string that the task will use to connect to the message broker's bootstrap servers.
+* A Kafka ETL task uses a **Kafka connection string** to connect to its destination Kafka cluster.  
+  The connection string stores one or more Kafka bootstrap server addresses and, when needed, additional Kafka client settings such as authentication and TLS options.
 
-#### Example: defining the connection string
+* The ETL task does not store these connection details directly.
+  Instead, its configuration references the connection string by name through the `ConnectionStringName` property.
 
+* A Kafka connection string can be created in any of these ways:
+  * **From the Client API**:
+    [per-database](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api)
+    or [server-wide](../../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api).
+  * **From Studio**:
+    [per-database](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    [server-wide](../../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    or while creating a [Kafka ETL task](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#define-kafka-etl-task).
+
+* The example below adds a **per-database** Kafka connection string from the **Client API**.  
+  The connection string is stored in the current database record and can be used by tasks in that database.
+
+<Tabs>
+<TabItem value="sync" label="Sync" default>
 ```csharp
-// Prepare the connection string:
-var conStr = new QueueConnectionString
+// Define a Kafka connection string
+// =================================
+var kafkaConnectionString = new QueueConnectionString
 {
-    // Provide a name for this connection string
-    Name = "myKafkaConStr",
+    // The name used by the Kafka ETL task configuration
+    Name = "kafka-connection-string-name",
 
-    // Set the broker type
+    // Set the queue broker type to Kafka
     BrokerType = QueueBrokerType.Kafka,
 
-    // Configure the connection details
-    KafkaConnectionSettings = new KafkaConnectionSettings()
-        { BootstrapServers = "localhost:9092" }
+    // Configure the Kafka broker connection
+    KafkaConnectionSettings = new KafkaConnectionSettings
+    {
+        // A comma-separated list of Kafka bootstrap servers
+        BootstrapServers = "localhost:9092"
+    }
 };
 
-// Deploy (send) the connection string to the server via the PutConnectionStringOperation:
-var res = store.Maintenance.Send(
-    new PutConnectionStringOperation<QueueConnectionString>(conStr));
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<QueueConnectionString>(kafkaConnectionString);
+
+PutConnectionStringResult connectionStringResult =
+    store.Maintenance.Send(putConnectionStringOp);
 ```
+</TabItem>
+<TabItem value="async" label="Async">
+```csharp
+// Define a Kafka connection string
+// =================================
+var kafkaConnectionString = new QueueConnectionString
+{
+    // The name used by the Kafka ETL task configuration
+    Name = "kafka-connection-string-name",
 
----
+    // Set the queue broker type to Kafka
+    BrokerType = QueueBrokerType.Kafka,
 
-<a id="example-secure-kafka-cluster"/>
+    // Configure the Kafka broker connection
+    KafkaConnectionSettings = new KafkaConnectionSettings
+    {
+        // A comma-separated list of Kafka bootstrap servers
+        BootstrapServers = "localhost:9092"
+    }
+};
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<QueueConnectionString>(kafkaConnectionString);
+
+PutConnectionStringResult connectionStringResult =
+    await store.Maintenance.SendAsync(putConnectionStringOp);
+```
+</TabItem>
+</Tabs>
+
 #### Example: connecting to a secure Kafka cluster
 
-For a secure Kafka cluster, set the authentication and TLS keys on the optional
-`ConnectionOptions` dictionary.
+For a secure Kafka cluster, define the relevant Kafka client configuration keys in the `ConnectionOptions` dictionary.
+For example, use `security.protocol`, `sasl.mechanism`, `sasl.username`, and `sasl.password` to configure SASL authentication over SSL/TLS.
 
-See [Prerequisites for a secure Kafka server](#prerequisites-for-a-secure-kafka-server)
-for the matching cluster-side ACL setup.
+If your RavenDB cluster is secured and Kafka should authenticate RavenDB by certificate,  
+set `UseRavenCertificate` to `true` on `KafkaConnectionSettings`.
 
+See [Prerequisites for a secure Kafka server](#prerequisites-for-a-secure-kafka-server) for the matching cluster-side ACL setup.
+
+<Tabs>
+<TabItem value="secure-sync" label="Sync" default>
 ```csharp
-// Prepare a connection string for a secure Kafka cluster:
-var conStr = new QueueConnectionString
+// Define a Kafka connection string for a secure Kafka cluster
+// ===========================================================
+var kafkaConnectionString = new QueueConnectionString
 {
-    Name = "secureKafkaConStr",
+    // The name used by the Kafka ETL task configuration
+    Name = "secure-kafka-connection-string-name",
+
+    // Set the queue broker type to Kafka
     BrokerType = QueueBrokerType.Kafka,
+
+    // Configure the Kafka broker connection
     KafkaConnectionSettings = new KafkaConnectionSettings
     {
         BootstrapServers = "broker.example.com:9092",
@@ -140,10 +200,77 @@ var conStr = new QueueConnectionString
     }
 };
 
-// Deploy the connection string via PutConnectionStringOperation:
-var res = store.Maintenance.Send(
-    new PutConnectionStringOperation<QueueConnectionString>(conStr));
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<QueueConnectionString>(kafkaConnectionString);
+
+PutConnectionStringResult connectionStringResult =
+    store.Maintenance.Send(putConnectionStringOp);
 ```
+</TabItem>
+<TabItem value="secure-async" label="Async">
+```csharp
+// Define a Kafka connection string for a secure Kafka cluster
+// ===========================================================
+var kafkaConnectionString = new QueueConnectionString
+{
+    // The name used by the Kafka ETL task configuration
+    Name = "secure-kafka-connection-string-name",
+
+    // Set the queue broker type to Kafka
+    BrokerType = QueueBrokerType.Kafka,
+
+    // Configure the Kafka broker connection
+    KafkaConnectionSettings = new KafkaConnectionSettings
+    {
+        BootstrapServers = "broker.example.com:9092",
+
+        ConnectionOptions = new Dictionary<string, string>
+        {
+            // Transport protocol. SASL_SSL combines SASL auth with SSL/TLS encryption.
+            // Other values: PLAINTEXT, SSL (mTLS only), SASL_PLAINTEXT.
+            { "security.protocol", "SASL_SSL" },
+
+            // SASL mechanism. PLAIN sends credentials as cleartext (safe only over TLS).
+            // Other common values: SCRAM-SHA-256, SCRAM-SHA-512.
+            { "sasl.mechanism", "PLAIN" },
+
+            // Credentials issued by the Kafka cluster admin.
+            { "sasl.username", "<your-username>" },
+            { "sasl.password", "<your-password>" }
+        }
+    }
+};
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<QueueConnectionString>(kafkaConnectionString);
+
+PutConnectionStringResult connectionStringResult =
+    await store.Maintenance.SendAsync(putConnectionStringOp);
+```
+</TabItem>
+</Tabs>
+
+#### Syntax
+
+`QueueConnectionString`:
+
+| Property | Type | Description |
+|---|---|---|
+| **Name** | `string` | The connection string name. Use this value in the ETL task's `ConnectionStringName` property. |
+| **BrokerType** | `QueueBrokerType` | Set to `QueueBrokerType.Kafka` for a Kafka connection string. |
+| **KafkaConnectionSettings** | `KafkaConnectionSettings` | The Kafka-specific connection settings. |
+
+`KafkaConnectionSettings`:
+
+| Property | Type | Description |
+|---|---|---|
+| **BootstrapServers** | `string` | A comma-separated list of Kafka bootstrap servers, in `host:port` format. |
+| **ConnectionOptions** | `Dictionary<string, string>` | Optional Kafka client configuration keys, passed through to the Kafka producer. |
+| **UseRavenCertificate** | `bool` | Set to `true` to use RavenDB's cluster-wide certificate for SSL/TLS client authentication. |
 
 </ContentFrame>
 

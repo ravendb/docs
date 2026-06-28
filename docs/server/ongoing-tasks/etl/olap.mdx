@@ -17,7 +17,6 @@ import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
-# Ongoing Tasks: OLAP ETL
 <Admonition type="note" title="">
 
 * The **OLAP ETL task** creates an ETL process from a RavenDB database to a variety of destinations that 
@@ -33,13 +32,15 @@ are especially useful for conducting OLAP. These destinations currently include:
 an alternative to CSV that is much faster to query. Unlike CSV, Parquet groups the data according to its 
 column (by field) instead of by row (by document).  
 
-* In this page:  
+* In this article:  
   * [Client API](../../../server/ongoing-tasks/etl/olap.mdx#client-api)  
+     * [Add an OLAP connection string](../../../server/ongoing-tasks/etl/olap.mdx#add-an-olap-connection-string)  
   * [Transform Script](../../../server/ongoing-tasks/etl/olap.mdx#transform-script)  
      * [Alternative Syntax](../../../server/ongoing-tasks/etl/olap.mdx#alternative-syntax)  
   * [Athena Examples](../../../server/ongoing-tasks/etl/olap.mdx#athena-examples)  
 
 </Admonition>
+
 ## Client API
 
 Creating an OLAP ETL task through the client is very similar to creating a RavenDB or SQL ETL task. 
@@ -90,6 +91,142 @@ AddEtlOperationResult result = store.Maintenance.Send(operation);
 | `RunFrequency` | `string` | Takes a [cron expression](https://docs.oracle.com/cd/E12058_01/doc/doc.1014/e12030/cron_expressions.htm) which determines how often the server will execute the ETL process. |
 | `CustomPartitionValue` | `string` | A value that can be used as a partition name in multiple scripts. See [below](../../../server/ongoing-tasks/etl/olap.mdx#the-custom-partition-value). |
 | `OlapTables` | `List<OlapEtlTable>` | List of naming configurations for individual tables. See more details below. |
+
+#### Add an OLAP connection string
+
+* An OLAP ETL task writes Parquet files to a destination defined by an **OLAP connection string**.  
+  The connection string stores the destination settings, such as a local folder, Amazon S3 bucket, Azure Storage container, Google Cloud Storage bucket, Amazon Glacier vault, or FTP endpoint.
+
+* The ETL task does not store these destination details directly.  
+  Instead, its configuration references the connection string by name through the `ConnectionStringName` property.
+
+* An OLAP connection string can be created in any of these ways:
+  * **From the Client API**:
+    [per-database](../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api)
+    or [server-wide](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api).
+  * **From Studio**:
+    [per-database](../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    [server-wide](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    or while creating an [OLAP ETL task](../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#define-an-olap-etl-task).
+
+* The examples below add **per-database** OLAP connection strings from the **Client API**.  
+  The connection strings are stored in the current database record and can be used by tasks in that database.  
+  The first example uses a local destination, and the second uses Amazon S3.
+
+<Tabs>
+<TabItem value="sync" label="Sync" default>
+```csharp
+// Define an OLAP connection string to a local destination
+// =======================================================
+var localOlapConStr = new OlapConnectionString
+{
+    // The name used by the OLAP ETL task configuration
+    Name = "olap-local-connection-string-name",
+
+    // The local folder where RavenDB will write the Parquet files
+    LocalSettings = new LocalSettings
+    {
+        FolderPath = "path-to-local-folder"
+    }
+};
+
+// Deploy (send) the local destination connection string to the server
+// ===================================================================
+var putLocalConnectionStringOp =
+    new PutConnectionStringOperation<OlapConnectionString>(localOlapConStr);
+
+PutConnectionStringResult localConnectionStringResult =
+    store.Maintenance.Send(putLocalConnectionStringOp);
+
+// Define an OLAP connection string to an Amazon S3 destination
+// ============================================================
+var s3OlapConStr = new OlapConnectionString
+{
+    // The name used by the OLAP ETL task configuration
+    Name = "olap-s3-connection-string-name",
+
+    // The S3 bucket where RavenDB will write the Parquet files
+    S3Settings = new S3Settings
+    {
+        BucketName = "myBucket",
+        RemoteFolderName = "my/folder/name",
+        AwsAccessKey = "myAccessKey",
+        AwsSecretKey = "myPassword",
+        AwsRegionName = "us-east-1"
+    }
+};
+
+// Deploy (send) the S3 destination connection string to the server
+// ================================================================
+var putS3ConnectionStringOp =
+    new PutConnectionStringOperation<OlapConnectionString>(s3OlapConStr);
+
+PutConnectionStringResult s3ConnectionStringResult =
+    store.Maintenance.Send(putS3ConnectionStringOp);
+```
+</TabItem>
+<TabItem value="async" label="Async">
+```csharp
+// Define an OLAP connection string to a local destination
+// =======================================================
+var localOlapConStr = new OlapConnectionString
+{
+    // The name used by the OLAP ETL task configuration
+    Name = "olap-local-connection-string-name",
+
+    // The local folder where RavenDB will write the Parquet files
+    LocalSettings = new LocalSettings
+    {
+        FolderPath = "path-to-local-folder"
+    }
+};
+
+// Deploy (send) the local destination connection string to the server
+// ===================================================================
+var putLocalConnectionStringOp =
+    new PutConnectionStringOperation<OlapConnectionString>(localOlapConStr);
+
+PutConnectionStringResult localConnectionStringResult =
+    await store.Maintenance.SendAsync(putLocalConnectionStringOp);
+
+// Define an OLAP connection string to an Amazon S3 destination
+// ============================================================
+var s3OlapConStr = new OlapConnectionString
+{
+    // The name used by the OLAP ETL task configuration
+    Name = "olap-s3-connection-string-name",
+
+    // The S3 bucket where RavenDB will write the Parquet files
+    S3Settings = new S3Settings
+    {
+        BucketName = "myBucket",
+        RemoteFolderName = "my/folder/name",
+        AwsAccessKey = "myAccessKey",
+        AwsSecretKey = "myPassword",
+        AwsRegionName = "us-east-1"
+    }
+};
+
+// Deploy (send) the S3 destination connection string to the server
+// ================================================================
+var putS3ConnectionStringOp =
+    new PutConnectionStringOperation<OlapConnectionString>(s3OlapConStr);
+
+PutConnectionStringResult s3ConnectionStringResult =
+    await store.Maintenance.SendAsync(putS3ConnectionStringOp);
+```
+</TabItem>
+</Tabs>
+
+| Parameter | Type | Description |
+|---|---|---|
+| **Name** | `string` | The connection string name. Use this value in the ETL task's `ConnectionStringName` property. |
+| **LocalSettings** | `LocalSettings` | Settings for a local folder destination. |
+| **S3Settings** | `S3Settings` | Settings for an Amazon S3 destination. |
+| **AzureSettings** | `AzureSettings` | Settings for an Azure storage destination. |
+| **GlacierSettings** | `GlacierSettings` | Settings for an Amazon Glacier destination. |
+| **GoogleCloudSettings** | `GoogleCloudSettings` | Settings for a Google Cloud Storage destination. |
+| **FtpSettings** | `FtpSettings` | Settings for an FTP destination. |
 
 #### `OlapConnectionString`
 
@@ -440,5 +577,3 @@ INNER JOIN
 Parquet is an open-source text-based file format. Like [ORC](https://orc.apache.org/), columns are stored together 
 instead of rows being stored together (the same fields from multiple documents, rather than 
 whole documents). This makes queries more efficient.  
-
-

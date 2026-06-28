@@ -12,8 +12,6 @@ import CodeBlock from '@theme/CodeBlock';
 import Panel from "@site/src/components/Panel";
 import ContentFrame from "@site/src/components/ContentFrame";
 
-# Queue Sink: RabbitMQ
-
 <Admonition type="note" title="">
 
 * **RabbitMQ** brokers are designed to disperse data to multiple queues,
@@ -185,28 +183,132 @@ it will remain.
 
 ### Adding a RabbitMQ connection string
 
-Before defining a sink task, add a RabbitMQ connection string for the task to use.  
-Create a `QueueConnectionString` object configured for RabbitMQ, and pass it to
-`PutConnectionStringOperation`.
+* A RabbitMQ queue sink task uses a **RabbitMQ connection string** to connect to its source RabbitMQ broker.  
+  The connection string stores the RabbitMQ connection URI used to reach the broker.
+
+* The sink task does not store these connection details directly.   
+  Instead, its configuration references the connection string by name through the `ConnectionStringName` property.
+
+* A RabbitMQ connection string can be created in any of these ways:
+  * **From the Client API**:
+    [per-database](../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api)
+    or [server-wide](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api).
+  * **From Studio**:
+    [per-database](../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    [server-wide](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    or while creating a [RabbitMQ queue sink task](../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink.mdx#define-a-rabbitmq-sink-task).
+
+* The example below adds a **per-database** RabbitMQ connection string from the **Client API**.  
+  The connection string is stored in the current database record and can be used by tasks in that database.
+
+<Tabs>
+<TabItem value="sync" label="Sync" default>
+```csharp
+// Define a RabbitMQ connection string
+// ===================================
+var rabbitMqConnectionString = new QueueConnectionString
+{
+    // The name used by the RabbitMQ queue sink task configuration
+    Name = "rabbitmq-connection-string-name",
+
+    // Set the queue broker type to RabbitMQ
+    BrokerType = QueueBrokerType.RabbitMq,
+
+    // Configure the RabbitMQ broker connection
+    RabbitMqConnectionSettings = new RabbitMqConnectionSettings
+    {
+        // The RabbitMQ connection URI
+        ConnectionString = "amqp://guest:guest@localhost:5672/"
+    }
+};
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<QueueConnectionString>(rabbitMqConnectionString);
+
+PutConnectionStringResult connectionStringResult =
+    store.Maintenance.Send(putConnectionStringOp);
+```
+</TabItem>
+<TabItem value="async" label="Async">
+```csharp
+// Define a RabbitMQ connection string
+// ===================================
+var rabbitMqConnectionString = new QueueConnectionString
+{
+    // The name used by the RabbitMQ queue sink task configuration
+    Name = "rabbitmq-connection-string-name",
+
+    // Set the queue broker type to RabbitMQ
+    BrokerType = QueueBrokerType.RabbitMq,
+
+    // Configure the RabbitMQ broker connection
+    RabbitMqConnectionSettings = new RabbitMqConnectionSettings
+    {
+        // The RabbitMQ connection URI
+        ConnectionString = "amqp://guest:guest@localhost:5672/"
+    }
+};
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<QueueConnectionString>(rabbitMqConnectionString);
+
+PutConnectionStringResult connectionStringResult =
+    await store.Maintenance.SendAsync(putConnectionStringOp);
+```
+</TabItem>
+</Tabs>
+
+#### Syntax
+
+<Tabs groupId="rabbitmq-sink-connection-string-syntax-gpt">
+<TabItem value="QueueConnectionString" label="QueueConnectionString" default>
+
+**The connection string a sink task uses to reach a RabbitMQ broker.**
 
 ```csharp
-// Add a RabbitMQ connection string
-var res = store.Maintenance.Send(
-    new PutConnectionStringOperation<QueueConnectionString>(
-        new QueueConnectionString
-        {
-            Name = "RabbitMqConStr",
-            BrokerType = QueueBrokerType.RabbitMq,
-            RabbitMqConnectionSettings = new RabbitMqConnectionSettings()
-                    { ConnectionString = "amqp://guest:guest@localhost:5672/" }
-        }));
+class QueueConnectionString
+{
+    string Name
+    QueueBrokerType BrokerType
+    RabbitMqConnectionSettings RabbitMqConnectionSettings
+}
 ```
-
 <br />
 
-For the full property reference, see the
-[Connection string](../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink.mdx#connection-string)
-class in the Syntax section.
+| Property | Type | Description |
+|---|---|---|
+| **Name** | `string` | The connection string name. Use this value in the sink task's `ConnectionStringName` property. |
+| **BrokerType** | `QueueBrokerType` | Set to `QueueBrokerType.RabbitMq` for a RabbitMQ connection string. |
+| **RabbitMqConnectionSettings** | `RabbitMqConnectionSettings` | The RabbitMQ-specific connection settings. |
+
+`QueueConnectionString` is shared by all queue brokers, so it also defines settings for the other
+broker types (`KafkaConnectionSettings`, `AzureQueueStorageConnectionSettings`,
+`AmazonSqsConnectionSettings`, `AzureServiceBusConnectionSettings`).
+Set only the one matching `BrokerType`.
+
+</TabItem>
+<TabItem value="RabbitMqConnectionSettings" label="RabbitMqConnectionSettings">
+
+**The connection details for a RabbitMQ broker.**
+
+```csharp
+class RabbitMqConnectionSettings
+{
+    string ConnectionString
+}
+```
+<br />
+
+| Property | Type | Description |
+|---|---|---|
+| **ConnectionString** | `string` | The RabbitMQ connection URI, for example `amqp://guest:guest@localhost:5672/`. |
+
+</TabItem>
+</Tabs>
 
 ---
 
