@@ -1,22 +1,27 @@
 ---
 title: "SSO: Deploying the SSO Application"
 sidebar_label: Deploying the SSO Application
-description: "Deploy the RavenDB SSO reverse proxy with Docker — DNS, TLS via Let's Encrypt, OAuth2 provider registration, and Kerberos/AD setup."
+description: "Deploy the RavenDB SSO reverse proxy with Docker - DNS, TLS via Let's Encrypt, OAuth2 provider registration, and Kerberos/AD setup."
 sidebar_position: 2
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # SSO: Deploying the SSO Application
 
-The SSO application is distributed as a single Docker image (`ravendb/sso`) that bundles Nginx, the
-authentication sidecar, and `oauth2-proxy`. The [ravendb/sso](https://github.com/ravendb/sso) repository
-ships with an **interactive installer** (`install.sh` for Linux/macOS, `install.ps1` for Windows) that
-asks all the questions, pre-flights DNS and host permissions, generates a complete deployment directory,
-and optionally starts the stack. This is the recommended way to set up a new SSO server.
+<Admonition type="note" title="">
+
+* The SSO application is distributed as a single Docker image (`ravendb/sso`) that bundles Nginx, the
+  authentication sidecar, and `oauth2-proxy`.
+
+* The [ravendb/sso](https://github.com/ravendb/sso) repository ships with an **interactive installer**
+  (`install.sh` for Linux/macOS, `install.ps1` for Windows) that asks all the questions, pre-flights DNS
+  and host permissions, generates a complete deployment directory, and optionally starts the stack. This
+  is the recommended way to set up a new SSO server.
 
 <Admonition type="tip" title="Use the installer">
 Unless you have a specific reason to assemble the deployment by hand (for example because you're
@@ -25,7 +30,30 @@ that the manual setup below describes, but with secrets generated for you, file 
 sanity-checked.
 </Admonition>
 
-## Prerequisites
+* In this article:
+   * [Prerequisites](../../../server/security/sso/deploying-sso-app.mdx#prerequisites)
+   * [DNS setup](../../../server/security/sso/deploying-sso-app.mdx#dns-setup)
+   * [Recommended: interactive installer](../../../server/security/sso/deploying-sso-app.mdx#recommended-interactive-installer)
+      * [What the installer produces](../../../server/security/sso/deploying-sso-app.mdx#what-the-installer-produces)
+   * [Manual deployment with Docker Compose](../../../server/security/sso/deploying-sso-app.mdx#manual-deployment-with-docker-compose)
+      * [1. Copy and fill the environment files](../../../server/security/sso/deploying-sso-app.mdx#1-copy-and-fill-the-environment-files)
+      * [2. (Optional) Configure clusters via settings.json](../../../server/security/sso/deploying-sso-app.mdx#2-optional-configure-clusters-via-settingsjson)
+      * [3. Start the stack](../../../server/security/sso/deploying-sso-app.mdx#3-start-the-stack)
+      * [4. Volumes and on-host layout](../../../server/security/sso/deploying-sso-app.mdx#4-volumes-and-on-host-layout)
+   * [Quick start (single container)](../../../server/security/sso/deploying-sso-app.mdx#quick-start-single-container)
+   * [Registering OAuth providers](../../../server/security/sso/deploying-sso-app.mdx#registering-oauth-providers)
+      * [GitHub](../../../server/security/sso/deploying-sso-app.mdx#github)
+      * [Google](../../../server/security/sso/deploying-sso-app.mdx#google)
+      * [Microsoft / Entra ID](../../../server/security/sso/deploying-sso-app.mdx#microsoft--entra-id)
+      * [Cookie secret](../../../server/security/sso/deploying-sso-app.mdx#cookie-secret)
+   * [Kerberos / Active Directory](../../../server/security/sso/deploying-sso-app.mdx#kerberos-active-directory)
+   * [Logs](../../../server/security/sso/deploying-sso-app.mdx#logs)
+   * [Troubleshooting](../../../server/security/sso/deploying-sso-app.mdx#troubleshooting)
+   * [Next steps](../../../server/security/sso/deploying-sso-app.mdx#next-steps)
+
+</Admonition>
+
+<Panel heading="Prerequisites">
 
 - Docker (Compose v2).
 - A public domain you control, with the ability to create DNS records.
@@ -36,10 +64,12 @@ sanity-checked.
   IAM user authorized to create TXT records (DNS-01 challenge). The installer can also wire up a
   manually-supplied certificate instead.
 
-## DNS setup
+</Panel>
+
+<Panel heading="DNS setup">
 
 The SSO server is reached at a base domain (e.g. `sso.example.com`). Each RavenDB cluster behind it is
-exposed at `<cluster-alias>.<sso-domain>` — for example `my-cluster.sso.example.com`. You therefore need
+exposed at `<cluster-alias>.<sso-domain>` - for example `my-cluster.sso.example.com`. You therefore need
 both an apex record and a wildcard for sub-aliases:
 
 | Type | Name | Value |
@@ -49,9 +79,11 @@ both an apex record and a wildcard for sub-aliases:
 
 The installer probes both records before continuing and will warn (but not block) if they are missing.
 
-## Recommended: interactive installer
+</Panel>
 
-The installer is a single self-contained script — every template it writes (including `nlog.config` and
+<Panel heading="Recommended: interactive installer">
+
+The installer is a single self-contained script - every template it writes (including `nlog.config` and
 the `docker-compose.yml`) is embedded inline, so you can download and run it directly without cloning the
 repository.
 
@@ -65,6 +97,7 @@ curl -fsSL https://raw.githubusercontent.com/ravendb/sso/main/install.sh -o inst
 chmod +x install.sh
 ./install.sh
 ```
+<br />
 
 Or pipe directly into Bash:
 
@@ -81,6 +114,7 @@ Download and run:
 Invoke-WebRequest -Uri https://raw.githubusercontent.com/ravendb/sso/main/install.ps1 -OutFile install.ps1
 .\install.ps1
 ```
+<br />
 
 Or run directly from the URL:
 
@@ -97,32 +131,35 @@ clone it and run the script from there instead:
 ```bash
 git clone https://github.com/ravendb/sso.git && cd sso && ./install.sh
 ```
+<br />
 
 The script walks through the following steps:
 
-1. **Output directory** — defaults to `./sso-deploy`. Must be empty.
-2. **Host user check** *(Linux only)* — verifies that UID `10000` exists; offers to create the
+1. **Output directory** - defaults to `./sso-deploy`. Must be empty.
+2. **Host user check** *(Linux only)* - verifies that UID `10000` exists; offers to create the
    `ravendb-sso` system user (the SSO container runs as `10000:10000`).
-3. **SSO URL** — your public `https://sso.example.com`.
-4. **DNS sanity check** — resolves the apex `A` record and probes a random subdomain to confirm the
+3. **SSO URL** - your public `https://sso.example.com`.
+4. **DNS sanity check** - resolves the apex `A` record and probes a random subdomain to confirm the
    wildcard `CNAME` is in place.
-5. **TLS certificate strategy** — pick `certbot-route53` (automated Let's Encrypt via Route53 DNS-01) or
+5. **TLS certificate strategy** - pick `certbot-route53` (automated Let's Encrypt via Route53 DNS-01) or
    `manual` (you supply `fullchain.pem` and `privkey.pem`).
-6. **Authentication providers** — multi-select between GitHub, Google, Microsoft/Entra ID, and Kerberos.
+6. **Authentication providers** - multi-select between GitHub, Google, Microsoft/Entra ID, and Kerberos.
    Each selected provider expands into its own credential prompts.
-7. **Kerberos files** *(if Kerberos was chosen)* — paths to `krb5.conf` and `krb5.keytab`. On Linux the
+7. **Kerberos files** *(if Kerberos was chosen)* - paths to `krb5.conf` and `krb5.keytab`. On Linux the
    script verifies that UID `10000` can read both files and offers to apply an ACL (`setfacl -m u:10000:r`)
    if not.
-8. **Clusters** — for each RavenDB cluster, an alias (lowercase letters, digits, hyphens) and one or more
+8. **Clusters** - for each RavenDB cluster, an alias (lowercase letters, digits, hyphens) and one or more
    node URLs (HTTPS only).
 9. **Summary and confirmation**, then file generation.
+
+<ContentFrame>
 
 ### What the installer produces
 
 ```
 sso-deploy/
-  sso.env               # SSO secrets — mode 600
-  certbot.env           # AWS creds + LE email (only if cert mode = certbot) — mode 600
+  sso.env               # SSO secrets - mode 600
+  certbot.env           # AWS creds + LE email (only if cert mode = certbot) - mode 600
   docker-compose.yml    # Two services if certbot, one if manual certs
   config/
     settings.json       # Generated cluster topology
@@ -131,6 +168,7 @@ sso-deploy/
   logs/                 # Pre-created, owned by UID 10000
   README-deploy.md      # Per-deployment quick reference
 ```
+<br />
 
 `OAUTH2_PROXY_COOKIE_SECRET` is generated automatically (32 hex chars). `config/`, `certs/`, and `logs/`
 are chowned to `10000:10000` so the container can write to them. After the script finishes, start the
@@ -140,18 +178,25 @@ stack from the generated directory:
 cd sso-deploy
 docker compose up -d
 ```
+<br />
 
 The script also offers to run that command for you as its final step.
 
-## Manual deployment with Docker Compose
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Manual deployment with Docker Compose">
 
 If you can't or don't want to run the installer, the example under `Raven.Sso/example/` in the
 [ravendb/sso](https://github.com/ravendb/sso) repository is the same layout the installer generates, just
 filled in by hand. It runs two containers:
 
-- **`certbot`** — `certbot/dns-route53`. Obtains the wildcard certificate on first start and renews every 12 hours.
-- **`sso`** — `ravendb/sso:latest`. Starts once `certbot` has produced a valid certificate, and reloads Nginx
+- **`certbot`** - `certbot/dns-route53`. Obtains the wildcard certificate on first start and renews every 12 hours.
+- **`sso`** - `ravendb/sso:latest`. Starts once `certbot` has produced a valid certificate, and reloads Nginx
   every 6 hours to pick up renewals.
+
+<ContentFrame>
 
 ### 1. Copy and fill the environment files
 
@@ -161,9 +206,14 @@ The example splits environment variables into two files so AWS credentials aren'
 cp sso.env.example sso.env
 cp certbot.env.example certbot.env
 ```
+<br />
 
 Edit each file with your domain, OAuth credentials, and AWS keys. The complete list of variables is on the
-[SSO application configuration](./sso-configuration.mdx) page.
+[SSO application configuration](../../../server/security/sso/sso-configuration.mdx) page.
+
+</ContentFrame>
+
+<ContentFrame>
 
 ### 2. (Optional) Configure clusters via `settings.json`
 
@@ -179,15 +229,21 @@ The list of RavenDB clusters the SSO server should proxy can live in `config/set
   ]
 }
 ```
+<br />
 
-Alternatively, set `RAVENDBSSO_Clusters` in `sso.env` to the same JSON array — environment variables override
+Alternatively, set `RAVENDBSSO_Clusters` in `sso.env` to the same JSON array - environment variables override
 file values.
+
+</ContentFrame>
+
+<ContentFrame>
 
 ### 3. Start the stack
 
 ```bash
 docker compose up -d
 ```
+<br />
 
 On first run, `certbot` requests the wildcard certificate from Let's Encrypt; this can take 1–2 minutes
 while the DNS TXT record propagates. The SSO container's `depends_on` waits for `certbot` to report healthy
@@ -198,6 +254,10 @@ The example's `certbot` entrypoint pins `--key-type rsa`. RavenDB's certificate 
 do not switch this to ECDSA.
 </Admonition>
 
+</ContentFrame>
+
+<ContentFrame>
+
 ### 4. Volumes and on-host layout
 
 ```
@@ -206,8 +266,8 @@ example/
   certbot.env            # certbot env vars
   docker-compose.yml
   config/
-    settings.json        # optional — clusters can come from env vars instead
-    nlog.config          # optional — logging configuration (autoReload)
+    settings.json        # optional - clusters can come from env vars instead
+    nlog.config          # optional - logging configuration (autoReload)
   certs/                 # populated by certbot
     live/<domain>/
       fullchain.pem
@@ -215,7 +275,11 @@ example/
   logs/                  # SSO + Nginx logs
 ```
 
-## Quick start (single container)
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Quick start (single container)">
 
 For local testing without Let's Encrypt, build the image directly and pass credentials on the command line:
 
@@ -236,19 +300,24 @@ docker run --rm -it \
     -v /path/to/krb5.conf:/etc/krb5.conf:ro \
     auth-proxy
 ```
+<br />
 
 Any combination of providers can run concurrently. Volumes for the keytab and `krb5.conf` are only needed
 when using Kerberos.
 
-After login, the SSO portal lists the clusters the user can reach — each cluster is exposed under its own
+After login, the SSO portal lists the clusters the user can reach - each cluster is exposed under its own
 sub-alias of the SSO domain:
 
 ![SSO cluster picker](./assets/clusters-page-multiple.png)
 
-## Registering OAuth providers
+</Panel>
+
+<Panel heading="Registering OAuth providers">
 
 For every OAuth provider you enable, the redirect URI is
 `https://<sso-domain>/oauth2/<provider>/callback`.
+
+<ContentFrame>
 
 ### GitHub
 
@@ -258,12 +327,20 @@ For every OAuth provider you enable, the redirect URI is
    `https://<sso-domain>/oauth2/github/callback`.
 4. Generate a client secret. Set `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`.
 
+</ContentFrame>
+
+<ContentFrame>
+
 ### Google
 
 1. In [Google Cloud Console](https://console.cloud.google.com/) → **APIs & Services → Credentials**, create
    an **OAuth 2.0 Client ID** of type **Web application**.
 2. Add `https://<sso-domain>/oauth2/google/callback` to **Authorized redirect URIs**.
 3. Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`.
+
+</ContentFrame>
+
+<ContentFrame>
 
 ### Microsoft / Entra ID
 
@@ -272,10 +349,10 @@ apps.
 
 1. In [Azure Portal → App registrations](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade),
    click **New registration**.
-2. Pick **Supported account types** — single-tenant, multi-tenant, or multi-tenant + personal accounts.
+2. Pick **Supported account types** - single-tenant, multi-tenant, or multi-tenant + personal accounts.
    This must match the `MICROSOFT_TENANT` value you choose.
 3. Set **Redirect URI** (Web) to `https://<sso-domain>/oauth2/microsoft/callback`.
-4. Under **Token configuration**, add `email` as an **optional claim** for the ID token — organizational
+4. Under **Token configuration**, add `email` as an **optional claim** for the ID token - organizational
    accounts don't emit it by default, and the SSO server uses it as the username.
 5. Under **Certificates & secrets**, create a client secret.
 6. Set `MICROSOFT_CLIENT_ID`, `MICROSOFT_CLIENT_SECRET`, and `MICROSOFT_TENANT`:
@@ -285,6 +362,10 @@ apps.
 7. For multi-tenant apps, scope access by setting `MICROSOFT_ALLOWED_TENANTS` (comma-separated tenant
    GUIDs) and / or `MICROSOFT_ALLOWED_EMAIL_DOMAINS`. Without these allowlists a multi-tenant app accepts
    **any** organization's users.
+
+</ContentFrame>
+
+<ContentFrame>
 
 ### Cookie secret
 
@@ -297,10 +378,15 @@ openssl rand -base64 32
 # docker-compose example (16/24/32-char hex):
 openssl rand -hex 16
 ```
+<br />
 
 Set the result as `OAUTH2_PROXY_COOKIE_SECRET`.
 
-## Kerberos / Active Directory
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Kerberos / Active Directory">
 
 On a domain controller (or with delegated rights):
 
@@ -316,6 +402,7 @@ ktpass /princ HTTP/app.domain.com@DOMAIN.COM `
        /crypto All `
        /ptype KRB5_NT_PRINCIPAL
 ```
+<br />
 
 Mount the keytab at `/etc/nginx/app.keytab` and supply a Kerberos client config at `/etc/krb5.conf`:
 
@@ -335,33 +422,38 @@ Mount the keytab at `/etc/nginx/app.keytab` and supply a Kerberos client config 
     .domain.com = DOMAIN.COM
     domain.com = DOMAIN.COM
 ```
+<br />
 
 If Kerberos auth fails or isn't available, Nginx falls back to OAuth automatically.
 
-## Logs
+</Panel>
 
-All logs are written under `/app/logs/` inside the container — mount the directory to keep them on the host:
+<Panel heading="Logs">
+
+All logs are written under `/app/logs/` inside the container - mount the directory to keep them on the host:
 
 | File | Source | Content |
 |---|---|---|
 | `app.log` | NLog (rotating, 7-day retention) | Startup, certificate generation, cluster polling, errors |
-| `audit.log` | NLog (rotating, 30-day retention) | Login success/failure, access denied, logout — with user and client IP |
+| `audit.log` | NLog (rotating, 30-day retention) | Login success/failure, access denied, logout - with user and client IP |
 | `app.out.log` | stdout | Raw .NET process stdout |
 | `app.err.log` | stderr | Raw .NET process stderr |
 | `nginx-access.log` | Nginx | Standard combined access log |
 | `nginx-error.log` | Nginx | Errors and warnings |
-| `nginx-audit.log` | Nginx | Per-request audit log — real client IP, authenticated user, target host, status, response time |
+| `nginx-audit.log` | Nginx | Per-request audit log - real client IP, authenticated user, target host, status, response time |
 
 `nlog.config` is loaded from `/app/config/nlog.config` at startup with `autoReload="true"`, so log levels
 can be changed without restarting the container.
 
-## Troubleshooting
+</Panel>
+
+<Panel heading="Troubleshooting">
 
 | Symptom | Likely cause |
 |---|---|
 | `certbot` fails with a Route53 error | AWS credentials or the DNS zone isn't actually in Route53. |
 | `sso` container exits immediately | `RAVENDBSSO_Url` not set in `sso.env`. |
-| `502 Bad Gateway` shortly after startup | The .NET sidecar on `127.0.0.1:3000` is still warming up — retry. |
+| `502 Bad Gateway` shortly after startup | The .NET sidecar on `127.0.0.1:3000` is still warming up - retry. |
 | Login loops back to the provider | Wrong callback URL registered, or `OAUTH2_PROXY_COOKIE_SECRET` length is invalid (must be 16, 24, or 32 chars). |
 
 ```bash
@@ -369,7 +461,11 @@ docker logs ravendb-sso     # nginx + .NET app
 docker logs certbot         # certificate issues
 ```
 
-## Next steps
+</Panel>
+
+<Panel heading="Next steps">
 
 Once the SSO server is up, register its certificate and create SSO user entries in your RavenDB cluster
-following [Configuring RavenDB for SSO](./configuring-ravendb-for-sso.mdx).
+following [Configuring RavenDB for SSO](../../../server/security/sso/configuring-ravendb-for-sso.mdx).
+
+</Panel>
