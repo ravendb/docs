@@ -43,7 +43,7 @@ When there is a conflict between two or more document versions, RavenDB will try
 1. If `ResolveToLatest` flag is set (by default it is `true`), resolve the conflict to the document variant where the [Latest Modified](../../../client-api/session/how-to/get-entity-last-modified.mdx) property is the latest.
 2. Check whether the document contents are identical, if so, then there is no conflict and the change vector of the two documents is merged.
 <Admonition type="note" title="">
-The identity check applies to [Tombstone](../../../glossary/tombstone.mdx) as well, and it will always resolve to the local one, since the tombstones are always considered equal.
+The identity check applies to [Tombstone](../../../monitoring/tombstones/overview.mdx) as well, and it will always resolve to the local one, since the tombstones are always considered equal.
 </Admonition>
 3. Try to resolve the conflict by using a script, which is set up by configuring a [Conflict Resolver](../../../server/clustering/replication/replication-conflicts.mdx#conflict-resolution-script).  
 4. If all else fails, record conflicting document variants as "Conflicted Documents" which will have to be resolved [Manually](../../../server/clustering/replication/replication-conflicts.mdx#manually-resolving-conflicts). 

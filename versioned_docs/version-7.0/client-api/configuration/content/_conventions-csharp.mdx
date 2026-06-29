@@ -31,6 +31,7 @@ import CodeBlock from '@theme/CodeBlock';
       [FindPropertyNameForDynamicIndex](../../../client-api/configuration/conventions.mdx#findpropertynamefordynamicindex)  
       [FindPropertyNameForIndex](../../../client-api/configuration/conventions.mdx#findpropertynameforindex)  
       [FirstBroadcastAttemptTimeout](../../../client-api/configuration/conventions.mdx#firstbroadcastattempttimeout)  
+      [GlobalHttpClientTimeout](../../../client-api/configuration/conventions.mdx#globalhttpclienttimeout)  
       [HttpClientType](../../../client-api/configuration/conventions.mdx#httpclienttype)  
       [HttpPooledConnectionIdleTimeout](../../../client-api/configuration/conventions.mdx#httppooledconnectionidletimeout)  
       [HttpPooledConnectionLifetime](../../../client-api/configuration/conventions.mdx#httppooledconnectionlifetime)  
@@ -699,6 +700,42 @@ public Func<Type, string, string, string, string> FindPropertyNameForIndex \{ ge
 <CodeBlock language="csharp">
 {`// Syntax:
 public TimeSpan FirstBroadcastAttemptTimeout \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="">
+
+#### GlobalHttpClientTimeout
+    
+* Use the `GlobalHttpClientTimeout` convention to set the maximum time the underlying `HttpClient` can spend on a single HTTP request.
+  If a request takes longer than this value, the request times out and the client reports an error.  
+  This setting does not control how long an idle TCP connection remains open; it limits how long the client waits for an HTTP request to complete.
+
+* This value also serves as the maximum allowed timeout for request-executor timeouts, 
+  such as [RequestTimeout](../../../client-api/configuration/conventions.mdx#requesttimeout),
+  [FirstBroadcastAttemptTimeout](../../../client-api/configuration/conventions.mdx#firstbroadcastattempttimeout),
+  [SecondBroadcastAttemptTimeout](../../../client-api/configuration/conventions.mdx#secondbroadcastattempttimeout), and per-request command timeouts.  
+  Setting any of these to a value greater than `GlobalHttpClientTimeout` will throw an exception.
+
+* In client code, set `GlobalHttpClientTimeout` to be greater than or equal to the longest request timeout you plan to use.
+  For example, if you set `RequestTimeout` or a per-request timeout to 24 hours, `GlobalHttpClientTimeout` must also be at least 24 hours.
+
+* Set the value to `Timeout.InfiniteTimeSpan` to remove this upper-bound restriction.  
+    
+* DEFAULT: `12 hours`
+
+<TabItem value="GlobalHttpClientTimeout" label="GlobalHttpClientTimeout">
+<CodeBlock language="csharp">
+{`GlobalHttpClientTimeout = TimeSpan.FromHours(6)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="GlobalHttpClientTimeoutSyntax" label="GlobalHttpClientTimeoutSyntax">
+<CodeBlock language="csharp">
+{`// Syntax:
+public TimeSpan GlobalHttpClientTimeout \{ get; set; \}
 `}
 </CodeBlock>
 </TabItem>

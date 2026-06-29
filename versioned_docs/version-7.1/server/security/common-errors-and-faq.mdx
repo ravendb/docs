@@ -135,6 +135,7 @@ When building a cluster, repeat this step with nodes B, C, and so on.
 * [The Let's Encrypt certificate is about to expire but doesn't renew automatically](../../server/security/common-errors-and-faq.mdx#the-lets-encrypt-certificate-is-about-to-expire-but-doesnt-renew-automatically)
 * [What should I do when my license expires?](../../server/security/common-errors-and-faq.mdx#what-should-i-do-when-my-license-expires)
 * [Let's Encrypt certificate permission errors after renewal](../../server/security/common-errors-and-faq.mdx#lets-encrypt-certificate-permission-errors-after-renewal)
+* [How do I recover from an expired server certificate?](../../server/security/common-errors-and-faq.mdx#how-do-i-recover-from-an-expired-server-certificate)
 ### After installing with Let's Encrypt, can I change the DNS records?
 
 Yes.  
@@ -217,7 +218,12 @@ If you have External Replication or ETL to another cluster,
 or if you use your own Let's Encrypt certificates as client certificates,  
 the next certificate renewal may cause permission issues that need to be handled manually.  
 
-Learn how to handle this issue [here](../../server/security/authentication/solve-cluster-certificate-renewal-issue.mdx).  
+Learn how to handle this issue [here](../../server/security/authentication/solve-cluster-certificate-renewal-issue.mdx).
+
+### How do I recover from an expired server certificate?
+
+An expired server certificate blocks every connection to the server, including Studio's, so the certificate must be replaced at the file level on the server machine.  
+See [recover from an expired certificate](../../server/security/authentication/recover-from-expired-certificate.mdx).  
 
 
 

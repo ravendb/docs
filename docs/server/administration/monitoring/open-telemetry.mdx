@@ -1,6 +1,6 @@
 ---
 title: "OpenTelemetry Support"
-sidebar_label: OpenTelemetry
+sidebar_label: "OpenTelemetry"
 description: "Export RavenDB server metrics and traces using OpenTelemetry for integration with observability platforms like Jaeger and Prometheus."
 sidebar_position: 2
 ---
@@ -12,7 +12,6 @@ import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
-# OpenTelemetry Support
 <Admonition type="note" title="">
 
 * [OpenTelemetry](https://opentelemetry.io) is an open-source observability framework that provides a set of APIs, SDKs, and tools 
@@ -27,10 +26,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Learn more [below](../../../server/administration/monitoring/open-telemetry.mdx#retrieve-data-from-prometheus).
 
 * OpenTelemetry support is provided for RavenDB instances both on-premises and in the cloud.
-* In this page:
+    
+* In this article:
   * [Enabling OpenTelemetry in RavenDB](../../../server/administration/monitoring/open-telemetry.mdx#enabling-opentelemetry-in-ravendb)
   * [RavenDB OpenTelemetry meters](../../../server/administration/monitoring/open-telemetry.mdx#ravendb-opentelemetry-meters)
   * [Server identification in metrics](../../../server/administration/monitoring/open-telemetry.mdx#server-identification-in-metrics)
+  * [Service name and namespace](../../../server/administration/monitoring/open-telemetry.mdx#service-name-and-namespace)
   * [The metric instruments](../../../server/administration/monitoring/open-telemetry.mdx#the-metric-instruments)
   * [Metrics export options](../../../server/administration/monitoring/open-telemetry.mdx#metrics-export-options)
       * [Console](../../../server/administration/monitoring/open-telemetry.mdx#console)
@@ -40,6 +41,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
       * [Retrieve data from Prometheus](../../../server/administration/monitoring/open-telemetry.mdx#retrieve-data-from-prometheus)
 
 </Admonition>
+
 ## Enabling OpenTelemetry in RavenDB
 
 * To enable the OpenTelemetry metrics in RavenDB,  
@@ -49,8 +51,6 @@ import LanguageContent from "@site/src/components/LanguageContent";
   which outlines all available options.
 
 * Please remember that it is necessary to restart the RavenDB process for changes to take effect.
-
-
 
 ## RavenDB OpenTelemetry meters
 
@@ -89,7 +89,8 @@ RavenDB exposes the following meters:
 * **ravendb.server.totaldatabases**  
   Description: Exposes aggregated information about databases on the server   
   Enabled by default: _true_   
-  Configuration key: [Monitoring.OpenTelemetry.Meters.Server.TotalDatabases.Enabled](../../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersservertotaldatabasesenabled)  
+  Configuration key: [Monitoring.OpenTelemetry.Meters.Server.TotalDatabases.Enabled](../../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersservertotaldatabasesenabled)
+
 RavenDB also supports exposing meters developed by Microsoft for AspNetCore and .NET Runtime:  
 
 * **Official AspNetCore instrumentation**  
@@ -100,8 +101,6 @@ RavenDB also supports exposing meters developed by Microsoft for AspNetCore and 
   Description: See the official MS documentation [.NET Runtime documentation](https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Runtime#metrics)  
   Enabled by default: _false_   
   Configuration key: [Monitoring.OpenTelemetry.Meters.Runtime.Enabled](../../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersruntimeenabled)  
-
-
 
 ## Server identification in metrics
 
@@ -120,7 +119,26 @@ RavenDB also supports exposing meters developed by Microsoft for AspNetCore and 
     4. **Initialization Failure**  
        If none of the above options are available, OpenTelemetry will Not be initialized.
 
+## Service name and namespace
 
+* RavenDB's OpenTelemetry metrics are emitted with an OpenTelemetry resource that includes the `service.name` and `service.namespace` attributes.
+  Observability tools, such as the .NET Aspire dashboard, can use these values to identify and group RavenDB metrics.
+
+* By default, RavenDB uses `server` as the service name and `ravendb` as the service namespace.
+
+* These values are configured through RavenDB configuration, not through OpenTelemetry environment variables.  
+  To override these values, use the following configuration keys:  
+    * [Monitoring.OpenTelemetry.ServiceName](../../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryservicename)
+    * [Monitoring.OpenTelemetry.ServiceNamespace](../../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryservicenamespace)
+
+<Admonition type="note" title="">
+
+When RavenDB OpenTelemetry monitoring is enabled by setting
+[Monitoring.OpenTelemetry.Enabled](../../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryenabled) to `true`,  
+the effective service name and service namespace values must not be `null`, empty, or whitespace.  
+Otherwise, the server will fail to start.
+
+</Admonition>
 
 ## The metric instruments
 
@@ -238,8 +256,6 @@ RavenDB also supports exposing meters developed by Microsoft for AspNetCore and 
 | ravendb.server.totaldatabases.number.faulty_indexes               | Number of faulty indexes in all loaded databases                                                   | UpDownCounter     |
 | ravendb.server.totaldatabases.writes_per_second                   | Number of writes \(documents, attachments, counters, timeseries\) in all loaded databases          | Gauge             |
 
-
-
 ## Metrics export options
 
 RavenDB offers two options for exporting metrics:  
@@ -320,8 +336,6 @@ The endpoint format should match the transport protocol you are using:
 
 </Admonition>
 
-
-
 ## Configuring the OpenTelemetry Collector
 
 * The OpenTelemetry Collector is a vendor-agnostic proxy that can receive, process, and export telemetry data (traces, metrics, logs)
@@ -394,5 +408,3 @@ The endpoint format should match the transport protocol you are using:
   The collector will access `http://localhost:8080/admin/monitoring/v1/prometheus` to retrieve the metrics.
  
 </Admonition>
-
-

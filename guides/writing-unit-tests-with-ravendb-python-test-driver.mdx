@@ -1,9 +1,268 @@
 ---
 title: "Writing unit tests with RavenDB Python Test Driver"
-tags: [python, testing]
-description: "Read about Writing unit tests with RavenDB Python Test Driver on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/writing-unit-tests-with-ravendb-python-test-driver"
+tags: [python, testing, getting-started]
+icon: "database"
+description: "Learn how to use the ravendb-test-driver package to run Python integration tests against a real in-memory RavenDB instance, replacing mocks with a database environment that mirrors production."
 published_at: 2024-08-24
 image: "https://ravendb.net/wp-content/uploads/2024/09/in-mem-python2-2.png"
+see_also:
+  - title: "What is a Document Store"
+    link: "client-api/what-is-a-document-store"
+    source: "docs"
+    path: "Client API"
+  - title: "Stale Indexes"
+    link: "indexes/stale-indexes"
+    source: "docs"
+    path: "Indexes"
+  - title: "Test Driver"
+    link: "start/test-driver"
+    source: "docs"
+    path: "Getting Started"
+author: "Gracjan Sadowicz"
 proficiency_level: "Beginner"
 ---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+## What you'll learn
+
+- How to avoid shortfalls of mocking the database  
+- How to integrate ravendb-test-driver into your Python project with no effort  
+- How to create integration tests that use a real, in-memory database, far more similar to production environment
+
+## Introduction
+
+Mocking a database is a commonly used strategy for testing of database-driven applications. While mocks offer convenience and low effort, many bugs and erroneous program states might happen due to interactions with a database in a real production system. This discrepancy can lead to unexpected issues when transitioning from testing to deployment, ultimately undermining the effectiveness of the testing process.
+
+It's crucial to recognize that the effectiveness of your testing process heavily depends on how closely it mirrors real-life production conditions. Testing in an environment that is similar to production helps to detect potential issues early on, ensuring a smoother transition to deployment and a more reliable application in the hands of users.
+
+Being aware of it, we've decided to provide a simple solution that developers may take leverage of to use the real database instead of mocks with no effort, while working with it in the various types of tests, especially in the integration tests. We've created test drivers, that let users instantiate the database component in no time.
+
+We will be running RavenDB in-memory, ensuring that each test receives its own separated and isolated database instance. These instances will be automatically disposed, which solves the problem with a state of a database. Provisioning in-memory databases is fast and easy, making the testing seamlessly integrable into CI/CD pipelines. This approach not only simplifies the testing process but also ensures that developers can work with a database environment that closely mimics production conditions, leading to more reliable and accurate test results.
+
+In this article we'll take a closer look upon Python [ravendb-test-driver](https://pypi.org/project/ravendb-test-driver/) package. 
+
+We'll go quickly through the simple setup, to focus on the usage. Let's dive into it.
+
+## Step-by-Step guide
+
+### What we'll use
+
+- **Python Tests Framework**: We'll utilize the unittest package for writing our test cases. It's not mandatory, use your own favorite framework.  
+- **RavenDB**: We'll integrate the ravendb-test-driver package to interact with RavenDB.
+
+### 1. Installing RavenDB Test Driver
+
+Begin by installing the `ravendb-test-driver` package in your project directory using pip:
+
+```bash
+pip install ravendb-test-driver
+```
+
+It will install the test driver and the [embedded server](https://pypi.org/project/ravendb-embedded).
+
+### 2. Integrating Test Driver into your tests 
+
+Depending on the framework you're using, you might either be having test classes, or a collection of functions.  
+In all of those cases, the approach we'll be going through is applicable - having an accessible RavenTestDriver instance next to (or within) your test code.
+
+In the examples, we'll be using [unittest](https://docs.python.org/3/library/unittest.html) module. If you're using [pytest](https://docs.pytest.org/en/8.0.x/), or other tests frameworks, the solution is still valid.
+
+```py
+from unittest import TestCase
+from ravendb_test_driver import RavenTestDriver
+
+class TestBasic(TestCase):
+    def setUp(self):
+        super().setUp()
+        self.test_driver = RavenTestDriver()
+```
+
+We could've inherited from RavenTestDriver, but multiple inheritance can lead to the diamond problem in certain cases, where a class inherits from two classes that have a common ancestor.  
+This can potentially cause issues with method resolution order. Composition, as used in the implementation, avoids this problem.
+
+You can override RavenTestDriver methods to customize its behavior.   
+- The '*pre_initialize()*' method is called right **before** the 'DocumentStore' is initialized. Pre-configure your `DocumentStore` here, e.g. change the store `DocumentConventions`)  
+- The '*setup_database()*' method is called right **after** the 'DocumentStore' is initialized. Here you can already work with a running server - store new documents, setup and configure features like revisions or expiration, prepare ongoing tasks like ETLs or subscriptions, execute various operations, etc.  
+
+##### Overriding RavenTestDriver pre\_initialize() and setup\_database() methods
+
+```py
+from unittest import TestCase
+from ravendb_test_driver import RavenTestDriver
+from ravendb import DocumentStore, ExpirationConfiguration
+from ravendb.documents.operations.expiration.operations import ConfigureExpirationOperation
+
+
+
+class MyRavenTestDriver(RavenTestDriver):
+    def pre_initialize(self, document_store: DocumentStore) -> None:
+        document_store.conventions.find_collection_name = (
+            lambda object_type: "Test" + DocumentConventions.default_get_collection_name(object_type)
+        )
+    
+    def setup_database(self, document_store: DocumentStore) -> None:
+        expiration_configuration = ExpirationConfiguration(False, 5)
+        configure_operation = ConfigureExpirationOperation(expiration_configuration)
+        expiration_operation_result = document_store.maintenance.send(configure_operation)
+
+
+class TestBasic(TestCase):
+    def setUp(self):
+        super().setUp()
+        self.test_driver = MyRavenTestDriver()
+
+```
+
+### 3. Using Test Driver to get database instance 
+
+Now, you can write new tests or replace mocks in existing tests with real database instances.  Your [document store](/7.2/client-api/what-is-a-document-store) is available by calling the get\_document\_store() method. It's the one from ravendb Python package, our Python database client with rich and type-hinted API. Interact with the docs and other entities in your database instance, like in the Python client.
+
+```py
+from ravendb_test_driver import RavenTestDriver
+from unittest import TestCase
+class TestBrewery(TestCase):
+    def setUp(self):
+        super().setUp()
+        self.test_driver = RavenTestDriver()
+        
+    def test_basic_contractor(self):
+        with self.test_driver.get_document_store() as store:
+            with store.open_session() as session:
+                contractor = {"name": "Andy Paulaner"}
+                session.store(contractor, "contractors/1")
+                session.save_changes()
+                
+            # Act
+            # Assert
+```
+
+### 4. Debugging the database
+
+In some cases, you might want to check what's under the hood, working with the database. We've provided a `wait_for_user_to_continue_the_test(store)` method, that freezes the test and opens-up the Raven Studio UI in the background, which lets you investigate the issues and influence the databases/server state in the meantime. It works only when the debugger is attached, so you don't have to add and remove the method call every time you want to run the code after debugging. 
+
+```py
+  def test_basic_contractor(self):
+        with self.test_driver.get_document_store() as store:
+            with store.open_session() as session:
+                contractor = {"name": "Andy Paulaner"}
+                session.store(contractor, "contractors/1")
+                session.save_changes()
+
+            self.test_driver.wait_for_user_to_continue_the_test(store)
+                
+            with store.open_session() as session:
+                # do something else if needed
+                pass
+
+            # assert
+
+```
+
+The studio pops out in the browser:
+
+<Image img={require("./assets/writing-unit-tests-with-ravendb-python-test-driver-1.webp")} alt="RavenDB Studio opened during a paused test, showing the Brewery database documents list with a Continue test button in the bottom bar" />
+
+After you're done reviewing your data in a database, click *Continue test* button located on the bottom UI bar, to continue the execution of a test.
+
+### 5. Address indexing delays if needed
+
+RavenDB works on indexing in the background. You can find more about it in the RavenDB docs on [indexing process](/7.2/studio/database/indexes/indexes-overview) and [stale indexes](/7.2/indexes/stale-indexes).  
+Usually, the delay from indexing is so small that it can be ignored. But it's crucial during the tests.
+
+In real life, programmers should know about this delay and how it can affect results. But here, unlike in real life, we use *wait_for_indexing()* to ensure our tests won't fail to interact with index which did not process the documents yet. We need to wait for indexes to finish to avoid test failures. Even single or couple of documents can cause a false-negative test result.
+
+In the example below, we're going a little bit further. We define the test driver that creates *BreweryCustomersByShippingAddressLocation* [spatial index](/7.2/indexes/indexing-spatial-data) (which can be [queried](/7.2/indexes/querying/spatial) later on) before every test using *setup_database()* override. In the test we'll insert the data, and then we'll instruct the driver to wait for index to finish the processing.
+
+#### Step 5. Instructing driver to wait for index to process the new data
+
+```py
+
+from ravendb import AbstractIndexCreationTask, DocumentStore
+from ravendb_test_driver import RavenTestDriver
+from unittest import TestCase
+
+
+class BreweryCustomers_ByShippingAddressLocation(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "docs.Customers.Select(doc => new{\n"
+            "    name = doc.name, \n"
+            "    shippingLocation = this.CreateSpatialField(doc.shipped_to.lat, doc.shipped_to.lng)\n"
+            "})"
+        )
+
+class MyRavenTestDriver(RavenTestDriver):
+    def setup_database(self, document_store: DocumentStore) -> None:
+        BreweryCustomers_ByShippingAddressLocation().execute(document_store)
+
+
+class TestBasic(TestCase):
+    def setUp(self):
+        super().setUp()
+        self.test_driver = MyRavenTestDriver()
+
+
+    def test_brewery_shipping_process(self):
+        with self.test_driver.get_document_store() as store:
+            with store.open_session() as session:
+                customer1 = Customer("Paul Becks", Location(51.509865, -0.118092))
+                customer2 = Customer("Arjen Heineken", Location(52.377956, 4.897070))
+                customer3 = Customer("Tom Grodziski", Location(52.105124, 20.591883))
+
+                session.store(customer1, "customers/1")
+                session.store(customer2, "customers/2")
+                session.store(customer3, "customers/3")
+
+                session.save_changes()
+
+            # let's wait for indexes to process the docs before asserting 
+            self.test_driver.wait_for_indexing(store)
+
+            # assert
+
+```
+
+The *wait_for_indexing(store)* method ensures that the database indexes are up-to-date before proceeding with the test. Stale indexes, which occur when queries are executed before indexing is complete, can lead to incorrect or outdated results in tests.
+
+### Registering a license
+
+The *ravendb-test-driver* package offers the option to register a license by providing an environmental variable called *RAVEN_LICENSE*. While not mandatory, registering a license can unlock additional features and performance enhancements, particularly for advanced operations. 
+
+Enabling a license may increase the number of cores available, resulting in significant performance boosts for tests that heavily utilize the database. Consider registering a license for optimal performance in your testing environment.
+
+**To request a developer license, which is suitable for CI/CD purposes, visit the [RavenDB license request page](https://ravendb.net/license/request/dev)**.
+
+## FAQ
+
+##### Q: I'm getting this error after trying to run the test:
+
+```
+Unable to start the RavenDB Server
+Error:
+It was not possible to find any compatible framework version
+The framework 'Microsoft.AspNetCore.App', version '5.0.13' (arm64) was not found.
+  - The following frameworks were found:
+      6.0.1 at [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
+
+```
+
+##### It says that dotnet framework installed on my machine isn't compatible. Why the package doesn't include dotnet included to actually run the server?
+
+**A:** In order to maintain a lightweight package, we cannot include multiple framework versions with the server files. RavenDB typically aligns with the newest dotnet version on each release. It's the responsibility of the user to ensure they have a compatible dotnet version installed. If you encounter errors like the one above, you can obtain the necessary dotnet version from the [official dotnet website](https://dotnet.microsoft.com/en-us/download/dotnet).
+
+## Summary
+
+Using ravendb-test-driver gives your Python tests a real, isolated RavenDB instance per test run, removing the gap between mocked behavior and production behavior.
+
+- Prefer composition over inheritance when wiring RavenTestDriver into test classes - inheriting from both a test framework base class and RavenTestDriver risks method resolution order conflicts from multiple inheritance.
+- Use pre_initialize() to configure DocumentStore conventions before the store opens, and setup_database() to seed data or configure server-side features like expiration or subscriptions after it opens.
+- Always call wait_for_indexing() before asserting on query results - RavenDB indexes asynchronously, and even a single document can produce a false-negative if the index hasn't processed it yet.
+- The wait_for_user_to_continue_the_test() helper only activates when a debugger is attached, so it is safe to leave in test code without affecting normal CI runs.

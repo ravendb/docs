@@ -75,6 +75,9 @@ is appointed **orchestrator**; the orchestrator retrieves items from
 the `.ravendbdump` or backup files, gathers the imported items into 
 batches, and distributes them among the shards.  
 
+The compression level applied to the import streams the orchestrator sends to the shards can be set with the
+[Sharding.Import.CompressionLevel](../sharding/configuration.mdx#shardingimportcompressionlevel) configuration key.
+
 ## Importing data from a `.ravendbdump` file
 
 There are no preliminary requirements regarding the structure 

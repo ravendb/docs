@@ -1,7 +1,8 @@
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -28,22 +29,24 @@ import CodeBlock from '@theme/CodeBlock';
       * [Circle](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#circle)
       * [Polygon](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#polygon)    
   * [Spatial sorting](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting)
-      * [Order by distance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistance)
-      * [Order by distance desc](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistancedesc)
-      * [Rounded distance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#roundeddistance)
-      * [Get resulting distance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#getresultingdistance)
+      * [Order by distance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#order-by-distance)
+      * [Order by distance desc](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#order-by-distance-descending)
+      * [Sort results by rounded distance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#sort-results-by-rounded-distance)
+      * [Control null placement when sorting by distance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#control-null-placement-when-sorting-by-distance)
+      * [Get resulting distance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#get-resulting-distance)
   * [Spatial API](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-api)
 
 </Admonition>
-## Search by radius
+
+<Panel heading="Search by radius">
 
 Use the `withinRadius` method to search for all documents containing spatial data that is located  
 within the specified distance from the given center point.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="js">
-{`// This query will return all matching employee entities
+```js
+// This query will return all matching employee entities
 // that are located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
@@ -58,12 +61,11 @@ const employeesWithinRadius = await session
         // Call 'withinRadius', pass the radius and the center points coordinates  
         criteria => criteria.withinRadius(20, 47.623473, -122.3060097))
     .all();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// This query will return all matching employee entities
+```sql
+// This query will return all matching employee entities
 // that are located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
@@ -72,30 +74,29 @@ where spatial.within(
     spatial.point(address.location.latitude, address.location.longitude),
     spatial.circle(20, 47.623473, -122.3060097)
 )
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Search by shape
+<Panel heading="Search by shape"> 
 
 * Use the `relatesToShape` method to search for all documents containing spatial data that is located  
   in the specified relation to the given shape.
 
-* The shape is specified as either a __circle__ or a __polygon__ in a [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format.
+* The shape is specified as either a **circle** or a **polygon** in a [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format.
 
 * The relation to the shape can be one of: `Within`, `Contains`, `Disjoint`, `Intersects`.
 
-<Admonition type="note" title="">
-
-<a id="circle"/> __Circle__:
+---
+    
+### Circle
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="js">
-{`// This query will return all matching employee entities
+```js
+// This query will return all matching employee entities
 // that are located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
@@ -116,12 +117,11 @@ const employeesWithinShape = await session
             "Miles",
             0))
     .all();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// This query will return all matching employee entities
+```sql
+// This query will return all matching employee entities
 // that are located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
@@ -130,21 +130,16 @@ where spatial.within(
     spatial.point(address.location.latitude, address.location.longitude),
     spatial.wkt("CIRCLE(-122.3060097 47.623473 d=20)", "miles")
 )
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
-
-<Admonition type="note" title="">
-
-<a id="polygon"/> __Polygon__:
+### Polygon
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="js">
-{`// This query will return all matching company entities
+```js
+// This query will return all matching company entities
 // that are located within the specified polygon.
 
 // Define a dynamic query on 'companies' collection
@@ -157,7 +152,7 @@ const companiesWithinShape = await session
         // Set the geographical search criteria, call 'relatesToShape'
         criteria => criteria.relatesToShape(
             // Specify the WKT string
-            \`POLYGON ((
+            `POLYGON ((
                 -118.6527948 32.7114894,
                 -95.8040242 37.5929338,
                 -102.8344151 53.3349629,
@@ -165,16 +160,15 @@ const companiesWithinShape = await session
                 -129.4620208 38.0786067,
                 -118.7406746 32.7853769,
                 -118.6527948 32.7114894
-            ))\`,
+            ))`,
             // Specify the relation between the WKT shape and the documents spatial data
             "Within"))
     .all();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// This query will return all matching company entities
+```sql
+// This query will return all matching company entities
 // that are located within the specified polygon.
 
 from "companies"
@@ -189,14 +183,13 @@ where spatial.within(
         -118.7406746 32.7853769,
         -118.6527948 32.7114894))")
 )
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
 <Admonition type="info" title="">
 
-<a id="polygonRules"/> __Polygon rules__:
+#### Polygon rules    
 
 * The polygon's coordinates must be provided in counterclockwise order.
 
@@ -206,25 +199,23 @@ where spatial.within(
 
 </Admonition>
 
-</Admonition>
+</Panel>
 
-
-
-## Spatial sorting
+<Panel heading="Spatial sorting">   
 
 * Use `orderByDistance` or `orderByDistanceDescending` to sort the results by distance from a given point.
 
 * By default, distance in RavenDB measured in **kilometers**.  
   The distance can be rounded to a specific range.  
 
-<Admonition type="note" title="">
-
-<a id="orderByDistance"/> __Order by distance__:
+---
+    
+#### Order by distance
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="js">
-{`// Return all matching employee entities located within 20 kilometers radius
+```js
+// Return all matching employee entities located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
 // Sort the results by their distance from a specified point,
@@ -243,12 +234,11 @@ const employeesSortedByDistance = await session
         // Sort the results by their distance from this point: 
         47.623473, -122.3060097)
     .all();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// Return all matching employee entities located within 20 kilometers radius
+```sql
+// Return all matching employee entities located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
 // Sort the results by their distance from a specified point,
@@ -263,21 +253,18 @@ order by spatial.distance(
     spatial.point(address.location.latitude, address.location.longitude),
     spatial.point(47.623473, -122.3060097)
 )
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
-
-<Admonition type="note" title="">
-
-<a id="orderByDistanceDesc"/> __Order by distance descending__:
+---
+    
+#### Order by distance descending
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="js">
-{`// Return all employee entities sorted by their distance from a specified point.
+```js
+// Return all employee entities sorted by their distance from a specified point.
 // The farthest results will be listed first.
 
 const employeesSortedByDistanceDesc = await session
@@ -289,12 +276,11 @@ const employeesSortedByDistanceDesc = await session
         // Sort the results by their distance (descending) from this point: 
         47.623473, -122.3060097)
     .all();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// Return all employee entities sorted by their distance from a specified point.
+```sql
+// Return all employee entities sorted by their distance from a specified point.
 // The farthest results will be listed first.
 
 from "employees"
@@ -302,21 +288,18 @@ order by spatial.distance(
     spatial.point(address.location.latitude, address.location.longitude),
     spatial.point(47.623473, -122.3060097)
 ) desc
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+---    
 
-<Admonition type="note" title="">
-
-<a id="roundedDistance"/> __Sort results by rounded distance__:
+#### Sort results by rounded distance
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="js">
-{`// Return all employee entities.
+```js
+// Return all employee entities.
 // Results are sorted by their distance to a specified point rounded to the nearest 100 km interval.
 // A secondary sort can be applied within the 100 km range, e.g. by field lastName.
 
@@ -333,12 +316,11 @@ const employeesSortedByRoundedDistance = await session
      // A secondary sort can be applied
     .orderBy("lastName")
     .all();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`// Return all employee entities.
+```sql
+// Return all employee entities.
 // Results are sorted by their distance to a specified point rounded to the nearest 100 km interval.
 // A secondary sort can be applied within the 100 km range, e.g. by field lastName.
 
@@ -348,32 +330,80 @@ order by spatial.distance(
     spatial.point(47.623473, -122.3060097),
     100
 ), lastName
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+---
+    
+#### Control null placement when sorting by distance    
 
-<Admonition type="note" title="">
+* Some documents may have `null` or missing spatial values.  
+  When sorting by distance with the [Corax](../../../../indexes/search-engine/corax.mdx) search engine,  
+  you can control whether these documents appear first or last in the sorted results.
 
-<a id="getResultingDistance"/> __Get resulting distance__:
+* Use:
+  * `"First"`  
+    to place documents with `null` or missing spatial values **before** documents with spatial values.
+  * `"Last"`  
+    to place documents with `null` or missing spatial values **after** documents with spatial values.
+  * `"Default"`  
+    to use the default configuration, which is set by the [Indexing.Querying.Corax.NullsSortMode](../../../../server/configuration/indexing-configuration.mdx#indexingqueryingcoraxnullssortmode) configuration key.
+
+* The requested null placement is independent of the sorting direction.  
+  For example, `"Last"` will place documents with `null` or missing spatial values last when using either `orderByDistance` or `orderByDistanceDescending`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+// Return all employee entities sorted by their distance from a specified point.
+// Documents with null or missing spatial values will be placed last.
+
+const employeesSortedByDistance = await session
+    .query({ collection: "employees" })
+     // Call 'orderByDistance'
+    .orderByDistance(
+        // Specify the document fields containing the spatial data
+        new PointField("address.location.latitude", "address.location.longitude"),
+        // Sort the results by their distance from this point
+        47.623473, -122.3060097,
+        // Place documents with null or missing spatial values last
+        "Last")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// Return all employee entities sorted by their distance from a specified point.
+// Documents with null or missing spatial values will be placed last.
+
+from "employees"
+order by spatial.distance(
+    spatial.point(address.location.latitude, address.location.longitude),
+    spatial.point(47.623473, -122.3060097)
+) nulls last
+```
+</TabItem>
+</Tabs>
+
+---
+    
+#### Get resulting distance
 
 * The distance is available in the `@spatial` metadata property within each result.
 
 * Note the following difference between the underlying search engines:
 
-    * When using __Lucene__:  
+    * When using **Lucene**:  
       This metadata property is always available in the results.
 
-    * When using __Corax__:  
+    * When using **Corax**:  
       In order to enhance performance, this property is not included in the results by default.  
       To get this metadata property you must set the [Indexing.Corax.IncludeSpatialDistance](../../../../server/configuration/indexing-configuration.mdx#indexingcoraxincludespatialdistance) configuration value to _true_.  
       Learn about the available methods for setting an indexing configuration key in this [indexing-configuration](../../../../server/configuration/indexing-configuration.mdx) article.
 
-<TabItem value="spatial_4_getDistance" label="spatial_4_getDistance">
-<CodeBlock language="js">
-{`// Get the distance of the results:
+```js
+// Get the distance of the results:
 // ================================
 
 // Call 'GetMetadataFor', pass an entity from the resulting employees list
@@ -385,62 +415,50 @@ const spatialResults = metadata["@spatial"];
 const distance = spatialResults.Distance;   // The distance of the entity from the queried location
 const latitude = spatialResults.Latitude;   // The entity's latitude value
 const longitude = spatialResults.Longitude; // The entity's longitude value
-`}
-</CodeBlock>
-</TabItem>
+```
 
-</Admonition>
+</Panel>
 
+<Panel heading="Spatial API">
 
+### `Spatial`
 
-## Spatial API
-<Admonition type="info" title="">
-#### spatial
-</Admonition>
-
-<TabItem value="spatial_7" label="spatial_7">
-<CodeBlock language="js">
-{`spatial(fieldName, clause);
+```js
+spatial(fieldName, clause);
 spatial(field, clause);
-`}
-</CodeBlock>
-</TabItem>
+```
+<br/>
 
 | Parameters    | Type                                           | Description                                                                                                                |
 |---------------|------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| __fieldName__ | `string`                                       | Path to spatial field in an index<br/>(when querying an index).                                                             |
-| __field__     | `DynamicSpatialField`                          | Object that contains the document's spatial fields,<br/>either `PointField` or `WktField`<br/>(when making a dynamic query). |
-| __clause__    | `(SpatialCriteriaFactory) => SpatialCrieteria` | Spatial criteria that will be executed on a given spatial field.                                                           |
-<Admonition type="info" title="">
-#### DynamicSpatialField
-</Admonition>
+| **fieldName** | `string`                                       | Path to spatial field in an index<br/>(when querying an index).                                                             |
+| **field**     | `DynamicSpatialField`                          | Object that contains the document's spatial fields,<br/>either `PointField` or `WktField`<br/>(when making a dynamic query). |
+| **clause**    | `(SpatialCriteriaFactory) => SpatialCrieteria` | Spatial criteria that will be executed on a given spatial field.                                                           |
+    
+### `DynamicSpatialField`
 
-<TabItem value="spatial_8" label="spatial_8">
-<CodeBlock language="js">
-{`class PointField \{
-    latitude; 
+```js
+class PointField {
+    latitude;
     longitude;
-\}
+}
 
-class WktField \{
+class WktField {
     wkt;
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
+<br/>
 
 | Parameters    | Type     | Description                                             |
 |---------------|----------|---------------------------------------------------------|
-| __latitude__  | `string` | Path to the document field that contains the latitude   |
-| __longitude__ | `string` | Path to the document field that contains the longitude  |
-| __wktPath__   | `string` | Path to the document field that contains the WKT string |
-<Admonition type="info" title="">
-#### SpatialCriteriaFactory
-</Admonition>
+| **latitude**  | `string` | Path to the document field that contains the latitude   |
+| **longitude** | `string` | Path to the document field that contains the longitude  |
+| **wktPath**   | `string` | Path to the document field that contains the WKT string |
+    
+### `SpatialCriteriaFactory`
 
-<TabItem value="spatial_9" label="spatial_9">
-<CodeBlock language="js">
-{`relatesToShape(shapeWkt, relation);
+```js
+relatesToShape(shapeWkt, relation);
 relatesToShape(shapeWkt, relation, units, distErrorPercent);
 intersects(shapeWkt);
 intersects(shapeWkt, distErrorPercent);
@@ -461,54 +479,58 @@ within(shapeWkt, units, distErrorPercent);
 withinRadius(radius, latitude, longitude);
 withinRadius(radius, latitude, longitude, radiusUnits);
 withinRadius(radius, latitude, longitude, radiusUnits, distErrorPercent);
-`}
-</CodeBlock>
-</TabItem>
+```
+<br/>
 
 | Parameter                                 | Type     | Description                                                                                                                         |
 |-------------------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------|
-| __shapeWkt__                              | `string` | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape used in query criteria                  |
-| __relation__                              | `string` | Relation of the shape to the spatial data in the document/index.<br/>Can be `Within`, `Contains`, `Disjoint`, `Intersects`.          |
-| __distErrorPercent__                      | `number` | Maximum distance error tolerance in percents. Default: 0.025                                                                        |
-| __radius__ / __latitude__ / __longitude__ | `number` | Used to define a radius of a circle                                                                                                 |
-| __radiusUnits__ / __units__               | `string` | Determines if circle or shape should be calculated in `Kilometers` or `Miles`.<br/>By default, distances are measured in kilometers. |
-<Admonition type="info" title="">
-#### orderByDistance
-</Admonition>
+| **shapeWkt**                              | `string` | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape used in query criteria                  |
+| **relation**                              | `string` | Relation of the shape to the spatial data in the document/index.<br/>Can be `Within`, `Contains`, `Disjoint`, `Intersects`.         |
+| **distErrorPercent**                      | `number` | Maximum distance error tolerance in percents. Default: 0.025                                                                        |
+| **radius** / **latitude** / **longitude** | `number` | Used to define a radius of a circle                                                                                                 |
+| **radiusUnits** / **units**               | `string` | Determines if circle or shape should be calculated in `Kilometers` or `Miles`.<br/>By default, distances are measured in kilometers. |
+    
+### `orderByDistance`
 
-<TabItem value="spatial_10" label="spatial_10">
-<CodeBlock language="js">
-{`orderByDistance(field, latitude, longitude);
+```js
+orderByDistance(field, latitude, longitude);
+orderByDistance(field, latitude, longitude, nulls);
 orderByDistance(field, shapeWkt);
+orderByDistance(field, shapeWkt, nulls);
 orderByDistance(fieldName, latitude, longitude);
-orderByDistance(fieldName, latitude, longitude, roundFactor: number);
+orderByDistance(fieldName, latitude, longitude, nulls);
+orderByDistance(fieldName, latitude, longitude, roundFactor);
+orderByDistance(fieldName, latitude, longitude, roundFactor, nulls);
 orderByDistance(fieldName, shapeWkt);
-`}
-</CodeBlock>
-</TabItem>
-<Admonition type="info" title="">
-#### orderByDistanceDescending
-</Admonition>
+orderByDistance(fieldName, shapeWkt, nulls);
+orderByDistance(fieldName, shapeWkt, roundFactor, nulls);
+```
+<br/>
+    
+### `orderByDistanceDescending`
 
-<TabItem value="spatial_11" label="spatial_11">
-<CodeBlock language="js">
-{`orderByDistanceDescending(field, latitude, longitude);
+```js
+orderByDistanceDescending(field, latitude, longitude);
+orderByDistanceDescending(field, latitude, longitude, nulls);
 orderByDistanceDescending(field, shapeWkt);
+orderByDistanceDescending(field, shapeWkt, nulls);
 orderByDistanceDescending(fieldName, latitude, longitude);
+orderByDistanceDescending(fieldName, latitude, longitude, nulls);
 orderByDistanceDescending(fieldName, latitude, longitude, roundFactor);
+orderByDistanceDescending(fieldName, latitude, longitude, roundFactor, nulls);
 orderByDistanceDescending(fieldName, shapeWkt);
-`}
-</CodeBlock>
-</TabItem>
+orderByDistanceDescending(fieldName, shapeWkt, nulls);
+orderByDistanceDescending(fieldName, shapeWkt, roundFactor, nulls);
+```
+<br/>
 
 | Parameter                    | Type                  | Description                                                                                                                                                                                                                                            
 |------------------------------|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __fieldName__                | `string`              | Path to spatial field in index<br/>(when querying an index).                                                                                                                                                                                          |
-| __field__                    | `DynamicSpatialField` | Object that contains the document's spatial fields,<br/>either `PointField` or `WktField`<br/>(when making a dynamic query).                                                                                                                          |
-| __shapeWkt__                 | `string`              | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
-| __latitude__ / __longitude__ | `number`              | Used to define a point from which distance will be measured                                                                                                                                                                                           |
-| __roundFactor__              | `number`              | A distance interval in kilometers.<br/>The distance from the point is rounded up to the nearest interval.<br/>Use `orderBy` to apply a secondary sort to results within the same distance interval.                                                   |
+| **fieldName**                | `string`              | Path to spatial field in index<br/>(when querying an index).                                                                                                                                                                                          |
+| **field**                    | `DynamicSpatialField` | Object that contains the document's spatial fields,<br/>either `PointField` or `WktField`<br/>(when making a dynamic query).                                                                                                                          |
+| **shapeWkt**                 | `string`              | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
+| **latitude** / **longitude** | `number`              | Used to define a point from which distance will be measured                                                                                                                                                                                           |
+| **roundFactor**              | `number`              | A distance interval in kilometers.<br/>The distance from the point is rounded up to the nearest interval.<br/>Use `orderBy` to apply a secondary sort to results within the same distance interval.                                                   |
+| **nulls**                    | `string`              | Controls whether documents with `null` or missing spatial values appear first or last in the sorted results.<br/>Possible values: `Default`, `First`, `Last`.<br/>Supported only when using [Corax](../../../../indexes/search-engine/corax.mdx).      |
 
-
-
-
+</Panel>

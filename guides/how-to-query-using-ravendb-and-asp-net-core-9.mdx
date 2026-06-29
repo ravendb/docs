@@ -1,9 +1,248 @@
 ---
-title: "How to query using RavenDB and ASP.NET Core 9"
-tags: [querying, asp-net, getting-started]
-description: "Read about How to query using RavenDB and ASP.NET Core 9 on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/how-to-query-using-ravendb-and-asp-net-core-9"
-published_at: 2025-09-21
+title: "How to Query Using RavenDB and ASP.NET Core 9"
+tags: [querying, asp-net, csharp, getting-started]
 image: "https://ravendb.net/wp-content/uploads/2024/12/asp_net_core8_article_cover.jpg"
+description: "Build a minimal ASP.NET Core 9 API that queries RavenDB documents, including optional LINQ-based filtering and Swagger-based testing."
+published_at: 2025-09-22
+see_also:
+  - title: "How to Filter by Field"
+    link: "client-api/session/querying/how-to-filter-by-field"
+    source: "docs"
+    path: "Client API > Session > Querying"
+  - title: "What Is a Session and How Does It Work"
+    link: "client-api/session/what-is-a-session-and-how-does-it-work"
+    source: "docs"
+    path: "Client API > Session"
+  - title: "Creating a Document Store"
+    link: "client-api/creating-document-store"
+    source: "docs"
+    path: "Client API"
+author: "Paweł Lachowski"
 proficiency_level: "Beginner"
 ---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Image from "@theme/IdealImage";
+import SeeAlso from "@site/src/components/SeeAlso";
+import { LanguageSwitcher, LanguageContent } from "@site/src/components/LanguageSwitcher";
+
+## Introduction
+
+Querying in RavenDB is straightforward, regardless of whether you are using automatic indexes or static ones. It enables you to search for specific documents in your collections. Let's see how to query with ASP.NET Core 9 and RavenDB, step by step.
+
+## Prerequisites
+
+- .NET SDK 9.0.200 or later installed on your machine
+- A RavenDB Cloud account with a certificate, or a local RavenDB cluster with sample data loaded
+- The `RavenDB.Client` NuGet package added to your project:
+
+```bash
+dotnet add package RavenDB.Client
+```
+
+You can generate sample data directly from the RavenDB Studio using the "Create sample data" option under the Tasks menu.
+
+## Setup
+
+Let's take this code one step at a time. First, we are using a namespace called `Models` that has our employee class inside. We move it from the main file to clean up a bit and make it less chaotic. The Models file looks like this:
+
+```csharp
+namespace Models
+{
+    public class Location
+    {
+        public float Latitude { get; set; }
+        public float Longitude { get; set; }
+    }
+
+    public class Address
+    {
+        public string City { get; set; }
+        public string Country { get; set; }
+        public string Line1 { get; set; }
+        public object Line2 { get; set; }
+        public Location Location { get; set; }
+        public string PostalCode { get; set; }
+        public string Region { get; set; }
+    }
+
+    public class Employee
+    {
+        public Address Address { get; set; }
+        public DateTime Birthday { get; set; }
+        public int Extension { get; set; }
+        public string FirstName { get; set; }
+        public DateTime HiredAt { get; set; }
+        public string HomePhone { get; set; }
+        public string LastName { get; set; }
+        public List<string> Notes { get; set; }
+        public string ReportsTo { get; set; }
+        public List<int> Territories { get; set; }
+        public string Title { get; set; }
+    }
+}
+```
+
+After we have our usings, we proceed further by adding the default ASP.NET host config, configuring OpenAPI (Swagger) for later use, RavenDB connection settings, and a [DocumentStore](https://docs.ravendb.net/7.2/client-api/what-is-a-document-store) singleton for dependency injection.
+
+```csharp
+using System.Security.Cryptography.X509Certificates;
+using Raven.Client;
+using Raven.Client.Documents;
+using Models;
+using Microsoft.AspNetCore.Mvc;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+string serverURL = "https://your_RavenDB_server_URL";
+string databaseName = "your_database_name";
+string certificatePath = @"C:\path_to_your_pfx_file\cert.pfx";
+
+var x509Certificate = new X509Certificate2(certificatePath);
+
+builder.Services.AddSingleton<IDocumentStore>(serviceProvider =>
+{
+    var store = new DocumentStore
+    {
+        Urls = new[] { serverURL },
+        Database = databaseName,
+        Certificate = x509Certificate
+    };
+    store.Initialize();
+    return store;
+});
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+```
+
+<Admonition type="note" title="What is dependency injection?">
+Dependency Injection is a design pattern where a class or function receives the objects it depends on instead of creating them itself. The `IDocumentStore` singleton is registered once and injected wherever you need database access.
+</Admonition>
+
+If you're running a local unsecured RavenDB instance, remove the certificate lines and use a plain `http://` URL. With it all, we can proceed to adding our endpoint and query.
+
+## Query
+
+Now let's create an endpoint that will make a query for us. Let's look at this code and try to analyze it a bit:
+
+```csharp
+app.MapGet("/Employees", ([FromServices] IDocumentStore store, string? firstName) =>
+{
+    using var session = store.OpenSession();
+    var query = session.Query<Employee>();
+
+    if (!string.IsNullOrWhiteSpace(firstName))
+        query = query.Where(e => e.FirstName == firstName);
+
+    List<Employee> employees = query.ToList();
+    return employees;
+})
+.WithName("Employee")
+.WithOpenApi();
+
+app.Run();
+```
+
+`MapGet` defines a route for our application, specifically `/Employees`. When we send an HTTP request to this endpoint, the code inside will run.
+
+Inside, we use `[FromServices] IDocumentStore store` to get access to our RavenDB connection. With this store, we open a session (`OpenSession`), which allows us to talk to the database. Session is the primary interface your application will interact with. Wrap it in `using` so it gets disposed at the end of the request, and treat it as a unit of work rather than something you hold on to. You can find more information in the [documentation](https://docs.ravendb.net/7.2/client-api/session/what-is-a-session-and-how-does-it-work).
+
+Then comes the query. We prepare our query on the Employees collection, and then optionally add filtering by name, based on the provided (or not) term. We're using the synchronous `.ToList()` here to keep things simple; in production, switch to `await query.ToListAsync()` so you're not blocking threads under load.
+
+After filtering, the query returns the matching employee objects. The result is turned into a list and returned as the response of our endpoint. We also give this route a name using `.WithName("Employee")` and make it available for OpenAPI documentation with `.WithOpenApi()`.
+
+What is left to do is test it by executing `dotnet run` in the console and using your URL with `/swagger`. Then:
+
+1. Expand the `/Employees` endpoint.
+2. Click **Try it out**.
+3. Optionally enter a first name in the parameter field.
+4. Click **Execute**.
+
+<Image img={require("./assets/how-to-query-using-ravendb-and-asp-net-core-91.webp")} alt="Swagger UI showing the Employees endpoint with numbered test controls" />
+
+If you created sample data, just as we did, you will get a response that looks like this.
+
+<Image img={require("./assets/how-to-query-using-ravendb-and-asp-net-core-92.webp")} alt="JSON response showing returned employee documents" />
+
+### Complete code
+
+Our complete code looks like this:
+
+```csharp
+using System.Security.Cryptography.X509Certificates;
+using Raven.Client;
+using Raven.Client.Documents;
+using Models;
+using Microsoft.AspNetCore.Mvc;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+string serverURL = "https://your_RavenDB_server_URL";
+string databaseName = "your_database_name";
+string certificatePath = @"C:\path_to_your_pfx_file\cert.pfx";
+
+var x509Certificate = new X509Certificate2(certificatePath);
+
+builder.Services.AddSingleton<IDocumentStore>(serviceProvider =>
+{
+    var store = new DocumentStore
+    {
+        Urls = new[] { serverURL },
+        Database = databaseName,
+        Certificate = x509Certificate
+    };
+    store.Initialize();
+    return store;
+});
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.MapGet("/Employees", ([FromServices] IDocumentStore store, string? firstName) =>
+{
+    using var session = store.OpenSession();
+    var query = session.Query<Employee>();
+
+    if (!string.IsNullOrWhiteSpace(firstName))
+        query = query.Where(e => e.FirstName == firstName);
+
+    List<Employee> employees = query.ToList();
+    return employees;
+})
+.WithName("Employee")
+.WithOpenApi();
+
+app.Run();
+```
+
+<Image img={require("./assets/how-to-query-using-ravendb-and-asp-net-core-93.webp")} alt="Swagger UI showing the Employees endpoint schema with Address, Employee, and Location models" />
+
+## Summary
+
+This article is just the tip of an iceberg of RavenDB querying capabilities. A few things to keep in mind as you build on top of this:
+
+- Auto-indexes: RavenDB creates indexes automatically based on your queries, so there is no need to define them upfront. You can see them in RavenDB Studio under Indexes. The first query may take longer while the index is being created, but once it is built, subsequent queries are fast.
+- Register IDocumentStore as a singleton: The document store manages connection pooling and cluster topology information. Creating multiple instances wastes resources and can lead to unnecessary connection overhead.
+- Collection naming conventions: When you query with `session.Query<Employee>()`, RavenDB looks for documents in the Employees collection. Make sure your entity names match the collections you expect to work with.
+
+Deep dive into querying mechanics and capabilities by visiting the [RavenDB querying documentation](/7.2/indexes/querying/query-index).
