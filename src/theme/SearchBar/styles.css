@@ -11,3 +11,32 @@
 .DocSearch-Container {
     z-index: calc(var(--ifm-z-index-fixed) + 1);
 }
+
+/* Source badge appended to each result row (Docs / Guide / Cloud / Sample / External). */
+.DocSearch-Hit a {
+    display: flex;
+    align-items: center;
+}
+
+.DocSearch-Hit a > .DocSearch-Hit-Container {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.DocSearch-Hit-sourceBadge {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 12px 0 8px;
+}
+
+/* Source filter pills injected after the modal search bar. */
+.DocSearch-SourceFilters {
+    padding: 10px var(--docsearch-spacing) 2px;
+}
+
+/* Hidden until the user types (while the input still shows its placeholder). */
+.DocSearch-Modal:has(.DocSearch-Input:placeholder-shown) .DocSearch-SourceFilters {
+    display: none;
+}
