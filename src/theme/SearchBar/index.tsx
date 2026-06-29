@@ -24,8 +24,7 @@ import CustomSearchButton from "@site/src/components/Common/CustomSearchButton";
 import SearchResultBadge from "@site/src/components/Search/SearchResultBadge";
 import SearchFilterPills from "@site/src/components/Search/SearchFilterPills";
 import {
-    ALL_SCOPE_EXCLUDED_TAGS,
-    getResultBreadcrumb,
+    ALL_SCOPE_EXCLUDED_PLUGIN_IDS,
     getSearchResultSource,
     SEARCH_ATTRIBUTES_TO_RETRIEVE,
     SEARCH_FILTERS,
@@ -140,11 +139,13 @@ function useResultsFooterComponent({
 function Hit({ hit, children }: { hit: InternalDocSearchHit | StoredDocSearchHit; children: React.ReactNode }) {
     const source = getSearchResultSource((hit as { docusaurus_tag?: string | string[] }).docusaurus_tag);
     const externalUrl = resolveExternalGuideUrl(useExternalGuideUrls(), hit.url);
-    const breadcrumb = getResultBreadcrumb(hit.url);
+    // Crawler-provided section trail; drop the leading source root ("Docs ›" / "Guides") — the
+    // source is already shown by the badge and section header.
+    const breadcrumb = ((hit as { breadcrumb?: string }).breadcrumb ?? "").split(" › ").slice(1).join(" › ");
 
-    // DocSearch renders no path for page-level (lvl1) hits; inject the URL chain into that empty slot.
+    // DocSearch renders no path for page-level (lvl1) hits; inject the section trail into that slot.
     const injectBreadcrumb = (node: HTMLAnchorElement | null) => {
-        if (!node || breadcrumb.length === 0) {
+        if (!node || !breadcrumb) {
             return;
         }
         const wrapper = node.querySelector(".DocSearch-Hit-content-wrapper");
@@ -153,7 +154,7 @@ function Hit({ hit, children }: { hit: InternalDocSearchHit | StoredDocSearchHit
         }
         const pathEl = document.createElement("div");
         pathEl.className = "DocSearch-Hit-path";
-        pathEl.textContent = breadcrumb.join(" › ");
+        pathEl.textContent = breadcrumb;
         wrapper.appendChild(pathEl);
     };
 
@@ -204,14 +205,15 @@ function useSearchParameters(
     // Contextual filters look like ["language:en", ["docusaurus_tag:..", ...]]. Narrow the tag
     // group: one pill -> just that instance's tag, keeping the version already in the contextual
     // group (so the Docs pill stays on the page's version); "All" -> drop separated scopes (samples).
-    const excluded = ALL_SCOPE_EXCLUDED_TAGS.map((tag) => `docusaurus_tag:${tag}`);
+    const isExcludedFromAll = (tag: string) =>
+        ALL_SCOPE_EXCLUDED_PLUGIN_IDS.some((pluginId) => tag.startsWith(`docusaurus_tag:docs-${pluginId}-`));
     const narrowed = contextual.map((entry) => {
         if (!Array.isArray(entry)) {
             return entry;
         }
         return activePluginId
             ? entry.filter((tag) => tag.startsWith(`docusaurus_tag:docs-${activePluginId}-`))
-            : entry.filter((tag) => !excluded.includes(tag));
+            : entry.filter((tag) => !isExcludedFromAll(tag));
     });
 
     let facetFilters: (string | string[])[];

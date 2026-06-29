@@ -12,7 +12,7 @@
     z-index: calc(var(--ifm-z-index-fixed) + 1);
 }
 
-/* Source badge appended to each result row (Docs / Guide / Cloud / Sample / External). */
+/* Lay out each result row as a flex row so the source badge sits beside the content. */
 .DocSearch-Hit a {
     display: flex;
     align-items: center;
@@ -23,6 +23,7 @@
     min-width: 0;
 }
 
+/* Wrapper for the source badge(s); a flex row with a gap so dual badges (e.g. Guide + External) don't touch. */
 .DocSearch-Hit-sourceBadge {
     flex: 0 0 auto;
     display: inline-flex;

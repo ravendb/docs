@@ -26,7 +26,7 @@ import Heading from "@theme/Heading";
 import SearchResultBadge from "@site/src/components/Search/SearchResultBadge";
 import SearchFilterPills from "@site/src/components/Search/SearchFilterPills";
 import {
-    ALL_SCOPE_EXCLUDED_TAGS,
+    ALL_SCOPE_EXCLUDED_PLUGIN_IDS,
     getSearchResultSource,
     SEARCH_ATTRIBUTES_TO_RETRIEVE,
     SEARCH_FILTERS,
@@ -303,9 +303,11 @@ function SearchPageContent(): ReactNode {
                 // "All": every instance except separated scopes (samples).
                 algoliaHelper.addDisjunctiveFacetRefinement("docusaurus_tag", "default");
                 Object.entries(docsSearchVersionsHelpers.searchVersions).forEach(([pluginId, searchVersion]) => {
-                    const tag = `docs-${pluginId}-${searchVersion}`;
-                    if (!ALL_SCOPE_EXCLUDED_TAGS.includes(tag)) {
-                        algoliaHelper.addDisjunctiveFacetRefinement("docusaurus_tag", tag);
+                    if (!ALL_SCOPE_EXCLUDED_PLUGIN_IDS.includes(pluginId)) {
+                        algoliaHelper.addDisjunctiveFacetRefinement(
+                            "docusaurus_tag",
+                            `docs-${pluginId}-${searchVersion}`
+                        );
                     }
                 });
             }

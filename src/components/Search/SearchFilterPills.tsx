@@ -23,7 +23,7 @@ export default function SearchFilterPills({ active, onChange, className }: Searc
                         {filter.separated && (
                             <span
                                 aria-hidden="true"
-                                className="mx-1 h-4 w-px self-center bg-black/15 dark:bg-white/15"
+                                className="mx-1 h-4 w-px self-center bg-black/10 dark:bg-white/10"
                             />
                         )}
                         <button
@@ -33,8 +33,8 @@ export default function SearchFilterPills({ active, onChange, className }: Searc
                             className={clsx(
                                 "cursor-pointer select-none rounded-full border px-3 py-1 text-xs font-semibold transition-colors",
                                 isActive
-                                    ? "border-transparent bg-primary text-white"
-                                    : "border-black/10 bg-black/5 text-ifm-menu hover:bg-black/10 dark:border-white/15 dark:bg-white/5 dark:hover:bg-white/10"
+                                    ? "border-transparent bg-primary text-white dark:text-black"
+                                    : "border-black/10 bg-black/5 text-ifm-menu hover:bg-black/10 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10"
                             )}
                         >
                             {filter.label}
