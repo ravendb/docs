@@ -1,6 +1,8 @@
+import { ContentSource } from "@site/src/components/Common/contentSource";
+
 export interface SeeAlsoItemType {
     title: string;
     link: string;
-    source: "docs" | "cloud" | "guides" | "samples" | "external";
+    source: ContentSource;
     path: string;
 }
