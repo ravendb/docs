@@ -1,7 +1,7 @@
 ---
-title: "Fiddler Usage With Secured Database"
-sidebar_label: Fiddler Usage With Secured Database
-description: "Debug HTTPS traffic between clients and a secured RavenDB server using Fiddler proxy with certificate forwarding configuration."
+title: "Fiddler Usage With Secure Database"
+sidebar_label: Fiddler Usage With Secure Database
+description: "Debug HTTPS traffic between clients and a secure RavenDB server using Fiddler proxy with certificate forwarding configuration."
 sidebar_position: 5
 ---
 
@@ -11,60 +11,144 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-# Fiddler Usage With Secured Database
+# Fiddler Usage With Secure Database
 
-When you want to use fiddler with secure database you need to configure fiddler that it could response and do requests as you.
+<Admonition type="note" title="">
 
-## Respond to Requests Requiring a Client Certificate
+* [Fiddler](https://www.telerik.com/fiddler) is a debugging tool that sits between
+  an application and a server so you can read the HTTPS traffic that flows between
+  them.  
 
-First you need to create .CER file: 
+* To use Fiddler against a secure RavenDB server, you need to configure both sides
+  of the connection that Fiddler intercepts.  
+  Fiddler must present a valid client certificate when it forwards a request to the
+  server, and the client must accept the certificate that Fiddler presents in place
+  of the server's real one.  
 
-1. Open Manege User certificates
+* In this page:
+   * [Forward the client certificate to the server](fiddler-usage-with-secured-database.mdx#forward-the-client-certificate-to-the-server)
+      * [Option A: Add a FiddlerScript snippet](fiddler-usage-with-secured-database.mdx#option-a-add-a-fiddlerscript-snippet)
+      * [Option B: Place the .CER file in the Fiddler profile](fiddler-usage-with-secured-database.mdx#option-b-place-the-cer-file-in-the-fiddler-profile)
+   * [Accept the proxy certificate at the client](fiddler-usage-with-secured-database.mdx#accept-the-proxy-certificate-at-the-client)
+      * [Option 1: Trust the Fiddler root certificate in Windows](fiddler-usage-with-secured-database.mdx#option-1-trust-the-fiddler-root-certificate-in-windows)
+      * [Option 2: Trust the proxy certificate via the client API](fiddler-usage-with-secured-database.mdx#option-2-trust-the-proxy-certificate-via-the-client-api)
 
-2. Right-click the certificate in Personal Certificates Store.
+</Admonition>
 
-3. Click All Tasks &gt; Export 
+<Panel heading="Forward the client certificate to the server">
 
-Then you need to specify the .CER file for Fiddler to return for a given session.
+To make Fiddler forward a valid client certificate to the server on your behalf,
+first export your certificate to a `.CER` file:
 
-You have two options to do so:
+1. Open **Manage User Certificates**.
+2. Right-click the certificate in the Personal Certificates store.
+3. Click **All Tasks > Export** and save the `.CER` file.
 
-1. Add a FiddlerScript to OnBeforeRequest function: 
-<TabItem value="plain" label="plain">
-<CodeBlock language="plain">
-{`oSession["https-Client-Certificate"] = "C:\\\\test\\\\someCert.cer"; 
-`}
-</CodeBlock>
-</TabItem>
-2. Place your .CER file in '%USERPROFILE%\My Documents\Fiddler2\ClientCertificate.cer' ( the name must be ClientCertificate.cer)
+Then point Fiddler at the file using one of the two options below.
+
+<ContentFrame>
+
+### Option A: Add a FiddlerScript snippet
+
+In Fiddler, add the following line to the `OnBeforeRequest` function:
+
+```plain
+oSession["https-Client-Certificate"] = "C:\\test\\someCert.cer";
+```
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Option B: Place the .CER file in the Fiddler profile
+
+Copy the `.CER` file to:
+
+```plain
+%USERPROFILE%\My Documents\Fiddler2\ClientCertificate.cer
+```
+
+<br />
+
+The filename must be exactly `ClientCertificate.cer`.
+
+</ContentFrame>
 
 <Admonition type="warning" title="">
-If you do this your client certificate is exposed through fiddler
+Note that either option exposes your client certificate to Fiddler.  
+Use this configuration only on a controlled machine where the Fiddler instance is
+yours.
 </Admonition>
 
-## Accepting response by the client
+</Panel>
 
-* Option 1: Configure Windows Client to trust Fiddler Root Certificate
+<Panel heading="Accept the proxy certificate at the client">
 
-    1. Click Tools &gt; Fiddler Options &gt; HTTPS.
+When Fiddler intercepts a request, it presents its own certificate to the client
+in place of the server's real certificate.  
+The client refuses that certificate by default.  
+You have two ways to make the client accept it.
 
-    2. Click the Decrypt HTTPS Traffic box.
+<ContentFrame>
 
-    3. Next to `Trust the Fiddler Root certificate?`, click Yes.
+### Option 1: Trust the Fiddler root certificate in Windows
 
-    4. After `Do you want to install this certificate?`, click Yes.
+1. In Fiddler, click **Tools > Fiddler Options > HTTPS**.
+2. Check **Decrypt HTTPS Traffic**.
+3. When prompted with **Trust the Fiddler Root certificate?**, click **Yes**.
+4. When prompted with **Do you want to install this certificate?**, click **Yes**.
 
 <Admonition type="danger" title="">
-If you do this windows will automatically trust any certificate issued by this CA. This is a security risk!
+Note that this makes Windows trust every certificate issued by Fiddler's root
+authority for as long as the certificate is installed in the trust store.  
+That trust applies to every process on the machine that uses the Windows
+trust store, not only to your RavenDB client.  
+Remove the certificate from the Windows trust store when the debugging session
+ends.
 </Admonition>
 
-* Option 2: Client will ignore certificate validation
+</ContentFrame>
 
-    In the application you should set:
+---
 
-    Raven.Client.Http.RequestExecutor.RemoteCertificateValidationCallback += (sender, cert, chain, errors) =&gt; true;
+<ContentFrame>
+
+### Option 2: Trust the proxy certificate via the client API
+
+In your RavenDB client application code, register a handler on
+`RequestExecutor.RemoteCertificateValidationCallback` that returns `true`
+for every certificate:
+
+```csharp
+Raven.Client.Http.RequestExecutor.RemoteCertificateValidationCallback +=
+    (sender, cert, chain, errors) => true;
+```
+
+<br />
+
+This handler accepts the certificate that Fiddler presents.  
+It also accepts every other certificate the client encounters for as long as the
+handler is registered, which is why the snippet is appropriate only for a short,
+controlled debugging session.
 
 <Admonition type="danger" title="">
-If you do this and forget to remove it from your code, your client will accept any response!
+Note that this trust-everything form is for debugging only.  
+While the handler is registered, the client accepts every certificate it
+receives, with no validation, for as long as the application is running.  
+Remove the handler when the debugging session ends.  
+To trust a specific server certificate in production (for example, an
+expired certificate during renewal, a self-signed development or staging
+certificate, a hostname mismatch, or a certificate signed by an internal
+certificate authority), see
+[Trusting a Server Certificate](../../client-api/security/trusting-server-certificates.mdx)
+instead.
 </Admonition>
+
+</ContentFrame>
+
+</Panel>
