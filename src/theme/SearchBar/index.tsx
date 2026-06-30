@@ -38,6 +38,12 @@ type DocSearchProps = Omit<DocSearchModalProps, "onClose" | "initialScrollY"> & 
     searchPagePath: boolean | string;
 };
 
+// A DocSearch hit augmented with the custom fields our Algolia crawler emits.
+type SearchHit = (InternalDocSearchHit | StoredDocSearchHit) & {
+    docusaurus_tag?: string | string[];
+    breadcrumb?: string;
+};
+
 let DocSearchModal: typeof DocSearchModalType | null = null;
 
 function importDocSearchModalIfNeeded() {
@@ -136,31 +142,17 @@ function useResultsFooterComponent({
     );
 }
 
-function Hit({ hit, children }: { hit: InternalDocSearchHit | StoredDocSearchHit; children: React.ReactNode }) {
-    const source = getSearchResultSource((hit as { docusaurus_tag?: string | string[] }).docusaurus_tag);
+function Hit({ hit, children }: { hit: SearchHit; children: React.ReactNode }) {
+    const source = getSearchResultSource(hit.docusaurus_tag);
     const externalUrl = resolveExternalGuideUrl(useExternalGuideUrls(), hit.url);
-    // Crawler-provided section trail; drop the leading source root ("Docs ›" / "Guides") — the
-    // source is already shown by the badge and section header.
-    const breadcrumb = ((hit as { breadcrumb?: string }).breadcrumb ?? "").split(" › ").slice(1).join(" › ");
-
-    // DocSearch renders no path for page-level (lvl1) hits; inject the section trail into that slot.
-    const injectBreadcrumb = (node: HTMLAnchorElement | null) => {
-        if (!node || !breadcrumb) {
-            return;
-        }
-        const wrapper = node.querySelector(".DocSearch-Hit-content-wrapper");
-        if (!wrapper || wrapper.querySelector(".DocSearch-Hit-path")) {
-            return;
-        }
-        const pathEl = document.createElement("div");
-        pathEl.className = "DocSearch-Hit-path";
-        pathEl.textContent = breadcrumb;
-        wrapper.appendChild(pathEl);
-    };
+    // Crawler section trail, minus the leading source root ("Docs ›" / "Guides") — the source is
+    // already shown by the badge.
+    const breadcrumb = (hit.breadcrumb ?? "").split(" › ").slice(1).join(" › ");
 
     return (
-        <Link to={externalUrl ?? hit.url} ref={injectBreadcrumb}>
+        <Link to={externalUrl ?? hit.url}>
             {children}
+            {breadcrumb && <span className="DocSearch-Hit-breadcrumb">{breadcrumb}</span>}
             {(source || externalUrl) && (
                 <span className="DocSearch-Hit-sourceBadge">
                     <SearchResultBadge source={source} />

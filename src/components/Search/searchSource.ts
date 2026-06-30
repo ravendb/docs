@@ -44,19 +44,24 @@ export interface SearchFilter {
     label: string;
     kind: ContentSource | null;
     pluginId: string | null;
-    // Render a divider before this pill: a separate scope, excluded from "All".
-    separated?: boolean;
 }
 
-export const SEARCH_FILTERS: SearchFilter[] = [
-    { label: "All", kind: null, pluginId: null },
-    { label: "Docs", kind: "docs", pluginId: "default" },
-    { label: "Guides", kind: "guides", pluginId: "guides" },
-    { label: "Cloud", kind: "cloud", pluginId: "cloud" },
-    { label: "Samples", kind: "samples", pluginId: "samples", separated: true },
+// Filter pills, grouped. The UI draws a divider between groups, and every group after the
+// first is a separate scope excluded from the default "All".
+export const SEARCH_FILTER_GROUPS: SearchFilter[][] = [
+    [
+        { label: "All", kind: null, pluginId: null },
+        { label: "Docs", kind: "docs", pluginId: "default" },
+        { label: "Guides", kind: "guides", pluginId: "guides" },
+        { label: "Cloud", kind: "cloud", pluginId: "cloud" },
+    ],
+    [{ label: "Samples", kind: "samples", pluginId: "samples" }],
 ];
 
-// Plugin instances kept out of the default "All" scope; each is reachable via its own separated pill.
-export const ALL_SCOPE_EXCLUDED_PLUGIN_IDS = SEARCH_FILTERS.filter((f) => f.separated && f.pluginId).map(
-    (f) => f.pluginId as string
-);
+export const SEARCH_FILTERS: SearchFilter[] = SEARCH_FILTER_GROUPS.flat();
+
+// Plugin instances kept out of the default "All" scope (every group after the first).
+export const ALL_SCOPE_EXCLUDED_PLUGIN_IDS = SEARCH_FILTER_GROUPS.slice(1)
+    .flat()
+    .map((f) => f.pluginId)
+    .filter((id): id is string => id !== null);
