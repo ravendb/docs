@@ -35,8 +35,8 @@ import Panel from '@site/src/components/Panel';
 * In this article:
   * [Queries always provide results using an index](#queries-always-provide-results-using-an-index)  
   * [session.query](#session-query)  
-  * [session.advanced.document_query](#session-advanced-document_query)  
-  * [session.advanced.raw_query](#session-advanced-raw_query)
+  * [session.advanced.document_query](#session-advanced-documentquery)  
+  * [session.advanced.raw_query](#session-advanced-rawquery)
   * [query API](#query-api)  
   * [Syntax](#syntax)  
 
@@ -391,7 +391,7 @@ from "Employees" where FirstName = "Robert"
 
 <Panel heading="session.advanced.raw_query">
 
-* Queries defined with [query](#session-query) or [document_query](#session-advanced-document_query) are translated by the RavenDB client to [RQL](../rql/what-is-rql.mdx)  
+* Queries defined with [query](#session-query) or [document_query](#session-advanced-documentquery) are translated by the RavenDB client to [RQL](../rql/what-is-rql.mdx)  
   when sent to the server.
 
 * The session also gives you a way to express the query directly in RQL using the `raw_query` method.

@@ -175,7 +175,7 @@ Task<string> UpdateAsync(SubscriptionUpdateOptions options, string database = nu
 
 | Parameter    | Type                        | Description                                                                                                                                                        |
 |--------------|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **options**  | `SubscriptionUpdateOptions` | The subscription update options object.<br/>See [SubscriptionUpdateOptions](#subscriptionupdateoptions) |
+| **options**  | `SubscriptionUpdateOptions` | The subscription update options object.<br/>See [SubscriptionUpdateOptions](#subscription-update-options) |
 | **database** | `string`                    | The name of the database where the subscription task resides.<br/>If `null`, the default database configured in the DocumentStore will be used.                     |
 | **token**    | `CancellationToken`         | Cancellation token used to halt the update process.                                                                                                                |
 
@@ -187,7 +187,7 @@ Task<string> UpdateAsync(SubscriptionUpdateOptions options, string database = nu
 
 ## Subscription update options
 
-`SubscriptionUpdateOptions` inherits from [SubscriptionCreationOptions](#subscriptioncreationoptions)
+`SubscriptionUpdateOptions` inherits from [SubscriptionCreationOptions](#subscription-creation-options)
 and adds two additional fields:
 
 <TabItem value="sub_update_options" label="sub_update_options">

@@ -31,8 +31,8 @@ import CodeBlock from '@theme/CodeBlock';
 * In this page:
   * [Queries always provide results using an index](#queries-always-provide-results-using-an-index)  
   * [session.query](#sessionquery)  
-  * [session.advanced.document_query](#sessionadvanceddocument_query)  
-  * [session.advanced.raw_query](#sessionadvancedraw_query)
+  * [session.advanced.document_query](#sessionadvanceddocumentquery)  
+  * [session.advanced.raw_query](#sessionadvancedrawquery)
   * [Custom methods](#custom-methods)  
   * [Syntax](#syntax)  
 
@@ -53,9 +53,9 @@ import CodeBlock from '@theme/CodeBlock';
 
 We differentiate between the following **3 query scenarios**:
 
-1. [Index query](#indexquery)
-2. [Dynamic query](#dynamicquery)
-3. [Full collection query](#collectionquery)
+1. [Index query](#indexQuery)
+2. [Dynamic query](#dynamicQuery)
+3. [Full collection query](#collectionQuery)
 
 For each scenario, a different index type is used, as described below.
 
@@ -392,7 +392,7 @@ from "Employees" where FirstName = "Robert"
 
 ## session.advanced.raw_query
 
-* Queries defined with [query](#sessionquery) or [document_query](#sessionadvanceddocument_query) are translated by the RavenDB client to [RQL](../what-is-rql.mdx)  
+* Queries defined with [query](#sessionquery) or [document_query](#sessionadvanceddocumentquery) are translated by the RavenDB client to [RQL](../what-is-rql.mdx)  
   when sent to the server.
 
 * The session also gives you a way to express the query directly in RQL using the `raw_query` method.

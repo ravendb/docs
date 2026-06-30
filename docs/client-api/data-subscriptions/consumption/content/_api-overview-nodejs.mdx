@@ -7,7 +7,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * In this page:  
   * [Create the subscription worker](#create-the-subscription-worker)  
-  * [Subscription worker options](#subscription-worker-options)  
+  * [Subscription worker options](#subscriptionworkeroptions)  
   * [Run the subscription worker](#run-the-subscription-worker)  
   * [Subscription batch](#subscription-batch)  
   * [Subscription batch item](#subscription-batch-item)  
@@ -36,7 +36,7 @@ await documentStore.subscriptions.getSubscriptionWorker(options, database);
 |----------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **subscriptionName** | `string` | The name of the subscription to which the worker will connect.                                                                                                                                                                                                      |
 | **database**         | `string` | The name of the database where the subscription task resides.<br/>If `null`, the default database configured in DocumentStore will be used.                                                                                                                          |
-| **options**          | `object` | [Subscription worker options](#subscription-worker-options) object that affect how the worker interacts with the subscription. These options do not alter the definition of the subscription itself. |
+| **options**          | `object` | [Subscription worker options](#subscriptionworkeroptions) object that affect how the worker interacts with the subscription. These options do not alter the definition of the subscription itself. |
 
 | Return value         |                                                                                                                                                                                                                                                                       |
 |----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
