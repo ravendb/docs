@@ -46,7 +46,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   * [Restore](#restore)  
      * [Set paths to backup files locations](#set-paths-to-backup-files-locations)  
      * [Define a restore configuration](#define-a-restore-configuration)  
-     * [Run `RestoreBackupOperation` with the restore configuration](../../sharding/backup-and-restore/restore#run-restorebackupoperation-with-the-restore-configuration)  
+     * [Run `RestoreBackupOperation` with the restore configuration](#run-restorebackupoperation-with-the-restore-configuration)  
      * [Examples](#examples)  
   * [Restoring to a selected restore point](#restoring-to-a-selected-restore-point)  
   * [Restore options summary](#restore-options-summary)  
@@ -123,7 +123,7 @@ To restore the database, we pass the
 a **configuration object**.  
 
 * The configuration object inherits properties from the `RestoreBackupConfigurationBase` class 
-  ([discussed below](../../sharding/backup-and-restore/restore#restorebackupconfigurationbase)) and defines additional sharding-specific settings.  
+  ([discussed below](#restorebackupconfigurationbase)) and defines additional sharding-specific settings.  
 
 * We choose what configuration object to pass the restore operation, by 
   the backup files' location.  
