@@ -122,7 +122,7 @@ The attachment metadata and the binary content are included in the operation:
 <Panel heading="Attachments & Revisions">
 
 Revisions are immutable snapshots of a document's state at a given point in time.
-If [Document revisions](../../document-extensions/revisions/overview.mdx) are enabled, any addition or removal of attachments will create a new revision of the document.
+If [Document revisions](../revisions/overview.mdx) are enabled, any addition or removal of attachments will create a new revision of the document.
 
 ---
         
@@ -134,7 +134,7 @@ The storage location of the attachment is bound to the revision’s creation con
 The background process that uploads attachments to remote storage only processes current documents.  
 It does not process or modify revisions.    
   * Revisions that reference an attachment as local will remain local forever, even if the attachment in the current (parent) document is
-    [scheduled for remote uploading](../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#schedule-existing-attachments-for-remote-upload) and later uploaded to remote storage.
+    [scheduled for remote uploading](./store-attachments/store-attachments-remote.mdx#schedule-existing-attachments-for-remote-upload) and later uploaded to remote storage.
   * The binary content will be retained on disk until all references to the attachments are removed -  
     both from the parent document and from any revision that still reference it.
     

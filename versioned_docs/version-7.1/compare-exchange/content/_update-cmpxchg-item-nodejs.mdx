@@ -61,7 +61,7 @@ await session.saveChanges();
 ## Update compare-exchange item using a Store operation
     
 * Use `PutCompareExchangeValueOperation` to **update the _value_ and/or _metadata_** of an existing compare-exchange item.
-  This operation is also used to create new compare-exchange items, see [Create compare-exchange item](../../compare-exchange/create-cmpxchg-items.mdx).
+  This operation is also used to create new compare-exchange items, see [Create compare-exchange item](../create-cmpxchg-items.mdx).
 
 * To perform an update, provide:
   * The existing key
@@ -154,7 +154,7 @@ const putCmpXchgOp = new PutCompareExchangeValueOperation(key, value, index, met
 |--------------|----------|-------------------------------------------------------------------------------------------------------------------------|
 | **key**      | `string` | The unique identifier in the database scope.                                                                            |
 | **value**    | `object` | The value to be saved for the specified _key_.<br/>Can be any object (number, string, array, or any valid JSON object). |
-| **index**    | `number` | The current version of the item when updating an existing item.<br/>Pass `0` to [create a new key](../../compare-exchange/create-cmpxchg-items.mdx). |
+| **index**    | `number` | The current version of the item when updating an existing item.<br/>Pass `0` to [create a new key](../create-cmpxchg-items.mdx). |
 | **metadata** | `object` | Metadata to be saved for the specified key.<br/>Must be a valid JSON object. |
 
 **Returned object**:

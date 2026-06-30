@@ -51,7 +51,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 Your agent will need a connection string to connect with the LLM.  Create a connection string using an `AiConnectionString` instance and the `PutConnectionStringOperation` operation.  
 
 <Admonition type="note" title="">
-You can also create a connection string using Studio, see [here](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#configure-basic-settings)
+You can also create a connection string using Studio, see [here](../creating-ai-agents_studio.mdx#configure-basic-settings)
 </Admonition>
 
 Choose a provider based on your needs.
@@ -458,7 +458,7 @@ own trust requirements regardless of which parent invokes it.
 * **Note** that this policy is only meaningful when the agent is used as a
   sub-agent. On a root agent, the value is always provided when the conversation is started.  
 
-See [Multi-agents](../../../../ai-integration/ai-agents/multi-agents.mdx#forbidding-the-parent-from-generating-a-parameter-value)
+See [Multi-agents](../../multi-agents.mdx#forbidding-the-parent-from-generating-a-parameter-value)
 for the full picture, including an end-to-end example.  
 
 ---
@@ -504,7 +504,7 @@ agent tools in response to a single user prompt. Use `MaxModelIterationsPerCall`
 
 <Admonition type="note" title="">
 Note that you can improve the TTFB (Time To First Byte) by getting the LLM's response in chunks using streaming.  
-Find more about streaming in the [overview](../../../../ai-integration/ai-agents/overview.mdx#streaming-llm-responses) and [below](#stream-llm-responses).  
+Find more about streaming in the [overview](../../overview.mdx#streaming-llm-responses) and [below](#stream-llm-responses).  
 </Admonition>
 
 </ContentFrame>
@@ -512,7 +512,7 @@ Find more about streaming in the [overview](../../../../ai-integration/ai-agents
 
 ### Set chat trimming configuration
 
-To [summarize the conversation](../../../../ai-integration/ai-agents/overview.mdx#define-a-chat-trimming-configuration), create an `AiAgentChatTrimmingConfiguration` instance, 
+To [summarize the conversation](../../overview.mdx#define-a-chat-trimming-configuration), create an `AiAgentChatTrimmingConfiguration` instance, 
 use it to configure your trimming strategy, and set the agent's `ChatTrimming` property 
 with the instance.  
 
@@ -554,11 +554,11 @@ After defining agent tools and submitting them to the LLM, it is up to the LLM t
 
 ### Query tools
 
-[Query tools](../../../../ai-integration/ai-agents/overview.mdx#query-tools) provide the LLM with the ability to retrieve data from the database.  
+[Query tools](../../overview.mdx#query-tools) provide the LLM with the ability to retrieve data from the database.  
 A query tool includes a natural-language **description** that explains the LLM what the tool is for, and an **RQL query**.  
 
 * **Passing values to query tools**  
-   * Query tools optionally include [parameters](../../../../ai-integration/ai-agents/overview.mdx#query-parameters), identified by a `$` prefix.  
+   * Query tools optionally include [parameters](../../overview.mdx#query-parameters), identified by a `$` prefix.  
      Both the user and the LLM can pass values to these parameters.  
    * **Passing values from the user**  
      Users can pass values to queries through **agent parameters**.  
@@ -634,7 +634,7 @@ A query tool includes a natural-language **description** that explains the LLM w
 
 #### <u>Initial-context queries</u>
 
-* You can set a query tool as an [initial-context query](../../../../ai-integration/ai-agents/overview.mdx#initial-context-queries) using its `Options.AddToInitialContext` property, to execute the query and provide the LLM with its results immediately when the agent is started.  
+* You can set a query tool as an [initial-context query](../../overview.mdx#initial-context-queries) using its `Options.AddToInitialContext` property, to execute the query and provide the LLM with its results immediately when the agent is started.  
    * An initial-context query is **not allowed** to use LLM parameters, since the query runs before the conversation starts, earlier than the first communication with the LLM, and the LLM will have no opportunity to fill the parameters with values.  
    * An initial-context query **is** allowed to use agent parameters, whose values are provided by the user even before the query is executed.  
 
@@ -730,7 +730,7 @@ deciding whether to delegate to that sub-agent.
 
 For the full conceptual picture - parameter propagation, sub-conversation
 isolation, action-tool path routing, and security considerations - see
-[Multi-agents](../../../../ai-integration/ai-agents/multi-agents.mdx).  
+[Multi-agents](../../multi-agents.mdx).  
 
 **Example**  
 ```csharp
@@ -759,7 +759,7 @@ they can be referenced. An agent cannot spawn a new agent at runtime.
 
 <br />
 See [AiAgentToolSubAgent](#agent-tool-classes) in the [Syntax](#syntax) section.  
-See [Multi-agents](../../../../ai-integration/ai-agents/multi-agents.mdx) for the end-to-end picture.  
+See [Multi-agents](../../multi-agents.mdx) for the end-to-end picture.  
 
 </ContentFrame>
 
@@ -900,7 +900,7 @@ See [Conversation](#conversation-execution), [SetUserPrompt](#conversation-execu
 
 <br />
 To read the messages of a stored conversation back from the server, see
-[Reading conversation history](../../../../ai-integration/ai-agents/reading-conversation-history.mdx).  
+[Reading conversation history](../../reading-conversation-history.mdx).  
 
 </ContentFrame>
 
@@ -980,7 +980,7 @@ levels.
 
 <br />
 
-See [Multi-agents: Action tool routing back to the client](../../../../ai-integration/ai-agents/multi-agents.mdx#action-tool-routing-back-to-the-client)
+See [Multi-agents: Action tool routing back to the client](../../multi-agents.mdx#action-tool-routing-back-to-the-client)
 for the full picture.
 
 </Admonition>
@@ -1251,7 +1251,7 @@ See [AddAttachment](#conversation-execution) and [CopyAttachmentFrom](#conversat
 
 <Panel heading="Stream LLM responses">
 
-You can set the agent to [stream the LLM's response to the client](../../../../ai-integration/ai-agents/overview.mdx#streaming-llm-responses) in real time as the LLM generates it, using the `StreamAsync` method, instead of using [RunAsync](#setting-user-prompt-and-running-the-conversation) which sends the whole response to the client when it is fully prepared.  
+You can set the agent to [stream the LLM's response to the client](../../overview.mdx#streaming-llm-responses) in real time as the LLM generates it, using the `StreamAsync` method, instead of using [RunAsync](#setting-user-prompt-and-running-the-conversation) which sends the whole response to the client when it is fully prepared.  
 
 Streaming the response allows the client to start processing it before it is complete, which can improve the application's responsiveness.  
 
@@ -2268,7 +2268,7 @@ class AiAgentToolSubAgent
 | **Identifier** | `string` | The identifier of an existing agent that this agent may invoke as a sub-agent.<br />The referenced agent must be created in the same database. |
 | **Description** | `string` | A short description the LLM reads when deciding whether to delegate to this sub-agent. |
 
-See [Multi-agents](../../../../ai-integration/ai-agents/multi-agents.mdx) for the full picture, including parameter propagation and sub-conversation isolation.
+See [Multi-agents](../../multi-agents.mdx) for the full picture, including parameter propagation and sub-conversation isolation.
 
 </TabItem>
 </Tabs>

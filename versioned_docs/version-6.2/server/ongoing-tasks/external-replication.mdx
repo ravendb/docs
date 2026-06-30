@@ -23,7 +23,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Any changes in the source database will be reflected in the replica once they occur.
 
 * This ongoing task replicates **one-way**, from the source to the destination.  
-  For additional functionality such as filtration and two-way replication consider [Hub/Sink Replication](../../server/ongoing-tasks/hub-sink-replication.mdx).
+  For additional functionality such as filtration and two-way replication consider [Hub/Sink Replication](./hub-sink-replication.mdx).
 
 * To replicate between two separate, secure RavenDB servers,  
   you need to [pass a client certificate](#step-by-step-guide) from the source server to the destination.
@@ -53,12 +53,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * Server and cluster level features:
     * [Indexes](../../indexes/creating-and-deploying.mdx)
-    * [Conflict resolution scripts](../../server/clustering/replication/replication-conflicts.mdx#conflict-resolution-script)
+    * [Conflict resolution scripts](../clustering/replication/replication-conflicts.mdx#conflict-resolution-script)
     * [Compare-Exchange](../../client-api/operations/compare-exchange/overview.mdx)
     * [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)
-    * [Identities](../../server/kb/document-identifier-generation.mdx#identity-id)
+    * [Identities](../kb/document-identifier-generation.mdx#identity-id)
     * Ongoing tasks
-        * [ETL](../../server/ongoing-tasks/etl/basics.mdx)
+        * [ETL](./etl/basics.mdx)
         * [Backup](../../studio/database/tasks/backup-task.mdx)
         * [Hub/Sink Replication](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)
 
@@ -78,8 +78,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 **Conflicts:**
 
 * Two databases that have an External Replication task defined between them will detect and resolve document
-  [conflicts](../../server/clustering/replication/replication-conflicts.mdx) according to each database's conflict resolution policy.
-* It is recommended to have the same [policy configuration](../../server/clustering/replication/replication-conflicts.mdx#configuring-conflict-resolution-using-the-client)
+  [conflicts](../clustering/replication/replication-conflicts.mdx) according to each database's conflict resolution policy.
+* It is recommended to have the same [policy configuration](../clustering/replication/replication-conflicts.mdx#configuring-conflict-resolution-using-the-client)
   on both the source and the target databases.
 **Sharding Support:**
 

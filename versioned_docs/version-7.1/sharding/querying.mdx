@@ -45,20 +45,20 @@ import ContentFrame from "@site/src/components/ContentFrame";
   the query syntax is the same, and the results are returned in the same format.
 
 * To allow this, the database performs the following steps when a client sends a query to a sharded database:  
-    * The query is received by a RavenDB server that was appointed as an [Orchestrator](../sharding/overview.mdx#client-server-communication).  
+    * The query is received by a RavenDB server that was appointed as an [Orchestrator](./overview.mdx#client-server-communication).  
       The orchestrator mediates all communication between the client and the database shards.
     * The orchestrator distributes the query to the shards.  
     * Each shard runs the query over its own data, using its own indexes.  
       Once the data is retrieved, the shard transfers it to the orchestrator.
     * The orchestrator combines the data it receives from all shards into a single dataset and may perform additional operations on it.
-      For example, when querying a [Map-Reduce index](../sharding/indexing.mdx#map-reduce-indexes-in-a-sharded-database), each shard returns results that were already reduced locally.
+      For example, when querying a [Map-Reduce index](./indexing.mdx#map-reduce-indexes-in-a-sharded-database), each shard returns results that were already reduced locally.
       After receiving all shard results, the orchestrator reduces the full dataset once again.    
     * Finally, the orchestrator returns the combined dataset to the client.
     
 * The client remains unaware that it communicated with a sharded database.    
   Note, however, that this process is more costly than the simpler retrieval performed by a non-sharded database.    
   Sharding is therefore recommended only when the database has grown to substantial size and complexity.  
-  Learn more in [When should sharding be used](../sharding/overview.mdx#when-should-sharding-be-used).   
+  Learn more in [When should sharding be used](./overview.mdx#when-should-sharding-be-used).   
 
 </Panel>
 
@@ -66,15 +66,15 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * A query is normally executed over all shards. However, you can also query only selected shards.  
   Querying a specific shard directly avoids unnecessary orchestrator requests to other shards.  
-  This can be useful, for example, when documents are intentionally stored on the same shard using [Anchoring documents](../sharding/administration/anchoring-documents.mdx).
+  This can be useful, for example, when documents are intentionally stored on the same shard using [Anchoring documents](./administration/anchoring-documents.mdx).
 
 * **You can query specific shards in either of the following ways**:
-  * Using a pre-defined sharding prefix, as explained in: [Querying selected shards by prefix](../sharding/administration/sharding-by-prefix.mdx#querying-selected-shards-by-prefix).
+  * Using a pre-defined sharding prefix, as explained in: [Querying selected shards by prefix](./administration/sharding-by-prefix.mdx#querying-selected-shards-by-prefix).
   * Using a document ID, as explained below.
     
 * To query specific shards using a document ID, use method `ShardContext` together with `ByDocumentId` or `ByDocumentIds`.
   RavenDB passes the document ID provided in the _ByDocumentId/s_ methods to a hashing algorithm, which determines the bucket ID and therefore the shard to query.  
-  Learn about the hashing method and bucket population in [How documents are distributed among shards](../sharding/overview.mdx#how-documents-are-distributed-among-shards).  
+  Learn about the hashing method and bucket population in [How documents are distributed among shards](./overview.mdx#how-documents-are-distributed-among-shards).  
 
 * The document ID parameter is not required to be one of the documents you are querying for;  
   it is used only to determine the target shard to query. See the following examples:  

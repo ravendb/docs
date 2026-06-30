@@ -15,7 +15,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="">
 
 * The following configuration keys allow you to control logging behavior in a RavenDB server.  
-  To learn more about RavenDB's logging see [Logging](../../server/troubleshooting/logging.mdx).  
+  To learn more about RavenDB's logging see [Logging](../troubleshooting/logging.mdx).  
 
 * In this page:  
     * RavenDB logging configuration keys:  
@@ -101,7 +101,7 @@ Set to `null` to keep log files indefinitely.
 
 ## Logs.Microsoft.Enabled
 
-Determines whether [Microsoft logs](../../server/troubleshooting/logging.mdx#microsoft-logs) are enabled.  
+Determines whether [Microsoft logs](../troubleshooting/logging.mdx#microsoft-logs) are enabled.  
 When enabled, RavenDB captures the diagnostic logs that .NET and Kestrel (RavenDB's web server)
 emit internally, and writes them to RavenDB's log output.  
 Note that enabling this setting can affect request latency under certain conditions.
@@ -114,7 +114,7 @@ Note that enabling this setting can affect request latency under certain conditi
 
 ## Logs.Microsoft.MinLevel
 
-The minimum logging level for [Microsoft logs](../../server/troubleshooting/logging.mdx#microsoft-logs).
+The minimum logging level for [Microsoft logs](../troubleshooting/logging.mdx#microsoft-logs).
 
 - **Type**: `enum LogLevel` (`Trace`, `Debug`, `Info`, `Warn`, `Error`, `Fatal`, `Off`)
 - **Default**: `LogLevel.Error`

@@ -7,7 +7,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Use `timeSeriesFor.get` to retrieve a range of entries from a **single** time series.  
   To retrieve a range of entries from **multiple** series, 
-  use the [GetMultipleTimeSeriesOperation](../../../../../../document-extensions/timeseries/client-api/operations/get.mdx#getmultipletimeseriesoperation) operation.
+  use the [GetMultipleTimeSeriesOperation](../../../operations/get.mdx#getmultipletimeseriesoperation) operation.
 
 * The retrieved data can be paged to get the time series entries gradually, one custom-size page at a time.
 
@@ -20,7 +20,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Calling `timeSeriesFor.get` will result in a trip to the server unless the series' parent document was loaded  
   (or queried for) with the time series included beforehand.  
-  Learn more in [Including time series](../../../../../../document-extensions/timeseries/client-api/session/include/overview.mdx).
+  Learn more in [Including time series](../../include/overview.mdx).
 
 * In this page:  
   * [`get` usage](#get-usage)
@@ -84,10 +84,10 @@ const tsEntries = await session
 #### Get entries with multiple values:
 
 * Here, we check if a stock's closing price is rising consecutively over three days.  
-  This example is based on the sample entries that were entered in [this example](../../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values).
+  This example is based on the sample entries that were entered in [this example](../../append.mdx#append-entries-with-multiple-values).
 
 * Since each time series entry contains multiple StockPrice values,  
-  we include a sample that uses [named time series values](../../../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx)
+  we include a sample that uses [named time series values](../../../named-time-series-values.mdx)
   to make the code easier to read.
 
 <Tabs groupId='languageSyntax'>
@@ -145,7 +145,7 @@ if ((closePriceDay2 > closePriceDay1) && (closePriceDay3 > closePriceDay2)) {
 ## Include parent and tagged documents
 
 * When retrieving time series entries using `timeSeriesFor.get`,  
-  you can include the series' parent document and/or documents referred to by the entries [tags](../../../../../../document-extensions/timeseries/overview.mdx#tags).  
+  you can include the series' parent document and/or documents referred to by the entries [tags](../../../../overview.mdx#tags).  
 
 * The included documents will be cached in the session, and instantly retrieved from memory if loaded by the user.
 

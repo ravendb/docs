@@ -19,7 +19,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * Restore a database from backup using Studio's restore wizard or the client API.  
 
-* The restore operation will create a **new database**, load backup files from the backup folder you provide it, and populate the database with the [backed up content](../backup/overview.mdx#backup-content).  
+* The restore operation will create a **new database**, load backup files from the backup folder you provide it, and populate the database with the [backed up content](./overview.mdx#backup-content).  
 
 * If your backup consists of full and incremental backup files, you can restore the database up to a specific point in time by selecting the last incremental backup file to restore.  
 
@@ -190,19 +190,19 @@ Choose where to restore the backup from by using a restore configuration that ma
 
 <Admonition type="note" title="">
 
-When restoring a [snapshot](../backup/overview.mdx#snapshot-image) from a remote destination
+When restoring a [snapshot](./overview.mdx#snapshot-image) from a remote destination
 (Amazon S3, Azure Blob Storage, or Google Cloud Storage), RavenDB downloads the snapshot
 file to local disk before reading the file.  
 The first defined path in this list is used for the download:
 
-- [`Backup.TempPath`](../backup/configuration.mdx#backuptemppath)
+- [`Backup.TempPath`](./configuration.mdx#backuptemppath)
 - [`Storage.TempPath`](../server/configuration/storage-configuration.mdx#storagetemppath)
 - The database directory
 
 Before the download starts, RavenDB checks that the chosen path has enough free space.  
 If there is not enough space, the restore fails with a `DiskFullException`.
 
-[Logical backups](../backup/overview.mdx#logical-backup) are streamed directly from the
+[Logical backups](./overview.mdx#logical-backup) are streamed directly from the
 destination during restore and do not use this temp path.
 
 </Admonition>
@@ -646,7 +646,7 @@ To restore a database from backup using Studio:
 * Choose the **new database's location** on the server machine.  
 
 <Admonition type="note" title="">
-The restore operation will conclude the process by creating a **new database** on the server and populating it with the [backup content](../backup/overview.mdx#backup-content).  
+The restore operation will conclude the process by creating a **new database** on the server and populating it with the [backup content](./overview.mdx#backup-content).  
 </Admonition>
 
 <ContentFrame>
@@ -745,7 +745,7 @@ Choose a folder on the server machine for the new database.
 
 #### After restoring:
 
-The new database will be available in the Databases view with the restored [content](../backup/overview.mdx#backup-content).
+The new database will be available in the Databases view with the restored [content](./overview.mdx#backup-content).
 
 ![Restore options](./assets/restore_after-restore.png)
 
@@ -891,7 +891,7 @@ To restore **from a snapshot** into multiple nodes simultaneously and join the d
 
 <Panel heading="Restoring from server-wide backups">
 
-Restoring databases backed up by a server-wide backup task **is identical** to restoring databases backed up by regular [database backup tasks](../backup/create/periodic-tasks/database-backup.mdx).  
+Restoring databases backed up by a server-wide backup task **is identical** to restoring databases backed up by regular [database backup tasks](./create/periodic-tasks/database-backup.mdx).  
 - Though a server-wide task creates backups for multiple databases, the backup for each database is restored separately into a new database.  
 - Note that each backup is stored in the backup location within its own folder, named after the database it belongs to.  
   When restoring, make sure the correct backup folder is selected.

@@ -39,7 +39,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 ### Load entities
 
-[load](../../../../client-api/session/loading-entities.mdx#load) loads a document entity from 
+[load](../../loading-entities.mdx#load) loads a document entity from 
 the database into the session.  
 Loading entities can be executed `lazily`.   
 
@@ -59,7 +59,7 @@ $employee = $lazyEmployee->getValue(); // 'Load' operation is executed here
 </TabItem>
 ### Load entities with include
 
-[load with include](../../../../client-api/session/loading-entities.mdx#load-with-includes) loads 
+[load with include](../../loading-entities.mdx#load-with-includes) loads 
 both the document and the specified related document.  
 Loading entities with include can be executed `lazily`.
 
@@ -130,7 +130,7 @@ $supplier = $session->load(Supplier::class, $product->getSuppierId());
 </Tabs>
 ### Load entities starting with
 
-[load_starting_with](../../../../client-api/session/loading-entities.mdx#loadstartingwith) loads 
+[load_starting_with](../../loading-entities.mdx#loadstartingwith) loads 
 entities whose ID starts with the specified prefix.  
 Loading entities with a common prefix can be executed `lazily`.
 
@@ -151,7 +151,7 @@ $employees = $lazyEmployees->getValue(); // 'Load' operation is executed here
 </TabItem>
 ### Conditional load
 
-[conditional_load](../../../../client-api/session/loading-entities.mdx#conditionalload) logic is: 
+[conditional_load](../../loading-entities.mdx#conditionalload) logic is: 
 
 * If the entity is already loaded to the session:  
   no server call is made, the tracked entity is returned.    
@@ -201,7 +201,7 @@ try \{
 ### Run query
 
 A query can be executed `lazily`.  
-Learn more about running queries lazily in [lazy queries](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx).
+Learn more about running queries lazily in [lazy queries](../../querying/how-to-perform-queries-lazily.mdx).
 
 <TabItem value="lazy_Query" label="lazy_Query">
 <CodeBlock language="php">
@@ -244,7 +244,7 @@ $revisions = $lazyRevisions->getValue(); // Getting revisions is executed here
 </TabItem>
 ### Get compare-exchange value
 
-[get_compare_exchange_value](../../../../client-api/session/cluster-transaction/compare-exchange.mdx#get-compare-exchange) 
+[get_compare_exchange_value](../../cluster-transaction/compare-exchange.mdx#get-compare-exchange) 
 can be executed `lazily`.
 
 <TabItem value="lazy_CompareExchange" label="lazy_CompareExchange">

@@ -175,10 +175,10 @@ An index can be in one of the following states:
 * `Error`
     * An indexing error can occur when the indexing-function is malformed (e.g., incorrectly written)  
       or when the document data is corrupted/missing.
-    * Once the index error rate exceeds a certain threshold (as described in [Marking index as errored](../indexes/troubleshooting/debugging-index-errors.mdx#marking-index-as-errored)),  
+    * Once the index error rate exceeds a certain threshold (as described in [Marking index as errored](./troubleshooting/debugging-index-errors.mdx#marking-index-as-errored)),  
       the index state is marked as _'Error'_. 
     * An errored index cannot be queried - all queries against it will result in an exception.
-    * Learn more in [Debugging index errors](../indexes/troubleshooting/debugging-index-errors.mdx).
+    * Learn more in [Debugging index errors](./troubleshooting/debugging-index-errors.mdx).
 
 * `Faulty`
     * When an index is successfully defined but the server fails to open its index data file from disk, or if this file is corrupted,  
@@ -196,7 +196,7 @@ An index can be in one of the following states:
 
 * The "per-index" configuration key can be set from:
   * The [configuration tab](../studio/database/indexes/create-map-index.mdx#configuration) in the Edit Index view in the Studio.  
-  * The [index class constructor](../indexes/creating-and-deploying.mdx#creating-an-index-with-custom-configuration) when defining an index.  
+  * The [index class constructor](./creating-and-deploying.mdx#creating-an-index-with-custom-configuration) when defining an index.  
   * The [index definition](../client-api/operations/maintenance/indexes/put-indexes.mdx#put-indexes-operation-with-indexdefinition) when sending a [putIndexesOperation](../client-api/operations/maintenance/indexes/put-indexes.mdx).
 
 **Expert configuration options**:

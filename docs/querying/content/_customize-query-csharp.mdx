@@ -7,10 +7,10 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* Use `Customize()` to set the following customization options on a specific [Query](../../querying/overview.mdx).   
+* Use `Customize()` to set the following customization options on a specific [Query](../overview.mdx).   
   Can be set for both **dynamic** and **index** queries.
 
-* Each such customization can also be implemented via the [DocumentQuery](../../querying/document-query/what-is-document-query.mdx) API.
+* Each such customization can also be implemented via the [DocumentQuery](../document-query/what-is-document-query.mdx) API.
 
 * A query can also be customized on the _Store_ or _Session_ level by subscribing to `OnBeforeQuery`.  
   Learn more in [Subscribing to Events](../../client-api/session/how-to/subscribe-to-events.mdx). 
@@ -203,7 +203,7 @@ IDocumentQueryCustomization AfterQueryExecuted(Action<QueryResult> action);
 <Panel heading="AfterStreamExecuted"> 
 
 * Use `AfterStreamExecuted` to retrieve a raw (blittable) result of the streaming query.  
-* Learn more about streaming queries in [how to stream query results](../../querying/stream-query-results.mdx).
+* Learn more about streaming queries in [how to stream query results](../stream-query-results.mdx).
 
 **Example**
 
@@ -550,7 +550,7 @@ public enum ProjectionBehavior {
 <Panel heading="RandomOrdering">
 
 * Use `RandomOrdering` to order the query results randomly.  
-* For additional ordering options, see [Sort query results](../../querying/sorting-query-results/sort-query-results.mdx).      
+* For additional ordering options, see [Sort query results](../sorting-query-results/sort-query-results.mdx).      
 
 **Example**
 
@@ -678,14 +678,14 @@ IDocumentQueryCustomization Timings(out QueryTimings timings);
 <Panel heading="WaitForNonStaleResults">
 
 * All queries in RavenDB provide results using an index, even when you don't specify one.  
-  See detailed explanation in [Queries always provide results using an index](../../querying/overview.mdx#queries-always-provide-results-using-an-index).
+  See detailed explanation in [Queries always provide results using an index](../overview.mdx#queries-always-provide-results-using-an-index).
 
 * Use `WaitForNonStaleResults` to instruct the query to wait for non-stale results from the index.  
 
 * A `TimeoutException` will be thrown if the query is not able to return non-stale results within the specified  
   (or default) timeout.
  
-* Note: This feature is Not available when [streaming the query results](../../querying/stream-query-results.mdx).  
+* Note: This feature is Not available when [streaming the query results](../stream-query-results.mdx).  
   Calling _WaitForNonStaleResults_ with a streaming query will throw an exception.  
 
 * Learn more about stale results in [stale indexes](../../indexes/stale-indexes.mdx).

@@ -10,7 +10,7 @@ import CodeBlock from '@theme/CodeBlock';
     * The session's  `rawQuery` method - using RQL
     * The [Query view](../../../../studio/database/queries/query-view.mdx) in Studio - using RQL
 
-* Queries defined with the `query` method are translated by the RavenDB client to [RQL](../../../../client-api/session/querying/what-is-rql.mdx)  
+* Queries defined with the `query` method are translated by the RavenDB client to [RQL](../what-is-rql.mdx)  
   when sent to the server.
 * All queries in RavenDB use an **index** to provide results, even when you don't specify one.  
   Learn more [below](#queries-always-provide-results-using-an-index).
@@ -18,12 +18,12 @@ import CodeBlock from '@theme/CodeBlock';
 * Queries that do Not specify which index to use are called **Dynamic Queries**.  
   This article displays examples of dynamic queries only.  
   For examples showing how to query an index see [querying an index](../../../../indexes/querying/query-index.mdx).
-* The entities returned by the query are 'loaded' and **tracked** by the [Session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx).  
+* The entities returned by the query are 'loaded' and **tracked** by the [Session](../../what-is-a-session-and-how-does-it-work.mdx).  
   Entities will Not be tracked when:  
-    * Query returns a [projection](../../../../client-api/session/querying/how-to-project-query-results.mdx)  
-    * Tracking is [disabled](../../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-query-results)  
+    * Query returns a [projection](../how-to-project-query-results.mdx)  
+    * Tracking is [disabled](../../configuration/how-to-disable-tracking.mdx#disable-tracking-query-results)  
 
-* Query results are **cached** by default. To disable query caching see [noCaching](../../../../client-api/session/querying/how-to-customize-query.mdx#nocaching).  
+* Query results are **cached** by default. To disable query caching see [noCaching](../how-to-customize-query.mdx#nocaching).  
 
 * Queries are timed out after a configurable time period.  See [query timeout](../../../../server/configuration/database-configuration.mdx#databasesquerytimeoutinsec).
 * In this page:
@@ -341,7 +341,7 @@ from "products" limit 5, 10 // skip 5, take 10
 
 ## session.advanced.rawQuery
 
-* Queries defined with [query](#sessionquery) are translated by the RavenDB client to [RQL](../../../../client-api/session/querying/what-is-rql.mdx) when sent to the server.  
+* Queries defined with [query](#sessionquery) are translated by the RavenDB client to [RQL](../what-is-rql.mdx) when sent to the server.  
 
 * The session also gives you a way to express the query directly in RQL using the `rawQuery` method.
 
@@ -377,43 +377,43 @@ Available methods for the session's [query](#sessionquery) method:
 - aggregateUsing
 - andAlso
 - any
-- [boost](../../../../client-api/session/querying/text-search/boost-search-results.mdx)
+- [boost](../text-search/boost-search-results.mdx)
 - closeSubclause
 - containsAll
 - containsAny
-- [count](../../../../client-api/session/querying/how-to-count-query-results.mdx)
-- [countLazily](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)
+- [count](../how-to-count-query-results.mdx)
+- [countLazily](../how-to-perform-queries-lazily.mdx#lazy-count-query)
 - distinct
 - first
 - firstOrNull
 - fuzzy
 - getIndexQuery
 - getQueryResult
-- [groupBy](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx)
-- [highlight](../../../../client-api/session/querying/text-search/highlight-query-results.mdx)
+- [groupBy](../how-to-perform-group-by-query.mdx)
+- [highlight](../text-search/highlight-query-results.mdx)
 - include
-- [includeExplanations](../../../../client-api/session/querying/debugging/include-explanations.mdx)
-- [intersect](../../../../client-api/session/querying/how-to-use-intersect.mdx)
+- [includeExplanations](../debugging/include-explanations.mdx)
+- [intersect](../how-to-use-intersect.mdx)
 - lazily
-- [longCount](../../../../client-api/session/querying/how-to-count-query-results.mdx)
-- [moreLikeThis](../../../../client-api/session/querying/how-to-use-morelikethis.mdx)
+- [longCount](../how-to-count-query-results.mdx)
+- [moreLikeThis](../how-to-use-morelikethis.mdx)
 - negateNext
-- [noCaching](../../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
-- [noTracking](../../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+- [noCaching](../how-to-customize-query.mdx#nocaching)
+- [noTracking](../how-to-customize-query.mdx#notracking)
 - not
-- [ofType](../../../../client-api/session/querying/how-to-project-query-results.mdx#oftype)
+- [ofType](../how-to-project-query-results.mdx#oftype)
 - [on("afterQueryExecuted")](../../../../client-api/session/querying/how-to-customize-query.mdx#on-("afterqueryexecuted"))
 - [on("beforeQueryExecuted")](../../../../client-api/session/querying/how-to-customize-query.mdx#on-("beforequeryexecuted"))
 - openSubclause
-- [orderBy](../../../../client-api/session/querying/sort-query-results.mdx)
-- [orderByDescending](../../../../client-api/session/querying/sort-query-results.mdx)
-- [orderByDistance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistance)
-- [orderByDistanceDescending](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistancedesc)
-- [orderByScore](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
-- [orderByScoreDescending](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
+- [orderBy](../sort-query-results.mdx)
+- [orderByDescending](../sort-query-results.mdx)
+- [orderByDistance](../how-to-make-a-spatial-query.mdx#orderbydistance)
+- [orderByDistanceDescending](../how-to-make-a-spatial-query.mdx#orderbydistancedesc)
+- [orderByScore](../sort-query-results.mdx#order-by-score)
+- [orderByScoreDescending](../sort-query-results.mdx#order-by-score)
 - orElse
 - proximity
-- [randomOrdering](../../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+- [randomOrdering](../how-to-customize-query.mdx#randomordering)
 - relatesToShape
 - search
 - [selectFields](../../../../indexes/querying/projections.mdx#selectfields)
@@ -422,25 +422,25 @@ Available methods for the session's [query](#sessionquery) method:
 - singleOrNull
 - skip
 - spatial
-- [statistics](../../../../client-api/session/querying/how-to-get-query-statistics.mdx)
-- [suggestUsing](../../../../client-api/session/querying/how-to-work-with-suggestions.mdx)
+- [statistics](../how-to-get-query-statistics.mdx)
+- [suggestUsing](../how-to-work-with-suggestions.mdx)
 - take
 - timings
 - usingDefaultOperator
-- [waitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+- [waitForNonStaleResults](../how-to-customize-query.mdx#waitfornonstaleresults)
 - whereBetween
-- [whereEndsWith](../../../../client-api/session/querying/text-search/ends-with-query.mdx)
+- [whereEndsWith](../text-search/ends-with-query.mdx)
 - whereEquals
-- [whereExists](../../../../client-api/session/querying/how-to-filter-by-field.mdx)
+- [whereExists](../how-to-filter-by-field.mdx)
 - whereGreaterThan
 - whereGreaterThanOrEqual
 - whereIn
 - whereLessThan
 - whereLessThanOrEqual
-- [whereLucene](../../../../client-api/session/querying/document-query/how-to-use-lucene.mdx)
+- [whereLucene](../document-query/how-to-use-lucene.mdx)
 - whereNotEquals
-- [whereRegex](../../../../client-api/session/querying/text-search/using-regex.mdx)
-- [whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-query.mdx)
+- [whereRegex](../text-search/using-regex.mdx)
+- [whereStartsWith](../text-search/starts-with-query.mdx)
 - withinRadiusOf
 
 

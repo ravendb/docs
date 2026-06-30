@@ -62,7 +62,7 @@ as **Studio alerts** and/or **responses to client requests**.
   that it can trust the new source certificate.  
 
 * **Original Solution**  
-  To solve this problem, we introduced [Implicit Trust](../../../server/security/authentication/certificate-renewal-and-rotation.mdx#implicit-trust-by-public-key-pinning-hash) 
+  To solve this problem, we introduced [Implicit Trust](./certificate-renewal-and-rotation.mdx#implicit-trust-by-public-key-pinning-hash) 
   by using the certificate's **Public Key Pinning Hash**.  
   Now, if the source cluster renews its certificate **by using the same private key and 
   issuer**, the new certificate will have the same Public Key Pinning Hash, and the 

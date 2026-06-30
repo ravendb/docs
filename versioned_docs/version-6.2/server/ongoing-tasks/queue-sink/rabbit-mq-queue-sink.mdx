@@ -19,7 +19,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   message streaming scenarios.
 
 * RavenDB can harness the advantages presented by RabbitMQ brokers both as
-  a producer (by [running ETL tasks](../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx))
+  a producer (by [running ETL tasks](../etl/queue-etl/rabbit-mq.mdx))
   and as a **consumer** (using a sink task to consume enqueued messages).
 
 * To use RavenDB as a consumer, define an ongoing Sink task that will read
@@ -141,7 +141,7 @@ The script can also apply various other JavaScript commands, including
 `load` to load a RavenDB document (e.g. to construct a document that
 includes data from the retrieved message and complementing data from
 existing RavenDB documents), `del` to remove existing RavenDB documents,
-and [many others](../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).
+and [many others](../../kb/javascript-engine.mdx#predefined-javascript-functions).
 
 </ContentFrame>
 
@@ -167,7 +167,7 @@ Note that the number of documents included in a batch is
 
 <Admonition type="warning" title="Take care of duplicates" id="take-care-of-duplicates" href="#take-care-of-duplicates">
 Producers may enqueue
-[multiple instances](../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#message-duplication)
+[multiple instances](../etl/queue-etl/rabbit-mq.mdx#message-duplication)
 of the same document.  
 If processing each message only once is important to the consumer,
 it is **the consumer's responsibility** to verify the uniqueness of
@@ -335,9 +335,9 @@ AddQueueSinkOperationResult addQueueSinkOperationResult =
 
 Use these configuration options to gain more control over queue sink tasks.
 
-* [QueueSink.MaxBatchSize](../../../server/configuration/queue-sink-configuration.mdx#queuesinkmaxbatchsize)  
+* [QueueSink.MaxBatchSize](../../configuration/queue-sink-configuration.mdx#queuesinkmaxbatchsize)  
   The maximum number of pulled messages consumed in a single batch.
-* [QueueSink.MaxFallbackTimeInSec](../../../server/configuration/queue-sink-configuration.mdx#queuesinkmaxfallbacktimeinsec)  
+* [QueueSink.MaxFallbackTimeInSec](../../configuration/queue-sink-configuration.mdx#queuesinkmaxfallbacktimeinsec)  
   The maximum number of seconds the Queue Sink process will be in a fallback
   mode (i.e. suspending the process) after a connection failure.
 

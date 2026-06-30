@@ -25,11 +25,11 @@ import CodeBlock from '@theme/CodeBlock';
 ### `None` (default option)
 
 * Requests will be handled based on the `ReadBalanceBehavior` configuration.  
-  See the conditional flow described in [Client logic for choosing a node](../../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
+  See the conditional flow described in [Client logic for choosing a node](../overview.mdx#client-logic-for-choosing-a-node).  
    * **_Read_** requests:  
-     The client will calculate the target node from the configured [ReadBalanceBehavior Option](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx#readbalancebehavior-options).  
+     The client will calculate the target node from the configured [ReadBalanceBehavior Option](../read-balance-behavior.mdx#readbalancebehavior-options).  
    * **_Write_** requests:  
-     Will be sent to the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node).  
+     Will be sent to the [preferred node](../overview.mdx#the-preferred-node).  
      The data will then be replicated to all the other nodes in the database group.
 ### `UseSessionContext`
 
@@ -44,7 +44,7 @@ import CodeBlock from '@theme/CodeBlock';
   
   * All **_Read & Write_** requests made on the session (i.e a query or a load request, etc.)  
     will address this calculated node.  
-    _Read & Write_ requests that are made on the store (i.e. executing an [operation](../../../../client-api/operations/what-are-operations.mdx))  
+    _Read & Write_ requests that are made on the store (i.e. executing an [operation](../../../operations/what-are-operations.mdx))  
     will go to the preferred node.
 
   * All _Write_ requests will be replicated to all the other nodes in the database group as usual.
@@ -162,12 +162,12 @@ using (var session = documentStore.OpenSession())
 </Admonition>
 #### Set LoadBalanceBehavior on the server - by operation:
 
-* The `LoadBalanceBehavior` configuration can be set **on the server** by sending an [operation](../../../../client-api/operations/what-are-operations.mdx).
+* The `LoadBalanceBehavior` configuration can be set **on the server** by sending an [operation](../../../operations/what-are-operations.mdx).
 
 * The operation can modify the default database only, or all databases - see examples below.
 
 * Once configuration on the server has changed, the running client will get updated with the new settings.  
-  See [keeping client up-to-date](../../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date).
+  See [keeping client up-to-date](../overview.mdx#keeping-the-client-topology-up-to-date).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Operation_For_Default_Database" label="Operation_For_Default_Database">
@@ -257,7 +257,7 @@ using (documentStore)
   Setting it from the Studio will set this configuration directly **on the server**.
 
 * Once configuration on the server has changed, the running client will get updated with the new settings.  
-  See [keeping client up-to-date](../../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date).
+  See [keeping client up-to-date](../overview.mdx#keeping-the-client-topology-up-to-date).
 
 
 
@@ -269,7 +269,7 @@ using (documentStore)
   (e.g., sessions for a specific user, tenant, or team) are routed to the same node,
   while other sessions are routed to different nodes - achieving effective load distribution.
 
-* In scenarios where [optimistic concurrency](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx) is enabled,
+* In scenarios where [optimistic concurrency](../../../session/configuration/how-to-enable-optimistic-concurrency.mdx) is enabled,
   routing sessions for the same entity to the same node can help reduce _Write_ conflicts,
   since concurrent updates tend to be coordinated on the same node.
   The node handling the write is also more likely to have the latest version of the document,

@@ -311,8 +311,8 @@ where lucene(Name, '[bistro TO cafe]')
 #### Numeric and date ranges    
     
 For range queries over numeric or date fields, prefer strongly typed methods:  
-use [comparison operators](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-numeric-value) such as `where_greater_than` / `where_less_than`,
-or [where_between](../../../querying/filtering-query-results/filter-query-results.mdx#syntax).
+use [comparison operators](../filter-query-results.mdx#filter-by-numeric-value) such as `where_greater_than` / `where_less_than`,
+or [where_between](../filter-query-results.mdx#syntax).
     
 A Lucene range clause compares string terms lexicographically,  
 so numeric and date ranges can produce unexpected results.

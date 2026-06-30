@@ -5,7 +5,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* The Refresh feature increments a document's [change vector](../../../server/clustering/replication/change-vector.mdx), 
+* The Refresh feature increments a document's [change vector](../../clustering/replication/change-vector.mdx), 
   triggering its re-indexation as well as other features that react to document updates.  
 
 * Refresh is scheduled using the `@refresh` flag in a document's [metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata.mdx).  
@@ -43,13 +43,13 @@ import CodeBlock from '@theme/CodeBlock';
 
      </Admonition>
 
-* Refreshing a document causes its [change vector](../../../server/clustering/replication/change-vector.mdx) 
+* Refreshing a document causes its [change vector](../../clustering/replication/change-vector.mdx) 
   to increment the same way it would after any other kind of update to the document.  
   This triggers any features that react to document updating, including but not limited to:  
    - Re-indexing of the document by indexes that cover it  
-   - [Replication](../../../server/ongoing-tasks/external-replication.mdx), 
+   - [Replication](../../ongoing-tasks/external-replication.mdx), 
      [Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx), 
-     and [ETL](../../../server/ongoing-tasks/etl/basics.mdx) triggering  
+     and [ETL](../../ongoing-tasks/etl/basics.mdx) triggering  
    - Creation of a [document revision](../../../document-extensions/revisions/overview.mdx)  
 
 

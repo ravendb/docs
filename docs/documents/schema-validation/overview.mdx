@@ -24,12 +24,12 @@ import Panel from "@site/src/components/Panel";
 
 * Validating document compliance during writing can help ensure data consistency (e.g., by preventing the saving of documents with missing required fields) and simplify read-time handling by preventing the need for additional checks and transformations.
 
-* Schemas can be configured per collection using [Studio](../../documents/schema-validation/write-validation/write-validation_studio.mdx) or the [client API](../../documents/schema-validation/write-validation/write-validation_api.mdx).
+* Schemas can be configured per collection using [Studio](./write-validation/write-validation_studio.mdx) or the [client API](./write-validation/write-validation_api.mdx).
 
 * You can also audit documents compliance with a schema after they are stored, to identify and address any violations.  
   Auditing can be performed:  
-   - By [running an audit operation](../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api.mdx#running-an-audit-operation) that scans a document collection and reports validation violations.  
-   - By [validating documents during indexing](../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api.mdx#audit-document-compliance-by-index) and embedding validation error messages in the indexes.  
+   - By [running an audit operation](./auditing-document-compliance/auditing-document-compliance_api.mdx#running-an-audit-operation) that scans a document collection and reports validation violations.  
+   - By [validating documents during indexing](./auditing-document-compliance/auditing-document-compliance_api.mdx#audit-document-compliance-by-index) and embedding validation error messages in the indexes.  
 
 * In this article:  
    * [The validation process](#the-validation-process)  
@@ -44,7 +44,7 @@ import Panel from "@site/src/components/Panel";
 ## The validation process
 
 Schema validation is performed by the server when a schema is defined and enabled for a collection, and a document that belongs to this collection is being written. The document is then validated against the schema before being saved.  
-If the validation fails, the operation stops and a detailed [SchemaValidationException](../../documents/schema-validation/write-validation/write-validation_api.mdx#schemavalidationexception-message) is thrown.  
+If the validation fails, the operation stops and a detailed [SchemaValidationException](./write-validation/write-validation_api.mdx#schemavalidationexception-message) is thrown.  
 
 ## A list of operations that trigger validation
 Validation is triggered during writing by these operations:
@@ -73,23 +73,23 @@ If you want to revert a document and a validation schema is defined for its coll
 
 ## Available constraints
 A validation schema can enforce these constraints on documents:  
-* [Type](../../documents/schema-validation/write-validation/write-validation_api.mdx#type)  
-* [Required Properties](../../documents/schema-validation/write-validation/write-validation_api.mdx#required)  
-* [Constant Value](../../documents/schema-validation/write-validation/write-validation_api.mdx#const)  
-* [Allowed Values](../../documents/schema-validation/write-validation/write-validation_api.mdx#enum)  
-* [String Minimum Length](../../documents/schema-validation/write-validation/write-validation_api.mdx#minlength)  
-* [String Maximum Length](../../documents/schema-validation/write-validation/write-validation_api.mdx#maxlength)  
-* [Pattern (Regex)](../../documents/schema-validation/write-validation/write-validation_api.mdx#pattern)  
-* [Number Minimum Value](../../documents/schema-validation/write-validation/write-validation_api.mdx#minimum)  
-* [Number Maximum Value](../../documents/schema-validation/write-validation/write-validation_api.mdx#maximum)  
-* [Array Minimum Items](../../documents/schema-validation/write-validation/write-validation_api.mdx#minitems)  
-* [Array Maximum Items](../../documents/schema-validation/write-validation/write-validation_api.mdx#maxitems)  
-* [Properties](../../documents/schema-validation/write-validation/write-validation_api.mdx#properties)  
-* [patternProperties](../../documents/schema-validation/write-validation/write-validation_api.mdx#patternproperties)  
-* [Additional Properties](../../documents/schema-validation/write-validation/write-validation_api.mdx#additionalproperties)  
-* [Items](../../documents/schema-validation/write-validation/write-validation_api.mdx#items)  
-* [Dependencies](../../documents/schema-validation/write-validation/write-validation_api.mdx#dependencies)  
-* [Null](../../documents/schema-validation/write-validation/write-validation_api.mdx#null)  
+* [Type](./write-validation/write-validation_api.mdx#type)  
+* [Required Properties](./write-validation/write-validation_api.mdx#required)  
+* [Constant Value](./write-validation/write-validation_api.mdx#const)  
+* [Allowed Values](./write-validation/write-validation_api.mdx#enum)  
+* [String Minimum Length](./write-validation/write-validation_api.mdx#minlength)  
+* [String Maximum Length](./write-validation/write-validation_api.mdx#maxlength)  
+* [Pattern (Regex)](./write-validation/write-validation_api.mdx#pattern)  
+* [Number Minimum Value](./write-validation/write-validation_api.mdx#minimum)  
+* [Number Maximum Value](./write-validation/write-validation_api.mdx#maximum)  
+* [Array Minimum Items](./write-validation/write-validation_api.mdx#minitems)  
+* [Array Maximum Items](./write-validation/write-validation_api.mdx#maxitems)  
+* [Properties](./write-validation/write-validation_api.mdx#properties)  
+* [patternProperties](./write-validation/write-validation_api.mdx#patternproperties)  
+* [Additional Properties](./write-validation/write-validation_api.mdx#additionalproperties)  
+* [Items](./write-validation/write-validation_api.mdx#items)  
+* [Dependencies](./write-validation/write-validation_api.mdx#dependencies)  
+* [Null](./write-validation/write-validation_api.mdx#null)  
 
 ## Considerations
 Take note of the following considerations when applying schema validation.
@@ -107,11 +107,11 @@ Up until now we have explained how to enforce document validation when documents
 However, it is also possible to verify whether stored documents comply with a schema, and address any violations.  
 
 #### Running an audit operation:
-Learn [here](../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api.mdx#running-an-audit-operation) how to launch an audit operation that scans the documents of a collection, checks their validity against a schema, and reports validation errors and related statistics.  
+Learn [here](./auditing-document-compliance/auditing-document-compliance_api.mdx#running-an-audit-operation) how to launch an audit operation that scans the documents of a collection, checks their validity against a schema, and reports validation errors and related statistics.  
 This process can help you assess data quality and ensure schema compliance across your collections.  
   
 #### Audit document compliance by index:
-Learn [here](../../documents/schema-validation/auditing-document-compliance/auditing-document-compliance_api.mdx#audit-document-compliance-by-index) how to validate documents against a schema during indexing, and embed validation error messages in the indexes.  
+Learn [here](./auditing-document-compliance/auditing-document-compliance_api.mdx#audit-document-compliance-by-index) how to validate documents against a schema during indexing, and embed validation error messages in the indexes.  
 You can then use your indexes to query and manage documents based on their schema compliance.
 
 ## Use cases

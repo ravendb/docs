@@ -24,12 +24,12 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * **High-level queries are translated to RQL**:  
   Any query written using high-level Session methods (`Query`, `DocumentQuery`) will be translated by the client into RQL  
   before being sent to the server for execution.
-  Learn more about querying from the session in this [Query Overview](../../querying/overview.mdx).    
+  Learn more about querying from the session in this [Query Overview](../overview.mdx).    
 
 * **Writing RQL directly:**  
   A query can be written directly in RQL by either:  
-  * Using the session's [RawQuery](../../querying/overview.mdx#session-advanced-rawquery) method in the Client API.  
-  * Writing a query in the [Query view](../../studio/database/queries/query-view.mdx) in Studio, where [RQL code assistance](../../querying/rql/rql-code-assistance.mdx) is available.
+  * Using the session's [RawQuery](../overview.mdx#session-advanced-rawquery) method in the Client API.  
+  * Writing a query in the [Query view](../../studio/database/queries/query-view.mdx) in Studio, where [RQL code assistance](./rql-code-assistance.mdx) is available.
 
 * **RQL keywords are case-insensitive**:  
   For example, `SELECT`, `select`, and `Select` are equivalent.
@@ -65,7 +65,7 @@ The query pipeline in RavenDB includes the following main stages:
      * `from collection` - Specify the collection to query.  
        RavenDB will decide which index will be used depending on the query criteria.
    * Note: all queries in RavenDB use an index to provide results, even when you don't specify one.  
-     Learn more about these **query scenarios** in this [Query Overview](../../querying/overview.mdx#queries-always-provide-results-using-an-index).
+     Learn more about these **query scenarios** in this [Query Overview](../overview.mdx#queries-always-provide-results-using-an-index).
 
 2. **Filter the data** ([`where`](#where))  
    * The index is scanned for records that match the query predicate. 
@@ -119,7 +119,7 @@ The following keywords and methods are available in RQL:
     - [regex()](../../client-api/session/querying/text-search/using-regex.mdx)
     - [startsWith()](../../client-api/session/querying/text-search/starts-with-query.mdx)
     - [endsWith()](../../client-api/session/querying/text-search/ends-with-query.mdx)
-    - [lucene()](../../querying/filtering-query-results/filter-with-lucene-syntax.mdx)
+    - [lucene()](../filtering-query-results/filter-with-lucene-syntax.mdx)
     - [exists()](../../client-api/session/querying/how-to-filter-by-field.mdx)
     - [exact()](../../client-api/session/querying/text-search/exact-match-query.mdx)
     - [intersect()](../../indexes/querying/intersection.mdx)
@@ -129,18 +129,18 @@ The following keywords and methods are available in RQL:
     - [spatial.intersects()](../../indexes/querying/spatial.mdx)
     - [moreLikeThis()](../../client-api/session/querying/how-to-use-morelikethis.mdx)
     - [vector.search()](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx)
-    - [when()](../../querying/filtering-query-results/conditional-filtering.mdx)
+    - [when()](../filtering-query-results/conditional-filtering.mdx)
 - [ORDER BY](#order-by)
-    - [ASC | ASCENDING](../../querying/sorting-query-results/sort-query-results.mdx)
-    - [DESC | DESCENDING](../../querying/sorting-query-results/sort-query-results.mdx)
-    - [AS](../../querying/sorting-query-results/sort-query-results.mdx)
-        - [string](../../querying/sorting-query-results/sort-query-results.mdx)
-        - [long](../../querying/sorting-query-results/sort-query-results.mdx)
-        - [double](../../querying/sorting-query-results/sort-query-results.mdx)
-        - [alphaNumeric](../../querying/sorting-query-results/sort-query-results.mdx)
-    - [NULLS FIRST | NULLS LAST](../../querying/sorting-query-results/sort-query-results.mdx) // TODO...
-    - [random()](../../querying/sorting-query-results/sort-query-results.mdx#order-by-random)
-    - [score()](../../querying/sorting-query-results/sort-query-results.mdx#order-by-score)
+    - [ASC | ASCENDING](../sorting-query-results/sort-query-results.mdx)
+    - [DESC | DESCENDING](../sorting-query-results/sort-query-results.mdx)
+    - [AS](../sorting-query-results/sort-query-results.mdx)
+        - [string](../sorting-query-results/sort-query-results.mdx)
+        - [long](../sorting-query-results/sort-query-results.mdx)
+        - [double](../sorting-query-results/sort-query-results.mdx)
+        - [alphaNumeric](../sorting-query-results/sort-query-results.mdx)
+    - [NULLS FIRST | NULLS LAST](../sorting-query-results/sort-query-results.mdx) // TODO...
+    - [random()](../sorting-query-results/sort-query-results.mdx#order-by-random)
+    - [score()](../sorting-query-results/sort-query-results.mdx#order-by-score)
     - [spatial.distance()](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting)
 - [SELECT](#select)
     - DISTINCT
@@ -395,7 +395,7 @@ where Lines[].ProductName all in ("Chang", "Spegesild")
 Binary operators can be used to build more complex statements.  
 The `NOT` operator can only be used with one of the other binary operators creating `OR NOT` or `AND NOT` ones.
 
-Learn more about combining filter conditions with these operators in [Use logical operators](../../querying/filtering-query-results/use-logical-operators.mdx).
+Learn more about combining filter conditions with these operators in [Use logical operators](../filtering-query-results/use-logical-operators.mdx).
 
 ```sql
 from "Companies"
@@ -421,7 +421,7 @@ where Freight > 500 AND ShippedAt > '1998-01-01' AND NOT Freight = 830.75
 #### Methods: &nbsp;&nbsp; `today()`, `now()` 
 
 Use `today()` and `now()` to compare date/time fields with the current server date or current server time.  
-Learn more in [Filter by date and time](../../querying/filtering-query-results/filter-by-date-and-time.mdx).    
+Learn more in [Filter by date and time](../filtering-query-results/filter-by-date-and-time.mdx).    
 
 ```sql    
 // Find orders that were shipped before the current date    
@@ -449,7 +449,7 @@ When the condition is `true`, the predicate is applied; when it is `false`, the 
 This is useful for optional search criteria, without building different query strings on the client.
 
 This feature is available in RQL only - it is not exposed through LINQ queries or DocumentQuery.  
-Learn more in [Conditional filtering](../../querying/filtering-query-results/conditional-filtering.mdx).
+Learn more in [Conditional filtering](../filtering-query-results/conditional-filtering.mdx).
 
 ```sql
 // Apply the Country predicate only when the $country parameter is non-null
@@ -464,7 +464,7 @@ where when($country != null, Address.Country == $country)
 #### Subclauses: &nbsp;&nbsp; `(`, `)`
 
 Subclauses can be used along with binary operators to build even more complex logical statements.  
-See [Group conditions to control precedence](../../querying/filtering-query-results/use-logical-operators.mdx#group-conditions-to-control-precedence).
+See [Group conditions to control precedence](../filtering-query-results/use-logical-operators.mdx#group-conditions-to-control-precedence).
 
 </ContentFrame>
 
@@ -495,7 +495,7 @@ The keyword `include` has been introduced to support:
 ## `order by`
 
 Use `order by` to sort the query results by one or more fields.  
-Learn more about sorting in the [Sort query results](../../querying/sorting-query-results/sort-query-results.mdx) article.
+Learn more about sorting in the [Sort query results](../sorting-query-results/sort-query-results.mdx) article.
     
 RQL syntax:  
     

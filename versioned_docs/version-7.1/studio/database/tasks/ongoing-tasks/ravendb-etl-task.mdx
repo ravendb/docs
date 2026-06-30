@@ -16,7 +16,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Admonition type="note" title="">
 
 * A **RavenDB ETL Task** is an [ETL process](../../../../server/ongoing-tasks/etl/basics.mdx#basics) 
-  that transfers data from a source RavenDB database to another RavenDB database instance that is outside of the [Database Group](../../../../studio/database/settings/manage-database-group.mdx).
+  that transfers data from a source RavenDB database to another RavenDB database instance that is outside of the [Database Group](../../settings/manage-database-group.mdx).
   The sent data can be filtered and modified by transformation scripts, giving you control over what is shared and in what format.
 
 * This article focuses on how to define the RavenDB ETL task from Studio.  
@@ -52,8 +52,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
    If active, then the ETL process will start immediately after saving the task.  
     
 3. **Set responsible node** (Optional)  
-   Select a preferred node from the [Database Group](../../../../studio/database/settings/manage-database-group.mdx) to be the responsible node for this RavenDB ETL task.  
-   If not selected, then the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group.mdx#database-group-topology---members-duties)).  
+   Select a preferred node from the [Database Group](../../settings/manage-database-group.mdx) to be the responsible node for this RavenDB ETL task.  
+   If not selected, then the cluster will assign a responsible node (see [Members Duties](../../settings/manage-database-group.mdx#database-group-topology---members-duties)).  
 
 4. **Connection string**  
    Select an existing connection string from the list or create a new one.  
@@ -171,7 +171,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * **With RavenDB ETL**:  
   * When a RavenDB node performs an **ETL** to another node it is _not_ replicating the data, it is _writing_ it.  
     In other words, ETL always _overwrites_ whatever exists on the destination database,  
-    and there is no [conflict handling](../../../../studio/database/settings/conflict-resolution.mdx).    
+    and there is no [conflict handling](../../settings/conflict-resolution.mdx).    
   * The source database for the ETL process is the owner of the data.  
     This means that as long as the destination collection is the same as the source,
     any modifications made to the data sent by ETL on the destination database are lost when overwriting occurs.
@@ -181,7 +181,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
     The rule is: With ETL destination documents, you can look but don't touch.
 
 * **With External Replication**:  
-  Data that is replicated with RavenDB's [External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx) does _not_ overwrite existing documents in the destination database. 
+  Data that is replicated with RavenDB's [External Replication Task](./external-replication-task.mdx) does _not_ overwrite existing documents in the destination database. 
   Conflicts are created and handled according to the destination database's conflict resolution policy, meaning you _can_ modify replicated data on the destination side and conflicts will be resolved.
 
 ### Data content

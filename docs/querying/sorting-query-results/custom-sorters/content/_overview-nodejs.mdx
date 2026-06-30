@@ -9,7 +9,7 @@ import Panel from '@site/src/components/Panel';
     
 * Custom sorters let you **define your own logic for ordering query results**.  
   They are used only when explicitly requested in the query.  
-  If no custom sorter is used, RavenDB orders the results as described in [Sort query results](../../../../querying/sorting-query-results/sort-query-results.mdx).
+  If no custom sorter is used, RavenDB orders the results as described in [Sort query results](../../sort-query-results.mdx).
     
 * Custom sorters are available when using the **Lucene** indexing engine.  
   They are not available with the [Corax engine](../../../../indexes/search-engine/corax.mdx).
@@ -32,8 +32,8 @@ import Panel from '@site/src/components/Panel';
 
 <Panel heading="Querying with a custom sorter">
     
-Learn how to deploy a database-level custom sorter in: [Database-level custom sorters](../../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx).    
-Learn how to deploy a server-wide custom sorter in: [Server-wide custom sorters](../../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx).
+Learn how to deploy a database-level custom sorter in: [Database-level custom sorters](../database-level-custom-sorters.mdx).    
+Learn how to deploy a server-wide custom sorter in: [Server-wide custom sorters](../server-wide-custom-sorters.mdx).
     
 Once deployed, a custom sorter can be specified in a query to sort the results.
     
@@ -198,6 +198,6 @@ You can test a custom sorter from the Studio before using it in queries.
 The Studio test flow is available in the **database-level custom sorters** view.
 The test is run in the context of a specific database because it executes a query against documents and indexes in that database.
     
-To learn how to test a sorter, see [Test custom sorter](../../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx#test-custom-sorter).
+To learn how to test a sorter, see [Test custom sorter](../database-level-custom-sorters.mdx#test-custom-sorter).
     
 </Panel>

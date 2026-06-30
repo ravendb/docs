@@ -90,8 +90,8 @@ and Sink replication tasks.
     * [Identities](../../../../../server/kb/document-identifier-generation.mdx#identity-id)  
     * Ongoing tasks
       * [ETL](../../../../../server/ongoing-tasks/etl/basics.mdx)
-      * [Backup](../../../../../studio/database/tasks/backup-task.mdx)
-      * [Hub/Sink Replication](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)
+      * [Backup](../../backup-task.mdx)
+      * [Hub/Sink Replication](./overview.mdx)
 
 <Admonition type="note" title="Why are some cluster-level features not replicated?" id="why-are-some-cluster-level-features-not-replicated" href="#why-are-some-cluster-level-features-not-replicated">
 To provide for architecture that prevents conflicts between clusters, especially when ACID transactions are important, 
@@ -124,7 +124,7 @@ Select existing access or define a new sink/hub, then click **Save** to create a
 
 
 * **Creating Accesses**  
-  When you create or edit a Hub task, you can add it [Accesses](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-hub-task.mdx#access-configuration).  
+  When you create or edit a Hub task, you can add it [Accesses](./replication-hub-task.mdx#access-configuration).  
   Each Access can be used by a Sink task to connect the Hub.  
   You are required to issue a certificate for each Access, that would 
   identify Sinks that connect the Hub via this Access.  

@@ -33,7 +33,7 @@ Compare Exchange items are key/value pairs where the key servers a unique value 
   * **Metadata** - Data that is associated with the compare-exchange item.
     Must be a valid JSON object.
      * For example, the metadata can be used to set expiration time for the compare-exchange item.  
-       Learn more in [compare-exchange expiration](../../../../client-api/operations/compare-exchange/compare-exchange-expiration.mdx).  
+       Learn more in [compare-exchange expiration](../compare-exchange-expiration.mdx).  
   * **Raft index** - The compare-exchange item's version.  
     Any change to the value or metadata will increase this number.  
 
@@ -47,7 +47,7 @@ Compare Exchange items are key/value pairs where the key servers a unique value 
 Compare exchange items are created and managed with any of the following approaches:
 
 * **Document Store Operations**  
-  You can manage a compare-exchange item as an [Operation on the document store](../../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx).  
+  You can manage a compare-exchange item as an [Operation on the document store](../put-compare-exchange-value.mdx).  
   This can be done within or outside of a session (cluster-wide or single-node session).
    * When inside a session:  
      If the session fails, the compare-exchange operation can still succeed
@@ -55,15 +55,15 @@ Compare exchange items are created and managed with any of the following approac
      You will need to delete the compare-exchange item explicitly upon session failure if you don't want the compare-exchange item to persist.
 
 * **Cluster-Wide Sessions**  
-  You can manage a compare-exchange item from inside a [Cluster-Wide session](../../../../client-api/session/cluster-transaction/compare-exchange.mdx).  
+  You can manage a compare-exchange item from inside a [Cluster-Wide session](../../../session/cluster-transaction/compare-exchange.mdx).  
   If the session fails, the compare-exchange item creation also fails.  
   None of the nodes in the group will have the new compare-exchange item.
 
 
 * **Atomic Guards**  
-  When creating documents using a cluster-wide session RavenDB automatically creates [Atomic Guards](../../../../client-api/session/cluster-transaction/atomic-guards.mdx),  
+  When creating documents using a cluster-wide session RavenDB automatically creates [Atomic Guards](../../../session/cluster-transaction/atomic-guards.mdx),  
   which are compare-exchange items that guarantee ACID transactions.  
-  See [Cluster-wide vs. Single-node](../../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction) for a session comparision overview.
+  See [Cluster-wide vs. Single-node](../../../session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction) for a session comparision overview.
 
 * **Studio**  
   Compare-exchange items can be created from the [Studio](../../../../studio/database/documents/compare-exchange-view.mdx#the-compare-exchange-view) as well.
@@ -132,8 +132,8 @@ using (IDocumentSession session = store.OpenSession())
 
 * The `User` object is saved as a document, hence it can be indexed, queried, etc.  
 
-* This compare-exchange item was [created as an operation](../../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx)
-  rather than with a [cluster-wide session](../../../../client-api/session/cluster-transaction/overview.mdx).  
+* This compare-exchange item was [created as an operation](../put-compare-exchange-value.mdx)
+  rather than with a [cluster-wide session](../../../session/cluster-transaction/overview.mdx).  
   Thus, if `session.SaveChanges` fails, then the email reservation is _not_ rolled back automatically.  
   It is your responsibility to do so.  
 
@@ -260,7 +260,7 @@ The reference documents will replicate to the destination database,
 as opposed to compare-exchange items, which are not externally replicated.
 
 <Admonition type="note" title="">
-Sessions which process fields that must be unique should be set to [TransactionMode.ClusterWide](../../../../client-api/session/cluster-transaction/overview.mdx).  
+Sessions which process fields that must be unique should be set to [TransactionMode.ClusterWide](../../../session/cluster-transaction/overview.mdx).  
 </Admonition>
 
 <TabItem value="create_uniqueness_control_documents" label="create_uniqueness_control_documents">

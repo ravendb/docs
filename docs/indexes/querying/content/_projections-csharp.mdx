@@ -113,7 +113,7 @@ select FirstName as EmployeeFirstName, LastName as EmployeeLastName
 
 * **Source of projection fields**:  
 
-  * Since the index-fields in this example are not [Stored in the index](../../../indexes/storing-data-in-index.mdx), and no projection behavior was defined,  
+  * Since the index-fields in this example are not [Stored in the index](../../storing-data-in-index.mdx), and no projection behavior was defined,  
     resulting values for `FirstName` & `LastName` will be retrieved from the matching Employee document in the storage.
   
   * This behavior can be modified by setting the [projection behavior](#projection-behavior-with-a-static-index) used when querying a static-index.
@@ -1150,7 +1150,7 @@ select ProductName, PricePerUnit
 ## Projection behavior with a static-index
 
 * **By default**, when querying a static-index and projecting query results,  
-  the server will try to retrieve the fields' values from the fields [stored in the index](../../../indexes/storing-data-in-index.mdx).  
+  the server will try to retrieve the fields' values from the fields [stored in the index](../../storing-data-in-index.mdx).  
   If the index does Not store those fields then the fields' values will be retrieved from the documents.
 
 * This behavior can be modified by setting the **projection behavior**.

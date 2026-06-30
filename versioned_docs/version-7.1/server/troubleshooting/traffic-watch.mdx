@@ -15,11 +15,11 @@ import Panel from '@site/src/components/Panel';
 * Traffic Watch is a server-wide monitoring feature that records all **HTTP**, **TCP**, and **PostgreSQL** requests made to the RavenDB server.  
   For each request it captures: HTTP method, URL, database name, response status code, request and response sizes, elapsed time, change type, and client certificate thumbprint.
 
-* A client with [Operator-level](../../server/security/authorization/security-clearance-and-permissions.mdx) access can connect to the Traffic Watch WebSocket endpoint to receive a **live stream** of requests.  
+* A client with [Operator-level](../security/authorization/security-clearance-and-permissions.mdx) access can connect to the Traffic Watch WebSocket endpoint to receive a **live stream** of requests.  
   The stream is active only while a client is connected; no data is persisted through it.
 
 * Independently, Traffic Watch can be configured to **log requests persistently to file** via the  
-  [`TrafficWatch.Mode`](../../server/configuration/traffic-watch-configuration.mdx#trafficwatchmode) configuration key (`Off` by default, set to `ToLogFile` to enable).  
+  [`TrafficWatch.Mode`](../configuration/traffic-watch-configuration.mdx#trafficwatchmode) configuration key (`Off` by default, set to `ToLogFile` to enable).  
   Both the live stream and log-to-file can be active at the same time.
 
 * In this page:
@@ -35,7 +35,7 @@ import Panel from '@site/src/components/Panel';
 <ContentFrame>
 
 **From Studio:**  
-* Go to _Manage Server → Traffic Watch_ ([Operator-level](../../server/security/authorization/security-clearance-and-permissions.mdx) access is required).  
+* Go to _Manage Server → Traffic Watch_ ([Operator-level](../security/authorization/security-clearance-and-permissions.mdx) access is required).  
 * The Traffic Watch view can also be reached by clicking a node tag in the [Traffic Per Database Widget](../../studio/cluster/cluster-dashboard/cluster-dashboard-widgets.mdx#traffic-per-database-widget) from the cluster dashboard.
 
 </ContentFrame>
@@ -76,7 +76,7 @@ import Panel from '@site/src/components/Panel';
   ```
 
 <Admonition type="note" title="">
-For the full list of configuration keys that control log-to-file filtering (by database, HTTP method, status code, change type, etc.), see [Configuration: Traffic Watch Options](../../server/configuration/traffic-watch-configuration.mdx).
+For the full list of configuration keys that control log-to-file filtering (by database, HTTP method, status code, change type, etc.), see [Configuration: Traffic Watch Options](../configuration/traffic-watch-configuration.mdx).
 </Admonition>
 
 </ContentFrame>
@@ -118,16 +118,16 @@ When neither log-to-file is enabled nor any client is connected to the WebSocket
 * **Disk storage**: Proportional to request volume.  
   Because Traffic Watch shares the server log file with all other log data, high request volumes can increase log file size and cause it to archive more frequently.  
   When a log file reaches the size limit, it is archived and a new file is started. Old archives are deleted once they exceed the configured age or count limit.  
-  These limits are set by the standard [logging configuration](../../server/configuration/logs-configuration.mdx):  
-  [`Logs.ArchiveAboveSizeInMb`](../../server/configuration/logs-configuration.mdx#logsarchiveabovesizeinmb) (default: 128 MB),  
-  [`Logs.MaxArchiveDays`](../../server/configuration/logs-configuration.mdx#logsmaxarchivedays) (default: 3 days),  
-  [`Logs.MaxArchiveFiles`](../../server/configuration/logs-configuration.mdx#logsmaxarchivefiles).  
+  These limits are set by the standard [logging configuration](../configuration/logs-configuration.mdx):  
+  [`Logs.ArchiveAboveSizeInMb`](../configuration/logs-configuration.mdx#logsarchiveabovesizeinmb) (default: 128 MB),  
+  [`Logs.MaxArchiveDays`](../configuration/logs-configuration.mdx#logsmaxarchivedays) (default: 3 days),  
+  [`Logs.MaxArchiveFiles`](../configuration/logs-configuration.mdx#logsmaxarchivefiles).  
   Archived log files that exceed the configured retention limits are deleted automatically.
 
 </ContentFrame>
 
 <Admonition type="tip" title="">
-Use the [filter configuration options](../../server/configuration/traffic-watch-configuration.mdx) (databases, HTTP methods, status codes, change types, minimum duration, etc.)
+Use the [filter configuration options](../configuration/traffic-watch-configuration.mdx) (databases, HTTP methods, status codes, change types, minimum duration, etc.)
 to limit the number of logged entries and reduce storage impact in high-traffic environments.
 </Admonition>
 

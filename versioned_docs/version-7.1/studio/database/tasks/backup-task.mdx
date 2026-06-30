@@ -15,7 +15,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="">
 
 * Backups save your data at a specific point in time and allow you to 
-  [restore](../../../studio/database/create-new-database/from-backup.mdx) 
+  [restore](../create-new-database/from-backup.mdx) 
   your database from that point. Learn more in [Backup Overview](../../../server/ongoing-tasks/backup-overview.mdx).  
 
 * This Studio view enables you to create ongoing [periodic backup tasks](#periodic-backup-creation), 
@@ -23,7 +23,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   [manual backups](#manually-creating-one-time-backups), for a particular database.  
 
      It also enables **server-wide backups** which can back up all of the databases on one server/node.  
-     See [Studio: Server-Wide Backups](../../../studio/server/server-wide-backup.mdx) to learn more.  
+     See [Studio: Server-Wide Backups](../../server/server-wide-backup.mdx) to learn more.  
 
 * On a [sharded](../../../sharding/overview.mdx) database, a single backup task 
   is defined by the user for all shards, and RavenDB automatically defines 
@@ -60,8 +60,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
  3. **Create a Manual Backup**  
     For a [one-time backup](#manually-creating-one-time-backups).  
  4. **Restore a database from a backup**  
-    To [restore a database](../../../studio/database/create-new-database/from-backup.mdx) from a previously created backup.
- 5. **Go to Server Wide Tasks View** to [back up all of the databases](../../../studio/server/server-wide-backup.mdx) on this server.  
+    To [restore a database](../create-new-database/from-backup.mdx) from a previously created backup.
+ 5. **Go to Server Wide Tasks View** to [back up all of the databases](../../server/server-wide-backup.mdx) on this server.  
  6. **Database Group Topology**  
     You can see all active server-wide and database-specific periodic backups.  
 
@@ -79,7 +79,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
     * [Backup Now](#periodic-backup-details) (e.g. before software updates) can be triggered in the 'View Details' interface.
  3. **Edit** this database backup task. To edit server/node-wide backup tasks, see button #5.  
  4. **Delete** this periodic backup task.  
- 5. **Go to the server-wide backups view** to [back up all databases on the server](../../../studio/server/server-wide-backup.mdx).  
+ 5. **Go to the server-wide backups view** to [back up all databases on the server](../../server/server-wide-backup.mdx).  
  6. **Database Group Topology**  
     This shows all active server-wide and database-specific periodic backups.  
 ### Creating Periodic Backups
@@ -107,8 +107,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 3. **Preferred Node** (Optional)  
 
-   * Select a preferred mentor node from the [Database Group](../../../studio/database/settings/manage-database-group.mdx) to be the responsible node for this Backup Task  
-   * If no node is selected, then the cluster will assign a responsible node (see [Members Duties](../../../studio/database/settings/manage-database-group.mdx#database-group-topology---members-duties))  
+   * Select a preferred mentor node from the [Database Group](../settings/manage-database-group.mdx) to be the responsible node for this Backup Task  
+   * If no node is selected, then the cluster will assign a responsible node (see [Members Duties](../settings/manage-database-group.mdx#database-group-topology---members-duties))  
 ### Scheduling Backups
 
 Select the content to back up. Note: Both incremental and full backups can be scheduled at the same time.  
@@ -138,7 +138,7 @@ Select the content to back up. Note: Both incremental and full backups can be sc
   
   Infrequent backups can be useful if a mistake was made and you need access to data from a few days ago.  
 
-  **If downtime while recovering databases is a concern**, you can also set up an [external replica](../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx) and manually fail over to it while you recover the data onto the original cluster.  
+  **If downtime while recovering databases is a concern**, you can also set up an [external replica](./ongoing-tasks/external-replication-task.mdx) and manually fail over to it while you recover the data onto the original cluster.  
 
 </Admonition>  
 ### Retention Policy
@@ -347,7 +347,7 @@ process currently overuses resources.
   
 ## Backup Task -vs- Replication Task
 
- * RavenDB's [External Replication](../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx) provides you with an off-site live replica/copy of the data 
+ * RavenDB's [External Replication](./ongoing-tasks/external-replication-task.mdx) provides you with an off-site live replica/copy of the data 
    ('live' meaning that any changes in the database will be duplicated into the replica immediately).  
    If one database is down, replicas (other nodes in the cluster) can continue its work, thus greatly improving **availability**.  
    Replication is also quite useful if you need to:  
@@ -360,7 +360,7 @@ process currently overuses resources.
     * Protect you from various cyber attacks  
 
  * A backup keeps an exact state of the database at a specific point in time and can be restored.  
-    * A new database can be [created from a Backup](../../../studio/database/create-new-database/from-backup.mdx)  
+    * A new database can be [created from a Backup](../create-new-database/from-backup.mdx)  
     * This can be done with both 'Backup' & 'Snapshot' types  
 
 

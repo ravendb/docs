@@ -93,7 +93,7 @@ The following methods can be used when creating a bulk insert.
      to `true` so the operation overwrites existing documents only if they changed since
      the last insertion.  
    * **If you need full transactionality**, using a
-     [session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx)
+     [session](../../session/what-is-a-session-and-how-does-it-work.mdx)
      may be a better option.  
      Note that if a session is used, all of the data is processed in a single transaction,
      so the server must have sufficient resources to handle the entire data set included
@@ -227,7 +227,7 @@ See [Classes](#classes)
 for the full property list.
 
 * Updates arrive asynchronously over the
-  [Changes](../../../client-api/changes/what-is-changes-api.mdx)
+  [Changes](../../changes/what-is-changes-api.mdx)
   stream that the server opens for the operation.  
   Your handler is invoked by the server's progress reports, not by your `Store`
   calls - a single progress event typically covers many `Store` calls at once.

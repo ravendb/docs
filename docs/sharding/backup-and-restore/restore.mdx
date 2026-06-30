@@ -28,7 +28,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
    The backup of shard 1, for example, must be restored as shard 1.
    </Admonition>
 * Backup files can be restored from local shard node storage or from 
-  a [remote location](../../sharding/backup-and-restore/backup.mdx#backup-storage-local-and-remote).  
+  a [remote location](./backup.mdx#backup-storage-local-and-remote).  
 * A backed-up sharded database can be restored in part or in full, 
   to a sharded or a non-sharded database.  
 * Only [logical](../../backup/overview#logical-backup) 
@@ -37,7 +37,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   backups cannot be created or restored for sharded databases.  
 * `.ravendbdump` files (exported from RavenDB databases) and 
   backup files can also be 
-  [imported](../../sharding/import-and-export.mdx#import) 
+  [imported](../import-and-export.mdx#import) 
   into a database (sharded or non-sharded).  
 * A backup created for a non-sharded database **cannot** be restored 
   as a sharded database.  
@@ -626,7 +626,7 @@ backups that were added to it over time.
 | Option | Supported on a Sharded Database | Comment |
 | -------------------- | --------------- | --------------------- |
 | Restore from **local shard storage** | **Yes** |  |
-| Restore from a [remote location](../../sharding/backup-and-restore/backup.mdx#backup-storage-local-and-remote) | **Yes** | Define a [restore configuration](#define-a-restore-configuration) with S3, Azure, or Google Cloud settings. |
+| Restore from a [remote location](./backup.mdx#backup-storage-local-and-remote) | **Yes** | Define a [restore configuration](#define-a-restore-configuration) with S3, Azure, or Google Cloud settings. |
 | Restore a **sharded database** backup <br/> to a **sharded database** | **Yes** |  |
 | Restore a **sharded database** backup <br/> to a **non-sharded database** | **Yes** |  |
 | Restore a **non-sharded database** backup <br/> to a **sharded database** | **No** | A backup created for a non-sharded database **cannot** be restored to a sharded database. |

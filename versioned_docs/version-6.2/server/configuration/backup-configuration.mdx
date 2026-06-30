@@ -16,7 +16,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * Configuration options for backups (both on premise and RavenDB Cloud).  
 
-* Another relevant server configuration option can be found [here](../../server/configuration/server-configuration.mdx#servercpucreditsexhaustionbackupdelayinmin).
+* Another relevant server configuration option can be found [here](./server-configuration.mdx#servercpucreditsexhaustionbackupdelayinmin).
 
 * In this page:  
     * [Backup.TempPath](#backuptemppath)  
@@ -32,8 +32,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 ## Backup.TempPath
 
 Use this setting to specify a different path to the temporary backup files.  
-By default, backup temporary files are written under the Database directory or under [Storage.TempPath](../../server/configuration/storage-configuration.mdx) if defined.  
-Learn more about RavenDB directory structure [here](../../server/storage/directory-structure.mdx).
+By default, backup temporary files are written under the Database directory or under [Storage.TempPath](./storage-configuration.mdx) if defined.  
+Learn more about RavenDB directory structure [here](../storage/directory-structure.mdx).
 
 - **Type**: `string`
 - **Default**: `null`
@@ -115,10 +115,10 @@ Number of minutes to delay the backup if the server enters a low memory state.
 
 ## Backup.MoveToNewResponsibleNodeGracePeriodInMin
 
-Number of minutes the [cluster observer](../../server/clustering/distribution/cluster-observer.mdx) waits
+Number of minutes the [cluster observer](../clustering/distribution/cluster-observer.mdx) waits
 before reassigning a backup task to a new responsible node,
 when the current responsible node has entered the
-[Rehab state](../../server/clustering/distribution/distributed-database.mdx#database-topology).  
+[Rehab state](../clustering/distribution/distributed-database.mdx#database-topology).  
 
 During this grace period, the task remains assigned to its current responsible node.  
 This gives the node a chance to recover, and prevents a duplicate backup

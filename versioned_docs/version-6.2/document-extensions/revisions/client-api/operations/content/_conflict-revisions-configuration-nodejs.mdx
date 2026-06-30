@@ -80,7 +80,7 @@ await documentStore.maintenance.server.send(configureConflictRevisionsOp);
 </CodeBlock>
 </TabItem>
 
-* See properties explanation and default values [here](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisions-collection-configuration-object).
+* See properties explanation and default values [here](../configure-revisions.mdx#revisions-collection-configuration-object).
 
 
 
@@ -94,7 +94,7 @@ However, it can also lead to a significant increase in the database size if many
 * Consider limiting the number of conflict revisions kept per document using:  
   `minimumRevisionsToKeep` and/or `minimumRevisionAgeToKeep`.  
 
-* Revisions are purged upon [modification of their parent documents](../../../../../document-extensions/revisions/overview.mdx#revisions-configuration-execution).  
+* Revisions are purged upon [modification of their parent documents](../../../overview.mdx#revisions-configuration-execution).  
   If you want to purge a large number of revisions at once, you can **cautiously** [enforce configuration](../../../../../studio/database/settings/document-revisions.mdx#enforce-configuration).  
 
 </Admonition>

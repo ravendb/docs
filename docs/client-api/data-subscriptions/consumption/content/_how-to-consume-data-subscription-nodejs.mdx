@@ -9,7 +9,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * The `SubscriptionWorker` object, defined on the client, manages the communication between the server and the client and processes the document batches sent from the server.  
 
-* There are several ways to create and configure the SubscriptionWorker - see [subscription worker options](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions).  
+* There are several ways to create and configure the SubscriptionWorker - see [subscription worker options](../api-overview.mdx#subscriptionworkeroptions).  
 
 * In this page:
   * [SubscriptionWorker lifecycle](#subscriptionworker-lifecycle)  
@@ -102,7 +102,7 @@ For example:
 </TabItem>
 
 When creating a worker, the worker can be configured to handle these exceptions in either of the following ways,
-depending on the `ignoreSubscriberErrors` property in the [subscription worker options](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions):
+depending on the `ignoreSubscriberErrors` property in the [subscription worker options](../api-overview.mdx#subscriptionworkeroptions):
 
 * **Abort processing completely**  
   When `ignoreSubscriberErrors` is `false` (default):  
@@ -119,7 +119,7 @@ depending on the `ignoreSubscriberErrors` property in the [subscription worker o
 
 <Admonition type="info" title="Reconnecting" id="reconnecting" href="#reconnecting">
 
-Two properties in the [subscription worker options](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions) 
+Two properties in the [subscription worker options](../api-overview.mdx#subscriptionworkeroptions) 
 object control the behavior of a worker attempting to reconnect with the server:
 
 * `timeToWaitBeforeConnectionRetry`  
@@ -172,7 +172,7 @@ and determine what happens when one worker is connected and another tries to con
 
 * `Concurrent`  
   The server allows multiple workers to connect to the same subscription **concurrently**.  
-  Read more about concurrent subscriptions [here](../../../../client-api/data-subscriptions/concurrent-subscriptions.mdx).  
+  Read more about concurrent subscriptions [here](../../concurrent-subscriptions.mdx).  
 
 
 

@@ -36,7 +36,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * This functionality is achieved by defining [Queue ETL tasks](#queue-etl-tasks) within a RavenDB database.
 
 * RavenDB can also function as a _Consumer_.  
-  To learn about RavenDB's role as a _Consumer_ please refer to the [Queue Sink section](../../../../server/ongoing-tasks/queue-sink/overview.mdx).
+  To learn about RavenDB's role as a _Consumer_ please refer to the [Queue Sink section](../../queue-sink/overview.mdx).
 
 * In this page:
     * [Queue ETL tasks](#queue-etl-tasks)
@@ -54,16 +54,16 @@ RavenDB produces messages to broker queues via the following Queue ETL tasks:
 
 * **Kafka ETL Task**  
   You can define a Kafka ETL Task from [Studio](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx) 
-  or using the [Client API](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx).  
+  or using the [Client API](./kafka.mdx).  
 * **RabbitMQ ETL Task**  
   You can define a RabbitMQ ETL Task from [Studio](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task.mdx) 
-  or using the [Client API](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx).  
+  or using the [Client API](./rabbit-mq.mdx).  
 * **Azure Queue Storage ETL Task**  
   You can define an Azure Queue Storage ETL Task from [Studio](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl.mdx) 
-  or using the [Client API](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx).  
+  or using the [Client API](./azure-queue.mdx).  
 * **Amazon SQS ETL Task**  
   You can define an Amazon SQS ETL Task from [Studio](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl.mdx) 
-  or using the [Client API](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx).  
+  or using the [Client API](./amazon-sqs.mdx).  
 The above ETL tasks:  
 
 * **Extract** selected data from RavenDB documents from specified collections.  
@@ -91,7 +91,7 @@ The above ETL tasks:
   Find the specific syntax for defining a connection string per task in each task's documentation.
 * Each message will be added to the tail of its assigned queue according to the transformation script.  
   As earlier messages are processed, it will advance to the head of the queue, becoming available for consumers.
-* RavenDB publishes messages to the designated brokers using [transactions and batches](../../../../server/ongoing-tasks/etl/basics.mdx#batch-processing),  
+* RavenDB publishes messages to the designated brokers using [transactions and batches](../basics.mdx#batch-processing),  
   creating a batch of messages and opening a transaction to the destination queue for the batch.
 
 #### Idempotence and message duplication:
@@ -132,7 +132,7 @@ The above ETL tasks:
 
 <Admonition type="note" title="">
 The `partitionkey` attribute is a [CloudEvents partitioning extension](https://github.com/cloudevents/spec/blob/main/cloudevents/extensions/partitioning.md).  
-For [Kafka ETL](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx), it controls which partition the message is routed to.  
+For [Kafka ETL](./kafka.mdx), it controls which partition the message is routed to.  
 For other queue brokers, it is included as message metadata but has no routing effect.  
 </Admonition>
 

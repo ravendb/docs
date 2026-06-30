@@ -7,7 +7,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * **Time series index**:
 
-    * STATIC-time-series-indexes can be defined from the [Client API](../../../../document-extensions/timeseries/indexing.mdx) 
+    * STATIC-time-series-indexes can be defined from the [Client API](../../indexing.mdx) 
       or using [Studio](../../../../studio/database/indexes/create-map-index.mdx).  
       Such an index can be queried in the same way as a regular index that indexes documents.  
       (See [Querying an index](../../../../indexes/querying/query-index.mdx)).
@@ -42,7 +42,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Each **index-entry** consists of:
   * Three index-fields obtained from the "HeartRates" time series entries: `bpm`, `date`, and `tag`.
-  * One index-field obtained from the time series [segment](../../../../document-extensions/timeseries/indexing.mdx#timeseriessegment-object) header: `employeeID`.
+  * One index-field obtained from the time series [segment](../../indexing.mdx#timeseriessegment-object) header: `employeeID`.
   * One index-field obtained from the loaded employee document: `employeeName`.
 
 * When querying this time series index:  

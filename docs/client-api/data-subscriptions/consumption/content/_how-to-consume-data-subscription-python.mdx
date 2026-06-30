@@ -80,7 +80,7 @@ _ = worker_w_batch.run(_throw_exception)
 </TabItem>
 
 When creating a worker, the worker can be configured to handle these exceptions in either of the following ways,
-depending on the `ignore_subscriber_errors` property in [SubscriptionWorkerOptions](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions):
+depending on the `ignore_subscriber_errors` property in [SubscriptionWorkerOptions](../api-overview.mdx#subscriptionworkeroptions):
 
 * **Abort processing completely**  
   When `ignore_subscriber_errors` is set to _false_ (default):  
@@ -97,7 +97,7 @@ depending on the `ignore_subscriber_errors` property in [SubscriptionWorkerOptio
 
 <Admonition type="info" title="Reconnecting" id="reconnecting" href="#reconnecting">
 
-Two properties in the [SubscriptionWorkerOptions](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions)
+Two properties in the [SubscriptionWorkerOptions](../api-overview.mdx#subscriptionworkeroptions)
 object control the behavior of a worker attempting to reconnect with the server:
 
 * `time_to_wait_before_connection_retry`  
@@ -150,7 +150,7 @@ and determine what happens when one worker is connected and another tries to con
 
 * `SubscriptionOpeningStrategy.CONCURRENT`  
   The server allows multiple workers to connect to the same subscription **concurrently**.  
-  Read more about concurrent subscriptions [here](../../../../client-api/data-subscriptions/concurrent-subscriptions.mdx).
+  Read more about concurrent subscriptions [here](../../concurrent-subscriptions.mdx).
 
 
 

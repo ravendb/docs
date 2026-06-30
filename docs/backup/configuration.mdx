@@ -48,13 +48,13 @@ Use this key to specify the local path where temporary backup files are stored.
 - By default, temporary backup files are stored under the server Database directory (or under [Storage.TempPath](../server/configuration/storage-configuration.mdx) if set).  
 - If `Backup.TempPath` is set, temporary backup files will be stored under the path it specifies.  
 - If a backup task is configured to store backups in a local folder, `Backup.TempPath` will be ignored and temporary files will be stored alongside the backups.  
-- `Backup.TempPath` is also used when restoring a [snapshot](../backup/overview.mdx#snapshot-image)
+- `Backup.TempPath` is also used when restoring a [snapshot](./overview.mdx#snapshot-image)
   from a remote destination (Amazon S3, Azure Blob Storage, or Google Cloud Storage):
   the snapshot file is first downloaded to `Backup.TempPath` and then read from there.  
-  [Logical backups](../backup/overview.mdx#logical-backup) are streamed directly from
+  [Logical backups](./overview.mdx#logical-backup) are streamed directly from
   the destination and do not use this path.
 
-  [Learn about restoring from a remote destination.](../backup/restore.mdx#restorebackupconfiguration---backup-location-settings)
+  [Learn about restoring from a remote destination.](./restore.mdx#restorebackupconfiguration---backup-location-settings)
 </Admonition>
 
 - **Type**: `string`

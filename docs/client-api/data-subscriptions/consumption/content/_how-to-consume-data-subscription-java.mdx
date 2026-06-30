@@ -77,7 +77,7 @@ For example:
 </TabItem>
 
 When creating a worker, the worker can be configured to handle these exceptions in either of the following ways,
-depending on the `IgnoreSubscriberErrors` property in [SubscriptionWorkerOptions](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions):
+depending on the `IgnoreSubscriberErrors` property in [SubscriptionWorkerOptions](../api-overview.mdx#subscriptionworkeroptions):
 
 * **Abort processing completely**  
   When `IgnoreSubscriberErrors` is set to _false_ (default):  
@@ -94,7 +94,7 @@ depending on the `IgnoreSubscriberErrors` property in [SubscriptionWorkerOptions
 
 <Admonition type="info" title="Reconnecting" id="reconnecting" href="#reconnecting">
 
-Two properties in the [SubscriptionWorkerOptions](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions)
+Two properties in the [SubscriptionWorkerOptions](../api-overview.mdx#subscriptionworkeroptions)
 object control the behavior of a worker attempting to reconnect with the server:
 
 * `timeToWaitBeforeConnectionRetry`  

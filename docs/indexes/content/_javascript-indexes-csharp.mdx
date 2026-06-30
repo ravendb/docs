@@ -26,7 +26,7 @@ import CodeBlock from '@theme/CodeBlock';
 **Creating a JavaScript index**:
 
 * To create a JavaScript index, define a class that inherits from `AbstractJavaScriptIndexCreationTask`.  
-* This base class itself inherits from [AbstractIndexCreationTask](../../indexes/creating-and-deploying.mdx#define-a-static-index-using-a-custom-class),
+* This base class itself inherits from [AbstractIndexCreationTask](../creating-and-deploying.mdx#define-a-static-index-using-a-custom-class),
   which is the base class for all C# indexes.
 
 <TabItem value="js_index" label="js_index">
@@ -55,7 +55,7 @@ public class Documents_ByName_JS : AbstractJavaScriptIndexCreationTask
 
 **Deploying a JavaScript index**:  
 
-* Deploy a JavaScript index using the standard creation flow as described in [Deploy a static-index](../../indexes/creating-and-deploying.mdx#deploy-a-static-index).
+* Deploy a JavaScript index using the standard creation flow as described in [Deploy a static-index](../creating-and-deploying.mdx#deploy-a-static-index).
 
 * Note that **JavaScript indexes** can be deployed using a [User/Read-Write](../../server/security/authorization/security-clearance-and-permissions.mdx#section-1) certificate,  
   while **C# static indexes** require a [User/Admin](../../server/security/authorization/security-clearance-and-permissions.mdx#section) certificate or higher.
@@ -63,7 +63,7 @@ public class Documents_ByName_JS : AbstractJavaScriptIndexCreationTask
 * To restrict the creation of JavaScript indexes to database admins (and above),  
   set the [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../../server/configuration/indexing-configuration.mdx#indexingstaticrequireadmintodeployjavascriptindexes) configuration to `true`.
 
-* All other capabilities and features of JavaScript indexes are identical to those of [C# indexes](../../indexes/indexing-basics.mdx).
+* All other capabilities and features of JavaScript indexes are identical to those of [C# indexes](../indexing-basics.mdx).
 
 
 
@@ -296,7 +296,7 @@ public class BlogPostComment
 
 </Admonition>
 
-Learn more about [Map indexes here](../../indexes/map-indexes.mdx).
+Learn more about [Map indexes here](../map-indexes.mdx).
 
 
 
@@ -358,7 +358,7 @@ where Name == "Milo"
 
 </Admonition>
 
-Learn more about [Multi-Map indexes here](../../indexes/multi-map-indexes.mdx).
+Learn more about [Multi-Map indexes here](../multi-map-indexes.mdx).
 
 
 
@@ -510,7 +510,7 @@ The following index calculates how many items were sold and the total sales amou
 
 </Admonition>
 
-Learn more about [Map-Reduce indexes here](../../indexes/map-reduce-indexes.mdx).
+Learn more about [Map-Reduce indexes here](../map-reduce-indexes.mdx).
 
 
 

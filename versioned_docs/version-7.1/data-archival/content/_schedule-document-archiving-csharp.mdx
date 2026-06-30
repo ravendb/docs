@@ -13,9 +13,9 @@ import Panel from '@site/src/components/Panel';
 
 * **Note**:  
   Just scheduling a document for archival does Not archive it at the specified time.  
-  Actual archiving is performed only by a background task that runs when the archival feature is [enabled](../../data-archival/enable-data-archiving.mdx).  
+  Actual archiving is performed only by a background task that runs when the archival feature is [enabled](../enable-data-archiving.mdx).  
   This task periodically scans the database for documents scheduled for archival.  
-  The scan frequency is configurable when [enabling ](../../data-archival/enable-data-archiving.mdx) the archival feature (default: 60 seconds).
+  The scan frequency is configurable when [enabling ](../enable-data-archiving.mdx) the archival feature (default: 60 seconds).
  
 * The archiving task will archive any document whose `@archive-at` time has passed at the time of the scan.  
   The `@archive-at` metadata property will then be replaced with `@archived: true`.

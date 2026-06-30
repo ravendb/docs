@@ -17,7 +17,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * A **RavenDB Task** can be one of the following:  
 
   * An [Ongoing Task](../../../studio/database/tasks/ongoing-tasks/general-info.mdx)  
-  * Updating a `Rehab` or a `Promotable` [Database Node](../../../server/clustering/distribution/distributed-database.mdx#database-topology)  
+  * Updating a `Rehab` or a `Promotable` [Database Node](./distributed-database.mdx#database-topology)  
 
 * There is no single coordinator handing out tasks to a specific node.  
   Instaed, each node decides on its own if it is the [Reponsible Node](#responsible-node) of the task.  
@@ -56,14 +56,14 @@ to verify whether the Highly Available Tasks feature is activated in your databa
 
 ## Constraints
 
-1. Task is defined per [Database Group](../../../server/clustering/distribution/distributed-database.mdx).  
+1. Task is defined per [Database Group](./distributed-database.mdx).  
 
 2. Task is executed by a single `Database Node` only.  
    With Backup Task being an exception in case of a cluster partition, see [Backup Task - When Cluster or Node are Down](../../../studio/database/tasks/backup-task.mdx#when-the-cluster-or-node-are-down).  
 
 3. A `Database Node` can be assigned with many tasks.  
 
-4. The node must be in a [Member](../../../server/clustering/distribution/distributed-database.mdx#database-topology) state in the `Database Group` in order to perform a task.  
+4. The node must be in a [Member](./distributed-database.mdx#database-topology) state in the `Database Group` in order to perform a task.  
 
 5. Cluster must be in a functional state.  
 
@@ -73,13 +73,13 @@ to verify whether the Highly Available Tasks feature is activated in your databa
 * `Responsible Node` is the node that is responsible to perform a specific Ongoing Task.  
 
 * Each node checks whether it is the `Responsible Node` for the task by executing a local function that is based on the  
-  _unique hash value_ of the task and the current [Database Topology](../../../server/clustering/distribution/distributed-database.mdx#database-topology).  
+  _unique hash value_ of the task and the current [Database Topology](./distributed-database.mdx#database-topology).  
 
 * Since the `Database Topology` is _eventually consistent_ across the cluster,  
   there will be an **eventually consistent single Responsible Node**, which will answer the above constraints.  
 
 <Admonition type="note" title="Additional Reading" id="additional-reading" href="#additional-reading">
-Learn more [here](../../../server/clustering/distribution/distributed-database.mdx#database-topology) 
+Learn more [here](./distributed-database.mdx#database-topology) 
 about database nodes' relations and states. 
 </Admonition>
 
@@ -89,7 +89,7 @@ about database nodes' relations and states.
 
 For backup tasks, the responsible node is either picked when the task is created
 (via the **Set responsible node** option in Studio, or `MentorNode` via the API),
-or chosen by the [cluster observer](../../../server/clustering/distribution/cluster-observer.mdx)
+or chosen by the [cluster observer](./cluster-observer.mdx)
 when no explicit choice was made.  
 Either way, the choice is persisted cluster-wide,
 so all nodes agree on a single responsible node.  
@@ -99,7 +99,7 @@ the cluster observer waits a configurable grace period (30 minutes by default)
 before moving the task to another node.  
 This prevents the same backup from running on two nodes at once.  
 The grace period is set by
-[Backup.MoveToNewResponsibleNodeGracePeriodInMin](../../../server/configuration/backup-configuration.mdx#backupmovetonewresponsiblenodegraceperiodinmin).
+[Backup.MoveToNewResponsibleNodeGracePeriodInMin](../../configuration/backup-configuration.mdx#backupmovetonewresponsiblenodegraceperiodinmin).
 
 </Admonition>
 
@@ -130,13 +130,13 @@ Let's assume that we have a 5 nodes cluster [A, B, C, D, E] with a database on [
 Node B has network issues and is separated from the cluster. 
 So nodes [A, C, D, E] are on one side and node [B] is on the other side.  
 
-The [Cluster Observer](../../../server/clustering/distribution/cluster-observer.mdx) will note that it can't reach node B 
-and issue a [Raft Command](../../../server/clustering/rachis/consensus-operations.mdx) in order to move node B to a `Rehab` state.  
+The [Cluster Observer](./cluster-observer.mdx) will note that it can't reach node B 
+and issue a [Raft Command](../rachis/consensus-operations.mdx) in order to move node B to a `Rehab` state.  
 
 Once this change has propagated, it will trigger a re-assessment of _all_ tasks in _all_ reachable nodes.  
 In our example the task will move to either A or E.  
 
-In the meanwhile, node B which has no communication with the [Cluster Leader](../../../server/clustering/rachis/cluster-topology.mdx),  
+In the meanwhile, node B which has no communication with the [Cluster Leader](../rachis/cluster-topology.mdx),  
 moves itself to be a `Candidate` and removes all its tasks.  
 </Admonition>
 
@@ -159,11 +159,11 @@ The failover of a task to another responsible node can be prevented by **pinning
 * If the node the task is pinned to fails, the task will **not** be executed until the node is back online.  
   When the node awakes, the task will be resumed from the failure point on.  
 * If a node remains offline for the period set by 
-  [cluster.timebeforeaddingreplicainsec](../../../server/configuration/cluster-configuration.mdx#clustertimebeforeaddingreplicainsec), 
+  [cluster.timebeforeaddingreplicainsec](../../configuration/cluster-configuration.mdx#clustertimebeforeaddingreplicainsec), 
   the cluster observer will attempt to select an available node to replace it in the database group 
   and redistribute the fallen node's tasks, including pinned ones, among database group members.  
 * A pinned **backup task** is also not subject to the
-  [grace period](../../../server/configuration/backup-configuration.mdx#backupmovetonewresponsiblenodegraceperiodinmin)
+  [grace period](../../configuration/backup-configuration.mdx#backupmovetonewresponsiblenodegraceperiodinmin)
   that the cluster observer otherwise applies before reassigning a backup task.  
   The pinned backup stays on its node even while the node is in Rehab,
   and only moves when the cluster eventually replaces the node as described above.  

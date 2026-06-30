@@ -16,7 +16,7 @@ import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* After running the Setup Wizard and accepting the EULA as described in the [Overview](../../../start/installation/setup-wizard/overview.mdx),  
+* After running the Setup Wizard and accepting the EULA as described in the [Overview](./overview.mdx),  
   the next step is to choose the **setup method** you want to proceed with.    
     
 * In this article:
@@ -46,7 +46,7 @@ The following setup methods are available:
    Apply a previously generated setup package to join a node to a cluster.  
    Learn more below in [Use an existing setup package](#use-an-existing-setup-package).
     
-4. Click **"Continue"** to proceed to the next step in the wizard, which is [Providing the license key](../../../start/installation/setup-wizard/provide-license-key.mdx).
+4. Click **"Continue"** to proceed to the next step in the wizard, which is [Providing the license key](./provide-license-key.mdx).
 
 </Panel>
 
@@ -65,17 +65,17 @@ The following setup methods are available:
         
     |    | Step                                  | What you do                                        |
     |----|---------------------------------------|----------------------------------------------------|
-    | ▶️ | [Run Setup Wizard](../../../start/installation/setup-wizard/overview.mdx#how-to-run-the-setup-wizard) | ️Run `run.ps1` (Windows) or `run.sh` (Linux). |
-    | ⚖️ | [Accept EULA](../../../start/installation/setup-wizard/overview.mdx#license-agreement-eula) | ️Required to continue. |
-    | 🔀 | [Choose setup method](../../../start/installation/setup-wizard/choose-setup-method.mdx) | Select **"Set up new cluster"**. |
-    | 🔑 | [Provide license](../../../start/installation/setup-wizard/provide-license-key.mdx) | Enter your license key. |
-    | 🔒 | [Choose security option](../../../start/installation/setup-wizard/choose-security-option.mdx) | Select how to secure your server. Available options:<br/>- Let’s Encrypt<br/>- Provide your own certificate<br/>- Unsecured |
-    | 🌐 | [Configure node addresses](../../../start/installation/setup-wizard/configure-node-addresses.mdx) | Define the cluster topology.<br/>Add nodes and set their IP addresses. |
-    | ⚙️ | [Additional settings](../../../start/installation/setup-wizard/additional-settings.mdx) | Configure optional settings. |
-    | 📝 | [Review setup](../../../start/installation/setup-wizard/review-setup.mdx) | Review your settings before proceeding. |
-    | ⏳ | [Configuration in progress](../../../start/installation/setup-wizard/finish-setup.mdx) | Wait while the wizard applies your configuration and certificate (if applicable).<br/>A setup package (ZIP) is generated (unless configuring a single-node unsecured cluster). |
-    | 🚀 | [Start the **first** configured node](../../../start/installation/setup-wizard/finish-setup.mdx#restarting-the-server) | Click "Restart server".<br/>The node restarts and becomes operational. |
-    | 📦 | Continue with<br/>["Use setup package"](../../../start/installation/setup-wizard/use-setup-package.mdx) | If creating a multi-node cluster,<br/>continue with **"Use setup package"** to add the remaining nodes. | 
+    | ▶️ | [Run Setup Wizard](./overview.mdx#how-to-run-the-setup-wizard) | ️Run `run.ps1` (Windows) or `run.sh` (Linux). |
+    | ⚖️ | [Accept EULA](./overview.mdx#license-agreement-eula) | ️Required to continue. |
+    | 🔀 | [Choose setup method](./choose-setup-method.mdx) | Select **"Set up new cluster"**. |
+    | 🔑 | [Provide license](./provide-license-key.mdx) | Enter your license key. |
+    | 🔒 | [Choose security option](./choose-security-option.mdx) | Select how to secure your server. Available options:<br/>- Let’s Encrypt<br/>- Provide your own certificate<br/>- Unsecured |
+    | 🌐 | [Configure node addresses](./configure-node-addresses.mdx) | Define the cluster topology.<br/>Add nodes and set their IP addresses. |
+    | ⚙️ | [Additional settings](./additional-settings.mdx) | Configure optional settings. |
+    | 📝 | [Review setup](./review-setup.mdx) | Review your settings before proceeding. |
+    | ⏳ | [Configuration in progress](./finish-setup.mdx) | Wait while the wizard applies your configuration and certificate (if applicable).<br/>A setup package (ZIP) is generated (unless configuring a single-node unsecured cluster). |
+    | 🚀 | [Start the **first** configured node](./finish-setup.mdx#restarting-the-server) | Click "Restart server".<br/>The node restarts and becomes operational. |
+    | 📦 | Continue with<br/>["Use setup package"](./use-setup-package.mdx) | If creating a multi-node cluster,<br/>continue with **"Use setup package"** to add the remaining nodes. | 
         
     </TabItem>
 
@@ -95,16 +95,16 @@ The following setup methods are available:
         
     |     | Step                               | What you do                                           |
     |-----|------------------------------------|-------------------------------------------------------|
-    | ▶️ | [Run Setup Wizard](../../../start/installation/setup-wizard/overview.mdx#how-to-run-the-setup-wizard) | ️Run `run.ps1` (Windows) or `run.sh` (Linux). |
-    | ⚖️ | [Accept EULA](../../../start/installation/setup-wizard/overview.mdx#license-agreement-eula) | ️Required to continue. |
-    | 🔀 | [Choose setup method](../../../start/installation/setup-wizard/choose-setup-method.mdx) | Select **"Create package for external setup"**. |
-    | 🔑 | [Provide license](../../../start/installation/setup-wizard/provide-license-key.mdx) | Enter your license key. |
-    | 🔒 | [Choose security option](../../../start/installation/setup-wizard/choose-security-option.mdx) | Select how to secure your server. Available options:<br/>- Let’s Encrypt<br/>- Provide your own certificate<br/>- Unsecured |
-    | 🌐 | [Configure node addresses](../../../start/installation/setup-wizard/configure-node-addresses.mdx) | Define the cluster topology.<br/>Add nodes and set their IP addresses. |
-    | ⚙️ | [Additional settings](../../../start/installation/setup-wizard/additional-settings.mdx) | ️Configure optional settings. |
-    | 📝 | [Review setup](../../../start/installation/setup-wizard/review-setup.mdx) | Review your settings before proceeding. |
-    | ⏳ | [Configuration in progress](../../../start/installation/setup-wizard/finish-setup.mdx) | Wait while the wizard creates the setup package with your configuration. |
-    | 📦 | Continue with<br/>["Use setup package"](../../../start/installation/setup-wizard/use-setup-package.mdx) | On each target machine, run the Setup Wizard and use **Use setup package** to set up and start the cluster nodes. |
+    | ▶️ | [Run Setup Wizard](./overview.mdx#how-to-run-the-setup-wizard) | ️Run `run.ps1` (Windows) or `run.sh` (Linux). |
+    | ⚖️ | [Accept EULA](./overview.mdx#license-agreement-eula) | ️Required to continue. |
+    | 🔀 | [Choose setup method](./choose-setup-method.mdx) | Select **"Create package for external setup"**. |
+    | 🔑 | [Provide license](./provide-license-key.mdx) | Enter your license key. |
+    | 🔒 | [Choose security option](./choose-security-option.mdx) | Select how to secure your server. Available options:<br/>- Let’s Encrypt<br/>- Provide your own certificate<br/>- Unsecured |
+    | 🌐 | [Configure node addresses](./configure-node-addresses.mdx) | Define the cluster topology.<br/>Add nodes and set their IP addresses. |
+    | ⚙️ | [Additional settings](./additional-settings.mdx) | ️Configure optional settings. |
+    | 📝 | [Review setup](./review-setup.mdx) | Review your settings before proceeding. |
+    | ⏳ | [Configuration in progress](./finish-setup.mdx) | Wait while the wizard creates the setup package with your configuration. |
+    | 📦 | Continue with<br/>["Use setup package"](./use-setup-package.mdx) | On each target machine, run the Setup Wizard and use **Use setup package** to set up and start the cluster nodes. |
         
     </TabItem>
 
@@ -125,14 +125,14 @@ The following setup methods are available:
     
 |    | Step                                  | What you do                                         |
 |----|---------------------------------------|-----------------------------------------------------|
-| ▶️ | [Run Setup Wizard](../../../start/installation/setup-wizard/overview.mdx#how-to-run-the-setup-wizard) | ️Run `run.ps1` (Windows) or `run.sh` (Linux). |
-| ⚖️ | [Accept EULA](../../../start/installation/setup-wizard/overview.mdx#license-agreement-eula) | ️Required to continue. |
-| 🔀 | [Choose setup method](../../../start/installation/setup-wizard/use-setup-package.mdx#select-use-package) | Select **"Use setup package"**. |
-| 📥️ | [Upload setup package](../../../start/installation/setup-wizard/use-setup-package.mdx#upload-setup-package) | Upload the setup package (ZIP) created earlier. |
-| 🖥️ | [Select node](../../../start/installation/setup-wizard/use-setup-package.mdx#select-node) | Select the node you want to set up from the package |
-| ⏳ | [Configuration in progress](../../../start/installation/setup-wizard/use-setup-package.mdx#in-progress) | Wait while the wizard applies the configuration to this node. |
-| 🚀 | [Start the node](../../../start/installation/setup-wizard/use-setup-package.mdx#restart-server) | Click "Restart server".<br/>The node restarts and becomes operational. |
-| 📦 | Continue with<br/>["Use setup package"](../../../start/installation/setup-wizard/use-setup-package.mdx#repeat) | Repeat this process on each target machine to add the remaining nodes to the cluster. |
+| ▶️ | [Run Setup Wizard](./overview.mdx#how-to-run-the-setup-wizard) | ️Run `run.ps1` (Windows) or `run.sh` (Linux). |
+| ⚖️ | [Accept EULA](./overview.mdx#license-agreement-eula) | ️Required to continue. |
+| 🔀 | [Choose setup method](./use-setup-package.mdx#select-use-package) | Select **"Use setup package"**. |
+| 📥️ | [Upload setup package](./use-setup-package.mdx#upload-setup-package) | Upload the setup package (ZIP) created earlier. |
+| 🖥️ | [Select node](./use-setup-package.mdx#select-node) | Select the node you want to set up from the package |
+| ⏳ | [Configuration in progress](./use-setup-package.mdx#in-progress) | Wait while the wizard applies the configuration to this node. |
+| 🚀 | [Start the node](./use-setup-package.mdx#restart-server) | Click "Restart server".<br/>The node restarts and becomes operational. |
+| 📦 | Continue with<br/>["Use setup package"](./use-setup-package.mdx#repeat) | Repeat this process on each target machine to add the remaining nodes to the cluster. |
     
 </TabItem>
 

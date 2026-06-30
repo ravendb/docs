@@ -7,7 +7,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Use `GetIndexOperation` to retrieve an index definition from the database.
 
-* The operation will execute on the node defined by the [client configuration](../../../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
+* The operation will execute on the node defined by the [client configuration](../../../../configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
   However, the index definition returned is taken from the database record,  
   which is common to all the database-group nodes.  
   i.e., an index state change done only on a local node is not reflected.
@@ -56,7 +56,7 @@ deployment_mode = index.deployment_mode
 
 | Return value of `store.maintenance.send(GetIndexOperation)` | Description |
 |- | - |
-| `IndexDefinition` | An instance of class [IndexDefinition](../../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#indexdefinition) |
+| `IndexDefinition` | An instance of class [IndexDefinition](../put-indexes.mdx#indexdefinition) |
 
 
 

@@ -50,7 +50,7 @@ Rollup time series are created automatically according to rollup policies that c
   * Subsequently, the resulting rollup time series is further aggregated using the policy with the next shortest aggregation frame,  
     and so on.
 
-[Querying with group-by](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) 
+[Querying with group-by](../querying/aggregation-and-projections.mdx) 
 will transparently traverse over the rollups to retrieve the relevant results.  
 
 Let's look at an example of rollup data:  
@@ -118,7 +118,7 @@ store.maintenance.send(ConfigureTimeSeriesOperation(database_ts_config))
 
 * Retrieving entries from a rollup time series is similar to getting the raw time series data.
 
-* Learn more about using `time_series_for.get` in [Get time series entries](../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx).
+* Learn more about using `time_series_for.get` in [Get time series entries](../client-api/session/get/get-entries.mdx).
 
 <TabItem value="rollup_and_retention_1" label="rollup_and_retention_1">
 <CodeBlock language="python">

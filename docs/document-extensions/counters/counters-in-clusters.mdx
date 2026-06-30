@@ -112,17 +112,17 @@ As a result:
 * Multiple clients can modify the same Counter at the same time.  
 * Nodes do not need to coordinate these modifications with each other.
 * Concurrent value modifications do not cause conflicts.
-  For more details, see [Counters and conflicts](../../document-extensions/counters/overview.mdx#counters-and-conflicts).  
+  For more details, see [Counters and conflicts](./overview.mdx#counters-and-conflicts).  
 
 </Panel>
 
 <Panel heading="Concurrent&nbsp;`Delete`&nbsp;and&nbsp;`Increment`">
 
-A sequence of Counter actions is [cumulative](../../document-extensions/counters/overview.mdx#cumulative-counter-actions), 
-as long as the Counter is not [Deleted](../../document-extensions/counters/delete.mdx).  
+A sequence of Counter actions is [cumulative](./overview.mdx#cumulative-counter-actions), 
+as long as the Counter is not [Deleted](./delete.mdx).  
 When a _Delete_ is involved, the order of execution becomes significant.  
 
-If [Increment](../../document-extensions/counters/create-or-modify.mdx) and [Delete](../../document-extensions/counters/delete.mdx) are called concurrently,  
+If [Increment](./create-or-modify.mdx) and [Delete](./delete.mdx) are called concurrently,  
 their execution order is unpredictable, and the outcome depends on the system architecture:   
 whether it's a single-node system or a multi-node cluster.
 

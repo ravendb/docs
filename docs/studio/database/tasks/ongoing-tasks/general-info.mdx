@@ -19,8 +19,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * Ongoing tasks are **work tasks** defined for the database.
  
-* Each task is assigned a responsible node from the [Database Group nodes](../../../../studio/database/settings/manage-database-group.mdx) to handle the work.  
-    * If not specified by the user, the cluster decides which node will be responsible for the task. See [Members Duties](../../../../studio/database/settings/manage-database-group.mdx#database-group-topology---members-duties).  
+* Each task is assigned a responsible node from the [Database Group nodes](../../settings/manage-database-group.mdx) to handle the work.  
+    * If not specified by the user, the cluster decides which node will be responsible for the task. See [Members Duties](../../settings/manage-database-group.mdx#database-group-topology---members-duties).  
     * If a node is down, the cluster will reassign the work to another node.  
 
 * Once enabled, an **ongoing task** runs in the background and executes its defined 
@@ -69,13 +69,13 @@ The following task types are available:
 
 **Replication:**
 
-* **[External Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx)**  
+* **[External Replication](./external-replication-task.mdx)**  
     Create a live replica of your database in another RavenDB database in another cluster.  
     This replication is initiated by the source database.  
-* **[Replication Hub](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-hub-task.mdx)**  
+* **[Replication Hub](./hub-sink-replication/replication-hub-task.mdx)**  
     Replicate documents to and/or from one or more `Replication Sink` tasks in other RavenDB
     databases across different clusters.  
-* **[Replication Sink](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task.mdx)**  
+* **[Replication Sink](./hub-sink-replication/replication-sink-task.mdx)**  
     Connect to a central `Replication Hub` in another RavenDB cluster to receive documents,
     and optionally replicate back.  
     The replication can be *bidirectional* or limited to a *single direction*,
@@ -93,40 +93,40 @@ The following task types are available:
 
 **ETL (RavenDB =&gt; Target):**
 
-* **[RavenDB ETL](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx)**  
+* **[RavenDB ETL](./ravendb-etl-task.mdx)**  
     Write all or chosen database documents to another RavenDB database.  
     Data can be filtered and modified with transformation scripts.  
 * **[SQL ETL](../../../../server/ongoing-tasks/etl/sql.mdx)**  
     Write the database data to a relational database.  
     Data can be filtered and modified with transformation scripts.  
-* **[Snowflake ETL](../../../../studio/database/tasks/ongoing-tasks/snowflake-etl-task.mdx)**  
+* **[Snowflake ETL](./snowflake-etl-task.mdx)**  
     Write all or chosen database documents to a Snowflake database.  
     Data can be filtered and modified with transformation scripts.  
-* **[OLAP ETL](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx)**  
+* **[OLAP ETL](./olap-etl-task.mdx)**  
     Convert database data to the _Parquet_ file format for OLAP purposes.  
     Data can be filtered and modified with transformation scripts.  
-* **[Elasticsearch ETL](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx)**  
+* **[Elasticsearch ETL](./elasticsearch-etl-task.mdx)**  
     Write all or chosen database documents to an Elasticsearch destination.  
     Data can be filtered and modified with transformation scripts.  
-* **[Kafka ETL](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx)**  
+* **[Kafka ETL](./kafka-etl-task.mdx)**  
     Write all or chosen database documents to topics of a Kafka broker.  
     Data can be filtered and modified with transformation scripts.  
-* **[RabbitMQ ETL](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task.mdx)**  
+* **[RabbitMQ ETL](./rabbitmq-etl-task.mdx)**  
     Write all or chosen database documents to a RabbitMQ exchange.  
     Data can be filtered and modified with transformation scripts.  
-* **[Azure Queue Storage ETL](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl.mdx)**  
+* **[Azure Queue Storage ETL](./azure-queue-storage-etl.mdx)**  
     Write all or chosen database documents to Azure Queue Storage.  
     Data can be filtered and modified with transformation scripts.  
-* **[Amazon SQS ETL](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl.mdx)**  
+* **[Amazon SQS ETL](./amazon-sqs-etl.mdx)**  
     Write all or chosen database documents to Amazon SQS queues.  
     Data can be filtered and modified with transformation scripts.  
 
 **Sink (Source =&gt; RavenDB):**
 
-* **[Kafka Sink](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink.mdx)**  
+* **[Kafka Sink](./kafka-queue-sink.mdx)**  
     Consume and process incoming messages from Kafka topics.  
     Add scripts to Load, Put, or Delete documents in RavenDB based on the incoming messages.  
-* **[RabbitMQ Sink](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink.mdx)**  
+* **[RabbitMQ Sink](./rabbitmq-queue-sink.mdx)**  
     Consume and process incoming messages from RabbitMQ queues.  
     Add scripts to Load, Put, or Delete documents in RavenDB based on the incoming messages.  
 

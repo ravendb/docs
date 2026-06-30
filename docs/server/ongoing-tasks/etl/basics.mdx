@@ -67,15 +67,15 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Panel heading="Defining ETL Tasks"> 
 
 * The following ETL tasks can be defined:  
-  * [RavenDB ETL](../../../server/ongoing-tasks/etl/raven.mdx) - send data to another _RavenDB database_  
-  * [SQL ETL](../../../server/ongoing-tasks/etl/sql.mdx) - send data to an _SQL database_  
-  * [Snowflake ETL](../../../server/ongoing-tasks/etl/snowflake.mdx) - send data to a _Snowflake warehouse_  
-  * [OLAP ETL](../../../server/ongoing-tasks/etl/olap.mdx) - send data to an _OLAP destination_  
-  * [Elasticsearch ETL](../../../server/ongoing-tasks/etl/elasticsearch.mdx) - send data to an _Elasticsearch destination_  
-  * [Kafka ETL](../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx) - send data to a _Kafka message broker_  
-  * [RabbitMQ ETL](../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx) - send data to an _RabbitMQ exchange_  
-  * [Azure Queue Storage ETL](../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx) - send data to an _Azure Queue Storage message queue_  
-  * [Amazon SQS ETL](../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx) - send data to an _Amazon SQS message queue_  
+  * [RavenDB ETL](./raven.mdx) - send data to another _RavenDB database_  
+  * [SQL ETL](./sql.mdx) - send data to an _SQL database_  
+  * [Snowflake ETL](./snowflake.mdx) - send data to a _Snowflake warehouse_  
+  * [OLAP ETL](./olap.mdx) - send data to an _OLAP destination_  
+  * [Elasticsearch ETL](./elasticsearch.mdx) - send data to an _Elasticsearch destination_  
+  * [Kafka ETL](./queue-etl/kafka.mdx) - send data to a _Kafka message broker_  
+  * [RabbitMQ ETL](./queue-etl/rabbit-mq.mdx) - send data to an _RabbitMQ exchange_  
+  * [Azure Queue Storage ETL](./queue-etl/azure-queue.mdx) - send data to an _Azure Queue Storage message queue_  
+  * [Amazon SQS ETL](./queue-etl/amazon-sqs.mdx) - send data to an _Amazon SQS message queue_  
 
 * All ETL tasks can be defined from the Client API or from the [Studio](../../../studio/database/tasks/ongoing-tasks/general-info.mdx).
 
@@ -147,7 +147,7 @@ loadToEmployeesWithManager({
 ### Syntax
 
 The transformation script has access to all predefined JavaScript functions available in RavenDB's scripting engine.  
-See the [Predefined JavaScript functions](../../../server/kb/javascript-engine.mdx#predefined-javascript-functions) article for the complete reference.
+See the [Predefined JavaScript functions](../../kb/javascript-engine.mdx#predefined-javascript-functions) article for the complete reference.
 
 The script context exposes the following members for working with the current document:
 
@@ -167,7 +167,7 @@ These are not part of the general JavaScript engine and **apply to ETL scripts o
 | `loadAttachment(name)`                        | function | Loads an attachment of the current document.                                                                                                                                                                |
 | `hasAttachment(name)`                         | function | Returns `true` if an attachment with the given name exists on the current document.                                                                                                                         |
 | `getAttachments()`                            | function | Returns a collection of attachment details for the current document.<br/>Each item has: `Name`, `Hash`, `ContentType`, `Size`.                                                                   |
-| `<doc>.addAttachment([name,] attachmentRef)`  | function | Adds an attachment to a transformed document (`<doc>`) that will be sent to the target. <br/> For RavenDB ETL specifics, see this [section](../../../server/ongoing-tasks/etl/raven.mdx#attachments).       |
+| `<doc>.addAttachment([name,] attachmentRef)`  | function | Adds an attachment to a transformed document (`<doc>`) that will be sent to the target. <br/> For RavenDB ETL specifics, see this [section](./raven.mdx#attachments).       |
 
 </Admonition>
 
@@ -213,16 +213,16 @@ The `TargetName` must correspond to the appropriate target entity for the ETL ty
 Documents are extracted and transformed by the ETL process in a batch manner.  
 The number of documents processed depends on the following configuration limits:
 
-* [`ETL.ExtractAndTransformTimeoutInSec`](../../../server/configuration/etl-configuration.mdx#etlextractandtransformtimeoutinsec) (default: 30 sec)  
+* [`ETL.ExtractAndTransformTimeoutInSec`](../../configuration/etl-configuration.mdx#etlextractandtransformtimeoutinsec) (default: 30 sec)  
   Time-frame for the extraction and transformation stages (in seconds), after which the loading stage will start.
 
-* [`ETL.MaxNumberOfExtractedDocuments`](../../../server/configuration/etl-configuration.mdx#etlmaxnumberofextracteddocuments) (default: 8192)  
+* [`ETL.MaxNumberOfExtractedDocuments`](../../configuration/etl-configuration.mdx#etlmaxnumberofextracteddocuments) (default: 8192)  
   Maximum number of extracted documents in an ETL batch.
 
-* [`ETL.MaxNumberOfExtractedItems`](../../../server/configuration/etl-configuration.mdx#etlmaxnumberofextracteditems) (default: 8192)  
+* [`ETL.MaxNumberOfExtractedItems`](../../configuration/etl-configuration.mdx#etlmaxnumberofextracteditems) (default: 8192)  
   Maximum number of extracted items (documents, counters) in an ETL batch.
 
-* [`ETL.MaxBatchSizeInMb`](../../../server/configuration/etl-configuration.mdx#etlmaxbatchsizeinmb) (default: 64 MB)  
+* [`ETL.MaxBatchSizeInMb`](../../configuration/etl-configuration.mdx#etlmaxbatchsizeinmb) (default: 64 MB)  
   Maximum size of an ETL batch in MB.
 
 </Admonition>
@@ -233,7 +233,7 @@ The number of documents processed depends on the following configuration limits:
 
 * Loading the results to the target destination is the last stage.
 
-* In contrast to [Replication](../../../server/clustering/replication/replication-overview.mdx), 
+* In contrast to [Replication](../../clustering/replication/replication-overview.mdx), 
   ETL is a push-only process that _writes_ data to the destination whenever documents from the relevant collections are changed. **Existing entries on the target will always be overwritten**.
 
 * Updates are implemented by executing consecutive DELETEs and INSERTs.  
@@ -263,7 +263,7 @@ Please note that in such cases, your data encrypted at rest _won't_ be protected
 
 <Panel heading="Troubleshooting">
 
-ETL errors and warnings are [logged to files](../../../server/troubleshooting/logging.mdx) and displayed in the notification center panel.  
+ETL errors and warnings are [logged to files](../../troubleshooting/logging.mdx) and displayed in the notification center panel.  
 You will be notified if any of the following events happen:
 
 - Connection error to the target
@@ -276,7 +276,7 @@ You will be notified if any of the following events happen:
 If the ETL cannot proceed with the load stage (e.g. it can't connect to the destination) then it enters the fallback mode.  
 The fallback mode means suspending the process and retrying it periodically.  
 The fallback time starts from 5 seconds and it's doubled on every consecutive error according to the time passed since the last error,
-but it never crosses [`ETL.MaxFallbackTimeInSec`](../../../server/configuration/etl-configuration.mdx#etlmaxfallbacktimeinsec) configuration (default: 900 sec).  
+but it never crosses [`ETL.MaxFallbackTimeInSec`](../../configuration/etl-configuration.mdx#etlmaxfallbacktimeinsec) configuration (default: 900 sec).  
 
 Once the process is in the fallback mode, then the _Reconnect_ state is shown in the Studio.
     

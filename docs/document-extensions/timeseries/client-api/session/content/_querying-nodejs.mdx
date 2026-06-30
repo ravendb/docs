@@ -26,7 +26,7 @@ import CodeBlock from '@theme/CodeBlock';
 </Admonition>
 
 <Admonition type="info" title="">
-Learn more about time series queries in the [section dedicated to this subject](../../../../../document-extensions/timeseries/querying/overview-and-syntax.mdx).  
+Learn more about time series queries in the [section dedicated to this subject](../../../querying/overview-and-syntax.mdx).  
 </Admonition>
 ## Query
 
@@ -128,8 +128,8 @@ select timeseries(
 </Tabs>
 
 * In this example, we retrieve a company's stock trade data.  
-  Note the usage of named values, so we may address trade Volume [by name](../../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx).  
-  This example is based on the sample entries that were entered in [this example](../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values).  
+  Note the usage of named values, so we may address trade Volume [by name](../../named-time-series-values.mdx).  
+  This example is based on the sample entries that were entered in [this example](../append.mdx#append-entries-with-multiple-values).  
 <Tabs groupId='languageSyntax'>
 <TabItem value="Native" label="Native">
 <CodeBlock language="js">
@@ -289,7 +289,7 @@ The time series query builder has one method:
 | Return value                    | Description                                                                                                               |
 |---------------------------------|---------------------------------------------------------------------------------------------------------------------------|
 | `TimeSeriesRawResult[]`         | The returned value for non-aggregated data                                                                                |
-| `TimeSeriesAggregationResult[]` | The returned value for [aggregated data](../../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) |
+| `TimeSeriesAggregationResult[]` | The returned value for [aggregated data](../../../querying/aggregation-and-projections.mdx) |
 
 <TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="js">

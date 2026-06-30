@@ -8,13 +8,13 @@ import Panel from '@site/src/components/Panel';
 <Admonition type="note" title="">        
     
 * A server-wide custom sorter can be used to sort query results in all databases across your cluster.  
-  To learn how to define and deploy a database-level custom sorter, see [Database-level custom sorters](../../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx).    
+  To learn how to define and deploy a database-level custom sorter, see [Database-level custom sorters](../database-level-custom-sorters.mdx).    
     
 * If a database-level custom sorter and a server-wide custom sorter have the **same name**,  
   the database-level custom sorter will be used for the query.
     
 * Custom sorters are available only when using the **Lucene** indexing engine; they are not available with [Corax](../../../../indexes/search-engine/corax.mdx).  
-  To learn how to write a custom sorter, see: [How to write a custom sorter](../../../../querying/sorting-query-results/custom-sorters/overview.mdx#how-to-write-a-custom-sorter). 
+  To learn how to write a custom sorter, see: [How to write a custom sorter](../overview.mdx#how-to-write-a-custom-sorter). 
     
 * In this article:
   * [Add server-wide custom sorter - via the Client API](#add-server-wide-custom-sorter-via-the-client-api)
@@ -108,7 +108,7 @@ order by custom(UnitsInStock, "MyServerWideCustomSorter")
 3. Or, you can enter the code manually in this editor.    
    The sorter code must be compilable and include all necessary `using` statements.  
    The sorter's class should inherit from [Lucene.Net.Search.FieldComparator](https://lucenenet.apache.org/docs/3.0.3/df/d91/class_lucene_1_1_net_1_1_search_1_1_field_comparator.html).  
-   Learn more in [How to write a custom sorter](../../../../querying/sorting-query-results/custom-sorters/overview.mdx#how-to-write-a-custom-sorter).   
+   Learn more in [How to write a custom sorter](../overview.mdx#how-to-write-a-custom-sorter).   
 4. Save your server-wide sorter or discard.    
     
 </Panel>
@@ -134,7 +134,7 @@ await store.maintenance.server.send(deleteSorterOp);
 <Panel heading="Test custom sorter">
     
 To test a server-wide sorter, go to the Custom Sorters view in a specific database and use the test option from there.  
-See [Test custom sorter](../../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx#test-custom-sorter).    
+See [Test custom sorter](../database-level-custom-sorters.mdx#test-custom-sorter).    
     
 </Panel>
 

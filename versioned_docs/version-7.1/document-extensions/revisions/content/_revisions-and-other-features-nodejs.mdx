@@ -69,7 +69,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 **Reverted data**  
 
-* When a document is [reverted](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx) to a revision that has counters,  
+* When a document is [reverted](../revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx) to a revision that has counters,  
   the counters from the revision are restored to functionality along with their values.  
 
 </Admonition>
@@ -78,7 +78,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 **Extract counters data from revisions**  
 
-* Use [getMetadataFor](../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-metadata) to get the revisions metadata for a specified document,  
+* Use [getMetadataFor](../client-api/session/loading.mdx#get-revisions-metadata) to get the revisions metadata for a specified document,  
   and then extract the counters' data.  
 
 <TabItem value="extract_counters" label="extract_counters">
@@ -109,7 +109,7 @@ const countersDataInRevisions = revisionsMetadata
     * A time series is **deleted** from the document.  
       (A time series is deleted from a document when all its entries are deleted)
 
-* A revision will Not be created upon modifying the values of an existing [time series](../../../document-extensions/timeseries/overview.mdx).
+* A revision will Not be created upon modifying the values of an existing [time series](../../timeseries/overview.mdx).
 
 </Admonition>
 
@@ -126,7 +126,7 @@ const countersDataInRevisions = revisionsMetadata
   * The number of entries in each time series
   * Dates of the first and last entry in each time series
   
-* Read more about Revisions and Time Series [here](../../../document-extensions/timeseries/time-series-and-other-features.mdx#revisions).
+* Read more about Revisions and Time Series [here](../../timeseries/time-series-and-other-features.mdx#revisions).
 
 * Sample revision metadata:  
 <TabItem value="json" label="json">
@@ -159,7 +159,7 @@ const countersDataInRevisions = revisionsMetadata
 
 **Reverted Data**
 
-When a document is [reverted](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx) to a revision that has a time series:  
+When a document is [reverted](../revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx) to a revision that has a time series:  
 
 * If the current document **contains** a time series name as in the revision:
     * The reverted document will keep the time series entries & values as it was in the current document.
@@ -181,7 +181,7 @@ When a document is [reverted](../../../document-extensions/revisions/revert-docu
 **Revisions Creation**
 
 * A document revision will be created when:  
-    * A new [attachment](../../../document-extensions/attachments/what-are-attachments.mdx) is **added** to the document.  
+    * A new [attachment](../../attachments/what-are-attachments.mdx) is **added** to the document.  
     * An attachment is **deleted** from the document.   
 
 </Admonition>
@@ -231,7 +231,7 @@ When a document is [reverted](../../../document-extensions/revisions/revert-docu
 
 **Reverted Data**
 
-* When a document is [reverted](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx) to a revision that has attachments,  
+* When a document is [reverted](../revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx) to a revision that has attachments,  
   the attachments are restored to their state when the revision was created.
 
 </Admonition>

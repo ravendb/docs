@@ -23,7 +23,7 @@ import CodeBlock from '@theme/CodeBlock';
     We recommend that you -  
 
   * **Limit** the number of records that an exploration query filters.  
-  * Use [where](../../../indexes/querying/filtering.mdx) in recurring queries, 
+  * Use [where](../filtering.mdx) in recurring queries, 
     so the query would [use an index](#limit-the-query-and-prefer--for-recurring-queries).  
 
 </Admonition>
@@ -49,7 +49,7 @@ Exploration queries can be applied using -
 
 The added filtering is parsed and executed by RavenDB's Javascript engine.  
 
-The provided filtering operations resemble those implemented by [where](../../../indexes/querying/filtering.mdx) 
+The provided filtering operations resemble those implemented by [where](../filtering.mdx) 
 and can be further enhanced by Javascript functions of your own. 
 Read [here](#with-user-defined-javascript-functions-) about creating and using your own Javascript function in your filters.  
 
@@ -140,7 +140,7 @@ filter_limit 100
 </CodeBlock>
 </TabItem>
 
-* Use [where](../../../indexes/querying/filtering.mdx) rather than `filter` for recurring filtering.  
+* Use [where](../filtering.mdx) rather than `filter` for recurring filtering.  
   `where` will use an index, creating it if necessary, to accelerate the filtering in subsequent queries.
  
 </Admonition>

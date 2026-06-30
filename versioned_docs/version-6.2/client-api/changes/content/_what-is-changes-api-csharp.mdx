@@ -91,44 +91,44 @@ or `ISingleNodeDatabaseChanges` interfaces.
 To receive notifications regarding server-side events, subscribe using one of the following methods.  
 
 * **For Document Changes:**  
-   - [ForAllDocuments](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)  
+   - [ForAllDocuments](../how-to-subscribe-to-document-changes.mdx#foralldocuments)  
      Track changes for all document  
-   - [ForDocument](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)  
+   - [ForDocument](../how-to-subscribe-to-document-changes.mdx#fordocument)  
      Track changes for a given document (by Doc ID)  
-   - [ForDocumentsInCollection](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)  
+   - [ForDocumentsInCollection](../how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)  
      Track changes for all documents in a given collection  
-   - [ForDocumentsStartingWith](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)  
+   - [ForDocumentsStartingWith](../how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)  
      Track changes for documents whose ID contains a given prefix  
 
 * **For Index Changes:**  
-   - [ForAllIndexes](../../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forallindexes)  
+   - [ForAllIndexes](../how-to-subscribe-to-index-changes.mdx#forallindexes)  
      Track changes for all indexes  
-   - [ForIndex](../../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forindex)  
+   - [ForIndex](../how-to-subscribe-to-index-changes.mdx#forindex)  
      Track changes for a given index (by Index Name)   
 
 * **For Operation Changes:**  
   Operation changes can be tracked only [on a specific node](#accessing-changes-api).  
-   - [ForAllOperations](../../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#foralloperations)  
+   - [ForAllOperations](../how-to-subscribe-to-operation-changes.mdx#foralloperations)  
      Track changes for all operation  
-   - [ForOperationId](../../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#foroperationid)  
+   - [ForOperationId](../how-to-subscribe-to-operation-changes.mdx#foroperationid)  
      Track changes for a given operation (by Operation ID)  
 
 * **For Counter Changes:**  
-   - [ForAllCounters](../../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#forallcounters)  
+   - [ForAllCounters](../how-to-subscribe-to-counter-changes.mdx#forallcounters)  
      Track changes for all counters  
-   - [ForCounter](../../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#forcounter)  
+   - [ForCounter](../how-to-subscribe-to-counter-changes.mdx#forcounter)  
      Track changes for a given counter (by Counter Name)  
-   - [ForCounterOfDocument](../../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#forcounterofdocument)  
+   - [ForCounterOfDocument](../how-to-subscribe-to-counter-changes.mdx#forcounterofdocument)  
      Track changes for a specific counter of a chosen document (by Doc ID and Counter Name)  
-   - [ForCountersOfDocument](../../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#forcountersofdocument)  
+   - [ForCountersOfDocument](../how-to-subscribe-to-counter-changes.mdx#forcountersofdocument)  
      Track changes for all counters of a chosen document (by Doc ID)  
 
 * **For Time Series Changes:**  
-   - [ForAllTimeSeries](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#foralltimeseries)  
+   - [ForAllTimeSeries](../how-to-subscribe-to-time-series-changes.mdx#foralltimeseries)  
      Track changes for all time series  
-   - [ForTimeSeries](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#fortimeseries)  
+   - [ForTimeSeries](../how-to-subscribe-to-time-series-changes.mdx#fortimeseries)  
      Track changes for all time series with a given name  
-   - [ForTimeSeriesOfDocument](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#fortimeseriesofdocument)  
+   - [ForTimeSeriesOfDocument](../how-to-subscribe-to-time-series-changes.mdx#fortimeseriesofdocument)  
      Track changes for -  
       * a **specific time series** of a given document (by Doc ID and Time Series Name)  
       * **any time series** of a given document (by Doc ID)  
@@ -179,7 +179,7 @@ To get more method overloads, especially ones supporting **delegates**, please a
 
 ## Changes API -vs- Data Subscriptions
 
-**Changes API** and [Data Subscription](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
+**Changes API** and [Data Subscription](../../data-subscriptions/what-are-data-subscriptions.mdx) 
 are services that a RavenDB Server provides subscribing clients.  
 Both services respond to events that take place on the server, by sending updates 
 to their subscribers.  
@@ -189,7 +189,7 @@ to their subscribers.
      took place on the server, without receiving the actual data entities 
      affected by these events.  
      For the modification of a document, for example, the client will receive 
-     a [DocumentChange](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange) 
+     a [DocumentChange](../how-to-subscribe-to-document-changes.mdx#documentchange) 
      object with details like the document's ID and collection name.  
 
    * The server does **not** keep track of sent notifications or 
@@ -205,6 +205,6 @@ to their subscribers.
 
 |                              | Data Subscriptions                                                                                                                                                                                              | Changes API                                                                                                                                                                                                                          |
 |------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| What can the server Track    | [Documents](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#documents-processing) <br/> [Revisions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx) <br/> [Counters](../../../client-api/data-subscriptions/creation/examples.mdx#including-counters) <br/> Time Series | [Documents](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx) <br/> [Indexes](../../../client-api/changes/how-to-subscribe-to-index-changes.mdx) <br/> [Operations](../../../client-api/changes/how-to-subscribe-to-operation-changes.mdx) <br/> [Counters](../../../client-api/changes/how-to-subscribe-to-counter-changes.mdx) <br/> [Time Series](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx) |
+| What can the server Track    | [Documents](../../data-subscriptions/what-are-data-subscriptions.mdx#documents-processing) <br/> [Revisions](../../data-subscriptions/advanced-topics/subscription-with-revisioning.mdx) <br/> [Counters](../../data-subscriptions/creation/examples.mdx#including-counters) <br/> Time Series | [Documents](../how-to-subscribe-to-document-changes.mdx) <br/> [Indexes](../how-to-subscribe-to-index-changes.mdx) <br/> [Operations](../how-to-subscribe-to-operation-changes.mdx) <br/> [Counters](../how-to-subscribe-to-counter-changes.mdx) <br/> [Time Series](../how-to-subscribe-to-time-series-changes.mdx) |
 | What can the server Deliver  | Documents <br/> Revisions <br/> Counters <br/> Time Series                                                                                                                                                       | Notifications                                                                                                                                                                                                                        |
 | Management                   | Managed by the Server                                                                                                                                                                                           | Managed by the Client                                                                                                                                                                                                                |

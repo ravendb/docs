@@ -74,7 +74,7 @@ and modifications no matter how large the overall database gets.
   its own, based on the user-defined task.  
   This creation of multiple ETL tasks, one per shard, is 
   automatic and requires no additional actions from the user.  
-* Each shard appoints [one of its nodes](../sharding/overview.mdx#shard-replication) 
+* Each shard appoints [one of its nodes](./overview.mdx#shard-replication) 
   responsible for the execution of the shard's ETL task.  
 * The shards' ETL tasks behave just like an ETL task of 
   a non-sharded database would, **E**xtractng relevant 
@@ -92,13 +92,13 @@ Queries used by an ETL task's transform script on a sharded
 database are basically no different than queries executed over 
 a non-sharded database.  
 However, as some querying features are 
-[not yet implemented](../sharding/querying.mdx#unsupported-querying-features) 
+[not yet implemented](./querying.mdx#unsupported-querying-features) 
 on a sharded database (e.g. loading a document that resides 
 on a different shard will fail) and others behave a little 
 differently than their non-sharded equivalents (e.g. 
-[filer](../sharding/querying.mdx#filtering-results-in-a-sharded-database)), 
-it is recommended to read the pages dedicated to [indexing](../sharding/indexing.mdx) 
-and [querying](../sharding/querying.mdx) on a sharded database.  
+[filer](./querying.mdx#filtering-results-in-a-sharded-database)), 
+it is recommended to read the pages dedicated to [indexing](./indexing.mdx) 
+and [querying](./querying.mdx) on a sharded database.  
 
 
 

@@ -30,7 +30,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="info" title="">
 This article focuses on the creation of an Amazon SQS ETL task using the Client API.  
 To define an Amazon SQS ETL task from Studio, see [Studio: Amazon SQS ETL Task](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl.mdx).  
-For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx).
+For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](./overview.mdx).
 </Admonition>
 
 * In this page:  
@@ -411,7 +411,7 @@ public class EtlQueue
 
 ## The transformation script
 
-The [basic characteristics](../../../../server/ongoing-tasks/etl/basics.mdx) of an Amazon SQS ETL script 
+The [basic characteristics](../basics.mdx) of an Amazon SQS ETL script 
 are similar to those of other ETL types.  
 The script defines what data to **extract** from the source document, how to **transform** this data,  
 and which SQS Queue to **load** the data to.
@@ -459,7 +459,7 @@ Source: '/promotion-campaigns/summer-sale'
    |----------------|--------|----------------------------------------------------------------------------------------------------------------------------------|
    | **QueueName**  | string | The name of the SQS Queue                                                                                                        |
    | **obj**        | object | The object to transfer                                                                                                           |
-   | **attributes** | object | An object with optional & required [CloudEvents attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#cloudevents) |
+   | **attributes** | object | An object with optional & required [CloudEvents attributes](./overview.mdx#cloudevents) |
 
 For example, the following two calls, which load data to "OrdersQueue", are equivalent:
 

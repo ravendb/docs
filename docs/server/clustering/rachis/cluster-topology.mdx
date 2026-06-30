@@ -17,7 +17,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * The cluster topology is defined by the type and state of each node in the cluster and the relation between them.  
 
-* Clusters are typically composed of any odd number of nodes equal or greater than 3, see [Clusters Best Practice](../../../server/clustering/cluster-best-practice-and-configuration.mdx).  
+* Clusters are typically composed of any odd number of nodes equal or greater than 3, see [Clusters Best Practice](../cluster-best-practice-and-configuration.mdx).  
 
 * In this page:
     * [Fetching the topology](#fetching-the-topology)
@@ -39,7 +39,7 @@ by sending the following REST API call:
 
 ## Modifying the topology
 
-With [Cluster Admin](../../../server/security/authorization/security-clearance-and-permissions.mdx#cluster-admin) privileges, 
+With [Cluster Admin](../../security/authorization/security-clearance-and-permissions.mdx#cluster-admin) privileges, 
 the client can modify the cluster through the [Studio](../../../studio/cluster/cluster-view.mdx#cluster-view-operations),  
 or by using the following REST API calls:  
 
@@ -56,7 +56,7 @@ Optional parameters (for the Add Node endpoint):
 | watcher          | `bool`       | Add the node as a [Watcher](#watcher).<br/>Default: `false` |
 | maxUtilizedCores | `uint`       | Maximum number of cores that can be assigned to this node.<br/>Default: number of processors.                 |
 
-See the [Cluster API page](../../../server/clustering/cluster-api.mdx) for usage examples.
+See the [Cluster API page](../cluster-api.mdx) for usage examples.
 
 ## Nodes states and types
 
@@ -116,7 +116,7 @@ The Rachis state defines the **current role** of the node in the cluster.
 
 * For example, the decision to add a database to a node will be either accepted by the entire cluster (eventually) or fail to register altogether.  
 
-* [Raft Commands](../../../server/clustering/rachis/consensus-operations.mdx#raft-commands-implementation-details) can't be accepted while there is no Leader or if the Leader is down.  
+* [Raft Commands](./consensus-operations.mdx#raft-commands-implementation-details) can't be accepted while there is no Leader or if the Leader is down.  
 
 </Admonition>
 
@@ -145,6 +145,6 @@ Node types can be altered on the fly by using the following REST API calls:
 | Demote Member to be a Watcher  | `POST`  | /admin/cluster/demote  | ClusterAdmin |
 | Force Elections                | `POST`  | /admin/cluster/reelect | Operator     |
 
-See the [Cluster API page](../../../server/clustering/cluster-api.mdx) for usage examples.
+See the [Cluster API page](../cluster-api.mdx) for usage examples.
 
 

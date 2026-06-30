@@ -17,7 +17,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* Database backups are typically scheduled using [periodic backup tasks](../../backup/create/periodic-tasks/database-backup.mdx) and created automatically according to the defined schedule.  
+* Database backups are typically scheduled using [periodic backup tasks](./periodic-tasks/database-backup.mdx) and created automatically according to the defined schedule.  
 However, you can also back up any database on demand, whenever needed.  
 
 - You can define a **one-time backup configuration** and run it to create a backup immediately.
@@ -125,9 +125,9 @@ Operation<StartBackupOperationResult> op =
 
 Set backup encryption using the backup configuration `BackupEncryptionSettings` property.  
 
-* [Snapshots](../../backup/overview.mdx#snapshot-image-encryption) are exact images of the database, and as such are automatically encrypted when the database is encrypted (using the same encryption key as the database) or unencrypted when the database is not encrypted.  
+* [Snapshots](../overview.mdx#snapshot-image-encryption) are exact images of the database, and as such are automatically encrypted when the database is encrypted (using the same encryption key as the database) or unencrypted when the database is not encrypted.  
 
-* [Logical backups](../../backup/overview.mdx#logical-backup-encryption) can be encrypted or not, regardless of the database encryption.  
+* [Logical backups](../overview.mdx#logical-backup-encryption) can be encrypted or not, regardless of the database encryption.  
    - Use `BackupEncryptionSettings.EncryptionMode` to select if and how backups should be encrypted.  
    Available options are:  
       - `EncryptionMode.None` - Do not encrypt backups
@@ -371,7 +371,7 @@ class LocalSettings : BackupSettings
 <br />
 | Property | Type | Description |
 |----------|------|-----------------------------------------------------------------------------|
-| **FolderPath** | `string` | Path to a local folder.<br />When set, backups are kept in this path and will [not be deleted](../../backup/overview.mdx#upload-mode). |
+| **FolderPath** | `string` | Path to a local folder.<br />When set, backups are kept in this path and will [not be deleted](../overview.mdx#upload-mode). |
 | **ShardNumber** | `int?` | An optional shard number, so the backup can be kept in the local path of a specific shard when a [sharded database](../../sharding/backup-and-restore/backup.mdx) is used. |
 
 </TabItem>
@@ -514,8 +514,8 @@ public string RemoteFolderName
 
 Each periodic backup task, including server-wide derived tasks, can be triggered to run a backup operation immediately, outside of its schedule.  
 
-[Triggering a regular backup task to run a backup operation immediately](../../backup/create/periodic-tasks/database-backup.mdx#triggering-an-immediate-backup-operation)  
-[Triggering a server-wide derived task to run a backup operation immediately](../../backup/create/periodic-tasks/server-wide-backup.mdx#triggering-an-immediate-backup-operation)  
+[Triggering a regular backup task to run a backup operation immediately](./periodic-tasks/database-backup.mdx#triggering-an-immediate-backup-operation)  
+[Triggering a server-wide derived task to run a backup operation immediately](./periodic-tasks/server-wide-backup.mdx#triggering-an-immediate-backup-operation)  
 
 </ContentFrame>
 
@@ -561,8 +561,8 @@ To back up a database immediately:
 
 2. **Backup type**  
    Select the type of backup to create:
-    - **Backup** - create a [logical backup](../../backup/overview.mdx#logical-backup).  
-    - **Snapshot** - create a [snapshot image](../../backup/overview.mdx#snapshot-image).  
+    - **Backup** - create a [logical backup](../overview.mdx#logical-backup).  
+    - **Snapshot** - create a [snapshot image](../overview.mdx#snapshot-image).  
 
       When **snapshot** is selected, a few additional options are available:  
       - **Compression algorithm**  
@@ -686,8 +686,8 @@ Click **Backup Now** to back up the database by your settings.
 
 Each periodic backup task, including server-wide derived tasks, can be triggered to run a backup operation immediately, outside of its schedule.  
 
-[Triggering a regular backup task to run a backup operation immediately](../../backup/create/periodic-tasks/database-backup.mdx#running-a-backup-operation-immediately)  
-[Triggering a server-wide derived task to run a backup operation immediately](../../backup/create/periodic-tasks/server-wide-backup.mdx#running-a-backup-operation-immediately)  
+[Triggering a regular backup task to run a backup operation immediately](./periodic-tasks/database-backup.mdx#running-a-backup-operation-immediately)  
+[Triggering a server-wide derived task to run a backup operation immediately](./periodic-tasks/server-wide-backup.mdx#running-a-backup-operation-immediately)  
 
 </ContentFrame>
 

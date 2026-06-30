@@ -20,7 +20,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   stores and streams climbs to the big-data zone.  
   
 * RavenDB can collaborate with message brokers like Kafka both as a **producer**, 
-  by running [ETL tasks](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx)), 
+  by running [ETL tasks](./kafka-etl-task.mdx)), 
   and as a **consumer**, using a sink task to consume enqueued messages.  
 
 * To use RavenDB as a consumer, define an ongoing **Queue Sink Task**. Sink tasks 
@@ -76,10 +76,10 @@ To open the ongoing tasks view:
    Disabled - No documents are read or stored, and the task's script is inactive.  
 
 4. **Responsible Node** (Optional)  
-  * Select a node from the [Database Group](../../../../studio/database/settings/manage-database-group.mdx) 
+  * Select a node from the [Database Group](../../settings/manage-database-group.mdx) 
     to be responsible for this task.  
   * If no node is selected, the cluster will assign a responsible node 
-    (see [Members Duties](../../../../studio/database/settings/manage-database-group.mdx#database-group-topology---members-duties)).  
+    (see [Members Duties](../../settings/manage-database-group.mdx#database-group-topology---members-duties)).  
 
 5. **Create a new Kafka connection String**  
    The connection string defines the source Kafka brokers URLs.  
@@ -144,7 +144,7 @@ To open the ongoing tasks view:
 
 Sink statistics are added to RavenDB's ongoing tasks stats view, where their 
 performance can be examined from various aspects. To watch these statistics, 
-enter Studio's [ongoing tasks stats](../../../../studio/database/stats/ongoing-tasks-stats/overview.mdx) 
+enter Studio's [ongoing tasks stats](../../stats/ongoing-tasks-stats/overview.mdx) 
 view.  
 
 ![Queue Sink Stats](./assets/kafka-stats.png)

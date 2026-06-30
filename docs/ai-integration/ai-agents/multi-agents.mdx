@@ -356,7 +356,7 @@ What a hierarchy does change is **how data flows**. A parameter passed to the ro
   Use `AiAgentParameterPolicy.ForbidModelGeneration` on parameters whose values must come from a trusted source - for example, a user identifier that scopes queries to the caller's own data, a session token, or an account number.  
   Without this policy, the parent's LLM could pick a plausible-looking value belonging to a different caller, and the sub-agent would run its scoped queries against that caller's data.  
 
-General AI agent concerns - unauthorized database access, data compromise in transit, audit logging, prompt injection - are covered in [Security concerns](../../ai-integration/ai-agents/security-concerns.mdx) and apply to multi-agent setups unchanged.  
+General AI agent concerns - unauthorized database access, data compromise in transit, audit logging, prompt injection - are covered in [Security concerns](./security-concerns.mdx) and apply to multi-agent setups unchanged.  
 
 </Panel>
 
@@ -505,8 +505,8 @@ public class AssistantReply
 
 #### Related:
 
-[Create and configure an agent using the client API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx)  
-[Create and configure an agent using Studio](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx)  
-[Security concerns](../../ai-integration/ai-agents/security-concerns.mdx)  
+[Create and configure an agent using the client API](./creating-ai-agents/creating-ai-agents_api.mdx)  
+[Create and configure an agent using Studio](./creating-ai-agents/creating-ai-agents_studio.mdx)  
+[Security concerns](./security-concerns.mdx)  
 
 </Panel>

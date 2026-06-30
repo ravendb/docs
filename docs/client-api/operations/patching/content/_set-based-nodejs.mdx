@@ -7,7 +7,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Set-based patch operations allow you to apply changes to a set of documents that match specific criteria instead of separately targeting each document.
 
-* To perform patch operations on a single document see [Single Document Patch Operations](../../../../client-api/operations/patching/single-document.mdx).  
+* To perform patch operations on a single document see [Single Document Patch Operations](../single-document.mdx).  
   Set-based patching can also be done from the [Studio](../../../../studio/database/documents/patch-view.mdx).
 
 * In this page: 
@@ -88,7 +88,7 @@ update  \{
 * __Manage lengthy patch operations__:  
   The set-based patch operation (`PatchByQueryOperation`) runs in the server background may take a long time to complete.  
   Executing the operation via the `Send` method return an object that can be __awaited for completion__ or __aborted__ (killed). 
-  Learn more about this and see dedicated examples in [Manage length operations](../../../../client-api/operations/what-are-operations.mdx#manage-lengthy-operations).
+  Learn more about this and see dedicated examples in [Manage length operations](../../what-are-operations.mdx#manage-lengthy-operations).
 
 </Admonition>
 

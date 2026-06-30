@@ -11,10 +11,10 @@ import CodeBlock from '@theme/CodeBlock';
 * This is particularly efficient for large documents or when only a small portion of the document needs to be changed, 
   reducing the amount of data transferred over the network.
 
-* The patching operation is executed on the server-side within a [Single write transaction](../../../../client-api/faq/transaction-support.mdx).
+* The patching operation is executed on the server-side within a [Single write transaction](../../../faq/transaction-support.mdx).
 
 * This article covers patch operations on single documents from the Client API.  
-  To patch multiple documents that match certain criteria see [Set based patching](../../../../client-api/operations/patching/set-based.mdx).  
+  To patch multiple documents that match certain criteria see [Set based patching](../set-based.mdx).  
   Patching can also be done from the [Studio](../../../../studio/database/documents/patch-view.mdx).  
 
 * In this page:  
@@ -62,8 +62,8 @@ Patching can be performed using either of the following interfaces (detailed syn
 
 * This interface allows performing most common patch operations.
 
-* Multiple patch methods can be defined on the [session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) 
-  and are sent to the server for execution in a single batch (along with any other modified documents) only when calling [SaveChanges](../../../../client-api/session/saving-changes.mdx).
+* Multiple patch methods can be defined on the [session](../../../session/what-is-a-session-and-how-does-it-work.mdx) 
+  and are sent to the server for execution in a single batch (along with any other modified documents) only when calling [SaveChanges](../../../session/saving-changes.mdx).
 
 * This API includes the following patching methods (see examples [below](#examples)):
   * `patch`
@@ -92,7 +92,7 @@ Patching can be performed using either of the following interfaces (detailed syn
 
 #### Operations API
 
-* [Operations](../../../../client-api/operations/what-are-operations.mdx) allow performing ad-hoc requests directly on the document store **without** creating a session.
+* [Operations](../../what-are-operations.mdx) allow performing ad-hoc requests directly on the document store **without** creating a session.
 
 * Similar to the above _defer_ usage, define the patch request yourself with a script and optional variables.  
 
@@ -1520,7 +1520,7 @@ patchArray(entity, pathToArray, arrayAdder);
 </TabItem>
 ### Operations API syntax
 
-* Learn more about using operations in this [Operations overview](../../../../client-api/operations/what-are-operations.mdx).
+* Learn more about using operations in this [Operations overview](../../what-are-operations.mdx).
 
 <TabItem value="operations_syntax" label="operations_syntax">
 <CodeBlock language="js">

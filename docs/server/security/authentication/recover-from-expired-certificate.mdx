@@ -85,7 +85,7 @@ authority, or one issued through Let's Encrypt.
 
 The replacement must meet the same requirements as any RavenDB server certificate: a `.pfx`
 file that contains the private key, has not expired, and carries the required `Key Usage`
-and `Enhanced Key Usage` fields. See [certificate requirements](../../../server/security/authentication/certificate-configuration.mdx#certificate-requirements)
+and `Enhanced Key Usage` fields. See [certificate requirements](./certificate-configuration.mdx#certificate-requirements)
 for the full list.
 
 </ContentFrame>
@@ -117,7 +117,7 @@ In a cluster, the same certificate is installed on every node, so an expired cer
 must be replaced on each node, using either method above.
 
 Replacing the certificate file does not depend on the cluster, so it works even while the
-cluster has no leader. The cluster elects a leader again once a [majority of its nodes](../../../server/clustering/rachis/cluster-topology.mdx#leader)
+cluster has no leader. The cluster elects a leader again once a [majority of its nodes](../../clustering/rachis/cluster-topology.mdx#leader)
 have loaded a valid certificate.
 
 If Studio still cannot be reached with an administrator certificate, or the nodes still
@@ -125,7 +125,7 @@ don't trust each other after the change, register a trusted certificate on each 
 locally using `rvn admin-channel` (see [emergency access for a secure cluster](../../../users-issues/emergency-access.mdx)
 for the procedure), which connects to the running server without TLS.
 
-Once the cluster is reachable again, see [certificate renewal and rotation](../../../server/security/authentication/certificate-renewal-and-rotation.mdx) to learn how to replace certificates across the cluster using Studio.
+Once the cluster is reachable again, see [certificate renewal and rotation](./certificate-renewal-and-rotation.mdx) to learn how to replace certificates across the cluster using Studio.
 
 </Panel>
 
@@ -137,7 +137,7 @@ RavenDB provides warnings in advance, in the following ways:
 
 * Notifications are raised in Studio's Notification Center as the expiration date nears,
   first as a warning and in the final days as an error.  
-* RavenDB also publishes the certificate's expiration over [SNMP](../../../server/administration/snmp/snmp-overview.mdx),
+* RavenDB also publishes the certificate's expiration over [SNMP](../../administration/snmp/snmp-overview.mdx),
   which an external monitoring tool can poll.  
   The certificate is marked as expiring once its remaining validity falls below the number of
   days set by [Security.Certificate.ExpiringThresholdInDays](../../configuration/security-configuration.mdx#securitycertificateexpiringthresholdindays)
@@ -147,10 +147,10 @@ RavenDB provides warnings in advance, in the following ways:
 
 If you install the server using the Setup Wizard and Let's Encrypt, RavenDB renews the
 certificate automatically.  
-See [automatic Let's Encrypt renewals](../../../server/security/authentication/lets-encrypt-certificates.mdx).
+See [automatic Let's Encrypt renewals](./lets-encrypt-certificates.mdx).
 
 If you provide your own certificate, renewing it before it expires is your responsibility.  
-See [certificate renewal and rotation](../../../server/security/authentication/certificate-renewal-and-rotation.mdx).
+See [certificate renewal and rotation](./certificate-renewal-and-rotation.mdx).
 
 </Admonition>
 

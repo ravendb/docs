@@ -18,7 +18,7 @@ Please also take a look at the automated [Setup Wizard](../../../start/installat
 authentication in a much easier and faster way with automatic certificate renewals.  
 
  * The Setup Wizard can process **certificates that you provide**  
- * Or the Wizard can give you a free, highly secure **certificate via [Let's Encrypt](../../../server/security/authentication/lets-encrypt-certificates.mdx)**.  
+ * Or the Wizard can give you a free, highly secure **certificate via [Let's Encrypt](./lets-encrypt-certificates.mdx)**.  
  * We've developed default **automatic renewals** of certificates when setting up with the Setup Wizard **together** with Let's Encrypt.  
 
  If you choose manual setup and/or to provide your own certificate, **you are responsible for its periodic renewal**.  
@@ -36,14 +36,14 @@ authentication in a much easier and faster way with automatic certificate renewa
 ## Prerequisites
 
 To enable authentication, either `Security.Certificate.Path` or `Security.Certificate.Load.Exec` must be set in [settings.json](../../configuration/configuration-options.mdx#json). 
- Please note that `Security.Certificate.Load.Exec` has replaced the old `Security.Certificate.Exec` as of 4.2 - [see FAQ](../../../server/security/common-errors-and-faq.mdx#automatic-cluster-certificate-renewal-following-migration-to-42).  
+ Please note that `Security.Certificate.Load.Exec` has replaced the old `Security.Certificate.Exec` as of 4.2 - [see FAQ](../common-errors-and-faq.mdx#automatic-cluster-certificate-renewal-following-migration-to-42).  
 #### Setting up Client Certificates
 When the server is manually set up with a server certificate for the first time, there are no client certificates registered in the server yet. 
-The first action an administrator will do is to [generate/register a new client certificate](../../../server/security/authentication/client-certificate-usage.mdx).  
+The first action an administrator will do is to [generate/register a new client certificate](./client-certificate-usage.mdx).  
 Find detailed instructions of the process [below](#step-by-step-guide-to-installing-certificate).  
 
 You can set up various client certificates with different security clearance levels and database permissions. 
-See [Certificate Management](../../../server/security/authentication/certificate-management.mdx) for more about permissions.  
+See [Certificate Management](./certificate-management.mdx) for more about permissions.  
 
 
 
@@ -71,7 +71,7 @@ and include a basic (`Key Usage`) field and an enhanced (`Enhanced Key Usage`) f
 
 <Admonition type="note" title="">
 
-* Certificates created during setup using [Let's Encrypt](../../../server/security/authentication/lets-encrypt-certificates.mdx) 
+* Certificates created during setup using [Let's Encrypt](./lets-encrypt-certificates.mdx) 
   are already provided with the above fields and OIDs.  
 * User-created certificates must be provided with these properties for RavenDB to accept and be able to use them. 
 
@@ -207,7 +207,7 @@ In all secure configurations, the `ServerUrl` must contain the same domain name 
       - It's best to **first do the next two steps before selecting a client certificate** in your browser. 
 
 5. The PowerShell CLI window will be running the server terminal. The last line should read `ravendb>`. 
-  In the CLI, run the [generateClientCert](../../../server/administration/cli.mdx#generateclientcert) command to generate a client certificate.  
+  In the CLI, run the [generateClientCert](../../administration/cli.mdx#generateclientcert) command to generate a client certificate.  
    - The following is a generic RavenDB CLI command.
 <CodeBlock language="plain">
 {`ravendb> generateClientCert <your-client-certificate-name> <path-to-output-folder> <number of months> [optional password]
@@ -225,7 +225,7 @@ In all secure configurations, the `ServerUrl` must contain the same domain name 
    - Install the client certificate into the OS by double-clicking the `admin.client.certificate...pfx` file and complete the OS Certificate Import Wizard.  
      * **To install the client certificate without a password**, you can use the default settings by pressing **Next** all the way through. 
        In most cases, this is sufficient.  
-     * **To set a password on the client certificate**, do so in the Import Wizard.  You'll need to use that password every time you [work with the certificate](../../../server/security/authentication/certificate-management.mdx).  
+     * **To set a password on the client certificate**, do so in the Import Wizard.  You'll need to use that password every time you [work with the certificate](./certificate-management.mdx).  
 
        ![Set client certificate password](./assets/set-client-certificate-password.png)
 
@@ -243,7 +243,7 @@ In all secure configurations, the `ServerUrl` must contain the same domain name 
    - Open the "Services" manager for Windows. Make sure that the "RavenDB" service is there and that the Startup Type is "Automatic".  
 
 9. Now the service should run whenever the machine starts and the Studio should be accessible by the user with the client certificate.  
-   - See [Certificate Management](../../../server/security/authentication/certificate-management.mdx) for an easy way to generate various client certificates with customizable permissions.  
+   - See [Certificate Management](./certificate-management.mdx) for an easy way to generate various client certificates with customizable permissions.  
 
 
 

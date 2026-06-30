@@ -8,7 +8,7 @@ import CodeBlock from '@theme/CodeBlock';
 * Use `ConfigureRevisionsOperation` to apply the following [revisions configuration](../../../../../studio/database/settings/document-revisions.mdx#revisions-configuration) to the database:  
   * **Default configuration** - applies to all document collections.  
   * **Collection-specific configurations** - override the default settings for these collections.  
-  * To apply a configuration for conflict document revisions see [configure conflict revisions](../../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx).  
+  * To apply a configuration for conflict document revisions see [configure conflict revisions](../conflict-revisions-configuration.mdx).  
 
 * The configuration passed to this operation will **REPLACE** the current revisions configuration in the database.  
   To **MODIFY** existing configuration, fetch the current configuration from the database record first.  
@@ -16,7 +16,7 @@ import CodeBlock from '@theme/CodeBlock';
 * After applying the configuration,  
   revisions are created and purged for a document whenever the document is created, modified, or deleted.  
 
-* To create a revision when there is no configuration defined (or enabled) see: [force revision creation](../../../../../document-extensions/revisions/overview.mdx#force-revision-creation)
+* To create a revision when there is no configuration defined (or enabled) see: [force revision creation](../../../overview.mdx#force-revision-creation)
 
 * By default, the operation will be applied to the [default database](../../../../../client-api/setting-up-default-database.mdx).  
   To operate on a different database see [switch operations to different database](../../../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).  

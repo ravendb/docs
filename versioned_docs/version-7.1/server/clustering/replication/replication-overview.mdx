@@ -22,7 +22,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   (see the different types below).
 
 * __Conflicts__, which may be involved when the data replicates,  
-  are resolved according to the defined [conflict resolution](../../../server/clustering/replication/replication-conflicts.mdx) policy on the receiving end.
+  are resolved according to the defined [conflict resolution](./replication-conflicts.mdx) policy on the receiving end.
 
 * In this page:  
     * [Replication types](#replication-types)  
@@ -53,7 +53,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 #### External replication
 
 * __Replicate between__: Two databases that are typically set on different clusters.   
-  __Handled by__: Handled by the ongoing [External Replication Task](../../../server/ongoing-tasks/external-replication.mdx) defined by the user.  
+  __Handled by__: Handled by the ongoing [External Replication Task](../../ongoing-tasks/external-replication.mdx) defined by the user.  
   __Direction__: One-way replication.  
   __Filtering__: No filtering is available. Data is replicated as exists on the source.  
   __Conflicts__: Handled as defined by the destination database resolution policy.  
@@ -66,7 +66,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 #### Hub/Sink replication
  
 * __Replicate between__: Multiple Sinks that connect to a single Hub on different clusters.  
-  __Handled by__: Handled by the ongoing [Hub/Sink Replication Tasks](../../../server/ongoing-tasks/hub-sink-replication.mdx) defined by the user.  
+  __Handled by__: Handled by the ongoing [Hub/Sink Replication Tasks](../../ongoing-tasks/hub-sink-replication.mdx) defined by the user.  
   __Direction__: Hub to Sink only, Sink to Hub only, or both directions (as defined by the task).  
   __Filtering__: Documents filtering is available when working with secure servers.  
   __Conflicts__: Handled as defined by the destination database resolution policy.  
@@ -105,7 +105,7 @@ __The following cluster-level features are Not replicated__:
 * Conflict resolution scripts
 * __With internal replication__:  
   When you define a cluster-level behavior, i.e. create an index,  
-  then consistency between the database instances in the database-group is achieved by the [Raft Protocol](../../../server/clustering/rachis/what-is-rachis.mdx).
+  then consistency between the database instances in the database-group is achieved by the [Raft Protocol](../rachis/what-is-rachis.mdx).
 
 * __With a replication task__:    
   Replication controls only the flow of the data without dictating how it's going to be processed on the receiving end,
@@ -158,7 +158,7 @@ __Transactions atomicity__
 <Admonition type="note" title="">
 __Replication & cluster-wide transactions__
 
-* A [cluster-wide transaction](../../../client-api/session/cluster-transaction/overview.mdx), which is implemented by the [Raft Protocol](../../../server/clustering/rachis/consensus-operations.mdx#consensus-operations),  
+* A [cluster-wide transaction](../../../client-api/session/cluster-transaction/overview.mdx), which is implemented by the [Raft Protocol](../rachis/consensus-operations.mdx#consensus-operations),  
   is either persisted on all database group nodes or rolled back on all upon failure.  
 
 * After a cluster consensus is reached, the Raft command to be executed is propagated to all nodes.  

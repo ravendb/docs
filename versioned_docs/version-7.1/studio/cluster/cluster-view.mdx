@@ -71,7 +71,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 ![Figure 2. Cluster Operations](./assets/cluster-view-2.png)
 
 1. **Add New Node to Cluster**  
-   See [Setting a Cluster](../../studio/cluster/setting-a-cluster.mdx#add-another-node-to-the-cluster)  
+   See [Setting a Cluster](./setting-a-cluster.mdx#add-another-node-to-the-cluster)  
 2. **Demote**  
    Demote a Member to be a Watcher  
 3. **Reassign Cores**  
@@ -100,7 +100,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 2. Number of available cores on this node's machine  
 </Admonition>
 
-Learn more in [Setting a Cluster](../../studio/cluster/setting-a-cluster.mdx#add-another-node-to-the-cluster).
+Learn more in [Setting a Cluster](./setting-a-cluster.mdx#add-another-node-to-the-cluster).
 
 
 
@@ -139,7 +139,7 @@ Learn more in [Setting a Cluster](../../studio/cluster/setting-a-cluster.mdx#add
 
 
 * **1.** A new server/node will start as **Passive**, meaning it is _not_ part of any cluster yet.  
-         Learn how to add a node to a cluster in: [Setting a Cluster](../../studio/cluster/setting-a-cluster.mdx).  
+         Learn how to add a node to a cluster in: [Setting a Cluster](./setting-a-cluster.mdx).  
 
 * **2.** When a node is added to a cluster, it immediately becomes the **Leader** if it is the only node in the cluster.  
 
@@ -187,14 +187,14 @@ Operations in RavenDB are usually divided into cluster-wide operations and inter
   Note: An action is accepted by the entire cluster if a majority of the nodes have approved that action - if a majority of the nodes isn't available, we can't proceed.  
 * i.e.:  
   * Creating/deleting/enabling/disabling a database  
-  * Creating/deleting/modifying/enabling/disabling an [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info.mdx)  
-  * Creating/deleting/modifying an [index](../../studio/database/indexes/indexes-overview.mdx)  
+  * Creating/deleting/modifying/enabling/disabling an [ongoing task](../database/tasks/ongoing-tasks/general-info.mdx)  
+  * Creating/deleting/modifying an [index](../database/indexes/indexes-overview.mdx)  
 
 ### Database Operation
 
 * Database operation can always be done on a node (even in the case of a cluster partition)  
 * Database operation only impacts that particular database  
-* Any such update is automatically replicated to all other nodes in the [Database Group](../../studio/database/settings/manage-database-group.mdx)  
+* Any such update is automatically replicated to all other nodes in the [Database Group](../database/settings/manage-database-group.mdx)  
 * i.e.:  
   * Any Read/Write operation on a database such as:  
   * Create/Delete/Update a document, attachment or revision  

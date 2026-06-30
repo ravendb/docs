@@ -63,11 +63,11 @@ All other parameters are optional and will default to their respective default v
 | **close_when_no_docs_left**              | `bool`                                  | Determines whether the subscription connection closes when no new documents are available.<br/><br/>`True` – The subscription worker processes all available documents and stops when none remain, at which point the `run` method throws a `SubscriptionClosedException`.<br/>Useful for ad-hoc, one-time processing.<br/><br/>`False` (Default) – The subscription worker remains active, waiting for new documents. |
 | **send_buffer_size_in_bytes**            | `int`                                   | The size in bytes of the TCP socket buffer used for _sending_ data.<br/>Default: 32,768 bytes (32 KiB).                                                                                                                                                                                                                                                                                                            |
 | **receive_buffer_size_in_bytes**         | `int`                                   | The size in bytes of the TCP socket buffer used for _receiving_ data.<br/>Default: 4096 (4 KiB).                                                                                                                                                                                                                                                                                                                   |
-| **strategy**                             | `SubscriptionOpeningStrategy`<br/>(enum) | Configures how the server handles connection attempts from workers to a specific subscription task.<br/>Learn more in [worker strategies](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies).<br/>Default: `OPEN_IF_FREE`.                                                                                                                                      |
+| **strategy**                             | `SubscriptionOpeningStrategy`<br/>(enum) | Configures how the server handles connection attempts from workers to a specific subscription task.<br/>Learn more in [worker strategies](../how-to-consume-data-subscription.mdx#worker-strategies).<br/>Default: `OPEN_IF_FREE`.                                                                                                                                      |
 
 <Admonition type="note" title="">
 
-Learn more about `SubscriptionOpeningStrategy` in [worker strategies](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies).
+Learn more about `SubscriptionOpeningStrategy` in [worker strategies](../how-to-consume-data-subscription.mdx#worker-strategies).
 
 | `SubscriptionOpeningStrategy`   |                                                   |
 |---------------------------------|---------------------------------------------------|
@@ -121,7 +121,7 @@ The `run` function receives the client-side code as a function that will process
 As long as there is no exception, the worker will continue addressing the same 
 server that the first batch was received from.  
 If the worker fails to reach that node, it will try to 
-[failover](../../../../client-api/configuration/load-balance/overview.mdx) to another node 
+[failover](../../../configuration/load-balance/overview.mdx) to another node 
 from the session's topology list.  
 The node that the worker succeeds connecting to, will inform the worker which 
 node is currently responsible for data subscriptions.  

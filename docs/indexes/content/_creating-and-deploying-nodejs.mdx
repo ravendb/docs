@@ -6,7 +6,7 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * This article explains how to create indexes in RavenDB.  
-  For a general overview of indexes, see [What are indexes](../../indexes/what-are-indexes.mdx).
+  For a general overview of indexes, see [What are indexes](../what-are-indexes.mdx).
 
 * You can either:
     * [create a Static-index](#define-a-static-index) yourself, which involves **Defining** the index and **Deploying** it to the RavenDB server, or
@@ -41,7 +41,7 @@ import CodeBlock from '@theme/CodeBlock';
 * Static-indexes can perform calculations, data conversions, and other processes behind the scenes.  
   This reduces the workload at query time by offloading these costly operations to the indexing phase.
 * To query with a static-index, you must explicitly specify the index in the query definition.  
-  For more details, see [Querying an index](../../indexes/querying/query-index.mdx).
+  For more details, see [Querying an index](../querying/query-index.mdx).
 
 </Admonition>
 <Admonition type="note" title="">
@@ -194,7 +194,7 @@ createIndexes(indexes, store, conventions);
   you can choose between **Rolling** index deployment or **Parallel** index deployment.
 * Rolling deployment applies the index to one node at a time,  
   while Parallel deployment deploys the index on all nodes simultaneously.
-* Learn more in [Rolling index deployment](../../indexes/rolling-index-deployment.mdx).
+* Learn more in [Rolling index deployment](../rolling-index-deployment.mdx).
 
 </Admonition>
 

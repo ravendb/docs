@@ -8,7 +8,7 @@ import CodeBlock from '@theme/CodeBlock';
 * **Document Revisions** are snapshots of documents and their extensions:
 
     * The trail of revisions created for a document can be inspected to track changes made in the document over time.
-    * A document's live version can be [reverted](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx) to any of its recorded revisions.
+    * A document's live version can be [reverted](../revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx) to any of its recorded revisions.
       <Admonition type="info" title="">
       For example, tracking document revisions allows you to check how an employee's contract has changed over time,
       restore a single corrupted document without requiring a backup file, or conduct a full-scale audit of your data.  
@@ -52,7 +52,7 @@ import CodeBlock from '@theme/CodeBlock';
     
     * Conflict revisions are **enabled** by default.
     * Read about the conflict revisions API here:
-      [Conflict Revisions Configuration](../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx)
+      [Conflict Revisions Configuration](../client-api/operations/conflict-revisions-configuration.mdx)
     * Read about managing conflict revisions via the Studio here:
       [Editing the Conflicting Document Defaults](../../../studio/database/settings/document-revisions.mdx#editing-the-conflicting-document-defaults)
     
@@ -65,7 +65,7 @@ You can apply a revisions configuration using the Studio or the Client API:
     * Manage the revisions configuration in the [Document Revisions Settings](../../../studio/database/settings/document-revisions.mdx) view.
     * Inspect existing revisions and manually create a new revision in the [Revisions tab](../../../studio/database/document-extensions/revisions/revisions-overview.mdx#revisions-tab) in the Studio's Document View.
 * Via Client API:
-    * Use the [ConfigureRevisionsOperation](../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx) _Store_ operation to define and apply a revisions configuration.
+    * Use the [ConfigureRevisionsOperation](../client-api/operations/configure-revisions.mdx) _Store_ operation to define and apply a revisions configuration.
 #### Default settings and collection-specific configurations
 
 The revisions configuration consists of default settings and/or collection-specific configurations:
@@ -93,7 +93,7 @@ A revisions configuration defines -
 * Whether to limit the number of revisions that can be kept per document.  
   RavenDB will only purge revisions if they exceed the limits you set.
 
-* Learn more about the available configuration options in [Configure revisions operations](../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx).
+* Learn more about the available configuration options in [Configure revisions operations](../client-api/operations/configure-revisions.mdx).
 #### Revisions configuration execution
 
 Creating a revisions configuration does **not** immediately trigger its execution.  
@@ -132,7 +132,7 @@ Let's play with revisions a little to get a taste of its advantages.
 
 1. **Enable Revisions** so we can experiment with the feature.  
    Revisions can be enabled from the [Studio](../../../studio/database/settings/document-revisions.mdx)
-   or using the [ConfigureRevisionsOperation](../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx) _Store_ operation.
+   or using the [ConfigureRevisionsOperation](../client-api/operations/configure-revisions.mdx) _Store_ operation.
 
      ![Enable Revisions for the Users Collection](../assets/revisions-1.png)
 
@@ -204,9 +204,9 @@ using the same blittable JSON document format as regular documents.
   Learn more about documents compression in [Documents Compression](../../../server/storage/documents-compression.mdx).
 ##### Storage of document extensions in revisions
 
-Read [here](../../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-and-time-series) about revisions and **time series**.  
-Read [here](../../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-and-counters) about revisions and **counters**.  
-Read [here](../../../document-extensions/revisions/revisions-and-other-features.mdx#revisions-and-attachments) about revisions and **attachments**.
+Read [here](../revisions-and-other-features.mdx#revisions-and-time-series) about revisions and **time series**.  
+Read [here](../revisions-and-other-features.mdx#revisions-and-counters) about revisions and **counters**.  
+Read [here](../revisions-and-other-features.mdx#revisions-and-attachments) about revisions and **attachments**.
 
 
 

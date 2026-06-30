@@ -14,7 +14,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Ongoing Tasks: Elasticsearch ETL
 <Admonition type="note" title="">
 
-* An **Elasticsearch** [ETL](../../../server/ongoing-tasks/etl/basics.mdx) task creates an ETL process 
+* An **Elasticsearch** [ETL](./basics.mdx) task creates an ETL process 
   from selected collections in a RavenDB database to Elasticsearch destinations.
 
 * You can define an Elasticsearch ETL task using [Studio](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx) 
@@ -63,15 +63,15 @@ import LanguageContent from "@site/src/components/LanguageContent";
 ## Transformation Script
 
 * The structure and syntax of an Elasticsearch ETL transformation script are similar to 
-  those of all other ETL types ([RavenDB ETL](../../../server/ongoing-tasks/etl/raven.mdx), 
-  [SQL ETL](../../../server/ongoing-tasks/etl/sql.mdx), and 
-  [OLAP ETL](../../../server/ongoing-tasks/etl/olap.mdx)) scripts.  
+  those of all other ETL types ([RavenDB ETL](./raven.mdx), 
+  [SQL ETL](./sql.mdx), and 
+  [OLAP ETL](./olap.mdx)) scripts.  
   The script defines which documents will be _Extracted_ from the database, 
   _Transforms_ the retrieved data, and _Loads_ it to the Elasticsearch destination.
-  Learn about ETL transformation scripts [here](../../../server/ongoing-tasks/etl/basics.mdx#transform).  
+  Learn about ETL transformation scripts [here](./basics.mdx#transform).  
 
 * The script **Loads** data to the Elasticsearch destination using the 
-  [loadTo\\&lt;Target\\&gt;(obj)](../../../server/ongoing-tasks/etl/basics.mdx#transform) command.  
+  [loadTo\\&lt;Target\\&gt;(obj)](./basics.mdx#transform) command.  
    * `Target` is the name of the Elasticsearch index to which the data is transferred.  
        * **In the task settings**:  
          Define Elasticsearch Index names using only lower-case characters (as required by Elasticsearch).  

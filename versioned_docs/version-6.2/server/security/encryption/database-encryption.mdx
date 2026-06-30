@@ -19,7 +19,7 @@ In RavenDB you can create encrypted databases. Each encrypted database will have
 
 When [creating an encrypted database using the Studio](../../../studio/database/create-new-database/encrypted.mdx), you will receive a secret key which will 
 allow you to recover the encrypted data in case of a disaster, and when restoring from backup. During normal operations there is no need to supply the secret key to RavenDB.  
-See [Secret Key Management](../../../server/security/encryption/secret-key-management.mdx) for more information.  
+See [Secret Key Management](./secret-key-management.mdx) for more information.  
 
 ![Figure 1. Secret Key](./assets/1.png)
 
@@ -149,7 +149,7 @@ Database encryption must be enabled when creating the database. If you wish to u
 <Admonition type="danger" title="Indexing transaction size" id="indexing-transaction-size" href="#indexing-transaction-size">
 Indexing is most efficient when it is performed in the largest transactions possible. However, using encryption is very memory intensive, and if memory 
 runs out before the transaction completes, the entire transaction will fail. To avoid this, you can limit the size of indexing batches in encrypted 
-databases using [Indexing.Encrypted.TransactionSizeLimitInMb](../../../server/configuration/indexing-configuration.mdx#indexingencryptedtransactionsizelimitinmb).  
+databases using [Indexing.Encrypted.TransactionSizeLimitInMb](../../configuration/indexing-configuration.mdx#indexingencryptedtransactionsizelimitinmb).  
 </Admonition>
 
 

@@ -27,7 +27,7 @@ import CodeBlock from '@theme/CodeBlock';
   See [what can be configured](#what-can-be-configured) below.  
 
 * **Initializing the client configuration** (on the client):  
-  This configuration can be initially customized from the client code when creating the Document Store via the [Conventions](../../../../../client-api/configuration/conventions.mdx).
+  This configuration can be initially customized from the client code when creating the Document Store via the [Conventions](../../../../configuration/conventions.mdx).
   
 * **Overriding the initial client configuration for the database** (on the server):  
 
@@ -40,7 +40,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * **Updating the running client**:  
 
-  * Once the client configuration is modified on the server, the running client will [receive the updated settings](../../../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date)
+  * Once the client configuration is modified on the server, the running client will [receive the updated settings](../../../../configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date)
     the next time it makes a request to the database.  
 
   * Setting the client configuration on the server enables administrators to dynamically control 
@@ -48,7 +48,7 @@ import CodeBlock from '@theme/CodeBlock';
     e.g. manage load balancing of client requests on the fly in response to changing system demands.
 
 * The client configuration set for the database level **overrides** the 
-  [server-wide client configuration](../../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx).
+  [server-wide client configuration](../../../server-wide/configuration/put-serverwide-client-configuration.mdx).
 
 
 
@@ -65,11 +65,11 @@ The following client configuration options are available:
 
 * **Read balance behavior**:  
   Set the Read balance method the client will use when accessing a node with Read requests.  
-  Learn more in [Balancing client requests - overview](../../../../../client-api/configuration/load-balance/overview.mdx) and [Read balance behavior](../../../../../client-api/configuration/load-balance/read-balance-behavior.mdx).
+  Learn more in [Balancing client requests - overview](../../../../configuration/load-balance/overview.mdx) and [Read balance behavior](../../../../configuration/load-balance/read-balance-behavior.mdx).
   
 * **Load balance behavior**:  
   Set the Load balance method for Read & Write requests.  
-  Learn more in [Load balance behavior](../../../../../client-api/configuration/load-balance/load-balance-behavior.mdx).
+  Learn more in [Load balance behavior](../../../../configuration/load-balance/load-balance-behavior.mdx).
 
 
 

@@ -7,7 +7,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Use `GetIndexesOperation` to retrieve multiple **index definitions** from the database.
 
-* The operation will execute on the node defined by the [client configuration](../../../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
+* The operation will execute on the node defined by the [client configuration](../../../../configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
   However, the index definitions returned are taken from the database record,  
   which is common to all the database-group nodes.  
   i.e., an index state change done only on a local node is not reflected.

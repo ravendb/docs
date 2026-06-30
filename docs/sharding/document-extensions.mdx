@@ -27,7 +27,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   same API commands and Studio views.  
 
 * Document extensions are identified by the ID of their parent document, 
-  and are always stored in [the same bucket](../sharding/overview.mdx#document-extensions-storage) 
+  and are always stored in [the same bucket](./overview.mdx#document-extensions-storage) 
   as the document.  
 
      When a document is resharded, its document extensions are transferred 
@@ -104,7 +104,7 @@ The following points relate to this issue.
 
 * It takes longer to retrieve related documents (and their extensions) when 
   they are stored on different shards. To accelerate such operations, we can 
-  store related documents [in the same bucket](../sharding/administration/anchoring-documents.mdx) 
+  store related documents [in the same bucket](./administration/anchoring-documents.mdx) 
   in advance.  
 
 

@@ -14,7 +14,7 @@ import Panel from "@site/src/components/Panel";
 * Once the agent is created, the client can initiate or resume **conversations**, get LLM responses, and perform actions based on LLM insights.
     
 * This article provides a step-by-step guide to creating an AI agent and interacting with it using the **Client API**.  
-  To create an AI agent from Studio, see [Creating AI agents - Studio](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx).
+  To create an AI agent from Studio, see [Creating AI agents - Studio](../creating-ai-agents_studio.mdx).
     
 * In this article:
    * [Create a connection string](#creating-a-connection-string)  
@@ -43,9 +43,9 @@ import Panel from "@site/src/components/Panel";
 
 Your agent will need a connection string to connect to a **conversational or text generation LLM**.  
 RavenDB supports the following providers for these model types:  
-[Ollama](../../../../ai-integration/connection-strings/ollama.mdx),
-[OpenAI and compatible providers](../../../../ai-integration/connection-strings/open-ai.mdx),
-and [Azure OpenAI](../../../../ai-integration/connection-strings/azure-open-ai.mdx).
+[Ollama](../../../connection-strings/ollama.mdx),
+[OpenAI and compatible providers](../../../connection-strings/open-ai.mdx),
+and [Azure OpenAI](../../../connection-strings/azure-open-ai.mdx).
    
 Choose the model that best suits your needs:  
 You can use a local _Ollama_ model if your priorities are speed, cost, open-source usage, or security.  
@@ -56,9 +56,9 @@ Or use a remote _OpenAI_ service for its broader resources and capabilities.
 
 * **From the Studio**:    
   You can define a connection string in the _AI Connection Strings_ view.
-  See [AI connection strings - Overview](../../../../ai-integration/connection-strings/overview.mdx).  
+  See [AI connection strings - Overview](../../../connection-strings/overview.mdx).  
   You can also create a connection string when defining an AI agent.
-  See [Configure basic settings](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#configure-basic-settings).  
+  See [Configure basic settings](../creating-ai-agents_studio.mdx#configure-basic-settings).  
 
 ---
     
@@ -139,9 +139,9 @@ const putConnectionStringResult = await documentStore.maintenance.send(putConnec
     
 **Syntax reference**    
 See the dedicated syntax sections in the following articles for full configuration details:    
-* [Ollama (syntax)](../../../../ai-integration/connection-strings/ollama.mdx#syntax)  
-* [OpenAI and compatible providers (syntax)](../../../../ai-integration/connection-strings/open-ai.mdx#syntax)  
-* [Azure OpenAI (syntax)](../../../../ai-integration/connection-strings/azure-open-ai.mdx#syntax)  
+* [Ollama (syntax)](../../../connection-strings/ollama.mdx#syntax)  
+* [OpenAI and compatible providers (syntax)](../../../connection-strings/open-ai.mdx#syntax)  
+* [Azure OpenAI (syntax)](../../../connection-strings/azure-open-ai.mdx#syntax)  
 
 </Panel>
 
@@ -333,7 +333,7 @@ agentConfiguration.maxModelIterationsPerCall = 3;
 <Admonition type="note" title="">
 * Note that you can reduce Time To First Byte (TTFB) by streaming the LLM response as it's being generated.  
   This allows the LLM to return selected fields in chunks before the full response is complete.  
-* Find more about streaming in [Streaming LLM responses - overview](../../../../ai-integration/ai-agents/overview.mdx#streaming-llm-responses) 
+* Find more about streaming in [Streaming LLM responses - overview](../../overview.mdx#streaming-llm-responses) 
   and in [Stream LLM responses](#stream-llm-responses) below.  
 </Admonition>
     
@@ -383,7 +383,7 @@ agentConfiguration.chatTrimming = {
 
 ### Query tools
 
-* [Query tools](../../../../ai-integration/ai-agents/overview.mdx#query-tools) provide the LLM with the ability to retrieve data from the database.  
+* [Query tools](../../overview.mdx#query-tools) provide the LLM with the ability to retrieve data from the database.  
   Each query tool includes:  
   * **Description** - a natural-language description that tells the LLM when to use it, 
   * **RQL** - an [RQL query](../../../../client-api/session/querying/what-is-rql.mdx) that defines what data to retrieve.    
@@ -471,7 +471,7 @@ agentConfiguration.chatTrimming = {
     
 #### <u>Initial-context queries</u>
 
-* Use the `options.addToInitialContext` property to configure a query tool as an [initial-context query](../../../../ai-integration/ai-agents/overview.mdx#initial-context-queries)
+* Use the `options.addToInitialContext` property to configure a query tool as an [initial-context query](../../overview.mdx#initial-context-queries)
   so that it executes immediately when the agent starts, before the LLM receives any user input.  
   The results are provided to the LLM as part of the initial conversation context.
  
@@ -841,7 +841,7 @@ The status can be:
 ### Stream LLM responses
 
 * Instead of calling `run`, which returns the LLM's response to the client when it is fully prepared,  
-  you can call `stream` to [Stream llm responses](../../../../ai-integration/ai-agents/overview.mdx#streaming-llm-responses),
+  you can call `stream` to [Stream llm responses](../../overview.mdx#streaming-llm-responses),
   and receive the LLM's response in real time as it is being generated.
 
 * Streaming allows the client to start processing the response before it is complete,  

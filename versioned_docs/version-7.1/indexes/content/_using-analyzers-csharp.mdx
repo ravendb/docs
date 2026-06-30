@@ -8,7 +8,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Admonition type="note" title="">
 
 * RavenDB supports fast and efficient querying through indexes, 
-  which are powered by either [Lucene](http://lucene.apache.org/) or [Corax](../../indexes/search-engine/corax.mdx),  
+  which are powered by either [Lucene](http://lucene.apache.org/) or [Corax](../search-engine/corax.mdx),  
   a high-performance search engine developed specifically for RavenDB.  
   (You can choose which search engine to use for each index).
 
@@ -69,7 +69,7 @@ Analyzers can apply additional transformations, such as converting text to lower
 (e.g., "the," "and"), or applying stemming (reducing words to their base forms, e.g., "running" → "run").
 
 The resulting tokens are then stored in the index for each index-field and can later be searched by queries,  
-enabling [Full-text search](../../indexes/querying/searching.mdx).
+enabling [Full-text search](../querying/searching.mdx).
 
 </ContentFrame>
 <ContentFrame>
@@ -79,7 +79,7 @@ enabling [Full-text search](../../indexes/querying/searching.mdx).
 When running a [Full-text search with a dynamic query](../../client-api/session/querying/text-search/full-text-search.mdx),  
 the auto-index created by the server breaks down the text of the searched document field using the [default search analyzer](#using-the-default-search-analyzer).
 
-When running a [Full-text search on a static-index](../../indexes/querying/query-index.mdx),  
+When running a [Full-text search on a static-index](../querying/query-index.mdx),  
 the **same analyzer** used to tokenize field content at indexing time is typically applied 
 to process the terms provided in the full-text search query before they are sent to the search engine to retrieve matching documents.  
 
@@ -96,7 +96,7 @@ There are two exceptions to this rule:
        * Use a different analyzer other than _NGramAnalyzer_ that better matches your requirements.  
 
   2. Behavior is also different when making a full-text search with wildcards in the search terms.  
-     This is explained in detail in [Searching with wildcards](../../indexes/querying/searching.mdx#searching-with-wildcards).
+     This is explained in detail in [Searching with wildcards](../querying/searching.mdx#searching-with-wildcards).
 
 </ContentFrame>
 <ContentFrame>
@@ -108,7 +108,7 @@ For languages other than English, or when a custom analysis process is needed, y
 It is straightforward and may already be available as a contrib package for Lucene.
 
 You can also configure a specific collation for an index field to sort based on culture specific rules.  
-Learn more in [Sorting and Collation](../../indexes/sorting-and-collation.mdx#collation).
+Learn more in [Sorting and Collation](../sorting-and-collation.mdx#collation).
 
 </ContentFrame>
 
@@ -495,9 +495,9 @@ public class Employees_ByFirstName : AbstractIndexCreationTask<Employee>
   In this case:
     * No analyzer will process the field, and no terms will be generated from its content.
     * The field will not be available for querying.
-    * The field will still be accessible for extraction when [projecting query results](../../indexes/querying/projections.mdx).
+    * The field will still be accessible for extraction when [projecting query results](../querying/projections.mdx).
 
-* This is useful when you need to [store the field data in the index](../../indexes/storing-data-in-index.mdx) and only intend to use it for query projections.
+* This is useful when you need to [store the field data in the index](../storing-data-in-index.mdx) and only intend to use it for query projections.
 
 ```csharp
 public class BlogPosts_ByTitle : AbstractIndexCreationTask<BlogPost>

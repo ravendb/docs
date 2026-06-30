@@ -16,7 +16,7 @@ import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
   
-* After clicking the _Finish_ button in the [Review setup](../../../start/installation/setup-wizard/review-setup.mdx) step,
+* After clicking the _Finish_ button in the [Review setup](./review-setup.mdx) step,
   the wizard applies your configuration and either prepares the server for its first run or generates a setup package, depending on the flow you chose in earlier steps.
     
 * In this article:
@@ -32,8 +32,8 @@ import Panel from '@site/src/components/Panel';
 <Panel heading= "Configuration in process">
     
 The wizard performs several background tasks and displays them in a real-time configuration log.
-While the process depends on your [Setup method](../../../start/installation/setup-wizard/choose-setup-method.mdx)
-and [Chosen security method](../../../start/installation/setup-wizard/choose-security-option.mdx), it generally follows these stages:
+While the process depends on your [Setup method](./choose-setup-method.mdx)
+and [Chosen security method](./choose-security-option.mdx), it generally follows these stages:
     
 * **Validation**:  
   RavenDB verifies the configuration you provided in earlier steps, including file paths, network settings, and license validity.
@@ -199,19 +199,19 @@ the **All set!** screen reminds you how to complete the setup on the remaining m
     
 2. **Setup instructions**:  
    This text explains how to set up the other nodes in your cluster.  
-   For detailed steps, see [Use setup package](../../../start/installation/setup-wizard/choose-setup-method.mdx#use-an-existing-setup-package).    
+   For detailed steps, see [Use setup package](./choose-setup-method.mdx#use-an-existing-setup-package).    
 
 ---
     
-Similarly, this info is displayed when you follow the [Create package for external setup](../../../start/installation/setup-wizard/choose-setup-method.mdx#create-a-package-for-external-setup) flow.      
+Similarly, this info is displayed when you follow the [Create package for external setup](./choose-setup-method.mdx#create-a-package-for-external-setup) flow.      
 At this point, you have two options for your newly generated ZIP package:
     
 * **Use it on remote machines**:  
   Copy the downloaded _.zip_ file to your other servers and run the Setup Wizard there.
     
 * **Use it on this machine**:  
-  The UI offers a handy shortcut to take you back to the [Choose setup method](../../../start/installation/setup-wizard/choose-setup-method.mdx) step,  
-  where you can immediately apply the configuration using the [Use setup package](../../../start/installation/setup-wizard/choose-setup-method.mdx#use-an-existing-setup-package) flow.
+  The UI offers a handy shortcut to take you back to the [Choose setup method](./choose-setup-method.mdx) step,  
+  where you can immediately apply the configuration using the [Use setup package](./choose-setup-method.mdx#use-an-existing-setup-package) flow.
     
 ![All set - complete cluster setup - when creating setup package](./assets/finish-5.png)
     
@@ -251,7 +251,7 @@ Because different browsers handle certificates differently, this dialog provides
   In the [Cluster view](../../../studio/cluster/cluster-view.mdx), you can see that the other nodes (e.g., Node **B** and Node **C**) are not yet reachable.  
   This is expected at this stage because those nodes have not been started yet.
     
-    To complete the cluster, continue with the [Use setup package](../../../start/installation/setup-wizard/use-setup-package.mdx) flow 
+    To complete the cluster, continue with the [Use setup package](./use-setup-package.mdx) flow 
     on the machines for Node B and Node C to apply the configuration and automatically join them to the cluster.
     
     ![Handle certificate in browser](./assets/finish-10.png) 

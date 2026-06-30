@@ -12,7 +12,7 @@ import CodeBlock from '@theme/CodeBlock';
         * when querying with the session's `RawQuery` method.  
         * when querying from the [Query view](../../../../studio/database/queries/query-view.mdx) in Studio.  
 
-* Queries defined with `Query` or `DocumentQuery` are translated by the RavenDB client to [RQL](../../../../client-api/session/querying/what-is-rql.mdx)  
+* Queries defined with `Query` or `DocumentQuery` are translated by the RavenDB client to [RQL](../what-is-rql.mdx)  
   when sent to the server.
 * All queries in RavenDB use an **index** to provide results, even when you don't specify one.  
   Learn more [below](#queries-always-provide-results-using-an-index).
@@ -20,12 +20,12 @@ import CodeBlock from '@theme/CodeBlock';
 * Queries that do Not specify which index to use are called **Dynamic Queries**.  
   This article displays examples of dynamic queries only.  
   For examples showing how to query an index see [querying an index](../../../../indexes/querying/query-index.mdx).
-* The entities returned by the query are 'loaded' and **tracked** by the [Session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx).  
+* The entities returned by the query are 'loaded' and **tracked** by the [Session](../../what-is-a-session-and-how-does-it-work.mdx).  
   Entities will Not be tracked when:  
-    * Query returns a [projection](../../../../client-api/session/querying/how-to-project-query-results.mdx)  
-    * Tracking is [disabled](../../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-query-results)  
+    * Query returns a [projection](../how-to-project-query-results.mdx)  
+    * Tracking is [disabled](../../configuration/how-to-disable-tracking.mdx#disable-tracking-query-results)  
 
-* Query results are **cached** by default. To disable query caching see [NoCaching](../../../../client-api/session/querying/how-to-customize-query.mdx#nocaching).
+* Query results are **cached** by default. To disable query caching see [NoCaching](../how-to-customize-query.mdx#nocaching).
 
 * Queries are timed out after a configurable time period.  See [query timeout](../../../../server/configuration/database-configuration.mdx#databasesquerytimeoutinsec).
 * In this page:
@@ -485,8 +485,8 @@ from "Products" limit 5, 10 // skip 5, take 10
 
 * Below is a simple _DocumentQuery_ usage.  
   For a full description and more examples see:  
-    * [What is a document query](../../../../client-api/session/querying/document-query/what-is-document-query.mdx)
-    * [Query -vs- DocumentQuery](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx)
+    * [What is a document query](../document-query/what-is-document-query.mdx)
+    * [Query -vs- DocumentQuery](../document-query/query-vs-document-query.mdx)
 
 **Example**:
 
@@ -540,7 +540,7 @@ from "Employees" where FirstName = "Robert"
 
 ## Session.Advanced.RawQuery
 
-* Queries defined with [Query](#sessionquery) or [DocumentQuery](#sessionadvanceddocumentquery) are translated by the RavenDB client to [RQL](../../../../client-api/session/querying/what-is-rql.mdx)  
+* Queries defined with [Query](#sessionquery) or [DocumentQuery](#sessionadvanceddocumentquery) are translated by the RavenDB client to [RQL](../what-is-rql.mdx)  
   when sent to the server.
 
 * The session also gives you a way to express the query directly in RQL using the `RawQuery` method.
@@ -590,34 +590,34 @@ List<Employee> employees = await asyncSession
 
 Available custom methods and extensions for the session's [Query](#sessionquery) method:
 
-- [AggregateBy](../../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
+- [AggregateBy](../how-to-perform-a-faceted-search.mdx)
 - AnyAsync
-- [Count](../../../../client-api/session/querying/how-to-count-query-results.mdx)
-- [CountLazily](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
-- [Customize](../../../../client-api/session/querying/how-to-customize-query.mdx)
+- [Count](../how-to-count-query-results.mdx)
+- [CountLazily](../how-to-perform-queries-lazily.mdx)
+- [Customize](../how-to-customize-query.mdx)
 - FirstAsync
 - FirstOrDefaultAsync
-- [GroupByArrayValues](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-values)
-- [GroupByArrayContent](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-content)
-- [Highlight](../../../../client-api/session/querying/text-search/highlight-query-results.mdx)
-- [Include](../../../../client-api/how-to/handle-document-relationships.mdx)
-- [Intersect](../../../../client-api/session/querying/how-to-use-intersect.mdx)
-- [Lazily](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
-- [LazilyAsync](../../../../client-api/session/querying/how-to-perform-queries-lazily.mdx)
-- [LongCount](../../../../client-api/session/querying/how-to-count-query-results.mdx)
-- [MoreLikeThis](../../../../client-api/session/querying/how-to-use-morelikethis.mdx)
+- [GroupByArrayValues](../how-to-perform-group-by-query.mdx#by-array-values)
+- [GroupByArrayContent](../how-to-perform-group-by-query.mdx#by-array-content)
+- [Highlight](../text-search/highlight-query-results.mdx)
+- [Include](../../../how-to/handle-document-relationships.mdx)
+- [Intersect](../how-to-use-intersect.mdx)
+- [Lazily](../how-to-perform-queries-lazily.mdx)
+- [LazilyAsync](../how-to-perform-queries-lazily.mdx)
+- [LongCount](../how-to-count-query-results.mdx)
+- [MoreLikeThis](../how-to-use-morelikethis.mdx)
 - [OfType](../../../../client-api/session/querying/how-to-project-query-results.mdx#oftype-(as)---simple-projection)
-- [OrderByDistance](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistance)
-- [OrderByDistanceDescending](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistancedesc)
-- [OrderByScore](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
-- [OrderByScoreDescending](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score)
-- [ProjectInto](../../../../client-api/session/querying/how-to-project-query-results.mdx)
-- [Search](../../../../client-api/session/querying/text-search/full-text-search.mdx)
+- [OrderByDistance](../how-to-make-a-spatial-query.mdx#orderbydistance)
+- [OrderByDistanceDescending](../how-to-make-a-spatial-query.mdx#orderbydistancedesc)
+- [OrderByScore](../sort-query-results.mdx#order-by-score)
+- [OrderByScoreDescending](../sort-query-results.mdx#order-by-score)
+- [ProjectInto](../how-to-project-query-results.mdx)
+- [Search](../text-search/full-text-search.mdx)
 - SingleAsync
 - SingleOrDefaultAsync
-- [Spatial](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx)
-- [Statistics](../../../../client-api/session/querying/how-to-get-query-statistics.mdx)
-- [SuggestUsing](../../../../client-api/session/querying/how-to-work-with-suggestions.mdx)
+- [Spatial](../how-to-make-a-spatial-query.mdx)
+- [Statistics](../how-to-get-query-statistics.mdx)
+- [SuggestUsing](../how-to-work-with-suggestions.mdx)
 - ToListAsync
 - ToArrayAsync
 

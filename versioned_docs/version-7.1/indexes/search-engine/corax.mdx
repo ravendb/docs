@@ -28,8 +28,8 @@ import Panel from '@site/src/components/Panel';
   The search engine can be configured server-wide, per database, and per index (static indexes only).
 
 * RavenDB queries are handled through indexes.  
-  When a query does not match an existing index, RavenDB can create an [auto-index](../../indexes/creating-and-deploying.mdx#auto-indexes) for it.  
-  The selected search engine determines which engine is used when new auto or [static indexes](../../indexes/creating-and-deploying.mdx#static-indexes) are created.
+  When a query does not match an existing index, RavenDB can create an [auto-index](../creating-and-deploying.mdx#auto-indexes) for it.  
+  The selected search engine determines which engine is used when new auto or [static indexes](../creating-and-deploying.mdx#static-indexes) are created.
     
 * **The default search engine depends on your license.**  
   If the search engine is not explicitly configured, RavenDB uses a license-based default:  
@@ -216,8 +216,8 @@ The following Corax limitations currently apply.
 
 #### Unsupported during indexing:
 
-* Setting a [boost factor on an index-field](../../indexes/boosting.mdx#assign-a-boost-factor-to-an-index-field) is not supported.  
-  Note that [boosting the whole index-entry](../../indexes/boosting.mdx#assign-a-boost-factor-to-the-index-entry)
+* Setting a [boost factor on an index-field](../boosting.mdx#assign-a-boost-factor-to-an-index-field) is not supported.  
+  Note that [boosting the whole index-entry](../boosting.mdx#assign-a-boost-factor-to-the-index-entry)
   and [query-time boosting](../../client-api/session/querying/text-search/boost-search-results) with `boost()` **are supported**.
 * Indexing spatial shapes that are not points is not supported.  
   Note that spatial points **are supported**, including WKT values that represent points.
@@ -227,7 +227,7 @@ The following Corax limitations currently apply.
 * [Fuzzy search](../../client-api/session/querying/text-search/fuzzy-search.mdx) is not supported.  
 * [Proximity search](../../client-api/session/querying/text-search/proximity-search.mdx) is not supported.  
 * [Including query explanations](../../client-api/session/querying/debugging/include-explanations.mdx) is not supported  
-* [Custom sorters](../../indexes/querying/sorting.mdx) are not supported.  
+* [Custom sorters](../querying/sorting.mdx) are not supported.  
     
 #### Complex JSON properties:
 
@@ -237,7 +237,7 @@ Read more about this in [Handling complex JSON objects](#handling-complex-json-o
 #### Unsupported `where` methods:
 
 * [lucene()](../../client-api/session/querying/document-query/how-to-use-lucene.mdx) is not supported.  
-* [intersect()](../../indexes/querying/intersection.mdx) is not supported.  
+* [intersect()](../querying/intersection.mdx) is not supported.  
 
 Using an unsupported feature with Corax will fail the relevant indexing or query operation.  
 The exception type and message depend on the unsupported feature.
@@ -326,8 +326,8 @@ select new
 #### 2. Store the complex field for projection only
 
 If queries need to project the whole object but do not need to search inside it, 
-[disable indexing for the field](../../indexes/using-analyzers.mdx#disabling-indexing-for-index-field) and store it.
-[Projection queries](../../indexes/querying/projections.mdx#projections-and-stored-fields) would be able to project it.
+[disable indexing for the field](../using-analyzers.mdx#disabling-indexing-for-index-field) and store it.
+[Projection queries](../querying/projections.mdx#projections-and-stored-fields) would be able to project it.
 
 If you do not need to project the whole object from the index, do not map the complex object as an index-field.  
 Index only the simple properties you need.    
@@ -673,7 +673,7 @@ The index-fields and their terms are visible in the "Terms view":
 
 * Corax indexes can contain more than `int.MaxValue` (`2,147,483,647`) entries.
 
-* [Query paging](../../indexes/querying/paging.mdx) over Corax indexes supports skipping more than `int.MaxValue` results.  
+* [Query paging](../querying/paging.mdx) over Corax indexes supports skipping more than `int.MaxValue` results.  
   This allows a query to skip beyond the 32-bit range and then take results from that position.
 
 * The number of results that a single query can take and return is still limited to `int.MaxValue` (`2,147,483,647`).  

@@ -14,7 +14,7 @@ import ContentFrame from '@site/src/components/ContentFrame';
 
 * Use aggressive caching where the same documents are read many times, where reference data changes rarely, and where end-to-end latency matters more than absolute freshness.
 
-* Cached entries are invalidated automatically through the [Changes API](../../../client-api/changes/what-is-changes-api.mdx).  
+* Cached entries are invalidated automatically through the [Changes API](../../changes/what-is-changes-api.mdx).  
    A short notification delay can briefly cause stale reads inside the scope.
 
 * Some requests bypass aggressive caching by design, including queries with `wait_for_non_stale_results()`, queries with `no_caching()`, and internal cluster traffic.
@@ -54,7 +54,7 @@ When the same document is read repeatedly, that round trip dominates the cost of
 The RavenDB client caches every HTTP response it receives.  
 On the next read of the same data, the client sends only the cached ETag.  
 The server replies with `304 Not Modified` when nothing has changed, no payload crosses the network, and the client serves the cached value to your code as if a fresh response had arrived.  
-The total size of this cache is bounded by the [`MaxHttpCacheSize`](../../../client-api/configuration/conventions.mdx#maxhttpcachesize) convention; once the limit is reached, older entries are evicted.
+The total size of this cache is bounded by the [`MaxHttpCacheSize`](../../configuration/conventions.mdx#maxhttpcachesize) convention; once the limit is reached, older entries are evicted.
 
 This standard cache is on by default and works without any setup.  
 The trade-off is that every read still costs one network round trip to confirm freshness.  
@@ -84,7 +84,7 @@ RavenDB narrows that window by listening for change notifications from the serve
 
 ## How invalidation works
 
-The first time aggressive caching is enabled for a database, the client opens a [Changes API](../../../client-api/changes/what-is-changes-api.mdx) subscription to that database.  
+The first time aggressive caching is enabled for a database, the client opens a [Changes API](../../changes/what-is-changes-api.mdx) subscription to that database.  
 The subscription stays open for as long as the document store is alive and is shared by every aggressive scope opened against the same database.
 
 When a document or index is modified on the server, the server publishes a change notification on that subscription.  
@@ -241,7 +241,7 @@ with document_store.aggressively_cache_for(timedelta(minutes=5)):
 
 `disable_aggressive_caching()` only suspends aggressive caching.  
 The standard 304-based HTTP cache still runs.  
-To disable HTTP caching as well, see [Disable Caching per Session](../../../client-api/session/configuration/how-to-disable-caching.mdx) and the [`MaxHttpCacheSize`](../../../client-api/configuration/conventions.mdx#maxhttpcachesize) convention.
+To disable HTTP caching as well, see [Disable Caching per Session](../../session/configuration/how-to-disable-caching.mdx) and the [`MaxHttpCacheSize`](../../configuration/conventions.mdx#maxhttpcachesize) convention.
 
 </ContentFrame>
 
@@ -259,11 +259,11 @@ Some requests bypass aggressive caching regardless of the active scope:
 | Query without `wait_for_non_stale_results()` | Yes | Default behavior. |
 | Query with `wait_for_non_stale_results()` | No | Aggressive caching is suppressed because the caller explicitly asked for non-stale data. |
 | Query with `no_caching()` | No | Caching is disabled for the request entirely, both standard and aggressive. |
-| Lazy query, lazy suggestion query | Same rule as the non-lazy form | Lazy operations are bundled into a single MultiGet request. Aggressive caching can only short-circuit the batch when every operation in it is aggressively cacheable; if any one operation has `wait_for_non_stale_results()` or `no_caching()` set, the entire batch is sent to the server (individual operations can still be served from the standard 304 cache on the response path). See [Perform queries lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx). |
+| Lazy query, lazy suggestion query | Same rule as the non-lazy form | Lazy operations are bundled into a single MultiGet request. Aggressive caching can only short-circuit the batch when every operation in it is aggressively cacheable; if any one operation has `wait_for_non_stale_results()` or `no_caching()` set, the entire batch is sent to the server (individual operations can still be served from the standard 304 cache on the response path). See [Perform queries lazily](../../session/how-to/perform-operations-lazily.mdx). |
 | Internal cluster bookkeeping | No | Topology and similar maintenance traffic is never aggressively cached. |
 
 A session opened with `SessionOptions(no_caching=True)` disables HTTP caching for every request that session issues, including aggressive caching.  
-See [Disable Caching per Session](../../../client-api/session/configuration/how-to-disable-caching.mdx).
+See [Disable Caching per Session](../../session/configuration/how-to-disable-caching.mdx).
 
 </ContentFrame>
 

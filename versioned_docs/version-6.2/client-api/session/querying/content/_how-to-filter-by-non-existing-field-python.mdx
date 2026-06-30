@@ -18,11 +18,11 @@ import CodeBlock from '@theme/CodeBlock';
 ## Query the collection (dynamic query)
 
 To run a dynamic query over a collection and find which documents are missing a specified field,  
-use the `not_` and `where_exists` methods, accessible from the [document_query](../../../../client-api/session/querying/document-query/what-is-document-query.mdx) 
+use the `not_` and `where_exists` methods, accessible from the [document_query](../document-query/what-is-document-query.mdx) 
 API, as demonstrated below.  
 
 This will either create a new auto-index or add the queried field to an existing auto-index.  
-Learn more about the dynamic query flow [here](../../../../client-api/session/querying/how-to-query.mdx#dynamicquery).  
+Learn more about the dynamic query flow [here](../how-to-query.mdx#dynamicquery).  
 
 **Example**
 
@@ -122,7 +122,7 @@ where true and not exists("Freight")
 
 * Documents can be searched by missing fields using Studio's [Query view](../../../../studio/database/queries/query-view.mdx).  
 
-* Use an [RQL](../../../../client-api/session/querying/what-is-rql.mdx) expression such as:
+* Use an [RQL](../what-is-rql.mdx) expression such as:
 <TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from "Orders"    

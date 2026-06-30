@@ -84,9 +84,9 @@ order by unitsInStock as long desc
 
 ## Order results when index-field is searchable
 
-* **When configuring an index-field** for [full-text search](../../../indexes/querying/searching.mdx), 
+* **When configuring an index-field** for [full-text search](../searching.mdx), 
   the content of the index-field is broken down into terms at indexing time. 
-  The specific tokenization depends on the [analyzer](../../../indexes/using-analyzers.mdx) used.
+  The specific tokenization depends on the [analyzer](../../using-analyzers.mdx) used.
 
 * **When querying such index**, if you order by that searchable index-field, 
   results will come back sorted based on the terms, and not based on the original text of the field.

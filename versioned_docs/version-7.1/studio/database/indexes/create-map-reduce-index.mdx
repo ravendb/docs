@@ -32,7 +32,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   This second stage groups the specified requested fields that were indexed in the Map stage,  
   and then runs the Reduce function to get a final aggregation result per field value.  
 
-* The Map-Reduce results can be visualized in the [Map-Reduce Visualizer](../../../studio/database/indexes/map-reduce-visualizer.mdx).  
+* The Map-Reduce results can be visualized in the [Map-Reduce Visualizer](./map-reduce-visualizer.mdx).  
 
 * In this page:  
   * [The Map Stage](#the-map-stage)  
@@ -125,7 +125,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   The total amount of all orders per company is represented in the `TotalOrdersAmount` column.  
   The column names correspond to the Map-Reduce fields definition.  
 
-* The Map-Reduce results can also be visualized in [Map-Reduce Visualizer](../../../studio/database/indexes/map-reduce-visualizer.mdx).  
+* The Map-Reduce results can also be visualized in [Map-Reduce Visualizer](./map-reduce-visualizer.mdx).  
 
 
 
@@ -193,7 +193,7 @@ to edit them manually since any index results update would overwrite all manual 
 * You can set up indexes on top of the Artificial Documents collection, including additional MapReduce indexes,  
   giving you the option to create recursive map-reduce operations.  
 
-* You can set up a [RavenDB ETL Task](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx) 
+* You can set up a [RavenDB ETL Task](../tasks/ongoing-tasks/ravendb-etl-task.mdx) 
   on the Artificial Documents collection to a dedicated database on a separate cluster for further processing, 
   as well as other ongoing tasks such as: [SQL ETL](../../../server/ongoing-tasks/etl/sql.mdx) and [Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx).
 </Admonition>

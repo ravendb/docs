@@ -8,7 +8,7 @@ import Panel from '@site/src/components/Panel';
 <Admonition type="note" title="">
 
 * This article focuses on **storing attachments locally**.  
-  To learn about remote storage, see [Store attachments in remote storage](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx).
+  To learn about remote storage, see [Store attachments in remote storage](../store-attachments-remote.mdx).
     
 * In this article
   * [Overview](#overview)  
@@ -31,7 +31,7 @@ import Panel from '@site/src/components/Panel';
 * The document’s metadata is updated to reference each attachment that is added.  
   This metadata update is considered a document change, which causes the document to be replicated to all other nodes in the database group.  
   Any actions associated with the document change, such as indexing or ongoing tasks configured for the document, will be triggered.
-  Learn more in [Attachments and other features](../../../../document-extensions/attachments/attachments-and-other-features.mdx).  
+  Learn more in [Attachments and other features](../../attachments-and-other-features.mdx).  
     
 * When stored **locally**, attachments are not embedded within the document.
   Instead, they are saved in a dedicated attachment storage area on the RavenDB server, separate from the document store.  
@@ -363,7 +363,7 @@ void Store(object entity, string name, Stream stream, string contentType = null)
 | **stream**           | `Stream`                     | The stream containing the binary content of the attachment. |
 | **contentType**      | `string`                     | The MIME type of the attachment (optional).<br/>Common examples include:<br/>`image/png`, `application/pdf`, `text/plain`, `video/mp4`. |
 | **parameters**       | `StoreAttachmentParameters`  | An object that encapsulates all parameters required to store an attachment. |
-| **remoteParameters** | `RemoteAttachmentParameters` | Parameters for uploading the attachment to [Remote storage](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx).<br/>Set to _null_ or omit to store the attachment **locally**. |
+| **remoteParameters** | `RemoteAttachmentParameters` | Parameters for uploading the attachment to [Remote storage](../store-attachments-remote.mdx).<br/>Set to _null_ or omit to store the attachment **locally**. |
 | **changeVector**     | `string`                     | The document's change vector used for concurrency control.<br/>If set to `null`, no concurrency check will be performed and the attachment will be added regardless of the document's current state. |
 
 <TabItem>

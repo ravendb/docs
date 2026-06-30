@@ -28,7 +28,7 @@ import CodeBlock from '@theme/CodeBlock';
   * A new counter is **created** on the document.  
   * A counter is **deleted** from the document.
     
-* A revision will Not be created upon modifying the value of an existing [counter](../../../document-extensions/counters/overview.mdx).
+* A revision will Not be created upon modifying the value of an existing [counter](../../counters/overview.mdx).
 ### Stored data:
 
 * A revision that is created for a document that contains counters  
@@ -57,11 +57,11 @@ import CodeBlock from '@theme/CodeBlock';
 </TabItem>
 ### Reverted data:
 
-When a document is [reverted](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx) to a revision that has counters,  
+When a document is [reverted](../revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx) to a revision that has counters,  
 the counters from the revision are restored to functionality along with their values.  
 ### Extract counters data from revisions:
 
-Use [GetMetadataFor](../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-metadata) to get the revisions metadata for a specified document,  
+Use [GetMetadataFor](../client-api/session/loading.mdx#get-revisions-metadata) to get the revisions metadata for a specified document,  
 and then extract the counters' data.  
 
 <Tabs groupId='languageSyntax'>
@@ -110,7 +110,7 @@ List<MetadataAsDictionary> countersDataInRevisions = revisionsMetadata
     * A time series is **deleted** from the document.  
       (A time series is deleted from a document when all its entries are deleted)
 
-* A revision will Not be created upon modifying the values of an existing [time series](../../../document-extensions/timeseries/overview.mdx).
+* A revision will Not be created upon modifying the values of an existing [time series](../../timeseries/overview.mdx).
 ### Stored Data:
 
 * A revision that is created for a document that contains time series  
@@ -122,7 +122,7 @@ List<MetadataAsDictionary> countersDataInRevisions = revisionsMetadata
   * The number of entries in each time series
   * Dates of the first and last entry in each time series
   
-* Read more about Revisions and Time Series [here](../../../document-extensions/timeseries/time-series-and-other-features.mdx#revisions).
+* Read more about Revisions and Time Series [here](../../timeseries/time-series-and-other-features.mdx#revisions).
 
 * Sample revision metadata:  
 <TabItem value="json" label="json">
@@ -150,7 +150,7 @@ List<MetadataAsDictionary> countersDataInRevisions = revisionsMetadata
 </TabItem>
 ### Reverted Data:
 
-When a document is [reverted](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx) to a revision that has a time series:  
+When a document is [reverted](../revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx) to a revision that has a time series:  
 
 * If the current document **contains** a time series name as in the revision:
     * The reverted document will keep the time series entries & values as it was in the current document.
@@ -169,7 +169,7 @@ When a document is [reverted](../../../document-extensions/revisions/revert-docu
 
 A document revision will be created when:  
 
-  * A new [attachment](../../../document-extensions/attachments/overview.mdx) is **added** to the document.  
+  * A new [attachment](../../attachments/overview.mdx) is **added** to the document.  
   * An attachment is **deleted** from the document.   
 ### Stored Data:
 
@@ -209,7 +209,7 @@ A document revision will be created when:
 </TabItem>
 ### Reverted Data:
 
-When a document is [reverted](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx) to a revision that has attachments,  
+When a document is [reverted](../revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx) to a revision that has attachments,  
 the attachments are restored to their state when the revision was created.
 
 

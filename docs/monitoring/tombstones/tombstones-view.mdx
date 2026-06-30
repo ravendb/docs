@@ -12,11 +12,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Tombstones: Studio view
 <Admonition type="note" title="">
 
-* A [tombstone](../../monitoring/tombstones/overview.mdx) is the marker RavenDB keeps when a
+* A [tombstone](./overview.mdx) is the marker RavenDB keeps when a
   document is deleted, so the processes that rely on it (indexing, replication, ETL, and
   incremental backup) can handle the deletion.  
 
-* RavenDB periodically [cleans up](../../monitoring/tombstones/overview.mdx#tombstone-cleanup) all the tombstones that are no longer needed by any process.
+* RavenDB periodically [cleans up](./overview.mdx#tombstone-cleanup) all the tombstones that are no longer needed by any process.
 
 * The **Tombstones** view shows, for each collection, how far its tombstone cleanup has already reached,  
   and for each process, the number of tombstones it still has to process.  
@@ -52,7 +52,7 @@ To open the **Tombstones** view, go to `Settings` > `Tombstones`.
    ![Force cleanup confirmation](./assets/tombstones-force-cleanup-dialog.png)  
 
    The server runs tombstone cleanup on a schedule, every 5 minutes by default,  
-   set by [Tombstones.CleanupIntervalInMin](../../monitoring/tombstones/configuration.mdx#tombstonescleanupintervalinmin).  
+   set by [Tombstones.CleanupIntervalInMin](./configuration.mdx#tombstonescleanupintervalinmin).  
    Clicking **Force cleanup** runs the cleanup immediately, removing every tombstone that can currently be removed.  
 
 5. **Minimum Etags**  

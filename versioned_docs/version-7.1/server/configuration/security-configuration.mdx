@@ -15,7 +15,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="">
 
 * The following configuration keys allow you to control the desired level of security in a RavenDB server.  
-  To learn more about RavenDB's security features, see this [security overview](../../server/security/overview.mdx).
+  To learn more about RavenDB's security features, see this [security overview](../security/overview.mdx).
 
 * In this page:
   * Security.AuditLog:  
@@ -195,7 +195,7 @@ Used for renewal requests.
 
 * The [Security.Certificate.Path](#securitycertificatepath) setting takes precedence over this executable.
 
-* Learn more in [get certificate via loader](../../server/security/authentication/certificate-configuration.mdx#with-logic-foreign-to-ravendb-or-external-certificate-storage).
+* Learn more in [get certificate via loader](../security/authentication/certificate-configuration.mdx#with-logic-foreign-to-ravendb-or-external-certificate-storage).
 - **Type**: `string`
 - **Default**: `null`
 - **Scope**: Server-wide only
@@ -239,7 +239,7 @@ Certificate setting priority order:
 
 * A command or executable that handles automatic renewals, providing a renewed `.pfx` cluster certificate.
 
-* The [leader node](../../server/clustering/rachis/cluster-topology.mdx#leader) will invoke this executable once every hour, and if a new certificate is received,  
+* The [leader node](../clustering/rachis/cluster-topology.mdx#leader) will invoke this executable once every hour, and if a new certificate is received,  
   it will be sent to all other nodes.
 
 * The executable specified in [Security.Certificate.Change.Exec](#securitycertificatechangeexec)

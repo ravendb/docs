@@ -24,7 +24,7 @@ import Panel from '@site/src/components/Panel';
 * RavenDB features can detect archived documents and handle them in different ways.
   For example, indexing and data subscriptions can be configured to exclude, include, or handle only archived documents during processing.  
   Limiting processing to either archived or non-archived documents may **improve performance**.  
-  Learn more in [Archived documents and other features](../data-archival/archived-documents-and-other-features.mdx).
+  Learn more in [Archived documents and other features](./archived-documents-and-other-features.mdx).
 
 * Archived documents are stored in **compressed** form, which helps **reduce database size**.  
   Note that while compression saves disk space, retrieving archived documents may be slower and consume more CPU/memory than accessing regular documents.
@@ -44,12 +44,12 @@ import Panel from '@site/src/components/Panel';
 
 * **Enable the archiving feature**  
   * To archive documents, you must first enable the archiving feature in RavenDB.  
-    Learn how in the dedicated article: [Enable data archiving](../data-archival/enable-data-archiving.mdx).
+    Learn how in the dedicated article: [Enable data archiving](./enable-data-archiving.mdx).
 
 * **Schedule documents for archival**
   * Once the feature is enabled, you can schedule any document to be archived at a specific future time.  
     This is done by adding the `@archive-at` metadata property to the document, which specifies the time at which it should be archived.
-    Learn more in the dedicated article: [Schedule document archiving](../data-archival/schedule-document-archiving.mdx).  
+    Learn more in the dedicated article: [Schedule document archiving](./schedule-document-archiving.mdx).  
   * The server scans the database periodically (at an interval specified when the task is enabled),  
     identifies documents scheduled for archiving, and archives them at the scheduled time.
   * In a cluster, the archiving task runs on the [preferred node](../client-api/configuration/load-balance/overview.mdx#the-preferred-node) (the first node in the cluster topology).  
@@ -68,7 +68,7 @@ import Panel from '@site/src/components/Panel';
 
 * **Unarchiving documents**  
   * An archived document can be unarchived.  
-    Learn more in the dedicated article: [Unarchiving documents](../data-archival/unarchiving-documents.mdx).  
+    Learn more in the dedicated article: [Unarchiving documents](./unarchiving-documents.mdx).  
 
 </Panel>
 
@@ -82,16 +82,16 @@ A document that has been archived is compressed and marked with both a metadata 
    * This property is informational only -  
      you **cannot** archive a document by manually adding `"@archived": true` to its metadata.
      To archive a document, you must schedule it for archival.  
-     Learn more in [Schedule document archiving](../data-archival/schedule-document-archiving.mdx).  
+     Learn more in [Schedule document archiving](./schedule-document-archiving.mdx).  
    * This property allows RavenDB features, clients, and users to recognize the document’s archived status and handle it accordingly.
      For example, a user-defined ETL task can use the presence of this property to skip or handle archived documents differently.  
-     Learn more in [Archived documents and other features](../data-archival/archived-documents-and-other-features.mdx).
+     Learn more in [Archived documents and other features](./archived-documents-and-other-features.mdx).
 
 * **Internal flag**:
   * When a document is archived, the internal flag `"@flags": "Archived"` is added to its metadata.
   * Features like indexing and data subscriptions use this flag to detect archived documents and handle them based on the configured behavior.  
-    Learn more in [Archived documents and indexing](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-indexing) & 
-    [Archived documents and data subscriptions](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions).
+    Learn more in [Archived documents and indexing](./archived-documents-and-other-features.mdx#archived-documents-and-indexing) & 
+    [Archived documents and data subscriptions](./archived-documents-and-other-features.mdx#archived-documents-and-subscriptions).
     
 **An archived document**:  
 

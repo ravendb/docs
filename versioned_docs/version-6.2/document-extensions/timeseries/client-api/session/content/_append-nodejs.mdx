@@ -15,13 +15,13 @@ import CodeBlock from '@theme/CodeBlock';
   * **Modifying an existing time series entry**  
     Use `append` to update the data of an existing entry with the specified timestamp.
 
-* Each call to `append` handles a **single** [time series entry](../../../../../document-extensions/timeseries/design.mdx#time-series-entries).
+* Each call to `append` handles a **single** [time series entry](../../../design.mdx#time-series-entries).
 
 * To append **multiple** entries in a single transaction you can:
     * Call `append` as many times as needed before calling `session.saveChanges`, as shown in the examples below.
-    * Use patching to update the time series. Learn more in [Patch time series entries](../../../../../document-extensions/timeseries/client-api/session/patch.mdx).  
+    * Use patching to update the time series. Learn more in [Patch time series entries](../patch.mdx).  
     * Append entries directly on the _Store_ via [Operations](../../../../../client-api/operations/what-are-operations.mdx). 
-      Learn more in [Append time series operations](../../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx).
+      Learn more in [Append time series operations](../../operations/append-and-delete.mdx).
 * In this page:  
   * [`append` usage](#append-usage)  
   * [Examples](#examples)
@@ -108,7 +108,7 @@ await session.saveChanges();
 #### Append entries with multiple values:
 
 * In this example, we append multi-value StockPrice entries.  
-* Notice the clarity gained by [naming the values](../../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx).  
+* Notice the clarity gained by [naming the values](../../named-time-series-values.mdx).  
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Native" label="Native">

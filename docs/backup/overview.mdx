@@ -70,10 +70,10 @@ Periodic backup tasks are a key tool in ensuring your data safety, as they run i
   e.g.,  
   - `0 */6 * * *` - _0 minutes past the hour, every 6 hours_
   - `*/20 * * * *` - _every 20 minutes_
-* The execution of a running backup operation can be [delayed](../backup/create/periodic-tasks/database-backup.mdx#delaying-or-aborting-a-running-backup-operation) if needed. For example, while performing maintenance operations on the server.
+* The execution of a running backup operation can be [delayed](./create/periodic-tasks/database-backup.mdx#delaying-or-aborting-a-running-backup-operation) if needed. For example, while performing maintenance operations on the server.
 
-[Learn to define a periodic backup task using the client API](../backup/create/periodic-tasks/database-backup.mdx#creating-and-managing-periodic-backups-using-the-client-api)  
-[Learn to define a periodic backup task via Studio](../backup/create/periodic-tasks/database-backup.mdx#creating-and-managing-periodic-backups-via-studio)  
+[Learn to define a periodic backup task using the client API](./create/periodic-tasks/database-backup.mdx#creating-and-managing-periodic-backups-using-the-client-api)  
+[Learn to define a periodic backup task via Studio](./create/periodic-tasks/database-backup.mdx#creating-and-managing-periodic-backups-via-studio)  
 
 </ContentFrame>
 
@@ -85,8 +85,8 @@ You can run an immediate one-time backup operation to safeguard your data, e.g.,
 
 One-time backups are also useful when you want to create a backup at a specific point in time that doesn't fit the schedule of your periodic backup tasks.
 
-[Learn to create a one-time backup using the client API](../backup/create/one-time-backup.mdx#running-a-one-time-backup-operation-using-the-client-api)  
-[Learn to create a one-time backup via Studio](../backup/create/one-time-backup.mdx#running-a-one-time-backup-operation-using-studio)  
+[Learn to create a one-time backup using the client API](./create/one-time-backup.mdx#running-a-one-time-backup-operation-using-the-client-api)  
+[Learn to create a one-time backup via Studio](./create/one-time-backup.mdx#running-a-one-time-backup-operation-using-studio)  
 
 </ContentFrame>
 
@@ -145,7 +145,7 @@ Backups contain both database-level and cluster-level content, as detailed below
 | [Attachments](../document-extensions/attachments/overview.mdx) | ✔ | ✔ |
 | [Counters](../document-extensions/counters/overview.mdx) | ✔ | ✔ |
 | [Time-Series](../document-extensions/timeseries/overview.mdx) | ✔ | ✔ |
-| [Change Vector data](../server/clustering/replication/change-vector.mdx#after-restoring-a-database-from-backup) | Change Vectors are not preserved,<br />but recreated after [restoring](../backup/restore.mdx). | ✔ |
+| [Change Vector data](../server/clustering/replication/change-vector.mdx#after-restoring-a-database-from-backup) | Change Vectors are not preserved,<br />but recreated after [restoring](./restore.mdx). | ✔ |
 | [Tombstones](../monitoring/tombstones/overview.mdx) | ✔ | ✔ |
 | [Conflicts](../server/clustering/replication/replication-conflicts.mdx) | ✔ | ✔ |
 
@@ -159,7 +159,7 @@ Backups contain both database-level and cluster-level content, as detailed below
 | [Database Record](../studio/database/settings/database-record.mdx) | ✔ | ✔ |
 | [Compare-exchange values](../compare-exchange/overview.mdx) | ✔ | ✔ |
 | [Identities](../client-api/document-identifiers/working-with-document-identifiers.mdx#identities) | ✔ | ✔ |
-| [Indexes](../indexes/creating-and-deploying.mdx) | Indexes are not preserved,<br />but rebuilt after [restoring](../backup/restore.mdx)<br />from backed up index definitions. | ✔ |
+| [Indexes](../indexes/creating-and-deploying.mdx) | Indexes are not preserved,<br />but rebuilt after [restoring](./restore.mdx)<br />from backed up index definitions. | ✔ |
 | [Ongoing Tasks configuration](../studio/database/tasks/ongoing-tasks/general-info.mdx) | ✔ | ✔ |
 | [Subscriptions](../client-api/data-subscriptions/what-are-data-subscriptions.mdx) | ✔ | ✔ |
 
@@ -296,7 +296,7 @@ When using a remote destination (like an FTP destination or an S3 bucket), you c
 - When set to **Default**, backups are **stored locally** and exported from the local directory.  
   You may prefer this mode if you want to ensure that backup files are not lost even if uploading to the remote destination fails, or if you're storing backups locally anyway in addition to exporting them.  
   <Admonition type="note" title="">
-  * If a [local folder](../backup/create/periodic-tasks/database-backup.mdx#e-choosing-where-to-store-the-backups) was selected as one of the storage destinations, RavenDB will use it to store both the temporary backup files created during the upload process and the permanent backup files.  
+  * If a [local folder](./create/periodic-tasks/database-backup.mdx#e-choosing-where-to-store-the-backups) was selected as one of the storage destinations, RavenDB will use it to store both the temporary backup files created during the upload process and the permanent backup files.  
   * If a local folder **was not selected**, RavenDB will use the 
     folder defined by the [Storage.TempPath](../server/configuration/storage-configuration.mdx#storagetemppath) configuration key.  
     If `Storage.TempPath` is not defined, the temporary files 
@@ -421,8 +421,8 @@ A snapshot is an exact image of the database, and its encryption matches the dat
 
 The **Incremental backups** of an encrypted full backup (either a logical backup or a snapshot) are encrypted as well, using **the same encryption key** as the full backup.  
 
-[Learn to encrypt your backups using the client API](../backup/create/periodic-tasks/database-backup.mdx#setting-encryption)  
-[Learn to encrypt your backups via Studio](../backup/create/periodic-tasks/database-backup.mdx#d-setting-backup-encryption-options)  
+[Learn to encrypt your backups using the client API](./create/periodic-tasks/database-backup.mdx#setting-encryption)  
+[Learn to encrypt your backups via Studio](./create/periodic-tasks/database-backup.mdx#d-setting-backup-encryption-options)  
 
 </ContentFrame>
 <ContentFrame>
@@ -444,8 +444,8 @@ By default, backups are stored indefinitely. To prevent the accumulation of outd
 
 A full backup and its corresponding incremental backups are always deleted as a group when the age of all incremental backups exceeds the retention period.
 
-[Learn to set a retention policy using the client API](../backup/create/periodic-tasks/database-backup.mdx#setting-retention-policy)  
-[Learn to set a retention policy via Studio](../backup/create/periodic-tasks/database-backup.mdx#c-setting-backups-retention-policy)  
+[Learn to set a retention policy using the client API](./create/periodic-tasks/database-backup.mdx#setting-retention-policy)  
+[Learn to set a retention policy via Studio](./create/periodic-tasks/database-backup.mdx#c-setting-backups-retention-policy)  
 
 </ContentFrame>
 
@@ -471,7 +471,7 @@ A **server-wide task** solves this difficulty by allowing you to define the back
 
 ### The server-wide configuration
 
-The configuration you set for a server-wide backup task is similar to the configuration of a [regular database backup task](../backup/create/periodic-tasks/database-backup.mdx), with the following changes:  
+The configuration you set for a server-wide backup task is similar to the configuration of a [regular database backup task](./create/periodic-tasks/database-backup.mdx), with the following changes:  
 
 ---
 
@@ -525,8 +525,8 @@ As multiple databases are backed up, the backups for each database are kept sepa
 
 </ContentFrame>
 
-[Learn to create and manage server-wide backup tasks using the client API](../backup/create/periodic-tasks/server-wide-backup.mdx#creating-and-managing-server-wide-backup-tasks-using-the-client-api)  
-[Learn to create and manage server-wide backup tasks via Studio](../backup/create/periodic-tasks/server-wide-backup.mdx#creating-and-managing-server-wide-backup-tasks-via-studio)  
+[Learn to create and manage server-wide backup tasks using the client API](./create/periodic-tasks/server-wide-backup.mdx#creating-and-managing-server-wide-backup-tasks-using-the-client-api)  
+[Learn to create and manage server-wide backup tasks via Studio](./create/periodic-tasks/server-wide-backup.mdx#creating-and-managing-server-wide-backup-tasks-via-studio)  
 
 </Panel>
 
@@ -580,12 +580,12 @@ use the **root OID** + `1.13.1`:
 
 ### Retrieving a backup task status
 
-You can retrieve a backup task's **status**, which reflects the task's **most recent completed backup run** (whether scheduled or [triggered manually](../backup/create/periodic-tasks/database-backup.mdx#triggering-an-immediate-backup-operation)).
+You can retrieve a backup task's **status**, which reflects the task's **most recent completed backup run** (whether scheduled or [triggered manually](./create/periodic-tasks/database-backup.mdx#triggering-an-immediate-backup-operation)).
 
 The retrieved status includes details such as the number of backups performed by the task and the lasy backup operation's timestamp, duration, destination path, and potentially error information.  
 
-[Learn to retrieve the status of a database backup task](../backup/create/periodic-tasks/database-backup.mdx#getting-backup-task-status)  
-[Learn to retrieve the status of a server-wide derived backup task](../backup/create/periodic-tasks/server-wide-backup.mdx#getting-a-derived-backup-task-status)  
+[Learn to retrieve the status of a database backup task](./create/periodic-tasks/database-backup.mdx#getting-backup-task-status)  
+[Learn to retrieve the status of a server-wide derived backup task](./create/periodic-tasks/server-wide-backup.mdx#getting-a-derived-backup-task-status)  
 
 </Panel>
 
@@ -598,8 +598,8 @@ When restoring from backup:
 - The restore operation accesses the backup folder.  
 - The full backup and all subsequent incremental backups are automatically retrieved and their content added to the new database in the correct order.  
 
-[Learn how to restore a database from backup using the client API](../backup/restore.mdx#restoring-from-backup-using-the-client-api)  
-[Learn how to restore a database from backup via Studio](../backup/restore.mdx#restoring-from-backup-using-studio)
+[Learn how to restore a database from backup using the client API](./restore.mdx#restoring-from-backup-using-the-client-api)  
+[Learn how to restore a database from backup via Studio](./restore.mdx#restoring-from-backup-using-studio)
 </ContentFrame>
 
 <ContentFrame>
@@ -607,7 +607,7 @@ A database is typically restored from backup to a single node, and then replicat
 
 When restored from a snapshot image, the database can be restored to multiple cluster nodes simultaneously. This is because snapshots retain document change vectors, allowing documents to be recognized across nodes without further replication.
 
-[Learn how to restore from backup to multiple cluster nodes](../backup/restore.mdx#restoring-a-database-to-multiple-cluster-nodes)  
+[Learn how to restore from backup to multiple cluster nodes](./restore.mdx#restoring-a-database-to-multiple-cluster-nodes)  
 
 </ContentFrame>
 

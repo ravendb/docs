@@ -32,7 +32,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Time series index:
 
-    * Time series indexes process [segments](../../../document-extensions/timeseries/design.mdx#segmentation) that contain time series entries.  
+    * Time series indexes process [segments](../design.mdx#segmentation) that contain time series entries.  
       The entries are indexed through the segment they are stored in, for example, using a LINQ syntax that resembles this one:
 
 <TabItem value="sql" label="sql">
@@ -65,8 +65,8 @@ from entry in segment
 #### Query results:
 
 * Time series index:  
-  When [querying](../../../document-extensions/timeseries/querying/using-indexes.mdx) a time series index, each result item corresponds to the type defined by the **index-entry** in the index definition,
-  (unless results are [projected](../../../document-extensions/timeseries/querying/using-indexes.mdx#project-results)). The documents themselves are not returned.
+  When [querying](../querying/using-indexes.mdx) a time series index, each result item corresponds to the type defined by the **index-entry** in the index definition,
+  (unless results are [projected](../querying/using-indexes.mdx#project-results)). The documents themselves are not returned.
 
 * Document index:  
   The resulting objects are the document entities (unless results are projected).

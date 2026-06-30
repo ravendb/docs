@@ -14,8 +14,8 @@ import Panel from '@site/src/components/Panel';
     * Enable the feature.
     * Configure the remote destinations.  
       (Currently, Azure Blob Storage and Amazon S3 or any S3-compatible storage service are supported).
-    * Mark the attachment for remote storage, either when [storing](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx)
-      it or later using a [patch](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#schedule-existing-attachments-for-remote-upload) operation.
+    * Mark the attachment for remote storage, either when [storing](../store-attachments/store-attachments-remote.mdx)
+      it or later using a [patch](../store-attachments/store-attachments-remote.mdx#schedule-existing-attachments-for-remote-upload) operation.
 
 * When the Remote Attachments feature is enabled:  
   * RavenDB runs a **background task** that periodically scans the database for attachments marked for remote upload.  

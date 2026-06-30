@@ -33,7 +33,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * **When deleting a document that has revisions**:  
   Deleting a document that has revisions will always create a `"Delete Revision"`.  
   This occurs regardless of whether the revisions were created automatically or manually,  
-  or if the [Revisions configuration](../../../../studio/database/settings/document-revisions.mdx#revisions-configuration) is enabled.
+  or if the [Revisions configuration](../../settings/document-revisions.mdx#revisions-configuration) is enabled.
 
 * **When deleting a document that does Not have revisions**:  
   If you delete a document that does not have revisions, a "Delete Revision" will be created only if the revisions configuration is set and enabled.
@@ -52,10 +52,10 @@ import LanguageContent from "@site/src/components/LanguageContent";
   which deletes revisions based on a defined frequency and a specified "age to keep".
 
 * While the Revisions Bin provides access only to a deleted document's revisions,  
-  the [All Revisions](../../../../studio/database/document-extensions/revisions/all-revisions.mdx) view provides access to ALL revisions in the database,
+  the [All Revisions](./all-revisions.mdx) view provides access to ALL revisions in the database,
   where they can also be deleted.
 
-* For a complete list of deletion options, see [All ways to delete revisions](../../../../studio/database/document-extensions/revisions/all-revisions.mdx#all-ways-to-delete-revisions).
+* For a complete list of deletion options, see [All ways to delete revisions](./all-revisions.mdx#all-ways-to-delete-revisions).
 **Restoring revisions**:
 
 * Revisions of a deleted document can be restored from the Revisions Bin and associated with a new document.
@@ -102,7 +102,7 @@ Clicking the `orders/829-A` ID from the above list will open the following view:
 
 * When a new document is created with the same ID:  
   * The revisions of the deleted document are retrieved from the Revisions Bin and associated with the new document.  
-    This occurs even if the [Revisions configuration](../../../../studio/database/settings/document-revisions.mdx#revisions-configuration) is not defined or enabled for this document collection at the time.
+    This occurs even if the [Revisions configuration](../../settings/document-revisions.mdx#revisions-configuration) is not defined or enabled for this document collection at the time.
   * These revisions are removed from the Revisions Bin once restored.
   * The "Delete Revision" that marked the original document's deletion will also be removed from the Revisions Bin  
     and will now appear in the new document’s revision history.
@@ -111,7 +111,7 @@ Clicking the `orders/829-A` ID from the above list will open the following view:
 
 1. The ID of the deleted document that was recreated.
 2. The content of the newly created document.
-3. If the [Revisions configuration](../../../../studio/database/settings/document-revisions.mdx#revisions-configuration)
+3. If the [Revisions configuration](../../settings/document-revisions.mdx#revisions-configuration)
    is defined and enabled for the document collection at the time of creating the new document, a new revision marking its creation will be generated.
 4. This is the "Delete Revision" that marked the deletion of the original document.   
    This revision is now part of the new document's revision history.

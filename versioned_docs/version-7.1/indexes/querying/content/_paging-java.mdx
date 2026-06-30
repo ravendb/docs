@@ -17,7 +17,7 @@ import CodeBlock from '@theme/CodeBlock';
 
     * Querying **Corax** indexes:  
       The default page size is the same as the one employed by Lucene.  
-      Note: when using [Corax](../../../indexes/search-engine/corax.mdx) as the search engine, indexes with more than `int.MaxValue` entries can be created and used.
+      Note: when using [Corax](../../search-engine/corax.mdx) as the search engine, indexes with more than `int.MaxValue` entries can be created and used.
       To match this capacity, queries over Corax indexes can skip a number of results that exceed this max value and take documents from that location.  
 
 * **Performance**:  
@@ -188,9 +188,9 @@ This practice has several benefits:
 
 * The server will skip duplicate results internally in the following two scenarios:
 
-    1. When making a [Projection query](../../../indexes/querying/projections.mdx) with [Distinct](../../../indexes/querying/distinct.mdx).
+    1. When making a [Projection query](../projections.mdx) with [Distinct](../distinct.mdx).
 
-    2. When querying a [Fanout index](../../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document).
+    2. When querying a [Fanout index](../../indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document).
 
 * In those cases:
 

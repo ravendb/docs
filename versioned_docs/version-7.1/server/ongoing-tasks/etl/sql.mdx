@@ -12,7 +12,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Ongoing Tasks: SQL ETL
 <Admonition type="note" title="">
 
-* **SQL ETL** is a task that creates an [ETL process](../../../server/ongoing-tasks/etl/basics.mdx) where data from a RavenDB database is extracted, transformed, and loaded into a relational database as the destination.
+* **SQL ETL** is a task that creates an [ETL process](./basics.mdx) where data from a RavenDB database is extracted, transformed, and loaded into a relational database as the destination.
 
 * In this article:
    * [Supported relational databases](#supported-relational-databases)
@@ -118,7 +118,7 @@ Define the target tables where the SQL ETL task will load data.
 
 <Panel heading="Transformation scripts">
 
-The [basic characteristics](../../../server/ongoing-tasks/etl/basics.mdx) of an SQL ETL script are similar to those of other ETL types.  
+The [basic characteristics](./basics.mdx) of an SQL ETL script are similar to those of other ETL types.  
 The script defines what data to **extract** from the source document, how to **transform** this data,  
 and which SQL table to **load** it to.
 
@@ -371,7 +371,7 @@ The SQL ETL task does not support sending [Counters](../../../document-extension
 
 * **Command timeout**  
   Number of seconds after which SQL command will timeout.  
-  It overrides the value defined in the [ETL.SQL.CommandTimeoutInSec](../../../server/configuration/etl-configuration.mdx#etlsqlcommandtimeoutinsec) configuration key.  
+  It overrides the value defined in the [ETL.SQL.CommandTimeoutInSec](../../configuration/etl-configuration.mdx#etlsqlcommandtimeoutinsec) configuration key.  
   Default: `null` (use provider default).
 * **Parameterized deletes**  
   Control whether DELETE statements generated during the ETL process use parameterized SQL queries,  

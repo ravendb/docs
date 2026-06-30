@@ -6,7 +6,7 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * When set, the `ReadBalanceBehavior` configuration will be in effect according to the   
-  conditional flow described in [Client logic for choosing a node](../../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).
+  conditional flow described in [Client logic for choosing a node](../overview.mdx#client-logic-for-choosing-a-node).
 
 * Once configuration is in effect then:  
   * **_Read_** requests - will be sent to the node determined by the configured option - see below.
@@ -29,7 +29,7 @@ import CodeBlock from '@theme/CodeBlock';
 
   * **Read-balance**  
     No read balancing will occur.  
-    The client will always send _Read_ requests to the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node).
+    The client will always send _Read_ requests to the [preferred node](../overview.mdx#the-preferred-node).
   * **Failover**  
     The client will failover nodes in the order they appear in the [topology nodes list](../../../../studio/database/settings/manage-database-group.mdx#database-group-topology---actions).
 ### `RoundRobin`
@@ -39,7 +39,7 @@ import CodeBlock from '@theme/CodeBlock';
     **Per session**, the client will select the next node from the topology list based on this internal session-id.  
   * All _Read_ requests made on the session (i.e a query or a load request, etc.)  
     will address the calculated node.  
-  * A _Read_ request that is made on the store (i.e. executing an [operation](../../../../client-api/operations/what-are-operations.mdx))   
+  * A _Read_ request that is made on the store (i.e. executing an [operation](../../../operations/what-are-operations.mdx))   
     will go to the preferred node.  
 * **Failover**  
   In case of a failure, the client will try the next node from the topology nodes list.  
@@ -47,7 +47,7 @@ import CodeBlock from '@theme/CodeBlock';
 
   * **Read-balance**  
     All _Read_ requests will go to the fastest node.  
-    The fastest node is determined by a [Speed Test](../../../../client-api/cluster/speed-test.mdx).
+    The fastest node is determined by a [Speed Test](../../../cluster/speed-test.mdx).
   * **Failover**  
     In case of a failure, a speed test will be triggered again,  
     and in the meantime the client will use the preferred node.
@@ -86,12 +86,12 @@ var documentStore = new DocumentStore
 
 #### Set ReadBalanceBehavior on the server - by operation:
 
-* The `ReadBalanceBehavior` configuration can be set **on the server** by sending an [operation](../../../../client-api/operations/what-are-operations.mdx).  
+* The `ReadBalanceBehavior` configuration can be set **on the server** by sending an [operation](../../../operations/what-are-operations.mdx).  
 
 * The operation can modify the default database only, or all databases - see examples below.  
 
 * Once configuration on the server has changed, the running client will get updated with the new settings.  
-  See [keeping client up-to-date](../../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date).  
+  See [keeping client up-to-date](../overview.mdx#keeping-the-client-topology-up-to-date).  
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Operation_For_Default_Database" label="Operation_For_Default_Database">
@@ -152,7 +152,7 @@ using (documentStore)
   Setting it from the Studio will set this configuration directly **on the server**.  
 
 * Once configuration on the server has changed, the running client will get updated with the new settings.  
-  See [keeping client up-to-date](../../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date).  
+  See [keeping client up-to-date](../overview.mdx#keeping-the-client-topology-up-to-date).  
 
 
 

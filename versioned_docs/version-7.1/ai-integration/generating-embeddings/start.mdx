@@ -16,20 +16,20 @@ import discordImage from "@site/static/img/discord-lg.webp";
 ### Create embeddings to enable AI-powered similarity search.
     
 * [Embeddings](https://en.wikipedia.org/wiki/Embedding_(machine_learning)) are numeric vectors that represent the meaning, context, or relationships within the data (e.g., text or images).
-  They allow you to search for similar content using [Vector search](../../ai-integration/vector-search/start.mdx), rather than exact matches.
+  They allow you to search for similar content using [Vector search](../vector-search/start.mdx), rather than exact matches.
     
-* RavenDB can generate embeddings automatically using [Embeddings-generation tasks](../../ai-integration/generating-embeddings/embeddings-generation-task.mdx) that you define.
+* RavenDB can generate embeddings automatically using [Embeddings-generation tasks](./embeddings-generation-task.mdx) that you define.
   These tasks process text fields from documents and convert them into vectors using either an AI model from external providers 
-  (e.g., [OpenAI](../../ai-integration/connection-strings/open-ai.mdx)) or [RavenDB’s built-in model](../../ai-integration/connection-strings/embedded.mdx).
+  (e.g., [OpenAI](../connection-strings/open-ai.mdx)) or [RavenDB’s built-in model](../connection-strings/embedded.mdx).
   The resulting vectors are stored in a dedicated collection in your database.
     
 * Alternatively, you can skip pre-generating embeddings via _Embedding-generation tasks_ and let RavenDB generate them on-the-fly during dynamic vector search queries.
-  Learn more in [Vector search using a dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx). 
+  Learn more in [Vector search using a dynamic query](../vector-search/vector-search-using-dynamic-query.mdx). 
 
 * RavenDB does not generate embeddings for non-text content such as images.
   However, you can import embeddings for such content from external providers and store them in your database for similarity search.
 
-* Embeddings also power other AI features in RavenDB, such as [GenAI](../../ai-integration/gen-ai-integration/start.mdx) and [AI agents](../../ai-integration/ai-agents/start.mdx),  
+* Embeddings also power other AI features in RavenDB, such as [GenAI](../gen-ai-integration/start.mdx) and [AI agents](../ai-agents/start.mdx),  
   which may use vector search queries to retrieve relevant documents in response to LLM requests.
 
 ### Use cases

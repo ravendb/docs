@@ -6,7 +6,7 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * Use `GetTimeSeriesOperation` to retrieve entries from a **single** time series.  
-  You can also retrieve entries from a single time series using the Session's [timesSeriesFor.get](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx) method.
+  You can also retrieve entries from a single time series using the Session's [timesSeriesFor.get](../../session/get/get-entries.mdx) method.
 
 * Use `GetMultipleTimeSeriesOperation` to retrieve entries from **multiple** time series.
 
@@ -89,7 +89,7 @@ const getTimeSeriesOp = new GetTimeSeriesOperation(docId, timeseries, from, to, 
 
 <Admonition type="info" title="">
 
-* Details of class `TimeSeriesEntry ` are listed in [this syntax section](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#syntax).
+* Details of class `TimeSeriesEntry ` are listed in [this syntax section](../../session/get/get-entries.mdx#syntax).
 * If the requested time series does Not exist, a null object will be returned.
 * No exceptions are generated.
 

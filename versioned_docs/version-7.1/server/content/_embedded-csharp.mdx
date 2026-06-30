@@ -174,7 +174,7 @@ and additional options.
 | **AcceptEula** |  `bool` | If set to `false`, will ask to accept our terms & conditions |
 | **ServerUrl** | `string` | What address we want to start our server (default `127.0.0.1:0`) |
 | **MaxServerStartupTimeDuration** | `TimeSpan` | The timeout for the server to start |
-| **CommandLineArgs** | `List<string>` | The [command lines arguments](../../server/configuration/configuration-options.mdx#command-line-arguments) to start the server with |
+| **CommandLineArgs** | `List<string>` | The [command lines arguments](../configuration/configuration-options.mdx#command-line-arguments) to start the server with |
 | **ServerDirectory** | `string` | The path to the server binary files&lt;sup&gt;[*](#setting-server-directory) |
 
 <TabItem value="start_server_with_options" label="start_server_with_options">
@@ -418,7 +418,7 @@ serverOptions.Secured(
 </TabItem>
 
 The first way to enable authentication is to set the 
-[certificate with the path to your .pfx](../../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) 
+[certificate with the path to your .pfx](../security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) 
 server certificate.  
 You can supply the certificate password using certPassword.  
 ### Set up security using a custom script:

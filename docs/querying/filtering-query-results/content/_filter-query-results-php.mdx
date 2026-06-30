@@ -43,7 +43,7 @@ import Panel from '@site/src/components/Panel';
     
   If no suitable auto-index exists yet, RavenDB will create one automatically based on the fields used in the query.
   Later queries that need the same indexed fields will reuse the same auto-index.  
-  To learn more about dynamic queries and auto-indexes, see [Query overview](../../../querying/overview.mdx#2-query-a-collection---with-filtering).    
+  To learn more about dynamic queries and auto-indexes, see [Query overview](../../overview.mdx#2-query-a-collection---with-filtering).    
     
 * **When querying a STATIC index**, RavenDB will use the specified index to process the filter.  
   The filtering condition is evaluated against the fields indexed by that index, and no auto-index is created. 
@@ -379,7 +379,7 @@ This applies when the field used in the `whereEquals` clause is recognized as th
 according to the [`findIdentityProperty` convention](../../../client-api/configuration/identifier-generation/global.mdx#findidentityproperty),
 and no other fields are involved in the query.
 
-Such queries are considered [Collection queries](../../../querying/overview.mdx#3-query-a-collection---query-full-collection--query-by-id).
+Such queries are considered [Collection queries](../../overview.mdx#3-query-a-collection---query-full-collection--query-by-id).
 Simple collection queries that ask for documents by ID, or by an ID prefix, and do not require additional handling such as ordering or full-text search, have no additional indexing cost.
 
 In terms of efficiency, querying by ID is the same as loading documents using [`session.load`](../../../client-api/session/loading-entities.mdx).

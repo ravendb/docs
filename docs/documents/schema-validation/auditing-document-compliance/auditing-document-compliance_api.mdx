@@ -35,7 +35,7 @@ import Panel from "@site/src/components/Panel";
 
 <Panel heading="Running an audit operation">
 
-Use this audit approach to examine the [compliance of documents in a collection](../../../documents/schema-validation/overview.mdx#running-an-audit-operation) with a validation schema. You can limit the number of documents to be checked and the number of error messages returned.  
+Use this audit approach to examine the [compliance of documents in a collection](../overview.mdx#running-an-audit-operation) with a validation schema. You can limit the number of documents to be checked and the number of error messages returned.  
 This method is useful for one-time audits or periodic checks of data integrity.  
 
 To execute this audit, run `StartSchemaValidationOperation`. The operation will scan the documents in the specified collection, validate each document against the provided JSON schema, and produce a report of any validation errors.
@@ -167,11 +167,11 @@ To validate documents by index:
 
 Define a validation schema that the index will use to validate documents during indexing.  
 The index will use the schema defined in its index configuration (see [below](#defining-an-index-level-validation-schema) how to define it).  
-* If no schema is defined in the index configuration, the index will use the [database-level schema](../../../documents/schema-validation/write-validation/write-validation_api.mdx#creating-a-validation-schema).  
+* If no schema is defined in the index configuration, the index will use the [database-level schema](../write-validation/write-validation_api.mdx#creating-a-validation-schema).  
 * If no schema is defined either in the index configuration or at the database level, the index will not perform any validation.
 
 <Admonition type="note" title="">
-**Note**: When the index uses a database-level schema, [disabling validation at the database level](../../../documents/schema-validation/write-validation/write-validation_api.mdx#2-create-the-schema-configuration) will also disable auditing by the index.  
+**Note**: When the index uses a database-level schema, [disabling validation at the database level](../write-validation/write-validation_api.mdx#2-create-the-schema-configuration) will also disable auditing by the index.  
 However, when the index uses an index-level schema, disabling database-level validation will **not** disable auditing by the index.
 </Admonition>
 

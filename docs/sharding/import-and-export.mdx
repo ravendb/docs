@@ -73,7 +73,7 @@ When data is imported into a sharded database one of the shard nodes is appointe
 the `.ravendbdump` or backup files, gathers the imported items into batches, and distributes them among the shards.  
 
 The compression level applied to the import streams the orchestrator sends to the shards can be set with the
-[Sharding.Import.CompressionLevel](../sharding/configuration.mdx#shardingimportcompressionlevel) configuration key.
+[Sharding.Import.CompressionLevel](./configuration.mdx#shardingimportcompressionlevel) configuration key.
 
 ## Importing data from a `.ravendbdump` file
 
@@ -86,7 +86,7 @@ or contents of the database the data is imported to.
   In both cases, the data will be retrieved into the database from 
   a local `.ravendbdump` file.  
 * If the database is sharded, the imported data will be distributed among the shards.  
-  In case the shard has [several nodes](../sharding/overview.mdx#shard-replication), 
+  In case the shard has [several nodes](./overview.mdx#shard-replication), 
   each shard database will be replicated to all the nodes of this shard.  
 
 See a code example [here](../client-api/smuggler/what-is-smuggler.mdx#example-1).
@@ -134,6 +134,6 @@ Import the full backup first, and then the incremental backups that complement i
 | Export to **local shard node storage** | **No** |  |
 | Export to **remote locations** like S3, Azure, or Google Cloud | **No** | |
 | Import from a `.ravendbdump` file | **Yes** | An orchestrator is appointed to distribute the data among the shards. |
-| Import from **Backup files** | **Yes** | **Importing** data from a backup file does **not** create a new database like running the [restore process](../sharding/backup-and-restore/restore.mdx) over the backup file would, but **adds the data** to the existing database by distributing it among the shards. |
+| Import from **Backup files** | **Yes** | **Importing** data from a backup file does **not** create a new database like running the [restore process](./backup-and-restore/restore.mdx) over the backup file would, but **adds the data** to the existing database by distributing it among the shards. |
 | Import from **Full backup files** | **Yes** |  |
 | Import from **Incremental backup files** | **Yes** |  |

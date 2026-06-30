@@ -43,7 +43,7 @@ Time (in seconds) between cleanup of **expired** compare-exchange items.
 
 ## Cluster.CompareExchangeTombstonesCleanupIntervalInMin
 
-* Compare-exchange tombstones are created when compare-exchange items are [deleted](../compare-exchange/delete-cmpxchg-items.mdx).  
+* Compare-exchange tombstones are created when compare-exchange items are [deleted](./delete-cmpxchg-items.mdx).  
   These tombstones are not removed immediately - RavenDB uses an internal cleaner task to periodically remove tombstones that are eligible for deletion.
 
 * This configuration option sets the interval, in minutes, between each cleanup run.

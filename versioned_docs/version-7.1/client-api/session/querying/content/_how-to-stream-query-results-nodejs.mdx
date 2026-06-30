@@ -47,9 +47,9 @@ import CodeBlock from '@theme/CodeBlock';
 * __Query limitations:__:
 
     * A streaming query does not wait for indexing by design.  
-      So calling [waitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults) is Not supported and will result in an exception.
+      So calling [waitForNonStaleResults](../how-to-customize-query.mdx#waitfornonstaleresults) is Not supported and will result in an exception.
 
-    * Using [include](../../../../client-api/session/loading-entities.mdx#load-with-includes) to load a related document to the session in a streaming query is Not supported.  
+    * Using [include](../../loading-entities.mdx#load-with-includes) to load a related document to the session in a streaming query is Not supported.  
       Learn how to __stream related documents__ here [below](#stream-related-documents).
 
 
@@ -208,7 +208,7 @@ class Employees_ByFirstName extends AbstractJavaScriptIndexCreationTask {
 __Why streaming query results does not support 'include'__:
 
 * A document can reference [related documents](../../../../indexes/indexing-related-documents.mdx#what-are-related-documents).
-* An [include](../../../../client-api/session/loading-entities.mdx#load-with-includes) clause in a non-streamed query loads these related documents to the session  
+* An [include](../../loading-entities.mdx#load-with-includes) clause in a non-streamed query loads these related documents to the session  
   so that they can be accessed without an additional query to the server.
 * Those included documents are sent to the client at the end of the query results.  
   This does not mesh well with streaming, which is designed to allow transferring massive amounts of data,  

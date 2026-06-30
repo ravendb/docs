@@ -129,7 +129,7 @@ The score details can be retrieved by either:
 * **Request to include explanations**:  
   You can get the score details and see how it was calculated by requesting to include explanations in the query.
   Currently, this is only available when using Lucene as the underlying indexing engine.  
-  Learn more in [Include query explanations](../../../../client-api/session/querying/debugging/include-explanations.mdx).
+  Learn more in [Include query explanations](../debugging/include-explanations.mdx).
 
 * **Get score from metadata**:    
 
@@ -188,13 +188,13 @@ order by random()
 * If your data contains geographical locations,  
   spatial query results can be sorted based on their distance from a specific point.
 
-* See detailed explanation in [Spatial Sorting](../../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting).
+* See detailed explanation in [Spatial Sorting](../how-to-make-a-spatial-query.mdx#spatial-sorting).
 
 
 
 ## Order by count (aggregation query)
 
-* The results of a [group_by query](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx) can be sorted by the `count` aggregation operation used in the query.
+* The results of a [group_by query](../how-to-perform-group-by-query.mdx) can be sorted by the `count` aggregation operation used in the query.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -229,7 +229,7 @@ select key() as "Category", count()
 
 ## Order by sum (aggregation query)
 
-* The results of a [group_by query](../../../../client-api/session/querying/how-to-perform-group-by-query.mdx) can be sorted by the `sum` aggregation operation used in the query.
+* The results of a [group_by query](../how-to-perform-group-by-query.mdx) can be sorted by the `sum` aggregation operation used in the query.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -364,7 +364,7 @@ order by UnitsInStock as long desc, score(), Name
  
 * Custom sorters can be deployed to the server by either:  
 
-     * Sending the [Put Sorters Operation](../../../../client-api/operations/maintenance/sorters/put-sorter.mdx) from your code.
+     * Sending the [Put Sorters Operation](../../../operations/maintenance/sorters/put-sorter.mdx) from your code.
   
      * Uploading a custom sorter from Studio, see [Custom Sorters View](../../../../studio/database/settings/custom-sorters.mdx).
 

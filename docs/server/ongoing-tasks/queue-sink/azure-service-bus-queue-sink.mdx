@@ -38,7 +38,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   To configure this task in Studio, see the
   [Azure Service Bus Queue Sink Task](../../../studio/database/tasks/ongoing-tasks/azure-service-bus-queue-sink.mdx) page.  
   To learn about RavenDB queue sinks in general, see the
-  [Queue Sink overview](../../../server/ongoing-tasks/queue-sink/overview.mdx).
+  [Queue Sink overview](./overview.mdx).
 
 * In this article:
   * [The Azure Service Bus Sink Task](#the-azure-service-bus-sink-task)
@@ -165,7 +165,7 @@ put(this.Id.toString(), item);
 
 Beyond `put`, a script can call `load` to read an existing RavenDB document
 (e.g., to enrich a message with related data), `del` to delete a document, and
-[various other commands](../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).
+[various other commands](../../kb/javascript-engine.mdx#predefined-javascript-functions).
 
 </ContentFrame>
 
@@ -374,9 +374,9 @@ classes in the Syntax section.
 
 Use these configuration options for finer control over the sink task:
 
-* [QueueSink.MaxBatchSize](../../../server/configuration/queue-sink-configuration.mdx#queuesinkmaxbatchsize)  
+* [QueueSink.MaxBatchSize](../../configuration/queue-sink-configuration.mdx#queuesinkmaxbatchsize)  
   The maximum number of messages consumed in a single batch.
-* [QueueSink.MaxFallbackTimeInSec](../../../server/configuration/queue-sink-configuration.mdx#queuesinkmaxfallbacktimeinsec)  
+* [QueueSink.MaxFallbackTimeInSec](../../configuration/queue-sink-configuration.mdx#queuesinkmaxfallbacktimeinsec)  
   The maximum time, in seconds, that the sink stays in fallback mode (suspended) after a connection failure.
 
 </Panel>

@@ -91,15 +91,15 @@ In this page:
 
  3. **ReplacementOf**  
     * Temporary prefix of index that is rebuilding after definition changes are saved.  
-    * When an existing index definition is changed, RavenDB uses the old version until the new version is completely built, then saves the old definition in the [index history](../../../studio/database/indexes/index-history.mdx).  
-      Until the new version completely replaces the old, the two are in a state called [side-by-side indexing](../../../studio/database/indexes/indexes-list-view.mdx#index-list-view---side-by-side-indexing).
+    * When an existing index definition is changed, RavenDB uses the old version until the new version is completely built, then saves the old definition in the [index history](./index-history.mdx).  
+      Until the new version completely replaces the old, the two are in a state called [side-by-side indexing](./indexes-list-view.mdx#index-list-view---side-by-side-indexing).
 
 <Admonition type="info" title="Editing an Index in the Studio" id="editing-an-index-in-the-studio" href="#editing-an-index-in-the-studio">
 Click the following links to learn more about defining indexes via the Studio:  
 
-- [Map Index](../../../studio/database/indexes/create-map-index.mdx)  
-- [Multi-Map Index](../../../studio/database/indexes/create-multi-map-index.mdx)  
-- [Map-Reduce Index](../../../studio/database/indexes/create-map-reduce-index.mdx)  
+- [Map Index](./create-map-index.mdx)  
+- [Multi-Map Index](./create-multi-map-index.mdx)  
+- [Map-Reduce Index](./create-map-reduce-index.mdx)  
 
 </Admonition>
 
@@ -170,7 +170,7 @@ Indexing can be a taxing operation on CPU resources.
 
 There are a number of [configurations](../../../server/configuration/indexing-configuration.mdx) that efficiently use 
 batch stops to break up huge batch processes into smaller batches to prevent exhausting resources.  
-If a configuration is specific to an index, it can be [set in the Studio](../../../studio/database/indexes/create-map-index.mdx#configuration).  
+If a configuration is specific to an index, it can be [set in the Studio](./create-map-index.mdx#configuration).  
 If it is a server-wide only configuration, it must be set in the server's [settings.json](../../../server/configuration/configuration-options.mdx#settingsjson).  
 
 While they prevent system exhaustion, batch stops also point to potential **opportunities to optimize** your indexes.  
@@ -210,7 +210,7 @@ You can configure [batch stops](#common-indexing-issues) with the following meth
     accumulated enough credits to run another batch process.  
     This causes indexing to seem slow.  
      * On a cloud instance, you can [upgrade](/cloud/portal/cloud-portal-products-tab) your instance, [scale](/cloud/cloud-scaling), 
-      [externally replicate](../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx) to new instances, and/or optimize your indexes.  
+      [externally replicate](../tasks/ongoing-tasks/external-replication-task.mdx) to new instances, and/or optimize your indexes.  
 #### Concurrent Processing of Too Many Indexes
 
 - [Limit concurrent index processes](../../../server/configuration/indexing-configuration.mdx#indexingmaxnumberofconcurrentlyrunningindexes) - 

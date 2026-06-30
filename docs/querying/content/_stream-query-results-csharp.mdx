@@ -47,7 +47,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * **Query limitations**:  
 
   * A streaming query does not wait for indexing by design.  
-    So calling [WaitForNonStaleResults](../../querying/customize-query.mdx#waitfornonstaleresults) is Not supported and will result in an exception.   
+    So calling [WaitForNonStaleResults](../customize-query.mdx#waitfornonstaleresults) is Not supported and will result in an exception.   
   
   * Using [Include](../../client-api/how-to/handle-document-relationships.mdx#includes) to load a related document into the session in a streaming query is Not supported.  
     Learn more in [Stream related documents](#stream-related-documents).
@@ -500,7 +500,7 @@ IEnumerator<StreamResult<T>> Stream<T>(IRawDocumentQuery<T> query, out StreamQue
 
 | Parameter | type | description |
 | - | - | - |
-| **query** | [IQueryable](../../querying/overview.mdx#sessionquery), [IDocumentQuery](../../querying/overview.mdx#sessionadvanceddocumentquery) or [IRawDocumentQuery](../../querying/overview.mdx#sessionadvancedrawquery) | The query for which to stream results |
+| **query** | [IQueryable](../overview.mdx#sessionquery), [IDocumentQuery](../overview.mdx#sessionadvanceddocumentquery) or [IRawDocumentQuery](../overview.mdx#sessionadvancedrawquery) | The query for which to stream results |
 | `out` **streamQueryStats** | [StreamQueryStatistics](../../glossary/stream-query-statistics.mdx) | Information about performed query |
 
 | Return Value | |

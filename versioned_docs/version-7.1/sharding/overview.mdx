@@ -81,9 +81,9 @@ Note that this additional communication between the client and the orchestrator,
 introduces some overhead compared to using a non-sharded database.  
 
 The HTTP traffic between the orchestrator and the shards can be compressed  
-(see [Sharding.ShardExecutor.UseHttpCompression](../sharding/configuration.mdx#shardingshardexecutorusehttpcompression)
-and [Sharding.ShardExecutor.UseHttpDecompression](../sharding/configuration.mdx#shardingshardexecutorusehttpdecompression)),  
-and a timeout can be set on the orchestrator's requests to the shards (see [Sharding.OrchestratorTimeoutInMin](../sharding/configuration.mdx#shardingorchestratortimeoutinmin)).
+(see [Sharding.ShardExecutor.UseHttpCompression](./configuration.mdx#shardingshardexecutorusehttpcompression)
+and [Sharding.ShardExecutor.UseHttpDecompression](./configuration.mdx#shardingshardexecutorusehttpdecompression)),  
+and a timeout can be set on the orchestrator's requests to the shards (see [Sharding.OrchestratorTimeoutInMin](./configuration.mdx#shardingorchestratortimeoutinmin)).
 
 #### When should sharding be used?
 
@@ -133,7 +133,7 @@ can access a sharded database without any alterations.
 
 That said, shard-specific operations are also available:  
 a client can, for example, track the shard where a document is stored and query that shard.  
-Studio can be used to relocate ([reshard](../sharding/resharding.mdx)) documents from one shard to another.  
+Studio can be used to relocate ([reshard](./resharding.mdx)) documents from one shard to another.  
 
 !["Studio Document View"](./assets/overview_document-view.png)
 #### Shard replication 
@@ -161,7 +161,7 @@ The number of documents and the amount of data stored in each bucket may vary.
 
 Upon creating a sharded database, the cluster reserves **1,048,576** (1024 x 1024) buckets for the entire database.  
 Each shard is assigned a range of buckets from this overall set, where documents can be stored.  
-(Note: This default reservation method differs when using prefixed sharding. Learn more in [Bucket management](../sharding/administration/sharding-by-prefix.mdx#bucket-management)).
+(Note: This default reservation method differs when using prefixed sharding. Learn more in [Bucket management](./administration/sharding-by-prefix.mdx#bucket-management)).
 
 !["Buckets Allocation"](./assets/overview_buckets-allocation.png)
 #### Buckets population
@@ -170,7 +170,7 @@ The cluster automatically populates the buckets with documents in the following 
 
 A hashing algorithm is applied to each document ID, generating a number between **0** and **1,048,575**.  
 The resulting number determines the bucket number where the document is stored.  
-(Note: This default hashing method differs when using prefixed sharding. Learn more in [Bucket management](../sharding/administration/sharding-by-prefix.mdx#bucket-management).)  
+(Note: This default hashing method differs when using prefixed sharding. Learn more in [Bucket management](./administration/sharding-by-prefix.mdx#bucket-management).)  
 
 Since the buckets are pre-assigned to the shards,  
 the bucket number assigned to a document also determines which shard the document will reside on.
@@ -182,12 +182,12 @@ the bucket number assigned to a document also determines which shard the documen
 * **Anchoring documents to a bucket**:  
   You can make documents share a bucket (and therefore a shard) based on their document ID suffix.  
   RavenDB uses this suffix to calculate the bucket number for the document.  
-  Learn more in [Anchoring documents to a bucket](../sharding/administration/anchoring-documents.mdx).  
+  Learn more in [Anchoring documents to a bucket](./administration/anchoring-documents.mdx).  
 
 * **Anchoring documents to a shard**:   
   You can make documents reside on a specific shard based on their document ID prefix.  
   RavenDB uses this prefix to calculate a bucket number that resides on the requested shard.  
-  Learn more in [Sharding by prefix](../sharding/administration/sharding-by-prefix.mdx).
+  Learn more in [Sharding by prefix](./administration/sharding-by-prefix.mdx).
 
 </Admonition>
 #### Document extensions storage
@@ -199,7 +199,7 @@ To achieve this, the bucket number (hash code) for these extensions is calculate
 
 ## Resharding
 
-[Resharding](../sharding/resharding.mdx) is the relocation of data from one shard to another to maintain a balanced database,  
+[Resharding](./resharding.mdx) is the relocation of data from one shard to another to maintain a balanced database,  
 where all shards handle approximately the same volume of data.
 
 The resharding process moves all data related to a certain bucket, including documents, document extensions,  
@@ -227,7 +227,7 @@ using the same API.
 However, paging in a sharded database is more costly because the orchestrator must load data **from each shard**  
 and sort the retrieved results before handing the selected page to the client.  
 
-Read more about paging [here](../sharding/querying.mdx#paging).  
+Read more about paging [here](./querying.mdx#paging).  
 
 
 
@@ -248,7 +248,7 @@ Use [this configuration option](../server/configuration/core-configuration.mdx#s
 * When a database is created, the user can choose whether it will be sharded or not.  
   RavenDB (version 6.0 and later) provides this option by default, with no further steps required to enable the feature.
 
-* A sharded database can be created via the [Studio](../sharding/administration/studio-admin.mdx#creating-a-sharded-database) or the [Client API](../sharding/administration/api-admin.mdx).
+* A sharded database can be created via the [Studio](./administration/studio-admin.mdx#creating-a-sharded-database) or the [Client API](./administration/api-admin.mdx).
 
 * A RavenDB cluster can run both sharded and non-sharded databases in parallel.  
 

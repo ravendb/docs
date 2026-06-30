@@ -516,7 +516,7 @@ The following example allows you to:
     
 <Admonition type="note" title="">    
 
-Dynamic fields can be indexed for [Full-text search](../../indexes/querying/searching.mdx) by setting `indexing: 'Search'` in the `createField` options object (`AbstractJavaScriptIndexCreationTask`)
+Dynamic fields can be indexed for [Full-text search](../querying/searching.mdx) by setting `indexing: 'Search'` in the `createField` options object (`AbstractJavaScriptIndexCreationTask`)
 or `FieldIndexing.Search` in the `CreateFieldOptions` (`AbstractIndexCreationTask`).
 
 * **At indexing time**:      
@@ -527,16 +527,16 @@ or `FieldIndexing.Search` in the `CreateFieldOptions` (`AbstractIndexCreationTas
 
     * If the generated dynamic field name has an explicit analyzer configuration, that analyzer is used.  
     * Otherwise, if `ALL_FIELDS` has an analyzer configuration, RavenDB uses it as a fallback.
-    * If no analyzer is configured for the field, RavenDB uses the [Default search analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer).
+    * If no analyzer is configured for the field, RavenDB uses the [Default search analyzer](../using-analyzers.mdx#using-the-default-search-analyzer).
 
 * **At querying time**:  
   For full-text search to return the expected results, the analyzer used at indexing time and the analyzer used for the query term should produce compatible terms.  
 
     When a `search()` query targets a dynamic field that does **not** have an explicit analyzer configuration for its generated field name,
-    RavenDB uses the [Default analyzer](../../indexes/using-analyzers.mdx#using-the-default-analyzer) to analyze the query term by default.
+    RavenDB uses the [Default analyzer](../using-analyzers.mdx#using-the-default-analyzer) to analyze the query term by default.
 
     Set the [Indexing.Querying.UseSearchAnalyzerForDynamicFieldsIfNotSetExplicitlyInSearchQuery](../../server/configuration/indexing-configuration.mdx#indexingqueryingusesearchanalyzerfordynamicfieldsifnotsetexplicitlyinsearchquery)  
-    configuration key to `true` to make RavenDB use the [Default search analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer) as the fallback analyzer for the query term instead.
+    configuration key to `true` to make RavenDB use the [Default search analyzer](../using-analyzers.mdx#using-the-default-search-analyzer) as the fallback analyzer for the query term instead.
 
     This configuration can be set at different scopes: server-wide, per database, or per index.  
     The example below sets it at the index scope, in the index definition.
@@ -665,7 +665,7 @@ The following example indexes localized product descriptions as dynamic fields a
     In this example, the query targets the generated field `Description_English`.
 
     Since `Indexing.Querying.UseSearchAnalyzerForDynamicFieldsIfNotSetExplicitlyInSearchQuery` is set to `true`,  
-    the searched term `"north wind"` is analyzed with the [Default search analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer).
+    the searched term `"north wind"` is analyzed with the [Default search analyzer](../using-analyzers.mdx#using-the-default-search-analyzer).
 
     <Tabs groupId="languageSyntax">
     <TabItem value="DocumentQuery" label="DocumentQuery">
@@ -844,10 +844,10 @@ The following applies when a `search()` query targets a **dynamic field**:
 
 | Index configuration | [Configuration key](../../server/configuration/indexing-configuration.mdx#indexingqueryingusesearchanalyzerfordynamicfieldsifnotsetexplicitlyinsearchquery) | Analyzer used for the query term |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| No analyzer is explicitly configured for the generated field name | `false` | The [Default analyzer](../../indexes/using-analyzers.mdx#using-the-default-analyzer)                |
-| No analyzer is explicitly configured for the generated field name | `true`  | The [Default search analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer)  |
+| No analyzer is explicitly configured for the generated field name | `false` | The [Default analyzer](../using-analyzers.mdx#using-the-default-analyzer)                |
+| No analyzer is explicitly configured for the generated field name | `true`  | The [Default search analyzer](../using-analyzers.mdx#using-the-default-search-analyzer)  |
 | `ALL_FIELDS` is configured with a specific analyzer,<br/>e.g. `WhitespaceAnalyzer` | `false` | The analyzer resolved by the normal field fallback path,<br/>e.g. `WhitespaceAnalyzer` |
-| `ALL_FIELDS` is configured with a specific analyzer,<br/>e.g. `WhitespaceAnalyzer` | `true`  | The [Default search analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer) |
+| `ALL_FIELDS` is configured with a specific analyzer,<br/>e.g. `WhitespaceAnalyzer` | `true`  | The [Default search analyzer](../using-analyzers.mdx#using-the-default-search-analyzer) |
 | The generated field name is explicitly configured,<br/>e.g. `analyze("Description_English", "StopAnalyzer")` | `false` | The explicitly configured analyzer,<br/>e.g. `StopAnalyzer` |
 | The generated field name is explicitly configured,<br/>e.g. `analyze("Description_English", "StopAnalyzer")` | `true`  | The explicitly configured analyzer,<br/>e.g. `StopAnalyzer` |
 
@@ -881,15 +881,15 @@ createField(fieldName, fieldValue, options); // returns object
 |----------------|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **fieldName**  | `string`             | Name of the dynamic-index-field                                                                                                                                 |
 | **fieldValue** | `object`             | Value of the dynamic-index-field <br/> The field terms are derived from this value.                                                                             |
-| **stored**     | `bool`               | Sets [FieldStorage](../../indexes/storing-data-in-index.mdx) <br/><br/> `false` - will set `FieldStorage.No` (default value) <br/> `true` - will set `FieldStorage.Yes` |
-| **analyzed**   | `bool`               | Sets [FieldIndexing](../../indexes/using-analyzers.mdx) <br/><br/> `null` - `FieldIndexing.Default` (default value) <br/> `false` - `FieldIndexing.Exact` <br/> `true` - `FieldIndexing.Search` |
+| **stored**     | `bool`               | Sets [FieldStorage](../storing-data-in-index.mdx) <br/><br/> `false` - will set `FieldStorage.No` (default value) <br/> `true` - will set `FieldStorage.Yes` |
+| **analyzed**   | `bool`               | Sets [FieldIndexing](../using-analyzers.mdx) <br/><br/> `null` - `FieldIndexing.Default` (default value) <br/> `false` - `FieldIndexing.Exact` <br/> `true` - `FieldIndexing.Search` |
 | **options**    | `CreateFieldOptions` | Dynamic-index-field options                                                                                                                                     |
 
 | CreateFieldOptions |                    |                                                                                   |
 |--------------------|--------------------|-----------------------------------------------------------------------------------|
-| **Storage**        | `FieldStorage?`    | Learn about [storing data](../../indexes/storing-data-in-index.mdx) in the index. |
-| **Indexing**       | `FieldIndexing?`   | Sets the field indexing behavior.<br/>Learn about [using analyzers](../../indexes/using-analyzers.mdx) in the index.    |
-| **TermVector**     | `FieldTermVector?` | Sets the field term-vector behavior.<br/>Learn about [term vectors](../../indexes/using-term-vectors.mdx) in the index. |
+| **Storage**        | `FieldStorage?`    | Learn about [storing data](../storing-data-in-index.mdx) in the index. |
+| **Indexing**       | `FieldIndexing?`   | Sets the field indexing behavior.<br/>Learn about [using analyzers](../using-analyzers.mdx) in the index.    |
+| **TermVector**     | `FieldTermVector?` | Sets the field term-vector behavior.<br/>Learn about [term vectors](../using-term-vectors.mdx) in the index. |
 
 <Admonition type="info" title="">
 

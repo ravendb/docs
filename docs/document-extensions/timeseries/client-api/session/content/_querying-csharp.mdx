@@ -31,7 +31,7 @@ import CodeBlock from '@theme/CodeBlock';
 </Admonition>
 
 <Admonition type="info" title="">
-Learn more about time series queries in the [section dedicated to this subject](../../../../../document-extensions/timeseries/querying/overview-and-syntax.mdx).  
+Learn more about time series queries in the [section dedicated to this subject](../../../querying/overview-and-syntax.mdx).  
 </Admonition>
 ## Query
 
@@ -112,7 +112,7 @@ select timeseries(from q.HeartRates between "2020-05-17T00:00:00.0000000" and "2
 </Tabs>
 
 * In this example, we retrieve a company's stock trade data.  
-  Note the usage of named values, so we may address trade Volume [by name](../../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx).  
+  Note the usage of named values, so we may address trade Volume [by name](../../named-time-series-values.mdx).  
 <Tabs groupId='languageSyntax'>
 <TabItem value="Native" label="Native">
 <CodeBlock language="csharp">
@@ -396,7 +396,7 @@ Where(Expression<Func<TimeSeriesEntry, TTag, bool>> predicate);
 #### Return Value:
 
 * **`List<TimeSeriesAggregationResult>`**  for aggregated data.  
-  When the query [aggregates time series entries](../../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx),
+  When the query [aggregates time series entries](../../../querying/aggregation-and-projections.mdx),
   the results are returned in an aggregated array.
 
 * **`List<TimeSeriesRawResult>`** for non-aggregated data.  
@@ -525,7 +525,7 @@ List<TimeSeriesAggregationResult> results = query.ToList();
 **Return Value**:
 
 * **`List<TimeSeriesAggregationResult>`**  for aggregated data.  
-  When the query [aggregates time series entries](../../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx),
+  When the query [aggregates time series entries](../../../querying/aggregation-and-projections.mdx),
   the results are returned in an aggregated array.
 
 * **`List<TimeSeriesRawResult>`** for non-aggregated data.  

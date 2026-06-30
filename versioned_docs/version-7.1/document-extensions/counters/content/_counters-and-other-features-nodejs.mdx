@@ -27,11 +27,11 @@ Indexing Counters can speed-up finding them and the documents that contain them.
 
 * **Indexing Counter Values**
     Dynamic indexes (aka auto-indexes) _cannot_ index counter values. To index counter values, 
-    create a static index that inherits from `AbstractCountersIndexCreationTask` ([see here](../../../document-extensions/counters/indexing.mdx)).
+    create a static index that inherits from `AbstractCountersIndexCreationTask` ([see here](../indexing.mdx)).
 
 * **Indexing Counter Names**  
     Re-indexing due to Counter-name modification is normally rare enough to pause no performance issues.  
-    To index a document's Counters by name, use [CounterNamesFor](../../../document-extensions/counters/indexing.mdx#section-1).  
+    To index a document's Counters by name, use [CounterNamesFor](../indexing.mdx#section-1).  
 ### Counters and Queries  
 
 Create queries **using code**, or send the server **raw queries** for execution.  
@@ -102,7 +102,7 @@ const query = session.advanced
     </Tabs>
 ### Counters and Revisions  
 
-A [document revision](../../../document-extensions/revisions/overview.mdx) stores all the document Counters' 
+A [document revision](../../revisions/overview.mdx) stores all the document Counters' 
 names and values when the revision was created.  
  
 * **Stored Counter Values**: **Accumulated**  

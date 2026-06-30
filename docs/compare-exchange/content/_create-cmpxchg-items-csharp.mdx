@@ -15,9 +15,9 @@ import CodeBlock from '@theme/CodeBlock';
   * **An associated value** (number, string, array, or any valid JSON object)
   * You can optionally add **metadata** (a valid JSON object) to store extra information with the item.    
     A common use case is to set an expiration time for the compare-exchange item in its metadata.  
-    Learn more in [Set expiration for compare-exchange items](../../compare-exchange/cmpxchg-expiration.mdx).  
+    Learn more in [Set expiration for compare-exchange items](../cmpxchg-expiration.mdx).  
  
-* To modify an existing compare-exchange item, see: [Update compare-exchange item](../../compare-exchange/update-cmpxchg-item.mdx). 
+* To modify an existing compare-exchange item, see: [Update compare-exchange item](../update-cmpxchg-item.mdx). 
 
 * In this article:  
   * [Create item using a **cluster-wide session**](#create-item-using-a-cluster-wide-session)  
@@ -287,7 +287,7 @@ import CodeBlock from '@theme/CodeBlock';
   This is ideal for stand-alone tasks that don't require batching multiple commands into a single transactional session.  
 
 * Note:  
-   _PutCompareExchangeValueOperation_ is used for both **creating** and [modifying](../../compare-exchange/update-cmpxchg-item.mdx) compare-exchange items.  
+   _PutCompareExchangeValueOperation_ is used for both **creating** and [modifying](../update-cmpxchg-item.mdx) compare-exchange items.  
   The intent of the operation is determined by the index you pass:  
   * An index of `0` indicates a **create** operation.
   * A non-zero index indicates a **modify** operation.

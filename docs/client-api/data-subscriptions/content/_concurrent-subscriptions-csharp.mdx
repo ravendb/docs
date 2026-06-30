@@ -24,12 +24,12 @@ import CodeBlock from '@theme/CodeBlock';
 ## Defining concurrent workers
 
 Concurrent workers are defined similarly to other workers, except their 
-[strategy](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies) 
-is set to [SubscriptionOpeningStrategy.Concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#multiple-workers-per-subscription-strategy).  
+[strategy](../consumption/how-to-consume-data-subscription.mdx#worker-strategies) 
+is set to [SubscriptionOpeningStrategy.Concurrent](../consumption/how-to-consume-data-subscription.mdx#multiple-workers-per-subscription-strategy).  
 
 * To define a concurrent worker:  
-   * Create the worker using [GetSubscriptionWorker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker).  
-   * Pass it a [SubscriptionWorkerOptions](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions) instance.  
+   * Create the worker using [GetSubscriptionWorker](../consumption/api-overview.mdx#create-the-subscription-worker).  
+   * Pass it a [SubscriptionWorkerOptions](../consumption/api-overview.mdx#subscriptionworkeroptions) instance.  
    * Set the strategy to `SubscriptionOpeningStrategy.Concurrent`  
 
 * Usage:  

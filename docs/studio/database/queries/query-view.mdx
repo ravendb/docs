@@ -21,7 +21,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   When a query is executed over a Collection (without any filtering condition),  
   RavenDB uses an internal index that is kept in its internal storage.  
 * A query on a collection with some filtering condition will create an **Auto-Index** (Dynamic Query).  
-  See [Index Types](../../../studio/database/indexes/indexes-overview.mdx#index-types) for details.  
+  See [Index Types](../indexes/indexes-overview.mdx#index-types) for details.  
 * Query results can be saved/exported to a CSV file.  
 
 * In this page:  
@@ -63,7 +63,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
           Toggle to disable Auto-Index creation for this query.
           If no index exists to satisfy this query, an exception will be thrown.
           * Toggling this ON will not affect Auto-Index creation in future Studio queries.
-            To disable all future Auto-Index creation from Studio queries, change the default setting in [Studio Configuration](../../../studio/database/settings/studio-configuration.mdx#disabling-auto-index-creation-on-studio-queries-or-patches)
+            To disable all future Auto-Index creation from Studio queries, change the default setting in [Studio Configuration](../settings/studio-configuration.mdx#disabling-auto-index-creation-on-studio-queries-or-patches)
      * c. **Show stored index fields only**  
           Toggle to show the query results or only the stored index fields.  
           (Relevant only when querying an index)  
@@ -157,7 +157,7 @@ Changes made in the Display dialog will take effect only when the **Apply** butt
 1. **Preview**  
    Click for a preview of the retrieved item.  
 2. **Document ID**  
-   Click the ID to open this document in the [Document View](../../../studio/database/documents/document-view.mdx),  
+   Click the ID to open this document in the [Document View](../documents/document-view.mdx),  
    -or-  
    Hover over the ID to display it in text format and optionally copy it to the clipboard.  
     ![Hover ID](./assets/query-view-ID-column.png)  
@@ -176,9 +176,9 @@ Some RavenDB features enhance the queries options.
 
 * [Time Series Query](../../../document-extensions/timeseries/overview.mdx) results provide insight 
   into your time-series data, including a graph view over time.  
-  Learn more about it [here](../../../studio/database/document-extensions/time-series.mdx#querying-time-series).  
-* [Spatial Query](../../../studio/database/queries/spatial-queries-map-view.mdx) results include 
-  a Spatial Map Tab that [displays geographical locations](../../../studio/database/queries/spatial-queries-map-view.mdx#spatial-map-view) 
+  Learn more about it [here](../document-extensions/time-series.mdx#querying-time-series).  
+* [Spatial Query](./spatial-queries-map-view.mdx) results include 
+  a Spatial Map Tab that [displays geographical locations](./spatial-queries-map-view.mdx#spatial-map-view) 
   on the world map.  
 * [Counter Query](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries) can be used to get counters data.  
 

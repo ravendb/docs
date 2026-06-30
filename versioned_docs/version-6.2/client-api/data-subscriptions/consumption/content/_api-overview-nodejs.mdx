@@ -76,7 +76,7 @@ All other parameters are optional and will default to their respective default v
 | **maxDocsPerBatch**                 | `number`  | The maximum number of documents that the server will try to retrieve and send to the client in a batch. If the server doesn't find as many documents as specified, it will send the documents it has found without waiting. Default: 4096.                                                                                                                                                                 |
 | **timeToWaitBeforeConnectionRetry** | `number`  | The time (in ms) to wait before attempting to reconnect after a non-aborting failure during subscription processing. Default: 5 seconds.                                                                                                                                                                                                                                                                   |
 | **maxErroneousPeriod**              | `number`  | The maximum amount of time (in ms) a subscription connection can remain in an erroneous state before it is terminated. Default: 5 minutes.                                                                                                                                                                                                                                                                 |
-| **strategy**                        | `string`  | The strategy configures how the server handles connection attempts from workers to a specific subscription task.<br/><br/>Available options:<br/>`OpenIfFree` (default), `TakeOver`, `WaitForFree`, or `Concurrent`.<br/><br/>Learn more in [worker strategies](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies).                                         |
+| **strategy**                        | `string`  | The strategy configures how the server handles connection attempts from workers to a specific subscription task.<br/><br/>Available options:<br/>`OpenIfFree` (default), `TakeOver`, `WaitForFree`, or `Concurrent`.<br/><br/>Learn more in [worker strategies](../how-to-consume-data-subscription.mdx#worker-strategies).                                         |
 
 
 
@@ -120,14 +120,14 @@ The subscription batch class contains the following public properties & methods:
 | **getNumberOfItemsInBatch()** | `number`    | Get the number of items in the batch.                                                                                    |
 | **getNumberOfIncludes()**     | `number`    | Get the number of included documents in the batch.                                                                       |
 | **openSession()**             | `object`    | Open a new document session that tracks all items and their included items within the current batch.                     |
-| **openSession(options)**      | `object`    | Open a new document session - can pass [session options](../../../../client-api/session/opening-a-session.mdx#session-options). |
+| **openSession(options)**      | `object`    | Open a new document session - can pass [session options](../../../session/opening-a-session.mdx#session-options). |
 
 <Admonition type="info" title="">
 
 ##### Subscription worker connectivity
 
 As long as there is no exception, the worker will continue addressing the same server that the first batch was received from.  
-If the worker fails to reach that node, it will try to [failover](../../../../client-api/configuration/load-balance/overview.mdx) to another node from the session's topology list.  
+If the worker fails to reach that node, it will try to [failover](../../../configuration/load-balance/overview.mdx) to another node from the session's topology list.  
 The node that the worker succeeded connecting to, will inform the worker which node is currently responsible for data subscriptions.
 
 </Admonition>

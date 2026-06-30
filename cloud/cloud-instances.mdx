@@ -16,13 +16,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 <Admonition type="note" title="">
 
-- Use your portal's [Products tab](../cloud/portal/cloud-portal-products-tab.mdx) to raise or modify 
+- Use your portal's [Products tab](./portal/cloud-portal-products-tab.mdx) to raise or modify 
 a Free node, a Development node, a Production cluster, or a Serverless product.  
 - Free and Development nodes, as well as Production "basic" grade clusters, are operated by 
-[burstable instances](../cloud/cloud-overview.mdx#burstable-vs-reserved-clusters).  
+[burstable instances](./cloud-overview.mdx#burstable-vs-reserved-clusters).  
 - The Production cluster grades [Standard](#standard-grade-production-cluster) 
 and [Performance](#performance-grade-production-cluster) are 
-[Reserved clusters](../cloud/cloud-overview.mdx#burstable-vs-reserved-clusters).  
+[Reserved clusters](./cloud-overview.mdx#burstable-vs-reserved-clusters).  
 
 In this page:  
 
@@ -41,9 +41,9 @@ In this page:
 
 Free RavenDB cloud nodes are great for experiments and evaluation. They are equipped with the 
 most basic configuration and capabilities. They have a single node and no Service-Level Agreement (SLA).  
-You can run only one free node per [account](../cloud/cloud-overview.mdx#your-account).  
+You can run only one free node per [account](./cloud-overview.mdx#your-account).  
 
-To raise a free cloud node, use the [Products tab](../cloud/portal/cloud-portal-products-tab.mdx) 
+To raise a free cloud node, use the [Products tab](./portal/cloud-portal-products-tab.mdx) 
 to create a **free**-tier instance.  
 
 !["Tiers and Instances: Free"](./assets/tiers-and-instances-001-free.png)
@@ -67,9 +67,9 @@ A development server is equipped with all of RavenDB's [features](https://ravend
 but is **not** suitable for production for the following reasons:  
 
 * A single-node configuration (no [replication](../7.2/server/clustering/replication/replication-overview)).
-* [Burstable](../cloud/cloud-overview.mdx#burstable-instances) CPU usage, suitable for small to medium production loads.  
+* [Burstable](./cloud-overview.mdx#burstable-instances) CPU usage, suitable for small to medium production loads.  
   Burstable instances can become throttled if usage exceeds allocated resources.  
-* Lack of [backup](../cloud/cloud-backup-and-restore.mdx#cloud-backup) procedure.  
+* Lack of [backup](./cloud-backup-and-restore.mdx#cloud-backup) procedure.  
 * No [Service Level Agreement](../cloud/cloud-support#available-support-options).  
 
 To raise a cloud Development server, create a product using the Products tab and select the **Development** tier.  
@@ -109,7 +109,7 @@ with a **higher number of nodes** to further distribute the cluster's workload.
 [Contact Support](https://ravendb.net/contact) to provision customized cloud-based clusters 
 with configurations that suit your needs.  
 
-*Production tier* clusters can be also extended by [additional product nodes](../cloud/portal/cloud-portal-products-tab.mdx#nodes-additional-product-nodes).  
+*Production tier* clusters can be also extended by [additional product nodes](./portal/cloud-portal-products-tab.mdx#nodes-additional-product-nodes).  
 <Admonition type="info" title="">
 This option is not available for **PS** instance types.
 </Admonition>
@@ -131,21 +131,21 @@ The production tier offers three instance levels:
 <Admonition type="note" title="Backup resource requirements">
 The tier you select must have sufficient compute, memory, and disk resources to run backups on top
 of your normal workload. Undersized tiers can cause backup jobs to fail.  
-See [Tier Requirements and Failure Disclaimer](../cloud/cloud-backup-and-restore.mdx#tier-requirements-and-failure-disclaimer)
+See [Tier Requirements and Failure Disclaimer](./cloud-backup-and-restore.mdx#tier-requirements-and-failure-disclaimer)
 for details.
 </Admonition>
 
 #### 1. Basic-grade Production Cluster
-Basic production clusters are [burstable](../cloud/cloud-overview.mdx#burstable-instances).  
+Basic production clusters are [burstable](./cloud-overview.mdx#burstable-instances).  
 While suitable for low to medium workloads, they trade-off peak efficiency for lower costs.  
 
 <Admonition type="note" title="Throttling" id="throttling" href="#throttling">
- If burstable instances use more than their allocated budget, they can become [throttled](../cloud/cloud-overview.mdx#budget-credits-and-throttling).
+ If burstable instances use more than their allocated budget, they can become [throttled](./cloud-overview.mdx#budget-credits-and-throttling).
  </Admonition>
 
 !["Production: Basic"](./assets/tiers-and-instances-0031-production-basic.png)
 #### 2. Standard-grade Production Cluster
-The resources of standard production clusters are [reserved](../cloud/cloud-overview.mdx#reserved-clusters).  
+The resources of standard production clusters are [reserved](./cloud-overview.mdx#reserved-clusters).  
 The cluster can utilize them at all times, and is equipped to handle constant production load.  
 
 Use the slide-bars to select your Standard Production cluster's configuration and storage.  
@@ -168,7 +168,7 @@ high I/O latencies, RavenDB will alert you to the issue so you can upgrade the t
 number of IOPS reserved for your instances.  
 #### 3. Performance-grade Production Cluster
 
-Performance tier cluster are special [reserved](../cloud/cloud-overview.mdx#reserved-clusters) production clusters featuring high-throughput and low latency with a directly mapped local NVMe storage. When multiple NVME disks are available, in order to achieve the best possible throughput and to get as many IOPS as possible, multiple NVME volumes are striped together with RAID0. 
+Performance tier cluster are special [reserved](./cloud-overview.mdx#reserved-clusters) production clusters featuring high-throughput and low latency with a directly mapped local NVMe storage. When multiple NVME disks are available, in order to achieve the best possible throughput and to get as many IOPS as possible, multiple NVME volumes are striped together with RAID0. 
 
 <Admonition type="note" title="">
 **Scaling up and ephemeral drives**  
@@ -209,7 +209,7 @@ Serverless is available on **On-Demand** billing only. It is not available for y
 </Admonition>
 
 For instructions on how to create a Serverless product, see
-[Provisioning a New Product](../cloud/portal/cloud-portal-products-tab.mdx#provisioning-a-new-product).
+[Provisioning a New Product](./portal/cloud-portal-products-tab.mdx#provisioning-a-new-product).
 
 !["Serverless Product Details"](./portal/assets/portal-product-details-serverless.png)
 
@@ -229,5 +229,5 @@ The billing period closes on the **25th of each month (UTC)**.
 ### Switching to Regular Deployment
 
 For instructions on how to convert a Serverless product to a regular deployment, see
-[Maintenance and Danger Zones](../cloud/portal/cloud-portal-products-tab.mdx#maintenance-and-danger-zones).
+[Maintenance and Danger Zones](./portal/cloud-portal-products-tab.mdx#maintenance-and-danger-zones).
 

@@ -17,7 +17,7 @@ import CodeBlock from '@theme/CodeBlock';
   - [stream](#stream)
   - [is_loaded](#is_loaded)
 
-* For loading entities lazily see [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx).
+* For loading entities lazily see [perform requests lazily](../how-to/perform-operations-lazily.mdx).
 
 <Admonition type="warning" title="">
 From RavenDB version 4.x onward, only string identifiers are supported.  
@@ -45,7 +45,7 @@ Use the `load` method to load **an entity** or **multiple entities**.
 | ------------- | ------------- | ----- |
 | **key_or_keys** | `str` or `List[str]` | Identifier or a list of identifiers of entities to load |
 | **object_type**<br/>(optional) | `[Type[_T]` | Entity type to load (optional) |
-| **includes**<br/>(optional) | `Callable[[IncludeBuilder], None]` | A **consumer function** that takes an [include builder](../../../client-api/how-to/handle-document-relationships.mdx#includes) argument.<br/>The user should use the builder inside this function to _include_ all the data needed within a load. |
+| **includes**<br/>(optional) | `Callable[[IncludeBuilder], None]` | A **consumer function** that takes an [include builder](../../how-to/handle-document-relationships.mdx#includes) argument.<br/>The user should use the builder inside this function to _include_ all the data needed within a load. |
 
 | Return Type | Description |
 | ------------- | ----- |
@@ -77,7 +77,7 @@ Use the `load` method to load **an entity** or **multiple entities**.
 
 When there is a 'relationship' between documents, those documents can be loaded in a 
 single request call using the `include + load` methods. Learn more in 
-[How To Handle Document Relationships](../../../client-api/how-to/handle-document-relationships.mdx).  
+[How To Handle Document Relationships](../../how-to/handle-document-relationships.mdx).  
 
 <Admonition type="note" title="">
 Also see:  
@@ -306,7 +306,7 @@ with store.open_session() as session:
 
 Entities can be streamed from the server using one of the following `stream` methods from the `advanced` session operations.
 
-Streaming query results does not support the [`include` feature](../../../client-api/how-to/handle-document-relationships.mdx#includes). 
+Streaming query results does not support the [`include` feature](../../how-to/handle-document-relationships.mdx#includes). 
 Learn more in [How to Stream Query Results](../../../querying/stream-query-results.mdx).  
 
 <Admonition type="info" title="">

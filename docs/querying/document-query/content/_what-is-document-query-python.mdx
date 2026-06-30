@@ -8,14 +8,14 @@ import Panel from '@site/src/components/Panel';
 <Admonition type="note" title="">
 
 * RavenDB Queries can be executed using `query` or `document_query`,  
-  or by passing raw [RQL](../../../querying/rql/what-is-rql.mdx) directly to the server via `raw_query`.  
-  Learn more in [Query Overview](../../../querying/overview.mdx).     
+  or by passing raw [RQL](../../rql/what-is-rql.mdx) directly to the server via `raw_query`.  
+  Learn more in [Query Overview](../../overview.mdx).     
     
 * Unlike the **C#** client (where the `Query` method supports LINQ while `DocumentQuery` provides lower-level flexibility and control),
   the **Python** client API implements the `query` and `document_query` methods with **identical functionality**.
     
     Therefore, our Python documentation typically provides `query` samples without duplicating them for `document_query`.  
-    See [query -vs- document_query](../../../querying/document-query/query-vs-document-query.mdx) for additional details.
+    See [query -vs- document_query](../query-vs-document-query.mdx) for additional details.
 
 * In this article:
   * [`document_query` examples](#document_query-examples)
@@ -102,6 +102,6 @@ Refer to [Querying an index](../../../indexes/querying/query-index.mdx#sessionad
 
 <Panel heading="Syntax">
 
-The definition for `document_query` is listed in the [Syntax section](../../../querying/overview.mdx#syntax) of the [Query Overview](../../../querying/overview.mdx).
+The definition for `document_query` is listed in the [Syntax section](../../overview.mdx#syntax) of the [Query Overview](../../overview.mdx).
 
 </Panel>

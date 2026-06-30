@@ -34,14 +34,14 @@ The following properties can be configured when creating a new Document Store:
     * **Note**: This list is not binding. You can always modify your cluster later dynamically, add new nodes or remove existing ones as 
     necessary. Learn more in [Cluster View Operations](../../studio/cluster/cluster-view.mdx#cluster-view-operations).  
 
-* **[Database](../../client-api/setting-up-default-database.mdx)** (optional)  
+* **[Database](../setting-up-default-database.mdx)** (optional)  
   The default database which the Client will work against.  
-  A different database can be specified when creating a [Session](../../client-api/session/opening-a-session.mdx) if needed.  
+  A different database can be specified when creating a [Session](../session/opening-a-session.mdx) if needed.  
 
-* **[Conventions](../../client-api/configuration/conventions.mdx)** (optional)  
+* **[Conventions](../configuration/conventions.mdx)** (optional)  
   Customize the Client behavior with a variety of options, overriding the default settings.  
 
-* **[Certificate](../../client-api/setting-up-authentication-and-authorization.mdx)** (optional)  
+* **[Certificate](../setting-up-authentication-and-authorization.mdx)** (optional)  
   X.509 certificate used to authenticate the client to the RavenDB server  
 
 After setting the above configurations as necessary, call `.Initialize()` to begin using the Document Store.  
@@ -57,7 +57,7 @@ Starting with RavenDB `6.x`, disposing of a store automatically removes any X509
 it, to [prevent the accumulation of unneeded certificate files](https://snede.net/the-most-dangerous-constructor-in-net/).  
 
 To **disable** the automatic disposal of certificates, please use the 
-[DisposeCertificate](../../client-api/configuration/conventions.mdx#disposecertificate) convention.  
+[DisposeCertificate](../configuration/conventions.mdx#disposecertificate) convention.  
 
 <TabItem value="disable_certificate_cleanup" label="disable_certificate_cleanup">
 <CodeBlock language="csharp">

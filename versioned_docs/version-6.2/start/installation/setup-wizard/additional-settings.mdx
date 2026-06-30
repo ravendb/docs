@@ -15,7 +15,7 @@ import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* After configuring your cluster nodes, as described in [Node addresses](../../../start/installation/setup-wizard/configure-node-addresses.mdx),  
+* After configuring your cluster nodes, as described in [Node addresses](./configure-node-addresses.mdx),  
   the next step is to **customize optional settings**.
     
 * In this article:
@@ -41,8 +41,8 @@ import Panel from '@site/src/components/Panel';
    When your server is up and running,  
    you can change this label at any time in RavenDB Studio in the [Studio configuration view](../../../studio/database/settings/studio-configuration.mdx#studio-configuration---server-wide). 
     
-   **In the wizard, this option is available only when you choose a [Secure setup](../../../start/installation/setup-wizard/choose-security-option.mdx#choose-a-security-method) flow**.  
-   If you choose the [Unsecured setup](../../../start/installation/setup-wizard/choose-security-option.mdx#don-t-use-certificate), this option will not appear in the wizard,  
+   **In the wizard, this option is available only when you choose a [Secure setup](./choose-security-option.mdx#choose-a-security-method) flow**.  
+   If you choose the [Unsecured setup](./choose-security-option.mdx#don-t-use-certificate), this option will not appear in the wizard,  
    but you can still configure it later via the _Studio configuration view_.
     
         ![Environment label](./assets/additional-settings-2.png)
@@ -50,7 +50,7 @@ import Panel from '@site/src/components/Panel';
 2. **Admin client certificate expiration time**:  
    This setting defines how long the admin client certificate will be valid.  
    By default, this is set to 60 months.  
-   **This option is available only when you choose a [Secure setup](../../../start/installation/setup-wizard/choose-security-option.mdx#choose-a-security-method) flow** in the wizard.  
+   **This option is available only when you choose a [Secure setup](./choose-security-option.mdx#choose-a-security-method) flow** in the wizard.  
     
 3. **Experimental features**:   
    Some newly released features are considered experimental and are disabled by default.  
@@ -63,9 +63,9 @@ import Panel from '@site/src/components/Panel';
    Toggle this option on to expand the section.  
    Learn more below in [Configure advanced options](#configure-advanced-options).  
     
-5. Click **"Continue"** to proceed to the next step: [Review setup](../../../start/installation/setup-wizard/review-setup.mdx).
+5. Click **"Continue"** to proceed to the next step: [Review setup](./review-setup.mdx).
     
-6. Click **"Back"** to return to the previous step - [Node addresses](../../../start/installation/setup-wizard/configure-node-addresses.mdx).
+6. Click **"Back"** to return to the previous step - [Node addresses](./configure-node-addresses.mdx).
     
 7. The navigation panel indicates your current step (_"Additional settings"_) and the remaining steps in the wizard flow.     
     
@@ -100,7 +100,7 @@ import Panel from '@site/src/components/Panel';
      When joining nodes to your cluster using a [setup package](../../../start/installation/setup-wizard/use-setup-package),  
      make sure the same certificate file is available at this path on every node; otherwise, cluster setup may fail.    
     
-     This option is available only when you choose a [Secure setup](../../../start/installation/setup-wizard/choose-security-option.mdx#choose-a-security-method) flow in the wizard.  
+     This option is available only when you choose a [Secure setup](./choose-security-option.mdx#choose-a-security-method) flow in the wizard.  
     
 3. **Logs directory**:    
    By default, RavenDB stores logs in the `Logs` directory under the extracted `Server` folder.

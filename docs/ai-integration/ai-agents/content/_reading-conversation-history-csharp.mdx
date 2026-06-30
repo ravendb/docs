@@ -19,7 +19,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * This page covers: reading and paging through a conversation's messages, choosing the level of
   detail, and inspecting tool calls and sub-conversations.  
 
-* Learn how to create and run a conversation in [Managing conversations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#managing-conversations).  
+* Learn how to create and run a conversation in [Managing conversations](../creating-ai-agents/creating-ai-agents_api.mdx#managing-conversations).  
 
 * In this article:
    * [Get the conversation messages](#get-the-conversation-messages)
@@ -197,7 +197,7 @@ At the `Detailed` or `Full` detail level, the `ToolCalls` list of a message from
 the tool calls the LLM made. Each entry is an [AiToolCallResult](#conversation-history-classes) object, giving the tool's `Name`, the
 `Arguments` the LLM passed, and the `Result` the tool returned.
 
-An agent can hand work to another agent (a [sub-agent](../../../ai-integration/ai-agents/multi-agents.mdx)).  
+An agent can hand work to another agent (a [sub-agent](../multi-agents.mdx)).  
 The exchange with a sub-agent is held in its own conversation (a **sub-conversation**).
 
 When a tool call invoked a sub-agent, the tool call's `SubConversationId` points to the
@@ -247,7 +247,7 @@ foreach (AiConversationMessage message in trace.Messages)
 See [AiConversationMessage](#conversation-history-classes)
 and [AiToolCallResult](#conversation-history-classes)
 in the [Syntax](#syntax) section.  
-See [Multi-agents](../../../ai-integration/ai-agents/multi-agents.mdx) for the full sub-agent picture.
+See [Multi-agents](../multi-agents.mdx) for the full sub-agent picture.
 
 </Panel>
 
@@ -363,7 +363,7 @@ class AiConversationMessagesResult
 | **ConversationId** | `string` | The conversation document ID. |
 | **Agent** | `string` | The identifier of the AI agent this conversation belongs to. |
 | **Parameters** | `Dictionary<string, object>` | The conversation parameters as a name-to-value map. |
-| **TotalUsage** | `AiUsage` | Cumulative token usage across all turns of the conversation.<br />See [AiUsage](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#conversation-and-response-classes). |
+| **TotalUsage** | `AiUsage` | Cumulative token usage across all turns of the conversation.<br />See [AiUsage](../creating-ai-agents/creating-ai-agents_api.mdx#conversation-and-response-classes). |
 | **LastMessageAt** | `DateTime` | The time the last message was added to the conversation. |
 | **Messages** | `List<AiConversationMessage>` | The returned messages, in chronological order (oldest first). |
 | **HasMoreMessages** | `bool` | `true` when more messages exist beyond the returned page: older messages when `Before` is set (or neither is set), newer messages when `After` is set. |
@@ -399,7 +399,7 @@ class AiConversationMessage
 | **Attachments** | `List<string>` | Names of the attachments associated with this message, if any. |
 | **Timestamp** | `DateTime` | The time the message was recorded (UTC). Unique within the conversation and rising in message order, so a `Timestamp` value can be used to page through the conversation. |
 | **ToolCalls** | `List<AiToolCallResult>` | Tool calls initiated by the LLM in this message, with their results inlined. `null` when the message has no tool calls. |
-| **Usage** | `AiUsage` | Token usage for this message, or `null` for messages the LLM did not generate (such as user messages and system prompts).<br />See [AiUsage](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#conversation-and-response-classes). |
+| **Usage** | `AiUsage` | Token usage for this message, or `null` for messages the LLM did not generate (such as user messages and system prompts).<br />See [AiUsage](../creating-ai-agents/creating-ai-agents_api.mdx#conversation-and-response-classes). |
 | **SubConversationId** | `string` | For an `Internal` role message, the ID of the sub-conversation the message relates to. |
 
 </TabItem>

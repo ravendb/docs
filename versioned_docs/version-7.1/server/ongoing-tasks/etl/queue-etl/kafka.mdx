@@ -33,7 +33,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * This article focuses on how to create a Kafka ETL task using the Client API.  
   To define a Kafka ETL task from Studio, see [Studio: Kafka ETL Task](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx).  
-  For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx).
+  For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](./overview.mdx).
 
 * In this article:
   * [Setup workflow](#setup-workflow)
@@ -289,7 +289,7 @@ store.Maintenance.Send(new AddEtlOperation<QueueConnectionString>(etlTask));
 
 ## The transformation script
 
-The [basic characteristics](../../../../server/ongoing-tasks/etl/basics.mdx) of a Kafka ETL script are similar to those of other ETL types.  
+The [basic characteristics](../basics.mdx) of a Kafka ETL script are similar to those of other ETL types.  
 The script defines what data to **extract** from the source document, how to **transform** this data, and which Kafka topic to **load** it to.
 
 ### The loadTo method
@@ -311,7 +311,7 @@ The two methods are equivalent, offering alternative syntax:
 |----------------|--------|--------------------------------------------------------------------------------------------------------------------------------------|
 | **TopicName**  | string | The name of the Kafka topic.                                                                                                         |
 | **obj**        | object | The object to transfer.                                                                                                              |
-| **attributes** | object | An object with optional and required [CloudEvents attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#cloudevents). |
+| **attributes** | object | An object with optional and required [CloudEvents attributes](./overview.mdx#cloudevents). |
 
 For example, the following two calls, which load data to "OrdersTopic", are equivalent:
 

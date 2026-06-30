@@ -29,13 +29,13 @@ import CodeBlock from '@theme/CodeBlock';
    * If no [Auto-Index](#auto-indexes) exists to satisfy a query, 
      a new Auto-Index will be created and maintained automatically.
 * Indexes created explicitly by the user are called `static`.
-   * [To use a Static Index in a query](../../indexes/querying/query-index.mdx), 
+   * [To use a Static Index in a query](../querying/query-index.mdx), 
      **you must specify the index in the query definition**. If you don't specify the index, 
      RavenDB will look for an auto-index and potentially create a new one.  
    * Static Indexes can be defined to do calculations, conversions, and various other processes behind the scenes, to prevent
      doing these costly processes at query time (see [Using AbstractIndexCreationTask](#using-abstractindexcreationtask), 
-     our [map-indexes](../../indexes/map-indexes.mdx) article, [indexing multiple collections](../../indexes/multi-map-indexes.mdx), 
-     and [map-reduce indexing](../../indexes/map-reduce-indexes.mdx)).  
+     our [map-indexes](../map-indexes.mdx) article, [indexing multiple collections](../multi-map-indexes.mdx), 
+     and [map-reduce indexing](../map-reduce-indexes.mdx)).  
 
 </Admonition>
 

@@ -167,12 +167,12 @@ Indexes in RavenDB are split across the following multiple axes:
 
 #### Map Indexes -vs- Map-Reduce Indexes
 * **Map Indexes**:  
-  [Map indexes](../../../studio/database/indexes/create-map-index.mdx) are simple indexes.  
+  [Map indexes](./create-map-index.mdx) are simple indexes.  
   Contain one or more LINQ-based or JavaScript mapping functions indicating what should be indexed from the document, 
   and how it should be indexed, as these functions allow you to compute the indexed value.  
 
 * **Map-Reduce Indexes**:  
-  [Map-Reduce indexes](../../../studio/database/indexes/create-map-reduce-index.mdx) allow performing complex data aggregation.  
+  [Map-Reduce indexes](./create-map-reduce-index.mdx) allow performing complex data aggregation.  
   The _Map_ stage is similar to a regular Map-Index, defining what data should be indexed.  
   The _Reduce_ stage operates on the Map results, specifying how the data should be grouped and aggregated.  
 
@@ -193,7 +193,7 @@ Indexes in RavenDB are split across the following multiple axes:
 ## Field Configuration Options
 
 Additional settings can be specified per field in the index-entry definition, configuring how the terms are indexed inside RavenDB. 
-See [Create Map Index](../../../studio/database/indexes/create-map-index.mdx) to learn how to set these options in the Studio.  
+See [Create Map Index](./create-map-index.mdx) to learn how to set these options in the Studio.  
 
 * **Full-Text Search**  
   The original field data is split and tokenized according to the selected analyzer. Learn more about [analyzers here](../../../indexes/using-analyzers.mdx#full-text-search).  
@@ -224,12 +224,12 @@ See [Create Map Index](../../../studio/database/indexes/create-map-index.mdx) to
 * The original index is retained and is fully operable while the new index (with the new definition) is being built.  
   Once the new index is up-to-date the original index is removed in favor of the new one.  
 
-* See the example in [Index List View - Side by Side](../../../studio/database/indexes/indexes-list-view.mdx#index-list-view---side-by-side-indexing).  
-* RavenDB keeps a [history of index revisions](../../../studio/database/indexes/index-history.mdx), 
+* See the example in [Index List View - Side by Side](./indexes-list-view.mdx#index-list-view---side-by-side-indexing).  
+* RavenDB keeps a [history of index revisions](./index-history.mdx), 
   allowing you to revert an index to any of its past revisions.  
   The number of index revisions kept can be configured in the 
   [Server Configuration Options](../../../server/configuration/configuration-options.mdx),  
-  or using the [Database Settings view](../../../studio/database/indexes/index-history.mdx#view-and-update-number-of-index-revisions) in the Studio.
+  or using the [Database Settings view](./index-history.mdx#view-and-update-number-of-index-revisions) in the Studio.
 
 
 ## Indexes in the Cluster
@@ -237,11 +237,11 @@ See [Create Map Index](../../../studio/database/indexes/create-map-index.mdx) to
 * Index & Auto-Index creation is a cluster operation. It goes through the [Raft protocol](../../../server/clustering/rachis/what-is-rachis.mdx#rachis---ravendbs-raft-implementation).  
   Index creation will fail if the majority of the nodes in the cluster are not reachable.  
 
-* Once an index is created against any node in the [Database Group](../../../studio/database/settings/manage-database-group.mdx), 
+* Once an index is created against any node in the [Database Group](../settings/manage-database-group.mdx), 
   RavenDB will make sure that its definition is replicated to all the database's nodes. 
   The indexing process will occur separately on each node.  
 
-* Note: The [External Replication](../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx) ongoing task does NOT replicate indexes.  
+* Note: The [External Replication](../tasks/ongoing-tasks/external-replication-task.mdx) ongoing task does NOT replicate indexes.  
 
 * In a multiple-nodes cluster, indexing can be configured to occur either in _Rolling deployment Mode_ 
   (one node at a time if machine resources are limited) 
@@ -256,6 +256,6 @@ See [Create Map Index](../../../studio/database/indexes/create-map-index.mdx) to
 * An index is only allowed a certain failure rate, above which it is marked in an error state.  
   An index in an error state cannot be queried and will return an immediate error.  
 
-* See more in [Index List View - Errors](../../../studio/database/indexes/indexes-list-view.mdx#index-list-view---errors).  
+* See more in [Index List View - Errors](./indexes-list-view.mdx#index-list-view---errors).  
 
 

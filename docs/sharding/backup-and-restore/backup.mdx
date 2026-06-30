@@ -67,11 +67,11 @@ and keep backup files in manageable proportions no matter what the overall datab
 * Each shard hosts a unique part of the database, so no single node can create a backup of the entire database.  
 * After a user defines a backup task, RavenDB automatically creates one backup task per shard, based on the user-defined task.
   This operation is automatic and requires no additional actions from the user.  
-* Each shard appoints [one of its nodes](../../sharding/overview.mdx#shard-replication) responsible for the execution of the shard's backup task.  
+* Each shard appoints [one of its nodes](../overview.mdx#shard-replication) responsible for the execution of the shard's backup task.  
 * Each shard backup task can keep the shard's database locally (on the shard machine),  
   and/or remotely (on one or more cloud destinations).  
 * A backup task can store backups on multiple destinations, e.g., locally, on an S3 bucket, and on an Azure blob.  
-* To [restore](../../sharding/backup-and-restore/restore.mdx) the entire database, 
+* To [restore](./restore.mdx) the entire database, 
   the restore operation is provided with the locations of the backup folders used by all shards.  
 * When restoring the database, the user doesn't have to restore all shard backups. 
   It is possible, for example, to restore only one of the shards. Using this flexibility, a sharded database can easily be split into several databases.  
@@ -86,7 +86,7 @@ Find a code example [here](#example).
 * **Local backup**  
   A shard's backup task may keep backup data locally, using the node's local storage.  
 
-    [Restoring](../../sharding/backup-and-restore/restore.mdx#section-2) backup files that were stored locally
+    [Restoring](./restore.mdx#section-2) backup files that were stored locally
     requires the user to provide the restore operation with the location of the backup folder on each shard's node.  
 
 * **Remote location**  
@@ -98,7 +98,7 @@ Find a code example [here](#example).
    * Amazon Glacier  
    * Google Cloud  
 
-    [Restoring](../../sharding/backup-and-restore/restore.mdx#section-2) backup files that were stored remotely
+    [Restoring](./restore.mdx#section-2) backup files that were stored remotely
     requires the user to provide the restore operation with each shard's backup folder location.  
 
 </Panel>
@@ -107,9 +107,9 @@ Find a code example [here](#example).
 
 Backup files use the same internal structure as the `.ravendbdump` files that [Studio](../../studio/database/tasks/export-database.mdx) 
 and [Smuggler](../../client-api/smuggler/what-is-smuggler.mdx) create when **exporting** data.
-It is therefore possible to not only [restore](../../sharding/backup-and-restore/restore.mdx) 
+It is therefore possible to not only [restore](./restore.mdx) 
 but also **import** backup files using [studio](../../studio/database/tasks/import-data/import-data-file.mdx) and [smuggler](../../client-api/smuggler/what-is-smuggler.mdx#import).  
-Read more about this feature [here](../../sharding/import-and-export.mdx#import).  
+Read more about this feature [here](../import-and-export.mdx#import).  
 
 <Admonition type="note" title="">
 

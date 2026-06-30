@@ -66,7 +66,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Access the conventions via the `Conventions` property of the `DocumentStore` object.
 
-* The conventions set on a Document Store will apply to ALL [sessions](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) and [operations](../../../client-api/operations/what-are-operations.mdx) associated with that store.
+* The conventions set on a Document Store will apply to ALL [sessions](../../session/what-is-a-session-and-how-does-it-work.mdx) and [operations](../../operations/what-are-operations.mdx) associated with that store.
 
 * Customizing the conventions can only be set **before** calling `DocumentStore.Initialize()`.  
   Trying to do so after calling _Initialize()_ will throw an exception.
@@ -101,7 +101,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 #### AddIdFieldToDynamicObjects
 * Use the `AddIdFieldToDynamicObjects` convention to determine whether an `Id` field is automatically added  
-  to [dynamic objects](https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/interop/using-type-dynamic) when [storing new entities](../../../client-api/session/storing-entities.mdx) via the session.
+  to [dynamic objects](https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/interop/using-type-dynamic) when [storing new entities](../../session/storing-entities.mdx) via the session.
 
 * DEFAULT: `true`
 
@@ -117,7 +117,7 @@ public bool AddIdFieldToDynamicObjects \{ get; set; \}
 <Admonition type="note" title="">
 
 #### AggressiveCache.Duration
-* Use the `AggressiveCache.Duration` convention to define the [aggressive cache](../../../client-api/how-to/setup-aggressive-caching.mdx) duration period.
+* Use the `AggressiveCache.Duration` convention to define the [aggressive cache](../../how-to/setup-aggressive-caching.mdx) duration period.
 
 * DEFAULT: `1 day`
 
@@ -133,7 +133,7 @@ public TimeSpan Duration \{ get; set; \}
 <Admonition type="note" title="">
 
 #### AggressiveCache.Mode
-* Use the `AggressiveCache.Mode` convention to define the [aggressive cache](../../../client-api/how-to/setup-aggressive-caching.mdx) mode.  
+* Use the `AggressiveCache.Mode` convention to define the [aggressive cache](../../how-to/setup-aggressive-caching.mdx) mode.  
   (`AggressiveCacheMode.TrackChanges` or `AggressiveCacheMode.DoNotTrackChanges`)
 
 * DEFAULT: `AggressiveCacheMode.TrackChanges`
@@ -152,11 +152,11 @@ public AggressiveCacheMode Mode \{ get; set; \}
 #### AsyncDocumentIdGenerator
 * Use the `AsyncDocumentIdGenerator` convention to define the document ID generator method that will be used when storing a document without explicitly specifying its `Id`.
 
-* You can override this global ID generator for specific object types using the [RegisterAsyncIdConvention](../../../client-api/configuration/identifier-generation/type-specific.mdx) convention.
+* You can override this global ID generator for specific object types using the [RegisterAsyncIdConvention](../identifier-generation/type-specific.mdx) convention.
 
 * DEFAULT:  
   The default document ID generator is the `GenerateDocumentIdAsync` method, which is part of the `HiLoIdGenerator` object within the _DocumentStore_.
-  This method implements the [HiLo algorithm](../../../client-api/document-identifiers/hilo-algorithm.mdx) to ensure efficient ID generation when storing a document without explicitly specifying its `Id`.
+  This method implements the [HiLo algorithm](../../document-identifiers/hilo-algorithm.mdx) to ensure efficient ID generation when storing a document without explicitly specifying its `Id`.
 
 <TabItem value="AsyncDocumentIdGenerator" label="AsyncDocumentIdGenerator">
 <CodeBlock language="csharp">
@@ -682,7 +682,7 @@ public Func<Type, string, string, string, string> FindPropertyNameForIndex \{ ge
 * Use the `FirstBroadcastAttemptTimeout` convention to set the timeout for the first broadcast attempt.
 
 * In the first attempt, the request executor will send a single request to the selected node.  
-  Learn about the "selected node" in: [Client logic for choosing a node](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).
+  Learn about the "selected node" in: [Client logic for choosing a node](../load-balance/overview.mdx#client-logic-for-choosing-a-node).
 
 * A [second attempt](#secondbroadcastattempttimeout) will be held upon failure.
 
@@ -832,7 +832,7 @@ public Version HttpVersion \{ get; set; \}
 
 #### IdentityPartsSeparator
 * Use the `IdentityPartsSeparator` convention to customize the **default ID separator** for document IDs generated automatically by the 
-  [HiLo algorithm](../../../client-api/document-identifiers/hilo-algorithm.mdx).
+  [HiLo algorithm](../../document-identifiers/hilo-algorithm.mdx).
 
 * The value can be any char except `|` (pipe), which is reserved for identity IDs.
 
@@ -859,7 +859,7 @@ public char IdentityPartsSeparator \{ get; set; \}
     * `LoadBalancerPerSessionContextSelector`
     * `LoadBalancerContextSeed`
 
-* Learn more in the dedicated [Load balance behavior](../../../client-api/configuration/load-balance/load-balance-behavior.mdx) article.
+* Learn more in the dedicated [Load balance behavior](../load-balance/load-balance-behavior.mdx) article.
 
 </Admonition>
 <Admonition type="note" title="">
@@ -878,10 +878,10 @@ public char IdentityPartsSeparator \{ get; set; \}
 * **Disabling Caching**:
 
     * To disable caching globally, set `MaxHttpCacheSize` to zero.
-    * To disable caching per session, see: [Disable caching per session](../../../client-api/session/configuration/how-to-disable-caching.mdx).
+    * To disable caching per session, see: [Disable caching per session](../../session/configuration/how-to-disable-caching.mdx).
 
 * Note: RavenDB also supports Aggressive Caching.  
-  Learn more about that in article [Setup aggressive caching](../../../client-api/how-to/setup-aggressive-caching.mdx).
+  Learn more about that in article [Setup aggressive caching](../../how-to/setup-aggressive-caching.mdx).
 
 <TabItem value="MaxHttpCacheSize" label="MaxHttpCacheSize">
 <CodeBlock language="csharp">
@@ -971,7 +971,7 @@ public ISerializationConventions Serialization \{ get; set; \}
 <Admonition type="note" title="">
 
 #### OperationStatusFetchMode
-* Use the `OperationStatusFetchMode` convention to set the way an [operation](../../../client-api/operations/what-are-operations.mdx) is getting its status when [waiting for completion](../../../client-api/operations/what-are-operations.mdx#wait-for-completion).
+* Use the `OperationStatusFetchMode` convention to set the way an [operation](../../operations/what-are-operations.mdx) is getting its status when [waiting for completion](../../operations/what-are-operations.mdx#wait-for-completion).
 
 * DEFAULT:  
   By default, the value is set to `ChangesApi` which uses the WebSocket protocol underneath when a connection is established with the server.
@@ -1001,8 +1001,8 @@ public OperationStatusFetchMode OperationStatusFetchMode \{ get; set; \}
   from the loaded entity, and no exception is thrown.
 
 * Setting the `PreserveDocumentPropertiesNotFoundOnModel` convention to `true`  
-  allows the client to check (via [whatChanged](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#get-session-changes)
-  or via [WhatChangedFor](../../../client-api/session/how-to/check-if-entity-has-changed.mdx#get-entity-changes) methods)
+  allows the client to check (via [whatChanged](../../session/how-to/check-if-there-are-any-changes-on-a-session.mdx#get-session-changes)
+  or via [WhatChangedFor](../../session/how-to/check-if-entity-has-changed.mdx#get-entity-changes) methods)
   for the missing properties on the entity after loading the document.
 
 * DEFAULT: `true`
@@ -1021,7 +1021,7 @@ public bool PreserveDocumentPropertiesNotFoundOnModel \{ get; set; \}
 #### ReadBalanceBehavior
 * Configure the **read request behavior** by setting the `ReadBalanceBehavior` convention.
 
-* Learn more in the dedicated [Read balance behavior](../../../client-api/configuration/load-balance/read-balance-behavior.mdx) article.
+* Learn more in the dedicated [Read balance behavior](../load-balance/read-balance-behavior.mdx) article.
 
 </Admonition>
 <Admonition type="note" title="">
@@ -1134,7 +1134,7 @@ public bool SendApplicationIdentifier \{ get; set; \}
 #### ShouldIgnoreEntityChanges
 * Set the `ShouldIgnoreEntityChanges` convention to disable entity tracking for certain entities.
 
-* Learn more in [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions).
+* Learn more in [Customize tracking in conventions](../../session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions).
 
 </Admonition>
 <Admonition type="note" title="">
@@ -1228,7 +1228,7 @@ public bool UseHttpDecompression \{ get; set; \}
   Optimistic Concurrency checks will be applied for all sessions opened from the Document Store.
 
 * Learn more about Optimistic Concurrency and the various ways to enable it in article  
-  [how to enable optimistic concurrency](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx).
+  [how to enable optimistic concurrency](../../session/configuration/how-to-enable-optimistic-concurrency.mdx).
 
 * DEFAULT: `false`
 

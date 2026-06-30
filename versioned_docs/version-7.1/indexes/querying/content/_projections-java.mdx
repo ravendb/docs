@@ -33,7 +33,7 @@ Another consideration to take into account is the cost of running the projection
 
 ## Projections and Stored Fields
 
-If a projection function only requires fields that are stored, then the document will not be loaded from storage and all data will come from the index directly. This can increase query performance (by the cost of disk space used) in many situations when whole document is not needed. You can read more about field storing [here](../../../indexes/storing-data-in-index.mdx).
+If a projection function only requires fields that are stored, then the document will not be loaded from storage and all data will come from the index directly. This can increase query performance (by the cost of disk space used) in many situations when whole document is not needed. You can read more about field storing [here](../../storing-data-in-index.mdx).
 
 ## SelectFields
 The most basic projection can be done using `selectFields` method:

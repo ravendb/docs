@@ -38,10 +38,10 @@ To allow data subscriptions in a sharded database:
 * From a user's point of view, creating a data subscription is 
   done once, [just like it is done](../client-api/data-subscriptions/creation/how-to-create-data-subscription.mdx) 
   under a non-sharded database.  
-* Behind the scenes, though, the [orchestrator](../sharding/overview.mdx#client-server-communication) 
+* Behind the scenes, though, the [orchestrator](./overview.mdx#client-server-communication) 
   that was appointed to handle this client and received its 
   subscription request uses the subscription's settings and 
-  creates a data subscription with each [shard](../sharding/overview.mdx#shards).  
+  creates a data subscription with each [shard](./overview.mdx#shards).  
 * Each shard independently organizes available data in batches 
   and sends the batches to the orchestrator in response to data 
   requests.  

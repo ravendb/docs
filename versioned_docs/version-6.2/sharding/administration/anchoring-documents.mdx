@@ -14,13 +14,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Anchoring Documents to a Bucket
 <Admonition type="note" title="">
 
-* By default, RavenDB selects the bucket for storing a document based on a [hash code](../../sharding/overview.mdx#buckets-population) derived from the entire document ID.
+* By default, RavenDB selects the bucket for storing a document based on a [hash code](../overview.mdx#buckets-population) derived from the entire document ID.
   To give you more control over the document's bucket selection, RavenDB allows you to **Anchor documents to a bucket**,
   which ensures that multiple documents **share the same bucket**.
 
 * Making documents share a bucket is useful when, for example, the documents are related and are expected to be frequently loaded in the same transaction.  
 
-* To gain control over which specific shard a document will reside in, see [sharding by prefix](../../sharding/administration/sharding-by-prefix.mdx). 
+* To gain control over which specific shard a document will reside in, see [sharding by prefix](./sharding-by-prefix.mdx). 
 
 * In this page:  
   * [Overview](#overview)  

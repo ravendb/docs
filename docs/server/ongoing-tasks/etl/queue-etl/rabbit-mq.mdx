@@ -28,7 +28,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Read more about RabbitMQ in the platform's [official documentation](https://www.rabbitmq.com/).
 * This article focuses on how to create a RabbitMQ ETL task using the Client API.  
   To define a RabbitMQ ETL task from Studio see [Studio: RabbitMQ ETL Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task.mdx)  
-  For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx).
+  For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](./overview.mdx).
 
 * In this page:
     * [Add a RabbitMQ connection string](#add-a-rabbitmq-connection-string)
@@ -284,7 +284,7 @@ public class EtlQueue
 
 ## The transformation script
 
-The [basic characteristics](../../../../server/ongoing-tasks/etl/basics.mdx) of a RabbitMQ ETL script are similar to those of other ETL types.  
+The [basic characteristics](../basics.mdx) of a RabbitMQ ETL script are similar to those of other ETL types.  
 The script defines what data to **extract** from the source document, how to **transform** this data,  
 and which RabbitMQ Exchange to **load** it to.
 #### The loadTo method
@@ -307,7 +307,7 @@ The two methods are equivalent, offering alternative syntax:
       | **ExchangeName** | string  | The name of the RabbitMQ exchange.                                                                                           |
       | **obj**          | object  | The object to transfer.                                                                                                      |
       | **routingKey**   | string  | The RabbitMQ exchange evaluates this attribute to determine how to route the message to queues based on the exchange type.   |
-      | **attributes**   | object  | An object with [CloudEvents attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#cloudevents).                |
+      | **attributes**   | object  | An object with [CloudEvents attributes](./overview.mdx#cloudevents).                |
 
 For example, the following two calls, which load data to the Orders exchange, are equivalent:
 

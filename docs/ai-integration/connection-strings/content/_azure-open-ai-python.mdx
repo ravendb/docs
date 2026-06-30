@@ -8,8 +8,8 @@ import Panel from '@site/src/components/Panel';
 <Admonition type="note" title="">
 
 * This article explains how to define a connection string to the [Azure OpenAI Service](https://azure.microsoft.com/en-us/products/ai-services/openai-service),  
-  enabling RavenDB to use Azure OpenAI models for [Embeddings generation tasks](../../../ai-integration/generating-embeddings/overview.mdx),
-  [Gen AI tasks](../../../ai-integration/gen-ai-integration/overview.mdx), and [AI agents](../../../ai-integration/ai-agents/overview.mdx).    
+  enabling RavenDB to use Azure OpenAI models for [Embeddings generation tasks](../../generating-embeddings/overview.mdx),
+  [Gen AI tasks](../../gen-ai-integration/overview.mdx), and [AI agents](../../ai-agents/overview.mdx).    
     
 * In this article:
   * [Define the connection string - from Studio](#define-the-connection-string-from-studio)
@@ -31,7 +31,7 @@ import Panel from '@site/src/components/Panel';
 
 2. **Identifier** (optional)  
    Enter an identifier for this connection string.  
-   Learn more about the identifier in the [connection string identifier](../../../ai-integration/connection-strings/overview.mdx#identifier) section.
+   Learn more about the identifier in the [connection string identifier](../overview.mdx#identifier) section.
 
 3. **Model Type**  
    Select "Text Embeddings".
@@ -86,9 +86,9 @@ import Panel from '@site/src/components/Panel';
 3. **Prompt Cache Key** (optional)
     
    * Controls whether RavenDB includes the `prompt_cache_key` field in chat completion 
-     requests sent to the AI provider when using [AI Agents](../../../ai-integration/ai-agents/overview.mdx).
+     requests sent to the AI provider when using [AI Agents](../../ai-agents/overview.mdx).
     
-   * When enabled (set to _True_), RavenDB sends the [Conversation's document ID](../../../ai-integration/ai-agents/overview.mdx#what-is-a-conversation) 
+   * When enabled (set to _True_), RavenDB sends the [Conversation's document ID](../../ai-agents/overview.mdx#what-is-a-conversation) 
      in the `prompt_cache_key` field with each request.
      This can help the AI provider identify requests that belong to the same conversation and reuse a previously cached prompt prefix (system prompt + prior messages).
    

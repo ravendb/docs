@@ -8,11 +8,11 @@ import Panel from '@site/src/components/Panel';
 <Admonition type="note" title="">
 
 * RavenDB Queries can be executed via `Query`, `DocumentQuery` or directly using `RQL`.  
-  Learn more in [Query Overview](../../../querying/overview.mdx).
+  Learn more in [Query Overview](../../overview.mdx).
 
 * Unlike the `Query` method, the `DocumentQuery` method does Not support LINQ.  
   However, it gives you more flexibility and control over the process of building a query,  
-  as it provides low-level querying capabilities. See [Query -vs- DocumentQuery](../../../querying/document-query/query-vs-document-query.mdx) for all differences.
+  as it provides low-level querying capabilities. See [Query -vs- DocumentQuery](../query-vs-document-query.mdx) for all differences.
 
 * In this article:
   * [`DocumentQuery` examples](#documentquery-examples)
@@ -294,12 +294,12 @@ Refer to the corresponding documentation articles, marked with links starting wi
 Available custom methods and extensions:   
 
 - AddOrder
-- [Query] [AfterQueryExecuted](../../../querying/customize-query.mdx#afterqueryexecuted)
-- [Query] [AfterStreamExecuted](../../../querying/customize-query.mdx#afterstreamexecuted)
+- [Query] [AfterQueryExecuted](../../customize-query.mdx#afterqueryexecuted)
+- [Query] [AfterStreamExecuted](../../customize-query.mdx#afterstreamexecuted)
 - [Query] [AggregateBy](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
 - [Query] [AggregateUsing](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
 - AndAlso
-- [Query] [BeforeQueryExecuted](../../../querying/customize-query.mdx#beforequeryexecuted)
+- [Query] [BeforeQueryExecuted](../../customize-query.mdx#beforequeryexecuted)
 - [Boost](../../../client-api/session/querying/text-search/boost-search-results.mdx)
 - CloseSubclause
 - CmpXchg
@@ -327,21 +327,21 @@ Available custom methods and extensions:
 - [LongCount](../../../client-api/session/querying/how-to-count-query-results.mdx)
 - MoreLikeThis
 - NegateNext
-- [Not](../../../querying/filtering-query-results/use-logical-operators.mdx#negate-a-condition-with-not)
-- [Query] [NoCaching](../../../querying/customize-query.mdx#nocaching)
-- [Query] [NoTracking](../../../querying/customize-query.mdx#notracking)
+- [Not](../../filtering-query-results/use-logical-operators.mdx#negate-a-condition-with-not)
+- [Query] [NoCaching](../../customize-query.mdx#nocaching)
+- [Query] [NoTracking](../../customize-query.mdx#notracking)
 - OfType
 - OpenSubclause
-- [OrderBy](../../../querying/sorting-query-results/sort-query-results.mdx)
-- [OrderByDescending](../../../querying/sorting-query-results/sort-query-results.mdx)
+- [OrderBy](../../sorting-query-results/sort-query-results.mdx)
+- [OrderByDescending](../../sorting-query-results/sort-query-results.mdx)
 - [Query] [OrderByDistance](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistance)
 - [Query] [OrderByDistanceDescending](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#orderbydistancedesc)
-- [OrderByScore](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-score)
-- [OrderByScoreDescending](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-score)
+- [OrderByScore](../../sorting-query-results/sort-query-results.mdx#order-by-score)
+- [OrderByScoreDescending](../../sorting-query-results/sort-query-results.mdx#order-by-score)
 - OrElse
-- [Query] [Projection](../../../querying/customize-query.mdx#projection)
+- [Query] [Projection](../../customize-query.mdx#projection)
 - Proximity
-- [Query] [RandomOrdering](../../../querying/customize-query.mdx#randomordering)
+- [Query] [RandomOrdering](../../customize-query.mdx#randomordering)
 - [Query] [RelatesToShape](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#search-by-shape)
 - [Search](../../../client-api/session/querying/text-search/full-text-search.mdx)
 - SelectFields
@@ -353,9 +353,9 @@ Available custom methods and extensions:
 - Statistics
 - [SuggestUsing](../../../client-api/session/querying/how-to-work-with-suggestions.mdx)
 - Take
-- [Query] [Timings](../../../querying/customize-query.mdx#timings)
+- [Query] [Timings](../../customize-query.mdx#timings)
 - UsingDefaultOperator
-- [Query] [WaitForNonStaleResults](../../../querying/customize-query.mdx#waitfornonstaleresults)
+- [Query] [WaitForNonStaleResults](../../customize-query.mdx#waitfornonstaleresults)
 - Where
 - WhereBetween
 - [WhereEndsWith](../../../client-api/session/querying/text-search/ends-with-query.mdx)
@@ -366,7 +366,7 @@ Available custom methods and extensions:
 - WhereIn
 - WhereLessThan
 - WhereLessThanOrEqual
-- [WhereLucene](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx)
+- [WhereLucene](../../filtering-query-results/filter-with-lucene-syntax.mdx)
 - WhereNotEquals
 - [WhereRegex](../../../client-api/session/querying/text-search/using-regex.mdx)
 - [WhereStartsWith](../../../client-api/session/querying/text-search/starts-with-query.mdx)
@@ -376,6 +376,6 @@ Available custom methods and extensions:
 
 <Panel heading="Syntax">
 
-The available `DocumentQuery` overloads are listed in this [Syntax section](../../../querying/overview.mdx#syntax) in the [Query Overview](../../../querying/overview.mdx).
+The available `DocumentQuery` overloads are listed in this [Syntax section](../../overview.mdx#syntax) in the [Query Overview](../../overview.mdx).
 
 </Panel>

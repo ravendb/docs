@@ -10,7 +10,7 @@ import CodeBlock from '@theme/CodeBlock';
   * Use [PatchOperation](../../../../../client-api/operations/patching/single-document.mdx) to patch data on a **single** document.
   * Use [PatchByQueryOperation](../../../../../client-api/operations/patching/set-based.mdx) to patch data on **multiple** documents.
 
-* Patching time series entries on a single document can also be performed via the [session](../../../../../document-extensions/timeseries/client-api/session/patch.mdx).
+* Patching time series entries on a single document can also be performed via the [session](../../session/patch.mdx).
 
 * In this page:  
   * [Patch time series data - single document](#patch-time-series-data---single-document)
@@ -27,7 +27,7 @@ import CodeBlock from '@theme/CodeBlock';
 ### Usage
 
 * Create a `PatchRequest` instance:
-    * Define the Append or Delete action using the [JavaScript time series API](../../../../../document-extensions/timeseries/client-api/javascript-support.mdx).
+    * Define the Append or Delete action using the [JavaScript time series API](../../javascript-support.mdx).
 
 * Create a `PatchOperation` instance and pass it:
     * The ID of the document to patch
@@ -136,7 +136,7 @@ await documentStore.operations.send(patchOp);
 
 * The detailed syntax of `PatchRequest` is listed under this [syntax section](../../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer-syntax).
 
-* The available JavaScript API methods are detailed in the [time series JavaScript support](../../../../../document-extensions/timeseries/client-api/javascript-support.mdx) article.
+* The available JavaScript API methods are detailed in the [time series JavaScript support](../../javascript-support.mdx) article.
 
 
 
@@ -150,7 +150,7 @@ await documentStore.operations.send(patchOp);
 * This is achieved by defining a string, or creating an instance of `IndexQuery` that contains such string,  
   with the following two parts:
   * **The query**: provide an [RQL](../../../../../querying/rql/what-is-rql.mdx) code snippet to filter the documents you want to patch.
-  * **The patching script**: use the [JavaScript time series API](../../../../../document-extensions/timeseries/client-api/javascript-support.mdx) to define the patching action.
+  * **The patching script**: use the [JavaScript time series API](../../javascript-support.mdx) to define the patching action.
     
 * Create a `PatchByQueryOperation` instance and pass it the `IndexQuery` object, or the defined string.
 
@@ -217,7 +217,7 @@ await documentStore.operations.send(deleteByQueryOp);
 * In this example, for each document in the "Users" collection, we patch a document field with data retrieved from its time series entries.  
   The document's time series data itself is Not patched.  
   The document `numberOfUniqueTagsInTS` field will be updated with the number of unique tags in the user's "HeartRates" time series.  
-  To do this, we use the JavaScript [get](../../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-3) method to get all the time series entries for each document  
+  To do this, we use the JavaScript [get](../../javascript-support.mdx#section-3) method to get all the time series entries for each document  
   and extract each entry's tag.  
 <TabItem value="patch_6" label="patch_6">
 <CodeBlock language="js">
@@ -264,7 +264,7 @@ await asyncOp.waitForCompletion();
 
 * The detailed syntax of `PatchByQueryOperation` is listed under this [syntax section](../../../../../client-api/operations/patching/set-based.mdx#patchbyqueryoperation-syntax).
 
-* The available JavaScript API methods are detailed in the [time series JavaScript support](../../../../../document-extensions/timeseries/client-api/javascript-support.mdx) article.
+* The available JavaScript API methods are detailed in the [time series JavaScript support](../../javascript-support.mdx) article.
 
 
 

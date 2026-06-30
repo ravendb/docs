@@ -91,10 +91,10 @@ try \{
 #### Get entries with multiple values:
 
 * Here, we check whether a stock's closing-time price is rising from day to day (over three days).  
-  This example is based on the sample entries that were entered in [this example](../../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values).
+  This example is based on the sample entries that were entered in [this example](../../append.mdx#append-entries-with-multiple-values).
  
 * Since each time series entry contains multiple StockPrice values, 
-  we include a sample that uses [named](../../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values) 
+  we include a sample that uses [named](../../append.mdx#append-entries-with-multiple-values) 
   time series values to make the code easier to read.  
 
 <TabItem value="timeseries_region_Get-Named-Values" label="timeseries_region_Get-Named-Values">
@@ -129,7 +129,7 @@ try \{
 
 * When retrieving time series entries using `timeSeriesFor.get`,  
   you can include the series parent document and/or documents referred to by the entries 
-  [tags](../../../../../../document-extensions/timeseries/overview.mdx#tags).  
+  [tags](../../../../overview.mdx#tags).  
 
 * The included documents will be cached in the session, and instantly retrieved from memory if loaded by the user.
 
