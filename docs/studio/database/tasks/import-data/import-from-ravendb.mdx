@@ -22,18 +22,18 @@ import LanguageContent from "@site/src/components/LanguageContent";
   You can import a database from a previous RavenDB version into your current server.  
 
 * The process consists of the following steps:  
-  1st Step: [Prepare Servers for the Import Process](../../../../studio/database/tasks/import-data/import-from-ravendb.mdx#1st-step:-prepare-servers-for-the-import-process)   
-  2nd Step: [Access the Import View](../../../../studio/database/tasks/import-data/import-from-ravendb.mdx#2nd-step:-access-the-import-view)  
-  3rd Step: [Set the Source Server URL and database](../../../../studio/database/tasks/import-data/import-from-ravendb.mdx#3rd-step:-set-the-source-server-url-and-database)  
-  4th Step: [Set Import Options](../../../../studio/database/tasks/import-data/import-from-ravendb.mdx#4th-step:-set-import-options)  
-  5th Step: [Advanced Import Options](../../../../studio/database/tasks/import-data/import-from-ravendb.mdx#5th-step:-advanced-import-options)  
+  1st Step: [Prepare Servers for the Import Process](#1st-step-prepare-servers-for-the-import-process)   
+  2nd Step: [Access the Import View](#2nd-step-access-the-import-view)  
+  3rd Step: [Set the Source Server URL and database](#3rd-step-set-the-source-server-url-and-database)  
+  4th Step: [Set Import Options](#4th-step-set-import-options)  
+  5th Step: [Advanced Import Options](#5th-step-advanced-import-options)  
 </Admonition>
 ## 1st Step: Prepare Servers for the Import Process 
 
 * Before migrating data from a secure source server, the destination server must also be secure.  
   You must pass the certificate from the destination to the source server.  The following steps explain how.
 
-* Perform this step only if your source RavenDB server is a secure verion 4.x (or newer) server that is running on HTTPS.  For other servers, skip this step and continue to [Step 2](../../../../studio/database/tasks/import-data/import-from-ravendb.mdx#2nd:-access-the-import-view).
+* Perform this step only if your source RavenDB server is a secure verion 4.x (or newer) server that is running on HTTPS.  For other servers, skip this step and continue to [Step 2](#2nd:-access-the-import-view).
 
 * To import, the destination server needs to access the existing source database and fetch data from it.  
   To grant such access, you must first register the destination server certificate as a client certificate on your source server.  
@@ -125,7 +125,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 ## 4th Step: Set Import Options
 
 * Filter the data you want to import.  
-* Customize advanced configuration and apply a transform script under the [Advanced Import Options](../../../../studio/database/tasks/import-data/import-from-ravendb.mdx#step-#5:-advanced-import-options).
+* Customize advanced configuration and apply a transform script under the [Advanced Import Options](#step-#5:-advanced-import-options).
 
 ![Import Options](./assets/import-from-ravendb-options.png)
 

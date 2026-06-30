@@ -188,7 +188,7 @@ RavenDB also supports [cluster-wide transactions](../session/cluster-transaction
 This feature modifies the way RavenDB commits a transaction, and it is meant to address scenarios where you prefer to get a failure if the transaction cannot be persisted to a majority of the nodes in the cluster.  
 In other words, this feature is for scenarios where you want to favor consistency over availability.
 
-For cluster-wide transactions, RavenDB uses the [Raft](../../server/clustering/rachis/what-is-rachis.mdx#what-is-raft-?) protocol. 
+For cluster-wide transactions, RavenDB uses the [Raft](../../server/clustering/rachis/what-is-rachis.mdx#what-is-raft-) protocol. 
 This protocol ensures that the transaction is acknowledged by a majority of the nodes in the cluster and once committed, the changes will be visible on any node that you'll use henceforth.  
 
 Similar to single-node transactions, RavenDB requires that you submit the cluster-wide transaction as a single request of all the changes you want to commit to the database. 

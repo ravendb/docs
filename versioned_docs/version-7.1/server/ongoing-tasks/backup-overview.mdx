@@ -38,7 +38,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * In this page:  
   * [Backup Type](#backup-type)  
   * [Backup Contents](#backup-contents)  
-  * [Backup Scope: Full or Incremental](../../server/ongoing-tasks/backup-overview.mdx#backup-scope:-full-or-incremental)  
+  * [Backup Scope: Full or Incremental](#backup-scope-full-or-incremental)  
   * [Backup Name and Folder Structure](#backup-name-and-folder-structure)  
   * [Encryption](#encryption)  
   * [Compression](#compression)  
@@ -60,7 +60,7 @@ There are two backup types: [Logical-backup](../../client-api/operations/mainten
   at a given point in time.  
 
    * Restoration time is reduced because no re-indexing is needed, but more data is transferred during backups.  
-   * [Incremental Snapshot backups](../../server/ongoing-tasks/backup-overview.mdx#backup-scope:-full-or-incremental) 
+   * [Incremental Snapshot backups](#backup-scope-full-or-incremental) 
      (the changes made since the last backup) **do not incrementally update indexes or change vector data** after the initial complete Snapshot image. 
   <Admonition type="note" title="">
   Snapshots are only available for _Enterprise subscribers_.  
@@ -182,7 +182,7 @@ after the end of the retention period.
 
 To restore a database - 
 
-* [Provide RavenDB](../../client-api/operations/maintenance/backup/restore.mdx#restoring-a-database:-configuration-and-execution) 
+* [Provide RavenDB](../../client-api/operations/maintenance/backup/restore.mdx#restoring-a-database-configuration-and-execution) 
   with the path to the backup folder.  
 * To [restore an encrypted database](../../client-api/operations/maintenance/backup/encrypted-backup.mdx#restoring-an-encrypted-backup) 
   you must provide the encryption key.  

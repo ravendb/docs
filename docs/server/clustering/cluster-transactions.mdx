@@ -58,7 +58,7 @@ replication vs. cluster-wide transactions that are accepted by a majority of the
 1. A request sent from the client via [SaveChanges()](../../client-api/session/saving-changes.mdx#transaction-mode---cluster-wide) using `TransactionMode.ClusterWide` will generate a [Raft Command](./rachis/consensus-operations.mdx#implementation-details) 
    and the server will wait for a consensus on it.
 2. When consensus is achieved, each node will validate the compare-exchange values first.  
-   If this fails, the entire session transaction is rolled back. From the nature of the [Raft consensus algorithm](../../server/clustering/rachis/what-is-rachis.mdx#what-is-raft-?) 
+   If this fails, the entire session transaction is rolled back. From the nature of the [Raft consensus algorithm](./rachis/what-is-rachis.mdx#what-is-raft-) 
    the cluster-wide transaction should either _eventually_ be accepted on _all_ nodes or fail on _all_ of them. 
 3. Once the validation has passed, the request is stored on the local cluster state machine of every node and is 
    processed asynchronously by the relevant database.
