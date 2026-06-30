@@ -16,12 +16,12 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* Sharded databases are backed up using user-defined periodic [backup tasks](../../backup/overview).  
+* Sharded databases are backed up using user-defined periodic [backup tasks](../../backup/overview.mdx).  
 
 * Shards can store backup files **locally** (each shard using its own node machine storage)  
   and/or **remotely** (all shards sending backup files to a common remote destination like an AWS S3 bucket).  
 
-* Both [Full](../../backup/overview.mdx#full-backup) and [Incremental](../../backup/overview#incremental-backup) 
+* Both [Full](../../backup/overview.mdx#full-backup) and [Incremental](../../backup/overview.mdx#incremental-backup) 
   backups can be created for a sharded database.  
 
 * A [logical](../../backup/overview.mdx#logical-backup) backup **can** be:  
@@ -113,7 +113,7 @@ Read more about this feature [here](../import-and-export.mdx#import).
 
 <Admonition type="note" title="">
 
-Backed-up data includes both [database-level and cluster-level content](../../backup/overview#backup-content).
+Backed-up data includes both [database-level and cluster-level content](../../backup/overview.mdx#backup-content).
     
 </Admonition>
 
@@ -123,7 +123,7 @@ Backed-up data includes both [database-level and cluster-level content](../../ba
 
 A backup task for a sharded database can create a [logical backup](../../backup/overview.mdx#logical-backup) only.
 
-A [Snapshot](../../backup/overview#snapshot-image) backup **cannot** be created for a sharded database.  
+A [Snapshot](../../backup/overview.mdx#snapshot-image) backup **cannot** be created for a sharded database.  
 
 `Logical` backups created for a sharded database can be restored into both sharded and non-sharded databases.  
 
@@ -132,13 +132,13 @@ A [Snapshot](../../backup/overview#snapshot-image) backup **cannot** be created 
 <Panel heading="Backup scope">
 
 A backup task for a sharded database can create a [full backup](../../backup/overview.mdx#full-backup) with the entire content of each shard,  
-or an [incremental backup](../../backup/overview#incremental-backup) with just the difference between the current data and the last backed-up data.  
+or an [incremental backup](../../backup/overview.mdx#incremental-backup) with just the difference between the current data and the last backed-up data.  
 
 </Panel>
 
 <Panel heading="Naming convention">
 
-* Backup files created for a sharded database generally follow the same [naming convention](../../backup/overview#naming-and-folder-structure) as non-sharded database backups.  
+* Backup files created for a sharded database generally follow the same [naming convention](../../backup/overview.mdx#naming-and-folder-structure) as non-sharded database backups.  
 
 * Each shard keeps its backup files in a folder whose name consists of:  
    * **Date and Time** (when the folder was created)  
@@ -155,7 +155,7 @@ or an [incremental backup](../../backup/overview#incremental-backup) with just t
 
 <Panel heading="Server-wide backup">
    
-[Server-wide backup](../../backup/overview#server-wide-backup) creates and runs the required backup tasks
+[Server-wide backup](../../backup/overview.mdx#server-wide-backup) creates and runs the required backup tasks
 for the databases hosted by the cluster at the scheduled time.
     
 * A server-wide **logical** backup creates backups for both non-sharded and sharded databases.  
@@ -218,7 +218,7 @@ var result = await store.Maintenance.SendAsync(operation);
 #### Casting Backup Results  
     
 In a sharded database, results are returned by Backup in a `ShardedBackupResult` type.  
-This type is specific to a sharded database, and casting it using a non-sharded type [will fail](../../migration/client-api/previous-versions-client-breaking-changes#casting-smuggler-results).
+This type is specific to a sharded database, and casting it using a non-sharded type [will fail](../../migration/client-api/previous-versions-client-breaking-changes.mdx#casting-smuggler-results).
     
 </Admonition>
 
@@ -230,12 +230,12 @@ This type is specific to a sharded database, and casting it using a non-sharded 
 | ------ | ------------------------------- | ------- |
 | Store backup files created by shards in **local shard machine storage**                                                          | **Yes** | Shards can store the backups they create locally. |
 | Store backup files of sharded databases [remotely](#backup-storage-local-and-remote) | **Yes** | Shards can store the backups they create on remote S3, Azure, or Google Cloud destinations. |
-| Create [Full](../../backup/overview#full-backup) backups for sharded databases                                                   | **Yes** | |
-| Create [Incremental](../../backup/overview#incremental-backup) backups for sharded databases                                     | **Yes** | |
-| Create [Logical](../../backup/overview#logical-backup) backups for sharded databases                                             | **Yes** | |
-| Create [Snapshot](../../backup/overview#snapshot-image) backups for sharded databases                                            | **No**  | Snapshot backups CANNOT be created for (nor restored to) sharded databases. |
+| Create [Full](../../backup/overview.mdx#full-backup) backups for sharded databases                                                   | **Yes** | |
+| Create [Incremental](../../backup/overview.mdx#incremental-backup) backups for sharded databases                                     | **Yes** | |
+| Create [Logical](../../backup/overview.mdx#logical-backup) backups for sharded databases                                             | **Yes** | |
+| Create [Snapshot](../../backup/overview.mdx#snapshot-image) backups for sharded databases                                            | **No**  | Snapshot backups CANNOT be created for (nor restored to) sharded databases. |
 | Create **periodic backup tasks** for sharded databases                                                                           | **Yes** | |
-| Run a manual [one-time](../../backup/create/one-time-backup) backup operation on a sharded database                              | **Yes** | |
+| Run a manual [one-time](../../backup/create/one-time-backup.mdx) backup operation on a sharded database                              | **Yes** | |
 | Include sharded databases in a [server-wide backup operation](#server-wide-backup)   | **Yes (logical only)** | A server-wide **logical** backup includes all databases, including sharded ones. Sharded databases are automatically **excluded** from server-wide **snapshot** backups. |
 
 </Panel>

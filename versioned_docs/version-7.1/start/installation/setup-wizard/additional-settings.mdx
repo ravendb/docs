@@ -97,7 +97,7 @@ import Panel from '@site/src/components/Panel';
      The directory part of this path must exist and be writable on every node.    
      RavenDB must be able to save the certificate file to this location for the cluster setup to succeed.
     
-     When joining nodes to your cluster using a [setup package](../../../start/installation/setup-wizard/use-setup-package),  
+     When joining nodes to your cluster using a [setup package](./use-setup-package.mdx),  
      make sure the same certificate file is available at this path on every node; otherwise, cluster setup may fail.    
     
      This option is available only when you choose a [Secure setup](./choose-security-option.mdx#choose-a-security-method) flow in the wizard.  
@@ -109,10 +109,10 @@ import Panel from '@site/src/components/Panel';
      The value you enter will be written to the _settings.json_ file as the value of the [Logs.Path](../../../server/configuration/logs-configuration.mdx#logspath) configuration key.
     
      This directory will be used on all nodes in the cluster.
-     When joining nodes to your cluster using a [setup package](../../../start/installation/setup-wizard/use-setup-package),  
+     When joining nodes to your cluster using a [setup package](./use-setup-package.mdx),  
      make sure this directory exists on each node; otherwise, cluster setup may fail.  
     
-     Learn more about the RavenDB logging system in [Logging](../../../server/troubleshooting/logging).      
+     Learn more about the RavenDB logging system in [Logging](../../../server/troubleshooting/logging.mdx).      
     
 4. **Auto indexing engine type**:  
    Choose which search engine RavenDB will use for auto-indexes.  

@@ -87,7 +87,7 @@ Use these configuration options to select the search engine:
   new static indexes will use Lucene.
   Existing static indexes that were created while Corax was selected will continue using Corax.
     
-* To make an existing index use a different engine, [reset the index](../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) after changing the relevant search engine setting.
+* To make an existing index use a different engine, [reset the index](../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) after changing the relevant search engine setting.
     
 </Admonition>
 
@@ -97,7 +97,7 @@ Use these configuration options to select the search engine:
 Some features require Corax regardless of the default search engine configuration:
 
 * **Vector search**  
-  [Vector search](../../ai-integration/vector-search/overview) is supported only by Corax.  
+  [Vector search](../../ai-integration/vector-search/overview.mdx) is supported only by Corax.  
   Auto-indexes created for vector search queries use Corax automatically,  
   even if the configured default engine is Lucene.
 
@@ -218,7 +218,7 @@ The following Corax limitations currently apply.
 
 * Setting a [boost factor on an index-field](../boosting.mdx#assign-a-boost-factor-to-an-index-field) is not supported.  
   Note that [boosting the whole index-entry](../boosting.mdx#assign-a-boost-factor-to-the-index-entry)
-  and [query-time boosting](../../client-api/session/querying/text-search/boost-search-results) with `boost()` **are supported**.
+  and [query-time boosting](../../client-api/session/querying/text-search/boost-search-results.mdx) with `boost()` **are supported**.
 * Indexing spatial shapes that are not points is not supported.  
   Note that spatial points **are supported**, including WKT values that represent points.
 
@@ -736,7 +736,7 @@ both collection size and the storage system's IO speed affect how long training 
 If an index was created while the relevant collections were still very small,
 the trained dictionary may not be representative (or RavenDB may fall back to the default dictionary).   
 Once the collections hold a representative amount of data,
-you can [reset the index](../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) to train a new dictionary.
+you can [reset the index](../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) to train a new dictionary.
 
 <Admonition type="note" title="">
 Whether a reset rebuilds the index in place or side-by-side depends on the configured [reset mode](../../server/configuration/indexing-configuration.mdx#indexingresetmode).  
