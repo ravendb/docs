@@ -27,15 +27,15 @@ import ContentFrame from "@site/src/components/ContentFrame";
   user-defined scripts, and store the documents in RavenDB collections.
 
 * In this page:
-  * [The Queue Sink Task](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#the-queue-sink-task)
-     * [Connecting a Kafka broker](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#connecting-a-kafka-broker)
-     * [Retrieving enqueued messages from selected Kafka topics](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#retrieving-enqueued-messages-from-selected-kafka-topics)
-     * [Running user-defined scripts](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#running-user-defined-scripts)
-     * [Storing documents in RavenDB collections](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#storing-documents-in-ravendb-collections)
-  * [Client API](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#client-api)
-     * [Add a Kafka Connection String](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#add-a-kafka-connection-string)
-     * [Add a Kafka Sink Task](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#add-a-kafka-sink-task)
-  * [Configuration Options](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#configuration-options)
+  * [The Queue Sink Task](#the-queue-sink-task)
+     * [Connecting a Kafka broker](#connecting-a-kafka-broker)
+     * [Retrieving enqueued messages from selected Kafka topics](#retrieving-enqueued-messages-from-selected-kafka-topics)
+     * [Running user-defined scripts](#running-user-defined-scripts)
+     * [Storing documents in RavenDB collections](#storing-documents-in-ravendb-collections)
+  * [Client API](#client-api)
+     * [Add a Kafka Connection String](#add-a-kafka-connection-string)
+     * [Add a Kafka Sink Task](#add-a-kafka-sink-task)
+  * [Configuration Options](#configuration-options)
 
 </Admonition>
 
@@ -54,7 +54,7 @@ In the message broker architecture, RavenDB sinks take the role of data consumer
 A sink would connect a Kafka broker using a connection string, and retrieve messages
 from the broker's Topics.
 
-Read [below](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#add-a-kafka-connection-string)
+Read [below](#add-a-kafka-connection-string)
 about adding a connection string via API.  
 Read [here](../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink.mdx#define-a-kafka-sink-task)
 about adding a connection string using Studio.
@@ -176,7 +176,7 @@ user in Studio, but **continue processing the batch**.
 Once a batch is consumed, the task confirms it by calling `kafkaConsumer.Commit()`.
 
 Note that the number of documents included in a batch is
-[configurable](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#configuration-options).
+[configurable](#configuration-options).
 
 <Admonition type="warning" title="Take care of duplicates" id="take-care-of-duplicates" href="#take-care-of-duplicates">
 Producers may enqueue

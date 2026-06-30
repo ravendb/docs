@@ -22,23 +22,23 @@ import ContentFrame from '@site/src/components/ContentFrame';
 ---
 
 * In this article:  
-   * [Caching in RavenDB](../../../client-api/how-to/setup-aggressive-caching.mdx#caching-in-ravendb)  
-      * [Standard HTTP caching](../../../client-api/how-to/setup-aggressive-caching.mdx#standard-http-caching)  
-      * [Aggressive caching](../../../client-api/how-to/setup-aggressive-caching.mdx#aggressive-caching)  
-      * [How invalidation works](../../../client-api/how-to/setup-aggressive-caching.mdx#how-invalidation-works)  
-   * [Enable aggressive caching](../../../client-api/how-to/setup-aggressive-caching.mdx#enable-aggressive-caching)  
-      * [Enable for a scope](../../../client-api/how-to/setup-aggressive-caching.mdx#enable-for-a-scope)  
-      * [Apply to the entire application](../../../client-api/how-to/setup-aggressive-caching.mdx#apply-to-the-entire-application)  
-   * [Cache modes](../../../client-api/how-to/setup-aggressive-caching.mdx#cache-modes)  
-      * [TrackChanges](../../../client-api/how-to/setup-aggressive-caching.mdx#trackchanges)  
-      * [DoNotTrackChanges](../../../client-api/how-to/setup-aggressive-caching.mdx#donottrackchanges)  
-   * [More operations](../../../client-api/how-to/setup-aggressive-caching.mdx#more-operations)  
-      * [Opt out for a single call](../../../client-api/how-to/setup-aggressive-caching.mdx#opt-out-for-a-single-call)  
-      * [Requests that are never aggressively cached](../../../client-api/how-to/setup-aggressive-caching.mdx#requests-that-are-never-aggressively-cached)  
-      * [Common mistakes](../../../client-api/how-to/setup-aggressive-caching.mdx#common-mistakes)  
-   * [Syntax](../../../client-api/how-to/setup-aggressive-caching.mdx#syntax)  
-      * [Methods](../../../client-api/how-to/setup-aggressive-caching.mdx#methods)  
-      * [Classes](../../../client-api/how-to/setup-aggressive-caching.mdx#classes)
+   * [Caching in RavenDB](#caching-in-ravendb)  
+      * [Standard HTTP caching](#standard-http-caching)  
+      * [Aggressive caching](#aggressive-caching)  
+      * [How invalidation works](#how-invalidation-works)  
+   * [Enable aggressive caching](#enable-aggressive-caching)  
+      * [Enable for a scope](#enable-for-a-scope)  
+      * [Apply to the entire application](#apply-to-the-entire-application)  
+   * [Cache modes](#cache-modes)  
+      * [TrackChanges](#trackchanges)  
+      * [DoNotTrackChanges](#donottrackchanges)  
+   * [More operations](#more-operations)  
+      * [Opt out for a single call](#opt-out-for-a-single-call)  
+      * [Requests that are never aggressively cached](#requests-that-are-never-aggressively-cached)  
+      * [Common mistakes](#common-mistakes)  
+   * [Syntax](#syntax)  
+      * [Methods](#methods)  
+      * [Classes](#classes)
 
 </Admonition>
 
@@ -101,7 +101,7 @@ The next read of any aggressively cached entry is sent to the server for revalid
 There is a short delay between the moment a document is modified on the server and the moment the change notification reaches the client.  
 A read that hits the aggressive cache during that window will return the previous value of the document.  
 Use aggressive caching only when this small staleness window is acceptable for the calling code.  
-For requests that must always see the most recent committed state, use the bypass options under [Opt out for a single call](../../../client-api/how-to/setup-aggressive-caching.mdx#opt-out-for-a-single-call) and [Requests that are never aggressively cached](../../../client-api/how-to/setup-aggressive-caching.mdx#requests-that-are-never-aggressively-cached).
+For requests that must always see the most recent committed state, use the bypass options under [Opt out for a single call](#opt-out-for-a-single-call) and [Requests that are never aggressively cached](#requests-that-are-never-aggressively-cached).
 
 </Admonition>
 

@@ -23,7 +23,7 @@ import Panel from '@site/src/components/Panel';
       RQL keywords are case-insensitive; the examples below use lowercase.
     
 * The same logical-operator rules apply when querying a collection dynamically
-  and when [querying a static index](../../../querying/filtering-query-results/use-logical-operators.mdx#logical-operators-when-querying-a-static-index).  
+  and when [querying a static index](#logical-operators-when-querying-a-static-index).  
     
 * For filtering by field value, numeric value, nested field, collection, document ID, and other basic conditions,  
   see [Filter query results](../../../querying/filtering-query-results/filter-query-results.mdx).    
@@ -31,13 +31,13 @@ import Panel from '@site/src/components/Panel';
 ---
     
 * In this article:
-    * [Combine conditions with AND](../../../querying/filtering-query-results/use-logical-operators.mdx#combine-conditions-with-and)
-    * [Combine conditions with OR](../../../querying/filtering-query-results/use-logical-operators.mdx#combine-conditions-with-or)
-    * [Negate a condition with NOT](../../../querying/filtering-query-results/use-logical-operators.mdx#negate-a-condition-with-not)
-    * [Negate a group of conditions](../../../querying/filtering-query-results/use-logical-operators.mdx#negate-a-group-of-conditions)
-    * [Group conditions to control precedence](../../../querying/filtering-query-results/use-logical-operators.mdx#group-conditions-to-control-precedence)
-    * [Logical operators when querying a static index](../../../querying/filtering-query-results/use-logical-operators.mdx#logical-operators-when-querying-a-static-index)
-    * [Operator precedence and defaults](../../../querying/filtering-query-results/use-logical-operators.mdx#operator-precedence-and-defaults)
+    * [Combine conditions with AND](#combine-conditions-with-and)
+    * [Combine conditions with OR](#combine-conditions-with-or)
+    * [Negate a condition with NOT](#negate-a-condition-with-not)
+    * [Negate a group of conditions](#negate-a-group-of-conditions)
+    * [Group conditions to control precedence](#group-conditions-to-control-precedence)
+    * [Logical operators when querying a static index](#logical-operators-when-querying-a-static-index)
+    * [Operator precedence and defaults](#operator-precedence-and-defaults)
 
 </Admonition>
 
@@ -339,7 +339,7 @@ Without the grouping, the query:
 `Title = "Sales Representative" and FirstName = "Robert" or FirstName = "Nancy"`  
 is evaluated as:  
 `(Title = "Sales Representative" and FirstName = "Robert") or FirstName = "Nancy"`,  
-because **AND** has higher precedence than **OR** (see [Operator precedence and defaults](../../../querying/filtering-query-results/use-logical-operators.mdx#operator-precedence-and-defaults)).  
+because **AND** has higher precedence than **OR** (see [Operator precedence and defaults](#operator-precedence-and-defaults)).  
 This returns a different set of documents than the grouped query.    
 
 </Admonition>

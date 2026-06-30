@@ -17,17 +17,17 @@ import Panel from '@site/src/components/Panel';
   See [Configure remote attachments](../../../../document-extensions/attachments/configure-remote-attachments.mdx).  
     
 * In this article
-  * [Overview](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#overview)  
-    * [Remote attachment upload - flow](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#remote-attachment-upload---flow)  
-    * [Remote attachment upload – considerations](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#remote-attachment-upload--considerations)  
-  * [Store attachments remotely - using the **Studio**](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#store-attachments-remotely-using-the-studio)  
-  * [Store attachments remotely - using the **Client API**](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#store-attachments-remotely-using-the-client-api)  
-    * [Store via the Session](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#store-attachments-remotely---via-the-session)  
-    * [Store via an Operation](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#store-attachments-remotely---via-an-operation)  
-  * [Schedule existing attachments for remote upload](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#schedule-existing-attachments-for-remote-upload)  
-  * [The attachment metadata](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#the-attachment-metadata)  
-  * [Deduplicating remote attachments](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#deduplicating-remote-attachments)  
-  * [Syntax](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#syntax)  
+  * [Overview](#overview)  
+    * [Remote attachment upload - flow](#remote-attachment-upload---flow)  
+    * [Remote attachment upload – considerations](#remote-attachment-upload--considerations)  
+  * [Store attachments remotely - using the **Studio**](#store-attachments-remotely-using-the-studio)  
+  * [Store attachments remotely - using the **Client API**](#store-attachments-remotely-using-the-client-api)  
+    * [Store via the Session](#store-attachments-remotely---via-the-session)  
+    * [Store via an Operation](#store-attachments-remotely---via-an-operation)  
+  * [Schedule existing attachments for remote upload](#schedule-existing-attachments-for-remote-upload)  
+  * [The attachment metadata](#the-attachment-metadata)  
+  * [Deduplicating remote attachments](#deduplicating-remote-attachments)  
+  * [Syntax](#syntax)  
  
 </Admonition>
 
@@ -121,7 +121,7 @@ import Panel from '@site/src/components/Panel';
    It only shows the `@flags` property with the value `HasAttachments` in the document's `@metadata` section  
    to indicate that the document has attachments.
 4. Click this JSON button to view the document's raw content, including its full metadata.  
-   Learn more about the attachment metadata in [The attachment metadata](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#the-attachment-metadata).
+   Learn more about the attachment metadata in [The attachment metadata](#the-attachment-metadata).
 
 ![Add attachment to remote storage 4](../assets/add-attachment-to-remote-storage-4.png)    
     
@@ -374,7 +374,7 @@ await using (var stream = new FileStream(attachmentPath,
 
 * Once patching is successful:
   * The document's metadata is updated with the requested remote attachment parameters,  
-    as described in [The attachment metadata](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#the-attachment-metadata).
+    as described in [The attachment metadata](#the-attachment-metadata).
     
   * If the feature is enabled and destinations are defined (see [Configure remote attachments](../../../../document-extensions/attachments/configure-remote-attachments.mdx)),  
     the background task will upload the attachment to the specified remote destination when the scheduled time arrives.    

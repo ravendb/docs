@@ -10,13 +10,13 @@ import CodeBlock from '@theme/CodeBlock';
    * How Counters trigger features' execution.  
 
 * In this page:  
-  * [Counters and Indexing](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing)  
-  * [Counters and Queries](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries)  
-  * [Counters and Revisions](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-revisions)  
-  * [Counters and Changes API](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-changes-api)  
-  * [Counters and Ongoing Tasks](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`, `Data Subscription`  
-  * [Counters and Other Features: summary](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-other-features-summary)
-  * [Counters Bulk-Insert](../../../document-extensions/counters/counters-and-other-features.mdx#counters-bulk-insert)  
+  * [Counters and Indexing](#counters-and-indexing)  
+  * [Counters and Queries](#counters-and-queries)  
+  * [Counters and Revisions](#counters-and-revisions)  
+  * [Counters and Changes API](#counters-and-changes-api)  
+  * [Counters and Ongoing Tasks](#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`, `Data Subscription`  
+  * [Counters and Other Features: summary](#counters-and-other-features-summary)
+  * [Counters Bulk-Insert](#counters-bulk-insert)  
 </Admonition>
 
 
@@ -36,7 +36,7 @@ Indexing Counters can speed-up finding them and the documents that contain them.
 Create queries **using code**, or send the server **raw queries** for execution.  
 
 * Either way, you can query Counters **by name** but **not by value**.  
-  This is because queries are generally [based on indexes](../../../start/getting-started.mdx#example-iii---querying), and Counter values are [not indexed](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing).  
+  This is because queries are generally [based on indexes](../../../start/getting-started.mdx#example-iii---querying), and Counter values are [not indexed](#counters-and-indexing).  
 * Counter values **can** be [projected](../../../indexes/querying/projections.mdx) from query results, as demonstrated in the following examples.  
   This way a client can get Counter values from a query without downloading whole documents.  
 
@@ -119,7 +119,7 @@ Each [ongoing task](../../../studio/database/tasks/ongoing-tasks/general-info.md
     Both types operate as an ongoing backup routine, with a pre-set time schedule.  
     * Logical Backup:  
       **Backed-up Counter values**: **Distributed**  
-      A logical backup is a higher-level implementation of [Smuggler](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-smuggler).  
+      A logical backup is a higher-level implementation of [Smuggler](#counters-and-smuggler).  
       As with Smuggler, Counters are backed-up and restored including their values on all nodes.  
     * Snapshot:  
       A snapshot stores all data and settings as a single binary image.
@@ -165,16 +165,16 @@ and how the various features handle Counter values.
 
 | **Feature** | **Triggered by** | **Counter Value** |
 |-------------|:-------------|:-------------|
-| [Indexing](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing) | _Document Change_ | doesn't handle values |
-| [LINQ Queries](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries) | _No trigger_ | _Accumulated_ |
-| [Raw Queries](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries) | _No trigger_ | `counter()` - _Accumulated_ <br/> `counterRaw()` - _Distributed_ |
-| [Smuggler](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-smuggler) | _No trigger_ | _Distributed_ |
-| [Backup Task](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Time Schedule_ | _Distributed_ |
-| [RavenDB ETL Task](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
-| [External Replication task](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
-| [Data Subscriptions Update Task](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_ | |
-| [Changes API](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-changes-api) | _Countrer Value Modification_ | _Accumulated_ |
-| [Revision creation](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-revisions) | _Document Change_ | _Accumulated_ |
+| [Indexing](#counters-and-indexing) | _Document Change_ | doesn't handle values |
+| [LINQ Queries](#counters-and-queries) | _No trigger_ | _Accumulated_ |
+| [Raw Queries](#counters-and-queries) | _No trigger_ | `counter()` - _Accumulated_ <br/> `counterRaw()` - _Distributed_ |
+| [Smuggler](#counters-and-smuggler) | _No trigger_ | _Distributed_ |
+| [Backup Task](#counters-and-ongoing-tasks) | _Time Schedule_ | _Distributed_ |
+| [RavenDB ETL Task](#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
+| [External Replication task](#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
+| [Data Subscriptions Update Task](#counters-and-ongoing-tasks) | _Document Change_ | |
+| [Changes API](#counters-and-changes-api) | _Countrer Value Modification_ | _Accumulated_ |
+| [Revision creation](#counters-and-revisions) | _Document Change_ | _Accumulated_ |
 
 </Admonition>
 

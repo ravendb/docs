@@ -9,25 +9,25 @@ import Panel from '@site/src/components/Panel';
 
 * You can filter query results by date and time in one of the following ways:
     * An explicit date
-    * The current UTC date-time, using [now()](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#filter-using-now), with or without an offset
-    * The start of the current UTC day, using [today()](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#filter-using-today) 
+    * The current UTC date-time, using [now()](#filter-using-now), with or without an offset
+    * The start of the current UTC day, using [today()](#filter-using-today) 
 
 * The `now()` and `today()` functions are evaluated **server-side** when the query is executed.
 
 * In this article:
-    * [Filter by an explicit date](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#filter-by-an-explicit-date)
-      * [Filter by single date](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#filter-by-single-date)
-      * [Filter by date range](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#filter-by-date-range)
-      * [Filter by date range using `between`](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#filter-by-date-range-using-between)
-    * [Filter using `now()`](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#filter-using-now)
-    * [Filter using `now()` with offset](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#filter-using-now-with-offset)
-      * [Negative offset (past)](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#negative-offset-past)
-      * [Positive offset (future)](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#positive-offset-future)
-      * [Offset format](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#offset-format)
-    * [Filter using `today()`](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#filter-using-today)
-    * [Restrictions](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#restrictions)
-    * [Result caching with time functions](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#result-caching-with-time-functions)
-    * [Syntax](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#syntax)
+    * [Filter by an explicit date](#filter-by-an-explicit-date)
+      * [Filter by single date](#filter-by-single-date)
+      * [Filter by date range](#filter-by-date-range)
+      * [Filter by date range using `between`](#filter-by-date-range-using-between)
+    * [Filter using `now()`](#filter-using-now)
+    * [Filter using `now()` with offset](#filter-using-now-with-offset)
+      * [Negative offset (past)](#negative-offset-past)
+      * [Positive offset (future)](#positive-offset-future)
+      * [Offset format](#offset-format)
+    * [Filter using `today()`](#filter-using-today)
+    * [Restrictions](#restrictions)
+    * [Result caching with time functions](#result-caching-with-time-functions)
+    * [Syntax](#syntax)
 
 </Admonition>
 
@@ -38,7 +38,7 @@ import Panel from '@site/src/components/Panel';
 * Use **UTC** values to avoid time-zone-related issues. RavenDB stores and compares date-time values in UTC.  
   In the C# examples below, [DateTimeKind](https://learn.microsoft.com/dotnet/api/system.datetimekind) is passed to the `DateTime` constructor to mark the value as UTC.  
     
-* Unlike the [Restrictions](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#restrictions) on `now()` and `today()`,  
+* Unlike the [Restrictions](#restrictions) on `now()` and `today()`,  
   explicit date values are deterministic and **can be used** in [Exploration queries](../../../indexes/querying/exploration-queries.mdx) and [Subscription queries](../../../client-api/data-subscriptions/creation/examples.mdx).       
 
 ---
@@ -486,7 +486,7 @@ where HiredAt between "1995-01-01T00:00:00.0000000Z"
     
     * This keeps the generated time value stable for the duration of the smallest unit in the offset,    
       allowing identical queries to benefit from the server query cache and return `304 Not Modified` when applicable.
-      Learn more about caching in: [Result caching with time functions](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#result-caching-with-time-functions).  
+      Learn more about caching in: [Result caching with time functions](#result-caching-with-time-functions).  
     
 </Admonition>
     
@@ -732,7 +732,7 @@ where RequireAt <= now($offset)
   Use `today()` when you need to compare a date field with the start of the current UTC day, rather than with the current date and time.
     
 * `today()` does **not** accept any arguments.
-  To filter relative to another day, use [now() with offset](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#filter-using-now-with-offset) instead.  
+  To filter relative to another day, use [now() with offset](#filter-using-now-with-offset) instead.  
   For example, use `now('+1d')` to compare with the start of tomorrow’s UTC day.
 
 * The following query returns employees whose _HiredAt_ value is earlier than the start of the current UTC day:
@@ -821,7 +821,7 @@ where RequireAt <= now($offset)
   In exploration queries, these functions are blocked in `filter` clauses because `filter` expressions are evaluated as JavaScript expressions.
   Since `now()` and `today()` depend on the query execution time, using them in this context produces time-dependent results that conflict with the query result caching mechanism.  
     
-  [Filtering by an explicit date](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#filter-by-an-explicit-date) is fully supported in exploration queries.
+  [Filtering by an explicit date](#filter-by-an-explicit-date) is fully supported in exploration queries.
 
 ---
     
@@ -841,7 +841,7 @@ where RequireAt <= now($offset)
   Using `now()` or `today()` would make the matching results depend on when the subscription task evaluates each document,  
   yielding nondeterministic results: the set of matching documents could change dynamically even when the documents themselves have not changed.  
     
-  [Filtering by an explicit date](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#filter-by-an-explicit-date) is fully supported in subscription queries.    
+  [Filtering by an explicit date](#filter-by-an-explicit-date) is fully supported in subscription queries.    
 
 ---
     

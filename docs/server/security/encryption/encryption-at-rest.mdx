@@ -33,7 +33,7 @@ As long as the database is idle and there are no requests to serve, everything i
 
 Once a request is made, RavenDB will start a transaction (either read or write) and decrypt just the necessary data into memory. Then it will serve the 
 request, and when the transaction is finished, modified pages are encrypted and written back to the datafile. The data is 
-[locked](../../../server/security/encryption/encryption-at-rest.mdx#locking-memory) during the transaction by default, and it is zeroed when the transaction completes.  
+[locked](#locking-memory) during the transaction by default, and it is zeroed when the transaction completes.  
 
 <Admonition type="warning" title="Important things to be aware of:" id="important-things-to-be-aware-of" href="#important-things-to-be-aware-of">
 1. RavenDB makes sure that **no data is written to disk as plain text**. It will always be encrypted.  

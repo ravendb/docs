@@ -19,7 +19,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Each instance is a complete replica of the database.  
 
 * The [database-group-topology](../../../studio/database/settings/manage-database-group.mdx#database-group-topology---view) is the list of nodes that contain those database replicas.  
-  The first node in this list is called the [preferred node](../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node).
+  The first node in this list is called the [preferred node](#the-preferred-node).
 
 * The client is kept up-to-date with this topology list.  
   __The client decides which node from this list to access__ when making requests to the RavenDB cluster.  
@@ -29,10 +29,10 @@ import LanguageContent from "@site/src/components/LanguageContent";
     * [ReadBalanceBehavior](../../../client-api/configuration/load-balance/read-balance-behavior.mdx) - load balancing `Read` requests only
     * [LoadBalanceBehavior](../../../client-api/configuration/load-balance/load-balance-behavior.mdx) - load balancing `Read & Write` requests  
 * In this page:  
-    * [Keeping the client topology up-to-date](../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date)
-    * [Client logic for choosing a node](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node)
-    * [The preferred node](../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node)
-    * [Single-node session usage](../../../client-api/configuration/load-balance/overview.mdx#single-node-session-usage)
+    * [Keeping the client topology up-to-date](#keeping-the-client-topology-up-to-date)
+    * [Client logic for choosing a node](#client-logic-for-choosing-a-node)
+    * [The preferred node](#the-preferred-node)
+    * [Single-node session usage](#single-node-session-usage)
      
 </Admonition>
 ## Keeping the client topology up-to-date
@@ -68,7 +68,7 @@ The client uses the following logic (from top to bottom) to determine which node
   `Read` requests: The client will select a node based on the [read balance options](../../../client-api/configuration/load-balance/read-balance-behavior.mdx#readbalancebehavior-options).  
   `Write` requests: All _Write_ requests will be directed to the preferred node. 
 * Else, use the __preferred node__:  
-  Use the [preferred node](../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) for both `Read & Write` requests.
+  Use the [preferred node](#the-preferred-node) for both `Read & Write` requests.
 
 </Admonition>
 

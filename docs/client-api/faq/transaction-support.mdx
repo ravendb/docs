@@ -16,14 +16,14 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="">  
 
 * In this page:
-  * [ACID storage](../../client-api/faq/transaction-support.mdx#acid-storage)  
-  * [What is and what isn't a transaction](../../client-api/faq/transaction-support.mdx#what-is-and-what-isn)  
-  * [Working with transactions in RavenDB ](../../client-api/faq/transaction-support.mdx#working-with-transactions-in-ravendb)
-     * [Single-node model](../../client-api/faq/transaction-support.mdx#single-node-model)
-     * [Multi-master model](../../client-api/faq/transaction-support.mdx#multi-master-model)
-     * [Cluster-wide transactions](../../client-api/faq/transaction-support.mdx#cluster-wide-transactions)
-  * [ACID for document operations](../../client-api/faq/transaction-support.mdx#acid-for-document-operations)
-  * [BASE for query operations](../../client-api/faq/transaction-support.mdx#base-for-query-operations)
+  * [ACID storage](#acid-storage)  
+  * [What is and what isn't a transaction](#what-is-and-what-isn)  
+  * [Working with transactions in RavenDB ](#working-with-transactions-in-ravendb)
+     * [Single-node model](#single-node-model)
+     * [Multi-master model](#multi-master-model)
+     * [Cluster-wide transactions](#cluster-wide-transactions)
+  * [ACID for document operations](#acid-for-document-operations)
+  * [BASE for query operations](#base-for-query-operations)
 
 </Admonition>  
 ## ACID storage
@@ -48,7 +48,7 @@ which guarantees all ACID properties, whether executed on document, index or loc
   It employs _Serializable_ isolation for write operations and _Snapshot_ isolation for read operations.
 
 * RavenDB doesn't support a transaction spanning __multiple__ HTTP requests. Interactive transactions are not implemented by RavenDB 
-  (see [below](../../client-api/faq/transaction-support.mdx#no-support-for-interactive-transactions) for the reasoning behind this decision). 
+  (see [below](#no-support-for-interactive-transactions) for the reasoning behind this decision). 
   RavenDB offers [optimistic concurrency](../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx) feature to achieve similar behavior.  
 
 * The [Client API Session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) is a pure Client API object and does not represent a transaction, 
@@ -141,7 +141,7 @@ so you can utilize RavenDB for each of your scenarios:
 When running in a multi-node setup, RavenDB still uses transactions. However, they are single-node transactions.  
 That means that the set of changes that you write in a transaction is committed only to the node you are writing to.  
 It will then asynchronously replicate to the other nodes.  
-To achieve consistency across the entire cluster please refer to the [Cluster-wide transactions](../../client-api/faq/transaction-support.mdx#cluster-wide-transactions) section below.  
+To achieve consistency across the entire cluster please refer to the [Cluster-wide transactions](#cluster-wide-transactions) section below.  
 
 #### Replication conflicts
 
@@ -159,14 +159,14 @@ This behavior was influenced by the [Dynamo paper](https://dl.acm.org/doi/10.114
 The assumption is that if you are writing data to the database, you expect it to be persisted.
 
 RavenDB will do its utmost to provide that to you, allowing you to write to the database even in the case of partitions or partial failure states. 
-However, handling replication conflicts is a consideration you have to take into account when using single-node transactions in RavenDB (see below for running a [cluster-wide transaction](../../client-api/faq/transaction-support.mdx#cluster-wide-transactions)).
+However, handling replication conflicts is a consideration you have to take into account when using single-node transactions in RavenDB (see below for running a [cluster-wide transaction](#cluster-wide-transactions)).
 
 <Admonition type="warning" title="Lost updates" id="lost-updates" href="#lost-updates">
 
 If no conflict resolution script is defined for a collection, then by default RavenDB resolves the conflict using the latest version based on the `@last-modified` property of conflicted versions of the document.  
 That might result in the lost update anomaly.
 
-If you care about avoiding lost updates, you need to ensure you have the conflict resolution script defined accordingly or use a [cluster-wide transaction](../../client-api/faq/transaction-support.mdx#cluster-wide-transactions).
+If you care about avoiding lost updates, you need to ensure you have the conflict resolution script defined accordingly or use a [cluster-wide transaction](#cluster-wide-transactions).
 
 </Admonition>
 

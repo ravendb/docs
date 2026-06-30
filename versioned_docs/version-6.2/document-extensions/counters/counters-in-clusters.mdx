@@ -21,14 +21,14 @@ import Panel from '@site/src/components/Panel';
   * When conflicting actions (such as _Delete_ and _Increment_) may occur, and how they are resolved
 
 * In this article:  
-  * [Counter value modification](../../document-extensions/counters/counters-in-clusters.mdx#counter-value-modification)  
-     * [Value modification and replication flow](../../document-extensions/counters/counters-in-clusters.mdx#value-modification-and-replication-flow) 
-     * [Reading a Counter's value](../../document-extensions/counters/counters-in-clusters.mdx#reading-a-counters-value)  
-  * [Counter name modification](../../document-extensions/counters/counters-in-clusters.mdx#counter-name-modification)  
-  * [Concurrent value modification](../../document-extensions/counters/counters-in-clusters.mdx#concurrent-value-modification)  
-  * [Concurrent `Delete` and `Increment`](../../document-extensions/counters/counters-in-clusters.mdx#concurrent-delete-and-increment)  
-     * [In a single-node system](../../document-extensions/counters/counters-in-clusters.mdx#in-a-single-node-system)  
-     * [In a multi-node cluster](../../document-extensions/counters/counters-in-clusters.mdx#in-a-multi-node-cluster)  
+  * [Counter value modification](#counter-value-modification)  
+     * [Value modification and replication flow](#value-modification-and-replication-flow) 
+     * [Reading a Counter's value](#reading-a-counters-value)  
+  * [Counter name modification](#counter-name-modification)  
+  * [Concurrent value modification](#concurrent-value-modification)  
+  * [Concurrent `Delete` and `Increment`](#concurrent-delete-and-increment)  
+     * [In a single-node system](#in-a-single-node-system)  
+     * [In a multi-node cluster](#in-a-multi-node-cluster)  
 
 </Admonition>
 
@@ -57,7 +57,7 @@ In the following example:
     | ProductLikes | **B**     | **33**                     |
     | ProductLikes | C         | 10                         |
 
-After a Counter’s value is modified on a node, that node [replicates](../../document-extensions/counters/counters-in-clusters.mdx#value-modification-and-replication)
+After a Counter’s value is modified on a node, that node [replicates](#value-modification-and-replication)
 the updated value to all other nodes in the cluster.  
 In the above example:  
   * The "ProductLikes" Counter was incremented by 5 on node B.  
@@ -104,7 +104,7 @@ In the following example:
 
 **The same Counter can be concurrently modified by multiple clients**.  
 
-As explained in the [Value modification and replication flow](../../document-extensions/counters/counters-in-clusters.mdx#value-modification-and-replication-flow) section,  
+As explained in the [Value modification and replication flow](#value-modification-and-replication-flow) section,  
 each node manages its own portion of a Counter’s value independently.  
 As a result:  
 

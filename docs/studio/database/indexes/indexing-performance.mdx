@@ -24,14 +24,14 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 In this page:  
 
-* [Indexing Performance View](../../../studio/database/indexes/indexing-performance.mdx#indexing-performance-view)
-* [Types of Index Tracks](../../../studio/database/indexes/indexing-performance.mdx#types-of-index-tracks)
-* [Index Statistics View](../../../studio/database/indexes/indexing-performance.mdx#index-statistics-view)
-* [Common Indexing Issues](../../../studio/database/indexes/indexing-performance.mdx#common-indexing-issues)
-  - [Resource Exhaustion](../../../studio/database/indexes/indexing-performance.mdx#resource-exhaustion)
-  - [Low Memory](../../../studio/database/indexes/indexing-performance.mdx#low-memory)
-  - [Concurrent Processing of Too Many Indexes](../../../studio/database/indexes/indexing-performance.mdx#concurrent-processing-of-too-many-indexes)
-  - [LoadDocument Misuse](../../../studio/database/indexes/indexing-performance.mdx#loaddocument-misuse)
+* [Indexing Performance View](#indexing-performance-view)
+* [Types of Index Tracks](#types-of-index-tracks)
+* [Index Statistics View](#index-statistics-view)
+* [Common Indexing Issues](#common-indexing-issues)
+  - [Resource Exhaustion](#resource-exhaustion)
+  - [Low Memory](#low-memory)
+  - [Concurrent Processing of Too Many Indexes](#concurrent-processing-of-too-many-indexes)
+  - [LoadDocument Misuse](#loaddocument-misuse)
 ## Indexing Performance View 
 
 ![Indexing Performance View](./assets/indexing-performance-overview.png)
@@ -56,10 +56,10 @@ In this page:
    * The red area represents the area that is zoomed in below. Enlarge or shrink it to zoom in and out below.  
 9. **Auto/Orders/ByOrderedAt** (Expanded Track)  
    * This is one of the various types of indexes that is tracked in time.  
-     * Clicking the index title expands the track (as seen in the **Auto/Orders/ByOrderedAt** image above) to show index [batch process details](../../../studio/database/indexes/indexing-performance.mdx#index-statistics-view).  
+     * Clicking the index title expands the track (as seen in the **Auto/Orders/ByOrderedAt** image above) to show index [batch process details](#index-statistics-view).  
      * Varying index types have different processes and they may index different volumes of data, so the graphs are likely to differ from one another.
      * Each colored stripe shows the duration of a stage in the batch process.  
-     * Hovering over each stripe shows [detailed statistics](../../../studio/database/indexes/indexing-performance.mdx#index-statistics-view) about each stage.  
+     * Hovering over each stripe shows [detailed statistics](#index-statistics-view) about each stage.  
 10. **Vertical line**  
     Each verticle purple line shows that there was a time-lapse in the timeline before a batch process started.  
 
@@ -153,7 +153,7 @@ Click the following links to learn more about defining indexes via the Studio:
      - **(Name of the method used to create a batch stop)**  
        There are a number of configurations that break up large batch processes into smaller batches to prevent exhausting system resources.  
        While these batch stops prevent system exhaustion, they also point to potential opportunities to optimize your indexes.  
-       These situations are discussed in the section on [common indexing issues](../../../studio/database/indexes/indexing-performance.mdx#common-indexing-issues)
+       These situations are discussed in the section on [common indexing issues](#common-indexing-issues)
 3. **Storage** stages  
      The amount of time it took to read or write the data to disk.  
       * If this stage takes a long time after the index is already built, it may reveal a hardware problem.
@@ -177,16 +177,16 @@ While they prevent system exhaustion, batch stops also point to potential **oppo
  
 Batch stops break up processes into smaller batches when  
 
-  - An index is processing a [dataset that is too large](../../../studio/database/indexes/indexing-performance.mdx#resource-exhaustion) for your system resources.  
+  - An index is processing a [dataset that is too large](#resource-exhaustion) for your system resources.  
   - The index definition requires a complex Linq process (in Java - Stream API process) that can exhaust your resources.  
-  - [Low memory](../../../studio/database/indexes/indexing-performance.mdx#low-memory) resources for indexing process on local machines or burstable cloud instances.  
-  - [Too many concurrent index processes](../../../studio/database/indexes/indexing-performance.mdx#concurrent-processing-of-too-many-indexes) are exhausting your system resources.  
-  - The [LoadDocument](../../../studio/database/indexes/indexing-performance.mdx#loaddocument-misuse) method is misused.  
+  - [Low memory](#low-memory) resources for indexing process on local machines or burstable cloud instances.  
+  - [Too many concurrent index processes](#concurrent-processing-of-too-many-indexes) are exhausting your system resources.  
+  - The [LoadDocument](#loaddocument-misuse) method is misused.  
 #### Resource Exhaustion
 
 Some indexes are responsible for a huge dataset and/or have very complex, demanding definitions.  
 To prevent resource exhaustion, RavenDB can break up large batches into smaller ones.  
-You can configure [batch stops](../../../studio/database/indexes/indexing-performance.mdx#common-indexing-issues) with the following methods:
+You can configure [batch stops](#common-indexing-issues) with the following methods:
 
 - [Indexing.MapTimeoutInSec](../../../server/configuration/indexing-configuration.mdx#indexingmaptimeoutinsec)  
     Number of seconds after which mapping will end even if there is more to map.  
@@ -196,7 +196,7 @@ You can configure [batch stops](../../../studio/database/indexes/indexing-perfor
     Maximum number of documents to be processed by the index per indexing batch.  
 #### Low Memory 
 
-* [Low Memory](../../../server/configuration/memory-configuration.mdx#memorylowmemorylimitinmb) resources can slow down your system and result in [batch stops](../../../studio/database/indexes/indexing-performance.mdx#common-indexing-issues). 
+* [Low Memory](../../../server/configuration/memory-configuration.mdx#memorylowmemorylimitinmb) resources can slow down your system and result in [batch stops](#common-indexing-issues). 
    * **On a local machine**  
      * You can upgrade your hardware, divide the work onto more machines in a cluster, and/or optimize your indexes.  
      * Until then, there are a number of [indexing configurations](../../../server/configuration/indexing-configuration.mdx#indexingmapbatchsize) that you can configure

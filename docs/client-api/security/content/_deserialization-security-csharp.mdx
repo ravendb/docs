@@ -15,14 +15,14 @@ import ContentFrame from "@site/src/components/ContentFrame";
   is forbidden or allowed.  
 
 * In this article:  
-   * [Securing deserialization](../../../client-api/security/deserialization-security.mdx#securing-deserialization)  
-      * [The deserialization risk](../../../client-api/security/deserialization-security.mdx#the-deserialization-risk)  
-      * [Direct vs. indirect gadget loading](../../../client-api/security/deserialization-security.mdx#direct-vs-indirect-gadget-loading)  
-   * [DefaultRavenSerializationBinder](../../../client-api/security/deserialization-security.mdx#defaultravenserializationbinder)  
-      * [RegisterForbiddenNamespace](../../../client-api/security/deserialization-security.mdx#registerforbiddennamespace)  
-      * [RegisterForbiddenType](../../../client-api/security/deserialization-security.mdx#registerforbiddentype)  
-      * [RegisterSafeType](../../../client-api/security/deserialization-security.mdx#registersafetype)  
-   * [Example](../../../client-api/security/deserialization-security.mdx#example)  
+   * [Securing deserialization](#securing-deserialization)  
+      * [The deserialization risk](#the-deserialization-risk)  
+      * [Direct vs. indirect gadget loading](#direct-vs-indirect-gadget-loading)  
+   * [DefaultRavenSerializationBinder](#defaultravenserializationbinder)  
+      * [RegisterForbiddenNamespace](#registerforbiddennamespace)  
+      * [RegisterForbiddenType](#registerforbiddentype)  
+      * [RegisterSafeType](#registersafetype)  
+   * [Example](#example)  
 
 </Admonition>
 
@@ -52,7 +52,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   - `System.Xml.XmlDataDocument`  
   - `System.Management.Automation.PSObject`  
 
-* Users can [customize](../../../client-api/security/deserialization-security.mdx#defaultravenserializationbinder)
+* Users can [customize](#defaultravenserializationbinder)
   the list of namespaces and types for which deserialization is forbidden or allowed.  
 
 </ContentFrame>
@@ -115,7 +115,7 @@ trusted types.
 
 Create a new `DefaultRavenSerializationBinder` instance, call the registration
 methods to define your overrides, then configure the instance as a serialization
-convention as shown in the [example](../../../client-api/security/deserialization-security.mdx#example).  
+convention as shown in the [example](#example).  
 
 <Admonition type="note" title="">
 

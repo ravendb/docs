@@ -11,14 +11,14 @@ import Panel from '@site/src/components/Panel';
   To learn about remote storage, see [Store attachments in remote storage](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx).
     
 * In this article
-  * [Overview](../../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#overview)  
-  * [Store attachments using the **Studio**](../../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#store-attachments-using-the-studio)  
-  * [Store attachments using the **Client API**](../../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#store-attachments-using-the-client-api)  
-    * [Store via the Session](../../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#store-attachments-via-the-session)  
-    * [Store via an Operation](../../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#store-attachments-via-an-operation) 
-  * [The attachment metadata](../../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#the-attachment-metadata)  
-  * [Deduplicating local attachments](../../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#deduplicating-local-attachments)  
-  * [Syntax](../../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#syntax)  
+  * [Overview](#overview)  
+  * [Store attachments using the **Studio**](#store-attachments-using-the-studio)  
+  * [Store attachments using the **Client API**](#store-attachments-using-the-client-api)  
+    * [Store via the Session](#store-attachments-via-the-session)  
+    * [Store via an Operation](#store-attachments-via-an-operation) 
+  * [The attachment metadata](#the-attachment-metadata)  
+  * [Deduplicating local attachments](#deduplicating-local-attachments)  
+  * [Syntax](#syntax)  
  
 </Admonition>
 
@@ -57,7 +57,7 @@ You can add and manage attachments directly in the Studio.
    It only shows the `@flags` property with the value `HasAttachments` in the document's `@metadata` section  
    to indicate that the document has attachments.
 5. Click this JSON button to view the document's raw content, including its full metadata.  
-   Learn more about the attachment metadata in [The attachment metadata](../../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#the-attachment-metadata).
+   Learn more about the attachment metadata in [The attachment metadata](#the-attachment-metadata).
 
 </Panel>
 
@@ -335,7 +335,7 @@ public PutAttachmentOperation(string documentId, StoreAttachmentParameters param
     
 | Return value         | Description                                 |
 |----------------------|---------------------------------------------|
-| [AttachmentDetails](../../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#attachmentdetails) | An object with the new attachment's details |
+| [AttachmentDetails](#attachmentdetails) | An object with the new attachment's details |
     
 ---
     

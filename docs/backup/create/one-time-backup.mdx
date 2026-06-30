@@ -25,13 +25,13 @@ However, you can also back up any database on demand, whenever needed.
 - You can also trigger any **periodic backup task** defined for your database, to create a backup now.  
 
 * In this article:  
-  * [Running a one-time backup operation using the client API](../../backup/create/one-time-backup.mdx#running-a-one-time-backup-operation-using-the-client-api)
-     * [Defining and running a one-time backup operation](../../backup/create/one-time-backup.mdx#defining-and-running-a-one-time-backup-operation)
-     * [Triggering a backup task to run a backup operation immediately](../../backup/create/one-time-backup.mdx#triggering-a-backup-task-to-run-a-backup-operation-immediately)
+  * [Running a one-time backup operation using the client API](#running-a-one-time-backup-operation-using-the-client-api)
+     * [Defining and running a one-time backup operation](#defining-and-running-a-one-time-backup-operation)
+     * [Triggering a backup task to run a backup operation immediately](#triggering-a-backup-task-to-run-a-backup-operation-immediately)
 
-  * [Running a one-time backup operation using Studio](../../backup/create/one-time-backup.mdx#running-a-one-time-backup-operation-using-studio)
-     * [Defining and running a one-time backup operation](../../backup/create/one-time-backup.mdx#defining-and-running-a-one-time-backup-operation-1)
-     * [Triggering a backup task to run a backup operation immediately](../../backup/create/one-time-backup.mdx#triggering-a-backup-task-to-run-a-backup-operation-immediately-1)
+  * [Running a one-time backup operation using Studio](#running-a-one-time-backup-operation-using-studio)
+     * [Defining and running a one-time backup operation](#defining-and-running-a-one-time-backup-operation-1)
+     * [Triggering a backup task to run a backup operation immediately](#triggering-a-backup-task-to-run-a-backup-operation-immediately-1)
 
 
 </Admonition>
@@ -70,7 +70,7 @@ Operation<StartBackupOperationResult> op =
 
 #### Setting backup type:
 
-- Set the backup type using the backup configuration [BackupType](../../backup/create/one-time-backup.mdx#classes-and-enums-used-in-the-backup-configuration) _enum_ property.  
+- Set the backup type using the backup configuration [BackupType](#classes-and-enums-used-in-the-backup-configuration) _enum_ property.  
   You can assign it with `BackupType.Backup` to create logical backups,  
   or with `BackupType.Snapshot` for snapshot images.  
 
@@ -117,7 +117,7 @@ Operation<StartBackupOperationResult> op =
   };
   ```
 
-- [See destinations-related syntax](../../backup/create/one-time-backup.mdx#backup-destinations-classes)
+- [See destinations-related syntax](#backup-destinations-classes)
 
 ---
 
@@ -155,7 +155,7 @@ Set backup encryption using the backup configuration `BackupEncryptionSettings` 
      };
      ```
 
-* [See `BackupEncryptionSettings` and `EncryptionMode` syntax](../../backup/create/one-time-backup.mdx#classes-and-enums-used-in-the-backup-configuration)
+* [See `BackupEncryptionSettings` and `EncryptionMode` syntax](#classes-and-enums-used-in-the-backup-configuration)
 
 </ContentFrame>
 
@@ -539,10 +539,10 @@ To back up a database immediately:
 
   ![Define and run backup operation](./assets/one-time-backup_define-config.png)
     
-  `A`. [Define basic backup options](../../backup/create/one-time-backup.mdx#a-define-basic-backup-options)  
-  `B`. [Set backup encryption options](../../backup/create/one-time-backup.mdx#b-set-backup-encryption-options)  
-  `C`. [Choose where to store the backup](../../backup/create/one-time-backup.mdx#c-choose-where-to-store-the-backup)  
-  `D`. [Run the backup operation](../../backup/create/one-time-backup.mdx#d-run-the-backup-operation)
+  `A`. [Define basic backup options](#a-define-basic-backup-options)  
+  `B`. [Set backup encryption options](#b-set-backup-encryption-options)  
+  `C`. [Choose where to store the backup](#c-choose-where-to-store-the-backup)  
+  `D`. [Run the backup operation](#d-run-the-backup-operation)
 
 ---
 
@@ -660,7 +660,7 @@ You can select one or more storage locations for the backup, both local and remo
 
   ![Local storage settings](./assets/one-time-backup_storage_local.png)
 
-* The **Backup Upload Mode** setting defined [above](../../backup/create/one-time-backup.mdx#a-define-basic-backup-options) determines whether to store the backup locally before sending it to any remote destination.
+* The **Backup Upload Mode** setting defined [above](#a-define-basic-backup-options) determines whether to store the backup locally before sending it to any remote destination.
 
 </ContentFrame>
 

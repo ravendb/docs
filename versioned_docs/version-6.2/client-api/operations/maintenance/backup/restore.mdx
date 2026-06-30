@@ -23,12 +23,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * In this page:  
   * [Restoring a Database: Configuration and Execution](../../../../client-api/operations/maintenance/backup/restore.mdx#restoring-a-database:-configuration-and-execution)  
-  * [Optional Settings](../../../../client-api/operations/maintenance/backup/restore.mdx#optional-settings)  
-  * [Restore Database to a Single Node](../../../../client-api/operations/maintenance/backup/restore.mdx#restore-database-to-a-single-node)  
-  * [Restore Database to Multiple Nodes](../../../../client-api/operations/maintenance/backup/restore.mdx#restore-database-to-multiple-nodes)  
-     * [Restore to a Single Node & Replicate to Other Nodes](../../../../client-api/operations/maintenance/backup/restore.mdx#restore-database-to-a-single-node--replicate-it-to-other-nodes)  
-     * [Restore to Multiple Nodes Simultaneously](../../../../client-api/operations/maintenance/backup/restore.mdx#restore-database-to-multiple-nodes-simultaneously)  
-  * [Recommended Precautions](../../../../client-api/operations/maintenance/backup/restore.mdx#recommended-precautions)  
+  * [Optional Settings](#optional-settings)  
+  * [Restore Database to a Single Node](#restore-database-to-a-single-node)  
+  * [Restore Database to Multiple Nodes](#restore-database-to-multiple-nodes)  
+     * [Restore to a Single Node & Replicate to Other Nodes](#restore-database-to-a-single-node--replicate-it-to-other-nodes)  
+     * [Restore to Multiple Nodes Simultaneously](#restore-database-to-multiple-nodes-simultaneously)  
+  * [Recommended Precautions](#recommended-precautions)  
 
 </Admonition>
 ## Restoring a Database: Configuration and Execution
@@ -122,7 +122,7 @@ This is where you need to provide your encryption key if your backup is encrypte
 ### `DisableOngoingTasks`
 
 set **DisableOngoingTasks** to **true** to disable the execution of ongoing tasks after restoration.  
-See [Recommended Precautions](../../../../client-api/operations/maintenance/backup/restore.mdx#recommended-precautions).
+See [Recommended Precautions](#recommended-precautions).
 <TabItem value="restore_disable_ongoing_tasks_true" label="restore_disable_ongoing_tasks_true">
 <CodeBlock language="csharp">
 {`// Do or do not run ongoing tasks after restoration.
@@ -212,7 +212,7 @@ and not in any ongoing tasks that may have existed during backup.
 
 * E.g., an ETL ongoing task from a production cluster may have unwanted results in a testing environment.  
 
-In such cases, **disable** ongoing tasks using the [DisableOngoingTasks](../../../../client-api/operations/maintenance/backup/restore.mdx#section-1) flag.  
+In such cases, **disable** ongoing tasks using the [DisableOngoingTasks](#section-1) flag.  
 
 * Code Sample:  
 <TabItem value="restore_disable_ongoing_tasks_true" label="restore_disable_ongoing_tasks_true">

@@ -27,13 +27,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Several **indexing-time parameters** affect how the vector graph is built, and **query-time parameters** affect how the graph is searched.
   These settings influence the trade-off between speed and accuracy.
 
-* If full accuracy is required, RavenDB also provides [Exact vector search](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#using-exact-search),  
+* If full accuracy is required, RavenDB also provides [Exact vector search](#using-exact-search),  
   which performs a full scan of all indexed vectors to guarantee the closest matches.
 * In this article:
-  * [The approximate nature of HNSW](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#the-approximate-nature-of-hnsw)
-  * [Indexing-time parameters](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#indexing-time-parameters)
-  * [Query-time parameters](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#query-time-parameters)
-  * [Using exact search](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#using-exact-search)
+  * [The approximate nature of HNSW](#the-approximate-nature-of-hnsw)
+  * [Indexing-time parameters](#indexing-time-parameters)
+  * [Query-time parameters](#query-time-parameters)
+  * [Using exact search](#using-exact-search)
     
 </Admonition>
 
@@ -45,7 +45,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
     Top layers are sparse and support fast, broad navigation.  
     The bottom layer is dense and includes all indexed vectors for fine-grained matching.  
   * Each node (vector) is connected only to a limited number of neighbors, selected as the most relevant during indexing (graph build time).
-    This limitation is controlled by the [Indexing-time parameters](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#indexing-time-parameters) described below.
+    This limitation is controlled by the [Indexing-time parameters](#indexing-time-parameters) described below.
   * This structure speeds up search but increases the chance that a relevant document is not reachable -  
     especially if it's poorly connected.
 
@@ -66,12 +66,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * The algorithm doesn't exhaustively explore all possible paths, so it can miss the true global nearest neighbors -  
     especially if they are not well-connected in the graph.
     This design enables HNSW to find relevant results very quickly by focusing only on the most promising paths, making it highly efficient even for large datasets.
-  * The search is influenced by the [Query-time params](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#query-time-parameters) described below.  
+  * The search is influenced by the [Query-time params](#query-time-parameters) described below.  
     Slight variations in graph structure or search parameters can lead to different results.
   * While HNSW offers fast search performance at scale and quickly finds points that are likely to be among the nearest neighbors,
     it does not guarantee exact results - only approximate matches are returned.  
     This behavior is expected in all ANN algorithms, not just HNSW.  
-    If full accuracy is critical, consider using [Exact search](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#using-exact-search) instead.
+    If full accuracy is critical, consider using [Exact search](#using-exact-search) instead.
 
 ## Indexing-time parameters
 
@@ -148,7 +148,7 @@ These parameters directly affect how many results are found, how similar they ar
       it is typically accurate and strongly recommended in most scenarios due to its performance.
     * **Exact search**:  
       Performs a full comparison against all indexed vectors to guarantee the closest matches.  
-      Learn more in [Using exact search](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#using-exact-search) below.
+      Learn more in [Using exact search](#using-exact-search) below.
 
 For all parameters that can be defined at query time, see:  
 Dynamic queries - [The dynamic query parameters](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#the-dynamic-query-parameters).  

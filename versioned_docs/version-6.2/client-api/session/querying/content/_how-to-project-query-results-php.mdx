@@ -13,13 +13,13 @@ import CodeBlock from '@theme/CodeBlock';
 
 * In this page:
 
-  * [Projections overview](../../../../client-api/session/querying/how-to-project-query-results.mdx#projections-overview)
+  * [Projections overview](#projections-overview)
 
-  * [Projection Methods](../../../../client-api/session/querying/how-to-project-query-results.mdx#projection-methods)  
+  * [Projection Methods](#projection-methods)  
       * [`select`, `selectFields`](../../../../client-api/session/querying/how-to-project-query-results.mdx#select,-selectfields)  
-      * [`ofType`](../../../../client-api/session/querying/how-to-project-query-results.mdx#oftype)  
+      * [`ofType`](#oftype)  
 
-  * [Single projection per query](../../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query)
+  * [Single projection per query](#single-projection-per-query)
 
 </Admonition>
 ## Projections overview
@@ -73,12 +73,12 @@ import CodeBlock from '@theme/CodeBlock';
 * Within the projection you can only filter what data will be returned from the matching documents,  
   but you cannot filter which documents will be returned. That has already been determined earlier in the query pipeline.
 
-* Only a [single projection request](../../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query) can be made per query.  
+* Only a [single projection request](#single-projection-per-query) can be made per query.  
 
 ### The cost of projections:
 
 * Queries in RavenDB do not allow any computation to occur during the query phase.  
-  However, you can perform any [calculations](../../../../client-api/session/querying/how-to-project-query-results.mdx#example---projection-with-calculations) 
+  However, you can perform any [calculations](#example---projection-with-calculations) 
   inside the projection.
 
 * But while calculations within a projection are allowed, having a very complex logic can impact query performance.  

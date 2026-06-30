@@ -12,12 +12,12 @@ import CodeBlock from '@theme/CodeBlock';
   indexing a vector field.
 
 * In this article:
-    * [Overview](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#overview)
-    * [Indexing TEXT attachments](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-text-attachments)
-    * [Indexing NUMERICAL attachments](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-numerical-attachments)
-      * [LINQ index](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#linq-index)
-      * [JS index](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#js-index)
-    * [Indexing ALL attachments](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-all-attachments)
+    * [Overview](#overview)
+    * [Indexing TEXT attachments](#indexing-text-attachments)
+    * [Indexing NUMERICAL attachments](#indexing-numerical-attachments)
+      * [LINQ index](#linq-index)
+      * [JS index](#js-index)
+    * [Indexing ALL attachments](#indexing-all-attachments)
 
 </Admonition>
 
@@ -601,7 +601,7 @@ where vector.search(VectorFromAttachment, $queryVector)
 
 ### JS index
 
-* The following is the JavaScript index format equivalent to the [LINQ index](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#linq-index) shown above.
+* The following is the JavaScript index format equivalent to the [LINQ index](#linq-index) shown above.
 
 * The main difference is that JavaScript indexes do Not support `getContentAsStream()` on attachment objects:
   * Because of this, embedding vectors must be stored in attachments as **Base64-encoded strings**.  

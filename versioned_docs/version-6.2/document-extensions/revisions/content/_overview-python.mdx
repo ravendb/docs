@@ -18,21 +18,21 @@ import CodeBlock from '@theme/CodeBlock';
     * **Automatic revisions creation**:  
       When revisions settings are defined and enabled for a collection, a document revision is automatically created whenever documents are created, modified, or deleted.
       To configure revisions settings, and set limits for the number of revisions retained per document,
-      apply a [Revisions configuration](../../../document-extensions/revisions/overview.mdx#revisions-configuration) to all and/or specific collections.
+      apply a [Revisions configuration](#revisions-configuration) to all and/or specific collections.
 
     * **Manual revisions creation**:  
       When revisions settings are disabled, you can still create revisions manually.  
-      See [Force revision creation](../../../document-extensions/revisions/overview.mdx#force-revision-creation) below.
+      See [Force revision creation](#force-revision-creation) below.
 * In this page:
-    * [Revisions configuration](../../../document-extensions/revisions/overview.mdx#revisions-configuration)
-        * [Defining a revisions configuration](../../../document-extensions/revisions/overview.mdx#defining-a-revisions-configuration)
-        * [Default settings and collection-specific configurations](../../../document-extensions/revisions/overview.mdx#default-settings-and-collection-specific-configurations)
-        * [Revisions configuration options](../../../document-extensions/revisions/overview.mdx#revisions-configuration-options)
-        * [Revisions configuration execution](../../../document-extensions/revisions/overview.mdx#revisions-configuration-execution)
-        * [Enabling and disabling revisions for existing documents](../../../document-extensions/revisions/overview.mdx#enabling-and-disabling-revisions-for-existing-documents)
-    * [How it works](../../../document-extensions/revisions/overview.mdx#how-it-works)
-    * [Revisions storage](../../../document-extensions/revisions/overview.mdx#revisions-storage)
-    * [Force revision creation](../../../document-extensions/revisions/overview.mdx#force-revision-creation)
+    * [Revisions configuration](#revisions-configuration)
+        * [Defining a revisions configuration](#defining-a-revisions-configuration)
+        * [Default settings and collection-specific configurations](#default-settings-and-collection-specific-configurations)
+        * [Revisions configuration options](#revisions-configuration-options)
+        * [Revisions configuration execution](#revisions-configuration-execution)
+        * [Enabling and disabling revisions for existing documents](#enabling-and-disabling-revisions-for-existing-documents)
+    * [How it works](#how-it-works)
+    * [Revisions storage](#revisions-storage)
+    * [Force revision creation](#force-revision-creation)
 
 </Admonition>
 ## Revisions configuration
@@ -239,8 +239,8 @@ However, you can also **force the creation** of a document revision, whether the
 This is useful when you choose to disable automatic revisions creation but still want to create a revision for a specific document,
 e.g. take a snapshot of the document as a precaution before editing it.
 
-* You can force the creation of a revision via the [Studio](../../../document-extensions/revisions/overview.mdx#force-revision-creation-via-the-studio)
-  or use the [Client API](../../../document-extensions/revisions/overview.mdx#force-revision-creation-via-the-client-api).
+* You can force the creation of a revision via the [Studio](#force-revision-creation-via-the-studio)
+  or use the [Client API](#force-revision-creation-via-the-client-api).
 * A revision **will** be created even if the revisions configuration is disabled for the document's collection.
 * A revision **will** be created even if the document has not been modified  
   (unless the document has revisions and the latest revision contains the current document contents).

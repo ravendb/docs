@@ -34,10 +34,10 @@ an alternative to CSV that is much faster to query. Unlike CSV, Parquet groups t
 column (by field) instead of by row (by document).  
 
 * In this page:  
-  * [Client API](../../../server/ongoing-tasks/etl/olap.mdx#client-api)  
-  * [Transform Script](../../../server/ongoing-tasks/etl/olap.mdx#transform-script)  
-     * [Alternative Syntax](../../../server/ongoing-tasks/etl/olap.mdx#alternative-syntax)  
-  * [Athena Examples](../../../server/ongoing-tasks/etl/olap.mdx#athena-examples)  
+  * [Client API](#client-api)  
+  * [Transform Script](#transform-script)  
+     * [Alternative Syntax](#alternative-syntax)  
+  * [Athena Examples](#athena-examples)  
 
 </Admonition>
 ## Client API
@@ -88,7 +88,7 @@ AddEtlOperationResult result = store.Maintenance.Send(operation);
 | Property | Type | Description |
 | - | - | - |
 | `RunFrequency` | `string` | Takes a [cron expression](https://docs.oracle.com/cd/E12058_01/doc/doc.1014/e12030/cron_expressions.htm) which determines how often the server will execute the ETL process. |
-| `CustomPartitionValue` | `string` | A value that can be used as a partition name in multiple scripts. See [below](../../../server/ongoing-tasks/etl/olap.mdx#the-custom-partition-value). |
+| `CustomPartitionValue` | `string` | A value that can be used as a partition name in multiple scripts. See [below](#the-custom-partition-value). |
 | `OlapTables` | `List<OlapEtlTable>` | List of naming configurations for individual tables. See more details below. |
 
 #### `OlapConnectionString`
@@ -290,7 +290,7 @@ using this syntax: `loadTo('folder_name', key, object)`
 #### The Custom Partition Value
 
 The custom partition value is a string value that can be set in the 
-[`OlapEtlConfiguration` object](../../../server/ongoing-tasks/etl/olap.mdx#section). This value can be 
+[`OlapEtlConfiguration` object](#section). This value can be 
 referenced in the transform script as `$customPartitionValue`. This setting gives you another way 
 to distinguish data from different ETL tasks that use the same transform script.  
 

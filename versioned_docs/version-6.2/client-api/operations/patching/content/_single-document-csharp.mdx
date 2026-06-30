@@ -15,39 +15,39 @@ import CodeBlock from '@theme/CodeBlock';
 
 * The current page covers patch operations on single documents.
 
-* Patching has three possible interfaces: [Session API](../../../../client-api/operations/patching/single-document.mdx#session-api), 
-[Session API using Defer](../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer), 
-and [Operations API](../../../../client-api/operations/patching/single-document.mdx#operations-api).
+* Patching has three possible interfaces: [Session API](#session-api), 
+[Session API using Defer](#session-api-using-defer), 
+and [Operations API](#operations-api).
 
-* Patching can be done from the [client API](../../../../client-api/operations/patching/single-document.mdx#examples) as well as in the [studio](../../../../studio/database/documents/patch-view.mdx).  
+* Patching can be done from the [client API](#examples) as well as in the [studio](../../../../studio/database/documents/patch-view.mdx).  
 
 In this page:  
 
-* [API overview](../../../../client-api/operations/patching/single-document.mdx#api-overview)  
-  * [Session API](../../../../client-api/operations/patching/single-document.mdx#session-api)
-  * [Session API using Defer](../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer)
-  * [Operations API](../../../../client-api/operations/patching/single-document.mdx#operations-api)
-  * [List of script methods](../../../../client-api/operations/patching/single-document.mdx#list-of-script-methods)
-* [Examples](../../../../client-api/operations/patching/single-document.mdx#examples)  
-  * [Change value of single field](../../../../client-api/operations/patching/single-document.mdx#change-value-of-single-field)  
-  * [Change values of two fields](../../../../client-api/operations/patching/single-document.mdx#change-values-of-two-fields)  
-  * [Increment value](../../../../client-api/operations/patching/single-document.mdx#increment-value)  
-  * [Add or increment](../../../../client-api/operations/patching/single-document.mdx#add-or-increment)  
-  * [Add or patch](../../../../client-api/operations/patching/single-document.mdx#add-or-patch)  
-  * [Add or patch to an existing array](../../../../client-api/operations/patching/single-document.mdx#add-or-patch-to-an-existing-array)  
-  * [Add item to array](../../../../client-api/operations/patching/single-document.mdx#add-item-to-array)  
-  * [Insert item into specific position in array](../../../../client-api/operations/patching/single-document.mdx#insert-item-into-specific-position-in-array)  
-  * [Modify item in specific position in array](../../../../client-api/operations/patching/single-document.mdx#modify-item-in-specific-position-in-array)  
-  * [Remove items from array](../../../../client-api/operations/patching/single-document.mdx#remove-items-from-array)  
-  * [Loading documents in a script](../../../../client-api/operations/patching/single-document.mdx#loading-documents-in-a-script)  
-  * [Remove property](../../../../client-api/operations/patching/single-document.mdx#remove-property)  
-  * [Rename property](../../../../client-api/operations/patching/single-document.mdx#rename-property)  
-  * [Add document](../../../../client-api/operations/patching/single-document.mdx#add-document)  
-  * [Clone document](../../../../client-api/operations/patching/single-document.mdx#clone-document)  
-  * [Increment counter](../../../../client-api/operations/patching/single-document.mdx#increment-counter)  
-  * [Delete counter](../../../../client-api/operations/patching/single-document.mdx#delete-counter)  
-  * [Get counter](../../../../client-api/operations/patching/single-document.mdx#get-counter)  
-  * [Patching using inline string compilation](../../../../client-api/operations/patching/single-document.mdx#patching-using-inline-string-compilation)  
+* [API overview](#api-overview)  
+  * [Session API](#session-api)
+  * [Session API using Defer](#session-api-using-defer)
+  * [Operations API](#operations-api)
+  * [List of script methods](#list-of-script-methods)
+* [Examples](#examples)  
+  * [Change value of single field](#change-value-of-single-field)  
+  * [Change values of two fields](#change-values-of-two-fields)  
+  * [Increment value](#increment-value)  
+  * [Add or increment](#add-or-increment)  
+  * [Add or patch](#add-or-patch)  
+  * [Add or patch to an existing array](#add-or-patch-to-an-existing-array)  
+  * [Add item to array](#add-item-to-array)  
+  * [Insert item into specific position in array](#insert-item-into-specific-position-in-array)  
+  * [Modify item in specific position in array](#modify-item-in-specific-position-in-array)  
+  * [Remove items from array](#remove-items-from-array)  
+  * [Loading documents in a script](#loading-documents-in-a-script)  
+  * [Remove property](#remove-property)  
+  * [Rename property](#rename-property)  
+  * [Add document](#add-document)  
+  * [Clone document](#clone-document)  
+  * [Increment counter](#increment-counter)  
+  * [Delete counter](#delete-counter)  
+  * [Get counter](#get-counter)  
+  * [Patching using inline string compilation](#patching-using-inline-string-compilation)  
 
 </Admonition>
 

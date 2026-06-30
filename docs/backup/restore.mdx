@@ -27,19 +27,19 @@ import ContentFrame from "@site/src/components/ContentFrame";
   [Learn to restore a sharded database.](../sharding/backup-and-restore/restore.mdx)  
 
 * In this article:  
-  * [Restoring from backup using the client API](../backup/restore.mdx#restoring-from-backup-using-the-client-api)
-     * [Restoring a database from backup](../backup/restore.mdx#restoring-a-database-from-backup)
-     * [Key configuration settings](../backup/restore.mdx#key-configuration-settings)
-        * [Setting restore points](../backup/restore.mdx#lastfilenametorestore---setting-restore-points)
-        * [Encryption settings](../backup/restore.mdx#encryptionkey--backupencryptionsettings---encryption-settings)
-        * [Backup location settings](../backup/restore.mdx#restorebackupconfiguration---backup-location-settings)
-     * [Syntax](../backup/restore.mdx#syntax)
-  * [Restoring from backup using Studio](../backup/restore.mdx#restoring-from-backup-using-studio)
-      * [Set restore options](../backup/restore.mdx#set-restore-options)
-  * [Restoring a database to multiple cluster nodes](../backup/restore.mdx#restoring-a-database-to-multiple-cluster-nodes)
-     * [Restoring to a single node and replicating to additional nodes](../backup/restore.mdx#restoring-to-a-single-node-and-replicating-to-additional-nodes)
-     * [Restoring to multiple nodes simultaneously](../backup/restore.mdx#restoring-to-multiple-nodes-simultaneously)
-  * [Restoring from server-wide backups](../backup/restore.mdx#restoring-from-server-wide-backups)
+  * [Restoring from backup using the client API](#restoring-from-backup-using-the-client-api)
+     * [Restoring a database from backup](#restoring-a-database-from-backup)
+     * [Key configuration settings](#key-configuration-settings)
+        * [Setting restore points](#lastfilenametorestore---setting-restore-points)
+        * [Encryption settings](#encryptionkey--backupencryptionsettings---encryption-settings)
+        * [Backup location settings](#restorebackupconfiguration---backup-location-settings)
+     * [Syntax](#syntax)
+  * [Restoring from backup using Studio](#restoring-from-backup-using-studio)
+      * [Set restore options](#set-restore-options)
+  * [Restoring a database to multiple cluster nodes](#restoring-a-database-to-multiple-cluster-nodes)
+     * [Restoring to a single node and replicating to additional nodes](#restoring-to-a-single-node-and-replicating-to-additional-nodes)
+     * [Restoring to multiple nodes simultaneously](#restoring-to-multiple-nodes-simultaneously)
+  * [Restoring from server-wide backups](#restoring-from-server-wide-backups)
 
 </Admonition>
 
@@ -157,7 +157,7 @@ await store.Maintenance.Server
 
 * `BackupEncryptionSettings`  
   Use this property to **decrypt an encrypted backup**.  
-  [See details in the syntax section.](../backup/restore.mdx#additional-restore-classes)
+  [See details in the syntax section.](#additional-restore-classes)
 
 **Example:**  
 
@@ -186,7 +186,7 @@ Choose where to restore the backup from by using a restore configuration that ma
 * `RestoreFromAzureConfiguration` - To restore from Azure Blob Storage.  
 * `RestoreFromGoogleCloudConfiguration` - To restore from Google Cloud Storage.
 
-[See details in the syntax section.](../backup/restore.mdx#restore-configuration-classes)
+[See details in the syntax section.](#restore-configuration-classes)
 
 <Admonition type="note" title="">
 
@@ -883,7 +883,7 @@ To restore **from a snapshot** into multiple nodes simultaneously and join the d
            fromNode: "B", timeToWaitForConfirmation: null));
      ```
 * **Rename** the deleted database's folder on each respective node to match the name of the remaining database.  
-* On the node you didn't delete the database from, expand the database group (as [shown above](../backup/restore.mdx#using-studio)) to include all the other nodes.  
+* On the node you didn't delete the database from, expand the database group (as [shown above](#using-studio)) to include all the other nodes.  
 
 </ContentFrame>
 

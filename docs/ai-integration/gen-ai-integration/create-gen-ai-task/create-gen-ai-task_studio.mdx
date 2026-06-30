@@ -16,13 +16,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="">
 
 * In this article:
-    * [The GenAI Task wizard](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#the-genai-task-wizard)  
-    * [Add a GenAI Task](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#add-a-genai-task)
-    * [Configure basic settings](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#configure-basic-settings)
-    * [Generate context objects](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#generate-context-objects)
-    * [Define Prompt and JSON schema](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#define-prompt-and-json-schema)
-    * [Provide update script](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#provide-update-script)
-    * [Review configuration and Save task](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#review-configuration-and-save-task)
+    * [The GenAI Task wizard](#the-genai-task-wizard)  
+    * [Add a GenAI Task](#add-a-genai-task)
+    * [Configure basic settings](#configure-basic-settings)
+    * [Generate context objects](#generate-context-objects)
+    * [Define Prompt and JSON schema](#define-prompt-and-json-schema)
+    * [Provide update script](#provide-update-script)
+    * [Review configuration and Save task](#review-configuration-and-save-task)
 
 </Admonition>
 
@@ -171,7 +171,7 @@ To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task**
     * **Select a document from the source collection**  
       Select a document to test your context generation script on.  
        * To use the same sample document we're using to demonstrate the process, 
-         add [posts/1](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#sample-data) and select it here.  
+         add [posts/1](#sample-data) and select it here.  
        * Or if you prefer it, click `enter a document manually` and enter the sample document content yourself.  
     * To run the test, click the **Test context** button.  
       If all works well, you will see a list of context objects created by your script, one for each comment.  
@@ -182,7 +182,7 @@ To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task**
     * **Cancel**  
       Click to cancel any changes made in the task.  
     * **Back**  
-      Click to return to the previous step, [Configure basic settings](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#configure-basic-settings).  
+      Click to return to the previous step, [Configure basic settings](#configure-basic-settings).  
     * **Test Context**  
       Click to test your context generation script on the document selected/entered in the playground area.  
        * You do not have to use the playground; you'll be able to define and save your task without testing 
@@ -190,7 +190,7 @@ To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task**
        * However, running the test here will allow you to use the generated result set in the playground of 
          the next wizard step.  
     * **Next**  
-      Click to advance to the next step, [Define prompt & JSON schema](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#define-prompt-and-json-schema).  
+      Click to advance to the next step, [Define prompt & JSON schema](#define-prompt-and-json-schema).  
 
 <hr />
 
@@ -289,12 +289,12 @@ To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task**
     * **Cancel**  
       Click to cancel any changes made in the task.  
     * **Back**  
-      Click to return to the previous step, [Generate context objects](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#generate-context-objects).  
+      Click to return to the previous step, [Generate context objects](#generate-context-objects).  
     * **Test Context**  
       Click to test the prompt and JSON schema you define above, on the context objects generated from the 
       document you provided.  
     * **Next**  
-      Click to advance to the next step, [Provide update script](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#provide-update-script).  
+      Click to advance to the next step, [Provide update script](#provide-update-script).  
 
 <hr />
 
@@ -340,14 +340,14 @@ The update script set in this step, determines what actions should be taken on t
     * **Cancel**  
       Click to cancel any changes made in the task.  
     * **Back**  
-      Click to return to the previous step, [Define Prompt and JSON schema](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#define-prompt-and-json-schema).  
+      Click to return to the previous step, [Define Prompt and JSON schema](#define-prompt-and-json-schema).  
     * **Test Context**  
       Click to test the update script you define above.  
       Note that even though in our case we remove comments from existing documents, 
       the update script can leave the original document unchanged, create new documents, 
       and so on - as you choose.  
     * **Next**  
-      Click to advance to the next step, [Review configuration and Save task](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#review-configuration-and-save-task).  
+      Click to advance to the next step, [Review configuration and Save task](#review-configuration-and-save-task).  
 
 <hr />
 
@@ -373,7 +373,7 @@ If your task is enabled, it will start running when you save it.
     * **Cancel**  
       Click to cancel any changes made in the task.  
     * **Back**  
-      Click to return to the previous step, [Provide update script](../../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_studio.mdx#provide-update-script).  
+      Click to return to the previous step, [Provide update script](#provide-update-script).  
     * **Save**  
       Click to save your task.  
       If enabled, saving the task will start its execution.  

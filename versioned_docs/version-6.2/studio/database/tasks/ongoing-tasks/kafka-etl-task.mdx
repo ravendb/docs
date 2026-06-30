@@ -33,17 +33,17 @@ import ContentFrame from "@site/src/components/ContentFrame";
   [Learn here](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx) how to define a Kafka ETL task using code.
 
 * In this article:
-  * [Setup workflow](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#setup-workflow)
-  * [Creating a Kafka ETL task](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#creating-a-kafka-etl-task)
-    * [Open Kafka ETL Task View](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#open-kafka-etl-task-view)
-    * [Define Kafka ETL Task](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#define-kafka-etl-task)
-    * [Use RavenDB Certificate](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#use-ravendb-certificate)
-    * [Options Per Topic](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#options-per-topic)
-    * [Edit Transformation Script](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#edit-transformation-script)
-  * [Prerequisites for a secure Kafka server](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#prerequisites-for-a-secure-kafka-server)
-    * [What needs to be granted](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#what-needs-to-be-granted)
-    * [Reading the transactional IDs from Studio](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#reading-the-transactional-ids-from-studio)
-    * [Entering the grants on the Kafka cluster](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#entering-the-grants-on-the-kafka-cluster)
+  * [Setup workflow](#setup-workflow)
+  * [Creating a Kafka ETL task](#creating-a-kafka-etl-task)
+    * [Open Kafka ETL Task View](#open-kafka-etl-task-view)
+    * [Define Kafka ETL Task](#define-kafka-etl-task)
+    * [Use RavenDB Certificate](#use-ravendb-certificate)
+    * [Options Per Topic](#options-per-topic)
+    * [Edit Transformation Script](#edit-transformation-script)
+  * [Prerequisites for a secure Kafka server](#prerequisites-for-a-secure-kafka-server)
+    * [What needs to be granted](#what-needs-to-be-granted)
+    * [Reading the transactional IDs from Studio](#reading-the-transactional-ids-from-studio)
+    * [Entering the grants on the Kafka cluster](#entering-the-grants-on-the-kafka-cluster)
 
 </Admonition>
 
@@ -135,7 +135,7 @@ extension that permits acting as a TLS client) or a separate certificate that
 RavenDB issues from the server certificate's key pair.
 
 Enabling **Use RavenDB Certificate** replaces the security options you would
-otherwise enter via [Add new connection option](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#define-kafka-etl-task).
+otherwise enter via [Add new connection option](#define-kafka-etl-task).
 
 <Admonition type="warning" title="">
 

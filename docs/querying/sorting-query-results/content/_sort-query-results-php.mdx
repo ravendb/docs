@@ -16,27 +16,27 @@ import Panel from '@site/src/components/Panel';
 * Sorting is applied by the server after the query filtering stage.
   Filtering is recommended, as it reduces the number of results RavenDB needs to sort when querying a large dataset.
 
-* Multiple sorting operations can be [chained](../../../querying/sorting-query-results/sort-query-results.mdx#chain-ordering).
+* Multiple sorting operations can be [chained](#chain-ordering).
     
 * All sorting capabilities available for **dynamic queries** can also be used when querying a **static-index**.  
   The same syntax used with dynamic queries also applies when querying indexes.
 
 * In this article:
-    * [Order by field value](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-field-value) 
-        * [Ordering type](../../../querying/sorting-query-results/sort-query-results.mdx#ordering-type) 
-    * [Order by searchable fields](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-searchable-fields)
-    * [Order by score](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-score)
-        * [Get resulting score](../../../querying/sorting-query-results/sort-query-results.mdx#get-resulting-score)  
-    * [Order by random](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-random)   
-    * [Order by spatial](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-spatial)     
-    * [Order by count (aggregation query)](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-count-aggregation-query)  
-    * [Order by sum (aggregation query)](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-sum-aggregation-query)
-    * [Order by metadata](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-metadata)
-    * [Force ordering type](../../../querying/sorting-query-results/sort-query-results.mdx#force-ordering-type)
-    * [Chain ordering](../../../querying/sorting-query-results/sort-query-results.mdx#chain-ordering)
-    * [Custom sorters](../../../querying/sorting-query-results/sort-query-results.mdx#custom-sorters)
-    * [Performance notes](../../../querying/sorting-query-results/sort-query-results.mdx#performance-notes)
-    * [Syntax](../../../querying/sorting-query-results/sort-query-results.mdx#syntax)
+    * [Order by field value](#order-by-field-value) 
+        * [Ordering type](#ordering-type) 
+    * [Order by searchable fields](#order-by-searchable-fields)
+    * [Order by score](#order-by-score)
+        * [Get resulting score](#get-resulting-score)  
+    * [Order by random](#order-by-random)   
+    * [Order by spatial](#order-by-spatial)     
+    * [Order by count (aggregation query)](#order-by-count-aggregation-query)  
+    * [Order by sum (aggregation query)](#order-by-sum-aggregation-query)
+    * [Order by metadata](#order-by-metadata)
+    * [Force ordering type](#force-ordering-type)
+    * [Chain ordering](#chain-ordering)
+    * [Custom sorters](#custom-sorters)
+    * [Performance notes](#performance-notes)
+    * [Syntax](#syntax)
 
 </Admonition>
 
@@ -190,7 +190,7 @@ order by UnitsInStock as long desc
 * E.g. in the above example, ordering by `UnitsInStock` will result in `OrderingType::long`  
   because this property's data type is integer.
 
-* Different ordering can be forced - see [Force ordering type](../../../querying/sorting-query-results/sort-query-results.mdx#force-ordering-type) below.
+* Different ordering can be forced - see [Force ordering type](#force-ordering-type) below.
 
 </Admonition>
 

@@ -22,15 +22,15 @@ import Panel from "@site/src/components/Panel";
   and how to manually generate HiLo-based IDs when needed.    
     
 * In this article:
-   * [How the HiLo algorithm works in RavenDB](../../../client-api/document-identifiers/hilo-algorithm.mdx#how-the-hilo-algorithm-works-in-ravendb)
-     * [Generating unique IDs efficiently](../../../client-api/document-identifiers/hilo-algorithm.mdx#generating-unique-ids-efficiently)
-     * [Using HiLo documents](../../../client-api/document-identifiers/hilo-algorithm.mdx#using-hilo-documents)
-   * [Returning HiLo ranges](../../../client-api/document-identifiers/hilo-algorithm.mdx#returning-hilo-ranges)
-   * [Identity parts separator](../../../client-api/document-identifiers/hilo-algorithm.mdx#identity-parts-separator)
-   * [Manual HiLo ID generation](../../../client-api/document-identifiers/hilo-algorithm.mdx#manual-hilo-id-generation)
-     * [Get next ID - number only](../../../client-api/document-identifiers/hilo-algorithm.mdx#get-next-id---number-only)
-     * [Get next ID - full document ID](../../../client-api/document-identifiers/hilo-algorithm.mdx#get-next-id---full-document-id)
-   * [Overriding the HiLo algorithm](../../../client-api/document-identifiers/hilo-algorithm.mdx#overriding-the-hilo-algorithm)
+   * [How the HiLo algorithm works in RavenDB](#how-the-hilo-algorithm-works-in-ravendb)
+     * [Generating unique IDs efficiently](#generating-unique-ids-efficiently)
+     * [Using HiLo documents](#using-hilo-documents)
+   * [Returning HiLo ranges](#returning-hilo-ranges)
+   * [Identity parts separator](#identity-parts-separator)
+   * [Manual HiLo ID generation](#manual-hilo-id-generation)
+     * [Get next ID - number only](#get-next-id---number-only)
+     * [Get next ID - full document ID](#get-next-id---full-document-id)
+   * [Overriding the HiLo algorithm](#overriding-the-hilo-algorithm)
 
 </Admonition>
 
@@ -188,8 +188,8 @@ using (var session = newStore.OpenSession())
   You can ask the default HiLo generator for the next ID value without storing a document first.  
   You can retrieve either the next number from the HiLo range or the next full document ID,  
   and then use that value when storing a document, as explained below:  
-    * [Get next ID - number only](../../../client-api/document-identifiers/hilo-algorithm.mdx#get-next-id---number-only)
-    * [Get next ID - full document ID](../../../client-api/document-identifiers/hilo-algorithm.mdx#get-next-id---full-document-id)
+    * [Get next ID - number only](#get-next-id---number-only)
+    * [Get next ID - full document ID](#get-next-id---full-document-id)
 
 ---
     
@@ -372,8 +372,8 @@ using (var session = store.OpenSession())
 * Once you configure a custom `AsyncDocumentIdGenerator`:
     * Your custom ID generation logic is used whenever the session stores a document whose `Id` property is `null`.      
     * The store's default `HiLoIdGenerator` is no longer available.
-      Calling [GenerateNextIdForAsync](../../../client-api/document-identifiers/hilo-algorithm.mdx#get-next-id---number-only) or
-      [GenerateDocumentIdAsync](../../../client-api/document-identifiers/hilo-algorithm.mdx#get-next-id---full-document-id) through `store.HiLoIdGenerator`
+      Calling [GenerateNextIdForAsync](#get-next-id---number-only) or
+      [GenerateDocumentIdAsync](#get-next-id---full-document-id) through `store.HiLoIdGenerator`
       will throw an exception.
 
 </Panel>

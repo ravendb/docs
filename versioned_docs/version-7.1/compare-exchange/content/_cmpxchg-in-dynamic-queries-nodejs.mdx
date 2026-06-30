@@ -14,11 +14,11 @@ import CodeBlock from '@theme/CodeBlock';
   Learn more about dynamic queries in the [Query overview](../../client-api/session/querying/how-to-query.mdx).
 
 * In this article: 
-  * [Projecting compare-exchange values in query results](../../compare-exchange/cmpxchg-in-dynamic-queries.mdx#projecting-compare-exchange-values-in-query-results)  
-  * [Filtering by compare-exchange value](../../compare-exchange/cmpxchg-in-dynamic-queries.mdx#filtering-by-compare-exchange-value)  
-    * [Example 1 - Filtering when the compare-exchange value is a string](../../compare-exchange/cmpxchg-in-dynamic-queries.mdx#example-1---filtering-when-the-compare-exchange-value-is-a-string)  
-    * [Example 2 - Filtering when the compare-exchange value is an object](../../compare-exchange/cmpxchg-in-dynamic-queries.mdx#example-2---filtering-when-the-compare-exchange-value-is-an-object)  
-  * [Syntax](../../compare-exchange/cmpxchg-in-dynamic-queries.mdx#syntax)  
+  * [Projecting compare-exchange values in query results](#projecting-compare-exchange-values-in-query-results)  
+  * [Filtering by compare-exchange value](#filtering-by-compare-exchange-value)  
+    * [Example 1 - Filtering when the compare-exchange value is a string](#example-1---filtering-when-the-compare-exchange-value-is-a-string)  
+    * [Example 2 - Filtering when the compare-exchange value is an object](#example-2---filtering-when-the-compare-exchange-value-is-an-object)  
+  * [Syntax](#syntax)  
 
 </Admonition>
 
@@ -98,7 +98,7 @@ select {
   When filtering with `cmpxchg` inside the `where` predicate (as shown in this example),  
   the compare-exchange value must be a _string_.  
   If your compare-exchange value is of another type, you can still filter the results - 
-  see the [next example](../../compare-exchange/cmpxchg-in-dynamic-queries.mdx#example-2---filtering-when-the-compare-exchange-value-is-an-object).
+  see the [next example](#example-2---filtering-when-the-compare-exchange-value-is-an-object).
   
 * Since this query uses filtering, RavenDB will automatically create an auto-index to serve it.  
   In this case, the auto-index `Auto/Users/ByEmail` will be created.  

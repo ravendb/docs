@@ -18,13 +18,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * This article provides guidance on integrating RavenDB with Akka.Persistence.
 
 * In this page:
-   * [Overview](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx#overview)
-   * [Akka.Persistence.RavenDB](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx#akkapersistenceravendb)
-   * [Installing the RavenDB persistence plugin](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx#installing-the-ravendb-persistence-plugin)
-   * [Configuring the RavenDB persistence plugin with HOCON](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx#configuring-the-ravendb-persistence-plugin-with-hocon)
-       * [Configuration keys](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx#configuration-keys)
-   * [Configuring the RavenDB persistence plugin with Hosting](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx#configuring-the-ravendb-persistence-plugin-with-hosting)
-       * [Syntax](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx#syntax)
+   * [Overview](#overview)
+   * [Akka.Persistence.RavenDB](#akkapersistenceravendb)
+   * [Installing the RavenDB persistence plugin](#installing-the-ravendb-persistence-plugin)
+   * [Configuring the RavenDB persistence plugin with HOCON](#configuring-the-ravendb-persistence-plugin-with-hocon)
+       * [Configuration keys](#configuration-keys)
+   * [Configuring the RavenDB persistence plugin with Hosting](#configuring-the-ravendb-persistence-plugin-with-hosting)
+       * [Syntax](#syntax)
 
 </Admonition>
 ## Overview
@@ -119,7 +119,7 @@ the configuration provided via Hosting takes precedence and will override the co
   Provide different values for each store as needed.  
 
 * The following is a sample HOCON configuration under the `<akka>` section.  
-  See the full description of each configuration key [below](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx#configuration-keys).
+  See the full description of each configuration key [below](#configuration-keys).
 
 <TabItem value="hocon_config" label="hocon_config">
 <CodeBlock language="csharp">
@@ -255,7 +255,7 @@ Default: `false`
 * Using Hosting, you can easily set up the RavenDB plugin during your application's startup.
 
 * Use method `WithRavenDbPersistence` to configure all relevant parameters.  
-  See the available parameters and method overloads in the syntax section [below](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx#syntax).
+  See the available parameters and method overloads in the syntax section [below](#syntax).
 
 * The following example shows a basic configuration using Hosting:
 

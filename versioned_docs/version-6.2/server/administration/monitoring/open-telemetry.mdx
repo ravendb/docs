@@ -22,22 +22,22 @@ import LanguageContent from "@site/src/components/LanguageContent";
   allowing seamless data collection and analysis by an OpenTelemetry retriever.
 
 * In addition, an OpenTelemetry collector can retrieve data from RavenDB's [Prometheus](../../../server/administration/monitoring/prometheus.mdx) endpoint.  
-  Learn more [below](../../../server/administration/monitoring/open-telemetry.mdx#retrieve-data-from-prometheus).
+  Learn more [below](#retrieve-data-from-prometheus).
 
 * OpenTelemetry support is provided for RavenDB instances both on-premises and in the cloud.
     
 * In this article:
-  * [Enabling OpenTelemetry in RavenDB](../../../server/administration/monitoring/open-telemetry.mdx#enabling-opentelemetry-in-ravendb)
-  * [RavenDB OpenTelemetry meters](../../../server/administration/monitoring/open-telemetry.mdx#ravendb-opentelemetry-meters)
-  * [Server identification in metrics](../../../server/administration/monitoring/open-telemetry.mdx#server-identification-in-metrics)
-  * [Service name and namespace](../../../server/administration/monitoring/open-telemetry.mdx#service-name-and-namespace)
-  * [The metric instruments](../../../server/administration/monitoring/open-telemetry.mdx#the-metric-instruments)
-  * [Metrics export options](../../../server/administration/monitoring/open-telemetry.mdx#metrics-export-options)
-      * [Console](../../../server/administration/monitoring/open-telemetry.mdx#console)
-      * [OpenTelemetry Protocol](../../../server/administration/monitoring/open-telemetry.mdx#opentelemetry-protocol)
-  * [Configuring the OpenTelemetry Collector](../../../server/administration/monitoring/open-telemetry.mdx#configuring-the-opentelemetry-collector)
-      * [Receive data via OLTP ](../../../server/administration/monitoring/open-telemetry.mdx#receive-data-via-otlp)
-      * [Retrieve data from Prometheus](../../../server/administration/monitoring/open-telemetry.mdx#retrieve-data-from-prometheus)
+  * [Enabling OpenTelemetry in RavenDB](#enabling-opentelemetry-in-ravendb)
+  * [RavenDB OpenTelemetry meters](#ravendb-opentelemetry-meters)
+  * [Server identification in metrics](#server-identification-in-metrics)
+  * [Service name and namespace](#service-name-and-namespace)
+  * [The metric instruments](#the-metric-instruments)
+  * [Metrics export options](#metrics-export-options)
+      * [Console](#console)
+      * [OpenTelemetry Protocol](#opentelemetry-protocol)
+  * [Configuring the OpenTelemetry Collector](#configuring-the-opentelemetry-collector)
+      * [Receive data via OLTP ](#receive-data-via-otlp)
+      * [Retrieve data from Prometheus](#retrieve-data-from-prometheus)
 
 </Admonition>
 
@@ -55,7 +55,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ## RavenDB OpenTelemetry meters
 
-Each meter listed below groups similar or related [metric instruments](../../../server/administration/monitoring/open-telemetry.mdx#the-metric-instruments).  
+Each meter listed below groups similar or related [metric instruments](#the-metric-instruments).  
 Each metric instrument observes some metric value.
 
 Only the most commonly used meters are enabled by default.  
@@ -304,7 +304,7 @@ RavenDB offers two options for exporting metrics:
 | Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.ExportProcessorType](../../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocolexportprocessortype) | Export processor type                                                                                                                                                      | Simple / Batch       |
 | Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.Headers](../../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocolheaders)                         | Custom headers                                                                                                                                                             | string               |
 | Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.Protocol](../../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocolprotocol)                       | Defines the transport protocol that OpenTelemetry Protocol should use to send data.                                                                                        | gRPC / HttpProtobuf  |
-| Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.Endpoint](../../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocolendpoint)                       | Endpoint where OpenTelemetry Protocol should send data.<br/>See configuration details [below](../../../server/administration/monitoring/open-telemetry.mdx#configure-endpoint). | string               |
+| Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.Endpoint](../../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocolendpoint)                       | Endpoint where OpenTelemetry Protocol should send data.<br/>See configuration details [below](#configure-endpoint). | string               |
 | Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.Timeout](../../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocoltimeout)                         | Timeout                                                                                                                                                                    | int                  |
 
 </Admonition>
@@ -312,7 +312,7 @@ RavenDB offers two options for exporting metrics:
 <Admonition type="info" title="">
 
 <a id="configure-endpoint"/> __Configuring the OpenTelemetry Protocol endpoint__:
-The defined endpoint must correspond to the endpoint [configured on the collector](../../../server/administration/monitoring/open-telemetry.mdx#configuring-the-opentelemetry-collector) for receiving metrics data.
+The defined endpoint must correspond to the endpoint [configured on the collector](#configuring-the-opentelemetry-collector) for receiving metrics data.
 The endpoint format should match the transport protocol you are using:
 
 <br/>

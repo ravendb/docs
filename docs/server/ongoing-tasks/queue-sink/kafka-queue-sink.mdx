@@ -29,17 +29,17 @@ import ContentFrame from "@site/src/components/ContentFrame";
   user-defined scripts, and store the documents in RavenDB collections.
 
 * In this article:
-  * [The Queue Sink Task](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#the-queue-sink-task)
-     * [Connecting a Kafka broker](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#connecting-a-kafka-broker)
-     * [Retrieving enqueued messages from selected Kafka topics](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#retrieving-enqueued-messages-from-selected-kafka-topics)
-     * [Running user-defined scripts](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#running-user-defined-scripts)
-     * [Storing documents in RavenDB collections](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#storing-documents-in-ravendb-collections)
-  * [Client API](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#client-api)
-     * [Adding a Kafka connection string](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#adding-a-kafka-connection-string)
-     * [Adding a Kafka sink task](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#adding-a-kafka-sink-task)
-  * [Configuration Options](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#configuration-options)
-  * [Syntax](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#syntax)
-     * [Classes](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#classes)
+  * [The Queue Sink Task](#the-queue-sink-task)
+     * [Connecting a Kafka broker](#connecting-a-kafka-broker)
+     * [Retrieving enqueued messages from selected Kafka topics](#retrieving-enqueued-messages-from-selected-kafka-topics)
+     * [Running user-defined scripts](#running-user-defined-scripts)
+     * [Storing documents in RavenDB collections](#storing-documents-in-ravendb-collections)
+  * [Client API](#client-api)
+     * [Adding a Kafka connection string](#adding-a-kafka-connection-string)
+     * [Adding a Kafka sink task](#adding-a-kafka-sink-task)
+  * [Configuration Options](#configuration-options)
+  * [Syntax](#syntax)
+     * [Classes](#classes)
 
 </Admonition>
 
@@ -58,7 +58,7 @@ In the message broker architecture, RavenDB sinks take the role of data consumer
 A sink would connect a Kafka broker using a connection string, and retrieve messages
 from the broker's Topics.
 
-Read [below](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#adding-a-kafka-connection-string)
+Read [below](#adding-a-kafka-connection-string)
 about adding a connection string via API.  
 Read [here](../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink.mdx#define-a-kafka-sink-task)
 about adding a connection string using Studio.
@@ -174,7 +174,7 @@ user in Studio, but **continue processing the batch**.
 Once a batch is consumed, the task confirms it by calling `kafkaConsumer.Commit()`.
 
 Note that the number of documents included in a batch is
-[configurable](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#configuration-options).
+[configurable](#configuration-options).
 
 <Admonition type="warning" title="Take care of duplicates" id="take-care-of-duplicates" href="#take-care-of-duplicates">
 Producers may enqueue
@@ -218,7 +218,7 @@ var res = store.Maintenance.Send(
 <br />
 
 For the full property reference, see the
-[Connection string](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#connection-string)
+[Connection string](#connection-string)
 class in the Syntax section.
 
 ---
@@ -283,7 +283,7 @@ AddQueueSinkOperationResult addQueueSinkOperationResult =
 </ContentFrame>
 
 For the `QueueSinkConfiguration` and `QueueSinkScript` property reference, see the
-[Sink task](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#sink-task)
+[Sink task](#sink-task)
 classes in the Syntax section.
 
 </Panel>

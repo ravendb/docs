@@ -22,11 +22,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
   To run it from Studio, see [Enforce configuration](../../../../../studio/database/settings/document-revisions.mdx#enforce-configuration) in the Document Revisions settings view.        
 
 * In this article:
-  * [Enforce configuration on all collections](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#enforce-configuration-on-all-collections)
-  * [Enforce configuration on specific collections](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#enforce-configuration-on-specific-collections)
-  * [Include force-created revisions](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#include-force-created-revisions)
-  * [Throttle the operation](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#throttle-the-operation)
-  * [Syntax](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#syntax)
+  * [Enforce configuration on all collections](#enforce-configuration-on-all-collections)
+  * [Enforce configuration on specific collections](#enforce-configuration-on-specific-collections)
+  * [Include force-created revisions](#include-force-created-revisions)
+  * [Throttle the operation](#throttle-the-operation)
+  * [Syntax](#syntax)
 
 </Admonition>
 
@@ -36,7 +36,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   Running the operation can delete them all in a single enforcement run and may require substantial server resources.
   Schedule it accordingly.    
 
-* On large datasets, use `setMaxOpsPerSecond(...)` to [throttle the operation](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#throttle-the-operation)
+* On large datasets, use `setMaxOpsPerSecond(...)` to [throttle the operation](#throttle-the-operation)
   and reduce its resource consumption.
 
 * Revisions in collections that no current configuration applies to may be deleted.

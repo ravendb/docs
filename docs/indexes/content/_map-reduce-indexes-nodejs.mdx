@@ -23,9 +23,9 @@ import CodeBlock from '@theme/CodeBlock';
     and then runs the Reduce function to get a final aggregation result per field value.  
 
 * In this page: 
-   * [Creating Map Reduce Indexes](../../indexes/map-reduce-indexes.mdx#creating-map-reduce-indexes)  
-   * [Reduce Results as Artificial Documents](../../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents)  
-   * [Important Comments](../../indexes/map-reduce-indexes.mdx#important-comments)  
+   * [Creating Map Reduce Indexes](#creating-map-reduce-indexes)  
+   * [Reduce Results as Artificial Documents](#reduce-results-as-artificial-documents)  
+   * [Important Comments](#important-comments)  
 
 </Admonition>
 
@@ -227,7 +227,7 @@ give to their document ID also determines how the output documents are grouped.
 Because reference documents have well known, predictable IDs, they are easier to plug into 
 indexes and other operations, and can serve as an intermediary for the output documents whose 
 IDs are less predictable. This allows you to chain map-reduce indexes in a recursive fashion, 
-see [Example II](../../indexes/map-reduce-indexes.mdx#example-ii).  
+see [Example II](#example-ii).  
 
 Learn more about how to configure output and reference documents in the 
 [Studio: Create Map-Reduce Index](../../studio/database/indexes/create-map-reduce-index.mdx).  
@@ -317,7 +317,7 @@ const patternForOutputReduceToCollectionReferences = indexDefinition.patternForO
 ## Important Comments
 
 ## Saving documents
-[Artificial documents](../../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents) 
+[Artificial documents](#reduce-results-as-artificial-documents) 
 are stored immediately after the indexing transaction completes.  
 
 ## Recursive indexing loop

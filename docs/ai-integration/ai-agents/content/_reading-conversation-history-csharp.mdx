@@ -22,31 +22,31 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * Learn how to create and run a conversation in [Managing conversations](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#managing-conversations).  
 
 * In this article:
-   * [Get the conversation messages](../../../ai-integration/ai-agents/reading-conversation-history.mdx#get-the-conversation-messages)
-   * [Page through the conversation](../../../ai-integration/ai-agents/reading-conversation-history.mdx#page-through-the-conversation)
-      * [Catch up on new messages](../../../ai-integration/ai-agents/reading-conversation-history.mdx#catch-up-on-new-messages)
-   * [Control the level of detail](../../../ai-integration/ai-agents/reading-conversation-history.mdx#control-the-level-of-detail)
-   * [Inspect tool calls and sub-conversations](../../../ai-integration/ai-agents/reading-conversation-history.mdx#inspect-tool-calls-and-sub-conversations)
-   * [Syntax](../../../ai-integration/ai-agents/reading-conversation-history.mdx#syntax)
+   * [Get the conversation messages](#get-the-conversation-messages)
+   * [Page through the conversation](#page-through-the-conversation)
+      * [Catch up on new messages](#catch-up-on-new-messages)
+   * [Control the level of detail](#control-the-level-of-detail)
+   * [Inspect tool calls and sub-conversations](#inspect-tool-calls-and-sub-conversations)
+   * [Syntax](#syntax)
 
 </Admonition>
 
 <Panel heading="Get the conversation messages">
 
-To read a conversation's messages, call [GetConversationMessages](../../../ai-integration/ai-agents/reading-conversation-history.mdx#conversation-history) (or `GetConversationMessagesAsync`)
+To read a conversation's messages, call [GetConversationMessages](#conversation-history) (or `GetConversationMessagesAsync`)
 and pass the conversation document ID.  
 
-`GetConversationMessages` returns an [AiConversationMessagesResult](../../../ai-integration/ai-agents/reading-conversation-history.mdx#conversation-history-classes) object that includes a `Messages`
+`GetConversationMessages` returns an [AiConversationMessagesResult](#conversation-history-classes) object that includes a `Messages`
 list, holding the conversation's messages in chronological order, oldest first.  
 If no conversation with the given ID exists, the method returns `null`.  
 
 Passing only a conversation ID returns the whole conversation in one call: `PageSize`, the maximum
 number of messages in a page, defaults to `int.MaxValue`, so no page limit applies.  
 To read the conversation in fixed-size pages, set `PageSize` and read it a page at a time, as explained in
-[Page through the conversation](../../../ai-integration/ai-agents/reading-conversation-history.mdx#page-through-the-conversation).  
+[Page through the conversation](#page-through-the-conversation).  
 
 At the default `Simple` detail level, the result holds the messages between the user and the LLM.  
-See [Control the level of detail](../../../ai-integration/ai-agents/reading-conversation-history.mdx#control-the-level-of-detail)
+See [Control the level of detail](#control-the-level-of-detail)
 for the other detail levels and the message types each level includes.
 
 
@@ -75,9 +75,9 @@ Besides the messages, the result includes, among others:
   `true` when the conversation holds more messages beyond the returned page.  
 
 <br />
-See [GetConversationMessages](../../../ai-integration/ai-agents/reading-conversation-history.mdx#conversation-history)
-and [AiConversationMessagesResult](../../../ai-integration/ai-agents/reading-conversation-history.mdx#conversation-history-classes)
-in the [Syntax](../../../ai-integration/ai-agents/reading-conversation-history.mdx#syntax) section.
+See [GetConversationMessages](#conversation-history)
+and [AiConversationMessagesResult](#conversation-history-classes)
+in the [Syntax](#syntax) section.
 
 </Panel>
 
@@ -86,7 +86,7 @@ in the [Syntax](../../../ai-integration/ai-agents/reading-conversation-history.m
 A single call to `GetConversationMessages` returns one page of messages, up to `PageSize`.  
 By default, the page holds the conversation's most recent messages.
 
-To select another page, pass a [GetConversationMessagesOptions](../../../ai-integration/ai-agents/reading-conversation-history.mdx#conversation-history-classes) object instead of a bare
+To select another page, pass a [GetConversationMessagesOptions](#conversation-history-classes) object instead of a bare
 conversation ID:
 
 * Set `Before` to a timestamp to read the page of messages immediately before it.  
@@ -150,8 +150,8 @@ var newMessages = await store.AI.GetConversationMessagesAsync(
 </ContentFrame>
 
 <br />
-See [GetConversationMessagesOptions](../../../ai-integration/ai-agents/reading-conversation-history.mdx#conversation-history-classes)
-in the [Syntax](../../../ai-integration/ai-agents/reading-conversation-history.mdx#syntax) section.
+See [GetConversationMessagesOptions](#conversation-history-classes)
+in the [Syntax](#syntax) section.
 
 </Panel>
 
@@ -186,15 +186,15 @@ var detailed = await store.AI.GetConversationMessagesAsync(
 ```
 <br />
 
-See [AiConversationDetailLevel](../../../ai-integration/ai-agents/reading-conversation-history.mdx#conversation-history-enums)
-in the [Syntax](../../../ai-integration/ai-agents/reading-conversation-history.mdx#syntax) section.
+See [AiConversationDetailLevel](#conversation-history-enums)
+in the [Syntax](#syntax) section.
 
 </Panel>
 
 <Panel heading="Inspect tool calls and sub-conversations">
 
 At the `Detailed` or `Full` detail level, the `ToolCalls` list of a message from the LLM holds
-the tool calls the LLM made. Each entry is an [AiToolCallResult](../../../ai-integration/ai-agents/reading-conversation-history.mdx#conversation-history-classes) object, giving the tool's `Name`, the
+the tool calls the LLM made. Each entry is an [AiToolCallResult](#conversation-history-classes) object, giving the tool's `Name`, the
 `Arguments` the LLM passed, and the `Result` the tool returned.
 
 An agent can hand work to another agent (a [sub-agent](../../../ai-integration/ai-agents/multi-agents.mdx)).  
@@ -244,9 +244,9 @@ foreach (AiConversationMessage message in trace.Messages)
 ```
 <br />
 
-See [AiConversationMessage](../../../ai-integration/ai-agents/reading-conversation-history.mdx#conversation-history-classes)
-and [AiToolCallResult](../../../ai-integration/ai-agents/reading-conversation-history.mdx#conversation-history-classes)
-in the [Syntax](../../../ai-integration/ai-agents/reading-conversation-history.mdx#syntax) section.  
+See [AiConversationMessage](#conversation-history-classes)
+and [AiToolCallResult](#conversation-history-classes)
+in the [Syntax](#syntax) section.  
 See [Multi-agents](../../../ai-integration/ai-agents/multi-agents.mdx) for the full sub-agent picture.
 
 </Panel>
@@ -394,7 +394,7 @@ class AiConversationMessage
 
 | Property | Type | Description |
 |----------|------|-------------|
-| **Role** | `AiMessageRole` | What the message is: a system prompt, a user message, a message from the LLM, a summary, or an internal message.<br />See [AiMessageRole](../../../ai-integration/ai-agents/reading-conversation-history.mdx#conversation-history-enums). |
+| **Role** | `AiMessageRole` | What the message is: a system prompt, a user message, a message from the LLM, a summary, or an internal message.<br />See [AiMessageRole](#conversation-history-enums). |
 | **Content** | `string` | The text content. When the stored message has several text parts, they are joined with line breaks. `null` for a message from the LLM that only initiated tool calls. |
 | **Attachments** | `List<string>` | Names of the attachments associated with this message, if any. |
 | **Timestamp** | `DateTime` | The time the message was recorded (UTC). Unique within the conversation and rising in message order, so a `Timestamp` value can be used to page through the conversation. |

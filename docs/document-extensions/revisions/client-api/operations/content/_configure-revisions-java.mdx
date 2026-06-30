@@ -12,11 +12,11 @@ import CodeBlock from '@theme/CodeBlock';
   using the Configure Revisions Operation.  
 
 * In this page:  
-  * [Syntax](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#syntax)  
-      * [RevisionsCollectionConfiguration](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisionscollectionconfiguration)  
-      * [RevisionsConfiguration](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisionsconfiguration)  
-      * [ConfigureRevisionsOperation](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#configurerevisionsoperation)  
-  * [Example](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#example)  
+  * [Syntax](#syntax)  
+      * [RevisionsCollectionConfiguration](#revisionscollectionconfiguration)  
+      * [RevisionsConfiguration](#revisionsconfiguration)  
+      * [ConfigureRevisionsOperation](#configurerevisionsoperation)  
+  * [Example](#example)  
 
 </Admonition>
 ## Syntax
@@ -27,13 +27,13 @@ settings.
 
 To configure the revisions settings for a database and/or the collections in that database, follow these steps:  
 
-[1.](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisionscollectionconfiguration) 
+[1.](#revisionscollectionconfiguration) 
 Create a RevisionsCollectionConfiguration` object for each desired collection.  
 
-[2.](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisionsconfiguration) 
+[2.](#revisionsconfiguration) 
 Put those `RevisionsCollectionConfiguration` objects in a `RevisionsConfiguration` object.  
 
-[3.](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#configurerevisionsoperation) 
+[3.](#configurerevisionsoperation) 
 Send that RevisionsConfiguration` to the server.  
 ### RevisionsCollectionConfiguration
 
@@ -96,7 +96,7 @@ configuration.
 
 Note that when this object is sent to the server, it overrides the configurations for **all** collections, including all existing 
 configurations currently on the server. If a collection is not listed in `collections` and `defaultConfig` has not been set, the 
-default values listed in the table [above](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisionscollectionconfiguration) 
+default values listed in the table [above](#revisionscollectionconfiguration) 
 are applied.  
 ### ConfigureRevisionsOperation
 

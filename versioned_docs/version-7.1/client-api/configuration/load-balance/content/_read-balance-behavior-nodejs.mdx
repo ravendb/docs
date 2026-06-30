@@ -15,12 +15,12 @@ import CodeBlock from '@theme/CodeBlock';
   * Upon a node failure, the node to failover to is also determined by the defined option.  
 
 * In this page:
-    * [readBalanceBehavior options](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx#readbalancebehavior-options)  
-    * [Initialize readBalanceBehavior on the client](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx#initialize-readbalancebehavior-on-the-client)  
-    * [Set readBalanceBehavior on the server:](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx#set-readbalancebehavior-on-the-server)  
-        * [By operation](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx#set-readbalancebehavior-on-the-server---by-operation)  
-        * [From Studio](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx#set-readbalancebehavior-on-the-server---from-studio)  
-    * [When to use](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx#when-to-use)
+    * [readBalanceBehavior options](#readbalancebehavior-options)  
+    * [Initialize readBalanceBehavior on the client](#initialize-readbalancebehavior-on-the-client)  
+    * [Set readBalanceBehavior on the server:](#set-readbalancebehavior-on-the-server)  
+        * [By operation](#set-readbalancebehavior-on-the-server---by-operation)  
+        * [From Studio](#set-readbalancebehavior-on-the-server---from-studio)  
+    * [When to use](#when-to-use)
      
 </Admonition>
 ## readBalanceBehavior options 
@@ -59,7 +59,7 @@ import CodeBlock from '@theme/CodeBlock';
 * The `readBalanceBehavior` convention can be set **on the client** when initializing the Document Store.  
   This will set the read balance behavior for the default database that is set on the store.  
 
-* This setting can be **overriden** by setting 'readBalanceBehavior' on the server, see [below](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx#set-readbalancebehavior-on-the-server).   
+* This setting can be **overriden** by setting 'readBalanceBehavior' on the server, see [below](#set-readbalancebehavior-on-the-server).   
 
 <TabItem value="readBalance_1" label="readBalance_1">
 <CodeBlock language="js">

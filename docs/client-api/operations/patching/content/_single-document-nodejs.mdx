@@ -19,42 +19,42 @@ import CodeBlock from '@theme/CodeBlock';
 
 * In this page:  
 
-  * [API overview](../../../../client-api/operations/patching/single-document.mdx#api-overview)    
+  * [API overview](#api-overview)    
   
-  * [Examples](../../../../client-api/operations/patching/single-document.mdx#examples)  
-      * [Modify value of single field](../../../../client-api/operations/patching/single-document.mdx#modify-value-of-single-field)  
-      * [Modify values of two fields](../../../../client-api/operations/patching/single-document.mdx#modify-values-of-two-fields)  
-      * [Increment value](../../../../client-api/operations/patching/single-document.mdx#increment-value)  
-      * [Add or increment](../../../../client-api/operations/patching/single-document.mdx#add-or-increment)  
-      * [Add or patch](../../../../client-api/operations/patching/single-document.mdx#add-or-patch)
-      * [Add item to array](../../../../client-api/operations/patching/single-document.mdx#add-item-to-array)
-      * [Add or patch an existing array](../../../../client-api/operations/patching/single-document.mdx#add-or-patch-an-existing-array)  
-      * [Insert item into specific position in array](../../../../client-api/operations/patching/single-document.mdx#insert-item-into-specific-position-in-array)  
-      * [Modify item in specific position in array](../../../../client-api/operations/patching/single-document.mdx#modify-item-in-specific-position-in-array)  
-      * [Remove items from array](../../../../client-api/operations/patching/single-document.mdx#remove-items-from-array)  
-      * [Load documents in a script](../../../../client-api/operations/patching/single-document.mdx#load-documents-in-a-script)  
-      * [Remove property](../../../../client-api/operations/patching/single-document.mdx#remove-property)  
-      * [Rename property](../../../../client-api/operations/patching/single-document.mdx#rename-property)  
-      * [Add document](../../../../client-api/operations/patching/single-document.mdx#add-document)  
-      * [Clone document](../../../../client-api/operations/patching/single-document.mdx#clone-document)  
-      * [Create/Increment counter](../../../../client-api/operations/patching/single-document.mdx#createincrement-counter)  
-      * [Delete counter](../../../../client-api/operations/patching/single-document.mdx#delete-counter)  
-      * [Get counter](../../../../client-api/operations/patching/single-document.mdx#get-counter)  
-      * [Patching using inline string compilation](../../../../client-api/operations/patching/single-document.mdx#patching-using-inline-string-compilation)  
-      * [Generate a random UUID](../../../../client-api/operations/patching/single-document.mdx#generate-a-random-uuid)  
-      * [Store a SHA-256 hash of a field](../../../../client-api/operations/patching/single-document.mdx#store-a-sha-256-hash-of-a-field)  
-      * [Encrypt a field](../../../../client-api/operations/patching/single-document.mdx#encrypt-a-field)      
+  * [Examples](#examples)  
+      * [Modify value of single field](#modify-value-of-single-field)  
+      * [Modify values of two fields](#modify-values-of-two-fields)  
+      * [Increment value](#increment-value)  
+      * [Add or increment](#add-or-increment)  
+      * [Add or patch](#add-or-patch)
+      * [Add item to array](#add-item-to-array)
+      * [Add or patch an existing array](#add-or-patch-an-existing-array)  
+      * [Insert item into specific position in array](#insert-item-into-specific-position-in-array)  
+      * [Modify item in specific position in array](#modify-item-in-specific-position-in-array)  
+      * [Remove items from array](#remove-items-from-array)  
+      * [Load documents in a script](#load-documents-in-a-script)  
+      * [Remove property](#remove-property)  
+      * [Rename property](#rename-property)  
+      * [Add document](#add-document)  
+      * [Clone document](#clone-document)  
+      * [Create/Increment counter](#createincrement-counter)  
+      * [Delete counter](#delete-counter)  
+      * [Get counter](#get-counter)  
+      * [Patching using inline string compilation](#patching-using-inline-string-compilation)  
+      * [Generate a random UUID](#generate-a-random-uuid)  
+      * [Store a SHA-256 hash of a field](#store-a-sha-256-hash-of-a-field)  
+      * [Encrypt a field](#encrypt-a-field)      
   
-  * [Syntax](../../../../client-api/operations/patching/single-document.mdx#syntax)
-      * [Session API syntax](../../../../client-api/operations/patching/single-document.mdx#session-api-syntax)
-      * [Session API using defer syntax](../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer-syntax)
-      * [Operations API syntax](../../../../client-api/operations/patching/single-document.mdx#operations-api-syntax)
-      * [List of script methods syntax](../../../../client-api/operations/patching/single-document.mdx#list-of-script-methods-syntax)
+  * [Syntax](#syntax)
+      * [Session API syntax](#session-api-syntax)
+      * [Session API using defer syntax](#session-api-using-defer-syntax)
+      * [Operations API syntax](#operations-api-syntax)
+      * [List of script methods syntax](#list-of-script-methods-syntax)
 
 </Admonition>
 ## API overview
 
-Patching can be performed using either of the following interfaces (detailed syntax is provided [below](../../../../client-api/operations/patching/single-document.mdx#syntax)):
+Patching can be performed using either of the following interfaces (detailed syntax is provided [below](#syntax)):
 
 * **Session API**
 * **Session API using defer** 
@@ -68,7 +68,7 @@ Patching can be performed using either of the following interfaces (detailed syn
 * Multiple patch methods can be defined on the [session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) 
   and are sent to the server for execution in a single batch (along with any other modified documents) only when calling [SaveChanges](../../../../client-api/session/saving-changes.mdx).
 
-* This API includes the following patching methods (see examples [below](../../../../client-api/operations/patching/single-document.mdx#examples)):
+* This API includes the following patching methods (see examples [below](#examples)):
   * `patch`
   * `addOrPatch`
   * `increment`

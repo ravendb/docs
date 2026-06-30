@@ -16,16 +16,16 @@ import ContentFrame from "@site/src/components/ContentFrame";
   * **Change vector** - use this to include **one or more** revisions
 
 * In this article:
-  * [Overview:](../../../../../document-extensions/revisions/client-api/session/including.mdx#overview)
-      * [Why include revisions](../../../../../document-extensions/revisions/client-api/session/including.mdx#why-include-revisions)
-      * [Including by creation time](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-creation-time)
-      * [Including by change vector](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-change-vector)
-  * [Include revisions when Loading](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-loading)
-  * [Include revisions when Querying - High-level query](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-querying-high-level-query)
-  * [Include revisions when Querying - Raw query](../../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-querying-raw-query)
-  * [View included revisions in Studio](../../../../../document-extensions/revisions/client-api/session/including.mdx#view-included-revisions-in-studio)
-  * [Patching the revision change vector](../../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector)
-  * [Syntax](../../../../../document-extensions/revisions/client-api/session/including.mdx#syntax)
+  * [Overview:](#overview)
+      * [Why include revisions](#why-include-revisions)
+      * [Including by creation time](#including-by-creation-time)
+      * [Including by change vector](#including-by-change-vector)
+  * [Include revisions when Loading](#include-revisions-when-loading)
+  * [Include revisions when Querying - High-level query](#include-revisions-when-querying-high-level-query)
+  * [Include revisions when Querying - Raw query](#include-revisions-when-querying-raw-query)
+  * [View included revisions in Studio](#view-included-revisions-in-studio)
+  * [Patching the revision change vector](#patching-the-revision-change-vector)
+  * [Syntax](#syntax)
 
 </Admonition>
 
@@ -49,7 +49,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 #### Including by creation time:
 
 * When specifying a creation time, only a **single** revision can be included per document.  
-  To include **multiple** revisions, use [change vectors](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-change-vector) instead.
+  To include **multiple** revisions, use [change vectors](#including-by-change-vector) instead.
 
 * You can pass local time or UTC, either way the server will convert it to UTC.  
 
@@ -63,7 +63,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 #### Including by change vector:
 
-* Unlike using [creation time](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-creation-time), which limits you to a **single** revision,  
+* Unlike using [creation time](#including-by-creation-time), which limits you to a **single** revision,  
   including by change vector allows you to include **one or more** revisions per document.
 
 * Each time a document is modified, its [Change Vector](../../../../../server/clustering/replication/change-vector.mdx) is updated.  
@@ -74,7 +74,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * To include single or multiple document revisions by their change vectors:   
 
   * When modifying the document, store its updated change vector in a property in the document.  
-    This can be done by [patching](../../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector) the document from the Client API or from the Studio.  
+    This can be done by [patching](#patching-the-revision-change-vector) the document from the Client API or from the Studio.  
   
   * Specify the **path** to this property when including the revisions, see examples below.  
   
@@ -493,8 +493,8 @@ The included revisions will be listed in a dedicated **Revisions Tab** under the
 
 <Panel heading="Patching the revision change vector">
 
-* When [including revisions by change vector](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-change-vector)
-  rather than by [creation time](../../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-creation-time),  
+* When [including revisions by change vector](#including-by-change-vector)
+  rather than by [creation time](#including-by-creation-time),  
   you need to specify the path to a document property that contains the revision change vector(s).  
 
 * The example below shows how to retrieve a revision's change vector and patch it into a document property  

@@ -34,15 +34,15 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * A [one-time](../../backup/create/one-time-backup.mdx) backup **can** be created for a sharded database.  
 
 * In this article:  
-   * [Sharded and non-sharded backup tasks](../../sharding/backup-and-restore/backup.mdx#sharded-and-non-sharded-backup-tasks)  
-   * [Backup storage: local and remote](../../sharding/backup-and-restore/backup.mdx#backup-storage-local-and-remote)  
-   * [Backup files extension and structure](../../sharding/backup-and-restore/backup.mdx#backup-files-extension-and-structure)  
-   * [Backup type](../../sharding/backup-and-restore/backup.mdx#backup-type)  
-   * [Backup scope](../../sharding/backup-and-restore/backup.mdx#backup-scope)  
-   * [Naming convention](../../sharding/backup-and-restore/backup.mdx#naming-convention)  
-   * [Server-wide backup](../../sharding/backup-and-restore/backup.mdx#server-wide-backup)  
-   * [Example](../../sharding/backup-and-restore/backup.mdx#example)  
-   * [Backup options summary](../../sharding/backup-and-restore/backup.mdx#backup-options-summary)  
+   * [Sharded and non-sharded backup tasks](#sharded-and-non-sharded-backup-tasks)  
+   * [Backup storage: local and remote](#backup-storage-local-and-remote)  
+   * [Backup files extension and structure](#backup-files-extension-and-structure)  
+   * [Backup type](#backup-type)  
+   * [Backup scope](#backup-scope)  
+   * [Naming convention](#naming-convention)  
+   * [Server-wide backup](#server-wide-backup)  
+   * [Example](#example)  
+   * [Backup options summary](#backup-options-summary)  
 
 </Admonition>
 
@@ -81,7 +81,7 @@ and keep backup files in manageable proportions no matter what the overall datab
 <Panel heading="Backup storage: local and remote">
 
 Backup files can be stored locally and remotely.  
-Find a code example [here](../../sharding/backup-and-restore/backup.mdx#example).  
+Find a code example [here](#example).  
 
 * **Local backup**  
   A shard's backup task may keep backup data locally, using the node's local storage.  
@@ -229,14 +229,14 @@ This type is specific to a sharded database, and casting it using a non-sharded 
 | Option | Available on a Sharded Database | Comment |
 | ------ | ------------------------------- | ------- |
 | Store backup files created by shards in **local shard machine storage**                                                          | **Yes** | Shards can store the backups they create locally. |
-| Store backup files of sharded databases [remotely](../../sharding/backup-and-restore/backup.mdx#backup-storage-local-and-remote) | **Yes** | Shards can store the backups they create on remote S3, Azure, or Google Cloud destinations. |
+| Store backup files of sharded databases [remotely](#backup-storage-local-and-remote) | **Yes** | Shards can store the backups they create on remote S3, Azure, or Google Cloud destinations. |
 | Create [Full](../../backup/overview#full-backup) backups for sharded databases                                                   | **Yes** | |
 | Create [Incremental](../../backup/overview#incremental-backup) backups for sharded databases                                     | **Yes** | |
 | Create [Logical](../../backup/overview#logical-backup) backups for sharded databases                                             | **Yes** | |
 | Create [Snapshot](../../backup/overview#snapshot-image) backups for sharded databases                                            | **No**  | Snapshot backups CANNOT be created for (nor restored to) sharded databases. |
 | Create **periodic backup tasks** for sharded databases                                                                           | **Yes** | |
 | Run a manual [one-time](../../backup/create/one-time-backup) backup operation on a sharded database                              | **Yes** | |
-| Include sharded databases in a [server-wide backup operation](../../sharding/backup-and-restore/backup.mdx#server-wide-backup)   | **Yes (logical only)** | A server-wide **logical** backup includes all databases, including sharded ones. Sharded databases are automatically **excluded** from server-wide **snapshot** backups. |
+| Include sharded databases in a [server-wide backup operation](#server-wide-backup)   | **Yes (logical only)** | A server-wide **logical** backup includes all databases, including sharded ones. Sharded databases are automatically **excluded** from server-wide **snapshot** backups. |
 
 </Panel>
 

@@ -32,10 +32,10 @@ _-or-_
   files locally or in a variety of remote locations.  
 
 * In this page:  
-  * [Scheduling a Server-Wide Backup Task](../../studio/server/server-wide-backup.mdx#scheduling-a-server-wide-backup-task)  
-  * [Restoring a Database From a Server-Wide Backup](../../studio/server/server-wide-backup.mdx#restoring-a-database-from-a-server-wide-backup)  
-  * [Server-Wide Backup Tasks in the Database Tasks View](../../studio/server/server-wide-backup.mdx#server-wide-backup-tasks-in-the-database-tasks-view)  
-  * [The Responsible Node](../../studio/server/server-wide-backup.mdx#the-responsible-node)  
+  * [Scheduling a Server-Wide Backup Task](#scheduling-a-server-wide-backup-task)  
+  * [Restoring a Database From a Server-Wide Backup](#restoring-a-database-from-a-server-wide-backup)  
+  * [Server-Wide Backup Tasks in the Database Tasks View](#server-wide-backup-tasks-in-the-database-tasks-view)  
+  * [The Responsible Node](#the-responsible-node)  
 
 </Admonition>
 ## Scheduling a Server-Wide Backup Task
@@ -77,7 +77,7 @@ The settings are similar to those of a [regular backup task](../../studio/databa
    See below.  
 
 7. **Destination**  
-   See [below](../../studio/server/server-wide-backup.mdx#destination).  
+   See [below](#destination).  
    * If you use an [Amazon S3](https://aws.amazon.com/s3/) custom host:
      ![ForcePathStyle](./assets/studio-force-path-style.png)
       * a- **Use a custom S3 host**  
@@ -124,7 +124,7 @@ Backup files are created in a separate child folder per database, under a common
 ## Restoring a Database From a Server-Wide Backup
 
 There is no difference between restoring a database from a backup file created by the 
-[Server-Wide procedure](../../studio/server/server-wide-backup.mdx#scheduling-a-server-wide-backup-task) 
+[Server-Wide procedure](#scheduling-a-server-wide-backup-task) 
 and a [separately created backup](../../studio/database/tasks/backup-task.mdx#backup-task).  
 In both cases, you can restore the database by 
 [Creating a New Database from Backup](../../studio/database/create-new-database/from-backup.mdx).  
@@ -162,7 +162,7 @@ To edit or modify a Server-Wide task, navigate back to the [Server-Wide Backup v
 ## The Responsible Node
 
 * When defining a Server-Wide backup, the user is not given the option to select a 
-  [responsible node](../../studio/server/server-wide-backup.mdx#the-responsible-node) manually, 
+  [responsible node](#the-responsible-node) manually, 
   since the responsible node can differ per database depending on the nodes the database resides on 
   (the [Database Group](../../studio/database/settings/manage-database-group.mdx#database-group)).  
   For each database, the responsible node for the task is set by the cluster to one of the database group nodes.

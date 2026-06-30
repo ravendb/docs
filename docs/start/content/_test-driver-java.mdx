@@ -12,11 +12,11 @@ import CodeBlock from '@theme/CodeBlock';
   [prerequisites](../../server/embedded.mdx#prerequisites) as embedded servers to run the tests.  
 
 * In this page: 
-   - [RavenTestDriver](../../start/test-driver.mdx#raventestdriver)
-   - [Pre-initializing the store](../../start/test-driver.mdx#preinitialize)
-   - [ConfigureServer](../../start/test-driver.mdx#configureserver)
-   - [Unit test](../../start/test-driver.mdx#unittest)
-   - [Complete example](../../start/test-driver.mdx#complete-example)
+   - [RavenTestDriver](#raventestdriver)
+   - [Pre-initializing the store](#preinitialize)
+   - [ConfigureServer](#configureserver)
+   - [Unit test](#unittest)
+   - [Complete example](#complete-example)
 
 </Admonition>
 
@@ -36,7 +36,7 @@ First, please make sure that the Raven TestDriver is added to your project depen
 Then, define a class that derives from the Raven TestDriver.
 
 We can start by reviewing TestDriver methods, and then get into implementation 
-(find a complete Raven TestDriver code sample [below](../../start/test-driver.mdx#complete-example)).  
+(find a complete Raven TestDriver code sample [below](#complete-example)).  
 ### Methods
 
 | Signature | Description |
@@ -83,7 +83,7 @@ protected void preInitialize(IDocumentStore documentStore) \{
 
 We'll be using [JUnit](https://junit.org/) for my test framework in the below example.
 Note that the test itself is meant to show different capabilities of the test driver and is not meant to be the most efficient.
-The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../../start/test-driver.mdx#complete-example)
+The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](#complete-example)
 
 ### Example
 

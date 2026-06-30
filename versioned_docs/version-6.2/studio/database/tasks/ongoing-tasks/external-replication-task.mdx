@@ -26,7 +26,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   such as filtration and two-way (master-master) replication, consider [Hub/Sink Replication](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx).  
 
 * To replicate between two separate, secure RavenDB servers,  
-  you need to [pass a client certificate](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#step-by-step-guide) from the source server to the destination.
+  you need to [pass a client certificate](#step-by-step-guide) from the source server to the destination.
 
 * External replication can be a comfortable means of data migration into a [sharded](../../../../sharding/overview.mdx) database.  
   You can read more about this option in the sharding documentation [external replication](../../../../sharding/external-replication.mdx) and [migration](../../../../sharding/migration.mdx) sections.  
@@ -35,11 +35,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
   See more in [Backup -vs- Replication](../../../../studio/database/tasks/backup-task.mdx#backup-task--vs--replication-task)
 
 * In this page:  
-  * [General Information about External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#general-information-about-external-replication-task)
-  * [Step-by-Step Guide](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#step-by-step-guide)
-  * [Definition](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#definition)  
-  * [Details in Tasks List View](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#details-in-tasks-list-view)  
-  * [Offline Behavior](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#offline-behavior)
+  * [General Information about External Replication Task](#general-information-about-external-replication-task)
+  * [Step-by-Step Guide](#step-by-step-guide)
+  * [Definition](#definition)  
+  * [Details in Tasks List View](#details-in-tasks-list-view)  
+  * [Offline Behavior](#offline-behavior)
 
 </Admonition>
 
@@ -102,7 +102,7 @@ To explore this concept further, refer to the [Data Ownership in a Distributed S
     be sure that the target database is as well.  
      ![Encrypted Logo](./assets/encrypted-logo.png)
 3. **Define External Replication Task in the Source Database**  
-    Learn more about [defining the task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#definition) in the dedicated section.  
+    Learn more about [defining the task](#definition) in the dedicated section.  
   * **Optional Parameters**  
      - Task Name  
      - Delay Time  
@@ -167,7 +167,7 @@ f. Click **External Replication** to access the following interface.
     <Admonition type="note" title="If the destination database is in a cluster" id="if-the-destination-database-is-in-a-cluster" href="#if-the-destination-database-is-in-a-cluster">
     You can set multiple connection strings to multiple different nodes on different machines 
     so that if one is down, the other can keep the destination updated.  
-    See [Offline Behavior - When the destination node is down](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#offline-behavior).  
+    See [Offline Behavior - When the destination node is down](#offline-behavior).  
     If you define only one node's connection string, RavenDB will wait until that node is online and will then update any missing information.  
     </Admonition>
 

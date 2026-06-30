@@ -18,20 +18,20 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Use this endpoint with the **`POST`** method to send multiple commands in one request:  
 `<server URL>/databases/<database name>/bulk_docs`  
 
-* The commands are sent as a JSON array in the [request body](../../../client-api/rest-api/document-commands/batch-commands.mdx#body).  
+* The commands are sent as a JSON array in the [request body](#body).  
 
 * All the commands in the batch will either succeed or fail as a **single transaction**. Changes will not be visible until 
 the entire batch completes.  
 
-* [Options](../../../client-api/rest-api/document-commands/batch-commands.mdx#batch-options) can be set to make the server wait 
+* [Options](#batch-options) can be set to make the server wait 
 for indexing and replication to complete before returning.  
 
 * In this page:  
-  * [Basic Example](../../../client-api/rest-api/document-commands/batch-commands.mdx#basic-example)  
-  * [Request Format](../../../client-api/rest-api/document-commands/batch-commands.mdx#request-format)  
-      * [Commands](../../../client-api/rest-api/document-commands/batch-commands.mdx#commands)  
-  * [Response Format](../../../client-api/rest-api/document-commands/batch-commands.mdx#response-format)  
-  * [More Examples](../../../client-api/rest-api/document-commands/batch-commands.mdx#more-examples)  
+  * [Basic Example](#basic-example)  
+  * [Request Format](#request-format)  
+      * [Commands](#commands)  
+  * [Response Format](#response-format)  
+  * [More Examples](#more-examples)  
 </Admonition>
 ## Basic Example
 
@@ -114,7 +114,7 @@ Raven-Server-Version: 4.2.4.42
 ## Request Format
 
 This is the general format of a cURL request with a batch of commands that _does not_ include a Put Attachment Command 
-(see the format for batching a Put Attachment Command [below](../../../client-api/rest-api/document-commands/batch-commands.mdx#put-attachment-command)):  
+(see the format for batching a Put Attachment Command [below](#put-attachment-command)):  
 
 <TabItem value="bash" label="bash">
 <CodeBlock language="bash">
@@ -134,7 +134,7 @@ Linebreaks are added for clarity.
 
 #### Query String
 
-The query string takes [batch options](../../../client-api/rest-api/document-commands/batch-commands.mdx#batch-options), which 
+The query string takes [batch options](#batch-options), which 
 can make the server wait for indexing and replication to finish before responding.  
 
 
@@ -143,7 +143,7 @@ can make the server wait for indexing and replication to finish before respondin
 The header `Content-Type` is required and takes one of two values:  
 
 * `application/json` - if the batch _does not_ include a Put Attachment Command.  
-* `multipart/mixed; boundary=<separator>` - if the batch [_does_](../../../client-api/rest-api/document-commands/batch-commands.mdx#put-attachment-command) 
+* `multipart/mixed; boundary=<separator>` - if the batch [_does_](#put-attachment-command) 
 include a Put Attachment Command. The "separator" is an arbitrary string used to demarcate the attachment streams and 
 commands array.  
 
@@ -173,12 +173,12 @@ using a backslash: `"` -&gt; `\"`.
 
 The following commands can be sent using the batch command:  
 
-* [Put Document Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#put-document-command)  
-* [Patch Document Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#patch-document-command)  
-* [Delete Document Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#delete-document-command)  
-* [Delete by Prefix Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#delete-by-prefix-command)  
-* [Put Attachment Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#put-attachment-command)  
-* [Delete Attachment Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#delete-attachment-command)  
+* [Put Document Command](#put-document-command)  
+* [Patch Document Command](#patch-document-command)  
+* [Delete Document Command](#delete-document-command)  
+* [Delete by Prefix Command](#delete-by-prefix-command)  
+* [Put Attachment Command](#put-attachment-command)  
+* [Delete Attachment Command](#delete-attachment-command)  
 ### Batch Options
 
 These options, configured in the query string, make the server wait until indexing or replication have completed before responding. If these have not 
@@ -221,7 +221,7 @@ Linebreaks are added for clarity.
 
 Upload a new document or update an existing document.  
 
-Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands.mdx#request-format):  
+Format within the `Commands` array in the [request body](#request-format):  
 
 <TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
@@ -251,7 +251,7 @@ Format within the `Commands` array in the [request body](../../../client-api/res
 Update a document. A [patch](../../../client-api/operations/patching/single-document.mdx) is executed on the server side and 
 does not involve loading the document, avoiding the cost of sending the entire document in a round trip over the network.  
 
-Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands.mdx#request-format):  
+Format within the `Commands` array in the [request body](#request-format):  
 
 <TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
@@ -281,8 +281,8 @@ Format within the `Commands` array in the [request body](../../../client-api/res
 | - | - | - |
 | **Id** | ID of a document to execute the patch on | Yes |
 | **ChangeVector** | The document's expected [change vector](../../../server/clustering/replication/change-vector.mdx). If it does not match the server-side change vector a concurrency exception is thrown. | No |
-| **Patch** | A script that modifies the specified document. [Details below](../../../client-api/rest-api/document-commands/batch-commands.mdx#patch-request). | Yes |
-| **PatchIfMissing** | An alternative script to be executed if no document with the given ID is found. This will create a new document with the given ID. [Details below](../../../client-api/rest-api/document-commands/batch-commands.mdx#patch-request). | No |
+| **Patch** | A script that modifies the specified document. [Details below](#patch-request). | Yes |
+| **PatchIfMissing** | An alternative script to be executed if no document with the given ID is found. This will create a new document with the given ID. [Details below](#patch-request). | No |
 | **Type** | Set to `PATCH` | Yes |
 
 #### Patch Request
@@ -298,7 +298,7 @@ wrap strings.
 
 Delete a document by its ID.  
 
-Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands.mdx#request-format):  
+Format within the `Commands` array in the [request body](#request-format):  
 
 <TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
@@ -320,7 +320,7 @@ Format within the `Commands` array in the [request body](../../../client-api/res
 
 Delete all documents whose IDs begin with a certain prefix.  
 
-Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands.mdx#request-format):  
+Format within the `Commands` array in the [request body](#request-format):  
 
 <TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
@@ -391,7 +391,7 @@ Command-Type: AttachmentStream
 
 Delete an attachment in a certain document.  
 
-Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands.mdx#request-format):  
+Format within the `Commands` array in the [request body](#request-format):  
 
 <TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
@@ -442,12 +442,12 @@ Results appear in the same order as the commands in the request body.
 </TabItem>
 
 * Format within the `Results` array in the response body:  
-  * [Put Document Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#put-document-command-1)  
-  * [Patch Document Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#patch-document-command-1)  
-  * [Delete Document Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#delete-document-command-1)  
-  * [Delete by Prefix Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#delete-by-prefix-command-1)  
-  * [Put Attachment Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#put-attachment-command-1)  
-  * [Delete Attachment Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#delete-attachment-command-1)  
+  * [Put Document Command](#put-document-command-1)  
+  * [Patch Document Command](#patch-document-command-1)  
+  * [Delete Document Command](#delete-document-command-1)  
+  * [Delete by Prefix Command](#delete-by-prefix-command-1)  
+  * [Put Attachment Command](#put-attachment-command-1)  
+  * [Delete Attachment Command](#delete-attachment-command-1)  
 
 ### Put Document Command
 
@@ -493,7 +493,7 @@ Results appear in the same order as the commands in the request body.
 | **@change-vector** | The document's change vector after the command was executed. Returns `null` if the command did not result in any changes. |
 | **@last-modified** | Date and time (UTC) of the most recent modification made to the document. |
 | **Type** | Same as the `Type` of the command sent - in this case `PATCH`. |
-| **PatchStatus** | See [below](../../../client-api/rest-api/document-commands/batch-commands.mdx#patchstatus) |
+| **PatchStatus** | See [below](#patchstatus) |
 | **Debug** | Should always return `null` in the context of batch commands. |
 
 #### PatchStatus
@@ -601,12 +601,12 @@ Results appear in the same order as the commands in the request body.
 [About Northwind](../../../start/about-examples.mdx), the database used in our examples.
 
 * In this section:  
-  * [Put Document Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#put-document-command-2)  
-  * [Patch Document Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#patch-document-command-2)  
-  * [Delete Document Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#delete-document-command-2)  
-  * [Delete by Prefix Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#delete-by-prefix-command-2)  
-  * [Put Attachment Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#put-attachment-command-2)  
-  * [Delete Attachment Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#delete-attachment-command-2)  
+  * [Put Document Command](#put-document-command-2)  
+  * [Patch Document Command](#patch-document-command-2)  
+  * [Delete Document Command](#delete-document-command-2)  
+  * [Delete by Prefix Command](#delete-by-prefix-command-2)  
+  * [Put Attachment Command](#put-attachment-command-2)  
+  * [Delete Attachment Command](#delete-attachment-command-2)  
 ### Put Document Command
 
 Request:

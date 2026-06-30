@@ -22,9 +22,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Only after the cluster's approval (majority of nodes ), it will _eventually_ be executed on all cluster nodes.  
 
 * In this page:  
-  * [Operations that require Consensus](../../../server/clustering/rachis/consensus-operations.mdx#operations-that-require-consensus)  
-  * [Operations that do not require Consensus](../../../server/clustering/rachis/consensus-operations.mdx#operations-that-do-not-require-consensus)  
-  * [Raft Commands Implementation Details](../../../server/clustering/rachis/consensus-operations.mdx#raft-commands-implementation-details)  
+  * [Operations that require Consensus](#operations-that-require-consensus)  
+  * [Operations that do not require Consensus](#operations-that-do-not-require-consensus)  
+  * [Raft Commands Implementation Details](#raft-commands-implementation-details)  
 </Admonition>
 ## Operations that require Consensus
 
@@ -36,7 +36,7 @@ Since getting a consensus is an expensive operation, it is limited to the follow
 * Creating / Deleting Indexes (static and auto indexes)  
 * Configuring the [Ongoing Tasks](../../../studio/database/tasks/ongoing-tasks/general-info.mdx)  
 
-See [Implementation Details](../../../server/clustering/rachis/consensus-operations.mdx#implementation-details) below.  
+See [Implementation Details](#implementation-details) below.  
 
 
 

@@ -19,40 +19,40 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * RavenDB provides a powerful and diverse backup mechanism that you can use to both secure your data and retain access to it as it was at specific points in time.
 
-* You can create [periodic](../studio/database/tasks/ongoing-tasks/general-info.mdx) backup tasks that generate [full](../backup/overview.mdx#full-backup) or [incremental](../backup/overview.mdx#incremental-backup) backups on a predefined schedule.  
-  Whenever needed, you can also run a [one-time backup](../backup/overview.mdx#one-time-backup-operation) operation.  
+* You can create [periodic](../studio/database/tasks/ongoing-tasks/general-info.mdx) backup tasks that generate [full](#full-backup) or [incremental](#incremental-backup) backups on a predefined schedule.  
+  Whenever needed, you can also run a [one-time backup](#one-time-backup-operation) operation.  
 
-* Backups can be [logical](../backup/overview.mdx#logical-backup) JSON-based dumps of database content, or binary [snapshot](../backup/overview.mdx#snapshot-image) images.  
+* Backups can be [logical](#logical-backup) JSON-based dumps of database content, or binary [snapshot](#snapshot-image) images.  
 
-* Backup files can be [encrypted](../backup/overview.mdx#encryption).  
+* Backup files can be [encrypted](#encryption).  
 
-* To save storage space, backups are [compressed](../backup/overview.mdx#compression), and you can set a [retention policy](../backup/overview.mdx#retention-policy) to automatically delete outdated backup files.
+* To save storage space, backups are [compressed](#compression), and you can set a [retention policy](#retention-policy) to automatically delete outdated backup files.
 
 * You can create and configure backup tasks using the client API or via Studio.
 
 * In this article:  
-  * [Backup recurrence](../backup/overview.mdx#backup-recurrence)
-     * [Periodic backup tasks](../backup/overview.mdx#periodic-backup-tasks)
-     * [One-time backup operation](../backup/overview.mdx#one-time-backup-operation)
-  * [Backup type](../backup/overview.mdx#backup-type)
-     * [Logical backup](../backup/overview.mdx#logical-backup)
-     * [Snapshot image](../backup/overview.mdx#snapshot-image)
-  * [Backup content](../backup/overview.mdx#backup-content)
-  * [Backup scope](../backup/overview.mdx#backup-scope)
-     * [Full backup](../backup/overview.mdx#full-backup)
-     * [Incremental backup](../backup/overview.mdx#incremental-backup)
-  * [Backup storage](../backup/overview.mdx#backup-storage)
-     * [Local and remote storage](../backup/overview.mdx#local-and-remote-storage)
-         * [Overriding storage settings with an external script](../backup/overview.mdx#overriding-storage-settings-with-an-external-script)
-     * [Naming and folder structure](../backup/overview.mdx#naming-and-folder-structure)
-     * [Encryption](../backup/overview.mdx#encryption)
-     * [Compression](../backup/overview.mdx#compression)
-     * [Retention policy](../backup/overview.mdx#retention-policy)
-  * [Server-wide backup](../backup/overview.mdx#server-wide-backup)
-  * [Backup on a sharded database](../backup/overview.mdx#backup-on-a-sharded-database)
-  * [Monitoring backup tasks](../backup/overview.mdx#monitoring-backup-tasks)
-  * [Restoring from backup](../backup/overview.mdx#restoring-from-backup)
-  * [Recommended precautions](../backup/overview.mdx#recommended-precautions)
+  * [Backup recurrence](#backup-recurrence)
+     * [Periodic backup tasks](#periodic-backup-tasks)
+     * [One-time backup operation](#one-time-backup-operation)
+  * [Backup type](#backup-type)
+     * [Logical backup](#logical-backup)
+     * [Snapshot image](#snapshot-image)
+  * [Backup content](#backup-content)
+  * [Backup scope](#backup-scope)
+     * [Full backup](#full-backup)
+     * [Incremental backup](#incremental-backup)
+  * [Backup storage](#backup-storage)
+     * [Local and remote storage](#local-and-remote-storage)
+         * [Overriding storage settings with an external script](#overriding-storage-settings-with-an-external-script)
+     * [Naming and folder structure](#naming-and-folder-structure)
+     * [Encryption](#encryption)
+     * [Compression](#compression)
+     * [Retention policy](#retention-policy)
+  * [Server-wide backup](#server-wide-backup)
+  * [Backup on a sharded database](#backup-on-a-sharded-database)
+  * [Monitoring backup tasks](#monitoring-backup-tasks)
+  * [Restoring from backup](#restoring-from-backup)
+  * [Recommended precautions](#recommended-precautions)
 
 </Admonition>
 
@@ -94,7 +94,7 @@ One-time backups are also useful when you want to create a backup at a specific 
 
 <Panel heading="Backup type">
 
-You can back up your data in a JSON-based [logical backup](../backup/overview.mdx#logical-backup), that is typically smaller and quicker to transfer, or as a binary [snapshot image](../backup/overview.mdx#snapshot-image), that is typically faster to restore.
+You can back up your data in a JSON-based [logical backup](#logical-backup), that is typically smaller and quicker to transfer, or as a binary [snapshot image](#snapshot-image), that is typically faster to restore.
 | Backup type | Format | Restore speed | Size |
 | ------ | ------ | --- | --- |
 | Logical backup |  Compressed textual data - JSON | Slower than a snapshot | Smaller than a snapshot |
@@ -104,9 +104,9 @@ You can back up your data in a JSON-based [logical backup](../backup/overview.md
 
 ### Logical backup
 
-A logical backup is a compressed JSON dump of the database content at a given point in time, including documents, index definitions (but **not** the actual index data), ongoing tasks, and [additional data](../backup/overview.mdx#backup-content).  
+A logical backup is a compressed JSON dump of the database content at a given point in time, including documents, index definitions (but **not** the actual index data), ongoing tasks, and [additional data](#backup-content).  
 
-* Both [full](../backup/overview.mdx#full-backup) and [incremental](../backup/overview.mdx#incremental-backup) backups are stored in a JSON-based format.  
+* Both [full](#full-backup) and [incremental](#incremental-backup) backups are stored in a JSON-based format.  
 * A full logical backup is typically much smaller than an equivalent snapshot image, but restore time is longer because documents and index definitions need to be inserted into the newly created database.  
 * Following the restore operation, the database is scanned and re-indexed according to the index definitions.  
   This operation can be time-consuming when performed on large datasets.  
@@ -116,7 +116,7 @@ A logical backup is a compressed JSON dump of the database content at a given po
 
 ### Snapshot image
 
-A snapshot is a compressed binary image of the entire database structure at a given point in time, including document data, [journals](../server/storage/storage-engine.mdx#transaction-support), indexes, ongoing tasks, and [additional data](../backup/overview.mdx#backup-content).  
+A snapshot is a compressed binary image of the entire database structure at a given point in time, including document data, [journals](../server/storage/storage-engine.mdx#transaction-support), indexes, ongoing tasks, and [additional data](#backup-content).  
 
 <Admonition type="note" title="">
 
@@ -125,7 +125,7 @@ A snapshot is a compressed binary image of the entire database structure at a gi
 </Admonition>
 
 * A snapshot is typically larger than an equivalent logical backup, but restore time is reduced because documents and index definitions do not need to be inserted into the database, and subsequent re-indexing is not required.  
-* [Incremental](../backup/overview.mdx#incremental-backup) backups following the initial complete snapshot are stored in **JSON format**, similar to logical backups. They do **not** carry index or change vectors data as the full snapshot does.  
+* [Incremental](#incremental-backup) backups following the initial complete snapshot are stored in **JSON format**, similar to logical backups. They do **not** carry index or change vectors data as the full snapshot does.  
 
 </ContentFrame>
 
@@ -139,7 +139,7 @@ Backups contain both database-level and cluster-level content, as detailed below
 
 ### Database-level data
 
-| Content | Included in [logical backups](../backup/overview.mdx#logical-backup) | Included in [snapshots](../backup/overview.mdx#snapshot-image) |
+| Content | Included in [logical backups](#logical-backup) | Included in [snapshots](#snapshot-image) |
 |---- | ---- | ---- |
 | [Documents & Revisions](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling) | ✔ | ✔ |
 | [Attachments](../document-extensions/attachments/overview.mdx) | ✔ | ✔ |
@@ -154,7 +154,7 @@ Backups contain both database-level and cluster-level content, as detailed below
 
 ### Cluster-level data
 
-| Content | Included in [logical backups](../backup/overview.mdx#logical-backup) | Included in [snapshots](../backup/overview.mdx#snapshot-image) |
+| Content | Included in [logical backups](#logical-backup) | Included in [snapshots](#snapshot-image) |
 |---- | ---- | ---- |
 | [Database Record](../studio/database/settings/database-record.mdx) | ✔ | ✔ |
 | [Compare-exchange values](../compare-exchange/overview.mdx) | ✔ | ✔ |
@@ -171,7 +171,7 @@ Backups contain both database-level and cluster-level content, as detailed below
 
 A backup task can create **full** and/or **incremental** backups.  
 - Each time a backup task (full or incremental) is executed, a single new backup file is added.  
-- Existing backup files are not modified or deleted by the task, unless a [retention policy](../backup/overview.mdx#retention-policy) is set.  
+- Existing backup files are not modified or deleted by the task, unless a [retention policy](#retention-policy) is set.  
 
 <ContentFrame>
 
@@ -179,7 +179,7 @@ A backup task can create **full** and/or **incremental** backups.
 
 #### Full logical backup:
 
-A full [logical backup](../backup/overview.mdx#logical-backup) contains the whole database content, except for full indexes and change vectors.
+A full [logical backup](#logical-backup) contains the whole database content, except for full indexes and change vectors.
 
 
 - A full backup, containing one compressed file with the entire database content, is always created in a new subfolder in the backup directory.  
@@ -205,7 +205,7 @@ A full [logical backup](../backup/overview.mdx#logical-backup) contains the whol
 
 #### Full snapshot image:
 
-A full [snapshot image](../backup/overview.mdx#snapshot-image) is a duplication of the entire database content.  
+A full [snapshot image](#snapshot-image) is a duplication of the entire database content.  
   
 * **Location**  
   When stored locally, a full backup is always created in a new subfolder in the backup directory.  
@@ -227,7 +227,7 @@ An incremental backup contains only **the changes** made to the database since t
 
 <Admonition type="info" title="">
 When an incremental-backup task is executed:  
-- If no backup file is found, the task creates a [full backup](../backup/overview.mdx#full-backup) first. Subsequent backups will be incremental.  
+- If no backup file is found, the task creates a [full backup](#full-backup) first. Subsequent backups will be incremental.  
 - If the database has not changed since the last backup, the backup is skipped - no backup file is produced.  
 </Admonition>
 
@@ -394,7 +394,7 @@ Each incremental-backup file contains only the changes made in the database sinc
 
 #### Logical backup encryption:
 
-When creating a [logical backup](../backup/overview.mdx#logical-backup), the following options are available:
+When creating a [logical backup](#logical-backup), the following options are available:
 
 * If the database the backup is made for is **unencrypted**:  
    - You can create an unencrypted backup.  
@@ -510,7 +510,7 @@ As multiple databases are backed up, the backups for each database are kept sepa
 
 #### Server-wide encryption settings:
 
-- When a derived database task is applied to an **unencrypted** database, it behaves similarly to a [regular database backup task](../backup/overview.mdx#encryption):  
+- When a derived database task is applied to an **unencrypted** database, it behaves similarly to a [regular database backup task](#encryption):  
   - A **snapshot** will always be **unencrypted**.  
   - A **logical backup** will comply with the configuration settings, and can be either unencrypted or encrypted using a user-provided key.  
 
@@ -629,7 +629,7 @@ The backup procedure addresses requirements that simply copying the database fol
 <ContentFrame>
 
 #### Regularly remove old backup files.
-Define a [retention policy](../backup/overview.mdx#retention-policy) to automatically remove outdated files and free up storage space.  
+Define a [retention policy](#retention-policy) to automatically remove outdated files and free up storage space.  
 When setting the retention period, consider how long backups should be retained to balance storage needs and recovery requirements.
 
 </ContentFrame>

@@ -17,22 +17,22 @@ import Panel from '@site/src/components/Panel';
     
 * The examples in this article mostly demonstrate **dynamic queries** (queries that don't specify which index to query).  
   You can use the same filtering syntax when querying a **static index**,
-  as explained below in [Filtering when querying static indexes](../../../querying/filtering-query-results/filter-query-results.mdx#filtering-when-querying-static-indexes).
+  as explained below in [Filtering when querying static indexes](#filtering-when-querying-static-indexes).
 
 * In this article:    
-  * [Filtering and index usage](../../../querying/filtering-query-results/filter-query-results.mdx#filtering-and-index-usage)
-  * [Filter by field value](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-field-value)
-  * [Filter by numeric value](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-numeric-value)
-  * [Filter by nested field](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-nested-field)
-  * [Filter by values in a collection](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-values-in-a-collection)
-  * [Filter by multiple possible values](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-multiple-possible-values)
-  * [Filter by matching any value in a collection](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-matching-any-value-in-a-collection)
-  * [Filter by matching all values in a collection](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-matching-all-values-in-a-collection)
-  * [Filter by string prefix or suffix](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-string-prefix-or-suffix)
-  * [Filter by field presence](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-field-presence)
-  * [Filter by document ID](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-document-id)
-  * [Filtering when querying static indexes](../../../querying/filtering-query-results/filter-query-results.mdx#filtering-when-querying-static-indexes)
-  * [Syntax](../../../querying/filtering-query-results/filter-query-results.mdx#syntax)
+  * [Filtering and index usage](#filtering-and-index-usage)
+  * [Filter by field value](#filter-by-field-value)
+  * [Filter by numeric value](#filter-by-numeric-value)
+  * [Filter by nested field](#filter-by-nested-field)
+  * [Filter by values in a collection](#filter-by-values-in-a-collection)
+  * [Filter by multiple possible values](#filter-by-multiple-possible-values)
+  * [Filter by matching any value in a collection](#filter-by-matching-any-value-in-a-collection)
+  * [Filter by matching all values in a collection](#filter-by-matching-all-values-in-a-collection)
+  * [Filter by string prefix or suffix](#filter-by-string-prefix-or-suffix)
+  * [Filter by field presence](#filter-by-field-presence)
+  * [Filter by document ID](#filter-by-document-id)
+  * [Filtering when querying static indexes](#filtering-when-querying-static-indexes)
+  * [Syntax](#syntax)
 
 </Admonition>
 
@@ -412,7 +412,7 @@ where FirstName in ("Robert", "Nancy")
 >    
 > The same auto-index serves both equality (`FirstName = "Robert"`) and `in` queries on this field -  
 > the operator does not affect the auto-index name.  
-> This means the auto-index created in [Filter by field value](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-field-value) is reused here,
+> This means the auto-index created in [Filter by field value](#filter-by-field-value) is reused here,
   and no new auto-index is created.
     
 </Panel>
@@ -571,7 +571,7 @@ where Tags all in ("Development", "Research")
 >    
 > `ContainsAny` (`in`) and `ContainsAll` (`all in`) produce the same auto-index name;  
 > the operator only affects which documents match, not which auto-index is created or used.  
-> This means the auto-index created for [Filter by matching any value in a collection](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-matching-any-value-in-a-collection) is reused here.
+> This means the auto-index created for [Filter by matching any value in a collection](#filter-by-matching-any-value-in-a-collection) is reused here.
     
 </Panel>
 

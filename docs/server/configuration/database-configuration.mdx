@@ -19,21 +19,21 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * In this article:
     * Server-wide scope:  
-      [Databases.Compression.CompressAllCollectionsDefault](../../server/configuration/database-configuration.mdx#databasescompressioncompressallcollectionsdefault)  
-      [Databases.Compression.CompressRevisionsDefault](../../server/configuration/database-configuration.mdx#databasescompressioncompressrevisionsdefault)  
-      [Databases.ConcurrentLoadTimeoutInSec](../../server/configuration/database-configuration.mdx#databasesconcurrentloadtimeoutinsec)  
-      [Databases.FrequencyToCheckForIdleInSec](../../server/configuration/database-configuration.mdx#databasesfrequencytocheckforidleinsec)  
-      [Databases.MaxConcurrentLoads](../../server/configuration/database-configuration.mdx#databasesmaxconcurrentloads)
+      [Databases.Compression.CompressAllCollectionsDefault](#databasescompressioncompressallcollectionsdefault)  
+      [Databases.Compression.CompressRevisionsDefault](#databasescompressioncompressrevisionsdefault)  
+      [Databases.ConcurrentLoadTimeoutInSec](#databasesconcurrentloadtimeoutinsec)  
+      [Databases.FrequencyToCheckForIdleInSec](#databasesfrequencytocheckforidleinsec)  
+      [Databases.MaxConcurrentLoads](#databasesmaxconcurrentloads)
 
     * Server-wide, or database scope:  
-      [Databases.CollectionOperationTimeoutInSec](../../server/configuration/database-configuration.mdx#databasescollectionoperationtimeoutinsec)  
-      [Databases.DeepCleanupThresholdInMin](../../server/configuration/database-configuration.mdx#databasesdeepcleanupthresholdinmin)  
-      [Databases.MaxIdleTimeInSec](../../server/configuration/database-configuration.mdx#databasesmaxidletimeinsec)  
-      [Databases.OperationTimeoutInSec](../../server/configuration/database-configuration.mdx#databasesoperationtimeoutinsec)  
-      [Databases.PulseReadTransactionLimitInMb](../../server/configuration/database-configuration.mdx#databasespulsereadtransactionlimitinmb)  
-      [Databases.QueryOperationTimeoutInSec](../../server/configuration/database-configuration.mdx#databasesqueryoperationtimeoutinsec)  
-      [Databases.QueryTimeoutInSec](../../server/configuration/database-configuration.mdx#databasesquerytimeoutinsec)  
-      [Databases.RegularCleanupThresholdInMin](../../server/configuration/database-configuration.mdx#databasesregularcleanupthresholdinmin)
+      [Databases.CollectionOperationTimeoutInSec](#databasescollectionoperationtimeoutinsec)  
+      [Databases.DeepCleanupThresholdInMin](#databasesdeepcleanupthresholdinmin)  
+      [Databases.MaxIdleTimeInSec](#databasesmaxidletimeinsec)  
+      [Databases.OperationTimeoutInSec](#databasesoperationtimeoutinsec)  
+      [Databases.PulseReadTransactionLimitInMb](#databasespulsereadtransactionlimitinmb)  
+      [Databases.QueryOperationTimeoutInSec](#databasesqueryoperationtimeoutinsec)  
+      [Databases.QueryTimeoutInSec](#databasesquerytimeoutinsec)  
+      [Databases.RegularCleanupThresholdInMin](#databasesregularcleanupthresholdinmin)
 
 </Admonition>
 ## Databases.Compression.CompressAllCollectionsDefault
@@ -65,7 +65,7 @@ The time (in seconds) that a database waits for a free loading slot before the
 load attempt times out.
 
 RavenDB limits the number of databases that load at the same time
-(set by [Databases.MaxConcurrentLoads](../../server/configuration/database-configuration.mdx#databasesmaxconcurrentloads)).  
+(set by [Databases.MaxConcurrentLoads](#databasesmaxconcurrentloads)).  
 When this limit is reached, each additional database that needs to load waits
 for a slot to free up.  
 This can happen when a burst of requests accesses many idle databases at once.
@@ -96,7 +96,7 @@ The interval (in seconds) at which the system checks for idle databases.
 
 Specifies the maximum number of databases that can be loaded concurrently.  
 If more databases need to load at the same time, each database waits for a free slot
-for the period set by [Databases.ConcurrentLoadTimeoutInSec](../../server/configuration/database-configuration.mdx#databasesconcurrentloadtimeoutinsec).
+for the period set by [Databases.ConcurrentLoadTimeoutInSec](#databasesconcurrentloadtimeoutinsec).
 
 - **Type**: `int`
 - **Default**: `8`

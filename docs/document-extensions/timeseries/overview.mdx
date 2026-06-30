@@ -29,20 +29,20 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Time series data is **compressed** to lower storage usage and transaction time.  
 
 * In this page:  
-  * [Overview](../../document-extensions/timeseries/overview.mdx#overview)  
-     * [RavenDB's Time Series Implementation](../../document-extensions/timeseries/overview.mdx#ravendbs-time-series-implementation)  
-     * [Distributed Time Series](../../document-extensions/timeseries/overview.mdx#distributed-time-series)  
-     * [Time Series as Document Extensions](../../document-extensions/timeseries/overview.mdx#time-series-as-document-extensions)  
-     * [Time Series Features](../../document-extensions/timeseries/overview.mdx#time-series-features)  
-  * [Time Series Data](../../document-extensions/timeseries/overview.mdx#time-series-data)  
-  * [Separate Name and Data Storage](../../document-extensions/timeseries/overview.mdx#separate-name-and-data-storage)  
-  * [Time Series Segments](../../document-extensions/timeseries/overview.mdx#time-series-segments)  
-      * [Transactions Performance](../../document-extensions/timeseries/overview.mdx#transactions-performance)  
-      * [Common-Queries Performance](../../document-extensions/timeseries/overview.mdx#common-queries-performance)  
-  * [Time Series Entries](../../document-extensions/timeseries/overview.mdx#time-series-entries)  
-      * [Timestamps](../../document-extensions/timeseries/overview.mdx#timestamps)  
-      * [Values](../../document-extensions/timeseries/overview.mdx#values)  
-      * [Tags](../../document-extensions/timeseries/overview.mdx#tags)  
+  * [Overview](#overview)  
+     * [RavenDB's Time Series Implementation](#ravendbs-time-series-implementation)  
+     * [Distributed Time Series](#distributed-time-series)  
+     * [Time Series as Document Extensions](#time-series-as-document-extensions)  
+     * [Time Series Features](#time-series-features)  
+  * [Time Series Data](#time-series-data)  
+  * [Separate Name and Data Storage](#separate-name-and-data-storage)  
+  * [Time Series Segments](#time-series-segments)  
+      * [Transactions Performance](#transactions-performance)  
+      * [Common-Queries Performance](#common-queries-performance)  
+  * [Time Series Entries](#time-series-entries)  
+      * [Timestamps](#timestamps)  
+      * [Values](#values)  
+      * [Tags](#tags)  
 
 </Admonition>
 ## Overview
@@ -95,7 +95,7 @@ Notable time series features include -
 
 * **Highly-Efficient Storage Management**  
   Time series data is [compressed](../../document-extensions/timeseries/design.mdx#compression)
-  and [segmented](../../document-extensions/timeseries/overview.mdx#time-series-segments) to minimize storage usage and transmission time.
+  and [segmented](#time-series-segments) to minimize storage usage and transmission time.
 * **A Thorough Set of API Methods**  
   The [time series API](../../document-extensions/timeseries/client-api/overview.mdx) includes a variety of `session methods` and `store operations`.
 * **Full GUI Support**  
@@ -103,7 +103,7 @@ Notable time series features include -
 * **Time Series Indexing**  
   Time series can be [indexed](../../document-extensions/timeseries/indexing.mdx).
 * **Time Series Querying and Aggregation**
-    * [High-performance common queries](../../document-extensions/timeseries/overview.mdx#common-queries-performance)  
+    * [High-performance common queries](#common-queries-performance)  
       The results of a set of common queries are prepared in advance in time series segments' headers,   
       so the response to querying for a series minimum value, for example, is returned nearly instantly.
     * [LINQ and raw RQL queries](../../document-extensions/timeseries/querying/overview-and-syntax.mdx)  
@@ -126,10 +126,10 @@ Notable time series features include -
 ## Time Series Data
 
 Time series **names** are kept in their parent documents' metadata, while their 
-**data** is kept [separately](../../document-extensions/timeseries/overview.mdx#separate-name-and-data-storage).  
+**data** is kept [separately](#separate-name-and-data-storage).  
 Time series data is **compressed** and composed of consecutive 
-[segments](../../document-extensions/timeseries/overview.mdx#time-series-segments) and 
-[entries](../../document-extensions/timeseries/overview.mdx#time-series-entries).  
+[segments](#time-series-segments) and 
+[entries](#time-series-entries).  
 
 
 

@@ -21,11 +21,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
   and more.
 
 * In this article:  
-  * [Indexes list view](../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view)  
-  * [Indexes list view - Actions](../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions)  
-  * [Indexes list view - Index errors](../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---errors)  
-  * [Indexes list view - Side by side indexing](../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---side-by-side-indexing)
-  * [Indexes list view - Rolling deployment](../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---rolling-deployment)
+  * [Indexes list view](#indexes-list-view)  
+  * [Indexes list view - Actions](#indexes-list-view---actions)  
+  * [Indexes list view - Index errors](#indexes-list-view---errors)  
+  * [Indexes list view - Side by side indexing](#indexes-list-view---side-by-side-indexing)
+  * [Indexes list view - Rolling deployment](#indexes-list-view---rolling-deployment)
 </Admonition>
 ## Indexes list view
 
@@ -111,7 +111,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   By default, RavenDB prioritizes request processing over indexing to ensure responsiveness.
 * **Mode**  
   Set the modification behavior (for static-indexes only):  
-   * Unlocked - Changes to the index definition will be applied. See [Side by side indexing](../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---side-by-side-indexing).  
+   * Unlocked - Changes to the index definition will be applied. See [Side by side indexing](#indexes-list-view---side-by-side-indexing).  
    * Locked - Changes to the index definition will not be applied. No error is raised.  
    * Locked(Error) - Changes to the index definition will not be applied,  
      and an error is raised when attempting to modify the index.  

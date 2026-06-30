@@ -24,21 +24,21 @@ import LanguageContent from "@site/src/components/LanguageContent";
   (e.g., a 10-terabyte DB).
 
 * In this article:  
-  * [Sharding](../sharding/overview.mdx#sharding)  
-     * [Licensing](../sharding/overview.mdx#licensing)
-     * [Client compatibility](../sharding/overview.mdx#client-compatibility)
-     * [Client-Server communication](../sharding/overview.mdx#client-server-communication)  
-     * [When should sharding be used?](../sharding/overview.mdx#when-should-sharding-be-used)  
-  * [Shards](../sharding/overview.mdx#shards)  
-     * [Shard replication](../sharding/overview.mdx#shard-replication)  
-  * [How documents are distributed among shards](../sharding/overview.mdx#how-documents-are-distributed-among-shards)  
-     * [Buckets allocation](../sharding/overview.mdx#buckets-allocation)  
-     * [Buckets population](../sharding/overview.mdx#buckets-population)  
-     * [Document extensions storage](../sharding/overview.mdx#document-extensions-storage)  
-  * [Resharding](../sharding/overview.mdx#resharding)  
-  * [Paging](../sharding/overview.mdx#paging)  
-  * [Using local IP addresses](../sharding/overview.mdx#using-local-ip-addresses)  
-  * [Creating a sharded database](../sharding/overview.mdx#creating-a-sharded-database)  
+  * [Sharding](#sharding)  
+     * [Licensing](#licensing)
+     * [Client compatibility](#client-compatibility)
+     * [Client-Server communication](#client-server-communication)  
+     * [When should sharding be used?](#when-should-sharding-be-used)  
+  * [Shards](#shards)  
+     * [Shard replication](#shard-replication)  
+  * [How documents are distributed among shards](#how-documents-are-distributed-among-shards)  
+     * [Buckets allocation](#buckets-allocation)  
+     * [Buckets population](#buckets-population)  
+     * [Document extensions storage](#document-extensions-storage)  
+  * [Resharding](#resharding)  
+  * [Paging](#paging)  
+  * [Using local IP addresses](#using-local-ip-addresses)  
+  * [Creating a sharded database](#creating-a-sharded-database)  
 
 </Admonition>
 
@@ -48,7 +48,7 @@ As a database grows [very large](https://en.wikipedia.org/wiki/Very_large_databa
 System performance may suffer as resources like RAM, CPU, and storage are exhausted, routine chores like indexing and backup become massive tasks, 
 responsiveness to client requests and queries slows down, and the system's throughput spreads thin serving an ever-growing number of clients.  
 
-With sharding, as the volume of stored data grows, the database can be scaled out by splitting it into [shards](../sharding/overview.mdx#shards).  
+With sharding, as the volume of stored data grows, the database can be scaled out by splitting it into [shards](#shards).  
 This allows the database to be managed by multiple nodes and effectively removes most limits on its growth.  
 In this manner, the size of the overall database, comprised of all shards, can reach dozens of terabytes and more,  
 while keeping the resources of each shard in check and maintaining high performance and throughput.  
@@ -125,7 +125,7 @@ Take a 3-shard database, in which shard **1** is populated with documents `Users
 shard **2** contains documents `Users/2001`..`Users/4000`, and shard **3** contains `Users/4001`..`Users/6000`.
 
 A client that connects to this database to retrieve `Users/3000` and `Users/5000` would be served by an
-automatically-appointed [orchestrator node](../sharding/overview.mdx#client-server-communication)
+automatically-appointed [orchestrator node](#client-server-communication)
 that would seamlessly retrieve `Users/3000` from shard **2**  
 and `Users/5000` from shard **3** and hand them to the client.
     

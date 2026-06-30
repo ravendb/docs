@@ -23,15 +23,15 @@ Learn how to apply these keys in the [Configuration Overview](../server/configur
 
 
 * In this article:  
-    * [Backup.TempPath](../backup/configuration.mdx#backuptemppath)  
-    * [Backup.LocalRootPath](../backup/configuration.mdx#backuplocalrootpath)  
-    * [Backup.AllowedDestinations](../backup/configuration.mdx#backupalloweddestinations)  
-    * [Backup.AllowedAwsRegions](../backup/configuration.mdx#backupallowedawsregions)  
-    * [Backup.MaxNumberOfConcurrentBackups](../backup/configuration.mdx#backupmaxnumberofconcurrentbackups)  
-    * [Backup.ConcurrentBackupsDelayInSec](../backup/configuration.mdx#backupconcurrentbackupsdelayinsec)  
-    * [Backup.LowMemoryBackupDelayInMin](../backup/configuration.mdx#backuplowmemorybackupdelayinmin)  
-    * [Backup.MoveToNewResponsibleNodeGracePeriodInMin](../backup/configuration.mdx#backupmovetonewresponsiblenodegraceperiodinmin)  
-    * [Server.CpuCredits.ExhaustionBackupDelayInMin](../backup/configuration.mdx#servercpucreditsexhaustionbackupdelayinmin)
+    * [Backup.TempPath](#backuptemppath)  
+    * [Backup.LocalRootPath](#backuplocalrootpath)  
+    * [Backup.AllowedDestinations](#backupalloweddestinations)  
+    * [Backup.AllowedAwsRegions](#backupallowedawsregions)  
+    * [Backup.MaxNumberOfConcurrentBackups](#backupmaxnumberofconcurrentbackups)  
+    * [Backup.ConcurrentBackupsDelayInSec](#backupconcurrentbackupsdelayinsec)  
+    * [Backup.LowMemoryBackupDelayInMin](#backuplowmemorybackupdelayinmin)  
+    * [Backup.MoveToNewResponsibleNodeGracePeriodInMin](#backupmovetonewresponsiblenodegraceperiodinmin)  
+    * [Server.CpuCredits.ExhaustionBackupDelayInMin](#servercpucreditsexhaustionbackupdelayinmin)
 
 </Admonition>
 
@@ -143,7 +143,7 @@ Maximum number of concurrent backup tasks.
 
 ### Backup.ConcurrentBackupsDelayInSec
 
-Number of seconds to delay the backup when the [concurrent backups limit](../backup/configuration.mdx#backupmaxnumberofconcurrentbackups) is reached.  
+Number of seconds to delay the backup when the [concurrent backups limit](#backupmaxnumberofconcurrentbackups) is reached.  
 
 - **Type**: `TimeSetting`  
 - **TimeUnit**: `TimeUnit.Seconds`  

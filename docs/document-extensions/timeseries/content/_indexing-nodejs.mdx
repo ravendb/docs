@@ -10,15 +10,15 @@ import CodeBlock from '@theme/CodeBlock';
 * Indexing allows for fast retrieval of the indexed time series data when querying a time series.
 
 * In this page:  
-  * [Time series indexes vs Document indexes](../../../document-extensions/timeseries/indexing.mdx#time-series-indexes-vs-document-indexes)
-  * [Ways to create a time series index](../../../document-extensions/timeseries/indexing.mdx#ways-to-create-a-time-series-index)
-  * [Examples of time series indexes](../../../document-extensions/timeseries/indexing.mdx#examples-of-time-series-indexes)
-      * [Map index - index single time series from single collection](../../../document-extensions/timeseries/indexing.mdx#map-index---index-single-time-series-from-single-collection)
-      * [Map index - index all time series from single collection](../../../document-extensions/timeseries/indexing.mdx#map-index---index-all-time-series-from-single-collection)
-      * [Map index - index all time series from all collections](../../../document-extensions/timeseries/indexing.mdx#map-index---index-all-time-series-from-all-collections)
-      * [Multi-Map index - index time series from several collections](../../../document-extensions/timeseries/indexing.mdx#multi-map-index---index-time-series-from-several-collections)
-      * [Map-Reduce index](../../../document-extensions/timeseries/indexing.mdx#map-reduce-index)
-  * [Syntax](../../../document-extensions/timeseries/indexing.mdx#syntax)
+  * [Time series indexes vs Document indexes](#time-series-indexes-vs-document-indexes)
+  * [Ways to create a time series index](#ways-to-create-a-time-series-index)
+  * [Examples of time series indexes](#examples-of-time-series-indexes)
+      * [Map index - index single time series from single collection](#map-index---index-single-time-series-from-single-collection)
+      * [Map index - index all time series from single collection](#map-index---index-all-time-series-from-single-collection)
+      * [Map index - index all time series from all collections](#map-index---index-all-time-series-from-all-collections)
+      * [Multi-Map index - index time series from several collections](#multi-map-index---index-time-series-from-several-collections)
+      * [Map-Reduce index](#map-reduce-index)
+  * [Syntax](#syntax)
 
 </Admonition>
 ## Time series indexes vs Document indexes
@@ -40,7 +40,7 @@ import CodeBlock from '@theme/CodeBlock';
         * Values & timestamp of a time series entry
         * The entry tag
         * Content from a document referenced by the tag
-        * Properties of the containing segment (see **[segment properties](../../../document-extensions/timeseries/indexing.mdx#segment-properties)**)
+        * Properties of the containing segment (see **[segment properties](#segment-properties)**)
 
 * Document index:
 
@@ -61,9 +61,9 @@ import CodeBlock from '@theme/CodeBlock';
 
 There are two main ways to create a time series index:
 
-1. Create a class that inherits from the abstract index class [`AbstractRawJavaScriptTimeSeriesIndexCreationTask`](../../../document-extensions/timeseries/indexing.mdx#section).
+1. Create a class that inherits from the abstract index class [`AbstractRawJavaScriptTimeSeriesIndexCreationTask`](#section).
 
-2. Create a [`TimeSeriesIndexDefinition`](../../../document-extensions/timeseries/indexing.mdx#section-1) 
+2. Create a [`TimeSeriesIndexDefinition`](#section-1) 
    and deploy the time series index definition via [PutIndexesOperation](../../../client-api/operations/maintenance/indexes/put-indexes.mdx).
 
 

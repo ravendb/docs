@@ -24,36 +24,36 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * See the variety of backup configuration options and settings in:  
     [Backup overview](../../../backup/overview.mdx)  
-    [Configuration syntax](../../../backup/create/periodic-tasks/database-backup.mdx#syntax)
+    [Configuration syntax](#syntax)
 
 * This article explains how to create periodic backup tasks for a **single database**.  
   [Learn to create server-wide periodic backup tasks.](../../../backup/create/periodic-tasks/server-wide-backup.mdx)
 
 * In this article:  
-  * [Creating and managing periodic backups using the client API](../../../backup/create/periodic-tasks/database-backup.mdx#creating-and-managing-periodic-backups-using-the-client-api)
-     * [Creating a backup task](../../../backup/create/periodic-tasks/database-backup.mdx#creating-a-backup-task)
-        * [Key configuration settings](../../../backup/create/periodic-tasks/database-backup.mdx#key-configuration-settings)
-     * [Getting backup task status](../../../backup/create/periodic-tasks/database-backup.mdx#getting-backup-task-status)
-     * [Updating a backup task](../../../backup/create/periodic-tasks/database-backup.mdx#updating-a-backup-task)
-     * [Deleting a backup task](../../../backup/create/periodic-tasks/database-backup.mdx#deleting-a-backup-task)
-     * [Managing backup operations](../../../backup/create/periodic-tasks/database-backup.mdx#managing-backup-operations)
-        * [Triggering an immediate backup operation](../../../backup/create/periodic-tasks/database-backup.mdx#triggering-an-immediate-backup-operation)
-        * [Delaying a running backup operation](../../../backup/create/periodic-tasks/database-backup.mdx#delaying-a-running-backup-operation)
-        * [Aborting a running backup operation](../../../backup/create/periodic-tasks/database-backup.mdx#aborting-a-running-backup-operation)
-     * [Syntax](../../../backup/create/periodic-tasks/database-backup.mdx#syntax)
-        * [Methods](../../../backup/create/periodic-tasks/database-backup.mdx#methods)
-        * [Classes](../../../backup/create/periodic-tasks/database-backup.mdx#classes)
+  * [Creating and managing periodic backups using the client API](#creating-and-managing-periodic-backups-using-the-client-api)
+     * [Creating a backup task](#creating-a-backup-task)
+        * [Key configuration settings](#key-configuration-settings)
+     * [Getting backup task status](#getting-backup-task-status)
+     * [Updating a backup task](#updating-a-backup-task)
+     * [Deleting a backup task](#deleting-a-backup-task)
+     * [Managing backup operations](#managing-backup-operations)
+        * [Triggering an immediate backup operation](#triggering-an-immediate-backup-operation)
+        * [Delaying a running backup operation](#delaying-a-running-backup-operation)
+        * [Aborting a running backup operation](#aborting-a-running-backup-operation)
+     * [Syntax](#syntax)
+        * [Methods](#methods)
+        * [Classes](#classes)
   
-  * [Creating and managing periodic backups via Studio](../../../backup/create/periodic-tasks/database-backup.mdx#creating-and-managing-periodic-backups-via-studio)
-     * [Creating a backup task](../../../backup/create/periodic-tasks/database-backup.mdx#creating-a-backup-task-1)
-         * [Defining basic task options](../../../backup/create/periodic-tasks/database-backup.mdx#a-defining-basic-task-options)
-         * [Scheduling full and incremental backups](../../../backup/create/periodic-tasks/database-backup.mdx#b-scheduling-full-and-incremental-backups)
-         * [Setting backups retention policy](../../../backup/create/periodic-tasks/database-backup.mdx#c-setting-backups-retention-policy)
-         * [Setting backup encryption options](../../../backup/create/periodic-tasks/database-backup.mdx#d-setting-backup-encryption-options)
-         * [Choosing where to store the backups](../../../backup/create/periodic-tasks/database-backup.mdx#e-choosing-where-to-store-the-backups)
-         * [Saving and managing the task](../../../backup/create/periodic-tasks/database-backup.mdx#f-saving-and-managing-the-task)
-      * [Running a backup operation immediately](../../../backup/create/periodic-tasks/database-backup.mdx#running-a-backup-operation-immediately)
-      * [Delaying or aborting a running backup operation](../../../backup/create/periodic-tasks/database-backup.mdx#delaying-or-aborting-a-running-backup-operation)
+  * [Creating and managing periodic backups via Studio](#creating-and-managing-periodic-backups-via-studio)
+     * [Creating a backup task](#creating-a-backup-task-1)
+         * [Defining basic task options](#a-defining-basic-task-options)
+         * [Scheduling full and incremental backups](#b-scheduling-full-and-incremental-backups)
+         * [Setting backups retention policy](#c-setting-backups-retention-policy)
+         * [Setting backup encryption options](#d-setting-backup-encryption-options)
+         * [Choosing where to store the backups](#e-choosing-where-to-store-the-backups)
+         * [Saving and managing the task](#f-saving-and-managing-the-task)
+      * [Running a backup operation immediately](#running-a-backup-operation-immediately)
+      * [Delaying or aborting a running backup operation](#delaying-or-aborting-a-running-backup-operation)
 
 
 </Admonition>
@@ -67,11 +67,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
 To create a periodic backup task:  
 * Define a **backup configuration** using a `PeriodicBackupConfiguration` instance.  
   The configuration sets the [schedule](../../../backup/overview.mdx#periodic-backup-tasks) for backups creation and specifies other task settings, including:  
-    - The [type](../../../backup/create/periodic-tasks/database-backup.mdx#setting-backup-type) of backups to create (logical backups or snapshot images).
-    - Backups [scope and schedule](../../../backup/create/periodic-tasks/database-backup.mdx#setting-backups-scope-and-schedule) (schedule full and/or incremental backups).  
-    - Where to [store](../../../backup/create/periodic-tasks/database-backup.mdx#setting-storage-destinations) backups (locally and/or remotely).  
-    - Whether to use a [retention policy](../../../backup/create/periodic-tasks/database-backup.mdx#setting-retention-policy) to delete outdated backups.  
-    - If and how to use [encryption](../../../backup/create/periodic-tasks/database-backup.mdx#setting-encryption).
+    - The [type](#setting-backup-type) of backups to create (logical backups or snapshot images).
+    - Backups [scope and schedule](#setting-backups-scope-and-schedule) (schedule full and/or incremental backups).  
+    - Where to [store](#setting-storage-destinations) backups (locally and/or remotely).  
+    - Whether to use a [retention policy](#setting-retention-policy) to delete outdated backups.  
+    - If and how to use [encryption](#setting-encryption).
 
 * When the configuration is prepared, pass the instance to `UpdatePeriodicBackupOperation` to create the backup task on the server and schedule the backup routine for the database.  
 
@@ -142,7 +142,7 @@ To create a periodic backup task:
   };
   ```
 
-- [See `BackupType` syntax](../../../backup/create/periodic-tasks/database-backup.mdx#classes-and-enums-used-in-the-backup-configuration)
+- [See `BackupType` syntax](#classes-and-enums-used-in-the-backup-configuration)
 
 ---
 
@@ -164,7 +164,7 @@ To create a periodic backup task:
   };
   ```
 
-- [See `FullBackupFrequency` and `IncrementalBackupFrequency` syntax](../../../backup/create/periodic-tasks/database-backup.mdx#backup-configuration-classes)
+- [See `FullBackupFrequency` and `IncrementalBackupFrequency` syntax](#backup-configuration-classes)
 
 ---
 
@@ -214,7 +214,7 @@ To create a periodic backup task:
      }
      ```
 
-- [See destinations-related syntax](../../../backup/create/periodic-tasks/database-backup.mdx#backup-destinations-classes)
+- [See destinations-related syntax](#backup-destinations-classes)
 
 ---
 
@@ -241,7 +241,7 @@ To create a periodic backup task:
   };
   ```
 
-- [See `RetentionPolicy` syntax](../../../backup/create/periodic-tasks/database-backup.mdx#classes-and-enums-used-in-the-backup-configuration)
+- [See `RetentionPolicy` syntax](#classes-and-enums-used-in-the-backup-configuration)
 
 ---
 
@@ -277,7 +277,7 @@ Set backup encryption using the backup configuration `BackupEncryptionSettings` 
      };
      ```
 
-* [See `BackupEncryptionSettings` and `EncryptionMode` syntax](../../../backup/create/periodic-tasks/database-backup.mdx#classes-and-enums-used-in-the-backup-configuration)
+* [See `BackupEncryptionSettings` and `EncryptionMode` syntax](#classes-and-enums-used-in-the-backup-configuration)
 
 </ContentFrame>
 
@@ -287,10 +287,10 @@ Set backup encryption using the backup configuration `BackupEncryptionSettings` 
 
 To retrieve the status of a backup task after its last run, use `GetPeriodicBackupStatusOperation` with the task ID.  
 - If you don't have the task ID, you can get it using `GetOngoingTaskInfoOperation` with the task name.  
-- The retrieved status reflects the **most recent completed backup run**, whether it was scheduled or [triggered manually](../../../backup/create/periodic-tasks/database-backup.mdx#triggering-an-immediate-backup-operation).
+- The retrieved status reflects the **most recent completed backup run**, whether it was scheduled or [triggered manually](#triggering-an-immediate-backup-operation).
 - The status includes the number of backups performed by the task, and details about the last backup such as the backup timestamp, duration, destination path, and error information (if any).  
 
-[See GetPeriodicBackupStatusOperation syntax](../../../backup/create/periodic-tasks/database-backup.mdx#task-management)
+[See GetPeriodicBackupStatusOperation syntax](#task-management)
 
 #### Example:
 ```csharp
@@ -559,7 +559,7 @@ await store.Maintenance.SendAsync(new DelayBackupOperation(
   await store.Commands().ExecuteAsync(new KillOperationCommand(runningOperationId));
   ```
 
-* To abort a backup that was triggered [manually](../../../backup/create/periodic-tasks/database-backup.mdx#triggering-an-immediate-backup-operation) using `StartBackupOperation`:  
+* To abort a backup that was triggered [manually](#triggering-an-immediate-backup-operation) using `StartBackupOperation`:  
   - Extract the backup operation ID from the result returned by `StartBackupOperation`.  
    - Use the backup operation ID to abort the operation.  
    - Also extract and use the responsible node tag to ensure that the operation is aborted on the correct cluster node.  
@@ -666,7 +666,7 @@ GetPeriodicBackupStatusOperationResult result = await store.Maintenance.SendAsyn
 | **IsEncrypted** | `bool` | Whether the backup was encrypted. |
 | **Error** | `Error` | Error details if the last backup run failed, `null` otherwise.<br />Contains `Exception` (`string`) and `At` (`DateTime`). |
 | **LastOperationId** | `long?` | The operation ID of the last backup run. |
-| **DelayUntil** | `DateTime?` | If the backup was [delayed](../../../backup/create/periodic-tasks/database-backup.mdx#delaying-a-running-backup-operation), the time at which it will resume. |
+| **DelayUntil** | `DateTime?` | If the backup was [delayed](#delaying-a-running-backup-operation), the time at which it will resume. |
 | **LocalBackup** | `LocalBackup` | Local backup details.<br />`BackupDirectory` (`string`) contains the local path if local storage was configured as a backup destination, or `null` if local storage was only used as a temporary staging area for remote uploads.<br />Also contains `FileName` (`string`) and `TempFolderUsed` (`bool`). |
 | **UploadToS3** | `UploadToS3` | Amazon S3 upload status. `null` if S3 was not configured as a destination. |
 | **UploadToGlacier** | `UploadToGlacier` | Amazon Glacier upload status. `null` if Glacier was not configured. |
@@ -744,7 +744,7 @@ GetShardedPeriodicBackupStatusOperationResult result = await store.Maintenance.S
 
 | Return value | |
 |-----------|-------------|
-| `GetShardedPeriodicBackupStatusOperationResult` | Contains `Statuses` (`Dictionary<int, PeriodicBackupStatus>`) — a dictionary mapping each shard number to its backup status.<br />Each value is a `PeriodicBackupStatus` with the [same properties](../../../backup/create/periodic-tasks/database-backup.mdx#getting-backup-task-status) as the non-sharded result. |
+| `GetShardedPeriodicBackupStatusOperationResult` | Contains `Statuses` (`Dictionary<int, PeriodicBackupStatus>`) — a dictionary mapping each shard number to its backup status.<br />Each value is a `PeriodicBackupStatus` with the [same properties](#getting-backup-task-status) as the non-sharded result. |
 
 <Admonition type="note" title="">
 
@@ -1289,12 +1289,12 @@ And then define and save the new task to start the backup schedule.
 
 ![Define a backup task](./assets/database-periodic_define-task.png)
     
-`A`. [Defining basic task options](../../../backup/create/periodic-tasks/database-backup.mdx#a-defining-basic-task-options)  
-`B`. [Scheduling full and incremental backups](../../../backup/create/periodic-tasks/database-backup.mdx#b-scheduling-full-and-incremental-backups)  
-`C`. [Setting backups retention policy](../../../backup/create/periodic-tasks/database-backup.mdx#c-setting-backups-retention-policy)  
-`D`. [Setting backup encryption options](../../../backup/create/periodic-tasks/database-backup.mdx#d-setting-backup-encryption-options)  
-`E`. [Choosing where to store the backups](../../../backup/create/periodic-tasks/database-backup.mdx#e-choosing-where-to-store-the-backups)  
-`F`. [Saving and managing the task](../../../backup/create/periodic-tasks/database-backup.mdx#f-saving-and-managing-the-task)
+`A`. [Defining basic task options](#a-defining-basic-task-options)  
+`B`. [Scheduling full and incremental backups](#b-scheduling-full-and-incremental-backups)  
+`C`. [Setting backups retention policy](#c-setting-backups-retention-policy)  
+`D`. [Setting backup encryption options](#d-setting-backup-encryption-options)  
+`E`. [Choosing where to store the backups](#e-choosing-where-to-store-the-backups)  
+`F`. [Saving and managing the task](#f-saving-and-managing-the-task)
 
 ---
 
@@ -1456,7 +1456,7 @@ You can select one or more storage locations for your backups, both local and re
 
   ![Local storage settings](./assets/database-periodic_storage_local.png)
 
-* The **Backup Upload Mode** setting defined [above](../../../backup/create/periodic-tasks/database-backup.mdx#a-defining-basic-task-options) applies to all remote storage locations, determining whether to store backups locally before transferring them to their destinations.
+* The **Backup Upload Mode** setting defined [above](#a-defining-basic-task-options) applies to all remote storage locations, determining whether to store backups locally before transferring them to their destinations.
 
 ---
 

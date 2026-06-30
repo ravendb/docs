@@ -19,7 +19,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Indexing is triggered normally when items are added or modified, but RavenDB suspends 
   index procession by the set interval.  
 * The gaps in indexing activity and the procession of 
-  [larger batches](../indexes/index-throttling.mdx#throttling-and-batches) 
+  [larger batches](#throttling-and-batches) 
   can reduce overall indexing CPU utilization.  
 * Indexing can be throttled server-wide, per-database, and per-index.  
 * Index throttling applies to the procession of **existing** indexes.  
@@ -27,11 +27,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * In this page:  
   * [Why Use Index Throttling?](../indexes/index-throttling.mdx#why-use-index-throttling?)  
-  * [Index Throttling and Batches](../indexes/index-throttling.mdx#throttling-and-batches)  
-  * [Setting Index Throttling](../indexes/index-throttling.mdx#setting-index-throttling)  
-     * [Server-Wide](../indexes/index-throttling.mdx#server-wide-index-throttling)  
-     * [Per-Database](../indexes/index-throttling.mdx#index-throttling-per-database)  
-     * [Per-Index](../indexes/index-throttling.mdx#index-throttling-in-an-index-definition)  
+  * [Index Throttling and Batches](#throttling-and-batches)  
+  * [Setting Index Throttling](#setting-index-throttling)  
+     * [Server-Wide](#server-wide-index-throttling)  
+     * [Per-Database](#index-throttling-per-database)  
+     * [Per-Index](#index-throttling-in-an-index-definition)  
 
 </Admonition>
 ## Why Use Index Throttling?
@@ -81,7 +81,7 @@ In special cases, throttled indexes' batches are processed without delay.
 
 Enable or disable index throttling for a specific database using the designated database configuration key.  
 Setting this property overrides the 
-[Server-Wide](../indexes/index-throttling.mdx#server-wide-index-throttling) default.  
+[Server-Wide](#server-wide-index-throttling) default.  
  
 * **From Studio**:  
 
@@ -107,8 +107,8 @@ Setting this property overrides the
          </Admonition>
 ### Index Throttling in an Index Definition
 
-Setting throttling in an index definition overrides [server-wide](../indexes/index-throttling.mdx#server-wide-index-throttling) 
-and [database](../indexes/index-throttling.mdx#index-throttling-per-database) settings configuration.  
+Setting throttling in an index definition overrides [server-wide](#server-wide-index-throttling) 
+and [database](#index-throttling-per-database) settings configuration.  
 
 
 * **From Code**:  

@@ -13,12 +13,12 @@ import CodeBlock from '@theme/CodeBlock';
   If no database is specified in the options then the [Default Database](../../../client-api/setting-up-default-database.mdx) (stored in the Document Store) is assumed.
 
 * Make sure you release allocated session resources using the `close` method or wrapping 
-  the session object in a `try` statement ([see below](../../../client-api/session/opening-a-session.mdx#example-3---releasing-session-resources)).  
+  the session object in a `try` statement ([see below](#example-3---releasing-session-resources)).  
 
 * In this page:  
-  * [Syntax](../../../client-api/session/opening-a-session.mdx#syntax)  
-  * [Session options](../../../client-api/session/opening-a-session.mdx#session-options)  
-  * [Open session examples](../../../client-api/session/opening-a-session.mdx#open-session-examples)
+  * [Syntax](#syntax)  
+  * [Session options](#session-options)  
+  * [Open session examples](#open-session-examples)
 </Admonition>
 ## Syntax
 
@@ -41,7 +41,7 @@ public function openSession(SessionOptions $sessionOptions): DocumentSessionInte
 | Parameter    | Type             | Description                                                                                                                    |
 |--------------|------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | **database** | `string`         | The Session will operate on this database,<br/>overriding the default database set in the document store.                       |
-| **options**  | `sessionOptions` | An object with Session configuration options. See details [below](../../../client-api/session/opening-a-session.mdx#session-options). |
+| **options**  | `sessionOptions` | An object with Session configuration options. See details [below](#session-options). |
 
 | Return Value               | Description                |
 |----------------------------|----------------------------|

@@ -34,21 +34,21 @@ For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../
 </Admonition>
 
 * In this page:  
-  * [RavenDB ETL and Amazon SQS](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#ravendb-etl-and-amazon-sqs)  
-  * [Queue methods](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#queue-methods)  
-      * [Standard queueing](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#standard-queueing)  
-      * [FIFO queueing](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#fifo-queueing)  
-      * [Caution: ETL message size -vs- Queue message size](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#caution-etl-message-size--vs--queue-message-size)  
-  * [Add an Amazon SQS connection string](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#add-an-amazon-sqs-connection-string)  
-      * [Authentication methods](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#authentication-methods)  
-      * [Example](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#example)  
-      * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#syntax)
-  * [Add an Amazon SQS ETL task](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#add-an-amazon-sqs-etl-task)  
-      * [Example: Add SQS ETL task](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#example-add-sqs-etl-task)  
-      * [Delete processed documents](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#delete-processed-documents)  
-      * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#syntax-1)
-  * [The transformation script](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#the-transformation-script)
-      * [The loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#the-loadto-method)  
+  * [RavenDB ETL and Amazon SQS](#ravendb-etl-and-amazon-sqs)  
+  * [Queue methods](#queue-methods)  
+      * [Standard queueing](#standard-queueing)  
+      * [FIFO queueing](#fifo-queueing)  
+      * [Caution: ETL message size -vs- Queue message size](#caution-etl-message-size--vs--queue-message-size)  
+  * [Add an Amazon SQS connection string](#add-an-amazon-sqs-connection-string)  
+      * [Authentication methods](#authentication-methods)  
+      * [Example](#example)  
+      * [Syntax](#syntax)
+  * [Add an Amazon SQS ETL task](#add-an-amazon-sqs-etl-task)  
+      * [Example: Add SQS ETL task](#example-add-sqs-etl-task)  
+      * [Delete processed documents](#delete-processed-documents)  
+      * [Syntax](#syntax-1)
+  * [The transformation script](#the-transformation-script)
+      * [The loadTo method](#the-loadto-method)  
 
 </Admonition>
 ## RavenDB ETL and Amazon SQS
@@ -91,7 +91,7 @@ the delivery of each message exactly once, in exchange for a much slower transfe
 than that of the Standard Queueing method.  
 
 To load messages to a FIFO queue, add `.fifo` to the queue name while calling the 
-transformation script's [loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#the-loadto-method):  
+transformation script's [loadTo method](#the-loadto-method):  
 <TabItem value="sqs_fifo" label="sqs_fifo">
 <CodeBlock language="csharp">
 {`Script = @"// Create an orderData object
@@ -451,7 +451,7 @@ Source: '/promotion-campaigns/summer-sale'
       like `'-'` and `'.'` in target names.  
       This is not possible when the `loadTo&lt;QueueName&gt;` syntax is used because including special 
       characters in the name of a JavaScript function makes it invalid.  
-    * To deliver messages to a [FIFO queue](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#fifo-queueing), 
+    * To deliver messages to a [FIFO queue](#fifo-queueing), 
       use this format and add `.fifo` to the queue name.  
       `loadTo('QueueName.fifo', obj, {attributes})`
 

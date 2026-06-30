@@ -11,13 +11,13 @@ import CodeBlock from '@theme/CodeBlock';
 * For a detailed syntax of the available subscription methods and objects, see this [API overview](../../../../client-api/data-subscriptions/creation/api-overview.mdx).
 
 * In this page:
-    * [Create subscription - for all documents in a collection](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---for-all-documents-in-a-collection)
-    * [Create subscription - filter documents](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-documents)
-    * [Create subscription - filter and project fields](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-and-project-fields)
-    * [Create subscription - project data from a related document](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---project-data-from-a-related-document)
-    * [Create subscription - include documents](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-documents)
-    * [Create subscription - include counters](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters)
-    * [Update existing subscription](../../../../client-api/data-subscriptions/creation/examples.mdx#update-existing-subscription)  
+    * [Create subscription - for all documents in a collection](#create-subscription---for-all-documents-in-a-collection)
+    * [Create subscription - filter documents](#create-subscription---filter-documents)
+    * [Create subscription - filter and project fields](#create-subscription---filter-and-project-fields)
+    * [Create subscription - project data from a related document](#create-subscription---project-data-from-a-related-document)
+    * [Create subscription - include documents](#create-subscription---include-documents)
+    * [Create subscription - include counters](#create-subscription---include-counters)
+    * [Update existing subscription](#update-existing-subscription)  
 
 </Admonition>
 ## Create subscription - for all documents in a collection
@@ -208,7 +208,7 @@ See how to consume this type of subscription [here](../../../../client-api/data-
 
 Include statements can be added to the subscription with `SubscriptionIncludeBuilder`.  
 This builder is assigned to the  `includes` property in [SubscriptionCreationOptions](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptionst).  
-It supports methods for including documents as well as [counters](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters).
+It supports methods for including documents as well as [counters](#create-subscription---include-counters).
 These methods can be chained.  
 
 To include related documents, use method `include_documents`.  
@@ -232,7 +232,7 @@ The include statements can be written in two ways:
 
 <Admonition type="info" title="">
 
-If you include documents when making a [projection](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-and-project-fields),
+If you include documents when making a [projection](#create-subscription---filter-and-project-fields),
 the include will search for the specified paths in the projected fields rather than in the original document.
 
 </Admonition>

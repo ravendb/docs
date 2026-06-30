@@ -11,13 +11,13 @@ import CodeBlock from '@theme/CodeBlock';
   In addition, RavenDB provides a set of predefined JavaScript functions that can be used in JavaScript indexes and in other features such as subscriptions, ETL scripts, set-based patching, and more.  
   See the full list in [Predefined JavaScript functions](../../server/kb/javascript-engine.mdx#predefined-javascript-functions).
 * In this article:
-  * [Creating and deploying a JavaScript index](../../indexes/javascript-indexes.mdx#creating-and-deploying-a-javascript-index)
-  * [Map index](../../indexes/javascript-indexes.mdx#map-index)
-     * [Map index - basic](../../indexes/javascript-indexes.mdx#example-i---map-index---basic)
-     * [Map index - with additional sources](../../indexes/javascript-indexes.mdx#example-ii---map-index---with-additional-sources)
-     * [Map index - with inline string compilation](../../indexes/javascript-indexes.mdx#example-iii---map-index---with-inline-string-compilation)
-  * [Multi-Map index](../../indexes/javascript-indexes.mdx#multi-map-index)
-  * [Map-Reduce index](../../indexes/javascript-indexes.mdx#map-reduce-index)
+  * [Creating and deploying a JavaScript index](#creating-and-deploying-a-javascript-index)
+  * [Map index](#map-index)
+     * [Map index - basic](#example-i---map-index---basic)
+     * [Map index - with additional sources](#example-ii---map-index---with-additional-sources)
+     * [Map index - with inline string compilation](#example-iii---map-index---with-inline-string-compilation)
+  * [Multi-Map index](#multi-map-index)
+  * [Map-Reduce index](#map-reduce-index)
 
 </Admonition>
 
@@ -70,7 +70,7 @@ public class Documents_ByName_JS : AbstractJavaScriptIndexCreationTask
 ## Map index
 
 * A map index contains a single `map` function.  
-  To define an index that uses multiple map functions, see the section on [Multi-Map indexes](../../indexes/javascript-indexes.mdx#multi-map-index) below.
+  To define an index that uses multiple map functions, see the section on [Multi-Map indexes](#multi-map-index) below.
 
 * The `map` function is written as a string and specifies what content from the documents will be indexed.
 

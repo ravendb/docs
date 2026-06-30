@@ -15,15 +15,15 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="">
 
 * In this page:  
-  * [Is there a one-time backup?](../../../../client-api/operations/maintenance/backup/faq.mdx#is-there-a-one-time-backup)  
-  * [How do I create a backup of my cluster, not just one database?](../../../../client-api/operations/maintenance/backup/faq.mdx#how-do-i-create-a-backup-of-my-cluster-not-just-one-database)  
-  * [How should the servers' time be set in a multi-node cluster?](../../../../client-api/operations/maintenance/backup/faq.mdx#how-should-the-servers-time-be-set-in-a-multi-node-cluster)  
-  * [Is an External Replication a good substitute for a backup task?](../../../../client-api/operations/maintenance/backup/faq.mdx#is-an-external-replication-task-a-good-substitute-for-a-backup-task)  
-  * [Can I simply copy the database folder contents whenever I need to create a backup?](../../../../client-api/operations/maintenance/backup/faq.mdx#can-i-simply-copy-the-database-folder-contents-whenever-i-need-to-create-a-backup)  
-  * [Does RavenDB automatically delete old backups?](../../../../client-api/operations/maintenance/backup/faq.mdx#does-ravendb-automatically-delete-old-backups)  
-  * [Are there any locations that backup files should NOT be stored at?](../../../../client-api/operations/maintenance/backup/faq.mdx#are-there-any-locations-that-backup-files-should-not-be-stored-at)  
-  * [What happens when a backup process fails before it is completed?](../../../../client-api/operations/maintenance/backup/faq.mdx#what-happens-when-a-backup-process-fails-before-completion)  
-  * [What happens if the node responsible for a backup task is down?](../../../../client-api/operations/maintenance/backup/faq.mdx#what-happens-if-the-node-responsible-for-a-backup-task-is-down)  
+  * [Is there a one-time backup?](#is-there-a-one-time-backup)  
+  * [How do I create a backup of my cluster, not just one database?](#how-do-i-create-a-backup-of-my-cluster-not-just-one-database)  
+  * [How should the servers' time be set in a multi-node cluster?](#how-should-the-servers-time-be-set-in-a-multi-node-cluster)  
+  * [Is an External Replication a good substitute for a backup task?](#is-an-external-replication-task-a-good-substitute-for-a-backup-task)  
+  * [Can I simply copy the database folder contents whenever I need to create a backup?](#can-i-simply-copy-the-database-folder-contents-whenever-i-need-to-create-a-backup)  
+  * [Does RavenDB automatically delete old backups?](#does-ravendb-automatically-delete-old-backups)  
+  * [Are there any locations that backup files should NOT be stored at?](#are-there-any-locations-that-backup-files-should-not-be-stored-at)  
+  * [What happens when a backup process fails before it is completed?](#what-happens-when-a-backup-process-fails-before-completion)  
+  * [What happens if the node responsible for a backup task is down?](#what-happens-if-the-node-responsible-for-a-backup-task-is-down)  
 
 </Admonition>
 ## FAQ
@@ -56,7 +56,7 @@ and databases can be [restored from backup](../../../../studio/database/create-n
 
 **To prevent downtime while rebuilding**, you can [replicate your database](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx) 
 so that there is a live version available to distribute the workload and act as a failover.  
-[Is an External Replication a good substitute for a backup task?](../../../../client-api/operations/maintenance/backup/faq.mdx#is-an-external-replication-task-a-good-substitute-for-a-backup-task)  
+[Is an External Replication a good substitute for a backup task?](#is-an-external-replication-task-a-good-substitute-for-a-backup-task)  
 ### How should the servers' time be set in a multi-node cluster?
 
 The backup task runs on schedule according to the executing server's local time.  
@@ -94,7 +94,7 @@ Learn how to change the [Retention Policy via API](../../../../client-api/operat
 It is recommended **not to store backups on the same drive as your database** data files, 
 since both the database and the backups would be exposed to the same risks.  
 
-* Disk space can run low as backups start piling up unless you [set your retention policy for backups](../../../../client-api/operations/maintenance/backup/faq.mdx#does-ravendb-automatically-delete-old-backups).
+* Disk space can run low as backups start piling up unless you [set your retention policy for backups](#does-ravendb-automatically-delete-old-backups).
 * There are many [options for backup locations](../../../../studio/database/tasks/backup-task.mdx#destination).  
 * We recommend creating ongoing backups in two different types of locations (cloud and local machine).  
   You can store your backups in multiple locations by setting up one [on-going backup task](../../../../studio/database/tasks/backup-task.mdx) 

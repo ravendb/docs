@@ -15,15 +15,15 @@ import CodeBlock from '@theme/CodeBlock';
   * [Document identifier generation](../../../server/kb/document-identifier-generation.mdx)
   * [Working with document identifiers](../../../client-api/document-identifiers/working-with-document-identifiers.mdx).
 * In this page:
-   * [How the HiLo algorithm works in RavenDB](../../../client-api/document-identifiers/hilo-algorithm.mdx#how-the-hilo-algorithm-works-in-ravendb)
-     * [Generating unique IDs efficiently](../../../client-api/document-identifiers/hilo-algorithm.mdx#generating-unique-ids-efficiently)
-     * [Using HiLo documents](../../../client-api/document-identifiers/hilo-algorithm.mdx#using-hilo-documents)
-   * [Returning HiLo ranges](../../../client-api/document-identifiers/hilo-algorithm.mdx#returning-hilo-ranges)
-   * [Identity parts separator](../../../client-api/document-identifiers/hilo-algorithm.mdx#identity-parts-separator)
-   * [Manual HiLo ID generation](../../../client-api/document-identifiers/hilo-algorithm.mdx#manual-hilo-id-generation)
-     * [Get next ID - number only](../../../client-api/document-identifiers/hilo-algorithm.mdx#get-next-id---number-only)
-     * [Get next ID - full document ID](../../../client-api/document-identifiers/hilo-algorithm.mdx#get-next-id---full-document-id)
-   * [Overriding the HiLo algorithm](../../../client-api/document-identifiers/hilo-algorithm.mdx#overriding-the-hilo-algorithm)
+   * [How the HiLo algorithm works in RavenDB](#how-the-hilo-algorithm-works-in-ravendb)
+     * [Generating unique IDs efficiently](#generating-unique-ids-efficiently)
+     * [Using HiLo documents](#using-hilo-documents)
+   * [Returning HiLo ranges](#returning-hilo-ranges)
+   * [Identity parts separator](#identity-parts-separator)
+   * [Manual HiLo ID generation](#manual-hilo-id-generation)
+     * [Get next ID - number only](#get-next-id---number-only)
+     * [Get next ID - full document ID](#get-next-id---full-document-id)
+   * [Overriding the HiLo algorithm](#overriding-the-hilo-algorithm)
 
 </Admonition>
 
@@ -160,8 +160,8 @@ using (var session = newStore.OpenSession())
 * **Manual generation**:  
   We provide you with the option of manually retrieving the next ID from the HiLo range currently reserved for the client without having to store the document first.
   You can retrieve either the next number portion or the full document ID and then use it when storing the document, as explained below:  
-    * [Get next ID - number only](../../../client-api/document-identifiers/hilo-algorithm.mdx#get-next-id---number-only)
-    * [Get next ID - full document ID](../../../client-api/document-identifiers/hilo-algorithm.mdx#get-next-id---full-document-id)
+    * [Get next ID - number only](#get-next-id---number-only)
+    * [Get next ID - full document ID](#get-next-id---full-document-id)
 ### Get next ID - number only
 
 You can take advantage of the HiLo algorithm and create documents with your own customized ID that is based on the next HiLo ID number provided by the client.
@@ -308,8 +308,8 @@ the consecutive number `4` is retrieved and incorporated into the full document 
 
     * Your customized ID generation will be applied whenever you store a document without explicitly specifying an `Id`.
   
-    * Attempting to call [GenerateNextIdForAsync](../../../client-api/document-identifiers/hilo-algorithm.mdx#get-next-id---number-only) or 
-      [GenerateDocumentIdAsync](../../../client-api/document-identifiers/hilo-algorithm.mdx#get-next-id---full-document-id) via the store's `HiLoIdGenerator`   
+    * Attempting to call [GenerateNextIdForAsync](#get-next-id---number-only) or 
+      [GenerateDocumentIdAsync](#get-next-id---full-document-id) via the store's `HiLoIdGenerator`   
       will throw an exception.
 
 

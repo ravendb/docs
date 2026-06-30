@@ -20,17 +20,17 @@ import Panel from '@site/src/components/Panel';
   An index definition can contain both dynamic-index-fields and regular-index-fields.
 
 * In this article:
-  * [Indexing field KEYS](../../indexes/using-dynamic-fields.mdx#indexing-field-keys)
-      * [Example - index every field under an object](../../indexes/using-dynamic-fields.mdx#example---index-every-field-under-an-object)
-      * [Example - index every field](../../indexes/using-dynamic-fields.mdx#example---index-every-field)
-  * [Indexing field VALUES](../../indexes/using-dynamic-fields.mdx#indexing-field-values)
-      * [Example - basic](../../indexes/using-dynamic-fields.mdx#example---basic)
-      * [Example - list](../../indexes/using-dynamic-fields.mdx#example---list)
-  * [Indexing dynamic fields for full-text search](../../indexes/using-dynamic-fields.mdx#indexing-dynamic-fields-for-full-text-search)
-      * [Configuring analyzers for dynamic fields](../../indexes/using-dynamic-fields.mdx#configuring-analyzers-for-dynamic-fields)
-      * [Which analyzer is used for the query term?](../../indexes/using-dynamic-fields.mdx#which-analyzer-is-used-for-the-query-term)
-  * [`CreateField` syntax](../../indexes/using-dynamic-fields.mdx#createfield-syntax)
-  * [Indexed fields & terms view](../../indexes/using-dynamic-fields.mdx#indexed-fields-terms-view)
+  * [Indexing field KEYS](#indexing-field-keys)
+      * [Example - index every field under an object](#example---index-every-field-under-an-object)
+      * [Example - index every field](#example---index-every-field)
+  * [Indexing field VALUES](#indexing-field-values)
+      * [Example - basic](#example---basic)
+      * [Example - list](#example---list)
+  * [Indexing dynamic fields for full-text search](#indexing-dynamic-fields-for-full-text-search)
+      * [Configuring analyzers for dynamic fields](#configuring-analyzers-for-dynamic-fields)
+      * [Which analyzer is used for the query term?](#which-analyzer-is-used-for-the-query-term)
+  * [`CreateField` syntax](#createfield-syntax)
+  * [Indexed fields & terms view](#indexed-fields-terms-view)
 
 </Admonition>
 
@@ -276,7 +276,7 @@ The following example allows you to:
 The following example shows:    
   * Only the **basic concept** of creating a dynamic-index-field from the **value** of a document field.  
   * Documents can then be queried based on those indexed values.  
-  * For a more practical usage see the [Example](../../indexes/using-dynamic-fields.mdx#example---list) below.  
+  * For a more practical usage see the [Example](#example---list) below.  
 </Admonition>
 
 * **The document**:  
@@ -523,7 +523,7 @@ or `FieldIndexing.Search` in the `CreateFieldOptions` (`AbstractIndexCreationTas
   At indexing time, RavenDB analyzes the dynamic field value and creates the indexed terms.  
   The analyzer used at indexing time is resolved from the index definition.  
   You can configure an analyzer for a specific generated field name, or configure `ALL_FIELDS` as a fallback.  
-  See [Configuring analyzers for dynamic fields](../../indexes/using-dynamic-fields.mdx#configuring-analyzers-for-dynamic-fields) below.    
+  See [Configuring analyzers for dynamic fields](#configuring-analyzers-for-dynamic-fields) below.    
 
     * If the generated dynamic field name has an explicit analyzer configuration, that analyzer is used.  
     * Otherwise, if `ALL_FIELDS` has an analyzer configuration, RavenDB uses it as a fallback.
@@ -542,7 +542,7 @@ or `FieldIndexing.Search` in the `CreateFieldOptions` (`AbstractIndexCreationTas
     The example below sets it at the index scope, in the index definition.
 
     For a summary of how RavenDB resolves the analyzer used for the query term,  
-    see [Which analyzer is used for the query term](../../indexes/using-dynamic-fields.mdx#which-analyzer-is-used-for-the-query-term) below.
+    see [Which analyzer is used for the query term](#which-analyzer-is-used-for-the-query-term) below.
 
 </Admonition>
     
@@ -910,7 +910,7 @@ createField(fieldName, fieldValue, options); // returns object
 <Panel heading="Indexed fields & terms view">
 
 The generated dynamic index fields and their indexed terms can be viewed in the **Terms View** in Studio.  
-Below are sample index fields & their terms generated from [this example](../../indexes/using-dynamic-fields.mdx#example---list).
+Below are sample index fields & their terms generated from [this example](#example---list).
     
 ![Figure 1. Go to terms view](../assets/dynamic-index-fields-1.png)
     

@@ -29,13 +29,13 @@ import ContentFrame from "@site/src/components/ContentFrame";
   Learn more about how ETL works on a sharded database [here](../../../sharding/etl.mdx).
 
 * In this article:  
-  * [Why use ETL](../../../server/ongoing-tasks/etl/basics.mdx#why-use-etl)  
-  * [Defining ETL Tasks](../../../server/ongoing-tasks/etl/basics.mdx#defining-etl-tasks)  
-  * [ETL Stages:](../../../server/ongoing-tasks/etl/basics.mdx#etl-stages)  
-      * [Extract](../../../server/ongoing-tasks/etl/basics.mdx#extract)  
-      * [Transform](../../../server/ongoing-tasks/etl/basics.mdx#transform)  
-      * [Load](../../../server/ongoing-tasks/etl/basics.mdx#load)  
-  * [Troubleshooting](../../../server/ongoing-tasks/etl/basics.mdx#troubleshooting)
+  * [Why use ETL](#why-use-etl)  
+  * [Defining ETL Tasks](#defining-etl-tasks)  
+  * [ETL Stages:](#etl-stages)  
+      * [Extract](#extract)  
+      * [Transform](#transform)  
+      * [Load](#load)  
+  * [Troubleshooting](#troubleshooting)
     
 </Admonition>
 
@@ -87,9 +87,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 ETL's three stages are:  
 
-* [Extract](../../../server/ongoing-tasks/etl/basics.mdx#extract) - Extract the documents from the database  
-* [Transform](../../../server/ongoing-tasks/etl/basics.mdx#transform) - Transform & filter the documents data according to the supplied script (optional)  
-* [Load](../../../server/ongoing-tasks/etl/basics.mdx#load) - Load (write) the transformed data into the target destination  
+* [Extract](#extract) - Extract the documents from the database  
+* [Transform](#transform) - Transform & filter the documents data according to the supplied script (optional)  
+* [Load](#load) - Load (write) the transformed data into the target destination  
 
 ---
     
@@ -159,7 +159,7 @@ These are not part of the general JavaScript engine and **apply to ETL scripts o
 
 | Function / Member                             | Type     | Description                                                                                                                                                                                                 |
 |-----------------------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `loadTo`                                      | function | Loads an object to the specified target. An object will only be sent to the destination if this method is called.<br/>This command has several syntax options,<br/>see [The loadTo method](../../../server/ongoing-tasks/etl/basics.mdx#theloadtomethod) below. |
+| `loadTo`                                      | function | Loads an object to the specified target. An object will only be sent to the destination if this method is called.<br/>This command has several syntax options,<br/>see [The loadTo method](#theloadtomethod) below. |
 | **Attachments:**                              |          |                                                                                                                                                                                                             |
 | `loadAttachment(name)`                        | function | Loads an attachment of the current document.                                                                                                                                                                |
 | `hasAttachment(name)`                         | function | Returns `true` if an attachment with the given name exists on the current document.                                                                                                                         |

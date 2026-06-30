@@ -38,7 +38,7 @@ const operation = await store.smuggler.export(options, toFile);
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **options** | `DatabaseSmugglerExportOptions` | Options that will be used during the export. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerexportoptions). |
+| **options** | `DatabaseSmugglerExportOptions` | Options that will be used during the export. Read more [here](#databasesmugglerexportoptions). |
 | **toDatabase** | `DatabaseSmuggler` | `DatabaseSmuggler` instance used as a destination |
 | **toFile** | `string` | Path to a file where exported data will be written |
 
@@ -56,7 +56,7 @@ const operation = await store.smuggler.export(options, toFile);
 | **includeExpired** | `boolean` | Should expired documents be included in the export. Default: `true` |
 | **includeArtificial** | `boolean` | ? |
 | **removeAnalyzers** | `boolean` | Should analyzers be removed from Indexes. Default: `false` |
-| **transformScript** | `string` | JavaScript-based script applied to every exported document. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
+| **transformScript** | `string` | JavaScript-based script applied to every exported document. Read more [here](#transformscript). |
 | **maxStepsForTransformScript** | `number` | Maximum number of steps that transform script can process before failing. Default: 10000 |
 | **skipRevisionCreation** | `boolean` | skip revision creation |
 | **encryptionKey** | `string` | Encryption key used for restore |
@@ -92,7 +92,7 @@ const operation = await store.smuggler.import(options, stream);
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **options** | `DatabaseSmugglerImportOptions` | Options that will be used during the import. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions). |
+| **options** | `DatabaseSmugglerImportOptions` | Options that will be used during the import. Read more [here](#databasesmugglerimportoptions). |
 | **stream** | `Stream` | Stream with data to import |
 | **fromFile** | `string` | Path to a file from which data will be imported |
 
@@ -109,7 +109,7 @@ const operation = await store.smuggler.import(options, stream);
 | **includeExpired** | `boolean` | Should expired documents be included in the import. Default: `true` |
 | **includeArtificial** | `boolean` | ? |
 | **removeAnalyzers** | `boolean` | Should analyzers be removed from Indexes. Default: `false` |
-| **transformScript** | `string` | JavaScript-based script applied to every imported document. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
+| **transformScript** | `string` | JavaScript-based script applied to every imported document. Read more [here](#transformscript). |
 | **maxStepsForTransformScript** | `number` | Maximum number of steps that transform script can process before failing. Default: 10000 |
 | **skipRevisionCreation** | `boolean` | skip revision creation |
 | **encryptionKey** | `string` | Encryption key used for restore |

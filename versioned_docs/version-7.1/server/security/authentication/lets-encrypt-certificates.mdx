@@ -108,7 +108,7 @@ When your server uses a Let's Encrypt certificate obtained via the Setup Wizard,
 ravendb> triggerCertificateRefresh [-replaceImmediately]
 ```
 
-Both methods trigger the same certificate replacement process described [above](../../../server/security/authentication/lets-encrypt-certificates.mdx#automatic-renewal-for-lets-encrypt-certificates-obtained-via-ravendb).
+Both methods trigger the same certificate replacement process described [above](#automatic-renewal-for-lets-encrypt-certificates-obtained-via-ravendb).
 
 If a node is down when renewal is triggered, the cluster will complete the operation without that node. **When bringing that node up, the certificate must be replaced manually.**
 

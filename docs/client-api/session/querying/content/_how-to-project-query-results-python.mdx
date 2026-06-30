@@ -13,14 +13,14 @@ import CodeBlock from '@theme/CodeBlock';
 
 * In this page:
 
-  * [Projections overview](../../../../client-api/session/querying/how-to-project-query-results.mdx#projections-overview)
+  * [Projections overview](#projections-overview)
 
-  * [Projection Methods](../../../../client-api/session/querying/how-to-project-query-results.mdx#projection-methods)  
-      * [select_fields_query_data](../../../../client-api/session/querying/how-to-project-query-results.mdx#select_fields_query_data)  
-      * [raw_query with `select`](../../../../client-api/session/querying/how-to-project-query-results.mdx#raw_query-with-select)  
-      * [select_fields](../../../../client-api/session/querying/how-to-project-query-results.mdx#select_fields)  
+  * [Projection Methods](#projection-methods)  
+      * [select_fields_query_data](#select_fields_query_data)  
+      * [raw_query with `select`](#raw_query-with-select)  
+      * [select_fields](#select_fields)  
 
-  * [Single projection per query](../../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query)
+  * [Single projection per query](#single-projection-per-query)
 
 </Admonition>
 ## Projections overview
@@ -75,12 +75,12 @@ import CodeBlock from '@theme/CodeBlock';
   but you cannot filter which documents will be returned. That has already been determined earlier in the query pipeline.
 
 * Only a single projection request can be made per query.  
-  Learn more in [single projection per query](../../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query).
+  Learn more in [single projection per query](#single-projection-per-query).
 
 ### The cost of projections:
 
 * Queries in RavenDB do not allow any computation to occur during the query phase.  
-  However, you can perform any [calculations](../../../../client-api/session/querying/how-to-project-query-results.mdx#example---projection-with-calculations) 
+  However, you can perform any [calculations](#example---projection-with-calculations) 
 * inside the projection.
 
 * But while calculations within a projection are allowed, having a very complex logic can impact query performance.  

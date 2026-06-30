@@ -20,23 +20,23 @@ import ContentFrame from "@site/src/components/ContentFrame";
   so queries written for a non-sharded database can usually be used without modification.
     
 * Some querying features are not yet implemented.
-  Others, such as [filter](../sharding/querying.mdx#filter), behave a little differently in a sharded database.
+  Others, such as [filter](#filter), behave a little differently in a sharded database.
   These cases are described below.  
 
 * In this article:  
-  * [Querying a sharded database](../sharding/querying.mdx#querying-a-sharded-database)
-  * [Querying selected shards](../sharding/querying.mdx#querying-selected-shards)
-  * [Including items in a query](../sharding/querying.mdx#including-items-in-a-query)
-  * [Paging query results](../sharding/querying.mdx#paging-query-results)
-  * [Streaming query results](../sharding/querying.mdx#streaming-query-results)    
-  * [Filtering query results](../sharding/querying.mdx#filtering-query-results)
-      * [`where`](../sharding/querying.mdx#where)
-      * [`filter`](../sharding/querying.mdx#filter)
-      * [`where` vs `filter` recommendations](../sharding/querying.mdx#wherevsfilterrecommendations)
-  * [Loading a document within a projection](../sharding/querying.mdx#loading-a-document-within-a-projection)  
-  * [`order by` and `limit` in a Map-Reduce query](../sharding/querying.mdx#order-by-and-limit-in-a-map-reduce-query)  
-  * [Timing queries](../sharding/querying.mdx#timing-queries)
-  * [Unsupported querying features](../sharding/querying.mdx#unsupported-querying-features)  
+  * [Querying a sharded database](#querying-a-sharded-database)
+  * [Querying selected shards](#querying-selected-shards)
+  * [Including items in a query](#including-items-in-a-query)
+  * [Paging query results](#paging-query-results)
+  * [Streaming query results](#streaming-query-results)    
+  * [Filtering query results](#filtering-query-results)
+      * [`where`](#where)
+      * [`filter`](#filter)
+      * [`where` vs `filter` recommendations](#wherevsfilterrecommendations)
+  * [Loading a document within a projection](#loading-a-document-within-a-projection)  
+  * [`order by` and `limit` in a Map-Reduce query](#order-by-and-limit-in-a-map-reduce-query)  
+  * [Timing queries](#timing-queries)
+  * [Unsupported querying features](#unsupported-querying-features)  
   
 </Admonition>
 
@@ -278,7 +278,7 @@ where Name == "Joe"
     
 * Although includes are supported in regular sharded queries,  
   they are **not** supported when query results are **streamed**.  
-  Learn more in [Streaming query results](../sharding/querying.mdx#streaming-query-results).
+  Learn more in [Streaming query results](#streaming-query-results).
 
 </Panel>
 
@@ -520,7 +520,7 @@ Both static index queries and dynamic queries (auto-indexes) are supported.
 
 <Panel heading="Filtering query results"> 
 
-Data can be filtered using the [where](../sharding/querying.mdx#where) and [filter](../sharding/querying.mdx#filter) keywords on both non-sharded and sharded databases.  
+Data can be filtered using the [where](#where) and [filter](#filter) keywords on both non-sharded and sharded databases.  
     
 However, in a sharded database,  
 **when filtering results from a Map-Reduce index query or a dynamic aggregation query**, these commands behave differently.
@@ -557,11 +557,11 @@ The server uses it to retrieve only items that match the specified conditions.
       * Each shard evaluates the `where` condition using only the data stored on that shard.  
       * If a product was sold 4000 times on each shard, the query shown above will filter it out 
         on every shard — even though its total sales across the database far exceed 5000.
-      * To address this, use the [filter](../sharding/querying.mdx#filter) keyword instead,  
+      * To address this, use the [filter](#filter) keyword instead,  
         whose behavior on sharded databases is designed for exactly this case.  
       * Note: using `where` does **not** cause this problem when filtering on a `GroupBy` field (the reduce-key),  
         and is actually the recommended approach in that case.  
-        Learn more in [`where` vs `filter` recommendations](../sharding/querying.mdx#wherevsfilterrecommendations) below.
+        Learn more in [`where` vs `filter` recommendations](#wherevsfilterrecommendations) below.
     
 </ContentFrame>  
     
@@ -951,13 +951,13 @@ Querying features that are not supported or not yet implemented in sharded datab
   will throw a `NotSupportedInShardingException`.  
 
 * **Loading a document within a Map-Reduce projection**  
-  Read more about this topic in [Loading a document within a projection](../sharding/querying.mdx#loading-a-document-within-a-projection) above.      
+  Read more about this topic in [Loading a document within a projection](#loading-a-document-within-a-projection) above.      
     
 * **Ordering streamed Map-Reduce results by _non-reduce-key_ fields**  
-  Read more about this topic in [Streaming query results](../sharding/querying.mdx#streaming-query-results) above.
+  Read more about this topic in [Streaming query results](#streaming-query-results) above.
     
 * **_Includes_ and _loads_ are not supported in sharded streaming queries**  
-  Read more about this topic in [Streaming query results](../sharding/querying.mdx#streaming-query-results) above.
+  Read more about this topic in [Streaming query results](#streaming-query-results) above.
     
 * **Querying for similar documents with _MoreLikeThis_**  
   [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis.mdx) is not supported in a sharded database.

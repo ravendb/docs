@@ -24,20 +24,20 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * With prefixed sharding, you only control the shard where a document is stored.  
   You cannot control the specific bucket within that shard where the document will reside.  
   This can be partially addressed by [anchoring documents](../../sharding/administration/anchoring-documents.mdx) to a bucket.
-  Learn more [below](../../sharding/administration/sharding-by-prefix.mdx#prefixed-sharding-vs-anchoring-documents).
+  Learn more [below](#prefixed-sharding-vs-anchoring-documents).
   
 * In this page:  
-  * [Why use prefixed sharding](../../sharding/administration/sharding-by-prefix.mdx#why-use-prefixed-sharding)  
-  * [Overview](../../sharding/administration/sharding-by-prefix.mdx#overview)  
-  * [Bucket management](../../sharding/administration/sharding-by-prefix.mdx#bucket-management)  
-  * [Adding prefixes via Studio](../../sharding/administration/sharding-by-prefix.mdx#adding-prefixes-via-studio)
-  * [Adding prefixes via Client API](../../sharding/administration/sharding-by-prefix.mdx#adding-prefixes-via-client-api)
-      * [Add prefixes when creating a database](../../sharding/administration/sharding-by-prefix.mdx#add-prefixes-when-creating-a-database)
-      * [Add prefixes after database creation](../../sharding/administration/sharding-by-prefix.mdx#add-prefixes-after-database-creation)
-  * [Removing prefixes](../../sharding/administration/sharding-by-prefix.mdx#removing-prefixes)
-  * [Updating shard configurations for prefixes](../../sharding/administration/sharding-by-prefix.mdx#updating-shard-configurations-for-prefixes)
-  * [Querying selected shards by prefix](../../sharding/administration/sharding-by-prefix.mdx#querying-selected-shards-by-prefix)
-  * [Prefixed sharding vs Anchoring documents](../../sharding/administration/sharding-by-prefix.mdx#prefixed-sharding-vs-anchoring-documents)
+  * [Why use prefixed sharding](#why-use-prefixed-sharding)  
+  * [Overview](#overview)  
+  * [Bucket management](#bucket-management)  
+  * [Adding prefixes via Studio](#adding-prefixes-via-studio)
+  * [Adding prefixes via Client API](#adding-prefixes-via-client-api)
+      * [Add prefixes when creating a database](#add-prefixes-when-creating-a-database)
+      * [Add prefixes after database creation](#add-prefixes-after-database-creation)
+  * [Removing prefixes](#removing-prefixes)
+  * [Updating shard configurations for prefixes](#updating-shard-configurations-for-prefixes)
+  * [Querying selected shards by prefix](#querying-selected-shards-by-prefix)
+  * [Prefixed sharding vs Anchoring documents](#prefixed-sharding-vs-anchoring-documents)
 
 </Admonition>
 ## Why use prefixed sharding
@@ -71,7 +71,7 @@ reduces network latency for region-specific operations, and enhances overall sys
 
 * To store documents on a specific shard, define the target shard for each document ID prefix that you add.  
   Documents with IDs matching any of the defined prefixes will be routed to the corresponding shard.  
-  Learn how to [add prefixes](../../sharding/administration/sharding-by-prefix.mdx#adding-prefixes-via-client-api) below.
+  Learn how to [add prefixes](#adding-prefixes-via-client-api) below.
 
 * For example, you can define that all documents with an ID starting with `users/us/` will be stored in shard **#0**.  
   Consequently, the following sample documents will be stored in shard **#0**:  
@@ -392,7 +392,7 @@ await store.Maintenance.SendAsync(deletePrefixOp);
     * **When removing a shard from an existing prefix configuration**,  
       you must first manually move the buckets from the removed shard to the other shards that are assigned to this prefix.
 
-* In the below example, in addition to shard **#2** that was configured in the [previous](../../sharding/administration/sharding-by-prefix.mdx#add-prefixes-after-database-creation) example,  
+* In the below example, in addition to shard **#2** that was configured in the [previous](#add-prefixes-after-database-creation) example,  
   we are adding shard **#0** as a destination for documents with prefix `users/eu/`.
 
 <Tabs groupId='languageSyntax'>

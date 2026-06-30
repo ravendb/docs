@@ -16,30 +16,30 @@ import Panel from '@site/src/components/Panel';
 * Sorting is applied by the server after the query filtering stage.  
   Filtering is recommended, as it reduces the number of results RavenDB needs to sort when querying a large dataset.
 
-* Multiple sorting operations can be [chained](../../../querying/sorting-query-results/sort-query-results.mdx#chain-ordering).
+* Multiple sorting operations can be [chained](#chain-ordering).
     
 * All sorting capabilities available for **dynamic queries** can also be used when querying a **static-index**.  
   The same syntax used with dynamic queries also applies when querying indexes.
     
 * In this article:
-    * [Order by field value](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-field-value) 
-        * [Order by field value - dynamic query](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-field-value---dynamic-query) 
-        * [Order by field value - querying a static-index ](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-field-value---querying-a-static-index) 
-        * [Ordering type](../../../querying/sorting-query-results/sort-query-results.mdx#ordering-type) 
-        * [Control position of null values](../../../querying/sorting-query-results/sort-query-results.mdx#control-position-of-null-values) 
-    * [Order by searchable fields](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-searchable-fields)
-    * [Order by score](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-score)
-        * [Get resulting score](../../../querying/sorting-query-results/sort-query-results.mdx#get-resulting-score)  
-    * [Order by random](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-random)   
-    * [Order by spatial](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-spatial)     
-    * [Order by count (aggregation query)](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-count-aggregation-query)  
-    * [Order by sum (aggregation query)](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-sum-aggregation-query)
-    * [Order by metadata](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-metadata)
-    * [Force ordering type](../../../querying/sorting-query-results/sort-query-results.mdx#force-ordering-type)
-    * [Chain ordering](../../../querying/sorting-query-results/sort-query-results.mdx#chain-ordering)
-    * [Custom sorters](../../../querying/sorting-query-results/sort-query-results.mdx#custom-sorters)
-    * [Performance notes](../../../querying/sorting-query-results/sort-query-results.mdx#performance-notes)
-    * [Syntax](../../../querying/sorting-query-results/sort-query-results.mdx#syntax)
+    * [Order by field value](#order-by-field-value) 
+        * [Order by field value - dynamic query](#order-by-field-value---dynamic-query) 
+        * [Order by field value - querying a static-index ](#order-by-field-value---querying-a-static-index) 
+        * [Ordering type](#ordering-type) 
+        * [Control position of null values](#control-position-of-null-values) 
+    * [Order by searchable fields](#order-by-searchable-fields)
+    * [Order by score](#order-by-score)
+        * [Get resulting score](#get-resulting-score)  
+    * [Order by random](#order-by-random)   
+    * [Order by spatial](#order-by-spatial)     
+    * [Order by count (aggregation query)](#order-by-count-aggregation-query)  
+    * [Order by sum (aggregation query)](#order-by-sum-aggregation-query)
+    * [Order by metadata](#order-by-metadata)
+    * [Force ordering type](#force-ordering-type)
+    * [Chain ordering](#chain-ordering)
+    * [Custom sorters](#custom-sorters)
+    * [Performance notes](#performance-notes)
+    * [Syntax](#syntax)
 
 </Admonition>
 
@@ -204,7 +204,7 @@ order by UnitsInStock as long desc
 * E.g. in the above example, ordering by `x => x.UnitsInStock` will result in `OrderingType.Long`  
   because that property data type is an integer.
 
-* Different ordering can be forced - see [Force ordering type](../../../querying/sorting-query-results/sort-query-results.mdx#force-ordering-type) below.
+* Different ordering can be forced - see [Force ordering type](#force-ordering-type) below.
 
 </Admonition>
     
@@ -221,7 +221,7 @@ order by UnitsInStock as long desc
 
 * The requested null placement is a per-query, per-sort-clause setting.   
   When using multiple `order by` clauses, each clause can define its own null placement.    
-  Learn more in [Chain ordering](../../../querying/sorting-query-results/sort-query-results.mdx#chain-ordering).     
+  Learn more in [Chain ordering](#chain-ordering).     
     
 * Use `NullsOrdering.First` to place documents with `null` values **before** documents with non-null values.  
   Use `NullsOrdering.Last` to place documents with `null` values **after** documents with non-null values.    
@@ -1124,7 +1124,7 @@ order by QuantityPerUnit as alphanumeric
 
 * This is achieved by using the `ThenBy` (`ThenByDescending`) and `ThenByScore` (`ThenByScoreDescending`) methods.
 
-* When ordering by a field, each ordering clause can also define its own [null placement](../../../querying/sorting-query-results/sort-query-results.mdx#control-position-of-null-values) (Corax only).   
+* When ordering by a field, each ordering clause can also define its own [null placement](#control-position-of-null-values) (Corax only).   
   If no null placement is specified for an ordering clause, RavenDB uses the behavior configured by [Indexing.Querying.Corax.NullsSortMode](../../../server/configuration/indexing-configuration.mdx#indexingqueryingcoraxnullssortmode) for that clause.    
 
 * **When using the Lucene search engine** -  

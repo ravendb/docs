@@ -26,40 +26,40 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Indexes created by issuing a query are called `dynamic` or `Auto` indexes. 
    * They can be easily identified. Their name starts with the `Auto/` prefix.
-   * If no [Auto-Index](../../indexes/creating-and-deploying.mdx#auto-indexes) exists to satisfy a query, 
+   * If no [Auto-Index](#auto-indexes) exists to satisfy a query, 
      a new Auto-Index will be created and maintained automatically.
 * Indexes created explicitly by the user are called `static`.
    * [To use a Static Index in a query](../../indexes/querying/query-index.mdx), 
      **you must specify the index in the query definition**. If you don't specify the index, 
      RavenDB will look for an auto-index and potentially create a new one.  
    * Static Indexes can be defined to do calculations, conversions, and various other processes behind the scenes, to prevent
-     doing these costly processes at query time (see [Using AbstractIndexCreationTask](../../indexes/creating-and-deploying.mdx#using-abstractindexcreationtask), 
+     doing these costly processes at query time (see [Using AbstractIndexCreationTask](#using-abstractindexcreationtask), 
      our [map-indexes](../../indexes/map-indexes.mdx) article, [indexing multiple collections](../../indexes/multi-map-indexes.mdx), 
      and [map-reduce indexing](../../indexes/map-reduce-indexes.mdx)).  
 
 </Admonition>
 
 * In this page:
-   * [Static indexes](../../indexes/creating-and-deploying.mdx#static-indexes)
-      * [Using AbstractIndexCreationTask](../../indexes/creating-and-deploying.mdx#using-abstractindexcreationtask)
-         * [Naming convention](../../indexes/creating-and-deploying.mdx#naming-convention)
-         * [Sending to server](../../indexes/creating-and-deploying.mdx#sending-to-server)
-         * [Creating an index with custom configuration](../../indexes/creating-and-deploying.mdx#creating-an-index-with-custom-configuration)
-         * [Using assembly scanner](../../indexes/creating-and-deploying.mdx#using-assembly-scanner)
-         * [Example](../../indexes/creating-and-deploying.mdx#example)
-      * [Using maintenance operations](../../indexes/creating-and-deploying.mdx#using-maintenance-operations)
-         * [IndexDefinitionBuilder](../../indexes/creating-and-deploying.mdx#indexdefinitionbuilder)
-   * [Auto-indexes](../../indexes/creating-and-deploying.mdx#auto-indexes)
-      * [Naming convention](../../indexes/creating-and-deploying.mdx#naming-convention-1)
-      * [Auto indexes and indexing state](../../indexes/creating-and-deploying.mdx#auto-indexes-and-indexing-state)
-   * [If indexes exhaust system resources](../../indexes/creating-and-deploying.mdx#if-indexes-exhaust-system-resources)
+   * [Static indexes](#static-indexes)
+      * [Using AbstractIndexCreationTask](#using-abstractindexcreationtask)
+         * [Naming convention](#naming-convention)
+         * [Sending to server](#sending-to-server)
+         * [Creating an index with custom configuration](#creating-an-index-with-custom-configuration)
+         * [Using assembly scanner](#using-assembly-scanner)
+         * [Example](#example)
+      * [Using maintenance operations](#using-maintenance-operations)
+         * [IndexDefinitionBuilder](#indexdefinitionbuilder)
+   * [Auto-indexes](#auto-indexes)
+      * [Naming convention](#naming-convention-1)
+      * [Auto indexes and indexing state](#auto-indexes-and-indexing-state)
+   * [If indexes exhaust system resources](#if-indexes-exhaust-system-resources)
 
 
 </Admonition>
 
 ## Static indexes
 
-There are a couple of ways to create a `static index` and send it to the server. We can use [maintenance operations](../../indexes/creating-and-deploying.mdx#using-maintenance-operations) or create a [custom class](../../indexes/creating-and-deploying.mdx#using-abstractindexcreationtask). 
+There are a couple of ways to create a `static index` and send it to the server. We can use [maintenance operations](#using-maintenance-operations) or create a [custom class](#using-abstractindexcreationtask). 
 
 ---
 

@@ -20,17 +20,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * Updating a `Rehab` or a `Promotable` [Database Node](../../../server/clustering/distribution/distributed-database.mdx#database-topology)  
 
 * There is no single coordinator handing out tasks to a specific node.  
-  Instaed, each node decides on its own if it is the [Reponsible Node](../../../server/clustering/distribution/highly-available-tasks.mdx#responsible-node) of the task.  
+  Instaed, each node decides on its own if it is the [Reponsible Node](#responsible-node) of the task.  
 
 * Each node will re-evaluate its responsibilities with every change made to the [Database Record](../../../client-api/operations/server-wide/create-database.mdx),  
   such as defining a new _index_, configuring or modifying an _Ongoing Task_, any _Database Topology_ change, etc.  
 
 * In this page:  
-  * [License](../../../server/clustering/distribution/highly-available-tasks.mdx#license)  
-  * [Constraints](../../../server/clustering/distribution/highly-available-tasks.mdx#constraints)  
-  * [Responsible Node](../../../server/clustering/distribution/highly-available-tasks.mdx#responsible-node)  
-  * [Tasks Relocation](../../../server/clustering/distribution/highly-available-tasks.mdx#tasks-relocation)  
-  * [Pinning a Task](../../../server/clustering/distribution/highly-available-tasks.mdx#pinning-a-task)  
+  * [License](#license)  
+  * [Constraints](#constraints)  
+  * [Responsible Node](#responsible-node)  
+  * [Tasks Relocation](#tasks-relocation)  
+  * [Pinning a Task](#pinning-a-task)  
 </Admonition>
 ## License
 
@@ -49,7 +49,7 @@ to verify whether the Highly Available Tasks feature is activated in your databa
 * If your license does **not** provide highly available tasks, the responsibilites of a failed node will be 
   resumed when the node returns online.  
  
-* Scenarios [below](../../../server/clustering/distribution/highly-available-tasks.mdx#tasks-relocation) 
+* Scenarios [below](#tasks-relocation) 
   are meant to demonstrate the behavior of a system licensed for highly available tasks.  
 
 

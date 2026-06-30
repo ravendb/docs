@@ -14,15 +14,15 @@ import CodeBlock from '@theme/CodeBlock';
   directly to the server via DocumentStore Operations instead of using the higher-level Session API.
 
 * In this page:  
-  * [Why use operations](../../../client-api/operations/what-are-operations.mdx#why-use-operations)  
-  * [How operations work](../../../client-api/operations/what-are-operations.mdx#how-operations-work)  
+  * [Why use operations](#why-use-operations)  
+  * [How operations work](#how-operations-work)  
   * **Operation types**: 
-      * [Common operations](../../../client-api/operations/what-are-operations.mdx#common-operations)  
-      * [Maintenance operations](../../../client-api/operations/what-are-operations.mdx#maintenance-operations)  
-      * [Server-maintenance operations](../../../client-api/operations/what-are-operations.mdx#server-maintenance-operations)
-  * [Manage lengthy operations](../../../client-api/operations/what-are-operations.mdx#manage-lengthy-operations)
-      * [Wait for completion](../../../client-api/operations/what-are-operations.mdx#wait-for-completion)  
-      * [Kill operation](../../../client-api/operations/what-are-operations.mdx#kill-operation)  
+      * [Common operations](#common-operations)  
+      * [Maintenance operations](#maintenance-operations)  
+      * [Server-maintenance operations](#server-maintenance-operations)
+  * [Manage lengthy operations](#manage-lengthy-operations)
+      * [Wait for completion](#wait-for-completion)  
+      * [Kill operation](#kill-operation)  
 
 </Admonition>
 ## Why use operations
@@ -58,7 +58,7 @@ import CodeBlock from '@theme/CodeBlock';
   If needed, data will then replicate to the other nodes in the database-group.  
 * **Background operations**:  
   Some operations may take a long time to complete and can be awaited for completion.   
-  Learn more [below](../../../client-api/operations/what-are-operations.mdx#wait-for-completion).
+  Learn more [below](#wait-for-completion).
 
 
 
@@ -70,7 +70,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * These operations include set-based operations such as _PatchOperation_, _CounterBatchOperation_,  
   document-extensions related operations such as getting/putting an attachment, and more.  
-  See all available operations [below](../../../client-api/operations/what-are-operations.mdx#the-following-common-operations-are-available).
+  See all available operations [below](#the-following-common-operations-are-available).
 
 * To execute a common operation request,  
   use the `send` method on the `operations` property of the DocumentStore.
@@ -155,7 +155,7 @@ def send_patch_operation_with_entity_class(
 
 * These operations include database management operations such as setting client configuration,  
   managing indexes & ongoing-tasks operations, getting stats, and more.  
-  See all available maintenance operations [below](../../../client-api/operations/what-are-operations.mdx#the-following-maintenance-operations-are-available).
+  See all available maintenance operations [below](#the-following-maintenance-operations-are-available).
  
 * To execute a maintenance operation request,  
   use the `send` method on the `maintenance` property in the DocumentStore.
@@ -317,7 +317,7 @@ def send_async(self, operation: MaintenanceOperation[OperationIdResult]) -> Oper
   Use [for_node](../../../client-api/operations/how-to/switch-operations-to-a-different-node.mdx) to operate on a specific node other than the default defined in the client configuration.
 
 * These operations include server management and configuration operations.  
-  See all available operations [below](../../../client-api/operations/what-are-operations.mdx#the-following-server-maintenance-operations-are-available).
+  See all available operations [below](#the-following-server-maintenance-operations-are-available).
 
 * To execute a server-maintenance operation request,  
   use the `send` method on the `maintenance.server` property in the DocumentStore.

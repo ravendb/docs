@@ -19,19 +19,19 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * Compare-exchange items are also suitable for storing shared or global values that aren't tied to a specific document -
   such as configuration flags, feature toggles, or reusable identifiers stored under a unique key.  
-  However, [unlike regular documents](../../compare-exchange/overview.mdx#why-not-use-regular-documents-to-enforce-uniqueness),
+  However, [unlike regular documents](#why-not-use-regular-documents-to-enforce-uniqueness),
   compare-exchange provides atomic updates, version-based conflict prevention, and Raft-based consistency for distributed safety.
   
-* Compare-exchange items are [not replicated externally](../../compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases) to other databases.   
+* Compare-exchange items are [not replicated externally](#why-compare-exchange-items-are-not-replicated-to-external-databases) to other databases.   
 
 * In this article:  
-  * [What compare-exchange items are](../../compare-exchange/overview.mdx#what-compare-exchange-items-are)  
-  * [Ways to create and manage compare-exchange items](../../compare-exchange/overview.mdx#ways-to-create-and-manage-compare-exchange-items)  
-  * [Why compare-exchange items are not replicated to external databases](../../compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases)  
-  * [Why not use regular documents to enforce uniqueness](../../compare-exchange/overview.mdx#why-not-use-regular-documents-to-enforce-uniqueness)  
-  * [Example I - Email address reservation](../../compare-exchange/overview.mdx#example-i-email-address-reservation)  
-  * [Example II - Reserve a shared resource](../../compare-exchange/overview.mdx#example-ii-reserve-a-shared-resource)  
-  * [Use cases](../../compare-exchange/overview.mdx#use-cases)  
+  * [What compare-exchange items are](#what-compare-exchange-items-are)  
+  * [Ways to create and manage compare-exchange items](#ways-to-create-and-manage-compare-exchange-items)  
+  * [Why compare-exchange items are not replicated to external databases](#why-compare-exchange-items-are-not-replicated-to-external-databases)  
+  * [Why not use regular documents to enforce uniqueness](#why-not-use-regular-documents-to-enforce-uniqueness)  
+  * [Example I - Email address reservation](#example-i-email-address-reservation)  
+  * [Example II - Reserve a shared resource](#example-ii-reserve-a-shared-resource)  
+  * [Use cases](#use-cases)  
 
 </Admonition>
 

@@ -5,8 +5,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 The following methods allow you to subscribe to operation changes:
 
-- [ForOperationId](../../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#foroperationid)
-- [ForAllOperations](../../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#foralloperations)
+- [ForOperationId](#foroperationid)
+- [ForAllOperations](#foralloperations)
 
 ## ForOperationId
 
@@ -37,7 +37,7 @@ tracking to a single node: `store.Changes(dbName, nodeTag)`
 
 | Return value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[OperationStatusChange](../../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#operationchange)&gt; | Observable that allows you to add subscriptions to notifications for an operation with a given ID. |
+| IChangesObservable&lt;[OperationStatusChange](#operationchange)&gt; | Observable that allows you to add subscriptions to notifications for an operation with a given ID. |
 
 ### Example
 
@@ -89,7 +89,7 @@ tracking to a single node: `store.Changes(dbName, nodeTag)`
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[OperationStatusChange](../../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#operationchange)&gt; | Observable that allows to add subscriptions to notifications for all operations. |
+| IChangesObservable&lt;[OperationStatusChange](#operationchange)&gt; | Observable that allows to add subscriptions to notifications for all operations. |
 
 ### Syntax
 
@@ -120,7 +120,7 @@ tracking to a single node: `store.Changes(dbName, nodeTag)`
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **State** | [OperationState](../../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#operationstate) | Operation state |
+| **State** | [OperationState](#operationstate) | Operation state |
 | **OperationId** | long | Operation ID |
 
 
@@ -131,9 +131,9 @@ tracking to a single node: `store.Changes(dbName, nodeTag)`
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **Result** | [IOperationResult](../../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#operationresult) | Operation result |
+| **Result** | [IOperationResult](#operationresult) | Operation result |
 | **Progress** | IOperationProgress| Instance of IOperationProgress (json representation of the progress) |
-| **Status** | [OperationStatus](../../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#operationstatus) | Operation status |
+| **Status** | [OperationStatus](#operationstatus) | Operation status |
 
 
 ## OperationResult

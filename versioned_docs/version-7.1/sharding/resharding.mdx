@@ -29,14 +29,14 @@ import LanguageContent from "@site/src/components/LanguageContent";
   at a time, to avoid resource overuse.  
 
 * In this page:  
-  * [Resharding](../sharding/resharding.mdx#resharding)  
-  * [The Resharding Process](../sharding/resharding.mdx#the-resharding-process)  
-      * [Following Resharding Progress](../sharding/resharding.mdx#following-resharding-progress)  
-      * [Racing](../sharding/resharding.mdx#racing)  
-  * [Change Vector on a Sharded Database](../sharding/resharding.mdx#change-vector-on-a-sharded-database)  
-  * [Resharding and Other Features](../sharding/resharding.mdx#resharding-and-other-features)  
-  * [Executing Resharding](../sharding/resharding.mdx#executing-resharding)  
-      * [Bucket Ownership](../sharding/resharding.mdx#bucket-ownership)  
+  * [Resharding](#resharding)  
+  * [The Resharding Process](#the-resharding-process)  
+      * [Following Resharding Progress](#following-resharding-progress)  
+      * [Racing](#racing)  
+  * [Change Vector on a Sharded Database](#change-vector-on-a-sharded-database)  
+  * [Resharding and Other Features](#resharding-and-other-features)  
+  * [Executing Resharding](#executing-resharding)  
+      * [Bucket Ownership](#bucket-ownership)  
 
 </Admonition>
 ## Resharding
@@ -82,7 +82,7 @@ using a database like the one shown below:
 You can follow the progress of the resharding progress using -  
 
 * **Studio Popup Messages**  
-  When [Studio is used for resharding](../sharding/resharding.mdx#executing-resharding) 
+  When [Studio is used for resharding](#executing-resharding) 
   the user interface produces popup messages to keep users 
   informed of its progress.  
 
@@ -177,7 +177,7 @@ related to them, including revisions, time series, attachments, and
 so on, resharding a large document's bucket may take a considerable 
 amount of time.  
 During this time, checking which shard the bucket belongs to 
-[may show](../sharding/resharding.mdx#bucket-ownership) 
+[may show](#bucket-ownership) 
 both the bucket's source and destination shards.  
 However, if documents stored in this bucket are [queried](../sharding/querying.mdx) 
 during this time, RavenDB will add them to the retrieved dataset 

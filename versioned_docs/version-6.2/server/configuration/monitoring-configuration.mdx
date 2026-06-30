@@ -15,47 +15,47 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * In this article:
     * OpenTelemetry monitoring:  
-      [Monitoring.OpenTelemetry.ConsoleExporter](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryconsoleexporter)  
-      [Monitoring.OpenTelemetry.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryenabled)  
-      [Monitoring.OpenTelemetry.Meters.AspNetCore.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersaspnetcoreenabled)  
-      [Monitoring.OpenTelemetry.Meters.Runtime.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersruntimeenabled)  
-      [Monitoring.OpenTelemetry.Meters.Server.CPUCredits.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersservercpucreditsenabled)  
-      [Monitoring.OpenTelemetry.Meters.Server.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersserverenabled)  
-      [Monitoring.OpenTelemetry.Meters.Server.GC.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersservergcenabled)  
-      [Monitoring.OpenTelemetry.Meters.Server.General.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersservergeneralenabled)  
-      [Monitoring.OpenTelemetry.Meters.Server.Requests.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersserverrequestsenabled)  
-      [Monitoring.OpenTelemetry.Meters.Server.Resources.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersserverresourcesenabled)  
-      [Monitoring.OpenTelemetry.Meters.Server.Storage.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersserverstorageenabled)  
-      [Monitoring.OpenTelemetry.Meters.Server.TotalDatabases.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersservertotaldatabasesenabled)  
-      [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocolenabled)  
-      [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Endpoint](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocolendpoint)  
-      [Monitoring.OpenTelemetry.OpenTelemetryProtocol.ExportProcessorType](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocolexportprocessortype)  
-      [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Headers](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocolheaders)  
-      [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Protocol](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocolprotocol)  
-      [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Timeout](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocoltimeout)    
-      [Monitoring.OpenTelemetry.ServiceInstanceId](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryserviceinstanceid)    
-      [Monitoring.OpenTelemetry.ServiceName](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryservicename)    
-      [Monitoring.OpenTelemetry.ServiceNamespace](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryservicenamespace)   
+      [Monitoring.OpenTelemetry.ConsoleExporter](#monitoringopentelemetryconsoleexporter)  
+      [Monitoring.OpenTelemetry.Enabled](#monitoringopentelemetryenabled)  
+      [Monitoring.OpenTelemetry.Meters.AspNetCore.Enabled](#monitoringopentelemetrymetersaspnetcoreenabled)  
+      [Monitoring.OpenTelemetry.Meters.Runtime.Enabled](#monitoringopentelemetrymetersruntimeenabled)  
+      [Monitoring.OpenTelemetry.Meters.Server.CPUCredits.Enabled](#monitoringopentelemetrymetersservercpucreditsenabled)  
+      [Monitoring.OpenTelemetry.Meters.Server.Enabled](#monitoringopentelemetrymetersserverenabled)  
+      [Monitoring.OpenTelemetry.Meters.Server.GC.Enabled](#monitoringopentelemetrymetersservergcenabled)  
+      [Monitoring.OpenTelemetry.Meters.Server.General.Enabled](#monitoringopentelemetrymetersservergeneralenabled)  
+      [Monitoring.OpenTelemetry.Meters.Server.Requests.Enabled](#monitoringopentelemetrymetersserverrequestsenabled)  
+      [Monitoring.OpenTelemetry.Meters.Server.Resources.Enabled](#monitoringopentelemetrymetersserverresourcesenabled)  
+      [Monitoring.OpenTelemetry.Meters.Server.Storage.Enabled](#monitoringopentelemetrymetersserverstorageenabled)  
+      [Monitoring.OpenTelemetry.Meters.Server.TotalDatabases.Enabled](#monitoringopentelemetrymetersservertotaldatabasesenabled)  
+      [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Enabled](#monitoringopentelemetryopentelemetryprotocolenabled)  
+      [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Endpoint](#monitoringopentelemetryopentelemetryprotocolendpoint)  
+      [Monitoring.OpenTelemetry.OpenTelemetryProtocol.ExportProcessorType](#monitoringopentelemetryopentelemetryprotocolexportprocessortype)  
+      [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Headers](#monitoringopentelemetryopentelemetryprotocolheaders)  
+      [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Protocol](#monitoringopentelemetryopentelemetryprotocolprotocol)  
+      [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Timeout](#monitoringopentelemetryopentelemetryprotocoltimeout)    
+      [Monitoring.OpenTelemetry.ServiceInstanceId](#monitoringopentelemetryserviceinstanceid)    
+      [Monitoring.OpenTelemetry.ServiceName](#monitoringopentelemetryservicename)    
+      [Monitoring.OpenTelemetry.ServiceNamespace](#monitoringopentelemetryservicenamespace)   
     * SNMP monitoring  
-      [Monitoring.Snmp.AuthenticationPassword](../../server/configuration/monitoring-configuration.mdx#monitoringsnmpauthenticationpassword)  
-      [Monitoring.Snmp.AuthenticationPassword.Secondary](../../server/configuration/monitoring-configuration.mdx#monitoringsnmpauthenticationpasswordsecondary)  
-      [Monitoring.Snmp.AuthenticationProtocol](../../server/configuration/monitoring-configuration.mdx#monitoringsnmpauthenticationprotocol)  
-      [Monitoring.Snmp.AuthenticationProtocol.Secondary](../../server/configuration/monitoring-configuration.mdx#monitoringsnmpauthenticationprotocolsecondary)  
-      [Monitoring.Snmp.AuthenticationUser](../../server/configuration/monitoring-configuration.mdx#monitoringsnmpauthenticationuser)  
-      [Monitoring.Snmp.AuthenticationUser.Secondary](../../server/configuration/monitoring-configuration.mdx#monitoringsnmpauthenticationusersecondary)  
-      [Monitoring.Snmp.Community](../../server/configuration/monitoring-configuration.mdx#monitoringsnmpcommunity)  
-      [Monitoring.Snmp.DisableTimeWindowChecks](../../server/configuration/monitoring-configuration.mdx#monitoringsnmpdisabletimewindowchecks)  
-      [Monitoring.Snmp.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringsnmpenabled)  
-      [Monitoring.Snmp.Port](../../server/configuration/monitoring-configuration.mdx#monitoringsnmpport)  
-      [Monitoring.Snmp.PrivacyPassword](../../server/configuration/monitoring-configuration.mdx#monitoringsnmpprivacypassword)  
-      [Monitoring.Snmp.PrivacyPassword.Secondary](../../server/configuration/monitoring-configuration.mdx#monitoringsnmpprivacypasswordsecondary)   
-      [Monitoring.Snmp.PrivacyProtocol](../../server/configuration/monitoring-configuration.mdx#monitoringsnmpprivacyprotocol)  
-      [Monitoring.Snmp.PrivacyProtocol.Secondary](../../server/configuration/monitoring-configuration.mdx#monitoringsnmpprivacyprotocolsecondary)  
-      [Monitoring.Snmp.SupportedVersions](../../server/configuration/monitoring-configuration.mdx#monitoringsnmpsupportedversions)  
+      [Monitoring.Snmp.AuthenticationPassword](#monitoringsnmpauthenticationpassword)  
+      [Monitoring.Snmp.AuthenticationPassword.Secondary](#monitoringsnmpauthenticationpasswordsecondary)  
+      [Monitoring.Snmp.AuthenticationProtocol](#monitoringsnmpauthenticationprotocol)  
+      [Monitoring.Snmp.AuthenticationProtocol.Secondary](#monitoringsnmpauthenticationprotocolsecondary)  
+      [Monitoring.Snmp.AuthenticationUser](#monitoringsnmpauthenticationuser)  
+      [Monitoring.Snmp.AuthenticationUser.Secondary](#monitoringsnmpauthenticationusersecondary)  
+      [Monitoring.Snmp.Community](#monitoringsnmpcommunity)  
+      [Monitoring.Snmp.DisableTimeWindowChecks](#monitoringsnmpdisabletimewindowchecks)  
+      [Monitoring.Snmp.Enabled](#monitoringsnmpenabled)  
+      [Monitoring.Snmp.Port](#monitoringsnmpport)  
+      [Monitoring.Snmp.PrivacyPassword](#monitoringsnmpprivacypassword)  
+      [Monitoring.Snmp.PrivacyPassword.Secondary](#monitoringsnmpprivacypasswordsecondary)   
+      [Monitoring.Snmp.PrivacyProtocol](#monitoringsnmpprivacyprotocol)  
+      [Monitoring.Snmp.PrivacyProtocol.Secondary](#monitoringsnmpprivacyprotocolsecondary)  
+      [Monitoring.Snmp.SupportedVersions](#monitoringsnmpsupportedversions)  
     * Other monitoring:  
-      [Monitoring.Cpu.Exec](../../server/configuration/monitoring-configuration.mdx#monitoringcpuexec)  
-      [Monitoring.Cpu.Exec.Arguments](../../server/configuration/monitoring-configuration.mdx#monitoringcpuexecarguments)  
-      [Monitoring.Disk.ReadStatsDebounceTimeInMs](../../server/configuration/monitoring-configuration.mdx#monitoringdiskreadstatsdebouncetimeinms)  
+      [Monitoring.Cpu.Exec](#monitoringcpuexec)  
+      [Monitoring.Cpu.Exec.Arguments](#monitoringcpuexecarguments)  
+      [Monitoring.Disk.ReadStatsDebounceTimeInMs](#monitoringdiskreadstatsdebouncetimeinms)  
 
 </Admonition>
 
@@ -257,7 +257,7 @@ OpenTelemetryProtocol timeout value.
 * Sets the OpenTelemetry **service name**.
   This value is reported as the `service.name` resource attribute and is used to identify the RavenDB service in observability tools, such as the .NET Aspire dashboard.
 
-* If [Monitoring.OpenTelemetry.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryenabled) is set to `true`,
+* If [Monitoring.OpenTelemetry.Enabled](#monitoringopentelemetryenabled) is set to `true`,
   the effective value must not be `null`, empty, or whitespace.  
   Otherwise, the server will fail to start.
 
@@ -274,7 +274,7 @@ OpenTelemetryProtocol timeout value.
 * Sets the OpenTelemetry **service namespace**.
   This value is reported as the `service.namespace` resource attribute and is used to group related services together in observability tools.  
 
-* If [Monitoring.OpenTelemetry.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryenabled) is set to `true`,
+* If [Monitoring.OpenTelemetry.Enabled](#monitoringopentelemetryenabled) is set to `true`,
   the effective value must not be `null`, empty, or whitespace.  
   Otherwise, the server will fail to start.
 

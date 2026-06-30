@@ -17,11 +17,11 @@ import Panel from '@site/src/components/Panel';
   To learn how to write a custom sorter, see: [How to write a custom sorter](../../../../querying/sorting-query-results/custom-sorters/overview.mdx#how-to-write-a-custom-sorter). 
     
 * In this article:
-  * [Add server-wide custom sorter - via the Client API](../../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx#add-server-wide-custom-sorter-via-the-client-api)
-  * [Add server-wide custom sorter - via Studio](../../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx#add-server-wide-custom-sorter-via-studio)
-  * [Delete server-wide custom sorter](../../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx#delete-server-wide-custom-sorter)
-  * [Test custom sorter](../../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx#test-custom-sorter)
-  * [Syntax](../../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx#syntax)
+  * [Add server-wide custom sorter - via the Client API](#add-server-wide-custom-sorter-via-the-client-api)
+  * [Add server-wide custom sorter - via Studio](#add-server-wide-custom-sorter-via-studio)
+  * [Delete server-wide custom sorter](#delete-server-wide-custom-sorter)
+  * [Test custom sorter](#test-custom-sorter)
+  * [Syntax](#syntax)
 
 </Admonition>
 
@@ -92,7 +92,7 @@ order by custom(UnitsInStock, "MyServerWideCustomSorter")
 
 1. Go to **Manage Server &gt; Server-Wide Sorters**.
 2. Click to add a new server-wide custom sorter.
-   See [Add a server-wide custom sorter](../../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx#add-a-server-wide-custom-sorter) below.
+   See [Add a server-wide custom sorter](#add-a-server-wide-custom-sorter) below.
 3. The **server-wide** custom sorters are listed here.
 4. Click to edit this server-wide custom sorter.
 5. Click to delete this server-wide custom sorter.
@@ -115,7 +115,7 @@ order by custom(UnitsInStock, "MyServerWideCustomSorter")
 
 <Panel heading="Delete server-wide custom sorter">
     
-In addition to deleting a server-wide custom sorter via [The server-wide custom sorters view](../../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx#the-server-wide-custom-sorters-view) in Studio,  
+In addition to deleting a server-wide custom sorter via [The server-wide custom sorters view](#the-server-wide-custom-sorters-view) in Studio,  
 you can use `DeleteServerWideSorterOperation` to delete a server-wide custom sorter.  
 Once removed, the sorter will no longer be available for ordering query results in any database in the cluster. 
     

@@ -34,9 +34,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Behind the scenes, Studio uses Smuggler to perform these operations.  
 
 * In this article:  
-  * [Export](../sharding/import-and-export.mdx#export)  
-  * [Import](../sharding/import-and-export.mdx#import)  
-  * [Export and Import Options Summary](../sharding/import-and-export.mdx#export-and-import-options-summary)  
+  * [Export](#export)  
+  * [Import](#import)  
+  * [Export and Import Options Summary](#export-and-import-options-summary)  
 
 </Admonition>
 
@@ -66,7 +66,7 @@ and casting it using a non-sharded type [will fail](../migration/client-api/prev
 ## Import
 
 Smuggler can be used to [import](../client-api/smuggler/what-is-smuggler.mdx#import) 
-data into a database from either a [.ravendbdump](../sharding/import-and-export.mdx#export) 
+data into a database from either a [.ravendbdump](#export) 
 file or from backup files (full or incremental).  
 
 When data is imported into a sharded database one of the shard nodes is appointed **orchestrator**; the orchestrator retrieves items from 
@@ -128,7 +128,7 @@ Import the full backup first, and then the incremental backups that complement i
 
 | Option | Available on a Sharded Database | Comment |
 | -------------------- | --------------- | --------------------- |
-| Export and Import [.ravendbdump](../sharding/import-and-export.mdx#export) files using [Smuggler](../client-api/smuggler/what-is-smuggler.mdx) | **Yes** | Smuggler behaves just like it does on non-sharded databases. |
+| Export and Import [.ravendbdump](#export) files using [Smuggler](../client-api/smuggler/what-is-smuggler.mdx) | **Yes** | Smuggler behaves just like it does on non-sharded databases. |
 | [Export](../studio/database/tasks/export-database.mdx) and [import](../studio/database/tasks/import-data/import-data-file.mdx) sharded database data using Studio | **Yes** | Behind the scenes, Studio uses Smuggler. |
 | Export to **client machine** | **Yes** |  |
 | Export to **local shard node storage** | **No** |  |

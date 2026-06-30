@@ -25,27 +25,27 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 
 * In this article:  
-  * [Overview](../../../backup/create/periodic-tasks/server-wide-backup.mdx#overview)
-  * [Creating and managing server-wide backup tasks using the client API](../../../backup/create/periodic-tasks/server-wide-backup.mdx#creating-and-managing-server-wide-backup-tasks-using-the-client-api)
-     * [Creating a server-wide backup task](../../../backup/create/periodic-tasks/server-wide-backup.mdx#creating-a-server-wide-backup-task)
-     * [Getting a derived backup task status](../../../backup/create/periodic-tasks/server-wide-backup.mdx#getting-a-derived-backup-task-status)
-     * [Updating a server-wide backup task](../../../backup/create/periodic-tasks/server-wide-backup.mdx#updating-a-server-wide-backup-task)
-     * [Deleting a server-wide backup task](../../../backup/create/periodic-tasks/server-wide-backup.mdx#deleting-a-server-wide-backup-task)
-     * [Managing backup operations](../../../backup/create/periodic-tasks/server-wide-backup.mdx#managing-backup-operations)
-        * [Triggering an immediate backup operation](../../../backup/create/periodic-tasks/server-wide-backup.mdx#triggering-an-immediate-backup-operation)
-        * [Delaying a running backup operation](../../../backup/create/periodic-tasks/server-wide-backup.mdx#delaying-a-running-backup-operation)
-        * [Aborting a running backup operation](../../../backup/create/periodic-tasks/server-wide-backup.mdx#aborting-a-running-backup-operation)
-     * [Syntax](../../../backup/create/periodic-tasks/server-wide-backup.mdx#syntax)
-        * [Methods](../../../backup/create/periodic-tasks/server-wide-backup.mdx#methods)
-        * [Classes](../../../backup/create/periodic-tasks/server-wide-backup.mdx#classes)
+  * [Overview](#overview)
+  * [Creating and managing server-wide backup tasks using the client API](#creating-and-managing-server-wide-backup-tasks-using-the-client-api)
+     * [Creating a server-wide backup task](#creating-a-server-wide-backup-task)
+     * [Getting a derived backup task status](#getting-a-derived-backup-task-status)
+     * [Updating a server-wide backup task](#updating-a-server-wide-backup-task)
+     * [Deleting a server-wide backup task](#deleting-a-server-wide-backup-task)
+     * [Managing backup operations](#managing-backup-operations)
+        * [Triggering an immediate backup operation](#triggering-an-immediate-backup-operation)
+        * [Delaying a running backup operation](#delaying-a-running-backup-operation)
+        * [Aborting a running backup operation](#aborting-a-running-backup-operation)
+     * [Syntax](#syntax)
+        * [Methods](#methods)
+        * [Classes](#classes)
 
-  * [Creating and managing server-wide backup tasks via Studio](../../../backup/create/periodic-tasks/server-wide-backup.mdx#creating-and-managing-server-wide-backup-tasks-via-studio)
-     * [Creating a server-wide backup task](../../../backup/create/periodic-tasks/server-wide-backup.mdx#creating-a-server-wide-backup-task)
-     * [Managing server-wide tasks](../../../backup/create/periodic-tasks/server-wide-backup.mdx#managing-server-wide-tasks)
-        - [Managing the parent server-wide task](../../../backup/create/periodic-tasks/server-wide-backup.mdx#managing-the-parent-server-wide-task)
-        - [Managing derived database tasks](../../../backup/create/periodic-tasks/server-wide-backup.mdx#managing-derived-database-tasks)
-            - [Running a backup operation immediately](../../../backup/create/periodic-tasks/server-wide-backup.mdx#running-a-backup-operation-immediately)
-    - [Delaying or aborting a running backup operation](../../../backup/create/periodic-tasks/server-wide-backup.mdx#delaying-or-aborting-a-running-backup-operation)
+  * [Creating and managing server-wide backup tasks via Studio](#creating-and-managing-server-wide-backup-tasks-via-studio)
+     * [Creating a server-wide backup task](#creating-a-server-wide-backup-task)
+     * [Managing server-wide tasks](#managing-server-wide-tasks)
+        - [Managing the parent server-wide task](#managing-the-parent-server-wide-task)
+        - [Managing derived database tasks](#managing-derived-database-tasks)
+            - [Running a backup operation immediately](#running-a-backup-operation-immediately)
+    - [Delaying or aborting a running backup operation](#delaying-or-aborting-a-running-backup-operation)
 
 </Admonition>
 
@@ -81,7 +81,7 @@ For example:
 
 To create a server-wide backup task:  
 * Define a **backup configuration** using a `ServerWideBackupConfiguration` instance.  
-   - `ServerWideBackupConfiguration` inherits from [PeriodicBackupConfiguration](../../../backup/create/periodic-tasks/server-wide-backup.mdx#backup-configuration-classes), which defines all configuration options used by both server-wide and regular database backup tasks.  
+   - `ServerWideBackupConfiguration` inherits from [PeriodicBackupConfiguration](#backup-configuration-classes), which defines all configuration options used by both server-wide and regular database backup tasks.  
      See the [periodic database backup task](../../../backup/create/periodic-tasks/database-backup.mdx) article for guidance about these options.  
    - `ServerWideBackupConfiguration` adds the following server-wide-specific property:  
      - `ExcludedDatabases` - A list of databases to [exclude](../../../backup/overview.mdx#excluding-databases-from-the-backup) from the server-wide backup.  
@@ -863,7 +863,7 @@ To manage a database backup task derived from a server-wide task:
       - The **retention period** for stored backups.  
 
   <Admonition type="note" title="">
-  **Editing** and **deleting** the task are available only from the [parent server-wide task](../../../backup/create/periodic-tasks/server-wide-backup.mdx#managing-the-parent-server-wide-task).  
+  **Editing** and **deleting** the task are available only from the [parent server-wide task](#managing-the-parent-server-wide-task).  
   </Admonition>
 
 ---

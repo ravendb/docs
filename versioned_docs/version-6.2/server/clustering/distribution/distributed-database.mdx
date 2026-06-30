@@ -14,21 +14,21 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Distributed Database
 <Admonition type="note" title="">
 
-* In RavenDB, a database can be replicated across multiple nodes, depending on its [Replication Factor](../../../server/clustering/distribution/distributed-database.mdx#replication-factor).  
+* In RavenDB, a database can be replicated across multiple nodes, depending on its [Replication Factor](#replication-factor).  
 
 * A node where a database resides is referred to as a `Database Node`.  
   The group of _Database Nodes_ that assemble the distributed database, is called a [Database Group](../../../studio/database/settings/manage-database-group.mdx).  
 
-* Unless [Sharding](../../../server/clustering/distribution/distributed-database.mdx#sharding) is employed,
+* Unless [Sharding](#sharding) is employed,
   each Database Node has a **full copy** of the database, containing **all** the database documents, and indexes them **locally**.
   This greatly simplifies executing query requests, as there is no need to aggregate data from multiple nodes.
   
 * In this page:  
-  * [The Database Record](../../../server/clustering/distribution/distributed-database.mdx#the-database-record)  
-  * [Replication Factor](../../../server/clustering/distribution/distributed-database.mdx#replication-factor)  
-  * [Database Topology](../../../server/clustering/distribution/distributed-database.mdx#database-topology)  
-  * [Dynamic Database Distribution](../../../server/clustering/distribution/distributed-database.mdx#dynamic-database-distribution)  
-  * [Sharding](../../../server/clustering/distribution/distributed-database.mdx#sharding)  
+  * [The Database Record](#the-database-record)  
+  * [Replication Factor](#replication-factor)  
+  * [Database Topology](#database-topology)  
+  * [Dynamic Database Distribution](#dynamic-database-distribution)  
+  * [Sharding](#sharding)  
 
 </Admonition>
 ## The Database Record

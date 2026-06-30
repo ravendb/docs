@@ -27,15 +27,15 @@ import ContentFrame from "@site/src/components/ContentFrame";
   using user-defined scripts, and store the documents in RavenDB collections.
 
 * In this page:
-  * [The RabbitMQ Sink Task](../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink.mdx#the-rabbitmq-sink-task)
-     * [Connecting a RabbitMQ broker](../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink.mdx#connecting-a-rabbitmq-broker)
-     * [Retrieving messages from RabbitMQ queues](../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink.mdx#retrieving-messages-from-rabbitmq-queues)
-     * [Running user-defined scripts](../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink.mdx#running-user-defined-scripts)
-     * [Storing documents in RavenDB collections](../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink.mdx#storing-documents-in-ravendb-collections)
-  * [Client API](../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink.mdx#client-api)
-     * [Add a RabbitMQ Connection String](../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink.mdx#add-a-rabbitmq-connection-string)
-     * [Add a RabbitMQ Sink Task](../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink.mdx#add-a-rabbitmq-sink-task)
-  * [Configuration Options](../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink.mdx#configuration-options)
+  * [The RabbitMQ Sink Task](#the-rabbitmq-sink-task)
+     * [Connecting a RabbitMQ broker](#connecting-a-rabbitmq-broker)
+     * [Retrieving messages from RabbitMQ queues](#retrieving-messages-from-rabbitmq-queues)
+     * [Running user-defined scripts](#running-user-defined-scripts)
+     * [Storing documents in RavenDB collections](#storing-documents-in-ravendb-collections)
+  * [Client API](#client-api)
+     * [Add a RabbitMQ Connection String](#add-a-rabbitmq-connection-string)
+     * [Add a RabbitMQ Sink Task](#add-a-rabbitmq-sink-task)
+  * [Configuration Options](#configuration-options)
 
 </Admonition>
 
@@ -54,7 +54,7 @@ In the message broker architecture, RavenDB sinks take the role of data consumer
 A sink would connect a RabbitMQ broker using a connection string, and retrieve messages
 from the broker's queues.
 
-Read [below](../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink.mdx#add-a-rabbitmq-connection-string)
+Read [below](#add-a-rabbitmq-connection-string)
 about adding a connection string via API.  
 Read [here](../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink.mdx#define-a-rabbitmq-sink-task)
 about adding a connection string using Studio.
@@ -163,7 +163,7 @@ user in Studio, but **continue processing the batch**.
 Once a batch is consumed, the task confirms it by sending `_channel.BasicAck`.
 
 Note that the number of documents included in a batch is
-[configurable](../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink.mdx#configuration-options).
+[configurable](#configuration-options).
 
 <Admonition type="warning" title="Take care of duplicates" id="take-care-of-duplicates" href="#take-care-of-duplicates">
 Producers may enqueue

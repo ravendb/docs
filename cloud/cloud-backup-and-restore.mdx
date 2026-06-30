@@ -24,13 +24,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
   You **can** define custom backup tasks for them.  
 
 * In this page:  
-  * [The Mandatory-Backup Routine](../cloud/cloud-backup-and-restore.mdx#the-mandatory-backup-routine)  
-    * [Tier Requirements and Failure Disclaimer](../cloud/cloud-backup-and-restore.mdx#tier-requirements-and-failure-disclaimer)  
-  * [Backup storage](../cloud/cloud-backup-and-restore.mdx#backup-storage)  
-  * [Charging For Backup storage](../cloud/cloud-backup-and-restore.mdx#charging-for-backup-storage)  
-  * [Backup Encryption](../cloud/cloud-backup-and-restore.mdx#backup-encryption)  
-  * [Creating a Custom Backup](../cloud/cloud-backup-and-restore.mdx#creating-a-custom-backup)  
-  * [Restore Mandatory-Backup Files](../cloud/cloud-backup-and-restore.mdx#restore-mandatory-backup-files)  
+  * [The Mandatory-Backup Routine](#the-mandatory-backup-routine)  
+    * [Tier Requirements and Failure Disclaimer](#tier-requirements-and-failure-disclaimer)  
+  * [Backup storage](#backup-storage)  
+  * [Charging For Backup storage](#charging-for-backup-storage)  
+  * [Backup Encryption](#backup-encryption)  
+  * [Creating a Custom Backup](#creating-a-custom-backup)  
+  * [Restore Mandatory-Backup Files](#restore-mandatory-backup-files)  
 </Admonition>
 ## The Mandatory-Backup Routine
 
@@ -101,9 +101,9 @@ and their resource allocations.
 ## Backup storage
 
 #### Mandatory-Backup Storage
-Backups created by the [mandatory backup routine](../cloud/cloud-backup-and-restore.mdx#the-mandatory-backup-routine) are stored in a RavenDB 
+Backups created by the [mandatory backup routine](#the-mandatory-backup-routine) are stored in a RavenDB 
 cloud you have no direct access to.  
-You can [view and restore](../cloud/cloud-backup-and-restore.mdx#restore-mandatory-backup-files) them using your portal's Backups tab and the 
+You can [view and restore](#restore-mandatory-backup-files) them using your portal's Backups tab and the 
 management Studio.  
 
 <Admonition type="note" title="">
@@ -121,7 +121,7 @@ Upon backup geographically closest AWS S3 bucket is used for backup storage e.g.
 - if your RavenDB Cloud cluster has been created in the US, it backs up to AWS S3 buckets in the US.
 </Admonition>
 #### Custom-Backup Storage
-[Custom-backup](../cloud/cloud-backup-and-restore.mdx#creating-a-custom-backup) files can be kept using an Amazon service 
+[Custom-backup](#creating-a-custom-backup) files can be kept using an Amazon service 
 (S3 or S3 Glacier) or a Microsoft service (Azure).  
 We recommend that you use a backup method **local to your host cloud**. If your product is hosted by Amazon AWS for example, 
 you can store your backup files on an Amazon S3 bucket.  

@@ -24,16 +24,16 @@ import CodeBlock from '@theme/CodeBlock';
   
     * When querying a **time series index**:  
       each item in the results is of the type defined by the **index-entry** in the index definition,  
-      (unless results are [projected](../../../../document-extensions/timeseries/querying/using-indexes.mdx#project-results)). 
+      (unless results are [projected](#project-results)). 
       The documents themselves are not returned.
 
 * In this page:
-    * [Sample index](../../../../document-extensions/timeseries/querying/using-indexes.mdx#sample-index)
-    * [Querying the index](../../../../document-extensions/timeseries/querying/using-indexes.mdx#querying-the-index)
-        * [Query all time series entries](../../../../document-extensions/timeseries/querying/using-indexes.mdx#query-all-time-series-entries)
-        * [Filter query results](../../../../document-extensions/timeseries/querying/using-indexes.mdx#filter-query-results)
-        * [Order query results](../../../../document-extensions/timeseries/querying/using-indexes.mdx#order-query-results)
-        * [Project results](../../../../document-extensions/timeseries/querying/using-indexes.mdx#project-results)
+    * [Sample index](#sample-index)
+    * [Querying the index](#querying-the-index)
+        * [Query all time series entries](#query-all-time-series-entries)
+        * [Filter query results](#filter-query-results)
+        * [Order query results](#order-query-results)
+        * [Project results](#project-results)
 
 </Admonition>
 ## Sample Index
@@ -48,7 +48,7 @@ import CodeBlock from '@theme/CodeBlock';
 * When querying this time series index:  
   * The resulting items correspond to the time series entries that match the query predicate.  
   * Each item in the results will in the shape of the defined index-entry.  
-    Different result types may be returned when the query [projects the results](../../../../document-extensions/timeseries/querying/using-indexes.mdx#project-results).
+    Different result types may be returned when the query [projects the results](#project-results).
 
 <TabItem value="sample_ts_index" label="sample_ts_index">
 <CodeBlock language="js">

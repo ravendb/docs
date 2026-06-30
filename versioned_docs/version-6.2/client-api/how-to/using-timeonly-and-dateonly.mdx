@@ -21,16 +21,16 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * You can now convert `DateTime` or strings written in date/time formats to .NET's 
   `DateOnly` or `TimeOnly` types without slowing down queries and while leaving your existing data as is.  
-   * Use `AsDateOnly` or `AsTimeOnly` in a static index ([see examples below](../../client-api/how-to/using-timeonly-and-dateonly.mdx#use--or--in-a-static-index-to-convert-strings-or-datetime))
+   * Use `AsDateOnly` or `AsTimeOnly` in a static index ([see examples below](#use--or--in-a-static-index-to-convert-strings-or-datetime))
    * `AsDateOnly` and `AsTimeOnly` automatically convert strings to ticks for faster querying.  
 
 * We convert the types in [static indexes](../../indexes/map-indexes.mdx) so that the conversions and calculations are done behind the scenes
   and the data is ready for fast queries. ([See sample index below.](../../client-api/how-to/using-timeonly-and-dateonly.mdx#convert-and-use-date/timeonly-without-affecting-your-existing-data))  
 
 * In this page: 
-   * [About DateOnly and TimeOnly](../../client-api/how-to/using-timeonly-and-dateonly.mdx#about-dateonly-and-timeonly) 
+   * [About DateOnly and TimeOnly](#about-dateonly-and-timeonly) 
    * [Convert and Use Date/TimeOnly Without Affecting Your Existing Data](../../client-api/how-to/using-timeonly-and-dateonly.mdx#convert-and-use-date/timeonly-without-affecting-your-existing-data) 
-   * [Using already existing DateOnly or TimeOnly fields](../../client-api/how-to/using-timeonly-and-dateonly.mdx#using-already-existing-dateonly-or-timeonly-fields) 
+   * [Using already existing DateOnly or TimeOnly fields](#using-already-existing-dateonly-or-timeonly-fields) 
 
 </Admonition>
 
@@ -54,7 +54,7 @@ These two new C# types are available from .NET 6.0+ (RavenDB 5.3+).
 
 ## Convert and Use Date/TimeOnly Without Affecting Your Existing Data
 
-RavenDB offers conversion of types in static indexes with the methods [AsDateOnly or AsTimeOnly](../../client-api/how-to/using-timeonly-and-dateonly.mdx#use--or--in-a-static-index-to-convert-strings-or-datetime).
+RavenDB offers conversion of types in static indexes with the methods [AsDateOnly or AsTimeOnly](#use--or--in-a-static-index-to-convert-strings-or-datetime).
 
 * [Static indexes](../../indexes/indexing-basics.mdx) process new data in the background, 
   including calculations and conversions to DateOnly/TimeOnly values, which can be used as ticks, 
@@ -78,8 +78,8 @@ though comparing ticks is faster.
 
 ### Use `AsDateOnly` or `AsTimeOnly` in a static index to convert strings or DateTime
 
-* [Converting Strings to DateOnly or TimeOnly](../../client-api/how-to/using-timeonly-and-dateonly.mdx#converting-strings-with-minimal-cost)
-* [Converting DateTime to DateOnly or TimeOnly](../../client-api/how-to/using-timeonly-and-dateonly.mdx#converting--with-minimal-cost)
+* [Converting Strings to DateOnly or TimeOnly](#converting-strings-with-minimal-cost)
+* [Converting DateTime to DateOnly or TimeOnly](#converting--with-minimal-cost)
 
 #### Converting Strings with minimal cost
 
@@ -272,7 +272,7 @@ var result = session
 </TabItem>
 
 **Querying on Ticks**  
-Strings are automatically converted to ticks with [`AsDateOnly` and `AsTimeOnly`](../../client-api/how-to/using-timeonly-and-dateonly.mdx#use--or--in-a-static-index-to-convert-strings-or-datetime).  
+Strings are automatically converted to ticks with [`AsDateOnly` and `AsTimeOnly`](#use--or--in-a-static-index-to-convert-strings-or-datetime).  
 
 
 

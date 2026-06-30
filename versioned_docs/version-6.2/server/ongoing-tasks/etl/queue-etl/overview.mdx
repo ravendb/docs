@@ -22,19 +22,19 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * **RabbitMQ**
   * **Azure Queue Storage**
 
-* This functionality is achieved by defining [Queue ETL tasks](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#queue-etl-tasks) within a RavenDB database.
+* This functionality is achieved by defining [Queue ETL tasks](#queue-etl-tasks) within a RavenDB database.
 
 * RavenDB can also function as a _Consumer_.  
   To learn about RavenDB's role as a _Consumer_ please refer to the [Queue Sink section](../../../../server/ongoing-tasks/queue-sink/overview.mdx).
 
 * In this page:
-    * [Queue ETL tasks](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#queue-etl-tasks)
-    * [Data delivery](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#data-delivery)
-        * [What is transferred](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#what-is-transferred)
-        * [How are messages produced and consumed](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#how-are-messages-produced-and-consumed)
-        * [Idempotence and message duplication](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#idempotence-and-message-duplication)
-    * [CloudEvents](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#cloudevents)
-    * [Task statistics](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#task-statistics)
+    * [Queue ETL tasks](#queue-etl-tasks)
+    * [Data delivery](#data-delivery)
+        * [What is transferred](#what-is-transferred)
+        * [How are messages produced and consumed](#how-are-messages-produced-and-consumed)
+        * [Idempotence and message duplication](#idempotence-and-message-duplication)
+    * [CloudEvents](#cloudevents)
+    * [Task statistics](#task-statistics)
 
 </Admonition>
 ## Queue ETL tasks
@@ -68,7 +68,7 @@ The above ETL tasks:
   Document extensions like attachments, counters, or time series, will not be transferred.
 * **CloudEvents messages**  
   JSON objects produced by the task's transformation script are wrapped
-  and delivered as [CloudEvents Messages](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#cloudevents).
+  and delivered as [CloudEvents Messages](#cloudevents).
 
 #### How are messages produced and consumed:
 

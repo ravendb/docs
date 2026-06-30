@@ -36,21 +36,21 @@ import Panel from '@site/src/components/Panel';
   *  _Community_, _Developer_, and servers without a license default to **Corax**.  
   * All other license types, such as  _Professional_ and _Enterprise_, default to **Lucene**.    
     
-  Explicitly [selecting the search engine](../../indexes/search-engine/corax.mdx#selecting-the-search-engine) overrides this license-based default.
+  Explicitly [selecting the search engine](#selecting-the-search-engine) overrides this license-based default.
     
 ---
     
 * In this article:  
-   * [Selecting the search engine](../../indexes/search-engine/corax.mdx#selecting-the-search-engine)  
-      * [Server wide](../../indexes/search-engine/corax.mdx#select-search-engine-server-wide)  
-      * [Per database](../../indexes/search-engine/corax.mdx#select-search-engine-per-database)  
-      * [Per static index](../../indexes/search-engine/corax.mdx#select-search-engine-per-static-index)  
-   * [Unsupported features](../../indexes/search-engine/corax.mdx#unsupported-features)  
-   * [Handling complex JSON objects](../../indexes/search-engine/corax.mdx#handling-complex-json-objects)  
-   * [Compound fields](../../indexes/search-engine/corax.mdx#compound-fields)  
-   * [Limits](../../indexes/search-engine/corax.mdx#limits)  
-   * [Index training: Compression dictionaries](../../indexes/search-engine/corax.mdx#index-training-compression-dictionaries)
-   * [Configuration options](../../indexes/search-engine/corax.mdx#configuration-options)  
+   * [Selecting the search engine](#selecting-the-search-engine)  
+      * [Server wide](#select-search-engine-server-wide)  
+      * [Per database](#select-search-engine-per-database)  
+      * [Per static index](#select-search-engine-per-static-index)  
+   * [Unsupported features](#unsupported-features)  
+   * [Handling complex JSON objects](#handling-complex-json-objects)  
+   * [Compound fields](#compound-fields)  
+   * [Limits](#limits)  
+   * [Index training: Compression dictionaries](#index-training-compression-dictionaries)
+   * [Configuration options](#configuration-options)  
     
 </Admonition>
 
@@ -58,11 +58,11 @@ import Panel from '@site/src/components/Panel';
 
 You can select the search engine at the following scopes:
 
-   * [Server-wide](../../indexes/search-engine/corax.mdx#select-search-engine-server-wide), 
+   * [Server-wide](#select-search-engine-server-wide), 
      for all databases hosted by the server.
-   * [Per database](../../indexes/search-engine/corax.mdx#select-search-engine-per-database), 
+   * [Per database](#select-search-engine-per-database), 
      overriding the server-wide setting for a specific database.
-   * [Per static index](../../indexes/search-engine/corax.mdx#select-search-engine-per-static-index), 
+   * [Per static index](#select-search-engine-per-static-index), 
      overriding the server-wide and database-level settings for a specific static index.  
      Per-index search engine selection is available only for **static** indexes.
 
@@ -74,7 +74,7 @@ Use these configuration options to select the search engine:
    * [Indexing.Static.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexingstaticsearchenginetype)  
      Selects either `Lucene` or `Corax` for **static indexes**.  
      This option can be set **server-wide**, **per database**, or **per index**.
-   * For additional Corax configuration options, see [Configuration options](../../indexes/search-engine/corax.mdx#configuration-options).
+   * For additional Corax configuration options, see [Configuration options](#configuration-options).
     
 ---
     
@@ -241,7 +241,7 @@ The following Corax limitations currently apply.
 #### Complex JSON properties:
 
 Complex JSON properties cannot currently be indexed and searched by Corax.  
-Read more about this in [Handling complex JSON objects](../../indexes/search-engine/corax.mdx#handling-complex-json-objects) below.  
+Read more about this in [Handling complex JSON objects](#handling-complex-json-objects) below.  
 
 #### Unsupported `where` methods:
 
@@ -306,14 +306,14 @@ but `Location` itself is not a simple searchable value.
 * **Corax** does not support indexing the whole complex JSON object as a single text value,
   because indexing an entire object as text is usually not useful for search.
   The exact behavior depends on whether the index is an auto-index or a static index;
-  see [How Corax handles complex fields while indexing](../../indexes/search-engine/corax.mdx#how-corax-handles-complex-fields-while-indexing) below.
+  see [How Corax handles complex fields while indexing](#how-corax-handles-complex-fields-while-indexing) below.
 
     To work with complex objects, use one of the following approaches:
     
-    1. [Index simple properties from the object](../../indexes/search-engine/corax.mdx#1-index-simple-properties-from-the-object)
-    2. [Store the complex field for projection only](../../indexes/search-engine/corax.mdx#2-store-the-complex-field-for-projection-only)
-    3. [Serialize the complex object explicitly](../../indexes/search-engine/corax.mdx#3-serialize-the-complex-object-explicitly)
-    4. [Use Lucene to index the whole object as JSON text](../../indexes/search-engine/corax.mdx#4-use-lucene-to-index-the-whole-object-as-json-text)   
+    1. [Index simple properties from the object](#1-index-simple-properties-from-the-object)
+    2. [Store the complex field for projection only](#2-store-the-complex-field-for-projection-only)
+    3. [Serialize the complex object explicitly](#3-serialize-the-complex-object-explicitly)
+    4. [Use Lucene to index the whole object as JSON text](#4-use-lucene-to-index-the-whole-object-as-json-text)   
 
 ---
     
@@ -690,7 +690,7 @@ The index-fields and their terms are visible in the "Terms view":
     
 * Compound fields have additional constraints, including exactly **2 fields** per compound field
   and a **255-byte limit** per participating field value.  
-  Learn more in [Compound fields: Constraints and value limits](../../indexes/search-engine/corax.mdx#constraints-and-value-limits).
+  Learn more in [Compound fields: Constraints and value limits](#constraints-and-value-limits).
 
 </Panel>
 

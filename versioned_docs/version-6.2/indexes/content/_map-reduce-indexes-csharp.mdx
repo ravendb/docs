@@ -23,10 +23,10 @@ import CodeBlock from '@theme/CodeBlock';
     and then runs the Reduce function to get a final aggregation result per field value.  
 
 * In this page: 
-   * [Creating Map Reduce Indexes](../../indexes/map-reduce-indexes.mdx#creating-map-reduce-indexes)  
-   * [Creating Multi-Map-Reduce Indexes](../../indexes/map-reduce-indexes.mdx#creating-multi-map-reduce-indexes)  
-   * [Reduce Results as Artificial Documents](../../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents)  
-   * [Remarks](../../indexes/map-reduce-indexes.mdx#remarks)  
+   * [Creating Map Reduce Indexes](#creating-map-reduce-indexes)  
+   * [Creating Multi-Map-Reduce Indexes](#creating-multi-map-reduce-indexes)  
+   * [Reduce Results as Artificial Documents](#reduce-results-as-artificial-documents)  
+   * [Remarks](#remarks)  
 
 </Admonition>
 
@@ -515,7 +515,7 @@ give to their document ID also determines how the output documents are grouped.
 Because reference documents have well known, predictable IDs, they are easier to plug into 
 indexes and other operations, and can serve as an intermediary for the output documents whose 
 IDs are less predictable. This allows you to chain map-reduce indexes in a recursive fashion, 
-see [Example II](../../indexes/map-reduce-indexes.mdx#example-ii).  
+see [Example II](#example-ii).  
 
 Learn more about how to configure output and reference documents in the 
 [Studio: Create Map-Reduce Index](../../studio/database/indexes/create-map-reduce-index.mdx).  
@@ -527,7 +527,7 @@ The identifiers of **map reduce output documents** have three components in this
 
 `<Output collection name>/<incrementing value>/<hash of reduce key values>`  
 
-The index in [Example I](../../indexes/map-reduce-indexes.mdx#example-i) might generate an output document 
+The index in [Example I](#example-i) might generate an output document 
 ID like this:  
 
 `DailyProductSales/35/14369232530304891504`  
@@ -547,7 +547,7 @@ case: `hash(Product, Month)`.
 The identifiers of **reference documents** follow some pattern you choose, and this pattern 
 determines which output documents are held by a given reference document.  
 
-The index in [Example I](../../indexes/map-reduce-indexes.mdx#example-i) has this pattern for reference documents:  
+The index in [Example I](#example-i) has this pattern for reference documents:  
 
 `sales/daily/{Date:yyyy-MM-dd}`
 
@@ -803,7 +803,7 @@ public class OutputReduceToCollectionReference
 
 #### Saving documents
 
-[Artificial documents](../../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents) 
+[Artificial documents](#reduce-results-as-artificial-documents) 
 are stored immediately after the indexing transaction completes.  
 #### Recursive indexing loop
 

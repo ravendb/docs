@@ -20,12 +20,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Code examples and client API can be found [here](../../client-api/session/saving-changes.mdx#transaction-mode---cluster-wide).
 
 * In this page:
-  * [Why Cluster-Wide Transactions](../../server/clustering/cluster-transactions.mdx#why-cluster-wide-transactions)
-  * [How Cluster Transactions Work](../../server/clustering/cluster-transactions.mdx#how-cluster-transactions-work) described by the flow of a cluster transaction request example.
-  * [Cluster Transactions Properties](../../server/clustering/cluster-transactions.mdx#cluster-transactions-properties)
-  * [Concurrent Cluster-Wide and Single-Node Transactions](../../server/clustering/cluster-transactions.mdx#concurrent-cluster-wide-and-single-node-transactions)
-  * [Failure Modes in Cluster-Wide Transactions](../../server/clustering/cluster-transactions.mdx#failure-modes-in-cluster-wide-transactions)
-  * [Debug Cluster-Wide Transactions](../../server/clustering/cluster-transactions.mdx#debug-cluster-wide-transactions)
+  * [Why Cluster-Wide Transactions](#why-cluster-wide-transactions)
+  * [How Cluster Transactions Work](#how-cluster-transactions-work) described by the flow of a cluster transaction request example.
+  * [Cluster Transactions Properties](#cluster-transactions-properties)
+  * [Concurrent Cluster-Wide and Single-Node Transactions](#concurrent-cluster-wide-and-single-node-transactions)
+  * [Failure Modes in Cluster-Wide Transactions](#failure-modes-in-cluster-wide-transactions)
+  * [Debug Cluster-Wide Transactions](#debug-cluster-wide-transactions)
 
 </Admonition>
 ## Why Cluster-Wide Transactions
@@ -95,7 +95,7 @@ After having a quorum for the cluster transaction request by raft and a successf
 of the compare exchange values, the transaction is guaranteed to be executed.  
 Failure during the quorum or the concurrency check will roll back the entire session transaction,  
 while failure during the commit of the documents will halt any further cluster transactions execution on the database 
-until that failure is remedied (failure mode for the documents commits are described later [here](../../server/clustering/cluster-transactions.mdx#failure-modes-in-cluster-wide-transactions)).
+until that failure is remedied (failure mode for the documents commits are described later [here](#failure-modes-in-cluster-wide-transactions)).
 
 **Consistency**  
 Consistency is guaranteed on the requested node. The node will complete the request only when the transaction is completed 

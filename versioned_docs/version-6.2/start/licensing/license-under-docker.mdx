@@ -23,12 +23,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
    * A `RAVEN_License` environment variable can be set.  
 
 * In this page:  
-  * [Prerequisites](../../start/licensing/license-under-docker.mdx#prerequisites)  
-  * [Licensing a RavenDB docker image](../../start/licensing/license-under-docker.mdx#licensing-a-ravendb-docker-image)  
-     * [Passing a Path to the License File via CLI](../../start/licensing/license-under-docker.mdx#passing-a-path-to-the-license-file-via-cli)  
-     * [Providing a License in `settings.json`](../../start/licensing/license-under-docker.mdx#providing-a-license-in-)  
-     * [Setting a `RAVEN_License` Environment Variable](../../start/licensing/license-under-docker.mdx#setting-a--environment-variable)  
-  * [Licensing RavenDB under Linux](../../start/licensing/license-under-docker.mdx#licensing-ravendb-under-linux)  
+  * [Prerequisites](#prerequisites)  
+  * [Licensing a RavenDB docker image](#licensing-a-ravendb-docker-image)  
+     * [Passing a Path to the License File via CLI](#passing-a-path-to-the-license-file-via-cli)  
+     * [Providing a License in `settings.json`](#providing-a-license-in-)  
+     * [Setting a `RAVEN_License` Environment Variable](#setting-a--environment-variable)  
+  * [Licensing RavenDB under Linux](#licensing-ravendb-under-linux)  
 
 </Admonition>
 ## Prerequisites
@@ -85,7 +85,7 @@ Provide the license as a property of the `settings.json` configuration file in o
 
 * Add `settings.json` the **full license string** as the value of the "License" key 
   [as explained here](../../server/configuration/license-configuration.mdx).  
-  Mount `settings.json` as [explained above](../../start/licensing/license-under-docker.mdx#passing-a-path-to-the-license-file-via-cli), 
+  Mount `settings.json` as [explained above](#passing-a-path-to-the-license-file-via-cli), 
   using the location of `settings.json` instead of the location of a license file.  
 * Alternatively, add `settings.json` the **license path** as the value of the “License.Path” key and mount the license directory.  
 

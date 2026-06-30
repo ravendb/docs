@@ -30,13 +30,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
   and concisely and can always be used to review and easily modify it.  
 
 * In this page:  
-  * [Prerequisites](../integrations/terraform.mdx#prerequisites)  
-  * [Prepare Terraform Configuration](../integrations/terraform.mdx#prepare-terraform-configuration)  
-     * [Provider](../integrations/terraform.mdx#provider)  
-     * [Terraform Local Parameters](../integrations/terraform.mdx#terraform-local-parameters)  
-     * [RavenDB Resource](../integrations/terraform.mdx#ravendb-resource)  
-     * [Terraform Output Values](../integrations/terraform.mdx#terraform-output-values)  
-  * [Apply Terraform Configuration](../integrations/terraform.mdx#apply-terraform-configuration)  
+  * [Prerequisites](#prerequisites)  
+  * [Prepare Terraform Configuration](#prepare-terraform-configuration)  
+     * [Provider](#provider)  
+     * [Terraform Local Parameters](#terraform-local-parameters)  
+     * [RavenDB Resource](#ravendb-resource)  
+     * [Terraform Output Values](#terraform-output-values)  
+  * [Apply Terraform Configuration](#apply-terraform-configuration)  
 </Admonition>
 ## Prerequisites
 
@@ -46,7 +46,7 @@ To deploy RavenDB using Terraform, you need:
    * Find [here](https://ravendb.net/buy) what features are supported by each RavenDB 
      license, and acquire the product that suits your needs.  
    * The license you acquire will be provided to RavenDB via the 
-     [Terraform configuration file](../integrations/terraform.mdx#prepare-terraform-configuration) 
+     [Terraform configuration file](#prepare-terraform-configuration) 
      to validate your product and determine which of its features would be enabled.  
 
 * **Hosts**  
@@ -59,7 +59,7 @@ To deploy RavenDB using Terraform, you need:
 * **Terraform Configuration File**  
    * Learn [here](https://www.terraform.io/docs/language/index.html) the 
      basics of Terraform's configuration language.  
-   * Read [below](../integrations/terraform.mdx#prepare-terraform-configuration) 
+   * Read [below](#prepare-terraform-configuration) 
      how to set the configuration file to provision RavenDB.  
 
 * **Terraform Application**  
@@ -93,7 +93,7 @@ Use the `provider` object to **set RavenDB as the provider**.
 
 Note that the **version number** relates to the RavenDB Terraform 
 Provider version, **not** to the RavenDB Product version (that is 
-defined in the [resource](../integrations/terraform.mdx#ravendb-resource) 
+defined in the [resource](#ravendb-resource) 
 block's **package** field).  
 
 <TabItem value="json" label="json">

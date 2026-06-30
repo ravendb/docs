@@ -12,15 +12,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Compare-exchange items can be used to coordinate work between sessions that are trying to modify a shared resource (such as a document) at the same time.
 
-* Compare-exchange items are [not replicated externally](../../../../client-api/operations/compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases) to other databases.
+* Compare-exchange items are [not replicated externally](#why-compare-exchange-items-are-not-replicated-to-external-databases) to other databases.
 
 * In this page:  
-* [What Compare Exchange Items Are](../../../../client-api/operations/compare-exchange/overview.mdx#what-compare-exchange-items-are)  
-* [Creating and Managing Compare-Exchange Items](../../../../client-api/operations/compare-exchange/overview.mdx#creating-and-managing-compare-exchange-items)  
-* [Why Compare-Exchange Items are Not Replicated to External Databases](../../../../client-api/operations/compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases)  
-* [Example I - Email Address Reservation](../../../../client-api/operations/compare-exchange/overview.mdx#example-i---email-address-reservation)  
-* [Example II - Reserve a Shared Resource](../../../../client-api/operations/compare-exchange/overview.mdx#example-ii---reserve-a-shared-resource)  
-* [Example III - Ensuring Unique Values without Using Compare Exchange](../../../../client-api/operations/compare-exchange/overview.mdx#example-iii---ensuring-unique-values-without-using-compare-exchange)  
+* [What Compare Exchange Items Are](#what-compare-exchange-items-are)  
+* [Creating and Managing Compare-Exchange Items](#creating-and-managing-compare-exchange-items)  
+* [Why Compare-Exchange Items are Not Replicated to External Databases](#why-compare-exchange-items-are-not-replicated-to-external-databases)  
+* [Example I - Email Address Reservation](#example-i---email-address-reservation)  
+* [Example II - Reserve a Shared Resource](#example-ii---reserve-a-shared-resource)  
+* [Example III - Ensuring Unique Values without Using Compare Exchange](#example-iii---ensuring-unique-values-without-using-compare-exchange)  
 
 </Admonition>
 ## What Compare Exchange Items Are
@@ -84,7 +84,7 @@ Compare exchange items are created and managed with any of the following approac
   Change-Vector. Compare-exchange conflicts cannot be handled properly as they do not have a similar
   mechanism to resolve conflicts.
 
-* To ensure unique values between two databases without using compare-exchange items see [Example III](../../../../client-api/operations/compare-exchange/overview.mdx#example-iii---ensuring-unique-values-without-using-compare-exchange).
+* To ensure unique values between two databases without using compare-exchange items see [Example III](#example-iii---ensuring-unique-values-without-using-compare-exchange).
 
 
 
@@ -94,7 +94,7 @@ The following example shows how to use compare-exchange to create documents with
 The scope is within the database group on a single cluster. 
 
 Compare-exchange items are not externally replicated to other databases.  
-To establish uniqueness without using compare-exchange see [Example III](../../../../client-api/operations/compare-exchange/overview.mdx#example-iii---ensuring-unique-values-without-using-compare-exchange).
+To establish uniqueness without using compare-exchange see [Example III](#example-iii---ensuring-unique-values-without-using-compare-exchange).
 
 <TabItem value="email" label="email">
 <CodeBlock language="php">

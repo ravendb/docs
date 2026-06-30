@@ -29,14 +29,14 @@ learn more about OLAP ETL tasks, and how to create one using the client API,
 see [Ongoing Tasks: OLAP ETL](../../../../server/ongoing-tasks/etl/olap.mdx).
 
 * In this page:  
-  * [Navigate to the OLAP ETL View](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#navigate-to-the-olap-etl-view)
-  * [Define an OLAP ETL Task](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#define-an-olap-etl-task)
-      * [Custom Partition Value](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#custom-partition-value)
-      * [Run Frequency](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#run-frequency)
-      * [OLAP Connection String](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#olap-connection-string)
-      * [OLAP ETL Destinations](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#olap-etl-destinations)
-      * [Transform Scripts](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#transform-scripts)
-      * [Override ID column](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#override-id-column)
+  * [Navigate to the OLAP ETL View](#navigate-to-the-olap-etl-view)
+  * [Define an OLAP ETL Task](#define-an-olap-etl-task)
+      * [Custom Partition Value](#custom-partition-value)
+      * [Run Frequency](#run-frequency)
+      * [OLAP Connection String](#olap-connection-string)
+      * [OLAP ETL Destinations](#olap-etl-destinations)
+      * [Transform Scripts](#transform-scripts)
+      * [Override ID column](#override-id-column)
 
 </Admonition>
 ## Create an OLAP ETL Task
@@ -66,7 +66,7 @@ To begin creating your OLAP ETL task:
 
 * A custom partition can be defined to differentiate parquet file locations when 
 using the same connection string in multiple OLAP ETL tasks.  
-* The custom partition **name** is defined inside the [transformation scripts](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#transform-scripts).  
+* The custom partition **name** is defined inside the [transformation scripts](#transform-scripts).  
 * The custom partition **value** is defined in the input box above.  
 * The custom partition value is referenced in the transform script as 
 `$customPartitionValue`.  
@@ -154,7 +154,7 @@ aren't specified in the script:
 * `_id`  
   Contains the source document ID. The default name used for this column is `_id`.  
   You can override this name in the task definition - see more 
-  [below](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#override-id-column).  
+  [below](#override-id-column).  
 * `_lastModifiedTime`  
   The value of the `last-modified` field in a document's metadata. Represented in unix time.  
 

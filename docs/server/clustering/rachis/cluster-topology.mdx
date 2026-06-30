@@ -20,10 +20,10 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Clusters are typically composed of any odd number of nodes equal or greater than 3, see [Clusters Best Practice](../../../server/clustering/cluster-best-practice-and-configuration.mdx).  
 
 * In this page:
-    * [Fetching the topology](../../../server/clustering/rachis/cluster-topology.mdx#fetching-the-topology)
-    * [Modifying the topology](../../../server/clustering/rachis/cluster-topology.mdx#modifying-the-topology)
-    * [Nodes states and types](../../../server/clustering/rachis/cluster-topology.mdx#nodes-states-and-types)
-    * [Changing node type](../../../server/clustering/rachis/cluster-topology.mdx#changing-node-type)  
+    * [Fetching the topology](#fetching-the-topology)
+    * [Modifying the topology](#modifying-the-topology)
+    * [Nodes states and types](#nodes-states-and-types)
+    * [Changing node type](#changing-node-type)  
 
 </Admonition>
 ## Fetching the topology
@@ -53,14 +53,14 @@ Optional parameters (for the Add Node endpoint):
 | Name             | Value type   | Description                                                                                                  |
 |------------------|--------------|--------------------------------------------------------------------------------------------------------------|
 | tag              | `string`     | The node tag. 1-4 uppercase unicode letters.<br/>Default: 'A' - 'Z' assigned by order of addition.            |
-| watcher          | `bool`       | Add the node as a [Watcher](../../../server/clustering/rachis/cluster-topology.mdx#watcher).<br/>Default: `false` |
+| watcher          | `bool`       | Add the node as a [Watcher](#watcher).<br/>Default: `false` |
 | maxUtilizedCores | `uint`       | Maximum number of cores that can be assigned to this node.<br/>Default: number of processors.                 |
 
 See the [Cluster API page](../../../server/clustering/cluster-api.mdx) for usage examples.
 
 ## Nodes states and types
 
-In Rachis every cluster node has a [state](../../../server/clustering/rachis/cluster-topology.mdx#state) and a [type](../../../server/clustering/rachis/cluster-topology.mdx#type).  
+In Rachis every cluster node has a [state](#state) and a [type](#type).  
 
 <Admonition type="note" title="">
 
@@ -73,7 +73,7 @@ and **elect** a new leader when needed.
 |----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Member**     | A fully functional voting node in the cluster.                                                                                                                                                  |
 | **Promotable** | A non-voting node. <br/> This is an intermediate stage until node is promoted by the Leader to a Member.                                                                                        |
-| **Watcher**    | A non-voting node that is still fully managed by the cluster. <br/> Can be assigned with databases and tasks. See more [below](../../../server/clustering/rachis/cluster-topology.mdx#watcher). |
+| **Watcher**    | A non-voting node that is still fully managed by the cluster. <br/> Can be assigned with databases and tasks. See more [below](#watcher). |
 
 </Admonition>
 
@@ -89,7 +89,7 @@ The Rachis state defines the **current role** of the node in the cluster.
 | **Candidate**    | Has no Leader and tries to get elected for leadership.                                                                                                                                                                                           |
 | **Follower**     | Has a Leader and operates normally.                                                                                                                                                                                                              |
 | **Leader-Elect** | Just elected for leadership, but will take office and become the leader only after the dummy `noop` raft command was successfully applied in the cluster.                                                                                          |
-| **Leader**       | Leader of the cluster. See more [below](../../../server/clustering/rachis/cluster-topology.mdx#leader).                                                                                                                                           |
+| **Leader**       | Leader of the cluster. See more [below](#leader).                                                                                                                                           |
 
 </Admonition>
 

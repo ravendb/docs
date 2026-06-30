@@ -45,8 +45,8 @@ When there is a conflict between two or more document versions, RavenDB will try
 <Admonition type="note" title="">
 The identity check applies to [Tombstone](../../../monitoring/tombstones/overview.mdx) as well, and it will always resolve to the local one, since the tombstones are always considered equal.
 </Admonition>
-3. Try to resolve the conflict by using a script, which is set up by configuring a [Conflict Resolver](../../../server/clustering/replication/replication-conflicts.mdx#conflict-resolution-script).  
-4. If all else fails, record conflicting document variants as "Conflicted Documents" which will have to be resolved [Manually](../../../server/clustering/replication/replication-conflicts.mdx#manually-resolving-conflicts). 
+3. Try to resolve the conflict by using a script, which is set up by configuring a [Conflict Resolver](#conflict-resolution-script).  
+4. If all else fails, record conflicting document variants as "Conflicted Documents" which will have to be resolved [Manually](#manually-resolving-conflicts). 
 
 ## Conflict Resolution Script 
 A resolution script is defined per collection and have the following input arguments:

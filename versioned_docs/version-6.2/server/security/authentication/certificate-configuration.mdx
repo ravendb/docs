@@ -23,12 +23,12 @@ authentication in a much easier and faster way with automatic certificate renewa
  If you choose manual setup and/or to provide your own certificate, **you are responsible for its periodic renewal**.  
  
 * In this page:
-   * [Prerequisites](../../../server/security/authentication/certificate-configuration.mdx#prerequisites)  
-   * [Standard Manual Setup With Certificate Stored Locally](../../../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally)  
-      * [Certificate Requirements](../../../server/security/authentication/certificate-configuration.mdx#certificate-requirements)  
-      * [Certificate Location](../../../server/security/authentication/certificate-configuration.mdx#certificate-location)  
-   * [With Logic Foreign to RavenDB or External Certificate Storage](../../../server/security/authentication/certificate-configuration.mdx#with-logic-foreign-to-ravendb-or-external-certificate-storage)  
-   * [Step-by-step Guide to Installing Certificate](../../../server/security/authentication/certificate-configuration.mdx#step-by-step-guide-to-installing-certificate)  
+   * [Prerequisites](#prerequisites)  
+   * [Standard Manual Setup With Certificate Stored Locally](#standard-manual-setup-with-certificate-stored-locally)  
+      * [Certificate Requirements](#certificate-requirements)  
+      * [Certificate Location](#certificate-location)  
+   * [With Logic Foreign to RavenDB or External Certificate Storage](#with-logic-foreign-to-ravendb-or-external-certificate-storage)  
+   * [Step-by-step Guide to Installing Certificate](#step-by-step-guide-to-installing-certificate)  
 
 </Admonition>
 
@@ -39,7 +39,7 @@ To enable authentication, either `Security.Certificate.Path` or `Security.Certif
 #### Setting up Client Certificates
 When the server is manually set up with a server certificate for the first time, there are no client certificates registered in the server yet. 
 The first action an administrator will do is to [generate/register a new client certificate](../../../server/security/authentication/client-certificate-usage.mdx).  
-Find detailed instructions of the process [below](../../../server/security/authentication/certificate-configuration.mdx#step-by-step-guide-to-installing-certificate).  
+Find detailed instructions of the process [below](#step-by-step-guide-to-installing-certificate).  
 
 You can set up various client certificates with different security clearance levels and database permissions. 
 See [Certificate Management](../../../server/security/authentication/certificate-management.mdx) for more about permissions.  
@@ -180,7 +180,7 @@ In all secure configurations, the `ServerUrl` must contain the same domain name 
    - Extract the .zip into the folders on each machine where the server nodes will permanently live.  
    - Store server certificate in your desired location with secure permissions.  
 
-2. In each node `Server` folder, create the `settings.json` file which you will configure like the [examples](../../../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) above.  
+2. In each node `Server` folder, create the `settings.json` file which you will configure like the [examples](#standard-manual-setup-with-certificate-stored-locally) above.  
    * You can do this by going into the node `Server` folder &gt; right-click &gt; **New** &gt; **Text Document** &gt; name it `settings.json` instead of 
     ...txt &gt; click **Yes** &gt; open it and begin configuring.
    * Place the `settings.json` inside each node's `Server` folder because when you run the server, RavenDB is programmed to find the settings there.  
@@ -189,12 +189,12 @@ In all secure configurations, the `ServerUrl` must contain the same domain name 
    - Set the `ServerUrl`.  Make sure to use `https` and that it matches the domain established in your certificate.  
    - Set `Setup.Mode` to `None` to deactivate the RavenDB Setup Wizard.  
    - Set `DataDir` to the desired database storage folder on each machine.  
-   - Set the `Security.Certificate.Path` to the **.pfx** that you placed in each server folder if certificate is stored with [RavenDB logic on local machines](../../../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) 
-     or `Security.Certificate.Load.Exec` if using [external location or logic](../../../server/security/authentication/certificate-configuration.mdx#with-logic-foreign-to-ravendb-or-external-certificate-storage).  
+   - Set the `Security.Certificate.Path` to the **.pfx** that you placed in each server folder if certificate is stored with [RavenDB logic on local machines](#standard-manual-setup-with-certificate-stored-locally) 
+     or `Security.Certificate.Load.Exec` if using [external location or logic](#with-logic-foreign-to-ravendb-or-external-certificate-storage).  
    - Make sure that the certificate .path or .load script lead to the correct certificate location. `.Path` should look something like this:  
          `"Security.Certificate.Path": "C:/Windows/MyDomainName/A/Server/ravendb.domain.com.pfx"`  
-         See [.json example for a .Path situation](../../../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) above.  
-   - Setting a **password** on the certificate is optional. See [settings.json example](../../../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) above.  
+         See [.json example for a .Path situation](#standard-manual-setup-with-certificate-stored-locally) above.  
+   - Setting a **password** on the certificate is optional. See [settings.json example](#standard-manual-setup-with-certificate-stored-locally) above.  
    Run
 
 4. Right-click and run the `run.ps1` (or `run.sh` in Linux) in the extracted server package.  In Windows, it runs in PowerShell as a default.

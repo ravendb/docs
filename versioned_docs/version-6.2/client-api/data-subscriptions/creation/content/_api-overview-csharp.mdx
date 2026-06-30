@@ -6,12 +6,12 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * In this page:  
-   * [Create subscription](../../../../client-api/data-subscriptions/creation/api-overview.mdx#create-subscription)
-   * [SubscriptionCreationOptions&lt;T&gt;](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptionst)
-   * [SubscriptionCreationOptions](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions)  
-   * [Update subscription](../../../../client-api/data-subscriptions/creation/api-overview.mdx#update-subscription)  
-   * [SubscriptionUpdateOptions](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptionupdateoptions)  
-   * [Subscription query](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscription-query)  
+   * [Create subscription](#create-subscription)
+   * [SubscriptionCreationOptions&lt;T&gt;](#subscriptioncreationoptionst)
+   * [SubscriptionCreationOptions](#subscriptioncreationoptions)  
+   * [Update subscription](#update-subscription)  
+   * [SubscriptionUpdateOptions](#subscriptionupdateoptions)  
+   * [Subscription query](#subscription-query)  
 
 </Admonition>
 ## Create subscription
@@ -56,8 +56,8 @@ Task<string> CreateAsync<T>(Expression<Func<T, bool>> predicate = null,
 | Parameter      | Type                             | Description                                                                                                                                                                                  |
 |----------------|----------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **predicate**  | `Expression<Func<T, bool>>`      | An optional lambda expression that returns a boolean.<br/>This predicate defines the filter criteria for the subscription documents.                                                          |
-| **options**    | `SubscriptionCreationOptions<T>` | Contains subscription creation options.<br/>See [SubscriptionCreationOptions&lt;T&gt;](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptionst)           |
-| **options**    | `SubscriptionCreationOptions`    | Contains subscription creation options - non-generic version.<br/>See [SubscriptionCreationOptions](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions) |
+| **options**    | `SubscriptionCreationOptions<T>` | Contains subscription creation options.<br/>See [SubscriptionCreationOptions&lt;T&gt;](#subscriptioncreationoptionst)           |
+| **options**    | `SubscriptionCreationOptions`    | Contains subscription creation options - non-generic version.<br/>See [SubscriptionCreationOptions](#subscriptioncreationoptions) |
 | **database**   | `string`                         | The name of the database where the subscription task will be created. If `null`, the default database configured in the DocumentStore will be used.                                          |
 | **token**      | `CancellationToken`              | Cancellation token used in to halt the subscription creation process.                                                                                                                  |
 
@@ -130,7 +130,7 @@ Task<string> UpdateAsync(SubscriptionUpdateOptions options, string database = nu
 
 | Parameter    | Type                        | Description                                                                                                                                                        |
 |--------------|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **options**  | `SubscriptionUpdateOptions` | The subscription update options object.<br/>See [SubscriptionUpdateOptions](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptionupdateoptions) |
+| **options**  | `SubscriptionUpdateOptions` | The subscription update options object.<br/>See [SubscriptionUpdateOptions](#subscriptionupdateoptions) |
 | **database** | `string`                    | The name of the database where the subscription task resides.<br/>If `null`, the default database configured in the DocumentStore will be used.                    |
 | **token**    | `CancellationToken`         | Cancellation token used to halt the update process.                                                                                                                |
 
@@ -142,7 +142,7 @@ Task<string> UpdateAsync(SubscriptionUpdateOptions options, string database = nu
 
 ## SubscriptionUpdateOptions
 
-`SubscriptionUpdateOptions` inherits from [SubscriptionCreationOptions](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions)
+`SubscriptionUpdateOptions` inherits from [SubscriptionCreationOptions](#subscriptioncreationoptions)
 and adds two additional fields:
 
 <TabItem value="sub_update_options" label="sub_update_options">

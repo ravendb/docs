@@ -9,25 +9,25 @@ import CodeBlock from '@theme/CodeBlock';
   For a general overview of indexes, see [What are indexes](../../indexes/what-are-indexes.mdx).
 
 * You can either:  
-  * [create a Static-index](../../indexes/creating-and-deploying.mdx#define-a-static-index) yourself, which involves **Defining** the index and **Deploying** it to the RavenDB server, or
-  * let the RavenDB server [create an Auto-index](../../indexes/creating-and-deploying.mdx#creating-auto-indexes) for you based on query patterns.
+  * [create a Static-index](#define-a-static-index) yourself, which involves **Defining** the index and **Deploying** it to the RavenDB server, or
+  * let the RavenDB server [create an Auto-index](#creating-auto-indexes) for you based on query patterns.
 
 * Static-indexes can be created:
     * using the Client API, as outlined in this article, or
     * from the [Indexes list view](../../studio/database/indexes/indexes-list-view.mdx) in the Studio.
 * In this page:
-  * [Static-indexes](../../indexes/creating-and-deploying.mdx#static-indexes)
-      * [Define a static-index](../../indexes/creating-and-deploying.mdx#define-a-static-index)
-      * [Deploy a static-index](../../indexes/creating-and-deploying.mdx#deploy-a-static-index)
-          * [Deploy single index](../../indexes/creating-and-deploying.mdx#deploy-single-index)
-          * [Deploy multiple indexes](../../indexes/creating-and-deploying.mdx#deploy-multiple-indexes)
-          * [Deploy syntax](../../indexes/creating-and-deploying.mdx#deploy-syntax)
-          * [Deployment behavior](../../indexes/creating-and-deploying.mdx#deployment-behavior)
-      * [Creating a static-index - Example](../../indexes/creating-and-deploying.mdx#create-a-static-index---example)
-      * [Creating a static-index - using an Operation](../../indexes/creating-and-deploying.mdx#create-a-static-index---using-an-operation)
-  * [Auto-indexes](../../indexes/creating-and-deploying.mdx#auto-indexes)
-      * [Creating auto-indexes](../../indexes/creating-and-deploying.mdx#creating-auto-indexes)
-      * [Disabling auto-indexes](../../indexes/creating-and-deploying.mdx#disabling-auto-indexes)
+  * [Static-indexes](#static-indexes)
+      * [Define a static-index](#define-a-static-index)
+      * [Deploy a static-index](#deploy-a-static-index)
+          * [Deploy single index](#deploy-single-index)
+          * [Deploy multiple indexes](#deploy-multiple-indexes)
+          * [Deploy syntax](#deploy-syntax)
+          * [Deployment behavior](#deployment-behavior)
+      * [Creating a static-index - Example](#create-a-static-index---example)
+      * [Creating a static-index - using an Operation](#create-a-static-index---using-an-operation)
+  * [Auto-indexes](#auto-indexes)
+      * [Creating auto-indexes](#creating-auto-indexes)
+      * [Disabling auto-indexes](#disabling-auto-indexes)
 
 </Admonition>
 
@@ -48,7 +48,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 ##### Define a static-index using a custom class
 * To define a static-index using a custom class inherit from `AbstractIndexCreationTask`.
-* This method is recommended over the [Creating an index using an operation](../../indexes/creating-and-deploying.mdx#create-a-static-index---using-an-operation) method  
+* This method is recommended over the [Creating an index using an operation](#create-a-static-index---using-an-operation) method  
   for its simplicity and the following advantages:  
   * **Strongly-typed syntax**:  
     Provides strong typing when defining the index, making it easier to work with.
@@ -65,7 +65,7 @@ public class Orders_ByTotal : AbstractIndexCreationTask<Order>
 `}
 </CodeBlock>
 </TabItem>
-* A complete example of creating a static-index is provided [below](../../indexes/creating-and-deploying.mdx#create-a-static-index---example).
+* A complete example of creating a static-index is provided [below](#create-a-static-index---example).
 
 </Admonition>
 <Admonition type="note" title="">
@@ -105,13 +105,13 @@ public class Orders_ByTotal : AbstractIndexCreationTask<Order>
 * To begin indexing data, the index must be deployed to the server.
 * This section provides options for deploying indexes that inherit from `AbstractIndexCreationTask`.
 * To create and deploy an index using the `IndexDefinition` class via `PutIndexesOperation`,  
-  see [Creating a static-index - using an Operation](../../indexes/creating-and-deploying.mdx#create-a-static-index---using-an-operation).
+  see [Creating a static-index - using an Operation](#create-a-static-index---using-an-operation).
 <Admonition type="note" title="">
 
 ##### Deploy single index
 * Use `Execute()` or `ExecuteIndex()` to deploy a single index.
 * The following examples deploy index `Ordes/ByTotal` to the default database defined in your _DocumentStore_ object.
-  See the [syntax](../../indexes/creating-and-deploying.mdx#deploy-syntax) section below for all available overloads.
+  See the [syntax](#deploy-syntax) section below for all available overloads.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Execute" label="Execute">
@@ -156,7 +156,7 @@ await store.ExecuteIndexAsync(new Orders_ByTotal());
   If it fails, it will repeat the execution by calling the `Execute` method for each index, one by one,  
   in separate requests.
 * The following examples deploy indexes `Ordes/ByTotal` and `Employees/ByLastName` to the default database defined in your _DocumentStore_ object.  
-  See the [syntax](../../indexes/creating-and-deploying.mdx#deploy-syntax) section below for all available overloads.
+  See the [syntax](#deploy-syntax) section below for all available overloads.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="ExecuteIndexes" label="ExecuteIndexes">
@@ -401,7 +401,7 @@ public static void Main(string[] args)
 
 * When using this operation:
 
-  * Unlike the [naming convention](../../indexes/creating-and-deploying.mdx#naming-convention) used with indexes inheriting from `AbstractIndexCreationTask`,  
+  * Unlike the [naming convention](#naming-convention) used with indexes inheriting from `AbstractIndexCreationTask`,  
     you can choose any string-based name for the index.   
     However, when querying, you must use that string-based name rather than the index class type.
 

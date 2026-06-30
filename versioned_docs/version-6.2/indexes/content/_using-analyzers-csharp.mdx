@@ -23,26 +23,26 @@ import ContentFrame from "@site/src/components/ContentFrame";
   giving you full flexibility in configuring your indexes.
 
 * In this article:
-   * [Understanding the role of analyzers](../../indexes/using-analyzers.mdx#understanding-the-role-of-analyzers)
-      * [Analyzers in the index definition](../../indexes/using-analyzers.mdx#analyzers-in-the-index-definition)
-      * [Analyzers at indexing time](../../indexes/using-analyzers.mdx#analyzers-at-indexing-time)
-      * [Analyzers at query time](../../indexes/using-analyzers.mdx#analyzers-at-query-time)
-      * [Full-text search](../../indexes/using-analyzers.mdx#full-text-search)
-   * [Analyzers available in RavenDB](../../indexes/using-analyzers.mdx#analyzers-available-in-ravendb)
-      * [Analyzers that remove common stop words](../../indexes/using-analyzers.mdx#analyzers-that-remove-common-stop-words)
-      * [Analyzers that do not remove common stop words](../../indexes/using-analyzers.mdx#analyzers-that-do-not-remove-common-stop-words)
-      * [Analyzers that tokenize according to the defined number of characters](../../indexes/using-analyzers.mdx#analyzers-that-tokenize-according-to-the-defined-number-of-characters)
-   * [Setting analyzer for index-field](../../indexes/using-analyzers.mdx#setting-analyzer-for-index-field)
-   * [RavenDB's default analyzers](../../indexes/using-analyzers.mdx#ravendbs-default-analyzers)
-      * [Using the Default Search Analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer)
-      * [Using the Default Exact Analyzer](../../indexes/using-analyzers.mdx#using-the-default-exact-analyzer)
-      * [Using the Default Analyzer](../../indexes/using-analyzers.mdx#using-the-default-analyzer)
-   * [Disabling indexing for index-field](../../indexes/using-analyzers.mdx#disabling-indexing-for-index-field)
-   * [Creating custom analyzers](../../indexes/using-analyzers.mdx#creating-custom-analyzers)
-      * [Add custom analyzer via Studio](../../indexes/using-analyzers.mdx#add-custom-analyzer-via-studio)
-      * [Add custom analyzer via Client API](../../indexes/using-analyzers.mdx#add-custom-analyzer-via-client-api)
-      * [Add custom analyzer directly to RavenDB's binaries](../../indexes/using-analyzers.mdx#add-custom-analyzer-directly-to-ravendbs-binaries)
-   * [Viewing the indexed terms](../../indexes/using-analyzers.mdx#viewing-the-indexed-terms)
+   * [Understanding the role of analyzers](#understanding-the-role-of-analyzers)
+      * [Analyzers in the index definition](#analyzers-in-the-index-definition)
+      * [Analyzers at indexing time](#analyzers-at-indexing-time)
+      * [Analyzers at query time](#analyzers-at-query-time)
+      * [Full-text search](#full-text-search)
+   * [Analyzers available in RavenDB](#analyzers-available-in-ravendb)
+      * [Analyzers that remove common stop words](#analyzers-that-remove-common-stop-words)
+      * [Analyzers that do not remove common stop words](#analyzers-that-do-not-remove-common-stop-words)
+      * [Analyzers that tokenize according to the defined number of characters](#analyzers-that-tokenize-according-to-the-defined-number-of-characters)
+   * [Setting analyzer for index-field](#setting-analyzer-for-index-field)
+   * [RavenDB's default analyzers](#ravendbs-default-analyzers)
+      * [Using the Default Search Analyzer](#using-the-default-search-analyzer)
+      * [Using the Default Exact Analyzer](#using-the-default-exact-analyzer)
+      * [Using the Default Analyzer](#using-the-default-analyzer)
+   * [Disabling indexing for index-field](#disabling-indexing-for-index-field)
+   * [Creating custom analyzers](#creating-custom-analyzers)
+      * [Add custom analyzer via Studio](#add-custom-analyzer-via-studio)
+      * [Add custom analyzer via Client API](#add-custom-analyzer-via-client-api)
+      * [Add custom analyzer directly to RavenDB's binaries](#add-custom-analyzer-directly-to-ravendbs-binaries)
+   * [Viewing the indexed terms](#viewing-the-indexed-terms)
 
 </Admonition>
 
@@ -77,7 +77,7 @@ enabling [Full-text search](../../indexes/querying/searching.mdx).
 ### Analyzers at query time
 
 When running a [Full-text search with a dynamic query](../../client-api/session/querying/text-search/full-text-search.mdx),  
-the auto-index created by the server breaks down the text of the searched document field using the [default search analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer).
+the auto-index created by the server breaks down the text of the searched document field using the [default search analyzer](#using-the-default-search-analyzer).
 
 When running a [Full-text search on a static-index](../../indexes/querying/query-index.mdx),  
 the **same analyzer** used to tokenize field content at indexing time is typically applied 
@@ -85,10 +85,10 @@ to process the terms provided in the full-text search query before they are sent
 
 There are two exceptions to this rule:
 
-  1. When setting the [NGramAnalyzer](../../indexes/using-analyzers.mdx#analyzers-that-tokenize-according-to-the-defined-number-of-characters) in the index definition,
+  1. When setting the [NGramAnalyzer](#analyzers-that-tokenize-according-to-the-defined-number-of-characters) in the index definition,
      it tokenizes the index field at indexing time.  
      However, at query time, when performing a full-text search on that field,  
-     the default [RavenStandardAnalyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer) is used to tokenize the search term from the query predicate.
+     the default [RavenStandardAnalyzer](#using-the-default-search-analyzer) is used to tokenize the search term from the query predicate.
 
        Currently, for query time, you cannot specify a different analyzer than the one defined in the index definition,  
        so to address this issue, you have two options:  
@@ -103,8 +103,8 @@ There are two exceptions to this rule:
 
 ### Full-text search
 
-In most cases, Lucene's [StandardAnalyzer](../../indexes/using-analyzers.mdx#analyzers-that-remove-common-stop-words) is sufficient for full-text searches.  
-For languages other than English, or when a custom analysis process is needed, you can provide your own [Custom analyzer](../../indexes/using-analyzers.mdx#creating-custom-analyzers).  
+In most cases, Lucene's [StandardAnalyzer](#analyzers-that-remove-common-stop-words) is sufficient for full-text searches.  
+For languages other than English, or when a custom analysis process is needed, you can provide your own [Custom analyzer](#creating-custom-analyzers).  
 It is straightforward and may already be available as a contrib package for Lucene.
 
 You can also configure a specific collation for an index field to sort based on culture specific rules.  
@@ -126,13 +126,13 @@ Learn more in [Sorting and Collation](../../indexes/sorting-and-collation.mdx#co
    * **KeywordAnalyzer**
    * **NGramAnalyzer**
 
-* If needed, you can create your own [Customized Analyzers](../../indexes/using-analyzers.mdx#creating-custom-analyzers).
+* If needed, you can create your own [Customized Analyzers](#creating-custom-analyzers).
 
 * To assign the analyzer of your choice to a specific index-field,
-  see: [Setting analyzer for index-field](../../indexes/using-analyzers.mdx#setting-analyzer-for-index-field).
+  see: [Setting analyzer for index-field](#setting-analyzer-for-index-field).
 
 * When no analyzer is explicitly assigned to an index-field in the index definition,  
-  RavenDB will use its [Default Analyzers](../../indexes/using-analyzers.mdx#ravendb) to process and tokenize the content of a field.
+  RavenDB will use its [Default Analyzers](#ravendb) to process and tokenize the content of a field.
 
 <Admonition type="info" title="">
 All examples below use the following text:  
@@ -177,7 +177,7 @@ All examples below use the following text:
     be aware that analyzers removing common stop words may treat IT as a stop word and exclude it from the resulting terms.
     This can also affect acronyms such as WHO (World Health Organization) or names such as "The Who" or "The IT Crowd".
   * To avoid excluding acronyms, you can either spell out the full title instead of abbreviating it
-    or use an [Analyzer that doesn't remove stop words](../../indexes/using-analyzers.mdx#analyzers-that-do-not-remove-common-stop-words).
+    or use an [Analyzer that doesn't remove stop words](#analyzers-that-do-not-remove-common-stop-words).
 
 </Admonition>
 
@@ -272,7 +272,7 @@ All examples below use the following text:
     In RavenDB, the analyzer configured in the index definition is typically used both at indexing time and query time (the same analyzer). 
     However, the `NGramAnalyzer` is an exception to this rule.  
   
-    Refer to section [Analyzers at query time](../../indexes/using-analyzers.mdx#analyzers-at-query-time) to learn about the different behaviors. 
+    Refer to section [Analyzers at query time](#analyzers-at-query-time) to learn about the different behaviors. 
 
 </ContentFrame>
 
@@ -284,10 +284,10 @@ All examples below use the following text:
   use the `Analyzers.Add()` method within the index definition for that field.
 
 * Either:  
-  * Specify an analyzer from the [Analyzers available in RavenDB](../../indexes/using-analyzers.mdx#analyzers-available-in-ravendb),  
-  * Or specify your own custom analyzer (see [Creating custom analyzers](../../indexes/using-analyzers.mdx#creating-custom-analyzers)).
+  * Specify an analyzer from the [Analyzers available in RavenDB](#analyzers-available-in-ravendb),  
+  * Or specify your own custom analyzer (see [Creating custom analyzers](#creating-custom-analyzers)).
 
-* If you want RavenDB to use the default analyzers, see [RavenDB's default analyzers](../../indexes/using-analyzers.mdx#ravendb).
+* If you want RavenDB to use the default analyzers, see [RavenDB's default analyzers](#ravendb).
 
 * An analyzer may also be set from the Edit Index view in the Studio, see [Index field options](../../studio/database/indexes/create-map-index.mdx#index-field-options).
 
@@ -356,14 +356,14 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
    depending on the specified Indexing Behavior.
 
 * The **Default Analyzers** are:  
-   * `RavenStandardAnalyzer` - Serves as the [Default Search Analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer). 
-   * `KeywordAnalyzer` - Servers as the [Default Exact Analyzer](../../indexes/using-analyzers.mdx#using-the-default-exact-analyzer). 
-   * `LowerCaseKeywordAnalyzer`- Serves as the [Default Analyzer](../../indexes/using-analyzers.mdx#using-the-default-analyzer). 
+   * `RavenStandardAnalyzer` - Serves as the [Default Search Analyzer](#using-the-default-search-analyzer). 
+   * `KeywordAnalyzer` - Servers as the [Default Exact Analyzer](#using-the-default-exact-analyzer). 
+   * `LowerCaseKeywordAnalyzer`- Serves as the [Default Analyzer](#using-the-default-analyzer). 
 
 * The available **Indexing Behavior** values are:  
     * `FieldIndexing.Exact` 
     * `FieldIndexing.Search`
-    * `FieldIndexing.No` - This behavior [disables field indexing](../../indexes/using-analyzers.mdx#disabling-indexing-for-index-field).
+    * `FieldIndexing.No` - This behavior [disables field indexing](#disabling-indexing-for-index-field).
 
 * See the detailed explanation for each scenario below:
 
@@ -548,9 +548,9 @@ public class BlogPosts_ByTitle : AbstractIndexCreationTask<BlogPost>
 * **Ways to create**:  
   There are three ways to create a custom analyzer and add it to your server:  
 
-  1. [Add custom analyzer via Studio](../../indexes/using-analyzers.mdx#add-custom-analyzer-via-studio)  
-  2. [Add custom analyzer via Client API](../../indexes/using-analyzers.mdx#add-custom-analyzer-via-client-api)  
-  3. [Add custom analyzer directly to RavenDB's binaries](../../indexes/using-analyzers.mdx#add-custom-analyzer-directly-to-ravendbs-binaries)  
+  1. [Add custom analyzer via Studio](#add-custom-analyzer-via-studio)  
+  2. [Add custom analyzer via Client API](#add-custom-analyzer-via-client-api)  
+  3. [Add custom analyzer directly to RavenDB's binaries](#add-custom-analyzer-directly-to-ravendbs-binaries)  
 
 <ContentFrame>
 
