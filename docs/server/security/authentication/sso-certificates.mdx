@@ -41,16 +41,19 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Panel heading="Required clearance and license">
 
-<Admonition type="warning" title="Required clearance and license">
-SSO is a commercial feature gated by the RavenDB license. Registering an SSO server certificate requires
-**Cluster Admin** clearance; SSO user entries can be managed by **Operator** clearance and above.
+SSO is a commercial feature gated by the RavenDB license. Registering an SSO server certificate
+requires **Cluster Admin** clearance; SSO user entries can be managed by **Operator** clearance and above.
+
+<Admonition type="warning" title="License required">
+Registering an SSO server certificate or creating an SSO user entry fails with a license error
+if your license does not permit SSO.
 </Admonition>
 
 </Panel>
 
 <Panel heading="Register an SSO server certificate">
 
-The SSO server presents its public certificate to clients on `https://<sso-domain>`. Registering that
+The SSO server presents its public certificate to clients on `https://<sso-domain>`. Registering the
 certificate in RavenDB tells the cluster "trust SSO identities forwarded by this server." Identification
 is by **[public-key pinning hash](../../../server/security/authentication/certificate-renewal-and-rotation.mdx#implicit-trust-by-public-key-pinning-hash)**, not by the certificate file itself.
 
@@ -93,6 +96,8 @@ Click **Upload SSO certificate** to open the **Register SSO server certificate**
   Browse to a PEM or PFX file to provide the certificate yourself instead.
 - **Register certificate**  
   Saves the certificate as a trusted SSO server.
+
+---
 
 Once registered, the SSO server certificate appears under a dedicated **SSO** section of the certificates
 list, alongside any existing SSO user entries:
@@ -167,14 +172,20 @@ Listing multiple pinning hashes is how you give one user access through several 
 <Admonition type="warning" title="SSO logins bypass two-factor authentication">
 RavenDB's two-factor authentication does not apply to an SSO login. RavenDB cannot enforce a second
 factor on the identity provider's side, so multi-factor enforcement is the SSO provider's
-responsibility. SSO users granted Operator or Cluster Admin clearance therefore get that access
-with no second factor on the RavenDB side, so configure your identity provider to require
-multi-factor authentication for those users.
+responsibility.  
+SSO users granted Operator or Cluster Admin clearance therefore sign in with no RavenDB-side
+second factor, so configure your identity provider to require multi-factor authentication for
+those users.
 </Admonition>
 
 <ContentFrame>
 
 ### Studio
+
+SSO user entries are created and managed in the `Manage Server` > `User Access Management`
+view.
+
+---
 
 #### Generate SSO user
 
@@ -239,10 +250,14 @@ Validation rules enforced by the endpoint:
 
 <Panel heading="Renewing the SSO server certificate">
 
-<Admonition type="danger" title="Renew with the same private key">
-RavenDB identifies trusted SSO servers by their **public key pinning hash**, not by the certificate file.
-Every SSO user entry that doesn't have `AllowAnySsoServer = true` is pinned to one or more specific
-hashes. **If you renew the SSO server certificate with a new key pair, the hash changes and every
+RavenDB identifies trusted SSO servers by their **public key pinning hash**, not by the
+certificate file.  
+Every SSO user entry that doesn't have `AllowAnySsoServer = true` is pinned to one or more
+specific hashes.  
+Public-key pinning is the same mechanism RavenDB uses for [implicit trust between server and client certificates](../../../server/security/authentication/certificate-renewal-and-rotation.mdx#implicit-trust-by-public-key-pinning-hash).
+
+<Admonition type="warning" title="Renew with the same private key">
+**If you renew the SSO server certificate with a new key pair, the hash changes and every
 non-`AllowAnySsoServer` entry stops accepting logins through that server until you re-register the new
 certificate and update each user entry's pinning list.**
 
@@ -252,8 +267,7 @@ pinning hash - stays identical, and every existing SSO user entry keeps working 
 RavenDB.
 </Admonition>
 
-This is the same mechanism RavenDB uses for [implicit trust between server and client certificates](../../../server/security/authentication/certificate-renewal-and-rotation.mdx#implicit-trust-by-public-key-pinning-hash) - see that section
-for the underlying details.
+---
 
 Practical guidance:
 
@@ -270,6 +284,8 @@ Practical guidance:
 </Panel>
 
 <Panel heading="Supported providers">
+
+SSO recognizes four identity providers:
 
 | `SsoProvider` | Typical `Identifier` | When to set `Domain` |
 |---|---|---|

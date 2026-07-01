@@ -25,7 +25,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="tip" title="Use the installer">
 Unless you have a specific reason to assemble the deployment by hand (for example because you're
-integrating into existing automation), run `install.sh` / `install.ps1`. It produces the same artifacts
+integrating into existing automation), run `install.sh` / `install.ps1`.  
+The installer produces the same artifacts
 that the manual setup below describes, but with secrets generated for you, file permissions set, and DNS
 sanity-checked.
 </Admonition>
@@ -156,6 +157,8 @@ The script walks through the following steps:
 
 ### What the installer produces
 
+The installer generates a self-contained deployment directory:
+
 ```
 sso-deploy/
   sso.env               # SSO secrets - mode 600
@@ -180,7 +183,7 @@ docker compose up -d
 ```
 <br />
 
-The script also offers to run that command for you as its final step.
+As its final step, the installer offers to run `docker compose up -d` for you.
 
 </ContentFrame>
 
@@ -190,7 +193,7 @@ The script also offers to run that command for you as its final step.
 
 If you can't or don't want to run the installer, the example under `Raven.Sso/example/` in the
 [ravendb/sso](https://github.com/ravendb/sso) repository is the same layout the installer generates, just
-filled in by hand. It runs two containers:
+filled in by hand. The compose file runs two containers:
 
 - **[certbot](https://certbot.eff.org)** - `certbot/dns-route53`. Obtains the wildcard certificate on first start and renews every 12 hours.
 - **`sso`** - `ravendb/sso:latest`. Starts once `certbot` has produced a valid certificate, and reloads Nginx
@@ -260,6 +263,8 @@ do not switch this to ECDSA.
 
 ### 4. Volumes and on-host layout
 
+The deployment maps these host directories into the containers:
+
 ```
 example/
   sso.env                # SSO env vars
@@ -284,7 +289,7 @@ example/
 For local testing without Let's Encrypt, build the image directly and pass credentials on the command line:
 
 ```bash
-docker build -t auth-proxy .
+docker build -t ravendb/sso .
 
 docker run --rm -it \
     -p 8080:8080 \
@@ -298,7 +303,7 @@ docker run --rm -it \
     -e MICROSOFT_TENANT=common \
     -v /path/to/app.keytab:/etc/nginx/app.keytab:ro \
     -v /path/to/krb5.conf:/etc/krb5.conf:ro \
-    auth-proxy
+    ravendb/sso
 ```
 <br />
 
@@ -449,12 +454,16 @@ can be changed without restarting the container.
 
 <Panel heading="Troubleshooting">
 
+Common symptoms and their likely causes:
+
 | Symptom | Likely cause |
 |---|---|
 | `certbot` fails with a Route53 error | AWS credentials or the DNS zone isn't actually in Route53. |
 | `sso` container exits immediately | `RAVENDBSSO_Url` not set in `sso.env`. |
 | `502 Bad Gateway` shortly after startup | The .NET sidecar on `127.0.0.1:3000` is still warming up - retry. |
 | Login loops back to the provider | Wrong callback URL registered, or `OAUTH2_PROXY_COOKIE_SECRET` length is invalid (must be 16, 24, or 32 chars). |
+
+To find the cause of any of these symptoms, check the container logs:
 
 ```bash
 docker logs ravendb-sso     # nginx + .NET app

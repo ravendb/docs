@@ -60,7 +60,7 @@ An SSO setup has three components:
 
 | Component | Role |
 |---|---|
-| **SSO application** | Nginx + .NET 10 sidecar packaged as `ravendb/sso`. Terminates TLS, runs OAuth2 / Kerberos, issues a per-user ECDSA client certificate, and proxies to RavenDB over mTLS. |
+| **SSO application** | Nginx + .NET 10 sidecar packaged as `ravendb/sso`. Terminates TLS, runs [OAuth2](https://oauth.net/2/) / Kerberos, issues a per-user ECDSA client certificate, and proxies to RavenDB over mTLS. |
 | **[oauth2-proxy](https://github.com/oauth2-proxy/oauth2-proxy)** | Bundled inside the SSO image. Handles the OAuth2 dance for GitHub, Google, and Microsoft. |
 | **RavenDB cluster** | Trusts the SSO server's certificate and resolves the SSO identity (embedded in the per-user cert) to a registered SSO user entry. |
 
@@ -78,13 +78,13 @@ Once SSO is set up, every sign-in runs through these steps automatically:
    - `/oauth` - `oauth2-proxy` for GitHub, Google, or Microsoft.
 3. After upstream auth succeeds, Nginx forwards the authenticated username to the .NET sidecar at `/auth`
    via the `X-Auth-User` header.
-4. The sidecar generates a unique ECDSA client certificate for that user (cached by thumbprint) and issues
+4. The sidecar generates a unique ECDSA client certificate for the user (cached by thumbprint) and issues
    a JWT cookie containing the certificate and key paths.
 5. Nginx validates the JWT and uses the referenced certificate to open an mTLS connection to RavenDB.
 6. RavenDB sees a client certificate whose subject carries an **SSO identity extension**
    (`Provider`, `Domain`, `Identifier` - `Domain` is only populated when `Provider = Windows`, where it
-   carries the Kerberos realm). It looks up a matching **SSO user entry** in the cluster and applies that
-   entry's security clearance and database permissions.
+   carries the Kerberos realm). RavenDB looks up a matching **SSO user entry** in the cluster
+   and applies the entry's security clearance and database permissions.
 
 </Panel>
 
@@ -111,11 +111,12 @@ The cluster stores both records as certificates, told apart by their `Usage`:
 
 <Panel heading="Licensing">
 
+SSO is a commercial feature. Registering an SSO server certificate requires **Cluster Admin**
+clearance; creating SSO user entries requires **Operator** clearance or higher.
+
 <Admonition type="warning" title="Commercial feature">
-SSO is gated by the RavenDB license. Both registering an SSO server certificate and creating an SSO user
-entry will fail with a license error if your license does not permit SSO. Registering an SSO server
-certificate also requires the **Cluster Admin** security clearance - creating SSO user entries only requires
-**Operator** clearance.
+Both registering an SSO server certificate and creating an SSO user entry fail with a license
+error if your license does not permit SSO.
 </Admonition>
 
 </Panel>
@@ -145,6 +146,8 @@ When setting up SSO, weigh these points:
 
 <Panel heading="Auditing and monitoring">
 
+You can review SSO activity on both the RavenDB cluster and the SSO application:
+
 <ContentFrame>
 
 ### Auditing
@@ -152,7 +155,7 @@ When setting up SSO, weigh these points:
 RavenDB's [audit log](../../../server/security/audit-log/audit-log-overview.mdx) records each
 connection to the cluster, including the certificate used and the access granted.  
 An SSO user connects with the per-user certificate that the SSO application issued, so the
-audit log records that login under the user's SSO identity, alongside your regular client
+audit log records the login under the user's SSO identity, alongside your regular client
 connections.
 
 </ContentFrame>

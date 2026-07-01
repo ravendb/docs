@@ -49,7 +49,7 @@ For example, `RAVENDBSSO_Clusters` containing a JSON array is equivalent to a to
 
 <Panel heading="SSO application settings">
 
-These map to properties on `SsoSettings`:
+These settings map to properties on `SsoSettings`:
 
 | Setting | Environment variable | Default | Required | Description |
 |---|---|---|---|---|
@@ -72,6 +72,8 @@ prevents environment-variable path injection - keep your customized paths under 
 <ContentFrame>
 
 ### Defining clusters
+
+Each cluster the SSO application proxies is defined by its URLs and an alias:
 
 <Tabs>
 <TabItem value="env" label="Environment variable">
@@ -107,6 +109,8 @@ RAVENDBSSO_Clusters=[{"ClusterUrls":["https://a.prod.example.com"],"ClusterAlias
 
 ### CLI flags
 
+The SSO application accepts one command-line flag:
+
 | Flag | Purpose |
 |---|---|
 | `--generate-keys` | Generate the JWT keypair at `JwtKeyPath` / `JwtPubPath` and exit. Used once during initial setup or when rotating keys. |
@@ -116,6 +120,8 @@ RAVENDBSSO_Clusters=[{"ClusterUrls":["https://a.prod.example.com"],"ClusterAlias
 </Panel>
 
 <Panel heading="OAuth2 / oauth2-proxy environment variables">
+
+These variables configure the bundled oauth2-proxy and the OAuth providers:
 
 | Variable | Required | Description |
 |---|---|---|
@@ -136,7 +142,7 @@ At least one OAuth provider must be configured unless you exclusively use Kerber
 
 <Panel heading="Certbot environment variables (Let's Encrypt example)">
 
-These are read by the bundled `certbot/dns-route53` container in `Raven.Sso/example/docker-compose.yml`.
+These variables are read by the bundled `certbot/dns-route53` container in `Raven.Sso/example/docker-compose.yml`.
 
 | Variable | Required | Description |
 |---|---|---|
