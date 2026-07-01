@@ -21,7 +21,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * The [ravendb/sso](https://github.com/ravendb/sso) repository ships with an **interactive installer**
   (`install.sh` for Linux/macOS, `install.ps1` for Windows) that asks all the questions, pre-flights DNS
   and host permissions, generates a complete deployment directory, and optionally starts the stack. This
-  is the recommended way to set up a new SSO server.
+  is the recommended way to set up a new SSO application.
 
 <Admonition type="tip" title="Use the installer">
 Unless you have a specific reason to assemble the deployment by hand (for example because you're
@@ -55,12 +55,12 @@ sanity-checked.
 
 <Panel heading="Prerequisites">
 
-- Docker (Compose v2).
+- [Docker](https://www.docker.com) (Compose v2).
 - A public domain you control, with the ability to create DNS records.
 - At least one of:
   - OAuth credentials for **GitHub**, **Google**, or **Microsoft/Entra ID**, or
   - A Kerberos keytab for an Active Directory service principal.
-- For the bundled Let's Encrypt option: an **AWS account** with **Route53** hosting the SSO domain and an
+- For the bundled [Let's Encrypt](https://letsencrypt.org) option: an **AWS account** with **Route53** hosting the SSO domain and an
   IAM user authorized to create TXT records (DNS-01 challenge). The installer can also wire up a
   manually-supplied certificate instead.
 
@@ -68,7 +68,7 @@ sanity-checked.
 
 <Panel heading="DNS setup">
 
-The SSO server is reached at a base domain (e.g. `sso.example.com`). Each RavenDB cluster behind it is
+The SSO application is reached at a base domain (e.g. `sso.example.com`). Each RavenDB cluster behind it is
 exposed at `<cluster-alias>.<sso-domain>` - for example `my-cluster.sso.example.com`. You therefore need
 both an apex record and a wildcard for sub-aliases:
 
@@ -192,7 +192,7 @@ If you can't or don't want to run the installer, the example under `Raven.Sso/ex
 [ravendb/sso](https://github.com/ravendb/sso) repository is the same layout the installer generates, just
 filled in by hand. It runs two containers:
 
-- **`certbot`** - `certbot/dns-route53`. Obtains the wildcard certificate on first start and renews every 12 hours.
+- **[certbot](https://certbot.eff.org)** - `certbot/dns-route53`. Obtains the wildcard certificate on first start and renews every 12 hours.
 - **`sso`** - `ravendb/sso:latest`. Starts once `certbot` has produced a valid certificate, and reloads Nginx
   every 6 hours to pick up renewals.
 
@@ -217,7 +217,7 @@ Edit each file with your domain, OAuth credentials, and AWS keys. The complete l
 
 ### 2. (Optional) Configure clusters via `settings.json`
 
-The list of RavenDB clusters the SSO server should proxy can live in `config/settings.json`:
+The list of RavenDB clusters the SSO application should proxy can live in `config/settings.json`:
 
 ```json
 {
@@ -353,7 +353,7 @@ apps.
    This must match the `MICROSOFT_TENANT` value you choose.
 3. Set **Redirect URI** (Web) to `https://<sso-domain>/oauth2/microsoft/callback`.
 4. Under **Token configuration**, add `email` as an **optional claim** for the ID token - organizational
-   accounts don't emit it by default, and the SSO server uses it as the username.
+   accounts don't emit it by default, and the SSO application uses it as the username.
 5. Under **Certificates & secrets**, create a client secret.
 6. Set `MICROSOFT_CLIENT_ID`, `MICROSOFT_CLIENT_SECRET`, and `MICROSOFT_TENANT`:
    - **Single-tenant**: your tenant GUID.
@@ -465,7 +465,7 @@ docker logs certbot         # certificate issues
 
 <Panel heading="Next steps">
 
-Once the SSO server is up, register its certificate and create SSO user entries in your RavenDB cluster
-following [Configuring RavenDB for SSO](../../../server/security/sso/configuring-ravendb-for-sso.mdx).
+Once the SSO application is up, register its certificate and create SSO user entries in your RavenDB cluster
+following [SSO Certificates and Users](../../../server/security/authentication/sso-certificates.mdx).
 
 </Panel>

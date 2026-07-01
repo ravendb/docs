@@ -20,9 +20,10 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * **Which SSO servers to trust** - registered as certificates with `Usage = SsoServer`.
    * **How to map an SSO identity to RavenDB permissions** - stored as **SSO user entries** with `Usage = SsoClient`.
 
-* Both are managed from **Manage Server → Certificates** in Studio, and live in the same certificate list as your regular server and client certificates.
+* Both are managed from `Manage Server` > `User Access Management` in Studio, and live in the same certificate list as your regular server and client certificates.
 
-* For end-to-end deployment of the SSO application itself, see the [SSO section](../../../server/security/sso/overview.mdx). This page focuses on the certificate-management side of the workflow.
+* For end-to-end deployment of the SSO application itself, see the [SSO Overview](../../../server/security/sso/overview.mdx).  
+  This page focuses on the certificate-management side of the workflow.
 
 * In this article:
    * [Required clearance and license](../../../server/security/authentication/sso-certificates.mdx#required-clearance-and-license)
@@ -57,20 +58,41 @@ is by **[public-key pinning hash](../../../server/security/authentication/certif
 
 ### Studio
 
-1. Open **Manage Server → Certificates**.
-2. Click **Register SSO server**.
-3. Either upload the certificate (PEM/PFX) or paste the SSO URL - the cluster will fetch the certificate
-   from `https://<sso-url>/api/certificate`, validate it, and show the parsed details for confirmation.
-4. Give it a name and save.
+To register SSO server certificates and create SSO user entries, open:
+`Manage Server` > `User Access Management`
 
-Open the **Manage user access** dropdown to find the SSO actions:
+![Manage user access menu](./assets/sso-user-access-management-nav.png)
 
-![Manage user access dropdown with SSO actions](./assets/certificates-manage-dropdown.png)
+1. **Manage Server**  
+   Click to open the Manage Server menu.  
+2. **User Access Management**  
+   Click to open this page, where you manage SSO server certificates and SSO user entries, alongside
+   the cluster's regular server and client certificates.  
+3. **Manage user access**  
+   Click to open this dropdown. The SSO actions are:
 
-**Upload SSO certificate** opens the registration modal - either fetch the certificate from the SSO URL or
-upload a file directly:
+   - [**Upload SSO certificate**](../../../server/security/authentication/sso-certificates.mdx#upload-sso-certificate)  
+     Register an SSO server certificate.
+   - [**Generate SSO user**](../../../server/security/authentication/sso-certificates.mdx#generate-sso-user)  
+     Create an SSO user entry.
 
-![Register SSO server certificate modal](./assets/register-sso-server-modal.png)
+---
+
+#### Upload SSO certificate
+
+Click **Upload SSO certificate** to open the **Register SSO server certificate** dialog:
+
+![Register SSO server certificate dialog](./assets/register-sso-server-modal.png)
+
+- **Name**  
+  A display name for the certificate.
+- **SSO server URL**  
+  Enter the SSO server's address and click **Fetch**. RavenDB downloads the public certificate from
+  `https://<sso-url>/api/certificate`, validates it, and shows the parsed details.
+- **Or upload certificate file**  
+  Browse to a PEM or PFX file to provide the certificate yourself instead.
+- **Register certificate**  
+  Saves the certificate as a trusted SSO server.
 
 Once registered, the SSO server certificate appears under a dedicated **SSO** section of the certificates
 list, alongside any existing SSO user entries:
@@ -82,6 +104,10 @@ list, alongside any existing SSO user entries:
 <ContentFrame>
 
 ### HTTP API
+
+Every action in the Studio dialog above maps to a REST endpoint you can call directly.  
+Use these endpoints to automate SSO setup as part of a deployment pipeline, instead of registering
+each certificate and user by hand in Studio.
 
 ```http
 PUT /admin/certificates
@@ -105,7 +131,7 @@ GET /admin/certificates/sso/server/fetch?url=https://sso.example.com
 <br />
 
 This downloads `https://sso.example.com/api/certificate`, validates it, and returns the base64 bytes -
-hand them to `PUT /admin/certificates` above. The fetch is limited to **1 MB** and times out after
+hand them to `PUT /admin/certificates` above. The fetch is limited to **64 KB** and times out after
 **10 seconds**.
 
 ---
@@ -138,28 +164,47 @@ Each entry must trust the SSO servers it accepts identities from. You can either
 Listing multiple pinning hashes is how you give one user access through several SSO deployments
 (production + staging, for example) without duplicating the entry.
 
+<Admonition type="warning" title="SSO logins bypass two-factor authentication">
+RavenDB's two-factor authentication does not apply to an SSO login. RavenDB cannot enforce a second
+factor on the identity provider's side, so multi-factor enforcement is the SSO provider's
+responsibility. SSO users granted Operator or Cluster Admin clearance therefore get that access
+with no second factor on the RavenDB side, so configure your identity provider to require
+multi-factor authentication for those users.
+</Admonition>
+
 <ContentFrame>
 
 ### Studio
 
-1. **Manage Server → Certificates → Register SSO user**.
-2. Enter a **Name**, choose a **Security Clearance**, and pick the **Permissions** per database.
-3. Add one or more SSO identifiers (provider + identifier, plus a domain when the provider is
-   Windows - the Kerberos realm).
-4. Pick the trust model - either tick **Allow any SSO server**, or select the SSO servers you registered
-   above.
-5. Save.
+#### Generate SSO user
 
-The modal collects all the entry's fields on one screen - display name, identifiers, security clearance,
-trust scope (per-server pinning or any SSO server), and per-database permissions:
+Click **Generate SSO user** to open the **Add SSO user** dialog:
 
-![Add SSO user modal](./assets/register-sso-user-modal.png)
+![Add SSO user dialog](./assets/register-sso-user-modal.png)
+
+- **Display name**  
+  A display name for the user entry.
+- **Identifiers**  
+  Choose the provider and enter the identifier (a username or email).  
+  For **Windows**, a **Domain** field appears for the Kerberos realm.  
+  Click **Add** to map more than one identity to this entry.
+- **Security clearance**  
+  The clearance to grant: Cluster Admin, Operator, or User.
+- **Authorizing SSO**  
+  Turn on **Allow any SSO to authorize** to accept this identity from any registered SSO server, or
+  leave it off and select the specific SSO servers this user is bound to.
+- **Database permissions**  
+  The per-database access to grant.
+- **Add user**  
+  Saves the SSO user entry.
 
 </ContentFrame>
 
 <ContentFrame>
 
 ### HTTP API
+
+The matching endpoint for an SSO user entry:
 
 ```http
 PUT /admin/certificates/sso/user
