@@ -160,12 +160,12 @@ See the dedicated syntax sections in the following articles for full configurati
   The following sections explain how to configure each component of the agent:  
   * [System prompt](#system-prompt)  
   * [Agent name](#agent-name)  
-  * [Agent ID](#agent-id)  
-  * [Connection string](#connection-string)  
+  * [Agent ID](#set-the-agent-id)  
+  * [Connection string](#creating-a-connection-string)  
   * [Expected response format](#expected-response-format)  
-  * [Agent parameters](#agent-parameters)  
-  * [Maximum number of iterations](#maximum-number-of-iterations)  
-  * [Chat trimming configuration](#chat-trimming-configuration)      
+  * [Agent parameters](#add-agent-parameters)  
+  * [Maximum number of iterations](#set-maximum-number-of-iterations)  
+  * [Chat trimming configuration](#set-chat-trimming-configuration)      
 
 ---
     
@@ -395,7 +395,7 @@ agentConfiguration.chatTrimming = {
   The RQL in the query tool may include parameter placeholders prefixed with `$` (e.g. `$country`).  
   Both the user and the LLM can pass values to these parameters.  
   * **Passing values from the user**:  
-    Users can pass values to queries through [Agent parameters](#agent-parameters).  
+    Users can pass values to queries through [Agent parameters](#add-agent-parameters).  
     If agent parameters are defined in the agent configuration -  
     * The client must provide values for them when initiating a conversation with the agent.
     * Before executing the query, the agent will replace the placeholders with the provided values.

@@ -13,7 +13,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * In this page:  
   * [Syntax](#syntax)  
-      * [RevisionsCollectionConfiguration](#revisionscollectionconfiguration)  
+      * [RevisionsCollectionConfiguration](#revisions-collection-configuration-object)  
       * [RevisionsConfiguration](#revisionsconfiguration)  
       * [ConfigureRevisionsOperation](#configurerevisionsoperation)  
   * [Example](#example)  
@@ -27,7 +27,7 @@ settings.
 
 To configure the revisions settings for a database and/or the collections in that database, follow these steps:  
 
-[1.](#revisionscollectionconfiguration) 
+[1.](#revisions-collection-configuration-object) 
 Create a RevisionsCollectionConfiguration` object for each desired collection.  
 
 [2.](#revisionsconfiguration) 
@@ -96,7 +96,7 @@ configuration.
 
 Note that when this object is sent to the server, it overrides the configurations for **all** collections, including all existing 
 configurations currently on the server. If a collection is not listed in `collections` and `defaultConfig` has not been set, the 
-default values listed in the table [above](#revisionscollectionconfiguration) 
+default values listed in the table [above](#revisions-collection-configuration-object) 
 are applied.  
 ### ConfigureRevisionsOperation
 

@@ -24,7 +24,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * It allows you to execute an ordered set of operations across your entire cluster.  
   This means that you can apply a set of operations on a state machine, and have the _same_ final state machine in all the cluster's nodes.  
-  So any series of events (called a [Raft Commands](./consensus-operations.mdx#implementation-details)) will be executed in the _same_ order on each node.  
+  So any series of events (called a [Raft Commands](./consensus-operations.mdx#raft-commands-implementation-details)) will be executed in the _same_ order on each node.  
 
 * The [Leader Node](./cluster-topology.mdx#leader) accepts all the Raft Commands requests for the cluster and handles committing them cluster-wide.  
   These Raft Commands are done only if the majority of the nodes in the cluster agreed to it !  

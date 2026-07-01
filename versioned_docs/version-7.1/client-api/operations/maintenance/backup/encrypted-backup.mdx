@@ -28,7 +28,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   using the same encryption key provided for the full backup.  
 
 * In this page:  
-  * [RavenDB's Security Approach](#ravendb)  
+  * [RavenDB's Security Approach](#ravendbs-security-approach)  
      * [Secure Client-Server Communication](#secure-client-server-communication)  
      * [Database Encryption](#database-encryption)  
   * [Backup-Encryption Overview](#backup-encryption-overview)  
@@ -258,7 +258,7 @@ var result = await docStore.Maintenance.SendAsync(operation);
 
 ## Restoring an Encrypted Backup
 
-To [restore](./restore.mdx#configuration-and-execution) 
+To [restore](./restore.mdx#restoring-a-database-configuration-and-execution) 
 an encrypted backup you must provide the **key** that was used to encrypt it.  
 Pass the key to `RestoreBackupOperation` via `restoreConfiguration.BackupEncryptionSettings`.  
 <TabItem value="restore_encrypted_backup" label="restore_encrypted_backup">

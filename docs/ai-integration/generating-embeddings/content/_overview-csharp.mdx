@@ -49,7 +49,7 @@ import Panel from '@site/src/components/Panel';
   If quantization was defined in the task, RavenDB applies it to the embeddings before storing them.
 
 * **Embeddings are stored in your database**:  
-  * Each embedding is stored as an attachment in a [dedicated collection](../embedding-collections.mdx#the-embeddings-collection).  
+  * Each embedding is stored as an attachment in a [dedicated collection](../embedding-collections.mdx#the-embeddings-collections).  
   * RavenDB maintains an [embeddings cache](../embedding-collections.mdx#the-embeddings-cache-collection),
     allowing reuse of embeddings for the same source content and reducing provider calls.
     Cached embeddings expire after a configurable duration.
@@ -127,8 +127,8 @@ import Panel from '@site/src/components/Panel';
 
 * The number of embeddings generation tasks across all databases can also be monitored using [SNMP](../../../server/administration/snmp/snmp-overview.mdx).  
   The following SNMP OIDs provide relevant metrics:
-  * [5.1.11.25](../../../server/administration/snmp/snmp-overview.mdx#511125) – Total number of enabled embeddings generation tasks.
-  * [5.1.11.26](../../../server/administration/snmp/snmp-overview.mdx#511126) – Total number of active embeddings generation tasks.
+  * [5.1.11.25](../../../server/administration/snmp/snmp-overview.mdx#value-5.1.11.25) – Total number of enabled embeddings generation tasks.
+  * [5.1.11.26](../../../server/administration/snmp/snmp-overview.mdx#value-5.1.11.26) – Total number of active embeddings generation tasks.
 
 * Errors raised by embeddings generation tasks, and how those errors affect each task's
   health, are tracked in the [Task Errors view](../../../monitoring/task-errors/studio-views.mdx#task-errors-view).  
