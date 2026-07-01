@@ -1,0 +1,65 @@
+---
+title: "RVN010 — Unsupported method call inside RavenDB query expression"
+sidebar_label: RVN010
+sidebar_position: 10
+---
+
+# RVN010 — Unsupported method call inside RavenDB query expression
+
+| Property | Value |
+|----------|-------|
+| **ID** | RVN010 |
+| **Title** | Unsupported method call inside RavenDB query expression |
+| **Severity** | Info (default) |
+| **Category** | Usage |
+| **Code fix** | No |
+
+## Description
+
+RavenDB translates LINQ query lambdas (`Where`, `OrderBy`, `Select`, `Filter`, `Spatial`, `VectorSearch`, `OrderByDistance`, `MoreLikeThis`, etc.) to RQL on the server. User-defined methods called inside these lambdas cannot be translated and will throw at runtime during RQL generation. Extension methods are excluded from this check to reduce false positives.
+
+## Query methods checked
+
+Lambdas inside the following query chain methods are analyzed: `Where`, `OrderBy`, `OrderByDescending`, `ThenBy`, `ThenByDescending`, `Select`, `SelectMany`, `GroupBy`, `Search`, `ProjectInto`, `Filter`, `Spatial`, `VectorSearch`, `OrderByDistance`, `OrderByDistanceDescending`, `MoreLikeThis`, `GroupByArrayValues`, `GroupByArrayContent`.
+
+## Trigger condition
+
+The analyzer fires when one of the above methods is called on an `IRavenQueryable<T>`, and a lambda argument contains an invocation that resolves to a user-defined, non-extension method.
+
+## What to do
+
+1. **Compute the value before the query** — capture the result in a local variable and use it in the lambda.
+2. **Inline the logic** — replace the method call with the equivalent LINQ/BCL expression that RavenDB can translate.
+3. **Materialize client-side** — call `.ToList()` first and apply the filter/projection in memory using regular LINQ to Objects.
+
+### Before (triggers RVN010)
+
+```csharp
+private static string GetCategory(string name) => name.Split('/')[0];
+
+var results = session.Query<Product>()
+    .Where(x => GetCategory(x.Name) == "electronics")  // RVN010
+    .ToList();
+```
+
+### After (option 1: compute before the query)
+
+```csharp
+string category = "electronics";
+var results = session.Query<Product>()
+    .Where(x => x.Category == category)
+    .ToList();
+```
+
+### After (option 3: materialize client-side)
+
+```csharp
+var results = session.Query<Product>()
+    .ToList()
+    .Where(x => GetCategory(x.Name) == "electronics")
+    .ToList();
+```
+
+## See also
+
+- [RVN009](./RVN009.mdx) — equivalent rule for unsupported methods inside index `Map`/`Reduce` lambdas.
