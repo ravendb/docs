@@ -17,6 +17,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * This article serves as an **overview** for the operator workflow: it explains what the Kubernetes RavenDB Operator is, how the operator-managed deployment works, and how to use the running cluster afterward.  
 
+* This article follows the RavenDB Kubernetes Operator 2.x deployment model: install the operator chart once, then install the `ravendb-cluster` chart for each RavenDB cluster.
+
 * For the **full end-to-end walkthrough**, including the detailed setup, configuration, and bootstrap steps, see:  
   [The RavenDB Kubernetes Operator way](../../../guides/the-ravendb-kubernetes-operator-way#prologue)
 
@@ -24,9 +26,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
   - [What the operator is](../../start/containers/kubernetes-operator#what-the-operator-is)
   - [Before you start](../../start/containers/kubernetes-operator#before-you-start)
   - [Install the operator](../../start/containers/kubernetes-operator#install-the-operator)
-  - [Prepare the namespace and Secrets](../../start/containers/kubernetes-operator#prepare-the-namespace-and-secrets)
-  - [Define `RavenDBCluster`](../../start/containers/kubernetes-operator#define-ravendbcluster)
-  - [Apply the cluster](../../start/containers/kubernetes-operator#apply-the-cluster)
+  - [Prepare cluster inputs](../../start/containers/kubernetes-operator#prepare-cluster-inputs)
+  - [Define cluster values](../../start/containers/kubernetes-operator#define-cluster-values)
+  - [Install the cluster chart](../../start/containers/kubernetes-operator#install-the-cluster-chart)
   - [Use the cluster](../../start/containers/kubernetes-operator#use-the-cluster)
   - [Observe and troubleshoot](../../start/containers/kubernetes-operator#observe-and-troubleshoot)
   - [Upgrade the cluster](../../start/containers/kubernetes-operator#upgrade-the-cluster)
@@ -42,8 +44,8 @@ A Kubernetes Operator is a component dedicated to managing a specific applicatio
 In Kubernetes terms, the operator is a controller: a component that reads a declared configuration and carries out the work needed to make the actual deployment match it.
 
 The Kubernetes RavenDB Operator applies this pattern to a secure RavenDB cluster.  
-The configuration you declare is a `RavenDBCluster` custom resource, that defines the RavenDB cluster you want Kubernetes to run.  
-When you apply this resource, the operator creates and maintains the Kubernetes resources needed for the cluster deployment.
+The configuration you declare is rendered as a `RavenDBCluster` custom resource, which defines the RavenDB cluster you want Kubernetes to run.
+When the cluster chart installs that resource, the operator creates and maintains the Kubernetes resources needed for the cluster deployment.
 
 <ContentFrame>
 
@@ -145,56 +147,50 @@ helm install ravendb-operator ravendb-operator/ravendb-operator \
 This installs the operator itself in the `ravendb-operator-system` namespace,  
 it does not create a RavenDB cluster yet.
 
-The operator starts managing RavenDB only after you create the required Secrets and apply a `RavenDBCluster` resource that references them.
+The operator starts managing RavenDB only after you install the separate `ravendb-cluster` chart. That chart renders the `RavenDBCluster` resource and creates or references the Secrets it needs.
 
 For the full installation flow, including Helm, `make deploy`, and OLM, see [Part 1: Setup & Operator Installation](../../../guides/the-ravendb-kubernetes-operator-way#part-1-setup--operator-installation).
 
 </Panel>
 
-<Panel heading="Prepare the namespace and Secrets">
+<Panel heading="Prepare cluster inputs">
 
 
-After the operator is installed, create a namespace for the cluster and prepare the **Secrets** that the `RavenDBCluster` will reference.
+After the operator is installed, prepare the cluster values and the setup-package files that the `ravendb-cluster` chart will use.
 
-```bash
-kubectl create namespace ravendb
-```
+The namespace can be created by Helm with `--create-namespace`. The license and certificate material can be passed to the chart with `--set-file`, or you can point the chart at Secrets your organization already manages.
 
 <ContentFrame>
 
 <Admonition type="note" title="">
-Learn more about the deployment of secrets in the operator [readme file](https://github.com/ravendb/ravendb-operator?tab=readme-ov-file#installation).
+Learn more about the chart values in the operator [readme file](https://github.com/ravendb/ravendb-operator?tab=readme-ov-file#installation).
 </Admonition>
 
 At a minimum, you need:
-- A license Secret
-- A client certificate Secret
-- Server certificate Secrets for the RavenDB nodes
+- A RavenDB license file
+- An admin client certificate file
+- Server certificate files for the RavenDB nodes
 
-Each Secret has a different role.
-- The **license Secret** makes the RavenDB license available to the cluster.
-- The **client certificate Secret** contains the `ClusterAdmin` certificate used by the bootstrap job when it calls RavenDB management APIs during the initial cluster formation.
-- The **server certificate Secrets** contain the certificates used by the RavenDB nodes themselves.
+Each input has a different role.
+- The **license file** makes the RavenDB license available to the cluster.
+- The **client certificate** contains the `ClusterAdmin` certificate used by the bootstrap job when it calls RavenDB management APIs during the initial cluster formation.
+- The **server certificates** contain the certificates used by the RavenDB nodes themselves.
 
 </ContentFrame>
 
-A minimal setup looks like this:
+A minimal setup names the standard Secret slots:
 
-```bash
-kubectl create secret generic ravendb-license \
-  --from-file=license.json=./license.json \
-  -n ravendb
-
-kubectl create secret generic ravendb-client-cert \
-  --from-file=client.pfx=./admin-client-cert.pfx \
-  -n ravendb
-
-kubectl create secret generic ravendb-certs-a \
-  --from-file=server.pfx=./setup-package/A/server-cert.pfx \
-  -n ravendb
+```yaml
+secrets:
+  license:
+    name: ravendb-license
+  clientCert:
+    name: ravendb-client-cert
+  nodeCerts:
+    namePrefix: ravendb-certs
 ```
 <br />
-Create one server-certificate Secret per node, and reference each one from the matching node entry in `spec.nodes`.
+If these Secrets already exist, keep the `name` values and omit the matching `--set-file` values during install.
 
 The exact certificate files depend on the TLS mode you choose.
 - In **Let’s Encrypt mode**, the operator workflow uses the certificate files generated earlier by the secure RavenDB setup flow and stored in the RavenDB setup package.
@@ -202,15 +198,15 @@ The exact certificate files depend on the TLS mode you choose.
   In this case, the CA certificate is also needed, because it tells RavenDB and its clients which certificate authority issued the server certificates.
 
 For the detailed certificate flows and the exact prerequisites they produce, see [Part 4: TLS](../../../guides/the-ravendb-kubernetes-operator-way#part-4-tls).  
-The full apply sequence that creates the prerequisites and then applies the cluster is shown in [Part 6: Bringing the Cluster to Life](../../../guides/the-ravendb-kubernetes-operator-way#part-6-bringing-the-cluster-to-life).
+The full chart install sequence is shown in [Part 6: Bringing the Cluster to Life](../../../guides/the-ravendb-kubernetes-operator-way#part-6-bringing-the-cluster-to-life).
 
 </Panel>
 
-<Panel heading="Define `RavenDBCluster`">
+<Panel heading="Define cluster values">
 
 
 `RavenDBCluster` is the custom resource that defines the intended RavenDB deployment.  
-The operator reads this resource and uses it to create and manage the cluster.
+In the Helm workflow, you normally describe that intent in `my-values.yaml`, and the `ravendb-cluster` chart renders the `RavenDBCluster` resource for you.
 
 Instead of applying and maintaining a StatefulSet, Service, Job, and PVCs separately, you describe the cluster here and let the operator manage these resources.
 
@@ -223,29 +219,27 @@ A typical definition includes:
 - The storage configuration
 - The external access configuration
 
-The example below shows the general shape of an operator-managed cluster:
+The example below shows the general shape of an operator-managed cluster values file:
 
 ```yaml
-apiVersion: ravendb.ravendb.io/v1
-kind: RavenDBCluster
-metadata:
-  name: ravendbcluster-sample
-  namespace: ravendb
-
+secrets:
+  license:
+    name: ravendb-license
+  clientCert:
+    name: ravendb-client-cert
+  nodeCerts:
+    namePrefix: ravendb-certs
 spec:
   nodes:
     - tag: a
       publicServerUrl: https://a.example.development.run:443
       publicServerUrlTcp: tcp://a-tcp.example.development.run:443
-      certSecretRef: ravendb-certs-a
     - tag: b
       publicServerUrl: https://b.example.development.run:443
       publicServerUrlTcp: tcp://b-tcp.example.development.run:443
-      certSecretRef: ravendb-certs-b
     - tag: c
       publicServerUrl: https://c.example.development.run:443
       publicServerUrlTcp: tcp://c-tcp.example.development.run:443
-      certSecretRef: ravendb-certs-c
 
   storage:
     data:
@@ -263,9 +257,6 @@ spec:
   mode: LetsEncrypt
   email: user@example.com
   domain: example.development.run
-
-  licenseSecretRef: ravendb-license
-  clientCertSecretRef: ravendb-client-cert
 ```
 
 <ContentFrame>
@@ -276,8 +267,7 @@ A few fields deserve special attention:
 
 - `nodes` defines the RavenDB nodes that make up the cluster.
 - `publicServerUrl` and `publicServerUrlTcp` are the addresses RavenDB advertises to clients and other nodes.
-- `certSecretRef` ties each node to its server certificate Secret.
-- `licenseSecretRef` and `clientCertSecretRef` connect the cluster to the Secrets prepared earlier.
+- `secrets.license`, `secrets.clientCert`, and `secrets.nodeCerts` tell the chart which Secret names to create or reference.
 - `externalAccessConfiguration` defines how Kubernetes exposes the nodes.
 - `storage` defines the persistent storage RavenDB will use.
 
@@ -293,13 +283,20 @@ For the TLS and storage parts of the spec, see [Part 4: TLS](../../../guides/the
 
 </Panel>
 
-<Panel heading="Apply the cluster">
+<Panel heading="Install the cluster chart">
 
 
-Once the Secrets and the `RavenDBCluster` manifest are ready, apply the cluster:
+Once `my-values.yaml` is ready, install the cluster chart and pass the setup-package files:
 
 ```bash
-kubectl apply -f ravendbcluster.yaml
+helm install my-cluster ravendb-operator/ravendb-cluster \
+  -n ravendb --create-namespace \
+  -f my-values.yaml \
+  --set-file secrets.license.file=/setup/license.json \
+  --set-file secrets.clientCert.file=/setup/admin.client.certificate.example.pfx \
+  --set-file secrets.nodeCerts.files.a=/setup/A/cluster.server.certificate.example.pfx \
+  --set-file secrets.nodeCerts.files.b=/setup/B/cluster.server.certificate.example.pfx \
+  --set-file secrets.nodeCerts.files.c=/setup/C/cluster.server.certificate.example.pfx
 ```
 <br/>
 Then watch what Kubernetes creates:
@@ -324,7 +321,7 @@ A successful bootstrap run will show readiness checks, client certificate regist
 When the bootstrap Job later reaches `Completed`, that is expected.  
 It means the initialization work finished and the RavenDB nodes are left running.
 
-For the full apply sequence, including the complete manifest and the bootstrap flow, see [Part 6: Bringing the Cluster to Life](../../../guides/the-ravendb-kubernetes-operator-way#part-6-bringing-the-cluster-to-life).
+For the full install sequence, including the complete values file and the bootstrap flow, see [Part 6: Bringing the Cluster to Life](../../../guides/the-ravendb-kubernetes-operator-way#part-6-bringing-the-cluster-to-life).
 
 </Panel>
 
@@ -410,7 +407,7 @@ For the full troubleshooting flow, including Events and logs, see [Part 7: Event
 <Panel heading="Upgrade the cluster">
 
 
-To upgrade RavenDB, change the image tag in the `RavenDBCluster` spec and apply the manifest again.
+To upgrade RavenDB, change the image tag in the release values and run `helm upgrade`.
 
 ```yaml
 spec:
@@ -418,7 +415,10 @@ spec:
 ```
 <br />
 ```bash
-kubectl apply -f ravendbcluster.yaml
+helm upgrade my-cluster ravendb-operator/ravendb-cluster \
+  -n ravendb \
+  --reuse-values \
+  --set spec.image=ravendb/ravendb:7.2.1
 ```
 <br />
 The operator performs a rolling upgrade node by node and stops if a health gate is not satisfied.
