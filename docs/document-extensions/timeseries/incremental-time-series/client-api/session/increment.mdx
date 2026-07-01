@@ -19,17 +19,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * There is no need to explicitly create or delete a time series.  
    * A time series is created when its first entry is incremented.  
-   * A time series is deleted when all entries are [deleted](../../../../../document-extensions/timeseries/client-api/session/delete.mdx) from it.  
+   * A time series is deleted when all entries are [deleted](../../../client-api/session/delete.mdx) from it.  
 
-* You can add a single [incremental time series entry](../../../../../document-extensions/timeseries/design.mdx#time-series-entries) at a time.  
+* You can add a single [incremental time series entry](../../../design.mdx#time-series-entries) at a time.  
   Note, however, that you can `Increment` as many times as you need to before calling 
   `session.SaveChanges`, to create multiple entries in a single transaction.  
 
 * In this page:  
-      * [`IncrementalTimeSeriesFor.Increment`](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment.mdx#timeseriesforappend)  
-         * [Syntax](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment.mdx#syntax)  
-         * [Usage Flow](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment.mdx#usage-flow)  
-         * [Code Samples](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment.mdx#code-samples)  
+      * [`IncrementalTimeSeriesFor.Increment`](#timeseriesforappend)  
+         * [Syntax](#syntax)  
+         * [Usage Flow](#usage-flow)  
+         * [Code Samples](#code-samples)  
 </Admonition>
 ## `IncrementalTimeSeriesFor.Increment`
 

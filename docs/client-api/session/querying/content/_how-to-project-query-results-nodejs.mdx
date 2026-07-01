@@ -12,11 +12,11 @@ import CodeBlock from '@theme/CodeBlock';
   For projecting results when querying a **static-index** see [project index query results](../../../../indexes/querying/projections.mdx).
 
 * In this article:
-    * [Projections overview](../../../../client-api/session/querying/how-to-project-query-results.mdx#projections-overview)
-    * [SelectFields](../../../../client-api/session/querying/how-to-project-query-results.mdx#selectfields)  
-    * [Projecting nested object types](../../../../client-api/session/querying/how-to-project-query-results.mdx#projecting-nested-object-types)  
-    * [Single projection per query](../../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query)  
-    * [Syntax](../../../../client-api/session/querying/how-to-project-query-results.mdx#syntax)
+    * [Projections overview](#projections-overview)
+    * [SelectFields](#selectfields)  
+    * [Projecting nested object types](#projecting-nested-object-types)  
+    * [Single projection per query](#single-projection-per-query)  
+    * [Syntax](#syntax)
 
 </Admonition>
 
@@ -32,7 +32,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * The query can load [related documents](../../../../indexes/indexing-related-documents.mdx#what-are-related-documents) and have their data merged into the projection results.
 
-* Content from inner objects and arrays can be projected in addition to [projecting the nested object types](../../../../client-api/session/querying/how-to-project-query-results.mdx#projecting-nested-object-types).
+* Content from inner objects and arrays can be projected in addition to [projecting the nested object types](#projecting-nested-object-types).
 
 * An alias name can be given to the projected fields, and any calculations can be applied within the projection.
 
@@ -40,7 +40,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Projections allow you to tailor the query results specifically to your needs.  
   Getting specific details to display can be useful when presenting data to users or populating user interfaces.  
-  Projection queries are also useful with [subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)
+  Projection queries are also useful with [subscriptions](../../../data-subscriptions/what-are-data-subscriptions.mdx)
   since all transformation work is done on the server side without having to send a lot of data over the wire.
 
 * Returning partial document data from the server reduces network traffic,  
@@ -73,7 +73,7 @@ import CodeBlock from '@theme/CodeBlock';
 **The cost of projections**:
 
 * Queries in RavenDB do not allow any computation to occur during the query phase.  
-  However, you can perform any [calculations](../../../../client-api/session/querying/how-to-project-query-results.mdx#example-v---projection-with-calculations)
+  However, you can perform any [calculations](#example-v---projection-with-calculations)
   inside the projection.
 
 * But while calculations within a projection are allowed, having a very complex logic can impact query performance.  

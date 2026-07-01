@@ -23,14 +23,14 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 
 * In this page:  
-  * [Why Rolling Index Deployment](../indexes/rolling-index-deployment.mdx#why-rolling-index-deployment)  
-  * [How Does It Work](../indexes/rolling-index-deployment.mdx#how-does-it-work)  
-     * [The Rolling Procedure](../indexes/rolling-index-deployment.mdx#the-rolling-procedure)  
-     * [Deployment Concurrency and Order](../indexes/rolling-index-deployment.mdx#deployment-concurrency-and-order)  
-  * [Setting Indexing Deployment Mode](../indexes/rolling-index-deployment.mdx#setting-indexing-deployment-mode)  
-     * [Server-Wide Deployment Mode](../indexes/rolling-index-deployment.mdx#server-wide-deployment-mode)  
-     * [Database Deployment Mode](../indexes/rolling-index-deployment.mdx#database-deployment-mode)  
-     * [Deployment Mode in an Index Definition](../indexes/rolling-index-deployment.mdx#deployment-mode-in-an-index-definition)  
+  * [Why Rolling Index Deployment](#why-rolling-index-deployment)  
+  * [How Does It Work](#how-does-it-work)  
+     * [The Rolling Procedure](#the-rolling-procedure)  
+     * [Deployment Concurrency and Order](#deployment-concurrency-and-order)  
+  * [Setting Indexing Deployment Mode](#setting-indexing-deployment-mode)  
+     * [Server-Wide Deployment Mode](#server-wide-deployment-mode)  
+     * [Database Deployment Mode](#database-deployment-mode)  
+     * [Deployment Mode in an Index Definition](#deployment-mode-in-an-index-definition)  
 
 </Admonition>
 ## Why Rolling Index Deployment
@@ -91,12 +91,12 @@ Nodes are assigned with the indexing of each database in a linear order, one nod
  Deployment mode can be set server-wide using [configuration options](../server/configuration/configuration-options.mdx#settingsjson).  
  Setting the server-wide configuration option will apply to all databases on a given node.  
 
-* [Auto Indexes](../indexes/creating-and-deploying.mdx#auto-indexes) Deployment Mode  
+* [Auto Indexes](./creating-and-deploying.mdx#auto-indexes) Deployment Mode  
   Set a deployment mode for indexes created automatically using the `Indexing.Auto.DeploymentMode` configuration option.  
   `"Indexing.Auto.DeploymentMode": "Rolling"`  
   `"Indexing.Auto.DeploymentMode": "Parallel"`  
 
-* [Static Indexes](../indexes/creating-and-deploying.mdx#static-indexes) Deployment Mode  
+* [Static Indexes](./creating-and-deploying.mdx#static-indexes) Deployment Mode  
   Set a deployment mode for static indexes using the `Indexing.Static.DeploymentMode` configuration option.  
   `"Indexing.Static.DeploymentMode": "Rolling"`  
   `"Indexing.Static.DeploymentMode": "Parallel"`  
@@ -104,7 +104,7 @@ Nodes are assigned with the indexing of each database in a linear order, one nod
 
 Enable or disable rolling for a specific database using database configuration keys.  
 Setting these properties overrides the 
-[Server-Wide](../indexes/rolling-index-deployment.mdx#server-wide-deployment-mode) default.  
+[Server-Wide](#server-wide-deployment-mode) default.  
  
 * From Studio:  
 
@@ -132,8 +132,8 @@ Setting these properties overrides the
 ### Deployment Mode in an Index Definition
 
 Enable or disable rolling for a specific index using the index-definition `DeploymentMode` property.  
-Setting this property overrides [server-wide](../indexes/rolling-index-deployment.mdx#server-wide-deployment-mode) 
-and [database](../indexes/rolling-index-deployment.mdx#database-deployment-mode) settings configuration.  
+Setting this property overrides [server-wide](#server-wide-deployment-mode) 
+and [database](#database-deployment-mode) settings configuration.  
   
   * `DeploymentMode = IndexDeploymentMode.Rolling`  
   * `DeploymentMode = IndexDeploymentMode.Parallel`  

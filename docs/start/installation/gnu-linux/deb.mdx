@@ -25,18 +25,18 @@ import LanguageContent from "@site/src/components/LanguageContent";
   a browser and complete the setup process using our setup wizard.  
 
 * In this page:  
-   * [Downloading and Installing RavenDB](../../../start/installation/gnu-linux/deb.mdx#downloading-and-installing-ravendb)  
-      * [1. Download DEB Package](../../../start/installation/gnu-linux/deb.mdx#download-deb-package)  
-      * [2. Install RavenDB](../../../start/installation/gnu-linux/deb.mdx#install-ravendb)  
-      * [3. Complete the setup](../../../start/installation/gnu-linux/deb.mdx#complete-the-setup)  
-      * [4. Entering RavenDB Studio When Setup is Complete](../../../start/installation/gnu-linux/deb.mdx#entering-ravendb-studio-when-setup-is-complete)  
-   * [Upgrading RavenDB](../../../start/installation/gnu-linux/deb.mdx#upgrading-ravendb)  
-   * [Removing RavenDB](../../../start/installation/gnu-linux/deb.mdx#removing-ravendb)  
-      * [Remove RavenDB and Leave its Data and Settings Intact](../../../start/installation/gnu-linux/deb.mdx#remove-ravendb-and-leave-its-data-and-settings-intact)  
-      * [Remove RavenDB Completely](../../../start/installation/gnu-linux/deb.mdx#remove-ravendb-completely)  
-   * [File System Locations](../../../start/installation/gnu-linux/deb.mdx#file-system-locations)  
-   * [Default Settings](../../../start/installation/gnu-linux/deb.mdx#default-settings)  
-   * [RavenDB Service Definitions](../../../start/installation/gnu-linux/deb.mdx#ravendb-service-definitions)  
+   * [Downloading and Installing RavenDB](#downloading-and-installing-ravendb)  
+      * [1. Download DEB Package](#1-download-deb-package)  
+      * [2. Install RavenDB](#2-install-ravendb)  
+      * [3. Complete the setup](#3-complete-the-setup)  
+      * [4. Entering RavenDB Studio When Setup is Complete](#4-entering-ravendb-studio-when-setup-is-complete)  
+   * [Upgrading RavenDB](#upgrading-ravendb)  
+   * [Removing RavenDB](#removing-ravendb)  
+      * [Remove RavenDB and Leave its Data and Settings Intact](#remove-ravendb-and-leave-its-data-and-settings-intact)  
+      * [Remove RavenDB Completely](#remove-ravendb-completely)  
+   * [File System Locations](#file-system-locations)  
+   * [Default Settings](#default-settings)  
+   * [RavenDB Service Definitions](#ravendb-service-definitions)  
 
 </Admonition>
 ## Downloading and Installing RavenDB
@@ -60,7 +60,7 @@ Find it here: [https://ravendb.net/download](https://ravendb.net/download)
 
   <Admonition type="note" title="">
   The same command, `sudo apt install <package name>`, is also used to 
-  [Upgrade RavenDB](../../../start/installation/gnu-linux/deb.mdx#upgrading-ravendb).  
+  [Upgrade RavenDB](#upgrading-ravendb).  
   </Admonition>
 
 * The RavenDB service will be created and activated automatically.  
@@ -100,7 +100,7 @@ Connecting the RavenDB service will invoke the setup wizard.
   We strongly recommend that you set RavenDB as a secure server.  
   </Admonition>
         
-* [Find Here](../../../start/installation/setup-wizard/overview.mdx) a **step by step guide** 
+* [Find Here](../setup-wizard/overview.mdx) a **step by step guide** 
   to the rest of the setup process.  
 ### 4. Entering RavenDB Studio When Setup is Complete
 
@@ -166,7 +166,7 @@ To remove RavenDB and **leave its settings and data intact**, use: `sudo apt-get
 
 !["Leave Data and Settings Intact"](./assets/sudo_apt-get_remove_ravendb.png)
 
-[Reinstalling](../../../start/installation/gnu-linux/deb.mdx#upgrading-ravendb) 
+[Reinstalling](#upgrading-ravendb) 
 RavenDB after removing it this way will **restore** its data and settings.  
 ### Remove RavenDB Completely
 

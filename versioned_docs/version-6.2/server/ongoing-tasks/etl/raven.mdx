@@ -15,7 +15,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* **RavenDB ETL Task** creates an [ETL](../../../server/ongoing-tasks/etl/basics.mdx) process
+* **RavenDB ETL Task** creates an [ETL](./basics.mdx) process
   that transfers data from a RavenDB database to another RavenDB database, with optional filtering and transformation along the way.
 
 * The transformation script is executed per document in the defined source collection(s) whenever a document is created, modified, or deleted.
@@ -30,24 +30,24 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * RavenDB ETL tasks can be defined via the Client API or the [Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx).
 
 * In this article:  
-  * [Transformation script options](../../../server/ongoing-tasks/etl/raven.mdx#transformation-script-options)  
-  * [Empty Script](../../../server/ongoing-tasks/etl/raven.mdx#empty-script)  
-  * [Attachments](../../../server/ongoing-tasks/etl/raven.mdx#attachments) 
-  * [Counters](../../../server/ongoing-tasks/etl/raven.mdx#counters)  
-  * [Time Series](../../../server/ongoing-tasks/etl/raven.mdx#time-series)  
-  * [Revisions](../../../server/ongoing-tasks/etl/raven.mdx#revisions)  
-  * [Deletions](../../../server/ongoing-tasks/etl/raven.mdx#deletions)  
+  * [Transformation script options](#transformation-script-options)  
+  * [Empty Script](#empty-script)  
+  * [Attachments](#attachments) 
+  * [Counters](#counters)  
+  * [Time Series](#time-series)  
+  * [Revisions](#revisions)  
+  * [Deletions](#deletions)  
 
 </Admonition>
 
 <Panel heading="Transformation script options">
 
-* [Loading documents to the destination database](../../../server/ongoing-tasks/etl/raven.mdx#loading-documents-to-the-destination-database)
-* [Document identifiers](../../../server/ongoing-tasks/etl/raven.mdx#document-identifiers)
-* [Filtering](../../../server/ongoing-tasks/etl/raven.mdx#filtering)
-* [Loading data from related documents](../../../server/ongoing-tasks/etl/raven.mdx#loading-data-from-related-documents)
-* [Accessing metadata](../../../server/ongoing-tasks/etl/raven.mdx#accessing-metadata)
-* [Creating multiple documents from a single document](../../../server/ongoing-tasks/etl/raven.mdx#creating-multiple-documents-from-a-single-document)
+* [Loading documents to the destination database](#loading-documents-to-the-destination-database)
+* [Document identifiers](#document-identifiers)
+* [Filtering](#filtering)
+* [Loading data from related documents](#loading-data-from-related-documents)
+* [Accessing metadata](#accessing-metadata)
+* [Creating multiple documents from a single document](#creating-multiple-documents-from-a-single-document)
 
 ---
 
@@ -66,7 +66,7 @@ For example, the following two calls are **equivalent**:
 > `loadTo('Employees', obj);`  
     
 Both options write `obj` to the `Employees` collection in the destination database.  
-Refer to [The loadTo method](../../../server/ongoing-tasks/etl/basics.mdx#theloadtomethod) for full syntax details.
+Refer to [The loadTo method](./basics.mdx#theloadtomethod) for full syntax details.
 
 </ContentFrame>
 
@@ -169,7 +169,7 @@ loadToEmployees({
 ### Document Identifiers
  
 Document IDs assigned to documents written to the destination depend on whether the source and destination collections share the same name.
-You can also configure a [postfix](../../../server/ongoing-tasks/etl/raven.mdx#setting-a-destination-document-id-postfix) to further modify the resulting ID.  
+You can also configure a [postfix](#setting-a-destination-document-id-postfix) to further modify the resulting ID.  
 
 <ContentFrame>
     
@@ -202,7 +202,7 @@ the destination ID will look like: `employees/1-A/people/00000000000000000024-A`
 This happens because the ETL task appends `/` to the source ID, signaling the destination server to 
 generate an [identity-based ID](../../../client-api/document-identifiers/working-with-document-identifiers.mdx#server-side-generated-ids).
 Since the destination ID differs from the source ID, the old document version is deleted on the destination database and replaced with each update.
-This behavior can be changed - see [Deletions](../../../server/ongoing-tasks/etl/raven.mdx#deletions).
+This behavior can be changed - see [Deletions](#deletions).
 
 <TabItem>
 ```js
@@ -313,7 +313,7 @@ The exact resulting ID depends on whether the source and destination collections
   This lets you read fields from the related document and include them in the object you send to the destination.
     
 * Note that `load()` increases the maximum number of allowed script execution steps.  
-  Read about "Execution limitations" in [How RavenDB uses Jint](../../../server/kb/javascript-engine.mdx#how-ravendb-uses-jint).
+  Read about "Execution limitations" in [How RavenDB uses Jint](../../kb/javascript-engine.mdx#how-ravendb-uses-jint).
  
 * Example:    
   The following script processes documents from the `Employees` collection.  
@@ -349,7 +349,7 @@ The exact resulting ID depends on whether the source and destination collections
 * The metadata of the current source document is accessible via `this['@metadata']`.  
   Use this to read built-in RavenDB metadata properties or any custom metadata keys you have set on the document.
 
-* Alternatively, you can use the predefined function [`getMetadata(document)`](../../../server/kb/javascript-engine.mdx#document-operations), 
+* Alternatively, you can use the predefined function [`getMetadata(document)`](../../kb/javascript-engine.mdx#document-operations), 
   which returns the full metadata object for any document - including `@id`, `@change-vector`, and `@last-modified`.
     
 * Any metadata value you retrieve can be included as a field in the object you pass to `loadTo`,  
@@ -430,10 +430,10 @@ var managerMeta = getMetadata(manager);
 * If you use a script you can indicate that an attachment should also be sent by using dedicated functions:
    - `loadAttachment(name)` returns a reference to an attachment that is meant be passed to `addAttachment()`
    - `<doc>.addAttachment([name,] attachmentRef)` adds an attachment to a document that will be sent in the process, `<doc>` is a reference returned by `loadTo<CollectionName>()`        
-* [Sending attachments together with documents](../../../server/ongoing-tasks/etl/raven.mdx#sending-attachments-together-with-documents)        
-* [Changing attachment name](../../../server/ongoing-tasks/etl/raven.mdx#changing-attachment-name)
-* [Loading non-existent attachment](../../../server/ongoing-tasks/etl/raven.mdx#loading-non-existent-attachment)
-* [Accessing attachments from metadata](../../../server/ongoing-tasks/etl/raven.mdx#accessing-attachments-from-metadata)
+* [Sending attachments together with documents](#sending-attachments-together-with-documents)        
+* [Changing attachment name](#changing-attachment-name)
+* [Loading non-existent attachment](#loading-non-existent-attachment)
+* [Accessing attachments from metadata](#accessing-attachments-from-metadata)
         
 ### Sending attachments together with documents
 
@@ -490,13 +490,13 @@ var attachments = this['@metadata']['@attachments'];
 
 * Counters are sent automatically when you send a _full_ collection to the destination using an _empty_ script.
 * If a script is defined RavenDB doesn't send counters by default.
-* To indicate that a counter should also be sent, the [behavior function](../../../server/ongoing-tasks/etl/raven.mdx#counter-behavior-function) 
+* To indicate that a counter should also be sent, the [behavior function](#counter-behavior-function) 
   (e.g. by increment operation). If the relevant function doesn't exist, a counter isn't loaded.
 * The reason that counters require special functions is that incrementing a counter _doesn't_ modify the change vector of a related document so the document _isn't_ processed
   by ETL on a change in the counter.
 * Another option of sending a counter is to explicitly add it in a script to a loaded document.
-* [Counter behavior function](../../../server/ongoing-tasks/etl/raven.mdx#counter-behavior-function)
-* [Adding counter explicitly in a script](../../../server/ongoing-tasks/etl/raven.mdx#adding-counter-explicitly-in-a-script)
+* [Counter behavior function](#counter-behavior-function)
+* [Adding counter explicitly in a script](#adding-counter-explicitly-in-a-script)
         
 ### Counter behavior function
 
@@ -556,7 +556,7 @@ function loadCountersOfProductsBehavior(docId, counterName) {
 Counter behavior functions typically handle counters of documents 
   that are loaded to the same collection. If a transformation script for `Employees`
   collection specifies that they are loaded to the `People` collection in a target database, 
-  then due to document ID generation strategy by ETL process (see [Documents Identifiers](../../../server/ongoing-tasks/etl/raven.mdx#documents-identifiers)),
+  then due to document ID generation strategy by ETL process (see [Documents Identifiers](#documents-identifiers)),
   the counters won't be sent because the final ID of a loaded document isn't known on the source side.  
   
   You can use special functions in the script code to deal with counters on documents that are loaded into different collections:
@@ -595,8 +595,8 @@ but it **sets the value using a** `put` command.
 * If the transformation script is empty, time series are transferred along with their 
 documents by default.  
 * When the script is not empty, ETL can be set for time series via:  
-  * [Time Series Load Behavior Function](../../../server/ongoing-tasks/etl/raven.mdx#time-series-load-behavior-function) 
-  * [Adding Time Series to Documents](../../../server/ongoing-tasks/etl/raven.mdx#adding-time-series-to-documents)
+  * [Time Series Load Behavior Function](#time-series-load-behavior-function) 
+  * [Adding Time Series to Documents](#adding-time-series-to-documents)
             
 ### Time Series Load Behavior Function
 
@@ -721,12 +721,12 @@ Upon source document modifications, ETL is set to delete and replace the destina
 If you want to control the way deletions are handled in the destination database, 
 you can change the default settings with the configurable functions described in this section.
 
-* [Why documents are deleted by default](../../../server/ongoing-tasks/etl/raven.mdx#deletions-why-documents-are-deleted-by-default-in-the-destination-database)
-* [When destination collections are different](../../../server/ongoing-tasks/etl/raven.mdx#when-destination-collections-are-different)
-* [Collection specific function](../../../server/ongoing-tasks/etl/raven.mdx#deletions-collection-specific-function)
-* [Generic function](../../../server/ongoing-tasks/etl/raven.mdx#deletions-generic-function)
-* [Filtering deletions in the destination database](../../../server/ongoing-tasks/etl/raven.mdx#deletions-filtering-deletions-in-the-destination-database)
-* [Deletions Example: ETL script with deletion behavior defined](../../../server/ongoing-tasks/etl/raven.mdx#deletions-example-etl-script-with-deletion-behavior-defined)
+* [Why documents are deleted by default](#deletions-why-documents-are-deleted-by-default-in-the-destination-database)
+* [When destination collections are different](#when-destination-collections-are-different)
+* [Collection specific function](#deletions-collection-specific-function)
+* [Generic function](#deletions-generic-function)
+* [Filtering deletions in the destination database](#deletions-filtering-deletions-in-the-destination-database)
+* [Deletions Example: ETL script with deletion behavior defined](#deletions-example-etl-script-with-deletion-behavior-defined)
 
 ---
     
@@ -747,9 +747,9 @@ The functions in this section were created to allow developers this control.
 **If we ETL to a different collection than the source**,  
 the source isn't aware of the new IDs created. 
 This forces us to load new documents with incremented IDs instead of overwriting the fields in existing documents.  
-RavenDB has to create a new, updated document in the destination with an [incremented server-made identity](../../../server/ongoing-tasks/etl/raven.mdx#documents-identifiers).  
+RavenDB has to create a new, updated document in the destination with an [incremented server-made identity](#documents-identifiers).  
 You can then choose if you want to delete the old version in the destination by selecting 
-`return false` in the transform script function [deleteDocumentsBehavior](../../../server/ongoing-tasks/etl/raven.mdx#deletions-generic-function). 
+`return false` in the transform script function [deleteDocumentsBehavior](#deletions-generic-function). 
 
 * Each updated version of the document gets a [server generated ID](../../../client-api/document-identifiers/working-with-document-identifiers.mdx#server-side-generated-ids)
   in which the number at the end is incremented with each version.  
@@ -775,7 +775,7 @@ sending a single delete command in the destination for a given ID.
 If documents are updated and not deleted in the source, they will simply be updated in the destination with no change to the destination document ID. 
 Deletions can be controlled by defining deletion behavior functions in the ETL script.
 
-* See a [sample ETL script with deletion behavior defined](../../../server/ongoing-tasks/etl/raven.mdx#deletions-example-etl-script-with-deletion-behavior-defined).
+* See a [sample ETL script with deletion behavior defined](#deletions-example-etl-script-with-deletion-behavior-defined).
 
 ---
     
@@ -793,7 +793,7 @@ function deleteDocumentsOf<CollectionName>Behavior(docId, deleted) {
 </TabItem>
 
 `<CollectionName>` needs to be substituted by a real collection name that the ETL script is working on
-(same convention as for [loadTo](../../../server/ongoing-tasks/etl/raven.mdx#transformation-script-options) method).  
+(same convention as for [loadTo](#transformation-script-options) method).  
 e.g. `function deleteDocumentsOfOrdersBehavior(docId, deleted) {return false;}`  
 
 | Parameter   | Type     | Description                                                                                                                                                                           | Notes     |
@@ -861,7 +861,7 @@ trigger the command regardless of whether the source document was deleted.
 
 ### Example - Generic deletions behavior function
 
-[If the source and destination collection names are different](../../../server/ongoing-tasks/etl/raven.mdx#when-destination-collections-are-different)  
+[If the source and destination collection names are different](#when-destination-collections-are-different)  
 and deletions behavior is set to false,  
 each document change will load a new document with an incremented document identity, thus saving a history.  
 
@@ -914,7 +914,7 @@ When you delete a document you can store a deletion marker document that will pr
  * In the below example if the auxiliary document `LocalOnlyDeletions/{docId}` exists then we skip this deletion during ETL. 
    The auxiliary document can be created to protect certain documents from deletion in the destination database.
  * You can add `@expires` tag to the metadata when storing the marker document, so it would be automatically cleaned up after a certain time
-   by [the expiration extension](../../../server/extensions/expiration.mdx#setting-the-document-expiration-time).
+   by [the expiration extension](../../extensions/expiration.mdx#setting-the-document-expiration-time).
       
 <TabItem>
 ```js
@@ -958,7 +958,7 @@ function deleteDocumentsBehavior(docId, collection, deleted) {
 The following example will check if the source document was deleted or just updated before 
 loading the transformed document. This function can be used if the destination collection is the same or different from the source.  
 
-&gt; [In this example, the source and destination collection names are different](../../../server/ongoing-tasks/etl/raven.mdx#when-destination-collections-are-different) 
+&gt; [In this example, the source and destination collection names are different](#when-destination-collections-are-different) 
 and deletions behavior is set to false if the source is deleted, 
 so source deletions won't delete the destination document, thus saving a history of documents even if they're deleted in the source.  
 

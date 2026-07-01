@@ -6,8 +6,8 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * **Exploration Queries** form an additional layer of filtering that can be applied 
-  to a dataset after its retrieval by [query](../../../querying/overview.mdx#sessionquery), 
-  or [rawQuery](../../../querying/overview.mdx#sessionadvancedrawquery), 
+  to a dataset after its retrieval by [query](../../../querying/overview.mdx#session-query), 
+  or [rawQuery](../../../querying/overview.mdx#session-advanced-rawquery), 
   while the dataset is still held by the server.  
 
 * The **retrieved dataset** is scanned and filtered **without requiring or creating an index**,  
@@ -24,20 +24,20 @@ import CodeBlock from '@theme/CodeBlock';
 
   * **Limit** the number of records that an exploration query filters.  
   * Use [where](../../../querying/filtering-query-results/filter-query-results.mdx) in recurring queries, 
-    so the query would [use an index](../../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries).  
+    so the query would [use an index](#limit-the-query-and-prefer--for-recurring-queries).  
 
 </Admonition>
 
 * In this page:  
 
-   * [`filter`](../../../indexes/querying/exploration-queries.mdx#filter)
-   * [When should exploration queries be used](../../../indexes/querying/exploration-queries.mdx#when-should-exploration-queries-be-used)
-   * [Usage examples](../../../indexes/querying/exploration-queries.mdx#usage-examples)
-      * [With collection queries](../../../indexes/querying/exploration-queries.mdx#with-collection-queries)
-      * [With queries that use an index](../../../indexes/querying/exploration-queries.mdx#with-queries-that-use-an-index)
-      * [With projections](../../../indexes/querying/exploration-queries.mdx#with-projections)
-      * [With user-defined JavaScript functions (`declare`)](../../../indexes/querying/exploration-queries.mdx#with-user-defined-javascript-functions-)
-   * [Syntax](../../../indexes/querying/exploration-queries.mdx#syntax)
+   * [`filter`](#filter)
+   * [When should exploration queries be used](#when-should-exploration-queries-be-used)
+   * [Usage examples](#usage-examples)
+      * [With collection queries](#with-collection-queries)
+      * [With queries that use an index](#with-queries-that-use-an-index)
+      * [With projections](#with-projections)
+      * [With user-defined JavaScript functions (`declare`)](#with-user-defined-javascript-functions-declare)
+   * [Syntax](#syntax)
 
 </Admonition>
 ## `filter`
@@ -51,7 +51,7 @@ The added filtering is parsed and executed by RavenDB's Javascript engine.
 
 The provided filtering operations resemble those implemented by [where](../../../querying/filtering-query-results/filter-query-results.mdx) 
 and can be further enhanced by Javascript functions of your own. 
-Read [here](../../../indexes/querying/exploration-queries.mdx#with-user-defined-javascript-functions-) about creating and using your own Javascript function in your filters.  
+Read [here](#with-user-defined-javascript-functions-declare) about creating and using your own Javascript function in your filters.  
 
 
 

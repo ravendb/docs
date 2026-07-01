@@ -26,13 +26,13 @@ or accept the potential for conflicts.
 For document writes, RavenDB chooses to accept conflicts as a trade-off of always being able to accept writes on any node.
 
 ## Conflict Detection
-Each document in a RavenDB cluster has a [Change Vector](../../../server/clustering/replication/change-vector.mdx) which is used for conflict detection.
+Each document in a RavenDB cluster has a [Change Vector](./change-vector.mdx) which is used for conflict detection.
 
-When the server receives an incoming replication batch, it compares the [Change Vector](../../../server/clustering/replication/change-vector.mdx) 
-of the incoming document with the [Change Vector](../../../server/clustering/replication/change-vector.mdx) of the local document. 
+When the server receives an incoming replication batch, it compares the [Change Vector](./change-vector.mdx) 
+of the incoming document with the [Change Vector](./change-vector.mdx) of the local document. 
   
 Let's assume _remote_cv_ to be the change vector of a remote document, and _local_cv_ to be a change vector of a local document.  
-The [Comparison](../../../server/clustering/replication/change-vector.mdx#change-vector-comparisons) of the [Change Vectors](../../../server/clustering/replication/change-vector.mdx) may yield three possible results:  
+The [Comparison](./change-vector.mdx#change-vector-comparisons) of the [Change Vectors](./change-vector.mdx) may yield three possible results:  
   
 * _remote_cv_ &lt;= _local_cv_ -&gt; Nothing to do, the local document is more up-to-date.
 * _remote_cv_ &gt; _local_cv_ -&gt;  Remote document is more recent than local, replace local document with remote
@@ -45,8 +45,8 @@ When there is a conflict between two or more document versions, RavenDB will try
 <Admonition type="note" title="">
 The identity check applies to [Tombstone](../../../monitoring/tombstones/overview.mdx) as well, and it will always resolve to the local one, since the tombstones are always considered equal.
 </Admonition>
-3. Try to resolve the conflict by using a script, which is set up by configuring a [Conflict Resolver](../../../server/clustering/replication/replication-conflicts.mdx#conflict-resolution-script).  
-4. If all else fails, record conflicting document variants as "Conflicted Documents" which will have to be resolved [Manually](../../../server/clustering/replication/replication-conflicts.mdx#manually-resolving-conflicts). 
+3. Try to resolve the conflict by using a script, which is set up by configuring a [Conflict Resolver](#conflict-resolution-script).  
+4. If all else fails, record conflicting document variants as "Conflicted Documents" which will have to be resolved [Manually](#manually-resolving-conflicts). 
 
 ## Conflict Resolution Script 
 A resolution script is defined per collection and have the following input arguments:

@@ -23,20 +23,20 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Any changes in the source database will be reflected in the replica once they occur.
 
 * This ongoing task replicates **one-way**, from the source to the destination.  
-  For additional functionality such as filtration and two-way replication consider [Hub/Sink Replication](../../server/ongoing-tasks/hub-sink-replication.mdx).
+  For additional functionality such as filtration and two-way replication consider [Hub/Sink Replication](./hub-sink-replication.mdx).
 
 * To replicate between two separate, secure RavenDB servers,  
-  you need to [pass a client certificate](../../server/ongoing-tasks/external-replication.mdx#step-by-step-guide) from the source server to the destination.
+  you need to [pass a client certificate](#step-by-step-guide) from the source server to the destination.
 
 * The External Replication task **does _not_ create a backup** of your data and indexes.  
   See more in [Backup -vs- Replication](../../studio/database/tasks/backup-task.mdx#backup-task--vs--replication-task)
 * In this page: 
-  * [General Information about External Replication Task](../../server/ongoing-tasks/external-replication.mdx#general-information-about-external-replication-task)
-  * [Code Sample](../../server/ongoing-tasks/external-replication.mdx#code-sample)
-  * [Step-by-Step Guide](../../server/ongoing-tasks/external-replication.mdx#step-by-step-guide)
-  * [Definition](../../server/ongoing-tasks/external-replication.mdx#definition)  
-  * [Offline Behavior](../../server/ongoing-tasks/external-replication.mdx#offline-behavior)
-  * [Delayed Replication](../../server/ongoing-tasks/external-replication.mdx#delayed-replication)
+  * [General Information about External Replication Task](#general-information-about-external-replication-task)
+  * [Code Sample](#code-sample)
+  * [Step-by-Step Guide](#step-by-step-guide)
+  * [Definition](#definition)  
+  * [Offline Behavior](#offline-behavior)
+  * [Delayed Replication](#delayed-replication)
 
 </Admonition>
 
@@ -53,12 +53,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * Server and cluster level features:
     * [Indexes](../../indexes/creating-and-deploying.mdx)
-    * [Conflict resolution scripts](../../server/clustering/replication/replication-conflicts.mdx#conflict-resolution-script)
+    * [Conflict resolution scripts](../clustering/replication/replication-conflicts.mdx#conflict-resolution-script)
     * [Compare-Exchange](../../client-api/operations/compare-exchange/overview.mdx)
     * [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)
-    * [Identities](../../server/kb/document-identifier-generation.mdx#identity-id)
+    * [Identities](../kb/document-identifier-generation.mdx#identity-id)
     * Ongoing tasks
-        * [ETL](../../server/ongoing-tasks/etl/basics.mdx)
+        * [ETL](./etl/basics.mdx)
         * [Backup](../../studio/database/tasks/backup-task.mdx)
         * [Hub/Sink Replication](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)
 
@@ -78,8 +78,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 **Conflicts:**
 
 * Two databases that have an External Replication task defined between them will detect and resolve document
-  [conflicts](../../server/clustering/replication/replication-conflicts.mdx) according to each database's conflict resolution policy.
-* It is recommended to have the same [policy configuration](../../server/clustering/replication/replication-conflicts.mdx#configuring-conflict-resolution-using-the-client)
+  [conflicts](../clustering/replication/replication-conflicts.mdx) according to each database's conflict resolution policy.
+* It is recommended to have the same [policy configuration](../clustering/replication/replication-conflicts.mdx#configuring-conflict-resolution-using-the-client)
   on both the source and the target databases.
 **Sharding Support:**
 
@@ -93,7 +93,7 @@ Learn more about the way ETL works on a sharded database [here](../../sharding/e
 The required elements of an External Replication task are:
 
 * The `UpdateExternalReplicationOperation()` method.
-* The destination server needs the [certificate from the source server](../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers:-importing-and-exporting-certificates) 
+* The destination server needs the [certificate from the source server](../security/authentication/certificate-management.mdx#enabling-communication-between-servers-importing-and-exporting-certificates) 
   so that it will trust the source.
 * The [connection string](../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-raven-connection-string) 
   with the destination server URL and any other details needed to access the destination server.
@@ -167,7 +167,7 @@ To create an external replication task via the RavenDB Studio, see the [Step-by-
 
 ## Definition
 
-To learn how to define an external replication task via code, see [code sample](../../server/ongoing-tasks/external-replication.mdx#code-sample).  
+To learn how to define an external replication task via code, see [code sample](#code-sample).  
 
 You can also configure external eplication tasks [via RavenDB Studio](../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#definition).  
 

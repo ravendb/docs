@@ -6,9 +6,9 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * **Exploration Queries** form an additional layer of filtering that can be applied 
-  to a dataset after its retrieval by [Query](../../../querying/overview.mdx#sessionquery), 
-  [DocumentQuery](../../../querying/overview.mdx#sessionadvanceddocumentquery), 
-  or [Raw RQL](../../../querying/overview.mdx#sessionadvancedrawquery), 
+  to a dataset after its retrieval by [Query](../../../querying/overview.mdx#session-query), 
+  [DocumentQuery](../../../querying/overview.mdx#session-advanced-documentquery), 
+  or [Raw RQL](../../../querying/overview.mdx#session-advanced-rawquery), 
   while the dataset is still held by the server.  
 
 * The **retrieved dataset** is scanned and filtered **without requiring or creating an 
@@ -18,9 +18,9 @@ import CodeBlock from '@theme/CodeBlock';
 * You can filter the datasets retrieved by both **Index queries** and **Collection queries**.  
 
 * Exploration queries need to be used 
-  [with caution](../../../indexes/querying/exploration-queries.mdx#when-should-exploration-queries-be-used) 
+  [with caution](#when-should-exploration-queries-be-used) 
   since scanning and filtering all the data retrieved by a query cost substantial 
-  [server resources and user waiting time](../../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries) 
+  [server resources and user waiting time](#limit-the-query-and-prefer--for-recurring-queries) 
   when large datasets are handled.  
     <Admonition type="warning" title="">
 
@@ -28,19 +28,19 @@ import CodeBlock from '@theme/CodeBlock';
 
     * **Limit** the number of records that an exploration query filters.  
     * Use [where](../../../querying/filtering-query-results/filter-query-results.mdx) in recurring queries, 
-      so the query would [use an index](../../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries).  
+      so the query would [use an index](#limit-the-query-and-prefer--for-recurring-queries).  
 
     </Admonition>
 
 * In this page:  
-   * [`filter`](../../../indexes/querying/exploration-queries.mdx#filter)
-   * [When should exploration queries be used](../../../indexes/querying/exploration-queries.mdx#when-should-exploration-queries-be-used)
-   * [Syntax](../../../indexes/querying/exploration-queries.mdx#syntax)
-   * [Usage examples](../../../indexes/querying/exploration-queries.mdx#usage-examples)
-      * [With collection queries](../../../indexes/querying/exploration-queries.mdx#with-collection-queries)
-      * [With queries that use an index](../../../indexes/querying/exploration-queries.mdx#with-queries-that-use-an-index)
-      * [With projections](../../../indexes/querying/exploration-queries.mdx#with-projections)
-      * [With user-defined JavaScript functions (`declare`)](../../../indexes/querying/exploration-queries.mdx#with-user-defined-javascript-functions-)
+   * [`filter`](#filter)
+   * [When should exploration queries be used](#when-should-exploration-queries-be-used)
+   * [Syntax](#syntax)
+   * [Usage examples](#usage-examples)
+      * [With collection queries](#with-collection-queries)
+      * [With queries that use an index](#with-queries-that-use-an-index)
+      * [With projections](#with-projections)
+      * [With user-defined JavaScript functions (`declare`)](#with-user-defined-javascript-functions-declare)
 
 </Admonition>
 
@@ -57,7 +57,7 @@ The added filtering is parsed and executed by RavenDB's Javascript engine.
 The provided filtering operations resemble those implemented by 
 [where](../../../querying/filtering-query-results/filter-query-results.mdx) and can be further enhanced 
 by Javascript functions of your own.  
-Read [here](../../../indexes/querying/exploration-queries.mdx#with-a-javascript-function:-declare) 
+Read [here](#with-a-javascript-function:-declare) 
 about creating and using your own Javascript function in your filters.  
 
 

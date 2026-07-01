@@ -30,13 +30,13 @@ In RavenDB, you don't need to worry about renewals. RavenDB takes care of this f
 
 When there are 30 days left until expiration, RavenDB will initiate the certificate renewal and replacement process. The actual request to Let's Encrypt will happen on the nearest coming Saturday.
 
-Once the renewed certificate is obtained, [it will be replaced](../../../server/security/authentication/certificate-renewal-and-rotation.mdx) in all the nodes of the cluster without needing to shut down any server.
+Once the renewed certificate is obtained, [it will be replaced](./certificate-renewal-and-rotation.mdx) in all the nodes of the cluster without needing to shut down any server.
 
 <Admonition type="warning" title="Warning" id="warning" href="#warning"> 
 Automatic certificate renewal is available only if you obtained your certificate using the Setup Wizard and got your free RavenDB domain. Self-obtained certificates will not renew automatically, even if issued by Let's Encrypt.
 </Admonition>
 
-If a certificate is not renewed in time and expires, see [recover from an expired certificate](../../../server/security/authentication/recover-from-expired-certificate.mdx).
+If a certificate is not renewed in time and expires, see [recover from an expired certificate](./recover-from-expired-certificate.mdx).
 
 When running as a cluster, the replacement process is a distributed operation. It involves sending the new certificate to all nodes, and requires all nodes to confirm that they have received and replaced the certificate.
 
@@ -65,7 +65,7 @@ Set the credentials for your DNS service. In Route53 it's done by creating a use
 Now that certbot is ready, you can create an executable script that will run the certbot command whenever RavenDB asks it, this way the certificate will keep renewing itself. 
 
 When using the `Security.Certificate.Load.Exec` option, RavenDB expects to get the raw binary representation (byte array) of the .pfx certificate through 
-the standard output. [See this example](../../../server/security/authentication/certificate-configuration.mdx) of how to write a file to standard output in 
+the standard output. [See this example](./certificate-configuration.mdx) of how to write a file to standard output in 
 Powershell.  
 
 Here's a little script, `certificate.sh`, that demonstrates this feature. It renews the certificate or creates it in the first run, uses `openssl` to convert the received file to .PFX and writes it to the standard output for RavenDB to consume. 
@@ -94,7 +94,7 @@ To enable the script, add the following to settings.json:
 
 <Admonition type="info" title="Implicit Trust" id="implicit-trust" href="#implicit-trust">
 If two different RavenDB clusters are communicating securely, and the source cluster has its certificate renewed, the destination cluster could still trust this new certificate - provided that the new certificate is signed with the same private key as the original, and was issued by the same certificate authority.  
-This is accomplished using a [public key pinning hash](../../../server/security/authentication/certificate-renewal-and-rotation.mdx#implicit-trust-by-public-key-pinning-hash).  
+This is accomplished using a [public key pinning hash](./certificate-renewal-and-rotation.mdx#implicit-trust-by-public-key-pinning-hash).  
 </Admonition>
 
 ## Manual Renewal
@@ -102,13 +102,13 @@ This is accomplished using a [public key pinning hash](../../../server/security/
 When your server uses a Let's Encrypt certificate obtained via the Setup Wizard, you can trigger the certificate renewal process manually in two ways:
 
 * Go to the certificate view in Studio and click `Renew` on the server certificate.
-* Run the following command via [`rvn admin-channel`](../../../server/administration/cli.mdx#rvn):
+* Run the following command via [`rvn admin-channel`](../../administration/cli.mdx#rvn):
 
 ```
 ravendb> triggerCertificateRefresh [-replaceImmediately]
 ```
 
-Both methods trigger the same certificate replacement process described [above](../../../server/security/authentication/lets-encrypt-certificates.mdx#automatic-renewal-for-lets-encrypt-certificates-obtained-via-ravendb).
+Both methods trigger the same certificate replacement process described [above](#automatic-renewal-for-lets-encrypt-certificates-obtained-via-ravendb).
 
 If a node is down when renewal is triggered, the cluster will complete the operation without that node. **When bringing that node up, the certificate must be replaced manually.**
 

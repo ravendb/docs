@@ -9,15 +9,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 * This article covers the following methods:
 
-  - [Load](../../../client-api/session/loading-entities.mdx#load)
-  - [Load with Includes](../../../client-api/session/loading-entities.mdx#load-with-includes)
-  - [Load - multiple entities](../../../client-api/session/loading-entities.mdx#load---multiple-entities)
-  - [LoadStartingWith](../../../client-api/session/loading-entities.mdx#loadstartingwith)
-  - [ConditionalLoad](../../../client-api/session/loading-entities.mdx#conditionalload)
-  - [Stream](../../../client-api/session/loading-entities.mdx#stream)
-  - [IsLoaded](../../../client-api/session/loading-entities.mdx#isloaded)
+  - [Load](#load)
+  - [Load with Includes](#load-with-includes)
+  - [Load - multiple entities](#load---multiple-entities)
+  - [LoadStartingWith](#loadstartingwith)
+  - [ConditionalLoad](#conditionalload)
+  - [Stream](#stream)
+  - [IsLoaded](#isloaded)
 
-* For loading entities lazily see [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx).
+* For loading entities lazily see [perform requests lazily](../how-to/perform-operations-lazily.mdx).
 
 </Admonition>
 ## Load
@@ -74,7 +74,7 @@ From RavenDB version 4.x onwards, only string identifiers are supported. If you 
 
 When there is a 'relationship' between documents, those documents can be loaded in a 
 single request call using the `Include + Load` methods. Learn more in 
-[How To Handle Document Relationships](../../../client-api/how-to/handle-document-relationships.mdx).  
+[How To Handle Document Relationships](../../how-to/handle-document-relationships.mdx).  
 
 <Admonition type="note" title="">
 Also see:  
@@ -457,7 +457,7 @@ using (var session = store.OpenAsyncSession())
 
 Entities can be streamed from the server using one of the following `Stream` methods from the `Advanced` session operations.
 
-Streaming query results does not support the [`include` feature](../../../client-api/how-to/handle-document-relationships.mdx#includes). 
+Streaming query results does not support the [`include` feature](../../how-to/handle-document-relationships.mdx#includes). 
 Learn more in [How to Stream Query Results](../../../querying/stream-query-results.mdx).  
 
 <Admonition type="info" title="">

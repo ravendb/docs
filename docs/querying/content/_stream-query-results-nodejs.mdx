@@ -15,17 +15,17 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * To stream results, use the `stream` method from the `advanced` session operations.
 
 * In this article:
-    * [Streaming overview](../../querying/stream-query-results.mdx#streaming-overview)
-    * [Stream by query](../../querying/stream-query-results.mdx#stream-by-query)
-        * [Stream a dynamic query](../../querying/stream-query-results.mdx#stream-a-dynamic-query)
-        * [Stream a dynamic raw query](../../querying/stream-query-results.mdx#stream-a-dynamic-raw-query)
-        * [Stream a projected query](../../querying/stream-query-results.mdx#stream-a-projected-query)
-        * [Stream an index query](../../querying/stream-query-results.mdx#stream-an-index-query)
-        * [Stream related documents](../../querying/stream-query-results.mdx#stream-related-documents)
-        * [By query syntax](../../querying/stream-query-results.mdx#by-query-syntax)
-    * [Stream by prefix](../../querying/stream-query-results.mdx#stream-by-prefix)
-        * [Stream results by prefix](../../querying/stream-query-results.mdx#stream-results-by-prefix)
-        * [By prefix syntax](../../querying/stream-query-results.mdx#by-prefix-syntax)
+    * [Streaming overview](#streaming-overview)
+    * [Stream by query](#stream-by-query)
+        * [Stream a dynamic query](#stream-a-dynamic-query)
+        * [Stream a dynamic raw query](#stream-a-dynamic-raw-query)
+        * [Stream a projected query](#stream-a-projected-query)
+        * [Stream an index query](#stream-an-index-query)
+        * [Stream related documents](#stream-related-documents)
+        * [By query syntax](#by-query-syntax)
+    * [Stream by prefix](#stream-by-prefix)
+        * [Stream results by prefix](#stream-results-by-prefix)
+        * [By prefix syntax](#by-prefix-syntax)
 
 </Admonition>
 
@@ -47,10 +47,10 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * **Query limitations**:
 
     * A streaming query does not wait for indexing by design.  
-      So calling [waitForNonStaleResults](../../querying/customize-query.mdx#waitfornonstaleresults) is Not supported and will result in an exception.
+      So calling [waitForNonStaleResults](../customize-query.mdx#waitfornonstaleresults) is Not supported and will result in an exception.
 
     * Using [include](../../client-api/session/loading-entities.mdx#load-with-includes) to load a related document into the session in a streaming query is Not supported.  
-      Learn more in [Stream related documents](../../querying/stream-query-results.mdx#stream-related-documents).
+      Learn more in [Stream related documents](#stream-related-documents).
 
 </Panel>
 

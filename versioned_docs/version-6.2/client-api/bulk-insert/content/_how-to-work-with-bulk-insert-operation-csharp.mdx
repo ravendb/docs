@@ -9,23 +9,23 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * `BulkInsert` is useful when inserting a large quantity of data from the client to the server.  
 * It is an optimized time-saving approach with a few
-  [limitations](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#limitations)
+  [limitations](#limitations)
   like the possibility that interruptions will occur during the operation.  
 
 * In this page:
-   * [Quick example](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#quick-example)
-   * [`BulkInsertOperation`](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#bulkinsertoperation)
-      * [Methods](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#methods)
-      * [Limitations](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#limitations)
-      * [Example](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#example)
-   * [`BulkInsertOptions`](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#bulkinsertoptions)
-      * [CompressionLevel](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#compressionlevel)
-      * [SkipOverwriteIfUnchanged](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#skipoverwriteifunchanged)
-   * [Track progress with OnProgress](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#track-progress-with-onprogress)
-   * [Syntax](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#syntax)
-      * [Method signatures](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#method-signatures)
-      * [Event signature](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#event-signature)
-      * [Classes](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#classes)
+   * [Quick example](#quick-example)
+   * [`BulkInsertOperation`](#bulkinsertoperation)
+      * [Methods](#methods)
+      * [Limitations](#limitations)
+      * [Example](#example)
+   * [`BulkInsertOptions`](#bulkinsertoptions)
+      * [CompressionLevel](#compressionlevel)
+      * [SkipOverwriteIfUnchanged](#skipoverwriteifunchanged)
+   * [Track progress with OnProgress](#track-progress-with-onprogress)
+   * [Syntax](#syntax)
+      * [Method signatures](#method-signatures)
+      * [Event signature](#event-signature)
+      * [Classes](#classes)
 
 </Admonition>
 
@@ -48,7 +48,7 @@ using (BulkInsertOperation bulkInsert = store.BulkInsert())
 <br />
 
 For the full set of `BulkInsert` overloads and their parameters, see the
-[Syntax](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#syntax)
+[Syntax](#syntax)
 section at the end of this page.
 
 </Panel>
@@ -89,11 +89,11 @@ The following methods can be used when creating a bulk insert.
      cause some of your data not to persist on the server yet.  
    * If the operation was interrupted and you choose to re-insert the whole dataset in a
      new operation, you can set
-     [SkipOverwriteIfUnchanged](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#skipoverwriteifunchanged)
+     [SkipOverwriteIfUnchanged](#skipoverwriteifunchanged)
      as `true` so the operation will overwrite existing documents only if they changed
      since the last insertion.  
    * **If you need full transactionality**, using a
-     [session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx)
+     [session](../../session/what-is-a-session-and-how-does-it-work.mdx)
      may be a better option.  
      Note that if `session` is used, all of the data is processed in a single transaction,
      so the server must have sufficient resources to handle the entire data-set included
@@ -217,11 +217,11 @@ so far - subscribe to the `OnProgress` event.
 The bulk insert delivers a progress snapshot to your handler each time the server
 reports new progress, with counters such as `DocumentsProcessed`, `BatchCount`, and
 the ID of the document processed most recently (`LastProcessedId`).  
-See [Classes](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#classes)
+See [Classes](#classes)
 for the full property list.
 
 * Updates arrive asynchronously over the
-  [Changes](../../../client-api/changes/what-is-changes-api.mdx)
+  [Changes](../../changes/what-is-changes-api.mdx)
   stream that the server opens for the operation.  
   Your handler is invoked by the server's progress reports, not by your `Store`
   calls - a single progress event typically covers many `Store` calls at once.
@@ -301,7 +301,7 @@ using (var bulkInsert = store.BulkInsert())
 <TabItem value="bulkInsert-with-options" label="BulkInsert (with options)">
 
 Opens a bulk insert against the given database with a
-[`BulkInsertOptions`](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#bulkinsertoptions)
+[`BulkInsertOptions`](#bulkinsertoptions)
 instance to configure compression and overwrite behavior.
 
 ```csharp
@@ -330,7 +330,7 @@ using (var bulkInsert = store.BulkInsert("Northwind", new BulkInsertOptions
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | **database** | `string` | The name of the database to perform the bulk operation on.<br/>If `null`, the `DocumentStore.Database` is used. |
-| **options** | `BulkInsertOptions` | [Options](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#bulkinsertoptions) to configure BulkInsert. |
+| **options** | `BulkInsertOptions` | [Options](#bulkinsertoptions) to configure BulkInsert. |
 | **token** | `CancellationToken` | Cancellation token used to halt the worker operation. |
 
 | Return value | |
@@ -341,7 +341,7 @@ using (var bulkInsert = store.BulkInsert("Northwind", new BulkInsertOptions
 <TabItem value="bulkInsert-options-only" label="BulkInsert (options only)">
 
 Opens a bulk insert against the document store's default database with a
-[`BulkInsertOptions`](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#bulkinsertoptions)
+[`BulkInsertOptions`](#bulkinsertoptions)
 instance to configure compression and overwrite behavior.
 
 ```csharp
@@ -368,7 +368,7 @@ using (var bulkInsert = store.BulkInsert(new BulkInsertOptions
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| **options** | `BulkInsertOptions` | [Options](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx#bulkinsertoptions) to configure BulkInsert. |
+| **options** | `BulkInsertOptions` | [Options](#bulkinsertoptions) to configure BulkInsert. |
 | **token** | `CancellationToken` | Cancellation token used to halt the worker operation. |
 
 | Return value | |

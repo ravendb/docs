@@ -22,12 +22,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * A dynamic walkthrough demonstrating revisions management is available [here](../../../../document-extensions/revisions/overview.mdx#how-it-works).  
 
 * This article provides an overview of how to view and compare revisions of a specific document.  
-  * To see all revisions in the database, go to the [All Revisions](../../../../studio/database/document-extensions/revisions/all-revisions.mdx) view.  
-  * To access revisions of deleted documents, go to the [Revisions Bin](../../../../studio/database/document-extensions/revisions/revisions-bin.mdx) view.    
+  * To see all revisions in the database, go to the [All Revisions](./all-revisions.mdx) view.  
+  * To access revisions of deleted documents, go to the [Revisions Bin](./revisions-bin.mdx) view.    
 * In this page:
-  * [Revisions tab](../../../../studio/database/document-extensions/revisions/revisions-overview.mdx#revisions-tab)  
-  * [Revision inspection](../../../../studio/database/document-extensions/revisions/revisions-overview.mdx#revision-inspection)  
-  * [Revisions comparison](../../../../studio/database/document-extensions/revisions/revisions-overview.mdx#revisions-comparison)  
+  * [Revisions tab](#revisions-tab)  
+  * [Revision inspection](#revision-inspection)  
+  * [Revisions comparison](#revisions-comparison)  
 
 </Admonition>
 ## Revisions tab
@@ -39,14 +39,14 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ![Revisions Tab](./assets/document-revisions.png)
 
-1. [Document View](../../../../studio/database/documents/document-view.mdx) &gt; **Revisions tab**  
+1. [Document View](../../documents/document-view.mdx) &gt; **Revisions tab**  
    Click to display the document's revisions tab.  
    Revisions are listed in the revisions tab by their creation time signatures.  
    The current number of revisions is displayed in the tab header.  
 2. **Create revision**  
    Click to manually create a new revision for this document from the Studio.  
    A new revision will be created if the document doesn't already have a revision for the latest content.  
-   This option is available even if a [revisions configuration](../../../../studio/database/settings/document-revisions.mdx#revisions-configuration) is not defined or enabled.  
+   This option is available even if a [revisions configuration](../../settings/document-revisions.mdx#revisions-configuration) is not defined or enabled.  
    [Learn here](../../../../document-extensions/revisions/overview.mdx#force-revision-creation-via-the-client-api) about forcing the creation of a new revision via the Client API.  
 3. **Revision timestamp**  
    Click the timestamp to inspect this revision and view its content.

@@ -8,9 +8,9 @@ import CodeBlock from '@theme/CodeBlock';
 * Use the `Recurse` method to traverse the layers of a hierarchical document and index its fields.
 
 * In this Page:
-    * [Hierarchical data](../../indexes/indexing-hierarchical-data.mdx#hierarchical-data)
-    * [Index hierarchical data](../../indexes/indexing-hierarchical-data.mdx#index-hierarchical-data)
-    * [Query the index](../../indexes/indexing-hierarchical-data.mdx#query-the-index)
+    * [Hierarchical data](#hierarchical-data)
+    * [Index hierarchical data](#index-hierarchical-data)
+    * [Query the index](#query-the-index)
 
 </Admonition>
 ## Hierarchical data
@@ -92,7 +92,7 @@ For example, the following document, `BlogPosts/1-A`, represents a blog post by 
 To index the elements of a hierarchical structure like the one above, use RavenDB's `Recurse` method.
 
 The sample index below shows how to use `Recurse` to traverse the comments in the post thread and index them by their authors.
-We can then [query the index](../../indexes/indexing-hierarchical-data.mdx#query-the-index) for all blog posts that contain comments by specific authors.
+We can then [query the index](#query-the-index) for all blog posts that contain comments by specific authors.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Index" label="Index">

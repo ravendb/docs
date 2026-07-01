@@ -13,13 +13,13 @@ import CodeBlock from '@theme/CodeBlock';
 
 * In this page:
 
-  * [Projections overview](../../../../client-api/session/querying/how-to-project-query-results.mdx#projections-overview)
+  * [Projections overview](#projections-overview)
 
-  * [Projection Methods](../../../../client-api/session/querying/how-to-project-query-results.mdx#projection-methods)  
-      * [`select`, `selectFields`](../../../../client-api/session/querying/how-to-project-query-results.mdx#select,-selectfields)  
-      * [`ofType`](../../../../client-api/session/querying/how-to-project-query-results.mdx#oftype)  
+  * [Projection Methods](#projection-methods)  
+      * [`select`, `selectFields`](#select,-selectfields)  
+      * [`ofType`](#oftype)  
 
-  * [Single projection per query](../../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query)
+  * [Single projection per query](#single-projection-per-query)
 
 </Admonition>
 ## Projections overview
@@ -43,7 +43,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Projections allow you to tailor the query results specifically to your needs.  
   Getting specific details to display can be useful when presenting data to users or populating user interfaces.  
-  Projection queries are also useful with [subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
+  Projection queries are also useful with [subscriptions](../../../data-subscriptions/what-are-data-subscriptions.mdx) 
   since all transformation work is done on the server side without having to send a lot of data over the wire.
 
 * Returning partial document data from the server reduces network traffic,  
@@ -73,12 +73,12 @@ import CodeBlock from '@theme/CodeBlock';
 * Within the projection you can only filter what data will be returned from the matching documents,  
   but you cannot filter which documents will be returned. That has already been determined earlier in the query pipeline.
 
-* Only a [single projection request](../../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query) can be made per query.  
+* Only a [single projection request](#single-projection-per-query) can be made per query.  
 
 ### The cost of projections:
 
 * Queries in RavenDB do not allow any computation to occur during the query phase.  
-  However, you can perform any [calculations](../../../../client-api/session/querying/how-to-project-query-results.mdx#example---projection-with-calculations) 
+  However, you can perform any [calculations](#example---projection-with-calculations) 
   inside the projection.
 
 * But while calculations within a projection are allowed, having a very complex logic can impact query performance.  

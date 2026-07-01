@@ -25,9 +25,9 @@ import Admonition from '@theme/Admonition';
   Learn how to define an Azure Service Bus sink task using the client API [here](../../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx).  
 
 * In this article:  
-  * [Add a Database Task](../../../../studio/database/tasks/ongoing-tasks/azure-service-bus-queue-sink.mdx#add-a-database-task)  
-  * [Define an Azure Service Bus Sink Task](../../../../studio/database/tasks/ongoing-tasks/azure-service-bus-queue-sink.mdx#define-an-azure-service-bus-sink-task)  
-  * [Authentication methods](../../../../studio/database/tasks/ongoing-tasks/azure-service-bus-queue-sink.mdx#authentication-methods)  
+  * [Add a Database Task](#add-a-database-task)  
+  * [Define an Azure Service Bus Sink Task](#define-an-azure-service-bus-sink-task)  
+  * [Authentication methods](#authentication-methods)  
 
 </Admonition>
 
@@ -66,14 +66,14 @@ To open the ongoing tasks view:
    Disabled - No messages are read or stored, and the task's scripts are inactive.  
 
 4. **Set responsible node** (Optional)  
-   * Select a node from the [Database Group](../../../../studio/database/settings/manage-database-group.mdx) to be responsible for this task, e.g., node `A`.  
-   * If no node is selected, the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group.mdx#database-group-topology---members-duties)).  
+   * Select a node from the [Database Group](../../settings/manage-database-group.mdx) to be responsible for this task, e.g., node `A`.  
+   * If no node is selected, the cluster will assign a responsible node (see [Members Duties](../../settings/manage-database-group.mdx#database-group-topology---members-duties)).  
 
 5. **Connection String**  
    The connection string holds the details RavenDB needs to reach your Azure Service Bus namespace.  
    Select an existing connection string from the list, or click **Create new connection string** to define a new one.  
    A new connection string requires a **Name**, e.g., *AzureServiceBusConStr*, and an **Authentication** method.  
-   Learn about the three authentication methods [below](../../../../studio/database/tasks/ongoing-tasks/azure-service-bus-queue-sink.mdx#authentication-methods).  
+   Learn about the three authentication methods [below](#authentication-methods).  
 
 6. **Test Connection**  
    After defining the connection string, click to test the connection to the Azure Service Bus namespace.  

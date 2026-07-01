@@ -20,17 +20,17 @@ import Panel from '@site/src/components/Panel';
   An index definition can contain both dynamic-index-fields and regular-index-fields.
 
 * In this article:
-  * [Indexing field KEYS](../../indexes/using-dynamic-fields.mdx#indexing-field-keys)
-      * [Example - index every field under an object](../../indexes/using-dynamic-fields.mdx#example---index-every-field-under-an-object)
-      * [Example - index every field](../../indexes/using-dynamic-fields.mdx#example---index-every-field)
-  * [Indexing field VALUES](../../indexes/using-dynamic-fields.mdx#indexing-field-values)
-      * [Example - basic](../../indexes/using-dynamic-fields.mdx#example---basic)
-      * [Example - list](../../indexes/using-dynamic-fields.mdx#example---list)
-  * [Indexing dynamic fields for full-text search](../../indexes/using-dynamic-fields.mdx#indexing-dynamic-fields-for-full-text-search)
-      * [Configuring analyzers for dynamic fields](../../indexes/using-dynamic-fields.mdx#configuring-analyzers-for-dynamic-fields)
-      * [Which analyzer is used for the query term?](../../indexes/using-dynamic-fields.mdx#which-analyzer-is-used-for-the-query-term)
-  * [`createField` syntax](../../indexes/using-dynamic-fields.mdx#createfield-syntax)
-  * [Indexed fields & terms view](../../indexes/using-dynamic-fields.mdx#indexed-fields-terms-view)
+  * [Indexing field KEYS](#indexing-field-keys)
+      * [Example - index every field under an object](#example---index-every-field-under-an-object)
+      * [Example - index every field](#example---index-every-field)
+  * [Indexing field VALUES](#indexing-field-values)
+      * [Example - basic](#example---basic)
+      * [Example - list](#example---list)
+  * [Indexing dynamic fields for full-text search](#indexing-dynamic-fields-for-full-text-search)
+      * [Configuring analyzers for dynamic fields](#configuring-analyzers-for-dynamic-fields)
+      * [Which analyzer is used for the query term?](#which-analyzer-is-used-for-the-query-term)
+  * [`createField` syntax](#createfield-syntax)
+  * [Indexed fields & terms view](#indexed-fields-terms-view)
 
 </Admonition>
 
@@ -247,7 +247,7 @@ The following example allows you to:
 The following example shows:    
   * Only the **basic concept** of creating a dynamic-index-field from the **value** of a document field.  
   * Documents can then be queried based on those indexed values.  
-  * For a more practical usage see the [Example](../../indexes/using-dynamic-fields.mdx#example---list) below.  
+  * For a more practical usage see the [Example](#example---list) below.  
 </Admonition>
 
 * **The document**:  
@@ -453,32 +453,32 @@ The following example allows you to:
     
 <Admonition type="note" title="">    
 
-Dynamic fields can be indexed for [Full-text search](../../indexes/querying/searching.mdx) by setting `indexing: "Search"` in the `createField` options.
+Dynamic fields can be indexed for [Full-text search](../querying/searching.mdx) by setting `indexing: "Search"` in the `createField` options.
 
 * **At indexing time**:      
   At indexing time, RavenDB analyzes the dynamic field value and creates the indexed terms.  
   The analyzer used at indexing time is resolved from the index definition.  
   You can configure an analyzer for a specific generated field name, or configure `ALL_FIELDS` as a fallback.  
-  See [Configuring analyzers for dynamic fields](../../indexes/using-dynamic-fields.mdx#configuring-analyzers-for-dynamic-fields) below.    
+  See [Configuring analyzers for dynamic fields](#configuring-analyzers-for-dynamic-fields) below.    
 
     * If the generated dynamic field name has an explicit analyzer configuration, that analyzer is used.  
     * Otherwise, if `ALL_FIELDS` has an analyzer configuration, RavenDB uses it as a fallback.
-    * If no analyzer is configured for the field, RavenDB uses the [Default search analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer).
+    * If no analyzer is configured for the field, RavenDB uses the [Default search analyzer](../using-analyzers.mdx#using-the-default-search-analyzer).
 
 * **At querying time**:  
   For full-text search to return the expected results, the analyzer used at indexing time and the analyzer used for the query term should produce compatible terms.  
 
     When a `search()` query targets a dynamic field that does **not** have an explicit analyzer configuration for its generated field name,
-    RavenDB uses the [Default analyzer](../../indexes/using-analyzers.mdx#using-the-default-analyzer) to analyze the query term by default.
+    RavenDB uses the [Default analyzer](../using-analyzers.mdx#using-the-default-analyzer) to analyze the query term by default.
 
     Set the [Indexing.Querying.UseSearchAnalyzerForDynamicFieldsIfNotSetExplicitlyInSearchQuery](../../server/configuration/indexing-configuration.mdx#indexingqueryingusesearchanalyzerfordynamicfieldsifnotsetexplicitlyinsearchquery)  
-    configuration key to `true` to make RavenDB use the [Default search analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer) as the fallback analyzer for the query term instead.
+    configuration key to `true` to make RavenDB use the [Default search analyzer](../using-analyzers.mdx#using-the-default-search-analyzer) as the fallback analyzer for the query term instead.
 
     This configuration can be set at different scopes: server-wide, per database, or per index.  
     The example below sets it at the index scope, in the index definition.
 
     For a summary of how RavenDB resolves the analyzer used for the query term,  
-    see [Which analyzer is used for the query term](../../indexes/using-dynamic-fields.mdx#which-analyzer-is-used-for-the-query-term) below.
+    see [Which analyzer is used for the query term](#which-analyzer-is-used-for-the-query-term) below.
 
 </Admonition>
     
@@ -561,7 +561,7 @@ The following example indexes localized product descriptions as dynamic fields a
     In this example, the query targets the generated field `Description_English`.
 
     Since `Indexing.Querying.UseSearchAnalyzerForDynamicFieldsIfNotSetExplicitlyInSearchQuery` is set to `true`,  
-    the searched term `"north wind"` is analyzed with the [Default search analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer).
+    the searched term `"north wind"` is analyzed with the [Default search analyzer](../using-analyzers.mdx#using-the-default-search-analyzer).
 
     <Tabs groupId="languageSyntax">
     <TabItem value="Query" label="Query">
@@ -674,10 +674,10 @@ The following applies when a `search()` query targets a **dynamic field**:
 
 | Index configuration | [Configuration key](../../server/configuration/indexing-configuration.mdx#indexingqueryingusesearchanalyzerfordynamicfieldsifnotsetexplicitlyinsearchquery) | Analyzer used for the query term |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| No analyzer is explicitly configured for the generated field name | `false` | The [Default analyzer](../../indexes/using-analyzers.mdx#using-the-default-analyzer)                |
-| No analyzer is explicitly configured for the generated field name | `true`  | The [Default search analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer)  |
+| No analyzer is explicitly configured for the generated field name | `false` | The [Default analyzer](../using-analyzers.mdx#using-the-default-analyzer)                |
+| No analyzer is explicitly configured for the generated field name | `true`  | The [Default search analyzer](../using-analyzers.mdx#using-the-default-search-analyzer)  |
 | `ALL_FIELDS` is configured with a specific analyzer,<br/>e.g. `WhitespaceAnalyzer` | `false` | The analyzer resolved by the normal field fallback path,<br/>e.g. `WhitespaceAnalyzer`             |
-| `ALL_FIELDS` is configured with a specific analyzer,<br/>e.g. `WhitespaceAnalyzer` | `true`  | The [Default search analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer) |
+| `ALL_FIELDS` is configured with a specific analyzer,<br/>e.g. `WhitespaceAnalyzer` | `true`  | The [Default search analyzer](../using-analyzers.mdx#using-the-default-search-analyzer) |
 | The generated field name is explicitly configured,<br/>e.g. `this.analyze("Description_English", "StopAnalyzer")` | `false` | The explicitly configured analyzer,<br/>e.g. `StopAnalyzer` |
 | The generated field name is explicitly configured,<br/>e.g. `this.analyze("Description_English", "StopAnalyzer")` | `true`  | The explicitly configured analyzer,<br/>e.g. `StopAnalyzer` |
 
@@ -703,9 +703,9 @@ createField(fieldName, fieldValue, options); // returns object
 
 | options object  |                    |                                                                                   |
 |-----------------|--------------------|-----------------------------------------------------------------------------------|
-| **storage**     | `boolean`          | Learn about [storing data](../../indexes/storing-data-in-index.mdx) in the index. |
-| **indexing**    | `FieldIndexing`    | Sets the field indexing behavior.<br/>Learn about [using analyzers](../../indexes/using-analyzers.mdx) in the index.    |
-| **termVector**  | `FieldTermVector`  | Sets the field term-vector behavior.<br/>Learn about [term vectors](../../indexes/using-term-vectors.mdx) in the index. |
+| **storage**     | `boolean`          | Learn about [storing data](../storing-data-in-index.mdx) in the index. |
+| **indexing**    | `FieldIndexing`    | Sets the field indexing behavior.<br/>Learn about [using analyzers](../using-analyzers.mdx) in the index.    |
+| **termVector**  | `FieldTermVector`  | Sets the field term-vector behavior.<br/>Learn about [term vectors](../using-term-vectors.mdx) in the index. |
 
 <Admonition type="info" title="">
 
@@ -722,7 +722,7 @@ createField(fieldName, fieldValue, options); // returns object
 <Panel heading="Indexed fields & terms view">
 
 The generated dynamic index fields and their indexed terms can be viewed in the **Terms View** in Studio.  
-Below are sample index fields & their terms generated from [this example](../../indexes/using-dynamic-fields.mdx#example---list).
+Below are sample index fields & their terms generated from [this example](#example---list).
     
 ![Figure 1. Go to terms view](../assets/dynamic-index-fields-1.png)
     

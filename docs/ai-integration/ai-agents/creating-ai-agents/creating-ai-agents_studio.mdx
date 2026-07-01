@@ -18,22 +18,22 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Admonition type="note" title="">
 
 * In this article:
-   * [Create AI Agent](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#create-ai-agent)  
-   * [Configure basic settings](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#configure-basic-settings)
-   * [Set agent parameters](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#set-agent-parameters)
-   * [Define agent tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#define-agent-tools)
-      * [Add query tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#add-query-tools)
-      * [Add action tools](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#add-action-tools)
-   * [Define sub-agents](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#define-sub-agents)
-   * [Configure chat trimming](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#configure-chat-trimming)
-   * [Save and Run your agent](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#save-and-run-your-agent)
-      * [Start new chat](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#start-new-chat)
-      * [Adding file attachments](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#adding-file-attachments)
-      * [Agent interaction](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#agent-interaction)
-      * [Action tool dialog](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#action-tool-dialog)
-      * [Agent results](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#agent-results)
-   * [Test your agent](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#test-your-agent)
-      * [Runtime view and Test results](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#runtime-view-and-test-results)
+   * [Create AI Agent](#create-ai-agent)  
+   * [Configure basic settings](#configure-basic-settings)
+   * [Set agent parameters](#set-agent-parameters)
+   * [Define agent tools](#define-agent-tools)
+      * [Add query tools](#a-add-query-tools)
+      * [Add action tools](#b-add-action-tools)
+   * [Define sub-agents](#define-sub-agents)
+   * [Configure chat trimming](#configure-chat-trimming)
+   * [Save and Run your agent](#save-and-run-your-agent)
+      * [Start new chat](#start-new-chat)
+      * [Adding file attachments](#adding-file-attachments)
+      * [Agent interaction](#agent-interaction)
+      * [Action tool dialog](#action-tool-dialog)
+      * [Agent results](#agent-results)
+   * [Test your agent](#test-your-agent)
+      * [Runtime view and Test results](#runtime-view-and-test-results)
 
 </Admonition>
 
@@ -44,7 +44,7 @@ To create an AI agent, open: **AI hub &gt; AI Agents** and click **Add new agent
 ![AI Agents View](./assets/ai-agents_ai-agents-view.png)
 
 1. **AI Hub**  
-   Click to open the [AI Hub view](../../../ai-integration/ai-tasks-list-view.mdx).  
+   Click to open the [AI Hub view](../../ai-tasks-list-view.mdx).  
    Use this view to handle AI connection strings and tasks, and to view task statistics.  
 2. **AI Agents**  
    Click to open the AI Agents view.  
@@ -85,7 +85,7 @@ To create an AI agent, open: **AI hub &gt; AI Agents** and click **Add new agent
 
       ![Select or Create a Connection String](./assets/ai-agents_connection-string_select-or-create.png)
    
-      **Select** an existing [connection string](../../../ai-integration/connection-strings/overview.mdx) 
+      **Select** an existing [connection string](../../connection-strings/overview.mdx) 
       that the agent will use to connect your LLM of choice,  
       or click **Create a new AI connection string** to define a new string.  
       Your agent can use a local LLM like Ollama, or an external model like OpenAI.  
@@ -111,7 +111,7 @@ To create an AI agent, open: **AI hub &gt; AI Agents** and click **Add new agent
 
 After setting an agent parameter, it can be included in query tool RQL queries.  
 Values for agent parameters are provided by the client when a conversation is started.  
-[Read more about agent parameters](../../../ai-integration/ai-agents/overview.mdx#query-parameters).
+[Read more about agent parameters](../overview.mdx#query-parameters).
 
 To add an agent parameter:  
 ![Add an agent parameter](./assets/ai-agents_set-agent-params_add.png)
@@ -149,7 +149,7 @@ Define **Query** and **Action** agent tools.
 * Query tools you define here can be used freely by the LLM to trigger the agent to retrieve data from the database and return it to the LLM.  
 * Action tools can trigger the client to perform actions such as removing a spam entry from a comments section or adding a comment to an article.  
 * The LLM has no direct access to the database or any other server property; all queries and actions are performed through the agent.  
-* [Find an AI agent usage flow chart here](../../../ai-integration/ai-agents/overview.mdx#ai-agent-usage-flow-chart)
+* [Find an AI agent usage flow chart here](../overview.mdx#ai-agent-usage-flowchart)
 
 ![Define agent tools](./assets/ai-agents_define-agent-tools.png)
 
@@ -180,7 +180,7 @@ Define **Query** and **Action** agent tools.
 
 7. **Sample parameters object** and **Parameters JSON schema**  
    Set a schema (as a sample object or a formal JSON schema) that allows the LLM to fill query parameters with values.  
-   [Read more about query parameters](../../../ai-integration/ai-agents/overview.mdx#query-parameters)  
+   [Read more about query parameters](../overview.mdx#query-parameters)  
 
 8. **Advanced settings**  
    Click to expand advanced query tool settings.  
@@ -188,7 +188,7 @@ Define **Query** and **Action** agent tools.
     * **Allow model queries**  
       Enable to allow the LLM to trigger the execution of this query tool.  
       <Admonition type="note" title="">
-      When disabled, the LLM will not be able to trigger this tool - but if the tool is set as an [initial-context query](../../../ai-integration/ai-agents/overview.mdx#initial-context-queries) the agent will still be able to execute it when it is started.  
+      When disabled, the LLM will not be able to trigger this tool - but if the tool is set as an [initial-context query](../overview.mdx#initial-context-queries) the agent will still be able to execute it when it is started.  
       </Admonition>
 
        * **Override**  
@@ -196,7 +196,7 @@ Define **Query** and **Action** agent tools.
          Enable **Override** to change this behavior for this query tool.  
 
     * **Add to initial context**  
-      Enable to set this tool as an [initial-context query](../../../ai-integration/ai-agents/overview.mdx#initial-context-queries).  
+      Enable to set this tool as an [initial-context query](../overview.mdx#initial-context-queries).  
       An initial-context query is executed by the agent as it starts a conversation with the LLM **without waiting for the LLM to invoke the tool**, allowing the agent to provide the LLM with relevant data at the very beginning of the conversation.  
       Disable to prevent the agent from executing the query on startup.  
       <Admonition type="note" title="">
@@ -245,7 +245,7 @@ Define **Query** and **Action** agent tools.
 
 Providing your agent with specialist sub-agents allows it to delegate tasks, keep each agent's context cleaner and more focused, and reduce token consumption.
 
-[Learn more about sub-agents](../../../ai-integration/ai-agents/multi-agents.mdx)
+[Learn more about sub-agents](../multi-agents.mdx)
 
 ![Define sub agents tools](./assets/ai-agents_define-sub-agents.png)
 

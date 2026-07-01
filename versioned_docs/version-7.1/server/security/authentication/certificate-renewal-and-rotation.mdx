@@ -15,7 +15,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 X.509 certificates have expiration dates and must be renewed once in a while.
 
-When using the Setup Wizard to obtain a Let's Encrypt certificate, you don't have to worry about this. Read about [Automatic Let's Encrypt Renewals in RavenDB](../../../server/security/authentication/lets-encrypt-certificates.mdx).
+When using the Setup Wizard to obtain a Let's Encrypt certificate, you don't have to worry about this. Read about [Automatic Let's Encrypt Renewals in RavenDB](./lets-encrypt-certificates.mdx).
 
 If you provided your own certificate to RavenDB, it is **your responsibility** to renew it. 
 
@@ -25,7 +25,7 @@ You can also ignore these limits and replace the certificates immediately but be
 
 To manually replace the server certificate you can either edit [settings.json](../../configuration/configuration-options.mdx#json) with a new certificate path and restart the server or you can overwrite the existing certificate file and the server will pick it up within one hour without requiring a restart.
 
-If the server certificate has already expired and Studio can no longer be reached, see [recover from an expired certificate](../../../server/security/authentication/recover-from-expired-certificate.mdx).
+If the server certificate has already expired and Studio can no longer be reached, see [recover from an expired certificate](./recover-from-expired-certificate.mdx).
 
 <Admonition type="danger" title="">
 The new certificate must contain all of the cluster domain names in the CN or ASN properties of the certificate. Otherwise you will get an authentication error because SSL/TLS requires the domain in the certificate to match with the actual domain being used.

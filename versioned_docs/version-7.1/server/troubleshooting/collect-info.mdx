@@ -24,12 +24,12 @@ import Panel from '@site/src/components/Panel';
 
 * In this article:
 
-  * [Provide incident description](../../server/troubleshooting/collect-info.mdx#provide-incident-description)
-  * [Create debug package](../../server/troubleshooting/collect-info.mdx#create-debug-package)
-  * [Enable logs for ongoing issues](../../server/troubleshooting/collect-info.mdx#enable-logs-for-ongoing-issues)
-  * [Download logs](../../server/troubleshooting/collect-info.mdx#download-logs)
-  * [Reproduce scenario](../../server/troubleshooting/collect-info.mdx#reproduce-scenario)
-  * [Create failing test](../../server/troubleshooting/collect-info.mdx#create-failing-test)
+  * [Provide incident description](#provide-incident-description)
+  * [Create debug package](#create-debug-package)
+  * [Enable logs for ongoing issues](#enable-logs-for-ongoing-issues)
+  * [Download logs](#download-logs)
+  * [Reproduce scenario](#reproduce-scenario)
+  * [Create failing test](#create-failing-test)
 
 </Admonition>
 
@@ -123,10 +123,10 @@ To preserve your settings after a restart, you can either:
     (Scroll down in the Traffic watch logs dialog to see this option)  
     ![Save to settings.json](./assets/save-to-settings-json.png)
 
-  * Or set the relevant configuration key, as described in this [configuration overview](../../server/configuration/configuration-options.mdx):
-    * For **Server logs**: set the [Logs.MinLevel](../../server/configuration/logs-configuration.mdx#logsminlevel) configuration key.  
-    * For **Microsoft logs**: set the [Logs.Microsoft.MinLevel](../../server/configuration/logs-configuration.mdx#logsmicrosoftminlevel) configuration key.
-    * For **Traffic watch logs**: set the [TrafficWatch.Mode](../../server/configuration/traffic-watch-configuration.mdx#trafficwatchmode) configuration key.
+  * Or set the relevant configuration key, as described in this [configuration overview](../configuration/configuration-options.mdx):
+    * For **Server logs**: set the [Logs.MinLevel](../configuration/logs-configuration.mdx#logsminlevel) configuration key.  
+    * For **Microsoft logs**: set the [Logs.Microsoft.MinLevel](../configuration/logs-configuration.mdx#logsmicrosoftminlevel) configuration key.
+    * For **Traffic watch logs**: set the [TrafficWatch.Mode](../configuration/traffic-watch-configuration.mdx#trafficwatchmode) configuration key.
 
 </Admonition>
 
@@ -160,11 +160,11 @@ Perform the following for each node in your cluster:
 then copy the log files directly from the disk to another location to ensure that you keep them,  
 avoiding potential loss due to the retention configuration.
 
-* The location of the log files is determined by the [Logs.Path](../../server/configuration/logs-configuration.mdx#logspath) configuration.
+* The location of the log files is determined by the [Logs.Path](../configuration/logs-configuration.mdx#logspath) configuration.
 
 * Logs deletion is controlled by the following configurations:
-  * [Logs.MaxArchiveDays](../../server/configuration/logs-configuration.mdx#logsmaxarchivedays)
-  * [Logs.MaxArchiveFiles ](../../server/configuration/logs-configuration.mdx#logsmaxarchivefiles)
+  * [Logs.MaxArchiveDays](../configuration/logs-configuration.mdx#logsmaxarchivedays)
+  * [Logs.MaxArchiveFiles ](../configuration/logs-configuration.mdx#logsmaxarchivefiles)
 
 </Admonition> 
 
@@ -187,7 +187,7 @@ avoiding potential loss due to the retention configuration.
 
 * If the incident is over and you can reproduce it, then first verify logging level is set to '**Debug**'.  
 
-* See how to enable the logs in [Enable logs](../../server/troubleshooting/collect-info.mdx#enable-logs-for-ongoing-issues).
+* See how to enable the logs in [Enable logs](#enable-logs-for-ongoing-issues).
 
 </Panel>
 

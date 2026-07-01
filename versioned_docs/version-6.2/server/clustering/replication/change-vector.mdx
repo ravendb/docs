@@ -17,17 +17,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Change vectors are the RavenDB implementation of the [Vector clock](https://en.wikipedia.org/wiki/Vector_clock) concept.
   They give us partial order over modifications of documents in a RavenDB cluster.
 
-* Change vectors are updated every time a document is [modified](../../../server/clustering/replication/change-vector.mdx#concurrency-control--change-vectors) 
+* Change vectors are updated every time a document is [modified](#concurrency-control--change-vectors) 
   in any way.
 
 * In this page:
-   * [What are Change Vectors Constructed From?](../../../server/clustering/replication/change-vector.mdx#what-are-change-vectors-constructed-from)
-   * [How are Change Vectors used to Determine Order?](../../../server/clustering/replication/change-vector.mdx#how-are-change-vectors-used-to-determine-order)
-   * [Concurrency Control & Change Vectors](../../../server/clustering/replication/change-vector.mdx#concurrency-control--change-vectors)
-   * [Change Vector Comparisons](../../../server/clustering/replication/change-vector.mdx#change-vector-comparisons)
-   * [Concurrency Control at the Cluster](../../../server/clustering/replication/change-vector.mdx#concurrency-control-at-the-cluster)
-   * [Database Global Change Vector](../../../server/clustering/replication/change-vector.mdx#database-global-change-vector)
-   * [After Restoring a Database from Backup](../../../server/clustering/replication/change-vector.mdx#after-restoring-a-database-from-backup)
+   * [What are Change Vectors Constructed From?](#what-are-change-vectors-constructed-from)
+   * [How are Change Vectors used to Determine Order?](#how-are-change-vectors-used-to-determine-order)
+   * [Concurrency Control & Change Vectors](#concurrency-control--change-vectors)
+   * [Change Vector Comparisons](#change-vector-comparisons)
+   * [Concurrency Control at the Cluster](#concurrency-control-at-the-cluster)
+   * [Database Global Change Vector](#database-global-change-vector)
+   * [After Restoring a Database from Backup](#after-restoring-a-database-from-backup)
 
 </Admonition>
 ## What are Change Vectors Constructed From?
@@ -180,9 +180,9 @@ Note that if data is considered contained by a database it doesn't mean it is pr
 
 ## After Restoring a Database from Backup
 
-* [Snapshot backups](../../../client-api/operations/maintenance/backup/backup-overview.mdx#snapshot) save [change vector data](../../../server/ongoing-tasks/backup-overview.mdx#backup-contents).
+* [Snapshot backups](../../../client-api/operations/maintenance/backup/backup-overview.mdx#snapshot) save [change vector data](../../ongoing-tasks/backup-overview.mdx#backup-contents).
 * [Logical backups](../../../client-api/operations/maintenance/backup/backup-overview.mdx#logical-backup) do not save change vector data.  
-  Restoring a database from a logical backup will renew the document change vector's frequently [incrementing ETag](../../../server/clustering/replication/change-vector.mdx#what-are-change-vectors-constructed-from)
+  Restoring a database from a logical backup will renew the document change vector's frequently [incrementing ETag](#what-are-change-vectors-constructed-from)
   to its original value.
 
 

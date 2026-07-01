@@ -38,22 +38,22 @@ import ContentFrame from "@site/src/components/ContentFrame";
   To configure this task in Studio, see the
   [Azure Service Bus Queue Sink Task](../../../studio/database/tasks/ongoing-tasks/azure-service-bus-queue-sink.mdx) page.  
   To learn about RavenDB queue sinks in general, see the
-  [Queue Sink overview](../../../server/ongoing-tasks/queue-sink/overview.mdx).
+  [Queue Sink overview](./overview.mdx).
 
 * In this article:
-  * [The Azure Service Bus Sink Task](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#the-azure-service-bus-sink-task)
-     * [Connecting an Azure Service Bus namespace](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#connecting-an-azure-service-bus-namespace)
-     * [Selecting message sources](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#selecting-message-sources)
-     * [Retrieving enqueued messages](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#retrieving-enqueued-messages)
-     * [Running user-defined scripts](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#running-user-defined-scripts)
-     * [Storing documents in RavenDB collections](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#storing-documents-in-ravendb-collections)
-  * [Client API](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#client-api)
-     * [Adding an Azure Service Bus connection string](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#adding-an-azure-service-bus-connection-string)
-     * [Adding an Azure Service Bus sink task](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#adding-an-azure-service-bus-sink-task)
-  * [Configuration Options](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#configuration-options)
-  * [Syntax](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#syntax)
-     * [Methods](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#methods)
-     * [Classes](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#classes)
+  * [The Azure Service Bus Sink Task](#the-azure-service-bus-sink-task)
+     * [Connecting an Azure Service Bus namespace](#connecting-an-azure-service-bus-namespace)
+     * [Selecting message sources](#selecting-message-sources)
+     * [Retrieving enqueued messages](#retrieving-enqueued-messages)
+     * [Running user-defined scripts](#running-user-defined-scripts)
+     * [Storing documents in RavenDB collections](#storing-documents-in-ravendb-collections)
+  * [Client API](#client-api)
+     * [Adding an Azure Service Bus connection string](#adding-an-azure-service-bus-connection-string)
+     * [Adding an Azure Service Bus sink task](#adding-an-azure-service-bus-sink-task)
+  * [Configuration Options](#configuration-options)
+  * [Syntax](#syntax)
+     * [Methods](#methods)
+     * [Classes](#classes)
 
 </Admonition>
 
@@ -70,7 +70,7 @@ The task connects to an Azure Service Bus namespace using a connection string th
 register with RavenDB. The connection string identifies the namespace and holds the
 credentials that the task authenticates with.
 
-Read [below](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#adding-an-azure-service-bus-connection-string)
+Read [below](#adding-an-azure-service-bus-connection-string)
 about adding a connection string via the client API.
 
 </ContentFrame>
@@ -89,7 +89,7 @@ A source is either:
 One script can read from several sources, and a sink task can run several scripts, so a
 single task can consume from any mix of queues and subscriptions in the same namespace.
 
-Learn [below](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#adding-an-azure-service-bus-sink-task)
+Learn [below](#adding-an-azure-service-bus-sink-task)
 how to specify each source via the client API.
 
 </ContentFrame>
@@ -165,7 +165,7 @@ put(this.Id.toString(), item);
 
 Beyond `put`, a script can call `load` to read an existing RavenDB document
 (e.g., to enrich a message with related data), `del` to delete a document, and
-[various other commands](../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).
+[various other commands](../../kb/javascript-engine.mdx#predefined-javascript-functions).
 
 </ContentFrame>
 
@@ -190,7 +190,7 @@ Because the task acknowledges a message only after its document is persisted, ev
 is processed **at least once**, even if the sink fails partway through a batch.
 
 The number of messages in a batch is
-[configurable](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#configuration-options).
+[configurable](#configuration-options).
 
 <Admonition type="warning" title="Handle duplicate messages">
 
@@ -293,9 +293,9 @@ store.Maintenance.Send(
 </Tabs>
 
 For the full property reference, see the
-[Connection string](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#connection-string)
+[Connection string](#connection-string)
 and
-[Authentication credentials](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#authentication-credentials)
+[Authentication credentials](#authentication-credentials)
 classes in the Syntax section.
 
 ---
@@ -365,7 +365,7 @@ Queues = new List<string>
 </ContentFrame>
 
 For the `QueueSinkConfiguration` and `QueueSinkScript` property reference, see the
-[Sink task](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx#sink-task)
+[Sink task](#sink-task)
 classes in the Syntax section.
 
 </Panel>
@@ -374,9 +374,9 @@ classes in the Syntax section.
 
 Use these configuration options for finer control over the sink task:
 
-* [QueueSink.MaxBatchSize](../../../server/configuration/queue-sink-configuration.mdx#queuesinkmaxbatchsize)  
+* [QueueSink.MaxBatchSize](../../configuration/queue-sink-configuration.mdx#queuesinkmaxbatchsize)  
   The maximum number of messages consumed in a single batch.
-* [QueueSink.MaxFallbackTimeInSec](../../../server/configuration/queue-sink-configuration.mdx#queuesinkmaxfallbacktimeinsec)  
+* [QueueSink.MaxFallbackTimeInSec](../../configuration/queue-sink-configuration.mdx#queuesinkmaxfallbacktimeinsec)  
   The maximum time, in seconds, that the sink stays in fallback mode (suspended) after a connection failure.
 
 </Panel>

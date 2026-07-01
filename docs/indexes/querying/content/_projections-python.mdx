@@ -14,12 +14,12 @@ import CodeBlock from '@theme/CodeBlock';
 
 * In this page:  
 
-  * [What are Projections and When to Use Them](../../../indexes/querying/projections.mdx#what-are-projections-and-when-to-use-them)
-  * [`select_fields`](../../../indexes/querying/projections.mdx#select_fields)
-  * [Examples](../../../indexes/querying/projections.mdx#examples)
-  * [Projection Behavior](../../../indexes/querying/projections.mdx#projection-behavior)
-  * [Projections and the Session](../../../indexes/querying/projections.mdx#projections-and-the-session)
-  * [Syntax](../../../indexes/querying/projections.mdx#syntax)
+  * [What are Projections and When to Use Them](#what-are-projections-and-when-to-use-them)
+  * [`select_fields`](#selectfields)
+  * [Examples](#examples)
+  * [Projection Behavior](#projection-behavior-with-a-static-index)
+  * [Projections and the Session](#projections-and-the-session)
+  * [Syntax](#syntax)
   
 </Admonition>
 ## What are Projections and When to Use Them
@@ -59,7 +59,7 @@ projection, and exceeding these (quite generous) limits will fail the query.
 If a projection function only requires fields that are stored, then the document will not be loaded from 
 storage and all data will come from the index directly. This can increase query performance (by the cost 
 of disk space used) in many situations when whole document is not needed. You can read more about field 
-storing [here](../../../indexes/storing-data-in-index.mdx).
+storing [here](../../storing-data-in-index.mdx).
 
 
 

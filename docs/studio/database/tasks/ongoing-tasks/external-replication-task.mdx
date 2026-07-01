@@ -24,23 +24,23 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Any changes in the source database will be reflected in the replica once they occur.  
 
 * This ongoing task replicates **one-way**, from the source to the destination. For additional functionality,  
-  such as filtration and two-way (master-master) replication, consider [Hub/Sink Replication](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx).  
+  such as filtration and two-way (master-master) replication, consider [Hub/Sink Replication](./hub-sink-replication/overview.mdx).  
 
 * To replicate between two separate, secure RavenDB servers,  
-  you need to [pass a client certificate](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#step-by-step-guide) from the source server to the destination.
+  you need to [pass a client certificate](#step-by-step-guide) from the source server to the destination.
 
 * External replication can be a comfortable means of data migration into a [sharded](../../../../sharding/overview.mdx) database.  
   You can read more about this option in the sharding documentation [external replication](../../../../sharding/external-replication.mdx) and [migration](../../../../sharding/migration.mdx) sections.  
 
 * The External Replication task **does _not_ create a backup** of your data and indexes.  
-  See more in [Backup -vs- Replication](../../../../backup/faq#is-an-external-replication-task-a-good-substitute-for-a-backup-task)
+  See more in [Backup -vs- Replication](../../../../backup/faq.mdx#is-an-external-replication-task-a-good-substitute-for-a-backup-task)
 
 * In this page:  
-  * [General Information about External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#general-information-about-external-replication-task)
-  * [Step-by-Step Guide](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#step-by-step-guide)
-  * [Definition](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#definition)  
-  * [Details in Tasks List View](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#details-in-tasks-list-view)  
-  * [Offline Behavior](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#offline-behavior)
+  * [General Information about External Replication Task](#general-information-about-external-replication-task)
+  * [Step-by-Step Guide](#step-by-step-guide)
+  * [Definition](#definition)  
+  * [Details in Tasks List View](#details-in-tasks-list-view)  
+  * [Offline Behavior](#offline-behavior)
 
 </Admonition>
 
@@ -62,8 +62,8 @@ Server and cluster level features.
 * [Identities](../../../../server/kb/document-identifier-generation.mdx#strategy--3)  
 * Ongoing tasks
    * [ETL](../../../../server/ongoing-tasks/etl/basics.mdx)
-   * [Backup](../../../../backup/create/periodic-tasks/database-backup#creating-and-managing-periodic-backups-via-studio)
-   * [Hub/Sink Replication](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)
+   * [Backup](../../../../backup/create/periodic-tasks/database-backup.mdx#creating-and-managing-periodic-backups-via-studio)
+   * [Hub/Sink Replication](./hub-sink-replication/overview.mdx)
 
 <Admonition type="note" title="Why are cluster-level features not replicated?" id="why-are-cluster-level-features-not-replicated" href="#why-are-cluster-level-features-not-replicated">
 RavenDB is designed with a cluster-level data ownership model to prevent conflicts between clusters,  
@@ -86,7 +86,7 @@ To explore this concept further, refer to the [Data Ownership in a Distributed S
   This step must be done if replicating *to a separate secure cluster* so that the destination cluster trusts the source.  
   * **Via RavenDB Studio:**  
     Navigate from the "Manage Server" tab (left side) &gt; "Certificates" to open the [Certificate Management](../../../../server/security/authentication/certificate-management.mdx) view.  
-     - Learn how to [pass certificates here](../../../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers:-importing-and-exporting-certificates).  
+     - Learn how to [pass certificates here](../../../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers-importing-and-exporting-certificates).  
   * **Via API:**  
     See the code sample to learn how to [define a client certificate in the DocumentStore()](../../../../client-api/creating-document-store.mdx).  
      * To generate and configure a client certificate from the source server:  
@@ -94,13 +94,13 @@ To explore this concept further, refer to the [Data Ownership in a Distributed S
        **Via RavenDB CLI** PowerShell command, see [Client Certificate Usage](../../../../server/security/authentication/client-certificate-usage.mdx)  
      * Learn the rationale needed to configure client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management.mdx#the-ravendb-security-authorization-approach)
 2. **Create Target Database in Destination Server**  
-  * Consider [creating an empty target database](../../../../studio/database/create-new-database/general-flow.mdx) 
+  * Consider [creating an empty target database](../../create-new-database/general-flow.mdx) 
     because data transfer can overwrite existing data.  
-  * If the source database is [encrypted](../../../../studio/database/create-new-database/encrypted.mdx#creating-encrypted-database), 
+  * If the source database is [encrypted](../../create-new-database/encrypted.mdx#creating-encrypted-database), 
     be sure that the target database is as well.  
      ![Encrypted Logo](./assets/encrypted-logo.png)
 3. **Define External Replication Task in the Source Database**  
-    Learn more about [defining the task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#definition) in the dedicated section.  
+    Learn more about [defining the task](#definition) in the dedicated section.  
   * **Optional Parameters**  
      - Task Name  
      - Delay Time  
@@ -140,11 +140,11 @@ f. Click **External Replication** to access the following interface.
 3. **Set Replication Delay Time** (Optional)  
    * If a delay time is set then data will be replicated only after this time period has passed for each data change.  
    * Having a delayed instance of a database allows you to "go back in time" and undo contamination to your data due to an attack, faulty patch script, or other human errors.  
-     * This doesn't replace the need to [safely backup your databases](../../../../backup/create/periodic-tasks/database-backup#creating-and-managing-periodic-backups-via-studio), but it does provide a way to stay online while repairing.  
+     * This doesn't replace the need to [safely backup your databases](../../../../backup/create/periodic-tasks/database-backup.mdx#creating-and-managing-periodic-backups-via-studio), but it does provide a way to stay online while repairing.  
 
 4. **Set Preferred Responsible Node** (Optional)  
-  * Select a preferred mentor node from the [Database Group](../../../../studio/database/settings/manage-database-group.mdx) to be the responsible node for this External Replication Task  
-  * If not selected, then the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group.mdx#database-group-topology---members-duties))  
+  * Select a preferred mentor node from the [Database Group](../../settings/manage-database-group.mdx) to be the responsible node for this External Replication Task  
+  * If not selected, then the cluster will assign a responsible node (see [Members Duties](../../settings/manage-database-group.mdx#database-group-topology---members-duties))  
 
 5. **Create a new RavenDB connection string**  
   * Select a connection string from the pre-defined list -or- create a new connection string to be used.  
@@ -165,7 +165,7 @@ f. Click **External Replication** to access the following interface.
     <Admonition type="note" title="If the destination database is in a cluster" id="if-the-destination-database-is-in-a-cluster" href="#if-the-destination-database-is-in-a-cluster">
     You can set multiple connection strings to multiple different nodes on different machines 
     so that if one is down, the other can keep the destination updated.  
-    See [Offline Behavior - When the destination node is down](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#offline-behavior).  
+    See [Offline Behavior - When the destination node is down](#offline-behavior).  
     If you define only one node's connection string, RavenDB will wait until that node is online and will then update any missing information.  
     </Admonition>
 

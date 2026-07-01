@@ -6,15 +6,15 @@ import CodeBlock from '@theme/CodeBlock';
 <Admonition type="note" title="">
 
 * A session represents a single [business transaction](https://martinfowler.com/eaaCatalog/unitOfWork.html) 
-  (not to be confused with an [ACID transaction](../../../../client-api/faq/transaction-support.mdx)).  
+  (not to be confused with an [ACID transaction](../../../faq/transaction-support.mdx)).  
  
 * When opening a session, the session's mode can be set to either:  
     * **Single-Node** - transaction is executed on a specific node and then replicated
     * **Cluster-Wide** - transaction is registered for execution on all nodes in an atomic fashion
 
 * In this page:  
-    * [Open a cluster transaction](../../../../client-api/session/cluster-transaction/overview.mdx#open-a-cluster-transaction)
-    * [Cluster-wide transaction vs. Single-node transaction](../../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction)
+    * [Open a cluster transaction](#open-a-cluster-transaction)
+    * [Cluster-wide transaction vs. Single-node transaction](#cluster-wide-transaction-vs-single-node-transaction)
      
 </Admonition>
 
@@ -104,7 +104,7 @@ using (var session = store.OpenAsyncSession(new SessionOptions
   They are resolved according to the defined conflict settings, either by using the latest version (default) or by following a conflict resolution script.  
   Revisions are created for the conflicting documents so that any document can be recovered.
 * **Optimistic concurrency**:  
-  Single-node sessions support optional [Optimistic concurrency checks](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx).
+  Single-node sessions support optional [Optimistic concurrency checks](../../configuration/how-to-enable-optimistic-concurrency.mdx).
   By default, no checks are performed (Last Write Wins), but you can configure the session to detect and reject conflicting writes.  
 * **Performance**:  
   The single-node transaction is considered faster and less expensive, as no cluster consensus is required for its execution.
@@ -118,6 +118,6 @@ using (var session = store.OpenAsyncSession(new SessionOptions
 
 <Admonition type="info" title="Transactions in RavenDB" id="transactions-in-ravendb" href="#transactions-in-ravendb">
 
-For a detailed description of transactions in RavenDB please refer to the [Transaction support in RavenDB](../../../../client-api/faq/transaction-support.mdx) article.
+For a detailed description of transactions in RavenDB please refer to the [Transaction support in RavenDB](../../../faq/transaction-support.mdx) article.
 
 </Admonition>

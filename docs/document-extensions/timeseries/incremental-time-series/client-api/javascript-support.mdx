@@ -18,24 +18,24 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 
 * RavenDB's time-series 
-  [Javascript Support](../../../../document-extensions/timeseries/client-api/javascript-support.mdx) 
+  [Javascript Support](../../client-api/javascript-support.mdx) 
   has been extended to support incremental time series.  
 
-* You can use the Javascript [timeseries.increment](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support.mdx#timeseriesincrement) 
+* You can use the Javascript [timeseries.increment](#timeseriesincrement) 
   method to create and modify incremental time series and their entries.  
-  The method behaves the same way it does when it is called [using C#](../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment.mdx).  
+  The method behaves the same way it does when it is called [using C#](./session/increment.mdx).  
 
 * Incremental time series **cannot** use the non-incremental time series 
-  [timeseries.append](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-1) method.  
+  [timeseries.append](../../client-api/javascript-support.mdx#section-1) method.  
 
 * Other Javascript methods available for an incremental time series:  
-   * [timeseries.delete](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-2)   
-   * [timeseries.get](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-3)  
+   * [timeseries.delete](../../client-api/javascript-support.mdx#section-2)   
+   * [timeseries.get](../../client-api/javascript-support.mdx#section-3)  
 
 * In this page:  
-  * [The `timeseries` Interface](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support.mdx#the-timeseries-interface)  
-  * [`timeseries.increment`](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support.mdx#timeseriesincrement)  
-  * [Usage Sample](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support.mdx#usage-sample)  
+  * [The `timeseries` Interface](#the-timeseries-interface)  
+  * [`timeseries.increment`](#timeseriesincrement)  
+  * [Usage Sample](#usage-sample)  
 
 </Admonition>
 
@@ -50,9 +50,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
        | name      | `string`                                    | Incremental time series Name (e.g. `INC:StockPrice`)                        |
 
 * Use one of the following methods to access the chosen time series:  
-   * [timeseries.increment](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support.mdx#the-timeseries-interface)  
-   * [timeseries.delete](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-2)  
-   * [timeseries.get](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-3)  
+   * [timeseries.increment](#the-timeseries-interface)  
+   * [timeseries.delete](../../client-api/javascript-support.mdx#section-2)  
+   * [timeseries.get](../../client-api/javascript-support.mdx#section-3)  
 
 ## `timeseries.increment`
 
@@ -110,7 +110,7 @@ void Increment(double value);
 ## Usage Sample
 
 In this sample we use 
-[session.Advanced.Defer](../../../../document-extensions/timeseries/client-api/session/patch.mdx#patching-using-sessionadvanceddefer) 
+[session.Advanced.Defer](../../client-api/session/patch.mdx#patching-using-sessionadvanceddefer) 
 to patch an incremental time series.  
 We go through a series of collected stock prices, and add a **2** factor to each collected stock price, 
 that has been originally miscalculated.  

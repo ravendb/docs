@@ -26,33 +26,33 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * Using the session's `RawQuery` method  
   * Making a query from the [Query view](../../../studio/database/queries/query-view.mdx) in Studio  
 
-* Learn more about querying from the session in this [Query Overview](../../../client-api/session/querying/how-to-query.mdx). 
+* Learn more about querying from the session in this [Query Overview](./how-to-query.mdx). 
 
 * In this page:  
 
-  * [The query pipeline](../../../client-api/session/querying/what-is-rql.mdx#the-query-pipeline)
+  * [The query pipeline](#the-query-pipeline)
   
-  * [RQL keywords and methods](../../../client-api/session/querying/what-is-rql.mdx#rql-keywords-and-methods)
+  * [RQL keywords and methods](#rql-keywords-and-methods)
   
-     * [`declare`](../../../client-api/session/querying/what-is-rql.mdx#declare)  
-     * [`from`](../../../client-api/session/querying/what-is-rql.mdx#from)
-     * [`where`](../../../client-api/session/querying/what-is-rql.mdx#where)
-     * [`group by`](../../../client-api/session/querying/what-is-rql.mdx#group-by)
-     * [`include`](../../../client-api/session/querying/what-is-rql.mdx#include)
-     * [`order by`](../../../client-api/session/querying/what-is-rql.mdx#order-by)
-     * [`select`](../../../client-api/session/querying/what-is-rql.mdx#select)
-     * [`load`](../../../client-api/session/querying/what-is-rql.mdx#load)
-     * [`limit`](../../../client-api/session/querying/what-is-rql.mdx#limit)
-     * [`update`](../../../client-api/session/querying/what-is-rql.mdx#update)
+     * [`declare`](#declare)  
+     * [`from`](#from)
+     * [`where`](#where)
+     * [`group by`](#group-by)
+     * [`include`](#include)
+     * [`order by`](#order-by)
+     * [`select`](#select)
+     * [`load`](#load)
+     * [`limit`](#limit)
+     * [`update`](#update)
     
-  * [RQL comments](../../../client-api/session/querying/what-is-rql.mdx#rql-comments)
+  * [RQL comments](#rql-comments)
 
 </Admonition>
 ## The query pipeline  
 
 The query pipeline in RavenDB includes the following main stages:  
 
-1. __Detect query source__  ([`from`](../../../client-api/session/querying/what-is-rql.mdx#from))
+1. __Detect query source__  ([`from`](#from))
 
    * Based on your query, RavenDB will determine the appropriate data source from which to retrieve results.  
    
@@ -65,25 +65,25 @@ The query pipeline in RavenDB includes the following main stages:
      * `from collection` - Specify the collection to query.  
        RavenDB will decide which index will be used depending on the query criteria.
 
-   * Learn more about these __query scenarios__ in this [Query Overview](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).
+   * Learn more about these __query scenarios__ in this [Query Overview](./how-to-query.mdx#queries-always-provide-results-using-an-index).
 
-2. __Filter the data__ ([`where`](../../../client-api/session/querying/what-is-rql.mdx#where))  
+2. __Filter the data__ ([`where`](#where))  
    * The index is scanned for records that match the query predicate. 
 
-3. __Include related documents__  ([`include`](../../../client-api/session/querying/what-is-rql.mdx#include))
-    * [Related documents](../../../client-api/how-to/handle-document-relationships.mdx#includes) that are included in the query will be retrieved and returned to the client  
+3. __Include related documents__  ([`include`](#include))
+    * [Related documents](../../how-to/handle-document-relationships.mdx#includes) that are included in the query will be retrieved and returned to the client  
       along with the resulting matching documents, reducing the need to do another network round trip  
       to the database when accessing the included documents.
 
-4. __Sort results__ ([`order by`](../../../client-api/session/querying/what-is-rql.mdx#order-by)) 
+4. __Sort results__ ([`order by`](#order-by)) 
    * Query results can be sorted.  
      For example, you can order by a field value, by the resulting documents' score, by random ordering, etc.
 
-5. __Limit results__ ([`limit`](../../../client-api/session/querying/what-is-rql.mdx#limit))
+5. __Limit results__ ([`limit`](#limit))
    * You can specify the number of results you want to get back from the query  
      and the number of results you want to skip.
 
-6. __Project results__ ([`select`](../../../client-api/session/querying/what-is-rql.mdx#select)) 
+6. __Project results__ ([`select`](#select)) 
    * [Projections](../../../indexes/querying/projections.mdx) are specified when you need to retrieve only specific document fields, instead of the whole full document.
      This reduces the amount of data sent over the network and is useful when only partial data is needed.
      When projections are Not defined on the query - then the full document content is retrieved from the document storage.
@@ -92,7 +92,7 @@ The query pipeline in RavenDB includes the following main stages:
      This means that the projection doesn't apply to all the documents in the database,  
      only to the results that are actually returned.
 
-   * Data can be loaded ([`load`](../../../client-api/session/querying/what-is-rql.mdx#load)) from related documents to be used in the projected fields.  
+   * Data can be loaded ([`load`](#load)) from related documents to be used in the projected fields.  
    
    * For each record, the server extracts the requested field:  
      If a field is stored in the index - the server will fetch it from the index.  
@@ -106,29 +106,29 @@ The query pipeline in RavenDB includes the following main stages:
 
 The following keywords and methods are available in RQL:
 
-- [DECLARE](../../../client-api/session/querying/what-is-rql.mdx#declare)
-- [FROM](../../../client-api/session/querying/what-is-rql.mdx#from)
+- [DECLARE](#declare)
+- [FROM](#from)
     - index
-- [GROUP BY](../../../client-api/session/querying/what-is-rql.mdx#group-by)
-    - [array()](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-content)
-- [WHERE](../../../client-api/session/querying/what-is-rql.mdx#where)
+- [GROUP BY](#group-by)
+    - [array()](./how-to-perform-group-by-query.mdx#by-array-content)
+- [WHERE](#where)
     - id()
-    - [search()](../../../client-api/session/querying/text-search/full-text-search.mdx)
+    - [search()](./text-search/full-text-search.mdx)
     - cmpxchg()
-    - [boost()](../../../client-api/session/querying/text-search/boost-search-results.mdx)
-    - [regex()](../../../client-api/session/querying/text-search/using-regex.mdx)
-    - [startsWith()](../../../client-api/session/querying/text-search/starts-with-query.mdx)
-    - [endsWith()](../../../client-api/session/querying/text-search/ends-with-query.mdx)
-    - [lucene()](../../../client-api/session/querying/document-query/how-to-use-lucene.mdx)
-    - [exists()](../../../client-api/session/querying/how-to-filter-by-field.mdx)
-    - [exact()](../../../client-api/session/querying/text-search/exact-match-query.mdx)
+    - [boost()](./text-search/boost-search-results.mdx)
+    - [regex()](./text-search/using-regex.mdx)
+    - [startsWith()](./text-search/starts-with-query.mdx)
+    - [endsWith()](./text-search/ends-with-query.mdx)
+    - [lucene()](./document-query/how-to-use-lucene.mdx)
+    - [exists()](./how-to-filter-by-field.mdx)
+    - [exact()](./text-search/exact-match-query.mdx)
     - [intersect()](../../../indexes/querying/intersection.mdx)
     - [spatial.within()](../../../indexes/querying/spatial.mdx)
     - [spatial.contains()](../../../indexes/querying/spatial.mdx)
     - [spatial.disjoint()](../../../indexes/querying/spatial.mdx)
     - [spatial.intersects()](../../../indexes/querying/spatial.mdx)
-    - [moreLikeThis()](../../../client-api/session/querying/how-to-use-morelikethis.mdx)
-- [ORDER BY](../../../client-api/session/querying/what-is-rql.mdx#order-by)
+    - [moreLikeThis()](./how-to-use-morelikethis.mdx)
+- [ORDER BY](#order-by)
     - [ASC | ASCENDING](../../../indexes/querying/sorting.mdx#basics)
     - [DESC | DESCENDING](../../../indexes/querying/sorting.mdx#basics)
     - [AS](../../../indexes/querying/sorting.mdx#basics)
@@ -138,19 +138,19 @@ The following keywords and methods are available in RQL:
         - [alphaNumeric](../../../indexes/querying/sorting.mdx#alphanumeric-ordering)
     - [random()](../../../indexes/querying/sorting.mdx#random-ordering)
     - [score()](../../../indexes/querying/sorting.mdx#ordering-by-score)
-    - [spatial.distance()](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting)
-- [LOAD](../../../client-api/session/querying/what-is-rql.mdx#load)
-- [SELECT](../../../client-api/session/querying/what-is-rql.mdx#select)
+    - [spatial.distance()](./how-to-make-a-spatial-query.mdx#spatial-sorting)
+- [LOAD](#load)
+- [SELECT](#select)
     - DISTINCT
     - key()
     - sum()
     - count()
     - [facet()](../../../indexes/querying/faceted-search.mdx)
-    - [timeseries()](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#syntax)
+    - [timeseries()](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#rql-syntax)
     - [counter()](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries)
-- [LIMIT](../../../client-api/session/querying/what-is-rql.mdx#limit)
-- [UPDATE](../../../client-api/session/querying/what-is-rql.mdx#update)
-- [INCLUDE](../../../client-api/session/querying/what-is-rql.mdx#include)
+- [LIMIT](#limit)
+- [UPDATE](#update)
+- [INCLUDE](#include)
 
 With the following operators:
 
@@ -300,7 +300,7 @@ Use the `where` keyword with various operators to filter chosen documents from t
 #### Operator: &nbsp;&nbsp; `>=`, `<=`, `<>`, `!=`, `<`, `>`, `=`, `==`
 
 These basic operators can be used with all value types, including 'numbers' and 'strings'.  
-For example, you can return every document from the [Companies collection](../../../client-api/faq/what-is-a-collection.mdx) 
+For example, you can return every document from the [Companies collection](../../faq/what-is-a-collection.mdx) 
 whose _field value_ **=** _a given input_.  
 
 <TabItem value="csharp" label="csharp">
@@ -466,7 +466,7 @@ Subclauses can be used along with binary operators to build even more complex lo
 ## `group by`
 
 The keyword `group by` is used to create an aggregation query.  
-Learn more in [dynamic group by queries](../../../client-api/session/querying/how-to-perform-group-by-query.mdx).
+Learn more in [dynamic group by queries](./how-to-perform-group-by-query.mdx).
 
 
 
@@ -474,14 +474,14 @@ Learn more in [dynamic group by queries](../../../client-api/session/querying/ho
 
 The keyword `include` has been introduced to support:
 
-- [including related documents](../../../client-api/how-to/handle-document-relationships.mdx#includes) in the query response
+- [including related documents](../../how-to/handle-document-relationships.mdx#includes) in the query response
 - [including counters](../../../document-extensions/counters/counters-and-other-features.mdx#including-counters),
   [time series](../../../document-extensions/timeseries/client-api/session/include/with-raw-queries.mdx),
   or [revisions](../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-raw-query) in the query response
-- [including compare-exchange items](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#include-cmpxchg-items-when-querying) in the query response
-- [highlighting](../../../client-api/session/querying/text-search/highlight-query-results.mdx) results
-- [get query timings](../../../client-api/session/querying/debugging/query-timings.mdx)
-- [get explanations](../../../client-api/session/querying/debugging/include-explanations.mdx)
+- [including compare-exchange items](../../operations/compare-exchange/include-compare-exchange.mdx#include-cmpxchg-items-when-querying) in the query response
+- [highlighting](./text-search/highlight-query-results.mdx) results
+- [get query timings](./debugging/query-timings.mdx)
+- [get explanations](./debugging/include-explanations.mdx)
 
 
 
@@ -531,7 +531,7 @@ from "Products" offset 5          // skip 5, take all the rest
 ## `update`
 
 To patch documents on the server-side, use `update` with the desired JavaScript that will be applied to any document matching the query criteria.  
-For more information, please refer to this [patching](../../../client-api/operations/patching/set-based.mdx) article.  
+For more information, please refer to this [patching](../../operations/patching/set-based.mdx) article.  
 
 
 

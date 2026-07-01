@@ -27,19 +27,19 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Read more about RabbitMQ in the platform's [official documentation](https://www.rabbitmq.com/).
 * This article focuses on how to create a RabbitMQ ETL task using the Client API.  
   To define a RabbitMQ ETL task from Studio see [Studio: RabbitMQ ETL Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task.mdx)  
-  For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx).
+  For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](./overview.mdx).
 
 * In this page:
-    * [Add a RabbitMQ connection string](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#add-a-rabbitmq-connection-string)
-        * [Exmaple](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#example)
-        * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#syntax)
-    * [Add a RabbitMQ ETL task](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#add-a-rabbitmq-etl-task)
-        * [Example - basic](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#example-basic)
-        * [Example - delete processed documents](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#delete-processed-documents)
-        * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#syntax-1)
-    * [The transformation script](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#the-transformation-script)
-        * [The loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#the-loadto-method)
-        * [Available method overloads](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#available-method-overloads)
+    * [Add a RabbitMQ connection string](#add-a-rabbitmq-connection-string)
+        * [Exmaple](#example)
+        * [Syntax](#syntax)
+    * [Add a RabbitMQ ETL task](#add-a-rabbitmq-etl-task)
+        * [Example - basic](#example-basic)
+        * [Example - delete processed documents](#delete-processed-documents)
+        * [Syntax](#syntax-1)
+    * [The transformation script](#the-transformation-script)
+        * [The loadTo method](#the-loadto-method)
+        * [Available method overloads](#available-method-overloads)
 
 </Admonition>
 ## Add a RabbitMQ connection string
@@ -126,7 +126,7 @@ var res = store.Maintenance.Send(
     * Extract source documents from the "Orders" collection in RavenDB.
     * Process each "Order" document using a defined script that creates a new `orderData` object.
     * Load the `orderData` object to the "OrdersExchange" in a RabbitMQ broker.
-* For more details about the script and the `loadTo` method overloads, see the [transromation script](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#the-transformation-script) section below.
+* For more details about the script and the `loadTo` method overloads, see the [transromation script](#the-transformation-script) section below.
 
 <TabItem value="add_rabbitMq_etl_task" label="add_rabbitMq_etl_task">
 <CodeBlock language="csharp">
@@ -283,7 +283,7 @@ public class EtlQueue
 
 ## The transformation script
 
-The [basic characteristics](../../../../server/ongoing-tasks/etl/basics.mdx) of a RabbitMQ ETL script are similar to those of other ETL types.  
+The [basic characteristics](../basics.mdx) of a RabbitMQ ETL script are similar to those of other ETL types.  
 The script defines what data to **extract** from the source document, how to **transform** this data,  
 and which RabbitMQ Exchange to **load** it to.
 #### The loadTo method
@@ -306,7 +306,7 @@ The two methods are equivalent, offering alternative syntax:
       | **ExchangeName** | string  | The name of the RabbitMQ exchange.                                                                                           |
       | **obj**          | object  | The object to transfer.                                                                                                      |
       | **routingKey**   | string  | The RabbitMQ exchange evaluates this attribute to determine how to route the message to queues based on the exchange type.   |
-      | **attributes**   | object  | An object with [CloudEvents attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#cloudevents).                |
+      | **attributes**   | object  | An object with [CloudEvents attributes](./overview.mdx#cloudevents).                |
 
 For example, the following two calls, which load data to the Orders exchange, are equivalent:
 

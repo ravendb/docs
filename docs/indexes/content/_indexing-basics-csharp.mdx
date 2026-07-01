@@ -12,12 +12,12 @@ The notion of stale indexes comes from an observation deep in RavenDB's design, 
 RavenDB returns quickly for every client request, even if involves re-indexing hundreds of thousands of documents. Since the previous request has returned so quickly, the next query can be made a millisecond after that. and results will be returned but they will be marked as `Stale`.
 
 <Admonition type="info" title="">
-You can read more about stale indexes [here](../../indexes/stale-indexes.mdx).
+You can read more about stale indexes [here](../stale-indexes.mdx).
 </Admonition>
 
 ## Querying
 
-RavenDB uses `Raven Query Language (RQL)`, an SQL-like querying language for querying. The easiest way for us would be to expose a method in which you could pass your RQL-flavored query as a string (we [did](../../querying/overview.mdx#sessionadvancedrawquery) that) and do not bother about anything else.
+RavenDB uses `Raven Query Language (RQL)`, an SQL-like querying language for querying. The easiest way for us would be to expose a method in which you could pass your RQL-flavored query as a string (we [did](../../querying/overview.mdx#session-advanced-rawquery) that) and do not bother about anything else.
 
 The fact is that we did not stop at this point. We went much further by exposing LINQ-based querying with strong-type support that hides all Lucene syntax complexity:
 
@@ -82,18 +82,18 @@ where FirstName = 'Robert'
 
 ## Types of Indexes
 
-You probably know that indexes can be divided by their source of origin to the `static` and `auto` indexes (if not, read about it [here](../../indexes/creating-and-deploying.mdx)), but a more interesting division is by functionality. For this case we have `Map` and `Map-Reduce` indexes.
+You probably know that indexes can be divided by their source of origin to the `static` and `auto` indexes (if not, read about it [here](../creating-and-deploying.mdx)), but a more interesting division is by functionality. For this case we have `Map` and `Map-Reduce` indexes.
 
 `Map` indexes (sometimes referred as simple indexes) contain one (or more) mapping functions that indicate which fields from documents should be indexed. They indicate which documents can be searched by which fields.
 
 `Map-Reduce` indexes allow complex aggregations to be performed in a two-step process. First by selecting appropriate records (using the Map function), then by applying a specified reduce function to these records to produce a smaller set of results.
 
 <Admonition type="info" title="Map Indexes" id="map-indexes" href="#map-indexes">
-You can read more about `Map` indexes [here](../../indexes/map-indexes.mdx).
+You can read more about `Map` indexes [here](../map-indexes.mdx).
 </Admonition>
 
 <Admonition type="info" title="Map-Reduce Indexes" id="map-reduce-indexes" href="#map-reduce-indexes">
-More detailed information about `Map-Reduce` indexes can be found [here](../../indexes/map-reduce-indexes.mdx).
+More detailed information about `Map-Reduce` indexes can be found [here](../map-reduce-indexes.mdx).
 </Admonition>
 
 

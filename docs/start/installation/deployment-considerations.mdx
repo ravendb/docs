@@ -16,12 +16,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="">
 
 * In this page:
-   * [Deployment Considerations](../../start/installation/deployment-considerations.mdx#deployment-considerations)  
-      * [Performance Considerations](../../start/installation/deployment-considerations.mdx#performance-considerations)  
-      * [Storage Considerations](../../start/installation/deployment-considerations.mdx#storage-considerations)  
-      * [Network Considerations](../../start/installation/deployment-considerations.mdx#network-considerations)  
-      * [Running RavenDB](../../start/installation/deployment-considerations.mdx#running-ravendb)  
-   * [When the Database Grows Bigger](../../start/installation/deployment-considerations.mdx#when-the-database-grows-bigger)  
+   * [Deployment Considerations](#deployment-considerations)  
+      * [Performance Considerations](#performance-considerations)  
+      * [Storage Considerations](#storage-considerations)  
+      * [Network Considerations](#network-considerations)  
+      * [Running RavenDB](#running-ravendb)  
+   * [When the Database Grows Bigger](#when-the-database-grows-bigger)  
 
 </Admonition>
 
@@ -81,7 +81,7 @@ _Note_: RavenDB does operate with ext2 and other lack of journaling mechanism fi
 
 RavenDB can be deployed either internally in your organization (secured network, only known good actors), or on the public Internet.
 Any deployment, aside from maybe on a developer machine, should use the secured mode. See the 
-[Setup Wizard](../../start/installation/setup-wizard/choose-security-option.mdx) for the details on how to do that. 
+[Setup Wizard](./setup-wizard/choose-security-option.mdx) for the details on how to do that. 
 
 RavenDB will typically use two ports. One for HTTPS traffic, for clients and browsers and one for TCP, used by the cluster nodes to
 communicate with each other. Both the HTTPS and TCP traffic are encrypted by default (unless you explicitly specify the unsecured setup)

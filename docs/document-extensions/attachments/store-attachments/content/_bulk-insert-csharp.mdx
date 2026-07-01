@@ -11,11 +11,11 @@ import Panel from '@site/src/components/Panel';
   storing attachments alongside documents in a high-throughput, streamed process that avoids sending a separate request for each attachment.
     
 * In this article:  
-  * [What is Bulk Insert](../../../../document-extensions/attachments/store-attachments/bulk-insert.mdx#what-is-bulk-insert)  
-  * [Inserting attachment with Bulk Insert](../../../../document-extensions/attachments/store-attachments/bulk-insert.mdx#inserting-attachments-with-bulk-insert)   
-  * [Bulk Insert attachments - Local storage](../../../../document-extensions/attachments/store-attachments/bulk-insert.mdx#bulk-insert-attachments-local-storage)  
-  * [Bulk Insert attachments - Remote storage](../../../../document-extensions/attachments/store-attachments/bulk-insert.mdx#bulk-insert-attachments-remote-storage)  
-  * [Syntax](../../../../document-extensions/attachments/store-attachments/bulk-insert.mdx#syntax)
+  * [What is Bulk Insert](#what-is-bulk-insert)  
+  * [Inserting attachment with Bulk Insert](#inserting-attachments-with-bulk-insert)   
+  * [Bulk Insert attachments - Local storage](#bulk-insert-attachments-local-storage)  
+  * [Bulk Insert attachments - Remote storage](#bulk-insert-attachments-remote-storage)  
+  * [Syntax](#syntax)
     
 </Admonition>
 
@@ -304,14 +304,14 @@ public class User
 * Using the Bulk Insert operation, you can add attachments and mark them to be stored in **remote storage**.
     
 * Ensure that the remote attachment feature is enabled for the database and that remote destinations are configured.  
-  See [Configure remote attachments](../../../../document-extensions/attachments/configure-remote-attachments.mdx).
+  See [Configure remote attachments](../../configure-remote-attachments.mdx).
     
 * Inserting attachments via Bulk Insert for remote storage is similar to inserting attachments for local storage,  
   except that you need to specify the remote **destination identifier** and the **time to upload**.
 
 * Once the attachment is added to the document on the server, its content is first stored locally.  
   The background task will then upload it to the specified remote destination when the scheduled time arrives,  
-  as described in [Remote attachment storage flow](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#remote-attachment-storage-flow).
+  as described in [Remote attachment storage flow](../store-attachments-remote.mdx#remote-attachment-storage-flow).
     
 <Tabs groupId='languageSyntax'>
 <TabItem value="BulkInsert_remote_attachments_sync" label="BulkInsert_remote_attachments_sync">

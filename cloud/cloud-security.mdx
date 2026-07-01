@@ -21,9 +21,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
     * [Using the initial client certificate](cloud-security#using-the-initial-client-certificate)  
     * [Managing allowed IPs](cloud-security#managing-allowed-ips)  
     * [Using additional certificates](cloud-security#using-additional-certificates)  
-    * [MFA](../cloud/cloud-security.mdx#mfa)
-       - [Enable MFA](../cloud/cloud-security#enable-mfa)  
-       - [Disable MFA](../cloud/cloud-security#disable-mfa)  
+    * [MFA](#mfa)
+       - [Enable MFA](#enable-mfa)  
+       - [Disable MFA](#disable-mfa)  
 
 </Admonition>
 
@@ -40,7 +40,7 @@ The certificate will be automatically regenerated **30 days** before its expirat
 
 #### Download certificate  
 
-Go to the [Products tab](../cloud/portal/cloud-portal-products-tab.mdx) in the cloud [portal](../cloud/portal/cloud-portal.mdx) 
+Go to the [Products tab](./portal/cloud-portal-products-tab.mdx) in the cloud [portal](./portal/cloud-portal.mdx) 
 and click the **Download Certificate** button.  
 
 !["Download Certificate"](./assets/security-001-download-certificate.png)  
@@ -93,15 +93,15 @@ Cross-instance communication **inside the cluster** is **not** subject to these 
 
 Your initial [operator-level](../7.2/server/security/authorization/security-clearance-and-permissions#operator)
 certificate allows you to perform operations like creating and deleting databases, managing access to the cluster, and inspecting the cluster's state.
-Operations like adding and removing cluster nodes are left for your [products administrators](../cloud/cloud-overview.mdx#ravendb-on-the-cloud-overview).  
+Operations like adding and removing cluster nodes are left for your [products administrators](./cloud-overview.mdx#ravendb-on-the-cloud-overview).  
 
 <Admonition type="info" title="">
 We recommend that you generate and use **different certificates** for your client applications, for maximum security.  
 </Admonition>
 
 <Admonition type="info" title="">
-If your instance runs on a [burstable CPU](../cloud/cloud-overview.mdx#burstable-vs-reserved-clusters), especially if it is a low-end one, 
-RavenDB may take a while to generate certificates and spend a lot of your [CPU credits](../cloud/cloud-overview.mdx#budget-credits-and-throttling) in the 
+If your instance runs on a [burstable CPU](./cloud-overview.mdx#burstable-vs-reserved-clusters), especially if it is a low-end one, 
+RavenDB may take a while to generate certificates and spend a lot of your [CPU credits](./cloud-overview.mdx#budget-credits-and-throttling) in the 
 process.  
 We therefore recommend that you generate your certificates off-cloud and import them to your cloud instance.  
 </Admonition>

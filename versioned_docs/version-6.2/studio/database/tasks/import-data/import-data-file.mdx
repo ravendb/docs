@@ -26,12 +26,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 In this page:
 
-* [Import data to destination server from file](../../../../studio/database/tasks/import-data/import-data-file.mdx#import-data-to-destination-server-from-file)  
-* [Import options](../../../../studio/database/tasks/import-data/import-data-file.mdx#import-options)  
-* [Advanced import options](../../../../studio/database/tasks/import-data/import-data-file.mdx#advanced-import-options)  
-    * [Transform Script](../../../../studio/database/tasks/import-data/import-data-file.mdx#transform-script)  
-    * [Customize Configuration and Ongoing Tasks](../../../../studio/database/tasks/import-data/import-data-file.mdx#customize-configuration-and-ongoing-tasks)  
-    * [Copy command as PowerShell](../../../../studio/database/tasks/import-data/import-data-file.mdx#copy-command-as-powershell)  
+* [Import data to destination server from file](#import-data-to-destination-server-from-file)  
+* [Import options](#import-options)  
+* [Advanced import options](#advanced-import-options)  
+    * [Transform Script](#transform-script)  
+    * [Customize Configuration and Ongoing Tasks](#customize-configuration-and-ongoing-tasks)  
+    * [Copy command as PowerShell](#copy-command-as-powershell)  
 
 </Admonition>
 
@@ -54,7 +54,7 @@ If you have already [exported a database](../export-database.mdx), follow these 
 5. **Select file**  
    Select the `.ravendbdump` file that you previously exported from the source server.  
 6. **Documents and Extensions**  
-  Select desired [options](../../tasks/import-data/import-data-file.mdx#import-options).  
+  Select desired [options](#import-options).  
   *If you encrypted while exporting* make sure to select **imported file is encrypted**.  
   You will need to paste the encryption key that you saved when creating the encrypted database.  
 7. **Advanced**  
@@ -73,14 +73,14 @@ Here you can filter the data you want to import, select configuration and apply 
 ![Figure 2. Import Options](./assets/import-from-file-options.png)
 
 
-1. [Include Documents](../../../../studio/database/documents/document-view.mdx)  
+1. [Include Documents](../../documents/document-view.mdx)  
    Toggle to include documents and to enable inclusion of the following document related items:  
     - [Include Attachments](../../../../document-extensions/attachments/what-are-attachments.mdx)  
-    - [Include Legacy Attachments](../../../../studio/database/create-new-database/from-legacy-files.mdx)  
+    - [Include Legacy Attachments](../../create-new-database/from-legacy-files.mdx)  
      Determines whether or not legacy attachments contained in the file should be imported where legacy attachments refers to v2.x and v3.x attachments.  
     - [Include Counters](../../../../document-extensions/counters/overview.mdx)  
-    - [Include Legacy Files](../../../../studio/database/create-new-database/from-legacy-files.mdx)  
-    - [Include Artificial Documents](../../../../studio/database/indexes/create-map-reduce-index.mdx#artificial-documents--vs--regular-documents)  
+    - [Include Legacy Files](../../create-new-database/from-legacy-files.mdx)  
+    - [Include Artificial Documents](../../indexes/create-map-reduce-index.mdx#artificial-documents--vs--regular-documents)  
     - [Include Expired Documents](../../../../server/extensions/expiration.mdx)  
     - [Include Revisions](../../../../document-extensions/revisions/overview.mdx)  
     - [Include Conflicts](../../../../client-api/cluster/document-conflicts-in-client-side.mdx)  
@@ -90,7 +90,7 @@ Here you can filter the data you want to import, select configuration and apply 
     - [Include Identities](../../../../client-api/document-identifiers/working-with-document-identifiers.mdx)  
     - [Include Compare Exchange](../../../../client-api/operations/compare-exchange/overview.mdx)  
     - [Include Subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)  
-    - [Include Configuration and OngoingTasks](../../../../studio/database/tasks/import-data/import-from-ravendb.mdx#customize-configuration-and-ongoing-tasks) 
+    - [Include Configuration and OngoingTasks](./import-from-ravendb.mdx#customize-configuration-and-ongoing-tasks) 
   
   
 3. [Imported file is encrypted](../../../../server/security/overview.mdx#encryption)  
@@ -143,19 +143,19 @@ If a task is included but doesn't exist in your source database, it will be skip
 
 **Ongoing tasks:**
 
-- [Periodic Backups](../../../../studio/database/tasks/backup-task.mdx)  
-- [External replications](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx)  
+- [Periodic Backups](../backup-task.mdx)  
+- [External replications](../ongoing-tasks/external-replication-task.mdx)  
 - [ETL Tasks - Extract, Transform, Load](../../../../server/ongoing-tasks/etl/basics.mdx)  
-- [Pull Replication Sinks](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)  
-- [Pull Replication Hubs](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)  
+- [Pull Replication Sinks](../ongoing-tasks/hub-sink-replication/overview.mdx)  
+- [Pull Replication Hubs](../ongoing-tasks/hub-sink-replication/overview.mdx)  
 
 **Other:**
 
-- [Settings](../../../../studio/database/settings/database-settings.mdx)  
+- [Settings](../../settings/database-settings.mdx)  
 - [Conflict Solver Configuration](../../../../client-api/operations/server-wide/modify-conflict-solver.mdx)  
 - [Revisions Configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx)  
 - [Document Expiration](../../../../server/extensions/expiration.mdx)  
-- [Client Configuration](../../../../studio/server/client-configuration.mdx)  
+- [Client Configuration](../../../server/client-configuration.mdx)  
 - [Custom Sorters](../../../../indexes/querying/sorting.mdx#creating-a-custom-sorter)  
 
 **Connection Strings:**

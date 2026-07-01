@@ -21,29 +21,29 @@ like adding or removing nodes, and run recurring tasks like backing up your data
 
 * **Our and your administration**  
   Ridding you of administrative chores that don't require your attention is complemented by providing you with
-  comfortable control over your data and database management via your account's [Portal](../cloud/portal/cloud-portal.mdx)
+  comfortable control over your data and database management via your account's [Portal](./portal/cloud-portal.mdx)
   and the cloud version of our [Studio](../7.2/studio/overview) management GUI.
 
 * **Resources**  
   Some of your products may share their resources with other applications and users, while other products may occupy machines
-  reserved for their usage only. Read about [reserved clusters](../cloud/cloud-overview.mdx#reserved-clusters),
-  [burstable instances](../cloud/cloud-overview.mdx#burstable-instances), and [credits](../cloud/cloud-overview.mdx#budget-credits-and-throttling)
+  reserved for their usage only. Read about [reserved clusters](#reserved-clusters),
+  [burstable instances](#burstable-instances), and [credits](#budget-credits-and-throttling)
   to understand more about your choices.
 
 * In this page:
-    * [Your Account](../cloud/cloud-overview.mdx#your-account)
-        - [Register](../cloud/cloud-overview.mdx#register-your-account)
-        - [Login](../cloud/cloud-overview.mdx#login-to-your-account)
-            - [Login with a magic link](../cloud/cloud-overview.mdx#login-with-a-magic-link)
-            - [Login with GitHub or Google](../cloud/cloud-overview.mdx#login-with-github-or-google)
-    * [RavenDB on the Cloud](../cloud/cloud-overview.mdx#ravendb-on-the-cloud)
-        * [Instances, Provisioning and RavenDB Products](../cloud/cloud-overview.mdx#instances-provisioning-and-ravendb-products)
-        * [RavenDB Tiers: Free, Development and Production](../cloud/cloud-overview.mdx#ravendb-tiers)
-        * [Burstable vs. Reserved clusters](../cloud/cloud-overview.mdx#burstable-vs-reserved-clusters)
-        * [Budget, Credits and Throttling](../cloud/cloud-overview.mdx#budget-credits-and-throttling)
-    * [RavenDB Studio - Graphic User Interface](../cloud/cloud-overview.mdx#ravendb-studio---graphic-user-interface)
-        * [Accessing RavenDB Cloud Studio](../cloud/cloud-overview.mdx#accessing-ravendb-cloud-studio)
-        * [What you can do with RavenDB Studio](../cloud/cloud-overview.mdx#what-you-can-do-with-ravendb-studio)
+    * [Your Account](#your-account)
+        - [Register](#register-your-account)
+        - [Login](#login-to-your-account)
+            - [Login with a magic link](#login-with-a-magic-link)
+            - [Login with GitHub or Google](#login-with-github-or-google)
+    * [RavenDB on the Cloud](#ravendb-on-the-cloud)
+        * [Instances, Provisioning and RavenDB Products](#instances-provisioning-and-ravendb-products)
+        * [RavenDB Tiers: Free, Development and Production](#ravendb-tiers)
+        * [Burstable vs. Reserved clusters](#burstable-vs-reserved-clusters)
+        * [Budget, Credits and Throttling](#budget-credits-and-throttling)
+    * [RavenDB Studio - Graphic User Interface](#ravendb-studio---graphic-user-interface)
+        * [Accessing RavenDB Cloud Studio](#accessing-ravendb-cloud-studio)
+        * [What you can do with RavenDB Studio](#what-you-can-do-with-ravendb-studio)
 </Admonition>
 ## What do you get?
 
@@ -52,18 +52,18 @@ Some of the key reasons for running RavenDB on the cloud are -
 * The high availability of a cloud service.
 * The constant monitoring and healthcare of your products and their accommodating equipment.
 * Your insulation from the cloud infrastructure's administration as we handle and continuously optimize it.
-* The high [security](../cloud/cloud-security.mdx) level.
-* Regular [backups](../cloud/cloud-backup-and-restore.mdx) to your database and settings.
-* Our [support](../cloud/portal/cloud-portal-support-tab.mdx).
+* The high [security](./cloud-security.mdx) level.
+* Regular [backups](./cloud-backup-and-restore.mdx) to your database and settings.
+* Our [support](./portal/cloud-portal-support-tab.mdx).
 
 
 
 ## Your Account
 
 Your cloud-RavenDB account gathers your products' information, your details, and your contracts and
-billing data. We create your account and send you a link to its [Portal](../cloud/portal/cloud-portal.mdx)
+billing data. We create your account and send you a link to its [Portal](./portal/cloud-portal.mdx)
 as soon as you finish registering, so you can immediately start creating and handling your
-[cloud products](../cloud/portal/cloud-portal-products-tab.mdx).
+[cloud products](./portal/cloud-portal-products-tab.mdx).
 
 ## Register Your Account
 
@@ -72,10 +72,10 @@ and allow the wizard to walk you through the 5 simple stages of the registration
 
 <Admonition type="info" title="">
 You can also start registration by clicking **Login via GitHub** or **Login via Google** on the
-[login page](../cloud/cloud-overview.mdx#login-to-your-account). If no Cloud account exists yet for
+[login page](#login-to-your-account). If no Cloud account exists yet for
 the email reported by the provider, a registration link is sent to that address and the registration
 form opens with the email already filled in.
-See [Login with GitHub or Google](../cloud/cloud-overview.mdx#login-with-github-or-google).
+See [Login with GitHub or Google](#login-with-github-or-google).
 </Admonition>
 
 1. **Email**
@@ -121,7 +121,7 @@ Click the **Skip Billing Information** button if you prefer to evaluate the clou
 
 - The sign-up process will send a registration link to your email.
 - Click the link to enter your account. No password required.
-- The link will expire after a while, use the [login page](../cloud/cloud-overview.mdx#login-to-your-account) to re-visit your account.
+- The link will expire after a while, use the [login page](#login-to-your-account) to re-visit your account.
 
 
 
@@ -149,7 +149,7 @@ You can sign in either with a **magic link** sent to your email, or by using you
   </Admonition>
 
   <Admonition type="note" title="">
-  We advise you to enable 2FA. Setup is described [here](../cloud/cloud-security.mdx#enable-mfa).  
+  We advise you to enable 2FA. Setup is described [here](./cloud-security.mdx#enable-mfa).  
   </Admonition>
 
 #### Login with GitHub or Google
@@ -200,13 +200,13 @@ Each server or cluster-node occupies a single cloud instance.
 
 Different instances are equipped to your specifications to accommodate your different products and
 may be considerably different from each other in features, capabilities, and cost. The instances of
-a basic production cluster, for example, are [burstable](../cloud/cloud-overview.mdx#burstable-instances),
-while those of a higher-grade production cluster are [reserved](../cloud/cloud-overview.mdx#reserved-clusters).
+a basic production cluster, for example, are [burstable](#burstable-instances),
+while those of a higher-grade production cluster are [reserved](#reserved-clusters).
 
 ## RavenDB Tiers
 
 There are three types of RavenDB cloud products. They are explained in detail in the
-[Tiers and Instances ](../cloud/cloud-instances.mdx) section, in the meantime - here are
+[Tiers and Instances ](./cloud-instances.mdx) section, in the meantime - here are
 a few words about each.
 #### The Free Tier  
 This tier offers a single product: a single-node RavenDB cloud server designated for experiments and evaluation.  
@@ -226,8 +226,8 @@ HW selection or a multi-region cluster.
 | **Tier** | **Sub-tiers** | **CPU** | **Options** | **SLA** |
 | -- | -- | -- | -- | -- |
 | Free | - | Very low | None | No |
-| Development | Dev10-Dev70 | Very low - High | All | [Yes](../cloud/portal/cloud-portal-support-tab.mdx#support-entitlement) |
-| Production | **By CPU Priority** (Basic/Standard/Performance) <br/> **By Cluster Size**| Up to extra performance, high network and reserved NVMe | All | [Yes](../cloud/portal/cloud-portal-support-tab.mdx#support-entitlement) |
+| Development | Dev10-Dev70 | Very low - High | All | [Yes](./portal/cloud-portal-support-tab.mdx#support-entitlement) |
+| Production | **By CPU Priority** (Basic/Standard/Performance) <br/> **By Cluster Size**| Up to extra performance, high network and reserved NVMe | All | [Yes](./portal/cloud-portal-support-tab.mdx#support-entitlement) |
 
 ## Burstable vs. Reserved clusters
 
@@ -265,7 +265,7 @@ Credits are **consumed** when the instance uses computing and I/O resources, and
   </Admonition>
 
 * **Burstable CLUSTERS and throttling**  
-  [Basic-grade production clusters](../cloud/cloud-instances.mdx#basic-grade-production-cluster) are burstable: each node of such a cluster
+  [Basic-grade production clusters](./cloud-instances.mdx#1-basic-grade-production-cluster) are burstable: each node of such a cluster
   is accommodated by a burstable instance.  
   When the budget of a burstable cluster is drained or nearly so, the cluster automatically shifts the workload to cluster nodes that still have
   credits to work with.  
@@ -274,7 +274,7 @@ Credits are **consumed** when the instance uses computing and I/O resources, and
 <Admonition type="note" title="">
 **Use a suitable configuration**.  
 The stronger your burstable instances are, the less susceptible they are to budget drainage and throttling.  
-If you are regularly warned or your product is actually throttled, consider [upscaling](../cloud/cloud-scaling.mdx) its configuration.  
+If you are regularly warned or your product is actually throttled, consider [upscaling](./cloud-scaling.mdx) its configuration.  
 </Admonition>
 #### Throttling Warnings  
 Your instances will warn you when their credits are about to finish, and inform you when throttling is performed.  
@@ -315,7 +315,7 @@ RavenDB provides a built-in [GUI to monitor and manage](../7.2/studio/overview) 
    when trying to access the Studio.
 5. **Product Labels**
    Product labels describe current alerts for given product. Product alerts are described
-   on [Maintenance & Troubleshooting](./cloud-maintenance-troubleshooting) page.
+   on [Maintenance & Troubleshooting](./cloud-maintenance-troubleshooting.mdx) page.
 ### What you can do with RavenDB Studio
 
 * [Your RavenDB servers](../7.2/studio/server/manage-server)
@@ -334,7 +334,7 @@ RavenDB provides a built-in [GUI to monitor and manage](../7.2/studio/overview) 
     * Manage documents and their extensions.
     * Adjust settings.
         * Occasionally, cloud instance settings are different than general RavenDB defaults.  
-          See [cloud-specific settings](../cloud/cloud-settings.mdx).
+          See [cloud-specific settings](./cloud-settings.mdx).
 
 
 

@@ -22,15 +22,15 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * Find configuration keys related to **Studio's AI assistant** in the [Configuration options](../studio/configuration.mdx) page under the Studio documentation folder.
 
 * On this page:
-   * [Embeddings configuration keys](../ai-integration/configuration#embeddings-configuration-keys)  
-      * [Ai.Embeddings.MaxBatchSize](../ai-integration/configuration#aiembeddingsmaxbatchsize)  
-      * [Ai.Embeddings.MaxConcurrentBatches](../ai-integration/configuration#aiembeddingsmaxconcurrentbatches)  
-      * [Ai.Embeddings.MaxFallbackTimeInSec](../ai-integration/configuration#aiembeddingsmaxfallbacktimeinsec)  
-   * [AI Agents configuration keys](../ai-integration/configuration#ai-agents-configuration-keys)  
-      * [Ai.Agent.Tools.TokenUsageThreshold](../ai-integration/configuration#aiagenttoolstokenusagethreshold)  
-      * [Ai.Agent.Trimming.Summarization.SummarizationResultPrefix](../ai-integration/configuration#aiagenttrimmingsummarizationsummarizationresultprefix)  
-      * [Ai.Agent.Trimming.Summarization.SummarizationTaskBeginningPrompt](../ai-integration/configuration#aiagenttrimmingsummarizationsummarizationtaskbeginningprompt)  
-      * [Ai.Agent.Trimming.Summarization.SummarizationTaskEndPrompt](../ai-integration/configuration#aiagenttrimmingsummarizationsummarizationtaskendprompt)  
+   * [Embeddings configuration keys](#embeddings-configuration-keys)  
+      * [Ai.Embeddings.MaxBatchSize](#aiembeddingsmaxbatchsize)  
+      * [Ai.Embeddings.MaxConcurrentBatches](#aiembeddingsmaxconcurrentbatches)  
+      * [Ai.Embeddings.MaxFallbackTimeInSec](#aiembeddingsmaxfallbacktimeinsec)  
+   * [AI Agents configuration keys](#ai-agents-configuration-keys)  
+      * [Ai.Agent.Tools.TokenUsageThreshold](#aiagenttoolstokenusagethreshold)  
+      * [Ai.Agent.Trimming.Summarization.SummarizationResultPrefix](#aiagenttrimmingsummarizationsummarizationresultprefix)  
+      * [Ai.Agent.Trimming.Summarization.SummarizationTaskBeginningPrompt](#aiagenttrimmingsummarizationsummarizationtaskbeginningprompt)  
+      * [Ai.Agent.Trimming.Summarization.SummarizationTaskEndPrompt](#aiagenttrimmingsummarizationsummarizationtaskendprompt)  
 
 </Admonition>
 
@@ -38,7 +38,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 The following configuration keys apply to integrating **AI-powered embeddings generation** into your RavenDB server.
  
-  * Embeddings can be generated from your document content via [AI-powered tasks](../ai-integration/generating-embeddings/overview.mdx) and stored in a dedicated collection in the database.  
+  * Embeddings can be generated from your document content via [AI-powered tasks](./generating-embeddings/overview.mdx) and stored in a dedicated collection in the database.  
   * When performing vector search queries, embeddings are also generated from the search term to compare against the stored vectors.  
 
 ---
@@ -91,7 +91,7 @@ Once this time expires, the system will retry the connection automatically.
   * **Server-wide** configuration keys apply to agents on all databases.  
   * **Per-database** configuration keys apply to all agents on a specific database,  
      overriding server-wide settings for these agents.  
-  * To change the settings for a specific agent, edit its configuration using the [API](../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#defining-an-agent-configuration) or [Studio](../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#configure-basic-settings).  
+  * To change the settings for a specific agent, edit its configuration using the [API](./ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#defining-an-agent-configuration) or [Studio](./ai-agents/creating-ai-agents/creating-ai-agents_studio.mdx#configure-basic-settings).  
 
 ---
 

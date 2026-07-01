@@ -17,19 +17,19 @@ import Panel from '@site/src/components/Panel';
 <Admonition type="note" title="">
 
 * In this article:  
-    * [ETL.ExtractAndTransformTimeoutInSec](../../server/configuration/etl-configuration.mdx#etlextractandtransformtimeoutinsec)
-    * [ETL.MaxBatchSizeInMb](../../server/configuration/etl-configuration.mdx#etlmaxbatchsizeinmb)
-    * [ETL.MaxFallbackTimeInSec](../../server/configuration/etl-configuration.mdx#etlmaxfallbacktimeinsec)
-    * [ETL.MaxNumberOfExtractedDocuments](../../server/configuration/etl-configuration.mdx#etlmaxnumberofextracteddocuments)
-    * [ETL.MaxNumberOfExtractedItems](../../server/configuration/etl-configuration.mdx#etlmaxnumberofextracteditems)
-    * [ETL.OLAP.MaxNumberOfExtractedDocuments](../../server/configuration/etl-configuration.mdx#etlolapmaxnumberofextracteddocuments)
-    * [ETL.ProcessHealthStatusFailedThreshold](../../server/configuration/etl-configuration.mdx#etlprocesshealthstatusfailedthreshold)
-    * [ETL.ProcessHealthStatusImpairedThreshold](../../server/configuration/etl-configuration.mdx#etlprocesshealthstatusimpairedthreshold)
-    * [ETL.Queue.AzureQueueStorage.TimeToLiveInSec](../../server/configuration/etl-configuration.mdx#etlqueueazurequeuestoragetimetoliveinsec)
-    * [ETL.Queue.AzureQueueStorage.VisibilityTimeoutInSec](../../server/configuration/etl-configuration.mdx#etlqueueazurequeuestoragevisibilitytimeoutinsec)
-    * [ETL.Queue.Kafka.InitTransactionsTimeoutInSec](../../server/configuration/etl-configuration.mdx#etlqueuekafkainittransactionstimeoutinsec)
-    * [ETL.Raven.LoadRequestTimeoutInSec](../../server/configuration/etl-configuration.mdx#etlravenloadrequesttimeoutinsec)
-    * [ETL.SQL.CommandTimeoutInSec](../../server/configuration/etl-configuration.mdx#etlsqlcommandtimeoutinsec)
+    * [ETL.ExtractAndTransformTimeoutInSec](#etlextractandtransformtimeoutinsec)
+    * [ETL.MaxBatchSizeInMb](#etlmaxbatchsizeinmb)
+    * [ETL.MaxFallbackTimeInSec](#etlmaxfallbacktimeinsec)
+    * [ETL.MaxNumberOfExtractedDocuments](#etlmaxnumberofextracteddocuments)
+    * [ETL.MaxNumberOfExtractedItems](#etlmaxnumberofextracteditems)
+    * [ETL.OLAP.MaxNumberOfExtractedDocuments](#etlolapmaxnumberofextracteddocuments)
+    * [ETL.ProcessHealthStatusFailedThreshold](#etlprocesshealthstatusfailedthreshold)
+    * [ETL.ProcessHealthStatusImpairedThreshold](#etlprocesshealthstatusimpairedthreshold)
+    * [ETL.Queue.AzureQueueStorage.TimeToLiveInSec](#etlqueueazurequeuestoragetimetoliveinsec)
+    * [ETL.Queue.AzureQueueStorage.VisibilityTimeoutInSec](#etlqueueazurequeuestoragevisibilitytimeoutinsec)
+    * [ETL.Queue.Kafka.InitTransactionsTimeoutInSec](#etlqueuekafkainittransactionstimeoutinsec)
+    * [ETL.Raven.LoadRequestTimeoutInSec](#etlravenloadrequesttimeoutinsec)
+    * [ETL.SQL.CommandTimeoutInSec](#etlsqlcommandtimeoutinsec)
 
 </Admonition>
 
@@ -180,7 +180,7 @@ Timeout to initialize transactions for the Kafka producer.
 ## ETL.Raven.LoadRequestTimeoutInSec
 
 * Number of seconds after which the Raven ETL load request will time out.  
-* Can be overridden per task by setting the `LoadRequestTimeoutInSec` property in the [Raven ETL configuration](../../server/ongoing-tasks/etl/raven.mdx), 
+* Can be overridden per task by setting the `LoadRequestTimeoutInSec` property in the [Raven ETL configuration](../ongoing-tasks/etl/raven.mdx), 
   or via [Studio](../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx#ravendb-etl-task-definition).
     
 ---    

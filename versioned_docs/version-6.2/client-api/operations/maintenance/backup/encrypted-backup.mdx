@@ -28,19 +28,19 @@ import LanguageContent from "@site/src/components/LanguageContent";
   using the same encryption key provided for the full backup.  
 
 * In this page:  
-  * [RavenDB's Security Approach](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#ravendb)  
-     * [Secure Client-Server Communication](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#secure-client-server-communication)  
-     * [Database Encryption](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#database-encryption)  
-  * [Backup-Encryption Overview](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#backup-encryption-overview)  
-     * [Prerequisites to Encrypting Backups](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#prerequisites-to-encrypting-backups)  
-     * [Choosing Encryption Mode & Key](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#choosing-encryption-mode--key)  
-  * [Creating an Encrypted Logical-Backup](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#creating-an-encrypted-logical-backup)  
-     * [For a Non-Encrypted Database](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#for-a-non-encrypted-database)  
-     * [For an Encrypted Database](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#for-an-encrypted-database)  
-  * [Creating an Encrypted Snapshot](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#creating-an-encrypted-snapshot)  
-  * [Restoring an Encrypted Backup](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#restoring-an-encrypted-backup)  
-     * [Restoring an encrypted Logical-Backup](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#restoring-an-encrypted-logical-backup)  
-     * [Restoring a Snapshot](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#restoring-a-snapshot)  
+  * [RavenDB's Security Approach](#ravendbs-security-approach)  
+     * [Secure Client-Server Communication](#secure-client-server-communication)  
+     * [Database Encryption](#database-encryption)  
+  * [Backup-Encryption Overview](#backup-encryption-overview)  
+     * [Prerequisites to Encrypting Backups](#prerequisites-to-encrypting-backups)  
+     * [Choosing Encryption Mode & Key](#choosing-encryption-mode--key)  
+  * [Creating an Encrypted Logical-Backup](#creating-an-encrypted-logical-backup)  
+     * [For a Non-Encrypted Database](#for-a-non-encrypted-database)  
+     * [For an Encrypted Database](#for-an-encrypted-database)  
+  * [Creating an Encrypted Snapshot](#creating-an-encrypted-snapshot)  
+  * [Restoring an Encrypted Backup](#restoring-an-encrypted-backup)  
+     * [Restoring an encrypted Logical-Backup](#restoring-an-encrypted-logical-backup)  
+     * [Restoring a Snapshot](#restoring-a-snapshot)  
 </Admonition>
 ## RavenDB's Security Approach
 
@@ -87,7 +87,7 @@ Secure the data stored on the server by
 
 * **Secure communication to enable database encryption.**  
   An encrypted database can only be created when the 
-  [client-server communication is secure](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#secure-client-server-communication).  
+  [client-server communication is secure](#secure-client-server-communication).  
 
 
 
@@ -103,7 +103,7 @@ Secure the data stored on the server by
   can be different than the original database encryption key.
 
 * **Snapshot**  
-  A [snapshot](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#snapshot) is an exact image of your database.  
+  A [snapshot](./backup-overview.mdx#snapshot) is an exact image of your database.  
   If the database is **not encrypted**, its snapshot wouldn't be either.  
   If the database is **encrypted**, its snapshot would also be encrypted using the database encryption key.  
   If you want your snapshot to be encrypted, simply take the snapshot of an 
@@ -111,10 +111,10 @@ Secure the data stored on the server by
 
 #### Choosing Encryption Mode & Key
 
-Use the same [Backup](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup) and [Restore](../../../../client-api/operations/maintenance/backup/restore.mdx) methods that are used to create and restore **un**-encrypted backups.  
+Use the same [Backup](./backup-overview.mdx#backup) and [Restore](./restore.mdx) methods that are used to create and restore **un**-encrypted backups.  
 Specify whether encryption is used, and with which encryption key, 
 in the **BackupEncryptionSettings** structure defined within the 
-[PeriodicBackupConfiguration](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup-to-local-and-remote-destinations) object.  
+[PeriodicBackupConfiguration](./backup-overview.mdx#backup-to-local-and-remote-destinations) object.  
 
 `BackupEncryptionSettings` definition:
   
@@ -258,7 +258,7 @@ var result = await docStore.Maintenance.SendAsync(operation);
 
 ## Restoring an Encrypted Backup
 
-To [restore](../../../../client-api/operations/maintenance/backup/restore.mdx#configuration-and-execution) 
+To [restore](./restore.mdx#restoring-a-database-configuration-and-execution) 
 an encrypted backup you must provide the **key** that was used to encrypt it.  
 Pass the key to `RestoreBackupOperation` via `restoreConfiguration.BackupEncryptionSettings`.  
 <TabItem value="restore_encrypted_backup" label="restore_encrypted_backup">
@@ -286,7 +286,7 @@ docStore.Maintenance.Server.Send(restoreBackupTask);
 </TabItem>
 #### Restoring an encrypted Logical-Backup
 
-A database is [restored](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#restoring-an-encrypted-backup) from a logical-backup 
+A database is [restored](#restoring-an-encrypted-backup) from a logical-backup 
 to its **unencrypted** form.  
 To restore a database and encrypt its contents, you have to address it explicitly.  
 
@@ -325,7 +325,7 @@ docStore.Maintenance.Server.Send(restoreBackupTask);
 </TabItem>  
 #### Restoring a Snapshot
 
-Restore a snapshot as specified in [Restoring an Encrypted Database](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#restoring-an-encrypted-backup).  
+Restore a snapshot as specified in [Restoring an Encrypted Database](#restoring-an-encrypted-backup).  
 
 * The database of an un-encrypted snapshot is restored to its un-encrypted form.  
 * The database of an encrypted snapshot is restored to its encrypted form.  

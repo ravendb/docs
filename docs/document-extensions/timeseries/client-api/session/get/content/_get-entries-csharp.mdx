@@ -7,7 +7,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Use `TimeSeriesFor.Get` to retrieve a range of entries from a **single** time series.  
   To retrieve a range of entries from **multiple** series, 
-  use the [GetMultipleTimeSeriesOperation](../../../../../../document-extensions/timeseries/client-api/operations/get.mdx#getmultipletimeseriesoperation) operation.
+  use the [GetMultipleTimeSeriesOperation](../../../operations/get.mdx#getmultipletimeseriesoperation) operation.
 
 * The retrieved data can be paged to get the time series entries gradually, one custom-size page at a time.
 
@@ -16,20 +16,20 @@ import CodeBlock from '@theme/CodeBlock';
   
 * When getting the time series entries,  
   you can also _include_ the series' **parent document** and/or **documents referred to by the entry tag**.  
-  Learn more [below](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#include-parent-and-tagged-documents).
+  Learn more [below](#include-parent-and-tagged-documents).
 
 * Calling `TimeSeriesFor.Get` will result in a trip to the server unless the series' parent document was loaded  
   (or queried for) with the time series included beforehand.  
-  Learn more in: [Including time series](../../../../../../document-extensions/timeseries/client-api/session/include/overview.mdx).
+  Learn more in: [Including time series](../../include/overview.mdx).
 
 * In this page:  
-  * [`Get` usage](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-usage)
-  * [Examples](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#examples)
-     * [Get all entries](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-all-entries)
-     * [Get range of entries](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-range-of-entries)
-     * [Get entries with multiple values](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#get-entries-with-multiple-values)
-  * [Include parent and tagged documents](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#include-parent-and-tagged-documents)
-  * [Syntax](../../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#syntax)
+  * [`Get` usage](#get-usage)
+  * [Examples](#examples)
+     * [Get all entries](#get-all-entries)
+     * [Get range of entries](#get-range-of-entries)
+     * [Get entries with multiple values](#get-entries-with-multiple-values)
+  * [Include parent and tagged documents](#include-parent-and-tagged-documents)
+  * [Syntax](#syntax)
 
 </Admonition>
 ## `Get` usage 
@@ -87,10 +87,10 @@ using (var session = store.OpenSession())
 #### Get entries with multiple values:
 
 * Here, we check whether a stock's closing-time price is rising from day to day (over three days).  
-  This example is based on the sample entries that were entered in [this example](../../../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values).
+  This example is based on the sample entries that were entered in [this example](../../append.mdx#append-entries-with-multiple-values).
  
 * Since each time series entry contains multiple StockPrice values,  
-  we include a sample that uses [named time series values](../../../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx) 
+  we include a sample that uses [named time series values](../../../named-time-series-values.mdx) 
   to make the code easier to read.  
 
 <Tabs groupId='languageSyntax'>
@@ -146,7 +146,7 @@ using (var session = store.OpenSession())
 ## Include parent and tagged documents
 
 * When retrieving time series entries using `TimeSeriesFor.Get`,  
-  you can include the series' parent document and/or documents referred to by the entries [tags](../../../../../../document-extensions/timeseries/overview.mdx#tags).  
+  you can include the series' parent document and/or documents referred to by the entries [tags](../../../../overview.mdx#tags).  
 
 * The included documents will be cached in the session, and instantly retrieved from memory if loaded by the user.
 
@@ -216,7 +216,7 @@ int start = 0, int pageSize = int.MaxValue);
 </CodeBlock>
 </TabItem>
 
-* **`TimeSeriesEntry<TValues>[]`** - Time series values that can be referred to [by name](../../../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx).
+* **`TimeSeriesEntry<TValues>[]`** - Time series values that can be referred to [by name](../../../named-time-series-values.mdx).
 
 
 

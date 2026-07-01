@@ -512,12 +512,12 @@ This is an aggregated build containing fixes released in hotfix versions since t
 - Properly dispose of timer instance when shutting down a database using expiration bundle,
 - Prevent an error loading ICSharpCode.NRefactory from killing RavenDB client startup
 
-#### [Configuration](../server/configuration/configuration-options)
+#### [Configuration](server/configuration/configuration-options)
 
-- Increased `Raven/Voron/MaxScratchBufferSize` from 1024 to 6144. More [here](../server/configuration/configuration-options#voron-settings),
-- Added `Raven/Voron/ScratchBufferSizeNotificationThreshold`. More [here](../server/configuration/configuration-options#voron-settings),
-- Added `Raven/MaxClauseCount`. More [here](../server/configuration/configuration-options#index-settings),
-- Added `Raven/Indexing/DisableIndexingFreeSpaceThreshold`. More [here](../server/configuration/configuration-options#index-settings)
+- Increased `Raven/Voron/MaxScratchBufferSize` from 1024 to 6144. More [here](server/configuration/configuration-options#voron-settings),
+- Added `Raven/Voron/ScratchBufferSizeNotificationThreshold`. More [here](server/configuration/configuration-options#voron-settings),
+- Added `Raven/MaxClauseCount`. More [here](server/configuration/configuration-options#index-settings),
+- Added `Raven/Indexing/DisableIndexingFreeSpaceThreshold`. More [here](server/configuration/configuration-options#index-settings)
 
 ### File systems
 
@@ -532,22 +532,22 @@ This is an aggregated build containing fixes released in hotfix versions since t
 
 ### Client API
 
-- Added `AbstractScriptedIndexCreationTask`. More [here](../server/bundles/scripted-index-results#example-ii---abstractscriptedindexcreationtask),
-- Added `SetTransformerLock` command. More [here](../client-api/commands/transformers/how-to/change-transformer-lock-mode),
-- Added `PutIndexes` command. More [here](../client-api/commands/indexes/put#putindexes),
+- Added `AbstractScriptedIndexCreationTask`. More [here](server/bundles/scripted-index-results#example-ii---abstractscriptedindexcreationtask),
+- Added `SetTransformerLock` command. More [here](client-api/commands/transformers/how-to/change-transformer-lock-mode),
+- Added `PutIndexes` command. More [here](client-api/commands/indexes/put#putindexes),
 - Added `Include<TResult>(Expression<Func<T, object>> path)` to async session,
 - Implemented `GetMetadataForAsync<T>(T instance)` in advanced options of async session of `ShardedDocumentStore`,
-- `WithinRadiusOf` marked as obsolete in spatial querying because of the parameter order inconsistency. `WithinRadius` is designated to be used instead. More [here](../indexes/querying/spatial),
-- Added `StartEtag` to `SubscriptionCriteria`. More [here](../client-api/data-subscriptions/how-to-create-data-subscription),
-- Added opening strategies to data subscriptions. More [here](../client-api/data-subscriptions/how-to-open-data-subscription),
-- Added `BeforeAcknowledgment` and `AfterAcknowledgment` events to data subscription. More [here](../client-api/data-subscriptions/events),
-- Added "Query parsing" measure for `ShowTimings` query customization. More [here](../client-api/session/querying/how-to-customize-query#showtimings),
-- Added `TransformerLockMode`. More [here](../client-api/commands/transformers/how-to/change-transformer-lock-mode),
-- Added `Load` overload with transformer to `ILoaderWithInclude`. More [here](../client-api/session/loading-entities#example-iii-1),
+- `WithinRadiusOf` marked as obsolete in spatial querying because of the parameter order inconsistency. `WithinRadius` is designated to be used instead. More [here](indexes/querying/spatial),
+- Added `StartEtag` to `SubscriptionCriteria`. More [here](client-api/data-subscriptions/how-to-create-data-subscription),
+- Added opening strategies to data subscriptions. More [here](client-api/data-subscriptions/how-to-open-data-subscription),
+- Added `BeforeAcknowledgment` and `AfterAcknowledgment` events to data subscription. More [here](client-api/data-subscriptions/events),
+- Added "Query parsing" measure for `ShowTimings` query customization. More [here](client-api/session/querying/how-to-customize-query#showtimings),
+- Added `TransformerLockMode`. More [here](client-api/commands/transformers/how-to/change-transformer-lock-mode),
+- Added `Load` overload with transformer to `ILoaderWithInclude`. More [here](client-api/session/loading-entities#example-iii-1),
 - `IndexCreation.CreateIndexes` creates indexes in a single request,
 - `DocumentStore.SideBySideExecuteIndexes` and `DocumentStore.SideBySideExecuteIndexesAsync` creates side by side indexes in a single request,
 - Implemented bulk inserts for `ShardedDocumentStore`,
-- Optimized memory allocation and better performance in [profiling](../client-api/how-to/enable-profiling),
+- Optimized memory allocation and better performance in [profiling](client-api/how-to/enable-profiling),
 - Fixed implementations of sync methods to avoid hangs,
 - Fixed caching of `HttpClient`,
 - Extended IEnumerable implementation of `DynamicList` - more available extensions in an index definition
@@ -556,10 +556,10 @@ This is an aggregated build containing fixes released in hotfix versions since t
 
 ### Studio
 
-- Environment based studio themes. More [here](../studio/management/studio-config),
+- Environment based studio themes. More [here](studio/management/studio-config),
 - Added `Status -> Debug -> Currently indexing`,
-- Added IO Test. More [here](../studio/management/io-test),
-- Added License server information. More [here](../studio/management/license-information),
+- Added IO Test. More [here](studio/management/io-test),
+- Added License server information. More [here](studio/management/license-information),
 - Fixed authentication by API keys,
 - Fixed inconsistency bug in Query intellisense,
 - Exposed option StoreAllFields (Edit index view),
@@ -586,16 +586,16 @@ This is an aggregated build containing fixes released in hotfix versions since t
 
 ### Server
 
-- `[JavaScript]` Added `IncreaseNumberOfAllowedStepsBy` method. More [here](../client-api/commands/patches/how-to-use-javascript-to-patch-your-documents#methods-objects-and-variables),
+- `[JavaScript]` Added `IncreaseNumberOfAllowedStepsBy` method. More [here](client-api/commands/patches/how-to-use-javascript-to-patch-your-documents#methods-objects-and-variables),
 - `[JavaScript]` Debug information now contains number of steps that script took,
 - `[Voron]` Less aggresive disk space allocation,
 - Various performance improvements
 
-#### [Configuration](../server/configuration/configuration-options)
+#### [Configuration](server/configuration/configuration-options)
 
-- Added `Raven/AllowScriptsToAdjustNumberOfSteps`. More [here](../server/configuration/configuration-options#javascript-parser),
-- Added `Raven/Voron/AllowOn32Bits`. More [here](../server/configuration/configuration-options#voron-settings),
-- Added `Raven/PreventSchemaUpdate`. More [here](../server/configuration/configuration-options#data-settings).
+- Added `Raven/AllowScriptsToAdjustNumberOfSteps`. More [here](server/configuration/configuration-options#javascript-parser),
+- Added `Raven/Voron/AllowOn32Bits`. More [here](server/configuration/configuration-options#voron-settings),
+- Added `Raven/PreventSchemaUpdate`. More [here](server/configuration/configuration-options#data-settings).
 
 #### Bundles
 
@@ -646,17 +646,17 @@ This is an aggregated build containing fixes released in hotfix versions since t
 - Recognize Windows users with admin rights to system database as server admins,
 - Facets can now have very large number of facets
 
-#### [Configuration](../server/configuration/configuration-options)
+#### [Configuration](server/configuration/configuration-options)
 
-- Added `Raven/WorkingDir`. More [here](../server/configuration/configuration-options#data-settings),
-- Added `Raven/AdditionalStepsForScriptBasedOnDocumentSize` (5 by default). More [here](../server/configuration/configuration-options#javascript-parser),
-- Added `Raven/MaxServicePointIdleTime`. More [here](../server/configuration/configuration-options#http-settings),
-- Added `Raven/ImplicitFetchFieldsFromDocumentMode`. More [here](../server/configuration/configuration-options#index-settings),
-- Added `Raven/Replication/ForceReplicationRequestBuffering`. More [here](../server/configuration/configuration-options#replication)
+- Added `Raven/WorkingDir`. More [here](server/configuration/configuration-options#data-settings),
+- Added `Raven/AdditionalStepsForScriptBasedOnDocumentSize` (5 by default). More [here](server/configuration/configuration-options#javascript-parser),
+- Added `Raven/MaxServicePointIdleTime`. More [here](server/configuration/configuration-options#http-settings),
+- Added `Raven/ImplicitFetchFieldsFromDocumentMode`. More [here](server/configuration/configuration-options#index-settings),
+- Added `Raven/Replication/ForceReplicationRequestBuffering`. More [here](server/configuration/configuration-options#replication)
 
 #### Indexes
 
-- [`AbstractIndexCreationTask`](../indexes/creating-and-deploying#using-abstractindexcreationtask) will add sorting to numerical fields automatically
+- [`AbstractIndexCreationTask`](indexes/creating-and-deploying#using-abstractindexcreationtask) will add sorting to numerical fields automatically
 
 #### Bundles
 
@@ -671,8 +671,8 @@ This is an aggregated build containing fixes released in hotfix versions since t
 
 - Indexes can be deployed side-by-side using `SideBySideExecute` from `AbstractIndexCreationTask`, `SideBySideCreateIndexes` from `IndexCreation` and directly from `DocumentStore` using `SideBySideExecuteIndex`,
 - Added the ability to provide additional query to MoreLikeThis queries,
-- Added `SetIndexLock` to `IDatabaseCommands`. More [here](../client-api/commands/indexes/how-to/change-index-lock-mode),
-- Added `SetIndexPriority` to `IDatabaseCommands`. More [here](../client-api/commands/indexes/how-to/change-index-priority),
+- Added `SetIndexLock` to `IDatabaseCommands`. More [here](client-api/commands/indexes/how-to/change-index-lock-mode),
+- Added `SetIndexPriority` to `IDatabaseCommands`. More [here](client-api/commands/indexes/how-to/change-index-priority),
 - Index priority can be set through `IndexPriority` property in `IndexDefinition` or `Priority` property in `AbstractIndexCreationTask`,
 
 <hr />
@@ -712,13 +712,13 @@ This is an aggregated build containing fixes released in hotfix versions since t
 
 ### Server
 
-- preventing, by default, unrestricted access (`Raven/AnonymousAccess` set to `Admin`) to server when license is used. More [here](../server/configuration/license-registration),
+- preventing, by default, unrestricted access (`Raven/AnonymousAccess` set to `Admin`) to server when license is used. More [here](server/configuration/license-registration),
 - `[Voron]` added compaction,
 - added Data Subscriptions,
 - added _admin/low-memory-notification_ endpoint,
 - performance improvements
 
-#### [Configuration](../server/configuration/configuration-options)
+#### [Configuration](server/configuration/configuration-options)
 
 - added `Raven/Indexing/MaxNumberOfItemsToProcessInTestIndexes`,
 - added `Raven/Licensing/AllowAdminAnonymousAccessForCommercialUse`,
@@ -734,9 +734,9 @@ This is an aggregated build containing fixes released in hotfix versions since t
 
 #### Indexes
 
-- test indexes. More [here](../indexes/testing-indexes),
-- side-by-side indexes. More [here](../indexes/side-by-side-indexes),
-- added safe number parsing methods. More [here](../indexes/indexing-linq-extensions#parsing-numbers),
+- test indexes. More [here](indexes/testing-indexes),
+- side-by-side indexes. More [here](indexes/side-by-side-indexes),
+- added safe number parsing methods. More [here](indexes/indexing-linq-extensions#parsing-numbers),
 - added the ability to replicate index and transformer definitions.
 
 #### Bundles
@@ -748,10 +748,10 @@ This is an aggregated build containing fixes released in hotfix versions since t
 
 ### Client API
 
-- added `PreserveDocumentPropertiesNotFoundOnModel` convention. More [here](../client-api/configuration/conventions/request-handling#preservedocumentpropertiesnotfoundonmodel),
-- **highlights** can be accessed when performing **projection** or querying **map-reduce** index. More [here](../indexes/querying/highlights#highlights--projections),
-- added `IndexAndTransformerReplicationMode` convention that indicates if index and transformer definitions should be replicated when they are created using `AbstractIndexCreationTask` or `AbstractTransformerCreationTask`. More [here](../client-api/configuration/conventions/misc#indexandtransformerreplicationmode),
-- added [Data Subscriptions](../client-api/data-subscriptions/what-are-data-subscriptions).
+- added `PreserveDocumentPropertiesNotFoundOnModel` convention. More [here](client-api/configuration/conventions/request-handling#preservedocumentpropertiesnotfoundonmodel),
+- **highlights** can be accessed when performing **projection** or querying **map-reduce** index. More [here](indexes/querying/highlights#highlights--projections),
+- added `IndexAndTransformerReplicationMode` convention that indicates if index and transformer definitions should be replicated when they are created using `AbstractIndexCreationTask` or `AbstractTransformerCreationTask`. More [here](client-api/configuration/conventions/misc#indexandtransformerreplicationmode),
+- added [Data Subscriptions](client-api/data-subscriptions/what-are-data-subscriptions).
 
 <hr />
 

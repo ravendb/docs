@@ -11,13 +11,13 @@ import Panel from '@site/src/components/Panel';
 <Admonition type="note" title="">
     
 * In this article:
-  * [Is there a size limit for attachments?](../../document-extensions/attachments/faq.mdx#is-there-a-size-limit-for-attachments)
-  * [Does document compression affect attachments?](../../document-extensions/attachments/faq.mdx#does-document-compression-affect-attachments)
-  * [What happens to attachments when I delete a document?](../../document-extensions/attachments/faq.mdx#what-happens-to-attachments-when-i-delete-a-document)
-  * [Are REMOTE attachments included in backups?](../../document-extensions/attachments/faq.mdx#are-remote-attachments-included-in-backups)
-  * [Are REMOTE attachments cached locally after retrieval?](../../document-extensions/attachments/faq.mdx#are-remote-attachments-cached-locally-after-retrieval)
-  * [Are REMOTE attachments supported with sharded databases?](../../document-extensions/attachments/faq.mdx#are-remote-attachments-supported-with-sharded-databases)
-  * [What happens to REMOTE attachments if I delete my database?](../../document-extensions/attachments/faq.mdx#what-happens-to-remote-attachments-if-i-delete-my-database)
+  * [Is there a size limit for attachments?](#is-there-a-size-limit-for-attachments)
+  * [Does document compression affect attachments?](#does-document-compression-affect-attachments)
+  * [What happens to attachments when I delete a document?](#what-happens-to-attachments-when-i-delete-a-document)
+  * [Are REMOTE attachments included in backups?](#are-remote-attachments-included-in-backups)
+  * [Are REMOTE attachments cached locally after retrieval?](#are-remote-attachments-cached-locally-after-retrieval)
+  * [Are REMOTE attachments supported with sharded databases?](#are-remote-attachments-supported-with-sharded-databases)
+  * [What happens to REMOTE attachments if I delete my database?](#what-happens-to-remote-attachments-if-i-delete-my-database)
 
 </Admonition>
 
@@ -31,7 +31,7 @@ However, keep the following in mind:
     since the binary content is replicated to all nodes in the database group.
     
 * **Remote attachments**:  
-  [Remote attachments](../../document-extensions/attachments/configure-remote-attachments.mdx) can help reduce local disk usage for large files, as only the metadata is stored locally and replicated between nodes.
+  [Remote attachments](./configure-remote-attachments.mdx) can help reduce local disk usage for large files, as only the metadata is stored locally and replicated between nodes.
   The binary content is uploaded to external storage once and is not replicated.
 
 </Panel>
@@ -43,7 +43,7 @@ However, keep the following in mind:
 The [Documents Compression](../../server/storage/documents-compression.mdx) feature compresses only the content of documents and revisions stored within RavenDB's internal storage.
 It does Not apply to attachments, whether local or remote, and it also does not apply to counters or time series.    
 
-[Remote attachments](../../document-extensions/attachments/configure-remote-attachments.mdx) are binary files stored in external storage, such as Amazon S3 or Azure Blob Storage.
+[Remote attachments](./configure-remote-attachments.mdx) are binary files stored in external storage, such as Amazon S3 or Azure Blob Storage.
 RavenDB does not compress, modify, or transform their content in any way.
 If you need compression for remote attachment files, configure it at the cloud storage-provider level or compress the files before storing them as attachments.
 
@@ -69,7 +69,7 @@ When you [Delete a document](../../client-api/session/deleting-entities.mdx):
 
 When performing a [Backup](../../backup/overview.mdx) or [Export](../../studio/database/tasks/export-database.mdx) operation:
 
-* The [remote attachment metadata](../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#the-attachment-metadata) is written to the backup/export file.
+* The [remote attachment metadata](./store-attachments/store-attachments-remote.mdx#the-attachment-metadata) is written to the backup/export file.
 * The actual **binary content** remains in the remote storage and is **not** downloaded or included in the backup.  
   The developer is responsible for backing up and retaining the remote files using the cloud provider's backup and retention mechanisms.  
 
@@ -78,7 +78,7 @@ When performing a [Restore](../../backup/restore.mdx) or [Import](../../studio/d
 * The remote attachment metadata is restored/imported from the dump into the database.
 * The binary content is expected to still be available at its original remote storage location.
     
-Learn more in [Attachments & Export/import/backup/restore](../../document-extensions/attachments/attachments-and-other-features.mdx#attachments-export-import-backup-restore).    
+Learn more in [Attachments & Export/import/backup/restore](./attachments-and-other-features.mdx#attachments-export-import-backup-restore).    
     
 </Panel>
 
@@ -87,7 +87,7 @@ Learn more in [Attachments & Export/import/backup/restore](../../document-extens
 **No.**  
     
 Remote attachments are **not** cached locally after they are downloaded.  
-Each time you [retrieve a remote attachment](../../document-extensions/attachments/get-attachments.mdx), RavenDB fetches the data from the remote storage again.
+Each time you [retrieve a remote attachment](./get-attachments.mdx), RavenDB fetches the data from the remote storage again.
 
 If your application reads the same remote attachment frequently,  
 consider caching the content on the application side to reduce latency and remote storage access costs.
@@ -99,7 +99,7 @@ consider caching the content on the application side to reduce latency and remot
 **No.**  
     
 Remote attachments are currently supported only in **non-sharded databases**.  
-Attempting to [configure remote attachments](../../document-extensions/attachments/configure-remote-attachments.mdx) on a [sharded database](../../sharding/overview) will throw an exception.
+Attempting to [configure remote attachments](./configure-remote-attachments.mdx) on a [sharded database](../../sharding/overview.mdx) will throw an exception.
 
 </Panel>
 

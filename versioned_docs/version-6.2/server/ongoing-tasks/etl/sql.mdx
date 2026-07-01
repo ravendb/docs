@@ -12,27 +12,27 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Ongoing Tasks: SQL ETL
 <Admonition type="note" title="">
 
-* **SQL ETL** is a task that creates an [ETL process](../../../server/ongoing-tasks/etl/basics.mdx) where data from a RavenDB database is extracted, transformed, and loaded into a relational database as the destination.
+* **SQL ETL** is a task that creates an [ETL process](./basics.mdx) where data from a RavenDB database is extracted, transformed, and loaded into a relational database as the destination.
 
 * In this article:
-   * [Supported relational databases](../../../server/ongoing-tasks/etl/sql.mdx#supported-relational-databases)
-   * [Creating the SQL ETL task](../../../server/ongoing-tasks/etl/sql.mdx#creating-the-sql-etl-task)
-   * [Configuring the SQL tables](../../../server/ongoing-tasks/etl/sql.mdx#configuring-the-sql-tables)
-      * [Document ID column](../../../server/ongoing-tasks/etl/sql.mdx#document-id-column)
-      * [Insert only](../../../server/ongoing-tasks/etl/sql.mdx#insert-only)
-   * [Transformation scripts](../../../server/ongoing-tasks/etl/sql.mdx#transformation-scripts)
-      * [The `loadTo` method](../../../server/ongoing-tasks/etl/sql.mdx#the-loadto-method)
-      * [Loading to multiple tables](../../../server/ongoing-tasks/etl/sql.mdx#loading-to-multiple-tables)
-      * [Loading related documents](../../../server/ongoing-tasks/etl/sql.mdx#loading-related-documents)
-      * [Loading attachments](../../../server/ongoing-tasks/etl/sql.mdx#loading-attachments)
-      * [Loading to VARCHAR and NVARCHAR columns](../../../server/ongoing-tasks/etl/sql.mdx#loading-to-varchar-and-nvarchar-columns)
-      * [Loading to specific column types](../../../server/ongoing-tasks/etl/sql.mdx#loading-to-specific-column-types)
-      * [Filtering](../../../server/ongoing-tasks/etl/sql.mdx#filtering)
-      * [Accessing the metadata](../../../server/ongoing-tasks/etl/sql.mdx#accessing-the-metadata)
-      * [Document extensions](../../../server/ongoing-tasks/etl/sql.mdx#document-extensions)
-   * [Advanced options](../../../server/ongoing-tasks/etl/sql.mdx#advanced-options)
-   * [Transaction processing](../../../server/ongoing-tasks/etl/sql.mdx#transaction-processing)
-   * [Creating the SQL ETL task from the Client API](../../../server/ongoing-tasks/etl/sql.mdx#creating-the-sql-etl-task-from-the-client-api)
+   * [Supported relational databases](#supported-relational-databases)
+   * [Creating the SQL ETL task](#creating-the-sql-etl-task)
+   * [Configuring the SQL tables](#configuring-the-sql-tables)
+      * [Document ID column](#document-id-column)
+      * [Insert only](#insert-only)
+   * [Transformation scripts](#transformation-scripts)
+      * [The `loadTo` method](#the-loadto-method)
+      * [Loading to multiple tables](#loading-to-multiple-tables)
+      * [Loading related documents](#loading-related-documents)
+      * [Loading attachments](#loading-attachments)
+      * [Loading to VARCHAR and NVARCHAR columns](#loading-to-varchar-and-nvarchar-columns)
+      * [Loading to specific column types](#loading-to-specific-column-types)
+      * [Filtering](#filtering)
+      * [Accessing the metadata](#accessing-the-metadata)
+      * [Document extensions](#document-extensions)
+   * [Advanced options](#advanced-options)
+   * [Transaction processing](#transaction-processing)
+   * [Creating the SQL ETL task from the Client API](#creating-the-sql-etl-task-from-the-client-api)
 
 </Admonition>
 
@@ -59,7 +59,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Panel heading="Creating the SQL ETL task">
 
-To create an SQL ETL task using the Client API, see [Creating the SQL ETL task from the Client API](../../../server/ongoing-tasks/etl/sql.mdx#creating-the-sql-etl-task-from-the-client-api).  
+To create an SQL ETL task using the Client API, see [Creating the SQL ETL task from the Client API](#creating-the-sql-etl-task-from-the-client-api).  
 To create an SQL ETL task from Studio, open `Tasks` > `Ongoing Tasks`.  
 
 ![Configure SQL ETL task](./assets/sql-etl-setup.png)
@@ -118,7 +118,7 @@ Define the target tables where the SQL ETL task will load data.
 
 <Panel heading="Transformation scripts">
 
-The [basic characteristics](../../../server/ongoing-tasks/etl/basics.mdx) of an SQL ETL script are similar to those of other ETL types.  
+The [basic characteristics](./basics.mdx) of an SQL ETL script are similar to those of other ETL types.  
 The script defines what data to **extract** from the source document, how to **transform** this data,  
 and which SQL table to **load** it to.
 
@@ -371,7 +371,7 @@ The SQL ETL task does not support sending [Counters](../../../document-extension
 
 * **Command timeout**  
   Number of seconds after which SQL command will timeout.  
-  It overrides the value defined in the [ETL.SQL.CommandTimeoutInSec](../../../server/configuration/etl-configuration.mdx#etlsqlcommandtimeoutinsec) configuration key.  
+  It overrides the value defined in the [ETL.SQL.CommandTimeoutInSec](../../configuration/etl-configuration.mdx#etlsqlcommandtimeoutinsec) configuration key.  
   Default: `null` (use provider default).
 * **Parameterized deletes**  
   Control whether DELETE statements generated during the ETL process use parameterized SQL queries,  

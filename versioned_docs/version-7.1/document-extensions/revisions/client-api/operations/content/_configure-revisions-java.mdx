@@ -5,18 +5,18 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* [Revisions](../../../../../document-extensions/revisions/overview.mdx) are snapshots of documents that 
+* [Revisions](../../../overview.mdx) are snapshots of documents that 
   are taken automatically each time a document is updated or deleted.  
 
 * Revisions can be stored indefinitely, or they can be deleted when certain conditions are met. These conditions can be set 
   using the Configure Revisions Operation.  
 
 * In this page:  
-  * [Syntax](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#syntax)  
-      * [RevisionsCollectionConfiguration](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisionscollectionconfiguration)  
-      * [RevisionsConfiguration](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisionsconfiguration)  
-      * [ConfigureRevisionsOperation](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#configurerevisionsoperation)  
-  * [Example](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#example)  
+  * [Syntax](#syntax)  
+      * [RevisionsCollectionConfiguration](#revisions-collection-configuration-object)  
+      * [RevisionsConfiguration](#revisionsconfiguration)  
+      * [ConfigureRevisionsOperation](#configurerevisionsoperation)  
+  * [Example](#example)  
 
 </Admonition>
 ## Syntax
@@ -27,13 +27,13 @@ settings.
 
 To configure the revisions settings for a database and/or the collections in that database, follow these steps:  
 
-[1.](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisionscollectionconfiguration) 
+[1.](#revisions-collection-configuration-object) 
 Create a RevisionsCollectionConfiguration` object for each desired collection.  
 
-[2.](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisionsconfiguration) 
+[2.](#revisionsconfiguration) 
 Put those `RevisionsCollectionConfiguration` objects in a `RevisionsConfiguration` object.  
 
-[3.](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#configurerevisionsoperation) 
+[3.](#configurerevisionsoperation) 
 Send that RevisionsConfiguration` to the server.  
 ### RevisionsCollectionConfiguration
 
@@ -96,7 +96,7 @@ configuration.
 
 Note that when this object is sent to the server, it overrides the configurations for **all** collections, including all existing 
 configurations currently on the server. If a collection is not listed in `collections` and `defaultConfig` has not been set, the 
-default values listed in the table [above](../../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisionscollectionconfiguration) 
+default values listed in the table [above](#revisions-collection-configuration-object) 
 are applied.  
 ### ConfigureRevisionsOperation
 

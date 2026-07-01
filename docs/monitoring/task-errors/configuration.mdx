@@ -24,14 +24,14 @@ import ContentFrame from "@site/src/components/ContentFrame";
   [Configuration Overview](../../server/configuration/configuration-options.mdx).  
 
 * To learn about task errors and how task health is determined, see the
-  [Task errors overview](../../monitoring/task-errors/overview.mdx).  
+  [Task errors overview](./overview.mdx).  
 
 * In this article:
-   * [Task health thresholds](../../monitoring/task-errors/configuration.mdx#task-health-thresholds)
-      * [ETL.ProcessHealthStatusImpairedThreshold](../../monitoring/task-errors/configuration.mdx#etlprocesshealthstatusimpairedthreshold)
-      * [ETL.ProcessHealthStatusFailedThreshold](../../monitoring/task-errors/configuration.mdx#etlprocesshealthstatusfailedthreshold)
-      * [Tuning the thresholds](../../monitoring/task-errors/configuration.mdx#tuning-the-thresholds)
-      * [Validation rules](../../monitoring/task-errors/configuration.mdx#validation-rules)
+   * [Task health thresholds](#task-health-thresholds)
+      * [ETL.ProcessHealthStatusImpairedThreshold](#etlprocesshealthstatusimpairedthreshold)
+      * [ETL.ProcessHealthStatusFailedThreshold](#etlprocesshealthstatusfailedthreshold)
+      * [Tuning the thresholds](#tuning-the-thresholds)
+      * [Validation rules](#validation-rules)
 
 </Admonition>
 
@@ -40,7 +40,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 Two configuration keys define the boundaries between the three task health states
 (`Healthy`, `Impaired`, and `Failed`). Each task is classified by its error ratio
 (described on the
-[Task errors overview](../../monitoring/task-errors/overview.mdx#how-health-is-computed)):
+[Task errors overview](./overview.mdx#how-health-is-computed)):
 `Healthy` below the Impaired threshold, `Impaired` between the two thresholds, and
 `Failed` above the Failed threshold. A task moves between states as the ratio crosses
 each threshold.  

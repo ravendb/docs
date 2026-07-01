@@ -10,13 +10,13 @@ import CodeBlock from '@theme/CodeBlock';
 * Indexing allows for fast retrieval of the indexed time series data when querying a time series.
 
 * In this page:  
-  * [Time series indexes vs Document indexes](../../../document-extensions/timeseries/indexing.mdx#time-series-indexes-vs-document-indexes)
-  * [Ways to create a time series index](../../../document-extensions/timeseries/indexing.mdx#ways-to-create-a-time-series-index)
-  * [Examples of time series indexes](../../../document-extensions/timeseries/indexing.mdx#examples-of-time-series-indexes)
-      * [Map index - index single time series from single collection](../../../document-extensions/timeseries/indexing.mdx#map-index---index-single-time-series-from-single-collection)
-      * [Multi-Map index - index time series from several collections](../../../document-extensions/timeseries/indexing.mdx#multi-map-index---index-time-series-from-several-collections)
-      * [Map-Reduce index](../../../document-extensions/timeseries/indexing.mdx#map-reduce-index)
-  * [Syntax](../../../document-extensions/timeseries/indexing.mdx#syntax)
+  * [Time series indexes vs Document indexes](#time-series-indexes-vs-document-indexes)
+  * [Ways to create a time series index](#ways-to-create-a-time-series-index)
+  * [Examples of time series indexes](#examples-of-time-series-indexes)
+      * [Map index - index single time series from single collection](#map-index---index-single-time-series-from-single-collection)
+      * [Multi-Map index - index time series from several collections](#multi-map-index---index-time-series-from-several-collections)
+      * [Map-Reduce index](#map-reduce-index)
+  * [Syntax](#syntax)
 
 </Admonition>
 ## Time series indexes vs Document indexes
@@ -65,8 +65,8 @@ from entry in segment
 #### Query results:
 
 * Time series index:  
-  When [querying](../../../document-extensions/timeseries/querying/using-indexes.mdx) a time series index, each result item corresponds to the type defined by the **index-entry** in the index definition,
-  (unless results are [projected](../../../document-extensions/timeseries/querying/using-indexes.mdx#project-results)). The documents themselves are not returned.
+  When [querying](../querying/using-indexes.mdx) a time series index, each result item corresponds to the type defined by the **index-entry** in the index definition,
+  (unless results are [projected](../querying/using-indexes.mdx#project-results)). The documents themselves are not returned.
 
 * Document index:  
   The resulting objects are the document entities (unless results are projected).
@@ -100,7 +100,7 @@ There are two main ways to create a time series index:
 * In addition, we index the containing document id (`DocumentID`), which is obtained from the segment,  
   and some content from the document referenced by the entry's Tag (`EmployeeName`).
  
-* Each tab below presents one of the different [ways](../../../document-extensions/timeseries/indexing.mdx#ways-to-create-a-time-series-index) the index can be defined.
+* Each tab below presents one of the different [ways](#ways-to-create-a-time-series-index) the index can be defined.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Map_index" label="Map_index">

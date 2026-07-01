@@ -26,8 +26,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Collections are used throughout many RavenDB features, such as defining indexes, setting revisions, and much more.
 
 * In this page:  
-  * [Collection Name Generation](../../client-api/faq/what-is-a-collection.mdx#collection-name-generation)
-  * [Collection Usages](../../client-api/faq/what-is-a-collection.mdx#collection-usages)
+  * [Collection Name Generation](#collection-name-generation)
+  * [Collection Usages](#collection-usages)
 
 * For more information see [Documents and Collections](../../studio/database/documents/documents-and-collections.mdx)
 </Admonition>
@@ -43,7 +43,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   e.g. storing an entity of type `Order` will generate the collection name `Orders`.  
 
 * The function that is responsible for tagging the documents can be overridden.  
-  See: [Global Identifier Generation Conventions](../../client-api/configuration/identifier-generation/global.mdx#findtypetagname-and-finddynamictagname). 
+  See: [Global Identifier Generation Conventions](../configuration/identifier-generation/global.mdx#findtypetagname-and-finddynamictagname). 
 
 ----
 
@@ -73,11 +73,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * A [RavenDB ETL Task](../../server/ongoing-tasks/etl/raven.mdx) & [SQL ETL Task](../../server/ongoing-tasks/etl/sql.mdx) are defined on specified collections.  
 
 * **The @hilo Collection**
-  * The ranges of available IDs values returned by [HiLo algorithm](../../client-api/document-identifiers/hilo-algorithm.mdx) are per collection name.  
-    Learn more in: [The @hilo Collection](../../studio/database/documents/documents-and-collections.mdx#the-@hilo-collection)  
+  * The ranges of available IDs values returned by [HiLo algorithm](../document-identifiers/hilo-algorithm.mdx) are per collection name.  
+    Learn more in: [The @hilo Collection](../../studio/database/documents/documents-and-collections.mdx#the-hilo-collection)  
 
 * **The @empty Collection**
-  * Learn more in: [The @empty Collection](../../studio/database/documents/documents-and-collections.mdx#the-@empty-collection)  
+  * Learn more in: [The @empty Collection](../../studio/database/documents/documents-and-collections.mdx#the-empty-collection)  
 
 
 

@@ -15,19 +15,19 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Customizing Data Files Locations
 <Admonition type="note" title="">
 
-* The structure of [RavenDB directories](../../server/storage/directory-structure.mdx) **cannot** be changed. However:  
+* The structure of [RavenDB directories](./directory-structure.mdx) **cannot** be changed. However:  
     * Path for temporary files can be customized.
     * Data files can be stored in different locations,  
       by defining junction points (Windows) or mount points (Linux).  
     * A script can be used to automate the different location definitions.  
 
 * In this page:
-    * [Why store data on different devices](../../server/storage/customizing-raven-data-files-locations.mdx#why-store-data-on-different-devices)
-    * [Configuring temp files location](../../server/storage/customizing-raven-data-files-locations.mdx#configuring-temp-files-location)
-    * [Configuring data files location](../../server/storage/customizing-raven-data-files-locations.mdx#configuring-data-files-location)
-    * [Automate storage definitions](../../server/storage/customizing-raven-data-files-locations.mdx#automate-storage-definitions)
-        * [Script example - Basic usage](../../server/storage/customizing-raven-data-files-locations.mdx#script-example---basic-usage)
-        * [Script example - Point Indexes to different location](../../server/storage/customizing-raven-data-files-locations.mdx#script-example---point-indexes-to-different-location)
+    * [Why store data on different devices](#why-store-data-on-different-devices)
+    * [Configuring temp files location](#configuring-temp-files-location)
+    * [Configuring data files location](#configuring-data-files-location)
+    * [Automate storage definitions](#automate-storage-definitions)
+        * [Script example - Basic usage](#script-example---basic-usage)
+        * [Script example - Point Indexes to different location](#script-example---point-indexes-to-different-location)
 
 </Admonition>
 ## Why store data on different devices
@@ -37,7 +37,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * This allows organizing the files based on their usage pattern and the performance of the different devices you own.  
   i.e. slow devices may cause a slow down when reading from _Raven.voron_.  
 
-* [Voron components](../../server/storage/directory-structure.mdx#voron-storage-environment) operate concurrently.  
+* [Voron components](./directory-structure.mdx#voron-storage-environment) operate concurrently.  
   Storing them to different locations can help avoid traffic jams and achieve better concurrency.  
 
 
@@ -46,30 +46,30 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * __System temporary files__  
   By default, temporary files containing cluster data and server-wide data are written to the `Temp` folder under the System directory. 
-  Customize the path for these files by setting the [Storage.TempPath](../../server/configuration/storage-configuration.mdx#storagetemppath) configuration option.  
+  Customize the path for these files by setting the [Storage.TempPath](../configuration/storage-configuration.mdx#storagetemppath) configuration option.  
   The temporary files will be written to the combined path `"<Storage.TempPath>/System"`.
 
 * __Databases temporary files__  
   By default, all databases' temporary files are written to the `Temp` folder under each Database directory.  
-  Customize the path for these files by setting the [Storage.TempPath](../../server/configuration/storage-configuration.mdx#storagetemppath) configuration option.  
+  Customize the path for these files by setting the [Storage.TempPath](../configuration/storage-configuration.mdx#storagetemppath) configuration option.  
   The temporary files will be written to `"<Storage.TempPath>/Databases/{database-name}"`.
 
 * __Configuration temporary files__  
   By default, the configuration temporary files are written to the `Temp` folder under the Configuration directory per database. 
-  Customize the path for these files by setting the [Storage.TempPath](../../server/configuration/storage-configuration.mdx#storagetemppath) configuration option.  
+  Customize the path for these files by setting the [Storage.TempPath](../configuration/storage-configuration.mdx#storagetemppath) configuration option.  
   The temporary files will be written to `"<Storage.TempPath>/Databases/{database-name}/Configuration"`.
 
 * __Indexes temporary files__  
   By default, all indexes' temporary files are written to the `Temp` folder under each Index directory.  
-  Customize the path for these files by setting the [Indexing.TempPath](../../server/configuration/indexing-configuration.mdx#indexingtemppath) configuration option.  
+  Customize the path for these files by setting the [Indexing.TempPath](../configuration/indexing-configuration.mdx#indexingtemppath) configuration option.  
 
 * __Backup temporary files__  
   By default, backup temporary files are written under the `Database` directory or under `Storage.TempPath` if defined.  
-  Customize the path for these files by setting the [Backup.TempPath](../../backup/configuration#backuptemppath) configuration option.  
+  Customize the path for these files by setting the [Backup.TempPath](../../backup/configuration.mdx#backuptemppath) configuration option.  
 
 <Admonition type="note" title="">
 
-Refer to article [Configuration overview](../../server/configuration/configuration-options.mdx) to learn how to set the configuration keys.
+Refer to article [Configuration overview](../configuration/configuration-options.mdx) to learn how to set the configuration keys.
 
 </Admonition>
 
@@ -137,7 +137,7 @@ ln -s /mnt/FastDrive/Databases/Northwind/Indexes ~/RavenDB/Server/RavenData/Data
 
 ## Automate storage definitions
 
-* To help automate the process, we have added the [on directory initialize](../../server/configuration/storage-configuration.mdx#storageondirectoryinitializeexec) configuration option.  
+* To help automate the process, we have added the [on directory initialize](../configuration/storage-configuration.mdx#storageondirectoryinitializeexec) configuration option.  
   Whenever RavenDB __creates a directory__, it will invoke the process that is defined within that configuration.
 
 * The process is called just before the directory is created.  
@@ -145,7 +145,7 @@ ln -s /mnt/FastDrive/Databases/Northwind/Indexes ~/RavenDB/Server/RavenData/Data
 * RavenDB will invoke the process with the following params:
 
     * Params passed by the user: 
-        * User arguments - optional params, set in the [optional user arguments](../../server/configuration/storage-configuration.mdx#storageondirectoryinitializeexecarguments) configuration option
+        * User arguments - optional params, set in the [optional user arguments](../configuration/storage-configuration.mdx#storageondirectoryinitializeexecarguments) configuration option
   
     * Params passed by RavenDB:
         * The environment type (System, Database, Index, Configuration, Compaction)
@@ -219,7 +219,7 @@ The following bash script example will point the Indexes data to a new location.
 If the environment type is other than 'Database' the script will exit.  
 Else, the script will create a soft link for the `Indexes` directory.  
 
-After the script is run, the Indexes link will reside under the Database directory (See [Directory Structure](../../server/storage/directory-structure.mdx)).  
+After the script is run, the Indexes link will reside under the Database directory (See [Directory Structure](./directory-structure.mdx)).  
 The link will point to the new location set by variable $INDEXES_TARGET_DIR_NAME where all indexes' data will be written.  
 
 <TabItem value="bash" label="bash">

@@ -24,16 +24,16 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 In this page:
 
-[Studio Configuration - Single Database](../../../studio/database/settings/studio-configuration.mdx#studio-configuration---single-database)
+[Studio Configuration - Single Database](#studio-configuration---single-database)
 
-* [Database Studio Configuration View](../../../studio/database/settings/studio-configuration.mdx#database-studio-configuration-view)
-* [Disabling Auto-Index Creation on Studio Queries or Patches](../../../studio/database/settings/studio-configuration.mdx#disabling-auto-index-creation-on-studio-queries-or-patches)
-  * [About Auto-Index Creation](../../../studio/database/settings/studio-configuration.mdx#about-auto-indexes-and-the-studio)
-  * [If Disabled, Temporarily Enable Auto-Index Creation](../../../studio/database/settings/studio-configuration.mdx#if-disabled,-temporarily-enable-auto-index-creation)
+* [Database Studio Configuration View](#database-studio-configuration-view)
+* [Disabling Auto-Index Creation on Studio Queries or Patches](#disabling-auto-index-creation-on-studio-queries-or-patches)
+  * [About Auto-Index Creation](#about-auto-indexes-and-the-studio)
+  * [If Disabled, Temporarily Enable Auto-Index Creation](#if-disabled-temporarily-enable-auto-index-creation)
 
-[Studio Configuration - Server-wide](../../../studio/database/settings/studio-configuration.mdx#studio-configuration---server-wide)
+[Studio Configuration - Server-wide](#studio-configuration---server-wide)
 
-* [Server Studio Configuration View](../../../studio/database/settings/studio-configuration.mdx#server-studio-configuration-view)
+* [Server Studio Configuration View](#server-studio-configuration-view)
 
 </Admonition>
 
@@ -57,8 +57,8 @@ In this page:
 * If set to `true`, **Disable auto-index-creation** will prevent future queries or patches from creating Auto-Indexes.  
   * If there is no index to satisfy a query or patch, an exeption will be thrown stating that 
     `Creation of Auto Indexes was disabled and no Auto Index matching the given query was found.`
-  * You can temporarily allow auto-index creation as a result of a query or patch in the Studio [query settings](../../../studio/database/queries/query-view.mdx#query-view) 
-    and [patch settings](../../../studio/database/documents/patch-view.mdx#patch-configuration)
+  * You can temporarily allow auto-index creation as a result of a query or patch in the Studio [query settings](../queries/query-view.mdx#query-view) 
+    and [patch settings](../documents/patch-view.mdx#patch-configuration)
 
 
 !["Disable Auto Index"](./assets/disabling-auto-index-studio.png)
@@ -76,7 +76,7 @@ In this page:
 **What are Auto-Indexes**  
 
 * Auto-indexes are created when all of the following conditions are met:
-  * A query is issued without specifying an index (a [dynamic query](../../../client-api/session/querying/how-to-query.mdx#dynamicquery)).
+  * A query is issued without specifying an index (a [dynamic query](../../../client-api/session/querying/how-to-query.mdx#dynamicQuery)).
   * The query includes a filtering condition. 
   * No suitable auto-index exists that can satisfy the query.
   * Creation of auto-indexes has not been disabled.
@@ -84,11 +84,11 @@ In this page:
 * For such queries, RavenDB's Query Optimizer searches for an existing auto-index that can satisfy the query.  
   If no suitable auto-index is found, RavenDB will either [create a new auto-index](../../../indexes/creating-and-deploying.mdx#auto-indexes) or optimize an existing auto-index.
 
-* Note: dynamic queries can be issued either when [querying](../../../studio/database/queries/query-view.mdx#query-view) or when [patching](../../../studio/database/documents/patch-view.mdx#patch-configuration).
+* Note: dynamic queries can be issued either when [querying](../queries/query-view.mdx#query-view) or when [patching](../documents/patch-view.mdx#patch-configuration).
 
 * Auto-indexes are dynamically maintained to change automatically in response to changing query demands.  
   After a certain amount of time that an auto-index is not used [(30 minutes by default)](../../../server/configuration/indexing-configuration.mdx#indexingtimetowaitbeforemarkingautoindexasidleinmin),  
-  the index goes into an [idle state](../../../studio/database/indexes/indexes-list-view.mdx#index-state)
+  the index goes into an [idle state](../indexes/indexes-list-view.mdx#3-index-state)
   and deleted after a set time-period [(72 hours by default)](../../../server/configuration/indexing-configuration.mdx#indexingtimetowaitbeforedeletingautoindexmarkedasidleinhrs).
 
 * To provide for fast queries, indexes process information in the background.  
@@ -108,8 +108,8 @@ If you disabled Auto-Indexing in the Studio Database Configuration page, and
 you want a one-time Auto-Index set up to satisfy a Query or Patch,  
 temporarily allow Auto-Index in the Query or Patch settings interface.  
 
-* [Query Settings](../../../studio/database/queries/query-view.mdx#query-settings)
-* [Patch Settings](../../../studio/database/documents/patch-view.mdx#patch-settings)
+* [Query Settings](../queries/query-view.mdx#query-settings)
+* [Patch Settings](../documents/patch-view.mdx#patch-settings)
 
 Note: These settings only affect Auto-Indexing as a result of Queries or Patches done in the Studio.  
 They do not affect API-based Queries or Patches.  
@@ -131,7 +131,7 @@ To configure API-based Auto-Indexing, see [Indexing.DisableQueryOptimizerGenerat
    Choose work environment.  This does not affect settings or features.  It makes it clear if, for example, you are in a production 
    server and should be much more careful than in a development environment.
 4. **Default replication factor**  
-   Change the default [replication factor](../../../studio/database/create-new-database/general-flow.mdx#3-configure-replication) from 
+   Change the default [replication factor](../create-new-database/general-flow.mdx#3-configure-replication) from 
    automatically replicating data to every node in the cluster.  
 5. **Help us improve the Studio**  
    Allow the Studio to send usage statistics to inform our developers.  

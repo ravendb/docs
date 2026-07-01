@@ -9,14 +9,14 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 The following query customization options are available in the `IDocumentQueryCustomization` interface:
 
-- [BeforeQueryExecuted](../../querying/customize-query.mdx#beforequeryexecuted)
-- [AfterQueryExecuted](../../querying/customize-query.mdx#afterqueryexecuted)
-- [AfterStreamExecuted](../../querying/customize-query.mdx#afterstreamexecuted)
-- [NoCaching](../../querying/customize-query.mdx#nocaching)
-- [NoTracking](../../querying/customize-query.mdx#notracking)
-- [ProjectionBehavior](../../querying/customize-query.mdx#projectionbehavior)
-- [RandomOrdering](../../querying/customize-query.mdx#randomordering)
-- [WaitForNonStaleResults](../../querying/customize-query.mdx#waitfornonstaleresults)
+- [BeforeQueryExecuted](#beforequeryexecuted)
+- [AfterQueryExecuted](#afterqueryexecuted)
+- [AfterStreamExecuted](#afterstreamexecuted)
+- [NoCaching](#nocaching)
+- [NoTracking](#notracking)
+- [ProjectionBehavior](#projectionbehavior)
+- [RandomOrdering](#randomordering)
+- [WaitForNonStaleResults](#waitfornonstaleresults)
 
 </Admonition>
 
@@ -286,7 +286,7 @@ List<Employee> results = session.query(Employee.class)
 Queries can be 'instructed' to wait for non-stale results for a specified amount of time using the `waitForNonStaleResults` method. If the query won't be able to return 
 non-stale results within the specified (or default) timeout, then a `TimeoutException` is thrown.
 
-Note: This feature is Not available when [streaming the query results](../../querying/stream-query-results.mdx).  
+Note: This feature is Not available when [streaming the query results](../stream-query-results.mdx).  
 Calling _waitForNonStaleResults_ with a streaming query will throw an exception.
 
 <Admonition type="note" title="Cutoff Point" id="cutoff-point" href="#cutoff-point">

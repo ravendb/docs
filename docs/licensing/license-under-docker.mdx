@@ -25,12 +25,12 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * A `RAVEN_License` environment variable can be set.  
 
 * In this article:  
-  * [Prerequisites](../licensing/license-under-docker.mdx#prerequisites)  
-  * [Licensing a RavenDB docker image](../licensing/license-under-docker.mdx#licensing-a-ravendb-docker-image)  
-     * [Passing a Path to the License File via CLI](../licensing/license-under-docker.mdx#passing-a-path-to-the-license-file-via-cli)  
-     * [Passing a License via `settings.json`](../licensing/license-under-docker.mdx#passing-a-license-via-settingsjson)  
-     * [Setting a `RAVEN_License` Environment Variable](../licensing/license-under-docker.mdx#setting-a-raven_license-environment-variable)  
-  * [Licensing RavenDB under Linux](../licensing/license-under-docker.mdx#licensing-ravendb-under-linux)  
+  * [Prerequisites](#prerequisites)  
+  * [Licensing a RavenDB docker image](#licensing-a-ravendb-docker-image)  
+     * [Passing a Path to the License File via CLI](#passing-a-path-to-the-license-file-via-cli)  
+     * [Passing a License via `settings.json`](#passing-a-license-via-settingsjson)  
+     * [Setting a `RAVEN_License` Environment Variable](#setting-a-raven_license-environment-variable)  
+  * [Licensing RavenDB under Linux](#licensing-ravendb-under-linux)  
 
 </Admonition>
 
@@ -84,8 +84,8 @@ To verify that the server is licensed, run it as shown above, create a new datab
 
 Provide the license as a property of the `settings.json` configuration file in one of the following ways.  
 
-* Add the **full license text** to `settings.json` as the value of the "License" key, [as explained here](../licensing/configuration.mdx).  
-  Mount `settings.json` as [explained above](../licensing/license-under-docker.mdx#passing-a-path-to-the-license-file-via-cli), using the location of `settings.json` instead of the location of a license file.  
+* Add the **full license text** to `settings.json` as the value of the "License" key, [as explained here](./configuration.mdx).  
+  Mount `settings.json` as [explained above](#passing-a-path-to-the-license-file-via-cli), using the location of `settings.json` instead of the location of a license file.  
 * **Or**, add the **license path** to `settings.json` as the value of the “License.Path” key and mount the license directory.  
 
 </ContentFrame>

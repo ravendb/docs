@@ -84,7 +84,7 @@ const config: Config = {
     baseUrl: "/",
 
     onBrokenLinks: isStrict ? "throw" : "warn",
-    onBrokenAnchors: "ignore",
+    onBrokenAnchors: "warn",
 
     i18n: {
         defaultLocale: "en",

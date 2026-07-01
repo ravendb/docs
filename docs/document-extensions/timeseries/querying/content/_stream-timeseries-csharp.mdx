@@ -10,15 +10,15 @@ import CodeBlock from '@theme/CodeBlock';
   2. Stream time series query results.
 
 * In this page:
-  * [Syntax](../../../../document-extensions/timeseries/querying/stream-timeseries.mdx#syntax)
-  * [Examples](../../../../document-extensions/timeseries/querying/stream-timeseries.mdx#examples)
+  * [Syntax](#syntax)
+  * [Examples](#examples)
 
 </Admonition>
 ## Syntax
 
 ### Stream a time series directly:  
 
-Get a time series (e.g. [using `TimeSeriesFor.Get`](../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx)), 
+Get a time series (e.g. [using `TimeSeriesFor.Get`](../../client-api/session/get/get-entries.mdx)), 
 and call `Stream()`/`StreamAsync()`.  
 
 <TabItem value="csharp" label="csharp">
@@ -69,7 +69,7 @@ IEnumerator<TimeSeriesStreamResult<T>> Stream(
 
 | Parameters | Type | Description |
 | - | - | - |
-| **query** | [IQueryable](../../../../querying/overview.mdx#sessionquery), [IDocumentQuery](../../../../querying/overview.mdx#sessionadvanceddocumentquery) or [IRawDocumentQuery](../../../../querying/overview.mdx#sessionadvancedrawquery) | Query to stream results for. |
+| **query** | [IQueryable](../../../../querying/overview.mdx#session-query), [IDocumentQuery](../../../../querying/overview.mdx#session-advanced-documentquery) or [IRawDocumentQuery](../../../../querying/overview.mdx#session-advanced-rawquery) | Query to stream results for. |
 | **streamQueryStats** | `out` [StreamQueryStatistics](../../../../glossary/stream-query-statistics.mdx) | Information about performed query. |
 
 | Return Value | Description |

@@ -21,11 +21,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
   and more.
 
 * In this article:  
-  * [Indexes list view](../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view)  
-  * [Indexes list view - Actions](../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions)  
-  * [Indexes list view - Index errors](../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---errors)  
-  * [Indexes list view - Side by side indexing](../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---side-by-side-indexing)
-  * [Indexes list view - Rolling deployment](../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---rolling-deployment)
+  * [Indexes list view](#indexes-list-view)  
+  * [Indexes list view - Actions](#indexes-list-view---actions)  
+  * [Indexes list view - Index errors](#indexes-list-view---errors)  
+  * [Indexes list view - Side by side indexing](#indexes-list-view---side-by-side-indexing)
+  * [Indexes list view - Rolling deployment](#indexes-list-view---rolling-deployment)
 </Admonition>
 ## Indexes list view
 
@@ -35,7 +35,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * **Name** - The name of the index.  
   For example, in the above example, the index name is _NamesIndex_.
-* **Type** - The [index Type](../../../studio/database/indexes/indexes-overview.mdx#index-types), which can be one of the following:  
+* **Type** - The [index Type](./indexes-overview.mdx#index-types), which can be one of the following:  
     * Map  
     * Map-Reduce  
     * Auto Map  
@@ -81,7 +81,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 #### 1. Crate a new index
 
-* Learn more in [Create new index](../../../studio/database/indexes/create-map-index.mdx).  
+* Learn more in [Create new index](./create-map-index.mdx).  
 
 #### 2. &gt;
 
@@ -111,7 +111,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   By default, RavenDB prioritizes request processing over indexing to ensure responsiveness.
 * **Mode**  
   Set the modification behavior (for static-indexes only):  
-   * Unlocked - Changes to the index definition will be applied. See [Side by side indexing](../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---side-by-side-indexing).  
+   * Unlocked - Changes to the index definition will be applied. See [Side by side indexing](#indexes-list-view---side-by-side-indexing).  
    * Locked - Changes to the index definition will not be applied. No error is raised.  
    * Locked(Error) - Changes to the index definition will not be applied,  
      and an error is raised when attempting to modify the index.  
@@ -181,7 +181,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Once the 'new index' has completed its work, it will automatically replace the old one.  
   You can also force an immediate replacement if needed, by clicking **'Swap Now'** (label **'3'** in the figure above).  
 
-* The 'old index' definition can still be referenced as RavenDB keeps a [history of index revisions](../../../studio/database/indexes/index-history.mdx),  
+* The 'old index' definition can still be referenced as RavenDB keeps a [history of index revisions](./index-history.mdx),  
   allowing you to revert an index to any of its past revisions.  
 
 
@@ -192,7 +192,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 #### 1. Rolling deployment
 
-* When an index that is [defined](../../../studio/database/indexes/create-map-index.mdx#edit-index-view) with [Rolling deployment](../../../indexes/rolling-index-deployment.mdx) is created or modified,  
+* When an index that is [defined](./create-map-index.mdx#edit-index-view) with [Rolling deployment](../../../indexes/rolling-index-deployment.mdx) is created or modified,  
   the indexing process progress is displayed per node.  
 
 #### 2. Force parallel

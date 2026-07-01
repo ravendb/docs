@@ -20,8 +20,8 @@ import Panel from '@site/src/components/Panel';
     In such cases, the resulting `QueryStatistics` object will remain with its default values.
     
 * In this article:  
-   * [Get query statistics](../../../../client-api/session/querying/how-to-get-query-statistics.mdx#get-query-statistics)  
-   * [Syntax](../../../../client-api/session/querying/how-to-get-query-statistics.mdx#syntax)  
+   * [Get query statistics](#get-query-statistics)  
+   * [Syntax](#syntax)  
 
 </Admonition>
 
@@ -123,7 +123,7 @@ public class QueryStatistics
 |--------------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **IsStale**        | `bool`           | Are the results returned by the query potentially stale                                                                                                                                                      |
 | **DurationInMs**   | `long`           | Query duration on the server side in Milliseconds                                                                                                                                                            |
-| **TotalResults**   | `long`           | The total count of results that matched the query as `Int32`.<br/>Matching query results can also be counted as `Int32` using [Count](../../../../client-api/session/querying/how-to-count-query-results.mdx#count). |
+| **TotalResults**   | `long`           | The total count of results that matched the query as `Int32`.<br/>Matching query results can also be counted as `Int32` using [Count](../how-to-count-query-results.mdx#count). |
 | **SkippedResults** | `long`           | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../../indexes/querying/paging.mdx#paging-through-tampered-results).                                           |
 | **ScannedResults** | `long?`          | The number of results scanned by the query.<br/>Relevant only when using a filter clause in the query.                                                                                                        |
 | **Timestamp**      | `DateTime`       | The time when the query results were unstale                                                                                                                                                                 |

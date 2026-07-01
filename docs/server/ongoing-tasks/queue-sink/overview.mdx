@@ -25,7 +25,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   **only** RavenDB's role as a _Consumer_ through the implementation of 
   a sink connector.  
   To learn about RavenDB's role as a _Producer_ please refer to the 
-  [Queue ETL section](../../../server/ongoing-tasks/etl/queue-etl/overview.mdx).  
+  [Queue ETL section](../etl/queue-etl/overview.mdx).  
   </Admonition>
 * RavenDB can run an ongoing Sink task that reads JSON formatted messages 
   from broker queues, apply a user-defined script that can, among other things, 
@@ -40,9 +40,9 @@ ability to process this data, reveal and exploit its value.
 </Admonition>
 
 * In this page:  
-   * [Supported Message Brokers](../../../server/ongoing-tasks/queue-sink/overview.mdx#supported-message-brokers)  
-   * [Task Statistics](../../../server/ongoing-tasks/queue-sink/overview.mdx#task-statistics)  
-   * [Licensing](../../../server/ongoing-tasks/queue-sink/overview.mdx#licensing)  
+   * [Supported Message Brokers](#supported-message-brokers)  
+   * [Task Statistics](#task-statistics)  
+   * [Licensing](#licensing)  
 
 </Admonition>
 ## Supported Message Brokers
@@ -56,11 +56,11 @@ Message brokers currently supported by RavenDB include **Apache Kafka**, **Rabbi
 3. Create a new **database task**.  
    ![Define Queue Sink Task](./assets/overview_task-selection.png)
    * **A**. **Kafka Sink**  
-     Click to define a [Kafka Queue Sink task](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx).  
+     Click to define a [Kafka Queue Sink task](./kafka-queue-sink.mdx).  
    * **B**. **RabbitMQ Sink**  
-     Click to define a [RabbitMQ Queue Sink task](../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink.mdx).  
+     Click to define a [RabbitMQ Queue Sink task](./rabbit-mq-queue-sink.mdx).  
    * **C**. **Azure Service Bus Sink**  
-     Click to define an [Azure Service Bus Queue Sink task](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx).  
+     Click to define an [Azure Service Bus Queue Sink task](./azure-service-bus-queue-sink.mdx).  
 4. Open the **info hub** for information about ongoing tasks and this view.  
    ![Info Hub](./assets/info-hub.png)
 

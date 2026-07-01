@@ -32,21 +32,21 @@ import ContentFrame from "@site/src/components/ContentFrame";
   its recent error rate, independently of the raw number of errors stored.  
 
 * Task errors and the health states they drive are exposed in
-  [Studio](../../monitoring/task-errors/studio-views.mdx),
+  [Studio](./studio-views.mdx),
   [HTTP endpoints](../../server/troubleshooting/debug-routes.mdx#debug-endpoints),
   [SNMP OIDs](../../server/administration/snmp/snmp-overview.mdx#list-of-oids),
   [Prometheus metrics](../../server/administration/monitoring/prometheus.mdx#metrics-provided-by-the-prometheus-endpoint),
   and [monitoring endpoints](../../server/administration/monitoring/telegraf.mdx#monitoring-endpoints).  
 
 * In this article:
-   * [What task errors are](../../monitoring/task-errors/overview.mdx#what-task-errors-are)
-      * [Error types](../../monitoring/task-errors/overview.mdx#error-types)
-      * [Error steps](../../monitoring/task-errors/overview.mdx#error-steps)
-   * [Where task errors are stored](../../monitoring/task-errors/overview.mdx#where-task-errors-are-stored)
-   * [Task health](../../monitoring/task-errors/overview.mdx#task-health)
-      * [Health states](../../monitoring/task-errors/overview.mdx#health-states)
-      * [How health is computed](../../monitoring/task-errors/overview.mdx#how-health-is-computed)
-   * [Where to view and manage task errors](../../monitoring/task-errors/overview.mdx#where-to-view-and-manage-task-errors)
+   * [What task errors are](#what-task-errors-are)
+      * [Error types](#error-types)
+      * [Error steps](#error-steps)
+   * [Where task errors are stored](#where-task-errors-are-stored)
+   * [Task health](#task-health)
+      * [Health states](#health-states)
+      * [How health is computed](#how-health-is-computed)
+   * [Where to view and manage task errors](#where-to-view-and-manage-task-errors)
 
 </Admonition>
 
@@ -142,7 +142,7 @@ type.
 
 Each ETL and AI task carries a health state that summarizes how well it has been processing
 recent batches. The health state is exposed everywhere task errors are
-(see [Where to view and manage task errors](../../monitoring/task-errors/overview.mdx#where-to-view-and-manage-task-errors))
+(see [Where to view and manage task errors](#where-to-view-and-manage-task-errors))
 and is used by automated monitoring to decide when a task needs attention.  
 
 <ContentFrame>
@@ -173,7 +173,7 @@ Deleting a task's stored errors clears the rows from the error tables but does n
 reset the task's health state.  
 Health is driven by the running error rate, not by the rows in the error tables. A task in
 the `Failed` state will recover only when its error rate falls back below the
-[configured thresholds](../../monitoring/task-errors/configuration.mdx).  
+[configured thresholds](./configuration.mdx).  
 </Admonition>
 
 </ContentFrame>
@@ -205,7 +205,7 @@ recent batches have all failed. Two thresholds determine the transitions between
 Both thresholds are configurable, server-wide or per database, and apply to AI tasks as well
 as ETL tasks despite the keys `ETL` prefix.  
 
-[Task errors configuration](../../monitoring/task-errors/configuration.mdx) covers the two
+[Task errors configuration](./configuration.mdx) covers the two
 keys, their valid ranges, and guidance for choosing values.  
 
 </ContentFrame>
@@ -219,7 +219,7 @@ start with Studio; automated monitoring tools usually pull from SNMP OIDs, Prome
 metrics, or monitoring endpoints.  
 
 [Inspect and manage task errors via the HTTP endpoints](../../server/troubleshooting/debug-routes.mdx)  
-[Inspect and manage task errors via Studio](../../monitoring/task-errors/studio-views.mdx)  
+[Inspect and manage task errors via Studio](./studio-views.mdx)  
 
 Where to find them in detail:  
 
@@ -238,7 +238,7 @@ Where to find them in detail:
   The `Task Errors` view is reachable from `Tasks` **>** `Task Errors` and from
   `AI Hub` **>** `AI Task Errors` (the same view, pre-filtered to AI tasks).
   Each ETL and AI task bar on the `Ongoing Tasks` view also shows the task's health state and error count.  
-  See [Task errors Studio views](../../monitoring/task-errors/studio-views.mdx).  
+  See [Task errors Studio views](./studio-views.mdx).  
 
 * **SNMP OIDs**  
   Dedicated OIDs for server-level, database-level, and per-task error counts and health

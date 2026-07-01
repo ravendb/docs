@@ -33,29 +33,29 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * This article focuses on how to create a Kafka ETL task using the Client API.  
   To define a Kafka ETL task from Studio, see [Studio: Kafka ETL Task](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx).  
-  For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx).
+  For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](./overview.mdx).
 
 * In this article:
-  * [Setup workflow](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#setup-workflow)
-  * [Creating a Kafka ETL task using the Client API](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#creating-a-kafka-etl-task-using-the-client-api)
-    * [Add a Kafka connection string](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#add-a-kafka-connection-string)
-      * [Example: connecting to a secure Kafka cluster](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#example-secure-kafka-cluster)
-    * [Use RavenDB Certificate](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#use-ravendb-certificate)
-    * [Add a Kafka ETL task](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#add-a-kafka-etl-task)
-      * [Example: basic](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#example-basic)
-      * [Example: delete processed documents](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#delete-processed-documents)
-    * [The transformation script](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#the-transformation-script)
-      * [The loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#the-loadto-method)
-  * [Prerequisites for a secure Kafka server](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#prerequisites-for-a-secure-kafka-server)
-    * [What needs to be granted](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#what-needs-to-be-granted)
-    * [Computing the transactional IDs](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#computing-the-transactional-ids)
-      * [Example: building the transactional ID](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#example-building-the-transactional-id)
-    * [Entering the grants on the Kafka cluster](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#entering-the-grants-on-the-kafka-cluster)
-    * [Single-node Kafka cluster](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#single-node-kafka-cluster)
-    * [SSL/TLS required for encrypted RavenDB databases](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#ssl-tls-for-encrypted-databases)
-  * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#syntax)
-    * [Connection string classes](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#connection-string-classes)
-    * [ETL task classes](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#etl-task-classes)
+  * [Setup workflow](#setup-workflow)
+  * [Creating a Kafka ETL task using the Client API](#creating-a-kafka-etl-task-using-the-client-api)
+    * [Add a Kafka connection string](#add-a-kafka-connection-string)
+      * [Example: connecting to a secure Kafka cluster](#example-secure-kafka-cluster)
+    * [Use RavenDB Certificate](#use-ravendb-certificate)
+    * [Add a Kafka ETL task](#add-a-kafka-etl-task)
+      * [Example: basic](#example-basic)
+      * [Example: delete processed documents](#delete-processed-documents)
+    * [The transformation script](#the-transformation-script)
+      * [The loadTo method](#the-loadto-method)
+  * [Prerequisites for a secure Kafka server](#prerequisites-for-a-secure-kafka-server)
+    * [What needs to be granted](#what-needs-to-be-granted)
+    * [Computing the transactional IDs](#computing-the-transactional-ids)
+      * [Example: building the transactional ID](#example-building-the-transactional-id)
+    * [Entering the grants on the Kafka cluster](#entering-the-grants-on-the-kafka-cluster)
+    * [Single-node Kafka cluster](#single-node-kafka-cluster)
+    * [SSL/TLS required for encrypted RavenDB databases](#ssl-tls-for-encrypted-databases)
+  * [Syntax](#syntax)
+    * [Connection string classes](#connection-string-classes)
+    * [ETL task classes](#etl-task-classes)
 
 </Admonition>
 
@@ -193,7 +193,7 @@ In this example, the Kafka ETL Task will:
 * Process each "Order" document using a defined script that creates a new `orderData` object.
 * Load the `orderData` object to the "OrdersTopic" in a Kafka broker.
 
-For more details about the script and the `loadTo` method, see [The transformation script](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#the-transformation-script) below.
+For more details about the script and the `loadTo` method, see [The transformation script](#the-transformation-script) below.
 
 ```csharp
 // Define a transformation script for the task:
@@ -290,7 +290,7 @@ store.Maintenance.Send(new AddEtlOperation<QueueConnectionString>(etlTask));
 
 ## The transformation script
 
-The [basic characteristics](../../../../server/ongoing-tasks/etl/basics.mdx) of a Kafka ETL script are similar to those of other ETL types.  
+The [basic characteristics](../basics.mdx) of a Kafka ETL script are similar to those of other ETL types.  
 The script defines what data to **extract** from the source document, how to **transform** this data, and which Kafka topic to **load** it to.
 
 ### The loadTo method
@@ -312,7 +312,7 @@ The two methods are equivalent, offering alternative syntax:
 |----------------|--------|--------------------------------------------------------------------------------------------------------------------------------------|
 | **TopicName**  | string | The name of the Kafka topic.                                                                                                         |
 | **obj**        | object | The object to transfer.                                                                                                              |
-| **attributes** | object | An object with optional and required [CloudEvents attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#cloudevents). |
+| **attributes** | object | An object with optional and required [CloudEvents attributes](./overview.mdx#cloudevents). |
 
 For example, the following two calls, which load data to "OrdersTopic", are equivalent:
 

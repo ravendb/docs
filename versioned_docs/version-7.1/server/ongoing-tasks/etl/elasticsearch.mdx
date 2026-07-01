@@ -14,46 +14,46 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Ongoing Tasks: Elasticsearch ETL
 <Admonition type="note" title="">
 
-* An **Elasticsearch** [ETL](../../../server/ongoing-tasks/etl/basics.mdx) task creates an ETL process 
+* An **Elasticsearch** [ETL](./basics.mdx) task creates an ETL process 
   from selected collections in a RavenDB database to Elasticsearch destinations.
 
 * You can define an Elasticsearch ETL task using [Studio](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx) 
   or your [client](../../../client-api/operations/maintenance/etl/add-etl.mdx#example---add-elasticsearch-etl-task).  
 
 * In this page:  
-  * [Elasticsearch ETL](../../../server/ongoing-tasks/etl/elasticsearch.mdx#elasticsearch-etl)  
-  * [Transformation Script](../../../server/ongoing-tasks/etl/elasticsearch.mdx#transformation-script)  
-     * [Alternative Syntax](../../../server/ongoing-tasks/etl/elasticsearch.mdx#alternative-syntax)  
-  * [Data Delivery](../../../server/ongoing-tasks/etl/elasticsearch.mdx#data-delivery)  
-     * [What is Transferred](../../../server/ongoing-tasks/etl/elasticsearch.mdx#what-is-transferred)  
-     * [Document Identifiers](../../../server/ongoing-tasks/etl/elasticsearch.mdx#document-identifiers)  
-     * [Transactions](../../../server/ongoing-tasks/etl/elasticsearch.mdx#transactions)  
-     * [Insert Only Mode](../../../server/ongoing-tasks/etl/elasticsearch.mdx#insert-only-mode)  
-  * [Elasticsearch Index Definition](../../../server/ongoing-tasks/etl/elasticsearch.mdx#elasticsearch-index-definition)  
-  * [Client API](../../../server/ongoing-tasks/etl/elasticsearch.mdx#client-api)  
-     * [Add an Elasticsearch ETL Task](../../../server/ongoing-tasks/etl/elasticsearch.mdx#add-an-elasticsearch-etl-task)  
-     * [Add an Elasticsearch Connection String](../../../server/ongoing-tasks/etl/elasticsearch.mdx#add-an-elasticsearch-connection-string)  
-  * [Supported Elasticsearch Versions](../../../server/ongoing-tasks/etl/elasticsearch.mdx#supported-elasticsearch-versions)  
+  * [Elasticsearch ETL](#elasticsearch-etl)  
+  * [Transformation Script](#transformation-script)  
+     * [Alternative Syntax](#alternative-syntax)  
+  * [Data Delivery](#data-delivery)  
+     * [What is Transferred](#what-is-transferred)  
+     * [Document Identifiers](#document-identifiers)  
+     * [Transactions](#transactions)  
+     * [Insert Only Mode](#insert-only-mode)  
+  * [Elasticsearch Index Definition](#elasticsearch-index-definition)  
+  * [Client API](#client-api)  
+     * [Add an Elasticsearch ETL Task](#add-an-elasticsearch-etl-task)  
+     * [Add an Elasticsearch Connection String](#add-an-elasticsearch-connection-string)  
+  * [Supported Elasticsearch Versions](#supported-elasticsearch-versions)  
 
 </Admonition>
 ## Elasticsearch ETL
 
 * The following steps are required when creating an Elasticsearch ETL task:  
-   * Define a [connection string](../../../server/ongoing-tasks/etl/elasticsearch.mdx#add-an-elasticsearch-connection-string) which includes:  
+   * Define a [connection string](#add-an-elasticsearch-connection-string) which includes:  
       * URLs to Elasticsearch nodes.  
       * Authentication method required by the Elasticsearch nodes.  
    * **Define the Elasticsearch Indexes**  
       * Indexes are used by Elasticsearch to store and locate documents.  
       * The ETL task will send new documents to the specified Elasticsearch indexes.  
       * If not otherwise specified, existing Elasticsearch documents will be removed before adding new documents.  
-      * A [document identifier](../../../server/ongoing-tasks/etl/elasticsearch.mdx#document-identifiers) 
+      * A [document identifier](#document-identifiers) 
         field property is defined per document, and used by the delete command to locate the matching documents.  
    * **Define Transformation Scripts**.  
      The transformation script determines which RavenDB documents will be transferred, 
      to which Elasticsearch Indexes, and in what form.  
 
 * For a thorough step-by-step explanation:  
-   * Learn [here](../../../server/ongoing-tasks/etl/elasticsearch.mdx#add-an-elasticsearch-etl-task) 
+   * Learn [here](#add-an-elasticsearch-etl-task) 
      to define an Elasticsearch ETL task using **code**.  
    * Learn [here](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx) 
      to define an Elasticsearch ETL task using **Studio**.  
@@ -63,15 +63,15 @@ import LanguageContent from "@site/src/components/LanguageContent";
 ## Transformation Script
 
 * The structure and syntax of an Elasticsearch ETL transformation script are similar to 
-  those of all other ETL types ([RavenDB ETL](../../../server/ongoing-tasks/etl/raven.mdx), 
-  [SQL ETL](../../../server/ongoing-tasks/etl/sql.mdx), and 
-  [OLAP ETL](../../../server/ongoing-tasks/etl/olap.mdx)) scripts.  
+  those of all other ETL types ([RavenDB ETL](./raven.mdx), 
+  [SQL ETL](./sql.mdx), and 
+  [OLAP ETL](./olap.mdx)) scripts.  
   The script defines which documents will be _Extracted_ from the database, 
   _Transforms_ the retrieved data, and _Loads_ it to the Elasticsearch destination.
-  Learn about ETL transformation scripts [here](../../../server/ongoing-tasks/etl/basics.mdx#transform).  
+  Learn about ETL transformation scripts [here](./basics.mdx#transform).  
 
 * The script **Loads** data to the Elasticsearch destination using the 
-  [loadTo\\&lt;Target\\&gt;(obj)](../../../server/ongoing-tasks/etl/basics.mdx#transform) command.  
+  [loadTo\\&lt;Target\\&gt;(obj)](./basics.mdx#transform) command.  
    * `Target` is the name of the Elasticsearch index to which the data is transferred.  
        * **In the task settings**:  
          Define Elasticsearch Index names using only lower-case characters (as required by Elasticsearch).  
@@ -148,7 +148,7 @@ adToOrders(orderData);
 </CodeBlock>
 </TabItem>
 * In addition to specifying this document property in the script, it must be defined for the ETL task:  
-   * Either set `DocumentIdProperty` through code (see [code sample](../../../server/ongoing-tasks/etl/elasticsearch.mdx#add-an-elasticsearch-etl-task)),  
+   * Either set `DocumentIdProperty` through code (see [code sample](#add-an-elasticsearch-etl-task)),  
    * or Set the [Document ID Property Name](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#elasticsearch-indexes) field via Studio.  
 ### Transactions
 
@@ -176,7 +176,7 @@ OrderLinesCount":3,"TotalCost":0,"DocID":"orders/1-a"\}
 </TabItem>
 ### Insert Only Mode
 
-You can enable the task's **Insert Only** mode using [code](../../../server/ongoing-tasks/etl/elasticsearch.mdx#add-an-elasticsearch-etl-task) 
+You can enable the task's **Insert Only** mode using [code](#add-an-elasticsearch-etl-task) 
 or via [Studio](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#elasticsearch-indexes), 
 to **omit** _delete_by_query commands and so refrain from deleting documents before the transfer.  
 <Admonition type="note" title="">
@@ -235,7 +235,7 @@ as **"keyword"** in your index definition.
   Pass it an `ElasticSearchEtlConfiguration`instance with -  
    * The name of a defined **Connection String**.  
      You can define a connection string 
-     [using code](../../../server/ongoing-tasks/etl/elasticsearch.mdx#add-an-elasticsearch-connection-string) 
+     [using code](#add-an-elasticsearch-connection-string) 
      or via [Studio](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#define-the-elasticsearch-etl-task).  
    * A list of **Elasticsearch Indexes**.  
    * A list of **Transformation Scripts**.  
@@ -309,7 +309,7 @@ store.Maintenance.Send(operation);
     | Property | Type | Description |
     |:-------------|:-------------|:-------------|
     | **IndexName** | `string` | Elasticsearch Index name. <br/> Name indexes **using lower-case characters only**, e.g. `orders`. |
-    | **DocumentIdProperty** | `string` | The [document ID property](../../../server/ongoing-tasks/etl/elasticsearch.mdx#document-identifiers) defined on the transferred document object inside the transformation script. |
+    | **DocumentIdProperty** | `string` | The [document ID property](#document-identifiers) defined on the transferred document object inside the transformation script. |
     | **InsertOnlyMode** | `bool` | `true` - Do not delete existing documents before appending new ones. <br/>  `false` - Delete existing document versions before appending documents.|
 
 </Admonition>

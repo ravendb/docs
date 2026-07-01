@@ -8,7 +8,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Admonition type="note" title="">
 
 * This article explains **optimistic concurrency** in RavenDB,
-  focusing on how optimistic concurrency behaves in sessions operating with [single-node transactions](../../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction) and how to configure it.    
+  focusing on how optimistic concurrency behaves in sessions operating with [single-node transactions](../../cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction) and how to configure it.    
     
 * By default, single-node sessions do not perform concurrency checks,  
   so concurrent updates to the same document follow the "Last Write Wins" strategy, which may lead to lost updates.
@@ -16,7 +16,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * Enabling optimistic concurrency ensures RavenDB detects and prevents conflicting updates,  
   preserving data integrity by rejecting changes when a document has been modified by another session.  
 
-* RavenDB supports three [modes of optimistic concurrency](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#optimistic-concurrency-modes),  
+* RavenDB supports three [modes of optimistic concurrency](#optimistic-concurrency-modes),  
   allowing you to choose a level of conflict validation that suits your application.
     
 * The optimistic concurrency mode can be configured at different scopes:
@@ -27,17 +27,17 @@ import ContentFrame from "@site/src/components/ContentFrame";
 ---
     
 * In this article:
-  * [Optimistic concurrency - Overview](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#optimistic-concurrency-overview)
-    * [Default concurrency behavior with single-node transactions](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#default-concurrency-behavior-with-single-node-transactions)
-    * [Optimistic concurrency with single-node transactions](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#optimistic-concurrency-with-single-node-transactions)
-    * [Concurrency control in cluster-wide transactions](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#concurrency-control-in-cluster-wide-transactions)
-  * [Optimistic concurrency - Modes](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#optimistic-concurrency-modes)  
-  * [Configure globally](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#configure-globally)
-  * [Configure per session](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#configure-per-session)
-  * [Disable for specific document (when enabled on the session)](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#disable-for-specific-document-when-enabled-on-session)  
-  * [Enable for specific document (when disabled on the session)](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#enable-for-specific-document-when-disabled-on-session)
-  * [Constraints](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#constraints)    
-  * [Syntax](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#syntax)
+  * [Optimistic concurrency - Overview](#optimistic-concurrency-overview)
+    * [Default concurrency behavior with single-node transactions](#default-concurrency-behavior-with-single-node-transactions)
+    * [Optimistic concurrency with single-node transactions](#optimistic-concurrency-with-single-node-transactions)
+    * [Concurrency control in cluster-wide transactions](#concurrency-control-in-cluster-wide-transactions)
+  * [Optimistic concurrency - Modes](#optimistic-concurrency-modes)  
+  * [Configure globally](#configure-globally)
+  * [Configure per session](#configure-per-session)
+  * [Disable for specific document (when enabled on the session)](#disable-for-specific-document-when-enabled-on-session)  
+  * [Enable for specific document (when disabled on the session)](#enable-for-specific-document-when-disabled-on-session)
+  * [Constraints](#constraints)    
+  * [Syntax](#syntax)
 
 </Admonition>
 
@@ -48,7 +48,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   <ContentFrame>    
       
   1. **Load or query** for documents from the database.  
-     Unless [Tracking is explicitly disabled](../../../../client-api/session/configuration/how-to-disable-tracking.mdx), these documents are automatically [Tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern).   
+     Unless [Tracking is explicitly disabled](../how-to-disable-tracking.mdx), these documents are automatically [Tracked by the session](../../what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern).   
      When tracked, the session stores the document's [Change vector](../../../../server/clustering/replication/change-vector.mdx) (a unique version identifier) in memory.
       
        <Admonition type="note" title="">
@@ -83,7 +83,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
     
 ### Default concurrency behavior with single-node transactions
     
-By default, sessions using [single-node transactions](../../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction) do not perform optimistic concurrency checks:
+By default, sessions using [single-node transactions](../../cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction) do not perform optimistic concurrency checks:
     
 * **Silent overwrites**:  
   Documents are saved without validating whether the version loaded by the session is still current,  
@@ -115,7 +115,7 @@ sessions operating with single-node transactions can enable optimistic concurren
     
 * **Optimistic concurrency modes**:   
   Optimistic concurrency can be configured to validate only modified documents or both modified and read-only documents.
-  Learn more in the [Optimistic concurrency modes](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#optimistic-concurrency-modes) section below.   
+  Learn more in the [Optimistic concurrency modes](#optimistic-concurrency-modes) section below.   
 
 </Admonition>
     
@@ -123,14 +123,14 @@ sessions operating with single-node transactions can enable optimistic concurren
     
 ### Concurrency control in cluster-wide transactions
     
-When the session operates in [Cluster-wide mode](../../../../client-api/session/cluster-transaction/overview.mdx),  
+When the session operates in [Cluster-wide mode](../../cluster-transaction/overview.mdx),  
 concurrency control is managed by the cluster transaction mechanism:
     
 * RavenDB coordinates cluster-wide writes through the Raft protocol and validates document changes as part of the transaction process. 
   To ensure consistency across the cluster, document writes use [Atomic guards](../../../../compare-exchange/atomic-guards.mdx).  
   If another cluster-wide transaction modifies the same document first, `SaveChanges()` will fail with a `ConcurrencyException`, allowing your application to handle the conflict.    
 
-* For more information, see [Cluster Transaction - Overview](../../../../client-api/session/cluster-transaction/overview.mdx).
+* For more information, see [Cluster Transaction - Overview](../../cluster-transaction/overview.mdx).
 
 </Admonition>
     
@@ -138,7 +138,7 @@ concurrency control is managed by the cluster transaction mechanism:
 
 <Panel heading="Optimistic concurrency - Modes">
 
-* When working with a session that uses [Single-node transactions](../../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction), 
+* When working with a session that uses [Single-node transactions](../../cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction), 
   you can configure optimistic concurrency to determine whether the server validates document versions and raises exceptions for conflicting updates.
     
 * RavenDB offers three modes, each providing a different level of conflict protection.    
@@ -217,10 +217,10 @@ Use this mode in scenarios where:
 
 <Panel heading="Configure globally">
 
-* Use the [store.Conventions.OptimisticConcurrencyMode](../../../../client-api/configuration/conventions.mdx#optimisticconcurrencymode) convention 
+* Use the [store.Conventions.OptimisticConcurrencyMode](../../../configuration/conventions.mdx#optimisticconcurrencymode) convention 
  to set the default optimistic concurrency mode for ALL sessions created under the same document store.
 
-* You can override this setting for individual sessions if needed. See [Configure per session](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#configure-per-session) for more details.    
+* You can override this setting for individual sessions if needed. See [Configure per session](#configure-per-session) for more details.    
 
 <TabItem>
 ```csharp
@@ -522,7 +522,7 @@ using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
 * Optimistic concurrency can be _disabled_ when **storing** a specific document,  
   even when it is _enabled_ for an entire session (or globally).
 
-* This is done by passing `null` as a change vector value to the [Store](../../../../client-api/session/storing-entities.mdx) method.
+* This is done by passing `null` as a change vector value to the [Store](../../storing-entities.mdx) method.
 
 <Tabs>   
 <TabItem value="Sync" label="Sync">
@@ -588,7 +588,7 @@ using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
 * Optimistic concurrency can be _enabled_ when **storing** a specific document,  
   even when it is _disabled_ for an entire session (or globally).
 
-* This is done by passing `string.Empty` as the change vector value to the [Store](../../../../client-api/session/storing-entities.mdx) method.  
+* This is done by passing `string.Empty` as the change vector value to the [Store](../../storing-entities.mdx) method.  
   Setting the change vector to an empty string will cause RavenDB to ensure that this document is a new one and doesn't already exist.
   A `ConcurrencyException` will be thrown if the document already exists. 
 
@@ -657,9 +657,9 @@ using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
 
 <Panel heading="Constraints">
 
-* [Cannot combine _Writes_ and _WritesAndReads_ with _NoTracking_](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#cannot-combinewritesandwritesandreadswithnotracking).
-* [Cannot combine _Writes_ and _WritesAndReads_ with _TransactionMode.ClusterWide_](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#cannot-combineewritesandwritesandreadswithtransactionmodeclusterwide).
-* [_UseOptimisticConcurrency_ is deprecated](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#useoptimisticconcurrencyis-deprecated).
+* [Cannot combine _Writes_ and _WritesAndReads_ with _NoTracking_](#cannot-combinewritesandwritesandreadswithnotracking).
+* [Cannot combine _Writes_ and _WritesAndReads_ with _TransactionMode.ClusterWide_](#cannot-combineewritesandwritesandreadswithtransactionmodeclusterwide).
+* [_UseOptimisticConcurrency_ is deprecated](#useoptimisticconcurrencyis-deprecated).
 * _WritesAndReads_ mode is not supported with [Sharding](../../../../sharding/overview.mdx).
     
 ---
@@ -668,7 +668,7 @@ using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
     
 ### Cannot combine&nbsp;_Writes_&nbsp;and&nbsp;_WritesAndReads_&nbsp;with&nbsp;_NoTracking_
     
-* If you [Disable tracking](../../../../client-api/session/configuration/how-to-disable-tracking.mdx),
+* If you [Disable tracking](../how-to-disable-tracking.mdx),
   the session does Not track documents or retain their change vectors.  
   As a result, _Writes_ and _WritesAndReads_ modes cannot be used.    
 
@@ -710,7 +710,7 @@ using (IDocumentSession session = store.OpenSession(new SessionOptions
     
 ### Cannot combinee&nbsp;_Writes_&nbsp;and&nbsp;_WritesAndReads_&nbsp;with&nbsp;_TransactionMode.ClusterWide_
     
-* [Cluster-wide sessions](../../../../client-api/session/cluster-transaction/overview.mdx) cannot apply _Writes_ or _WritesAndReads_ modes.    
+* [Cluster-wide sessions](../../cluster-transaction/overview.mdx) cannot apply _Writes_ or _WritesAndReads_ modes.    
 
 * Setting `Writes` or `WritesAndReads` mode on a cluster-wide session will throw an `InvalidOperationException`.  
   The exception is thrown by whichever property is set second.
@@ -786,7 +786,7 @@ using (IDocumentSession session = store.OpenSession())
 <Admonition type="info" title="">
     
 **Note**:  
-In all cases above, the exception is also thrown if the conflicting condition is inherited from the [store conventions](../../../../client-api/configuration/conventions.mdx)  
+In all cases above, the exception is also thrown if the conflicting condition is inherited from the [store conventions](../../../configuration/conventions.mdx)  
 rather than set explicitly in the session.
     
 </Admonition>

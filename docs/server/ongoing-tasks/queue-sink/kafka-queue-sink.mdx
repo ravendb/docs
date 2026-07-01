@@ -21,7 +21,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   increases and the number of events it needs to stream climbs to the big-data zone.
 
 * RavenDB can harness the advantages presented by message brokers like Kafka
-  both as a producer (by [running ETL tasks](../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx))
+  both as a producer (by [running ETL tasks](../etl/queue-etl/kafka.mdx))
   and as a **consumer** (using a sink task to consume enqueued messages).
 
 * To use RavenDB as a consumer, define an ongoing Sink task that will read batches
@@ -29,17 +29,17 @@ import ContentFrame from "@site/src/components/ContentFrame";
   user-defined scripts, and store the documents in RavenDB collections.
 
 * In this article:
-  * [The Queue Sink Task](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#the-queue-sink-task)
-     * [Connecting a Kafka broker](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#connecting-a-kafka-broker)
-     * [Retrieving enqueued messages from selected Kafka topics](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#retrieving-enqueued-messages-from-selected-kafka-topics)
-     * [Running user-defined scripts](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#running-user-defined-scripts)
-     * [Storing documents in RavenDB collections](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#storing-documents-in-ravendb-collections)
-  * [Client API](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#client-api)
-     * [Adding a Kafka connection string](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#adding-a-kafka-connection-string)
-     * [Adding a Kafka sink task](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#adding-a-kafka-sink-task)
-  * [Configuration Options](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#configuration-options)
-  * [Syntax](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#syntax)
-     * [Classes](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#classes)
+  * [The Queue Sink Task](#the-queue-sink-task)
+     * [Connecting a Kafka broker](#connecting-a-kafka-broker)
+     * [Retrieving enqueued messages from selected Kafka topics](#retrieving-enqueued-messages-from-selected-kafka-topics)
+     * [Running user-defined scripts](#running-user-defined-scripts)
+     * [Storing documents in RavenDB collections](#storing-documents-in-ravendb-collections)
+  * [Client API](#client-api)
+     * [Adding a Kafka connection string](#adding-a-kafka-connection-string)
+     * [Adding a Kafka sink task](#adding-a-kafka-sink-task)
+  * [Configuration Options](#configuration-options)
+  * [Syntax](#syntax)
+     * [Classes](#classes)
 
 </Admonition>
 
@@ -58,14 +58,14 @@ In the message broker architecture, RavenDB sinks take the role of data consumer
 A sink would connect a Kafka broker using a connection string, and retrieve messages
 from the broker's Topics.
 
-Read [below](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#adding-a-kafka-connection-string)
+Read [below](#adding-a-kafka-connection-string)
 about adding a connection string via API.  
 Read [here](../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink.mdx#define-a-kafka-sink-task)
 about adding a connection string using Studio.
 
 <Admonition type="warning" title="">
 Like all ongoing tasks, a sink task is operated by a
-[responsible node](../../../server/clustering/distribution/highly-available-tasks.mdx#responsible-node).  
+[responsible node](../../clustering/distribution/highly-available-tasks.mdx#responsible-node).  
 When the responsibility for the task is moved from one node to another,
 e.g. from node `A` to node `B` as a result of node `A` down time:
 
@@ -154,7 +154,7 @@ The script can also apply various other JavaScript commands, including
 `load` to load a RavenDB document (e.g. to construct a document that
 includes data from the retrieved message and complementing data from
 existing RavenDB documents), `del` to remove existing RavenDB documents,
-and [many others](../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).
+and [many others](../../kb/javascript-engine.mdx#predefined-javascript-functions).
 
 </ContentFrame>
 
@@ -174,11 +174,11 @@ user in Studio, but **continue processing the batch**.
 Once a batch is consumed, the task confirms it by calling `kafkaConsumer.Commit()`.
 
 Note that the number of documents included in a batch is
-[configurable](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#configuration-options).
+[configurable](#configuration-options).
 
 <Admonition type="warning" title="Take care of duplicates" id="take-care-of-duplicates" href="#take-care-of-duplicates">
 Producers may enqueue
-[multiple instances](../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#idempotence-and-message-duplication)
+[multiple instances](../etl/queue-etl/overview.mdx#idempotence-and-message-duplication)
 of the same document.  
 If processing each message only once is important to the consumer,
 it is **the consumer's responsibility** to verify the uniqueness of
@@ -218,7 +218,7 @@ var res = store.Maintenance.Send(
 <br />
 
 For the full property reference, see the
-[Connection string](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#connection-string)
+[Connection string](#connection-string)
 class in the Syntax section.
 
 ---
@@ -283,7 +283,7 @@ AddQueueSinkOperationResult addQueueSinkOperationResult =
 </ContentFrame>
 
 For the `QueueSinkConfiguration` and `QueueSinkScript` property reference, see the
-[Sink task](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#sink-task)
+[Sink task](#sink-task)
 classes in the Syntax section.
 
 </Panel>
@@ -292,9 +292,9 @@ classes in the Syntax section.
 
 Use these configuration options to gain more control over queue sink tasks.
 
-* [QueueSink.MaxBatchSize](../../../server/configuration/queue-sink-configuration.mdx#queuesinkmaxbatchsize)  
+* [QueueSink.MaxBatchSize](../../configuration/queue-sink-configuration.mdx#queuesinkmaxbatchsize)  
   The maximum number of pulled messages consumed in a single batch.
-* [QueueSink.MaxFallbackTimeInSec](../../../server/configuration/queue-sink-configuration.mdx#queuesinkmaxfallbacktimeinsec)  
+* [QueueSink.MaxFallbackTimeInSec](../../configuration/queue-sink-configuration.mdx#queuesinkmaxfallbacktimeinsec)  
   The maximum number of seconds the Queue Sink process will be in a fallback
   mode (i.e. suspending the process) after a connection failure.
 

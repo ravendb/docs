@@ -12,12 +12,12 @@ import CodeBlock from '@theme/CodeBlock';
   For projecting results when querying a **static-index** see [project index query results](../../../../indexes/querying/projections.mdx).
 
 * In this article:
-  * [Projections overview](../../../../client-api/session/querying/how-to-project-query-results.mdx#projections-overview)
-  * [Projection Methods](../../../../client-api/session/querying/how-to-project-query-results.mdx#projection-methods)  
-      * [Select](../../../../client-api/session/querying/how-to-project-query-results.mdx#select)  
-      * [ProjectInto](../../../../client-api/session/querying/how-to-project-query-results.mdx#projectinto)  
-      * [SelectFields](../../../../client-api/session/querying/how-to-project-query-results.mdx#selectfields)
-  * [Single projection per query](../../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query)
+  * [Projections overview](#projections-overview)
+  * [Projection Methods](#projection-methods)  
+      * [Select](#select)  
+      * [ProjectInto](#projectinto)  
+      * [SelectFields](#selectfields)
+  * [Single projection per query](#single-projection-per-query)
 
 </Admonition>
 ## Projections overview
@@ -37,7 +37,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Projections allow you to tailor the query results specifically to your needs.  
   Getting specific details to display can be useful when presenting data to users or populating user interfaces.  
-  Projection queries are also useful with [subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
+  Projection queries are also useful with [subscriptions](../../../data-subscriptions/what-are-data-subscriptions.mdx) 
   since all transformation work is done on the server side without having to send a lot of data over the wire.
 
 * Returning partial document data from the server reduces network traffic,  
@@ -66,11 +66,11 @@ import CodeBlock from '@theme/CodeBlock';
   but you cannot filter which documents will be returned. That has already been determined earlier in the query pipeline.
 
 * Only a single projection request can be made per Query (and DocumentQuery).  
-  Learn more in [single projection per query](../../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query).
+  Learn more in [single projection per query](#single-projection-per-query).
 **The cost of projections**:
 
 * Queries in RavenDB do not allow any computation to occur during the query phase.  
-  However, you can perform any [calculations](../../../../client-api/session/querying/how-to-project-query-results.mdx#example---projection-with-calculations)
+  However, you can perform any [calculations](#example---projection-with-calculations)
   inside the projection.
 
 * But while calculations within a projection are allowed, having a very complex logic can impact query performance.  
@@ -639,7 +639,7 @@ select Name, Phone, Fax
 
 ## SelectFields
 
-The `SelectFields` method can only be used by a [Document Query](../../../../client-api/session/querying/document-query/what-is-document-query.mdx).  
+The `SelectFields` method can only be used by a [Document Query](../document-query/what-is-document-query.mdx).  
 It has two overloads:
 
 <TabItem value="csharp" label="csharp">

@@ -8,17 +8,17 @@ import Panel from '@site/src/components/Panel';
 <Admonition type="note" title="">
 
 * This article explains how to define a connection string to the [Google AI service](https://ai.google.dev/gemini-api/docs),  
-  enabling RavenDB to use Google AI models for [Embeddings generation tasks](../../../ai-integration/generating-embeddings/overview.mdx),
-  [Gen AI tasks](../../../ai-integration/gen-ai-integration/overview.mdx), and [AI agents](../../../ai-integration/ai-agents/overview.mdx).
+  enabling RavenDB to use Google AI models for [Embeddings generation tasks](../../generating-embeddings/overview.mdx),
+  [Gen AI tasks](../../gen-ai-integration/overview.mdx), and [AI agents](../../ai-agents/overview.mdx).
 
 * This configuration is not compatible with Vertex AI endpoints or credentials.   
 
 * In this article:
-  * [Define the connection string - from Studio](../../../ai-integration/connection-strings/google-ai.mdx#define-the-connection-string-from-studio)
-    * [Configuring a text embedding model](../../../ai-integration/connection-strings/google-ai.mdx#configuring-a-text-embedding-model)
-    * [Configuring a chat model](../../../ai-integration/connection-strings/google-ai.mdx#configuring-a-chat-model)
-  * [Define the connection string - from the Client API](../../../ai-integration/connection-strings/google-ai.mdx#define-the-connection-string-from-the-client-api)
-  * [Syntax](../../../ai-integration/connection-strings/google-ai.mdx#syntax) 
+  * [Define the connection string - from Studio](#define-the-connection-string-from-studio)
+    * [Configuring a text embedding model](#configuring-a-text-embedding-model)
+    * [Configuring a chat model](#configuring-a-chat-model)
+  * [Define the connection string - from the Client API](#define-the-connection-string-from-the-client-api)
+  * [Syntax](#syntax) 
     
 </Admonition>
 
@@ -33,7 +33,7 @@ import Panel from '@site/src/components/Panel';
 
 2. **Identifier** (optional)  
    Enter an identifier for this connection string.  
-   Learn more about the identifier in the [connection string identifier](../../../ai-integration/connection-strings/overview.mdx#the-connection-string-identifier) section.
+   Learn more about the identifier in the [connection string identifier](../overview.mdx#the-connection-string-identifier) section.
 
 3. **Model Type**  
    Select "Text Embeddings".
@@ -69,7 +69,7 @@ import Panel from '@site/src/components/Panel';
     
 ### Configuring a chat model
     
-* When configuring a chat model, the UI displays the same base fields as those used for [text embedding models](../../../ai-integration/connection-strings/google-ai.mdx#configuring-a-text-embedding-model),  
+* When configuring a chat model, the UI displays the same base fields as those used for [text embedding models](#configuring-a-text-embedding-model),  
   including the connection string _Name_, optional _Identifier_, _AI Version_, _API Key_, _Endpoint_, and _Model_ name.
 
 * One additional setting is specific to chat models: _Prompt Cache Key_.
@@ -85,9 +85,9 @@ import Panel from '@site/src/components/Panel';
 3. **Prompt Cache Key** (optional)
     
    * Controls whether RavenDB includes the `prompt_cache_key` field in chat completion 
-     requests sent to the AI provider when using [AI Agents](../../../ai-integration/ai-agents/overview.mdx).
+     requests sent to the AI provider when using [AI Agents](../../ai-agents/overview.mdx).
     
-   * When enabled (set to _True_), RavenDB sends the [Conversation's document ID](../../../ai-integration/ai-agents/overview.mdx#what-is-a-conversation) 
+   * When enabled (set to _True_), RavenDB sends the [Conversation's document ID](../../ai-agents/overview.mdx#what-is-a-conversation) 
      in the `prompt_cache_key` field with each request.
      This can help the AI provider identify requests that belong to the same conversation and reuse a previously cached prompt prefix (system prompt + prior messages).
    

@@ -22,13 +22,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Read about restore on a sharded database [in the section dedicated to it](../../../../sharding/backup-and-restore/restore.mdx).  
 
 * In this page:  
-  * [Restoring a Database: Configuration and Execution](../../../../client-api/operations/maintenance/backup/restore.mdx#restoring-a-database:-configuration-and-execution)  
-  * [Optional Settings](../../../../client-api/operations/maintenance/backup/restore.mdx#optional-settings)  
-  * [Restore Database to a Single Node](../../../../client-api/operations/maintenance/backup/restore.mdx#restore-database-to-a-single-node)  
-  * [Restore Database to Multiple Nodes](../../../../client-api/operations/maintenance/backup/restore.mdx#restore-database-to-multiple-nodes)  
-     * [Restore to a Single Node & Replicate to Other Nodes](../../../../client-api/operations/maintenance/backup/restore.mdx#restore-database-to-a-single-node--replicate-it-to-other-nodes)  
-     * [Restore to Multiple Nodes Simultaneously](../../../../client-api/operations/maintenance/backup/restore.mdx#restore-database-to-multiple-nodes-simultaneously)  
-  * [Recommended Precautions](../../../../client-api/operations/maintenance/backup/restore.mdx#recommended-precautions)  
+  * [Restoring a Database: Configuration and Execution](#restoring-a-database-configuration-and-execution)  
+  * [Optional Settings](#optional-settings)  
+  * [Restore Database to a Single Node](#restore-database-to-a-single-node)  
+  * [Restore Database to Multiple Nodes](#restore-database-to-multiple-nodes)  
+     * [Restore to a Single Node & Replicate to Other Nodes](#restore-database-to-a-single-node--replicate-it-to-other-nodes)  
+     * [Restore to Multiple Nodes Simultaneously](#restore-database-to-multiple-nodes-simultaneously)  
+  * [Recommended Precautions](#recommended-precautions)  
 
 </Admonition>
 ## Restoring a Database: Configuration and Execution
@@ -122,7 +122,7 @@ This is where you need to provide your encryption key if your backup is encrypte
 ### `DisableOngoingTasks`
 
 set **DisableOngoingTasks** to **true** to disable the execution of ongoing tasks after restoration.  
-See [Recommended Precautions](../../../../client-api/operations/maintenance/backup/restore.mdx#recommended-precautions).
+See [Recommended Precautions](#recommended-precautions).
 <TabItem value="restore_disable_ongoing_tasks_true" label="restore_disable_ongoing_tasks_true">
 <CodeBlock language="csharp">
 {`// Do or do not run ongoing tasks after restoration.
@@ -175,18 +175,18 @@ database to a single server and then expand the database group to additional nod
 * Verify relevant nodes exist in your cluster. [Add nodes](../../../../server/clustering/cluster-api.mdx#add-node-to-the-cluster) as needed.
 * Manage the database-group topology.  
   Add a node to the database-group using the [Studio](../../../../studio/database/settings/manage-database-group.mdx) 
-  or from your [code](../../../../client-api/operations/server-wide/add-database-node.mdx), to replicate the database to the other nodes.
+  or from your [code](../../server-wide/add-database-node.mdx), to replicate the database to the other nodes.
 ### Restore Database to Multiple Nodes Simultaneously  
 
 You can create the cluster in advance, and restore the database to multiple nodes simultaneously.  
 
 <Admonition type="note" title="This procedure is advisable only when restoring a Snapshot." id="this-procedure-is-advisable-only-when-restoring-a-snapshot" href="#this-procedure-is-advisable-only-when-restoring-a-snapshot">
 
-* When a [logical-backup](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#logical-backup) 
+* When a [logical-backup](./backup-overview.mdx#logical-backup) 
   is restored, each document receives a new change-vector according to the node it resides on.  
   When the database instances synchronize, this change-vector will be updated and be composed of all database nodes tags.  
 
-* When a [snapshot](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#snapshot) is restored, 
+* When a [snapshot](./backup-overview.mdx#snapshot) is restored, 
   documents are **not** assigned a new change-vector because the databases kept by all nodes are considered identical.  
   Each document retains the original change-vector it had during backup.  
   When the database instances synchronize, documents' change-vectors do **not** change.  
@@ -197,7 +197,7 @@ You can create the cluster in advance, and restore the database to multiple node
 * On other nodes, restore the database using different names.  
 * Wait for the restoration to complete on all nodes.  
 * **Soft-delete** the additional databases (those with altered names) from the cluster.  
-  [Soft-delete](../../../../client-api/operations/server-wide/delete-database.mdx#operations--server--how-to-delete-a-database) 
+  [Soft-delete](../../server-wide/delete-database.mdx#operations--server--how-to-delete-a-database) 
   the databases by setting `HardDelete` to `false`, to retain the data files on disk.  
 * Rename the database folder on all nodes to the original database name.  
 * [Expand](../../../../server/clustering/rachis/cluster-topology.mdx#modifying-the-topology) the database group to all relevant nodes.  
@@ -212,7 +212,7 @@ and not in any ongoing tasks that may have existed during backup.
 
 * E.g., an ETL ongoing task from a production cluster may have unwanted results in a testing environment.  
 
-In such cases, **disable** ongoing tasks using the [DisableOngoingTasks](../../../../client-api/operations/maintenance/backup/restore.mdx#section-1) flag.  
+In such cases, **disable** ongoing tasks using the [DisableOngoingTasks](#section-1) flag.  
 
 * Code Sample:  
 <TabItem value="restore_disable_ongoing_tasks_true" label="restore_disable_ongoing_tasks_true">

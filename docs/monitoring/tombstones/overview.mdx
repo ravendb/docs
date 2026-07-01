@@ -15,18 +15,18 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * When a document is deleted, RavenDB replaces it with a "delete marker" called a **Tombstone**.
 
 * RavenDB removes tombstones that are no longer needed through a periodic **tombstone cleanup**.  
-  You can follow the progress of tombstone cleanup in Studio's [Tombstones view](../../monitoring/tombstones/tombstones-view.mdx).
+  You can follow the progress of tombstone cleanup in Studio's [Tombstones view](./tombstones-view.mdx).
 
 * These pages describe **document tombstones**, the markers left when documents are deleted.  
   RavenDB also keeps [compare-exchange tombstones](../../compare-exchange/delete-cmpxchg-items.mdx) for deleted compare-exchange items; these are cleaned up separately and are not covered here.
 
 * In this article:
-   * [Why tombstones](../../monitoring/tombstones/overview.mdx#why-tombstones)
-   * [Where are tombstones used?](../../monitoring/tombstones/overview.mdx#where-are-tombstones-used)
-   * [Tombstone cleanup](../../monitoring/tombstones/overview.mdx#tombstone-cleanup)
-      * [Why cleanup](../../monitoring/tombstones/overview.mdx#why-cleanup)
-      * [When is a tombstone removed](../../monitoring/tombstones/overview.mdx#when-is-a-tombstone-removed)
-      * [What blocks cleanup](../../monitoring/tombstones/overview.mdx#what-blocks-cleanup)
+   * [Why tombstones](#why-tombstones)
+   * [Where are tombstones used?](#where-are-tombstones-used)
+   * [Tombstone cleanup](#tombstone-cleanup)
+      * [Why cleanup](#why-cleanup)
+      * [When is a tombstone removed](#when-is-a-tombstone-removed)
+      * [What blocks cleanup](#what-blocks-cleanup)
 
 </Admonition>
 
@@ -90,7 +90,7 @@ are no longer needed.
 <Admonition type="note" title="">
 
 * The interval between tombstone cleanups is configurable using the
-  [Tombstones.CleanupIntervalInMin](../../monitoring/tombstones/configuration.mdx) configuration key.  
+  [Tombstones.CleanupIntervalInMin](./configuration.mdx) configuration key.  
 * By default, `Tombstones.CleanupIntervalInMin` is set to **5 minutes**.  
 
 </Admonition>
@@ -151,7 +151,7 @@ When the cleanup detects that a process is holding tombstones back, RavenDB rais
 **Blockage in tombstone deletion** notification that lists the blocking processes and the
 collections they affect.  
 To inspect the current cleanup status, and see how far cleanup can proceed for 
-each collection and process, open the [Tombstones view](../../monitoring/tombstones/tombstones-view.mdx).
+each collection and process, open the [Tombstones view](./tombstones-view.mdx).
 
 </ContentFrame>
 

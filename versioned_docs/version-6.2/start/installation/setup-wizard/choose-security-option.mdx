@@ -15,7 +15,7 @@ import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* After entering your license as described in [Provide license key](../../../start/installation/setup-wizard/provide-license-key.mdx),  
+* After entering your license as described in [Provide license key](./provide-license-key.mdx),  
   the next step is to choose **how to secure your RavenDB server**.    
     
 * You can configure the server in either secure or unsecured mode:   
@@ -34,10 +34,10 @@ import Panel from '@site/src/components/Panel';
 ---
     
 * In this article:
-  * [Choose a security method](../../../start/installation/setup-wizard/choose-security-option.mdx#choose-a-security-method)  
-  * [Generate Let's Encrypt certificate](../../../start/installation/setup-wizard/choose-security-option.mdx#generate-let-s-encrypt-certificate)  
-  * [Provide your own certificate](../../../start/installation/setup-wizard/choose-security-option.mdx#provide-your-own-certificate)  
-  * [Don't use certificate](../../../start/installation/setup-wizard/choose-security-option.mdx#don-t-use-certificate)  
+  * [Choose a security method](#choose-a-security-method)  
+  * [Generate Let's Encrypt certificate](#generate-let-s-encrypt-certificate)  
+  * [Provide your own certificate](#provide-your-own-certificate)  
+  * [Don't use certificate](#don-t-use-certificate)  
 
 </Admonition>
     
@@ -47,21 +47,21 @@ In this step, choose one of three security options:
     
 ![Select how to secure](./assets/security-1.png)
     
-1. [Generate Let's Encrypt certificate](../../../start/installation/setup-wizard/choose-security-option.mdx#generate-let-s-encrypt-certificate)  
-2. [Provide your own certificate](../../../start/installation/setup-wizard/choose-security-option.mdx#provide-your-own-certificate)    
-3. [Don't use certificate](../../../start/installation/setup-wizard/choose-security-option.mdx#don-t-use-certificate)  
+1. [Generate Let's Encrypt certificate](#generate-let-s-encrypt-certificate)  
+2. [Provide your own certificate](#provide-your-own-certificate)    
+3. [Don't use certificate](#don-t-use-certificate)  
 4. After selecting a security method, click **"Continue"** to proceed with its setup steps.
-5. Click **"Back"** to return to the previous step - [Provide license key](../../../start/installation/setup-wizard/provide-license-key.mdx).
+5. Click **"Back"** to return to the previous step - [Provide license key](./provide-license-key.mdx).
 
 </Panel> 
 
 <Panel heading="Generate Let's Encrypt certificate">
  
-Use this option to secure your server with a [Let's Encrypt certificate](../../../server/security/authentication/lets-encrypt-certificates).
+Use this option to secure your server with a [Let's Encrypt certificate](../../../server/security/authentication/lets-encrypt-certificates.mdx).
 Let’s Encrypt is a free, automated certificate authority that provides trusted SSL/TLS certificates for HTTPS communication.  
     
 To make this process as seamless as possible, **RavenDB provides a free domain name** for your cluster.  
-RavenDB will automatically issue and renew a trusted HTTPS certificate for the [domain you define in the next step](../../../start/installation/setup-wizard/choose-security-option.mdx#enter-a-domain-name),  
+RavenDB will automatically issue and renew a trusted HTTPS certificate for the [domain you define in the next step](#enter-a-domain-name),  
 fully managing the certificate lifecycle so you don't need to provide or maintain your own. 
 
 **When to use this option**:
@@ -94,7 +94,7 @@ we recommend using your own certificates and domains, avoiding reliance on a thi
 1. Select "Generate Let's Encrypt certificate".
 2. Review and accept the Let's Encrypt agreement.
 3. Click **"Continue"** proceed to the domain name screen.
-4. Click **"Back"** to return to the previous step - [Provide license key](../../../start/installation/setup-wizard/provide-license-key.mdx).
+4. Click **"Back"** to return to the previous step - [Provide license key](./provide-license-key.mdx).
 
 ---
 
@@ -104,7 +104,7 @@ we recommend using your own certificates and domains, avoiding reliance on a thi
 
 1. Enter the domain name that will be used for your cluster.
 2. The email address shown is the one associated with the license you are using.  
-3. Click **"Continue"** to proceed to the next step: [Configure node addresses](../../../start/installation/setup-wizard/configure-node-addresses.mdx).
+3. Click **"Continue"** to proceed to the next step: [Configure node addresses](./configure-node-addresses.mdx).
 4. Click **"Back"** to return to selecting a security method.  
 5. The navigation panel indicates your current step (_"Domain"_) and the remaining steps in the wizard flow.     
     
@@ -137,14 +137,14 @@ we recommend using your own certificates and domains, avoiding reliance on a thi
     
 * **DNS configuration**  
   RavenDB provides this free subdomain and allows you to configure its DNS records with the IP addresses that your server will listen on,
-  which you configure in the next step: [Configure node addresses](../../../start/installation/setup-wizard/configure-node-addresses.mdx).  
+  which you configure in the next step: [Configure node addresses](./configure-node-addresses.mdx).  
   The subdomain is owned by RavenDB, and you can manage it through the [Customer Portal](https://customers.ravendb.net).  
   Log in with your license key to add, remove, or update DNS records for your cluster.
 
 * **Using your own domain**  
   The free subdomain is provided only for the purpose of proving ownership to Let's Encrypt.  
   If you prefer to use your own domain, you are welcome to acquire your own certificate and use it instead.    
-  See [Provide your own certificate](../../../start/installation/setup-wizard/choose-security-option.mdx#provide-your-own-certificate).
+  See [Provide your own certificate](#provide-your-own-certificate).
 
 </Admonition>
     
@@ -166,7 +166,7 @@ With this option, you are responsible for keeping the certificate valid and rene
     
 1. Select "Provide your own certificate".
 2. Click **"Continue"** to proceed to the certificate upload screen.
-3. Click **"Back"** to return to the previous step - [Provide license key](../../../start/installation/setup-wizard/provide-license-key.mdx).
+3. Click **"Back"** to return to the previous step - [Provide license key](./provide-license-key.mdx).
     
 ---
     
@@ -176,7 +176,7 @@ With this option, you are responsible for keeping the certificate valid and rene
 
 1. Upload your server certificate (`.pfx` file that includes the private key).
 2. Verify that the common names (CN) detected from the certificate match the hostnames you plan to use.
-3. Click **"Continue"** to proceed to the next step: [Configure node addresses](../../../start/installation/setup-wizard/configure-node-addresses.mdx).
+3. Click **"Continue"** to proceed to the next step: [Configure node addresses](./configure-node-addresses.mdx).
 4. Click **"Back"** to return to selecting a security method.
 5. The navigation panel indicates your current step (_"Self-signed certificate"_) and the remaining steps in the wizard flow.  
     
@@ -192,7 +192,7 @@ With this option, you are responsible for keeping the certificate valid and rene
   * `ExtendedKeyUsage`: Server Authentication
 
 * If you use the Setup Wizard to construct a cluster, you must use the same certificate for all nodes.  
-  If you want to use a different certificate for each node, this is only possible through [Manual setup](../../../start/installation/manual.mdx).
+  If you want to use a different certificate for each node, this is only possible through [Manual setup](../manual.mdx).
 
 * A **wildcard certificate** is usually the easiest option. 
   A wildcard (for example, `*.yourcluster.development.run`) covers all subdomains under that domain, so a single certificate can be used for all nodes.
@@ -219,7 +219,7 @@ All security features (authentication, authorization, and encryption) are disabl
 ![don't use certificate](./assets/security-6.png) 
 
 1. Select "Don't use certificate".
-2. Click **"Continue"** to proceed to the next step: [Configure node addresses](../../../start/installation/setup-wizard/configure-node-addresses.mdx).
+2. Click **"Continue"** to proceed to the next step: [Configure node addresses](./configure-node-addresses.mdx).
 3. Click **"Back"** to return to selecting a security method.
 
 ---

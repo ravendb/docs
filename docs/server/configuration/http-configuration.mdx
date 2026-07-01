@@ -20,33 +20,33 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * You can set Kestrel's properties via the following RavenDB configuration keys.
 
 * In this page:
-  * [Http.MinDataRateBytesPerSec](../../server/configuration/http-configuration.mdx#httpmindataratebytespersec)
-  * [Http.MinDataRateGracePeriodInSec](../../server/configuration/http-configuration.mdx#httpmindatarategraceperiodinsec)
-  * [Http.MaxRequestBufferSizeInKb](../../server/configuration/http-configuration.mdx#httpmaxrequestbuffersizeinkb)
-  * [Http.MaxRequestLineSizeInKb](../../server/configuration/http-configuration.mdx#httpmaxrequestlinesizeinkb)
-  * [Http.Http2.KeepAlivePingTimeoutInSec](../../server/configuration/http-configuration.mdx#httphttp2keepalivepingtimeoutinsec)
-  * [Http.Http2.KeepAlivePingDelayInSec](../../server/configuration/http-configuration.mdx#httphttp2keepalivepingdelayinsec)
-  * [Http.Http2.MaxStreamsPerConnection](../../server/configuration/http-configuration.mdx#httphttp2maxstreamsperconnection)
-  * [Http.Http2.Profile](../../server/configuration/http-configuration.mdx#httphttp2profile)
-  * [Http.Http2.LatencyHint](../../server/configuration/http-configuration.mdx#httphttp2latencyhint)
-  * [Http.Http2.InitialConnectionWindowSizeInKb](../../server/configuration/http-configuration.mdx#httphttp2initialconnectionwindowsizeinkb)
-  * [Http.Http2.InitialStreamWindowSizeInKb](../../server/configuration/http-configuration.mdx#httphttp2initialstreamwindowsizeinkb)
-  * [Http.Http2.MaxFrameSizeInKb](../../server/configuration/http-configuration.mdx#httphttp2maxframesizeinkb)
-  * [Http.UseResponseCompression](../../server/configuration/http-configuration.mdx#httpuseresponsecompression)
-  * [Http.AllowResponseCompressionOverHttps](../../server/configuration/http-configuration.mdx#httpallowresponsecompressionoverhttps)
-  * [Http.GzipResponseCompressionLevel](../../server/configuration/http-configuration.mdx#httpgzipresponsecompressionlevel)
-  * [Http.DeflateResponseCompressionLevel](../../server/configuration/http-configuration.mdx#httpdeflateresponsecompressionlevel)
-  * [Http.ZstdResponseCompressionLevel](../../server/configuration/http-configuration.mdx#httpzstdresponsecompressionlevel)
-  * [Http.StaticFilesResponseCompressionLevel](../../server/configuration/http-configuration.mdx#httpstaticfilesresponsecompressionlevel)
-  * [Http.Protocols](../../server/configuration/http-configuration.mdx#httpprotocols)
-  * [Http.AllowSynchronousIO](../../server/configuration/http-configuration.mdx#httpallowsynchronousio)
+  * [Http.MinDataRateBytesPerSec](#httpmindataratebytespersec)
+  * [Http.MinDataRateGracePeriodInSec](#httpmindatarategraceperiodinsec)
+  * [Http.MaxRequestBufferSizeInKb](#httpmaxrequestbuffersizeinkb)
+  * [Http.MaxRequestLineSizeInKb](#httpmaxrequestlinesizeinkb)
+  * [Http.Http2.KeepAlivePingTimeoutInSec](#httphttp2keepalivepingtimeoutinsec)
+  * [Http.Http2.KeepAlivePingDelayInSec](#httphttp2keepalivepingdelayinsec)
+  * [Http.Http2.MaxStreamsPerConnection](#httphttp2maxstreamsperconnection)
+  * [Http.Http2.Profile](#httphttp2profile)
+  * [Http.Http2.LatencyHint](#httphttp2latencyhint)
+  * [Http.Http2.InitialConnectionWindowSizeInKb](#httphttp2initialconnectionwindowsizeinkb)
+  * [Http.Http2.InitialStreamWindowSizeInKb](#httphttp2initialstreamwindowsizeinkb)
+  * [Http.Http2.MaxFrameSizeInKb](#httphttp2maxframesizeinkb)
+  * [Http.UseResponseCompression](#httpuseresponsecompression)
+  * [Http.AllowResponseCompressionOverHttps](#httpallowresponsecompressionoverhttps)
+  * [Http.GzipResponseCompressionLevel](#httpgzipresponsecompressionlevel)
+  * [Http.DeflateResponseCompressionLevel](#httpdeflateresponsecompressionlevel)
+  * [Http.ZstdResponseCompressionLevel](#httpzstdresponsecompressionlevel)
+  * [Http.StaticFilesResponseCompressionLevel](#httpstaticfilesresponsecompressionlevel)
+  * [Http.Protocols](#httpprotocols)
+  * [Http.AllowSynchronousIO](#httpallowsynchronousio)
 
 </Admonition>
 ## Http.MinDataRateBytesPerSec
 
 * Set Kestrel's minimum required data rate in bytes per second.  
 
-* This option must be configured together with [Http.MinDataRateGracePeriod](../../server/configuration/http-configuration.mdx#httpmindatarategraceperiodinsec).  
+* This option must be configured together with [Http.MinDataRateGracePeriod](#httpmindatarategraceperiodinsec).  
 - **Type**: `int`
 - **Default**: `null`
 - **Scope**: Server-wide only
@@ -59,7 +59,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 ## Http.MinDataRateGracePeriodInSec
 
 * Set Kestrel's allowed request and response grace period in seconds.  
-  This option must be configured together with [Http.MinDataRateBytesPerSec](../../server/configuration/http-configuration.mdx#httpmindataratebytespersec)
+  This option must be configured together with [Http.MinDataRateBytesPerSec](#httpmindataratebytespersec)
 
 * Kestrel checks every second if data is coming in at the specified rate in bytes/second.  
   If the rate drops below the minimum set by _MinResponseDataRate_, the connection is timed out.
@@ -194,8 +194,8 @@ The latency hint does **not** affect explicit overrides set via
 
 * **EXPERT**: Override the Kestrel HTTP/2 per-connection receive window size.
 
-* Prefer using [Http.Http2.Profile](../../server/configuration/http-configuration.mdx#httphttp2profile) and
-  [Http.Http2.LatencyHint](../../server/configuration/http-configuration.mdx#httphttp2latencyhint)
+* Prefer using [Http.Http2.Profile](#httphttp2profile) and
+  [Http.Http2.LatencyHint](#httphttp2latencyhint)
   unless you understand your bandwidth-delay product and memory tradeoffs.
 
 * Values are clamped to the RFC 9113 legal range (64 KB – 2,147,483,647 bytes).
@@ -211,8 +211,8 @@ The latency hint does **not** affect explicit overrides set via
 
 * **EXPERT**: Override the Kestrel HTTP/2 per-stream receive window size.
 
-* Prefer using [Http.Http2.Profile](../../server/configuration/http-configuration.mdx#httphttp2profile) and
-  [Http.Http2.LatencyHint](../../server/configuration/http-configuration.mdx#httphttp2latencyhint)
+* Prefer using [Http.Http2.Profile](#httphttp2profile) and
+  [Http.Http2.LatencyHint](#httphttp2latencyhint)
   unless you are tuning for specific concurrency and RTT requirements.
 
 * Values are clamped to the RFC 9113 legal range (64 KB – 2,147,483,647 bytes).

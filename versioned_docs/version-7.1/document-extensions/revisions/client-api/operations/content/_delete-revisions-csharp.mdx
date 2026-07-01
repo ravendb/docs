@@ -19,18 +19,18 @@ import CodeBlock from '@theme/CodeBlock';
   To operate on a different database see [switch operations to different database](../../../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).  
 
 * In this page:  
-  * [Delete all revisions - single document](../../../../../document-extensions/revisions/client-api/operations/delete-revisions.mdx#delete-all-revisions---single-document)
-  * [Delete revisions - multiple documents](../../../../../document-extensions/revisions/client-api/operations/delete-revisions.mdx#delete-revisions---multiple-documents)
-  * [Delete revisions by time frame](../../../../../document-extensions/revisions/client-api/operations/delete-revisions.mdx#delete-revisions-by-time-frame)  
-  * [Delete revisions by change vectors](../../../../../document-extensions/revisions/client-api/operations/delete-revisions.mdx#delete-revisions-by-change-vectors)  
-  * [Syntax](../../../../../document-extensions/revisions/client-api/operations/delete-revisions.mdx#syntax)  
+  * [Delete all revisions - single document](#delete-all-revisions---single-document)
+  * [Delete revisions - multiple documents](#delete-revisions---multiple-documents)
+  * [Delete revisions by time frame](#delete-revisions-by-time-frame)  
+  * [Delete revisions by change vectors](#delete-revisions-by-change-vectors)  
+  * [Syntax](#syntax)  
 
 </Admonition>
 ## Delete all revisions - single document
 
 In this example, we delete ALL revisions of a document.  
 Both types of revisions, those resulting from the [revisions settings](../../../../../studio/database/settings/document-revisions.mdx) and those generated manually via  
-[force revision creation](../../../../../document-extensions/revisions/overview.mdx#force-revision-creation), will be deleted.
+[force revision creation](../../../overview.mdx#force-revision-creation), will be deleted.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
@@ -149,7 +149,7 @@ var numberOfRevisionsDeleted = await store.Maintenance.SendAsync(deleteRevisions
 
 ## Delete revisions by change vectors
 
-Each revision has its own unique [change vector](../../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-change-vector).  
+Each revision has its own unique [change vector](../../session/loading.mdx#get-revisions-by-change-vector).  
 You can specify which revisions to delete by providing their corresponding change vectors.  
 No exception is thrown if a change vector doesn’t match any revision.
 
@@ -242,7 +242,7 @@ public DeleteRevisionsOperation(string documentId,
 |---------------------------------|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **documentId**                  | `string`       | The ID of the document whose revisions you want to delete.                                                                                                                            |
 | **documentIds**                 | `List<string>` | A list of document IDs whose revisions you want to delete.                                                                                                                            |
-| **removeForceCreatedRevisions** | `bool`         | `true` - Include [force-created revisions](../../../../../document-extensions/revisions/overview.mdx#force-revision-creation) in the deletion.<br/>`false` - Exclude force-created revisions. |
+| **removeForceCreatedRevisions** | `bool`         | `true` - Include [force-created revisions](../../../overview.mdx#force-revision-creation) in the deletion.<br/>`false` - Exclude force-created revisions. |
 | **from**                        | `DateTime`     | The start of the date range for the revisions to delete (inclusive).                                                                                                                  |
 | **to**                          | `DateTime`     | The end of the date range for the revisions to delete (inclusive).                                                                                                                    |
 | **revisionsChangeVectors**      | `List<string>` | A list of change vectors corresponding to the revisions that you want to delete.                                                                                                      |

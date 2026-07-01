@@ -21,17 +21,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
   The list below details these unsupported features.    
   
 * In this article:  
-  * [Unsupported Indexing Features](../sharding/unsupported.mdx#unsupported-indexing-features)  
-  * [Unsupported Querying Features](../sharding/unsupported.mdx#unsupported-querying-features)  
-  * [Unsupported Document Extensions Features](../sharding/unsupported.mdx#unsupported-document-extensions-features)  
-  * [Unsupported Backup Features](../sharding/unsupported.mdx#unsupported-backup-features)  
-  * [Unsupported Import & Export Features](../sharding/unsupported.mdx#unsupported-import--export-features)  
-  * [Unsupported Migration Features](../sharding/unsupported.mdx#unsupported-migration-features)  
-  * [Unsupported Data Subscription Features](../sharding/unsupported.mdx#unsupported-data-subscription-features)  
-  * [Unsupported Integrations Features](../sharding/unsupported.mdx#unsupported-integrations-features)  
-  * [Unsupported Patching Features](../sharding/unsupported.mdx#unsupported-patching-features)  
-  * [Unsupported Replication Features](../sharding/unsupported.mdx#unsupported-replication-features)  
-  * [Unsupported AI Features](../sharding/unsupported.mdx#unsupported-ai-features)  
+  * [Unsupported Indexing Features](#unsupported-indexing-features)  
+  * [Unsupported Querying Features](#unsupported-querying-features)  
+  * [Unsupported Document Extensions Features](#unsupported-document-extensions-features)  
+  * [Unsupported Backup Features](#unsupported-backup-features)  
+  * [Unsupported Import & Export Features](#unsupported-import--export-features)  
+  * [Unsupported Migration Features](#unsupported-migration-features)  
+  * [Unsupported Data Subscription Features](#unsupported-data-subscription-features)  
+  * [Unsupported Integrations Features](#unsupported-integrations-features)  
+  * [Unsupported Patching Features](#unsupported-patching-features)  
+  * [Unsupported Replication Features](#unsupported-replication-features)  
+  * [Unsupported AI Features](#unsupported-ai-features)  
   
 </Admonition>
 
@@ -44,7 +44,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 | Outputting map-reduce results to a collection    | Outputting map-reduce index results to an [artificial documents collection](../indexes/map-reduce-indexes.mdx#map-reduce-output-documents) is not supported in a sharded database. |
 | Custom sorters                                   | [Custom sorters](../querying/sorting-query-results/custom-sorters/overview.mdx) are not supported in a sharded database. |
 
-Reference: [Unsupported indexing features](../sharding/indexing.mdx#unsupported-indexing-features).
+Reference: [Unsupported indexing features](./indexing.mdx#unsupported-indexing-features).
 
 ---
 
@@ -53,9 +53,9 @@ Reference: [Unsupported indexing features](../sharding/indexing.mdx#unsupported-
 | Unsupported Feature                                           | Comment |
 | ------------------------------------------------------------- | ------- |
 | Loading a document that resides on another shard              | A query can only load a document if it resides on the same shard. Loading a document that resides on a different shard will return _null_. |
-| Loading a document within a Map-Reduce projection             | Learn more in [Loading a document within a projection](../sharding/querying.mdx#loading-a-document-within-a-projection). |
-| Includes and loads are not supported in streaming queries     | Learn more in [Limitations when streaming query results in a sharded database](../sharding/querying.mdx#limitations-when-streaming-query-results-in-a-sharded-database). |
-| Ordering streamed Map-Reduce results by non-reduce-key fields | Learn more in [Limitations when streaming query results in a sharded database](../sharding/querying.mdx#limitations-when-streaming-query-results-in-a-sharded-database). |
+| Loading a document within a Map-Reduce projection             | Learn more in [Loading a document within a projection](./querying.mdx#loading-a-document-within-a-projection). |
+| Includes and loads are not supported in streaming queries     | Learn more in [Limitations when streaming query results in a sharded database](./querying.mdx#limitations-when-streaming-query-results-in-a-sharded-database). |
+| Ordering streamed Map-Reduce results by non-reduce-key fields | Learn more in [Limitations when streaming query results in a sharded database](./querying.mdx#limitations-when-streaming-query-results-in-a-sharded-database). |
 | Querying with limit in patch/delete by query operations       | Attempting to set a `limit` with [PatchByQueryOperation](../client-api/operations/patching/set-based.mdx#patchbyqueryoperation) or [DeleteByQueryOperation](../client-api/operations/common/delete-by-query.mdx) will throw _NotSupportedInShardingException_. |
 | OrderByDistance                                               | [OrderByDistance](../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting) is not supported for map-reduce indexes in sharded databases. Only supported for regular (map) indexes in a sharded database. |
 | OrderByScore                                                  | [OrderByScore](../querying/sorting-query-results/sort-query-results.mdx#order-by-score) is not supported in a sharded database. |
@@ -63,7 +63,7 @@ Reference: [Unsupported indexing features](../sharding/indexing.mdx#unsupported-
 | Highlighting                                                  | [Highlighting](../indexes/querying/highlighting.mdx) is not supported in a sharded database. |
 | Intersection                                                  | [Intersection](../indexes/querying/intersection.mdx) is not supported in a sharded database. |
 
-Reference: [Unsupported querying features](../sharding/indexing.mdx#unsupported-querying-features).
+Reference: [Unsupported querying features](./indexing.mdx#unsupported-querying-features).
 
 ---
 
@@ -80,8 +80,8 @@ Reference: [Unsupported querying features](../sharding/indexing.mdx#unsupported-
 
 | Unsupported Feature | Comment |
 | ------------- | ------------- |
-| [Create a Snapshot Backup](../sharding/backup-and-restore/backup.mdx#backup-type) |  |
-| [Restore from a Snapshot Backup](../sharding/backup-and-restore/restore.mdx#sharding-restore) |  |
+| [Create a Snapshot Backup](./backup-and-restore/backup.mdx#backup-type) |  |
+| [Restore from a Snapshot Backup](./backup-and-restore/restore.mdx#sharding-restore) |  |
 
 ## Unsupported Import & Export Features
 
@@ -105,7 +105,7 @@ Reference: [Unsupported querying features](../sharding/indexing.mdx#unsupported-
 | ------------- | ------------- |
 | [Concurrent Subscriptions](../client-api/data-subscriptions/concurrent-subscriptions.mdx) |  |
 | [Data Subscriptions Revisions Support](../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx) | Subscribing to document revisions |
-| [SubscriptionCreationOptions.ChangeVector](../sharding/subscriptions.mdx#unsupported-features) | Providing a change vector to start the processing from is not supported <br/> except for these special cases: <br/> `"LastDocument"`, `"BeginningOfTime"`, `"DoNotChange"` |
+| [SubscriptionCreationOptions.ChangeVector](./subscriptions.mdx#unsupported-features) | Providing a change vector to start the processing from is not supported <br/> except for these special cases: <br/> `"LastDocument"`, `"BeginningOfTime"`, `"DoNotChange"` |
 
 ## Unsupported Integrations Features
 

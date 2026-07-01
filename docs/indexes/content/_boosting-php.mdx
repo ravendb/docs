@@ -11,7 +11,7 @@ import CodeBlock from '@theme/CodeBlock';
 * Providing a **boost value** to selected fields allows prioritization of the resulting documents.  
   The boos value is integrated with the basic score, increasing the document rank.  
 
-* The automatic ordering of results by their score is [configurable](../../indexes/boosting.mdx#automatic-score-based-ordering).  
+* The automatic ordering of results by their score is [configurable](#automatic-score-based-ordering).  
 
 * Boosting can be achieved in the following ways:
 
@@ -22,10 +22,10 @@ import CodeBlock from '@theme/CodeBlock';
       By applying a boost factor in the index definition, as described in this article.  
  
 * In this page:
-    * [Assign a boost factor to an index-field](../../indexes/boosting.mdx#assign-a-boost-factor-to-an-index-field)
-    * [Assign a boost factor to the index-entry](../../indexes/boosting.mdx#assign-a-boost-factor-to-the-index-entry)
-    * [Automatic score-based ordering](../../indexes/boosting.mdx#automatic-score-based-ordering)
-    * [Corax vs Lucene: boosting differences](../../indexes/boosting.mdx#automatic-score-based-ordering)
+    * [Assign a boost factor to an index-field](#assign-a-boost-factor-to-an-index-field)
+    * [Assign a boost factor to the index-entry](#assign-a-boost-factor-to-the-index-entry)
+    * [Automatic score-based ordering](#automatic-score-based-ordering)
+    * [Corax vs Lucene: boosting differences](#automatic-score-based-ordering)
 
 </Admonition>
 ## Assign a boost factor to an index-field
@@ -294,7 +294,7 @@ where ShipToCountry == "poland" or CompanyCountry == "portugal"
 * **Boosting features available:**  
 
   * When using **Corax** as the underlying indexing engine, a boost factor can only be assigned 
-    to the [index-entry](../../indexes/boosting.mdx#assign-a-boost-factor-to-the-index-entry).  
+    to the [index-entry](#assign-a-boost-factor-to-the-index-entry).  
     Applying a boost factor to an _index-field_ is Not supported.  
   
   * When using **Lucene**, a boost factor can be assigned to both the index-field and the whole index-entry.  

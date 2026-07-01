@@ -5,21 +5,21 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* A Session object is obtained from the [Document Store](../../../client-api/what-is-a-document-store.mdx).  
+* A Session object is obtained from the [Document Store](../../what-is-a-document-store.mdx).  
 
 * A Session can operate Synchronously or Asynchronously.  
   * `OpenSession()` - Open a Session for a **Synchronous** mode of operation.  
   * `OpenAsyncSession()` - Open a Session for **Asynchronous** mode of operation.  
 
 * Various Session options can be configured using the `SessionOptions` object.  
-  If no database is specified in the options then the [Default Database](../../../client-api/setting-up-default-database.mdx) (stored in the Document Store) is assumed.
+  If no database is specified in the options then the [Default Database](../../setting-up-default-database.mdx) (stored in the Document Store) is assumed.
 
 * Be sure to wrap the Session variable with a 'using' statement to ensure proper disposal.
 
 * In this page:  
-  * [Syntax](../../../client-api/session/opening-a-session.mdx#syntax)  
-  * [Session options](../../../client-api/session/opening-a-session.mdx#session-options)  
-  * [Open session example](../../../client-api/session/opening-a-session.mdx#open-session-example)
+  * [Syntax](#syntax)  
+  * [Session options](#session-options)  
+  * [Open session example](#open-session-example)
 </Admonition>
 ## Syntax
 
@@ -58,7 +58,7 @@ IAsyncDocumentSession OpenAsyncSession(SessionOptions options);
 | Parameter    | Type             | Description                                                                                                                    |
 |--------------|------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | **database** | `string`           | The Session will operate on this database,<br/>overriding the default database set in the document store.                       |
-| **options**  | `SessionOptions` | An object with Session configuration options. See details [below](../../../client-api/session/opening-a-session.mdx#session-options). |
+| **options**  | `SessionOptions` | An object with Session configuration options. See details [below](#session-options). |
 
 | Return Value                                 | Description                   |
 |----------------------------------------------|-------------------------------|
@@ -71,11 +71,11 @@ IAsyncDocumentSession OpenAsyncSession(SessionOptions options);
 | Option               | Type              | Description                                                                                                                                           |
 |----------------------|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **Database**         | `string`          | The Session will operate on this database,<br/>overriding the Default Database.<br/>Default: `null` - The Session operates on the Default Database. |
-| **NoTracking**       | `bool`            | `true` - The Session tracks changes made to all entities it loaded, stored, or queried for.<br/>`false` (Default) - Tracking will be turned off.<br/>Learn more in [Disable tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx) |
-| **NoCaching**        | `bool`            | `true` - Server responses will Not be cached.<br/>`false` (Default) - The Session caches the server responses.<br/>Learn more in [Disable caching](../../../client-api/session/configuration/how-to-disable-caching.mdx)                                     |
+| **NoTracking**       | `bool`            | `true` - The Session tracks changes made to all entities it loaded, stored, or queried for.<br/>`false` (Default) - Tracking will be turned off.<br/>Learn more in [Disable tracking](../configuration/how-to-disable-tracking.mdx) |
+| **NoCaching**        | `bool`            | `true` - Server responses will Not be cached.<br/>`false` (Default) - The Session caches the server responses.<br/>Learn more in [Disable caching](../configuration/how-to-disable-caching.mdx)                                     |
 | **RequestExecutor**  | `RequestExecutor` | ( _Advanced option_ )<br/>The request executor the Session should use. | `null` - the default request executor is used. |
-| **TransactionMode**  | `TransactionMode` | Specify the Session's transaction mode:<br/>`SingleNode` (Default) / `ClusterWide`<br/>Learn more in [Cluster-wide vs. Single-node](../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction) |
-| **OptimisticConcurrencyMode** | `OptimisticConcurrencyMode?` | Configure the optimistic concurrency mode for the session.<br/>When `null`, the session inherits the value from the [store conventions](../../../client-api/configuration/conventions.mdx#optimisticconcurrencymode).<br/>Learn more in [Configure optimistic concurrency](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx). |
+| **TransactionMode**  | `TransactionMode` | Specify the Session's transaction mode:<br/>`SingleNode` (Default) / `ClusterWide`<br/>Learn more in [Cluster-wide vs. Single-node](../cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction) |
+| **OptimisticConcurrencyMode** | `OptimisticConcurrencyMode?` | Configure the optimistic concurrency mode for the session.<br/>When `null`, the session inherits the value from the [store conventions](../../configuration/conventions.mdx#optimisticconcurrencymode).<br/>Learn more in [Configure optimistic concurrency](../configuration/how-to-enable-optimistic-concurrency.mdx). |
 
 * Experts Only:
 

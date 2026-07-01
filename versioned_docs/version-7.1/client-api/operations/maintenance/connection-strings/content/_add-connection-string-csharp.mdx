@@ -5,19 +5,19 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* Use the [PutConnectionStringOperation](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#the%c2%a0putconnectionstringoperation%c2%a0method) method to define a connection string in your database.
+* Use the [PutConnectionStringOperation](#the%c2%a0putconnectionstringoperation%c2%a0method) method to define a connection string in your database.
 
 * In this page:  
-    * [Add a RavenDB connection string](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-ravendb-connection-string)  
-    * [Add an SQL connection string](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-sql-connection-string)  
-    * [Add a Snowflake connection string](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-snowflake-connection-string)  
-    * [Add an OLAP connection string](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-olap-connection-string)  
-    * [Add an Elasticsearch connection string](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-elasticsearch-connection-string)  
-    * [Add a Kafka connection string](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-kafka-connection-string)  
-    * [Add a RabbitMQ connection string](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-rabbitmq-connection-string)  
-    * [Add an Azure Queue Storage connection string](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-azure-queue-storage-connection-string)  
-    * [Add an Amazon SQS connection string](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-amazon-sqs-connection-string)  
-    * [The PutConnectionStringOperation method](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#the%c2%a0putconnectionstringoperation%c2%a0method)
+    * [Add a RavenDB connection string](#add-a-ravendb-connection-string)  
+    * [Add an SQL connection string](#add-an-sql-connection-string)  
+    * [Add a Snowflake connection string](#add-a-snowflake-connection-string)  
+    * [Add an OLAP connection string](#add-an-olap-connection-string)  
+    * [Add an Elasticsearch connection string](#add-an-elasticsearch-connection-string)  
+    * [Add a Kafka connection string](#add-a-kafka-connection-string)  
+    * [Add a RabbitMQ connection string](#add-a-rabbitmq-connection-string)  
+    * [Add an Azure Queue Storage connection string](#add-an-azure-queue-storage-connection-string)  
+    * [Add an Amazon SQS connection string](#add-an-amazon-sqs-connection-string)  
+    * [The PutConnectionStringOperation method](#the%c2%a0putconnectionstringoperation%c2%a0method)
 
 </Admonition>
 ## Add a RavenDB connection string
@@ -62,7 +62,7 @@ PutConnectionStringResult connectionStringResult = store.Maintenance.Send(PutCon
 
 **Secure servers**  
 
-To [connect to secure RavenDB servers](../../../../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers:-importing-and-exporting-certificates)
+To [connect to secure RavenDB servers](../../../../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers-importing-and-exporting-certificates)
 you need to:  
 1. Export the server certificate from the source server.  
 2. Install it as a client certificate on the destination server.  

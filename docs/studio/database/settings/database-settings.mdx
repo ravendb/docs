@@ -21,17 +21,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
   To edit a server-scope key follow any of the available options listed in the [Configuration overview](../../../server/configuration/configuration-options.mdx) article.  
 
 * After editing & saving a configuration key, the change does not take effect 
-  until the database is [reloaded](../../../studio/database/settings/database-settings.mdx#how-to-reload-the-database).  
+  until the database is [reloaded](#how-to-reload-the-database).  
 
 <Admonition type="warning" title="Warning" id="warning" href="#warning">
 Do not modify the database settings unless you are an expert and know what you're doing.  
 </Admonition>
 
 * In this page:  
-  * [View Database Settings](../../../studio/database/settings/database-settings.mdx#view-database-settings)  
-  * [Edit Database Settings](../../../studio/database/settings/database-settings.mdx#edit-database-settings)  
-      * [Database Settings View with Pending Values](../../../studio/database/settings/database-settings.mdx#database-settings-view-with-pending-values)  
-  * [How to Reload the Database](../../../studio/database/settings/database-settings.mdx#how-to-reload-the-database)  
+  * [View Database Settings](#view-database-settings)  
+  * [Edit Database Settings](#edit-database-settings)  
+      * [Database Settings View with Pending Values](#database-settings-view-with-pending-values)  
+  * [How to Reload the Database](#how-to-reload-the-database)  
 
 </Admonition>
 ## View Database Settings
@@ -40,7 +40,7 @@ Do not modify the database settings unless you are an expert and know what you'r
 
 1. Navigate to **Settings &gt; Database Settings**.  
 2. Type a keyword here to filter the configuration keys.  
-3. Click on **Edit** to access the database setting editing view. [See next section](../../../studio/database/settings/database-settings.mdx#edit-database-settings).  
+3. Click on **Edit** to access the database setting editing view. [See next section](#edit-database-settings).  
 4. This column lists the **Configuration Keys**.  
     * A 'yellow' entry is a key whose value was customized by the user.  
     * A 'green' entry is a key holding a default value that was not modified.  
@@ -61,9 +61,9 @@ Do not modify the database settings unless you are an expert and know what you'r
   and can only be viewed here.  
 
 * Once you save the changes made in this view, all modifications are saved into the 
-  [database record](../../../studio/database/settings/database-record.mdx).  
+  [database record](./database-record.mdx).  
   However, in order for those changes to be in effect, the database must be reloaded.  
-  See [How to Reload the Database](../../../studio/database/settings/database-settings.mdx#how-to-reload-the-database).  
+  See [How to Reload the Database](#how-to-reload-the-database).  
 
 ![Figure 2: Edit Database Settings](./assets/database-settings-2.png)
 
@@ -83,7 +83,7 @@ Do not modify the database settings unless you are an expert and know what you'r
    All changes will immediately be written to the database record.  
    However, in this view, the changes will appear as pending and will not be in effect until the 
    database is reloaded.  
-   See [How to Reload the Database](../../../studio/database/settings/database-settings.mdx#how-to-reload-the-database).  
+   See [How to Reload the Database](#how-to-reload-the-database).  
 
 ### Database Settings View with Pending Values
 
@@ -109,7 +109,7 @@ There are a few ways to reload a database:
 
 2. Execute the [toggle database state](../../../client-api/operations/server-wide/toggle-databases-state.mdx) operation from the Client API.  
 
-3. Disable and then re-enable the database from the [Database List View](../../../studio/database/databases-list-view.mdx) in the Studio, see image below.  
+3. Disable and then re-enable the database from the [Database List View](../databases-list-view.mdx) in the Studio, see image below.  
    This will reload the database on all the cluster nodes immediately.
 
 ![Figure 4: How to Reload the Database](./assets/database-settings-4.png)

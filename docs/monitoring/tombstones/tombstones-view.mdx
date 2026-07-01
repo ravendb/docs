@@ -12,21 +12,21 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Tombstones: Studio view
 <Admonition type="note" title="">
 
-* A [tombstone](../../monitoring/tombstones/overview.mdx) is the marker RavenDB keeps when a
+* A [tombstone](./overview.mdx) is the marker RavenDB keeps when a
   document is deleted, so the processes that rely on it (indexing, replication, ETL, and
   incremental backup) can handle the deletion.  
 
-* RavenDB periodically [cleans up](../../monitoring/tombstones/overview.mdx#tombstone-cleanup) all the tombstones that are no longer needed by any process.
+* RavenDB periodically [cleans up](./overview.mdx#tombstone-cleanup) all the tombstones that are no longer needed by any process.
 
 * The **Tombstones** view shows, for each collection, how far its tombstone cleanup has already reached,  
   and for each process, the number of tombstones it still has to process.  
 
 * In this article:
-   * [Studio view](../../monitoring/tombstones/tombstones-view.mdx#studio-view)
-   * [Reading the Tombstones tables](../../monitoring/tombstones/tombstones-view.mdx#reading-the-tombstones-tables)
-      * [Per Collection table](../../monitoring/tombstones/tombstones-view.mdx#per-collection-table)
-      * [Per Task table](../../monitoring/tombstones/tombstones-view.mdx#per-task-table)
-      * [Example: a disabled index blocking cleanup](../../monitoring/tombstones/tombstones-view.mdx#example-a-disabled-index-blocking-cleanup)
+   * [Studio view](#studio-view)
+   * [Reading the Tombstones tables](#reading-the-tombstones-tables)
+      * [Per Collection table](#per-collection-table)
+      * [Per Task table](#per-task-table)
+      * [Example: a disabled index blocking cleanup](#example-a-disabled-index-blocking-cleanup)
 
 </Admonition>
 
@@ -52,7 +52,7 @@ To open the **Tombstones** view, go to `Settings` > `Tombstones`.
    ![Force cleanup confirmation](./assets/tombstones-force-cleanup-dialog.png)  
 
    The server runs tombstone cleanup on a schedule, every 5 minutes by default,  
-   set by [Tombstones.CleanupIntervalInMin](../../monitoring/tombstones/configuration.mdx#tombstonescleanupintervalinmin).  
+   set by [Tombstones.CleanupIntervalInMin](./configuration.mdx#tombstonescleanupintervalinmin).  
    Clicking **Force cleanup** runs the cleanup immediately, removing every tombstone that can currently be removed.  
 
 5. **Minimum Etags**  
@@ -77,12 +77,12 @@ To open the **Tombstones** view, go to `Settings` > `Tombstones`.
 6. **Per Collection - Max Etags that can be deleted**  
    For each collection, this table shows how far cleanup can proceed for document, time series, and counter tombstones,
    and the process that is currently setting each limit.  
-   See [Per Collection table](../../monitoring/tombstones/tombstones-view.mdx#per-collection-table).  
+   See [Per Collection table](#per-collection-table).  
 
 7. **Per Task - Max Etag that can be deleted**  
    Each process that handles tombstones has its own row.  
    The row shows the Etag up to which the process has let cleanup proceed, and whether it is currently blocking cleanup.  
-   See [Per Task table](../../monitoring/tombstones/tombstones-view.mdx#per-task-table).  
+   See [Per Task table](#per-task-table).  
 
 </Panel>
 

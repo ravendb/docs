@@ -29,24 +29,24 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * [Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview?pivots=programming-language-csharp)
   can be triggered to consume and process messages that are sent to Azure queues,   
   enabling powerful and flexible workflows.
-  The message visibility period and life span in the Queue can be customized through these [ETL configuration options](../../../../server/configuration/etl-configuration.mdx#etlqueueazurequeuestoragetimetoliveinsec).
+  The message visibility period and life span in the Queue can be customized through these [ETL configuration options](../../../configuration/etl-configuration.mdx#etlqueueazurequeuestoragetimetoliveinsec).
 
 * Read more about Azure Queue Storage in the platform's [official documentation](https://learn.microsoft.com/en-us/azure/storage/queues/storage-queues-introduction).
 * This article focuses on how to create an Azure Queue Storage ETL task using the Client API.  
   To define an Azure Queue Storage ETL task from the Studio, see [Studio: Azure Queue Storage ETL Task](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl.mdx).  
-  For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx).
+  For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](./overview.mdx).
 
 * In this page:  
-  * [Add an Azure Queue Storage connection string](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx#add-an-azure-queue-storage-connection-string)  
-      * [Authentication methods](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx#authentication-methods)  
-      * [Example](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx#example)  
-      * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx#syntax)
-  * [Add an Azure Queue Storage ETL task](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx#add-an-azure-queue-storage-etl-task)  
-      * [Example](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx#example-basic)  
-      * [Delete processed documents](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx#delete-processed-documents)  
-      * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx#syntax-1)
-  * [The transformation script](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx#the-transformation-script)
-      * [The loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx#the-loadto-method)  
+  * [Add an Azure Queue Storage connection string](#add-an-azure-queue-storage-connection-string)  
+      * [Authentication methods](#authentication-methods)  
+      * [Example](#example)  
+      * [Syntax](#syntax)
+  * [Add an Azure Queue Storage ETL task](#add-an-azure-queue-storage-etl-task)  
+      * [Example](#example-basic)  
+      * [Delete processed documents](#delete-processed-documents)  
+      * [Syntax](#syntax-1)
+  * [The transformation script](#the-transformation-script)
+      * [The loadTo method](#the-loadto-method)  
 
 </Admonition>
 ## Add an Azure Queue Storage connection string
@@ -172,7 +172,7 @@ public class Passwordless
   * Extract source documents from the "Orders" collection in RavenDB.  
   * Process each "Order" document using a defined script that creates a new `orderData` object.  
   * Load the `orderData` object to the "OrdersQueue" in an Azure Queue Storage.  
-* For more details about the script and the `loadTo` method, see the [transromation script](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx#the-transformation-script) section below.
+* For more details about the script and the `loadTo` method, see the [transromation script](#the-transformation-script) section below.
 
 <TabItem value="add_azure_etl_task" label="add_azure_etl_task">
 <CodeBlock language="csharp">
@@ -321,7 +321,7 @@ public class EtlQueue
 
 ## The transformation script
 
-The [basic characteristics](../../../../server/ongoing-tasks/etl/basics.mdx) of an Azure Queue Storage ETL script are similar to those of other ETL types.  
+The [basic characteristics](../basics.mdx) of an Azure Queue Storage ETL script are similar to those of other ETL types.  
 The script defines what data to **extract** from the source document, how to **transform** this data,  
 and which Azure Queue to **load** it to.
 #### The loadTo method
@@ -343,7 +343,7 @@ The two methods are equivalent, offering alternative syntax:
    |----------------|--------|----------------------------------------------------------------------------------------------------------------------------------|
    | **QueueName**  | string | The name of the Azure Queue                                                                                                      |
    | **obj**        | object | The object to transfer                                                                                                           |
-   | **attributes** | object | An object with optional & required [CloudEvents attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#cloudevents) |
+   | **attributes** | object | An object with optional & required [CloudEvents attributes](./overview.mdx#cloudevents) |
 
 For example, the following two calls, which load data to "OrdersQueue", are equivalent:
 

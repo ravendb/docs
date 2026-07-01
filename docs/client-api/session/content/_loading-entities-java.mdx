@@ -9,13 +9,13 @@ There are several methods with many overloads that allow users to download docum
 from the database and convert them to entities. This article will cover the following 
 methods:  
 
-- [Load](../../../client-api/session/loading-entities.mdx#load)
-- [Load with Includes](../../../client-api/session/loading-entities.mdx#load-with-includes)
-- [Load - multiple entities](../../../client-api/session/loading-entities.mdx#load---multiple-entities)
-- [LoadStartingWith](../../../client-api/session/loading-entities.mdx#loadstartingwith)
-- [ConditionalLoad](../../../client-api/session/loading-entities.mdx#conditionalload)
-- [Stream](../../../client-api/session/loading-entities.mdx#stream)
-- [IsLoaded](../../../client-api/session/loading-entities.mdx#isloaded)
+- [Load](#load)
+- [Load with Includes](#load-with-includes)
+- [Load - multiple entities](#load---multiple-entities)
+- [LoadStartingWith](#loadstartingwith)
+- [ConditionalLoad](#conditionalload)
+- [Stream](#stream)
+- [IsLoaded](#isloaded)
 
 </Admonition>
 ## Load
@@ -56,7 +56,7 @@ From RavenDB version 4.x onwards, only string identifiers are supported. If you 
 
 When there is a 'relationship' between documents, those documents can be loaded in a 
 single request call using the `include + load` methods. Learn more in 
-[How To Handle Document Relationships](../../../client-api/how-to/handle-document-relationships.mdx).  
+[How To Handle Document Relationships](../../how-to/handle-document-relationships.mdx).  
 See also [including counters](../../../document-extensions/counters/counters-and-other-features.mdx#including-counters) 
 and [including time series](../../../document-extensions/timeseries/client-api/session/include/overview.mdx).
 

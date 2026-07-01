@@ -10,12 +10,12 @@ import CodeBlock from '@theme/CodeBlock';
    * How Counters trigger features' execution.  
 
 * In this page:  
-  * [Counters and Indexing](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing)  
-  * [Counters and Queries](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries)  
-  * [Counters and Revisions](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-revisions)  
-  * [Counters and Changes API](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-changes-api)  
-  * [Counters and Ongoing Tasks](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`
-  * [Counters and Other Features: summary](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-other-features-summary)  
+  * [Counters and Indexing](#counters-and-indexing)  
+  * [Counters and Queries](#counters-and-queries)  
+  * [Counters and Revisions](#counters-and-revisions)  
+  * [Counters and Changes API](#counters-and-changes-api)  
+  * [Counters and Ongoing Tasks](#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`
+  * [Counters and Other Features: summary](#counters-and-other-features-summary)  
 </Admonition>
 
 
@@ -25,17 +25,17 @@ Indexing Counters can speed-up finding them and the documents that contain them.
 
 * **Indexing Counter Values**
     Dynamic indexes (aka auto-indexes) _cannot_ index counter values. To index counter values, 
-    create a static index that inherits from `AbstractCountersIndexCreationTask` ([see here](../../../document-extensions/counters/indexing.mdx)).
+    create a static index that inherits from `AbstractCountersIndexCreationTask` ([see here](../indexing.mdx)).
 
 * **Indexing Counter Names**  
     Re-indexing due to Counter-name modification is normally rare enough to pause no performance issues.  
-    To index a document's Counters by name, use [CounterNamesFor](../../../document-extensions/counters/indexing.mdx#section-1).  
+    To index a document's Counters by name, use [CounterNamesFor](../indexing.mdx#section-1).  
 ### Counters and Queries  
 
 Send the server **raw queries** for execution.  
 
 * You can query Counters **by name** but **not by value**.  
-  This is because queries are generally [based on indexes](../../../start/getting-started.mdx#example-iii---querying), and Counter values are [not indexed](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing).  
+  This is because queries are generally [based on indexes](../../../start/getting-started.mdx#example-iii---querying), and Counter values are [not indexed](#counters-and-indexing).  
 * Counter values **can** be [projected](../../../indexes/querying/projections.mdx) from query results, as demonstrated in the following examples.  
   This way a client can get counter values from a query without downloading whole documents.  
 
@@ -150,14 +150,14 @@ and how the various features handle Counter values.
 
 | **Feature** | **Triggered by** | **Counter Value** |
 |-------------|:-------------|:-------------|
-| [Indexing](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing) | _Document Change_ | doesn't handle values |
-| [LINQ Queries](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries) | _No trigger_ | _Accumulated_ |
-| [Raw Queries](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries) | _No trigger_ | `counter()` - _Accumulated_ <br/> `counterRaw()` - _Distributed_ |
-| [Backup Task](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Time Schedule_ | _Distributed_ |
-| [RavenDB ETL Task](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
-| [External Replication task](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
-| [Changes API](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-changes-api) | _Countrer Value Modification_ | _Accumulated_ |
-| [Revision creation](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-revisions) | _Document Change_ | _Accumulated_ |
+| [Indexing](#counters-and-indexing) | _Document Change_ | doesn't handle values |
+| [LINQ Queries](#counters-and-queries) | _No trigger_ | _Accumulated_ |
+| [Raw Queries](#counters-and-queries) | _No trigger_ | `counter()` - _Accumulated_ <br/> `counterRaw()` - _Distributed_ |
+| [Backup Task](#counters-and-ongoing-tasks) | _Time Schedule_ | _Distributed_ |
+| [RavenDB ETL Task](#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
+| [External Replication task](#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
+| [Changes API](#counters-and-changes-api) | _Countrer Value Modification_ | _Accumulated_ |
+| [Revision creation](#counters-and-revisions) | _Document Change_ | _Accumulated_ |
 
 </Admonition>
 

@@ -8,22 +8,22 @@ import CodeBlock from '@theme/CodeBlock';
 * This page describes how time series interact with various other RavenDB features.  
 
 * Features not listed here either have no special behavior regarding time series,  
-  or they have their own pages describing their interaction with time series (such as [indexing](../../../document-extensions/timeseries/indexing.mdx)).
+  or they have their own pages describing their interaction with time series (such as [indexing](../indexing.mdx)).
 
 * In this page:  
-  * [General features](../../../document-extensions/timeseries/time-series-and-other-features.mdx#general-features)  
-  * [Smuggler](../../../document-extensions/timeseries/time-series-and-other-features.mdx#smuggler)  
-  * [Ongoing tasks](../../../document-extensions/timeseries/time-series-and-other-features.mdx#ongoing-tasks)  
-  * [Revisions](../../../document-extensions/timeseries/time-series-and-other-features.mdx#revisions)  
+  * [General features](#general-features)  
+  * [Smuggler](#smuggler)  
+  * [Ongoing tasks](#ongoing-tasks)  
+  * [Revisions](#revisions)  
 
 </Admonition>
 ## General features  
 
 * The Document Session [tracks](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) changes to time series data.  
 * The [Changes API](../../../client-api/changes/what-is-changes-api.mdx) service is triggered by changes to time series data.  
-* Learn about how to **index** time series [here](../../../document-extensions/timeseries/indexing.mdx).  
-* Learn about how to **query** time series data [here](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx).  
-* Learn how to **include** time series with `session.Load()` and in queries [here](../../../document-extensions/timeseries/client-api/session/include/overview.mdx).  
+* Learn about how to **index** time series [here](../indexing.mdx).  
+* Learn about how to **query** time series data [here](../querying/overview-and-syntax.mdx).  
+* Learn how to **include** time series with `session.Load()` and in queries [here](../client-api/session/include/overview.mdx).  
 
 
 
@@ -75,7 +75,7 @@ Support for time series in ETL is planned for one of the next releases.
 
 ## Revisions
 
-[Revisions](../../../document-extensions/revisions/overview.mdx) are old versions of a document.  
+[Revisions](../../revisions/overview.mdx) are old versions of a document.  
 They can be created manually or by setting a policy that creates them automatically on selected collections.  
 
 Revisions do not preserve time series data, and editing a time series does not trigger the creation of a new revision as editing a document would. 

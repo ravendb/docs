@@ -35,18 +35,18 @@ import ContentFrame from "@site/src/components/ContentFrame";
   and error count; expanding the bar reveals additional detail.  
 
 * To learn about task errors and how they impact task health, see the
-  [Overview](../../monitoring/task-errors/overview.mdx) page.  
+  [Overview](./overview.mdx) page.  
 
 * In this article:
-   * [Task Errors view](../../monitoring/task-errors/studio-views.mdx#task-errors-view)
-      * [Opening the view](../../monitoring/task-errors/studio-views.mdx#opening-the-view)
-      * [Task filters](../../monitoring/task-errors/studio-views.mdx#task-filters)
-      * [Task health indicators](../../monitoring/task-errors/studio-views.mdx#task-health-indicators)
-      * [Task errors](../../monitoring/task-errors/studio-views.mdx#task-errors)
-   * [AI Task Errors view](../../monitoring/task-errors/studio-views.mdx#ai-task-errors-view)
-   * [Task health on the Ongoing Tasks view](../../monitoring/task-errors/studio-views.mdx#task-health-on-the-ongoing-tasks-view)
-      * [Collapsed view](../../monitoring/task-errors/studio-views.mdx#collapsed-view)
-      * [Expanded view](../../monitoring/task-errors/studio-views.mdx#expanded-view)
+   * [Task Errors view](#task-errors-view)
+      * [Opening the view](#opening-the-view)
+      * [Task filters](#task-filters)
+      * [Task health indicators](#task-health-indicators)
+      * [Task errors](#task-errors)
+   * [AI Task Errors view](#ai-task-errors-view)
+   * [Task health on the Ongoing Tasks view](#task-health-on-the-ongoing-tasks-view)
+      * [Collapsed view](#collapsed-view)
+      * [Expanded view](#expanded-view)
 
 </Admonition>
 
@@ -68,13 +68,13 @@ showing a segment for every ETL or AI task that currently has any errors.
 
 * **B.** Click to open the Task Errors view.  
 
-* **C.** [Task filters](../../monitoring/task-errors/studio-views.mdx#task-filters) (see below).
+* **C.** [Task filters](#task-filters) (see below).
 
-* **D.** [Task health indicators](../../monitoring/task-errors/studio-views.mdx#task-health-indicators) (see below).
+* **D.** [Task health indicators](#task-health-indicators) (see below).
 
 * **E.** Toggle to **group errors by task** or display them in a unified list.
 
-* **F.** [Task errors](../../monitoring/task-errors/studio-views.mdx#task-errors) (see below).
+* **F.** [Task errors](#task-errors) (see below).
 
 </ContentFrame>
 
@@ -140,7 +140,7 @@ are grouped by task.
    Health is driven by the running error rate, not by the rows in the error tables.  
    A task in `Impaired` or `Failed` state will recover only as new batches complete 
    successfully and its error rate falls back below the configured thresholds.  
-   See the [Overview](../../monitoring/task-errors/overview.mdx#health-states) 
+   See the [Overview](./overview.mdx#health-states) 
    for more.  
    </Admonition>
 
@@ -174,7 +174,7 @@ are grouped by task.
     * **`Error step` column**  
       The processing step the error occurred at: `Configuration`, `Extraction`,
       `Transformation`, `Load`, `Persistence`, `Model Inference`, or `Unknown`.  
-      See the [Error steps](../../monitoring/task-errors/overview.mdx#error-steps) reference on the
+      See the [Error steps](./overview.mdx#error-steps) reference on the
       overview.  
 
     * **`Document` column**  
@@ -207,7 +207,7 @@ with the same layout, controls, and data, but applies a predefined filter to sho
 `Embeddings Generation` and `GenAI` task errors.  
 
 All options documented under
-[Task Errors view](../../monitoring/task-errors/studio-views.mdx#task-errors-view)
+[Task Errors view](#task-errors-view)
 above apply here without change.  
 
 ![AI Task Errors view](./assets/task-errors_ai-task-errors-view.png)

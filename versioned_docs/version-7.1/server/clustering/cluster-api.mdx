@@ -19,16 +19,16 @@ All cluster operations are available through the GUI. However, sometimes you'd w
 In this section we will demonstrate of how to perform certain cluster operations programmatically using the REST API.
 In the first example we will show how to make a secure call using PowerShell, cURL and the RavenDB C# Client. The rest of the examples are cURL only.
 
-- [Add node to the cluster](../../server/clustering/cluster-api.mdx#add-node-to-the-cluster)
-- [Delete node from the cluster](../../server/clustering/cluster-api.mdx#delete-node-from-the-cluster)
-- [Promote a watcher node](../../server/clustering/cluster-api.mdx#promote-a-node)
-- [Demote a watcher node](../../server/clustering/cluster-api.mdx#demote-a-node)
-- [Force elections](../../server/clustering/cluster-api.mdx#force-elections)
-- [Force timeout](../../server/clustering/cluster-api.mdx#force-timeout)
-- [Bootstrap the cluster](../../server/clustering/cluster-api.mdx#bootstrap-cluster)
+- [Add node to the cluster](#add-node-to-the-cluster)
+- [Delete node from the cluster](#delete-node-from-the-cluster)
+- [Promote a watcher node](#promote-a-node)
+- [Demote a watcher node](#demote-a-node)
+- [Force elections](#force-elections)
+- [Force timeout](#force-timeout)
+- [Bootstrap the cluster](#bootstrap-cluster)
 
 <Admonition type="note" title="">
-If authentication is turned on, a client certificate with either `Cluster Admin` or `Operator` [Security Clearance](../../server/security/authorization/security-clearance-and-permissions.mdx) must be supplied, depending on the endpoint.
+If authentication is turned on, a client certificate with either `Cluster Admin` or `Operator` [Security Clearance](../security/authorization/security-clearance-and-permissions.mdx) must be supplied, depending on the endpoint.
 </Admonition>
 
 ## Add node to the cluster

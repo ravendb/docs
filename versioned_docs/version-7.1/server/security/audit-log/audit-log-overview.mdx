@@ -14,7 +14,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Audit Log
 <Admonition type="note" title="">
 
-* [Authorization](../../../server/security/authorization/security-clearance-and-permissions.mdx) controls who can access RavenDB and what operations they can perform.
+* [Authorization](../authorization/security-clearance-and-permissions.mdx) controls who can access RavenDB and what operations they can perform.
 
 * In addition, RavenDB provides an optional **Audit Log** to track who connects to the system and when.  
   Audit logs are available only when using a secure server.
@@ -23,25 +23,25 @@ import LanguageContent from "@site/src/components/LanguageContent";
   See the full list of what is being logged below.
 
 * In this page:
-  * [Enabling the audit log](../../../server/security/audit-log/audit-log-overview.mdx#enabling-the-audit-log)
-  * [What is being logged](../../../server/security/audit-log/audit-log-overview.mdx#what-is-being-logged)
-  * [Things to consider](../../../server/security/audit-log/audit-log-overview.mdx#things-to-consider)
+  * [Enabling the audit log](#enabling-the-audit-log)
+  * [What is being logged](#what-is-being-logged)
+  * [Things to consider](#things-to-consider)
 
 </Admonition>
 ## Enabling the audit log
 
 * **To enable writing to the audit log**, set the following configuration key: 
-  * [Security.AuditLog.FolderPath](../../../server/configuration/security-configuration.mdx#securityauditlogfolderpath) - set the path to a folder where RavenDB will store the audit logs.
+  * [Security.AuditLog.FolderPath](../../configuration/security-configuration.mdx#securityauditlogfolderpath) - set the path to a folder where RavenDB will store the audit logs.
 
 * In addition, the following configurations are available:
-  * [Security.AuditLog.ArchiveAboveSizeInMb](../../../server/configuration/security-configuration.mdx#securityauditlogarchiveabovesizeinmb)  
+  * [Security.AuditLog.ArchiveAboveSizeInMb](../../configuration/security-configuration.mdx#securityauditlogarchiveabovesizeinmb)  
     The maximum size an audit log file may reach before it is archived and logging is directed to a new file.
-  * [Security.AuditLog.EnableArchiveFileCompression](../../../server/configuration/security-configuration.mdx#securityauditlogenablearchivefilecompression) - determine whether to compress the audit log files.
-  * [Security.AuditLog.MaxArchiveDays](../../../server/configuration/security-configuration.mdx#securityauditlogmaxarchivedays) - the maximum number of days that an archived audit log file is kept.
-  * [Security.AuditLog.MaxArchiveFiles](../../../server/configuration/security-configuration.mdx#securityauditlogmaxarchivefiles) - the maximum number of archived audit log files to keep.
-  * [Logs.ArchiveAboveSizeInMb](../../../server/configuration/logs-configuration.mdx#logsarchiveabovesizeinmb) - a new log file is created when this limit is reached (or daily). 
+  * [Security.AuditLog.EnableArchiveFileCompression](../../configuration/security-configuration.mdx#securityauditlogenablearchivefilecompression) - determine whether to compress the audit log files.
+  * [Security.AuditLog.MaxArchiveDays](../../configuration/security-configuration.mdx#securityauditlogmaxarchivedays) - the maximum number of days that an archived audit log file is kept.
+  * [Security.AuditLog.MaxArchiveFiles](../../configuration/security-configuration.mdx#securityauditlogmaxarchivefiles) - the maximum number of archived audit log files to keep.
+  * [Logs.ArchiveAboveSizeInMb](../../configuration/logs-configuration.mdx#logsarchiveabovesizeinmb) - a new log file is created when this limit is reached (or daily). 
 
-* Learn how to set configuration keys in this [configuration overview](../../../server/configuration/configuration-options.mdx).
+* Learn how to set configuration keys in this [configuration overview](../../configuration/configuration-options.mdx).
 
 
 

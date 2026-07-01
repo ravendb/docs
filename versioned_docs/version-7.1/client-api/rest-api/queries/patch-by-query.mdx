@@ -17,12 +17,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Use this endpoint with the **`PATCH`** method to update all documents that satisfy a query:  
 `<server URL>/databases/<database name>/queries`  
 
-* [Patching](../../../client-api/operations/patching/set-based.mdx) occurs on the server side.  
+* [Patching](../../operations/patching/set-based.mdx) occurs on the server side.  
 
 * In this page:  
-  * [Example](../../../client-api/rest-api/queries/patch-by-query.mdx#example)  
-  * [Request Format](../../../client-api/rest-api/queries/patch-by-query.mdx#request-format)  
-  * [Response Format](../../../client-api/rest-api/queries/patch-by-query.mdx#response-format)  
+  * [Example](#example)  
+  * [Request Format](#request-format)  
+  * [Response Format](#response-format)  
 
 </Admonition>
 ## Example
@@ -110,7 +110,7 @@ double quotes within the request body using a backslash: `"` -&gt; `\"`.
 
 | Parameter | Description |
 | - | - |
-| **Query** | A query in [RQL](../../../client-api/session/querying/what-is-rql.mdx). You can insert parameters from the `QueryParameters` object with `$<parameter name>` |
+| **Query** | A query in [RQL](../../session/querying/what-is-rql.mdx). You can insert parameters from the `QueryParameters` object with `$<parameter name>` |
 | **QueryParameters** | A list of values that can be used in the query, such as strings, ints, or documents IDs. Inputs from your users should always be passed as query parameters to avoid SQL injection attacks, and in general it's best practice to pass all your right-hand operands as parameters. |
 
 
