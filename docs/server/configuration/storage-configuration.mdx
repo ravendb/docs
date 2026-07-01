@@ -11,12 +11,39 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Configuration: Storage Options
+<Admonition type="note" title="">
 
-The following configuration options allow you configure [the storage engine](../../server/storage/storage-engine.mdx).
+* Use the configuration keys listed below to configure [the storage engine](../../server/storage/storage-engine.mdx).
+* Learn how to apply these keys in the [Configuration Overview](../../server/configuration/configuration-options.mdx) article.
 
-## Storage.TempPath
+* On this page:  
+   * [Storage.TempPath](../../server/configuration/storage-configuration.mdx#storagetemppath)
+   * [Storage.MaxConcurrentFlushes](../../server/configuration/storage-configuration.mdx#storagemaxconcurrentflushes)
+   * [Storage.TimeToSyncAfterFlushInSec](../../server/configuration/storage-configuration.mdx#storagetimetosyncafterflushinsec)
+   * [Storage.NumberOfConcurrentSyncsPerPhysicalDrive](../../server/configuration/storage-configuration.mdx#storagenumberofconcurrentsyncsperphysicaldrive)
+   * [Storage.CompressTxAboveSizeInKb](../../server/configuration/storage-configuration.mdx#storagecompresstxabovesizeinkb)
+   * [Storage.ForceUsing32BitsPager](../../server/configuration/storage-configuration.mdx#storageforceusing32bitspager)
+   * [Storage.MaxScratchBufferSizeInMb](../../server/configuration/storage-configuration.mdx#storagemaxscratchbuffersizeinmb)
+   * [Storage.PrefetchBatchSizeInKb](../../server/configuration/storage-configuration.mdx#storageprefetchbatchsizeinkb)
+   * [Storage.PrefetchResetThresholdInGb](../../server/configuration/storage-configuration.mdx#storageprefetchresetthresholdingb)
+   * [Storage.OnDirectoryInitialize.Exec](../../server/configuration/storage-configuration.mdx#storageondirectoryinitializeexec)
+   * [Storage.OnDirectoryInitialize.Exec.Arguments](../../server/configuration/storage-configuration.mdx#storageondirectoryinitializeexecarguments)
+   * [Storage.OnDirectoryInitialize.Exec.TimeoutInSec](../../server/configuration/storage-configuration.mdx#storageondirectoryinitializeexectimeoutinsec)
+   * [Storage.EnablePrefetching](../../server/configuration/storage-configuration.mdx#storageenableprefetching)
+   * [Storage.ReadAheadKbAlertThresholdInKb](../../server/configuration/storage-configuration.mdx#storagereadaheadkbalertthresholdinkb)
+   * [Storage.UseSequentialReadAheadHintForJournalRecovery](../../server/configuration/storage-configuration.mdx#storageusesequentialreadaheadhintforjournalrecovery)
+
+</Admonition>
+
+<Panel heading="Configuration keys">
+
+<ContentFrame>
+
+### Storage.TempPath
 
 * Use this configuration option to customize the path for the temporary files of the following [directories](../../server/storage/directory-structure.mdx):
   * `System`
@@ -38,9 +65,11 @@ The following configuration options allow you configure [the storage engine](../
 - **Default**: `null`
 - **Scope**: Server-wide or per database
 
+</ContentFrame>
 
+<ContentFrame>
 
-## Storage.MaxConcurrentFlushes
+### Storage.MaxConcurrentFlushes
 
 Maximum concurrent flushes.
 
@@ -48,19 +77,23 @@ Maximum concurrent flushes.
 - **Default**: `10`
 - **Scope**: Server-wide or per database
 
+</ContentFrame>
 
+<ContentFrame>
 
-## Storage.TimeToSyncAfterFlushInSec
+### Storage.TimeToSyncAfterFlushInSec
 
-Time to sync after flush in seconds
+Time to sync after flush in seconds.
 
 - **Type**: `int`
 - **Default**: `30`
 - **Scope**: Server-wide or per database
 
+</ContentFrame>
 
+<ContentFrame>
 
-## Storage.NumberOfConcurrentSyncsPerPhysicalDrive
+### Storage.NumberOfConcurrentSyncsPerPhysicalDrive
 
 Number of concurrent syncs per physical drive.
 
@@ -68,103 +101,163 @@ Number of concurrent syncs per physical drive.
 - **Default**: `3`
 - **Scope**: Server-wide or per database
 
+</ContentFrame>
 
+<ContentFrame>
 
-## Storage.CompressTxAboveSizeInKb
+### Storage.CompressTxAboveSizeInKb
 
-Compress transactions above size (value in KB)
+Compress transactions above size (value in KB).
 
 - **Type**: `int`
 - **Default**: `512`
 - **Scope**: Server-wide or per database
 
+</ContentFrame>
 
+<ContentFrame>
 
-## Storage.ForceUsing32BitsPager
+### Storage.ForceUsing32BitsPager
 
-Use the 32 bits memory mapped pager even when running on 64 bits.
+Use the 32-bit memory-mapped pager even when running on 64 bits.
 
 - **Type**: `bool`
 - **Default**: `false`
 - **Scope**: Server-wide only
 
+</ContentFrame>
 
+<ContentFrame>
 
-## Storage.MaxScratchBufferSizeInMb
+### Storage.MaxScratchBufferSizeInMb
 
-Maximum size of `.buffers` files
+Maximum size of `.buffers` files.
 
 - **Type**: `int`
 - **Default**: `256` when running on 64 bits, `32` when running on 32 bits or `Storage.ForceUsing32BitsPager` is set to `true`
 - **Scope**: Server-wide or per database
 
+</ContentFrame>
 
+<ContentFrame>
 
+### Storage.PrefetchBatchSizeInKb
 
-## Storage.PrefetchBatchSizeInKb
+**Experts only**
 
-Size of the batch in kilobytes that will be requested to the OS from disk when prefetching (value in powers of 2). Some OSs may not honor certain values. Experts only.
+Size of the batch in kilobytes that will be requested to the OS from disk when prefetching (value in powers of 2).  
+Some OSs may not honor certain values.
 
 - **Type**: `int`
 - **Default**: `1024`
 - **Scope**: Server-wide or per database
 
+</ContentFrame>
 
+<ContentFrame>
 
-## Storage.PrefetchResetThresholdInGb
+### Storage.PrefetchResetThresholdInGb
 
-How many gigabytes of memory should be prefetched before restarting the prefetch tracker table. Experts only.
+**Experts only**
+
+How many gigabytes of memory should be prefetched before restarting the prefetch tracker table.
 
 - **Type**: `int`
 - **Default**: `8`
 - **Scope**: Server-wide or per database
 
+</ContentFrame>
 
+<ContentFrame>
 
-## Storage.OnDirectoryInitialize.Exec
+### Storage.OnDirectoryInitialize.Exec
 
-A command or executable to run when creating/opening a directory (storage environment). Experts only.  
-RavenDB will execute:  
-<TabItem value="plain" label="plain">
-<CodeBlock language="plain">
-{`command [user-arg-1] ... [user-arg-n] <environment-type> <database-name> <data-dir-path> <temp-dir-path> <journal-dir-path>  
-`}
-</CodeBlock>
-</TabItem>
+**Experts only**
 
-- **Type**: `string`
-- **Default**: `null`
-- **Scope**: Server-wide or per database
+A command or executable to run when creating/opening a directory (storage environment).
 
+RavenDB will execute:
 
-
-## Storage.OnDirectoryInitialize.Exec.Arguments
-
-The optional user arguments for the 'Storage.OnDirectoryInitialize.Exec' command or executable. The arguments must be escaped for the command line. Experts only.  
+```plain
+command [user-arg-1] ... [user-arg-n] <environment-type> <database-name> <data-dir-path> <temp-dir-path> <journal-dir-path>
+```
+<br />
 
 - **Type**: `string`
 - **Default**: `null`
 - **Scope**: Server-wide or per database
 
+</ContentFrame>
 
+<ContentFrame>
 
-## Storage.OnDirectoryInitialize.Exec.TimeoutInSec
+### Storage.OnDirectoryInitialize.Exec.Arguments
 
-The number of seconds to wait for the OnDirectoryInitialize executable to exit. Default: 30 seconds. Experts only.  
+**Experts only**
+
+The optional user arguments for the 'Storage.OnDirectoryInitialize.Exec' command or executable.  
+The arguments must be escaped for the command line.
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Storage.OnDirectoryInitialize.Exec.TimeoutInSec
+
+**Experts only**
+
+The number of seconds to wait for the OnDirectoryInitialize executable to exit.  
+Default: 30 seconds.
 
 - **Type**: `int`
 - **Default**: `30`
 - **Scope**: Server-wide or per database
 
+</ContentFrame>
 
+<ContentFrame>
 
-## Storage.EnablePrefetching
+### Storage.EnablePrefetching
 
-Enables memory prefetching mechanism if OS supports it.  
+Enables memory prefetching mechanism if the OS supports it.  
 
 - **Type**: `bool`
 - **Default**: `true`
 - **Scope**: Server-wide only
 
+</ContentFrame>
 
+<ContentFrame>
 
+### Storage.ReadAheadKbAlertThresholdInKb
+
+On Linux, RavenDB raises a startup warning when any block device's `read_ahead_kb` is above this threshold.  
+A high `read_ahead_kb` amplifies I/O for the random-access database workload - see [System Configuration Recommendations](../../start/installation/system-configuration-recommendations.mdx) for guidance on tuning it.  
+Set to `null` to disable the check.  
+Has no effect on Windows or macOS.
+
+- **Type**: `int?`
+- **Default**: `128`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Storage.UseSequentialReadAheadHintForJournalRecovery
+
+On Linux, hints the kernel (`posix_fadvise` with `POSIX_FADV_SEQUENTIAL`) to read journal files sequentially while a database loads, so a low `read_ahead_kb` tuned for the random-access workload causes a smaller startup slowdown.  
+Set to `false` to opt out.  
+Has no effect on Windows or macOS.
+
+- **Type**: `bool`
+- **Default**: `true` on Linux, `false` on other platforms
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+</Panel>

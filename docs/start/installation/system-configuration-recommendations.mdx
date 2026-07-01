@@ -11,76 +11,182 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Installation: System Configuration Recommendations
+<Admonition type="note" title="">
 
-## Linux - Ubuntu 16.04
+* These recommendations target RavenDB deployments on Linux.  
+* RavenDB uses the resources of the machine it runs on, within its configured limits.  
+  To benefit from higher resources usage, consider the following settings.  
+* Note that this might affect different systems with different behaviors.  
+* Some of the settings require super-user permissions.  
 
-RavenDB uses the resources of the machine it is running on, limited to the configuration limitation. In order to benefit from higher resources usage, consider the following setup:
+* On this page:  
+   * [Set a higher limit on open file descriptors](../../start/installation/system-configuration-recommendations.mdx#set-a-higher-limit-on-open-file-descriptors)
+   * [Enlarge local available port range](../../start/installation/system-configuration-recommendations.mdx#enlarge-local-available-port-range)
+   * [Reuse TIME-WAIT sockets](../../start/installation/system-configuration-recommendations.mdx#reuse-time-wait-sockets)
+   * [Recycle TIME-WAIT sockets](../../start/installation/system-configuration-recommendations.mdx#recycle-time-wait-sockets)
+   * [Enlarge memory-mapped max usage](../../start/installation/system-configuration-recommendations.mdx#enlarge-memory-mapped-max-usage)
+   * [Select swap device](../../start/installation/system-configuration-recommendations.mdx#select-swap-device)
+   * [Tune block-device settings for random-access workloads (`read_ahead_kb`, `scheduler`, `rotational`)](../../start/installation/system-configuration-recommendations.mdx#tune-block-device-settings-for-random-access-workloads-read_ahead_kb-scheduler-rotational)
 
-* Note that this might affect different systems with different behaviors
-* Some of the settings require super user permissions
-### Set higher limit to max open file descriptors
+</Admonition>
 
-In order to handle more connections to more databases and indexes at once, higher limit to open file descriptors (which affects also max number of network connections) is required.
+<Panel heading="Linux">
 
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`ulimit -n 65535
-`}
-</CodeBlock>
-</TabItem>
+<ContentFrame>
+
+### Set a higher limit on open file descriptors
+
+To handle more connections to more databases and indexes at once, a higher limit on open file descriptors (which also affects the max number of network connections) is required.
+
+```bash
+ulimit -n 65535
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
 ### Enlarge local available port range
 
-In order to serve more connections at once (heavy traffic usage) from clients, a higher port range is required.
+To serve more connections at once (heavy traffic usage) from clients, a higher port range is required.
 
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`sysctl -w net.ipv4.ip_local_port_range="1024 65535"
-`}
-</CodeBlock>
-</TabItem>
+```bash
+sysctl -w net.ipv4.ip_local_port_range="1024 65535"
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
 ### Reuse TIME-WAIT sockets
 
-Time to make reuse of closing tcp sockets. This allows RavenDB to handle more requests faster.
+Reuse TCP sockets that are still in the TIME-WAIT state for new connections.  
+This allows RavenDB to handle more requests faster.
 
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`sysctl -w net.ipv4.tcp_tw_reuse=1
-`}
-</CodeBlock>
-</TabItem>
+```bash
+sysctl -w net.ipv4.tcp_tw_reuse=1
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
 ### Recycle TIME-WAIT sockets
 
-Similar usage to the above reuse. Not for use when working with NAT, or in Kernel 4.12+
+Similar usage to the above reuse.  
+Do not use when working with **NAT** or in **Kernel 4.12+**.
 
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`sysctl -w net.ipv4.tcp_tw_recycle=1
-`}
-</CodeBlock>
-</TabItem>
-### Enlarge memory mapped max usage
+```bash
+sysctl -w net.ipv4.tcp_tw_recycle=1
+```
 
-RavenDB uses memory mapped files (few per database, indexes, etc). Upper limit is required in order to server larger amounts of databases and indexes
+</ContentFrame>
 
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`sysctl -w vm.max_map_count=2000000
-`}
-</CodeBlock>
-</TabItem>
+<ContentFrame>
+
+### Enlarge memory-mapped max usage
+
+RavenDB uses memory-mapped files: a few per database, plus more for indexes and other components.  
+Upper limit is required to serve larger amounts of databases and indexes.
+
+```bash
+sysctl -w vm.max_map_count=2000000
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
 ### Select swap device
 
-Consider different swap physical drive.
+Consider placing swap on a separate physical drive.  
+
 For details on current swapping partitions and priorities use:
 
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`swapon
-`}
-</CodeBlock>
-</TabItem>
+```bash
+swapon
+```
 
+</ContentFrame>
 
+<ContentFrame>
 
+### Tune block-device settings for random-access workloads (`read_ahead_kb`, `scheduler`, `rotational`)
+
+`read_ahead_kb` controls how much data the kernel prefetches on each read.  
+RavenDB's typical workload is random-access over 8 KB Voron pages, so a high `read_ahead_kb` amplifies I/O - 
+small random reads get fused into large ones, wasting disk bandwidth and page cache and raising latency under 
+load (most visible with many databases or large datasets).  
+Lowering it keeps each read close to what RavenDB actually requested, which is what this random-access workload 
+usually wants.
+
+The trade-off is database startup: when a database loads, RavenDB reads its journal files sequentially, 
+and a low `read_ahead_kb` slows that read down.  
+RavenDB mitigates this internally - it hints the kernel to read the journals sequentially during load (controlled by 
+[`Storage.UseSequentialReadAheadHintForJournalRecovery`](../../server/configuration/storage-configuration.mdx#storageusesequentialreadaheadhintforjournalrecovery)) - 
+so you can keep `read_ahead_kb` low without a large startup penalty.
+
+For random-access SSD/NVMe workloads, values in the 8-64 KB range are worth experimenting with, versus the common 128 KB default.
+
+Check the current value (`<device>` is e.g. `sda` or `nvme0n1`):
+
+```bash
+cat /sys/block/<device>/queue/read_ahead_kb
+```
+<br />
+
+Set it at runtime (requires root, resets on reboot):
+
+```bash
+echo 32 > /sys/block/<device>/queue/read_ahead_kb
+```
+<br />
+
+RavenDB captures the device's read-ahead value when it opens its files, so restart the server (or reload the databases) 
+for a runtime change to take effect on already-open storage.
+
+Also check `rotational` and `scheduler`.  
+They matter most on virtualized disks (Azure managed disks in particular), which are often misreported as `rotational` 
+even when backed by SSD/NVMe, so the kernel picks HDD-oriented defaults.  
+Bare-metal SSD/NVMe is usually detected correctly.  
+For SSD/NVMe, `rotational=0` and `scheduler=none` are usually better.
+
+Persist these across reboots with a udev rule:
+
+```bash
+# /etc/udev/rules.d/99-ravendb.rules
+ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}="0"
+ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/scheduler}="none"
+ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/read_ahead_kb}="32"
+ACTION=="add|change", KERNEL=="nvme*", ATTR{queue/read_ahead_kb}="32"
+
+# apply without reboot:
+# sudo udevadm control --reload-rules && sudo udevadm trigger
+```
+<br />
+
+This rule matches every `sd*` and `nvme*` device on the host.  
+If other workloads share the machine, scope it to the disks RavenDB actually uses (find the device behind a path with 
+`df <path>` or `lsblk`) so you don't retune unrelated disks.
+
+<Admonition type="note" title="When to tune read_ahead_kb">
+
+The common 128 KB default works well for the majority of deployments - it is what RavenDB instances typically run with - 
+and a lower value is worth pursuing only when heavy random-access load (many databases or large datasets on one host) 
+shows up as high I/O wait or memory pressure.  
+There is no universally correct `read_ahead_kb`.  
+It depends on your disk, workload, and available memory, so test candidate values in your own environment and verify 
+their effect on request/response times under real load before committing to one.  
+RavenDB raises a startup warning when a block device's `read_ahead_kb` is above 
+[`Storage.ReadAheadKbAlertThresholdInKb`](../../server/configuration/storage-configuration.mdx#storagereadaheadkbalertthresholdinkb) 
+(default 128 KB), since an unusually high read-ahead causes the I/O amplification described above.
+
+</Admonition>
+
+</ContentFrame>
+
+</Panel>
