@@ -6,11 +6,6 @@ sidebar_position: 3
 ---
 
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
 import ContentFrame from '@site/src/components/ContentFrame';
 import Panel from '@site/src/components/Panel';
 
@@ -27,8 +22,12 @@ import Panel from '@site/src/components/Panel';
 
   * [Provide incident description](../../server/troubleshooting/collect-info.mdx#provide-incident-description)
   * [Create debug package](../../server/troubleshooting/collect-info.mdx#create-debug-package)
+     * [Create the package](../../server/troubleshooting/collect-info.mdx#create-the-package)
+     * [Verify the package](../../server/troubleshooting/collect-info.mdx#verify-the-package)
   * [Enable logs for ongoing issues](../../server/troubleshooting/collect-info.mdx#enable-logs-for-ongoing-issues)
   * [Download logs](../../server/troubleshooting/collect-info.mdx#download-logs)
+     * [Download the logs](../../server/troubleshooting/collect-info.mdx#download-the-logs)
+     * [Verify the logs](../../server/troubleshooting/collect-info.mdx#verify-the-logs)
   * [Reproduce scenario](../../server/troubleshooting/collect-info.mdx#reproduce-scenario)
   * [Create failing test](../../server/troubleshooting/collect-info.mdx#create-failing-test)
 
@@ -51,13 +50,19 @@ import Panel from '@site/src/components/Panel';
 
 <Panel heading="Create debug package">
 
+<ContentFrame>
+
+### Create the package
+
 Studio's **Debug Package** view allows you to collect diagnostic information about your server or cluster into a debug package (a `.zip` file).  
 To create such a package, go to **Manage Server &gt; Debug Package** and click **Download package for entire cluster** (or choose your current server 
-from the dropdown).  
+from the dropdown).
 
 ![Create debug package](./assets/create-debug-package.png)
 
 For the full walkthrough, see [Create a Debug Package](../../server/troubleshooting/debug-package/create-debug-package.mdx).
+
+---
 
 <Admonition type="info" title="">
 
@@ -70,9 +75,13 @@ For the full walkthrough, see [Create a Debug Package](../../server/troubleshoot
 
 </Admonition>
 
-<Admonition type="note" title="">
+</ContentFrame>
 
-**Before sending the debug package zip file**, perform the following checks:  
+<ContentFrame>
+
+### Verify the package
+
+**Before sending the debug package zip file**, perform the following checks:
 
   * Verify that the zip file can be successfully extracted.
   * Verify that the content is similar to the following sample images.
@@ -85,36 +94,43 @@ For the full walkthrough, see [Create a Debug Package](../../server/troubleshoot
 
 ![Zip file contents 4](./assets/zip-4.png)
 
-</Admonition>
+</ContentFrame>
 
 </Panel>
 
 <Panel heading="Enable logs for ongoing issues">
 
-If the issue you're encountering is still **ongoing**, enable the following logs on disk (if not already enabled) 
-before [downloading the log files](../../server/troubleshooting/collect-info#download-logs).
+If the issue you're encountering is still **ongoing**, enable debug-level logging on disk as follows
+(if not already enabled) to capture helpful information, before [downloading the log files](../../server/troubleshooting/collect-info#download-logs).
 
 ![Admin logs view](./assets/admin-logs-view.png)
 
-1. Navigate to **Manage Server &gt; Admin Logs**
-
-2. Click **Settings** in the "Logs on disk" section.  
+1. Navigate to **Manage Server**.
+2. Open the **Admin Logs** view.
+3. Click **Settings** in the "Logs on disk" section.  
    The following Settings dialog will open:
+   ![Settings logs on disk](./assets/settings-logs-on-disk.png)
 
-![Settings logs on disk](./assets/settings-logs-on-disk.png)
-### Server logs:
-  ![Server logs](./assets/server-logs.png)
-### Microsoft logs:
-  ![Microsoft logs](./assets/microsoft-logs.png)
-### Traffic watch logs:
-  ![Traffic watch logs 1](./assets/traffic-watch-logs.png)
+   **`A`**. Click to open the **Logs** (server logs) dialog and change logging level to **Debug**:  
+      ![Server logs](./assets/server-logs.png)
+
+   **`B`**. Click to open the **Microsoft logs** dialog and change logging level to **Debug**:  
+      ![Microsoft logs](./assets/microsoft-logs.png)
+
+   **`C`**. Click to open the **Traffic watch** dialog and enable logging:  
+      ![Traffic watch logs 1](./assets/traffic-watch-logs.png)
+
+---
+
 <Admonition type="warning" title="">
 
-Be aware that a server restart will reset all log settings to their default values.  
+Be aware that a server restart will **reset all log settings** to their default values.  
 To preserve your settings even through a restart, either:
 
-  * **Save the settings** in each log dialog to the `settings.json` file by checking the UI checkbox:  
-    (Scroll down in the Traffic watch logs dialog to see this option)  
+  * **Save the settings** via Studio:  
+    Open each log type dialog, check the "Save in `settings.json`" checkbox, and **save**.  
+    Note: the exact checkbox label varies between the log types.  
+    e.g., 
     ![Save to settings.json](./assets/save-to-settings-json.png)
 
   * or **Set the relevant configuration key** as described in the [configuration overview](../../server/configuration/configuration-options.mdx):
@@ -128,15 +144,17 @@ To preserve your settings even through a restart, either:
 
 <Panel heading="Download logs">
 
+<ContentFrame>
+
+### Download the logs
+
 Perform the following for each cluster node:
 
 ![download logs](./assets/download-logs-1.png)
 
 ![download logs](./assets/download-logs-2.png)
 
-<Admonition type="note" title="">
-
-1. Navigate to **Manage Server &gt; Admin Logs** and click 'Download Logs' in the "Logs on disk" section.
+1. Navigate to **Manage Server &gt; Admin Logs** and click 'Download' in the "Logs on disk" section.
 
 2. Either check 'Use minimum start date' to retrieve logs information from the time the server was started,  
    or enter a specific (local) time.
@@ -147,7 +165,7 @@ Perform the following for each cluster node:
 4. Click 'Download'.  
    A zip file containing the logs will be downloaded.
 
-</Admonition>
+---
 
 <Admonition type="info" title="">
 
@@ -161,9 +179,13 @@ avoiding potentially losing them due to retention policy.
   * [Logs.MaxArchiveDays](../../server/configuration/logs-configuration.mdx#logsmaxarchivedays)
   * [Logs.MaxArchiveFiles ](../../server/configuration/logs-configuration.mdx#logsmaxarchivefiles)
 
-</Admonition> 
+</Admonition>
 
-<Admonition type="note" title="">
+</ContentFrame>
+
+<ContentFrame>
+
+### Verify the logs
 
 **Before sending the log files**, perform the following checks:
 
@@ -175,7 +197,7 @@ avoiding potentially losing them due to retention policy.
 
 ![Zip file contents 6](./assets/zip-6.png)
 
-</Admonition>
+</ContentFrame>
 
 </Panel>
 
