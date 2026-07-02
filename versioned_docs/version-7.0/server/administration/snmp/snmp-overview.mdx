@@ -5,11 +5,8 @@ sidebar_position: 0
 ---
 
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # SNMP Support
 <Admonition type="info" title="">
@@ -30,6 +27,7 @@ SNMP support is available for [Enterprise](../../../start/licensing/licensing-ov
       * [Access metrics via monitoring tools](../../../server/administration/snmp/snmp-overview.mdx#access-metrics-via-monitoring-tools)
       * [Access metrics via SNMP agents](../../../server/administration/snmp/snmp-overview.mdx#access-metrics-via-snmp-agents)
       * [Access metrics via HTTP](../../../server/administration/snmp/snmp-overview.mdx#access-metrics-via-http)
+      * [Rate values explained](../../../server/administration/snmp/snmp-overview.mdx#rate-values-explained)
   * [List of OIDs](../../../server/administration/snmp/snmp-overview.mdx#list-of-oids)
       * [Server OIDs](../../../server/administration/snmp/snmp-overview.mdx#server-oids)
       * [Cluster OIDs](../../../server/administration/snmp/snmp-overview.mdx#cluster-oids)
@@ -39,7 +37,7 @@ SNMP support is available for [Enterprise](../../../start/licensing/licensing-ov
       * [Ongoing tasks OIDs](../../../server/administration/snmp/snmp-overview.mdx#ongoing-tasks-oids)
 
 </Admonition>
-## Overview
+<Panel heading="Overview">
 
 * Simple Network Management Protocol (SNMP) is an Internet-standard protocol for collecting and organizing 
   information about managed devices on IP networks. It is used primarily for monitoring network services. 
@@ -53,14 +51,14 @@ SNMP support is available for [Enterprise](../../../start/licensing/licensing-ov
   the loaded databases, and database-specific metrics like the number of indexed items per second, 
   document writes per second, storage space each database takes, and more.  
 
-* You can still monitor what is going on with RavenDB directly from the Studio, or by using one of our 
+* You can still monitor what is going on with RavenDB directly from Studio, or by using one of our 
   monitoring tools. However, using SNMP might be easier in some cases. As users start running large numbers 
   of RavenDB instances, it becomes impractical to deal with each of them individually, and using a monitoring 
   system that can watch many servers becomes advisable.  
 
+</Panel>
 
-
-## Enabling SNMP in RavenDB
+<Panel heading="Enabling SNMP in RavenDB">
 
 * To monitor RavenDB using SNMP you **must** first set the [Monitoring.Snmp.Enabled](../../../server/configuration/monitoring-configuration.mdx#monitoringsnmpenabled) configuration key to _true_.
 
@@ -69,23 +67,20 @@ SNMP support is available for [Enterprise](../../../start/licensing/licensing-ov
 
 * For example, add this key to your _settings.json_ file and restart the server.
 
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`\{
-    ...
-    "Monitoring.Snmp.Enabled": true
-    ...
-\}
-`}
-</CodeBlock>
-</TabItem>
+  ```json
+  {
+      ...
+      "Monitoring.Snmp.Enabled": true
+      ...
+  }
+  ```
 
+</Panel>
 
-
-## SNMP configuration options
+<Panel heading="SNMP configuration options">
 
 There are several configurable SNMP properties in RavenDB:
-##### For SNMPv1:
+#### For SNMPv1:
 
 * [Monitoring.Snmp.Port](../../../server/configuration/monitoring-configuration.mdx#monitoringsnmpport)  
   The SNMP port.  
@@ -94,14 +89,14 @@ There are several configurable SNMP properties in RavenDB:
   List of supported SNMP versions.  
   Default: `"V2C;V3"`
 
-##### For SNMPv2c:
+#### For SNMPv2c:
 
 * [Monitoring.Snmp.Community](../../../server/configuration/monitoring-configuration.mdx#monitoringsnmpcommunity)   
   The community string is used as a password.  
   It is sent with each SNMP `GET` request and allows or denies access to the monitored device.  
   Default: `"ravendb"`
 
-##### For SNMPv3:
+#### For SNMPv3:
 
 * [Monitoring.Snmp.AuthenticationProtocol](../../../server/configuration/monitoring-configuration.mdx#monitoringsnmpauthenticationprotocol)  
   Authentication protocol.  
@@ -127,22 +122,24 @@ There are several configurable SNMP properties in RavenDB:
   which outlines all available options.
 </Admonition>
 
+</Panel>
 
+<Panel heading="The Metrics">
 
-## The Metrics
+<ContentFrame>
 
-<Admonition type="note" title="">
-
-#### Access metrics via monitoring tools
+### Access metrics via monitoring tools
 
 * Querying the exposed metrics using a monitoring tool is typically straightforward.  
   See [Zabbix monitoring](../../../server/administration/snmp/setup-zabbix.mdx) to learn how to set Zabbix using the RavenDB community template.
- 
-</Admonition>
 
-<Admonition type="note" title="">
+</ContentFrame>
 
-#### Access metrics via SNMP agents
+---
+
+<ContentFrame>
+
+### Access metrics via SNMP agents
 
 * The metrics can be accessed directly using any SNMP agent such as [Net-SNMP](http://net-snmp.sourceforge.net/).  
   Each metric has a unique object identifier (OID) and can be accessed individually.  
@@ -152,41 +149,42 @@ There are several configurable SNMP properties in RavenDB:
 
     ##### For SNMPv2c:
 
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`// Request:
-snmpget -v 2c -c ravendb live-test.ravendb.net 1.3.6.1.4.1.45751.1.1.1.3
+    ```bash
+    // Request:
+    snmpget -v 2c -c ravendb live-test.ravendb.net 1.3.6.1.4.1.45751.1.1.1.3
 
-// Result:
-iso.3.6.1.4.1.45751.1.1.1.3 = Timeticks: (29543973) 3 days, 10:03:59.73
-`}
-</CodeBlock>
-</TabItem>
+    // Result:
+    iso.3.6.1.4.1.45751.1.1.1.3 = Timeticks: (29543973) 3 days, 10:03:59.73
+    ```
+
+    <br />
 
     * `ravendb` is the community string (set via the [Monitoring.Snmp.Community](../../../server/configuration/monitoring-configuration.mdx#monitoringsnmpcommunity) configuration key).   
     * `"live-test.ravendb.net"` is the host.  
 
+    <br />
+
     ##### For SNMPv3:
 
+    ```bash
+    snmpget -v 3 -l authNoPriv -u ravendb -a SHA \
+            -A ravendb live-test.ravendb.net 1.3.6.1.4.1.45751.1.1.1.3
+    ```
 
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`snmpget -v 3 -l authNoPriv -u ravendb -a SHA \\
-        -A ravendb live-test.ravendb.net 1.3.6.1.4.1.45751.1.1.1.3
-`}
-</CodeBlock>
-</TabItem>
+    <br />
 
     * `-l authNoPriv` - sets the security level to use authentication but no privacy.  
     * `-u ravendb` - sets the user for authentication purposes to "ravendb".  
     * `-a SHA` - sets the authentication protocol to SHA.  
     * `-A ravendb` - sets the authentication password to "ravendb".  
 
-</Admonition>
+</ContentFrame>
 
-<Admonition type="note" title="">
+---
 
-#### Access metrics via HTTP
+<ContentFrame>
+
+### Access metrics via HTTP
 **Access single OID value**:
 
 * An individual OID value can be retrieved via HTTP `GET` endpoint:  
@@ -194,16 +192,16 @@ iso.3.6.1.4.1.45751.1.1.1.3 = Timeticks: (29543973) 3 days, 10:03:59.73
 
 * For example, a cURL request for the server [up-time metric](../../../server/administration/snmp/snmp-overview.mdx#13):
 
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`// Request:
-curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1.1.1.3
+  ```bash
+  // Request:
+  curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1.1.1.3
 
-// Result:
-\{ "Value" : "4.21:32:56.0700000" \}
-`}
-</CodeBlock>
-</TabItem>
+  // Result:
+  { "Value" : "4.21:32:56.0700000" }
+  ```
+
+<br />
+
 **Access multiple OID values**:
 
 * Multiple OID values can be retrieved by making either a `GET` or a `POST` request to the following HTTP endpoint:
@@ -211,35 +209,29 @@ curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1
 
 * For example, cURL requests for the server [managed memory](../../../server/administration/snmp/snmp-overview.mdx#167) and [unmanaged memory](../../../server/administration/snmp/snmp-overview.mdx#168) metrics:
 
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`curl -X GET "http://live-test.ravendb.net/monitoring/snmp/bulk? \\
-             oid=1.3.6.1.4.1.45751.1.1.1.6.7&oid=1.3.6.1.4.1.45751.1.1.1.6.8"
-`}
-</CodeBlock>
-</TabItem>
+  ```bash
+  curl -X GET "http://live-test.ravendb.net/monitoring/snmp/bulk? \
+               oid=1.3.6.1.4.1.45751.1.1.1.6.7&oid=1.3.6.1.4.1.45751.1.1.1.6.8"
+  ```
 
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`curl -X POST \\
-     -H "Content-Type: application/json" \\
-     -d '\{  "OIDs": ["1.3.6.1.4.1.45751.1.1.1.6.7", "1.3.6.1.4.1.45751.1.1.1.6.8"]\}' \\
-     http://localhost:8080/monitoring/snmp/bulk
-`}
-</CodeBlock>
-</TabItem>
+  ```bash
+  curl -X POST \
+       -H "Content-Type: application/json" \
+       -d '{  "OIDs": ["1.3.6.1.4.1.45751.1.1.1.6.7", "1.3.6.1.4.1.45751.1.1.1.6.8"]}' \
+       http://localhost:8080/monitoring/snmp/bulk
+  ```
 
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`\{
-    "Results": [
-        \{ "OID": "1.3.6.1.4.1.45751.1.1.1.6.7", "Value": "410" \},
-        \{ "OID": "1.3.6.1.4.1.45751.1.1.1.6.8", "Value": "4"   \}
-    ]
-\}
-`}
-</CodeBlock>
-</TabItem>
+  ```bash
+  {
+      "Results": [
+          { "OID": "1.3.6.1.4.1.45751.1.1.1.6.7", "Value": "410" },
+          { "OID": "1.3.6.1.4.1.45751.1.1.1.6.8", "Value": "4"   }
+      ]
+  }
+  ```
+
+<br />
+
 <a id="getAllOids"/> **Get all OIDs:**
 
 * You can get a list of all OIDs along with their description via this HTTP `GET` endpoint:  
@@ -247,11 +239,36 @@ curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1
 
 * For example: [http://live-test.ravendb.net/monitoring/snmp/oids](http://live-test.ravendb.net/monitoring/snmp/oids)
 
-</Admonition>
+</ContentFrame>
 
+---
 
+<ContentFrame>
 
-## List of OIDs
+### Rate values explained
+
+Several OIDs below carry a **(one minute rate)** or **(five second rate)** qualifier,
+which averages activity over a time window.  
+The chosen rate changes what the collected data shows:
+
+* **One minute rate**  
+  The number of events per second, averaged over the last 60 seconds.  
+  Short bursts are smoothed out into the average.  
+
+* **Five second rate**  
+  The number of events per second, averaged over the last 5 seconds.  
+  Brief spikes stay visible instead of being averaged away.
+
+When you monitor a metric, pick the qualifier that matches your goal:
+
+* Use the **one minute rate** to track sustained load and longer-term trends.  
+* Use the **five second rate** to catch short bursts and request spikes as they happen.  
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="List of OIDs">
 
 <Admonition type="note" title="">
 
@@ -268,7 +285,9 @@ curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1
 
 </Admonition>
 
-<a id="server-oids"/>
+<ContentFrame>
+
+### Server OIDs
 
 | OID                                            | Metric (Server)                                                                                                                                                                                                                                                                |
 |------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -359,7 +378,13 @@ curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1
 | <a id="value-1.17.3"/> 1.17.3                       | Value of the '/proc/sys/kernel/threads-max' parameter                                                                                                                                                                                                                          |
 | <a id="value-1.17.4"/> 1.17.4                       | Number of current threads                                                                                                                                                                                                                                                      |
 
-<a id="cluster-oids"/>
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Cluster OIDs
 
 | OID                    | Metric (Cluster)   |
 |------------------------|--------------------| 
@@ -369,7 +394,13 @@ curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1
 | <a id="value-3.2.2"/> 3.2.2 | Cluster index      |
 | <a id="value-3.2.3"/> 3.2.3 | Cluster ID         |
 
-<a id="database-oids"/>
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Database OIDs
 
 | OID                                | Metric (Database)                                                        |
 |------------------------------------|--------------------------------------------------------------------------| 
@@ -415,7 +446,13 @@ curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1
 | <a id="value-5.2.D.6.1"/> 5.2.`D`.6.1   | Number of writes (documents, attachments, counters, timeseries)          |
 | <a id="value-5.2.D.6.2"/> 5.2.`D`.6.2   | Number of bytes written (documents, attachments, counters, timeseries)   |
 
-<a id="index-oids"/>
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Index OIDs
 
 | OID                                      | Metric (Index)                                 |
 |------------------------------------------|------------------------------------------------| 
@@ -435,7 +472,13 @@ curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1
 | <a id="value-5.2.D.4.I.15"/> 5.2.`D`.4.`I`.15 | Number of reduces per second (one minute rate) |
 | <a id="value-5.2.D.4.I.16"/> 5.2.`D`.4.`I`.16 | Index type                                     |
 
-<a id="general-oids"/>
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### General OIDs
 
 | OID                        | Metric (General)                                                                                 |
 |----------------------------|--------------------------------------------------------------------------------------------------| 
@@ -457,7 +500,13 @@ curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1
 | <a id="value-5.1.9.2"/> 5.1.9.2 | Number of bytes written (documents, attachments, counters, timeseries) in all loaded databases   |
 | <a id="value-5.1.10"/> 5.1.10   | Number of faulted databases                                                                      |
 
-<a id="ongoing-tasks-oids"/>
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Ongoing tasks OIDs
 
 | OID                            | Metric (Ongoing tasks)                                             |
 |--------------------------------|--------------------------------------------------------------------| 
@@ -488,5 +537,7 @@ curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1
 | <a id="value-5.1.11.25"/> 5.1.11.25 | Number of enabled Embeddings Generation tasks for all databases    |
 | <a id="value-5.1.11.26"/> 5.1.11.26 | Number of active Embeddings Generation tasks for all databases     |
 
+</ContentFrame>
 
+</Panel>
 
