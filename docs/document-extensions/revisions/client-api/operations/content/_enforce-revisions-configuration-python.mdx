@@ -1,0 +1,179 @@
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* The revision configuration rules are usually applied to a document's revisions only when the document is modified.  
+  Use `EnforceRevisionsConfigurationOperation` to apply the current [revisions configuration](../../../../../studio/database/settings/document-revisions.mdx)
+  to existing revisions, instead of waiting for each document to be modified.
+
+* Running this operation scans existing revisions and enforces the current rules immediately,
+  **deleting** eligible revisions that should be purged according to the configuration.
+
+* The operation can be applied to all collections (default) or to a specified set of collections.
+
+* By default, the operation is applied to the [default database](../../../../../client-api/setting-up-default-database.mdx).  
+  To operate on a different database, see [switch operations to a different database](../../../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
+
+* This article explains how to run the operation from the Client API.  
+  To run it from Studio, see [Enforce configuration](../../../../../studio/database/settings/document-revisions.mdx#enforce-configuration) in the Document Revisions settings view.    
+
+* In this article:
+  * [Enforce configuration on all collections](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#enforce-configuration-on-all-collections)
+  * [Enforce configuration on specific collections](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#enforce-configuration-on-specific-collections)
+  * [Include force-created revisions](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#include-force-created-revisions)
+  * [Throttle the operation](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#throttle-the-operation)
+  * [Syntax](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#syntax)
+
+</Admonition>
+
+<Admonition type="warning" title="Resource consumption">
+
+* Large databases may contain many revisions that will be deleted when the current configuration is enforced.  
+  Running the operation can delete them all in a single enforcement run and may require substantial server resources.
+  Schedule it accordingly.    
+
+* On large datasets, use `max_ops_per_second` to [throttle the operation](../../../../../document-extensions/revisions/client-api/operations/enforce-revisions-configuration.mdx#throttle-the-operation)
+  and reduce its resource consumption.
+
+* Revisions in collections that no current configuration applies to may be deleted.
+  Make sure your revisions configuration includes the default settings and collection-specific configurations needed to keep the revisions you want to preserve.
+  Force-created revisions may also be removed when `include_force_created` is set to `True`.        
+
+</Admonition>
+
+<Panel heading="Enforce configuration on all collections">
+
+In this example, the current revisions configuration is enforced on the revisions of all collections.
+
+```python
+# Define the enforce revisions configuration operation
+enforce_configuration_op = EnforceRevisionsConfigurationOperation()
+
+# Execute the operation by passing it to operations.send_async
+# send_async returns an Operation object, NOT the operation result
+operation = store.operations.send_async(enforce_configuration_op)
+
+# Wait for the operation to complete
+operation.wait_for_completion()
+```
+
+</Panel>
+
+<Panel heading="Enforce configuration on specific collections">
+
+    
+Set the `collections` parameter to enforce the configuration only on revisions in the specified collections.  
+When `collections` is not set, is `None`, or is an empty list, the operation is applied to all collections.
+
+```python
+enforce_configuration_op = EnforceRevisionsConfigurationOperation(
+    EnforceRevisionsConfigurationOperation.Parameters(
+        # The configuration will be enforced only on these collections
+        collections=["Users", "Products"]
+    )
+)
+
+operation = store.operations.send_async(enforce_configuration_op)
+operation.wait_for_completion()
+```
+
+</Panel>
+
+<Panel heading="Include force-created revisions">
+   
+By default, [force-created revisions](../../../../../document-extensions/revisions/overview.mdx#force-revision-creation)
+are preserved and are not removed by the operation.     
+
+Set `include_force_created` to `True` to allow those force-created revisions to be removed as well.      
+
+```python
+enforce_configuration_op = EnforceRevisionsConfigurationOperation(
+    EnforceRevisionsConfigurationOperation.Parameters(
+        # Force-created revisions will also be subject to the configuration rules
+        include_force_created=True
+    )
+)
+
+operation = store.operations.send_async(enforce_configuration_op)
+operation.wait_for_completion()
+```
+
+</Panel>
+
+<Panel heading="Throttle the operation"> 
+
+Running the operation on a large database may consume substantial server resources and affect server performance.    
+
+Set `max_ops_per_second` to limit the number of documents processed per second,  
+throttling the operation to reduce its resource consumption.    
+
+```python
+enforce_configuration_op = EnforceRevisionsConfigurationOperation(
+    EnforceRevisionsConfigurationOperation.Parameters(
+        # Process at most 100 documents per second
+        max_ops_per_second=100
+    )
+)
+
+operation = store.operations.send_async(enforce_configuration_op)
+operation.wait_for_completion()
+```
+<br/>   
+    
+<Admonition type="warning" title="">
+
+`max_ops_per_second` must be greater than `0`.  
+Setting it to `0` or a negative value raises a `ValueError` when the `Parameters` object is created.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Syntax">
+
+```python
+# Available overloads:
+# ====================
+
+class EnforceRevisionsConfigurationOperation(IOperation[OperationIdResult]):
+    # Enforce the configuration using default parameters (all collections),
+    # or pass a Parameters object to customize the operation.
+    def __init__(
+        self,
+        parameters: Optional[EnforceRevisionsConfigurationOperation.Parameters] = None,
+    ): ...
+```
+<br/>    
+
+| Parameter       | Type         | Description                                                                                  |
+|-----------------|--------------|----------------------------------------------------------------------------------------------|
+| **parameters**  | `Parameters` | The parameters defining how the configuration is enforced. See the `Parameters` class below. |
+
+```python
+class Parameters(RevisionsOperationParameters):
+    def __init__(
+        self,
+        include_force_created: bool = False,
+        max_ops_per_second: int = None,       # raises ValueError if value <= 0
+        collections: List[str] = None,
+    ): ...
+```
+<br/>    
+
+| Parameter                 | Type         | Description |
+|---------------------------|--------------|-------------|
+| **include_force_created** | `bool`       | `True` - [Force-created revisions](../../../../../document-extensions/revisions/overview.mdx#force-revision-creation) may also be removed by the operation.<br/>`False` (default) - Force-created revisions are not included in deletion paths that protect them. |  
+| **max_ops_per_second**    | `int`        | Limits the number of documents processed per second.<br/>`None` (default) - no throttling.<br/>Must be greater than `0`, otherwise a `ValueError` is raised. |    
+| **collections**           | `List[str]`  | The collections the operation applies to.<br/>`None` or empty list - the operation applies to all collections. |
+
+Enforcing the configuration is a long-running server operation.  
+`store.operations.send_async` returns an `Operation` object built from an `OperationIdResult`:
+
+```python
+class OperationIdResult:
+    def __init__(self, operation_id: int = None, operation_node_tag: str = None): ...
+```
+    
+</Panel>
