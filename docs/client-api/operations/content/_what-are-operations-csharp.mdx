@@ -25,6 +25,7 @@ import CodeBlock from '@theme/CodeBlock';
       * [Kill operation](../../../client-api/operations/what-are-operations.mdx#kill-operation)  
 
 </Admonition>
+
 ## Why use operations
 
 * Operations provide **management functionality** that is not available in the context of the session, for example:
@@ -37,8 +38,6 @@ import CodeBlock from '@theme/CodeBlock';
 
 * There are some client tasks, such as patching documents, that can be carried out either via the Session ([session.Advanced.Patch()](../../../client-api/operations/patching/single-document.mdx#array-manipulation))
   or via an Operation on the DocumentStore ([PatchOperation](../../../client-api/operations/patching/single-document.mdx#operations-api)).
-
-
 
 ## How operations work
 
@@ -58,8 +57,6 @@ import CodeBlock from '@theme/CodeBlock';
 * **Background operations**:  
   Some operations may take a long time to complete and can be awaited for completion.   
   Learn more [below](../../../client-api/operations/what-are-operations.mdx#wait-for-completion).
-
-
 
 ## Common operations
 
@@ -176,7 +173,6 @@ Task<PatchOperation.Result<TEntity>> SendAsync<TEntity>(PatchOperation<TEntity> 
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteCompareExchangeValueOperation](../../../compare-exchange/delete-cmpxchg-items.mdx#delete-compare-exchange-item-using-a-store-operation)
 
 </Admonition>
-
 
 ## Maintenance operations
 
@@ -331,9 +327,9 @@ Task<Operation> SendAsync(IMaintenanceOperation<OperationIdResult> operation,
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [RestoreBackupOperation](../../../backup/restore.mdx#restoring-a-database-from-backup)
   
 * **Connection strings**:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutConnectionStringOperation](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [RemoveConnectionStringOperation](../../../client-api/operations/maintenance/connection-strings/remove-connection-string.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetConnectionStringsOperation](../../../client-api/operations/maintenance/connection-strings/get-connection-string.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutConnectionStringOperation](../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string-from-the-client-api)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [RemoveConnectionStringOperation](../../../integrations/connection-strings/per-database/remove-connection-string.mdx#remove-a-per-database-connection-string)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetConnectionStringsOperation](../../../integrations/connection-strings/per-database/get-connection-strings.mdx#get-connection-string-by-name-and-type)  
 
 * **Transaction recording**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StartTransactionsRecordingOperation  
@@ -383,7 +379,6 @@ Task<Operation> SendAsync(IMaintenanceOperation<OperationIdResult> operation,
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CreateSampleDataOperation  
 
 </Admonition>
-
 
 ## Server-maintenance operations
 
@@ -509,6 +504,11 @@ Task<Operation> SendAsync(IServerOperation<OperationIdResult> operation,
 * **Server-wide sorters**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideSortersOperation](../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx#add-server-wide-custom-sorter-via-the-client-api)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteServerWideSorterOperation](../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx#delete-server-wide-custom-sorter)  
+    
+* **Server-wide onnection strings**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideConnectionStringOperation](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string-from-the-client-api)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [RemoveServerWideConnectionStringOperation](../../../integrations/connection-strings/server-wide/remove-connection-string.mdx#remove-a-server-wide-connection-string)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetServerWideConnectionStringsOperation](../../../integrations/connection-strings/server-wide/get-connection-strings.mdx#get-a-server-wide-connection-string-by-name-and-type)  
 
 * **Logs & debug**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetLogsConfigurationOperation  
@@ -530,7 +530,6 @@ Task<Operation> SendAsync(IServerOperation<OperationIdResult> operation,
 
 </Admonition>
 
-
 ## Manage lengthy operations
 
 * Some operations that run in the server background may take a long time to complete.  
@@ -538,6 +537,7 @@ Task<Operation> SendAsync(IServerOperation<OperationIdResult> operation,
 * For Operations that implement an interface with type `OperationIdResult`,  
   executing the operation via the `Send` method will return an `Operation` object,  
   which can be **awaited for completion** or **aborted (killed)**.  
+
 #### Wait for completion:
 
 <Tabs groupId='languageSyntax'>
@@ -772,7 +772,3 @@ public async Task KillAsync(CancellationToken token = default)
 | Parameter   | Type                | Description                                                          |
 |-------------|---------------------|----------------------------------------------------------------------|
 | **token**   | `CancellationToken` | Provide a cancellation token if needed to abort the KillAsync method |
-
-
-
-

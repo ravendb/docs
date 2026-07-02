@@ -12,8 +12,6 @@ import CodeBlock from '@theme/CodeBlock';
 import Panel from "@site/src/components/Panel";
 import ContentFrame from "@site/src/components/ContentFrame";
 
-# Queue Sink: Apache Kafka
-
 <Admonition type="note" title="">
 
 * **Apache Kafka** is a distributed, high-performance, transactional messaging
@@ -198,28 +196,199 @@ one copy of it will remain.
 
 ### Adding a Kafka connection string
 
-Before defining a sink task, add a Kafka connection string for the task to use.  
-Create a `QueueConnectionString` object configured for Kafka, and pass it to
-`PutConnectionStringOperation`.
+* A Kafka queue sink task uses a **Kafka connection string** to connect to its source Kafka cluster.  
+  The connection string stores one or more Kafka bootstrap server addresses and, when needed, additional Kafka client settings such as authentication and TLS options.
 
+* The sink task does not store these connection details directly.  
+  Instead, its configuration references the connection string by name through the `ConnectionStringName` property.
+
+* A Kafka connection string can be created in any of these ways:
+  * **From the Client API**:
+    [per-database](../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api)
+    or [server-wide](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api).
+  * **From Studio**:
+    [per-database](../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    [server-wide](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    or while creating a [Kafka queue sink task](../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink.mdx#define-a-kafka-sink-task).
+
+* The example below adds a **per-database** Kafka connection string from the **Client API**.  
+  The connection string is stored in the current database record and can be used by tasks in that database.
+
+<Tabs>
+<TabItem value="sync" label="Sync" default>
 ```csharp
-// Add a Kafka connection string
-var res = store.Maintenance.Send(
-    new PutConnectionStringOperation<QueueConnectionString>(
-        new QueueConnectionString
-        {
-            Name = "KafkaConStr",
-            BrokerType = QueueBrokerType.Kafka,
-            KafkaConnectionSettings = new KafkaConnectionSettings()
-                    { BootstrapServers = "localhost:9092" }
-        }));
+// Define a Kafka connection string
+// =================================
+var kafkaConnectionString = new QueueConnectionString
+{
+    // The name used by the Kafka queue sink task configuration
+    Name = "kafka-connection-string-name",
+
+    // Set the queue broker type to Kafka
+    BrokerType = QueueBrokerType.Kafka,
+
+    // Configure the Kafka broker connection
+    KafkaConnectionSettings = new KafkaConnectionSettings
+    {
+        // A comma-separated list of Kafka bootstrap servers
+        BootstrapServers = "localhost:9092"
+    }
+};
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<QueueConnectionString>(kafkaConnectionString);
+
+PutConnectionStringResult connectionStringResult =
+    store.Maintenance.Send(putConnectionStringOp);
 ```
+</TabItem>
+<TabItem value="async" label="Async">
+```csharp
+// Define a Kafka connection string
+// =================================
+var kafkaConnectionString = new QueueConnectionString
+{
+    // The name used by the Kafka queue sink task configuration
+    Name = "kafka-connection-string-name",
 
-<br />
+    // Set the queue broker type to Kafka
+    BrokerType = QueueBrokerType.Kafka,
 
-For the full property reference, see the
-[Connection string](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#connection-string)
-class in the Syntax section.
+    // Configure the Kafka broker connection
+    KafkaConnectionSettings = new KafkaConnectionSettings
+    {
+        // A comma-separated list of Kafka bootstrap servers
+        BootstrapServers = "localhost:9092"
+    }
+};
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<QueueConnectionString>(kafkaConnectionString);
+
+PutConnectionStringResult connectionStringResult =
+    await store.Maintenance.SendAsync(putConnectionStringOp);
+```
+</TabItem>
+</Tabs>
+
+#### Secure Kafka clusters
+
+For a secure Kafka cluster, define the relevant Kafka client configuration keys in the `ConnectionOptions` dictionary.  
+For example, use `security.protocol`, `sasl.mechanism`, `sasl.username`, and `sasl.password` to configure SASL authentication over SSL/TLS.
+
+If your RavenDB cluster is secured and Kafka should authenticate RavenDB by certificate,  
+set `UseRavenCertificate` to `true` on `KafkaConnectionSettings`.
+
+<Tabs>
+<TabItem value="secure-sync" label="Sync" default>
+```csharp
+// Define a Kafka connection string for a secure Kafka cluster
+// ===========================================================
+var kafkaConnectionString = new QueueConnectionString
+{
+    // The name used by the Kafka queue sink task configuration
+    Name = "secure-kafka-connection-string-name",
+
+    // Set the queue broker type to Kafka
+    BrokerType = QueueBrokerType.Kafka,
+
+    // Configure the Kafka broker connection
+    KafkaConnectionSettings = new KafkaConnectionSettings
+    {
+        BootstrapServers = "broker.example.com:9092",
+
+        ConnectionOptions = new Dictionary<string, string>
+        {
+            // Transport protocol. SASL_SSL combines SASL auth with SSL/TLS encryption.
+            // Other values: PLAINTEXT, SSL (mTLS only), SASL_PLAINTEXT.
+            { "security.protocol", "SASL_SSL" },
+
+            // SASL mechanism. PLAIN sends credentials as cleartext (safe only over TLS).
+            // Other common values: SCRAM-SHA-256, SCRAM-SHA-512.
+            { "sasl.mechanism", "PLAIN" },
+
+            // Credentials issued by the Kafka cluster admin.
+            { "sasl.username", "<your-username>" },
+            { "sasl.password", "<your-password>" }
+        }
+    }
+};
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<QueueConnectionString>(kafkaConnectionString);
+
+PutConnectionStringResult connectionStringResult =
+    store.Maintenance.Send(putConnectionStringOp);
+```
+</TabItem>
+<TabItem value="secure-async" label="Async">
+```csharp
+// Define a Kafka connection string for a secure Kafka cluster
+// ===========================================================
+var kafkaConnectionString = new QueueConnectionString
+{
+    // The name used by the Kafka queue sink task configuration
+    Name = "secure-kafka-connection-string-name",
+
+    // Set the queue broker type to Kafka
+    BrokerType = QueueBrokerType.Kafka,
+
+    // Configure the Kafka broker connection
+    KafkaConnectionSettings = new KafkaConnectionSettings
+    {
+        BootstrapServers = "broker.example.com:9092",
+
+        ConnectionOptions = new Dictionary<string, string>
+        {
+            // Transport protocol. SASL_SSL combines SASL auth with SSL/TLS encryption.
+            // Other values: PLAINTEXT, SSL (mTLS only), SASL_PLAINTEXT.
+            { "security.protocol", "SASL_SSL" },
+
+            // SASL mechanism. PLAIN sends credentials as cleartext (safe only over TLS).
+            // Other common values: SCRAM-SHA-256, SCRAM-SHA-512.
+            { "sasl.mechanism", "PLAIN" },
+
+            // Credentials issued by the Kafka cluster admin.
+            { "sasl.username", "<your-username>" },
+            { "sasl.password", "<your-password>" }
+        }
+    }
+};
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<QueueConnectionString>(kafkaConnectionString);
+
+PutConnectionStringResult connectionStringResult =
+    await store.Maintenance.SendAsync(putConnectionStringOp);
+```
+</TabItem>
+</Tabs>
+
+#### Syntax
+
+`QueueConnectionString`:
+
+| Property | Type | Description |
+|---|---|---|
+| **Name** | `string` | The connection string name. Use this value in the sink task's `ConnectionStringName` property. |
+| **BrokerType** | `QueueBrokerType` | Set to `QueueBrokerType.Kafka` for a Kafka connection string. |
+| **KafkaConnectionSettings** | `KafkaConnectionSettings` | The Kafka-specific connection settings. |
+
+`KafkaConnectionSettings`:
+
+| Property | Type | Description |
+|---|---|---|
+| **BootstrapServers** | `string` | A comma-separated list of Kafka bootstrap servers, in `host:port` format. |
+| **ConnectionOptions** | `Dictionary<string, string>` | Optional Kafka client configuration keys used by the Kafka connection. |
+| **UseRavenCertificate** | `bool` | Set to `true` to use RavenDB's cluster-wide certificate for SSL/TLS client authentication. |
 
 ---
 

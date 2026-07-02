@@ -1,0 +1,97 @@
+---
+title: "Connection Strings Overview"
+sidebar_label: "Overview"
+description: "Connection strings store reusable connection details for RavenDB tasks that connect to external systems. They can be defined per database or server-wide."
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+
+<Admonition type="note" title="">
+    
+* A **connection string** is a named, reusable object that stores the details RavenDB needs to connect to an external system or another RavenDB database,
+  such as destination URLs, the target database or resource, and authentication parameters.   
+    
+* RavenDB tasks and features reference a connection string by name.  
+  This keeps connection details outside each task or feature definition and lets the same connection string be reused.    
+    
+* Connection strings can be defined in one of two scopes:
+  * [Per-database](../../integrations/connection-strings/per-database/overview.mdx) - available only to one database.
+  * [Server-wide](../../integrations/connection-strings/server-wide/overview.mdx) - defined once at the cluster level and propagated automatically to databases in the cluster.
+
+---
+
+* In this article:
+  * [What connection strings are used for](../../integrations/connection-strings/overview.mdx#what-connection-strings-are-used-for)
+  * [Supported connection string types](../../integrations/connection-strings/overview.mdx#supported-connection-string-types)
+  * [Scope: per-database and server-wide](../../integrations/connection-strings/overview.mdx#scope-per-database-and-server-wide)
+  * [Managing connection strings](../../integrations/connection-strings/overview.mdx#managing-connection-strings)
+
+</Admonition>
+
+<Panel heading="What connection strings are used for">
+    
+Connection strings define the connection details that RavenDB tasks and features use to connect to another system:    
+
+* **ETL tasks**:  
+  Send transformed data from RavenDB to another RavenDB database, a relational database, cloud storage, a search engine, or a queue provider.
+* **External Replication**:  
+  Replicate documents to another RavenDB database.
+* **Queue Sink tasks**:  
+  Consume messages from a message broker and store the resulting documents in RavenDB.
+* **CDC Sink tasks**:  
+  Stream changes from an external CDC database and store the resulting documents in RavenDB.
+* **AI features**:  
+  Connect to AI providers used by embeddings generation, GenAI tasks, and AI Agents.
+
+</Panel>
+
+<Panel heading="Supported connection string types">
+
+RavenDB supports the following connection string types:
+
+| Type | Connects to | Used by |
+| - | - | - |
+| **RavenDB** | Another RavenDB database | [RavenDB ETL](../../server/ongoing-tasks/etl/raven.mdx), [External Replication](../../server/ongoing-tasks/external-replication.mdx),<br/>and [Hub/Sink Replication](../../server/ongoing-tasks/hub-sink-replication.mdx) |
+| **SQL** | A relational database | [SQL ETL](../../server/ongoing-tasks/etl/sql.mdx) and CDC Sink tasks |
+| **Snowflake** | A Snowflake warehouse | [Snowflake ETL](../../server/ongoing-tasks/etl/snowflake.mdx) |
+| **OLAP** | Local or cloud storage | [OLAP ETL](../../server/ongoing-tasks/etl/olap.mdx) |
+| **Elasticsearch** | An Elasticsearch cluster | [Elasticsearch ETL](../../server/ongoing-tasks/etl/elasticsearch.mdx) |
+| **Queue** | A supported queue broker or queue service | [Queue ETL](../../server/ongoing-tasks/etl/queue-etl/overview.mdx) and [Queue Sink](../../server/ongoing-tasks/queue-sink/overview.mdx) tasks |
+| **AI** | AI providers or RavenDB's embedded model | [Embeddings generation](../../ai-integration/generating-embeddings/overview.mdx), [GenAI tasks](../../ai-integration/gen-ai-integration/overview.mdx),<br/>and [AI Agents](../../ai-integration/ai-agents/overview.mdx) |
+
+</Panel>
+
+<Panel heading="Scope: per-database and server-wide">
+
+A connection string can be defined at one of two scopes:
+
+| Scope | Use when | Availability |
+| - | - | - |
+| **[Per-database](../../integrations/connection-strings/per-database/overview.mdx)** | One database needs its own connection details,<br/>or different databases need different credentials, endpoints, or providers. | Stored in one database record and available only to tasks in that database. |
+| **[Server-wide](../../integrations/connection-strings/server-wide/overview.mdx)** | Many databases share the same connection details, and you want one place to update endpoints, credentials, or provider settings. | Stored at the cluster level and propagated to all databases, except databases that are explicitly excluded. |
+
+</Panel>
+
+<Panel heading="Managing connection strings">
+
+Connection strings can be created, updated, read, and removed from Studio or through the Client API.
+
+* **Per-database connection strings**  
+  Manage them from the database's **Settings > Connection Strings** view in Studio, or via the Client API.  
+  Learn more in:  
+  * [Add or update a per-database connection string](../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx)
+  * [Get per-database connection strings](../../integrations/connection-strings/per-database/get-connection-strings.mdx)
+  * [Remove a per-database connection string](../../integrations/connection-strings/per-database/remove-connection-string.mdx)
+
+* **Server-wide connection strings**  
+  Manage them from **Manage Server > Server-Wide Connection Strings** in Studio, or via the Client API.  
+  Learn more in:  
+  * [Add or update a server-wide connection string](../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx)
+  * [Get server-wide connection strings](../../integrations/connection-strings/server-wide/get-connection-strings.mdx)
+  * [Remove a server-wide connection string](../../integrations/connection-strings/server-wide/remove-connection-string.mdx)
+
+A connection string cannot be deleted while it is still referenced by a task.
+
+</Panel>

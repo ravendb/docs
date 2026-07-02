@@ -1,0 +1,87 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+
+<Admonition type="note" title="">
+    
+* Use `RemoveConnectionStringOperation` to remove a per-database connection string from the current database.
+
+* A connection string **cannot** be removed while it is still used by an ongoing task.  
+  Before removing it, delete the task or update it to use a different connection string.
+
+* This operation **cannot** remove inherited server-wide connection strings.  
+  To remove a cluster-level definition, use [Remove a server-wide connection string](../../../../integrations/connection-strings/server-wide/remove-connection-string.mdx).
+    
+* To remove a per-database connection string from Studio, open **Settings > Connection Strings** and use the remove action in the list view.
+  See [Managing per-database connection strings](../../../../integrations/connection-strings/per-database/overview.mdx#managing-per-database-connection-strings).    
+
+* In this article:
+  * [Remove a per-database connection string](../../../../integrations/connection-strings/per-database/remove-connection-string.mdx#remove-a-per-database-connection-string)
+  * [Syntax](../../../../integrations/connection-strings/per-database/remove-connection-string.mdx#syntax)
+    
+</Admonition>    
+
+<Panel heading="Remove a per-database connection string">    
+
+The following example removes a RavenDB per-database connection string.  
+Only the `Name` property is required; the type is inferred from the connection string class.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+```csharp
+var ravenConnectionString = new RavenConnectionString()
+{
+    // Note:
+    // Only the 'Name' property of the connection string is needed for the remove operation.
+    // Other properties are not considered.
+    Name = "ravendb-connection-string-name"
+};
+               
+// Define the remove connection string operation,
+// pass the connection string to be removed.
+var removeConStrOp
+    = new RemoveConnectionStringOperation<RavenConnectionString>(ravenConnectionString);
+
+// Execute the operation by passing it to Maintenance.Send
+store.Maintenance.Send(removeConStrOp);
+```
+</TabItem>
+<TabItem value="Async" label="Async">
+```csharp
+var ravenConnectionString = new RavenConnectionString()
+{
+    // Note:
+    // Only the 'Name' property of the connection string is needed for the remove operation.
+    // Other properties are not considered.
+    Name = "ravendb-connection-string-name"
+};
+               
+// Define the remove connection string operation,
+// pass the connection string to be removed.
+var removeConStrOp
+    = new RemoveConnectionStringOperation<RavenConnectionString>(ravenConnectionString);
+
+// Execute the operation by passing it to Maintenance.SendAsync
+await store.Maintenance.SendAsync(removeConStrOp);
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Syntax">
+
+```csharp
+public RemoveConnectionStringOperation(T connectionString) where T : ConnectionString
+```
+
+| Parameter            | Type | Description |
+|----------------------|------|-------------|
+| **connectionString** | `T`  | Connection string to remove (only `Name` is required):<br/>`RavenConnectionString`<br/>`SqlConnectionString`<br/>`SnowflakeConnectionString`<br/>`OlapConnectionString`<br/>`ElasticSearchConnectionString`<br/>`QueueConnectionString`<br/>`AiConnectionString` |
+
+| Return value | Description |
+|--------------|-------------|
+| `RemoveConnectionStringResult` | Contains `RaftCommandIndex` - the Raft index assigned to the operation. |
+
+</Panel>

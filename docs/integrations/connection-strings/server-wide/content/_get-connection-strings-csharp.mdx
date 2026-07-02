@@ -1,0 +1,161 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+
+<Admonition type="note" title="">
+
+* Use `GetServerWideConnectionStringsOperation` to retrieve a specific server-wide connection string,  
+  or all server-wide connection strings defined at the cluster level.
+
+* This operation reads server-wide connection strings from the cluster-level configuration.  
+  To get connection strings stored in a single database's record, see [Get per-database connection strings](../../../../integrations/connection-strings/per-database/get-connection-strings.mdx).
+
+* Learn more about server-wide connection strings in [Server-wide connection strings - Overview](../../../../integrations/connection-strings/server-wide/overview.mdx).  
+  To create or update a server-wide connection string, see [Add or update a server-wide connection string](../../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx).
+
+* In this article:
+  * [Get a server-wide connection string by name and type](../../../../integrations/connection-strings/server-wide/get-connection-strings.mdx#get-a-server-wide-connection-string-by-name-and-type)
+  * [Get all server-wide connection strings](../../../../integrations/connection-strings/server-wide/get-connection-strings.mdx#get-all-server-wide-connection-strings)
+  * [Syntax](../../../../integrations/connection-strings/server-wide/get-connection-strings.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Get a server-wide connection string by name and type">
+    
+The following example retrieves a server-wide `Raven` connection string:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+```csharp
+// Request a specific server-wide connection string, pass its name and type:
+// =========================================================================
+var getOp = new GetServerWideConnectionStringsOperation(
+    "ravendb-connection-string-name", ConnectionStringType.Raven);
+
+GetServerWideConnectionStringsResult result = store.Maintenance.Server.Send(getOp);
+
+// Access results:
+// ===============
+foreach (ServerWideConnectionString serverWideConStr in result.Results)
+{
+    var name = serverWideConStr.Name;
+    var type = serverWideConStr.Type;
+    var excludedDatabases = serverWideConStr.ExcludedDatabases;
+    
+    // The underlying connection string definition:
+    var ravenConStr = serverWideConStr.ConnectionString as RavenConnectionString;
+}
+```
+</TabItem>
+<TabItem value="Async" label="Async">
+```csharp
+// Request a specific server-wide connection string, pass its name and type:
+// =========================================================================
+var getOp = new GetServerWideConnectionStringsOperation(
+    "ravendb-connection-string-name", ConnectionStringType.Raven);
+
+GetServerWideConnectionStringsResult result = await store.Maintenance.Server.SendAsync(getOp);
+
+// Access results:
+// ===============
+foreach (ServerWideConnectionString serverWideConStr in result.Results)
+{
+    var name = serverWideConStr.Name;
+    var type = serverWideConStr.Type;
+    var excludedDatabases = serverWideConStr.ExcludedDatabases;
+    
+    // The underlying connection string definition:
+    var ravenConStr = serverWideConStr.ConnectionString as RavenConnectionString;
+}
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Get all server-wide connection strings">
+    
+The following example retrieves all server-wide connection strings defined in the cluster:    
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+```csharp
+// Get all server-wide connection strings (all types):
+// ====================================================
+var getAllOp = new GetServerWideConnectionStringsOperation();
+GetServerWideConnectionStringsResult result = store.Maintenance.Server.Send(getAllOp);
+
+// Access results:
+// ===============    
+List<ServerWideConnectionString> allConnectionStrings = result.Results;
+
+foreach (ServerWideConnectionString serverWideConStr in allConnectionStrings)
+{
+    var name = serverWideConStr.Name;
+    var type = serverWideConStr.Type;
+    var excludedDatabases = serverWideConStr.ExcludedDatabases;
+
+    // The underlying connection string definition:
+    var connectionString = serverWideConStr.ConnectionString;
+}
+```
+</TabItem>
+<TabItem value="Async" label="Async">
+```csharp
+// Get all server-wide connection strings (all types):
+// ====================================================
+var getAllOp = new GetServerWideConnectionStringsOperation();
+GetServerWideConnectionStringsResult result = await store.Maintenance.Server.SendAsync(getAllOp);
+
+// Access results:
+// ===============        
+List<ServerWideConnectionString> allConnectionStrings = result.Results;
+
+foreach (ServerWideConnectionString serverWideConStr in allConnectionStrings)
+{
+    var name = serverWideConStr.Name;
+    var type = serverWideConStr.Type;
+    var excludedDatabases = serverWideConStr.ExcludedDatabases;
+
+    // The underlying connection string definition:
+    var connectionString = serverWideConStr.ConnectionString;
+}
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Syntax">
+
+```csharp
+public GetServerWideConnectionStringsOperation()
+public GetServerWideConnectionStringsOperation(
+    string connectionStringName, ConnectionStringType type)
+```
+<br/>    
+
+| Parameter                | Type                   | Description                                                                    |
+|--------------------------|------------------------|--------------------------------------------------------------------------------|
+| **connectionStringName** | `string`               | Name of a specific server-wide connection string to retrieve.                  |
+| **type**                 | `ConnectionStringType` | Connection string type:<br/>`Raven`, `Sql`, `Olap`, `ElasticSearch`, `Queue`, `Snowflake`, or `Ai` |
+
+| Operation result                       |                                                                             |
+|----------------------------------------|-----------------------------------------------------------------------------|
+| `GetServerWideConnectionStringsResult` | Contains `Results` - a list of the matching server-wide connection strings. |
+
+```csharp
+public sealed class GetServerWideConnectionStringsResult
+{
+    public List<ServerWideConnectionString> Results { get; set; }
+}
+```
+<br/>
+    
+<Admonition type="note" title="">
+Connection string type-specific fields and complete examples are documented in the task or feature articles listed under
+[Connection string per type](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#connection-string-per-type).
+</Admonition>
+
+</Panel>
