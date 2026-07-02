@@ -1,40 +1,43 @@
 ---
 title: "Authorization: Security Clearance and Permissions"
 sidebar_label: Security Clearance and Permissions
-description: "Control access to RavenDB databases using security clearance levels — Operator, ClusterAdmin, and per-database read/write permissions."
+description: "Control access to RavenDB databases and clusters by assigning security clearances and per-database access levels to client certificates."
 sidebar_position: 0
 ---
 
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Authorization: Security Clearance and Permissions
 
-* X.509 certificates are used for authentication - validating that users are who they say they are. 
-  Once a connection is authenticated, RavenDB uses the certificate for authorization as well. 
+<Admonition type="note" title="">
 
-* Each certificate is associated with a security clearance and access permissions per database.
+* X.509 certificates are used for authentication, validating that users are who they say they are.  
+  Once a connection is authenticated, RavenDB uses the certificate for authorization as well.  
 
-* It is the administrator's responsibility to generate client certificates and assign permissions. 
-  Read more in the [Certificate Management](../authentication/certificate-management.mdx) page.
+* Each certificate is associated with a security clearance and access permissions per database.  
+
+* It is the administrator's responsibility to generate client certificates and assign permissions.  
+  Read more on the [Certificate Management](../authentication/certificate-management.mdx) page.  
 
 * A client certificate's security clearance can be one of the following: Cluster Admin, Operator, User.
 
-* In this page:
+* In this article:
    * [Cluster Admin](../../../server/security/authorization/security-clearance-and-permissions.mdx#cluster-admin)
    * [Operator](../../../server/security/authorization/security-clearance-and-permissions.mdx#operator)
    * [User](../../../server/security/authorization/security-clearance-and-permissions.mdx#user)  
-      * [Admin](../../../server/security/authorization/security-clearance-and-permissions.mdx#section)  
-      * [Read/Write](../../../server/security/authorization/security-clearance-and-permissions.mdx#section-1) 
-      * [Read Only](../../../server/security/authorization/security-clearance-and-permissions.mdx#section-2)
+      * [Admin](../../../server/security/authorization/security-clearance-and-permissions.mdx#admin)  
+      * [Read/Write](../../../server/security/authorization/security-clearance-and-permissions.mdx#readwrite)  
+      * [Read Only](../../../server/security/authorization/security-clearance-and-permissions.mdx#read-only)
 
-## Cluster Admin
+</Admonition>
 
-`Cluster Admin` is the highest security clearance. There are no restrictions. A `Cluster Admin` certificate has admin permissions to all databases. It also has the ability to modify the cluster itself.
+<Panel heading="Cluster Admin">
+
+`Cluster Admin` is the highest security clearance, with no restrictions.  
+A `Cluster Admin` certificate has admin permissions to all databases, and can also modify the
+cluster itself.  
 
 The following operations are allowed **only** for `Cluster Admin` certificates:
 
@@ -45,17 +48,17 @@ The following operations are allowed **only** for `Cluster Admin` certificates:
 - Activate or update the license
 - Get SNMP used OIDs
 
+</Panel>
 
+<Panel heading="Operator">
 
-## Operator
+A client certificate with an `Operator` security clearance has admin access to all databases but
+cannot modify the cluster. For example, it cannot add, remove, promote, or demote cluster nodes.  
+This clearance is useful in a hosted solution such as RavenDB Cloud.  
+If you are running on your own machines, you will typically use `Cluster Admin` or `User` instead.  
 
-A client certificate with an `Operator` security clearance has admin access to all databases 
-but is unable to modify the cluster. It cannot perform operations such as 
-add/remove/promote/demote nodes from the cluster. This is useful in a hosted solution 
-(such as **RavenDB Cloud**). If you are running on your own machines, you'll typically ignore 
-that level in favor of `Cluster Admin` or `User`.
-
-The following operations are allowed for **both** `Operator` and `Cluster Admin` certificates and are not allowed for `User` certificates:
+The following operations are allowed for **both** `Operator` and `Cluster Admin` certificates, but
+not for `User` certificates:
 
 - Operations on databases (put, delete, enable, disable)
 - Manage `Operator` and `User` certificates
@@ -65,7 +68,7 @@ The following operations are allowed for **both** `Operator` and `Cluster Admin`
 - Migrate databases
 - View cluster observer logs
 - View admin logs
-- Gather local and cluster debug info (process, memory, cpu, threads) 
+- Gather local and cluster debug info (process, memory, cpu, threads)
 - Use smuggler
 - Use the traffic watch
 - Put cluster-wide client configuration (Max number of requests per session, Read balance behavior)
@@ -73,25 +76,32 @@ The following operations are allowed for **both** `Operator` and `Cluster Admin`
 - Manage database groups in the cluster
 - Restore databases from backup
 - Perform database and index compaction
-- Get server metrics (request/sec, indexed/sec, batch size, etc...)
+- Get server metrics (request/sec, indexed/sec, batch size, etc.)
 - Get remote server build info
 
+</Panel>
 
+<Panel heading="User">
 
-## User
-
-A client certificate with a `User` security clearance cannot perform any admin operations at the cluster level.  
-Unlike the other clearance levels, a `User` client certificate can grant different access levels to different databases.  
+A client certificate with a `User` security clearance cannot perform any admin operations at the
+cluster level.  
+Unlike the other clearance levels, a `User` certificate can be granted a different access level for
+each database.  
 These access levels are, from highest to lowest:  
 
 * **Admin**  
 * **Read/Write**  
 * **Read Only**  
 
-If no access level is defined for a particular database, the certificate doesn't grant access to that database at all.  
+If no access level is defined for a particular database, the certificate does not grant access to
+that database at all.  
+
+<ContentFrame>
+
 ### `Admin`
 
-The following operations are permitted at the `Admin` access level but not for `Read/Write` or `Read Only`:
+The following operations are permitted at the `Admin` access level but not for `Read/Write` or
+`Read Only`:
 
 - Operations on indexes (put, delete, start, stop, enable and disable)
 - Solve replication conflicts
@@ -102,40 +112,61 @@ The following operations are permitted at the `Admin` access level but not for `
 - Put client configuration for the database (Max number of requests per session, Read balance behavior)
 - Get transaction info
 - Perform SQL migration
+
+</ContentFrame>
+
+<ContentFrame>
+
 ### `Read/Write`
 
-A `User` certificate with a `Read/Write` access level can perform all operations **except** for those listed above in the 'Admin' and 'Operator'sections.  
+A `User` certificate with a `Read/Write` access level can perform all operations **except** those
+listed above in the `Admin` and `Operator` sections.  
 
-  * [JavaScript static indexes](../../../indexes/javascript-indexes.mdx) are permitted by default with Read/Write User certificates.  
-    To configure a server or database so that only Admin certificates will be able to deploy JavaScript static indexes,  
-    set [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../../../server/configuration/indexing-configuration.mdx#indexingstaticrequireadmintodeployjavascriptindexes) 
-    to `true`.
+* [JavaScript static indexes](../../../indexes/javascript-indexes.mdx) are permitted by default for
+  User certificates with Read/Write access.  
+  To configure a server or database so that only clients with Admin access can deploy JavaScript
+  static indexes, set [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../../../server/configuration/indexing-configuration.mdx#indexingstaticrequireadmintodeployjavascriptindexes)
+  to `true`.  
+
+* **Data subscriptions access**  
+  A `User` certificate with a `Read/Write` access level can create, edit, delete, and enable or
+  disable [data subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx).  
+  Subscriptions are an exception among ongoing tasks: managing other ongoing tasks requires a higher
+  access level, while subscriptions can be managed with `Read/Write` access.
+
+</ContentFrame>
+
+<ContentFrame>
+
 ### `Read Only`
 
-The `ReadOnly` access level **allows** clients to: 
+The `Read Only` access level **allows** clients to:
 
-- Read data from a database, but not to write or modify data.  
-- Be subscription workers to consume data subscriptions.  
-- Query the databases that are configured in the client certificate.  
+- Read data from a database, but not write or modify data.
+- Consume data subscriptions as subscription workers.
+- Query the databases configured in the client certificate.
   <Admonition type="note" title="">
-  [An Auto-index](../../../indexes/creating-and-deploying.mdx#auto-indexes) 
-  is built if there is no existing index that satisfies a query.  
+  [An auto-index](../../../indexes/creating-and-deploying.mdx#auto-indexes) is built if no existing
+  index satisfies a query.
   </Admonition>
+
+---
 
 <Admonition type="info" title="Unauthorized actions for ReadOnly client certificates" id="unauthorized-actions-for-readonly-client-certificates" href="#unauthorized-actions-for-readonly-client-certificates">
 
-The following operations are **forbidden**:  
+The following operations are **forbidden**:
 
-- Creating documents or modifying existing documents  
-- Changing any configurations or settings  
-- Creating or modifying [ongoing tasks](../../../studio/database/tasks/ongoing-tasks/general-info.mdx)  
-- Defining [static indexes](../../../indexes/creating-and-deploying.mdx#static-indexes) (the database will create 
-[auto-indexes](../../../indexes/creating-and-deploying.mdx#auto-indexes) if there is no existing index that satisfies a query.)
-
+- Creating documents or modifying existing documents
+- Changing any configurations or settings
+- Creating or modifying [ongoing tasks](../../../studio/database/tasks/ongoing-tasks/general-info.mdx)
+- Defining [static indexes](../../../indexes/creating-and-deploying.mdx#static-indexes) (the database
+  will create [auto-indexes](../../../indexes/creating-and-deploying.mdx#auto-indexes) if no existing
+  index satisfies a query)
 
 </Admonition>
 
-Learn more about the `Read Only` access level [here](../../../studio/server/certificates/read-only-access-level.mdx).
+[Learn more about the Read Only access level](../../../studio/server/certificates/read-only-access-level.mdx)
 
+</ContentFrame>
 
-
+</Panel>
