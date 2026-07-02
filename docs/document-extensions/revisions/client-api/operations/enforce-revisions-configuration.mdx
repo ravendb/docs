@@ -3,7 +3,7 @@ title: "Enforce Revisions Configuration Operation"
 description: "Apply the current revisions configuration to all existing revisions using the EnforceRevisionsConfigurationOperation, with optional throttling via MaxOpsPerSecond."
 sidebar_label: "Enforce Configuration"
 sidebar_position: 4
-supported_languages: ["csharp", "java", "nodejs"]
+supported_languages: ["csharp", "java", "python", "nodejs"]
 see_also:
      - title: "Revisions Overview"
        link: "document-extensions/revisions/overview"
@@ -60,6 +60,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import EnforceRevisionsConfigurationCsharp from './content/_enforce-revisions-configuration-csharp.mdx';
 import EnforceRevisionsConfigurationJava from './content/_enforce-revisions-configuration-java.mdx';
+import EnforceRevisionsConfigurationPython from './content/_enforce-revisions-configuration-python.mdx';
 import EnforceRevisionsConfigurationNodejs from './content/_enforce-revisions-configuration-nodejs.mdx';
 
 <LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
@@ -70,6 +71,10 @@ import EnforceRevisionsConfigurationNodejs from './content/_enforce-revisions-co
 
 <LanguageContent language="java">
    <EnforceRevisionsConfigurationJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <EnforceRevisionsConfigurationPython />
 </LanguageContent>
 
 <LanguageContent language="nodejs">
