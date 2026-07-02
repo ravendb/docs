@@ -13,9 +13,9 @@ import Panel from "@site/src/components/Panel";
 * A **server-wide connection string** is defined once at the cluster level.  
   RavenDB propagates it to databases in the cluster, except databases that are explicitly excluded.
 
-* Tasks and AI agents in a database can use the propagated connection string, but it is read-only from the database scope.
-  To edit or delete the server-wide definition, see [Managing server-wide connection strings](../../../integrations/connection-strings/server-wide/overview.mdx#managing-server-wide-connection-strings).
-    
+* Tasks and AI agents in a database can use the propagated server-wide connection string like a per-database connection string, but it is read-only from the database scope.
+  To edit or delete the server-wide definition, see [Managing server-wide connection strings](../../../integrations/connection-strings/server-wide/overview.mdx#managing-server-wide-connection-strings).    
+
 * For the available connection string types,  
   see [Supported connection string types](../../../integrations/connection-strings/overview.mdx#supported-connection-string-types)
   in the [Connection strings overview](../../../integrations/connection-strings/overview.mdx) article.
