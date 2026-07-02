@@ -1,179 +1,397 @@
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-Smuggler gives you the ability to export or import data from or to a database using JSON format.  
-It is exposed via the `DocumentStore.Smuggler` property.
+<Admonition type="note" title="">
 
-## ForDatabase
+* **Smuggler** is a tool for moving data between databases.  
+  Use it to export documents, indexes, and other items from a database as JSON,  
+  and to import that data into another database.  
 
-By default, the `DocumentStore.Smuggler` works on the default document store database from the `DocumentStore.Database` property. 
+* Smuggler is exposed through the `DocumentStore.Smuggler` property.  
 
-In order to switch it to a different database use the `.ForDatabase` method.
+* An export can write to a `.ravendbdump` file or stream directly into another database.  
+  An import reads that data back into a database.  
 
-<TabItem value="for_database" label="for_database">
-<CodeBlock language="csharp">
-{`var northwindSmuggler = store
+* You can narrow what is transferred by collection, by item type,  
+  and by applying a transform script to each document.  
+
+* In this article:
+   * [ForDatabase](../../../client-api/smuggler/what-is-smuggler.mdx#fordatabase)
+   * [Export](../../../client-api/smuggler/what-is-smuggler.mdx#export)
+      * [Export specific collections](../../../client-api/smuggler/what-is-smuggler.mdx#export-specific-collections)
+   * [Import](../../../client-api/smuggler/what-is-smuggler.mdx#import)
+      * [Import specific collections](../../../client-api/smuggler/what-is-smuggler.mdx#import-specific-collections)
+   * [TransformScript](../../../client-api/smuggler/what-is-smuggler.mdx#transformscript)
+   * [Syntax](../../../client-api/smuggler/what-is-smuggler.mdx#syntax)
+      * [Methods](../../../client-api/smuggler/what-is-smuggler.mdx#methods)
+      * [Classes](../../../client-api/smuggler/what-is-smuggler.mdx#classes)
+
+</Admonition>
+
+<Panel heading="ForDatabase">
+
+By default, `DocumentStore.Smuggler` works on the database set in the `DocumentStore.Database` property.  
+To run Smuggler against a different database, switch to it with the `ForDatabase` method.  
+
+```csharp
+var northwindSmuggler = store
     .Smuggler
     .ForDatabase("Northwind");
-`}
-</CodeBlock>
-</TabItem>
+```
 
+</Panel>
 
+<Panel heading="Export">
 
-## Export
+Export writes the selected data to a `.ravendbdump` file, or streams it directly into another database.  
+Use `DatabaseSmugglerExportOptions` to choose what to include.  
 
-### Syntax
+<a id="example"/>
 
-<TabItem value="export_syntax" label="export_syntax">
-<CodeBlock language="csharp">
-{`Task<Operation> ExportAsync(
-    DatabaseSmugglerExportOptions options,
-    DatabaseSmuggler toDatabase,
-    CancellationToken token = default(CancellationToken));
+#### Example: export indexes and documents to a file
 
-Task<Operation> ExportAsync(
-    DatabaseSmugglerExportOptions options,
-    string toFile,
-    CancellationToken token = default(CancellationToken));
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **options** | `DatabaseSmugglerExportOptions` | Options that will be used during the export. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerexportoptions). |
-| **toDatabase** | `DatabaseSmuggler` | `DatabaseSmuggler` instance used as a destination |
-| **toFile** | `string` | Path to a file where exported data will be written |
-| **token** | `CancellationToken` | Token used to cancel the operation |
-
-| Return Value | | 
-| ------------- | ----- |
-| `Operation` | Instance of Operation class which gives you an ability to wait for the operation to complete and subscribe to operation progress events |
-
-### DatabaseSmugglerExportOptions
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **Collections** | `List<string>` | List of specific collections to export. If empty, then all collections will be exported. <br/> Default: `empty` |
-| **OperateOnTypes** | `DatabaseItemType` | Indicates what should be exported. <br/> Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `ReplicationHubCertificates`, `Identities`, `CompareExchange`, `Attachments`, `CounterGroups`, `Subscriptions`, `TimeSeries` |
-| **OperateOnDatabaseRecordTypes** | `DatabaseRecordItemType` | Indicates what should be exported from database record. <br/> Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `Settings`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications`, `TimeSeries`, `DocumentsCompression`, `Analyzers`, `LockMode`, `OlapConnectionStrings`, `OlapEtls`, `ElasticSearchConnectionStrings`, `ElasticSearchEtls`, `PostgreSQLIntegration`, `QueueConnectionStrings`, `QueueEtls`, `IndexesHistory`, `Refresh`, `DataArchival` |
-| **IncludeExpired** | `bool` | Should expired documents be exported. <br/> Default: `true` |
-| **IncludeArtificial** | `bool` | Should artificial documents be exported. <br/> Default: `false` |
-| **IncludeArchived** | `bool` | Should archived documents be exported. <br/> Default: `true` |
-| **RemoveAnalyzers** | `bool` | Should analyzers be removed from Indexes. <br/> Default: `false` |
-| **TransformScript** | `string` | JavaScript-based script applied to every exported document. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
-| **MaxStepsForTransformScript** | `int` | Maximum number of steps that the transform script can process before failing. <br/> Default: **10000** |
-
-### Example
-
-<TabItem value="export_example" label="export_example">
-<CodeBlock language="csharp">
-{`// export only Indexes and Documents to a given file
+```csharp
+// export only Indexes and Documents to a given file
 var exportOperation = await store
     .Smuggler
     .ExportAsync(
         new DatabaseSmugglerExportOptions
-        \{
+        {
             OperateOnTypes = DatabaseItemType.Indexes
                              | DatabaseItemType.Documents
-        \},
-        @"C:\\ravendb-exports\\Northwind.ravendbdump",
+        },
+        @"C:\ravendb-exports\Northwind.ravendbdump",
         token);
 
 await exportOperation.WaitForCompletionAsync();
-`}
-</CodeBlock>
-</TabItem>
+```
 
+<br />
 
+<ContentFrame>
 
-## Import
+### Export specific collections
 
-### Syntax
+By default, all collections are exported.  
+To export only specific collections, list their names in the `Collections` option.  
 
-<TabItem value="import_syntax" label="import_syntax">
-<CodeBlock language="csharp">
-{`Task<Operation> ImportAsync(
-    DatabaseSmugglerImportOptions options,
-    Stream stream,
-    CancellationToken token = default(CancellationToken));
+```csharp
+// Export only the "Orders" and "Categories" collections to a file
+var exportOperation = await store
+    .Smuggler
+    .ExportAsync(
+        new DatabaseSmugglerExportOptions
+        {
+            Collections = new List<string> { "Orders", "Categories" }
+        },
+        @"C:\ravendb-exports\Northwind.ravendbdump",
+        token);
 
-Task<Operation> ImportAsync(
-    DatabaseSmugglerImportOptions options,
-    string fromFile,
-    CancellationToken token = default(CancellationToken));
-`}
-</CodeBlock>
-</TabItem>
+await exportOperation.WaitForCompletionAsync();
+```
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **options** | `DatabaseSmugglerImportOptions` | Options that will be used during the import. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions). |
-| **stream** | `Stream` | Stream with data to import |
-| **fromFile** | `string` | Path to a file from which data will be imported |
-| **token** | `CancellationToken` | Token used to cancel the operation |
+</ContentFrame>
 
-| Return Value | | 
-| ------------- | ----- |
-| `Operation` | Instance of Operation-class which gives you an ability to wait for the operation to complete and subscribe to operation progress events |
+<br />
 
-### DatabaseSmugglerImportOptions
+See [ExportAsync](../../../client-api/smuggler/what-is-smuggler.mdx#methods) and [DatabaseSmugglerExportOptions](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerexportoptions) in the [Syntax](../../../client-api/smuggler/what-is-smuggler.mdx#syntax) section.  
 
-| Parameters | | |
-| - | - | - |
-| **Collections** | `List<string>` | List of specific collections to import. If empty, then all collections will be imported. <br/> Default: `empty` |
-| **OperateOnTypes** | `DatabaseItemType` | Indicates what should be imported. <br/> Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `ReplicationHubCertificates`, `Identities`, `CompareExchange`, `Attachments`, `CounterGroups`, `Subscriptions`, `TimeSeries` |
-| **OperateOnDatabaseRecordTypes** | `DatabaseRecordItemType` | Indicates what should be imported from database record. <br/> Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `Settings`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications`, `TimeSeries`, `DocumentsCompression`, `Analyzers`, `LockMode`, `OlapConnectionStrings`, `OlapEtls`, `ElasticSearchConnectionStrings`, `ElasticSearchEtls`, `PostgreSQLIntegration`, `QueueConnectionStrings`, `QueueEtls`, `IndexesHistory`, `Refresh`, `DataArchival` |
-| **IncludeExpired** | `bool` | Should expired documents be imported. <br/> Default: `true` |
-| **IncludeArtificial** | `bool` | Should artificial documents be imported. <br/> Default: `false` |
-| **IncludeArchived** | `bool` | Should archived documents be imported. <br/> Default: `true` |
-| **RemoveAnalyzers** | `bool` | Should analyzers be removed from Indexes. <br/> Default: `false` |
-| **TransformScript** | `string` | JavaScript-based script applied to every imported document. Read more [here](../../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
-| **MaxStepsForTransformScript** | `int` | Maximum number of steps that the transform script can process before failing. <br/> Default: **10000** |
+</Panel>
 
-### Example
+<Panel heading="Import">
 
-<TabItem value="import_example" label="import_example">
-<CodeBlock language="csharp">
-{`// import only Documents from a given file
+Import reads data from a `.ravendbdump` file or a stream and writes it into the database.  
+Use `DatabaseSmugglerImportOptions` to choose what to include.  
+
+<a id="example-1"/>
+
+#### Example: import documents from a file
+
+```csharp
+// import only Documents from a given file
 var importOperation = await store
     .Smuggler
     .ImportAsync(
         new DatabaseSmugglerImportOptions
-        \{
+        {
             OperateOnTypes = DatabaseItemType.Documents
-        \},
+        },
         // import the .ravendbdump file that you exported (i.e. in the export example above)
-        @"C:\\ravendb-exports\\Northwind.ravendbdump",
+        @"C:\ravendb-exports\Northwind.ravendbdump",
         token);
 
 await importOperation.WaitForCompletionAsync();
-`}
-</CodeBlock>
-</TabItem>
+```
 
+<br />
 
+<ContentFrame>
 
-## TransformScript
+### Import specific collections
 
-`TransformScript` exposes the ability to modify or even filter-out the document during the import and export process using the provided JavaScript. 
+By default, all collections are imported.  
+To import only specific collections, list their names in the `Collections` option.  
 
-Underneath the JavaScript engine is exactly the same as used for [patching operations](../../../client-api/operations/patching/single-document.mdx) giving you identical syntax and capabilities with additional **ability to filter out documents by throwing a 'skip' exception**.
+```csharp
+// Import only the "Orders" and "Categories" collections from the file
+var importOperation = await store
+    .Smuggler
+    .ImportAsync(
+        new DatabaseSmugglerImportOptions
+        {
+            Collections = new List<string> { "Orders", "Categories" }
+        },
+        @"C:\ravendb-exports\Northwind.ravendbdump",
+        token);
 
-<TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`var id = this['@metadata']['@id'];
+await importOperation.WaitForCompletionAsync();
+```
+
+</ContentFrame>
+
+<br />
+
+See [ImportAsync](../../../client-api/smuggler/what-is-smuggler.mdx#methods) and [DatabaseSmugglerImportOptions](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions) in the [Syntax](../../../client-api/smuggler/what-is-smuggler.mdx#syntax) section.  
+
+</Panel>
+
+<Panel heading="TransformScript">
+
+`TransformScript` lets you modify or filter out each document during an export or import, using JavaScript that you provide.  
+
+The JavaScript engine is the same one used for [patching operations](../../../client-api/operations/patching/single-document.mdx), so you have identical syntax and capabilities, plus the ability to filter out a document by throwing a `skip` exception.  
+
+```javascript
+var id = this['@metadata']['@id'];
 if (id === 'orders/999-A')
     throw 'skip'; // filter-out
 
 this.Freight = 15.3;
-`}
-</CodeBlock>
+```
+
+</Panel>
+
+<Panel heading="Syntax">
+
+## Methods
+
+<ContentFrame>
+
+### Smuggler methods
+
+<Tabs groupId='smuggler-methods'>
+<TabItem value="ForDatabase" label="ForDatabase">
+
+Switches Smuggler to operate on a database other than the document store's default database.
+
+```csharp
+public DatabaseSmuggler ForDatabase(string databaseName);
+```
+
+<br />
+
+Usage:
+
+```csharp
+var northwindSmuggler = store.Smuggler.ForDatabase("Northwind");
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **databaseName** | `string` | The database that Smuggler will operate on. |
+
+| Return value | |
+|-----------|-------------|
+| `DatabaseSmuggler` | A Smuggler instance scoped to the specified database. |
+
 </TabItem>
+<TabItem value="ExportAsync" label="ExportAsync">
 
+Exports the selected data to a file, to a stream, or to another database.
 
+```csharp
+Task<Operation> ExportAsync(
+    DatabaseSmugglerExportOptions options,
+    string toFile,
+    CancellationToken token = default);
 
+Task<Operation> ExportAsync(
+    DatabaseSmugglerExportOptions options,
+    Stream toStream,
+    CancellationToken token = default);
 
+Task<Operation> ExportAsync(
+    DatabaseSmugglerExportOptions options,
+    DatabaseSmuggler toDatabase,
+    CancellationToken token = default);
+```
+
+<br />
+
+Usage:
+
+```csharp
+var exportOperation = await store.Smuggler.ExportAsync(options, toFile, token);
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **options** | `DatabaseSmugglerExportOptions` | Options used during the export. See [DatabaseSmugglerExportOptions](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerexportoptions). |
+| **toFile** | `string` | Path to the file where exported data is written. |
+| **toStream** | `Stream` | Stream that exported data is written to. |
+| **toDatabase** | `DatabaseSmuggler` | A `DatabaseSmuggler` instance used as the destination. |
+| **token** | `CancellationToken` | Token used to cancel the operation. |
+
+| Return value | |
+|-----------|-------------|
+| `Operation` | An `Operation` instance you can use to wait for completion and subscribe to progress events. |
+
+</TabItem>
+<TabItem value="ImportAsync" label="ImportAsync">
+
+Imports data from a file or a stream into the database.
+
+```csharp
+Task<Operation> ImportAsync(
+    DatabaseSmugglerImportOptions options,
+    string fromFile,
+    CancellationToken token = default);
+
+Task<Operation> ImportAsync(
+    DatabaseSmugglerImportOptions options,
+    Stream stream,
+    CancellationToken token = default);
+```
+
+<br />
+
+Usage:
+
+```csharp
+var importOperation = await store.Smuggler.ImportAsync(options, fromFile, token);
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **options** | `DatabaseSmugglerImportOptions` | Options used during the import. See [DatabaseSmugglerImportOptions](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions). |
+| **fromFile** | `string` | Path to the file the data is imported from. |
+| **stream** | `Stream` | Stream with the data to import. |
+| **token** | `CancellationToken` | Token used to cancel the operation. |
+
+| Return value | |
+|-----------|-------------|
+| `Operation` | An `Operation` instance you can use to wait for completion and subscribe to progress events. |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+## Classes
+
+<ContentFrame>
+
+### Smuggler options classes
+
+<a id="databasesmugglerexportoptions"/>
+<a id="databasesmugglerimportoptions"/>
+
+<Tabs groupId='smuggler-options-classes'>
+<TabItem value="DatabaseSmugglerExportOptions" label="DatabaseSmugglerExportOptions">
+
+**Options that control what an export includes.**
+
+```csharp
+class DatabaseSmugglerExportOptions
+{
+    DatabaseItemType OperateOnTypes
+    DatabaseRecordItemType OperateOnDatabaseRecordTypes
+    bool IncludeExpired
+    bool IncludeArtificial
+    bool IncludeArchived
+    bool RemoveAnalyzers
+    string TransformScript
+    int MaxStepsForTransformScript
+    string EncryptionKey
+    List<string> Collections
+    int? MaxReadOpsPerSecond
+    bool SkipCorruptedData
+    ExportCompressionAlgorithm? CompressionAlgorithm
+}
+```
+
+<br />
+
+| Property | Type | Description |
+|-----------|------|-------------|
+| **Collections** | `List<string>` | List of specific collections to export. If empty, all collections are exported. <br/> Default: `empty` |
+| **OperateOnTypes** | `DatabaseItemType` | Indicates what should be exported. <br/> Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `ReplicationHubCertificates`, `Identities`, `CompareExchange`, `Attachments`, `CounterGroups`, `Subscriptions`, `TimeSeries`, `TimeSeriesDeletedRanges` |
+| **OperateOnDatabaseRecordTypes** | `DatabaseRecordItemType` | Indicates what should be exported from the database record. <br/> Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `Settings`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications`, `TimeSeries`, `DocumentsCompression`, `Analyzers`, `LockMode`, `OlapConnectionStrings`, `OlapEtls`, `ElasticSearchConnectionStrings`, `ElasticSearchEtls`, `PostgreSQLIntegration`, `QueueConnectionStrings`, `QueueEtls`, `IndexesHistory`, `Refresh`, `DataArchival`, `QueueSinks`, `SnowflakeEtls`, `SnowflakeConnectionStrings`, `EmbeddingsGenerations`, `AiConnectionStrings` |
+| **IncludeExpired** | `bool` | Should expired documents be exported. <br/> Default: `true` |
+| **IncludeArtificial** | `bool` | Should artificial documents be exported. <br/> Default: `false` |
+| **IncludeArchived** | `bool` | Should archived documents be exported. <br/> Default: `true` |
+| **RemoveAnalyzers** | `bool` | Should analyzers be removed from indexes. <br/> Default: `false` |
+| **TransformScript** | `string` | JavaScript applied to every exported document. See [TransformScript](../../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
+| **MaxStepsForTransformScript** | `int` | Maximum number of steps the transform script can run before failing. <br/> Default: `10000` |
+| **EncryptionKey** | `string` | Encryption key used to encrypt the exported file. <br/> Default: `null` |
+| **MaxReadOpsPerSecond** | `int?` | Limits the read-operation rate during the export, to throttle the load placed on the database. <br/> Default: `null` (no limit) |
+| **SkipCorruptedData** | `bool` | When `true`, the export continues if corrupted data is encountered (for example, lost compression dictionaries), recording an error entry in the result report instead of stopping. <br/> Default: `false` |
+| **CompressionAlgorithm** | `ExportCompressionAlgorithm?` | Compression algorithm used for the exported file: `Zstd` or `Gzip`. <br/> Default: `null` |
+
+</TabItem>
+<TabItem value="DatabaseSmugglerImportOptions" label="DatabaseSmugglerImportOptions">
+
+**Options that control what an import includes.**
+
+```csharp
+class DatabaseSmugglerImportOptions
+{
+    DatabaseItemType OperateOnTypes
+    DatabaseRecordItemType OperateOnDatabaseRecordTypes
+    bool IncludeExpired
+    bool IncludeArtificial
+    bool IncludeArchived
+    bool RemoveAnalyzers
+    string TransformScript
+    int MaxStepsForTransformScript
+    string EncryptionKey
+    List<string> Collections
+    int? MaxReadOpsPerSecond
+    bool SkipCorruptedData
+    bool SkipRevisionCreation
+}
+```
+
+<br />
+
+| Property | Type | Description |
+|-----------|------|-------------|
+| **Collections** | `List<string>` | List of specific collections to import. If empty, all collections are imported. <br/> Default: `empty` |
+| **OperateOnTypes** | `DatabaseItemType` | Indicates what should be imported. <br/> Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `ReplicationHubCertificates`, `Identities`, `CompareExchange`, `Attachments`, `CounterGroups`, `Subscriptions`, `TimeSeries`, `TimeSeriesDeletedRanges` |
+| **OperateOnDatabaseRecordTypes** | `DatabaseRecordItemType` | Indicates what should be imported into the database record. <br/> Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `Settings`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications`, `TimeSeries`, `DocumentsCompression`, `Analyzers`, `LockMode`, `OlapConnectionStrings`, `OlapEtls`, `ElasticSearchConnectionStrings`, `ElasticSearchEtls`, `PostgreSQLIntegration`, `QueueConnectionStrings`, `QueueEtls`, `IndexesHistory`, `Refresh`, `DataArchival`, `QueueSinks`, `SnowflakeEtls`, `SnowflakeConnectionStrings`, `EmbeddingsGenerations`, `AiConnectionStrings` |
+| **IncludeExpired** | `bool` | Should expired documents be imported. <br/> Default: `true` |
+| **IncludeArtificial** | `bool` | Should artificial documents be imported. <br/> Default: `false` |
+| **IncludeArchived** | `bool` | Should archived documents be imported. <br/> Default: `true` |
+| **RemoveAnalyzers** | `bool` | Should analyzers be removed from indexes. <br/> Default: `false` |
+| **TransformScript** | `string` | JavaScript applied to every imported document. See [TransformScript](../../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
+| **MaxStepsForTransformScript** | `int` | Maximum number of steps the transform script can run before failing. <br/> Default: `10000` |
+| **EncryptionKey** | `string` | Encryption key used to read an encrypted `.ravendbdump` file. <br/> Default: `null` |
+| **MaxReadOpsPerSecond** | `int?` | Limits the read-operation rate during the import, to throttle the load placed on the database. <br/> Default: `null` (no limit) |
+| **SkipCorruptedData** | `bool` | When `true`, the import continues if corrupted data is encountered, recording an error entry in the result report instead of stopping. <br/> Default: `false` |
+| **SkipRevisionCreation** | `bool` | When `true`, revisions are not created for the imported documents. <br/> Default: `false` |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>
