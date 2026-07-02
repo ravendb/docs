@@ -21,7 +21,7 @@ import Panel from '@site/src/components/Panel';
 * When encountering incidents or issues with RavenDB, it is essential to gather as much information as possible 
   to help the support team diagnose and resolve the problem effectively.
 
-* Follow the steps in this article for collecting the relevant information for RavenDB support.
+* Follow the steps described in this article to collect relevant information for RavenDB support.
 
 * In this article:
 
@@ -37,46 +37,36 @@ import Panel from '@site/src/components/Panel';
 <Panel heading="Provide incident description">
 
 * **Description**:  
-  * Provide a detailed description of the incident you are experiencing.  
+  * Provide a detailed description of the incident you are experiencing.
   * Include any error messages, warnings, or unexpected behavior you have encountered.
 
 * **Exceptions**:  
-  * If applicable, attach the **full exception stack trace** including the error message as plain text.
-  * Specify the origin of the exception  
-    (e.g. from RavenDB Studio, from the client, from server logs, etc.).
+  * If an exception was thrown, attach the **full exception stack trace** including the error message as plain text.
+  * Specify the exception's origin (e.g., RavenDB Studio, client, server logs, etc.).
 
 * **Versions**:  
-  * Specify the RavenDB Server, Studio, and the client **versions** that you are using.  
+  * Specify your RavenDB server, Studio, and client **versions**.
 
 </Panel>
 
 <Panel heading="Create debug package">
 
-![Create Debug Package](./assets/create-debug-package.png)
+Studio's **Debug Package** view allows you to collect diagnostic information about your server or cluster into a debug package (a `.zip` file).  
+To create such a package, go to **Manage Server &gt; Debug Package** and click **Download package for entire cluster** (or choose your current server 
+from the dropdown).  
 
-<Admonition type="note" title="">
+![Create debug package](./assets/create-debug-package.png)
 
-1. Navigate to **Manage Server &gt; Gather Debug Info**
-
-2. Select the data source(s) to retrieve. It is recommended to check all options.
-
-3. Select all databases or choose specific databases to gather information from.
-
-4. Select whether to create the package for the entire cluster or the current server.
-
-5. Click 'Download'.  
-   A zip file containing the debug package will be downloaded.
-
-</Admonition>
+For the full walkthrough, see [Create a Debug Package](../../server/troubleshooting/debug-package/create-debug-package.mdx).
 
 <Admonition type="info" title="">
 
-**If the Studio is unavailable**:
+**If Studio is unavailable**:
 
 * Try to download the debug package by issuing an HTTP GET request to the following endpoint:  
   `{SERVER_URL}/admin/debug/info-package`.
 
-* Execute this request for each node in the cluster, replacing `{SERVER_URL}` with the relevant node's URL.
+* Execute this request for each cluster node, replacing `{SERVER_URL}` with the relevant node's URL.
 
 </Admonition>
 
@@ -88,8 +78,11 @@ import Panel from '@site/src/components/Panel';
   * Verify that the content is similar to the following sample images.
 
 ![Zip file contents 1](./assets/zip-1.png)
+
 ![Zip file contents 2](./assets/zip-2.png)
+
 ![Zip file contents 3](./assets/zip-3.png)
+
 ![Zip file contents 4](./assets/zip-4.png)
 
 </Admonition>
@@ -98,8 +91,8 @@ import Panel from '@site/src/components/Panel';
 
 <Panel heading="Enable logs for ongoing issues">
 
-If the issue you encounter is still **ongoing**, enable the following logs on disk (if they are not already enabled)  
-before downloading the existing log files, as described below.
+If the issue you're encountering is still **ongoing**, enable the following logs on disk (if not already enabled) 
+before [downloading the log files](../../server/troubleshooting/collect-info#download-logs).
 
 ![Admin logs view](./assets/admin-logs-view.png)
 
@@ -117,14 +110,14 @@ before downloading the existing log files, as described below.
   ![Traffic watch logs 1](./assets/traffic-watch-logs.png)
 <Admonition type="warning" title="">
 
-Be aware that all log settings will reset to their default values after a server restart.  
-To preserve your settings after a restart, you can either:
+Be aware that a server restart will reset all log settings to their default values.  
+To preserve your settings even through a restart, either:
 
-  * In each log dialog, save the settings to the `settings.json` file by checking the checkbox in the UI:  
+  * **Save the settings** in each log dialog to the `settings.json` file by checking the UI checkbox:  
     (Scroll down in the Traffic watch logs dialog to see this option)  
     ![Save to settings.json](./assets/save-to-settings-json.png)
 
-  * Or set the relevant configuration key, as described in this [configuration overview](../../server/configuration/configuration-options.mdx):
+  * or **Set the relevant configuration key** as described in the [configuration overview](../../server/configuration/configuration-options.mdx):
     * For **Server logs**: set the [Logs.MinLevel](../../server/configuration/logs-configuration.mdx#logsminlevel) configuration key.  
     * For **Microsoft logs**: set the [Logs.Microsoft.MinLevel](../../server/configuration/logs-configuration.mdx#logsmicrosoftminlevel) configuration key.
     * For **Traffic watch logs**: set the [TrafficWatch.Mode](../../server/configuration/traffic-watch-configuration.mdx#trafficwatchmode) configuration key.
@@ -135,19 +128,20 @@ To preserve your settings after a restart, you can either:
 
 <Panel heading="Download logs">
 
-Perform the following for each node in your cluster:
+Perform the following for each cluster node:
 
 ![download logs](./assets/download-logs-1.png)
+
 ![download logs](./assets/download-logs-2.png)
 
 <Admonition type="note" title="">
 
 1. Navigate to **Manage Server &gt; Admin Logs** and click 'Download Logs' in the "Logs on disk" section.
 
-2. Either check 'Use minimum' to retrieve logs information from the time the server was started,  
+2. Either check 'Use minimum start date' to retrieve logs information from the time the server was started,  
    or enter a specific (local) time.
 
-3. Either check 'Use maximum' to retrieve logs information up to the current time,  
+3. Either check 'Use maximum end date' to retrieve logs information up to the current time,  
    or enter a specific (local) time.
 
 4. Click 'Download'.  
@@ -157,13 +151,13 @@ Perform the following for each node in your cluster:
 
 <Admonition type="info" title="">
 
-**If the Studio is unavailable**, or if the logs downloaded via the Studio appear problematic,  
-then copy the log files directly from the disk to another location to ensure that you keep them,  
-avoiding potential loss due to the retention configuration.
+**If Studio is unavailable**, or the logs downloaded via Studio appear erroneous,  
+copy the log files directly from disk to another location to ensure they are kept,  
+avoiding potentially losing them due to retention policy.
 
-* The location of the log files is determined by the [Logs.Path](../../server/configuration/logs-configuration.mdx#logspath) configuration.
+* **Log files location** is set by the [Logs.Path](../../server/configuration/logs-configuration.mdx#logspath) configuration key.
 
-* Logs deletion is controlled by the following configurations:
+* **Logs deletion** is controlled by the following configuration keys:
   * [Logs.MaxArchiveDays](../../server/configuration/logs-configuration.mdx#logsmaxarchivedays)
   * [Logs.MaxArchiveFiles ](../../server/configuration/logs-configuration.mdx#logsmaxarchivefiles)
 
@@ -178,6 +172,7 @@ avoiding potential loss due to the retention configuration.
 * Verify that the content is similar to the following sample images.
 
 ![Zip file contents 5](./assets/zip-5.png)
+
 ![Zip file contents 6](./assets/zip-6.png)
 
 </Admonition>
@@ -186,7 +181,7 @@ avoiding potential loss due to the retention configuration.
 
 <Panel heading="Reproduce scenario">
 
-* If the incident is over and you can reproduce it, then first verify logging level is set to '**Debug**'.  
+* If the incident is over and you can reproduce it, verify first that the logging level is set to '**Debug**'.  
 
 * See how to enable the logs in [Enable logs](../../server/troubleshooting/collect-info.mdx#enable-logs-for-ongoing-issues).
 
@@ -196,6 +191,6 @@ avoiding potential loss due to the retention configuration.
 
 * If possible, it is advised to create a unit test that showcases the failure in your client code.
 
-* Refer to [Writing your unit test](../../start/test-driver.mdx) to learn how to use **RavenDB's TestDriver**.
+* Refer to [Writing your unit test](../../start/test-driver.mdx) to learn how to use RavenDB's **TestDriver**.
 
 </Panel>
