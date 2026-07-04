@@ -51,7 +51,7 @@ SecurityClearance: `Cluster Admin`
 
 <TabItem value="add_node_with_args" label="add_node_with_args">
 <CodeBlock language="csharp">
-{`store.GetRequestExecutor().HttpClient.SendAsync(new HttpRequestMessage(HttpMethod.Put, "https://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<new-node-tag>&watcher=<is-watcher>&assignedCores=<assigned-cores>"));
+{`store.GetRequestExecutor().HttpClient.SendAsync(new HttpRequestMessage(HttpMethod.Put, "https://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<new-node-tag>&watcher=<is-watcher>&maxUtilizedCores=<max-utilized-cores>"));
 `}
 </CodeBlock>
 </TabItem>
@@ -62,7 +62,7 @@ SecurityClearance: `Cluster Admin`
 <CodeBlock language="powershell">
 {`[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $clientCert = Get-PfxCertificate -FilePath <path-to-pfx-cert>
-Invoke-WebRequest -Method Put -URI "https://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<new-node-tag>&watcher=<is-watcher>&maxUtilizedCores=<max-utilized-cores> -Certificate $cert"
+Invoke-WebRequest -Method Put -URI "https://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<new-node-tag>&watcher=<is-watcher>&maxUtilizedCores=<max-utilized-cores>" -Certificate $clientCert
 `}
 </CodeBlock>
 </TabItem>
@@ -71,7 +71,7 @@ Invoke-WebRequest -Method Put -URI "https://<server-url>/admin/cluster/node?url=
 
 <TabItem value="bash" label="bash">
 <CodeBlock language="bash">
-{`curl -X PUT https://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<node-tag>&watcher=<is-watcher>&maxUtilizedCores=<max-utilized-cores> --cert <path-to-pem-cert>
+{`curl --cert <path-to-cert> --key <path-to-key> -X PUT "https://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<node-tag>&watcher=<is-watcher>&maxUtilizedCores=<max-utilized-cores>"
 `}
 </CodeBlock>
 </TabItem>
