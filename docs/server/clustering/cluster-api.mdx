@@ -8,192 +8,177 @@ sidebar_position: 6
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
 
 # Cluster: Cluster API
 
-The easiest way to manage a RavenDB cluster is through the Management Studio's [Cluster View](../../studio/cluster/cluster-view.mdx).  
-All cluster operations are available through the GUI. However, sometimes you'd want to automate things. 
-
-In this section we will demonstrate of how to perform certain cluster operations programmatically using the REST API.
-In the first example we will show how to make a secure call using PowerShell, cURL and the RavenDB C# Client. The rest of the examples are cURL only.
-
-- [Add node to the cluster](../../server/clustering/cluster-api.mdx#add-node-to-the-cluster)
-- [Delete node from the cluster](../../server/clustering/cluster-api.mdx#delete-node-from-the-cluster)
-- [Promote a watcher node](../../server/clustering/cluster-api.mdx#promote-a-node)
-- [Demote a watcher node](../../server/clustering/cluster-api.mdx#demote-a-node)
-- [Force elections](../../server/clustering/cluster-api.mdx#force-elections)
-- [Force timeout](../../server/clustering/cluster-api.mdx#force-timeout)
-- [Bootstrap the cluster](../../server/clustering/cluster-api.mdx#bootstrap-cluster)
-
 <Admonition type="note" title="">
-If authentication is turned on, a client certificate with either `Cluster Admin` or `Operator` [Security Clearance](../../server/security/authorization/security-clearance-and-permissions.mdx) must be supplied, depending on the endpoint.
+
+* The easiest way to manage a RavenDB cluster is through Studio's [Cluster View](../../studio/cluster/cluster-view.mdx).  
+  All cluster operations are available through the GUI. However, sometimes you'd prefer to automate these operations.  
+
+* In this section we will demonstrate how to perform certain cluster operations programmatically using the REST API.  
+  The first example shows how to make a secure call using PowerShell, cURL, and the RavenDB C# client.  
+  All other examples are cURL only.  
+
+* If authentication is enabled, a client certificate with either `Cluster Admin` or `Operator` [security clearance](../../server/security/authorization/security-clearance-and-permissions.mdx) must be provided.  
+  The security clearance each endpoint requires is noted below.  
+
+* In this article:
+   * [Add node to the cluster](../../server/clustering/cluster-api.mdx#add-node-to-the-cluster)
+   * [Delete node from the cluster](../../server/clustering/cluster-api.mdx#delete-node-from-the-cluster)
+   * [Promote a watcher node](../../server/clustering/cluster-api.mdx#promote-a-node)
+   * [Demote a watcher node](../../server/clustering/cluster-api.mdx#demote-a-node)
+   * [Force elections](../../server/clustering/cluster-api.mdx#force-elections)
+   * [Force timeout](../../server/clustering/cluster-api.mdx#force-timeout)
+   * [Bootstrap cluster](../../server/clustering/cluster-api.mdx#bootstrap-cluster)
+
 </Admonition>
 
-## Add node to the cluster
+<Panel heading="Add node to the cluster">
 
-Adding a node to the cluster can be done using an HTTP PUT request to the `/admin/cluster/node` endpoint with the following arguments:
+You can add a node to the cluster using an `HTTP PUT` request to the `/admin/cluster/node` endpoint with the following arguments:
 
 | Argument | Description | Required | Default |
 | - | - | - | - |
-| new-node-url | The address of the new node we want to add to the cluster | true | - |
-| new-node-tag | 1-4 uppercase unicode letters | false | 'A' - 'Z' assigned by order of addition |
-| is-watcher | Add the new node as a watcher | false | `false` |
-| max-utilized-cores | The maximum number of cores that can be assigned to the new node | false | Number of processors on the machine or the license limit (smallest) |
+| `new-node-url` | The address of the new node you want to add to the cluster | `true` | - |
+| `new-node-tag` | 1-4 uppercase unicode letters | `false` | `A` - `Z` assigned by order of addition |
+| `is-watcher` | Add the new node as a [watcher](../../server/clustering/rachis/cluster-topology.mdx#watcher) | `false` | `false` |
+| `max-utilized-cores` | The maximum number of cores that can be assigned to the new node | `false` | Number of processors on the machine or the license limit, the smaller of the two |
 
-SecurityClearance: `Cluster Admin`
+* Security clearance: `Cluster Admin`
 
-### C# Client
+#### Example: Add a node
 
-* To make a secure call, the Document Store must be supplied with the client certificate ([example](../../client-api/setting-up-authentication-and-authorization.mdx#example---initializing-document-store-with-a-client-certificate)).
+<Tabs groupId="languages">
+<TabItem value="csharp" label="C#">
 
-<TabItem value="add_node_with_args" label="add_node_with_args">
-<CodeBlock language="csharp">
-{`store.GetRequestExecutor().HttpClient.SendAsync(new HttpRequestMessage(HttpMethod.Put, "https://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<new-node-tag>&watcher=<is-watcher>&maxUtilizedCores=<max-utilized-cores>"));
-`}
-</CodeBlock>
+To make a secure call, the Document Store must be provided with the client certificate (see [example](../../client-api/setting-up-authentication-and-authorization.mdx#example---initializing-document-store-with-a-client-certificate)).
+
+```csharp
+store.GetRequestExecutor().HttpClient.SendAsync(new HttpRequestMessage(HttpMethod.Put, "https://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<new-node-tag>&watcher=<is-watcher>&maxUtilizedCores=<max-utilized-cores>"));
+```
+
 </TabItem>
+<TabItem value="powershell" label="PowerShell">
 
-### Powershell
+To make a secure call, load the client certificate from a PFX file and pass it to the request.
 
-<TabItem value="powershell" label="powershell">
-<CodeBlock language="powershell">
-{`[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+```powershell
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $clientCert = Get-PfxCertificate -FilePath <path-to-pfx-cert>
 Invoke-WebRequest -Method Put -URI "https://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<new-node-tag>&watcher=<is-watcher>&maxUtilizedCores=<max-utilized-cores>" -Certificate $clientCert
-`}
-</CodeBlock>
+```
+
 </TabItem>
+<TabItem value="curl" label="cURL">
 
-### cURL
+To make a secure call, provide the client certificate and private key using the `--cert` and `--key` options.
 
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`curl --cert <path-to-cert> --key <path-to-key> -X PUT "https://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<node-tag>&watcher=<is-watcher>&maxUtilizedCores=<max-utilized-cores>"
-`}
-</CodeBlock>
+```bash
+curl --cert <path-to-cert> --key <path-to-key> -X PUT "https://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<node-tag>&watcher=<is-watcher>&maxUtilizedCores=<max-utilized-cores>"
+```
+
 </TabItem>
+</Tabs>
 
+</Panel>
 
+<Panel heading="Delete node from the cluster">
 
-## Delete node from the cluster
-
-Deleting a node from the cluster can be done using an HTTP DELETE request to the `/admin/cluster/node` endpoint with the following argument:
+You can delete a node from the cluster using an `HTTP DELETE` request to the `/admin/cluster/node` endpoint with the following argument:
 
 | Argument | Description | Required | Default |
 | - | - | - | - |
-| node-tag | The tag of the node to delete | true | - |
+| `node-tag` | The tag of the node to delete | `true` | - |
 
-SecurityClearance: `Cluster Admin`
+* Security clearance: `Cluster Admin`
 
-### Example
+#### Example: Delete a node
 
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`curl -X DELETE https://<server-url>/admin/cluster/node?nodeTag=<node-tag>
-`}
-</CodeBlock>
-</TabItem>
+```bash
+curl -X DELETE "https://<server-url>/admin/cluster/node?nodeTag=<node-tag>"
+```
 
+</Panel>
 
+<Panel heading="Promote a node">
 
-## Promote a Node
-
-Promoting a node can be done using an HTTP POST request to the `/admin/cluster/promote` 
-endpoint with the following argument:
+You can [promote a node](../../server/clustering/rachis/cluster-topology.mdx#nodes-states-and-types) using an `HTTP POST` request to the `/admin/cluster/promote` endpoint with the following argument:
 
 | Argument | Description | Required | Default |
 | - | - | - | - |
-| node-tag | The tag of the node to promote | true | - |
+| `node-tag` | The tag of the node to promote | `true` | - |
 
-The POST request body should be empty.
+* The POST request body should be empty.
+* Security clearance: `Cluster Admin`
 
-SecurityClearance: `ClusterAdmin`
+#### Example: Promote a node
 
-### Example
+```bash
+curl -X POST "https://<server-url>/admin/cluster/promote?nodeTag=<node-tag>" -d ''
+```
 
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`curl -X POST https://<server-url>/admin/cluster/promote?nodeTag=<node-tag> -d ''
-`}
-</CodeBlock>
-</TabItem>
+</Panel>
 
+<Panel heading="Demote a node">
 
-
-## Demote a Node
-
-Demoting a node can be done using an HTTP POST request to the `/admin/cluster/demote` endpoint with the following argument:
+You can [demote a node](../../server/clustering/rachis/cluster-topology.mdx#nodes-states-and-types) using an `HTTP POST` request to the `/admin/cluster/demote` endpoint with the following argument:
 
 | Argument | Description | Required | Default |
 | - | - | - | - |
-| node-tag | The tag of the node to demote | true | - |
+| `node-tag` | The tag of the node to demote | `true` | - |
 
-The POST request body should be empty.
+* The POST request body should be empty.
+* Security clearance: `Cluster Admin`
 
-SecurityClearance: `ClusterAdmin`
+#### Example: Demote a node
 
-### Example
+```bash
+curl -X POST "https://<server-url>/admin/cluster/demote?nodeTag=<node-tag>" -d ''
+```
 
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`curl -X POST https://<server-url>/admin/cluster/demote?nodeTag=<node-tag> -d ''
-`}
-</CodeBlock>
-</TabItem>
+</Panel>
 
+<Panel heading="Force elections">
 
+You can force an election using an empty `HTTP POST` request to the `/admin/cluster/reelect` endpoint.
 
-## Force Elections
+* Security clearance: `Operator`
 
-Forcing an election can be done using an empty HTTP POST request to the `/admin/cluster/reelect` endpoint:
+#### Example: Force an election
 
-SecurityClearance: `Operator`
+```bash
+curl -X POST "https://<server-url>/admin/cluster/reelect" -d ''
+```
 
-### Example
+</Panel>
 
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`curl -X POST https://<server-url>/admin/cluster/reelect -d ''
-`}
-</CodeBlock>
-</TabItem>
+<Panel heading="Force timeout">
 
+You can force a timeout using an empty `HTTP POST` request to the `/admin/cluster/timeout` endpoint.
 
+* Security clearance: `Operator`
 
-## Force Timeout
+#### Example: Force a timeout
 
-Forcing a timeout can be done using an empty HTTP POST request to the `/admin/cluster/timeout` endpoint:
+```bash
+curl -X POST "https://<server-url>/admin/cluster/timeout" -d ''
+```
 
-SecurityClearance: `Operator`
+</Panel>
 
-### Example
+<Panel heading="Bootstrap cluster">
 
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`curl -X POST https://<server-url>/admin/cluster/timeout -d ''
-`}
-</CodeBlock>
-</TabItem>
+You can bootstrap the cluster using an empty `HTTP POST` request to the `/admin/cluster/bootstrap` endpoint.  
+Note that bootstrapping takes effect only while the server is in the [Passive state](../../server/clustering/rachis/cluster-topology.mdx#nodes-states-and-types). On a server that has already formed or joined a cluster, the request has no effect.
 
+* Security clearance: `Cluster Admin`
 
+#### Example: Bootstrap the cluster
 
-## Bootstrap Cluster
+```bash
+curl -X POST "https://<server-url>/admin/cluster/bootstrap" -d ''
+```
 
-Bootstrapping the cluster can be done using an empty HTTP POST request to the `/admin/cluster/bootstrap` endpoint:
-Note: This option is only available when the server is in the Passive state. 
-
-SecurityClearance: `Cluster Admin`
-
-### Example
-
-<TabItem value="bash" label="bash">
-<CodeBlock language="bash">
-{`curl -X POST https://<server-url>/admin/cluster/bootstrap -d ''
-`}
-</CodeBlock>
-</TabItem>
-
- 
+</Panel>
