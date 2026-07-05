@@ -32,7 +32,7 @@ In this page:
   * [List of Registered Certificates](../../../server/security/authentication/certificate-management.mdx#list-of-registered-certificates)  
   * [Generate Client Certificate](../../../server/security/authentication/certificate-management.mdx#generate-client-certificate)  
   * [Edit Certificate](../../../server/security/authentication/certificate-management.mdx#edit-certificate)  
-* [Enabling Communication Between Servers: Importing and Exporting Certificates](../../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers:-importing-and-exporting-certificates)  
+* [Enabling Communication Between Servers: Importing and Exporting Certificates](../../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers-importing-and-exporting-certificates)  
   * [Export Server Certificates](../../../server/security/authentication/certificate-management.mdx#export-server-certificates)  
   * [Upload an Existing Certificate](../../../server/security/authentication/certificate-management.mdx#upload-an-existing-certificate)  
   * [Certificate Collections](../../../server/security/authentication/certificate-management.mdx#certificate-collections)  
@@ -343,6 +343,12 @@ This information is used by RavenDB internally and is not stored in the certific
 <Admonition type="note" title="">
 
 Expiration for client certificates is set to 5 years by default.
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+To register the source server's certificate on the destination server from the client API, use [PutClientCertificateOperation](../../../client-api/operations/server-wide/certificates/put-client-certificate.mdx).
 
 </Admonition>
 ### Certificate Collections
