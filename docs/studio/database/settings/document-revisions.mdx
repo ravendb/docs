@@ -134,16 +134,34 @@ import ContentFrame from "@site/src/components/ContentFrame";
    Upon revision creation (when the parent document is modified), if the number of revisions exceeds this limit, 
    older revisions will be purged (starting with the oldest revision).  
 
-     * Enabling this option will display the following setting as well:  
-       ![Set the number of revisions to delete upon document update](./assets/document-revisions_delete-upon-update.png)   
-       Enable to limit the number of revisions that RavenDB is allowed to purge per document modification.  
+   <Admonition type="note" title="">
 
-       <Admonition type="info" title="">
-       This will be the highest number of revisions that RavenDB will purge per document modification,  
-       even if the number of revisions that pend purging is higher.  
-       Setting this limit can reserve server resources if many revisions pend purging,  
-       by dividing the purging between multiple document modifications.  
-       </Admonition>
+   When you define a new configuration, this option is enabled by default and set to 1000
+   (keeping the latest 1000 revisions).  
+   If your license limits the number of revisions that you can keep to a lower number than 1000,
+   the lower limit becomes the default instead.  
+
+   If no limit is set on the number of revisions to keep, Studio shows a warning:  
+   ![Revisions number warning](./assets/document-revisions_revisions-number_warning.png)  
+
+   An **age limit** alone does not clear this warning, since the age limit does not cap
+   the **number of revisions**.
+
+   </Admonition>
+
+   <Admonition type="note" title="">
+
+   Enabling the **Set the number of revisions to keep** option displays the following setting as well:  
+   ![Set the number of revisions to delete upon document update](./assets/document-revisions_delete-upon-update.png)  
+   Enable to limit the number of revisions that RavenDB is allowed to purge per document modification.  
+
+   <Admonition type="info" title="">
+   This will be the highest number of revisions that RavenDB is allowed to purge per document modification.  
+   Setting this limit can reserve server resources if many revisions pend purging,  
+   by dividing the purging between multiple document modifications.  
+   </Admonition>
+
+   </Admonition>
 
 3. **Set the number of revisions to keep by age**  
    ![Limit By Age](./assets/document-revisions_limit-by-age.png)  
