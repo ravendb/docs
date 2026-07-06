@@ -1,11 +1,11 @@
 ---
 title: "CDC Sink: API Reference"
-sidebar_label: API Reference
+sidebar_label: Task Operations
 description: "Documents the Client API operations for creating, updating, querying, toggling, and deleting CDC Sink tasks programmatically."
-sidebar_position: 11
+sidebar_position: 0
 see_also:
   - title: "Configuration Reference"
-    link: "server/ongoing-tasks/cdc-sink/configuration-reference"
+    link: "server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/configuration-reference"
     source: "docs"
     path: "Server > CDC Sink"
   - title: "Overview"
@@ -144,12 +144,12 @@ SELECT slot_name FROM pg_replication_slots WHERE slot_name LIKE 'rvn_cdc_s_%';
 SELECT pubname FROM pg_publication WHERE pubname LIKE 'rvn_cdc_p_%';
 ```
 
-See [Initial Setup](./postgres/initial-setup.mdx) for
+See [Initial Setup](../source-database-setup/postgres/initial-setup.mdx) for
 guidance on slot and publication management.
 
 Dropped or orphaned slots and publications must be cleaned up manually by the
 database administrator.
-See [Cleanup and Maintenance](./postgres/cleanup-and-maintenance.mdx).
+See [Cleanup and Maintenance](../source-database-setup/postgres/cleanup-and-maintenance.mdx).
 </Admonition>
 
 </Panel>
@@ -196,7 +196,7 @@ await store.Maintenance.SendAsync(
 PostgreSQL retains WAL segments for unconsumed slots, so pausing for an extended period
 causes WAL to accumulate on disk. Monitor disk usage if a task is paused for more than
 a short time.
-See [Monitoring PostgreSQL](./postgres/monitoring-postgres.mdx).
+See [Monitoring PostgreSQL](../source-database-setup/postgres/monitoring-postgres.mdx).
 
 **SQL Server:** Pausing a CDC Sink task for an extended period (days) may cause SQL Server
 to trim the CDC change tables, removing rows that have not yet been consumed. A short
@@ -224,7 +224,7 @@ await store.Maintenance.SendAsync(
 <Admonition type="warning" title="">
 Deleting the task in RavenDB does **not** drop the replication slot or publication
 in the source database. These must be cleaned up manually by the database administrator.
-See [Cleanup and Maintenance](./postgres/cleanup-and-maintenance.mdx).
+See [Cleanup and Maintenance](../source-database-setup/postgres/cleanup-and-maintenance.mdx).
 </Admonition>
 
 </Panel>

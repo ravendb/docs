@@ -25,11 +25,11 @@ see_also:
     source: "docs"
     path: "Server > CDC Sink"
   - title: "PostgreSQL Prerequisites Checklist"
-    link: "server/ongoing-tasks/cdc-sink/postgres/prerequisites-checklist"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/prerequisites-checklist"
     source: "docs"
     path: "Server > CDC Sink > PostgreSQL"
   - title: "PostgreSQL Initial Setup"
-    link: "server/ongoing-tasks/cdc-sink/postgres/initial-setup"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/initial-setup"
     source: "docs"
     path: "Server > CDC Sink > PostgreSQL"
 ---
@@ -79,20 +79,20 @@ CDC Sink checks:
 * The connecting user has sufficient privileges
 * REPLICA IDENTITY is configured correctly for embedded tables that need delete routing
 
-See the [PostgreSQL Prerequisites Checklist](./postgres/prerequisites-checklist.mdx)
+See the [PostgreSQL Prerequisites Checklist](./source-database-setup/postgres/prerequisites-checklist.mdx)
 for the full list of requirements.
 
 ### SQL Server
 
 CDC Sink checks that Change Data Capture is enabled on the database and on each captured
 table, and that the SQL Server Agent service is running (it drives the CDC capture jobs).
-See [CDC Sink for SQL Server](./sql-server/overview.mdx).
+See [CDC Sink for SQL Server](./source-database-setup/sql-server/overview.mdx).
 
 ### MySQL / MariaDB
 
 CDC Sink checks that binary logging is enabled with `binlog_format = ROW`, and that the
 connecting user has the `REPLICATION SLAVE` and `REPLICATION CLIENT` privileges required
-to read the binlog. See [CDC Sink for MySQL](./mysql/overview.mdx).
+to read the binlog. See [CDC Sink for MySQL](./source-database-setup/mysql/overview.mdx).
 
 </Panel>
 

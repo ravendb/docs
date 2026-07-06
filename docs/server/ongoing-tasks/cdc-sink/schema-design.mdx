@@ -2,7 +2,7 @@
 title: "CDC Sink: Schema Design"
 sidebar_label: Schema Design
 description: "Explains how CDC Sink maps a relational schema to a RavenDB document model using root tables, embedded tables, and linked tables."
-sidebar_position: 2
+sidebar_position: 4
 see_also:
   - title: "Embedded Tables"
     link: "server/ongoing-tasks/cdc-sink/embedded-tables"
@@ -17,11 +17,11 @@ see_also:
     source: "docs"
     path: "Server > CDC Sink"
   - title: "Configuration Reference"
-    link: "server/ongoing-tasks/cdc-sink/configuration-reference"
+    link: "server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/configuration-reference"
     source: "docs"
     path: "Server > CDC Sink"
   - title: "REPLICA IDENTITY"
-    link: "server/ongoing-tasks/cdc-sink/postgres/replica-identity"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity"
     source: "docs"
     path: "Server > CDC Sink > PostgreSQL"
 ---
@@ -236,7 +236,7 @@ can route the delete to the correct parent document.
 If the join column is not part of the source table's primary key, the source database may
 need additional configuration to include it in DELETE events.
 
-See [REPLICA IDENTITY](./postgres/replica-identity.mdx) for
+See [REPLICA IDENTITY](./source-database-setup/postgres/replica-identity.mdx) for
 the PostgreSQL-specific requirement and how CDC Sink handles it automatically.
 
 </Panel>

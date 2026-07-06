@@ -9,11 +9,11 @@ see_also:
     source: "docs"
     path: "Server > CDC Sink"
   - title: "Configuration Reference"
-    link: "server/ongoing-tasks/cdc-sink/configuration-reference"
+    link: "server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/configuration-reference"
     source: "docs"
     path: "Server > CDC Sink"
   - title: "PostgreSQL Prerequisites Checklist"
-    link: "server/ongoing-tasks/cdc-sink/postgres/prerequisites-checklist"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/prerequisites-checklist"
     source: "docs"
     path: "Server > CDC Sink > PostgreSQL"
 ---
@@ -90,14 +90,14 @@ The SQL Server Agent service must be running for CDC to function.
 
 Unlike PostgreSQL (which uses streaming replication), SQL Server CDC Sink uses polling.
 The `CdcSink.SqlServer.PollIntervalInSec` server configuration key controls how frequently
-the task polls for new changes. See [Server Configuration](../server-configuration.mdx).
+the task polls for new changes. See [Server Configuration](../../server-configuration.mdx).
 
 </Panel>
 
 <Panel heading="Configuration">
 
 The CDC Sink task configuration is the same across all database engines.
-See [Configuration Reference](../configuration-reference.mdx) for full details.
+See [Configuration Reference](../../manage-cdc-sink-tasks/configuration-reference.mdx) for full details.
 
 The `SourceTableSchema` defaults to `"dbo"` when using SQL Server.
 

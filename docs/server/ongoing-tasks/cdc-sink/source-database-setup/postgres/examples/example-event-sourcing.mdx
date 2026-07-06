@@ -5,15 +5,15 @@ description: "How to use CDC Sink patches to maintain a computed aggregate on a 
 sidebar_position: 2
 see_also:
   - title: "Simple Migration"
-    link: "server/ongoing-tasks/cdc-sink/postgres/examples/example-simple-migration"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/examples/example-simple-migration"
     source: "docs"
     path: "Server > CDC Sink > PostgreSQL > Examples"
   - title: "Denormalization"
-    link: "server/ongoing-tasks/cdc-sink/postgres/examples/example-denormalization"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/examples/example-denormalization"
     source: "docs"
     path: "Server > CDC Sink > PostgreSQL > Examples"
   - title: "Complex Nesting"
-    link: "server/ongoing-tasks/cdc-sink/postgres/examples/example-complex-nesting"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/examples/example-complex-nesting"
     source: "docs"
     path: "Server > CDC Sink > PostgreSQL > Examples"
   - title: "Patching"
@@ -201,7 +201,7 @@ keeps `Balance` consistent.
 The patch uses delta logic (`$old` → `$row`) for idempotency. If a change is
 re-applied after a failover, `$old` still reflects the state before the original
 update, so the delta produces the same result.
-See [Failover and Consistency](../../failover-and-consistency.mdx).
+See [Failover and Consistency](../../../failover-and-consistency.mdx).
 </Admonition>
 
 </Panel>

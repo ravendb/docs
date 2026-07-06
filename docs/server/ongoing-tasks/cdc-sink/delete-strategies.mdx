@@ -2,7 +2,7 @@
 title: "CDC Sink: Delete Strategies"
 sidebar_label: Delete Strategies
 description: "Documents configurable behavior for DELETE events in CDC Sink, including archive, audit trail, and silent ignore patterns."
-sidebar_position: 7
+sidebar_position: 11
 see_also:
   - title: "Patching"
     link: "server/ongoing-tasks/cdc-sink/patching"
@@ -13,11 +13,11 @@ see_also:
     source: "docs"
     path: "Server > CDC Sink"
   - title: "Configuration Reference"
-    link: "server/ongoing-tasks/cdc-sink/configuration-reference"
+    link: "server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/configuration-reference"
     source: "docs"
     path: "Server > CDC Sink"
   - title: "REPLICA IDENTITY"
-    link: "server/ongoing-tasks/cdc-sink/postgres/replica-identity"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity"
     source: "docs"
     path: "Server > CDC Sink > PostgreSQL"
 ---
@@ -290,7 +290,7 @@ configuration for DELETE routing.
 
 See:
 
-* [REPLICA IDENTITY](./postgres/replica-identity.mdx) (PostgreSQL)
+* [REPLICA IDENTITY](./source-database-setup/postgres/replica-identity.mdx) (PostgreSQL)
 
 **Skipping REPLICA IDENTITY requirements:** Set `OnDelete.IgnoreDeletes = true`
 to discard DELETE events for an embedded table entirely. This skips the REPLICA

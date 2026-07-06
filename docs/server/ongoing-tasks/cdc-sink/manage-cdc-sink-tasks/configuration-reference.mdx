@@ -1,8 +1,8 @@
 ---
 title: "CDC Sink: Configuration Reference"
-sidebar_label: Configuration Reference
+sidebar_label: Configuration Syntax
 description: "Documents all configuration classes used to define a CDC Sink task, including CdcSinkConfiguration, table configs, CdcColumnMapping, and related types."
-sidebar_position: 10
+sidebar_position: 1
 see_also:
   - title: "Schema Design"
     link: "server/ongoing-tasks/cdc-sink/schema-design"
@@ -25,7 +25,7 @@ see_also:
     source: "docs"
     path: "Server > CDC Sink"
   - title: "API Reference"
-    link: "server/ongoing-tasks/cdc-sink/api-reference"
+    link: "server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/api-reference"
     source: "docs"
     path: "Server > CDC Sink"
 ---
@@ -101,12 +101,12 @@ Setting these explicitly is useful when:
 If tables are missing from the publication, CDC Sink attempts `ALTER PUBLICATION ... ADD TABLE`
 automatically on startup (requires sufficient permissions).
 
-See [Initial Setup](./postgres/initial-setup.mdx) for details.
+See [Initial Setup](../source-database-setup/postgres/initial-setup.mdx) for details.
 
 <Admonition type="note" title="">
 For embedded tables where the join columns are not part of the primary key, the
 PostgreSQL table must have `REPLICA IDENTITY` configured so that DELETE events include
-the join column values. See [REPLICA IDENTITY](./postgres/replica-identity.mdx).
+the join column values. See [REPLICA IDENTITY](../source-database-setup/postgres/replica-identity.mdx).
 </Admonition>
 
 </Panel>

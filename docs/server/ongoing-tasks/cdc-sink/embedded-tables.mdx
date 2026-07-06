@@ -2,7 +2,7 @@
 title: "CDC Sink: Embedded Tables"
 sidebar_label: Embedded Tables
 description: "Covers configuration options, nesting constraints, and how embedded items are updated and deleted in CDC Sink."
-sidebar_position: 3
+sidebar_position: 5
 see_also:
   - title: "Schema Design"
     link: "server/ongoing-tasks/cdc-sink/schema-design"
@@ -21,15 +21,15 @@ see_also:
     source: "docs"
     path: "Server > CDC Sink"
   - title: "Configuration Reference"
-    link: "server/ongoing-tasks/cdc-sink/configuration-reference"
+    link: "server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/configuration-reference"
     source: "docs"
     path: "Server > CDC Sink"
   - title: "REPLICA IDENTITY"
-    link: "server/ongoing-tasks/cdc-sink/postgres/replica-identity"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity"
     source: "docs"
     path: "Server > CDC Sink > PostgreSQL"
   - title: "REPLICA IDENTITY Manual Setup"
-    link: "server/ongoing-tasks/cdc-sink/postgres/replica-identity-manual-setup"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity-manual-setup"
     source: "docs"
     path: "Server > CDC Sink > PostgreSQL"
 ---
@@ -126,7 +126,7 @@ By default, many databases only include primary key columns in DELETE events. If
 join column is _not_ in the embedded table's primary key, additional source database
 configuration is required.
 
-**PostgreSQL:** See [REPLICA IDENTITY](./postgres/replica-identity.mdx)
+**PostgreSQL:** See [REPLICA IDENTITY](./source-database-setup/postgres/replica-identity.mdx)
 for how CDC Sink handles this automatically when it has sufficient permissions, or how
 a DBA can configure it manually.
 

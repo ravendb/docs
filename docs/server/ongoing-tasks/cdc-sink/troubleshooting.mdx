@@ -2,7 +2,7 @@
 title: "CDC Sink: Troubleshooting"
 sidebar_label: Troubleshooting
 description: "Covers common problems encountered when running CDC Sink tasks and how to resolve them, including startup failures, error states, and missing documents."
-sidebar_position: 14
+sidebar_position: 16
 see_also:
   - title: "How It Works"
     link: "server/ongoing-tasks/cdc-sink/how-it-works"
@@ -21,15 +21,15 @@ see_also:
     source: "docs"
     path: "Server > CDC Sink"
   - title: "PostgreSQL WAL Configuration"
-    link: "server/ongoing-tasks/cdc-sink/postgres/wal-configuration"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/wal-configuration"
     source: "docs"
     path: "Server > CDC Sink > PostgreSQL"
   - title: "PostgreSQL Permissions and Roles"
-    link: "server/ongoing-tasks/cdc-sink/postgres/permissions-and-roles"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/permissions-and-roles"
     source: "docs"
     path: "Server > CDC Sink > PostgreSQL"
   - title: "PostgreSQL REPLICA IDENTITY"
-    link: "server/ongoing-tasks/cdc-sink/postgres/replica-identity"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity"
     source: "docs"
     path: "Server > CDC Sink > PostgreSQL"
 ---
@@ -74,11 +74,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * **Authentication failure** - the credentials in the connection string are incorrect
   or the user does not have the required permissions.
-  See the PostgreSQL [Permissions and Roles](./postgres/permissions-and-roles.mdx) page.
+  See the PostgreSQL [Permissions and Roles](./source-database-setup/postgres/permissions-and-roles.mdx) page.
 
 * **WAL level not set to `logical`** - CDC Sink requires logical replication enabled
   on the source.
-  See [WAL Configuration](./postgres/wal-configuration.mdx).
+  See [WAL Configuration](./source-database-setup/postgres/wal-configuration.mdx).
 
 Check the error message in the Notification Center (bell icon in Studio) for the
 specific failure reason.
@@ -148,7 +148,7 @@ specific failure reason.
    items remain in RavenDB, check whether `REPLICA IDENTITY` is configured for the
    embedded table. Without it, PostgreSQL does not include the old row values in the
    DELETE event, and CDC Sink cannot identify which item to remove.
-   See [REPLICA IDENTITY](./postgres/replica-identity.mdx).
+   See [REPLICA IDENTITY](./source-database-setup/postgres/replica-identity.mdx).
 
 4. **Type mismatch (Array vs Map)** - if the `Type` was changed from `Array` to `Map`
    or vice versa after documents were already created, existing documents retain the
@@ -170,7 +170,7 @@ specific failure reason.
    parent document to update. If `REPLICA IDENTITY` is not set to `FULL` (or to
    an index that includes join columns), the DELETE event may be missing the columns
    needed to route it.
-   See [REPLICA IDENTITY](./postgres/replica-identity.mdx).
+   See [REPLICA IDENTITY](./source-database-setup/postgres/replica-identity.mdx).
 
 3. **Custom patch returns without deleting** - if an `OnDelete.Patch` is configured
    that does not allow the delete to proceed (combined with `IgnoreDeletes = true`),
