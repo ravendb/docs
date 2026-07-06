@@ -76,7 +76,7 @@ The top-level configuration object for a CDC Sink task.
 | FactoryName | Database Engine |
 |-------------|-----------------|
 | `Npgsql` | PostgreSQL |
-| `System.Data.SqlClient` or `Microsoft.Data.SqlClient` | SQL Server |
+| `Microsoft.Data.SqlClient` | SQL Server |
 | `MySql.Data.MySqlClient` or `MySqlConnector.MySqlConnectorFactory` | MySQL / MariaDB |
 
 </Panel>
@@ -117,7 +117,7 @@ Configures a root table - one SQL table mapped to one RavenDB collection.
 |----------|------|----------|-------------|
 | `CollectionName` | `string` | ✓ | RavenDB collection name (e.g., `"Orders"`) |
 | `SourceTableName` | `string` | ✓ | SQL table name (e.g., `"orders"`) |
-| `SourceTableSchema` | `string` | | SQL schema name. Default: `"public"` |
+| `SourceTableSchema` | `string` | | SQL schema name. Default is provider-specific: PostgreSQL `"public"`, SQL Server `"dbo"`, MySQL/MariaDB the database name from the connection string. |
 | `PrimaryKeyColumns` | `List<string>` | ✓ | SQL columns used for document ID generation |
 | `Columns` | `List<CdcColumnMapping>` | ✓ | Column mappings - each entry defines a SQL column, its document property name, and how to store it |
 | `Patch` | `string` | | JavaScript patch for INSERT and UPDATE |
@@ -135,7 +135,7 @@ Configures a table whose rows are embedded as nested objects within a parent doc
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
 | `SourceTableName` | `string` | ✓ | SQL table name |
-| `SourceTableSchema` | `string` | | SQL schema name. Default: `"public"` |
+| `SourceTableSchema` | `string` | | SQL schema name. Default is provider-specific: PostgreSQL `"public"`, SQL Server `"dbo"`, MySQL/MariaDB the database name from the connection string. |
 | `PropertyName` | `string` | ✓ | Property name in the parent document (e.g., `"Lines"`) |
 | `Type` | `CdcSinkRelationType` | ✓ | `Array`, `Map`, or `Value` |
 | `JoinColumns` | `List<string>` | ✓ | FK columns referencing parent's `PrimaryKeyColumns` |
@@ -156,7 +156,7 @@ Configures a foreign key reference that becomes a document ID in the parent docu
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
 | `SourceTableName` | `string` | ✓ | SQL table name of the referenced table |
-| `SourceTableSchema` | `string` | | SQL schema name. Default: `"public"` |
+| `SourceTableSchema` | `string` | | SQL schema name. Default is provider-specific: PostgreSQL `"public"`, SQL Server `"dbo"`, MySQL/MariaDB the database name from the connection string. |
 | `PropertyName` | `string` | ✓ | Property name in the parent document (e.g., `"Customer"`) |
 | `LinkedCollectionName` | `string` | ✓ | Target RavenDB collection for ID generation (e.g., `"Customers"`) |
 | `JoinColumns` | `List<string>` | ✓ | FK columns used to build the referenced document ID |

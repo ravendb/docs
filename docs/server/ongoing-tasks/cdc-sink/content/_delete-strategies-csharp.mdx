@@ -59,6 +59,10 @@ public class CdcSinkOnDeleteConfig
 * If `IgnoreDeletes = true`, the deletion is skipped after the patch runs
 * If `IgnoreDeletes = false` (default), the deletion proceeds after the patch runs
 
+A DELETE event is discarded outright only when `IgnoreDeletes == true` **and** `Patch == null`
+(that is, `OnDelete.IgnoreDeletes = true` with no `OnDelete.Patch`). If a delete patch is
+configured, the event is still routed so the patch can run - even when `IgnoreDeletes = true`.
+
 <Admonition type="note" title="">
 When `IgnoreDeletes = true`, CDC Sink skips the delete but still **saves any changes
 made to `this`** in the patch. This means a patch can modify the document (e.g.,
@@ -157,7 +161,7 @@ The same `OnDelete` configuration works on embedded tables. For embedded tables:
 
 * `Patch` runs on the **parent document** (not the embedded item)
 * `$old` contains the embedded item's last known state before deletion
-* `IgnoreDeletes = true` prevents the item from being removed from the array/map
+* `IgnoreDeletes = true` prevents the item from being removed from the array/map/value
 
 **Example: Keep deleted items in an audit array**
 

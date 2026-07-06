@@ -89,6 +89,15 @@ See [REPLICA IDENTITY](../../replica-identity.mdx) for more details.
 
 <Panel heading="Task Configuration">
 
+Multi-level nesting follows three rules:
+
+* Every descendant table must carry the root's primary key (here `product_id`) as
+  a denormalized column so CDC Sink can locate the root document.
+* Each embedded level's `JoinColumns` points to its direct parent's primary key,
+  used to navigate the nested arrays.
+* The root primary key is read from the row automatically - it does not need to be
+  listed in `JoinColumns` or in the `Columns` mapping.
+
 <Tabs>
 <TabItem value="csharp" label="csharp">
 
@@ -170,6 +179,30 @@ await store.Maintenance.SendAsync(new AddCdcSinkOperation(config));
 </Panel>
 
 <Panel heading="Resulting Documents">
+
+SQL rows:
+
+<Tabs>
+<TabItem value="sql" label="sql">
+
+```sql
+categories:         category_id=3, name='Footwear'
+
+products:           product_id=42, name='Hiking Boot', category_id=3
+
+product_variants:   variant_id=101, product_id=42, sku='HB-BLK-10', price=89.99
+product_variants:   variant_id=102, product_id=42, sku='HB-BRN-11', price=89.99
+
+variant_attributes: attr_id=1, product_id=42, variant_id=101, attr_name='Color', attr_value='Black'
+variant_attributes: attr_id=2, product_id=42, variant_id=101, attr_name='Size',  attr_value='10'
+variant_attributes: attr_id=3, product_id=42, variant_id=102, attr_name='Color', attr_value='Brown'
+variant_attributes: attr_id=4, product_id=42, variant_id=102, attr_name='Size',  attr_value='11'
+```
+
+</TabItem>
+</Tabs>
+
+RavenDB document `Products/42`:
 
 <Tabs>
 <TabItem value="json" label="json">

@@ -9,6 +9,11 @@ import Panel from '@site/src/components/Panel';
   than embedding data. A foreign key value becomes a RavenDB document ID pointing
   to a related collection.
 
+* `CdcSinkLinkedTableConfig` only creates the document ID reference in the current
+  document. It does **not** create or maintain the referenced document itself.
+  The referenced document exists only if the referenced table is also configured
+  as a root table.
+
 * In this article:
   * [Basic Configuration](#basic-configuration)
   * [Composite Foreign Keys](#composite-foreign-keys)
@@ -31,8 +36,7 @@ new CdcSinkTableConfig
     PrimaryKeyColumns = ["id"],
     Columns =
     [
-        new CdcColumnMapping() { Column = "id",          Name = "Id" },
-        new CdcColumnMapping() { Column = "customer_id", Name = "CustomerId" },
+        new CdcColumnMapping() { Column = "id", Name = "Id" },
     ],
     LinkedTables =
     [
@@ -58,7 +62,6 @@ With `customer_id = 42`, the Orders document gets:
 ```json
 {
     "Id": 1,
-    "CustomerId": 42,
     "Customer": "Customers/42"
 }
 ```
@@ -67,7 +70,13 @@ With `customer_id = 42`, the Orders document gets:
 </Tabs>
 
 The `Customer` property is a RavenDB document ID, built from the `LinkedCollectionName`
-and the join column values. Load the referenced document using
+and the join column values. The `JoinColumns` values are appended to
+`LinkedCollectionName` in the order listed. Use the same order as the referenced
+table's `PrimaryKeyColumns`, so the generated ID matches the referenced document ID.
+
+This configuration only writes the `"Customers/42"` reference into the Orders document.
+The `Customers/42` document itself exists only if the `customers` table is also
+configured as a root table. Load the referenced document using
 [includes](../../../../client-api/session/loading-entities.mdx#load-with-includes) to avoid
 a second network call.
 
@@ -109,7 +118,7 @@ With `customer_region = 'US'` and `customer_id = 42`, the document gets:
 | Data stored | Full nested object/array inside document | Document ID reference only |
 | Load pattern | Single document load | Load parent + include references |
 | Document size | Grows with embedded items | Parent document stays small |
-| Updates to referenced data | Reflected via CDC | Reflected via CDC on the referenced collection |
+| Updates to referenced data | Reflected via CDC | Reflected via CDC only when the referenced table is also configured as a root table |
 | Independence | Child has no meaning without parent | Referenced entity exists independently |
 | Typical use | Orders own LineItems | Orders reference Customers |
 

@@ -44,12 +44,10 @@ Columns =
 **`Name`:** Property name in the RavenDB document
 
 <Admonition type="note" title="">
-The primary key column(s) do not need to be mapped. When included in `Columns`,
-they become a regular document property. When omitted, the PK values are still used
-to build the document ID - they just won't appear as a named property.
-
-Including the PK in the mapping is generally useful so the document carries its own
-identifier, but it is not required.
+Every column in `PrimaryKeyColumns` must also appear in `Columns`. It is then stored
+as a regular document property, which CDC Sink reads back to match the correct embedded
+array/map item on subsequent UPDATE/DELETE events. The document ID itself is built from
+the PK's raw source-row value.
 </Admonition>
 
 </Panel>
@@ -147,8 +145,10 @@ document - accessible as `this.FinalPrice` inside a patch script.
 Column names (the `Column` values in `Columns`, plus any unmapped columns) are accessible
 in patch scripts via `$row.base_price` (for the current row's values).
 
-`$old` contains the previous state of the document and uses **mapped property names**
-(the `Name` values), not SQL column names. Unmapped columns do not appear in `$old`.
+`$old` contains the previous stored value before the current change: for root-table
+patches, the previous document; for embedded-table patches, the previous embedded item.
+It uses mapped property names (`Name` values), not SQL column names. Unmapped columns
+do not appear in `$old`.
 See [Patching: $row and $old](../patching.mdx#row-and-old-names-and-types) for details.
 </Admonition>
 
@@ -156,9 +156,10 @@ See [Patching: $row and $old](../patching.mdx#row-and-old-names-and-types) for d
 
 <Panel heading="JSON Columns">
 
-SQL columns that contain JSON data (e.g., PostgreSQL `jsonb`, SQL Server `nvarchar`
-with JSON content) can be parsed into native JSON objects or arrays using
-`CdcColumnType.Json`:
+SQL columns that contain JSON data (e.g., PostgreSQL `jsonb`, MySQL `json`, SQL Server
+`nvarchar` with JSON content) can be parsed into native JSON values using
+`CdcColumnType.Json`. This handles both JSON objects/arrays and scalar JSON values
+(strings, numbers, booleans, and `null`):
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
@@ -180,7 +181,31 @@ Columns =
 </Tabs>
 
 Without `CdcColumnType.Json`, the JSON column value would be stored as a raw string.
-With it, the value is parsed and stored as a nested object or array in the document.
+With it, the value is parsed and stored as a nested object, array, or scalar value in
+the document.
+
+The same mapping applies to a MySQL `json` column - the `Type = CdcColumnType.Json`
+entry is identical regardless of the source provider:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+
+```csharp
+// MySQL `json` column
+Columns =
+[
+    new CdcColumnMapping() { Column = "id",   Name = "Id" },
+    new CdcColumnMapping() { Column = "name", Name = "Name" },
+    new CdcColumnMapping()
+    {
+        Column = "attributes", Name = "Attributes",
+        Type = CdcColumnType.Json
+    },
+]
+```
+
+</TabItem>
+</Tabs>
 
 </Panel>
 
@@ -189,16 +214,22 @@ With it, the value is parsed and stored as a nested object or array in the docum
 The following rules apply to both root table and embedded table column mappings:
 
 - Each `Column` name must be unique within a table (no duplicate SQL column entries).
-- Each `Name` must be unique within a table (no duplicate property or attachment names).
+- Each `Name` must be unique within the table and must not duplicate any embedded or
+  linked table `PropertyName` on the same parent.
 - Both `Column` and `Name` are required and must be non-empty strings.
 - At least one entry is required - an empty `Columns` list is a validation error.
+- Every column in `PrimaryKeyColumns` must also appear in `Columns`. It is then stored
+  as a regular document property, which CDC Sink reads back to match the correct embedded
+  array/map item on subsequent UPDATE/DELETE events. The document ID itself is built from
+  the PK's raw source-row value.
 
 </Panel>
 
 <Panel heading="Schema (Source Table Schema)">
 
-`SourceTableSchema` specifies the SQL schema containing the table. It defaults to
-`"public"` for PostgreSQL if omitted.
+`SourceTableSchema` specifies the SQL schema containing the table. If omitted, CDC Sink
+uses the provider default: `public` for PostgreSQL, `dbo` for SQL Server, and the database
+name from the connection string for MySQL/MariaDB.
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
@@ -215,6 +246,6 @@ new CdcSinkTableConfig
 </TabItem>
 </Tabs>
 
-For most PostgreSQL setups using the default `public` schema, this can be omitted.
+When the table is in the provider's default schema, this can be omitted.
 
 </Panel>

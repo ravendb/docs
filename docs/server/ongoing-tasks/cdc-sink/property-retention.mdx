@@ -52,7 +52,7 @@ When a CDC UPDATE arrives for a document that already exists:
 
 **Example:**
 
-Initial SQL row → initial document:
+Existing RavenDB document before the CDC UPDATE:
 
 <Tabs>
 <TabItem value="json" label="json">
@@ -100,11 +100,14 @@ Document after CDC UPDATE:
 
 * Properties not listed in the `Columns` list
 * Properties set in RavenDB directly (annotations, computed values, flags)
-* Document metadata (unless the patch explicitly modifies it)
 
 **Overwritten on CDC update:**
 
 * Any property mapped via the `Columns` list - always updated to match the current SQL value
+* Document metadata - a root CDC upsert builds a fresh `@metadata` object containing only
+  `@collection`, then the merge overwrites each mapped property (including `@metadata`) onto
+  the existing document while leaving unmapped properties untouched. As a result, custom
+  metadata set directly in RavenDB is replaced on every upsert unless a patch re-applies it.
 
 If you manually edit a property that is part of the `Columns` list, the next CDC UPDATE
 for that row will overwrite your edit with the SQL value.
@@ -149,8 +152,8 @@ from the `Columns` list. These patch-computed properties follow the same merge r
 
 * If a patch sets `this.ComputedField = ...`, that value persists across future events
   where the patch doesn't explicitly change it
-* If a patch sets a property that is also in the `Columns` list, the column mapping
-  value takes precedence (mapping is applied before patching)
+* If a patch sets a property that is also in the `Columns` list, the patch value
+  takes precedence (mapping is applied first, then the patch runs and can override it)
 
 For aggregates maintained via patches (e.g., `RunningTotal`), the patch itself
 is responsible for keeping the value correct across INSERT, UPDATE, and DELETE events.

@@ -171,6 +171,10 @@ new CdcSinkTableConfig
 
 With `customer_id = 42`, the document gets `"Customer": "Customers/42"`.
 
+A linked table does NOT load or maintain the linked document by itself. It only writes a
+document ID reference such as `Customers/42` into the current document. The referenced
+`Customers/42` document is maintained only if `customers` is also configured as a root table.
+
 </Panel>
 
 <Panel heading="Primary Key and Join Column Requirements">
@@ -179,6 +183,10 @@ With `customer_id = 42`, the document gets `"Customer": "Customers/42"`.
 
 The `PrimaryKeyColumns` list defines which source columns are used to generate the document ID.
 All PK columns must be present in every INSERT, UPDATE, and DELETE event.
+
+Every column listed in `PrimaryKeyColumns` must also appear in the `Columns` list. In the
+samples, `Columns` is the list of `CdcColumnMapping` entries, where `Column` is the source
+SQL column name and `Name` is the RavenDB document field name.
 
 ### Embedded Tables (One Level)
 
@@ -196,13 +204,14 @@ The `JoinColumns` must correspond 1:1 (same count and order) to the parent's `Pr
 | `[id]` | `[customer_id, order_id]` | ✗ Extra column not from parent PK |
 | `[id, year]` | `[order_id]` | ✗ Missing `order_year` |
 
-### DELETE Events and REPLICA IDENTITY
+### DELETE Events and REPLICA IDENTITY (PostgreSQL)
 
 For DELETE events, the source database must include the join column values so CDC Sink
 can route the delete to the correct parent document.
 
 If the join column is not part of the source table's primary key, the source database may
-need additional configuration to include it in DELETE events.
+need additional configuration to include it in DELETE events. For PostgreSQL, this is
+controlled by REPLICA IDENTITY.
 
 See [REPLICA IDENTITY](../source-database-setup/postgres/replica-identity.mdx) for
 the PostgreSQL-specific requirement and how CDC Sink handles it automatically.
@@ -292,12 +301,15 @@ CREATE TABLE employees (
 </TabItem>
 </Tabs>
 
-Including all routing columns in the primary key also avoids the need for REPLICA IDENTITY
-configuration - the default DELETE events include all PK columns.
+For PostgreSQL, including all routing columns in the primary key also avoids the need for
+REPLICA IDENTITY configuration - the default DELETE events include all PK columns.
 
 </Panel>
 
 <Panel heading="Relation Types">
+
+When defining a CDC Sink task, you choose how related SQL tables are represented in RavenDB:
+embedded inside the parent document, or linked as references to separate documents.
 
 The `Type` property on embedded tables controls the document structure:
 
@@ -316,9 +328,7 @@ Use when you need fast direct-key access within the document.
 **Value** - Stores a single embedded object.
 Use for many-to-one relationships (many orders share one customer).
 
-</Panel>
-
-<Panel heading="Choosing Between Embedded and Linked">
+The following table summarizes how embedded and linked tables compare:
 
 | Consideration | Embedded | Linked |
 |--------------|----------|--------|
@@ -327,6 +337,10 @@ Use for many-to-one relationships (many orders share one customer).
 | Updates | Automatic via CDC | Automatic via CDC for each table |
 | Document size | Grows with embedded items | Parent stays small |
 | Use case | Parent owns child (orders own lines) | Independent entities (orders reference customers) |
+
+</Panel>
+
+<Panel heading="Choosing Between Embedded and Linked">
 
 **Use embedded tables** when:
 * The child entity has no meaning outside the parent (order lines without an order)

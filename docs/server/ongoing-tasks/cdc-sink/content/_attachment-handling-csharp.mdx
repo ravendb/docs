@@ -68,8 +68,8 @@ new CdcSinkTableConfig
 
 The `content` column is stored as an attachment named `"file"` on the document.
 The `Name` value becomes the attachment name. The content type is determined by the
-SQL column type: `application/octet-stream` for binary columns, `text/plain` for
-text columns.
+runtime value type (not the SQL column type): `application/octet-stream` for binary
+values, `text/plain` for text values.
 
 </Panel>
 

@@ -53,6 +53,7 @@ var config = new CdcSinkConfiguration
             CollectionName = "Customers",
             SourceTableName = "customers",
             PrimaryKeyColumns = new List<string> { "id" },
+            // Column = source SQL column, Name = RavenDB document property
             Columns =
             [
                 new CdcColumnMapping() { Column = "id",         Name = "Id" },
@@ -107,6 +108,8 @@ RavenDB document in collection `Customers` with ID `Customers/1`:
 </Tabs>
 
 Document IDs are generated as `{collection}/{pk}` - for example, `Customers/1`
-for a row with `id = 1`.
+for a row with `id = 1`. The `id` column is the primary key: it must be included
+in `Columns` (the task is rejected otherwise), and its value is used both to build
+the document ID and to store the `Id` property.
 
 </Panel>

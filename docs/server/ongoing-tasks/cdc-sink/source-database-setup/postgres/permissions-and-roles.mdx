@@ -39,6 +39,10 @@ import Panel from '@site/src/components/Panel';
 
 <Panel heading="Minimum Permissions">
 
+The **CDC Sink user** is the PostgreSQL role in the connection string that the CDC Sink
+task uses to connect to the source database. Throughout this page, `cdc_user` is used as
+the example username for this role.
+
 At a minimum, the CDC Sink user needs:
 
 * **`REPLICATION`** attribute - allows the user to initiate logical replication
@@ -75,19 +79,19 @@ automatically, the user needs additional permissions:
 
 **Create/drop replication slots:**
 
-PostgreSQL 14+:
+Creating and dropping logical replication slots requires the `REPLICATION` role attribute:
 
 <Tabs>
 <TabItem value="sql" label="sql">
 
 ```sql
-GRANT pg_replication_slot_admin TO cdc_user;
+ALTER USER cdc_user REPLICATION;
 ```
 
 </TabItem>
 </Tabs>
 
-PostgreSQL 10–13: Replication slot management requires `SUPERUSER`.
+On PostgreSQL 10 - 13, replication slot management effectively requires `SUPERUSER`.
 
 **Create/drop publications:**
 
@@ -139,8 +143,8 @@ CREATE USER cdc_user WITH PASSWORD 'secure_password' REPLICATION;
 GRANT SELECT ON TABLE orders TO cdc_user;
 GRANT SELECT ON TABLE order_lines TO cdc_user;
 
--- If using PostgreSQL 14+ and want automatic slot management:
-GRANT pg_replication_slot_admin TO cdc_user;
+-- If you want CDC Sink to manage replication slots automatically:
+-- (the REPLICATION attribute is already granted above)
 
 -- If user needs to create publications (requires table ownership or superuser):
 -- Option A: Grant ownership of tables

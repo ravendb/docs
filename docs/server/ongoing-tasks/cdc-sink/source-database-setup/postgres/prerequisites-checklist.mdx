@@ -115,19 +115,14 @@ GRANT SELECT ON TABLE order_lines TO cdc_user;
 
 **Optional (allows CDC Sink to configure replication automatically):**
 
-<Tabs>
-<TabItem value="sql" label="sql">
+To let CDC Sink create and drop its own replication slot and publication, the user needs:
 
-```sql
--- Create/drop replication slots
--- This requires SUPERUSER or membership in pg_replication_slot_admin (PG 14+)
+* **Create/drop replication slots:** the `REPLICATION` role attribute (granted with
+  `ALTER USER cdc_user REPLICATION;`). On PostgreSQL 10 - 13 this requires `SUPERUSER`.
+* **Create/drop publications:** ownership of the tables being published, or `SUPERUSER`.
+  Alternatively, `CREATE` on the database.
 
--- Create/drop publications
--- This requires ownership of the tables being published, or SUPERUSER
-```
-
-</TabItem>
-</Tabs>
+See [Permissions and Roles](./permissions-and-roles.mdx) for the exact grants.
 
 If the CDC Sink user does not have permission to create publications and replication
 slots, a database administrator must set them up manually.

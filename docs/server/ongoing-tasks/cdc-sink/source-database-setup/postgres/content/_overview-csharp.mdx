@@ -27,7 +27,7 @@ store.Maintenance.Send(new PutConnectionStringOperation<SqlConnectionString>(
     {
         Name = "MyPostgresConnection",
         FactoryName = "Npgsql",
-        ConnectionString = "Host=myserver;Port=5432;Database=mydb;Username=ravendb_cdc;Password=..."
+        ConnectionString = "Host=myserver;Port=5432;Database=mydb;Username=cdc_user;Password=..."
     }));
 ```
 
@@ -44,9 +44,11 @@ changes without polling. This gives low-latency, near-real-time replication.
 Key PostgreSQL concepts:
 
 * **Replication slot** - a server-side cursor that tracks how far a consumer has read.
-  CDC Sink creates and manages one automatically.
+  CDC Sink creates and manages one automatically when the PostgreSQL user has
+  sufficient permissions.
 * **Publication** - defines which tables are included in the replication stream.
-  CDC Sink creates one automatically for the configured tables.
+  CDC Sink creates one automatically for the configured tables when the PostgreSQL
+  user has sufficient permissions.
 * **WAL (Write-Ahead Log)** - PostgreSQL retains WAL segments as long as a replication
   slot has not consumed them. An inactive or paused task causes WAL to accumulate.
 
@@ -61,7 +63,9 @@ full list, including:
 * WAL level set to `logical`
 * Sufficient `max_replication_slots` and `max_wal_senders`
 * A database user with `REPLICATION` privilege
-* `REPLICA IDENTITY` configuration for embedded tables with surrogate keys
+* `REPLICA IDENTITY` configuration for embedded tables whose primary key is an
+  auto-generated column (for example a serial/identity ID rather than a natural
+  business key)
 
 </Panel>
 
@@ -84,7 +88,10 @@ Postgres = new CdcSinkPostgresSettings
 </TabItem>
 </Tabs>
 
-If omitted, GUID-based names are generated automatically when the task is created.
+If these names are omitted, they are generated automatically at task creation as
+`rvn_cdc_s_{taskId}` (slot) and `rvn_cdc_p_{taskId}` (publication), where `{taskId}`
+is the task's Raft etag. Automatic creation of the slot and publication requires the
+PostgreSQL user to have sufficient permissions.
 See [Initial Setup](../initial-setup.mdx) for details.
 
 </Panel>

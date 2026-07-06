@@ -8,8 +8,9 @@ import Panel from '@site/src/components/Panel';
 * When CDC Sink starts, it verifies and (if it has the necessary permissions) creates
   the **replication slot** and **publication** required for logical replication.
 
-* If the CDC Sink user does not have permission to create these objects, a database
-  administrator must create them manually before the task can start.
+* If the PostgreSQL user configured in the CDC Sink connection string does not have
+  permission to create these objects, a database administrator must create them
+  manually before the task can start.
 
 * In this article:
   * [Automatic Setup](#automatic-setup)
@@ -22,11 +23,12 @@ import Panel from '@site/src/components/Panel';
 
 <Panel heading="Automatic Setup">
 
-If the CDC Sink user has the required permissions (see
+If the PostgreSQL user configured in the CDC Sink connection string has the required
+PostgreSQL permissions (see
 [Permissions and Roles](../permissions-and-roles.mdx)),
 CDC Sink will:
 
-1. Generate the replication slot and publication names (a GUID-based identifier) and store them with the task
+1. Generate the replication slot and publication names (derived from the task id) and store them with the task
 2. Check whether they already exist
 3. Create them if they do not exist
 4. If configured tables are missing from the publication, CDC Sink attempts `ALTER PUBLICATION ... ADD TABLE` automatically (requires the user to have publication ownership or superuser access)
@@ -38,8 +40,9 @@ No manual database administration is needed in this case.
 
 <Panel heading="Manual Setup">
 
-If the CDC Sink user does not have permission to create replication slots or
-publications, a database administrator must create them before the task is started.
+If the PostgreSQL user configured in the CDC Sink connection string does not have
+permission to create replication slots or publications, a database administrator must
+create them before the task is started.
 
 **Step 1: Determine the slot and publication names**
 
@@ -48,7 +51,7 @@ so both you and the database administrator know what names to use.
 See [Specifying Custom Slot and Publication Names](#specifying-custom-slot-and-publication-names).
 
 If using auto-generated names (no `Postgres` settings), CDC Sink generates names
-using the `rvn_cdc_s_` and `rvn_cdc_p_` prefixes followed by a GUID.
+using the `rvn_cdc_s_` and `rvn_cdc_p_` prefixes followed by the task id.
 See [Slot and Publication Naming](#slot-and-publication-naming-auto-generated)
 for the naming scheme.
 
@@ -63,7 +66,7 @@ Create a publication that includes all the tables CDC Sink will replicate:
 <TabItem value="sql" label="sql">
 
 ```sql
-CREATE PUBLICATION rvn_cdc_p_<guid>
+CREATE PUBLICATION rvn_cdc_p_<taskId>
 FOR TABLE orders, order_lines, customers;
 ```
 
@@ -80,7 +83,7 @@ configurations.
 
 ```sql
 SELECT pg_create_logical_replication_slot(
-    'rvn_cdc_s_<guid>',
+    'rvn_cdc_s_<taskId>',
     'pgoutput'
 );
 ```
@@ -142,12 +145,13 @@ lifetime of the task. If you need different names, delete the task and create a 
 <Panel heading="Slot and Publication Naming (Auto-generated)">
 
 When `CdcSinkPostgresSettings` is not set (or `SlotName`/`PublicationName` are null),
-CDC Sink generates unique names at task creation time using a GUID:
+CDC Sink generates unique names at task creation time using the task id:
 
-* **Slot name**: `rvn_cdc_s_<guid>`
-* **Publication name**: `rvn_cdc_p_<guid>`
+* **Slot name**: `rvn_cdc_s_{taskId}`
+* **Publication name**: `rvn_cdc_p_{taskId}`
 
-The GUID is generated once when the task is first created and stored with the task.
+Here `{taskId}` is the task's Raft etag, assigned once when the task is first created
+and stored with the task.
 
 **Example:**
 
@@ -155,14 +159,14 @@ The GUID is generated once when the task is first created and stored with the ta
 <TabItem value="plain" label="plain">
 
 ```plain
-rvn_cdc_s_a3f1b2c4d5e6f7a8b9c0d1e2f3a4b5c6
-rvn_cdc_p_a3f1b2c4d5e6f7a8b9c0d1e2f3a4b5c6
+rvn_cdc_s_9481
+rvn_cdc_p_9481
 ```
 
 </TabItem>
 </Tabs>
 
-The slot and publication share the same identifier, making it easy to match them to
+The slot and publication share the same task id, making it easy to match them to
 a specific task.
 
 <Admonition type="note" title="">

@@ -18,16 +18,26 @@ import Panel from '@site/src/components/Panel';
 
 <Panel heading="Task State">
 
-A CDC Sink task can be in one of the following states:
+A CDC Sink task's status is reported through two separate fields: `TaskState`
+describes whether the task is enabled, and `TaskConnectionStatus` describes the
+task's live connection to the source database.
 
-| State | Description |
+**`TaskState`** - whether the task is enabled:
+
+| Value | Description |
 |-------|-------------|
-| `Active` | Running normally - streaming changes or waiting for new changes |
-| `ActiveByAnotherNode` | Another cluster node is the mentor; this node is a replica |
-| `Disabled` | Manually disabled via Studio or API |
-| `Error` | The task encountered an error and stopped |
-| `FallbackMode` | Connection to the source database was lost; retrying |
-| `NotOnThisNode` | This node does not hold the task |
+| `Enabled` | The task is enabled |
+| `Disabled` | The task is disabled |
+| `PartiallyEnabled` | The task is enabled but not fully active (for example, enabled at the task level while an individual component is disabled) |
+
+**`TaskConnectionStatus`** - the task's live connection state:
+
+| Value | Description |
+|-------|-------------|
+| `Active` | The task is running on this node and connected |
+| `NotActive` | The task is not currently running |
+| `Reconnect` | The task is attempting to reconnect to the source database |
+| `NotOnThisNode` | The task is not assigned to this node |
 
 The current state is visible in the **Ongoing Tasks** view in the Management Studio.
 
@@ -68,10 +78,21 @@ The returned object includes:
 
 | Field | Description |
 |-------|-------------|
-| `TaskState` | Current state of the task |
+| `TaskState` | Whether the task is enabled (`Enabled` / `Disabled` / `PartiallyEnabled`) |
+| `TaskConnectionStatus` | Live connection state (`Active` / `NotActive` / `Reconnect` / `NotOnThisNode`) |
 | `MentorNode` | Configured preferred node |
 | `ResponsibleNode` | Node currently running the task |
 | `Error` | Error message if the task is in error state |
+
+The following CDC-specific fields report the task's recent processing activity:
+
+| Field | Description |
+|-------|-------------|
+| `LastBatchTime` | Timestamp of the last batch of changes that was processed |
+| `LastCheckpoint` | Timestamp of the last CDC checkpoint (last processed position) that was persisted |
+| `SecondsSinceLastBatch` | Number of seconds elapsed since the last batch was processed |
+| `LastActivityTime` | Timestamp of the last task activity |
+| `SecondsSinceLastActivity` | Number of seconds elapsed since the last task activity |
 
 Detailed per-table statistics - including row counts and last processed position -
 are available through the Management Studio's ongoing tasks detail view.

@@ -118,7 +118,7 @@ ORDER BY p.pubname, c.relname;
 <TabItem value="sql" label="sql">
 
 ```sql
-SELECT pg_drop_replication_slot('rvn_cdc_s_<hash>');
+SELECT pg_drop_replication_slot('rvn_cdc_s_<task-id>');
 ```
 
 </TabItem>
@@ -137,7 +137,7 @@ task must be stopped or deleted in RavenDB before the slot can be dropped.
 <TabItem value="sql" label="sql">
 
 ```sql
-DROP PUBLICATION IF EXISTS "rvn_cdc_p_<hash>";
+DROP PUBLICATION IF EXISTS "rvn_cdc_p_<task-id>";
 ```
 
 </TabItem>
@@ -177,7 +177,7 @@ To resolve this:
 ```sql
 SELECT slot_name, active
 FROM pg_replication_slots
-WHERE active = false;
+WHERE active = false AND slot_name LIKE 'rvn_cdc_s_%';
 ```
 
 </TabItem>
@@ -189,7 +189,7 @@ WHERE active = false;
 <TabItem value="sql" label="sql">
 
 ```sql
-SELECT pg_drop_replication_slot('rvn_cdc_s_<hash>');
+SELECT pg_drop_replication_slot('rvn_cdc_s_<task-id>');
 ```
 
 </TabItem>
@@ -203,7 +203,7 @@ SELECT pg_drop_replication_slot('rvn_cdc_s_<hash>');
 <Panel heading="Slot and Publication Names Are Immutable">
 
 The replication slot name and publication name are generated **once at task creation**
-using a GUID and stored with the task. They do not change when you modify the task -
+using the task id and stored with the task. They do not change when you modify the task -
 adding or removing tables, renaming the task, or changing any other configuration
 always reuses the same slot and publication.
 

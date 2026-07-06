@@ -73,7 +73,9 @@ or large columns.
 <Panel heading="Using an Index Instead of FULL">
 
 If WAL size is a concern, you can use a specific unique index that covers both
-the join columns and PK columns of the embedded table.
+the join columns and PK columns of the embedded table, because those become the
+values PostgreSQL sends on DELETE, and CDC Sink needs both the join columns (to
+find the parent document) and the PK columns (to find the matching embedded item).
 
 **Step 1: Create a unique index covering the required columns**
 
