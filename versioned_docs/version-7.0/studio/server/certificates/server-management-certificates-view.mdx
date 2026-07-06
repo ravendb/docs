@@ -113,6 +113,14 @@ by using different client certificates, each with its own set of permissions.
 10. **Delete Certificate**  
     Deleting a certificate will revoke access for all clients using this certificate.
 
+<Admonition type="info" title="">
+
+When a database is deleted, RavenDB removes its name from the permissions of every client certificate that was granted access to it.  
+If you later re-create a database with the same name, [reassign the relevant permissions](../../../server/security/authentication/certificate-management.mdx#edit-certificate)
+to each certificate that needs access to it.
+
+</Admonition>
+
 </Panel>
 
 <Panel heading="Generate a client certificate">

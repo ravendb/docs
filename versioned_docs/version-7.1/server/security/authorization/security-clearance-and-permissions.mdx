@@ -102,6 +102,14 @@ These access levels are, from highest to lowest:
 
 If no access level is defined for a particular database, the certificate doesn't grant access to that database at all.  
 
+<Admonition type="info" title="">
+
+When a database is deleted, RavenDB removes its name from the permissions of every client certificate that was granted access to it.  
+If you later re-create a database with the same name, [reassign the relevant permissions](../authentication/certificate-management.mdx#edit-certificate)
+to each certificate that needs access to it.
+
+</Admonition>
+
 <ContentFrame>
 
 ### `Admin`
