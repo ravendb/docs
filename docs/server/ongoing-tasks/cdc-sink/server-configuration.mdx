@@ -3,12 +3,29 @@ title: "CDC Sink: Server Configuration"
 sidebar_label: Server Configuration
 description: "Documents the RavenDB server configuration keys that control CDC Sink task behavior, including batch size, fallback timeout, and poll interval."
 sidebar_position: 15
+see_also:
+  - title: "Overview"
+    link: "server/ongoing-tasks/cdc-sink/overview"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Monitoring"
+    link: "server/ongoing-tasks/cdc-sink/monitoring"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Failover and Consistency"
+    link: "server/ongoing-tasks/cdc-sink/failover-and-consistency"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Configuration Overview"
+    link: "server/configuration/configuration-options"
+    source: "docs"
+    path: "Server > Configuration"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -19,14 +36,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * This page documents the RavenDB server configuration keys that control CDC Sink
   task behavior.
 
-* In this page:
+* In this article:
   * [Configuration Keys](#configuration-keys)
 
 </Admonition>
 
----
-
-## Configuration Keys
+<Panel heading="Configuration Keys">
 
 These keys can be set in `settings.json` or passed as environment variables.
 See [Configuration Overview](../../../server/configuration/configuration-options).
@@ -71,16 +86,4 @@ Timeout (in seconds) for the PostgreSQL replication connection. Controls both th
 
 SQL Server and MySQL ignore this setting.
 
----
-
-## Related Articles
-
-### CDC Sink
-
-- [Overview](./overview.mdx)
-- [Monitoring](./monitoring.mdx)
-- [Failover and Consistency](./failover-and-consistency.mdx)
-
-### Server Configuration
-
-- [Configuration Overview](../../../server/configuration/configuration-options)
+</Panel>

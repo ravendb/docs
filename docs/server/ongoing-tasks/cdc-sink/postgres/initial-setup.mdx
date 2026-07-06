@@ -3,12 +3,29 @@ title: "CDC Sink for PostgreSQL: Initial Setup"
 sidebar_label: Initial Setup
 description: "How CDC Sink creates and verifies the replication slot and publication on startup, with options for automatic or manual setup and custom naming."
 sidebar_position: 3
+see_also:
+  - title: "Prerequisites Checklist"
+    link: "server/ongoing-tasks/cdc-sink/postgres/prerequisites-checklist"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "Permissions and Roles"
+    link: "server/ongoing-tasks/cdc-sink/postgres/permissions-and-roles"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "REPLICA IDENTITY"
+    link: "server/ongoing-tasks/cdc-sink/postgres/replica-identity"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "Cleanup and Maintenance"
+    link: "server/ongoing-tasks/cdc-sink/postgres/cleanup-and-maintenance"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -22,7 +39,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * If the CDC Sink user does not have permission to create these objects, a database
   administrator must create them manually before the task can start.
 
-* In this page:
+* In this article:
   * [Automatic Setup](#automatic-setup)
   * [Manual Setup](#manual-setup)
   * [Specifying Custom Slot and Publication Names](#specifying-custom-slot-and-publication-names)
@@ -31,9 +48,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
----
-
-## Automatic Setup
+<Panel heading="Automatic Setup">
 
 If the CDC Sink user has the required permissions (see
 [Permissions and Roles](./permissions-and-roles.mdx)),
@@ -47,9 +62,9 @@ CDC Sink will:
 
 No manual database administration is needed in this case.
 
----
+</Panel>
 
-## Manual Setup
+<Panel heading="Manual Setup">
 
 If the CDC Sink user does not have permission to create replication slots or
 publications, a database administrator must create them before the task is started.
@@ -73,12 +88,13 @@ and reading the error message, which includes the expected names.
 Create a publication that includes all the tables CDC Sink will replicate:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`CREATE PUBLICATION rvn_cdc_p_<guid>
+<TabItem value="sql" label="SQL">
+
+```sql
+CREATE PUBLICATION rvn_cdc_p_<guid>
 FOR TABLE orders, order_lines, customers;
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -88,14 +104,15 @@ configurations.
 **Step 3: Create the replication slot**
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`SELECT pg_create_logical_replication_slot(
+<TabItem value="sql" label="SQL">
+
+```sql
+SELECT pg_create_logical_replication_slot(
     'rvn_cdc_s_<guid>',
     'pgoutput'
 );
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -110,29 +127,30 @@ when you later modify the task. If you created these objects manually, the same 
 will continue to be used regardless of subsequent configuration changes.
 </Admonition>
 
----
+</Panel>
 
-## Specifying Custom Slot and Publication Names
+<Panel heading="Specifying Custom Slot and Publication Names">
 
 You can explicitly specify the replication slot and publication names by setting
 `CdcSinkPostgresSettings` on the task configuration:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`var config = new CdcSinkConfiguration
-\{
+
+```csharp
+var config = new CdcSinkConfiguration
+{
     Name = "OrdersSync",
     ConnectionStringName = "MyPostgresConnection",
     Postgres = new CdcSinkPostgresSettings
-    \{
+    {
         SlotName = "orders_sync_slot",
         PublicationName = "orders_sync_pub"
-    \},
+    },
     Tables = [ ... ]
-\};
-`}
-</CodeBlock>
+};
+```
+
 </TabItem>
 </Tabs>
 
@@ -147,9 +165,9 @@ Custom names are useful when:
 **Immutability:** Once set, `SlotName` and `PublicationName` are fixed for the
 lifetime of the task. If you need different names, delete the task and create a new one.
 
----
+</Panel>
 
-## Slot and Publication Naming (Auto-generated)
+<Panel heading="Slot and Publication Naming (Auto-generated)">
 
 When `CdcSinkPostgresSettings` is not set (or `SlotName`/`PublicationName` are null),
 CDC Sink generates unique names at task creation time using a GUID:
@@ -163,11 +181,12 @@ The GUID is generated once when the task is first created and stored with the ta
 
 <Tabs>
 <TabItem value="plain" label="plain">
-<CodeBlock language="plain">
-{`rvn_cdc_s_a3f1b2c4d5e6f7a8b9c0d1e2f3a4b5c6
+
+```plain
+rvn_cdc_s_a3f1b2c4d5e6f7a8b9c0d1e2f3a4b5c6
 rvn_cdc_p_a3f1b2c4d5e6f7a8b9c0d1e2f3a4b5c6
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -180,16 +199,17 @@ with the task. Subsequent modifications to the task (adding tables, changing map
 etc.) do not change the slot or publication names - the original names are always used.
 </Admonition>
 
----
+</Panel>
 
-## Verifying Setup
+<Panel heading="Verifying Setup">
 
 To verify the slot and publication were created:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`-- View CDC Sink replication slots
+<TabItem value="sql" label="SQL">
+
+```sql
+-- View CDC Sink replication slots
 SELECT slot_name, plugin, slot_type, active
 FROM pg_replication_slots
 WHERE slot_name LIKE 'rvn_cdc_s_%';
@@ -201,18 +221,9 @@ JOIN pg_publication_rel pr ON pr.prpubid = p.oid
 JOIN pg_class c ON c.oid = pr.prrelid
 WHERE p.pubname LIKE 'rvn_cdc_p_%'
 ORDER BY p.pubname, c.relname;
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
----
-
-## Related Articles
-
-### CDC Sink for PostgreSQL
-
-- [Prerequisites Checklist](./prerequisites-checklist.mdx)
-- [Permissions and Roles](./permissions-and-roles.mdx)
-- [REPLICA IDENTITY](./replica-identity.mdx)
-- [Cleanup and Maintenance](./cleanup-and-maintenance.mdx)
+</Panel>

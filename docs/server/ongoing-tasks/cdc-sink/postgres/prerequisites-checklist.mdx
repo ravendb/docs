@@ -3,12 +3,29 @@ title: "CDC Sink for PostgreSQL: Prerequisites Checklist"
 sidebar_label: Prerequisites Checklist
 description: "Verify all requirements before creating a CDC Sink task for PostgreSQL, including WAL configuration, user permissions, table requirements, and network access."
 sidebar_position: 0
+see_also:
+  - title: "WAL Configuration"
+    link: "server/ongoing-tasks/cdc-sink/postgres/wal-configuration"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "Permissions and Roles"
+    link: "server/ongoing-tasks/cdc-sink/postgres/permissions-and-roles"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "Initial Setup"
+    link: "server/ongoing-tasks/cdc-sink/postgres/initial-setup"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "REPLICA IDENTITY"
+    link: "server/ongoing-tasks/cdc-sink/postgres/replica-identity"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -19,7 +36,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Before creating a CDC Sink task for PostgreSQL, verify that each of these requirements
   is in place.
 
-* In this page:
+* In this article:
   * [Source Database Requirements](#source-database-requirements)
   * [User Permissions](#user-permissions)
   * [Table Requirements](#table-requirements)
@@ -27,9 +44,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
----
-
-## Source Database Requirements
+<Panel heading="Source Database Requirements">
 
 * **PostgreSQL version**: 10 or later (logical replication introduced in version 10)
 
@@ -38,11 +53,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Verify with:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`SHOW wal_level;
-`}
-</CodeBlock>
+<TabItem value="sql" label="SQL">
+
+```sql
+SHOW wal_level;
+```
+
 </TabItem>
 </Tabs>
 
@@ -53,11 +69,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Verify with:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`SHOW max_replication_slots;
-`}
-</CodeBlock>
+<TabItem value="sql" label="SQL">
+
+```sql
+SHOW max_replication_slots;
+```
+
 </TabItem>
 </Tabs>
 
@@ -66,48 +83,51 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Verify with:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`SHOW max_wal_senders;
-`}
-</CodeBlock>
+<TabItem value="sql" label="SQL">
+
+```sql
+SHOW max_wal_senders;
+```
+
 </TabItem>
 </Tabs>
 
----
+</Panel>
 
-## User Permissions
+<Panel heading="User Permissions">
 
 The database user in the connection string must have sufficient permissions.
 
 **Minimum required permissions:**
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`-- Replication privilege (required for logical replication)
+<TabItem value="sql" label="SQL">
+
+```sql
+-- Replication privilege (required for logical replication)
 ALTER USER cdc_user REPLICATION;
 
 -- SELECT on each table CDC Sink will read
 GRANT SELECT ON TABLE orders TO cdc_user;
 GRANT SELECT ON TABLE order_lines TO cdc_user;
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
 **Optional (allows CDC Sink to configure replication automatically):**
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`-- Create/drop replication slots
+<TabItem value="sql" label="SQL">
+
+```sql
+-- Create/drop replication slots
 -- This requires SUPERUSER or membership in pg_replication_slot_admin (PG 14+)
 
 -- Create/drop publications
 -- This requires ownership of the tables being published, or SUPERUSER
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -117,9 +137,9 @@ See [Initial Setup](./initial-setup.mdx).
 
 Full details: [Permissions and Roles](./permissions-and-roles.mdx).
 
----
+</Panel>
 
-## Table Requirements
+<Panel heading="Table Requirements">
 
 * **Primary key**: Each root table and each embedded table must have a primary key
   (or a unique index used as a replica identity).
@@ -136,9 +156,9 @@ Full details: [Permissions and Roles](./permissions-and-roles.mdx).
 * **Published columns**: All columns referenced in `PrimaryKeyColumns`, `JoinColumns`,
   and `Columns` entries must exist in the SQL table.
 
----
+</Panel>
 
-## Network Access
+<Panel heading="Network Access">
 
 * The RavenDB server must be able to open a TCP connection to the PostgreSQL host
   on the configured port (default: 5432).
@@ -147,13 +167,4 @@ Full details: [Permissions and Roles](./permissions-and-roles.mdx).
   Ensure that firewalls, proxies, and load balancers do not terminate idle or
   long-lived connections.
 
----
-
-## Related Articles
-
-### CDC Sink for PostgreSQL
-
-- [WAL Configuration](./wal-configuration.mdx)
-- [Permissions and Roles](./permissions-and-roles.mdx)
-- [Initial Setup](./initial-setup.mdx)
-- [REPLICA IDENTITY](./replica-identity.mdx)
+</Panel>

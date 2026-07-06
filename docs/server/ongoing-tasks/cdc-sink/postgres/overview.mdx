@@ -8,7 +8,7 @@ sidebar_position: -1
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -25,30 +25,29 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
----
-
-## Connection String
+<Panel heading="Connection String">
 
 Use a `SqlConnectionString` with `FactoryName` set to `"Npgsql"`:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`store.Maintenance.Send(new PutConnectionStringOperation<SqlConnectionString>(
+
+```csharp
+store.Maintenance.Send(new PutConnectionStringOperation<SqlConnectionString>(
     new SqlConnectionString
-    \{
+    {
         Name = "MyPostgresConnection",
         FactoryName = "Npgsql",
         ConnectionString = "Host=myserver;Port=5432;Database=mydb;Username=ravendb_cdc;Password=..."
-    \}));
-`}
-</CodeBlock>
+    }));
+```
+
 </TabItem>
 </Tabs>
 
----
+</Panel>
 
-## How It Works
+<Panel heading="How It Works">
 
 PostgreSQL CDC Sink uses logical replication, which provides a continuous stream of
 changes without polling. This gives low-latency, near-real-time replication.
@@ -62,9 +61,9 @@ Key PostgreSQL concepts:
 * **WAL (Write-Ahead Log)** - PostgreSQL retains WAL segments as long as a replication
   slot has not consumed them. An inactive or paused task causes WAL to accumulate.
 
----
+</Panel>
 
-## Prerequisites
+<Panel heading="Prerequisites">
 
 PostgreSQL requires several configuration settings and permissions before CDC Sink
 can connect. See [Prerequisites Checklist](./prerequisites-checklist.mdx) for the
@@ -75,41 +74,42 @@ full list, including:
 * A database user with `REPLICATION` privilege
 * `REPLICA IDENTITY` configuration for embedded tables with surrogate keys
 
----
+</Panel>
 
-## PostgreSQL-Specific Settings
+<Panel heading="PostgreSQL-Specific Settings">
 
 The `CdcSinkPostgresSettings` object on `CdcSinkConfiguration` controls the replication
 slot and publication names:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`Postgres = new CdcSinkPostgresSettings
-\{
+
+```csharp
+Postgres = new CdcSinkPostgresSettings
+{
     SlotName = "my_slot",
     PublicationName = "my_publication"
-\}
-`}
-</CodeBlock>
+}
+```
+
 </TabItem>
 </Tabs>
 
 If omitted, GUID-based names are generated automatically when the task is created.
 See [Initial Setup](./initial-setup.mdx) for details.
 
----
+</Panel>
 
-## Configuration
+<Panel heading="Configuration">
 
 The CDC Sink task configuration is the same across all database engines.
 See [Configuration Reference](../configuration-reference.mdx) for full details.
 
 The `SourceTableSchema` defaults to `"public"` when using PostgreSQL.
 
----
+</Panel>
 
-## In This Section
+<Panel heading="In This Section">
 
 * [Prerequisites Checklist](./prerequisites-checklist.mdx) - what to verify before creating a task
 * [Initial Setup](./initial-setup.mdx) - creating the replication slot and publication
@@ -120,4 +120,4 @@ The `SourceTableSchema` defaults to `"public"` when using PostgreSQL.
 * [Cleanup and Maintenance](./cleanup-and-maintenance.mdx) - dropping orphaned slots
 * [Studio UI](./studio-ui.mdx) - creating tasks through the Studio interface
 
----
+</Panel>

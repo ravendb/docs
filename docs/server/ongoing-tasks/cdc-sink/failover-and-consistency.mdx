@@ -3,12 +3,25 @@ title: "CDC Sink: Failover and Consistency"
 sidebar_label: Failover and Consistency
 description: "Explains how CDC Sink handles node failover, what consistency guarantees it provides, and why patches must be designed to be idempotent."
 sidebar_position: 13
+see_also:
+  - title: "How It Works"
+    link: "server/ongoing-tasks/cdc-sink/how-it-works"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Patching"
+    link: "server/ongoing-tasks/cdc-sink/patching"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Monitoring"
+    link: "server/ongoing-tasks/cdc-sink/monitoring"
+    source: "docs"
+    path: "Server > CDC Sink"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -19,7 +32,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * This page explains how CDC Sink handles node failover, what consistency guarantees
   it provides, and why patches must be designed to be idempotent.
 
-* In this page:
+* In this article:
   * [State Storage](#state-storage)
   * [Failover Behavior](#failover-behavior)
   * [Re-Reading Changes](#re-reading-changes)
@@ -28,9 +41,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
----
-
-## State Storage
+<Panel heading="State Storage">
 
 CDC Sink persists its progress as a **document in RavenDB** alongside your data.
 
@@ -42,9 +53,9 @@ This state document records:
 Like any RavenDB document, this state document is subject to **normal replication behavior**.
 Different nodes in a cluster may have different versions of this document at any given moment.
 
----
+</Panel>
 
-## Failover Behavior
+<Panel heading="Failover Behavior">
 
 When the cluster elects a new mentor node for a CDC Sink task, the new node reads
 the **replicated state** - which may be older than the work the previous mentor
@@ -54,8 +65,9 @@ completed but had not yet replicated.
 
 <Tabs>
 <TabItem value="plain" label="plain">
-<CodeBlock language="plain">
-{`Before failure:
+
+```plain
+Before failure:
 ├─ Node A (Mentor)  - Processed up to position X, state document not yet replicated
 ├─ Node B (Replica) - State document shows position X-100 (older, replicated state)
 └─ Node C (Replica) - State document shows position X-100
@@ -64,8 +76,8 @@ Node A crashes.
 Node B is elected new mentor.
 Node B reads its state document: position X-100.
 Node B resumes CDC Sink from position X-100.
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -73,9 +85,9 @@ Changes between positions X-100 and X may already be in RavenDB (written by Node
 or they may not be (if Node A crashed before writing). Node B will re-read and re-apply
 them either way.
 
----
+</Panel>
 
-## Re-Reading Changes
+<Panel heading="Re-Reading Changes">
 
 **CDC Sink guarantees that no changes are lost, but some changes may be re-read.**
 
@@ -94,9 +106,9 @@ Patches that are not idempotent can produce incorrect results when a change is
 re-read after a failover. See [Idempotency Requirements](#idempotency-requirements) below.
 </Admonition>
 
----
+</Panel>
 
-## Consistency Guarantee
+<Panel heading="Consistency Guarantee">
 
 CDC Sink provides **at-least-once delivery** with **eventual consistency**:
 
@@ -108,9 +120,9 @@ CDC Sink provides **at-least-once delivery** with **eventual consistency**:
 
 This is the same model used by other ongoing tasks in RavenDB.
 
----
+</Panel>
 
-## Idempotency Requirements
+<Panel heading="Idempotency Requirements">
 
 A patch is **idempotent** if applying it multiple times produces the same result as
 applying it once.
@@ -122,12 +134,13 @@ is a no-op.
 
 <Tabs>
 <TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`// Idempotent - always sets to the current SQL value
+
+```javascript
+// Idempotent - always sets to the current SQL value
 this.Status = $row.is_active ? 'Active' : 'Inactive';
 this.ViewCount = $row.view_count;
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -135,11 +148,12 @@ this.ViewCount = $row.view_count;
 
 <Tabs>
 <TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`// NOT idempotent - increments again on re-read
+
+```javascript
+// NOT idempotent - increments again on re-read
 this.ViewCount = (this.ViewCount || 0) + 1;
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -148,25 +162,18 @@ embedded item state, not the document's accumulated value:
 
 <Tabs>
 <TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`// Idempotent - delta is recomputed correctly on re-read
+
+```javascript
+// Idempotent - delta is recomputed correctly on re-read
 const oldAmount = $old?.Amount || 0;
 const newAmount = $row.amount || 0;
 this.RunningTotal = (this.RunningTotal || 0) + (newAmount - oldAmount);
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
 On re-read, `$old` still reflects the state before the update, and `$row` still
 reflects the new state - so the delta is the same as on the first read.
 
----
-
-## Related Articles
-
-### CDC Sink
-
-- [How It Works](./how-it-works.mdx)
-- [Patching](./patching.mdx)
-- [Monitoring](./monitoring.mdx)
+</Panel>

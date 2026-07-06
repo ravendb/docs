@@ -3,12 +3,41 @@ title: "CDC Sink: Troubleshooting"
 sidebar_label: Troubleshooting
 description: "Covers common problems encountered when running CDC Sink tasks and how to resolve them, including startup failures, error states, and missing documents."
 sidebar_position: 14
+see_also:
+  - title: "How It Works"
+    link: "server/ongoing-tasks/cdc-sink/how-it-works"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Monitoring"
+    link: "server/ongoing-tasks/cdc-sink/monitoring"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Patching"
+    link: "server/ongoing-tasks/cdc-sink/patching"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Failover and Consistency"
+    link: "server/ongoing-tasks/cdc-sink/failover-and-consistency"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "PostgreSQL WAL Configuration"
+    link: "server/ongoing-tasks/cdc-sink/postgres/wal-configuration"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "PostgreSQL Permissions and Roles"
+    link: "server/ongoing-tasks/cdc-sink/postgres/permissions-and-roles"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "PostgreSQL REPLICA IDENTITY"
+    link: "server/ongoing-tasks/cdc-sink/postgres/replica-identity"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -19,21 +48,19 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * This page covers common problems encountered when running CDC Sink tasks and how
   to resolve them.
 
-* In this page:
-  * [Task Won't Start](#task-wont-start)
+* In this article:
+  * [Task Fails to Start](#task-fails-to-start)
   * [Task Enters Error State](#task-enters-error-state)
   * [Documents Not Appearing](#documents-not-appearing)
   * [Embedded Items Missing or Incorrect](#embedded-items-missing-or-incorrect)
   * [DELETE Not Applied](#delete-not-applied)
   * [Patch Errors](#patch-errors)
   * [Source Schema Changes](#source-schema-changes)
-  * [Partial Export/Import and State Loss](#partial-exportimport-and-state-loss)
+  * [Partial Export/Import and State Loss](#partial-export-import-and-state-loss)
 
 </Admonition>
 
----
-
-## Task Won't Start
+<Panel heading="Task Fails to Start">
 
 **Symptom:** Task remains in `Error` state immediately after creation.
 
@@ -56,9 +83,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 Check the error message in the Notification Center (bell icon in Studio) for the
 specific failure reason.
 
----
+</Panel>
 
-## Task Enters Error State
+<Panel heading="Task Enters Error State">
 
 **Symptom:** Task was running, then stopped with an error.
 
@@ -80,9 +107,9 @@ specific failure reason.
   cap (default 15 minutes). Restore connectivity and the task resumes automatically
   on the next retry.
 
----
+</Panel>
 
-## Documents Not Appearing
+<Panel heading="Documents Not Appearing">
 
 **Symptom:** SQL rows exist but corresponding RavenDB documents are not created.
 
@@ -101,9 +128,9 @@ specific failure reason.
 
 5. **Task is paused** - check that the task state is `Active`, not `Disabled`.
 
----
+</Panel>
 
-## Embedded Items Missing or Incorrect
+<Panel heading="Embedded Items Missing or Incorrect">
 
 **Symptom:** Parent document exists but embedded array/map is empty or items are missing.
 
@@ -127,9 +154,9 @@ specific failure reason.
    or vice versa after documents were already created, existing documents retain the
    old structure. Re-process from scratch or migrate existing documents.
 
----
+</Panel>
 
-## DELETE Not Applied
+<Panel heading="DELETE Not Applied">
 
 **Symptom:** A row was deleted from SQL but the RavenDB document still exists.
 
@@ -149,9 +176,9 @@ specific failure reason.
    that does not allow the delete to proceed (combined with `IgnoreDeletes = true`),
    the document is kept. Review the patch logic.
 
----
+</Panel>
 
-## Patch Errors
+<Panel heading="Patch Errors">
 
 **Symptom:** Task enters error state with a message referencing a JavaScript patch failure.
 
@@ -168,11 +195,12 @@ specific failure reason.
 
 <Tabs>
 <TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`const related = load("Collection/123");
-if (related) \{ ... \}
-`}
-</CodeBlock>
+
+```javascript
+const related = load("Collection/123");
+if (related) { ... }
+```
+
 </TabItem>
 </Tabs>
 
@@ -180,9 +208,9 @@ if (related) \{ ... \}
    long-running or loops over large arrays, it may hit `Patching.MaxStepsForScript`.
    See the [configuration reference](../../../server/configuration/patching-configuration) for this setting.
 
----
+</Panel>
 
-## Source Schema Changes
+<Panel heading="Source Schema Changes">
 
 Adding, removing, renaming, or retyping columns on the source database while a CDC
 Sink task is running requires different handling depending on the database engine.
@@ -192,9 +220,9 @@ capture instance procedure for every schema change.
 See [Source Schema Changes](./source-schema-changes.mdx) for the full guide, including
 per-engine behavior, examples, and the SQL Server procedure.
 
----
+</Panel>
 
-## Partial Export/Import and State Loss
+<Panel heading="Partial Export/Import and State Loss">
 
 **Symptom:** After importing a database export, CDC Sink re-reads all data from the
 source database from the beginning, performing a full initial load even though the
@@ -245,19 +273,4 @@ changes that occurred between the export and the recreation).
 
 </Admonition>
 
----
-
-## Related Articles
-
-### CDC Sink
-
-- [How It Works](./how-it-works.mdx)
-- [Monitoring](./monitoring.mdx)
-- [Patching](./patching.mdx)
-- [Failover and Consistency](./failover-and-consistency.mdx)
-
-### PostgreSQL
-
-- [WAL Configuration](./postgres/wal-configuration.mdx)
-- [Permissions and Roles](./postgres/permissions-and-roles.mdx)
-- [REPLICA IDENTITY](./postgres/replica-identity.mdx)
+</Panel>

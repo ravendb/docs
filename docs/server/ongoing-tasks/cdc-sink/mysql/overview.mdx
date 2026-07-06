@@ -3,12 +3,21 @@ title: "CDC Sink for MySQL: Overview"
 sidebar_label: Overview
 description: "CDC Sink support for MySQL and MariaDB - using binlog replication to stream changes into RavenDB in real time."
 sidebar_position: 0
+see_also:
+  - title: "CDC Sink Overview"
+    link: "server/ongoing-tasks/cdc-sink/overview"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Configuration Reference"
+    link: "server/ongoing-tasks/cdc-sink/configuration-reference"
+    source: "docs"
+    path: "Server > CDC Sink"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -25,45 +34,45 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
----
-
-## Connection String
+<Panel heading="Connection String">
 
 Use a `SqlConnectionString` with `FactoryName` set to `"MySql.Data.MySqlClient"` or
 `"MySqlConnector.MySqlConnectorFactory"`:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`store.Maintenance.Send(new PutConnectionStringOperation<SqlConnectionString>(
+
+```csharp
+store.Maintenance.Send(new PutConnectionStringOperation<SqlConnectionString>(
     new SqlConnectionString
-    \{
+    {
         Name = "MySqlConnection",
         FactoryName = "MySqlConnector.MySqlConnectorFactory",
         ConnectionString = "Server=myserver;Port=3306;Database=mydb;User=ravendb_cdc;Password=..."
-    \}));
-`}
-</CodeBlock>
+    }));
+```
+
 </TabItem>
 </Tabs>
 
----
+</Panel>
 
-## Prerequisites
+<Panel heading="Prerequisites">
 
 MySQL must have binary logging enabled with row-based format:
 
 <Tabs>
 <TabItem value="ini" label="my.cnf">
-<CodeBlock language="ini">
-{`# my.cnf / my.ini
+
+```ini
+# my.cnf / my.ini
 [mysqld]
 log-bin = mysql-bin
 binlog_format = ROW
 binlog_row_image = FULL
 server-id = 1
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -71,11 +80,12 @@ The CDC Sink user needs the following privileges:
 
 <Tabs>
 <TabItem value="sql" label="SQL">
-<CodeBlock language="sql">
-{`GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'ravendb_cdc'@'%';
+
+```sql
+GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'ravendb_cdc'@'%';
 GRANT SELECT ON mydb.* TO 'ravendb_cdc'@'%';
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -83,28 +93,21 @@ GRANT SELECT ON mydb.* TO 'ravendb_cdc'@'%';
 * `REPLICATION CLIENT` - required to query binlog status
 * `SELECT` - required for the initial full-table load
 
----
+</Panel>
 
-## Streaming Behavior
+<Panel heading="Streaming Behavior">
 
 Like PostgreSQL, MySQL CDC Sink uses streaming replication (via the binlog), not
 polling. The `CdcSink.SqlServer.PollIntervalInSec` server configuration setting does not
 apply to MySQL.
 
----
+</Panel>
 
-## Configuration
+<Panel heading="Configuration">
 
 The CDC Sink task configuration is the same across all database engines.
 See [Configuration Reference](../configuration-reference.mdx) for full details.
 
 The `SourceTableSchema` corresponds to the MySQL database name.
 
----
-
-## Related Articles
-
-### CDC Sink
-
-- [Overview](../overview.mdx)
-- [Configuration Reference](../configuration-reference.mdx)
+</Panel>

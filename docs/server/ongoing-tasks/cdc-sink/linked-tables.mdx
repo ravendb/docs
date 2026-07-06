@@ -3,12 +3,29 @@ title: "CDC Sink: Linked Tables"
 sidebar_label: Linked Tables
 description: "Explains how linked tables create document ID references in parent documents by converting foreign key values into RavenDB document IDs."
 sidebar_position: 4
+see_also:
+  - title: "Schema Design"
+    link: "server/ongoing-tasks/cdc-sink/schema-design"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Embedded Tables"
+    link: "server/ongoing-tasks/cdc-sink/embedded-tables"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Configuration Reference"
+    link: "server/ongoing-tasks/cdc-sink/configuration-reference"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Load with Includes"
+    link: "client-api/session/loading-entities#load-with-includes"
+    source: "docs"
+    path: "Client API > Session"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -20,45 +37,44 @@ import LanguageContent from "@site/src/components/LanguageContent";
   than embedding data. A foreign key value becomes a RavenDB document ID pointing
   to a related collection.
 
-* In this page:
+* In this article:
   * [Basic Configuration](#basic-configuration)
   * [Composite Foreign Keys](#composite-foreign-keys)
   * [Linked vs Embedded](#linked-vs-embedded)
 
 </Admonition>
 
----
-
-## Basic Configuration
+<Panel heading="Basic Configuration">
 
 `CdcSinkLinkedTableConfig` is placed inside a root table's (or embedded table's) `LinkedTables` list:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`new CdcSinkTableConfig
-\{
+
+```csharp
+new CdcSinkTableConfig
+{
     CollectionName = "Orders",
     SourceTableName = "orders",
     PrimaryKeyColumns = ["id"],
     Columns =
     [
-        new CdcColumnMapping() \{ Column = "id",          Name = "Id" \},
-        new CdcColumnMapping() \{ Column = "customer_id", Name = "CustomerId" \},
+        new CdcColumnMapping() { Column = "id",          Name = "Id" },
+        new CdcColumnMapping() { Column = "customer_id", Name = "CustomerId" },
     ],
     LinkedTables =
     [
         new CdcSinkLinkedTableConfig
-        \{
+        {
             SourceTableName = "customers",
             PropertyName = "Customer",              // Property name in document
             LinkedCollectionName = "Customers",     // Target collection for ID
             JoinColumns = ["customer_id"]           // FK used to build the document ID
-        \}
+        }
     ]
-\}
-`}
-</CodeBlock>
+}
+```
+
 </TabItem>
 </Tabs>
 
@@ -66,14 +82,15 @@ With `customer_id = 42`, the Orders document gets:
 
 <Tabs>
 <TabItem value="json" label="json">
-<CodeBlock language="json">
-{`\{
+
+```json
+{
     "Id": 1,
     "CustomerId": 42,
     "Customer": "Customers/42"
-\}
-`}
-</CodeBlock>
+}
+```
+
 </TabItem>
 </Tabs>
 
@@ -82,25 +99,26 @@ and the join column values. Load the referenced document using
 [includes](../../../client-api/session/loading-entities#load-with-includes) to avoid
 a second network call.
 
----
+</Panel>
 
-## Composite Foreign Keys
+<Panel heading="Composite Foreign Keys">
 
 When the target table has a composite primary key, the linked reference includes
 all parts of that key:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`new CdcSinkLinkedTableConfig
-\{
+
+```csharp
+new CdcSinkLinkedTableConfig
+{
     SourceTableName = "customers",
     PropertyName = "Customer",
     LinkedCollectionName = "Customers",
     JoinColumns = ["customer_region", "customer_id"]  // Must match Customers PK order
-\}
-`}
-</CodeBlock>
+}
+```
+
 </TabItem>
 </Tabs>
 
@@ -110,9 +128,9 @@ With `customer_region = 'US'` and `customer_id = 42`, the document gets:
 "Customer": "Customers/US/42"
 ```
 
----
+</Panel>
 
-## Linked vs Embedded
+<Panel heading="Linked vs Embedded">
 
 | Consideration | Embedded | Linked |
 |--------------|----------|--------|
@@ -129,16 +147,4 @@ together with it.
 **Choose linked** when the referenced entity is independently meaningful and shared
 across many parents, and you want to avoid duplicating data.
 
----
-
-## Related Articles
-
-### CDC Sink
-
-- [Schema Design](./schema-design.mdx)
-- [Embedded Tables](./embedded-tables.mdx)
-- [Configuration Reference](./configuration-reference.mdx)
-
-### Client API
-
-- [Load with Includes](../../../client-api/session/loading-entities#load-with-includes)
+</Panel>

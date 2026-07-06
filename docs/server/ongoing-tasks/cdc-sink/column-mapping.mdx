@@ -3,12 +3,33 @@ title: "CDC Sink: Column Mapping"
 sidebar_label: Column Mapping
 description: "Explains how to control which SQL columns appear in RavenDB documents and under what property names using the Columns list of CdcColumnMapping entries."
 sidebar_position: 5
+see_also:
+  - title: "Schema Design"
+    link: "server/ongoing-tasks/cdc-sink/schema-design"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Patching"
+    link: "server/ongoing-tasks/cdc-sink/patching"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Attachment Handling"
+    link: "server/ongoing-tasks/cdc-sink/attachment-handling"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Configuration Reference"
+    link: "server/ongoing-tasks/cdc-sink/configuration-reference"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Patching: $row Column Types"
+    link: "server/ongoing-tasks/cdc-sink/patching#row-column-types"
+    source: "docs"
+    path: "Server > CDC Sink"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -20,7 +41,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   under what property names, and how they are stored. It uses a `Columns` list
   of `CdcColumnMapping` objects (not a dictionary).
 
-* In this page:
+* In this article:
   * [Mapping Columns to Properties](#mapping-columns-to-properties)
   * [Column Types](#column-types)
   * [Unmapped Columns](#unmapped-columns)
@@ -30,25 +51,24 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
----
-
-## Mapping Columns to Properties
+<Panel heading="Mapping Columns to Properties">
 
 `Columns` is a `List<CdcColumnMapping>` where each entry maps a SQL column
 to a RavenDB document property:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`Columns =
+
+```csharp
+Columns =
 [
-    new CdcColumnMapping() \{ Column = "id",            Name = "Id" \},
-    new CdcColumnMapping() \{ Column = "customer_name", Name = "CustomerName" \},
-    new CdcColumnMapping() \{ Column = "order_date",    Name = "OrderDate" \},
-    new CdcColumnMapping() \{ Column = "total_amount",  Name = "TotalAmount" \},
+    new CdcColumnMapping() { Column = "id",            Name = "Id" },
+    new CdcColumnMapping() { Column = "customer_name", Name = "CustomerName" },
+    new CdcColumnMapping() { Column = "order_date",    Name = "OrderDate" },
+    new CdcColumnMapping() { Column = "total_amount",  Name = "TotalAmount" },
 ]
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -64,34 +84,35 @@ Including the PK in the mapping is generally useful so the document carries its 
 identifier, but it is not required.
 </Admonition>
 
----
+</Panel>
 
-## Column Types
+<Panel heading="Column Types">
 
 Each `CdcColumnMapping` entry has an optional `Type` property of type `CdcColumnType`
 that controls how the SQL value is stored in RavenDB:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`Columns =
+
+```csharp
+Columns =
 [
-    new CdcColumnMapping() \{ Column = "order_id",  Name = "OrderId" \},
+    new CdcColumnMapping() { Column = "order_id",  Name = "OrderId" },
     // Parsed as a native JSON value
     new CdcColumnMapping()
-    \{
+    {
         Column = "metadata", Name = "Metadata",
         Type = CdcColumnType.Json
-    \},
+    },
     // Stored as an attachment
     new CdcColumnMapping()
-    \{
+    {
         Column = "receipt", Name = "receipt.pdf",
         Type = CdcColumnType.Attachment
-    \},
+    },
 ]
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -122,9 +143,9 @@ SQL Server `nvarchar(max)` with JSON content.
 `byte[]` → binary (`application/octet-stream`), `string` → UTF-8 text (`text/plain`),
 `float[]`/`double[]` → raw vector data. The `Name` field becomes the attachment name.
 
----
+</Panel>
 
-## Unmapped Columns
+<Panel heading="Unmapped Columns">
 
 Columns not listed in `Columns` are **not stored** in the document, but they
 are available in patch scripts via `$row`.
@@ -133,16 +154,17 @@ This allows you to use data for computations without permanently storing raw SQL
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`Columns =
+
+```csharp
+Columns =
 [
-    new CdcColumnMapping() \{ Column = "id",   Name = "Id" \},
-    new CdcColumnMapping() \{ Column = "name", Name = "Name" \},
+    new CdcColumnMapping() { Column = "id",   Name = "Id" },
+    new CdcColumnMapping() { Column = "name", Name = "Name" },
     // base_price and tax_rate are NOT mapped - won't appear in document
 ],
 Patch = "this.FinalPrice = $row.base_price * (1 + $row.tax_rate);"
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -162,9 +184,9 @@ in patch scripts via `$row.base_price` (for the current row's values).
 See [Patching: $row and $old](./patching.mdx#row-and-old-names-and-types) for details.
 </Admonition>
 
----
+</Panel>
 
-## JSON Columns
+<Panel heading="JSON Columns">
 
 SQL columns that contain JSON data (e.g., PostgreSQL `jsonb`, SQL Server `nvarchar`
 with JSON content) can be parsed into native JSON objects or arrays using
@@ -172,28 +194,29 @@ with JSON content) can be parsed into native JSON objects or arrays using
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`Columns =
+
+```csharp
+Columns =
 [
-    new CdcColumnMapping() \{ Column = "id",       Name = "Id" \},
-    new CdcColumnMapping() \{ Column = "name",     Name = "Name" \},
+    new CdcColumnMapping() { Column = "id",       Name = "Id" },
+    new CdcColumnMapping() { Column = "name",     Name = "Name" },
     new CdcColumnMapping()
-    \{
+    {
         Column = "metadata", Name = "Metadata",
         Type = CdcColumnType.Json
-    \},
+    },
 ]
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
 Without `CdcColumnType.Json`, the JSON column value would be stored as a raw string.
 With it, the value is parsed and stored as a nested object or array in the document.
 
----
+</Panel>
 
-## Validation Rules
+<Panel heading="Validation Rules">
 
 The following rules apply to both root table and embedded table column mappings:
 
@@ -202,40 +225,28 @@ The following rules apply to both root table and embedded table column mappings:
 - Both `Column` and `Name` are required and must be non-empty strings.
 - At least one entry is required - an empty `Columns` list is a validation error.
 
----
+</Panel>
 
-## Schema (Source Table Schema)
+<Panel heading="Schema (Source Table Schema)">
 
 `SourceTableSchema` specifies the SQL schema containing the table. It defaults to
 `"public"` for PostgreSQL if omitted.
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`new CdcSinkTableConfig
-\{
+
+```csharp
+new CdcSinkTableConfig
+{
     SourceTableSchema = "sales",    // Table is in the "sales" schema
     SourceTableName = "orders",
     // ...
-\}
-`}
-</CodeBlock>
+}
+```
+
 </TabItem>
 </Tabs>
 
 For most PostgreSQL setups using the default `public` schema, this can be omitted.
 
----
-
-## Related Articles
-
-### CDC Sink
-
-- [Schema Design](./schema-design.mdx)
-- [Patching](./patching.mdx)
-- [Attachment Handling](./attachment-handling.mdx)
-- [Configuration Reference](./configuration-reference.mdx)
-
-### PostgreSQL
-
-- [Patching: $row Column Types](./patching.mdx#row-column-types)
+</Panel>

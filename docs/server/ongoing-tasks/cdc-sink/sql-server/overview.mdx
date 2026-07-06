@@ -3,12 +3,25 @@ title: "CDC Sink for SQL Server: Overview"
 sidebar_label: Overview
 description: "CDC Sink support for SQL Server - using native SQL Server Change Data Capture to stream changes into RavenDB."
 sidebar_position: 0
+see_also:
+  - title: "Overview"
+    link: "server/ongoing-tasks/cdc-sink/overview"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Configuration Reference"
+    link: "server/ongoing-tasks/cdc-sink/configuration-reference"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "PostgreSQL Prerequisites Checklist"
+    link: "server/ongoing-tasks/cdc-sink/postgres/prerequisites-checklist"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -25,39 +38,38 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
----
+<Panel heading="Connection String">
 
-## Connection String
-
-Use a `SqlConnectionString` with `FactoryName` set to `"System.Data.SqlClient"` or
-`"Microsoft.Data.SqlClient"`:
+Use a `SqlConnectionString` with `FactoryName` set to `"Microsoft.Data.SqlClient"`:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`store.Maintenance.Send(new PutConnectionStringOperation<SqlConnectionString>(
+
+```csharp
+store.Maintenance.Send(new PutConnectionStringOperation<SqlConnectionString>(
     new SqlConnectionString
-    \{
+    {
         Name = "MySqlServerConnection",
         FactoryName = "Microsoft.Data.SqlClient",
         ConnectionString = "Server=myserver;Database=mydb;Trusted_Connection=True;"
-    \}));
-`}
-</CodeBlock>
+    }));
+```
+
 </TabItem>
 </Tabs>
 
----
+</Panel>
 
-## Prerequisites
+<Panel heading="Prerequisites">
 
 SQL Server CDC must be enabled on the source database and on each table you want
 to capture:
 
 <Tabs>
 <TabItem value="sql" label="SQL">
-<CodeBlock language="sql">
-{`-- Enable CDC on the database
+
+```sql
+-- Enable CDC on the database
 EXEC sys.sp_cdc_enable_db;
 
 -- Enable CDC on a table
@@ -65,36 +77,28 @@ EXEC sys.sp_cdc_enable_table
     @source_schema = N'dbo',
     @source_name = N'orders',
     @role_name = NULL;
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
 The SQL Server Agent service must be running for CDC to function.
 
----
+</Panel>
 
-## Polling Behavior
+<Panel heading="Polling Behavior">
 
 Unlike PostgreSQL (which uses streaming replication), SQL Server CDC Sink uses polling.
 The `CdcSink.SqlServer.PollIntervalInSec` server configuration key controls how frequently
 the task polls for new changes. See [Server Configuration](../server-configuration.mdx).
 
----
+</Panel>
 
-## Configuration
+<Panel heading="Configuration">
 
 The CDC Sink task configuration is the same across all database engines.
 See [Configuration Reference](../configuration-reference.mdx) for full details.
 
 The `SourceTableSchema` defaults to `"dbo"` when using SQL Server.
 
----
-
-## Related Articles
-
-### CDC Sink
-
-- [Overview](../overview.mdx)
-- [Configuration Reference](../configuration-reference.mdx)
-- [PostgreSQL: Prerequisites Checklist](../postgres/prerequisites-checklist.mdx)
+</Panel>

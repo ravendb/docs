@@ -3,12 +3,25 @@ title: "CDC Sink: Property Retention"
 sidebar_label: Property Retention
 description: "Explains how CDC Sink merges UPDATE events onto existing RavenDB documents, preserving properties that are not part of the column mapping."
 sidebar_position: 8
+see_also:
+  - title: "Column Mapping"
+    link: "server/ongoing-tasks/cdc-sink/column-mapping"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Patching"
+    link: "server/ongoing-tasks/cdc-sink/patching"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "How It Works"
+    link: "server/ongoing-tasks/cdc-sink/how-it-works"
+    source: "docs"
+    path: "Server > CDC Sink"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -22,17 +35,15 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Properties that are not part of the column mapping are preserved across updates.
   This allows RavenDB-side data to coexist safely with CDC-managed properties.
 
-* In this page:
+* In this article:
   * [How Merging Works](#how-merging-works)
-  * [What Is and Isn't Preserved](#what-is-and-isnt-preserved)
+  * [What Is and Is Not Preserved](#what-is-and-is-not-preserved)
   * [Editing Documents Directly in RavenDB](#editing-documents-directly-in-ravendb)
   * [Implications for Patches](#implications-for-patches)
 
 </Admonition>
 
----
-
-## How Merging Works
+<Panel heading="How Merging Works">
 
 When a CDC UPDATE arrives for a document that already exists:
 
@@ -47,16 +58,17 @@ Initial SQL row → initial document:
 
 <Tabs>
 <TabItem value="json" label="json">
-<CodeBlock language="json">
-{`\{
+
+```json
+{
     "Id": 1,
     "Name": "Alice",
     "Email": "alice@example.com",
     "InternalNotes": "VIP customer",
-    "@metadata": \{ "@collection": "Customers" \}
-\}
-`}
-</CodeBlock>
+    "@metadata": { "@collection": "Customers" }
+}
+```
+
 </TabItem>
 </Tabs>
 
@@ -66,24 +78,25 @@ Document after CDC UPDATE:
 
 <Tabs>
 <TabItem value="json" label="json">
-<CodeBlock language="json">
-{`\{
+
+```json
+{
     "Id": 1,
     "Name": "Alice",
     "Email": "alice.new@example.com",
     "InternalNotes": "VIP customer",
-    "@metadata": \{ "@collection": "Customers" \}
-\}
-`}
-</CodeBlock>
+    "@metadata": { "@collection": "Customers" }
+}
+```
+
 </TabItem>
 </Tabs>
 
 `Email` is updated from SQL, while `InternalNotes` (not in the `Columns` list) is preserved.
 
----
+</Panel>
 
-## What Is and Isn't Preserved
+<Panel heading="What Is and Is Not Preserved">
 
 **Preserved across CDC updates:**
 
@@ -98,25 +111,26 @@ Document after CDC UPDATE:
 If you manually edit a property that is part of the `Columns` list, the next CDC UPDATE
 for that row will overwrite your edit with the SQL value.
 
----
+</Panel>
 
-## Editing Documents Directly in RavenDB
+<Panel heading="Editing Documents Directly in RavenDB">
 
 You can safely add properties to CDC-managed documents:
 
 <Tabs>
 <TabItem value="json" label="json">
-<CodeBlock language="json">
-{`\{
+
+```json
+{
     "Id": 1,
     "Name": "Alice",
     "Email": "alice@ex.com",
     "InternalNotes": "...",
     "ReviewedAt": "...",
     "Tags": ["vip"]
-\}
-`}
-</CodeBlock>
+}
+```
+
 </TabItem>
 </Tabs>
 
@@ -128,9 +142,9 @@ properties surviving future CDC updates.
 If you need to preserve a value that comes from SQL, consider adding a separate
 RavenDB-only property for your annotation and leaving the SQL-mapped property as-is.
 
----
+</Panel>
 
-## Implications for Patches
+<Panel heading="Implications for Patches">
 
 Patches run after column mapping and can set additional properties that are not
 from the `Columns` list. These patch-computed properties follow the same merge rules:
@@ -144,12 +158,4 @@ For aggregates maintained via patches (e.g., `RunningTotal`), the patch itself
 is responsible for keeping the value correct across INSERT, UPDATE, and DELETE events.
 See [Patching](./patching.mdx).
 
----
-
-## Related Articles
-
-### CDC Sink
-
-- [Column Mapping](./column-mapping.mdx)
-- [Patching](./patching.mdx)
-- [How It Works](./how-it-works.mdx)
+</Panel>

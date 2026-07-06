@@ -3,12 +3,29 @@ title: "CDC Sink: API Reference"
 sidebar_label: API Reference
 description: "Documents the Client API operations for creating, updating, querying, toggling, and deleting CDC Sink tasks programmatically."
 sidebar_position: 11
+see_also:
+  - title: "Configuration Reference"
+    link: "server/ongoing-tasks/cdc-sink/configuration-reference"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Overview"
+    link: "server/ongoing-tasks/cdc-sink/overview"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "What are Operations"
+    link: "client-api/operations/what-are-operations"
+    source: "docs"
+    path: "Client API > Operations"
+  - title: "Ongoing Task Operations"
+    link: "client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations"
+    source: "docs"
+    path: "Client API > Operations"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -19,7 +36,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * CDC Sink tasks can be created, updated, and managed programmatically using
   the RavenDB Client API.
 
-* In this page:
+* In this article:
   * [Add a CDC Sink Task](#add-a-cdc-sink-task)
   * [Update a CDC Sink Task](#update-a-cdc-sink-task)
   * [Get Task Info](#get-task-info)
@@ -28,42 +45,41 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
----
-
-## Add a CDC Sink Task
+<Panel heading="Add a CDC Sink Task">
 
 Use `AddCdcSinkOperation` to create a new CDC Sink task:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`var config = new CdcSinkConfiguration
-\{
+
+```csharp
+var config = new CdcSinkConfiguration
+{
     Name = "OrdersSync",
     ConnectionStringName = "MyPostgresConnection",
     Tables = new List<CdcSinkTableConfig>
-    \{
+    {
         new CdcSinkTableConfig
-        \{
+        {
             CollectionName = "Orders",
             SourceTableName = "orders",
-            PrimaryKeyColumns = new List<string> \{ "id" \},
+            PrimaryKeyColumns = new List<string> { "id" },
             Columns =
             [
-                new CdcColumnMapping() \{ Column = "id",            Name = "Id" \},
-                new CdcColumnMapping() \{ Column = "customer_name", Name = "CustomerName" \},
-                new CdcColumnMapping() \{ Column = "total",         Name = "Total" \},
+                new CdcColumnMapping() { Column = "id",            Name = "Id" },
+                new CdcColumnMapping() { Column = "customer_name", Name = "CustomerName" },
+                new CdcColumnMapping() { Column = "total",         Name = "Total" },
             ]
-        \}
-    \}
-\};
+        }
+    }
+};
 
 var result = await store.Maintenance.SendAsync(
     new AddCdcSinkOperation(config));
 
 long taskId = result.TaskId;
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -74,34 +90,35 @@ long taskId = result.TaskId;
 | `TaskId` | `long` | Assigned task ID |
 | `RaftCommandIndex` | `long` | Raft index of the command |
 
----
+</Panel>
 
-## Update a CDC Sink Task
+<Panel heading="Update a CDC Sink Task">
 
 Use `UpdateCdcSinkOperation` to modify an existing task.
 Pass the full updated configuration including the `TaskId`:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`config.TaskId = taskId;        // Must be set
+
+```csharp
+config.TaskId = taskId;        // Must be set
 config.Tables.Add(new CdcSinkTableConfig
-\{
+{
     CollectionName = "Customers",
     SourceTableName = "customers",
-    PrimaryKeyColumns = new List<string> \{ "id" \},
+    PrimaryKeyColumns = new List<string> { "id" },
     Columns =
     [
-        new CdcColumnMapping() \{ Column = "id",    Name = "Id" \},
-        new CdcColumnMapping() \{ Column = "name",  Name = "Name" \},
-        new CdcColumnMapping() \{ Column = "email", Name = "Email" \},
+        new CdcColumnMapping() { Column = "id",    Name = "Id" },
+        new CdcColumnMapping() { Column = "name",  Name = "Name" },
+        new CdcColumnMapping() { Column = "email", Name = "Email" },
     ]
-\});
+});
 
 await store.Maintenance.SendAsync(
     new UpdateCdcSinkOperation(taskId, config));
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -135,40 +152,42 @@ database administrator.
 See [Cleanup and Maintenance](./postgres/cleanup-and-maintenance.mdx).
 </Admonition>
 
----
+</Panel>
 
-## Get Task Info
+<Panel heading="Get Task Info">
 
 Use `GetOngoingTaskInfoOperation` to retrieve the current state of a CDC Sink task:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`var taskInfo = await store.Maintenance.SendAsync(
+
+```csharp
+var taskInfo = await store.Maintenance.SendAsync(
     new GetOngoingTaskInfoOperation(taskId, OngoingTaskType.CdcSink));
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
----
+</Panel>
 
-## Toggle Task State
+<Panel heading="Toggle Task State">
 
 Pause or resume a CDC Sink task using `ToggleOngoingTaskStateOperation`:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`// Pause the task
+
+```csharp
+// Pause the task
 await store.Maintenance.SendAsync(
     new ToggleOngoingTaskStateOperation(taskId, OngoingTaskType.CdcSink, disable: true));
 
 // Resume the task
 await store.Maintenance.SendAsync(
     new ToggleOngoingTaskStateOperation(taskId, OngoingTaskType.CdcSink, disable: false));
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -185,19 +204,20 @@ pause is safe. If the task is paused long enough that trimming occurs, CDC Sink 
 report an error on resume - the task may need to be recreated rather than simply resumed.
 </Admonition>
 
----
+</Panel>
 
-## Delete a Task
+<Panel heading="Delete a Task">
 
 Use `DeleteOngoingTaskOperation` to delete a CDC Sink task:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`await store.Maintenance.SendAsync(
+
+```csharp
+await store.Maintenance.SendAsync(
     new DeleteOngoingTaskOperation(taskId, OngoingTaskType.CdcSink));
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -207,16 +227,4 @@ in the source database. These must be cleaned up manually by the database admini
 See [Cleanup and Maintenance](./postgres/cleanup-and-maintenance.mdx).
 </Admonition>
 
----
-
-## Related Articles
-
-### CDC Sink
-
-- [Configuration Reference](./configuration-reference.mdx)
-- [Overview](./overview.mdx)
-
-### Client API
-
-- [What are Operations](../../../client-api/operations/what-are-operations)
-- [Ongoing Task Operations](../../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations)
+</Panel>

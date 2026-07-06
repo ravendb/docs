@@ -3,12 +3,25 @@ title: "CDC Sink for PostgreSQL: WAL Configuration"
 sidebar_label: WAL Configuration
 description: "How to verify and configure the PostgreSQL Write-Ahead Log level to enable logical replication required by CDC Sink."
 sidebar_position: 1
+see_also:
+  - title: "Prerequisites Checklist"
+    link: "server/ongoing-tasks/cdc-sink/postgres/prerequisites-checklist"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "Permissions and Roles"
+    link: "server/ongoing-tasks/cdc-sink/postgres/permissions-and-roles"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "Cleanup and Maintenance"
+    link: "server/ongoing-tasks/cdc-sink/postgres/cleanup-and-maintenance"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -21,25 +34,24 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * This page explains how to verify the current setting and change it if needed.
 
-* In this page:
+* In this article:
   * [Check Current WAL Level](#check-current-wal-level)
   * [Enable Logical Replication](#enable-logical-replication)
   * [Other Required Settings](#other-required-settings)
 
 </Admonition>
 
----
-
-## Check Current WAL Level
+<Panel heading="Check Current WAL Level">
 
 Connect to your PostgreSQL instance and run:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`SHOW wal_level;
-`}
-</CodeBlock>
+<TabItem value="sql" label="SQL">
+
+```sql
+SHOW wal_level;
+```
+
 </TabItem>
 </Tabs>
 
@@ -48,18 +60,19 @@ If the result is `logical`, no changes are needed.
 If the result is `replica` or `minimal`, logical replication is not enabled and
 must be configured before CDC Sink can run.
 
----
+</Panel>
 
-## Enable Logical Replication
+<Panel heading="Enable Logical Replication">
 
 Edit `postgresql.conf` and set the following:
 
 <Tabs>
 <TabItem value="plain" label="plain">
-<CodeBlock language="plain">
-{`wal_level = logical
-`}
-</CodeBlock>
+
+```plain
+wal_level = logical
+```
+
 </TabItem>
 </Tabs>
 
@@ -68,12 +81,13 @@ This change requires a **PostgreSQL restart**.
 After restarting, verify the change took effect:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`SHOW wal_level;
+<TabItem value="sql" label="SQL">
+
+```sql
+SHOW wal_level;
 -- Should return: logical
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -82,20 +96,21 @@ Changing `wal_level` requires a full server restart, not just a configuration re
 Plan for a brief maintenance window.
 </Admonition>
 
----
+</Panel>
 
-## Other Required Settings
+<Panel heading="Other Required Settings">
 
 CDC Sink uses one replication slot per task. Ensure the following settings are
 sufficient for the number of CDC Sink tasks you plan to run:
 
 <Tabs>
 <TabItem value="plain" label="plain">
-<CodeBlock language="plain">
-{`max_replication_slots = 10   -- at least 1 per CDC Sink task
+
+```plain
+max_replication_slots = 10   -- at least 1 per CDC Sink task
 max_wal_senders = 10         -- at least 1 per active replication connection
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -106,23 +121,16 @@ concurrent CDC Sink tasks or other replication consumers.
 Check current values:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`SHOW max_replication_slots;
+<TabItem value="sql" label="SQL">
+
+```sql
+SHOW max_replication_slots;
 SHOW max_wal_senders;
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
 These settings also require a **server restart** if changed.
 
----
-
-## Related Articles
-
-### CDC Sink for PostgreSQL
-
-- [Prerequisites Checklist](./prerequisites-checklist.mdx)
-- [Permissions and Roles](./permissions-and-roles.mdx)
-- [Cleanup and Maintenance](./cleanup-and-maintenance.mdx)
+</Panel>

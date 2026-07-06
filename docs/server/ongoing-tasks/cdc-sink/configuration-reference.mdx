@@ -3,12 +3,37 @@ title: "CDC Sink: Configuration Reference"
 sidebar_label: Configuration Reference
 description: "Documents all configuration classes used to define a CDC Sink task, including CdcSinkConfiguration, table configs, CdcColumnMapping, and related types."
 sidebar_position: 10
+see_also:
+  - title: "Schema Design"
+    link: "server/ongoing-tasks/cdc-sink/schema-design"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Embedded Tables"
+    link: "server/ongoing-tasks/cdc-sink/embedded-tables"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Linked Tables"
+    link: "server/ongoing-tasks/cdc-sink/linked-tables"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Patching"
+    link: "server/ongoing-tasks/cdc-sink/patching"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Delete Strategies"
+    link: "server/ongoing-tasks/cdc-sink/delete-strategies"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "API Reference"
+    link: "server/ongoing-tasks/cdc-sink/api-reference"
+    source: "docs"
+    path: "Server > CDC Sink"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -18,7 +43,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * This page documents all configuration classes used to define a CDC Sink task.
 
-* In this page:
+* In this article:
   * [CdcSinkConfiguration](#cdcsinkconfiguration)
   * [CdcSinkPostgresSettings](#cdcsinkpostgressettings)
   * [CdcSinkTableConfig](#cdcsinktableconfig)
@@ -32,9 +57,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
----
-
-## CdcSinkConfiguration
+<Panel heading="CdcSinkConfiguration">
 
 The top-level configuration object for a CDC Sink task.
 
@@ -58,9 +81,9 @@ The top-level configuration object for a CDC Sink task.
 | `System.Data.SqlClient` or `Microsoft.Data.SqlClient` | SQL Server |
 | `MySql.Data.MySqlClient` or `MySqlConnector.MySqlConnectorFactory` | MySQL / MariaDB |
 
----
+</Panel>
 
-## CdcSinkPostgresSettings
+<Panel heading="CdcSinkPostgresSettings">
 
 PostgreSQL-specific settings. Assigned to `CdcSinkConfiguration.Postgres`.
 Leave `null` for non-PostgreSQL connections.
@@ -86,9 +109,9 @@ PostgreSQL table must have `REPLICA IDENTITY` configured so that DELETE events i
 the join column values. See [REPLICA IDENTITY](./postgres/replica-identity.mdx).
 </Admonition>
 
----
+</Panel>
 
-## CdcSinkTableConfig
+<Panel heading="CdcSinkTableConfig">
 
 Configures a root table - one SQL table mapped to one RavenDB collection.
 
@@ -105,9 +128,9 @@ Configures a root table - one SQL table mapped to one RavenDB collection.
 | `LinkedTables` | `List<CdcSinkLinkedTableConfig>` | | Foreign key reference configurations |
 | `Disabled` | `bool` | | Skip this table. Default: `false` |
 
----
+</Panel>
 
-## CdcSinkEmbeddedTableConfig
+<Panel heading="CdcSinkEmbeddedTableConfig">
 
 Configures a table whose rows are embedded as nested objects within a parent document.
 
@@ -126,9 +149,9 @@ Configures a table whose rows are embedded as nested objects within a parent doc
 | `EmbeddedTables` | `List<CdcSinkEmbeddedTableConfig>` | | Nested embedded tables |
 | `LinkedTables` | `List<CdcSinkLinkedTableConfig>` | | Linked tables within embedded items |
 
----
+</Panel>
 
-## CdcSinkLinkedTableConfig
+<Panel heading="CdcSinkLinkedTableConfig">
 
 Configures a foreign key reference that becomes a document ID in the parent document.
 
@@ -140,9 +163,9 @@ Configures a foreign key reference that becomes a document ID in the parent docu
 | `LinkedCollectionName` | `string` | ✓ | Target RavenDB collection for ID generation (e.g., `"Customers"`) |
 | `JoinColumns` | `List<string>` | ✓ | FK columns used to build the referenced document ID |
 
----
+</Panel>
 
-## CdcColumnMapping
+<Panel heading="CdcColumnMapping">
 
 A single column mapping entry within a `Columns` list.
 
@@ -152,9 +175,9 @@ A single column mapping entry within a `Columns` list.
 | `Name` | `string` | ✓ | Document property name (or attachment name when `Type = Attachment`) |
 | `Type` | `CdcColumnType` | | How to store the value. Default: `Default` |
 
----
+</Panel>
 
-## CdcColumnType
+<Panel heading="CdcColumnType">
 
 Controls how a SQL column value is stored in RavenDB.
 
@@ -164,9 +187,9 @@ Controls how a SQL column value is stored in RavenDB.
 | `Json` | Parses the string value as a native JSON value (object, array, string, number, boolean, etc.) in the document. Use for PostgreSQL `json`/`jsonb` or SQL Server `nvarchar(max)` with JSON content. |
 | `Attachment` | Stores the raw column value as a RavenDB attachment. `byte[]`→binary (`application/octet-stream`), `string`→UTF-8 text (`text/plain`), `float[]`/`double[]`→raw vector data. The `Name` field becomes the attachment name. |
 
----
+</Panel>
 
-## CdcSinkOnDeleteConfig
+<Panel heading="CdcSinkOnDeleteConfig">
 
 Controls how DELETE events are handled for a table or embedded table.
 
@@ -190,9 +213,9 @@ Controls how DELETE events are handled for a table or embedded table.
 | `true` | null | DELETE discarded silently |
 | `true` | set | Patch runs, delete skipped |
 
----
+</Panel>
 
-## CdcSinkRelationType
+<Panel heading="CdcSinkRelationType">
 
 Specifies the structure of embedded data in the document.
 
@@ -202,9 +225,9 @@ Specifies the structure of embedded data in the document.
 | `Map` | One-to-many: stored as a JSON object keyed by PK value(s) |
 | `Value` | Many-to-one: stored as a single embedded object |
 
----
+</Panel>
 
-## REST API Endpoints
+<Panel heading="REST API Endpoints">
 
 | Method | Path | Auth | Description |
 |--------|------|------|-------------|
@@ -215,15 +238,4 @@ Specifies the structure of embedded data in the document.
 | GET | `/databases/{db}/cdc-sink/performance` | ValidUser | Get performance stats |
 | GET | `/databases/{db}/cdc-sink/performance/live` | ValidUser | WebSocket for live performance stats |
 
----
-
-## Related Articles
-
-### CDC Sink
-
-- [Schema Design](./schema-design.mdx)
-- [Embedded Tables](./embedded-tables.mdx)
-- [Linked Tables](./linked-tables.mdx)
-- [Patching](./patching.mdx)
-- [Delete Strategies](./delete-strategies.mdx)
-- [API Reference](./api-reference.mdx)
+</Panel>

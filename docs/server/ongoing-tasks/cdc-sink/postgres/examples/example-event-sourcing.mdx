@@ -3,12 +3,37 @@ title: "CDC Sink Example: Event Sourcing with Aggregation"
 sidebar_label: Event Sourcing with Aggregation
 description: "How to use CDC Sink patches to maintain a computed aggregate on a RavenDB document as individual event rows arrive from PostgreSQL."
 sidebar_position: 2
+see_also:
+  - title: "Simple Migration"
+    link: "server/ongoing-tasks/cdc-sink/postgres/examples/example-simple-migration"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL > Examples"
+  - title: "Denormalization"
+    link: "server/ongoing-tasks/cdc-sink/postgres/examples/example-denormalization"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL > Examples"
+  - title: "Complex Nesting"
+    link: "server/ongoing-tasks/cdc-sink/postgres/examples/example-complex-nesting"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL > Examples"
+  - title: "Patching"
+    link: "server/ongoing-tasks/cdc-sink/patching"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Delete Strategies"
+    link: "server/ongoing-tasks/cdc-sink/delete-strategies"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Failover and Consistency"
+    link: "server/ongoing-tasks/cdc-sink/failover-and-consistency"
+    source: "docs"
+    path: "Server > CDC Sink"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -19,7 +44,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * This example shows how to use CDC Sink patches to maintain a computed aggregate
   on a RavenDB document as individual event rows arrive from PostgreSQL.
 
-* In this page:
+* In this article:
   * [Source Schema](#source-schema)
   * [Goal](#goal)
   * [Task Configuration](#task-configuration)
@@ -28,14 +53,15 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
-## Source Schema
+<Panel heading="Source Schema">
 
 An accounts table and a transactions table:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`CREATE TABLE accounts (
+<TabItem value="sql" label="SQL">
+
+```sql
+CREATE TABLE accounts (
     account_id SERIAL PRIMARY KEY,
     owner      TEXT NOT NULL,
     currency   TEXT NOT NULL DEFAULT 'USD'
@@ -48,43 +74,48 @@ CREATE TABLE transactions (
     type       TEXT NOT NULL,   -- 'credit' or 'debit'
     created_at TIMESTAMPTZ DEFAULT now()
 );
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
-## Goal
+</Panel>
+
+<Panel heading="Goal">
 
 Store each account as a RavenDB document with a `Balance` field that reflects the
 running total of all transactions. Transaction rows are embedded as an array for
 history, and `Balance` is maintained using patch logic.
 
-## Task Configuration
+</Panel>
+
+<Panel heading="Task Configuration">
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`var config = new CdcSinkConfiguration
-\{
+
+```csharp
+var config = new CdcSinkConfiguration
+{
     Name = "AccountsSync",
     ConnectionStringName = "MyPostgresConnection",
     Tables =
     [
         new CdcSinkTableConfig
-        \{
+        {
             CollectionName = "Accounts",
             SourceTableName = "accounts",
             PrimaryKeyColumns = ["account_id"],
             Columns =
             [
-                new CdcColumnMapping() \{ Column = "account_id", Name = "AccountId" \},
-                new CdcColumnMapping() \{ Column = "owner",      Name = "Owner" \},
-                new CdcColumnMapping() \{ Column = "currency",   Name = "Currency" \},
+                new CdcColumnMapping() { Column = "account_id", Name = "AccountId" },
+                new CdcColumnMapping() { Column = "owner",      Name = "Owner" },
+                new CdcColumnMapping() { Column = "currency",   Name = "Currency" },
             ],
             EmbeddedTables =
             [
                 new CdcSinkEmbeddedTableConfig
-                \{
+                {
                     SourceTableName = "transactions",
                     PropertyName = "Transactions",
                     Type = CdcSinkRelationType.Array,
@@ -92,10 +123,10 @@ history, and `Balance` is maintained using patch logic.
                     PrimaryKeyColumns = ["txn_id"],
                     Columns =
                     [
-                        new CdcColumnMapping() \{ Column = "txn_id",     Name = "TxnId" \},
-                        new CdcColumnMapping() \{ Column = "amount",     Name = "Amount" \},
-                        new CdcColumnMapping() \{ Column = "type",       Name = "Type" \},
-                        new CdcColumnMapping() \{ Column = "created_at", Name = "CreatedAt" \},
+                        new CdcColumnMapping() { Column = "txn_id",     Name = "TxnId" },
+                        new CdcColumnMapping() { Column = "amount",     Name = "Amount" },
+                        new CdcColumnMapping() { Column = "type",       Name = "Type" },
+                        new CdcColumnMapping() { Column = "created_at", Name = "CreatedAt" },
                     ],
                     // Patch runs on the parent document for INSERT/UPDATE
                     Patch = """
@@ -108,50 +139,55 @@ history, and `Balance` is maintained using patch logic.
                             + (sign * newAmount);
                         """,
                     OnDelete = new CdcSinkOnDeleteConfig
-                    \{
+                    {
                         Patch = """
                             const deletedAmount = $old?.Amount || 0;
                             const sign = $old?.Type === 'credit' ? 1 : -1;
                             this.Balance = (this.Balance || 0) - (sign * deletedAmount);
                             """
-                    \}
-                \}
+                    }
+                }
             ]
-        \}
+        }
     ]
-\};
+};
 
 await store.Maintenance.SendAsync(new AddCdcSinkOperation(config));
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
-## Resulting Documents
+</Panel>
+
+<Panel heading="Resulting Documents">
 
 After three transactions (credit 100, debit 30, credit 50):
 
 <Tabs>
 <TabItem value="json" label="json">
-<CodeBlock language="json">
-{`\{
+
+```json
+{
     "AccountId": 1,
     "Owner": "Alice",
     "Currency": "USD",
     "Balance": 120.00,
     "Transactions": [
-        \{ "TxnId": 1, "Amount": 100.00, "Type": "credit", "CreatedAt": "..." \},
-        \{ "TxnId": 2, "Amount": 30.00,  "Type": "debit",  "CreatedAt": "..." \},
-        \{ "TxnId": 3, "Amount": 50.00,  "Type": "credit", "CreatedAt": "..." \}
+        { "TxnId": 1, "Amount": 100.00, "Type": "credit", "CreatedAt": "..." },
+        { "TxnId": 2, "Amount": 30.00,  "Type": "debit",  "CreatedAt": "..." },
+        { "TxnId": 3, "Amount": 50.00,  "Type": "credit", "CreatedAt": "..." }
     ],
-    "@metadata": \{ "@collection": "Accounts" \}
-\}
-`}
-</CodeBlock>
+    "@metadata": { "@collection": "Accounts" }
+}
+```
+
 </TabItem>
 </Tabs>
 
-## Handling Deletes
+</Panel>
+
+<Panel heading="Handling Deletes">
 
 The `OnDelete.Patch` reverses the contribution of the deleted transaction to
 `Balance`. This uses `$old` (the embedded item's last known state) rather than
@@ -168,18 +204,4 @@ update, so the delta produces the same result.
 See [Failover and Consistency](../../failover-and-consistency.mdx).
 </Admonition>
 
----
-
-## Related Articles
-
-### CDC Sink Examples
-
-- [Simple Migration](./example-simple-migration.mdx)
-- [Denormalization](./example-denormalization.mdx)
-- [Complex Nesting](./example-complex-nesting.mdx)
-
-### CDC Sink
-
-- [Patching](../../patching.mdx)
-- [Delete Strategies](../../delete-strategies.mdx)
-- [Failover and Consistency](../../failover-and-consistency.mdx)
+</Panel>

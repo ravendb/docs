@@ -3,12 +3,33 @@ title: "CDC Sink: Patching"
 sidebar_label: Patching
 description: "Explains how JavaScript patch scripts work in CDC Sink, covering available variables, patch scope, common scenarios, idempotency, and limitations."
 sidebar_position: 6
+see_also:
+  - title: "Delete Strategies"
+    link: "server/ongoing-tasks/cdc-sink/delete-strategies"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Column Mapping"
+    link: "server/ongoing-tasks/cdc-sink/column-mapping"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Property Retention"
+    link: "server/ongoing-tasks/cdc-sink/property-retention"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Failover and Consistency"
+    link: "server/ongoing-tasks/cdc-sink/failover-and-consistency"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Patching Configuration"
+    link: "server/configuration/patching-configuration"
+    source: "docs"
+    path: "Server > Configuration"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -23,7 +44,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Patches are defined per-table (root or embedded) and per-operation (INSERT/UPDATE
   or DELETE via `OnDelete.Patch`).
 
-* In this page:
+* In this article:
   * [When Patches Run](#when-patches-run)
   * [Available Variables](#available-variables)
   * [$row and $old: Names and Types](#row-and-old-names-and-types)
@@ -41,9 +62,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
----
-
-## When Patches Run
+<Panel heading="When Patches Run">
 
 | Event | Patch property | Runs? |
 |-------|---------------|-------|
@@ -55,9 +74,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 The `Patch` property on a table handles INSERT and UPDATE.
 The `OnDelete.Patch` on `CdcSinkOnDeleteConfig` handles DELETE separately.
 
----
+</Panel>
 
-## Available Variables
+<Panel heading="Available Variables">
 
 | Variable | Available | Type | Description |
 |----------|-----------|------|-------------|
@@ -66,9 +85,9 @@ The `OnDelete.Patch` on `CdcSinkOnDeleteConfig` handles DELETE separately.
 | `$old` | Always | object \| null | Previous state of the document (root patches) or embedded item (embedded patches). Null on INSERT. |
 | `load(id)` | Always | function | Load a RavenDB document by ID |
 
----
+</Panel>
 
-## $row and $old: Names and Types
+<Panel heading="$row and $old: Names and Types">
 
 `$row` and `$old` look similar but represent fundamentally different things:
 
@@ -85,14 +104,15 @@ Given this column mapping:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`Columns =
+
+```csharp
+Columns =
 [
-    new CdcColumnMapping() \{ Column = "customer_name", Name = "CustomerName" \},
-    new CdcColumnMapping() \{ Column = "amount",        Name = "Amount" \},
+    new CdcColumnMapping() { Column = "customer_name", Name = "CustomerName" },
+    new CdcColumnMapping() { Column = "amount",        Name = "Amount" },
 ]
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -100,8 +120,9 @@ In the patch script:
 
 <Tabs>
 <TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`// $row - SQL column names, raw SQL types
+
+```javascript
+// $row - SQL column names, raw SQL types
 $row.customer_name   // string
 $row.amount          // number (from numeric/decimal column)
 
@@ -112,8 +133,8 @@ $old.Amount          // number (as stored in RavenDB)
 // this - the document after column mapping has been applied for this event
 this.CustomerName    // string (just set from $row.customer_name)
 this.Amount          // number (just set from $row.amount)
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -122,9 +143,9 @@ Unmapped columns - those not listed in `Columns` - appear in `$row` but are neve
 written to the document and therefore never appear in `$old`.
 </Admonition>
 
----
+</Panel>
 
-## $row Column Types
+<Panel heading="$row Column Types">
 
 `$row` exposes all SQL columns using their **original column names** (not the mapped
 RavenDB property names). The JavaScript type of each value depends on the source
@@ -150,12 +171,13 @@ database type.
 
 <Tabs>
 <TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`var meta = JSON.parse($row.metadata);
+
+```javascript
+var meta = JSON.parse($row.metadata);
 this.Priority = meta.priority;
 this.Label = meta.label;
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -163,15 +185,16 @@ this.Label = meta.label;
 
 <Tabs>
 <TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`this.TagCount = $row.tags.length;
+
+```javascript
+this.TagCount = $row.tags.length;
 this.FirstTag = $row.tags[0];
 this.Tags = $row.tags;
 
 // INT[] elements are strings - parse explicitly if numeric arithmetic is needed
 var first = parseInt($row.scores[0], 10);
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -179,26 +202,28 @@ var first = parseInt($row.scores[0], 10);
 
 <Tabs>
 <TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`this.EmbeddingSum = $row.embedding.reduce(function(a, b) \{ return a + b; \}, 0);
+
+```javascript
+this.EmbeddingSum = $row.embedding.reduce(function(a, b) { return a + b; }, 0);
 this.Embedding = $row.embedding;
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
----
+</Panel>
 
-## Patch Scope: Root vs Embedded
+<Panel heading="Patch Scope: Root vs Embedded">
 
 **Root table patches** operate on the root document:
 
 <Tabs>
 <TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`Patch = "this.Status = $row.is_active ? 'Active' : 'Inactive';"
-`}
-</CodeBlock>
+
+```javascript
+Patch = "this.Status = $row.is_active ? 'Active' : 'Inactive';"
+```
+
 </TabItem>
 </Tabs>
 
@@ -208,37 +233,39 @@ this.Embedding = $row.embedding;
 
 <Tabs>
 <TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`// Patch on order_lines embedded table
+
+```javascript
+// Patch on order_lines embedded table
 Patch = "this.TotalQuantity = (this.Lines || []).reduce((s, l) => s + l.Quantity, 0);"
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
 `this` is the parent Orders document. This lets you recompute parent-level aggregates
 whenever an embedded item changes.
 
----
+</Panel>
 
-## Scenario: Column Transformation
+<Panel heading="Scenario: Column Transformation">
 
 Transform or combine SQL columns into RavenDB properties:
 
 <Tabs>
 <TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`this.FullName = ($row.first_name + ' ' + $row.last_name).trim();
+
+```javascript
+this.FullName = ($row.first_name + ' ' + $row.last_name).trim();
 this.Status = $row.is_active ? 'Active' : 'Inactive';
 this.CreatedAt = new Date($row.created_unix * 1000).toISOString();
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
----
+</Panel>
 
-## Scenario: Aggregation with Embedded Tables
+<Panel heading="Scenario: Aggregation with Embedded Tables">
 
 Recompute parent-level totals whenever an embedded item is added or updated.
 
@@ -250,17 +277,18 @@ Without it, deletes will leave the aggregate in an incorrect state.
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`new CdcSinkEmbeddedTableConfig
-\{
+
+```csharp
+new CdcSinkEmbeddedTableConfig
+{
     SourceTableName = "order_lines",
     PropertyName = "Lines",
     PrimaryKeyColumns = ["line_id"],
     JoinColumns = ["order_id"],
     Columns =
     [
-        new CdcColumnMapping() \{ Column = "line_id",  Name = "LineId" \},
-        new CdcColumnMapping() \{ Column = "quantity", Name = "Quantity" \},
+        new CdcColumnMapping() { Column = "line_id",  Name = "LineId" },
+        new CdcColumnMapping() { Column = "quantity", Name = "Quantity" },
     ],
 
     // Runs on INSERT and UPDATE - recomputes total from current Lines array
@@ -271,24 +299,24 @@ Without it, deletes will leave the aggregate in an incorrect state.
 
     // REQUIRED: Runs on DELETE - recomputes after item is removed from array
     OnDelete = new CdcSinkOnDeleteConfig
-    \{
+    {
         Patch = @"
             this.TotalQuantity = (this.Lines || [])
                 .reduce((sum, line) => sum + (line.Quantity || 0), 0);
         "
-    \}
-\}
-`}
-</CodeBlock>
+    }
+}
+```
+
 </TabItem>
 </Tabs>
 
 The OnDelete patch runs after the item has already been removed from the array,
 so re-summing `this.Lines` gives the correct post-deletion total.
 
----
+</Panel>
 
-## Scenario: Delta Computations
+<Panel heading="Scenario: Delta Computations">
 
 Use `$old` to compute a delta when an embedded item changes, keeping a running total
 without recomputing from scratch.
@@ -300,17 +328,18 @@ the deleted item's value. Without it, deletes leave the running total incorrect.
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`new CdcSinkEmbeddedTableConfig
-\{
+
+```csharp
+new CdcSinkEmbeddedTableConfig
+{
     SourceTableName = "invoice_lines",
     PropertyName = "Lines",
     PrimaryKeyColumns = ["line_id"],
     JoinColumns = ["invoice_id"],
     Columns =
     [
-        new CdcColumnMapping() \{ Column = "line_id", Name = "LineId" \},
-        new CdcColumnMapping() \{ Column = "amount",  Name = "Amount" \},
+        new CdcColumnMapping() { Column = "line_id", Name = "LineId" },
+        new CdcColumnMapping() { Column = "amount",  Name = "Amount" },
     ],
 
     // INSERT: $old is null, so delta = new amount (0 → new)
@@ -323,87 +352,90 @@ the deleted item's value. Without it, deletes leave the running total incorrect.
 
     // REQUIRED: Subtract the deleted item's amount using $old
     OnDelete = new CdcSinkOnDeleteConfig
-    \{
+    {
         Patch = @"
             const deletedAmount = $old?.Amount || 0;
             this.RunningTotal = (this.RunningTotal || 0) - deletedAmount;
         "
-    \}
-\}
-`}
-</CodeBlock>
+    }
+}
+```
+
 </TabItem>
 </Tabs>
 
 The `$old` variable in the OnDelete patch contains the item's last known state before deletion.
 
----
+</Panel>
 
-## Scenario: Computed Derived Fields
+<Panel heading="Scenario: Computed Derived Fields">
 
 Compute fields from unmapped columns that you don't want to store directly:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`Columns =
+
+```csharp
+Columns =
 [
-    new CdcColumnMapping() \{ Column = "id",   Name = "Id" \},
-    new CdcColumnMapping() \{ Column = "name", Name = "Name" \},
+    new CdcColumnMapping() { Column = "id",   Name = "Id" },
+    new CdcColumnMapping() { Column = "name", Name = "Name" },
 ],
 // base_price and tax_rate are NOT in Columns
 Patch = @"
     this.FinalPrice = $row.base_price * (1 + $row.tax_rate);
     this.Discount = $row.is_vip ? $row.base_price * 0.1 : 0;
 "
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
----
+</Panel>
 
-## Scenario: Document Metadata
+<Panel heading="Scenario: Document Metadata">
 
 Patches can set RavenDB document metadata, including expiration:
 
 <Tabs>
 <TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`this['@metadata'] = this['@metadata'] || \{\};
 
-if ($row.expires_at) \{
+```javascript
+this['@metadata'] = this['@metadata'] || {};
+
+if ($row.expires_at) {
     this['@metadata']['@expires'] = new Date($row.expires_at).toISOString();
-\}
+}
 
 this['@metadata']['SourceTable'] = 'orders';
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
----
+</Panel>
 
-## Scenario: Loading Related Documents
+<Panel heading="Scenario: Loading Related Documents">
 
 Use `load()` to load a related RavenDB document and denormalize its data:
 
 <Tabs>
 <TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`const customer = load('Customers/' + $row.customer_id);
 
-if (customer) \{
+```javascript
+const customer = load('Customers/' + $row.customer_id);
+
+if (customer) {
     this.CustomerName = customer.Name;
     this.CustomerEmail = customer.Email;
     this.CustomerTier = customer.Tier;
-\} else \{
+} else {
     // Document doesn't exist yet - race condition or not yet synced
     this.CustomerName = null;
     this.CustomerEmail = null;
-\}
-`}
-</CodeBlock>
+}
+```
+
 </TabItem>
 </Tabs>
 
@@ -419,9 +451,9 @@ Always check for null before accessing properties.
 **Prefer linked tables** for simple foreign key references - they are cleaner and
 do not have the null-handling complexity of `load()`.
 
----
+</Panel>
 
-## Idempotency and Failover
+<Panel heading="Idempotency and Failover">
 
 After a failover, CDC Sink resumes from the replicated state, which may be older
 than the last work the previous mentor node completed. Some changes may be re-read
@@ -431,8 +463,9 @@ and re-applied.
 
 <Tabs>
 <TabItem value="javascript" label="javascript">
-<CodeBlock language="javascript">
-{`// NOT idempotent - increments again on re-read
+
+```javascript
+// NOT idempotent - increments again on re-read
 this.ViewCount = (this.ViewCount || 0) + 1;
 
 // Idempotent - absolute value from SQL source
@@ -442,17 +475,17 @@ this.ViewCount = $row.view_count;
 const oldVal = $old?.Amount || 0;
 const newVal = $row.amount || 0;
 this.RunningTotal = (this.RunningTotal || 0) + (newVal - oldVal);
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
 Column mapping itself is idempotent - overwriting a property with the same value
 is always safe.
 
----
+</Panel>
 
-## Step Limit
+<Panel heading="Step Limit">
 
 Patch scripts are bounded by a **step quota** rather than a time limit. Each operation
 in the script (assignment, loop iteration, function call) consumes steps.
@@ -464,9 +497,9 @@ If a patch exceeds the limit, the CDC operation fails and is retried.
 
 Keep patches focused and efficient - prefer `.filter()` + `.reduce()` over nested loops.
 
----
+</Panel>
 
-## Capabilities and Limitations
+<Panel heading="Capabilities and Limitations">
 
 **What patches can do:**
 
@@ -485,21 +518,4 @@ Keep patches focused and efficient - prefer `.filter()` + `.reduce()` over neste
 * Access the file system
 * Load documents from other RavenDB databases
 
----
-
-## Related Articles
-
-### CDC Sink
-
-- [Delete Strategies](./delete-strategies.mdx)
-- [Column Mapping](./column-mapping.mdx)
-- [Property Retention](./property-retention.mdx)
-- [Failover and Consistency](./failover-and-consistency.mdx)
-
-### PostgreSQL
-
-- [Column Mapping](./column-mapping.mdx)
-
-### Server
-
-- [Patching Configuration](../../../server/configuration/patching-configuration)
+</Panel>

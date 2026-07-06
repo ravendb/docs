@@ -3,12 +3,29 @@ title: "CDC Sink for PostgreSQL: Cleanup and Maintenance"
 sidebar_label: Cleanup and Maintenance
 description: "How to identify and remove orphaned PostgreSQL replication slots and publications after a CDC Sink task is deleted, and how to avoid slot accumulation."
 sidebar_position: 6
+see_also:
+  - title: "Initial Setup"
+    link: "server/ongoing-tasks/cdc-sink/postgres/initial-setup"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "Monitoring PostgreSQL"
+    link: "server/ongoing-tasks/cdc-sink/postgres/monitoring-postgres"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "WAL Configuration"
+    link: "server/ongoing-tasks/cdc-sink/postgres/wal-configuration"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "API Reference"
+    link: "server/ongoing-tasks/cdc-sink/api-reference"
+    source: "docs"
+    path: "Server > CDC Sink"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -21,19 +38,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * These must be cleaned up manually by a database administrator.
 
-* In this page:
+* In this article:
   * [Why Manual Cleanup Is Required](#why-manual-cleanup-is-required)
   * [Finding Orphaned Slots and Publications](#finding-orphaned-slots-and-publications)
   * [Dropping a Replication Slot](#dropping-a-replication-slot)
   * [Dropping a Publication](#dropping-a-publication)
   * [Too Many Replication Slots](#too-many-replication-slots)
-  * [Configuration Changes That Rename Slots](#configuration-changes-that-rename-slots)
+  * [Slot and Publication Names Are Immutable](#slot-and-publication-names-are-immutable)
 
 </Admonition>
 
----
-
-## Why Manual Cleanup Is Required
+<Panel heading="Why Manual Cleanup Is Required">
 
 An active replication slot prevents PostgreSQL from discarding WAL segments that
 have not yet been consumed. If a slot is not being consumed (because the CDC Sink
@@ -59,20 +74,21 @@ For these reasons, slot and publication lifecycle management is the responsibili
 of the database administrator.
 </Admonition>
 
----
+</Panel>
 
-## Finding Orphaned Slots and Publications
+<Panel heading="Finding Orphaned Slots and Publications">
 
 List all CDC Sink replication slots:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`SELECT slot_name, active, confirmed_flush_lsn
+<TabItem value="sql" label="SQL">
+
+```sql
+SELECT slot_name, active, confirmed_flush_lsn
 FROM pg_replication_slots
 WHERE slot_name LIKE 'rvn_cdc_s_%';
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -82,29 +98,31 @@ Sink tasks in RavenDB - any slot whose corresponding task no longer exists is or
 List all CDC Sink publications:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`SELECT p.pubname, c.relname AS table_name
+<TabItem value="sql" label="SQL">
+
+```sql
+SELECT p.pubname, c.relname AS table_name
 FROM pg_publication p
 JOIN pg_publication_rel pr ON pr.prpubid = p.oid
 JOIN pg_class c ON c.oid = pr.prrelid
 WHERE p.pubname LIKE 'rvn_cdc_p_%'
 ORDER BY p.pubname, c.relname;
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
----
+</Panel>
 
-## Dropping a Replication Slot
+<Panel heading="Dropping a Replication Slot">
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`SELECT pg_drop_replication_slot('rvn_cdc_s_<hash>');
-`}
-</CodeBlock>
+<TabItem value="sql" label="SQL">
+
+```sql
+SELECT pg_drop_replication_slot('rvn_cdc_s_<hash>');
+```
+
 </TabItem>
 </Tabs>
 
@@ -113,25 +131,26 @@ You cannot drop an active replication slot (one with `active = true`). The CDC S
 task must be stopped or deleted in RavenDB before the slot can be dropped.
 </Admonition>
 
----
+</Panel>
 
-## Dropping a Publication
+<Panel heading="Dropping a Publication">
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`DROP PUBLICATION IF EXISTS "rvn_cdc_p_<hash>";
-`}
-</CodeBlock>
+<TabItem value="sql" label="SQL">
+
+```sql
+DROP PUBLICATION IF EXISTS "rvn_cdc_p_<hash>";
+```
+
 </TabItem>
 </Tabs>
 
 Publications are not consumed like slots - they do not accumulate data or hold WAL
 segments. However, they should still be dropped to keep the database clean.
 
----
+</Panel>
 
-## Too Many Replication Slots
+<Panel heading="Too Many Replication Slots">
 
 PostgreSQL limits the total number of replication slots to `max_replication_slots`.
 If you exceed this limit, no new CDC Sink tasks can start (they will fail with a
@@ -140,12 +159,13 @@ connection error).
 Check how many slots are in use:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`SELECT count(*) FROM pg_replication_slots;
+<TabItem value="sql" label="SQL">
+
+```sql
+SELECT count(*) FROM pg_replication_slots;
 SHOW max_replication_slots;
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -154,33 +174,35 @@ To resolve this:
 1. Identify inactive slots:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`SELECT slot_name, active
+<TabItem value="sql" label="SQL">
+
+```sql
+SELECT slot_name, active
 FROM pg_replication_slots
 WHERE active = false;
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
 2. Drop slots for tasks that no longer exist:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`SELECT pg_drop_replication_slot('rvn_cdc_s_<hash>');
-`}
-</CodeBlock>
+<TabItem value="sql" label="SQL">
+
+```sql
+SELECT pg_drop_replication_slot('rvn_cdc_s_<hash>');
+```
+
 </TabItem>
 </Tabs>
 
 3. If needed, increase `max_replication_slots` in `postgresql.conf` and restart
    PostgreSQL.
 
----
+</Panel>
 
-## Slot and Publication Names Are Immutable
+<Panel heading="Slot and Publication Names Are Immutable">
 
 The replication slot name and publication name are generated **once at task creation**
 using a GUID and stored with the task. They do not change when you modify the task -
@@ -195,16 +217,4 @@ The old slot and publication from the deleted task must then be cleaned up manua
 see [Dropping a Replication Slot](#dropping-a-replication-slot) and
 [Dropping a Publication](#dropping-a-publication) below.
 
----
-
-## Related Articles
-
-### CDC Sink for PostgreSQL
-
-- [Initial Setup](./initial-setup.mdx)
-- [Monitoring PostgreSQL](./monitoring-postgres.mdx)
-- [WAL Configuration](./wal-configuration.mdx)
-
-### CDC Sink
-
-- [API Reference](../api-reference.mdx)
+</Panel>

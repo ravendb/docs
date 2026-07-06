@@ -3,12 +3,25 @@ title: "CDC Sink for PostgreSQL: Monitoring PostgreSQL"
 sidebar_label: Monitoring PostgreSQL
 description: "PostgreSQL-side monitoring for CDC Sink, including replication slot health, replication lag, and WAL disk usage queries."
 sidebar_position: 7
+see_also:
+  - title: "Cleanup and Maintenance"
+    link: "server/ongoing-tasks/cdc-sink/postgres/cleanup-and-maintenance"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "Monitoring"
+    link: "server/ongoing-tasks/cdc-sink/monitoring"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Failover and Consistency"
+    link: "server/ongoing-tasks/cdc-sink/failover-and-consistency"
+    source: "docs"
+    path: "Server > CDC Sink"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -21,27 +34,26 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * For RavenDB-side monitoring, see [Monitoring](../monitoring.mdx).
 
-* In this page:
+* In this article:
   * [Replication Slot Health](#replication-slot-health)
   * [Replication Lag](#replication-lag)
   * [WAL Disk Usage](#wal-disk-usage)
 
 </Admonition>
 
----
-
-## Replication Slot Health
+<Panel heading="Replication Slot Health">
 
 Check that CDC Sink replication slots are active and being consumed:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`SELECT slot_name, active, confirmed_flush_lsn
+<TabItem value="sql" label="SQL">
+
+```sql
+SELECT slot_name, active, confirmed_flush_lsn
 FROM pg_replication_slots
 WHERE slot_name LIKE 'rvn_cdc_s_%';
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -54,21 +66,22 @@ A slot with `active = false` means CDC Sink is not currently connected. This is
 expected during failover or when the task is paused. If the slot remains inactive
 for an extended period, investigate the task state in RavenDB Studio.
 
----
+</Panel>
 
-## Replication Lag
+<Panel heading="Replication Lag">
 
 Replication lag measures how far behind the slot is relative to the current WAL position:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`SELECT slot_name,
+<TabItem value="sql" label="SQL">
+
+```sql
+SELECT slot_name,
        pg_current_wal_lsn() - confirmed_flush_lsn AS lag_bytes
 FROM pg_replication_slots
 WHERE slot_name LIKE 'rvn_cdc_s_%';
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -80,9 +93,9 @@ of changes in the source database. Consider:
 * Checking the per-table processing statistics in the Management Studio for slow scripts -
   complex patch scripts are a common cause of processing slowdowns
 
----
+</Panel>
 
-## WAL Disk Usage
+<Panel heading="WAL Disk Usage">
 
 PostgreSQL retains WAL segments until all replication slots have consumed them.
 An inactive or slow slot can cause WAL to accumulate on disk.
@@ -90,14 +103,15 @@ An inactive or slow slot can cause WAL to accumulate on disk.
 Check approximate WAL retained per slot:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`SELECT slot_name, active,
+<TabItem value="sql" label="SQL">
+
+```sql
+SELECT slot_name, active,
        pg_wal_lsn_diff(pg_current_wal_lsn(), restart_lsn) AS retained_wal_bytes
 FROM pg_replication_slots
 WHERE slot_name LIKE 'rvn_cdc_s_%';
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -106,15 +120,4 @@ consumed and is holding WAL. If the slot corresponds to a deleted or abandoned
 CDC Sink task, drop it.
 See [Cleanup and Maintenance](./cleanup-and-maintenance.mdx).
 
----
-
-## Related Articles
-
-### CDC Sink for PostgreSQL
-
-- [Cleanup and Maintenance](./cleanup-and-maintenance.mdx)
-
-### CDC Sink
-
-- [Monitoring](../monitoring.mdx)
-- [Failover and Consistency](../failover-and-consistency.mdx)
+</Panel>

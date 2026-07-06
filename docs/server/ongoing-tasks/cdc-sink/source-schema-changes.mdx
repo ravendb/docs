@@ -3,12 +3,33 @@ title: "CDC Sink: Source Schema Changes"
 sidebar_label: Source Schema Changes
 description: "How to safely modify your source database schema while a CDC Sink task is running - behavior per database engine, recovery, and the SQL Server capture instance procedure."
 sidebar_position: 13
+see_also:
+  - title: "Configuration Reference"
+    link: "server/ongoing-tasks/cdc-sink/configuration-reference"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Column Mapping"
+    link: "server/ongoing-tasks/cdc-sink/column-mapping"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "How It Works: Updating the Task Configuration"
+    link: "server/ongoing-tasks/cdc-sink/how-it-works#updating-the-task-configuration"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Troubleshooting"
+    link: "server/ongoing-tasks/cdc-sink/troubleshooting"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "SQL Server Overview"
+    link: "server/ongoing-tasks/cdc-sink/sql-server/overview"
+    source: "docs"
+    path: "Server > CDC Sink > SQL Server"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -23,7 +44,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   MySQL detects most changes automatically, and SQL Server requires an explicit
   procedure for every schema change.
 
-* In this page:
+* In this article:
   * [Quick Reference](#quick-reference)
   * [PostgreSQL](#postgresql)
   * [MySQL](#mysql)
@@ -33,9 +54,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
----
-
-## Quick Reference
+<Panel heading="Quick Reference">
 
 | Change | MySQL | PostgreSQL | SQL Server |
 |--------|-------|------------|------------|
@@ -46,9 +65,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 | Change column type | Restarts, usually recovers | Transparent (auto-rebuild) | Requires [procedure](#sql-server-schema-change-procedure) |
 | Rename mapped column | Enters fallback | Enters fallback | Requires [procedure](#sql-server-schema-change-procedure) |
 
----
+</Panel>
 
-## PostgreSQL
+<Panel heading="PostgreSQL">
 
 PostgreSQL logical replication sends `RelationMessage` events inline in the WAL stream
 whenever the schema changes. CDC Sink detects these automatically and rebuilds its
@@ -67,8 +86,9 @@ column mapping on the fly. This makes PostgreSQL the **most resilient** to schem
 
 <Tabs>
 <TabItem value="sql" label="SQL">
-<CodeBlock language="sql">
-{`-- Transparent: adding an unmapped column
+
+```sql
+-- Transparent: adding an unmapped column
 ALTER TABLE orders ADD COLUMN internal_notes TEXT;
 -- CDC Sink auto-rebuilds and continues
 
@@ -79,14 +99,14 @@ ALTER TABLE orders ALTER COLUMN status TYPE VARCHAR(100);
 -- Requires config update: renaming a mapped column
 ALTER TABLE orders RENAME COLUMN name TO full_name;
 -- CDC Sink enters fallback. Update column mapping from 'name' to 'full_name'.
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
----
+</Panel>
 
-## MySQL
+<Panel heading="MySQL">
 
 MySQL CDC uses binlog replication. Each row event is preceded by a `TableMapEvent`
 containing column type information. CDC Sink compares the column types at mapped
@@ -121,8 +141,9 @@ then apply the next change. This ensures each change is simple and isolated.
 
 <Tabs>
 <TabItem value="sql" label="SQL">
-<CodeBlock language="sql">
-{`-- Transparent: adding an unmapped column
+
+```sql
+-- Transparent: adding an unmapped column
 ALTER TABLE orders ADD COLUMN internal_notes TEXT;
 -- CDC Sink continues without interruption
 
@@ -133,14 +154,14 @@ ALTER TABLE orders MODIFY COLUMN status VARCHAR(100);
 -- Requires config update: dropping a mapped column
 ALTER TABLE orders DROP COLUMN legacy_field;
 -- CDC Sink enters fallback. Update the config to remove 'legacy_field' from Columns.
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
----
+</Panel>
 
-## SQL Server
+<Panel heading="SQL Server">
 
 SQL Server CDC uses **capture instances** - immutable snapshots of the table schema
 at the time `sp_cdc_enable_table` was executed. The CDC change tables reflect the
@@ -159,8 +180,9 @@ For **any** schema change on a SQL Server CDC-tracked table, follow this procedu
 
 <Tabs>
 <TabItem value="sql" label="SQL">
-<CodeBlock language="sql">
-{`-- Step 1: ALTER the table
+
+```sql
+-- Step 1: ALTER the table
 ALTER TABLE dbo.orders ADD priority INT DEFAULT 0;
 
 -- Step 2: Create a NEW capture instance (the old one still exists)
@@ -181,8 +203,8 @@ EXEC sys.sp_cdc_disable_table
     @capture_instance = N'dbo_orders';
 
 -- CDC Sink detects the drop, restarts, and picks up dbo_orders_v2.
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -213,20 +235,21 @@ tables) and cleanup job (which purges old changes) are Agent jobs.
 
 <Tabs>
 <TabItem value="sql" label="SQL">
-<CodeBlock language="sql">
-{`-- Check Agent status
+
+```sql
+-- Check Agent status
 SELECT * FROM sys.dm_server_services WHERE servicename LIKE '%Agent%';
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
 Without the Agent, changes are never captured and CDC Sink polls indefinitely without
 finding data.
 
----
+</Panel>
 
-## Recovery From Errors
+<Panel heading="Recovery From Errors">
 
 All three providers use the same recovery mechanism:
 
@@ -238,9 +261,9 @@ All three providers use the same recovery mechanism:
 4. **After fixing the configuration** - the process recovers automatically on the next
    retry cycle. No manual restart is needed.
 
----
+</Panel>
 
-## General Recommendation
+<Panel heading="General Recommendation">
 
 For schema changes that affect mapped columns on any database engine:
 
@@ -251,17 +274,4 @@ For schema changes that affect mapped columns on any database engine:
 CDC Sink will detect the change and recover automatically. Disabling the task
 beforehand is not required but can avoid a brief fallback cycle.
 
----
-
-## Related Articles
-
-### CDC Sink
-
-- [Configuration Reference](./configuration-reference.mdx)
-- [Column Mapping](./column-mapping.mdx)
-- [How It Works: Updating the Task Configuration](./how-it-works.mdx#updating-the-task-configuration)
-- [Troubleshooting](./troubleshooting.mdx)
-
-### SQL Server
-
-- [SQL Server Overview](./sql-server/overview.mdx)
+</Panel>

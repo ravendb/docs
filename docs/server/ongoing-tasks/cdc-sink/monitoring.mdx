@@ -3,12 +3,29 @@ title: "CDC Sink: Monitoring"
 sidebar_label: Monitoring
 description: "Explains how to monitor a CDC Sink task - its running state, progress, fallback behavior, and statistics available through Management Studio and the API."
 sidebar_position: 12
+see_also:
+  - title: "How It Works"
+    link: "server/ongoing-tasks/cdc-sink/how-it-works"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Failover and Consistency"
+    link: "server/ongoing-tasks/cdc-sink/failover-and-consistency"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Server Configuration"
+    link: "server/ongoing-tasks/cdc-sink/server-configuration"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Troubleshooting"
+    link: "server/ongoing-tasks/cdc-sink/troubleshooting"
+    source: "docs"
+    path: "Server > CDC Sink"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -19,7 +36,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * This page explains how to monitor a CDC Sink task - its running state, progress,
   fallback behavior, and statistics available through the Management Studio and API.
 
-* In this page:
+* In this article:
   * [Task State](#task-state)
   * [Fallback Mode](#fallback-mode)
   * [Statistics](#statistics)
@@ -27,9 +44,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
----
-
-## Task State
+<Panel heading="Task State">
 
 A CDC Sink task can be in one of the following states:
 
@@ -44,9 +59,9 @@ A CDC Sink task can be in one of the following states:
 
 The current state is visible in the **Ongoing Tasks** view in the Management Studio.
 
----
+</Panel>
 
-## Fallback Mode
+<Panel heading="Fallback Mode">
 
 When CDC Sink cannot reach the source database, it enters **fallback mode** rather
 than failing immediately.
@@ -60,19 +75,20 @@ Retry delay doubles on each consecutive failure, up to the cap set by
 `CdcSink.MaxFallbackTimeInSec` (default 15 minutes).
 See [Server Configuration](./server-configuration.mdx).
 
----
+</Panel>
 
-## Statistics
+<Panel heading="Statistics">
 
 CDC Sink exposes runtime statistics through the `GetOngoingTaskInfoOperation`:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`var taskInfo = await store.Maintenance.SendAsync(
+
+```csharp
+var taskInfo = await store.Maintenance.SendAsync(
     new GetOngoingTaskInfoOperation(taskId, OngoingTaskType.CdcSink));
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -88,9 +104,9 @@ The returned object includes:
 Detailed per-table statistics - including row counts and last processed position -
 are available through the Management Studio's ongoing tasks detail view.
 
----
+</Panel>
 
-## Notifications
+<Panel heading="Notifications">
 
 CDC Sink participates in RavenDB's standard alert system. If the task enters an
 error state or fallback mode, an alert is raised and visible in:
@@ -101,9 +117,9 @@ error state or fallback mode, an alert is raised and visible in:
 Alerts include the error message and which table or operation triggered the failure,
 making it straightforward to diagnose the root cause.
 
----
+</Panel>
 
-## Error Handling
+<Panel heading="Error Handling">
 
 CDC Sink tolerates individual document processing errors - each failure is logged
 and recorded, but processing continues for the remaining documents in the batch.
@@ -122,13 +138,4 @@ See [Server Configuration](./server-configuration.mdx) and [Fallback Mode](#fall
 Patch errors - including `MaxSteps exceeded` - fail only the affected document.
 The rest of the batch continues normally.
 
----
-
-## Related Articles
-
-### CDC Sink
-
-- [How It Works](./how-it-works.mdx)
-- [Failover and Consistency](./failover-and-consistency.mdx)
-- [Server Configuration](./server-configuration.mdx)
-- [Troubleshooting](./troubleshooting.mdx)
+</Panel>

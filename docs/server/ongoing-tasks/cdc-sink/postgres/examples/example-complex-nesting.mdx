@@ -3,12 +3,41 @@ title: "CDC Sink Example: Complex Nesting with Linked Tables"
 sidebar_label: Complex Nesting with Linked Tables
 description: "Multi-level embedded table structure combined with linked table references, representing a product catalog with variants, attributes, and a category reference."
 sidebar_position: 3
+see_also:
+  - title: "Simple Migration"
+    link: "server/ongoing-tasks/cdc-sink/postgres/examples/example-simple-migration"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL > Examples"
+  - title: "Denormalization"
+    link: "server/ongoing-tasks/cdc-sink/postgres/examples/example-denormalization"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL > Examples"
+  - title: "Event Sourcing"
+    link: "server/ongoing-tasks/cdc-sink/postgres/examples/example-event-sourcing"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL > Examples"
+  - title: "Schema Design"
+    link: "server/ongoing-tasks/cdc-sink/schema-design"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Embedded Tables"
+    link: "server/ongoing-tasks/cdc-sink/embedded-tables"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Linked Tables"
+    link: "server/ongoing-tasks/cdc-sink/linked-tables"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "REPLICA IDENTITY"
+    link: "server/ongoing-tasks/cdc-sink/postgres/replica-identity"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -20,7 +49,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   table references, representing a product catalog with variants, attributes, and
   a category reference.
 
-* In this page:
+* In this article:
   * [Source Schema](#source-schema)
   * [REPLICA IDENTITY Setup](#replica-identity-setup)
   * [Task Configuration](#task-configuration)
@@ -28,12 +57,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 </Admonition>
 
-## Source Schema
+<Panel heading="Source Schema">
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`CREATE TABLE categories (
+<TabItem value="sql" label="SQL">
+
+```sql
+CREATE TABLE categories (
     category_id SERIAL PRIMARY KEY,
     name        TEXT NOT NULL
 );
@@ -59,12 +89,14 @@ CREATE TABLE variant_attributes (
     attr_name  TEXT NOT NULL,
     attr_value TEXT NOT NULL
 );
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
-## REPLICA IDENTITY Setup
+</Panel>
+
+<Panel heading="REPLICA IDENTITY Setup">
 
 Both `product_variants` and `variant_attributes` have surrogate PKs with join
 columns that are not part of their primary keys. Rather than `REPLICA IDENTITY FULL`
@@ -72,9 +104,10 @@ columns that are not part of their primary keys. Rather than `REPLICA IDENTITY F
 and PK columns:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`-- product_variants: join column is product_id, PK is variant_id
+<TabItem value="sql" label="SQL">
+
+```sql
+-- product_variants: join column is product_id, PK is variant_id
 CREATE UNIQUE INDEX product_variants_replica_idx
     ON product_variants (product_id, variant_id);
 ALTER TABLE product_variants
@@ -85,49 +118,52 @@ CREATE UNIQUE INDEX variant_attributes_replica_idx
     ON variant_attributes (product_id, variant_id, attr_id);
 ALTER TABLE variant_attributes
     REPLICA IDENTITY USING INDEX variant_attributes_replica_idx;
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
 See [REPLICA IDENTITY](../replica-identity.mdx) for more details.
 
-## Task Configuration
+</Panel>
+
+<Panel heading="Task Configuration">
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`var config = new CdcSinkConfiguration
-\{
+
+```csharp
+var config = new CdcSinkConfiguration
+{
     Name = "ProductCatalogSync",
     ConnectionStringName = "MyPostgresConnection",
     Tables =
     [
         new CdcSinkTableConfig
-        \{
+        {
             CollectionName = "Products",
             SourceTableName = "products",
             PrimaryKeyColumns = ["product_id"],
             Columns =
             [
-                new CdcColumnMapping() \{ Column = "product_id", Name = "ProductId" \},
-                new CdcColumnMapping() \{ Column = "name",       Name = "Name" \},
+                new CdcColumnMapping() { Column = "product_id", Name = "ProductId" },
+                new CdcColumnMapping() { Column = "name",       Name = "Name" },
             ],
             // Linked table: category_id FK → document ID in Categories collection
             LinkedTables =
             [
                 new CdcSinkLinkedTableConfig
-                \{
+                {
                     SourceTableName = "categories",
                     PropertyName = "Category",
                     LinkedCollectionName = "Categories",
                     JoinColumns = ["category_id"]
-                \}
+                }
             ],
             EmbeddedTables =
             [
                 new CdcSinkEmbeddedTableConfig
-                \{
+                {
                     SourceTableName = "product_variants",
                     PropertyName = "Variants",
                     Type = CdcSinkRelationType.Array,
@@ -135,15 +171,15 @@ See [REPLICA IDENTITY](../replica-identity.mdx) for more details.
                     PrimaryKeyColumns = ["variant_id"],
                     Columns =
                     [
-                        new CdcColumnMapping() \{ Column = "variant_id", Name = "VariantId" \},
-                        new CdcColumnMapping() \{ Column = "sku",        Name = "Sku" \},
-                        new CdcColumnMapping() \{ Column = "price",      Name = "Price" \},
+                        new CdcColumnMapping() { Column = "variant_id", Name = "VariantId" },
+                        new CdcColumnMapping() { Column = "sku",        Name = "Sku" },
+                        new CdcColumnMapping() { Column = "price",      Name = "Price" },
                     ],
                     // Deep-nested: attributes within each variant
                     EmbeddedTables =
                     [
                         new CdcSinkEmbeddedTableConfig
-                        \{
+                        {
                             SourceTableName = "variant_attributes",
                             PropertyName = "Attributes",
                             Type = CdcSinkRelationType.Array,
@@ -153,57 +189,60 @@ See [REPLICA IDENTITY](../replica-identity.mdx) for more details.
                             PrimaryKeyColumns = ["attr_id"],
                             Columns =
                             [
-                                new CdcColumnMapping() \{ Column = "attr_id",    Name = "AttrId" \},
-                                new CdcColumnMapping() \{ Column = "attr_name",  Name = "Name" \},
-                                new CdcColumnMapping() \{ Column = "attr_value", Name = "Value" \},
+                                new CdcColumnMapping() { Column = "attr_id",    Name = "AttrId" },
+                                new CdcColumnMapping() { Column = "attr_name",  Name = "Name" },
+                                new CdcColumnMapping() { Column = "attr_value", Name = "Value" },
                             ]
-                        \}
+                        }
                     ]
-                \}
+                }
             ]
-        \}
+        }
     ]
-\};
+};
 
 await store.Maintenance.SendAsync(new AddCdcSinkOperation(config));
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
-## Resulting Documents
+</Panel>
+
+<Panel heading="Resulting Documents">
 
 <Tabs>
 <TabItem value="json" label="json">
-<CodeBlock language="json">
-{`\{
+
+```json
+{
     "ProductId": 42,
     "Name": "Hiking Boot",
     "Category": "Categories/3",
     "Variants": [
-        \{
+        {
             "VariantId": 101,
             "Sku": "HB-BLK-10",
             "Price": 89.99,
             "Attributes": [
-                \{ "AttrId": 1, "Name": "Color", "Value": "Black" \},
-                \{ "AttrId": 2, "Name": "Size",  "Value": "10" \}
+                { "AttrId": 1, "Name": "Color", "Value": "Black" },
+                { "AttrId": 2, "Name": "Size",  "Value": "10" }
             ]
-        \},
-        \{
+        },
+        {
             "VariantId": 102,
             "Sku": "HB-BRN-11",
             "Price": 89.99,
             "Attributes": [
-                \{ "AttrId": 3, "Name": "Color", "Value": "Brown" \},
-                \{ "AttrId": 4, "Name": "Size",  "Value": "11" \}
+                { "AttrId": 3, "Name": "Color", "Value": "Brown" },
+                { "AttrId": 4, "Name": "Size",  "Value": "11" }
             ]
-        \}
+        }
     ],
-    "@metadata": \{ "@collection": "Products" \}
-\}
-`}
-</CodeBlock>
+    "@metadata": { "@collection": "Products" }
+}
+```
+
 </TabItem>
 </Tabs>
 
@@ -213,19 +252,4 @@ root table configuration). `"Categories/3"` is a standard RavenDB document ID
 that enables the use of RavenDB includes when querying products.
 </Admonition>
 
----
-
-## Related Articles
-
-### CDC Sink Examples
-
-- [Simple Migration](./example-simple-migration.mdx)
-- [Denormalization](./example-denormalization.mdx)
-- [Event Sourcing](./example-event-sourcing.mdx)
-
-### CDC Sink
-
-- [Schema Design](../../schema-design.mdx)
-- [Embedded Tables](../../embedded-tables.mdx)
-- [Linked Tables](../../linked-tables.mdx)
-- [REPLICA IDENTITY](../replica-identity.mdx)
+</Panel>

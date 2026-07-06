@@ -3,12 +3,25 @@ title: "CDC Sink for PostgreSQL: Permissions and Roles"
 sidebar_label: Permissions and Roles
 description: "PostgreSQL permissions required by the CDC Sink user, including minimum privileges, automatic setup permissions, and dedicated user creation examples."
 sidebar_position: 2
+see_also:
+  - title: "Prerequisites Checklist"
+    link: "server/ongoing-tasks/cdc-sink/postgres/prerequisites-checklist"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "Initial Setup"
+    link: "server/ongoing-tasks/cdc-sink/postgres/initial-setup"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "Cleanup and Maintenance"
+    link: "server/ongoing-tasks/cdc-sink/postgres/cleanup-and-maintenance"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
@@ -19,16 +32,14 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * This page documents the PostgreSQL permissions required by the CDC Sink user,
   and how to grant them.
 
-* In this page:
+* In this article:
   * [Minimum Permissions](#minimum-permissions)
   * [Permissions for Automatic Setup](#permissions-for-automatic-setup)
   * [Creating a Dedicated CDC User](#creating-a-dedicated-cdc-user)
 
 </Admonition>
 
----
-
-## Minimum Permissions
+<Panel heading="Minimum Permissions">
 
 At a minimum, the CDC Sink user needs:
 
@@ -38,17 +49,18 @@ At a minimum, the CDC Sink user needs:
 Example:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`-- Grant replication privilege
+<TabItem value="sql" label="SQL">
+
+```sql
+-- Grant replication privilege
 ALTER USER cdc_user REPLICATION;
 
 -- Grant SELECT on each table
 GRANT SELECT ON TABLE orders TO cdc_user;
 GRANT SELECT ON TABLE order_lines TO cdc_user;
 GRANT SELECT ON TABLE customers TO cdc_user;
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
@@ -56,9 +68,9 @@ With only these permissions, a database administrator must manually create the
 replication slot and publication before starting the CDC Sink task.
 See [Initial Setup](./initial-setup.mdx).
 
----
+</Panel>
 
-## Permissions for Automatic Setup
+<Panel heading="Permissions for Automatic Setup">
 
 If you want CDC Sink to create and manage the replication slot and publication
 automatically, the user needs additional permissions:
@@ -68,11 +80,12 @@ automatically, the user needs additional permissions:
 PostgreSQL 14+:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`GRANT pg_replication_slot_admin TO cdc_user;
-`}
-</CodeBlock>
+<TabItem value="sql" label="SQL">
+
+```sql
+GRANT pg_replication_slot_admin TO cdc_user;
+```
+
 </TabItem>
 </Tabs>
 
@@ -85,11 +98,12 @@ The user must either own the tables being published, or have `SUPERUSER`.
 Alternatively, you can grant `CREATE` on the database:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`GRANT CREATE ON DATABASE mydb TO cdc_user;
-`}
-</CodeBlock>
+<TabItem value="sql" label="SQL">
+
+```sql
+GRANT CREATE ON DATABASE mydb TO cdc_user;
+```
+
 </TabItem>
 </Tabs>
 
@@ -107,9 +121,9 @@ user then only needs `REPLICATION` privilege and `SELECT` on the relevant tables
 See [Initial Setup](./initial-setup.mdx).
 </Admonition>
 
----
+</Panel>
 
-## Creating a Dedicated CDC User
+<Panel heading="Creating a Dedicated CDC User">
 
 It is recommended to use a dedicated database user for CDC Sink rather than an
 application or admin user.
@@ -117,9 +131,10 @@ application or admin user.
 Example setup:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`-- Create the user
+<TabItem value="sql" label="SQL">
+
+```sql
+-- Create the user
 CREATE USER cdc_user WITH PASSWORD 'secure_password' REPLICATION;
 
 -- Grant SELECT on tables to replicate
@@ -133,17 +148,9 @@ GRANT pg_replication_slot_admin TO cdc_user;
 -- Option A: Grant ownership of tables
 ALTER TABLE orders OWNER TO cdc_user;
 -- Option B: Create publications as a superuser before starting the task
-`}
-</CodeBlock>
+```
+
 </TabItem>
 </Tabs>
 
----
-
-## Related Articles
-
-### CDC Sink for PostgreSQL
-
-- [Prerequisites Checklist](./prerequisites-checklist.mdx)
-- [Initial Setup](./initial-setup.mdx)
-- [Cleanup and Maintenance](./cleanup-and-maintenance.mdx)
+</Panel>
