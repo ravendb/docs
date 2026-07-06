@@ -38,8 +38,6 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
 
 # CDC Sink: How It Works
 
@@ -164,7 +162,7 @@ are applied in order.
 **Example:** A source transaction that does:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 BEGIN;
@@ -255,7 +253,7 @@ the CDC Sink task and recreate it. The new task will perform a fresh initial loa
 re-processing all rows with the updated configuration.
 
 If you only need to backfill a specific property on existing documents, you can also
-use a RavenDB [patch by query](../../../client-api/operations/patching/set-based)
+use a RavenDB [patch by query](../../../client-api/operations/patching/set-based.mdx)
 to update existing documents independently of the CDC Sink task.
 
 </Admonition>

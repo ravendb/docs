@@ -22,8 +22,6 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
 
 # CDC Sink for PostgreSQL: Permissions and Roles
 
@@ -49,7 +47,7 @@ At a minimum, the CDC Sink user needs:
 Example:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 -- Grant replication privilege
@@ -80,7 +78,7 @@ automatically, the user needs additional permissions:
 PostgreSQL 14+:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 GRANT pg_replication_slot_admin TO cdc_user;
@@ -98,7 +96,7 @@ The user must either own the tables being published, or have `SUPERUSER`.
 Alternatively, you can grant `CREATE` on the database:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 GRANT CREATE ON DATABASE mydb TO cdc_user;
@@ -131,7 +129,7 @@ application or admin user.
 Example setup:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 -- Create the user

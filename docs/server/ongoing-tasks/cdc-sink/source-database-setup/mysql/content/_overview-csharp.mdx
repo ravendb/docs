@@ -1,0 +1,93 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* CDC Sink supports MySQL and MariaDB as source databases using
+  [binary log (binlog) replication](https://dev.mysql.com/doc/refman/8.0/en/replication.html).
+
+* MySQL streams row-level changes in real time through the binlog. CDC Sink consumes
+  this stream and applies INSERTs, UPDATEs, and DELETEs to RavenDB documents as they
+  occur.
+
+</Admonition>
+
+<Panel heading="Connection String">
+
+Use a `SqlConnectionString` with `FactoryName` set to `"MySql.Data.MySqlClient"` or
+`"MySqlConnector.MySqlConnectorFactory"`:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+
+```csharp
+store.Maintenance.Send(new PutConnectionStringOperation<SqlConnectionString>(
+    new SqlConnectionString
+    {
+        Name = "MySqlConnection",
+        FactoryName = "MySqlConnector.MySqlConnectorFactory",
+        ConnectionString = "Server=myserver;Port=3306;Database=mydb;User=ravendb_cdc;Password=..."
+    }));
+```
+
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Prerequisites">
+
+MySQL must have binary logging enabled with row-based format:
+
+<Tabs>
+<TabItem value="ini" label="my.cnf">
+
+```ini
+# my.cnf / my.ini
+[mysqld]
+log-bin = mysql-bin
+binlog_format = ROW
+binlog_row_image = FULL
+server-id = 1
+```
+
+</TabItem>
+</Tabs>
+
+The CDC Sink user needs the following privileges:
+
+<Tabs>
+<TabItem value="sql" label="sql">
+
+```sql
+GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'ravendb_cdc'@'%';
+GRANT SELECT ON mydb.* TO 'ravendb_cdc'@'%';
+```
+
+</TabItem>
+</Tabs>
+
+* `REPLICATION SLAVE` - required to read the binlog stream
+* `REPLICATION CLIENT` - required to query binlog status
+* `SELECT` - required for the initial full-table load
+
+</Panel>
+
+<Panel heading="Streaming Behavior">
+
+Like PostgreSQL, MySQL CDC Sink uses streaming replication (via the binlog), not
+polling. The `CdcSink.SqlServer.PollIntervalInSec` server configuration setting does not
+apply to MySQL.
+
+</Panel>
+
+<Panel heading="Configuration">
+
+The CDC Sink task configuration is the same across all database engines.
+See [Configuration Reference](../../../manage-cdc-sink-tasks/configuration-reference.mdx) for full details.
+
+The `SourceTableSchema` corresponds to the MySQL database name.
+
+</Panel>

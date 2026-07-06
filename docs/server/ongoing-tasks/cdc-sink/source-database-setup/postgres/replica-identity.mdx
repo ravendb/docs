@@ -18,8 +18,6 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
 
 # CDC Sink for PostgreSQL: REPLICA IDENTITY
 
@@ -88,7 +86,7 @@ For CDC Sink, `FULL` is the simplest and most compatible choice.
 **Example where REPLICA IDENTITY is needed:**
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 -- order_lines has a surrogate PK (line_id), with order_id as foreign key
@@ -111,7 +109,7 @@ ALTER TABLE order_lines REPLICA IDENTITY FULL;
 **Example where REPLICA IDENTITY is NOT needed:**
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 -- If order_id is part of a composite PK, DEFAULT is sufficient
@@ -132,7 +130,7 @@ CREATE TABLE order_lines (
 <Panel heading="Checking Current Setting">
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 SELECT c.relname, c.relreplident

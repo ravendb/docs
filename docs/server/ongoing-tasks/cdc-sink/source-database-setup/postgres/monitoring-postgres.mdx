@@ -22,8 +22,6 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
 
 # CDC Sink for PostgreSQL: Monitoring PostgreSQL
 
@@ -46,7 +44,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 Check that CDC Sink replication slots are active and being consumed:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 SELECT slot_name, active, confirmed_flush_lsn
@@ -73,7 +71,7 @@ for an extended period, investigate the task state in RavenDB Studio.
 Replication lag measures how far behind the slot is relative to the current WAL position:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 SELECT slot_name,
@@ -103,7 +101,7 @@ An inactive or slow slot can cause WAL to accumulate on disk.
 Check approximate WAL retained per slot:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 SELECT slot_name, active,

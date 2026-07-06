@@ -18,8 +18,6 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
 
 # CDC Sink for PostgreSQL: Manual REPLICA IDENTITY Setup
 
@@ -56,7 +54,7 @@ The simplest approach is to set `REPLICA IDENTITY FULL` on all embedded tables
 that CDC Sink will replicate:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 ALTER TABLE order_lines REPLICA IDENTITY FULL;
@@ -80,7 +78,7 @@ the join columns and PK columns of the embedded table.
 **Step 1: Create a unique index covering the required columns**
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 -- For order_lines: join column is order_id, PK is line_id
@@ -94,7 +92,7 @@ CREATE UNIQUE INDEX order_lines_replica_idx
 **Step 2: Set REPLICA IDENTITY to use this index**
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 ALTER TABLE order_lines
@@ -119,7 +117,7 @@ or partial predicates. All columns in the index must be `NOT NULL`.
 Confirm that the desired `REPLICA IDENTITY` mode is set:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 SELECT c.relname, c.relreplident,

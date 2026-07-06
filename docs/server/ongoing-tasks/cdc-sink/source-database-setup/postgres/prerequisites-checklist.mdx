@@ -26,8 +26,6 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
 
 # CDC Sink for PostgreSQL: Prerequisites Checklist
 
@@ -53,7 +51,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Verify with:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 SHOW wal_level;
@@ -69,7 +67,7 @@ SHOW wal_level;
   Verify with:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 SHOW max_replication_slots;
@@ -83,7 +81,7 @@ SHOW max_replication_slots;
   Verify with:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 SHOW max_wal_senders;
@@ -101,7 +99,7 @@ The database user in the connection string must have sufficient permissions.
 **Minimum required permissions:**
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 -- Replication privilege (required for logical replication)
@@ -118,7 +116,7 @@ GRANT SELECT ON TABLE order_lines TO cdc_user;
 **Optional (allows CDC Sink to configure replication automatically):**
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 -- Create/drop replication slots

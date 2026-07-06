@@ -26,8 +26,6 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
 
 # CDC Sink for PostgreSQL: Cleanup and Maintenance
 
@@ -81,7 +79,7 @@ of the database administrator.
 List all CDC Sink replication slots:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 SELECT slot_name, active, confirmed_flush_lsn
@@ -98,7 +96,7 @@ Sink tasks in RavenDB - any slot whose corresponding task no longer exists is or
 List all CDC Sink publications:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 SELECT p.pubname, c.relname AS table_name
@@ -117,7 +115,7 @@ ORDER BY p.pubname, c.relname;
 <Panel heading="Dropping a Replication Slot">
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 SELECT pg_drop_replication_slot('rvn_cdc_s_<hash>');
@@ -136,7 +134,7 @@ task must be stopped or deleted in RavenDB before the slot can be dropped.
 <Panel heading="Dropping a Publication">
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 DROP PUBLICATION IF EXISTS "rvn_cdc_p_<hash>";
@@ -159,7 +157,7 @@ connection error).
 Check how many slots are in use:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 SELECT count(*) FROM pg_replication_slots;
@@ -174,7 +172,7 @@ To resolve this:
 1. Identify inactive slots:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 SELECT slot_name, active
@@ -188,7 +186,7 @@ WHERE active = false;
 2. Drop slots for tasks that no longer exist:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 SELECT pg_drop_replication_slot('rvn_cdc_s_<hash>');

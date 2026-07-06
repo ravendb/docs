@@ -30,8 +30,6 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
 
 # CDC Sink: Source Schema Changes
 
@@ -85,7 +83,7 @@ column mapping on the fly. This makes PostgreSQL the **most resilient** to schem
 ### PostgreSQL Examples
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 -- Transparent: adding an unmapped column
@@ -140,7 +138,7 @@ then apply the next change. This ensures each change is simple and isolated.
 ### MySQL Examples
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 -- Transparent: adding an unmapped column
@@ -179,7 +177,7 @@ picks up the new instance.
 For **any** schema change on a SQL Server CDC-tracked table, follow this procedure:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 -- Step 1: ALTER the table
@@ -234,7 +232,7 @@ CDC requires SQL Server Agent to be running. The capture job (which populates ch
 tables) and cleanup job (which purges old changes) are Agent jobs.
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 -- Check Agent status

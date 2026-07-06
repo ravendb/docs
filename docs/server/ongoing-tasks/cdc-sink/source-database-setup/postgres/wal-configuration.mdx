@@ -22,8 +22,6 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
 
 # CDC Sink for PostgreSQL: WAL Configuration
 
@@ -46,7 +44,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 Connect to your PostgreSQL instance and run:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 SHOW wal_level;
@@ -81,7 +79,7 @@ This change requires a **PostgreSQL restart**.
 After restarting, verify the change took effect:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 SHOW wal_level;
@@ -121,7 +119,7 @@ concurrent CDC Sink tasks or other replication consumers.
 Check current values:
 
 <Tabs>
-<TabItem value="sql" label="SQL">
+<TabItem value="sql" label="sql">
 
 ```sql
 SHOW max_replication_slots;
