@@ -1,7 +1,7 @@
 ---
 title: "Cluster: Cluster API"
 sidebar_label: Cluster API
-description: "Use the RavenDB cluster API to manage nodes, assign ongoing tasks, and control database group topology and membership programmatically."
+description: "Use the RavenDB cluster API to add, remove, promote, and demote cluster nodes and manage cluster leadership."
 sidebar_position: 6
 ---
 
@@ -9,35 +9,43 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Cluster: Cluster API
 
 <Admonition type="note" title="">
 
-* The easiest way to manage a RavenDB cluster is through Studio's [Cluster View](../../studio/cluster/cluster-view.mdx).  
-  All cluster operations are available through the GUI. However, sometimes you'd prefer to automate these operations.  
+* You can manage a RavenDB cluster using Studio's [Cluster View](../../studio/cluster/cluster-view.mdx).  
+  All cluster operations can be performed through Studio. However, you may sometimes prefer to automate these operations.  
 
-* In this section we will demonstrate how to perform certain cluster operations programmatically using the REST API.  
+* In this article, we demonstrate several cluster operations you can perform using the REST API.  
   The first example shows how to make a secure call using PowerShell, cURL, and the RavenDB C# client.  
   All other examples are cURL only.  
 
-* If authentication is enabled, a client certificate with either `Cluster Admin` or `Operator` [security clearance](../../server/security/authorization/security-clearance-and-permissions.mdx) must be provided.  
-  The security clearance each endpoint requires is noted below.  
+* If authentication is enabled, each call must present a client certificate with the [security clearance](../../server/security/authorization/security-clearance-and-permissions.mdx)
+  required by its endpoint: `Cluster Admin` for most operations, and `Operator` for [Force elections](../../server/clustering/cluster-api.mdx#force-elections) and [Force timeout](../../server/clustering/cluster-api.mdx#force-timeout).  
 
 * In this article:
-   * [Add node to the cluster](../../server/clustering/cluster-api.mdx#add-node-to-the-cluster)
-   * [Delete node from the cluster](../../server/clustering/cluster-api.mdx#delete-node-from-the-cluster)
-   * [Promote a watcher node](../../server/clustering/cluster-api.mdx#promote-a-node)
-   * [Demote a watcher node](../../server/clustering/cluster-api.mdx#demote-a-node)
-   * [Force elections](../../server/clustering/cluster-api.mdx#force-elections)
-   * [Force timeout](../../server/clustering/cluster-api.mdx#force-timeout)
-   * [Bootstrap cluster](../../server/clustering/cluster-api.mdx#bootstrap-cluster)
+   * [REST API endpoints](../../server/clustering/cluster-api.mdx#rest-api-endpoints)
+      * [Add node to the cluster](../../server/clustering/cluster-api.mdx#add-node-to-the-cluster)
+      * [Delete node from the cluster](../../server/clustering/cluster-api.mdx#delete-node-from-the-cluster)
+      * [Promote a node](../../server/clustering/cluster-api.mdx#promote-a-node)
+      * [Demote a node](../../server/clustering/cluster-api.mdx#demote-a-node)
+      * [Bootstrap cluster](../../server/clustering/cluster-api.mdx#bootstrap-cluster)
+      * [Force elections](../../server/clustering/cluster-api.mdx#force-elections)
+      * [Force timeout](../../server/clustering/cluster-api.mdx#force-timeout)
 
 </Admonition>
 
-<Panel heading="Add node to the cluster">
+<Panel heading="REST API endpoints">
 
-You can add a node to the cluster using an `HTTP PUT` request to the `/admin/cluster/node` endpoint with the following arguments:
+Each operation below is performed by calling a REST endpoint.
+
+<ContentFrame>
+
+### Add node to the cluster
+
+You can add a node to the cluster by sending an `HTTP PUT` request to the `/admin/cluster/node` endpoint with the following arguments:
 
 | Argument | Description | Required | Default |
 | - | - | - | - |
@@ -46,7 +54,11 @@ You can add a node to the cluster using an `HTTP PUT` request to the `/admin/clu
 | `is-watcher` | Add the new node as a [watcher](../../server/clustering/rachis/cluster-topology.mdx#watcher) | `false` | `false` |
 | `max-utilized-cores` | The maximum number of cores that can be assigned to the new node | `false` | Number of processors on the machine or the license limit, the smaller of the two |
 
-* Security clearance: `Cluster Admin`
+<Admonition type="info" title="">
+
+Required security clearance: `Cluster Admin`
+
+</Admonition>
 
 #### Example: Add a node
 
@@ -82,17 +94,34 @@ curl --cert <path-to-cert> --key <path-to-key> -X PUT "https://<server-url>/admi
 </TabItem>
 </Tabs>
 
-</Panel>
+</ContentFrame>
 
-<Panel heading="Delete node from the cluster">
+<ContentFrame>
 
-You can delete a node from the cluster using an `HTTP DELETE` request to the `/admin/cluster/node` endpoint with the following argument:
+### Delete node from the cluster
+
+You can delete a node from the cluster by sending an `HTTP DELETE` request to the `/admin/cluster/node` endpoint with the following argument:
 
 | Argument | Description | Required | Default |
 | - | - | - | - |
 | `node-tag` | The tag of the node to delete | `true` | - |
 
-* Security clearance: `Cluster Admin`
+<Admonition type="info" title="">
+
+Required security clearance: `Cluster Admin`
+
+</Admonition>
+
+<Admonition type="warning" title="Check the replication factor before removing a node">
+
+Removing a node removes from the cluster the database copies this node held:  
+
+* A database whose only copy was on the removed node **will become inaccessible**.  
+* A multi-node database that had one of its copies on the removed node will have its [replication factor](../../glossary/replication-factor.mdx) reduced by one.  
+
+**Prior to removing a node, make sure that all the databases it holds have copies on other nodes.**  
+
+</Admonition>
 
 #### Example: Delete a node
 
@@ -100,18 +129,25 @@ You can delete a node from the cluster using an `HTTP DELETE` request to the `/a
 curl -X DELETE "https://<server-url>/admin/cluster/node?nodeTag=<node-tag>"
 ```
 
-</Panel>
+</ContentFrame>
 
-<Panel heading="Promote a node">
+<ContentFrame>
 
-You can [promote a node](../../server/clustering/rachis/cluster-topology.mdx#nodes-states-and-types) using an `HTTP POST` request to the `/admin/cluster/promote` endpoint with the following argument:
+### Promote a node
+
+[Promoting a node](../../server/clustering/rachis/cluster-topology.mdx#nodes-states-and-types) turns a watcher into a voting member that participates in the cluster quorum.  
+You can promote a node by sending an `HTTP POST` request to the `/admin/cluster/promote` endpoint with the following argument:
 
 | Argument | Description | Required | Default |
 | - | - | - | - |
 | `node-tag` | The tag of the node to promote | `true` | - |
 
-* The POST request body should be empty.
-* Security clearance: `Cluster Admin`
+<Admonition type="info" title="">
+
+* No request body is required.
+* Required security clearance: `Cluster Admin`
+
+</Admonition>
 
 #### Example: Promote a node
 
@@ -119,18 +155,25 @@ You can [promote a node](../../server/clustering/rachis/cluster-topology.mdx#nod
 curl -X POST "https://<server-url>/admin/cluster/promote?nodeTag=<node-tag>" -d ''
 ```
 
-</Panel>
+</ContentFrame>
 
-<Panel heading="Demote a node">
+<ContentFrame>
 
-You can [demote a node](../../server/clustering/rachis/cluster-topology.mdx#nodes-states-and-types) using an `HTTP POST` request to the `/admin/cluster/demote` endpoint with the following argument:
+### Demote a node
+
+[Demoting a node](../../server/clustering/rachis/cluster-topology.mdx#nodes-states-and-types) turns a voting member into a watcher that no longer participates in the cluster quorum.  
+You can demote a node by sending an `HTTP POST` request to the `/admin/cluster/demote` endpoint with the following argument:
 
 | Argument | Description | Required | Default |
 | - | - | - | - |
 | `node-tag` | The tag of the node to demote | `true` | - |
 
-* The POST request body should be empty.
-* Security clearance: `Cluster Admin`
+<Admonition type="info" title="">
+
+* No request body is required.
+* Required security clearance: `Cluster Admin`
+
+</Admonition>
 
 #### Example: Demote a node
 
@@ -138,13 +181,40 @@ You can [demote a node](../../server/clustering/rachis/cluster-topology.mdx#node
 curl -X POST "https://<server-url>/admin/cluster/demote?nodeTag=<node-tag>" -d ''
 ```
 
-</Panel>
+</ContentFrame>
 
-<Panel heading="Force elections">
+<ContentFrame>
 
-You can force an election using an empty `HTTP POST` request to the `/admin/cluster/reelect` endpoint.
+### Bootstrap cluster
 
-* Security clearance: `Operator`
+You can bootstrap the cluster by sending an empty `HTTP POST` request to the `/admin/cluster/bootstrap` endpoint.  
+Note that bootstrapping takes effect only while the server is in the [Passive state](../../server/clustering/rachis/cluster-topology.mdx#nodes-states-and-types). On a server that has already formed or joined a cluster, the request has no effect.
+
+<Admonition type="info" title="">
+
+Required security clearance: `Cluster Admin`
+
+</Admonition>
+
+#### Example: Bootstrap the cluster
+
+```bash
+curl -X POST "https://<server-url>/admin/cluster/bootstrap" -d ''
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Force elections
+
+You can force an election by sending an empty `HTTP POST` request to the `/admin/cluster/reelect` endpoint.
+
+<Admonition type="info" title="">
+
+Required security clearance: `Operator`
+
+</Admonition>
 
 #### Example: Force an election
 
@@ -152,13 +222,19 @@ You can force an election using an empty `HTTP POST` request to the `/admin/clus
 curl -X POST "https://<server-url>/admin/cluster/reelect" -d ''
 ```
 
-</Panel>
+</ContentFrame>
 
-<Panel heading="Force timeout">
+<ContentFrame>
 
-You can force a timeout using an empty `HTTP POST` request to the `/admin/cluster/timeout` endpoint.
+### Force timeout
 
-* Security clearance: `Operator`
+You can force a timeout by sending an empty `HTTP POST` request to the `/admin/cluster/timeout` endpoint.
+
+<Admonition type="info" title="">
+
+Required security clearance: `Operator`
+
+</Admonition>
 
 #### Example: Force a timeout
 
@@ -166,19 +242,6 @@ You can force a timeout using an empty `HTTP POST` request to the `/admin/cluste
 curl -X POST "https://<server-url>/admin/cluster/timeout" -d ''
 ```
 
-</Panel>
-
-<Panel heading="Bootstrap cluster">
-
-You can bootstrap the cluster using an empty `HTTP POST` request to the `/admin/cluster/bootstrap` endpoint.  
-Note that bootstrapping takes effect only while the server is in the [Passive state](../../server/clustering/rachis/cluster-topology.mdx#nodes-states-and-types). On a server that has already formed or joined a cluster, the request has no effect.
-
-* Security clearance: `Cluster Admin`
-
-#### Example: Bootstrap the cluster
-
-```bash
-curl -X POST "https://<server-url>/admin/cluster/bootstrap" -d ''
-```
+</ContentFrame>
 
 </Panel>
