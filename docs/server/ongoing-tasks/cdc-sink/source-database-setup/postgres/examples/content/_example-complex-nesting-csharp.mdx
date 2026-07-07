@@ -182,25 +182,33 @@ await store.Maintenance.SendAsync(new AddCdcSinkOperation(config));
 
 SQL rows:
 
-<Tabs>
-<TabItem value="sql" label="sql">
+**`categories`**
 
-```sql
-categories:         category_id=3, name='Footwear'
+| category_id | name |
+|---|---|
+| 3 | Footwear |
 
-products:           product_id=42, name='Hiking Boot', category_id=3
+**`products`**
 
-product_variants:   variant_id=101, product_id=42, sku='HB-BLK-10', price=89.99
-product_variants:   variant_id=102, product_id=42, sku='HB-BRN-11', price=89.99
+| product_id | name | category_id |
+|---|---|---|
+| 42 | Hiking Boot | 3 |
 
-variant_attributes: attr_id=1, product_id=42, variant_id=101, attr_name='Color', attr_value='Black'
-variant_attributes: attr_id=2, product_id=42, variant_id=101, attr_name='Size',  attr_value='10'
-variant_attributes: attr_id=3, product_id=42, variant_id=102, attr_name='Color', attr_value='Brown'
-variant_attributes: attr_id=4, product_id=42, variant_id=102, attr_name='Size',  attr_value='11'
-```
+**`product_variants`**
 
-</TabItem>
-</Tabs>
+| variant_id | product_id | sku | price |
+|---|---|---|---|
+| 101 | 42 | HB-BLK-10 | 89.99 |
+| 102 | 42 | HB-BRN-11 | 89.99 |
+
+**`variant_attributes`**
+
+| attr_id | product_id | variant_id | attr_name | attr_value |
+|---|---|---|---|---|
+| 1 | 42 | 101 | Color | Black |
+| 2 | 42 | 101 | Size | 10 |
+| 3 | 42 | 102 | Color | Brown |
+| 4 | 42 | 102 | Size | 11 |
 
 RavenDB document `Products/42`:
 

@@ -18,26 +18,11 @@ import Panel from '@site/src/components/Panel';
 
 <Panel heading="Task State">
 
-A CDC Sink task's status is reported through two separate fields: `TaskState`
-describes whether the task is enabled, and `TaskConnectionStatus` describes the
-task's live connection to the source database.
-
-**`TaskState`** - whether the task is enabled:
-
-| Value | Description |
-|-------|-------------|
-| `Enabled` | The task is enabled |
-| `Disabled` | The task is disabled |
-| `PartiallyEnabled` | The task is enabled but not fully active (for example, enabled at the task level while an individual component is disabled) |
-
-**`TaskConnectionStatus`** - the task's live connection state:
-
-| Value | Description |
-|-------|-------------|
-| `Active` | The task is running on this node and connected |
-| `NotActive` | The task is not currently running |
-| `Reconnect` | The task is attempting to reconnect to the source database |
-| `NotOnThisNode` | The task is not assigned to this node |
+A CDC Sink task's status is reported through two standard ongoing-task fields:
+`TaskState` (whether the task is enabled) and `TaskConnectionStatus` (the task's
+live connection to the source database). For the full set of values and their
+meanings, see
+[Ongoing Task Operations](../../../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations.mdx).
 
 The current state is visible in the **Ongoing Tasks** view in the Management Studio.
 

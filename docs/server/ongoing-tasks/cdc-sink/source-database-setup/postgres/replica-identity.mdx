@@ -56,7 +56,7 @@ If they are not - which is the common case when a table has a surrogate PK - the
 DELETE event will be missing the columns needed to route it.
 
 UPDATE events always carry the new row, so routing an UPDATE normally works even
-under `DEFAULT`. REPLICA IDENTITY chiefly matters for DELETE events, and for UPDATEs
+under `DEFAULT`. REPLICA IDENTITY mostly matters for DELETE events, and for UPDATEs
 that change the key or join columns (where the old key values are needed to locate
 the existing embedded item).
 

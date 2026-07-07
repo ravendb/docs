@@ -95,8 +95,8 @@ $row.customer_name   // string
 $row.amount          // number (from numeric/decimal column)
 
 // $old - mapped property names, stored JSON types
-$old?.CustomerName   // string, or undefined/null when there is no previous value
-$old?.Amount         // number, or undefined/null when there is no previous value
+$old?.CustomerName   // string, or undefined when there is no previous value
+$old?.Amount         // number, or undefined when there is no previous value
 
 // this - the document after column mapping has been applied for this event
 this.CustomerName    // string (just set from $row.customer_name)
@@ -111,7 +111,7 @@ Unmapped columns - those not listed in `Columns` - appear in `$row` but are neve
 written to the document and therefore never appear in `$old`.
 </Admonition>
 
-The pair most likely to confuse a first-time reader is `$row` vs `this`:
+**`$row` vs `this` comparison**
 
 | | `$row` | `this` |
 |--|--------|--------|

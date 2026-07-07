@@ -36,7 +36,7 @@ each embedded item.
 ```csharp
 new CdcSinkEmbeddedTableConfig
 {
-    SourceTableSchema = "public",         // SQL schema (provider-specific; "public" for PostgreSQL)
+    SourceTableSchema = "public",         // Source schema (default: "public" PostgreSQL, "dbo" SQL Server, db name for MySQL)
     SourceTableName = "order_lines",      // SQL table name
     PropertyName = "Lines",               // Property name in parent document
     Type = CdcSinkRelationType.Array,     // Array, Map, or Value
