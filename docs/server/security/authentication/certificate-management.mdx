@@ -181,8 +181,8 @@ You can also control access by giving a client certificate a [User](../../../ser
 With this clearance, you can set a different access level to each database. The three "User" access levels are:  
 
 * User [Admin](../../../server/security/authorization/security-clearance-and-permissions.mdx#user)  
-* [Read/Write](../../../server/security/authorization/security-clearance-and-permissions.mdx#section-1)  
-* [Read-Only](../../../server/security/authorization/security-clearance-and-permissions.mdx#section-2)  
+* [Read/Write](../../../server/security/authorization/security-clearance-and-permissions.mdx#readwrite)  
+* [Read-Only](../../../server/security/authorization/security-clearance-and-permissions.mdx#read-only)  
   * Learn more about the [Read-Only access level here](../../../studio/server/certificates/read-only-access-level.mdx).  
 
 <Admonition type="note" title="">
@@ -193,7 +193,7 @@ It enables developers to control access levels by configuring client certificate
 </Admonition>
 
 * To learn how to configure each client certificate's database permissions and authorization levels via the RavenDB Studio GUI, see [Create and Configure Certificates](../../../server/security/authentication/certificate-management.mdx#create-and-configure-certificates).  
-* To learn how to configure client certificates via CLI, see [Authentication: Client Certificate Usage](../../../server/security/authentication/client-certificate-usage.mdx#authentication-client-certificate-usage)
+* To learn how to configure client certificates via CLI, see [Authentication: Client Certificate Usage](../../../server/security/authentication/client-certificate-usage.mdx#client-certificate-usage)
 
 
 
@@ -425,8 +425,8 @@ and will allow access to all these certificates explicitly by their thumbprint.
 
 * All of the operations which are described below are also available in Command Line Interface (CLI).  
   - Be sure to configure the `SecurityClearance` for each client certificate because the default is [cluster admin](../../../server/security/authorization/security-clearance-and-permissions.mdx#cluster-admin) which has full access.
-  - There are CLI-based means to [generate](../../../server/security/authentication/client-certificate-usage.mdx#example-i---using-the-ravendb-cli) and [configure client certificates in Windows](../../../server/security/authentication/client-certificate-usage.mdx#example-ii---using-powershell-and-wget-in-windows).  
-  - [Linux](../../../server/security/authentication/client-certificate-usage.mdx#example-iii--using-curl-in-linux) developers can use this cURL command sample.  
+  - There are CLI-based means to [generate](../../../server/security/authentication/client-certificate-usage.mdx#using-the-ravendb-cli) and [configure client certificates in Windows](../../../server/security/authentication/client-certificate-usage.mdx#using-powershell-and-wget-on-windows).  
+  - [Linux](../../../server/security/authentication/client-certificate-usage.mdx#using-curl-on-linux) developers can use this cURL command sample.  
 </ContentFrame>
 
 <ContentFrame>
