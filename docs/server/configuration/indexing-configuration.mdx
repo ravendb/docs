@@ -304,8 +304,18 @@ Disable query optimizer generated indexes (auto-indexes). Dynamic queries will n
 
 ## Indexing.ErrorIndexStartupBehavior
 
-Set how faulty indexes should behave on database startup when they are loaded.  
-By default they are not started.
+* Set how faulty indexes should behave on database startup when they are loaded.  
+
+* Optional values:  
+  * `Default`:  
+     Faulty indexes are loaded but not started; they remain in the error state until handled manually.
+  * `Start`:  
+     An index that was marked as errored is set back to the normal state and started, without rebuilding it.  
+     This does not recover an index that failed to open.
+  * `ResetAndStart`:  
+     The index is reset (rebuilt from scratch) and then started.  
+     From version 5.2 this also resets faulty indexes that could not be opened -
+     for example, after a [Database ID mismatch](../../indexes/troubleshooting/debugging-index-errors.mdx#index-marked-as-faulty-on-startup).
 
 - **Type**: `enum ErrorIndexStartupBehaviorType` (`Default`, `Start`, `ResetAndStart`)
 - **Default**: `Default`
@@ -377,7 +387,11 @@ Optional values:
 ## Indexing.SkipDatabaseIdValidationOnIndexOpening
 
 EXPERT ONLY:  
-Allow to open an index without checking if current Database ID matched the one for which index was created.
+
+* Allow to open an index without checking if current Database ID matches the one for which index was created.
+
+* When enabled, an index whose storage belongs to a different database will be allowed to open and may silently return incomplete query results. 
+  Intended for support scenarios; learn more in [Index marked as faulty on startup](../../indexes/troubleshooting/debugging-index-errors.mdx#index-marked-as-faulty-on-startup).
 
 - **Type**: `bool`
 - **Default**: `false`
