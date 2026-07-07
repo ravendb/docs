@@ -4,6 +4,10 @@ sidebar_label: Overview
 description: "An introduction to CDC Sink, the RavenDB ongoing task that reads Change Data Capture streams from a relational database and writes documents into RavenDB."
 sidebar_position: 0
 see_also:
+  - title: "Create a Task"
+    link: "server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task"
+    source: "docs"
+    path: "Server > CDC Sink"
   - title: "How It Works"
     link: "server/ongoing-tasks/cdc-sink/how-it-works"
     source: "docs"
@@ -39,20 +43,17 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
 
-# CDC Sink: Overview
-
 <Admonition type="note" title="">
 
-* **CDC Sink** is a RavenDB ongoing task that reads **Change Data Capture (CDC)**
-  streams from a relational database and writes the resulting documents into RavenDB.
+* **CDC Sink** is a RavenDB ongoing task that reads **Change Data Capture (CDC) streams** from a relational database  
+  and writes the resulting documents into RavenDB.
 
-* CDC Sink is the reverse of SQL ETL: instead of pushing data _from_ RavenDB _to_ a
-  relational database, CDC Sink _pulls_ data _from_ the relational database _into_ RavenDB.
-  The relational database is the source of truth; RavenDB receives a continuously-updated
-  document model derived from it.
-
-* CDC Sink maps normalized relational tables into RavenDB documents -
-  automatically and in real time.
+* CDC Sink is the reverse of SQL ETL:  
+  instead of pushing data _from_ RavenDB _to_ a relational database,    
+  CDC Sink _pulls_ data _from_ the relational database _into_ RavenDB.
+    
+* The relational database remains the source of truth,  
+  while the CDC Sink task continuously maps normalized relational tables into RavenDB documents.
 
 * Supported source databases:
   * **PostgreSQL** - via logical replication
@@ -60,64 +61,58 @@ import Panel from '@site/src/components/Panel';
   * **MySQL / MariaDB** - via binlog replication
 
 * In this article:
-  * [Why Use CDC Sink](#why-use-cdc-sink)
-  * [How It Works](#how-it-works)
-  * [Task Lifecycle](#task-lifecycle)
+  * [Why use CDC Sink](#why-use-cdc-sink)
+  * [How it works](#how-it-works)
+  * [Task lifecycle](#task-lifecycle)
   * [Licensing](#licensing)
 
 </Admonition>
 
-<Panel heading="Why Use CDC Sink">
+<Panel heading="Why use CDC Sink">
 
-CDC Sink solves the problem of moving data from a relational database into RavenDB
-without changing the source application.
+CDC Sink solves the problem of moving data from a relational database into RavenDB without changing the source application.
 
 * **Migrate from SQL to RavenDB**  
-  Transform normalized relational tables into RavenDB documents where an Order contains
-  embedded LineItems and a reference to the Customer - automatically and continuously,
-  without changing your application.
+  Automatically and continuously transform normalized relational tables into RavenDB documents,  
+  such as an _Order_ document that embeds _LineItems_ and references a _Customer_ document,  
+  without changing your application.    
 
 * **Build a read-optimized view**  
-  Your transactional system uses a relational database, but your API layer needs
-  denormalized documents. CDC Sink creates and maintains those documents without
-  touching your existing application.
+  Your transactional system uses a relational database, but your API layer needs denormalized documents.   
+  CDC Sink creates and maintains those documents without touching your existing application.
 
 * **Gradual migration**  
-  Keep your existing application running while RavenDB documents are built in the background.
+  Keep your existing application running while RavenDB documents are built in the background.  
   Applications can start reading from RavenDB while writes still go to the relational database.
 
 * **Event-driven side effects**  
-  Using JavaScript patches, every INSERT, UPDATE, or DELETE in the source database can
-  trigger custom logic in RavenDB - computing derived fields, maintaining running totals,
-  or writing custom transformations.
+  Using JavaScript patches, every INSERT, UPDATE, or DELETE in the source database can trigger custom logic in RavenDB - 
+  computing derived fields, maintaining running totals, or writing custom transformations.
 
 </Panel>
 
-<Panel heading="How It Works">
+<Panel heading="How it works">
 
-A CDC Sink task continuously reads changes from the source relational database and
-applies them to RavenDB documents.
+A CDC Sink task continuously reads changes from the source relational database and applies them to RavenDB documents.
 
-### Initial Load
+### Initial load
 
-By default, when a CDC Sink task starts for the first time, it performs a full scan of
-every configured table using keyset pagination. This populates RavenDB with the current
-state of the data before streaming begins.
+By default, when a CDC Sink task starts for the first time, it performs a full scan of every configured table using keyset pagination. 
+This populates RavenDB with the current state of the data before streaming begins.
 
-The task can also be configured to skip the full scan and start from new CDC changes only,
-without scanning existing rows - useful when you only need to capture changes going forward.
+The task can also be configured to skip the full scan and start from new CDC changes only, without scanning existing rows - 
+useful when you only need to capture changes going forward.
 
-Initial load progress is persisted per-table. If the task is restarted, it resumes
-from where it left off rather than re-scanning.
+Initial load progress is persisted per-table.  
+If the task is restarted, it resumes from where it left off rather than re-scanning.
 
-### Change Streaming
+### Streaming changes
 
-After the initial load, CDC Sink switches to streaming changes in real time.
-Changes are grouped into transactions, preserving the exact order of operations
-from the source database. Partial transactions are never written to RavenDB -
-all changes within a source database transaction are applied together.
+After the initial load, CDC Sink switches to streaming changes continuously.  
+Changes are grouped into transactions, preserving the exact order of operations from the source database.  
+Partial transactions are never written to RavenDB - all changes within a source database transaction are applied together.
 
-### Document Model
+### Document model
 
 The relational model is mapped to RavenDB documents through configuration:
 
@@ -125,33 +120,42 @@ The relational model is mapped to RavenDB documents through configuration:
 * **Embedded tables** become nested arrays or objects within parent documents
 * **Linked tables** become document ID references to _related documents_
 
-See [Schema Design](./schema-design.mdx) for details.
+See [Schema design](../../../server/ongoing-tasks/cdc-sink/schema-design.mdx) for details.
 
 </Panel>
 
-<Panel heading="Task Lifecycle">
+<Panel heading="Task lifecycle">
 
-1. **Create** - Define the task in Studio or via the Client API  
-   Specify the connection string, table mappings, and transformation options
+1. **Create**  
+   Define the CDC Sink task in Studio or via the Client API.  
+   Specify the connection string, table mappings, and transformation options.  
+   See [Create a CDC Sink task](../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx). 
+   You can later [Update](../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/update-task.mdx) or
+   [Enable/Disable](../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/enable-disable-task.mdx) the task.
 
-2. **Verify** - CDC Sink verifies the source database is properly configured  
-   Checks permissions, replication prerequisites, and table configuration
+2. **Verify**  
+   CDC Sink verifies that the source database is properly configured,  
+   including permissions, replication prerequisites, and table configuration.
 
-3. **Initial Load** - Full table scan populates RavenDB with current data  
-   Progress is tracked per-table and persists across restarts
+3. **Initial load**  
+   Full table scan populates RavenDB with current data.  
+   Progress is tracked per table and persists across restarts.
 
-4. **Stream** - Real-time change streaming begins  
-   All INSERTs, UPDATEs, and DELETEs are applied to RavenDB documents as they occur
+4. **Stream**  
+   Continuous change streaming begins.  
+   All INSERTs, UPDATEs, and DELETEs are applied to RavenDB documents as they occur.
 
-5. **Monitor** - View statistics, errors, and progress in Studio
+5. **Monitor**  
+   [Monitor the task state](../../../server/ongoing-tasks/cdc-sink/monitoring.mdx),
+   or [Get task info](../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/get-task-info.mdx) via Studio or via the Client API.
 
-6. **Retire** - Delete the task in RavenDB when no longer needed
-
-<Admonition type="note" title="">
-When you retire a task, the change-tracking artifacts left in the source database
-(for example, the PostgreSQL replication slot and publication) must be cleaned up by
-the database administrator separately.
-</Admonition>
+6. **Retire**  
+   Delete the task in RavenDB when no longer needed.  
+   Retiring a task removes it on the **RavenDB** side only.  
+    
+   Change-tracking artifacts created in the source database (such as a PostgreSQL replication slot and publication)   
+   are **not** removed automatically and must be cleaned up by the source-database administrator.  
+   Learn more in [Delete a CDC Sink task](../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/delete-task.mdx).
 
 </Panel>
 
@@ -161,6 +165,6 @@ the database administrator separately.
 CDC Sink is available on an **Enterprise** license.
 </Admonition>
 
-Learn more about licensing [here](../../../licensing/overview.mdx).
+Learn more about licensing in [Licensing overview](../../../licensing/overview.mdx).
 
 </Panel>
