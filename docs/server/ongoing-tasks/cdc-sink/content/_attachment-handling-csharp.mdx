@@ -5,8 +5,8 @@ import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* SQL columns - binary (`bytea`, `varbinary`, etc.) or text (`text`, `nvarchar`, etc.)
-  - can be stored as RavenDB **attachments** by setting `Type = CdcColumnType.Attachment`
+* Binary columns (`bytea`, `varbinary`, etc.) and text columns (`text`, `nvarchar`, etc.)
+  can be stored as RavenDB **attachments** by setting `Type = CdcColumnType.Attachment`
   on the column mapping entry.
 
 * This applies to both root tables and embedded tables.
