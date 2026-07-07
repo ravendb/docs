@@ -10,7 +10,10 @@ import CodeBlock from '@theme/CodeBlock';
   [Embeddings generation tasks](../../../ai-integration/generating-embeddings/overview.mdx) without requiring an external AI service.  
 
 * Running the model locally consumes processor resources and will impact RavenDB's overall performance,  
-  depending on your workload and usage patterns.
+  depending on your workload and usage patterns.    
+    
+* The Studio and Client API examples below define a **per-database** AI connection string.  
+  To define the same provider configuration at the **cluster level**, see [Add a server-wide connection string](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx).    
 
 * In this article:
   * [Define the connection string - from Studio](../../../ai-integration/connection-strings/embedded.mdx#define-the-connection-string---from-studio)

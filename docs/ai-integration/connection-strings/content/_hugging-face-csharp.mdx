@@ -11,7 +11,10 @@ import Panel from '@site/src/components/Panel';
   enabling RavenDB to seamlessly integrate its [Embeddings generation tasks](../../../ai-integration/generating-embeddings/overview.mdx) within your environment.
     
 * Note: RavenDB currently supports only text embeddings with Hugging Face.  
-  Chat models are not supported through this integration.    
+  Chat models are not supported through this integration.        
+    
+* The Studio and Client API examples below define a **per-database** AI connection string.  
+  To define the same provider configuration at the **cluster level**, see [Add a server-wide connection string](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx).    
 
 * In this article:
   * [Define the connection string - from Studio](../../../ai-integration/connection-strings/hugging-face.mdx#define-the-connection-string-from-studio)

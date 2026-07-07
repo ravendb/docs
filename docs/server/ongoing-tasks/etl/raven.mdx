@@ -31,6 +31,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * RavenDB ETL tasks can be defined via the Client API or the [Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx).
 
 * In this article:  
+  * [Add a RavenDB connection string](../../../server/ongoing-tasks/etl/raven.mdx#add-a-ravendb-connection-string)  
   * [Transformation script options](../../../server/ongoing-tasks/etl/raven.mdx#transformation-script-options)  
   * [Empty Script](../../../server/ongoing-tasks/etl/raven.mdx#empty-script)  
   * [Attachments](../../../server/ongoing-tasks/etl/raven.mdx#attachments) 
@@ -40,6 +41,94 @@ import ContentFrame from "@site/src/components/ContentFrame";
   * [Deletions](../../../server/ongoing-tasks/etl/raven.mdx#deletions)  
 
 </Admonition>
+
+<Panel heading="Add a RavenDB connection string">
+
+* A RavenDB ETL task uses a **RavenDB connection string** to connect to its destination database.
+  The connection string stores the destination database name and one or more target cluster URLs used for topology discovery.    
+
+* The ETL task does not store these connection details directly.  
+  Instead, its configuration references the connection string by name through the `ConnectionStringName` property.
+    
+* A RavenDB connection string can be created in any of these ways:
+  * **From the Client API**:  
+    [per-database](../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api)
+    or [server-wide](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api).
+  * **From Studio**:  
+    [per-database](../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    [server-wide](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    or while creating a [RavenDB ETL task](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx).    
+    
+* The example below adds a **per-database** RavenDB connection string from the **Client API**.  
+  The connection string is stored in the current database record and can be used by tasks in that database.    
+
+<Tabs>
+<TabItem value="sync" label="Sync" default>
+```csharp
+// Define a RavenDB connection string
+// ==================================
+var ravenConStr = new RavenConnectionString
+{
+    // The name used by the RavenDB ETL task configuration
+    Name = "raven-connection-string-name",
+
+    // The destination database the ETL task will write to
+    Database = "target-database-name",
+
+    // One or more target cluster node URLs used to discover the topology
+    TopologyDiscoveryUrls = new[] { "https://rvn2:8080" }
+};
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<RavenConnectionString>(ravenConStr);
+
+PutConnectionStringResult connectionStringResult =
+    store.Maintenance.Send(putConnectionStringOp);
+```
+</TabItem>
+<TabItem value="async" label="Async">
+```csharp
+// Define a RavenDB connection string
+// ==================================
+var ravenConStr = new RavenConnectionString
+{
+    // The name used by the RavenDB ETL task configuration
+    Name = "raven-connection-string-name",
+
+    // The destination database the ETL task will write to
+    Database = "target-database-name",
+
+    // One or more target cluster node URLs used to discover the topology
+    TopologyDiscoveryUrls = new[] { "https://rvn2:8080" }
+};
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<RavenConnectionString>(ravenConStr);
+
+PutConnectionStringResult connectionStringResult =
+    await store.Maintenance.SendAsync(putConnectionStringOp);
+```
+</TabItem>
+</Tabs>
+
+| Parameter | Type | Description |
+|---|---|---|
+| **Name** | `string` | The connection string name. Use this value in the ETL task's `ConnectionStringName` property. |
+| **Database** | `string` | The destination database the ETL task writes to. |
+| **TopologyDiscoveryUrls** | `string[]` | One or more target cluster node URLs used to discover the cluster topology. |
+
+<Admonition type="note" title="Secure servers">
+
+When the destination is a secure server, the destination cluster must trust the source cluster.  
+See [Passing certificate between secure clusters](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx#passing-certificate-between-secure-clusters).
+
+</Admonition>
+
+</Panel>
 
 <Panel heading="Transformation script options">
 

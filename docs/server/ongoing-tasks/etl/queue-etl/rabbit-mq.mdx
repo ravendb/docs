@@ -12,7 +12,6 @@ import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
-# Queue ETL: RabbitMQ
 <Admonition type="note" title="">
 
 * RabbitMQ exchanges are designed to disperse data to multiple queues,  
@@ -30,7 +29,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   To define a RabbitMQ ETL task from Studio see [Studio: RabbitMQ ETL Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task.mdx)  
   For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx).
 
-* In this page:
+* In this article:
     * [Add a RabbitMQ connection string](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#add-a-rabbitmq-connection-string)
         * [Example](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#example)
         * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#syntax)
@@ -43,79 +42,138 @@ import LanguageContent from "@site/src/components/LanguageContent";
         * [Available method overloads](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#available-method-overloads)
 
 </Admonition>
+
 ## Add a RabbitMQ connection string
 
-Before setting up the ETL task, define a connection string that the task will use to connect to RabbitMQ.
-#### Example
+* A RabbitMQ ETL task uses a **RabbitMQ connection string** to connect to its destination RabbitMQ broker.  
+  The connection string stores the RabbitMQ connection URI used to reach the broker.
 
-<TabItem value="add_rabbitMq_connection_string" label="add_rabbitMq_connection_string">
-<CodeBlock language="csharp">
-{`// Prepare the connection string:
-// ==============================
-var conStr = new QueueConnectionString
-\{
-    // Provide a name for this connection string
-    Name = "myRabbitMqConStr",
-    
-    // Set the broker type
+* The ETL task does not store these connection details directly.
+  Instead, its configuration references the connection string by name through the `ConnectionStringName` property.  
+
+* A RabbitMQ connection string can be created in any of these ways:
+  * **From the Client API**:
+    [per-database](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api)
+    or [server-wide](../../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api).
+  * **From Studio**:
+    [per-database](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    [server-wide](../../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    or while creating a [RabbitMQ ETL task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task.mdx#define-rabbitmq-etl-task).
+
+* The example below adds a **per-database** RabbitMQ connection string from the **Client API**.  
+  The connection string is stored in the current database record and can be used by tasks in that database.
+
+<Tabs>
+<TabItem value="sync" label="Sync" default>
+```csharp
+// Define a RabbitMQ connection string
+// ===================================
+var rabbitMqConnectionString = new QueueConnectionString
+{
+    // The name used by the RabbitMQ ETL task configuration
+    Name = "rabbitmq-connection-string-name",
+
+    // Set the queue broker type to RabbitMQ
     BrokerType = QueueBrokerType.RabbitMq,
-    
-    // Configure the connection details
-    RabbitMqConnectionSettings = new RabbitMqConnectionSettings() 
-        \{ ConnectionString = "amqp://guest:guest@localhost:49154" \}
-\};
 
-// Deploy (send) the connection string to the server via the PutConnectionStringOperation:
-// =======================================================================================
-var res = store.Maintenance.Send(
-    new PutConnectionStringOperation<QueueConnectionString>(conStr));
-`}
-</CodeBlock>
+    // Configure the RabbitMQ broker connection
+    RabbitMqConnectionSettings = new RabbitMqConnectionSettings
+    {
+        // The RabbitMQ connection URI
+        ConnectionString = "amqp://guest:guest@localhost:49154"
+    }
+};
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<QueueConnectionString>(rabbitMqConnectionString);
+
+PutConnectionStringResult connectionStringResult =
+    store.Maintenance.Send(putConnectionStringOp);
+```
 </TabItem>
+<TabItem value="async" label="Async">
+```csharp
+// Define a RabbitMQ connection string
+// ===================================
+var rabbitMqConnectionString = new QueueConnectionString
+{
+    // The name used by the RabbitMQ ETL task configuration
+    Name = "rabbitmq-connection-string-name",
+
+    // Set the queue broker type to RabbitMQ
+    BrokerType = QueueBrokerType.RabbitMq,
+
+    // Configure the RabbitMQ broker connection
+    RabbitMqConnectionSettings = new RabbitMqConnectionSettings
+    {
+        // The RabbitMQ connection URI
+        ConnectionString = "amqp://guest:guest@localhost:49154"
+    }
+};
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<QueueConnectionString>(rabbitMqConnectionString);
+
+PutConnectionStringResult connectionStringResult =
+    await store.Maintenance.SendAsync(putConnectionStringOp);
+```
+</TabItem>
+</Tabs>
+
 #### Syntax
 
-<TabItem value="queue_connection_string" label="queue_connection_string">
-<CodeBlock language="csharp">
-{`public class QueueConnectionString : ConnectionString
-\{
+<Tabs groupId="rabbitmq-connection-string-syntax-gpt">
+<TabItem value="QueueConnectionString" label="QueueConnectionString" default>
+```csharp
+public sealed class QueueConnectionString : ConnectionString
+{
     // Set the broker type to QueueBrokerType.RabbitMq for a RabbitMQ connection string
-    public QueueBrokerType BrokerType \{ get; set; \}
-    
+    public QueueBrokerType BrokerType { get; set; }
+
     // Configure this when setting a connection string for Kafka
-    public KafkaConnectionSettings KafkaConnectionSettings \{ get; set; \}
-    
+    public KafkaConnectionSettings KafkaConnectionSettings { get; set; }
+
     // Configure this when setting a connection string for RabbitMQ
-    public RabbitMqConnectionSettings RabbitMqConnectionSettings \{ get; set; \}
-    
+    public RabbitMqConnectionSettings RabbitMqConnectionSettings { get; set; }
+
     // Configure this when setting a connection string for Azure Queue Storage
-    public AzureQueueStorageConnectionSettings AzureQueueStorageConnectionSettings \{ get; set; \}
-\}
-`}
-</CodeBlock>
+    public AzureQueueStorageConnectionSettings AzureQueueStorageConnectionSettings { get; set; }
+
+    // Configure this when setting a connection string for Amazon SQS
+    public AmazonSqsConnectionSettings AmazonSqsConnectionSettings { get; set; }
+
+    // Configure this when setting a connection string for Azure Service Bus
+    public AzureServiceBusConnectionSettings AzureServiceBusConnectionSettings { get; set; }
+}
+```
 </TabItem>
-<TabItem value="queue_broker_type" label="queue_broker_type">
-<CodeBlock language="csharp">
-{`public enum QueueBrokerType
-\{
+<TabItem value="QueueBrokerType" label="QueueBrokerType">
+```csharp
+public enum QueueBrokerType
+{
     None,
     Kafka,
     RabbitMq,
-    AzureQueueStorage
-\}
-`}
-</CodeBlock>
+    AzureQueueStorage,
+    AmazonSqs,
+    AzureServiceBus
+}
+```
 </TabItem>
-<TabItem value="rabbitMq_con_str_settings" label="rabbitMq_con_str_settings">
-<CodeBlock language="csharp">
-{`public sealed class RabbitMqConnectionSettings
-\{
-    // A single string that specifies the RabbitMQ exchange connection details
-    public string ConnectionString \{ get; set; \}
-\}
-`}
-</CodeBlock>
+<TabItem value="RabbitMqConnectionSettings" label="RabbitMqConnectionSettings">
+```csharp
+public sealed class RabbitMqConnectionSettings
+{
+    // The RabbitMQ connection URI, for example: amqp://guest:guest@localhost:49154
+    public string ConnectionString { get; set; }
+}
+```
 </TabItem>
-
+</Tabs>
 
 
 ## Add a RabbitMQ ETL task
@@ -359,6 +417,4 @@ loadToOrdersExchange(orderData, 'users-queue', \{
 `}
 </CodeBlock>
 </TabItem>
-
-
 

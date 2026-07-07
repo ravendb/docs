@@ -1,41 +1,55 @@
 ---
-title: "Indexes: Debugging Index Errors"
+title: "Debugging Index Errors"
 sidebar_label: Debugging Index Errors
+description: "Diagnose and fix RavenDB index compilation errors and runtime failures caused by malformed definitions or corrupt document data."
 sidebar_position: 0
 ---
 
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
-# Indexes: Debugging Index Errors
+<Admonition type="note" title="">
+    
+* A RavenDB index processes JSON documents according to its index definition,  
+  which specifies how documents are mapped into _index entries_.      
+    
+* Index errors can happen because of invalid index syntax, assumptions about missing or malformed document data,  
+  or problems detected when RavenDB opens existing index storage.    
 
-Indexes in RavenDB are user provided LINQ queries running on top of dynamic JSON data model. There is a wide space for errors here, either because of malformed index definition or missing / corrupt data on the JSON document itself.
+* In this article:
+  * [Index compilation errors](../../indexes/troubleshooting/debugging-index-errors.mdx#index-compilation-errors)
+  * [Index execution errors](../../indexes/troubleshooting/debugging-index-errors.mdx#index-execution-errors)  
+  * [Index marked as faulty on startup](../../indexes/troubleshooting/debugging-index-errors.mdx#index-marked-as-faulty-on-startup)    
+  * [Marking index as errored](../../indexes/troubleshooting/debugging-index-errors.mdx#marking-index-as-errored)    
 
-## Index Compilation Errors
+</Admonition>
 
-An index definition such as the following one will fail:
+<Panel heading="Index compilation errors">
 
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`\{
+An index definition like this will fail:    
+
+```json
+{
     "Name": "Posts_TitleLength",
     "Maps" : [
-        "from doc in docs where doc.Type == 'posts' select new \{ doc.Title.Length \}"
+        "from doc in docs where doc.Type == 'posts' select new { doc.Title.Length }"
     ]
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
+<br/>
 
-The error is the use of single quotes to enclose a string, something that is not allowed in C#. This will result in the following compilation error:
+The error is caused by using single quotes to enclose a string.  
+In C#, strings must be enclosed in double quotes.    
+    
+This results in the following compilation error:    
 
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`IndexCompilationException: Failed to compile index Posts_TitleLength
+```csharp
+IndexCompilationException: Failed to compile index Posts_TitleLength
 
 using System;
 using System.Collections;
@@ -49,81 +63,82 @@ using Raven.Server.Documents.Indexes.Static.Linq;
 using Raven.Server.Documents.Indexes.Static.Extensions;
 
 namespace Raven.Server.Documents.Indexes.Static.Generated
-\{
+{
     public class Index_Posts_TitleLength : StaticIndexBase
-    \{
+    {
         IEnumerable Map_0(IEnumerable<dynamic> docs)
-        \{
+        {
             foreach (var doc in docs)
-            \{
+            {
                 if ((doc.Type == 'posts') == false)
                     continue;
                 yield return new
-                \{
+                {
                     doc.Title.Length
-                \}
+                }
 
                 ;
-            \}
-        \}
+            }
+        }
 
         public Index_Posts_TitleLength()
-        \{
+        {
             this.AddMap("@all_docs", this.Map_0);
-            this.OutputFields = new string[] \{ "Length" \};
-        \}
-    \}
-\}
+            this.OutputFields = new string[] { "Length" };
+        }
+    }
+}
 
 (20,34): error CS1012: Too many characters in character literal
-`}
-</CodeBlock>
-</TabItem>
+```
+<br/>    
 
-Which clearly indicates that the error is at line 20, column 34: `if ((doc.Type == 'posts') == false)`.
+The compiler output indicates that the error is at line 20, column 34: `if ((doc.Type == 'posts') == false)`.
 
-This gives you enough information to figure out what is wrong. Those errors are immediate, and require no further action from the database. The only thing that the user can do is fix the index definition.
+This is enough information to identify the problem in the index definition.  
+Compilation errors are detected immediately, before the index starts processing documents.  
+To resolve the error, fix the index definition.    
 
-<Admonition type="note" title="Information" id="information" href="#information">
+<Admonition type="note" title="">
+    
+#### Generated Code    
 
-Please note that the index definition differs from the send one, because internally RavenDB is applying a lot of optimizations to the send LINQ function to achieve best performance.
+The generated index code may differ from the index definition you submitted.  
+RavenDB transforms and optimizes the submitted index definition before compiling it to achieve best performance.    
 
 </Admonition>
 
-## Index Execution Errors
+</Panel>    
 
-A common case is an index that doesn't take into account that other documents also exists on the server. For example, let us take this index:
+<Panel heading="Index execution errors">
 
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`\{
+A common cause of execution errors is an index that assumes all documents have a specific structure.  
+For example, consider this index:    
+
+```json
+{
     "Name": "YearOfBirth",
     "Maps" : [
-        "from doc in docs select new \{ YearOfBirth = DateTime.Parse(doc.DateOfBirth).Year \}"
+        "from doc in docs select new { YearOfBirth = DateTime.Parse(doc.DateOfBirth).Year }"
     ]
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
+<br/>    
 
-This index makes an assumption that all documents have a `DateOfBirth` property and that 
-the value of this property can be parsed to `DateTime`. A document that doesn't have that 
-property will return `null` when it is accessed, resulting in a `ArgumentNullException` 
-when the index is executed.
+This index assumes that every document has a `DateOfBirth` property and that its value can be parsed as a `DateTime`.  
+If a document doesn't have this property, accessing it returns `null`, and `DateTime.Parse` will throw an `ArgumentNullException` while the index is running.
 
-Because indexes are updated on a background thread, it is unlikely that users will be 
-aware of those errors.  
-
-Index execution errors can be viewed in two places:  
-
-* View **index statistics** and **index error statistics** 
-  in `/indexes/stats` and `/indexes/errors`.  
-* View indexes activity, including errors, in a human-readable form via [Studio](../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---errors).  
+Because indexes are updated in the background, users may not notice these errors immediately.      
+Index execution errors can be viewed in the following ways:  
+  * Use the database REST API endpoints:  
+    `/databases/<database-name>/indexes/stats` and `/databases/<database-name>/indexes/errors`.
+  * In Studio, view index activity and error indicators in the [indexes list view](../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---errors).
+  * For a dedicated index errors view, go to **Indexes > Index Errors**.
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Statistics" label="Statistics">
-<CodeBlock language="json">
-{`{
+<TabItem value="Statistics" label="/indexes/stats">
+```json
+{
    "Results":[
       {
          "Name":"TitleLength",
@@ -137,7 +152,7 @@ Index execution errors can be viewed in two places:
          "ReducedPerSecondRate":0.0,
          "MaxNumberOfOutputsPerDocument":0,
          "Collections":{
-            "@all_docs":{
+            "@all_docs":{ (
                "LastProcessedDocumentEtag":791,
                "LastProcessedTombstoneEtag":0,
                "DocumentLag":0,
@@ -159,12 +174,11 @@ Index execution errors can be viewed in two places:
       }
    ]
 }
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="Errors" label="Errors">
-<CodeBlock language="json">
-{`{
+<TabItem value="Errors" label="/indexes/errors">
+```json
+{
    "Results":[
       {
          "Name":"TitleLength",
@@ -179,9 +193,9 @@ Parameter name: s
    at CallSite.Target(Closure , CallSite , Type , Object )
    at System.Dynamic.UpdateDelegates.UpdateAndExecute2[T0,T1,TRet](CallSite site, T0 arg0, T1 arg1)
    at Raven.Server.Documents.Indexes.Static.Generated.Index_TitleLength.<Map_0>d__0.MoveNext()
-   at Raven.Server.Documents.Indexes.Static.TimeCountingEnumerable.Enumerator.MoveNext() in C:\\\\Builds\\\\RavenDB-Stable-4.0\\\\src\\\\Raven.Server\\\\Documents\\\\Indexes\\\\Static\\\\TimeCountingEnumerable.cs:line 41
-   at Raven.Server.Documents.Indexes.MapIndexBase\`2.HandleMap(LazyStringValue lowerId, IEnumerable mapResults, IndexWriteOperation writer, TransactionOperationContext indexContext, IndexingStatsScope stats) in C:\\\\Builds\\\\RavenDB-Stable-4.0\\\\src\\\\Raven.Server\\\\Documents\\\\Indexes\\\\MapIndexBase.cs:line 64
-   at Raven.Server.Documents.Indexes.Workers.MapDocuments.Execute(DocumentsOperationContext databaseContext, TransactionOperationContext indexContext, Lazy\`1 writeOperation, IndexingStatsScope stats, CancellationToken token) in C:\\\\Builds\\\\RavenDB-Stable-4.0\\\\src\\\\Raven.Server\\\\Documents\\\\Indexes\\\\Workers\\\\MapDocuments.cs:line 108"
+   at Raven.Server.Documents.Indexes.Static.TimeCountingEnumerable.Enumerator.MoveNext() in C:\\Builds\\RavenDB-Stable-4.0\\src\\Raven.Server\\Documents\\Indexes\\Static\\TimeCountingEnumerable.cs:line 41
+   at Raven.Server.Documents.Indexes.MapIndexBase`2.HandleMap(LazyStringValue lowerId, IEnumerable mapResults, IndexWriteOperation writer, TransactionOperationContext indexContext, IndexingStatsScope stats) in C:\\Builds\\RavenDB-Stable-4.0\\src\\Raven.Server\\Documents\\Indexes\\MapIndexBase.cs:line 64
+   at Raven.Server.Documents.Indexes.Workers.MapDocuments.Execute(DocumentsOperationContext databaseContext, TransactionOperationContext indexContext, Lazy`1 writeOperation, IndexingStatsScope stats, CancellationToken token) in C:\\Builds\\RavenDB-Stable-4.0\\src\\Raven.Server\\Documents\\Indexes\\Workers\\MapDocuments.cs:line 108"
             },
             {
                "Timestamp":"2018-02-26T14:17:08.7958137Z",
@@ -192,31 +206,116 @@ Parameter name: s
    at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
    at CallSite.Target(Closure , CallSite , Type , Object )
    at Raven.Server.Documents.Indexes.Static.Generated.Index_TitleLength.<Map_0>d__0.MoveNext()
-   at Raven.Server.Documents.Indexes.Static.TimeCountingEnumerable.Enumerator.MoveNext() in C:\\\\Builds\\\\RavenDB-Stable-4.0\\\\src\\\\Raven.Server\\\\Documents\\\\Indexes\\\\Static\\\\TimeCountingEnumerable.cs:line 41
-   at Raven.Server.Documents.Indexes.MapIndexBase\`2.HandleMap(LazyStringValue lowerId, IEnumerable mapResults, IndexWriteOperation writer, TransactionOperationContext indexContext, IndexingStatsScope stats) in C:\\\\Builds\\\\RavenDB-Stable-4.0\\\\src\\\\Raven.Server\\\\Documents\\\\Indexes\\\\MapIndexBase.cs:line 64
-   at Raven.Server.Documents.Indexes.Workers.MapDocuments.Execute(DocumentsOperationContext databaseContext, TransactionOperationContext indexContext, Lazy\`1 writeOperation, IndexingStatsScope stats, CancellationToken token) in C:\\\\Builds\\\\RavenDB-Stable-4.0\\\\src\\\\Raven.Server\\\\Documents\\\\Indexes\\\\Workers\\\\MapDocuments.cs:line 108"
+   at Raven.Server.Documents.Indexes.Static.TimeCountingEnumerable.Enumerator.MoveNext() in C:\\Builds\\RavenDB-Stable-4.0\\src\\Raven.Server\\Documents\\Indexes\\Static\\TimeCountingEnumerable.cs:line 41
+   at Raven.Server.Documents.Indexes.MapIndexBase`2.HandleMap(LazyStringValue lowerId, IEnumerable mapResults, IndexWriteOperation writer, TransactionOperationContext indexContext, IndexingStatsScope stats) in C:\\Builds\\RavenDB-Stable-4.0\\src\\Raven.Server\\Documents\\Indexes\\MapIndexBase.cs:line 64
+   at Raven.Server.Documents.Indexes.Workers.MapDocuments.Execute(DocumentsOperationContext databaseContext, TransactionOperationContext indexContext, Lazy`1 writeOperation, IndexingStatsScope stats, CancellationToken token) in C:\\Builds\\RavenDB-Stable-4.0\\src\\Raven.Server\\Documents\\Indexes\\Workers\\MapDocuments.cs:line 108"
             }
          ]
       }
    ]
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-As you can see, RavenDB surfaces both the fact that the index has encountered, what was the document it errored on, and what that error was. The errors collection contains the last 500 errors that happened on the server per index.
+RavenDB shows which index encountered errors, which document caused each error, and the exception that was thrown.
+The errors collection contains the last 500 errors stored per index.
 
-In addition to that, the server logs may contain additional information regarding the error.
+In addition, the server logs may contain additional information about the error.
 
-## Marking Index as Errored
+</Panel>  
 
-Furthermore, in order to protect itself from indexes that always fail, RavenDB will mark index as errored if it keeps failing. The actual logic for erroring-out an index is:
+<Panel heading="Index marked as faulty on startup">
 
-* If an index has 15% or more failure rate
-* The 15% count is only considered after the first 100 indexing attempts to make sure that have a good determination
+Unlike compilation and execution errors, which occur while an index is running,  
+an index can also be marked as **Faulty** when the database starts up - before the index ever processes a document.  
 
-A errored index cannot be queried, all queries to a errored index will result in an exception.
+This startup fault happens when RavenDB detects that the index storage was created for a **different database** than the one currently loading it.
+The faulty index will not open, and any query against it will throw an exception:
 
-The only thing that can be done with a errored index is to either delete it or replace the index definition with one that is resilient to those errors.
+```csharp
+IndexOpenException: Could not open index because stored database ID ('<source-database-id>') is
+different than current database ID ('<current-database-id>').
+A common reason for this is that the index was copied from another database.
+```
+<br/>
 
+---        
+
+<ContentFrame>
+    
+#### What RavenDB checks
+
+Each index stores the **Database ID** of the database it was created for.  
+On startup, RavenDB compares that stored ID with the ID of the database currently loading the index.
+    
+If the IDs do not match, RavenDB treats the index files as copied from another database and marks the index as **Faulty**.
+This most commonly happens when raw database/index files are copied between databases as a manual deploy, backup, or restore shortcut.
+
+This validation applies to both auto-indexes and static indexes.    
+    
+The [Indexing.SkipDatabaseIdValidationOnIndexOpening](../../server/configuration/indexing-configuration.mdx#indexingskipdatabaseidvalidationonindexopening)
+configuration key disables this check.
+It is intended for support scenarios only, not as a fix - a mismatched index that is allowed to open can still return incomplete results.
+
+</ContentFrame>       
+<ContentFrame>
+    
+#### Why this validation matters
+        
+An index records the last document [etag](../../glossary/etag.mdx) it processed.
+RavenDB uses that value to skip documents whose etag is at or below it and continue indexing from the next document.
+        
+If index files are copied from another database, the copied index can carry a last-processed etag from the source database.
+That etag may be higher than the etags of documents in the target database, so RavenDB can treat those documents as already indexed and skip them.
+
+The result is a silent query-correctness issue:
+the documents exist, but their index terms were never written, so queries that rely on the copied index can miss them,
+even though the index appears healthy (not stale, not paused, no errors).
+
+Failing fast at startup turns that silent data-correctness problem into an explicit, visible error.        
+
+</ContentFrame>       
+<ContentFrame>
+    
+#### How to recover
+
+* [Reset the index](../../client-api/operations/maintenance/indexes/reset-index.mdx) to discard the copied index files and rebuild the index from scratch.
+* Or set [Indexing.ErrorIndexStartupBehavior](../../server/configuration/indexing-configuration.mdx#indexingerrorindexstartupbehavior)
+  to `ResetAndStart` to have RavenDB automatically reset and start faulty indexes on startup.
+
+**To avoid this situation**,  
+use RavenDB's [backup & restore](../../server/ongoing-tasks/backup-overview.mdx)
+or [export & import](../../client-api/smuggler/what-is-smuggler.mdx) features instead of copying data directories between databases.
+
+</ContentFrame>
+
+</Panel>  
+
+<Panel heading="Marking index as errored">
+
+* An index can end up in the `Error` state in more than one way:  
+  * **Repeated execution errors**:  
+    RavenDB can mark a running index as errored when it keeps failing while processing documents.
+  * **Startup/opening failures**:  
+    RavenDB can also create a faulty, errored index instance when an existing index cannot be opened,  
+    such as when the index storage belongs to a different database.
+
+* To protect the database from indexes that keep failing during execution, RavenDB tracks indexing attempts and errors.
+  The failure rate is calculated from map, referenced-document map, and reduce work.
+   
+  For a **stale** index, RavenDB waits until more than 100 indexing attempts have been made before applying the failure-rate threshold.
+  Once the index is **no longer stale**, RavenDB can evaluate the failure rate sooner.  
+    
+  In either case, once RavenDB evaluates the failure rate, it marks the index as errored if the rate exceeds 15%.   
+  As a special case, a non-stale index for which every indexing attempt has failed is marked as errored immediately, without waiting for the usual attempt threshold.    
+
+* An errored index cannot be queried.  
+  Queries that use an errored index will throw an exception.
+
+* Recovery depends on the cause:    
+  * If the index definition is invalid, fix or replace it.  
+  * If the index data is invalid or must be rebuilt, reset the index or delete and recreate it.    
+  * For startup faults caused by copied index storage, use the recovery steps described in [Index faulted on startup](../../indexes/troubleshooting/debugging-index-errors.mdx#index-faulted-on-startup).    
+
+</Panel>
