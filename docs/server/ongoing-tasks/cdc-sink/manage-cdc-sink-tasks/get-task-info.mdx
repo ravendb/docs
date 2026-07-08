@@ -1,0 +1,31 @@
+---
+title: "CDC Sink: Get Task Info"
+sidebar_label: Get Task Info
+description: "How to retrieve the current state of a CDC Sink task using the RavenDB Client API (GetOngoingTaskInfoOperation) and through the Management Studio."
+sidebar_position: 4
+supported_languages: ["csharp"]
+see_also:
+  - title: "Enable / Disable a Task"
+    link: "server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/enable-disable-task"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Monitoring"
+    link: "server/ongoing-tasks/cdc-sink/monitoring"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Ongoing Task Operations"
+    link: "client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations"
+    source: "docs"
+    path: "Client API > Operations"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GetTaskInfoCsharp from './content/_get-task-info-csharp.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <GetTaskInfoCsharp />
+</LanguageContent>
