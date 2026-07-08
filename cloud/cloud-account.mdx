@@ -19,6 +19,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * In this page:
     * [Account roles](../cloud/cloud-account.mdx#account-roles)
+    * [Product permissions](../cloud/cloud-account.mdx#product-permissions)
     * [Multi-account configuration](../cloud/cloud-account.mdx#multi-account-configuration)
 
 </Admonition>
@@ -28,14 +29,69 @@ Each account user can be assigned specific roles that extend the range of functi
 
 | **Account role**                 | **Description**                                                                                                                                                                                                                                 |
 |----------------------------------|---------------------------------------------------------------------------------------------------|
-| Products                         | Grants full access to manage products: provision, configure, monitor, and control instances.      |                                                                                                                                                       |
+| Products Creation                | Grants the ability to provision new products. Access to existing products is managed through [per-product permissions](#product-permissions). |
 | Backups                          | Access and manage backups, restore links and downloads.                                           |
 | Billing                          | Provides visibility into billing history, current charges, remaining credits, and invoices.       |
 | API Access                       | Controls programmatic access to the platform. Generate, manage, and revoke API keys.              |
 | Support                          | Create and manage support requests for general issues or specific products, active or terminated. |
 | Account                          | Provides access to general account information.                                                   |
-| Account with User Management     | Grants permissions to manage account users. You can invite or remove team members.                |
+| Account with User Management     | Grants permissions to manage account users — invite or remove members, assign their [account roles](#account-roles), and manage their [product permissions](#product-permissions). |
 | Account with Billing Information | Update credit cards, billing addresses, and payment contacts for your account.                    |
+
+## Product permissions
+
+Access to your Cloud products is controlled by **two independent layers**, managed through separate flows:
+
+* **Account-level roles** (the [Account roles](#account-roles) above) — apply to the account as a whole. For example, the **Products Creation** role controls who may provision new products.
+* **Per-product permissions** (this section) — apply to a *single* product and control what a user may do with it. They are assigned per user, per product, from the [Users & Access](./portal/cloud-portal-users-and-access-tab.mdx) page.
+
+<Admonition type="note" title="Account Owner">
+The **Account Owner** always has full access to every product, regardless of any per-product permissions.
+</Admonition>
+
+### Permission presets
+
+Per-product access is assigned as a single **preset** — you choose one preset per user, per product, on the [Users & Access](./portal/cloud-portal-users-and-access-tab.mdx) page. There is no need to manage individual permissions.
+
+| **Preset**     | **What it grants**                                                                                                    |
+|----------------|-----------------------------------------------------------------------------------------------------------------------|
+| No access      | The user cannot see this product.                                                                                     |
+| Viewer         | Read-only access — view the product's configuration, status, and metrics.                                            |
+| Operator       | Everything a Viewer can do, plus day-to-day operations: restart nodes and review audit logs.                         |
+| Manager        | Everything an Operator can do, plus change the configuration, resize instances, extend storage, and enable or disable product features. |
+| Admin          | Everything a Manager can do, plus terminate the product. Does not include security settings.                         |
+| Security admin | Manages the product's security settings — client certificates, IP allowlists, monitoring IPs, and SNMP credentials.  |
+
+**Security admin** is an **add-on** enabled on top of a base preset (Viewer / Operator / Manager / Admin) with a dedicated toggle. It cannot be enabled for **No access**, and it cannot be toggled for a **Custom (legacy)** access level — an access level that predates the presets, shown (and locked) when editing such a user.
+
+<Admonition type="note" title="Security-related features">
+The **Monitoring/OpenTelemetry** and **Power BI** features are a special case. **Enabling or disabling** them requires the **Manager** (or **Admin**) preset **together with** the **Security admin** add-on. To only **configure** such a feature once it is enabled, the **Security admin** add-on is sufficient.
+</Admonition>
+
+### Who can manage product permissions
+
+Product permissions are managed by the **Account Owner** and by users with the **Account with User Management** role, subject to a **subset rule**:
+
+* A manager can grant or revoke a product permission only for products on which they hold that permission themselves.
+* A user cannot edit their own product permissions.
+* A non-owner cannot edit the Account Owner's permissions.
+
+Permissions are assigned from the [Users & Access](./portal/cloud-portal-users-and-access-tab.mdx) page.
+
+### Default access for new products
+
+Each account member carries a per-user **default product-permission set**. When a new product is provisioned, every member whose default is non-empty is automatically granted those permissions on the new product. A member with an empty default receives no access (this is the out-of-the-box value).
+
+* The default is set by the **Account Owner** only, in the invite-user and edit-user flows. Users with the **Account with User Management** role can manage per-product permissions, but they cannot change a user's default access for new products.
+* It applies only to products created **after** it is set — it does not retroactively change access to existing products.
+
+<Admonition type="note" title="Product creator">
+When a user with the **Products Creation** role creates a product, they are automatically granted full access to that product, regardless of their default set.
+</Admonition>
+
+<Admonition type="info" title="Migration from the previous model">
+The Cloud portal previously used a single **Products** account role that granted management of *every* product. That role no longer exists. During the upgrade, users who held the old **Products** role were granted full access to every existing product, and their account-level role became **Products Creation**. No customer action is required — access is simply finer-grained going forward.
+</Admonition>
 
 ## Multi-account configuration
 

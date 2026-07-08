@@ -32,6 +32,10 @@ insights and data-driven decision-making.
 Usage of this feature is
 described [here](https://ravendb.net/docs/article-page/latest/csharp/integrations/postgresql-protocol/power-bi).
 
+<Admonition type="note" title="Permissions">
+*Power BI* is a security-related feature: **enabling or disabling** it requires the [**Manager** (or **Admin**) preset together with the **Security admin** add-on](./cloud-account.mdx#permission-presets), while the **Security admin** add-on alone is enough to *configure* it once enabled.
+</Admonition>
+
 ## Configuration
 
 <Admonition type="warning" title="Required " id="required" href="#required">
@@ -111,6 +115,10 @@ networks.
 *RavenDB Cloud* leverages the *OpenTelemetry SDK* to send metrics data via the *OpenTelemetry* Protocol, allowing
 seamless
 data collection and analysis by an OpenTelemetry retriever.
+
+<Admonition type="note" title="Permissions">
+*Monitoring* (SNMP / *OpenTelemetry*) is a security-related feature: **enabling or disabling** it requires the [**Manager** (or **Admin**) preset together with the **Security admin** add-on](./cloud-account.mdx#permission-presets), while the **Security admin** add-on alone is enough to *configure* it once enabled.
+</Admonition>
 
 ## Configuration
 
