@@ -200,30 +200,62 @@ Multiple documents modified in the same transaction are also applied atomically 
 </Panel>
 
 <Panel heading="State persistence">
-
-* CDC Sink stores processing progress in a single **state document per task**, separate from the task definition:  
+    
+<ContentFrame>
+    
+### The state document
+    
+CDC Sink stores processing progress in a single **state document per task**, separate from the task definition:  
   * The task definition is stored in the database record.
-  * The processing state is stored as a RavenDB document in the `@cdc-states` system collection.
+  * The processing state is stored as a RavenDB document in the `@cdc-states` system collection.  
+    
+![The state document](./assets/the-state-document.png)
 
-* The **state document ID** is `@cdc-states/<task name>`.  
-  This document tracks both streaming progress and initial-load progress:  
-  * `LastLsn` - the last processed source-database change position, used to resume streaming after a restart.
-  * `Tables` - a per-table map, keyed by `schema.tableName`, that stores initial-load progress:
-    * `InitialLoadCompleted` - whether the full scan for that table has finished.
-    * `LastKeyValues` - the last primary-key values read, used to resume an interrupted initial load.
+1. **The `@cdc-states` collection**  
+   In the **Documents** view, expand the **@system** group and open the **@cdc-states** collection.  
+   It holds one state document per CDC Sink task.    
 
+2. **The state document ID**  
+   The document is named `@cdc-states/<task name>` (here, `@cdc-states/MyCdcSinkTask`).
+
+3. **The document contents**  
+   The JSON tracks both streaming progress and initial-load progress:  
+   * **`ConfigurationName`**  
+     The name of the CDC Sink task this state belongs to.
+   * **`LastLsn`**  
+     The last processed source-database change position, used to resume streaming after a restart.
+   * **`Tables`**
+     A per-table map, keyed by `schema.tableName`, that stores initial-load progress:
+     * **`InitialLoadCompleted`** - whether the full scan for that table has finished.
+     * **`LastKeyValues`** - the last primary-key values read, used to resume an interrupted initial load.    
+    
+     In this example both tables show `InitialLoadCompleted: true` and an empty `LastKeyValues`,  
+     meaning the initial load has finished and the task is now streaming changes driven by `LastLsn`.
+
+</ContentFrame>
+<ContentFrame>    
+    
+### Reusing saved state  
+    
 * Deleting a CDC Sink task removes the task definition, but leaves the matching state document.  
   If you create a new task with the same name, CDC Sink can reuse that state document and resume from the saved position.
 
-  To start from scratch, create the replacement task with a different name.  
+* To start from scratch, create the replacement task with a different name.  
   Since no `@cdc-states/<new task name>` document exists yet, CDC Sink has no saved position to resume from.  
   It performs a fresh initial load unless the task is configured with `SkipInitialLoad = true`.
+      
+* See [Troubleshooting](../../../server/ongoing-tasks/cdc-sink/troubleshooting.mdx) for details on state loss and recovery options.
+
+</ContentFrame>
+<ContentFrame>  
+    
+### Cluster replication  
         
-  See [Troubleshooting](../../../server/ongoing-tasks/cdc-sink/troubleshooting.mdx) for details on state loss and recovery options.
+Like any RavenDB document, this state document is subject to [internal replication](../../../server/clustering/replication/replication-overview.mdx#replication-types) behavior.  
+Different nodes in a cluster may temporarily have different versions of this document.
 
-* Like any RavenDB document, this state document is subject to [internal replication](../../../server/clustering/replication/replication-overview.mdx#replication-types) behavior.  
-  Different nodes in a cluster may temporarily have different versions of this document.
-
+</ContentFrame>
+    
 </Panel>
 
 <Panel heading="Failover behavior">
