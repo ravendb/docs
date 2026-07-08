@@ -14,7 +14,7 @@ import Panel from '@site/src/components/Panel';
 
 </Admonition>
 
-<Panel heading="Connection String">
+<Panel heading="Connection string">
 
 Use a `SqlConnectionString` with `FactoryName` set to `"Npgsql"`:
 
@@ -36,7 +36,7 @@ store.Maintenance.Send(new PutConnectionStringOperation<SqlConnectionString>(
 
 </Panel>
 
-<Panel heading="How It Works">
+<Panel heading="How it works">
 
 PostgreSQL CDC Sink uses logical replication, which provides a continuous stream of
 changes without polling. This gives low-latency, near-real-time replication.
@@ -57,7 +57,7 @@ Key PostgreSQL concepts:
 <Panel heading="Prerequisites">
 
 PostgreSQL requires several configuration settings and permissions before CDC Sink
-can connect. See [Prerequisites Checklist](../prerequisites-checklist.mdx) for the
+can connect. See [Prerequisites Checklist](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/prerequisites-checklist.mdx) for the
 full list, including:
 
 * WAL level set to `logical`
@@ -69,7 +69,7 @@ full list, including:
 
 </Panel>
 
-<Panel heading="PostgreSQL-Specific Settings">
+<Panel heading="PostgreSQL-specific settings">
 
 The `CdcSinkPostgresSettings` object on `CdcSinkConfiguration` controls the replication
 slot and publication names:
@@ -92,28 +92,27 @@ If these names are omitted, they are generated automatically at task creation as
 `rvn_cdc_s_{taskId}` (slot) and `rvn_cdc_p_{taskId}` (publication), where `{taskId}`
 is the task's Raft etag. Automatic creation of the slot and publication requires the
 PostgreSQL user to have sufficient permissions.
-See [Initial Setup](../initial-setup.mdx) for details.
+See [Initial Setup](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/initial-setup.mdx) for details.
 
 </Panel>
 
 <Panel heading="Configuration">
 
 The CDC Sink task configuration is the same across all database engines.
-See [Configuration Reference](../../../manage-cdc-sink-tasks/configuration-reference.mdx) for full details.
+See [Configuration Reference](../../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/configuration-reference.mdx) for full details.
 
 The `SourceTableSchema` defaults to `"public"` when using PostgreSQL.
 
 </Panel>
 
-<Panel heading="In This Section">
+<Panel heading="In this section">
 
-* [Prerequisites Checklist](../prerequisites-checklist.mdx) - what to verify before creating a task
-* [Initial Setup](../initial-setup.mdx) - creating the replication slot and publication
-* [WAL Configuration](../wal-configuration.mdx) - PostgreSQL WAL settings
-* [Permissions and Roles](../permissions-and-roles.mdx) - required database permissions
-* [REPLICA IDENTITY](../replica-identity.mdx) - configuring DELETE event content
-* [Monitoring PostgreSQL](../monitoring-postgres.mdx) - replication lag and WAL monitoring
-* [Cleanup and Maintenance](../cleanup-and-maintenance.mdx) - dropping orphaned slots
-* [Studio UI](../studio-ui.mdx) - creating tasks through the Studio interface
+* [Prerequisites Checklist](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/prerequisites-checklist.mdx) - what to verify before creating a task
+* [Initial Setup](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/initial-setup.mdx) - creating the replication slot and publication
+* [WAL Configuration](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/wal-configuration.mdx) - PostgreSQL WAL settings
+* [Permissions and Roles](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/permissions-and-roles.mdx) - required database permissions
+* [REPLICA IDENTITY](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity.mdx) - configuring DELETE event content
+* [Monitoring PostgreSQL](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/monitoring-postgres.mdx) - replication lag and WAL monitoring
+* [Cleanup and Maintenance](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/cleanup-and-maintenance.mdx) - dropping orphaned slots
 
 </Panel>
