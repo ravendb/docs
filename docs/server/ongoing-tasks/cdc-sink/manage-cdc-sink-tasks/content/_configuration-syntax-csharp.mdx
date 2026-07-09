@@ -1,45 +1,12 @@
----
-title: "CDC Sink: Configuration Reference"
-sidebar_label: Configuration Syntax
-description: "Documents all configuration classes used to define a CDC Sink task, including CdcSinkConfiguration, table configs, CdcColumnMapping, and related types."
-sidebar_position: 1
-see_also:
-  - title: "Schema Design"
-    link: "server/ongoing-tasks/cdc-sink/schema-design"
-    source: "docs"
-    path: "Server > CDC Sink"
-  - title: "Embedded Tables"
-    link: "server/ongoing-tasks/cdc-sink/embedded-tables"
-    source: "docs"
-    path: "Server > CDC Sink"
-  - title: "Linked Tables"
-    link: "server/ongoing-tasks/cdc-sink/linked-tables"
-    source: "docs"
-    path: "Server > CDC Sink"
-  - title: "Patching"
-    link: "server/ongoing-tasks/cdc-sink/patching"
-    source: "docs"
-    path: "Server > CDC Sink"
-  - title: "Delete Strategies"
-    link: "server/ongoing-tasks/cdc-sink/delete-strategies"
-    source: "docs"
-    path: "Server > CDC Sink"
-  - title: "API Reference"
-    link: "server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/api-reference"
-    source: "docs"
-    path: "Server > CDC Sink"
----
-
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
 
-# CDC Sink: Configuration Reference
-
 <Admonition type="note" title="">
 
-* This page documents all configuration classes used to define a CDC Sink task.
+* This article documents the Client API configuration classes used to define a CDC Sink task in code.  
+  Pass a `CdcSinkConfiguration` to `AddCdcSinkOperation` (create) or `UpdateCdcSinkOperation` (update).
 
 * In this article:
   * [CdcSinkConfiguration](#cdcsinkconfiguration)
@@ -51,7 +18,6 @@ import Panel from '@site/src/components/Panel';
   * [CdcColumnType](#cdccolumntype)
   * [CdcSinkOnDeleteConfig](#cdcsinkondeleteconfig)
   * [CdcSinkRelationType](#cdcsinkrelationtype)
-  * [REST API Endpoints](#rest-api-endpoints)
 
 </Admonition>
 
@@ -66,10 +32,10 @@ The top-level configuration object for a CDC Sink task.
 | `Tables` | `List<CdcSinkTableConfig>` | ✓ | Root table configurations (at least one required) |
 | `Postgres` | `CdcSinkPostgresSettings` | | PostgreSQL-specific settings (slot and publication names) |
 | `SkipInitialLoad` | `bool` | | When `true`, skip the initial full-table scan and start streaming CDC changes immediately. Only applies on first startup - has no effect once the initial load has completed. Default: `false` |
-| `Disabled` | `bool` | | Pause the task without deleting it. Default: `false` |
+| `Disabled` | `bool` | | Create the task paused (without deleting it). Default: `false` |
 | `MentorNode` | `string` | | Preferred cluster node for execution |
 | `PinToMentorNode` | `bool` | | Pin the task to the mentor node. Default: `false` |
-| `TaskId` | `long` | | Set by the server on creation |
+| `TaskId` | `long` | | Server-assigned task ID. To update a task, pass the existing task ID to `UpdateCdcSinkOperation(taskId, configuration)`; do not use this property as the update selector. |
 
 **Supported `FactoryName` values (set on the connection string):**
 
@@ -83,29 +49,16 @@ The top-level configuration object for a CDC Sink task.
 
 <Panel heading="CdcSinkPostgresSettings">
 
-PostgreSQL-specific settings. Assigned to `CdcSinkConfiguration.Postgres`.
+PostgreSQL-specific settings. Assigned to `CdcSinkConfiguration.Postgres`.  
 Leave `null` for non-PostgreSQL connections.
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `SlotName` | `string` | Name of the PostgreSQL logical replication slot. If omitted on creation, auto-generated as `rvn_cdc_s_{guid}` on task creation. Immutable once set. Max 63 characters, alphanumeric and underscores only. |
-| `PublicationName` | `string` | Name of the PostgreSQL publication. Same auto-generated naming and immutability rules as `SlotName`. |
+| `SlotName` | `string` | Name of the PostgreSQL logical replication slot. If omitted on creation, auto-generated as `rvn_cdc_s_{taskId}`. Immutable once set. Max 63 characters, alphanumeric and underscores only. |
+| `PublicationName` | `string` | Name of the PostgreSQL publication. If omitted on creation, auto-generated as `rvn_cdc_p_{taskId}` (note the `_p_` prefix vs. the slot's `_s_`). Same immutability rules as `SlotName`. |
 
-Setting these explicitly is useful when:
-- A database administrator pre-creates the slot and publication with human-readable names
-- Migrating from a previous CDC Sink task and reusing an existing slot
-- Running multiple environments (dev/staging/prod) with predictable names
-
-If tables are missing from the publication, CDC Sink attempts `ALTER PUBLICATION ... ADD TABLE`
-automatically on startup (requires sufficient permissions).
-
-See [Initial Setup](../source-database-setup/postgres/initial-setup.mdx) for details.
-
-<Admonition type="note" title="">
-For embedded tables where the join columns are not part of the primary key, the
-PostgreSQL table must have `REPLICA IDENTITY` configured so that DELETE events include
-the join column values. See [REPLICA IDENTITY](../source-database-setup/postgres/replica-identity.mdx).
-</Admonition>
+Setting these explicitly is useful when a DBA pre-creates the slot and publication with human-readable names,  
+when migrating from a previous task and reusing an existing slot, or when running multiple environments with predictable names.
 
 </Panel>
 
@@ -135,12 +88,12 @@ Configures a table whose rows are embedded as nested objects within a parent doc
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
 | `SourceTableName` | `string` | ✓ | SQL table name |
-| `SourceTableSchema` | `string` | | SQL schema name. Default is provider-specific: PostgreSQL `"public"`, SQL Server `"dbo"`, MySQL/MariaDB the database name from the connection string. |
+| `SourceTableSchema` | `string` | | SQL schema name (provider-specific default) |
 | `PropertyName` | `string` | ✓ | Property name in the parent document (e.g., `"Lines"`) |
 | `Type` | `CdcSinkRelationType` | ✓ | `Array`, `Map`, or `Value` |
 | `JoinColumns` | `List<string>` | ✓ | FK columns referencing parent's `PrimaryKeyColumns` |
 | `PrimaryKeyColumns` | `List<string>` | ✓ | PK columns for matching items on UPDATE/DELETE |
-| `Columns` | `List<CdcColumnMapping>` | ✓ | Column mappings - each entry defines a SQL column, its document property name, and how to store it |
+| `Columns` | `List<CdcColumnMapping>` | ✓ | Column mappings |
 | `Patch` | `string` | | JavaScript patch on **parent** document for INSERT/UPDATE |
 | `OnDelete` | `CdcSinkOnDeleteConfig` | | Delete behavior for embedded items |
 | `CaseSensitiveKeys` | `bool` | | Case-sensitive PK matching. Default: `false` |
@@ -156,7 +109,7 @@ Configures a foreign key reference that becomes a document ID in the parent docu
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
 | `SourceTableName` | `string` | ✓ | SQL table name of the referenced table |
-| `SourceTableSchema` | `string` | | SQL schema name. Default is provider-specific: PostgreSQL `"public"`, SQL Server `"dbo"`, MySQL/MariaDB the database name from the connection string. |
+| `SourceTableSchema` | `string` | | SQL schema name (provider-specific default) |
 | `PropertyName` | `string` | ✓ | Property name in the parent document (e.g., `"Customer"`) |
 | `LinkedCollectionName` | `string` | ✓ | Target RavenDB collection for ID generation (e.g., `"Customers"`) |
 | `JoinColumns` | `List<string>` | ✓ | FK columns used to build the referenced document ID |
@@ -194,13 +147,13 @@ Controls how DELETE events are handled for a table or embedded table.
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | `Patch` | `string` | null | JavaScript patch that runs when a DELETE event arrives |
-| `IgnoreDeletes` | `bool` | `false` | When `true`, skip the delete - document/item is kept |
+| `IgnoreDeletes` | `bool` | `false` | When `true`, CDC Sink skips the automatic document delete or embedded-item removal. If `Patch` is set, the patch still runs. |
 
 **Available patch variables for OnDelete:**
 
 * `this` - the document (root or parent for embedded)
 * `$row` - all SQL columns from the DELETE event
-* `$old` - the embedded item's last known state (for embedded tables)
+* `$old` - the previous stored document or embedded item before the DELETE event
 
 **Behavior matrix:**
 
@@ -222,18 +175,5 @@ Specifies the structure of embedded data in the document.
 | `Array` | One-to-many: stored as a JSON array. Items matched by PK for UPDATE/DELETE |
 | `Map` | One-to-many: stored as a JSON object keyed by PK value(s) |
 | `Value` | Many-to-one: stored as a single embedded object |
-
-</Panel>
-
-<Panel heading="REST API Endpoints">
-
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| PUT | `/databases/{db}/admin/cdc-sink` | DatabaseAdmin | Create CDC Sink task |
-| PUT | `/databases/{db}/admin/cdc-sink?id={taskId}` | DatabaseAdmin | Update CDC Sink task |
-| POST | `/databases/{db}/admin/cdc-sink/test` | DatabaseAdmin | Test a patch script |
-| POST | `/databases/{db}/admin/cdc-sink/schema` | DatabaseAdmin | Discover the source schema (tables, columns, primary keys, foreign keys) |
-| GET | `/databases/{db}/cdc-sink/performance` | ValidUser | Get performance stats |
-| GET | `/databases/{db}/cdc-sink/performance/live` | ValidUser | WebSocket for live performance stats |
 
 </Panel>

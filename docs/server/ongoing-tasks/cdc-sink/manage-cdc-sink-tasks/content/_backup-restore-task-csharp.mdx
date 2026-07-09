@@ -5,7 +5,7 @@ import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
     
-* CDC Sink task configuration is stored in the database record, 
+* CDC Sink task configuration is stored in the database record,  
   so it is included in database **backups** (logical and snapshot) and recreated when the database is **restored**.
 
 * Unlike an [imported CDC Sink task](../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/export-import-task.mdx#import-cdc-sink-task),
@@ -112,17 +112,17 @@ await restoreOp.WaitForCompletionAsync();
 
 #### Restored enabled tasks can start immediately
     
-If `DisableOngoingTasks` is left as `false`, 
-a CDC Sink task that was enabled when the backup was created becomes **active immediately**
-and can connect to the source database.
+* If `DisableOngoingTasks` is left as `false`, 
+  a CDC Sink task that was enabled when the backup was created becomes **active immediately**
+  and can connect to the source database.
     
-When restoring to a new environment, verify the connection string and source availability first.
-For **PostgreSQL**, also confirm that the referenced publication exists and that the replication slot
-can be consumed, or configure dedicated names before enabling the restored task.
+* When restoring to a new environment, verify the connection string and source availability first.  
+  For **PostgreSQL**, also confirm that the referenced publication exists and that the replication slot
+  can be consumed, or configure dedicated names before enabling the restored task.
     
-The task's saved CDC progress is restored from the [`@cdc-states/<task name>` document](../todo add link....)
-as it existed in the backup. If no matching state document exists, the task starts fresh
-and performs an initial load unless `SkipInitialLoad` is set.
+* The task's saved CDC progress is restored from the [`@cdc-states/<task name>` document](../../../../../server/ongoing-tasks/cdc-sink/how-it-works.mdx#the-state-document)
+  as it existed in the backup. If no matching state document exists, the task starts fresh
+  and performs an initial load unless `SkipInitialLoad` is set.
     
 </Admonition>
 
@@ -130,16 +130,16 @@ and performs an initial load unless `SkipInitialLoad` is set.
     
 #### PostgreSQL: shared replication slot
     
-Restore copies the task's `SlotName` and `PublicationName` unchanged. 
+* Restore copies the task's `SlotName` and `PublicationName` unchanged. 
     
-A PostgreSQL replication slot can be consumed by **only one connection at a time**.  
-If the origin database's task is still enabled, the restored task cannot attach to the same slot
-and enters fallback mode, reporting an error such as `Process is in error recovery (fallback mode)...`.
+* A PostgreSQL replication slot can be consumed by **only one connection at a time**.  
+  If the origin database's task is still enabled, the restored task cannot attach to the same slot
+  and enters fallback mode, reporting an error such as `Process is in error recovery (fallback mode)...`.    
+  Learn more in [One Active Consumer per Slot](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/initial-setup.mdx#one-active-consumer-per-slot).   
     
-Disable the task on one of the two databases (or restore with `DisableOngoingTasks = true`),  
-or give the restored task its own slot and publication before enabling it.
-    
-See [One Active Consumer per Slot](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/initial-setup.mdx#one-active-consumer-per-slot). 
+* Disable the task on one of the two databases (or restore with `DisableOngoingTasks = true`),  
+  or give the restored task its own slot and publication before enabling it.    
+
 </Admonition>
 
 </Panel>
