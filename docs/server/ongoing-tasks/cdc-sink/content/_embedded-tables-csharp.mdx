@@ -2,111 +2,133 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
 
 <Admonition type="note" title="">
+ 
+* Embedded tables let CDC Sink store related source table rows inside a parent RavenDB document as arrays, maps,  
+  or a single object.
 
-* Embedded tables allow CDC Sink to nest SQL table data inside a parent document as
-  arrays, maps, or single objects.
-
-* This page covers configuration options, nesting constraints, and how embedded items
-  are updated and deleted.
+* This article covers embedded table configuration, key constraints, and how embedded items are matched, updated, and deleted.    
 
 * In this article:
-  * [Basic Configuration](#basic-configuration)
-  * [Join Columns and Primary Key Interaction](#join-columns-and-primary-key-interaction)
-  * [Matching Items on Update and Delete](#matching-items-on-update-and-delete)
-  * [Deep Nesting](#deep-nesting)
-  * [Attachments on Embedded Items](#attachments-on-embedded-items)
+  * [Basic configuration](#basic-configuration)
+  * [Join columns and primary key interaction](#join-columns-and-primary-key-interaction)
+  * [Matching items on update and delete](#matching-items-on-update-and-delete)
+  * [Deep nesting](#deep-nesting)
+  * [Attachments on embedded items](#attachments-on-embedded-items)
 
 </Admonition>
 
-<Panel heading="Basic Configuration">
+<Panel heading="Basic configuration">
 
-Each embedded table is configured with a `CdcSinkEmbeddedTableConfig` object inside the
-root table's `EmbeddedTables` list. This configuration defines the related SQL table, the
-parent document property that will hold the embedded data, the join columns used to find
-the parent document, the embedded table's primary key columns, and the columns to store in
-each embedded item.
+* Each embedded table is configured with a `CdcSinkEmbeddedTableConfig` object in its parent table configuration's `EmbeddedTables` list.
+    
+* This configuration defines the related source table, the parent document property that will hold the embedded data,
+  the join columns used to find the parent document, the embedded table's primary key columns, and the columns to map for each embedded item.    
 
-`CdcSinkEmbeddedTableConfig` is placed inside a root table's `EmbeddedTables` list:
+* `CdcSinkEmbeddedTableConfig` is placed inside a root table's `EmbeddedTables` list:
 
-<Tabs>
-<TabItem value="csharp" label="csharp">
-
-```csharp
-new CdcSinkEmbeddedTableConfig
-{
-    SourceTableSchema = "public",         // Source schema (default: "public" PostgreSQL, "dbo" SQL Server, db name for MySQL)
-    SourceTableName = "order_lines",      // SQL table name
-    PropertyName = "Lines",               // Property name in parent document
-    Type = CdcSinkRelationType.Array,     // Array, Map, or Value
-    JoinColumns = ["order_id"],           // FK to parent's PrimaryKeyColumns
-    PrimaryKeyColumns = ["line_id"],      // Used to match items on UPDATE/DELETE
-    Columns =
-    [
-        new CdcColumnMapping() { Column = "line_id",  Name = "LineId" },
-        new CdcColumnMapping() { Column = "product",  Name = "Product" },
-        new CdcColumnMapping() { Column = "quantity", Name = "Quantity" },
-    ]
-}
-```
-
-</TabItem>
-</Tabs>
+    <Tabs>
+    <TabItem value="csharp" label="csharp">
+    ```csharp
+    new CdcSinkEmbeddedTableConfig
+    {
+        SourceTableSchema = "public",     // Source schema (default: "public" PostgreSQL, "dbo" SQL Server, db name for MySQL/MariaDB)
+        SourceTableName = "order_lines",  // SQL table name
+        PropertyName = "Lines",           // Property name in parent document
+        Type = CdcSinkRelationType.Array, // Array, Map, or Value
+        JoinColumns = ["order_id"],       // FK to parent's PrimaryKeyColumns
+        PrimaryKeyColumns = ["line_id"],  // Used to match items on UPDATE/DELETE
+        Columns =
+        [
+            new CdcColumnMapping() { Column = "line_id",  Name = "LineId" },
+            new CdcColumnMapping() { Column = "product",  Name = "Product" },
+            new CdcColumnMapping() { Column = "quantity", Name = "Quantity" },
+        ]
+    }
+    ```
+    </TabItem>
+    </Tabs>
 
 </Panel>
 
-<Panel heading="Join Columns and Primary Key Interaction">
+<Panel heading="Join columns and primary key interaction">
 
+<ContentFrame>
+    
 ### Purpose of JoinColumns
 
-`JoinColumns` specifies the foreign key columns in the embedded table that reference
-the parent's primary key. CDC Sink uses these columns to route each row to the correct
-parent document.
+* `JoinColumns` lists the embedded table columns whose values correspond to the direct parent table's `PrimaryKeyColumns`.
+* CDC Sink pairs the two lists by position. The column names can differ, but the order and count must match:   
 
-`JoinColumns` are the embedded table's foreign key columns. They must correspond to the
-parent's `PrimaryKeyColumns` in the same order and count, but the column names can differ:
+    <Tabs>
+    <TabItem value="csharp" label="csharp">
+    ```csharp
+    // Parent root table:
+    PrimaryKeyColumns = ["id"]
+    
+    // Embedded table - CORRECT:
+    JoinColumns = ["order_id"] // FK that references the parent's PK ("id");
+                               // the name can differ, but it must correspond
+                               // to the parent's PK in the same order/count
+    
+    // Embedded table - INCORRECT:
+    JoinColumns = ["order_id", "line_no"]  // Column count does not match the parent's
+                                           // single-column PrimaryKeyColumns
+    ```
+    </TabItem>
+    </Tabs>
+    
+</ContentFrame>
+<ContentFrame>    
+
+### DELETE events
+
+For embedded-table DELETE events, CDC Sink needs the embedded table's primary key values to find the item to remove,
+and the join column values to route the event to the correct parent document or embedded parent item.
+
+Whether the source includes the join columns in DELETE events depends on the database:
+
+* **PostgreSQL:**  
+  The default `REPLICA IDENTITY` includes only primary key columns in DELETE events.  
+  If the join columns are not part of the embedded table's primary key, additional PostgreSQL configuration is required.  
+  See [REPLICA IDENTITY](../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity.mdx)
+  for how CDC Sink handles this automatically when it has sufficient permissions,  
+  or how a DBA can configure it manually.
+
+* **SQL Server:**  
+  CDC change rows always include all tracked columns, so DELETE events already carry the join columns.  
+  No extra configuration is required.
+
+* **MySQL / MariaDB:**  
+  DELETE events carry the full row only when `binlog_row_image = FULL`, which CDC Sink already requires.  
+  With that in place, the join columns are included.
+
+<Admonition type="note" title="">
+    
+#### Skipping embedded deletes
+
+Regardless of source, if deletes on an embedded table don't need to be processed,  
+set `OnDelete.IgnoreDeletes = true` and leave `OnDelete.Patch` unset.  
+    
+In that case, CDC Sink discards delete events for the embedded table and does not need to route them to the parent.
+For PostgreSQL, this also avoids any REPLICA IDENTITY changes.    
+    
+If an `OnDelete.Patch` is configured, CDC Sink still routes the delete to the parent document so the patch can run.
+See [Delete Strategies](../../../../server/ongoing-tasks/cdc-sink/delete-strategies.mdx).    
+
+</Admonition>    
+    
+<Admonition type="note" title="">
+    
+#### Avoiding PostgreSQL REPLICA IDENTITY changes
+
+If embedded deletes do need to be processed, 
+a schema-level way to avoid PostgreSQL REPLICA IDENTITY changes is to include the join column in the embedded table's primary key:    
 
 <Tabs>
-<TabItem value="csharp" label="csharp">
-
-```csharp
-// Parent root table:
-PrimaryKeyColumns = ["id"]
-
-// Embedded table - correct:
-JoinColumns = ["order_id"]          // FK that references the parent's PK ("id");
-                                    // the name can differ, but it must correspond
-                                    // to the parent's PK in the same order/count
-
-// Embedded table - INCORRECT:
-JoinColumns = ["order_id", "line_no"]   // Column count does not match the parent's
-                                        // single-column PrimaryKeyColumns
-```
-
-</TabItem>
-</Tabs>
-
-### DELETE Events
-
-For DELETE events, the source database must include the join column values so CDC Sink
-can route the delete to the correct parent document.
-
-By default, many databases only include primary key columns in DELETE events. If the
-join column is _not_ in the embedded table's primary key, additional source database
-configuration is required.
-
-**PostgreSQL:** See [REPLICA IDENTITY](../source-database-setup/postgres/replica-identity.mdx)
-for how CDC Sink handles this automatically when it has sufficient permissions, or how
-a DBA can configure it manually.
-
-### Avoiding REPLICA IDENTITY Requirements
-
-The cleanest solution is to include the join column in the embedded table's primary key:
-
-<Tabs>
-<TabItem value="sql" label="sql">
-
+<TabItem value="sql" label="SQL">
 ```sql
 -- SQL schema:
 CREATE TABLE order_lines (
@@ -116,87 +138,86 @@ CREATE TABLE order_lines (
     PRIMARY KEY (order_id, line_id)   -- order_id in PK means DELETE events include it
 );
 ```
-
 </TabItem>
 </Tabs>
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-
 ```csharp
 // Configuration:
 PrimaryKeyColumns = ["order_id", "line_id"]
 JoinColumns = ["order_id"]
 ```
-
 </TabItem>
 </Tabs>
 
-With `order_id` in the primary key, PostgreSQL DELETE events include it by default and no
-additional REPLICA IDENTITY configuration is needed.
-
-Alternatively, set `OnDelete.IgnoreDeletes = true` to skip delete routing entirely
-if deletes on that embedded table don't need to be processed. This only skips delete
-routing when no `OnDelete.Patch` is configured. If a delete patch is configured, CDC Sink
-still routes the delete to the parent document so the patch can run.
-See [Delete Strategies](../delete-strategies.mdx).
-
+With `order_id` in the primary key, PostgreSQL DELETE events include it by default and no additional REPLICA IDENTITY configuration is needed.
+    
+</Admonition>
+    
+</ContentFrame>
+    
 </Panel>
 
-<Panel heading="Matching Items on Update and Delete">
+<Panel heading="Matching items on update and delete">
 
-When an UPDATE or DELETE arrives for an embedded row, CDC Sink must find the correct
-item within the parent document's array or map.
+When an INSERT, UPDATE, or DELETE arrives for an embedded row, 
+CDC Sink identifies the embedded item by the values in the columns listed in `PrimaryKeyColumns`.
 
-Items are matched by their full `PrimaryKeyColumns` composite key:
+For `Array` and `Map` embedded tables, CDC Sink uses the full `PrimaryKeyColumns` composite key:
 
-* **INSERT** - New item appended to array / added to map
-* **UPDATE** - Item found by PK match; mapped columns overwritten
-* **DELETE** - Item found by PK match; removed from array/map (or OnDelete behavior applied)
+* **INSERT**  
+  Appends the item to the array or adds it to the map.
+* **UPDATE**  
+  Finds the item by PK match and merges the mapped column values into it;   
+  if no item is found, the row is added as a new item.
+* **DELETE**  
+  Finds the item by PK match and removes it from the array/map, unless `OnDelete` changes the behavior.
 
 **Composite PKs** work the same way - all PK columns must match:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-
 ```csharp
 PrimaryKeyColumns = ["invoice_date", "invoice_seq"]
 
 // UPDATE event for (invoice_date='2024-01-15', invoice_seq=3)
 // → Finds and updates the item where both columns match
 ```
-
 </TabItem>
 </Tabs>
 
-**Case sensitivity:** By default, PK matching is case-insensitive. Set
-`CaseSensitiveKeys = true` on `CdcSinkEmbeddedTableConfig` if your keys are
-case-sensitive.
+**Case sensitivity:**  
+By default, string PK values are matched case-insensitively.  
+Set `CaseSensitiveKeys = true` on `CdcSinkEmbeddedTableConfig` if your string keys are case-sensitive.    
 
-**Value embedded tables:** The matching behavior above applies to `Array` and `Map`
-embedded tables. For `Value` embedded tables, there is only one embedded object at the
-configured property. Updates merge into that object, and deletes set the property to
-`null` unless `OnDelete` changes the behavior.
+**Value embedded tables:**  
+The matching behavior above applies to `Array` and `Map` embedded tables.  
+For `Value` embedded tables, there is only one embedded object at the configured property.  
+Updates merge into that object, and deletes set the property to `null` unless `OnDelete` changes the behavior.
 
 </Panel>
 
-<Panel heading="Deep Nesting">
+<Panel heading="Deep nesting">
 
-Embedded tables can contain their own `EmbeddedTables`, creating hierarchies
-with multiple levels.
+Embedded tables can contain their own `EmbeddedTables`, creating hierarchies with multiple levels.
 
-**Key constraint:** Every descendant table must carry the **root table's primary key**
-as a denormalized column. This is required because CDC Sink routes each row to its
-root document in a single pass.
+**Key constraint:**  
+Every descendant table must include the column values that identify the root document.  
+In practice, this means carrying the root-level join columns: 
+the columns from the first embedded table's `JoinColumns`, which correspond to the root table's `PrimaryKeyColumns`.
 
-**Example: Company → Departments → Employees**
+CDC Sink uses those values to route each row to its root document in a single pass.
 
-The `employees` table must have `company_id` (the root PK) even though it only
-directly joins to `departments`:
+---    
+    
+**Example: employees nested under departments**
+
+The `employees` table must have `company_id`, the root-level join column that identifies the owning company,  
+even though it only directly joins to `departments`:    
 
 <Tabs>
-<TabItem value="sql" label="sql">
-
+<TabItem value="sql" label="SQL">
 ```sql
 CREATE TABLE employees (
     company_id INT NOT NULL,   -- Denormalized root PK
@@ -205,50 +226,53 @@ CREATE TABLE employees (
     PRIMARY KEY (company_id, dept_id, emp_id)
 );
 ```
-
 </TabItem>
 </Tabs>
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-
 ```csharp
 // Configuration for the employees embedded table:
-JoinColumns = ["dept_id"]                 // FK to the direct parent (departments) PK
-PrimaryKeyColumns = ["emp_id"]            // Local item key within each department
+JoinColumns = ["dept_id"]      // FK to the direct parent (departments) PK
+PrimaryKeyColumns = ["emp_id"] // Local item key within each department
 ```
-
 </TabItem>
 </Tabs>
 
-Note that `PrimaryKeyColumns` here lists only `emp_id`, not the full physical
-`PRIMARY KEY (company_id, dept_id, emp_id)` from the SQL schema. At each nesting level,
-`PrimaryKeyColumns` identifies the item **within its direct parent's** array or map, so
-only the local key column (`emp_id`) is needed. The root PK (`company_id`) still has to
-be present as a denormalized column on the row (see the key constraint above) so CDC Sink
-can locate the root document, but it is not part of the embedded table's `PrimaryKeyColumns`.
+Note that `PrimaryKeyColumns` here lists only `emp_id`, not the full physical `PRIMARY KEY (company_id, dept_id, emp_id)` from the SQL schema. 
+At each nesting level, `PrimaryKeyColumns` identifies the item **within its direct parent's** array or map, 
+so only the local key column (`emp_id`) is needed. 
+    
+The root PK (`company_id`) still has to be present as a denormalized column on the row (see the key constraint above) 
+so CDC Sink can locate the root document, but it is not part of the embedded table's `PrimaryKeyColumns`.
 
+<Admonition type="note" title="">    
+    
 **Why is the root PK required?**
 
 When a CDC Sink event arrives for an `employees` row, CDC Sink needs to:
 
-1. Find the root document: `Companies/{company_id}`
-2. Navigate to the correct `Departments` array item: `Departments.find(d => d.dept_id == dept_id)`
-3. Add or update the `Employees` array item: `Employees.find(e => e.emp_id == emp_id)`
+1. Find the root document using `company_id`
+2. Navigate to the department item whose key matches `dept_id`
+3. Add or update the employee item whose key matches `emp_id`
 
-Without `company_id` in the event, CDC Sink cannot identify the root document
-without an additional lookup, which is not supported.
+Without `company_id` in the event, CDC Sink cannot identify the root document without an additional lookup,  
+which is not supported.
+
+</Admonition>    
 
 </Panel>
 
-<Panel heading="Attachments on Embedded Items">
+<Panel heading="Attachments on embedded items">
 
-Binary columns from embedded tables can be stored as RavenDB attachments by adding
-them to `Columns` with `Type = CdcColumnType.Attachment`.
-
+Source columns from embedded tables can be stored as RavenDB attachments by adding a mapping with` Type = CdcColumnType.Attachment`.
+When that type is set, the mapping's `Name` value is used as the attachment name,  
+not as a property on the embedded item.
+    
+For example:
+    
 <Tabs>
 <TabItem value="csharp" label="csharp">
-
 ```csharp
 new CdcSinkEmbeddedTableConfig
 {
@@ -268,19 +292,16 @@ new CdcSinkEmbeddedTableConfig
     ]
 }
 ```
-
 </TabItem>
 </Tabs>
 
-When `Type = CdcColumnType.Attachment`, the `Name` value is the attachment name, not a
-property on the embedded item. In the example above, `Column = "thumbnail", Name = "thumb",
-Type = CdcColumnType.Attachment` stores the `thumbnail` column as an attachment named
-`thumb`; it does not add a `thumb` field to the embedded item.
+In the example above,
+`Column = "thumbnail", Name = "thumb", Type = CdcColumnType.Attachment` stores the `thumbnail` column as an attachment named `thumb`; 
+it does not add a `thumb` field to the embedded item.
 
-A photo with `photo_num = 1` creates an attachment named `"Photos/1/thumb"` on the
-parent document. The attachment name is prefixed with the embedded path and PK to
-ensure uniqueness within the document.
+A photo with `photo_num = 1` creates an attachment named `"Photos/1/thumb"` on the parent document.  
+The attachment name is prefixed with the embedded table's `PropertyName` and primary key values.    
 
-When the embedded item is removed, its attachments are automatically removed.
+When the embedded item is removed, attachments with that embedded-item prefix are automatically removed.    
 
 </Panel>
