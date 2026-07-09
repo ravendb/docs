@@ -16,18 +16,12 @@ see_also:
     link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/wal-configuration"
     source: "docs"
     path: "Server > CDC Sink > PostgreSQL"
-  - title: "API Reference"
-    link: "server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/api-reference"
-    source: "docs"
-    path: "Server > CDC Sink"
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
-
-# CDC Sink for PostgreSQL: Cleanup and Maintenance
 
 <Admonition type="note" title="">
 
@@ -37,16 +31,16 @@ import Panel from '@site/src/components/Panel';
 * These must be cleaned up manually by a database administrator.
 
 * In this article:
-  * [Why Manual Cleanup Is Required](#why-manual-cleanup-is-required)
-  * [Finding Orphaned Slots and Publications](#finding-orphaned-slots-and-publications)
-  * [Dropping a Replication Slot](#dropping-a-replication-slot)
-  * [Dropping a Publication](#dropping-a-publication)
-  * [Too Many Replication Slots](#too-many-replication-slots)
-  * [Slot and Publication Names Are Immutable](#slot-and-publication-names-are-immutable)
+  * [Why manual cleanup is required](#why-manual-cleanup-is-required)
+  * [Finding orphaned slots and publications](#finding-orphaned-slots-and-publications)
+  * [Dropping a replication slot](#dropping-a-replication-slot)
+  * [Dropping a publication](#dropping-a-publication)
+  * [Too many replication slots](#too-many-replication-slots)
+  * [Slot and publication names are immutable](#slot-and-publication-names-are-immutable)
 
 </Admonition>
 
-<Panel heading="Why Manual Cleanup Is Required">
+<Panel heading="Why manual cleanup is required">
 
 An active replication slot prevents PostgreSQL from discarding WAL segments that
 have not yet been consumed. If a slot is not being consumed (because the CDC Sink
@@ -74,12 +68,12 @@ of the database administrator.
 
 </Panel>
 
-<Panel heading="Finding Orphaned Slots and Publications">
+<Panel heading="Finding orphaned slots and publications">
 
 List all CDC Sink replication slots:
 
 <Tabs>
-<TabItem value="sql" label="sql">
+<TabItem value="sql" label="SQL">
 
 ```sql
 SELECT slot_name, active, confirmed_flush_lsn
@@ -96,7 +90,7 @@ Sink tasks in RavenDB - any slot whose corresponding task no longer exists is or
 List all CDC Sink publications:
 
 <Tabs>
-<TabItem value="sql" label="sql">
+<TabItem value="sql" label="SQL">
 
 ```sql
 SELECT p.pubname, c.relname AS table_name
@@ -112,10 +106,10 @@ ORDER BY p.pubname, c.relname;
 
 </Panel>
 
-<Panel heading="Dropping a Replication Slot">
+<Panel heading="Dropping a replication slot">
 
 <Tabs>
-<TabItem value="sql" label="sql">
+<TabItem value="sql" label="SQL">
 
 ```sql
 SELECT pg_drop_replication_slot('rvn_cdc_s_<task-id>');
@@ -131,10 +125,10 @@ task must be stopped or deleted in RavenDB before the slot can be dropped.
 
 </Panel>
 
-<Panel heading="Dropping a Publication">
+<Panel heading="Dropping a publication">
 
 <Tabs>
-<TabItem value="sql" label="sql">
+<TabItem value="sql" label="SQL">
 
 ```sql
 DROP PUBLICATION IF EXISTS "rvn_cdc_p_<task-id>";
@@ -148,7 +142,7 @@ segments. However, they should still be dropped to keep the database clean.
 
 </Panel>
 
-<Panel heading="Too Many Replication Slots">
+<Panel heading="Too many replication slots">
 
 PostgreSQL limits the total number of replication slots to `max_replication_slots`.
 If you exceed this limit, no new CDC Sink tasks can start (they will fail with a
@@ -157,7 +151,7 @@ connection error).
 Check how many slots are in use:
 
 <Tabs>
-<TabItem value="sql" label="sql">
+<TabItem value="sql" label="SQL">
 
 ```sql
 SELECT count(*) FROM pg_replication_slots;
@@ -172,7 +166,7 @@ To resolve this:
 1. Identify inactive slots:
 
 <Tabs>
-<TabItem value="sql" label="sql">
+<TabItem value="sql" label="SQL">
 
 ```sql
 SELECT slot_name, active
@@ -186,7 +180,7 @@ WHERE active = false AND slot_name LIKE 'rvn_cdc_s_%';
 2. Drop slots for tasks that no longer exist:
 
 <Tabs>
-<TabItem value="sql" label="sql">
+<TabItem value="sql" label="SQL">
 
 ```sql
 SELECT pg_drop_replication_slot('rvn_cdc_s_<task-id>');
@@ -200,7 +194,7 @@ SELECT pg_drop_replication_slot('rvn_cdc_s_<task-id>');
 
 </Panel>
 
-<Panel heading="Slot and Publication Names Are Immutable">
+<Panel heading="Slot and publication names are immutable">
 
 The replication slot name and publication name are generated **once at task creation**
 using the task id and stored with the task. They do not change when you modify the task -
@@ -212,7 +206,42 @@ task results in an error.
 
 If you need to use a different slot or publication, delete the task and create a new one.
 The old slot and publication from the deleted task must then be cleaned up manually -
-see [Dropping a Replication Slot](#dropping-a-replication-slot) and
-[Dropping a Publication](#dropping-a-publication) below.
+see [Dropping a replication slot](#dropping-a-replication-slot) and
+[Dropping a publication](#dropping-a-publication) below.
+
+</Panel>
+
+<Panel heading="Keeping the publication in sync when tables change">
+    
+// TODO.. add this to TOC and... see if it duplicates exsiting content...    
+
+The replication slot and publication names are fixed at task creation and do not change when you update the task.
+However, the **publication** controls which tables CDC Sink receives changes for, so table changes require database-level updates:
+
+* **Adding tables** - If the PostgreSQL user configured in the CDC Sink connection string has permission to alter the publication,
+  CDC Sink attempts to run `ALTER PUBLICATION <name> ADD TABLE <new_table>;` automatically when the task is updated.
+  If it does not have permission, a database administrator must run this manually.
+
+* **Removing tables** - `ALTER PUBLICATION <name> DROP TABLE <removed_table>;` must be run manually by a database administrator.
+  CDC Sink does not remove tables from the publication automatically.
+
+If the slot and publication were auto-named, a database administrator can look up the current names from the task configuration or from PostgreSQL:
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+
+```sql
+SELECT slot_name FROM pg_replication_slots WHERE slot_name LIKE 'rvn_cdc_s_%';
+SELECT pubname FROM pg_publication WHERE pubname LIKE 'rvn_cdc_p_%';
+```
+
+</TabItem>
+</Tabs>
+
+See [Initial Setup](./initial-setup.mdx) for guidance on slot and publication management.
+
+Orphaned slots and publications must be cleaned up manually by the database administrator -
+see [Dropping a replication slot](#dropping-a-replication-slot) and
+[Dropping a publication](#dropping-a-publication).
 
 </Panel>
