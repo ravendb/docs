@@ -5,29 +5,25 @@ import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* A **linked table** creates a document ID reference in the parent document rather
-  than embedding data. A foreign key value becomes a RavenDB document ID pointing
-  to a related collection.
-
-* `CdcSinkLinkedTableConfig` only creates the document ID reference in the current
-  document. It does **not** create or maintain the referenced document itself.
-  The referenced document exists only if the referenced table is also configured
-  as a root table.
+* A **linked table** writes a RavenDB document ID reference instead of embedding related data.  
+  CDC Sink builds the ID from `LinkedCollectionName` and the configured `JoinColumns`.
+    
+* `CdcSinkLinkedTableConfig` does **not** create, load, or maintain the referenced document.
+  The referenced document is maintained by CDC Sink only when that source table is also configured as a root table in the task.
 
 * In this article:
-  * [Basic Configuration](#basic-configuration)
-  * [Composite Foreign Keys](#composite-foreign-keys)
-  * [Linked vs Embedded](#linked-vs-embedded)
+  * [Basic configuration](#basic-configuration)
+  * [Composite foreign keys](#composite-foreign-keys)
+  * [Linked vs embedded](#linked-vs-embedded)
 
 </Admonition>
 
-<Panel heading="Basic Configuration">
+<Panel heading="Basic configuration">
 
-`CdcSinkLinkedTableConfig` is placed inside a root table's (or embedded table's) `LinkedTables` list:
+`CdcSinkLinkedTableConfig` is added to the `LinkedTables` list of a root or embedded table configuration:    
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-
 ```csharp
 new CdcSinkTableConfig
 {
@@ -43,14 +39,13 @@ new CdcSinkTableConfig
         new CdcSinkLinkedTableConfig
         {
             SourceTableName = "customers",
-            PropertyName = "Customer",              // Property name in document
-            LinkedCollectionName = "Customers",     // Target collection for ID
-            JoinColumns = ["customer_id"]           // FK used to build the document ID
+            PropertyName = "Customer",          // Property name in document
+            LinkedCollectionName = "Customers", // Target collection for ID
+            JoinColumns = ["customer_id"]       // FK used to build the document ID
         }
     ]
 }
 ```
-
 </TabItem>
 </Tabs>
 
@@ -58,48 +53,47 @@ With `customer_id = 42`, the Orders document gets:
 
 <Tabs>
 <TabItem value="json" label="json">
-
 ```json
 {
     "Id": 1,
     "Customer": "Customers/42"
 }
 ```
-
 </TabItem>
 </Tabs>
 
-The `Customer` property is a RavenDB document ID, built from the `LinkedCollectionName`
-and the join column values. The `JoinColumns` values are appended to
-`LinkedCollectionName` in the order listed. Use the same order as the referenced
-table's `PrimaryKeyColumns`, so the generated ID matches the referenced document ID.
+If all join column values are `null`, CDC Sink sets the link property to `null`.    
+    
+The `Customer` property is a RavenDB document ID built from `LinkedCollectionName` and the source-row values in `JoinColumns`.
+The join column values are appended to `LinkedCollectionName` in the order listed.
+Use the same order as the referenced table's `PrimaryKeyColumns`, so the generated ID matches the referenced document ID.   
 
-This configuration only writes the `"Customers/42"` reference into the Orders document.
-The `Customers/42` document itself exists only if the `customers` table is also
-configured as a root table. Load the referenced document using
-[includes](../../../../client-api/session/loading-entities.mdx#load-with-includes) to avoid
-a second network call.
+This configuration only writes the `"Customers/42"` reference into the Orders document.  
+The `Customers/42` document itself exists only if the `customers` table is also configured as a root table.
+    
+When loading the parent document, use [includes](../../../../client-api/session/loading-entities.mdx#load-with-includes) 
+to fetch the referenced document without a second network call.  
 
 </Panel>
 
-<Panel heading="Composite Foreign Keys">
+<Panel heading="Composite foreign keys">
 
-When the target table has a composite primary key, the linked reference includes
-all parts of that key:
+For a reference to a table with a composite primary key,  
+list the matching foreign-key columns in `JoinColumns` in the same order:   
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-
 ```csharp
 new CdcSinkLinkedTableConfig
 {
     SourceTableName = "customers",
     PropertyName = "Customer",
     LinkedCollectionName = "Customers",
-    JoinColumns = ["customer_region", "customer_id"]  // Must match Customers PK order
+    
+    // Must match the referenced table's PK order
+    JoinColumns = ["customer_region", "customer_id"]
 }
 ```
-
 </TabItem>
 </Tabs>
 
@@ -111,21 +105,26 @@ With `customer_region = 'US'` and `customer_id = 42`, the document gets:
 
 </Panel>
 
-<Panel heading="Linked vs Embedded">
+<Panel heading="Linked vs embedded">
 
-| Consideration | Embedded | Linked |
-|--------------|----------|--------|
-| Data stored | Full nested object/array inside document | Document ID reference only |
-| Load pattern | Single document load | Load parent + include references |
-| Document size | Grows with embedded items | Parent document stays small |
-| Updates to referenced data | Reflected via CDC | Reflected via CDC only when the referenced table is also configured as a root table |
-| Independence | Child has no meaning without parent | Referenced entity exists independently |
-| Typical use | Orders own LineItems | Orders reference Customers |
+| Consideration       | Embedded                                        | Linked |
+|---------------------|-------------------------------------------------|--------|
+| Data stored         | Full nested object/array inside document        | Document ID reference only |
+| Load pattern        | Single document load                            | Load parent, then include/load referenced documents |
+| Document size       | Grows with embedded items                       | Parent document stays small |
+| Related-row updates | Update the embedded data in the parent document | Update the referenced document only when that table is also configured as a root table |
+| Relationship model  | Related data is owned by the parent             | Referenced entity exists independently |
+| Typical use         | Orders own LineItems                            | Orders reference Customers |    
 
-**Choose embedded** when the child data belongs to the parent and is always read
-together with it.
+---
+    
+<Admonition type="note" title="">
+    
+* **Choose embedded** when the child data belongs to the parent and is always read together with it.
 
-**Choose linked** when the referenced entity is independently meaningful and shared
-across many parents, and you want to avoid duplicating data.
+* **Choose linked** when the referenced entity is independently meaningful and shared across many parents,  
+  and you want to avoid duplicating data.
+
+</Admonition>    
 
 </Panel>
