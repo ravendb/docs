@@ -1,0 +1,374 @@
+---
+title: "PostgreSQL Protocol: Querying with SQL"
+sidebar_label: "Querying with SQL"
+description: "Query RavenDB with SQL SELECT statements over the PostgreSQL protocol; the server translates the supported SQL subset to RQL."
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# PostgreSQL Protocol: Querying with SQL
+<Admonition type="note" title="">
+
+* Clients that connect to RavenDB over the 
+  [PostgreSQL protocol](../../integrations/postgresql-protocol/overview.mdx) can query the 
+  database using plain SQL.  
+  The RavenDB server translates the SQL queries to 
+  [RQL](../../querying/rql/what-is-rql.mdx), runs the translated queries on the 
+  database, and returns the matching results to the client.  
+  Only queries that retrieve data (`SELECT` queries) are supported.  
+
+* SQL is one of two query languages that RavenDB accepts over the PostgreSQL protocol: 
+  the RavenDB server detects and runs RQL queries as they are, and clients like 
+  [Power BI](../../integrations/postgresql-protocol/power-bi.mdx#query-with-rql-or-sql) can 
+  send queries in either of the two languages.  
+  This page covers querying with SQL.  
+
+* A limited SQL subset is supported.  
+  Using an unsupported SQL feature will fail the query, with an error message that names 
+  the feature and, where possible, suggests a workaround.  
+
+* In this article:  
+   * [A quick example](../../integrations/postgresql-protocol/querying-with-sql.mdx#a-quick-example)  
+   * [Supported SQL](../../integrations/postgresql-protocol/querying-with-sql.mdx#supported-sql)  
+      * [SELECT and FROM](../../integrations/postgresql-protocol/querying-with-sql.mdx#select-and-from)  
+      * [WHERE](../../integrations/postgresql-protocol/querying-with-sql.mdx#where)  
+      * [ORDER BY](../../integrations/postgresql-protocol/querying-with-sql.mdx#order-by)  
+      * [LIMIT and OFFSET](../../integrations/postgresql-protocol/querying-with-sql.mdx#limit-and-offset)  
+      * [GROUP BY](../../integrations/postgresql-protocol/querying-with-sql.mdx#group-by)  
+      * [Query parameters](../../integrations/postgresql-protocol/querying-with-sql.mdx#query-parameters)  
+   * [Unsupported SQL features](../../integrations/postgresql-protocol/querying-with-sql.mdx#unsupported-sql-features)  
+
+</Admonition>
+
+<Panel heading="A quick example">
+
+The following SQL query retrieves up to 20 companies, ordered by name, excluding 
+one company.  
+
+```sql
+SELECT *
+FROM "public"."Companies"
+WHERE "Name" <> 'Ernst Handel'
+ORDER BY "Name"
+LIMIT 20
+```
+<br />
+
+* Since the SQL query selects `*`, the results include all the fields of each `Companies` 
+  document, plus the two columns RavenDB adds: `id`, holding the document's ID, and 
+  `json`, holding results that do not fit the regular columns.  
+* A nested object, like a company's `Address`, is returned as JSON text in its column.  
+* The SQL identifiers are double-quoted to keep their case.  
+  Learn more in [SELECT and FROM](../../integrations/postgresql-protocol/querying-with-sql.mdx#select-and-from).  
+
+RavenDB will run the following RQL query on the database:  
+
+```rql
+from 'Companies' where Name != 'Ernst Handel' order by Name limit 0, 20
+```
+
+</Panel>
+
+<Panel heading="Supported SQL">
+
+A SQL query addresses the database in SQL terms: each document collection is a table, 
+and the fields of its documents are the table's columns.  
+
+<ContentFrame>
+
+### SELECT and FROM
+
+* **SELECT** takes a list of the table's columns, or `*` for all of them.  
+  A column can be renamed using `AS`, like `"Freight" AS "shipping_cost"`.  
+* `SELECT DISTINCT` retrieves each distinct value once.  
+  e.g., `SELECT DISTINCT "ShipVia" FROM "public"."Orders"` will retrieve the three 
+  shippers once each.  
+* **FROM** takes a table name, plain or qualified with the `public` schema: 
+  `FROM "Orders"` and `FROM "public"."Orders"` are equivalent.  
+* To query an index instead of a collection, qualify the index name with the `indexes` schema.  
+  An index query returns the documents that the index covers.  
+  
+  The following query retrieves the `Orders` documents through the sample database's 
+  `Orders/Totals` index.  
+
+  <Tabs groupId="sql-rql">
+  <TabItem value="sql" label="SQL">
+
+  The SQL query you send:  
+
+  ```sql
+  SELECT *
+  FROM "indexes"."Orders/Totals"
+  ```
+
+  </TabItem>
+  <TabItem value="rql" label="RQL">
+
+  The RQL query RavenDB will run on the database:  
+
+  ```rql
+  from index 'Orders/Totals'
+  ```
+
+  </TabItem>
+  </Tabs>
+
+* Double-quote identifiers to keep the exact casing of your collection and field names.  
+  An unquoted identifier folds to lowercase (standard PostgreSQL behavior): an unquoted 
+  `FROM Orders` is read as `FROM "orders"`.  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### WHERE
+
+* **WHERE** filters the retrieved rows using a condition.  
+* A condition can be:  
+
+  | Condition element | Example |
+  |-------------------|---------|
+  | The comparison operators `=`, `<>` (or `!=`), `<`, `<=`, `>`, `>=` | `"Freight" > 100` |
+  | `BETWEEN` | `"Freight" BETWEEN 10 AND 20` |
+  | `IN` and `NOT IN` | `"ShipVia" IN ('shippers/1-A', 'shippers/2-A')` |
+  | `IS NULL` and `IS NOT NULL` | `"ShippedAt" IS NULL` |
+  | `AND`, `OR`, `NOT`, and parentheses | `NOT ("Freight" > 100 OR "ShipVia" = 'shippers/1-A')` |
+
+* A column reference reaches a nested field by quoting each segment of the path.  
+  e.g., `"ShipTo"."Country"`  
+  
+  The following query retrieves the orders shipped to France with a freight charge 
+  above 100.  
+
+  <Tabs groupId="sql-rql">
+  <TabItem value="sql" label="SQL">
+
+  The SQL query you send:  
+
+  ```sql
+  SELECT *
+  FROM "public"."Orders"
+  WHERE "ShipTo"."Country" = 'France' AND "Freight" > 100
+  ```
+
+  </TabItem>
+  <TabItem value="rql" label="RQL">
+
+  The RQL query RavenDB will run on the database:  
+
+  ```rql
+  from 'Orders' where ShipTo.Country = 'France' and Freight > 100
+  ```
+
+  </TabItem>
+  </Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### ORDER BY
+
+* **ORDER BY** sorts the results by one or more of the table's columns, in ascending 
+  (`ASC`, the default) or descending (`DESC`) order.  
+* A sort key must be a plain table column: an expression or a function as a sort key, 
+  like `ORDER BY upper("Name")`, will fail the query.  
+* Number fields are sorted numerically: RavenDB selects each sort key's ordering type, 
+  numeric or alphabetic, by sampling the value of the column's underlying document field 
+  in one of the collection's documents.  
+  If the sampled document does not hold the field, the results will be sorted 
+  alphabetically.  
+
+The following query retrieves the orders, sorted from the most recent to the oldest.  
+
+<Tabs groupId="sql-rql">
+<TabItem value="sql" label="SQL">
+
+The SQL query you send:  
+
+```sql
+SELECT *
+FROM "public"."Orders"
+ORDER BY "OrderedAt" DESC
+```
+
+</TabItem>
+<TabItem value="rql" label="RQL">
+
+The RQL query RavenDB will run on the database:  
+
+```rql
+from 'Orders' order by OrderedAt desc
+```
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### LIMIT and OFFSET
+
+* **LIMIT** caps the number of retrieved rows, and **OFFSET** skips a given number of 
+  rows before the retrieval starts.  
+  Use the two clauses together to page through a large result set.  
+* Both clauses take an integer literal.  
+  Any other value, like a parameter or an expression, will fail the query.  
+
+The following query retrieves the second page of ten companies, ordered by name.  
+
+<Tabs groupId="sql-rql">
+<TabItem value="sql" label="SQL">
+
+The SQL query you send:  
+
+```sql
+SELECT *
+FROM "public"."Companies"
+WHERE "Name" <> 'Ernst Handel'
+ORDER BY "Name"
+LIMIT 10 OFFSET 10
+```
+
+</TabItem>
+<TabItem value="rql" label="RQL">
+
+The RQL query RavenDB will run on the database:  
+
+```rql
+from 'Companies' where Name != 'Ernst Handel' order by Name limit 10, 10
+```
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### GROUP BY
+
+* **GROUP BY** groups the retrieved rows by one or more of the table's columns, and 
+  aggregates each group using the `sum` and `count` functions.  
+* A grouped query can order its results by a projected column or aggregate.  
+* A `WHERE` condition in a grouped query can filter only by the grouped columns.  
+* Aggregate functions other than `sum` and `count`, and the `HAVING` clause, are not 
+  supported.  
+  Learn more in [Unsupported SQL features](../../integrations/postgresql-protocol/querying-with-sql.mdx#unsupported-sql-features).  
+
+The following query counts each shipper's orders.  
+
+<Tabs groupId="sql-rql">
+<TabItem value="sql" label="SQL">
+
+The SQL query you send:  
+
+```sql
+SELECT "ShipVia", COUNT(*)
+FROM "public"."Orders"
+GROUP BY "ShipVia"
+```
+
+</TabItem>
+<TabItem value="rql" label="RQL">
+
+The RQL query RavenDB will run on the database:  
+
+```rql
+from 'Orders' group by ShipVia select ShipVia, count()
+```
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Query parameters
+
+* A `WHERE` condition can use numbered placeholders like `$1` and `$2` instead of 
+  literal values, and the client can provide the values separately (using PostgreSQL's 
+  **extended query protocol**):  
+   * The client sends the query text once, and RavenDB keeps the parsed query as a 
+     **prepared statement**.  
+   * On each subsequent run, the client sends only the values, as an ordered list that 
+     fills the placeholders by position: the first value fills `$1`, the second fills `$2`, 
+     and so on.  
+   * RavenDB runs the prepared query with the received values, and returns the matching 
+     results to the client.  
+
+  e.g., a sales dashboard that refreshes every morning can define its query once, send 
+  only a fresh pair of dates with each morning's run, and receive the latest orders 
+  in return.  
+
+  <Admonition type="note" title="">
+  The prepared query is kept for the duration of the connection between the client and RavenDB.  
+  The client names the prepared query when creating it, and RavenDB registers the query under this name.  
+  Each list of values that the client sends to RavenDB is accompanied by the query's name, informing 
+  RavenDB of the query to run with these values.  
+  When the connection is terminated, both the client and RavenDB discard the prepared query.  
+  </Admonition>
+* Parameters serve clients that send queries programmatically, like applications using 
+  [Npgsql](https://www.npgsql.org/).  
+  Some of the queries that Power BI generates, like 
+  [incremental refresh](../../integrations/postgresql-protocol/power-bi.mdx#incremental-refresh) 
+  date windows, use parameters.  
+  Power BI's **SQL statement** box, on the other hand, takes plain text: to set values in 
+  the box, write the values into the query text.  
+
+In the following example, the client sends the query's text to RavenDB once.  
+On each subsequent run, the client sends to RavenDB only two values indicating 
+a time window, and RavenDB replies with the orders placed during this time window.  
+
+<Tabs groupId="sql-rql">
+<TabItem value="sql" label="SQL">
+
+The SQL query you send:  
+
+```sql
+SELECT *
+FROM "Orders"
+WHERE "OrderedAt" >= $1 AND "OrderedAt" < $2
+```
+
+</TabItem>
+<TabItem value="rql" label="RQL">
+
+The RQL query RavenDB will run on the database:  
+
+```rql
+from 'Orders' where OrderedAt >= $1 and OrderedAt < $2
+```
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Unsupported SQL features">
+
+The following SQL features are not supported.  
+Using them will fail the query, with an error message that names the feature and, where 
+possible, suggests a workaround.  
+
+| Feature | Workaround |
+|---------|-----------|
+| `JOIN` | RavenDB relates documents to each other using document IDs, not relational joins. Query with RQL, relating the documents using [load](../../querying/rql/what-is-rql.mdx#load) or [include](../../querying/rql/what-is-rql.mdx#include), or keep the related data in one document. <br /> e.g., `from "Orders" as o load o.Company as c select c.Name, o.Freight` retrieves each order's company by the ID stored in the order's `Company` field. |
+| `avg` | Retrieve `sum` and `count`, and divide the sum by the count on the client side. <br /> e.g., to average each company's freight charge, retrieve `SELECT "Company", SUM("Freight"), COUNT(*) FROM "Orders" GROUP BY "Company"`, and divide each company's sum by its count. |
+| `min`, `max` | Sort by the column and take the first row. <br /> e.g., `ORDER BY "Freight" ASC LIMIT 1` retrieves the row with the lowest freight charge, and `ORDER BY "Freight" DESC LIMIT 1` the row with the highest. |
+| An aggregate without `GROUP BY`, like `SELECT COUNT(*) FROM "Orders"` | Group the query, and combine the groups' results on the client side. <br /> e.g., retrieve `SELECT "ShipVia", COUNT(*) FROM "Orders" GROUP BY "ShipVia"`, and sum the counts. |
+| `HAVING` | Retrieve the grouped rows without `HAVING`, and filter the groups on the client side. <br /> e.g., to keep only companies with a freight-charge total above 100, retrieve `SELECT "Company", SUM("Freight") FROM "Orders" GROUP BY "Company"`, and drop the lower groups after retrieval. |
+| `INTERSECT`, `EXCEPT` | Run the two `SELECT` queries separately, and combine the two result sets on the client side: keep the rows that appear in both (`INTERSECT`), or only the rows of the first set that are absent from the second (`EXCEPT`). |
+
+Any other unrecognized SQL will fail the query with a generic **Unhandled query** error.  
+
+</Panel>

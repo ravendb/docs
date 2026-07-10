@@ -96,8 +96,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
   built separately for each platform (like Windows x64 or Linux ARM64) and ships with 
   the RavenDB server.  
 * When the RavenDB server runs on a platform that this library does not ship for, like the 
-  Raspberry Pi (32-bit ARM) package, the PostgreSQL integration does not start even if 
-  enabled in your settings, and the server logs a warning.  
+  Raspberry Pi (32-bit ARM) package, the PostgreSQL integration will not start even if 
+  enabled in your settings, and the server will log a warning.  
 
 </ContentFrame>
 
@@ -123,14 +123,14 @@ as a table in a `public` schema.
 You can query in two languages:  
 
 * **SQL**  
-  The server translates SQL `SELECT` queries to RQL and runs the translated queries 
-  against the database.  
+  The RavenDB server translates SQL `SELECT` queries to RQL and runs the translated 
+  queries on the database.  
   See the supported SQL subset and its limitations in 
   [Querying with SQL](../../integrations/postgresql-protocol/querying-with-sql.mdx).  
 
 * **RQL**  
-  The server recognizes RQL input and runs the query as it is.  
-  E.g., `from Orders where ShipTo.Country == 'France'`.  
+  RavenDB recognizes RQL input and runs the query as it is.  
+  e.g., `from Orders where ShipTo.Country == 'France'`.  
 
 </Panel>
 
@@ -154,7 +154,7 @@ A secure server accepts PostgreSQL connections only over TLS.
 The server refuses a non-TLS connection before the client sends its password, so the 
 password never travels unencrypted.  
 To connect to a secure server, enable SSL in your client's connection settings.  
-E.g., in an Npgsql connection string, include `SSL Mode=Require`.  
+e.g., in an Npgsql connection string, include `SSL Mode=Require`.  
 </Admonition>
 
 </Panel>
