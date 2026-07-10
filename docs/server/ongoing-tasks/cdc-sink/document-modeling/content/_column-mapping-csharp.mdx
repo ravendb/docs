@@ -100,7 +100,7 @@ For PostgreSQL:
   * SQL arrays → JSON arrays
   * `vector` (pgvector) → `float[]`
     
-For the JavaScript values exposed in patch scripts, see [Patching: $row Column Types](../../../../server/ongoing-tasks/cdc-sink/patching.mdx#row-column-types).
+For the JavaScript values exposed in patch scripts, see [Patching: $row Column Types](../../../../../server/ongoing-tasks/cdc-sink/patching.mdx#row-column-types).
     
 </ContentFrame>
 <ContentFrame>   
@@ -119,7 +119,7 @@ Stores the raw column value as a RavenDB attachment.
 `byte[]` → binary (`application/octet-stream`), `string` → UTF-8 text (`text/plain`),  
 `float[]`/`double[]` → raw vector data. The `Name` field becomes the attachment name.
     
-Learn more in [CDC Sink: Attachment handling](../../../../server/ongoing-tasks/cdc-sink/document-modeling/attachment-handling.mdx).
+Learn more in [CDC Sink: Attachment handling](../../../../../server/ongoing-tasks/cdc-sink/document-modeling/attachment-handling.mdx).
 
 </ContentFrame>
     
@@ -168,7 +168,7 @@ for root-table patches, the previous document; for embedded-table patches, the p
 It uses stored document property names, not SQL column names. 
 Unmapped columns do not appear in `$old` unless a patch previously stored them.
     
-See [Patching: $row and $old](../../../../server/ongoing-tasks/cdc-sink/patching.mdx#row-and-old-names-and-types) for more details.
+See [Patching: $row and $old](../../../../../server/ongoing-tasks/cdc-sink/patching.mdx#row-and-old-names-and-types) for more details.
     
 </Admonition>
 

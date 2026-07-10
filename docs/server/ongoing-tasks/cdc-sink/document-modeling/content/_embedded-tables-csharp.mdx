@@ -93,7 +93,7 @@ Whether the source includes the join columns in DELETE events depends on the dat
 * **PostgreSQL:**  
   The default `REPLICA IDENTITY` includes only primary key columns in DELETE events.  
   If the join columns are not part of the embedded table's primary key, additional PostgreSQL configuration is required.  
-  See [REPLICA IDENTITY](../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity.mdx)
+  See [REPLICA IDENTITY](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity.mdx)
   for how CDC Sink handles this automatically when it has sufficient permissions,  
   or how a DBA can configure it manually.
 
@@ -116,7 +116,7 @@ In that case, CDC Sink discards delete events for the embedded table and does no
 For PostgreSQL, this also avoids any REPLICA IDENTITY changes.    
     
 If an `OnDelete.Patch` is configured, CDC Sink still routes the delete to the parent document so the patch can run.
-See [Delete Strategies](../../../../server/ongoing-tasks/cdc-sink/delete-strategies.mdx).    
+See [Delete Strategies](../../../../../server/ongoing-tasks/cdc-sink/delete-strategies.mdx).    
 
 </Admonition>    
     
