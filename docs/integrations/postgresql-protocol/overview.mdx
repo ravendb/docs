@@ -60,15 +60,22 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 ### Settings
 
-* PostgreSQL support is an [experimental feature](../../server/configuration/core-configuration.mdx#featuresavailability) 
-  and must be explicitly enabled in your [settings](../../server/configuration/configuration-options.mdx#settingsjson).  
-  To enable the feature, add these two lines to your server's `settings.json` file and 
-  restart the server:  
+PostgreSQL support is an [experimental feature](../../server/configuration/core-configuration.mdx#featuresavailability) 
+and must be explicitly enabled in your [settings](../../server/configuration/configuration-options.mdx#settingsjson).  
+To enable the feature, add these two lines to your server's `settings.json` file and restart the server:  
 
-  ```json
-  "Integrations.PostgreSQL.Enabled": true,
-  "Features.Availability": "Experimental"
-  ```
+```json
+"Integrations.PostgreSQL.Enabled": true,
+"Features.Availability": "Experimental"
+```
+<br />
+
+<Admonition type="info" title="">
+When setting up a secure server using the 
+[setup wizard](../../start/installation/setup-wizard/additional-settings.mdx#additional-settings), 
+turning on the wizard's **Experimental features** option enables PostgreSQL support and writes 
+both keys to `settings.json`, so you do **not** need to add the keys manually.  
+</Admonition>
 
 </ContentFrame>
 
