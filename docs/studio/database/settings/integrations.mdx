@@ -1,57 +1,84 @@
 ---
 title: "Integrations View"
 sidebar_label: Integrations
-description: "Configure third-party integrations in RavenDB Studio including PostgreSQL wire protocol for BI tools like Power BI and Grafana."
+description: "Define the credentials that PostgreSQL-protocol clients like Power BI must provide to access a RavenDB database, in the Studio Integrations view."
 sidebar_position: 14
 ---
 
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
-
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Integrations View
 <Admonition type="note" title="">
 
-* The **Integrations View** allows you to define credentials that third-party clients 
-  are required to provide when accessing RavenDB.  
+* Use the **Integrations view** to define the credentials that clients connecting over the 
+  [PostgreSQL protocol](../../../integrations/postgresql-protocol/overview.mdx), like 
+  [Power BI](../../../integrations/postgresql-protocol/power-bi.mdx), must provide to access 
+  a RavenDB database.  
 
-* Providing the credentials is only required of clients when RavenDB is installed as a 
-  [Secure Server](../../../start/installation/setup-wizard/choose-security-option.mdx).  
+* Providing these credentials is required only when RavenDB runs as a 
+  [secure server](../../../integrations/postgresql-protocol/overview.mdx#security).  
 
-* In this page:  
-  * [Integrations View](../../../studio/database/settings/integrations.mdx#integrations-view)  
+* In this article:  
+   * [PostgreSQL Protocol Credentials](../../../studio/database/settings/integrations.mdx#postgresql-protocol-credentials)  
+      * [Open the Integrations view](../../../studio/database/settings/integrations.mdx#open-the-integrations-view)  
+      * [Add a credential](../../../studio/database/settings/integrations.mdx#add-a-credential)  
+
 </Admonition>
-## Integrations View
 
-!["Integrations View Info"](./assets/integrations-view-info.png)
+<Panel heading="PostgreSQL Protocol Credentials">
 
-<Admonition type="info" title="">
+<ContentFrame>
 
-1. Integrations View  
-2. PostgreSQL Protocol Credentials Section  
-3. Client Credentials 
-</Admonition>
-!["Integrations View Actions"](./assets/integrations-view-actions.png)
+### Open the Integrations view
 
-<Admonition type="warning" title="">
+To open the Integrations view: **Settings** `>` **Integrations**  
 
-1. Click to add PostgreSQL client credentials  
-2. Click to remove client credentials  
-</Admonition>
-!["Add Credentials"](./assets/add-credentials.png)
+![Integrations view](./assets/integrations-view.png)
 
-1. Enter user name  
-2. Enter password  
-3. Click to generate a password  
-4. Click to view the password  
-5. Click to copy the credentials  
-   **Note**: This is the only opportunity to view and copy the credentials.  
-6. Click to cancel the operation  
-7. Click to save the credentials  
+1. **Settings**  
+   Open the **Settings** menu.  
+2. **Integrations**  
+   Open the Integrations view.  
+3. **Add new**  
+   Click to add a credential.  
+   The **New credential** pane opens (see [Add a credential](../../../studio/database/settings/integrations.mdx#add-a-credential)).  
+4. **PostgreSQL Protocol Credentials**  
+   The credentials defined so far are listed here, each with a button to delete it.  
 
+</ContentFrame>
 
+<ContentFrame>
 
+### Add a credential
+
+Clicking **Add new** opens the **New credential** pane.  
+
+![Add a credential](./assets/add-credentials.png)
+
+1. **Username**  
+   Enter the credential's user name.  
+2. **Password**  
+   Enter a password, or generate one (see callout 3).  
+   Click the eye icon to reveal the typed password.  
+3. **Generate password**  
+   Fill the password field with a randomly generated password.  
+4. **Copy to clipboard**  
+   Copy the password to the clipboard.  
+
+      <Admonition type="warning" title="">
+      A saved credential cannot be edited, and its password cannot be viewed again: a listed 
+      credential shows only its user name and a button to delete it.  
+      Copy the password before saving if the client will need it later.  
+      To change a password, delete the credential and create a new one.  
+      </Admonition>
+
+5. **Save credentials**  
+   Save the credential.  
+6. **Discard**  
+   Discard the credential without saving.  
+
+</ContentFrame>
+
+</Panel>
