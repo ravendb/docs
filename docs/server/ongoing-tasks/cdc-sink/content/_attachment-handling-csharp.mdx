@@ -2,30 +2,33 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
 
 <Admonition type="note" title="">
 
-* Binary columns (`bytea`, `varbinary`, etc.) and text columns (`text`, `nvarchar`, etc.)
-  can be stored as RavenDB **attachments** by setting `Type = CdcColumnType.Attachment`
-  on the column mapping entry.
+* To store a source column as a RavenDB attachment instead of a document property,  
+  set `Type = CdcColumnType.Attachment` on the column mapping entry.  
+  This is typically used for binary or text values such as `bytea`, `varbinary`, `text`, or `nvarchar`.
 
-* This applies to both root tables and embedded tables.
+* Attachment mappings can be used on root tables and embedded tables:
+  * **Root-table attachments** are stored on the mapped document.
+  * **Embedded-table attachments** are stored on the parent document with a generated  
+    `{PropertyName}/{primary-key-values}/` name prefix.
 
 * In this article:
-  * [Root Table Attachments](#root-table-attachments)
-  * [Embedded Table Attachments](#embedded-table-attachments)
-  * [Attachment Naming](#attachment-naming)
-  * [Attachment Lifecycle](#attachment-lifecycle)
+  * [Root table attachments](#root-table-attachments)
+  * [Embedded table attachments](#embedded-table-attachments)
+  * [Attachment naming](#attachment-naming)
+  * [Attachment lifecycle](#attachment-lifecycle)
 
 </Admonition>
 
-<Panel heading="Root Table Attachments">
+<Panel heading="Root table attachments">
 
-Given a SQL table with a binary column:
+Given a root SQL table with a binary column:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-
+<TabItem value="sql" label="SQL">
 ```sql
 CREATE TABLE files (
     id        SERIAL PRIMARY KEY,
@@ -34,7 +37,6 @@ CREATE TABLE files (
     content   BYTEA       NOT NULL   -- binary attachment
 );
 ```
-
 </TabItem>
 </Tabs>
 
@@ -42,7 +44,6 @@ Set `Type = CdcColumnType.Attachment` on the `content` column entry:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-
 ```csharp
 new CdcSinkTableConfig
 {
@@ -57,32 +58,34 @@ new CdcSinkTableConfig
         new CdcColumnMapping()
         {
             Column = "content", Name = "file",
-            Type = CdcColumnType.Attachment
+            // store this column as a RavenDB attachment
+            Type = CdcColumnType.Attachment 
         },
     ]
 }
 ```
-
 </TabItem>
 </Tabs>
 
-The `content` column is stored as an attachment named `"file"` on the document.
-The `Name` value becomes the attachment name. The content type is determined by the
-runtime value type (not the SQL column type): `application/octet-stream` for binary
-values, `text/plain` for text values.
+The `content` column is stored as an attachment named `"file"` on the document.  
+The `Name` value on the attachment mapping becomes the attachment name.
 
+The `filename` and `mime_type` columns are stored as regular document properties.  
+They are not used to set the RavenDB attachment name or content type.  
+The attachment content type is determined by the **runtime value type**:  
+`application/octet-stream` for binary values, `text/plain; charset=utf-8` for text values.    
+    
 </Panel>
 
-<Panel heading="Embedded Table Attachments">
+<Panel heading="Embedded table attachments">
 
-Binary columns on embedded tables are stored as attachments on the **parent** document.
-The attachment name is automatically prefixed to ensure uniqueness.
+Columns mapped as attachments on embedded tables are stored as attachments on the **parent** document.  
+The attachment name is prefixed with the embedded property name and primary key values.
 
 Given a parent `products` table and a child `photos` table:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-
+<TabItem value="sql" label="SQL">
 ```sql
 CREATE TABLE products (
     product_id  SERIAL PRIMARY KEY,
@@ -97,15 +100,13 @@ CREATE TABLE photos (
     PRIMARY KEY (product_id, photo_num)
 );
 ```
-
 </TabItem>
 </Tabs>
 
-Configure the embedded table with `Type = CdcColumnType.Attachment` on the binary column:
+Configure the embedded table with `Type = CdcColumnType.Attachment` on the attachment column:    
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-
 ```csharp
 new CdcSinkEmbeddedTableConfig
 {
@@ -125,54 +126,76 @@ new CdcSinkEmbeddedTableConfig
     ]
 }
 ```
-
 </TabItem>
 </Tabs>
 
-A photo with `photo_num = 1` creates an attachment named `"Photos/1/thumb"` on the
-parent document. The prefix `"Photos/1/"` is generated from the `PropertyName` and
-the primary key value.
+A photo with `photo_num = 1` creates an attachment named `"Photos/1/thumb"` on the parent document.  
+The prefix `"Photos/1/"` is generated from the `PropertyName` and the primary key value.
 
 </Panel>
 
-<Panel heading="Attachment Naming">
+<Panel heading="Attachment naming">
 
-**Root table attachments:**
+<ContentFrame>
+    
+### Root table attachments
 
-The attachment name is exactly the `Name` value on the mapping entry with
-`Type = CdcColumnType.Attachment`.
+The attachment name is exactly the `Name` value on the mapping entry with `Type = CdcColumnType.Attachment`.
 
-```
+```text
 Column = "content", Name = "file", Type = CdcColumnType.Attachment
 → Attachment name: "file"
 ```
 
-**Embedded table attachments:**
+</ContentFrame>    
+    
+<ContentFrame>    
+    
+### Embedded table attachments
 
-The attachment name is prefixed with `{PropertyName}/{pkValue}/`:
+The attachment name is built from the embedded `PropertyName`, the embedded row's primary key values,  
+and the mapping `Name`.
+The generated attachment name has this format:
 
+```text
+{PropertyName}/{primary-key-value-1}/.../{Name}
+```
+<br/>
+    
+where `{Name}` is the `Name` value from the attachment column mapping.
+    
 ```
 PropertyName = "Photos"
 PrimaryKeyColumns = ["photo_num"]  → photo_num = 1
 Column = "thumbnail", Name = "thumb", Type = CdcColumnType.Attachment
 → Attachment name: "Photos/1/thumb"
 ```
+<br/>
+    
+For composite primary keys, the key values are added in `PrimaryKeyColumns` order and separated with `/`: 
 
-For composite primary keys, all key values are joined:
-
-```
+```text
 PrimaryKeyColumns = ["date", "seq"]  → date='2024-01', seq=3
 → Attachment name: "Photos/2024-01/3/thumb"
 ```
-
+    
+</ContentFrame>  
+    
 </Panel>
 
-<Panel heading="Attachment Lifecycle">
+<Panel heading="Attachment lifecycle">
 
-* **INSERT** - Attachment is created on the document
-* **UPDATE** - Attachment is replaced with the new binary data
-* **DELETE (embedded item)** - All attachments for that item are automatically removed
-  from the parent document
-* **DELETE (root document)** - Document and all its attachments are deleted
+* **INSERT**  
+  A non-null attachment value creates an attachment on the document.
+    
+* **UPDATE**   
+  A non-null attachment value replaces the existing attachment.  
+  If the new value is `NULL`, the attachment update is skipped and the existing attachment is left unchanged.
+    
+* **DELETE (embedded item)**   
+  When the embedded delete is processed, attachments generated from that embedded item are removed from the parent document.
+    
+* **DELETE (root document)**  
+  When the root document is deleted, the document and its attachments are deleted.
 
 </Panel>
