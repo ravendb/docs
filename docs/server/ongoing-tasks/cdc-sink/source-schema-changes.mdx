@@ -2,14 +2,14 @@
 title: "CDC Sink: Source Schema Changes"
 sidebar_label: Source Schema Changes
 description: "How to safely modify your source database schema while a CDC Sink task is running - behavior per database engine, recovery, and the SQL Server capture instance procedure."
-sidebar_position: 12
+sidebar_position: 8
 see_also:
   - title: "Configuration Reference"
     link: "server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/configuration-reference"
     source: "docs"
     path: "Server > CDC Sink"
   - title: "Column Mapping"
-    link: "server/ongoing-tasks/cdc-sink/column-mapping"
+    link: "server/ongoing-tasks/cdc-sink/document-modeling/column-mapping"
     source: "docs"
     path: "Server > CDC Sink"
   - title: "How It Works: Updating the Task Configuration"
@@ -31,8 +31,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
 
-# CDC Sink: Source Schema Changes
-
 <Admonition type="note" title="">
 
 * This page explains how CDC Sink handles schema changes (columns added, removed,
@@ -43,16 +41,16 @@ import Panel from '@site/src/components/Panel';
   procedure for every schema change.
 
 * In this article:
-  * [Quick Reference](#quick-reference)
+  * [Quick reference](#quick-reference)
   * [PostgreSQL](#postgresql)
   * [MySQL](#mysql)
   * [SQL Server](#sql-server)
-  * [Recovery From Errors](#recovery-from-errors)
-  * [General Recommendation](#general-recommendation)
+  * [Recovery from errors](#recovery-from-errors)
+  * [General recommendation](#general-recommendation)
 
 </Admonition>
 
-<Panel heading="Quick Reference">
+<Panel heading="Quick reference">
 
 | Change | MySQL | PostgreSQL | SQL Server |
 |--------|-------|------------|------------|
@@ -80,10 +78,10 @@ column mapping on the fly. This makes PostgreSQL the **most resilient** to schem
   mapped column name is no longer found in the new schema. Update the task
   configuration to match the new column name, and CDC Sink recovers on the next retry.
 
-### PostgreSQL Examples
+### PostgreSQL examples
 
 <Tabs>
-<TabItem value="sql" label="sql">
+<TabItem value="sql" label="SQL">
 
 ```sql
 -- Transparent: adding an unmapped column
@@ -135,10 +133,10 @@ then apply the next change. This ensures each change is simple and isolated.
 
 </Admonition>
 
-### MySQL Examples
+### MySQL examples
 
 <Tabs>
-<TabItem value="sql" label="sql">
+<TabItem value="sql" label="SQL">
 
 ```sql
 -- Transparent: adding an unmapped column
@@ -172,12 +170,12 @@ Sink always reads from the oldest active instance. When the old instance is drop
 CDC Sink detects this (via `fn_cdc_get_min_lsn` returning all zeros), restarts, and
 picks up the new instance.
 
-### SQL Server Schema Change Procedure
+### SQL Server schema change procedure
 
 For **any** schema change on a SQL Server CDC-tracked table, follow this procedure:
 
 <Tabs>
-<TabItem value="sql" label="sql">
+<TabItem value="sql" label="SQL">
 
 ```sql
 -- Step 1: ALTER the table
@@ -232,7 +230,7 @@ CDC requires SQL Server Agent to be running. The capture job (which populates ch
 tables) and cleanup job (which purges old changes) are Agent jobs.
 
 <Tabs>
-<TabItem value="sql" label="sql">
+<TabItem value="sql" label="SQL">
 
 ```sql
 -- Check Agent status
@@ -247,7 +245,7 @@ finding data.
 
 </Panel>
 
-<Panel heading="Recovery From Errors">
+<Panel heading="Recovery from errors">
 
 All three providers use the same recovery mechanism:
 
@@ -261,7 +259,7 @@ All three providers use the same recovery mechanism:
 
 </Panel>
 
-<Panel heading="General Recommendation">
+<Panel heading="General recommendation">
 
 For schema changes that affect mapped columns on any database engine:
 

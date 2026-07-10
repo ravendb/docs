@@ -2,7 +2,7 @@
 title: "CDC Sink: Troubleshooting"
 sidebar_label: Troubleshooting
 description: "Covers common problems encountered when running CDC Sink tasks and how to resolve them, including startup failures, error states, and missing documents."
-sidebar_position: 16
+sidebar_position: 12
 see_also:
   - title: "How It Works"
     link: "server/ongoing-tasks/cdc-sink/how-it-works"
@@ -39,26 +39,25 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
 
-# CDC Sink: Troubleshooting
-
 <Admonition type="note" title="">
 
 * This page covers common problems encountered when running CDC Sink tasks and how
   to resolve them.
 
 * In this article:
-  * [Task Fails to Start](#task-fails-to-start)
-  * [Task Enters Error State](#task-enters-error-state)
-  * [Documents Not Appearing](#documents-not-appearing)
-  * [Embedded Items Missing or Incorrect](#embedded-items-missing-or-incorrect)
-  * [DELETE Not Applied](#delete-not-applied)
-  * [Patch Errors](#patch-errors)
-  * [Source Schema Changes](#source-schema-changes)
-  * [Partial Export/Import and State Loss](#partial-export-import-and-state-loss)
+  * [Task fails to start](#task-fails-to-start)
+  * [Task enters error state](#task-enters-error-state)
+  * [Documents not appearing](#documents-not-appearing)
+  * [Embedded items missing or incorrect](#embedded-items-missing-or-incorrect)
+  * [DELETE not applied](#delete-not-applied)
+  * [Patch errors](#patch-errors)
+  * [Source schema changes](#source-schema-changes)
+  * [Partial export/import and state loss](#partial-export-import-and-state-loss)
+  * [Shared replication slot across databases](#shared-replication-slot-across-databases)
 
 </Admonition>
 
-<Panel heading="Task Fails to Start">
+<Panel heading="Task fails to start">
 
 **Symptom:** Task remains in `Error` state immediately after creation.
 
@@ -72,18 +71,18 @@ import Panel from '@site/src/components/Panel';
 
 * **Authentication failure** - the credentials in the connection string are incorrect
   or the user does not have the required permissions.
-  See the PostgreSQL [Permissions and Roles](./source-database-setup/postgres/permissions-and-roles.mdx) page.
+  See the PostgreSQL [Permissions and Roles](../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/permissions-and-roles.mdx) page.
 
 * **WAL level not set to `logical`** - CDC Sink requires logical replication enabled
   on the source.
-  See [WAL Configuration](./source-database-setup/postgres/wal-configuration.mdx).
+  See [WAL Configuration](../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/wal-configuration.mdx).
 
 Check the error message in the Notification Center (bell icon in Studio) for the
 specific failure reason.
 
 </Panel>
 
-<Panel heading="Task Enters Error State">
+<Panel heading="Task enters error state">
 
 **Symptom:** Task was running, then stopped with an error.
 
@@ -94,7 +93,7 @@ specific failure reason.
   slot will be created on next start).
 
 * **Source table schema changed** - adding or removing columns from the SQL table
-  may cause mapping errors. See [Source Schema Changes](./source-schema-changes.mdx).
+  may cause mapping errors. See [Source Schema Changes](../../../server/ongoing-tasks/cdc-sink/source-schema-changes.mdx).
 
 * **Replication lag too large** - if CDC Sink falls behind significantly, PostgreSQL
   may retain WAL segments that fill the disk. See your PostgreSQL documentation on
@@ -107,7 +106,7 @@ specific failure reason.
 
 </Panel>
 
-<Panel heading="Documents Not Appearing">
+<Panel heading="Documents not appearing">
 
 **Symptom:** SQL rows exist but corresponding RavenDB documents are not created.
 
@@ -128,7 +127,7 @@ specific failure reason.
 
 </Panel>
 
-<Panel heading="Embedded Items Missing or Incorrect">
+<Panel heading="Embedded items missing or incorrect">
 
 **Symptom:** Parent document exists but embedded array/map is empty or items are missing.
 
@@ -146,7 +145,7 @@ specific failure reason.
    items remain in RavenDB, check whether `REPLICA IDENTITY` is configured for the
    embedded table. Without it, PostgreSQL does not include the old row values in the
    DELETE event, and CDC Sink cannot identify which item to remove.
-   See [REPLICA IDENTITY](./source-database-setup/postgres/replica-identity.mdx).
+   See [REPLICA IDENTITY](../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity.mdx).
 
 4. **Type mismatch (Array vs Map)** - if the `Type` was changed from `Array` to `Map`
    or vice versa after documents were already created, existing documents retain the
@@ -154,7 +153,7 @@ specific failure reason.
 
 </Panel>
 
-<Panel heading="DELETE Not Applied">
+<Panel heading="DELETE not applied">
 
 **Symptom:** A row was deleted from SQL but the RavenDB document still exists.
 
@@ -168,7 +167,7 @@ specific failure reason.
    parent document to update. If `REPLICA IDENTITY` is not set to `FULL` (or to
    an index that includes join columns), the DELETE event may be missing the columns
    needed to route it.
-   See [REPLICA IDENTITY](./source-database-setup/postgres/replica-identity.mdx).
+   See [REPLICA IDENTITY](../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity.mdx).
 
 3. **Custom patch returns without deleting** - if an `OnDelete.Patch` is configured
    that does not allow the delete to proceed (combined with `IgnoreDeletes = true`),
@@ -176,7 +175,7 @@ specific failure reason.
 
 </Panel>
 
-<Panel heading="Patch Errors">
+<Panel heading="Patch errors">
 
 **Symptom:** Task enters error state with a message referencing a JavaScript patch failure.
 
@@ -208,19 +207,19 @@ if (related) { ... }
 
 </Panel>
 
-<Panel heading="Source Schema Changes">
+<Panel heading="Source schema changes">
 
 Adding, removing, renaming, or retyping columns on the source database while a CDC
 Sink task is running requires different handling depending on the database engine.
 PostgreSQL and MySQL detect most changes automatically; SQL Server requires an explicit
 capture instance procedure for every schema change.
 
-See [Source Schema Changes](./source-schema-changes.mdx) for the full guide, including
+See [Source Schema Changes](../../../server/ongoing-tasks/cdc-sink/source-schema-changes.mdx) for the full guide, including
 per-engine behavior, examples, and the SQL Server procedure.
 
 </Panel>
 
-<Panel heading="Partial Export/Import and State Loss">
+<Panel heading="Partial export/import and state loss">
 
 **Symptom:** After importing a database export, CDC Sink re-reads all data from the
 source database from the beginning, performing a full initial load even though the
@@ -270,5 +269,43 @@ recreate the task with `SkipInitialLoad` (which skips the initial load but may m
 changes that occurred between the export and the recreation).
 
 </Admonition>
+
+</Panel>
+
+<Panel heading="Shared replication slot across databases">
+
+**Symptom (PostgreSQL):** After copying a CDC Sink task to a second database (via
+export/import or backup/restore), one of the two tasks sits in fallback mode with an error
+like:
+
+<Tabs>
+<TabItem value="plain" label="plain">
+
+```plain
+Process is in error recovery (fallback mode). Last error: <timestamp>. Next retry in: 464s.
+```
+
+</TabItem>
+</Tabs>
+
+**Cause:**
+
+Export/import and backup/restore copy the task configuration verbatim, including the
+immutable `SlotName` and `PublicationName`. A PostgreSQL logical replication slot can be
+consumed by only **one connection at a time**, so when both databases have the task enabled
+they compete for the same slot. Only one wins; the other cannot attach and enters
+error-recovery (fallback) mode. The error clears on a later retry once the slot is free, but
+until then changes from the source are reflected in the losing database only after a delay.
+
+**Resolution:**
+
+* Keep the task **enabled in only one database at a time** when the configuration is shared.
+  On restore, use the `DisableOngoingTasks` option or disable the task on one database;
+  imported tasks are already disabled by default.
+* To run the task against **both** databases at once, give each its own dedicated slot and
+  publication (set a distinct `SlotName`/`PublicationName` in `CdcSinkPostgresSettings`
+  before enabling the copy).
+
+See [One Active Consumer per Slot](../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/initial-setup.mdx#one-active-consumer-per-slot).
 
 </Panel>

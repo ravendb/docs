@@ -2,7 +2,7 @@
 title: "CDC Sink: Failover and Consistency"
 sidebar_label: Failover and Consistency
 description: "Explains how CDC Sink handles node failover, what consistency guarantees it provides, and why patches must be designed to be idempotent."
-sidebar_position: 13
+sidebar_position: 9
 see_also:
   - title: "How It Works"
     link: "server/ongoing-tasks/cdc-sink/how-it-works"
@@ -23,23 +23,21 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
 
-# CDC Sink: Failover and Consistency
-
 <Admonition type="note" title="">
 
 * This page explains how CDC Sink handles node failover, what consistency guarantees
   it provides, and why patches must be designed to be idempotent.
 
 * In this article:
-  * [State Storage](#state-storage)
-  * [Failover Behavior](#failover-behavior)
-  * [Re-Reading Changes](#re-reading-changes)
-  * [Consistency Guarantee](#consistency-guarantee)
-  * [Idempotency Requirements](#idempotency-requirements)
+  * [State storage](#state-storage)
+  * [Failover behavior](#failover-behavior)
+  * [Re-reading changes](#re-reading-changes)
+  * [Consistency guarantee](#consistency-guarantee)
+  * [Idempotency requirements](#idempotency-requirements)
 
 </Admonition>
 
-<Panel heading="State Storage">
+<Panel heading="State storage">
 
 CDC Sink persists its progress as a **document in RavenDB** alongside your data.
 
@@ -53,7 +51,7 @@ Different nodes in a cluster may have different versions of this document at any
 
 </Panel>
 
-<Panel heading="Failover Behavior">
+<Panel heading="Failover behavior">
 
 When the cluster elects a new mentor node for a CDC Sink task, the new node reads
 the **replicated state** - which may be older than the work the previous mentor
@@ -85,7 +83,7 @@ them either way.
 
 </Panel>
 
-<Panel heading="Re-Reading Changes">
+<Panel heading="Re-reading changes">
 
 **CDC Sink guarantees that no changes are lost, but some changes may be re-read.**
 
@@ -101,12 +99,12 @@ with the same values they already have.
 
 <Admonition type="warning" title="">
 Patches that are not idempotent can produce incorrect results when a change is
-re-read after a failover. See [Idempotency Requirements](#idempotency-requirements) below.
+re-read after a failover. See [Idempotency requirements](#idempotency-requirements) below.
 </Admonition>
 
 </Panel>
 
-<Panel heading="Consistency Guarantee">
+<Panel heading="Consistency guarantee">
 
 CDC Sink provides **at-least-once delivery** with **eventual consistency**:
 
@@ -120,7 +118,7 @@ This is the same model used by other ongoing tasks in RavenDB.
 
 </Panel>
 
-<Panel heading="Idempotency Requirements">
+<Panel heading="Idempotency requirements">
 
 A patch is **idempotent** if applying it multiple times produces the same result as
 applying it once.
