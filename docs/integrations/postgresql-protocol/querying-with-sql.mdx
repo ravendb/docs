@@ -306,9 +306,9 @@ from 'Orders' group by ShipVia select ShipVia, count()
    * When the connection between the client and RavenDB is terminated, both discard 
      the query.  
 
-  e.g., a sales dashboard that refreshes every morning can define its query once, send 
-  only a fresh pair of dates with each morning's run, and receive the latest orders 
-  in return.  
+  e.g., a sales dashboard that refreshes every morning can define its query once, and 
+  with each subsequent morning run send only a fresh pair of dates and receive the 
+  day's orders in return.  
 * Parameters serve clients that send queries programmatically, like applications using 
   [Npgsql](https://www.npgsql.org/).  
   Some of the queries that Power BI generates, like 
