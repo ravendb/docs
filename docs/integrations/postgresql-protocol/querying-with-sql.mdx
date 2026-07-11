@@ -34,7 +34,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * In this article:  
    * [A quick example](../../integrations/postgresql-protocol/querying-with-sql.mdx#a-quick-example)  
-   * [Supported SQL](../../integrations/postgresql-protocol/querying-with-sql.mdx#supported-sql)  
+   * [Supported SQL clauses and parameters](../../integrations/postgresql-protocol/querying-with-sql.mdx#supported-sql-clauses-and-parameters)  
       * [SELECT and FROM](../../integrations/postgresql-protocol/querying-with-sql.mdx#select-and-from)  
       * [WHERE](../../integrations/postgresql-protocol/querying-with-sql.mdx#where)  
       * [ORDER BY](../../integrations/postgresql-protocol/querying-with-sql.mdx#order-by)  
@@ -61,7 +61,7 @@ LIMIT 20
 
 * Since the SQL query selects `*`, the results include all the fields of each `Companies` 
   document, plus the two columns RavenDB adds: `id`, holding the document's ID, and 
-  `json`, holding results that do not fit the regular columns.  
+  `json`, holding document properties that do not fit the regular columns.  
 * A nested object, like a company's `Address`, is returned as JSON text in its column.  
 * The SQL identifiers are double-quoted to keep their case.  
   Learn more in [SELECT and FROM](../../integrations/postgresql-protocol/querying-with-sql.mdx#select-and-from).  
@@ -74,7 +74,7 @@ from 'Companies' where Name != 'Ernst Handel' order by Name limit 0, 20
 
 </Panel>
 
-<Panel heading="Supported SQL">
+<Panel heading="Supported SQL clauses and parameters">
 
 A SQL query addresses the database in SQL terms: each document collection is a table, 
 and the fields of its documents are the table's columns.  
@@ -84,7 +84,7 @@ and the fields of its documents are the table's columns.
 ### SELECT and FROM
 
 * **SELECT** takes a list of the table's columns, or `*` for all of them.  
-  A column can be renamed using `AS`, like `"Freight" AS "shipping_cost"`.  
+  A column can be aliased using `AS`, like `"Freight" AS "shipping_cost"`.  
 * `SELECT DISTINCT` retrieves each distinct value once.  
   e.g., `SELECT DISTINCT "ShipVia" FROM "public"."Orders"` will retrieve the three 
   shippers once each.  
@@ -133,7 +133,7 @@ and the fields of its documents are the table's columns.
 
   | Condition element | Example |
   |-------------------|---------|
-  | The comparison operators `=`, `<>` (or `!=`), `<`, `<=`, `>`, `>=` | `"Freight" > 100` |
+  | The comparison operators `=`, `<>`, `<`, `<=`, `>`, `>=` | `"Freight" > 100` |
   | `BETWEEN` | `"Freight" BETWEEN 10 AND 20` |
   | `IN` and `NOT IN` | `"ShipVia" IN ('shippers/1-A', 'shippers/2-A')` |
   | `IS NULL` and `IS NOT NULL` | `"ShippedAt" IS NULL` |
@@ -296,25 +296,19 @@ from 'Orders' group by ShipVia select ShipVia, count()
 * A `WHERE` condition can use numbered placeholders like `$1` and `$2` instead of 
   literal values, and the client can provide the values separately (using PostgreSQL's 
   **extended query protocol**):  
-   * The client sends the query text once, and RavenDB keeps the parsed query as a 
-     **prepared statement**.  
-   * On each subsequent run, the client sends only the values, as an ordered list that 
-     fills the placeholders by position: the first value fills `$1`, the second fills `$2`, 
-     and so on.  
-   * RavenDB runs the prepared query with the received values, and returns the matching 
-     results to the client.  
+   * The client sends the query text to RavenDB once, under a name of its choice, and 
+     RavenDB registers the parsed query under this name.  
+   * On each subsequent run, the client sends only the query's name and the values, as an 
+     ordered list that fills the placeholders by position: the first value fills `$1`, the 
+     second fills `$2`, and so on.  
+   * RavenDB runs the named query with the received values, and returns the results to 
+     the client.  
+   * When the connection between the client and RavenDB is terminated, both discard 
+     the query.  
 
   e.g., a sales dashboard that refreshes every morning can define its query once, send 
   only a fresh pair of dates with each morning's run, and receive the latest orders 
   in return.  
-
-  <Admonition type="note" title="">
-  The prepared query is kept for the duration of the connection between the client and RavenDB.  
-  The client names the prepared query when creating it, and RavenDB registers the query under this name.  
-  Each list of values that the client sends to RavenDB is accompanied by the query's name, informing 
-  RavenDB of the query to run with these values.  
-  When the connection is terminated, both the client and RavenDB discard the prepared query.  
-  </Admonition>
 * Parameters serve clients that send queries programmatically, like applications using 
   [Npgsql](https://www.npgsql.org/).  
   Some of the queries that Power BI generates, like 

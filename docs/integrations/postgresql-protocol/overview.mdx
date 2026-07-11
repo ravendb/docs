@@ -102,9 +102,9 @@ both keys to `settings.json`, so you do **not** need to add the keys manually.
 * To parse incoming SQL, the PostgreSQL integration uses `libpg_query`, a library that is 
   built separately for each platform (like Windows x64 or Linux ARM64) and ships with 
   the RavenDB server.  
-* When the RavenDB server runs on a platform that this library does not ship for, like the 
-  Raspberry Pi (32-bit ARM) package, the PostgreSQL integration will not start even if 
-  enabled in your settings, and the server will log a warning.  
+* The library does not ship for 32-bit platforms: the Raspberry Pi and Windows x86 packages.  
+  When the RavenDB server runs on one of these platforms, the PostgreSQL integration will not 
+  start even if enabled in your settings, and the server will log a warning.  
 
 </ContentFrame>
 
@@ -112,7 +112,11 @@ both keys to `settings.json`, so you do **not** need to add the keys manually.
 
 <Panel heading="Supported clients">
 
-RavenDB supports these PostgreSQL clients:
+Any PostgreSQL client can connect to RavenDB over the protocol. The clients listed in the 
+table below are tested with RavenDB.  
+Power BI, pgAdmin, and Microsoft Fabric also send many PostgreSQL metadata queries of 
+their own. RavenDB recognizes these queries, so you can use these clients' interfaces 
+without repeated errors.
 
 | Client | Description |
 |--------|-------------|

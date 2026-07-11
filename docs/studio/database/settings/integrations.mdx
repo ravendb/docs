@@ -1,7 +1,7 @@
 ---
 title: "Integrations View"
 sidebar_label: Integrations
-description: "Define the credentials that PostgreSQL-protocol clients like Power BI must provide to access a RavenDB database, in the Studio Integrations view."
+description: "Define credentials that third-party clients, like Power BI connecting over the PostgreSQL protocol, must provide to access a RavenDB database, in the Studio Integrations view."
 sidebar_position: 14
 ---
 
@@ -12,13 +12,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Integrations View
 <Admonition type="note" title="">
 
-* Use the **Integrations view** to define the credentials that clients connecting over the 
-  [PostgreSQL protocol](../../../integrations/postgresql-protocol/overview.mdx), like 
-  [Power BI](../../../integrations/postgresql-protocol/power-bi.mdx), must provide to access 
-  a RavenDB database.  
+* Use the **Integrations view** to define credentials that third-party clients must provide 
+  when connecting to RavenDB.  
 
 * Providing these credentials is required only when RavenDB runs as a 
-  [secure server](../../../integrations/postgresql-protocol/overview.mdx#security).  
+  [secure server](../../../server/security/overview.mdx).  
 
 * In this article:  
    * [PostgreSQL Protocol Credentials](../../../studio/database/settings/integrations.mdx#postgresql-protocol-credentials)  
@@ -28,6 +26,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
 </Admonition>
 
 <Panel heading="PostgreSQL Protocol Credentials">
+
+Define the credentials that clients connecting over the 
+[PostgreSQL protocol](../../../integrations/postgresql-protocol/overview.mdx), like 
+[Power BI](../../../integrations/postgresql-protocol/power-bi.mdx), must provide to access 
+a RavenDB database.  
 
 <ContentFrame>
 

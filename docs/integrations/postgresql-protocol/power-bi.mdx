@@ -25,6 +25,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
   enabled for your RavenDB server, and your 
   [license](../../integrations/postgresql-protocol/overview.mdx#license) enables Power BI.  
 
+* The examples on this page use the 
+  [Northwind sample data](../../studio/database/tasks/create-sample-data.mdx).  
+
 * In this article:  
    * [Connect to RavenDB](../../integrations/postgresql-protocol/power-bi.mdx#connect-to-ravendb)  
    * [Load collection data](../../integrations/postgresql-protocol/power-bi.mdx#load-collection-data)  
@@ -152,8 +155,9 @@ as before: server, database, and connectivity mode.
   **SQL statement** box.  
   RavenDB detects the query language automatically.  
   
-  The following RQL query retrieves the destination city and freight charge of orders 
-  shipped to France.  
+  The following RQL query runs on the 
+  [Northwind sample data](../../studio/database/tasks/create-sample-data.mdx), retrieving 
+  the destination city and freight charge of orders shipped to France.  
 
   ```rql
   from Orders
@@ -178,8 +182,8 @@ as before: server, database, and connectivity mode.
 !["RQL Query Results"](./assets/rql-query-results.png)
 
 * The preview shows only the fields the query selects, plus two columns added by RavenDB:  
-  `id`, holding each document's ID, and `json`, holding results that do not fit the 
-  regular columns.  
+  `id`, holding each document's ID, and `json`, holding document properties that do not 
+  fit the regular columns.  
 
   <Admonition type="note" title="">
   Earlier RavenDB versions exposed these columns as `id()` and `json()`.  
