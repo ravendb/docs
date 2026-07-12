@@ -1,119 +1,117 @@
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* This page explains how to monitor a CDC Sink task - its running state, progress,
-  fallback behavior, and statistics available through the Management Studio and API.
+* This article explains the runtime information exposed for a CDC Sink task -  
+  including its running state, progress, fallback behavior, error handling, notifications, and performance statistics.
 
 * In this article:
-  * [Task State](#task-state)
-  * [Fallback Mode](#fallback-mode)
-  * [Statistics](#statistics)
+  * [Task status and statistics](#task-status-and-statistics)
+  * [Fallback mode](#fallback-mode)
   * [Notifications](#notifications)
+  * [Error handling](#error-handling)
+  * [Performance endpoints](#performance-endpoints)
 
 </Admonition>
 
-<Panel heading="Task State">
+<Panel heading="Task status and statistics">
 
-A CDC Sink task's status is reported through two standard ongoing-task fields:
-`TaskState` (whether the task is enabled) and `TaskConnectionStatus` (the task's
-live connection to the source database). For the full set of values and their
-meanings, see
-[Ongoing Task Operations](../../../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations.mdx).
+Retrieve the current task info with `GetOngoingTaskInfoOperation` and cast the result to `OngoingTaskCdcSink`.      
+Two standard ongoing-task fields report the task's enabled state and current connection status:
 
-The current state is visible in the **Ongoing Tasks** view in the Management Studio.
+* `TaskState` - whether the task is enabled, disabled, or partially enabled.
+* `TaskConnectionStatus` - whether the task is active, reconnecting, inactive, or running on another node.
 
+The following runtime fields report how a running task is progressing:
+
+* **Progress and lag**  
+  `LastBatchTime` and `SecondsSinceLastBatch` show when the task last completed a batch,  
+  while `LastActivityTime` and `SecondsSinceLastActivity` show the last activity from the source.  
+  Recent activity with an old `LastBatchTime` indicates that the source connection is alive but there are no changes to apply.  
+* **Health**  
+  `HealthIssue` is `null` when healthy and carries a diagnostic message when the task detects a problem,  
+  such as fallback mode or a stale connection.
+* **Position**  
+  `LastCheckpoint` reports the last persisted CDC checkpoint (an LSN or GTID).
+
+<Admonition type="note" title="">
+    
+For the call syntax and the full list of returned fields with their possible values,
+see [Get task info via Client API](../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/get-task-info.mdx#get-cdc-sink-task-info-via-client-api).  
+Task info is also available in the **Ongoing Tasks** view in the Management Studio -
+see [Get task info via Studio](../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/get-task-info.mdx#get-cdc-sink-task-info-via-studio).
+    
+</Admonition>
+    
 </Panel>
 
-<Panel heading="Fallback Mode">
+<Panel heading="Fallback mode">
 
-When CDC Sink cannot reach the source database, it enters **fallback mode** rather
-than failing immediately.
+When a CDC Sink task encounters a retryable failure, it enters **fallback mode** and retries after a backoff delay.  
+While the task is in fallback mode, `TaskConnectionStatus` is reported as `Reconnect`.
 
 In fallback mode:
-* The task continues retrying the connection at regular intervals
-* No changes are applied while the connection is down
-* The task automatically resumes streaming once the source is reachable again
+* The task waits for the current backoff delay, then retries
+* No changes are applied while the task is waiting
+* If the next attempt succeeds, processing resumes automatically
 
-Retry delay doubles on each consecutive failure, up to the cap set by
-`CdcSink.MaxFallbackTimeInSec` (default 15 minutes).
-See [Server Configuration](../server-configuration.mdx).
-
-</Panel>
-
-<Panel heading="Statistics">
-
-CDC Sink exposes runtime statistics through the `GetOngoingTaskInfoOperation`:
-
-<Tabs>
-<TabItem value="csharp" label="csharp">
-
-```csharp
-var taskInfo = await store.Maintenance.SendAsync(
-    new GetOngoingTaskInfoOperation(taskId, OngoingTaskType.CdcSink));
-```
-
-</TabItem>
-</Tabs>
-
-The returned object includes:
-
-| Field | Description |
-|-------|-------------|
-| `TaskState` | Whether the task is enabled (`Enabled` / `Disabled` / `PartiallyEnabled`) |
-| `TaskConnectionStatus` | Live connection state (`Active` / `NotActive` / `Reconnect` / `NotOnThisNode`) |
-| `MentorNode` | Configured preferred node |
-| `ResponsibleNode` | Node currently running the task |
-| `Error` | Error message if the task is in error state |
-
-The following CDC-specific fields report the task's recent processing activity:
-
-| Field | Description |
-|-------|-------------|
-| `LastBatchTime` | Timestamp of the last batch of changes that was processed |
-| `LastCheckpoint` | Timestamp of the last CDC checkpoint (last processed position) that was persisted |
-| `SecondsSinceLastBatch` | Number of seconds elapsed since the last batch was processed |
-| `LastActivityTime` | Timestamp of the last task activity |
-| `SecondsSinceLastActivity` | Number of seconds elapsed since the last task activity |
-
-Detailed per-table statistics - including row counts and last processed position -
-are available through the Management Studio's ongoing tasks detail view.
+The first fallback delay is 5 seconds.
+On subsequent failures, the base delay grows to twice the time elapsed since the last error, up to the cap set by `CdcSink.MaxFallbackTimeInSec` (default 15 minutes).
+RavenDB then adds up to 10% random jitter to avoid synchronized retries across processes.
+See [Server Configuration](../../../../server/ongoing-tasks/cdc-sink/server-configuration.mdx).
 
 </Panel>
 
 <Panel heading="Notifications">
 
-CDC Sink participates in RavenDB's standard alert system. If the task enters an
-error state or fallback mode, an alert is raised and visible in:
+CDC Sink raises RavenDB alerts for task-level failures and provider-specific warning conditions.  
+A retryable process failure also moves the task into fallback mode.
 
-* The **Notification Center** in the Management Studio (bell icon)
-* The cluster's alert log
+CDC Sink alerts are visible in the **Notification Center** in the Management Studio (bell icon).
 
-Alerts include the error message and which table or operation triggered the failure,
-making it straightforward to diagnose the root cause.
+The alert message identifies the affected task and describes the failure or warning.
+Depending on the case, it may also include provider-specific context, such as a table, publication, checkpoint, or exception details.
 
 </Panel>
 
-<Panel heading="Error Handling">
+<Panel heading="Error handling">
 
-CDC Sink tolerates individual document processing errors - each failure is logged
-and recorded, but processing continues for the remaining documents in the batch.
-The CDC position advances as long as the error ratio stays within acceptable bounds.
+CDC Sink can tolerate deterministic per-document failures, such as mapping or patch-script errors, while the overall error ratio remains acceptable.
+The failed document is logged and recorded, and CDC Sink continues processing the remaining documents in the batch.
+
+The CDC checkpoint advances only when the current batch execution completes without errors or successfully processes at least one document.
+If all documents in the execution fail, the checkpoint is not advanced.
 
 **Error threshold:**
-When cumulative errors reach **100** and also exceed the number of successes,
-the batch throws and the task enters fallback mode.
+When cumulative per-document processing errors reach **100** and also exceed the number of successful operations,
+CDC Sink stops the current batch. The failure is reported as an alert, and the task enters fallback mode.
 
-**Fallback mode on error:**
-The task enters exponential backoff, starting at 5 seconds and doubling on each
-retry, up to the limit set by `CdcSink.MaxFallbackTimeInSec` (default 15 minutes).
-See [Server Configuration](../server-configuration.mdx) and [Fallback Mode](#fallback-mode).
+Non-document-scoped process failures are not treated as tolerable per-document errors.  
+They fail the current attempt and move the task into fallback mode.
 
 **Patch errors:**
-Patch errors - including `MaxSteps exceeded` - fail only the affected document.
-The rest of the batch continues normally.
+Patch-script errors, including scripts that exceed `Patching.MaxStepsForScript`,
+fail only the affected document while the script-error ratio remains acceptable.
+Other documents in the same batch can still be processed.
+
+For fallback retry timing, see [Fallback mode](#fallback-mode) and [Server Configuration](../../../../server/ongoing-tasks/cdc-sink/server-configuration.mdx).
+
+</Panel>
+
+<Panel heading="Performance endpoints">
+
+CDC Sink exposes detailed performance statistics through dedicated endpoints:
+
+| Method | Endpoint                                              | Auth        | Description                                     |
+|--------|-------------------------------------------------------|-------------|-------------------------------------------------|
+| `GET`  | `/databases/{databaseName}/cdc-sink/performance`      | `ValidUser` | Get the latest CDC Sink performance statistics  |
+| `GET`  | `/databases/{databaseName}/cdc-sink/performance/live` | `ValidUser` | Open a WebSocket stream of live performance statistics |
+
+Both endpoints can be filtered with the optional `name` query parameter.
+
+The response is grouped by CDC Sink task and process.
+Each performance entry includes timing information, read and processed message counts,
+script-processing and read-error counts, memory allocation, batch stop reason, processing status, and nested operation timings.
 
 </Panel>
