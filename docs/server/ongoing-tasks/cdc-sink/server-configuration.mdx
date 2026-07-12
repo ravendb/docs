@@ -25,11 +25,15 @@ see_also:
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import ContentFrame from '@site/src/components/ContentFrame';
 
 <Admonition type="note" title="">
 
-* This page documents the RavenDB server configuration keys that control CDC Sink
-  task behavior.
+* This article documents the RavenDB server configuration keys that control CDC Sink task behavior.
+    
+* These keys can be set in `settings.json` or passed as environment variables.  
+  All CDC Sink keys have a `Server-wide or per database` scope, so they can be set per database as well as server-wide.
+  Learn how to apply these keys in the [Configuration overview](../../../server/configuration/configuration-options.mdx) article.
 
 * In this article:
   * [CdcSink.MaxBatchSize](#cdcsinkmaxbatchsize)
@@ -39,14 +43,13 @@ import TabItem from '@theme/TabItem';
 
 </Admonition>
 
-These keys can be set in `settings.json` or passed as environment variables.
-All CDC Sink keys have a `Server-wide or per database` scope, so they can be set
-per database as well as server-wide.
-See [Configuration Overview](../../../server/configuration/configuration-options.mdx).
+<ContentFrame>
 
-## CdcSink.MaxBatchSize
+### CdcSink.MaxBatchSize
 
-Target number of change rows processed in a single batch before writing to RavenDB. A batch may exceed this size when a source database transaction contains more rows, since transactions are never split across batches.
+Target number of change rows processed in a single batch before writing to RavenDB.  
+A batch may exceed this size when a source database transaction contains more rows,  
+since transactions are never split across batches.
 
 Larger values increase throughput but also increase memory usage per batch.
 
@@ -54,19 +57,31 @@ Larger values increase throughput but also increase memory usage per batch.
 - **Default**: `1024`
 - **Scope**: Server-wide or per database
 
-## CdcSink.MaxFallbackTimeInSec
+</ContentFrame>
 
-Maximum number of seconds the CDC Sink process will stay in fallback mode after a failure before retrying. Fallback duration doubles on each consecutive failure, up to this cap.
+<ContentFrame>
 
-The first retry after a failure waits 5 seconds; subsequent retries grow toward this cap (roughly doubling based on the time since the last error), with a small random jitter added to avoid synchronized retries across multiple tasks.
+### CdcSink.MaxFallbackTimeInSec
+
+Maximum number of seconds used as the base cap for CDC Sink fallback mode after a failure.  
+The first retry after a failure waits 5 seconds.  
+Subsequent retries roughly double based on the time since the previous error, up to this configured base cap.
+
+A small random jitter is added after the base delay to avoid synchronized retries across multiple tasks,  
+so the actual wait can be slightly higher than this value.
 
 - **Type**: `int`
 - **Default**: `900` (15 minutes)
 - **Scope**: Server-wide or per database
 
-## CdcSink.SqlServer.PollIntervalInSec
+</ContentFrame>
 
-How frequently (in seconds) the SQL Server CDC Sink polls for new change rows. Lower values reduce latency but increase load on the source database.
+<ContentFrame>
+
+### CdcSink.SqlServer.PollIntervalInSec
+
+How frequently (in seconds) the SQL Server CDC Sink polls for new change rows.  
+Lower values reduce latency but increase load on the source database.
 
 PostgreSQL and MySQL use streaming replication and ignore this setting.
 
@@ -74,12 +89,21 @@ PostgreSQL and MySQL use streaming replication and ignore this setting.
 - **Default**: `1`
 - **Scope**: Server-wide or per database
 
-## CdcSink.Postgres.ReplicationTimeoutInSec
+</ContentFrame>
 
-Timeout (in seconds) for the PostgreSQL replication connection. Controls both the server-side `wal_sender_timeout` (keepalives arrive at roughly half this interval) and the client-side `WalReceiverTimeout`. Lower values detect dead connections faster but increase keepalive traffic.
+<ContentFrame>
+
+### CdcSink.Postgres.ReplicationTimeoutInSec
+
+Timeout (in seconds) for the PostgreSQL replication connection.  
+Controls both the server-side `wal_sender_timeout` (keepalives arrive at roughly half this interval) and the client-side `WalReceiverTimeout`.  
+    
+Lower values detect dead connections faster but increase keepalive traffic.
 
 SQL Server and MySQL ignore this setting.
 
 - **Type**: `int`
 - **Default**: `10`
 - **Scope**: Server-wide or per database
+
+</ContentFrame>
