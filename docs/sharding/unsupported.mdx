@@ -31,6 +31,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * [Unsupported Integrations Features](../sharding/unsupported.mdx#unsupported-integrations-features)  
   * [Unsupported Patching Features](../sharding/unsupported.mdx#unsupported-patching-features)  
   * [Unsupported Replication Features](../sharding/unsupported.mdx#unsupported-replication-features)  
+  * [Unsupported AI Features](../sharding/unsupported.mdx#unsupported-ai-features)  
   
 </Admonition>
 
@@ -111,8 +112,8 @@ Reference: [Unsupported querying features](../sharding/indexing.mdx#unsupported-
 | Unsupported Feature | Comment |
 | ------------- | ------------- |
 | [PostgreSQL](../integrations/postgresql-protocol/overview.mdx) |  |
-| [Queue ETL](../server/ongoing-tasks/etl/queue-etl/overview.mdx) | [Kafka ETL](../server/ongoing-tasks/etl/queue-etl/kafka.mdx), [RabbitMQ ETL](../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx) |
-| [Queue Sink](../server/ongoing-tasks/queue-sink/overview.mdx) | [Kafka Queue Sink](../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx), [RabbitMQ Queue Sink](../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink.mdx) |
+| [Queue ETL](../server/ongoing-tasks/etl/queue-etl/overview.mdx) | [Kafka ETL](../server/ongoing-tasks/etl/queue-etl/kafka.mdx), [RabbitMQ ETL](../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx), [Azure Queue Storage ETL](../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx), [Amazon SQS ETL](../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx) |
+| [Queue Sink](../server/ongoing-tasks/queue-sink/overview.mdx) | [Kafka Queue Sink](../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx), [RabbitMQ Queue Sink](../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink.mdx), Azure Service Bus Queue Sink |
 
 ## Unsupported Patching Features
 
@@ -127,3 +128,10 @@ Reference: [Unsupported querying features](../sharding/indexing.mdx#unsupported-
 | [Filtered Replication](../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx#filtered-replication) |  |
 | [Hub/Sink Replication](../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx) |  |
 | **Legacy replication** | From RavenDB 3.x instances |
+
+## Unsupported AI Features
+
+| Unsupported Feature | Comment |
+| ------------- | ------------- |
+| [GenAI](../ai-integration/gen-ai-integration/overview.mdx) |  |
+| [AI Agents](../ai-integration/ai-agents/overview.mdx) |  |

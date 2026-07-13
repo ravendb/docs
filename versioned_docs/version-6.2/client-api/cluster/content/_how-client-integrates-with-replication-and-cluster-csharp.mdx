@@ -45,6 +45,16 @@ The **topology** is updated with the following logic:
 * If a client detects the `"Refresh-Topology:true"` header in the response, the client will fetch the updated topology from the server.
   Note: if `ReadBalanceBehavior.FastestNode` is selected, the client will schedule a speed test to determine the fastest node.
 * In addition, every 5 minutes, the client fetches the current topology from the server if no requests are made within that time frame.
+
+<Admonition type="note" title="">
+
+The node URLs in the topology are the addresses the client connects to.  
+If those URLs are not reachable from where the client runs (for example, a client outside the
+cluster's network), you can rewrite the node URLs with the
+[OnTopologyUpdated](../../../client-api/how-to/subscribe-to-store-events.mdx#ontopologyupdated) event.
+
+</Admonition>
+
 The **client configuration** is handled in a similar way:
 
 * Each client configuration has an etag attached

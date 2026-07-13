@@ -180,7 +180,7 @@ Note that the number of documents included in a batch is
 
 <Admonition type="warning" title="Take care of duplicates" id="take-care-of-duplicates" href="#take-care-of-duplicates">
 Producers may enqueue
-[multiple instances](../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#idempotence-and-message-duplication)
+[multiple instances](../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#idempotence-and-message-duplication)
 of the same document.  
 If processing each message only once is important to the consumer,
 it is **the consumer's responsibility** to verify the uniqueness of

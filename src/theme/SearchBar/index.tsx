@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState, type ReactNode } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import Head from "@docusaurus/Head";
 import Link from "@docusaurus/Link";
@@ -21,11 +21,27 @@ import {
 import type { AutocompleteState } from "@algolia/autocomplete-core";
 import type { FacetFilters } from "algoliasearch/lite";
 import CustomSearchButton from "@site/src/components/Common/CustomSearchButton";
+import SearchResultBadge from "@site/src/components/Search/SearchResultBadge";
+import SearchFilterPills from "@site/src/components/Search/SearchFilterPills";
+import {
+    ALL_SCOPE_EXCLUDED_PLUGIN_IDS,
+    getSearchResultSource,
+    SEARCH_ATTRIBUTES_TO_RETRIEVE,
+    SEARCH_FILTERS,
+} from "@site/src/components/Search/searchSource";
+import type { ContentSource } from "@site/src/components/Common/contentSource";
+import { resolveExternalGuideUrl, useExternalGuideUrls } from "@site/src/components/Search/useExternalGuides";
 
 type DocSearchProps = Omit<DocSearchModalProps, "onClose" | "initialScrollY"> & {
     contextualSearch?: string;
     externalUrlRegex?: string;
     searchPagePath: boolean | string;
+};
+
+// A DocSearch hit augmented with the custom fields our Algolia crawler emits.
+type SearchHit = (InternalDocSearchHit | StoredDocSearchHit) & {
+    docusaurus_tag?: string | string[];
+    breadcrumb?: string;
 };
 
 let DocSearchModal: typeof DocSearchModalType | null = null;
@@ -43,34 +59,49 @@ function importDocSearchModalIfNeeded() {
     });
 }
 
-function useNavigator({ externalUrlRegex }: Pick<DocSearchProps, "externalUrlRegex">) {
+function useNavigator(
+    { externalUrlRegex }: Pick<DocSearchProps, "externalUrlRegex">,
+    externalGuideUrls: Map<string, string>
+): DocSearchModalProps["navigator"] {
     const history = useHistory();
-    const [navigator] = useState<DocSearchModalProps["navigator"]>(() => {
-        return {
+    return useMemo(
+        () => ({
             navigate(params) {
-                // Algolia results could contain URL's from other domains which cannot
-                // be served through history and should navigate with window.location
-                if (isRegexpStringMatch(externalUrlRegex, params.itemUrl)) {
-                    window.location.href = params.itemUrl;
+                const url = resolveExternalGuideUrl(externalGuideUrls, params.itemUrl) ?? params.itemUrl;
+                if (/^https?:\/\//.test(url) || isRegexpStringMatch(externalUrlRegex, url)) {
+                    // Open external destinations (incl. external guides) in a new tab, matching the Link.
+                    if (!window.open(url, "_blank", "noopener,noreferrer")) {
+                        window.location.href = url;
+                    }
                 } else {
-                    history.push(params.itemUrl);
+                    history.push(url);
                 }
             },
-        };
-    });
-    return navigator;
+        }),
+        [externalUrlRegex, externalGuideUrls, history]
+    );
 }
 
-function useTransformSearchClient(): DocSearchModalProps["transformSearchClient"] {
+function useTransformSearchClient(realNbHits: { current: number }): DocSearchModalProps["transformSearchClient"] {
     const {
         siteMetadata: { docusaurusVersion },
     } = useDocusaurusContext();
     return useCallback(
         (searchClient: DocSearchTransformClient) => {
             searchClient.addAlgoliaAgent("docusaurus", docusaurusVersion);
+            // DocSearch accumulates nbHits across keystrokes; capture the real per-query count instead.
+            const originalSearch = searchClient.search.bind(searchClient);
+            searchClient.search = ((...args: Parameters<typeof originalSearch>) =>
+                originalSearch(...args).then((response) => {
+                    const firstResult = (response as { results?: Array<{ nbHits?: number }> })?.results?.[0];
+                    if (firstResult && typeof firstResult.nbHits === "number") {
+                        realNbHits.current = firstResult.nbHits;
+                    }
+                    return response;
+                })) as typeof searchClient.search;
             return searchClient;
         },
-        [docusaurusVersion]
+        [docusaurusVersion, realNbHits]
     );
 }
 
@@ -79,10 +110,8 @@ function useTransformItems(props: Pick<DocSearchProps, "transformItems">) {
     const [transformItems] = useState<DocSearchModalProps["transformItems"]>(() => {
         return (items: DocSearchHit[]) =>
             props.transformItems
-                ? // Custom transformItems
-                  props.transformItems(items)
-                : // Default transformItems
-                  items.map((item) => ({
+                ? props.transformItems(items)
+                : items.map((item) => ({
                       ...item,
                       url: processSearchResultUrl(item.url),
                   }));
@@ -92,71 +121,137 @@ function useTransformItems(props: Pick<DocSearchProps, "transformItems">) {
 
 function useResultsFooterComponent({
     closeModal,
+    realNbHits,
+    activeFilter,
 }: {
     closeModal: () => void;
+    realNbHits: { current: number };
+    activeFilter: ContentSource | null;
 }): DocSearchProps["resultsFooterComponent"] {
     return useMemo(
         () =>
-            ({ state }) => <ResultsFooter state={state} onClose={closeModal} />,
-        [closeModal]
+            ({ state }) => (
+                <ResultsFooter
+                    state={state}
+                    onClose={closeModal}
+                    nbHits={realNbHits.current}
+                    activeFilter={activeFilter}
+                />
+            ),
+        [closeModal, realNbHits, activeFilter]
     );
 }
 
-function Hit({ hit, children }: { hit: InternalDocSearchHit | StoredDocSearchHit; children: React.ReactNode }) {
-    return <Link to={hit.url}>{children}</Link>;
+function Hit({ hit, children }: { hit: SearchHit; children: React.ReactNode }) {
+    const source = getSearchResultSource(hit.docusaurus_tag);
+    const externalUrl = resolveExternalGuideUrl(useExternalGuideUrls(), hit.url);
+    // Crawler section trail, minus the leading source root ("Docs ›" / "Guides") — the source is
+    // already shown by the badge.
+    const breadcrumb = (hit.breadcrumb ?? "").split(" › ").slice(1).join(" › ");
+
+    return (
+        <Link to={externalUrl ?? hit.url}>
+            {children}
+            {breadcrumb && <span className="DocSearch-Hit-breadcrumb">{breadcrumb}</span>}
+            {(source || externalUrl) && (
+                <span className="DocSearch-Hit-sourceBadge">
+                    <SearchResultBadge source={source} />
+                    {externalUrl && <SearchResultBadge source="external" />}
+                </span>
+            )}
+        </Link>
+    );
 }
 
 type ResultsFooterProps = {
     state: AutocompleteState<InternalDocSearchHit>;
     onClose: () => void;
+    nbHits: number;
+    activeFilter: ContentSource | null;
 };
 
-function ResultsFooter({ state, onClose }: ResultsFooterProps) {
+function ResultsFooter({ state, onClose, nbHits, activeFilter }: ResultsFooterProps) {
     const createSearchLink = useSearchLinkCreator();
+    let to = createSearchLink(state.query);
+    if (activeFilter) {
+        // Carry the active source filter through to the full search page.
+        to += `${to.includes("?") ? "&" : "?"}source=${activeFilter}`;
+    }
 
     return (
-        <Link to={createSearchLink(state.query)} onClick={onClose}>
-            <Translate id="theme.SearchBar.seeAll" values={{ count: state.context.nbHits }}>
+        <Link to={to} onClick={onClose}>
+            <Translate id="theme.SearchBar.seeAll" values={{ count: nbHits }}>
                 {"See all {count} results"}
             </Translate>
         </Link>
     );
 }
 
-function useSearchParameters({ contextualSearch, ...props }: DocSearchProps): DocSearchProps["searchParameters"] {
-    function mergeFacetFilters(f1: FacetFilters, f2: FacetFilters): FacetFilters {
-        const normalize = (f: FacetFilters): FacetFilters => (typeof f === "string" ? [f] : f);
-        return [...normalize(f1), ...normalize(f2)];
+function useSearchParameters(
+    { contextualSearch, ...props }: DocSearchProps,
+    activePluginId: string | null
+): DocSearchProps["searchParameters"] {
+    const contextual = useAlgoliaContextualFacetFilters() as (string | string[])[];
+    const configFilters = (props.searchParameters?.facetFilters ?? []) as (string | string[])[];
+
+    // Contextual filters look like ["language:en", ["docusaurus_tag:..", ...]]. Narrow the tag
+    // group: one pill -> just that instance's tag, keeping the version already in the contextual
+    // group (so the Docs pill stays on the page's version); "All" -> drop separated scopes (samples).
+    const isExcludedFromAll = (tag: string) =>
+        ALL_SCOPE_EXCLUDED_PLUGIN_IDS.some((pluginId) => tag.startsWith(`docusaurus_tag:docs-${pluginId}-`));
+    const narrowed = contextual.map((entry) => {
+        if (!Array.isArray(entry)) {
+            return entry;
+        }
+        return activePluginId
+            ? entry.filter((tag) => tag.startsWith(`docusaurus_tag:docs-${activePluginId}-`))
+            : entry.filter((tag) => !isExcludedFromAll(tag));
+    });
+
+    let facetFilters: (string | string[])[];
+    if (contextualSearch) {
+        facetFilters = [...narrowed, ...configFilters];
+    } else if (activePluginId) {
+        facetFilters = [[`docusaurus_tag:docs-${activePluginId}-current`], ...configFilters];
+    } else {
+        facetFilters = configFilters;
     }
 
-    const contextualSearchFacetFilters = useAlgoliaContextualFacetFilters() as FacetFilters;
-
-    const configFacetFilters: FacetFilters = props.searchParameters?.facetFilters ?? [];
-
-    const facetFilters: FacetFilters = contextualSearch
-        ? // Merge contextual search filters with config filters
-          mergeFacetFilters(contextualSearchFacetFilters, configFacetFilters)
-        : // ... or use config facetFilters
-          configFacetFilters;
-
-    // We let users override default searchParameters if they want to
     return {
         ...props.searchParameters,
-        facetFilters,
+        attributesToRetrieve: props.searchParameters?.attributesToRetrieve ?? SEARCH_ATTRIBUTES_TO_RETRIEVE,
+        facetFilters: facetFilters as FacetFilters,
     };
 }
 
+// Text fields where typing must not hijack the type-to-search shortcut.
+function isEditableElement(target: EventTarget | null): boolean {
+    if (!(target instanceof HTMLElement)) {
+        return false;
+    }
+    return (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT" ||
+        target.isContentEditable
+    );
+}
+
 function DocSearch({ externalUrlRegex, ...props }: DocSearchProps) {
-    const navigator = useNavigator({ externalUrlRegex });
-    const searchParameters = useSearchParameters({ ...props });
+    const externalGuideUrls = useExternalGuideUrls();
+    const navigator = useNavigator({ externalUrlRegex }, externalGuideUrls);
+    const [activeFilter, setActiveFilter] = useState<ContentSource | null>(null);
+    const activePluginId = SEARCH_FILTERS.find((f) => f.kind === activeFilter)?.pluginId ?? null;
+    const searchParameters = useSearchParameters({ ...props }, activePluginId);
     const transformItems = useTransformItems(props);
-    const transformSearchClient = useTransformSearchClient();
+    const realNbHits = useRef(0);
+    const transformSearchClient = useTransformSearchClient(realNbHits);
 
     const searchContainer = useRef<HTMLDivElement | null>(null);
-    // TODO remove "as any" after React 19 upgrade
-    const searchButtonRef = useRef<HTMLButtonElement>(null as any);
+    const searchButtonRef = useRef<HTMLButtonElement>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [initialQuery, setInitialQuery] = useState<string | undefined>(undefined);
+    const [pillHost, setPillHost] = useState<HTMLElement | null>(null);
 
     const prepareSearchContainer = useCallback(() => {
         if (!searchContainer.current) {
@@ -175,30 +270,71 @@ function DocSearch({ externalUrlRegex, ...props }: DocSearchProps) {
         setIsOpen(false);
         searchButtonRef.current?.focus();
         setInitialQuery(undefined);
+        setActiveFilter(null);
     }, []);
 
-    const handleInput = useCallback(
-        (event: KeyboardEvent) => {
-            if (event.key === "f" && (event.metaKey || event.ctrlKey)) {
-                // ignore browser's ctrl+f
+    // The DocSearch modal has no slot for custom controls, so insert a host node after its search bar
+    // and portal the pills into it. Visibility (hidden until the user types) is pure CSS, so typing
+    // never touches React state and the first character is never dropped.
+    useEffect(() => {
+        if (!isOpen) {
+            setPillHost(null);
+            return undefined;
+        }
+        const searchBar = document.querySelector(".DocSearch-Modal .DocSearch-SearchBar");
+        if (!searchBar) {
+            return undefined;
+        }
+        const host = document.createElement("div");
+        host.className = "DocSearch-SourceFilters";
+        searchBar.insertAdjacentElement("afterend", host);
+        setPillHost(host);
+        return () => host.remove();
+    }, [isOpen, activeFilter]);
+
+    // DocSearch reads searchParameters only at mount, so a filter change remounts the modal
+    // (keyed on the filter); the typed query is fed back as the next initial query.
+    const handleFilterChange = useCallback((kind: ContentSource | null) => {
+        const input = document.querySelector<HTMLInputElement>(".DocSearch-Input");
+        setInitialQuery(input?.value || undefined);
+        setPillHost(null);
+        setActiveFilter(kind);
+    }, []);
+
+    // Type-to-search: a printable key pressed anywhere outside a text field opens the modal
+    // seeded with that character (Space and "/" keep their usual behavior). Seeding the query
+    // is also what guarantees the first keystroke survives the modal's lazy mount.
+    useEffect(() => {
+        if (isOpen) {
+            return undefined;
+        }
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (
+                event.key.length !== 1 ||
+                event.key === " " ||
+                event.key === "/" ||
+                event.metaKey ||
+                event.ctrlKey ||
+                event.altKey ||
+                event.isComposing ||
+                isEditableElement(event.composedPath()[0] ?? event.target)
+            ) {
                 return;
             }
-            // prevents duplicate key insertion in the modal input
             event.preventDefault();
-            setInitialQuery(event.key);
+            setInitialQuery((prev) => (prev ?? "") + event.key);
             openModal();
-        },
-        [openModal]
-    );
+        };
+        window.addEventListener("keydown", onKeyDown);
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, [isOpen, openModal]);
 
-    const resultsFooterComponent = useResultsFooterComponent({ closeModal });
+    const resultsFooterComponent = useResultsFooterComponent({ closeModal, realNbHits, activeFilter });
 
     useDocSearchKeyboardEvents({
         isOpen,
         onOpen: openModal,
         onClose: closeModal,
-        onInput: handleInput,
-        searchButtonRef,
         isAskAiActive: false,
         onAskAiToggle: (_toggle: boolean) => {},
     });
@@ -206,13 +342,12 @@ function DocSearch({ externalUrlRegex, ...props }: DocSearchProps) {
     return (
         <>
             <Head>
-                {/* This hints the browser that the website will load data from Algolia,
-        and allows it to preconnect to the DocSearch cluster. It makes the first
-        query faster, especially on mobile. */}
+                {/* Preconnect to the Algolia cluster to speed up the first query. */}
                 <link rel="preconnect" href={`https://${props.appId}-dsn.algolia.net`} crossOrigin="anonymous" />
             </Head>
 
             <CustomSearchButton
+                ref={searchButtonRef}
                 onTouchStart={importDocSearchModalIfNeeded}
                 onFocus={importDocSearchModalIfNeeded}
                 onMouseOver={importDocSearchModalIfNeeded}
@@ -225,6 +360,7 @@ function DocSearch({ externalUrlRegex, ...props }: DocSearchProps) {
                 searchContainer.current &&
                 createPortal(
                     <DocSearchModal
+                        key={activeFilter ?? "all"}
                         onClose={closeModal}
                         initialScrollY={window.scrollY}
                         initialQuery={initialQuery}
@@ -242,6 +378,10 @@ function DocSearch({ externalUrlRegex, ...props }: DocSearchProps) {
                     />,
                     searchContainer.current
                 )}
+
+            {isOpen &&
+                pillHost &&
+                createPortal(<SearchFilterPills active={activeFilter} onChange={handleFilterChange} />, pillHost)}
         </>
     );
 }

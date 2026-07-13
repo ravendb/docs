@@ -11,3 +11,45 @@
 .DocSearch-Container {
     z-index: calc(var(--ifm-z-index-fixed) + 1);
 }
+
+/* Lay out each result row as a flex row so the source badge sits beside the content. */
+.DocSearch-Hit a {
+    display: flex;
+    align-items: center;
+}
+
+.DocSearch-Hit a > .DocSearch-Hit-Container {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* Crawler section trail, shown muted to the right of the title (truncates if tight). */
+.DocSearch-Hit-breadcrumb {
+    flex: 0 1 auto;
+    min-width: 0;
+    margin-left: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--docsearch-muted-color);
+    font-size: 0.85em;
+}
+
+/* Wrapper for the source badge(s); a flex row with a gap so dual badges (e.g. Guide + External) don't touch. */
+.DocSearch-Hit-sourceBadge {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 12px 0 8px;
+}
+
+/* Source filter pills injected after the modal search bar. */
+.DocSearch-SourceFilters {
+    padding: 10px var(--docsearch-spacing) 2px;
+}
+
+/* Hidden until the user types (while the input still shows its placeholder). */
+.DocSearch-Modal:has(.DocSearch-Input:placeholder-shown) .DocSearch-SourceFilters {
+    display: none;
+}

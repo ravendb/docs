@@ -6,10 +6,11 @@ sidebar_position: 2
 ---
 
 import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import Panel from "@site/src/components/Panel";
 import ContentFrame from "@site/src/components/ContentFrame";
 
-# Ongoing Tasks: SQL ETL
 <Admonition type="note" title="">
 
 * **SQL ETL** is a task that creates an [ETL process](../../../server/ongoing-tasks/etl/basics.mdx) where data from a RavenDB database is extracted, transformed, and loaded into a relational database as the destination.
@@ -32,6 +33,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Document extensions](../../../server/ongoing-tasks/etl/sql.mdx#document-extensions)
    * [Advanced options](../../../server/ongoing-tasks/etl/sql.mdx#advanced-options)
    * [Transaction processing](../../../server/ongoing-tasks/etl/sql.mdx#transaction-processing)
+   * [Add an SQL connection string](../../../server/ongoing-tasks/etl/sql.mdx#add-an-sql-connection-string)
    * [Creating the SQL ETL task from the Client API](../../../server/ongoing-tasks/etl/sql.mdx#creating-the-sql-etl-task-from-the-client-api)
 
 </Admonition>
@@ -45,7 +47,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
     * Oracle
 
 * You must specify the provider type for the target relational database when setting up the  
-  [SQL connection string](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-sql-connection-string).
+  [Add an SQL connection string](../../../server/ongoing-tasks/etl/sql.mdx#add-an-sql-connection-string).
 
   <Admonition type="note" title="">
   For MySQL, the `MySql.Data.MySqlClient` factory name is deprecated. Use `MySqlConnector.MySqlConnectorFactory` instead.  
@@ -392,37 +394,91 @@ All records created in a single ETL run, one for each `loadTo` call, are sent in
 
 </Panel>
 
-<Panel heading="Creating the SQL ETL task from the Client API">
+<Panel heading="Add an SQL connection string">
 
-Creating an SQL ETL task from the Client API takes two steps.
+* An SQL ETL task uses an **SQL connection string** to connect to its destination relational database.  
+  The connection string stores the provider factory name and the provider-specific connection string.
 
-First, define and deploy a connection string to the destination database:
+* The ETL task does not store these connection details directly.  
+  Instead, its configuration references the connection string by name through the `ConnectionStringName` property.
 
+* An SQL connection string can be created in any of these ways:
+  * **From the Client API**:
+    [per-database](../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api)
+    or [server-wide](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api).
+  * **From Studio**:
+    [per-database](../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    [server-wide](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    or while creating an [SQL ETL task](../../../server/ongoing-tasks/etl/sql.mdx#creating-the-sql-etl-task).
+
+* The example below adds a **per-database** SQL connection string from the **Client API**.  
+  The connection string is stored in the current database record and can be used by tasks in that database.
+
+<Tabs>
+<TabItem value="sync" label="Sync" default>
 ```csharp
-// Define a connection string to a SQL database destination
-// ========================================================
+// Define an SQL connection string
+// ===============================
 var sqlConStr = new SqlConnectionString
 {
+    // The name used by the SQL ETL task configuration
     Name = "sql-connection-string-name",
 
-    // Define destination factory name
+    // The ADO.NET provider factory name for the destination database
     FactoryName = "MySqlConnector.MySqlConnectorFactory",
 
-    // Define the destination database
-    // May also need to define authentication and encryption parameters
-    // By default, encrypted databases are sent over encrypted channels
+    // The provider-specific connection string
     ConnectionString = "host=127.0.0.1;user=root;database=Northwind"
 };
-           
-// Deploy (send) the connection string to the server via the PutConnectionStringOperation
-// ======================================================================================
-var PutConnectionStringOp = new PutConnectionStringOperation<SqlConnectionString>(sqlConStr);
-PutConnectionStringResult connectionStringResult = store.Maintenance.Send(PutConnectionStringOp);
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<SqlConnectionString>(sqlConStr);
+
+PutConnectionStringResult connectionStringResult =
+    store.Maintenance.Send(putConnectionStringOp);
 ```
+</TabItem>
+<TabItem value="async" label="Async">
+```csharp
+// Define an SQL connection string
+// ===============================
+var sqlConStr = new SqlConnectionString
+{
+    // The name used by the SQL ETL task configuration
+    Name = "sql-connection-string-name",
 
-<br />
+    // The ADO.NET provider factory name for the destination database
+    FactoryName = "MySqlConnector.MySqlConnectorFactory",
 
-Then define and deploy the SQL ETL task:
+    // The provider-specific connection string
+    ConnectionString = "host=127.0.0.1;user=root;database=Northwind"
+};
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<SqlConnectionString>(sqlConStr);
+
+PutConnectionStringResult connectionStringResult =
+    await store.Maintenance.SendAsync(putConnectionStringOp);
+```
+</TabItem>
+</Tabs>
+
+| Parameter | Type | Description |
+|---|---|---|
+| **Name** | `string` | The connection string name. Use this value in the ETL task's `ConnectionStringName` property. |
+| **FactoryName** | `string` | The provider factory name for the destination database. See [Supported relational databases](../../../server/ongoing-tasks/etl/sql.mdx#supported-relational-databases). |
+| **ConnectionString** | `string` | The provider-specific connection string to the destination database, including any required authentication and encryption settings. |
+
+</Panel>
+
+<Panel heading="Creating the SQL ETL task from the Client API">
+
+Define and deploy the SQL ETL task that references the connection string
+(see [Add an SQL connection string](../../../server/ongoing-tasks/etl/sql.mdx#add-an-sql-connection-string)):
 
 ```csharp
 // Define the SQL ETL task configuration

@@ -1,0 +1,158 @@
+---
+title: "Tombstones: Overview"
+description: "Definition of RavenDB tombstones, markers for deleted documents, attachments, and revisions used to propagate deletions across cluster nodes."
+sidebar_label: "Overview"
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Tombstones: Overview
+<Admonition type="note" title="">
+
+* When a document is deleted, RavenDB replaces it with a "delete marker" called a **Tombstone**.
+
+* RavenDB removes tombstones that are no longer needed through a periodic **tombstone cleanup**.  
+  You can follow the progress of tombstone cleanup in Studio's [Tombstones view](../../monitoring/tombstones/tombstones-view.mdx).
+
+* These pages describe **document tombstones**, the markers left when documents are deleted.  
+  RavenDB also keeps [compare-exchange tombstones](../../compare-exchange/delete-cmpxchg-items.mdx) for deleted compare-exchange items; these are cleaned up separately and are not covered here.
+
+* In this article:
+   * [Why tombstones](../../monitoring/tombstones/overview.mdx#why-tombstones)
+   * [Where are tombstones used?](../../monitoring/tombstones/overview.mdx#where-are-tombstones-used)
+   * [Tombstone cleanup](../../monitoring/tombstones/overview.mdx#tombstone-cleanup)
+      * [Why cleanup](../../monitoring/tombstones/overview.mdx#why-cleanup)
+      * [When is a tombstone removed](../../monitoring/tombstones/overview.mdx#when-is-a-tombstone-removed)
+      * [What blocks cleanup](../../monitoring/tombstones/overview.mdx#what-blocks-cleanup)
+
+</Admonition>
+
+<Panel heading="Why tombstones">
+
+When a document is **created or updated**, any process that has to react to the change (an index updating its 
+entries, replication forwarding the change to another node, and others) has the document to work with.  
+
+When the document is **deleted**, however, processes still need to handle the change (an index to remove 
+the document's entry, an ETL task to send the deletion to the ETL destination, and so on), but have no object to process.
+
+This is what a tombstone is for: whenever a document is deleted, RavenDB replaces it with a tiny **tombstone** 
+record that contains the deleted document's ID along with any details a consuming process may need.  
+When, for example, the tombstone is extracted by an ETL task, the deletion will be applied
+at the ETL destination.
+
+</Panel>
+
+<Panel heading="Where are tombstones used?">
+
+* [Replication](../../server/clustering/replication/replication-overview.mdx)
+  uses each tombstone to convey the deletion to its replication targets: external replication
+  to the destination database, internal replication to the other nodes of the database group,
+  and pull replication between a hub and its sinks.
+* [ETL](../../server/ongoing-tasks/etl/basics.mdx) tasks apply each deletion at the ETL
+  destination.
+* [Indexes](../../indexes/what-are-indexes.mdx) remove the index entries that referred to the
+  deleted document.
+* [Incremental backup](../../backup/overview.mdx#incremental-backup) records each deletion.  
+  (A [full backup](../../backup/overview.mdx#full-backup) needs no tombstones: it captures the
+  complete current state of the database, so a deleted document is simply absent from the
+  backup.)
+* [Embeddings generation](../../ai-integration/generating-embeddings/overview.mdx)
+  deletes the embeddings it generated for the deleted document.
+
+</Panel>
+
+<Panel heading="Tombstone cleanup">
+
+<ContentFrame>
+
+### Why cleanup
+
+A tombstone is a minimal record, holding just enough to indicate that a document was deleted.  
+Even so, each tombstone takes up storage for as long as it is kept.  
+In a database where documents are seldom deleted, tombstones accumulate slowly and their
+cost is negligible.  
+In a database with frequent deletions, however, tombstones can build up and consume
+a substantial amount of storage.  
+
+<Admonition type="note" title="Example: tombstone buildup">
+
+In a database that constantly logs streamed data, documents that are used as log records 
+may often be summarized and deleted, leaving an ever-growing number of tombstones behind.  
+
+</Admonition>
+
+To keep the number of tombstones at bay, RavenDB periodically cleans up the tombstones that
+are no longer needed.
+
+<Admonition type="note" title="">
+
+* The interval between tombstone cleanups is configurable using the
+  [Tombstones.CleanupIntervalInMin](../../monitoring/tombstones/configuration.mdx) configuration key.  
+* By default, `Tombstones.CleanupIntervalInMin` is set to **5 minutes**.  
+
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### When is a tombstone removed
+
+A tombstone can be cleaned up only when **all** the processes that rely on it have handled the deletion.  
+Indexing, replication, ETL, and incremental backup all advance through a collection's tombstones 
+in [Etag](../../glossary/etag.mdx) order and process the deletion that each tombstone
+represents.  
+
+Cleanup removes a collection's tombstones **only up to the lowest Etag** that **all of these
+processes** have reached.
+
+<Admonition type="note" title="Example: how far cleanup proceeds">
+
+Suppose the `Orders` collection has document tombstones up to Etag `100`, and three processes
+consume them:
+
+| Process | Tombstones processed up to Etag |
+|---|---|
+| The `Orders/Totals` index | `100` |
+| External replication to `Orders-Replica` | `100` |
+| Incremental backup | `60` |
+
+When the periodic cleanup is executed, it will remove tombstones only up to the lowest Etag, `60`.  
+Tombstones with higher Etags will be removed when the backup task catches up.
+
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### What blocks cleanup
+
+- When **Indexing**, **external replication**, **ETL**, or an **incremental backup task** is disabled, 
+  errored, or paused, it stops processing tombstones.  
+  From this point on, tombstones can no longer be cleaned up and start accumulating.  
+
+- **Internal replication** can similarly block cleanup if a node in the database group is down.  
+  Cleanup will be held back across the whole database until this node returns and catches up.  
+
+Cleanup blockage can be tolerated when it is brief, but if this state continues, tombstone buildup may become costly.  
+
+<Admonition type="note" title="Example: incremental backup blocking cleanup">
+
+**Disabling** an incremental backup task rather than **deleting** it will result in a continuous 
+accumulation of tombstones that the task hasn't backed up yet.
+
+</Admonition>
+
+When the cleanup detects that a process is holding tombstones back, RavenDB raises a
+**Blockage in tombstone deletion** notification that lists the blocking processes and the
+collections they affect.  
+To inspect the current cleanup status, and see how far cleanup can proceed for 
+each collection and process, open the [Tombstones view](../../monitoring/tombstones/tombstones-view.mdx).
+
+</ContentFrame>
+
+</Panel>

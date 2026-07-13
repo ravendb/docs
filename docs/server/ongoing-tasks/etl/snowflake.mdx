@@ -12,7 +12,6 @@ import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
-# Ongoing Tasks: Snowflake ETL  
 <Admonition type="note" title="">
 
 * Snowflake is a widely used cloud-based [Data Warehouse](https://docs.snowflake.com/en/user-guide/warehouses) 
@@ -26,8 +25,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * Snowflake ETL is enabled with a RavenDB [Enterprise License](https://ravendb.net/buy).  
 
-* In this page:  
+* In this article:  
   * [Creating a Task](../../../server/ongoing-tasks/etl/snowflake.mdx#creating-a-task)  
+  * [Add a Snowflake connection string](../../../server/ongoing-tasks/etl/snowflake.mdx#add-a-snowflake-connection-string)  
   * [Snowflake warehouse setup](../../../server/ongoing-tasks/etl/snowflake.mdx#snowflake-warehouse-setup)  
   * [Snowflake Tables](../../../server/ongoing-tasks/etl/snowflake.mdx#snowflake-tables)  
      * [Performance improvement suggestions](../../../server/ongoing-tasks/etl/snowflake.mdx#performance-improvement-suggestions)  
@@ -43,15 +43,15 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * [Advanced Options](../../../server/ongoing-tasks/etl/snowflake.mdx#advanced-options)  
 
 </Admonition>
+
 ## Creating a Task
 
 A Snowflake ETL task can be created using **Code** or via **Studio**.
 
 * To create the task using **Code:**
    * Define a [Snowflake Connection String](https://github.com/snowflakedb/snowflake-connector-net/blob/master/doc/Connecting.md) 
-     and register it using the [PutConnectionStringOperation](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#putconnectionstringoperation) 
-     operation.  
-     Find an example [Here](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-snowflake-connection-string).
+     and register it using the `PutConnectionStringOperation` operation.  
+     Find an example in [Add a Snowflake connection string](../../../server/ongoing-tasks/etl/snowflake.mdx#add-a-snowflake-connection-string) below.
    * Define an **ETL Task**, associate it with your connection string, and run it using the 
      [AddEtlOperation](../../../client-api/operations/maintenance/etl/add-etl.mdx#add-etl-operation) operation.  
      Find an example [Here](../../../client-api/operations/maintenance/etl/add-etl.mdx#add-snowflake-etl-task).  
@@ -72,7 +72,84 @@ A Snowflake ETL task can be created using **Code** or via **Studio**.
         ![Define Snowflake Task](./assets/snowflake-etl-setup.png)
 
 
+## Add a Snowflake connection string
 
+* A Snowflake ETL task uses a **Snowflake connection string** to connect to its destination Snowflake warehouse.  
+  The connection string stores the provider-specific Snowflake connection string,
+  including the account, user, password, and any database, schema, warehouse, role, or other Snowflake options required by your environment.
+
+* The ETL task does not store these connection details directly.  
+  Instead, its configuration references the connection string by name through the `ConnectionStringName` property.
+
+* A Snowflake connection string can be created in any of these ways:
+  * **From the Client API**:
+    [per-database](../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api)
+    or [server-wide](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api).
+  * **From Studio**:
+    [per-database](../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    [server-wide](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    or while creating a [Snowflake ETL task](../../../studio/database/tasks/ongoing-tasks/snowflake-etl-task.mdx#define-a-snowflake-etl-task).
+
+* The example below adds a **per-database** Snowflake connection string from the **Client API**.  
+  The connection string is stored in the current database record and can be used by tasks in that database.
+
+<Tabs>
+<TabItem value="sync" label="Sync" default>
+```csharp
+// Define a Snowflake connection string
+// ====================================
+var snowflakeConStr = new SnowflakeConnectionString
+{
+    // The name used by the Snowflake ETL task configuration
+    Name = "snowflake-connection-string-name",
+
+    // The provider-specific connection string to the Snowflake destination
+    ConnectionString =
+        "ACCOUNT = " + SnowflakeAccount +
+        "; USER = " + SnowflakeUser +
+        "; PASSWORD = " + SnowflakePassword
+};
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<SnowflakeConnectionString>(snowflakeConStr);
+
+PutConnectionStringResult connectionStringResult =
+    store.Maintenance.Send(putConnectionStringOp);
+```
+</TabItem>
+<TabItem value="async" label="Async">
+```csharp
+// Define a Snowflake connection string
+// ====================================
+var snowflakeConStr = new SnowflakeConnectionString
+{
+    // The name used by the Snowflake ETL task configuration
+    Name = "snowflake-connection-string-name",
+
+    // The provider-specific connection string to the Snowflake destination
+    ConnectionString =
+        "ACCOUNT = " + SnowflakeAccount +
+        "; USER = " + SnowflakeUser +
+        "; PASSWORD = " + SnowflakePassword
+};
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<SnowflakeConnectionString>(snowflakeConStr);
+
+PutConnectionStringResult connectionStringResult =
+    await store.Maintenance.SendAsync(putConnectionStringOp);
+```
+</TabItem>
+</Tabs>
+
+| Parameter | Type | Description |
+|---|---|---|
+| **Name** | `string` | The connection string name. Use this value in the ETL task's `ConnectionStringName` property. |
+| **ConnectionString** | `string` | The [Snowflake connection string](https://github.com/snowflakedb/snowflake-connector-net/blob/master/doc/Connecting.md) to the destination warehouse, including any required authentication and Snowflake connection options. |
 
 ## Snowflake warehouse setup
 
@@ -329,6 +406,4 @@ Default: `null` (use provider default)
     ![Advanced options](./assets/snowflake-etl-advanced_01.png)
 
     ![Command timeout](./assets/snowflake-etl-advanced_02.png)
-
-
 

@@ -146,7 +146,13 @@ var guidId = session.Advanced.GetDocumentId(orderEmptyId); // "bc151542-8fa7-45a
 This time the check for the document ID is called after `SaveChanges` because only then we go to the server while 
 the entity's identifier is generated there.
 
+<Admonition type="note" title="">
 
+In addition to the automatic ID generation handled by the session, you can also manually request the next HiLo value yourself
+(either the next number only, or the full document ID) without having to store a document first.  
+See [Manual HiLo ID generation](../../../client-api/document-identifiers/hilo-algorithm.mdx#manual-hilo-id-generation) for details.
+
+</Admonition>
 
 ## Custom / Semantic IDs
 

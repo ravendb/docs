@@ -1,9 +1,288 @@
 ---
 title: "Writing unit tests with RavenDB Java Test Driver"
-tags: [java, testing]
-description: "Read about Writing unit tests with RavenDB Java Test Driver on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/writing-unit-tests-with-ravendb-java-test-driver"
-published_at: 2024-09-05
+tags: [java, testing, getting-started]
 icon: "java"
+description: "Learn how to set up the ravendb-test-driver Maven package for Java integration tests, run RavenDB in-memory per test, and use preInitialize, setupDatabase, and waitForIndexing to control test behavior."
+published_at: 2024-09-05
+see_also:
+  - title: "RavenDB Test Driver"
+    link: "start/test-driver"
+    source: "docs"
+    path: "Start > Installation"
+  - title: "Stale Indexes"
+    link: "indexes/stale-indexes"
+    source: "docs"
+    path: "Indexes"
+author: "Gracjan Sadowicz"
 proficiency_level: "Beginner"
 ---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+
+## What you'll learn
+
+- How to avoid shortfalls of mocking the database  
+- How to integrate *ravendb-test-driver* into your Java project with no effort  
+- How to create integration tests that use a real, in-memory database, far more similar to production environment
+
+## Introduction
+
+Mocking a database is a commonly used strategy for testing of database-driven applications. While mocks offer convenience and low effort, many bugs and erroneous program states might happen due to interactions with a database in a real production system. This discrepancy can lead to unexpected issues when transitioning from testing to deployment, ultimately undermining the effectiveness of the testing process.
+
+It's crucial to recognize that the effectiveness of your testing process heavily depends on how closely it mirrors real-life production conditions. Testing in an environment that is similar to production helps to detect potential issues early on, ensuring a smoother transition to deployment and a more reliable application in the hands of users.
+
+Being aware of it, we've decided to provide a simple solution that developers can take advantage of to use the real database instead of mocks with no effort, while working with it in the various types of tests, especially in the integration tests. We've created test drivers, that let users instantiate the database component in no time.
+
+We will be running RavenDB in-memory, ensuring that each test receives its own separated and isolated database instance. These instances will be automatically disposed, which solves the problem with a state of a database. Provisioning in-memory databases is fast and easy, making the testing seamlessly integrable into CI/CD pipelines. This approach not only simplifies the testing process but also ensures that developers can work with a database environment that closely mimics production conditions, leading to more reliable and accurate test results.
+
+In this article we'll take a closer look upon Maven [ravendb-test-driver](https://mvnrepository.com/artifact/net.ravendb/ravendb-test-driver) package.
+
+We'll go quickly through the simple setup, to focus on the usage. Let's dive into it.
+
+## Step-by-Step guide
+
+### What we'll use
+
+- **Java Tests Framework**: We'll utilize the junit package for writing our test cases.  It's not mandatory, use your own favorite framework.  
+- **RavenDB**: We'll integrate the `ravendb-test-driver` package to interact with RavenDB.
+
+### 1. Installing RavenDB Test Driver
+
+Begin by including the *ravendb-test-driver* package in your project:
+
+```bash
+mvn dependency:get -Dartifact=com.ravendb:ravendb-test-driver
+```
+
+It will install the test driver and the [embedded server](https://www.nuget.org/packages/RavenDB.Embedded).
+
+### 2. Integrating Test Driver into your tests 
+
+Your test class like BasicTest should be extending `RavenTestDriver` from `net.ravendb.test.driver`.
+
+#### Step 2 - Creating a test case equipped with RavenTestDriver 
+
+```java
+package net.ravendb.test.driver;
+import org.junit.jupiter.api.Test;
+
+public class BasicTest extends RavenTestDriver {
+
+    @Test
+    public void test() {
+
+
+```
+
+You can override RavenTestDriver methods to customize its behavior.   
+- The *preInitialize()* method is called right **before** the DocumentStore is initialized. Pre-configure your `DocumentStore` here, e.g. change the store `DocumentConventions`  
+- The *setupDatabase()* method is called right **after** the `DocumentStore` is initialized. Here you can already work with a running server - store new documents, setup and configure features like revisions or expiration, prepare ongoing tasks like ETLs or subscriptions, execute various operations, etc.  
+
+#### Overriding RavenTestDriver PreInitialize() and SetupDatabase() methods
+
+```java
+class BasicTest extends RavenTestDriver {
+    @Override
+    protected void preInitialize(IDocumentStore documentStore) {
+        documentStore.getConventions().setFindCollectionName(clazz -> "Test" + DocumentConventions.defaultGetCollectionName(clazz));
+    }
+    
+    @Override
+    protected void setupDatabase(IDocumentStore documentStore) {
+        RevisionsConfiguration revisionsConfiguration = new RevisionsConfiguration();
+        RevisionsCollectionConfiguration defaultCollection = new RevisionsCollectionConfiguration();
+        defaultCollection.setPurgeOnDelete(true);
+        defaultCollection.setMinimumRevisionsToKeep(123);
+
+        revisionsConfiguration.setDefaultConfig(defaultCollection);
+        ConfigureRevisionsOperation operation = new ConfigureRevisionsOperation(revisionsConfiguration);
+
+        documentStore.maintenance().send(operation);
+    }
+
+    @Test
+    public void test() {
+
+
+```
+
+### 3. Using Test Driver to get database instance 
+
+Now, you can write new tests or replace mocks in existing tests with real database instances.  Your [document store](/7.2/client-api/what-is-a-document-store) *DocumentStore* is available by calling the getDocumentStore() method. It's the one from *ravendb* Maven package, our Java database client with powerful API. Interact with the docs and other entities in your database instance, like in the Java client.
+
+#### Step 3: Writing your test
+
+```java
+package net.ravendb.test.driver;
+
+import net.ravendb.client.documents.IDocumentStore;
+import net.ravendb.client.documents.session.IDocumentSession;
+import org.junit.jupiter.api.Test;
+
+public class TestBrewery extends RavenTestDriver {
+
+    @Test
+    public void testBasicContractor() {
+        try (IDocumentStore store = getDocumentStore()) {
+            try (IDocumentSession session = store.openSession()) {
+                Contractor contractor = new Contractor();
+                contractor.setName("Andy Paulaner");
+
+                session.store(contractor, "contractors/1");
+                session.saveChanges();
+            }
+        }
+    }
+
+```
+
+### 4. Debugging the database
+
+In some cases, you might want to check what's under the hood, working with the database. We've provided a *waitForUserToContinueTheTest(store)* method, that freezes the test and opens-up the Raven Studio UI in the background, which lets you investigate the issues and influence the databases/server state in the meantime. It works only when the debugger is attached, so you don't have to add and remove the method call every time you want to run the code after debugging. 
+
+#### Step 4: Using 'wait for user to continue the test'
+
+```java
+package net.ravendb.test.driver;
+
+import net.ravendb.client.documents.IDocumentStore;
+import net.ravendb.client.documents.session.IDocumentSession;
+import org.junit.jupiter.api.Test;
+
+public class TestBrewery extends RavenTestDriver {
+
+    @Test
+    public void testBasicContractor() {
+        try (IDocumentStore store = getDocumentStore()) {
+            try (IDocumentSession session = store.openSession()) {
+                Contractor contractor = new Contractor();
+                contractor.setName("Andy Paulaner");
+
+                session.store(contractor, "contractors/1");
+                session.saveChanges();
+            }
+            
+            waitForUserToContinueTheTest(store);
+            
+            try (IDocumentSession session = store.openSession()) {
+                // Do something else if needed
+            }
+            
+            // Assert
+        }
+    }
+}
+
+
+```
+
+The studio pops out in the browser:
+
+<Image img={require("./assets/java-test-driver1.webp")} alt="RavenDB Studio opened during test debugging with the Continue test button visible in the bottom bar" />
+
+After you're done reviewing your data in a database, click *Continue test* button located on the bottom UI bar, to continue the execution of a test.
+
+### 5. Address indexing delays if needed
+
+RavenDB works on indexing in the background. You can find more about it in the RavenDB docs on [indexing process](/7.2/studio/database/indexes/indexes-overview#indexing-process) and [stale indexes](/7.2/indexes/stale-indexes).  
+Usually, the delay from indexing is so small that it can be ignored. But it's crucial during the tests.
+
+In real life, programmers should know about this delay and how it can affect results. But here, unlike in real life, we use *waitForIndexing()* to ensure our tests won't fail to interact with index which did not process the documents yet. We need to wait for indexes to finish to avoid test failures. Even single or couple of documents can cause a false-negative test result.
+
+In the example below, we're going a little bit further. We define the test driver that creates *BreweryCustomersByShippingAddressLocation* [spatial index](/7.2/indexes/indexing-spatial-data) (which can be [queried](/7.2/indexes/querying/spatial) later on) before every test using *setupDatabase()* override. In the test we'll insert the data, and then we'll instruct the driver to wait for index to finish the processing.
+
+#### Step 5. Instructing driver to wait for index to process the new data
+
+```java
+
+import net.ravendb.client.documents.indexes.*;
+
+
+class BreweryCustomers_ByShippingAddressLocation extends AbstractIndexCreationTask {
+    public BreweryCustomers_ByShippingAddressLocation() {
+        map = "docs.Customers.Select(doc => new{\n" + 
+              "    name = doc.name, \n" +
+              "    shippingLocation = this.CreateSpatialField(doc.shippedTo.lat, doc.shippedTo.lng)\n" +
+              "})";
+    }
+}
+
+class AdvancedBreweryTest extends RavenTestDriver {
+    @Override
+    protected void setupDatabase(IDocumentStore documentStore) {
+        new BreweryCustomers_ByShippingAddressLocation().execute(documentStore);
+    }
+    
+    @Test
+    public void testProvideCustomerDistributionStatistics() {
+        try (IDocumentStore store = getDocumentStore()) {
+            try (IDocumentSession session = store.openSession()) {
+                Customer customer1 = new Customer();
+                customer1.setName("Paul Becks");
+                customer1.setShippedTo(new Location(51.509865, -0.118092));
+
+                Customer customer2 = new Customer();
+                customer2.setName("Arjen Heineken");
+                customer2.setShippedTo(new Location(52.377956, 4.897070));
+
+                Customer customer3 = new Customer();
+                customer3.setName("Tom Grodziski");
+                customer3.setShippedTo(new Location(52.105124, 20.591883));
+
+                session.store(customer1, "customers/1");
+                session.store(customer2, "customers/2");
+                session.store(customer3, "customers/3");
+                session.saveChanges();
+            }
+            
+            // let's wait for indexes to process the docs before asserting 
+            waitForIndexing(store);
+        }
+        
+        // your code and assert
+    }
+}
+
+
+```
+
+The *waitForIndexing(store)* method ensures that the database indexes are up-to-date before proceeding with the test. Stale indexes, which occur when queries are executed before indexing is complete, can lead to incorrect or outdated results in tests.
+
+### Registering a license
+
+The *ravendb-test-driver* package offers the option to register a license by providing an environmental variable called *RAVEN_LICENSE*. While not mandatory, registering a license can unlock additional features and performance enhancements, particularly for advanced operations. 
+
+Enabling a license may increase the number of cores available, resulting in significant performance boosts for tests that heavily utilize the database. Consider registering a license for optimal performance in your testing environment.
+
+**To request a developer license, which is suitable for CI/CD purposes, visit the [RavenDB license request page](https://ravendb.net/license/request/dev)**.
+
+## FAQ
+
+##### Q: I'm getting this error after trying to run the test:
+
+```
+Unable to start the RavenDB Server
+Error:
+It was not possible to find any compatible framework version
+The framework 'Microsoft.AspNetCore.App', version '5.0.13' (arm64) was not found.
+  - The following frameworks were found:
+      6.0.1 at [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
+
+```
+
+##### It says that dotnet framework installed on my machine isn't compatible. Why the package doesn't include dotnet included to actually run the server?
+
+**A:** In order to maintain a lightweight package, we cannot include multiple framework versions with the server files. RavenDB typically aligns with the newest dotnet version on each release. It's the responsibility of the user to ensure they have a compatible dotnet version installed. If you encounter errors like the one above, you can obtain the necessary dotnet version from the [official dotnet website](https://dotnet.microsoft.com/en-us/download/dotnet).
+
+## Summary
+
+Integrating RavenDB into your Java integration tests using the ravendb-test-driver package offers a convenient way to move beyond mocking and interact with a real database instance. By following the steps outlined in this guide, you can seamlessly incorporate RavenDB into your testing workflow, leading to more robust and reliable tests.
+
+The ability to work with real database instances provides a more accurate representation of your application's behavior in a production environment, ultimately improving the quality of your software. Embrace the power of real database testing with ravendb-test-driver and elevate your testing practices to new heights.

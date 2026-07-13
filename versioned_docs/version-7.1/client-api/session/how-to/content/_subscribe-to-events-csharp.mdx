@@ -1,379 +1,253 @@
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* **Events** allow users to perform custom actions in response to operations made in 
-  a `Document Store` or a `Session`.  
+* **Events** let you run custom logic in response to operations made on a `DocumentStore`
+  or a `Session`.  
+  An event is invoked when the selected action runs on an entity, or when a query is made.
 
-* An event is invoked when the selected action is executed on an entity, or querying is performed.  
+* Subscribing to an event in a `Session` is valid for that session only.  
+  E.g., to invoke an event after `SaveChanges()` is called by this session only, use:  
+  `session.Advanced.OnAfterSaveChanges += OnAfterSaveChangesEvent;`
 
-* Subscribing to an event within a `Session` is valid only for this session.  
-  
-     E.g., to invoke an event after SaveChanges() is called by **this session** only, use -  
-     `session.Advanced.OnAfterSaveChanges += OnAfterSaveChangesEvent;`
+* Subscribing to an event at the `DocumentStore` level subscribes to that event in all
+  subsequent sessions.  
+  Read more about store events [here](../../../../client-api/how-to/subscribe-to-store-events.mdx).
 
-* Subscribing to an event at the `DocumentStore` level subscribes to this 
-  event in all subsequent sessions.  
-  
-      E.g., to invoke an event after SaveChanges() is called by **any subsequent session**, use -  
-      `store.OnAfterSaveChanges += OnAfterSaveChangesEvent;`
-
-      Read more about `DocumentStore` events [here](../../../../client-api/how-to/subscribe-to-store-events.mdx).  
-
-* In this Page:  
-   * [OnBeforeStore](../../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforestore)  
-   * [OnBeforeDelete](../../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforedelete)  
-   * [OnAfterSaveChanges](../../../../client-api/session/how-to/subscribe-to-events.mdx#onaftersavechanges)  
-   * [OnBeforeQuery](../../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforequery)  
-   * [OnBeforeConversionToDocument](../../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforeconversiontodocument)  
-   * [OnAfterConversionToDocument](../../../../client-api/session/how-to/subscribe-to-events.mdx#onafterconversiontodocument)  
-   * [OnBeforeConversionToEntity](../../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforeconversiontoentity)  
-   * [OnAfterConversionToEntity](../../../../client-api/session/how-to/subscribe-to-events.mdx#onafterconversiontoentity)  
-   * [OnSessionDisposing](../../../../client-api/session/how-to/subscribe-to-events.mdx#onsessiondisposing)  
+* In this article:
+   * [Session events](../../../../client-api/session/how-to/subscribe-to-events.mdx#session-events)
+      * [OnBeforeStore](../../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforestore)
+      * [OnBeforeDelete](../../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforedelete)
+      * [OnAfterSaveChanges](../../../../client-api/session/how-to/subscribe-to-events.mdx#onaftersavechanges)
+      * [OnBeforeQuery](../../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforequery)
+      * [OnBeforeConversionToDocument](../../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforeconversiontodocument)
+      * [OnAfterConversionToDocument](../../../../client-api/session/how-to/subscribe-to-events.mdx#onafterconversiontodocument)
+      * [OnBeforeConversionToEntity](../../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforeconversiontoentity)
+      * [OnAfterConversionToEntity](../../../../client-api/session/how-to/subscribe-to-events.mdx#onafterconversiontoentity)
+      * [OnSessionDisposing](../../../../client-api/session/how-to/subscribe-to-events.mdx#onsessiondisposing)
+   * [Unsubscribing from an event](../../../../client-api/session/how-to/subscribe-to-events.mdx#unsubscribing-from-an-event)
+   * [Syntax](../../../../client-api/session/how-to/subscribe-to-events.mdx#syntax)
 
 </Admonition>
 
-## OnBeforeStore
+<Panel heading="Session events">
 
-This event is invoked as a part of `SaveChanges` but before it is actually sent to the server.  
-It should be defined with this signature:  
+<ContentFrame>
 
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`private void OnBeforeStoreEvent(object sender, BeforeStoreEventArgs args);
-`}
-</CodeBlock>
-</TabItem>
+### `OnBeforeStore`
 
-| Parameters | Type | Description |
-| - | - | - |
-| **sender** | `IDocumentSession` | The session on which `SaveChanges()` has been called, triggering this event |
-| **args** | `BeforeStoreEventArgs` | `args` contains the session on which `SaveChanges()` has been called, the ID of the document being Stored, the document's metadata, and the document itself. |
+This event is invoked as a part of `SaveChanges`, but before it is actually sent to the server.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-The class `BeforeStoreEventArgs`:  
+```csharp
+private void OnBeforeStoreEvent(object sender, BeforeStoreEventArgs args);
+```
+<br />
 
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`public class BeforeStoreEventArgs
-\{
-    public InMemoryDocumentSessionOperations Session;
-    public string DocumentId;
-    public object Entity;
-    public IMetadataDictionary DocumentMetadata;
-\}
-`}
-</CodeBlock>
-</TabItem>
+#### Example: discontinue out-of-stock products
 
-### Example
-
-Say we want to discontinue all of the products that are not in stock.  
-
-<TabItem value="on_before_store_event" label="on_before_store_event">
-<CodeBlock language="csharp">
-{`private void OnBeforeStoreEvent(object sender, BeforeStoreEventArgs args)
-\{
+```csharp
+private void OnBeforeStoreEvent(object sender, BeforeStoreEventArgs args)
+{
     var product = args.Entity as Product;
     if (product?.UnitsInStock == 0)
-    \{
+    {
         product.Discontinued = true;
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+    }
+}
+```
+<br />
 
-After we subscribe to the event, every stored entity will invoke the method.  
+After you subscribe to the event, every stored entity invokes the method:
 
-<TabItem value="store_session" label="store_session">
-<CodeBlock language="csharp">
-{`// Subscribe to the event
+```csharp
+// Subscribe to the event
 session.Advanced.OnBeforeStore += OnBeforeStoreEvent;
 
 session.Store(new Product
-\{
+{
     Name = "RavenDB v3.5",
     UnitsInStock = 0
-\});
+});
 session.Store(new Product
-\{
+{
     Name = "RavenDB v4.0",
     UnitsInStock = 1000
-\});
+});
 
 session.SaveChanges(); // Here the method is invoked
-`}
-</CodeBlock>
-</TabItem>
+```
 
+</ContentFrame>
 
+<ContentFrame>
 
-## OnBeforeDelete
+### `OnBeforeDelete`
 
-This event is invoked by `Delete(id)` or `Delete(entity)`. It is only executed when `SaveChanges()` 
+This event is invoked by `Delete(id)` or `Delete(entity)`. It is executed only when `SaveChanges()`
 is called, but before the commands are actually sent to the server.  
-It should be defined with this signature:  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`private void OnBeforeDeleteEvent(object sender, BeforeDeleteEventArgs args);
-`}
-</CodeBlock>
-</TabItem>
+```csharp
+private void OnBeforeDeleteEvent(object sender, BeforeDeleteEventArgs args);
+```
+<br />
 
-| Parameters | Type | Description |
-| - | - | - |
-| **sender** | `IDocumentSession` | The session on which `SaveChanges()` has been called, triggering this event |
-| **args** | `BeforeDeleteEventArgs` | `args` contains the session on which `SaveChanges()` has been called, the ID of the document being deleted, the document's metadata, and the document itself. |
+#### Example: prevent deletions
 
-The class `BeforeDeleteEventArgs`:  
-
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`public class BeforeDeleteEventArgs
-\{
-    public InMemoryDocumentSessionOperations Session;
-    public string DocumentId;
-    public object Entity;
-    public IMetadataDictionary DocumentMetadata;
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-### Example
-
-To prevent anyone from deleting entities we can create a method as follows:
-
-<TabItem value="on_before_delete_event" label="on_before_delete_event">
-<CodeBlock language="csharp">
-{`private void OnBeforeDeleteEvent(object sender, BeforeDeleteEventArgs args)
-\{
+```csharp
+private void OnBeforeDeleteEvent(object sender, BeforeDeleteEventArgs args)
+{
     throw new NotSupportedException();
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
+<br />
 
-and subscribe it to the session:
+Subscribe to the event:
 
-<TabItem value="delete_session" label="delete_session">
-<CodeBlock language="csharp">
-{`// Subscribe to the event
+```csharp
+// Subscribe to the event
 session.Advanced.OnBeforeDelete += OnBeforeDeleteEvent;
 
 var product = session.Load<Product>("products/1-A");
-var product2 = session.Load<Product>("products/2-A");
 
 // OnBeforeDelete is triggered whether you
 // call Delete() on an entity or on its ID
 session.Delete(product);
 session.SaveChanges(); // NotSupportedException will be thrown
+```
 
-session.Delete("products/2-A");
-session.SaveChanges(); // NotSupportedException will be thrown
-`}
-</CodeBlock>
-</TabItem>
+</ContentFrame>
 
+<ContentFrame>
 
+### `OnAfterSaveChanges`
 
-## OnAfterSaveChanges
+This event is invoked after `SaveChanges` returns.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-This event is invoked after the `SaveChanges` is returned.  
-It should be defined with this signature:  
+```csharp
+private void OnAfterSaveChangesEvent(object sender, AfterSaveChangesEventArgs args);
+```
+<br />
 
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`private void OnAfterSaveChangesEvent(object sender, AfterSaveChangesEventArgs args);
-`}
-</CodeBlock>
-</TabItem>
+#### Example: log each saved document
 
-| Parameters | Type | Description |
-| - | - | - |
-| **sender** | `IDocumentSession` | The session on which `SaveChanges()` has been called, triggering this event |
-| **args** | `AfterSaveChangesEventArgs` | `args` contains the session on which `SaveChanges()` has been called, the ID of the document being deleted, and the document itself. |
-
-The class `AfterSaveChangesEventArgs`:
-
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`public class AfterSaveChangesEventArgs
-\{
-    public InMemoryDocumentSessionOperations Session;
-    public string DocumentId;
-    public object Entity;
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-### Example
-
-If we want to log each entity that was saved, we can create a method as follows:  
-
-<TabItem value="on_after_save_changes_event" label="on_after_save_changes_event">
-<CodeBlock language="csharp">
-{`private void OnAfterSaveChangesEvent(object sender, AfterSaveChangesEventArgs args)
-\{
+```csharp
+private void OnAfterSaveChangesEvent(object sender, AfterSaveChangesEventArgs args)
+{
     if (Log.IsInfoEnabled)
-        Log.Info($"Document '\{args.DocumentId\}' was saved.");
-\}
-`}
-</CodeBlock>
-</TabItem>
+        Log.Info($"Document '{args.DocumentId}' was saved.");
+}
+```
+<br />
 
+Subscribe to the event:
 
+```csharp
+session.Advanced.OnAfterSaveChanges += OnAfterSaveChangesEvent;
+```
 
-## OnBeforeQuery
+</ContentFrame>
 
-This event is invoked just before the query is sent to the server. 
-It should be defined with this signature:  
+<ContentFrame>
 
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`private void OnBeforeQueryEvent(object sender, BeforeQueryEventArgs args);
-`}
-</CodeBlock>
-</TabItem>
+### `OnBeforeQuery`
 
-| Parameters | Type | Description |
-| - | - | - |
-| **sender** | `IDocumentSession` | The session on which `SaveChanges()` has been called, triggering this event |
-| **args** | `BeforeQueryEventArgs` | `args` contains the session on which `SaveChanges()` has been called, and the query's [query customizations](../../../../client-api/session/querying/how-to-customize-query.mdx). |
+This event is invoked just before the query is sent to the server.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-The class `BeforeQueryEventArgs`:  
+```csharp
+private void OnBeforeQueryEvent(object sender, BeforeQueryEventArgs args);
+```
+<br />
 
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`public class BeforeQueryEventArgs
-\{
-    public InMemoryDocumentSessionOperations Session;
-    public IDocumentQueryCustomization queryCustomization;
-\}
-`}
-</CodeBlock>
-</TabItem>
+#### Example: disable query caching
 
-### Example I
-
-If you want to disable caching of all query results, you can implement the method as follows:  
-
-<TabItem value="on_before_query_execute_event" label="on_before_query_execute_event">
-<CodeBlock language="csharp">
-{`private void OnBeforeQueryEvent(object sender, BeforeQueryEventArgs args)
-\{
+```csharp
+private void OnBeforeQueryEvent(object sender, BeforeQueryEventArgs args)
+{
     args.QueryCustomization.NoCaching();
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
+<br />
 
-### Example II
+#### Example: wait for non-stale results
 
-If you want each query to [wait for non-stale results](../../../../indexes/stale-indexes.mdx) you can create an event as follows:  
+To have each query [wait for non-stale results](../../../../indexes/stale-indexes.mdx),
+define the event as follows:
 
-<TabItem value="on_before_query_execute_event_2" label="on_before_query_execute_event_2">
-<CodeBlock language="csharp">
-{`private void OnBeforeQueryEvent(object sender, BeforeQueryEventArgs args)
-\{
+```csharp
+private void OnBeforeQueryEvent(object sender, BeforeQueryEventArgs args)
+{
     args.QueryCustomization.WaitForNonStaleResults(TimeSpan.FromSeconds(30));
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
+<br />
 
+Subscribe to the event:
 
+```csharp
+session.Advanced.OnBeforeQuery += OnBeforeQueryEvent;
+```
 
-## OnBeforeConversionToDocument
+</ContentFrame>
 
-This event is invoked before conversion of an entity to blittable JSON document. E.g. it's called when sending a document to a server.  
-It should be defined with this signature:  
+<ContentFrame>
 
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`private void OnBeforeConversionToDocumentEvent(object sender, BeforeConversionToDocumentEventArgs args);
-`}
-</CodeBlock>
-</TabItem>
+### `OnBeforeConversionToDocument`
 
-| Parameters | Type | Description |
-| - | - | - |
-| **sender** | `IDocumentSession` | The session on which `SaveChanges()` has been called, triggering this event |
-| **args** | `BeforeConversionToDocumentEventArgs` | `args` contains the session on which `SaveChanges()` has been called, the ID of the document being ConversionToDocumentd, and the document itself. |
+This event is invoked before an entity is converted to a JSON document, e.g. when a document
+is sent to the server.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-The class `BeforeConversionToDocumentEventArgs`:  
+```csharp
+private void OnBeforeConversionToDocumentEvent(object sender, BeforeConversionToDocumentEventArgs args);
+```
+<br />
 
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`public class BeforeConversionToDocumentEventArgs
-\{
-    public InMemoryDocumentSessionOperations Session;
-    public string DocumentId;
-    public object Entity;
-\}
-`}
-</CodeBlock>
-</TabItem>
+#### Example: modify an entity before conversion
 
-### Example
-
-<TabItem value="on_before_conversion_to_document" label="on_before_conversion_to_document">
-<CodeBlock language="csharp">
-{`private void OnBeforeConversionToDocument(object sender, BeforeConversionToDocumentEventArgs args)
-\{
+```csharp
+private void OnBeforeConversionToDocument(object sender, BeforeConversionToDocumentEventArgs args)
+{
     if (args.Entity is Item item)
         item.Before = true;
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
+<br />
 
+Subscribe to the event:
 
+```csharp
+session.Advanced.OnBeforeConversionToDocument += OnBeforeConversionToDocument;
+```
 
-## OnAfterConversionToDocument
+</ContentFrame>
 
-This event is invoked after conversion of an entity to blittable JSON document.  
-It should be defined with this signature:  
+<ContentFrame>
 
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`private void OnAfterConversionToDocumentEvent(object sender, AfterConversionToDocumentEventArgs args);
-`}
-</CodeBlock>
-</TabItem>
+### `OnAfterConversionToDocument`
 
-| Parameters | Type | Description |
-| - | - | - |
-| **sender** | `IDocumentSession` | The session on which `SaveChanges()` has been called, triggering this event |
-| **args** | `AfterConversionToDocumentEventArgs` | `args` contains the session on which `SaveChanges()` has been called, the ID of the document being ConversionToDocumentd, and the document itself. |
+This event is invoked after an entity is converted to a JSON document.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-The class `AfterConversionToDocumentEventArgs`:  
+```csharp
+private void OnAfterConversionToDocumentEvent(object sender, AfterConversionToDocumentEventArgs args);
+```
+<br />
 
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`public class AfterConversionToDocumentEventArgs
-\{
-    public InMemoryDocumentSessionOperations Session;
-    public string DocumentId;
-    public object Entity;
-\}
-`}
-</CodeBlock>
-</TabItem>
+#### Example: modify a document after conversion
 
-### Example
-
-<TabItem value="on_after_conversion_to_document" label="on_after_conversion_to_document">
-<CodeBlock language="csharp">
-{`private void OnAfterConversionToDocument(object sender, AfterConversionToDocumentEventArgs args)
-\{
+```csharp
+private void OnAfterConversionToDocument(object sender, AfterConversionToDocumentEventArgs args)
+{
     if (args.Entity is Item item)
-    \{
+    {
         if (args.Document.Modifications == null)
             args.Document.Modifications = new DynamicJsonValue();
 
@@ -381,85 +255,331 @@ The class `AfterConversionToDocumentEventArgs`:
         args.Document = args.Session.Context.ReadObject(args.Document, args.Id);
 
         item.After = true;
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+    }
+}
+```
+<br />
 
+Subscribe to the event:
 
+```csharp
+session.Advanced.OnAfterConversionToDocument += OnAfterConversionToDocument;
+```
 
-## OnBeforeConversionToEntity
+</ContentFrame>
 
-This event is invoked before conversion of a JSON document to an entity. E.g. it's called when loading a document.  
+<ContentFrame>
 
-It takes the argument `BeforeConversionToEntityEventArgs`, that consists of a JSON document, its ID and type, and the session instance.  
+### `OnBeforeConversionToEntity`
 
-<TabItem value="on_before_conversion_to_entity" label="on_before_conversion_to_entity">
-<CodeBlock language="csharp">
-{`private void OnBeforeConversionToEntity(object sender, BeforeConversionToEntityEventArgs args)
-\{
+This event is invoked before a JSON document is converted to an entity, e.g. when a document
+is loaded.  
+See its [arguments](#event-arguments) in the Syntax section below.
+
+```csharp
+private void OnBeforeConversionToEntity(object sender, BeforeConversionToEntityEventArgs args);
+```
+<br />
+
+#### Example: modify a document before conversion
+
+```csharp
+private void OnBeforeConversionToEntity(object sender, BeforeConversionToEntityEventArgs args)
+{
     var document = args.Document;
     if (document.Modifications == null)
         document.Modifications = new DynamicJsonValue();
 
     document.Modifications["Before"] = true;
     args.Document = args.Session.Context.ReadObject(document, args.Id);
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
+<br />
 
+Subscribe to the event:
 
+```csharp
+session.Advanced.OnBeforeConversionToEntity += OnBeforeConversionToEntity;
+```
 
+</ContentFrame>
 
-## OnAfterConversionToEntity
+<ContentFrame>
 
-This event is invoked after conversion of a JSON document to an entity. It takes the argument `AfterConversionToEntityEventArgs`, that consists of a JSON document, its ID, the session instance and a converted entity.  
+### `OnAfterConversionToEntity`
 
-<TabItem value="on_after_conversion_to_entity" label="on_after_conversion_to_entity">
-<CodeBlock language="csharp">
-{`private void OnAfterConversionToEntity(object sender, AfterConversionToEntityEventArgs args)
-\{
+This event is invoked after a JSON document is converted to an entity.  
+See its [arguments](#event-arguments) in the Syntax section below.
+
+```csharp
+private void OnAfterConversionToEntity(object sender, AfterConversionToEntityEventArgs args);
+```
+<br />
+
+#### Example: modify an entity after conversion
+
+```csharp
+private void OnAfterConversionToEntity(object sender, AfterConversionToEntityEventArgs args)
+{
     if (args.Entity is Item item)
         item.After = true;
-\}
-`}
-</CodeBlock>
+}
+```
+<br />
+
+Subscribe to the event:
+
+```csharp
+session.Advanced.OnAfterConversionToEntity += OnAfterConversionToEntity;
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### `OnSessionDisposing`
+
+This event is invoked by the disposal of a session, before the session is disposed of.  
+Tracking session disposal lets you, among other uses, verify that sessions you no longer
+need are disposed of.  
+See its [arguments](#event-arguments) in the Syntax section below.
+
+```csharp
+private void OnSessionDisposingEvent(object sender, SessionDisposingEventArgs args);
+```
+<br />
+
+Subscribe to the event:
+
+```csharp
+session.Advanced.OnSessionDisposing += OnSessionDisposingEvent;
+```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Unsubscribing from an event">
+
+To stop responding to an event, detach the handler with the `-=` operator, passing the same
+method you subscribed with:
+
+```csharp
+session.Advanced.OnBeforeStore -= OnBeforeStoreEvent;
+```
+<br />
+
+Session events can be unsubscribed at any time.
+
+</Panel>
+
+<Panel heading="Syntax">
+
+<ContentFrame>
+
+### Events
+
+```csharp
+public event EventHandler<BeforeStoreEventArgs> OnBeforeStore
+public event EventHandler<BeforeDeleteEventArgs> OnBeforeDelete
+public event EventHandler<AfterSaveChangesEventArgs> OnAfterSaveChanges
+public event EventHandler<BeforeQueryEventArgs> OnBeforeQuery
+public event EventHandler<BeforeConversionToDocumentEventArgs> OnBeforeConversionToDocument
+public event EventHandler<AfterConversionToDocumentEventArgs> OnAfterConversionToDocument
+public event EventHandler<BeforeConversionToEntityEventArgs> OnBeforeConversionToEntity
+public event EventHandler<AfterConversionToEntityEventArgs> OnAfterConversionToEntity
+public event EventHandler<SessionDisposingEventArgs> OnSessionDisposing
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Event arguments
+
+<Tabs groupId="event-args-1">
+<TabItem value="BeforeStoreEventArgs" label="BeforeStoreEventArgs" default>
+
+```csharp
+class BeforeStoreEventArgs
+{
+    InMemoryDocumentSessionOperations Session
+    string DocumentId
+    object Entity
+    IMetadataDictionary DocumentMetadata
+}
+```
+
+| Property | Type | Description |
+| --- | --- | --- |
+| **Session** | `InMemoryDocumentSessionOperations` | The session on which `SaveChanges()` was called |
+| **DocumentId** | `string` | The ID of the document being stored |
+| **Entity** | `object` | The entity being stored |
+| **DocumentMetadata** | `IMetadataDictionary` | The document's metadata |
+
 </TabItem>
+<TabItem value="BeforeDeleteEventArgs" label="BeforeDeleteEventArgs">
 
+```csharp
+class BeforeDeleteEventArgs
+{
+    InMemoryDocumentSessionOperations Session
+    string DocumentId
+    object Entity
+    IMetadataDictionary DocumentMetadata
+}
+```
 
+| Property | Type | Description |
+| --- | --- | --- |
+| **Session** | `InMemoryDocumentSessionOperations` | The session on which `SaveChanges()` was called |
+| **DocumentId** | `string` | The ID of the document being deleted |
+| **Entity** | `object` | The entity being deleted |
+| **DocumentMetadata** | `IMetadataDictionary` | The document's metadata |
 
-## OnSessionDisposing
-
-This event is invoked by the disposal of a session, **before** the session is disposed of.  
-Keeping track of sessions disposal allows you, among other uses, to verify that sessions 
-that are no longer needed are disposed of.  
-
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`private void OnSessionDisposingEvent(object sender, SessionDisposingEventArgs args);
-`}
-</CodeBlock>
 </TabItem>
+</Tabs>
 
-| Parameters | Type | Description |
-| - | - | - |
-| **sender** | `IDocumentSession` | The session whose disposal triggered this event |
-| **args** | `SessionDisposingEventArgs` | `args` contains the session that is disposed of. |
+<Tabs groupId="event-args-2">
+<TabItem value="AfterSaveChangesEventArgs" label="AfterSaveChangesEventArgs" default>
 
-The class `SessionDisposingEventArgs`:  
+```csharp
+class AfterSaveChangesEventArgs
+{
+    InMemoryDocumentSessionOperations Session
+    string DocumentId
+    object Entity
+    IMetadataDictionary DocumentMetadata
+}
+```
 
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`public class SessionDisposingEventArgs : EventArgs
-\{
-    public InMemoryDocumentSessionOperations Session \{ get; \}
-\}
-`}
-</CodeBlock>
+| Property | Type | Description |
+| --- | --- | --- |
+| **Session** | `InMemoryDocumentSessionOperations` | The session on which `SaveChanges()` was called |
+| **DocumentId** | `string` | The ID of the document that was saved |
+| **Entity** | `object` | The entity that was saved |
+| **DocumentMetadata** | `IMetadataDictionary` | The document's metadata |
+
 </TabItem>
+<TabItem value="BeforeQueryEventArgs" label="BeforeQueryEventArgs">
 
+```csharp
+class BeforeQueryEventArgs
+{
+    InMemoryDocumentSessionOperations Session
+    IDocumentQueryCustomization QueryCustomization
+}
+```
 
+| Property | Type | Description |
+| --- | --- | --- |
+| **Session** | `InMemoryDocumentSessionOperations` | The session that triggered the event |
+| **QueryCustomization** | `IDocumentQueryCustomization` | The query's customizations |
 
+</TabItem>
+</Tabs>
 
+<Tabs groupId="event-args-3">
+<TabItem value="BeforeConversionToDocumentEventArgs" label="BeforeConversionToDocumentEventArgs" default>
+
+```csharp
+class BeforeConversionToDocumentEventArgs
+{
+    string Id
+    object Entity
+    InMemoryDocumentSessionOperations Session
+}
+```
+
+| Property | Type | Description |
+| --- | --- | --- |
+| **Id** | `string` | The ID of the document being converted |
+| **Entity** | `object` | The entity being converted to a document |
+| **Session** | `InMemoryDocumentSessionOperations` | The session that triggered the event |
+
+</TabItem>
+<TabItem value="AfterConversionToDocumentEventArgs" label="AfterConversionToDocumentEventArgs">
+
+```csharp
+class AfterConversionToDocumentEventArgs
+{
+    string Id
+    object Entity
+    BlittableJsonReaderObject Document
+    InMemoryDocumentSessionOperations Session
+}
+```
+
+| Property | Type | Description |
+| --- | --- | --- |
+| **Id** | `string` | The ID of the converted document |
+| **Entity** | `object` | The entity that was converted |
+| **Document** | `BlittableJsonReaderObject` | The resulting JSON document |
+| **Session** | `InMemoryDocumentSessionOperations` | The session that triggered the event |
+
+</TabItem>
+</Tabs>
+
+<Tabs groupId="event-args-4">
+<TabItem value="BeforeConversionToEntityEventArgs" label="BeforeConversionToEntityEventArgs" default>
+
+```csharp
+class BeforeConversionToEntityEventArgs
+{
+    string Id
+    Type Type
+    BlittableJsonReaderObject Document
+    InMemoryDocumentSessionOperations Session
+}
+```
+
+| Property | Type | Description |
+| --- | --- | --- |
+| **Id** | `string` | The ID of the document being converted |
+| **Type** | `Type` | The target entity type |
+| **Document** | `BlittableJsonReaderObject` | The JSON document being converted |
+| **Session** | `InMemoryDocumentSessionOperations` | The session that triggered the event |
+
+</TabItem>
+<TabItem value="AfterConversionToEntityEventArgs" label="AfterConversionToEntityEventArgs">
+
+```csharp
+class AfterConversionToEntityEventArgs
+{
+    string Id
+    BlittableJsonReaderObject Document
+    object Entity
+    InMemoryDocumentSessionOperations Session
+}
+```
+
+| Property | Type | Description |
+| --- | --- | --- |
+| **Id** | `string` | The ID of the converted document |
+| **Document** | `BlittableJsonReaderObject` | The source JSON document |
+| **Entity** | `object` | The resulting entity |
+| **Session** | `InMemoryDocumentSessionOperations` | The session that triggered the event |
+
+</TabItem>
+</Tabs>
+
+<Tabs groupId="event-args-5">
+<TabItem value="SessionDisposingEventArgs" label="SessionDisposingEventArgs" default>
+
+```csharp
+class SessionDisposingEventArgs
+{
+    InMemoryDocumentSessionOperations Session
+}
+```
+
+| Property | Type | Description |
+| --- | --- | --- |
+| **Session** | `InMemoryDocumentSessionOperations` | The session being disposed |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>

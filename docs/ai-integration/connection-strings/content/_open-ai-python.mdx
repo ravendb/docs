@@ -12,7 +12,10 @@ import Panel from '@site/src/components/Panel';
   [Gen AI tasks](../../../ai-integration/gen-ai-integration/overview.mdx), and [AI agents](../../../ai-integration/ai-agents/overview.mdx).  
     
 * Use this connection string format to connect RavenDB to **any OpenAI-compatible provider** that offers a compatible API.
-  As long as the provider follows the OpenAI API format, RavenDB will be able to use it for Embeddings generation, Gen AI tasks, and chat-based agent interactions.  
+  As long as the provider follows the OpenAI API format, RavenDB will be able to use it for Embeddings generation, Gen AI tasks, and chat-based agent interactions.      
+    
+* The Studio and Client API examples below define a **per-database** AI connection string.  
+  To define the same provider configuration at the **cluster level**, see [Add a server-wide connection string](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx).    
 
 * In this article:
   * [Define the connection string - from Studio](../../../ai-integration/connection-strings/open-ai.mdx#define-the-connection-string-from-studio)

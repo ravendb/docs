@@ -1,0 +1,353 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* When a RavenDB client connects to a server over HTTPS, it checks the server's
+  TLS certificate against the system's certificate authorities.
+  If the check fails (expired certificate, self-signed certificate, name mismatch,
+  unknown issuer), the client refuses the connection.  
+
+* If you have a clear reason to trust the certificate even though the standard
+  certificate check rejects it, you can register a handler on
+  `RequestExecutor.RemoteCertificateValidationCallback` and accept it from your
+  application code.  
+
+* Working with this mechanism comes down to one action: you attach a handler
+  to the event, and the handler decides which certificates the client should
+  accept.  
+  The sections below cover when you need such a handler, what its code should
+  look like, how the event behaves underneath, how to unregister the handler
+  when its job is done, and the cautions that apply.  
+
+* This page covers only the client's check of the server's certificate.  
+  The client certificate that the server requires for authentication is a
+  separate mechanism.  
+
+* In this page:
+   * [When to use this](../../../client-api/security/trusting-server-certificates.mdx#when-to-use-this)
+   * [Registering a handler](../../../client-api/security/trusting-server-certificates.mdx#registering-a-handler)
+      * [Trust by thumbprint](../../../client-api/security/trusting-server-certificates.mdx#trust-by-thumbprint)
+      * [Trust several certificates](../../../client-api/security/trusting-server-certificates.mdx#trust-several-certificates)
+   * [How the event works underneath](../../../client-api/security/trusting-server-certificates.mdx#how-the-event-works-underneath)
+      * [Multiple handlers](../../../client-api/security/trusting-server-certificates.mdx#multiple-handlers)
+      * [One handler affects every store and connection](../../../client-api/security/trusting-server-certificates.mdx#one-handler-affects-every-store-and-connection)
+   * [Unregistering the handler](../../../client-api/security/trusting-server-certificates.mdx#unregistering-the-handler)
+   * [Cautions](../../../client-api/security/trusting-server-certificates.mdx#cautions)
+   * [Related: Fiddler debugging sessions](../../../client-api/security/trusting-server-certificates.mdx#related-fiddler-debugging-sessions)
+
+</Admonition>
+
+<Panel heading="When to use this">
+
+The standard certificate check answers a single question: did a certificate
+authority that the client trusts vouch for this server, for this name, with
+a currently valid certificate?  
+Sometimes the certificate is the right one for the server but the standard
+certificate check still rejects it.
+
+Common reasons:
+
+* A production server certificate has expired and renewal is in progress.
+  You know the cluster has not been replaced; the certificate has simply
+  outlived its validity period.
+* A development or staging server uses a self-signed certificate, because
+  obtaining a certificate from a public authority for an internal-only host
+  is not worth the work.
+* The certificate was issued for a hostname that does not match the URL the
+  client uses (for example, behind a load balancer or under an alternate DNS
+  name).
+* The certificate is signed by an in-house certificate authority that your
+  company operates, which the client machine has not been configured to
+  trust.
+
+In each case the certificate is correct; the client just has no way to confirm
+that on its own.  
+A registered handler is how you give the client that confirmation explicitly.
+
+<Admonition type="note" title="">
+This mechanism applies only to the client's check of the server's certificate.  
+The client certificate that the server requires for authentication is a separate
+mechanism.  
+See [Setting Up Authentication and Authorization](../../../client-api/setting-up-authentication-and-authorization.mdx)
+for the authentication path.
+</Admonition>
+
+</Panel>
+
+<Panel heading="Registering a handler">
+
+Once you have decided which certificates to accept, register a handler in
+your application's startup path, or anywhere that runs before the first
+connection to a RavenDB server.
+
+The pieces involved:
+
+* **The event**  
+  `RequestExecutor.RemoteCertificateValidationCallback` on
+  `Raven.Client.Http.RequestExecutor`.  
+  It is a public event; you attach a handler to it with `+=`.
+
+* **The handler signature**  
+  Matches `System.Net.Security.RemoteCertificateValidationCallback`.  
+  The handler receives the server's certificate, the chain that was built
+  for it, and the errors detected by the standard certificate check.
+
+* **The return value**  
+  Return `true` to accept the certificate.  
+  Return `false` to leave the decision to the standard certificate check (see
+  [How the event works underneath](../../../client-api/security/trusting-server-certificates.mdx#how-the-event-works-underneath)).
+
+The `+=` operator attaches a handler to a RavenDB-client event.
+See [Subscribing to Store Events](../../../client-api/how-to/subscribe-to-store-events.mdx)
+for other RavenDB events that follow the same pattern.
+
+Two patterns for the body of the handler are shown below:
+
+* **Trust by thumbprint**  
+  Match against one known good thumbprint.  
+  Use this when there is a single certificate you have a reason to trust.
+
+* **Trust several certificates**  
+  Match against a small set of thumbprints.  
+  Use this during a renewal window, when both the outgoing and the incoming
+  certificate should be accepted for a short period.
+
+<ContentFrame>
+
+### Trust by thumbprint
+
+A certificate's thumbprint is a short fingerprint computed from its content.  
+Two different certificates have different thumbprints; the same certificate
+always produces the same thumbprint.  
+You store the thumbprint of the certificate you want to trust, compare every
+incoming certificate to it, and accept only on an exact match.
+
+```csharp
+// The thumbprint of the one server certificate the client should trust
+const string TrustedThumbprint =
+    "AABBCCDDEEFF00112233445566778899AABBCCDD";
+
+// Attach a handler that accepts only the trusted certificate
+RequestExecutor.RemoteCertificateValidationCallback +=
+    (sender, cert, chain, errors) =>
+    {
+        if (cert is null)
+            return false;
+
+        // Accept only when the incoming thumbprint matches the trusted value
+        return string.Equals(
+            cert.GetCertHashString(),
+            TrustedThumbprint,
+            StringComparison.OrdinalIgnoreCase);
+    };
+```
+
+<br />
+
+`GetCertHashString()` returns the SHA-1 thumbprint as uppercase hexadecimal,
+matching the value shown by the Windows certificate manager and most
+certificate tooling.
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### Trust several certificates
+
+Hold the thumbprints in a collection and check membership instead of comparing
+against a single value.
+
+Beyond the renewal window, multi-thumbprint trust also applies when:
+
+* The same client code talks to several servers that each have their own
+  self-signed certificate (a development server, a staging server, an
+  integration server).
+
+* A failover certificate is pre-staged alongside the active one, so a
+  rotation can happen without a client code change.
+
+```csharp
+// The thumbprints of every server certificate the client should accept
+// (for example, the outgoing and the incoming certificate during renewal)
+var trustedThumbprints = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+{
+    "AABBCCDDEEFF00112233445566778899AABBCCDD",
+    "11223344556677889900AABBCCDDEEFF11223344",
+};
+
+// Attach a handler that accepts any certificate in the trusted set
+RequestExecutor.RemoteCertificateValidationCallback +=
+    (sender, cert, chain, errors) =>
+    {
+        if (cert is null)
+            return false;
+
+        // Accept when the incoming thumbprint is one of the trusted values
+        return trustedThumbprints.Contains(cert.GetCertHashString());
+    };
+```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="How the event works underneath">
+
+Two properties of the event are worth understanding before you use it: how
+multiple handlers interact when more than one is registered, and how widely a
+single handler reaches inside your application.
+
+<ContentFrame>
+
+### Multiple handlers
+
+You can register more than one handler.  
+This is useful when different parts of an application each need to influence
+certificate acceptance independently.
+
+For example:
+
+* A shared RavenDB client library installed across your services attaches a
+  handler that recognises your company's certificates, and an individual
+  service adds its own handler for a partner cluster's certificate.
+
+* During an incident, on-call installs a temporary handler that accepts a
+  replacement certificate, while the existing production handler stays in
+  place untouched.
+
+The client calls every attached handler in turn for each certificate, and
+accepts the certificate if any of them returns `true`.  
+If every handler returns `false`, the client falls back to the standard
+certificate check.
+
+Returning `false` from a handler does not refuse the certificate.  
+It only means *this handler has no opinion about this certificate*.  
+For instance, if your handler accepts only certificates whose thumbprint
+matches one of your trusted values, it returns `false` for every other
+certificate, and the client falls back to the standard certificate check
+on those.
+
+This is what makes the thumbprint-match pattern safe to leave in place: the
+handler accepts only the certificates you have a reason to trust, and every
+other certificate is checked normally.
+
+</ContentFrame>
+
+---
+
+<ContentFrame>
+
+### One handler affects every store and connection
+
+Registering the handler once changes the behaviour of every `DocumentStore`
+and every connection in the same running application.  
+A handler installed at application startup stays in effect until the
+application shuts down.  
+While it is in effect, it applies to every cluster and every database the
+application talks to.  
+The handler matches by the thumbprint value you stored in your code, so when
+the underlying certificate is renewed or replaced, the handler stops matching
+it, and you would need to update the stored thumbprint to keep accepting the
+new certificate.
+
+If your application uses more than one store, remember that the same handler
+runs for every store.  
+The handler has no way to tell which store or which cluster a given
+certificate belongs to, so any trust decision you make in the handler applies
+to every connection from the application.  
+If different clusters need different trust rules, encode all of them in the
+same handler.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Unregistering the handler">
+
+Unregister the handler when the reason it was added no longer applies.  
+A renewed certificate, a retired staging environment, a load-balancer change
+that closes a hostname mismatch, or any similar resolution all signal that
+the handler has done its job.  
+A handler that stays in place keeps trusting whatever it was set up to trust.
+
+Removing a handler from the event requires a reference to it.  
+A handler attached as an anonymous lambda cannot be detached, because there
+is nothing to refer back to.  
+Store the handler in a variable when you attach it, and use `-=` to remove
+it when the time comes.
+
+```csharp
+// Store the handler in a variable so you can remove it later
+RemoteCertificateValidationCallback trustHandler = (sender, cert, chain, errors) =>
+{
+    if (cert is null)
+        return false;
+
+    return string.Equals(
+        cert.GetCertHashString(),
+        TrustedThumbprint,
+        StringComparison.OrdinalIgnoreCase);
+};
+
+// Attach the handler to the event
+RequestExecutor.RemoteCertificateValidationCallback += trustHandler;
+
+// Later, when the reason for adding the handler is resolved, detach it
+RequestExecutor.RemoteCertificateValidationCallback -= trustHandler;
+```
+
+<br />
+
+The `RemoteCertificateValidationCallback` type lives in `System.Net.Security`.
+
+</Panel>
+
+<Panel heading="Cautions">
+
+<Admonition type="warning" title="">
+
+* Use the most targeted check possible.  
+  Match by thumbprint rather than by subject name, and prefer exact
+  comparison over substring matches (for example, checking that a subject
+  name contains `staging` would also accept any other certificate whose
+  subject happens to include that text).  
+  A loose check may accept more certificates than you intend.
+
+* Do not ship a handler that returns `true` unconditionally.  
+  Such a handler accepts every certificate the client receives, with no
+  validation.  
+  The trust-everything form suits a short debugging session, not application
+  code that runs in production.  
+  See the [Fiddler page](../../../server/security/fiddler-usage-with-secured-database.mdx)
+  for the debugging context where it is appropriate.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Related: Fiddler debugging sessions">
+
+[Fiddler](https://www.telerik.com/fiddler) is a debugging tool that sits
+between your application and the server so you can read the HTTPS traffic
+that flows between them.  
+To do that, Fiddler presents its own certificate to the client in place of
+the real server certificate.  
+The mechanism for making the client accept Fiddler's certificate is the same
+event documented above, used in a trust-everything form that is appropriate
+for a short debugging session and unsuitable for production.
+
+For the full Fiddler workflow, including client-certificate forwarding and
+the option of trusting Fiddler's root certificate at the operating-system
+level, see
+[Fiddler Usage With Secure Database](../../../server/security/fiddler-usage-with-secured-database.mdx).
+
+</Panel>

@@ -1,6 +1,6 @@
 ---
 title: "Search Engine: Corax"
-sidebar_label: Corax
+sidebar_label: "Corax"
 description: "Corax is RavenDB's native search engine, offering faster indexing and querying performance as an alternative to the Lucene engine."
 sidebar_position: 0
 see_also:
@@ -16,592 +16,793 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
-# Search Engine: Corax
 <Admonition type="note" title="">
 
-* **Corax** is RavenDB's native search engine, introduced in RavenDB 
-  version 6.0 as an in-house searching alternative for Lucene.  
-  Lucene remains available as well, you can use either search engine 
-  as you prefer.  
+* **Corax** is RavenDB's native search engine.   
+  It is used by RavenDB indexes to handle queries and provides an in-house alternative to the Lucene search engine.
 
-* The main role of the database's search engine is to **satisfy incoming queries**.  
-  In RavenDB, the search engine achieves this by handling each query via an index.  
-  If no relevant index exists, the search engine will create one automatically.  
-  
-    The search engine is the main "moving part" of the indexing mechanism, 
-    which processes and indexes documents by index definitions.  
+* **Lucene** remains available, and you can choose whether RavenDB uses Corax or Lucene for new indexes.  
+  The search engine can be configured server-wide, per database, and per index (static indexes only).
 
-* The search engine supports both [Auto](../../indexes/creating-and-deploying.mdx#auto-indexes) 
-  and [Static](../../indexes/creating-and-deploying.mdx#static-indexes) indexing 
-  and can be selected separately for each.  
-
-* The search engine can be selected per server, per database, and per index (for static indexes only).  
-
-* In this page:  
+* RavenDB queries are handled through indexes.  
+  When a query does not match an existing index, RavenDB can create an [auto-index](../../indexes/creating-and-deploying.mdx#auto-indexes) for it.  
+  The selected search engine determines which engine is used when new auto or [static indexes](../../indexes/creating-and-deploying.mdx#static-indexes) are created.
+    
+* **The default search engine depends on your license.**  
+  If the search engine is not explicitly configured, RavenDB uses a license-based default:  
+  *  _Community_, _Developer_, and servers without a license default to **Corax**.  
+  * All other license types, such as  _Professional_ and _Enterprise_, default to **Lucene**.    
+    
+  Explicitly [selecting the search engine](../../indexes/search-engine/corax.mdx#selecting-the-search-engine) overrides this license-based default.
+    
+---
+    
+* In this article:  
    * [Selecting the search engine](../../indexes/search-engine/corax.mdx#selecting-the-search-engine)  
       * [Server wide](../../indexes/search-engine/corax.mdx#select-search-engine-server-wide)  
       * [Per database](../../indexes/search-engine/corax.mdx#select-search-engine-per-database)  
-      * [Per index](../../indexes/search-engine/corax.mdx#select-search-engine-per-index)  
+      * [Per static index](../../indexes/search-engine/corax.mdx#select-search-engine-per-static-index)  
    * [Unsupported features](../../indexes/search-engine/corax.mdx#unsupported-features)  
-      * [Unimplemented methods](../../indexes/search-engine/corax.mdx#unimplemented-methods)  
-   * [Handling of complex JSON objects](../../indexes/search-engine/corax.mdx#handling-of-complex-json-objects)  
+   * [Handling complex JSON objects](../../indexes/search-engine/corax.mdx#handling-complex-json-objects)  
    * [Compound fields](../../indexes/search-engine/corax.mdx#compound-fields)  
    * [Limits](../../indexes/search-engine/corax.mdx#limits)  
+   * [Index training: Compression dictionaries](../../indexes/search-engine/corax.mdx#index-training-compression-dictionaries)
    * [Configuration options](../../indexes/search-engine/corax.mdx#configuration-options)  
-   * [Index training: Compression dictionaries](../../indexes/search-engine/corax.mdx#index-training:-compression-dictionaries)
+    
 </Admonition>
-## Selecting the search engine
 
-* You can select your preferred search engine in several scopes:  
+<Panel heading="Selecting the search engine">
+
+You can select the search engine at the following scopes:
+
    * [Server-wide](../../indexes/search-engine/corax.mdx#select-search-engine-server-wide), 
-     selecting which search engine will be used by all the databases hosted by this server.  
+     for all databases hosted by the server.
    * [Per database](../../indexes/search-engine/corax.mdx#select-search-engine-per-database), 
-     overriding server-wide settings for a specific database.  
-   * [Per index](../../indexes/search-engine/corax.mdx#select-search-engine-per-index), 
-     overriding server-wide and per-database settings.  
-     Per-index settings are available only for **static** indexes.  
+     overriding the server-wide setting for a specific database.
+   * [Per static index](../../indexes/search-engine/corax.mdx#select-search-engine-per-static-index), 
+     overriding the server-wide and database-level settings for a specific static index.  
+     Per-index search engine selection is available only for **static** indexes.
 
-     <Admonition type="note" title="">
-     Note that the search engine is selected for **new indexes** only.  
-     These settings do not apply to existing indexes.  
-     </Admonition>
+Use these configuration options to select the search engine:
 
-* These configuration options are available:  
    * [Indexing.Auto.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexingautosearchenginetype)  
-     Use this option to select the search engine (either `Lucene` or `Corax`) for **auto** indexes.  
-     The search engine can be selected **server-wide** or **per database**.  
+     Selects either `Lucene` or `Corax` for **auto indexes**.  
+     This option can be set **server-wide** or **per database**.
    * [Indexing.Static.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexingstaticsearchenginetype)  
-     Use this option to select the search engine (either `Lucene` or `Corax`) for **static** indexes.  
-     The search engine can be selected **server-wide**, **per database**, or **per index**.  
-   * Read about additional Corax configuration options [here](../../indexes/search-engine/corax.mdx#configuration-options).  
-### Select search engine: Server wide
+     Selects either `Lucene` or `Corax` for **static indexes**.  
+     This option can be set **server-wide**, **per database**, or **per index**.
+   * For additional Corax configuration options, see [Configuration options](../../indexes/search-engine/corax.mdx#configuration-options).
+    
+---
+    
+<Admonition type="note" title="">
+    
+**The selected search engine applies only to NEW indexes**      
+    
+* Existing indexes keep using the search engine they were created with even if you later change the server-wide or database-level setting.
+  For example, if `Indexing.Static.SearchEngineType` was set to `Corax` and you later change it to `Lucene`,
+  new static indexes will use Lucene.
+  Existing static indexes that were created while Corax was selected will continue using Corax.
+    
+* To make an existing index use a different engine, [reset the index](../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) after changing the relevant search engine setting.
+    
+</Admonition>
 
-Select the search engine for all the databases hosted by a server 
-by modifying the server's [settings.json](../../server/configuration/configuration-options.mdx#settingsjson) file.  
-E.g. -  
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`\{
+<Admonition type="note" title="">
+    
+**Corax-only cases**  
+
+Some features are available only with Corax:    
+
+* **Vector search**  
+  [Vector search](../../ai-integration/vector-search/overview.mdx) is supported only by Corax.  
+  Auto-indexes created for vector search queries use Corax automatically,  
+  even if the configured default engine is Lucene.
+
+* **Static indexes with vector fields**  
+  A static index that defines vector fields must use Corax.  
+  If such an index is configured to use Lucene, deploying it fails with a `NotSupportedException`.
+
+* **Auto-index to static-index conversion**  
+  When RavenDB converts an auto-index with vector fields to a static index definition,  
+  the resulting static index is set to Corax as well, regardless of the default search engine configuration.
+    
+* **Control null placement when sorting**  
+  The `order by ... nulls first` and `order by ... nulls last` clauses are supported only by Corax.  
+  RavenDB does not automatically select Corax for these clauses;  
+  running such a query against a Lucene index throws an `InvalidQueryException`.
+    
+    Learn more in [Control position of null values](../../querying/sorting-query-results/sort-query-results.mdx#control-position-of-null-values).  
+    For spatial sorting, see [Control null placement when sorting by distance](../../client-api/session/querying/how-to-make-a-spatial-query.mdx#control-null-placement-when-sorting-by-distance).
+
+</Admonition>    
+
+---
+    
+### Select search engine: Server-wide
+
+To select the search engine for all databases hosted by the server, modify the server's [settings.json](../../server/configuration/configuration-options.mdx#settingsjson) file.  
+For example:
+
+```json
+{
     "Indexing.Auto.SearchEngineType": "Corax",
     "Indexing.Static.SearchEngineType": "Corax"
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
+<br/>    
 
-<Admonition type="note" title="">
-You must restart the server for the new settings to be read and applied.  
+<Admonition type="note" title="Restart required">
+You must restart the server for the new settings to be read and applied.
 </Admonition>
-
-<Admonition type="note" title="">
-Selecting a new search engine will change the search engine only for indexes created from now on.  
-
-E.g., If my configuration has been `"Indexing.Static.SearchEngineType": "Corax"` 
-until now and I now changed it to `"Indexing.Static.SearchEngineType": "Lucene"`, 
-static indexes created from now on will use Lucene, but static indexes created 
-while Corax was selected will continue using Corax.  
-
-After selecting a new search engine using the above options, change the search 
-engine used by an existing index by [resetting](../../client-api/operations/maintenance/indexes/reset-index.mdx) 
-the index.  
-</Admonition>
+    
+---    
+    
 ### Select search engine: Per database
 
-To select the search engine that the database would use, modify the 
-relevant Database Record settings. You can easily do this via Studio:  
+To select the search engine for a specific database, modify the database's search engine settings.  
+You can do this from Studio or from the Client API:
 
-* Open Studio's [Database Settings](../../studio/database/settings/database-settings.mdx) 
-  page, and enter `SearchEngine` in the search bar to find the search engine settings.  
-  Click `Edit` to modify the default search engine.  
+* **From Studio**:   
+  Open the Studio's [Database Settings](../../studio/database/settings/database-settings.mdx) view and enter `SearchEngine` in the search bar to find the search engine settings.
+  Click `Edit` to modify the default search engine.
 
      ![Database Settings](./assets/corax-04_database-settings_01.png)
 
-* Select your preferred search engine for Auto and Static indexes.  
+* Select your preferred search engine for Auto and Static indexes.
 
      ![Corax Database Options](./assets/corax-05_database-settings_02.png)
 
-* To apply the new settings either **disable and re-enable the database** or **restart the server**.  
+* To apply the new settings, either **disable and re-enable the database** or **restart the server**.
 
-     ![Default Search Engine](./assets/corax-06_database-settings_03.png)
-### Select search engine: Per index 
+     ![Default Search Engine](./assets/corax-06_database-settings_03.png)    
+    
+* **From the Client API**:  
+  You can also set these database-level search engine settings via the Client API using
+  [PutDatabaseSettingsOperation](../../client-api/operations/maintenance/configuration/database-settings-operation.mdx#put-database-settings-operation).  
+  This operation updates settings on an existing database and replaces the database settings dictionary, 
+  so include any existing settings you want to keep. Reload the database for the changes to take effect.    
 
-You can also select the search engine that would be used by a specific index, 
-overriding any per-database and per-server settings.  
+---
+    
+### Select search engine: Per static index 
 
-#### Select index search engine via studio:  
+You can select the search engine for a specific **static index**, overriding the server-wide and database-level settings.    
 
-* **Indexes-List-View** &gt; **Edit Index Definition**  
-  Open Studio's [Index List](../../studio/database/indexes/indexes-list-view.mdx) 
-  view and select the index whose search engine you want to set.  
+#### Select index search engine via Studio:  
 
-    ![Index Definition](./assets/corax-02_index-definition.png)
+* Open Studio's [Index List](../../studio/database/indexes/indexes-list-view.mdx) view,
+  and select the static index whose search engine you want to set.  
+    
+    ![Index Definition](./assets/corax-02_index-definition.png)    
     1. Open the index **Configuration** tab.  
-    2. Select the search engine you prefer for this index.  
+    2. Select the search engine for this index.
+    
        ![Per-Index Search Engine](./assets/corax-03_index-definition_searcher-select.png)
 
-* The indexes list view will show the changed configuration.  
-
+* The indexes list view will show the changed configuration.
+    
     ![Search Engine Changed](./assets/corax-01_search-engine-changed.png)
-#### Select index search engine using code
+    
+---
+    
+#### Select index search engine using code:
 
-While defining an index using the API, use the `SearchEngineType` 
-property to select the search engine that would run the index.  
-Available values: `SearchEngineType.Lucene`, `SearchEngineType.Corax`.  
+When defining a static index using the API, set the `SearchEngineType` property.  
+Available values are `SearchEngineType.Lucene` and `SearchEngineType.Corax`.  
+    
+    ```csharp
+    // The index definition:
+    private class Products_ByAvailability : AbstractIndexCreationTask<Product>
+    {
+        public Products_ByAvailability()
+        {
+            Map = products => from product in products
+                              select new
+                              {
+                                  product.Name,
+                                  product.UnitsInStock,
+                                  product.Discontinued
+                              };
+    
+            // Set the search engine type 
+            SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Corax;
+        }
+    }
+    
+    // Deploy the index:
+    new Products_ByAvailability().Execute(store);
+    ```
 
-* You can pass the search engine type you prefer:  
-<TabItem value="index-definition_select-while-creating-index" label="index-definition_select-while-creating-index">
-<CodeBlock language="csharp">
-{`// Set search engine type while creating the index
-new Product_ByAvailability(SearchEngineType.Corax).Execute(store);
-`}
-</CodeBlock>
-</TabItem>  
-* And set it in the index definition:  
-<TabItem value="index-definition_set-search-engine-type" label="index-definition_set-search-engine-type">
-<CodeBlock language="csharp">
-{`private class Product_ByAvailability : AbstractIndexCreationTask<Product>
-\{
-    public Product_ByAvailability(SearchEngineType type)
-    \{
-        // Any Map/Reduce segments here
-        Map = products => from p in products
-                          select new
-                          \{
-                              p.Name,
-                              p.Brand
-                          \};
+</Panel>
 
-        // The preferred search engine type
-        SearchEngineType = type;
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>  
+<Panel heading="Unsupported features">
 
-
-
-## Unsupported features
-
-The below features are currently not supported by Corax.
+The following Corax limitations currently apply.
 
 #### Unsupported during indexing:
 
 * Setting a [boost factor on an index-field](../../indexes/boosting.mdx#assign-a-boost-factor-to-an-index-field) is not supported.  
-  Note that [boosting the whole index-entry](../../indexes/boosting.mdx#assign-a-boost-factor-to-the-index-entry) IS supported.
-* Indexing [WKT shapes](../../indexes/indexing-spatial-data.mdx) is not supported.  
-  Note that indexing **spatial points** IS supported.  
-* [Custom analyzers](../../studio/database/settings/custom-analyzers.mdx)  
-* [Custom Sorters](../../querying/sorting-query-results/custom-sorters/overview.mdx)  
+  Note that [boosting the whole index-entry](../../indexes/boosting.mdx#assign-a-boost-factor-to-the-index-entry)
+  and [query-time boosting](../../client-api/session/querying/text-search/boost-search-results) with `boost()` **are supported**.
+* Indexing spatial shapes that are not points is not supported.  
+  Note that spatial points **are supported**, including WKT values that represent points.
 
 #### Unsupported while querying:
 
-* [Fuzzy Search](../../client-api/session/querying/text-search/fuzzy-search.mdx)  
-* [Explanations](../../client-api/session/querying/debugging/include-explanations.mdx)  
-
+* [Fuzzy search](../../client-api/session/querying/text-search/fuzzy-search.mdx) is not supported.  
+* [Proximity search](../../client-api/session/querying/text-search/proximity-search.mdx) is not supported.  
+* [Including query explanations](../../client-api/session/querying/debugging/include-explanations.mdx) is not supported  
+* [Custom sorters](../../querying/sorting-query-results/custom-sorters/overview.mdx) are not supported.  
+    
 #### Complex JSON properties:
 
 Complex JSON properties cannot currently be indexed and searched by Corax.  
-Read more about this [below](../../indexes/search-engine/corax.mdx#handling-of-complex-json-objects).  
+Read more about this in [Handling complex JSON objects](../../indexes/search-engine/corax.mdx#handling-complex-json-objects) below.  
 
-#### Unsupported `WHERE` methods/terms:  
+#### Unsupported `where` methods:
 
 * [lucene()](../../querying/filtering-query-results/filter-with-lucene-syntax.mdx)  
-* [intersect()](../../indexes/querying/intersection.mdx)  
-### Unimplemented methods
+* [intersect()](../../indexes/querying/intersection.mdx) is not supported.  
 
-Trying to use Corax with an unimplemented method (see 
-[Unsupported Features](../../indexes/search-engine/corax.mdx#unsupported-features) above) 
-will generate a `NotSupportedInCoraxException` exception and end the search.  
+Using an unsupported feature with Corax will fail the relevant indexing or query operation.  
+The exception type and message depend on the unsupported feature.
 
 <Admonition type="info" title="">
-E.g. -  
-The following query uses the `intersect` method, which is currently not supported by Corax.  
-<TabItem value="sql" label="sql">
-<CodeBlock language="sql">
-{`from index 'Orders/ByCompany'
-where intersect(Count > 10, Total > 3)
-`}
-</CodeBlock>
-</TabItem>
 
-If you set Corax as the search engine for the `Orders/ByCompany` index 
-used by the above query, running the query will generate the following 
-exception and the search will stop.  
+For example, the following query uses the `intersect()` method, which is currently not supported by Corax.
+    
+```sql
+from index 'Orders/ByCompany'
+where intersect(Count > 10, Total > 3)
+```    
+<br/>
+    
+If the `Orders/ByCompany` index uses Corax, running this query will fail.
+    
   ![Method Not Implemented Exception](./assets/corax-07_exception-method-not-implemented.png)
+    
 </Admonition>
 
+</Panel>
 
-
-## Handling of complex JSON objects
-
-To avoid unnecessary resource usage, the content of complex JSON properties is not indexed by RavenDB.  
-[See below](../../indexes/search-engine/corax.mdx#if-corax-encounters-a-complex-property-while-indexing) 
-how auto and static indexes handle such fields.  
+<Panel heading="Handling complex JSON objects">
 
 <Admonition type="note" title="">
-Lucene's approach of indexing complex fields as JSON strings usually makes no 
-sense, and is not supported by Corax.  
-</Admonition>
+    
+#### What is a complex JSON object
+    
+Consider the following `Orders` document:
 
-Consider, for example, the following `orders` document:  
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`\{
+```json
+{
     "Company": "companies/27-A",
     "Employee": "employees/2-A",
-    "ShipTo": \{
+    "ShipTo": {
         "City": "Torino",
         "Country": "Italy",
-        "Location": \{
+        "Location": {
             "Latitude": 45.0907661,
             "Longitude": 7.687425699999999
-        \}
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+        }
+    }
+}
+```
+<br/>
+    
+The `Location` property is a complex JSON object.  
+It contains simple properties, such as `Latitude` and `Longitude`,  
+but `Location` itself is not a simple searchable value.
 
-As `Location` contains a list of key/value pairs rather than a simple numeric value or a string, 
-Corax will not index its contents (see [here](../../indexes/search-engine/corax.mdx#if-corax-encounters-a-complex-property-while-indexing) 
-what will be indexes).  
+</Admonition>    
+    
+---
+    
+* **Lucene** can index a complex field as a JSON string.
+    
+* **Corax** does not support indexing the whole complex JSON object as a single text value,
+  because indexing an entire object as text is usually not useful for search.
+  The exact behavior depends on whether the index is an auto-index or a static index;
+  see [How Corax handles complex fields while indexing](../../indexes/search-engine/corax.mdx#how-corax-handles-complex-fields-while-indexing) below.
 
-There are several ways to handle the indexing of complex JSON objects:  
+    To work with complex objects, use one of the following approaches:
+    
+    1. [Index simple properties from the object](../../indexes/search-engine/corax.mdx#1-index-simple-properties-from-the-object)
+    2. [Store the complex field for projection only](../../indexes/search-engine/corax.mdx#2-store-the-complex-field-for-projection-only)
+    3. [Serialize the complex object explicitly](../../indexes/search-engine/corax.mdx#3-serialize-the-complex-object-explicitly)
+    4. [Use Lucene to index the whole object as JSON text](../../indexes/search-engine/corax.mdx#4-use-lucene-to-index-the-whole-object-as-json-text)   
 
-#### 1. Index a simple property contained in the complex field
+---
+    
+#### 1. Index simple properties from the object
 
-Index one of the simple key/value properties stored within the nested object.  
-In the `Location` field, for example, Location's `Latitude` and `Longitude`.  
-can serve us this way:  
+Index the specific values that you need to query.
 
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`from order in docs.Orders
+```csharp
+from order in docs.Orders
 select new
-\{
+{
     Latitude = order.ShipTo.Location.Latitude,
     Longitude = order.ShipTo.Location.Longitude
-\}
-`}
-</CodeBlock>
-</TabItem>
-#### 2. Index the document using lucene
+}
+```
 
-As long as Corax doesn't index complex JSON objects, you can always 
-select Lucene as your search engine when you need to index nested properties.  
-#### 3. Revise index definition and fields usage
+---
+    
+#### 2. Store the complex field for projection only
 
-As [shown above](../../indexes/search-engine/corax.mdx#index-a-simple-property-contained-in-the-complex-field), 
-indexing a whole complex field is rarely needed, and users would typically 
-index and search only the simple properties such a field contains.  
-Queries may sometimes need, however, to **project** the content of an entire 
-complex field.  
-When this is the case, you can revise the index definition (see below) to 
-**disable the indexing** of the complex field but **store its content** so 
-[projection queries](../../indexes/querying/projections.mdx#projections-and-stored-fields) 
-would be able to project it.  
+If queries need to project the whole object but do not need to search inside it, 
+[disable indexing for the field](../../indexes/using-analyzers.mdx#disabling-indexing-for-index-field) and store it.
+[Projection queries](../../indexes/querying/projections.mdx#projections-and-stored-fields) would be able to project it.
+
+If you do not need to project the whole object from the index, do not map the complex object as an index-field.  
+Index only the simple properties you need.    
+
 <Admonition type="note" title="">
-Content we retrieve from the database and store in indexes becomes available for 
-projection and will be henceforth retrieved directly from the indexes, accelerating 
-its retrieval at the expense of indexes storage space.
+A stored field can be projected directly from the index.  
+This can make projections faster, but increases index storage size.
 </Admonition>
 
-* To store a field's content and disable its indexing **via Studio**:  
-  
+* To store a field's content and disable its indexing **via Studio**:
+
      ![Disable indexing of a Nested Field](./assets/corax-08_disable-indexing-of-nested-field.png)
 
-     1. Open the index definition's **Fields** tab.  
-     2. Click **Add Field** to specify what field Corax shouldn't index.  
-     3. Enter the name of the field Corax should not index.  
-     4. Select **Yes** to Store the field's content  
-     5. Select **No** to disable the field's indexing  
+     1. Open the index definition's **Fields** tab.
+     2. Click **Add Field**.
+     3. Enter the complex field name, for example `Location`.
+     4. Set **Store** to **Yes**.
+     5. Set **Indexing** to **No**.
 
-* To store a field's content and disable its indexing **using Code**:  
-<TabItem value="index-definition_disable-indexing-for-specified-field" label="index-definition_disable-indexing-for-specified-field">
-<CodeBlock language="csharp">
-{`private class Order_ByLocation : AbstractIndexCreationTask<Order>
-\{
-    public Order_ByLocation(SearchEngineType type)
-    \{
-        Map = orders => from o in orders
-                        select new
-                        \{
-                            o.ShipTo.Location
-                        \};
+* To store a field's content and disable its indexing **using code**:
 
-        SearchEngineType = type;
+    ```csharp
+    private class Orders_ByLocation : AbstractIndexCreationTask<Order>
+    {
+        public Orders_ByLocation()
+        {
+            Map = orders => from order in orders
+                            select new
+                            {
+                                order.ShipTo.Location
+                            };
 
-        // Disable indexing for this field
-        Index("Location", FieldIndexing.No);
+            SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Corax;
 
-        // Store the field's content
-        // (this is mandatory if the field's indexing is disabled)
-        Store("Location", FieldStorage.Yes);
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>  
-#### 4. Turn the complex property into a string
+            // Disable indexing for the field
+            // Do not index the complex object as a searchable field
+            Index("Location", FieldIndexing.No);
 
-You can handle the complex property as a string.  
+            // Store the field if you want to project it from the index.
+            // (storing is the only way to retrieve a complex field from the index
+            // when its indexing is disabled, since it won't be indexed)    
+            Store("Location", FieldStorage.Yes);
+        }
+    }
+    ```
+
+---
+    
+#### 3. Serialize the complex object explicitly
+
+You can explicitly serialize the complex object to a string.
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Not_Supported_By_Corax" label="Not_Supported_By_Corax">
-<CodeBlock language="sql">
-{`from order in docs.Orders
+<TabItem value="Use_ToString" label="Use ToString()">
+
+```csharp
+from order in docs.Orders
 select new
 {
-    // This will fail for the above document when using Corax
-    Location = order.ShipTo.Location
-}
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="Use_ToString()" label="Use_ToString()">
-<CodeBlock language="sql">
-{`from order in docs.Orders
-select new
-{
-    // .ToString() will convert the data to a string in JSON format (same as using JsonConvert.Serialize()) 
+    // Convert the complex object to JSON text
     Location = order.ShipTo.Location.ToString()
 }
-`}
-</CodeBlock>
+```
+
+</TabItem>
+<TabItem value="Not_Supported_By_Corax" label="Not supported by Corax">
+
+```csharp
+from order in docs.Orders
+select new
+{
+    // This will fail when using Corax
+    Location = order.ShipTo.Location
+}
+```
+
 </TabItem>
 </Tabs>
-
+    
 <Admonition type="note" title="">
-Serializing all the properties of a complex property into a single string, 
-including names, values, brackets, and so on, can be used as a last resort 
-to produce a string that **doesn't** make a good feed for analyzers and is not 
-commonly used for searches.  
-It does, however, make sense in some cases to **project** such a string.  
-</Admonition>
-#### If Corax encounters a complex property while indexing:  
-Auto and Static indexes handle complex fields differently.  
-New and Old static indexes also handle complex fields differently.  
+Serializing a complex object to a single string can make it indexable by Corax,
+but the result is usually poor input for analyzers and is not commonly used for searches.
+It can still make sense when you only need to project the serialized string.
+</Admonition>    
 
-* **Auto Index**  
-  An auto index will replace a complex field with a `JSON_VALUE` string.  
-  This will allow basic queries over the field, like checking if it 
-  exists using `Field == null` or `exists(Field)`.  
-   * Corax will also raise a complex-field alert:  
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`We have detected a complex field in an auto index. To avoid higher 
-resources usage when processing JSON objects, the values of these fields 
-will be replaced with JSON_VALUE.  
-Please consider querying on individual fields of that object or using 
-a static index.
-`}
-</CodeBlock>
-</TabItem>
-
-* **New static index** (created or reset on RavenDB `6.2.x` and on)  
-  The index will behave as determined by the 
-  [Indexing.Corax.Static.ComplexFieldIndexingBehavior](../../server/configuration/indexing-configuration.mdx#indexingcoraxstaticcomplexfieldindexingbehavior) 
-  configuration option.  
-   * If `ComplexFieldIndexingBehavior` is set to **`Throw`** -  
-     Corax will throw a `NotSupportedInCoraxException` exception with this message:  
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`The value of \`\{fieldName\}\` field is a complex object.  
-Typically a complex field is not intended to be indexed as a whole hence indexing 
-it as a text isn't supported in Corax. The field is supposed to have 'Indexing' 
-option set to 'No' (note that you can still store it and use it in projections).  
-Alternatively you can switch 'Indexing.Corax.Static.ComplexFieldIndexingBehavior' 
-configuration option from 'Throw' to 'Skip' to disable the indexing of all complex 
-fields in the index or globally for all indexes (index reset is required).  
-If you really need to use this field for searching purposes, you have to call ToString() 
-on the field value in the index definition. Although it's recommended to index individual 
-fields of this complex object.  
-Read more at: https://ravendb.net/l/OB9XW4/6.2  
-`}
-</CodeBlock>
-</TabItem>
-   * If `ComplexFieldIndexingBehavior` is set to **`Skip`** -  
-     Corax will skip indexing the complex field without throwing an exception.  
-
-* **Old static index** (created using RavenDB `6.0.x` or older)  
-  If the index doesn't explicitly relate to the complex field, Corax will automatically 
-  **disable indexing** for this field by defining **Indexing: No** for it as shown 
-  [above](../../indexes/search-engine/corax.mdx#disable-the-indexing-of-the-complex-field).  
-   * If the Indexing flag is set to anything but "no" -  
-     Corax will throw a `NotSupportedInCoraxException` exception.  
-     As disabling indexing for this field will prevent additional attempts to index its values,  
-     the exception will be thrown just once.  
-
-
-
-## Compound fields
-
-<Admonition type="info" title="">
-This feature should be applied to very large datasets and specific queries.  
-It is meant for **experts only**.  
-</Admonition>
-
-A compound field is a Corax index field comprised of 2 simple data elements.  
+---
+    
+#### 4. Use Lucene to index the whole object as JSON text
+    
+If you specifically need the whole complex object to be indexed as a single string value, use Lucene as the index's search engine.
+Lucene supports this behavior directly, while Corax does not.  
+With Corax, prefer indexing the specific simple properties you need to query.
+  
+---
+    
 <Admonition type="note" title="">
-A compound field can currently be composed of exactly **2 elements**.  
+    
+### How Corax handles complex fields while indexing    
+
+* **Auto indexes**  
+  If an auto-index maps a complex field, Corax indexes a placeholder value (`JSON_VALUE`) for that field  
+  and raises a complex-field **alert**.
+
+  This allows basic existence or non-null checks, such as `exists(Field)` or  `Field != null`,  
+  but the object's inner values are not searchable through that field.
+    
+  Consider querying on individual fields of that object or using a static index.
+
+* **New static indexes** (created or reset in RavenDB 6.2 or later)      
+  Static Corax indexes behave according to the
+  [Indexing.Corax.Static.ComplexFieldIndexingBehavior](../../server/configuration/indexing-configuration.mdx#indexingcoraxstaticcomplexfieldindexingbehavior) configuration option.
+
+  * If `ComplexFieldIndexingBehavior` is set to **`Throw`**:  
+    Corax throws a `NotSupportedInCoraxException` when the index attempts to index a complex object as a whole. This is the default behavior.
+
+  * If `ComplexFieldIndexingBehavior` is set to **`Skip`**:  
+    Corax skips indexing terms for the complex field without throwing an exception.   
+    If the field is stored, it can still be used for projection.
+
+* **Old static indexes** (created using RavenDB `6.0.x` or older)      
+  Older static Corax indexes use legacy behavior for backward compatibility.
+
+  If the index maps a complex field but the field has no explicit indexing option,  
+  RavenDB disables indexing for that field.
+
+  If the field was explicitly configured with indexing other than `No`,  
+  Corax throws once and then disables indexing for that field to avoid repeated indexing errors.
+    
+  After the index is reset, it no longer uses the legacy behavior.
+  It behaves like a new static index, and complex-field indexing is controlled by `Indexing.Corax.Static.ComplexFieldIndexingBehavior`.
+
 </Admonition>
+    
+</Panel>
 
-Expert users can define compound fields to optimize data retrieval: data stored in a compound 
-field is sorted as requested by the user, and would later on be retrieved in this order 
-with extreme efficiency.  
-Compound fields can also be used to unify simple data elements in cohesive units to 
-make the index more readable. 
+<Panel heading="Compound fields">
+ 
+<ContentFrame>
+    
+### What are compound fields?
 
-* **Adding a Compound Field**  
-  In an index definition, add a compound field using the `CompoundField` method.  
-  Pass the method simple data elements in the order by which you want them to be sorted.  
-* **Example**  
-  An example of an index definition with a compound field can be:  
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`private class Product_Location : AbstractIndexCreationTask<Product>
-\{
-    public Product_Location()
-    \{
-        Map = products => 
-            from p in products 
-            select new \{ p.Brand, p.Location \};
+* Compound fields are an expert-level Corax optimization intended for very large datasets and specific query patterns.  
 
-        // Add a compound field 
-        CompoundField(x => x.Brand, x => x.Location);
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+* A compound field is an internal Corax index-field that combines two index-field values into a single order-preserving key.
+  Corax can use this key to optimize queries that **filter by one field** and **order by another field**.
 
-    The query that uses the indexed data will look no different than if the 
-    index included no compound field, but produce the results much faster.  
+  The regular index-fields remain separate and queryable.  
+  The compound field is added in addition to them for Corax's internal optimization and is not queried directly.    
+
+* For example, an index definition that includes `CompoundField("Category", "UnitsInStock")`  
+  adds an internal index-field named `compound(Category,UnitsInStock)`.  
+  Corax can use this compound field to optimize a query that **filters by `Category`** and **orders by `UnitsInStock`**,  
+  without executing a separate sorting pass.
+
+* Use compound fields when the same filter-then-sort query pattern is run repeatedly over a large dataset.    
+
+</ContentFrame>    
+<ContentFrame>
+    
+### When is optimization applied?
+
+The compound-field optimization applies only when the query has a single equality filter on the first compound-field component and orders by the second component.
+    
+Assume a Corax index defines this compound field: `CompoundField("Category", "UnitsInStock")`  
+In this case, Corax can optimize a query that filters by equality on `Category` and orders by `UnitsInStock`.    
+    
+---
+    
+The optimization is NOT applied to the query when:
+
+* **The filter on the first field is not an equality comparison** 
+
+  ```sql
+  from index 'Products/ByCategoryAndUnitsInStock'
+  where Category != "categories/1-A" // not an equality filter
+  order by UnitsInStock    
+  ```  
+    
+* **The query has additional `where` conditions**  
+    
+  ```sql
+  from index 'Products/ByCategoryAndUnitsInStock'
+  where Category == "categories/1-A" and Name == "Chai" // extra where condition
+  order by UnitsInStock
+  ```    
+    
+* **The field order is reversed**  
+  ```sql
+  from index 'Products/ByCategoryAndUnitsInStock'
+  where UntisInStock == 25  // filter by the second field
+  order by Category         // order by the first field
+  ```  
+
+* **The query has additional order by clauses**  
+    
+  ```sql  
+  from index 'Products/ByCategoryAndUnitsInStock'
+  where Category = "categories/1-A"
+  order by UnitsInStock, Name // extra order by field
+    
+  // The additional order by field requires another sorting step, 
+  // so the query does not get the full skip-sort optimization.        
+  ``` 
+    
+</ContentFrame>    
+<ContentFrame>
+    
+### Constraints and value limits
+    
+* A compound field can currently be composed of exactly **2 fields**.
+
+* Each of the two values in the compound field must be **255 bytes or less** after Corax converts the value to the encoded form stored in the compound term.  
+  This limit applies to each field value separately, not to the full compound field.
+
+  Corax stores the two encoded values together and appends one byte that records the length of the first value.  
+  The full compound term must fit within Corax's general 512-byte term limit, but the per-value 255-byte limit is the practical constraint to consider when defining compound fields.
+    
+* The limit is checked at **indexing time**.  
+  RavenDB can accept and deploy the index definition, but indexing will fail when a document produces a compound-field value of 256 bytes or more,
+  and an `ArgumentOutOfRangeException` will be thrown.
+
+* The 255-byte limit is checked after Corax converts each value to the encoded form stored in the compound key.
+    
+  * For string values, this includes running the field analyzer.
+    The limit is based on the byte length of the analyzed term, not on the number of characters in the original string.
+    Long text values, URLs, descriptions, or analyzer output can exceed the 255-byte limit, so avoid using long free-text fields in compound fields.
+
+  * Non-string scalar values (numbers, dates and times, and booleans) are encoded in just a few bytes and never approach this limit. 
+    `null` and empty values produce no bytes and sort before non-empty values.    
+
+* When choosing fields for a compound field, prefer short string values or fixed-size scalar values.    
+    
+</ContentFrame>   
+
+---
+
+### Example
+    
+#### The index:
+    
+In the index definition, call `CompoundField` with the two index-fields that match the query pattern you want Corax to optimize.
+Pass the equality-filter field first and the order by field second.    
+
+The following index defines a compound field from `Category` and `UnitsInStock`:    
+    
+```csharp
+private class Products_ByCategoryAndUnitsInStock :
+    AbstractIndexCreationTask<Product, Products_ByCategoryAndUnitsInStock.IndexEntry>
+{
+    public class IndexEntry
+    {
+        // the 'regular' index-fields
+        public string Category { get; set; }
+        public long UnitsInStock { get; set; }
+    }
+
+    public Products_ByCategoryAndUnitsInStock()
+    {
+        Map = products =>
+            from product in products
+            select new IndexEntry
+            {
+                Category = product.Category,
+                UnitsInStock = product.UnitsInStock
+            };
+
+        SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Corax;
+
+        // Add a compound index-field to optimize queries
+        // that filter by Category and order by UnitsInStock.
+        CompoundField(x => x.Category, x => x.UnitsInStock);
+    }
+}
+```
+<br/>
+    
+The index-fields include:
+
+* The regular `Category` index-field.
+* The regular `UnitsInStock` index-field.
+* The internal compound index-field `compound(Category,UnitsInStock)`.    
+    
+---
+    
+#### The query:    
+    
+The query does not reference the compound field directly.  
+Corax uses it internally when a query filters by `Category` and orders by `UnitsInStock`.     
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`using (var s = store.OpenSession())
+
+```csharp
+using (var session = store.OpenSession())
 {
-    // Use the internal optimization previously created by the added compound field
-    var products = s.Query<Product, Product_Location>()
-        .Where(x => x.Brand == "RunningShoes")
-        .OrderBy(x => x.Location)
+    var products = session
+        .Query<Products_ByCategoryAndUnitsInStock.IndexEntry, 
+            Products_ByCategoryAndUnitsInStock>()
+        .Where(x => x.Category == "categories/1-A")  // Filter by Category
+        .OrderBy(x => x.UnitsInStock)                // Order by UnitsInStock
+        .OfType<Product>()
         .ToList();
 }
-`}
-</CodeBlock>
+```
+
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from Products 
-where Brand = "RunningShoes" 
-order by Location
-`}
-</CodeBlock>
+
+```sql
+from index 'Products/ByCategoryAndUnitsInStock'
+where Category = "categories/1-A"
+order by UnitsInStock
+```
+
 </TabItem>
 </Tabs>
+    
+---
+ 
+You can also define a compound field from Studio when editing an index:    
+    
+ ![Corax Database Options](./assets/corax-09-add-compound-field.png)
+    
+  1. Define the 'regular' index-fields in the **Maps** section.
+  2. To define a compound field, open the **Fields** tab.
+  3. Click **Add compound field**.
+  4. Enter the two index-fields that compose the compound field.
+    
+---    
+    
+The index-fields and their terms are visible in the "Terms view":    
+    
+ ![Corax Database Options](./assets/corax-10-compound-field-terms.png)
+    
+  1. The 'regular' index-fields.
+  2. The internal compound index-field.  
+    
+  > Expand an index-field to view its terms.
 
+</Panel>
 
+<Panel heading="Limits">
 
-## Limits
+* Corax indexes can contain more than `int.MaxValue` (`2,147,483,647`) entries.
 
-* Corax can create and use indexes of more than `int.MaxValue` (2,147,483,647) documents.  
-  To match this capacity, queries over Corax indexes can 
-  [skip](../../querying/rql/what-is-rql.mdx#limit) 
-  a number of results that exceeds `int.MaxValue` and 
-  [take](../../indexes/querying/paging.mdx#example-ii---basic-paging) 
-  documents from this location.  
+* [Query paging](../../indexes/querying/paging.mdx) over Corax indexes supports skipping more than `int.MaxValue` results.  
+  This allows a query to skip beyond the 32-bit range and then take results from that position.
 
-* The maximum number of documents that can be **projected** by a query 
-  (using either Corax or Lucene) is `int.MaxValue` (2,147,483,647).  
+* The number of results that a single query can take and return is still limited to `int.MaxValue` (`2,147,483,647`).  
+  This limit applies to both Corax and Lucene, including projected results.
+    
+* Compound fields have additional constraints, including exactly **2 fields** per compound field
+  and a **255-byte limit** per participating field value.  
+  Learn more in [Compound fields: Constraints and value limits](../../indexes/search-engine/corax.mdx#constraints-and-value-limits).
 
+</Panel>
 
+<Panel heading="Index training: Compression dictionaries">
 
-## Configuration options
+<ContentFrame>
+    
+### Compression dictionary training   
+    
+When a Corax index is created over a document collection, RavenDB samples the indexed content and trains a 
+[compression dictionary](https://en.wikibooks.org/wiki/Data_Compression/Dictionary_compression) for the index.
+The dictionary lets Corax encode index terms more compactly, reducing index storage size and improving the efficiency of subsequent indexing and querying operations.
 
-Corax configuration options include:  
+Training happens before the index starts its regular indexing work, and only when the index does not already have a dictionary.
+It is performed only for Corax indexes over document collections, and is skipped for non-document source types, such as time series and counters.
 
+Once trained, the dictionary is stored with the index and used for all subsequent indexing and querying operations.    
+
+</ContentFrame>    
+<ContentFrame>
+    
+### Training limits
+
+Training is bounded by two limits:
+    
+* **The number of documents sampled from the indexed collections**.  
+  By default, RavenDB samples up to `100,000` documents.  
+  This limit is configured by [Indexing.Corax.DocumentsLimitForCompressionDictionaryCreation](../../server/configuration/indexing-configuration.mdx#indexingcoraxdocumentslimitforcompressiondictionarycreation).
+
+* **The memory budget for training.**  
+  The default budget scales with the server's platform and total available memory,  
+  ranging from `128 MB` on ≤1 GB RAM or 32-bit servers up to `2 GB` on servers with more than 64 GB of RAM.  
+  The actual memory used for sampling is a fraction of this budget.  
+  This budget can be customized by [Indexing.Corax.MaxAllocationsAtDictionaryTrainingInMb](../../server/configuration/indexing-configuration.mdx#indexingcoraxmaxallocationsatdictionarytraininginmb).
+
+</ContentFrame>    
+<ContentFrame>
+    
+### Training impact    
+    
+The larger the indexed collections, the more useful the trained dictionary can be,
+and the more efficient the index becomes in terms of resource usage.  
+    
+Training may take longer on large datasets or slower storage, because RavenDB needs to read the sample documents before regular indexing begins - 
+both collection size and the storage system's IO speed affect how long training takes.
+
+</ContentFrame>    
+<ContentFrame>
+    
+### Resetting an index to retrain the dictionary    
+    
+If an index was created while the relevant collections were still very small,
+the trained dictionary may not be representative (or RavenDB may fall back to the default dictionary).   
+Once the collections hold a representative amount of data,
+you can [reset the index](../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) to train a new dictionary.
+
+<Admonition type="note" title="">
+Whether a reset rebuilds the index in place or side-by-side depends on the configured [reset mode](../../server/configuration/indexing-configuration.mdx#indexingresetmode).  
+The default reset mode is `InPlace`. When a side-by-side reset is used, the existing index continues serving queries until its replacement has been built.
+</Admonition>
+
+</ContentFrame>    
+<ContentFrame>
+    
+### Corax and the Test Index interface
+
+Corax indexes created through Studio's [Test Index](../../studio/database/indexes/create-map-index.mdx#test-index) interface do not train compression dictionaries.  
+The Test Index interface is intended for prototyping an index definition, and dictionary training would add unnecessary overhead to that workflow.
+
+</ContentFrame>    
+</Panel>
+
+<Panel heading="Configuration options">
+
+Common Corax configuration options include:  
+
+#### Search engine selection
+    
 * [Indexing.Auto.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexingautosearchenginetype)  
-  [Select](../../indexes/search-engine/corax.mdx#selecting-the-search-engine) the search engine for **Auto** indexes.  
+  Set the search engine used by **auto-indexes**.
 
 * [Indexing.Static.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexingstaticsearchenginetype)  
-  [Select](../../indexes/search-engine/corax.mdx#selecting-the-search-engine) the search engine for **Static** indexes.  
+  Set the search engine used by **static indexes**. 
 
+#### General Corax options
+    
 * [Indexing.Corax.IncludeDocumentScore](../../server/configuration/indexing-configuration.mdx#indexingcoraxincludedocumentscore)  
   Choose whether to include the score value in document metadata when sorting by score.  
-  <Admonition type="note" title="">
   Disabling this option can improve query performance.  
-  </Admonition>
 
 * [Indexing.Corax.IncludeSpatialDistance](../../server/configuration/indexing-configuration.mdx#indexingcoraxincludespatialdistance)  
   Choose whether to include spatial information in document metadata when sorting by distance.  
-  <Admonition type="note" title="">
   Disabling this option can improve query performance.  
-  </Admonition>
 
 * [Indexing.Corax.MaxMemoizationSizeInMb](../../server/configuration/indexing-configuration.mdx#indexingcoraxmaxmemoizationsizeinmb)  
   The maximum amount of memory that Corax can use for a memoization clause during query processing.  
-  <Admonition type="warning" title="Expert Level Configuration" id="expert-level-configuration" href="#expert-level-configuration">
-  Please configure this option only if you are an expert.
-  </Admonition>
+  This configuration is an EXPERT level. Configure this option only if you are an expert.
 
 * [Indexing.Corax.DocumentsLimitForCompressionDictionaryCreation](../../server/configuration/indexing-configuration.mdx#indexingcoraxdocumentslimitforcompressiondictionarycreation)  
-  Set the maximum number of documents that will be used for the training of a Corax index during dictionary creation.  
+  Set the maximum number of documents used to train the compression dictionary for a Corax index.    
   Training will stop when it reaches this limit.  
 
 * [Indexing.Corax.MaxAllocationsAtDictionaryTrainingInMb](../../server/configuration/indexing-configuration.mdx#indexingcoraxmaxallocationsatdictionarytraininginmb)  
-  Set the maximum amount of memory (in MB) that will be allocated for the training of a Corax index during dictionary creation.  
+  Set the maximum amount of memory allocated while training Corax compression dictionaries.    
   Training will stop when it reaches this limit.  
 
 * [Indexing.Corax.Static.ComplexFieldIndexingBehavior](../../server/configuration/indexing-configuration.mdx#indexingcoraxstaticcomplexfieldindexingbehavior)  
-  Choose [how to react](../../indexes/search-engine/corax.mdx#if-corax-encounters-a-complex-property-while-indexing) 
-  when a static Corax index is requested to index a complex JSON object.  
-  
+  Set how static Corax indexes handle complex JSON objects.    
+    
+* [Indexing.Corax.UnmanagedAllocationsBatchSizeLimitInMb](../../server/configuration/indexing-configuration.mdx#indexingcoraxunmanagedallocationsbatchsizelimitinmb)  
+  Set the unmanaged memory allocation limit for a single Corax indexing batch.    
+    
+For the full list of indexing configuration options, see [Indexing configuration](../../server/configuration/indexing-configuration.mdx).    
 
-
-## Index training: Compression dictionaries
-
-When creating Corax indexes, RavenDB analyzes index contents and trains 
-[compression dictionaries](https://en.wikibooks.org/wiki/Data_Compression/Dictionary_compression) 
-for much higher storage and execution efficiency.  
-
-* The larger the collection, the longer the training process will take.  
-  The index, however, will become more efficient in terms of resource usage.  
-* The training process can take from a few seconds to up to a minute in multiterabyte collections.  
-* The IO speed of the storage system also affects the training time.  
-
-Here are some additional things to keep in mind about Corax indexes compression dictionaries:  
-
-* Compression dictionaries are used to store index terms more efficiently.  
-  This can significantly reduce the size of the index, which can improve performance.  
-* The training process is **only performed once**, when the index is created.  
-* The compression dictionaries are stored with the index and are used for all subsequent 
-  operations (indexing and querying).  
-* The benefits of compression dictionaries are most pronounced for large collections.  
-  <Admonition type="note" title="">
-  Training stops when it reaches either the 
-  [number of documents](../../server/configuration/indexing-configuration.mdx#indexingcoraxdocumentslimitforcompressiondictionarycreation)
-  threshold (100,000 docs by default) or the 
-  [amount of memory](../../server/configuration/indexing-configuration.mdx#indexingcoraxmaxallocationsatdictionarytraininginmb) 
-  threshold (up to 2GB). Both thresholds are configurable.  
-  </Admonition>
-* If upon creation there are less than 10,000 documents in the involved collections, 
-  it may make sense to manually force an index reset after reaching 
-  [100,000](../../server/configuration/indexing-configuration.mdx#indexingcoraxdocumentslimitforcompressiondictionarycreation) 
-  documents to force retraining.  
-  <Admonition type="note" title="">
-  Indexes are replaced in a [side-by-side](../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---side-by-side-indexing) 
-  manner: existing indexes would continue running until the new ones are created, 
-  to avoid any interruption to existing queries.  
-  </Admonition>
-### Corax and the Test Index Interface
-Corax indexes will **not** train compression dictionaries if they are created in the 
-[Test Index](../../studio/database/indexes/create-map-index.mdx#test-index) interface, 
-because the testing interface is designed for indexing prototyping and the training 
-process will add unnecessary overhead.
-
-
-
+</Panel>

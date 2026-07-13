@@ -2,8 +2,9 @@ import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const { CURRENT_VERSION, LEGACY_VERSIONS } = require("./scripts/lib/version-policy.js") as {
+const { CURRENT_VERSION, ACTIVE_VERSIONS, LEGACY_VERSIONS } = require("./scripts/lib/version-policy.js") as {
     CURRENT_VERSION: string;
+    ACTIVE_VERSIONS: string[];
     LEGACY_VERSIONS: string[];
 };
 
@@ -34,7 +35,19 @@ const config: Config = {
     // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
     future: {
         v4: true, // Improve compatibility with the upcoming Docusaurus v4
-        faster: true,
+        // All faster flags except rspackPersistentCache, which only speeds up repeat builds — CI
+        // wipes the workspace between builds, so it provides no benefit here.
+        faster: {
+            swcJsLoader: true,
+            swcJsMinimizer: true,
+            swcHtmlMinimizer: true,
+            lightningCssMinimizer: true,
+            mdxCrossCompilerCache: true,
+            rspackBundler: true,
+            ssgWorkerThreads: true,
+            gitEagerVcs: true,
+            rspackPersistentCache: false,
+        },
     },
 
     // future.v4 enables mdx1CompatDisabledByDefault in 3.10+, which turns off HTML
@@ -46,6 +59,21 @@ const config: Config = {
             headingIds: true,
             admonitions: true,
         },
+        hooks: {
+            onBrokenMarkdownLinks: ({ sourceFilePath, url }: { sourceFilePath: string; url: string }) => {
+                const maintained =
+                    !sourceFilePath.includes("versioned_docs") ||
+                    ACTIVE_VERSIONS.some((v) => sourceFilePath.includes(`version-${v}`));
+                if (!maintained) {
+                    return;
+                }
+                const message = `Broken Markdown link in ${sourceFilePath}: "${url}"`;
+                if (isStrict) {
+                    throw new Error(message);
+                }
+                console.warn(`[docusaurus] ${message}`);
+            },
+        },
     },
 
     customFields: {
@@ -56,7 +84,6 @@ const config: Config = {
     baseUrl: "/",
 
     onBrokenLinks: isStrict ? "throw" : "warn",
-    onBrokenMarkdownLinks: isStrict ? "throw" : "warn",
     onBrokenAnchors: "ignore",
 
     i18n: {
@@ -88,7 +115,7 @@ const config: Config = {
                     lastmod: "date",
                     changefreq: null,
                     priority: null,
-                    ignorePatterns: LEGACY_VERSIONS.map((v) => `/${v}/**`),
+                    ignorePatterns: [...ACTIVE_VERSIONS, ...LEGACY_VERSIONS].map((v) => `/${v}/**`),
                 },
                 googleTagManager: {
                     containerId: "GTM-TDH4JWF2",

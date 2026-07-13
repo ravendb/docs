@@ -12,7 +12,6 @@ import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
-# Queue ETL: Amazon SQS
 <Admonition type="note" title="">
 
 * Amazon **SQS** (**S**imple **Q**ueue **S**ervice) is a distributed Message 
@@ -33,7 +32,7 @@ To define an Amazon SQS ETL task from Studio, see [Studio: Amazon SQS ETL Task](
 For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx).
 </Admonition>
 
-* In this page:  
+* In this article:  
   * [RavenDB ETL and Amazon SQS](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#ravendb-etl-and-amazon-sqs)  
   * [Queue methods](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#queue-methods)  
       * [Standard queueing](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#standard-queueing)  
@@ -51,6 +50,7 @@ For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../
       * [The loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#the-loadto-method)  
 
 </Admonition>
+
 ## RavenDB ETL and Amazon SQS
 
 * Utilizing SQS ETL tasks allows RavenDB to take the role of an event producer in an Amazon SQS 
@@ -135,6 +135,7 @@ transformation script's [loadTo method](../../../../server/ongoing-tasks/etl/que
    Use this method when throughput is not as important as the order and uniqueness of 
    arriving messages.  
   </Admonition>
+
 #### Caution: ETL message size -vs- Queue message size
 
 <Admonition type="warning" title="">
@@ -148,114 +149,166 @@ at its destination queue it may be charged for not 1 but 4 queue messages.
 
 ## Add an Amazon SQS connection string
 
-Prior to setting up the ETL task, define a connection string that the task will use to access your SQS destination.  
-The connection string includes the authorization credentials required to connect.
+* An Amazon SQS ETL task uses an **Amazon SQS connection string** to connect to its destination Amazon SQS service.  
+  The connection string stores the authentication settings and AWS region used to access SQS.
+
+* The ETL task does not store these connection details directly.  
+  Instead, its configuration references the connection string by name through the `ConnectionStringName` property.
+
+* An Amazon SQS connection string can be created in any of these ways:
+  * **From the Client API**:
+    [per-database](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api)
+    or [server-wide](../../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api).
+  * **From Studio**:
+    [per-database](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    [server-wide](../../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    or while creating an [Amazon SQS ETL task](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl.mdx#define-amazon-sqs-etl-task).
+
+* The example below adds a **per-database** Amazon SQS connection string from the **Client API**.
+  The connection string is stored in the current database record and can be used by tasks in that database.
+
 #### Authentication methods
-The authorization method that the ETL task uses to access the SQS target is determined 
-by properties of the connection string it uses, as shown in the example below.  
+
+An Amazon SQS connection string authenticates in one of two modes.  
+Set exactly one of these properties in `AmazonSqsConnectionSettings`:
+
+* **Basic**:  
+  AWS access credentials: `AccessKey`, `SecretKey`, and `RegionName`.
+* **Passwordless**:  
+  passwordless machine authentication for self-hosted mode.  
+  Set this property to `true` only when the host machine is already authorized to access SQS.
 
 #### Example
 
-<TabItem value="add_sqs_connection_string" label="add_sqs_connection_string">
-<CodeBlock language="csharp">
-{`// Prepare the connection string:
-// ==============================
-var conStr = new QueueConnectionString
-\{
-    // Provide a name for this connection string
-    Name = "mySqsConStr", 
-    
-    // Set the broker type
+<Tabs>
+<TabItem value="sync" label="Sync" default>
+```csharp
+// Define an Amazon SQS connection string
+// ======================================
+var amazonSqsConnectionString = new QueueConnectionString
+{
+    // The name used by the Amazon SQS ETL task configuration
+    Name = "amazon-sqs-connection-string-name",
+
+    // Set the queue broker type to Amazon SQS
     BrokerType = QueueBrokerType.AmazonSqs,
 
-    AmazonSqsConnectionSettings = new AmazonSqsConnectionSettings()
-    \{
-        // Define whether to use a password or not.
-        // Set to \`true\` to authorize a dedicated machine that requires no password.
-        // You can only use this option in self-hosted mode.
-        Passwordless = false,
+    // Configure the Amazon SQS connection
+    AmazonSqsConnectionSettings = new AmazonSqsConnectionSettings
+    {
+        Basic = new AmazonSqsCredentials
+        {
+            AccessKey = "<access-key>",
+            SecretKey = "<secret-key>",
+            RegionName = "<region-name>"
+        }
+    }
+};
 
-        // Sqs destination authorization parameters 
-        Basic =
-            \{
-                AccessKey = SqsAccessKey,
-                SecretKey = SqsSecretKey,
-                RegionName = SqsRegionName
-            \},
-    \}
-\};
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<QueueConnectionString>(amazonSqsConnectionString);
 
-// Deploy (send) the connection string to the server via the PutConnectionStringOperation:
-// =======================================================================================
-var res = store.Maintenance.Send(
-    new PutConnectionStringOperation<QueueConnectionString>(conStr));
-`}
-</CodeBlock>
+PutConnectionStringResult connectionStringResult =
+    store.Maintenance.Send(putConnectionStringOp);
+```
 </TabItem>
+<TabItem value="async" label="Async">
+```csharp
+// Define an Amazon SQS connection string
+// ======================================
+var amazonSqsConnectionString = new QueueConnectionString
+{
+    // The name used by the Amazon SQS ETL task configuration
+    Name = "amazon-sqs-connection-string-name",
 
-* **Passwordless**  
-  Defines whether to use a password or not.  
-  Set this property to `true` if the target machine is pre-authorized.  
-  This authorization method can only be used in self-hosted mode.  
+    // Set the queue broker type to Amazon SQS
+    BrokerType = QueueBrokerType.AmazonSqs,
 
-* **Basic**  
-  Defines these authorization properties:  
-   * `AccessKey`  
-   * `SecretKey`  
-   * `RegionName`  
+    // Configure the Amazon SQS connection
+    AmazonSqsConnectionSettings = new AmazonSqsConnectionSettings
+    {
+        Basic = new AmazonSqsCredentials
+        {
+            AccessKey = "<access-key>",
+            SecretKey = "<secret-key>",
+            RegionName = "<region-name>"
+        }
+    }
+};
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<QueueConnectionString>(amazonSqsConnectionString);
+
+PutConnectionStringResult connectionStringResult =
+    await store.Maintenance.SendAsync(putConnectionStringOp);
+```
+</TabItem>
+</Tabs>
+
 #### Syntax
 
-<TabItem value="amazon_sqs_con_str_settings" label="amazon_sqs_con_str_settings">
-<CodeBlock language="csharp">
-{`public class AmazonSqsConnectionSettings
-\{
-    public Basic Basic \{ get; set; \}
-    public bool Passwordless \{ get; set; \}
-\}
-public class Basic
-\{
-    public string AccessKey \{ get; set; \}
-    public string SecretKey \{ get; set; \}
-    public string RegionName \{ get; set; \}
-\}
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="queue_connection_string" label="queue_connection_string">
-<CodeBlock language="csharp">
-{`public class QueueConnectionString : ConnectionString
-\{
-    // Set to QueueBrokerType.AmazonSqs for an SQS connection string
-    public QueueBrokerType BrokerType \{ get; set; \}
-    
+<Tabs groupId="amazon-sqs-connection-string-syntax">
+<TabItem value="QueueConnectionString" label="QueueConnectionString">
+```csharp
+public sealed class QueueConnectionString : ConnectionString
+{
+    // Set the broker type to QueueBrokerType.AmazonSqs for an Amazon SQS connection string
+    public QueueBrokerType BrokerType { get; set; }
+
     // Configure this when setting a connection string for Kafka
-    public KafkaConnectionSettings KafkaConnectionSettings \{ get; set; \}
-    
+    public KafkaConnectionSettings KafkaConnectionSettings { get; set; }
+
     // Configure this when setting a connection string for RabbitMQ
-    public RabbitMqConnectionSettings RabbitMqConnectionSettings \{ get; set; \}
+    public RabbitMqConnectionSettings RabbitMqConnectionSettings { get; set; }
 
     // Configure this when setting a connection string for Azure Queue Storage
-    public AzureQueueStorageConnectionSettings AzureQueueStorageConnectionSettings \{ get; set; \}
+    public AzureQueueStorageConnectionSettings AzureQueueStorageConnectionSettings { get; set; }
 
     // Configure this when setting a connection string for Amazon SQS
-    public AmazonSqsConnectionSettings AmazonSqsConnectionSettings \{ get; set; \}
-\}
-`}
-</CodeBlock>
-</TabItem> 
-<TabItem value="queue_broker_type" label="queue_broker_type">
-<CodeBlock language="csharp">
-{`public enum QueueBrokerType
-\{
+    public AmazonSqsConnectionSettings AmazonSqsConnectionSettings { get; set; }
+
+    // Configure this when setting a connection string for Azure Service Bus
+    public AzureServiceBusConnectionSettings AzureServiceBusConnectionSettings { get; set; }
+}
+```
+</TabItem>
+<TabItem value="QueueBrokerType" label="QueueBrokerType">
+```csharp
+public enum QueueBrokerType
+{
     None,
     Kafka,
     RabbitMq,
     AzureQueueStorage,
-    AmazonSqs
-\}
-`}
-</CodeBlock>
+    AmazonSqs,
+    AzureServiceBus
+}
+```
 </TabItem>
+<TabItem value="AmazonSqsConnectionSettings" label="AmazonSqsConnectionSettings">
+```csharp
+public sealed class AmazonSqsConnectionSettings
+{
+    // Set this to authenticate with AWS access credentials
+    public AmazonSqsCredentials Basic { get; set; }
+
+    // Set this to true for passwordless machine authentication
+    public bool Passwordless { get; set; }
+}
+
+public class AmazonSqsCredentials
+{
+    public string AccessKey { get; set; }
+    public string SecretKey { get; set; }
+    public string RegionName { get; set; }
+}
+```
+</TabItem>
+</Tabs>
 
 
 
@@ -495,6 +548,5 @@ loadToOrdersQueue(orderData, \{
 `}
 </CodeBlock>
 </TabItem>
-
 
 

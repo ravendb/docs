@@ -50,6 +50,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
     * [Revisions](../../document-extensions/revisions/overview.mdx)
     * [Counters](../../document-extensions/counters/overview.mdx)
     * [Time Series](../../document-extensions/timeseries/overview.mdx)
+
 **What is _not_ being replicated:**
 
 * Server and cluster level features:
@@ -95,7 +96,7 @@ The required elements of an External Replication task are:
 * The `UpdateExternalReplicationOperation()` method.
 * The destination server needs the [certificate from the source server](../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers:-importing-and-exporting-certificates) 
   so that it will trust the source.
-* The [connection string](../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-raven-connection-string) 
+* The [connection string](../../server/ongoing-tasks/etl/raven.mdx#add-a-ravendb-connection-string) 
   with the destination server URL and any other details needed to access the destination server.
 * The following properties in the `ExternalReplication` object:
   * **ConnectionStringName**  

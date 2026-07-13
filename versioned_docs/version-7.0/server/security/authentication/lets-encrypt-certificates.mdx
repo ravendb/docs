@@ -35,6 +35,8 @@ Once the renewed certificate is obtained, [it will be replaced](../../../server/
 Automatic certificate renewal is available only if you obtained your certificate using the Setup Wizard and got your free RavenDB domain. Self-obtained certificates will not renew automatically, even if issued by Let's Encrypt.
 </Admonition>
 
+If a certificate is not renewed in time and expires, see [recover from an expired certificate](../../../server/security/authentication/recover-from-expired-certificate.mdx).
+
 When running as a cluster, the replacement process is a distributed operation. It involves sending the new certificate to all nodes, and requires all nodes to confirm that they have recieved and replaced the certificate.
 
 Only when all nodes have confirmed will the cluster start using this new certificate. 

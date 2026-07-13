@@ -1,345 +1,478 @@
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-* **Events** allow users to perform custom actions in response to operations made in 
-  a `Document Store` or a `Session`.  
+<Admonition type="note" title="">
 
-* An event is invoked when the selected action is executed on an entity, or querying is performed.  
+* **Events** let you run custom logic in response to operations made on a `DocumentStore`
+  or a `Session`.  
+  An event is invoked when the selected action runs on an entity, or when a query is made.
 
-* Subscribing to an event in a `Session` is valid only for this session.  
+* Subscribing to an event in a `Session` is valid for that session only.
 
-* Subscribing to an event at the `DocumentStore` level subscribes to this 
-  event in all subsequent sessions.  
-  Read more about `DocumentStore` events [here](../../../../client-api/how-to/subscribe-to-store-events.mdx).  
+* Subscribing to an event at the `DocumentStore` level subscribes to that event in all
+  subsequent sessions.  
+  Subscribe with `store.addSessionListener(eventName, handler)`, passing the event name,
+  e.g. for the `afterSaveChanges` event:  
+  `store.addSessionListener("afterSaveChanges", event => onAfterSaveChanges(event));`  
+  Read more about store events [here](../../../../client-api/how-to/subscribe-to-store-events.mdx).
 
-## OnBeforeStore
+* In this article:
+   * [Session events](../../../../client-api/session/how-to/subscribe-to-events.mdx#session-events)
+      * [beforeStore](../../../../client-api/session/how-to/subscribe-to-events.mdx#beforestore)
+      * [beforeDelete](../../../../client-api/session/how-to/subscribe-to-events.mdx#beforedelete)
+      * [afterSaveChanges](../../../../client-api/session/how-to/subscribe-to-events.mdx#aftersavechanges)
+      * [beforeQuery](../../../../client-api/session/how-to/subscribe-to-events.mdx#beforequery)
+      * [beforeConversionToDocument](../../../../client-api/session/how-to/subscribe-to-events.mdx#beforeconversiontodocument)
+      * [afterConversionToDocument](../../../../client-api/session/how-to/subscribe-to-events.mdx#afterconversiontodocument)
+      * [beforeConversionToEntity](../../../../client-api/session/how-to/subscribe-to-events.mdx#beforeconversiontoentity)
+      * [afterConversionToEntity](../../../../client-api/session/how-to/subscribe-to-events.mdx#afterconversiontoentity)
+   * [Unsubscribing from an event](../../../../client-api/session/how-to/subscribe-to-events.mdx#unsubscribing-from-an-event)
+   * [Syntax](../../../../client-api/session/how-to/subscribe-to-events.mdx#syntax)
 
-This event is invoked as a part of `saveChanges()` but before it is actually sent to the server.  
-It should be defined with this signature:  
+</Admonition>
 
-<TabItem value="OnBeforeStore" label="OnBeforeStore">
-<CodeBlock language="js">
-{`store.addSessionListener("beforeStore", event => onBeforeStore(event));
-`}
-</CodeBlock>
-</TabItem>
+<Panel heading="Session events">
 
-The usage of `SessionBeforeStoreEventArgs`:  
+<ContentFrame>
 
-<TabItem value="beforeStoreEventArgs" label="beforeStoreEventArgs">
-<CodeBlock language="js">
-{`const beforeStoreEventArgs = new SessionBeforeStoreEventArgs(session, documentId, entity);
-`}
-</CodeBlock>
-</TabItem>
+### `beforeStore`
 
-### Example
+This event is invoked as a part of `saveChanges()`, but before it is actually sent to the server.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-Say we want to discontinue all of the products that are not in stock.  
+#### Example: discontinue out-of-stock products
 
-<TabItem value="on_before_store_event" label="on_before_store_event">
-<CodeBlock language="js">
-{`function onBeforeStore(args) \{
-    if (args.getEntity() instanceof Product) \{
+```js
+function onBeforeStore(args) {
+    if (args.getEntity() instanceof Product) {
         const product = args.getEntity();
-        if (product.unitsInStock === 0) \{
+        if (product.unitsInStock === 0) {
             product.discontinued = true;
-        \}
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+        }
+    }
+}
+```
+<br />
 
-After we subscribe to the event, every stored entity will invoke the method.  
+After you subscribe to the event, every stored entity invokes the method:
 
-<TabItem value="store_session" label="store_session">
-<CodeBlock language="js">
-{`store.addSessionListener("beforeStore", event => onBeforeStore(event));
+```js
+store.addSessionListener("beforeStore", event => onBeforeStore(event));
 
-session = store.openSession();
-await session.store(new Product(
-    \{
-        name: "RavenDB v3.5",
-        unitsInStock: 0
-    \})
-)
-
-await session.store(new Product(
-    \{
-        name: "RavenDB v4.0",
-        unitsInStock: 1000
-    \})
-)
+const session = store.openSession();
+await session.store(new Product({ name: "RavenDB v3.5", unitsInStock: 0 }));
+await session.store(new Product({ name: "RavenDB v4.0", unitsInStock: 1000 }));
 
 await session.saveChanges(); // Here the method is invoked
-`}
-</CodeBlock>
-</TabItem>
+```
 
+</ContentFrame>
 
+<ContentFrame>
 
-## OnBeforeDelete
+### `beforeDelete`
 
-This event is invoked by `delete(id)` or `delete(entity)`. It is only executed when `saveChanges()` 
+This event is invoked by `delete(id)` or `delete(entity)`. It is executed only when `saveChanges()`
 is called, but before the commands are actually sent to the server.  
-It should be defined with this signature:  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-<TabItem value="before_delete_event" label="before_delete_event">
-<CodeBlock language="js">
-{`store.addSessionListener("beforeDelete", event => onBeforeDelete(event));
-`}
-</CodeBlock>
-</TabItem>
+#### Example: prevent deletions
 
-The usage of `SessionBeforeDeleteEventArgs`:  
-
-<TabItem value="beforeDeleteEventArgs" label="beforeDeleteEventArgs">
-<CodeBlock language="js">
-{`const beforeDeleteEventArgs = new SessionBeforeDeleteEventArgs(session, documentId, entity);
-`}
-</CodeBlock>
-</TabItem>
-
-### Example
-
-To prevent anyone from deleting entities we can create a method as follows:
-
-<TabItem value="on_Before_Delete_Event" label="on_Before_Delete_Event">
-<CodeBlock language="js">
-{`function onBeforeDelete(args) \{
+```js
+function onBeforeDelete(args) {
     throw new Error("Not implemented");
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
+<br />
 
-and subscribe it to the session:
+Subscribe to the event:
 
-<TabItem value="delete_session" label="delete_session">
-<CodeBlock language="js">
-{`store.addSessionListener("beforeDelete", event => onBeforeDelete(event));
+```js
+store.addSessionListener("beforeDelete", event => onBeforeDelete(event));
 
-session = store.openSession();
-let product = await session.load("products/1-A", Product);
-let product2 = await session.load("products/2-A", Product);
+const session = store.openSession();
+const product = await session.load("products/1-A", Product);
 
 // onBeforeDelete is triggered whether you
 // call delete() on an entity or on its ID
 await session.delete(product);
-await session.saveChanges(); // NotSupportedException will be thrown
+await session.saveChanges(); // Error will be thrown
+```
 
-await session.delete("products/2-A");
-await session.saveChanges(); // NotSupportedException will be thrown
-`}
-</CodeBlock>
-</TabItem>
+</ContentFrame>
 
+<ContentFrame>
 
+### `afterSaveChanges`
 
-## OnAfterSaveChanges
+This event is invoked after `saveChanges` returns.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-This event is invoked after the `saveChanges` is returned.  
-It should be defined with this signature:  
+#### Example: log each saved document
 
-<TabItem value="after_save_event" label="after_save_event">
-<CodeBlock language="js">
-{`store.addSessionListener("afterSave", event => onAfterSaveChanges(event));
-`}
-</CodeBlock>
-</TabItem>
-
-
-The usage of `SessionAfterSaveChangesEventArgs`:
-
-<TabItem value="afterSaveChangesEventArgs" label="afterSaveChangesEventArgs">
-<CodeBlock language="js">
-{`const afterSaveChangesEventArgs = new SessionAfterSaveChangesEventArgs(session, documentId, entity);
-`}
-</CodeBlock>
-</TabItem>
-
-
-### Example
-
-If we want to log each entity that was saved, we can create a method as follows:  
-
-<TabItem value="on_after_save_changes_event" label="on_after_save_changes_event">
-<CodeBlock language="js">
-{`function onAfterSaveChanges(args) \{
+```js
+function onAfterSaveChanges(args) {
     console.log("Document " + args.documentId + " was saved.");
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
+<br />
 
+Subscribe to the event:
 
+```js
+store.addSessionListener("afterSaveChanges", event => onAfterSaveChanges(event));
+```
 
-## OnBeforeQuery
+</ContentFrame>
 
-This event is invoked just before the query is sent to the server. 
-It should be defined with this signature:  
+<ContentFrame>
 
-<TabItem value="before_query_event" label="before_query_event">
-<CodeBlock language="js">
-{`store.addSessionListener("beforeQuery", event => onBeforeQuery(event));
-`}
-</CodeBlock>
-</TabItem>
+### `beforeQuery`
 
-The usage of `SessionBeforeQueryEventArgs`:  
+This event is invoked just before the query is sent to the server.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-<TabItem value="beforeQueryEventArgs" label="beforeQueryEventArgs">
-<CodeBlock language="js">
-{`const beforeQueryEventArgs = new SessionBeforeQueryEventArgs(session, documentId, entity);
-`}
-</CodeBlock>
-</TabItem>
+#### Example: disable query caching
 
-### Example I
-
-If you want to disable caching of all query results, you can implement the method as follows:  
-
-<TabItem value="on_before_query_execute_event" label="on_before_query_execute_event">
-<CodeBlock language="js">
-{`function onBeforeQuery(args) \{
+```js
+function onBeforeQuery(args) {
     args.queryCustomization.noCaching();
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
+<br />
 
-### Example II
+#### Example: wait for non-stale results
 
-If you want each query to [wait for non-stale results](../../../../indexes/stale-indexes.mdx) you can create an event as follows:  
+To have each query [wait for non-stale results](../../../../indexes/stale-indexes.mdx),
+define the event as follows:
 
-<TabItem value="on_before_query_execute_event_2" label="on_before_query_execute_event_2">
-<CodeBlock language="js">
-{`function onBeforeQuery(args) \{
+```js
+function onBeforeQuery(args) {
     args.queryCustomization.waitForNonStaleResults(30);
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
+<br />
 
+Subscribe to the event:
 
+```js
+store.addSessionListener("beforeQuery", event => onBeforeQuery(event));
+```
 
-## OnBeforeConversionToDocument
+</ContentFrame>
 
-This event is invoked before conversion of an entity to blittable JSON document. E.g. it's called when sending a document to a server.  
-It should be defined with this signature:  
+<ContentFrame>
 
-<TabItem value="beforeConversionToDocument_event" label="beforeConversionToDocument_event">
-<CodeBlock language="js">
-{`store.addSessionListener("beforeConversionToDocument", event => onBeforeConversionToDocument(event));
-`}
-</CodeBlock>
-</TabItem>
+### `beforeConversionToDocument`
 
-The usage of `BeforeConversionToDocumentEventArgs`:  
+This event is invoked before an entity is converted to a JSON document, e.g. when a document
+is sent to the server.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-<TabItem value="beforeConversionToDocument" label="beforeConversionToDocument">
-<CodeBlock language="js">
-{`const beforeConversionToDocumentEventArgs = new BeforeConversionToDocumentEventArgs(session, documentId, entity);
-`}
-</CodeBlock>
-</TabItem>
+#### Example: modify an entity before conversion
 
-### Example
-
-<TabItem value="on_before_conversion_to_document" label="on_before_conversion_to_document">
-<CodeBlock language="js">
-{`function onBeforeConversionToDocument(args) \{
-    if (args.getEntity() instanceof Product) \{
-        const product = args.getEntity();
+```js
+function onBeforeConversionToDocument(args) {
+    if (args.entity instanceof Product) {
+        const product = args.entity;
         product.before = true;
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+    }
+}
+```
+<br />
 
+Subscribe to the event:
 
+```js
+store.addSessionListener("beforeConversionToDocument", event => onBeforeConversionToDocument(event));
+```
 
-## OnAfterConversionToDocument
+</ContentFrame>
 
-This event is invoked after conversion of an entity to blittable JSON document.  
-It should be defined with this signature:  
+<ContentFrame>
 
-<TabItem value="afterConversionToDocument_event" label="afterConversionToDocument_event">
-<CodeBlock language="js">
-{`store.addSessionListener("afterConversionToDocument", event => onAfterConversionToDocument(event));
-`}
-</CodeBlock>
-</TabItem>
+### `afterConversionToDocument`
 
-The class `AfterConversionToDocumentEventArgs`:  
+This event is invoked after an entity is converted to a JSON document.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-<TabItem value="afterConversionToDocument" label="afterConversionToDocument">
-<CodeBlock language="js">
-{`const afterConversionToDocument = new AfterConversionToDocumentEventArgs(session, documentId, entity, document);
-`}
-</CodeBlock>
-</TabItem>
+#### Example: act on a document after conversion
 
+```js
+function onAfterConversionToDocument(args) {
+    if (args.entity instanceof Product) {
+        const product = args.entity;
+        product.after = true;
+    }
+}
+```
+<br />
 
-### Example
+Subscribe to the event:
 
-<TabItem value="on_after_conversion_to_document" label="on_after_conversion_to_document">
-<CodeBlock language="js">
-{`function onAfterConversionToDocument(args) \{
-    if (args.getEntity() instanceof Product) \{
-        const product = args.getEntity();
-        if (product.document.after == null) \{
-            product.document.after = true;
-        \}
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+```js
+store.addSessionListener("afterConversionToDocument", event => onAfterConversionToDocument(event));
+```
 
+</ContentFrame>
 
+<ContentFrame>
 
-## OnBeforeConversionToEntity
+### `beforeConversionToEntity`
 
-This event is invoked before conversion of a JSON document to an entity. E.g. it's called when loading a document.  
+This event is invoked before a JSON document is converted to an entity, e.g. when a document
+is loaded.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-It takes the argument `BeforeConversionToEntityEventArgs`, that consists of a JSON document, its ID and type, and the session instance.  
+#### Example: modify a document before conversion
 
-<TabItem value="on_before_conversion_to_entity" label="on_before_conversion_to_entity">
-<CodeBlock language="js">
-{`store.addSessionListener("beforeConversionToEntity", (event: BeforeConversionToEntityEventArgs) => \{
+```js
+store.addSessionListener("beforeConversionToEntity", (event) => {
     const document = ObjectUtil.clone(event.document);
 
     document.before = true;
     event.document = document;
-\});
-`}
-</CodeBlock>
-</TabItem>
+});
+```
 
+</ContentFrame>
 
+<ContentFrame>
 
+### `afterConversionToEntity`
 
-## OnAfterConversionToEntity
+This event is invoked after a JSON document is converted to an entity.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-This event is invoked after conversion of a JSON document to an entity. It takes the argument `AfterConversionToEntityEventArgs`, that consists of a JSON document, its ID, the session instance and a converted entity.  
+#### Example: modify an entity after conversion
 
-<TabItem value="on_after_conversion_to_entity" label="on_after_conversion_to_entity">
-<CodeBlock language="js">
-{`store.addSessionListener("afterConversionToEntity", (event: AfterConversionToEntityEventArgs) => \{
-    if (event.entity instanceof Item) \{
+```js
+store.addSessionListener("afterConversionToEntity", (event) => {
+    if (event.entity instanceof Item) {
         const item = event.entity;
         item.after = true;
-    \}
-\});
-`}
-</CodeBlock>
+    }
+});
+```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Unsubscribing from an event">
+
+To stop responding to an event, detach the handler with `store.removeSessionListener`, passing
+the same event name and handler you subscribed with:
+
+```js
+store.removeSessionListener("beforeStore", onBeforeStore);
+```
+<br />
+
+Session events can be unsubscribed at any time.
+
+</Panel>
+
+<Panel heading="Syntax">
+
+<ContentFrame>
+
+### Methods
+
+```js
+store.addSessionListener(eventName, eventHandler)
+store.removeSessionListener(eventName, eventHandler)
+```
+<br />
+
+`eventName` is the name of the session event to handle:
+
+| Event name | Event arguments |
+| --- | --- |
+| `"beforeStore"` | `SessionBeforeStoreEventArgs` |
+| `"beforeDelete"` | `SessionBeforeDeleteEventArgs` |
+| `"afterSaveChanges"` | `SessionAfterSaveChangesEventArgs` |
+| `"beforeQuery"` | `SessionBeforeQueryEventArgs` |
+| `"beforeConversionToDocument"` | `BeforeConversionToDocumentEventArgs` |
+| `"afterConversionToDocument"` | `AfterConversionToDocumentEventArgs` |
+| `"beforeConversionToEntity"` | `BeforeConversionToEntityEventArgs` |
+| `"afterConversionToEntity"` | `AfterConversionToEntityEventArgs` |
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Event arguments
+
+<Tabs groupId="event-args-1">
+<TabItem value="SessionBeforeStoreEventArgs" label="SessionBeforeStoreEventArgs" default>
+
+```js
+class SessionBeforeStoreEventArgs
+{
+    session              // InMemoryDocumentSessionOperations
+    documentId           // string
+    getEntity()          // object
+    getDocumentMetadata() // IMetadataDictionary
+}
+```
+
+| Member | Description |
+| --- | --- |
+| **session** | The session that triggered the event |
+| **documentId** | The ID of the document being stored |
+| **getEntity()** | The entity being stored |
+| **getDocumentMetadata()** | The document's metadata |
+
 </TabItem>
+<TabItem value="SessionBeforeDeleteEventArgs" label="SessionBeforeDeleteEventArgs">
 
+```js
+class SessionBeforeDeleteEventArgs
+{
+    session            // InMemoryDocumentSessionOperations
+    documentId         // string
+    entity             // object
+    documentMetadata   // IMetadataDictionary
+}
+```
 
+| Member | Description |
+| --- | --- |
+| **session** | The session that triggered the event |
+| **documentId** | The ID of the document being deleted |
+| **entity** | The entity being deleted |
+| **documentMetadata** | The document's metadata |
 
+</TabItem>
+</Tabs>
 
+<Tabs groupId="event-args-2">
+<TabItem value="SessionAfterSaveChangesEventArgs" label="SessionAfterSaveChangesEventArgs" default>
+
+```js
+class SessionAfterSaveChangesEventArgs
+{
+    session            // InMemoryDocumentSessionOperations
+    documentId         // string
+    entity             // object
+    documentMetadata   // IMetadataDictionary
+}
+```
+
+| Member | Description |
+| --- | --- |
+| **session** | The session that triggered the event |
+| **documentId** | The ID of the document that was saved |
+| **entity** | The entity that was saved |
+| **documentMetadata** | The document's metadata |
+
+</TabItem>
+<TabItem value="SessionBeforeQueryEventArgs" label="SessionBeforeQueryEventArgs">
+
+```js
+class SessionBeforeQueryEventArgs
+{
+    session              // InMemoryDocumentSessionOperations
+    queryCustomization   // IDocumentQueryCustomization
+}
+```
+
+| Member | Description |
+| --- | --- |
+| **session** | The session that triggered the event |
+| **queryCustomization** | The query's customizations |
+
+</TabItem>
+</Tabs>
+
+<Tabs groupId="event-args-3">
+<TabItem value="BeforeConversionToDocumentEventArgs" label="BeforeConversionToDocumentEventArgs" default>
+
+```js
+class BeforeConversionToDocumentEventArgs
+{
+    id        // string
+    entity    // object
+    session   // InMemoryDocumentSessionOperations
+}
+```
+
+| Member | Description |
+| --- | --- |
+| **id** | The ID of the document being converted |
+| **entity** | The entity being converted to a document |
+| **session** | The session that triggered the event |
+
+</TabItem>
+<TabItem value="AfterConversionToDocumentEventArgs" label="AfterConversionToDocumentEventArgs">
+
+```js
+class AfterConversionToDocumentEventArgs
+{
+    id        // string
+    entity    // object
+    document  // Reference<object>
+    session   // InMemoryDocumentSessionOperations
+}
+```
+
+| Member | Description |
+| --- | --- |
+| **id** | The ID of the converted document |
+| **entity** | The entity that was converted |
+| **document** | The resulting JSON document |
+| **session** | The session that triggered the event |
+
+</TabItem>
+</Tabs>
+
+<Tabs groupId="event-args-4">
+<TabItem value="BeforeConversionToEntityEventArgs" label="BeforeConversionToEntityEventArgs" default>
+
+```js
+class BeforeConversionToEntityEventArgs
+{
+    id        // string
+    type      // DocumentType
+    document  // object
+    session   // InMemoryDocumentSessionOperations
+}
+```
+
+| Member | Description |
+| --- | --- |
+| **id** | The ID of the document being converted |
+| **type** | The target entity type |
+| **document** | The JSON document being converted |
+| **session** | The session that triggered the event |
+
+</TabItem>
+<TabItem value="AfterConversionToEntityEventArgs" label="AfterConversionToEntityEventArgs">
+
+```js
+class AfterConversionToEntityEventArgs
+{
+    id        // string
+    document  // object
+    entity    // object
+    session   // InMemoryDocumentSessionOperations
+}
+```
+
+| Member | Description |
+| --- | --- |
+| **id** | The ID of the converted document |
+| **document** | The source JSON document |
+| **entity** | The resulting entity |
+| **session** | The session that triggered the event |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>

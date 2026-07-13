@@ -29,8 +29,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
   backup **can** be created for a sharded database and restored into either 
   a sharded or a non-sharded database.  
 
-* A [snapshot](../../server/ongoing-tasks/backup-overview.mdx#snapshot) 
-  backup **cannot** be created for a sharded database.  
+* A [snapshot](../../server/ongoing-tasks/backup-overview.mdx#snapshot) **cannot** be created for a sharded database  
+  (and sharded databases are automatically excluded from server-wide **snapshot** backups).    
 
 * A manual [one-time](../../studio/database/tasks/backup-task.mdx#manually-creating-one-time-backups) 
   backup **can** be created for a sharded database.  
@@ -140,23 +140,16 @@ Backed-up data includes both
 
 ## Backup Type
 
-A shard backup task can create a 
-[Logical backup](../../server/ongoing-tasks/backup-overview.mdx#logical-backup) 
-only.  
+A backup task for a sharded database can create a [logical backup](../../server/ongoing-tasks/backup-overview.mdx#logical-backup) only.
 
-A [Snapshot](../../server/ongoing-tasks/backup-overview.mdx#snapshot) 
-backup **cannot** be created for a sharded database.  
+A [Snapshot](../../server/ongoing-tasks/backup-overview.mdx#snapshot) backup **cannot** be created for a sharded database.  
 
-`Logical` backups created for a sharded database can be restored into 
-both sharded and non-sharded databases.  
+`Logical` backups created for a sharded database can be restored into both sharded and non-sharded databases.  
 
 ## Backup Scope
 
-A shard backup task can create 
-a [Full backup](../../server/ongoing-tasks/backup-overview.mdx#full-backup) 
-with the entire content of the shard, or an 
-[Incremental Backup](../../server/ongoing-tasks/backup-overview.mdx#incremental-backup) 
-with just the difference between the current database data and the last backed-up data.  
+A backup task for a sharded database can create a [full backup](../../server/ongoing-tasks/backup-overview.mdx#full-backup) with the entire content of each shard,  
+or an [incremental backup](../../server/ongoing-tasks/backup-overview.mdx#incremental-backup) with just the difference between the current data and the last backed-up data.  
 
 ## Naming Convention
 
@@ -178,15 +171,16 @@ with just the difference between the current database data and the last backed-u
 
 ## Server-Wide Backup
 
-[Server-wide backup](../../client-api/operations/maintenance/backup/backup-overview.mdx#server-wide-backup) 
-backs up all the databases hosted by the cluster, by creating a backup 
-task for each database and executing all tasks at a scheduled time.  
+[Server-wide backup](../../studio/server/server-wide-backup.mdx) creates and runs the required backup tasks
+for the databases hosted by the cluster at the scheduled time.
+    
+* A server-wide **logical** backup creates backups for both non-sharded and sharded databases.  
+  For a sharded database, RavenDB defines and executes a backup task for each shard,  
+  as if the task was defined manually.  
 
-* A server-wide backup will create backups for both non-sharded **and** 
-  sharded databases.  
-* To create a backup for an entire sharded database, the operation will 
-  define and execute a backup task for each shard, behaving as if it was 
-  defined manually.  
+* A server-wide **snapshot** backup excludes sharded databases, since snapshots cannot be created for sharded databases.
+  RavenDB automatically adds sharded database names to the server-wide snapshot task's `ExcludedDatabases` list,
+  including sharded databases created after the task already exists.  
 
 ## Example
 
@@ -256,7 +250,7 @@ This type is specific to a sharded database, and casting it using a non-sharded 
 | Create [Snapshot](../../server/ongoing-tasks/backup-overview.mdx#snapshot) backups for sharded databases | **No** | Snapshot backups CANNOT be created for (nor restored to) sharded databases. |
 | Create **periodic backup tasks** for sharded databases | **Yes** |  |
 | Run a manual [one-time](../../studio/database/tasks/backup-task.mdx#manually-creating-one-time-backups) backup operation on a sharded database | **Yes** |  |
-| Include sharded databases in a [server-wide backup operation](../../sharding/backup-and-restore/backup.mdx#server-wide-backup) | **Yes** | A server-wide backup operation will create backups for all databases, including the sharded ones. |
+| Include sharded databases in a [server-wide backup operation](../../sharding/backup-and-restore/backup.mdx#server-wide-backup)   | **Yes (logical only)** | A server-wide **logical** backup includes all databases, including sharded ones. Sharded databases are automatically **excluded** from server-wide **snapshot** backups. |
 
 
 
