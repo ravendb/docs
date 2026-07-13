@@ -120,6 +120,12 @@ This means:
 
 CDC Sink does not provide exactly-once delivery. Regular column mapping is safe to re-apply,  
 but custom patches must be idempotent if they can run more than once for the same source change.
+    
+<Admonition type="note" title="">
+This guarantee assumes the source database can still provide changes from the saved position.  
+For PostgreSQL backup/restore cases where the replication slot no longer retains the saved LSN,  
+see [Backup/Restore Task](../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/backup-restore-task.mdx#restore-considerations).
+</Admonition> 
 
 </Panel>
 

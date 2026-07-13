@@ -90,7 +90,15 @@ Task was running, then stopped with an error.
 
 * **PostgreSQL replication slot issue**  
   Verify that the configured slot exists and uses the `pgoutput` plugin.
-  If the slot was dropped and recreated, CDC Sink may detect that the slot starts after the task's saved LSN;
+    
+  If a slot with the task's configured name already exists but uses a different plugin,
+  CDC Sink fails to start with an error such as
+  *"Replication slot '&lt;name&gt;' exists but uses plugin '&lt;plugin&gt;' instead of 'pgoutput'"*.  
+  Drop the conflicting slot so CDC Sink can recreate it with `pgoutput`
+  (see [Dropping a replication slot](../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/cleanup-and-maintenance.mdx#dropping-a-replication-slot)).  
+  To use a different slot name, delete the task and create a new one with a distinct `SlotName`.
+    
+  If the slot was dropped and recreated, CDC Sink may detect that the slot starts after the task's saved LSN;  
   changes in that gap cannot be recovered from the slot.
 
 * **Source table schema changed**  
@@ -102,8 +110,8 @@ Task was running, then stopped with an error.
   Check slot lag and relevant PostgreSQL WAL-retention settings, such as `max_slot_wal_keep_size`.
 
 * **Persistent connection failure**  
-  The source has been unreachable through multiple retry cycles.
-  The first fallback delay is 5 seconds; subsequent retry delays roughly double up to the `CdcSink.MaxFallbackTimeInSec` base cap (default 15 minutes), with small jitter.
+  The source has been unreachable through multiple retry cycles. The first fallback delay is 5 seconds;
+  subsequent retry delays roughly double up to the `CdcSink.MaxFallbackTimeInSec` base cap (default 15 minutes), with small jitter.
   Restore connectivity and the task resumes automatically on the next retry.
 
 </Panel>

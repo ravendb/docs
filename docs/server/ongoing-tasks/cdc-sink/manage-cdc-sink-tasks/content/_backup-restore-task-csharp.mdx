@@ -142,6 +142,28 @@ await restoreOp.WaitForCompletionAsync();
 
 </Admonition>
 
+<Admonition type="note" title="">
+
+#### PostgreSQL: saved LSN no longer retained by the slot
+    
+* The restored task uses the `LastLsn` saved in its `@cdc-states/<task name>` document.  
+  This works only if the PostgreSQL replication slot can still serve WAL from that position.
+    
+* If the slot was dropped and recreated after the backup, 
+  or if PostgreSQL no longer retains the WAL needed for the saved `LastLsn`,
+  the slot's `restart_lsn` can be ahead of the restored `LastLsn`.  
+  Changes in that gap cannot be recovered from the slot.
+    
+* When this happens, CDC Sink raises a warning notification stating that the slot's restart LSN is ahead of the saved position.
+  To start over from the current source data, remove the saved CDC Sink state (`@cdc-states/<task name>`) 
+  or create the task with a new name, then let the initial load run again.  
+  If the gap might include deletes, verify or rebuild the affected target documents as needed.
+    
+* To avoid this gap, restore the source database and the RavenDB database to consistent points in time,  
+  and do not drop the slot while a backup that references it may still be restored.
+    
+</Admonition>
+
 </Panel>    
 
 <Panel heading="Behavior summary">
