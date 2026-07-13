@@ -4,6 +4,17 @@ import fs from "fs";
 import matter from "gray-matter";
 const yaml = require("js-yaml");
 
+// Build-time-only helper for reading intrinsic image dimensions. It's a transitive
+// dependency of the image pipeline, so the require is guarded: if it's ever absent,
+// sample cards simply ship without width/height rather than failing the build.
+let imageSize: ((input: Buffer) => { width?: number; height?: number }) | null = null;
+try {
+    const mod = require("image-size");
+    imageSize = typeof mod === "function" ? mod : mod.imageSize || mod.default || null;
+} catch {
+    imageSize = null;
+}
+
 interface TagDefinition {
     label: string;
     description?: string;
@@ -23,6 +34,8 @@ export interface Sample {
     description?: string;
     image?: string;
     imgAlt?: string;
+    imgWidth?: number;
+    imgHeight?: number;
 }
 
 export interface PluginData {
@@ -135,6 +148,19 @@ export default function recentSamplesPlugin(context, _options): Plugin {
                     };
                 });
 
+                let imgWidth: number | undefined;
+                let imgHeight: number | undefined;
+                if (imageSize && typeof data.image === "string") {
+                    try {
+                        const absImagePath = path.join(context.siteDir, "static", data.image);
+                        const dimensions = imageSize(fs.readFileSync(absImagePath));
+                        imgWidth = dimensions.width;
+                        imgHeight = dimensions.height;
+                    } catch {
+                        // Cover dimensions are optional; ignore missing/unreadable images.
+                    }
+                }
+
                 return {
                     id: path.basename(filePath, path.extname(filePath)),
                     title: data.title,
@@ -143,7 +169,31 @@ export default function recentSamplesPlugin(context, _options): Plugin {
                     description: data.description,
                     image: data.image,
                     img_alt: data.img_alt,
+                    imgWidth,
+                    imgHeight,
                 };
+            });
+
+            let orderList: string[] = [];
+            const orderFilePath = path.join(samplesDir, "order.yml");
+            if (fs.existsSync(orderFilePath)) {
+                try {
+                    const loaded = yaml.load(fs.readFileSync(orderFilePath, "utf8"));
+                    if (Array.isArray(loaded)) {
+                        orderList = loaded.map((id) => String(id));
+                    }
+                } catch (e) {
+                    console.error("Failed to load samples/order.yml", e);
+                }
+            }
+
+            const orderIndex = new Map<string, number>();
+            orderList.forEach((id, index) => orderIndex.set(id, index));
+            const rankOf = (id: string) => (orderIndex.has(id) ? orderIndex.get(id)! : Number.MAX_SAFE_INTEGER);
+
+            samples.sort((a, b) => {
+                const rankDiff = rankOf(a.id) - rankOf(b.id);
+                return rankDiff !== 0 ? rankDiff : (a.title || "").localeCompare(b.title || "");
             });
 
             const allTags: Array<{

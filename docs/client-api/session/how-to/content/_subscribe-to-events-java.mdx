@@ -1,91 +1,77 @@
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-* **Events** allow users to perform custom actions in response to operations made in 
-  a `Document Store` or a `Session`.  
+<Admonition type="note" title="">
 
-* An event is invoked when the selected action is executed on an entity, or querying is performed.  
+* **Events** let you run custom logic in response to operations made on a `DocumentStore`
+  or a `Session`.  
+  An event is invoked when the selected action runs on an entity, or when a query is made.
 
-* Subscribing to an event in a `Session` is valid only for this session.  
+* Subscribing to an event in a `Session` is valid for that session only.
 
-* Subscribing to an event at the `DocumentStore` level subscribes to this 
-  event in all subsequent sessions.  
-  Read more about `DocumentStore` events [here](../../../../client-api/how-to/subscribe-to-store-events.mdx).  
+* Subscribing to an event at the `DocumentStore` level subscribes to that event in all
+  subsequent sessions.  
+  Subscribe with the matching `add*Listener` method on the store, e.g. for the
+  `AfterSaveChanges` event:  
+  `store.addAfterSaveChangesListener(this::onAfterSaveChangesEvent);`  
+  Read more about store events [here](../../../../client-api/how-to/subscribe-to-store-events.mdx).
 
-## beforeStoreListener
+* In this article:
+   * [Session events](../../../../client-api/session/how-to/subscribe-to-events.mdx#session-events)
+      * [beforeStore](../../../../client-api/session/how-to/subscribe-to-events.mdx#beforestore)
+      * [beforeDelete](../../../../client-api/session/how-to/subscribe-to-events.mdx#beforedelete)
+      * [afterSaveChanges](../../../../client-api/session/how-to/subscribe-to-events.mdx#aftersavechanges)
+      * [beforeQuery](../../../../client-api/session/how-to/subscribe-to-events.mdx#beforequery)
+      * [beforeConversionToDocument](../../../../client-api/session/how-to/subscribe-to-events.mdx#beforeconversiontodocument)
+      * [afterConversionToDocument](../../../../client-api/session/how-to/subscribe-to-events.mdx#afterconversiontodocument)
+      * [beforeConversionToEntity](../../../../client-api/session/how-to/subscribe-to-events.mdx#beforeconversiontoentity)
+      * [afterConversionToEntity](../../../../client-api/session/how-to/subscribe-to-events.mdx#afterconversiontoentity)
+   * [Unsubscribing from an event](../../../../client-api/session/how-to/subscribe-to-events.mdx#unsubscribing-from-an-event)
+   * [Syntax](../../../../client-api/session/how-to/subscribe-to-events.mdx#syntax)
 
-This event is invoked as a part of `saveChanges` but before it is actually sent to the server.  
-It should be defined with this signature:  
+</Admonition>
 
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public void addBeforeStoreListener(EventHandler<BeforeStoreEventArgs> handler);
+<Panel heading="Session events">
 
-public void removeBeforeStoreListener(EventHandler<BeforeStoreEventArgs> handler);
-`}
-</CodeBlock>
-</TabItem>
+<ContentFrame>
 
-| Parameters | Type | Description |
-| - | - | - |
-| **handler** | `EventHandler<BeforeStoreEventArgs>` | handle this event |
+### `beforeStore`
 
-The class `BeforeStoreEventArgs`:  
+This event is invoked as a part of `saveChanges`, but before it is actually sent to the server.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public BeforeStoreEventArgs(InMemoryDocumentSessionOperations session, String documentId, Object entity);
-`}
-</CodeBlock>
-</TabItem>
+```java
+private void onBeforeStoreEvent(Object sender, BeforeStoreEventArgs args);
+```
+<br />
 
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public class BeforeStoreEventArgs
-\{
-    private IMetadataDictionary _documentMetadata;
-    private final InMemoryDocumentSessionOperations session;
-    private final String documentId;
-    private final Object entity;
+#### Example: discontinue out-of-stock products
 
-    //getters and setters (omitted for brevity)
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-### Example
-
-Say we want to discontinue all of the products that are not in stock.  
-
-<TabItem value="on_before_store_event" label="on_before_store_event">
-<CodeBlock language="java">
-{`private void onBeforeStoreEvent(Object sender, BeforeStoreEventArgs args) \{
-    if (args.getEntity() instanceof Product) \{
+```java
+private void onBeforeStoreEvent(Object sender, BeforeStoreEventArgs args) {
+    if (args.getEntity() instanceof Product) {
         Product product = (Product) args.getEntity();
-        if (product.getUnitsInStock() == 0) \{
+        if (product.getUnitsInStock() == 0) {
             product.setDiscontinued(true);
-        \}
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+        }
+    }
+}
+```
+<br />
 
-After we subscribe to the event, every stored entity will invoke the method.  
+After you subscribe to the event, every stored entity invokes the method:
 
-<TabItem value="store_session" label="store_session">
-<CodeBlock language="java">
-{`// subscribe to the event
+```java
+// subscribe to the event
 store.addBeforeStoreListener(this::onBeforeStoreEvent);
 
-try (IDocumentSession session = store.openSession()) \{
+try (IDocumentSession session = store.openSession()) {
     Product product1 = new Product();
     product1.setName("RavenDB v3.5");
     product1.setUnitsInStock(0);
-
     session.store(product1);
 
     Product product2 = new Product();
@@ -94,423 +80,473 @@ try (IDocumentSession session = store.openSession()) \{
     session.store(product2);
 
     session.saveChanges();  // Here the method is invoked
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
 
+</ContentFrame>
 
+<ContentFrame>
 
-## beforeDeleteListener
+### `beforeDelete`
 
-This event is invoked by `delete(id)` or `delete(entity)`. It is only executed when `saveChanges()` 
+This event is invoked by `delete(id)` or `delete(entity)`. It is executed only when `saveChanges()`
 is called, but before the commands are actually sent to the server.  
-It should be defined with this signature:  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public void addBeforeDeleteListener(EventHandler<BeforeDeleteEventArgs> handler);
+```java
+private void onBeforeDeleteEvent(Object sender, BeforeDeleteEventArgs args);
+```
+<br />
 
-public void removeBeforeDeleteListener(EventHandler<BeforeDeleteEventArgs> handler);
-`}
-</CodeBlock>
-</TabItem>
+#### Example: prevent deletions
 
-| Parameters | Type | Description |
-| - | - | - |
-| **handler** | `EventHandler<BeforeDeleteEventArgs>` | handle this event |
-
-The class `BeforeDeleteEventArgs`:  
-
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public BeforeDeleteEventArgs(InMemoryDocumentSessionOperations session, String documentId, Object entity);
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public class BeforeDeleteEventArgs
-\{
-    private IMetadataDictionary _documentMetadata;
-    private final InMemoryDocumentSessionOperations session;
-    private final String documentId;
-    private final Object entity;
-
-    //getters and setters (omitted for brevity)
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-### Example
-
-To prevent anyone from deleting entities we can create a method as follows:
-
-<TabItem value="on_before_delete_event" label="on_before_delete_event">
-<CodeBlock language="java">
-{`private void onBeforeDeleteEvent(Object sender, BeforeDeleteEventArgs args) \{
+```java
+private void onBeforeDeleteEvent(Object sender, BeforeDeleteEventArgs args) {
     throw new NotImplementedException("Sample");
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
+<br />
 
-and subscribe it to the session:
+Subscribe to the event:
 
-<TabItem value="delete_session" label="delete_session">
-<CodeBlock language="java">
-{`// subscribe to the event
+```java
+// subscribe to the event
 store.addBeforeDeleteListener(this::onBeforeDeleteEvent);
 
-// open a session and delete entity
-try (IDocumentSession session = store.openSession()) \{
+// open a session and delete an entity
+try (IDocumentSession session = store.openSession()) {
     Product product = session.load(Product.class, "products/1-A");
 
     session.delete(product);
     session.saveChanges(); // NotImplementedException will be thrown here
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
 
+</ContentFrame>
 
+<ContentFrame>
 
-## afterSaveChangesListener
+### `afterSaveChanges`
 
-This event is invoked after the `saveChanges` is returned.  
-It should be defined with this signature:  
+This event is invoked after `saveChanges` returns.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public void addAfterSaveChangesListener(EventHandler<AfterSaveChangesEventArgs> handler);
+```java
+private void onAfterSaveChangesEvent(Object sender, AfterSaveChangesEventArgs args);
+```
+<br />
 
-public void removeAfterSaveChangesListener(EventHandler<AfterSaveChangesEventArgs> handler);
-`}
-</CodeBlock>
-</TabItem>
+#### Example: log each saved document
 
-| Parameters | Type | Description |
-| - | - | - |
-| **handler** | `EventHandler<AfterSaveChangesEventArgs>` | handle this event |
-
-
-The class `AfterSaveChangesEventArgs`:
-
-
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public AfterSaveChangesEventArgs(InMemoryDocumentSessionOperations session, String documentId, Object entity);
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public class AfterSaveChangesEventArgs
-\{
-    private IMetadataDictionary _documentMetadata;
-    private final InMemoryDocumentSessionOperations session;
-    private final String documentId;
-    private final Object entity;
-
-    //getters and setters (omitted for brevity)
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-### Example
-
-If we want to log each entity that was saved, we can create a method as follows:  
-
-<TabItem value="on_after_save_changes_event" label="on_after_save_changes_event">
-<CodeBlock language="java">
-{`private void onAfterSaveChangesEvent(Object sender, AfterSaveChangesEventArgs args) \{
-    if (log.isLoggable(Level.INFO)) \{
+```java
+private void onAfterSaveChangesEvent(Object sender, AfterSaveChangesEventArgs args) {
+    if (log.isLoggable(Level.INFO)) {
         log.info("Document " + args.getDocumentId() + " was saved");
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+    }
+}
+```
+<br />
 
+Subscribe to the event:
 
+```java
+store.addAfterSaveChangesListener(this::onAfterSaveChangesEvent);
+```
 
-## beforeQueryListener
+</ContentFrame>
 
-This event is invoked just before the query is sent to the server. 
-It should be defined with this signature:  
+<ContentFrame>
 
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public void addBeforeQueryListener(EventHandler<BeforeQueryEventArgs> handler);
+### `beforeQuery`
 
-public void removeBeforeQueryListener(EventHandler<BeforeQueryEventArgs> handler);
-`}
-</CodeBlock>
-</TabItem>
+This event is invoked just before the query is sent to the server.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-| Parameters | Type | Description |
-| - | - | - |
-| **handler** | `EventHandler<BeforeQueryEventArgs>` | handle this event |
+```java
+private void onBeforeQueryEvent(Object sender, BeforeQueryEventArgs args);
+```
+<br />
 
-The class `BeforeQueryEventArgs`:  
+#### Example: disable query caching
 
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public class BeforeQueryEventArgs
-\{
-    private final InMemoryDocumentSessionOperations session;
-    private final IDocumentQueryCustomization queryCustomization;
-
-    //getters (omitted for brevity)
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-### Example I
-
-If you want to disable caching of all query results, you can implement the method as follows:  
-
-<TabItem value="on_before_query_execute_event" label="on_before_query_execute_event">
-<CodeBlock language="java">
-{`private void onBeforeQueryEvent(Object sender, BeforeQueryEventArgs args) \{
+```java
+private void onBeforeQueryEvent(Object sender, BeforeQueryEventArgs args) {
     args.getQueryCustomization().noCaching();
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
+<br />
 
-### Example II
+#### Example: wait for non-stale results
 
-If you want each query to [wait for non-stale results](../../../../indexes/stale-indexes.mdx) you can create an event as follows:  
+To have each query [wait for non-stale results](../../../../indexes/stale-indexes.mdx),
+define the event as follows:
 
-<TabItem value="on_before_query_execute_event_2" label="on_before_query_execute_event_2">
-<CodeBlock language="java">
-{`private void onBeforeQueryEvent(BeforeQueryEventArgs args) \{
+```java
+private void onBeforeQueryEvent(BeforeQueryEventArgs args) {
     args.getQueryCustomization().waitForNonStaleResults(Duration.ofSeconds(30));
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
+<br />
 
+Subscribe to the event:
 
+```java
+store.addBeforeQueryListener(this::onBeforeQueryEvent);
+```
 
-## beforeConversionToDocumentListener
+</ContentFrame>
 
-This event is invoked before conversion of an entity to blittable JSON document. E.g. it's called when sending a document to a server.  
-It should be defined with this signature:  
+<ContentFrame>
 
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public void addBeforeConversionToDocumentListener(EventHandler<BeforeConversionToDocumentEventArgs> handler);
+### `beforeConversionToDocument`
 
-public void removeBeforeConversionToDocumentListener(EventHandler<BeforeConversionToDocumentEventArgs> handler);
-`}
-</CodeBlock>
-</TabItem>
+This event is invoked before an entity is converted to a JSON document, e.g. when a document
+is sent to the server.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-| Parameters | Type | Description |
-| - | - | - |
-| **handler** | `EventHandler<BeforeConversionToDocumentEventArgs>` | handle this event |
+```java
+private void onBeforeConversionToDocument(Object sender, BeforeConversionToDocumentEventArgs args);
+```
+<br />
 
-The class `BeforeConversionToDocumentEventArgs`:  
+#### Example: modify an entity before conversion
 
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public BeforeConversionToDocumentEventArgs(InMemoryDocumentSessionOperations session, String id, Object entity);
-`}
-</CodeBlock>
-</TabItem>
-
-
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public class BeforeConversionToDocumentEventArgs
-\{
-    private String _id;
-    private Object _entity;
-    private InMemoryDocumentSessionOperations _session;
-
-    //getters (omitted for brevity)
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-### Example
-
-<TabItem value="on_before_conversion_to_document" label="on_before_conversion_to_document">
-<CodeBlock language="java">
-{`private void onBeforeConversionToDocument(Object sender, BeforeConversionToDocumentEventArgs args) \{
-    if (args.getEntity() instanceof Item) \{
+```java
+private void onBeforeConversionToDocument(Object sender, BeforeConversionToDocumentEventArgs args) {
+    if (args.getEntity() instanceof Item) {
         Item item = (Item) args.getEntity();
         item.setBefore(true);
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+    }
+}
+```
+<br />
 
+Subscribe to the event:
 
+```java
+store.addBeforeConversionToDocumentListener(this::onBeforeConversionToDocument);
+```
 
-## afterConversionToDocumentListener
+</ContentFrame>
 
-This event is invoked after conversion of an entity to blittable JSON document.  
-It should be defined with this signature:  
+<ContentFrame>
 
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public void addAfterConversionToDocumentListener(EventHandler<AfterConversionToDocumentEventArgs> handler);
+### `afterConversionToDocument`
 
-public void removeAfterConversionToDocumentListener(EventHandler<AfterConversionToDocumentEventArgs> handler);
-`}
-</CodeBlock>
-</TabItem>
+This event is invoked after an entity is converted to a JSON document.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-| Parameters | Type | Description |
-| - | - | - |
-| **handler** | `EventHandler<AfterConversionToDocumentEventArgs>` | handle this event |
+```java
+private void onAfterConversionToDocument(Object sender, AfterConversionToDocumentEventArgs args);
+```
+<br />
 
-The class `AfterConversionToDocumentEventArgs`:  
+#### Example: act on a document after conversion
 
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public AfterConversionToDocumentEventArgs(InMemoryDocumentSessionOperations session, String id, Object entity, Reference<ObjectNode> document);
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public class AfterConversionToDocumentEventArgs
-\{
-    private String _id;
-    private Object _entity;
-    private Reference<ObjectNode> _document;
-    private InMemoryDocumentSessionOperations _session;
-
-    //getters (omitted for brevity)
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-### Example
-
-<TabItem value="on_after_conversion_to_document" label="on_after_conversion_to_document">
-<CodeBlock language="java">
-{`private void onAfterConversionToDocument(Object sender, AfterConversionToDocumentEventArgs args) \{
-    if (args.getEntity() instanceof Item)
-    \{
+```java
+private void onAfterConversionToDocument(Object sender, AfterConversionToDocumentEventArgs args) {
+    if (args.getEntity() instanceof Item) {
         Item item = (Item) args.getEntity();
         item.setAfter(true);
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+    }
+}
+```
+<br />
 
+Subscribe to the event:
 
+```java
+store.addAfterConversionToDocumentListener(this::onAfterConversionToDocument);
+```
 
-## beforeConversionToEntityListener
+</ContentFrame>
 
-This event is invoked before conversion of a JSON document to an entity. E.g. it's called when loading a document.  
+<ContentFrame>
 
-It takes the argument `BeforeConversionToEntityEventArgs`, that consists of a JSON document, its ID and type, and the session instance.  
+### `beforeConversionToEntity`
 
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public void addBeforeConversionToEntityListener(EventHandler<BeforeConversionToEntityEventArgs> handler);
+This event is invoked before a JSON document is converted to an entity, e.g. when a document
+is loaded.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-public void removeBeforeConversionToEntityListener(EventHandler<BeforeConversionToEntityEventArgs> handler);
-`}
-</CodeBlock>
-</TabItem>
+```java
+private void onBeforeConversionToEntity(Object sender, BeforeConversionToEntityEventArgs args);
+```
+<br />
 
-| Parameters | Type | Description |
-| - | - | - |
-| **handler** | `EventHandler<BeforeConversionToEntityEventArgs>` | handle this event |
+#### Example: log a loaded document before conversion
 
-
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public class BeforeConversionToEntityEventArgs\{
-
-    private String _id;
-    private Class _type;
-    private Reference<ObjectNode> _document;
-    private InMemoryDocumentSessionOperations _session;
-
-    //getters (omitted for brevity)
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="on_before_conversion_to_entity" label="on_before_conversion_to_entity">
-<CodeBlock language="java">
-{`private void onBeforeConversionToEntity(Object sender, BeforeConversionToEntityEventArgs args) \{
-    if (args.getId() == "item/1-A")
-    \{
-        if (log.isLoggable(Level.INFO)) \{
+```java
+private void onBeforeConversionToEntity(Object sender, BeforeConversionToEntityEventArgs args) {
+    if (args.getId() == "item/1-A") {
+        if (log.isLoggable(Level.INFO)) {
             log.info("Document " + args.getId() + " has found");
-        \}
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+        }
+    }
+}
+```
+<br />
 
+Subscribe to the event:
 
+```java
+store.addBeforeConversionToEntityListener(this::onBeforeConversionToEntity);
+```
 
-## afterConversionToEntityListener
+</ContentFrame>
 
-This event is invoked after conversion of a JSON document to an entity. It takes the argument `AfterConversionToEntityEventArgs`, that consists of a JSON document, its ID, the session instance and a converted entity.  
+<ContentFrame>
 
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public void addAfterConversionToEntityListener(EventHandler<AfterConversionToEntityEventArgs> handler);
+### `afterConversionToEntity`
 
-public void removeAfterConversionToEntityListener(EventHandler<AfterConversionToEntityEventArgs> handler);
-`}
-</CodeBlock>
-</TabItem>
+This event is invoked after a JSON document is converted to an entity.  
+See its [arguments](#event-arguments) in the Syntax section below.
 
-| Parameters | Type | Description |
-| - | - | - |
-| **handler** | `EventHandler<AfterConversionToEntityEventArgs>` | handle this event |
+```java
+private void onAfterConversionToEntity(Object sender, AfterConversionToEntityEventArgs args);
+```
+<br />
 
-<TabItem value="java" label="java">
-<CodeBlock language="java">
-{`public class AfterConversionToEntityEventArgs \{
+#### Example: modify an entity after conversion
 
-    private String _id;
-    private ObjectNode _document;
-    private Object _entity;
-    private InMemoryDocumentSessionOperations _session;
-
-    //getters (omitted for brevity)
-\}
-`}
-</CodeBlock>
-</TabItem>
-
-<TabItem value="on_after_conversion_to_entity" label="on_after_conversion_to_entity">
-<CodeBlock language="java">
-{`private void onAfterConversionToEntity(Object sender, AfterConversionToEntityEventArgs args) \{
-    if (args.getEntity() instanceof Item) \{
+```java
+private void onAfterConversionToEntity(Object sender, AfterConversionToEntityEventArgs args) {
+    if (args.getEntity() instanceof Item) {
         Item item = (Item) args.getEntity();
         item.setAfter(true);
-    \}
-\}
-`}
-</CodeBlock>
+    }
+}
+```
+<br />
+
+Subscribe to the event:
+
+```java
+store.addAfterConversionToEntityListener(this::onAfterConversionToEntity);
+```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Unsubscribing from an event">
+
+To stop responding to an event, detach the handler with the matching `remove*Listener` method,
+passing the same handler you subscribed with:
+
+```java
+store.removeBeforeStoreListener(this::onBeforeStoreEvent);
+```
+<br />
+
+Session events can be unsubscribed at any time.
+
+</Panel>
+
+<Panel heading="Syntax">
+
+<ContentFrame>
+
+### Methods
+
+```java
+void addBeforeStoreListener(EventHandler<BeforeStoreEventArgs> handler)
+void removeBeforeStoreListener(EventHandler<BeforeStoreEventArgs> handler)
+
+void addBeforeDeleteListener(EventHandler<BeforeDeleteEventArgs> handler)
+void removeBeforeDeleteListener(EventHandler<BeforeDeleteEventArgs> handler)
+
+void addAfterSaveChangesListener(EventHandler<AfterSaveChangesEventArgs> handler)
+void removeAfterSaveChangesListener(EventHandler<AfterSaveChangesEventArgs> handler)
+
+void addBeforeQueryListener(EventHandler<BeforeQueryEventArgs> handler)
+void removeBeforeQueryListener(EventHandler<BeforeQueryEventArgs> handler)
+
+void addBeforeConversionToDocumentListener(EventHandler<BeforeConversionToDocumentEventArgs> handler)
+void removeBeforeConversionToDocumentListener(EventHandler<BeforeConversionToDocumentEventArgs> handler)
+
+void addAfterConversionToDocumentListener(EventHandler<AfterConversionToDocumentEventArgs> handler)
+void removeAfterConversionToDocumentListener(EventHandler<AfterConversionToDocumentEventArgs> handler)
+
+void addBeforeConversionToEntityListener(EventHandler<BeforeConversionToEntityEventArgs> handler)
+void removeBeforeConversionToEntityListener(EventHandler<BeforeConversionToEntityEventArgs> handler)
+
+void addAfterConversionToEntityListener(EventHandler<AfterConversionToEntityEventArgs> handler)
+void removeAfterConversionToEntityListener(EventHandler<AfterConversionToEntityEventArgs> handler)
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Event arguments
+
+<Tabs groupId="event-args-1">
+<TabItem value="BeforeStoreEventArgs" label="BeforeStoreEventArgs" default>
+
+```java
+class BeforeStoreEventArgs
+{
+    InMemoryDocumentSessionOperations getSession()
+    String getDocumentId()
+    Object getEntity()
+    IMetadataDictionary getDocumentMetadata()
+}
+```
+
+| Member | Type | Description |
+| --- | --- | --- |
+| **getSession()** | `InMemoryDocumentSessionOperations` | The session on which `saveChanges()` was called |
+| **getDocumentId()** | `String` | The ID of the document being stored |
+| **getEntity()** | `Object` | The entity being stored |
+| **getDocumentMetadata()** | `IMetadataDictionary` | The document's metadata |
+
 </TabItem>
+<TabItem value="BeforeDeleteEventArgs" label="BeforeDeleteEventArgs">
 
+```java
+class BeforeDeleteEventArgs
+{
+    InMemoryDocumentSessionOperations getSession()
+    String getDocumentId()
+    Object getEntity()
+    IMetadataDictionary getDocumentMetadata()
+}
+```
 
+| Member | Type | Description |
+| --- | --- | --- |
+| **getSession()** | `InMemoryDocumentSessionOperations` | The session on which `saveChanges()` was called |
+| **getDocumentId()** | `String` | The ID of the document being deleted |
+| **getEntity()** | `Object` | The entity being deleted |
+| **getDocumentMetadata()** | `IMetadataDictionary` | The document's metadata |
 
+</TabItem>
+</Tabs>
 
+<Tabs groupId="event-args-2">
+<TabItem value="AfterSaveChangesEventArgs" label="AfterSaveChangesEventArgs" default>
+
+```java
+class AfterSaveChangesEventArgs
+{
+    InMemoryDocumentSessionOperations getSession()
+    String getDocumentId()
+    Object getEntity()
+    IMetadataDictionary getDocumentMetadata()
+}
+```
+
+| Member | Type | Description |
+| --- | --- | --- |
+| **getSession()** | `InMemoryDocumentSessionOperations` | The session on which `saveChanges()` was called |
+| **getDocumentId()** | `String` | The ID of the document that was saved |
+| **getEntity()** | `Object` | The entity that was saved |
+| **getDocumentMetadata()** | `IMetadataDictionary` | The document's metadata |
+
+</TabItem>
+<TabItem value="BeforeQueryEventArgs" label="BeforeQueryEventArgs">
+
+```java
+class BeforeQueryEventArgs
+{
+    InMemoryDocumentSessionOperations getSession()
+    IDocumentQueryCustomization getQueryCustomization()
+}
+```
+
+| Member | Type | Description |
+| --- | --- | --- |
+| **getSession()** | `InMemoryDocumentSessionOperations` | The session that triggered the event |
+| **getQueryCustomization()** | `IDocumentQueryCustomization` | The query's customizations |
+
+</TabItem>
+</Tabs>
+
+<Tabs groupId="event-args-3">
+<TabItem value="BeforeConversionToDocumentEventArgs" label="BeforeConversionToDocumentEventArgs" default>
+
+```java
+class BeforeConversionToDocumentEventArgs
+{
+    String getId()
+    Object getEntity()
+    InMemoryDocumentSessionOperations getSession()
+}
+```
+
+| Member | Type | Description |
+| --- | --- | --- |
+| **getId()** | `String` | The ID of the document being converted |
+| **getEntity()** | `Object` | The entity being converted to a document |
+| **getSession()** | `InMemoryDocumentSessionOperations` | The session that triggered the event |
+
+</TabItem>
+<TabItem value="AfterConversionToDocumentEventArgs" label="AfterConversionToDocumentEventArgs">
+
+```java
+class AfterConversionToDocumentEventArgs
+{
+    String getId()
+    Object getEntity()
+    Reference<ObjectNode> getDocument()
+    InMemoryDocumentSessionOperations getSession()
+}
+```
+
+| Member | Type | Description |
+| --- | --- | --- |
+| **getId()** | `String` | The ID of the converted document |
+| **getEntity()** | `Object` | The entity that was converted |
+| **getDocument()** | `Reference<ObjectNode>` | The resulting JSON document |
+| **getSession()** | `InMemoryDocumentSessionOperations` | The session that triggered the event |
+
+</TabItem>
+</Tabs>
+
+<Tabs groupId="event-args-4">
+<TabItem value="BeforeConversionToEntityEventArgs" label="BeforeConversionToEntityEventArgs" default>
+
+```java
+class BeforeConversionToEntityEventArgs
+{
+    String getId()
+    Class getType()
+    Reference<ObjectNode> getDocument()
+    InMemoryDocumentSessionOperations getSession()
+}
+```
+
+| Member | Type | Description |
+| --- | --- | --- |
+| **getId()** | `String` | The ID of the document being converted |
+| **getType()** | `Class` | The target entity type |
+| **getDocument()** | `Reference<ObjectNode>` | The JSON document being converted |
+| **getSession()** | `InMemoryDocumentSessionOperations` | The session that triggered the event |
+
+</TabItem>
+<TabItem value="AfterConversionToEntityEventArgs" label="AfterConversionToEntityEventArgs">
+
+```java
+class AfterConversionToEntityEventArgs
+{
+    String getId()
+    ObjectNode getDocument()
+    Object getEntity()
+    InMemoryDocumentSessionOperations getSession()
+}
+```
+
+| Member | Type | Description |
+| --- | --- | --- |
+| **getId()** | `String` | The ID of the converted document |
+| **getDocument()** | `ObjectNode` | The source JSON document |
+| **getEntity()** | `Object` | The resulting entity |
+| **getSession()** | `InMemoryDocumentSessionOperations` | The session that triggered the event |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>

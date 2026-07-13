@@ -14,3 +14,6 @@ src/data/guides-metadata.json
 src/typescript/iconName.ts
 
 /.github
+
+# Third-party tool config (managed in main, not ours to format)
+/context7.json

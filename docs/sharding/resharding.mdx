@@ -19,7 +19,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   to another shard, to maintain an overall balanced database in which all 
   shards handle about the same volume of data.  
 * The resharding process moves all the data related to a certain [bucket](../sharding/overview.mdx#buckets) 
-  (including documents, document extensions, tombstones, etc.), to a different 
+  (including documents, document extensions, [tombstones](../monitoring/tombstones/overview.mdx), etc.), to a different 
   shard, and then associates the bucket with the new shard.  
 * An even distribution of data and workload between all shards maintains 
   a steadier overall usage of resources like disk space, memory, and bandwidth, 

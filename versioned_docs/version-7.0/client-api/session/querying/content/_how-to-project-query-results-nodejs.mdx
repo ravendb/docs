@@ -15,6 +15,7 @@ import CodeBlock from '@theme/CodeBlock';
     * [Projections overview](../../../../client-api/session/querying/how-to-project-query-results.mdx#projections-overview)
     * [SelectFields](../../../../client-api/session/querying/how-to-project-query-results.mdx#selectfields)  
     * [Projecting nested object types](../../../../client-api/session/querying/how-to-project-query-results.mdx#projecting-nested-object-types)  
+    * [Single projection per query](../../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query)  
     * [Syntax](../../../../client-api/session/querying/how-to-project-query-results.mdx#syntax)
 
 </Admonition>
@@ -501,7 +502,56 @@ select name, @metadata.@nested-object-types as **PROJECTED_NESTED_OBJECT_TYPES**
 </CodeBlock>
 </TabItem>
 
+## Single projection per query
 
+As of RavenDB v6.0, each client-side query instance can define its projection only once.  
+The `selectFields` method modifies the underlying query object by defining the shape of the results,  
+so applying another projection on the **same query instance** will throw an exception.  
+The validation is performed by the client before the query is sent to the server.
+
+```js
+// For example:
+try {
+    const baseQuery = session.query({ collection: "Companies" });
+
+    // Make first projection
+    const results1 = await baseQuery.selectFields("Name").all();
+
+    // A second projection on the same query is not supported and will throw
+    const results2 = await baseQuery.selectFields("Phone").all();
+} catch (err) {
+    // The following exception will be thrown:
+    // "Projection is already done. You should not project your result twice."
+}
+```
+
+---
+
+<Admonition type="note" title="">
+    
+#### Running the same query criteria with multiple projections
+
+* In the client API, if you need to run the same query criteria with different projections,  
+  build a new query instance for each projection:
+
+    ```js
+    const baseQuery = () => session
+        .query({ collection: "Companies" })
+        .whereEquals("Address.Country", "USA");
+    
+    const results1 = await baseQuery()
+        .selectFields("Name")
+        .all();
+    
+    const results2 = await baseQuery()
+        .selectFields("Phone")
+        .all();
+    ```
+
+* In RQL, the projection is part of the query text and is defined by the `select` clause.  
+  To use a different projection, run a separate RQL query with a different `select` clause.
+
+</Admonition>
 
 ## Syntax
 

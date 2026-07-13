@@ -1,7 +1,8 @@
 import React from "react";
 import Link from "@docusaurus/Link";
 import { Icon } from "@site/src/components/Common/Icon";
-import { getIconName, parsePath } from "./utils";
+import { getContentSourceIcon } from "@site/src/components/Common/contentSource";
+import { parsePath } from "./utils";
 import clsx from "clsx";
 import { SeeAlsoItemType } from "./types";
 import { useVersionedLink } from "./useVersionedLink";
@@ -11,7 +12,7 @@ interface SeeAlsoItemProps {
 }
 
 export function SeeAlsoItem({ item }: SeeAlsoItemProps) {
-    const iconName = getIconName(item.source);
+    const iconName = getContentSourceIcon(item.source);
     const { mainCategory, restOfPath, fullPath } = parsePath(item.path);
     const { getVersionedLink } = useVersionedLink();
 

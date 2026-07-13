@@ -415,6 +415,12 @@ where search(AllValues, "tofu")
 
 * When using [Corax](../../../indexes/search-engine/corax.mdx) as the search engine,  
   this behavior will only apply to indexes that are newly created or have been reset.
+
+* Note that the `Search` method supports only the **multi-character** wildcard `*`.  
+  To match a **single character** using the `?` wildcard, use Lucene syntax instead.  
+  This requires the target index to use the Lucene search engine.
+  Learn more in [Filter with Lucene syntax](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#wildcards).
+
 <Admonition type="note" title="">
 
 ##### When using&nbsp;`RavenStandardAnalyzer`&nbsp;or`StandardAnalyzer`&nbsp;or&nbsp;`NGramAnalyzer`:

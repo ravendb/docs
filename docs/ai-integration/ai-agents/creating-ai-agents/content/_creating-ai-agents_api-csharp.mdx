@@ -13,7 +13,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * Once the agent is created, the client can initiate or resume conversations, get LLM responses, and perform actions based on LLM insights.  
 
-* This page provides a step-by-step guide to creating an AI agent and interacting with it using the Client API.  
+* This page provides a step-by-step guide to creating an AI agent and interacting with it using the client API.  
 
 * In this article:
    * [Creating a connection string](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#creating-a-connection-string)  
@@ -897,6 +897,10 @@ See [DeleteAgent](../../../../ai-integration/ai-agents/creating-ai-agents/creati
 ---
 
 See [Conversation](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#conversation-execution), [SetUserPrompt](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#conversation-execution), and [AiConversationCreationOptions](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#conversation-and-response-classes) in the [Syntax](../../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#syntax) section.
+
+<br />
+To read the messages of a stored conversation back from the server, see
+[Reading conversation history](../../../../ai-integration/ai-agents/reading-conversation-history.mdx).  
 
 </ContentFrame>
 
@@ -2340,6 +2344,10 @@ class AiConversationParameter
 
 </TabItem>
 
+</Tabs>
+
+<Tabs groupId='conversation-classes-2'>
+
 <TabItem value="AiConversationParameterOptions" label="AiConversationParameterOptions">
 
 **Options for a conversation parameter when using `AddParameter`.**
@@ -2379,6 +2387,11 @@ class AiAgentActionRequest
 | **Arguments** | `string` | The arguments provided by the LLM, as a JSON string. |
 
 </TabItem>
+
+</Tabs>
+
+<Tabs groupId='conversation-classes-3'>
+
 <TabItem value="AiAnswer" label="AiAnswer">
 
 **The typed answer returned from an AI conversation turn.**

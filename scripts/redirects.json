@@ -1,5 +1,26 @@
 [
     {
+        "key": "/glossary/tombstone",
+        "value": {
+            "targetUrl": "/monitoring/tombstones/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/database/settings/tombstones",
+        "value": {
+            "targetUrl": "/monitoring/tombstones/tombstones-view",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/server/configuration/tombstone-configuration",
+        "value": {
+            "targetUrl": "/monitoring/tombstones/configuration",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/client-api/session/querying/what-is-rql",
         "value": {
             "targetUrl": "/querying/rql/what-is-rql",
@@ -946,6 +967,48 @@
         "key": "/client-api/operations/server-wide/sorters/put-sorter-server-wide",
         "value": {
             "targetUrl": "/querying/sorting-query-results/custom-sorters/server-wide-custom-sorters",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/indexes/querying/filtering",
+        "value": {
+            "targetUrl": "/querying/filtering-query-results/filter-query-results",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/session/querying/document-query/how-to-use-lucene",
+        "value": {
+            "targetUrl": "/querying/filtering-query-results/filter-with-lucene-syntax",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/session/querying/document-query/how-to-use-not-operator",
+        "value": {
+            "targetUrl": "/querying/filtering-query-results/use-logical-operators",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/maintenance/connection-strings/add-connection-string",
+        "value": {
+            "targetUrl": "/integrations/connection-strings/per-database/add-or-update-connection-string",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/maintenance/connection-strings/get-connection-string",
+        "value": {
+            "targetUrl": "/integrations/connection-strings/per-database/get-connection-strings",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/maintenance/connection-strings/remove-connection-string",
+        "value": {
+            "targetUrl": "/integrations/connection-strings/per-database/remove-connection-string",
             "minimumVersion": "7.2"
         }
     }

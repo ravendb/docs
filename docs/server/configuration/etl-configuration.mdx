@@ -23,6 +23,8 @@ import Panel from '@site/src/components/Panel';
     * [ETL.MaxNumberOfExtractedDocuments](../../server/configuration/etl-configuration.mdx#etlmaxnumberofextracteddocuments)
     * [ETL.MaxNumberOfExtractedItems](../../server/configuration/etl-configuration.mdx#etlmaxnumberofextracteditems)
     * [ETL.OLAP.MaxNumberOfExtractedDocuments](../../server/configuration/etl-configuration.mdx#etlolapmaxnumberofextracteddocuments)
+    * [ETL.ProcessHealthStatusFailedThreshold](../../server/configuration/etl-configuration.mdx#etlprocesshealthstatusfailedthreshold)
+    * [ETL.ProcessHealthStatusImpairedThreshold](../../server/configuration/etl-configuration.mdx#etlprocesshealthstatusimpairedthreshold)
     * [ETL.Queue.AzureQueueStorage.TimeToLiveInSec](../../server/configuration/etl-configuration.mdx#etlqueueazurequeuestoragetimetoliveinsec)
     * [ETL.Queue.AzureQueueStorage.VisibilityTimeoutInSec](../../server/configuration/etl-configuration.mdx#etlqueueazurequeuestoragevisibilitytimeoutinsec)
     * [ETL.Queue.Kafka.InitTransactionsTimeoutInSec](../../server/configuration/etl-configuration.mdx#etlqueuekafkainittransactionstimeoutinsec)
@@ -107,6 +109,36 @@ Max number of extracted documents in OLAP ETL batch.
 
 - **Type**: `int`
 - **Default**: `64 * 1024`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+<ContentFrame>
+    
+## ETL.ProcessHealthStatusFailedThreshold
+
+* Error-rate threshold for the `Failed` task health state. A task whose recent error rate
+  exceeds this value is classified as `Failed`.
+* See the [Task errors](../../monitoring/task-errors/configuration.mdx#etlprocesshealthstatusfailedthreshold)
+  page to learn how the rate is calculated and how to set a value.
+
+- **Type**: `float`
+- **Default**: `0.9`
+- **Range**: `[0, 1]`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+<ContentFrame>
+    
+## ETL.ProcessHealthStatusImpairedThreshold
+
+* Error-rate threshold for the `Impaired` task health state. A task whose recent error rate
+  exceeds this value is classified as `Impaired`.
+* See the [Task errors](../../monitoring/task-errors/configuration.mdx#etlprocesshealthstatusimpairedthreshold)
+  page to learn how the rate is calculated and how to set a value.
+
+- **Type**: `float`
+- **Default**: `0.1`
+- **Range**: `[0, 1]`
 - **Scope**: Server-wide or per database
 
 </ContentFrame>

@@ -26,6 +26,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
     * [Backup.MaxNumberOfConcurrentBackups](../../server/configuration/backup-configuration.mdx#backupmaxnumberofconcurrentbackups)  
     * [Backup.ConcurrentBackupsDelayInSec](../../server/configuration/backup-configuration.mdx#backupconcurrentbackupsdelayinsec)  
     * [Backup.LowMemoryBackupDelayInMin](../../server/configuration/backup-configuration.mdx#backuplowmemorybackupdelayinmin)  
+    * [Backup.MoveToNewResponsibleNodeGracePeriodInMin](../../server/configuration/backup-configuration.mdx#backupmovetonewresponsiblenodegraceperiodinmin)  
 
 </Admonition>
 ## Backup.TempPath
@@ -108,6 +109,24 @@ Number of minutes to delay the backup if the server enters a low memory state.
 - **Type**: `TimeSetting`  
 - **TimeUnit**: `TimeUnit.Minutes`  
 - **Default**: `10`  
+- **Scope**: Server-wide only  
+
+
+
+## Backup.MoveToNewResponsibleNodeGracePeriodInMin
+
+Number of minutes the [cluster observer](../../server/clustering/distribution/cluster-observer.mdx) waits
+before reassigning a backup task to a new responsible node,
+when the current responsible node has entered the
+[Rehab state](../../server/clustering/distribution/distributed-database.mdx#database-topology).  
+
+During this grace period, the task remains assigned to its current responsible node.  
+This gives the node a chance to recover, and prevents a duplicate backup
+from starting elsewhere in the cluster.  
+
+- **Type**: `TimeSetting`  
+- **TimeUnit**: `TimeUnit.Minutes`  
+- **Default**: `30`  
 - **Scope**: Server-wide only  
 
 

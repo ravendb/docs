@@ -330,8 +330,7 @@ a.breadcrumbs__link:hover {
 }
 
 /* Custom styling for search */
-.DocSearch-Logo,
-.searchLogoColumn_rJIA {
+.DocSearch-Logo {
     display: none;
 }
 

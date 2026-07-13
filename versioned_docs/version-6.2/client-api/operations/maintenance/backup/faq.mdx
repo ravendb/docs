@@ -23,6 +23,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * [Does RavenDB automatically delete old backups?](../../../../client-api/operations/maintenance/backup/faq.mdx#does-ravendb-automatically-delete-old-backups)  
   * [Are there any locations that backup files should NOT be stored at?](../../../../client-api/operations/maintenance/backup/faq.mdx#are-there-any-locations-that-backup-files-should-not-be-stored-at)  
   * [What happens when a backup process fails before it is completed?](../../../../client-api/operations/maintenance/backup/faq.mdx#what-happens-when-a-backup-process-fails-before-completion)  
+  * [What happens if the node responsible for a backup task is down?](../../../../client-api/operations/maintenance/backup/faq.mdx#what-happens-if-the-node-responsible-for-a-backup-task-is-down)  
 
 </Admonition>
 ## FAQ
@@ -107,6 +108,42 @@ While in progress, the backup content is written to an **.in-progress* file on d
   This file will not be used in any future Restore processes.  
   If the failed process was an incremental-backup task, any future incremental backups will 
   continue from the correct place before the file was created so that the backup is consistent with the source.  
+
+### What happens if the node responsible for a backup task is down?
+
+When the responsible node enters the
+[Rehab state](../../../../server/clustering/distribution/distributed-database.mdx#database-topology),
+the [cluster observer](../../../../server/clustering/distribution/cluster-observer.mdx)
+does not move the backup task immediately.  
+Instead, it waits a grace period (30 minutes by default) before reassigning the task
+to another database-group member.  
+The grace period gives the original node a chance to recover,
+and prevents the same backup from running on two nodes at once.  
+
+* **Who picks the responsible node:**  
+  When you create a backup task, you can pick the responsible node yourself,
+  or leave it for the cluster to decide.  
+  The choice (yours or the cluster's) is persisted cluster-wide,
+  so all nodes agree on a single responsible node for the task.  
+
+* **If the node is in Rehab due to resource constraints on the host machine:**  
+  The cluster observer will leave the backup task on the same node rather than reassign it.  
+  The backup will run on that node once it recovers,
+  or be reassigned to another node if this one is eventually removed from the database group.  
+
+The grace period is configurable via
+[Backup.MoveToNewResponsibleNodeGracePeriodInMin](../../../../server/configuration/backup-configuration.mdx#backupmovetonewresponsiblenodegraceperiodinmin).
+
+<Admonition type="note" title="">
+
+A backup task that is **pinned** to its mentor node (via `PinToMentorNode`)
+is an exception to the behavior described above.  
+A pinned task is not subject to the grace period.  
+It stays on its node even while the node is in Rehab,
+and only moves to another node when its pinned node is removed from the database group.  
+See [Pinning a Task](../../../../server/clustering/distribution/highly-available-tasks.mdx#pinning-a-task) for the full behavior.
+
+</Admonition>
 
 
 

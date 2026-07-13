@@ -1,7 +1,7 @@
 # RavenDB Documentation — Claude Context
 
 ## Project Overview
-Official RavenDB documentation site. Built with **Docusaurus 3.9** + React 19 + TypeScript 5.6.
+Official RavenDB documentation site. Built with **Docusaurus 3.10** + React 19 + TypeScript 5.6.
 Serves 18+ product versions simultaneously across four content areas: main docs (current: 7.2), cloud, guides, templates.
 
 ---
@@ -30,7 +30,7 @@ docs/                        # Current (7.2) doc content — EDIT HERE
 cloud/                       # RavenDB Cloud portal docs
 guides/                      # Community guides (frontmatter-driven, tag-indexed)
 templates/                   # Doc authoring templates
-versioned_docs/version-X.Y/  # Historical version snapshots — DO NOT EDIT
+versioned_docs/version-X.Y/  # Per-version snapshots (Docusaurus-managed) — editable for bugfixes
 versioned_sidebars/          # Auto-managed sidebar configs for old versions
 src/
   components/                # 58 shared React/TSX components
@@ -52,11 +52,11 @@ versions.json                # Active version list
 ---
 
 ## Versioning Rules
-- **Only edit `docs/`** — it is the current (7.2) version.
-- `versioned_docs/` are read-only snapshots managed by Docusaurus.
+- **`docs/` is the current (7.2) version** — forward-looking content goes here.
+- `versioned_docs/` are per-version snapshots managed by Docusaurus, but **editable, not read-only**: maintained versions (current + `ACTIVE_VERSIONS`) get bugfixes and content changes like any other docs; legacy versions may be fixed too when there's a good reason (e.g., malformed markup that breaks or clutters the build).
 - `versions.json` lists all active versions.
 - CI uses `onlyIncludeVersions` env var to build specific versions (e.g., 6.2, 7.1, current).
-- **Version policy** lives in `scripts/lib/version-policy.js` (`CURRENT_VERSION`, `LEGACY_VERSIONS`). When a version ages out of support, move it into `LEGACY_VERSIONS` — `docusaurus.config.ts`, sitemaps, robots.txt, the canonical rewriter, and the edge handler all derive from that single list.
+- **Version policy** lives in `scripts/lib/version-policy.js` (`CURRENT_VERSION`, `ACTIVE_VERSIONS`, `LEGACY_VERSIONS`). When a version ages out of support, move it into `LEGACY_VERSIONS` — `docusaurus.config.ts`, sitemaps, robots.txt, the canonical rewriter, and the edge handler all derive from that single list.
 
 ---
 
@@ -513,7 +513,7 @@ Style guide and live examples for documentation building blocks: ContentFrame/Pa
 ---
 
 ## Tech Stack Summary
-- Docusaurus 3.9.2 · React 19 · TypeScript 5.6
+- Docusaurus 3.10.1 · React 19 · TypeScript 5.6
 - Tailwind CSS 4.1 (via custom PostCSS plugin)
 - Algolia search · Google Tag Manager · Sitemap auto-generation
 - Prism React Renderer for code syntax highlighting

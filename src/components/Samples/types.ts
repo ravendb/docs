@@ -12,6 +12,8 @@ export interface Sample {
     permalink: string;
     image?: string;
     img_alt?: string;
+    imgWidth?: number;
+    imgHeight?: number;
     tags: Array<{ label: string; key: string; category?: string }>;
 }
 

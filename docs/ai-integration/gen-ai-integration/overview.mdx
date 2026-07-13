@@ -33,6 +33,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
      * [How to create and run a GenAI task](../../ai-integration/gen-ai-integration/overview.mdx#how-to-create-and-run-a-genai-task)
    * [Runtime](../../ai-integration/gen-ai-integration/overview.mdx#runtime)
      * [Tracking of processed document parts](../../ai-integration/gen-ai-integration/overview.mdx#tracking-of-processed-document-parts)
+   * [Monitoring the tasks](../../ai-integration/gen-ai-integration/overview.mdx#monitoring-the-tasks)
    * [Licensing](../../ai-integration/gen-ai-integration/overview.mdx#licensing)
    * [Supported services](../../ai-integration/gen-ai-integration/overview.mdx#supported-services)
    * [Common use cases](../../ai-integration/gen-ai-integration/overview.mdx#common-use-cases)
@@ -182,7 +183,7 @@ These are the elements that need to be defined for a GenAI task.
   to create GenAI tasks. The wizard will guide you through the task creation phases, 
   exemplify where needed, and provide you with convenient, interactive, secluded "playgrounds" 
   for free interactive experimenting.  
-* Or, you can create GenAI tasks using the [Client API](../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api.mdx). 
+* Or, you can create GenAI tasks using the [client API](../../ai-integration/gen-ai-integration/create-gen-ai-task/create-gen-ai-task_api.mdx). 
 
 <hr />
 
@@ -220,6 +221,24 @@ added or modified.
       These hash codes were created after processing the document.  
       The codes were computed per comment, based on the comment's content and the current task configuration.  
       When the document is processed again, the task will generate a new hash code for each comment. If the comment or the task configuration has changed, the new hash will differ from the existing one and trigger reprocessing. If none of them changed, the identical hash will indicate that no reprocessing is needed.  
+
+<hr />
+
+## Monitoring the tasks
+
+* The status and state of each GenAI task are visible in the
+  [AI Tasks - list view](../../ai-integration/ai-tasks-list-view.mdx).
+
+* Task performance and activity over time can be analyzed in the _AI Tasks Stats_ view.  
+  Learn more about the stats view in the
+  [Ongoing Tasks Stats](../../studio/database/stats/ongoing-tasks-stats/overview.mdx) article.
+
+* Errors raised by GenAI tasks, and how those errors affect each task's health, are tracked
+  in the [Task Errors view](../../monitoring/task-errors/studio-views.mdx#task-errors-view).  
+  The [AI Task Errors view](../../monitoring/task-errors/studio-views.mdx#ai-task-errors-view),
+  opened from the `AI Hub`, shows the same errors pre-filtered to AI tasks only.  
+  For an introduction to task error monitoring, see the
+  [Task errors overview](../../monitoring/task-errors/overview.mdx).
 
 <hr />
 

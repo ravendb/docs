@@ -1,7 +1,7 @@
 ---
 title: "Ongoing Tasks: Queue Sink Overview"
 sidebar_label: Overview
-description: "Ingest messages from Kafka and RabbitMQ queues into RavenDB documents using queue sink tasks with configurable processing scripts."
+description: "Ingest messages from Kafka, RabbitMQ, and Azure Service Bus into RavenDB documents using queue sink tasks with configurable processing scripts."
 sidebar_position: 0
 ---
 
@@ -31,11 +31,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
   from broker queues, apply a user-defined script that can, among other things, 
   construct documents from the retrieved messages, and potentially store 
   manufactured documents in RavenDB's database.  
-* Supported broker queues currently include **Apache Kafka** and **RabbitMQ**.  
+* Supported message brokers currently include **Apache Kafka**, **RabbitMQ**, and **Azure Service Bus**.  
 
 <Admonition type="info" title="">
 Using RavenDB as a message broker sink can benefit users who want to combine 
-Kafka or RabbitMQ's immense capability to collect and stream data with RavenDB's 
+Kafka, RabbitMQ, or Azure Service Bus's immense capability to collect and stream data with RavenDB's 
 ability to process this data, reveal and exploit its value.  
 </Admonition>
 
@@ -47,26 +47,24 @@ ability to process this data, reveal and exploit its value.
 </Admonition>
 ## Supported Message Brokers
 
-Queue brokers currently supported by RavenDB include **Apache Kafka** and **RabbitMQ**.  
+Message brokers currently supported by RavenDB include **Apache Kafka**, **RabbitMQ**, and **Azure Service Bus**.  
 
 ![Ongoing Tasks](./assets/overview_ongoing-tasks.png)
 
-1. **Ongoing Tasks**  
-   Click to open the ongoing tasks view.  
-2. **Add a Database Task**  
-   Click to create a new ongoing task.  
-3. **Info Hub**  
-   Click for usage and licensing assistance.  
+1. Open the **tasks menu**.
+2. Open the **ongoing tasks** view.  
+3. Create a new **database task**.  
+   ![Define Queue Sink Task](./assets/overview_task-selection.png)
+   * **A**. **Kafka Sink**  
+     Click to define a [Kafka Queue Sink task](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx).  
+   * **B**. **RabbitMQ Sink**  
+     Click to define a [RabbitMQ Queue Sink task](../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink.mdx).  
+   * **C**. **Azure Service Bus Sink**  
+     Click to define an [Azure Service Bus Queue Sink task](../../../server/ongoing-tasks/queue-sink/azure-service-bus-queue-sink.mdx).  
+4. Open the **info hub** for information about ongoing tasks and this view.  
+   ![Info Hub](./assets/info-hub.png)
 
-      ![Info Hub](./assets/info-hub.png)
-![Define Queue Sink Task](./assets/overview_task-selection.png)
-
-1. **Kafka Sink**  
-   Click to define a Kafka Queue Sink task.  
-2. **RabbitMQ Sink**  
-   Click to define a RabbitMQ Queue Sink task.  
-
-
+---
 
 ## Task Statistics
 

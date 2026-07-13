@@ -1,6 +1,7 @@
 ---
 title: "Backup configuration options"
 sidebar_label: "Configuration options"
+description: "Server-wide configuration keys that control backup behavior: paths, allowed destinations, concurrency, low-memory delays, and the responsible-node grace period."
 sidebar_position: 85
 ---
 
@@ -18,18 +19,19 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Admonition type="note" title="">
 
 Use the configuration keys listed below to set backup-related options for your RavenDB server.  
-Learn how to apply these keys in the [Configuration Overview](../server/configuration/configuration-options) article.
+Learn how to apply these keys in the [Configuration Overview](../server/configuration/configuration-options.mdx) article.
 
 
 * In this article:  
-    * [Backup.TempPath](../backup/configuration#backuptemppath)  
-    * [Backup.LocalRootPath](../backup/configuration#backuplocalrootpath)  
-    * [Backup.AllowedDestinations](../backup/configuration#backupalloweddestinations)  
-    * [Backup.AllowedAwsRegions](../backup/configuration#backupallowedawsregions)  
-    * [Backup.MaxNumberOfConcurrentBackups](../backup/configuration#backupmaxnumberofconcurrentbackups)  
-    * [Backup.ConcurrentBackupsDelayInSec](../backup/configuration#backupconcurrentbackupsdelayinsec)  
-    * [Backup.LowMemoryBackupDelayInMin](../backup/configuration#backuplowmemorybackupdelayinmin)  
-    * [Server.CpuCredits.ExhaustionBackupDelayInMin](../backup/configuration#servercpucreditsexhaustionbackupdelayinmin)
+    * [Backup.TempPath](../backup/configuration.mdx#backuptemppath)  
+    * [Backup.LocalRootPath](../backup/configuration.mdx#backuplocalrootpath)  
+    * [Backup.AllowedDestinations](../backup/configuration.mdx#backupalloweddestinations)  
+    * [Backup.AllowedAwsRegions](../backup/configuration.mdx#backupallowedawsregions)  
+    * [Backup.MaxNumberOfConcurrentBackups](../backup/configuration.mdx#backupmaxnumberofconcurrentbackups)  
+    * [Backup.ConcurrentBackupsDelayInSec](../backup/configuration.mdx#backupconcurrentbackupsdelayinsec)  
+    * [Backup.LowMemoryBackupDelayInMin](../backup/configuration.mdx#backuplowmemorybackupdelayinmin)  
+    * [Backup.MoveToNewResponsibleNodeGracePeriodInMin](../backup/configuration.mdx#backupmovetonewresponsiblenodegraceperiodinmin)  
+    * [Server.CpuCredits.ExhaustionBackupDelayInMin](../backup/configuration.mdx#servercpucreditsexhaustionbackupdelayinmin)
 
 </Admonition>
 
@@ -46,6 +48,13 @@ Use this key to specify the local path where temporary backup files are stored.
 - By default, temporary backup files are stored under the server Database directory (or under [Storage.TempPath](../server/configuration/storage-configuration.mdx) if set).  
 - If `Backup.TempPath` is set, temporary backup files will be stored under the path it specifies.  
 - If a backup task is configured to store backups in a local folder, `Backup.TempPath` will be ignored and temporary files will be stored alongside the backups.  
+- `Backup.TempPath` is also used when restoring a [snapshot](../backup/overview.mdx#snapshot-image)
+  from a remote destination (Amazon S3, Azure Blob Storage, or Google Cloud Storage):
+  the snapshot file is first downloaded to `Backup.TempPath` and then read from there.  
+  [Logical backups](../backup/overview.mdx#logical-backup) are streamed directly from
+  the destination and do not use this path.
+
+  [Learn about restoring from a remote destination.](../backup/restore.mdx#restorebackupconfiguration---backup-location-settings)
 </Admonition>
 
 - **Type**: `string`
@@ -134,7 +143,7 @@ Maximum number of concurrent backup tasks.
 
 ### Backup.ConcurrentBackupsDelayInSec
 
-Number of seconds to delay the backup when the [concurrent backups limit](../backup/configuration#backupmaxnumberofconcurrentbackups) is reached.  
+Number of seconds to delay the backup when the [concurrent backups limit](../backup/configuration.mdx#backupmaxnumberofconcurrentbackups) is reached.  
 
 - **Type**: `TimeSetting`  
 - **TimeUnit**: `TimeUnit.Seconds`  
@@ -152,6 +161,26 @@ Number of minutes to delay the backup if the server enters a low-memory state.
 - **Type**: `TimeSetting`  
 - **TimeUnit**: `TimeUnit.Minutes`  
 - **Default**: `10`  
+- **Scope**: Server-wide only  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Backup.MoveToNewResponsibleNodeGracePeriodInMin
+
+Number of minutes the [cluster observer](../server/clustering/distribution/cluster-observer.mdx) waits
+before reassigning a backup task to a new responsible node,
+when the current responsible node has entered the
+[Rehab state](../server/clustering/distribution/distributed-database.mdx#database-topology).  
+
+During this grace period, the task remains assigned to its current responsible node.  
+This gives the node a chance to recover, and prevents a duplicate backup
+from starting elsewhere in the cluster.  
+
+- **Type**: `TimeSetting`  
+- **TimeUnit**: `TimeUnit.Minutes`  
+- **Default**: `30`  
 - **Scope**: Server-wide only  
 
 </ContentFrame>

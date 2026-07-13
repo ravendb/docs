@@ -12,7 +12,10 @@ import CodeBlock from '@theme/CodeBlock';
   It is not compatible with Google AI (Gemini API) endpoints or API key authentication.
 
 * RavenDB currently supports only text embeddings with Vertex AI.  
-  Chat models are not supported through this integration.  
+  Chat models are not supported through this integration.      
+    
+* The Studio and Client API examples below define a **per-database** AI connection string.  
+  To define the same provider configuration at the **cluster level**, see [Add a server-wide connection string](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx).    
 
 * In this article:
   * [Define the connection string - from Studio](../../../ai-integration/connection-strings/vertex-ai.mdx#define-the-connection-string---from-studio)

@@ -1,0 +1,157 @@
+---
+title: "Authentication: Recover from an Expired Certificate"
+sidebar_label: "Recover from an Expired Certificate"
+description: "Restore access to a secure RavenDB server after its server certificate has expired by installing a valid certificate at the file level."
+sidebar_position: 6
+see_also:
+  - title: "Certificate Renewal & Rotation"
+    link: "server/security/authentication/certificate-renewal-and-rotation"
+    source: "docs"
+    path: "Server > Security > Authentication"
+  - title: "Let's Encrypt Certificates"
+    link: "server/security/authentication/lets-encrypt-certificates"
+    source: "docs"
+    path: "Server > Security > Authentication"
+  - title: "Certificate Configuration"
+    link: "server/security/authentication/certificate-configuration"
+    source: "docs"
+    path: "Server > Security > Authentication"
+  - title: "Emergency access to a secured cluster"
+    link: "users-issues/emergency-access"
+    source: "docs"
+    path: "Users Issues"
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Recover from an expired certificate
+<Admonition type="note" title="">
+
+* This article explains how to restore access to a secure server after its server
+  certificate has expired.  
+
+* An expired server certificate blocks every encrypted connection to the server, including
+  Studio's connection, so the certificate must be replaced at the file level, directly on
+  the server machine.  
+
+* In this article:
+   * [What happens when the server certificate expires](../../../server/security/authentication/recover-from-expired-certificate.mdx#what-happens-when-the-server-certificate-expires)
+   * [Recover the server](../../../server/security/authentication/recover-from-expired-certificate.mdx#recover-the-server)
+      * [Obtain a valid certificate](../../../server/security/authentication/recover-from-expired-certificate.mdx#obtain-a-valid-certificate)
+      * [Install the new certificate](../../../server/security/authentication/recover-from-expired-certificate.mdx#install-the-new-certificate)
+   * [Recover a cluster](../../../server/security/authentication/recover-from-expired-certificate.mdx#recover-a-cluster)
+   * [Prevent recurrence](../../../server/security/authentication/recover-from-expired-certificate.mdx#prevent-recurrence)
+
+</Admonition>
+
+<Panel heading="What happens when the server certificate expires">
+
+A secure RavenDB server uses a single server certificate, which it presents on every
+encrypted connection.
+
+Once the certificate expires, every connection to the server fails:
+
+* You cannot open Studio, because the browser rejects the expired certificate during the
+  TLS handshake.  
+* Client applications can no longer connect to the server.  
+* In a cluster, the nodes share the certificate that is now expired, and cannot authenticate
+  to each other and elect a leader.
+
+Restarting the server does not help on its own. As the server loads, it rejects the expired
+certificate and fails to start, logging an error such as:
+
+```plain
+The provided certificate '<name>' from <source> is expired! Thumbprint: <thumbprint>, Expired on: <date>
+```
+<br />
+
+Normally you would replace the certificate using Studio, but Studio cannot be reached in this
+situation. The recovery is therefore done directly on the server machine, at the file
+level, as described below.
+
+</Panel>
+
+<Panel heading="Recover the server">
+
+<ContentFrame>
+
+### Obtain a valid certificate
+
+Before access can be restored, you need a valid certificate to replace the expired one. The
+replacement can be a certificate that is still valid, a new one from your certificate
+authority, or one issued through Let's Encrypt.
+
+The replacement must meet the same requirements as any RavenDB server certificate: a `.pfx`
+file that contains the private key, has not expired, and carries the required `Key Usage`
+and `Enhanced Key Usage` fields. See [certificate requirements](../../../server/security/authentication/certificate-configuration.mdx#certificate-requirements)
+for the full list.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Install the new certificate
+
+Install the new certificate on the server machine in one of two ways:
+
+* **Overwrite the existing certificate file.**  
+  Replace the current `.pfx` file with the new one, keeping the same path. The server will
+  detect the change and load the new certificate within an hour, or immediately on a restart.
+* **Point the server at the new file.**  
+  Set [Security.Certificate.Path](../../configuration/security-configuration.mdx#securitycertificatepath)
+  in the server's `settings.json` file to the new `.pfx`, add `Security.Certificate.Password`
+  if the file has one, and restart the server.
+
+Once a valid certificate is loaded, the server resumes serving over HTTPS, and clients and
+cluster nodes can connect again.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Recover a cluster">
+
+In a cluster, the same certificate is installed on every node, so an expired certificate
+must be replaced on each node, using either method above.
+
+Replacing the certificate file does not depend on the cluster, so it works even while the
+cluster has no leader. The cluster elects a leader again once a [majority of its nodes](../../../server/clustering/rachis/cluster-topology.mdx#leader)
+have loaded a valid certificate.
+
+If Studio still cannot be reached with an administrator certificate, or the nodes still
+don't trust each other after the change, register a trusted certificate on each node
+locally using `rvn admin-channel` (see [emergency access for a secure cluster](../../../users-issues/emergency-access.mdx)
+for the procedure), which connects to the running server without TLS.
+
+Once the cluster is reachable again, see [certificate renewal and rotation](../../../server/security/authentication/certificate-renewal-and-rotation.mdx) to learn how to replace certificates across the cluster using Studio.
+
+</Panel>
+
+<Panel heading="Prevent recurrence">
+
+Renew your certificates well before they expire.
+
+RavenDB provides warnings in advance, in the following ways:
+
+* Notifications are raised in Studio's Notification Center as the expiration date nears,
+  first as a warning and in the final days as an error.  
+* RavenDB also publishes the certificate's expiration over [SNMP](../../../server/administration/snmp/snmp-overview.mdx),
+  which an external monitoring tool can poll.  
+  The certificate is marked as expiring once its remaining validity falls below the number of
+  days set by [Security.Certificate.ExpiringThresholdInDays](../../configuration/security-configuration.mdx#securitycertificateexpiringthresholdindays)
+  (14 days by default).
+
+<Admonition type="note" title="">
+
+If you install the server using the Setup Wizard and Let's Encrypt, RavenDB renews the
+certificate automatically.  
+See [automatic Let's Encrypt renewals](../../../server/security/authentication/lets-encrypt-certificates.mdx).
+
+If you provide your own certificate, renewing it before it expires is your responsibility.  
+See [certificate renewal and rotation](../../../server/security/authentication/certificate-renewal-and-rotation.mdx).
+
+</Admonition>
+
+</Panel>

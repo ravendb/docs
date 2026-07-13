@@ -3,8 +3,8 @@ import Link from "@docusaurus/Link";
 import Heading from "@theme/Heading";
 import LazyImage from "@site/src/components/Common/LazyImage";
 import clsx from "clsx";
-import Tag from "@site/src/theme/Tag";
 import LanguageTag from "@site/src/components/Samples/Hub/Partials/LanguageTag";
+import OverflowTagRow from "@site/src/components/Common/OverflowTagRow";
 
 interface TagWithCategory {
     label: string;
@@ -23,6 +23,8 @@ export interface SampleCardProps {
     tags?: TagWithCategory[];
     onTagClick?: (tagKey: string) => void;
     selectedTags?: Set<string>;
+    /** Eager-load + high fetch priority for above-the-fold cards (LCP). */
+    priority?: boolean;
 }
 
 export default function SampleCard({
@@ -30,10 +32,13 @@ export default function SampleCard({
     description,
     imgSrc,
     imgAlt = "",
+    imgWidth,
+    imgHeight,
     url,
     tags = [],
     onTagClick,
     selectedTags,
+    priority = false,
 }: SampleCardProps) {
     const hasImage = Boolean(imgSrc);
 
@@ -55,6 +60,16 @@ export default function SampleCard({
         }
         return selectedTags.has(tag.key);
     };
+
+    const selectedFirst = (list: TagWithCategory[]) => {
+        if (!selectedTags || selectedTags.size === 0) {
+            return list;
+        }
+        return [...list].sort((a, b) => Number(selectedTags.has(b.key)) - Number(selectedTags.has(a.key)));
+    };
+
+    const orderedChallengesSolutionsTags = selectedFirst(challengesSolutionsTags);
+    const orderedFeatureTags = selectedFirst(featureTags);
 
     return (
         <div
@@ -82,6 +97,10 @@ export default function SampleCard({
                         <LazyImage
                             imgSrc={imgSrc}
                             alt={imgAlt}
+                            width={imgWidth}
+                            height={imgHeight}
+                            loading={priority ? "eager" : "lazy"}
+                            fetchPriority={priority ? "high" : undefined}
                             className={clsx(
                                 "pointer-events-none",
                                 "w-full h-full object-cover object-center",
@@ -106,7 +125,7 @@ export default function SampleCard({
                 )}
             </div>
             <article className="p-4">
-                <Link to={url} className={clsx("absolute inset-0 z-1", "!transition-all")} />
+                <Link to={url} aria-label={title} className={clsx("absolute inset-0 z-1", "!transition-all")} />
                 <div>
                     <div className="flex flex-col gap-0.5">
                         <Heading as="h4" className="!mb-0 !text-base !font-bold !leading-5 !break-normal">
@@ -117,45 +136,25 @@ export default function SampleCard({
                     <p className="!mb-0 text-sm pt-2 flex-grow">{description}</p>
 
                     <div className="flex flex-col gap-2 z-2 relative">
-                        {challengesSolutionsTags.length > 0 && (
+                        {orderedChallengesSolutionsTags.length > 0 && (
                             <div>
                                 <span className="text-xs">Challenges & Solutions</span>
-                                <div className="flex flex-wrap gap-1">
-                                    {challengesSolutionsTags.map((tag) => (
-                                        <Tag
-                                            key={tag.label}
-                                            size="xs"
-                                            onClick={onTagClick ? (e) => handleTagClick(e, tag) : undefined}
-                                            className={clsx(
-                                                onTagClick && "cursor-pointer",
-                                                !isTagSelected(tag) && "opacity-50"
-                                            )}
-                                        >
-                                            {tag.label}
-                                        </Tag>
-                                    ))}
-                                </div>
+                                <OverflowTagRow
+                                    tags={orderedChallengesSolutionsTags}
+                                    onTagClick={onTagClick ? handleTagClick : undefined}
+                                    isTagSelected={isTagSelected}
+                                />
                             </div>
                         )}
 
-                        {featureTags.length > 0 && (
+                        {orderedFeatureTags.length > 0 && (
                             <div>
                                 <span className="text-xs">Features</span>
-                                <div className="flex flex-wrap gap-1">
-                                    {featureTags.map((tag) => (
-                                        <Tag
-                                            key={tag.label}
-                                            size="xs"
-                                            onClick={onTagClick ? (e) => handleTagClick(e, tag) : undefined}
-                                            className={clsx(
-                                                onTagClick && "cursor-pointer",
-                                                !isTagSelected(tag) && "opacity-50"
-                                            )}
-                                        >
-                                            {tag.label}
-                                        </Tag>
-                                    ))}
-                                </div>
+                                <OverflowTagRow
+                                    tags={orderedFeatureTags}
+                                    onTagClick={onTagClick ? handleTagClick : undefined}
+                                    isTagSelected={isTagSelected}
+                                />
                             </div>
                         )}
                     </div>

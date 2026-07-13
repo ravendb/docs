@@ -12,7 +12,6 @@ import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
-# Queue ETL: Azure Queue Storage
 <Admonition type="note" title="">
 
 * Azure Queue Storage is a Microsoft Azure service that allows for the storage and retrieval of large numbers of messages, 
@@ -37,7 +36,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   To define an Azure Queue Storage ETL task from the Studio, see [Studio: Azure Queue Storage ETL Task](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl.mdx).  
   For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx).
 
-* In this page:  
+* In this article:
   * [Add an Azure Queue Storage connection string](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx#add-an-azure-queue-storage-connection-string)  
       * [Authentication methods](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx#authentication-methods)  
       * [Example](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx#example)  
@@ -50,118 +49,181 @@ import LanguageContent from "@site/src/components/LanguageContent";
       * [The loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx#the-loadto-method)  
 
 </Admonition>
+
 ## Add an Azure Queue Storage connection string
 
-Prior to setting up the ETL task, define a connection string that the task will use to access your Azure account.  
-The connection string includes the authorization credentials required to connect.
-#### Authentication methods:  
-There are three authentication methods available:
+* An Azure Queue Storage ETL task uses an **Azure Queue Storage connection string** to connect to its destination storage account.
+  The connection string stores the storage account connection details and the authentication settings used to access Azure queues.
 
-* **Connection string**  
-    * Provide a single string that includes all the options required to connect to your Azure account.  
-      Learn more about Azure Storage connection strings [here](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string).
-    * Note: the following connection string parameters are mandatory:  
-       * `AccountName`
-       * `AccountKey`
-       * `DefaultEndpointsProtocol`
-       * `QueueEndpoint` (when using http protocol)
-* **Entra ID**
-    * Use the Entra ID authorization method to achieve enhanced security by leveraging Microsoft Entra’s robust identity solutions.  
-    * This approach minimizes the risks associated with exposed credentials commonly found in connection strings and enables
-      more granular control through [Role-Based Access Controls](https://learn.microsoft.com/en-us/azure/role-based-access-control/).
-* **Passwordless**
-    * This authorization method requires the machine to be pre-authorized and can only be used in self-hosted mode.
-    * Passwordless authorization works only when the account on the machine is assigned the Storage Account Queue Data Contributor role; the Contributor role alone is inadequate.
-#### Example:
+* The ETL task does not store these connection details directly.  
+  Instead, its configuration references the connection string by name through the `ConnectionStringName` property.
 
-<TabItem value="add_azure_connection_string" label="add_azure_connection_string">
-<CodeBlock language="csharp">
-{`// Prepare the connection string:
-// ==============================
-var conStr = new QueueConnectionString
-\{
-    // Provide a name for this connection string
-    Name = "myAzureQueueConStr", 
-    
-    // Set the broker type
+* An Azure Queue Storage connection string can be created in any of these ways:
+  * **From the Client API**:
+    [per-database](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api)
+    or [server-wide](../../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api).
+  * **From Studio**:
+    [per-database](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    [server-wide](../../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    or while creating an [Azure Queue Storage ETL task](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl.mdx#define-azure-queue-storage-etl-task).
+
+* The example below adds a **per-database** Azure Queue Storage connection string from the **Client API**.  
+  The connection string is stored in the current database record and can be used by tasks in that database.
+
+#### Authentication methods
+
+An Azure Queue Storage connection string authenticates in one of three modes.  
+Set exactly one of these properties in `AzureQueueStorageConnectionSettings`:
+
+* **ConnectionString**:  
+  A single Azure Storage connection string.  
+  For `http`, it must include `DefaultEndpointsProtocol`, `AccountName`, `AccountKey`, and `QueueEndpoint`.  
+  For `https`, it must include `DefaultEndpointsProtocol`, `AccountName`, and the authentication details required by Azure.  
+* **EntraId**:  
+  Microsoft Entra ID application credentials: `StorageAccountName`, `TenantId`, `ClientId`, and `ClientSecret`.
+* **Passwordless**:  
+  Passwordless machine authentication for self-hosted mode, using `StorageAccountName`.  
+  The machine account must have the Storage Account Queue Data Contributor role.
+
+#### Example
+
+<Tabs>
+<TabItem value="sync" label="Sync">
+```csharp
+// Define an Azure Queue Storage connection string
+// ===============================================
+var azureQueueStorageConnectionString = new QueueConnectionString
+{
+    // The name used by the Azure Queue Storage ETL task configuration
+    Name = "azure-queue-storage-connection-string-name",
+
+    // Set the queue broker type to Azure Queue Storage
     BrokerType = QueueBrokerType.AzureQueueStorage,
- 
-    // In this example we provide a simple string for the connection string
-    AzureQueueStorageConnectionSettings = new AzureQueueStorageConnectionSettings()
-    \{
-        ConnectionString = @"DefaultEndpointsProtocol=https;
-                             AccountName=myAccountName;
-                             AccountKey=myAccountKey;
-                             EndpointSuffix=core.windows.net"
-    \}
-\};
 
-// Deploy (send) the connection string to the server via the PutConnectionStringOperation:
-// =======================================================================================
-var res = store.Maintenance.Send(
-    new PutConnectionStringOperation<QueueConnectionString>(conStr));
-`}
-</CodeBlock>
+    // Configure the Azure Queue Storage account connection
+    AzureQueueStorageConnectionSettings = new AzureQueueStorageConnectionSettings
+    {
+        // A storage account connection string
+        ConnectionString = "DefaultEndpointsProtocol=https;" +
+                           "AccountName=<storage-account-name>;" +
+                           "AccountKey=<storage-account-key>;" +
+                           "EndpointSuffix=core.windows.net"
+    }
+};
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<QueueConnectionString>(azureQueueStorageConnectionString);
+
+PutConnectionStringResult connectionStringResult =
+    store.Maintenance.Send(putConnectionStringOp);
+```
 </TabItem>
-#### Syntax:
+<TabItem value="async" label="Async">
+```csharp
+// Define an Azure Queue Storage connection string
+// ===============================================
+var azureQueueStorageConnectionString = new QueueConnectionString
+{
+    // The name used by the Azure Queue Storage ETL task configuration
+    Name = "azure-queue-storage-connection-string-name",
 
-<TabItem value="queue_connection_string" label="queue_connection_string">
-<CodeBlock language="csharp">
-{`public class QueueConnectionString : ConnectionString
-\{
+    // Set the queue broker type to Azure Queue Storage
+    BrokerType = QueueBrokerType.AzureQueueStorage,
+
+    // Configure the Azure Queue Storage account connection
+    AzureQueueStorageConnectionSettings = new AzureQueueStorageConnectionSettings
+    {
+        // A storage account connection string
+        ConnectionString = "DefaultEndpointsProtocol=https;" +
+                           "AccountName=<storage-account-name>;" +
+                           "AccountKey=<storage-account-key>;" +
+                           "EndpointSuffix=core.windows.net"
+    }
+};
+
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<QueueConnectionString>(azureQueueStorageConnectionString);
+
+PutConnectionStringResult connectionStringResult =
+    await store.Maintenance.SendAsync(putConnectionStringOp);
+```
+</TabItem>
+</Tabs>
+
+#### Syntax
+
+<Tabs groupId="azure-queue-storage-connection-string-syntax">
+<TabItem value="QueueConnectionString" label="QueueConnectionString" default>
+```csharp
+public sealed class QueueConnectionString : ConnectionString
+{
     // Set the broker type to QueueBrokerType.AzureQueueStorage
     // for an Azure Queue Storage connection string
-    public QueueBrokerType BrokerType \{ get; set; \}
-    
+    public QueueBrokerType BrokerType { get; set; }
+
     // Configure this when setting a connection string for Kafka
-    public KafkaConnectionSettings KafkaConnectionSettings \{ get; set; \}
-    
+    public KafkaConnectionSettings KafkaConnectionSettings { get; set; }
+
     // Configure this when setting a connection string for RabbitMQ
-    public RabbitMqConnectionSettings RabbitMqConnectionSettings \{ get; set; \}
-    
+    public RabbitMqConnectionSettings RabbitMqConnectionSettings { get; set; }
+
     // Configure this when setting a connection string for Azure Queue Storage
-    public AzureQueueStorageConnectionSettings AzureQueueStorageConnectionSettings \{ get; set; \}
-\}
-`}
-</CodeBlock>
-</TabItem> 
-<TabItem value="queue_broker_type" label="queue_broker_type">
-<CodeBlock language="csharp">
-{`public enum QueueBrokerType
-\{
+    public AzureQueueStorageConnectionSettings AzureQueueStorageConnectionSettings { get; set; }
+
+    // Configure this when setting a connection string for Amazon SQS
+    public AmazonSqsConnectionSettings AmazonSqsConnectionSettings { get; set; }
+
+    // Configure this when setting a connection string for Azure Service Bus
+    public AzureServiceBusConnectionSettings AzureServiceBusConnectionSettings { get; set; }
+}
+```
+</TabItem>
+<TabItem value="QueueBrokerType" label="QueueBrokerType">
+```csharp
+public enum QueueBrokerType
+{
     None,
     Kafka,
     RabbitMq,
-    AzureQueueStorage
-\}
-`}
-</CodeBlock>
+    AzureQueueStorage,
+    AmazonSqs,
+    AzureServiceBus
+}
+```
 </TabItem>
-<TabItem value="azure_con_str_settings" label="azure_con_str_settings">
-<CodeBlock language="csharp">
-{`public class AzureQueueStorageConnectionSettings
-\{
-    public EntraId EntraId \{ get; set; \}
-    public string ConnectionString \{ get; set; \}
-    public Passwordless Passwordless \{ get; set; \}
-\}
+<TabItem value="AzureQueueStorageConnectionSettings" label="AzureQueueStorageConnectionSettings">
+```csharp
+public sealed class AzureQueueStorageConnectionSettings
+{
+    // Set this to authenticate with a storage account connection string
+    public string ConnectionString { get; set; }
 
-public class EntraId
-\{
-    public string StorageAccountName \{ get; set; \}
-    public string TenantId \{ get; set; \}
-    public string ClientId \{ get; set; \}
-    public string ClientSecret \{ get; set; \}
-\}
+    // Set this to authenticate with Microsoft Entra ID application credentials
+    public EntraId EntraId { get; set; }
 
-public class Passwordless
-\{
-    public string StorageAccountName \{ get; set; \}
-\}
-`}
-</CodeBlock>
+    // Set this to authenticate with the host machine identity
+    public Passwordless Passwordless { get; set; }
+}
+
+public sealed class EntraId
+{
+    public string StorageAccountName { get; set; }
+    public string TenantId { get; set; }
+    public string ClientId { get; set; }
+    public string ClientSecret { get; set; }
+}
+
+public sealed class Passwordless
+{
+    public string StorageAccountName { get; set; }
+}
+```
 </TabItem>
-
+</Tabs>
 
 
 ## Add an Azure Queue Storage ETL task
@@ -388,6 +450,4 @@ The queue name defined in the transform script must follow the set of rules outl
 [Naming Queues and Metadata](https://learn.microsoft.com/en-us/rest/api/storageservices/naming-queues-and-metadata#queue-names ).
 
 </Admonition>
-
-
 

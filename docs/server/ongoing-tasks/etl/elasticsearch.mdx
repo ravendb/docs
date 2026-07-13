@@ -12,7 +12,6 @@ import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
-# Ongoing Tasks: Elasticsearch ETL
 <Admonition type="note" title="">
 
 * An **Elasticsearch** [ETL](../../../server/ongoing-tasks/etl/basics.mdx) task creates an ETL process 
@@ -21,7 +20,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * You can define an Elasticsearch ETL task using [Studio](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx) 
   or your [client](../../../client-api/operations/maintenance/etl/add-etl.mdx#example---add-elasticsearch-etl-task).  
 
-* In this page:  
+* In this article:  
   * [Elasticsearch ETL](../../../server/ongoing-tasks/etl/elasticsearch.mdx#elasticsearch-etl)  
   * [Transformation Script](../../../server/ongoing-tasks/etl/elasticsearch.mdx#transformation-script)  
      * [Alternative Syntax](../../../server/ongoing-tasks/etl/elasticsearch.mdx#alternative-syntax)  
@@ -37,6 +36,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * [Supported Elasticsearch Versions](../../../server/ongoing-tasks/etl/elasticsearch.mdx#supported-elasticsearch-versions)  
 
 </Admonition>
+
 ## Elasticsearch ETL
 
 * The following steps are required when creating an Elasticsearch ETL task:  
@@ -294,6 +294,7 @@ store.Maintenance.Send(operation);
 `}
 </CodeBlock>
 </TabItem>
+
 <Admonition type="note" title="Task Properties" id="task-properties" href="#task-properties">
 
 * `ElasticSearchEtlConfiguration`  
@@ -314,77 +315,132 @@ store.Maintenance.Send(operation);
     | **InsertOnlyMode** | `bool` | `true` - Do not delete existing documents before appending new ones. <br/>  `false` - Delete existing document versions before appending documents.|
 
 </Admonition>
+
 ### Add an Elasticsearch Connection String
 
-* An Elasticsearch connection string includes a list of **Elasticsearch destinations URLs**, 
-  and determines the **Authentication Method** required to access them.  
-   * Omit the Authentication property if the Elasticsearch destination requires no authentication.  
-   * Add a connection string as shown below.  
+* An Elasticsearch ETL task uses an **Elasticsearch connection string** to connect to its destination Elasticsearch cluster.  
+  The connection string stores one or more Elasticsearch node URLs and, when needed, the authentication settings required by those nodes.
 
-**Code Sample**:  
-<TabItem value="create-connection-string" label="create-connection-string">
-<CodeBlock language="csharp">
-{`// Create a Connection String to Elasticsearch
+* The ETL task does not store these connection details directly.  
+  Instead, its configuration references the connection string by name through the `ConnectionStringName` property.
+
+* An Elasticsearch connection string can be created in any of these ways:
+  * **From the Client API**:
+    [per-database](../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api)
+    or [server-wide](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-client-api).
+  * **From Studio**:
+    [per-database](../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    [server-wide](../../../integrations/connection-strings/server-wide/add-or-update-connection-string.mdx#add-a-connection-string---from-the-studio),
+    or while creating an [Elasticsearch ETL task](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#define-the-elasticsearch-etl-task).
+
+* The example below adds a **per-database** Elasticsearch connection string from the **Client API**.  
+  The connection string is stored in the current database record and can be used by tasks in that database.
+
+<Tabs>
+<TabItem value="sync" label="Sync" default>
+```csharp
+// Define an Elasticsearch connection string
+// =========================================
 var elasticSearchConnectionString = new ElasticSearchConnectionString
-\{
-    // Connection String Name
-    Name = "ElasticConStr", 
-    // Elasticsearch Nodes URLs
-    Nodes = new[] \{ "http://localhost:9200" \}, 
-    // Authentication Method
-    Authentication = new Raven.Client.Documents.Operations.ETL.ElasticSearch.Authentication 
-    \{ 
+{
+    // The name used by the Elasticsearch ETL task configuration
+    Name = "elasticsearch-connection-string-name",
+
+    // One or more Elasticsearch node URLs
+    Nodes = new[] { "http://localhost:9200" },
+
+    // Optional authentication settings
+    Authentication = new Raven.Client.Documents.Operations.ETL.ElasticSearch.Authentication
+    {
         Basic = new BasicAuthentication
-        \{
+        {
             Username = "John",
             Password = "32n4j5kp8"
-        \}
-    \}
-\};
+        }
+    }
+};
 
-store.Maintenance.Send(new PutConnectionStringOperation<ElasticSearchConnectionString>(elasticSearchConnectionString));
-`}
-</CodeBlock>
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<ElasticSearchConnectionString>(elasticSearchConnectionString);
+
+PutConnectionStringResult connectionStringResult =
+    store.Maintenance.Send(putConnectionStringOp);
+```
 </TabItem>
-<Admonition type="note" title="Connection String Object" id="connection-string-object" href="#connection-string-object">  
+<TabItem value="async" label="Async">
+```csharp
+// Define an Elasticsearch connection string
+// =========================================
+var elasticSearchConnectionString = new ElasticSearchConnectionString
+{
+    // The name used by the Elasticsearch ETL task configuration
+    Name = "elasticsearch-connection-string-name",
 
-* `ElasticSearchConnectionString`  
+    // One or more Elasticsearch node URLs
+    Nodes = new[] { "http://localhost:9200" },
 
-    | Property | Type | Description |
-    |:-------------|:-------------|:-------------|
-    | **Name** | `string` | Connection string Name |
-    | **Nodes** | `string[]` | A list of URLs to Elasticsearch destinations |
-    | **Authentication** | `Authentication` | Optional authentication method <br/> (Do not use when no authentication is required) |
+    // Optional authentication settings
+    Authentication = new Raven.Client.Documents.Operations.ETL.ElasticSearch.Authentication
+    {
+        Basic = new BasicAuthentication
+        {
+            Username = "John",
+            Password = "32n4j5kp8"
+        }
+    }
+};
 
-* `Authentication` (Authentication methods)  
+// Deploy (send) the connection string to the server
+// ==================================================
+var putConnectionStringOp =
+    new PutConnectionStringOperation<ElasticSearchConnectionString>(elasticSearchConnectionString);
 
-    | Property | Type | Description |
-    |:-------------|:-------------|:-------------|
-    | **Basic** | `BasicAuthentication` | Authenticate connection by **username** and **password** |
-    | **ApiKey** | `ApiKeyAuthentication` | Authenticate connection by an **API key** |
-    | **Certificate** | `CertificateAuthentication` | Authenticate connection by **certificate** |
+PutConnectionStringResult connectionStringResult =
+    await store.Maintenance.SendAsync(putConnectionStringOp);
+```
+</TabItem>
+</Tabs>
 
-* `BasicAuthentication` (Authenticate transfers by **user name** and **password**)  
+#### Syntax
 
-      | Property | Type |
-      |:-------------|:-------------|
-      | **Username** | **string** |
-      | **Password** | **string** |
+`ElasticSearchConnectionString`:
 
-* `ApiKeyAuthentication` (Authenticate transfers by an **API key**)  
+| Property | Type | Description |
+|---|---|---|
+| **Name** | `string` | The connection string name. Use this value in the ETL task's `ConnectionStringName` property. |
+| **Nodes** | `string[]` | One or more Elasticsearch node URLs. |
+| **Authentication** | `Authentication` | Optional authentication settings. Omit this property when the Elasticsearch destination does not require authentication. |
 
-    | Property | Type |
-    |:-------------|:-------------|
-    | **ApiKeyId** | `string` |
-    | **ApiKey** | `string` |
+`Authentication`:
 
-* `CertificateAuthentication` (Authenticate transfers by **certificate**)  
+| Property | Type | Description |
+|---|---|---|
+| **Basic** | `BasicAuthentication` | Authenticate with a username and password. |
+| **ApiKey** | `ApiKeyAuthentication` | Authenticate with an API key. |
+| **Certificate** | `CertificateAuthentication` | Authenticate with a certificate. |
 
-    | Property | Type | Description |
-    |:-------------|:-------------|:-------------|
-    | **CertificatesBase64** | `string[]` | A valid certificate string |
+`BasicAuthentication`:
 
-</Admonition>
+| Property | Type |
+|---|---|
+| **Username** | `string` |
+| **Password** | `string` |
+
+`ApiKeyAuthentication`:
+
+| Property | Type | Description |
+|---|---|---|
+| **ApiKeyId** | `string` | The API key identifier. Used together with `ApiKey` when `EncodedApiKey` is not supplied. |
+| **ApiKey** | `string` | The API key secret. Used together with `ApiKeyId` when `EncodedApiKey` is not supplied. |
+| **EncodedApiKey** | `string` | A Base64-encoded API key value. If supplied, RavenDB uses this value directly. |
+
+`CertificateAuthentication`:
+
+| Property | Type | Description |
+|---|---|---|
+| **CertificatesBase64** | `string[]` | One or more certificates encoded as Base64 strings. |
 
 ## Supported Elasticsearch Versions
 - RavenDB `6.2`, `7.0`, and `7.1` use `Elastic.Clients.Elasticsearch 8.x`, that supports Elasticsearch server `8.x` and `9.x`.  

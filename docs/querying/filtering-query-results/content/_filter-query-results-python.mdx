@@ -1,0 +1,579 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* Queries can include a `where` clause to **filter the results** returned from a collection or an index.
+    
+* Filtering is performed on the server: the `where` clause is sent as part of the query, evaluated against an index (static or auto), 
+  and only documents that match the specified condition are returned to the client.   
+
+  For example, when querying a collection of products, you can filter the results to return only products that are in stock, or only products whose price is above a specified value.
+    
+* You can filter by simple field values, numeric ranges, nested fields, values inside collections, document IDs, and more.
+    
+* The examples in this article mostly demonstrate **dynamic queries** (queries that don't specify which index to query).  
+  You can use the same filtering syntax when querying a **static index**,
+  as explained below in [Filtering when querying static indexes](../../../querying/filtering-query-results/filter-query-results.mdx#filtering-when-querying-static-indexes).
+
+* In this article:    
+  * [Filtering and index usage](../../../querying/filtering-query-results/filter-query-results.mdx#filtering-and-index-usage)
+  * [Filter by field value](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-field-value)
+  * [Filter by numeric value](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-numeric-value)
+  * [Filter by nested field](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-nested-field)
+  * [Filter by values in a collection](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-values-in-a-collection)
+  * [Filter by multiple possible values](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-multiple-possible-values)
+  * [Filter by matching any value in a collection](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-matching-any-value-in-a-collection)
+  * [Filter by matching all values in a collection](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-matching-all-values-in-a-collection)
+  * [Filter by string prefix or suffix](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-string-prefix-or-suffix)
+  * [Filter by field presence](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-field-presence)
+  * [Filter by document ID](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-document-id)
+  * [Filtering when querying static indexes](../../../querying/filtering-query-results/filter-query-results.mdx#filtering-when-querying-static-indexes)
+  * [Syntax](../../../querying/filtering-query-results/filter-query-results.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Filtering and index usage">
+    
+* **When querying a collection with a filtering condition without specifying an index**,  
+  RavenDB treats the query as a dynamic query and will use an **AUTO-index** to process the filter.
+    
+  If no suitable auto-index exists yet, RavenDB will create one automatically based on the fields used in the query.
+  Later queries that need the same indexed fields will reuse the same auto-index.  
+  To learn more about dynamic queries and auto-indexes, see [Query overview](../../../querying/overview.mdx#2-query-a-collection---with-filtering).    
+    
+* **When querying a STATIC index**, RavenDB will use the specified index to process the filter.  
+  The filtering condition is evaluated against the fields indexed by that index, and no auto-index is created. 
+    
+</Panel>
+
+<Panel heading="Filter by field value">
+    
+Use `where_equals` to return only documents where a field has the specified value.  
+For example, the following query will return all _Employee_ documents where `FirstName` is `"Robert"`.    
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```python
+employees = list(
+    session.query(object_type=Employee)      # Query the Employees collection
+    .where_equals("FirstName", "Robert")     # Apply the filter predicate
+)                                            # list(...) executes the query and returns the results
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+employees = list(
+    session.advanced
+    .raw_query("from Employees where FirstName = $firstName", Employee)
+    .add_parameter("firstName", "Robert")
+)
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Employees
+where FirstName = "Robert"
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/Employees/ByFirstName`  
+> The auto-index is derived from the `FirstName` field referenced in the `where` clause.  
+    
+</Panel>   
+
+<Panel heading="Filter by numeric value">
+
+You can filter numeric fields using comparison operators.  
+For example, the following query returns all products that have more than `50` units in stock.   
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+
+```python
+products = list(
+    session.query(object_type=Product)
+    .where_greater_than("UnitsInStock", 50)
+)
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+products = list(
+    session.advanced
+    .raw_query("from Products where UnitsInStock > $units", Product)
+    .add_parameter("units", 50)
+)
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Products
+where UnitsInStock > 50
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/Products/ByUnitsInStock`  
+> The auto-index is derived from the `UnitsInStock` field referenced in the `where` clause.  
+>    
+> The auto-index name does not depend on the comparison operator (`=`, `>`, `<`, ...),  
+> so the same auto-index serves any comparison on `UnitsInStock`.
+    
+You can use the following comparison operators:
+
+| Operator | Description              |
+| -------- | ------------------------ |
+| `=`      | Equal to                 |
+| `!=`     | Not equal to             |
+| `>`      | Greater than             |
+| `>=`     | Greater than or equal to |
+| `<`      | Less than                |
+| `<=`     | Less than or equal to    |
+
+</Panel>
+
+<Panel heading="Filter by nested field">
+    
+To filter by a nested field, specify the full path to the field.  
+For example, the following query returns all orders that were shipped to `Albuquerque`.    
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```python
+orders = list(
+    session.query(object_type=Order)
+    .where_equals("ShipTo.City", "Albuquerque")  # Filter by the nested field's full path
+)
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+orders = list(
+    session.advanced
+    .raw_query("from Orders where ShipTo.City = $city", Order)
+    .add_parameter("city", "Albuquerque")
+)
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Orders
+where ShipTo.City = "Albuquerque"
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/Orders/ByShipTo.City`  
+> The auto-index is derived from the nested field path `ShipTo.City` referenced in the `where` clause.  
+>
+> The full dotted path is preserved in the auto-index name.
+    
+</Panel>
+
+<Panel heading="Filter by values in a collection">
+    
+Use `where_equals` with the collection's field path when the field you want to filter by is inside a collection.
+
+For example, each _Order_ document contains a `Lines` collection.  
+The following query returns every _Order_ document that contains at least one order line for  
+`Teatime Chocolate Biscuits`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```python
+orders = list(
+    session.query(object_type=Order)
+    .where_equals("Lines.ProductName", "Teatime Chocolate Biscuits")
+)
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+orders = list(
+    session.advanced
+    .raw_query("from Orders where Lines[].ProductName = $productName", Order)
+    .add_parameter("productName", "Teatime Chocolate Biscuits")
+)
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Orders
+where Lines[].ProductName = "Teatime Chocolate Biscuits"
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/Orders/ByLines[].ProductName`  
+> The auto-index is derived from the array-element path `Lines[].ProductName` referenced in the `where` clause.
+>    
+> The `[]` notation in the auto-index name indicates that `Lines` is a collection and that the index is built over each element's `ProductName`.
+    
+</Panel>
+
+<Panel heading="Filter by multiple possible values">
+
+Use `where_in` when a field can match any value from a specified list.      
+For example, the following query returns _Employee_ documents whose first name is either `Robert` or `Nancy`. 
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```python
+employees = list(
+    session.query(object_type=Employee)
+    .where_in("FirstName", ["Robert", "Nancy"])
+)
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+employees = list(
+    session.advanced
+    .raw_query("from Employees where FirstName in ($names)", Employee)
+    .add_parameter("names", ["Robert", "Nancy"])
+)
+```
+
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Employees
+where FirstName in ("Robert", "Nancy")
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/Employees/ByFirstName`
+> The auto-index is derived from the `FirstName` field referenced in the `where` clause.
+>    
+> The same auto-index serves both equality (`FirstName = "Robert"`) and `in` queries on this field -  
+> the operator does not affect the auto-index name.  
+> This means the auto-index created in [Filter by field value](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-field-value) is reused here,
+  and no new auto-index is created.
+    
+</Panel>
+
+<Panel heading="Filter by matching any value in a collection">
+    
+Use `contains_any` to return documents where a collection field contains at least one value from the specified list.  
+    
+Assume the following `BlogPost` class:    
+ 
+<TabItem>
+```python
+class BlogPost:
+    def __init__(self, Id: str = None, title: str = None, tags: List[str] = None):
+        self.Id = Id
+        self.title = title
+        self.tags = tags
+```    
+</TabItem> 
+    
+The following query returns all blog posts that contain either the `Development` tag or the `Research` tag.  
+The query will return a document if the `Tags` collection contains at least one of the specified values.
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```python
+posts = list(
+    session.query(object_type=BlogPost)
+    .contains_any("tags", ["Development", "Research"])
+)
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+posts = list(
+    session.advanced
+    .raw_query("from BlogPosts where tags in ($tags)", BlogPost)
+    .add_parameter("tags", ["Development", "Research"])
+)
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from BlogPosts
+where tags in ("Development", "Research")
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/BlogPosts/ByTags`  
+> The auto-index is derived from the `Tags` collection field referenced in the `where` clause.
+    
+</Panel>
+
+<Panel heading="Filter by matching all values in a collection">
+    
+Use `contains_all` to return documents where a collection field contains all values from the specified list.
+For example, the following query returns only blog posts where the `Tags` collection contains both `Development` and `Research`.    
+ 
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```python
+posts = list(
+    session.query(object_type=BlogPost)
+    .contains_all("tags", ["Development", "Research"])
+)
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+posts = list(
+    session.advanced
+    .raw_query("from BlogPosts where tags all in ($tags)", BlogPost)
+    .add_parameter("tags", ["Development", "Research"])
+)
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from BlogPosts
+where tags all in ("Development", "Research")
+```
+</TabItem>
+</Tabs>
+
+> **Auto-index used:** `Auto/BlogPosts/ByTags`  
+> The auto-index is derived from the `Tags` collection field referenced in the `where` clause.
+>    
+> `contains_any` (`in`) and `contains_all` (`all in`) produce the same auto-index name;  
+> the operator only affects which documents match, not which auto-index is created or used.  
+> This means the auto-index created for [Filter by matching any value in a collection](../../../querying/filtering-query-results/filter-query-results.mdx#filter-by-matching-any-value-in-a-collection) is reused here.
+    
+</Panel>
+
+<Panel heading="Filter by string prefix or suffix">    
+    
+    Use `where_starts_with` to return documents where a string field starts with the specified value.  
+    Learn more in [Starts-with query](../../../client-api/session/querying/text-search/starts-with-query.mdx).
+    
+    Use `where_ends_with` to return documents where a string field ends with the specified value.  
+    Learn more in [Ends-with query](../../../client-api/session/querying/text-search/ends-with-query.mdx).
+    
+</Panel>
+
+<Panel heading="Filter by field presence">
+    
+To find all documents in a collection that have a specified field, see [How to Filter by Field Presence](../../../client-api/session/querying/how-to-filter-by-field.mdx).  
+
+To find all documents in a collection that don't have a specified field, see [How to Filter by Non-Existing Field](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx).
+    
+</Panel>
+
+<Panel heading="Filter by document ID">
+   
+You can filter by document ID or by an ID prefix.
+When the query only filters by the document ID, RavenDB does not need to create an auto-index.
+Instead, the query is served directly by the storage engine.
+
+This applies when the field used in the `where_equals` filter is recognized as the identity property of the entity type,
+according to the [`find_identity_property_name` convention](../../../client-api/configuration/identifier-generation/global.mdx#findidentityproperty),
+and no other fields are involved in the query.
+
+Such queries are considered [Collection queries](../../../querying/overview.mdx#3-query-a-collection---query-full-collection--query-by-id).
+Simple collection queries that ask for documents by ID, or by an ID prefix, and do not require additional handling such as ordering or full-text search, have no additional indexing cost.
+
+In terms of efficiency, querying by ID is the same as loading documents using [`session.load`](../../../client-api/session/loading-entities.mdx).
+
+---
+    
+For example, the following query returns the order whose document ID is `orders/1-A`.    
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```python
+order = (
+    session.query(object_type=Order)
+    .where_equals("Id", "orders/1-A")
+    .first()
+)
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+order = (
+    session.advanced
+    .raw_query("from Orders where id() = $id", Order)
+    .add_parameter("id", "orders/1-A")
+    .first()
+)
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Orders
+where id() = "orders/1-A"
+```
+</TabItem>
+</Tabs>
+
+> **No auto-index is created**.  
+> Filtering only by document ID is served directly by the storage engine.
+    
+---
+    
+You can also filter by an ID prefix to return all documents whose IDs start with a specified value:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```python
+orders = list(
+    session.query(object_type=Order)
+    .where_starts_with("Id", "orders/")
+)
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+orders = list(
+    session.advanced
+    .raw_query("from Orders where startsWith(id(), $prefix)", Order)
+    .add_parameter("prefix", "orders/")
+)
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Orders
+where startsWith(id(), "orders/")
+```
+</TabItem>
+</Tabs>
+
+> **No auto-index is created**.  
+> Filtering by an ID prefix is also handled directly by the storage engine.
+    
+</Panel>
+
+<Panel heading="Filtering when querying static indexes">
+
+All filtering methods shown above can also be used when querying a **static index**.     
+However, when querying a static index, the filter must reference fields that are defined by the index.    
+
+For example, consider the following index:
+
+<TabItem>
+```python
+from ravendb.documents.indexes.abstract_index_creation_tasks import AbstractIndexCreationTask
+
+
+class Employees_ByFirstAndLastName(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        # The index fields: FirstName and LastName
+        self.map = (
+            "from employee in docs.Employees "
+            "select new { FirstName = employee.FirstName, LastName = employee.LastName }"
+        )
+```
+</TabItem>
+
+You can query the index and filter the resulting documents by the index fields.        
+The following example queries the index for _Employee_ documents and filters them by the index field `FirstName`.
+  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+
+```python
+employees = list(
+    session.query_index_type(Employees_ByFirstAndLastName, Employee)
+    .where_equals("FirstName", "Robert")
+)
+```
+
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+
+```python
+employees = list(
+    session.advanced
+    .raw_query(
+        "from index 'Employees/ByFirstAndLastName' where FirstName = $firstName", Employee)
+    .add_parameter("firstName", "Robert")
+)
+```
+
+</TabItem>
+<TabItem value="RQL" label="RQL">
+
+```sql
+from index "Employees/ByFirstAndLastName"
+where FirstName = "Robert"
+```
+
+</TabItem>
+</Tabs>    
+    
+</Panel>
+
+<Panel heading="Syntax">
+
+**`DocumentQuery` filtering methods**
+
+Each filter method below takes a `field_name` string.  
+Use a dotted path for nested or array fields (such as `"ShipTo.City"` or `"Lines.ProductName"`).
+                
+The optional `exact` parameter (default `False`) controls case sensitivity for string comparisons.
+
+<TabItem>     
+```python
+# Equality and comparison
+def where_equals(self, field_name: str, value: Any, exact: bool = False) -> "DocumentQuery[_T]": ...
+
+def where_not_equals(self, field_name: str, value: Any, exact: bool = False) -> "DocumentQuery[_T]": ...
+
+def where_greater_than(self, field_name: str, value: Any, exact: bool = False) -> "DocumentQuery[_T]": ...
+
+def where_greater_than_or_equal(self, field_name: str, value: Any, exact: bool = False) -> "DocumentQuery[_T]": ...
+
+def where_less_than(self, field_name: str, value: Any, exact: bool = False) -> "DocumentQuery[_T]": ...
+
+def where_less_than_or_equal(self, field_name: str, value: Any, exact: bool = False) -> "DocumentQuery[_T]": ...
+
+def where_between(self, field_name: str, start: Any, end: Any, exact: bool = False) -> "DocumentQuery[_T]": ...
+
+# Collection / set matching
+# Match if the field equals any of the provided values.
+def where_in(self, field_name: str, values: Collection, exact: bool = False) -> "DocumentQuery[_T]": ...
+
+# Match if the collection field shares at least one value with the provided values.
+def contains_any(self, field_name: str, values: Collection) -> "DocumentQuery[_T]": ...
+
+# Match if the collection field contains every provided value.
+def contains_all(self, field_name: str, values: Collection) -> "DocumentQuery[_T]": ...
+
+# Prefix / suffix
+def where_starts_with(self, field_name: str, value: Any, exact: bool = False) -> "DocumentQuery[_T]": ...
+
+def where_ends_with(self, field_name: str, value: Any, exact: bool = False) -> "DocumentQuery[_T]": ...
+```
+</TabItem>
+    
+---    
+                                                    
+**`raw_query`**
+
+```python
+# Submit an RQL string directly.
+def raw_query(self, query: str, object_type: Optional[Type[_T]] = None) -> "RawDocumentQuery[_T]": ...
+
+# Bind a value to an RQL parameter referenced as $paramName.
+def add_parameter(self, name: str, value: Any) -> "RawDocumentQuery[_T]": ...
+```
+
+| Parameter            | Type                       | Description                                                                                                          |
+|----------------------|----------------------------|----------------------------------------------------------------------------------------------------------------------|
+| **field_name**       | `str`                      | The name of the field to filter on. Use a dotted path for nested fields (e.g. `"ShipTo.City"`, `"Lines.ProductName"`). |
+| **value**            | `Any`                      | The value to compare against.                                                                                        |
+| **values**           | `Collection`               | The set of values to compare against.                                                                                |
+| **exact**            | `bool`                     | When `True`, string comparison is case-sensitive.<br/>Default: `False`.                                              |
+| **query**            | `str`                      | An RQL string. Use `$paramName` placeholders for values supplied via `add_parameter`.                                |
+| **name**             | `str`                      | The name of an RQL parameter (no `$` prefix).                                                                        |
+
+</Panel>

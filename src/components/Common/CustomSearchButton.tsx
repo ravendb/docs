@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import clsx from "clsx";
-import { useDocSearchKeyboardEvents } from "@docsearch/react";
+import useIsBrowser from "@docusaurus/useIsBrowser";
 import { Icon } from "./Icon";
 
 interface CustomSearchButtonProps {
+    ref?: React.Ref<HTMLButtonElement>;
     onClick: () => void;
     onTouchStart?: () => void;
     onFocus?: () => void;
@@ -15,38 +16,25 @@ interface CustomSearchButtonProps {
 }
 
 function getShortcutKey(): string {
-    if (typeof navigator === "undefined") {
-        return "Ctrl+K";
-    }
-    const isMac = /Mac|iPhone|iPod|iPad/.test(navigator.platform);
-    return isMac ? "⌘K" : "Ctrl+K";
+    return /Mac|iPhone|iPod|iPad/.test(navigator.platform) ? "⌘K" : "Ctrl+K";
 }
 
+// Keyboard handling (open shortcut, type-to-search) is owned by the parent SearchBar,
+// which passes its ref here so the shortcut targets this button.
 export default function CustomSearchButton({
+    ref,
     onClick,
     onTouchStart,
     onFocus,
     onMouseOver,
     translations = {},
 }: CustomSearchButtonProps) {
-    const buttonRef = React.useRef<HTMLButtonElement>(null);
-    const [shortcutKey, setShortcutKey] = useState("Ctrl+K");
-
-    useEffect(() => {
-        setShortcutKey(getShortcutKey());
-    }, []);
-
-    useDocSearchKeyboardEvents({
-        isOpen: false,
-        onOpen: onClick,
-        onClose: () => {},
-        searchButtonRef: buttonRef,
-    });
+    const shortcutKey = useIsBrowser() ? getShortcutKey() : "Ctrl+K";
 
     return (
         <button
             type="button"
-            ref={buttonRef}
+            ref={ref}
             className={clsx(
                 "flex items-center gap-2 text-sm cursor-pointer",
                 "bg-ifm-background border border-black/10 p-2.5 md:py-1.5 md:pr-1.5 md:pl-3",
