@@ -287,6 +287,7 @@ class DatabaseSmugglerExportOptions
     skipRevisionCreation: boolean
     encryptionKey: string
     collections: string[]
+    maxReadOpsPerSecond?: number
     skipCorruptedData: boolean
     compressionAlgorithm?: ExportCompressionAlgorithm
 }
@@ -297,7 +298,7 @@ class DatabaseSmugglerExportOptions
 | Property | Type | Description |
 |-----------|------|-------------|
 | **collections** | `string[]` | List of specific collections to export. If empty, all collections are exported. <br/> Default: `empty` |
-| **operateOnTypes** | `DatabaseItemType[]` | Indicates what should be exported. <br/> Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `ReplicationHubCertificates`, `Identities`, `CompareExchange`, `Attachments`, `CounterGroups`, `Subscriptions`, `TimeSeries` |
+| **operateOnTypes** | `DatabaseItemType[]` | Indicates what should be exported. <br/> Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `ReplicationHubCertificates`, `Identities`, `CompareExchange`, `Attachments`, `CounterGroups`, `Subscriptions`, `TimeSeries`, `TimeSeriesDeletedRanges` |
 | **operateOnDatabaseRecordType** | `DatabaseRecordItemType[]` | Indicates what should be exported from the database record. <br/> Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `Settings`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications`, `TimeSeries`, `DocumentsCompression`, `Analyzers`, `LockMode`, `OlapConnectionStrings`, `OlapEtls`, `ElasticSearchConnectionStrings`, `ElasticSearchEtls`, `PostgreSqlIntegration`, `QueueConnectionStrings`, `QueueEtl`, `IndexesHistory`, `Refresh`, `QueueSinks`, `DataArchival` |
 | **includeExpired** | `boolean` | Should expired documents be exported. <br/> Default: `true` |
 | **includeArtificial** | `boolean` | Should artificial documents be exported. <br/> Default: `false` |
@@ -307,6 +308,7 @@ class DatabaseSmugglerExportOptions
 | **maxStepsForTransformScript** | `number` | Maximum number of steps the transform script can run before failing. <br/> Default: `10000` |
 | **skipRevisionCreation** | `boolean` | When `true`, revisions are not created for the processed documents. <br/> Default: `false` |
 | **encryptionKey** | `string` | Encryption key used to encrypt the exported file. <br/> Default: `null` |
+| **maxReadOpsPerSecond** | `number` | Maximum number of read operations per second during the export. <br/> Default: `null` (no limit) |
 | **skipCorruptedData** | `boolean` | When `true`, the export continues if corrupted data is encountered (for example, lost compression dictionaries), recording an error entry in the result report instead of stopping. <br/> Default: `false` |
 | **compressionAlgorithm** | `ExportCompressionAlgorithm` | Compression algorithm used for the exported file: `Zstd` or `Gzip`. <br/> Default: `null` |
 
@@ -329,6 +331,7 @@ class DatabaseSmugglerImportOptions
     skipRevisionCreation: boolean
     encryptionKey: string
     collections: string[]
+    maxReadOpsPerSecond?: number
     skipCorruptedData: boolean
 }
 ```
@@ -338,7 +341,7 @@ class DatabaseSmugglerImportOptions
 | Property | Type | Description |
 |-----------|------|-------------|
 | **collections** | `string[]` | List of specific collections to import. If empty, all collections are imported. <br/> Default: `empty` |
-| **operateOnTypes** | `DatabaseItemType[]` | Indicates what should be imported. <br/> Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `ReplicationHubCertificates`, `Identities`, `CompareExchange`, `Attachments`, `CounterGroups`, `Subscriptions`, `TimeSeries` |
+| **operateOnTypes** | `DatabaseItemType[]` | Indicates what should be imported. <br/> Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `ReplicationHubCertificates`, `Identities`, `CompareExchange`, `Attachments`, `CounterGroups`, `Subscriptions`, `TimeSeries`, `TimeSeriesDeletedRanges` |
 | **operateOnDatabaseRecordType** | `DatabaseRecordItemType[]` | Indicates what should be imported into the database record. <br/> Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `Settings`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications`, `TimeSeries`, `DocumentsCompression`, `Analyzers`, `LockMode`, `OlapConnectionStrings`, `OlapEtls`, `ElasticSearchConnectionStrings`, `ElasticSearchEtls`, `PostgreSqlIntegration`, `QueueConnectionStrings`, `QueueEtl`, `IndexesHistory`, `Refresh`, `QueueSinks`, `DataArchival` |
 | **includeExpired** | `boolean` | Should expired documents be imported. <br/> Default: `true` |
 | **includeArtificial** | `boolean` | Should artificial documents be imported. <br/> Default: `false` |
@@ -348,6 +351,7 @@ class DatabaseSmugglerImportOptions
 | **maxStepsForTransformScript** | `number` | Maximum number of steps the transform script can run before failing. <br/> Default: `10000` |
 | **skipRevisionCreation** | `boolean` | When `true`, revisions are not created for the imported documents. <br/> Default: `false` |
 | **encryptionKey** | `string` | Encryption key used to read an encrypted `.ravendbdump` file. <br/> Default: `null` |
+| **maxReadOpsPerSecond** | `number` | Maximum number of read operations per second during the import. <br/> Default: `null` (no limit) |
 | **skipCorruptedData** | `boolean` | When `true`, the import continues if corrupted data is encountered, recording an error entry in the result report instead of stopping. <br/> Default: `false` |
 
 </TabItem>
