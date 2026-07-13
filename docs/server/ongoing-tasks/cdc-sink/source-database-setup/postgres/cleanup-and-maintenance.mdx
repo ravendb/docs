@@ -2,7 +2,7 @@
 title: "CDC Sink for PostgreSQL: Cleanup and Maintenance"
 sidebar_label: Cleanup and Maintenance
 description: "How to identify and remove orphaned PostgreSQL replication slots and publications after a CDC Sink task is deleted, and how to avoid slot accumulation."
-sidebar_position: 6
+sidebar_position: 8
 see_also:
   - title: "Initial Setup"
     link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/initial-setup"
@@ -25,223 +25,380 @@ import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* When a CDC Sink task is deleted from RavenDB, the associated PostgreSQL objects
-  - the replication slot and publication - are **not** automatically removed.
+* When a CDC Sink task is deleted from RavenDB, PostgreSQL-side resources used by that task are **not** automatically cleaned up. 
+  This includes the replication slot, the publication, and any `REPLICA IDENTITY FULL` changes that CDC Sink applied to source tables.
 
-* These must be cleaned up manually by a database administrator.
+* A database administrator must decide which resources to keep and which to clean up manually.
 
 * In this article:
   * [Why manual cleanup is required](#why-manual-cleanup-is-required)
+  * [Disabled and stopped tasks keep their slot](#disabled-and-stopped-tasks-keep-their-slot)
   * [Finding orphaned slots and publications](#finding-orphaned-slots-and-publications)
   * [Dropping a replication slot](#dropping-a-replication-slot)
   * [Dropping a publication](#dropping-a-publication)
   * [Too many replication slots](#too-many-replication-slots)
+  * [Preventing WAL from filling the disk](#preventing-wal-from-filling-the-disk)
+  * [Reverting REPLICA IDENTITY changes](#reverting-replica-identity-changes)
   * [Slot and publication names are immutable](#slot-and-publication-names-are-immutable)
+  * [Keeping the publication in sync when tables change](#keeping-the-publication-in-sync-when-tables-change)
 
 </Admonition>
 
 <Panel heading="Why manual cleanup is required">
-
-An active replication slot prevents PostgreSQL from discarding WAL segments that
-have not yet been consumed. If a slot is not being consumed (because the CDC Sink
-task was deleted), PostgreSQL will accumulate WAL on disk indefinitely.
+ 
+A replication slot tells PostgreSQL to retain WAL until the consumer confirms it has processed the changes by advancing the slot's `confirmed_flush_lsn`.
+If CDC Sink stops consuming from the slot because the task was deleted, `confirmed_flush_lsn` no longer advances, so PostgreSQL can continue retaining WAL for that slot.
 
 This can lead to:
 
 * Disk space exhaustion on the PostgreSQL server
 * Degraded performance as old WAL segments pile up
 
-A database administrator must drop unused replication slots.
+When the slot is no longer needed, a database administrator should drop it.
 
 <Admonition type="note" title="">
-**Why RavenDB does not drop slots automatically:**
+    
+#### Why RavenDB does not drop slots automatically:
 
-There are valid reasons to keep a slot after a task is deleted. For example, you
-may want to create a new CDC Sink task that resumes from the same position (by
-reusing the existing slot), or you may want to review what changes are pending
-before cleaning up. The CDC Sink user may also not have the permissions required
-to drop replication slots, even if it had the permissions to create them.
+There are valid reasons to keep a slot after a task is deleted.
+    
+For example, you may want to create a new CDC Sink task that resumes from the same position by reusing the existing slot, 
+or you may want to review what changes are pending before cleaning up.    
+The PostgreSQL user configured in the CDC Sink connection string may also not have the permissions required to drop replication slots,
+even if it had the permissions to create them.
 
-For these reasons, slot and publication lifecycle management is the responsibility
-of the database administrator.
+For these reasons, PostgreSQL-side cleanup is the responsibility of the database administrator.
+    
+</Admonition>
+
+</Panel>
+
+<Panel heading="Disabled and stopped tasks keep their slot">
+
+Deleting a task is not the only way WAL accumulates.  
+    
+A task that is **disabled** or **stopped** (for example, because the responsible node is down or the connection to PostgreSQL is failing)
+is not consuming from PostgreSQL, but it **keeps its replication slot**. 
+    
+While the task is not consuming, `confirmed_flush_lsn` stops advancing and PostgreSQL retains WAL for that slot exactly as it would for a deleted task - 
+except that the task still exists, so the slot will not show up as "orphaned".
+
+This makes long-disabled tasks a common and easily overlooked cause of disk growth.  
+When you disable a task that you do not intend to re-enable soon, decide deliberately whether to keep the slot so the task can resume from the same position later,
+or drop it and accept that the retained WAL position is gone.
+
+<Admonition type="tip" title="">
+    
+To see how much WAL each slot is holding - active or not - use the retained-WAL query in [Monitoring PostgreSQL](./monitoring-postgres.mdx).
+    
 </Admonition>
 
 </Panel>
 
 <Panel heading="Finding orphaned slots and publications">
 
-List all CDC Sink replication slots:
+List CDC Sink replication slots that use the auto-generated prefix:
 
 <Tabs>
 <TabItem value="sql" label="SQL">
-
 ```sql
 SELECT slot_name, active, confirmed_flush_lsn
 FROM pg_replication_slots
 WHERE slot_name LIKE 'rvn_cdc_s_%';
 ```
-
 </TabItem>
 </Tabs>
 
-An `active = false` slot is not being consumed. Compare the list to your active CDC
-Sink tasks in RavenDB - any slot whose corresponding task no longer exists is orphaned.
+An `active = false` slot is not being consumed.  
+Compare the list to your CDC Sink tasks in RavenDB - any slot whose corresponding task no longer exists is orphaned.
+    
+Note that an inactive slot does not always mean the task is gone: 
+a disabled or stopped task also leaves its slot inactive (see [Disabled and stopped tasks keep their slot](#disabled-and-stopped-tasks-keep-their-slot)).
+    
+To see how much WAL each slot is retaining, use the query in [Monitoring PostgreSQL](./monitoring-postgres.mdx).
 
-List all CDC Sink publications:
+List CDC Sink publications that use the auto-generated publication prefix:    
 
 <Tabs>
 <TabItem value="sql" label="SQL">
-
 ```sql
-SELECT p.pubname, c.relname AS table_name
+SELECT p.pubname,
+       p.puballtables,
+       n.nspname AS schema_name,
+       c.relname AS table_name
 FROM pg_publication p
-JOIN pg_publication_rel pr ON pr.prpubid = p.oid
-JOIN pg_class c ON c.oid = pr.prrelid
+LEFT JOIN pg_publication_rel pr ON pr.prpubid = p.oid
+LEFT JOIN pg_class c ON c.oid = pr.prrelid
+LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
 WHERE p.pubname LIKE 'rvn_cdc_p_%'
-ORDER BY p.pubname, c.relname;
+ORDER BY p.pubname, n.nspname, c.relname;
 ```
-
 </TabItem>
 </Tabs>
+
+<Admonition type="note" title="">
+    
+The `rvn_cdc_s_` and `rvn_cdc_p_` prefixes match only **auto-generated** names.  
+    
+If a slot or publication was created with a custom name, either supplied when the task was created or pre-created by an administrator, 
+drop the `LIKE` filter and cross-check the full list against your CDC Sink task configurations instead.
+    
+</Admonition>
 
 </Panel>
 
 <Panel heading="Dropping a replication slot">
 
+Use the actual slot name from the CDC Sink task configuration or from `pg_replication_slots`:
+
 <Tabs>
 <TabItem value="sql" label="SQL">
-
 ```sql
-SELECT pg_drop_replication_slot('rvn_cdc_s_<task-id>');
+SELECT pg_drop_replication_slot('<slot-name>');
 ```
-
 </TabItem>
 </Tabs>
 
 <Admonition type="warning" title="">
-You cannot drop an active replication slot (one with `active = true`). The CDC Sink
-task must be stopped or deleted in RavenDB before the slot can be dropped.
+    
+You cannot drop an active replication slot (one with `active = true`).   
+Disable or delete the CDC Sink task, or otherwise stop the process that is consuming the slot, before dropping it.
+    
+</Admonition>
+
+Dropping a slot discards the retained WAL position for that slot.  
+If a CDC Sink task is later started with saved state that points to WAL no longer retained by the slot,  
+CDC Sink can report an LSN gap; changes in that gap cannot be recovered from the slot.
+
+Even after the task is stopped or deleted, the slot can remain `active` for a short time.  
+PostgreSQL does not release the slot until the streaming connection (the WAL sender) closes,  
+which can take up to `wal_sender_timeout` (60 seconds by default).
+    
+If `pg_drop_replication_slot` fails with *"replication slot is active for PID …"*, either wait for the timeout,  
+or terminate the lingering WAL sender:
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+```sql
+SELECT pg_terminate_backend(active_pid)
+FROM pg_replication_slots
+WHERE slot_name = '<slot-name>' AND active_pid IS NOT NULL;
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+    
+This is also where you drop a slot that a task reports as using the **wrong output plugin** (*"exists but uses plugin … instead of 'pgoutput'"*).
+Dropping it here lets CDC Sink recreate it with the correct plugin on the next run.  
+See [Task enters error state](../../../../../server/ongoing-tasks/cdc-sink/troubleshooting.mdx#task-enters-error-state) for the diagnosis.
+    
 </Admonition>
 
 </Panel>
 
 <Panel heading="Dropping a publication">
 
+Use the actual publication name from the CDC Sink task configuration or from `pg_publication`:
+
 <Tabs>
 <TabItem value="sql" label="SQL">
-
 ```sql
-DROP PUBLICATION IF EXISTS "rvn_cdc_p_<task-id>";
+DROP PUBLICATION IF EXISTS "<publication-name>";
 ```
-
 </TabItem>
 </Tabs>
 
-Publications are not consumed like slots - they do not accumulate data or hold WAL
-segments. However, they should still be dropped to keep the database clean.
+Publications are not consumed like slots - they do not accumulate data or hold WAL segments.  
+However, they should still be dropped when they are no longer needed, to keep the PostgreSQL database clean.
+
+<Admonition type="warning" title="">
+    
+Drop a publication only after confirming that no CDC Sink task or other replication consumer still depends on it.  
+This is especially important for custom or pre-created publication names.
+    
+</Admonition>
 
 </Panel>
 
 <Panel heading="Too many replication slots">
 
-PostgreSQL limits the total number of replication slots to `max_replication_slots`.
-If you exceed this limit, no new CDC Sink tasks can start (they will fail with a
-connection error).
+PostgreSQL limits the total number of replication slots to `max_replication_slots`.  
+If the limit is reached, CDC Sink tasks that need to create a new replication slot can fail to start.
 
-Check how many slots are in use:
+Check how many slots exist and what the configured limit is:
 
 <Tabs>
 <TabItem value="sql" label="SQL">
-
 ```sql
-SELECT count(*) FROM pg_replication_slots;
+SELECT count(*) AS used_slots FROM pg_replication_slots;
 SHOW max_replication_slots;
 ```
-
 </TabItem>
 </Tabs>
 
-To resolve this:
-
-1. Identify inactive slots:
+To resolve this, first identify slots that are not currently being consumed:
 
 <Tabs>
 <TabItem value="sql" label="SQL">
-
 ```sql
 SELECT slot_name, active
 FROM pg_replication_slots
-WHERE active = false AND slot_name LIKE 'rvn_cdc_s_%';
+WHERE active = false;
 ```
-
 </TabItem>
 </Tabs>
 
-2. Drop slots for tasks that no longer exist:
+Compare the inactive slots with your CDC Sink task configurations. Drop only slots that are no longer needed:
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+```sql
+SELECT pg_drop_replication_slot('<slot-name>');
+```
+</TabItem>
+</Tabs>
+
+If the remaining slots are all still needed, increase `max_replication_slots` in `postgresql.conf` and restart PostgreSQL.
+
+</Panel>
+
+<Panel heading="Preventing WAL from filling the disk">
+
+Regular cleanup removes slots you no longer need, but as a safety net you can also cap how much WAL a single slot is allowed to retain.
+On PostgreSQL 13 and later, set `max_slot_wal_keep_size` in `postgresql.conf`, or with `ALTER SYSTEM`:
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+```sql
+-- Retain at most 10 GB of WAL for any single slot
+ALTER SYSTEM SET max_slot_wal_keep_size = '10GB';
+SELECT pg_reload_conf();
+```
+</TabItem>
+</Tabs>
+
+If a slot falls further behind than this limit, PostgreSQL can stop retaining WAL for it and the slot can become **lost**.  
+This protects the server from running out of disk, but the slot can no longer stream the missing changes.  
+    
+If CDC Sink has saved state that points to WAL no longer retained by the slot, CDC Sink can report an LSN gap;  
+changes in that gap cannot be recovered from the slot.
+
+Check each slot's WAL status:
 
 <Tabs>
 <TabItem value="sql" label="SQL">
 
 ```sql
-SELECT pg_drop_replication_slot('rvn_cdc_s_<task-id>');
+SELECT slot_name, active, wal_status, safe_wal_size
+FROM pg_replication_slots;
 ```
 
 </TabItem>
 </Tabs>
 
-3. If needed, increase `max_replication_slots` in `postgresql.conf` and restart
-   PostgreSQL.
+A `wal_status` of `lost` means the slot has already been invalidated.   
+Use `safe_wal_size` to see how much more WAL can be written before the slot is at risk.  
+Treat this setting as a safeguard, not a substitute for dropping slots you no longer need.
+
+</Panel>
+
+<Panel heading="Reverting REPLICA IDENTITY changes">
+
+Besides the slot and publication, CDC Sink may modify **embedded source tables**.  
+    
+When an embedded table's current replica identity does not include the columns needed to route `DELETE` events,  
+CDC Sink can run `ALTER TABLE <table> REPLICA IDENTITY FULL` on that table.  
+This change is made on the PostgreSQL table itself, so it **persists after the CDC Sink task is deleted**.
+
+`REPLICA IDENTITY FULL` causes PostgreSQL to write the full old row into WAL for every `UPDATE` and `DELETE` on that table,
+which increases WAL volume even for other consumers.
+    
+After cleanup, revert the table only if no remaining replication or CDC process depends on the current setting.
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+
+```sql
+-- Inspect current replica identity (d = default, f = full, i = index, n = nothing)
+SELECT n.nspname AS schema_name,
+       c.relname AS table_name,
+       c.relreplident
+FROM pg_class c
+JOIN pg_namespace n ON n.oid = c.relnamespace
+WHERE n.nspname = '<schema-name>'
+  AND c.relname = '<table-name>';
+
+-- Revert to the default only if DEFAULT is the desired setting after cleanup
+ALTER TABLE "<schema-name>"."<table-name>" REPLICA IDENTITY DEFAULT;
+```
+
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="">
+Only change replica identity for tables that CDC Sink changed and that no other replication or CDC tool relies on.  
+If a table still needs `REPLICA IDENTITY FULL` or a replica identity index for another consumer, leave it.
+</Admonition>
 
 </Panel>
 
 <Panel heading="Slot and publication names are immutable">
 
-The replication slot name and publication name are generated **once at task creation**
-using the task id and stored with the task. They do not change when you modify the task -
-adding or removing tables, renaming the task, or changing any other configuration
-always reuses the same slot and publication.
+The replication slot name and publication name are fixed when the task is created and stored with the task.  
+You can supply your own names when creating the task; if you omit them, RavenDB auto-generates them (`rvn_cdc_s_<task-id>` and `rvn_cdc_p_<task-id>`).
 
-Attempting to specify a different `SlotName` or `PublicationName` when updating a
-task results in an error.
+After that, task updates reuse the same slot and publication.  
+Adding or removing tables, renaming the task, or changing other task settings does not change those names.
 
-If you need to use a different slot or publication, delete the task and create a new one.
-The old slot and publication from the deleted task must then be cleaned up manually -
-see [Dropping a replication slot](#dropping-a-replication-slot) and
-[Dropping a publication](#dropping-a-publication) below.
+When updating a task, you may omit `SlotName` and `PublicationName`; RavenDB keeps the existing values.  
+However, attempting to set a different non-null `SlotName` or `PublicationName` results in an error.
+
+If you need to use a different slot or publication, delete the task and create a new one.  
+If the old slot and publication are no longer needed, clean them up manually -  
+see [Dropping a replication slot](#dropping-a-replication-slot) and [Dropping a publication](#dropping-a-publication) above.
 
 </Panel>
 
 <Panel heading="Keeping the publication in sync when tables change">
-    
-// TODO.. add this to TOC and... see if it duplicates exsiting content...    
 
-The replication slot and publication names are fixed at task creation and do not change when you update the task.
-However, the **publication** controls which tables CDC Sink receives changes for, so table changes require database-level updates:
+While the slot and publication names never change, the **publication** itself controls which PostgreSQL tables CDC Sink receives changes for.
+The publication must include all root and embedded source tables configured in the task.
 
-* **Adding tables** - If the PostgreSQL user configured in the CDC Sink connection string has permission to alter the publication,
-  CDC Sink attempts to run `ALTER PUBLICATION <name> ADD TABLE <new_table>;` automatically when the task is updated.
-  If it does not have permission, a database administrator must run this manually.
+* **Adding tables**  
+  When the task starts after new tables were added to the CDC Sink configuration, CDC Sink checks whether those tables are in the publication.
+  If the PostgreSQL user configured in the CDC Sink connection string has permission, CDC Sink attempts to add the missing tables automatically:
 
-* **Removing tables** - `ALTER PUBLICATION <name> DROP TABLE <removed_table>;` must be run manually by a database administrator.
+  ```sql
+  ALTER PUBLICATION "<publication-name>" ADD TABLE "<schema-name>"."<table-name>";
+  ```
+
+  If this fails, a database administrator must add the missing tables manually.
+
+* **Removing tables**  
   CDC Sink does not remove tables from the publication automatically.
+  If a table was removed from the CDC Sink task, a database administrator should remove it from the publication when it is no longer needed:
 
-If the slot and publication were auto-named, a database administrator can look up the current names from the task configuration or from PostgreSQL:
+  ```sql
+  ALTER PUBLICATION "<publication-name>" DROP TABLE "<schema-name>"."<table-name>";
+  ```
+  <bt/>        
 
-<Tabs>
-<TabItem value="sql" label="SQL">
+<Admonition type="note" title="">
+If the publication contains tables that are **not** configured in the CDC Sink task,  
+CDC Sink discards changes from those tables and raises a warning notification in RavenDB.
 
-```sql
-SELECT slot_name FROM pg_replication_slots WHERE slot_name LIKE 'rvn_cdc_s_%';
-SELECT pubname FROM pg_publication WHERE pubname LIKE 'rvn_cdc_p_%';
-```
+For a normal table-list publication,  
+remove extra tables with `ALTER PUBLICATION "<publication-name>" DROP TABLE ...`.
 
-</TabItem>
-</Tabs>
+For a publication created `FOR ALL TABLES`,  
+you cannot narrow it with `ALTER PUBLICATION ... DROP TABLE` or `ALTER PUBLICATION ... SET TABLE`;  
+    
+PostgreSQL rejects table-list changes on `FOR ALL TABLES` publications.   
+Drop and recreate it as a table-list publication that lists only the tables configured in the CDC Sink task.   
+        
+</Admonition>
 
-See [Initial Setup](./initial-setup.mdx) for guidance on slot and publication management.
-
-Orphaned slots and publications must be cleaned up manually by the database administrator -
-see [Dropping a replication slot](#dropping-a-replication-slot) and
-[Dropping a publication](#dropping-a-publication).
+See [Initial Setup](./initial-setup.mdx) for publication setup and permission guidance.
 
 </Panel>
