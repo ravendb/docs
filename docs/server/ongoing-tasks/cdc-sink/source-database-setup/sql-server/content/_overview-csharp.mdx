@@ -5,45 +5,68 @@ import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* CDC Sink supports SQL Server as a source database using native
+* CDC Sink supports **SQL Server** as a source database using native
   [SQL Server Change Data Capture](https://learn.microsoft.com/en-us/sql/relational-databases/track-changes/about-change-data-capture-sql-server).
 
-* SQL Server CDC captures row-level changes from the transaction log and stores them
-  in change tables. CDC Sink polls these change tables to stream INSERTs, UPDATEs,
-  and DELETEs into RavenDB documents.
+* SQL Server CDC captures row-level changes from the transaction log and stores them in CDC change tables.  
+  The CDC Sink task polls SQL Server CDC for new changes and applies INSERTs, UPDATEs, and DELETEs  
+  to RavenDB documents.
 
 </Admonition>
 
-<Panel heading="Connection String">
+<Panel heading="Connection string">
 
-Use a `SqlConnectionString` with `FactoryName` set to `"Microsoft.Data.SqlClient"`:
+Use a [SqlConnectionString](../todo..) with `FactoryName` set to `"Microsoft.Data.SqlClient"`:
 
 <Tabs>
-<TabItem value="csharp" label="csharp">
-
+<TabItem value="sync" label="Sync">
 ```csharp
 store.Maintenance.Send(new PutConnectionStringOperation<SqlConnectionString>(
     new SqlConnectionString
     {
-        Name = "MySqlServerConnection",
+        Name = "SqlServerConnection",
         FactoryName = "Microsoft.Data.SqlClient",
-        ConnectionString = "Server=myserver;Database=mydb;Trusted_Connection=True;"
+        ConnectionString =
+            "Server=myserver;Database=mydb;" +
+            "User Id=ravendb_cdc;Password=...;" +
+            "TrustServerCertificate=True;"
     }));
 ```
-
+</TabItem>
+<TabItem value="async" label="Async">
+```csharp
+await store.Maintenance.SendAsync(new PutConnectionStringOperation<SqlConnectionString>(
+    new SqlConnectionString
+    {
+        Name = "SqlServerConnection",
+        FactoryName = "Microsoft.Data.SqlClient",
+        ConnectionString =
+            "Server=myserver;Database=mydb;" +
+            "User Id=ravendb_cdc;Password=...;" +
+            "TrustServerCertificate=True;"
+    }));
+```
 </TabItem>
 </Tabs>
+
+<Admonition type="warning" title="">
+`Microsoft.Data.SqlClient` defaults to `Encrypt=True`.  
+Unless SQL Server presents a certificate trusted by the RavenDB server, add `TrustServerCertificate=True`  
+(as above) or `Encrypt=False` to the connection string. Otherwise, the CDC Sink task cannot connect.
+</Admonition>
 
 </Panel>
 
 <Panel heading="Prerequisites">
 
-SQL Server CDC must be enabled on the source database and on each table you want
-to capture:
+Before CDC Sink can capture changes,  
+SQL Server CDC must be enabled on the source database and on every source table configured in the task.
+
+If the SQL Server user in the CDC Sink connection string has permission to enable CDC,  
+RavenDB enables it automatically when the task starts. Otherwise, ask a database administrator to run:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-
+<TabItem value="sql" label="SQL">
 ```sql
 -- Enable CDC on the database
 EXEC sys.sp_cdc_enable_db;
@@ -54,27 +77,44 @@ EXEC sys.sp_cdc_enable_table
     @source_name = N'orders',
     @role_name = NULL;
 ```
-
 </TabItem>
 </Tabs>
 
-The SQL Server Agent service must be running for CDC to function.
+The SQL Server Agent service must be running for CDC change capture to work.  
+The Agent runs the capture jobs that populate the change tables. 
+    
+On-premises, start the SQL Server Agent service; in Docker containers, start with `-e 'MSSQL_AGENT_ENABLED=true'`.  
+If the Agent is stopped, the task can still start and raise a warning, but no CDC changes are delivered until the Agent is running.
+
+<Admonition type="note" title="">
+    
+#### Azure SQL Database
+    
+Azure SQL Database has no classic SQL Server Agent.  
+Its CDC capture runs on a managed scheduler, so this requirement does not apply there.
+    
+</Admonition>
 
 </Panel>
 
-<Panel heading="Polling Behavior">
+<Panel heading="Polling behavior">
 
-Unlike PostgreSQL (which uses streaming replication), SQL Server CDC Sink uses polling.
-The `CdcSink.SqlServer.PollIntervalInSec` server configuration key controls how frequently
-the task polls for new changes. See [Server Configuration](../../../server-configuration.mdx).
+Unlike PostgreSQL and MySQL, SQL Server CDC Sink uses polling rather than a streaming replication connection.  
+The `CdcSink.SqlServer.PollIntervalInSec` server configuration key controls how frequently the task polls for new change rows.
+
+Lower values reduce latency, but increase load on the source database.  
+See [Server Configuration](../../../../../../server/ongoing-tasks/cdc-sink/server-configuration.mdx).
 
 </Panel>
 
-<Panel heading="Configuration">
+<Panel heading="Task configuration">
 
-The CDC Sink task configuration is the same across all database engines.
-See [Configuration Reference](../../../manage-cdc-sink-tasks/configuration-reference.mdx) for full details.
+SQL Server CDC Sink uses the same `CdcSinkConfiguration` table, mapping, patching, and delete-handling settings as the other source engines. 
+SQL Server does not use the PostgreSQL-specific `Postgres` settings.
 
-The `SourceTableSchema` defaults to `"dbo"` when using SQL Server.
+See [Configuration Reference](../../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/configuration-reference.mdx)
+for full details.
+
+When `SourceTableSchema` is omitted, SQL Server uses `"dbo"` as the default schema.
 
 </Panel>
