@@ -5,22 +5,27 @@ import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* CDC Sink supports PostgreSQL as a source database using
-  [logical replication](https://www.postgresql.org/docs/current/logical-replication.html).
+* CDC Sink supports PostgreSQL as a source database by using [logical replication](https://www.postgresql.org/docs/current/logical-replication.html).
 
-* PostgreSQL streams row-level changes in real time through a logical replication slot.
-  CDC Sink consumes this stream and applies INSERTs, UPDATEs, and DELETEs to RavenDB
-  documents as they occur.
+* PostgreSQL streams row-level changes continuously through a logical replication slot.  
+  The CDC Sink task consumes this stream and applies INSERTs, UPDATEs, and DELETEs to RavenDB documents as they are received.
+
+* In this article:
+  * [Connection string](#connection-string)
+  * [How it works](#how-it-works)
+  * [Prerequisites](#prerequisites)
+  * [PostgreSQL-specific settings](#postgresql-specific-settings)
+  * [Task configuration](#task-configuration)
 
 </Admonition>
 
 <Panel heading="Connection string">
 
-Use a `SqlConnectionString` with `FactoryName` set to `"Npgsql"`:
+[Create a SqlConnectionString](../../../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-sql-connection-string)
+with `FactoryName` set to `"Npgsql"`.  
 
 <Tabs>
-<TabItem value="csharp" label="csharp">
-
+<TabItem value="sync" label="Sync">
 ```csharp
 store.Maintenance.Send(new PutConnectionStringOperation<SqlConnectionString>(
     new SqlConnectionString
@@ -30,7 +35,17 @@ store.Maintenance.Send(new PutConnectionStringOperation<SqlConnectionString>(
         ConnectionString = "Host=myserver;Port=5432;Database=mydb;Username=cdc_user;Password=..."
     }));
 ```
-
+</TabItem>
+<TabItem value="async" label="Async">
+```csharp
+await store.Maintenance.SendAsync(new PutConnectionStringOperation<SqlConnectionString>(
+    new SqlConnectionString
+    {
+        Name = "MyPostgresConnection",
+        FactoryName = "Npgsql",
+        ConnectionString = "Host=myserver;Port=5432;Database=mydb;Username=cdc_user;Password=..."
+    }));
+```
 </TabItem>
 </Tabs>
 
@@ -38,45 +53,42 @@ store.Maintenance.Send(new PutConnectionStringOperation<SqlConnectionString>(
 
 <Panel heading="How it works">
 
-PostgreSQL CDC Sink uses logical replication, which provides a continuous stream of
-changes without polling. This gives low-latency, near-real-time replication.
+CDC Sink uses PostgreSQL logical replication to receive a continuous stream of row-level changes without polling.
 
 Key PostgreSQL concepts:
 
-* **Replication slot** - a server-side cursor that tracks how far a consumer has read.
-  CDC Sink creates and manages one automatically when the PostgreSQL user has
-  sufficient permissions.
-* **Publication** - defines which tables are included in the replication stream.
-  CDC Sink creates one automatically for the configured tables when the PostgreSQL
-  user has sufficient permissions.
-* **WAL (Write-Ahead Log)** - PostgreSQL retains WAL segments as long as a replication
-  slot has not consumed them. An inactive or paused task causes WAL to accumulate.
+* **Replication slot**  
+  A server-side object that tracks how far CDC Sink has read in the logical replication stream.  
+  It also causes PostgreSQL to retain the required WAL segments until CDC Sink confirms receipt.
+* **Publication**  
+  Defines which tables are included in the replication stream.
+  CDC Sink creates or reuses a publication for the configured tables when the PostgreSQL user in the connection string has sufficient permissions.
+* **WAL (Write-Ahead Log)**  
+  The durable log PostgreSQL uses as the source for logical replication.  
+  If a CDC Sink task is inactive or paused while its replication slot exists, WAL segments can accumulate.
 
 </Panel>
 
 <Panel heading="Prerequisites">
 
-PostgreSQL requires several configuration settings and permissions before CDC Sink
-can connect. See [Prerequisites Checklist](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/prerequisites-checklist.mdx) for the
-full list, including:
+Before creating a CDC Sink task for PostgreSQL, verify the source database settings, permissions, and table requirements.
+See [Prerequisites Checklist](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/prerequisites-checklist.mdx)
+for the full list, including:
 
+* PostgreSQL version 10 or later
 * WAL level set to `logical`
 * Sufficient `max_replication_slots` and `max_wal_senders`
-* A database user with `REPLICATION` privilege
-* `REPLICA IDENTITY` configuration for embedded tables whose primary key is an
-  auto-generated column (for example a serial/identity ID rather than a natural
-  business key)
+* A PostgreSQL user with `REPLICATION` privilege and `SELECT` on each table CDC Sink will read
+* `REPLICA IDENTITY` configuration for embedded tables whose join columns are not part of the primary key
 
 </Panel>
 
 <Panel heading="PostgreSQL-specific settings">
 
-The `CdcSinkPostgresSettings` object on `CdcSinkConfiguration` controls the replication
-slot and publication names:
+Use `CdcSinkConfiguration.Postgres` when you want to specify the PostgreSQL replication slot and publication names explicitly:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-
 ```csharp
 Postgres = new CdcSinkPostgresSettings
 {
@@ -84,35 +96,26 @@ Postgres = new CdcSinkPostgresSettings
     PublicationName = "my_publication"
 }
 ```
-
 </TabItem>
 </Tabs>
 
-If these names are omitted, they are generated automatically at task creation as
-`rvn_cdc_s_{taskId}` (slot) and `rvn_cdc_p_{taskId}` (publication), where `{taskId}`
-is the task's Raft etag. Automatic creation of the slot and publication requires the
-PostgreSQL user to have sufficient permissions.
+If either name is omitted, the CDC Sink task generates it when the task is created:
+`rvn_cdc_s_{taskId}` for the slot and `rvn_cdc_p_{taskId}` for the publication.
+The names are stored with the task and do not change on later updates.
+    
+To let the CDC Sink task create the PostgreSQL slot and publication itself, 
+the PostgreSQL user configured in the CDC Sink connection string must have sufficient permissions.    
+    
 See [Initial Setup](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/initial-setup.mdx) for details.
 
 </Panel>
 
-<Panel heading="Configuration">
+<Panel heading="Task configuration">
 
-The CDC Sink task configuration is the same across all database engines.
-See [Configuration Reference](../../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/configuration-reference.mdx) for full details.
+Most CDC Sink task configuration is shared across supported source database engines.  
+See [Configuration Reference](../../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/configuration-reference.mdx) for the full API, 
+including table mappings, delete behavior, patches, and PostgreSQL-specific settings.
 
-The `SourceTableSchema` defaults to `"public"` when using PostgreSQL.
-
-</Panel>
-
-<Panel heading="In this section">
-
-* [Prerequisites Checklist](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/prerequisites-checklist.mdx) - what to verify before creating a task
-* [Initial Setup](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/initial-setup.mdx) - creating the replication slot and publication
-* [WAL Configuration](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/wal-configuration.mdx) - PostgreSQL WAL settings
-* [Permissions and Roles](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/permissions-and-roles.mdx) - required database permissions
-* [REPLICA IDENTITY](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity.mdx) - configuring DELETE event content
-* [Monitoring PostgreSQL](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/monitoring-postgres.mdx) - replication lag and WAL monitoring
-* [Cleanup and Maintenance](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/cleanup-and-maintenance.mdx) - dropping orphaned slots
+For PostgreSQL, `SourceTableSchema` defaults to `"public"` when omitted.
 
 </Panel>
