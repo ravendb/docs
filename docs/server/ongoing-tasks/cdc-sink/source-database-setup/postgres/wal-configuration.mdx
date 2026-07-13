@@ -2,7 +2,7 @@
 title: "CDC Sink for PostgreSQL: WAL Configuration"
 sidebar_label: WAL Configuration
 description: "How to verify and configure the PostgreSQL Write-Ahead Log level to enable logical replication required by CDC Sink."
-sidebar_position: 1
+sidebar_position: 3
 see_also:
   - title: "Prerequisites Checklist"
     link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/prerequisites-checklist"
@@ -23,112 +23,112 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
 
-# CDC Sink for PostgreSQL: WAL Configuration
-
 <Admonition type="note" title="">
 
-* CDC Sink uses PostgreSQL **logical replication**, which requires the Write-Ahead Log
-  (WAL) to be configured at the `logical` level.
+* CDC Sink uses PostgreSQL **logical replication**, which requires `wal_level` to be set to `logical`.
 
-* This page explains how to verify the current setting and change it if needed.
+* This page explains how to check the current `wal_level`, enable logical replication if needed,  
+  and review related replication settings.
 
 * In this article:
-  * [Check Current WAL Level](#check-current-wal-level)
-  * [Enable Logical Replication](#enable-logical-replication)
-  * [Other Required Settings](#other-required-settings)
+  * [Check current WAL level](#check-current-wal-level)
+  * [Enable logical replication](#enable-logical-replication)
+  * [Other required settings](#other-required-settings)
 
 </Admonition>
 
-<Panel heading="Check Current WAL Level">
+<Panel heading="Check current WAL level">
 
 Connect to your PostgreSQL instance and run:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-
+<TabItem value="sql" label="SQL">
 ```sql
 SHOW wal_level;
 ```
-
 </TabItem>
 </Tabs>
 
-If the result is `logical`, no changes are needed.
+If the result is `logical`, no change to `wal_level` is needed.    
 
-If the result is `replica` or `minimal`, logical replication is not enabled and
-must be configured before CDC Sink can run.
+If the result is `replica` or `minimal`, 
+logical replication is not enabled and `wal_level` must be changed before CDC Sink can read changes from PostgreSQL.    
 
 </Panel>
 
-<Panel heading="Enable Logical Replication">
+<Panel heading="Enable logical replication">
 
-Edit `postgresql.conf` and set the following:
-
-<Tabs>
-<TabItem value="plain" label="plain">
+For self-managed PostgreSQL, edit `postgresql.conf` and set:
 
 ```plain
 wal_level = logical
 ```
+<br/>
 
-</TabItem>
-</Tabs>
-
-This change requires a **PostgreSQL restart**.
+<Admonition type="warning" title="">
+Changing `wal_level` requires a full server restart, not just a configuration reload.  
+Plan for a brief maintenance window.
+</Admonition>
 
 After restarting, verify the change took effect:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-
+<TabItem value="sql" label="SQL">
 ```sql
 SHOW wal_level;
 -- Should return: logical
 ```
-
 </TabItem>
 </Tabs>
 
-<Admonition type="warning" title="">
-Changing `wal_level` requires a full server restart, not just a configuration reload.
-Plan for a brief maintenance window.
+<Admonition type="info" title="">
+
+#### Managed PostgreSQL    
+
+On managed PostgreSQL services, you usually cannot edit `postgresql.conf` directly.  
+Change the setting through the provider's configuration mechanism instead:
+
+* **Amazon RDS for PostgreSQL**  
+  Set `rds.logical_replication = 1` in the DB parameter group, then reboot the DB instance.
+
+* **Amazon Aurora PostgreSQL**  
+  Set `rds.logical_replication = 1` in the DB cluster parameter group, then reboot the writer instance.
+
+* **Google Cloud SQL for PostgreSQL**  
+  Set the `cloudsql.logical_decoding` flag to `on`, then restart the primary instance.
+
+* **Azure Database for PostgreSQL Flexible Server**  
+  Set the `wal_level` server parameter to `logical`, save the change, and restart the server.
+
 </Admonition>
 
 </Panel>
 
-<Panel heading="Other Required Settings">
+<Panel heading="Other required settings">
 
-CDC Sink uses one replication slot per task. Ensure the following settings are
-sufficient for the number of CDC Sink tasks you plan to run:
-
-<Tabs>
-<TabItem value="plain" label="plain">
+CDC Sink uses one PostgreSQL replication slot per task.  
+Make sure the following settings are high enough for your CDC Sink tasks and any other replication consumers:
 
 ```plain
-max_replication_slots = 10   -- at least 1 per CDC Sink task
-max_wal_senders = 10         -- at least 1 per active replication connection
+max_replication_slots = 10   # at least 1 per CDC Sink task
+max_wal_senders = 10         # at least 1 per running CDC Sink task
 ```
+<br/>
 
-</TabItem>
-</Tabs>
-
-The defaults in a standard PostgreSQL installation are typically sufficient for
-a small number of tasks, but you may need to increase them if you have many
-concurrent CDC Sink tasks or other replication consumers.
+The defaults in a standard PostgreSQL installation are typically sufficient for a small number of tasks,  
+but you may need to increase them if you have many CDC Sink tasks or other replication consumers.
 
 Check current values:
 
 <Tabs>
-<TabItem value="sql" label="sql">
-
+<TabItem value="sql" label="SQL">
 ```sql
 SHOW max_replication_slots;
 SHOW max_wal_senders;
 ```
-
 </TabItem>
 </Tabs>
 
-These settings also require a **server restart** if changed.
+These settings require a server restart if changed.
 
 </Panel>
