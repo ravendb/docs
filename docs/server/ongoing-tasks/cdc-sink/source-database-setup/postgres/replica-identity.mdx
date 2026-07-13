@@ -2,7 +2,7 @@
 title: "CDC Sink for PostgreSQL: REPLICA IDENTITY"
 sidebar_label: REPLICA IDENTITY
 description: "How PostgreSQL REPLICA IDENTITY affects CDC Sink's ability to process DELETE events for embedded tables, and when it must be configured."
-sidebar_position: 4
+sidebar_position: 6
 see_also:
   - title: "Manual REPLICA IDENTITY Setup"
     link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity-manual-setup"
@@ -19,80 +19,82 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Panel from '@site/src/components/Panel';
 
-# CDC Sink for PostgreSQL: REPLICA IDENTITY
-
 <Admonition type="note" title="">
 
-* **REPLICA IDENTITY** controls what column values PostgreSQL includes in DELETE
-  (and UPDATE) events in the logical replication stream.
+* **REPLICA IDENTITY** determines which old column values PostgreSQL can include in logical replication messages for `DELETE` and `UPDATE` operations.
+  For CDC Sink, it mainly matters for `DELETE` events from embedded tables.
 
-* CDC Sink requires old row values in DELETE events to identify which embedded
-  item to remove from a parent document. Without them, embedded table deletes
-  cannot be routed correctly.
+* To process an embedded-table `DELETE`, CDC Sink needs the old values of the embedded row's join columns and primary key columns.
+  The join columns locate the parent document; the primary key columns locate the embedded item to remove.
+
+* This article explains when PostgreSQL's default setting is sufficient, when the table needs a different `REPLICA IDENTITY`,
+  and whether CDC Sink can configure it automatically.
 
 * In this article:
-  * [Why REPLICA IDENTITY Matters](#why-replica-identity-matters)
-  * [REPLICA IDENTITY Options](#replica-identity-options)
-  * [When Is REPLICA IDENTITY Required?](#when-is-replica-identity-required)
-  * [Checking Current Setting](#checking-current-setting)
-  * [Automatic vs Manual Configuration](#automatic-vs-manual-configuration)
+  * [Why REPLICA IDENTITY matters](#why-replica-identity-matters)
+  * [REPLICA IDENTITY options](#replica-identity-options)
+  * [When is REPLICA IDENTITY required?](#when-is-replica-identity-required)
+  * [Checking current setting](#checking-current-setting)
+  * [Automatic vs manual configuration](#automatic-vs-manual-configuration)
 
 </Admonition>
 
-<Panel heading="Why REPLICA IDENTITY Matters">
+<Panel heading="Why REPLICA IDENTITY matters">
 
 When CDC Sink receives a DELETE event for an embedded table, it needs to:
 
-1. Find the parent document (using the join column values from the old row)
-2. Find the matching item within the embedded array or map (using the PK column values)
+1. Find the parent document using the old row's join column values
+2. Find the matching item within the embedded array or map using the embedded table's primary key values
 3. Remove it
 
-If the DELETE event does not include old row values for the join columns and PK
-columns, CDC Sink cannot perform steps 1 or 2.
+If the DELETE event does not include the old values for both sets of columns, CDC Sink cannot perform steps 1 or 2.
 
-By default, PostgreSQL only includes the primary key columns in DELETE events.
-If the embedded table's join columns are part of the primary key, this is sufficient.
-If they are not - which is the common case when a table has a surrogate PK - the
-DELETE event will be missing the columns needed to route it.
+By default, PostgreSQL includes only the primary key columns in DELETE events.  
+If the embedded table's join columns are part of the primary key, this is sufficient.  
+If they are not, which is common when a table has a surrogate primary key,  
+the DELETE event will be missing the columns needed to route it.
 
-UPDATE events always carry the new row, so routing an UPDATE normally works even
-under `DEFAULT`. REPLICA IDENTITY mostly matters for DELETE events, and for UPDATEs
-that change the key or join columns (where the old key values are needed to locate
-the existing embedded item).
+UPDATE events carry the new row, so ordinary embedded updates can be routed under `DEFAULT`.  
+Old row values matter when an UPDATE changes the embedded row's join columns,  
+because CDC Sink must remove the item from the old parent document and add it to the new one.
 
 </Panel>
 
-<Panel heading="REPLICA IDENTITY Options">
+<Panel heading="REPLICA IDENTITY options">
 
 PostgreSQL supports four REPLICA IDENTITY modes:
 
-| Mode | What's included in DELETE/UPDATE events | Notes |
-|------|----------------------------------------|-------|
-| `DEFAULT` | Primary key columns only | Default for tables with a PK |
-| `FULL` | All columns | Works for any table structure; increases WAL size |
-| `INDEX` | Columns covered by a specific unique index | More targeted than FULL |
-| `NOTHING` | No old values | Insufficient for CDC Sink embedded table deletes |
+| Mode      | Old row values available for DELETE and UPDATE events    | Notes                                                                                         |
+| --------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `DEFAULT` | Primary key columns only                                 | The default for every table.<br/>On a table **without** a primary key, no old row values are sent |
+| `FULL`    | All columns                                              | Works for any table structure; increases WAL size                                             |
+| `INDEX`   | Columns covered by the designated replica identity index | More targeted than `FULL`, but the selected index must cover all columns CDC Sink needs       |
+| `NOTHING` | No old row values                                        | Insufficient for CDC Sink embedded table deletes                                              |
 
 For CDC Sink, `FULL` is the simplest and most compatible choice.
-`INDEX` works if the index covers both the join columns and PK columns.
+`INDEX` works if the designated replica identity index covers both the embedded
+table's join columns and its `PrimaryKeyColumns`.
 
 </Panel>
 
-<Panel heading="When Is REPLICA IDENTITY Required?">
+<Panel heading="When is REPLICA IDENTITY required?">
 
-| Scenario | REPLICA IDENTITY needed? |
-|----------|------------------------|
-| Root table deletes | No - root documents are deleted by document ID |
-| Embedded table deletes where join columns ARE part of the PK | No - `DEFAULT` is sufficient |
-| Embedded table deletes where join columns are NOT part of the PK | **Yes** - `DEFAULT` is insufficient |
-| Embedded table where `OnDelete.IgnoreDeletes = true` is set | No - deletes are skipped, so delete routing isn't needed |
-| Deep-nested embedded tables | Depends on the join column placement |
+| Scenario                                                                                                                 | REPLICA IDENTITY needed?                                                                                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Root table deletes where the document ID is built from the table's PostgreSQL primary key                                | No - `DEFAULT` sends the primary key columns                                                                                                                                               |
+| Configured table has no PostgreSQL primary key and DELETEs must be processed                                             | **Yes** - under `DEFAULT`, PostgreSQL sends no old row values; use `FULL` or a suitable replica identity index                                                                             |
+| Embedded table deletes where all required join columns and `PrimaryKeyColumns` are covered by the PostgreSQL primary key | No - `DEFAULT` is sufficient                                                                                                                                                               |
+| Embedded table deletes where any required join column is not covered by the PostgreSQL primary key                       | **Yes** - use `FULL` or a replica identity index that covers the join columns and `PrimaryKeyColumns`                                                                                      |
+| Embedded table where `OnDelete.IgnoreDeletes = true` is set without an `OnDelete.Patch`                                  | No - the DELETE event is discarded before routing                                                                                                                                          |
+| Embedded table with an `OnDelete.Patch`                                                                                  | Same as a processed delete - the DELETE event must still be routed so the patch can run                                                                                                    |
+| Deep-nested embedded tables                                                                                              | Apply the same rule to each embedded source table: the DELETE event must include the columns needed to find the root document, navigate the embedded path, and identify the item to remove |
 
+---
+    
 **Example where REPLICA IDENTITY is needed:**
 
 <Tabs>
-<TabItem value="sql" label="sql">
-
+<TabItem value="sql" label="SQL">
 ```sql
 -- order_lines has a surrogate PK (line_id), with order_id as foreign key
 -- order_id is NOT part of the primary key
@@ -107,15 +109,13 @@ CREATE TABLE order_lines (
 -- CDC Sink cannot determine which parent document (order_id) to update.
 ALTER TABLE order_lines REPLICA IDENTITY FULL;
 ```
-
 </TabItem>
 </Tabs>
 
 **Example where REPLICA IDENTITY is NOT needed:**
 
 <Tabs>
-<TabItem value="sql" label="sql">
-
+<TabItem value="sql" label="SQL">
 ```sql
 -- If order_id is part of a composite PK, DEFAULT is sufficient
 CREATE TABLE order_lines (
@@ -126,24 +126,33 @@ CREATE TABLE order_lines (
     PRIMARY KEY (order_id, line_num)
 );
 ```
-
 </TabItem>
 </Tabs>
 
 </Panel>
 
-<Panel heading="Checking Current Setting">
+<Panel heading="Checking current setting">
 
 <Tabs>
-<TabItem value="sql" label="sql">
+<TabItem value="sql" label="SQL">
 
 ```sql
-SELECT c.relname, c.relreplident
+SELECT
+    n.nspname AS schema_name,
+    c.relname AS table_name,
+    c.relreplident,
+    CASE c.relreplident
+        WHEN 'd' THEN 'DEFAULT'
+        WHEN 'f' THEN 'FULL'
+        WHEN 'i' THEN 'INDEX'
+        WHEN 'n' THEN 'NOTHING'
+    END AS replica_identity
 FROM pg_class c
 JOIN pg_namespace n ON n.oid = c.relnamespace
-WHERE c.relkind = 'r'
-  AND n.nspname = 'public'
-ORDER BY c.relname;
+WHERE c.relkind IN ('r', 'p')
+  AND n.nspname NOT LIKE 'pg_%'
+  AND n.nspname <> 'information_schema'
+ORDER BY n.nspname, c.relname;
 ```
 
 </TabItem>
@@ -151,23 +160,22 @@ ORDER BY c.relname;
 
 The `relreplident` column:
 
-| Value | Meaning |
-|-------|---------|
-| `d` | DEFAULT (primary key only) |
-| `f` | FULL (all columns) |
-| `i` | INDEX (specific unique index) |
-| `n` | NOTHING |
+| Value | Meaning                                   |
+| ----- | ----------------------------------------- |
+| `d`   | DEFAULT (primary key only)                |
+| `f`   | FULL (all columns)                        |
+| `i`   | INDEX (designated replica identity index) |
+| `n`   | NOTHING                                   |
 
 </Panel>
 
-<Panel heading="Automatic vs Manual Configuration">
+<Panel heading="Automatic vs manual configuration">
 
-If the CDC Sink user has sufficient permissions (table ownership or `SUPERUSER`),
-CDC Sink will automatically set `REPLICA IDENTITY FULL` on embedded tables that
-require it.
+If the PostgreSQL user configured in the CDC Sink connection string owns the affected embedded source table, or has `SUPERUSER`,
+CDC Sink can automatically set `REPLICA IDENTITY FULL` when that table's current replica identity is insufficient for embedded DELETE routing.
 
-If the CDC Sink user does not have permission to alter tables, a database
-administrator must configure `REPLICA IDENTITY` before starting the task.
-See [Manual Setup](./replica-identity-manual-setup.mdx).
+If that PostgreSQL user cannot alter the table, the task fails to start with a permissions error.  
+A database administrator must configure `REPLICA IDENTITY` before starting the task.
+See [Manual Setup](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity-manual-setup.mdx).
 
 </Panel>
