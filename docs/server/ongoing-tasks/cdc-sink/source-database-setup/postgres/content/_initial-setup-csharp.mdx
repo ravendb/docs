@@ -5,65 +5,69 @@ import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* When CDC Sink starts, it verifies and (if it has the necessary permissions) creates
-  the **replication slot** and **publication** required for logical replication.
+* When CDC Sink starts, it checks for the **replication slot** and **publication** required for logical replication,  
+  and creates them if they are missing and the PostgreSQL user has the required permissions.
 
-* If the PostgreSQL user configured in the CDC Sink connection string does not have
-  permission to create these objects, a database administrator must create them
-  manually before the task can start.
+* If the PostgreSQL user configured in the CDC Sink connection string cannot create these objects,  
+  a database administrator must create them manually before the task can start.
 
 * In this article:
-  * [Automatic Setup](#automatic-setup)
-  * [Manual Setup](#manual-setup)
-  * [Specifying Custom Slot and Publication Names](#specifying-custom-slot-and-publication-names)
-  * [Slot and Publication Naming (Auto-generated)](#slot-and-publication-naming-auto-generated)
-  * [Verifying Setup](#verifying-setup)
+  * [Automatic setup](#automatic-setup)
+  * [Manual setup](#manual-setup)
+  * [Specifying custom slot and publication names](#specifying-custom-slot-and-publication-names)
+  * [Slot and publication naming (auto-generated)](#slot-and-publication-naming-auto-generated)
+  * [Verifying setup](#verifying-setup)
+  * [One active consumer per slot](#one-active-consumer-per-slot)
 
 </Admonition>
 
-<Panel heading="Automatic Setup">
+<Panel heading="Automatic setup">
 
-If the PostgreSQL user configured in the CDC Sink connection string has the required
-PostgreSQL permissions (see
-[Permissions and Roles](../permissions-and-roles.mdx)),
-CDC Sink will:
+If the PostgreSQL user configured in the CDC Sink connection string has the permissions required for automatic setup,  
+CDC Sink can create and update the PostgreSQL objects it needs:
 
-1. Generate the replication slot and publication names (derived from the task id) and store them with the task
-2. Check whether they already exist
-3. Create them if they do not exist
-4. If configured tables are missing from the publication, CDC Sink attempts `ALTER PUBLICATION ... ADD TABLE` automatically (requires the user to have publication ownership or superuser access)
-5. Begin the initial load
+1. Use the replication slot and publication names that were assigned when the task was created  
+   (derived from the task id and stored with the task)
+2. Check whether the replication slot and publication already exist
+3. Create the publication if it does not exist
+4. Create the replication slot if it does not exist
+5. If configured tables are missing from the publication,
+   attempt `ALTER PUBLICATION ... ADD TABLE` automatically
+6. Begin the initial load
+
+For the required PostgreSQL permissions, see [Permissions and Roles](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/permissions-and-roles.mdx).
 
 No manual database administration is needed in this case.
 
 </Panel>
 
-<Panel heading="Manual Setup">
+<Panel heading="Manual setup">
 
-If the PostgreSQL user configured in the CDC Sink connection string does not have
-permission to create replication slots or publications, a database administrator must
-create them before the task is started.
+If the PostgreSQL user configured in the CDC Sink connection string cannot create the replication slot
+or create/update the publication, a database administrator must create the required PostgreSQL objects manually
+before the task can run successfully.
 
+---
+    
 **Step 1: Determine the slot and publication names**
 
-The simplest approach is to specify the names explicitly in `CdcSinkPostgresSettings`
-so both you and the database administrator know what names to use.
-See [Specifying Custom Slot and Publication Names](#specifying-custom-slot-and-publication-names).
+The simplest approach is to specify the names explicitly in `CdcSinkPostgresSettings`, so both you and the database administrator know which names to use.
+See [Specifying custom slot and publication names](#specifying-custom-slot-and-publication-names).
 
-If using auto-generated names (no `Postgres` settings), CDC Sink generates names
-using the `rvn_cdc_s_` and `rvn_cdc_p_` prefixes followed by the task id.
-See [Slot and Publication Naming](#slot-and-publication-naming-auto-generated)
-for the naming scheme.
+If `SlotName` and `PublicationName` are not set explicitly, CDC Sink generates names using the `rvn_cdc_s_` and `rvn_cdc_p_` prefixes followed by the task id.
+See [Slot and publication naming (auto-generated)](#slot-and-publication-naming-auto-generated).
 
-You can also find the names CDC Sink expects by creating the task (it will fail to start)
-and reading the error message, which includes the expected names.
+You can also find the names CDC Sink expects by creating the task and reading the startup error message,  
+which includes the expected slot or publication name.
 
+---    
+    
 **Step 2: Create the publication**
 
 Create a publication that includes all the tables CDC Sink will replicate:
 
 <Tabs>
-<TabItem value="sql" label="sql">
+<TabItem value="sql" label="SQL">
 
 ```sql
 CREATE PUBLICATION rvn_cdc_p_<taskId>
@@ -73,45 +77,45 @@ FOR TABLE orders, order_lines, customers;
 </TabItem>
 </Tabs>
 
-The publication must include all tables from the task's root and embedded table
-configurations.
+The publication must include all tables from the task's root and embedded table configurations.
 
+---    
+    
 **Step 3: Create the replication slot**
 
 <Tabs>
-<TabItem value="sql" label="sql">
-
+<TabItem value="sql" label="SQL">
 ```sql
 SELECT pg_create_logical_replication_slot(
     'rvn_cdc_s_<taskId>',
     'pgoutput'
 );
 ```
-
 </TabItem>
 </Tabs>
-
+    
+---
+    
 **Step 4: Start the CDC Sink task**
 
-Once the slot and publication exist, CDC Sink will detect them on startup and
-proceed with the initial load.
+Once the slot and publication exist, CDC Sink will detect them on startup and proceed with the initial load.
 
 <Admonition type="note" title="">
+    
 The slot and publication names are determined at task creation time and do not change
 when you later modify the task. If you created these objects manually, the same names
 will continue to be used regardless of subsequent configuration changes.
+    
 </Admonition>
 
 </Panel>
 
-<Panel heading="Specifying Custom Slot and Publication Names">
+<Panel heading="Specifying custom slot and publication names">
 
-You can explicitly specify the replication slot and publication names by setting
-`CdcSinkPostgresSettings` on the task configuration:
+Set `CdcSinkConfiguration.Postgres` when you want to choose the PostgreSQL replication slot and publication names explicitly:
 
 <Tabs>
 <TabItem value="csharp" label="csharp">
-
 ```csharp
 var config = new CdcSinkConfiguration
 {
@@ -125,81 +129,113 @@ var config = new CdcSinkConfiguration
     Tables = [ ... ]
 };
 ```
-
 </TabItem>
 </Tabs>
 
+Use names that follow PostgreSQL identifier rules: 
+start with a letter or underscore, contain only alphanumeric characters and underscores, and stay within PostgreSQL's 63-character limit.  
+
 Custom names are useful when:
 
-* A database administrator pre-creates the slot and publication with human-readable
-  names before starting the task
-* You are migrating from a previous CDC Sink task and want to reuse an existing slot
-  to avoid re-reading history
+* A database administrator pre-creates the slot and publication with human-readable names before starting the task
+* You are migrating a task and intentionally reusing an existing replication slot
 * You need predictable names across environments (dev/staging/prod)
 
-**Immutability:** Once set, `SlotName` and `PublicationName` are fixed for the
-lifetime of the task. If you need different names, delete the task and create a new one.
+**Immutability**:  
+`SlotName` and `PublicationName` are fixed when the task is created.  
+If you need different names, delete the task and create a new one.
 
 </Panel>
 
-<Panel heading="Slot and Publication Naming (Auto-generated)">
+<Panel heading="Slot and publication naming (auto-generated)">
 
-When `CdcSinkPostgresSettings` is not set (or `SlotName`/`PublicationName` are null),
-CDC Sink generates unique names at task creation time using the task id:
+If `CdcSinkConfiguration.Postgres` is omitted, or if either `SlotName` or `PublicationName` is left null,  
+CDC Sink fills in each missing name at task creation time using the task id:
 
 * **Slot name**: `rvn_cdc_s_{taskId}`
 * **Publication name**: `rvn_cdc_p_{taskId}`
 
-Here `{taskId}` is the task's Raft etag, assigned once when the task is first created
-and stored with the task.
-
+Here `{taskId}` is the task id assigned when the CDC Sink task is created.
+    
 **Example:**
-
-<Tabs>
-<TabItem value="plain" label="plain">
 
 ```plain
 rvn_cdc_s_9481
 rvn_cdc_p_9481
 ```
+<br/>
 
-</TabItem>
-</Tabs>
-
-The slot and publication share the same task id, making it easy to match them to
-a specific task.
+The slot and publication use the same task id, making it easy to match them to a specific task.
 
 <Admonition type="note" title="">
-The slot and publication names are generated **once at task creation** and then stored
-with the task. Subsequent modifications to the task (adding tables, changing mappings,
-etc.) do not change the slot or publication names - the original names are always used.
+    
+These names are stored with the task and are fixed after task creation.  
+Updating the task later does not regenerate or change them.
+    
 </Admonition>
 
 </Panel>
 
-<Panel heading="Verifying Setup">
+<Panel heading="Verifying setup">
 
-To verify the slot and publication were created:
+To verify the slot and publication were created, query the actual names configured for the task  
+(whether custom or auto-generated):
 
 <Tabs>
-<TabItem value="sql" label="sql">
-
+<TabItem value="sql" label="SQL">
 ```sql
--- View CDC Sink replication slots
+-- Verify the replication slot
 SELECT slot_name, plugin, slot_type, active
 FROM pg_replication_slots
-WHERE slot_name LIKE 'rvn_cdc_s_%';
+WHERE slot_name = '<slot-name>';
 
--- View CDC Sink publications
-SELECT p.pubname, c.relname AS table_name
+-- Verify the publication and its tables
+SELECT p.pubname, n.nspname AS schema_name, c.relname AS table_name
 FROM pg_publication p
 JOIN pg_publication_rel pr ON pr.prpubid = p.oid
 JOIN pg_class c ON c.oid = pr.prrelid
-WHERE p.pubname LIKE 'rvn_cdc_p_%'
-ORDER BY p.pubname, c.relname;
+JOIN pg_namespace n ON n.oid = c.relnamespace
+WHERE p.pubname = '<publication-name>'
+ORDER BY p.pubname, n.nspname, c.relname;
 ```
-
 </TabItem>
 </Tabs>
+
+</Panel>
+
+<Panel heading="One active consumer per slot">
+
+A PostgreSQL logical replication slot can be consumed by **only one connection at a time**.  
+    
+This matters when the same CDC Sink task configuration exists in more than one RavenDB database,  
+for example after **export/import** or **backup/restore**, which copy the task configuration verbatim,
+including the immutable `SlotName` and `PublicationName`.
+
+Because both task copies point at the **same slot**, only one enabled task can consume it at a time.  
+The other task cannot stream from that slot, enters fallback (error-recovery) mode, and retries periodically.  
+While this conflict exists, changes from the PostgreSQL source may be delayed or interrupted in one of the RavenDB databases,
+and the task reports an error such as:
+
+```plain
+Process is in error recovery (fallback mode). Last error: <timestamp>. Next retry in: 464s.
+```
+<br/>
+
+**Guidance:**
+
+* Keep the task **enabled in only one RavenDB database at a time** when the copied configuration uses the same slot.
+  * **Export/Import**:  
+    Imported tasks are created **disabled** by default. Before enabling the imported task,
+    either disable the task in the origin database or create the imported task with its own slot and publication names.
+  * **Backup/Restore**:  
+    A restored task keeps its original **enabled** state unless you set the `DisableOngoingTasks` restore option.  
+    Restore with that option set, or disable the task in one of the databases, to avoid a slot conflict.
+
+* To run both task copies simultaneously, each copy must use its own replication slot.  
+  If the copied task was already created with the original names, delete it and create a new task with distinct
+  `SlotName` and `PublicationName`, or have a database administrator pre-create the required PostgreSQL objects.
+
+See [Export / Import a Task](../../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/export-import-task.mdx) and
+[Backup / Restore a Task](../../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/backup-restore-task.mdx).
 
 </Panel>
