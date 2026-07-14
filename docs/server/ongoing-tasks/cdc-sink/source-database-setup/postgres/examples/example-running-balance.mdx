@@ -1,7 +1,7 @@
 ---
-title: "Event Sourcing with Aggregation"
-sidebar_label: Event Sourcing with Aggregation
-description: "How to use CDC Sink patches to maintain a computed aggregate on a RavenDB document as individual event rows arrive from PostgreSQL."
+title: "Maintaining a Running Balance"
+sidebar_label: "Running Balance"
+description: "How to use CDC Sink patches to incrementally update an account balance as transaction rows arrive from PostgreSQL"
 sidebar_position: 2
 supported_languages: ["csharp"]
 see_also:
@@ -34,10 +34,10 @@ see_also:
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
-import ExampleEventSourcingCsharp from './content/_example-event-sourcing-csharp.mdx';
+import ExampleRunningBalanceCsharp from './content/_example-running-balance-csharp.mdx';
 
 <LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
-   <ExampleEventSourcingCsharp />
+   <ExampleRunningBalanceCsharp />
 </LanguageContent>

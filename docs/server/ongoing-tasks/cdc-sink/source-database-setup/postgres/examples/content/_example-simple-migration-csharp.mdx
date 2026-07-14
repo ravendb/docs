@@ -7,8 +7,8 @@ import Panel from '@site/src/components/Panel';
 
 * This example shows the basic CDC Sink configuration to migrate a single SQL table into a RavenDB collection.
 
-* For step-by-step instructions on creating a CDC Sink task with the Client API or Studio, 
-  see [Create a CDC Sink task](../../../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx).       
+* For detailed instructions on creating a CDC Sink task with the Client API or Studio,  
+  see [Create a CDC Sink task](../../../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx).           
 
 * In this article:
   * [Source schema](#source-schema)
@@ -83,8 +83,10 @@ await store.Maintenance.SendAsync(new AddCdcSinkOperation(config));
 Configure the task visually under **Configured Tables**:  
 set the source table, target collection, primary key, and field mapping (source column &rarr; target property).
     
-![configure tables](../assets/example-simple-migration-1.png)
+![Configure tables](../assets/example-simple-migration-1.png)
 
+---
+    
 Alternatively, toggle **Raw config** and paste the equivalent JSON:
 
 <Tabs>
