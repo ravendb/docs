@@ -197,6 +197,19 @@ pre[class*="language-"] {
     font-display: swap;
 }
 
+/* Disable coding ligatures so operators like != and <= render literally, not as glyphs (≠, ≤). */
+code,
+kbd,
+samp,
+pre,
+.prism-code,
+[class*="language-"] {
+    font-variant-ligatures: none;
+    font-feature-settings:
+        "liga" 0,
+        "calt" 0;
+}
+
 /* Custom border for sidebar and navbar */
 [class*="docSidebarContainer"] {
     @apply !border-black/10 dark:!border-white/10;
