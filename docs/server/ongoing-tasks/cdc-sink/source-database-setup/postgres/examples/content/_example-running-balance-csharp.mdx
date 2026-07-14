@@ -160,8 +160,8 @@ await store.Maintenance.SendAsync(new AddCdcSinkOperation(config));
 
 ### Via Studio
 
-Configure the task visually under **Configured Tables**:  
-set the source table, target collection, relation details, and field mappings.
+In Studio, configure how the `accounts` source table maps to the `Accounts` target collection,  
+then add `transactions` as an embedded table for each account.    
 
 ---
     
@@ -220,6 +220,8 @@ The embedded `transactions` table and its balance patches (`Patch` / `OnDelete.P
     
 Alternatively, toggle **Raw config** and paste the equivalent JSON:
 
+![Use raw config](../assets/example-running-balance-3.png)    
+
 <Tabs>
 <TabItem value="json" label="Raw config (JSON)">
 ```json
@@ -262,9 +264,7 @@ Alternatively, toggle **Raw config** and paste the equivalent JSON:
 }
 ```
 </TabItem>
-</Tabs>
-
-![Use raw config](../assets/example-running-balance-3.png)      
+</Tabs>      
 
 </Panel>
 

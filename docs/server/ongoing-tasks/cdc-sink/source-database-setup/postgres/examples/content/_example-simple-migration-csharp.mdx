@@ -79,15 +79,17 @@ await store.Maintenance.SendAsync(new AddCdcSinkOperation(config));
 ---
     
 ### Via Studio
-
-Configure the task visually under **Configured Tables**:  
-set the source table, target collection, primary key, and field mapping (source column &rarr; target property).
     
-![Configure tables](../assets/example-simple-migration-1.png)
+In Studio, configure how the selected `customers` source table maps to the `Customers` target collection:  
+set the source schema/table, primary key column, and field mapping (source column &rarr; target property).
+
+![Configure the customers table](../assets/example-simple-migration-1.png)    
 
 ---
     
 Alternatively, toggle **Raw config** and paste the equivalent JSON:
+    
+![Use raw config](../assets/example-simple-migration-2.png)
 
 <Tabs>
 <TabItem value="json" label="Raw config (JSON)">
@@ -113,8 +115,6 @@ Alternatively, toggle **Raw config** and paste the equivalent JSON:
 ```
 </TabItem>
 </Tabs>
-    
-![Use raw config](../assets/example-simple-migration-2.png)    
 
 </Panel>
 
