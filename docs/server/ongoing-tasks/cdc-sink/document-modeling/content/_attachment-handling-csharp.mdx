@@ -8,7 +8,9 @@ import ContentFrame from '@site/src/components/ContentFrame';
 
 * To store a source column as a RavenDB attachment instead of a document property,  
   set `Type = CdcColumnType.Attachment` on the column mapping entry.  
-  This is typically used for binary or text values such as `bytea`, `varbinary`, `text`, or `nvarchar`.
+    
+* Attachment mappings are typically used for source columns with binary, text, or vector content,  
+  such as `bytea`, `varbinary`, `text`, `nvarchar`, or pgvector `vector` columns. 
 
 * Attachment mappings can be used on root tables and embedded tables:
   * **Root-table attachments** are stored on the mapped document.
