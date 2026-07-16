@@ -3,6 +3,7 @@ import DocItem from "@theme-original/DocItem";
 import type DocItemType from "@theme/DocItem";
 import type { WrapperProps } from "@docusaurus/types";
 import DocsTopbar from "@site/src/components/DocsTopbar";
+import LanguageUrlSync from "@site/src/components/LanguageUrlSync";
 import { CustomDocFrontMatter } from "@site/src/typescript/docMetadata";
 import { useActivePlugin } from "@docusaurus/plugin-content-docs/client";
 import Head from "@docusaurus/Head";
@@ -38,6 +39,7 @@ export default function DocItemWrapper(props: Props): ReactNode {
                     <meta name="robots" content="noindex, nofollow" />
                 </Head>
             )}
+            {supportedLanguages?.length ? <LanguageUrlSync supportedLanguages={supportedLanguages} /> : null}
             {showTopbar && <DocsTopbar title={title} supportedLanguages={supportedLanguages} />}
             <div className="wrapper row">
                 <div className="col flex-1 min-w-0">
