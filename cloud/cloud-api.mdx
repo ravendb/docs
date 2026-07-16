@@ -51,6 +51,10 @@ Client libraries are available in the following languages:
 
 More information about available methods, requests and responses can be found in the [Swagger & available clients](#swagger--available-clients) section.
 
+<Admonition type="note" title="API keys and product permissions">
+An API key authenticates at the **account level** and operates with **Account Owner** authority — it is not tied to an individual user. Consequently, the Cloud API is **not** subject to the finer-grained [per-product permissions](./cloud-account.mdx#product-permissions) that apply in the portal: any valid API key can invoke any **Products** method on any product belonging to its account. Restrict access accordingly when issuing API keys.
+</Admonition>
+
 
 
 ## API Keys expiration

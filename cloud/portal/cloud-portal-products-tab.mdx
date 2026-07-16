@@ -32,12 +32,17 @@ and [Production](../../cloud/cloud-overview.mdx#the-production-tier).
      - [Manage features](#manage-features)
      - [Nodes: Additional product nodes](../../cloud/portal/cloud-portal-products-tab.mdx#nodes-additional-product-nodes)
      - [Maintenance and Danger Zones: Terminate and Restart your Instance](../../cloud/portal/cloud-portal-products-tab.mdx#maintenance-and-danger-zones)  
+     - [User Access](../../cloud/portal/cloud-portal-products-tab.mdx#user-access)  
 </Admonition>
 
 ## Provisioning a New Product
 To provision a new product, open your Portal's Products tab and click **Add Product**.
 
 !["Figure 1 - Add Product"](./assets/portal-product-list-add-product-button.png)
+
+<Admonition type="note" title="Access required">
+Creating a product requires the [**Products Creation**](../../cloud/cloud-account.mdx#account-roles) account role — the **Add Product** button is hidden otherwise. Users without any relevant access do not see the **Products** tab at all.
+</Admonition>
 
 The New Product wizard will open and walk you through the following simple stages:  
   
@@ -117,6 +122,10 @@ your new product's status until it's ready to go.
 This allows you to analyse your machine resources for a selected time period and cluster node.
 It's useful for analysing usage, instance overload and traffic.
 
+<Admonition type="note" title="Access required">
+The **Metrics** and **Cluster Health** buttons — on both the product list and the product view — require at least [**Viewer** access](../../cloud/cloud-account.mdx#permission-presets) to the product, and are disabled without it.
+</Admonition>
+
 ## View the Cluster Health
 
 !["Figure 10 - Cluster Health: General View"](./assets/portal-product-details-cluster-health.png)
@@ -129,7 +138,11 @@ It's useful for analysing usage, instance overload and traffic.
 More details can be found [here](../cloud-maintenance-troubleshooting.mdx#cluster-health).
 
 ## Managing an Existing Product
-  
+
+<Admonition type="note" title="Per-product permissions">
+The actions available on a product depend on your [per-product permissions](../../cloud/cloud-account.mdx#product-permissions) — buttons for actions you are not permitted to perform are hidden or disabled, and the **Account Owner** always has full access.
+</Admonition>
+
 To modify an existing product, find it in the Products tab and click its Manage button.  
 
 !["Figure 11 - Manage Product: Manage Button"](./assets/portal-product-list-manage-button.png)
@@ -234,6 +247,10 @@ After enabling features some of them must be configured to work properly.
 
 Available features are described on [Product Features](../cloud-features.mdx) page.
 
+<Admonition type="note" title="Access required">
+Enabling, disabling, and configuring features requires the [**Manager** (or **Admin**) preset](../../cloud/cloud-account.mdx#permission-presets) — this includes switching a *Serverless* product to regular deployment. Security-related features (**Monitoring/OpenTelemetry** and **Power BI**) additionally require the **Security admin** add-on to be enabled or disabled; see [Product Features](../cloud-features.mdx).
+</Admonition>
+
 ### Nodes: Additional product nodes
 
 You can expand your cluster by adding *more product nodes* to your cluster. This helps improve *High Availability* and *task/load balancing*.
@@ -262,3 +279,9 @@ Changing your product deployment type is **irreversible**.
   <Admonition type="danger" title="">
   Terminating your instance is **irreversible**. Your data and cluster properties will be permanently lost.  
   </Admonition>
+
+### User Access
+
+The product view includes a **User Access** widget that lists the account users who have access to this product, together with their access level. If you can manage users, you can change a user's [preset](../cloud-account.mdx#permission-presets) and toggle the **Security admin** add-on directly in the widget, then click **Save changes** — without leaving the product view. The **Account Owner** is always shown with **full access**. Use **Manage in Users & Access** to open the [Users & Access](./cloud-portal-users-and-access-tab.mdx) page for the full user-management view. When no other users have been granted access yet, the widget shows an empty state.
+
+!["Product Details: User Access widget"](./assets/portal-products-tab-user-access-widget.png)
