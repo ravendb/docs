@@ -94,7 +94,7 @@ repository.
 Download and run:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ravendb/sso/main/install.sh -o install.sh
+curl -fsSL https://ravendb-build-assets.s3.us-east-1.amazonaws.com/Sso/install.sh -o install.sh
 chmod +x install.sh
 ./install.sh
 ```
@@ -103,7 +103,7 @@ chmod +x install.sh
 Or pipe directly into Bash:
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/ravendb/sso/main/install.sh)
+bash <(curl -fsSL https://ravendb-build-assets.s3.us-east-1.amazonaws.com/Sso/install.sh)
 ```
 
 </TabItem>
@@ -112,7 +112,7 @@ bash <(curl -fsSL https://raw.githubusercontent.com/ravendb/sso/main/install.sh)
 Download and run:
 
 ```powershell
-Invoke-WebRequest -Uri https://raw.githubusercontent.com/ravendb/sso/main/install.ps1 -OutFile install.ps1
+Invoke-WebRequest -Uri https://ravendb-build-assets.s3.us-east-1.amazonaws.com/Sso/install.ps1 -OutFile install.ps1
 .\install.ps1
 ```
 <br />
@@ -120,7 +120,7 @@ Invoke-WebRequest -Uri https://raw.githubusercontent.com/ravendb/sso/main/instal
 Or run directly from the URL:
 
 ```powershell
-iex (irm https://raw.githubusercontent.com/ravendb/sso/main/install.ps1)
+iex (irm https://ravendb-build-assets.s3.us-east-1.amazonaws.com/Sso/install.ps1)
 ```
 
 </TabItem>
