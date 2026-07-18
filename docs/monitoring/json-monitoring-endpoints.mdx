@@ -1,0 +1,617 @@
+---
+title: "JSON monitoring endpoints"
+sidebar_label: "JSON Monitoring Endpoints"
+description: "Read server, database, index, collection, and task metrics as JSON through RavenDB's /admin/monitoring/v1 endpoints."
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# JSON monitoring endpoints
+
+<Admonition type="note" title="">
+
+* RavenDB exposes performance and health metrics in JSON format through a set of HTTP
+  endpoints.  
+  The endpoints cover the server itself, its databases, indexes, collections, ETL tasks,
+  AI tasks, and CDC (Change Data Capture) Sink tasks.  
+
+* The endpoints are not tied to any particular consumer: any monitoring tool that reads
+  JSON over HTTP, like Grafana, Elasticsearch, Zabbix, or Telegraf, can poll them.  
+
+* On a secure server, requests to these endpoints require a client certificate with
+  `Operator` clearance or higher.  
+
+* Using the endpoints requires a [license](https://ravendb.net/buy) that includes the
+  Monitoring Endpoints feature.  
+
+* RavenDB also exposes a
+  [Prometheus endpoint](../server/administration/monitoring/prometheus.mdx#ravendb-prometheus-endpoint)
+  that returns metrics in the Prometheus format rather than JSON.  
+
+* In this article:
+   * [The endpoints](../monitoring/json-monitoring-endpoints.mdx#the-endpoints)
+   * [Querying the endpoints](../monitoring/json-monitoring-endpoints.mdx#querying-the-endpoints)
+   * [Access and licensing](../monitoring/json-monitoring-endpoints.mdx#access-and-licensing)
+   * [Fields returned by the endpoints](../monitoring/json-monitoring-endpoints.mdx#fields-returned-by-the-endpoints)
+      * [The server endpoint](../monitoring/json-monitoring-endpoints.mdx#the-server-endpoint)
+      * [The databases endpoint](../monitoring/json-monitoring-endpoints.mdx#the-databases-endpoint)
+      * [The indexes endpoint](../monitoring/json-monitoring-endpoints.mdx#the-indexes-endpoint)
+      * [The collections endpoint](../monitoring/json-monitoring-endpoints.mdx#the-collections-endpoint)
+      * [The etls endpoint](../monitoring/json-monitoring-endpoints.mdx#the-etls-endpoint)
+      * [The ai-tasks endpoint](../monitoring/json-monitoring-endpoints.mdx#the-ai-tasks-endpoint)
+      * [The cdc-sinks endpoint](../monitoring/json-monitoring-endpoints.mdx#the-cdc-sinks-endpoint)
+
+</Admonition>
+
+<Panel heading="The endpoints">
+
+Each endpoint returns metrics for one area of the server's operation:
+
+| Endpoint | Returns |
+| - | - |
+| `/admin/monitoring/v1/server` | Server-wide metrics, including CPU and memory usage, disk space, network activity, cluster state, license and certificate status, and backup activity. |
+| `/admin/monitoring/v1/databases` | Per-database metrics, including document and index counts, request and indexing rates, and storage sizes. |
+| `/admin/monitoring/v1/indexes` | Per-index metrics for each database, including state, priority, errors, and indexing rates. |
+| `/admin/monitoring/v1/collections` | Per-collection metrics for each database: document counts and storage sizes. |
+| `/admin/monitoring/v1/etls` | Health, error, and throughput metrics for each ETL task in each database. |
+| `/admin/monitoring/v1/ai-tasks` | Health, error, and throughput metrics for each AI task in each database. |
+| `/admin/monitoring/v1/cdc-sinks` | Health and error metrics for each CDC Sink task in each database. |
+
+<ContentFrame>
+
+#### Example: ETL task metrics for one database
+
+The `etls` endpoint's response for a server with one database that runs a single ETL task:
+
+```json
+{
+    "PublicServerUrl": "https://a.example.com",
+    "NodeTag": "A",
+    "Results": [
+        {
+            "DatabaseName": "Northwind",
+            "Etls": [
+                {
+                    "ProcessName": "SqlEtlToWarehouse/OrdersScript",
+                    "ErrorsCount": 0,
+                    "HealthStatus": "Healthy",
+                    "LastSuccessfulBatchTimeInSec": 3.5,
+                    "DocumentsProcessedPerSec": 12.4
+                }
+            ]
+        }
+    ]
+}
+```
+<br />
+
+All the endpoints except `server` return this shape: the server's public URL and node tag,
+then a `Results` array with one entry per database.  
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Querying the endpoints">
+
+The endpoints respond to HTTP GET requests.  
+To read an endpoint, append its path to the server's URL. You can open the resulting
+address in a browser, or have your monitoring tool poll it on a schedule.
+
+<ContentFrame>
+
+#### Example: Reading the databases endpoint
+
+Using curl to read the `databases` endpoint of a local server:
+
+```bash
+curl http://localhost:8080/admin/monitoring/v1/databases
+```
+
+</ContentFrame>
+
+The per-database endpoints report on every loaded database by default.  
+To narrow the response to specific databases, add a `name` query parameter for each
+database you want included.
+
+<ContentFrame>
+
+#### Example: ETL metrics for two databases
+
+Using the `name` parameter to read ETL metrics for the `Northwind` and `Orders`
+databases only:
+
+```bash
+curl "http://localhost:8080/admin/monitoring/v1/etls?name=Northwind&name=Orders"
+```
+
+</ContentFrame>
+
+Note that the endpoints cover only databases that are currently loaded in memory.  
+A database stays out of the responses if the server has not loaded it yet (e.g. since a
+restart), or has unloaded it after the database remained unused for a configurable period
+(15 minutes by default, set by the
+[Databases.MaxIdleTimeInSec](../server/configuration/database-configuration.mdx#databasesmaxidletimeinsec)
+configuration key).  
+Naming such a database in a `name` query parameter of an endpoint's URL does not load
+the database: the request succeeds, but the response carries no entry for this database.  
+
+</Panel>
+
+<Panel heading="Access and licensing">
+
+On a secure server, a request to these endpoints must present a client certificate with
+[Operator](../server/security/authorization/security-clearance-and-permissions.mdx#operator)
+clearance or higher.  
+On an unsecured server, no certificate is needed.
+
+<ContentFrame>
+
+#### Example: Reading an endpoint on a secure server
+
+Using curl with a client certificate:
+
+```bash
+curl --cert <path-to-cert> --key <path-to-key> "https://<server-url>/admin/monitoring/v1/server"
+```
+
+</ContentFrame>
+
+If the server's [license](https://ravendb.net/buy) does not include the Monitoring
+Endpoints feature, requests to these endpoints fail with HTTP status `402 Payment Required`
+and an error naming the missing feature.
+
+</Panel>
+
+<Panel heading="Fields returned by the endpoints">
+
+<ContentFrame>
+
+### The server endpoint
+
+`/admin/monitoring/v1/server` returns a single JSON object: a few top-level fields, and
+a nested group of fields per area.
+
+The top-level fields:
+
+| Field | Description |
+| - | - |
+| `ServerVersion` | The server's version, e.g. `7.2` |
+| `ServerFullVersion` | The server's full version string |
+| `UpTimeInSec` | Time since the server started, in seconds |
+| `ServerProcessId` | Process ID of the server process |
+
+---
+
+#### server: Config
+
+The server's configured addresses:
+
+| Field | Description |
+| - | - |
+| `ServerUrls` | The URLs the server listens on |
+| `PublicServerUrl` | The URL the server publishes to clients, when one is configured |
+| `TcpServerUrls` | The URLs the server listens on for TCP connections, when configured |
+| `PublicTcpServerUrls` | The URLs the server publishes for TCP connections, when configured |
+
+---
+
+#### server: Backup
+
+Backup activity on the server:
+
+| Field | Description |
+| - | - |
+| `CurrentNumberOfRunningBackups` | Number of backup tasks currently running |
+| `MaxNumberOfConcurrentBackups` | Maximum number of backup tasks that can run concurrently |
+
+---
+
+#### server: Cpu
+
+Processor usage of the server process and the machine:
+
+| Field | Description |
+| - | - |
+| `ProcessUsage` | CPU usage of the server process, in percent |
+| `MachineUsage` | CPU usage of the whole machine, in percent |
+| `MachineIoWait` | Time the machine's processors spend waiting for IO, in percent; `null` when the platform does not provide this statistic |
+| `ProcessorCount` | Number of processors on the machine |
+| `AssignedProcessorCount` | Number of processors assigned to the server process |
+| `ThreadPoolAvailableWorkerThreads` | Number of worker threads currently available in the thread pool |
+| `ThreadPoolAvailableCompletionPortThreads` | Number of completion port threads currently available in the thread pool |
+
+---
+
+#### server: Memory
+
+Memory usage of the server process and the machine:
+
+| Field | Description |
+| - | - |
+| `AllocatedMemoryInMb` | Memory allocated by the server process (its working set), in MB |
+| `LowMemorySeverity` | The server's low-memory state: `None`, `Low`, or `ExtremelyLow` |
+| `PhysicalMemoryInMb` | Physical memory available to the machine, in MB |
+| `InstalledMemoryInMb` | Physical memory installed on the machine, in MB |
+| `TotalSwapSizeInMb` | Total swap space on the machine, in MB |
+| `TotalSwapUsageInMb` | Swap space currently in use, in MB |
+| `WorkingSetSwapUsageInMb` | Swap space used by the server process's working set, in MB |
+| `TotalDirtyInMb` | Dirty memory held by the scratch buffers, in MB |
+| `AvailableMemoryForProcessingInMb` | Memory the server can still use for processing, in MB |
+| `ManagedMemoryInBytes` | Memory allocated on the .NET managed heap, in bytes |
+| `UnmanagedMemoryInBytes` | Unmanaged memory allocated by the server, in bytes |
+
+---
+
+#### server: Gc
+
+Details of the most recent GC (Garbage Collection), in a single nested object named
+`Any`. If no garbage collection has run since the server started, `Any` is `null`.
+
+| Field | Description |
+| - | - |
+| `Index` | The sequence number of this collection since the process started |
+| `Compacted` | Indicates if this collection compacted the heap |
+| `Concurrent` | Indicates if this was a background (concurrent) collection |
+| `Generation` | The highest generation this collection collected |
+| `PauseTimePercentage` | The share of the process's run time spent paused for garbage collection, in percent |
+| `PauseDurationsInMs` | The pause durations of this collection, in milliseconds; a background collection pauses twice |
+| `TotalHeapSizeAfterBytes` | Total heap size after this collection, in bytes |
+| `Gen0HeapSize` | Size and fragmentation of generation 0, before and after this collection |
+| `Gen1HeapSize` | Size and fragmentation of generation 1, before and after this collection |
+| `Gen2HeapSize` | Size and fragmentation of generation 2, before and after this collection |
+| `LargeObjectHeapSize` | Size and fragmentation of the LOH (Large Object Heap), before and after this collection |
+| `PinnedObjectHeapSize` | Size and fragmentation of the POH (Pinned Object Heap), before and after this collection |
+| `FinalizationPendingCount` | Number of objects waiting for finalization |
+| `FragmentedInMb` | Fragmented memory in the heap, in MB |
+| `HeapSizeInMb` | Heap size, in MB |
+| `HighMemoryLoadThresholdInMb` | The memory load the garbage collector considers high, in MB |
+| `MemoryLoadInMb` | The machine's memory load as the garbage collector observed it, in MB |
+| `PinnedObjectsCount` | Number of pinned objects this collection encountered |
+| `PromotedInMb` | Memory promoted to a higher generation in this collection, in MB |
+| `TotalAvailableMemoryInMb` | Memory available to the garbage collector, in MB |
+| `TotalCommittedInMb` | Memory committed by the garbage collector, in MB |
+
+Each of the five heap-size fields holds an object with `SizeBeforeBytes`, `SizeAfterBytes`,
+`FragmentationBeforeBytes`, and `FragmentationAfterBytes`, all in bytes.
+
+---
+
+#### server: Disk
+
+Storage usage of the server store and its drive:
+
+| Field | Description |
+| - | - |
+| `SystemStoreUsedDataFileSizeInMb` | Used size of the server store's data file, in MB |
+| `SystemStoreTotalDataFileSizeInMb` | Allocated size of the server store's data file, in MB |
+| `TotalFreeSpaceInMb` | Remaining free space on the drive that holds the server store, in MB |
+| `RemainingStorageSpacePercentage` | Remaining free space, as a percentage of the drive's total size |
+| `IoReadOperations` | Read operations per second on the drive |
+| `IoWriteOperations` | Write operations per second on the drive |
+| `ReadThroughputInKb` | Read throughput on the drive, in KB per second |
+| `WriteThroughputInKb` | Write throughput on the drive, in KB per second |
+| `QueueLength` | The drive's IO queue length |
+
+The IO fields are `null` when the platform does not provide disk statistics.  
+On a server that runs in memory, the free-space fields return `0` and the IO fields
+return `null`.
+
+---
+
+#### server: License
+
+The server's license:
+
+| Field | Description |
+| - | - |
+| `Type` | The license type, e.g. `Community`, `Professional`, or `Enterprise` |
+| `ExpirationLeftInSec` | Time left until the license expires, in seconds; `0` when the license has expired, `null` when it has no expiration date |
+| `UtilizedCpuCores` | Number of CPU cores this node uses under the license |
+| `MaxCores` | Maximum number of CPU cores the license allows |
+
+---
+
+#### server: Network
+
+Requests and connections:
+
+| Field | Description |
+| - | - |
+| `TcpActiveConnections` | Number of active TCP connections on the machine, IPv4 and IPv6 combined |
+| `ConcurrentRequestsCount` | Number of requests the server is currently handling |
+| `TotalRequests` | Total number of requests since the server started |
+| `RequestsPerSec` | Requests per second (one-minute rate) |
+| `LastRequestTimeInSec` | Time since the last request, in seconds; `null` when no request has arrived yet |
+| `LastAuthorizedNonClusterAdminRequestTimeInSec` | Time since the last authorized request from a client without `Cluster Admin` clearance, in seconds; `null` when no such request has arrived yet |
+
+---
+
+#### server: Certificate
+
+The server certificate:
+
+| Field | Description |
+| - | - |
+| `ServerCertificateExpirationLeftInSec` | Time left until the server certificate expires, in seconds; `0` when the certificate has expired, `-1` on an unsecured server |
+| `WellKnownAdminCertificates` | Thumbprints of the well-known admin certificates configured on the server |
+| `WellKnownAdminIssuers` | Thumbprints of the well-known admin issuer certificates configured on the server |
+
+---
+
+#### server: Cluster
+
+The node's cluster membership:
+
+| Field | Description |
+| - | - |
+| `NodeTag` | The node's tag |
+| `NodeState` | The node's cluster state: `Passive`, `Candidate`, `Follower`, `LeaderElect`, or `Leader` |
+| `CurrentTerm` | The cluster's current Raft term |
+| `Index` | The last Raft index committed on this node |
+| `Id` | The cluster's ID |
+
+---
+
+#### server: Databases
+
+The server's databases:
+
+| Field | Description |
+| - | - |
+| `TotalCount` | Number of databases on the server |
+| `LoadedCount` | Number of databases currently loaded in memory |
+
+---
+
+#### server: Etls
+
+ETL tasks across all loaded databases, counted by
+[health state](../monitoring/task-errors/overview.mdx#health-states):
+
+| Field | Description |
+| - | - |
+| `Count` | Number of ETL tasks |
+| `ErrorsCount` | Total number of errors recorded for ETL tasks |
+| `HealthyEtlsCount` | Number of ETL tasks in the `Healthy` health state |
+| `ImpairedEtlsCount` | Number of ETL tasks in the `Impaired` health state |
+| `FailedEtlsCount` | Number of ETL tasks in the `Failed` health state |
+
+---
+
+#### server: AiTasks
+
+AI tasks (Embeddings Generation and GenAI tasks) across all loaded databases:
+
+| Field | Description |
+| - | - |
+| `Count` | Number of AI tasks |
+| `ErrorsCount` | Total number of errors recorded for AI tasks |
+| `HealthyTasksCount` | Number of AI tasks in the `Healthy` health state |
+| `ImpairedTasksCount` | Number of AI tasks in the `Impaired` health state |
+| `FailedTasksCount` | Number of AI tasks in the `Failed` health state |
+
+---
+
+#### server: CdcSinks
+
+CDC Sink tasks across all loaded databases:
+
+| Field | Description |
+| - | - |
+| `Count` | Number of CDC Sink tasks |
+| `ErrorsCount` | Total number of errors recorded for CDC Sink tasks |
+| `HealthyCdcSinksCount` | Number of CDC Sink tasks in the `Healthy` health state |
+| `ImpairedCdcSinksCount` | Number of CDC Sink tasks in the `Impaired` health state |
+| `FailedCdcSinksCount` | Number of CDC Sink tasks in the `Failed` health state |
+
+</ContentFrame>
+
+<ContentFrame>
+
+### The databases endpoint
+
+`/admin/monitoring/v1/databases` returns one entry per loaded database.  
+Each entry holds a few top-level fields, and a nested group of fields per area.
+
+The top-level fields:
+
+| Field | Description |
+| - | - |
+| `DatabaseName` | The database's name |
+| `DatabaseId` | The database's ID |
+| `UptimeInSec` | Time since the database was loaded, in seconds |
+| `TimeSinceLastBackupInSec` | Time since the database's last backup, in seconds; `null` when no backup has run yet |
+
+---
+
+#### databases: Counts
+
+Document and state counts:
+
+| Field | Description |
+| - | - |
+| `Documents` | Number of documents in the database |
+| `Revisions` | Number of revisions in the database |
+| `Attachments` | Number of attachments in the database |
+| `UniqueAttachments` | Number of unique attachments in the database |
+| `Alerts` | Number of alerts raised for the database |
+| `Rehabs` | Number of nodes where the database is in a `Rehab` state |
+| `PerformanceHints` | Number of performance hints raised for the database |
+| `ReplicationFactor` | The database's replication factor |
+
+---
+
+#### databases: Statistics
+
+Activity rates of the database:
+
+| Field | Description |
+| - | - |
+| `DocPutsPerSec` | Document puts per second (one-minute rate) |
+| `MapIndexIndexesPerSec` | Documents indexed per second by map indexes (one-minute rate) |
+| `MapReduceIndexMappedPerSec` | Documents mapped per second by map-reduce indexes (one-minute rate) |
+| `MapReduceIndexReducedPerSec` | Results reduced per second by map-reduce indexes (one-minute rate) |
+| `RequestsPerSec` | Requests per second (one-minute rate) |
+| `RequestsCount` | Number of requests since the database was loaded |
+| `RequestAverageDurationInMs` | Average request duration, in milliseconds |
+
+---
+
+#### databases: Indexes
+
+Index counts, by kind and state:
+
+| Field | Description |
+| - | - |
+| `Count` | Number of indexes in the database |
+| `StaleCount` | Number of stale indexes |
+| `ErrorsCount` | Number of indexing errors |
+| `StaticCount` | Number of static indexes |
+| `AutoCount` | Number of auto indexes |
+| `IdleCount` | Number of idle indexes |
+| `DisabledCount` | Number of disabled indexes |
+| `ErroredCount` | Number of indexes in the `Error` state |
+
+---
+
+#### databases: Storage
+
+Storage usage of the database:
+
+| Field | Description |
+| - | - |
+| `DocumentsAllocatedDataFileInMb` | Allocated size of the documents data file, in MB |
+| `DocumentsUsedDataFileInMb` | Used size of the documents data file, in MB |
+| `IndexesAllocatedDataFileInMb` | Allocated size of the index data files, in MB |
+| `IndexesUsedDataFileInMb` | Used size of the index data files, in MB |
+| `TotalAllocatedStorageFileInMb` | Total allocated storage size of the database, in MB |
+| `TotalFreeSpaceInMb` | Remaining free space on the drive that holds the database, in MB; `-1` on a server that runs in memory |
+| `IoReadOperations` | Read operations per second on the drive |
+| `IoWriteOperations` | Write operations per second on the drive |
+| `ReadThroughputInKb` | Read throughput on the drive, in KB per second |
+| `WriteThroughputInKb` | Write throughput on the drive, in KB per second |
+| `QueueLength` | The drive's IO queue length |
+
+The IO fields are `null` on a server that runs in memory, and when the platform does not
+provide disk statistics.
+
+---
+
+#### databases: Etls, AiTasks, and CdcSinks
+
+These three groups carry the same fields as the server endpoint's groups of the same
+names, scoped to this database: the task count, the total recorded errors, and the task
+counts per health state.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### The indexes endpoint
+
+`/admin/monitoring/v1/indexes` returns one entry per loaded database, holding the
+database's name and an `Indexes` array with one entry per index.
+
+The fields of each index entry:
+
+| Field | Description |
+| - | - |
+| `IndexName` | The index's name |
+| `Priority` | The index's priority: `Low`, `Normal`, or `High` |
+| `State` | The index's state: `Normal`, `Disabled`, `Idle`, or `Error` |
+| `Errors` | Number of indexing errors recorded for the index |
+| `TimeSinceLastQueryInSec` | Time since the index was last queried, in seconds; `null` when the index has not been queried yet |
+| `TimeSinceLastIndexingInSec` | Time since the index last indexed documents, in seconds; `null` when the index has not indexed anything yet |
+| `LockMode` | The index's lock mode: `Unlock`, `LockedIgnore`, or `LockedError` |
+| `ArchivedDataProcessingBehavior` | The index's processing behavior for archived documents: `ExcludeArchived`, `IncludeArchived`, or `ArchivedOnly` |
+| `IsInvalid` | Indicates if the index is invalid |
+| `Status` | The index's running status: `Running`, `Paused`, `Disabled`, or `Pending` |
+| `MappedPerSec` | Documents mapped per second (one-minute rate) |
+| `ReducedPerSec` | Results reduced per second (one-minute rate) |
+| `Type` | The index's type, e.g. `Map`, `MapReduce`, `AutoMap`, or `JavaScriptMap` |
+
+</ContentFrame>
+
+<ContentFrame>
+
+### The collections endpoint
+
+`/admin/monitoring/v1/collections` returns one entry per loaded database, holding the
+database's name and a `Collections` array with one entry per collection.
+
+The fields of each collection entry:
+
+| Field | Description |
+| - | - |
+| `CollectionName` | The collection's name |
+| `DocumentsCount` | Number of documents in the collection |
+| `TotalSizeInBytes` | Total size of the collection, in bytes |
+| `DocumentsSizeInBytes` | Size of the collection's documents, in bytes |
+| `TombstonesSizeInBytes` | Size of the collection's [tombstones](../monitoring/tombstones/overview.mdx), in bytes |
+| `RevisionsSizeInBytes` | Size of the collection's revisions, in bytes |
+
+</ContentFrame>
+
+<ContentFrame>
+
+### The etls endpoint
+
+`/admin/monitoring/v1/etls` returns one entry per loaded database, holding the database's
+name and an `Etls` array with one entry per ETL task.
+
+The fields of each task entry:
+
+| Field | Description |
+| - | - |
+| `ProcessName` | The task's name, in the form `<configuration name>/<transformation name>` |
+| `ErrorsCount` | Number of errors recorded for the task |
+| `HealthStatus` | The task's health state: `Healthy`, `Impaired`, or `Failed` |
+| `LastSuccessfulBatchTimeInSec` | Time since the task's last successful batch, in seconds; `null` when the task has not completed a batch yet |
+| `DocumentsProcessedPerSec` | Documents processed per second by the task (one-minute rate) |
+
+</ContentFrame>
+
+<ContentFrame>
+
+### The ai-tasks endpoint
+
+`/admin/monitoring/v1/ai-tasks` returns one entry per loaded database, holding the
+database's name and an `AiTasks` array with one entry per AI task:
+an [Embeddings Generation](../ai-integration/generating-embeddings/overview.mdx)
+or [GenAI](../ai-integration/gen-ai-integration/overview.mdx) task.
+
+The fields of each task entry:
+
+| Field | Description |
+| - | - |
+| `ProcessName` | The task's name |
+| `ErrorsCount` | Number of errors recorded for the task |
+| `HealthStatus` | The task's health state: `Healthy`, `Impaired`, or `Failed` |
+| `LastSuccessfulBatchTimeInSec` | Time since the task's last successful batch, in seconds; `null` when the task has not completed a batch yet |
+| `DocumentsProcessedPerSec` | Documents processed per second by the task (one-minute rate) |
+
+</ContentFrame>
+
+<ContentFrame>
+
+### The cdc-sinks endpoint
+
+`/admin/monitoring/v1/cdc-sinks` returns one entry per loaded database, holding the
+database's name and a `CdcSinks` array with one entry per CDC Sink task.
+
+The fields of each task entry:
+
+| Field | Description |
+| - | - |
+| `ProcessName` | The task's name |
+| `ErrorsCount` | Number of errors recorded for the task |
+| `HealthStatus` | The task's health state: `Healthy`, `Impaired`, or `Failed` |
+| `LastSuccessfulBatchTimeInSec` | Time since the task's last successful batch, in seconds; `null` when the task has not completed a batch yet |
+
+</ContentFrame>
+
+</Panel>
