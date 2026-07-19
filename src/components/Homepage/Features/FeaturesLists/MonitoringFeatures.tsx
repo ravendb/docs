@@ -23,7 +23,10 @@ export default function MonitoringFeaturesGrid() {
         {
             title: "SNMP monitoring",
             icon: "snmp",
-            url: `/${activeVersion.label}/server/administration/snmp/snmp-overview`,
+            url:
+                activeVersion.label >= "7.2"
+                    ? `/${activeVersion.label}/monitoring/integrations/snmp/overview`
+                    : `/${activeVersion.label}/server/administration/snmp/snmp-overview`,
             description: "Easily expose RavenDB metrics to Zabbix/Datadog/PTRG",
             minimumSupportedVersion: "4.0",
         },

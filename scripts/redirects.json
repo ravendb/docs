@@ -754,6 +754,13 @@
         }
     },
     {
+        "key": "/server/administration/snmp/snmp-overview",
+        "value": {
+            "targetUrl": "/monitoring/integrations/snmp/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/client-api/operations/maintenance/Sorters/put-sorter",
         "value": {
             "targetUrl": "/client-api/operations/maintenance/sorters/put-sorter",

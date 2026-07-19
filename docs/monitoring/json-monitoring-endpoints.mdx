@@ -146,7 +146,7 @@ the database: the request succeeds, but the response carries no entry for this d
 On a secure server, a request to these endpoints must present a client certificate with
 [Operator](../server/security/authorization/security-clearance-and-permissions.mdx#operator)
 clearance or higher.  
-On an unsecured server, no certificate is needed.
+On an unsecure server, no certificate is needed.
 
 <ContentFrame>
 
@@ -338,7 +338,7 @@ The server certificate:
 
 | Field | Description |
 | - | - |
-| `ServerCertificateExpirationLeftInSec` | Time left until the server certificate expires, in seconds; `0` when the certificate has expired, `-1` on an unsecured server |
+| `ServerCertificateExpirationLeftInSec` | Time left until the server certificate expires, in seconds; `0` when the certificate has expired, `-1` on an unsecure server |
 | `WellKnownAdminCertificates` | Thumbprints of the well-known admin certificates configured on the server |
 | `WellKnownAdminIssuers` | Thumbprints of the well-known admin issuer certificates configured on the server |
 

@@ -29,7 +29,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   a template of your own, see the [community-templates repository](https://github.com/zabbix/community-templates).
 
 * Zabbix reads RavenDB's metrics over SNMP, so SNMP must be enabled on RavenDB before Zabbix can reach it.  
-  See [SNMP Support](./snmp-overview.mdx) for the RavenDB-side configuration.
+  See [SNMP Support](../../../monitoring/integrations/snmp/overview.mdx) for the RavenDB-side configuration.
 
 * This page covers: importing the template into Zabbix, acquainting Zabbix with your RavenDB server, 
   checking that metrics are arriving from the server, and reviewing the alerts the template defines.
@@ -62,7 +62,7 @@ Before Zabbix can monitor RavenDB, three things have to be in place:
 * **RavenDB with SNMP enabled.**  
   SNMP requires a RavenDB [Enterprise license](../../../licensing/overview.mdx#enterprise-license).  
   To turn SNMP on, set `Monitoring.Snmp.Enabled` to `true` in `settings.json` and restart the server.  
-  See [SNMP Support](./snmp-overview.mdx) for the SNMPv2c / SNMPv3 credentials and other configuration.
+  See [SNMP Support](../../../monitoring/integrations/snmp/overview.mdx) for the SNMPv2c / SNMPv3 credentials and other configuration.
 
 * **Network access between Zabbix and RavenDB.**  
   Zabbix sends its SNMP queries to RavenDB over UDP on port 161 (the default SNMP port).  
@@ -133,7 +133,7 @@ The interface supports either SNMPv2c or SNMPv3:
 * **SNMPv2c** sends a community string (a shared secret) in cleartext. Simpler option, for a trusted local network.
 * **SNMPv3** adds user authentication and traffic encryption. The right choice when SNMP traffic crosses an untrusted network.
 
-Pick the SNMP version that matches what RavenDB accepts; see [SNMP Support](./snmp-overview.mdx#snmp-configuration-options) 
+Pick the SNMP version that matches what RavenDB accepts; see [SNMP Support](../../../monitoring/integrations/snmp/overview.mdx#snmp-configuration-options) 
 for the RavenDB-side settings.
 
 #### Example: SNMPv2c interface
