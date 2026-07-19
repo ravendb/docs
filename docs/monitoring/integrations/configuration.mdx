@@ -1,0 +1,488 @@
+---
+title: "Integrations: Configuration"
+sidebar_label: "Configuration options"
+description: "Configuration keys for the SNMP and OpenTelemetry monitoring integrations."
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Integrations: Configuration
+<Admonition type="note" title="">
+
+* Use the configuration keys listed below to set the SNMP and OpenTelemetry integration
+  options for your RavenDB server.  
+
+* Learn how to set these keys in the [configuration overview](../../server/configuration/configuration-options.mdx).  
+
+* The general monitoring keys (CPU and disk metrics collection) are listed in the
+  [monitoring configuration](../configuration.mdx) page.  
+
+* In this article:
+    * [SNMP configuration keys](../integrations/configuration.mdx#snmp-configuration-keys)  
+      [Monitoring.Snmp.AuthenticationPassword](../integrations/configuration.mdx#monitoringsnmpauthenticationpassword)  
+      [Monitoring.Snmp.AuthenticationPassword.Secondary](../integrations/configuration.mdx#monitoringsnmpauthenticationpasswordsecondary)  
+      [Monitoring.Snmp.AuthenticationProtocol](../integrations/configuration.mdx#monitoringsnmpauthenticationprotocol)  
+      [Monitoring.Snmp.AuthenticationProtocol.Secondary](../integrations/configuration.mdx#monitoringsnmpauthenticationprotocolsecondary)  
+      [Monitoring.Snmp.AuthenticationUser](../integrations/configuration.mdx#monitoringsnmpauthenticationuser)  
+      [Monitoring.Snmp.AuthenticationUser.Secondary](../integrations/configuration.mdx#monitoringsnmpauthenticationusersecondary)  
+      [Monitoring.Snmp.Community](../integrations/configuration.mdx#monitoringsnmpcommunity)  
+      [Monitoring.Snmp.DisableTimeWindowChecks](../integrations/configuration.mdx#monitoringsnmpdisabletimewindowchecks)  
+      [Monitoring.Snmp.Enabled](../integrations/configuration.mdx#monitoringsnmpenabled)  
+      [Monitoring.Snmp.Port](../integrations/configuration.mdx#monitoringsnmpport)  
+      [Monitoring.Snmp.PrivacyPassword](../integrations/configuration.mdx#monitoringsnmpprivacypassword)  
+      [Monitoring.Snmp.PrivacyPassword.Secondary](../integrations/configuration.mdx#monitoringsnmpprivacypasswordsecondary)  
+      [Monitoring.Snmp.PrivacyProtocol](../integrations/configuration.mdx#monitoringsnmpprivacyprotocol)  
+      [Monitoring.Snmp.PrivacyProtocol.Secondary](../integrations/configuration.mdx#monitoringsnmpprivacyprotocolsecondary)  
+      [Monitoring.Snmp.SupportedVersions](../integrations/configuration.mdx#monitoringsnmpsupportedversions)  
+    * [OpenTelemetry configuration keys](../integrations/configuration.mdx#opentelemetry-configuration-keys)  
+      [Monitoring.OpenTelemetry.ConsoleExporter](../integrations/configuration.mdx#monitoringopentelemetryconsoleexporter)  
+      [Monitoring.OpenTelemetry.Enabled](../integrations/configuration.mdx#monitoringopentelemetryenabled)  
+      [Monitoring.OpenTelemetry.Meters.AspNetCore.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersaspnetcoreenabled)  
+      [Monitoring.OpenTelemetry.Meters.Runtime.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersruntimeenabled)  
+      [Monitoring.OpenTelemetry.Meters.Server.CPUCredits.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersservercpucreditsenabled)  
+      [Monitoring.OpenTelemetry.Meters.Server.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersserverenabled)  
+      [Monitoring.OpenTelemetry.Meters.Server.GC.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersservergcenabled)  
+      [Monitoring.OpenTelemetry.Meters.Server.General.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersservergeneralenabled)  
+      [Monitoring.OpenTelemetry.Meters.Server.Requests.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersserverrequestsenabled)  
+      [Monitoring.OpenTelemetry.Meters.Server.Resources.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersserverresourcesenabled)  
+      [Monitoring.OpenTelemetry.Meters.Server.Storage.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersserverstorageenabled)  
+      [Monitoring.OpenTelemetry.Meters.Server.TotalDatabases.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersservertotaldatabasesenabled)  
+      [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Enabled](../integrations/configuration.mdx#monitoringopentelemetryopentelemetryprotocolenabled)  
+      [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Endpoint](../integrations/configuration.mdx#monitoringopentelemetryopentelemetryprotocolendpoint)  
+      [Monitoring.OpenTelemetry.OpenTelemetryProtocol.ExportProcessorType](../integrations/configuration.mdx#monitoringopentelemetryopentelemetryprotocolexportprocessortype)  
+      [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Headers](../integrations/configuration.mdx#monitoringopentelemetryopentelemetryprotocolheaders)  
+      [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Protocol](../integrations/configuration.mdx#monitoringopentelemetryopentelemetryprotocolprotocol)  
+      [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Timeout](../integrations/configuration.mdx#monitoringopentelemetryopentelemetryprotocoltimeout)  
+      [Monitoring.OpenTelemetry.ServiceInstanceId](../integrations/configuration.mdx#monitoringopentelemetryserviceinstanceid)  
+      [Monitoring.OpenTelemetry.ServiceName](../integrations/configuration.mdx#monitoringopentelemetryservicename)  
+      [Monitoring.OpenTelemetry.ServiceNamespace](../integrations/configuration.mdx#monitoringopentelemetryservicenamespace)  
+
+</Admonition>
+
+<Panel heading="SNMP configuration keys">
+
+<ContentFrame>
+
+### Monitoring.Snmp.AuthenticationPassword
+
+Authentication password used for SNMP v3 authentication.  
+When set to `null`, the value from `Monitoring.Snmp.Community` is used.
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.Snmp.AuthenticationPassword.Secondary
+
+Authentication password used by secondary user for SNMP v3 authentication.
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.Snmp.AuthenticationProtocol
+
+Authentication protocol used for SNMP v3 authentication.
+
+- **Type**: `SnmpAuthenticationProtocol`
+- **Default**: `SHA1`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.Snmp.AuthenticationProtocol.Secondary
+
+Authentication protocol used by secondary user for SNMP v3 authentication.
+
+- **Type**: `SnmpAuthenticationProtocol`
+- **Default**: `SHA1`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.Snmp.AuthenticationUser
+
+Authentication user used for SNMP v3 authentication.
+
+- **Type**: `string`
+- **Default**: `"ravendb"`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.Snmp.AuthenticationUser.Secondary
+
+Authentication secondary user used for SNMP v3 authentication.
+
+- **Type**: `string`
+- **Default**: `null (disabled)`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.Snmp.Community
+
+Community string used for SNMP v2c authentication.
+
+- **Type**: `string`
+- **Default**: `"ravendb"`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.Snmp.DisableTimeWindowChecks
+
+EXPERT ONLY.  
+Disables time window checks, which are problematic for some SNMP engines.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.Snmp.Enabled
+
+Indicates if SNMP endpoint is enabled or not.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.Snmp.Port
+
+Port at which SNMP listener will be active.
+
+- **Type**: `int`
+- **Default**: `161`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.Snmp.PrivacyPassword
+
+Privacy password used for SNMP v3 privacy.
+
+- **Type**: `string`
+- **Default**: `"ravendb"`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.Snmp.PrivacyPassword.Secondary
+
+Privacy password used by secondary user for SNMP v3 privacy.
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.Snmp.PrivacyProtocol
+
+Privacy protocol used for SNMP v3 privacy.
+
+- **Type**: `SnmpPrivacyProtocol`
+- **Default**: `SnmpPrivacyProtocol.None`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.Snmp.PrivacyProtocol.Secondary
+
+Privacy protocol used by secondary user for SNMP v3 privacy.
+
+- **Type**: `SnmpPrivacyProtocol`
+- **Default**: `SnmpPrivacyProtocol.None`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.Snmp.SupportedVersions
+
+List of supported SNMP versions. Values must be semicolon separated.
+
+- **Type**: `string[]`
+- **Default**: `V2C;V3`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="OpenTelemetry configuration keys">
+
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.ConsoleExporter
+
+Indicates if metrics should be exported to the console output.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.Enabled
+
+Indicates if OpenTelemetry is enabled or not.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.Meters.AspNetCore.Enabled
+
+Indicates if AspNetCore metric is enabled or not.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.Meters.Runtime.Enabled
+
+Indicates if Runtime metric is enabled or not.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.Meters.Server.CPUCredits.Enabled
+
+Expose metrics related to CPU credits.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.Meters.Server.Enabled
+
+Indicates if RavenDB's OpenTelemetry metrics are enabled or not.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.Meters.Server.GC.Enabled
+
+Expose metrics related to GC.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.Meters.Server.General.Enabled
+
+Expose metrics related to general information about the cluster and its licensing.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.Meters.Server.Requests.Enabled
+
+Expose metrics related to requests.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.Meters.Server.Resources.Enabled
+
+Expose metrics related to resources usage.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.Meters.Server.Storage.Enabled
+
+Expose metrics related to server storage.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.Meters.Server.TotalDatabases.Enabled
+
+Expose metrics related to aggregated database statistics.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.OpenTelemetryProtocol.Enabled
+
+Indicates if metrics should be exported via the OpenTelemetry protocol.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.OpenTelemetryProtocol.Endpoint
+
+Endpoint where OpenTelemetryProtocol should sends data.  
+
+- **Type**: `string`
+- **Default**: `null` (internal OTLP default settings)
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.OpenTelemetryProtocol.ExportProcessorType
+
+OpenTelemetryProtocol export processor type.
+
+- **Type**: `enum ExportProcessorType` (Simple | Batch)
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.OpenTelemetryProtocol.Headers
+
+OpenTelemetryProtocol custom headers.
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.OpenTelemetryProtocol.Protocol
+
+Defines the protocol that OpenTelemetryProtocol should use to send data.
+
+- **Type**: `enum OtlpExportProtocol` (Grpc | HttpProtobuf)
+- **Default**: `null` (internal OTLP default settings)
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.OpenTelemetryProtocol.Timeout
+
+OpenTelemetryProtocol timeout value.
+
+- **Type**: `int?`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.ServiceInstanceId
+
+* OpenTelemetry monitoring requires a service instance ID for initialization.  
+  You can set the OpenTelemetry service instance ID using this configuration option.  
+
+* If this configuration key is not set, RavenDB will default to using the server's public URL hostname.  
+  If the public hostname is unavailable, RavenDB will use the node tag as the identifier.
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.ServiceName
+
+* Sets the OpenTelemetry **service name**.
+  This value is reported as the `service.name` resource attribute and is used to identify the RavenDB service in observability tools, such as the .NET Aspire dashboard.
+
+* If [Monitoring.OpenTelemetry.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryenabled) is set to `true`,
+  the effective value must not be `null`, empty, or whitespace.  
+  Otherwise, the server will fail to start.
+
+---
+
+- **Type**: `string`
+- **Default**: `server`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.OpenTelemetry.ServiceNamespace
+
+* Sets the OpenTelemetry **service namespace**.
+  This value is reported as the `service.namespace` resource attribute and is used to group related services together in observability tools.  
+
+* If [Monitoring.OpenTelemetry.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryenabled) is set to `true`,
+  the effective value must not be `null`, empty, or whitespace.  
+  Otherwise, the server will fail to start.
+
+---
+
+- **Type**: `string`
+- **Default**: `ravendb`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+</Panel>
