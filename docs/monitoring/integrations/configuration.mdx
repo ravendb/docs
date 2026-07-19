@@ -455,7 +455,7 @@ OpenTelemetryProtocol timeout value.
 * Sets the OpenTelemetry **service name**.
   This value is reported as the `service.name` resource attribute and is used to identify the RavenDB service in observability tools, such as the .NET Aspire dashboard.
 
-* If [Monitoring.OpenTelemetry.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryenabled) is set to `true`,
+* If [Monitoring.OpenTelemetry.Enabled](../integrations/configuration.mdx#monitoringopentelemetryenabled) is set to `true`,
   the effective value must not be `null`, empty, or whitespace.  
   Otherwise, the server will fail to start.
 
@@ -473,7 +473,7 @@ OpenTelemetryProtocol timeout value.
 * Sets the OpenTelemetry **service namespace**.
   This value is reported as the `service.namespace` resource attribute and is used to group related services together in observability tools.  
 
-* If [Monitoring.OpenTelemetry.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryenabled) is set to `true`,
+* If [Monitoring.OpenTelemetry.Enabled](../integrations/configuration.mdx#monitoringopentelemetryenabled) is set to `true`,
   the effective value must not be `null`, empty, or whitespace.  
   Otherwise, the server will fail to start.
 
