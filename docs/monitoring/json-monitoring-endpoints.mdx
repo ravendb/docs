@@ -172,8 +172,10 @@ and an error naming the missing feature.
 
 ### The server endpoint
 
-`/admin/monitoring/v1/server` returns a single JSON object: a few top-level fields, and
-a nested group of fields per area.
+`/admin/monitoring/v1/server` returns a single JSON object, holding a few top-level
+fields and a nested group of fields per area.  
+The tables below list these fields, starting with the top-level fields and continuing
+group by group.
 
 The top-level fields:
 
@@ -415,7 +417,9 @@ CDC Sink tasks across all loaded databases:
 ### The databases endpoint
 
 `/admin/monitoring/v1/databases` returns one entry per loaded database.  
-Each entry holds a few top-level fields, and a nested group of fields per area.
+Each entry holds a few top-level fields and a nested group of fields per area; the
+tables below list these fields, starting with the top-level fields and continuing group
+by group.
 
 The top-level fields:
 
