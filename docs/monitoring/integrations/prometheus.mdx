@@ -1,22 +1,21 @@
 ---
-title: "Monitoring: Prometheus"
-sidebar_label: Prometheus
+title: "Prometheus"
+sidebar_label: "Prometheus"
 description: "Scrape RavenDB server metrics with Prometheus using built-in endpoints, with configuration examples and available metric names."
-sidebar_position: 1
+sidebar_position: 3
 ---
 
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-# Monitoring: Prometheus
+# Prometheus
 <Admonition type="note" title="">
 
-* Prometheus is a popular monitoring tool designated to help in the inspection and 
-  administration of networks, infrastructures, databases, etc.  
+* [Prometheus](https://prometheus.io) is an open-source monitoring system.  
+  A Prometheus server scrapes numeric metrics from HTTP endpoints that services expose,
+  stores the values over time, and can graph them and raise alerts when a value crosses
+  a threshold you have set.  
 
 * RavenDB exposes data metrics via an HTTP endpoint in a Prometheus-compatible format, 
   allowing a Prometheus server to scrape the data from the endpoint and handle it.  
@@ -24,56 +23,75 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * A Prometheus endpoint is provided by RavenDB instances both on-premise and on the cloud.  
 
 * To read metrics as JSON rather than in the Prometheus format, use the
-  [JSON monitoring endpoints](../../../monitoring/json-monitoring-endpoints.mdx).  
+  [JSON monitoring endpoints](../json-monitoring-endpoints.mdx).  
 
-* In this page:  
-   * [Prometheus](../../../server/administration/monitoring/prometheus.mdx#prometheus)  
-   * [RavenDB Prometheus Endpoint](../../../server/administration/monitoring/prometheus.mdx#ravendb-prometheus-endpoint)  
-       * [Omit or Include Selected Metrics](../../../server/administration/monitoring/prometheus.mdx#omit-or-include-selected-metrics)  
-       * [Metrics Provided by the Prometheus Endpoint](../../../server/administration/monitoring/prometheus.mdx#metrics-provided-by-the-prometheus-endpoint)  
-   * [Using the RavenDB Endpoint by a Prometheus Server](../../../server/administration/monitoring/prometheus.mdx#using-the-ravendb-endpoint-by-a-prometheus-server)  
-       * [Fetching Additional RavenDB Information](../../../server/administration/monitoring/prometheus.mdx#fetching-additional-ravendb-information)  
+* In this article:  
+   * [RavenDB Prometheus Endpoint](../integrations/prometheus.mdx#ravendb-prometheus-endpoint)  
+       * [Omit or Include Selected Metrics](../integrations/prometheus.mdx#omit-or-include-selected-metrics)  
+       * [Metrics Provided by the Prometheus Endpoint](../integrations/prometheus.mdx#metrics-provided-by-the-prometheus-endpoint)  
+   * [Using the RavenDB Endpoint by a Prometheus Server](../integrations/prometheus.mdx#using-the-ravendb-endpoint-by-a-prometheus-server)  
+       * [Configuring and running Prometheus](../integrations/prometheus.mdx#configuring-and-running-prometheus)  
+       * [Browsing the metrics in Prometheus](../integrations/prometheus.mdx#browsing-the-metrics-in-prometheus)  
+       * [Reading the endpoint output directly](../integrations/prometheus.mdx#reading-the-endpoint-output-directly)  
+   * [Fetching Additional RavenDB Information](../integrations/prometheus.mdx#fetching-additional-ravendb-information)  
 
 </Admonition>
-## Prometheus
-
-Prometheus is commonly used in conjunction with services that expose numeric data via HTTP endpoints.  
-A Prometheus server can be used (either manually or by an application using a dedicated library) to 
-scrape the data off an endpoint, monitor and store it, and put it to use in additional ways like raising 
-alerts related to it or forwarding it to analysis services.  
-
-
-
-## RavenDB Prometheus Endpoint
+<Panel heading="RavenDB Prometheus Endpoint">
 
 The path to the Prometheus endpoint of a RavenDB instance is: `/admin/monitoring/v1/prometheus`  
 To inspect the endpoint's output using a browser, add the endpoint path to the RavenDB server's URL.  
-E.g. [http://live-test.ravendb.net/admin/monitoring/v1/prometheus](http://live-test.ravendb.net/admin/monitoring/v1/prometheus)  
+e.g., [http://live-test.ravendb.net/admin/monitoring/v1/prometheus](http://live-test.ravendb.net/admin/monitoring/v1/prometheus)  
 
 ![RavenDB: Prometheus Endpoint Output](./assets/ravendb_prometheus-endpoint-output.png)
 
-* As prometheus handles only numeric values, the endpoint outputs all values as numbers, 
+* As Prometheus handles only numeric values, the endpoint outputs all values as numbers, 
   providing legends that explain what the numbers mean.  
-  Metrics values are also explained in the [table below](../../../server/administration/monitoring/prometheus.mdx#metrics-provided-by-the-prometheus-endpoint).  
+  Metrics values are also explained in the [table below](../integrations/prometheus.mdx#metrics-provided-by-the-prometheus-endpoint).  
 
-## Omit or Include Selected Metrics
+On a secure server, a request to the endpoint must present a client certificate with
+[Operator](../../server/security/authorization/security-clearance-and-permissions.mdx#operator)
+clearance or higher.  
+On an unsecure server, no certificate is needed.
 
-To omit metrics related to selected topics from the data sent to the endpoint, set one or more of the 
-flags listed below, in the URL line. Each flag can be set to `true` to omit the topic from the results, 
-or to `false` to include it.  
-`skipServerMetrics`  
-`skipDatabasesMetrics`  
-`skipIndexesMetrics`  
-`skipCollectionsMetrics`  
+If the server's [license](https://ravendb.net/buy) does not include the Monitoring Endpoints
+feature, requests to the endpoint fail with HTTP status `402 Payment Required`.
 
-E.g., to skip indexing metrics use -  
-http://localhost:8080/admin/monitoring/v1/prometheus?skipIndexesMetrics=true  
-And to skip both indexing and server metrics use -  
-http://localhost:8080/admin/monitoring/v1/prometheus?skipIndexesMetrics=true&skipServerMetrics=true
+</Panel>
 
-## Metrics Provided by the Prometheus Endpoint
+<Panel heading="Omit or Include Selected Metrics">
 
-Here is the list of metrics made available by the `/admin/monitoring/v1/prometheus` endpoint.  
+Each `skip*` flag omits one metric group from the response when set to `true`; the
+`includeGcMetrics` flag adds the GC metrics, the one group that is excluded by default.  
+All flags default to `false`.
+
+| Flag | Metric group |
+| - | - |
+| `skipServerMetrics` | Server metrics |
+| `skipDatabasesMetrics` | Database metrics |
+| `skipIndexesMetrics` | Index metrics |
+| `skipCollectionsMetrics` | Collection metrics |
+| `skipEtlsMetrics` | ETL task metrics |
+| `skipAiTasksMetrics` | AI task metrics |
+| `skipCdcSinksMetrics` | CDC Sink task metrics |
+| `includeGcMetrics` | GC metrics (excluded by default) |
+
+e.g., to omit the index metrics:  
+`http://localhost:8080/admin/monitoring/v1/prometheus?skipIndexesMetrics=true`
+
+To omit both the index and the server metrics:  
+`http://localhost:8080/admin/monitoring/v1/prometheus?skipIndexesMetrics=true&skipServerMetrics=true`
+
+</Panel>
+
+<Panel heading="Metrics Provided by the Prometheus Endpoint">
+
+The following table lists the metrics that the `/admin/monitoring/v1/prometheus` endpoint provides.  
+In the endpoint's output, each name carries the `ravendb_` prefix.  
+e.g., the `server_uptime_seconds` metric is exposed as `ravendb_server_uptime_seconds`.
+
+The GC metrics appear only when the request sets the `includeGcMetrics`
+[flag](../integrations/prometheus.mdx#omit-or-include-selected-metrics), and each carries
+a `gckind` label naming the kind of the garbage collection it describes.
 
 | Metrics | Description |
 | - | - |
@@ -82,8 +100,12 @@ Here is the list of metrics made available by the `/admin/monitoring/v1/promethe
 | ai_task_health_status | AI task health status + `0`/`1`/`2` <br/> 0 =&gt; Healthy <br/> 1 =&gt; Impaired <br/> 2 =&gt; Failed |
 | ai_task_last_successful_batch_time_in_seconds | Time since the AI task's last successful batch, in seconds |
 | archived_data_processing_behavior | Archived data processing behavior + `0`/`1`/`2` <br/> 0 =&gt; ExcludeArchived <br/> 1 =&gt; IncludeArchived <br/> 2 =&gt; ArchivedOnly |
+| available_memory_for_processing_bytes | Available memory for processing |
 | backup_current_number_of_running_backups | Number of currently running backups |
 | backup_max_number_of_concurrent_backups | Maximum number of concurrent backups |
+| cdc_sink_errors_count | Number of errors recorded for the CDC Sink task |
+| cdc_sink_health_status | CDC Sink task health status + `0`/`1`/`2` <br/> 0 =&gt; Healthy <br/> 1 =&gt; Impaired <br/> 2 =&gt; Failed |
+| cdc_sink_last_successful_batch_time_in_seconds | Time since the CDC Sink task's last successful batch, in seconds |
 | certificate_server_certificate_expiration_left_seconds | Server certificate expiration left in seconds |
 | cluster_current_term | Cluster term |
 | cluster_index | Cluster index |
@@ -107,6 +129,11 @@ Here is the list of metrics made available by the `/admin/monitoring/v1/promethe
 | database_ai_tasks_impaired_count | Number of AI tasks with `Impaired` health status in the database |
 | database_alerts_count | Number of alerts |
 | database_attachments_count | Number of attachments |
+| database_cdc_sinks_count | Number of CDC Sink tasks in the database |
+| database_cdc_sinks_errors_count | Total number of CDC Sink errors in the database |
+| database_cdc_sinks_failed_count | Number of CDC Sink tasks with `Failed` health status in the database |
+| database_cdc_sinks_healthy_count | Number of CDC Sink tasks with `Healthy` health status in the database |
+| database_cdc_sinks_impaired_count | Number of CDC Sink tasks with `Impaired` health status in the database |
 | database_documents_count | Number of documents |
 | database_etls_count | Number of ETL tasks in the database |
 | database_etls_errors_count | Total number of ETL errors in the database |
@@ -152,6 +179,22 @@ Here is the list of metrics made available by the `/admin/monitoring/v1/promethe
 | etl_errors_count | Number of errors recorded for the ETL task |
 | etl_health_status | ETL task health status + `0`/`1`/`2` <br/> 0 =&gt; Healthy <br/> 1 =&gt; Impaired <br/> 2 =&gt; Failed |
 | etl_last_successful_batch_time_in_seconds | Time since the ETL task's last successful batch, in seconds |
+| gc_compacted | Indicates if the last garbage collection was compacting (`1` = yes, `0` = no) |
+| gc_concurrent | Indicates if the last garbage collection was concurrent (`1` = yes, `0` = no) |
+| gc_finalization_pending_count | Number of objects pending finalization observed during the last garbage collection |
+| gc_fragmented_mb | Heap fragmentation in MB after the last garbage collection |
+| gc_generation | Generation collected by the last garbage collection |
+| gc_heap_size_mb | Total GC heap size in MB after the last garbage collection |
+| gc_high_memory_load_threshold_mb | High memory load threshold in MB at the time of the last garbage collection |
+| gc_index | Index of the last garbage collection |
+| gc_memory_load_mb | Memory load in MB at the time of the last garbage collection |
+| gc_pause_durations_1_seconds | First GC pause duration in seconds recorded during the last garbage collection |
+| gc_pause_durations_2_seconds | Second GC pause duration in seconds recorded during the last garbage collection |
+| gc_pause_time_percentage | Percentage of time spent paused for GC since the previous collection |
+| gc_pinned_objects_count | Number of pinned objects observed during the last garbage collection |
+| gc_promoted_mb | Memory promoted during the last garbage collection in MB |
+| gc_total_available_memory_mb | Total available memory for the GC in MB at the time of the last garbage collection |
+| gc_total_committed_mb | Total committed managed heap size in MB after the last garbage collection |
 | index_entries_count | Number of entries in the index |
 | index_errors | Number of index errors |
 | index_is_invalid | Indicates if index is invalid |
@@ -166,8 +209,9 @@ Here is the list of metrics made available by the `/admin/monitoring/v1/promethe
 | index_type | Index type + `0`/`1`/`2`/`3`/`4`/`5`/`6`/`7` <br/> 0 =&gt; None <br/> 1 =&gt; AutoMap <br/> 2 =&gt; AutoMapReduce <br/> 3 =&gt; Map <br/> 4 =&gt; MapReduce <br/> 5 =&gt; Faulty <br/> 6 =&gt; JavaScriptMap <br/> 7 =&gt; JavaScriptMapReduce |
 | license_expiration_left_seconds | Server license expiration left |
 | license_max_cores | Server license max CPU cores |
-| license_type | Server license type + `-1`/`0`/`1`/`2`/`3`/`4`/`5`/`6` <br/> -1 =&gt; Invalid <br/> 0 =&gt; None <br/> 1 =&gt; Community <br/> 2 =&gt; Reserved <br/> 3 =&gt; Professional <br/> 4 =&gt; Enterprise <br/> 5 =&gt; Developer <br/> 6 =&gt; Essential |
+| license_type | Server license type + `-1`/`0`/`1`/`2`/`3`/`4`/`5`/`6`/`7` <br/> -1 =&gt; Invalid <br/> 0 =&gt; None <br/> 1 =&gt; Community <br/> 2 =&gt; Reserved <br/> 3 =&gt; Professional <br/> 4 =&gt; Enterprise <br/> 5 =&gt; Developer <br/> 6 =&gt; Essential <br/> 7 =&gt; EnterpriseAi |
 | license_utilized_cpu_cores | Server license utilized CPU cores |
+| managed_memory_bytes | Server managed memory size |
 | memory_allocated_bytes | Server allocated memory |
 | memory_installed_bytes | Installed memory |
 | memory_low_memory_severity | Server low memory flag value + `0`/`1`/`2` <br/> 0 =&gt; None <br/> 1 =&gt; Low <br/> 2 =&gt; ExtremelyLow |
@@ -187,6 +231,11 @@ Here is the list of metrics made available by the `/admin/monitoring/v1/promethe
 | server_ai_tasks_failed_count | Number of AI tasks with `Failed` health status across all databases |
 | server_ai_tasks_healthy_count | Number of AI tasks with `Healthy` health status across all databases |
 | server_ai_tasks_impaired_count | Number of AI tasks with `Impaired` health status across all databases |
+| server_cdc_sinks_count | Total number of CDC Sink tasks across all databases |
+| server_cdc_sinks_errors_count | Total number of CDC Sink errors across all databases |
+| server_cdc_sinks_failed_count | Number of CDC Sink tasks with `Failed` health status across all databases |
+| server_cdc_sinks_healthy_count | Number of CDC Sink tasks with `Healthy` health status across all databases |
+| server_cdc_sinks_impaired_count | Number of CDC Sink tasks with `Impaired` health status across all databases |
 | server_disk_remaining_storage_space_percentage | Remaining server storage disk space in % |
 | server_disk_system_store_total_data_file_size_bytes | Server storage total size |
 | server_disk_system_store_used_data_file_size_bytes | Server storage used size |
@@ -204,67 +253,95 @@ Here is the list of metrics made available by the `/admin/monitoring/v1/promethe
 | server_storage_total_free_space_bytes | Remaining storage disk space |
 | server_storage_write_throughput_bytes | Disk Write Throughput |
 | server_uptime_seconds | Server up-time |
+| unmanaged_memory_bytes | Server unmanaged memory size |
 
+</Panel>
 
+<Panel heading="Using the RavenDB Endpoint by a Prometheus Server">
 
-## Using the RavenDB Endpoint by a Prometheus Server
+<ContentFrame>
 
-To direct a Prometheus server to the Prometheus endpoint of a RavenDB instance 
-[add an entry](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config) 
-to the Prometheus `yml` configuration file.  
+### Configuring and running Prometheus
 
-* **Prometheus.yml**:  
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`- job_name: "local-raven-instance"
-    # Monitor a local, non-secure RavenDB server
+To direct a Prometheus server to the Prometheus endpoint of a RavenDB instance, add a
+[scrape job](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config)
+for the RavenDB server under the `scrape_configs` section of the `prometheus.yml` configuration file.  
+The following sample defines two scrape jobs: one for a local unsecure server, and one for
+three secure nodes of a cloud cluster.  
+
+```yaml
+scrape_configs:
+  - job_name: "local-raven-instance"
+    # Monitor a local, unsecure RavenDB server
     metrics_path: "/admin/monitoring/v1/prometheus"
     static_configs:
       - targets:
-        - "localhost:8080"
-- job_name: "cloud-raven-instance"
+          - "localhost:8080"
+
+  - job_name: "cloud-raven-instance"
     # Monitor 3 RavenDB nodes on the cloud
     scheme: https
     tls_config:
-       cert_file: 'a.client.certificate.crt'
-       key_file: 'a.client.certificate.key'
+      cert_file: "a.client.certificate.crt"
+      key_file: "a.client.certificate.key"
     metrics_path: "/admin/monitoring/v1/prometheus"
     static_configs:
       - targets:
-        - "a.cloudtest.ravendb.org"  
-        - "b.cloudtest.ravendb.org"  
-        - "c.cloudtest.ravendb.org"  
-`}
-</CodeBlock>
-</TabItem>
+          - "a.cloudtest.ravendb.org"
+          - "b.cloudtest.ravendb.org"
+          - "c.cloudtest.ravendb.org"
+```
+<br />
 
-* When you run the Prometheus server, direct it to the configuration file you want it to use.  
-  `./prometheus --config.file=prometheus.yml`
-  
-* When the Prometheus server is running, you'll be able to provide it with various RavenDB metrics.  
-  
-    ![Prometheus: Select Metrics](./assets/prometheus_select-metrics.png)
-    
-    ![Prometheus: Metrics Graph](./assets/prometheus_metrics-graph.png)
+To load the scrape jobs, run the Prometheus server and point it at your `prometheus.yml` file:  
+`./prometheus --config.file=prometheus.yml`
 
-    * Use the search bar to search for relevant metrics.   
-      Typing **raven** will display a list of metrics provided by the endpoint.  
+</ContentFrame>
 
-* Metrics can also be found in RavenDB's endpoint output, using the browser.  
-  In the following screenshot, for example, we can see that the priority of one of the indexes was updated to 2 (high).
-  
-    ![RavenDB Endpoint Output: Index Priority](./assets/RavenDB_changed-index-priority.png)
+<ContentFrame>
 
-    Providing the Prometheus server with the metrics' name will display the event graphically.  
+### Browsing the metrics in Prometheus
 
-    ![Prometheus Server: Index Priority](./assets/Prometheus_changed-index-priority.png)
+Once the Prometheus server is running, you can browse and graph the RavenDB metrics it collects.
 
-## Fetching Additional RavenDB Information
+Typing **raven** in the search bar lists the metrics the RavenDB endpoint provides:
 
-To retrieve additional information about RavenDB, including its version, 
-HTTP and TCP URLs, and other details, pass Prometheus: `ravendb_server_info`  
+![Prometheus: Select Metrics](./assets/prometheus_select-metrics.png)
+
+Executing a query over a metric plots its values over time in the **Graph** tab.  
+e.g., the RavenDB server's CPU usage:
+
+![Prometheus: Metrics Graph](./assets/prometheus_metrics-graph.png)
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Reading the endpoint output directly
+
+You can also read the metrics directly from RavenDB's endpoint output, without Prometheus:
+open the endpoint URL in your browser, as described under
+[RavenDB Prometheus Endpoint](../integrations/prometheus.mdx#ravendb-prometheus-endpoint).  
+In the following endpoint output, the priority of one of the indexes was updated to `2` (high):
+
+![RavenDB Endpoint Output: Index Priority](./assets/RavenDB_changed-index-priority.png)
+
+Querying the metric's name in Prometheus displays the change graphically:
+
+![Prometheus Server: Index Priority](./assets/Prometheus_changed-index-priority.png)
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Fetching Additional RavenDB Information">
+
+To retrieve additional information about RavenDB, including its version and its
+HTTP and TCP URLs, query `ravendb_server_info` in Prometheus:  
 
 ![Additional Information](./assets/additional-info.png)
+
+</Panel>
 
 
 
