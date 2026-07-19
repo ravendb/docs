@@ -44,7 +44,7 @@ import Panel from "@site/src/components/Panel";
 
 <Panel heading="Enabling OpenTelemetry in RavenDB">
 
-* To enable the OpenTelemetry metrics in RavenDB, you must first set the [Monitoring.OpenTelemetry.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryenabled) configuration key to `true`.
+* To enable the OpenTelemetry metrics in RavenDB, you must first set the [Monitoring.OpenTelemetry.Enabled](../integrations/configuration.mdx#monitoringopentelemetryenabled) configuration key to `true`.
 
 * Learn how to customize configuration keys in the [Configuration Overview](../../server/configuration/configuration-options.mdx) article.
 
@@ -58,7 +58,7 @@ A **meter** is a named group of related [metric instruments](../integrations/ope
 RavenDB defines a meter for each area of the server's operation, and enabling or disabling a meter enables or disables all of its instruments.
 
 All of RavenDB's own meters sit under the master configuration key
-[Monitoring.OpenTelemetry.Meters.Server.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersserverenabled)
+[Monitoring.OpenTelemetry.Meters.Server.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersserverenabled)
 (`true` by default); disabling it disables every `ravendb.server.*` meter at once.  
 Only the most commonly used meters are enabled by default, as the tables show.
 
@@ -68,13 +68,13 @@ Only the most commonly used meters are enabled by default, as the tables show.
 
 | Meter | Description | Configuration key |
 | - | - | - |
-| `ravendb.server.cpucredits` | Exposes status of CPU credits (cloud).<br />Default: `false`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.CPUCredits.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersservercpucreditsenabled) |
-| `ravendb.server.gc` | Exposes detailed information about the Garbage Collector.<br />Default: `false`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.GC.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersservergcenabled) |
-| `ravendb.server.general` | Exposes general info about the cluster and its licensing.<br />Default: `true`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.General.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersservergeneralenabled) |
-| `ravendb.server.requests` | Exposes information about requests processed by the server.<br />Default: `true`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.Requests.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersserverrequestsenabled) |
-| `ravendb.server.resources` | Exposes detailed information about resource usage (e.g. CPU).<br />Default: `true`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.Resources.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersserverresourcesenabled) |
-| `ravendb.server.storage` | Exposes storage information.<br />Default: `true`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.Storage.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersserverstorageenabled) |
-| `ravendb.server.totaldatabases` | Exposes aggregated information about databases on the server.<br />Default: `true`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.TotalDatabases.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersservertotaldatabasesenabled) |
+| `ravendb.server.cpucredits` | Exposes status of CPU credits (cloud).<br />Default: `false`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.CPUCredits.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersservercpucreditsenabled) |
+| `ravendb.server.gc` | Exposes detailed information about the Garbage Collector.<br />Default: `false`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.GC.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersservergcenabled) |
+| `ravendb.server.general` | Exposes general info about the cluster and its licensing.<br />Default: `true`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.General.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersservergeneralenabled) |
+| `ravendb.server.requests` | Exposes information about requests processed by the server.<br />Default: `true`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.Requests.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersserverrequestsenabled) |
+| `ravendb.server.resources` | Exposes detailed information about resource usage (e.g. CPU).<br />Default: `true`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.Resources.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersserverresourcesenabled) |
+| `ravendb.server.storage` | Exposes storage information.<br />Default: `true`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.Storage.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersserverstorageenabled) |
+| `ravendb.server.totaldatabases` | Exposes aggregated information about databases on the server.<br />Default: `true`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.TotalDatabases.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersservertotaldatabasesenabled) |
 
 ---
 
@@ -84,8 +84,8 @@ RavenDB also supports exposing meters developed by Microsoft for AspNetCore and 
 
 | Meter | Description | Configuration key |
 | - | - | - |
-| **AspNetCore instrumentation** | Official Microsoft meters; see the [AspNetCore documentation](https://github.com/open-telemetry/opentelemetry-dotnet-contrib/blob/main/src/OpenTelemetry.Instrumentation.AspNetCore/README.md#metrics).<br />Default: `false`. | Monitoring.OpenTelemetry.Meters<br/>[.AspNetCore.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersaspnetcoreenabled) |
-| **Runtime instrumentation** | Official Microsoft meters; see the [.NET Runtime documentation](https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Runtime#metrics).<br />Default: `false`. | Monitoring.OpenTelemetry.Meters<br/>[.Runtime.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetrymetersruntimeenabled) |
+| **AspNetCore instrumentation** | Official Microsoft meters; see the [AspNetCore documentation](https://github.com/open-telemetry/opentelemetry-dotnet-contrib/blob/main/src/OpenTelemetry.Instrumentation.AspNetCore/README.md#metrics).<br />Default: `false`. | Monitoring.OpenTelemetry.Meters<br/>[.AspNetCore.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersaspnetcoreenabled) |
+| **Runtime instrumentation** | Official Microsoft meters; see the [.NET Runtime documentation](https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Runtime#metrics).<br />Default: `false`. | Monitoring.OpenTelemetry.Meters<br/>[.Runtime.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersruntimeenabled) |
 
 </Panel>
 
@@ -98,7 +98,7 @@ RavenDB also supports exposing meters developed by Microsoft for AspNetCore and 
 * The server instance identification is determined by the following sequence:
 
     1. **Configuration Key**  
-       First, attempt to retrieve the [Monitoring.OpenTelemetry.ServiceInstanceId](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryserviceinstanceid) configuration key.  
+       First, attempt to retrieve the [Monitoring.OpenTelemetry.ServiceInstanceId](../integrations/configuration.mdx#monitoringopentelemetryserviceinstanceid) configuration key.  
     2. **Public URL Hostname**  
        If the configuration key is not defined, use the server's public URL hostname, provided it is available.
     3. **Node Tag**  
@@ -117,13 +117,13 @@ RavenDB also supports exposing meters developed by Microsoft for AspNetCore and 
 
 * These values are configured through RavenDB configuration, not through OpenTelemetry environment variables.  
   To override these values, use the following configuration keys:  
-    * [Monitoring.OpenTelemetry.ServiceName](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryservicename)
-    * [Monitoring.OpenTelemetry.ServiceNamespace](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryservicenamespace)
+    * [Monitoring.OpenTelemetry.ServiceName](../integrations/configuration.mdx#monitoringopentelemetryservicename)
+    * [Monitoring.OpenTelemetry.ServiceNamespace](../integrations/configuration.mdx#monitoringopentelemetryservicenamespace)
 
 <Admonition type="note" title="">
 
 When RavenDB OpenTelemetry monitoring is enabled by setting
-[Monitoring.OpenTelemetry.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryenabled) to `true`,  
+[Monitoring.OpenTelemetry.Enabled](../integrations/configuration.mdx#monitoringopentelemetryenabled) to `true`,  
 the effective service name and service namespace values must not be `null`, empty, or whitespace.  
 Otherwise, the server will fail to start.
 
@@ -265,7 +265,7 @@ Otherwise, the server will fail to start.
 
 <Panel heading="Metrics export options">
 
-RavenDB offers two options for exporting metrics:  
+RavenDB offers two metric export options:  
 
   * Export data to the console for immediate metrics insight.
   * Export data via the OpenTelemetry Protocol (OTLP) for integration with other observability platforms.
@@ -280,7 +280,7 @@ RavenDB offers two options for exporting metrics:
   as it eliminates the need for integration with external monitoring systems or observability platforms.
 
 * To enable output to the console -  
-  set the [Monitoring.OpenTelemetry.ConsoleExporter](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryconsoleexporter) configuration key to `true`.
+  set the [Monitoring.OpenTelemetry.ConsoleExporter](../integrations/configuration.mdx#monitoringopentelemetryconsoleexporter) configuration key to `true`.
 
 </Admonition>
 <Admonition type="note" title="">
@@ -296,7 +296,7 @@ RavenDB offers two options for exporting metrics:
 
 * RavenDB supports the official OTLP by default, allowing you to export RavenDB metrics to the OpenTelemetry Collector.
 
-* The [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Enabled](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocolenabled) configuration key is `true` by default,  
+* The [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Enabled](../integrations/configuration.mdx#monitoringopentelemetryopentelemetryprotocolenabled) configuration key is `true` by default,  
   so once OpenTelemetry itself is enabled, RavenDB exports metrics via the OpenTelemetry Protocol without further configuration.  
   To disable the OTLP export, set this key to `false`.
 
@@ -305,18 +305,18 @@ RavenDB offers two options for exporting metrics:
 
 | Configuration key                                                                                                                                                                                   | Description                                                                                                                                                                | Accepted values      |
 |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------|
-| Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.ExportProcessorType](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocolexportprocessortype) | Export processor type                                                                                                                                                      | Simple / Batch       |
-| Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.Headers](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocolheaders)                         | Custom headers                                                                                                                                                             | string               |
-| Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.Protocol](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocolprotocol)                       | Defines the transport protocol that OpenTelemetry Protocol should use to send data.                                                                                        | gRPC / HttpProtobuf  |
-| Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.Endpoint](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocolendpoint)                       | Endpoint where OpenTelemetry Protocol should send data.<br/>See configuration details [below](../integrations/open-telemetry.mdx#configure-endpoint). | string               |
-| Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.Timeout](../../server/configuration/monitoring-configuration.mdx#monitoringopentelemetryopentelemetryprotocoltimeout)                         | Timeout                                                                                                                                                                    | int                  |
+| Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.ExportProcessorType](../integrations/configuration.mdx#monitoringopentelemetryopentelemetryprotocolexportprocessortype) | Export processor type                                                                                                                                                      | Simple / Batch       |
+| Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.Headers](../integrations/configuration.mdx#monitoringopentelemetryopentelemetryprotocolheaders)                         | Custom headers                                                                                                                                                             | string               |
+| Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.Protocol](../integrations/configuration.mdx#monitoringopentelemetryopentelemetryprotocolprotocol)                       | Defines the transport protocol that OpenTelemetry Protocol should use to send data.                                                                                        | gRPC / HttpProtobuf  |
+| Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.Endpoint](../integrations/configuration.mdx#monitoringopentelemetryopentelemetryprotocolendpoint)                       | Endpoint where OpenTelemetry Protocol should send data.<br/>See configuration details [below](../integrations/open-telemetry.mdx#configure-endpoint). | string               |
+| Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.Timeout](../integrations/configuration.mdx#monitoringopentelemetryopentelemetryprotocoltimeout)                         | Timeout                                                                                                                                                                    | int                  |
 
 </Admonition>
 
 <Admonition type="info" title="">
 
 <a id="configure-endpoint"/> __Configuring the OpenTelemetry Protocol endpoint__:
-The defined endpoint must correspond to the endpoint [configured on the collector](../integrations/open-telemetry.mdx#configuring-the-opentelemetry-collector) for receiving metrics data.
+The defined endpoint must match the receiving endpoint [configured on the collector](../integrations/open-telemetry.mdx#configuring-the-opentelemetry-collector).
 The endpoint format should match the transport protocol you are using:
 
 <br/>
@@ -349,7 +349,7 @@ The endpoint format should match the transport protocol you are using:
 <Panel heading="Configuring the OpenTelemetry Collector">
 
 * The OpenTelemetry Collector is a vendor-agnostic proxy that can receive, process, and export telemetry data (traces, metrics, logs)
-  from multiple sources to different backends. It acts as a centralized point for collecting and processing telemetry data.
+  from multiple sources to different backends. It acts as a central collection and processing point for telemetry data.
 
 * In the OpenTelemetry Collector configuration, a **receiver** is a component that listens for incoming telemetry data. 
 
@@ -360,7 +360,7 @@ The endpoint format should match the transport protocol you are using:
 <Admonition type="note" title="">
 
 <a id="receive-data-via-otlp"/> __Receive data via OTLP__:
-* The `otlp` receiver is used for receiving telemetry data in the OpenTelemetry Protocol (OTLP) format.
+* The `otlp` receiver accepts telemetry data in the OpenTelemetry Protocol (OTLP) format.
 
 * Specify the `endpoints` where the OpenTelemetry Collector should listen for incoming telemetry data,  
   whether via gRPC or HTTP, and on which ports.  
@@ -382,7 +382,7 @@ receivers:
 <Admonition type="note" title="">
  
 <a id="retrieve-data-from-prometheus"/> __Retrieve data from Prometheus__:
-* The OpenTelemetry Collector includes support for retrieving metrics from a Prometheus endpoint.  
+* The OpenTelemetry Collector can retrieve metrics from a Prometheus endpoint.  
 
 * RavenDB provides a Prometheus endpoint that can be used as a data source for the OpenTelemetry Collector.
   This endpoint provides metrics in a standardized format and integrates seamlessly without requiring you to enable OpenTelemetry in RavenDB.
