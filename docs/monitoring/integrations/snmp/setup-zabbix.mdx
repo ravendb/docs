@@ -1,8 +1,8 @@
 ---
-title: "Zabbix monitoring"
+title: "SNMP: Zabbix monitoring"
 sidebar_label: "Zabbix monitoring"
 description: "Monitor RavenDB over SNMP using the official Zabbix community template, including importing the template, creating a host, and reviewing the shipped triggers."
-sidebar_position: 1
+sidebar_position: 3
 ---
 
 import Admonition from '@theme/Admonition';
@@ -12,7 +12,7 @@ import CodeBlock from '@theme/CodeBlock';
 import Panel from "@site/src/components/Panel";
 import ContentFrame from "@site/src/components/ContentFrame";
 
-# Zabbix monitoring
+# SNMP: Zabbix monitoring
 
 <Admonition type="note" title="">
 
@@ -29,7 +29,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   a template of your own, see the [community-templates repository](https://github.com/zabbix/community-templates).
 
 * Zabbix reads RavenDB's metrics over SNMP, so SNMP must be enabled on RavenDB before Zabbix can reach it.  
-  See [SNMP Support](../../../monitoring/integrations/snmp/overview.mdx) for the RavenDB-side configuration.
+  See [SNMP Support](../snmp/overview.mdx) for the RavenDB-side configuration.
 
 * This page covers: importing the template into Zabbix, acquainting Zabbix with your RavenDB server, 
   checking that metrics are arriving from the server, and reviewing the alerts the template defines.
@@ -56,13 +56,13 @@ import ContentFrame from "@site/src/components/ContentFrame";
 Before Zabbix can monitor RavenDB, three things have to be in place:
 
 * **A running Zabbix instance (version 6.0 or later), with administrative access to the Zabbix web frontend.**  
-  If you haven't set an instance yet, the [Set up Zabbix monitoring for RavenDB Cloud](../../../../guides/zabbix-setup-guide) 
+  If you haven't set up an instance yet, the [Set up Zabbix monitoring for RavenDB Cloud](../../../../guides/zabbix-setup-guide) 
   guide can walk you through setting it up in Docker.
 
 * **RavenDB with SNMP enabled.**  
-  SNMP requires a RavenDB [Enterprise license](../../../licensing/overview.mdx#enterprise-license).  
+  SNMP requires a [license](https://ravendb.net/buy) that includes the SNMP feature.  
   To turn SNMP on, set `Monitoring.Snmp.Enabled` to `true` in `settings.json` and restart the server.  
-  See [SNMP Support](../../../monitoring/integrations/snmp/overview.mdx) for the SNMPv2c / SNMPv3 credentials and other configuration.
+  See [SNMP Support](../snmp/overview.mdx) for the SNMPv2c / SNMPv3 credentials and other configuration.
 
 * **Network access between Zabbix and RavenDB.**  
   Zabbix sends its SNMP queries to RavenDB over UDP on port 161 (the default SNMP port).  
@@ -133,7 +133,7 @@ The interface supports either SNMPv2c or SNMPv3:
 * **SNMPv2c** sends a community string (a shared secret) in cleartext. Simpler option, for a trusted local network.
 * **SNMPv3** adds user authentication and traffic encryption. The right choice when SNMP traffic crosses an untrusted network.
 
-Pick the SNMP version that matches what RavenDB accepts; see [SNMP Support](../../../monitoring/integrations/snmp/overview.mdx#snmp-configuration-options) 
+Pick the SNMP version that matches what RavenDB accepts; see [SNMP Support](../snmp/overview.mdx#snmp-configuration-options) 
 for the RavenDB-side settings.
 
 #### Example: SNMPv2c interface
@@ -269,7 +269,6 @@ This expression raises the trigger when the request rate, averaged over five min
 ```text
 avg(/RavenDB dev playground/server.requests.persecond,5m)>1000
 ```
-
 <br />
 
 Replace `RavenDB dev playground` with your host's name, `server.requests.persecond` with the item you want to watch, and `1000` with your threshold.  
