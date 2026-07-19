@@ -761,6 +761,13 @@
         }
     },
     {
+        "key": "/server/administration/monitoring/mib-generation",
+        "value": {
+            "targetUrl": "/monitoring/integrations/snmp/mib-generation",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/client-api/operations/maintenance/Sorters/put-sorter",
         "value": {
             "targetUrl": "/client-api/operations/maintenance/sorters/put-sorter",
