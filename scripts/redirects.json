@@ -775,6 +775,13 @@
         }
     },
     {
+        "key": "/server/administration/monitoring/open-telemetry",
+        "value": {
+            "targetUrl": "/monitoring/integrations/open-telemetry",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/client-api/operations/maintenance/Sorters/put-sorter",
         "value": {
             "targetUrl": "/client-api/operations/maintenance/sorters/put-sorter",
