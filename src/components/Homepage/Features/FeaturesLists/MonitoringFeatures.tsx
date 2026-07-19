@@ -30,7 +30,10 @@ export default function MonitoringFeaturesGrid() {
         {
             title: "Telegraf and Grafana",
             icon: "telegraf-and-grafana",
-            url: `/${activeVersion.label}/server/administration/monitoring/telegraf`,
+            url:
+                activeVersion.label >= "7.2"
+                    ? `/${activeVersion.label}/monitoring/integrations/telegraf`
+                    : `/${activeVersion.label}/server/administration/monitoring/telegraf`,
             description: "Effortlessly push RavenDB metrics into your dashboards via plugin",
             minimumSupportedVersion: "5.2",
         },
