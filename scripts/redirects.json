@@ -747,6 +747,48 @@
         }
     },
     {
+        "key": "/server/administration/monitoring/telegraf",
+        "value": {
+            "targetUrl": "/monitoring/integrations/telegraf",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/server/administration/snmp/snmp-overview",
+        "value": {
+            "targetUrl": "/monitoring/integrations/snmp/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/server/administration/monitoring/mib-generation",
+        "value": {
+            "targetUrl": "/monitoring/integrations/snmp/mib-generation",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/server/administration/snmp/setup-zabbix",
+        "value": {
+            "targetUrl": "/monitoring/integrations/snmp/setup-zabbix",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/server/administration/monitoring/open-telemetry",
+        "value": {
+            "targetUrl": "/monitoring/integrations/open-telemetry",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/server/administration/monitoring/prometheus",
+        "value": {
+            "targetUrl": "/monitoring/integrations/prometheus",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/client-api/operations/maintenance/Sorters/put-sorter",
         "value": {
             "targetUrl": "/client-api/operations/maintenance/sorters/put-sorter",

@@ -1,0 +1,66 @@
+---
+title: "SNMP: MIB generation"
+sidebar_label: "MIB generation"
+description: "Generate and use MIB files for SNMP monitoring of RavenDB servers, including OID structure and integration with network management tools."
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+
+# SNMP: MIB generation
+<Admonition type="note" title="">
+
+* RavenDB allows you to generate a MIB (Management Information Base) file that contains 
+  a structured collection of SNMP OIDs.  
+
+* The MIB can be generated through RavenDB's `/monitoring/snmp/mib` endpoint, 
+  and fine-tuned using flags.  
+
+* Monitoring tools like [Zabbix](https://www.zabbix.com) and [PRTG](https://www.paessler.com/prtg) 
+  can import the created MIB and use it to extract RavenDB metrics via SNMP.  
+
+* In this article:  
+   * [The MIB generation endpoint](../snmp/mib-generation.mdx#the-mib-generation-endpoint)  
+   * [Fine-tuning the OID list](../snmp/mib-generation.mdx#fine-tuning-the-oid-list)  
+
+</Admonition>
+
+<Panel heading="The MIB generation endpoint">
+
+To generate a MIB, send a GET request to the server's `/monitoring/snmp/mib` endpoint.  
+The endpoint returns a text file named `RavenDB-MIB.txt`, listing RavenDB's OIDs.  
+You can download the file using your browser, or import the file into a monitoring tool.
+
+On a secure server, the request must present a client certificate with
+[Operator](../../../server/security/authorization/security-clearance-and-permissions.mdx#operator)
+clearance or higher.  
+On an unsecure server, no certificate is needed.
+
+The endpoint's full URL is the server address (including the port) followed by the endpoint path.  
+e.g., the MIB of RavenDB's live test server:  
+[http://live-test.ravendb.net/monitoring/snmp/mib](http://live-test.ravendb.net/monitoring/snmp/mib)
+
+</Panel>
+
+<Panel heading="Fine-tuning the OID list">
+
+By default, the generated MIB includes only the server metrics OIDs.  
+Three query-string flags select the OID groups the MIB includes:
+
+| Flag | Description |
+| - | - |
+| `includeServer` | Include the server metrics OIDs.<br />Default: `true`. |
+| `includeCluster` | Include the cluster metrics OIDs.<br />Default: `false`. |
+| `includeDatabases` | Include the database metrics OIDs.<br />Default: `false`. |
+
+e.g., to add the database metrics OIDs to the MIB:  
+[http://live-test.ravendb.net/monitoring/snmp/mib?includeDatabases=true](http://live-test.ravendb.net/monitoring/snmp/mib?includeDatabases=true)
+
+To generate a MIB without the server metrics OIDs:  
+[http://live-test.ravendb.net/monitoring/snmp/mib?includeServer=false](http://live-test.ravendb.net/monitoring/snmp/mib?includeServer=false)
+
+Or combine flags to select exactly the groups you need, like a MIB with the database
+metrics OIDs alone:  
+[http://live-test.ravendb.net/monitoring/snmp/mib?includeServer=false&includeDatabases=true](http://live-test.ravendb.net/monitoring/snmp/mib?includeServer=false&includeDatabases=true)
+</Panel>

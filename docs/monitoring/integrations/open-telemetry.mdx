@@ -1,0 +1,423 @@
+---
+title: "OpenTelemetry Support"
+sidebar_label: "OpenTelemetry"
+description: "Export RavenDB server metrics and traces using OpenTelemetry for integration with observability platforms like Jaeger and Prometheus."
+sidebar_position: 2
+see_also:
+  - title: "Increase your RavenDB observability with Grafana Cloud and OpenTelemetry"
+    link: "https://ravendb.net/articles/grafana-cloud-configuration-with-opentelemetry"
+    source: "external"
+  - title: "Leverage RavenDB observability with Datadog"
+    link: "https://ravendb.net/articles/leverage-ravendb-observability-with-datadog"
+    source: "external"
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+
+# OpenTelemetry Support
+<Admonition type="note" title="">
+
+* [OpenTelemetry](https://opentelemetry.io) is an open-source observability framework that provides a set of APIs, SDKs, and tools 
+  for collecting, processing, and exporting telemetry data (metrics, traces, and logs) from applications and systems.
+
+* RavenDB uses the OpenTelemetry SDK to expose its metrics, sending them over the OpenTelemetry Protocol
+  to any consumer that accepts it, commonly an [OpenTelemetry Collector](../integrations/open-telemetry.mdx#configuring-the-opentelemetry-collector).
+
+* In addition, an OpenTelemetry collector can retrieve data from RavenDB's [Prometheus](../integrations/prometheus.mdx) endpoint.  
+  Learn more [below](../integrations/open-telemetry.mdx#retrieve-data-from-prometheus).
+
+* OpenTelemetry support requires a [license](https://ravendb.net/buy) that includes the Monitoring Endpoints feature.  
+  Note that if the server's license is upgraded to include this feature while the server is running,
+  the meters are registered only on the next server restart; until then, RavenDB collects
+  no OpenTelemetry metrics.
+
+* OpenTelemetry support is provided for RavenDB instances both on-premises and in the cloud.
+    
+* In this article:
+  * [Enabling OpenTelemetry in RavenDB](../integrations/open-telemetry.mdx#enabling-opentelemetry-in-ravendb)
+  * [RavenDB OpenTelemetry meters](../integrations/open-telemetry.mdx#ravendb-opentelemetry-meters)
+  * [Server identification in metrics](../integrations/open-telemetry.mdx#server-identification-in-metrics)
+  * [Service name and namespace](../integrations/open-telemetry.mdx#service-name-and-namespace)
+  * [The metric instruments](../integrations/open-telemetry.mdx#the-metric-instruments)
+  * [Metrics export options](../integrations/open-telemetry.mdx#metrics-export-options)
+      * [Console](../integrations/open-telemetry.mdx#console)
+      * [OpenTelemetry Protocol](../integrations/open-telemetry.mdx#opentelemetry-protocol)
+  * [Configuring the OpenTelemetry Collector](../integrations/open-telemetry.mdx#configuring-the-opentelemetry-collector)
+      * [Receive data via OLTP ](../integrations/open-telemetry.mdx#receive-data-via-otlp)
+      * [Retrieve data from Prometheus](../integrations/open-telemetry.mdx#retrieve-data-from-prometheus)
+
+</Admonition>
+
+<Panel heading="Enabling OpenTelemetry in RavenDB">
+
+* To enable the OpenTelemetry metrics in RavenDB, you must first set the [Monitoring.OpenTelemetry.Enabled](../integrations/configuration.mdx#monitoringopentelemetryenabled) configuration key to `true`.
+
+* Learn how to customize configuration keys in the [Configuration Overview](../../server/configuration/configuration-options.mdx) article.
+
+* Restart the server for the change to take effect.
+
+</Panel>
+
+<Panel heading="RavenDB OpenTelemetry meters">
+
+A **meter** is a named group of related [metric instruments](../integrations/open-telemetry.mdx#the-metric-instruments); a **metric instrument** observes one metric value (e.g., the machine's CPU usage).  
+RavenDB defines a meter for each area of the server's operation, and enabling or disabling a meter enables or disables all of its instruments.
+
+All of RavenDB's own meters sit under the master configuration key
+[Monitoring.OpenTelemetry.Meters.Server.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersserverenabled)
+(`true` by default); disabling it disables every `ravendb.server.*` meter at once.  
+Only the most commonly used meters are enabled by default, as the tables show.
+
+---
+
+#### RavenDB meters
+
+| Meter | Description | Configuration key |
+| - | - | - |
+| `ravendb.server.cpucredits` | Exposes status of CPU credits (cloud).<br />Default: `false`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.CPUCredits.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersservercpucreditsenabled) |
+| `ravendb.server.gc` | Exposes detailed information about the Garbage Collector.<br />Default: `false`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.GC.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersservergcenabled) |
+| `ravendb.server.general` | Exposes general info about the cluster and its licensing.<br />Default: `true`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.General.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersservergeneralenabled) |
+| `ravendb.server.requests` | Exposes information about requests processed by the server.<br />Default: `true`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.Requests.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersserverrequestsenabled) |
+| `ravendb.server.resources` | Exposes detailed information about resource usage (e.g. CPU).<br />Default: `true`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.Resources.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersserverresourcesenabled) |
+| `ravendb.server.storage` | Exposes storage information.<br />Default: `true`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.Storage.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersserverstorageenabled) |
+| `ravendb.server.totaldatabases` | Exposes aggregated information about databases on the server.<br />Default: `true`. | Monitoring.OpenTelemetry.Meters<br/>[.Server.TotalDatabases.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersservertotaldatabasesenabled) |
+
+---
+
+#### Microsoft meters
+
+RavenDB also supports exposing meters developed by Microsoft for AspNetCore and .NET Runtime:  
+
+| Meter | Description | Configuration key |
+| - | - | - |
+| **AspNetCore instrumentation** | Official Microsoft meters; see the [AspNetCore documentation](https://github.com/open-telemetry/opentelemetry-dotnet-contrib/blob/main/src/OpenTelemetry.Instrumentation.AspNetCore/README.md#metrics).<br />Default: `false`. | Monitoring.OpenTelemetry.Meters<br/>[.AspNetCore.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersaspnetcoreenabled) |
+| **Runtime instrumentation** | Official Microsoft meters; see the [.NET Runtime documentation](https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Runtime#metrics).<br />Default: `false`. | Monitoring.OpenTelemetry.Meters<br/>[.Runtime.Enabled](../integrations/configuration.mdx#monitoringopentelemetrymetersruntimeenabled) |
+
+</Panel>
+
+<Panel heading="Server identification in metrics">
+
+* OpenTelemetry monitoring requires a service instance ID for initialization.  
+
+* The identification of the server that originated each exposed metric will be listed in the `serviceInstanceId` property within the metric data.
+
+* The server instance identification is determined by the following sequence:
+
+    1. **Configuration Key**  
+       First, attempt to retrieve the [Monitoring.OpenTelemetry.ServiceInstanceId](../integrations/configuration.mdx#monitoringopentelemetryserviceinstanceid) configuration key.  
+    2. **Public URL Hostname**  
+       If the configuration key is not defined, use the server's public URL hostname, provided it is available.
+    3. **Node Tag**  
+       If the public URL hostname is unavailable, attempt to use the node tag.
+    4. **Initialization Failure**  
+       If none of the above options are available, OpenTelemetry will not be initialized.
+
+</Panel>
+
+<Panel heading="Service name and namespace">
+
+* RavenDB's OpenTelemetry metrics are emitted with an OpenTelemetry resource that includes the `service.name` and `service.namespace` attributes.
+  Observability tools, such as the .NET Aspire dashboard, can use these values to identify and group RavenDB metrics.
+
+* By default, RavenDB uses `server` as the service name and `ravendb` as the service namespace.
+
+* These values are configured through RavenDB configuration, not through OpenTelemetry environment variables.  
+  To override these values, use the following configuration keys:  
+    * [Monitoring.OpenTelemetry.ServiceName](../integrations/configuration.mdx#monitoringopentelemetryservicename)
+    * [Monitoring.OpenTelemetry.ServiceNamespace](../integrations/configuration.mdx#monitoringopentelemetryservicenamespace)
+
+<Admonition type="note" title="">
+
+When RavenDB OpenTelemetry monitoring is enabled by setting
+[Monitoring.OpenTelemetry.Enabled](../integrations/configuration.mdx#monitoringopentelemetryenabled) to `true`,  
+the effective service name and service namespace values must not be `null`, empty, or whitespace.  
+Otherwise, the server will fail to start.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="The metric instruments">
+
+---
+
+#### `ravendb.server.cpucredits`
+
+| Instrument name                                         | Description                               | Instrument type    |
+|---------------------------------------------------------|-------------------------------------------|--------------------|
+| `ravendb.server.cpucredits.alert_raised`                  | CPU Credits Any Alert Raised              | Gauge              |
+| `ravendb.server.cpucredits.background.tasks.alert_raised` | CPU Credits Background Tasks Alert Raised | Gauge              |
+| `ravendb.server.cpucredits.base`                          | CPU Credits Base                          | UpDownCounter      |
+| `ravendb.server.cpucredits.consumption_current`           | CPU Credits Gained Per Second             | UpDownCounter      |
+| `ravendb.server.cpucredits.failover.alert_raised`         | CPU Credits Failover Alert Raised         | Gauge              |
+| `ravendb.server.cpucredits.max`                           | CPU Credits Max                           | UpDownCounter      |
+| `ravendb.server.cpucredits.remaining`                     | CPU Credits Remaining                     | Gauge              |
+
+---
+
+#### `ravendb.server.gc`  
+
+| Instrument name                            | Description                                                                                                         | Instrument type   |
+|--------------------------------------------|---------------------------------------------------------------------------------------------------------------------|-------------------|
+| `ravendb.server.gc.compacted`                | Specifies if this is a compacting GC or not.                                                                        | Gauge             |
+| `ravendb.server.gc.concurrent`               | Specifies if this is a concurrent GC or not.                                                                        | Gauge             |
+| `ravendb.server.gc.finalizationpendingcount` | Gets the number of objects ready for finalization this GC observed.                                                 | Gauge             |
+| `ravendb.server.gc.fragmented`               | Gets the total fragmentation (in MB) when the last garbage collection occurred.                                     | Gauge             |
+| `ravendb.server.gc.gclohsize`                | Gets the large object heap size (in MB) after the last garbage collection of given kind occurred.                   | Gauge             |
+| `ravendb.server.gc.generation`               | Gets the generation this GC collected.                                                                              | Gauge             |
+| `ravendb.server.gc.heapsize`                 | Gets the total heap size (in MB) when the last garbage collection occurred.                                         | Gauge             |
+| `ravendb.server.gc.highmemoryloadthreshold`  | Gets the high memory load threshold (in MB) when the last garbage collection occurred.                              | Gauge             |
+| `ravendb.server.gc.index`                    | The index of this GC.                                                                                               | Gauge             |
+| `ravendb.server.gc.memoryload`               | Gets the memory load (in MB) when the last garbage collection occurred.                                             | Gauge             |
+| `ravendb.server.gc.pausedurations1`          | Gets the pause durations. First item in the array.                                                                  | Gauge             |
+| `ravendb.server.gc.pausedurations2`          | Gets the pause durations. Second item in the array.                                                                 | Gauge             |
+| `ravendb.server.gc.pinnedobjectscount`       | Gets the number of pinned objects this GC observed.                                                                 | Gauge             |
+| `ravendb.server.gc.promoted`                 | Gets the promoted MB for this GC.                                                                                   | Gauge             |
+| `ravendb.server.gc.timepercentage`           | Gets the pause time percentage in the GC so far.                                                                    | Gauge             |
+| `ravendb.server.gc.totalavailablememory`     | Gets the total available memory (in MB) for the garbage collector to use when the last garbage collection occurred. | Gauge             |
+| `ravendb.server.gc.totalcommitted`           | Gets the total committed MB of the managed heap.                                                                    | Gauge             |
+
+---
+
+#### `ravendb.server.general`
+
+| Instrument name                                                               | Description                        | Instrument type   |
+|-------------------------------------------------------------------------------|------------------------------------|-------------------|
+| `ravendb.server.general.certificate_server_certificate_expiration_left_seconds` | Server certificate expiration left | Gauge             |
+| `ravendb.server.general.cluster.index`                                          | Cluster index                      | UpDownCounter     |
+| `ravendb.server.general.cluster.node.state`                                     | Current node state                 | UpDownCounter     |
+| `ravendb.server.general.cluster.term`                                           | Cluster term                       | UpDownCounter     |
+| `ravendb.server.general.license.cores.max`                                      | Server license max CPU cores       | Gauge             |
+| `ravendb.server.general.license.cpu.utilized`                                   | Server license utilized CPU cores  | Gauge             |
+| `ravendb.server.general.license.expiration_left_seconds`                        | Server license expiration left     | Gauge             |
+| `ravendb.server.general.license.type`                                           | Server license type                | Gauge             |
+
+---
+
+#### `ravendb.server.resources`
+
+| Instrument name                                                        | Description                                                    | Instrument type |
+|------------------------------------------------------------------------|----------------------------------------------------------------|-----------------|
+| `ravendb.server.resources.available_memory_for_processing`               | Available memory for processing \(in MB\)                      | Gauge           |
+| `ravendb.server.resources.cpu.machine`                                   | Machine CPU usage in %                                         | Gauge           |
+| `ravendb.server.resources.cpu.process`                                   | Process CPU usage in %                                         | Gauge           |
+| `ravendb.server.resources.dirty_memory`                                  | Dirty Memory that is used by the scratch buffers in MB         | Gauge           |
+| `ravendb.server.resources.encryption_buffers.memory_in_pool`             | Server encryption buffers memory being in pool in MB           | Gauge           |
+| `ravendb.server.resources.encryption_buffers.memory_in_use`              | Server encryption buffers memory being in use in MB            | Gauge           |
+| `ravendb.server.resources.io_wait`                                       | IO wait in %                                                   | Gauge           |
+| `ravendb.server.resources.low_memory_flag`                               | Server low memory flag value                                   | Gauge           |
+| `ravendb.server.resources.machine.assigned_processor_count`              | Number of assigned processors on the machine                   | UpDownCounter   |
+| `ravendb.server.resources.machine.processor_count`                       | Number of processor on the machine                             | UpDownCounter   |
+| `ravendb.server.resources.managed_memory`                                | Server managed memory size in MB                               | Gauge           |
+| `ravendb.server.resources.thread_pool.available_completion_port_threads` | Number of available completion port threads in the thread pool | Gauge           |
+| `ravendb.server.resources.thread_pool.available_worker_threads`          | Number of available worker threads in the thread pool          | Gauge           |
+| `ravendb.server.resources.total_memory`                                  | Server allocated memory in MB                                  | Gauge           |
+| `ravendb.server.resources.total.swap_usage`                              | Server total swap usage in MB                                  | Gauge           |
+| `ravendb.server.resources.total.swap.size`                               | Server total swap size in MB                                   | Gauge           |
+| `ravendb.server.resources.unmanaged_memory`                              | Server unmanaged memory size in MB                             | Gauge           |
+| `ravendb.server.resources.working_set_swap_usage`                        | Server working set swap usage in MB                            | Gauge           |
+
+---
+
+#### `ravendb.server.requests`
+
+| Instrument name                                      | Description                                   | Instrument type  |
+|------------------------------------------------------|-----------------------------------------------|------------------|
+| `ravendb.server.requests.requests.average_duration`    | Average request time in milliseconds          | Gauge            |
+| `ravendb.server.requests.requests.concurrent_requests` | Number of concurrent requests                 | UpDownCounter    |
+| `ravendb.server.requests.requests.per_second`          | Number of requests per second.                | Gauge            |
+| `ravendb.server.requests.tcp.active.connections`       | Number of active TCP connections              | Gauge            |
+| `ravendb.server.requests.total.requests`               | Total number of requests since server startup | UpDownCounter    |
+
+---
+
+#### `ravendb.server.storage`
+
+| Instrument name                                                | Description                               | Instrument type   |
+|----------------------------------------------------------------|-------------------------------------------|-------------------|
+| `ravendb.server.storage.storage.disk.ios.read_operations`        | IO read operations per second             | Gauge             |
+| `ravendb.server.storage.storage.disk.ios.write_operations`       | IO write operations per second            | Gauge             |
+| `ravendb.server.storage.storage.disk.queue_length`               | Queue length                              | Gauge             |
+| `ravendb.server.storage.storage.disk.read_throughput`            | Read throughput in kilobytes per second   | Gauge             |
+| `ravendb.server.storage.storage.disk.remaining.space`            | Remaining server storage disk space in MB | Gauge             |
+| `ravendb.server.storage.storage.disk.remaining.space_percentage` | Remaining server storage disk space in %  | Gauge             |
+| `ravendb.server.storage.storage.disk.write_throughput`           | Write throughput in kilobytes per second  | Gauge             |
+| `ravendb.server.storage.storage.total_size`                      | Server storage total size in MB           | Gauge             |
+| `ravendb.server.storage.storage.used_size`                       | Server storage used size in MB            | Gauge             |
+
+---
+
+#### `ravendb.server.totaldatabases`
+
+| Instrument name                                                   | Description                                                                                        | Instrument type   |
+|-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|-------------------|
+| `ravendb.server.totaldatabases.count_stale_indexes`                 | Number of stale indexes in all loaded databases                                                    | UpDownCounter     |
+| `ravendb.server.totaldatabases.data.written.per_second`             | Number of bytes written \(documents, attachments, counters, timeseries\) in all loaded databases   | Gauge             |
+| `ravendb.server.totaldatabases.database.disabled_count`             | Number of disabled databases                                                                       | UpDownCounter     |
+| `ravendb.server.totaldatabases.database.encrypted_count`            | Number of encrypted databases                                                                      | UpDownCounter     |
+| `ravendb.server.totaldatabases.database.faulted_count`              | Number of faulted databases                                                                        | UpDownCounter     |
+| `ravendb.server.totaldatabases.database.loaded_count`               | Number of loaded databases                                                                         | UpDownCounter     |
+| `ravendb.server.totaldatabases.database.node_count`                 | Number of databases for current node                                                               | UpDownCounter     |
+| `ravendb.server.totaldatabases.database.total_count`                | Number of all databases                                                                            | UpDownCounter     |
+| `ravendb.server.totaldatabases.map_reduce.index.mapped_per_second`  | Number of maps per second for map-reduce indexes \(one minute rate\) in all loaded databases       | Gauge             |
+| `ravendb.server.totaldatabases.map_reduce.index.reduced_per_second` | Number of reduces per second for map-reduce indexes \(one minute rate\) in all loaded databases    | Gauge             |
+| `ravendb.server.totaldatabases.map.index.indexed_per_second`        | Number of indexed documents per second for map indexes \(one minute rate\) in all loaded databases | Gauge             |
+| `ravendb.server.totaldatabases.number_error_indexes`                | Number of error indexes in all loaded databases                                                    | UpDownCounter     |
+| `ravendb.server.totaldatabases.number_of_indexes`                   | Number of indexes in all loaded databases                                                          | UpDownCounter     |
+| `ravendb.server.totaldatabases.number.faulty_indexes`               | Number of faulty indexes in all loaded databases                                                   | UpDownCounter     |
+| `ravendb.server.totaldatabases.writes_per_second`                   | Number of writes \(documents, attachments, counters, timeseries\) in all loaded databases          | Gauge             |
+
+</Panel>
+
+<Panel heading="Metrics export options">
+
+RavenDB offers two metric export options:  
+
+  * Export data to the console for immediate metrics insight.
+  * Export data via the OpenTelemetry Protocol (OTLP) for integration with other observability platforms.
+
+<Admonition type="note" title="">
+
+<a id="console"/> __Console__:
+* RavenDB can output telemetry data directly to the console,  
+  providing real-time, local visibility of the OpenTelemetry metrics.  
+
+* This is particularly useful for local development and debugging,  
+  as it eliminates the need for integration with external monitoring systems or observability platforms.
+
+* To enable output to the console -  
+  set the [Monitoring.OpenTelemetry.ConsoleExporter](../integrations/configuration.mdx#monitoringopentelemetryconsoleexporter) configuration key to `true`.
+
+</Admonition>
+<Admonition type="note" title="">
+
+<a id="opentelemetry-protocol"/> __OpenTelemetry Protocol__:
+* OpenTelemetry supports the **OpenTelemetry Protocol** (OTLP),  
+  a standard wire protocol used by all OpenTelemetry SDKs.
+
+* This protocol allows data to be sent from metrics producers (e.g. RavenDB) to any software that supports OTLP.  
+  The recommended software, as suggested by OpenTelemetry, is called **OpenTelemetry Collector**.  
+  The Collector can be further configured to forward and export this data to various analysis tools.  
+  Learn about the OpenTelemetry Collector on the official documentation site: [OTel Collector](https://opentelemetry.io/docs/collector/).
+
+* RavenDB supports the official OTLP by default, allowing you to export RavenDB metrics to the OpenTelemetry Collector.
+
+* The [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Enabled](../integrations/configuration.mdx#monitoringopentelemetryopentelemetryprotocolenabled) configuration key is `true` by default,  
+  so once OpenTelemetry itself is enabled, RavenDB exports metrics via the OpenTelemetry Protocol without further configuration.  
+  To disable the OTLP export, set this key to `false`.
+
+* By default, RavenDB does not override the OpenTelemetry Protocol exporter default values.  
+  However, customization is available via the following configuration options:  
+
+| Configuration key                                                                                                                                                                                   | Description                                                                                                                                                                | Accepted values      |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------|
+| Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.ExportProcessorType](../integrations/configuration.mdx#monitoringopentelemetryopentelemetryprotocolexportprocessortype) | Export processor type                                                                                                                                                      | Simple / Batch       |
+| Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.Headers](../integrations/configuration.mdx#monitoringopentelemetryopentelemetryprotocolheaders)                         | Custom headers                                                                                                                                                             | string               |
+| Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.Protocol](../integrations/configuration.mdx#monitoringopentelemetryopentelemetryprotocolprotocol)                       | Defines the transport protocol that OpenTelemetry Protocol should use to send data.                                                                                        | gRPC / HttpProtobuf  |
+| Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.Endpoint](../integrations/configuration.mdx#monitoringopentelemetryopentelemetryprotocolendpoint)                       | Endpoint where OpenTelemetry Protocol should send data.<br/>See configuration details [below](../integrations/open-telemetry.mdx#configure-endpoint). | string               |
+| Monitoring.OpenTelemetry.OpenTelemetryProtocol<br/>[.Timeout](../integrations/configuration.mdx#monitoringopentelemetryopentelemetryprotocoltimeout)                         | Timeout                                                                                                                                                                    | int                  |
+
+</Admonition>
+
+<Admonition type="info" title="">
+
+<a id="configure-endpoint"/> __Configuring the OpenTelemetry Protocol endpoint__:
+The defined endpoint must match the receiving endpoint [configured on the collector](../integrations/open-telemetry.mdx#configuring-the-opentelemetry-collector).
+The endpoint format should match the transport protocol you are using:
+
+<br/>
+
+* **HttpProtobuf** protocol:
+
+  * HttpProtobuf is a transport protocol used for efficiently serializing structured data over HTTP  
+    using Protocol Buffers (Protobuf).
+  
+  * The current official .NET implementation adheres to the OpenTelemetry specification,  
+    which requires specifying the complete path to the collector endpoint when exporting metrics.  
+    By default, the endpoint path for the OpenTelemetry Collector is `/v1/metrics`.
+  
+  * So, for example, if you are using the default settings for the OpenTelemetry Collector  
+    and utilizing **HttpProtobuf** as the transport protocol, the endpoint used would be 
+    `http://localhost:4318/v1/metrics` (replace the default port 4318 with whatever port you are using).
+
+* **gRPC** protocol:
+
+  * When using the default settings for the OpenTelemetry Collector with the **gRPC** transport protocol,  
+    the endpoint should be specified in the format `grpc://localhost:4317`  
+    (replace the default port 4317 with whatever port you are using).
+  
+  * The gRPC endpoint does not include a path like `/v1/metrics`.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Configuring the OpenTelemetry Collector">
+
+* The OpenTelemetry Collector is a vendor-agnostic proxy that can receive, process, and export telemetry data (traces, metrics, logs)
+  from multiple sources to different backends. It acts as a central collection and processing point for telemetry data.
+
+* In the OpenTelemetry Collector configuration, a **receiver** is a component that listens for incoming telemetry data. 
+
+* Configure the receiver to either:  
+   * Receive data via OTLP from RavenDB
+   * Retrieve data from RavenDB's Prometheus endpoint
+
+<Admonition type="note" title="">
+
+<a id="receive-data-via-otlp"/> __Receive data via OTLP__:
+* The `otlp` receiver accepts telemetry data in the OpenTelemetry Protocol (OTLP) format.
+
+* Specify the `endpoints` where the OpenTelemetry Collector should listen for incoming telemetry data,  
+  whether via gRPC or HTTP, and on which ports.  
+  (4317 is the default port for gRPC, and 4318 is the default port for HTTP protocol).
+
+* For example, define the receiver as follows:
+
+```yaml
+receivers:
+    otlp:
+        protocols:
+            grpc:
+                endpoint: localhost:4317
+            http:
+                endpoint: localhost:4318
+```
+
+</Admonition>
+<Admonition type="note" title="">
+ 
+<a id="retrieve-data-from-prometheus"/> __Retrieve data from Prometheus__:
+* The OpenTelemetry Collector can retrieve metrics from a Prometheus endpoint.  
+
+* RavenDB provides a Prometheus endpoint that can be used as a data source for the OpenTelemetry Collector.
+  This endpoint provides metrics in a standardized format and integrates seamlessly without requiring you to enable OpenTelemetry in RavenDB.
+
+* Use the `prometheus_simple` receiver in your OpenTelemetry Collector configuration.  
+  This setup instructs the collector to scrape metrics from a Prometheus endpoint.
+
+* Specify the address of your RavenDB server in the `endpoint` key.  
+  Specify RavenDB's Prometheus endpoint path in the `metrics_path` key.  
+
+* A sample configuration looks as follows:  
+
+```yaml
+receivers:
+    prometheus_simple:
+        endpoint: "http://localhost:8080"  # Replace with your RavenDB instance address
+        metrics_path: "/admin/monitoring/v1/prometheus"  # RavenDB's prometheus endpoint path
+        collection_interval: 10s
+        tls:
+            cert_file: "D:\\cert.crt"
+            key_file: "D:\\key.key"
+            insecure: false
+            insecure_skip_verify: false
+```
+
+* The configuration above sets up the OpenTelemetry Collector to scrape Prometheus-formatted metrics from a RavenDB server.  
+  The collector will access `http://localhost:8080/admin/monitoring/v1/prometheus` to retrieve the metrics.
+ 
+</Admonition>
+
+</Panel>

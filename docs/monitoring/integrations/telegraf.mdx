@@ -1,0 +1,137 @@
+---
+title: "Telegraf plugin"
+sidebar_label: "Telegraf Plugin"
+description: "Collect RavenDB metrics using Telegraf's RavenDB input plugin and forward them to destinations like InfluxDB and Grafana."
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Telegraf plugin
+
+<Admonition type="note" title="">
+
+* [Telegraf](https://www.influxdata.com/time-series-platform/telegraf/) is an open source
+  agent that uses plugins to connect data sources to destinations.  
+  Its **RavenDB input plugin** reads metrics from a RavenDB server's
+  [JSON monitoring endpoints](../json-monitoring-endpoints.mdx) and
+  forwards them to the destination set in the Telegraf configuration, commonly
+  [InfluxDB](https://www.influxdata.com/products/influxdb/), with the data charted by
+  [Grafana](https://grafana.com/).  
+
+* The plugin reads the
+  [server](../json-monitoring-endpoints.mdx#the-server-endpoint),
+  [databases](../json-monitoring-endpoints.mdx#the-databases-endpoint),
+  [indexes](../json-monitoring-endpoints.mdx#the-indexes-endpoint), and
+  [collections](../json-monitoring-endpoints.mdx#the-collections-endpoint)
+  endpoints.  
+
+* The plugin is included in Telegraf 1.18.0 and later, and works with RavenDB Server 5.2
+  and later.  
+
+* In this article:
+   * [The RavenDB input plugin](../integrations/telegraf.mdx#the-ravendb-input-plugin)
+   * [Configuring the plugin](../integrations/telegraf.mdx#configuring-the-plugin)
+   * [The metric names](../integrations/telegraf.mdx#the-metric-names)
+
+</Admonition>
+
+<Panel heading="The RavenDB input plugin">
+
+The RavenDB input plugin polls the `server`, `databases`, `indexes`, and `collections`
+endpoints at the interval set in the Telegraf configuration, and Telegraf forwards the
+collected metrics to any destination it has an output plugin for.
+
+Commonly, Telegraf stores the metrics in [InfluxDB](https://www.influxdata.com/products/influxdb/),
+and [Grafana](https://grafana.com/) charts them from there.  
+e.g., a live dashboard that tracks the server's CPU usage, memory usage, and indexing
+activity.
+
+The plugin reads only the four endpoints named above; the task endpoints
+([etls](../json-monitoring-endpoints.mdx#the-etls-endpoint),
+[ai-tasks](../json-monitoring-endpoints.mdx#the-ai-tasks-endpoint), and
+[cdc-sinks](../json-monitoring-endpoints.mdx#the-cdc-sinks-endpoint))
+are not covered.  
+To collect task metrics, read those three JSON endpoints directly, without Telegraf, or
+use the
+[Prometheus endpoint](../integrations/prometheus.mdx#ravendb-prometheus-endpoint),
+whose metric set includes ETL and AI task health.
+
+</Panel>
+
+<Panel heading="Configuring the plugin">
+
+To collect RavenDB metrics, add an `[[inputs.ravendb]]` section to your `telegraf.conf`:
+
+```toml
+[[inputs.ravendb]]
+  ## The URL of the RavenDB node to collect metrics from
+  url = "https://a.example.com"
+
+  ## The client certificate to use on a secure server.
+  ## The certificate requires Operator clearance or higher.
+  # tls_cert = "/etc/telegraf/raven.crt"
+  # tls_key = "/etc/telegraf/raven.key"
+
+  ## Request timeout
+  # timeout = "5s"
+
+  ## The endpoints to read. At least one is required.
+  ## Allowed values: server, databases, indexes, collections
+  # stats_include = ["server", "databases", "indexes", "collections"]
+
+  ## Databases the databases endpoint reports on. Empty = all databases.
+  # db_stats_dbs = []
+
+  ## Databases the indexes endpoint reports on. Empty = all databases.
+  # index_stats_dbs = []
+
+  ## Databases the collections endpoint reports on. Empty = all databases.
+  # collection_stats_dbs = []
+```
+<br />
+
+The options:
+
+| Option | Description |
+| - | - |
+| `url` | The URL of the RavenDB node to collect metrics from.<br />e.g. `http://localhost:8080` for an unsecure local server. |
+| `tls_cert`, `tls_key` | Paths to a client certificate and its private key, for a secure server.<br />The certificate requires [Operator](../../server/security/authorization/security-clearance-and-permissions.mdx#operator) clearance or higher. |
+| `timeout` | Request timeout.<br />`5s` by default. |
+| `stats_include` | The endpoints to read: any of `server`, `databases`, `indexes`, `collections`.<br />At least one is required; by default all four are read. |
+| `db_stats_dbs` | Databases the `databases` endpoint reports on.<br />An empty list (the default) covers all databases. |
+| `index_stats_dbs` | Databases the `indexes` endpoint reports on.<br />An empty list (the default) covers all databases. |
+| `collection_stats_dbs` | Databases the `collections` endpoint reports on.<br />An empty list (the default) covers all databases. |
+
+</Panel>
+
+<Panel heading="The metric names">
+
+Telegraf renames the metrics it collects: each field of an endpoint's JSON is published
+under a flat, lowercase name, grouped into a **measurement** (Telegraf's term for a named
+group of metrics). The plugin fills four measurements:
+
+| Measurement | Source |
+| - | - |
+| `ravendb_server` | The `server` endpoint |
+| `ravendb_databases` | The `databases` endpoint |
+| `ravendb_indexes` | The `indexes` endpoint |
+| `ravendb_collections` | The `collections` endpoint |
+
+The published names follow the JSON structure, with a field's group and name joined and
+lowercased.  
+e.g., the `databases` endpoint's `Counts.Documents` field becomes `counts_documents` in
+the `ravendb_databases` measurement.
+
+Note that some values are published as numeric codes where the JSON returns strings.  
+e.g., the JSON's `Cluster.NodeState` value `Leader` becomes: `cluster_node_state` = `4`
+
+The complete field lists of the four measurements are documented in the
+[plugin's reference](https://docs.influxdata.com/telegraf/v1/input-plugins/ravendb/).  
+The meaning of each value is documented on the
+[JSON monitoring endpoints](../json-monitoring-endpoints.mdx) page,
+under the endpoint the measurement is built from.
+
+</Panel>
