@@ -1,0 +1,164 @@
+---
+title: "CDC Sink: Property Retention"
+sidebar_label: Property Retention
+description: "Explains how CDC Sink merges UPDATE events onto existing RavenDB documents, preserving properties that are not part of the column mapping."
+sidebar_position: 5
+see_also:
+  - title: "Column Mapping"
+    link: "server/ongoing-tasks/cdc-sink/document-modeling/column-mapping"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Patching"
+    link: "server/ongoing-tasks/cdc-sink/patching"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "How It Works"
+    link: "server/ongoing-tasks/cdc-sink/how-it-works"
+    source: "docs"
+    path: "Server > CDC Sink"
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* When CDC Sink applies an UPDATE to an existing RavenDB document,  
+  it merges the mapped column values into the current document instead of replacing the whole document.
+
+* **Unmapped properties**:  
+  Unmapped document properties are left unchanged.  
+  For example, if you add `ReviewedAt`, `InternalNotes`, or a computed flag in RavenDB,  
+  and that property is not mapped from a source column, later CDC updates will keep it.
+
+* **Mapped properties**:  
+  Mapped properties are different: each CDC update writes the current source value again.  
+  Custom `@metadata` keys are also not retained by the root document write unless a patch re-applies them.    
+    
+* In this article:
+  * [How merging works](#how-merging-works)
+  * [What is and is not preserved](#what-is-and-is-not-preserved)
+  * [Editing documents directly in RavenDB](#editing-documents-directly-in-ravendb)
+  * [Implications for patches](#implications-for-patches)
+
+</Admonition>
+
+<Panel heading="How merging works">
+
+When a CDC UPDATE arrives for a document that already exists:
+
+1. The existing document is loaded.
+2. Mapped column values from the CDC event overwrite the corresponding document properties.
+3. Unmapped document properties are left unchanged.
+4. CDC Sink writes the merged document back, with fresh root `@metadata` containing the collection name.    
+
+**Example:**
+
+Existing RavenDB document before the CDC UPDATE:
+
+<Tabs>
+<TabItem value="json" label="json">
+```json
+{
+    "Id": 1,
+    "Name": "Alice",
+    "Email": "alice@example.com",
+    "InternalNotes": "VIP customer",
+    "@metadata": { "@collection": "Customers" }
+}
+```
+</TabItem>
+</Tabs>
+
+SQL UPDATE: `UPDATE customers SET email = 'alice.new@example.com' WHERE id = 1`
+
+Document after CDC UPDATE:
+
+<Tabs>
+<TabItem value="json" label="json">
+```json
+{
+    "Id": 1,
+    "Name": "Alice",
+    "Email": "alice.new@example.com",
+    "InternalNotes": "VIP customer",
+    "@metadata": { "@collection": "Customers" }
+}
+```
+</TabItem>
+</Tabs>
+
+`Email` is updated from SQL because it is mapped,  
+while `InternalNotes` is not in the `Columns` list and is therefore preserved.    
+
+</Panel>
+
+<Panel heading="What is and is not preserved">
+
+**Preserved across CDC updates:**
+
+* Document properties that are not listed in the `Columns` list.
+* Properties added or edited directly in RavenDB, such as annotations, computed values, or flags,  
+  as long as they are not mapped from source columns.
+
+**Overwritten on CDC update:**
+
+* Properties mapped via the `Columns` list -  
+  the CDC event writes the current source value for each mapped property.
+* Custom `@metadata` keys -   
+  when CDC Sink creates or updates the root document, it writes fresh document metadata containing only the collection name;
+  RavenDB then re-adds system metadata such as `@id`, `@change-vector`, and `@last-modified`.
+    
+If you manually edit a mapped property in RavenDB,  
+the next CDC UPDATE for that row will overwrite your edit with the source value.    
+
+</Panel>
+
+<Panel heading="Editing documents directly in RavenDB">
+
+You can safely add unmapped document properties to CDC-managed documents:    
+
+<Tabs>
+<TabItem value="json" label="json">
+
+```json
+{
+    "Id": 1,
+    "Name": "Alice",
+    "Email": "alice@ex.com",
+    "InternalNotes": "...",
+    "ReviewedAt": "...",
+    "Tags": ["vip"]
+}
+```
+
+</TabItem>
+</Tabs>
+
+Properties mapped from source columns are overwritten on the next UPDATE from the source database.  
+Do not rely on manual edits to mapped properties surviving future CDC updates.
+
+**CDC Sink does not detect or protect manual edits to mapped properties**. If you need to preserve your own value,  
+add a separate RavenDB-only property and leave the source-mapped property as-is.
+
+</Panel>
+
+<Panel heading="Implications for patches">
+
+Patches run after column mapping.
+On UPDATE, the patch sees the merged document and can add unmapped properties or override values that came from mapped columns.
+
+* If a patch sets an unmapped property, such as `this.ComputedField = ...`,
+  that property is stored on the document and is preserved by later CDC updates unless a later patch changes or removes it.
+    
+* If a patch sets a property that is also mapped in the `Columns` list, 
+  the patch value wins for that CDC event because mapping is applied first and the patch runs afterward.
+
+For values maintained by patches, such as `RunningTotal`, the patch script is responsible for keeping the value correct across the events it handles.        
+    
+Learn more in [Patching](../../../server/ongoing-tasks/cdc-sink/patching.mdx).
+
+</Panel>

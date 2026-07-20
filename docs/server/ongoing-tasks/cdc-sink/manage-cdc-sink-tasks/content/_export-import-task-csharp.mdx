@@ -1,0 +1,202 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* A CDC Sink task definition is exported/imported through the database record, while its progress is stored separately.    
+    
+* **Task configuration**  
+  The CDC Sink task definition (tables, column mappings, patches, provider settings) and the SQL connection string are database-record items.
+  They are included when the `DatabaseRecord` is exported/imported (`CdcSinks` and `SqlConnectionStrings` are part of the smuggler defaults).    
+    
+* **CDC progress**   
+  The `LastLsn` checkpoint and per-table initial-load state are stored in [`@cdc-states/<task name>` documents](../../../../../server/ongoing-tasks/cdc-sink/how-it-works.mdx#the-state-document).  
+  These are ordinary documents, so they are included only when documents are included and the `@cdc-states` collection is not filtered out.
+
+* **CDC-created documents**  
+  Documents created by the CDC Sink task are also ordinary RavenDB documents.  
+  They are exported/imported with the normal document stream and are not controlled by the `CdcSinks` flag.
+    
+* In this article:
+  * [Export CDC Sink task](#export-cdc-sink-task)
+    * [Export via Client API](#export-via-client-api)
+    * [Export via Studio](#export-via-studio)
+  * [Import CDC Sink task](#import-cdc-sink-task)
+    * [Import via Client API](#import-via-client-api)
+    * [Import via Studio](#import-via-studio)
+    * [Import considerations](#import-considerations)
+  * [What is transferred](#what-is-transferred)
+
+</Admonition>
+
+<Panel heading="Export CDC Sink task">
+
+By default, exporting a database includes:
+
+* the CDC Sink task definition (`CdcSinks`) and SQL connection strings (`SqlConnectionStrings`),  
+  which are part of the database record.
+* the `@cdc-states/<task name>` progress documents,  
+  which are part of the normal document stream.
+
+You can exclude the task definition, SQL connection strings, the progress documents, or any combination of them.
+
+<Admonition type="note" title="">
+
+**For PostgreSQL**:  
+The export includes the configured `SlotName` and `PublicationName` because they are part of the task definition.
+The actual replication slot and publication are not exported; they remain in PostgreSQL.  
+Reusing the same slot name when the imported task is enabled has additional implications,  
+see [Import CDC Sink task](#import-cdc-sink-task).
+
+</Admonition>
+
+---
+    
+### Export via Client API
+
+```csharp
+// The default options include documents and the database record (with CDC Sink tasks)
+var exportOptions = new DatabaseSmugglerExportOptions();
+// exportOptions.OperateOnTypes includes 
+//     DatabaseItemType.DatabaseRecord. and DatabaseItemType.Documents by default
+// exportOptions.OperateOnDatabaseRecordTypes includes 
+//     DatabaseRecordItemType.CdcSinks by default
+
+var exportOp = await store.Smuggler.ExportAsync(exportOptions, "export.ravendbdump");
+await exportOp.WaitForCompletionAsync();
+```
+<br/>
+
+This writes the export to the file named in the second argument - here `export.ravendbdump`. 
+The [import example](#import-cdc-sink-task) below reads from that same file.
+
+To leave the CDC Sink task **configuration** out of the export, 
+clear the `CdcSinks` flag from `OperateOnDatabaseRecordTypes`:
+
+```csharp
+exportOptions.OperateOnDatabaseRecordTypes &= ~DatabaseRecordItemType.CdcSinks;
+```
+<br/>
+
+Clearing `CdcSinks` removes only the CDC Sink task definition from the export.  
+It does not remove SQL connection strings or `@cdc-states/<task name>` progress documents.  
+To exclude the progress documents as well, filter the `@cdc-states` collection out of the export.    
+
+---
+   
+### Export via Studio
+
+* In Studio, open your database and go to **Tasks** → **Export Database**.  
+  See [Export database](../../../../../studio/database/tasks/export-database.mdx).
+        
+* **Include Configuration and Ongoing Tasks** is enabled by default,  
+  so the CDC Sink task definition is exported with no extra step.
+
+* To exclude the CDC Sink task definition, turn on **Customize Configuration and Ongoing Tasks** under **Advanced** 
+  and toggle off **CDC Sinks** under **Ongoing tasks**. This does not exclude `@cdc-states/<task name>` progress documents.
+  Explicitly exclude the `@cdc-states` collection if you want to leave them out as well.
+        
+</Panel>
+
+<Panel heading="Import CDC Sink task">
+
+By default, import includes the CDC Sink task definition and SQL connection strings from the database record,  
+and imports any `@cdc-states/<task name>` progress documents present in the dump.
+  
+When RavenDB imports a CDC Sink task definition, it creates the task **disabled**.  
+You must verify the imported settings and re-enable the task manually when the source database is ready.  
+RavenDB assigns the imported task a new task ID.    
+
+---
+    
+### Import via Client API
+
+```csharp
+// The default options include documents and the database record (with CDC Sink task definitions)    
+var importOptions = new DatabaseSmugglerImportOptions();
+
+var importOp = await destinationStore.Smuggler.ImportAsync(importOptions, "export.ravendbdump");
+await importOp.WaitForCompletionAsync();
+```
+<br/>
+
+To skip importing the CDC Sink task **definition**, clear the `CdcSinks` flag from `OperateOnDatabaseRecordTypes`:   
+
+```csharp
+importOptions.OperateOnDatabaseRecordTypes &= ~DatabaseRecordItemType.CdcSinks;
+```
+
+---
+    
+### Import via Studio
+
+* In Studio, go to **Tasks** → **Import Data** → **From file (.ravendbdump)** and choose the exported file.  
+  See [Import data from file](../../../../../studio/database/tasks/import-data/import-data-file.mdx).
+    
+* **Include Configuration and Ongoing Tasks** is enabled by default, so the CDC Sink task definition is imported with no extra step.
+  To exclude the CDC Sink task definition, turn on **Customize Configuration and Ongoing Tasks** and toggle off **CDC Sinks** under **Ongoing tasks**.
+
+* After import, if the CDC Sink task definition was included, open **Ongoing Tasks**, find the imported task,
+  verify its connection string, and enable it when the source database is ready.
+
+---    
+    
+### Import considerations
+    
+<Admonition type="note" title="">
+    
+#### Existing task with the same name    
+
+If a CDC Sink task with the same **name** already exists in the target database, the imported task definition replaces it:  
+RavenDB deletes the existing task definition and adds the imported definition as a new, disabled task.    
+
+</Admonition>
+
+<Admonition type="note" title="">
+    
+#### Resume vs. fresh start    
+
+Whether the imported task resumes or starts over depends on whether `@cdc-states/<task name>` exists in the target database:    
+
+* **If the progress document exists in the target database**, the task resumes from that checkpoint when enabled -
+  continuing from the last `LastLsn` and skipping already-completed initial loads.
+* **If it is absent**, the task starts fresh with a full initial load 
+  (unless `SkipInitialLoad` is set on the configuration).    
+
+To force a fresh start, delete `@cdc-states/<task name>` in the target database before enabling the task,  
+or exclude the `@cdc-states` collection from the import.    
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+#### PostgreSQL: shared replication slot
+
+The imported task carries the same `SlotName` and `PublicationName` as the original task.  
+A PostgreSQL replication slot allows only **one active consumer**, so before you enable the imported task,  
+either disable the original task or give the imported task its own slot and publication  
+(set a distinct `SlotName`/`PublicationName` in `CdcSinkPostgresSettings` before enabling).
+
+Otherwise, the imported task cannot attach to the slot and drops into fallback mode.
+
+See [One Active Consumer per Slot](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/initial-setup.mdx#one-active-consumer-per-slot).
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="What is transferred">
+
+| Item                                                                                    | Transferred on export/import? |
+|-----------------------------------------------------------------------------------------|-------------------------------|
+| CDC Sink task definition (tables, column mappings, patches, provider settings)          | Yes (unless excluded) - it is part of the database record |
+| SQL connection string                                                                   | Yes (unless excluded) - it is part of the database record |
+| Task enabled/disabled state                                                             | No - imported tasks are always **disabled** |
+| Task ID                                                                                 | No - a new task ID is assigned on import |
+| CDC progress state document (`@cdc-states/<task name>`: `LastLsn` + initial-load state) | Yes (unless the collection is excluded) - it is an ordinary document and moves with the document stream |
+| Runtime position<br/>(last consumed change / LSN)                                       | Reused only if the matching `@cdc-states` document exists in the target database; otherwise the task starts fresh<br/>(initial load, unless `SkipInitialLoad`) |
+| PostgreSQL replication slot / publication                                               | No - these remain in PostgreSQL and must be available before the imported task can use them |
+
+</Panel>

@@ -1,0 +1,47 @@
+---
+title: "Complex Nesting with Linked Tables"
+sidebar_label: "Complex Nesting with Linked Tables"
+description: "Multi-level embedded table structure combined with linked table references, representing a product catalog with variants, attributes, and a category reference."
+sidebar_position: 3
+supported_languages: ["csharp"]
+see_also:
+  - title: "Simple Migration"
+    link: "server/ongoing-tasks/cdc-sink/examples/example-simple-migration"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL > Examples"
+  - title: "Denormalization"
+    link: "server/ongoing-tasks/cdc-sink/examples/example-denormalization"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL > Examples"
+  - title: "Runnning Balance"
+    link: "server/ongoing-tasks/cdc-sink/examples/example-running-balance"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL > Examples"
+  - title: "Schema Design"
+    link: "server/ongoing-tasks/cdc-sink/document-modeling/schema-design"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Embedded Tables"
+    link: "server/ongoing-tasks/cdc-sink/document-modeling/embedded-tables"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Linked Tables"
+    link: "server/ongoing-tasks/cdc-sink/document-modeling/linked-tables"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "REPLICA IDENTITY"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ExampleComplexNestingCsharp from './content/_example-complex-nesting-csharp.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <ExampleComplexNestingCsharp />
+</LanguageContent>

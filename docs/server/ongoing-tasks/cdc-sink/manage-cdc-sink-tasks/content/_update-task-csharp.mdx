@@ -1,0 +1,110 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* Update an existing CDC Sink task to change its column mappings, add or remove tables, adjust patch scripts,  
+  or modify other configuration settings.
+
+* This article shows how to **update** a CDC Sink task using the Client API, Studio, or the REST API.
+
+* In this article:
+  * [Update a CDC Sink task via Client API](#update-a-cdc-sink-task-via-client-api)
+  * [Update a CDC Sink task via Studio](#update-a-cdc-sink-task-via-studio)
+  * [Update a CDC Sink task via REST API](#update-a-cdc-sink-task-via-rest-api)
+
+</Admonition>
+
+<Panel heading="Update a CDC Sink task via Client API">
+
+Use `UpdateCdcSinkOperation` to modify an existing task.
+
+Start from the existing task configuration, apply your changes, and send the complete updated `CdcSinkConfiguration`. 
+    
+The update operation replaces the saved task configuration, so include any unchanged settings you want to keep.    
+The task to update is selected by the `taskId` passed to `UpdateCdcSinkOperation`.   
+
+<Tabs>
+<TabItem value="sync" label="Sync">
+```csharp
+// config contains the existing task configuration with the changes applied.
+
+config.Tables.Add(new CdcSinkTableConfig
+{
+    CollectionName = "Customers",
+    SourceTableName = "customers",
+    PrimaryKeyColumns = new List<string> { "id" },
+    Columns =
+    [
+        new CdcColumnMapping() { Column = "id",    Name = "Id" },
+        new CdcColumnMapping() { Column = "name",  Name = "Name" },
+        new CdcColumnMapping() { Column = "email", Name = "Email" },
+    ]
+});
+
+// Execute the operation by passing it to Maintenance.Send      
+store.Maintenance.Send(new UpdateCdcSinkOperation(taskId, config));
+```
+</TabItem>
+<TabItem value="async" label="Async">
+```csharp
+// config contains the existing task configuration with the changes applied.
+
+config.Tables.Add(new CdcSinkTableConfig
+{
+    CollectionName = "Customers",
+    SourceTableName = "customers",
+    PrimaryKeyColumns = new List<string> { "id" },
+    Columns =
+    [
+        new CdcColumnMapping() { Column = "id",    Name = "Id" },
+        new CdcColumnMapping() { Column = "name",  Name = "Name" },
+        new CdcColumnMapping() { Column = "email", Name = "Email" },
+    ]
+});
+
+// Execute the operation by passing it to Maintenance.SendAsync     
+await store.Maintenance.SendAsync(new UpdateCdcSinkOperation(taskId, config));
+```
+</TabItem>
+</Tabs>
+
+---
+    
+<Admonition type="note" title="">  
+    
+For PostgreSQL tasks, adding or removing tables can require updating the PostgreSQL publication.  
+See [PostgreSQL - Cleanup and Maintenance](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/cleanup-and-maintenance.mdx) for details.
+
+</Admonition>    
+    
+</Panel>
+
+<Panel heading="Update a CDC Sink task via Studio">
+
+To edit a CDC Sink task in the Studio:    
+    
+![Create task 12](../assets/create-task-12.png)       
+
+1. Navigate to **Databases** → your database → **Tasks** → **Ongoing Tasks**.
+2. Under the **SINK (SOURCE ⇒ RavenDB)** group,   
+   click the task's name (or the edit icon) to open the same configuration form used for creation, now in edit mode.
+3. Modify the connection string, tables, column mappings, or patches as needed, then click **Save**.
+
+</Panel>
+
+<Panel heading="Update a CDC Sink task via REST API">
+
+To update a CDC Sink task through REST, send a `PUT` request to the same endpoint used to create a task,  
+with the task ID in the `id` query string parameter.
+    
+The request body must contain the complete updated JSON `CdcSinkConfiguration`.   
+If `id` is omitted, the same endpoint creates a new CDC Sink task.
+
+| Method | Endpoint | Auth |
+|--------|----------|------|
+| `PUT`  | `/databases/{databaseName}/admin/cdc-sink?id={taskId}` | `DatabaseAdmin` |
+
+</Panel>

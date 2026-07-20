@@ -1,0 +1,134 @@
+---
+title: "CDC Sink for PostgreSQL: WAL Configuration"
+sidebar_label: WAL Configuration
+description: "How to verify and configure the PostgreSQL Write-Ahead Log level to enable logical replication required by CDC Sink."
+sidebar_position: 3
+see_also:
+  - title: "Prerequisites Checklist"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/prerequisites-checklist"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "Permissions and Roles"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/permissions-and-roles"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "Cleanup and Maintenance"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/cleanup-and-maintenance"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* CDC Sink uses PostgreSQL **logical replication**, which requires `wal_level` to be set to `logical`.
+
+* This page explains how to check the current `wal_level`, enable logical replication if needed,  
+  and review related replication settings.
+
+* In this article:
+  * [Check current WAL level](#check-current-wal-level)
+  * [Enable logical replication](#enable-logical-replication)
+  * [Other required settings](#other-required-settings)
+
+</Admonition>
+
+<Panel heading="Check current WAL level">
+
+Connect to your PostgreSQL instance and run:
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+```sql
+SHOW wal_level;
+```
+</TabItem>
+</Tabs>
+
+If the result is `logical`, no change to `wal_level` is needed.    
+
+If the result is `replica` or `minimal`, 
+logical replication is not enabled and `wal_level` must be changed before CDC Sink can read changes from PostgreSQL.    
+
+</Panel>
+
+<Panel heading="Enable logical replication">
+
+For self-managed PostgreSQL, edit `postgresql.conf` and set:
+
+```plain
+wal_level = logical
+```
+<br/>
+
+<Admonition type="warning" title="">
+Changing `wal_level` requires a full server restart, not just a configuration reload.  
+Plan for a brief maintenance window.
+</Admonition>
+
+After restarting, verify the change took effect:
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+```sql
+SHOW wal_level;
+-- Should return: logical
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="">
+
+#### Managed PostgreSQL    
+
+On managed PostgreSQL services, you usually cannot edit `postgresql.conf` directly.  
+Change the setting through the provider's configuration mechanism instead:
+
+* **Amazon RDS for PostgreSQL**  
+  Set `rds.logical_replication = 1` in the DB parameter group, then reboot the DB instance.
+
+* **Amazon Aurora PostgreSQL**  
+  Set `rds.logical_replication = 1` in the DB cluster parameter group, then reboot the writer instance.
+
+* **Google Cloud SQL for PostgreSQL**  
+  Set the `cloudsql.logical_decoding` flag to `on`, then restart the primary instance.
+
+* **Azure Database for PostgreSQL Flexible Server**  
+  Set the `wal_level` server parameter to `logical`, save the change, and restart the server.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Other required settings">
+
+CDC Sink uses one PostgreSQL replication slot per task.  
+Make sure the following settings are high enough for your CDC Sink tasks and any other replication consumers:
+
+```plain
+max_replication_slots = 10   # at least 1 per CDC Sink task
+max_wal_senders = 10         # at least 1 per running CDC Sink task
+```
+<br/>
+
+The defaults in a standard PostgreSQL installation are typically sufficient for a small number of tasks,  
+but you may need to increase them if you have many CDC Sink tasks or other replication consumers.
+
+Check current values:
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+```sql
+SHOW max_replication_slots;
+SHOW max_wal_senders;
+```
+</TabItem>
+</Tabs>
+
+These settings require a server restart if changed.
+
+</Panel>

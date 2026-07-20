@@ -1,0 +1,35 @@
+---
+title: "CDC Sink: Linked Tables"
+sidebar_label: Linked Tables
+description: "Explains how linked tables create document ID references in parent documents by converting foreign key values into RavenDB document IDs."
+sidebar_position: 3
+supported_languages: ["csharp"]
+see_also:
+  - title: "Schema Design"
+    link: "server/ongoing-tasks/cdc-sink/document-modeling/schema-design"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Embedded Tables"
+    link: "server/ongoing-tasks/cdc-sink/document-modeling/embedded-tables"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Configuration Reference"
+    link: "server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/configuration-reference"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Load with Includes"
+    link: "client-api/session/loading-entities#load-with-includes"
+    source: "docs"
+    path: "Client API > Session"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import LinkedTablesCsharp from './content/_linked-tables-csharp.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <LinkedTablesCsharp />
+</LanguageContent>

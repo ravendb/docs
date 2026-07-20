@@ -1,0 +1,35 @@
+---
+title: "CDC Sink: Attachment Handling"
+sidebar_label: Attachment Handling
+description: "Explains how to store binary or text SQL columns as RavenDB attachments using CdcColumnType.Attachment on root and embedded table configurations."
+sidebar_position: 5
+supported_languages: ["csharp"]
+see_also:
+  - title: "Column Mapping"
+    link: "server/ongoing-tasks/cdc-sink/document-modeling/column-mapping"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Embedded Tables"
+    link: "server/ongoing-tasks/cdc-sink/document-modeling/embedded-tables"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Configuration Reference"
+    link: "server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/configuration-reference"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Attachments Overview"
+    link: "document-extensions/attachments/overview"
+    source: "docs"
+    path: "Document Extensions > Attachments"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import AttachmentHandlingCsharp from './content/_attachment-handling-csharp.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <AttachmentHandlingCsharp />
+</LanguageContent>

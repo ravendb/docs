@@ -1,0 +1,39 @@
+---
+title: "CDC Sink: Column Mapping"
+sidebar_label: Column Mapping
+description: "Explains how to control which SQL columns appear in RavenDB documents and under what property names using the Columns list of CdcColumnMapping entries."
+sidebar_position: 4
+supported_languages: ["csharp"]
+see_also:
+  - title: "Schema Design"
+    link: "server/ongoing-tasks/cdc-sink/document-modeling/schema-design"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Patching"
+    link: "server/ongoing-tasks/cdc-sink/patching"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Attachment Handling"
+    link: "server/ongoing-tasks/cdc-sink/document-modeling/attachment-handling"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Configuration Reference"
+    link: "server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/configuration-reference"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Patching: $row Column Types"
+    link: "server/ongoing-tasks/cdc-sink/patching#row-column-types"
+    source: "docs"
+    path: "Server > CDC Sink"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ColumnMappingCsharp from './content/_column-mapping-csharp.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <ColumnMappingCsharp />
+</LanguageContent>

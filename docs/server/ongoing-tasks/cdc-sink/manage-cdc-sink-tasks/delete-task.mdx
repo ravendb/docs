@@ -1,0 +1,31 @@
+---
+title: "CDC Sink: Delete Task"
+sidebar_label: Delete Task
+description: "How to delete a CDC Sink task using the RavenDB Client API (DeleteOngoingTaskOperation) and through the Management Studio, including source-database cleanup."
+sidebar_position: 4
+supported_languages: ["csharp"]
+see_also:
+  - title: "Create a Task"
+    link: "server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Cleanup and Maintenance"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/cleanup-and-maintenance"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "Ongoing Task Operations"
+    link: "client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations"
+    source: "docs"
+    path: "Client API > Operations"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import DeleteTaskCsharp from './content/_delete-task-csharp.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <DeleteTaskCsharp />
+</LanguageContent>
