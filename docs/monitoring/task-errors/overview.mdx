@@ -34,9 +34,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * Task errors and the health states they drive are exposed in
   [Studio](../../monitoring/task-errors/studio-views.mdx),
   [HTTP endpoints](../../server/troubleshooting/debug-routes.mdx#debug-endpoints),
-  [SNMP OIDs](../../server/administration/snmp/snmp-overview.mdx#list-of-oids),
-  [Prometheus metrics](../../server/administration/monitoring/prometheus.mdx#metrics-provided-by-the-prometheus-endpoint),
-  and [monitoring endpoints](../../server/administration/monitoring/telegraf.mdx#monitoring-endpoints).  
+  [SNMP OIDs](../integrations/snmp/overview.mdx#list-of-oids),
+  [Prometheus metrics](../integrations/prometheus.mdx#metrics-provided-by-the-prometheus-endpoint),
+  and [JSON monitoring endpoints](../../monitoring/json-monitoring-endpoints.mdx).  
 
 * In this article:
    * [What task errors are](../../monitoring/task-errors/overview.mdx#what-task-errors-are)
@@ -243,15 +243,15 @@ Where to find them in detail:
 * **SNMP OIDs**  
   Dedicated OIDs for server-level, database-level, and per-task error counts and health
   states.  
-  See [List of OIDs](../../server/administration/snmp/snmp-overview.mdx#list-of-oids).  
+  See [List of OIDs](../integrations/snmp/overview.mdx#list-of-oids).  
 
 * **Prometheus metrics**  
   Metrics for server, database, and per-task scopes, mirroring the SNMP set.  
-  See [Prometheus integration](../../server/administration/monitoring/prometheus.mdx).  
+  See [Prometheus integration](../integrations/prometheus.mdx).  
 
-* **Monitoring Endpoints**  
+* **JSON monitoring endpoints**  
   `/admin/monitoring/v1/etls` and `/admin/monitoring/v1/ai-tasks` return per-task health and
   error counts as JSON.  
-  See [Monitoring endpoints](../../server/administration/monitoring/telegraf.mdx#monitoring-endpoints).  
+  See [JSON monitoring endpoints](../../monitoring/json-monitoring-endpoints.mdx).  
 
 </Panel>

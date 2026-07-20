@@ -1,0 +1,125 @@
+---
+title: "CDC Sink for PostgreSQL: Manual REPLICA IDENTITY Setup"
+sidebar_label: Manual REPLICA IDENTITY Setup
+description: "Step-by-step instructions for a database administrator to configure REPLICA IDENTITY manually when CDC Sink lacks permission to alter tables."
+sidebar_position: 7
+see_also:
+  - title: "REPLICA IDENTITY"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "Initial Setup"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/initial-setup"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* If the PostgreSQL user configured in the CDC Sink connection string cannot alter an affected table,  
+  a database administrator must configure `REPLICA IDENTITY` manually before the task starts.
+
+* This article shows the SQL commands for manual setup. For background on what `REPLICA IDENTITY` is,  
+  when it is required, and when CDC Sink can configure it automatically,
+  see [REPLICA IDENTITY](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity.mdx).
+
+* In this article:
+  * [When manual setup is required](#when-manual-setup-is-required)
+  * [Setting REPLICA IDENTITY FULL](#setting-replica-identity-full)
+  * [Using an index instead of FULL](#using-an-index-instead-of-full)
+  * [Verifying the configuration](#verifying-the-configuration)
+
+</Admonition>
+
+<Panel heading="When manual setup is required">
+
+If the PostgreSQL user configured in the CDC Sink connection string owns theaffected embedded source table, or has `SUPERUSER`,
+CDC Sink can automatically set `REPLICA IDENTITY FULL` when that table's current setting is insufficient.
+
+If that PostgreSQL user cannot alter the table, the task fails to start with a permissions error.  
+A database administrator must configure `REPLICA IDENTITY` manually before the task can run.
+
+See [Automatic vs manual configuration](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity.mdx#automatic-vs-manual-configuration)
+for details on when this applies.
+
+</Panel>
+
+<Panel heading="Setting REPLICA IDENTITY FULL">
+
+The simplest approach is to set `REPLICA IDENTITY FULL` on each affected embedded source table:
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+```sql
+ALTER TABLE order_lines REPLICA IDENTITY FULL;
+ALTER TABLE line_attributes REPLICA IDENTITY FULL;
+```
+</TabItem>
+</Tabs>
+
+With `REPLICA IDENTITY FULL`, PostgreSQL can include all old column values in `DELETE` and `UPDATE` events.  
+This is the most compatible option, but it increases WAL volume for tables with many or large columns.
+
+</Panel>
+
+<Panel heading="Using an index instead of FULL">
+
+If WAL size is a concern, you can use a specific unique index instead of `FULL`.  
+    
+The designated replica identity index must cover both the join columns and `PrimaryKeyColumns` of the embedded table,
+because CDC Sink needs those old values to find the parent document and the matching embedded item.
+    
+---    
+
+**Step 1: Create a unique index covering the required columns**
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+```sql
+-- For order_lines: join column is order_id, PK is line_id
+CREATE UNIQUE INDEX order_lines_replica_idx
+    ON order_lines (order_id, line_id);
+```
+</TabItem>
+</Tabs>
+
+**Step 2: Set REPLICA IDENTITY to use this index**
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+```sql
+ALTER TABLE order_lines
+    REPLICA IDENTITY USING INDEX order_lines_replica_idx;
+```
+</TabItem>
+</Tabs>
+
+This instructs PostgreSQL to include old row values for the indexed columns in `DELETE` and `UPDATE` events,  
+rather than all columns.
+
+<Admonition type="note" title="">
+    
+* The index must be `UNIQUE` and `NOT DEFERRABLE`.  
+  It cannot use expressions or partial predicates.
+    
+* Every indexed column must be marked `NOT NULL`;  
+  if a required join column is nullable, make it `NOT NULL` first or use `FULL`.
+    
+</Admonition>
+
+</Panel>
+
+<Panel heading="Verifying the configuration">
+
+* After applying the changes, confirm that each affected table shows the expected `REPLICA IDENTITY` mode using the query in
+  [Checking current setting](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity.mdx#checking-current-setting).
+
+* A table configured with `FULL` is ready for CDC Sink embedded-table delete processing.  
+  A table configured with `INDEX` is ready when the designated replica identity index covers the required join columns and `PrimaryKeyColumns`.
+
+</Panel>

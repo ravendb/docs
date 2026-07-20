@@ -1,0 +1,242 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* Column mapping defines which SQL columns are written to RavenDB, what document property or attachment names they use, and how each value is stored.
+  It uses a `Columns` list of `CdcColumnMapping` objects, not a dictionary.
+
+* In this article:
+  * [Mapping columns to properties](#mapping-columns-to-properties)
+  * [Column types](#column-types)
+  * [Unmapped columns](#unmapped-columns)
+  * [JSON columns](#json-columns)
+  * [Validation rules](#validation-rules)
+  * [Schema (source table schema)](#schema-source-table-schema)
+
+</Admonition>
+
+<Panel heading="Mapping columns to properties">
+
+`Columns` is a `List<CdcColumnMapping>` where each entry maps a SQL column to a RavenDB document property attachment:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+```csharp
+Columns =
+[
+    new CdcColumnMapping() { Column = "id",            Name = "Id" },
+    new CdcColumnMapping() { Column = "customer_name", Name = "CustomerName" },
+    new CdcColumnMapping() { Column = "order_date",    Name = "OrderDate" },
+    new CdcColumnMapping() { Column = "total_amount",  Name = "TotalAmount" },
+]
+```
+</TabItem>
+</Tabs>
+
+* **`Column`:** SQL column name (case-insensitive match against the column names in CDC events)
+* **`Name`:** Property name in the RavenDB document, or attachment name when `Type = CdcColumnType.Attachment`
+
+<Admonition type="note" title="">
+    
+Every column in `PrimaryKeyColumns` must also be mapped in `Columns` as a regular document property.  
+CDC Sink stores the value in the document and reads it back to match the correct embedded array/map item on subsequent UPDATE/DELETE events.
+The document ID itself is built from the primary key's raw source-row value.
+    
+</Admonition>
+
+</Panel>
+
+<Panel heading="Column types">
+
+Each `CdcColumnMapping` entry has an optional `Type` property of type `CdcColumnType` that controls how the SQL value is stored in RavenDB:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+```csharp
+Columns =
+[
+    new CdcColumnMapping() { Column = "order_id",  Name = "OrderId" },
+    // Parsed as a native JSON value
+    new CdcColumnMapping()
+    {
+        Column = "metadata", Name = "Metadata",
+        Type = CdcColumnType.Json
+    },
+    // Stored as an attachment
+    new CdcColumnMapping()
+    {
+        Column = "receipt", Name = "receipt.pdf",
+        Type = CdcColumnType.Attachment
+    },
+]
+```
+</TabItem>
+</Tabs>
+
+<ContentFrame>
+    
+### `CdcColumnType.Default`
+    
+Standard SQL-to-JSON type conversion.  
+This is the default when `Type` is omitted. Type conversions are source-database-specific.
+    
+For PostgreSQL:  
+    
+  * `smallint` / `integer` / `oid` → `long`
+  * `bigint` → `long`
+  * `real` → `float`
+  * `double precision` → `double`
+  * `numeric` / `decimal` → `decimal`
+  * `boolean` → `bool`
+  * `date` → `DateOnly`
+  * `timestamp` / `timestamptz` → `DateTime`
+  * `uuid` → `string`
+  * `varchar` / `text` / `char` → `string`
+  * `json` / `jsonb` → `string` (raw JSON text, not parsed)
+  * SQL arrays → JSON arrays
+  * `vector` (pgvector) → `float[]`
+    
+For the JavaScript values exposed in patch scripts, see [Patching: $row Column Types](../../../../../server/ongoing-tasks/cdc-sink/patching.mdx#row-column-types).
+    
+</ContentFrame>
+<ContentFrame>   
+    
+### `CdcColumnType.Json`  
+    
+Parses the string value as a native JSON value (object, array, string, number, boolean, etc.) in the document.   
+Use for PostgreSQL `json`/`jsonb`, MySQL/MariaDB `json`, or SQL Server `nvarchar(max)` with JSON content.    
+
+</ContentFrame>   
+<ContentFrame>     
+    
+### `CdcColumnType.Attachment`
+    
+Stores the raw column value as a RavenDB attachment.  
+`byte[]` → binary (`application/octet-stream`), `string` → UTF-8 text (`text/plain`),  
+`float[]`/`double[]` → raw vector data. The `Name` field becomes the attachment name.
+    
+Learn more in [CDC Sink: Attachment handling](../../../../../server/ongoing-tasks/cdc-sink/document-modeling/attachment-handling.mdx).
+
+</ContentFrame>
+    
+</Panel>
+
+<Panel heading="Unmapped columns">
+
+Columns not listed in `Columns` are **not stored automatically** in the document,  
+but they are available in patch scripts via the `$row` variable.
+    
+This allows you to use data for computations without permanently storing raw SQL values.
+    
+In the following example, `base_price` and `tax_rate` are available during the patch but not stored as document properties.
+Only the computed `FinalPrice` is stored.    
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+```csharp
+Columns =
+[
+    new CdcColumnMapping() { Column = "id",   Name = "Id" },
+    new CdcColumnMapping() { Column = "name", Name = "Name" },
+    // base_price and tax_rate are NOT mapped - won't appear in document
+],
+Patch = "this.FinalPrice = $row.base_price * (1 + $row.tax_rate);"
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+    
+### Patch script variables
+    
+### `$this`  
+The current RavenDB document is available as `this`.  
+Mapped columns are written using their `Name` values, so the `name` column above becomes `this.Name`.  
+Patch scripts can also add computed properties, such as `this.FinalPrice`.
+
+### `$row` 
+Source column names are available through `$row`, including mapped and unmapped columns.  
+For example, `$row.base_price` reads the current row's `base_price` value.
+
+### `$old`   
+`$old` contains the previous stored value before the current change: 
+for root-table patches, the previous document; for embedded-table patches, the previous embedded item.
+It uses stored document property names, not SQL column names. 
+Unmapped columns do not appear in `$old` unless a patch previously stored them.
+    
+See [Patching: $row and $old](../../../../../server/ongoing-tasks/cdc-sink/patching.mdx#row-and-old-names-and-types) for more details.
+    
+</Admonition>
+
+</Panel>
+
+<Panel heading="JSON columns">
+
+SQL columns that contain JSON data, such as PostgreSQL `json`/`jsonb`, MySQL/MariaDB `json`, or SQL Server `nvarchar(max)` with JSON content, 
+can be parsed into native JSON values using `CdcColumnType.Json`.  
+This handles JSON objects, arrays, and scalar values (strings, numbers, booleans, and `null`):    
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+```csharp
+Columns =
+[
+    new CdcColumnMapping() { Column = "id",       Name = "Id" },
+    new CdcColumnMapping() { Column = "name",     Name = "Name" },
+    new CdcColumnMapping()
+    {
+        Column = "metadata", Name = "Metadata",
+        Type = CdcColumnType.Json
+    },
+]
+```
+</TabItem>
+</Tabs>
+
+Without `CdcColumnType.Json`, the JSON column value would be stored as a raw string.  
+With it, the value is parsed and stored as a nested object, array, or scalar value in the document.
+
+The same `Type = CdcColumnType.Json` mapping is used regardless of the source provider.  
+For SQL Server, set this explicitly on string columns that contain JSON, since the source column type is still `nvarchar`.
+
+</Panel>
+
+<Panel heading="Validation rules">
+
+The following rules apply to both root table and embedded table column mappings:
+
+- Each `Column` name must be unique within the table. The check is case-insensitive.
+- Each `Name` must be unique within the table and must not duplicate any embedded or linked table `PropertyName` on the same parent. The check is case-insensitive.
+- Both `Column` and `Name` are required and must be non-empty strings.
+- At least one entry is required - an empty `Columns` list is a validation error.
+- Every column in `PrimaryKeyColumns` must also appear in `Columns`.
+  Map primary key columns as regular document properties, because CDC Sink reads the stored values to match the correct embedded array/map item on subsequent UPDATE/DELETE events.
+  The document ID itself is built from the primary key's raw source-row value. 
+
+</Panel>
+
+<Panel heading="Schema (source table schema)">
+
+`SourceTableSchema` specifies the source schema that contains the table.
+If omitted, CDC Sink uses the provider default: `public` for PostgreSQL, `dbo` for SQL Server, and the database selected in the connection string for MySQL/MariaDB.  
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+```csharp
+new CdcSinkTableConfig
+{
+    SourceTableSchema = "sales", // Table is in the "sales" schema
+    SourceTableName = "orders",
+    // ...
+}
+```
+</TabItem>
+</Tabs>
+
+When the table is in the provider's default schema, this can be omitted.
+
+</Panel>

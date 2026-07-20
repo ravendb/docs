@@ -1,0 +1,120 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* CDC Sink supports PostgreSQL as a source database by using [logical replication](https://www.postgresql.org/docs/current/logical-replication.html).
+
+* PostgreSQL streams row-level changes continuously through a logical replication slot.  
+  The CDC Sink task consumes this stream and applies INSERTs, UPDATEs, and DELETEs to RavenDB documents as they are received.
+
+* In this article:
+  * [Connection string](#connection-string)
+  * [How it works](#how-it-works)
+  * [Prerequisites](#prerequisites)
+  * [PostgreSQL-specific settings](#postgresql-specific-settings)
+  * [Task configuration](#task-configuration)
+
+</Admonition>
+
+<Panel heading="Connection string">
+    
+Create a [SqlConnectionString](../../../../../../server/ongoing-tasks/etl/sql.mdx#add-an-sql-connection-string) with `FactoryName` set to `"Npgsql"`.      
+
+<Tabs>
+<TabItem value="sync" label="Sync">
+```csharp
+store.Maintenance.Send(new PutConnectionStringOperation<SqlConnectionString>(
+    new SqlConnectionString
+    {
+        Name = "MyPostgresConnection",
+        FactoryName = "Npgsql",
+        ConnectionString = "Host=myserver;Port=5432;Database=mydb;Username=cdc_user;Password=..."
+    }));
+```
+</TabItem>
+<TabItem value="async" label="Async">
+```csharp
+await store.Maintenance.SendAsync(new PutConnectionStringOperation<SqlConnectionString>(
+    new SqlConnectionString
+    {
+        Name = "MyPostgresConnection",
+        FactoryName = "Npgsql",
+        ConnectionString = "Host=myserver;Port=5432;Database=mydb;Username=cdc_user;Password=..."
+    }));
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="How it works">
+
+CDC Sink uses PostgreSQL logical replication to receive a continuous stream of row-level changes without polling.
+
+Key PostgreSQL concepts:
+
+* **Replication slot**  
+  A server-side object that tracks how far CDC Sink has read in the logical replication stream.  
+  It also causes PostgreSQL to retain the required WAL segments until CDC Sink confirms receipt.
+* **Publication**  
+  Defines which tables are included in the replication stream.
+  CDC Sink creates or reuses a publication for the configured tables when the PostgreSQL user in the connection string has sufficient permissions.
+* **WAL (Write-Ahead Log)**  
+  The durable log PostgreSQL uses as the source for logical replication.  
+  If a CDC Sink task is inactive or paused while its replication slot exists, WAL segments can accumulate.
+
+</Panel>
+
+<Panel heading="Prerequisites">
+
+Before creating a CDC Sink task for PostgreSQL, verify the source database settings, permissions, and table requirements.
+See [Prerequisites Checklist](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/prerequisites-checklist.mdx)
+for the full list, including:
+
+* PostgreSQL version 10 or later
+* WAL level set to `logical`
+* Sufficient `max_replication_slots` and `max_wal_senders`
+* A PostgreSQL user with `REPLICATION` privilege and `SELECT` on each table CDC Sink will read
+* `REPLICA IDENTITY` configuration for embedded tables whose join columns are not part of the primary key
+
+</Panel>
+
+<Panel heading="PostgreSQL-specific settings">
+
+Use `CdcSinkConfiguration.Postgres` when you want to specify the PostgreSQL replication slot and publication names explicitly:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+```csharp
+Postgres = new CdcSinkPostgresSettings
+{
+    SlotName = "my_slot",
+    PublicationName = "my_publication"
+}
+```
+</TabItem>
+</Tabs>
+
+If either name is omitted, the CDC Sink task generates it when the task is created:
+`rvn_cdc_s_{taskId}` for the slot and `rvn_cdc_p_{taskId}` for the publication.
+The names are stored with the task and do not change on later updates.
+    
+To let the CDC Sink task create the PostgreSQL slot and publication itself, 
+the PostgreSQL user configured in the CDC Sink connection string must have sufficient permissions.    
+    
+See [Initial Setup](../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/initial-setup.mdx) for details.
+
+</Panel>
+
+<Panel heading="Task configuration">
+
+Most CDC Sink task configuration is shared across supported source database engines.  
+See [Configuration Reference](../../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/configuration-reference.mdx) for the full API, 
+including table mappings, delete behavior, patches, and PostgreSQL-specific settings.
+
+For PostgreSQL, `SourceTableSchema` defaults to `"public"` when omitted.
+
+</Panel>

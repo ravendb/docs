@@ -1,0 +1,39 @@
+---
+title: "CDC Sink: Patching"
+sidebar_label: Patching
+description: "Explains how JavaScript patch scripts work in CDC Sink, covering available variables, patch scope, common scenarios, idempotency, and limitations."
+sidebar_position: 6
+supported_languages: ["csharp"]
+see_also:
+  - title: "Handling Deletes"
+    link: "server/ongoing-tasks/cdc-sink/handling-deletes"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Column Mapping"
+    link: "server/ongoing-tasks/cdc-sink/document-modeling/column-mapping"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Property Retention"
+    link: "server/ongoing-tasks/cdc-sink/property-retention"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Failover and Consistency"
+    link: "server/ongoing-tasks/cdc-sink/failover-and-consistency"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Patching Configuration"
+    link: "server/configuration/patching-configuration"
+    source: "docs"
+    path: "Server > Configuration"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import PatchingCsharp from './content/_patching-csharp.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <PatchingCsharp />
+</LanguageContent>

@@ -1,0 +1,198 @@
+---
+title: "CDC Sink: Failover and Consistency"
+sidebar_label: Failover and Consistency
+description: "Explains how CDC Sink handles node failover, what consistency guarantees it provides, and why patches must be designed to be idempotent."
+sidebar_position: 9
+see_also:
+  - title: "How It Works"
+    link: "server/ongoing-tasks/cdc-sink/how-it-works"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Patching"
+    link: "server/ongoing-tasks/cdc-sink/patching"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Monitoring"
+    link: "server/ongoing-tasks/cdc-sink/monitoring"
+    source: "docs"
+    path: "Server > CDC Sink"
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* This article explains how CDC Sink handles node failover and consistency.  
+  After failover, the task resumes from the last replicated state, so no changes are lost,  
+  but some source changes may be re-read and applied more than once.
+    
+* Custom patches must be idempotent under this at-least-once delivery model.
+
+* In this article:
+  * [State storage](#state-storage)
+  * [Failover behavior](#failover-behavior)
+  * [Re-reading changes](#re-reading-changes)
+  * [Consistency guarantee](#consistency-guarantee)
+  * [Idempotency requirements](#idempotency-requirements)
+
+</Admonition>
+
+
+
+<Panel heading="State storage">
+
+CDC Sink stores processing progress in a RavenDB state document in the `@cdc-states` system collection.  
+For the full structure, see [The state document](../../../server/ongoing-tasks/cdc-sink/how-it-works.mdx#the-state-document).
+
+This state document records:
+
+* The last processed source-database change position (`LastLsn`)
+* Per-table initial-load progress, including whether each table's initial load completed  
+  and the last primary-key values read
+
+Like any RavenDB document, this state document is replicated between cluster nodes.  
+Different nodes may temporarily have different versions of the document.
+
+</Panel>
+
+<Panel heading="Failover behavior">
+
+When the cluster elects a new mentor node for a CDC Sink task, the new mentor reads the state document that was replicated to it.
+This state may be older than the previous mentor's actual progress.    
+
+**Example:**
+
+<Tabs>
+<TabItem value="plain" label="plain">
+```plain
+Before failure:
+├─ Node A (Mentor)  - Reached position X; latest state update has not replicated
+├─ Node B           - State document shows position X-100
+└─ Node C           - State document shows position X-100
+
+Node A crashes.
+Node B is elected new mentor.
+Node B reads its state document: position X-100.
+Node B resumes CDC Sink from position X-100.
+```
+</TabItem>
+</Tabs>
+
+Changes between positions X-100 and X may already be in RavenDB, or they may not be if Node A crashed before writing them. 
+Node B re-reads and applies those changes either way.
+
+</Panel>
+
+<Panel heading="Re-reading changes">
+
+CDC Sink guarantees that no source changes are lost,  
+but changes after the last replicated checkpoint may be read again.
+
+When the new mentor resumes from an older state document, it reprocesses source changes after that saved position:
+
+* If the previous mentor's RavenDB write already replicated, the same change is applied again.
+* If the write did not replicate, the new mentor applies the change for the first time on that node.
+* Changes after the previous mentor's progress are processed normally.
+
+Re-reading is normal and expected. For regular column mapping, re-applying the same
+INSERT or UPDATE is safe because mapped properties are overwritten with the same values.
+
+<Admonition type="warning" title="">
+Patches that are not idempotent can produce incorrect results when a change is re-read after a failover.  
+See [Idempotency requirements](#idempotency-requirements) below.
+</Admonition>
+
+</Panel>
+
+<Panel heading="Consistency guarantee">
+
+CDC Sink provides **at-least-once delivery** with **eventual consistency**.
+
+This means:
+
+* Source changes are not skipped because of failover.
+* Changes are processed in source transaction order.
+* After failover, the task resumes from the last replicated state document.
+* Changes after that saved position may be read and applied more than once.
+
+CDC Sink does not provide exactly-once delivery. Regular column mapping is safe to re-apply,  
+but custom patches must be idempotent if they can run more than once for the same source change.
+    
+<Admonition type="note" title="">
+This guarantee assumes the source database can still provide changes from the saved position.  
+For PostgreSQL backup/restore cases where the replication slot no longer retains the saved LSN,  
+see [Backup/Restore Task](../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/backup-restore-task.mdx#restore-considerations).
+</Admonition> 
+
+</Panel>
+
+<Panel heading="Idempotency requirements">
+
+A patch is **idempotent** if applying it multiple times produces the same result as applying it once.
+
+**Column mapping is always idempotent** - overwriting a property with the same value is a no-op.
+
+**Patches that use absolute values are idempotent:**
+
+<Tabs>
+<TabItem value="javascript" label="javascript">
+```javascript
+// Idempotent - always sets to the current SQL value
+this.Status = $row.is_active ? 'Active' : 'Inactive';
+this.ViewCount = $row.view_count;
+```
+</TabItem>
+</Tabs>
+
+**Patches that accumulate are NOT idempotent:**
+
+Any patch that reads the document's current value and adds to it will double-count
+when a change is re-read after a failover.
+
+<Tabs>
+<TabItem value="javascript" label="javascript">
+```javascript
+// NOT idempotent - increments again on re-read
+this.ViewCount = (this.ViewCount || 0) + 1;
+```
+</TabItem>
+</Tabs>
+    
+**Use `$old` when a patch needs to apply a delta safely.**  
+`$old` contains the previous RavenDB document or embedded item value before the current source row is applied.
+When the same source change is re-read after the RavenDB write has already replicated, `$old` reflects the already-applied value, so the computed delta is `0`.
+
+<Tabs>
+<TabItem value="javascript" label="javascript">
+```javascript
+// Idempotent - applies only the change between the previous and current values
+const oldAmount = $old?.Amount || 0;
+const newAmount = $row.amount || 0;
+this.RunningTotal = (this.RunningTotal || 0) + (newAmount - oldAmount);
+```
+</TabItem>
+</Tabs>
+
+For example, suppose the source row's `amount` is updated from 40 to 55, the document already stores that
+previous value as `Amount` (40), and `RunningTotal` currently holds 100. On the first apply, the delta is `55 - 40 = 15`,  
+so `RunningTotal` moves from 100 to 115 and `Amount` is updated to 55.
+    
+If the same change is re-read after failover and the document write already replicated, `$old.Amount` is already 55,  
+so the delta is `55 - 55 = 0` and `RunningTotal` remains 115.
+
+This pattern is idempotent only when the value used for the delta is stored on the
+RavenDB document or embedded item and updated on each apply.
+    
+`$old` is available when CDC Sink finds a previous root document or embedded item; it is `null` for new documents or embedded items.
+It is also useful for update and delete logic, such as reparenting embedded items.    
+
+<Admonition type="warning" title="">
+A patch is still not idempotent if it blindly increments, creates a new side-effect document,
+or otherwise cannot detect that the same source change was already applied. Prefer absolute
+assignments from `$row` when possible. When you need a delta, compute it from `$old` and the current `$row` value.
+</Admonition>
+
+</Panel>

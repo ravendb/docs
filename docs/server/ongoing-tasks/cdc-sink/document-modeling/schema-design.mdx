@@ -1,0 +1,39 @@
+---
+title: "CDC Sink: Schema Design"
+sidebar_label: Schema Design
+description: "Explains how CDC Sink maps a relational schema to a RavenDB document model using root tables, embedded tables, and linked tables."
+sidebar_position: 1
+supported_languages: ["csharp"]
+see_also:
+  - title: "Embedded Tables"
+    link: "server/ongoing-tasks/cdc-sink/document-modeling/embedded-tables"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Linked Tables"
+    link: "server/ongoing-tasks/cdc-sink/document-modeling/linked-tables"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Column Mapping"
+    link: "server/ongoing-tasks/cdc-sink/document-modeling/column-mapping"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Configuration Reference"
+    link: "server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/configuration-reference"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "REPLICA IDENTITY"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import SchemaDesignCsharp from './content/_schema-design-csharp.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <SchemaDesignCsharp />
+</LanguageContent>

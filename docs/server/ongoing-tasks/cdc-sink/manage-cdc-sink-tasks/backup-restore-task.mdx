@@ -1,0 +1,31 @@
+---
+title: "CDC Sink: Backup/Restore Task"
+sidebar_label: Backup/Restore Task
+description: "How CDC Sink tasks are included in database backups and how they behave when a database is restored, via the RavenDB Client API and the Management Studio."
+sidebar_position: 7
+supported_languages: ["csharp"]
+see_also:
+  - title: "Export / Import a Task"
+    link: "server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/export-import-task"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Enable / Disable a Task"
+    link: "server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/enable-disable-task"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Failover and Consistency"
+    link: "server/ongoing-tasks/cdc-sink/failover-and-consistency"
+    source: "docs"
+    path: "Server > CDC Sink"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import BackupRestoreTaskCsharp from './content/_backup-restore-task-csharp.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <BackupRestoreTaskCsharp />
+</LanguageContent>

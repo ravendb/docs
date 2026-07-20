@@ -1,0 +1,43 @@
+---
+title: "Maintaining a Running Balance"
+sidebar_label: "Running Balance"
+description: "How to use CDC Sink patches to incrementally update an account balance as transaction rows arrive from PostgreSQL"
+sidebar_position: 2
+supported_languages: ["csharp"]
+see_also:
+  - title: "Simple Migration"
+    link: "server/ongoing-tasks/cdc-sink/examples/example-simple-migration"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL > Examples"
+  - title: "Denormalization"
+    link: "server/ongoing-tasks/cdc-sink/examples/example-denormalization"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL > Examples"
+  - title: "Complex Nesting"
+    link: "server/ongoing-tasks/cdc-sink/examples/example-complex-nesting"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL > Examples"
+  - title: "Patching"
+    link: "server/ongoing-tasks/cdc-sink/patching"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Handling Deletes"
+    link: "server/ongoing-tasks/cdc-sink/handling-deletes"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Failover and Consistency"
+    link: "server/ongoing-tasks/cdc-sink/failover-and-consistency"
+    source: "docs"
+    path: "Server > CDC Sink"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ExampleRunningBalanceCsharp from './content/_example-running-balance-csharp.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <ExampleRunningBalanceCsharp />
+</LanguageContent>

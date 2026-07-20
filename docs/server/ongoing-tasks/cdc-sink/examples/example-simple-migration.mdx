@@ -1,0 +1,39 @@
+---
+title: "Simple Table Migration"
+sidebar_label: "Simple Table Migration"
+description: "Minimal setup to replicate a single SQL table into a RavenDB collection using CDC Sink."
+sidebar_position: 0
+supported_languages: ["csharp"]
+see_also:
+  - title: "Denormalization"
+    link: "server/ongoing-tasks/cdc-sink/examples/example-denormalization"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL > Examples"
+  - title: "Event Sourcing"
+    link: "server/ongoing-tasks/cdc-sink/examples/example-running-balance"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL > Examples"
+  - title: "Complex Nesting"
+    link: "server/ongoing-tasks/cdc-sink/examples/example-complex-nesting"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL > Examples"
+  - title: "Schema Design"
+    link: "server/ongoing-tasks/cdc-sink/document-modeling/schema-design"
+    source: "docs"
+    path: "Server > CDC Sink"
+  - title: "Column Mapping"
+    link: "server/ongoing-tasks/cdc-sink/document-modeling/column-mapping"
+    source: "docs"
+    path: "Server > CDC Sink"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ExampleSimpleMigrationCsharp from './content/_example-simple-migration-csharp.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <ExampleSimpleMigrationCsharp />
+</LanguageContent>

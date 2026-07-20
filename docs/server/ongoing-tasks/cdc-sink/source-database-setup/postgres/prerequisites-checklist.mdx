@@ -1,0 +1,153 @@
+---
+title: "CDC Sink for PostgreSQL: Prerequisites Checklist"
+sidebar_label: "Prerequisites Checklist"
+description: "Verify all requirements before creating a CDC Sink task for PostgreSQL, including WAL configuration, user permissions, table requirements, and network access."
+sidebar_position: 2
+see_also:
+  - title: "WAL Configuration"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/wal-configuration"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "Permissions and Roles"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/permissions-and-roles"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "Initial Setup"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/initial-setup"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "REPLICA IDENTITY"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* Before creating a CDC Sink task for PostgreSQL, review the prerequisites on this page to confirm that
+  the source database is ready for logical replication, the PostgreSQL user has the required permissions,
+  the mapped tables meet CDC Sink requirements, and RavenDB can connect to the database.
+
+* In this article:
+  * [Source database requirements](#source-database-requirements)
+  * [User permissions](#user-permissions)
+  * [Table requirements](#table-requirements)
+  * [Network access](#network-access)
+
+</Admonition>   
+
+<Panel heading="Source database requirements">
+
+* **PostgreSQL version**:  
+  10 or later.
+
+* **WAL level**:  
+  `wal_level` must be set to `logical`.
+
+* **Replication slots**:  
+  `max_replication_slots` must allow at least one slot for each CDC Sink task.
+
+* **WAL senders**:  
+  `max_wal_senders` must allow at least one active replication connection for each running CDC Sink task.
+
+Verify the current settings with:
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+```sql
+SHOW wal_level;
+SHOW max_replication_slots;
+SHOW max_wal_senders;
+```
+</TabItem>
+</Tabs>
+
+For instructions on changing `wal_level`, `max_replication_slots`, or `max_wal_senders`, 
+see [WAL Configuration](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/wal-configuration.mdx).
+
+</Panel>
+
+<Panel heading="User permissions">
+
+The PostgreSQL user configured in the CDC Sink connection string must be able to use logical replication 
+and read every table mapped by the CDC Sink task.
+
+**Minimum required permissions:**
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+```sql
+-- Required for logical replication
+ALTER USER cdc_user REPLICATION;
+
+-- Required for the initial load and for reading mapped tables
+GRANT SELECT ON TABLE orders TO cdc_user;
+GRANT SELECT ON TABLE order_lines TO cdc_user;
+```
+</TabItem>
+</Tabs>
+
+**Permissions for automatic setup:**
+
+To let CDC Sink create the replication slot and create or update the publication automatically,  
+the PostgreSQL user also needs:
+
+* **Create replication slots**:  
+  the `REPLICATION` role attribute.
+    
+* **Create publications**:  
+  `CREATE` on the database, plus ownership of the tables being published.  
+  `SUPERUSER` satisfies both publication requirements.
+
+See [Permissions and Roles](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/permissions-and-roles.mdx) for the exact grants.
+
+If the PostgreSQL user configured in the CDC Sink connection string does not have these permissions, 
+a database administrator must set up the replication slot and publication manually before the task starts.
+See [Initial Setup](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/initial-setup.mdx).
+
+</Panel>
+
+<Panel heading="Table requirements">
+
+* **Configured key columns**:  
+  Each root table and embedded table must define `PrimaryKeyColumns`.  
+  These columns must exist in the source table and must also be included in the table's `Columns` mappings.
+
+* **Embedded join columns**:  
+  Each embedded table must define `JoinColumns` that match the direct parent table's `PrimaryKeyColumns`
+  in count and order. These columns must exist in the embedded source table.
+
+* **REPLICA IDENTITY for embedded deletes**:  
+  For embedded tables where the join columns are not part of the primary key,  
+  the table must have `REPLICA IDENTITY FULL` or a replica identity index that covers both the join columns and the embedded table's `PrimaryKeyColumns`.
+    
+  Without this, DELETE events will not include enough old row values for CDC Sink to route the delete and identify the embedded item to remove.
+  If deletes for that embedded table are ignored with `OnDelete.IgnoreDeletes = true`,  
+  no `REPLICA IDENTITY` change is required for delete routing.
+  Learn more in [REPLICA IDENTITY](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity.mdx).
+
+* **Mapped source columns**:  
+  Every source column referenced by `Columns`, `PrimaryKeyColumns`, `JoinColumns`, or linked-table `JoinColumns`  
+  must exist in the SQL table.
+
+</Panel>
+
+<Panel heading="Network access">
+
+* The RavenDB node that runs the CDC Sink task must be able to connect to the PostgreSQL host and port in the connection string (default port: `5432`).
+
+* In a RavenDB cluster, every node that can become responsible for the task should have the same access,  
+  so the task can resume after failover.
+
+* PostgreSQL and the network path must allow connections from those RavenDB node addresses.
+  Check PostgreSQL host-based authentication, firewall rules, routing, proxies, load balancers, and security groups as applicable.
+
+* The replication connection is long-lived.  
+  Ensure that firewalls, proxies, and load balancers do not terminate idle or long-lived connections.
+
+</Panel>

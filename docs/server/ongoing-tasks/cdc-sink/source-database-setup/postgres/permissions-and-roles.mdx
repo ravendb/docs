@@ -1,0 +1,157 @@
+---
+title: "CDC Sink for PostgreSQL: Permissions and Roles"
+sidebar_label: Permissions and Roles
+description: "PostgreSQL permissions required by the CDC Sink user, including minimum privileges, automatic setup permissions, and dedicated user creation examples."
+sidebar_position: 4
+see_also:
+  - title: "Prerequisites Checklist"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/prerequisites-checklist"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "Initial Setup"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/initial-setup"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+  - title: "Cleanup and Maintenance"
+    link: "server/ongoing-tasks/cdc-sink/source-database-setup/postgres/cleanup-and-maintenance"
+    source: "docs"
+    path: "Server > CDC Sink > PostgreSQL"
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* This page documents the PostgreSQL permissions required by the role configured in the CDC Sink connection string, and how to grant them.
+
+* In this article:
+  * [Minimum permissions](#minimum-permissions)
+  * [Permissions for automatic setup](#permissions-for-automatic-setup)
+  * [Creating a dedicated CDC user](#creating-a-dedicated-cdc-user)
+
+</Admonition>
+
+<Panel heading="Minimum permissions">
+
+The **CDC Sink user** is the PostgreSQL role in the connection string that the CDC Sink task uses to connect to the source database. 
+Throughout this page, `cdc_user` is used as the example username for this role.
+
+At a minimum, the CDC Sink user needs:
+
+* **`REPLICATION`** role attribute - allows the user to use logical replication and create a logical replication slot.
+* **`SELECT`** on each table mapped by the CDC Sink task - required for the initial load phase.
+
+Example:
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+```sql
+-- Grant replication privilege
+ALTER USER cdc_user REPLICATION;
+
+-- Grant SELECT on each table
+GRANT SELECT ON TABLE orders TO cdc_user;
+GRANT SELECT ON TABLE order_lines TO cdc_user;
+GRANT SELECT ON TABLE customers TO cdc_user;
+```
+</TabItem>
+</Tabs>
+
+With only these permissions, CDC Sink can create the replication slot, 
+but a database administrator must create or update the publication before the task starts 
+unless the user also has the publication permissions described below.
+
+See [Initial Setup](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/initial-setup.mdx).
+
+</Panel>
+
+<Panel heading="Permissions for automatic setup">
+
+To let CDC Sink create the replication slot and create or update the publication automatically,  
+the PostgreSQL user needs the minimum permissions above plus publication-management permissions.
+
+**Create replication slots:**
+
+The `REPLICATION` role attribute listed under [Minimum permissions](#minimum-permissions) is enough for CDC Sink to create the logical replication slot:
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+```sql
+ALTER USER cdc_user REPLICATION;
+```
+</TabItem>
+</Tabs>
+
+**Create and update publications:**
+
+Creating a publication requires `CREATE` on the database.  
+Adding tables to the publication requires ownership of those tables (`SUPERUSER` satisfies both requirements):
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+```sql
+GRANT CREATE ON DATABASE mydb TO cdc_user;
+
+-- The user must also own the tables added to the publication,
+-- or a database administrator must create/update the publication manually.
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="">
+    
+Granting `SUPERUSER` gives the user unrestricted access to the database server.
+For production environments, prefer granting only the specific privileges required, or have a database administrator manage the publication manually.
+    
+</Admonition>
+
+<Admonition type="note" title="">
+    
+For added security in production, consider having your database administrator create or update the publication manually,
+rather than granting CDC Sink ownership of application tables.  
+The CDC Sink user still needs `REPLICATION` and `SELECT` on the relevant tables.
+See [Initial Setup](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/initial-setup.mdx).
+    
+</Admonition>
+
+</Panel>
+
+<Panel heading="Creating a dedicated CDC user">
+
+It is recommended to use a dedicated PostgreSQL user for CDC Sink rather than an application or admin user.
+
+Example setup:
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+```sql
+-- Create the user with replication privilege
+CREATE USER cdc_user WITH PASSWORD 'secure_password' REPLICATION;
+
+-- Grant SELECT on every table mapped by the CDC Sink task
+GRANT SELECT ON TABLE orders TO cdc_user;
+GRANT SELECT ON TABLE order_lines TO cdc_user;
+
+-- If CDC Sink should create the publication automatically:
+GRANT CREATE ON DATABASE mydb TO cdc_user;
+
+-- The user must also own every table added to the publication,
+-- or a database administrator must create/update the publication manually.
+ALTER TABLE orders OWNER TO cdc_user;
+ALTER TABLE order_lines OWNER TO cdc_user;
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="">
+
+Transferring table ownership with `ALTER TABLE ... OWNER TO` can affect the owning application,
+including who can alter or drop the table and who controls table-level privileges.
+For production environments, prefer having a database administrator create or update the publication manually unless table ownership transfer is acceptable.
+
+</Admonition>
+
+</Panel>

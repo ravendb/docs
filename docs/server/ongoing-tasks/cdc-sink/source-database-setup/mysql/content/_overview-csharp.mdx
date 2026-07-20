@@ -1,0 +1,125 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* CDC Sink supports MySQL and MariaDB as source databases using
+  [binary log (binlog) replication](https://dev.mysql.com/doc/refman/8.0/en/replication.html).
+
+* MySQL and MariaDB record row-level changes in the binlog.   
+  The CDC Sink task reads the binlog stream continuously and processes INSERT, UPDATE, and DELETE events according to the task configuration.
+
+* In this article:
+  * [Connection string](#connection-string)
+  * [Prerequisites](#prerequisites)
+  * [Streaming behavior](#streaming-behavior)
+  * [Task configuration](#task-configuration)
+
+</Admonition>
+
+<Panel heading="Connection string">
+
+Use a [SqlConnectionString](../../../../../../server/ongoing-tasks/etl/sql.mdx#add-an-sql-connection-string) with `FactoryName` set to `"MySqlConnector.MySqlConnectorFactory"`.
+
+The legacy `"MySql.Data.MySqlClient"` factory name is still accepted, 
+but the server automatically replaces it with `"MySqlConnector.MySqlConnectorFactory"` and raises a deprecation notification.
+
+<Tabs>
+<TabItem value="sync" label="Sync">
+```csharp
+store.Maintenance.Send(new PutConnectionStringOperation<SqlConnectionString>(
+    new SqlConnectionString
+    {
+        Name = "MySqlConnection",
+        FactoryName = "MySqlConnector.MySqlConnectorFactory",
+        ConnectionString =
+            "Server=myserver;Port=3306;" +
+            "Database=mydb;User=ravendb_cdc;Password=..."
+    }));
+```
+</TabItem>
+<TabItem value="async" label="Async">
+```csharp
+await store.Maintenance.SendAsync(new PutConnectionStringOperation<SqlConnectionString>(
+    new SqlConnectionString
+    {
+        Name = "MySqlConnection",
+        FactoryName = "MySqlConnector.MySqlConnectorFactory",
+        ConnectionString =
+            "Server=myserver;Port=3306;" +
+            "Database=mydb;User=ravendb_cdc;Password=..."
+    }));
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Prerequisites">
+
+MySQL/MariaDB must have binary logging enabled with row-based format:
+
+<Tabs>
+<TabItem value="ini" label="my.cnf">
+```ini
+# my.cnf / my.ini
+[mysqld]
+log-bin = mysql-bin
+binlog_format = ROW
+binlog_row_image = FULL
+server-id = 1
+
+# MySQL only: CDC Sink requires GTID.
+# This is not needed for MariaDB.
+enforce_gtid_consistency = ON
+gtid_mode = ON
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+On **MySQL**, CDC Sink requires `gtid_mode = ON`.  
+If GTID is not already enabled, configure it before starting the CDC Sink task.  
+For an existing MySQL server, follow MySQL's GTID enablement procedure.
+
+**MariaDB** always has GTID support enabled, so no `gtid_mode` setting is needed there.
+
+</Admonition>
+
+The MySQL/MariaDB user in the CDC Sink connection string needs the following privileges:
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+```sql
+GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'ravendb_cdc'@'%';
+GRANT SELECT ON mydb.* TO 'ravendb_cdc'@'%';
+```
+</TabItem>
+</Tabs>
+
+* `REPLICATION SLAVE` - required to read the binlog stream
+* `REPLICATION CLIENT` - required to query binlog status
+* `SELECT` - required for the initial full-table load
+
+</Panel>
+
+<Panel heading="Streaming behavior">
+
+After the initial load, MySQL/MariaDB CDC Sink reads row-based binlog events continuously.  
+It does not poll the source database for changes, so the `CdcSink.SqlServer.PollIntervalInSec` server configuration setting 
+applies only to SQL Server CDC Sink tasks and has no effect on MySQL/MariaDB.
+
+</Panel>
+
+<Panel heading="Task configuration">
+
+Most CDC Sink task configuration is shared across supported source database engines.  
+See [Configuration Reference](../../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/configuration-reference.mdx)
+for full details, including table mappings, delete behavior, and patches.
+
+When `SourceTableSchema` is omitted, MySQL/MariaDB uses the database name from the connection string as the default schema.
+
+</Panel>

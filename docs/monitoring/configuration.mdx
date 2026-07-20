@@ -1,0 +1,100 @@
+---
+title: "Monitoring: Configuration"
+sidebar_label: "Configuration options"
+description: "General monitoring configuration keys, and the configuration pages of the monitoring sections."
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Monitoring: Configuration
+<Admonition type="note" title="">
+
+* This page lists the general monitoring configuration keys, and points to the
+  configuration pages of the monitoring sections.  
+
+* Learn how to set configuration keys in the [configuration overview](../server/configuration/configuration-options.mdx).  
+
+* In this article:
+    * [General monitoring keys](../monitoring/configuration.mdx#general-monitoring-keys)  
+    * [Per-section configuration pages](../monitoring/configuration.mdx#per-section-configuration-pages)  
+
+</Admonition>
+
+<Panel heading="General monitoring keys">
+
+These keys control how the server collects its CPU and disk metrics:
+
+<ContentFrame>
+
+### Monitoring.Cpu.Exec
+
+A command or executable that provides RavenDB with CPU usage figures.  
+RavenDB runs the command when the server starts, and continuously reads JSON objects with
+`MachineCpuUsage` and `ProcessCpuUsage` fields (usage percentages) from the command's
+standard output, using these values as its CPU metrics rather than measuring CPU usage itself.  
+Note that the command must write to its standard output unbuffered.
+
+---
+
+#### Example: Reading CPU usage from a script
+
+```json
+{
+    "Monitoring.Cpu.Exec": "/usr/bin/python3",
+    "Monitoring.Cpu.Exec.Arguments": "/scripts/cpu_usage.py"
+}
+```
+<br />
+
+The script writes lines in this form to its standard output:
+
+```json
+{ "MachineCpuUsage": 57.0, "ProcessCpuUsage": 2.5 }
+```
+<br />
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.Cpu.Exec.Arguments
+
+The command line arguments for the `Monitoring.Cpu.Exec` command or executable.  
+The arguments must be escaped for the command line.
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitoring.Disk.ReadStatsDebounceTimeInMs
+
+The minimum interval between measures to calculate the disk stats.
+
+- **Type**: `TimeSetting`
+- **Default**: `1000`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Per-section configuration pages">
+
+Each monitoring section documents its own configuration keys:
+
+| Section | Configuration page |
+| - | - |
+| Integrations (SNMP, OpenTelemetry) | [Integrations: Configuration](integrations/configuration.mdx) |
+| Task errors | [Task errors: Configuration](task-errors/configuration.mdx) |
+| Tombstones | [Tombstones: Configuration](tombstones/configuration.mdx) |
+
+</Panel>

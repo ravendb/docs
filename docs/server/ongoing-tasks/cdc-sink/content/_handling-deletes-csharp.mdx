@@ -1,0 +1,290 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* CDC Sink lets you configure how DELETE events are handled for root tables and embedded tables  
+  by setting the `OnDelete` property (`CdcSinkOnDeleteConfig`) on the table configuration.
+
+* By default, a DELETE event deletes the corresponding RavenDB document.  
+  For embedded tables, it removes the item from an array or map, or sets a `Value`-type property to `null`.  
+  The `OnDelete` configuration changes this behavior.
+
+* In this article:
+  * [Default DELETE behavior](#default-delete-behavior)
+  * [OnDelete configuration](#ondelete-configuration)
+  * [OnDelete behavior summary](#ondelete-behavior-summary)    
+  * [Common patterns](#common-patterns)
+    * [Archive](#archive)
+    * [Audit trail (root document)](#audit-trail-root-document)
+    * [Silent ignore](#silent-ignore)
+  * [OnDelete for embedded tables](#ondelete-for-embedded-tables)
+  * [DELETE routing and REPLICA IDENTITY](#delete-routing-and-replica-identity)
+
+</Admonition>
+
+<Panel heading="Default DELETE behavior">
+
+When `OnDelete` is not configured, CDC Sink applies the delete automatically:
+
+* **Root table DELETE** - Deletes the corresponding RavenDB document.
+* **Embedded table DELETE (Array/Map)** - Removes the item from the parent document's array or map.
+* **Embedded table DELETE (Value)** - Sets the `Value`-type property on the parent document to `null`.
+
+</Panel>
+
+<Panel heading="OnDelete configuration">
+
+`CdcSinkOnDeleteConfig` has two properties:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+```csharp
+public class CdcSinkOnDeleteConfig
+{
+    // JavaScript patch that runs when a DELETE event arrives
+    // Available variables: this, $row, $old
+    public string Patch { get; set; }
+
+    // When true, CDC Sink does not apply its automatic delete/removal    
+    public bool IgnoreDeletes { get; set; }
+}
+```
+</TabItem>
+</Tabs>
+
+* If `Patch` is set, it runs before CDC Sink applies or skips its automatic delete handling.
+* If `IgnoreDeletes = true`, CDC Sink skips the automatic delete/removal after the patch runs.
+* If `IgnoreDeletes = false` (default), CDC Sink applies the automatic delete/removal after the patch runs.
+
+A DELETE event is discarded outright only when `IgnoreDeletes = true` **and** `Patch = null`  
+(that is, `OnDelete.IgnoreDeletes = true` with no `OnDelete.Patch`).  
+If a delete patch is configured, the event is still routed so the patch can run - even when `IgnoreDeletes = true`.
+
+<Admonition type="note" title="">
+When `IgnoreDeletes = true`, CDC Sink skips its automatic delete/removal but still saves changes made to `this` by the patch.
+For root tables, `this` is the document being handled. For embedded tables, `this` is the parent document.
+</Admonition>
+
+</Panel>
+
+<Panel heading="OnDelete behavior summary">
+
+| IgnoreDeletes | Patch | Behavior |
+|---------------|-------|----------|
+| `false`       | null  | CDC Sink applies the normal delete/removal (default). |
+| `false`       | set   | Patch runs, and CDC Sink still applies the normal delete/removal. |
+| `true`        | null  | DELETE event is discarded silently; no patch runs. |
+| `true`        | set   | Patch runs, and CDC Sink skips its automatic delete/removal. |
+
+When CDC Sink applies its automatic delete/removal (that is, when `IgnoreDeletes = false`):
+
+* For root tables, the delete patch runs before the document is deleted.  
+* For embedded tables, CDC Sink removes the item (or sets a `Value`-type property to `null`) before running the patch,  
+  and `$old` contains the removed item.  
+
+When `IgnoreDeletes = true`, CDC Sink skips its automatic delete/removal.  
+If a patch is configured, its changes to `this` are saved unless the patch explicitly calls `del()` or `put()`.
+
+</Panel>
+
+<Panel heading="Common patterns">
+
+<ContentFrame>
+
+### Archive
+
+Keep the document in RavenDB but mark it as archived.  
+The patch sets archive fields, and `IgnoreDeletes = true` prevents CDC Sink's automatic deletion:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+```csharp
+OnDelete = new CdcSinkOnDeleteConfig
+{
+    IgnoreDeletes = true,
+    Patch = @"
+        this.Archived = true;
+        this.ArchivedAt = new Date().toISOString();
+    "
+}
+```
+</TabItem>
+</Tabs>
+
+The document remains in RavenDB with `Archived = true`.  
+Queries can filter on `Archived` to exclude archived records.    
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Audit trail (root document)
+
+When a root document is deleted, use `OnDelete.Patch` to write an audit document with `put()` before CDC Sink applies the delete.
+
+Because `IgnoreDeletes` is `false` by default, CDC Sink deletes `this` after the patch runs.  
+Changes made only to `this` do not remain; use `put()` to create a separate document that survives the delete:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+```csharp
+OnDelete = new CdcSinkOnDeleteConfig
+{
+    // IgnoreDeletes defaults to false - CDC Sink deletes the RavenDB document after the patch
+    Patch = @"
+        put('DeletedOrders/' + id(this), {
+            OriginalId: id(this),
+            Customer: this.Customer,
+            Total: this.Total,
+            DeletedAt: new Date().toISOString(),
+            '@metadata': { '@collection': 'DeletedOrders' }
+        });
+    "
+}
+```
+</TabItem>
+</Tabs>
+
+The patch creates a document in the `DeletedOrders` collection before `this` is deleted.  
+That audit document is not removed by this delete operation.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Silent ignore
+
+Set `IgnoreDeletes = true` and leave `Patch` unset to discard DELETE events without running a patch.  
+Use this for append-only data where deletes should not remove the RavenDB document or embedded item:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+```csharp
+OnDelete = new CdcSinkOnDeleteConfig
+{
+    // No patch - DELETE events are silently discarded
+    IgnoreDeletes = true
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="OnDelete for embedded tables">
+
+The same `OnDelete` configuration works on embedded tables.  
+For embedded tables:
+
+* `Patch`   
+   runs on the parent document, not on the embedded item.
+* `$old`    
+   contains the embedded item's last known state before deletion.
+* `IgnoreDeletes = true`  
+   prevents CDC Sink from automatically removing the array/map item or setting a `Value`-type property to `null`.    
+
+---
+    
+**Example: Keep deleted items in an audit array**
+
+Rather than removing a deleted line item from the array, move it to a separate `DeletedLines` property:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+```csharp
+new CdcSinkEmbeddedTableConfig
+{
+    SourceTableName = "order_lines",
+    PropertyName = "Lines",
+    // ...
+    OnDelete = new CdcSinkOnDeleteConfig
+    {
+        IgnoreDeletes = true,
+        Patch = @"
+            // Remove from active Lines
+            this.Lines = (this.Lines || [])
+                .filter(l => l.LineId !== $old?.LineId);
+
+            // Add to DeletedLines audit array
+            this.DeletedLines = this.DeletedLines || [];
+            this.DeletedLines.push({
+                LineId: $old?.LineId,
+                Product: $old?.Product,
+                Quantity: $old?.Quantity,
+                DeletedAt: new Date().toISOString()
+            });
+        "
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+With `IgnoreDeletes = true`, CDC Sink does not automatically remove the item -  
+the patch takes full control of both the `Lines` array and the `DeletedLines` audit trail.
+
+---
+    
+**Example: Run a patch but still remove the item**
+
+To run side-effect logic on DELETE while still removing the item from the array,
+leave `IgnoreDeletes` as `false` (the default). CDC Sink removes the item, and the patch can use `$old` to inspect the removed item:
+
+<Tabs>
+<TabItem value="csharp" label="csharp">
+```csharp
+new CdcSinkEmbeddedTableConfig
+{
+    SourceTableName = "order_lines",
+    PropertyName = "Lines",
+    // ...
+    OnDelete = new CdcSinkOnDeleteConfig
+    {
+        // IgnoreDeletes = false (default) - CDC Sink removes the item
+        Patch = @"
+            // Log total for the line being removed
+            this.RemovedTotal = (this.RemovedTotal || 0)
+                + ($old?.UnitPrice || 0) * ($old?.Quantity || 0);
+        "
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+The `Lines` item is removed by CDC Sink. The patch only handles the side-effect logic.    
+
+</Panel>
+
+<Panel heading="DELETE routing and REPLICA IDENTITY">
+
+For embedded-table DELETE events, CDC Sink must know which parent document and embedded item to update.  
+The DELETE event must include the embedded table's primary key columns and the join columns that identify the parent.
+
+For PostgreSQL, the default `REPLICA IDENTITY` includes only primary key columns in DELETE events.  
+If an embedded table's join columns are not part of its primary key, configure `REPLICA IDENTITY` so DELETE events include those join columns.
+
+<Admonition type="note" title="">
+This requirement is PostgreSQL-specific.
+Other databases may include the needed DELETE-event columns by default or use a different mechanism.
+See [REPLICA IDENTITY](../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity.mdx) (PostgreSQL).    
+</Admonition>
+    
+---    
+
+**Skipping DELETE routing for embedded tables**:
+    
+* To discard embedded-table DELETE events entirely, set `OnDelete.IgnoreDeletes = true` and leave `OnDelete.Patch` unset.
+  In that configuration, CDC Sink does not need to route the DELETE event to a parent document, so PostgreSQL `REPLICA IDENTITY` changes are not needed for that delete behavior.
+    
+* This skip applies only when no patch is set. 
+  If `OnDelete.Patch` is configured, the DELETE event is still routed and processed so the patch can run - 
+  so the join columns (and `REPLICA IDENTITY`, if the join columns aren't in the primary key) are still required.
+
+</Panel>
