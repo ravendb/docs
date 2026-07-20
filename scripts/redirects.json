@@ -21,6 +21,13 @@
         }
     },
     {
+        "key": "/server/administration/statistics",
+        "value": {
+            "targetUrl": "/monitoring/statistics/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/client-api/session/querying/what-is-rql",
         "value": {
             "targetUrl": "/querying/rql/what-is-rql",

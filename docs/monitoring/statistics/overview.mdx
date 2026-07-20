@@ -1,0 +1,365 @@
+---
+title: "Statistics"
+sidebar_label: "Overview"
+description: "Access RavenDB server and database statistics including document counts, index status, storage usage, and request metrics."
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Statistics
+
+<Admonition type="note" title="">
+
+* RavenDB reports runtime statistics and metrics for the server and for individual databases.  
+
+* You can view this data in Studio, or retrieve it in JSON format from dedicated endpoints.  
+
+* RavenDB can also be monitored via protocols like SNMP and OTLP (used by OpenTelemetry),
+  as well as monitoring tools like Prometheus.  
+
+* In this article:
+   * [Server statistics](overview.mdx#server-statistics)
+      * [Server statistics via Studio](overview.mdx#server-statistics-via-studio)
+      * [Metrics](overview.mdx#metrics)
+      * [Memory stats](overview.mdx#memory-stats)
+      * [CPU stats](overview.mdx#cpu-stats)
+   * [Database statistics](overview.mdx#database-statistics)
+      * [Database statistics via Studio](overview.mdx#database-statistics-via-studio)
+      * [Database statistics via a dedicated endpoint](overview.mdx#database-statistics-via-a-dedicated-endpoint)
+      * [Database metrics](overview.mdx#database-metrics)
+
+</Admonition>
+
+<Panel heading="Server statistics">
+
+You can view server statistics in Studio, or retrieve them from the dedicated endpoints
+listed below.
+
+<ContentFrame>
+
+### Server statistics via Studio
+
+Find server statistics in the following Studio views:
+
+* [Cluster Dashboard](../../studio/cluster/cluster-dashboard/cluster-dashboard-overview.mdx): live per-node CPU, memory, traffic, indexing, and storage metrics.
+* [Cluster View](../../studio/cluster/cluster-view.mdx#cluster-view-stats): cluster-wide stats, including assigned and licensed cores, election term, and per-node state and memory.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Metrics
+
+<Admonition type="note" title="">
+Get server metrics using the `{serverUrl}/admin/metrics` endpoint.
+</Admonition>
+
+A document containing the following metrics is retrieved:
+
+* **Requests**
+    * RequestsPerSec
+    * ConcurrentRequestsCount
+    * AverageDuration
+* **Docs**
+    * PutsPerSec
+    * BytesPutsPerSec
+* **Attachments**
+    * PutsPerSec
+    * BytesPutsPerSec
+* **Counters**
+    * PutsPerSec
+    * BytesPutsPerSec
+* **TimeSeries**
+    * PutsPerSec
+    * BytesPutsPerSec
+* **MapIndexes**
+    * IndexedPerSec
+* **MapReduceIndexes**
+    * MappedPerSec
+    * ReducedPerSec
+
+The rate fields (those ending in `PerSec`) are **meters**, each with the following format.  
+`ConcurrentRequestsCount` and `AverageDuration` are plain numeric values.
+
+```json
+{
+    "Current": 0.0,
+    "Count": 131,
+    "MeanRate": 1.8,
+    "OneMinuteRate": 0.2,
+    "FiveMinuteRate": 0.4,
+    "FifteenMinuteRate": 0.1
+}
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Memory stats
+
+<Admonition type="note" title="">
+Get server memory statistics using the `{serverUrl}/admin/debug/memory/stats` endpoint.
+</Admonition>
+
+A document is retrieved with the server's overall memory usage, per-thread allocations,
+and memory-mapped files grouped by directory.
+
+```json
+{
+    "@metadata": {
+        "DateTime": "2026-07-20T09:43:40.5522757Z",
+        "WebUrl": "http://127.0.0.1:8080",
+        "NodeTag": "A"
+    },
+    "MemoryInformation": {
+        "PhysicalMemory": "31.435 GBytes",
+        "WorkingSet": "571.27 MBytes",
+        "SharedClean": "188.93 MBytes",
+        "ManagedAllocations": "196.68 MBytes",
+        "ManagedHeapsAfterLastGC": {
+            "TotalSize": "245.96 MBytes",
+            "Gen0": { "Size": "157.88 MBytes", "Fragmentation": "125.79 MBytes" },
+            "Gen1": { "Size": "0 Bytes", "Fragmentation": "0 Bytes" },
+            "Gen2": { "Size": "0 Bytes", "Fragmentation": "0 Bytes" },
+            "LOH": { "Size": "87.43 MBytes", "Fragmentation": "19.38 MBytes" },
+            "POH": { "Size": "142.77 KBytes", "Fragmentation": "0 Bytes" }
+        },
+        "UnmanagedAllocations": "11.71 MBytes",
+        "LuceneManagedAllocationsForTermCache": "0 Bytes",
+        "LuceneUnmanagedAllocationsForTermCache": "0 Bytes",
+        "LuceneUnmanagedAllocationsForSorting": "0 Bytes",
+        "EncryptionBuffersInUse": "0 Bytes",
+        "EncryptionBuffersPool": "0 Bytes",
+        "EncryptionLockedMemory": "0 Bytes",
+        "MemoryMapped": "346.31 MBytes",
+        "IsHighDirty": false,
+        "DirtyMemory": "40 KBytes",
+        "AvailableMemory": "11.092 GBytes",
+        "AvailableMemoryForProcessing": "11.277 GBytes"
+    },
+    "Threads": [
+        {
+            "Name": ".NET TP Worker",
+            "Allocations": 5939200,
+            "HumaneAllocations": "5.66 MBytes",
+            "Ids": [
+                { "Id": 27012, "ManagedThreadId": 33, "Allocations": 2531328, "HumaneAllocations": "2.41 MBytes" },
+                { "Id": 30196, "ManagedThreadId": 81, "Allocations": 1196032, "HumaneAllocations": "1.14 MBytes" }
+            ]
+        },
+        {
+            "Name": "Consensus Leader - A in term 5",
+            "Allocations": 458752,
+            "HumaneAllocations": "448 KBytes",
+            "Id": 25804,
+            "ManagedThreadId": 26
+        }
+        ...
+    ],
+    "Mappings": [
+        {
+            "Directory": "\\Databases\\sampleDB",
+            "TotalDirectorySize": 134217728,
+            "HumaneTotalDirectorySize": "128 MBytes",
+            "Details": {
+                "Raven.voron": {
+                    "FileSize": 134217728,
+                    "HumaneFileSize": "128 MBytes",
+                    "TotalMapped": 134217728,
+                    "HumaneTotalMapped": "128 MBytes",
+                    "Mappings": [ { "Size": 134217728, "Count": 1 } ]
+                }
+            }
+        }
+        ...
+    ]
+}
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### CPU stats
+
+<Admonition type="note" title="">
+Get server CPU stats using the `{serverUrl}/admin/debug/cpu/stats` endpoint.
+</Admonition>
+
+A document is retrieved with the process CPU times and the current thread-pool thread counts.
+
+```json
+{
+    "@metadata": {
+        "DateTime": "2026-07-20T09:44:04.9416220Z",
+        "WebUrl": "http://127.0.0.1:8080",
+        "NodeTag": "A"
+    },
+    "CpuStats": [
+        {
+            "ProcessName": "Raven.Server",
+            "ProcessorAffinity": 16777215,
+            "PrivilegedProcessorTime": "00:00:02.2343750",
+            "TotalProcessorTime": "00:00:08.9531250",
+            "UserProcessorTime": "00:00:06.7187500"
+        }
+    ],
+    "ThreadPoolStats": [
+        {
+            "AvailableThreadPoolWorkerThreads": 32765,
+            "AvailableThreadPoolCompletionPortThreads": 1000,
+            "MinThreadPoolWorkerThreads": 48,
+            "MinThreadPoolCompletionPortThreads": 2,
+            "MaxThreadPoolWorkerThreads": 32767,
+            "MaxThreadPoolCompletionPortThreads": 1000
+        }
+    ]
+}
+```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Database statistics">
+
+You can view database statistics in Studio, or retrieve them from the dedicated endpoints
+listed below or via the [client API](../../client-api/operations/maintenance/get-stats.mdx).
+
+<ContentFrame>
+
+### Database statistics via Studio
+
+Several Studio views show database statistics:
+
+* [Database List View](../../studio/database/databases-list-view.mdx#database-stats): general database stats, including size, document and index counts, and status.
+* [Indexing Performance](../../studio/database/indexes/indexing-performance.mdx#index-statistics-view): per-index statistics, including map and reduce attempts, success counts, and rates.
+* [Storage Report](../../studio/database/stats/storage-report.mdx): storage usage per collection and index.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Database statistics via a dedicated endpoint
+
+<Admonition type="note" title="">
+Get database statistics using the `{serverUrl}/databases/{databaseName}/stats` endpoint.
+</Admonition>
+
+A document is retrieved with counts of the database's documents, indexes, and extensions,
+its per-index status, and its size on disk.
+
+```json
+{
+    "@metadata": {
+        "DateTime": "2026-07-20T09:46:46.6064918Z",
+        "WebUrl": "http://127.0.0.1:8080",
+        "NodeTag": "A"
+    },
+    "CountOfIndexes": 7,
+    "CountOfDocuments": 1059,
+    "CountOfRevisionDocuments": 5475,
+    "CountOfTombstones": 0,
+    "CountOfDocumentsConflicts": 0,
+    "CountOfConflicts": 0,
+    "CountOfAttachments": 17,
+    "CountOfCounterEntries": 77,
+    "CountOfTimeSeriesSegments": 864,
+    "Indexes": [
+        {
+            "IsStale": false,
+            "State": "Normal",
+            "LastIndexingTime": "2026-07-20T09:42:03.7518904Z",
+            "Name": "Product/Rating",
+            "LockMode": "Unlock",
+            "Priority": "Normal",
+            "Type": "MapReduce",
+            "SourceType": "Counters"
+        },
+        {
+            "IsStale": false,
+            "State": "Normal",
+            "LastIndexingTime": "2026-07-20T09:42:03.6013188Z",
+            "Name": "Orders/ByCompany",
+            "LockMode": "Unlock",
+            "Priority": "Normal",
+            "Type": "MapReduce",
+            "SourceType": "Documents"
+        }
+        ...
+    ],
+    "CountOfUniqueAttachments": 17,
+    "DatabaseChangeVector": "A:8882-M/x0ucHwgEGGxAfWlnYPNw",
+    "DatabaseId": "M/x0ucHwgEGGxAfWlnYPNw",
+    "NumberOfTransactionMergerQueueOperations": 0,
+    "Is64Bit": true,
+    "Pager": "Voron.Platform.Win32.WindowsMemoryMapPager",
+    "LastDocEtag": 8878,
+    "LastDatabaseEtag": 8882,
+    "LastIndexingTime": "2026-07-20T09:42:03.8632713Z",
+    "SizeOnDisk": {
+        "HumaneSize": "285.94 MBytes",
+        "SizeInBytes": 299827200
+    },
+    "TempBuffersSizeOnDisk": {
+        "HumaneSize": "1.69 MBytes",
+        "SizeInBytes": 1769472
+    }
+}
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Database metrics
+
+<Admonition type="note" title="">
+Get the database metrics using the `{serverUrl}/databases/{databaseName}/metrics` endpoint.
+</Admonition>
+
+A document containing the following database metrics is retrieved:
+
+* **Requests**
+    * RequestsPerSec
+    * ConcurrentRequestsCount
+    * AverageDuration
+* **Docs**
+    * PutsPerSec
+    * BytesPutsPerSec
+* **Attachments**
+    * PutsPerSec
+    * BytesPutsPerSec
+* **Counters**
+    * PutsPerSec
+    * BytesPutsPerSec
+* **TimeSeries**
+    * PutsPerSec
+    * BytesPutsPerSec
+* **MapIndexes**
+    * IndexedPerSec
+* **MapReduceIndexes**
+    * MappedPerSec
+    * ReducedPerSec
+
+The rate fields (those ending in `PerSec`) are meters, each with the following format.  
+`ConcurrentRequestsCount` and `AverageDuration` are plain numeric values.
+
+```json
+{
+    "Current": 0.0,
+    "Count": 32,
+    "MeanRate": 0.1,
+    "OneMinuteRate": 0.0,
+    "FiveMinuteRate": 0.1,
+    "FifteenMinuteRate": 0.0
+}
+```
+
+</ContentFrame>
+
+</Panel>
