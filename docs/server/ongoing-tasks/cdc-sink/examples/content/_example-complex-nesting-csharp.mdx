@@ -12,7 +12,7 @@ import Panel from '@site/src/components/Panel';
   nested `product_variants` and `variant_attributes` arrays, and a linked `categories` document reference.    
 
 * For detailed instructions on creating a CDC Sink task with the Client API or Studio,  
-  see [Create a CDC Sink task](../../../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx).       
+  see [Create a CDC Sink task](../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx).       
 
 * In this article:
   * [Source schema](#source-schema)
@@ -101,7 +101,7 @@ CREATE TABLE variant_attributes (
     </TabItem>
     </Tabs>
 
-    Learn more in [REPLICA IDENTITY](../../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity.mdx).
+    Learn more in [REPLICA IDENTITY](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity.mdx).
 
 </Panel>
 
@@ -264,7 +264,7 @@ Then add the linked `categories` reference:
 5. **Referenced table as a root table**  
    The lower `categories` node is configured separately as a root table, not as part of the linked reference.  
    This lets CDC Sink create `Categories/<id>` documents that the `Category` link can point to and include.  
-   Learn more in [Linked tables](../../../../../../../server/ongoing-tasks/cdc-sink/document-modeling/linked-tables.mdx).
+   Learn more in [Linked tables](../../../../../server/ongoing-tasks/cdc-sink/document-modeling/linked-tables.mdx).
     
 ---
 
@@ -276,8 +276,8 @@ Then add the linked `categories` reference:
   selecting their node in the Tables tree and setting the relation type, primary key, join columns, and field mapping.
     
 * For an example that shows the embedded-table fields in Studio, see
-  [Denormalization with Embedded Tables](../../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/examples/example-denormalization.mdx).  
-  For the full configuration reference, see [Embedded Tables](../../../../../../../server/ongoing-tasks/cdc-sink/document-modeling/embedded-tables.mdx).
+  [Denormalization with Embedded Tables](../../../../../server/ongoing-tasks/cdc-sink/examples/example-denormalization.mdx).  
+  For the full configuration reference, see [Embedded Tables](../../../../../server/ongoing-tasks/cdc-sink/document-modeling/embedded-tables.mdx).
 
 #### Deep nesting is configured the same way 
     

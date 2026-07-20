@@ -9,7 +9,7 @@ import Panel from '@site/src/components/Panel';
   as individual event rows arrive from PostgreSQL.
 
 * For detailed instructions on creating a CDC Sink task with the Client API or Studio,  
-  see [Create a CDC Sink task](../../../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx).       
+  see [Create a CDC Sink task](../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx).       
     
 * In this article:
   * [Source schema](#source-schema)
@@ -76,7 +76,7 @@ Transaction rows are embedded as an array for history, and `Balance` is maintain
     </TabItem>
     </Tabs>
 
-  Learn more in [REPLICA IDENTITY](../../../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity.mdx).
+  Learn more in [REPLICA IDENTITY](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity.mdx).
 
 </Panel>
 
@@ -311,6 +311,6 @@ Without `OnDelete.Patch`, deleting a transaction row from SQL would remove it fr
 but leave `Balance` stale.  
     
 This also keeps `Balance` correct if the same change is re-applied after failover.      
-Learn more in [Failover and consistency](../../../../../../../server/ongoing-tasks/cdc-sink/failover-and-consistency.mdx).
+Learn more in [Failover and consistency](../../../../../server/ongoing-tasks/cdc-sink/failover-and-consistency.mdx).
 
 </Panel>
