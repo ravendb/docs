@@ -405,6 +405,13 @@
         }
     },
     {
+        "key": "/server/troubleshooting/logging",
+        "value": {
+            "targetUrl": "/monitoring/logs/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/server/administration/monitoring",
         "value": {
             "targetUrl": "/server/administration/monitoring/prometheus",

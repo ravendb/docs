@@ -17,7 +17,7 @@ import Panel from '@site/src/components/Panel';
   * From the **Client API** - use `SetLogsConfigurationOperation`, as explained below.  
   * From the **Studio** - see: [Admin Logs view](../../../../../studio/server/debug/admin-logs.mdx).
 
-* Learn more about RavenDB's logging system in the [Logging](../../../../../server/troubleshooting/logging.mdx) article. 
+* Learn more about RavenDB's logging system in the [Logging](../../../../../monitoring/logs/overview.mdx) article. 
     
 * In this article:
     * [Set logs configuration](../../../../../client-api/operations/server-wide/logs/set-logs-configuration.mdx#set-logs-configuration)
@@ -133,7 +133,7 @@ await store.Maintenance.Server.SendAsync(setLogsOp);
 If you're using an external `NLog.config` file,  
 you can define the logging level and filters directly in the XML file using `<logger>` and `<rules>`.
 
-* To learn how to use NLog for log filtering and routing, see: [Configuring and using NLog](../../../../../server/troubleshooting/logging.mdx#configuring-and-using-nlog).
+* To learn how to use NLog for log filtering and routing, see: [Configuring and using NLog](../../../../../monitoring/logs/overview.mdx#configuring-and-using-nlog).
 
 * Note: When an external NLog config file is used, its settings override any values set via `SetLogsConfigurationOperation`.
 

@@ -30,7 +30,10 @@ export default function AdministrationFeaturesGrid() {
         {
             title: "NLog",
             icon: "nlog",
-            url: `/${activeVersion.label}/server/troubleshooting/logging#configuring-and-using-nlog`,
+            url:
+                activeVersion.label >= "7.2"
+                    ? `/${activeVersion.label}/monitoring/logs/overview#configuring-and-using-nlog`
+                    : `/${activeVersion.label}/server/troubleshooting/logging#configuring-and-using-nlog`,
             description: "Seamless NLog integration to route RavenDB logs anywhere",
             minimumSupportedVersion: "4.0",
         },
