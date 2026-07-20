@@ -1,0 +1,199 @@
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+
+<Admonition type="note" title="">
+
+* Database and collection statistics can be retrieved using the client API.  
+
+* By default, statistics are retrieved for the database defined in the Document Store.  
+  To get database and collection statistics for another database use [forDatabase](../../../monitoring/statistics/client-api.mdx#get-statistics-for-another-database).  
+
+* In this page:
+    * [Get collection statistics](../../../monitoring/statistics/client-api.mdx#get-collection-statistics)
+    * [Get detailed collection statistics](../../../monitoring/statistics/client-api.mdx#get-detailed-collection-statistics)
+    * [Get database statistics](../../../monitoring/statistics/client-api.mdx#get-database-statistics)
+    * [Get detailed database statistics](../../../monitoring/statistics/client-api.mdx#get-detailed-database-statistics)
+    * [Get statistics for another database](../../../monitoring/statistics/client-api.mdx#get-statistics-for-another-database)
+
+</Admonition>
+
+<Panel heading="Get collection statistics">
+
+To get collection statistics, use `GetCollectionStatisticsOperation`:
+
+```php
+/** @var CollectionStatistics $stats */
+$stats = $store->maintenance()->send(new GetCollectionStatisticsOperation());
+```
+<br />
+
+The statistics are returned in a `CollectionStatistics` object:
+
+```php
+class CollectionStatistics
+{
+    // Total number of documents in all collections
+    private ?int $countOfDocuments = null;
+    // Total number of conflicts
+    private ?int $countOfConflicts = null;
+    // Number of documents per collection
+    private array $collections = [];
+
+    // ... getters and setters
+}
+```
+
+</Panel>
+
+<Panel heading="Get detailed collection statistics">
+
+To get detailed collection statistics, use `GetDetailedCollectionStatisticsOperation`:
+
+```php
+/** @var DetailedCollectionStatistics $stats */
+$stats = $store->maintenance()->send(new GetDetailedCollectionStatisticsOperation());
+```
+<br />
+
+The statistics are returned in a `DetailedCollectionStatistics` object,
+with a `CollectionDetails` entry per collection:
+
+```php
+class DetailedCollectionStatistics
+{
+    // Total number of documents in all collections
+    private ?int $countOfDocuments = null;
+    // Total number of conflicts
+    private ?int $countOfConflicts = null;
+    // Details per collection
+    private ?CollectionDetailsArray $collections = null;
+
+    // ... getters and setters
+}
+
+class CollectionDetails
+{
+    private ?string $name = null;
+    private ?int $countOfDocuments = null;
+    private ?Size $size = null;
+    private ?Size $documentsSize = null;
+    private ?Size $tombstonesSize = null;
+    private ?Size $revisionsSize = null;
+
+    // ... getters and setters
+}
+```
+
+</Panel>
+
+<Panel heading="Get database statistics">
+
+To get database statistics, use `GetStatisticsOperation`:
+
+```php
+/** @var DatabaseStatistics $stats */
+$stats = $store->maintenance()->send(new GetStatisticsOperation());
+```
+<br />
+
+The statistics are returned in a `DatabaseStatistics` object:
+
+```php
+class DatabaseStatistics implements ResultInterface
+{
+    // Last document etag in the database
+    private ?int $lastDocEtag = null;
+    // Last database etag
+    private ?int $lastDatabaseEtag = null;
+    // Total number of indexes in the database
+    private ?int $countOfIndexes = null;
+    // Total number of documents in the database
+    private ?int $countOfDocuments = null;
+    // Total number of revision documents in the database
+    private ?int $countOfRevisionDocuments = null;
+    // Total number of document conflicts in the database
+    private ?int $countOfDocumentsConflicts = null;
+    // Total number of tombstones in the database
+    private ?int $countOfTombstones = null;
+    // Total number of conflicts in the database
+    private ?int $countOfConflicts = null;
+    // Total number of attachments in the database
+    private ?int $countOfAttachments = null;
+    // Total number of unique attachments in the database
+    private ?int $countOfUniqueAttachments = null;
+    // Total number of counter-group entries in the database
+    private ?int $countOfCounterEntries = null;
+    // Total number of time-series segments in the database
+    private ?int $countOfTimeSeriesSegments = null;
+    // Statistics for each index in the database
+    private ?IndexInformationArray $indexes = null;
+    // Global change vector of the database
+    private ?string $databaseChangeVector = null;
+    // Database identifier
+    private ?string $databaseId = null;
+    // Indicates whether the process is 64-bit
+    private bool $is64Bit = false;
+    // Component handling the memory-mapped files
+    private ?string $pager = null;
+    // Last time an item was indexed
+    private ?DateTimeInterface $lastIndexingTime = null;
+    // Database size on disk
+    private ?Size $sizeOnDisk = null;
+    // Temp buffers size on disk
+    private ?Size $tempBuffersSizeOnDisk = null;
+    private ?int $numberOfTransactionMergerQueueOperations = null;
+
+    // Returns the names of the stale indexes in the database
+    public function getStaleIndexes(): IndexInformationArray { /* ... */ }
+
+    // ... getters and setters
+}
+```
+
+</Panel>
+
+<Panel heading="Get detailed database statistics">
+
+To get detailed database statistics, use `GetDetailedStatisticsOperation`:
+
+```php
+/** @var DetailedDatabaseStatistics $stats */
+$stats = $store->maintenance()->send(new GetDetailedStatisticsOperation());
+```
+<br />
+
+`DetailedDatabaseStatistics` extends `DatabaseStatistics` with additional counts:
+
+```php
+class DetailedDatabaseStatistics extends DatabaseStatistics implements ResultInterface
+{
+    // Total number of identities in the database
+    private ?int $countOfIdentities = null;
+    // Total number of compare-exchange values in the database
+    private ?int $countOfCompareExchange = null;
+    // Total number of compare-exchange tombstones in the database
+    private ?int $countOfCompareExchangeTombstones = null;
+    // Total number of time-series deleted ranges in the database
+    private ?int $countOfTimeSeriesDeletedRanges = null;
+
+    // ... getters and setters
+}
+```
+
+</Panel>
+
+<Panel heading="Get statistics for another database">
+
+* By default, you get statistics for the database defined in your Document Store.  
+* Use `forDatabase` to get database and collection statistics for another database.  
+* `forDatabase` can be used with any of the statistics options shown above.
+
+```php
+/** @var DatabaseStatistics $stats */
+$stats = $store->maintenance()->forDatabase("AnotherDatabase")->send(new GetStatisticsOperation());
+```
+<br />
+
+Learn more about [switching operations to another database](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
+
+</Panel>

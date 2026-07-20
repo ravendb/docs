@@ -1,0 +1,184 @@
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+
+<Admonition type="note" title="">
+
+* Database and collection statistics can be retrieved using the client API.  
+
+* By default, statistics are retrieved for the database defined in the Document Store.  
+  To get database and collection statistics for another database use [forDatabase](../../../monitoring/statistics/client-api.mdx#get-statistics-for-another-database).  
+
+* In this page:
+    * [Get collection statistics](../../../monitoring/statistics/client-api.mdx#get-collection-statistics)
+    * [Get detailed collection statistics](../../../monitoring/statistics/client-api.mdx#get-detailed-collection-statistics)
+    * [Get database statistics](../../../monitoring/statistics/client-api.mdx#get-database-statistics)
+    * [Get detailed database statistics](../../../monitoring/statistics/client-api.mdx#get-detailed-database-statistics)
+    * [Get statistics for another database](../../../monitoring/statistics/client-api.mdx#get-statistics-for-another-database)
+
+</Admonition>
+
+<Panel heading="Get collection statistics">
+
+To get collection statistics, use `GetCollectionStatisticsOperation`:
+
+```js
+// Pass an instance of GetCollectionStatisticsOperation to the store
+const stats = await store.maintenance.send(new GetCollectionStatisticsOperation());
+```
+<br />
+
+The returned `CollectionStatistics` object has the following properties:
+
+```js
+{
+    // Total number of documents in all collections
+    countOfDocuments,
+    // Total number of conflicts
+    countOfConflicts,
+    // Number of documents per collection
+    collections
+}
+```
+
+</Panel>
+
+<Panel heading="Get detailed collection statistics">
+
+To get detailed collection statistics, use `GetDetailedCollectionStatisticsOperation`:
+
+```js
+// Pass an instance of GetDetailedCollectionStatisticsOperation to the store
+const stats = await store.maintenance.send(new GetDetailedCollectionStatisticsOperation());
+```
+<br />
+
+The returned `DetailedCollectionStatistics` object has the following properties,
+with a collection-details object per collection:
+
+```js
+{
+    // Total number of documents in all collections
+    countOfDocuments,
+    // Total number of conflicts
+    countOfConflicts,
+    // Details per collection
+    collections
+}
+
+// Details per collection:
+{
+    name,
+    countOfDocuments,
+    size,
+    documentsSize,
+    tombstonesSize,
+    revisionsSize
+}
+```
+
+</Panel>
+
+<Panel heading="Get database statistics">
+
+To get database statistics, use `GetStatisticsOperation`:
+
+```js
+// Pass an instance of GetStatisticsOperation to the store
+const stats = await store.maintenance.send(new GetStatisticsOperation());
+```
+<br />
+
+The returned `DatabaseStatistics` object has the following properties:
+
+```js
+{
+    // Last document etag in the database
+    lastDocEtag,
+    // Last database etag
+    lastDatabaseEtag,
+    // Total number of indexes in the database
+    countOfIndexes,
+    // Total number of documents in the database
+    countOfDocuments,
+    // Total number of revision documents in the database
+    countOfRevisionDocuments,
+    // Total number of document conflicts in the database
+    countOfDocumentsConflicts,
+    // Total number of tombstones in the database
+    countOfTombstones,
+    // Total number of conflicts in the database
+    countOfConflicts,
+    // Total number of attachments in the database
+    countOfAttachments,
+    // Total number of unique attachments in the database
+    countOfUniqueAttachments,
+    // Total number of counter-group entries in the database
+    countOfCounterEntries,
+    // Total number of time-series segments in the database
+    countOfTimeSeriesSegments,
+    // Statistics for each index in the database (array of IndexInformation)
+    indexes,
+    // Global change vector of the database
+    databaseChangeVector,
+    // Database identifier
+    databaseId,
+    // Indicates whether the process is 64-bit
+    is64Bit,
+    // Component handling the memory-mapped files
+    pager,
+    // Last time an item was indexed
+    lastIndexingTime,
+    // Database size on disk
+    sizeOnDisk,
+    // Temp buffers size on disk
+    tempBuffersSizeOnDisk,
+    numberOfTransactionMergerQueueOperations
+}
+```
+
+</Panel>
+
+<Panel heading="Get detailed database statistics">
+
+To get detailed database statistics, use `GetDetailedStatisticsOperation`:
+
+```js
+// Pass an instance of GetDetailedStatisticsOperation to the store
+const stats = await store.maintenance.send(new GetDetailedStatisticsOperation());
+```
+<br />
+
+The returned `DetailedDatabaseStatistics` object contains all `DatabaseStatistics`
+properties and, in addition:
+
+```js
+{
+    // Total number of identities in the database
+    countOfIdentities,
+    // Total number of compare-exchange values in the database
+    countOfCompareExchange,
+    // Total number of compare-exchange tombstones in the database
+    countOfCompareExchangeTombstones,
+    // Total number of time-series deleted ranges in the database
+    countOfTimeSeriesDeletedRanges
+}
+```
+
+</Panel>
+
+<Panel heading="Get statistics for another database">
+
+* By default, you get statistics for the database defined in your Document Store.  
+* Use `forDatabase` to get database and collection statistics for another database.  
+* `forDatabase` can be used with any of the statistics options shown above.
+
+```js
+// Get statistics for 'AnotherDatabase':
+const stats =
+    await store.maintenance.forDatabase("AnotherDatabase").send(new GetStatisticsOperation());
+```
+<br />
+
+Learn more about [switching operations to another database](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
+
+</Panel>

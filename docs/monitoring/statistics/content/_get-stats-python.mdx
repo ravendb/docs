@@ -1,0 +1,162 @@
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+
+<Admonition type="note" title="">
+
+* Database and collection statistics can be retrieved using the client API.  
+
+* By default, statistics are retrieved for the database defined in the Document Store.  
+  To get database and collection statistics for another database use [for_database](../../../monitoring/statistics/client-api.mdx#get-statistics-for-another-database).  
+
+* In this page:
+    * [Get collection statistics](../../../monitoring/statistics/client-api.mdx#get-collection-statistics)
+    * [Get detailed collection statistics](../../../monitoring/statistics/client-api.mdx#get-detailed-collection-statistics)
+    * [Get database statistics](../../../monitoring/statistics/client-api.mdx#get-database-statistics)
+    * [Get detailed database statistics](../../../monitoring/statistics/client-api.mdx#get-detailed-database-statistics)
+    * [Get statistics for another database](../../../monitoring/statistics/client-api.mdx#get-statistics-for-another-database)
+
+</Admonition>
+
+<Panel heading="Get collection statistics">
+
+To get collection statistics, use `GetCollectionStatisticsOperation`:
+
+```python
+# Pass an instance of GetCollectionStatisticsOperation to the store
+stats = store.maintenance.send(GetCollectionStatisticsOperation())
+```
+<br />
+
+The statistics are returned in a `CollectionStatistics` object:
+
+```python
+class CollectionStatistics:
+    def __init__(
+        self,
+        count_of_documents: Optional[int] = None,
+        count_of_conflicts: Optional[int] = None,
+        collections: Optional[Dict[str, int]] = None,
+    ): ...
+```
+
+</Panel>
+
+<Panel heading="Get detailed collection statistics">
+
+To get detailed collection statistics, use `GetDetailedCollectionStatisticsOperation`:
+
+```python
+# Pass an instance of GetDetailedCollectionStatisticsOperation to the store
+stats = store.maintenance.send(GetDetailedCollectionStatisticsOperation())
+```
+<br />
+
+The statistics are returned in a `DetailedCollectionStatistics` object,
+with a `CollectionDetails` entry per collection:
+
+```python
+class DetailedCollectionStatistics:
+    def __init__(
+        self,
+        count_of_documents: int = None,
+        count_of_conflicts: int = None,
+        collections: Dict[str, CollectionDetails] = None,
+    ) -> None: ...
+
+class CollectionDetails:
+    def __init__(
+        self,
+        name: str = None,
+        count_of_documents: int = None,
+        size: Size = None,
+        documents_size: Size = None,
+        tombstones_size: Size = None,
+        revisions_size: Size = None,
+    ): ...
+```
+
+</Panel>
+
+<Panel heading="Get database statistics">
+
+To get database statistics, use `GetStatisticsOperation`:
+
+```python
+# Pass an instance of GetStatisticsOperation to the store
+stats = store.maintenance.send(GetStatisticsOperation())
+```
+<br />
+
+The statistics are returned in a `DatabaseStatistics` object:
+
+```python
+class DatabaseStatistics:
+    def __init__(
+        self,
+        last_doc_etag: int = None,
+        last_database_etag: int = None,
+        count_of_indexes: int = None,
+        count_of_documents: int = None,
+        count_of_revision_documents: int = None,
+        count_of_documents_conflicts: int = None,
+        count_of_tombstones: int = None,
+        count_of_conflicts: int = None,
+        count_of_attachments: int = None,
+        count_of_unique_attachments: int = None,
+        count_of_counter_entries: int = None,
+        count_of_time_series_segments: int = None,
+        indexes: List[IndexInformation] = None,
+        database_change_vector: str = None,
+        database_id: str = None,
+        is_64_bit: bool = None,
+        pager: str = None,
+        last_indexing_time: datetime.datetime = None,
+        size_on_disk: Size = None,
+        temp_buffers_size_on_disk: Size = None,
+        number_of_transaction_merger_queue_operations: int = None,
+    ): ...
+```
+
+</Panel>
+
+<Panel heading="Get detailed database statistics">
+
+To get detailed database statistics, use `GetDetailedStatisticsOperation`:
+
+```python
+# Pass an instance of GetDetailedStatisticsOperation to the store
+stats = store.maintenance.send(GetDetailedStatisticsOperation())
+```
+<br />
+
+`DetailedDatabaseStatistics` inherits from `DatabaseStatistics` and adds:
+
+```python
+class DetailedDatabaseStatistics(DatabaseStatistics):
+    def __init__(
+        self,
+        # ... all DatabaseStatistics fields, plus:
+        count_of_identities: int = None,
+        count_of_compare_exchange: int = None,
+        count_of_compare_exchange_tombstones: int = None,
+        count_of_remote_attachments: int = None,
+    ): ...
+```
+
+</Panel>
+
+<Panel heading="Get statistics for another database">
+
+* By default, you get statistics for the database defined in your Document Store.  
+* Use `for_database` to get database and collection statistics for another database.  
+* `for_database` can be used with any of the statistics options shown above.
+
+```python
+# Get statistics for 'AnotherDatabase'
+stats = store.maintenance.for_database("AnotherDatabase").send(GetStatisticsOperation())
+```
+<br />
+
+Learn more about [switching operations to another database](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
+
+</Panel>

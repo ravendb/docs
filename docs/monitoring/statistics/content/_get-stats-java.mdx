@@ -1,0 +1,191 @@
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+
+<Admonition type="note" title="">
+
+* Database and collection statistics can be retrieved using the client API.  
+
+* By default, statistics are retrieved for the database defined in the Document Store.  
+  To get database and collection statistics for another database use [forDatabase](../../../monitoring/statistics/client-api.mdx#get-stats-for-another-database).  
+
+* In this page:
+    * [Get collection stats](../../../monitoring/statistics/client-api.mdx#get-collection-stats)
+    * [Get detailed collection stats](../../../monitoring/statistics/client-api.mdx#get-detailed-collection-stats)
+    * [Get database stats](../../../monitoring/statistics/client-api.mdx#get-database-stats)
+    * [Get detailed database stats](../../../monitoring/statistics/client-api.mdx#get-detailed-database-stats)
+    * [Get stats for another database](../../../monitoring/statistics/client-api.mdx#get-stats-for-another-database)
+
+</Admonition>
+
+<Panel heading="Get collection stats">
+
+To get collection stats, use `GetCollectionStatisticsOperation`:
+
+```java
+// Pass an instance of GetCollectionStatisticsOperation to the store
+CollectionStatistics stats =
+    store.maintenance().send(new GetCollectionStatisticsOperation());
+```
+<br />
+
+The stats are returned in a `CollectionStatistics` object:
+
+```java
+public class CollectionStatistics {
+    // Total number of documents in all collections
+    long CountOfDocuments;
+    // Total number of conflicts
+    long CountOfConflicts;
+    // Number of documents per collection
+    Map<String, Long> Collections;
+}
+```
+
+</Panel>
+
+<Panel heading="Get detailed collection stats">
+
+To get detailed collection stats, use `GetDetailedCollectionStatisticsOperation`:
+
+```java
+// Pass an instance of GetDetailedCollectionStatisticsOperation to the store
+DetailedCollectionStatistics stats =
+    store.maintenance().send(new GetDetailedCollectionStatisticsOperation());
+```
+<br />
+
+The stats are returned in a `DetailedCollectionStatistics` object,
+with a `CollectionDetails` entry per collection:
+
+```java
+public class DetailedCollectionStatistics {
+    // Total number of documents in all collections
+    long CountOfDocuments;
+    // Total number of conflicts
+    long CountOfConflicts;
+    // Details per collection
+    Map<String, CollectionDetails> Collections;
+}
+
+public class CollectionDetails {
+    String Name;
+    long CountOfDocuments;
+    Size Size;
+    Size DocumentsSize;
+    Size TombstonesSize;
+    Size RevisionsSize;
+}
+```
+
+</Panel>
+
+<Panel heading="Get database stats">
+
+To get database stats, use `GetStatisticsOperation`:
+
+```java
+// Pass an instance of GetStatisticsOperation to the store
+DatabaseStatistics stats =
+    store.maintenance().send(new GetStatisticsOperation());
+```
+<br />
+
+The stats are returned in a `DatabaseStatistics` object:
+
+```java
+public class DatabaseStatistics {
+    // Last document etag in the database
+    Long LastDocEtag;
+    // Last database etag
+    Long LastDatabaseEtag;
+    // Total number of indexes in the database
+    int CountOfIndexes;
+    // Total number of documents in the database
+    long CountOfDocuments;
+    // Total number of revision documents in the database
+    long CountOfRevisionDocuments;
+    // Total number of document conflicts in the database
+    long CountOfDocumentsConflicts;
+    // Total number of tombstones in the database
+    long CountOfTombstones;
+    // Total number of conflicts in the database
+    long CountOfConflicts;
+    // Total number of attachments in the database
+    long CountOfAttachments;
+    // Total number of unique attachments in the database
+    long CountOfUniqueAttachments;
+    // Total number of counter-group entries in the database
+    long CountOfCounterEntries;
+    // Total number of time-series segments in the database
+    long CountOfTimeSeriesSegments;
+    // Names of the stale indexes in the database
+    IndexInformation[] StaleIndexes;
+    // Statistics for each index in the database
+    IndexInformation[] Indexes;
+    // Global change vector of the database
+    String DatabaseChangeVector;
+    // Database identifier
+    String DatabaseId;
+    // Indicates whether the process is 64-bit
+    boolean Is64Bit;
+    // Component handling the memory-mapped files
+    String Pager;
+    // Last time an item was indexed
+    Date LastIndexingTime;
+    // Database size on disk
+    Size SizeOnDisk;
+    // Temp buffers size on disk
+    Size TempBuffersSizeOnDisk;
+    // Number of transaction-merger queue operations
+    int NumberOfTransactionMergerQueueOperations;
+}
+```
+
+</Panel>
+
+<Panel heading="Get detailed database stats">
+
+To get detailed database stats, use `GetDetailedStatisticsOperation`:
+
+```java
+// Pass an instance of GetDetailedStatisticsOperation to the store
+DetailedDatabaseStatistics stats =
+    store.maintenance().send(new GetDetailedStatisticsOperation());
+```
+<br />
+
+`DetailedDatabaseStatistics` extends `DatabaseStatistics` with additional counts:
+
+```java
+public class DetailedDatabaseStatistics extends DatabaseStatistics {
+    // Total number of identities in the database
+    long CountOfIdentities;
+    // Total number of compare-exchange values in the database
+    long CountOfCompareExchange;
+    // Total number of compare-exchange tombstones in the database
+    long CountOfCompareExchangeTombstones;
+    // Total number of time-series deleted ranges in the database
+    long CountOfTimeSeriesDeletedRanges;
+    // Total number of remote attachments in the database
+    long CountOfRemoteAttachments;
+}
+```
+
+</Panel>
+
+<Panel heading="Get stats for another database">
+
+* By default, you get stats for the database defined in your Document Store.  
+* Use `forDatabase` to get database and collection stats for another database.  
+* `forDatabase` can be used with any of the stats options shown above.
+
+```java
+// Get stats for 'AnotherDatabase':
+DatabaseStatistics stats =
+    store.maintenance().forDatabase("AnotherDatabase").send(new GetStatisticsOperation());
+```
+<br />
+
+Learn more about [switching operations to another database](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
+
+</Panel>
