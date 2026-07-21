@@ -1,5 +1,5 @@
 ---
-title: "Logging"
+title: "Logging: Overview"
 sidebar_label: "Overview"
 description: "Configure and analyze RavenDB server logs with adjustable log levels, structured output, and real-time log streaming for diagnostics."
 sidebar_position: 1
@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 import ContentFrame from '@site/src/components/ContentFrame';
 import Panel from '@site/src/components/Panel';
 
-# Logging
+# Logging: Overview
 
 <Admonition type="note" title="">
 
@@ -29,7 +29,7 @@ import Panel from '@site/src/components/Panel';
 * **High performance**  
   Because logging is asynchronous and is handled by a thread dedicated to I/O operations, it has minimal effect on server performance.  
 
-* In this page:  
+* In this article:  
   * [Available logging destinations](overview.mdx#available-logging-destinations)  
   * [Logging configuration](overview.mdx#logging-configuration)  
   * [Available logging levels](overview.mdx#available-logging-levels)  
@@ -96,7 +96,7 @@ filtering and error handling tools, and a long list of applications that NLog is
 * **Temporary changes** can be applied at runtime, without requiring a server restart, using:
   * the [CLI](overview.mdx#cli-customization-immediate-temporary-changes)  
   * Studio's [Admin Logs view](../../studio/server/debug/admin-logs.mdx)  
-  * the Client API [`SetLogsConfigurationOperation`](../../client-api/operations/server-wide/logs/set-logs-configuration.mdx) method
+  * the Client API [`SetLogsConfigurationOperation`](client-api.mdx#change-the-logging-configuration-at-runtime) method
 
 * The _scope_ of all logging settings is _server-wide_, applying to all databases.  
 
@@ -249,7 +249,7 @@ To enable Microsoft logs, set the following configuration keys and restart the s
 <Admonition type="note" title="">
 
 Once Microsoft logs are enabled, you can adjust their minimum level at runtime, without restarting the server,
-using the Client API [`SetLogsConfigurationOperation`](../../client-api/operations/server-wide/logs/set-logs-configuration.mdx) method.
+using the Client API [`SetLogsConfigurationOperation`](client-api.mdx#change-the-logging-configuration-at-runtime) method.
 
 </Admonition>
 
