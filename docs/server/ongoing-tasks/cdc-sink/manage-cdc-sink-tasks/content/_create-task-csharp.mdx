@@ -238,6 +238,13 @@ A **linked table** turns a foreign-key relationship into a document-ID reference
 instead of copying the related row's data into the document,
 the parent document stores a reference (a document ID) to a document in another collection.
     
+![Create task 7.0](../assets/create-task-7.0.png)
+    
+1. On a root (or embedded) table in the **Tables** list, click the three-dots **Table actions** icon.
+2. Select **Add new linked table**.    
+    
+---
+    
 In this example, the `customers` table is linked under the `orders` root table.  
 The resulting Order document gets a `Customer` property holding a document-ID reference into the `Customers` collection.    
     
@@ -326,15 +333,19 @@ An **embedded table** nests the related rows _inside_ the parent document instea
 ![Create task 11](../assets/create-task-11.png)
     
 1. Expand **Advanced settings** for the selected table.
-2. **Patch**  
+2. **Case sensitive keys**  
+   This option is shown only for **embedded tables**.  
+   For `Array` and `Map` embedded tables, it controls whether string primary-key values are matched case-sensitively when locating items within the parent document.  
+   Enable it when values that differ only by letter case represent different keys. Default: off.    
+3. **Patch**  
    An optional script that transforms `this` (the document) AFTER column mapping, on INSERT and UPDATE events.
-3. **Patch syntax help**  
+4. **Patch syntax help**  
    Click the **(?)** icon for patch syntax help and examples.
-4. **Skip deletion**  
+5. **Skip deletion**  
    Enable to ignore source DELETE events (useful for soft-delete scenarios). 
-5. **Delete patch**  
+6. **Delete patch**  
    An optional script that runs on DELETE events BEFORE the delete is applied or ignored.
-6. **Delete-patch syntax help**  
+7. **Delete-patch syntax help**  
    Click the **(?)** icon for delete-patch syntax help and examples.
     
 ---

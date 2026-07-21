@@ -96,7 +96,7 @@ Configures a table whose rows are embedded as nested objects within a parent doc
 | `Columns`           | `List<CdcColumnMapping>`           | ✓        | Column mappings                                           |
 | `Patch`             | `string`                           |          | JavaScript patch on **parent** document for INSERT/UPDATE |
 | `OnDelete`          | `CdcSinkOnDeleteConfig`            |          | Delete behavior for embedded items                        |
-| `CaseSensitiveKeys` | `bool`                             |          | Case-sensitive PK matching. Default: `false`              |
+| `CaseSensitiveKeys` | `bool`                             |          | Whether string PK values are matched case-sensitively.<br/>Set to `true` when values that differ only by letter case represent different keys. Default: `false` |
 | `EmbeddedTables`    | `List<CdcSinkEmbeddedTableConfig>` |          | Nested embedded tables                                    |
 | `LinkedTables`      | `List<CdcSinkLinkedTableConfig>`   |          | Linked tables within embedded items                       |
 
