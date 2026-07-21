@@ -1,0 +1,206 @@
+---
+title: "Bringing Connection Strings Together in RavenDB"
+tags: [administration, clusters, csharp, use-case]
+icon: "manage-connection-strings"
+description: "Consolidate duplicate ETL, backup, and replication connection strings scattered across databases into a single server-wide definition, and migrate existing databases to it."
+published_at: 2026-02-01
+see_also:
+  - title: "Add or Update a Server-Wide Connection String"
+    link: "integrations/connection-strings/server-wide/add-or-update-connection-string"
+    source: "docs"
+    path: "Integrations > Connection Strings > Server-Wide > Add or Update Connection String"
+  - title: "Get Server-Wide Connection Strings"
+    link: "integrations/connection-strings/server-wide/get-connection-strings"
+    source: "docs"
+    path: "Integrations > Connection Strings > Server-Wide > Get connection strings"
+  - title: "Remove a Per-Database Connection String"
+    link: "integrations/connection-strings/per-database/remove-connection-string"
+    source: "docs"
+    path: "Integrations > Connection Strings > Per-Database > Remove connection string"
+author: "Paweł Lachowski"
+proficiency_level: "Expert"
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+## How the copies pile up
+
+RavenDB integrates with SQL databases, cloud storage, other RavenDB clusters, and more. Connection strings tell features such as ETL, backups, and external replication where those external targets are.
+
+In a multi-database setup, the same target is often used by several databases. As the cluster grows, its connection string gets copied from one database to the next. The result is connection string sprawl: the same SQL warehouse, S3 bucket, or replication destination defined in many places, with every change needing to be repeated in each one.
+
+When a shared target changes, every database with its own copy of the connection string must be updated separately. The more databases use it, the more places there are to find, change, and verify.
+
+That is connection string sprawl: the same destination defined many times, slowly drifting out of sync because there was never one place to update it. Server-Wide Connection Strings fix that by moving the shared definition to the server level. Instead of keeping a separate copy in every database, you define the connection string once and let databases use that shared version. Existing databases can be moved to it, and new databases can use it too, including databases you have not created yet.
+
+There is one thing we want to say immediately. Switching to a shared connection string still takes some cleanup. You need to visit each affected database once and remove its local copy, either in Studio or using the API. But it is also the last time you should need to do that work for this connection. After that, the destination has a single definition, a single place to update, and far fewer chances of drifting out of sync.
+
+## Looking for duplicates
+
+Before you can sort anything out, you need to know what is repeated and where. RavenDB does not currently have one server-wide command that says, “show me every connection string in every database.” `GetConnectionStringsOperation` works one database at a time, so the first step is simple: go through the databases, ask each one for its connection strings, and collect the results.
+
+```c#
+using Raven.Client.Documents;
+using Raven.Client.Documents.Operations.ConnectionStrings;
+using Raven.Client.ServerWide.Operations;
+
+var databaseNames = store.Maintenance.Server.Send(
+    new GetDatabaseNamesOperation(start: 0, pageSize: 1024));
+
+var connectionStringsByDatabase = new Dictionary<string, GetConnectionStringsResult>();
+
+foreach (var dbName in databaseNames)
+{
+    GetConnectionStringsResult result = store.Maintenance.ForDatabase(dbName)
+        .Send(new GetConnectionStringsOperation());
+
+    connectionStringsByDatabase[dbName] = result;
+}
+```
+
+You will usually know which connection strings are shared. If you have many databases or are unsure where duplicates exist, use `GetDatabaseNamesOperation` and `GetConnectionStringsOperation` to find them across the cluster.
+
+The exact comparison depends on the connection string type, but the goal is always the same: take a long list of database-level settings and turn it into a clear picture of which destinations are shared.
+
+```c#
+var byDestination = connectionStringsByDatabase
+    .SelectMany(kvp => kvp.Value.SqlConnectionStrings.Values
+        .Select(cs => new { Database = kvp.Key, cs.Name, cs.ConnectionString }))
+    .GroupBy(x => x.ConnectionString);
+
+foreach (var group in byDestination)
+{
+    Console.WriteLine($"{group.Count()} databases point at: {group.Key}");
+    foreach (var entry in group)
+        Console.WriteLine($"  - {entry.Database} ({entry.Name})");
+}
+```
+
+After you run this, the sprawl becomes visible. You might find ten databases using the same SQL warehouse under slightly different local names. You might also find two databases that really do point somewhere else, and that distinction matters. Not every difference is a mistake. Some differences are intentional, and those should either stay local or become a separate Server-Wide Connection String.
+
+<Image img={require("./assets/server-wide-connection-string-duplicates.webp")} alt="Console output listing duplicate SQL connection strings found across two databases" />
+
+The important part is that you now know what you are dealing with. Finding the sprawl required checking every database because the old setup was spread across every database. But once the shared destinations are moved to Server-Wide Connection Strings, you no longer have to take care of the same connection string again and again. There is one shared definition to update, and the databases that use it can all follow that same definition.
+
+## Moving to server-wide
+
+Once you know which connection strings are really shared, the cleanup is straightforward: define the connection string once at the cluster level, then remove the redundant per-database copies. The connection string object itself is not new. You still use the same types you already use for local connection strings, such as `SqlConnectionString`, `RavenConnectionString`, `OlapConnectionString`, and so on.
+
+```c#
+var sharedWarehouse = new SqlConnectionString
+{
+    Name = "Shared-SQL-Warehouse",
+    FactoryName = "MySql.Data.MySqlClient",
+    ConnectionString = "Server=warehouse.internal;Database=Analytics;Uid=etl_user;"
+};
+```
+
+What changes is where the definition lives. Instead of saving this connection string inside one database, you put it at the server-wide level. Internally, this is handled through dedicated Raft/Rachis commands in the cluster state machine, the same general pattern RavenDB already uses for other server-wide features. From the client side, you do not call those internal commands directly. You send the matching server operation through `Maintenance.Server`.
+
+```c#
+// Client-facing server operation, following the server-wide pattern.
+// This is a brand-new feature. Confirm the exact operation name and
+// signature against the shipped release, as the public API surface and
+// Studio work were still being finalized at PR time.
+store.Maintenance.Server.Send(
+    new PutServerWideConnectionStringOperation(sharedWarehouse));
+```
+
+The important part is not the exact internal command name. It is the behavior. Because the change goes through RavenDB’s consensus layer, it is not a loose setting that eventually makes its way around the cluster. Once accepted, the server-wide connection string is part of the cluster state and is consistent across the nodes in that cluster.
+
+After that, remove the local copies that pointed at the same destination. This is the one-time cost from earlier: each affected database has to be touched once, so the old local definition can be removed. The per-database `RemoveConnectionStringOperation<T>` takes the connection string object, using its Name to identify which connection string should be deleted.
+
+```c#
+foreach (var dbName in databasesToConsolidate)
+{
+    var toRemove = new SqlConnectionString { Name = "Old-Local-SQL-String" };
+
+    store.Maintenance.ForDatabase(dbName).Send(
+        new RemoveConnectionStringOperation<SqlConnectionString>(toRemove));
+}
+```
+
+Finally, run the check again. Query the same databases and confirm that the old local connection string is gone, and that the shared server-wide definition is now the one being resolved.
+
+```c#
+var check = store.Maintenance.ForDatabase(dbName)
+    .Send(new GetConnectionStringsOperation());
+
+// check.SqlConnectionStrings should no longer contain "Old-Local-SQL-String",
+// and should reflect the server-wide "Shared-SQL-Warehouse" definition instead.
+```
+
+At that point, every database that uses this destination is reading from one definition. If the endpoint changes or the credentials need to be rotated, you update the server-wide connection string once. There is no second pass over every database, and no quiet local copy left behind with last quarter’s settings.
+
+## Adding a database afterward
+
+Before Server-Wide Connection Strings, creating a new database meant repeating the same setup again: add the SQL warehouse connection string, add the backup target, add the replication destination, and hope it matched the other databases that already used those same places. Now the shared definition already lives at the cluster level, so the new database can resolve it without getting another local copy.
+
+```c#
+var createOp = new CreateDatabaseOperation(new DatabaseRecord("NewAnalyticsDb"));
+store.Maintenance.Server.Send(createOp);
+
+var stringsOnNewDb = store.Maintenance.ForDatabase("NewAnalyticsDb")
+    .Send(new GetConnectionStringsOperation());
+
+// "Shared-SQL-Warehouse" is present here without any per-database
+// configuration call having been made for this database.
+```
+
+That is important: the connection string is available to the database because it is defined server-wide. You are not copying the configuration into the new database, and you are not adding another place that has to be updated later.
+
+When the destination changes later, you update the server-wide connection string once, and the databases that use it continue resolving the same shared definition instead of depending on their own local copies.
+
+## The database that's a real exception
+
+Not every database should use every shared connection string, and that is expected. Server-wide does not mean “force this onto everything.” It means “define the common destination once, then name the databases that should not use this particular definition.” If one database talks to a regional SQL instance instead of the shared warehouse, maybe for data residency reasons, maybe because that team owns separate infrastructure, that database can keep its own local connection string.
+
+```c#
+var sharedWarehouse = new SqlConnectionString
+{
+    Name = "Shared-SQL-Warehouse",
+    FactoryName = "MySql.Data.MySqlClient",
+    ConnectionString = "Server=warehouse.internal;Database=Analytics;Uid=etl_user;"
+};
+
+// The exclusion list identifies databases that should NOT receive this
+// particular server-wide string. Exact property/parameter names follow the
+// server-wide pattern and should be confirmed against the shipped release.
+store.Maintenance.Server.Send(
+    new PutServerWideConnectionStringOperation(
+        sharedWarehouse,
+        excludedDatabases: new[] { "RegionalDb-EU" }));
+```
+
+The [exclusion list](/7.2/integrations/connection-strings/server-wide/add-or-update-connection-string) belongs to the connection string, not to the database. RegionalDb-EU can be excluded from the shared warehouse connection string while still using other server-wide definitions, such as a shared backup destination or a shared replication target. You are not opting the database out of server-wide configuration as a whole. You are only saying that this one shared destination does not apply to it.
+
+Most databases use the shared definition because they really do point at the same place. The exceptions stay local because they really are different. That gives you a clean split: one server-wide definition for the common path, and local connection strings only where the database has a good reason to be different.
+
+In Studio, once the server-wide connection strings page is available, this same distinction should be visible instead of implied. A database’s own Connection Strings view can show which entries come from the cluster level, so you do not have to guess whether a connection string is locally owned or resolved from a server-wide definition.
+
+## Cheatsheet: per-database vs. server-wide
+
+| Situation | Use |
+| :---- | :---- |
+| Most or all databases share the same ETL/replication/backup destination | Server-wide |
+| One database points somewhere genuinely different | Per-database (or server-wide + exclusion) |
+| Credentials or endpoint need to rotate across the whole cluster | Server-wide: one update instead of N |
+| A new database is about to be created and will need the shared destination | Nothing to do; server-wide already covers it |
+| You're not sure how much duplication exists today | Run the enumeration loop first |
+
+## Summary
+
+* Copied config creates connection string sprawl.
+* No cluster-wide list yet, so check per database.
+* Group duplicates by target.
+* Move shared strings to server-wide.
+* Delete local copies they replace.
+* Exclude only genuine exceptions.
+
+Any questions about RavenDB features, or just want to hang out and talk with the RavenDB team? Join our Discord Community Server. The invitation link is [here](https://discord.com/invite/ravendb).
