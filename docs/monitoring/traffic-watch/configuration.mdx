@@ -1,0 +1,163 @@
+---
+title: "Traffic Watch: Configuration"
+sidebar_label: "Configuration options"
+description: "Configuration keys that control RavenDB Traffic Watch's log-to-file behavior, with filters by database, status code, HTTP method, change type, size, and duration."
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Traffic Watch: Configuration
+<Admonition type="note" title="">
+
+* The following configuration keys control Traffic Watch's log-to-file behavior.  
+  They filter the log-to-file output only, and do not affect the live stream.  
+
+* Learn how to set these keys in the [configuration overview](../../server/configuration/configuration-options.mdx).  
+
+* In this article:  
+    * [TrafficWatch.Mode](configuration.mdx#trafficwatchmode)  
+    * [TrafficWatch.Databases](configuration.mdx#trafficwatchdatabases)  
+    * [TrafficWatch.StatusCodes](configuration.mdx#trafficwatchstatuscodes)  
+    * [TrafficWatch.MinimumResponseSizeInBytes](configuration.mdx#trafficwatchminimumresponsesizeinbytes)  
+    * [TrafficWatch.MinimumRequestSizeInBytes](configuration.mdx#trafficwatchminimumrequestsizeinbytes)  
+    * [TrafficWatch.MinimumDurationInMs](configuration.mdx#trafficwatchminimumdurationinms)  
+    * [TrafficWatch.HttpMethods](configuration.mdx#trafficwatchhttpmethods)  
+    * [TrafficWatch.ChangeTypes](configuration.mdx#trafficwatchchangetypes)  
+    * [TrafficWatch.CertificateThumbprints](configuration.mdx#trafficwatchcertificatethumbprints)  
+
+</Admonition>
+
+<Panel heading="Traffic Watch configuration keys">
+
+`TrafficWatch.Mode` controls whether Traffic Watch logs requests to file, and the other keys filter the log output.  
+Requests can be filtered by database, response status code, HTTP method, change type, client certificate, request or response size, and duration.
+
+<ContentFrame>
+
+### TrafficWatch.Mode
+
+Sets whether Traffic Watch writes requests to the log file.  
+Set to `ToLogFile` to enable logging to file, or `Off` to disable it.
+
+- **Type**: `enum TrafficWatchMode` (`Off`, `ToLogFile`)
+- **Default**: `Off`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+<ContentFrame>
+
+### TrafficWatch.Databases
+
+Only requests made to the listed databases are logged.  
+Provide a semicolon-separated list of database names; when left empty, requests to all databases are logged.  
+e.g., `northwind;another-database`
+
+- **Type**: `string[]`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+<ContentFrame>
+
+### TrafficWatch.StatusCodes
+
+Only requests that returned one of the listed HTTP response status codes are logged.  
+Provide a semicolon-separated list; when left empty, requests with any status code are logged.  
+e.g., `200;404;500`
+
+- **Type**: `HashSet<int>`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+<ContentFrame>
+
+### TrafficWatch.MinimumResponseSizeInBytes
+
+Only requests with a response of at least this many bytes are logged.
+
+- **Type**: `int`
+- **Default**: `0`
+- **Min Value**: `0`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+<ContentFrame>
+
+### TrafficWatch.MinimumRequestSizeInBytes
+
+Only requests with a request body of at least this many bytes are logged.
+
+- **Type**: `int`
+- **Default**: `0`
+- **Min Value**: `0`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+<ContentFrame>
+
+### TrafficWatch.MinimumDurationInMs
+
+Only requests that took at least this many milliseconds to process are logged.
+
+- **Type**: `int`
+- **Default**: `0`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+<ContentFrame>
+
+### TrafficWatch.HttpMethods
+
+Only requests made with one of the listed HTTP methods are logged.  
+Provide a semicolon-separated list; when left empty, requests with any HTTP method are logged.  
+e.g., `GET;POST`
+
+- **Type**: `string[]`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+<ContentFrame>
+
+### TrafficWatch.ChangeTypes
+
+Only requests with one of the listed change types are logged.  
+A request's change type is the category of operation it performs, such as a query, a document operation, or a subscription.  
+Provide a semicolon-separated list; when left empty, requests with any change type are logged.  
+e.g., `Queries;Documents`
+
+- **Type**: `TrafficWatchChangeType[]`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+Possible values:
+
+`None`, `Queries`, `Operations`, `MultiGet`, `BulkDocs`, `Index`, `Counters`, `Hilo`, `Subscriptions`, `Streams`, `Documents`, `TimeSeries`, `Notifications`, `ClusterCommands`
+
+</ContentFrame>
+
+<ContentFrame>
+
+### TrafficWatch.CertificateThumbprints
+
+Only requests made with one of the listed client certificate thumbprints are logged.  
+Provide a semicolon-separated list; when left empty, requests with any thumbprint are logged, as well as those made without a client certificate.
+
+- **Type**: `string[]`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+</Panel>

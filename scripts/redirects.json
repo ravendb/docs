@@ -412,6 +412,13 @@
         }
     },
     {
+        "key": "/server/troubleshooting/traffic-watch",
+        "value": {
+            "targetUrl": "/monitoring/traffic-watch/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/server/administration/monitoring",
         "value": {
             "targetUrl": "/server/administration/monitoring/prometheus",
