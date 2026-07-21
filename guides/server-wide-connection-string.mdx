@@ -104,12 +104,13 @@ var sharedWarehouse = new SqlConnectionString
 What changes is where the definition lives. Instead of saving this connection string inside one database, you put it at the server-wide level. Internally, this is handled through dedicated Raft/Rachis commands in the cluster state machine, the same general pattern RavenDB already uses for other server-wide features. From the client side, you do not call those internal commands directly. You send the matching server operation through `Maintenance.Server`.
 
 ```c#
-// Client-facing server operation, following the server-wide pattern.
-// This is a brand-new feature. Confirm the exact operation name and
-// signature against the shipped release, as the public API surface and
-// Studio work were still being finalized at PR time.
+var serverWideConStr = new ServerWideConnectionString
+{
+    ConnectionString = sharedWarehouse
+};
+
 store.Maintenance.Server.Send(
-    new PutServerWideConnectionStringOperation(sharedWarehouse));
+    new PutServerWideConnectionStringOperation(serverWideConStr));
 ```
 
 The important part is not the exact internal command name. It is the behavior. Because the change goes through RavenDB’s consensus layer, it is not a loose setting that eventually makes its way around the cluster. Once accepted, the server-wide connection string is part of the cluster state and is consistent across the nodes in that cluster.
@@ -169,20 +170,23 @@ var sharedWarehouse = new SqlConnectionString
     ConnectionString = "Server=warehouse.internal;Database=Analytics;Uid=etl_user;"
 };
 
-// The exclusion list identifies databases that should NOT receive this
-// particular server-wide string. Exact property/parameter names follow the
-// server-wide pattern and should be confirmed against the shipped release.
+// The exclusion list belongs to the ServerWideConnectionString wrapper,
+// not to the underlying connection string object.
+var serverWideConStr = new ServerWideConnectionString
+{
+    ConnectionString = sharedWarehouse,
+    ExcludedDatabases = new[] { "RegionalDb-EU" }
+};
+
 store.Maintenance.Server.Send(
-    new PutServerWideConnectionStringOperation(
-        sharedWarehouse,
-        excludedDatabases: new[] { "RegionalDb-EU" }));
+    new PutServerWideConnectionStringOperation(serverWideConStr));
 ```
 
-The [exclusion list](/7.2/integrations/connection-strings/server-wide/add-or-update-connection-string) belongs to the connection string, not to the database. RegionalDb-EU can be excluded from the shared warehouse connection string while still using other server-wide definitions, such as a shared backup destination or a shared replication target. You are not opting the database out of server-wide configuration as a whole. You are only saying that this one shared destination does not apply to it.
+The [exclusion list](/7.2/integrations/connection-strings/server-wide/add-or-update-connection-string) belongs to the server-wide connection string, not to the database. RegionalDb-EU can be excluded from the shared warehouse connection string while still using other server-wide definitions, such as a shared backup destination or a shared replication target. You are not opting the database out of server-wide configuration as a whole. You are only saying that this one shared destination does not apply to it.
 
 Most databases use the shared definition because they really do point at the same place. The exceptions stay local because they really are different. That gives you a clean split: one server-wide definition for the common path, and local connection strings only where the database has a good reason to be different.
 
-In Studio, once the server-wide connection strings page is available, this same distinction should be visible instead of implied. A database’s own Connection Strings view can show which entries come from the cluster level, so you do not have to guess whether a connection string is locally owned or resolved from a server-wide definition.
+In Studio, this same distinction is visible instead of implied. The **Manage Server > Server-Wide Connection Strings** view lists every server-wide definition in the cluster, and a database's own Connection Strings view shows which entries are propagated from the cluster level, so you do not have to guess whether a connection string is locally owned or resolved from a server-wide definition.
 
 ## Cheatsheet: per-database vs. server-wide
 
