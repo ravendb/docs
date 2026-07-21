@@ -70,7 +70,7 @@ filtering and error handling tools, and a long list of applications that NLog is
 
   <Admonition type="note" title="">
 
-  * See a [list of logging configuration keys](../../server/configuration/logs-configuration.mdx).
+  * See a [list of logging configuration keys](configuration.mdx).
   * Learn to modify the [configuration keys](../../server/configuration/configuration-options.mdx).
 
   </Admonition>
@@ -83,7 +83,7 @@ filtering and error handling tools, and a long list of applications that NLog is
    * To set an external configuration file, see [Configuring and using NLog](overview.mdx#configuring-and-using-nlog).  
 
 * To **determine whether to use an NLog configuration file or internal configuration keys**,  
-  set the [Logs.ConfigPath](../../server/configuration/logs-configuration.mdx#logsconfigpath) configuration key with -  
+  set the [Logs.ConfigPath](configuration.mdx#logsconfigpath) configuration key with -  
    - a [path](overview.mdx#1-configure-ravendb-to-use-an-external-nlog-configuration-file) to the configuration file you want to apply  
    - or `null` to continue using internal configuration keys.  
 
@@ -188,7 +188,7 @@ NLog-specific settings, including the logging level:
 ### Default logging level
 
 The default minimum logging level is `LogLevel.Info`.  
-To use a different level, set the [Logs.MinLevel](../../server/configuration/logs-configuration.mdx#logsminlevel) configuration key.
+To use a different level, set the [Logs.MinLevel](configuration.mdx#logsminlevel) configuration key.
 
 </ContentFrame>
 
@@ -197,7 +197,7 @@ To use a different level, set the [Logs.MinLevel](../../server/configuration/log
 ### Default destination
 
 Log entries are written by default to log files in the **Logs** folder on the server machine.  
-To store log files in a different path, set the [Logs.Path](../../server/configuration/logs-configuration.mdx#logspath) configuration key.  
+To store log files in a different path, set the [Logs.Path](configuration.mdx#logspath) configuration key.  
 Learn how to log to additional destinations in [Configuring and using NLog](overview.mdx#configuring-and-using-nlog).
 
 </ContentFrame>
@@ -221,7 +221,7 @@ layout="${longdate:universalTime=true}..."
 
 The default values provided for settings in the [NLog configuration file template](overview.mdx#an-available-template)
 are **identical** to those used by RavenDB's internal configuration keys.  
-See the full list of keys and their default values in the [logging configuration keys](../../server/configuration/logs-configuration.mdx) page.
+See the full list of keys and their default values in the [logging configuration keys](configuration.mdx) page.
 
 </ContentFrame>
 
@@ -241,9 +241,9 @@ typically while diagnosing a specific problem.
 
 To enable Microsoft logs, set the following configuration keys and restart the server:
 
-* [Logs.Microsoft.Enabled](../../server/configuration/logs-configuration.mdx#logsmicrosoftenabled)  
+* [Logs.Microsoft.Enabled](configuration.mdx#logsmicrosoftenabled)  
   Set to `true` to capture Microsoft logs.
-* [Logs.Microsoft.MinLevel](../../server/configuration/logs-configuration.mdx#logsmicrosoftminlevel)  
+* [Logs.Microsoft.MinLevel](configuration.mdx#logsmicrosoftminlevel)  
   Set the minimum level of the Microsoft entries that are logged. The default is `Error`.
 
 <Admonition type="note" title="">
@@ -294,7 +294,7 @@ To use NLog you need to:
 ### 1. Configure RavenDB to use an external NLog configuration file
 
 NLog options are customized using an NLog configuration file.
-To use a custom file, set the [Logs.ConfigPath](../../server/configuration/logs-configuration.mdx#logsconfigpath) configuration key to the full path of your NLog configuration file.
+To use a custom file, set the [Logs.ConfigPath](configuration.mdx#logsconfigpath) configuration key to the full path of your NLog configuration file.
 
 #### Example:
 
@@ -310,7 +310,7 @@ To use a configuration file named `NLog.config` located in the RavenDB server di
 
 * Learn how to set configuration keys [here](../../server/configuration/configuration-options.mdx).  
 * Learn how to create and modify an NLog configuration file [below](overview.mdx#3-set-your-nlog-configuration-file).  
-* Note: once a configuration file is used, the logging settings defined in it override all [internal configuration keys](../../server/configuration/logs-configuration.mdx) values.  
+* Note: once a configuration file is used, the logging settings defined in it override all [internal configuration keys](configuration.mdx) values.  
 
 </Admonition>
 
@@ -323,7 +323,7 @@ To use a configuration file named `NLog.config` located in the RavenDB server di
 NLog's biggest advantage lies in its [plugins library](https://nlog-project.org/config/), which allows applications like RavenDB to stream log data to a wide range of destinations.
 
 NLog plugins are distributed as NuGet packages, and you can instruct RavenDB to download and load them during startup.
-To do this, define the plugin's NuGet package URL as a property of the [Logs.NuGet.AdditionalPackages](../../server/configuration/logs-configuration.mdx#logsnugetadditionalpackages)
+To do this, define the plugin's NuGet package URL as a property of the [Logs.NuGet.AdditionalPackages](configuration.mdx#logsnugetadditionalpackages)
 configuration key, with the plugin version as its value.
 
 #### Example:
@@ -338,13 +338,13 @@ To load a [Grafana Loki](https://grafana.com/oss/loki/) plugin, add an `NLog.Tar
 
 <Admonition type="info" title="Other NuGet-related configuration keys">
 
-* [Logs.NuGet.PackagesPath](../../server/configuration/logs-configuration.mdx#logsnugetpackagespath)  
+* [Logs.NuGet.PackagesPath](configuration.mdx#logsnugetpackagespath)  
   Use this key to specify the path where NuGet packages required by RavenDB are downloaded.
-* [Logs.NuGet.PackageSourceUrl](../../server/configuration/logs-configuration.mdx#logsnugetpackagesourceurl)  
+* [Logs.NuGet.PackageSourceUrl](configuration.mdx#logsnugetpackagesourceurl)  
   Use this key to set the default URL for the NuGet package source.  
-* [Logs.NuGet.AllowPreReleasePackages](../../server/configuration/logs-configuration.mdx#logsnugetallowprereleasepackages)  
+* [Logs.NuGet.AllowPreReleasePackages](configuration.mdx#logsnugetallowprereleasepackages)  
   Use this key to determine whether RavenDB is allowed to install pre-release versions of NuGet packages.
-* [Logs.NuGet.AdditionalPackages](../../server/configuration/logs-configuration.mdx#logsnugetadditionalpackages)  
+* [Logs.NuGet.AdditionalPackages](configuration.mdx#logsnugetadditionalpackages)  
   Use this key to specify a dictionary of additional NuGet packages to load during server startup for logging.  
   Each key is a package name, and the corresponding value is the desired version.
 

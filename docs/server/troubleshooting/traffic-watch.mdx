@@ -118,10 +118,10 @@ When neither log-to-file is enabled nor any client is connected to the WebSocket
 * **Disk storage**: Proportional to request volume.  
   Because Traffic Watch shares the server log file with all other log data, high request volumes can increase log file size and cause it to archive more frequently.  
   When a log file reaches the size limit, it is archived and a new file is started. Old archives are deleted once they exceed the configured age or count limit.  
-  These limits are set by the standard [logging configuration](../../server/configuration/logs-configuration.mdx):  
-  [`Logs.ArchiveAboveSizeInMb`](../../server/configuration/logs-configuration.mdx#logsarchiveabovesizeinmb) (default: 128 MB),  
-  [`Logs.MaxArchiveDays`](../../server/configuration/logs-configuration.mdx#logsmaxarchivedays) (default: 3 days),  
-  [`Logs.MaxArchiveFiles`](../../server/configuration/logs-configuration.mdx#logsmaxarchivefiles).  
+  These limits are set by the standard [logging configuration](../../monitoring/logs/configuration.mdx):  
+  [`Logs.ArchiveAboveSizeInMb`](../../monitoring/logs/configuration.mdx#logsarchiveabovesizeinmb) (default: 128 MB),  
+  [`Logs.MaxArchiveDays`](../../monitoring/logs/configuration.mdx#logsmaxarchivedays) (default: 3 days),  
+  [`Logs.MaxArchiveFiles`](../../monitoring/logs/configuration.mdx#logsmaxarchivefiles).  
   Archived log files that exceed the configured retention limits are deleted automatically.
 
 </ContentFrame>

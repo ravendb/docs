@@ -135,8 +135,8 @@ To preserve your settings even through a restart, either:
     ![Save to settings.json](./assets/save-to-settings-json.png)
 
   * or **Set the relevant configuration key** as described in the [configuration overview](../../server/configuration/configuration-options.mdx):
-    * For **Server logs**: set the [Logs.MinLevel](../../server/configuration/logs-configuration.mdx#logsminlevel) configuration key.  
-    * For **Microsoft logs**: set the [Logs.Microsoft.MinLevel](../../server/configuration/logs-configuration.mdx#logsmicrosoftminlevel) configuration key.
+    * For **Server logs**: set the [Logs.MinLevel](../../monitoring/logs/configuration.mdx#logsminlevel) configuration key.  
+    * For **Microsoft logs**: set the [Logs.Microsoft.MinLevel](../../monitoring/logs/configuration.mdx#logsmicrosoftminlevel) configuration key.
     * For **Traffic watch logs**: set the [TrafficWatch.Mode](../../server/configuration/traffic-watch-configuration.mdx#trafficwatchmode) configuration key.
 
 </Admonition>
@@ -174,11 +174,11 @@ Perform the following for each cluster node:
 copy the log files directly from disk to another location to ensure they are kept,  
 avoiding potentially losing them due to retention policy.
 
-* **Log files location** is set by the [Logs.Path](../../server/configuration/logs-configuration.mdx#logspath) configuration key.
+* **Log files location** is set by the [Logs.Path](../../monitoring/logs/configuration.mdx#logspath) configuration key.
 
 * **Logs deletion** is controlled by the following configuration keys:
-  * [Logs.MaxArchiveDays](../../server/configuration/logs-configuration.mdx#logsmaxarchivedays)
-  * [Logs.MaxArchiveFiles ](../../server/configuration/logs-configuration.mdx#logsmaxarchivefiles)
+  * [Logs.MaxArchiveDays](../../monitoring/logs/configuration.mdx#logsmaxarchivedays)
+  * [Logs.MaxArchiveFiles ](../../monitoring/logs/configuration.mdx#logsmaxarchivefiles)
 
 </Admonition>
 
