@@ -1,0 +1,264 @@
+---
+title: "Wiring SSO Into Your RavenDB Cluster"
+tags: [security, administration, clusters]
+icon: "certificate"
+description: "Register an SSO proxy's server certificate with RavenDB and map external identities to clearance levels and database permissions, in the Studio and through the API."
+published_at: 2026-07-21
+see_also:
+  - title: "Security Clearance and Permissions"
+    link: "server/security/authorization/security-clearance-and-permissions"
+    source: "docs"
+    path: "Server > Security > Authorization > Security Clearance and Permissions"
+  - title: "Certificate Management"
+    link: "server/security/authentication/certificate-management"
+    source: "docs"
+    path: "Server > Security > Authentication > Certificate Management"
+  - title: "Security Overview"
+    link: "server/security/overview"
+    source: "docs"
+    path: "Server > Security > Overview"
+author: "Paweł Lachowski"
+proficiency_level: "Expert"
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+SSO Access in RavenDB 7.2 works via an external application that serves as a reverse proxy in front of the RavenDB cluster.
+
+You need to configure two things in RavenDB:
+
+* The SSO server certificate, which is the public certificate used by the proxy. RavenDB trusts certificates issued through it.
+* SSO user entries, which map each user identity to a clearance level and a set of permissions.
+
+This guide covers both parts. Deploying and configuring the proxy, including DNS and the installer, is covered in the [Deploying the SSO Application](/7.2/server/security/sso/deploying-sso-app) Documentation; this guide assumes this has been done.
+
+The proxy signs the user in through your identity provider, such as Microsoft Entra ID or Kerberos. After authentication, it sends the request to RavenDB using a short-lived client certificate that contains the user's identity.
+
+RavenDB reads that identity and maps it to the user's clearance and database permissions. From RavenDB's perspective, this works much like authentication using a regular client certificate.
+
+## What has to exist first
+
+Before RavenDB can trust the SSO proxy, the proxy must already be deployed and reachable at its base URL, for example  `https://sso.example.com`. That means it is connected to at least one identity provider, holds its own certificate, and knows which RavenDB clusters it fronts.
+
+The important point is that RavenDB connects to the SSO proxy. It does not create or manage it. The proxy owns the SSO server certificate and its private key. RavenDB only stores the public certificate so it can trust certificates issued by the proxy. You can let RavenDB fetch that certificate from the proxy or upload it yourself.
+
+RavenDB cannot generate an SSO server certificate. There is no Studio option or API for creating one, and RavenDB rejects attempts to register a generated certificate for SSO server use.
+
+This is part of the security model. The proxy creates a short-lived client certificate for each user and adds the user's identity to a custom certificate extension. That identity can include the provider, username, and optionally the domain.
+
+When RavenDB receives the certificate, it:
+
+1. Verifies that it was issued by the registered SSO server certificate.
+2. Reads the user's identity from the certificate extension.
+3. Maps that identity to the configured clearance and permissions.
+
+The proxy must remain the only component that controls the SSO server certificate's private key. Otherwise, the certificate chain would no longer prove that the request came through the trusted proxy. SSO also requires an appropriate RavenDB license. If the registration requests are rejected, confirm that your license includes SSO support.
+
+## Who can do what
+
+The two setup steps require different [clearance](/7.2/server/security/authorization/security-clearance-and-permissions) levels. This is why you may be able to open the SSO user dialog while the server certificate option remains disabled. Registering the SSO server certificate requires **Cluster Admin** clearance because it adds a trusted certificate for the entire cluster.
+
+Creating and managing SSO user entries requires **Operator** clearance or higher. This includes mapping a user identity to a clearance level and database permissions. In most setups, a Cluster Admin registers the proxy certificate once. Operators can then manage the SSO users as part of the normal day-to-day administration.
+
+## Where SSO lives in the Studio
+
+Both SSO setup steps are available from the same Studio page.
+
+Open **Manage Server** from the left menu, then select **User Access Management**. In earlier versions, this page was called **Certificates**. It now contains both regular client certificates and SSO configuration.
+
+<Image img={require("./assets/wiring-sso3.webp")} alt="User Access Management page in RavenDB Studio, opened from Manage Server" />
+
+Open the **Manage** dropdown and find the **SSO** section. It contains two actions:
+
+* Upload SSO certificate
+* Generate SSO user
+
+Start by uploading the SSO certificate. RavenDB needs a registered proxy certificate before you can create an SSO user entry.
+
+## Registering the SSO server certificate
+
+Registering the SSO server certificate requires Cluster Admin clearance. Open Upload SSO certificate. There are two ways to add the proxy's public certificate to RavenDB.
+
+<Image img={require("./assets/wiring-sso1.webp")} alt="Upload SSO certificate dialog with options to fetch from the proxy or upload manually" />
+
+### Fetch the certificate from the proxy
+
+Use this option when the RavenDB server can connect to the SSO proxy. Enter the proxy's base URL, for example:
+
+```
+https://sso.example.com
+```
+
+RavenDB sends a request to the proxy's certificate endpoint and fills in the certificate field automatically. Enter only the base URL, not a link to a specific page or endpoint. RavenDB adds the required path itself. If RavenDB cannot fetch the certificate, the dialog displays an error and you can upload it manually instead.
+
+### Upload the certificate manually
+
+Use this option when RavenDB cannot connect to the proxy, or when you prefer to transfer the certificate yourself. Upload the proxy certificate as a PEM or PFX file and continue.
+In both cases, RavenDB only needs the proxy's public certificate. After you confirm, RavenDB stores it as an SSO trust anchor.
+
+### Using the API
+
+Fetching and registering the certificate are separate operations. First, fetch the certificate from the proxy:
+
+```
+GET /admin/certificates/sso/server/fetch?url=https://sso.example.com
+```
+
+The response contains the certificate encoded as base64. Then register it in RavenDB:
+
+```
+PUT /admin/certificates
+Content-Type: application/json
+
+{
+  "Name": "SSO Proxy (sso.example.com)",
+  "Certificate": "<base64 public certificate>",
+  "Usage": "SsoServer"
+}
+```
+
+The `"Usage": "SsoServer"` field tells RavenDB that this certificate is a trust anchor for the SSO proxy, not a client login certificate. Although it appears alongside regular certificates in User Access Management, it cannot be used to log in to RavenDB. Its purpose is to verify the per-user client certificates issued by the proxy.
+
+## Creating an SSO user entry
+
+Creating the SSO user entry requires Operator clearance or higher. Open Generate SSO user. This entry tells RavenDB what permissions to grant when the proxy authenticates a specific identity.
+
+<Image img={require("./assets/wiring-sso2.webp")} alt="Generate SSO user dialog for mapping an identity to clearance and permissions" />
+
+### Define the user's identity
+
+An SSO identity contains three fields:
+
+* Provider: [GitHub](https://docs.github.com/en/apps/oauth-apps/using-oauth-apps), [Google](https://developers.google.com/identity/openid-connect/openid-connect), [Microsoft](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/add-application-portal-setup-sso), or Windows
+* Identifier: the email address or username returned by the provider
+* Domain: used only with Windows or Kerberos authentication
+
+For Google, GitHub, and Microsoft identities, leave the domain empty.
+You can add several identities to the same user entry. For example, the same person can sign in through Google or Microsoft and receive the same RavenDB permissions.
+The identity itself is not a secret. An email address or username may be easy to discover. RavenDB therefore also checks which SSO proxy authenticated that identity.
+
+### Choose which SSO server can authenticate the user
+
+You have two options.
+
+**Pin the user to one or more SSO servers**
+RavenDB stores the public-key pinning hashes of the selected SSO server certificates. The user is accepted only when their short-lived certificate was issued by one of those servers. This is the recommended option for most setups.
+
+**Allow any registered SSO server**
+Any SSO server registered in the cluster can authenticate this identity. Use this only when you run several SSO proxies that are intended to be interchangeable.
+
+During login, RavenDB validates the certificate chain and checks that the issuing server matches the user entry. A certificate containing the correct identity is still rejected if it was issued by the wrong SSO server.
+
+### Set the clearance and permissions
+
+The available clearance levels are:
+
+* ValidUser
+* Operator
+* ClusterAdmin
+
+A ValidUser receives only the database permissions configured in the entry. For example, you can grant ReadWrite access to the Northwind database. This is the most common setup.
+Operator and ClusterAdmin are cluster-wide clearances. Per-database permissions do not limit what these users can do, so grant these clearances carefully.
+
+### Using the API
+
+Use the following endpoint to create or update an SSO user entry:
+
+```
+PUT /admin/certificates/sso/user
+Content-Type: application/json
+
+{
+  "Name": "alice@example.com (Google)",
+  "SecurityClearance": "ValidUser",
+  "Permissions": {
+    "Northwind": "ReadWrite"
+  },
+  "SsoIdentifiers": [
+    {
+      "Provider": "Google",
+      "Domain": null,
+      "Identifier": "alice@example.com"
+    }
+  ],
+  "SsoServerPublicKeyPinningHashes": [
+    "<pinning hash of the SSO server>"
+  ],
+  "AllowAnySsoServer": false
+}
+```
+
+To create an Operator, set "SecurityClearance" to "Operator" and omit the "Permissions" map.
+To allow any registered SSO server to authenticate the user, set "AllowAnySsoServer" to true and leave "SsoServerPublicKeyPinningHashes" empty.
+
+### Validation rules
+
+RavenDB validates SSO user entries when you create or edit them. It rejects configurations that cannot authenticate anyone or could leave the cluster in an inconsistent state.
+Each entry must follow these rules:
+
+* A name and at least one identity are required. Without an identity, the entry cannot match any user.
+* You must either allow any registered SSO server or provide at least one pinning hash. When AllowAnySsoServer is false, an empty hash list would make authentication impossible.
+* Every pinning hash must belong to a registered SSO server. You cannot pin a user to a server that RavenDB does not know about.
+* Each identity must be unique across the cluster. The same combination of provider, domain, and identifier cannot appear in two user entries. This ensures that an identity always maps to one clearance and permission set.
+
+RavenDB also prevents you from deleting an SSO server while user entries are still pinned to it. Update or remove those user entries first. These checks apply in both the Studio and the API, so scripted requests receive the same validation as manual changes.
+
+## Where SSO records appear
+
+Registered SSO servers and SSO user entries appear in a dedicated SSO section on the User Access Management page. Servers and users are grouped together, making it easy to see the trusted proxies and the identities that depend on them. Regular client certificates remain in a separate list.
+
+<Image img={require("./assets/wiring-sso4.webp")} alt="SSO section on the User Access Management page listing registered servers and user entries" />
+
+After signing in through the proxy, users also see a link to the SSO application in the Studio footer. This lets them return to the application without entering its address again.
+
+## High-clearance SSO users
+
+RavenDB's two-factor authentication does not apply to SSO logins. The SSO proxy authenticates the user through your identity provider before the request reaches RavenDB. RavenDB trusts that result and does not ask the user for an additional RavenDB-managed authentication factor.
+
+This means that an SSO user with Operator or ClusterAdmin clearance can sign in without RavenDB's own 2FA. The Studio displays a warning when you grant either of these clearances.
+For high-clearance users, require multi-factor authentication in your identity provider. Granting an SSO user Operator or ClusterAdmin clearance should always include confirming that MFA is enforced for that account.
+
+## Same as the API
+
+Nothing the Studio does here is Studio-only. Everything above can be scripted, and the two "Using the API" blocks already give you the request bodies. What they leave open is how the pieces connect in an unattended run, which is what this section fills in.
+
+These calls are the cluster side of the setup. They assume the proxy is already deployed and reachable at its base URL, for example https://sso.example.com, as described in the Deploying the SSO Application guide. Configuration runs in two directions that meet here: the proxy learns which clusters to front through its own settings.json or RAVENDBSSO_Clusters setting on the deployment side, and the cluster learns to trust the proxy and map identities through these calls.
+
+The one value that links the calls is the SSO server's public-key pinning hash. RavenDB computes it when you register the certificate, and the user entry pins against it. So the automation captures the fetched certificate, reads the hash back after registering, and feeds it into the user entry:
+
+```shell
+NODE="https://a.my-cluster.example.com"  # a cluster node
+CERT="./admin.client.certificate.pem"    # admin certificate for mTLS
+SSO_URL="https://sso.example.com"        # the proxy, already deployed
+
+# 1. Capture the proxy certificate (the fetch call shown above).
+CERT_B64=$(curl -sf --cert "$CERT" \
+  "${NODE}/admin/certificates/sso/server/fetch?url=${SSO_URL}" | jq -r '.Base64')
+
+# 2. Register it: PUT /admin/certificates with the SsoServer body shown above,
+#    using "$CERT_B64" as the Certificate. Requires Cluster Admin.
+
+# 3. Read the registered server's pinning hash back.
+PIN_HASH=$(curl -sf --cert "$CERT" "${NODE}/admin/certificates" \
+  | jq -r '.Results[] | select(.Usage == "SsoServer") | .PublicKeyPinningHash')
+
+# 4. Create the user entry: PUT /admin/certificates/sso/user with the body shown
+#    above, putting "$PIN_HASH" in SsoServerPublicKeyPinningHashes. Requires Operator+.
+```
+
+You can configure SSO manually in the Studio first, then move the same setup into your provisioning pipeline, right after the stage that brings the proxy up. The behavior and validation remain the same, so scripted requests are checked exactly as the Studio dialogs are.
+
+## Summary
+
+* Register the proxy certificate.
+* Map identity to access.
+* Pin users to the proxy.
+* Require provider MFA for high clearance.
+
+Want to try this on your own cluster? Grab a free developer license at [ravendb.net/dev](https://ravendb.net/dev), and bring questions to the RavenDB community on [Discord](https://discord.gg/ravendb).

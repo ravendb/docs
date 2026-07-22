@@ -1,101 +1,171 @@
 ---
 title: "PostgreSQL Protocol: Overview"
-description: "Connect to RavenDB using the PostgreSQL wire protocol to run SQL queries from tools like psql, Power BI, and other PostgreSQL-compatible clients."
+description: "Connect to RavenDB using the PostgreSQL wire protocol to run SQL and RQL queries from clients like Power BI and pgAdmin."
 sidebar_label: Overview
 sidebar_position: 0
 ---
 
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # PostgreSQL Protocol: Overview
+<Admonition type="note" title="">
 
-* RavenDB implements the PostgreSQL protocol, allowing applications and libraries that 
-  use PostgreSQL, e.g. [Power BI](../../integrations/postgresql-protocol/power-bi.mdx), to 
-  retrieve data from a RavenDB database.  
+* RavenDB implements the PostgreSQL protocol, allowing applications and tools that 
+  use PostgreSQL, like [Power BI](../../integrations/postgresql-protocol/power-bi.mdx) and pgAdmin, 
+  to retrieve data from a RavenDB database.  
+
+* Clients can query the database in SQL, or in RavenDB's native 
+  [RQL](../../querying/rql/what-is-rql.mdx) (Raven Query Language).  
 
 * To use RavenDB as a PostgreSQL server you need -  
-   * a [license](../../licensing/overview.mdx) that enables the PostgreSQL Protocol.  
-   * To explicitly enable PostgreSQL in your [settings](../../server/configuration/configuration-options.mdx).  
+   * A [license](../../integrations/postgresql-protocol/overview.mdx#license) that enables the PostgreSQL Protocol.  
+   * PostgreSQL explicitly enabled in your [settings](../../integrations/postgresql-protocol/overview.mdx#settings).  
 
 * [Installing](../../start/installation/setup-wizard/overview.mdx) RavenDB as 
   a [secure](../../server/security/overview.mdx) server allows you to authenticate 
   PostgreSQL clients, granting access only to clients that provide the proper credentials.  
-<Admonition type="note" title="">
 
-* In this page:  
-  * [Enabling PostgreSQL support](../../integrations/postgresql-protocol/overview.mdx#enabling-postgresql-support)  
-     * [License](../../integrations/postgresql-protocol/overview.mdx#license)  
-     * [Settings](../../integrations/postgresql-protocol/overview.mdx#settings)  
-     * [PostgreSQL Port](../../integrations/postgresql-protocol/overview.mdx#postgresql-port)  
-  * [Security](../../integrations/postgresql-protocol/overview.mdx#security)  
+* The PostgreSQL protocol is not supported for sharded databases.  
+
+* In this article:  
+   * [Enabling PostgreSQL support](../../integrations/postgresql-protocol/overview.mdx#enabling-postgresql-support)  
+      * [License](../../integrations/postgresql-protocol/overview.mdx#license)  
+      * [Settings](../../integrations/postgresql-protocol/overview.mdx#settings)  
+      * [PostgreSQL Port](../../integrations/postgresql-protocol/overview.mdx#postgresql-port)  
+      * [Platform support](../../integrations/postgresql-protocol/overview.mdx#platform-support)  
+   * [Supported clients](../../integrations/postgresql-protocol/overview.mdx#supported-clients)  
+   * [Querying over the protocol](../../integrations/postgresql-protocol/overview.mdx#querying-over-the-protocol)  
+   * [Security](../../integrations/postgresql-protocol/overview.mdx#security)  
+
 </Admonition>
-## Enabling PostgreSQL support
+
+<Panel heading="Enabling PostgreSQL support">
+
+<ContentFrame>
 
 ### License
 
-* Your RavenDB license determines which features are available for your server.  
-* Visit Studio's [About](../../licensing/overview.mdx#manage-license-view) 
-  page to find which features are included in your license.  
-* PostgreSQL is enabled for all licenses.  
-* To [use Power BI with RavenDB as its PostgreSQL server](../../integrations/postgresql-protocol/power-bi.mdx), 
+* PostgreSQL is included in all licenses.  
+* To [connect Power BI to RavenDB](../../integrations/postgresql-protocol/power-bi.mdx), 
   your license must explicitly enable Power BI.  
   If your current license doesn't include Power BI Support, you can acquire one that does [here](https://ravendb.net/buy).  
+* Visit Studio's [About](../../licensing/overview.mdx#studio-license-management) 
+  page to see the features included in your license.  
+
+</ContentFrame>
+
+<ContentFrame>
+
 ### Settings
 
-* PostgreSQL protocol support must be explicitly enabled in your [settings](../../server/configuration/configuration-options.mdx#settingsjson).  
-  Add this line to your server's `settings.json` file to enable the PostgreSQL protocol:  
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`"Integrations.PostgreSQL.Enabled": true
-`}
-</CodeBlock>
-</TabItem>
-* PostgreSQL is an experimental feature. To enable it, enable RavenDB's 
-  [Experimental Features](../../server/configuration/core-configuration.mdx#featuresavailability) 
-  by adding this line to your server's `settings.json` file:  
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`"Features.Availability": "Experimental"
-`}
-</CodeBlock>
-</TabItem>  
-### PostgreSQL Port
+PostgreSQL support is an [experimental feature](../../server/configuration/core-configuration.mdx#featuresavailability) 
+and must be explicitly enabled in your [settings](../../server/configuration/configuration-options.mdx#settingsjson).  
+To enable the feature, add these two lines to your server's `settings.json` file and restart the server:  
 
-* To access RavenDB, your clients need not only its **URL** but also its 
-  PostgreSQL **Port** number.  
-  By default, the port number is *5433*.  
-* To use a different port, add the following line to your settings.json file, with a port number 
-  of your choice:  
-<TabItem value="json" label="json">
-<CodeBlock language="json">
-{`"Integrations.PostgreSQL.Port": 5433
-`}
-</CodeBlock>
-</TabItem>
+```json
+"Integrations.PostgreSQL.Enabled": true,
+"Features.Availability": "Experimental"
+```
+<br />
 
-
-
-## Security
-
-Allowing just any client to connect to your database (via PostgreSQL or otherwise) 
-without authentication is risky, and should in general be avoided.  
-<Admonition type="warning" title="">
-If RavenDB is not set as a secure server, it will require no authentication over the PostgreSQL protocol.  
+<Admonition type="info" title="">
+When setting up a secure server using the 
+[setup wizard](../../start/installation/setup-wizard/additional-settings.mdx#additional-settings), 
+turning on the wizard's **Experimental features** option enables PostgreSQL support and writes 
+both keys to `settings.json`, so you do **not** need to add the keys manually.  
 </Admonition>
 
-To allow access only for authorized clients -  
+</ContentFrame>
+
+<ContentFrame>
+
+### PostgreSQL Port
+
+* To access RavenDB, your clients need not only the server's **URL** but also the 
+  PostgreSQL **Port** number.  
+  By default, the port number is *5433*.  
+* To use a different port, add the following line to your `settings.json` file, with a port number 
+  of your choice, and restart the server:  
+
+  ```json
+  "Integrations.PostgreSQL.Port": 5433
+  ```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Platform support
+
+* To parse incoming SQL, the PostgreSQL integration uses `libpg_query`, a library that is 
+  built separately for each platform (like Windows x64 or Linux ARM64) and ships with 
+  the RavenDB server.  
+* The library does not ship for 32-bit platforms: the Raspberry Pi and Windows x86 packages.  
+  When the RavenDB server runs on one of these platforms, the PostgreSQL integration will not 
+  start even if enabled in your settings, and the server will log a warning.  
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Supported clients">
+
+Any PostgreSQL client can connect to RavenDB over the protocol; the table below lists 
+popular clients.  
+Power BI, pgAdmin, and Microsoft Fabric also send many PostgreSQL metadata queries of 
+their own. RavenDB recognizes these queries, so you can use these clients' interfaces 
+without repeated errors.
+
+| Client | Description |
+|--------|-------------|
+| **[Power BI](../../integrations/postgresql-protocol/power-bi.mdx)** (the Power BI Desktop application and the online service) | Build reports and dashboards over RavenDB data. |
+| **[pgAdmin](https://www.pgadmin.org/)** | Browse a RavenDB database and run SQL or RQL queries using the Query Tool. |
+| **[Microsoft Fabric](https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview)** | Copy data out of a RavenDB database using a Fabric [Copy job](https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job). |
+| **[Npgsql](https://www.npgsql.org/)** | The .NET data provider for PostgreSQL. Versions 6 through 10 are supported. |
+
+</Panel>
+
+<Panel heading="Querying over the protocol">
+
+Clients that connect to a RavenDB database over PostgreSQL see each document collection 
+as a table in a `public` schema.  
+You can query in two languages:  
+
+* **SQL**  
+  The RavenDB server translates SQL `SELECT` queries to RQL and runs the translated 
+  queries on the database.  
+  See the supported SQL subset and its limitations in 
+  [Querying with SQL](../../integrations/postgresql-protocol/querying-with-sql.mdx).  
+
+* **RQL**  
+  RavenDB recognizes RQL input and runs the query as it is.  
+  e.g., `from Orders where ShipTo.Country == 'France'`.  
+
+</Panel>
+
+<Panel heading="Security">
+
+To allow RavenDB to authenticate PostgreSQL clients:  
 
 * Set RavenDB as a [Secure Server](../../server/security/overview.mdx).  
-  This will allow RavenDB to authenticate PostgreSQL clients, in addition 
-  to many other security measures this setup provides.  
-* Create [PostgreSQL Credentials](../../studio/database/settings/integrations.mdx) using RavenDB Studio.  
-  PostgreSQL credentials are a **user name** and a **password**, that a client 
-  would have to provide in order to access the database.  
+  <Admonition type="warning" title="">
+  If RavenDB is not set as a secure server, the server will require no authentication over the PostgreSQL protocol.  
+  Allowing just any client to connect to your database (via PostgreSQL or otherwise) without authentication 
+  is risky, and should in general be avoided.  
+  </Admonition>
 
+* Create [PostgreSQL Credentials](../../studio/database/settings/integrations.mdx) using Studio.  
+  PostgreSQL credentials are a **user name** and a **password** that a client must provide 
+  to access the database.  
 
+<Admonition type="note" title="">
+A secure server accepts PostgreSQL connections only over TLS.  
+The server refuses a non-TLS connection before the client sends its password, so the 
+password never travels unencrypted.  
+To connect to a secure server, enable SSL in your client's connection settings.  
+e.g., in an Npgsql connection string, include `SSL Mode=Require`.  
+</Admonition>
 
+</Panel>
