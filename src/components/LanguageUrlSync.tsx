@@ -22,14 +22,19 @@ export default function LanguageUrlSync({ supportedLanguages }: LanguageUrlSyncP
             return;
         }
 
-        // Resolve from the real sources (URL then storage), not the hydration-unstable store value.
+        // Read the real sources (URL then storage), not the store's hydration-unstable `language`.
         const urlLanguage = getLanguageFromSearch(location.search);
-        const active = urlLanguage ?? getStoredLanguage();
-        const desired = supportedLanguages.includes(active) ? active : supportedLanguages[0];
-        const expectedUrlLanguage = desired === DEFAULT_LANGUAGE ? null : desired;
+        const activeLanguage = urlLanguage ?? getStoredLanguage();
 
-        if (urlLanguage !== expectedUrlLanguage || getStoredLanguage() !== desired) {
-            setLanguage(desired);
+        // Page doesn't offer the active language: leave the preference and URL alone (display clamps it).
+        if (!supportedLanguages.includes(activeLanguage)) {
+            return;
+        }
+
+        // Persist a ?lang arrival and keep it in the URL; guarded so it doesn't loop.
+        const expectedUrlLanguage = activeLanguage === DEFAULT_LANGUAGE ? null : activeLanguage;
+        if (urlLanguage !== expectedUrlLanguage || getStoredLanguage() !== activeLanguage) {
+            setLanguage(activeLanguage);
         }
     }, [location.pathname, location.search, supportedLanguages, setLanguage]);
 

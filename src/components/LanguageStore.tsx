@@ -1,4 +1,4 @@
-import { useSyncExternalStore, useCallback } from "react";
+import { useSyncExternalStore, useCallback, createContext, useContext } from "react";
 import { useHistory } from "@docusaurus/router";
 import { languageConfig } from "./languageConfig";
 
@@ -38,8 +38,20 @@ const subscribe = (callback: () => void): (() => void) => {
     };
 };
 
+// The current page's supported_languages, used to clamp the displayed language (see useLanguage).
+export const SupportedLanguagesContext = createContext<DocsLanguage[] | undefined>(undefined);
+
 // Store-only (no router) so consumers don't re-render on unrelated location changes.
-export const useLanguage = (): DocsLanguage => useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+export const useLanguage = (): DocsLanguage => {
+    const language = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+    const supportedLanguages = useContext(SupportedLanguagesContext);
+
+    // Clamp to a language the page offers, for display only (the stored preference is untouched).
+    if (supportedLanguages && supportedLanguages.length > 0 && !supportedLanguages.includes(language)) {
+        return supportedLanguages[0];
+    }
+    return language;
+};
 
 export const useSetLanguage = (): ((newLanguage: DocsLanguage) => void) => {
     const history = useHistory();

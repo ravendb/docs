@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useLocation } from "@docusaurus/router";
 import { useLanguage, useSetLanguage, LANGUAGE_QUERY_PARAM, type DocsLanguage } from "./LanguageStore";
 import { languageConfig } from "./languageConfig";
@@ -13,15 +13,6 @@ export default function LanguageSwitcher({ supportedLanguages, flush = false }: 
     const language = useLanguage();
     const setLanguage = useSetLanguage();
     const location = useLocation();
-
-    const isCurrentLanguageSupported = supportedLanguages.includes(language);
-    const firstSupportedLanguage = supportedLanguages[0];
-
-    useEffect(() => {
-        if (!isCurrentLanguageSupported) {
-            setLanguage(firstSupportedLanguage);
-        }
-    }, [isCurrentLanguageSupported, firstSupportedLanguage, setLanguage]);
 
     // Explicit ?lang= (incl. default) so Ctrl/Cmd/middle-click opens that language in a new tab.
     const buildHref = (value: DocsLanguage): string => {

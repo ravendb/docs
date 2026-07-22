@@ -4,6 +4,7 @@ import type DocItemType from "@theme/DocItem";
 import type { WrapperProps } from "@docusaurus/types";
 import DocsTopbar from "@site/src/components/DocsTopbar";
 import LanguageUrlSync from "@site/src/components/LanguageUrlSync";
+import { SupportedLanguagesContext } from "@site/src/components/LanguageStore";
 import { CustomDocFrontMatter } from "@site/src/typescript/docMetadata";
 import { useActivePlugin } from "@docusaurus/plugin-content-docs/client";
 import Head from "@docusaurus/Head";
@@ -33,7 +34,7 @@ export default function DocItemWrapper(props: Props): ReactNode {
     const isTemplatesPlugin = pluginId === "templates";
 
     return (
-        <>
+        <SupportedLanguagesContext.Provider value={supportedLanguages}>
             {isTemplatesPlugin && (
                 <Head>
                     <meta name="robots" content="noindex, nofollow" />
@@ -46,6 +47,6 @@ export default function DocItemWrapper(props: Props): ReactNode {
                     <DocItem {...props} />
                 </div>
             </div>
-        </>
+        </SupportedLanguagesContext.Provider>
     );
 }
