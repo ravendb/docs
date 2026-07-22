@@ -1,0 +1,604 @@
+---
+title: "Debug: Endpoints"
+sidebar_label: "Debug Endpoints"
+description: "Browse the HTTP endpoints a RavenDB server exposes, split into diagnostic debug endpoints and the production REST API, as reported by the /debug/routes endpoint."
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Debug: Endpoints
+<Admonition type="note" title="">
+
+* This page lists the HTTP endpoints that a RavenDB server exposes, in two groups:  
+  **debug endpoints**, which report internal server and database information for diagnostics,  
+  and **production endpoints**, which make up the rest of the server's REST API.  
+
+* The two groups mirror the output of the `/debug/routes` endpoint, which sorts every registered
+  route into the debug and production groups.  
+  To get the current, complete list from a running server, call `/debug/routes`; the list on this
+  page captures the routes for the RavenDB version documented here.  
+
+* In this article:
+   * [Debug endpoints](debug-endpoints.mdx#debug-endpoints)
+   * [Production endpoints](debug-endpoints.mdx#production-endpoints)
+
+</Admonition>
+
+<Panel heading="Debug endpoints">
+
+Debug endpoints report internal information about a RavenDB server and its databases, for diagnostics rather than normal application traffic.
+
+* Call a debug endpoint to inspect live state while investigating a problem.  
+  e.g., to read a node's memory and CPU usage, list the queries currently running on a database, or get a database's storage report.
+* The table below lists each endpoint, the HTTP methods it accepts, and what it reports.
+* Where an endpoint accepts parameters, pass them as query-string parameters on the request URL.  
+  e.g., `/admin/debug/memory/stats?includeThreads=false`
+
+| Endpoint | Method | Description |
+|-|-|-|
+| `/admin/cluster/log` | GET | The entries in the cluster's Rachis (Raft) consensus log.<br /><br />**Parameters:**<ul><li>`from`: the starting log index (optional)</li><li>`pageSize`: number of entries to return (optional, default `1024`)</li><li>`detailed`: include detailed entry information (optional, default `false`)</li></ul> |
+| `/admin/cluster/observer/decisions` | GET | The cluster observer's decision log: each entry's date, database, and message, plus the observer's current iteration and suspended state. Only the cluster leader serves this request; other nodes redirect to the leader. |
+| `/admin/debug/cluster-info-package` | GET | Downloads a `.zip` debug package with diagnostic information gathered from every node in the cluster, one sub-archive per node.<br /><br />**Parameters:**<ul><li>`timeoutInSecPerNode`: per-node timeout for collecting the package, in seconds (optional, default `3600`)</li><li>`type`: which content to include per node (`ServerWide`, `Databases`, `LogFile`, or a combination) (optional, default all three)</li><li>`database`: limit the package to the named database or databases (optional, multi-valued)</li></ul> |
+| `/admin/debug/cluster/history-logs` | GET | The cluster's history-log entries. |
+| `/admin/debug/cpu/stats` | GET | The RavenDB process's CPU times and processor affinity, and .NET thread-pool statistics. |
+| `/admin/debug/info-package` | GET | Downloads a `.zip` debug package with diagnostic information for a single node (the server that handles the request): server-wide info, the requested databases' info, and the current log file, depending on `type`.<br /><br />**Parameters:**<ul><li>`type`: which content to include (`ServerWide`, `Databases`, `LogFile`, or a combination) (optional, default all three)</li><li>`database`: limit the package to the named database or databases (optional, multi-valued)</li></ul> |
+| `/admin/debug/info/tcp/active-connections` | GET | The active TCP connections reported by the operating system, with a total count and each connection's local and remote endpoint, grouped by connection state. |
+| `/admin/debug/info/tcp/stats` | GET | IPv4 and IPv6 TCP statistics reported by the operating system. |
+| `/admin/debug/io-metrics` | GET | I/O metrics (writes, flushes, and syncs) for the server's storage environment. |
+| `/admin/debug/memory/encryption-buffer-pool` | GET | Statistics for the encryption buffer pool: whether it is disabled, total pool size, size currently in use, and the per-core and global allocation breakdown. |
+| `/admin/debug/memory/gc` | GET | A .NET garbage-collector memory report per GC kind: heap size, fragmentation, per-generation sizes (including the large-object and pinned-object heaps), pause times, and memory load. |
+| `/admin/debug/memory/low-mem-log` | GET | The low-memory events the server has recorded, each with its free, committed, unmanaged, and scratch-dirty memory, physical memory, and the low-memory threshold at the time. |
+| `/admin/debug/memory/stats` | GET | A full memory-usage report: managed and unmanaged allocations, encryption buffers, memory-mapped files, per-thread allocations, and dirty-memory state.<br /><br />**Parameters:**<ul><li>`includeThreads`: include per-thread allocations (optional, default `true`)</li><li>`includeMappings`: include memory-mapped files (optional, default `true`)</li></ul> |
+| `/admin/debug/node/engine-logs` | GET | Recent in-memory log entries from the node's Rachis (cluster consensus) engine. |
+| `/admin/debug/node/ping` | GET | Tests connectivity from this node to another cluster node, or to every node in the cluster topology if `url`/`node` is omitted: calls `/setup/alive` and negotiates a TCP connection, and reports the round-trip time or error for each target.<br /><br />**Parameters:**<ul><li>`url`: the target node's URL (optional)</li><li>`node`: the target node's tag, used if `url` is not given (optional)</li><li>`setStatusCodeOnError`: return HTTP 503 if any ping fails (optional, default `false`)</li></ul> |
+| `/admin/debug/node/remote-connections` | GET | The node's active Rachis (Raft) connections: for each, the caller, destination, term, start time, duration, and connection number. |
+| `/admin/debug/node/state-change-history` | GET | The node's history of Rachis state transitions (leader, follower, candidate, and so on). |
+| `/admin/debug/proc/meminfo` | GET | The contents of the `/proc/meminfo` file.<ul><li>Linux only</li></ul> |
+| `/admin/debug/proc/stats` | GET | Detailed .NET process information for the RavenDB process: memory sizes, working set, processor times, threads, and loaded modules. |
+| `/admin/debug/proc/status` | GET | The contents of the `/proc/self/status` file for the RavenDB process.<ul><li>Linux only</li></ul> |
+| `/admin/debug/threads/runaway` | GET | The server's threads ranked by CPU usage over a short sampling interval, to spot a thread consuming excessive CPU.<br /><br />**Parameters:**<ul><li>`samplesCount`: number of samples to collect (optional, default `1`)</li><li>`intervalInMs`: delay between samples (optional, default: the server's CPU sampling interval)</li><li>`maxTopThreads`: return only the top threads by usage (optional)</li></ul> |
+| `/admin/debug/threads/stack-trace` | GET | Live stack traces of the server's threads.<ul><li>Not available on macOS</li></ul><br />**Parameters:**<ul><li>`threadId`: limit to specific thread IDs (optional, multi-valued)</li><li>`includeStackObjects`: include stack objects (optional, default `false`)</li><li>`download`: return the result as a downloadable file (optional, default `false`)</li></ul> |
+| `/admin/debug/txinfo` | GET | Active-transaction information for the server-store storage environment. |
+| `/admin/indexes/lucene/query-clause-cache` | GET | The contents of the Lucene query-clause cache, grouped by database, index, and query text, with item counts and sizes, plus an overall summary. |
+| `/admin/server/notifications` | GET | The notifications stored in the server-wide Notification Center.<br /><br />**Parameters:**<ul><li>`postponed`: include postponed notifications (optional, default `true`)</li><li>`type`: filter to a notification type or types, comma-separated (optional)</li><li>`pageStart`: number of results to skip (optional, default `0`)</li><li>`pageSize`: number of results to return (optional, default all)</li></ul> |
+| `/admin/stats` | GET | The node's uptime, start time, last request time, last non-ClusterAdmin authorized request time, and the last request time per client certificate thumbprint. |
+| `/build/version` | GET | The server's build number, product version, commit hash, and full version string. |
+| `/cluster/topology` | GET | The current [cluster topology](../../server/clustering/rachis/cluster-topology.mdx): members, watchers, and their URLs. |
+| `/databases/*/admin/configuration/settings` | GET, PUT | The database's configuration settings. `GET` reads the effective settings; `PUT` updates them from the request body.<br /><br />**Parameters (`GET` only):**<ul><li>`scope`: filter to a configuration entry scope (`ServerWideOnly`, `ServerWideOrPerDatabase`, or `ServerWideOrPerDatabaseOrPerIndex`) (optional)</li></ul> |
+| `/databases/*/admin/debug/cluster/txinfo` | GET | The database's cluster-wide transaction commands, read as a batch from the cluster state machine.<br /><br />**Parameters:**<ul><li>`from`: number of commands to skip (optional)</li><li>`take`: number of commands to return (optional, default unlimited)</li></ul> |
+| `/databases/*/admin/debug/txinfo` | GET | Active-transaction information for the database's storage environments. |
+| `/databases/*/admin/tombstones/state` | GET | The tombstone-cleanup state: the tombstones held per collection and what is blocking their cleanup. |
+| `/databases/*/ai/errors` | GET, DELETE | Recent errors recorded for the database's AI tasks (Embeddings Generation, Gen AI). `GET` lists them; `DELETE` clears them.<br /><br />**Parameters:**<ul><li>`name`: the task name or names to filter to (optional for `GET`, multi-valued; required for `DELETE`)</li></ul> |
+| `/databases/*/cdc-sink/errors` | GET, DELETE | Recent errors recorded for the database's CDC sink tasks. `GET` lists them; `DELETE` clears them.<br /><br />**Parameters:**<ul><li>`name`: the task name or names to filter to (optional for `GET`, multi-valued; required for `DELETE`)</li></ul> |
+| `/databases/*/collections/stats/detailed` | GET | Detailed per-collection statistics (document, revision, tombstone, counter, and time-series counts and sizes), plus database-wide totals for documents, conflicts, revisions, tombstones, attachments, counters, and time series. |
+| `/databases/*/debug/documents/huge` | GET | Documents that exceeded the huge-document size hint (`PerformanceHints.Documents.HugeDocumentSizeInMb`). |
+| `/databases/*/debug/identities` | GET | The database's identity values: the latest number issued for each identity prefix.<br /><br />**Parameters:**<ul><li>`start`: number of results to skip (optional, default `0`)</li><li>`pageSize`: number of results to return (optional, default all)</li></ul> |
+| `/databases/*/debug/info-package` | GET | Downloads a `.zip` debug package with diagnostic information for the database. |
+| `/databases/*/debug/io-metrics` | GET | I/O metrics (writes, flushes, and syncs) for the database's storage environments. |
+| `/databases/*/debug/perf-metrics` | GET | Transaction performance metrics for each of the database's storage environments. |
+| `/databases/*/debug/queries/cache/list` | GET | The queries currently held in the database's query cache, with each entry's query text, creation and last-use times, index or collection, and query-shape flags (for example group-by, distinct, or has-facet), plus the total cached count. |
+| `/databases/*/debug/queries/running` | GET | The database's currently running queries, grouped by index name. |
+| `/databases/*/debug/script-runners` | GET | Debug information about the database's JavaScript script runners (used by patching and other JavaScript features).<br /><br />**Parameters:**<ul><li>`detailed`: include detailed per-runner information (optional, default `false`)</li></ul> |
+| `/databases/*/debug/storage/report` | GET | A storage report for the database: space used per storage environment, table, and index. |
+| `/databases/*/etl/errors` | GET, DELETE | Recent errors recorded for the database's ETL tasks. `GET` lists them; `DELETE` clears them.<br /><br />**Parameters:**<ul><li>`name`: the task name or names to filter to (optional for `GET`, multi-valued; required for `DELETE`)</li></ul> |
+| `/databases/*/etl/progress` | GET | Progress of the database's ETL tasks: task name, ETL type, per-process progress, and (for queue ETL) the queue-broker type.<br /><br />**Parameters:**<ul><li>`name`: filter to the named ETL task or tasks (optional, multi-valued)</li></ul> |
+| `/databases/*/etl/stats` | GET | Statistics for the database's ETL tasks: task ID, type, and per-transformation statistics.<br /><br />**Parameters:**<ul><li>`name`: filter to the named ETL task or tasks (optional, multi-valued)</li></ul> |
+| `/databases/*/indexes` | GET, PUT, DELETE, RESET | The database's [indexes](../../indexes/what-are-indexes.mdx). `GET` returns index definitions; `PUT` creates or updates a JavaScript-defined index (static, non-JavaScript index definitions use `/databases/*/admin/indexes`); `DELETE` removes an index; `RESET` rebuilds an index.<br /><br />**Parameters:**<ul><li>`name`: index name or names (`GET`: optional, multi-valued, filters the results; `DELETE` and `RESET`: required, single name)</li><li>`namesOnly`: return only index names instead of full definitions (`GET` only, optional, default `false`)</li><li>`start`, `pageSize`: pagination for `GET` when listing all indexes (optional)</li><li>`mode`: index reset mode (`RESET` only, optional)</li></ul> |
+| `/databases/*/indexes/debug/metadata` | GET | Low-level metadata for the database's indexes: version, type, state, lock mode, source type, priority, search-engine type, dynamic-fields and compare-exchange flags, and time fields.<br /><br />**Parameters:**<ul><li>`name`: filter to the named index or indexes (optional, multi-valued)</li></ul> |
+| `/databases/*/indexes/errors` | GET, DELETE | Indexing errors for the database's indexes. `GET` lists them; `DELETE` clears them.<br /><br />**Parameters:**<ul><li>`name`: filter to the named index or indexes (optional, multi-valued; if omitted, all indexes)</li><li>`start`, `pageSize`: pagination of each index's error list (`GET` only, optional)</li></ul> |
+| `/databases/*/indexes/performance` | GET | Detailed indexing-performance statistics for the database's indexes.<br /><br />**Parameters:**<ul><li>`name`: filter to the named index or indexes (optional, multi-valued)</li></ul> |
+| `/databases/*/indexes/stats` | GET | Statistics for the database's indexes: type, state, lock mode, priority, staleness, lag, memory usage, and referenced collections.<br /><br />**Parameters:**<ul><li>`name`: limit to a single named index (optional)</li></ul> |
+| `/databases/*/notifications` | GET | The notifications stored in the database's Notification Center.<br /><br />**Parameters:**<ul><li>`postponed`: include postponed notifications (optional, default `true`)</li><li>`type`: filter to a notification type or types, comma-separated (optional)</li><li>`pageStart`: number of results to skip (optional, default `0`)</li><li>`pageSize`: number of results to return (optional, default all)</li></ul> |
+| `/databases/*/replication/debug/incoming-last-activity-time` | GET | The last activity time of each incoming replication connection. |
+| `/databases/*/replication/debug/incoming-rejection-info` | GET | Information about rejected incoming replication connections. |
+| `/databases/*/replication/debug/outgoing-failures` | GET | Failures recorded for outgoing replication connections. |
+| `/databases/*/replication/debug/outgoing-reconnect-queue` | GET | Outgoing replication connections waiting to reconnect. |
+| `/databases/*/replication/internal/outgoing/progress` | GET | Progress of outgoing internal replication to the other nodes in the database group. |
+| `/databases/*/replication/progress` | GET | Progress of the database's outgoing external and pull replication tasks toward their destinations.<br /><br />**Parameters:**<ul><li>`name`: filter to the named replication task or tasks (optional, multi-valued)</li></ul> |
+| `/databases/*/stats` | GET | Statistics for the database: document count, index count, sizes, and so on. |
+| `/databases/*/subscriptions` | GET, PUT, DELETE | The database's [data subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx). `GET` lists them, or returns one by `id` or `name`; `PUT` creates or updates one from the request body; `DELETE` removes one.<br /><br />**Parameters:**<ul><li>`id`: return only the subscription with this ID (`GET` only, optional)</li><li>`name`: return only the subscription with this name (`GET` only, optional)</li><li>`taskName`: the subscription to delete (`DELETE` only, required)</li><li>`start`, `pageSize`: pagination when listing all subscriptions (`GET` only, optional)</li><li>`history`: include connection history (`GET` only, optional, default `false`)</li><li>`running`: limit to currently running subscriptions (`GET` only, optional, default `false`)</li></ul> |
+| `/databases/*/tasks` | GET | The database's ongoing tasks (ETL, replication, backups, subscriptions, and so on). |
+| `/databases/*/tcp` | GET, DELETE | The database's active TCP connections. `GET` lists them; `DELETE` force-disconnects one.<br /><br />**Parameters:**<ul><li>`id`: the connection ID to disconnect (`DELETE` only, required)</li></ul> |
+| `/debug/cpu-credits` | GET | The server's CPU-credits state: remaining and maximum credits, background-task and failover thresholds, current consumption, machine CPU usage, gain rate, and per-minute history. |
+| `/debug/server-id` | GET | The server's unique identifier. |
+| `/license-server/connectivity` | GET | Checks whether the server can reach RavenDB's license server. |
+
+</Panel>
+
+<Panel heading="Production endpoints">
+
+Production endpoints make up the rest of the server's REST API, used in normal operation rather than for diagnostics. The table lists each route and the HTTP methods it accepts.
+
+| Endpoint | Method | Description |
+|-|-|-|
+| `/` | GET | The server home page (redirects to Studio). |
+| `/2fa/$` | GET | Serves a static asset for the two-factor authentication page. |
+| `/2fa/index.html` | GET | Serves the two-factor authentication page if two-factor authentication is pending for the connection; otherwise redirects to Studio. |
+| `/admin/ai/test-connection` | POST | Tests a connection to an AI service using the connector type and settings supplied in the request body.<br /><br />**Parameters:**<ul><li>`type`: the AI connector type (required)</li><li>`modelType`: the AI model type (required)</li></ul> |
+| `/admin/analyzers` | PUT, DELETE | `PUT` registers server-wide custom analyzers from the request body; `DELETE` removes one by name.<br /><br />**Parameters:**<ul><li>`name`: name of the analyzer to delete (required, `DELETE` only)</li></ul> |
+| `/admin/backup-task/delay` | POST | Delays a backup task by the specified duration.<br /><br />**Parameters:**<ul><li>`taskId`: identifier of the backup task to delay (required)</li><li>`duration`: length of the delay (required)</li><li>`database`: the database that owns the backup task (required)</li></ul> |
+| `/admin/certificates` | GET, PUT, POST, DELETE | `GET` lists [client certificates](../../server/security/authentication/certificate-management.mdx); `PUT` registers an existing certificate; `POST` generates a new one; `DELETE` removes one by thumbprint. |
+| `/admin/certificates/2fa/generate` | GET | Generates a secret for two-factor authentication. |
+| `/admin/certificates/cluster-domains` | GET | The host names of the cluster's nodes, or this node's own host name if it is not part of a cluster yet. |
+| `/admin/certificates/edit` | POST | Edits an existing client certificate's permissions, security clearance, and other metadata.<br /><br />**Parameters:**<ul><li>`deleteTwoFactorConfiguration`: remove the certificate's two-factor authentication configuration (optional, default `false`)</li></ul> |
+| `/admin/certificates/export` | GET | Exports the server's certificate and the cluster's node certificates as a downloadable .pfx file. |
+| `/admin/certificates/for-communication/export` | GET | Exports the public certificate the server uses for communication. |
+| `/admin/certificates/letsencrypt/force-renew` | POST | Forces renewal of the Let's Encrypt server certificate. |
+| `/admin/certificates/letsencrypt/renewal-date` | GET | The estimated renewal date of the Let's Encrypt server certificate. |
+| `/admin/certificates/local-state` | GET, DELETE | `GET` returns the certificates held in the node's local state; `DELETE` removes them. |
+| `/admin/certificates/local-state/apply` | POST | Applies the node's local-state certificates to the cluster. |
+| `/admin/certificates/mode` | GET | The server's certificate setup mode. |
+| `/admin/certificates/purge` | DELETE | Deletes expired certificates from the cluster. |
+| `/admin/certificates/refresh` | POST | Triggers the certificate refresh cycle immediately.<br /><br />**Parameters:**<ul><li>`replaceImmediately`: replace the certificate on this node right away if it changed on disk (optional, default `false`)</li></ul> |
+| `/admin/certificates/replace-cluster-cert` | POST | Replaces the cluster certificate with the posted certificate.<br /><br />**Parameters:**<ul><li>`replaceImmediately`: replace the certificate on this node right away instead of waiting for the next refresh cycle (optional, default `false`)</li></ul> |
+| `/admin/certificates/replacement/reset` | POST | Resets an in-progress certificate replacement by clearing its state. |
+| `/admin/certificates/replacement/status` | GET | The status of an ongoing certificate replacement. |
+| `/admin/certificates/sso/server/fetch` | GET | Fetches an SSO server certificate from the specified URL.<br /><br />**Parameters:**<ul><li>`url`: address to fetch the certificate from (required)</li></ul> |
+| `/admin/certificates/sso/user` | PUT | Registers an SSO user. |
+| `/admin/cluster-dashboard/remote/watch` | GET | Streams this node's Cluster Dashboard notifications over a WebSocket, for use when another node proxies a dashboard view from this one.<br /><br />**Parameters:**<ul><li>`thumbprint`: thumbprint of the client certificate originally used to connect, to scope which databases are visible (optional)</li></ul> |
+| `/admin/cluster/bootstrap` | POST | Bootstraps a single-node cluster on this server.<br /><br />**Parameters:**<ul><li>`tag`: node tag to assign to this node (optional)</li></ul> |
+| `/admin/cluster/demote` | POST | Demote a node to a watcher.<br /><br />**Parameters:**<ul><li>`nodeTag`: tag of the node to demote (required)</li></ul> |
+| `/admin/cluster/log/entry` | GET | A single Raft log entry, retrieved by index.<br /><br />**Parameters:**<ul><li>`index`: index of the log entry to return (required)</li></ul> |
+| `/admin/cluster/maintenance-stats` | GET | The cluster maintenance statistics the leader collects from each node. |
+| `/admin/cluster/node` | PUT, DELETE | Add (`PUT`) or remove (`DELETE`) a node from the cluster.<br /><br />**Parameters:**<ul><li>`url`: URL of the node to add (required, `PUT` only)</li><li>`tag`: node tag to assign (optional, `PUT` only)</li><li>`watcher`: add the node as a non-voting watcher (optional, `PUT` only)</li><li>`maxUtilizedCores`: maximum CPU cores the added node may use (optional, `PUT` only)</li><li>`nodeTag`: tag of the node to remove (required, `DELETE` only)</li></ul> |
+| `/admin/cluster/observer/suspend` | POST | Suspends or resumes the cluster observer.<br /><br />**Parameters:**<ul><li>`value`: `true` to suspend the observer, `false` to resume it (required)</li></ul> |
+| `/admin/cluster/promote` | POST | Promote a node to a voting member.<br /><br />**Parameters:**<ul><li>`nodeTag`: tag of the node to promote (required)</li></ul> |
+| `/admin/cluster/reelect` | POST | Force a new cluster leader election. |
+| `/admin/cluster/remove-entry-from-log` | POST | Removes an entry from the Raft log by index.<br /><br />**Parameters:**<ul><li>`index`: index of the log entry to remove (required)</li></ul> |
+| `/admin/cluster/timeout` | POST | Force the current node's election timeout. |
+| `/admin/compact` | POST | Compact a database's storage to reclaim disk space. |
+| `/admin/configuration/client` | PUT | Saves the server's client configuration. |
+| `/admin/configuration/server-wide` | GET | The server-wide backup configuration: local root path and allowed AWS regions and destinations. |
+| `/admin/configuration/server-wide/backup` | GET, PUT, DELETE | `GET` returns the server-wide backup configurations; `PUT` saves one; `DELETE` removes one.<br /><br />**Parameters:**<ul><li>`name`: task name to filter by (optional, `GET`) or to remove (required, `DELETE`)</li></ul> |
+| `/admin/configuration/server-wide/connection-strings` | GET, PUT, DELETE | `GET` returns server-wide connection strings; `PUT` saves one; `DELETE` removes one.<br /><br />**Parameters:**<ul><li>`name`: connection string name to filter by (optional, `GET`) or to remove (required, `DELETE`)</li><li>`type`: connection string type (optional, `GET`; required, `DELETE`)</li></ul> |
+| `/admin/configuration/server-wide/external-replication` | PUT | Saves a server-wide external replication configuration. |
+| `/admin/configuration/server-wide/state` | POST | Enables or disables a server-wide task.<br /><br />**Parameters:**<ul><li>`type`: the ongoing task type (required)</li><li>`name`: the task name (required)</li><li>`disable`: `true` to disable the task, `false` to enable it (optional, default `true`)</li></ul> |
+| `/admin/configuration/server-wide/task` | DELETE | Removes a server-wide task by name and type.<br /><br />**Parameters:**<ul><li>`type`: the ongoing task type (required)</li><li>`name`: the task name (required)</li></ul> |
+| `/admin/configuration/server-wide/tasks` | GET | Returns the server-wide tasks of a given type (backup or external replication).<br /><br />**Parameters:**<ul><li>`type`: the ongoing task type, `Backup` or `Replication` (required)</li><li>`name`: filter by task name (optional)</li></ul> |
+| `/admin/configuration/settings` | GET | Returns the server's configuration settings.<br /><br />**Parameters:**<ul><li>`scope`: filter entries by configuration entry scope (optional)</li></ul> |
+| `/admin/configuration/studio` | PUT | Saves the server-wide Studio configuration. |
+| `/admin/console` | POST | Runs an administrative JavaScript console script, either against the server or against a specific database.<br /><br />**Parameters:**<ul><li>`serverScript`: run the script against the server rather than a database (optional, default `false`)</li><li>`database`: name of the database to run the script against, required unless `serverScript` is `true` (optional)</li></ul> |
+| `/admin/cpu-credits` | POST | Sets the server's remaining CPU credits. |
+| `/admin/cpu-credits/sync` | POST | Forces an immediate CPU-credits synchronization. |
+| `/admin/databases` | GET, PUT, DELETE | `GET` returns database records; `PUT` creates a database; `DELETE` deletes one or more databases. |
+| `/admin/databases/disable` | POST | Disable one or more databases. |
+| `/admin/databases/dynamic-node-distribution` | POST | Enables or disables dynamic node distribution for a database.<br /><br />**Parameters:**<ul><li>`name`: name of the database (required)</li><li>`enable`: `true` to enable, `false` to disable (optional, default `true`)</li></ul> |
+| `/admin/databases/enable` | POST | Enable one or more databases. |
+| `/admin/databases/indexing` | POST | Enables or disables indexing for one or more databases.<br /><br />**Parameters:**<ul><li>`enable`: `true` to enable indexing, `false` to disable it (optional, default `true`)</li></ul> |
+| `/admin/databases/node` | PUT | Adds a node to an existing database group.<br /><br />**Parameters:**<ul><li>`name`: name of the database (required)</li><li>`node`: tag of the node to add (optional, chosen automatically if omitted)</li><li>`mentor`: tag of the node to use as the initial replication mentor (optional)</li></ul> |
+| `/admin/databases/orchestrator` | PUT, DELETE | `PUT` adds a node to a sharded database's orchestrator topology; `DELETE` removes one.<br /><br />**Parameters:**<ul><li>`name`: name of the database (required)</li><li>`node`: tag of the node to add or remove (optional for `PUT`, chosen automatically if omitted; required for `DELETE`)</li></ul> |
+| `/admin/databases/promote` | POST | Promote a database-group node to a full member.<br /><br />**Parameters:**<ul><li>`name`: name of the database (required)</li><li>`node`: tag of the node to promote (required)</li></ul> |
+| `/admin/databases/reorder` | POST | Reorder the members of a database group.<br /><br />**Parameters:**<ul><li>`name`: name of the database (required)</li></ul> |
+| `/admin/databases/set-lock` | POST | Sets the deletion lock mode for one or more databases. |
+| `/admin/databases/shard` | PUT | Adds a new shard to a sharded database.<br /><br />**Parameters:**<ul><li>`name`: name of the database (required)</li><li>`shardNumber`: shard number to assign (optional, chosen automatically if omitted)</li><li>`node`: node tags to place the shard's replicas on, may repeat (optional)</li><li>`replicationFactor`: number of replicas for the new shard (optional)</li><li>`dynamicNodeDistribution`: enable dynamic node distribution for the new shard (optional)</li></ul> |
+| `/admin/databases/topology/modify` | POST | Modifies a database's topology.<br /><br />**Parameters:**<ul><li>`name`: name of the database (required)</li></ul> |
+| `/admin/databases/unused-ids` | POST | Register the set of unused database IDs for a database, supplied in the request body.<br /><br />**Parameters:**<ul><li>`name`: the target database (required)</li><li>`validate`: validate the supplied IDs before saving (optional, default `false`)</li></ul> |
+| `/admin/debug/databases/idle` | GET | Return idle-state information for recently used databases, including whether each can be unloaded, along with the configured idle timeout and check frequency. |
+| `/admin/debug/dump` | GET | Create a process memory dump of the requested type and download it as a gzip-compressed file.<br /><br />**Parameters:**<ul><li>`type`: the memory dump type to create</li><li>`path`: server-side directory for the temporary dump file (optional, default `system temp directory`)</li></ul> |
+| `/admin/debug/gcdump` | GET | Create a GC (Garbage Collector) memory dump and download it as a gzip-compressed file.<br /><br />**Parameters:**<ul><li>`timeout`: seconds to wait while collecting the dump (optional, default `30`)</li><li>`path`: server-side directory for the temporary dump file (optional, default `system temp directory`)</li></ul> |
+| `/admin/debug/io-metrics/live` | GET | Stream the server's live I/O metrics over a WebSocket. |
+| `/admin/debug/memory/allocations` | GET | Collect managed memory allocations over a sampling window and return them grouped by allocating type.<br /><br />**Parameters:**<ul><li>`delay`: length of the sampling window in seconds (optional, default `5`)</li></ul> |
+| `/admin/debug/memory/gc-events` | GET | Collect garbage-collection events over a sampling window and return the top five by duration, plus the full list of collected events.<br /><br />**Parameters:**<ul><li>`delay`: length of the sampling window in seconds (optional, default `10`)</li></ul> |
+| `/admin/debug/memory/smaps` | GET | Return a memory-mapping report for the server process. |
+| `/admin/debug/node/clear-http-clients-pool` | GET | Clear the server's internal pool of cached HTTP clients. |
+| `/admin/debug/operations/longest-running` | GET | Returns the longest-running active operation for each operation type, across the server and its loaded databases. |
+| `/admin/debug/periodic-backup/timers` | GET | Return the periodic-backup timers for the currently loaded databases on this node. |
+| `/admin/debug/remote-cluster-info-package` | GET | Return a debug-information package (ZIP) for this node, containing server info and the requested databases, for use when assembling a cluster-wide debug package. |
+| `/admin/debug/script-runners` | GET | Return debug information about the server's JavaScript script runners.<br /><br />**Parameters:**<ul><li>`detailed`: include detailed per-runner information (optional, default `false`)</li></ul> |
+| `/admin/debug/storage/environment/report` | GET | Return a storage report for the server-store (system) Voron environment.<br /><br />**Parameters:**<ul><li>`details`: include a detailed report (optional, default `false`)</li></ul> |
+| `/admin/debug/storage/environment/scratch-buffer-info` | GET | Return scratch-buffer pool information for the server-store (system) Voron environment. |
+| `/admin/debug/threads/contention` | GET | Collect thread lock-contention events over a sampling window and return the top five by duration plus the full list of events in chronological order.<br /><br />**Parameters:**<ul><li>`delay`: length of the sampling window in seconds (optional, default `30`)</li></ul> |
+| `/admin/etl/elasticsearch/test-connection` | POST | Test a connection to an Elasticsearch destination using the supplied connection settings.<br /><br />**Parameters:**<ul><li>`url`: URL of the Elasticsearch node to connect to</li></ul> |
+| `/admin/etl/queue/amazonsqs/test-connection` | POST | Test a connection to an Amazon SQS queue destination using the supplied connection settings. |
+| `/admin/etl/queue/azurequeuestorage/test-connection` | POST | Test a connection to an Azure Queue Storage destination using the supplied connection settings. |
+| `/admin/etl/queue/azureservicebus/test-connection` | POST | Test a connection to an Azure Service Bus destination using the supplied connection settings. |
+| `/admin/etl/queue/kafka/test-connection` | POST | Test a connection to a Kafka destination using the supplied connection settings. |
+| `/admin/etl/queue/rabbitmq/test-connection` | POST | Test a connection to a RabbitMQ destination using the supplied connection settings. |
+| `/admin/etl/snowflake/test-connection` | POST | Test a connection to a Snowflake destination using the supplied connection settings. |
+| `/admin/etl/sql/test-connection` | POST | Test a connection to a relational (SQL) database destination using the supplied connection settings.<br /><br />**Parameters:**<ul><li>`factoryName`: name of the .NET database provider factory to use for the connection test</li></ul> |
+| `/admin/event-listener/configuration` | GET, POST | Get (`GET`) or set (`POST`) the server's event-listener configuration. |
+| `/admin/license/activate` | POST | Activate a [license](../../licensing/overview.mdx). |
+| `/admin/license/eula/accept` | POST | Accept the license EULA (End User License Agreement). |
+| `/admin/license/forceUpdate` | POST | Force a license update from the license server. |
+| `/admin/license/renew` | POST | Renew the current license. |
+| `/admin/license/set-limit` | POST | Set the maximum number of licensed CPU cores a cluster node may use.<br /><br />**Parameters:**<ul><li>`nodeTag`: tag of the node to limit</li><li>`maxUtilizedCores`: maximum number of cores the node may use (optional)</li></ul> |
+| `/admin/logs/configuration` | GET, POST | Get (`GET`) or change (`POST`) the server's log configuration at runtime. |
+| `/admin/logs/download` | GET | Download the server's log files as a ZIP archive.<br /><br />**Parameters:**<ul><li>`from`: only include files last modified after this date (optional)</li><li>`to`: only include files created before this date (optional)</li></ul> |
+| `/admin/logs/watch` | GET | Stream the server's live log entries over a WebSocket. |
+| `/admin/memory/gc` | GET | Trigger a .NET garbage collection on the server.<br /><br />**Parameters:**<ul><li>`loh`: also compact the LOH (Large Object Heap) once (optional, default `false`)</li></ul> |
+| `/admin/metrics` | GET | Return the server's metrics in JSON. |
+| `/admin/migrate` | POST | Migrate databases from another live RavenDB server, using the migration configuration in the request body. |
+| `/admin/migrate/offline` | POST | Migrate a database from offline data files, using the migration configuration in the request body. |
+| `/admin/monitoring/v1/ai-tasks` | GET | Per-database AI-task [monitoring metrics in JSON](../json-monitoring-endpoints.mdx).<br /><br />**Parameters:**<ul><li>`name`: limit to this database (optional, may be repeated to include multiple databases)</li></ul> |
+| `/admin/monitoring/v1/cdc-sinks` | GET | Per-database CDC (Change Data Capture) sink monitoring metrics in JSON.<br /><br />**Parameters:**<ul><li>`name`: limit to this database (optional, may be repeated to include multiple databases)</li></ul> |
+| `/admin/monitoring/v1/collections` | GET | Per-collection monitoring metrics in JSON.<br /><br />**Parameters:**<ul><li>`name`: limit to this database (optional, may be repeated to include multiple databases)</li></ul> |
+| `/admin/monitoring/v1/databases` | GET | Per-database monitoring metrics in JSON.<br /><br />**Parameters:**<ul><li>`name`: limit to this database (optional, may be repeated to include multiple databases)</li></ul> |
+| `/admin/monitoring/v1/etls` | GET | Per-database ETL monitoring metrics in JSON.<br /><br />**Parameters:**<ul><li>`name`: limit to this database (optional, may be repeated to include multiple databases)</li></ul> |
+| `/admin/monitoring/v1/indexes` | GET | Per-index monitoring metrics in JSON.<br /><br />**Parameters:**<ul><li>`name`: limit to this database (optional, may be repeated to include multiple databases)</li></ul> |
+| `/admin/monitoring/v1/prometheus` | GET | Server metrics in [Prometheus](../integrations/prometheus.mdx) format.<br /><br />**Parameters:**<ul><li>`skipServerMetrics`: exclude server-level metrics (optional, default `false`)</li><li>`skipDatabasesMetrics`: exclude per-database metrics (optional, default `false`)</li><li>`skipIndexesMetrics`: exclude per-index metrics (optional, default `false`)</li><li>`skipCollectionsMetrics`: exclude per-collection metrics (optional, default `false`)</li><li>`skipEtlsMetrics`: exclude per-ETL metrics (optional, default `false`)</li><li>`skipAiTasksMetrics`: exclude per-AI-task metrics (optional, default `false`)</li><li>`skipCdcSinksMetrics`: exclude per-CDC-sink metrics (optional, default `false`)</li><li>`includeGcMetrics`: include garbage-collection metrics (optional, default `false`)</li></ul> |
+| `/admin/monitoring/v1/server` | GET | Server monitoring metrics in JSON, for external monitoring tools. |
+| `/admin/operations/kill` | POST | Abort a running server operation.<br /><br />**Parameters:**<ul><li>`id`: ID of the operation to abort</li></ul> |
+| `/admin/operations/next-operation-id` | GET | Get the next server operation ID. |
+| `/admin/rachis/send` | POST | Submit a Raft (cluster) command to the leader for the cluster to apply. |
+| `/admin/remote-server/build/version` | GET | Retrieve build-version and database information from a remote RavenDB server.<br /><br />**Parameters:**<ul><li>`serverUrl`: URL of the remote server to query</li><li>`userName`: username for authenticating to the remote server (optional)</li><li>`password`: password for authenticating to the remote server (optional)</li><li>`domain`: domain for authenticating to the remote server (optional)</li><li>`apiKey`: API key for authenticating to the remote server (optional)</li><li>`enableBasicAuthenticationOverUnsecuredHttp`: allow Basic authentication over an unsecured HTTP connection (optional, default `false`)</li><li>`skipServerCertificateValidation`: skip validation of the remote server's TLS certificate (optional, default `false`)</li></ul> |
+| `/admin/replication/conflicts/solver` | POST | Update the conflict-resolution configuration for a database.<br /><br />**Parameters:**<ul><li>`name`: the database whose conflict solver to update</li></ul> |
+| `/admin/resharding/start` | POST | Start a [resharding](../../sharding/resharding.mdx) operation that moves a range of buckets to another shard in a sharded database.<br /><br />**Parameters:**<ul><li>`database`: the sharded database</li><li>`fromBucket`: first bucket in the range to move</li><li>`toBucket`: last bucket in the range to move</li><li>`toShard`: the destination shard number</li></ul> |
+| `/admin/restore/database` | POST | Restore a database from a backup. |
+| `/admin/restore/points` | POST | List the available restore points in a backup location.<br /><br />**Parameters:**<ul><li>`type`: backup storage connection type, `Local`, `S3`, `Azure`, or `GoogleCloud` (optional, default `Local`)</li></ul> |
+| `/admin/secrets` | GET, POST | List stored secret-key names (`GET`) or store a secret key (`POST`).<br /><br />**Parameters:**<ul><li>`name`: the resource name for the key to store (`POST` only)</li><li>`overwrite`: replace an existing key with the same name (`POST` only, optional, default `false`)</li></ul> |
+| `/admin/secrets/distribute` | POST | Distribute a secret key to the specified cluster nodes.<br /><br />**Parameters:**<ul><li>`name`: the resource name the key belongs to</li><li>`node`: tag of a node to receive the key (may be repeated)</li></ul> |
+| `/admin/secrets/generate` | GET | Generate a random 256-bit secret key and return it as a base64 string. |
+| `/admin/server-wide/backup-data-directory` | GET | Resolve and return information about a server-wide backup data directory for the given path.<br /><br />**Parameters:**<ul><li>`path`: the directory path to inspect</li><li>`requestTimeoutInMs`: timeout for querying other nodes, in milliseconds (optional, default `5000`)</li><li>`getNodesInfo`: also return directory information from other cluster nodes (optional, default `false`)</li></ul> |
+| `/admin/server-wide/tasks` | GET | Return the configured server-wide tasks.<br /><br />**Parameters:**<ul><li>`name`: filter to a task with this name (optional)</li><li>`type`: filter to tasks of this type (optional)</li></ul> |
+| `/admin/sorters` | PUT, DELETE | Add or update (`PUT`) or delete (`DELETE`) a server-wide custom sorter.<br /><br />**Parameters:**<ul><li>`name`: name of the sorter to delete (`DELETE` only)</li></ul> |
+| `/admin/studio-tasks/folder-path-options` | POST | Return folder-path options (subfolder suggestions) for a given path or backup destination, used by Studio directory pickers.<br /><br />**Parameters:**<ul><li>`type`: backup storage connection type, `Local`, `S3`, `Azure`, or `GoogleCloud` (optional, default `Local`)</li><li>`path`: the path to list subfolder options for (optional)</li><li>`backupFolder`: treat the path as a backup folder (optional, default `false`)</li></ul> |
+| `/admin/studio-tasks/full-data-directory` | GET | Resolve and return the full data-directory path that a database would use, given a path or a database name.<br /><br />**Parameters:**<ul><li>`path`: an explicit directory path, which overrides `name` (optional)</li><li>`name`: a database name, used to derive its data directory (optional)</li><li>`requestTimeoutInMs`: timeout for querying other nodes, in milliseconds (optional, default `5000`)</li><li>`getNodesInfo`: also return directory information from other cluster nodes (optional, default `false`)</li></ul> |
+| `/admin/studio-tasks/offline-migration-test` | GET | Validate the data directory or migrator path for an offline migration.<br /><br />**Parameters:**<ul><li>`mode`: validation mode, `dataDir` or `migratorPath`</li><li>`path`: the path to validate</li></ul> |
+| `/admin/test-connection` | POST | Test the connection from this server to a remote node.<br /><br />**Parameters:**<ul><li>`url`: URL of the remote node</li><li>`database`: database to test against (optional)</li><li>`bidirectional`: also test the connection from the remote node back to this server (optional, default `false`)</li></ul> |
+| `/admin/test/delay` | GET | Delay the response by the specified number of milliseconds.<br /><br />**Parameters:**<ul><li>`value`: delay in milliseconds</li></ul> |
+| `/admin/test/empty-message` | GET | Return an empty response. |
+| `/admin/test/sized-message` | GET | Return a response of random bytes, sized as a number of 32 KB blocks.<br /><br />**Parameters:**<ul><li>`count`: number of 32 KB blocks to return (optional, default `1`)</li></ul> |
+| `/admin/traffic-watch` | GET | The [Traffic Watch](../traffic-watch/overview.mdx) live request-stream WebSocket endpoint.<br /><br />**Parameters:**<ul><li>`resourceName`: restrict the stream to a specific database (optional)</li></ul> |
+| `/admin/traffic-watch/configuration` | GET, POST | Get (`GET`) or update (`POST`) the Traffic Watch log-to-file configuration. |
+| `/analyzers` | GET | List the server-wide custom analyzers.<br /><br />**Parameters:**<ul><li>`namesOnly`: return only analyzer names, without their code (optional, default `false`)</li></ul> |
+| `/assistant/assist` | POST | Send a request to the AI Assistant. |
+| `/assistant/check-consent` | GET | Check whether consent to use the AI Assistant has been given. |
+| `/assistant/check-usage` | GET | Return the AI Assistant usage information. |
+| `/assistant/give-consent` | POST | Give consent to use the AI Assistant. |
+| `/assistant/settings` | GET | Return the AI Assistant settings (whether the assistant and data submission are disabled). |
+| `/auth-error.html` | GET | The Studio authentication-error page. Redirects to Studio when the caller is already authorized.<br /><br />**Parameters:**<ul><li>`ae`, `ao`, `rt`: encoded authentication status, authorization status, and resource type used to build the displayed error message (optional)</li></ul> |
+| `/authentication/2fa` | POST, DELETE | Validate a two-factor authentication token to open a session (`POST`), or end the current two-factor session (`DELETE`).<br /><br />**Parameters:**<ul><li>`hasLimits`: bind the session to a browser cookie (optional, default `true`)</li><li>`sessionDurationInMin`: session length in minutes (optional, default is the server's configured default)</li></ul> |
+| `/authentication/2fa/configuration` | GET | Return the two-factor authentication session-duration settings (default and maximum, in minutes). |
+| `/build/version/updates` | POST | Return information about available RavenDB version updates.<br /><br />**Parameters:**<ul><li>`refresh`: trigger a fresh check for updates before responding (optional, default `false`)</li></ul> |
+| `/certificates/whoami` | GET | The certificate definition the caller is authenticated with. |
+| `/cluster-dashboard/watch` | GET | Live WebSocket stream of Cluster Dashboard data for a node.<br /><br />**Parameters:**<ul><li>`node`: tag of the node to watch</li></ul> |
+| `/cluster/node-info` | GET | Information about this cluster node. |
+| `/configuration/client` | GET | Return the server-wide client configuration. |
+| `/configuration/studio` | GET | Return the server-wide Studio configuration. |
+| `/databases` | GET | Return the list of databases on the server, or a single database's record when `name` is specified.<br /><br />**Parameters:**<ul><li>`name`: return only this database (optional)</li><li>`namesOnly`: return only database names instead of full records (optional, default `false`)</li><li>`start`: number of results to skip, for paging (optional, default `0`)</li><li>`pageSize`: maximum number of results to return (optional)</li></ul> |
+| `/databases/*/admin/ai/agent` | GET, PUT, DELETE | Get (`GET`), add or update (`PUT`), or delete (`DELETE`) an AI agent definition for the database.<br /><br />**Parameters:**<ul><li>`agentId`: the AI agent identifier (optional for `GET`, returns all agents when omitted; required for `DELETE`)</li></ul> |
+| `/databases/*/admin/ai/agent/generate-code` | GET | Generate code for an AI agent for the database.<br /><br />**Parameters:**<ul><li>`agentId`: the AI agent identifier</li><li>`language`: the target language, `C#`, `JavaScript`, or `Python`</li></ul> |
+| `/databases/*/admin/ai/embeddings/test` | POST | Test an embeddings generation script for the database. |
+| `/databases/*/admin/ai/gen-ai/test` | POST | Test a Gen AI script for the database. |
+| `/databases/*/admin/ai/test-connection` | POST | Test an AI connection string for the database. |
+| `/databases/*/admin/analyzers` | PUT, DELETE | Add or update (`PUT`) or delete (`DELETE`) a custom analyzer for the database. |
+| `/databases/*/admin/attachments/remote/config` | GET, PUT | Get (`GET`) or set (`PUT`) the remote attachments configuration for the database. |
+| `/databases/*/admin/backup` | POST | Start a one-time backup for the database. |
+| `/databases/*/admin/backup-data-directory` | GET | Return information about a backup data directory for the database.<br /><br />**Parameters:**<ul><li>`path`: the directory to inspect</li><li>`requestTimeoutInMs`: request timeout in milliseconds (optional, default `5000`)</li><li>`getNodesInfo`: include information from other cluster nodes (optional, default `false`)</li></ul> |
+| `/databases/*/admin/backup/database` | POST | Start a backup run now for a periodic backup task defined on the database.<br /><br />**Parameters:**<ul><li>`taskId`: the periodic backup task to run</li><li>`isFullBackup`: run a full backup instead of an incremental one (optional, default `true`)</li><li>`startTime`: schedule the backup for this time instead of running it immediately (optional)</li></ul> |
+| `/databases/*/admin/backup/running` | GET | Return the operation ID of a periodic backup task's currently running backup, so the caller can track its progress.<br /><br />**Parameters:**<ul><li>`taskId`: the periodic backup task</li></ul> |
+| `/databases/*/admin/cdc-sink` | PUT | Add or update a CDC (Change Data Capture) sink task for the database.<br /><br />**Parameters:**<ul><li>`id`: the sink task to update (optional, adds a new task when omitted)</li></ul> |
+| `/databases/*/admin/cdc-sink/schema` | POST | Discover and return the source schema for a CDC (Change Data Capture) sink for the database. |
+| `/databases/*/admin/cdc-sink/test` | POST | Test a CDC (Change Data Capture) sink script for the database. |
+| `/databases/*/admin/configuration/client` | PUT | Set the client configuration for the database. |
+| `/databases/*/admin/configuration/studio` | PUT | Set the Studio configuration for the database. |
+| `/databases/*/admin/connection-strings` | GET, PUT, DELETE | Get (`GET`), add or update (`PUT`), or remove (`DELETE`) connection strings for the database.<br /><br />**Parameters:**<ul><li>`connectionStringName`: return only this connection string (`GET` only, optional)</li><li>`connectionString`: name of the connection string to remove (`DELETE` only, required)</li><li>`type`: the connection string type, required for `DELETE` and when `connectionStringName` is specified in `GET`</li></ul> |
+| `/databases/*/admin/data-archival/config` | POST | Configure [data archival](../../data-archival/overview.mdx) for the database. |
+| `/databases/*/admin/debug/periodic-backup/timers` | GET | Return the periodic backup timers for the database. |
+| `/databases/*/admin/documents-compression/config` | POST | Configure documents compression for the database. |
+| `/databases/*/admin/etl` | PUT, RESET | Add or update (`PUT`) or reset (`RESET`) an [ETL task](../../server/ongoing-tasks/etl/basics.mdx) for the database. |
+| `/databases/*/admin/etl/elasticsearch/test` | POST | Test an Elasticsearch ETL script for the database. |
+| `/databases/*/admin/etl/elasticsearch/test-connection` | POST | Test the connection to an Elasticsearch cluster for the database. |
+| `/databases/*/admin/etl/olap/test` | POST | Test an OLAP ETL script for the database. |
+| `/databases/*/admin/etl/queue/amazonsqs/test-connection` | POST | Test the connection to Amazon SQS for the database. |
+| `/databases/*/admin/etl/queue/azurequeuestorage/test-connection` | POST | Test the connection to Azure Queue Storage for the database. |
+| `/databases/*/admin/etl/queue/azureservicebus/test-connection` | POST | Test the connection to Azure Service Bus for the database. |
+| `/databases/*/admin/etl/queue/kafka/test-connection` | POST | Test the connection to Kafka for the database. |
+| `/databases/*/admin/etl/queue/rabbitmq/test-connection` | POST | Test the connection to RabbitMQ for the database. |
+| `/databases/*/admin/etl/queue/test` | POST | Test a Queue ETL script for the database. |
+| `/databases/*/admin/etl/raven/test` | POST | Test a RavenDB ETL script for the database. |
+| `/databases/*/admin/etl/snowflake/test` | POST | Test a Snowflake ETL script for the database. |
+| `/databases/*/admin/etl/snowflake/test-connection` | POST | Test the connection to Snowflake for the database. |
+| `/databases/*/admin/etl/sql/test` | POST | Test a SQL ETL script for the database. |
+| `/databases/*/admin/etl/sql/test-connection` | POST | Test the connection to the SQL ETL target for the database. |
+| `/databases/*/admin/expiration/config` | POST | Configure [document expiration](../../server/extensions/expiration.mdx) for the database. |
+| `/databases/*/admin/features` | POST | Modify the supported features for the database. |
+| `/databases/*/admin/indexes` | PUT | Create or update static indexes for the database. |
+| `/databases/*/admin/indexes/disable` | POST | Disable an index. |
+| `/databases/*/admin/indexes/dump` | POST | Dump an index's raw internal data files for the database to a directory on the server, as a background operation.<br /><br />**Parameters:**<ul><li>`name`: the index to dump</li><li>`path`: the target directory on the server</li></ul> |
+| `/databases/*/admin/indexes/enable` | POST | Enable an index. |
+| `/databases/*/admin/indexes/optimize` | POST | Optimize an index for the database by merging its underlying Lucene segments, as a background operation.<br /><br />**Parameters:**<ul><li>`name`: the index to optimize</li></ul> |
+| `/databases/*/admin/indexes/start` | POST | Resume indexing for the database. With no parameters, all indexing is resumed.<br /><br />**Parameters:**<ul><li>`name`: resume only the specified index (optional)</li><li>`type`: resume only indexes of this type, `map` or `map-reduce` (optional)</li></ul> |
+| `/databases/*/admin/indexes/stop` | POST | Pause indexing for the database until the server restarts. With no parameters, all indexing is paused.<br /><br />**Parameters:**<ul><li>`name`: pause only the specified index (optional)</li><li>`type`: pause only indexes of this type, `map` or `map-reduce` (optional)</li></ul> |
+| `/databases/*/admin/integrations/postgresql/config` | POST | Set the [PostgreSQL protocol integration](../../integrations/postgresql-protocol/overview.mdx) configuration for the database. |
+| `/databases/*/admin/integrations/postgresql/server/status` | GET | Get the status of the PostgreSQL protocol integration for the database. |
+| `/databases/*/admin/integrations/postgresql/user` | PUT, DELETE | PUT adds a user, and DELETE removes a user, for the database's PostgreSQL protocol integration.<br /><br />**Parameters:**<ul><li>`username`: the username to remove (required for DELETE)</li></ul> |
+| `/databases/*/admin/integrations/postgresql/users` | GET | Get the list of usernames defined for the database's PostgreSQL protocol integration. |
+| `/databases/*/admin/periodic-backup` | POST | Create or update a periodic backup task. |
+| `/databases/*/admin/periodic-backup/config` | GET | Get the server's backup configuration options: the local root path, allowed AWS regions, and allowed backup destinations. |
+| `/databases/*/admin/pull-replication/generate-certificate` | POST | Generate a self-signed certificate for a pull replication hub, for the database.<br /><br />**Parameters:**<ul><li>`validMonths`: certificate validity in months (optional)</li><li>`validYears`: certificate validity in years (optional)</li></ul> |
+| `/databases/*/admin/queue-sink` | PUT | Add or update a queue sink task for the database. |
+| `/databases/*/admin/queue-sink/test` | POST | Test a queue sink script for the database and return the result without persisting anything. |
+| `/databases/*/admin/rachis/wait-for-index-notifications` | POST | Wait until the database has applied cluster (Rachis) state changes up to a specified command index. |
+| `/databases/*/admin/record` | GET | Get the database record (the database's configuration document) for the database. |
+| `/databases/*/admin/refresh/config` | POST | Configure [document refresh](../../server/extensions/refresh.mdx) for the database. |
+| `/databases/*/admin/restart` | POST | Restart the database. |
+| `/databases/*/admin/revisions` | DELETE | Delete revisions of specified documents in the database. |
+| `/databases/*/admin/revisions/bin-cleaner/config` | POST | Configure the revisions bin cleaner for the database. |
+| `/databases/*/admin/revisions/config` | POST | Configure revisions for the database. |
+| `/databases/*/admin/revisions/config/enforce` | POST | Apply the current revisions configuration to existing documents in the database, as a background operation. |
+| `/databases/*/admin/revisions/conflicts/config` | POST | Configure revisions settings for conflicting documents in the database. |
+| `/databases/*/admin/revisions/orphaned/adopt` | POST | Adopt orphaned revisions in the database, as a background operation. |
+| `/databases/*/admin/schema-validation/config` | POST | Set the [schema validation](../../documents/schema-validation/overview.mdx) configuration for the database. |
+| `/databases/*/admin/sharding/prefixed` | PUT, POST, DELETE | Manage sharding-by-prefix settings for a sharded database. PUT adds a prefix setting and fails if documents already exist with that prefix, POST updates the shard assignments of an existing prefix setting, and DELETE removes a prefix setting and fails if documents exist with that prefix. |
+| `/databases/*/admin/sharding/resharding/cleanup` | POST | Clean up after resharding by migrating documents to their destination shards for the database. |
+| `/databases/*/admin/smuggler/import` | GET | Import data into the database from a dump file.<br /><br />**Parameters:**<ul><li>`file`: path to a dump file on the server, requires operator access (one of `file` or `url` is required)</li><li>`url`: URL to a dump file, requires operator access (one of `file` or `url` is required)</li></ul> |
+| `/databases/*/admin/smuggler/import-dir` | GET | Import data into the database from all dump files in a directory on the server.<br /><br />**Parameters:**<ul><li>`dir`: the server directory containing the dump files</li><li>`extension`: file extension to match (optional, default `dump`)</li><li>`maxTasks`: number of concurrent import tasks (optional, default is half the processor count)</li></ul> |
+| `/databases/*/admin/smuggler/import-s3-dir` | GET | Import data into the database from all dump files listed in an S3 directory.<br /><br />**Parameters:**<ul><li>`url`: the S3 directory listing URL</li><li>`maxTasks`: number of concurrent import tasks (optional, default is half the processor count)</li></ul> |
+| `/databases/*/admin/smuggler/migrate` | POST | Migrate data into the database from another database platform using an external migrator tool. |
+| `/databases/*/admin/smuggler/migrate/ravendb` | POST | Migrate data into the database from another RavenDB server. |
+| `/databases/*/admin/sorters` | PUT, DELETE | PUT adds or updates custom sorters, and DELETE removes a custom sorter, for the database. |
+| `/databases/*/admin/sql-migration/import` | POST | Import data into the database from a relational (SQL) database, as a background operation. |
+| `/databases/*/admin/sql-migration/schema` | POST | Retrieve the schema (tables and relationships) of a source relational (SQL) database for use when configuring a migration. |
+| `/databases/*/admin/sql-migration/test` | POST | Test a relational (SQL) database migration for the database and return the result without importing. |
+| `/databases/*/admin/storage/manual-flush` | POST | Manually flush a storage environment of the database to disk.<br /><br />**Parameters:**<ul><li>`name`: the storage environment name</li><li>`type`: the storage environment type</li></ul> |
+| `/databases/*/admin/storage/manual-sync` | POST | Manually sync a storage environment of the database to disk.<br /><br />**Parameters:**<ul><li>`name`: the storage environment name</li><li>`type`: the storage environment type</li></ul> |
+| `/databases/*/admin/studio-tasks/folder-path-options` | POST | Get available folder or bucket path options for a periodic backup destination (local, S3, Azure, or Google Cloud), for use by Studio path pickers.<br /><br />**Parameters:**<ul><li>`type`: backup destination type (optional, default `Local`)</li><li>`path`: local folder path to list (optional)</li><li>`backupFolder`: restrict results to backup folders (optional, default `false`)</li></ul> |
+| `/databases/*/admin/studio-tasks/restart` | POST | Restart the database. |
+| `/databases/*/admin/tasks` | DELETE | Delete an ongoing task. |
+| `/databases/*/admin/tasks/external-replication` | POST | Create or update an [external replication](../../server/ongoing-tasks/external-replication.mdx) task. |
+| `/databases/*/admin/tasks/pull-replication/hub` | PUT | Define (create or update) a [pull replication hub](../../server/ongoing-tasks/hub-sink-replication.mdx) task for the database. |
+| `/databases/*/admin/tasks/pull-replication/hub/access` | GET, PUT, DELETE | Manage access to a pull replication hub for the database. GET lists access entries, PUT registers access, and DELETE unregisters access. |
+| `/databases/*/admin/tasks/sink-pull-replication` | POST | Create or update a pull replication sink task for the database. |
+| `/databases/*/admin/tasks/state` | POST | Enable or disable an ongoing task. |
+| `/databases/*/admin/timeseries/config` | POST | Set the time series configuration for the database. |
+| `/databases/*/admin/timeseries/policy` | PUT, DELETE | PUT adds or updates a time series rollup policy, and DELETE removes a time series policy, for the database. |
+| `/databases/*/admin/tombstones/cleanup` | POST | Force cleanup of tombstones in the database. |
+| `/databases/*/admin/transactions/start-recording` | POST | Start recording the database's transaction commands to a file on the server, as a background operation. |
+| `/databases/*/admin/transactions/stop-recording` | POST | Stop the in-progress transaction command recording for the database. |
+| `/databases/*/admin/validate-unused-ids` | POST | Validate the set of unused database IDs supplied for the database. |
+| `/databases/*/ai/agent` | POST | Run a conversation with an AI agent.<br /><br />**Parameters:**<ul><li>`agentId`: the AI agent identifier</li><li>`conversationId`: the conversation identifier</li><li>`streaming`: stream the response as Server-Sent Events (optional, default `false`)</li><li>`changeVector`: change vector for optimistic concurrency (optional)</li><li>`debug`: enable debug mode override (optional)</li><li>`cancelPendingActionTools`: cancel any pending action tool calls before continuing (optional, default `false`)</li></ul> |
+| `/databases/*/ai/agent/conversation/messages` | GET | Get the messages of an AI agent conversation for the database.<br /><br />**Parameters:**<ul><li>`conversationId`: the conversation identifier</li><li>`pageSize`: maximum number of messages to return (optional, default unlimited)</li><li>`detailLevel`: level of detail to include in each message (optional)</li><li>`before`: return only messages before this date and time (optional)</li><li>`after`: return only messages after this date and time (optional, cannot be combined with `before`)</li></ul> |
+| `/databases/*/ai/agent/test` | POST | Run a test conversation with an AI agent for the database, without persisting it.<br /><br />**Parameters:**<ul><li>`conversationId`: the conversation identifier (optional, default `TestConversation`)</li><li>`streaming`: stream the response as Server-Sent Events (optional, default `false`)</li></ul> |
+| `/databases/*/analyzers` | GET | Get the custom analyzers defined for the database. |
+| `/databases/*/attachments` | GET, PUT, POST, DELETE, HEAD | Get, store, or delete a document's attachment, or check whether it exists. GET retrieves an attachment from the current version of a document; POST retrieves an attachment using a type and change vector from the request body (for example, from a document revision); PUT stores an attachment; DELETE removes an attachment; HEAD checks whether an attachment exists.<br /><br />**Parameters:**<ul><li>`id`: the document ID</li><li>`name`: the attachment name</li></ul> |
+| `/databases/*/attachments/bulk` | POST, DELETE | Get or delete multiple attachments in one request. |
+| `/databases/*/bulk_docs` | POST | Execute a batch of document commands (a session [SaveChanges](../../client-api/session/saving-changes.mdx)) in a single transaction. |
+| `/databases/*/bulk_insert` | POST | Stream a large number of documents into the database in a single [bulk-insert operation](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx).<br /><br />**Parameters:**<ul><li>`id`: the operation ID</li><li>`skipOverwriteIfUnchanged`: skip overwriting a document if the incoming content is unchanged (optional, default `false`)</li></ul> |
+| `/databases/*/cdc-sink/performance` | GET | Performance statistics for the database's CDC sink tasks. |
+| `/databases/*/cdc-sink/performance/live` | GET | Live streaming of performance statistics for the database's CDC sink tasks over a WebSocket. |
+| `/databases/*/changes` | GET, DELETE | `GET`: subscribe to the database's [Changes API](../../client-api/changes/what-is-changes-api.mdx) stream over a WebSocket. `DELETE`: close Changes API connections. |
+| `/databases/*/changes/debug` | GET | Debug information about the database's active Changes API connections. |
+| `/databases/*/cmpxchg` | GET, PUT, DELETE | Get, create or update, or delete [compare-exchange](../../compare-exchange/overview.mdx) values. |
+| `/databases/*/collections/docs` | GET | Get documents from a collection.<br /><br />**Parameters:**<ul><li>`name`: the collection name</li><li>`start`: number of documents to skip (optional, default `0`)</li><li>`pageSize`: maximum number of documents to return (optional, default unlimited)</li></ul> |
+| `/databases/*/collections/docs/ids` | GET | Get the IDs of the documents in a collection.<br /><br />**Parameters:**<ul><li>`name`: the collection name</li><li>`start`: number of documents to skip (optional, default `0`)</li><li>`pageSize`: maximum number of IDs to return (optional, default unlimited)</li></ul> |
+| `/databases/*/collections/last-change-vector` | GET | Get the change vector of the last document in a collection.<br /><br />**Parameters:**<ul><li>`name`: the collection name (required)</li></ul> |
+| `/databases/*/collections/stats` | GET | Statistics for the database: total counts of documents, tombstones, conflicts, revision documents, attachments, counter entries, and time series segments, plus the document count for each collection. |
+| `/databases/*/configuration/client` | GET | Get the client configuration for the database, falling back to the server-wide client configuration when the database has none or it is disabled.<br /><br />**Parameters:**<ul><li>`inherit`: whether to fall back to the server-wide configuration (optional, default `true`)</li></ul> |
+| `/databases/*/configuration/studio` | GET | Get the Studio configuration for the database. Returns `404 Not Found` if none is set. |
+| `/databases/*/counters` | GET, POST | Get (`GET`) or modify (`POST`) document [counters](../../document-extensions/counters/overview.mdx). `POST` applies a batch of counter operations from the request body.<br /><br />**Parameters (`GET`):**<ul><li>`docId`: the document ID (required)</li><li>`counter`: counter name to retrieve, repeatable (optional, default: all counters on the document)</li><li>`full`: include each node's partial value (optional, default `false`)</li></ul> |
+| `/databases/*/data-archival/config` | GET | Get the data archival configuration for the database. |
+| `/databases/*/debug/attachments/hash` | GET | Get the reference count for an attachment content hash.<br /><br />**Parameters:**<ul><li>`hash`: the attachment content hash (required)</li></ul> |
+| `/databases/*/debug/attachments/metadata` | GET | Get attachment metadata together with reference counts, for a document.<br /><br />**Parameters:**<ul><li>`id`: the document ID (required)</li></ul> |
+| `/databases/*/debug/attachments/missing` | GET | List attachments referenced in document or revision metadata but missing from storage.<br /><br />**Parameters:**<ul><li>`collection`: the collection to scan, or `@all_docs` for all collections (required)</li><li>`type`: `Document` or `Revision`, restricts the scan to one type (optional, default: both)</li><li>`start`: number of results to skip (optional, default `0`)</li><li>`pageSize`: maximum number of results to return (optional, default unlimited)</li></ul> |
+| `/databases/*/debug/documents/export-all-ids` | GET | Export the IDs of all documents in the database as a downloadable text file. |
+| `/databases/*/debug/documents/get-revisions` | GET | List revisions across all collections in the database (debug view), starting from a given point.<br /><br />**Parameters:**<ul><li>`start`: starting point to list from (optional, default `0`)</li><li>`pageSize`: maximum number of results to return (optional, default unlimited)</li></ul> |
+| `/databases/*/debug/documents/scan-corrupted-ids` | GET | Scan the database's documents and revisions for corrupted IDs (wrong escape sequences or unescaped control characters).<br /><br />**Parameters:**<ul><li>`startEtag`: etag to start scanning from (optional, default `0`)</li><li>`resultCount`: maximum number of results to return (optional, default `1024`)</li><li>`maxBatchTimeInSec`: maximum scan time in seconds (optional, default `60`)</li></ul> |
+| `/databases/*/debug/io-metrics/live` | GET | Live streaming of the database's I/O metrics over a WebSocket. |
+| `/databases/*/debug/queries/kill` | POST | Kill a running query, identified either by its client query ID or by index name and query ID.<br /><br />**Parameters:**<ul><li>`clientQueryId`: the client-assigned query ID (optional)</li><li>`indexName`: the index the query runs against (required if `clientQueryId` is not given)</li><li>`id`: the server-side query ID (required if `clientQueryId` is not given)</li></ul> |
+| `/databases/*/debug/replication/all-items` | GET | List items from the database's outgoing replication stream, as JSON or CSV.<br /><br />**Parameters:**<ul><li>`etag`: etag to start from (optional, default `0`)</li><li>`pageSize`: maximum number of results to return (optional, default unlimited)</li><li>`type`: replication item type to filter by, repeatable (optional)</li><li>`format`: `json` or `csv` (optional, default `json`)</li><li>`column`: for `csv` format, the columns to include, repeatable (optional, default: type, etag, change vector, last-modified, transaction marker, size)</li></ul> |
+| `/databases/*/debug/sharding/bucket` | GET | Information about a single sharding bucket in the database: size, document count, last-modified time, and replication items in it. Sharded databases only.<br /><br />**Parameters:**<ul><li>`bucket`: the bucket number (required)</li></ul> |
+| `/databases/*/debug/sharding/buckets` | GET | Information about the database's sharding buckets, grouped into ranges. Sharded databases only.<br /><br />**Parameters:**<ul><li>`fromBucket`: first bucket to include (optional, default `0`)</li><li>`toBucket`: last bucket to include (optional, default: unlimited)</li><li>`range`: number of buckets grouped per range (optional, default `32768`)</li></ul> |
+| `/databases/*/debug/storage/all-environments/report` | GET | A storage report covering all of the database's storage environments (documents and each index). |
+| `/databases/*/debug/storage/btree-structure` | GET | The structure of a named B+Tree in the database's document storage, rendered as an HTML page.<br /><br />**Parameters:**<ul><li>`name`: the tree name (required)</li></ul> |
+| `/databases/*/debug/storage/compression-dictionaries` | GET | The documents-compression dictionaries, in-memory and in-storage, for the database's document storage. |
+| `/databases/*/debug/storage/environment/debug-only/pages` | GET | Page-level ownership information for a storage environment, as plain text. Intended only for debugging RavenDB itself.<br /><br />**Parameters:**<ul><li>`name`: the storage environment name (required)</li><li>`type`: the storage environment type, e.g. `Documents` or `Index` (required)</li></ul> |
+| `/databases/*/debug/storage/environment/free-space-snapshot` | GET | A free-space snapshot for a storage environment.<br /><br />**Parameters:**<ul><li>`name`: the storage environment name (optional, default: the database name)</li><li>`type`: the storage environment type (optional, default `Documents`)</li><li>`hex`: return free page numbers in hexadecimal (optional, default `true`)</li></ul> |
+| `/databases/*/debug/storage/environment/report` | GET | A storage report for a single storage environment.<br /><br />**Parameters:**<ul><li>`name`: the storage environment name (required)</li><li>`type`: the storage environment type (required)</li><li>`details`: include detailed report data (optional, default `false`)</li><li>`flat`: return the report in flat format (optional, default `false`)</li></ul> |
+| `/databases/*/debug/storage/environment/scratch-buffer-info` | GET | Scratch-buffer-pool information for a storage environment identified by name and type, or for all of the database's storage environments if `type` is omitted.<br /><br />**Parameters:**<ul><li>`name`: the storage environment name (required)</li><li>`type`: the storage environment type (optional)</li></ul> |
+| `/databases/*/debug/storage/fst-structure` | GET | The structure of a named fixed-size tree in the database's document storage, rendered as an HTML page.<br /><br />**Parameters:**<ul><li>`name`: the tree name (required)</li></ul> |
+| `/databases/*/debug/storage/trees` | GET | The variable-size, fixed-size, and embedded fixed-size trees in the database's document storage. |
+| `/databases/*/debug/subscriptions/resend` | GET | Active batch IDs and documents queued for resend, for a named subscription.<br /><br />**Parameters:**<ul><li>`name`: the subscription name (required)</li></ul> |
+| `/databases/*/docs` | GET, PUT, POST, PATCH, DELETE, HEAD | Create, read, update, delete, or check [documents by ID](../../client-api/rest-api/document-commands/get-documents-by-id.mdx). |
+| `/databases/*/docs/class` | GET | Generate a C# class definition from a document, identified by ID or from the most recently modified document in a collection.<br /><br />**Parameters:**<ul><li>`id`: the document ID (optional if `collection` is given)</li><li>`collection`: the collection to pick the most recent document from (optional if `id` is given)</li><li>`lang`: the target language; only `csharp` is currently supported (optional, default `csharp`)</li></ul> |
+| `/databases/*/docs/size` | GET | Get the storage size of a document.<br /><br />**Parameters:**<ul><li>`id`: the document ID (required)</li></ul> |
+| `/databases/*/documents-compression/config` | GET | Get the documents compression configuration for the database. |
+| `/databases/*/etl/debug/stats` | GET | Debug statistics (per-transformation statistics and metrics) for the database's ETL tasks.<br /><br />**Parameters:**<ul><li>`name`: ETL task name to filter by, repeatable (optional, default: all tasks)</li></ul> |
+| `/databases/*/etl/performance` | GET | Performance statistics for the database's ETL tasks.<br /><br />**Parameters:**<ul><li>`name`: ETL task name to filter by, repeatable (optional, default: all tasks)</li></ul> |
+| `/databases/*/etl/performance/live` | GET | Live streaming of performance statistics for the database's ETL tasks over a WebSocket.<br /><br />**Parameters:**<ul><li>`name`: ETL task name to filter by, repeatable (optional, default: all tasks)</li></ul> |
+| `/databases/*/etl/retry-batch` | POST | Force an ETL process to retry immediately, skipping its fallback wait.<br /><br />**Parameters:**<ul><li>`name`: the ETL process name (required)</li></ul> |
+| `/databases/*/expiration/config` | GET | Get the document expiration configuration for the database. |
+| `/databases/*/healthcheck` | GET | A lightweight health check for the database. |
+| `/databases/*/hilo/next` | GET | Get the next range of IDs from the [HiLo](../../client-api/document-identifiers/hilo-algorithm.mdx) generator.<br /><br />**Parameters:**<ul><li>`tag`: the HiLo document tag (required)</li><li>`lastBatchSize`: the size of the last range the client received (optional, default `0`)</li><li>`lastRangeAt`: when the last range was received (optional)</li><li>`identityPartsSeparator`: separator character between the tag and the numeric value (optional, default: the database's identity parts separator)</li><li>`lastMax`: the last max value the client saw (optional, default `0`)</li></ul> |
+| `/databases/*/hilo/return` | PUT | Return an unused HiLo ID range.<br /><br />**Parameters:**<ul><li>`tag`: the HiLo document tag (required)</li><li>`end`: the end of the range being returned (required)</li><li>`last`: the last ID actually used (required)</li></ul> |
+| `/databases/*/identity/next` | POST | Get the next value for an identity.<br /><br />**Parameters:**<ul><li>`name`: the identity name (required)</li></ul> |
+| `/databases/*/identity/seed` | POST | Set the seed value for an identity.<br /><br />**Parameters:**<ul><li>`name`: the identity name (required)</li><li>`value`: the seed value (required)</li><li>`force`: set the value even if it is lower than the current one (optional, default `false`)</li></ul> |
+| `/databases/*/index/open-faulty-index` | POST | Reopen an index that has faulted.<br /><br />**Parameters:**<ul><li>`name`: the index name (required)</li></ul> |
+| `/databases/*/indexes/auto/convert` | GET | Convert an auto index into a static C# class or index definition JSON.<br /><br />**Parameters:**<ul><li>`name`: the auto index name (required)</li><li>`outputType`: `CsharpClass` or `Json` (required)</li><li>`download`: return the result as a downloadable file (optional, default `false`)</li></ul> |
+| `/databases/*/indexes/c-sharp-index-definition` | GET | The C# form of an index definition.<br /><br />**Parameters:**<ul><li>`name`: the index name (required)</li></ul> |
+| `/databases/*/indexes/debug` | GET | Debug information for an index: reduce trees for a map-reduce index, source document IDs, indexed entry fields, or HNSW vector-search graph output, depending on `op`.<br /><br />**Parameters:**<ul><li>`name`: the index name (required)</li><li>`op`: `map-reduce-tree`, `source-doc-ids`, `entries-fields`, or `hnsw` (required)</li><li>`docId`: document IDs to restrict the reduce tree to, repeatable (optional, used with `map-reduce-tree`)</li><li>`startsWith`: prefix filter for source document IDs (optional, used with `source-doc-ids`)</li><li>`field`: the vector field name (required for `hnsw`)</li></ul> |
+| `/databases/*/indexes/finish-rolling` | POST | Force completion of a rolling deployment for an index.<br /><br />**Parameters:**<ul><li>`name`: the index name (required)</li><li>`node`: the node tag (optional)</li></ul> |
+| `/databases/*/indexes/has-changed` | POST | Whether a submitted index definition differs from the deployed one. |
+| `/databases/*/indexes/history` | GET | The change history of an index definition.<br /><br />**Parameters:**<ul><li>`name`: the index name (required)</li></ul> |
+| `/databases/*/indexes/last-queried` | POST | Legacy no-op endpoint retained for backward compatibility. |
+| `/databases/*/indexes/performance/live` | GET | Live streaming of indexing performance statistics for the database over a WebSocket.<br /><br />**Parameters:**<ul><li>`name`: index name to filter by, repeatable (optional, default: all indexes)</li></ul> |
+| `/databases/*/indexes/progress` | GET | Indexing progress for indexes that are stale or not yet deployed on all nodes. |
+| `/databases/*/indexes/replace` | POST | Replace an index with its side-by-side version.<br /><br />**Parameters:**<ul><li>`name`: the index name (required)</li></ul> |
+| `/databases/*/indexes/set-lock` | POST | Set the lock mode of an index. |
+| `/databases/*/indexes/set-priority` | POST | Set the priority of an index. |
+| `/databases/*/indexes/source` | GET | The source code of an index definition.<br /><br />**Parameters:**<ul><li>`name`: the index name (required)</li></ul> |
+| `/databases/*/indexes/staleness` | GET | Whether an index is stale, and why.<br /><br />**Parameters:**<ul><li>`name`: the index name (required)</li></ul> |
+| `/databases/*/indexes/status` | GET | The running state of the database's indexes. |
+| `/databases/*/indexes/suggest-index-merge` | GET | Suggestions for merging similar indexes. |
+| `/databases/*/indexes/terms` | GET | The indexed terms for a given index field.<br /><br />**Parameters:**<ul><li>`name`: the index name (required)</li><li>`field`: the field name (required)</li><li>`collection`: resolve the index dynamically from a collection and field instead of naming it directly (optional)</li><li>`fromValue`: return terms starting after this value (optional)</li><li>`pageSize`: maximum number of terms to return (optional, default unlimited)</li></ul> |
+| `/databases/*/indexes/test` | POST | Test a static index definition against sample documents and return its results, without deploying it (testing C# indexes requires admin privileges). |
+| `/databases/*/indexes/total-time` | GET | The total indexing time and indexing lag for the database's indexes.<br /><br />**Parameters:**<ul><li>`name`: index name to filter by, repeatable (optional, default: all indexes)</li></ul> |
+| `/databases/*/indexes/try` | POST | Test a JavaScript index definition against documents and return its results, without deploying it.<br /><br />**Parameters:**<ul><li>`inputSize`: maximum number of documents to test per collection, when no explicit document IDs are given in the request body (optional, default `10`)</li></ul> |
+| `/databases/*/info/tcp` | GET | The database's TCP connection information for clients.<br /><br />**Parameters:**<ul><li>`senderUrl`: the requesting node's URL, used to decide whether to return the public or internal cluster TCP URL (optional)</li></ul> |
+| `/databases/*/json-patch` | PATCH | Apply a [JSON Patch](../../client-api/operations/patching/json-patch-syntax.mdx) to a document.<br /><br />**Parameters:**<ul><li>`id`: the document ID (required)</li></ul> |
+| `/databases/*/metrics` | GET | Rate and count metrics for the database. |
+| `/databases/*/metrics/bytes` | GET | Byte-throughput metrics for the database.<br /><br />**Parameters:**<ul><li>`empty`: include metrics with no recorded data (optional, default `true`)</li></ul> |
+| `/databases/*/metrics/puts` | GET | Document-write metrics for the database.<br /><br />**Parameters:**<ul><li>`empty`: include metrics with no recorded data (optional, default `true`)</li></ul> |
+| `/databases/*/migrate/get-migrated-server-urls` | GET | The server URLs that data has been migrated from into this database. |
+| `/databases/*/multi_get` | POST | Execute several read requests in a single round trip. |
+| `/databases/*/notification-center/dismiss` | POST | Dismiss a notification in the database's notification center.<br /><br />**Parameters:**<ul><li>`id`: the notification ID (required)</li><li>`forever`: dismiss it permanently instead of just for the current session (optional, default `false`)</li></ul> |
+| `/databases/*/notification-center/postpone` | POST | Postpone a notification in the database's notification center.<br /><br />**Parameters:**<ul><li>`id`: the notification ID (required)</li><li>`timeInSec`: how long to postpone it for, in seconds; `0` postpones it indefinitely (required)</li></ul> |
+| `/databases/*/notification-center/stats` | GET | Database-wide statistics used by the notification center: document, conflict, index, stale-index, indexing-error, ETL/AI/CDC-sink-task-error counts, per-collection document counts, and revision count. |
+| `/databases/*/notification-center/watch` | GET | Open a WebSocket connection to stream the database's stored notifications and active-operation status changes in real time. |
+| `/databases/*/operations` | GET | The database's operations.<br /><br />**Parameters:**<ul><li>`id`: a specific operation ID to return (optional, default: all operations)</li></ul> |
+| `/databases/*/operations/kill` | POST | Kill a running database operation, identified by its operation ID.<br /><br />**Parameters:**<ul><li>`id`: the ID of the operation to kill (required)</li></ul> |
+| `/databases/*/operations/next-operation-id` | GET | A new unique operation ID for the database, used to track a long-running operation. |
+| `/databases/*/operations/state` | GET | The state of a database operation, identified by its operation ID.<br /><br />**Parameters:**<ul><li>`id`: the ID of the operation (required)</li></ul> |
+| `/databases/*/queries` | GET, POST, PATCH, DELETE | Run an [RQL query](../../querying/overview.mdx) (`GET`/`POST`), patch by query (`PATCH`), or delete by query (`DELETE`). |
+| `/databases/*/queries/test` | PATCH | Test a patch script against one document without applying it, returning the patch status and the original and modified document.<br /><br />**Parameters:**<ul><li>`id`: the ID of the document to test the patch against (required)</li></ul> |
+| `/databases/*/queue-sink/performance/live` | GET | Stream live performance statistics for the database's queue sink tasks over a WebSocket.<br /><br />**Parameters:**<ul><li>`name`: one or more queue sink task names to report on (optional, reports on all tasks if omitted)</li></ul> |
+| `/databases/*/refresh/config` | GET | The database's document refresh configuration. |
+| `/databases/*/replication/active-connections` | GET | The database's active incoming and outgoing replication connections. |
+| `/databases/*/replication/conflicts` | GET | The database's replication conflicts, or the conflicts for one document.<br /><br />**Parameters:**<ul><li>`docId`: return conflicts for this document only (optional)</li></ul> |
+| `/databases/*/replication/conflicts/solver` | GET | The database's conflict resolver configuration. |
+| `/databases/*/replication/heartbeat` | POST | No-op. Returns immediately with no content. |
+| `/databases/*/replication/lastEtag` | GET | Replication source information, including the last replicated document etag, for a legacy replication source. |
+| `/databases/*/replication/performance` | GET | Performance statistics for the database's replication. |
+| `/databases/*/replication/performance/live` | GET | Stream live replication performance statistics for the database over a WebSocket. |
+| `/databases/*/replication/pulses/live` | GET | Stream the database's live replication pulse events over a WebSocket. |
+| `/databases/*/replication/replicateAttachments` | POST | Receives attachments from a legacy replication source and imports them into the database. |
+| `/databases/*/replication/replicateDocs` | POST | Receives documents from a legacy replication source and imports them into the database. |
+| `/databases/*/replication/tombstones` | GET | The replication tombstones for the database. |
+| `/databases/*/revisions` | GET | Get a document's [revisions](../../document-extensions/revisions/overview.mdx), by change vector or by document ID with paging.<br /><br />**Parameters:**<ul><li>`id`: the document ID, used when `changeVector` is not specified</li><li>`changeVector`: one or more revision change vectors to fetch instead of using `id` (optional)</li><li>`before`: return the single revision as of this date and time, instead of a page of revisions (optional)</li><li>`metadataOnly`: return only revision metadata (optional, default `false`)</li></ul> |
+| `/databases/*/revisions/bin` | GET | Get the revisions of deleted documents from the revisions bin. |
+| `/databases/*/revisions/bin-cleaner/config` | GET | The database's revisions bin cleaner configuration. |
+| `/databases/*/revisions/collections/stats` | GET | The number of revisions per collection, and the total revision count, for the database. |
+| `/databases/*/revisions/config` | GET | The database's revisions configuration. |
+| `/databases/*/revisions/conflicts/config` | GET | The database's conflict revisions configuration. |
+| `/databases/*/revisions/count` | GET | The number of revisions for a document.<br /><br />**Parameters:**<ul><li>`id`: the document ID (required)</li></ul> |
+| `/databases/*/revisions/resolved` | GET | Revisions of documents whose conflicts were resolved, since a given time.<br /><br />**Parameters:**<ul><li>`since`: return conflicts resolved after this time (optional)</li><li>`take`: maximum number of revisions to return (optional, default `1024`)</li></ul> |
+| `/databases/*/revisions/revert` | POST | Revert the database's documents to their state at a given time. |
+| `/databases/*/revisions/revert/docs` | POST | Revert specific documents to a given revision. |
+| `/databases/*/revisions/size` | GET | The size details of a specific document revision, identified by its change vector.<br /><br />**Parameters:**<ul><li>`changeVector`: the change vector of the revision to measure (required)</li></ul> |
+| `/databases/*/schema-validation/config` | GET | The database's schema validation configuration. |
+| `/databases/*/schema-validation/validate` | POST | Validate a collection's documents against a supplied schema validation definition. |
+| `/databases/*/side-by-side-indexes` | PUT | No-op. Returns immediately with no content. |
+| `/databases/*/smuggler/export` | POST | [Export](../../client-api/smuggler/what-is-smuggler.mdx) the database's data to a file. |
+| `/databases/*/smuggler/import` | POST | Import data into the database from an export file. |
+| `/databases/*/smuggler/import/csv` | POST | Import documents from a CSV file.<br /><br />**Parameters:**<ul><li>`collection`: the collection to import into (optional)</li></ul> |
+| `/databases/*/smuggler/validate-options` | POST | Validate a set of smuggler import/export options: checks that the file name is valid and the transform script compiles. |
+| `/databases/*/sorters` | GET | The custom sorters defined for the database. |
+| `/databases/*/stats/detailed` | GET | Detailed database statistics. |
+| `/databases/*/stats/essential` | GET | Essential, lightweight database statistics. |
+| `/databases/*/streams/docs` | GET | Stream documents without loading them all into memory. |
+| `/databases/*/streams/queries` | GET, POST, HEAD | [Stream](../../querying/stream-query-results.mdx) the results of an RQL query (`GET`/`POST`). `HEAD` is a no-op that returns no content. |
+| `/databases/*/streams/timeseries` | GET | Stream time series data. |
+| `/databases/*/studio-tasks/indexes/configuration/defaults` | GET | Returns the default index configuration values for the database, used by Studio when creating an index. |
+| `/databases/*/studio-tasks/remote-attachments/configuration` | GET | Returns the remote attachments configuration for the database. |
+| `/databases/*/studio-tasks/suggest-conflict-resolution` | GET | Returns a suggested merged resolution (document and metadata) for a conflicted document in the database.<br /><br />**Parameters:**<ul><li>`docId`: ID of the conflicted document</li></ul> |
+| `/databases/*/studio/collections/docs` | DELETE | Deletes documents of a collection in the database, used by Studio. |
+| `/databases/*/studio/collections/fields` | GET | Returns the document fields found in a collection of the database, used by Studio. |
+| `/databases/*/studio/collections/preview` | GET | Returns a preview page of documents for Studio's collection view of the database. |
+| `/databases/*/studio/footer/stats` | GET | Returns the summary statistics shown in the Studio footer for the database. |
+| `/databases/*/studio/index-fields` | POST | Compiles the map function sent in the request body and returns the output fields the index would emit for the database (empty array on compilation failure).<br /><br />**Parameters:**<ul><li>`Map` (request body): the index map function</li></ul> |
+| `/databases/*/studio/index-type` | POST | Detects and returns the index type and index source type of the index definition sent in the request body. |
+| `/databases/*/studio/indexes/errors-count` | GET | Returns the number of indexing errors for the database's indexes, used by Studio.<br /><br />**Parameters:**<ul><li>`name`: one or more index names to filter to (optional, returns all indexes if omitted)</li></ul> |
+| `/databases/*/studio/license/limits-usage` | GET | Returns the database's current usage against the license limits, used by Studio. |
+| `/databases/*/studio/revisions/ids` | GET | Returns revision IDs by prefix for the database, used by Studio. |
+| `/databases/*/studio/revisions/preview` | GET | Returns a preview page of document revisions for Studio's revisions view of the database. |
+| `/databases/*/studio/sample-data` | POST | Creates the sample data set in the database. Fails if the database already contains documents.<br /><br />**Parameters:**<ul><li>`operateOnTypes`: which data types to include (optional, includes all types by default)</li></ul> |
+| `/databases/*/studio/sample-data/classes` | GET | Returns the C# classes for the sample data model, used by Studio. |
+| `/databases/*/studio/tasks/embeddings` | GET | Returns the list of embeddings generation tasks defined for the database, used by Studio. |
+| `/databases/*/studio/validate-schema` | POST | Validates a document sent in the request body against the database's schema. |
+| `/databases/*/subscription-tasks` | DELETE | Delete a subscription task.<br /><br />**Parameters:**<ul><li>`id`: the task ID (required)</li><li>`taskName`: the task name (optional)</li><li>`type`: the task type; must be `Subscription` (required)</li></ul> |
+| `/databases/*/subscription-tasks/state` | POST | Enable or disable a subscription task.<br /><br />**Parameters:**<ul><li>`key`: the task ID (required)</li><li>`disable`: disable the task if `true`, enable it if `false` (optional, default `true`)</li><li>`taskName`: the task name (optional)</li><li>`type`: the task type; must be `Subscription` (required)</li></ul> |
+| `/databases/*/subscriptions/connection-details` | GET | Connection details for a data subscription.<br /><br />**Parameters:**<ul><li>`name`: the subscription name (required)</li></ul> |
+| `/databases/*/subscriptions/drop` | POST | Drop the current connection of a data subscription.<br /><br />**Parameters:**<ul><li>`id`: the subscription ID (optional, alternative to `name`)</li><li>`name`: the subscription name (optional, alternative to `id`)</li><li>`workerId`: drop only the connection with this worker ID (optional, drops all connections if omitted)</li></ul> |
+| `/databases/*/subscriptions/performance/live` | GET | Live stream of subscription performance statistics for the database. |
+| `/databases/*/subscriptions/state` | GET | The state of a data subscription.<br /><br />**Parameters:**<ul><li>`name`: the subscription name (required)</li></ul> |
+| `/databases/*/subscriptions/try` | POST | Test a data subscription without acknowledging progress.<br /><br />**Parameters:**<ul><li>`timeLimit`: maximum time in seconds to collect results (optional, default `15`)</li></ul> |
+| `/databases/*/subscriptions/update` | POST | Update a data subscription's definition. |
+| `/databases/*/task` | GET | Get a single ongoing task by ID or name.<br /><br />**Parameters:**<ul><li>`key`: the task ID (required unless `taskName` is given)</li><li>`taskName`: the task name (required if `key` is omitted)</li><li>`type`: the ongoing task type (required)</li></ul> |
+| `/databases/*/tasks/errors` | GET, DELETE | Recent errors for the database's ongoing tasks. `GET` lists them; `DELETE` clears them.<br /><br />**Parameters:**<ul><li>`name`: one or more task names to clear errors for, `DELETE` only (optional, clears all tasks' errors if omitted)</li><li>`type`: the task category the `name` values belong to, `DELETE` only (required if `name` is given)</li></ul> |
+| `/databases/*/tasks/pull-replication/hub` | GET | Information about a specific pull replication hub task and its current incoming connections.<br /><br />**Parameters:**<ul><li>`key`: the hub task ID (required)</li></ul> |
+| `/databases/*/timeseries` | GET, POST | Get (`GET`) or append (`POST`) a document's [time series](../../document-extensions/timeseries/overview.mdx) data. |
+| `/databases/*/timeseries/config` | GET | Returns the time series configuration for the database. |
+| `/databases/*/timeseries/debug/segments-summary` | GET | Returns a summary of the stored time series segments for a document.<br /><br />**Parameters:**<ul><li>`docId`: the document ID (required)</li><li>`name`: the time series name (required)</li><li>`from`: start of the range (optional)</li><li>`to`: end of the range (optional)</li></ul> |
+| `/databases/*/timeseries/names/config` | POST | Configures the named time series values for the database. |
+| `/databases/*/timeseries/ranges` | GET, POST | Returns time series range data for one or more named time series on a document. GET reads the document ID, names, and date ranges from the query string; POST reads a JSON body listing ranges per document ID, so it can return ranges for multiple documents in one call.<br /><br />**Parameters:**<ul><li>`docId`: document ID (GET only)</li><li>`name`: time series name, repeatable (GET only)</li><li>`from` / `to`: range start and end per name (GET only)</li><li>`start`: number of results to skip (optional, default `0`)</li><li>`pageSize`: maximum number of results to return (optional, default unlimited)</li><li>`includeDocument`: include the parent document (optional, default `false`, GET only)</li><li>`includeTags`: include time series tags (optional, default `false`, GET only)</li><li>`full`: include per-node values for incremental time series entries (optional, default `false`)</li></ul> |
+| `/databases/*/timeseries/stats` | GET | Returns each time series' entry count, start date, and end date for a document.<br /><br />**Parameters:**<ul><li>`docId`: the document ID</li></ul> |
+| `/databases/*/transactions/replay` | POST | Replays a recorded transaction commands file, uploaded as multipart form data, against the database and returns the number of commands executed.<br /><br />**Parameters:**<ul><li>`operationId`: ID to track the operation (optional, default: a new ID is generated)</li></ul> |
+| `/databases/*/transformers/$` | PUT, DELETE | Legacy transformer endpoint retained for backward compatibility; performs no operation. |
+| `/debug/info-package/analyzer/cluster/log` | GET | Returns a node's cluster log entry from a previously uploaded debug package.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package</li><li>`nodeTag`: node whose data is returned</li></ul> |
+| `/debug/info-package/analyzer/cluster/observer/decisions` | GET | Returns the cluster observer decisions from a previously uploaded debug package.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package</li></ul> |
+| `/debug/info-package/analyzer/cluster/topology` | GET | Returns the cluster topology from a previously uploaded debug package.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package</li><li>`nodeTag`: node whose topology is returned (optional; defaults to the first node that has topology data)</li></ul> |
+| `/debug/info-package/analyzer/databases/configuration/settings` | GET | Returns a database's configuration settings from a previously uploaded debug package.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package</li><li>`nodeTag`: node whose data is returned</li><li>`name`: database name</li></ul> |
+| `/debug/info-package/analyzer/databases/indexes` | GET | Returns a database's index definitions from a previously uploaded debug package.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package</li><li>`nodeTag`: node whose data is returned</li><li>`name`: database name</li></ul> |
+| `/debug/info-package/analyzer/databases/indexes/errors` | GET | Returns a database's index errors from a previously uploaded debug package.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package</li><li>`nodeTag`: node whose data is returned</li><li>`name`: database name</li></ul> |
+| `/debug/info-package/analyzer/databases/indexes/performance` | GET | Returns a database's indexing performance data from a previously uploaded debug package.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package</li><li>`nodeTag`: node whose data is returned</li><li>`name`: database name</li></ul> |
+| `/debug/info-package/analyzer/databases/indexes/stats` | GET | Returns a database's index statistics from a previously uploaded debug package.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package</li><li>`nodeTag`: node whose data is returned</li><li>`name`: database name</li></ul> |
+| `/debug/info-package/analyzer/databases/overview` | GET | Returns a database's overview, including detected issues, from a previously uploaded debug package.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package</li><li>`nodeTag`: node whose data is returned</li><li>`name`: database name</li></ul> |
+| `/debug/info-package/analyzer/databases/record` | GET | Returns a database's database record from a previously uploaded debug package.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package</li><li>`nodeTag`: node whose data is returned</li><li>`name`: database name</li></ul> |
+| `/debug/info-package/analyzer/databases/stats` | GET | Returns a database's statistics from a previously uploaded debug package.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package</li><li>`nodeTag`: node whose data is returned</li><li>`name`: database name</li></ul> |
+| `/debug/info-package/analyzer/databases/tasks` | GET | Returns a database's ongoing tasks from a previously uploaded debug package.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package</li><li>`nodeTag`: node whose data is returned</li><li>`name`: database name</li></ul> |
+| `/debug/info-package/analyzer/memory` | GET | Returns a node's memory information from a previously uploaded debug package.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package</li><li>`nodeTag`: node whose data is returned</li></ul> |
+| `/debug/info-package/analyzer/network` | GET | Returns a node's network information from a previously uploaded debug package.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package</li><li>`nodeTag`: node whose data is returned</li></ul> |
+| `/debug/info-package/analyzer/remove` | DELETE | Removes a previously uploaded debug package analysis from the server.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package to remove</li></ul> |
+| `/debug/info-package/analyzer/summary` | GET | Returns the analysis summary of a previously uploaded debug package.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package</li></ul> |
+| `/debug/info-package/analyzer/summary/node` | GET | Returns the analysis summary for a single node of a previously uploaded debug package.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package</li><li>`nodeTag`: node whose summary is returned</li></ul> |
+| `/debug/info-package/analyzer/threads/runaway` | GET | Returns a node's runaway threads information from a previously uploaded debug package.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package</li><li>`nodeTag`: node whose data is returned</li></ul> |
+| `/debug/info-package/analyzer/threads/stack-trace` | GET | Returns a node's thread stack traces from a previously uploaded debug package.<br /><br />**Parameters:**<ul><li>`packageId`: ID of the uploaded debug package</li><li>`nodeTag`: node whose data is returned</li></ul> |
+| `/debug/info-package/analyzer/upload` | POST | Uploads a debug package (a zip archive sent in the request body), analyzes it, and returns the analysis summary. |
+| `/debug/is-loaded` | GET | Returns whether the named database is loaded on the server.<br /><br />**Parameters:**<ul><li>`name`: database name</li></ul> |
+| `/debug/queries/running/live` | GET | Streams currently running queries, over a WebSocket connection, across the databases the user is allowed to access. |
+| `/debug/routes` | GET | Lists every route the server exposes, grouped into `Debug` and `Production` arrays; each entry gives the route path and its HTTP methods. |
+| `/debug/sharding/find/bucket` | GET | Returns the bucket and shard number that a document ID maps to in a sharded database.<br /><br />**Parameters:**<ul><li>`id`: the document ID (required)</li><li>`name`: the sharded database name (optional)</li></ul> |
+| `/eula/$` | GET | Serves the static files for the license agreement (EULA) page. Redirects to Studio if the EULA has already been accepted. |
+| `/eula/index.html` | GET | Serves the license agreement (EULA) page. Redirects to Studio if the EULA has already been accepted. |
+| `/favicon.ico` | GET | Serves the favicon icon file. |
+| `/info/remote-task/tcp` | GET | Returns the server's TCP connection information and certificates for an external remote-task connection, such as a replication sink.<br /><br />**Parameters:**<ul><li>`remote-task`: the remote task name (required)</li><li>`database`: the database name (required)</li><li>`verify-database`: verify that the database exists (optional, default `false`)</li><li>`tag`: the connection tag (optional)</li></ul> |
+| `/info/remote-task/topology` | GET | Returns the URLs of the nodes responsible for a pull replication remote task.<br /><br />**Parameters:**<ul><li>`database`: the database name (required)</li><li>`groupId`: the database group ID (required)</li><li>`remote-task`: the remote task name (required)</li><li>`tag`: the connection tag (optional)</li></ul> |
+| `/info/tcp` | GET | Returns the server's TCP connection information and certificates. |
+| `/license/configuration` | GET | Returns the license configuration settings that control whether the license can be renewed, activated, or force-updated. |
+| `/license/eula` | GET | Returns the RavenDB license agreement (EULA) text. |
+| `/license/free/download` | POST | Downloads a free license using an email address and verification code. Available only while the server is in setup mode. |
+| `/license/free/send-verification-code` | POST | Sends a verification code to an email address to obtain a free license. Available only while the server is in setup mode. |
+| `/license/limits-usage` | GET | Returns the cluster-wide license limits usage: the number of static indexes, auto indexes, custom sorters, analyzers, and subscriptions across all databases. |
+| `/license/status` | GET | Returns the current license status. |
+| `/license/support` | GET | Returns the license support status. |
+| `/monitoring/snmp` | GET | Returns the [SNMP](../integrations/snmp/overview.mdx) value for a single OID (object identifier).<br /><br />**Parameters:**<ul><li>`oid`: the object identifier to read (required)</li></ul> |
+| `/monitoring/snmp/bulk` | GET, POST | Returns SNMP values for multiple OIDs. The `GET` method reads the identifiers from the `oid` query string; the `POST` method reads them from an `OIDs` array in the request body. |
+| `/monitoring/snmp/mib` | GET | Returns the RavenDB SNMP MIB definition as a downloadable file.<br /><br />**Parameters:**<ul><li>`includeServer`: include server metrics (optional, default `true`)</li><li>`includeCluster`: include cluster metrics (optional, default `false`)</li><li>`includeDatabases`: include database metrics (optional, default `false`)</li></ul> |
+| `/monitoring/snmp/oids` | GET | Returns the SNMP OID mappings for the server, cluster, and databases. |
+| `/operations/state` | GET | Returns the state of a server-level or database-level operation.<br /><br />**Parameters:**<ul><li>`id`: the operation ID (required)</li></ul> |
+| `/periodic-backup` | GET | Returns the periodic backup configuration of a task for a database.<br /><br />**Parameters:**<ul><li>`name`: the database name (required)</li><li>`taskId`: the backup task ID (required)</li></ul> |
+| `/periodic-backup/status` | GET | Returns the status of a periodic backup task for a database.<br /><br />**Parameters:**<ul><li>`name`: the database name (required)</li><li>`taskId`: the backup task ID (required)</li><li>`type`: status source, `Cluster` or `Local` (optional, default `Cluster`)</li></ul> |
+| `/rachis/waitfor` | GET | Waits until the cluster has processed the Raft command with the specified index.<br /><br />**Parameters:**<ul><li>`index`: the Raft command index to wait for (required)</li></ul> |
+| `/secrets/generate` | GET | Generates and returns a new random 256-bit secret key, Base64-encoded, for use in [database encryption](../../server/security/encryption/database-encryption.mdx). |
+| `/server/notification-center/dismiss` | POST | Dismisses a server notification. When `forever` is `true`, the notification is postponed indefinitely instead.<br /><br />**Parameters:**<ul><li>`id`: the notification ID (required)</li><li>`forever`: dismiss the notification permanently (optional)</li></ul> |
+| `/server/notification-center/postpone` | POST | Postpones a server notification for a given number of seconds. A value of `0` postpones it indefinitely.<br /><br />**Parameters:**<ul><li>`id`: the notification ID (required)</li><li>`timeInSec`: postponement duration in seconds (required)</li></ul> |
+| `/server/notification-center/watch` | GET | Opens a WebSocket connection that streams server notifications and active operation updates. |
+| `/setup/alive` | GET | Returns an empty successful response, used to check that the server is reachable during setup. |
+| `/setup/continue` | POST | Continues the cluster setup on this node from an uploaded setup package. Available only while the server is in setup mode. |
+| `/setup/continue/extract` | POST | Extracts node information (tags and server URLs) from an uploaded setup zip package. Available only while the server is in setup mode. |
+| `/setup/continue/unsecured` | POST | Continues the unsecured cluster setup on this node. Available only while the server is in setup mode. |
+| `/setup/dns-n-cert` | POST | Proxies a DNS and certificate request to the RavenDB domain registration service during setup. Available only while the server is in setup mode.<br /><br />**Parameters:**<ul><li>`action`: the request action, `claim`, `user-domains`, or `check-availability` (required)</li></ul> |
+| `/setup/finish` | POST | Completes the setup wizard and restarts the server. Available only while the server is in setup mode. |
+| `/setup/hosts` | POST | Validates an uploaded server certificate and returns its common name (CN) and alternative names. Available only while the server is in setup mode. |
+| `/setup/ips` | GET | Returns the machine name and the available network interfaces with their IP addresses. Available only while the server is in setup mode. |
+| `/setup/letsencrypt` | POST | Sets up the server with a Let's Encrypt certificate and returns the settings package. Available only while the server is in setup mode. |
+| `/setup/letsencrypt/agreement` | GET | Returns the URL of the Let's Encrypt terms of service for the given email address. Available only while the server is in setup mode.<br /><br />**Parameters:**<ul><li>`email`: the email address for the agreement (required)</li></ul> |
+| `/setup/parameters` | GET | Returns setup parameters detected for the environment, such as a fixed server port and whether the server runs on Docker, Azure, AWS, or POSIX. Available only while the server is in setup mode. |
+| `/setup/populate-ips` | POST | Resolves the IP addresses of the provided domains and subdomains under a root domain. Available only while the server is in setup mode.<br /><br />**Parameters:**<ul><li>`rootDomain`: the root domain (required)</li></ul> |
+| `/setup/secured` | POST | Sets up the server in secured mode using a provided certificate and returns the settings package. Available only while the server is in setup mode. |
+| `/setup/unsecured/package` | POST | Sets up the server in unsecured mode and returns the settings package. Available only while the server is in setup mode. |
+| `/setup/user-domains` | POST | Retrieves the user's registered domains from the RavenDB domain registration service using the supplied license. Available only while the server is in setup mode. |
+| `/sorters` | GET | Returns the server-wide custom sorters defined on the server. |
+| `/studio-tasks/admin/migrator-path` | GET | Returns whether a data migrator path is defined in the server configuration. |
+| `/studio-tasks/ai/models` | POST | Returns the available AI models for a given AI connector (OpenAI, Google, Azure OpenAI, or Ollama) using the provided connection settings. |
+| `/studio-tasks/bootstrap` | GET | Returns the certificate expiration threshold, in days, that Studio preloads from the server configuration. |
+| `/studio-tasks/convert-to-json-schema` | POST | Converts a sample JSON object provided in the request body into a JSON schema.<br /><br />**Parameters:**<ul><li>`type`: the schema type (optional)</li></ul> |
+| `/studio-tasks/databases` | GET | Returns the list of databases for Studio.<br /><br />**Parameters:**<ul><li>`name`: return only the named database (optional)</li><li>`start`: number of results to skip (optional, default `0`)</li><li>`pageSize`: number of results to return (optional, default unlimited)</li></ul> |
+| `/studio-tasks/databases/state` | GET | Returns the state of the databases for Studio.<br /><br />**Parameters:**<ul><li>`name`: return only the named database's state (optional)</li><li>`start`: number of results to skip (optional, default `0`)</li><li>`pageSize`: number of results to return (optional, default unlimited)</li></ul> |
+| `/studio-tasks/format` | POST | Formats an index expression provided in the request body. |
+| `/studio-tasks/is-valid-name` | GET | Validates a name for a database, index, script, or Elasticsearch index.<br /><br />**Parameters:**<ul><li>`type`: the item type to validate (required)</li><li>`name`: the name to validate (required)</li><li>`dataPath`: the data path, used when validating a database name (optional)</li></ul> |
+| `/studio-tasks/next-cron-expression-occurrence` | GET | Returns the next occurrence of a given cron expression. If `taskId`, `database`, and `isFull` are all provided, computes the occurrence relative to that backup task's last full or incremental backup time instead of the current time.<br /><br />**Parameters:**<ul><li>`expression`: the cron expression (required)</li><li>`taskId`: the backup task ID, required together with `database` and `isFull` (optional)</li><li>`database`: the database name, required together with `taskId` and `isFull` (optional)</li><li>`isFull`: `true` to use the task's last full backup time or `false` for its last incremental backup time as the base time, required together with `taskId` and `database` (optional)</li></ul> |
+| `/studio-tasks/periodic-backup/test-credentials` | POST | Tests the connection credentials for a backup destination (Amazon S3, Amazon Glacier, Azure, Google Cloud, or FTP) using settings from the request body.<br /><br />**Parameters:**<ul><li>`type`: the backup destination type (required)</li></ul> |
+| `/studio/$` | GET | Serves the Studio static files. |
+| `/studio/feedback` | POST | Sends user feedback from Studio to RavenDB. |
+| `/studio/index.html` | GET | Serves the Studio entry page. Redirects to the two-factor authentication page or the setup wizard depending on the server state. |
+| `/studio/upgrade-info` | GET | Returns information about newer RavenDB versions available for upgrade.<br /><br />**Parameters:**<ul><li>`start`: number of results to skip (optional)</li><li>`pageSize`: number of results to return (optional)</li></ul> |
+| `/threads-info/watch` | GET | Opens a WebSocket connection that streams information about the server's threads. |
+| `/topology` | GET | Returns the database topology that a client uses to route its requests.<br /><br />**Parameters:**<ul><li>`name`: the database name (required)</li><li>`applicationIdentifier`: the client application identifier (optional)</li><li>`private`: return the private topology (optional, default `false`)</li><li>`includePromotables`: include promotable nodes (optional, default `false`)</li></ul> |
+| `/wizard/$` | GET | Serves the setup wizard static files. Redirects to the corresponding Studio file if the server is already configured. |
+| `/wizard/index.html` | GET | Serves the setup wizard entry page. Redirects to Studio if the server is already configured. |
+
+</Panel>

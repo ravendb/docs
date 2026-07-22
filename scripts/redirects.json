@@ -419,6 +419,13 @@
         }
     },
     {
+        "key": "/server/troubleshooting/debug-routes",
+        "value": {
+            "targetUrl": "/monitoring/debug/debug-endpoints",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/server/administration/monitoring",
         "value": {
             "targetUrl": "/server/administration/monitoring/prometheus",
