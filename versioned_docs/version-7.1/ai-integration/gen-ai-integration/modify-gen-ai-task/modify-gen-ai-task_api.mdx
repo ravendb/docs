@@ -2,6 +2,7 @@
 title: "Modify GenAI Task: API"
 sidebar_label: "Client API"
 sidebar_position: 1
+supported_languages: ["csharp", "python", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -11,9 +12,7 @@ import ModifyGenAiTaskApiCsharp from './content/_modify-gen-ai-task_api-csharp.m
 import ModifyGenAiTaskApiPython from './content/_modify-gen-ai-task_api-python.mdx';
 import ModifyGenAiTaskApiNodejs from './content/_modify-gen-ai-task_api-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "python", "nodejs"];
-
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ModifyGenAiTaskApiCsharp />
