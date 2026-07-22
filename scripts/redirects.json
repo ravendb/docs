@@ -440,6 +440,20 @@
         }
     },
     {
+        "key": "/server/troubleshooting/debug-package/create-debug-package",
+        "value": {
+            "targetUrl": "/monitoring/debug/debug-package/create-debug-package",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/server/troubleshooting/debug-package/debug-package-analyzer",
+        "value": {
+            "targetUrl": "/monitoring/debug/debug-package/debug-package-analyzer",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/server/administration/monitoring",
         "value": {
             "targetUrl": "/server/administration/monitoring/prometheus",
