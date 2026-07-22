@@ -1,0 +1,33 @@
+---
+title: "Single-Document Patching Examples: Counters, Time Series, and Attachments"
+sidebar_label: "Counters, Time Series, and Attachments"
+description: "Examples of creating, incrementing, deleting, and retrieving counters in RavenDB patch scripts."
+sidebar_position: 3
+supported_languages: ["csharp", "java", "nodejs", "python"]
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import PatchExamplesCountersCsharp from './content/_patch-examples-counters-time-series-attachments-csharp.mdx';
+import PatchExamplesCountersJava from './content/_patch-examples-counters-time-series-attachments-java.mdx';
+import PatchExamplesCountersNodejs from './content/_patch-examples-counters-time-series-attachments-nodejs.mdx';
+import PatchExamplesCountersPython from './content/_patch-examples-counters-time-series-attachments-python.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <PatchExamplesCountersCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <PatchExamplesCountersJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <PatchExamplesCountersNodejs />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <PatchExamplesCountersPython />
+</LanguageContent>

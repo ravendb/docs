@@ -1,0 +1,1330 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* This article is part of the single-document patching examples.  
+  It focuses on patching individual document fields and manipulating array and object fields.
+
+* For the available patching interfaces (Session API, Session API using defer, and Operations API) and their full syntax,  
+  see [Patch a Single Document: API Overview](../../../../../documents/patching-documents/patch-a-single-document/api-overview.mdx).
+
+* Every Python patching method is executed by the server as a JavaScript patch script.  
+  The Python client does not provide a JSON Patch (RFC 6902) API.
+
+* Patching examples in this article:
+  * [Modify value of single field](#modify-value-of-single-field)  
+  * [Modify values of two fields](#modify-values-of-two-fields)  
+  * [Increment value](#increment-value)  
+  * [Add or increment](#add-or-increment)  
+  * [Add or patch](#add-or-patch)  
+  * [Add item to array](#add-item-to-array)  
+  * [Add items to an array with add_or_patch_array](#add-items-to-an-array-with-add_or_patch_array)  
+  * [Insert item at a specific array index](#insert-item-at-a-specific-array-index)  
+  * [Replace item at a specific array index](#replace-item-at-a-specific-array-index)  
+  * [Remove item at a specific array index](#remove-item-at-a-specific-array-index)  
+  * [Remove all matching items from an array](#remove-all-matching-items-from-an-array)  
+  * [Patch an object](#patch-an-object)  
+  * [Remove property](#remove-property)  
+  * [Rename property](#rename-property)  
+
+</Admonition>
+
+<Panel heading="Patching examples">
+
+<ContentFrame>
+
+### Modify value of single field
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```python
+# Set FirstName without loading the document.
+# The Session 'patch' method generates a JavaScript patch script.
+session.advanced.patch("employees/1-A", "FirstName", "Robert")
+
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Queue an explicit JavaScript patch in the session batch.
+# Pass the new value through args instead of embedding it in the script.
+patch_request = PatchRequest()
+patch_request.script = "this.FirstName = args.FirstName;"
+patch_request.values = {"FirstName": "Robert"}
+
+session.advanced.defer(PatchCommandData("employees/1-A", None, patch_request))
+
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Send an explicit JavaScript patch directly through the document store.
+# Pass the new value through args instead of embedding it in the script.
+patch_request = PatchRequest()
+patch_request.script = "this.FirstName = args.FirstName;"
+patch_request.values = {"FirstName": "Robert"}
+
+store.operations.send(PatchOperation("employees/1-A", None, patch_request))
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Modify values of two fields
+
+* The following examples update both fields atomically without loading the document.
+
+* The Session API merges the two `patch` calls for the same document into a single patch command,  
+  so both assignments are performed by one server-side script.  
+  The Session API using `defer` and the Operations API each perform both assignments in a single JavaScript patch.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```python
+# Modify FirstName to Robert and LastName to Carter in a single request.
+
+# Queue both field updates for the same document.
+session.advanced.patch("employees/1-A", "FirstName", "Robert")
+session.advanced.patch("employees/1-A", "LastName", "Carter")
+
+# The session merges both calls into one patch command.
+# save_changes sends the command in the session batch,
+# which the server commits atomically.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Modify FirstName to Robert and LastName to Carter in a single request.
+
+# Queue one explicit JavaScript patch in the session.
+# Both field assignments are part of the same patch command.
+patch_request = PatchRequest()
+patch_request.script = """this.FirstName = args.FirstName;
+                          this.LastName = args.LastName;"""
+# Pass the new values separately as script arguments.
+patch_request.values = {
+    "FirstName": "Robert",
+    "LastName": "Carter"
+}
+
+session.advanced.defer(PatchCommandData("employees/1-A", None, patch_request))
+
+# save_changes sends the deferred command in the session batch,
+# which the server commits atomically.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Modify FirstName to Robert and LastName to Carter in a single request.
+
+# Send one explicit JavaScript patch directly through the document store.
+# Both field assignments are part of the same patch command.
+# This API does not use a session, so save_changes is not required.
+patch_request = PatchRequest()
+patch_request.script = """this.FirstName = args.FirstName;
+                          this.LastName = args.LastName;"""
+# Pass the new values separately as script arguments.
+patch_request.values = {
+    "FirstName": "Robert",
+    "LastName": "Carter"
+}
+
+store.operations.send(PatchOperation("employees/1-A", None, patch_request))
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Increment value
+
+* The following examples increment the existing `UnitsInStock` value by `10` without loading the document.
+
+* The Session API `increment` helper generates the script  
+  `this.UnitsInStock = this.UnitsInStock ? this.UnitsInStock + args.val_N : args.val_N ;`  
+  A missing field is therefore set to the specified increment value.  
+  Because the generated script performs a truthiness check, an existing falsy value  
+  (for example `0`, `false`, or an empty string) is replaced by the increment value rather than added to.
+
+* The explicit JavaScript examples use `+=`, which follows JavaScript coercion rules.  
+  A missing field evaluates to `NaN`, while a string value is concatenated.  
+  These explicit examples therefore assume that `UnitsInStock` exists and holds a numeric value.  
+  To create the document if it is missing, use [Add or increment](#add-or-increment).
+
+* If the document does not exist, the patch has no effect, no document is created,  
+  and no exception is thrown.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```python
+# Increment the current UnitsInStock value by 10.
+
+# Queue an increment operation in the session.
+session.advanced.increment("products/1-A", "UnitsInStock", 10)
+
+# Send the queued increment command in the session batch.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Increment the current UnitsInStock value by 10.
+
+# Queue an explicit JavaScript patch in the session.
+patch_request = PatchRequest()
+patch_request.script = "this.UnitsInStock += args.UnitsToAdd;"
+# Pass the increment amount separately as a script argument.
+patch_request.values = {"UnitsToAdd": 10}
+
+session.advanced.defer(PatchCommandData("products/1-A", None, patch_request))
+
+# Send the deferred patch in the session batch.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Increment the current UnitsInStock value by 10.
+
+# Send an explicit JavaScript patch directly through the document store.
+# This API does not use a session, so save_changes is not required.
+patch_request = PatchRequest()
+patch_request.script = "this.UnitsInStock += args.UnitsToAdd;"
+# Pass the increment amount separately as a script argument.
+patch_request.values = {"UnitsToAdd": 10}
+
+store.operations.send(PatchOperation("products/1-A", None, patch_request))
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Add or increment
+
+`add_or_increment` behaves as follows:
+
+* If the document exists:
+  * If the field exists, RavenDB adds the specified value to it.  
+    This increments a numeric value or concatenates a string value.
+  * If the field does not exist, RavenDB creates it with the specified value.
+  * The provided entity is ignored.
+* If the document does not exist:
+  * RavenDB creates it from the provided entity.
+  * The value to increment by is ignored.
+
+Like [Increment value](#increment-value), `add_or_increment` generates a script that performs a truthiness check,  
+so an existing falsy value (for example `0`, `false`, or an empty string) is replaced by the specified value rather than added to.
+
+`PatchCommandData` exposes a `create_if_missing` property that takes the new document as a plain dictionary,  
+which is exactly what `add_or_increment` sets internally.  
+`PatchOperation` has no such property, so the Operations example below builds the new document  
+with a `patch_if_missing` script instead.
+
+When you pass an entity, the client derives the new document's `@collection` metadata from the entity's class.  
+When you set `create_if_missing` yourself, set the metadata in the dictionary.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```python
+# Increment login_count by 1, or create users/1 if it does not exist.
+
+# This entity is used only if the document does not exist.
+new_user = User()
+new_user.first_name = "John"
+new_user.last_name = "Doe"
+new_user.login_count = 1
+
+session.advanced.add_or_increment(
+    # The document id on which the operation is performed
+    "users/1",
+    # If the document is not found, it is created from this entity
+    new_user,
+    # If the document exists, increment this field by the value below.
+    # If the field does not exist, add it with that value.
+    "login_count",
+    1)
+
+# Send the queued command in the session batch.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Increment login_count by 1, or create users/1 if it does not exist.
+
+# This script runs only if the document already exists.
+# Add to the field if it is present; otherwise create it with the value.
+patch_request = PatchRequest()
+patch_request.script = ("this.login_count = this.login_count "
+                        "? this.login_count + args.value_to_add "
+                        ": args.value_to_add;")
+patch_request.values = {"value_to_add": 1}
+
+patch_command = PatchCommandData("users/1", None, patch_request)
+
+# If the document is not found, it is created from this dictionary as-is
+# (the value to increment by is ignored).
+# Set '@collection' so the new document lands in the right collection.
+patch_command.create_if_missing = {
+    "first_name": "John",
+    "last_name": "Doe",
+    "login_count": 1,
+    "@metadata": {"@collection": "Users"}
+}
+
+session.advanced.defer(patch_command)
+
+# Send the deferred command in the session batch.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Increment login_count by 1, or create users/1 if it does not exist.
+
+# Send explicit JavaScript patches directly through the document store.
+# This API does not use a session, so save_changes is not required.
+
+# This patch runs only if the document already exists.
+# Add to the field if it is present; otherwise create it with the value.
+patch = PatchRequest()
+patch.script = ("this.login_count = this.login_count "
+                "? this.login_count + args.value_to_add "
+                ": args.value_to_add;")
+patch.values = {"value_to_add": 1}
+
+# This patch runs only if the document does not exist.
+# It builds the new document and assigns it to the Users collection.
+patch_if_missing = PatchRequest()
+patch_if_missing.script = """this.first_name = args.first_name;
+                             this.last_name = args.last_name;
+                             this.login_count = args.initial_login_count;
+                             this['@metadata'] = { '@collection': 'Users' };"""
+patch_if_missing.values = {
+    "first_name": "John",
+    "last_name": "Doe",
+    "initial_login_count": 1
+}
+
+store.operations.send(PatchOperation("users/1", None, patch, patch_if_missing, False))
+```
+</TabItem>
+<TabItem value="User_class" label="User_class">
+```python
+class User:
+    def __init__(
+        self,
+        Id: str = None,
+        first_name: str = None,
+        last_name: str = None,
+        login_count: int = 0,
+        last_login: datetime = None,
+        login_times: List[datetime] = None,
+    ):
+        self.Id = Id
+        self.first_name = first_name
+        self.last_name = last_name
+        self.login_count = login_count
+        self.last_login = last_login
+        self.login_times = login_times if login_times is not None else []
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Add or patch
+
+`add_or_patch` behaves as follows:
+
+* If the document exists:
+  * RavenDB sets the specified field to the patch value,  
+    replacing its current value or adding the field if it does not exist.
+  * The provided entity is ignored.
+* If the document does not exist:
+  * RavenDB creates it from the provided entity.
+  * The patch value is ignored.
+
+As with [Add or increment](#add-or-increment), the `defer` example uses the `create_if_missing` property of  
+`PatchCommandData`, while the Operations example builds the new document with a `patch_if_missing` script.
+
+A `datetime` object is serialized by the client's JSON encoder in RavenDB's date format  
+(for example `2021-09-12T00:00:00.0000000`), both in `PatchRequest.values` and in a `create_if_missing` dictionary.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```python
+# If users/1 exists, set last_login to September 12, 2021.
+# Otherwise, create the document with an initial last_login of January 1, 2021.
+
+# This entity is used only if the document does not exist.
+new_user = User()
+new_user.first_name = "John"
+new_user.last_name = "Doe"
+new_user.last_login = datetime(2021, 1, 1)
+
+session.advanced.add_or_patch(
+    # The document id on which the operation is performed
+    "users/1",
+    # If the document is not found, it is created from this entity
+    new_user,
+    # If the document exists, replace this field with the value below.
+    # If the field does not exist, add it with that value.
+    "last_login",
+    datetime(2021, 9, 12))
+
+# Send the queued command in the session batch.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# If users/1 exists, set last_login to September 12, 2021.
+# Otherwise, create the document with an initial last_login of January 1, 2021.
+
+# This script runs only if the document already exists.
+patch_request = PatchRequest()
+patch_request.script = "this.last_login = args.new_value;"
+patch_request.values = {"new_value": datetime(2021, 9, 12)}
+
+patch_command = PatchCommandData("users/1", None, patch_request)
+
+# If the document is not found, it is created from this dictionary as-is
+# (the value to patch by is ignored).
+# Set '@collection' so the new document lands in the right collection.
+patch_command.create_if_missing = {
+    "first_name": "John",
+    "last_name": "Doe",
+    "last_login": datetime(2021, 1, 1),
+    "@metadata": {"@collection": "Users"}
+}
+
+session.advanced.defer(patch_command)
+
+# Send the deferred command in the session batch.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# If users/1 exists, set last_login to September 12, 2021.
+# Otherwise, create the document with an initial last_login of January 1, 2021.
+
+# Send explicit JavaScript patches directly through the document store.
+# This API does not use a session, so save_changes is not required.
+
+# This patch runs only if the document already exists.
+patch = PatchRequest()
+patch.script = "this.last_login = args.new_value;"
+patch.values = {"new_value": datetime(2021, 9, 12)}
+
+# This patch runs only if the document does not exist.
+# It builds the new document and assigns it to the Users collection.
+patch_if_missing = PatchRequest()
+patch_if_missing.script = """this.first_name = args.first_name;
+                             this.last_name = args.last_name;
+                             this.last_login = args.initial_last_login;
+                             this['@metadata'] = { '@collection': 'Users' };"""
+patch_if_missing.values = {
+    "first_name": "John",
+    "last_name": "Doe",
+    "initial_last_login": datetime(2021, 1, 1)
+}
+
+store.operations.send(PatchOperation("users/1", None, patch, patch_if_missing, False))
+```
+</TabItem>
+<TabItem value="User_class" label="User_class">
+```python
+class User:
+    def __init__(
+        self,
+        Id: str = None,
+        first_name: str = None,
+        last_name: str = None,
+        login_count: int = 0,
+        last_login: datetime = None,
+        login_times: List[datetime] = None,
+    ):
+        self.Id = Id
+        self.first_name = first_name
+        self.last_name = last_name
+        self.login_count = login_count
+        self.last_login = last_login
+        self.login_times = login_times if login_times is not None else []
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Add item to array
+
+Adding an item to an array behaves as follows:
+
+* If the document and the specified array exist, RavenDB appends the item to the array.
+* If the document exists but the specified array is missing or `null`,  
+  no exception is thrown, no patching is done, and RavenDB does not create the array.
+* If the document exists but the specified field holds a value that is not an array  
+  (for example a string or a number), the patch fails.
+* If the document does not exist, no exception is thrown, no patching is done,  
+  and no document is created.
+
+The Session API `patch_array` helper exposes `add`, `remove_at`, and `remove_all`.  
+`add` accepts multiple items, generates a `push` call, and can be chained.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```python
+# Append a new comment to the existing comments array.
+# The document and the comments array must already exist.
+
+# The new comment to add:
+new_blog_comment = BlogComment()
+new_blog_comment.title = "New comment"
+new_blog_comment.content = "Lorem ipsum."
+
+session.advanced.patch_array(
+    "blogPosts/1",  # Document id to patch
+    "comments",     # The array to add the comment to
+    # Append the new comment
+    lambda comments: comments.add(new_blog_comment))
+
+# Send the queued patch command in the session batch.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Append a new comment to the existing comments array.
+# The document and the comments array must already exist.
+
+# Queue an explicit JavaScript patch in the session.
+patch_request = PatchRequest()
+patch_request.script = "this.comments.push(args.comment);"
+# Pass the new comment separately as a script argument.
+patch_request.values = {
+    "comment": {
+        "title": "New comment",
+        "content": "Lorem ipsum."
+    }
+}
+
+# Passing no patch_if_missing script means the document is not created if it is missing.
+session.advanced.defer(PatchCommandData("blogPosts/1", None, patch_request))
+
+# Send the deferred patch in the session batch.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Append a new comment to the existing comments array.
+# The document and the comments array must already exist.
+
+# Send an explicit JavaScript patch directly through the document store.
+# This API does not use a session, so save_changes is not required.
+patch_request = PatchRequest()
+patch_request.script = "this.comments.push(args.comment);"
+# Pass the new comment separately as a script argument.
+patch_request.values = {
+    "comment": {
+        "title": "New comment",
+        "content": "Lorem ipsum."
+    }
+}
+
+# Passing no patch_if_missing script means the document is not created if it is missing.
+store.operations.send(PatchOperation("blogPosts/1", None, patch_request))
+```
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+```python
+class BlogPost:
+    def __init__(
+        self,
+        Id: str = None,
+        title: str = None,
+        body: str = None,
+        comments: List["BlogComment"] = None,
+    ):
+        self.Id = Id
+        self.title = title
+        self.body = body
+        self.comments = comments if comments is not None else []
+
+
+class BlogComment:
+    def __init__(self, title: str = None, content: str = None):
+        self.title = title
+        self.content = content
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Add items to an array with add_or_patch_array
+
+`add_or_patch_array` behaves as follows:
+
+* If the document and the specified array exist:
+  * RavenDB appends the specified items to the array.
+  * The provided entity is ignored.
+* If the document exists but the specified array is missing or `null`:
+  * No exception is thrown, no patching is done, and RavenDB does not create the array.
+  * The provided entity is ignored.
+* If the document exists but the specified field holds a value that is not an array:
+  * The patch fails.
+  * The provided entity is ignored.
+* If the document does not exist:
+  * RavenDB creates it from the provided entity.
+  * The array modification is ignored.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```python
+# If users/1 and its login_times array exist, append two login times.
+# Otherwise, if the document is missing, create it with one initial login time.
+
+# This entity is used only if the document does not exist.
+new_user = User()
+new_user.first_name = "John"
+new_user.last_name = "Doe"
+new_user.login_times = [datetime(2021, 1, 1)]
+
+session.advanced.add_or_patch_array(
+    # The document id on which the operation is performed
+    "users/1",
+    # If the document is not found, it is created from this entity
+    new_user,
+    # If the document exists, this array must already exist
+    "login_times",
+    # Append both values to the existing array
+    lambda login_times: login_times.add(
+        datetime(1993, 9, 12),
+        datetime(2000, 1, 1)))
+
+# Send the queued command in the session batch.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# If users/1 and its login_times array exist, append two login times.
+# Otherwise, if the document is missing, create it with one initial login time.
+
+# This script runs only if the document already exists.
+# login_times must already be an array.
+patch_request = PatchRequest()
+patch_request.script = "this.login_times.push(args.first_time, args.second_time);"
+patch_request.values = {
+    "first_time": datetime(1993, 9, 12),
+    "second_time": datetime(2000, 1, 1)
+}
+
+patch_command = PatchCommandData("users/1", None, patch_request)
+
+# If the document is not found, it is created from this dictionary as-is
+# (the values to append are ignored).
+# Set '@collection' so the new document lands in the right collection.
+patch_command.create_if_missing = {
+    "first_name": "John",
+    "last_name": "Doe",
+    "login_times": [datetime(2021, 1, 1)],
+    "@metadata": {"@collection": "Users"}
+}
+
+session.advanced.defer(patch_command)
+
+# Send the deferred command in the session batch.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# If users/1 and its login_times array exist, append two login times.
+# Otherwise, if the document is missing, create it with one initial login time.
+
+# Send explicit JavaScript patches directly through the document store.
+# This API does not use a session, so save_changes is not required.
+
+# This patch runs only if the document already exists.
+# login_times must already be an array.
+patch = PatchRequest()
+patch.script = "this.login_times.push(args.first_time, args.second_time);"
+patch.values = {
+    "first_time": datetime(1993, 9, 12),
+    "second_time": datetime(2000, 1, 1)
+}
+
+# This patch runs only if the document does not exist.
+# It builds the new document and assigns it to the Users collection.
+patch_if_missing = PatchRequest()
+patch_if_missing.script = """this.first_name = args.first_name;
+                             this.last_name = args.last_name;
+                             this.login_times = [args.initial_login_time];
+                             this['@metadata'] = { '@collection': 'Users' };"""
+patch_if_missing.values = {
+    "first_name": "John",
+    "last_name": "Doe",
+    "initial_login_time": datetime(2021, 1, 1)
+}
+
+store.operations.send(PatchOperation("users/1", None, patch, patch_if_missing, False))
+```
+</TabItem>
+<TabItem value="User_class" label="User_class">
+```python
+class User:
+    def __init__(
+        self,
+        Id: str = None,
+        first_name: str = None,
+        last_name: str = None,
+        login_count: int = 0,
+        last_login: datetime = None,
+        login_times: List[datetime] = None,
+    ):
+        self.Id = Id
+        self.first_name = first_name
+        self.last_name = last_name
+        self.login_count = login_count
+        self.last_login = last_login
+        self.login_times = login_times if login_times is not None else []
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Insert item at a specific array index
+
+* The Session API array helper provides only `add`, `remove_at`, and `remove_all`.  
+  To insert an item at a specific index, use an explicit JavaScript patch through `defer` or the Operations API.
+
+* JavaScript array indexes are zero-based.  
+  In the examples below, `splice(index, 0, item)` inserts the item before the existing item at the given index without removing anything.  
+  The examples insert at index `1`, which is the second position.
+
+* The document and the specified array must already exist.  
+  If the array is missing or `null`, no exception is thrown and no patching is done.  
+  If the field holds a value that is not an array, the patch fails.  
+  If the document does not exist, no document is created.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Insert a new comment at index 1 in the existing comments array.
+# Index 1 is the second position because array indexes are zero-based.
+# The document and the comments array must already exist.
+
+# Queue an explicit JavaScript patch in the session.
+# splice(startIndex, deleteCount, item) inserts the item at the given index
+# and removes no existing items because deleteCount is 0.
+patch_request = PatchRequest()
+patch_request.script = "this.comments.splice(args.index, 0, args.comment);"
+# Pass the insertion index and the new comment as script arguments.
+patch_request.values = {
+    "index": 1,
+    "comment": {
+        "title": "New comment",
+        "content": "Lorem ipsum."
+    }
+}
+
+# Do not create the document if it does not exist.
+session.advanced.defer(PatchCommandData("blogPosts/1", None, patch_request))
+
+# Send the deferred patch in the session batch.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Insert a new comment at index 1 in the existing comments array.
+# Index 1 is the second position because array indexes are zero-based.
+# The document and the comments array must already exist.
+
+# Send an explicit JavaScript patch directly through the document store.
+# This API does not use a session, so save_changes is not required.
+# splice(startIndex, deleteCount, item) inserts the item at the given index
+# and removes no existing items because deleteCount is 0.
+patch_request = PatchRequest()
+patch_request.script = "this.comments.splice(args.index, 0, args.comment);"
+# Pass the insertion index and the new comment as script arguments.
+patch_request.values = {
+    "index": 1,
+    "comment": {
+        "title": "New comment",
+        "content": "Lorem ipsum."
+    }
+}
+
+# Do not create the document if it does not exist.
+store.operations.send(PatchOperation("blogPosts/1", None, patch_request))
+```
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+```python
+class BlogPost:
+    def __init__(
+        self,
+        Id: str = None,
+        title: str = None,
+        body: str = None,
+        comments: List["BlogComment"] = None,
+    ):
+        self.Id = Id
+        self.title = title
+        self.body = body
+        self.comments = comments if comments is not None else []
+
+
+class BlogComment:
+    def __init__(self, title: str = None, content: str = None):
+        self.title = title
+        self.content = content
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Replace item at a specific array index
+
+* Use the Session API with an indexed path, `defer`, or the Operations API  
+  to replace an array item at a specified zero-based index.
+
+* The following examples replace the entire `BlogComment` at index `3`, which is the fourth item in the array.  
+  The document, the `comments` array, and the item at index `3` are expected to exist.
+
+* All three examples perform a JavaScript indexed assignment.
+
+* If the array is missing or `null`, the patch fails with  
+  `Cannot convert undefined or null to object`.  
+  Assigning through a missing field requires coercing it to an object, which throws.  
+  This differs from the method-call examples above, where a missing array is a silent no-op.
+
+* Assigning to a non-negative index at or beyond the current array length extends the array  
+  rather than reporting a missing target.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```python
+# Replace the comment at index 3 in the comments array.
+# Index 3 is the fourth position because array indexes are zero-based.
+# The document, array, and item at index 3 are expected to exist.
+
+updated_comment = BlogComment()
+updated_comment.title = "Updated comment"
+updated_comment.content = "Updated content."
+
+# An indexed path assigns directly to the array item,
+# generating the script 'this.comments[3] = args.val_N;'
+session.advanced.patch("blogPosts/1", "comments[3]", updated_comment)
+
+# Send the queued patch command in the session batch.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Replace the comment at index 3 in the comments array.
+# Index 3 is the fourth position because array indexes are zero-based.
+# The document, array, and item at index 3 are expected to exist.
+
+# Queue an explicit JavaScript patch in the session.
+# Indexed assignment replaces the existing item at the specified index.
+patch_request = PatchRequest()
+patch_request.script = "this.comments[args.index] = args.comment;"
+patch_request.values = {
+    "index": 3,
+    "comment": {
+        "title": "Updated comment",
+        "content": "Updated content."
+    }
+}
+
+# Do not create the document if it does not exist.
+session.advanced.defer(PatchCommandData("blogPosts/1", None, patch_request))
+
+# Send the deferred patch in the session batch.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Replace the comment at index 3 in the comments array.
+# Index 3 is the fourth position because array indexes are zero-based.
+# The document, array, and item at index 3 are expected to exist.
+
+# Send an explicit JavaScript patch directly through the document store.
+# This API does not use a session, so save_changes is not required.
+# Indexed assignment replaces the existing item at the specified index.
+patch_request = PatchRequest()
+patch_request.script = "this.comments[args.index] = args.comment;"
+patch_request.values = {
+    "index": 3,
+    "comment": {
+        "title": "Updated comment",
+        "content": "Updated content."
+    }
+}
+
+# Do not create the document if it does not exist.
+store.operations.send(PatchOperation("blogPosts/1", None, patch_request))
+```
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+```python
+class BlogPost:
+    def __init__(
+        self,
+        Id: str = None,
+        title: str = None,
+        body: str = None,
+        comments: List["BlogComment"] = None,
+    ):
+        self.Id = Id
+        self.title = title
+        self.body = body
+        self.comments = comments if comments is not None else []
+
+
+class BlogComment:
+    def __init__(self, title: str = None, content: str = None):
+        self.title = title
+        self.content = content
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Remove item at a specific array index
+
+* Use `remove_at` with the Session API array helper, or JavaScript `splice`,  
+  to remove an item at a specified zero-based array index.
+
+* `remove_at(index)` generates a `splice(index, 1)` call,  
+  so all three examples below run equivalent server-side scripts.
+
+* The document and the target array must exist.  
+  If the document does not exist, no document is created.  
+  If the array is missing or `null`, no exception is thrown and no patching is done.  
+  If the field holds a value that is not an array, the patch fails.
+
+* If the specified non-negative index is at or beyond the array length,  
+  `splice` performs no operation and does not throw.
+
+* JavaScript `splice` treats a negative index as an offset from the end of the array,  
+  so a negative value can remove an item instead of being a no-op.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```python
+# Remove the comment at index 3 (the fourth item) from the comments array.
+# If index 3 does not exist, the patch performs no operation.
+session.advanced.patch_array(
+    "blogPosts/1",  # Document id to patch
+    "comments",     # The array to remove from
+    # Remove the item at index 3
+    lambda comments: comments.remove_at(3))
+
+# Send the pending patch operation to the server.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Queue a JavaScript patch that removes one comment from the comments array.
+# splice(startIndex, deleteCount) removes one item at the zero-based index.
+# If the index is outside the array, splice performs no operation.
+patch_request = PatchRequest()
+patch_request.script = "this.comments.splice(args.index, 1);"
+patch_request.values = {"index": 3}
+
+session.advanced.defer(PatchCommandData("blogPosts/1", None, patch_request))
+
+# Send the deferred patch command to the server.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Execute a JavaScript patch that removes one comment from the comments array.
+# splice(startIndex, deleteCount) removes one item at the zero-based index.
+# If the index is outside the array, splice performs no operation.
+patch_request = PatchRequest()
+patch_request.script = "this.comments.splice(args.index, 1);"
+patch_request.values = {"index": 3}
+
+store.operations.send(PatchOperation("blogPosts/1", None, patch_request))
+```
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+```python
+class BlogPost:
+    def __init__(
+        self,
+        Id: str = None,
+        title: str = None,
+        body: str = None,
+        comments: List["BlogComment"] = None,
+    ):
+        self.Id = Id
+        self.title = title
+        self.body = body
+        self.comments = comments if comments is not None else []
+
+
+class BlogComment:
+    def __init__(self, title: str = None, content: str = None):
+        self.title = title
+        self.content = content
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Remove all matching items from an array
+
+* Use `remove_all` with the Session API array helper, or JavaScript `filter`,  
+  to remove every array item that matches a predicate.
+
+* `remove_all` takes the predicate as a JavaScript expression string that the server evaluates  
+  for each `item` in the array, and generates  
+  `this.comments = this.comments.filter(function(item){ return !(<predicate>); });`  
+  The predicate is inlined in the generated script exactly as written,  
+  so its values cannot be passed through `args`. Use `defer` or the Operations API when you need parameters.
+
+* In these examples, matching is case-sensitive and substring-based.  
+  Every comment whose `content` contains `"wrong"` is removed.
+
+* If the document does not exist, the patch has no effect and no document is created.  
+  If the array is empty or no item matches, the array remains unchanged.
+
+* If the `comments` field is missing, the server evaluates `filter` to an empty array,  
+  so the script sets `comments` to an empty array.  
+  If the field is explicitly `null`, the script sets it to `null`.  
+  If it holds a value that is not an array, the patch fails.  
+  Guard the assignment if none of these outcomes is desired.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```python
+# Remove every comment whose content contains the case-sensitive substring "wrong".
+# The predicate is a JavaScript expression evaluated for each 'item' in the array.
+# remove_all keeps only the items for which the predicate is false.
+session.advanced.patch_array(
+    "blogPosts/1",  # Document id to patch
+    "comments",     # The array to remove from
+    lambda comments: comments.remove_all("item.content.includes('wrong')"))
+
+# Send the pending patch operation to the server.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Queue a JavaScript patch that removes every comment whose content
+# contains the case-sensitive substring "wrong".
+
+# filter keeps items for which the callback returns true.
+# Negating includes keeps only comments that do not contain the substring.
+patch_request = PatchRequest()
+patch_request.script = """this.comments = this.comments.filter(
+    comment => !comment.content.includes(args.text));"""
+patch_request.values = {"text": "wrong"}
+
+session.advanced.defer(PatchCommandData("blogPosts/1", None, patch_request))
+
+# Send the deferred patch command to the server.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Execute a JavaScript patch that removes every comment whose content
+# contains the case-sensitive substring "wrong".
+
+# filter keeps items for which the callback returns true.
+# Negating includes keeps only comments that do not contain the substring.
+patch_request = PatchRequest()
+patch_request.script = """this.comments = this.comments.filter(
+    comment => !comment.content.includes(args.text));"""
+patch_request.values = {"text": "wrong"}
+
+store.operations.send(PatchOperation("blogPosts/1", None, patch_request))
+```
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+```python
+class BlogPost:
+    def __init__(
+        self,
+        Id: str = None,
+        title: str = None,
+        body: str = None,
+        comments: List["BlogComment"] = None,
+    ):
+        self.Id = Id
+        self.title = title
+        self.body = body
+        self.comments = comments if comments is not None else []
+
+
+class BlogComment:
+    def __init__(self, title: str = None, content: str = None):
+        self.title = title
+        self.content = content
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Patch an object
+
+* Use `patch_object` with the Session API, or an explicit JavaScript patch,  
+  to add, update, or remove entries in an object field that is used as a dictionary:
+  * `put(key, value)` adds the key if it does not exist, or replaces its value if the key already exists.
+  * `remove(key)` deletes the entry with the specified key.
+
+* The document and the target object must exist.  
+  If the document does not exist, the patch has no effect and no document is created.  
+  If the object field is missing or `null`, the patch fails with  
+  `Cannot convert undefined or null to object`, because assigning through a missing field  
+  requires coercing it to an object.
+
+* Removing a key that does not exist has no effect and does not throw an exception.
+
+* The Session API helper emits the key as a quoted JavaScript string literal in bracket notation,  
+  for example `this.preferences["language"] = args.val_0_0;`,  
+  so keys containing a hyphen, a dot, a space, or a quote are handled correctly.
+
+* The two Session API `patch_object` calls below target the same document,  
+  so the session merges them into a single patch command.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```python
+# Add the "language" preference or update its value if the key already exists.
+session.advanced.patch_object("users/1", "preferences",
+    lambda prefs: prefs.put("language", "en-US"))
+
+# Remove the "theme" preference.
+# Removing a key that does not exist has no effect.
+session.advanced.patch_object("users/1", "preferences",
+    lambda prefs: prefs.remove("theme"))
+
+# Send both pending changes to the server in a single request.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Queue a JavaScript patch that adds or updates the "language" preference
+# and removes the "theme" preference.
+
+# Assignment adds the key or replaces its current value.
+# delete removes the key and is a no-op if the key does not exist.
+patch_request = PatchRequest()
+patch_request.script = """this.preferences[args.key_to_add_or_update] = args.value;
+                          delete this.preferences[args.key_to_remove];"""
+patch_request.values = {
+    "key_to_add_or_update": "language",
+    "value": "en-US",
+    "key_to_remove": "theme"
+}
+
+session.advanced.defer(PatchCommandData("users/1", None, patch_request))
+
+# Send the deferred patch command to the server.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Execute a JavaScript patch that adds or updates the "language" preference
+# and removes the "theme" preference.
+
+# Assignment adds the key or replaces its current value.
+# delete removes the key and is a no-op if the key does not exist.
+patch_request = PatchRequest()
+patch_request.script = """this.preferences[args.key_to_add_or_update] = args.value;
+                          delete this.preferences[args.key_to_remove];"""
+patch_request.values = {
+    "key_to_add_or_update": "language",
+    "value": "en-US",
+    "key_to_remove": "theme"
+}
+
+store.operations.send(PatchOperation("users/1", None, patch_request))
+```
+</TabItem>
+<TabItem value="User_class" label="User_class">
+```python
+class User:
+    def __init__(
+        self,
+        Id: str = None,
+        first_name: str = None,
+        last_name: str = None,
+        login_count: int = 0,
+        last_login: datetime = None,
+        login_times: List[datetime] = None,
+        # Stores user preferences as key-value pairs,
+        # for example: "theme": "dark" and "language": "en".
+        preferences: Dict[str, str] = None,
+    ):
+        self.Id = Id
+        self.first_name = first_name
+        self.last_name = last_name
+        self.login_count = login_count
+        self.last_login = last_login
+        self.login_times = login_times if login_times is not None else []
+        self.preferences = preferences if preferences is not None else {}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Remove property
+
+* Use the JavaScript `delete` operator to remove a property from a document.  
+  Removing an arbitrary document property is not supported by the Session API `patch` method;  
+  use a deferred patch command or the Operations API.
+
+* The property is removed entirely rather than assigned a `null` value.  
+  If the property does not exist, `delete` has no effect and does not throw an exception.
+
+* If the document does not exist, the patch has no effect and no document is created.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Queue a JavaScript patch that removes the Extension property from the document.
+# delete removes the property entirely instead of assigning it a null value.
+# If Extension does not exist, delete has no effect.
+patch_request = PatchRequest()
+patch_request.script = "delete this.Extension;"
+
+session.advanced.defer(PatchCommandData("employees/1-A", None, patch_request))
+
+# Send the deferred patch command to the server.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Execute a JavaScript patch that removes the Extension property from the document.
+# delete removes the property entirely instead of assigning it a null value.
+# If Extension does not exist, delete has no effect.
+patch_request = PatchRequest()
+patch_request.script = "delete this.Extension;"
+
+store.operations.send(PatchOperation("employees/1-A", None, patch_request))
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Rename property
+
+* Rename a property by copying its value to a new property and then deleting the original property.  
+  Renaming an arbitrary document property is not supported by the Session API `patch` method;  
+  use a deferred JavaScript patch command or the Operations API.
+
+* The examples perform the rename only if the original property exists.  
+  Its value, including a `null` value, is preserved. If the destination property already exists, its value is replaced.
+
+* Checking for the source property matters: reading a property that does not exist yields `undefined`  
+  inside a patch script, and `undefined` is stored as `null`.  
+  An unguarded rename would therefore overwrite the destination property with a `null` value.  
+  Compare against `undefined` rather than calling `hasOwnProperty`,  
+  which reports every property name as present on the patched document.
+
+* If the original property does not exist, the patch has no effect.  
+  If the document does not exist, no document is created.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Queue a JavaScript patch that renames HomePhone to Phone.
+# If HomePhone exists, its value is preserved and HomePhone is removed.
+# If Phone already exists, its current value is replaced.
+
+# Check for the source property so a missing HomePhone is a no-op.
+patch_request = PatchRequest()
+patch_request.script = """
+    if (this[args.old_property_name] !== undefined) {
+        var value = this[args.old_property_name];
+        delete this[args.old_property_name];
+        this[args.new_property_name] = value;
+    }"""
+patch_request.values = {
+    "old_property_name": "HomePhone",
+    "new_property_name": "Phone"
+}
+
+session.advanced.defer(PatchCommandData("employees/1-A", None, patch_request))
+
+# Send the deferred patch command to the server.
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Execute a JavaScript patch that renames HomePhone to Phone.
+# If HomePhone exists, its value is preserved and HomePhone is removed.
+# If Phone already exists, its current value is replaced.
+
+# Check for the source property so a missing HomePhone is a no-op.
+patch_request = PatchRequest()
+patch_request.script = """
+    if (this[args.old_property_name] !== undefined) {
+        var value = this[args.old_property_name];
+        delete this[args.old_property_name];
+        this[args.new_property_name] = value;
+    }"""
+patch_request.values = {
+    "old_property_name": "HomePhone",
+    "new_property_name": "Phone"
+}
+
+store.operations.send(PatchOperation("employees/1-A", None, patch_request))
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>

@@ -1,0 +1,294 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* This article is part of the single-document patching examples.  
+  It focuses on advanced patch-script techniques, including inline string compilation and cryptographic operations.
+
+* For the available patching interfaces (Session API, Session API using defer, and Operations API) and their full syntax,  
+  see [Patch a Single Document: API Overview](../../../../../documents/patching-documents/patch-a-single-document/api-overview.mdx).
+
+* Patching examples in this article:
+  * [Patching using inline string compilation](#patching-using-inline-string-compilation)  
+  * [Generate a random UUID](#generate-a-random-uuid)  
+  * [Store a SHA-256 hash of a field](#store-a-sha-256-hash-of-a-field)  
+  * [Encrypt a field](#encrypt-a-field)  
+
+</Admonition>
+
+<Panel heading="Patching examples">
+
+<ContentFrame>
+
+### Patching using inline string compilation
+
+* JavaScript patches submitted through `session.advanced().defer` or the Operations API can compile and execute code stored in a string by using `new Function(...)` or `eval(...)`.
+
+* String compilation is disabled by default.  
+  To enable it, set the [Patching.AllowStringCompilation](../../../../../server/configuration/patching-configuration.mdx#patchingallowstringcompilation) configuration key to `true`.
+
+* Compile only strings controlled by your application. Do not build compiled code from untrusted input.
+
+
+<Tabs>
+<TabItem value="using_new_function" label="new Function() - defer">
+```java
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript(
+    "// Build the function body as a string.\n" +
+    "const functionBody =\n" +
+    "    'return doc.UnitsInStock < lowStock ' +\n" +
+    "    '? doc.PricePerUnit * discount ' +\n" +
+    "    ': doc.PricePerUnit;';\n" +
+    "\n" +
+    "// Compile the string, then execute the generated function.\n" +
+    "const calculatePrice = new Function(\n" +
+    "    'doc',\n" +
+    "    'lowStock',\n" +
+    "    'discount',\n" +
+    "    functionBody);\n" +
+    "\n" +
+    "this.PricePerUnit = calculatePrice(\n" +
+    "    this,\n" +
+    "    args.lowStock,\n" +
+    "    args.discount);");
+
+Map<String, Object> values = new HashMap<>();
+values.put("lowStock", 10);
+values.put("discount", 0.8);
+patchRequest.setValues(values);
+
+session.advanced().defer(new PatchCommandData(
+    "products/1-A", // id
+    null,           // changeVector
+    patchRequest,   // patch
+    null));         // patchIfMissing
+
+session.saveChanges();
+```
+</TabItem>
+<TabItem value="using_eval" label="eval() - operations">
+```java
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript(
+    "// Build an expression that can access the document and patch arguments.\n" +
+    "const discountExpression =\n" +
+    "    'this.UnitsInStock < args.lowStock ' +\n" +
+    "    '? this.PricePerUnit * args.discount ' +\n" +
+    "    ': this.PricePerUnit';\n" +
+    "\n" +
+    "// Evaluate the expression and assign its result.\n" +
+    "this.PricePerUnit = eval(discountExpression);");
+
+Map<String, Object> values = new HashMap<>();
+values.put("lowStock", 10);
+values.put("discount", 0.8);
+patchRequest.setValues(values);
+
+store.operations().send(new PatchOperation(
+    "products/1-A", // id
+    null,           // changeVector
+    patchRequest)); // patch
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Generate a random UUID
+
+Use `crypto.randomUUID()` to generate a UUID v4 string.  
+The following patch sets `ExternalId` only when the field has no value, so running the patch again preserves an existing ID.
+
+For the full list of supported cryptographic methods, see [JavaScript Engine - Cryptographic methods](../../../../../server/kb/javascript-engine.mdx#cryptographic-methods).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session API - defer">
+```java
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript(
+    "// Preserve an existing ExternalId; generate one only when it is not set.\n" +
+    "if (!this.ExternalId) {\n" +
+    "    this.ExternalId = crypto.randomUUID();\n" +
+    "}");
+
+session.advanced().defer(new PatchCommandData(
+    "companies/1-A", // id
+    null,            // changeVector
+    patchRequest,    // patch
+    null));          // patchIfMissing
+
+session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operation_syntax" label="Operations API">
+```java
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript(
+    "// Preserve an existing ExternalId; generate one only when it is not set.\n" +
+    "if (!this.ExternalId) {\n" +
+    "    this.ExternalId = crypto.randomUUID();\n" +
+    "}");
+
+store.operations().send(new PatchOperation(
+    "companies/1-A", // id
+    null,            // changeVector
+    patchRequest));  // patch
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Store a SHA-256 hash of a field
+
+Use `crypto.digest()` to compute a SHA-256 hash of a normalized email address and store the Base64-encoded result in a separate field.  
+In this example, trimming and lowercasing ensure that values differing only in casing or surrounding whitespace produce the same hash.
+
+A deterministic, unsalted hash is not suitable for storing passwords or as a substitute for encrypting confidential values.
+
+For the full list of supported cryptographic methods, see [JavaScript Engine - Cryptographic methods](../../../../../server/kb/javascript-engine.mdx#cryptographic-methods).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session API - defer">
+```java
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript(
+    "if (this.Email) {\n" +
+    "    // Normalize the value so casing and surrounding whitespace do not affect the hash.\n" +
+    "    const normalizedEmail = this.Email.trim().toLowerCase();\n" +
+    "\n" +
+    "    // crypto.digest returns the hash as a Base64-encoded string.\n" +
+    "    this.EmailHash = crypto.digest('SHA-256', normalizedEmail);\n" +
+    "    this.EmailHashAlgorithm = 'SHA-256';\n" +
+    "}");
+
+session.advanced().defer(new PatchCommandData(
+    "users/1",    // id
+    null,         // changeVector
+    patchRequest, // patch
+    null));       // patchIfMissing
+
+session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operation_syntax" label="Operations API">
+```java
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript(
+    "if (this.Email) {\n" +
+    "    // Normalize the value so casing and surrounding whitespace do not affect the hash.\n" +
+    "    const normalizedEmail = this.Email.trim().toLowerCase();\n" +
+    "\n" +
+    "    // crypto.digest returns the hash as a Base64-encoded string.\n" +
+    "    this.EmailHash = crypto.digest('SHA-256', normalizedEmail);\n" +
+    "    this.EmailHashAlgorithm = 'SHA-256';\n" +
+    "}");
+
+store.operations().send(new PatchOperation(
+    "users/1",      // id
+    null,           // changeVector
+    patchRequest)); // patch
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Encrypt a field
+
+Use `crypto.encryptAesGcm()` to encrypt a field value. The method returns the encrypted value as a Base64-encoded string.
+
+Decrypting the value later requires the encrypted value, the IV, and the same encryption key.  
+Generate a new 12-byte IV for each encryption and store it alongside the encrypted value. Load the encryption key from a secure location and do not store it in the document.
+
+For illustration, the following code reads a Base64-encoded 256-bit AES key from an environment variable. Use your application's secret-management solution in production.
+
+For the full list of supported cryptographic methods, see [JavaScript Engine - Cryptographic methods](../../../../../server/kb/javascript-engine.mdx#cryptographic-methods).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session API - defer">
+```java
+String encryptionKey = System.getenv("PATCH_ENCRYPTION_KEY");
+
+if (encryptionKey == null) {
+    throw new IllegalStateException(
+        "PATCH_ENCRYPTION_KEY must contain a Base64-encoded 256-bit AES key.");
+}
+
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript(
+    "if (this.SensitiveData != null) {\n" +
+    "    // Generate a fresh 96-bit IV for this encryption.\n" +
+    "    const iv = crypto.getRandomValuesBase64(12);\n" +
+    "\n" +
+    "    // The key comes from patchRequest.setValues(); do not store it in the document.\n" +
+    "    this.SensitiveDataEncrypted = crypto.encryptAesGcm(\n" +
+    "        iv,\n" +
+    "        args.encryptionKey,\n" +
+    "        this.SensitiveData);\n" +
+    "\n" +
+    "    this.SensitiveDataIv = iv;\n" +
+    "\n" +
+    "    // Remove the plaintext only after encryption succeeds.\n" +
+    "    delete this.SensitiveData;\n" +
+    "}");
+
+patchRequest.setValues(Collections.singletonMap("encryptionKey", encryptionKey));
+
+session.advanced().defer(new PatchCommandData(
+    "users/1",    // id
+    null,         // changeVector
+    patchRequest, // patch
+    null));       // patchIfMissing
+
+session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operation_syntax" label="Operations API">
+```java
+String encryptionKey = System.getenv("PATCH_ENCRYPTION_KEY");
+
+if (encryptionKey == null) {
+    throw new IllegalStateException(
+        "PATCH_ENCRYPTION_KEY must contain a Base64-encoded 256-bit AES key.");
+}
+
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript(
+    "if (this.SensitiveData != null) {\n" +
+    "    // Generate a fresh 96-bit IV for this encryption.\n" +
+    "    const iv = crypto.getRandomValuesBase64(12);\n" +
+    "\n" +
+    "    // The key comes from patchRequest.setValues(); do not store it in the document.\n" +
+    "    this.SensitiveDataEncrypted = crypto.encryptAesGcm(\n" +
+    "        iv,\n" +
+    "        args.encryptionKey,\n" +
+    "        this.SensitiveData);\n" +
+    "\n" +
+    "    this.SensitiveDataIv = iv;\n" +
+    "\n" +
+    "    // Remove the plaintext only after encryption succeeds.\n" +
+    "    delete this.SensitiveData;\n" +
+    "}");
+
+patchRequest.setValues(Collections.singletonMap("encryptionKey", encryptionKey));
+
+store.operations().send(new PatchOperation(
+    "users/1",      // id
+    null,           // changeVector
+    patchRequest)); // patch
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>

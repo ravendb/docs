@@ -342,6 +342,27 @@
         }
     },
     {
+        "key": "/client-api/operations/patching/single-document",
+        "value": {
+            "targetUrl": "/documents/patching-documents/patch-a-single-document/api-overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/patching/set-based",
+        "value": {
+            "targetUrl": "/documents/patching-documents/patch-multiple-documents/patch-multiple-documents",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/patching/json-patch-operations",
+        "value": {
+            "targetUrl": "/documents/patching-documents/patch-a-single-document/json-patch",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/client-api/data-subscriptions",
         "value": {
             "targetUrl": "/client-api/data-subscriptions/what-are-data-subscriptions",

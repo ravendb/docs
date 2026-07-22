@@ -1,0 +1,404 @@
+import Admonition from '@theme/Admonition';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* **The .NET client** provides two ways to patch a document without first loading the document into a session:
+  * **Explicit JSON Patch** - create a `JsonPatchDocument` and send it with `JsonPatchOperation`.
+  * **Typed Session API** - call `session.Advanced.Patch`;  
+    the client uses JSON Patch when possible and falls back to JavaScript when needed.  
+    See [Explicit JSON Patch and the typed Session API](#explicit-json-patch-and-the-typed-session-api) for the key differences.
+
+* This article focuses on the **explicit JSON Patch** approach:  
+  how to create a `JsonPatchDocument` and send it with `JsonPatchOperation`.  
+  For full details about the typed Session API, see [JSON Patch and JavaScript patch formats](../../../../documents/patching-documents/patch-a-single-document/api-overview.mdx#json-patch-and-javascript-patch-formats).
+
+* In this article:  
+   * [JSON Patches](#json-patches)
+      * [What is a JSON Patch document?](#what-is-a-json-patch-document)
+      * [When to use JSON Patch](#when-to-use-json-patch)
+      * [Explicit JSON Patch and the typed Session API](#explicit-json-patch-and-the-typed-session-api)
+   * [Running explicit JSON Patches](#running-explicit-json-patches)  
+   * [JSON Patch operations](#json-patch-operations)  
+      * [Add document property](#add-document-property)  
+      * [Remove document property](#remove-document-property)  
+      * [Replace document property value](#replace-document-property-value)  
+      * [Copy a document property value to another property](#copy-a-document-property-value-to-another-property)
+      * [Move a document property value to another property](#move-a-document-property-value-to-another-property)  
+      * [Test a document property value](#test-a-document-property-value)
+   * [Patching arrays and nested elements](#patching-arrays-and-nested-elements)  
+   * [Syntax](#syntax)  
+      * [JsonPatchOperation syntax](#jsonpatchoperation-syntax)  
+      * [JsonPatchDocument operations syntax](#jsonpatchdocument-operations-syntax)  
+
+</Admonition>
+
+<Panel heading="JSON Patches">
+
+### What is a JSON Patch document?
+
+* A *JSON Patch document* follows the standardized format defined by [RFC 6902](https://datatracker.ietf.org/doc/html/rfc6902).  
+  It is not the RavenDB document being modified.  
+  It is an ordered array of operation objects that describe how to transform one target document.
+
+* Each operation contains an `op` and a `path`.  
+  The `path` is a [JSON Pointer](https://datatracker.ietf.org/doc/html/rfc6901) that identifies the target location in the document.  
+  Depending on the operation, the object must also contain a `value` or a `from` path.
+
+* RavenDB applies the operations in array order in a single write [transaction](../../../../client-api/faq/transaction-support.mdx).  
+  The result of each operation becomes the input for the next.  
+  If any operation fails, including a failed `test`, none of the changes are saved.
+
+* JSON Patch defines six operations:
+  * `add` - add or replace a document property, or insert an array element  
+  * `remove` - remove a document property or array element  
+  * `replace` - replace an existing value  
+  * `copy` - copy a value from one location to another  
+  * `move` - move a value from one location to another  
+  * `test` - verify that the value at a path matches an expected value  
+
+* For example, the following patch replaces one property and appends an item to an array:    
+  ```json
+  [
+    { "op": "replace", "path": "/Name", "value": "Alice" },
+    { "op": "add", "path": "/Tags/-", "value": "vip" }
+  ]
+  ```
+    
+* See [JSON Patch operations](#json-patch-operations) for the behavior and syntax of each operation.  
+    
+---
+    
+<Admonition type="info" title="">
+    
+JSON Patch (RFC 6902) is distinct from **JSON Merge Patch** ([RFC 7396](https://datatracker.ietf.org/doc/html/rfc7396)), 
+which represents the requested changes with a document-shaped structure rather than a list of operations.  
+RavenDB's `JsonPatchOperation` uses the RFC 6902 JSON Patch format.
+    
+</Admonition>
+   
+---
+    
+### When to use JSON Patch
+
+* Use JSON Patch when the required change can be expressed with its fixed set of operations 
+  and you prefer a standardized, declarative format over a JavaScript patch script.  
+
+* JSON Patch is particularly useful when:
+  * An application already uses RFC 6902 JSON Patch to represent changes across multiple systems.  
+  * An automated process needs to construct, store, or transmit patch instructions as data.  
+
+* For changes that require computations, conditions, loops, or calls to RavenDB's patching functions,  
+  use a [JavaScript patch command](../../../../documents/patching-documents/patch-a-single-document/api-overview.mdx#json-patch-and-javascript-patch-formats) instead.    
+    
+---
+
+### Explicit JSON Patch and the typed Session API
+
+The key differences between the two approaches are:
+
+|                                | Explicit JSON Patch                       | Typed Session API |
+| ------------------------------ | ----------------------------------------- | ----------------- |
+| **API used**                   | `JsonPatchOperation`                      | `session.Advanced.Patch` |
+| **How the patch is defined**   | Your application creates a `JsonPatchDocument` containing RFC 6902 operations. | Your application describes the change through a typed session method; the client creates the patch command internally. |
+| **Command format**             | Always JSON Patch.                        | By default, JSON Patch when possible; otherwise, JavaScript. Can be configured to always use JavaScript. |
+| **When the command is sent**   | When `store.Operations.Send` is called.   | When `session.SaveChanges()` is called, together with the other session changes. |
+| **If the document is missing** | The operation throws.                     | No change is made and `SaveChanges()` does not throw. |
+
+See [JSON Patch and JavaScript patch formats](../../../../documents/patching-documents/patch-a-single-document/api-overview.mdx#json-patch-and-javascript-patch-formats) 
+for supported session operations, fallback conditions, behavioral differences, and configuration options.
+
+</Panel>
+
+<Panel heading="Running explicit JSON Patches">
+
+To apply an explicit JSON Patch with `JsonPatchOperation`:
+
+1. Import the required namespaces.
+2. Create a `JsonPatchDocument` and add one or more operations.
+3. Create a `JsonPatchOperation` with the target document ID and the patch document.
+4. Send the operation using `store.Operations.Send`.
+
+```csharp
+using Microsoft.AspNetCore.JsonPatch;
+using Raven.Client.Documents.Operations;
+
+var patchesDocument = new JsonPatchDocument();
+patchesDocument.Replace("/Name", "Alice");
+
+var result = store.Operations.Send(
+    new JsonPatchOperation(documentId, patchesDocument));
+```
+<br/>    
+
+See the [Syntax](#syntax) section for the `JsonPatchOperation` constructor
+and the `JsonPatchDocument` method signatures.
+
+The target document must exist. Otherwise, RavenDB throws a `DocumentDoesNotExistException`.  
+`JsonPatchOperation` does not accept a change vector, 
+so it does not perform an [optimistic concurrency](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx) check against a caller-supplied document version.
+It patches the document version that exists when the server executes the command.
+    
+<Admonition type="warning" title="Not supported in sharded databases">
+
+`JsonPatchOperation` is not supported for [sharded databases](../../../../sharding/overview.mdx).  
+The server throws a `NotSupportedInShardingException`.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="JSON Patch Operations">
+
+<ContentFrame>
+
+### Add document property
+
+Use the `Add` operation to add a document property.  
+If the property already exists, its current value is replaced.  
+The property's parent object must already exist; `Add` does not create missing intermediate objects.  
+
+To insert or append an array element, see [Patching arrays and nested elements](#patching-arrays-and-nested-elements).
+
+**Example**:
+
+```csharp
+var patchesDocument = new JsonPatchDocument();
+
+// Add "PropertyName", or replace its value if it already exists
+patchesDocument.Add("/PropertyName", "Contents");
+
+store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
+```
+
+</ContentFrame>
+<ContentFrame>
+
+### Remove document property  
+
+Use the `Remove` operation to remove an existing document property.  
+The target property must exist. If it does not, the JSON Patch command fails and none of the changes in the `JsonPatchDocument` are saved.  
+
+To remove an array element, see [Patching arrays and nested elements](#patching-arrays-and-nested-elements).
+
+**Example**:
+
+```csharp
+var patchesDocument = new JsonPatchDocument();
+
+// Remove "PropertyName" from the document
+patchesDocument.Remove("/PropertyName");
+
+store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
+```
+
+</ContentFrame>
+<ContentFrame>
+
+### Replace document property value
+
+Use the `Replace` operation to change the value of an existing document property.  
+Unlike `Add`, `Replace` requires the target property to exist when the operation is applied.  
+If it does not exist, the JSON Patch command fails and none of the changes in the `JsonPatchDocument` are saved.  
+
+To replace an array element, see [Patching arrays and nested elements](#patching-arrays-and-nested-elements).
+
+**Example**:
+
+```csharp
+var patchesDocument = new JsonPatchDocument();
+
+// Replace the value of an existing property
+patchesDocument.Replace("/PropertyName", "NewValue");
+
+store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
+```
+
+</ContentFrame>
+<ContentFrame>
+
+### Copy a document property value to another property
+
+Use the `Copy` operation to copy a value from one document property to another.  
+The source property must exist and remains unchanged.  
+The destination property is created if it does not exist or replaced if it does.  
+The destination property's parent object must already exist.  
+
+If the source property or destination parent does not exist,   
+the JSON Patch command fails and none of the changes in the `JsonPatchDocument` are saved.  
+
+To copy values involving array elements, see [Patching arrays and nested elements](#patching-arrays-and-nested-elements).
+
+**Example**:
+    
+```csharp
+var patchesDocument = new JsonPatchDocument();
+
+// Copy "FirstName" to "DisplayName"; "FirstName" remains unchanged
+patchesDocument.Copy("/FirstName", "/DisplayName");
+
+store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
+```
+
+</ContentFrame>
+<ContentFrame>
+
+### Move a document property value to another property
+
+Use the `Move` operation to transfer a value from one document property to another.  
+The source property must exist and is removed after its value is retrieved.  
+The destination property is created if it does not exist or replaced if it does.  
+The destination property's parent object must already exist.  
+
+If the source property or destination parent does not exist,  
+the JSON Patch command fails and none of the changes in the `JsonPatchDocument` are saved.  
+
+To move values involving array elements, see [Patching arrays and nested elements](#patching-arrays-and-nested-elements).
+
+
+**Example**:
+
+```csharp
+var patchesDocument = new JsonPatchDocument();
+
+// Move "Name" to "DisplayName"; "Name" is removed
+patchesDocument.Move("/Name", "/DisplayName");
+
+store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
+```
+
+</ContentFrame>
+<ContentFrame>
+
+### Test a document property value
+
+Use the `Test` operation to verify that a document property contains an expected value.  
+`Test` does not modify the document. 
+It evaluates the value at the point where it appears in the ordered sequence of operations.  
+
+If the target property does not exist or its value does not match, 
+`store.Operations.Send` throws a `RavenException` and none of the changes in the `JsonPatchDocument` are saved.  
+
+The comparison distinguishes JSON types: the JSON string `"1"` does not match the JSON number `1`.  
+Pass the expected value using the same JSON type that is stored in the document.  
+
+To test an array element, see [Patching arrays and nested elements](#patching-arrays-and-nested-elements).
+
+**Example**:
+
+```csharp
+var patchesDocument = new JsonPatchDocument();
+
+// Change "Status" only if its current value is "Pending"
+patchesDocument.Test("/Status", "Pending");
+patchesDocument.Replace("/Status", "Processed");
+
+store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
+```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Patching arrays and nested elements">
+
+All six JSON Patch operations can target values in nested objects and arrays.  
+Both `path` and, for `Copy` and `Move`, `from` are [JSON Pointers](https://datatracker.ietf.org/doc/html/rfc6901).
+
+For example:
+
+* `/Address/City` targets the nested `City` property.  
+* `/Tags/1` targets the second element of the `Tags` array; array indexes are zero-based.  
+* `/Tags/-` is an append destination for `Add`, `Copy`, or `Move`.  
+
+When patching arrays:
+
+* `Add` with a numeric index inserts the value before the existing element at that index.  
+  In RavenDB, the index must identify an existing array position; use `-` to append.  
+* `Remove` deletes the targeted element and shifts subsequent elements one position to the left.  
+* `Replace` and `Test` require the targeted array index to exist.  
+* `Copy` and `Move` can use nested properties or array elements as their source and destination.  
+  Their destination follows `Add` behavior.  
+* Every intermediate object and array referenced by a path must already exist.  
+
+For a document whose `Tags` array contains at least two elements and whose `Address.City` property exists:
+
+```csharp
+var patchesDocument = new JsonPatchDocument();
+
+// Insert "sale" at index 1
+patchesDocument.Add("/Tags/1", "sale");
+
+// Append "vip" to the array
+patchesDocument.Add("/Tags/-", "vip");
+
+// Replace an existing nested property
+patchesDocument.Replace("/Address/City", "Paris");
+
+store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
+```
+<br/>
+    
+For path syntax and escaping rules, see [JSON Pointer (RFC 6901)](https://datatracker.ietf.org/doc/html/rfc6901).  
+For the complete operation semantics, see [JSON Patch (RFC 6902)](https://datatracker.ietf.org/doc/html/rfc6902).
+
+</Panel>
+
+<Panel heading="Syntax">
+
+### JsonPatchOperation syntax
+
+`JsonPatchOperation` is exposed by `Raven.Client.Documents.Operations`.  
+Send it with `store.Operations.Send`.
+
+```csharp
+public JsonPatchOperation(string id, JsonPatchDocument jsonPatchDocument);
+```
+<br/>
+
+| Parameter             | Type                | Description                                            |
+|-----------------------|---------------------|--------------------------------------------------------|
+| **id**                | `string`            | ID of the RavenDB document to patch.                   |
+| **jsonPatchDocument** | `JsonPatchDocument` | The ordered collection of JSON Patch operations to apply. |
+
+---
+
+### JsonPatchDocument operations syntax
+
+`JsonPatchDocument` is provided by the `Microsoft.AspNetCore.JsonPatch` namespace,  
+not by the RavenDB client. It exposes one method per RFC 6902 operation.
+
+```csharp
+public JsonPatchDocument Add(string path, object value);
+
+public JsonPatchDocument Remove(string path);
+
+public JsonPatchDocument Replace(string path, object value);
+
+public JsonPatchDocument Copy(string from, string path);
+
+public JsonPatchDocument Move(string from, string path);
+
+public JsonPatchDocument Test(string path, object value);
+```
+<br/>
+
+| Parameter | Type     | Description                                                                                                   |
+|-----------|----------|---------------------------------------------------------------------------------------------------------------|
+| **path**  | `string` | [JSON Pointer](https://datatracker.ietf.org/doc/html/rfc6901) to the target location.<br/>For `Copy` and `Move`, this is the destination. |
+| **from**  | `string` | JSON Pointer to the source location. Applies to `Copy` and `Move` only.                                       |
+| **value** | `object` | The value to assign, or - for `Test` - the expected value.<br/>Applies to `Add`, `Replace`, and `Test` only.  |
+
+| Return value        |                                                                                        |
+|---------------------|------------------------------------------------------------------------------------------|
+| `JsonPatchDocument` | The same `JsonPatchDocument` instance, so that operations can be chained.                |
+
+<Admonition type="info" title="">
+
+Operations are applied by the server in the order they were added to the `JsonPatchDocument`.  
+See [Patching arrays and nested elements](#patching-arrays-and-nested-elements) for the path forms that target nested properties and array elements.
+
+</Admonition>
+
+</Panel>

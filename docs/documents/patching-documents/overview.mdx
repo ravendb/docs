@@ -1,0 +1,235 @@
+---
+title: "Patching Documents Overview"
+sidebar_label: "Overview"
+sidebar_position: 0
+description: "Learn how RavenDB patches documents on the server, choose between single-document, JSON Patch, and set-based APIs, and understand their transaction boundaries."
+see_also:
+     - title: "Patch a Single Document"
+       link: "documents/patching-documents/patch-a-single-document/api-overview"
+       source: "docs"
+       path: "Documents > Patching Documents"
+     - title: "Patch a Single Document Using JSON Patch"
+       link: "documents/patching-documents/patch-a-single-document/json-patch"
+       source: "docs"
+       path: "Documents > Patching Documents"
+     - title: "Patch Multiple Documents Using the Client API"
+       link: "documents/patching-documents/patch-multiple-documents/patch-multiple-documents"
+       source: "docs"
+       path: "Documents > Patching Documents"
+     - title: "Patch Multiple Documents Using Studio"
+       link: "documents/patching-documents/patch-multiple-documents/patch-view"
+       source: "docs"
+       path: "Documents > Patching Documents"
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* **Patching** modifies documents directly on the server without first loading the full documents to the client.
+
+* You can patch a single document by ID or multiple documents selected by a query:
+  * **A single-document patch** is sent as a JavaScript patch command,  
+    or - in the .NET client - as an RFC 6902 JSON Patch command.
+  * **Set-based patching** uses an RQL query with a JavaScript `update` clause.    
+
+* In this article:
+   * [What is document patching?](#what-is-document-patching)
+   * [Choose a patching approach](#choose-a-patching-approach)
+   * [JSON Patch behavior in the .NET session API](#json-patch-behavior-in-the-net-session-api)
+   * [Execution and transaction boundaries](#execution-and-transaction-boundaries)
+   * [Where to go next](#where-to-go-next)
+
+</Admonition>
+
+<Panel heading="What is document patching?">
+
+Applications often update a document by loading it from RavenDB, modifying it in client code,
+and saving the updated document back to the database.
+
+Patching avoids this load-modify-save cycle.  
+The client sends instructions describing the required change, and RavenDB applies them directly on the server.   
+
+Depending on the patching interface, those instructions can:
+    
+* Set or remove fields and modify arrays or dictionaries.
+* Run conditional or computed update logic.
+* Modify metadata or work with related documents.
+* Update counters, time series, and attachments.
+* Apply the same transformation to multiple documents selected by an RQL query.
+
+Patching is therefore useful for targeted changes to a known document and for bulk transformations,  
+especially when loading every affected document would add unnecessary network traffic and client-side work.
+
+</Panel>
+
+<Panel heading="Choose a patching approach">
+
+First decide whether to patch one document or multiple documents, and then choose how to express the update:    
+
+<ContentFrame>
+
+* **Goal**:  
+  Queue common changes to one document together with other session work
+
+* **Use**:  
+  Session patch methods such as `Patch`, `Increment`, `AddOrPatch`, and `AddOrIncrement`.
+
+* **How it works**:  
+  The patch is queued in the session and sent with the rest of the session's changes when `SaveChanges()` is called.
+
+* **Learn more**:  
+  [Patch a Single Document: API Overview](../../documents/patching-documents/patch-a-single-document/api-overview.mdx),  
+  [Examples: Fields and Arrays](../../documents/patching-documents/patch-a-single-document/examples/patch-examples-fields-and-arrays.mdx)
+
+</ContentFrame>
+<ContentFrame>
+
+* **Goal**:  
+  Run flexible or custom logic on one document
+
+* **Use**:  
+  A JavaScript `PatchRequest`, sent as `PatchCommandData` through `Session.Advanced.Defer` or as a `PatchOperation`.
+
+* **How it works**:  
+  The script can use conditionals, loops, calculations, and RavenDB's predefined JavaScript functions.
+
+* **Learn more**:  
+  [Patch a Single Document: API Overview](../../documents/patching-documents/patch-a-single-document/api-overview.mdx),  
+  [Examples: Advanced Scripts](../../documents/patching-documents/patch-a-single-document/examples/patch-examples-advanced-scripts.mdx)
+
+</ContentFrame>
+<ContentFrame>
+
+* **Goal**:  
+  Send an RFC 6902 JSON Patch to one document from the .NET client
+
+* **Use**:  
+  `JsonPatchOperation`.
+
+* **How it works**:  
+  A JSON Patch document contains an ordered list of `add`, `remove`, `replace`, `copy`, `move`, and `test` operations.
+
+* **Learn more**:  
+  [Patch a Single Document Using JSON Patch](../../documents/patching-documents/patch-a-single-document/json-patch.mdx)
+
+</ContentFrame>
+<ContentFrame>
+
+* **Goal**:  
+  Update multiple documents selected by a collection, query, or index
+
+* **Use**:  
+  `PatchByQueryOperation`.
+
+* **How it works**:  
+  An RQL query selects the documents and a JavaScript `update` clause defines the change.
+
+* **Learn more**:  
+  [Patch Multiple Documents Using the Client API](../../documents/patching-documents/patch-multiple-documents/patch-multiple-documents.mdx)
+
+</ContentFrame>
+<ContentFrame>
+
+* **Goal**:  
+  Build, test, and run a set-based patch interactively
+
+* **Use**:  
+  The Studio **Patch View**.
+
+* **How it works**:  
+  Studio previews the effect on a selected document before running the set-based patch operation.
+
+* **Learn more**:  
+  [Patch Multiple Documents Using Studio](../../documents/patching-documents/patch-multiple-documents/patch-view.mdx)
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="JSON Patch behavior in the .NET session API">
+
+JSON Patch is currently supported only by the .NET client.
+
+With the default `SessionPatchBehavior.JsonPatch` convention, the client generates JSON Patch commands
+for supported typed `Session.Advanced.Patch` calls. If a change cannot be represented as JSON Patch,
+the client uses a JavaScript patch instead.
+
+To make all .NET session patch methods use JavaScript, set the
+[`SessionPatchBehavior` convention](../../client-api/configuration/conventions.mdx#sessionpatchbehavior)
+to `SessionPatchBehavior.JavaScript`.
+
+See [Patch a Single Document: API Overview](../../documents/patching-documents/patch-a-single-document/api-overview.mdx#json-patch-and-javascript-patch-formats)
+for the supported operations, fallback behavior, and removal semantics.
+
+</Panel>
+
+<Panel heading="Execution and transaction boundaries">
+
+The transaction boundary depends on how the patch is sent:
+
+<ContentFrame>
+
+### Session batch
+
+Session patch methods and `PatchCommandData` registered through `Session.Advanced.Defer`
+are sent when `SaveChanges()` is called.
+
+They execute with all other changes in the session batch in one ACID transaction.  
+Either the entire batch succeeds or none of its changes are persisted.
+
+</ContentFrame>
+<ContentFrame>
+
+### Direct single-document operation
+
+`PatchOperation` and `JsonPatchOperation` are sent immediately through the Operations API.
+
+Each request executes in one write transaction.  
+The operations in a `JsonPatchDocument` are applied in order and all-or-nothing.
+
+</ContentFrame>
+<ContentFrame>
+
+### Set-based patch operation
+
+`PatchByQueryOperation` and Studio patches run as background server operations.
+
+Matching documents are processed in batches of 1,024, with each batch committed in a separate write transaction.  
+The complete operation is therefore not one all-or-nothing transaction.
+
+Do not rely on documents created after the operation starts being included.  
+The operation does not hold a snapshot of document contents for its entire duration.  
+RavenDB performs no per-document concurrency checks, so a selected document can be modified or deleted before its batch is processed.  
+If the document still exists, the patch is applied to its current version.
+
+By default, a query-based patch will not run against stale index results.  
+Set `AllowStale` to patch stale results, or set `StaleTimeout` to wait for the index to become non-stale.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Where to go next">
+
+* [Patch a Single Document: API Overview](../../documents/patching-documents/patch-a-single-document/api-overview.mdx)  
+  Choose among the Session API, deferred commands, and the Operations API.
+
+* [Single-Document Patching Examples: Fields and Arrays](../../documents/patching-documents/patch-a-single-document/examples/patch-examples-fields-and-arrays.mdx)  
+  See common field, array, and dictionary updates.
+
+* [Single-Document Patching Examples: Documents and Metadata](../../documents/patching-documents/patch-a-single-document/examples/patch-examples-documents-and-metadata.mdx)  
+  Load related documents, modify metadata, and add, clone, or delete documents from a patch script.
+
+* [Single-Document Patching Examples: Counters, Time Series, and Attachments](../../documents/patching-documents/patch-a-single-document/examples/patch-examples-counters-time-series-attachments.mdx)  
+  Work with document extensions from patch scripts.
+
+* [Patch Multiple Documents Using the Client API](../../documents/patching-documents/patch-multiple-documents/patch-multiple-documents.mdx)  
+  Define and manage a `PatchByQueryOperation`.
+
+* [Patch Multiple Documents Using Studio](../../documents/patching-documents/patch-multiple-documents/patch-view.mdx)  
+  Test, preview, configure, and run a set-based patch from Studio.
+
+</Panel>

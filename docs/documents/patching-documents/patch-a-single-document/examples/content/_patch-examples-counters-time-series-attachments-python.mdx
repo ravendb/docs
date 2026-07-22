@@ -1,0 +1,431 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* This article is part of the single-document patching examples.  
+  It covers creating or incrementing counters, deleting and reading counters, appending and deleting time series entries, and deleting, copying, 
+  and scheduling existing attachments for remote upload.
+
+* The examples use the Session API with `defer` and the Operations API.  
+  To manage counters, time series, or attachments with their native client APIs instead,  
+  see the [Counters Overview](../../../../../document-extensions/counters/overview.mdx), 
+  the [Time Series Overview](../../../../../document-extensions/timeseries/overview.mdx), and the [Attachments Overview](../../../../../document-extensions/attachments/overview.mdx).
+
+* For the available single-document patching interfaces and their full syntax,  
+  see [Patch a Single Document: API Overview](../../../../../documents/patching-documents/patch-a-single-document/api-overview.mdx).
+
+* Patching examples in this article:
+  * [Increment counter](#increment-counter)  
+  * [Delete counter](#delete-counter)  
+  * [Get counter](#get-counter)  
+  * [Append time series entry](#append-time-series-entry)  
+  * [Delete time series entries](#delete-time-series-entries)  
+  * [Delete attachment](#delete-attachment)  
+  * [Copy attachment](#copy-attachment)  
+  * [Mark attachment as remote](#mark-attachment-as-remote)  
+
+</Admonition>
+
+<Panel heading="Patching examples">
+
+<ContentFrame>
+
+### Increment counter
+
+Use `incrementCounter` to add a value to a counter.  
+If the counter does not exist, RavenDB creates it with the supplied value.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Add 20 to Likes on orders/1-A.
+# If Likes does not exist, RavenDB creates it with the value 20.
+patch_request = PatchRequest()
+patch_request.script = "incrementCounter(this, args.name, args.value);"
+patch_request.values = {
+    "name": "Likes",
+    "value": 20
+}
+
+session.advanced.defer(PatchCommandData("orders/1-A", None, patch_request))
+
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Add 20 to Likes on orders/1-A.
+# If Likes does not exist, RavenDB creates it with the value 20.
+patch_request = PatchRequest()
+patch_request.script = "incrementCounter(this, args.name, args.value);"
+patch_request.values = {
+    "name": "Likes",
+    "value": 20
+}
+
+store.operations.send(PatchOperation("orders/1-A", None, patch_request))
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+`incrementCounter` accepts either a document ID or a document object in the patch script.  
+Omit the value to increment by `1`; pass a negative value to decrement the counter.
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Delete counter
+
+Use `deleteCounter` to delete a counter from a document.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Delete the Likes counter from products/1-A.
+patch_request = PatchRequest()
+patch_request.script = "deleteCounter(this, args.name);"
+patch_request.values = {
+    "name": "Likes"
+}
+
+session.advanced.defer(PatchCommandData("products/1-A", None, patch_request))
+
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Delete the Likes counter from products/1-A.
+patch_request = PatchRequest()
+patch_request.script = "deleteCounter(this, args.name);"
+patch_request.values = {
+    "name": "Likes"
+}
+
+store.operations.send(PatchOperation("products/1-A", None, patch_request))
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+`deleteCounter` accepts either a document ID or a document object in the patch script.
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Get counter
+
+Use `counter` to read a counter value while a patch script is running.  
+The following example stores the current `Likes` value in a regular document field named `LikesSnapshot`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Read Likes from orders/1-A and store its current value in LikesSnapshot.
+patch_request = PatchRequest()
+patch_request.script = "this.LikesSnapshot = counter(this, args.name);"
+patch_request.values = {
+    "name": "Likes"
+}
+
+session.advanced.defer(PatchCommandData("orders/1-A", None, patch_request))
+
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Read Likes from orders/1-A and store its current value in LikesSnapshot.
+patch_request = PatchRequest()
+patch_request.script = "this.LikesSnapshot = counter(this, args.name);"
+patch_request.values = {
+    "name": "Likes"
+}
+
+store.operations.send(PatchOperation("orders/1-A", None, patch_request))
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+`counter` accepts either a document ID or a document object in the patch script.  
+It returns `null` if the specified counter does not exist.
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Append time series entry
+
+Use `timeseries(...).append` to append an entry to a time series.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Append a one-value HeartRates entry to users/1-A.
+# RavenDB treats timestamps passed to patch scripts as UTC.
+timestamp = datetime.datetime.now(datetime.timezone.utc)
+
+patch_request = PatchRequest()
+patch_request.script = "timeseries(this, args.name).append(new Date(args.timestamp), args.values, args.tag);"
+patch_request.values = {
+    "name": "HeartRates",
+    "timestamp": timestamp.isoformat(),
+    # Pass a list instead when the entry contains multiple values.
+    "values": 78,
+    "tag": "watches/fitbit"
+}
+
+session.advanced.defer(PatchCommandData("users/1-A", None, patch_request))
+
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Append a one-value HeartRates entry to users/1-A.
+# RavenDB treats timestamps passed to patch scripts as UTC.
+timestamp = datetime.datetime.now(datetime.timezone.utc)
+
+patch_request = PatchRequest()
+patch_request.script = "timeseries(this, args.name).append(new Date(args.timestamp), args.values, args.tag);"
+patch_request.values = {
+    "name": "HeartRates",
+    "timestamp": timestamp.isoformat(),
+    # Pass a list instead when the entry contains multiple values.
+    "values": 78,
+    "tag": "watches/fitbit"
+}
+
+store.operations.send(PatchOperation("users/1-A", None, patch_request))
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+Provide the entry's timestamp, one numeric value or a list of numeric values, and an optional tag.  
+Learn more about appending time series entries via patching in [Patch time series entries](../../../../../document-extensions/timeseries/client-api/session/patch.mdx#append-multiple-entries),  
+and see the available time series patch methods in [Time series: JavaScript support](../../../../../document-extensions/timeseries/client-api/javascript-support.mdx).
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Delete time series entries
+
+Use `timeseries(...).delete` to delete a range of time series entries.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Delete HeartRates entries from the last hour, including both boundaries.
+to_date = datetime.datetime.now(datetime.timezone.utc)
+from_date = to_date - datetime.timedelta(hours=1)
+
+patch_request = PatchRequest()
+patch_request.script = "timeseries(this, args.name).delete(args.from, args.to);"
+patch_request.values = {
+    "name": "HeartRates",
+    "from": from_date.isoformat(),
+    "to": to_date.isoformat()
+}
+
+session.advanced.defer(PatchCommandData("users/1-A", None, patch_request))
+
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Delete HeartRates entries from the last hour, including both boundaries.
+to_date = datetime.datetime.now(datetime.timezone.utc)
+from_date = to_date - datetime.timedelta(hours=1)
+
+patch_request = PatchRequest()
+patch_request.script = "timeseries(this, args.name).delete(args.from, args.to);"
+patch_request.values = {
+    "name": "HeartRates",
+    "from": from_date.isoformat(),
+    "to": to_date.isoformat()
+}
+
+store.operations.send(PatchOperation("users/1-A", None, patch_request))
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+All entries within the specified range, including entries at the `from` and `to` timestamps, are removed.  
+Learn more about deleting time series entries via patching in [Patch time series entries](../../../../../document-extensions/timeseries/client-api/session/patch.mdx#delete-multiple-entries).
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Delete attachment
+
+Use `attachments(...).delete` to delete an attachment from the document being patched.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Delete invoice.pdf from orders/1-A.
+patch_request = PatchRequest()
+patch_request.script = "attachments(this, args.name).delete();"
+patch_request.values = {
+    "name": "invoice.pdf"
+}
+
+session.advanced.defer(PatchCommandData("orders/1-A", None, patch_request))
+
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Delete invoice.pdf from orders/1-A.
+patch_request = PatchRequest()
+patch_request.script = "attachments(this, args.name).delete();"
+patch_request.values = {
+    "name": "invoice.pdf"
+}
+
+store.operations.send(PatchOperation("orders/1-A", None, patch_request))
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+Learn more about deleting attachments in [Delete an attachment](../../../../../document-extensions/attachments/delete-attachment.mdx#delete-attachment---via-a-patch),  
+and see the full patch method syntax in [JavaScript engine - Attachment operations](../../../../../server/kb/javascript-engine.mdx#attachment-operations).
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Copy attachment
+
+Use `attachments(...).copyFrom` to copy an attachment from a source document to the document being patched.  
+The copy is performed entirely on the server, without downloading and re-uploading the attachment through the client.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Copy orders/2-A/invoice.pdf to orders/1-A as invoice-copy.pdf.
+patch_request = PatchRequest()
+patch_request.script = "attachments(this, args.targetName).copyFrom(args.sourceDocId, args.sourceName);"
+patch_request.values = {
+    "sourceDocId": "orders/2-A",
+    "sourceName": "invoice.pdf",
+    "targetName": "invoice-copy.pdf"
+}
+
+session.advanced.defer(PatchCommandData("orders/1-A", None, patch_request))
+
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Copy orders/2-A/invoice.pdf to orders/1-A as invoice-copy.pdf.
+patch_request = PatchRequest()
+patch_request.script = "attachments(this, args.targetName).copyFrom(args.sourceDocId, args.sourceName);"
+patch_request.values = {
+    "sourceDocId": "orders/2-A",
+    "sourceName": "invoice.pdf",
+    "targetName": "invoice-copy.pdf"
+}
+
+store.operations.send(PatchOperation("orders/1-A", None, patch_request))
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+The `copyFrom` method returns `true` on success and `false` if the source document, target document, or source attachment was not found.
+
+Learn more about copying attachments in [Copy attachments - via patching](../../../../../document-extensions/attachments/copy-move-rename.mdx#copy-attachments---via-patching),  
+and see the full patch method syntax in [JavaScript engine - Attachment operations](../../../../../server/kb/javascript-engine.mdx#attachment-operations).
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Mark attachment as remote
+
+Use `attachments(...).remote` to schedule an existing local attachment for upload to a configured remote storage destination.  
+Provide the attachment name, destination identifier, and scheduled upload time.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Schedule orders/1-A/invoice.pdf for remote upload in one day.
+upload_at = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=1)
+
+patch_request = PatchRequest()
+patch_request.script = "attachments(this, args.name).remote(args.identifier, args.at);"
+patch_request.values = {
+    "name": "invoice.pdf",
+    # Must match a configured remote destination identifier.
+    "identifier": "my-amazon-storage",
+    "at": upload_at.isoformat()
+}
+
+session.advanced.defer(PatchCommandData("orders/1-A", None, patch_request))
+
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Schedule orders/1-A/invoice.pdf for remote upload in one day.
+upload_at = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=1)
+
+patch_request = PatchRequest()
+patch_request.script = "attachments(this, args.name).remote(args.identifier, args.at);"
+patch_request.values = {
+    "name": "invoice.pdf",
+    # Must match a configured remote destination identifier.
+    "identifier": "my-amazon-storage",
+    "at": upload_at.isoformat()
+}
+
+store.operations.send(PatchOperation("orders/1-A", None, patch_request))
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+This schedules the attachment for remote upload; it does not upload the attachment immediately.  
+If the Remote Attachments feature and the selected destination are enabled, a background task uploads the attachment during a scan after the scheduled time has passed.
+
+Learn more in [Schedule existing attachments for remote upload](../../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#schedule-existing-attachments-for-remote-upload),  
+and see how to define destinations in [Configure remote attachments](../../../../../document-extensions/attachments/configure-remote-attachments.mdx).
+
+</Admonition>
+
+</ContentFrame>
+
+</Panel>

@@ -1,0 +1,708 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* Set-based patch operations apply changes to documents selected by a query,  
+  rather than targeting each document individually.
+
+* To patch a single document, see [Patch a Single Document](../../../../documents/patching-documents/patch-a-single-document/api-overview.mdx).  
+  You can also patch multiple documents using the [Patch view in Studio](../../../../documents/patching-documents/patch-multiple-documents/patch-view.mdx).
+
+* In this article: 
+  * [Overview](#overview)
+      * [Defining set-based patching](#defining-set-based-patching)
+      * [Important characteristics](#important-characteristics)
+  * [Examples](#examples)
+      * [Update all documents in a collection](#update-all-documents-in-a-collection)
+      * [Change the collection of matching documents](#change-the-collection-of-matching-documents)
+      * [Update by dynamic query](#update-by-dynamic-query)
+      * [Update by static index query](#update-by-static-index-query)
+      * [Update all documents in the database](#update-all-documents-in-the-database)
+      * [Update documents by ID](#update-documents-by-id)
+      * [Update documents by ID using parameters](#update-documents-by-id-using-parameters)
+      * [Increment a counter](#increment-a-counter)
+      * [Append a time series entry](#append-a-time-series-entry)
+      * [Allow patching based on stale index results](#allow-patching-based-on-stale-index-results)
+      * [Monitor patch progress](#monitor-patch-progress)
+      * [Inspect per-document patch results](#inspect-per-document-patch-results)
+  * [Syntax](#syntax)  
+      * [Send syntax](#send-syntax)  
+      * [PatchByQueryOperation syntax](#patchbyqueryoperation-syntax)  
+
+</Admonition>
+
+<Panel heading="Overview">
+
+<Admonition type="note" title="">
+
+#### Defining set-based patching
+
+* In a relational database, a SQL statement that updates a set of rows might look like this:  
+  `UPDATE Users SET IsActive = 0 WHERE LastLogin < '2020-01-01'`
+
+* In RavenDB, a `PatchByQueryOperation` combines two components:
+
+  1. **The QUERY**:  
+     An [RQL](../../../../querying/rql/what-is-rql.mdx) query that selects the documents to update.  
+     The selection portion uses the same RQL syntax used to query collections and indexes.
+
+  2. **The UPDATE**:  
+     A JavaScript `update` clause that defines the changes to apply to each selected document.
+
+* When you send the `PatchByQueryOperation`, the server runs the query and executes the `update` clause for each selected document.
+
+<Tabs groupId='languageSyntax'>    
+<TabItem value="rql" label="RQL">
+```sql
+// Query and update example
+// Increase Freight for Orders documents that match the query criteria.
+// ====================================================================
+
+from Orders
+where Freight < 10
+update {
+    this.Freight += 10;
+}
+```
+</TabItem>
+</Tabs>    
+
+</Admonition>
+    
+<Admonition type="note" title="">
+
+#### Important characteristics
+
+* **Transactional batches**:  
+  RavenDB patches the selected documents in batches of up to 1,024.  
+  Each batch runs in a separate write transaction, so the operation as a whole is not atomic.
+
+* **Document selection**:  
+  Do not rely on documents created after the operation starts being included.
+
+* **Concurrency**:  
+  The operation does not hold a snapshot of document contents for its entire duration.  
+  RavenDB performs no per-document concurrency checks, so a selected document can be modified or deleted before its batch is processed.  
+  If the document still exists, the patch is applied to its current version.
+
+* **Stale indexes**:  
+  When the query uses an auto-index or static index, RavenDB rejects stale results by default.  
+  You can explicitly allow patching based on stale index results, but the selected set may omit newly matching documents or include documents based on outdated indexed values.  
+  See [Allow updating stale results](../../../../documents/patching-documents/patch-multiple-documents/patch-multiple-documents.mdx#allow-updating-stale-results).
+
+* **Map-reduce indexes**:  
+  Set-based patch operations cannot be executed against map-reduce indexes.
+
+* **Long-running operations**:  
+  `PatchByQueryOperation` runs as a background server operation and may take a long time to complete.  
+  The `Send` method returns an `Operation` object that you can use to wait for completion, monitor progress,  
+  or kill the operation.  
+  See [Manage lengthy operations](../../../../client-api/operations/what-are-operations.mdx#manage-lengthy-operations).
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+#### JSON Patch does not apply to set-based patching
+
+The default [`SessionPatchBehavior.JsonPatch`](../../../../client-api/configuration/conventions.mdx#sessionpatchbehavior) convention affects only the typed session `Patch` methods,  
+allowing them to emit RFC 6902 [JSON Patch](../../../../documents/patching-documents/patch-a-single-document/json-patch.mdx) commands where possible.
+
+A `PatchByQueryOperation` always uses its JavaScript `update` clause.  
+The server executes that clause on its JavaScript engine, regardless of the `SessionPatchBehavior` convention.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Examples">
+
+<ContentFrame>
+
+### Update all documents in a collection
+
+This query targets every document in the `Orders` collection and does not require an index.
+
+<TabItem value="update_whole_collection" label="update_whole_collection">
+```csharp
+// Update all documents in the Orders collection
+// ==============================================
+
+// Define the query and JavaScript update clause.
+var patchByQueryOp = new PatchByQueryOperation(
+    @"from Orders as o
+      update
+      {
+          o.Freight += 10;
+      }");
+
+// Send the operation to the server.
+var operation = store.Operations.Send(patchByQueryOp);
+
+// Wait for the background operation to complete.
+operation.WaitForCompletion();
+```
+</TabItem>
+
+</ContentFrame>
+<ContentFrame>
+
+### Change the collection of matching documents
+
+Changing a document’s `@collection` metadata requires deleting and recreating the document with the same ID.
+
+<TabItem value="update_collection_name" label="update_collection_name">
+```csharp
+// Recreate all Orders documents in the ArchivedOrders collection
+// ===============================================================
+
+var patchByQueryOp = new PatchByQueryOperation(
+    @"from Orders
+      update
+      {
+          var documentId = id(this);
+
+          del(documentId);
+          this[""@metadata""][""@collection""] = ""ArchivedOrders"";
+          put(documentId, this);
+      }");
+
+var operation = store.Operations.Send(patchByQueryOp);
+operation.WaitForCompletion();
+```
+</TabItem>
+<br/>    
+
+<Admonition type="warning" title="Document extensions are deleted">
+
+Deleting the document also deletes its attachments, counters, and time series.  
+When [revisions](../../../../document-extensions/revisions/overview.mdx) are enabled, RavenDB may also create revision entries for the deletion and recreation.
+
+</Admonition>    
+
+</ContentFrame>
+<ContentFrame>
+
+### Update by dynamic query
+
+RavenDB evaluates this query using a matching auto-index, creating one if necessary.
+
+<TabItem value="update_by_dynamic_query" label="update_by_dynamic_query">
+```csharp
+// Update documents selected by a dynamic query
+// ============================================
+
+// Set the discount on every line of each order handled by the specified employee.
+var patchByQueryOp = new PatchByQueryOperation(
+    @"from Orders as o
+      where o.Employee = 'employees/4-A'
+      update
+      {
+          o.Lines.forEach(line => line.Discount = 0.3);
+      }");
+
+var operation = store.Operations.Send(patchByQueryOp);
+operation.WaitForCompletion();
+```
+</TabItem>
+
+</ContentFrame>
+<ContentFrame>
+
+### Update by static index query
+
+The static index selects the source documents to patch.  
+The `update` clause modifies those documents, not the index entries.
+
+The index must be a map index; set-based patching does not support map-reduce indexes.
+
+<Tabs>
+<TabItem value="patch-operation" label="Patch operation">
+```csharp
+// Deploy the static index.
+new Products_BySupplier().Execute(store);
+
+var indexQuery = new IndexQuery
+{
+    Query = @"from index 'Products/BySupplier' as p
+              where p.Supplier = 'suppliers/12-A'
+              update
+              {
+                  p.Supplier = 'suppliers/13-A';
+              }"
+};
+
+var options = new QueryOperationOptions
+{
+    // Wait for the index to become non-stale.
+    StaleTimeout = TimeSpan.FromSeconds(30)
+};
+
+var patchByQueryOp = new PatchByQueryOperation(indexQuery, options);
+
+var operation = store.Operations.Send(patchByQueryOp);
+operation.WaitForCompletion();
+```
+</TabItem>
+
+<TabItem value="index-definition" label="Index definition">
+```csharp
+public class Products_BySupplier : AbstractIndexCreationTask<Product>
+{
+    public Products_BySupplier()
+    {
+        Map = products =>
+            from product in products
+            select new
+            {
+                Supplier = product.Supplier
+            };
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Update all documents in the database
+
+Use `@all_docs` to select documents from every collection without requiring an index.  
+Use this scope carefully because the same patch is applied across all collections.
+
+<TabItem value="update_all_documents" label="update_all_documents">
+```csharp
+// Update documents across all collections
+// =======================================
+
+var patchByQueryOp = new PatchByQueryOperation(
+    @"from @all_docs
+      update
+      {
+          this.Updated = true;
+      }");
+
+var operation = store.Operations.Send(patchByQueryOp);
+operation.WaitForCompletion();
+```
+</TabItem>
+
+</ContentFrame>
+<ContentFrame>
+
+### Update documents by ID
+
+Use `@all_docs` to select documents by ID across different collections.  
+This query does not require an index, and IDs that do not exist are not patched.
+
+<TabItem value="update_by_id" label="update_by_id">
+```csharp
+// Update documents with the specified IDs
+// =======================================
+
+var patchByQueryOp = new PatchByQueryOperation(
+    @"from @all_docs as d
+      where id(d) in ('orders/1-A', 'companies/1-A')
+      update
+      {
+          d.Updated = true;
+      }");
+
+var operation = store.Operations.Send(patchByQueryOp);
+operation.WaitForCompletion();
+```
+</TabItem>
+
+</ContentFrame>
+<ContentFrame>
+
+### Update documents by ID using parameters
+
+Use `QueryParameters` to pass the document IDs without embedding them in the RQL string.  
+The ID-based query does not require an index.
+
+<TabItem value="update_by_id_using_parameters" label="update_by_id_using_parameters">
+```csharp
+var indexQuery = new IndexQuery
+{
+    Query = @"from @all_docs as d
+              where id(d) in ($ids)
+              update
+              {
+                  d.Updated = true;
+              }",
+
+    QueryParameters = new Parameters
+    {
+        { "ids", new[] { "orders/830-A", "companies/91-A" } }
+    }
+};
+
+var patchByQueryOp = new PatchByQueryOperation(indexQuery);
+
+var operation = store.Operations.Send(patchByQueryOp);
+operation.WaitForCompletion();
+```
+</TabItem>
+
+</ContentFrame>
+<ContentFrame>
+
+### Increment a counter
+
+Use `incrementCounter(document, counterName, incrementBy)` to increment a counter on every document selected by the query.  
+    
+You can omit `incrementBy` to increment by `1`.  
+If the counter does not exist, RavenDB creates it with the incremented value.
+
+This example uses a direct collection query and does not require an index.
+
+<TabItem value="increment_counter" label="increment_counter">
+```csharp
+// Increment a counter on every Product document
+// =============================================
+
+var query = new IndexQuery
+{
+    Query = @"from Products as p
+              update
+              {
+                  incrementCounter(p, $counterName, $incrementBy);
+              }",
+
+    QueryParameters = new Parameters
+    {
+        { "counterName", "PriceUpdates" },
+        { "incrementBy", 1 }
+    }
+};
+
+var patchByQueryOp = new PatchByQueryOperation(query);
+
+var operation = store.Operations.Send(patchByQueryOp);
+operation.WaitForCompletion();
+```
+</TabItem>
+<br/>
+    
+For additional patch-script operations, including retrieving and deleting counters, see [Counter operations](../../../../server/kb/javascript-engine.mdx#counter-operations).
+
+</ContentFrame>
+<ContentFrame>
+
+### Append a time series entry
+
+Use `timeseries(document, name).append(timestamp, values)` to append an entry to a time series on every document selected by the query.  
+    
+`values` must be an array of numbers.  
+You can optionally pass a tag as the third argument to `append`.
+
+If the time series does not exist, RavenDB creates it.  
+Time series timestamps supplied to patch scripts are treated as UTC.
+
+This example uses a direct collection query and does not require an index.
+
+<TabItem value="append_time_series_entry" label="append_time_series_entry">
+```csharp
+// Record the current product price in a time series
+// =================================================
+
+var query = new IndexQuery
+{
+    Query = @"from Products as p
+              update
+              {
+                  timeseries(p, $timeSeriesName)
+                      .append($timestamp, [p.PricePerUnit]);
+              }",
+
+    QueryParameters = new Parameters
+    {
+        { "timeSeriesName", "PriceHistory" },
+        { "timestamp", DateTime.UtcNow }
+    }
+};
+
+var patchByQueryOp = new PatchByQueryOperation(query);
+
+var operation = store.Operations.Send(patchByQueryOp);
+operation.WaitForCompletion();
+```
+</TabItem>
+<br/>
+    
+For additional patch-script operations, including retrieving and deleting time series data,  
+see [Patch time series data - multiple documents](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#patch-time-series-data---multiple-documents).
+
+</ContentFrame>    
+<ContentFrame>
+
+### Allow patching based on stale index results
+
+By default, RavenDB rejects a set-based patch operation when its auto-index or static index is stale.
+
+Set `AllowStale` to `true` only when you accept selection based on the index’s current,  
+potentially incomplete or outdated results.  
+A stale index can omit newly matching documents or select documents that no longer match.
+
+The patch is applied to each selected document’s current version.
+When necessary, recheck the condition inside the `update` clause to avoid modifying documents that no longer match.
+
+<TabItem value="update_stale_results" label="update_stale_results">
+```csharp
+var query = new IndexQuery
+{
+    Query = @"from Orders as o
+              where o.Company = $currentCompany
+              update
+              {
+                  // Recheck the current document value because the index result may be stale.
+                  if (o.Company === $currentCompany)
+                  {
+                      o.Company = $newCompany;
+                  }
+              }",
+
+    QueryParameters = new Parameters
+    {
+        { "currentCompany", "companies/12-A" },
+        { "newCompany", "companies/13-A" }
+    }
+};
+
+var options = new QueryOperationOptions
+{
+    AllowStale = true
+};
+
+var patchByQueryOp = new PatchByQueryOperation(query, options);
+
+var operation = store.Operations.Send(patchByQueryOp);
+operation.WaitForCompletion();
+```
+</TabItem>
+
+</ContentFrame>
+<ContentFrame>
+
+### Monitor patch progress
+
+Subscribe to `OnProgressChanged` to receive progress notifications while the patch operation is running.
+
+For `PatchByQueryOperation`, progress is reported as `DeterminateProgress`:
+
+- `Processed` is the number of documents processed so far.
+- `Total` is the number of documents selected for processing.
+
+A short operation may finish before the client receives a progress notification.
+
+<TabItem value="report_progress_on_patch" label="report_progress_on_patch">
+```csharp
+var query = new IndexQuery
+{
+    Query = @"from Orders as o
+              update
+              {
+                  o.Freight += 10;
+              }"
+};
+
+var options = new QueryOperationOptions
+{
+    // Optional: throttle processing to reduce server load
+    // and make progress notifications easier to observe.
+    MaxOpsPerSecond = 100
+};
+
+var operation = store.Operations.Send(
+    new PatchByQueryOperation(query, options));
+
+operation.OnProgressChanged += (_, progress) =>
+{
+    if (progress is DeterminateProgress details)
+    {
+        Console.WriteLine(
+            $"Processed: {details.Processed}; Total: {details.Total}");
+    }
+};
+
+operation.WaitForCompletion();
+```
+</TabItem>
+
+</ContentFrame>
+<ContentFrame>
+
+### Inspect per-document patch results
+
+`WaitForCompletion<BulkOperationResult>()` returns the completed operation result.
+
+Set `RetrieveDetails` to `true` to populate `BulkOperationResult.Details` with a `PatchDetails` entry for each processed document.
+Each entry provides the document ID, change vector, and patch status.
+
+<Admonition type="caution" title="Result size">
+
+Retrieving details for every processed document can significantly increase server memory use and the amount of data returned to the client. 
+Enable this option only when the per-document results are needed.
+
+</Admonition>
+
+<TabItem value="patch-request-with-details" label="patch-request-with-details">
+```csharp
+var query = new IndexQuery
+{
+    Query = @"from Orders as o
+              where o.Company = 'companies/12-A'
+              update
+              {
+                  o.Company = 'companies/13-A';
+              }"
+};
+
+var options = new QueryOperationOptions
+{
+    RetrieveDetails = true,
+    StaleTimeout = TimeSpan.FromSeconds(30)
+};
+
+var operation = store.Operations.Send(
+    new PatchByQueryOperation(query, options));
+
+var result = operation.WaitForCompletion<BulkOperationResult>();
+
+var statusSummary = result.Details
+    .OfType<BulkOperationResult.PatchDetails>()
+    .GroupBy(details => details.Status)
+    .Select(group => $"{group.Key}: {group.Count()}")
+    .ToList();
+
+statusSummary.ForEach(Console.WriteLine);
+```
+</TabItem>
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Syntax">
+    
+#### Send syntax
+
+```csharp
+public Operation Send(
+    IOperation<OperationIdResult> operation,
+    SessionInfo sessionInfo = null);
+
+public Task<Operation> SendAsync(
+    IOperation<OperationIdResult> operation,
+    SessionInfo sessionInfo = null,
+    CancellationToken token = default(CancellationToken));
+```
+<br/>
+
+| Parameter       | Type                                  | Description                                                                 |
+|-----------------|---------------------------------------|-----------------------------------------------------------------------------|
+| **operation**   | `IOperation<OperationIdResult>`       | The operation to execute. For the examples in this article, pass a `PatchByQueryOperation`. |
+| **sessionInfo** | `SessionInfo`                         | Optional session context. Normally omitted when sending the operation directly. |
+| **token**       | `CancellationToken`                   | A token for cancelling the asynchronous request that starts the operation. |
+
+| Return value      | Description |
+|-------------------|-------------|
+| `Operation`       | A handle used to monitor the server-side operation, wait for its completion, retrieve its result, or request its cancellation. |
+| `Task<Operation>` | The asynchronous result of starting the server-side operation. Use the returned `Operation` handle to wait for the patch itself to complete. |
+
+#### PatchByQueryOperation syntax
+
+```csharp
+// Available constructors:
+public PatchByQueryOperation(string queryToUpdate);
+
+public PatchByQueryOperation(
+    IndexQuery queryToUpdate,
+    QueryOperationOptions options = null);
+```
+<br/>
+
+| Parameter         | Type                    | Description |
+|-------------------|-------------------------|-------------|
+| **queryToUpdate** | `string`                | The complete RQL patch statement, containing the query that selects documents and the `update` clause with the JavaScript patching code. |
+| **queryToUpdate** | `IndexQuery`            | An object containing the RQL patch statement and, optionally, query parameters. |
+| **options**       | `QueryOperationOptions` | Options that control how the patch operation is executed. |
+
+#### Relevant IndexQuery properties
+
+```csharp
+// Relevant properties inherited by IndexQuery:
+public string Query { get; set; }
+
+public Parameters QueryParameters { get; set; }
+```
+<br/>
+
+| Property            | Description |
+|---------------------|-------------|
+| **Query**           | The complete RQL patch statement. |
+| **QueryParameters** | Values for parameters referenced in the RQL statement. |
+
+#### QueryOperationOptions properties
+
+```csharp
+public sealed class QueryOperationOptions
+{
+    public bool AllowStale { get; set; }
+
+    public bool IgnoreMaxStepsForScript { get; set; }
+
+    public TimeSpan? StaleTimeout { get; set; }
+
+    public int? MaxOpsPerSecond { get; set; }
+
+    public bool RetrieveDetails { get; set; }
+
+    public IndexPatchOptions IndexPatchOptions { get; set; }
+}
+```
+<br/>                    
+
+| Property                    | Description |
+|-----------------------------|-------------|
+| **AllowStale**              | Determines whether an index-backed patch may operate on stale index results. The default is `false`. |
+| **IgnoreMaxStepsForScript** | Determines whether the server-defined limit on the number of script steps is ignored. The default is `false`. |
+| **StaleTimeout**            | When `AllowStale` is `false`, specifies how long to wait for a stale index to become non-stale. An exception is thrown if the timeout is exceeded. |
+| **MaxOpsPerSecond**         | Limits the number of matched documents processed per second. When specified, the value must be greater than zero. |
+| **RetrieveDetails**         | Determines whether per-document operation details are requested from the server. The default is `false`. |
+| **IndexPatchOptions**       | Configures whether the operation waits for indexes to process the patched documents after the patch completes. |
+
+`StaleTimeout` controls waiting for the query index **before** documents are patched.  
+`IndexPatchOptions` controls waiting for indexes to process the changes **after** documents are patched.
+
+#### IndexPatchOptions syntax
+
+```csharp
+public sealed class IndexPatchOptions
+{
+    public IndexPatchOptions();
+
+    public IndexPatchOptions(TimeSpan waitForIndexesTimeout);
+
+    public TimeSpan WaitForIndexesTimeout { get; set; }
+
+    public bool ThrowOnTimeoutInWaitForIndexes { get; set; }
+
+    public string[] WaitForSpecificIndexes { get; set; }
+}
+```
+<br/>
+
+| Property                            | Description |
+|-------------------------------------|-------------|
+| **WaitForIndexesTimeout**           | The maximum time to wait for indexes to process the patched documents. |
+| **ThrowOnTimeoutInWaitForIndexes**  | Determines whether an exception is thrown if the indexing wait times out. The default is `false`. |
+| **WaitForSpecificIndexes**          | The names of the indexes to wait for. When omitted, the server determines the relevant indexes from the patched documents. |
+
+</Panel>

@@ -7,8 +7,8 @@ import CodeBlock from '@theme/CodeBlock';
    
 
 * Patching time series data (Append or Delete entries) can be performed via [Operations](../../../../../client-api/operations/what-are-operations.mdx).
-  * Use [PatchOperation](../../../../../client-api/operations/patching/single-document.mdx) to patch data on a **single** document.
-  * Use [PatchByQueryOperation](../../../../../client-api/operations/patching/set-based.mdx) to patch data on **multiple** documents.
+  * Use [PatchOperation](../../../../../documents/patching-documents/patch-a-single-document/api-overview.mdx) to patch data on a **single** document.
+  * Use [PatchByQueryOperation](../../../../../documents/patching-documents/patch-multiple-documents/patch-multiple-documents.mdx) to patch data on **multiple** documents.
 
 * Patching time series entries on a single document can also be performed via the [session](../../../../../document-extensions/timeseries/client-api/session/patch.mdx).
 
@@ -132,9 +132,9 @@ await documentStore.operations.send(patchOp);
 </TabItem>
 ### Syntax
 
-* The detailed syntax of `PatchOperation` is listed under this [syntax section](../../../../../client-api/operations/patching/single-document.mdx#operations-api-syntax).
+* The detailed syntax of `PatchOperation` is listed under this [syntax section](../../../../../documents/patching-documents/patch-a-single-document/api-overview.mdx#operations-api-syntax).
 
-* The detailed syntax of `PatchRequest` is listed under this [syntax section](../../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer-syntax).
+* The detailed syntax of `PatchRequest` is listed under this [syntax section](../../../../../documents/patching-documents/patch-a-single-document/api-overview.mdx#session-api-using-defer-syntax).
 
 * The available JavaScript API methods are detailed in the [time series JavaScript support](../../../../../document-extensions/timeseries/client-api/javascript-support.mdx) article.
 
@@ -262,7 +262,7 @@ await asyncOp.waitForCompletion();
 </TabItem>
 ### Syntax
 
-* The detailed syntax of `PatchByQueryOperation` is listed under this [syntax section](../../../../../client-api/operations/patching/set-based.mdx#patchbyqueryoperation-syntax).
+* The detailed syntax of `PatchByQueryOperation` is listed under this [syntax section](../../../../../documents/patching-documents/patch-multiple-documents/patch-multiple-documents.mdx#patchbyqueryoperation-syntax).
 
 * The available JavaScript API methods are detailed in the [time series JavaScript support](../../../../../document-extensions/timeseries/client-api/javascript-support.mdx) article.
 

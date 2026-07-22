@@ -1,0 +1,504 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* This article is part of the single-document patching examples.  
+  It covers creating or incrementing counters, deleting and reading counters, appending and deleting time series entries, and deleting, copying, 
+  and scheduling existing attachments for remote upload.
+
+* The examples use the Session API with `Defer` and the Operations API.  
+  To manage counters, time series, or attachments with their native client APIs instead,  
+  see the [Counters Overview](../../../../../document-extensions/counters/overview.mdx), 
+  the [Time Series Overview](../../../../../document-extensions/timeseries/overview.mdx), and the [Attachments Overview](../../../../../document-extensions/attachments/overview.mdx).
+
+* For the available single-document patching interfaces and their full syntax,  
+  see [Patch a Single Document: API Overview](../../../../../documents/patching-documents/patch-a-single-document/api-overview.mdx).
+
+* Patching examples in this article:
+  * [Increment counter](#increment-counter)  
+  * [Delete counter](#delete-counter)  
+  * [Get counter](#get-counter)  
+  * [Append time series entry](#append-time-series-entry)  
+  * [Delete time series entries](#delete-time-series-entries)  
+  * [Delete attachment](#delete-attachment)  
+  * [Copy attachment](#copy-attachment)  
+  * [Mark attachment as remote](#mark-attachment-as-remote)  
+
+</Admonition>
+
+<Panel heading="Patching examples">
+
+<ContentFrame>
+
+### Increment counter
+
+Use `incrementCounter` to add a value to a counter.  
+If the counter does not exist, RavenDB creates it with the supplied value.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Add 20 to Likes on orders/1-A.
+// If Likes does not exist, RavenDB creates it with the value 20.
+session.Advanced.Defer(new PatchCommandData(
+    id: "orders/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "incrementCounter(this, args.name, args.value);",
+        Values =
+        {
+            { "name", "Likes" },
+            { "value", 20 }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Add 20 to Likes on orders/1-A.
+// If Likes does not exist, RavenDB creates it with the value 20.
+store.Operations.Send(new PatchOperation(
+    id: "orders/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "incrementCounter(this, args.name, args.value);",
+        Values =
+        {
+            { "name", "Likes" },
+            { "value", 20 }
+        }
+    },
+    patchIfMissing: null));
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+`incrementCounter` accepts either a document ID or a document object in the patch script.  
+Omit the value to increment by `1`; pass a negative value to decrement the counter.
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Delete counter
+
+Use `deleteCounter` to delete a counter from a document.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Delete the Likes counter from products/1-A.
+session.Advanced.Defer(new PatchCommandData(
+    id: "products/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "deleteCounter(this, args.name);",
+        Values =
+        {
+            { "name", "Likes" }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Delete the Likes counter from products/1-A.
+store.Operations.Send(new PatchOperation(
+    id: "products/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "deleteCounter(this, args.name);",
+        Values =
+        {
+            { "name", "Likes" }
+        }
+    },
+    patchIfMissing: null));
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+`deleteCounter` accepts either a document ID or a document object in the patch script.
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Get counter
+
+Use `counter` to read a counter value while a patch script is running.  
+The following example stores the current `Likes` value in a regular document field named `LikesSnapshot`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Read Likes from orders/1-A and store its current value in LikesSnapshot.
+session.Advanced.Defer(new PatchCommandData(
+    id: "orders/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.LikesSnapshot = counter(this, args.name);",
+        Values =
+        {
+            { "name", "Likes" }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Read Likes from orders/1-A and store its current value in LikesSnapshot.
+store.Operations.Send(new PatchOperation(
+    id: "orders/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.LikesSnapshot = counter(this, args.name);",
+        Values =
+        {
+            { "name", "Likes" }
+        }
+    },
+    patchIfMissing: null));
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+`counter` accepts either a document ID or a document object in the patch script.  
+It returns `null` if the specified counter does not exist.
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Append time series entry
+
+Use `timeseries(...).append` to append an entry to a time series.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Append a one-value HeartRates entry to users/1-A.
+// RavenDB treats timestamps passed to patch scripts as UTC.
+session.Advanced.Defer(new PatchCommandData(
+    id: "users/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "timeseries(this, args.name).append(new Date(args.timestamp), args.values, args.tag);",
+        Values =
+        {
+            { "name", "HeartRates" },
+            { "timestamp", DateTime.UtcNow },
+            // Pass an array instead when the entry contains multiple values.
+            { "values", 78 },
+            { "tag", "watches/fitbit" }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Append a one-value HeartRates entry to users/1-A.
+// RavenDB treats timestamps passed to patch scripts as UTC.
+store.Operations.Send(new PatchOperation(
+    id: "users/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "timeseries(this, args.name).append(new Date(args.timestamp), args.values, args.tag);",
+        Values =
+        {
+            { "name", "HeartRates" },
+            { "timestamp", DateTime.UtcNow },
+            // Pass an array instead when the entry contains multiple values.
+            { "values", 78 },
+            { "tag", "watches/fitbit" }
+        }
+    },
+    patchIfMissing: null));
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+Provide the entry's timestamp, one numeric value or an array of numeric values, and an optional tag.  
+Learn more about appending time series entries via patching in [Patch time series entries](../../../../../document-extensions/timeseries/client-api/session/patch.mdx#append-multiple-entries),  
+and see the available time series patch methods in [Time series: JavaScript support](../../../../../document-extensions/timeseries/client-api/javascript-support.mdx).
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Delete time series entries
+
+Use `timeseries(...).delete` to delete a range of time series entries.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Delete HeartRates entries from the last hour, including both boundaries.
+var to = DateTime.UtcNow;
+var from = to.AddHours(-1);
+
+session.Advanced.Defer(new PatchCommandData(
+    id: "users/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "timeseries(this, args.name).delete(args.from, args.to);",
+        Values =
+        {
+            { "name", "HeartRates" },
+            { "from", from },
+            { "to", to }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Delete HeartRates entries from the last hour, including both boundaries.
+var to = DateTime.UtcNow;
+var from = to.AddHours(-1);
+
+store.Operations.Send(new PatchOperation(
+    id: "users/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "timeseries(this, args.name).delete(args.from, args.to);",
+        Values =
+        {
+            { "name", "HeartRates" },
+            { "from", from },
+            { "to", to }
+        }
+    },
+    patchIfMissing: null));
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+All entries within the specified range, including entries at the `from` and `to` timestamps, are removed.  
+Learn more about deleting time series entries via patching in [Patch time series entries](../../../../../document-extensions/timeseries/client-api/session/patch.mdx#delete-multiple-entries).
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Delete attachment
+
+Use `attachments(...).delete` to delete an attachment from the document being patched.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Delete invoice.pdf from orders/1-A.
+session.Advanced.Defer(new PatchCommandData(
+    id: "orders/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "attachments(this, args.name).delete();",
+        Values =
+        {
+            { "name", "invoice.pdf" }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Delete invoice.pdf from orders/1-A.
+store.Operations.Send(new PatchOperation(
+    id: "orders/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "attachments(this, args.name).delete();",
+        Values =
+        {
+            { "name", "invoice.pdf" }
+        }
+    },
+    patchIfMissing: null));
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+Learn more about deleting attachments in [Delete an attachment](../../../../../document-extensions/attachments/delete-attachment.mdx#delete-attachment---via-a-patch),  
+and see the full patch method syntax in [JavaScript engine - Attachment operations](../../../../../server/kb/javascript-engine.mdx#attachment-operations).
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Copy attachment
+
+Use `attachments(...).copyFrom` to copy an attachment from a source document to the document being patched.  
+The copy is performed entirely on the server, without downloading and re-uploading the attachment through the client.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Copy orders/2-A/invoice.pdf to orders/1-A as invoice-copy.pdf.
+session.Advanced.Defer(new PatchCommandData(
+    id: "orders/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "attachments(this, args.targetName).copyFrom(args.sourceDocId, args.sourceName);",
+        Values =
+        {
+            { "sourceDocId", "orders/2-A" },
+            { "sourceName", "invoice.pdf" },
+            { "targetName", "invoice-copy.pdf" }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Copy orders/2-A/invoice.pdf to orders/1-A as invoice-copy.pdf.
+store.Operations.Send(new PatchOperation(
+    id: "orders/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "attachments(this, args.targetName).copyFrom(args.sourceDocId, args.sourceName);",
+        Values =
+        {
+            { "sourceDocId", "orders/2-A" },
+            { "sourceName", "invoice.pdf" },
+            { "targetName", "invoice-copy.pdf" }
+        }
+    },
+    patchIfMissing: null));
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+The `copyFrom` method returns `true` on success and `false` if the source document, target document, or source attachment was not found.
+
+Learn more about copying attachments in [Copy attachments - via patching](../../../../../document-extensions/attachments/copy-move-rename.mdx#copy-attachments---via-patching),  
+and see the full patch method syntax in [JavaScript engine - Attachment operations](../../../../../server/kb/javascript-engine.mdx#attachment-operations).
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Mark attachment as remote
+
+Use `attachments(...).remote` to schedule an existing local attachment for upload to a configured remote storage destination.  
+Provide the attachment name, destination identifier, and scheduled upload time.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Schedule orders/1-A/invoice.pdf for remote upload in one day.
+session.Advanced.Defer(new PatchCommandData(
+    id: "orders/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "attachments(this, args.name).remote(args.identifier, args.at);",
+        Values =
+        {
+            { "name", "invoice.pdf" },
+            // Must match a configured remote destination identifier.
+            { "identifier", "my-amazon-storage" },
+            { "at", DateTime.UtcNow.AddDays(1) }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Schedule orders/1-A/invoice.pdf for remote upload in one day.
+store.Operations.Send(new PatchOperation(
+    id: "orders/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "attachments(this, args.name).remote(args.identifier, args.at);",
+        Values =
+        {
+            { "name", "invoice.pdf" },
+            // Must match a configured remote destination identifier.
+            { "identifier", "my-amazon-storage" },
+            { "at", DateTime.UtcNow.AddDays(1) }
+        }
+    },
+    patchIfMissing: null));
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+This schedules the attachment for remote upload; it does not upload the attachment immediately.  
+If the Remote Attachments feature and the selected destination are enabled, a background task uploads the attachment during a scan after the scheduled time has passed.
+
+Learn more in [Schedule existing attachments for remote upload](../../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#schedule-existing-attachments-for-remote-upload),  
+and see how to define destinations in [Configure remote attachments](../../../../../document-extensions/attachments/configure-remote-attachments.mdx).
+
+</Admonition>
+
+</ContentFrame>
+
+</Panel>

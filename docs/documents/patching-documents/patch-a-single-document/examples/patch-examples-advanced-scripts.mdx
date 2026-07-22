@@ -1,0 +1,33 @@
+---
+title: "Single-Document Patching Examples: Advanced Scripts"
+sidebar_label: "Advanced Scripts"
+description: "Advanced RavenDB patch-script examples: inline string compilation, random UUIDs, SHA-256 hashing, and field encryption."
+sidebar_position: 4
+supported_languages: ["csharp", "java", "nodejs", "python"]
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import PatchExamplesAdvancedScriptsCsharp from './content/_patch-examples-advanced-scripts-csharp.mdx';
+import PatchExamplesAdvancedScriptsJava from './content/_patch-examples-advanced-scripts-java.mdx';
+import PatchExamplesAdvancedScriptsNodejs from './content/_patch-examples-advanced-scripts-nodejs.mdx';
+import PatchExamplesAdvancedScriptsPython from './content/_patch-examples-advanced-scripts-python.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <PatchExamplesAdvancedScriptsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <PatchExamplesAdvancedScriptsJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <PatchExamplesAdvancedScriptsNodejs />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <PatchExamplesAdvancedScriptsPython />
+</LanguageContent>

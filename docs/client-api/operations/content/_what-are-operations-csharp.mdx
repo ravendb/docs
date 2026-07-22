@@ -13,7 +13,7 @@ import CodeBlock from '@theme/CodeBlock';
 * **RavenDB provides direct access to this lower-level API**, allowing you to send requests  
   directly to the server via DocumentStore Operations instead of using the higher-level Session API.
 
-* In this page:  
+* In this article:  
   * [Why use operations](../../../client-api/operations/what-are-operations.mdx#why-use-operations)  
   * [How operations work](../../../client-api/operations/what-are-operations.mdx#how-operations-work) 
   * **Operation types**: 
@@ -36,8 +36,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 * The operations are executed on the DocumentStore and are not part of the session transaction.
 
-* There are some client tasks, such as patching documents, that can be carried out either via the Session ([session.Advanced.Patch()](../../../client-api/operations/patching/single-document.mdx#array-manipulation))
-  or via an Operation on the DocumentStore ([PatchOperation](../../../client-api/operations/patching/single-document.mdx#operations-api)).
+* There are some client tasks, such as patching documents, that can be carried out either via the Session ([session.Advanced.Patch()](../../../documents/patching-documents/patch-a-single-document/api-overview.mdx#array-manipulation))
+  or via an Operation on the DocumentStore ([PatchOperation](../../../documents/patching-documents/patch-a-single-document/api-overview.mdx#operations-api)).
 
 ## How operations work
 
@@ -160,8 +160,9 @@ Task<PatchOperation.Result<TEntity>> SendAsync<TEntity>(PatchOperation<TEntity> 
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [RevertRevisionsByIdOperation](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-revisions.mdx#revert-documents-using-an-operation)  
 
 * **Patching**:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchOperation](../../../client-api/operations/patching/single-document.mdx)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchByQueryOperation](../../../client-api/operations/patching/set-based.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchOperation](../../../documents/patching-documents/patch-a-single-document/api-overview.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchByQueryOperation](../../../documents/patching-documents/patch-multiple-documents/patch-multiple-documents.mdx)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [JsonPatchOperation](../../../documents/patching-documents/patch-a-single-document/json-patch.mdx)  
 
 * **Delete by query**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteByQueryOperation](../../../client-api/operations/common/delete-by-query.mdx)   
