@@ -321,6 +321,13 @@
         }
     },
     {
+        "key": "/client-api/operations/maintenance/get-stats",
+        "value": {
+            "targetUrl": "/monitoring/statistics/client-api",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/client-api/operations/maintenance/indexes",
         "value": {
             "targetUrl": "/client-api/operations/maintenance/indexes/get-index",
