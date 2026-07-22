@@ -9,7 +9,7 @@ export const LANGUAGE_QUERY_PARAM = "lang";
 
 const LANGUAGE_STORAGE_KEY = "docs-language";
 
-// Same-tab only (not the native cross-tab "storage" event) so two tabs can show different languages side-by-side.
+// Same-tab event (not the cross-tab "storage" event) so two tabs can hold different languages.
 const LANGUAGE_CHANGE_EVENT = "docs-language-change";
 
 export const isDocsLanguage = (value: string | null | undefined): value is DocsLanguage =>
@@ -25,8 +25,7 @@ export const getStoredLanguage = (): DocsLanguage => {
     return isDocsLanguage(value) ? value : DEFAULT_LANGUAGE;
 };
 
-// URL wins (per-tab), then the stored cross-session default. Server snapshot is the default so the
-// first client render matches the query-less prerendered HTML; the URL/stored value applies after hydration.
+// URL (per-tab) wins over the stored default; server snapshot is the default to avoid a hydration mismatch.
 const getSnapshot = (): DocsLanguage => getLanguageFromSearch(window.location.search) ?? getStoredLanguage();
 const getServerSnapshot = (): DocsLanguage => DEFAULT_LANGUAGE;
 
@@ -39,18 +38,16 @@ const subscribe = (callback: () => void): (() => void) => {
     };
 };
 
-export const useLanguage = (): {
-    language: DocsLanguage;
-    setLanguage: (newLanguage: DocsLanguage) => void;
-} => {
-    const history = useHistory();
-    const language = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+// Store-only (no router) so consumers don't re-render on unrelated location changes.
+export const useLanguage = (): DocsLanguage => useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-    const setLanguage = useCallback(
+export const useSetLanguage = (): ((newLanguage: DocsLanguage) => void) => {
+    const history = useHistory();
+
+    return useCallback(
         (newLanguage: DocsLanguage) => {
             const { pathname, search, hash } = history.location;
             const params = new URLSearchParams(search);
-            // Keep the default language out of the URL; stamp everything else.
             if (newLanguage === DEFAULT_LANGUAGE) {
                 params.delete(LANGUAGE_QUERY_PARAM);
             } else {
@@ -60,11 +57,9 @@ export const useLanguage = (): {
             const newSearch = params.toString();
             window.localStorage.setItem(LANGUAGE_STORAGE_KEY, newLanguage);
             history.replace({ pathname, search: newSearch ? `?${newSearch}` : "", hash });
-            // Notify after storage and URL are both updated so getSnapshot re-reads fresh values.
+            // Dispatch after storage + URL are updated so getSnapshot re-reads fresh values.
             window.dispatchEvent(new window.Event(LANGUAGE_CHANGE_EVENT));
         },
         [history]
     );
-
-    return { language, setLanguage };
 };

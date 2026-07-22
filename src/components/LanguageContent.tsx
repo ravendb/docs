@@ -7,6 +7,6 @@ interface LanguageContentProps {
 }
 
 export default function LanguageContent({ language, children }: LanguageContentProps) {
-    const { language: current } = useLanguage();
+    const current = useLanguage();
     return current === language ? <>{children}</> : null;
 }

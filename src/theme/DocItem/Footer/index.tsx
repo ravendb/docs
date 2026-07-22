@@ -20,7 +20,7 @@ const getEditUrlWithLanguage = (url: string, language: DocsLanguage, supportedLa
 };
 
 export default function DocItemFooter(): ReactNode {
-    const { language } = useLanguage();
+    const language = useLanguage();
     const { metadata } = useDoc();
     const { editUrl, lastUpdatedAt, lastUpdatedBy, tags, permalink, frontMatter } = metadata;
     const { see_also } = frontMatter;

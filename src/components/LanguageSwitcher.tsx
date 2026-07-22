@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useLocation } from "@docusaurus/router";
-import { useLanguage, LANGUAGE_QUERY_PARAM, type DocsLanguage } from "./LanguageStore";
+import { useLanguage, useSetLanguage, LANGUAGE_QUERY_PARAM, type DocsLanguage } from "./LanguageStore";
 import { languageConfig } from "./languageConfig";
 import clsx from "clsx";
 
@@ -10,7 +10,8 @@ type LanguageSwitcherProps = {
 };
 
 export default function LanguageSwitcher({ supportedLanguages, flush = false }: LanguageSwitcherProps) {
-    const { language, setLanguage } = useLanguage();
+    const language = useLanguage();
+    const setLanguage = useSetLanguage();
     const location = useLocation();
 
     const isCurrentLanguageSupported = supportedLanguages.includes(language);
@@ -22,7 +23,7 @@ export default function LanguageSwitcher({ supportedLanguages, flush = false }: 
         }
     }, [isCurrentLanguageSupported, firstSupportedLanguage, setLanguage]);
 
-    // Explicit "?lang=" (incl. the default) so Ctrl/Cmd/middle-click opens that language in a new tab (RDoc-3454).
+    // Explicit ?lang= (incl. default) so Ctrl/Cmd/middle-click opens that language in a new tab.
     const buildHref = (value: DocsLanguage): string => {
         const params = new URLSearchParams(location.search);
         params.set(LANGUAGE_QUERY_PARAM, value);
