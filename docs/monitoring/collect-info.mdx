@@ -2,7 +2,7 @@
 title: "Collecting Information for Support"
 sidebar_label: Collect Info for Support
 description: "Gather RavenDB diagnostic information including server logs, debug packages, and system stats for troubleshooting performance issues."
-sidebar_position: 2
+sidebar_position: 14
 ---
 
 import Admonition from '@theme/Admonition';
@@ -20,16 +20,16 @@ import Panel from '@site/src/components/Panel';
 
 * In this article:
 
-  * [Provide incident description](../../monitoring/debug/collect-info.mdx#provide-incident-description)
-  * [Create debug package](../../monitoring/debug/collect-info.mdx#create-debug-package)
-     * [Create the package](../../monitoring/debug/collect-info.mdx#create-the-package)
-     * [Verify the package](../../monitoring/debug/collect-info.mdx#verify-the-package)
-  * [Enable logs for ongoing issues](../../monitoring/debug/collect-info.mdx#enable-logs-for-ongoing-issues)
-  * [Download logs](../../monitoring/debug/collect-info.mdx#download-logs)
-     * [Download the logs](../../monitoring/debug/collect-info.mdx#download-the-logs)
-     * [Verify the logs](../../monitoring/debug/collect-info.mdx#verify-the-logs)
-  * [Reproduce scenario](../../monitoring/debug/collect-info.mdx#reproduce-scenario)
-  * [Create failing test](../../monitoring/debug/collect-info.mdx#create-failing-test)
+  * [Provide incident description](../monitoring/collect-info.mdx#provide-incident-description)
+  * [Create debug package](../monitoring/collect-info.mdx#create-debug-package)
+     * [Create the package](../monitoring/collect-info.mdx#create-the-package)
+     * [Verify the package](../monitoring/collect-info.mdx#verify-the-package)
+  * [Enable logs for ongoing issues](../monitoring/collect-info.mdx#enable-logs-for-ongoing-issues)
+  * [Download logs](../monitoring/collect-info.mdx#download-logs)
+     * [Download the logs](../monitoring/collect-info.mdx#download-the-logs)
+     * [Verify the logs](../monitoring/collect-info.mdx#verify-the-logs)
+  * [Reproduce scenario](../monitoring/collect-info.mdx#reproduce-scenario)
+  * [Create failing test](../monitoring/collect-info.mdx#create-failing-test)
 
 </Admonition>
 
@@ -57,7 +57,7 @@ from the dropdown).
 
 ![Create debug package](./assets/create-debug-package.png)
 
-For the full walkthrough, see [Create a Debug Package](../../monitoring/debug/debug-package/create-debug-package.mdx).
+For the full walkthrough, see [Create a Debug Package](../monitoring/debug/debug-package/create-debug-package.mdx).
 
 ---
 
@@ -98,7 +98,7 @@ For the full walkthrough, see [Create a Debug Package](../../monitoring/debug/de
 <Panel heading="Enable logs for ongoing issues">
 
 If the issue you're encountering is still **ongoing**, enable debug-level logging on disk as follows
-(if not already enabled) to capture helpful information, before [downloading the log files](../../monitoring/debug/collect-info.mdx#download-logs).
+(if not already enabled) to capture helpful information, before [downloading the log files](../monitoring/collect-info.mdx#download-logs).
 
 ![Admin logs view](./assets/admin-logs-view.png)
 
@@ -125,16 +125,16 @@ Be aware that a server restart will **reset all log settings** to their default 
 To preserve your settings even through a restart, either:
 
   * **Save the settings** via Studio:  
-    [Open each log type dialog](../../monitoring/debug/collect-info.mdx#enable-logs-for-ongoing-issues), 
+    [Open each log type dialog](../monitoring/collect-info.mdx#enable-logs-for-ongoing-issues), 
     check the "Save ... in `settings.json`" checkbox, and **save**.  
     Note: the exact checkbox label varies between the log types.  
     e.g., 
     ![Save to settings.json](./assets/save-to-settings-json.png)
 
-  * or **Set the relevant configuration key** as described in the [configuration overview](../../server/configuration/configuration-options.mdx):
-    * For **Server logs**: set the [Logs.MinLevel](../../monitoring/logs/configuration.mdx#logsminlevel) configuration key.  
-    * For **Microsoft logs**: set the [Logs.Microsoft.MinLevel](../../monitoring/logs/configuration.mdx#logsmicrosoftminlevel) configuration key.
-    * For **Traffic watch logs**: set the [TrafficWatch.Mode](../../monitoring/traffic-watch/configuration.mdx#trafficwatchmode) configuration key.
+  * or **Set the relevant configuration key** as described in the [configuration overview](../server/configuration/configuration-options.mdx):
+    * For **Server logs**: set the [Logs.MinLevel](../monitoring/logs/configuration.mdx#logsminlevel) configuration key.  
+    * For **Microsoft logs**: set the [Logs.Microsoft.MinLevel](../monitoring/logs/configuration.mdx#logsmicrosoftminlevel) configuration key.
+    * For **Traffic watch logs**: set the [TrafficWatch.Mode](../monitoring/traffic-watch/configuration.mdx#trafficwatchmode) configuration key.
 
 </Admonition>
 
@@ -171,11 +171,11 @@ Perform the following for each cluster node:
 copy the log files directly from disk to another location to ensure they are kept,  
 avoiding potentially losing them due to retention policy.
 
-* **Log files location** is set by the [Logs.Path](../../monitoring/logs/configuration.mdx#logspath) configuration key.
+* **Log files location** is set by the [Logs.Path](../monitoring/logs/configuration.mdx#logspath) configuration key.
 
 * **Logs deletion** is controlled by the following configuration keys:
-  * [Logs.MaxArchiveDays](../../monitoring/logs/configuration.mdx#logsmaxarchivedays)
-  * [Logs.MaxArchiveFiles ](../../monitoring/logs/configuration.mdx#logsmaxarchivefiles)
+  * [Logs.MaxArchiveDays](../monitoring/logs/configuration.mdx#logsmaxarchivedays)
+  * [Logs.MaxArchiveFiles ](../monitoring/logs/configuration.mdx#logsmaxarchivefiles)
 
 </Admonition>
 
@@ -203,7 +203,7 @@ avoiding potentially losing them due to retention policy.
 
 * If the incident is over and you can reproduce it, verify first that the logging level is set to '**Debug**'.  
 
-* See how to enable the logs in [Enable logs](../../monitoring/debug/collect-info.mdx#enable-logs-for-ongoing-issues).
+* See how to enable the logs in [Enable logs](../monitoring/collect-info.mdx#enable-logs-for-ongoing-issues).
 
 </Panel>
 
@@ -211,6 +211,6 @@ avoiding potentially losing them due to retention policy.
 
 * If possible, it is advised to create a unit test that showcases the failure in your client code.
 
-* Refer to [Writing your unit test](../../start/test-driver.mdx) to learn how to use RavenDB's **TestDriver**.
+* Refer to [Writing your unit test](../start/test-driver.mdx) to learn how to use RavenDB's **TestDriver**.
 
 </Panel>

@@ -435,7 +435,7 @@
     {
         "key": "/server/troubleshooting/collect-info",
         "value": {
-            "targetUrl": "/monitoring/debug/collect-info",
+            "targetUrl": "/monitoring/collect-info",
             "minimumVersion": "7.2"
         }
     },
