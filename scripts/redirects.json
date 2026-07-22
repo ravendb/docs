@@ -433,6 +433,13 @@
         }
     },
     {
+        "key": "/server/troubleshooting/collect-info",
+        "value": {
+            "targetUrl": "/monitoring/debug/collect-info",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/server/administration/monitoring",
         "value": {
             "targetUrl": "/server/administration/monitoring/prometheus",

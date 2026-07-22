@@ -1,50 +1,47 @@
 ---
-title: "Collecting Information on Incidents for Support"
+title: "Collecting Information for Support"
 sidebar_label: Collect Info for Support
 description: "Gather RavenDB diagnostic information including server logs, debug packages, and system stats for troubleshooting performance issues."
-sidebar_position: 3
+sidebar_position: 2
 ---
 
 import Admonition from '@theme/Admonition';
 import ContentFrame from '@site/src/components/ContentFrame';
 import Panel from '@site/src/components/Panel';
 
-# Collecting Information on Incidents for Support
+# Collecting Information for Support
 
 <Admonition type="note" title="">
 
-* When encountering incidents or issues with RavenDB, it is essential to gather as much information as possible 
-  to help the support team diagnose and resolve the problem effectively.
+* When you encounter an incident or an issue with RavenDB, the support team needs relevant information
+  to diagnose and resolve it.
 
-* Follow the steps described in this article to collect relevant information for RavenDB support.
+* This article describes what information to collect and how to collect it.
 
 * In this article:
 
-  * [Provide incident description](../../server/troubleshooting/collect-info.mdx#provide-incident-description)
-  * [Create debug package](../../server/troubleshooting/collect-info.mdx#create-debug-package)
-     * [Create the package](../../server/troubleshooting/collect-info.mdx#create-the-package)
-     * [Verify the package](../../server/troubleshooting/collect-info.mdx#verify-the-package)
-  * [Enable logs for ongoing issues](../../server/troubleshooting/collect-info.mdx#enable-logs-for-ongoing-issues)
-  * [Download logs](../../server/troubleshooting/collect-info.mdx#download-logs)
-     * [Download the logs](../../server/troubleshooting/collect-info.mdx#download-the-logs)
-     * [Verify the logs](../../server/troubleshooting/collect-info.mdx#verify-the-logs)
-  * [Reproduce scenario](../../server/troubleshooting/collect-info.mdx#reproduce-scenario)
-  * [Create failing test](../../server/troubleshooting/collect-info.mdx#create-failing-test)
+  * [Provide incident description](../../monitoring/debug/collect-info.mdx#provide-incident-description)
+  * [Create debug package](../../monitoring/debug/collect-info.mdx#create-debug-package)
+     * [Create the package](../../monitoring/debug/collect-info.mdx#create-the-package)
+     * [Verify the package](../../monitoring/debug/collect-info.mdx#verify-the-package)
+  * [Enable logs for ongoing issues](../../monitoring/debug/collect-info.mdx#enable-logs-for-ongoing-issues)
+  * [Download logs](../../monitoring/debug/collect-info.mdx#download-logs)
+     * [Download the logs](../../monitoring/debug/collect-info.mdx#download-the-logs)
+     * [Verify the logs](../../monitoring/debug/collect-info.mdx#verify-the-logs)
+  * [Reproduce scenario](../../monitoring/debug/collect-info.mdx#reproduce-scenario)
+  * [Create failing test](../../monitoring/debug/collect-info.mdx#create-failing-test)
 
 </Admonition>
 
 <Panel heading="Provide incident description">
 
-* **Description**:  
-  * Provide a detailed description of the incident you are experiencing.
-  * Include any error messages, warnings, or unexpected behavior you have encountered.
+Provide the following details about the incident:
 
-* **Exceptions**:  
-  * If an exception was thrown, attach the **full exception stack trace** including the error message as plain text.
-  * Specify the exception's origin (e.g., RavenDB Studio, client, server logs, etc.).
-
-* **Versions**:  
-  * Specify your RavenDB server, Studio, and client **versions**.
+| Detail | What to provide |
+|-|-|
+| **Description** | A detailed description of the incident.<br />Include any error messages, warnings, or unexpected behavior. |
+| **Exceptions** | If an exception was thrown, attach the full exception stack trace, including the error message, as plain text.<br />Specify the exception's origin, e.g., RavenDB Studio, the client, or the server logs. |
+| **Versions** | Specify your RavenDB server, Studio, and client versions. |
 
 </Panel>
 
@@ -55,7 +52,7 @@ import Panel from '@site/src/components/Panel';
 ### Create the package
 
 Studio's **Debug Package** view allows you to collect diagnostic information about your server or cluster into a debug package (a `.zip` file).  
-To create such a package, go to **Manage Server &gt; Debug Package** and click **Download package for entire cluster** (or choose your current server 
+To create such a package, go to **`Manage Server` > `Debug Package`** and click **Download package for entire cluster** (or choose your current server 
 from the dropdown).
 
 ![Create debug package](./assets/create-debug-package.png)
@@ -83,16 +80,16 @@ For the full walkthrough, see [Create a Debug Package](../../server/troubleshoot
 
 **Before sending the debug package zip file**, perform the following checks:
 
-  * Verify that the zip file can be successfully extracted.
-  * Verify that the content is similar to the following sample images.
+* Verify that the zip file can be successfully extracted.
+* Verify that the content is similar to the following sample images:
 
-![Zip file contents 1](./assets/zip-1.png)
+  ![Zip file contents 1](./assets/zip-1.png)
 
-![Zip file contents 2](./assets/zip-2.png)
+  ![Zip file contents 2](./assets/zip-2.png)
 
-![Zip file contents 3](./assets/zip-3.png)
+  ![Zip file contents 3](./assets/zip-3.png)
 
-![Zip file contents 4](./assets/zip-4.png)
+  ![Zip file contents 4](./assets/zip-4.png)
 
 </ContentFrame>
 
@@ -101,7 +98,7 @@ For the full walkthrough, see [Create a Debug Package](../../server/troubleshoot
 <Panel heading="Enable logs for ongoing issues">
 
 If the issue you're encountering is still **ongoing**, enable debug-level logging on disk as follows
-(if not already enabled) to capture helpful information, before [downloading the log files](../../server/troubleshooting/collect-info#download-logs).
+(if not already enabled) to capture helpful information, before [downloading the log files](../../monitoring/debug/collect-info.mdx#download-logs).
 
 ![Admin logs view](./assets/admin-logs-view.png)
 
@@ -128,7 +125,7 @@ Be aware that a server restart will **reset all log settings** to their default 
 To preserve your settings even through a restart, either:
 
   * **Save the settings** via Studio:  
-    [Open each log type dialog](../../server/troubleshooting/collect-info#enable-logs-for-ongoing-issues), 
+    [Open each log type dialog](../../monitoring/debug/collect-info.mdx#enable-logs-for-ongoing-issues), 
     check the "Save ... in `settings.json`" checkbox, and **save**.  
     Note: the exact checkbox label varies between the log types.  
     e.g., 
@@ -155,7 +152,7 @@ Perform the following for each cluster node:
 
 ![download logs](./assets/download-logs-2.png)
 
-1. Navigate to **Manage Server &gt; Admin Logs** and click 'Download' in the "Logs on disk" section.
+1. Navigate to **`Manage Server` > `Admin Logs`** and click 'Download' in the "Logs on disk" section.
 
 2. Either check 'Use minimum start date' to retrieve logs information from the time the server was started,  
    or enter a specific (local) time.
@@ -190,13 +187,13 @@ avoiding potentially losing them due to retention policy.
 
 **Before sending the log files**, perform the following checks:
 
-* Verify that the zip files can be successfully extracted.  
-* Confirm that the logs correspond to the time of the incident.  
-* Verify that the content is similar to the following sample images.
+* Verify that the zip files can be successfully extracted.
+* Confirm that the logs correspond to the time of the incident.
+* Verify that the content is similar to the following sample images:
 
-![Zip file contents 5](./assets/zip-5.png)
+  ![Zip file contents 5](./assets/zip-5.png)
 
-![Zip file contents 6](./assets/zip-6.png)
+  ![Zip file contents 6](./assets/zip-6.png)
 
 </ContentFrame>
 
@@ -206,7 +203,7 @@ avoiding potentially losing them due to retention policy.
 
 * If the incident is over and you can reproduce it, verify first that the logging level is set to '**Debug**'.  
 
-* See how to enable the logs in [Enable logs](../../server/troubleshooting/collect-info.mdx#enable-logs-for-ongoing-issues).
+* See how to enable the logs in [Enable logs](../../monitoring/debug/collect-info.mdx#enable-logs-for-ongoing-issues).
 
 </Panel>
 
