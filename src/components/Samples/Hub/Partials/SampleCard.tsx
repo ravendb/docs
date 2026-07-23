@@ -22,6 +22,7 @@ export interface SampleCardProps {
     url: string;
     tags?: TagWithCategory[];
     onTagClick?: (tagKey: string) => void;
+    onCardClick?: () => void;
     selectedTags?: Set<string>;
     /** Eager-load + high fetch priority for above-the-fold cards (LCP). */
     priority?: boolean;
@@ -37,6 +38,7 @@ export default function SampleCard({
     url,
     tags = [],
     onTagClick,
+    onCardClick,
     selectedTags,
     priority = false,
 }: SampleCardProps) {
@@ -125,7 +127,12 @@ export default function SampleCard({
                 )}
             </div>
             <article className="p-4">
-                <Link to={url} aria-label={title} className={clsx("absolute inset-0 z-1", "!transition-all")} />
+                <Link
+                    to={url}
+                    aria-label={title}
+                    onClick={onCardClick}
+                    className={clsx("absolute inset-0 z-1", "!transition-all")}
+                />
                 <div>
                     <div className="flex flex-col gap-0.5">
                         <Heading as="h4" className="!mb-0 !text-base !font-bold !leading-5 !break-normal">
