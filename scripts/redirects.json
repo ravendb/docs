@@ -615,6 +615,27 @@
         }
     },
     {
+        "key": "/studio/cluster/cluster-dashboard/cluster-dashboard-overview",
+        "value": {
+            "targetUrl": "/monitoring/cluster-dashboard/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/cluster/cluster-dashboard/cluster-dashboard-customize",
+        "value": {
+            "targetUrl": "/monitoring/cluster-dashboard/customize",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/cluster/cluster-dashboard/cluster-dashboard-widgets",
+        "value": {
+            "targetUrl": "/monitoring/cluster-dashboard/widgets",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/glossary",
         "value": {
             "targetUrl": "/glossary/etag",
