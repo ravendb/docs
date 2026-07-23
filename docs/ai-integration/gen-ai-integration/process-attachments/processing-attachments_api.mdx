@@ -3,6 +3,7 @@ title: "Process attachments: API"
 sidebar_label: "Client API"
 description: "Send document attachments to AI models alongside documents using the RavenDB Client API for image analysis and file processing."
 sidebar_position: 1
+supported_languages: ["csharp", "python", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -12,9 +13,7 @@ import ProcessingAttachmentsApiCsharp from './content/_processing-attachments_ap
 import ProcessingAttachmentsApiPython from './content/_processing-attachments_api-python.mdx';
 import ProcessingAttachmentsApiNodejs from './content/_processing-attachments_api-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "python", "nodejs"];
-
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <ProcessingAttachmentsApiCsharp />
