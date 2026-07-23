@@ -6,7 +6,10 @@ export default function CustomVersionDropdown() {
     const pluginId = "default";
     const versions = useVersions(pluginId);
     const latestVersion = useLatestVersion(pluginId);
-    const { activeVersion } = useActiveDocContext(pluginId);
+    const { activeVersion, alternateDocVersions } = useActiveDocContext(pluginId);
+
+    const getVersionTargetPath = (version: (typeof versions)[number]) =>
+        alternateDocVersions[version.name]?.path ?? version.path;
 
     const [open, setOpen] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -69,7 +72,11 @@ export default function CustomVersionDropdown() {
                 <ul className="!p-0 !m-0">
                     {versions.map((version) => (
                         <li key={version.name} className="rounded-sm overflow-hidden">
-                            <Link to={version.path} className="menu__link" onClick={() => setOpen(false)}>
+                            <Link
+                                to={getVersionTargetPath(version)}
+                                className="menu__link"
+                                onClick={() => setOpen(false)}
+                            >
                                 {version.label}.x
                             </Link>
                         </li>
