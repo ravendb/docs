@@ -1,14 +1,20 @@
 import React from "react";
 import clsx from "clsx";
 import Button from "@site/src/components/Common/Button";
+import { trackSampleOutboundClick, trackSampleRepoClick, withSamplesUtm } from "@site/src/components/Samples/analytics";
 
 export interface ActionsCardProps {
     className?: string;
     githubUrl?: string;
     demoUrl?: string;
+    sampleName?: string;
+    techStack?: string;
 }
 
-export default function ActionsCard({ className, githubUrl, demoUrl }: ActionsCardProps) {
+export default function ActionsCard({ className, githubUrl, demoUrl, sampleName, techStack }: ActionsCardProps) {
+    const githubHref = withSamplesUtm(githubUrl, sampleName);
+    const demoHref = withSamplesUtm(demoUrl, sampleName);
+
     return (
         <div
             className={clsx(
@@ -20,13 +26,39 @@ export default function ActionsCard({ className, githubUrl, demoUrl }: ActionsCa
             )}
         >
             <div className="flex flex-col gap-2">
-                {githubUrl && (
-                    <Button url={githubUrl} variant="secondary" size="sm" iconName="github" className="w-full">
+                {githubHref && (
+                    <Button
+                        url={githubHref}
+                        variant="secondary"
+                        size="sm"
+                        iconName="github"
+                        className="w-full"
+                        onClick={() =>
+                            trackSampleRepoClick({
+                                sample_name: sampleName || "",
+                                tech_stack: techStack || "",
+                                destination_url: githubHref,
+                            })
+                        }
+                    >
                         Browse code
                     </Button>
                 )}
-                {demoUrl && (
-                    <Button url={demoUrl} variant="outline" size="sm" iconName="newtab" className="w-full">
+                {demoHref && (
+                    <Button
+                        url={demoHref}
+                        variant="outline"
+                        size="sm"
+                        iconName="newtab"
+                        className="w-full"
+                        onClick={() =>
+                            trackSampleOutboundClick({
+                                destination_url: demoHref,
+                                link_text: "View demo",
+                                sample_name: sampleName,
+                            })
+                        }
+                    >
                         View demo
                     </Button>
                 )}

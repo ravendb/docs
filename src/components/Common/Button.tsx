@@ -38,6 +38,7 @@ export default function Button({
     variant = "secondary",
     size = "sm",
     iconName,
+    onClick,
     ...props
 }: ButtonProps) {
     const baseClasses = clsx(
@@ -52,14 +53,18 @@ export default function Button({
     if (url) {
         const isExternal = !isInternalUrl(url);
         return (
-            <Link {...(isExternal ? { href: url } : { to: url })} className={baseClasses}>
+            <Link
+                {...(isExternal ? { href: url } : { to: url })}
+                className={baseClasses}
+                onClick={onClick as unknown as React.MouseEventHandler<HTMLAnchorElement>}
+            >
                 {children} {iconName && <Icon icon={iconName} className="ms-1" size="xs" />}
             </Link>
         );
     }
 
     return (
-        <button className={baseClasses} {...props}>
+        <button className={baseClasses} onClick={onClick} {...props}>
             {children} {iconName && <Icon icon={iconName} className="ms-1" size="xs" />}
         </button>
     );
