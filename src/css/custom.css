@@ -258,7 +258,13 @@ pre,
 }
 
 .hash-link {
-    @apply flex items-center;
+    @apply flex items-center pl-2 opacity-0 select-none transition-opacity;
+}
+
+/* Reveal the heading anchor on hover/focus. */
+.hash-link:focus,
+*:hover > .hash-link {
+    @apply opacity-100;
 }
 
 /* Custom breadcrumbs styling */
