@@ -24,7 +24,7 @@ const kvsHandle = cf.kvs();
 const defaultVersion = CURRENT_VERSION;
 
 const staticAssetRegex =
-    /\.(html|css|js|jpg|jpeg|png|gif|webp|svg|ico|ttf|otf|woff|woff2|eot|mp4|mp3|webm|avi|mov|pdf|txt|xml)$/i;
+    /\.(html|css|js|json|jpg|jpeg|png|gif|webp|svg|ico|ttf|otf|woff|woff2|eot|mp4|mp3|webm|avi|mov|pdf|txt|xml)$/i;
 
 const versionRegex = /^\/(\d+\.\d+)(\/.*)?/;
 

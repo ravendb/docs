@@ -160,5 +160,24 @@ export default function recentGuidesPlugin(context, _options): Plugin {
             const { setGlobalData } = actions;
             setGlobalData(content);
         },
+        async postBuild({ content, outDir }) {
+            // Static /api/guides.json for external consumers; native guides only.
+            // Absolute url — the widget is embedded off-site, so a relative path won't resolve.
+            const siteUrl = context.siteConfig.url.replace(/\/+$/, "");
+            const toApiGuide = (guide: Guide) => ({
+                title: guide.title,
+                url: siteUrl + guide.permalink,
+                description: guide.description,
+                tags: guide.tags.map((tag) => tag.label),
+                lastUpdatedAt: guide.lastUpdatedAt,
+            });
+
+            const data = content as PluginData | undefined;
+            const guides = (data?.guides ?? []).filter((guide) => !guide.external_url).map(toApiGuide);
+
+            const apiDir = path.join(outDir, "api");
+            fs.mkdirSync(apiDir, { recursive: true });
+            fs.writeFileSync(path.join(apiDir, "guides.json"), JSON.stringify({ guides }), "utf8");
+        },
     };
 }
