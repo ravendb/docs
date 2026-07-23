@@ -1,0 +1,232 @@
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+
+<Admonition type="note" title="">
+
+* Database and collection statistics can be retrieved using the client API.  
+
+* By default, statistics are retrieved for the database defined in the Document Store.  
+  To get database and collection statistics for another database use [ForDatabase](../../../monitoring/statistics/client-api.mdx#get-statistics-for-another-database).  
+
+* In this article:
+    * [Get collection statistics](../../../monitoring/statistics/client-api.mdx#get-collection-statistics)
+    * [Get detailed collection statistics](../../../monitoring/statistics/client-api.mdx#get-detailed-collection-statistics)
+    * [Get database statistics](../../../monitoring/statistics/client-api.mdx#get-database-statistics)
+    * [Get detailed database statistics](../../../monitoring/statistics/client-api.mdx#get-detailed-database-statistics)
+    * [Get statistics for another database](../../../monitoring/statistics/client-api.mdx#get-statistics-for-another-database)
+
+</Admonition>
+
+<Panel heading="Get collection statistics">
+
+To get collection statistics, use `GetCollectionStatisticsOperation`:
+
+```csharp
+// Pass an instance of GetCollectionStatisticsOperation to the store
+CollectionStatistics stats =
+    store.Maintenance.Send(new GetCollectionStatisticsOperation());
+```
+<br />
+
+The statistics are returned in a `CollectionStatistics` object:
+
+```csharp
+public class CollectionStatistics
+{
+    // Total number of documents in all collections
+    public long CountOfDocuments { get; set; }
+    // Total number of conflicts
+    public long CountOfConflicts { get; set; }
+    // Total number of revision documents
+    public long CountOfRevisionDocuments { get; set; }
+    // Total number of tombstones
+    public long CountOfTombstones { get; set; }
+    // Total number of time-series deleted ranges
+    public long CountOfTimeSeriesDeletedRanges { get; set; }
+    // Total number of document conflicts
+    public long CountOfDocumentsConflicts { get; set; }
+    // Total number of attachments
+    public long CountOfAttachments { get; set; }
+    // Total number of counter-group entries
+    public long CountOfCounterEntries { get; set; }
+    // Total number of time-series segments
+    public long CountOfTimeSeriesSegments { get; set; }
+    // Number of documents per collection
+    public Dictionary<string, long> Collections { get; set; }
+}
+```
+
+</Panel>
+
+<Panel heading="Get detailed collection statistics">
+
+To get detailed collection statistics, use `GetDetailedCollectionStatisticsOperation`:
+
+```csharp
+// Pass an instance of GetDetailedCollectionStatisticsOperation to the store
+DetailedCollectionStatistics stats =
+    store.Maintenance.Send(new GetDetailedCollectionStatisticsOperation());
+```
+<br />
+
+The statistics are returned in a `DetailedCollectionStatistics` object,
+with a `CollectionDetails` entry per collection:
+
+```csharp
+public class DetailedCollectionStatistics
+{
+    // Total number of documents in all collections
+    public long CountOfDocuments { get; set; }
+    // Total number of conflicts
+    public long CountOfConflicts { get; set; }
+    // Total number of revision documents
+    public long CountOfRevisionDocuments { get; set; }
+    // Total number of tombstones
+    public long CountOfTombstones { get; set; }
+    // Total number of time-series deleted ranges
+    public long CountOfTimeSeriesDeletedRanges { get; set; }
+    // Total number of document conflicts
+    public long CountOfDocumentsConflicts { get; set; }
+    // Total number of attachments
+    public long CountOfAttachments { get; set; }
+    // Total number of counter-group entries
+    public long CountOfCounterEntries { get; set; }
+    // Total number of time-series segments
+    public long CountOfTimeSeriesSegments { get; set; }
+    // Details per collection
+    public Dictionary<string, CollectionDetails> Collections { get; set; }
+}
+
+public class CollectionDetails
+{
+    public string Name { get; set; }
+    public long CountOfDocuments { get; set; }
+    public long CountOfTombstones { get; set; }
+    public long CountOfRevisions { get; set; }
+    public long CountOfTimeSeriesDeletedRanges { get; set; }
+    public long CountOfCounterEntries { get; set; }
+    public long CountOfTimeSeriesSegments { get; set; }
+    public Size TimeSeriesSegmentsSize { get; set; }
+    public Size Size { get; set; }
+    public Size DocumentsSize { get; set; }
+    public Size TombstonesSize { get; set; }
+    public Size RevisionsSize { get; set; }
+    public Size TimeSeriesDeletedRangesSize { get; set; }
+    public Size CounterEntriesSize { get; set; }
+}
+```
+
+</Panel>
+
+<Panel heading="Get database statistics">
+
+To get database statistics, use `GetStatisticsOperation`:
+
+```csharp
+// Pass an instance of GetStatisticsOperation to the store
+DatabaseStatistics stats =
+    store.Maintenance.Send(new GetStatisticsOperation());
+```
+<br />
+
+The statistics are returned in a `DatabaseStatistics` object:
+
+```csharp
+public class DatabaseStatistics
+{
+    // Last document etag in the database
+    public long? LastDocEtag { get; set; }
+    // Last database etag
+    public long? LastDatabaseEtag { get; set; }
+    // Total number of indexes in the database
+    public int CountOfIndexes { get; set; }
+    // Total number of documents in the database
+    public long CountOfDocuments { get; set; }
+    // Total number of revision documents in the database
+    public long CountOfRevisionDocuments { get; set; }
+    // Total number of document conflicts in the database
+    public long CountOfDocumentsConflicts { get; set; }
+    // Total number of tombstones in the database
+    public long CountOfTombstones { get; set; }
+    // Total number of conflicts in the database
+    public long CountOfConflicts { get; set; }
+    // Total number of counter-group entries in the database
+    public long CountOfCounterEntries { get; set; }
+    // Total number of time-series segments in the database
+    public long CountOfTimeSeriesSegments { get; set; }
+    // Total number of attachments in the database (local and remote)
+    public long CountOfAttachments { get; set; }
+    // Total number of unique attachments in the database (local only)
+    public long CountOfUniqueAttachments { get; set; }
+    // Names of the stale indexes in the database
+    public string[] StaleIndexes => Indexes?.Where(x => x.IsStale).Select(x => x.Name).ToArray();
+    // Statistics for each index in the database
+    public IndexInformation[] Indexes { get; set; }
+    // Global change vector of the database
+    public string DatabaseChangeVector { get; set; }
+    // Database identifier
+    public string DatabaseId { get; set; }
+    // Indicates whether the process is 64-bit
+    public bool Is64Bit { get; set; }
+    // Component handling the memory-mapped files
+    public string Pager { get; set; }
+    // Last time an item was indexed
+    public DateTime? LastIndexingTime { get; set; }
+    // Database size on disk
+    public Size SizeOnDisk { get; set; }
+    // Temp buffers size on disk
+    public Size TempBuffersSizeOnDisk { get; set; }
+    // Number of transaction-merger queue operations
+    public int NumberOfTransactionMergerQueueOperations { get; set; }
+}
+```
+
+</Panel>
+
+<Panel heading="Get detailed database statistics">
+
+To get detailed database statistics, use `GetDetailedStatisticsOperation`:
+
+```csharp
+// Pass an instance of GetDetailedStatisticsOperation to the store
+DetailedDatabaseStatistics stats =
+    store.Maintenance.Send(new GetDetailedStatisticsOperation());
+```
+<br />
+
+`DetailedDatabaseStatistics` extends `DatabaseStatistics` with additional counts:
+
+```csharp
+public class DetailedDatabaseStatistics : DatabaseStatistics
+{
+    // Total number of identities in the database
+    public long CountOfIdentities { get; set; }
+    // Total number of compare-exchange values in the database
+    public long CountOfCompareExchange { get; set; }
+    // Total number of compare-exchange tombstones in the database
+    public long CountOfCompareExchangeTombstones { get; set; }
+    // Total number of time-series deleted ranges in the database
+    public long CountOfTimeSeriesDeletedRanges { get; set; }
+    // Total number of remote attachments in the database
+    public long CountOfRemoteAttachments { get; set; }
+}
+```
+
+</Panel>
+
+<Panel heading="Get statistics for another database">
+
+* By default, you get statistics for the database defined in your Document Store.  
+* Use `ForDatabase` to get database and collection statistics for another database.  
+* `ForDatabase` can be used with any of the statistics options shown above.
+
+```csharp
+// Get statistics for 'AnotherDatabase':
+DatabaseStatistics stats =
+    store.Maintenance.ForDatabase("AnotherDatabase").Send(new GetStatisticsOperation());
+```
+<br />
+
+Learn more about [switching operations to another database](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
+
+</Panel>

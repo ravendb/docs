@@ -107,13 +107,13 @@ import Panel from '@site/src/components/Panel';
    By default, RavenDB stores logs in the `Logs` directory under the extracted `Server` folder.
     
      You can customize this location.  
-     The value you enter will be written to the _settings.json_ file as the value of the [Logs.Path](../../../server/configuration/logs-configuration.mdx#logspath) configuration key.
+     The value you enter will be written to the _settings.json_ file as the value of the [Logs.Path](../../../monitoring/logs/configuration.mdx#logspath) configuration key.
     
      This directory will be used on all nodes in the cluster.
      When joining nodes to your cluster using a [setup package](../../../start/installation/setup-wizard/use-setup-package),  
      make sure this directory exists on each node; otherwise, cluster setup may fail.  
     
-     Learn more about the RavenDB logging system in [Logging](../../../server/troubleshooting/logging).      
+     Learn more about the RavenDB logging system in the [Overview](../../../monitoring/logs/overview) page.      
     
 4. **Auto indexing engine type**:  
    Choose which search engine RavenDB will use for auto-indexes.  

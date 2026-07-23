@@ -21,6 +21,13 @@
         }
     },
     {
+        "key": "/server/administration/statistics",
+        "value": {
+            "targetUrl": "/monitoring/statistics/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/client-api/session/querying/what-is-rql",
         "value": {
             "targetUrl": "/querying/rql/what-is-rql",
@@ -314,6 +321,13 @@
         }
     },
     {
+        "key": "/client-api/operations/maintenance/get-stats",
+        "value": {
+            "targetUrl": "/monitoring/statistics/client-api",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/client-api/operations/maintenance/indexes",
         "value": {
             "targetUrl": "/client-api/operations/maintenance/indexes/get-index",
@@ -395,6 +409,48 @@
         "value": {
             "targetUrl": "/server/troubleshooting/logging",
             "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/server/troubleshooting/logging",
+        "value": {
+            "targetUrl": "/monitoring/logs/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/server/troubleshooting/traffic-watch",
+        "value": {
+            "targetUrl": "/monitoring/traffic-watch/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/server/troubleshooting/debug-routes",
+        "value": {
+            "targetUrl": "/monitoring/debug/debug-endpoints",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/server/troubleshooting/collect-info",
+        "value": {
+            "targetUrl": "/monitoring/collect-info",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/server/troubleshooting/debug-package/create-debug-package",
+        "value": {
+            "targetUrl": "/monitoring/debug/debug-package/create-debug-package",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/server/troubleshooting/debug-package/debug-package-analyzer",
+        "value": {
+            "targetUrl": "/monitoring/debug/debug-package/debug-package-analyzer",
+            "minimumVersion": "7.2"
         }
     },
     {

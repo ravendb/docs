@@ -33,7 +33,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * Task errors and the health states they drive are exposed in
   [Studio](../../monitoring/task-errors/studio-views.mdx),
-  [HTTP endpoints](../../server/troubleshooting/debug-routes.mdx#debug-endpoints),
+  [HTTP endpoints](../debug/debug-endpoints.mdx#debug-endpoints),
   [SNMP OIDs](../integrations/snmp/overview.mdx#list-of-oids),
   [Prometheus metrics](../integrations/prometheus.mdx#metrics-provided-by-the-prometheus-endpoint),
   and [JSON monitoring endpoints](../../monitoring/json-monitoring-endpoints.mdx).  
@@ -218,7 +218,7 @@ Task errors and the resulting health states are exposed in several places. Most 
 start with Studio; automated monitoring tools usually pull from SNMP OIDs, Prometheus
 metrics, or monitoring endpoints.  
 
-[Inspect and manage task errors via the HTTP endpoints](../../server/troubleshooting/debug-routes.mdx)  
+[Inspect and manage task errors via the HTTP endpoints](../debug/debug-endpoints.mdx)  
 [Inspect and manage task errors via Studio](../../monitoring/task-errors/studio-views.mdx)  
 
 Where to find them in detail:  
@@ -232,7 +232,7 @@ Where to find them in detail:
     * `POST /databases/*/etl/retry-batch` forces an immediate retry of an ETL task currently in
       fallback mode.  
   
-  See [Debug Endpoints](../../server/troubleshooting/debug-routes.mdx#debug-endpoints) for the full reference.  
+  See [Debug Endpoints](../debug/debug-endpoints.mdx#debug-endpoints) for the full reference.  
 
 * **Studio views**  
   The `Task Errors` view is reachable from `Tasks` **>** `Task Errors` and from
