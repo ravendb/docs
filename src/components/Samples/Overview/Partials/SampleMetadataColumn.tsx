@@ -5,6 +5,7 @@ import clsx from "clsx";
 import Heading from "@theme/Heading";
 import Tag from "@site/src/theme/Tag";
 import type { PluginData } from "@site/src/components/Samples/types";
+import { sampleSlugFromPermalink } from "@site/src/components/Samples/analytics";
 import ActionsCard from "./ActionsCard";
 import RelatedResource from "./RelatedResource";
 
@@ -60,7 +61,7 @@ function TagSection({ title, tags }: TagSectionProps) {
 }
 
 export default function SampleMetadataColumn({ className }: SampleMetadataColumnProps) {
-    const { frontMatter } = useDoc();
+    const { frontMatter, metadata } = useDoc();
     const pluginData = usePluginData("recent-samples-plugin") as PluginData | undefined;
 
     const { challengesSolutionsTagsData, featureTagsData, techStackTagsData } = useMemo(() => {
@@ -102,9 +103,19 @@ export default function SampleMetadataColumn({ className }: SampleMetadataColumn
     const featureTags = getTagsWithLabels(featureTagKeys, featureTagsData);
     const techStackTags = getTagsWithLabels(techStackTagKeys, techStackTagsData);
 
+    const sampleName = sampleSlugFromPermalink(metadata.permalink);
+    const techStack = techStackTags.map((tag) => tag.label).join(", ");
+
     return (
         <div className={clsx("sticky top-[90px] flex flex-col gap-4", className)}>
-            {(repositoryUrl || demoUrl) && <ActionsCard githubUrl={repositoryUrl} demoUrl={demoUrl} />}
+            {(repositoryUrl || demoUrl) && (
+                <ActionsCard
+                    githubUrl={repositoryUrl}
+                    demoUrl={demoUrl}
+                    sampleName={sampleName}
+                    techStack={techStack}
+                />
+            )}
 
             <TagSection title="Challenges & Solutions" tags={challengesSolutionsTags} />
             <TagSection title="Feature" tags={featureTags} />

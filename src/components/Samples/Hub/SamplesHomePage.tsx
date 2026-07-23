@@ -9,6 +9,7 @@ import Drawer from "@site/src/components/Common/Drawer";
 import useBoolean from "@site/src/hooks/useBoolean";
 import Button from "@site/src/components/Common/Button";
 import clsx from "clsx";
+import { trackFilterApplied } from "../analytics";
 
 const categoryLabels: Record<string, string> = {
     "tech-stack": "Tech Stack",
@@ -89,6 +90,13 @@ export default function SamplesHomePage() {
             newSelected.add(tagKey);
         }
         setSelectedTags(newSelected);
+
+        const tag = allTags.find((t) => t.key === tagKey);
+        trackFilterApplied({
+            filter_category: categoryLabels[tag?.category || "other"] || "Other",
+            filter_value: tagKey,
+            match_logic: matchLogic,
+        });
     };
 
     const { value: isFilterDrawerOpen, setTrue: openFilterDrawer, setFalse: closeFilterDrawer } = useBoolean(false);
