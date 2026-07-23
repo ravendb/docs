@@ -31,6 +31,10 @@ import Image from "@theme/IdealImage";
 
 SSO Access in RavenDB 7.2 works via an external application that serves as a reverse proxy in front of the RavenDB cluster.
 
+<Admonition type="note" title="Enterprise license required">
+SSO is an Enterprise-tier feature that requires an active Enterprise license with SSO support. Read more about licenses in the [licensing overview](https://docs.ravendb.net/licensing/overview).
+</Admonition>
+
 You need to configure two things in RavenDB:
 
 * The SSO server certificate, which is the public certificate used by the proxy. RavenDB trusts certificates issued through it.
@@ -58,7 +62,7 @@ When RavenDB receives the certificate, it:
 2. Reads the user's identity from the certificate extension.
 3. Maps that identity to the configured clearance and permissions.
 
-The proxy must remain the only component that controls the SSO server certificate's private key. Otherwise, the certificate chain would no longer prove that the request came through the trusted proxy. SSO also requires an appropriate RavenDB license. If the registration requests are rejected, confirm that your license includes SSO support.
+The proxy must remain the only component that controls the SSO server certificate's private key. Otherwise, the certificate chain would no longer prove that the request came through the trusted proxy.
 
 ## Who can do what
 
