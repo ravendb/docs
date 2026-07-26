@@ -638,7 +638,7 @@
     {
         "key": "/studio/database/stats/storage-report",
         "value": {
-            "targetUrl": "/monitoring/performance-views/storage-report",
+            "targetUrl": "/monitoring/performance-views/storage-reports",
             "minimumVersion": "7.2"
         }
     },
