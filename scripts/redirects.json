@@ -636,6 +636,13 @@
         }
     },
     {
+        "key": "/studio/database/stats/storage-report",
+        "value": {
+            "targetUrl": "/monitoring/performance-views/storage-report",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/glossary",
         "value": {
             "targetUrl": "/glossary/etag",
