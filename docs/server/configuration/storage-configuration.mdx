@@ -36,6 +36,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [Storage.EnablePrefetching](../../server/configuration/storage-configuration.mdx#storageenableprefetching)
    * [Storage.ReadAheadKbAlertThresholdInKb](../../server/configuration/storage-configuration.mdx#storagereadaheadkbalertthresholdinkb)
    * [Storage.UseSequentialReadAheadHintForJournalRecovery](../../server/configuration/storage-configuration.mdx#storageusesequentialreadaheadhintforjournalrecovery)
+   * [Storage.IO.Metrics.Enabled](../../server/configuration/storage-configuration.mdx#storageiometricsenabled)
+   * [Storage.IoMetricsCleanupIntervalInHrs](../../server/configuration/storage-configuration.mdx#storageiometricscleanupintervalinhrs)
+   * [Storage.SyncJournalsCountThreshold](../../server/configuration/storage-configuration.mdx#storagesyncjournalscountthreshold)
 
 </Admonition>
 
@@ -256,6 +259,46 @@ Has no effect on Windows or macOS.
 
 - **Type**: `bool`
 - **Default**: `true` on Linux, `false` on other platforms
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Storage.IO.Metrics.Enabled
+
+Enables the collection of metrics for each I/O operation RavenDB performs.  
+The [IO Stats](../../monitoring/performance-views/io-stats.mdx) Studio views draw these metrics.  
+Set to `false` to collect nothing.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Storage.IoMetricsCleanupIntervalInHrs
+
+The interval, in hours, at which RavenDB removes the collected I/O metrics from memory.  
+The cleanup runs as part of a database's idle operations.
+
+- **Type**: `int`
+- **Default**: `24`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Storage.SyncJournalsCountThreshold
+
+The number of journal files a storage environment accumulates before RavenDB forces a sync of the
+data file and removes the journal files that are no longer in use.
+
+- **Type**: `int`
+- **Default**: `2`
 - **Scope**: Server-wide or per database
 
 </ContentFrame>
