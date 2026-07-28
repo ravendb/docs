@@ -338,7 +338,7 @@
         "key": "/client-api/operations/patching",
         "value": {
             "targetUrl": "/client-api/operations/patching/single-document",
-            "minimumVersion": "6.2"
+            "minimumVersion": "7.2"
         }
     },
     {
