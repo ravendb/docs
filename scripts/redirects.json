@@ -351,7 +351,7 @@
     {
         "key": "/client-api/operations/patching/set-based",
         "value": {
-            "targetUrl": "/documents/patching-documents/patch-multiple-documents/patch-multiple-documents",
+            "targetUrl": "/documents/patching-documents/patch-multiple-documents/client-api",
             "minimumVersion": "7.2"
         }
     },

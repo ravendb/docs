@@ -90,14 +90,14 @@ update {
 * **Stale indexes**:  
   When the query uses an auto-index or static index, RavenDB rejects stale results by default.  
   You can explicitly allow patching based on stale index results, but the selected set may omit newly matching documents or include documents based on outdated indexed values.  
-  See [Allow patching based on stale index results](../../../../documents/patching-documents/patch-multiple-documents/patch-multiple-documents.mdx#allow-patching-based-on-stale-index-results).
+  See [Allow patching based on stale index results](../../../../documents/patching-documents/patch-multiple-documents/client-api.mdx#allow-patching-based-on-stale-index-results).
 
 * **Map-reduce indexes**:  
   Set-based patch operations cannot be executed against map-reduce indexes.
 
 * **Long-running operations**:  
   `PatchByQueryOperation` runs as a background server operation and may take a long time to complete.  
-  The `sendAsync` method returns an `Operation` object that you can use to wait for completion  
+  The `send` method resolves to an `OperationCompletionAwaiter` object that you can use to wait for completion  
   or kill the operation.  
   See [Manage lengthy operations](../../../../client-api/operations/what-are-operations.mdx#manage-lengthy-operations).
 
@@ -114,23 +114,23 @@ update {
 This query targets every document in the `Orders` collection and does not require an index.
 
 <TabItem value="update_whole_collection" label="update_whole_collection">
-```java
+```js
 // Update all documents in the Orders collection
 // ==============================================
 
 // Define the query and JavaScript update clause.
-PatchByQueryOperation patchByQueryOp = new PatchByQueryOperation(
-    "from Orders as o " +
-    "update " +
-    "{ " +
-    "    o.Freight += 10; " +
-    "}");
+const patchByQueryOp = new PatchByQueryOperation(
+    `from Orders as o
+     update
+     {
+         o.Freight += 10;
+     }`);
 
 // Send the operation to the server.
-Operation operation = store.operations().sendAsync(patchByQueryOp);
+const operation = await documentStore.operations.send(patchByQueryOp);
 
 // Wait for the background operation to complete.
-operation.waitForCompletion();
+await operation.waitForCompletion();
 ```
 </TabItem>
 
@@ -142,22 +142,23 @@ operation.waitForCompletion();
 Changing a document’s `@collection` metadata requires deleting and recreating the document with the same ID.
 
 <TabItem value="update_collection_name" label="update_collection_name">
-```java
+```js
 // Recreate all Orders documents in the ArchivedOrders collection
 // ===============================================================
 
-PatchByQueryOperation patchByQueryOp = new PatchByQueryOperation(
-    "from Orders " +
-    "update " +
-    "{ " +
-    "    var documentId = id(this); " +
-    "    del(documentId); " +
-    "    this['@metadata']['@collection'] = 'ArchivedOrders'; " +
-    "    put(documentId, this); " +
-    "}");
+const patchByQueryOp = new PatchByQueryOperation(
+    `from Orders
+     update
+     {
+         var documentId = id(this);
 
-Operation operation = store.operations().sendAsync(patchByQueryOp);
-operation.waitForCompletion();
+         del(documentId);
+         this["@metadata"]["@collection"] = "ArchivedOrders";
+         put(documentId, this);
+     }`);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+await operation.waitForCompletion();
 ```
 </TabItem>
 <br/>    
@@ -177,21 +178,21 @@ When [revisions](../../../../document-extensions/revisions/overview.mdx) are ena
 RavenDB evaluates this query using a matching auto-index, creating one if necessary.
 
 <TabItem value="update_by_dynamic_query" label="update_by_dynamic_query">
-```java
+```js
 // Update documents selected by a dynamic query
 // ============================================
 
 // Set the discount on every line of each order handled by the specified employee.
-PatchByQueryOperation patchByQueryOp = new PatchByQueryOperation(
-    "from Orders as o " +
-    "where o.Employee = 'employees/4-A' " +
-    "update " +
-    "{ " +
-    "    o.Lines.forEach(line => line.Discount = 0.3); " +
-    "}");
+const patchByQueryOp = new PatchByQueryOperation(
+    `from Orders as o
+     where o.Employee = 'employees/4-A'
+     update
+     {
+         o.Lines.forEach(line => line.Discount = 0.3);
+     }`);
 
-Operation operation = store.operations().sendAsync(patchByQueryOp);
-operation.waitForCompletion();
+const operation = await documentStore.operations.send(patchByQueryOp);
+await operation.waitForCompletion();
 ```
 </TabItem>
 
@@ -207,35 +208,33 @@ The index must be a map index; set-based patching does not support map-reduce in
 
 <Tabs>
 <TabItem value="patch-operation" label="Patch operation">
-```java
+```js
 // Deploy the static index.
-new Products_BySupplier().execute(store);
+await new Products_BySupplier().execute(documentStore);
 
-IndexQuery indexQuery = new IndexQuery(
-    "from index 'Products/BySupplier' as p " +
-    "where p.Supplier = 'suppliers/12-A' " +
-    "update " +
-    "{ " +
-    "    p.Supplier = 'suppliers/13-A'; " +
-    "}");
+const patchByQueryOp = new PatchByQueryOperation(
+    `from index 'Products/BySupplier' as p
+     where p.Supplier = 'suppliers/12-A'
+     update
+     {
+         p.Supplier = 'suppliers/13-A';
+     }`);
 
-QueryOperationOptions options = new QueryOperationOptions();
-// Wait for the index to become non-stale.
-options.setStaleTimeout(Duration.ofSeconds(30));
-
-PatchByQueryOperation patchByQueryOp = new PatchByQueryOperation(indexQuery, options);
-
-Operation operation = store.operations().sendAsync(patchByQueryOp);
-operation.waitForCompletion();
+const operation = await documentStore.operations.send(patchByQueryOp);
+await operation.waitForCompletion();
 ```
 </TabItem>
 
 <TabItem value="index-definition" label="Index definition">
-```java
-public class Products_BySupplier extends AbstractIndexCreationTask {
-    public Products_BySupplier() {
-        map = "from product in docs.Products " +
-              "select new { Supplier = product.Supplier }";
+```js
+class Products_BySupplier extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        // Define the index-fields
+        this.map("Products", p => ({
+            Supplier: p.Supplier
+        }));
     }
 }
 ```
@@ -251,19 +250,19 @@ Use `@all_docs` to select documents from every collection without requiring an i
 Use this scope carefully because the same patch is applied across all collections.
 
 <TabItem value="update_all_documents" label="update_all_documents">
-```java
+```js
 // Update documents across all collections
 // =======================================
 
-PatchByQueryOperation patchByQueryOp = new PatchByQueryOperation(
-    "from @all_docs " +
-    "update " +
-    "{ " +
-    "    this.Updated = true; " +
-    "}");
+const patchByQueryOp = new PatchByQueryOperation(
+    `from @all_docs
+     update
+     {
+         this.Updated = true;
+     }`);
 
-Operation operation = store.operations().sendAsync(patchByQueryOp);
-operation.waitForCompletion();
+const operation = await documentStore.operations.send(patchByQueryOp);
+await operation.waitForCompletion();
 ```
 </TabItem>
 
@@ -276,20 +275,20 @@ Use `@all_docs` to select documents by ID across different collections.
 This query does not require an index, and IDs that do not exist are not patched.
 
 <TabItem value="update_by_id" label="update_by_id">
-```java
+```js
 // Update documents with the specified IDs
 // =======================================
 
-PatchByQueryOperation patchByQueryOp = new PatchByQueryOperation(
-    "from @all_docs as d " +
-    "where id(d) in ('orders/1-A', 'companies/1-A') " +
-    "update " +
-    "{ " +
-    "    d.Updated = true; " +
-    "}");
+const patchByQueryOp = new PatchByQueryOperation(
+    `from @all_docs as d
+     where id(d) in ('orders/1-A', 'companies/1-A')
+     update
+     {
+         d.Updated = true;
+     }`);
 
-Operation operation = store.operations().sendAsync(patchByQueryOp);
-operation.waitForCompletion();
+const operation = await documentStore.operations.send(patchByQueryOp);
+await operation.waitForCompletion();
 ```
 </TabItem>
 
@@ -298,27 +297,28 @@ operation.waitForCompletion();
 
 ### Update documents by ID using parameters
 
-Use `Parameters` to pass the document IDs without embedding them in the RQL string.  
+Use `queryParameters` to pass the document IDs without embedding them in the RQL string.  
 The ID-based query does not require an index.
 
 <TabItem value="update_by_id_using_parameters" label="update_by_id_using_parameters">
-```java
-IndexQuery indexQuery = new IndexQuery(
-    "from @all_docs as d " +
-    "where id(d) in ($ids) " +
-    "update " +
-    "{ " +
-    "    d.Updated = true; " +
-    "}");
+```js
+const indexQuery = new IndexQuery();
 
-Parameters parameters = new Parameters();
-parameters.put("ids", new String[] { "orders/830-A", "companies/91-A" });
-indexQuery.setQueryParameters(parameters);
+indexQuery.query = `from @all_docs as d
+                    where id(d) in ($ids)
+                    update
+                    {
+                        d.Updated = true;
+                    }`;
 
-PatchByQueryOperation patchByQueryOp = new PatchByQueryOperation(indexQuery);
+indexQuery.queryParameters = {
+    ids: ["orders/830-A", "companies/91-A"]
+};
 
-Operation operation = store.operations().sendAsync(patchByQueryOp);
-operation.waitForCompletion();
+const patchByQueryOp = new PatchByQueryOperation(indexQuery);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+await operation.waitForCompletion();
 ```
 </TabItem>
 
@@ -335,26 +335,27 @@ If the counter does not exist, RavenDB creates it with the incremented value.
 This example uses a direct collection query and does not require an index.
 
 <TabItem value="increment_counter" label="increment_counter">
-```java
+```js
 // Increment a counter on every Product document
 // =============================================
 
-IndexQuery query = new IndexQuery(
-    "from Products as p " +
-    "update " +
-    "{ " +
-    "    incrementCounter(p, $counterName, $incrementBy); " +
-    "}");
+const query = new IndexQuery();
 
-Parameters parameters = new Parameters();
-parameters.put("counterName", "PriceUpdates");
-parameters.put("incrementBy", 1);
-query.setQueryParameters(parameters);
+query.query = `from Products as p
+               update
+               {
+                   incrementCounter(p, $counterName, $incrementBy);
+               }`;
 
-PatchByQueryOperation patchByQueryOp = new PatchByQueryOperation(query);
+query.queryParameters = {
+    counterName: "PriceUpdates",
+    incrementBy: 1
+};
 
-Operation operation = store.operations().sendAsync(patchByQueryOp);
-operation.waitForCompletion();
+const patchByQueryOp = new PatchByQueryOperation(query);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+await operation.waitForCompletion();
 ```
 </TabItem>
 <br/>
@@ -377,27 +378,28 @@ Time series timestamps supplied to patch scripts are treated as UTC.
 This example uses a direct collection query and does not require an index.
 
 <TabItem value="append_time_series_entry" label="append_time_series_entry">
-```java
+```js
 // Record the current product price in a time series
 // =================================================
 
-IndexQuery query = new IndexQuery(
-    "from Products as p " +
-    "update " +
-    "{ " +
-    "    timeseries(p, $timeSeriesName) " +
-    "        .append($timestamp, [p.PricePerUnit]); " +
-    "}");
+const query = new IndexQuery();
 
-Parameters parameters = new Parameters();
-parameters.put("timeSeriesName", "PriceHistory");
-parameters.put("timestamp", NetISO8601Utils.format(new Date(), true));
-query.setQueryParameters(parameters);
+query.query = `from Products as p
+               update
+               {
+                   timeseries(p, $timeSeriesName)
+                       .append($timestamp, [p.PricePerUnit]);
+               }`;
 
-PatchByQueryOperation patchByQueryOp = new PatchByQueryOperation(query);
+query.queryParameters = {
+    timeSeriesName: "PriceHistory",
+    timestamp: new Date().toISOString()
+};
 
-Operation operation = store.operations().sendAsync(patchByQueryOp);
-operation.waitForCompletion();
+const patchByQueryOp = new PatchByQueryOperation(query);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+await operation.waitForCompletion();
 ```
 </TabItem>
 <br/>
@@ -420,31 +422,33 @@ The patch is applied to each selected document’s current version.
 When necessary, recheck the condition inside the `update` clause to avoid modifying documents that no longer match.
 
 <TabItem value="update_stale_results" label="update_stale_results">
-```java
-IndexQuery query = new IndexQuery(
-    "from Orders as o " +
-    "where o.Company = $currentCompany " +
-    "update " +
-    "{ " +
-    // Recheck the current document value because the index result may be stale.
-    "    if (o.Company === $currentCompany) " +
-    "    { " +
-    "        o.Company = $newCompany; " +
-    "    } " +
-    "}");
+```js
+const query = new IndexQuery();
 
-Parameters parameters = new Parameters();
-parameters.put("currentCompany", "companies/12-A");
-parameters.put("newCompany", "companies/13-A");
-query.setQueryParameters(parameters);
+query.query = `from Orders as o
+               where o.Company = $currentCompany
+               update
+               {
+                   // Recheck the current document value because the index result may be stale.
+                   if (o.Company === $currentCompany)
+                   {
+                       o.Company = $newCompany;
+                   }
+               }`;
 
-QueryOperationOptions options = new QueryOperationOptions();
-options.setAllowStale(true);
+query.queryParameters = {
+    currentCompany: "companies/12-A",
+    newCompany: "companies/13-A"
+};
 
-PatchByQueryOperation patchByQueryOp = new PatchByQueryOperation(query, options);
+const options = {
+    allowStale: true
+};
 
-Operation operation = store.operations().sendAsync(patchByQueryOp);
-operation.waitForCompletion();
+const patchByQueryOp = new PatchByQueryOperation(query, options);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+await operation.waitForCompletion();
 ```
 </TabItem>
 
@@ -456,53 +460,42 @@ operation.waitForCompletion();
     
 #### Send syntax
 
-```java
-public Operation sendAsync(IOperation<OperationIdResult> operation);
-
-public Operation sendAsync(
-    IOperation<OperationIdResult> operation,
-    SessionInfo sessionInfo);
+```js
+await documentStore.operations.send(operation);
 ```
 <br/>
 
-| Parameter       | Type                              | Description                                                                 |
-|-----------------|-----------------------------------|-----------------------------------------------------------------------------|
-| **operation**   | `IOperation<OperationIdResult>`   | The operation to execute. For the examples in this article, pass a `PatchByQueryOperation`. |
-| **sessionInfo** | `SessionInfo`                     | Optional session context. Normally omitted when sending the operation directly. |
+| Parameter     | Type                    | Description                                                                                 |
+|---------------|-------------------------|-----------------------------------------------------------------------------------------------|
+| **operation** | `PatchByQueryOperation` | The operation to execute, describing the query and the patch to apply.                      |
 
-| Return value | Description |
-|--------------|-------------|
-| `Operation`  | A handle used to monitor the server-side operation, wait for its completion, or request its cancellation. |
+| Return value                          | Description |
+|---------------------------------------|-------------|
+| `Promise<OperationCompletionAwaiter>` | A promise that resolves to a handle used to wait for the server-side operation to complete (`waitForCompletion`) or to request its cancellation (`kill`). |
 
 #### PatchByQueryOperation syntax
 
-```java
-// Available constructors:
-public PatchByQueryOperation(String queryToUpdate);
-
-public PatchByQueryOperation(IndexQuery queryToUpdate);
-
-public PatchByQueryOperation(
-    IndexQuery queryToUpdate,
-    QueryOperationOptions options);
+```js
+// Available overloads:
+patchByQueryOp = new PatchByQueryOperation(queryToUpdate);
+patchByQueryOp = new PatchByQueryOperation(queryToUpdate, options);
 ```
 <br/>
 
 | Parameter         | Type                    | Description |
 |-------------------|-------------------------|-------------|
-| **queryToUpdate** | `String`                | The complete RQL patch statement, containing the query that selects documents and the `update` clause with the JavaScript patching code. |
+| **queryToUpdate** | `string`                | The complete RQL patch statement, containing the query that selects documents and the `update` clause with the JavaScript patching code. |
 | **queryToUpdate** | `IndexQuery`            | An object containing the RQL patch statement and, optionally, query parameters. |
 | **options**       | `QueryOperationOptions` | Options that control how the patch operation is executed. |
 
 #### Relevant IndexQuery properties
 
-```java
-// Relevant accessors inherited by IndexQuery:
-public String getQuery();
-public void setQuery(String query);
-
-public Parameters getQueryParameters();
-public void setQueryParameters(Parameters queryParameters);
+```js
+// Relevant properties inherited by IndexQuery:
+class IndexQuery {
+    query;           // string
+    queryParameters; // Record<string, object>
+}
 ```
 <br/>
 
@@ -513,22 +506,18 @@ public void setQueryParameters(Parameters queryParameters);
 
 #### QueryOperationOptions properties
 
-```java
-public class QueryOperationOptions {
-    public boolean isAllowStale();
-    public void setAllowStale(boolean allowStale);
+```js
+// Options for 'PatchByQueryOperation'
+{
+    allowStale;              // boolean
 
-    public boolean isIgnoreMaxStepsForScript();
-    public void setIgnoreMaxStepsForScript(boolean ignoreMaxStepsForScript);
+    ignoreMaxStepsForScript; // boolean
 
-    public Duration getStaleTimeout();
-    public void setStaleTimeout(Duration staleTimeout);
+    staleTimeout;            // number
 
-    public Integer getMaxOpsPerSecond();
-    public void setMaxOpsPerSecond(Integer maxOpsPerSecond);
+    maxOpsPerSecond;         // number
 
-    public boolean isRetrieveDetails();
-    public void setRetrieveDetails(boolean retrieveDetails);
+    retrieveDetails;         // boolean
 }
 ```
 <br/>                    

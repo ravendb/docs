@@ -91,7 +91,7 @@ update {
   When the query uses an auto-index or static index, the Python client allows stale results by default,  
   because `QueryOperationOptions.allow_stale` defaults to `True`.  
   The selected set may then omit newly matching documents or include documents based on outdated indexed values.  
-  See [Allow patching based on stale index results](../../../../documents/patching-documents/patch-multiple-documents/patch-multiple-documents.mdx#allow-patching-based-on-stale-index-results).
+  See [Allow patching based on stale index results](../../../../documents/patching-documents/patch-multiple-documents/client-api.mdx#allow-patching-based-on-stale-index-results).
 
 * **Map-reduce indexes**:  
   Set-based patch operations cannot be executed against map-reduce indexes.
@@ -455,7 +455,7 @@ operation.wait_for_completion()
 
 To reject stale index results instead, pass `allow_stale=False`.  
 Add `stale_timeout` to wait for the index to become non-stale before the patch runs,  
-as shown in [Update by static index query](../../../../documents/patching-documents/patch-multiple-documents/patch-multiple-documents.mdx#update-by-static-index-query).
+as shown in [Update by static index query](../../../../documents/patching-documents/patch-multiple-documents/client-api.mdx#update-by-static-index-query).
 
 </ContentFrame>
 

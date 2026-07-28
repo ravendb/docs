@@ -8,7 +8,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Patching time series data (Append or Delete entries) can be performed via [Operations](../../../../../client-api/operations/what-are-operations.mdx).
   * Use [PatchOperation](../../../../../documents/patching-documents/patch-a-single-document/api-overview.mdx) to patch data on a **single** document.
-  * Use [PatchByQueryOperation](../../../../../documents/patching-documents/patch-multiple-documents/patch-multiple-documents.mdx) to patch data on **multiple** documents.
+  * Use [PatchByQueryOperation](../../../../../documents/patching-documents/patch-multiple-documents/client-api.mdx) to patch data on **multiple** documents.
 
 * Patching time series entries on a single document can also be performed via the [Session](../../../../../document-extensions/timeseries/client-api/session/patch.mdx).
 
@@ -267,7 +267,7 @@ var result = store.Operations.Send(patchNumOfUniqueTags).WaitForCompletion();
 </TabItem>  
 ### Syntax
 
-* The detailed syntax of `PatchByQueryOperation` is listed under this [syntax section](../../../../../documents/patching-documents/patch-multiple-documents/patch-multiple-documents.mdx#syntax-overview).
+* The detailed syntax of `PatchByQueryOperation` is listed under this [syntax section](../../../../../documents/patching-documents/patch-multiple-documents/client-api.mdx#syntax-overview).
 
 * The available JavaScript API methods are detailed in the [time series JavaScript support](../../../../../document-extensions/timeseries/client-api/javascript-support.mdx) article.
 
