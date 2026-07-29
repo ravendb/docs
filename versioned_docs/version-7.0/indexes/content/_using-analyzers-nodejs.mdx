@@ -79,6 +79,8 @@ enabling [Full-text search](../../indexes/querying/searching.mdx).
 When running a [Full-text search with a dynamic query](../../client-api/session/querying/text-search/full-text-search.mdx),  
 the auto-index created by the server breaks down the text of the searched document field using the [default search analyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer).
 
+---
+    
 When running a [Full-text search on a static-index](../../indexes/querying/query-index.mdx),  
 the **same analyzer** used to tokenize field content at indexing time is typically applied
 to process the terms provided in the full-text search query before they are sent to the search engine to retrieve matching documents.
@@ -98,6 +100,20 @@ There are two exceptions to this rule:
 2. Behavior is also different when making a full-text search with wildcards in the search terms.  
    This is explained in detail in [Searching with wildcards](../../indexes/querying/searching.mdx#searching-with-wildcards).
 
+---
+    
+For each non-wildcard search term, the number of tokens produced by the query-time analyzer determines how RavenDB matches it:
+
+* When the analyzer produces **one token**, RavenDB searches for that token as a term.
+* When it produces **multiple tokens**, RavenDB searches them as a **phrase**.  
+  The corresponding tokens in the searched field must be adjacent and occur in the same order.
+* When it produces **no tokens**, the search term contributes no condition to the query.  
+  If no term in the `search()` call produces a token, that call matches no documents.
+
+This behavior is the same for both search engines.  
+Learn more in [Search with analyzer-generated phrases](../../client-api/session/querying/text-search/full-text-search.mdx#search-with-analyzer-generated-phrases)  
+and, for static indexes, in [Analyzer-generated phrases in static-index searches](../../indexes/querying/searching.mdx#analyzer-generated-phrases-in-static-index-searches).
+    
 </ContentFrame>
 <ContentFrame>
 
@@ -132,7 +148,7 @@ Learn more in [Sorting and Collation](../../indexes/sorting-and-collation.mdx#co
   see: [Setting analyzer for index-field](../../indexes/using-analyzers.mdx#setting-analyzer-for-index-field).
 
 * When no analyzer is explicitly assigned to an index-field in the index definition,  
-  RavenDB will use its [Default Analyzers](../../indexes/using-analyzers.mdx#ravendb) to process and tokenize the content of a field.
+  RavenDB will use its [Default Analyzers](../../indexes/using-analyzers.mdx#using-the-default-analyzer) to process and tokenize the content of a field.
 
 <Admonition type="info" title="">
 All examples below use the following text:  
@@ -171,13 +187,19 @@ All examples below use the following text:
 
 * **Stop words**:
 
-    * [Stop words](https://en.wikipedia.org/wiki/Stop_word) (e.g. the, it, a, is, this, who, that...)  
-      are often removed to narrow search results by focusing on less frequently used words.
-    * If you want to include words such as IT (Information Technology),
-      be aware that analyzers removing common stop words may treat IT as a stop word and exclude it from the resulting terms.
-      This can also affect acronyms such as WHO (World Health Organization) or names such as "The Who" or "The IT Crowd".
-    * To avoid excluding acronyms, you can either spell out the full title instead of abbreviating it
-      or use an [Analyzer that doesn't remove stop words](../../indexes/using-analyzers.mdx#analyzers-that-do-not-remove-common-stop-words).
+  * [Stop words](https://en.wikipedia.org/wiki/Stop_word) (e.g. the, it, a, is, this, that...)  
+    are often removed to narrow search results by focusing on less frequently used words.
+    
+  * If you want to include words such as IT (Information Technology), 
+    be aware that analyzers removing common stop words may treat IT as a stop word and exclude it from the resulting terms.
+    This can also affect names that contain stop words, such as "The IT Crowd".
+    
+  * At query time, a search term consisting only of stop words produces no tokens and contributes no condition to the query.
+    If every term in a `search()` call is dropped this way, that call matches no documents; the call itself is not ignored.
+    For example, searching for "IT" returns an empty result set.
+    
+  * To avoid excluding acronyms, you can either spell out the full title instead of abbreviating it
+    or use an [Analyzer that doesn't remove stop words](../../indexes/using-analyzers.mdx#analyzers-that-do-not-remove-common-stop-words).
 
 </Admonition>
 
@@ -287,7 +309,7 @@ All examples below use the following text:
     * Specify an analyzer from the [Analyzers available in RavenDB](../../indexes/using-analyzers.mdx#analyzers-available-in-ravendb),
     * Or specify your own custom analyzer (see [Creating custom analyzers](../../indexes/using-analyzers.mdx#creating-custom-analyzers)).
 
-* If you want RavenDB to use the default analyzers, see [RavenDB's default analyzers](../../indexes/using-analyzers.mdx#ravendb).
+* If you want RavenDB to use the default analyzers, see [RavenDB's default analyzers](../../indexes/using-analyzers.mdx#using-the-default-analyzer).
 
 * An analyzer may also be set from the Edit Index view in the Studio, see [Index field options](../../studio/database/indexes/create-map-index.mdx#index-field-options).
 
@@ -626,6 +648,24 @@ Another way to add custom analyzers to RavenDB is by placing them next to RavenD
 * This is the only method for adding custom analyzers in RavenDB versions older than 5.2.
 
 </ContentFrame>
+    
+---
+    
+<Admonition type="info" title="">
+
+**Tokenization affects how search terms are matched**:  
+    
+* A custom analyzer used for a searchable index field processes both the field content at indexing time  
+  and non-wildcard search terms at query time.
+    
+* If the analyzer produces **multiple tokens from a single search term**  
+  (for example when splitting compound words, segmenting CJK text, or breaking on punctuation),  
+  a `search()` for that term uses a **phrase query**.     
+  The tokens must appear in the indexed field adjacent to one another and in the same order.  
+    
+* Learn more in [Analyzer-generated phrases in static-index searches](../../indexes/querying/searching.mdx#analyzer-generated-phrases-in-static-index-searches).
+
+</Admonition>  
 
 </Panel>
 

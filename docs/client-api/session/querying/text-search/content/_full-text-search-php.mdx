@@ -1,7 +1,9 @@
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
 
 <Admonition type="note" title="">
 
@@ -12,44 +14,42 @@ import CodeBlock from '@theme/CodeBlock';
   within the text of the specified document field/s.
 
 * When running a full-text search with a dynamic query, the **auto-index** created by the server 
-  breaks down the text of the searched document field using the [default search analyzer](../../../../../indexes/using-analyzers.mdx#ravendb).  
+  breaks down the text of the searched document field using the [default search analyzer](../../../../../indexes/using-analyzers.mdx#using-the-default-search-analyzer).  
   All generated terms are lower-cased, so the search is **case-insensitive**.  
 
 * Gain additional control over term tokenization by running a full-text search 
-  using a [static-index](../../../../../indexes/querying/searching.mdx), where the used 
-  analyzer is configurable.  
+  using a [static-index](../../../../../indexes/querying/searching.mdx),  
+  where the used analyzer is configurable.  
 
-<Admonition type="info" title="">
-
-* A **boost** value can be set for each search to prioritize results. 
+* A **boost** value can be set for each search to prioritize results.  
   Learn more in [boost search results](../../../../../client-api/session/querying/text-search/boost-search-results.mdx).
-  
-* User experience can be enhanced by requesting text fragments that **highlight** 
-  the searched terms in the results. Learn more in [highlight search results](../../../../../client-api/session/querying/text-search/highlight-query-results.mdx).
-</Admonition>
-* In this page:
-  * [Search for single term](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-for-single-term)
-  * [Search for multiple terms](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-for-multiple-terms)
-  * [Search in multiple fields](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-in-multiple-fields)
-  * [Search in complex object](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-in-complex-object)
-  * [Search operators](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators)
-  * [Search options](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-options)
-  * [Using wildcards](../../../../../client-api/session/querying/text-search/full-text-search.mdx#using-wildcards)
-  * [Syntax](../../../../../client-api/session/querying/text-search/full-text-search.mdx#syntax)
+    
+* User experience can be enhanced by requesting text fragments that **highlight** the searched terms in the results.  
+  Learn more in [highlight search results](../../../../../client-api/session/querying/text-search/highlight-query-results.mdx).
+
+* In this article:
+  * [Search for single term](#search-for-single-term)
+  * [Search for multiple terms](#search-for-multiple-terms)
+  * [Search with analyzer-generated phrases](#search-with-analyzer-generated-phrases)
+  * [Search in multiple fields](#search-in-multiple-fields)
+  * [Search in complex object](#search-in-complex-object)
+  * [Search operators](#search-operators)
+  * [Search options](#search-options)
+  * [Using wildcards](#using-wildcards)
+  * [Syntax](#syntax)
 
 </Admonition>
-## Search for single term
 
-<Admonition type="note" title="">
+<Panel heading="Search for single term">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="query" label="query">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+```php
+/** @var array<Employee> $employees */
 $employees = $session
     // Make a dynamic query on Employees collection
     ->query(Employee::class)
-    // * Call 'Search' to make a Full-Text search
+    // * Call 'search' to make a Full-Text search
     // * Search is case-insensitive
     // * Look for documents containing the term 'University' within their 'Notes' field
     ->search("Notes", "University")
@@ -57,16 +57,15 @@ $employees = $session
 
 // Results will contain Employee documents that have
 // any case variation of the term 'university' in their 'Notes' field.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="documentQuery" label="documentQuery">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+```php
+/** @var array<Employee> $employees */
 $employees = $session->advanced()
     // Make a dynamic DocumentQuery on Employees collection
     ->documentQuery(Employee::class)
-    // * Call 'Search' to make a Full-Text search
+    // * Call 'search' to make a Full-Text search
     // * Search is case-insensitive
     // * Look for documents containing the term 'University' within their 'Notes' field
     ->search("Notes", "University")
@@ -74,19 +73,15 @@ $employees = $session->advanced()
 
 // Results will contain Employee documents that have
 // any case variation of the term 'university' in their 'Notes' field.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees"
+```sql
+from "Employees"
 where search(Notes, "University")
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
-
-</Admonition>
 
 * Executing the above query will generate the auto-index `Auto/Employees/BySearch(Notes)`.  
 
@@ -97,27 +92,27 @@ where search(Notes, "University")
     Text is lower-cased and Not tokenized.
   
   * `search(Notes)`  
-    Contains **lower-cased terms** that were tokenized from the 'Notes' field by the [default search analyzer](../../../../../indexes/using-analyzers.mdx#ravendb) (RavenStandardAnalyzer). 
+    Contains **lower-cased terms** that were tokenized from the 'Notes' field by the [default search analyzer](../../../../../indexes/using-analyzers.mdx#using-the-default-search-analyzer) (RavenStandardAnalyzer). 
     Calling the `search()` method targets these terms to find matching documents.
 
+</Panel>
 
-
-## Search for multiple terms
+<Panel heading="Search for multiple terms">
 
 * You can search for multiple terms in the **same field** in a single search method.
 
 * By default, the logical operator between these terms is 'OR'.
 
-* This behavior can be modified. See section [Search operators](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators). 
+* This behavior can be modified. See section [Search operators](#search-operators). 
 
-<Admonition type="note" title="">
+<ContentFrame>
 
 **Pass terms in a string**:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="query" label="query">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+```php
+/** @var array<Employee> $employees */
 $employees = $session
     ->query(Employee::class)
     // * Pass multiple terms in a single string, separated by spaces.
@@ -128,12 +123,11 @@ $employees = $session
 
 // * Results will contain Employee documents that have at least one of the specified terms.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="documentQuery" label="documentQuery">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+```php
+/** @var array<Employee> $employees */
 $employees = $session->advanced()
     ->documentQuery(Employee::class)
     // * Pass multiple terms in a single string, separated by spaces.
@@ -144,28 +138,26 @@ $employees = $session->advanced()
 
 // * Results will contain Employee documents that have at least one of the specified terms.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees"
+```sql
+from "Employees"
 where search(Notes, "University Sales Japanese")
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>
 
-<Admonition type="note" title="">
+<ContentFrame>
 
 **Pass terms in a list**:
  
 <Tabs groupId='languageSyntax'>
 <TabItem value="query" label="query">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+```php
+/** @var array<Employee> $employees */
 $employees = $session
     ->query(Employee::class)
     // * Pass terms in array<string>.
@@ -176,36 +168,215 @@ $employees = $session
 
 // * Results will contain Employee documents that have at least one of the specified terms.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+```php
+/** @var array<Employee> $employees */
+$employees = $session->advanced()
+    ->documentQuery(Employee::class)
+    // * Pass terms in array<string>.
+    // * Look for documents containing either 'University' OR 'Sales' OR 'Japanese'
+    //   within their 'Notes' field
+    ->search("Notes", ["University", "Sales", "Japanese"])
+    ->toList();
+
+// * Results will contain Employee documents that have at least one of the specified terms.
+// * Search is case-insensitive.
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees"
+```sql
+from "Employees"
 where search(Notes, "University Sales Japanese")
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Search with analyzer-generated phrases">
+
+A value passed to `search()` is processed in two stages:
+
+1. **Search terms**:  
+   `search()` parses the value into **search terms**.  
+   Unquoted spaces or tabs separate terms, while double quotes keep the enclosed text together as one term.
+
+2. **Tokens**:  
+   The [query-time analyzer](../../../../../indexes/using-analyzers.mdx#analyzers-at-query-time)
+   processes each search term and produces zero, one, or multiple **tokens**.
+
+**When the analyzer produces multiple tokens from one search term**, RavenDB searches those tokens as a **phrase**.  
+This means that a document matches only when the corresponding tokens in the searched field are adjacent  
+and occur in the same order as the analyzer-generated query tokens.
+
+---
+    
+### How the input form affects matching
+
+With RavenDB's default analyzer configuration, compare the following three cases:
+
+<ContentFrame>
+    
+**Separate search terms: matched independently**    
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+```php
+/** @var array<Employee> $employees */
+$employees = $session
+    ->query(Employee::class)
+    // Pass two separate search terms
+    ->search("Title", "sales representative")
+    ->toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Employees"
+// Pass two separate search terms        
+where search(Title, "sales representative")
+```
+</TabItem>
+</Tabs>
+
+In both the PHP and RQL tabs above, the outer quotation marks delimit the string literal.  
+These quotation marks are not part of the value processed by `search()`.  
+RavenDB therefore parses `sales representative` as the two terms `sales` and `representative`.
+
+The search operator combines these terms (`OR` by default),  
+so they do not need to be adjacent or appear in the same order.
+
+</ContentFrame>
+<ContentFrame> 
+    
+**One search term, multiple analyzer tokens: matched as a phrase**    
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+```php
+/** @var array<Employee> $employees */
+$employees = $session
+    ->query(Employee::class)
+    // Pass one term that the analyzer splits
+    ->search("Title", "sales%representative")
+    ->toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Employees"
+// Pass one term that the analyzer splits    
+where search(Title, "sales%representative")
+```
+</TabItem>
+</Tabs>
+
+Because `%` is not whitespace, `search()` initially parses `sales%representative` as one term.
+`RavenStandardAnalyzer` then splits that term into the tokens `sales` and `representative`.  
+RavenDB searches those analyzer-generated tokens as a **phrase**.
+
+* The `%` character is [not a wildcard](#using-wildcards)
+  and has no special meaning to `search()`.  
+  It is simply an example of punctuation that `RavenStandardAnalyzer` treats as a token boundary.  
+  Other analyzers can produce different tokens from the same input.
+
+* If the `search()` value contains other search terms, the search operator combines those terms with the generated phrase.
+  It does not change the required order or adjacency of the tokens within the phrase.
+
+</ContentFrame>   
+<ContentFrame>
+    
+**Explicitly quoted text: matched as a phrase** 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+```php
+/** @var array<Employee> $employees */
+$employees = $session
+    ->query(Employee::class)
+    // Pass an explicitly quoted phrase
+    ->search("Title", '"sales representative"')
+    ->toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Employees"
+// Pass an explicitly quoted phrase    
+where search(Title, '"sales representative"')
+```
+</TabItem>
+</Tabs>
+    
+The quotation marks around `sales representative` are part of the value sent to RavenDB.  
+They instruct `search()` to keep it together as one search term.  
+
+</ContentFrame>        
+
+The analyzer-generated phrase and the explicitly quoted phrase use the same phrase-matching rules.  
+Both match `Sales Representative`.
+Neither matches `Representative Sales`, where the order is reversed, or `Sales Area Representative`, where the tokens are not adjacent.
+
+<Admonition type="info" title="Analyzer used by a dynamic query">
+
+* A dynamic full-text query uses the default search analyzer configured for the auto-index.  
+  This is `RavenStandardAnalyzer` unless [Indexing.Analyzers.Search.Default](../../../../../server/configuration/indexing-configuration.mdx#indexinganalyzerssearchdefault)
+  is configured with a different analyzer.
+
+* To choose an analyzer for a specific index-field, use a [static index](../../../../../indexes/querying/searching.mdx).
+
 </Admonition>
+    
+---    
 
+### Wildcard terms
 
+Search terms that use the supported `*` wildcard forms are handled as prefix, suffix, or contains queries;  
+they are not converted into phrase queries.
+See [Using wildcards](#using-wildcards).
 
-## Search in multiple fields
+---
+    
+### When analysis produces no tokens
+
+If the analyzer produces no tokens from a search term - for example, because it removes all of them as
+[stop words](../../../../../indexes/using-analyzers.mdx#analyzers-that-remove-common-stop-words) -  
+RavenDB skips that term.
+
+---
+    
+### Search-engine compatibility
+
+Phrase matching for analyzer-generated tokens is supported by both **Corax** and **Lucene**.
+
+<Admonition type="note" title="">
+    
+#### Existing Corax indexes:    
+
+* Corax indexes store the term-position data required for phrase matching only if they were created or reset in RavenDB 6.0 or later.
+* A Corax index - including an auto-index - created before this support was available retains the legacy behavior, where analyzer-generated tokens are matched independently.    
+  Reset or recreate the index to enable phrase matching.
+    
+</Admonition>
+    
+</Panel>
+
+<Panel heading="Search in multiple fields">    
 
 * You can search for terms in **different fields** by making multiple search calls.
 
 * By default, the logical operator between consecutive search methods is 'OR'.
 
-* This behavior can be modified. See section [Search operators](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators).
-
-<Admonition type="note" title="">
+* This behavior can be modified. See section [Search options](#search-options).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="query" label="query">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+```php
+/** @var array<Employee> $employees */
 $employees = $session
     ->query(Employee::class)
     // * Look for documents containing:
@@ -217,12 +388,11 @@ $employees = $session
 // * Results will contain Employee documents that have
 //   at least one of the specified fields with the specified terms.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="documentQuery" label="documentQuery">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+```php
+/** @var array<Employee> $employees */
 $employees = $session->advanced()
     ->documentQuery(Employee::class)
     // * Look for documents containing:
@@ -234,34 +404,28 @@ $employees = $session->advanced()
 // * Results will contain Employee documents that have
 //   at least one of the specified fields with the specified terms.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees"
+```sql
+from "Employees"
 where (search(Notes, "French") or search(Title, "President"))
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</Panel>
 
-
-
-## Search in complex object
+<Panel heading="Search in complex object">    
 
 * You can search for terms within a complex object.
 
 * Any nested text field within the object is searchable.
 
-<Admonition type="note" title="">
-
 <Tabs groupId='languageSyntax'>
 <TabItem value="query" label="query">
-<CodeBlock language="php">
-{`/** @var array<Company> $companies */
+```php
+/** @var array<Company> $companies */
 $companies = $session
     ->query(Company::class)
     // * Look for documents that contain:
@@ -271,12 +435,11 @@ $companies = $session
 
 // * Results will contain Company documents that are located either in 'USA' OR in 'London'.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="documentQuery" label="documentQuery">
-<CodeBlock language="php">
-{`/** @var array<Company> $companies */
+```php
+/** @var array<Company> $companies */
 $companies = $session->advanced()
     ->documentQuery(Company::class)
     // * Look for documents that contain:
@@ -286,152 +449,141 @@ $companies = $session->advanced()
 
 // * Results will contain Company documents that are located either in 'USA' OR in 'London'.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Companies"
+```sql
+from "Companies"
 where search(Address, "USA London")
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
+    
+</Panel>
 
-</Admonition>
-
-
-
-## Search operators
+<Panel heading="Search operators">  
 
 * By default, the logical operator between multiple terms within the **same field** in a search call is **OR**.
 
-* This can be modified using the `@operator` parameter as follows: 
+* This can be modified using the `$operator` parameter as follows: 
 
-<Admonition type="note" title="">
+<ContentFrame>
 
 **AND**:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="query" label="query">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+```php
+/** @var array<Employee> $employees */
 $employees = $session
     ->query(Employee::class)
-    // * Pass operator with SearchOperator::and()
+    // * Pass '$operator' with 'SearchOperator::and()'
     ->search("Notes", "College German", SearchOperator::and())
     ->toList();
 
 // * Results will contain Employee documents that have BOTH 'College' AND 'German'
 //   in their 'Notes' field.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="documentQuery" label="documentQuery">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+```php
+/** @var array<Employee> $employees */
 $employees = $session->advanced()
     ->documentQuery(Employee::class)
-    // * Pass operator with SearchOperator::and()
+    // * Pass '$operator' with 'SearchOperator::and()'
     ->search("Notes", "College German", SearchOperator::and())
     ->toList();
 
 // * Results will contain Employee documents that have BOTH 'College' AND 'German'
 //   in their 'Notes' field.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees"
+```sql
+from "Employees"
 where search(Notes, "College German", and)
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
-
-<Admonition type="note" title="">
+</ContentFrame>    
+<ContentFrame>
 
 **OR**:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="query" label="query">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+```php
+/** @var array<Employee> $employees */
 $employees = $session
     ->query(Employee::class)
-    // * Pass operator with SearchOperator::or()
+    // * Pass '$operator' with 'SearchOperator::or()' (or don't pass this param at all)
     ->search("Notes", "College German", SearchOperator::or())
     ->toList();
 
 // * Results will contain Employee documents that have EITHER 'College' OR 'German'
 //   in their 'Notes' field.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="documentQuery" label="documentQuery">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+```php
+/** @var array<Employee> $employees */
 $employees = $session->advanced()
     ->documentQuery(Employee::class)
-    // * Pass operator with SearchOperator::or()
+    // * Pass '$operator' with 'SearchOperator::or()' (or don't pass this param at all)
     ->search("Notes", "College German", SearchOperator::or())
     ->toList();
 
 // * Results will contain Employee documents that have EITHER 'College' OR 'German'
 //   in their 'Notes' field.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees"
+```sql
+from "Employees"
 where search(Notes, "College German")
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>
 
+</Panel>
 
+<Panel heading="Search options">
 
-## Search options
-
-Search options allow to:  
-
-* Negate a search criteria.  
-* Specify the logical operator used between **consecutive search calls**.  
-
-<Admonition type="note" title="">
+* Search options allow to:  
+    * Negate a search criteria.  
+    * Specify the logical operator used between **consecutive search calls**.  
+ 
+<ContentFrame>
 
 **Negate search**:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="query" label="query">
-<CodeBlock language="php">
-{`/** @var array<Company> $companies */
+```php
+/** @var array<Company> $companies */
 $companies = $session
     ->query(Company::class)
-    # Call 'not()' to negate the next search call
+    ->openSubclause()
+    // Call 'not()' to negate the next search call
     ->not()
     ->search("Address", "USA")
+    ->closeSubclause()
     ->toList();
 
 // * Results will contain Company documents are NOT located in 'USA'
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="documentQuery" label="documentQuery">
-<CodeBlock language="php">
-{`/** @var array<Company> $companies */
+```php
+/** @var array<Company> $companies */
 $companies = $session->advanced()
     ->documentQuery(Company::class)
     ->openSubclause()
@@ -443,21 +595,18 @@ $companies = $session->advanced()
 
 // * Results will contain Company documents are NOT located in 'USA'
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Companies"
+```sql
+from "Companies"
 where (exists(Address) and not search(Address, "USA"))
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
-
-<Admonition type="note" title="">
+</ContentFrame>    
+<ContentFrame>
 
 **Default behavior between search calls**:
 
@@ -465,14 +614,14 @@ where (exists(Address) and not search(Address, "USA"))
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="query" label="query">
-<CodeBlock language="php">
-{`/** @var array<Company> $companies */
+```php
+/** @var array<Company> $companies */
 $companies = $session
     ->query(Company::class)
     ->whereEquals("Contact.Title", "Owner")
-    // Operator AND will be used with previous 'Where' predicate
+    // Operator AND will be used with previous 'whereEquals' predicate
     ->search("Address.Country", "France")
-    // Operator OR will be used between the two 'Search' calls by default
+    // Operator OR will be used between the two 'search' calls by default
     ->search("Name", "Markets")
     ->toList();
 
@@ -482,20 +631,19 @@ $companies = $session
 //   (are located in 'France' OR have 'Markets' in their 'Name' field)
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="documentQuery" label="documentQuery">
-<CodeBlock language="php">
-{`/** @var array<Company> $companies */
+```php
+/** @var array<Company> $companies */
 $companies = $session->advanced()
     ->documentQuery(Company::class)
     ->whereEquals("Contact.Title", "Owner")
-    // Operator AND will be used with previous 'Where' predicate
+    // Operator AND will be used with previous 'whereEquals' predicate
     // Call 'openSubclause()' to open predicate block
     ->openSubclause()
     ->search("Address.Country", "France")
-    // Operator OR will be used between the two 'Search' calls by default
+    // Operator OR will be used between the two 'search' calls by default
     ->search("Name", "Markets")
     // Call 'closeSubclause()' to close predicate block
     ->closeSubclause()
@@ -507,32 +655,30 @@ $companies = $session->advanced()
 //   (are located in 'France' OR have 'Markets' in their 'Name' field)
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Companies" 
+```sql
+from "Companies" 
 where Contact.Title == "Owner" and
 (search(Address.Country, "France") or search(Name, "Markets"))
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>    
+<ContentFrame>
 
-<Admonition type="note" title="">
 **AND search calls**:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="query" label="query">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+```php
+/** @var array<Employee> $employees */
 $employees = $session
     ->query(Employee::class)
     ->search("Notes", "French")
-    // Call 'AndAlso' so that operator AND will be used with previous 'search' call
+    // Call 'andAlso()' so that operator AND will be used with previous 'search' call
     ->andAlso()
     ->search("Title", "Manager")
     ->toList();
@@ -543,18 +689,17 @@ $employees = $session
 //   ('Manager' in their 'Title' field)
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="documentQuery" label="documentQuery">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+```php
+/** @var array<Employee> $employees */
 $employees = $session->advanced()
     ->documentQuery(Employee::class)
     ->search("Notes", "French")
     // Call 'andAlso()' so that operator AND will be used with previous 'search' call
     ->andAlso()
-    ->search("Title", "Manger")
+    ->search("Title", "Manager")
     ->toList();
 
 // * Results will contain Employee documents that have:
@@ -563,28 +708,25 @@ $employees = $session->advanced()
 //   ('Manager' in their 'Title' field)
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees" 
+```sql
+from "Employees" 
 where search(Notes, "French") and search(Title, "Manager")
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>    
+<ContentFrame>
 
-<Admonition type="note" title="">
-
-**Use options as bit flags**:
+**Combine AND with negation**:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="query" label="query">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+```php
+/** @var array<Employee> $employees */
 $employees = $session
     ->query(Employee::class)
     ->search("Notes", "French")
@@ -603,12 +745,11 @@ $employees = $session
 //   (do NOT have 'Manager' in their 'Title' field)
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="documentQuery" label="documentQuery">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+```php
+/** @var array<Employee> $employees */
 $employees = $session->advanced()
     ->documentQuery(Employee::class)
     ->search("Notes", "French")
@@ -627,24 +768,22 @@ $employees = $session->advanced()
 //   (do NOT have 'Manager' in their 'Title' field)
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees"
+```sql
+from "Employees"
 where search(Notes, "French") and
 (exists(Title) and not search(Title, "Manager"))
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>
 
+</Panel>
 
-
-## Using wildcards
+<Panel heading="Using wildcards">
 
 * Wildcards can be used to replace:
   * Prefix of a searched term
@@ -653,8 +792,8 @@ where search(Notes, "French") and
 
 * Note:  
 
-  * Searching with a wildcard as the prefix of the term (e.g. `*text`) is 
-    not advised as it will cause the server to perform a full index scan.
+  * Searching with a wildcard as the prefix of the term (e.g. `*text`) is less recommended,  
+    as it will cause the server to perform a full index scan.
   
   * Instead, consider using a static-index that indexes the field in reverse order  
     and then query with a wildcard as the postfix, which is much faster.  
@@ -664,35 +803,13 @@ where search(Notes, "French") and
     This requires the target index to use the Lucene search engine.
     Learn more in [Filter with Lucene syntax](../../../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#wildcards).
 
-<Admonition type="note" title="">
-
 <Tabs groupId='languageSyntax'>
 <TabItem value="query" label="query">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+```php
+/** @var array<Employee> $employees */
 $employees = $session
     ->query(Employee::class)
     // Use '*' to replace one or more characters
-    ->search("Notes", "art*")
-    ->search("Notes", "*logy")
-    ->search("Notes", "*mark*")
-    ->ToList();
-
-// Results will contain Employee documents that have in their 'Notes' field:
-// (terms that start with 'art')  OR
-// (terms that end with 'logy') OR
-// (terms that have the text 'mark' in the middle)
-//
-// * Search is case-insensitive
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="documentQuery" label="documentQuery">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
-$employees = $session->advanced()
-    ->documentQuery(Employee::class)
-    // Use '*' to replace one ore more characters
     ->search("Notes", "art*")
     ->search("Notes", "*logy")
     ->search("Notes", "*mark*")
@@ -704,43 +821,55 @@ $employees = $session->advanced()
 // (terms that have the text 'mark' in the middle)
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+```php
+/** @var array<Employee> $employees */
+$employees = $session->advanced()
+    ->documentQuery(Employee::class)
+    // Use '*' to replace one or more characters
+    ->search("Notes", "art*")
+    ->search("Notes", "*logy")
+    ->search("Notes", "*mark*")
+    ->toList();
+
+// Results will contain Employee documents that have in their 'Notes' field:
+// (terms that start with 'art')  OR
+// (terms that end with 'logy') OR
+// (terms that have the text 'mark' in the middle)
+//
+// * Search is case-insensitive
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees" where
+```sql
+from "Employees" where
 search(Notes, "art*") or
 search(Notes, "*logy") or
 search(Notes, "*mark*")
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</Panel>
 
-
-
-## Syntax
+<Panel heading="Syntax">
 
 <TabItem value="syntax" label="syntax">
-<CodeBlock language="php">
-{`public function search(string $fieldName, string $searchTerms, ?SearchOperator $operator = null): DocumentQueryInterface;
-`}
-</CodeBlock>
+```php
+public function search(string $fieldName, string|array $searchTerms, ?SearchOperator $operator = null): DocumentQueryInterface;
+```
 </TabItem>
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| **$fieldName** | `string` | Name of the searched field. |
-| **$searchTerms** | `string` | A string containing the term or terms (separated by spaces) to search for. |
-| **$operator** | `?SearchOperator ` | Logical operator to use between multiple terms in the same Search method.<br/>**Can be**: `SearchOperator::or` or `SearchOperator::and`<br/>**Default**: `SearchOperator::or` |
+| Parameter        | Type               | Description                                                                                                                                                                     |
+|------------------|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **$fieldName**   | `string`           | Name of the searched field.                                                                                                                                                     |
+| **$searchTerms** | `string \| array`  | A string containing the term or terms (separated by spaces) to search for. <br/> Or, can pass an `array` of terms to search for.                                                 |
+| **$operator**    | `?SearchOperator`  | Logical operator to use between multiple terms in the same Search method. <br/> Can be `SearchOperator::or()` or `SearchOperator::and()`. <br/> <strong>Default</strong> is `SearchOperator::or()` |
 
-| Return Type | Description |
-| ------------| ----------- |
-| `DocumentQueryInterface` | Query results |
+| Return Type              | Description                        |
+|--------------------------|------------------------------------|
+| `DocumentQueryInterface` | The same object used for the query |
 
-
-
-
+</Panel>

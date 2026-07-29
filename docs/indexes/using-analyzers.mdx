@@ -3,7 +3,7 @@ title: "Indexes: Analyzers"
 sidebar_label: Analyzers
 description: "Configure text analyzers in RavenDB indexes to control tokenization, stemming, and text processing for full-text search scenarios."
 sidebar_position: 24
-supported_languages: ["java", "csharp", "nodejs"]
+supported_languages: ["java", "csharp", "python", "php", "nodejs"]
 see_also:
      - title: "Boosting"
        link: "indexes/boosting"
@@ -32,6 +32,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 import UsingAnalyzersJava from './content/_using-analyzers-java.mdx';
 import UsingAnalyzersCsharp from './content/_using-analyzers-csharp.mdx';
+import UsingAnalyzersPython from './content/_using-analyzers-python.mdx';
+import UsingAnalyzersPhp from './content/_using-analyzers-php.mdx';
 import UsingAnalyzersNodejs from './content/_using-analyzers-nodejs.mdx';
 
 
@@ -45,9 +47,15 @@ import UsingAnalyzersNodejs from './content/_using-analyzers-nodejs.mdx';
    <UsingAnalyzersCsharp />
 </LanguageContent>
 
+<LanguageContent language="python">
+   <UsingAnalyzersPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <UsingAnalyzersPhp />
+</LanguageContent>
+
 <LanguageContent language="nodejs">
    <UsingAnalyzersNodejs />
 </LanguageContent>
-
-
 
