@@ -1,7 +1,8 @@
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -20,21 +21,26 @@ import CodeBlock from '@theme/CodeBlock';
       Learn more in [Setting analyzer for index-field](../../../indexes/using-analyzers.mdx#setting-analyzer-for-index-field).    
     
 * In this article:
-  * [Indexing single field for FTS](../../../indexes/querying/searching.mdx#indexing-single-field-for-fts)
-  * [Indexing multiple fields for FTS](../../../indexes/querying/searching.mdx#indexing-multiple-fields-for-fts)
-  * [Indexing all fields for FTS (using AsJson)](../../../indexes/querying/searching.mdx#indexing-all-fields-for-fts-using-asjson)
-  * [Indexing dynamic fields for FTS](../../../indexes/querying/searching.mdx#indexing-dynamic-fields-for-fts)
-  * [Boosting search results](../../../indexes/querying/searching.mdx#boosting-search-results)
+  * [Indexing single field for FTS](#indexing-single-field-for-fts)
+  * [Indexing multiple fields for FTS](#indexing-multiple-fields-for-fts)
+  * [Indexing all fields for FTS (using AsJson)](#indexing-all-fields-for-fts-using-asjson)
+  * [Indexing dynamic fields for FTS](#indexing-dynamic-fields-for-fts)
+  * [Boosting search results](#boosting-search-results)
+  * [Analyzer-generated phrases in static-index searches](#analyzer-generated-phrases-in-static-index-searches)
+  * [Searching with wildcards](#searching-with-wildcards)
+      * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](#when-usingoror)
+      * [When using a custom analyzer](#when-using-a-custom-analyzer)
+      * [When using the Exact analyzer](#when-using-the-exact-analyzer)
 
 </Admonition>
 
-## Indexing single field for FTS
+<Panel heading="Indexing single field for FTS">
 
 #### The index:
 
-<TabItem value="index_1" label="index_1">
-<CodeBlock language="python">
-{`class Employees_ByNotes(AbstractIndexCreationTask):
+<TabItem>
+```python
+class Employees_ByNotes(AbstractIndexCreationTask):
     # The IndexEntry class defines the index-fields
     class IndexEntry:
         def __init__(self, employee_notes: str = None):
@@ -43,32 +49,32 @@ import CodeBlock from '@theme/CodeBlock';
     def __init__(self):
         super().__init__()
         # The 'Map' function defines the content of the index-fields
-        self.map = "from employee in docs.Employees " "select new " "\{ " " employee_notes = employee.Notes[0]" "\}"
+        self.map = "from employee in docs.Employees " "select new " "{ " " employee_notes = employee.Notes[0]" "}"
 
         # Configure the index-field for FTS:
         # Set 'FieldIndexing.Search' on index-field 'employee_notes'
         self._index("employee_notes", FieldIndexing.SEARCH)
 
         # Optionally: Set your choice of analyzer for the index-field:
-        # Here the text from index-field 'EmployeeNotes' will be tokenized by 'WhitespaceAnalyzer'.
+        # Here the text from index-field 'employee_notes' will be tokenized by 'WhitespaceAnalyzer'.
         self._analyze("employee_notes", "WhitespaceAnalyzer")
 
         # Note:
         # If no analyzer is set then the default 'RavenStandardAnalyzer' is used.
-`}
-</CodeBlock>
+```
 </TabItem>
+    
 #### Query with Search:
 
-* Use `Search` to make a full-text search when querying the index.  
+* Use `search` to make a full-text search when querying the index.  
 
 * Refer to [Full-Text search with dynamic queries](../../../client-api/session/querying/text-search/full-text-search.mdx) for all available **Search options**,  
   such as using wildcards, searching for multiple terms, etc.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="python">
-{`employees = list(
+```python
+employees = list(
     session
     # Query the index
     .query_index_type(Employees_ByNotes, Employees_ByNotes.IndexEntry)
@@ -80,27 +86,25 @@ import CodeBlock from '@theme/CodeBlock';
 
 # * Search is case-sensitive since field was indexed using the 'WhitespaceAnalyzer'
 #   which preserves casing.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from index "Employees/ByNotes"
-where search(EmployeeNotes, "French")
-`}
-</CodeBlock>
+```sql
+from index "Employees/ByNotes"
+where search(employee_notes, "French")
+```
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Indexing multiple fields for FTS
+<Panel heading="Indexing multiple fields for FTS">
 
 #### The index:
 
-<TabItem value="index_2" label="index_2">
-<CodeBlock language="python">
-{`class Employees_ByEmployeeData(AbstractIndexCreationTask):
+<TabItem>
+```python
+class Employees_ByEmployeeData(AbstractIndexCreationTask):
     class IndexEntry:
         def __init__(self, employee_data: List = None):
             self.employee_data = employee_data
@@ -109,17 +113,17 @@ where search(EmployeeNotes, "French")
         super().__init__()
         self.map = (
             "from employee in docs.Employees "
-            "select new \{"
-            "  employee_data = "
-            "  \{"
+            "select new {"
+            "  employee_data = new object[] "
+            "  {"
             # Multiple document-fields can be indexed
             # into the single index-field 'employee_data'
             "    employee.FirstName,"
             "    employee.LastName,"
             "    employee.Title,"
             "    employee.Notes"
-            "  \}"
-            "\}"
+            "  }"
+            "}"
         )
         # Configure the index-field for FTS:
         # Set 'FieldIndexing.SEARCH' on index-field 'employee_data'
@@ -127,15 +131,17 @@ where search(EmployeeNotes, "French")
 
         # Note:
         # Since no analyzer is set, the default 'RavenStandardAnalyzer' is used.
-`}
-</CodeBlock>
+```
 </TabItem>
+    
+---    
+    
 #### Sample query:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="python">
-{`employees = list(
+```python
+employees = list(
     session
     # Query the static-index
     .query_index_type(Employees_ByEmployeeData, Employees_ByEmployeeData.IndexEntry)
@@ -154,21 +160,19 @@ where search(EmployeeNotes, "French")
 #   ('French' AND 'Spanish' in any of the 4 document-fields that were indexed)
 
 # * Search is case-insensitive since the default analyzer is used
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from index "Employees/ByEmployeeData"
-where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish", and))
-`}
-</CodeBlock>
+```sql
+from index "Employees/ByEmployeeData"
+where (search(employee_data, "Manager") or search(employee_data, "French Spanish", and))
+```
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Indexing all fields for FTS (using AsJson)
+<Panel heading="Indexing all fields for FTS (using AsJson)">
 
 * To search across ALL fields in a document without defining each one explicitly, use the `AsJson` method,  
   which is available in the **C# LINQ string** that is assigned to the `map` property in the Python index class,
@@ -182,11 +186,14 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
 * <Admonition type="info" title="">
   This indexing method is supported only when using **Lucene** as the indexing engine.
   </Admonition>
+    
+---
+    
 #### The index:
 
-<TabItem value="index_3" label="index_3">
-<CodeBlock language="python">
-{`class Products_ByAllValues(AbstractIndexCreationTask):
+<TabItem>
+```python
+class Products_ByAllValues(AbstractIndexCreationTask):
     class IndexEntry:
         def __init__(self, all_values: str = None):
             self.all_values = all_values
@@ -194,11 +201,11 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
     def __init__(self):
         super().__init__()
         self.map = (
-            "docs.Products.Select(product => new \{ "
+            "docs.Products.Select(product => new { "
             # Use the 'AsJson' method to convert the document into a JSON-like structure
             # and call 'Select' to extract only the values of each property
             "    all_values = this.AsJson(product).Select(x => x.Value) "
-            "\})"
+            "})"
         )
         
         # Configure the index-field for FTS:
@@ -210,15 +217,17 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
         
         # Set the search engine type to Lucene:
         self.search_engine_type = SearchEngineType.LUCENE
-`}
-</CodeBlock>
+```
 </TabItem>
+    
+---
+    
 #### Sample query:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="python">
-{`products = list(
+```python
+products = list(
     session.query_index_type(Products_ByAllValues, Products_ByAllValues.IndexEntry)
     .search("all_values", "tofu")
     .of_type(Product)
@@ -228,20 +237,19 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
 #   in ANY of their fields.
 #
 # * Search is case-insensitive since the default analyzer is used.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from index "Products/ByAllValues"
+```sql
+from index "Products/ByAllValues"
 where search(all_values, "tofu")
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
+</Panel>
 
-## Indexing dynamic fields for FTS
+<Panel heading="Indexing dynamic fields for FTS">
 
 * [Dynamic index fields](../../../indexes/using-dynamic-fields.mdx) are created at indexing time, with names and values derived from document content,  
   rather than being predefined as fixed index fields in the index definition.  
@@ -250,7 +258,9 @@ where search(all_values, "tofu")
 * Dynamic index fields can be configured for full-text search just like regular index fields.  
   Learn more in [Indexing dynamic fields for full-text search](../../../indexes/using-dynamic-fields.mdx#indexing-dynamic-fields-for-full-text-search).
 
-## Boosting search results
+</Panel>
+
+<Panel heading="Boosting search results">
 
 * In order to prioritize results, you can provide a boost value to the searched terms.  
   This can be applied by either of the following:
@@ -261,6 +271,384 @@ where search(all_values, "tofu")
   * Add a boost value to the queried terms **at query time**.  
     Refer to the [Boost search results](../../../client-api/session/querying/text-search/boost-search-results.mdx) article.  
 
+</Panel>
 
+<Panel heading="Analyzer-generated phrases in static-index searches">
 
+* The rules for parsing `search()` input and matching multiple tokens produced from one search term are described in
+  [Search with analyzer-generated phrases](../../../client-api/session/querying/text-search/full-text-search.mdx#search-with-analyzer-generated-phrases).
 
+* The phrase-matching behavior is the same for dynamic and static-index queries and applies to both Corax and Lucene.
+
+* The difference for a static index is that you can select the analyzer used for each searchable index-field.
+  The selected analyzer determines whether one search term remains one token or produces multiple tokens that RavenDB searches as a phrase.
+
+---
+
+### How the index-field analyzer affects the query
+
+The analyzer configured for an index-field normally processes both the field content at indexing time and the search terms at query time.
+
+For example, selected built-in analyzers process the same search term as follows:
+
+| Analyzer configured for the index-field                                                                   | Query-time tokens from `sales%representative` | Query behavior                                                                     |
+|-----------------------------------------------------------------------------------------------------------|-----------------------------------------------|------------------------------------------------------------------------------------|
+| [RavenStandardAnalyzer](../../../indexes/using-analyzers.mdx#using-the-default-search-analyzer)           | `sales`, `representative`                     | Searches the two tokens as a **phrase**                                            |
+| [StandardAnalyzer](../../../indexes/using-analyzers.mdx#analyzers-that-remove-common-stop-words)          | `sales`, `representative`                     | Searches the two tokens as a **phrase**                                            |
+| [WhitespaceAnalyzer](../../../indexes/using-analyzers.mdx#analyzers-that-do-not-remove-common-stop-words) | `sales%representative`                        | Searches for one case-sensitive token;<br/>no analyzer-generated phrase is created |
+
+<Admonition type="info" title="">
+
+#### Query-time analyzer exceptions:
+
+* When an index-field uses [NGramAnalyzer](../../../indexes/using-analyzers.mdx#analyzers-that-tokenize-according-to-the-defined-number-of-characters), RavenDB uses the default search analyzer instead of `NGramAnalyzer`
+  to process full-text search terms at query time.
+
+* Search terms that use wildcards follow the analyzer rules described in
+  [Searching with wildcards](#searching-with-wildcards).
+
+Learn more in [Analyzers at query time](../../../indexes/using-analyzers.mdx#analyzers-at-query-time).
+
+</Admonition>
+
+---
+
+<ContentFrame>
+
+### Example
+
+The `Employees_ByEmployeeData` index defined in
+[Indexing multiple fields for FTS](#indexing-multiple-fields-for-fts)
+does not assign an analyzer to `employee_data`, so the field uses the default `RavenStandardAnalyzer`.
+
+For the following query, `RavenStandardAnalyzer` produces the tokens `sales` and `representative`.  
+RavenDB applies the phrase-matching rules described in the linked [full-text search section](../../../client-api/session/querying/text-search/full-text-search.mdx#how-the-input-form-affects-matching).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```python
+employees = list(
+    session.query_index_type(Employees_ByEmployeeData, Employees_ByEmployeeData.IndexEntry)
+    .search("employee_data", "sales%representative")
+    .of_type(Employee)
+)
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Employees/ByEmployeeData"
+where search(employee_data, "sales%representative")
+```
+</TabItem>
+</Tabs>
+
+For the behavior of existing Corax indexes that predate phrase-query support, see
+[Search-engine compatibility](../../../client-api/session/querying/text-search/full-text-search.mdx#search-engine-compatibility).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Searching with wildcards">
+
+* When making a full-text search with wildcards in the search terms,
+  the presence of wildcards (`*`) in the terms sent to the search engine is determined by the transformations applied by the
+  [analyzer](../../../indexes/using-analyzers.mdx) used in the index.
+
+* Note the different behavior in the following cases, as described below:
+  * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](#when-usingoror)
+  * [When using a custom analyzer](#when-using-a-custom-analyzer)
+  * [When using the Exact analyzer](#when-using-the-exact-analyzer)
+
+* When using [Corax](../../../indexes/search-engine/corax.mdx) as the search engine,  
+  this behavior will only apply to indexes that are newly created or have been reset.
+
+* Note that the `search` method supports only the **multi-character** wildcard `*`.  
+  To match a **single character** using the `?` wildcard, use Lucene syntax instead.  
+  This requires the target index to use the Lucene search engine.
+  Learn more in [Filter with Lucene syntax](../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#wildcards).
+
+<Admonition type="note" title="">
+
+##### When using&nbsp;`RavenStandardAnalyzer`&nbsp;or`StandardAnalyzer`&nbsp;or&nbsp;`NGramAnalyzer`:
+Usually, the same analyzer used to tokenize field content at **indexing time** is also used to process the terms provided in the **full-text search query**
+before they are sent to the search engine to retrieve matching documents.
+
+**However, in the following cases**:
+
+* When making a [dynamic search query](../../../client-api/session/querying/text-search/full-text-search.mdx)
+* or when querying a static index that uses the default [RavenStandardAnalyzer](../../../indexes/using-analyzers.mdx#using-the-default-search-analyzer)
+* or when querying a static index that uses the [StandardAnalyzer](../../../indexes/using-analyzers.mdx#analyzers-that-remove-common-stop-words)
+* or when querying a static index that uses the [NGramAnalyzer](../../../indexes/using-analyzers.mdx#analyzers-that-tokenize-according-to-the-defined-number-of-characters)
+
+the queried terms in the _search_ method are processed with the [LowerCaseKeywordAnalyzer](../../../indexes/using-analyzers.mdx#using-the-default-analyzer)  
+before being sent to the search engine.
+
+This analyzer does Not remove the `*`, so the terms are sent with `*`, as provided in the search terms.  
+For example:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+```python
+class Employees_ByNotes_usingDefaultAnalyzer(AbstractIndexCreationTask):
+    # The IndexEntry class defines the index-fields
+    class IndexEntry:
+        def __init__(self, employee_notes: str = None):
+            self.employee_notes = employee_notes
+
+    def __init__(self):
+        super().__init__()
+        # The 'Map' function defines the content of the index-fields
+        self.map = "from employee in docs.Employees " "select new " "{ " " employee_notes = employee.Notes[0]" "}"
+
+        # Configure the index-field for FTS:
+        self._index("employee_notes", FieldIndexing.SEARCH)
+
+        # Since no analyzer is explicitly set
+        # then the default 'RavenStandardAnalyzer' will be used at indexing time.
+
+        # However, when making a search query with wildcards,
+        # the 'LowerCaseKeywordAnalyzer' will be used to process the search terms
+        # prior to sending them to the search engine.
+```
+</TabItem>
+<TabItem value="Query" label="Query">
+```python
+# Prepare a callback that receives the explanations
+explanations_holder = {}
+
+def explanations_callback(explanations: Explanations):
+    explanations_holder["explanations"] = explanations
+
+employees = list(
+    session.query_index_type(
+        Employees_ByNotes_usingDefaultAnalyzer, Employees_ByNotes_usingDefaultAnalyzer.IndexEntry
+    )
+    # If you request to include explanations,
+    # you can see the exact term that was sent to the search engine.
+    .include_explanations(explanations_callback=explanations_callback)
+    # Provide a term with a wildcard to the 'search' method:
+    .search("employee_notes", "*rench")
+    .of_type(Employee)
+)
+
+# Results will contain all Employee documents that have terms that end with 'rench'
+# (e.g. French).
+
+# Checking the explanations, you can see that the search term 'rench'
+# was sent to the search engine WITH the leading wildcard, i.e. '*rench'
+# since the 'LowerCaseKeywordAnalyzer' is used in this case.
+employee_id = session.advanced.get_document_id(employees[0])
+explanation = explanations_holder["explanations"].explanations[employee_id][0]
+
+assert "employee_notes:*rench" in explanation
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Employees/ByNotes/usingDefaultAnalyzer"
+where search(employee_notes, "*rench")
+include explanations()
+```
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+##### When using a custom analyzer:
+    
+* When setting a [custom analyzer](../../../indexes/using-analyzers.mdx#creating-custom-analyzers) in your index to tokenize field content,
+  then when querying the index, the search terms in the query will be processed according to the custom analyzer's logic.
+
+* The `*` will remain in the terms if the custom analyzer allows it.
+  It is the user's responsibility to ensure that wildcards are not removed by the custom analyzer if they should be included in the query.
+
+* Note:  
+  An exception to the above is when the wildcard is used as a suffix in the search term (e.g. `Fren*`).  
+  In this case the wildcard will be included in the query regardless of the analyzer's logic.
+
+For example:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+```python
+class Employees_ByNotes_usingCustomAnalyzer(AbstractIndexCreationTask):
+    class IndexEntry:
+        def __init__(self, employee_notes: str = None):
+            self.employee_notes = employee_notes
+
+    def __init__(self):
+        super().__init__()
+        self.map = "from employee in docs.Employees " "select new " "{ " " employee_notes = employee.Notes[0]" "}"
+
+        # Configure the index-field for FTS:
+        self._index("employee_notes", FieldIndexing.SEARCH)
+
+        # Set a custom analyzer for the index-field:
+        self._analyze("employee_notes", "RemoveWildcardsAnalyzer")
+```
+</TabItem>
+<TabItem value="Custom_analyzer" label="Custom_analyzer">
+```python
+# The custom analyzer:
+# ====================
+# Analyzers run on the RavenDB server, so the analyzer itself is a .NET class.
+# From the Python client you pass its source code to the server as a string.
+
+remove_wildcards_analyzer = """
+using System.IO;
+using Lucene.Net.Analysis;
+using Lucene.Net.Analysis.Standard;
+
+namespace CustomAnalyzers
+{
+    public class RemoveWildcardsAnalyzer : StandardAnalyzer
+    {
+        public RemoveWildcardsAnalyzer() : base(Lucene.Net.Util.Version.LUCENE_30)
+        {
+        }
+
+        public override TokenStream TokenStream(string fieldName, System.IO.TextReader reader)
+        {
+            // Read input stream and remove wildcards (*)
+            string text = reader.ReadToEnd();
+            string processedText = text.Replace("*", "");
+            StringReader newReader = new StringReader(processedText);
+
+            return base.TokenStream(fieldName, newReader);
+        }
+    }
+}
+"""
+
+# Deploying the custom analyzer:
+# ==============================
+
+analyzer_definition = AnalyzerDefinition(
+    name="RemoveWildcardsAnalyzer",
+    code=remove_wildcards_analyzer
+)
+
+store.maintenance.server.send(PutServerWideAnalyzersOperation(analyzer_definition))
+```
+</TabItem>
+<TabItem value="Query" label="Query">
+```python
+explanations_holder = {}
+
+def explanations_callback(explanations: Explanations):
+    explanations_holder["explanations"] = explanations
+
+employees = list(
+    session.query_index_type(
+        Employees_ByNotes_usingCustomAnalyzer, Employees_ByNotes_usingCustomAnalyzer.IndexEntry
+    )
+    .include_explanations(explanations_callback=explanations_callback)
+    # Provide a term with wildcards to the 'search' method:
+    .search("employee_notes", "*French*")
+    .of_type(Employee)
+)
+
+# Even though a wildcard was provided,
+# the results will contain only Employee documents that contain the exact term 'French'.
+
+# The search term was sent to the search engine WITHOUT the wildcard,
+# as the custom analyzer's logic strips them out.
+
+# This can be verified by checking the explanations:
+employee_id = session.advanced.get_document_id(employees[0])
+explanation = explanations_holder["explanations"].explanations[employee_id][0]
+
+assert "employee_notes:french" in explanation
+assert "employee_notes:*french" not in explanation
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Employees/ByNotes/usingCustomAnalyzer"
+where search(employee_notes, "*French*")
+include explanations()
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="">
+
+The Python client does not expose the database-scoped `PutAnalyzersOperation`.  
+The example above deploys the analyzer **server-wide**.  
+To deploy an analyzer to a single database, use the
+[Custom Analyzers view in Studio](../../../studio/database/settings/custom-analyzers.mdx).
+
+</Admonition>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+##### When using the Exact analyzer:
+    
+When using the default Exact analyzer in your index (which is [KeywordAnalyzer](../../../indexes/using-analyzers.mdx#using-the-default-exact-analyzer)),  
+then when querying the index, the wildcards in your search terms remain untouched.  
+The terms are sent to the search engine exactly as produced by the analyzer.
+
+For example:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+```python
+class Employees_ByFirstName_usingExactAnalyzer(AbstractIndexCreationTask):
+    class IndexEntry:
+        def __init__(self, first_name: str = None):
+            self.first_name = first_name
+
+    def __init__(self):
+        super().__init__()
+        self.map = "from employee in docs.Employees " "select new " "{ " " first_name = employee.FirstName" "}"
+
+        # Set the Exact analyzer for the index-field:
+        # (The field will not be tokenized)
+        self._index("first_name", FieldIndexing.EXACT)
+```
+</TabItem>
+<TabItem value="Query" label="Query">
+```python
+explanations_holder = {}
+
+def explanations_callback(explanations: Explanations):
+    explanations_holder["explanations"] = explanations
+
+employees = list(
+    session.query_index_type(
+        Employees_ByFirstName_usingExactAnalyzer, Employees_ByFirstName_usingExactAnalyzer.IndexEntry
+    )
+    .include_explanations(explanations_callback=explanations_callback)
+    # Provide a term with a wildcard to the 'search' method:
+    .search("first_name", "Mich*")
+    .of_type(Employee)
+)
+
+# Results will contain all Employee documents with FirstName that starts with 'Mich'
+# (e.g. Michael).
+
+# The search term, 'Mich*', is sent to the search engine
+# exactly as was provided to the 'search' method, WITH the wildcard.
+employee_id = session.advanced.get_document_id(employees[0])
+explanation = explanations_holder["explanations"].explanations[employee_id][0]
+
+assert "first_name:Mich*" in explanation
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Employees/ByFirstName/usingExactAnalyzer"
+where search(first_name, "Mich*")
+include explanations()
+```
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+</Panel>
