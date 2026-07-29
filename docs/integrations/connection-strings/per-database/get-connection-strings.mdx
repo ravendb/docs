@@ -2,16 +2,31 @@
 title: "Get a Per-Database Connection String"
 sidebar_label: "Get connection strings"
 sidebar_position: 2
-supported_languages: ["csharp"]
+supported_languages: ["csharp", "java", "nodejs", "python"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 import GetConnectionStringsCsharp from './content/_get-connection-strings-csharp.mdx';
+import GetConnectionStringsJava from './content/_get-connection-strings-java.mdx';
+import GetConnectionStringsNodejs from './content/_get-connection-strings-nodejs.mdx';
+import GetConnectionStringsPython from './content/_get-connection-strings-python.mdx';
 
 <LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <GetConnectionStringsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <GetConnectionStringsJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GetConnectionStringsNodejs />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <GetConnectionStringsPython />
 </LanguageContent>

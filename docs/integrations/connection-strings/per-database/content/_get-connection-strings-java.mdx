@@ -1,0 +1,151 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+
+<Admonition type="note" title="">
+
+* Use `GetConnectionStringsOperation` to retrieve a specific connection string,  
+  or all connection strings defined in the database.
+
+* This operation reads connection strings from a single database's record.   
+  To get connection strings defined at the cluster level, see [Get server-wide connection strings](../../../../integrations/connection-strings/server-wide/get-connection-strings.mdx).
+
+* Learn more about per-database connection strings in [Per-database connection strings - Overview](../../../../integrations/connection-strings/per-database/overview.mdx).  
+  To create or update a connection string, see [Add or update a connection string](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx).
+
+* In this article:
+  * [Get connection string by name and type](../../../../integrations/connection-strings/per-database/get-connection-strings.mdx#get-connection-string-by-name-and-type)
+  * [Get all connection strings](../../../../integrations/connection-strings/per-database/get-connection-strings.mdx#get-all-connection-strings)
+  * [Syntax](../../../../integrations/connection-strings/per-database/get-connection-strings.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Get connection string by name and type">
+
+The following example retrieves a `Raven` connection string in the current database:
+
+```java
+try (IDocumentStore store = new DocumentStore()) {
+    // Request a specific connection string, pass its name and type:
+    // =============================================================
+    GetConnectionStringsOperation getRavenConStrOp = new GetConnectionStringsOperation(
+        "ravendb-connection-string-name", ConnectionStringType.RAVEN);
+
+    GetConnectionStringsResult connectionStrings = store.maintenance().send(getRavenConStrOp);
+
+    // Access results:
+    // ===============
+    Map<String, RavenConnectionString> ravenConnectionStrings =
+        connectionStrings.getRavenConnectionStrings();
+
+    int numberOfRavenConnectionStrings = ravenConnectionStrings.size();
+    RavenConnectionString ravenConStr = ravenConnectionStrings.get("ravendb-connection-string-name");
+
+    String[] targetUrls = ravenConStr.getTopologyDiscoveryUrls();
+    String targetDatabase = ravenConStr.getDatabase();
+}
+```
+
+</Panel>
+
+<Panel heading="Get all connection strings">
+    
+The following example retrieves all connection strings defined in the database:    
+
+```java
+try (IDocumentStore store = new DocumentStore()) {
+    // Get all connection strings:
+    // ===========================
+    GetConnectionStringsOperation getAllConStrOp = new GetConnectionStringsOperation();
+    GetConnectionStringsResult allConnectionStrings = store.maintenance().send(getAllConStrOp);
+
+    // Access results by connection string type:
+    // =========================================
+
+    // Raven
+    Map<String, RavenConnectionString> ravenConnectionStrings =
+        allConnectionStrings.getRavenConnectionStrings();
+
+    // SQL
+    Map<String, SqlConnectionString> sqlConnectionStrings =
+        allConnectionStrings.getSqlConnectionStrings();
+
+    // OLAP
+    Map<String, OlapConnectionString> olapConnectionStrings =
+        allConnectionStrings.getOlapConnectionStrings();
+
+    // Elasticsearch
+    Map<String, ElasticSearchConnectionString> elasticsearchConnectionStrings =
+        allConnectionStrings.getElasticSearchConnectionStrings();
+
+    // Queue
+    Map<String, QueueConnectionString> queueConnectionStrings =
+        allConnectionStrings.getQueueConnectionStrings();
+
+    // AI
+    Map<String, AiConnectionString> aiConnectionStrings =
+        allConnectionStrings.getAiConnectionStrings();
+}
+```
+
+</Panel>
+
+<Panel heading="Syntax">
+
+```java
+public GetConnectionStringsOperation()
+public GetConnectionStringsOperation(String connectionStringName, ConnectionStringType type)
+```
+<br/>    
+
+| Parameter                | Type                   | Description                                                                    |
+|--------------------------|------------------------|--------------------------------------------------------------------------------|
+| **connectionStringName** | `String`               | Connection string name                                                         |
+| **type**                 | `ConnectionStringType` | Connection string type:<br/>`RAVEN`, `SQL`, `OLAP`, `ELASTIC_SEARCH`, `QUEUE`, or `AI` |
+
+```java
+public enum ConnectionStringType {
+    NONE,
+    RAVEN,
+    SQL,
+    OLAP,
+    ELASTIC_SEARCH,
+    QUEUE,
+    AI
+}
+```
+<br/>    
+
+| Operation result             | Description                                                   |
+|------------------------------|---------------------------------------------------------------|
+| `GetConnectionStringsResult` | Class holding all connection strings defined in the database. |
+
+```java
+public class GetConnectionStringsResult {
+    private Map<String, RavenConnectionString> ravenConnectionStrings;
+    private Map<String, SqlConnectionString> sqlConnectionStrings;
+    private Map<String, OlapConnectionString> olapConnectionStrings;
+    private Map<String, ElasticSearchConnectionString> elasticSearchConnectionStrings;
+    private Map<String, QueueConnectionString> queueConnectionStrings;
+    private Map<String, AiConnectionString> aiConnectionStrings;
+
+    // Getters and setters are available for each of the above
+}
+```
+<br/>
+
+<Admonition type="note" title="">
+
+The Java client returns connection strings of the `Raven`, `Sql`, `Olap`, `ElasticSearch`, `Queue`
+(Kafka, RabbitMQ, Azure Queue Storage, and Amazon SQS), and `Ai` types.  
+Connection string types that have no matching class in the Java client, such as `Snowflake`, can be viewed from Studio.
+
+</Admonition>
+    
+<Admonition type="note" title="">
+Connection string type-specific fields and complete examples are documented in the task or feature articles listed under
+[Connection string per type](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#connection-string-per-type).
+</Admonition>
+
+</Panel>

@@ -125,7 +125,7 @@ After making changes, test the connection and save it.
 Use [PutConnectionStringOperation](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#the-putconnectionstringoperation-operation)
 to add a connection string to a database.
 
-The operation is sent through the database maintenance store: `store.Maintenance.Send(...)`.  
+The operation is sent through the database maintenance store: `store.maintenance.send(...)`.  
 By default, it is applied to the [default database](../../../../client-api/setting-up-default-database.mdx).  
 To apply it to a different database, see [switch operations to a different database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
 
@@ -138,42 +138,27 @@ The following example adds a `RavenDB` connection string.
 
 #### Example
 
-<Tabs groupId='languageSyntax'>
-<TabItem value="Sync" label="Sync">
-```csharp
+```js
 // Define a connection string to a RavenDB database destination
 // ============================================================
-var ravenDBConStr = new RavenConnectionString
-{
-    Name = "ravendb-connection-string-name",
-    Database = "target-database-name",
-    TopologyDiscoveryUrls = new[] { "https://rvn2:8080" }
-};
+const ravenDBConStr = new RavenConnectionString();
+ravenDBConStr.name = "ravendb-connection-string-name";
+ravenDBConStr.database = "target-database-name";
+ravenDBConStr.topologyDiscoveryUrls = ["https://rvn2:8080"];
 
 // Deploy (send) the connection string to the server via the PutConnectionStringOperation
 // ======================================================================================
-var putConnectionStringOp = new PutConnectionStringOperation<RavenConnectionString>(ravenDBConStr);
-PutConnectionStringResult connectionStringResult = store.Maintenance.Send(putConnectionStringOp);
+const putConnectionStringOp = new PutConnectionStringOperation(ravenDBConStr);
+const connectionStringResult = await store.maintenance.send(putConnectionStringOp);
 ```
-</TabItem>
-<TabItem value="Async" label="Async">
-```csharp
-// Define a connection string to a RavenDB database destination
-// ============================================================
-var ravenDBConStr = new RavenConnectionString
-{
-    Name = "ravendb-connection-string-name",
-    Database = "target-database-name",
-    TopologyDiscoveryUrls = new[] { "https://rvn2:8080" }
-};
 
-// Deploy (send) the connection string to the server via the PutConnectionStringOperation
-// ======================================================================================
-var putConnectionStringOp = new PutConnectionStringOperation<RavenConnectionString>(ravenDBConStr);
-PutConnectionStringResult connectionStringResult = await store.Maintenance.SendAsync(putConnectionStringOp);
-```
-</TabItem>
-</Tabs>
+<Admonition type="note" title="">
+
+The Node.js client provides connection string classes for the `Raven`, `Sql`, `Olap`, `ElasticSearch`, `Queue`
+(Kafka and RabbitMQ), and `Ai` types.  
+Connection string types that have no matching class in the Node.js client, such as `Snowflake`, can be defined from Studio.    
+
+</Admonition>
 
 </Panel>
 
@@ -181,7 +166,7 @@ PutConnectionStringResult connectionStringResult = await store.Maintenance.SendA
     
 Use the same `PutConnectionStringOperation` to update an existing per-database connection string.
 
-To update a connection string, send a connection string with the **same** `Name`.    
+To update a connection string, send a connection string with the **same** `name`.    
 The submitted definition replaces the existing per-database connection string with that name.  
 The change applies to every task or AI agent in the database that references this connection string.
 
@@ -240,9 +225,9 @@ The specific fields and complete examples are documented in the relevant task or
 
 #### The `PutConnectionStringOperation` operation
 
-```csharp
-public PutConnectionStringOperation(T connectionString)
-    where T : ConnectionString
+```js
+// T extends ConnectionString
+new PutConnectionStringOperation(connectionString);
 ```
 <br/>    
 
@@ -250,37 +235,27 @@ public PutConnectionStringOperation(T connectionString)
 |----------------------|---------------------------------|----------------------------------------------------|
 | **connectionString** | `RavenConnectionString`         | Object that defines the RavenDB connection string. |
 | **connectionString** | `SqlConnectionString`           | Object that defines the SQL connection string. |
-| **connectionString** | `SnowflakeConnectionString`     | Object that defines the Snowflake connection string. |
 | **connectionString** | `OlapConnectionString`          | Object that defines the OLAP connection string. |
 | **connectionString** | `ElasticSearchConnectionString` | Object that defines the Elasticsearch connection string. |
-| **connectionString** | `QueueConnectionString`         | Object that defines the connection string for the queue broker tasks - Queue ETL (Kafka, RabbitMQ, Azure Queue Storage, Amazon SQS) and Queue Sink (Kafka, RabbitMQ, Azure Service Bus). |
+| **connectionString** | `QueueConnectionString`         | Object that defines the connection string for the queue broker tasks - Queue ETL (Kafka, RabbitMQ) and Queue Sink (Kafka, RabbitMQ). |
 | **connectionString** | `AiConnectionString`            | Object that defines the AI connection string. |    
 
 #### The `ConnectionString` base class
 
 All the connection string class types inherit from this abstract class:
 
-```csharp
-public abstract class ConnectionString
+```js
+class ConnectionString
 {
     // A name for the connection string
-    public string Name { get; set; }
+    name; // string
     
     // The connection string type
-    public abstract ConnectionStringType Type { get; } 
+    type; // ConnectionStringType, set by each derived class
 }
 
-public enum ConnectionStringType
-{
-    None,
-    Raven,
-    Sql,
-    Olap,
-    ElasticSearch,
-    Queue,
-    Snowflake,
-    Ai
-}
+// The available connection string types
+ConnectionStringType = "None" | "Raven" | "Sql" | "Olap" | "ElasticSearch" | "Queue" | "Ai";
 ```
 <br/>
     
