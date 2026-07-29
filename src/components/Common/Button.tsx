@@ -7,13 +7,16 @@ import isInternalUrl from "@docusaurus/isInternalUrl";
 
 export type ButtonVariant = "default" | "outline" | "ghost" | "destructive" | "secondary";
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick"> {
     children: React.ReactNode;
     url?: string;
     className?: string;
     variant?: ButtonVariant;
     size?: "xs" | "sm";
     iconName?: IconName;
+    onClick?: React.MouseEventHandler<HTMLElement>;
+    target?: string;
+    rel?: string;
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
@@ -38,6 +41,9 @@ export default function Button({
     variant = "secondary",
     size = "sm",
     iconName,
+    onClick,
+    target,
+    rel,
     ...props
 }: ButtonProps) {
     const baseClasses = clsx(
@@ -52,14 +58,20 @@ export default function Button({
     if (url) {
         const isExternal = !isInternalUrl(url);
         return (
-            <Link {...(isExternal ? { href: url } : { to: url })} className={baseClasses}>
+            <Link
+                {...(isExternal ? { href: url } : { to: url })}
+                className={baseClasses}
+                onClick={onClick}
+                target={target}
+                rel={rel}
+            >
                 {children} {iconName && <Icon icon={iconName} className="ms-1" size="xs" />}
             </Link>
         );
     }
 
     return (
-        <button className={baseClasses} {...props}>
+        <button className={baseClasses} onClick={onClick} {...props}>
             {children} {iconName && <Icon icon={iconName} className="ms-1" size="xs" />}
         </button>
     );

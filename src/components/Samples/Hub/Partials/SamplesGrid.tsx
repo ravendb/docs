@@ -3,6 +3,14 @@ import clsx from "clsx";
 import { SampleCard } from "@site/src/components/Samples";
 import Heading from "@theme/Heading";
 import type { Sample } from "../../types";
+import { sampleSlugFromPermalink, trackSampleCardClick } from "../../analytics";
+
+function techStackOf(sample: Sample): string {
+    return sample.tags
+        .filter((tag) => tag.category === "tech-stack")
+        .map((tag) => tag.label)
+        .join(", ");
+}
 
 interface SamplesGridProps {
     samples: Sample[];
@@ -67,6 +75,13 @@ export default function SamplesGrid({ samples, selectedTags, matchLogic, onTagCl
                         priority={index < 2}
                         tags={sample.tags as any}
                         onTagClick={onTagClick}
+                        onCardClick={() =>
+                            trackSampleCardClick({
+                                sample_name: sampleSlugFromPermalink(sample.permalink),
+                                tech_stack: techStackOf(sample),
+                                card_position: index + 1,
+                            })
+                        }
                         selectedTags={selectedTags}
                     />
                 ))}
