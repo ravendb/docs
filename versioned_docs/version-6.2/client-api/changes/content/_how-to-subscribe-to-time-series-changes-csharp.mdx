@@ -1,7 +1,8 @@
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
@@ -14,25 +15,36 @@ import CodeBlock from '@theme/CodeBlock';
    * `ForAllTimeSeries`  
      Track **all** time series  
 
-* In this page:  
+<Admonition type="warning" title="">
+The `Subscribe` method on the observable these methods return accepts only an `IObserver` object
+by default.  
+To instead subscribe with a delegate, like the `change => ...` lambda used in the examples below,
+add the [System.Reactive](https://www.nuget.org/packages/System.Reactive/) package to your project.  
+This adds `Subscribe` overloads that take delegates, including ones with error and
+completion handlers.  
+</Admonition>
+
+* In this article:  
    * [ForTimeSeries](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#fortimeseries)
    * [ForTimeSeriesOfDocument](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#fortimeseriesofdocument)
    * [ForAllTimeSeries](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#foralltimeseries)
+   * [TimeSeriesChange and TimeSeriesChangeTypes syntax](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#timeserieschange-and-timeserieschangetypes-syntax)
 
 </Admonition>
-## ForTimeSeries
 
-Subscribe to changes in **all time-series with a given name**, no matter which document they belong to, 
-using the `ForTimeSeries` method.  
+<Panel heading="ForTimeSeries">
 
-#### Syntax
+Subscribe to changes in **all time-series with a given name**, no matter which document they belong to,
+using the `ForTimeSeries` method.
 
-<TabItem value="timeseries_changes_1" label="timeseries_changes_1">
-<CodeBlock language="csharp">
-{`IChangesObservable<TimeSeriesChange> ForTimeSeries(string timeSeriesName);
-`}
-</CodeBlock>
-</TabItem>
+<ContentFrame>
+
+### Syntax
+
+```csharp
+IChangesObservable<TimeSeriesChange> ForTimeSeries(string timeSeriesName);
+```
+<br />
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -40,49 +52,53 @@ using the `ForTimeSeries` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[TimeSeriesChange](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#timeserieschange)&gt; | Observable that allows to add subscriptions to time series notifications. |
+| IChangesObservable&lt;[TimeSeriesChange](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#timeserieschange-and-timeserieschangetypes-syntax)&gt; | Observable that allows to add subscriptions to time series notifications. |
 
-#### Example
+</ContentFrame>
+<ContentFrame>
 
-<TabItem value="timeseries_changes_1_1" label="timeseries_changes_1_1">
-<CodeBlock language="csharp">
-{`IDisposable subscription = store
+### Example
+
+```csharp
+IDisposable subscription = store
     .Changes()
     .ForTimeSeries("Likes")
     .Subscribe
         (change =>
-        \{
+        {
             switch (change.Type)
-            \{
+            {
                 case TimeSeriesChangeTypes.Delete:
                     // do something
                 break;
-            \}
-        \});
-`}
-</CodeBlock>
-</TabItem>
+            }
+        });
+```
 
+</ContentFrame>
 
+</Panel>
 
-## ForTimeSeriesOfDocument
+<Panel heading="ForTimeSeriesOfDocument">
 
-Use `ForTimeSeriesOfDocument` to subscribe to changes in **time series of a chosen document**.  
+Use `ForTimeSeriesOfDocument` to subscribe to changes in **time series of a chosen document**.
 
 * Two overload methods allow you to  
    * Track **a specific** time series of the chosen document  
    * Track **any** time series of the chosen document  
+
+<ContentFrame>
+
 ### Overload #1
-Use this `ForTimeSeriesOfDocument` overload to track changes in a **specific time** series of the chosen document.  
+
+Use this `ForTimeSeriesOfDocument` overload to track changes in a **specific time** series of the chosen document.
 
 #### Syntax
 
-<TabItem value="timeseries_changes_2" label="timeseries_changes_2">
-<CodeBlock language="csharp">
-{`IChangesObservable<TimeSeriesChange> ForTimeSeriesOfDocument(string documentId, string timeSeriesName);
-`}
-</CodeBlock>
-</TabItem>
+```csharp
+IChangesObservable<TimeSeriesChange> ForTimeSeriesOfDocument(string documentId, string timeSeriesName);
+```
+<br />
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -91,39 +107,39 @@ Use this `ForTimeSeriesOfDocument` overload to track changes in a **specific tim
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[TimeSeriesChange](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#timeserieschange)&gt; | Observable that allows to add subscriptions to time series notifications. |
+| IChangesObservable&lt;[TimeSeriesChange](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#timeserieschange-and-timeserieschangetypes-syntax)&gt; | Observable that allows to add subscriptions to time series notifications. |
 
 #### Example
 
-<TabItem value="timeseries_changes_2_1" label="timeseries_changes_2_1">
-<CodeBlock language="csharp">
-{`IDisposable subscription = store
+```csharp
+IDisposable subscription = store
     .Changes()
     .ForTimeSeriesOfDocument("companies/1-A", "Likes")
     .Subscribe
         (change =>
-        \{
+        {
             switch (change.Type)
-            \{
+            {
                 case TimeSeriesChangeTypes.Delete:
                     // do something
                 break;
-            \}
-        \});
-`}
-</CodeBlock>
-</TabItem>
+            }
+        });
+```
+
+</ContentFrame>
+<ContentFrame>
+
 ### Overload #2
-Use this `ForTimeSeriesOfDocument` overload to track changes in **any time series** of the chosen document.  
+
+Use this `ForTimeSeriesOfDocument` overload to track changes in **any time series** of the chosen document.
 
 #### Syntax
 
-<TabItem value="timeseries_changes_3" label="timeseries_changes_3">
-<CodeBlock language="csharp">
-{`IChangesObservable<TimeSeriesChange> ForTimeSeriesOfDocument(string documentId);
-`}
-</CodeBlock>
-</TabItem>
+```csharp
+IChangesObservable<TimeSeriesChange> ForTimeSeriesOfDocument(string documentId);
+```
+<br />
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -131,76 +147,96 @@ Use this `ForTimeSeriesOfDocument` overload to track changes in **any time serie
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[TimeSeriesChange](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#timeserieschange)&gt; | Observable that allows to add subscriptions to time series notifications. |
+| IChangesObservable&lt;[TimeSeriesChange](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#timeserieschange-and-timeserieschangetypes-syntax)&gt; | Observable that allows to add subscriptions to time series notifications. |
 
 #### Example
 
-<TabItem value="timeseries_changes_3_1" label="timeseries_changes_3_1">
-<CodeBlock language="csharp">
-{`IDisposable subscription = store
+```csharp
+IDisposable subscription = store
     .Changes()
     .ForTimeSeriesOfDocument("companies/1-A")
     .Subscribe
         (change =>
-        \{
+        {
             switch (change.Type)
-            \{
+            {
                 case TimeSeriesChangeTypes.Delete:
                     // do something
                 break;
-            \}
-        \});
-`}
-</CodeBlock>
-</TabItem>
+            }
+        });
+```
 
+</ContentFrame>
 
+</Panel>
 
-## ForAllTimeSeries
+<Panel heading="ForAllTimeSeries">
 
-Subscribe to changes in **all time-series** using the `ForAllTimeSeries` method.  
+Subscribe to changes in **all time-series** using the `ForAllTimeSeries` method.
 
-#### Syntax
+<ContentFrame>
 
-<TabItem value="timeseries_changes_4" label="timeseries_changes_4">
-<CodeBlock language="csharp">
-{`IChangesObservable<TimeSeriesChange> ForAllTimeSeries();
-`}
-</CodeBlock>
-</TabItem>
+### Syntax
+
+```csharp
+IChangesObservable<TimeSeriesChange> ForAllTimeSeries();
+```
+<br />
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[TimeSeriesChange](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#timeserieschange)&gt; | Observable that allows to add subscriptions to time series notifications. |
+| IChangesObservable&lt;[TimeSeriesChange](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#timeserieschange-and-timeserieschangetypes-syntax)&gt; | Observable that allows to add subscriptions to time series notifications. |
 
-#### Example
+</ContentFrame>
+<ContentFrame>
 
-<TabItem value="timeseries_changes_4_1" label="timeseries_changes_4_1">
-<CodeBlock language="csharp">
-{`IDisposable subscription = store
+### Example
+
+```csharp
+IDisposable subscription = store
     .Changes()
     .ForAllTimeSeries()
     .Subscribe
         (change =>
-        \{
+        {
             switch (change.Type)
-            \{
+            {
                 case TimeSeriesChangeTypes.Delete:
                     // do something
                 break;
-            \}
-        \});
-`}
-</CodeBlock>
-</TabItem>
+            }
+        });
+```
 
+</ContentFrame>
 
+</Panel>
 
-## TimeSeriesChange
+<Panel heading="TimeSeriesChange and TimeSeriesChangeTypes syntax">
 
-| Name | Type | Description |
+<Tabs>
+<TabItem value="TimeSeriesChange" label="TimeSeriesChange">
+
+**The notification object delivered to subscribers when a time series changes.**
+
+```csharp
+class TimeSeriesChange
+{
+    TimeSeriesChangeTypes Type
+    string Name
+    string DocumentId
+    string CollectionName
+    DateTime From
+    DateTime To
+    string ChangeVector
+}
+```
+<br />
+
+| Property | Type | Description |
 | ------------- | ------------- | ----- |
-| **Type** | [TimeSeriesChangeTypes](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#timeserieschangetypes) | Time series change type enum |
+| **Type** | [TimeSeriesChangeTypes](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx#timeserieschange-and-timeserieschangetypes-syntax) | Time series change type enum |
 | **Name** | string | Time Series Name |
 | **DocumentId** | string | Time series Document Identifier |
 | **CollectionName** | string | Time series document Collection Name |
@@ -208,9 +244,19 @@ Subscribe to changes in **all time-series** using the `ForAllTimeSeries` method.
 | **To** | DateTime | Time series values To date |
 | **ChangeVector** | string | Time series Change Vector |
 
+</TabItem>
+<TabItem value="TimeSeriesChangeTypes" label="TimeSeriesChangeTypes">
 
-
-## TimeSeriesChangeTypes
+```csharp
+enum TimeSeriesChangeTypes
+{
+    None,
+    Put,
+    Delete,
+    Mixed,
+}
+```
+<br />
 
 | Name | Value |
 | ---- | ----- |
@@ -219,13 +265,7 @@ Subscribe to changes in **all time-series** using the `ForAllTimeSeries` method.
 | **Delete** | `2` |
 | **Mixed** | `3` |
 
+</TabItem>
+</Tabs>
 
-
-## Remarks
-
-<Admonition type="warning" title="">
-To get more method overloads, especially ones supporting **delegates**, please add the 
-[System.Reactive.Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project.  
-</Admonition>
-
-
+</Panel>
