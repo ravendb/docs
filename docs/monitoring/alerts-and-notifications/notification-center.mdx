@@ -350,7 +350,8 @@ List a performance-hint kind to filter out only the hints of this kind:
 List an alert kind to filter out only the alerts of this kind.  
 
 An alert's kind is not shown on its card. To find the kind's name, fetch the server's stored
-notifications from the `/admin/server/notifications` endpoint (requires `Operator` clearance),
+notifications from the `/admin/server/notifications`
+[debug endpoint](../../monitoring/debug/debug-endpoints.mdx) (requires `Operator` clearance),
 or a database's notifications from `/databases/<database name>/notifications` (requires access
 to the database), and read the alert's `Reason` field.  
 
