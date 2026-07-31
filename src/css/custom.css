@@ -590,6 +590,7 @@ hr {
 /* Full width override */
 .guidesHomePage [class*="docItemCol"],
 .cloudHomePage [class*="docItemCol"],
+.quillHomePage [class*="docItemCol"],
 .docsHomePage [class*="docItemCol"],
 .samplesHomePage [class*="docItemCol"],
 .plugin-id-samples [class*="docItemCol"] {
@@ -719,6 +720,7 @@ a {
 /* Disable navigation for Docs */
 .plugin-id-default .pagination-nav,
 .plugin-id-cloud .pagination-nav,
+.plugin-id-quill .pagination-nav,
 .plugin-id-samples .pagination-nav {
     display: none;
 }

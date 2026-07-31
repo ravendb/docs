@@ -22,6 +22,9 @@ export interface VerifySeeAlsoInput {
     latestVersion: string;
 }
 
+/** Sources whose scope key is the section name itself; every other source scopes to a docs version. */
+const SECTION_SOURCES = new Set(["cloud", "quill", "guides", "samples"]);
+
 const SEEALSO_ANCHOR_REGEX = /<a\b[^>]*\bdata-seealso\b[^>]*>/gi;
 const HREF_ATTR_REGEX = /\bhref\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/i;
 const SEEALSO_VALUE_REGEX = /\bdata-seealso\s*=\s*(?:"([\w-]+)"|'([\w-]+)'|([\w-]+))/i;
@@ -65,14 +68,8 @@ export function verifySeeAlsoLinks(input: VerifySeeAlsoInput): SeeAlsoIssue[] {
         }
 
         const expectedVersion = record.articleVersion ?? latestVersion;
-        const scopeKey =
-            record.source === "cloud"
-                ? "cloud"
-                : record.source === "guides"
-                  ? "guides"
-                  : record.source === "samples"
-                    ? "samples"
-                    : expectedVersion;
+        const isSection = SECTION_SOURCES.has(record.source);
+        const scopeKey = isSection ? record.source : expectedVersion;
 
         if (routesByScope.get(scopeKey)?.has(record.href)) {
             continue;
@@ -82,7 +79,7 @@ export function verifySeeAlsoLinks(input: VerifySeeAlsoInput): SeeAlsoIssue[] {
             articlePath: record.articlePath,
             href: record.href,
             reason: `see_also href ${record.href} does not resolve in scope "${scopeKey}"`,
-            fix: `edit ${record.articlePath}: link: must be versionless and point at a real page in ${scopeKey === "cloud" || scopeKey === "guides" || scopeKey === "samples" ? `/${scopeKey}/` : `version ${scopeKey}`}.`,
+            fix: `edit ${record.articlePath}: link: must be versionless and point at a real page in ${isSection ? `/${scopeKey}/` : `version ${scopeKey}`}.`,
         });
     }
 

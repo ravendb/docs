@@ -7,7 +7,12 @@ import { useLatestVersion } from "@site/src/hooks/useLatestVersion";
 
 type ResourceType = "guide" | "documentation" | "video";
 
-type DocumentationType = "docs" | "cloud";
+type DocumentationType = "docs" | "cloud" | "quill";
+
+const VERSIONLESS_DOC_AREAS: Partial<Record<DocumentationType, { basePath: string; icon: IconName }>> = {
+    cloud: { basePath: "/cloud", icon: "cloud" },
+    quill: { basePath: "/quill", icon: "sparkles" },
+};
 
 export interface RelatedResourceProps {
     className?: string;
@@ -53,11 +58,11 @@ export default function RelatedResource({
             return `/guides/${articleKey}`;
         }
 
-        const basePath = documentationType === "cloud" ? "/cloud" : `/${latestVersion}`;
+        const basePath = VERSIONLESS_DOC_AREAS[documentationType]?.basePath ?? `/${latestVersion}`;
         return `${basePath}/${articleKey}`;
     }, [type, documentationType, articleKey, externalUrl, latestVersion]);
 
-    const icon = type === "documentation" && documentationType === "cloud" ? "cloud" : config.icon;
+    const icon = (type === "documentation" ? VERSIONLESS_DOC_AREAS[documentationType]?.icon : undefined) ?? config.icon;
 
     return (
         <Link

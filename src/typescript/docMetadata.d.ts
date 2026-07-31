@@ -10,7 +10,7 @@ export interface GalleryImage {
 
 export interface RelatedResourceFrontMatter {
     type: "guide" | "documentation" | "video";
-    documentation_type?: "docs" | "cloud";
+    documentation_type?: "docs" | "cloud" | "quill";
     subtitle: string;
     article_key?: string;
     url?: string;

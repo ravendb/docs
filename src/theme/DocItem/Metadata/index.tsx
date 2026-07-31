@@ -19,9 +19,10 @@ export default function MetadataWrapper(props: Props): ReactNode {
     // which may vary depending on Docusaurus trailingSlash configuration.
     const isGuide = source?.startsWith("@site/guides/") || source?.startsWith("guides/") || false;
     const isCloud = source?.startsWith("@site/cloud/") || source?.startsWith("cloud/") || false;
+    const isQuill = source?.startsWith("@site/quill/") || source?.startsWith("quill/") || false;
     const isTemplate = source?.startsWith("@site/templates/") || source?.startsWith("templates/") || false;
     const isSample = source?.startsWith("@site/samples/") || source?.startsWith("samples/") || false;
-    const isDocumentationPage = !isGuide && !isCloud && !isTemplate && !isSample;
+    const isDocumentationPage = !isGuide && !isCloud && !isQuill && !isTemplate && !isSample;
 
     // Exclude landing pages (e.g. guides/home.mdx, samples/home.mdx) from type-specific metadata
     const fileName = source?.split("/").pop();
@@ -69,7 +70,7 @@ export default function MetadataWrapper(props: Props): ReactNode {
                     permalink={permalink}
                 />
             )}
-            {(isDocumentationPage || isCloud) && !isHomepage && (
+            {(isDocumentationPage || isCloud || isQuill) && !isHomepage && (
                 <DocPageMetadata
                     title={title}
                     description={description}

@@ -4,6 +4,7 @@ import { ContentSource } from "@site/src/components/Common/contentSource";
 const SOURCE_BY_PLUGIN_ID: Record<string, ContentSource> = {
     default: "docs",
     cloud: "cloud",
+    quill: "quill",
     guides: "guides",
     samples: "samples",
 };
@@ -54,6 +55,7 @@ export const SEARCH_FILTER_GROUPS: SearchFilter[][] = [
         { label: "Docs", kind: "docs", pluginId: "default" },
         { label: "Guides", kind: "guides", pluginId: "guides" },
         { label: "Cloud", kind: "cloud", pluginId: "cloud" },
+        { label: "Quill", kind: "quill", pluginId: "quill" },
     ],
     [{ label: "Samples", kind: "samples", pluginId: "samples" }],
 ];

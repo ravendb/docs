@@ -196,7 +196,11 @@ const versionedSeoPlugin = function versionedSeoPlugin(
                 // SeeAlso audit: currently-maintained versioned pages + unversioned content sections.
                 const shouldAuditSeeAlso =
                     (info && !LEGACY_VERSIONS.includes(info.version)) ||
-                    (!info && (rel.startsWith("cloud/") || rel.startsWith("guides/") || rel.startsWith("samples/")));
+                    (!info &&
+                        (rel.startsWith("cloud/") ||
+                            rel.startsWith("quill/") ||
+                            rel.startsWith("guides/") ||
+                            rel.startsWith("samples/")));
                 if (shouldAuditSeeAlso) {
                     seeAlsoRecords.push(
                         ...fanoutSeeAlsoRecords(
