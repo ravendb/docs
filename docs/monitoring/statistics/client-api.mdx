@@ -1,0 +1,59 @@
+---
+title: "Statistics: Client API"
+sidebar_label: "Client API"
+description: "Retrieve RavenDB database statistics including document count, index count, storage size, and last indexing time using GetStatisticsOperation."
+sidebar_position: 2
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
+see_also:
+     - title: "What are Operations"
+       link: "client-api/operations/what-are-operations"
+       source: "docs"
+       path: "Client API > Operations"
+     - title: "Switch operation to another database"
+       link: "client-api/operations/how-to/switch-operations-to-a-different-database"
+       source: "docs"
+       path: "Client API > Operations > How to..."
+     - title: "What is a Collection"
+       link: "client-api/faq/what-is-a-collection"
+       source: "docs"
+       path: "Client API > FAQ"
+     - title: "Get Query Statistics"
+       link: "client-api/session/querying/how-to-get-query-statistics"
+       source: "docs"
+       path: "Client API > Session > Querying"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import GetStatsCsharp from './content/_get-stats-csharp.mdx';
+import GetStatsJava from './content/_get-stats-java.mdx';
+import GetStatsPython from './content/_get-stats-python.mdx';
+import GetStatsPhp from './content/_get-stats-php.mdx';
+import GetStatsNodejs from './content/_get-stats-nodejs.mdx';
+
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <GetStatsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <GetStatsJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <GetStatsPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <GetStatsPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <GetStatsNodejs />
+</LanguageContent>
+
+
+
