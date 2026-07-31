@@ -9,40 +9,21 @@ export const PathType = {
 
 export type PathTypeValue = (typeof PathType)[keyof typeof PathType];
 
+// Versionless content areas, in match order. The URL segment doubles as the landing page path.
+// Anything that matches none of these is versioned documentation.
+const SECTIONS: readonly { segment: string; type: PathTypeValue }[] = [
+    { segment: "cloud", type: PathType.Cloud },
+    { segment: "quill", type: PathType.Quill },
+    { segment: "guides", type: PathType.Guides },
+    { segment: "samples", type: PathType.Samples },
+    { segment: "templates", type: PathType.Templates },
+];
+
 export function getPathType(path: string): PathTypeValue {
-    if (path.includes("/cloud")) {
-        return PathType.Cloud;
-    }
-    if (path.includes("/quill")) {
-        return PathType.Quill;
-    }
-    if (path.includes("/guides")) {
-        return PathType.Guides;
-    }
-    if (path.includes("/samples")) {
-        return PathType.Samples;
-    }
-    if (path.includes("/templates")) {
-        return PathType.Templates;
-    }
-    return PathType.Documentation;
+    return SECTIONS.find((section) => path.includes(`/${section.segment}`))?.type ?? PathType.Documentation;
 }
 
 export function getLandingPagePath(pathType: PathTypeValue, versionLabel: string): string {
-    if (pathType === PathType.Cloud) {
-        return "/cloud";
-    }
-    if (pathType === PathType.Quill) {
-        return "/quill";
-    }
-    if (pathType === PathType.Guides) {
-        return "/guides";
-    }
-    if (pathType === PathType.Samples) {
-        return "/samples";
-    }
-    if (pathType === PathType.Templates) {
-        return "/templates";
-    }
-    return `/${versionLabel}`;
+    const section = SECTIONS.find((candidate) => candidate.type === pathType);
+    return section ? `/${section.segment}` : `/${versionLabel}`;
 }

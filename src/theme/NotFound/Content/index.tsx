@@ -6,6 +6,7 @@ import Heading from "@theme/Heading";
 import CardWithIcon from "@site/src/components/Common/CardWithIcon";
 import { useActiveDocContext, useLatestVersion } from "@docusaurus/plugin-content-docs/client";
 import { useLocation } from "@docusaurus/router";
+import { getPathType, getLandingPagePath } from "@site/src/typescript/pathUtils";
 
 export default function NotFoundContent({ className }: Props): ReactNode {
     const pluginId = "default";
@@ -13,19 +14,7 @@ export default function NotFoundContent({ className }: Props): ReactNode {
     const latestVersion = useLatestVersion(pluginId);
     const versionLabel = activeVersion?.label ?? latestVersion.label;
     const { pathname } = useLocation();
-    const isCloudPath = pathname.includes("/cloud");
-    const isQuillPath = pathname.includes("/quill");
-    const isGuidesPath = pathname.includes("/guides");
-    const isSamplesPath = pathname.includes("/samples");
-    const homeUrl = isCloudPath
-        ? "/cloud"
-        : isQuillPath
-          ? "/quill"
-          : isGuidesPath
-            ? "/guides"
-            : isSamplesPath
-              ? "/samples"
-              : `/${versionLabel}`;
+    const homeUrl = getLandingPagePath(getPathType(pathname), versionLabel);
     return (
         <main className={clsx("container margin-vert--xl", className)}>
             <div className="row">
