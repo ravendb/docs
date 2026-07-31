@@ -414,7 +414,7 @@
     {
         "key": "/server/troubleshooting/logging",
         "value": {
-            "targetUrl": "/monitoring/logs/overview",
+            "targetUrl": "/monitoring/logging/overview",
             "minimumVersion": "7.2"
         }
     },

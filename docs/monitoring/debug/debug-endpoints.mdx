@@ -36,6 +36,8 @@ Debug endpoints report internal information about a RavenDB server and its datab
 * The table below lists each endpoint, the HTTP methods it accepts, and what it reports.
 * Where an endpoint accepts parameters, pass them as query-string parameters on the request URL.  
   e.g., `/admin/debug/memory/stats?includeThreads=false`
+* In the `/databases/*/...` endpoints, `*` stands for the name of the target database.  
+  e.g., `/databases/Orders2024/debug/queries/running`
 
 | Endpoint | Method | Description |
 |-|-|-|

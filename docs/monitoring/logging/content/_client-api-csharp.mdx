@@ -11,13 +11,13 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * The logging configuration is server-wide: it applies to all databases.  
 
-* For the persistent logging configuration keys, see the [Configuration options](../../../monitoring/logs/configuration.mdx) page.  
-  For an overview of RavenDB's logging system, see the [Overview](../../../monitoring/logs/overview.mdx) page.  
+* For the persistent logging configuration keys, see the [Configuration options](../../../monitoring/logging/configuration.mdx) page.  
+  For an overview of RavenDB's logging system, see the [Overview](../../../monitoring/logging/overview.mdx) page.  
 
 * In this article:
-    * [Retrieve the logging configuration](../../../monitoring/logs/client-api.mdx#retrieve-the-logging-configuration)
-    * [Change the logging configuration at runtime](../../../monitoring/logs/client-api.mdx#change-the-logging-configuration-at-runtime)
-    * [Syntax](../../../monitoring/logs/client-api.mdx#syntax)
+    * [Retrieve the logging configuration](../../../monitoring/logging/client-api.mdx#retrieve-the-logging-configuration)
+    * [Change the logging configuration at runtime](../../../monitoring/logging/client-api.mdx#change-the-logging-configuration-at-runtime)
+    * [Syntax](../../../monitoring/logging/client-api.mdx#syntax)
 
 </Admonition>
 
@@ -33,7 +33,7 @@ GetLogsConfigurationResult logsConfiguration =
 
 The returned `GetLogsConfigurationResult` object reports four groups of settings: the server logs, the audit
 logs, the Microsoft logs, and the admin logs (the live stream shown in Studio's Admin Logs view).  
-See the full shape of each group in the [Syntax](../../../monitoring/logs/client-api.mdx#syntax) section.
+See the full shape of each group in the [Syntax](../../../monitoring/logging/client-api.mdx#syntax) section.
 
 </Panel>
 
@@ -43,7 +43,7 @@ Use the `SetLogsConfigurationOperation` method to change parts of the logging co
 server is running, without a restart.
 
 * The operation accepts a `persist` flag: set it to `true` to also write the new minimum
-  [log level](../../../monitoring/logs/overview.mdx#available-logging-levels) to the
+  [log level](../../../monitoring/logging/overview.mdx#available-logging-levels) to the
   [`settings.json`](../../../server/configuration/configuration-options.mdx#settingsjson) file,
   so the change survives a restart.  
 
@@ -104,7 +104,7 @@ store.Maintenance.Server.Send(setLogsOp);
 ### Microsoft logs
 
 The default minimum level for the Microsoft logs is `LogLevel.Error`.  
-Microsoft logs must first be enabled by setting [Logs.Microsoft.Enabled](../../../monitoring/logs/configuration.mdx#logsmicrosoftenabled) to `true`, which requires a restart; you can then adjust their level at runtime as follows:
+Microsoft logs must first be enabled by setting [Logs.Microsoft.Enabled](../../../monitoring/logging/configuration.mdx#logsmicrosoftenabled) to `true`, which requires a restart; you can then adjust their level at runtime as follows:
 
 ```csharp
 var configuration = new SetLogsConfigurationOperation.MicrosoftLogsConfiguration
@@ -123,7 +123,7 @@ store.Maintenance.Server.Send(setLogsOp);
 
 ### Admin logs
 
-The admin logs are the live stream shown in Studio's [Admin Logs view](../../../monitoring/logs/overview.mdx#studio-the-admin-logs-view).  
+The admin logs are the live stream shown in Studio's [Admin Logs view](../../../monitoring/logging/overview.mdx#studio-the-admin-logs-view).  
 Settings you apply to the admin logs affect only this view (not the logs written to disk), take effect immediately for all open Studio sessions, and are never persisted (even with `persist: true`). The default minimum level is `LogLevel.Trace`.
 
 ```csharp

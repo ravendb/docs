@@ -148,7 +148,7 @@ When neither log-to-file is enabled nor any client is connected to the WebSocket
 **When log-to-file is enabled (`TrafficWatch.Mode = ToLogFile`):**
 
 * **CPU & memory overhead**: Negligible.  
-  Traffic Watch logging is processed asynchronously by [NLog](../logs/overview.mdx)'s `AsyncTargetWrapper`.  
+  Traffic Watch logging is processed asynchronously by [NLog](../logging/overview.mdx)'s `AsyncTargetWrapper`.  
   Request-handling threads are never blocked, so request latency and throughput are not affected.
 
 * **I/O overhead**: Minor.
@@ -159,10 +159,10 @@ When neither log-to-file is enabled nor any client is connected to the WebSocket
 * **Disk storage**: Proportional to request volume.
   * Because Traffic Watch entries go to the shared server log file, a high request volume increases the file's size, so the file is archived more frequently.
   * When a log file reaches its size limit, it is archived and a new file is started.
-  * The size and retention limits are set by the standard [logging configuration](../logs/configuration.mdx):  
-    [`Logs.ArchiveAboveSizeInMb`](../logs/configuration.mdx#logsarchiveabovesizeinmb) (default: 128 MB),  
-    [`Logs.MaxArchiveDays`](../logs/configuration.mdx#logsmaxarchivedays) (default: 3 days),  
-    [`Logs.MaxArchiveFiles`](../logs/configuration.mdx#logsmaxarchivefiles).  
+  * The size and retention limits are set by the standard [logging configuration](../logging/configuration.mdx):  
+    [`Logs.ArchiveAboveSizeInMb`](../logging/configuration.mdx#logsarchiveabovesizeinmb) (default: 128 MB),  
+    [`Logs.MaxArchiveDays`](../logging/configuration.mdx#logsmaxarchivedays) (default: 3 days),  
+    [`Logs.MaxArchiveFiles`](../logging/configuration.mdx#logsmaxarchivefiles).  
     Archived files that exceed these limits are deleted automatically.
 
 </ContentFrame>
