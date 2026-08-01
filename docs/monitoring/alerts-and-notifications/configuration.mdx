@@ -1,0 +1,213 @@
+---
+title: "Alerts and notifications: Configuration"
+sidebar_label: "Configuration options"
+description: "Configuration keys that set the thresholds for RavenDB's performance hints, and the key that keeps chosen notifications out of the notification center."
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Alerts and notifications: Configuration
+<Admonition type="note" title="">
+
+* This page explains configuration options related to **performance hints**.  
+  Learn more about performance hints and how to act on them in the
+  [performance hints](../../monitoring/alerts-and-notifications/performance-hints.mdx) article.  
+
+* Learn how to set these keys in the
+  [configuration overview](../../server/configuration/configuration-options.mdx).  
+
+* Find how to filter out **notifications** in the
+  [Notification center](../../monitoring/alerts-and-notifications/notification-center.mdx#configuration) article.  
+
+* In this article:
+   * [Performance hint configuration keys](../../monitoring/alerts-and-notifications/configuration.mdx#performance-hint-configuration-keys)
+      * [PerformanceHints.Documents.HugeDocumentSizeInMb](../../monitoring/alerts-and-notifications/configuration.mdx#performancehintsdocumentshugedocumentsizeinmb)
+      * [PerformanceHints.Indexing.AlertWhenSourceDocumentIncludedInOutput](../../monitoring/alerts-and-notifications/configuration.mdx#performancehintsindexingalertwhensourcedocumentincludedinoutput)
+      * [PerformanceHints.Indexing.MaxDepthOfRecursionInLinqSelect](../../monitoring/alerts-and-notifications/configuration.mdx#performancehintsindexingmaxdepthofrecursioninlinqselect)
+      * [PerformanceHints.Indexing.MaxIndexOutputsPerDocument](../../monitoring/alerts-and-notifications/configuration.mdx#performancehintsindexingmaxindexoutputsperdocument)
+      * [PerformanceHints.Indexing.MaxNumberOfLoadsPerReference](../../monitoring/alerts-and-notifications/configuration.mdx#performancehintsindexingmaxnumberofloadsperreference)
+      * [PerformanceHints.MaxNumberOfResults](../../monitoring/alerts-and-notifications/configuration.mdx#performancehintsmaxnumberofresults)
+      * [PerformanceHints.TooLongRequestThresholdInSec](../../monitoring/alerts-and-notifications/configuration.mdx#performancehintstoolongrequestthresholdinsec)
+      * [PerformanceHints.Documents.HugeDocumentsCollectionSize](../../monitoring/alerts-and-notifications/configuration.mdx#performancehintsdocumentshugedocumentscollectionsize)
+      * [PerformanceHints.Memory.MinSwapSizeInMb](../../monitoring/alerts-and-notifications/configuration.mdx#performancehintsmemoryminswapsizeinmb)
+   * [Filtering out notifications](../../monitoring/alerts-and-notifications/configuration.mdx#filtering-out-notifications)
+
+</Admonition>
+
+<Panel heading="Performance hint configuration keys">
+
+* Most of the keys below set the threshold at which a performance hint is raised.  
+
+* The last two keys have other roles: `PerformanceHints.Documents.HugeDocumentsCollectionSize`
+  sets the size of a list collected for debugging, and `PerformanceHints.Memory.MinSwapSizeInMb`
+  sets the threshold of a low-swap alert.
+
+---
+
+<ContentFrame>
+
+### PerformanceHints.Documents.HugeDocumentSizeInMb
+
+A [huge-documents](../../monitoring/alerts-and-notifications/performance-hints.mdx#huge-documents)
+performance hint is raised when a stored document is larger than the set size.
+
+- **Type**: `int`
+- **Default**: `5`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+<ContentFrame>
+
+### PerformanceHints.Indexing.AlertWhenSourceDocumentIncludedInOutput
+
+An [indexing](../../monitoring/alerts-and-notifications/performance-hints.mdx#indexing)
+performance hint is raised when an index stores whole source documents in its entries.  
+Set the key to `false` to disable this hint.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+<ContentFrame>
+
+### PerformanceHints.Indexing.MaxDepthOfRecursionInLinqSelect
+
+An [indexing](../../monitoring/alerts-and-notifications/performance-hints.mdx#indexing)
+performance hint is raised when a LINQ index definition contains more `let` clauses
+than the set number.
+
+- **Type**: `int`
+- **Default**: `32`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+<ContentFrame>
+
+### PerformanceHints.Indexing.MaxIndexOutputsPerDocument
+
+An [indexing](../../monitoring/alerts-and-notifications/performance-hints.mdx#indexing)
+performance hint is raised when an index produces more index entries from a single document
+than the set number.  
+Set the key to `0` or to a negative number to disable this hint.
+
+- **Type**: `int`
+- **Default**: `1024`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+<ContentFrame>
+
+### PerformanceHints.Indexing.MaxNumberOfLoadsPerReference
+
+An [indexing-references](../../monitoring/alerts-and-notifications/performance-hints.mdx#indexing-references)
+performance hint is raised when the number of times an index loads the same related document
+or compare-exchange value reaches the set number.
+
+- **Type**: `int`
+- **Default**: `1024`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+<ContentFrame>
+
+### PerformanceHints.MaxNumberOfResults
+
+A [paging](../../monitoring/alerts-and-notifications/performance-hints.mdx#paging)
+performance hint is raised when a request returns more results than the set number.
+
+- **Type**: `int`
+- **Default**: `2048`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+<ContentFrame>
+
+### PerformanceHints.TooLongRequestThresholdInSec
+
+A [request-latency](../../monitoring/alerts-and-notifications/performance-hints.mdx#request-latency)
+performance hint is raised when a request takes longer than the set time.
+
+- **Type**: `int`
+- **Default**: `30`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+<ContentFrame>
+
+### PerformanceHints.Documents.HugeDocumentsCollectionSize
+
+Each document detected as huge is recorded in memory, with the document's ID, its size, and
+the time it was detected.  
+This key sets the number of records kept: once the number is exceeded, the oldest records are
+dropped as new records are added.  
+The records are returned by the `/databases/*/debug/documents/huge`
+[debug endpoint](../../monitoring/debug/debug-endpoints.mdx) and are collected into the
+[debug package](../../monitoring/debug/debug-package/create-debug-package.mdx).  
+This key does not affect the list of occurrences shown in the hint itself, which is capped
+separately at 100 documents.
+
+- **Type**: `int`
+- **Default**: `100`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+<ContentFrame>
+
+### PerformanceHints.Memory.MinSwapSizeInMb
+
+This key sets the threshold of an
+[alert](../../monitoring/alerts-and-notifications/notification-center.mdx#alerts), not of a
+performance hint, although it belongs to the `PerformanceHints` category.  
+On a Linux server, the alert is raised when the swap size is more than 128 MB below the set
+minimum.  
+The alert is a server-wide Warning, titled `Low swap size`, or `No swap file` when the machine
+has no swap space at all.  
+Note that the swap size is checked once, when the server starts, and that the check is skipped
+when RavenDB runs in a Docker container.
+
+- **Type**: `int`
+- **Default**: On Linux, set when the server starts: `1024` (1 GB) when the machine has less
+  than 8 GB of RAM, otherwise half the machine's RAM, up to `8192` (8 GB).
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Filtering out notifications">
+
+* To keep chosen notifications from appearing in the notification center, list them in the
+  `Notifications.FilterOut` configuration key.  
+  Each entry names a whole notification type, a performance-hint *reason*, or an alert
+  *reason*.  
+
+  #### Example: Filter out all performance hints and the low-swap alert
+
+  ```json
+  {
+      "Notifications.FilterOut": "PerformanceHint;LowSwapSize"
+  }
+  ```
+
+* A dropped notification is neither stored nor shown, and is left out of the alert and hint
+  counts reported in the databases list view, over the monitoring endpoints, and over SNMP.  
+
+* The key is server-wide and cannot be set for a specific database.  
+
+* Learn the values the key accepts, and see more examples, in the
+  [notification center](../../monitoring/alerts-and-notifications/notification-center.mdx#configuration)
+  article.
+
+</Panel>

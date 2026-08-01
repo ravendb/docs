@@ -23,7 +23,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   where you can read, dismiss, and postpone them.  
 
 * Most hints are triggered by configurable thresholds, set by the `PerformanceHints.*`
-  [configuration keys](../../server/configuration/performance-hints-configuration.mdx).  
+  [configuration keys](../../monitoring/alerts-and-notifications/configuration.mdx).  
 
 * In this article:
    * [Overview](../../monitoring/alerts-and-notifications/performance-hints.mdx#overview)
@@ -76,7 +76,7 @@ The server raises performance hints for nine *reasons*:
 
 The server raises a paging hint when a request returns more results than the threshold set by
 the `PerformanceHints.MaxNumberOfResults`
-[configuration key](../../server/configuration/performance-hints-configuration.mdx#performancehintsmaxnumberofresults)
+[configuration key](../../monitoring/alerts-and-notifications/configuration.mdx#performancehintsmaxnumberofresults)
 (`2048` by default).
 
 </Admonition>
@@ -105,7 +105,7 @@ the `PerformanceHints.MaxNumberOfResults`
 
 The server raises a request-latency hint when a query runs longer than the threshold set by
 the `PerformanceHints.TooLongRequestThresholdInSec`
-[configuration key](../../server/configuration/performance-hints-configuration.mdx#performancehintstoolongrequestthresholdinsec)
+[configuration key](../../monitoring/alerts-and-notifications/configuration.mdx#performancehintstoolongrequestthresholdinsec)
 (`30` seconds by default).
 
 </Admonition>
@@ -147,7 +147,7 @@ minutes, at a write speed of 1 MB per second or lower.
 
 The server raises a huge-documents hint when a document exceeds the size threshold set by
 the `PerformanceHints.Documents.HugeDocumentSizeInMb`
-[configuration key](../../server/configuration/performance-hints-configuration.mdx#performancehintsdocumentshugedocumentsizeinmb)
+[configuration key](../../monitoring/alerts-and-notifications/configuration.mdx#performancehintsdocumentshugedocumentsizeinmb)
 (`5` MB by default).
 
 </Admonition>
@@ -173,7 +173,7 @@ Three conditions raise indexing hints, each governed by its own configuration ke
 * **High fanout ratio**  
   Raised as a Warning when an index produces more index entries from a single document than
   the threshold set by the `PerformanceHints.Indexing.MaxIndexOutputsPerDocument`
-  [configuration key](../../server/configuration/performance-hints-configuration.mdx#performancehintsindexingmaxindexoutputsperdocument)
+  [configuration key](../../monitoring/alerts-and-notifications/configuration.mdx#performancehintsindexingmaxindexoutputsperdocument)
   (`1024` by default).  
   Learn more about fanout indexes and this hint in
   [Indexing nested data](../../indexes/indexing-nested-data.mdx#performanceHints).  
@@ -184,13 +184,13 @@ Three conditions raise indexing hints, each governed by its own configuration ke
   the document is included multiple times.  
   This hint is enabled by the
   `PerformanceHints.Indexing.AlertWhenSourceDocumentIncludedInOutput`
-  [configuration key](../../server/configuration/performance-hints-configuration.mdx#performancehintsindexingalertwhensourcedocumentincludedinoutput)
+  [configuration key](../../monitoring/alerts-and-notifications/configuration.mdx#performancehintsindexingalertwhensourcedocumentincludedinoutput)
   (`true` by default).  
 
 * **Many `let` clauses**  
   Raised as an Info notification when a LINQ index definition contains more `let` clauses
   than the threshold set by the `PerformanceHints.Indexing.MaxDepthOfRecursionInLinqSelect`
-  [configuration key](../../server/configuration/performance-hints-configuration.mdx#performancehintsindexingmaxdepthofrecursioninlinqselect)
+  [configuration key](../../monitoring/alerts-and-notifications/configuration.mdx#performancehintsindexingmaxdepthofrecursioninlinqselect)
   (`32` by default).  
   Stack memory is allocated for each `let` clause, so a long chain of `let` clauses can
   consume a lot of memory.  
@@ -203,11 +203,11 @@ Three conditions raise indexing hints, each governed by its own configuration ke
 
 <Admonition type="note" title="">
 
-The server raises an indexing-references hint when an index loads the same
+The server raises an indexing-references hint when the number of times an index loads the same
 [related document](../../indexes/indexing-related-documents.mdx) or compare-exchange value
-more times than the threshold set by the
+reaches the threshold set by the
 `PerformanceHints.Indexing.MaxNumberOfLoadsPerReference`
-[configuration key](../../server/configuration/performance-hints-configuration.mdx#performancehintsindexingmaxnumberofloadsperreference)
+[configuration key](../../monitoring/alerts-and-notifications/configuration.mdx#performancehintsindexingmaxnumberofloadsperreference)
 (`1024` by default).
 
 </Admonition>
@@ -301,7 +301,7 @@ RavenDB can use.
 <Panel heading="Configuration">
 
 * The `PerformanceHints.*` configuration keys, named in the sections above, are listed on
-  the [Performance Hints Configuration](../../server/configuration/performance-hints-configuration.mdx)
+  the [Configuration options](../../monitoring/alerts-and-notifications/configuration.mdx)
   page.  
   Most of the keys can be set both server-wide and per database; the page states each key's
   scope, type, and default value.  
