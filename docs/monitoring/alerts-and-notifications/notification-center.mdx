@@ -34,9 +34,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [Dismissing and postponing](../../monitoring/alerts-and-notifications/notification-center.mdx#dismissing-and-postponing)
    * [Access requirements](../../monitoring/alerts-and-notifications/notification-center.mdx#access-requirements)
    * [Configuration](../../monitoring/alerts-and-notifications/notification-center.mdx#configuration)
-      * [Notification type values](../../monitoring/alerts-and-notifications/notification-center.mdx#notification-type-values)
-      * [Performance-hint kind values](../../monitoring/alerts-and-notifications/notification-center.mdx#performance-hint-kind-values)
-      * [Alert kind values](../../monitoring/alerts-and-notifications/notification-center.mdx#alert-kind-values)
+      * [Values for notification types](../../monitoring/alerts-and-notifications/notification-center.mdx#values-for-notification-types)
+      * [Values for performance-hint reasons](../../monitoring/alerts-and-notifications/notification-center.mdx#values-for-performance-hint-reasons)
+      * [Values for alert reasons](../../monitoring/alerts-and-notifications/notification-center.mdx#values-for-alert-reasons)
 
 </Admonition>
 
@@ -167,6 +167,10 @@ Click `Details` to list the recorded occurrences:
 The dialog's `Don't show again` checkbox works like the `Postpone` option: check the box and
 click `Dismiss alert` to hide the hint permanently.  
 
+Learn in the
+[Performance hints](../../monitoring/alerts-and-notifications/performance-hints.mdx) article
+about the hints the server raises and the conditions they report.  
+
 </ContentFrame>
 <ContentFrame>
 
@@ -268,14 +272,14 @@ To keep chosen notifications from appearing in the notification center, list the
 
 | Configuration key | Description |
 | ----------------- | ----------- |
-| `Notifications.FilterOut` | A semicolon-separated list of notifications that the server drops. A dropped notification is neither stored nor shown.<br />Each entry names a whole notification type (e.g., `PerformanceHint`), a performance-hint kind (e.g., `SlowIO`), or an alert kind (e.g., `Server_NewVersionAvailable`). The three name sets are described below.<br />Default: `null` (no notification is dropped). |
+| `Notifications.FilterOut` | A semicolon-separated list of notifications that the server drops. A dropped notification is neither stored nor shown.<br />Each entry names a whole notification type (e.g., `PerformanceHint`), a performance-hint *reason* (e.g., `SlowIO`), or an alert *reason* (e.g., `Server_NewVersionAvailable`). The three name sets are described below.<br />Default: `null` (no notification is dropped). |
 
 The key is server-wide and cannot be set for a specific database. Set it in the server's
 `settings.json` file; the change applies after a server restart.  
 Notifications raised before the key was set remain listed: dismiss them once, and the filter
 stops further occurrences from appearing.  
 
-#### Example: Filter out a hint kind and an alert kind
+#### Example: Filter out a hint reason and an alert reason
 
 ```json
 {
@@ -285,9 +289,9 @@ stops further occurrences from appearing.
 
 <ContentFrame>
 
-### Notification type values
+### Values for notification types
 
-List a notification type to filter out all the notifications of this type:
+To filter out all the notifications of one type, list the type:
 
 | Type | Filters out |
 | ---- | ----------- |
@@ -316,21 +320,21 @@ disables these updates.
 </ContentFrame>
 <ContentFrame>
 
-### Performance-hint kind values
+### Values for performance-hint reasons
 
-List a performance-hint kind to filter out only the hints of this kind:
+To filter out only the hints raised for a specific *reason*, list the *reason*:
 
-| Kind | Filters out hints about |
+| Reason | Filters out hints about |
 | ---- | ----------------------- |
-| `Paging` | Requests that return an excessive number of results |
-| `RequestLatency` | Queries whose duration exceeds the configured threshold |
-| `UnusedCapacity` | A server that uses fewer cores than the machine provides |
-| `SlowIO` | Extremely slow disk writes |
-| `HugeDocuments` | Documents that exceed the configured size |
-| `SqlEtl_SlowSql` | Slow SQL statements in a SQL ETL task |
-| `Indexing` | Indexing performance issues, like a high fanout ratio |
-| `Indexing_References` | A high rate of `LoadDocument()` calls per referenced item |
-| `Replication` | Tombstone accumulation caused by a disabled replication destination |
+| [`Paging`](../../monitoring/alerts-and-notifications/performance-hints.mdx#paging) | Requests that return an excessive number of results |
+| [`RequestLatency`](../../monitoring/alerts-and-notifications/performance-hints.mdx#request-latency) | Queries whose duration exceeds the configured threshold |
+| [`UnusedCapacity`](../../monitoring/alerts-and-notifications/performance-hints.mdx#unused-capacity) | A server that uses fewer cores than the machine provides |
+| [`SlowIO`](../../monitoring/alerts-and-notifications/performance-hints.mdx#slow-writes) | Extremely slow disk writes |
+| [`HugeDocuments`](../../monitoring/alerts-and-notifications/performance-hints.mdx#huge-documents) | Documents that exceed the configured size |
+| [`SqlEtl_SlowSql`](../../monitoring/alerts-and-notifications/performance-hints.mdx#slow-sql) | Slow SQL statements in a SQL ETL task |
+| [`Indexing`](../../monitoring/alerts-and-notifications/performance-hints.mdx#indexing) | Indexing performance issues, like a high fanout ratio |
+| [`Indexing_References`](../../monitoring/alerts-and-notifications/performance-hints.mdx#indexing-references) | A high rate of `LoadDocument()` calls per referenced item |
+| [`Replication`](../../monitoring/alerts-and-notifications/performance-hints.mdx#replication) | Tombstone accumulation caused by a disabled replication destination |
 
 ---
 
@@ -345,11 +349,11 @@ List a performance-hint kind to filter out only the hints of this kind:
 </ContentFrame>
 <ContentFrame>
 
-### Alert kind values
+### Values for alert reasons
 
-List an alert kind to filter out only the alerts of this kind.  
+To filter out only the alerts raised for a specific *reason*, list the *reason*.  
 
-An alert's kind is not shown on its card. To find the kind's name, fetch the server's stored
+An alert's *reason* is not shown on its card. To find the *reason*, fetch the server's stored
 notifications from the `/admin/server/notifications`
 [debug endpoint](../../monitoring/debug/debug-endpoints.mdx) (requires `Operator` clearance),
 or a database's notifications from `/databases/<database name>/notifications` (requires access
