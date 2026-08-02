@@ -478,8 +478,8 @@ Production endpoints make up the rest of the server's REST API, used in normal o
 | `/databases/*/smuggler/import/csv` | POST | Import documents from a CSV file.<br /><br />**Parameters:**<ul><li>`collection`: the collection to import into (optional)</li></ul> |
 | `/databases/*/smuggler/validate-options` | POST | Validate a set of smuggler import/export options: checks that the file name is valid and the transform script compiles. |
 | `/databases/*/sorters` | GET | The custom sorters defined for the database. |
-| `/databases/*/stats/detailed` | GET | Detailed database statistics. |
-| `/databases/*/stats/essential` | GET | Essential, lightweight database statistics. |
+| `/databases/*/stats/detailed` | GET | [Detailed database statistics](../../monitoring/statistics/stats-view.mdx#detailed-database-stats). |
+| `/databases/*/stats/essential` | GET | Essential, lightweight [database statistics](../../monitoring/statistics/stats-view.mdx#the-stats-view). |
 | `/databases/*/streams/docs` | GET | Stream documents without loading them all into memory. |
 | `/databases/*/streams/queries` | GET, POST, HEAD | [Stream](../../querying/stream-query-results.mdx) the results of an RQL query (`GET`/`POST`). `HEAD` is a no-op that returns no content. |
 | `/databases/*/streams/timeseries` | GET | Stream time series data. |

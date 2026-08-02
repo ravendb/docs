@@ -20,7 +20,7 @@ import Panel from '@site/src/components/Panel';
   * [Overview](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#overview)  
     * [Remote attachment upload - flow](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#remote-attachment-upload---flow)  
     * [Remote attachment upload – considerations](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#remote-attachment-upload--considerations)  
-  * [Store attachments remotely - using the **Studio**](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#store-attachments-remotely-using-the-studio)  
+  * [Store attachments remotely - using **Studio**](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#store-attachments-remotely-using-studio)  
   * [Store attachments remotely - using the **Client API**](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#store-attachments-remotely-using-the-client-api)  
     * [Store via the Session](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#store-attachments-remotely---via-the-session)  
     * [Store via an Operation](../../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx#store-attachments-remotely---via-an-operation)  
@@ -40,7 +40,7 @@ import Panel from '@site/src/components/Panel';
 
 * Create or load a document.  
 
-* Add an attachment to the document using the Studio or the Client API, specifying:   
+* Add an attachment to the document using Studio or the Client API, specifying:   
     * The remote destination identifier  
     * The desired upload time
 
@@ -90,7 +90,7 @@ import Panel from '@site/src/components/Panel';
   
 </Panel>
 
-<Panel heading="Store attachments remotely - using the Studio">
+<Panel heading="Store attachments remotely - using Studio">
 
 ![Add attachment to remote storage 1](../assets/add-attachment-to-remote-storage-1.png)
     
@@ -117,7 +117,7 @@ import Panel from '@site/src/components/Panel';
    * `Upload time`: The scheduled time when the attachment will be uploaded to the remote storage.
    * `Destination ID`: The identifier of the remote destination where the attachment will be uploaded.
    * `Flags`: While the file is still stored locally and pending upload, this value is `None`.
-3. The Studio does not show detailed attachment metadata in the document editor.  
+3. Studio does not show detailed attachment metadata in the document editor.  
    It only shows the `@flags` property with the value `HasAttachments` in the document's `@metadata` section  
    to indicate that the document has attachments.
 4. Click this JSON button to view the document's raw content, including its full metadata.  

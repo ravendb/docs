@@ -38,7 +38,7 @@ import Panel from '@site/src/components/Panel';
     
 ![Document with attachments - list view](../assets/document-with-attachments-1.png)
     
-1. Open the _Documents_ section in the Studio navigation bar.  
+1. Open the _Documents_ section in Studio's navigation bar.  
 2. Select a collection (e.g., _Employees_) to display the documents list view.
 3. The attachment flag is displayed for any document that has one or more attachments.
 
@@ -52,7 +52,7 @@ import Panel from '@site/src/components/Panel';
    The unique identifier of the document.
 
 2. **Document metadata**:  
-   The Studio does not show the full attachment metadata in the document editor.  
+   Studio does not show the full attachment metadata in the document editor.  
    It only shows the `@flags` property with the value `HasAttachments` in the document's `@metadata` section
    to indicate that the document has attachments.
 
@@ -96,19 +96,27 @@ import Panel from '@site/src/components/Panel';
 
 <Panel heading="Attachments stats">
     
-### View attachments stats in the Studio
-    
-* The overall number of attachments in the database can be viewed in the **General Database Stats** view in the Studio.
+### View attachments stats in Studio
+
+<Admonition type="info" title="">
+
+The attachment counts shown in this section are part of Studio's Stats view.  
+Learn about the whole view in
+[Stats view](../../../monitoring/statistics/stats-view.mdx).
+
+</Admonition>
+
+The overall number of attachments in the database can be viewed in Studio's **General Database Stats** view.
        
 ![Attachments stats](../assets/attachments-stats-1.png)
     
-1. Go to the **Stats** section in the Studio navigation bar.
+1. Go to the **Stats** section in Studio's navigation bar.
 2. This it the total number of attachments in the database, from all collections.
 3. Click "Show detailed database & indexing stats" to expand the detailed section.
     
 ![Attachments stats](../assets/attachments-stats-2.png)
     
-3. **Attachments details**:  
+4. **Attachments details**:  
    `total`:  
     The total number of attachments in the database, from all collections.  
    `unique`:  
@@ -121,8 +129,8 @@ import Panel from '@site/src/components/Panel';
     
 ### Get attachments stats via the Client API
 
-* Use the `GetDetailedStatisticsOperation` to retrieve statistics about attachments in the database.  
-  For a list of all available statistics properties, see the [Client API](../../../monitoring/statistics/client-api.mdx) page. 
+Use the `GetDetailedStatisticsOperation` to retrieve statistics about attachments in the database.  
+For a list of all available statistics properties, see the [Client API](../../../monitoring/statistics/client-api.mdx) page. 
     
 <Tabs groupId='languageSyntax'>
 <TabItem value="Get_stats_operation" label="Get_stats_operation">

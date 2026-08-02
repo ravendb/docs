@@ -11,7 +11,7 @@ import CodeBlock from '@theme/CodeBlock';
 * Referring to these values by their names in time series methods (such as `append`, `get`, etc.)  
   makes your code more readable and easier to manage.
 
-* In order for the Studio to present the time series values by their names, as can be seen [here](../../../../studio/database/document-extensions/time-series.mdx#time-series-view),  
+* In order for Studio to present the time series values by their names, as can be seen [here](../../../../studio/database/document-extensions/time-series.mdx#time-series-view),  
   you need to register the named values on the server. 
 
 * In this page:  
@@ -251,7 +251,7 @@ select timeseries(
 ## Register time series named values
 
 Registering a custom time series type on the server stores this information in the [database record](../../../../studio/database/settings/database-record.mdx).  
-This allows the Studio to present time series values by name when you view and manage them.
+This allows Studio to present time series values by name when you view and manage them.
 #### Usage
 
 To register a time series type, call `documentStore.timeSeries.register`, e.g.:
@@ -266,12 +266,12 @@ await documentStore.timeSeries.register("Users",
 </TabItem>
 
 <br/>
-The time series entries will be listed in the Studio under their corresponding named values:
+The time series entries will be listed in Studio under their corresponding named values:
 
 !["Time series entries"](../assets/time-series-entries-js.png)
 
 <br/>
-The named values can be managed from the [Time Series Settings View](../../../../studio/database/settings/time-series-settings.mdx) in the Studio:
+The named values can be managed from the [Time Series Settings View](../../../../studio/database/settings/time-series-settings.mdx) in Studio:
 
 !["Time series settings view"](../assets/time-series-settings-view-js.png)
 #### Syntax
