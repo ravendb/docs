@@ -53,6 +53,7 @@ import ContentFrame from '@site/src/components/ContentFrame';
       [RequestTimeout](../../../client-api/configuration/conventions.mdx#requesttimeout)  
       [ResolveTypeFromClrTypeName](../../../client-api/configuration/conventions.mdx#resolvetypefromclrtypename)  
       [SaveEnumsAsIntegers](../../../client-api/configuration/conventions.mdx#saveenumsasintegers)  
+      [SaveEnumsAsIntegersForPatching](../../../client-api/configuration/conventions.mdx#saveenumsasintegersforpatching)  
       [SecondBroadcastAttemptTimeout](../../../client-api/configuration/conventions.mdx#secondbroadcastattempttimeout)  
       [SendApplicationIdentifier](../../../client-api/configuration/conventions.mdx#sendapplicationidentifier)  
       [SessionPatchBehavior](../../../client-api/configuration/conventions.mdx#sessionpatchbehavior)  
@@ -1003,6 +1004,9 @@ public Func<string, Type> ResolveTypeFromClrTypeName { get; set; }
   C# `enum` types will be stored and queried as integers, rather than their string representations.
 
 * DEFAULT: `false` (save as strings)
+    
+* This convention does not affect values written by the typed `Session.Advanced.Patch` methods.  
+  See [SaveEnumsAsIntegersForPatching](../../../client-api/configuration/conventions.mdx#saveenumsasintegersforpatching).    
 
 ```csharp
 // Syntax:
@@ -1010,6 +1014,41 @@ public bool SaveEnumsAsIntegers { get; set; }
 ```
 
 </ContentFrame>
+<ContentFrame>
+
+### SaveEnumsAsIntegersForPatching
+
+* Use the `SaveEnumsAsIntegersForPatching` convention to control how C# `enum` **values** are written by the typed `Session.Advanced.Patch` methods.  
+    
+  When set to `true`, enum values are patched as integers.  
+  When `false`, they are patched as their string names.
+
+* The convention applies to both command formats produced by the
+  [SessionPatchBehavior](../../../client-api/configuration/conventions.mdx#sessionpatchbehavior) convention,  
+  JSON Patch and JavaScript patch alike.
+
+* Enum **keys** of a patched dictionary are not affected by this convention.  
+  A dictionary key is always written as its string name, such as `"Engine"`.
+
+* This convention is independent of [SaveEnumsAsIntegers](../../../client-api/configuration/conventions.mdx#saveenumsasintegers),
+  which governs how enums are stored and queried.  
+    
+  Set both conventions to the same value so that an enum written by a patch matches the representation used when the document is stored. 
+  Leaving them inconsistent can store the same field as a string in one document and as an integer in another.
+
+* DEFAULT: `false` (patch as strings)
+
+```csharp
+SaveEnumsAsIntegersForPatching = true
+```
+<br/>  
+    
+```csharp
+// Syntax:
+public bool SaveEnumsAsIntegersForPatching { get; set; }
+```
+
+</ContentFrame>    
 <ContentFrame>
 
 ### SecondBroadcastAttemptTimeout
@@ -1071,6 +1110,9 @@ public bool SendApplicationIdentifier { get; set; }
 * `SessionPatchBehavior.JavaScript`:  
   Generate JavaScript patch commands for all typed `Session.Advanced.Patch` calls.  
   Set this value to opt out of JSON Patch and restore the behavior used before JSON Patch support.
+    
+* Regardless of the selected value, C# `enum` values written by these methods are represented according to the
+  [SaveEnumsAsIntegersForPatching](../../../client-api/configuration/conventions.mdx#saveenumsasintegersforpatching) convention.    
 
 ```csharp
 SessionPatchBehavior = SessionPatchBehavior.JavaScript

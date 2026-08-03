@@ -26,6 +26,7 @@ import ContentFrame from '@site/src/components/ContentFrame';
   * [Remove item at a specific array index](#remove-item-at-a-specific-array-index)  
   * [Remove all matching items from an array](#remove-all-matching-items-from-an-array)  
   * [Patch a dictionary](#patch-a-dictionary)  
+  * [Patch a single dictionary entry](#patch-a-single-dictionary-entry)    
   * [Remove property](#remove-property)  
   * [Rename property](#rename-property)  
 
@@ -1210,9 +1211,22 @@ public class BlogComment
   If the document does not exist, the patch has no effect and no document is created.  
   If the dictionary is missing or `null`, the patch fails.
 
-* With the default Session behavior, the typed `Add` and `Remove` calls generate JSON Patch operations.  
-  Removing a key that does not exist causes `SaveChanges` to throw an exception and rolls back the batch.  
-  In the explicit JavaScript examples, deleting a key that does not exist has no effect and does not throw.
+* With the default Session behavior, typed `Add` and `Remove` calls generate JSON Patch operations when the dictionary path, key, 
+  and added value can be represented as JSON Patch. 
+  Otherwise, the client falls back to a JavaScript patch command. 
+  If a `Remove` call is generated as JSON Patch, removing a key that does not exist causes `SaveChanges()` to throw and rolls back the batch. 
+  With JavaScript, deleting a key that does not exist has no effect and does not throw.
+    
+* Keys may contain dots, dashes, spaces, quotes, or backslashes, and require no manual escaping.  
+  In a JSON Patch command the key is escaped as a JSON Pointer segment,  
+  with `~` becoming `~0` and `/` becoming `~1`.  
+    
+  In a JavaScript patch command it is written as a quoted JavaScript string literal in bracket notation,  
+  for example `this.Preferences["key-with-dash"] = args.val_0;`.
+
+* The key passed to `Add` or `Remove` can be a literal, a local variable, or a property of another object.  
+  Enum keys are stored as their string names.  
+  A `null` key throws `ArgumentNullException`.    
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_syntax" label="Session_syntax">
@@ -1230,7 +1244,14 @@ session.Advanced.Patch<User, string, string>(
     user => user.Preferences,
     preferences => preferences.Remove("theme"));
 
-// Send both pending dictionary changes to the server in a single request.
+// Add also accepts a KeyValuePair, which is equivalent to Add(key, value).
+session.Advanced.Patch<User, string, string>(
+    "users/1",
+    user => user.Preferences,
+    preferences => preferences.Add(
+        new KeyValuePair<string, string>("timezone", "UTC")));    
+    
+// Send the pending dictionary changes to the server in a single request.
 session.SaveChanges();
 ```
 </TabItem>
@@ -1303,6 +1324,72 @@ public class User
 </Tabs>
 
 </ContentFrame>
+<ContentFrame>
+
+### Patch a single dictionary entry
+
+* To set one entry, pass a path that indexes into the dictionary,  
+  for example `user => user.Preferences["language"]`.  
+  Assigning to a key that does not exist creates it. Other entries are left untouched.  
+  This overload only sets a value. To delete a key, use `Remove` as shown in [Patch a dictionary](#patch-a-dictionary).
+
+* The key can be a literal, a local variable, or a property of another object.
+
+* A dictionary-indexed path is always sent as a JavaScript patch command,  
+  regardless of the [SessionPatchBehavior convention](../../../../../client-api/configuration/conventions.mdx#sessionpatchbehavior),
+  because the client builds JSON Pointer segments from property names and constant numeric indexes only.  
+    
+  The key is written into the generated script as a quoted JavaScript string literal in bracket notation,  
+  for example `this.Preferences["key-with-dash"] = args.val_0;`,  
+  so keys containing dots, dashes, spaces, quotes, or backslashes need no manual escaping.
+
+* If the document does not exist, the patch has no effect and no document is created.  
+  If the dictionary field is missing or `null`, the patch fails.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```csharp
+// Set the "language" preference without loading the document.
+// The key is created if it does not exist, or its value is replaced if it does.
+session.Advanced.Patch<User, string>(
+    "users/1",
+    user => user.Preferences["language"], "en-US");
+
+// The key can also be supplied at run time, including keys that are not
+// valid JavaScript identifiers.
+var preferenceKey = "font-size";
+
+session.Advanced.Patch<User, string>(
+    "users/1",
+    user => user.Preferences[preferenceKey], "14px");
+
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// The equivalent explicit JavaScript patch.
+// Passing the key through args keeps it separate from the script text.
+session.Advanced.Defer(new PatchCommandData(
+    id: "users/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.Preferences[args.Key] = args.Value;",
+        Values =
+        {
+            { "Key", "font-size" },
+            { "Value", "14px" }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>    
 <ContentFrame>
 
 ### Remove property

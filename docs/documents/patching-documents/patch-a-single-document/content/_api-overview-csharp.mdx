@@ -186,6 +186,8 @@ the client automatically falls back to a JavaScript patch command. For example:
   This includes custom structs, which are serialized using the store's serialization conventions.
     
 * Paths the client cannot convert to a JSON Pointer, such as paths containing a non-constant array or list index, also require a JavaScript fallback.
+  A path that indexes into a dictionary with a non-numeric key, such as `x => x.Preferences["language"]`, always requires a JavaScript fallback,  
+  because the client builds JSON Pointer segments from property names and constant numeric indexes only.  
   Empty or whitespace dictionary keys also fall back because RavenDB rejects them as JSON Pointer path segments.    
 
 **Pending JavaScript patches**:    
@@ -429,7 +431,16 @@ void Patch<T, U>(T entity, Expression<Func<T, U>> path, U value);
 | **entity** | `T`                      | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation. This way the session can track down the entity's ID. |
 | **id**     | `string`                 | Entity ID on which the operation should be performed.                                                                                                                                                       |
 | **path**   | `Expression<Func<T, U>>` | Lambda describing the path to the field.                                                                                                                                                                    |
-| **value**  | `U`                      | Value to set.                                                                                                                                                                                               |
+| **value**  | `U`                      | Value to set.
+    
+`path` may also index into a dictionary, for example `x => x.Preferences["language"]`,  
+to set a single entry without replacing the rest of the dictionary.  
+    
+The key can be a literal, a local variable, or a property of another object.  
+Assigning to a key that does not exist creates it.
+    
+A dictionary-indexed path is always sent as a JavaScript patch command,  
+see [JSON Patch and JavaScript patch formats](#json-patch-and-javascript-patch-formats).
 
 #### `Session.Advanced.AddOrPatch`
     
@@ -584,7 +595,47 @@ void Patch<T, TKey, TValue>(
 | **Add(KeyValuePair&lt;TKey, TValue&gt; value)** | Adds or updates an entry using a key-value pair. |
 | **Remove(TKey key)**                            | Removes a dictionary entry.                      |
 
-</Admonition>        
+</Admonition>
+
+<Admonition type="info" title="">
+
+#### Dictionary key handling
+
+* The key is taken from the `dictionaryAdder` lambda as a value, so it can be a literal,  
+  a local variable, a captured field, or a property of another object:
+
+<TabItem value="patch_dictionary_key_from_variable" label="patch_dictionary_key_from_variable">    
+```csharp
+var setting = new Setting { Key = "language" };
+
+// A literal key
+session.Advanced.Patch<User, string, string>("users/1",
+    user => user.Preferences,
+    preferences => preferences.Add("theme", "dark"));
+
+// A key supplied by a variable or by another object's property
+session.Advanced.Patch<User, string, string>("users/1",
+    user => user.Preferences,
+    preferences => preferences.Add(setting.Key, "en-US"));
+```
+</TabItem>
+
+* A key may contain any characters, including dots, dashes, spaces, quotes, backslashes,  
+  newlines, and emoji. The client escapes the key for whichever command format it generates:
+  * In a **JSON Patch** command the key becomes a JSON Pointer segment,  
+    with `~` escaped as `~0` and `/` as `~1`.
+  * In a **JavaScript patch** command the key is written as a quoted JavaScript string literal  
+    in bracket notation, for example `this.Preferences["key-with-dash"] = args.val_0;`  
+    or `delete this.Preferences["key.with.dot"];`.
+
+* An empty or whitespace-only key is supported, and is applied through a JavaScript patch command.  
+  A `null` key throws `ArgumentNullException`.
+
+* **Enum keys** are always written as their string names, such as `"Engine"`,  
+  regardless of the [SaveEnumsAsIntegers](../../../../client-api/configuration/conventions.mdx#saveenumsasintegers) convention.  
+  The `SaveEnumsAsIntegersForPatching` convention applies to an entry's **value**, not to its key.
+
+</Admonition>
         
 ---        
 
