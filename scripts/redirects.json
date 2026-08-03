@@ -447,6 +447,13 @@
         }
     },
     {
+        "key": "/studio/server/debug/admin-logs",
+        "value": {
+            "targetUrl": "/monitoring/logging/admin-logs",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/server/troubleshooting/traffic-watch",
         "value": {
             "targetUrl": "/monitoring/traffic-watch/overview",
