@@ -1,0 +1,447 @@
+---
+title: "Quill Setup & Usage Guide"
+tags: [ai, integration, docker]
+icon: "ai-agents"
+description: "Set up self-hosted Quill to put a conversational AI agent in front of your existing SQL database: run the Docker appliance, connect a database and a model, build the agent, and embed the chat widget."
+published_at: 2026-08-03
+see_also:
+  - title: "AI Agents Overview"
+    link: "ai-integration/ai-agents/overview"
+    source: "docs"
+    path: "AI Integration > AI Agents"
+  - title: "Gen AI Integration Overview"
+    link: "ai-integration/gen-ai-integration/overview"
+    source: "docs"
+    path: "AI Integration > Gen AI Integration"
+  - title: "Vector Search Overview"
+    link: "ai-integration/vector-search/overview"
+    source: "docs"
+    path: "AI Integration > Vector Search"
+author: "Paweł Lachowski"
+proficiency_level: "Expert"
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+### What Quill is, and why you'd use it
+
+Quill puts a conversational AI agent in front of a database you already have. You point it at your data, describe what the agent should be able to answer, and you get a chat interface that answers questions about that data in plain language. It's self-hosted: it runs on your own server, with no ML engineers or cloud dependency to operate it.
+
+Quill doesn't give you a database, neither asks you to build one. You bring the app and its database, and Quill attaches to it, adding the AI chat layer on top. If you already run something on Postgres, SQL Server, or MySQL/MariaDB, Quill is the thing you put in front of it.
+
+One thing Quill does not include: the AI model itself. You need to bring it from a provider such as OpenAI API or Azure OpenAI. 
+
+What you'll need before you start
+
+* Docker Desktop (Linux engine). On Windows, run everything from a WSL shell with Docker's WSL integration on.  
+* Your app's database, reachable from Docker.  
+* An AI model: an API key for a hosted provider (OpenAI or Azure OpenAI).  
+* Port 443 free on the host.
+
+## Get your license and keys 
+
+Quill requires a license. It's a 90-day trial, no card is required. In order to get it, you need to sign up. Sign up and get your license - go to `ravendb.net/quill-beta`, enter your email, and accept the terms-of-service and privacy terms. 
+
+<Image img={require("./assets/quill-guide1.webp")} alt="Quill beta signup form on ravendb.net/quill-beta" />
+
+After clicking “Get started”, choose your domain (the .myquill.ai subdomain your Quill instance will be reachable from web) and the IP address that will have access to your Quill dashboard.
+
+<Image img={require("./assets/quill-guide2.webp")} alt="Choosing your Quill domain and the IP allowed to access the dashboard" />
+
+<Admonition type="note" title="Which IP to use">  
+Provide the IP address of the machine your Quill instance will run on. This guide runs Quill locally, so we use 127.0.0.1 (the loopback address, meaning "this machine").  
+</Admonition>
+
+Fill in information about you, confirm your choice, and click Confirm and Generate to get your credentials.
+
+Your license is then generated and emailed to you, so it won't appear on screen.
+
+### Receive your credentials
+
+The email contains two keys. Treat these as secrets: they identify and unlock your instance, so don't share them or commit them anywhere public. 
+
+The API key itself is the QUILLDASH-… value, and that's what you'll type when you log into the dashboard. When you pass it to your Quill app, prefix it with *primary/* (primary/QUILLDASH-…), exactly as the email shows. That prefix belongs to the command; it isn't part of the key you log in with. 
+
+| Credential | Looks like | What it's for |
+| :---- | :---- | :---- |
+| API key | QUILLDASH-… | Logs you into the Quill **dash**board |
+| License key | QUILL-… | Activates the appliance against the licensing API |
+
+The email also contains the docker command, which you can use to run your Quill instance immediately:
+
+<Image img={require("./assets/quill-guide3.webp")} alt="Signup email containing the Docker run command" />
+
+### What's next
+
+Your signup email ends with a short "What's next", three steps: run the Docker command, connect your database, and turn on the channels where people will chat. That's the rest of this guide. You'll run the appliance, connect your database and build the agent, and put the chat in front of your user.
+
+## Run the appliance
+
+### Before you run
+
+For this step, you will need Docker Desktop and free port 443.
+
+<Admonition type="note" title="New to Docker? On Windows?">
+
+Quill ships as a Docker image, a self-contained package with everything it needs to run. Docker is the tool that runs it, so the one command below is all it takes; you don't install Quill's pieces yourself. If you don't have Docker yet, install Docker Desktop (docker.com) and make sure it's running before you start.
+
+On Windows, make sure you have WSL installed. WSL (Windows Subsystem for Linux) gives you a Linux kernel available aside/inside your Windows OS. If you don't have it yet, install it by following [Microsoft's WSL install guide](https://learn.microsoft.com/windows/wsl/install). It’s a dependency to run Linux-based Docker images, as these require a live Linux kernel to bind to. It will work there once you've turned on Settings → Resources → WSL Integration in Docker Desktop.
+
+</Admonition>
+
+### Run it
+
+Your license email has this command with your keys already filled in. Copy it as-is and run it: 
+
+```shell
+docker run -d \
+  -p 443:443 \
+  -e QUILL_LICENSE_KEY=QUILL-… \
+  -e QUILL_API_KEY=primary/QUILLDASH-… \
+  -v quill-data:/data \
+  ravendb/quill:latest
+```
+
+It runs in the background and keeps its data in a volume so restarts don't wipe your setup.
+
+### Wait for it to be ready
+
+Quill activates itself and is ready in about 30 to 60 seconds (status walks NeedsActivation → Redeeming → Restarting → Ready). Check when it's done:
+
+```shell
+docker exec $(docker ps -q -f ancestor=ravendb/quill:latest) \
+  curl -s http://127.0.0.1:5000/api/bootstrap/status   # {"state":"Ready"}
+```
+
+When you see `{"state":"Ready"}`, you're up. If it stays stuck on NeedsActivation, the license key is usually wrong or the container can't reach the licensing API; check Docker logs.
+
+<Admonition type="note" title="Naming the container"> The run command doesn't name the container, so these commands find it by image. Add `--name quill` to the run command if you'd rather use docker exec quill and docker logs quill directly. </Admonition> 
+
+<Image img={require("./assets/quill-guide4.webp")} alt="Terminal showing the Quill bootstrap status walking to Ready" />
+
+### Where this leaves you
+
+Quill is running and activated, but nothing is connected to it yet. Let’s connect it to your database and point it to an LLM of your choice.
+
+## Connect your database and build the agent
+
+You'll log into the dashboard, point Quill at your database, connect an AI model, and build the agent that answers questions. By the end you'll have a working chat you can test.
+
+We will prepare four things, in order:
+
+* A connection to a **data source**, where Quill reads from - your database  
+* An **AI connection** which describes where location of LLM that works on top of it   
+* An **agent**, the system prompt plus the tools and queries it can run  
+* A **channel**, which connects your users with the backend of a chat
+
+### Log in
+
+Open your dashboard at:
+
+```
+https://dashboard.<your-domain>.myquill.ai/
+```
+
+Your domain is the one you chose at signup. Connect to it, and you should be welcomed with the Quill dashboard login page. Log in with your API key, the QUILLDASH-… one.
+
+<Image img={require("./assets/quill-guide5.webp")} alt="Quill dashboard login page" />
+
+### Connect your database
+
+On the first run, you’ll be immediately taken to the “Connect to your source database” view. This points Quill at your database, decides how your tables become documents, and lets Quill to start mirroring the app data.
+
+<Admonition type="note" title="Our sample setup">  
+Throughout this guide, we’ll use Postgres database loaded with Northwind, a small sample store dataset, so you'll see names like Categories, Products, and Orders. Read those as stand-ins for whatever your own database holds; you don't need Northwind to follow along.   
+</Admonition>
+
+#### Step 1: Connect to your source database. 
+
+Fill in the form:
+
+* Application name: a readable name for the app for you to follow (e.g. RavenDBShop)  
+* Public URL slug: a short ID for the app (auto-generated after application name)   
+* Source SQL database: PostgreSQL, SQL Server, or MySQL.  
+* Connection string: the single line that tells where exactly your database is and how to reach it, e.g. *Host=…;Port=…;Database=…;Username=…;Password=…* 
+
+<Image img={require("./assets/quill-guide6.webp")} alt="Connect to source database form" />
+
+<Admonition type="note" title="Turn on change-reading in your database">
+
+Quill needs to read changes from your database as they happen, and your database has to have that turned on. For Postgres, set wal_level = logical and use a login with the REPLICATION attribute. [SQL Server](https://learn.microsoft.com/en-us/sql/relational-databases/track-changes/enable-and-disable-change-data-capture-sql-server?view=sql-server-ver17) and [MySQL](https://dev.mysql.com/doc/refman/8.0/en/binary-log-formats.html) have their own equivalent settings. If the next step can't read your tables, this is usually what's missing.
+
+</Admonition>
+
+#### Step 2: Verify your schema.
+
+ Quill connects and lists the tables it found, each with its primary key and column count. Tick the ones you want to fetch, and continue. 
+
+One thing worth knowing here: Customize schemas (top right). By default Quill reads tables from the connection's *default schema* (public on Postgres, dbo on SQL Server). If your tables live in a different schema, or several, open this panel and add them so Quill knows where to look.
+
+<Image img={require("./assets/quill-guide7.webp")} alt="Schema verification step listing the discovered tables" />
+
+#### Step 3: Decide how your relational tables get turned into documents.
+
+Two approaches:
+
+* AI Suggest: this is the easiest and recommended way. The model drafts the mapping for you, with a space for optional instructions (e.g. "Embed line items in each order, link customers by id, keep addresses on the customer"). You can modify the created schema immediately after.  
+* Manual gives you the same tables laid out as collections and leaves the shaping to you. Treat it as an “advanced” option.
+
+<Image img={require("./assets/quill-guide8.webp")} alt="Choosing between AI Suggest and Manual mapping approaches" />
+
+On mapping SQL relations - you can choose how the related tables come together, in one of two ways: 
+
+* Embed: store the related data inside the parent document. It goes in either as an array of objects (an order carrying its line items) or, for a one-to-one relation, as a single nested object under a named field (a customer's address stored on the customer). Good when you usually want the data together.  
+* Link: keep it as its own document and reference it by ID, an order pointing to a customer. Good when the related data is fetched separately. 
+
+You can inspect every table to verify or change how the data is mapped. A Raw JSON toggle lets you edit the config directly. If you used auto-mapping, this is where you check its work.
+
+<Image img={require("./assets/quill-guide9.webp")} alt="Mapping SQL relations with embed and link options" />
+
+#### Step 4: Preview before full ingest.
+
+<Image img={require("./assets/quill-guide10.webp")} alt="Preview step before the full ingest" />
+
+Before committing, Quill can load a small number of rows (you set Max Rows) into a throwaway namespace so you can *see the shape* of the resulting documents. This is the moment to confirm the translation did what you expected. For example, Northwind “Categories” row comes back as a document like:
+
+```json
+{
+  "CategoryName": "Beverages",
+  "Description": "Soft drinks, coffees, teas, beers, and ales",
+  "CategoryId": "1",
+  "@metadata": {
+    "@collection": "Categories"
+  }
+}
+```
+
+That is a relational row turned into a JSON document in a named collection. If you don’t like the result, go back and fix the mappings. After the preview looks right click “Create app & continue” (1). This will spin up the data sync.
+
+<Admonition type="note" title="Save your mapping for next time"> The preview step has an Export configuration button (2), and step 1 has a matching Import configuration. Exporting saves your connection and table mapping so you can reuse or version it, handy for rebuilding the same app later or setting up a second environment. </Admonition>
+
+When the load finishes, your data has mirrored:
+
+<Image img={require("./assets/quill-guide11.webp")} alt="Data mirrored into RavenDB collections after the load" />
+
+## Connect an LLM
+
+Before the agent can answer anything, it needs a model. We’ll describe how to reach it by defining three main things:
+
+- The model (e.g. gpt-4.1-mini)  
+- The LLM provider/vendor (e.g. OpenAI, Azure)  
+- Your credentials - e.g. OpenAI API key
+
+Other miscellaneous or advanced options:
+
+- Name a friendly label to identify this connection later, e.g. `demo-llm`  
+- Endpoint the base API URL requests are sent to (e.g. `https://api.openai.com/v1` or your Azure resource URL)  
+- Deployment name (Azure OpenAI only) the name you gave your model deployment in the Azure portal  
+- Organization name (OpenAI only) your OpenAI org ID to attribute usage/billing to a specific org  
+- ProjectID (OpenAI only) scopes the API key to a specific OpenAI project for usage tracking/limits  
+- Prompt caching reuse repeated prompt prefixes to cut latency and cost on subsequent calls  
+- Temperature randomness of outputs: lower = more deterministic, higher = more creative
+
+<Image img={require("./assets/quill-guide12.webp")} alt="Add AI model connection string dialog" />
+
+Save, and the connection is ready. 
+
+<Admonition type="note" title="Model choice, and where your data goes"> Any capable model works; gpt-4.1-mini handles the agent's tool use reliably, while smaller models like gpt-4o-mini are cheaper but likelier to misfire on which query to run. Verify your vendor pricing before continuing to balance the cost with your model quality.</Admonition>
+
+## Build the agent
+
+Now you have the two ingredients, your data and a model. Building the agent fuses them together.
+
+Let’s start with tools: The tools you define are the queries the agent is allowed to run, so they decide what data it can see and answer from. That also keeps it grounded: the agent answers from your actual data, not guesswork. So an agent is really three things, the model connection you just made, a system prompt, and a set of query tools.
+
+You can see in the step list we’ve automatically skipped “Choose an AI Capability” step. You can go back to it, but for now, in beta, there’s only one option available.
+
+#### Step 1: Scaffold agent configuration with AI
+
+Pick an agent if it matches your goal, generate config from prompt (recommended). You can also choose to build one for yourself manually (this takes us to step 2 immediately).
+
+<Image img={require("./assets/quill-guide13.webp")} alt="Scaffold agent configuration with AI" />
+
+#### Step 2: Review and edit. 
+
+In this step you can edit and adjust all of these before saving, across two tabs.
+
+The AI suggestion tab is the summary view. It lays out what was generated at a glance. If it all looks right, you can go straight to testing and saving.
+
+<Image img={require("./assets/quill-guide14.webp")} alt="AI suggestion tab summarizing the generated agent" />
+
+The Agent configuration (2) tab is the full editor, showing the same generated agent as editable fields. Agent consists of its *name, system prompt, response shape, parameters, and query tools*. If you’ve generated the configuration with AI, all of it should be pre-filled, that’s why we’re recommending this approach. 
+
+About the options:
+
+* Identifier is a unique agent id which auto-generated from the name if you leave it empty.  
+* System prompt describes the agent's job and its guardrails  
+* Response shape. A Sample response object (like `{"reply":""}`) that Quill turns into a schema the model must follow, keeping output structured rather than free-form. For advanced control, you can also define the [JSON Schema](https://json-schema.org/understanding-json-schema/about). 
+
+<Image img={require("./assets/quill-guide15.webp")} alt="Agent configuration tab with system prompt and response shape" />
+
+* Agent parameters. Fixed values the agent cannot change itself. It can be injected into a query before running it. Often empty, you add one only if a tool needs a value pinned rather than filled by the model - *e.g. userId for user-bounded queries.*  
+* Query tools. The named queries the agent may run, in order to reach for your application data. Each has a name, a description (for the model to decide when to use it), RQL query (RavenDB's query language, e.g. `from Products where search(ProductName, $term)`), and a sample parameters object defining what LLM has to supply. Two switches control when a query runs: Allow model queries (the model runs it on demand) and Add to initial context (pre-runs to fill the model at start).
+
+<Image img={require("./assets/quill-guide16.webp")} alt="Agent parameters and query tools configuration" />
+
+Either way, you can click **Test agent** and try asking a few questions before saving to fine-tune the model configuration. It’s the fastest way to catch a vague tool description or a query that returns nothing. When it answers well, Save agent.
+
+### Where this leaves you
+
+You have a **working agent**: connected to your data and backed by a model. Test agent should be giving real answers from your data. After you save, the wizard's last step is Add a channel. We'll create that channel and connect to it in the next part. 
+
+## Put the agent into your app
+
+A **channel** lets *your application users* reach the *agent*. 
+
+Quill’s channel also ships you a ready-made chat widget, available via *iframe*, styled by Quill, with fully customizable CSS.
+
+### Create the web widget channel
+
+Creating a web widget channel is the agent wizard's final step: right after you save the agent, it lands on Add a channel. Add a web widget channel routed to your agent, with two fields: 
+
+* Channel name: a label for your own reference in the channels list. Optional.  
+* Allowed origins: the sites the widget is allowed to load on. Add the origins your page will be served from (e.g. [https://yourapp.com](https://yourapp.com)). Leave it empty and the widget can be embedded anywhere, fine for a quick test, but for production deployment you'll want to lock it to your known origins.
+
+Save, and the channel shows as Connected. It has a widget id (wgt_…) you'll use when minting links.
+
+<Image img={require("./assets/quill-guide17.webp")} alt="Create web widget channel form with channel name and allowed origins" />
+
+### Generate a link to try it
+
+The fastest way to see the widget working is to generate a link from the dashboard. Go to the Channels tab, and on your channel click Generate link (1).
+
+<Image img={require("./assets/quill-guide18.webp")} alt="Generate link action on the channel in the Channels tab" />
+
+Choose how long it should last (Link expires after) and how many chats it allows (Max invocations), and Quill gives you a link that stays live for that window. 
+
+Every link expires after its lifetime and stops working after its chat cap, and the parameters are baked in so *whoever opens it can't change them*. For actually putting the widget into a page, **don't paste** a hand-generated link, use the approach we will explain next.
+
+<Image img={require("./assets/quill-guide19.webp")} alt="Link expiry and max invocations settings for a generated link" />
+
+### Generate links from your own backend 
+
+For a real app you have to make your backend generate a fresh iframe per user or session. Fortunately, Quill allows that by simply calling *embed-links* endpoint, which returns the chat URL ✨
+
+The channel page shows the exact call under Generate links via the API, with samples for cURL, PowerShell, C#, Python, and Node.js. It's a POST to the embed-links endpoint:
+
+```
+POST https://api.<your-domain>.myquill.ai/api/apps/<your-app-slug>/embed-links
+X-Api-Key: <your QUILL_API_KEY>
+Content-Type: application/json
+
+{ "channelId": "<your-channel-id>", "ttlSeconds": 3600, "maxInvocations": 100 }
+
+
+Response fields:
+token
+-----
+966a0a65a8786a6... 
+
+url
+---
+https://public.ravendb-guide-test.myquill.ai/apps/test/embed/966...
+
+
+```
+
+The response contains a `url`, and you drop that straight into an `<iframe src>`. The three body fields you fill on every request are the same knobs as the dashboard dialog.
+
+The X-Api-Key is your API key, the QUILLDASH-… from email (the same key you log into the dashboard with). Here it goes straight into the header, with no prefix.
+
+Here's the whole pattern as a minimal example. The backend holds the key and mints the link; the page only ever sees the finished url. First the server (Node, no dependencies):
+
+```javascript
+import { createServer } from "node:http";
+
+createServer(async (req, res) => {
+  if (req.url === "/api/embed-link") {
+    const r = await fetch(
+      "https://api.<your-domain>.myquill.ai/api/apps/<your-app-slug>/embed-links",
+      {
+        method: "POST",
+        headers: { "X-Api-Key": process.env.QUILL_API_KEY, "Content-Type": "application/json" },
+        body: JSON.stringify({ channelId: "<your-channel-id>", ttlSeconds: 3600, maxInvocations: 100 }),
+      }
+    );
+    const { url } = await r.json();
+    res.writeHead(200, { "Content-Type": "application/json" }).end(JSON.stringify({ url }));
+  }
+  // ...also serve your index.html here
+}).listen(3000);
+```
+
+Then the page asks that endpoint for a url and drops it into the iframe:
+
+```html
+<iframe id="widget" style="width:400px;height:600px;border:0"></iframe>
+<script type="module">
+  const res = await fetch("/api/embed-link");
+  const { url } = await res.json();
+  document.getElementById("widget").src = url;
+</script>
+```
+
+Run it with the key in the environment (never hardcoded), then open the served page:
+
+```shell
+QUILL_API_KEY=your_key node server.js
+```
+
+<Image img={require("./assets/quill-guide20.webp")} alt="Running the Node backend that mints embed links" />
+
+<Admonition type="note" title="Keep the API key on the server"> The X-Api-Key is a secret, so make this call from your backend and hand only the returned url to the browser. If the key is in frontend code, anyone can read it and generate links against your app. </Admonition>
+
+### If the embed won't load
+
+Two failures are common when wiring this call into your own backend, especially on a corporate Windows machine:
+
+* fetch failed (UNABLE_TO_VERIFY_LEAF_SIGNATURE). A corporate proxy or antivirus is intercepting TLS and re-signing HTTPS with a private company CA. Your OS trusts it, but your runtime (Node, for one) ships its own certificate store and doesn't. The proper fix is to point your runtime at the corporate root CA (for Node, the NODE_EXTRA_CA_CERTS environment variable).
+
+### Customize the widget's look
+
+The widget's appearance is set per channel, click Customize appearance on the channel. Pick a preset (App default, Light, or Dark), or Custom CSS to write your own, and fine-tune the theme variables (background, text, border, the agent and user bubble colors, input colors, corner radii, and font) with a live preview beside them. Saving after editing any variable stores your choices as custom CSS.
+
+<Image img={require("./assets/quill-guide21.webp")} alt="Customize widget appearance panel with theme variables and live preview" />
+
+<Admonition type="note" title="Custom CSS goes a long way">
+
+The Custom CSS option gives you much finer control than the presets, you can restyle the widget well beyond the theme variables. For inspiration, see these examples: [Aurora](https://gist.github.com/Netzach-Nyss/30d4439b47e89bdc1e04a11b5d15259c) and [Synthwave](https://gist.github.com/Netzach-Nyss/81d3124b97ed3d4a1b17b67f8eb4b04c).
+
+<Image img={require("./assets/quill-guide22.webp")} alt="Widget restyled with custom CSS examples" />
+
+</Admonition>
+
+### Keep an eye on it
+
+Once your app is live, two dashboard views tell you how it's doing.
+
+“My apps” is the landing view: your apps listed with their source, agents, channels, and a health status, plus headline numbers up top (conversations, messages, tokens, writes) for the period you pick. 
+
+It's your quick "is it up, and is anyone using it" check, conversations and messages tell you whether people are actually talking to the agent, and it's also where Add application starts a new app. 
+
+<Image img={require("./assets/quill-guide23.webp")} alt="My apps dashboard view with usage headline numbers" />
+
+Usage goes deeper on consumption: a writes chart over time and a per-app breakdown. Writes are the main thing to watch; they're what your activity comes down to, so the per-app table tells you which app is driving usage and cost. Tokens track how much the model is being used, which you can sanity-check against your model provider's own bill. 
+
+In practice you'd look here right after launch to confirm traffic is flowing, then now and then to see how adoption is trending or to explain a jump on your bill. A sudden spike in one app's writes or tokens is the cue to go check what changed.
+
+<Image img={require("./assets/quill-guide24.webp")} alt="Usage view with a writes chart over time and a per-app breakdown" />
+
+## Summary
+
+* Run the appliance with one Docker command; it pulls the image and activates itself.  
+* Don't swap the keys: QUILL-… activates, QUILLDASH-… logs you in.  
+* Connect your existing database; Quill mirrors it and the agent queries the copy.  
+* The database must be reachable from the container and CDC-ready.  
+* Connect a hosted model, then let Quill generate the agent and edit it if needed.  
+* Query results reach the model, so keep sensitive data out of the agent's collections.  
+* Test with a generated link; embed by having your backend request per-user links.  
+* Keep the API key on the server, never in frontend code.
+
+Any questions about RavenDB features, or just want to hang out and talk with the RavenDB team? Join our Discord Community Server. The invitation link is [here](https://discord.com/invite/ravendb).
