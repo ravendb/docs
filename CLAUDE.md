@@ -486,7 +486,7 @@ related_resources:
 ### `cloud/` — RavenDB Cloud service documentation (~24 files)
 Account management, instance configuration, security (TLS, MFA, certificates), pricing/billing, scaling, backup/restore, migration, AWS/Azure Marketplace setup, and the cloud portal UI (home, products, billing, backups, support tabs).
 
-### `quill/` — Quill documentation (~2 files)
+### `quill/` — Quill documentation (~1 file)
 Docs for Quill, served at `/quill` by its own `content-docs` instance (versionless, same wiring as `cloud/`). Sidebar in `sidebarsQuill.js`.
 
 ### `guides/` — Practical how-to guides (~64 files, flat structure)

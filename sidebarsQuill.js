@@ -16,11 +16,6 @@ export default {
                     label: "Home",
                     className: "hidden", // <-- This makes the default item invisible, while still rendering the sidebar
                 },
-                {
-                    type: "doc",
-                    id: "quill-overview",
-                    label: "Overview",
-                },
             ],
         },
     ],
