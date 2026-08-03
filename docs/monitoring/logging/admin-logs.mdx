@@ -349,21 +349,21 @@ The listener is off by default. Once enabled, it records only the event types yo
 ![Event listener](./assets/admin-logs-settings-event-listener.png)
 
 * **A. Enable**  
-  Start writing runtime events to the log files.
+  Start writing runtime events to the log files.  
+  Configuration key: [Debug.EventListener.Mode](configuration.mdx#debugeventlistenermode)
 * **B. Event Types**  
   Select the runtime events to record.  
-  At least one type is required. `Select all` takes every type on the list.
+  At least one type is required. `Select all` takes every type on the list.  
+  Configuration key: [Debug.EventListener.EventTypes](configuration.mdx#debugeventlistenereventtypes)
 * **C. Minimum Duration**  
-  Record only the events that last for at least the duration you set.
+  Record only the events that last for at least the duration you set.  
+  Configuration key: [Debug.EventListener.MinimumDurationInMs](configuration.mdx#debugeventlistenerminimumdurationinms)
 * **D. Allocations Logging Interval** and **Allocations Logging Count**  
-  Both apply to the `Allocations` event type.
-   * **Allocations Logging Interval**  
-     The period over which the listener gathers allocation events before writing them to the
-     log.
-   * **Allocations Logging Count**  
-     The number of allocation events written for each period.  
-     The listener keeps the largest allocations of the period, and the smaller ones are not
-     written.
+  Both apply to the `Allocations` event type.  
+  Configuration keys:
+  [Debug.EventListener.AllocationsLoggingIntervalInMs](configuration.mdx#debugeventlistenerallocationsloggingintervalinms)
+  and
+  [Debug.EventListener.AllocationsLoggingCount](configuration.mdx#debugeventlistenerallocationsloggingcount)
 * **E. Save this configuration in `settings.json`**  
   Write these settings into `settings.json` so they apply after a restart as well.  
   The checkbox does not appear on RavenDB Cloud.
