@@ -37,11 +37,15 @@ const connectionStrings = await store.maintenance.send(getRavenConStrOp);
 // ===============
 const ravenConnectionStrings = connectionStrings.ravenConnectionStrings;
 
-const numberOfRavenConnectionStrings = Object.keys(ravenConnectionStrings).length;
-const ravenConStr = ravenConnectionStrings["ravendb-connection-string-name"];
+// If no connection string matches the specified name and type, 
+// the result object is null.
+if (ravenConnectionStrings) {
+    const numberOfRavenConnectionStrings = Object.keys(ravenConnectionStrings).length;
+    const ravenConStr = ravenConnectionStrings["ravendb-connection-string-name"];
 
-const targetUrls = ravenConStr.topologyDiscoveryUrls;
-const targetDatabase = ravenConStr.database;
+    const targetUrls = ravenConStr.topologyDiscoveryUrls;
+    const targetDatabase = ravenConStr.database;
+}
 ```
 
 </Panel>

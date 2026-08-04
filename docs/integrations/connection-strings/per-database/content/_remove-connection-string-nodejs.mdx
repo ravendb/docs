@@ -65,9 +65,8 @@ new RemoveConnectionStringOperation(connectionString);
 
 <Admonition type="note" title="">
 
-The Node.js client provides connection string classes for the `Raven`, `Sql`, `Olap`, `ElasticSearch`, `Queue`
-(Kafka and RabbitMQ), and `Ai` types.  
-Connection string types that have no matching class in the Node.js client, such as `Snowflake`, can be removed from Studio.
+To remove a queue connection string, including one for Azure Service Bus, pass a `QueueConnectionString` with only its `name` to `RemoveConnectionStringOperation`; broker-specific settings are not required.  
+Connection string types without a matching Node.js class, such as `Snowflake`, can be removed from Studio.
 
 </Admonition>
 

@@ -132,6 +132,10 @@ To apply it to a different database, see [switch operations to a different datab
 For every connection string type, create the matching connection string class  
 (e.g.: `RavenConnectionString`, `SqlConnectionString`, etc.) and pass it to `PutConnectionStringOperation`.
 
+For `QueueConnectionString`, you must provide `broker_type` and the matching connection settings.
+For example, pass `broker_type=QueueBrokerType.KAFKA` together with a configured `KafkaConnectionSettings` object in `kafka_settings`.
+The server rejects a queue connection string if no broker type is specified.
+
 For type-specific fields and links to full examples, see
 [Connection string per type](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#connection-string-per-type).  
 The following example adds a `RavenDB` connection string.    
@@ -155,6 +159,14 @@ raven_db_con_str = RavenConnectionString(
 put_connection_string_op = PutConnectionStringOperation(raven_db_con_str)
 connection_string_result = store.maintenance.send(put_connection_string_op)
 ```
+<br/>
+    
+<Admonition type="note" title="">
+
+_Azure Service Bus_ queue connection strings are not supported by the Python client,  
+but they can be defined from Studio.
+
+</Admonition>
 
 </Panel>
 

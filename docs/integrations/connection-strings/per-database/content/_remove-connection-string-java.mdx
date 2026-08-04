@@ -73,10 +73,9 @@ public class RemoveConnectionStringResult {
 <br/>
 
 <Admonition type="note" title="">
-
-The Java client provides connection string classes for the `Raven`, `Sql`, `Olap`, `ElasticSearch`, `Queue`
-(Kafka, RabbitMQ, Azure Queue Storage, and Amazon SQS), and `Ai` types.  
-Connection string types that have no matching class in the Java client, such as `Snowflake`, can be removed from Studio.
+    
+To remove a queue connection string, including one for Azure Service Bus, pass a `QueueConnectionString` with only its `Name` to `RemoveConnectionStringOperation`; broker-specific settings are not required.  
+Connection string types that have no matching Java class, such as `Snowflake`, can be removed from Studio.    
 
 </Admonition>
 

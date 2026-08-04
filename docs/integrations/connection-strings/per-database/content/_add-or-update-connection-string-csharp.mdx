@@ -132,6 +132,10 @@ To apply it to a different database, see [switch operations to a different datab
 For every connection string type, create the matching connection string class  
 (e.g.: `RavenConnectionString`, `SqlConnectionString`, etc.) and pass it to `PutConnectionStringOperation`.
 
+For `QueueConnectionString`, you must set `BrokerType` and provide the matching connection settings.  
+For example, set `BrokerType` to `QueueBrokerType.Kafka` and assign a configured `KafkaConnectionSettings` object to `KafkaConnectionSettings`.
+The server rejects a queue connection string if no broker type is specified.
+
 For type-specific fields and links to full examples, see
 [Connection string per type](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#connection-string-per-type).  
 The following example adds a `RavenDB` connection string.    

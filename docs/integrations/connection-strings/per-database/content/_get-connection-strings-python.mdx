@@ -40,11 +40,14 @@ connection_strings = store.maintenance.send(get_raven_con_str_op)
 # ===============
 raven_connection_strings = connection_strings.raven_connection_strings
 
-number_of_raven_connection_strings = len(raven_connection_strings)
-raven_con_str = raven_connection_strings["ravendb-connection-string-name"]
+# If no connection string matches the specified name and type, 
+# the result dictionary is None.
+if raven_connection_strings is not None:
+    number_of_raven_connection_strings = len(raven_connection_strings)
+    raven_con_str = raven_connection_strings["ravendb-connection-string-name"]
 
-target_urls = raven_con_str.topology_discovery_urls
-target_database = raven_con_str.database
+    target_urls = raven_con_str.topology_discovery_urls
+    target_database = raven_con_str.database
 ```
 
 </Panel>

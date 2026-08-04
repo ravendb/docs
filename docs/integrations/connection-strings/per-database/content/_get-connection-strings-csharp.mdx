@@ -41,12 +41,17 @@ using (var store = new DocumentStore())
     // ===============
     Dictionary<string, RavenConnectionString> ravenConnectionStrings = 
         connectionStrings.RavenConnectionStrings;
-    
-    var numberOfRavenConnectionStrings = ravenConnectionStrings.Count;
-    var ravenConStr = ravenConnectionStrings["ravendb-connection-string-name"];
-    
-    var targetUrls = ravenConStr.TopologyDiscoveryUrls;
-    var targetDatabase = ravenConStr.Database;
+
+    // If no connection string matches the specified name and type, 
+    // the result dictionary is null.
+    if (ravenConnectionStrings != null)
+    {
+        var numberOfRavenConnectionStrings = ravenConnectionStrings.Count;
+        var ravenConStr = ravenConnectionStrings["ravendb-connection-string-name"];
+
+        var targetUrls = ravenConStr.TopologyDiscoveryUrls;
+        var targetDatabase = ravenConStr.Database;
+    }
 }
 ```
 </TabItem>
@@ -65,12 +70,16 @@ using (var store = new DocumentStore())
     // ===============
     Dictionary<string, RavenConnectionString> ravenConnectionStrings = 
         connectionStrings.RavenConnectionStrings;
-    
-    var numberOfRavenConnectionStrings = ravenConnectionStrings.Count;
-    var ravenConStr = ravenConnectionStrings["ravendb-connection-string-name"];
-    
-    var targetUrls = ravenConStr.TopologyDiscoveryUrls;
-    var targetDatabase = ravenConStr.Database;
+
+    // If no connection string matches the specified name and type, the result dictionary is null.
+    if (ravenConnectionStrings != null)
+    {
+        var numberOfRavenConnectionStrings = ravenConnectionStrings.Count;
+        var ravenConStr = ravenConnectionStrings["ravendb-connection-string-name"];
+
+        var targetUrls = ravenConStr.TopologyDiscoveryUrls;
+        var targetDatabase = ravenConStr.Database;
+    }
 }
 ```
 </TabItem>

@@ -132,6 +132,10 @@ To apply it to a different database, see [switch operations to a different datab
 For every connection string type, create the matching connection string class  
 (e.g.: `RavenConnectionString`, `SqlConnectionString`, etc.) and pass it to `PutConnectionStringOperation`.
 
+For `QueueConnectionString`, you must set `brokerType` and provide the matching connection settings.
+For example, set `brokerType` to `"Kafka"` and assign a configured `KafkaConnectionSettings` object to `kafkaConnectionSettings`.
+The server rejects a queue connection string if no broker type is specified.
+
 For type-specific fields and links to full examples, see
 [Connection string per type](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#connection-string-per-type).  
 The following example adds a `RavenDB` connection string.    
@@ -151,12 +155,14 @@ ravenDBConStr.topologyDiscoveryUrls = ["https://rvn2:8080"];
 const putConnectionStringOp = new PutConnectionStringOperation(ravenDBConStr);
 const connectionStringResult = await store.maintenance.send(putConnectionStringOp);
 ```
-
+<br/>
+    
 <Admonition type="note" title="">
 
-The Node.js client provides connection string classes for the `Raven`, `Sql`, `Olap`, `ElasticSearch`, `Queue`
+The Node.js client provides connection string classes for the `Raven`, `Sql`, `Olap`, `ElasticSearch`, `Queue`  
 (Kafka and RabbitMQ), and `Ai` types.  
-Connection string types that have no matching class in the Node.js client, such as `Snowflake`, can be defined from Studio.    
+Connection string configurations that are not supported by the Node.js client,
+such as `Snowflake` and queue connection strings for `Azure Queue Storage`, `Amazon SQS`, and `Azure Service Bus`, can be defined from Studio.
 
 </Admonition>
 

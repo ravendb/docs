@@ -39,11 +39,16 @@ try (IDocumentStore store = new DocumentStore()) {
     Map<String, RavenConnectionString> ravenConnectionStrings =
         connectionStrings.getRavenConnectionStrings();
 
-    int numberOfRavenConnectionStrings = ravenConnectionStrings.size();
-    RavenConnectionString ravenConStr = ravenConnectionStrings.get("ravendb-connection-string-name");
-
-    String[] targetUrls = ravenConStr.getTopologyDiscoveryUrls();
-    String targetDatabase = ravenConStr.getDatabase();
+    // If no connection string matches the specified name and type, 
+    // the result map is null.
+    if (ravenConnectionStrings != null) {
+        int numberOfRavenConnectionStrings = ravenConnectionStrings.size();
+        RavenConnectionString ravenConStr =
+            ravenConnectionStrings.get("ravendb-connection-string-name");
+    
+        String[] targetUrls = ravenConStr.getTopologyDiscoveryUrls();
+        String targetDatabase = ravenConStr.getDatabase();
+    }
 }
 ```
 
