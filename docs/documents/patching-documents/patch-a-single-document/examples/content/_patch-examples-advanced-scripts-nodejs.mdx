@@ -289,6 +289,10 @@ patchRequest.script = `
         delete this.SensitiveData;
     }`;
 
+patchRequest.values = {
+    encryptionKey: encryptionKey
+};
+
 await documentStore.operations.send(new PatchOperation(
     "users/1",
     null,
