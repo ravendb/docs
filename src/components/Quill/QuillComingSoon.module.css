@@ -1,0 +1,31 @@
+/* Blueprint grid background — masked to fade out toward the edges. */
+.grid {
+    background-image:
+        linear-gradient(to right, var(--ifm-color-emphasis-200) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--ifm-color-emphasis-200) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 45%, #000 30%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 45%, #000 30%, transparent 100%);
+}
+
+/* Soft brand-colored glow behind the content. */
+.glow {
+    background: radial-gradient(circle, var(--ifm-color-primary) 0%, transparent 70%);
+}
+
+/* Pulsing dot in the "Coming soon" badge. */
+.pulseDot {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(var(--quill-pulse-rgb, 15 118 110), 0.5);
+    }
+    70% {
+        box-shadow: 0 0 0 8px rgba(var(--quill-pulse-rgb, 15 118 110), 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(var(--quill-pulse-rgb, 15 118 110), 0);
+    }
+}

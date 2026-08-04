@@ -81,7 +81,7 @@ function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
                 )}
                 {pathType !== PathType.Quill && (
                     <Link to="/quill" className="menu__link group">
-                        <Icon icon="sparkles" size="xs" className="me-2" /> Quill Docs
+                        <Icon icon="feather" size="xs" className="me-2" /> Quill Docs
                         <small className="flex items-center ms-auto gap-1 text-[0.675rem] opacity-0 group-hover:opacity-100 !transition-all">
                             Switch <Icon icon="arrow-thin-right" size="xs" />
                         </small>
