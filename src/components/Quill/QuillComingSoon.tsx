@@ -1,9 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "@docusaurus/Link";
 import Heading from "@theme/Heading";
-import { Icon } from "@site/src/components/Common/Icon";
 import styles from "./QuillComingSoon.module.css";
-import CardWithIcon from "../Common/CardWithIcon";
 
 export default function QuillComingSoon(): ReactNode {
     return (
