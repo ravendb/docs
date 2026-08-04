@@ -15,6 +15,14 @@ import ContentFrame from '@site/src/components/ContentFrame';
 * Every Python patching method is executed by the server as a JavaScript patch script.  
   The Python client does not provide a JSON Patch (RFC 6902) API.
 
+* A `path` refers to the JSON property name as stored in the document.  
+  With the default conventions, documents written by the Python client keep their Python  
+  attribute names, so a `login_count` attribute is patched as `"login_count"`.  
+  A single-segment path that matches no existing property adds a new one instead of failing,  
+  so a casing mismatch silently creates a duplicate field.  
+  A path whose parent is missing does fail, for example `"Address.City"` on a document  
+  without an `Address` object reports `City is not defined`.
+
 * Patching examples in this article:
   * [Modify value of single field](#modify-value-of-single-field)  
   * [Modify values of two fields](#modify-values-of-two-fields)  
@@ -819,9 +827,8 @@ class BlogComment:
 
 * All three examples perform a JavaScript indexed assignment.
 
-* If the array is missing or `null`, the patch fails with  
-  `Cannot convert undefined or null to object`.  
-  Assigning through a missing field requires coercing it to an object, which throws.  
+* If the array is missing or `null`, the patch fails.  
+  A missing array reports the index as an undefined identifier, for example `3 is not defined`.  
   This differs from the method-call examples above, where a missing array is a silent no-op.
 
 * Assigning to a non-negative index at or beyond the current array length extends the array  
@@ -1116,9 +1123,8 @@ class BlogComment:
 
 * The document and the target object must exist.  
   If the document does not exist, the patch has no effect and no document is created.  
-  If the object field is missing or `null`, the patch fails with  
-  `Cannot convert undefined or null to object`, because assigning through a missing field  
-  requires coercing it to an object.
+  If the object field is missing or `null`, the patch fails.  
+  A missing object reports the key as an undefined identifier, for example `language is not defined`.
 
 * Removing a key that does not exist has no effect and does not throw an exception.
 
@@ -1267,7 +1273,7 @@ store.operations.send(PatchOperation("employees/1-A", None, patch_request))
   Its value, including a `null` value, is preserved. If the destination property already exists, its value is replaced.
 
 * Checking for the source property matters: reading a property that does not exist yields `undefined`  
-  inside a patch script, and `undefined` is stored as `null`.  
+  inside a patch script, and assigning `undefined` to an existing property stores `null`.  
   An unguarded rename would therefore overwrite the destination property with a `null` value.
 
 * If the original property does not exist, the patch has no effect.  

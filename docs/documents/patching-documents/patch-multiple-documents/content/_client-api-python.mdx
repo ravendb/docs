@@ -370,7 +370,7 @@ For additional patch-script operations, including retrieving and deleting counte
 
 Use `timeseries(document, name).append(timestamp, values)` to append an entry to a time series on every document selected by the query.  
     
-`values` must be an array of numbers.  
+`values` can be a single number or an array of numbers.  
 You can optionally pass a tag as the third argument to `append`.
 
 If the time series does not exist, RavenDB creates it.  
@@ -388,12 +388,12 @@ query = IndexQuery(
              update
              {
                  timeseries(p, $timeSeriesName)
-                     .append($timestamp, [p.PricePerUnit]);
+                     .append(new Date($timestamp), [p.PricePerUnit]);
              }""")
 
 query.query_parameters = {
     "timeSeriesName": "PriceHistory",
-    "timestamp": datetime.datetime.utcnow().isoformat()
+    "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat()
 }
 
 patch_by_query_op = PatchByQueryOperation(query)

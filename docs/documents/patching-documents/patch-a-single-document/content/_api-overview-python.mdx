@@ -128,6 +128,16 @@ A negative index is not out of range.
 so `remove_at(-N)` removes the Nth item from the end and `remove_at(-1)` removes the last item.
 Exactly one item is removed in either case.
 
+**Patching a document that is loaded in the same session**:    
+If the session tracks the target document and considers it modified, `save_changes()` raises  
+`Cannot perform save because document <id> has been modified by the session and is also taking part in deferred PATCH command`.  
+This can happen even when you did not edit the entity, for example when the document was written by another client,  
+and it applies whether you pass the document ID or the entity.  
+Either queue the patch from a session that has not loaded the document,  
+or call `session.advanced.ignore_changes_for(entity)` before queueing it.  
+`ignore_changes_for` also discards in-memory edits made to that entity,  
+so use it only when the patch is the only change you want persisted for that document.
+
 </Admonition>
     
 <Admonition type="note" title="">
@@ -232,7 +242,7 @@ store.operations.send(PatchOperation(
   If no document with the given ID is found and no `patch_if_missing` script was provided,  
   the server reports that the document does not exist, `send` returns `None`, and no exception is thrown.  
       
-  To get the status itself in that case, use `store.operations.send_patch_operation()`,  
+  To get the status itself in that case, use `store.operations.send_patch_operation`,  
   which returns only a `PatchStatus` and reports a missing document as `PatchStatus.DOCUMENT_DOES_NOT_EXIST`.  
 
   If `skip_patch_if_change_vector_mismatch` is `True`, a change-vector mismatch skips the patch and is reported  
@@ -476,6 +486,8 @@ store.operations.send(patch_operation)
 store.operations.send(patch_operation, session_info)
 
 # Returns the PatchStatus alone
+store.operations.send_patch_operation(patch_operation, None)
+
 store.operations.send_patch_operation(patch_operation, session_info)
 
 # Pass an entity class to deserialize the returned document into your own class
@@ -495,11 +507,9 @@ Returned by `store.operations.send`.
 | --------------------- | --------------------------- | --------------------------------------------------------------------------------- |
 | **status**            | `PatchStatus`               | Status of the patch operation on the document.                                     |
 | **modified_document** | `dict`                      | The document after the patch operation completed. The document may be unchanged.    |
-| **original_document** | `dict`                      | The document before the patch, returned when the server includes debug information. |
 | **change_vector**     | `str`                       | Change vector of the document after the patch.                                     |
 | **last_modified**     | `datetime.datetime`         | Time of the most recent modification made to the document.                          |
 | **collection**        | `str`                       | Collection the patched document belongs to.                                        |
-| **debug**             | `dict`                      | Debug information, returned when the server includes it.                            |
 
 #### PatchOperation.Result
 

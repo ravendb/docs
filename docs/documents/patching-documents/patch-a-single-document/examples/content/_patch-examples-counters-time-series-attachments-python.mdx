@@ -238,7 +238,7 @@ to_date = datetime.datetime.now(datetime.timezone.utc)
 from_date = to_date - datetime.timedelta(hours=1)
 
 patch_request = PatchRequest()
-patch_request.script = "timeseries(this, args.name).delete(args.from, args.to);"
+patch_request.script = "timeseries(this, args.name).delete(new Date(args.from), new Date(args.to));"
 patch_request.values = {
     "name": "HeartRates",
     "from": from_date.isoformat(),
@@ -257,7 +257,7 @@ to_date = datetime.datetime.now(datetime.timezone.utc)
 from_date = to_date - datetime.timedelta(hours=1)
 
 patch_request = PatchRequest()
-patch_request.script = "timeseries(this, args.name).delete(args.from, args.to);"
+patch_request.script = "timeseries(this, args.name).delete(new Date(args.from), new Date(args.to));"
 patch_request.values = {
     "name": "HeartRates",
     "from": from_date.isoformat(),
