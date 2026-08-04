@@ -31,9 +31,9 @@ import Image from "@theme/IdealImage";
 
 ### What Quill is, and why you'd use it
 
-Quill puts a conversational AI agent in front of a database you already have. You point it at your data, describe what the agent should be able to answer, and you get a chat interface that answers questions about that data in plain language. It's self-hosted: it runs on your own server, with no ML engineers or cloud dependency to operate it.
+Quill puts a conversational AI agent on top of a database you already have. You point it at your data, describe what the agent should be able to answer, and you get a chat interface that answers questions about that data in plain language. It's self-hosted: it runs on your own server, with no ML engineers or cloud dependency to operate it.
 
-Quill doesn't give you a database, neither asks you to build one. You bring the app and its database, and Quill attaches to it, adding the AI chat layer on top. If you already run something on Postgres, SQL Server, or MySQL/MariaDB, Quill is the thing you put in front of it.
+Quill doesn't give you a database, nor asks you to build one. You bring the app and its database, and Quill attaches to it, adding the AI chat layer on top. If you already run something on Postgres, SQL Server, or MySQL/MariaDB, Quill can put a conversational agent on top of it.
 
 One thing Quill does not include: the AI model itself. You need to bring it from a provider such as OpenAI API or Azure OpenAI. 
 
@@ -66,12 +66,12 @@ Your license is then generated and emailed to you, so it won't appear on screen.
 
 The email contains two keys. Treat these as secrets: they identify and unlock your instance, so don't share them or commit them anywhere public. 
 
-The API key itself is the QUILLDASH-… value, and that's what you'll type when you log into the dashboard. When you pass it to your Quill app, prefix it with *primary/* (primary/QUILLDASH-…), exactly as the email shows. That prefix belongs to the command; it isn't part of the key you log in with. 
+Use the keys as they appear in your email. The run command comes with them already filled in; the API key is also what you enter to log into the dashboard.
 
 | Credential | Looks like | What it's for |
 | :---- | :---- | :---- |
 | API key | QUILLDASH-… | Logs you into the Quill **dash**board |
-| License key | QUILL-… | Activates the appliance against the licensing API |
+| License key | QUILL-… | Activates the Quill |
 
 The email also contains the docker command, which you can use to run your Quill instance immediately:
 
@@ -79,9 +79,15 @@ The email also contains the docker command, which you can use to run your Quill 
 
 ### What's next
 
-Your signup email ends with a short "What's next", three steps: run the Docker command, connect your database, and turn on the channels where people will chat. That's the rest of this guide. You'll run the appliance, connect your database and build the agent, and put the chat in front of your user.
+Your signup email ends with a short "What's next", three steps:
 
-## Run the appliance
+1. run the Docker command,
+2. connect your database,
+3. and turn on the channels where people will chat.
+
+That's the rest of this guide. You'll run the appliance, connect your database and build the agent, and put the chat in front of your user.
+
+## Run the Docker Image
 
 ### Before you run
 
@@ -148,7 +154,7 @@ Open your dashboard at:
 https://dashboard.<your-domain>.myquill.ai/
 ```
 
-Your domain is the one you chose at signup. Connect to it, and you should be welcomed with the Quill dashboard login page. Log in with your API key, the QUILLDASH-… one.
+Your domain is the one you chose at signup. Connect to it, and you should be welcomed with the Quill dashboard login page. Log in with your API key from email, the QUILLDASH-… one.
 
 <Image img={require("./assets/quill-guide5.webp")} alt="Quill dashboard login page" />
 
@@ -157,7 +163,7 @@ Your domain is the one you chose at signup. Connect to it, and you should be wel
 On the first run, you’ll be immediately taken to the “Connect to your source database” view. This points Quill at your database, decides how your tables become documents, and lets Quill to start mirroring the app data.
 
 <Admonition type="note" title="Our sample setup">  
-Throughout this guide, we’ll use Postgres database loaded with Northwind, a small sample store dataset, so you'll see names like Categories, Products, and Orders. Read those as stand-ins for whatever your own database holds; you don't need Northwind to follow along.   
+Throughout this guide, we’ll use the Postgres database loaded with Northwind, a small sample store dataset, so you'll see names like Categories, Products, and Orders. Read those as stand-ins for whatever your own database holds; you don't need Northwind to follow along.   
 </Admonition>
 
 #### Step 1: Connect to your source database. 
@@ -173,7 +179,13 @@ Fill in the form:
 
 <Admonition type="note" title="Turn on change-reading in your database">
 
-Quill needs to read changes from your database as they happen, and your database has to have that turned on. For Postgres, set wal_level = logical and use a login with the REPLICATION attribute. [SQL Server](https://learn.microsoft.com/en-us/sql/relational-databases/track-changes/enable-and-disable-change-data-capture-sql-server?view=sql-server-ver17) and [MySQL](https://dev.mysql.com/doc/refman/8.0/en/binary-log-formats.html) have their own equivalent settings. If the next step can't read your tables, this is usually what's missing.
+Quill reads changes from your source database as they happen, so change data capture (or logical replication) has to be enabled there first, and Quill's login needs permission to read the change stream. For PostgreSQL, set `wal_level = logical` and connect with a login that has the `REPLICATION` attribute.
+
+For [SQL Server](https://docs.ravendb.net/server/ongoing-tasks/cdc-sink/source-database-setup/sql-server/overview#prerequisites), enable CDC on the database and each source table, and keep the SQL Server Agent running.
+
+For [MySQL](https://docs.ravendb.net/server/ongoing-tasks/cdc-sink/source-database-setup/mysql/overview#prerequisites), turn on row-based binary logging and grant the login `REPLICATION SLAVE`, `REPLICATION CLIENT`, and `SELECT`.
+
+If the next step can't read your tables, this setting is almost always what's missing.
 
 </Admonition>
 
@@ -378,7 +390,7 @@ createServer(async (req, res) => {
 
 Then the page asks that endpoint for a url and drops it into the iframe:
 
-```html
+```
 <iframe id="widget" style="width:400px;height:600px;border:0"></iframe>
 <script type="module">
   const res = await fetch("/api/embed-link");
@@ -423,7 +435,7 @@ Once your app is live, two dashboard views tell you how it's doing.
 
 “My apps” is the landing view: your apps listed with their source, agents, channels, and a health status, plus headline numbers up top (conversations, messages, tokens, writes) for the period you pick. 
 
-It's your quick "is it up, and is anyone using it" check, conversations and messages tell you whether people are actually talking to the agent, and it's also where Add application starts a new app. 
+It's your quick "is it up, and is anyone using it" check, conversations and messages tell you whether people are actually talking to the agent. It's also where the *Add application* starts a new app. 
 
 <Image img={require("./assets/quill-guide23.webp")} alt="My apps dashboard view with usage headline numbers" />
 
@@ -435,6 +447,8 @@ In practice you'd look here right after launch to confirm traffic is flowing, th
 
 ## Summary
 
+By this point you've got Quill running from a single Docker command, mirroring your existing database, and serving an agent that queries the copy rather than your production rows.
+
 * Run the appliance with one Docker command; it pulls the image and activates itself.  
 * Don't swap the keys: QUILL-… activates, QUILLDASH-… logs you in.  
 * Connect your existing database; Quill mirrors it and the agent queries the copy.  
@@ -443,5 +457,3 @@ In practice you'd look here right after launch to confirm traffic is flowing, th
 * Query results reach the model, so keep sensitive data out of the agent's collections.  
 * Test with a generated link; embed by having your backend request per-user links.  
 * Keep the API key on the server, never in frontend code.
-
-Any questions about RavenDB features, or just want to hang out and talk with the RavenDB team? Join our Discord Community Server. The invitation link is [here](https://discord.com/invite/ravendb).
