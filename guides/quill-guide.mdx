@@ -1,24 +1,11 @@
 ---
 title: "Quill Setup & Usage Guide"
-tags: [ai, integration, docker]
+tags: [ai, integration]
 icon: "ai-agents"
 description: "Set up self-hosted Quill to put a conversational AI agent in front of your existing SQL database: run the Docker appliance, connect a database and a model, build the agent, and embed the chat widget."
 published_at: 2026-08-03
-see_also:
-  - title: "AI Agents Overview"
-    link: "ai-integration/ai-agents/overview"
-    source: "docs"
-    path: "AI Integration > AI Agents"
-  - title: "Gen AI Integration Overview"
-    link: "ai-integration/gen-ai-integration/overview"
-    source: "docs"
-    path: "AI Integration > Gen AI Integration"
-  - title: "Vector Search Overview"
-    link: "ai-integration/vector-search/overview"
-    source: "docs"
-    path: "AI Integration > Vector Search"
 author: "Paweł Lachowski"
-proficiency_level: "Expert"
+proficiency_level: "Beginner"
 ---
 
 import Admonition from '@theme/Admonition';
@@ -33,16 +20,16 @@ import Image from "@theme/IdealImage";
 
 Quill puts a conversational AI agent on top of a database you already have. You point it at your data, describe what the agent should be able to answer, and you get a chat interface that answers questions about that data in plain language. It's self-hosted: it runs on your own server, with no ML engineers or cloud dependency to operate it.
 
-Quill doesn't give you a database, nor asks you to build one. You bring the app and its database, and Quill attaches to it, adding the AI chat layer on top. If you already run something on Postgres, SQL Server, or MySQL/MariaDB, Quill can put a conversational agent on top of it.
+Quill doesn't give you a database, nor asks you to build one. You bring the app and its database, and Quill runs alongside it, adding the AI chat layer. If you already run something on Postgres, SQL Server, or MySQL/MariaDB, Quill can put a conversational agent on top of it.
 
 One thing Quill does not include: the AI model itself. You need to bring it from a provider such as OpenAI API or Azure OpenAI. 
 
 What you'll need before you start
 
-* Docker Desktop (Linux engine). On Windows, run everything from a WSL shell with Docker's WSL integration on.  
-* Your app's database, reachable from Docker.  
-* An AI model: an API key for a hosted provider (OpenAI or Azure OpenAI).  
-* Port 443 free on the host.
+1. Docker Desktop (Linux engine). On Windows, run everything from a WSL shell with Docker's WSL integration on.  
+2. Your app's database, reachable from Docker.  
+3. An AI model: an API key for a hosted provider (OpenAI or Azure OpenAI).  
+4. Port 443 free on the host.
 
 ## Get your license and keys 
 
@@ -141,10 +128,10 @@ You'll log into the dashboard, point Quill at your database, connect an AI model
 
 We will prepare four things, in order:
 
-* A connection to a **data source**, where Quill reads from - your database  
-* An **AI connection** which describes where location of LLM that works on top of it   
-* An **agent**, the system prompt plus the tools and queries it can run  
-* A **channel**, which connects your users with the backend of a chat
+1. A connection to a **data source**, where Quill reads from - your database  
+2. An **AI connection** which describes where location of LLM that works on top of it   
+3. An **agent**, the system prompt plus the tools and queries it can run  
+4. A **channel**, which connects your users with the backend of a chat
 
 ### Log in
 
