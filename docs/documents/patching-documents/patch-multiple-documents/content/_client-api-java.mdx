@@ -391,7 +391,7 @@ IndexQuery query = new IndexQuery(
 
 Parameters parameters = new Parameters();
 parameters.put("timeSeriesName", "PriceHistory");
-parameters.put("timestamp", NetISO8601Utils.format(new Date(), true));
+parameters.put("timestamp", new Date());
 query.setQueryParameters(parameters);
 
 PatchByQueryOperation patchByQueryOp = new PatchByQueryOperation(query);

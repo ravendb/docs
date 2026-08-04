@@ -90,7 +90,7 @@ PatchRequest patchRequest = new PatchRequest();
 patchRequest.setScript("this['@metadata']['@expires'] = args.expires;");
 // @expires must contain an ISO 8601 UTC date-time string
 patchRequest.setValues(Collections.singletonMap("expires",
-    NetISO8601Utils.format(DateUtils.addMinutes(new Date(), 1), true)));
+    DateUtils.addMinutes(new Date(), 1)));
 
 session.advanced().defer(new PatchCommandData(
     "users/1",     // id
@@ -108,7 +108,7 @@ PatchRequest patchRequest = new PatchRequest();
 patchRequest.setScript("this['@metadata']['@expires'] = args.expires;");
 // @expires must contain an ISO 8601 UTC date-time string
 patchRequest.setValues(Collections.singletonMap("expires",
-    NetISO8601Utils.format(DateUtils.addMinutes(new Date(), 1), true)));
+    DateUtils.addMinutes(new Date(), 1)));
 
 store.operations().send(new PatchOperation(
     "users/1",      // id

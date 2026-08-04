@@ -9,14 +9,18 @@ import ContentFrame from '@site/src/components/ContentFrame';
 * This article is part of the single-document patching examples.  
   It focuses on advanced patch-script techniques, including inline string compilation and cryptographic operations.
 
-* For the available patching interfaces (Session API, Session API using defer, and Operations API) and their full syntax,  
-  see [Patch a Single Document: API Overview](../../../../../documents/patching-documents/patch-a-single-document/api-overview.mdx).
-
+* For details about the available patching interfaces (Session API, Session API using defer, and Operations API),  
+  their full syntax, and failure handling, see [Patch a Single Document: API Overview](../../../../../documents/patching-documents/patch-a-single-document/api-overview.mdx).
+    
 * Patching examples in this article:
   * [Patching using inline string compilation](#patching-using-inline-string-compilation)  
   * [Generate a random UUID](#generate-a-random-uuid)  
   * [Store a SHA-256 hash of a field](#store-a-sha-256-hash-of-a-field)  
-  * [Encrypt a field](#encrypt-a-field)  
+  * [Encrypt a field](#encrypt-a-field)
+    
+* **Patch failures**:  
+  If an unhandled error occurs while compiling or executing a patch script,  
+  the patch is aborted and no partial document changes are persisted.       
 
 </Admonition>
 

@@ -197,7 +197,7 @@ patchRequest.setScript("timeseries(this, args.name).append(new Date(args.timesta
 
 Map<String, Object> values = new HashMap<>();
 values.put("name", "HeartRates");
-values.put("timestamp", NetISO8601Utils.format(new Date(), true));
+values.put("timestamp", new Date());
 // Pass an array instead when the entry contains multiple values.
 values.put("values", 78);
 values.put("tag", "watches/fitbit");
@@ -221,7 +221,7 @@ patchRequest.setScript("timeseries(this, args.name).append(new Date(args.timesta
 
 Map<String, Object> values = new HashMap<>();
 values.put("name", "HeartRates");
-values.put("timestamp", NetISO8601Utils.format(new Date(), true));
+values.put("timestamp", new Date());
 // Pass an array instead when the entry contains multiple values.
 values.put("values", 78);
 values.put("tag", "watches/fitbit");
@@ -262,8 +262,8 @@ patchRequest.setScript("timeseries(this, args.name).delete(args.from, args.to);"
 
 Map<String, Object> values = new HashMap<>();
 values.put("name", "HeartRates");
-values.put("from", NetISO8601Utils.format(from, true));
-values.put("to", NetISO8601Utils.format(to, true));
+values.put("from", from);
+values.put("to", to);
 patchRequest.setValues(values);
 
 session.advanced().defer(new PatchCommandData(
@@ -286,8 +286,8 @@ patchRequest.setScript("timeseries(this, args.name).delete(args.from, args.to);"
 
 Map<String, Object> values = new HashMap<>();
 values.put("name", "HeartRates");
-values.put("from", NetISO8601Utils.format(from, true));
-values.put("to", NetISO8601Utils.format(to, true));
+values.put("from", from);
+values.put("to", to);
 patchRequest.setValues(values);
 
 store.operations().send(new PatchOperation(
@@ -429,7 +429,7 @@ Map<String, Object> values = new HashMap<>();
 values.put("name", "invoice.pdf");
 // Must match a configured remote destination identifier.
 values.put("identifier", "my-amazon-storage");
-values.put("at", NetISO8601Utils.format(DateUtils.addDays(new Date(), 1), true));
+values.put("at", DateUtils.addDays(new Date(), 1));
 patchRequest.setValues(values);
 
 session.advanced().defer(new PatchCommandData(
@@ -451,7 +451,7 @@ Map<String, Object> values = new HashMap<>();
 values.put("name", "invoice.pdf");
 // Must match a configured remote destination identifier.
 values.put("identifier", "my-amazon-storage");
-values.put("at", NetISO8601Utils.format(DateUtils.addDays(new Date(), 1), true));
+values.put("at", DateUtils.addDays(new Date(), 1));
 patchRequest.setValues(values);
 
 store.operations().send(new PatchOperation(

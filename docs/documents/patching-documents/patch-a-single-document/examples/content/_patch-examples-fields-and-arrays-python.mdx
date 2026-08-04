@@ -1268,9 +1268,7 @@ store.operations.send(PatchOperation("employees/1-A", None, patch_request))
 
 * Checking for the source property matters: reading a property that does not exist yields `undefined`  
   inside a patch script, and `undefined` is stored as `null`.  
-  An unguarded rename would therefore overwrite the destination property with a `null` value.  
-  Compare against `undefined` rather than calling `hasOwnProperty`,  
-  which reports every property name as present on the patched document.
+  An unguarded rename would therefore overwrite the destination property with a `null` value.
 
 * If the original property does not exist, the patch has no effect.  
   If the document does not exist, no document is created.
