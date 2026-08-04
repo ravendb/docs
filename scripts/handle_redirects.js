@@ -60,6 +60,7 @@ async function handler(event) {
     if (
         normalizedUri.startsWith("/guides") ||
         normalizedUri.startsWith("/cloud") ||
+        normalizedUri.startsWith("/quill") ||
         normalizedUri.startsWith("/samples")
     ) {
         try {

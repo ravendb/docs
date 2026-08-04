@@ -8,6 +8,7 @@ const BADGE_CLASSES: Record<ContentSource, string> = {
     docs: "bg-black/5 dark:bg-white/5 text-ifm-menu border-black/10 dark:border-white/10",
     guides: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-600/25 dark:border-emerald-400/25",
     cloud: "bg-sky-500/15 text-sky-700 dark:text-sky-300 border-sky-600/25 dark:border-sky-400/25",
+    quill: "bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-600/25 dark:border-amber-400/25",
     samples: "bg-violet-500/15 text-violet-700 dark:text-violet-300 border-violet-600/25 dark:border-violet-400/25",
     external: "bg-black/5 dark:bg-white/5 text-ifm-menu border-black/10 dark:border-white/10",
 };

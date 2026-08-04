@@ -8,6 +8,7 @@ https://issues.hibernatingrhinos.com/issue/RDoc-...
 
 - [ ] Content - docs
 - [ ] Content - cloud
+- [ ] Content - Quill
 - [ ] Content - guides
 - [ ] Content - start pages/other
 - [ ] New docs feature (consider updating `/templates` or readme) 

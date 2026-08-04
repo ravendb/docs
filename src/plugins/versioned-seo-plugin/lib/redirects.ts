@@ -24,7 +24,7 @@ export interface RedirectRule {
 export type RedirectMap = Map<string, { targetUrl: string; minimumVersion?: string }>;
 
 /** Key prefixes whose content area has no version axis. */
-const VERSIONLESS_KEY_PREFIXES = ["/guides/", "/cloud/"] as const;
+const VERSIONLESS_KEY_PREFIXES = ["/guides/", "/cloud/", "/quill/"] as const;
 
 function isVersionlessKey(key: string): boolean {
     return VERSIONLESS_KEY_PREFIXES.some((p) => key.startsWith(p));
@@ -177,10 +177,12 @@ export function validateNoCycles(rules: RedirectRule[]): ValidationError[] {
     return errors;
 }
 
-/** /guides and /cloud are versionless content roots; everything else lives under docsRoot. */
+/** /guides, /cloud and /quill are versionless content roots; everything else lives under docsRoot. */
+const VERSIONLESS_ROOTS = new Set(["guides", "cloud", "quill"]);
+
 function targetBasePath(target: string, projectRoot: string, docsRoot: string): string {
     const [first, ...rest] = target.split("/").filter(Boolean);
-    return first === "guides" || first === "cloud"
+    return first && VERSIONLESS_ROOTS.has(first)
         ? path.join(projectRoot, first, ...rest)
         : path.join(docsRoot, first ?? "", ...rest);
 }
@@ -196,7 +198,7 @@ function fileExists(basePath: string): boolean {
 
 /**
  * Check every targetUrl resolves to a real page. Versionless rules
- * (/guides, /cloud) are checked once; versioned rules are checked against
+ * (/guides, /cloud, /quill) are checked once; versioned rules are checked against
  * every version in `versions` where their `minimumVersion` gate fires.
  *
  * Targets are walked through `resolveChain` first — if a rule's target is
@@ -218,7 +220,7 @@ export function validateTargetsExist(
 
         if (isVersionlessKey(rule.key)) {
             // Versionless rule: target has no version axis, check once.
-            // Edge does single-hop for /guides + /cloud, so we don't chain.
+            // Edge does single-hop for /guides + /cloud + /quill, so we don't chain.
             if (!fileExists(targetBasePath(target, projectRoot, currentDocsRoot))) {
                 errors.push({
                     index,

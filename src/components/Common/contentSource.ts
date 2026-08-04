@@ -1,11 +1,12 @@
 import { IconName } from "@site/src/typescript/iconName";
 
 // Shared by See Also, sample related-resources, and search results.
-export type ContentSource = "docs" | "cloud" | "guides" | "samples" | "external";
+export type ContentSource = "docs" | "cloud" | "quill" | "guides" | "samples" | "external";
 
 export const CONTENT_SOURCES: Record<ContentSource, { label: string; icon: IconName }> = {
     docs: { label: "Docs", icon: "document2" },
     cloud: { label: "Cloud", icon: "cloud" },
+    quill: { label: "Quill", icon: "sparkles" },
     guides: { label: "Guide", icon: "guides" },
     samples: { label: "Sample", icon: "code" },
     external: { label: "External", icon: "newtab" },

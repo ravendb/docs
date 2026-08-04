@@ -28,6 +28,7 @@ npm test                   # Run unit tests (custom Docusaurus plugins)
 ```
 docs/                        # Current (7.2) doc content — EDIT HERE
 cloud/                       # RavenDB Cloud portal docs
+quill/                       # Quill docs
 guides/                      # Community guides (frontmatter-driven, tag-indexed)
 templates/                   # Doc authoring templates
 versioned_docs/version-X.Y/  # Per-version snapshots (Docusaurus-managed) — editable for bugfixes
@@ -43,6 +44,7 @@ scripts/                     # Build/deploy automation
 static/icons/                # SVG icon assets (source for icon type generation)
 sidebars.ts                  # Main docs sidebar config
 sidebarsCloud.js             # Cloud docs sidebar
+sidebarsQuill.js             # Quill docs sidebar
 sidebarsGuides.js            # Guides sidebar
 sidebarsTemplates.js         # Templates sidebar
 docusaurus.config.ts         # Main Docusaurus config (versions, search, plugins)
@@ -483,6 +485,9 @@ related_resources:
 
 ### `cloud/` — RavenDB Cloud service documentation (~24 files)
 Account management, instance configuration, security (TLS, MFA, certificates), pricing/billing, scaling, backup/restore, migration, AWS/Azure Marketplace setup, and the cloud portal UI (home, products, billing, backups, support tabs).
+
+### `quill/` — Quill documentation (~1 file)
+Docs for Quill, served at `/quill` by its own `content-docs` instance (versionless, same wiring as `cloud/`). Sidebar in `sidebarsQuill.js`.
 
 ### `guides/` — Practical how-to guides (~64 files, flat structure)
 Community guides covering: connecting specific frameworks (ASP.NET Core, Next.js, SvelteKit, FastAPI), AI/ML integration, DevOps (Docker, Kubernetes/EKS, Helm, Ansible), observability (Datadog, Grafana/OpenTelemetry), data pipelines (Elasticsearch, Azure Queue, OLAP ETL), testing (unit test drivers for .NET/Java/Python), and troubleshooting specific problems.

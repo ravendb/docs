@@ -7,6 +7,7 @@
  * and lets us re-ping only changed sections on deploy.
  *
  *   /cloud/*   → sitemap-cloud.xml
+ *   /quill/*   → sitemap-quill.xml
  *   /guides/*  → sitemap-guides.xml
  *   /samples/* → sitemap-samples.xml
  *   /X.Y/*    → sitemap-docs-X.Y.xml  (if X.Y isn't legacy)
@@ -46,6 +47,7 @@ export interface SplitSucceeded {
 
 const SECTION_MAP: Record<string, string> = {
     cloud: "sitemap-cloud.xml",
+    quill: "sitemap-quill.xml",
     guides: "sitemap-guides.xml",
     samples: "sitemap-samples.xml",
 };

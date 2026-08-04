@@ -138,6 +138,16 @@ const config: Config = {
         [
             "content-docs",
             {
+                id: "quill",
+                path: "quill",
+                routeBasePath: "quill",
+                sidebarPath: require.resolve("./sidebarsQuill.js"),
+                editUrl: "https://github.com/ravendb/docs/edit/main",
+            },
+        ],
+        [
+            "content-docs",
+            {
                 id: "guides",
                 path: "guides",
                 routeBasePath: "guides",

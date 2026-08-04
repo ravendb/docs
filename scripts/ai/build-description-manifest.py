@@ -24,7 +24,7 @@ def extract_frontmatter(content):
 def get_section_path(filepath):
     rel = os.path.relpath(filepath, BASE).replace(os.sep, "/")
     parts = rel.split("/")
-    if parts[0] in ("docs", "cloud"):
+    if parts[0] in ("docs", "cloud", "quill"):
         section_parts = parts[1:-1]
     else:
         section_parts = parts[:-1]
@@ -74,6 +74,7 @@ def find_csharp_partial(filepath):
 patterns = [
     os.path.join(BASE, "docs", "**", "*.mdx"),
     os.path.join(BASE, "cloud", "**", "*.mdx"),
+    os.path.join(BASE, "quill", "**", "*.mdx"),
 ]
 
 all_files = []

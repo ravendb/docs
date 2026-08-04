@@ -35,7 +35,7 @@ export function useVersionedLink() {
             return link;
         }
 
-        const isUnversionedSection = /^\/(cloud|guides|samples|templates)(\/|$)/.test(link);
+        const isUnversionedSection = /^\/(cloud|quill|guides|samples|templates)(\/|$)/.test(link);
 
         if (isUnversionedSection) {
             return link;
@@ -43,6 +43,7 @@ export function useVersionedLink() {
 
         const versionToUse =
             currentPluginId === "cloud" ||
+            currentPluginId === "quill" ||
             currentPluginId === "guides" ||
             currentPluginId === "samples" ||
             currentPluginId === "templates"
