@@ -1,12 +1,27 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "@docusaurus/Link";
-import { useVersions, useLatestVersion, useActiveDocContext } from "@docusaurus/plugin-content-docs/client";
+import {
+    useVersions,
+    useLatestVersion,
+    useActiveDocContext,
+    useDocsPreferredVersion,
+    type GlobalVersion,
+} from "@docusaurus/plugin-content-docs/client";
+import { useHistorySelector } from "@docusaurus/theme-common";
 
 export default function CustomVersionDropdown() {
     const pluginId = "default";
     const versions = useVersions(pluginId);
     const latestVersion = useLatestVersion(pluginId);
-    const { activeVersion } = useActiveDocContext(pluginId);
+    const { activeVersion, alternateDocVersions } = useActiveDocContext(pluginId);
+    const { savePreferredVersionName } = useDocsPreferredVersion(pluginId);
+    const queryString = useHistorySelector((history) => history.location.search);
+    const anchor = useHistorySelector((history) => history.location.hash);
+
+    const getVersionMainDoc = (version: GlobalVersion) => version.docs.find((doc) => doc.id === version.mainDocId)!;
+
+    const getVersionTargetPath = (version: GlobalVersion) =>
+        `${(alternateDocVersions[version.name] ?? getVersionMainDoc(version)).path}${queryString}${anchor}`;
 
     const [open, setOpen] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -69,7 +84,14 @@ export default function CustomVersionDropdown() {
                 <ul className="!p-0 !m-0">
                     {versions.map((version) => (
                         <li key={version.name} className="rounded-sm overflow-hidden">
-                            <Link to={version.path} className="menu__link" onClick={() => setOpen(false)}>
+                            <Link
+                                to={getVersionTargetPath(version)}
+                                className="menu__link"
+                                onClick={() => {
+                                    savePreferredVersionName(version.name);
+                                    setOpen(false);
+                                }}
+                            >
                                 {version.label}.x
                             </Link>
                         </li>
