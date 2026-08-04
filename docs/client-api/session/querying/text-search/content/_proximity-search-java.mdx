@@ -10,8 +10,6 @@ import Panel from '@site/src/components/Panel';
 * A **proximity search** retrieves documents containing search terms that are located within a specified distance from each other.
   The distance is measured by the number of intermediate terms.
 
-* Proximity search is available only via [DocumentQuery](../../../../../querying/document-query/what-is-document-query.mdx) or RQL.  
-
 * Use the `proximity` method when running a **full-text search** by the [search](../../../../../client-api/session/querying/text-search/full-text-search.mdx) method.  
 
 * The queried index must use the **Lucene** search engine.  
@@ -65,6 +63,31 @@ import Panel from '@site/src/components/Panel';
 ### Proximity search (0 distance)
 
 <Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<Employee> employees = session
+    .query(Employee.class)
+     // Make a full-text search with search terms
+    .search("Notes", "fluent french")
+     // Call 'proximity' with 0 distance
+    .proximity(0)
+    .toList();
+
+// Running the above query on the Northwind sample data returns the following Employee documents:
+// * employees/2-A
+// * employees/5-A
+// * employees/9-A
+
+// Each resulting document has the text 'fluent in French' in its 'Notes' field.
+//
+// The word "in" is not taken into account as it is Not part of the terms list generated
+// by the analyzer. (Search is case-insensitive in this case).
+//
+// Note:
+// A document containing text with the search terms appearing with no words in between them
+// (e.g. "fluent french") would have also been returned.
+```
+</TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
 ```java
 List<Employee> employees = session
@@ -122,6 +145,30 @@ where proximity(search(Notes, "fluent french"), 0)
 ### Proximity search (distance &gt; 0)
 
 <Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<Employee> employees = session
+    .query(Employee.class)
+     // Make a full-text search with search terms
+    .search("Notes", "fluent french")
+     // Call 'proximity' with distance 4
+    .proximity(4)
+    .toList();
+
+// Running the above query on the Northwind sample data returns the following Employee documents:
+// * employees/2-A
+// * employees/5-A
+// * employees/6-A
+// * employees/9-A
+
+// This time document 'employees/6-A' was added to the previous results since it contains the phrase:
+// "fluent in Japanese and can read and write French"
+// where the search terms are separated by a count of 4 terms.
+//
+// "in" & "and" are not taken into account as they are not part of the terms list generated
+// by the analyzer.(Search is case-insensitive in this case).
+```
+</TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
 ```java
 List<Employee> employees = session
