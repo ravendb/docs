@@ -1,9 +1,12 @@
 import type { ReactNode } from "react";
 import Link from "@docusaurus/Link";
 import Heading from "@theme/Heading";
+import { useLatestVersion } from "@docusaurus/plugin-content-docs/client";
 import styles from "./QuillComingSoon.module.css";
 
 export default function QuillComingSoon(): ReactNode {
+    const latestVersion = useLatestVersion("default");
+
     return (
         <section className="relative flex items-center justify-center overflow-hidden rounded-2xl px-6 py-16 min-h-[calc(100vh-var(--ifm-navbar-height)-4rem)]">
             <div className={`${styles.grid} absolute inset-0 opacity-70`} aria-hidden="true" />
@@ -33,7 +36,7 @@ export default function QuillComingSoon(): ReactNode {
                 </div>
 
                 <div className="flex flex-wrap justify-center gap-3">
-                    <Link to="/docs" className="button button--primary">
+                    <Link to={`/${latestVersion.label}`} className="button button--primary">
                         Browse RavenDB docs
                     </Link>
                 </div>
