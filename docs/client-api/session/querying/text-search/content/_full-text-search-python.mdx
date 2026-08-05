@@ -266,7 +266,7 @@ See [Using wildcards](#using-wildcards).
 
 If the analyzer produces no tokens from a search term - for example, because it removes all of them as
 [stop words](../../../../../indexes/using-analyzers.mdx#analyzers-that-remove-common-stop-words) -  
-RavenDB skips that term.
+RavenDB drops that term from the query. If no term in the `search()` call produces a token, the call matches no documents.
 
 ---
     

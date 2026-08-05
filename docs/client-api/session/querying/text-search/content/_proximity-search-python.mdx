@@ -16,7 +16,7 @@ import Panel from '@site/src/components/Panel';
 
 * The queried index must use the **Lucene** search engine.  
   [Corax](../../../../../indexes/search-engine/corax.mdx#unsupported-features) does not support proximity over the `search` method,  
-  and running such a query against a Corax index throws a `NotSupportedInCoraxException`.  
+  and running such a query against a Corax index fails with `Method 'Proximity' is not supported.`  
 
 * In this article:
     * [Why use proximity search](#why-use-proximity-search)
@@ -67,12 +67,12 @@ import Panel from '@site/src/components/Panel';
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 ```python
+# The fluent 'proximity' method rejects a distance below 1,
+# so pass a 0 distance as RQL.
 employees = list(
-    session.advanced.document_query(object_type=Employee)
-    # Make a full-text search with search terms
-    .search("Notes", "fluent french")
-    # Call 'proximity' with 0 distance
-    .proximity(0)
+    session.advanced.raw_query(
+        'from "Employees" '
+        'where proximity(search(Notes, "fluent french"), 0)', Employee)
 )
 # Running the above query on the Northwind sample data returns the following Employee documents:
 # * employees/2-A
@@ -164,6 +164,6 @@ def proximity(self, proximity: int) -> DocumentQuery[_T]: ...
 
 | Parameter     | Type  | Description                                                                              |
 |---------------|-------|------------------------------------------------------------------------------------------|
-| **proximity** | `int` | The maximum number of terms between the search terms.<br/>Can be greater or equal to `0`. |
+| **proximity** | `int` | The maximum number of terms between the search terms.<br/>The fluent `proximity` method requires a value of `1` or greater; for a `0` distance, run the query with `session.advanced.raw_query`. |
 
 </Panel>
