@@ -361,7 +361,7 @@ Production endpoints make up the rest of the server's REST API, used in normal o
 | `/databases/*/bulk_docs` | POST | Execute a batch of document commands (a session [SaveChanges](../../client-api/session/saving-changes.mdx)) in a single transaction. |
 | `/databases/*/bulk_insert` | POST | Stream a large number of documents into the database in a single [bulk-insert operation](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx).<br /><br />**Parameters:**<ul><li>`id`: the operation ID</li><li>`skipOverwriteIfUnchanged`: skip overwriting a document if the incoming content is unchanged (optional, default `false`)</li></ul> |
 | `/databases/*/cdc-sink/performance` | GET | Performance statistics for the database's CDC sink tasks. |
-| `/databases/*/cdc-sink/performance/live` | GET | Live streaming of performance statistics for the database's CDC sink tasks over a WebSocket. |
+| `/databases/*/cdc-sink/performance/live` | GET | Live streaming of performance statistics for the database's CDC sink tasks over a WebSocket, drawn by the [Ongoing Task Stats](../../monitoring/performance-views/ongoing-task-stats.mdx) view. |
 | `/databases/*/changes` | GET, DELETE | `GET`: subscribe to the database's [Changes API](../../client-api/changes/what-is-changes-api.mdx) stream over a WebSocket. `DELETE`: close Changes API connections. |
 | `/databases/*/changes/debug` | GET | Debug information about the database's active Changes API connections. |
 | `/databases/*/cmpxchg` | GET, PUT, DELETE | Get, create or update, or delete [compare-exchange](../../compare-exchange/overview.mdx) values. |
@@ -400,7 +400,7 @@ Production endpoints make up the rest of the server's REST API, used in normal o
 | `/databases/*/documents-compression/config` | GET | Get the documents compression configuration for the database. |
 | `/databases/*/etl/debug/stats` | GET | Debug statistics (per-transformation statistics and metrics) for the database's ETL tasks.<br /><br />**Parameters:**<ul><li>`name`: ETL task name to filter by, repeatable (optional, default: all tasks)</li></ul> |
 | `/databases/*/etl/performance` | GET | Performance statistics for the database's ETL tasks.<br /><br />**Parameters:**<ul><li>`name`: ETL task name to filter by, repeatable (optional, default: all tasks)</li></ul> |
-| `/databases/*/etl/performance/live` | GET | Live streaming of performance statistics for the database's ETL tasks over a WebSocket.<br /><br />**Parameters:**<ul><li>`name`: ETL task name to filter by, repeatable (optional, default: all tasks)</li></ul> |
+| `/databases/*/etl/performance/live` | GET | Live streaming of performance statistics for the database's ETL tasks over a WebSocket, drawn by the [Ongoing Task Stats](../../monitoring/performance-views/ongoing-task-stats.mdx) view.<br /><br />**Parameters:**<ul><li>`name`: ETL task name to filter by, repeatable (optional, default: all tasks)</li></ul> |
 | `/databases/*/etl/retry-batch` | POST | Force an ETL process to retry immediately, skipping its fallback wait.<br /><br />**Parameters:**<ul><li>`name`: the ETL process name (required)</li></ul> |
 | `/databases/*/expiration/config` | GET | Get the document expiration configuration for the database. |
 | `/databases/*/healthcheck` | GET | A lightweight health check for the database. |
@@ -446,7 +446,7 @@ Production endpoints make up the rest of the server's REST API, used in normal o
 | `/databases/*/operations/state` | GET | The state of a database operation, identified by its operation ID.<br /><br />**Parameters:**<ul><li>`id`: the ID of the operation (required)</li></ul> |
 | `/databases/*/queries` | GET, POST, PATCH, DELETE | Run an [RQL query](../../querying/overview.mdx) (`GET`/`POST`), patch by query (`PATCH`), or delete by query (`DELETE`). |
 | `/databases/*/queries/test` | PATCH | Test a patch script against one document without applying it, returning the patch status and the original and modified document.<br /><br />**Parameters:**<ul><li>`id`: the ID of the document to test the patch against (required)</li></ul> |
-| `/databases/*/queue-sink/performance/live` | GET | Stream live performance statistics for the database's queue sink tasks over a WebSocket.<br /><br />**Parameters:**<ul><li>`name`: one or more queue sink task names to report on (optional, reports on all tasks if omitted)</li></ul> |
+| `/databases/*/queue-sink/performance/live` | GET | Stream live performance statistics for the database's queue sink tasks over a WebSocket, drawn by the [Ongoing Task Stats](../../monitoring/performance-views/ongoing-task-stats.mdx) view.<br /><br />**Parameters:**<ul><li>`name`: one or more queue sink task names to report on (optional, reports on all tasks if omitted)</li></ul> |
 | `/databases/*/refresh/config` | GET | The database's document refresh configuration. |
 | `/databases/*/replication/active-connections` | GET | The database's active incoming and outgoing replication connections. |
 | `/databases/*/replication/conflicts` | GET | The database's replication conflicts, or the conflicts for one document.<br /><br />**Parameters:**<ul><li>`docId`: return conflicts for this document only (optional)</li></ul> |
@@ -454,7 +454,7 @@ Production endpoints make up the rest of the server's REST API, used in normal o
 | `/databases/*/replication/heartbeat` | POST | No-op. Returns immediately with no content. |
 | `/databases/*/replication/lastEtag` | GET | Replication source information, including the last replicated document etag, for a legacy replication source. |
 | `/databases/*/replication/performance` | GET | Performance statistics for the database's replication. |
-| `/databases/*/replication/performance/live` | GET | Stream live replication performance statistics for the database over a WebSocket. |
+| `/databases/*/replication/performance/live` | GET | Stream live replication performance statistics for the database over a WebSocket, drawn by the [Ongoing Task Stats](../../monitoring/performance-views/ongoing-task-stats.mdx) view. |
 | `/databases/*/replication/pulses/live` | GET | Stream the database's live replication pulse events over a WebSocket. |
 | `/databases/*/replication/replicateAttachments` | POST | Receives attachments from a legacy replication source and imports them into the database. |
 | `/databases/*/replication/replicateDocs` | POST | Receives documents from a legacy replication source and imports them into the database. |
@@ -504,7 +504,7 @@ Production endpoints make up the rest of the server's REST API, used in normal o
 | `/databases/*/subscription-tasks/state` | POST | Enable or disable a subscription task.<br /><br />**Parameters:**<ul><li>`key`: the task ID (required)</li><li>`disable`: disable the task if `true`, enable it if `false` (optional, default `true`)</li><li>`taskName`: the task name (optional)</li><li>`type`: the task type; must be `Subscription` (required)</li></ul> |
 | `/databases/*/subscriptions/connection-details` | GET | Connection details for a data subscription.<br /><br />**Parameters:**<ul><li>`name`: the subscription name (required)</li></ul> |
 | `/databases/*/subscriptions/drop` | POST | Drop the current connection of a data subscription.<br /><br />**Parameters:**<ul><li>`id`: the subscription ID (optional, alternative to `name`)</li><li>`name`: the subscription name (optional, alternative to `id`)</li><li>`workerId`: drop only the connection with this worker ID (optional, drops all connections if omitted)</li></ul> |
-| `/databases/*/subscriptions/performance/live` | GET | Live stream of subscription performance statistics for the database. |
+| `/databases/*/subscriptions/performance/live` | GET | Live stream of subscription performance statistics for the database, drawn by the [Ongoing Task Stats](../../monitoring/performance-views/ongoing-task-stats.mdx) view. |
 | `/databases/*/subscriptions/state` | GET | The state of a data subscription.<br /><br />**Parameters:**<ul><li>`name`: the subscription name (required)</li></ul> |
 | `/databases/*/subscriptions/try` | POST | Test a data subscription without acknowledging progress.<br /><br />**Parameters:**<ul><li>`timeLimit`: maximum time in seconds to collect results (optional, default `15`)</li></ul> |
 | `/databases/*/subscriptions/update` | POST | Update a data subscription's definition. |
