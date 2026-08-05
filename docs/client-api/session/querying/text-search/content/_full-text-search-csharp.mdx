@@ -1,7 +1,9 @@
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
 
 <Admonition type="note" title="">
 
@@ -12,40 +14,38 @@ import CodeBlock from '@theme/CodeBlock';
   within the text of the specified document field/s.
 
 * When running a full-text search with a dynamic query, the **auto-index** created by the server 
-  breaks down the text of the searched document field using the [default search analyzer](../../../../../indexes/using-analyzers.mdx#ravendb).  
+  breaks down the text of the searched document field using the [default search analyzer](../../../../../indexes/using-analyzers.mdx#using-the-default-search-analyzer).  
   All generated terms are lower-cased, so the search is **case-insensitive**.  
 
 * Gain additional control over term tokenization by running a full-text search 
-  using a [static-index](../../../../../indexes/querying/searching.mdx), where the used 
-  analyzer is configurable.  
+  using a [static-index](../../../../../indexes/querying/searching.mdx),  
+  where the used analyzer is configurable.  
 
-<Admonition type="info" title="">
-
-* A **boost** value can be set for each search to prioritize results. 
+* A **boost** value can be set for each search to prioritize results.  
   Learn more in [boost search results](../../../../../client-api/session/querying/text-search/boost-search-results.mdx).
-  
-* User experience can be enhanced by requesting text fragments that **highlight** 
-  the searched terms in the results. Learn more in [highlight search results](../../../../../client-api/session/querying/text-search/highlight-query-results.mdx).
-</Admonition>
-* In this page:
-  * [Search for single term](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-for-single-term)
-  * [Search for multiple terms](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-for-multiple-terms)
-  * [Search in multiple fields](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-in-multiple-fields)
-  * [Search in complex object](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-in-complex-object)
-  * [Search operators](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators)
-  * [Search options](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-options)
-  * [Using wildcards](../../../../../client-api/session/querying/text-search/full-text-search.mdx#using-wildcards)
-  * [Syntax](../../../../../client-api/session/querying/text-search/full-text-search.mdx#syntax)
+    
+* User experience can be enhanced by requesting text fragments that **highlight** the searched terms in the results.  
+  Learn more in [highlight search results](../../../../../client-api/session/querying/text-search/highlight-query-results.mdx).
+
+* In this article:
+  * [Search for single term](#search-for-single-term)
+  * [Search for multiple terms](#search-for-multiple-terms)
+  * [Search with analyzer-generated phrases](#search-with-analyzer-generated-phrases)
+  * [Search in multiple fields](#search-in-multiple-fields)
+  * [Search in complex object](#search-in-complex-object)
+  * [Search operators](#search-operators)
+  * [Search options](#search-options)
+  * [Using wildcards](#using-wildcards)
+  * [Syntax](#syntax)
 
 </Admonition>
-## Search for single term
 
-<Admonition type="note" title="">
+<Panel heading="Search for single term">
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session
+```csharp
+List<Employee> employees = session
      // Make a dynamic query on Employees collection
     .Query<Employee>()
      // * Call 'Search' to make a Full-Text search
@@ -56,12 +56,11 @@ import CodeBlock from '@theme/CodeBlock';
 
 // Results will contain Employee documents that have
 // any case variation of the term 'university' in their 'Notes' field.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Employee> employees = await asyncSession
+```csharp
+List<Employee> employees = await asyncSession
      // Make a dynamic query on Employees collection
     .Query<Employee>()
      // * Call 'Search' to make a Full-Text search
@@ -72,12 +71,11 @@ import CodeBlock from '@theme/CodeBlock';
 
 // Results will contain Employee documents that have
 // any case variation of the term 'university' in their 'Notes' field.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session.Advanced
+```csharp
+List<Employee> employees = session.Advanced
      // Make a dynamic DocumentQuery on Employees collection
     .DocumentQuery<Employee>()
      // * Call 'Search' to make a Full-Text search
@@ -88,19 +86,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 // Results will contain Employee documents that have
 // any case variation of the term 'university' in their 'Notes' field.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees"
+```sql
+from "Employees"
 where search(Notes, "University")
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
-
-</Admonition>
 
 * Executing the above query will generate the auto-index `Auto/Employees/BySearch(Notes)`.  
 
@@ -111,27 +105,27 @@ where search(Notes, "University")
     Text is lower-cased and Not tokenized.
   
   * `search(Notes)`  
-    Contains __lower-cased terms__ that were tokenized from the 'Notes' field by the [default search analyzer](../../../../../indexes/using-analyzers.mdx#ravendb) (RavenStandardAnalyzer). 
+    Contains **lower-cased terms** that were tokenized from the 'Notes' field by the [default search analyzer](../../../../../indexes/using-analyzers.mdx#using-the-default-search-analyzer) (RavenStandardAnalyzer). 
     Calling the `Search()` method targets these terms to find matching documents.
 
+</Panel>
 
+<Panel heading="Search for multiple terms">
 
-## Search for multiple terms
-
-* You can search for multiple terms in the __same field__ in a single search method.
+* You can search for multiple terms in the **same field** in a single search method.
 
 * By default, the logical operator between these terms is 'OR'.
 
-* This behavior can be modified. See section [Search operators](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators). 
+* This behavior can be modified. See section [Search operators](#search-operators). 
 
-<Admonition type="note" title="">
+<ContentFrame>
 
-__Pass terms in a string__:
+**Pass terms in a string**:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session
+```csharp
+List<Employee> employees = session
     .Query<Employee>()
      // * Pass multiple terms in a single string, separated by spaces.
      // * Look for documents containing either 'University' OR 'Sales' OR 'Japanese'
@@ -141,12 +135,11 @@ __Pass terms in a string__:
 
 // * Results will contain Employee documents that have at least one of the specified terms.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Employee> employees = await asyncSession
+```csharp
+List<Employee> employees = await asyncSession
     .Query<Employee>()
      // * Pass multiple terms in a single string, separated by spaces.
      // * Look for documents containing either 'University' OR 'Sales' OR 'Japanese'
@@ -156,12 +149,11 @@ __Pass terms in a string__:
 
 // * Results will contain Employee documents that have at least one of the specified terms.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session.Advanced
+```csharp
+List<Employee> employees = session.Advanced
     .DocumentQuery<Employee>()
      // * Pass multiple terms in a single string, separated by spaces.
      // * Look for documents containing either 'University' OR 'Sales' OR 'Japanese'
@@ -171,28 +163,26 @@ __Pass terms in a string__:
 
 // * Results will contain Employee documents that have at least one of the specified terms.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees"
+```sql
+from "Employees"
 where search(Notes, "University Sales Japanese")
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>
 
-<Admonition type="note" title="">
+<ContentFrame>
 
-__Pass terms in a list__:
+**Pass terms in a list**:
  
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session
+```csharp
+List<Employee> employees = session
     .Query<Employee>()
      // * Pass terms in IEnumerable<string>.
      // * Look for documents containing either 'University' OR 'Sales' OR 'Japanese'
@@ -202,12 +192,11 @@ __Pass terms in a list__:
 
 // * Results will contain Employee documents that have at least one of the specified terms.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Employee> employees = await asyncSession
+```csharp
+List<Employee> employees = await asyncSession
     .Query<Employee>()
      // * Pass terms in IEnumerable<string>.
      // * Look for documents containing either 'University' OR 'Sales' OR 'Japanese'
@@ -217,36 +206,198 @@ __Pass terms in a list__:
 
 // * Results will contain Employee documents that have at least one of the specified terms.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees"
+```sql
+from "Employees"
 where search(Notes, "University Sales Japanese")
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>
 
+</Panel>
 
+<Panel heading="Search with analyzer-generated phrases">
 
-## Search in multiple fields
+A value passed to `Search()` is processed in two stages:
 
-* You can search for terms in __different fields__ by making multiple search calls.
+1. **Search terms**:  
+   `Search()` parses the value into **search terms**.  
+   Unquoted spaces or tabs separate terms, while double quotes keep the enclosed text together as one term.
 
-* By default, the logical operator between consecutive search methods is 'OR'.
+2. **Tokens**:  
+   The [query-time analyzer](../../../../../indexes/using-analyzers.mdx#analyzers-at-query-time)
+   processes each search term and produces zero, one, or multiple **tokens**.
 
-* This behavior can be modified. See section [Search options](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators).
+**When the analyzer produces multiple tokens from one search term**, RavenDB searches those tokens as a **phrase**.  
+This means that a document matches only when the corresponding tokens in the searched field are adjacent  
+and occur in the same order as the analyzer-generated query tokens.
 
-<Admonition type="note" title="">
+---
+    
+### How the input form affects matching
+
+With RavenDB's default analyzer configuration, compare the following three cases:
+
+<ContentFrame>
+    
+**Separate search terms: matched independently**    
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session
+```csharp
+List<Employee> employees = session
+    .Query<Employee>()
+     // Pass two separate search terms    
+    .Search(x => x.Title, "sales representative")
+    .ToList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Employees"
+// Pass two separate search terms        
+where search(Title, "sales representative")
+```
+</TabItem>
+</Tabs>
+
+In both the C# and RQL tabs above, the outer quotation marks delimit the string literal.  
+These quotation marks are not part of the value processed by `Search()`.  
+RavenDB therefore parses `sales representative` as the two terms `sales` and `representative`.
+
+The search operator combines these terms (`OR` by default),  
+so they do not need to be adjacent or appear in the same order.
+
+</ContentFrame>
+<ContentFrame> 
+    
+**One search term, multiple analyzer tokens: matched as a phrase**    
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+List<Employee> employees = session
+    .Query<Employee>()
+     // Pass one term that the analyzer splits
+    .Search(x => x.Title, "sales%representative")
+    .ToList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Employees"
+// Pass one term that the analyzer splits    
+where search(Title, "sales%representative")
+```
+</TabItem>
+</Tabs>
+
+Because `%` is not whitespace, `Search()` initially parses `sales%representative` as one term.
+`RavenStandardAnalyzer` then splits that term into the tokens `sales` and `representative`.  
+RavenDB searches those analyzer-generated tokens as a **phrase**.
+
+* The `%` character is [not a wildcard](#using-wildcards)
+  and has no special meaning to `Search()`.  
+  It is simply an example of punctuation that `RavenStandardAnalyzer` treats as a token boundary.  
+  Other analyzers can produce different tokens from the same input.
+
+* If the `Search()` value contains other search terms, the search operator combines those terms with the generated phrase.
+  It does not change the required order or adjacency of the tokens within the phrase.
+
+</ContentFrame>   
+<ContentFrame>
+    
+**Explicitly quoted text: matched as a phrase** 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+List<Employee> employees = session
+    .Query<Employee>()
+     // Pass an explicitly quoted phrase
+    .Search(x => x.Title, "\"sales representative\"")
+    .ToList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Employees"
+// Pass an explicitly quoted phrase    
+where search(Title, '"sales representative"')
+```
+</TabItem>
+</Tabs>
+    
+The quotation marks around `sales representative` are part of the value sent to RavenDB.  
+They instruct `Search()` to keep it together as one search term.  
+The analyzer produces the tokens `sales` and `representative`, which RavenDB searches as a **phrase**.    
+
+</ContentFrame>        
+
+The analyzer-generated phrase and the explicitly quoted phrase use the same phrase-matching rules.  
+Both match `Sales Representative`.
+Neither matches `Representative Sales`, where the order is reversed, or `Sales Area Representative`, where the tokens are not adjacent.
+
+<Admonition type="info" title="Analyzer used by a dynamic query">
+
+* A dynamic full-text query uses the default search analyzer configured for the auto-index.  
+  This is `RavenStandardAnalyzer` unless [Indexing.Analyzers.Search.Default](../../../../../server/configuration/indexing-configuration.mdx#indexinganalyzerssearchdefault)
+  is configured with a different analyzer.
+
+* To choose an analyzer for a specific index-field, use a [static index](../../../../../indexes/querying/searching.mdx).
+
+</Admonition>
+    
+---    
+
+### Wildcard terms
+
+Search terms that use the supported `*` wildcard forms are handled as prefix, suffix, or contains queries;  
+they are not converted into phrase queries.
+See [Using wildcards](#using-wildcards).
+
+---
+    
+### When analysis produces no tokens
+
+If the analyzer produces no tokens from a search term - for example, because it removes all of them as
+[stop words](../../../../../indexes/using-analyzers.mdx#analyzers-that-remove-common-stop-words) -  
+RavenDB skips that term.
+
+---
+    
+### Search-engine compatibility
+
+Phrase matching for analyzer-generated tokens is supported by both **Corax** and **Lucene**.
+
+<Admonition type="note" title="">
+    
+#### Existing Corax indexes:    
+
+* Corax indexes store the term-position data required for phrase matching only if they were created or reset in RavenDB 6.0 or later.
+* A Corax index - including an auto-index - created before this support was available retains the legacy behavior, where analyzer-generated tokens are matched independently.    
+  Reset or recreate the index to enable phrase matching.
+    
+</Admonition>
+    
+</Panel>
+
+<Panel heading="Search in multiple fields">    
+
+* You can search for terms in **different fields** by making multiple search calls.
+
+* By default, the logical operator between consecutive search methods is 'OR'.
+
+* This behavior can be modified. See section [Search options](#search-options).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+List<Employee> employees = session
     .Query<Employee>()
      // * Look for documents containing:
      //   'French' in their 'Notes' field OR 'President' in their 'Title' field
@@ -257,12 +408,11 @@ where search(Notes, "University Sales Japanese")
 // * Results will contain Employee documents that have
 //   at least one of the specified fields with the specified terms.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Employee> employees = await asyncSession
+```csharp
+List<Employee> employees = await asyncSession
     .Query<Employee>()
      // * Look for documents containing:
      //   'French' in their 'Notes' field OR 'President' in their 'Title' field
@@ -273,12 +423,11 @@ where search(Notes, "University Sales Japanese")
 // * Results will contain Employee documents that have
 //   at least one of the specified fields with the specified terms.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session.Advanced
+```csharp
+List<Employee> employees = session.Advanced
     .DocumentQuery<Employee>()
      // * Look for documents containing:
      //   'French' in their 'Notes' field OR 'President' in their 'Title' field
@@ -289,34 +438,28 @@ where search(Notes, "University Sales Japanese")
 // * Results will contain Employee documents that have
 //   at least one of the specified fields with the specified terms.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees"
+```sql
+from "Employees"
 where (search(Notes, "French") or search(Title, "President"))
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</Panel>
 
-
-
-## Search in complex object
+<Panel heading="Search in complex object">    
 
 * You can search for terms within a complex object.
 
 * Any nested text field within the object is searchable.
 
-<Admonition type="note" title="">
-
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Company> companies = session
+```csharp
+List<Company> companies = session
     .Query<Company>()
      // * Look for documents that contain:
      //   the term 'USA' OR 'London' in any field within the complex 'Address' object
@@ -325,12 +468,11 @@ where (search(Notes, "French") or search(Title, "President"))
 
 // * Results will contain Company documents that are located either in 'USA' OR in 'London'.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Company> companies = await asyncSession
+```csharp
+List<Company> companies = await asyncSession
     .Query<Company>()
      // * Look for documents that contain:
      //   the term 'USA' OR 'London' in any field within the complex 'Address' object
@@ -339,12 +481,11 @@ where (search(Notes, "French") or search(Title, "President"))
 
 // * Results will contain Company documents that are located either in 'USA' OR in 'London'.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Company> companies = session.Advanced
+```csharp
+List<Company> companies = session.Advanced
     .DocumentQuery<Company>()
      // * Look for documents that contain:
      //   the term 'USA' OR 'London' in any field within the complex 'Address' object
@@ -353,163 +494,150 @@ where (search(Notes, "French") or search(Title, "President"))
 
 // * Results will contain Company documents that are located either in 'USA' OR in 'London'.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Companies"
+```sql
+from "Companies"
 where search(Address, "USA London")
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
+    
+</Panel>
 
-</Admonition>
+<Panel heading="Search operators">  
 
-
-
-## Search operators
-
-* By default, the logical operator between multiple terms within the __same field__ in a search call is __OR__.
+* By default, the logical operator between multiple terms within the **same field** in a search call is **OR**.
 
 * This can be modified using the `@operator` parameter as follows: 
 
-<Admonition type="note" title="">
+<ContentFrame>
 
-__AND__:
+**AND**:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session
+```csharp
+List<Employee> employees = session
     .Query<Employee>()
-     // * Pass \`@operator\` with 'SearchOperator.And'
+     // * Pass `@operator` with 'SearchOperator.And'
     .Search(x => x.Notes, "College German", @operator: SearchOperator.And)
     .ToList();
 
 // * Results will contain Employee documents that have BOTH 'College' AND 'German'
 //   in their 'Notes' field.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Employee> employees = await asyncSession
+```csharp
+List<Employee> employees = await asyncSession
     .Query<Employee>()
-     // * Pass \`@operator\` with 'SearchOperator.And'
+     // * Pass `@operator` with 'SearchOperator.And'
     .Search(x => x.Notes, "College German", @operator: SearchOperator.And)
     .ToListAsync();
 
 // * Results will contain Employee documents that have BOTH 'College' AND 'German'
 //   in their 'Notes' field.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session.Advanced
+```csharp
+List<Employee> employees = session.Advanced
     .DocumentQuery<Employee>()
-     // * Pass \`@operator\` with 'SearchOperator.And'
+     // * Pass `@operator` with 'SearchOperator.And'
     .Search(x => x.Notes, "College German", @operator: SearchOperator.And)
     .ToList();
 
 // * Results will contain Employee documents that have BOTH 'College' AND 'German'
 //   in their 'Notes' field.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees"
+```sql
+from "Employees"
 where search(Notes, "College German", and)
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>    
+<ContentFrame>
 
-<Admonition type="note" title="">
-
-__OR__:
+**OR**:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session
+```csharp
+List<Employee> employees = session
     .Query<Employee>()
-     // * Pass \`@operator\` with 'SearchOperator.Or' (or don't pass this param at all)
+     // * Pass `@operator` with 'SearchOperator.Or' (or don't pass this param at all)
     .Search(x => x.Notes, "College German", @operator: SearchOperator.Or)
     .ToList();
 
 // * Results will contain Employee documents that have EITHER 'College' OR 'German'
 //   in their 'Notes' field.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Employee> employees = await asyncSession
+```csharp
+List<Employee> employees = await asyncSession
     .Query<Employee>()
-     // * Pass \`@operator\` with 'SearchOperator.Or' (or don't pass this param at all)
+     // * Pass `@operator` with 'SearchOperator.Or' (or don't pass this param at all)
     .Search(x => x.Notes, "College German", @operator: SearchOperator.Or)
     .ToListAsync();
 
 // * Results will contain Employee documents that have EITHER 'College' OR 'German'
 //   in their 'Notes' field.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session.Advanced
+```csharp
+List<Employee> employees = session.Advanced
     .DocumentQuery<Employee>()
-     // * Pass \`@operator\` with 'SearchOperator.Or' (or don't pass this param at all)
+     // * Pass `@operator` with 'SearchOperator.Or' (or don't pass this param at all)
     .Search(x => x.Notes, "College German", @operator: SearchOperator.Or)
     .ToList();
 
 // * Results will contain Employee documents that have EITHER 'College' OR 'German'
 //   in their 'Notes' field.
 // * Search is case-insensitive.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees"
+```sql
+from "Employees"
 where search(Notes, "College German")
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>
 
+</Panel>
 
-
-## Search options
+<Panel heading="Search options">
 
 * Search options allow to:  
     * Negate a search criteria.  
-    * Specify the logical operator used between __consecutive search calls__.  
+    * Specify the logical operator used between **consecutive search calls**.  
 
 * When using `Query`: use the `options` parameter.  
   When using `DocumentQuery`: follow the specific syntax in each example below.  
+ 
+<ContentFrame>
 
-<Admonition type="note" title="">
-
-__Negate search__:
+**Negate search**:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Company> companies = session
+```csharp
+List<Company> companies = session
     .Query<Company>()
      // Pass 'options' with 'SearchOptions.Not'
     .Search(x => x.Address, "USA", options: SearchOptions.Not)
@@ -517,12 +645,11 @@ __Negate search__:
 
 // * Results will contain Company documents are NOT located in 'USA'
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Company> companies = await asyncSession
+```csharp
+List<Company> companies = await asyncSession
     .Query<Company>()
      // Pass 'options' with 'SearchOptions.Not'
     .Search(x => x.Address, "USA", options: SearchOptions.Not)
@@ -530,12 +657,11 @@ __Negate search__:
 
 // * Results will contain Company documents are NOT located in 'USA'
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Company> companies = session.Advanced
+```csharp
+List<Company> companies = session.Advanced
     .DocumentQuery<Company>()
     .OpenSubclause()
      // Call 'Not' to negate the next search call
@@ -546,30 +672,27 @@ __Negate search__:
 
 // * Results will contain Company documents are NOT located in 'USA'
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Companies"
+```sql
+from "Companies"
 where (exists(Address) and not search(Address, "USA"))
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>    
+<ContentFrame>
 
-<Admonition type="note" title="">
+**Default behavior between search calls**:
 
-__Default behavior between search calls__:
-
-* By default, the logical operator between consecutive search methods is __OR__.
+* By default, the logical operator between consecutive search methods is **OR**.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Company> companies = session
+```csharp
+List<Company> companies = session
     .Query<Company>()
     .Where(x => x.Contact.Title == "Owner")
      // Operator AND will be used with previous 'Where' predicate
@@ -584,12 +707,11 @@ __Default behavior between search calls__:
 //   (are located in 'France' OR have 'Markets' in their 'Name' field)
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Company> companies = await asyncSession
+```csharp
+List<Company> companies = await asyncSession
     .Query<Company>()
     .Where(x => x.Contact.Title == "Owner")
      // Operator AND will be used with previous 'Where' predicate
@@ -604,12 +726,11 @@ __Default behavior between search calls__:
 //   (are located in 'France' OR have 'Markets' in their 'Name' field)
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Company> companies = session.Advanced
+```csharp
+List<Company> companies = session.Advanced
     .DocumentQuery<Company>()
     .WhereEquals(x => x.Contact.Title, "Owner")
      // Operator AND will be used with previous 'Where' predicate
@@ -628,29 +749,26 @@ __Default behavior between search calls__:
 //   (are located in 'France' OR have 'Markets' in their 'Name' field)
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Companies" 
+```sql
+from "Companies" 
 where Contact.Title == "Owner" and
 (search(Address.Country, "France") or search(Name, "Markets"))
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>    
+<ContentFrame>
 
-<Admonition type="note" title="">
-
-__AND search calls__:
+**AND search calls**:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session
+```csharp
+List<Employee> employees = session
     .Query<Employee>()
     .Search(x => x.Notes, "French")
      // * Pass 'options' with 'SearchOptions.And' to the second 'Search'
@@ -664,12 +782,11 @@ __AND search calls__:
 //   ('Manager' in their 'Title' field)
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Employee> employees = await asyncSession
+```csharp
+List<Employee> employees = await asyncSession
     .Query<Employee>()
     .Search(x => x.Notes, "French")
      // * Pass 'options' with 'SearchOptions.And' to this second 'Search'
@@ -683,12 +800,11 @@ __AND search calls__:
 //   ('Manager' in their 'Title' field)
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session.Advanced
+```csharp
+List<Employee> employees = session.Advanced
     .DocumentQuery<Employee>()
     .Search(x => x.Notes, "French")
      // Call 'AndAlso' so that operator AND will be used with previous 'Search' call
@@ -702,28 +818,25 @@ __AND search calls__:
 //   ('Manager' in their 'Title' field)
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees" 
+```sql
+from "Employees" 
 where search(Notes, "French") and search(Title, "Manager")
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>    
+<ContentFrame>
 
-<Admonition type="note" title="">
-
-__Use options as bit flags__:
+**Use options as bit flags**:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session
+```csharp
+List<Employee> employees = session
     .Query<Employee>()
     .Search(x => x.Notes, "French")
      // Pass logical operators as flags in the 'options' parameter
@@ -736,12 +849,11 @@ __Use options as bit flags__:
 //   (do NOT have 'Manager' in their 'Title' field)
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Employee> employees = await asyncSession
+```csharp
+List<Employee> employees = await asyncSession
     .Query<Employee>()
     .Search(x => x.Notes, "French")
      // Pass logical operators as flags in the 'options' parameter
@@ -754,12 +866,11 @@ __Use options as bit flags__:
 //   (do NOT have 'Manager' in their 'Title' field)
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session.Advanced
+```csharp
+List<Employee> employees = session.Advanced
     .DocumentQuery<Employee>()
     .Search(x => x.Notes, "French")
      // Call 'AndAlso' so that operator AND will be used with previous 'Search' call
@@ -777,24 +888,22 @@ __Use options as bit flags__:
 //   (do NOT have 'Manager' in their 'Title' field)
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees"
+```sql
+from "Employees"
 where search(Notes, "French") and
 (exists(Title) and not search(Title, "Manager"))
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</ContentFrame>
 
+</Panel>
 
-
-## Using wildcards
+<Panel heading="Using wildcards">
 
 * Wildcards can be used to replace:
   * Prefix of a searched term
@@ -814,12 +923,10 @@ where search(Notes, "French") and
     This requires the target index to use the Lucene search engine.
     Learn more in [Filter with Lucene syntax](../../../../../querying/filtering-query-results/filter-with-lucene-syntax.mdx#wildcards).
 
-<Admonition type="note" title="">
-
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session
+```csharp
+List<Employee> employees = session
     .Query<Employee>()
      // Use '*' to replace one or more characters
     .Search(x => x.Notes, "art*")
@@ -833,12 +940,11 @@ where search(Notes, "French") and
 // (terms that have the text 'mark' in the middle) 
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Employee> employees = await asyncSession
+```csharp
+List<Employee> employees = await asyncSession
     .Query<Employee>()
      // Use '*' to replace one or more characters
     .Search(x => x.Notes, "art*")
@@ -852,12 +958,11 @@ where search(Notes, "French") and
 // (terms that have the text 'mark' in the middle) 
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session.Advanced
+```csharp
+List<Employee> employees = session.Advanced
     .DocumentQuery<Employee>()
      // Use '*' to replace one or more characters
     .Search(x => x.Notes, "art*")
@@ -871,29 +976,25 @@ where search(Notes, "French") and
 // (terms that have the text 'mark' in the middle) 
 //
 // * Search is case-insensitive
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees" where
+```sql
+from "Employees" where
 search(Notes, "art*") or
 search(Notes, "*logy") or
 search(Notes, "*mark*")
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</Panel>
 
-
-
-## Syntax
+<Panel heading="Syntax">
 
 <TabItem value="syntax" label="syntax">
-<CodeBlock language="csharp">
-{`// Query overloads:
+```csharp
+// Query overloads:
 // ================
 
 IRavenQueryable<T> Search<T>(
@@ -922,15 +1023,16 @@ IDocumentQueryBase<T> Search<TValue>(
     Expression<Func<T, TValue>> propertySelector,
     string searchTerms,
     SearchOperator @operator);
-`}
-</CodeBlock>
+```
 </TabItem>
 
 | Parameter         | Type                           | Description                                                                                                                                                              |
 |-------------------|--------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __fieldSelector__ | `Expression<Func<TResult>>`    | Points to the field in which you search.                                                                                                                                 |
-| __fieldName__     | string                         | Name of the field in which you search.                                                                                                                                   |
-| __searchTerms__   | string / `IEnumerable<string>` | A string containing the term or terms (separated by spaces) to search for. <br/> Or, can pass an array (or other `IEnumerable`) with terms to search for.                  |
-| __boost__         | decimal                        | The boost value. <br/> Learn more in [boost search results](../../../../../client-api/session/querying/text-search/boost-search-results.mdx). <br/> <strong>Default</strong> is `1.0` |
-| __options__       | `SearchOptions` enum           | Logical operator to use between consecutive Search methods. <br/> Can be `Or`, `And`, `Not`, or `Guess`. <br/> <strong>Default</strong> is `SearchOptions.Guess`         |
-| __@operator__     | `SearchOperator` enum          | Logical operator to use between multiple terms in the same Search method. <br/> Can be `Or` or `And`. <br/> <strong>Default</strong> is `SearchOperation.Or`             |
+| **fieldSelector** | `Expression<Func<TResult>>`    | Points to the field in which you search.                                                                                                                                 |
+| **fieldName**     | string                         | Name of the field in which you search.                                                                                                                                   |
+| **searchTerms**   | string / `IEnumerable<string>` | A string containing the term or terms (separated by spaces) to search for. <br/> Or, can pass an array (or other `IEnumerable`) with terms to search for.                  |
+| **boost**         | decimal                        | The boost value. <br/> Learn more in [boost search results](../../../../../client-api/session/querying/text-search/boost-search-results.mdx). <br/> <strong>Default</strong> is `1.0` |
+| **options**       | `SearchOptions` enum           | Logical operator to use between consecutive Search methods. <br/> Can be `Or`, `And`, `Not`, or `Guess`. <br/> <strong>Default</strong> is `SearchOptions.Guess`         |
+| **@operator**     | `SearchOperator` enum          | Logical operator to use between multiple terms in the same Search method. <br/> Can be `Or` or `And`. <br/> <strong>Default</strong> is `SearchOperator.Or`             |
+
+</Panel>

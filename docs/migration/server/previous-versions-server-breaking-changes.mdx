@@ -37,6 +37,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [SQL ETL](../../migration/server/previous-versions-server-breaking-changes.mdx#sql-etl)  
       * [DateOnly & TimeOnly](../../migration/server/previous-versions-server-breaking-changes.mdx#dateonly--timeonly)  
       * [Full-text search with wildcards](../../migration/server/previous-versions-server-breaking-changes.mdx#full-text-search-with-wildcards)  
+      * [Full-text search when the analyzer splits a search term](../../migration/server/previous-versions-server-breaking-changes.mdx#full-text-search-when-the-analyzer-splits-a-search-term)  
 
 </Admonition>
 
@@ -44,49 +45,51 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <ContentFrame>
 
-## RavenDB incorporates NLog as its logging system
-RavenDB's logging system has changed; the server now incorporates the 
-NLog logging framework and writes all log data through it.  
-One of the changes that NLog brings to RavenDB is the richer set 
-of logging levels, visible right away through Studio's [admin-logs view](../../studio/server/debug/admin-logs.mdx).  
-Read more about Nlog [in the dedicated article](../../monitoring/logging/overview.mdx).
-If you migrate to RavenDB `7.x` from an earlier version, please 
-read the section related to NLog in the [migration page](../../migration/server/data-migration.mdx#migration-and-nlog).  
+### RavenDB incorporates NLog as its logging system
+    
+RavenDB's logging system has changed; 
+the server now incorporates the NLog logging framework and writes all log data through it.
+    
+One of the changes that NLog brings to RavenDB is the richer set of logging levels,  
+visible right away through Studio's [admin-logs view](../../studio/server/debug/admin-logs.mdx).
+    
+Read more about Nlog [Monitoring > Logging](../../monitoring/logging/overview.mdx).
+If you migrate to RavenDB `7.x` from an earlier version,  
+please read the section related to NLog in the [migration page](../../migration/server/data-migration.mdx#migration-and-nlog).
+    
 </ContentFrame>
 
 <ContentFrame>
 
-## Removed obsolete properties
+### Removed obsolete properties
+    
 The following properties are no longer in use, and have been removed from RavenDB `7.0`.  
 
 * `ServerOptions`'s `AcceptEula` property is no longer used,  
   Please use `Licensing.EulaAccepted` instead.  
 
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`// Removed 
-c bool AcceptEula
-`}
-</CodeBlock>
-</TabItem>
+    <TabItem value="csharp" label="csharp">
+    ```csharp
+    // Removed 
+    public bool AcceptEula
+    ```
+    </TabItem>
 
-* The `MemoryInfoResult` struct no longer includes these classes:  
-   - `MemoryUsageIntervals`  
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`// Removed 
-c sealed class MemoryUsageIntervals  
-`}
-</CodeBlock>
-</TabItem>
-   - `MemoryUsageLowHigh`  
-<TabItem value="csharp" label="csharp">
-<CodeBlock language="csharp">
-{`// Removed 
-c sealed class MemoryUsageLowHigh  
-`}
-</CodeBlock>
-</TabItem>
+* The `MemoryInfoResult` struct no longer includes these classes:
+    
+    <TabItem value="csharp" label="csharp">
+    ```csharp
+    // Removed 
+    public class MemoryUsageIntervals  
+    ```
+    </TabItem> 
+    <TabItem value="csharp" label="csharp">
+    ```csharp
+    // Removed 
+    public class MemoryUsageLowHigh  
+    ```
+    </TabItem>
+    
 </ContentFrame>
 
 </Panel>
@@ -95,7 +98,8 @@ c sealed class MemoryUsageLowHigh
 
 <ContentFrame>
 
-## MSSQL connection string requires an Encrypt property
+### MSSQL connection string requires an Encrypt property
+    
 To establish a connection with an MSSQL server via ETL, RavenDB is required 
 by the `Microsoft.Data.SqlClient` package it utilizes (which replaces the 
 deprecated `System.Data.SqlClient` package we've been using in previous versions) 
@@ -121,11 +125,12 @@ Provide the connection string using code
 or via Studio:  
 
 ![SQL ETL task](./assets/breaking-changes_SQL-ETL-task.png)
+    
 </ContentFrame>
-
 <ContentFrame>
 
-## Corax handling of complex JSON objects in static indexes is configurable
+### Corax handling of complex JSON objects in static indexes is configurable
+    
 The behavior of RavenDB's [Corax](../../indexes/search-engine/corax.mdx) search engine while 
 handling [complex JSON objects](../../indexes/search-engine/corax.mdx#handling-of-complex-json-objects) 
 in **static indexes** is now configurable using the `Indexing.Corax.Static.ComplexFieldIndexingBehavior` 
@@ -152,11 +157,12 @@ remains unchanged).
   of the complex field.  
 
 </Admonition>
+    
 </ContentFrame>
-
 <ContentFrame>
 
-## Customizable identifier parts separator
+### Customizable identifier parts separator
+    
 Picking an [identifier parts separator](../../server/kb/document-identifier-generation.mdx#id-generation-by-server) 
 allows you to choose which character would be placed as a separator between ID parts 
 when new documents are given their IDs.  
@@ -177,6 +183,7 @@ After making this change, creating a new document with the identity prefix `|`, 
 will apply your new separator.  
 
 ![New separator](./assets/breaking-changes_new-separator.png)
+    
 </ContentFrame>
 
 </Panel>
@@ -185,55 +192,63 @@ will apply your new separator.
 
 <ContentFrame>
 
-## License keys
+### License keys
+    
 License keys for versions lower than `6.0` are **not supported** by RavenDB `6.0`.  
 If you own a valid license key for RavenDB `5.x` or lower, please upgrade it using 
 the quick online interface described [here](../../licensing/replace-license.mdx#upgrade-a-license-key-for-ravendb-6x).
+    
 </ContentFrame>
-
 <ContentFrame>
 
-## RavenDB for Docker
+### RavenDB for Docker
+    
 RavenDB now applies an improved security model, and uses a **dedicated user** rather than `root`.  
-Read more about this change [here](../../migration/server/docker.mdx).  
+Read more about this change [here](../../migration/server/docker.mdx).
+    
 </ContentFrame>
-
 <ContentFrame>
 
-## Unsupported sharding features
+### Unsupported sharding features
+    
 RavenDB `6.0` introduces [sharding](../../sharding/overview.mdx). 
-Server and client features that are currently unavailable in a sharded database (but remain available in regular databases) are listed [here](../../sharding/unsupported.mdx).  
+Server and client features that are currently unavailable in a sharded database (but remain available in regular databases) are listed [here](../../sharding/unsupported.mdx).
+    
 </ContentFrame>
-
 <ContentFrame>
 
-## Graph queries
+### Graph queries
+    
 [Graph Queries](https://ravendb.net/docs/article-page/5.4/csharp/indexes/querying/graph/graph-queries-overview) support, 
-available in RavenDB versions `4.2` to `5.x`, has been removed from the RavenDB `6.x` server and client API.  
+available in RavenDB versions `4.2` to `5.x`, has been removed from the RavenDB `6.x` server and client API.
+    
 </ContentFrame>
-
 <ContentFrame>
 
-## SQL ETL
+### SQL ETL
+    
 SQL ETL no longer tolerates errors on `Load`, load errors are thrown immediately.  
 This is done to distinguish partial load errors that are used in SQL ETL from, for example, commit errors that may happen during load.
 (Prior to this change, the ETL would just advance instead of retrying.)
+    
 </ContentFrame>
-
 <ContentFrame>
 
-## DateOnly & TimeOnly
-[DateOnly and TimeOnly](../../client-api/how-to/using-timeonly-and-dateonly.mdx) types are now supported for every new auto index.  
+### DateOnly & TimeOnly
+    
+[DateOnly and TimeOnly](../../client-api/how-to/using-timeonly-and-dateonly.mdx) types are now supported for every new auto index.
+    
 </ContentFrame>
-
 <ContentFrame>
 
-## Full-text search with wildcards
+### Full-text search with wildcards
+    
 Starting with `6.0` we have changed how the [Search method](../../indexes/querying/searching.mdx) handles wildcards when they are included in search terms:
 
 <Admonition type="note" title="">
 
-##### Behavior for versions lower than `6.0`:  
+##### Behavior for versions lower than `6.0`:
+    
 After the analyzer stripped wildcards from the search term, 
 RavenDB would attempt to restore the `*` to their original positions before sending the term to the search engine (Lucene or Corax). 
 
@@ -242,6 +257,7 @@ RavenDB would attempt to restore the `*` to their original positions before send
 <Admonition type="note" title="">
 
 ##### Behavior for `6.0` and up:
+    
 Once wildcards are stripped by the analyzer, we no longer add them back before sending the term to the search engine.
 The search terms sent to the search engine are solely based on the transformations applied by the analyzer used in the index.
 
@@ -255,11 +271,58 @@ Note the different behavior in the following cases:
   The queried terms in the _Search_ method remain untouched as produced by the exact analyzer. 
 
 <Admonition type="info" title="">
+    
 When using **Corax** as the search engine,  
 this behavior will only apply to indexes that are newly created or have been reset.
+    
 </Admonition>
 
 See detailed examples in: [Searching with wildcards](../../indexes/querying/searching.mdx#searching-with-wildcards).
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Full-text search when the analyzer splits a search term
+
+Starting with RavenDB `6.0.104`, **Corax** changed how it handles a non-wildcard search term
+that the [query-time analyzer](../../indexes/using-analyzers.mdx#analyzers-at-query-time) splits into multiple tokens.
+For example, the default search analyzer splits `sales%representative` into the tokens `sales` and `representative`.
+
+<Admonition type="note" title="">
+
+##### Corax behavior for versions lower than `6.0.104`:
+
+Corax matched tokens produced from one search term as independent terms.  
+The search operator combined those tokens (`OR` by default):
+
+* With `OR`, a document matched if the searched field contained at least one of the tokens.
+* With `AND`, the field had to contain all the tokens.
+
+The tokens could occur anywhere in the field and in any order.
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+##### Corax behavior for `6.0.104` and later:
+
+Corax matches tokens produced from one search term as a **phrase**.
+A document matches only when the tokens in the searched field are adjacent and occur in the same order as the analyzer-generated query tokens.
+
+This aligns Corax with the existing behavior of the Lucene search engine.
+
+<Admonition type="info" title="">
+
+After upgrading to RavenDB `6.0.104` or later, this behavior applies without a reset to Corax indexes
+that were created or reset in RavenDB `6.0.101` or later.
+Older Corax indexes retain the legacy behavior until they are reset or recreated.
+
+</Admonition>
+
+See [Search with analyzer-generated phrases](../../client-api/session/querying/text-search/full-text-search.mdx#search-with-analyzer-generated-phrases)
+for detailed examples.
 
 </Admonition>
 

@@ -1,7 +1,8 @@
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -19,41 +20,42 @@ import CodeBlock from '@theme/CodeBlock';
       Learn more in [Setting analyzer for index-field](../../../indexes/using-analyzers.mdx#setting-analyzer-for-index-field).    
     
 * In this article:
-  * [Indexing single field for FTS](../../../indexes/querying/searching.mdx#indexing-single-field-for-fts)
-  * [Indexing multiple fields for FTS](../../../indexes/querying/searching.mdx#indexing-multiple-fields-for-fts)
-  * [Indexing all fields for FTS (using AsJson)](../../../indexes/querying/searching.mdx#indexing-all-fields-for-fts-using-asjson)
-  * [Indexing dynamic fields for FTS](../../../indexes/querying/searching.mdx#indexing-dynamic-fields-for-fts)
-  * [Boosting search results](../../../indexes/querying/searching.mdx#boosting-search-results)
-  * [Searching with wildcards](../../../indexes/querying/searching.mdx#searching-with-wildcards)
-      * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](../../../indexes/querying/searching.mdx#when-usingoror)
-      * [When using a custom analyzer](../../../indexes/querying/searching.mdx#when-using-a-custom-analyzer)
-      * [When using the Exact analyzer](../../../indexes/querying/searching.mdx#when-using-the-exact-analyzer)
+  * [Indexing single field for FTS](#indexing-single-field-for-fts)
+  * [Indexing multiple fields for FTS](#indexing-multiple-fields-for-fts)
+  * [Indexing all fields for FTS (using AsJson)](#indexing-all-fields-for-fts-using-asjson)
+  * [Indexing dynamic fields for FTS](#indexing-dynamic-fields-for-fts)
+  * [Boosting search results](#boosting-search-results)
+  * [Analyzer-generated phrases in static-index searches](#analyzer-generated-phrases-in-static-index-searches)
+  * [Searching with wildcards](#searching-with-wildcards)
+      * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](#when-usingoror)
+      * [When using a custom analyzer](#when-using-a-custom-analyzer)
+      * [When using the Exact analyzer](#when-using-the-exact-analyzer)
 
 </Admonition>
 
-## Indexing single field for FTS
+<Panel heading="Indexing single field for FTS">
 
 #### The index:
 
-<TabItem value="index_1" label="index_1">
-<CodeBlock language="csharp">
-{`public class Employees_ByNotes :
+<TabItem>
+```csharp
+public class Employees_ByNotes :
     AbstractIndexCreationTask<Employee, Employees_ByNotes.IndexEntry>
-\{
+{
     // The IndexEntry class defines the index-fields
     public class IndexEntry
-    \{
-        public string EmployeeNotes \{ get; set; \}
-    \}
+    {
+        public string EmployeeNotes { get; set; }
+    }
 
     public Employees_ByNotes()
-    \{
+    {
         // The 'Map' function defines the content of the index-fields
         Map = employees => from employee in employees
             select new IndexEntry()
-            \{
+            {
                 EmployeeNotes = employee.Notes[0]
-            \};
+            };
 
         // Configure the index-field for FTS:
         // Set 'FieldIndexing.Search' on index-field 'EmployeeNotes'
@@ -65,11 +67,13 @@ import CodeBlock from '@theme/CodeBlock';
 
         // Note:
         // If no analyzer is set then the default 'RavenStandardAnalyzer' is used.
-    \}
-\}
-`}
-</CodeBlock>
+    }
+}
+```
 </TabItem>
+    
+---    
+    
 #### Query with Search:
 
 * Use `Search` to make a full-text search when querying the index.  
@@ -79,8 +83,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session
+```csharp
+List<Employee> employees = session
      // Query the index
     .Query<Employees_ByNotes.IndexEntry, Employees_ByNotes>()
      // Call 'Search':
@@ -93,12 +97,11 @@ import CodeBlock from '@theme/CodeBlock';
 //
 // * Search is case-sensitive since field was indexed using the 'WhitespaceAnalyzer'
 //   which preserves casing.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Employee> employees = await asyncSession
+```csharp
+List<Employee> employees = await asyncSession
      // Query the index
     .Query<Employees_ByNotes.IndexEntry, Employees_ByNotes>()
      // Call 'Search':
@@ -111,12 +114,11 @@ import CodeBlock from '@theme/CodeBlock';
 // 
 // * Search is case-sensitive since field was indexed using the 'WhitespaceAnalyzer'
 //   which preserves casing.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session.Advanced
+```csharp
+List<Employee> employees = session.Advanced
      // Query the index
     .DocumentQuery<Employees_ByNotes.IndexEntry, Employees_ByNotes>()
      // Call 'Search':
@@ -129,49 +131,47 @@ import CodeBlock from '@theme/CodeBlock';
 // 
 // * Search is case-sensitive since field was indexed using the 'WhitespaceAnalyzer'
 //   which preserves casing.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from index "Employees/ByNotes"
+```sql
+from index "Employees/ByNotes"
 where search(EmployeeNotes, "French")
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Indexing multiple fields for FTS
+<Panel heading="Indexing multiple fields for FTS">
 
 #### The index:
 
-<TabItem value="index_2" label="index_2">
-<CodeBlock language="csharp">
-{`public class Employees_ByEmployeeData : 
+<TabItem>
+```csharp
+public class Employees_ByEmployeeData : 
     AbstractIndexCreationTask<Employee, Employees_ByEmployeeData.IndexEntry>
-\{
+{
     public class IndexEntry
-    \{
-        public object[] EmployeeData \{ get; set; \}
-    \}
+    {
+        public object[] EmployeeData { get; set; }
+    }
 
     public Employees_ByEmployeeData()
-    \{
+    {
         Map = employees => from employee in employees
             select new IndexEntry()
-            \{
+            {
                 EmployeeData = new object[]
-                \{
+                {
                     // Multiple document-fields can be indexed
                     // into the single index-field 'EmployeeData' 
                     employee.FirstName,
                     employee.LastName,
                     employee.Title,
                     employee.Notes
-                \}
-            \};
+                }
+            };
 
         // Configure the index-field for FTS:
         // Set 'FieldIndexing.Search' on index-field 'EmployeeData'
@@ -179,17 +179,19 @@ where search(EmployeeNotes, "French")
         
         // Note:
         // Since no analyzer is set, the default 'RavenStandardAnalyzer' is used.
-    \}
-\}
-`}
-</CodeBlock>
+    }
+}
+```
 </TabItem>
+    
+---    
+    
 #### Sample query:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session
+```csharp
+List<Employee> employees = session
      // Query the static-index
     .Query<Employees_ByEmployeeData.IndexEntry, Employees_ByEmployeeData>()
      // A logical OR is applied between the following two Search calls:
@@ -205,12 +207,11 @@ where search(EmployeeNotes, "French")
 //   ('French' AND 'Spanish' in any of the 4 document-fields that were indexed)
 //
 // * Search is case-insensitive since the default analyzer is used
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Employee> employees = await asyncSession
+```csharp
+List<Employee> employees = await asyncSession
      // Query the static-index
     .Query<Employees_ByEmployeeData.IndexEntry, Employees_ByEmployeeData>()
      // A logical OR is applied between the following two Search calls:
@@ -226,12 +227,11 @@ where search(EmployeeNotes, "French")
 //   ('French' AND 'Spanish' in any of the 4 document-fields that were indexed)
 //
 // * Search is case-insensitive since the default analyzer is used
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session.Advanced
+```csharp
+List<Employee> employees = session.Advanced
      // Query the static-index
     .DocumentQuery<Employees_ByEmployeeData.IndexEntry, Employees_ByEmployeeData>()
     .OpenSubclause()
@@ -249,21 +249,19 @@ where search(EmployeeNotes, "French")
 //   ('French' AND 'Spanish' in any of the 4 document-fields that were indexed)
 //                                                                                                                                                                                                                                                                                                                  
 // * Search is case-insensitive since the default analyzer is used
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from index "Employees/ByEmployeeData"
+```sql
+from index "Employees/ByEmployeeData"
 where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish", and))
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Indexing all fields for FTS (using AsJson)
+<Panel heading="Indexing all fields for FTS (using AsJson)">
 
 * To search across ALL fields in a document without defining each one explicitly,  
   use the `AsJson` method in the _Map_ function to extract all property values and index them in a single searchable field.
@@ -276,17 +274,20 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
 * <Admonition type="info" title="">
   This indexing method is supported only when using **Lucene** as the indexing engine.
   </Admonition>
+    
+---    
+    
 #### The index:
 
-<TabItem value="index_6" label="index_6">
-<CodeBlock language="csharp">
-{`public class Products_ByAllValues : 
+<TabItem>
+```csharp
+public class Products_ByAllValues : 
     AbstractIndexCreationTask<Product, Products_ByAllValues.IndexEntry>
-\{
+{
     public class IndexEntry
-    \{
+    {
         // This index field will contain all values from all properties in the document
-        public string AllValues \{ get; set; \}
+        public string AllValues { get; set; }
                 
         // Note:
         // RavenDB seamlessly supports multi-value indexing on this field.
@@ -294,17 +295,17 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
         // it can accept a collection of values, as defined in the Map function.
         // The engine treats the field as if it contains multiple strings
         // and indexes each one individually.
-    \}
+    }
 
     public Products_ByAllValues()
-    \{
+    {
         Map = products => from product in products
             select new
-            \{
+            {
                 // Use the 'AsJson' method to convert the document into a JSON-like structure
                 // and call 'Select' to extract only the values of each property
                 AllValues = AsJson(product).Select(x => x.Value)
-            \};
+            };
 
         // Configure the index-field for FTS:
         // Set 'FieldIndexing.Search' on index-field 'AllValues'
@@ -315,17 +316,19 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
         
         // Set the search engine type to Lucene:
         SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Lucene;
-    \}
-\}
-`}
-</CodeBlock>
+    }
+}
+```
 </TabItem>
+    
+---    
+    
 #### Sample query:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Product> products = session
+```csharp
+List<Product> products = session
     .Query<Products_ByAllValues.IndexEntry,
         Products_ByAllValues>()
     .Search(x => x.AllValues, "tofu")
@@ -336,12 +339,11 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
 //   in ANY of their fields.
 //
 // * Search is case-insensitive since the default analyzer is used.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Product> products = await asyncSession
+```csharp
+List<Product> products = await asyncSession
     .Query<Products_ByAllValues.IndexEntry,
         Products_ByAllValues>()
     .Search(x => x.AllValues, "tofu")
@@ -352,12 +354,11 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
 //   in ANY of their fields.
 //
 // * Search is case-insensitive since the default analyzer is used.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Product> products = session.Advanced
+```csharp
+List<Product> products = session.Advanced
     .DocumentQuery<Products_ByAllValues.IndexEntry,
         Products_ByAllValues>()
     .Search(x => x.AllValues, "tofu")
@@ -368,19 +369,19 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
 //   in ANY of their fields.
 //
 // * Search is case-insensitive since the default analyzer is used.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from index "Products/ByAllValues"
+```sql
+from index "Products/ByAllValues"
 where search(AllValues, "tofu")
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-## Indexing dynamic fields for FTS
+</Panel>
+
+<Panel heading="Indexing dynamic fields for FTS">
 
 * [Dynamic index fields](../../../indexes/using-dynamic-fields.mdx) are created at indexing time, with names and values derived from document content,  
   rather than being predefined as fixed index fields in the index definition.  
@@ -389,7 +390,9 @@ where search(AllValues, "tofu")
 * Dynamic index fields can be configured for full-text search just like regular index fields.  
   Learn more in [Indexing dynamic fields for full-text search](../../../indexes/using-dynamic-fields.mdx#indexing-dynamic-fields-for-full-text-search).
 
-## Boosting search results
+</Panel>
+
+<Panel heading="Boosting search results">
 
 * In order to prioritize results, you can provide a boost value to the searched terms.  
   This can be applied by either of the following:
@@ -400,18 +403,94 @@ where search(AllValues, "tofu")
   * Add a boost value to the queried terms **at query time**.  
     Refer to article [Boost search results](../../../client-api/session/querying/text-search/boost-search-results.mdx).
 
+</Panel>
 
+<Panel heading="Analyzer-generated phrases in static-index searches">
 
-## Searching with wildcards
+* The rules for parsing `Search()` input and matching multiple tokens produced from one search term are described in
+  [Search with analyzer-generated phrases](../../../client-api/session/querying/text-search/full-text-search.mdx#search-with-analyzer-generated-phrases).
+
+* The phrase-matching behavior is the same for dynamic and static-index queries and applies to both Corax and Lucene.
+
+* The difference for a static index is that you can select the analyzer used for each searchable index-field.
+  The selected analyzer determines whether one search term remains one token or produces multiple tokens that RavenDB searches as a phrase.
+
+---
+
+### How the index-field analyzer affects the query
+
+The analyzer configured for an index-field normally processes both the field content at indexing time and the search terms at query time.
+
+For example, selected built-in analyzers process the same search term as follows:
+
+| Analyzer configured for the index-field                                                                   | Query-time tokens from `sales%representative` | Query behavior                                                                     |
+|-----------------------------------------------------------------------------------------------------------|-----------------------------------------------|------------------------------------------------------------------------------------|
+| [RavenStandardAnalyzer](../../../indexes/using-analyzers.mdx#using-the-default-search-analyzer)           | `sales`, `representative`                     | Searches the two tokens as a **phrase**                                            |
+| [StandardAnalyzer](../../../indexes/using-analyzers.mdx#analyzers-that-remove-common-stop-words)          | `sales`, `representative`                     | Searches the two tokens as a **phrase**                                            |
+| [WhitespaceAnalyzer](../../../indexes/using-analyzers.mdx#analyzers-that-do-not-remove-common-stop-words) | `sales%representative`                        | Searches for one case-sensitive token;<br/>no analyzer-generated phrase is created |
+
+<Admonition type="info" title="">
+    
+#### Query-time analyzer exceptions:    
+
+* When an index-field uses [NGramAnalyzer](../../../indexes/using-analyzers.mdx#analyzers-that-tokenize-according-to-the-defined-number-of-characters), RavenDB uses the default search analyzer instead of `NGramAnalyzer`
+  to process full-text search terms at query time.
+
+* Search terms that use wildcards follow the analyzer rules described in
+  [Searching with wildcards](#searching-with-wildcards).
+
+Learn more in [Analyzers at query time](../../../indexes/using-analyzers.mdx#analyzers-at-query-time).
+
+</Admonition>
+
+---
+
+<ContentFrame>
+    
+### Example
+
+The `Employees_ByEmployeeData` index defined in
+[Indexing multiple fields for FTS](#indexing-multiple-fields-for-fts)
+does not assign an analyzer to `EmployeeData`, so the field uses the default `RavenStandardAnalyzer`.
+
+For the following query, `RavenStandardAnalyzer` produces the tokens `sales` and `representative`.  
+RavenDB applies the phrase-matching rules described in the linked [full-text search section](../../../client-api/session/querying/text-search/full-text-search.mdx#how-the-input-form-affects-matching).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+List<Employee> employees = session
+    .Query<Employees_ByEmployeeData.IndexEntry, Employees_ByEmployeeData>()
+    .Search(x => x.EmployeeData, "sales%representative")
+    .OfType<Employee>()
+    .ToList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Employees/ByEmployeeData"
+where search(EmployeeData, "sales%representative")
+```
+</TabItem>
+</Tabs>
+
+For the behavior of existing Corax indexes that predate phrase-query support, see
+[Search-engine compatibility](../../../client-api/session/querying/text-search/full-text-search.mdx#search-engine-compatibility).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Searching with wildcards">
 
 * When making a full-text search with wildcards in the search terms, 
   the presence of wildcards (`*`) in the terms sent to the search engine is determined by the transformations applied by the
   [analyzer](../../../indexes/using-analyzers.mdx) used in the index.
 
 * Note the different behavior in the following cases, as described below:  
-  * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](../../../indexes/querying/searching.mdx#when-usingoror)
-  * [When using a custom analyzer](../../../indexes/querying/searching.mdx#when-using-a-custom-analyzer)
-  * [When using the Exact analyzer](../../../indexes/querying/searching.mdx#when-using-the-exact-analyzer)
+  * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](#when-usingoror)
+  * [When using a custom analyzer](#when-using-a-custom-analyzer)
+  * [When using the Exact analyzer](#when-using-the-exact-analyzer)
 
 * When using [Corax](../../../indexes/search-engine/corax.mdx) as the search engine,  
   this behavior will only apply to indexes that are newly created or have been reset.
@@ -424,6 +503,7 @@ where search(AllValues, "tofu")
 <Admonition type="note" title="">
 
 ##### When using&nbsp;`RavenStandardAnalyzer`&nbsp;or`StandardAnalyzer`&nbsp;or&nbsp;`NGramAnalyzer`:
+    
 Usually, the same analyzer used to tokenize field content at **indexing time** is also used to process the terms provided in the **full-text search query**
 before they are sent to the search engine to retrieve matching documents.
 
@@ -442,8 +522,8 @@ For example:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Index" label="Index">
-<CodeBlock language="csharp">
-{`public class Employees_ByNotes_usingDefaultAnalyzer :
+```csharp
+public class Employees_ByNotes_usingDefaultAnalyzer :
     AbstractIndexCreationTask<Employee, Employees_ByNotes_usingDefaultAnalyzer.IndexEntry>
 {
     public class IndexEntry
@@ -470,12 +550,11 @@ For example:
         // prior to sending them to the search engine. 
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session
+```csharp
+List<Employee> employees = session
     .Query<Employees_ByNotes_usingDefaultAnalyzer.IndexEntry,
         Employees_ByNotes_usingDefaultAnalyzer>()
     
@@ -498,12 +577,11 @@ For example:
 // since the 'LowerCaseKeywordAnalyzer' is used in this case. 
 var explanation = explanations.GetExplanations(employees[0].Id)[0];
 Assert.Contains($"EmployeeNotes:*rench", explanation);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Employee> employees = await asyncSession
+```csharp
+List<Employee> employees = await asyncSession
     .Query<Employees_ByNotes_usingDefaultAnalyzer.IndexEntry,
         Employees_ByNotes_usingDefaultAnalyzer>()
     
@@ -526,12 +604,11 @@ Assert.Contains($"EmployeeNotes:*rench", explanation);
 // since the 'LowerCaseKeywordAnalyzer' is used in this case. 
 var explanation = explanations.GetExplanations(employees[0].Id)[0];
 Assert.Contains($"EmployeeNotes:*rench", explanation);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session.Advanced
+```csharp
+List<Employee> employees = session.Advanced
     .DocumentQuery<Employees_ByNotes_usingDefaultAnalyzer.IndexEntry,
         Employees_ByNotes_usingDefaultAnalyzer>()
     
@@ -552,23 +629,23 @@ Assert.Contains($"EmployeeNotes:*rench", explanation);
 // since the 'LowerCaseKeywordAnalyzer' is used in this case. 
 var explanation = explanations.GetExplanations(employees[0].Id)[0];
 Assert.Contains($"EmployeeNotes:*rench", explanation);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from index "Employees/ByNotes/usingDefaultAnalyzer"
+```sql
+from index "Employees/ByNotes/usingDefaultAnalyzer"
 where search(EmployeeNotes, "*rench")
 include explanations()
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
 </Admonition>
+    
 <Admonition type="note" title="">
 
 ##### When using a custom analyzer:
+    
 * When setting a [custom analyzer](../../../indexes/using-analyzers.mdx#creating-custom-analyzers) in your index to tokenize field content,
   then when querying the index, the search terms in the query will be processed according to the **custom analyzer's logic**.
 
@@ -583,8 +660,8 @@ For example:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Index" label="Index">
-<CodeBlock language="csharp">
-{`public class Employees_ByNotes_usingCustomAnalyzer :
+```csharp
+public class Employees_ByNotes_usingCustomAnalyzer :
     AbstractIndexCreationTask<Employee, Employees_ByNotes_usingCustomAnalyzer.IndexEntry>
 {
     public class IndexEntry
@@ -607,12 +684,11 @@ For example:
         Analyze(x => x.EmployeeNotes, "CustomAnalyzers.RemoveWildcardsAnalyzer");
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Custom_analyzer" label="Custom_analyzer">
-<CodeBlock language="csharp">
-{`// The custom analyzer:
+```csharp
+// The custom analyzer:
 // ====================
 
 const string RemoveWildcardsAnalyzer =
@@ -654,12 +730,11 @@ store.Maintenance.Send(new PutAnalyzersOperation(new AnalyzerDefinition()
     Name = "CustomAnalyzers.RemoveWildcardsAnalyzer",
     Code = RemoveWildcardsAnalyzer,
 }));
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session
+```csharp
+List<Employee> employees = session
     .Query<Employees_ByNotes_usingCustomAnalyzer.IndexEntry,
         Employees_ByNotes_usingCustomAnalyzer>()
     
@@ -682,12 +757,11 @@ store.Maintenance.Send(new PutAnalyzersOperation(new AnalyzerDefinition()
 var explanation = explanations.GetExplanations(employees[0].Id)[0];
 Assert.Contains($"EmployeeNotes:french", explanation);
 Assert.DoesNotContain($"EmployeeNotes:*french", explanation);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Employee> employees = await asyncSession
+```csharp
+List<Employee> employees = await asyncSession
     .Query<Employees_ByNotes_usingCustomAnalyzer.IndexEntry,
         Employees_ByNotes_usingCustomAnalyzer>()
     
@@ -710,12 +784,11 @@ Assert.DoesNotContain($"EmployeeNotes:*french", explanation);
 var explanation = explanations.GetExplanations(employees[0].Id)[0];
 Assert.Contains($"EmployeeNotes:french", explanation);
 Assert.DoesNotContain($"EmployeeNotes:*french", explanation);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session.Advanced
+```csharp
+List<Employee> employees = session.Advanced
     .DocumentQuery<Employees_ByNotes_usingCustomAnalyzer.IndexEntry,
         Employees_ByNotes_usingCustomAnalyzer>()
     .IncludeExplanations(out var explanations)
@@ -734,23 +807,23 @@ Assert.DoesNotContain($"EmployeeNotes:*french", explanation);
 var explanation = explanations.GetExplanations(employees[0].Id)[0];
 Assert.Contains($"EmployeeNotes:french", explanation);
 Assert.DoesNotContain($"EmployeeNotes:*french", explanation);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from index "Employees/ByNotes/UsingCustomAnalyzer"
+```sql
+from index "Employees/ByNotes/UsingCustomAnalyzer"
 where search(EmployeeNotes, "*French*")
 include explanations()
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
 </Admonition>
+    
 <Admonition type="note" title="">
 
 ##### When using the Exact analyzer:
+    
 When using the default Exact analyzer in your index (which is [KeywordAnalyzer](../../../indexes/using-analyzers.mdx#using-the-default-exact-analyzer)),  
 then when querying the index, the wildcards in your search terms remain untouched.  
 The terms are sent to the search engine exactly as produced by the analyzer.
@@ -759,8 +832,8 @@ For example:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Index" label="Index">
-<CodeBlock language="csharp">
-{`public class Employees_ByFirstName_usingExactAnalyzer :
+```csharp
+public class Employees_ByFirstName_usingExactAnalyzer :
     AbstractIndexCreationTask<Employee, Employees_ByFirstName_usingExactAnalyzer.IndexEntry>
 {
     public class IndexEntry
@@ -781,12 +854,11 @@ For example:
         Indexes.Add(x => x.FirstName, FieldIndexing.Exact);
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session
+```csharp
+List<Employee> employees = session
     .Query<Employees_ByFirstName_usingExactAnalyzer.IndexEntry,
         Employees_ByFirstName_usingExactAnalyzer>()
     
@@ -807,12 +879,11 @@ For example:
 
 var explanation = explanations.GetExplanations(employees[0].Id)[0];
 Assert.Contains($"FirstName:Mich*", explanation);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`List<Employee> employees = await asyncSession
+```csharp
+List<Employee> employees = await asyncSession
     .Query<Employees_ByFirstName_usingExactAnalyzer.IndexEntry,
         Employees_ByFirstName_usingExactAnalyzer>()
     
@@ -833,12 +904,11 @@ Assert.Contains($"FirstName:Mich*", explanation);
 
 var explanation = explanations.GetExplanations(employees[0].Id)[0];
 Assert.Contains($"FirstName:Mich*", explanation);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`List<Employee> employees = session.Advanced
+```csharp
+List<Employee> employees = session.Advanced
     .DocumentQuery<Employees_ByFirstName_usingExactAnalyzer.IndexEntry,
         Employees_ByFirstName_usingExactAnalyzer>()
     .IncludeExplanations(out var explanations)
@@ -855,20 +925,17 @@ Assert.Contains($"FirstName:Mich*", explanation);
 
 var explanation = explanations.GetExplanations(employees[0].Id)[0];
 Assert.Contains($"FirstName:Mich*", explanation);
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from index "Employees/ByFirstName/usingExactAnalyzer"
+```sql
+from index "Employees/ByFirstName/usingExactAnalyzer"
 where search(FirstName, "Mich*")
 include explanations()
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
 </Admonition>
 
-
-
+</Panel>

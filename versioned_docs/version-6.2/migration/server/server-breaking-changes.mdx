@@ -12,19 +12,23 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 # Migration: Server Breaking Changes
+
 <Admonition type="note" title="">
+    
 The features listed on this page were available in former RavenDB versions.  
 In RavenDB `6.2.x`, they are either unavailable or their behavior is inconsistent 
 with their behavior in previous versions.  
 
-* In this page:  
+* In this article:  
    * [MSSQL connection string requires an Encrypt property](../../migration/server/server-breaking-changes.mdx#mssql-connection-string-requires-an-encrypt-property)  
    * [Corax handling of complex JSON objects in static indexes is configurable](../../migration/server/server-breaking-changes.mdx#corax-handling-of-complex-json-objects-in-static-indexes-is-configurable)  
    * [Customizable identifier parts separator](../../migration/server/server-breaking-changes.mdx#customizable-identifier-parts-separator)  
+   * [Full-text search when the analyzer splits a search term](../../migration/server/server-breaking-changes.mdx#full-text-search-when-the-analyzer-splits-a-search-term)  
 
 </Admonition>
 
 ## MSSQL connection string requires an Encrypt property
+
 To establish a connection with an MSSQL server via ETL, RavenDB is required 
 by the `Microsoft.Data.SqlClient` package it utilizes (which replaces the 
 deprecated `System.Data.SqlClient` package we've been using in previous versions) 
@@ -52,6 +56,7 @@ or via Studio:
 ![SQL ETL task](./assets/breaking-changes_SQL-ETL-task.png)
 
 ## Corax handling of complex JSON objects in static indexes is configurable
+
 The behavior of RavenDB's [Corax](../../indexes/search-engine/corax.mdx) search engine while 
 handling [complex JSON objects](../../indexes/search-engine/corax.mdx#handling-of-complex-json-objects) 
 in **static indexes** is now configurable using the `Indexing.Corax.Static.ComplexFieldIndexingBehavior` 
@@ -80,6 +85,7 @@ remains unchanged).
 </Admonition>
 
 ## Customizable identifier parts separator
+
 Picking an [identifier parts separator](../../server/kb/document-identifier-generation.mdx#id-generation-by-server) 
 allows you to choose which character would be placed as a separator between ID parts 
 when new documents are given their IDs.  
@@ -101,5 +107,44 @@ will apply your new separator.
 
 ![New separator](./assets/breaking-changes_new-separator.png)
 
+## Full-text search when the analyzer splits a search term
 
+Starting with RavenDB `6.0.104`, **Corax** changed how it handles a non-wildcard search term
+that the [query-time analyzer](../../indexes/using-analyzers.mdx#analyzers-at-query-time) splits into multiple tokens.
+For example, the default search analyzer splits `sales%representative` into the tokens `sales` and `representative`.
 
+<Admonition type="note" title="">
+
+##### Corax behavior for versions lower than `6.0.104`:
+
+Corax matched tokens produced from one search term as independent terms.  
+The search operator combined those tokens (`OR` by default):
+
+* With `OR`, a document matched if the searched field contained at least one of the tokens.
+* With `AND`, the field had to contain all the tokens.
+
+The tokens could occur anywhere in the field and in any order.
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+##### Corax behavior for `6.0.104` and later:
+
+Corax matches tokens produced from one search term as a **phrase**.
+A document matches only when the tokens in the searched field are adjacent and occur in the same order as the analyzer-generated query tokens.
+
+This aligns Corax with the existing behavior of the Lucene search engine.
+
+<Admonition type="info" title="">
+
+After upgrading to RavenDB `6.0.104` or later, this behavior applies without a reset to Corax indexes
+that were created or reset in RavenDB `6.0.101` or later.
+Older Corax indexes retain the legacy behavior until they are reset or recreated.
+
+</Admonition>
+
+See [Search with analyzer-generated phrases](../../client-api/session/querying/text-search/full-text-search.mdx#search-with-analyzer-generated-phrases)
+for detailed examples.
+
+</Admonition>

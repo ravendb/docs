@@ -1,0 +1,676 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Admonition type="note" title="">
+
+* This article is about running a full-text search with a **dynamic query**.  
+  To learn how to run a full-text search using a static-index, see [full-text search with index](../../../../../indexes/querying/searching.mdx).  
+
+* Use the `search()` method to query for documents that contain specified term/s
+  within the text of the specified document field/s.
+
+* When running a full-text search with a dynamic query, the **auto-index** created by the server 
+  breaks down the text of the searched document field using the [default search analyzer](../../../../../indexes/using-analyzers.mdx#using-the-default-search-analyzer).  
+  All generated terms are lower-cased, so the search is **case-insensitive**.  
+
+* Gain additional control over term tokenization by running a full-text search 
+  using a [static-index](../../../../../indexes/querying/searching.mdx), where the used 
+  analyzer is configurable.  
+
+<Admonition type="info" title="">
+
+* A **boost** value can be set for each search to prioritize results. 
+  Learn more in [boost search results](../../../../../client-api/session/querying/text-search/boost-search-results.mdx).
+  
+* User experience can be enhanced by requesting text fragments that **highlight** 
+  the searched terms in the results. Learn more in [highlight search results](../../../../../client-api/session/querying/text-search/highlight-query-results.mdx).
+</Admonition>
+* In this page:
+  * [Search for single term](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-for-single-term)
+  * [Search for multiple terms](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-for-multiple-terms)
+  * [Search with analyzer-generated phrases](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-with-analyzer-generated-phrases)
+  * [Search in multiple fields](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-in-multiple-fields)
+  * [Search in complex object](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-in-complex-object)
+  * [Search operators](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators)
+  * [Search options](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-options)
+  * [Using wildcards](../../../../../client-api/session/querying/text-search/full-text-search.mdx#using-wildcards)
+  * [Syntax](../../../../../client-api/session/querying/text-search/full-text-search.mdx#syntax)
+
+</Admonition>
+## Search for single term
+
+<Admonition type="note" title="">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> employees = session
+     // Make a dynamic query on 'Employees' collection    
+    .query(Employee.class)
+     // * Call 'search' to make a Full-Text search
+     // * Search is case-insensitive
+     // * Look for documents containing the term 'University' within their 'Notes' field
+    .search("Notes", "University")
+    .toList();
+
+// Results will contain Employee documents that have
+// any case variation of the term 'university' in their 'Notes' field.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "University")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+* Executing the above query will generate the auto-index `Auto/Employees/BySearch(Notes)`.  
+
+* This auto-index will contain the following two index-fields:
+
+  * `Notes`  
+    Contains terms with the original text from the indexed document field 'Notes'.  
+    Text is lower-cased and Not tokenized.
+  
+  * `search(Notes)`  
+    Contains **lower-cased terms** that were tokenized from the 'Notes' field by the [default search analyzer](../../../../../indexes/using-analyzers.mdx#using-the-default-search-analyzer) (RavenStandardAnalyzer). 
+    Calling the `search()` method targets these terms to find matching documents.
+
+
+
+## Search for multiple terms
+
+* You can search for multiple terms in the **same field** in a single search method.
+
+* By default, the logical operator between these terms is 'OR'.
+
+* This behavior can be modified. See section [Search operators](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-operators). 
+
+<Admonition type="note" title="">
+
+**Pass terms in a string**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> employees = session
+    .query(Employee.class)
+     // * Pass multiple terms in a single string, separated by spaces.
+     // * Look for documents containing either 'University' OR 'Sales' OR 'Japanese'
+     //   within their 'Notes' field
+    .search("Notes", "University Sales Japanese")
+    .toList();
+
+// * Results will contain Employee documents that have at least one of the specified terms.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "University Sales Japanese")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search with analyzer-generated phrases
+
+A value passed to `search()` is processed in two stages:
+
+1. **Search terms**:  
+   `search()` parses the value into **search terms**.  
+   Unquoted spaces or tabs separate terms, while double quotes keep the enclosed text together as one term.
+
+2. **Tokens**:  
+   The [query-time analyzer](../../../../../indexes/using-analyzers.mdx#analyzers-at-query-time)
+   processes each search term and produces zero, one, or multiple **tokens**.
+
+**When the analyzer produces multiple tokens from one search term**, RavenDB searches those tokens as a **phrase**.  
+This means that a document matches only when the corresponding tokens in the searched field are adjacent  
+and occur in the same order as the analyzer-generated query tokens.
+
+---
+    
+### How the input form affects matching
+
+With RavenDB's default analyzer configuration, compare the following three cases:
+
+<Admonition type="note" title="">
+    
+**Separate search terms: matched independently**    
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> employees = session
+    .query(Employee.class)
+     // Pass two separate search terms    
+    .search("Title", "sales representative")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+// Pass two separate search terms        
+where search(Title, "sales representative")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+In both the Java and RQL tabs above, the outer quotation marks delimit the string literal.  
+These quotation marks are not part of the value processed by `search()`.  
+RavenDB therefore parses `sales representative` as the two terms `sales` and `representative`.
+
+The search operator combines these terms (`OR` by default), so they do not need to be adjacent or appear in the same order.
+
+</Admonition>
+
+<Admonition type="note" title="">
+    
+**One search term, multiple analyzer tokens: matched as a phrase**    
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> employees = session
+    .query(Employee.class)
+     // Pass one term that the analyzer splits
+    .search("Title", "sales%representative")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+// Pass one term that the analyzer splits    
+where search(Title, "sales%representative")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Because `%` is not whitespace, `search()` initially parses `sales%representative` as one term.
+`RavenStandardAnalyzer` then splits that term into the tokens `sales` and `representative`.  
+RavenDB searches those analyzer-generated tokens as a **phrase**.
+
+* The `%` character is [not a wildcard](../../../../../client-api/session/querying/text-search/full-text-search.mdx#using-wildcards)
+  and has no special meaning to `search()`.  
+  It is simply an example of punctuation that `RavenStandardAnalyzer` treats as a token boundary.  
+  Other analyzers can produce different tokens from the same input.
+
+* If the `search()` value contains other search terms, the search operator combines those terms with the generated phrase.
+  It does not change the required order or adjacency of the tokens within the phrase.
+
+</Admonition>
+
+<Admonition type="note" title="">
+    
+**Explicitly quoted text: matched as a phrase** 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> employees = session
+    .query(Employee.class)
+     // Pass an explicitly quoted phrase
+    .search("Title", "\\"sales representative\\"")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+// Pass an explicitly quoted phrase    
+where search(Title, '"sales representative"')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+    
+The quotation marks around `sales representative` are part of the value sent to RavenDB.  
+They instruct `search()` to keep it together as one search term.  
+The analyzer produces the tokens `sales` and `representative`, which RavenDB searches as a **phrase**.    
+
+</Admonition>
+
+The analyzer-generated phrase and the explicitly quoted phrase use the same phrase-matching rules.  
+Both match `Sales Representative`.
+Neither matches `Representative Sales`, where the order is reversed, or `Sales Area Representative`, where the tokens are not adjacent.
+
+<Admonition type="info" title="Analyzer used by a dynamic query">
+
+* A dynamic full-text query uses the default search analyzer configured for the auto-index.  
+  This is `RavenStandardAnalyzer` unless [Indexing.Analyzers.Search.Default](../../../../../server/configuration/indexing-configuration.mdx#indexinganalyzerssearchdefault)
+  is configured with a different analyzer.
+
+* To choose an analyzer for a specific index-field, use a [static index](../../../../../indexes/querying/searching.mdx).
+
+</Admonition>
+    
+---    
+
+### Wildcard terms
+
+Search terms that use the supported `*` wildcard forms are handled as prefix, suffix, or contains queries;  
+they are not converted into phrase queries.
+See [Using wildcards](../../../../../client-api/session/querying/text-search/full-text-search.mdx#using-wildcards).
+
+---
+    
+### When analysis produces no tokens
+
+If the analyzer produces no tokens from a search term - for example, because it removes all of them as
+[stop words](../../../../../indexes/using-analyzers.mdx#analyzers-that-remove-common-stop-words) -  
+RavenDB skips that term.
+
+---
+    
+### Search-engine compatibility
+
+Phrase matching for analyzer-generated tokens is supported by both **Corax** and **Lucene**.
+
+<Admonition type="note" title="">
+    
+#### Existing Corax indexes:    
+
+* Corax indexes store the term-position data required for phrase matching only if they were created or reset in RavenDB 6.0 or later.
+* A Corax index - including an auto-index - created before this support was available retains the legacy behavior, where analyzer-generated tokens are matched independently.    
+  Reset or recreate the index to enable phrase matching.
+    
+</Admonition>
+
+
+
+## Search in multiple fields
+
+* You can search for terms in **different fields** by making multiple search calls.
+
+* By default, the logical operator between consecutive search methods is 'OR'.
+
+* This behavior can be modified. See section [Search options](../../../../../client-api/session/querying/text-search/full-text-search.mdx#search-options).
+
+<Admonition type="note" title="">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> employees = session
+    .query(Employee.class)
+     // * Look for documents containing:
+     //   'French' in their 'Notes' field OR 'President' in their 'Title' field
+    .search("Notes", "French")
+    .search("Title", "President")
+    .toList();
+
+// * Results will contain Employee documents that have
+//   at least one of the specified fields with the specified terms.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where (search(Notes, "French") or search(Title, "President"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search in complex object
+
+* You can search for terms within a complex object.
+
+* Any nested text field within the object is searchable.
+
+<Admonition type="note" title="">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Company> companies = session
+    .query(Company.class)
+     // * Look for documents that contain:
+     //   the term 'USA' OR 'London' in any field within the complex 'Address' object
+    .search("Address", "USA London")
+    .toList();
+
+// * Results will contain Company documents that are located either in 'USA' OR in 'London'.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+where search(Address, "USA London")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search operators
+
+* By default, the logical operator between multiple terms within the **same field** in a search call is **OR**.
+
+* This can be modified using the `operator` parameter as follows: 
+
+<Admonition type="note" title="">
+
+**AND**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> employees = session
+    .query(Employee.class)
+     // * Pass 'SearchOperator.AND' as the third parameter
+    .search("Notes", "College German", SearchOperator.AND)
+    .toList();
+
+// * Results will contain Employee documents that have BOTH 'College' AND 'German'
+//   in their 'Notes' field.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "College German", and)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**OR**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> employees = session
+    .query(Employee.class)
+     // * Pass 'SearchOperator.OR' as the third parameter (or don't pass this param at all)
+    .search("Notes", "College German", SearchOperator.OR)
+    .toList();
+
+// * Results will contain Employee documents that have EITHER 'College' OR 'German'
+//   in their 'Notes' field.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "College German")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search options
+
+* Search options allow to:  
+    * Negate a search criteria.  
+    * Specify the logical operator used between **consecutive search calls**.  
+ 
+<Admonition type="note" title="">
+
+**Negate search**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Company> companies = session
+    .query(Company.class)
+    .openSubclause()
+     // Call 'not' to negate the next search call
+    .not()
+    .search("Address", "USA")
+    .closeSubclause()
+    .toList();
+
+// * Results will contain Company documents are NOT located in 'USA'
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+where (exists(Address) and not search(Address, "USA"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Default behavior between search calls**:
+
+* By default, the logical operator between consecutive search methods is **OR**.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Company> companies = session
+    .query(Company.class)
+    .whereEquals("Contact.Title", "Owner")
+     // Operator AND will be used with previous 'whereEquals' predicate
+     // Call 'openSubclause' to open predicate block
+    .openSubclause()
+    .search("Address.Country", "France")
+     // Operator OR will be used between the two 'search' calls by default
+    .search("Name", "Markets")
+     // Call 'closeSubclause' to close predicate block
+    .closeSubclause()
+    .toList();
+
+// * Results will contain Company documents that have:
+//   ('Owner' as the 'Contact.Title')
+//   AND
+//   (are located in 'France' OR have 'Markets' in their 'Name' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies" 
+where Contact.Title == "Owner" and
+(search(Address.Country, "France") or search(Name, "Markets"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**AND search calls**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> employees = session
+    .query(Employee.class)
+    .search("Notes", "French")
+     // Call 'andAlso' so that operator AND will be used with previous 'search' call
+    .andAlso()
+    .search("Title", "Manager")
+    .toList();
+
+// * Results will contain Employee documents that have:
+//   ('French' in their 'Notes' field)
+//   AND
+//   ('Manager' in their 'Title' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" 
+where search(Notes, "French") and search(Title, "Manager")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+**Combine AND with negation**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> employees = session
+    .query(Employee.class)
+    .search("Notes", "French")
+     // Call 'andAlso' so that operator AND will be used with previous 'search' call
+    .andAlso()
+    .openSubclause()
+     // Call 'not' to negate the next search call
+    .not()
+    .search("Title", "Manager")
+    .closeSubclause()
+    .toList();
+
+// * Results will contain Employee documents that have:
+//   ('French' in their 'Notes' field)
+//   AND
+//   (do NOT have 'Manager' in their 'Title' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "French") and
+(exists(Title) and not search(Title, "Manager"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Using wildcards
+
+* Wildcards can be used to replace:
+  * Prefix of a searched term
+  * Postfix of a searched term
+  * Both prefix & postfix
+
+* Note:  
+
+  * Searching with a wildcard as the prefix of the term (e.g. `*text`) is less recommended,  
+    as it will cause the server to perform a full index scan.
+  
+  * Instead, consider using a static-index that indexes the field in reverse order  
+    and then query with a wildcard as the postfix, which is much faster.  
+
+
+<Admonition type="note" title="">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> employees = session
+    .query(Employee.class)
+     // Use '*' to replace one or more characters
+    .search("Notes", "art*")
+    .search("Notes", "*logy")
+    .search("Notes", "*mark*")
+    .toList();
+
+// Results will contain Employee documents that have in their 'Notes' field:
+// (terms that start with 'art')  OR
+// (terms that end with 'logy') OR
+// (terms that have the text 'mark' in the middle) 
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" where
+search(Notes, "art*") or
+search(Notes, "*logy") or
+search(Notes, "*mark*")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="java">
+{`// Available overloads:
+IDocumentQuery<T> search(String fieldName, String searchTerms);
+IDocumentQuery<T> search(String fieldName, String searchTerms, SearchOperator operator);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type               | Description                                                                                                                                                                     |
+|-------------------|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **fieldName**     | `String`           | Name of the searched field.                                                                                                                                                     |
+| **searchTerms**   | `String`           | A string containing the term or terms (separated by spaces) to search for.                                                                                                       |
+| **operator**      | `SearchOperator`   | Logical operator to use between multiple terms in the same Search method. <br/> Can be `SearchOperator.AND` or `SearchOperator.OR`. <br/> <strong>Default</strong> is `SearchOperator.OR` |
+
+| Return Type            | Description                        |
+|------------------------|------------------------------------|
+| `IDocumentQuery<T>`    | The same object used for the query |
