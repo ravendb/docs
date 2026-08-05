@@ -20,7 +20,8 @@ const SECTIONS: readonly { segment: string; type: PathTypeValue }[] = [
 ];
 
 export function getPathType(path: string): PathTypeValue {
-    return SECTIONS.find((section) => path.includes(`/${section.segment}`))?.type ?? PathType.Documentation;
+    const [firstSegment] = path.replace(/^\/+/, "").split("/");
+    return SECTIONS.find((section) => section.segment === firstSegment)?.type ?? PathType.Documentation;
 }
 
 export function getLandingPagePath(pathType: PathTypeValue, versionLabel: string): string {
