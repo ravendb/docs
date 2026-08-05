@@ -116,7 +116,7 @@ class GetConnectionStringsOperation(MaintenanceOperation[GetConnectionStringsRes
 | Parameter                    | Type                   | Description                                                                    |
 |------------------------------|------------------------|--------------------------------------------------------------------------------|
 | **connection_string_name**   | `str`                  | Connection string name                                                         |
-| **connection_string_type**   | `ConnectionStringType` | Connection string type:<br/>`RAVEN`, `SQL`, `OLAP`, `ELASTIC_SEARCH`, `QUEUE`, `SNOWFLAKE`, or `AI` |
+| **connection_string_type**   | `ConnectionStringType` | Connection string type:<br/>`RAVEN`, `SQL`, `OLAP`, `ELASTIC_SEARCH`, `QUEUE`, `SNOWFLAKE`, or `AI`<br/>Required whenever `connection_string_name` is given. |
 
 ```python
 class ConnectionStringType(enum.Enum):

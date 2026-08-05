@@ -134,7 +134,7 @@ For every connection string type, create the matching connection string class
 
 For `QueueConnectionString`, you must provide `broker_type` and the matching connection settings.
 For example, pass `broker_type=QueueBrokerType.KAFKA` together with a configured `KafkaConnectionSettings` object in `kafka_settings`.
-The server rejects a queue connection string if no broker type is specified.
+The Python client raises `AttributeError: 'NoneType' object has no attribute 'value'` if no broker type is specified.
 
 For type-specific fields and links to full examples, see
 [Connection string per type](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#connection-string-per-type).  
@@ -266,6 +266,7 @@ class ConnectionString:
         ...
 
 
+# from ravendb.serverwide.server_operation_executor import ConnectionStringType
 class ConnectionStringType(enum.Enum):
     NONE = "None"
     RAVEN = "Raven"
