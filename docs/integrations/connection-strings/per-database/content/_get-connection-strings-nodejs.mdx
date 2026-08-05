@@ -1,0 +1,135 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+
+<Admonition type="note" title="">
+
+* Use `GetConnectionStringsOperation` to retrieve a specific connection string,  
+  or all connection strings defined in the database.
+
+* This operation reads connection strings from a single database's record.   
+  To get connection strings defined at the cluster level, see [Get server-wide connection strings](../../../../integrations/connection-strings/server-wide/get-connection-strings.mdx).
+
+* Learn more about per-database connection strings in [Per-database connection strings - Overview](../../../../integrations/connection-strings/per-database/overview.mdx).  
+  To create or update a connection string, see [Add or update a connection string](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx).
+
+* In this article:
+  * [Get connection string by name and type](../../../../integrations/connection-strings/per-database/get-connection-strings.mdx#get-connection-string-by-name-and-type)
+  * [Get all connection strings](../../../../integrations/connection-strings/per-database/get-connection-strings.mdx#get-all-connection-strings)
+  * [Syntax](../../../../integrations/connection-strings/per-database/get-connection-strings.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Get connection string by name and type">
+
+The following example retrieves a `Raven` connection string in the current database:
+
+```js
+// Request a specific connection string, pass its name and type:
+// =============================================================
+const getRavenConStrOp = new GetConnectionStringsOperation(
+    "ravendb-connection-string-name", "Raven");
+
+const connectionStrings = await store.maintenance.send(getRavenConStrOp);
+
+// Access results:
+// ===============
+const ravenConnectionStrings = connectionStrings.ravenConnectionStrings;
+
+// If no connection string matches the specified name and type, 
+// the result object is null.
+if (ravenConnectionStrings) {
+    const numberOfRavenConnectionStrings = Object.keys(ravenConnectionStrings).length;
+    const ravenConStr = ravenConnectionStrings["ravendb-connection-string-name"];
+
+    const targetUrls = ravenConStr.topologyDiscoveryUrls;
+    const targetDatabase = ravenConStr.database;
+}
+```
+
+</Panel>
+
+<Panel heading="Get all connection strings">
+    
+The following example retrieves all connection strings defined in the database:    
+
+```js
+// Get all connection strings:
+// ===========================
+const getAllConStrOp = new GetConnectionStringsOperation();
+const allConnectionStrings = await store.maintenance.send(getAllConStrOp);
+
+// Access results by connection string type:
+// =========================================
+
+// Raven
+const ravenConnectionStrings = allConnectionStrings.ravenConnectionStrings;
+
+// SQL
+const sqlConnectionStrings = allConnectionStrings.sqlConnectionStrings;
+
+// OLAP
+const olapConnectionStrings = allConnectionStrings.olapConnectionStrings;
+
+// Elasticsearch
+const elasticsearchConnectionStrings = allConnectionStrings.elasticSearchConnectionStrings;
+
+// Queue
+const queueConnectionStrings = allConnectionStrings.queueConnectionStrings;
+
+// AI
+const aiConnectionStrings = allConnectionStrings.aiConnectionStrings;
+```
+
+</Panel>
+
+<Panel heading="Syntax">
+
+```js
+new GetConnectionStringsOperation();
+new GetConnectionStringsOperation(connectionStringName, type);
+```
+<br/>    
+
+| Parameter                | Type                   | Description                                                                    |
+|--------------------------|------------------------|--------------------------------------------------------------------------------|
+| **connectionStringName** | `string`               | Connection string name                                                         |
+| **type**                 | `ConnectionStringType` | Connection string type:<br/>`Raven`, `Sql`, `Olap`, `ElasticSearch`, `Queue`, or `Ai` |
+
+```js
+// The available connection string types
+ConnectionStringType = "None" | "Raven" | "Sql" | "Olap" | "ElasticSearch" | "Queue" | "Ai";
+```
+<br/>    
+
+| Operation result             | Description                                                   |
+|------------------------------|---------------------------------------------------------------|
+| `GetConnectionStringsResult` | Object holding all connection strings defined in the database. |
+
+```js
+interface GetConnectionStringsResult {
+    ravenConnectionStrings; // Record<string, RavenConnectionString>
+    sqlConnectionStrings; // Record<string, SqlConnectionString>
+    olapConnectionStrings; // Record<string, OlapConnectionString>
+    elasticSearchConnectionStrings; // Record<string, ElasticSearchConnectionString>
+    queueConnectionStrings; // Record<string, QueueConnectionString>
+    aiConnectionStrings; // Record<string, AiConnectionString>
+}
+```
+<br/>
+
+<Admonition type="note" title="">
+
+The Node.js client returns connection strings of the `Raven`, `Sql`, `Olap`, `ElasticSearch`, `Queue`
+(Kafka and RabbitMQ), and `Ai` types.  
+Connection string types that have no matching class in the Node.js client, such as `Snowflake`, can be viewed from Studio.
+
+</Admonition>
+    
+<Admonition type="note" title="">
+Connection string type-specific fields and complete examples are documented in the task or feature articles listed under
+[Connection string per type](../../../../integrations/connection-strings/per-database/add-or-update-connection-string.mdx#connection-string-per-type).
+</Admonition>
+
+</Panel>
