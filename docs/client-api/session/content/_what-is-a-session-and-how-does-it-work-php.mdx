@@ -200,7 +200,7 @@ $this->assertSame($entity1, $entity2);
 * `saveChanges` is the only time when the RavenDB Client API sends updates to the server from the Session,  
   resulting in a reduced number of network calls.
 * To execute an operation that both loads and updates a document within the same write transaction, use the patching feature. 
-  This can be done either with the usage of a [JavaScript patch](../../../documents/patching-documents/patch-a-single-document/api-overview.mdx) syntax or [JSON Patch](../../../documents/patching-documents/patch-a-single-document/json-patch.mdx) syntax.
+  This is done with a [JavaScript patch](../../../documents/patching-documents/patch-a-single-document/api-overview.mdx) script.
 
 </Admonition>
 <Admonition type="note" title="">

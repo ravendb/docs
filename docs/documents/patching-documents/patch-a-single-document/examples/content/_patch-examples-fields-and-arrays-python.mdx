@@ -15,14 +15,6 @@ import ContentFrame from '@site/src/components/ContentFrame';
 * Every Python patching method is executed by the server as a JavaScript patch script.  
   The Python client does not provide a JSON Patch (RFC 6902) API.
 
-* A `path` refers to the JSON property name as stored in the document.  
-  With the default conventions, documents written by the Python client keep their Python  
-  attribute names, so a `login_count` attribute is patched as `"login_count"`.  
-  A single-segment path that matches no existing property adds a new one instead of failing,  
-  so a casing mismatch silently creates a duplicate field.  
-  A path whose parent is missing does fail, for example `"Address.City"` on a document  
-  without an `Address` object reports `City is not defined`.
-
 * Patching examples in this article:
   * [Modify value of single field](#modify-value-of-single-field)  
   * [Modify values of two fields](#modify-values-of-two-fields)  
@@ -46,6 +38,9 @@ import ContentFrame from '@site/src/components/ContentFrame';
 <ContentFrame>
 
 ### Modify value of single field
+
+The Session example passes `"FirstName"` as the field path.  
+The deferred and Operations examples target the same field as `this.FirstName`.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_syntax" label="Session_syntax">
