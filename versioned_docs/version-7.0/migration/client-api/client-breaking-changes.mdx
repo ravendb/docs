@@ -24,6 +24,7 @@ with their behavior in previous versions.
    * [Removed irrelevant `SingleNodeBatchCommand` parameters](../../migration/client-api/client-breaking-changes.mdx#removed-irrelevant-singlenodebatchcommand-parameters)  
    * [Removed obsolete methods](../../migration/client-api/client-breaking-changes.mdx#removed-obsolete-methods)  
    * [`FromEtl` is now internal](../../migration/client-api/client-breaking-changes.mdx#frometl-is-now-internal)  
+   * [Deploying multiple indexes is now atomic](../../migration/client-api/client-breaking-changes.mdx#deploying-multiple-indexes-is-now-atomic)  
 
 </Admonition>
 
@@ -214,5 +215,36 @@ The following methods are no longer used and have been removed from RavenDB `7.0
 ## `FromEtl` is now internal
 The `CounterBatch` class `FromEtl` property is now **internal**.  
 `FromEtl` is used internally to get or set a value indicating whether a counters batch originated from an ETL process.
+
+## Deploying multiple indexes is now atomic
+This change applies to the **.NET client** only.  
+
+In earlier versions, [IndexCreation.CreateIndexes](../../indexes/creating-and-deploying.mdx#deploy-multiple-indexes) 
+sent all index definitions in a single request, and if that request failed it retried the deployment 
+index-by-index. Indexes that were valid were therefore still created, and the indexes that failed were 
+reported together in an `AggregateException`.  
+
+`IndexCreation.CreateIndexes` now delegates to 
+[DocumentStore.ExecuteIndexes](../../indexes/creating-and-deploying.mdx#deploy-multiple-indexes), 
+and the two methods behave identically. The batch is now atomic:  
+
+* If any index in the batch fails to compile, the entire batch fails and **none** of the indexes 
+  in it are created.  
+* The failure is reported as an `IndexCompilationException` naming the index that caused it, 
+  instead of an `AggregateException`.  
+
+<Admonition type="note" title="">
+
+If your deployment flow relied on the valid indexes being created despite one of them failing, 
+deploy the indexes in separate calls, or call `Execute` on each index individually.  
+
+</Admonition>
+
+<Admonition type="info" title="">
+
+Deploying an empty list of indexes is now a no-op: no request is sent to the server 
+and no exception is thrown.  
+
+</Admonition>
 
 
