@@ -1,0 +1,1520 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* This article is part of the single-document patching examples.  
+  It focuses on patching individual document fields and manipulating array and dictionary fields.
+
+* For the available patching interfaces (Session API, Session API using defer, and Operations API) and their full syntax,  
+  see [Patch a Single Document: API Overview](../../../../../documents/patching-documents/patch-a-single-document/api-overview.mdx).
+
+* Patching examples in this article:
+  * [Modify value of single field](#modify-value-of-single-field)  
+  * [Modify values of two fields](#modify-values-of-two-fields)  
+  * [Increment value](#increment-value)  
+  * [Add or increment](#add-or-increment)  
+  * [Add or patch](#add-or-patch)  
+  * [Add item to array](#add-item-to-array)  
+  * [Add items to an array with AddOrPatch](#add-items-to-an-array-with-addorpatch)  
+  * [Insert item at a specific array index](#insert-item-at-a-specific-array-index)  
+  * [Replace item at a specific array index](#replace-item-at-a-specific-array-index)  
+  * [Remove item at a specific array index](#remove-item-at-a-specific-array-index)  
+  * [Remove all matching items from an array](#remove-all-matching-items-from-an-array)  
+  * [Patch a dictionary](#patch-a-dictionary)  
+  * [Patch a single dictionary entry](#patch-a-single-dictionary-entry)    
+  * [Remove property](#remove-property)  
+  * [Rename property](#rename-property)  
+
+</Admonition>
+
+<Panel heading="Patching examples">
+
+<ContentFrame>
+
+### Modify value of single field
+    
+The Session example identifies the field with the typed expression `x => x.FirstName`.  
+The deferred and Operations examples target the same field as `this.FirstName`.    
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```csharp
+// Set FirstName without loading the document.
+// With the default convention, this typed call is represented as JSON Patch.             
+session.Advanced.Patch<Employee, string>(
+    "employees/1",
+    x => x.FirstName, "Robert");
+
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Queue an explicit JavaScript patch in the session batch.
+// Pass the new value through args instead of embedding it in the script.              
+session.Advanced.Defer(new PatchCommandData(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.FirstName = args.FirstName;",
+        Values =
+        {
+            {"FirstName", "Robert"}
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Send an explicit JavaScript patch directly through the document store.
+// Pass the new value through args instead of embedding it in the script.               
+store.Operations.Send(new PatchOperation(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.FirstName = args.FirstName;",
+        Values =
+        {
+            {"FirstName", "Robert"}
+        }
+    },
+    patchIfMissing: null));
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Modify values of two fields
+
+* The following examples update both fields atomically without loading the document.
+
+* With the default convention, RavenDB merges the two typed Session API `Patch` calls into one JSON Patch command for this document.  
+  The Session API using `Defer` and the Operations API each perform both assignments in a single JavaScript patch. 
+    
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```csharp
+// Modify FirstName to Robert and LastName to Carter in a single request.
+
+// Queue both field updates for the same document.
+session.Advanced.Patch<Employee, string>(
+    "employees/1", x => x.FirstName, "Robert");
+
+session.Advanced.Patch<Employee, string>(
+    "employees/1", x => x.LastName, "Carter");
+
+// With the default convention, RavenDB combines both calls
+// into one JSON Patch command.
+// SaveChanges sends the command in the session batch,
+// which the server commits atomically.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Modify FirstName to Robert and LastName to Carter in a single request.
+
+// Queue one explicit JavaScript patch in the session.
+// Both field assignments are part of the same patch command.
+session.Advanced.Defer(new PatchCommandData(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.FirstName = args.FirstName;
+                   this.LastName = args.LastName;",
+        // Pass the new values separately as script arguments.
+        Values =
+        {
+            { "FirstName", "Robert" },
+            { "LastName", "Carter" }
+        }
+    },
+    patchIfMissing: null));
+
+// SaveChanges sends the deferred command in the session batch,
+// which the server commits atomically.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Modify FirstName to Robert and LastName to Carter in a single request.
+
+// Send one explicit JavaScript patch directly through the document store.
+// Both field assignments are part of the same patch command.
+// This API does not use a session, so SaveChanges is not required.
+store.Operations.Send(new PatchOperation(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.FirstName = args.FirstName;
+                   this.LastName = args.LastName;",
+        // Pass the new values separately as script arguments.
+        Values =
+        {
+            { "FirstName", "Robert" },
+            { "LastName", "Carter" }
+        }
+    },
+    patchIfMissing: null));
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Increment value
+    
+* The following examples increment the existing `UnitsInStock` value by `10` without loading the document.
+
+* The typed Session API `Increment` helper always creates a JavaScript patch command;  
+  it does not use JSON Patch.
+    
+* The typed Session API `Increment` helper sets a missing field to the specified increment value.
+    
+* The explicit JavaScript examples use `+=`, which follows JavaScript coercion rules.  
+  A missing field evaluates to `NaN`, while a string value is concatenated.  
+  These explicit examples therefore assume that `UnitsInStock` exists and holds a numeric value.  
+  To create the document if it is missing, use [Add or increment](#add-or-increment). 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```csharp
+// Increment the current UnitsInStock value by 10.
+
+// Queue a typed increment operation in the session.
+// Increment always uses a JavaScript patch command.
+session.Advanced.Increment<Product, int>(
+    "products/1-A", x => x.UnitsInStock, 10);
+
+// Send the queued increment command in the session batch.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Increment the current UnitsInStock value by 10.
+
+// Queue an explicit JavaScript patch in the session.
+session.Advanced.Defer(new PatchCommandData(
+    id: "products/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.UnitsInStock += args.UnitsToAdd;",
+        // Pass the increment amount separately as a script argument.
+        Values =
+        {
+            { "UnitsToAdd", 10 }
+        }
+    },
+    patchIfMissing: null));
+
+// Send the deferred patch in the session batch.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Increment the current UnitsInStock value by 10.
+
+// Send an explicit JavaScript patch directly through the document store.
+// This API does not use a session, so SaveChanges is not required.
+store.Operations.Send(new PatchOperation(
+    id: "products/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.UnitsInStock += args.UnitsToAdd;",
+        // Pass the increment amount separately as a script argument.
+        Values =
+        {
+            { "UnitsToAdd", 10 }
+        }
+    },
+    patchIfMissing: null));
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Add or increment
+
+`AddOrIncrement` always uses a JavaScript patch command and behaves as follows:
+
+* If the document exists:
+  * If the field exists, RavenDB adds the specified value to it.  
+    This increments a numeric value or concatenates a string value.
+  * If the field does not exist, RavenDB creates it with the specified value.
+  * The provided entity is ignored.    
+* If the document does not exist:
+  * RavenDB creates it from the provided entity.
+  * The value to increment by is ignored.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```csharp
+// Increment LoginCount by 1, or create users/1 if it does not exist.
+
+// AddOrIncrement always uses a JavaScript patch command.
+session.Advanced.AddOrIncrement<User, int>(
+    "users/1",
+    // This entity is used only if the document does not exist.
+    new User
+    {
+        FirstName = "John",
+        LastName = "Doe",
+        LoginCount = 1
+    },
+    // If the document exists, increment LoginCount by 1.
+    // If the field does not exist, add it with the value 1.
+    x => x.LoginCount, 1);
+
+// Send the queued command in the session batch.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Increment LoginCount by 1, or create users/1 if it does not exist.
+
+// Queue explicit JavaScript patches that implement AddOrIncrement behavior.
+session.Advanced.Defer(new PatchCommandData(
+    id: "users/1",
+    changeVector: null,
+    // This patch runs only if the document already exists.
+    patch: new PatchRequest
+    {
+        // Add to the field if it is present; otherwise create it with the value.
+        Script = @"this.LoginCount = this.LoginCount === undefined || this.LoginCount === null
+                   ? args.ValueToAdd
+                   : this.LoginCount + args.ValueToAdd;",
+        Values =
+        {
+            { "ValueToAdd", 1 }
+        }
+    },
+    // This patch runs only if the document does not exist.
+    // It builds the new document and assigns it to the Users collection.
+    patchIfMissing: new PatchRequest
+    {
+        Script = @"this.FirstName = args.FirstName;
+                   this.LastName = args.LastName;
+                   this.LoginCount = args.InitialLoginCount;
+                   this['@metadata'] = { '@collection': 'Users' };",
+        Values =
+        {
+            { "FirstName", "John" },
+            { "LastName", "Doe" },
+            { "InitialLoginCount", 1 }
+        }
+    }));
+
+// Send the deferred command in the session batch.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Increment LoginCount by 1, or create users/1 if it does not exist.
+
+// Send explicit JavaScript patches directly through the document store.
+// This API does not use a session, so SaveChanges is not required.
+store.Operations.Send(new PatchOperation(
+    id: "users/1",
+    changeVector: null,
+    // This patch runs only if the document already exists.
+    patch: new PatchRequest
+    {
+        // Add to the field if it is present; otherwise create it with the value.
+        Script = @"this.LoginCount = this.LoginCount === undefined || this.LoginCount === null
+                   ? args.ValueToAdd
+                   : this.LoginCount + args.ValueToAdd;",
+        Values =
+        {
+            { "ValueToAdd", 1 }
+        }
+    },
+    // This patch runs only if the document does not exist.
+    // It builds the new document and assigns it to the Users collection.
+    patchIfMissing: new PatchRequest
+    {
+        Script = @"this.FirstName = args.FirstName;
+                   this.LastName = args.LastName;
+                   this.LoginCount = args.InitialLoginCount;
+                   this['@metadata'] = { '@collection': 'Users' };",
+        Values =
+        {
+            { "FirstName", "John" },
+            { "LastName", "Doe" },
+            { "InitialLoginCount", 1 }
+        }
+    }));
+```
+</TabItem>
+<TabItem value="User_class" label="User_class">
+```csharp
+public class User
+{
+    public string Id { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public int LoginCount { get; set; }
+    public DateTime LastLogin { get; set; }
+    public List<DateTime> LoginTimes { get; set; }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Add or patch
+
+`AddOrPatch` always uses a JavaScript patch command and behaves as follows:
+
+* If the document exists:
+  * RavenDB sets the specified field to the patch value,  
+    replacing its current value or adding the field if it does not exist.
+  * The provided entity is ignored.    
+* If the document does not exist:
+  * RavenDB creates it from the provided entity.
+  * The patch value is ignored.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```csharp
+// If users/1 exists, set LastLogin to September 12, 2021.
+// Otherwise, create the document with an initial LastLogin of January 1, 2021.
+
+// AddOrPatch always uses a JavaScript patch command.
+session.Advanced.AddOrPatch<User, DateTime>(
+    "users/1",
+    // This entity is used only if the document does not exist.
+    new User
+    {
+        FirstName = "John",
+        LastName = "Doe",
+        LastLogin = new DateTime(2021, 1, 1)
+    },
+    // If the document exists, replace LastLogin with this value.
+    // If the field does not exist, add it with this value.
+    x => x.LastLogin, new DateTime(2021, 9, 12));
+
+// Send the queued command in the session batch.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// If users/1 exists, set LastLogin to September 12, 2021.
+// Otherwise, create the document with an initial LastLogin of January 1, 2021.
+
+// Queue explicit JavaScript patches that implement AddOrPatch behavior.
+session.Advanced.Defer(new PatchCommandData(
+    id: "users/1",
+    changeVector: null,
+    // This patch runs only if the document already exists.
+    patch: new PatchRequest
+    {
+        Script = "this.LastLogin = args.NewValue;",
+        Values =
+        {
+            { "NewValue", new DateTime(2021, 9, 12) }
+        }
+    },
+    // This patch runs only if the document does not exist.
+    // It builds the new document and assigns it to the Users collection.
+    patchIfMissing: new PatchRequest
+    {
+        Script = @"this.FirstName = args.FirstName;
+                   this.LastName = args.LastName;
+                   this.LastLogin = args.InitialLastLogin;
+                   this['@metadata'] = { '@collection': 'Users' };",
+        Values =
+        {
+            { "FirstName", "John" },
+            { "LastName", "Doe" },
+            { "InitialLastLogin", new DateTime(2021, 1, 1) }
+        }
+    }));
+
+// Send the deferred command in the session batch.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// If users/1 exists, set LastLogin to September 12, 2021.
+// Otherwise, create the document with an initial LastLogin of January 1, 2021.
+
+// Send explicit JavaScript patches directly through the document store.
+// This API does not use a session, so SaveChanges is not required.
+store.Operations.Send(new PatchOperation(
+    id: "users/1",
+    changeVector: null,
+    // This patch runs only if the document already exists.
+    patch: new PatchRequest
+    {
+        Script = "this.LastLogin = args.NewValue;",
+        Values =
+        {
+            { "NewValue", new DateTime(2021, 9, 12) }
+        }
+    },
+    // This patch runs only if the document does not exist.
+    // It builds the new document and assigns it to the Users collection.
+    patchIfMissing: new PatchRequest
+    {
+        Script = @"this.FirstName = args.FirstName;
+                   this.LastName = args.LastName;
+                   this.LastLogin = args.InitialLastLogin;
+                   this['@metadata'] = { '@collection': 'Users' };",
+        Values =
+        {
+            { "FirstName", "John" },
+            { "LastName", "Doe" },
+            { "InitialLastLogin", new DateTime(2021, 1, 1) }
+        }
+    }));
+```
+</TabItem>
+<TabItem value="User_class" label="User_class">
+```csharp
+public class User
+{
+    public string Id { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public int LoginCount { get; set; }
+    public DateTime LastLogin { get; set; }
+    public List<DateTime> LoginTimes { get; set; }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Add item to array
+
+Adding an item to an array behaves as follows:
+
+* If the document and the specified array exist, RavenDB appends the item to the array.
+* If the document exists but the specified array is missing or `null`,  
+  the `push` call resolves to a no-op. No exception is thrown, nothing is patched,  
+  and RavenDB does not create the array.
+* If the document exists but the specified field holds a value that is not an array  
+  (for example a string or a number), the patch fails.
+* If the document does not exist, no patch is applied and no document is created.
+
+Because `BlogComment` is a complex object, the typed Session API example falls back to a JavaScript patch command.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```csharp
+// Append a new comment to the existing Comments array.
+// The document and the Comments array must already exist.
+
+// BlogComment is a complex object, so this typed call uses
+// a JavaScript patch command rather than JSON Patch.
+session.Advanced.Patch<BlogPost, BlogComment>(
+    "blogposts/1",
+    post => post.Comments,
+    comments => comments.Add(new BlogComment
+    {
+        Title = "New comment",
+        Content = "Lorem ipsum."
+    }));
+
+// Send the queued patch command in the session batch.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Append a new comment to the existing Comments array.
+// The document and the Comments array must already exist.
+
+// Queue an explicit JavaScript patch in the session.
+session.Advanced.Defer(new PatchCommandData(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.Comments.push(args.Comment);",
+        // Pass the new comment separately as a script argument.
+        Values =
+        {
+            {
+                "Comment", new BlogComment
+                {
+                    Title = "New comment",
+                    Content = "Lorem ipsum."
+                }
+            }
+        }
+    },
+    // Do not create the document if it does not exist.
+    patchIfMissing: null));
+
+// Send the deferred patch in the session batch.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Append a new comment to the existing Comments array.
+// The document and the Comments array must already exist.
+
+// Send an explicit JavaScript patch directly through the document store.
+// This API does not use a session, so SaveChanges is not required.
+store.Operations.Send(new PatchOperation(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.Comments.push(args.Comment);",
+        // Pass the new comment separately as a script argument.
+        Values =
+        {
+            {
+                "Comment", new BlogComment
+                {
+                    Title = "New comment",
+                    Content = "Lorem ipsum."
+                }
+            }
+        }
+    },
+    // Do not create the document if it does not exist.
+    patchIfMissing: null));
+```
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+```csharp
+public class BlogPost
+{
+    public string Id { get; set; }
+    public string Title { get; set; }
+    public string Body { get; set; }
+    public List<BlogComment> Comments { get; set; }
+}
+
+public class BlogComment
+{
+    public string Title { get; set; }
+    public string Content { get; set; }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Add items to an array with AddOrPatch
+
+The array overload of `AddOrPatch` always uses a JavaScript patch command and behaves as follows:
+
+* If the document and the specified array exist:
+  * RavenDB appends the specified items to the array.
+  * The provided entity is ignored.    
+* If the document exists but the specified array is missing or `null`:
+  * The `push` call resolves to a no-op. No exception is thrown,  
+    and RavenDB does not create the array.
+  * The provided entity is ignored.    
+* If the document exists but the specified field holds a value that is not an array:
+  * The patch fails.
+  * The provided entity is ignored.    
+* If the document does not exist:
+  * RavenDB creates it from the provided entity.
+  * The array modification is ignored.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```csharp
+// If users/1 and its LoginTimes array exist, append two login times.
+// Otherwise, if the document is missing, create it with one initial login time.
+
+// AddOrPatch always uses a JavaScript patch command.
+session.Advanced.AddOrPatch<User, DateTime>(
+    "users/1",
+    // This entity is used only if the document does not exist.
+    new User
+    {
+        FirstName = "John",
+        LastName = "Doe",
+        LoginTimes = new List<DateTime>
+        {
+            new DateTime(2021, 1, 1)
+        }
+    },
+    // If the document exists, this array must already exist.
+    user => user.LoginTimes,
+    // Append both values to the existing array.
+    loginTimes => loginTimes.Add(
+        new DateTime(1993, 9, 12),
+        new DateTime(2000, 1, 1)));
+
+// Send the queued command in the session batch.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// If users/1 and its LoginTimes array exist, append two login times.
+// Otherwise, if the document is missing, create it with one initial login time.
+
+// Queue explicit JavaScript patches that implement AddOrPatch behavior.
+session.Advanced.Defer(new PatchCommandData(
+    id: "users/1",
+    changeVector: null,
+    // This patch runs only if the document already exists.
+    // LoginTimes must already be an array.
+    patch: new PatchRequest
+    {
+        Script = "this.LoginTimes.push(args.FirstTime, args.SecondTime);",
+        Values =
+        {
+            { "FirstTime", new DateTime(1993, 9, 12) },
+            { "SecondTime", new DateTime(2000, 1, 1) }
+        }
+    },
+    // This patch runs only if the document does not exist.
+    // It builds the new document and assigns it to the Users collection.
+    patchIfMissing: new PatchRequest
+    {
+        Script = @"this.FirstName = args.FirstName;
+                   this.LastName = args.LastName;
+                   this.LoginTimes = [args.InitialLoginTime];
+                   this['@metadata'] = { '@collection': 'Users' };",
+        Values =
+        {
+            { "FirstName", "John" },
+            { "LastName", "Doe" },
+            { "InitialLoginTime", new DateTime(2021, 1, 1) }
+        }
+    }));
+
+// Send the deferred command in the session batch.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// If users/1 and its LoginTimes array exist, append two login times.
+// Otherwise, if the document is missing, create it with one initial login time.
+
+// Send explicit JavaScript patches directly through the document store.
+// This API does not use a session, so SaveChanges is not required.
+store.Operations.Send(new PatchOperation(
+    id: "users/1",
+    changeVector: null,
+    // This patch runs only if the document already exists.
+    // LoginTimes must already be an array.
+    patch: new PatchRequest
+    {
+        Script = "this.LoginTimes.push(args.FirstTime, args.SecondTime);",
+        Values =
+        {
+            { "FirstTime", new DateTime(1993, 9, 12) },
+            { "SecondTime", new DateTime(2000, 1, 1) }
+        }
+    },
+    // This patch runs only if the document does not exist.
+    // It builds the new document and assigns it to the Users collection.
+    patchIfMissing: new PatchRequest
+    {
+        Script = @"this.FirstName = args.FirstName;
+                   this.LastName = args.LastName;
+                   this.LoginTimes = [args.InitialLoginTime];
+                   this['@metadata'] = { '@collection': 'Users' };",
+        Values =
+        {
+            { "FirstName", "John" },
+            { "LastName", "Doe" },
+            { "InitialLoginTime", new DateTime(2021, 1, 1) }
+        }
+    }));
+```
+</TabItem>
+<TabItem value="User_class" label="User_class">
+```csharp
+public class User
+{
+    public string Id { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public int LoginCount { get; set; }
+    public DateTime LastLogin { get; set; }
+    public List<DateTime> LoginTimes { get; set; }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Insert item at a specific array index
+
+* The typed Session API does not provide an array-insertion helper.  
+  To insert an item at a specific index, use an explicit JavaScript patch through `Defer` or the Operations API.
+
+* JavaScript array indexes are zero-based.  
+  In the examples below, `splice(index, 0, item)` inserts the item before the existing item at the given index without removing anything.
+  The examples insert at index `1`, which is the second position.
+
+* The document and the specified array must already exist.  
+  If the array is missing or `null`, `splice` resolves to a no-op and nothing is patched.  
+  If the field holds a value that is not an array, the patch fails.  
+  If the document does not exist, no document is created.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Insert a new comment at index 1 in the existing Comments array.
+// Index 1 is the second position because array indexes are zero-based.
+// The document and the Comments array must already exist.
+
+// Queue an explicit JavaScript patch in the session.
+session.Advanced.Defer(new PatchCommandData(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        // splice(startIndex, deleteCount, item) inserts the item at the given index
+        // and removes no existing items because deleteCount is 0.
+        Script = "this.Comments.splice(args.Index, 0, args.Comment);",
+        // Pass the insertion index and the new comment as script arguments.
+        Values =
+        {
+            { "Index", 1 },
+            {
+                "Comment", new BlogComment
+                {
+                    Title = "New comment",
+                    Content = "Lorem ipsum."
+                }
+            }
+        }
+    },
+    // Do not create the document if it does not exist.
+    patchIfMissing: null));
+
+// Send the deferred patch in the session batch.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Insert a new comment at index 1 in the existing Comments array.
+// Index 1 is the second position because array indexes are zero-based.
+// The document and the Comments array must already exist.
+
+// Send an explicit JavaScript patch directly through the document store.
+// This API does not use a session, so SaveChanges is not required.
+store.Operations.Send(new PatchOperation(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        // splice(startIndex, deleteCount, item) inserts the item at the given index
+        // and removes no existing items because deleteCount is 0.
+        Script = "this.Comments.splice(args.Index, 0, args.Comment);",
+        // Pass the insertion index and the new comment as script arguments.
+        Values =
+        {
+            { "Index", 1 },
+            {
+                "Comment", new BlogComment
+                {
+                    Title = "New comment",
+                    Content = "Lorem ipsum."
+                }
+            }
+        }
+    },
+    // Do not create the document if it does not exist.
+    patchIfMissing: null));
+```
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+```csharp
+public class BlogPost
+{
+    public string Id { get; set; }
+    public string Title { get; set; }
+    public string Body { get; set; }
+    public List<BlogComment> Comments { get; set; }
+}
+
+public class BlogComment
+{
+    public string Title { get; set; }
+    public string Content { get; set; }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Replace item at a specific array index
+
+* Use the typed Session API, `Defer`, or the Operations API to replace an array item at a specified zero-based index.
+
+* The following examples replace the entire `BlogComment` at index `3`, which is the fourth item in the array.  
+  The document, the `Comments` array, and the item at index `3` are expected to exist.
+
+* Because `BlogComment` is a complex object, the typed Session API example uses a JavaScript patch command.  
+  All three examples therefore perform a JavaScript indexed assignment.
+
+* If the array is missing or `null`, the patch fails.  
+  In the JavaScript examples, assigning to a non-negative index at or beyond the current array length extends the array rather than reporting a missing target.  
+  This behavior is specific to JavaScript patches.  
+  For a value that the client can represent as JSON Patch, the typed call generates a `replace` operation instead, and `SaveChanges` throws when the target index does not exist.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```csharp
+// Replace the comment at index 3 in the Comments array.
+// Index 3 is the fourth position because array indexes are zero-based.
+// The document, array, and item at index 3 are expected to exist.
+
+// BlogComment is a complex object, so this typed call uses
+// a JavaScript patch command rather than JSON Patch.
+session.Advanced.Patch<BlogPost, BlogComment>(
+    "blogposts/1",
+    post => post.Comments[3],
+    new BlogComment
+    {
+        Title = "Updated comment",
+        Content = "Updated content."
+    });
+
+// Send the queued patch command in the session batch.
+session.SaveChanges();
+```
+</TabItem>    
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Replace the comment at index 3 in the Comments array.
+// Index 3 is the fourth position because array indexes are zero-based.
+// The document, array, and item at index 3 are expected to exist.
+
+// Queue an explicit JavaScript patch in the session.
+session.Advanced.Defer(new PatchCommandData(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        // Indexed assignment replaces the existing item at the specified index.
+        Script = "this.Comments[args.Index] = args.Comment;",
+        Values =
+        {
+            { "Index", 3 },
+            {
+                "Comment", new BlogComment
+                {
+                    Title = "Updated comment",
+                    Content = "Updated content."
+                }
+            }
+        }
+    },
+    // Do not create the document if it does not exist.
+    patchIfMissing: null));
+
+// Send the deferred patch in the session batch.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Replace the comment at index 3 in the Comments array.
+// Index 3 is the fourth position because array indexes are zero-based.
+// The document, array, and item at index 3 are expected to exist.
+
+// Send an explicit JavaScript patch directly through the document store.
+// This API does not use a session, so SaveChanges is not required.
+store.Operations.Send(new PatchOperation(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        // Indexed assignment replaces the existing item at the specified index.
+        Script = "this.Comments[args.Index] = args.Comment;",
+        Values =
+        {
+            { "Index", 3 },
+            {
+                "Comment", new BlogComment
+                {
+                    Title = "Updated comment",
+                    Content = "Updated content."
+                }
+            }
+        }
+    },
+    // Do not create the document if it does not exist.
+    patchIfMissing: null));
+```
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+```csharp
+public class BlogPost
+{
+    public string Id { get; set; }
+    public string Title { get; set; }
+    public string Body { get; set; }
+    public List<BlogComment> Comments { get; set; }
+}
+
+public class BlogComment
+{
+    public string Title { get; set; }
+    public string Content { get; set; }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Remove item at a specific array index
+
+* Use `RemoveAt` with the typed Session API, or JavaScript `splice`,  
+  to remove an item at a specified zero-based array index.
+
+* The document and the target array must exist.  
+  If the document does not exist, no document is created.  
+  If the array is missing or `null`, the default Session behavior generates a JSON Patch `remove`  
+  operation that cannot reach its target, so `SaveChanges` throws and the batch is rolled back.  
+  In the explicit JavaScript examples, `splice` resolves to a no-op and nothing is patched.  
+  If the field holds a value that is not an array, the patch fails in all three examples.
+
+* If the specified non-negative index is at or beyond the array length:
+  * With the default Session behavior, `RemoveAt` generates a JSON Patch `remove` operation.  
+    `SaveChanges` throws an exception and the batch is rolled back.
+  * In the explicit JavaScript examples, `splice` performs no operation and does not throw.
+
+* JavaScript `splice` treats a negative index as an offset from the end of the array,  
+  so a negative value can remove an item instead of being a no-op.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```csharp
+// Remove the comment at index 3 (the fourth item) from the Comments array.
+// With the default convention, RemoveAt generates a JSON Patch remove operation.
+// If index 3 does not exist, SaveChanges throws an exception.
+session.Advanced.Patch<BlogPost, BlogComment>(
+    "blogposts/1",
+    post => post.Comments,
+    comments => comments.RemoveAt(3));
+
+// Send the pending patch operation to the server.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Queue a JavaScript patch that removes one comment from the Comments array.
+// splice(startIndex, deleteCount) removes one item at the zero-based index.
+// If the index is outside the array, splice performs no operation.
+session.Advanced.Defer(new PatchCommandData(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.Comments.splice(args.Index, 1);",
+        Values =
+        {
+            { "Index", 3 }
+        }
+    },
+    patchIfMissing: null));
+
+// Send the deferred patch command to the server.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Execute a JavaScript patch that removes one comment from the Comments array.
+// splice(startIndex, deleteCount) removes one item at the zero-based index.
+// If the index is outside the array, splice performs no operation.
+store.Operations.Send(new PatchOperation(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.Comments.splice(args.Index, 1);",
+        Values =
+        {
+            { "Index", 3 }
+        }
+    },
+    patchIfMissing: null));
+```
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+```csharp
+public class BlogPost
+{
+    public string Id { get; set; }
+    public string Title { get; set; }
+    public string Body { get; set; }
+    public List<BlogComment> Comments { get; set; }
+}
+
+public class BlogComment
+{
+    public string Title { get; set; }
+    public string Content { get; set; }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Remove all matching items from an array
+
+* Use `RemoveAll` or JavaScript `filter` to remove every array item that matches a predicate.
+
+* All three examples execute as JavaScript patches.  
+  The typed Session API automatically translates `RemoveAll` to a `filter` call because predicate-based removal cannot be represented as JSON Patch.
+
+* In these examples, matching is case-sensitive and substring-based.  
+  Every comment whose `Content` contains `"wrong"` is removed.
+
+* If the document does not exist, the patch has no effect and no document is created.  
+  If the array is empty or no item matches, the array remains unchanged.
+
+* If the target field is missing, `filter` evaluates to an empty array,  
+  so the script sets the field to an empty array.  
+  If the field is explicitly `null`, `filter` resolves to a no-op and the script sets the field to `null`.  
+  If it holds a value that is not an array, the patch fails.  
+  Guard the assignment if none of these outcomes is desired.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```csharp
+// Remove every comment whose Content contains the case-sensitive substring "wrong".
+// RemoveAll is translated to a JavaScript filter patch because predicate-based
+// array removal cannot be represented as JSON Patch.
+session.Advanced.Patch<BlogPost, BlogComment>(
+    "blogposts/1",
+    post => post.Comments,
+    comments => comments.RemoveAll(
+        comment => comment.Content.Contains("wrong")));
+
+// Send the pending patch operation to the server.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Queue a JavaScript patch that removes every comment whose Content
+// contains the case-sensitive substring "wrong".
+session.Advanced.Defer(new PatchCommandData(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        // filter keeps items for which the callback returns true.
+        // Negating includes keeps only comments that do not contain the substring.
+        Script = @"this.Comments = this.Comments.filter(
+            comment => !comment.Content.includes(args.Text));",
+        Values =
+        {
+            { "Text", "wrong" }
+        }
+    },
+    patchIfMissing: null));
+
+// Send the deferred patch command to the server.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Execute a JavaScript patch that removes every comment whose Content
+// contains the case-sensitive substring "wrong".
+store.Operations.Send(new PatchOperation(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        // filter keeps items for which the callback returns true.
+        // Negating includes keeps only comments that do not contain the substring.
+        Script = @"this.Comments = this.Comments.filter(
+            comment => !comment.Content.includes(args.Text));",
+        Values =
+        {
+            { "Text", "wrong" }
+        }
+    },
+    patchIfMissing: null));
+```
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+```csharp
+public class BlogPost
+{
+    public string Id { get; set; }
+    public string Title { get; set; }
+    public string Body { get; set; }
+    public List<BlogComment> Comments { get; set; }
+}
+
+public class BlogComment
+{
+    public string Title { get; set; }
+    public string Content { get; set; }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Patch a dictionary
+
+* Use `Patch` with the typed Session API, or an explicit JavaScript patch, to add, update, or remove dictionary entries:
+  * Adding an entry creates the key if it does not exist, or replaces its value if the key already exists.
+  * Removing an entry deletes the specified key.
+
+* The document and the target dictionary must exist.  
+  If the document does not exist, the patch has no effect and no document is created.  
+  If the dictionary is missing or `null`, the patch fails.
+
+* With the default Session behavior, typed `Add` and `Remove` calls generate JSON Patch operations when the dictionary path, key, 
+  and added value can be represented as JSON Patch. 
+  Otherwise, the client falls back to a JavaScript patch command. 
+  If a `Remove` call is generated as JSON Patch, removing a key that does not exist causes `SaveChanges()` to throw and rolls back the batch. 
+  With JavaScript, deleting a key that does not exist has no effect and does not throw.
+    
+* Keys may contain dots, dashes, spaces, quotes, or backslashes, and require no manual escaping.  
+  In a JSON Patch command the key is escaped as a JSON Pointer segment,  
+  with `~` becoming `~0` and `/` becoming `~1`.  
+    
+  In a JavaScript patch command it is written as a quoted JavaScript string literal in bracket notation,  
+  for example `this.Preferences["key-with-dash"] = args.val_0;`.
+
+* The key passed to `Add` or `Remove` can be a literal, a local variable, or a property of another object.  
+  Enum keys are stored as their string names.  
+  A `null` key throws `ArgumentNullException`.    
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```csharp
+// Add the "language" preference or update its value if the key already exists.
+session.Advanced.Patch<User, string, string>(
+    "users/1",
+    user => user.Preferences,
+    preferences => preferences.Add("language", "en-US"));
+
+// Remove the "theme" preference.
+// With the default JSON Patch behavior, the key must exist.
+session.Advanced.Patch<User, string, string>(
+    "users/1",
+    user => user.Preferences,
+    preferences => preferences.Remove("theme"));
+
+// Add also accepts a KeyValuePair, which is equivalent to Add(key, value).
+session.Advanced.Patch<User, string, string>(
+    "users/1",
+    user => user.Preferences,
+    preferences => preferences.Add(
+        new KeyValuePair<string, string>("timezone", "UTC")));    
+    
+// Send the pending dictionary changes to the server in a single request.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Queue a JavaScript patch that adds or updates the "language" preference
+// and removes the "theme" preference.
+session.Advanced.Defer(new PatchCommandData(
+    id: "users/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        // Assignment adds the key or replaces its current value.
+        // delete removes the key and is a no-op if the key does not exist.
+        Script = @"this.Preferences[args.KeyToAddOrUpdate] = args.Value;
+                   delete this.Preferences[args.KeyToRemove];",
+        Values =
+        {
+            { "KeyToAddOrUpdate", "language" },
+            { "Value", "en-US" },
+            { "KeyToRemove", "theme" }
+        }
+    },
+    patchIfMissing: null));
+
+// Send the deferred patch command to the server.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Execute a JavaScript patch that adds or updates the "language" preference
+// and removes the "theme" preference.
+store.Operations.Send(new PatchOperation(
+    id: "users/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        // Assignment adds the key or replaces its current value.
+        // delete removes the key and is a no-op if the key does not exist.
+        Script = @"this.Preferences[args.KeyToAddOrUpdate] = args.Value;
+                   delete this.Preferences[args.KeyToRemove];",
+        Values =
+        {
+            { "KeyToAddOrUpdate", "language" },
+            { "Value", "en-US" },
+            { "KeyToRemove", "theme" }
+        }
+    },
+    patchIfMissing: null));
+```
+</TabItem>
+<TabItem value="User_class" label="User_class">
+```csharp
+public class User
+{
+    public string Id { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public int LoginCount { get; set; }
+    public DateTime LastLogin { get; set; }
+    public List<DateTime> LoginTimes { get; set; }
+
+    // Stores user preferences as key-value pairs,
+    // for example: "theme": "dark" and "language": "en".
+    public Dictionary<string, string> Preferences { get; set; }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Patch a single dictionary entry
+
+* To set one entry, pass a path that indexes into the dictionary,  
+  for example `user => user.Preferences["language"]`.  
+  Assigning to a key that does not exist creates it. Other entries are left untouched.  
+  This overload only sets a value. To delete a key, use `Remove` as shown in [Patch a dictionary](#patch-a-dictionary).
+
+* The key can be a literal, a local variable, or a property of another object.
+
+* A dictionary-indexed path is always sent as a JavaScript patch command,  
+  regardless of the [SessionPatchBehavior convention](../../../../../client-api/configuration/conventions.mdx#sessionpatchbehavior),
+  because the client builds JSON Pointer segments from property names and constant numeric indexes only.  
+    
+  The key is written into the generated script as a quoted JavaScript string literal in bracket notation,  
+  for example `this.Preferences["key-with-dash"] = args.val_0;`,  
+  so keys containing dots, dashes, spaces, quotes, or backslashes need no manual escaping.
+
+* If the document does not exist, the patch has no effect and no document is created.  
+  If the dictionary field is missing or `null`, the patch fails.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```csharp
+// Set the "language" preference without loading the document.
+// The key is created if it does not exist, or its value is replaced if it does.
+session.Advanced.Patch<User, string>(
+    "users/1",
+    user => user.Preferences["language"], "en-US");
+
+// The key can also be supplied at run time, including keys that are not
+// valid JavaScript identifiers.
+var preferenceKey = "font-size";
+
+session.Advanced.Patch<User, string>(
+    "users/1",
+    user => user.Preferences[preferenceKey], "14px");
+
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// The equivalent explicit JavaScript patch.
+// Passing the key through args keeps it separate from the script text.
+session.Advanced.Defer(new PatchCommandData(
+    id: "users/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.Preferences[args.Key] = args.Value;",
+        Values =
+        {
+            { "Key", "font-size" },
+            { "Value", "14px" }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>    
+<ContentFrame>
+
+### Remove property
+
+* Use the JavaScript `delete` operator to remove a property from a document.  
+  Removing an arbitrary document property is not supported by the typed Session `Patch` API;  
+  use a deferred patch command or the Operations API.
+
+* The property is removed entirely rather than assigned a `null` value.  
+  If the property does not exist, `delete` has no effect and does not throw an exception.
+
+* If the document does not exist, the patch has no effect and no document is created.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Queue a JavaScript patch that removes the Extension property from the document.
+// delete removes the property entirely instead of assigning it a null value.
+// If Extension does not exist, delete has no effect.
+session.Advanced.Defer(new PatchCommandData(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "delete this.Extension;"
+    },
+    patchIfMissing: null));
+
+// Send the deferred patch command to the server.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Execute a JavaScript patch that removes the Extension property from the document.
+// delete removes the property entirely instead of assigning it a null value.
+// If Extension does not exist, delete has no effect.
+store.Operations.Send(new PatchOperation(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "delete this.Extension;"
+    },
+    patchIfMissing: null));
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Rename property
+
+* Rename a property by copying its value to a new property and then deleting the original property.  
+  Renaming an arbitrary document property is not supported by the typed Session `Patch` API;  
+  use a deferred JavaScript patch command or the Operations API.
+
+* The examples perform the rename only if the original property exists.  
+  Its value, including a `null` value, is preserved. If the destination property already exists, its value is replaced.
+
+* If the original property does not exist, the patch has no effect.  
+  If the document does not exist, no document is created.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```csharp
+// Queue a JavaScript patch that renames HomePhone to Phone.
+// If HomePhone exists, its value is preserved and HomePhone is removed.
+// If Phone already exists, its current value is replaced.
+session.Advanced.Defer(new PatchCommandData(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        // Check for the source property so a missing HomePhone is a no-op.
+        Script = @"
+            if (this[args.OldPropertyName] !== undefined) {
+                var value = this[args.OldPropertyName];
+                delete this[args.OldPropertyName];
+                this[args.NewPropertyName] = value;
+            }",
+        Values =
+        {
+            { "OldPropertyName", "HomePhone" },
+            { "NewPropertyName", "Phone" }
+        }
+    },
+    patchIfMissing: null));
+
+// Send the deferred patch command to the server.
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```csharp
+// Execute a JavaScript patch that renames HomePhone to Phone.
+// If HomePhone exists, its value is preserved and HomePhone is removed.
+// If Phone already exists, its current value is replaced.
+store.Operations.Send(new PatchOperation(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        // Check for the source property so a missing HomePhone is a no-op.
+        Script = @"
+            if (this[args.OldPropertyName] !== undefined) {
+                var value = this[args.OldPropertyName];
+                delete this[args.OldPropertyName];
+                this[args.NewPropertyName] = value;
+            }",
+        Values =
+        {
+            { "OldPropertyName", "HomePhone" },
+            { "NewPropertyName", "Phone" }
+        }
+    },
+    patchIfMissing: null));
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>

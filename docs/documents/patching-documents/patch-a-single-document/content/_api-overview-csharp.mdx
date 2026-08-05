@@ -1,0 +1,846 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* Use the **Patch** operation to update selected parts of a document without requiring the client to load, modify,  
+  and save the full document.  
+  
+* The patch is sent in a single request and applied atomically by the server in a single write [transaction](../../../../client-api/faq/transaction-support.mdx).  
+  This reduces client-server traffic and is especially useful when updating denormalized data.
+
+* This article covers patching a **single** document through the Client API.  
+  To patch **multiple** documents that match specified criteria, see  
+  [Patch Multiple Documents - Using the Client API](../../../../documents/patching-documents/patch-multiple-documents/client-api.mdx) or  
+  [Patch Multiple Documents - Using Studio](../../../../documents/patching-documents/patch-multiple-documents/patch-view.mdx).    
+
+* In this article:  
+  * [API overview](#api-overview)  
+    * [Session API](#session-api)  
+    * [JSON Patch and JavaScript patch formats](#json-patch-and-javascript-patch-formats)  
+    * [Session API using Defer](#session-api-using-defer)  
+    * [Operations API](#operations-api)  
+  * [Syntax](#syntax)
+    * [Session API syntax](#session-api-syntax)
+    * [Session API using Defer syntax](#session-api-using-defer-syntax)
+    * [Operations API syntax](#operations-api-syntax)
+    * [List of script methods syntax](#list-of-script-methods-syntax)
+
+</Admonition>
+
+<Panel heading="API overview">
+
+* You can patch a single document through any of the following Client API approaches:
+  * [**Session API**](#session-api)  
+    Use session helper methods for common patch operations.
+  * [**Session API using Defer**](#session-api-using-defer)    
+    Queue a custom JavaScript patch command as part of the session.
+  * [**Operations API**](#operations-api)  
+    Send a custom JavaScript patch command directly through the document store, without using a session.
+    
+* Each section below includes a basic example.  
+  For additional examples using all three APIs, see:
+  * [Fields and Arrays](../../../../documents/patching-documents/patch-a-single-document/examples/patch-examples-fields-and-arrays.mdx)  
+  * [Documents and Metadata](../../../../documents/patching-documents/patch-a-single-document/examples/patch-examples-documents-and-metadata.mdx)  
+  * [Counters, Time Series, and Attachments](../../../../documents/patching-documents/patch-a-single-document/examples/patch-examples-counters-time-series-attachments.mdx)  
+  * [Advanced Scripts](../../../../documents/patching-documents/patch-a-single-document/examples/patch-examples-advanced-scripts.mdx)
+    
+* Refer to the [Syntax](#syntax) section for detailed method signatures.
+    
+---    
+
+<Admonition type="note" title="">
+
+### Session API
+
+The type-safe `Session.Advanced` API provides the following methods for common single-document patch operations:
+
+* `Patch`
+* `AddOrPatch`
+* `Increment`
+* `AddOrIncrement`
+
+<ContentFrame>
+
+#### Example: Modify a single field
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+```csharp
+// Modify FirstName to Robert    
+// With the default convention, this typed call generates a JSON Patch command.    
+session.Advanced.Patch<Employee, string>(
+    "employees/1",
+    x => x.FirstName, "Robert");
+
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Async" label="Async">
+```csharp
+// Modify FirstName to Robert    
+// With the default convention, this typed call generates a JSON Patch command.    
+asyncSession.Advanced.Patch<Employee, string>(
+    "employees/1",
+    x => x.FirstName, "Robert");
+
+await asyncSession.SaveChangesAsync();
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+**Custom patch scripts**:  
+To run a custom patch script containing computations, conditions, loops, or calls to RavenDB's patching functions,
+use [Defer](#session-api-using-defer) or the [Operations API](#operations-api).    
+    
+---
+   
+**Saving session patches**:    
+Calls to these methods are queued in the [session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx)
+and sent to the server only when [SaveChanges](../../../../client-api/session/saving-changes.mdx) is called.  
+`SaveChanges()` sends the patch commands together with all other changes tracked by the session -  
+including stored, modified, and deleted documents - as a single batch in one HTTP request.    
+   
+---
+        
+**Missing documents**:    
+If the target document does not exist, session-generated `Patch` and `Increment` commands make no changes,  
+and `SaveChanges()` does not throw.  
+Use `AddOrPatch` or `AddOrIncrement` when a missing document should be created.      
+This differs from an explicitly sent [JsonPatchOperation](../../../../documents/patching-documents/patch-a-single-document/json-patch.mdx), which throws if the target document does not exist.  
+   
+---
+    
+**Transaction guarantees**:  
+The server executes the entire `SaveChanges` batch in one ACID transaction.  
+If the server cannot execute any command in the batch, for example because of a patch error or a concurrency conflict, `SaveChanges()` throws; awaiting `SaveChangesAsync()` also throws.  
+The server rolls back the transaction, and none of the changes in the batch are persisted.  
+When the save call completes successfully, the entire batch has been persisted.  
+   
+---
+    
+**Optimistic concurrency**:  
+Patch commands generated by these typed Session API methods carry no change vector in either command format,  
+even when [optimistic concurrency](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx) is enabled.  
+Consequently, these generated patch commands are not rejected merely because the target document changed after the patch was queued.  
+    
+Another command in the batch - such as a stored document or an explicitly deferred  
+[PatchCommandData](#session-api-using-defer-syntax) that supplies a change vector - can still fail with a concurrency conflict.
+
+---
+
+<a id="patching-modified-document-tracked-by-same-session"/>
+**Patching a modified document tracked by the same session**:    
+If the session tracks the target document and considers it modified, `SaveChanges()` throws an `InvalidOperationException`; awaiting `SaveChangesAsync()` also throws.  
+
+This restriction applies whether you pass the document ID or the tracked entity to a typed Session API patch method,
+and regardless of which command format the client selects (see [JSON Patch and JavaScript patch formats](#json-patch-and-javascript-patch-formats)).
+It also applies to a `PatchCommandData` queued with [Defer](#session-api-using-defer).
+        
+The exception message identifies the patch command format selected by the client:
+`Cannot perform save because document <id> has been modified by the session and is also taking part in deferred <command-type> command`,
+where `<command-type>` is `JsonPatch` for JSON Patch or `PATCH` for JavaScript patching.     
+    
+For a document loaded into the session, the client detects entity changes by serializing the entity and comparing the resulting document with the snapshot taken when the document was loaded.  
+Consequently, the entity can be considered modified even when you did not edit it.  
+For example:
+
+* A property represented by the .NET model but absent from the stored document can be serialized with its CLR default value and reported as a new field.
+* By default, the client preserves stored properties that are not represented by the .NET model.  
+  If [PreserveDocumentPropertiesNotFoundOnModel](../../../../client-api/configuration/deserialization.mdx#preservedocumentpropertiesnotfoundonmodel) is set to `false`, those properties are omitted when the entity is serialized and reported as removed.
+
+Changes made through the session's metadata API can also cause the document to be considered modified.
+
+To persist only the patch, either queue it in a separate session that is not tracking the target document,  
+or call `session.Advanced.IgnoreChangesFor(entity)` at any point before the save call.  
+`IgnoreChangesFor` does not revert or remove the entity's in-memory edits.  
+It prevents the session from sending a document update for those edits; the queued patch is still sent.  
+While the entity remains tracked, subsequent save calls will continue to ignore its changes.  
+Use this method only when the patch is the only change you want persisted for that document.
+
+---
+    
+### JSON Patch and JavaScript patch formats
+
+For the **.NET** typed `Session.Advanced.Patch` overloads, the client queues the requested change internally as either an RFC 6902 **JSON Patch command** or a **JavaScript patch command**.  
+You continue using the same session patch methods regardless of which patch format is selected.
+
+<ContentFrame>
+    
+##### How the patch formats differ   
+    
+| Patch format         | How the change is represented |
+| -------------------- | ----------------------------- |
+| **JSON Patch**       | A standardized, declarative list of operations. Each operation contains an `op` and a `path` into the document, and may also contain a `value` or `from` path. The server applies these operations directly without executing a JavaScript patch script. |
+| **JavaScript patch** | A JavaScript script with optional parameter values. The script can contain computations, conditions, loops, and calls to RavenDB's patching functions. |
+
+JSON Patch has a fixed set of operations: `add`, `remove`, `replace`, `move`, `copy`, and `test`.  
+JavaScript remains available for changes that cannot be expressed using this fixed set.
+
+</ContentFrame>    
+<ContentFrame> 
+    
+##### JSON Patch: selection and generated operations  
+    
+**Default behavior**:    
+By default, the client uses the [SessionPatchBehavior convention](../../../../client-api/configuration/conventions.mdx#sessionpatchbehavior) with the value `SessionPatchBehavior.JsonPatch`.
+
+With this default, the client generates JSON Patch commands when the requested operation, value, and path can be represented as JSON Patch for:
+
+* Setting a property.
+* Adding one or more items to an array.
+* Removing an array item with `RemoveAt`.
+* Adding or removing a dictionary entry.
+
+**Generated operations**:    
+When setting a named property, the generated JSON Patch uses `add`, which creates the property if it does not exist or replaces its value if it does.
+An array path ending in `/-` appends an item to the array.
+
+When assigning a value to an existing array or list position, such as `x => x.Items[0]`, the client generates a `replace` operation.
+This overwrites the item at that position without inserting a new item or shifting the remaining items.
+
+</ContentFrame>    
+<ContentFrame> 
+    
+##### JavaScript: fallback and explicit selection
+    
+**Fallback conditions**:    
+If a requested operation, value, or path cannot be represented as JSON Patch,  
+the client automatically falls back to a JavaScript patch command. For example:
+
+* `RemoveAll` with a predicate falls back to JavaScript.
+* `Increment`, `AddOrIncrement`, and `AddOrPatch` always use JavaScript patch commands and are not controlled by this convention.
+* Non-null reference-type values other than `string`, such as nested objects or polymorphic values,  
+  require a JavaScript fallback.  
+  `DateOnly` and `TimeOnly` values also require a JavaScript fallback.  
+  Other value-type values do not by themselves cause a fallback. 
+  This includes custom structs, which are serialized using the store's serialization conventions.
+    
+* Paths the client cannot convert to a JSON Pointer, such as paths containing a non-constant array or list index, also require a JavaScript fallback.
+  A path that indexes into a dictionary with a non-numeric key, such as `x => x.Preferences["language"]`, always requires a JavaScript fallback,  
+  because the client builds JSON Pointer segments from property names and constant numeric indexes only.  
+  Empty or whitespace dictionary keys also fall back because RavenDB rejects them as JSON Pointer path segments.    
+
+**Pending JavaScript patches**:    
+A JavaScript patch command that is already queued for the same document also forces a fallback:  
+while such a command is pending, subsequent `Patch` calls that would otherwise generate JSON Patch are generated as JavaScript and merged into the pending command.  
+The order of the calls therefore affects the queued commands:
+
+* `Increment` followed by `Patch` produces a single merged JavaScript patch command.
+* A JSON-Patch-eligible `Patch` followed by `Increment` produces two commands -  
+  a JSON Patch command followed by a JavaScript patch command.
+
+In both cases, RavenDB preserves the call order and executes the resulting command or commands in the same transaction.
+Reversing the calls can still change the final value when both operations modify the same field.  
+When a fallback occurs, any behavior that differs between the command formats follows the JavaScript semantics described below.
+
+**Selecting JavaScript explicitly**:  
+To make all typed `Session.Advanced.Patch` calls use JavaScript patch commands,  
+set the convention to `SessionPatchBehavior.JavaScript`.
+
+This automatic command selection applies only to the .NET typed `Session.Advanced.Patch` overloads.  
+JavaScript patches created explicitly with `PatchCommandData` or `PatchOperation` remain JavaScript commands.
+This includes `PatchCommandData` registered through `Session.Advanced.Defer`.
+
+</ContentFrame>    
+<ContentFrame> 
+    
+##### Differences in behavior
+    
+**Missing or out-of-range targets**:    
+The command formats differ when a removal target or indexed array element does not exist:
+
+* With `SessionPatchBehavior.JsonPatch`, `SaveChanges()` throws a `RavenException` when:
+  * `RemoveAt` targets an out-of-range array index.
+  * Dictionary `Remove` targets a key that does not exist.
+  * An indexed assignment targets an out-of-range position,  
+    because the generated `replace` operation requires the element to exist.
+
+  Because the batch is atomic, none of its changes are persisted.
+
+* With `SessionPatchBehavior.JavaScript`, a `RemoveAt` with a non-negative index at or beyond the array length, or a missing dictionary key, is treated as a no-op.  
+  Assigning beyond the current array length is handled as a JavaScript array assignment rather than an RFC 6902 `replace`.
+  No exception is thrown, and other valid changes in the batch can still be applied.
+
+**Negative array indexes**:    
+A negative index is not out of range, and the two settings treat it differently:
+
+* With `SessionPatchBehavior.JsonPatch`, `RemoveAt(-N)` generates a `remove` operation whose JSON Pointer path ends in `-N`.
+ The server rejects a negative array position as out of bounds, so `SaveChanges()` throws and the batch is rolled back.
+ The index is not counted from the end.
+
+* With `SessionPatchBehavior.JavaScript`, `RemoveAt` generates `splice(index, 1)`,  
+  and JavaScript `splice` treats a negative index as an offset from the end of the array.  
+  `RemoveAt(-N)` removes the _Nth_ item from the end and `RemoveAt(-1)` removes the last item.  
+  Exactly one item is removed in either case.
+
+</ContentFrame>    
+<ContentFrame> 
+    
+##### Sending JSON Patch explicitly
+    
+To construct and send RFC 6902 operations explicitly, use `JsonPatchOperation`.  
+This is separate from the automatic JSON Patch generation performed by the typed session API.  
+Learn more in [Patch a single document using JSON Patch](../../../../documents/patching-documents/patch-a-single-document/json-patch.mdx).
+    
+</ContentFrame>   
+
+</Admonition>
+    
+<Admonition type="note" title="">
+
+### Session API using Defer
+
+* Use `Session.Advanced.Defer` to queue a low-level patch command instead of using the type-safe  
+  `Session.Advanced.Patch` methods. Defining the command yourself gives you full control over the  
+  patch script and access to options the typed methods do not expose.
+
+* Create a `PatchRequest` containing a JavaScript script and optional parameter values,  
+  then pass it in a `PatchCommandData` for the document you want to patch.  
+  `PatchCommandData` also accepts an optional `changeVector`, which enforces optimistic concurrency  
+  for the patch, and an optional `patchIfMissing` script, which runs when the document does not exist.  
+  The `Session.Advanced.Patch` overloads expose neither option.
+    
+  `PatchCommandData` also has a `CreateIfMissing` property,  
+  which supplies a full document to store when the target document does not exist, instead of a script to run.    
+
+* `Defer` adds the `PatchCommandData` to the session's unit of work.  
+  The command is sent to the server only when `SaveChanges()` is called,  
+  together with the session's other pending changes in a single request and transaction.
+
+<ContentFrame>
+
+#### Example: Modify a single field
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+```csharp
+// Modify FirstName to Robert     
+// Define and defer a JavaScript patch command.    
+session.Advanced.Defer(new PatchCommandData(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.FirstName = args.FirstName;",
+        Values =
+        {
+            {"FirstName", "Robert"}
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+```
+</TabItem>
+<TabItem value="Async" label="Async">
+```csharp
+// Modify FirstName to Robert     
+// Define and defer a JavaScript patch command.    
+asyncSession.Advanced.Defer(new PatchCommandData(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.FirstName = args.FirstName;",
+        Values =
+        {
+            {"FirstName", "Robert"}
+        }
+    },
+    patchIfMissing: null));
+
+await asyncSession.SaveChangesAsync();
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+**Patch failures**:  
+If the server cannot compile or execute the deferred JavaScript patch script, `SaveChanges()` throws;  
+awaiting `SaveChangesAsync()` also throws.  
+The server rolls back the entire session batch, so neither partial changes from the patch nor any other changes in the batch are persisted.
+
+**Deferred and immediate execution**:    
+`PatchCommandData` implements `ICommandData`, which represents command data included in a batch;  
+it is not a [RavenCommand](../../../../client-api/commands/overview.mdx) that can be executed directly through a request executor.  
+To send a single-document patch without waiting for `SaveChanges()`, use the [Operations API](#operations-api) described below.
+
+**Mixing deferred and typed patches**:    
+Avoid calling a typed `Patch` after deferring a `PatchCommandData` for the same document in the same session.  
+The typed call is generated as JavaScript and merged into the deferred command, but the merge does not preserve  
+the deferred command's `changeVector` or `patchIfMissing` script. To keep the changes in one transaction, express  
+them all in the deferred script; otherwise, send them in separate `SaveChanges()` calls or sessions.
+    
+**Conflicts with tracked document changes**:    
+A deferred `PatchCommandData` is subject to the same session-tracking restriction described in the _Session API_,  
+(see [Patching a modified document tracked by the same session](#patching-modified-document-tracked-by-same-session)).  
+If the session also considers the target document modified, `SaveChanges()` throws, and awaiting `SaveChangesAsync()` also throws, instead of sending both changes.    
+
+</Admonition>
+<Admonition type="note" title="">
+
+### Operations API
+
+* **Creating and executing the operation**:  
+  Use the [Operations API](../../../../client-api/operations/what-are-operations.mdx) to patch a single document directly through the document store,  
+  without opening a session.
+
+  Create a `PatchRequest` containing a JavaScript script and optional parameter values, then pass it to `PatchOperation`
+  together with the document ID and any optional concurrency or missing-document settings.
+
+  Execute the operation with `store.Operations.Send()` or `SendAsync()`. Unlike a deferred session command,  
+  the patch is sent to the server immediately in its own HTTP request and its own transaction,  
+  and does not wait for `SaveChanges()`. Separate operations are therefore not applied atomically together.
+
+<ContentFrame>
+
+#### Example: Modify a single field
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+```csharp
+// Modify FirstName to Robert    
+// Send a JavaScript patch directly through the Operations API.    
+store.Operations.Send(new PatchOperation(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.FirstName = args.FirstName;",
+        Values =
+        {
+            {"FirstName", "Robert"}
+        }
+    },
+    patchIfMissing: null));
+```
+</TabItem>
+<TabItem value="Async" label="Async">
+```csharp
+// Modify FirstName to Robert    
+// Send a JavaScript patch directly through the Operations API.    
+await store.Operations.SendAsync(new PatchOperation(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.FirstName = args.FirstName;",
+        Values =
+        {
+            {"FirstName", "Robert"}
+        }
+    },
+    patchIfMissing: null));
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+* **Patch failures**:  
+  If the server cannot compile or execute the JavaScript patch script, `Send()` throws;  
+  awaiting `SendAsync()` also throws. No `PatchStatus` is returned.  
+  The server rolls back the operation's transaction, and no partial changes from the operation are persisted.
+
+* **Patch status**:  
+  `Send` returns a `PatchStatus`. If no document with the given ID is found and no `patchIfMissing` script  
+  was provided, the returned status is `PatchStatus.DocumentDoesNotExist` and no exception is thrown.  
+  This differs from an explicitly sent [JsonPatchOperation](../../../../documents/patching-documents/patch-a-single-document/json-patch.mdx), which throws when the target document does not exist.
+    
+  If `skipPatchIfChangeVectorMismatch` is `true`, a change-vector mismatch skips the patch and is reported  
+  as `PatchStatus.NotModified`. With the default `false`, a mismatch throws a `ConcurrencyException` instead.
+
+* **Returning the document**:  
+  To obtain the document returned by the server, use the generic `PatchOperation<TEntity>` type.  
+  `store.Operations.Send<TEntity>()` returns a `PatchOperation.Result<TEntity>` containing the patch `Status` and `Document`.
+        
+  `Document` contains the resulting document when the status is `Created` or `Patched`.  
+  It is also populated when the patch executes but makes no changes and returns `PatchStatus.NotModified`.  
+  It is `null` when the target document does not exist and no `patchIfMissing` script was supplied,  
+  or when the server skips the patch.  
+        
+  See [Operations API syntax](#operations-api-syntax) for the method signatures and the `Result<TEntity>` properties.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Syntax">
+
+### Session API syntax
+
+The type-safe `Session.Advanced` interface exposes the following patch methods.
+    
+The typed Session API does not accept a field path as a string.  
+Instead, the `path` argument is a lambda expression, such as `x => x.FirstName`.
+    
+The client converts the members in this expression to their stored JSON property names according to the document conventions, 
+whether the operation is generated as JSON Patch or as a JavaScript patch command.    
+
+#### `Session.Advanced.Patch`
+    
+<TabItem value="patch_generic_interface_set_value" label="patch_generic_interface_set_value">
+```csharp
+void Patch<T, U>(string id, Expression<Func<T, U>> path, U value);
+
+void Patch<T, U>(T entity, Expression<Func<T, U>> path, U value);
+```
+</TabItem>
+
+| Parameters | Type                     | Description                                                                                                                                                                                                 |
+| ---------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **T**      | `Type`                   | Entity type                                                                                                                                                                                                 |
+| **U**      | `Type`                   | Field type                                                                                                                                                                                                  |
+| **entity** | `T`                      | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation. This way the session can track down the entity's ID. |
+| **id**     | `string`                 | Entity ID on which the operation should be performed.                                                                                                                                                       |
+| **path**   | `Expression<Func<T, U>>` | Lambda describing the path to the field.                                                                                                                                                                    |
+| **value**  | `U`                      | Value to set.
+    
+`path` may also index into a dictionary, for example `x => x.Preferences["language"]`,  
+to set a single entry without replacing the rest of the dictionary.  
+    
+The key can be a literal, a local variable, or a property of another object.  
+Assigning to a key that does not exist creates it.
+    
+A dictionary-indexed path is always sent as a JavaScript patch command,  
+see [JSON Patch and JavaScript patch formats](#json-patch-and-javascript-patch-formats).
+
+#### `Session.Advanced.AddOrPatch`
+    
+<TabItem value="add_or_patch_generic" label="add_or_patch_generic">
+```csharp
+void AddOrPatch<T, TU>(string id, T entity, Expression<Func<T, TU>> path, TU value);
+```
+</TabItem>
+
+| Parameters    | Type                      | Description                                                                                                                                                                                                 |
+| ------------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **T**         | `Type`                    | Entity type                                                                                                                                                                                                 |
+| **TU**        | `Type`                    | Field type                                                                                                                                                                                                  |
+| **entity**    | `T`                       | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation. This way the session can track down the entity's ID. |
+| **id**        | `string`                  | Entity ID on which the operation should be performed.                                                                                                                                                       |
+| **path**      | `Expression<Func<T, TU>>` | Lambda describing the path to the field.                                                                                                                                                                    |
+| **value**     | `TU`                      | Value to set.                                                                                                                                                                                               |
+
+#### `Session.Advanced.Increment`
+    
+<TabItem value="patch_generic_interface_increment" label="patch_generic_interface_increment">
+```csharp
+void Increment<T, U>(T entity, Expression<Func<T, U>> path, U valToAdd);
+
+void Increment<T, U>(string id, Expression<Func<T, U>> path, U valToAdd);
+```
+</TabItem>
+
+| Parameters   | Type                     | Description                                                                                                                                                                                                 |
+| ------------ | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **T**        | `Type`                   | Entity type                                                                                                                                                                                                 |
+| **U**        | `Type`                   | Field type, must be a numeric type, or a `string` or `char` for string concatenation                                                                                                                         |
+| **entity**   | `T`                      | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation, this way, the session can track down the entity's ID |
+| **id**       | `string`                 | Entity ID on which the operation should be performed.                                                                                                                                                       |
+| **path**     | `Expression<Func<T, U>>` | Lambda describing the path to the field.                                                                                                                                                                    |
+| **valToAdd** | `U`                      | Value to be added.                                                                                                                                                                                          |
+
+* Note how numbers are handled with the [JavaScript engine](../../../../server/kb/numbers-in-ravendb.mdx) in RavenDB.
+
+#### `Session.Advanced.AddOrIncrement`
+    
+<TabItem value="add_or_increment_generic" label="add_or_increment_generic">
+```csharp
+void AddOrIncrement<T, TU>(string id, T entity, Expression<Func<T, TU>> path, TU valToAdd);
+```
+</TabItem>
+
+| Parameters    | Type                      | Description                                                                                                                                                                                                 |
+| ------------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **T**         | `Type`                    | Entity type                                                                                                                                                                                                 |
+| **TU**        | `Type`                    | Field type, must be a numeric type, or a `string` or `char` for string concatenation                                                                                                                         |
+| **entity**    | `T`                       | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation, this way, the session can track down the entity's ID |
+| **id**        | `string`                  | Entity ID on which the operation should be performed.                                                                                                                                                       |
+| **path**      | `Expression<Func<T, TU>>` | Lambda describing the path to the field.                                                                                                                                                                    |
+| **valToAdd**  | `TU`                      | Value to be added.                                                                                                                                                                                          |
+
+---
+    
+### Array manipulation
+
+#### `Session.Advanced.Patch`
+    
+<TabItem value="patch_generic_interface_array_modification_lambda" label="patch_generic_interface_array_modification_lambda">
+```csharp
+void Patch<T, U>(T entity, Expression<Func<T, IEnumerable<U>>> path,
+    Expression<Func<JavaScriptArray<U>, object>> arrayAdder);
+
+void Patch<T, U>(string id, Expression<Func<T, IEnumerable<U>>> path,
+    Expression<Func<JavaScriptArray<U>, object>> arrayAdder);
+```
+</TabItem>
+
+| Parameters      | Type                                           | Description                                                                                                                                                                                                 |
+| --------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **T**           | `Type`                                         | Entity type                                                                                                                                                                                                 |
+| **U**           | `Type`                                         | Type of the collection items                                                                                                                                                                                |
+| **entity**      | `T`                                            | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation. This way the session can track down the entity's ID. |
+| **id**          | `string`                                       | Entity ID on which the operation should be performed.                                                                                                                                                       |
+| **path**        | `Expression<Func<T, IEnumerable<U>>>`          | Lambda describing the path to the collection property.                                                                                                                                                      |
+| **arrayAdder**  | `Expression<Func<JavaScriptArray<U>, object>>` | Lambda that modifies the array, see `JavaScriptArray` below.                                                                                                                                                |
+
+#### `Session.Advanced.AddOrPatch`
+    
+<TabItem value="add_or_patch_array_generic" label="add_or_patch_array_generic">
+```csharp
+void AddOrPatch<T, TU>(string id, T entity, Expression<Func<T, List<TU>>> path, 
+    Expression<Func<JavaScriptArray<TU>, object>> arrayAdder);
+```
+</TabItem>
+
+| Parameters     | Type                                            | Description                                                                                                                                                                                                 |
+| -------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **T**          | `Type`                                          | Entity type                                                                                                                                                                                                 |
+| **TU**         | `Type`                                          | Type of the list items                                                                                                                                                                                      |
+| **entity**     | `T`                                             | Entity to add if no document with the given ID exists.                                                                                                                                                      |
+| **id**         | `string`                                        | Entity ID on which the operation should be performed.                                                                                                                                                       |
+| **path**       | `Expression<Func<T, List<TU>>>`                 | Lambda describing the path to the list property.                                                                                                                                                            |
+| **arrayAdder** | `Expression<Func<JavaScriptArray<TU>, object>>` | Lambda that modifies the array, see `JavaScriptArray` below.                                                                                                                                                |
+
+<Admonition type="info" title="">
+
+#### JavaScriptArray
+    
+`JavaScriptArray` allows building lambdas representing array manipulations for patches.  
+
+| Method Signature                        | Return Type          | Description                                                          |
+| ----------------------------------------| -------------------- | -------------------------------------------------------------------- |
+| **Add(U item)**                         | `JavaScriptArray<U>` | Adds one item to the array.                                          |
+| **Add(params U[] items)**               | `JavaScriptArray<U>` | Adds multiple items to the array.                                    |
+| **RemoveAt(int index)**                 | `JavaScriptArray<U>` | Removes item in position `index` in array.                           |
+| **RemoveAll(Func&lt;U, bool&gt; predicate)**  | `JavaScriptArray<U>` | Removes all the items in the array that satisfy the given predicate. |
+
+* `RemoveAt` removes exactly one item.  
+  A negative index counts from the end only under `SessionPatchBehavior.JavaScript`,  
+  where `RemoveAt(-1)` removes the last item.  
+  Under the default `SessionPatchBehavior.JsonPatch` a negative index is rejected and `SaveChanges()` throws,  
+  see [Differences in behavior](#differences-in-behavior) above.
+
+</Admonition>
+        
+---        
+        
+### Dictionary manipulation
+
+#### `Session.Advanced.Patch`
+
+<TabItem value="patch_generic_interface_dictionary_modification" label="patch_generic_interface_dictionary_modification">
+```csharp
+void Patch<T, TKey, TValue>(
+    T entity,
+    Expression<Func<T, IDictionary<TKey, TValue>>> path,
+    Expression<Func<JavaScriptDictionary<TKey, TValue>, object>> dictionaryAdder);
+
+void Patch<T, TKey, TValue>(
+    string id,
+    Expression<Func<T, IDictionary<TKey, TValue>>> path,
+    Expression<Func<JavaScriptDictionary<TKey, TValue>, object>> dictionaryAdder);
+```
+</TabItem>
+
+| Parameter           | Type                                                           | Description                                            |
+| ------------------- | -------------------------------------------------------------- | ------------------------------------------------------ |
+| **T**               | `Type`                                                         | Entity type                                            |
+| **TKey**            | `Type`                                                         | Dictionary key type                                    |
+| **TValue**          | `Type`                                                         | Dictionary value type                                  |
+| **entity**          | `T`                                                            | A tracked entity containing the dictionary property.   |
+| **id**              | `string`                                                       | ID of the document to patch.                           |
+| **path**            | `Expression<Func<T, IDictionary<TKey, TValue>>>`               | Lambda describing the path to the dictionary property. |
+| **dictionaryAdder** | `Expression<Func<JavaScriptDictionary<TKey, TValue>, object>>` | Lambda that adds or removes a dictionary entry.        |
+
+<Admonition type="info" title="">
+    
+#### JavaScriptDictionary    
+
+| Method signature                                | Description                                      |
+| ----------------------------------------------- | ------------------------------------------------ |
+| **Add(TKey key, TValue value)**                 | Adds or updates a dictionary entry.              |
+| **Add(KeyValuePair&lt;TKey, TValue&gt; value)** | Adds or updates an entry using a key-value pair. |
+| **Remove(TKey key)**                            | Removes a dictionary entry.                      |
+
+</Admonition>
+
+<Admonition type="info" title="">
+
+#### Dictionary key handling
+
+* The key is taken from the `dictionaryAdder` lambda as a value, so it can be a literal,  
+  a local variable, a captured field, or a property of another object:
+
+<TabItem value="patch_dictionary_key_from_variable" label="patch_dictionary_key_from_variable">    
+```csharp
+var setting = new Setting { Key = "language" };
+
+// A literal key
+session.Advanced.Patch<User, string, string>("users/1",
+    user => user.Preferences,
+    preferences => preferences.Add("theme", "dark"));
+
+// A key supplied by a variable or by another object's property
+session.Advanced.Patch<User, string, string>("users/1",
+    user => user.Preferences,
+    preferences => preferences.Add(setting.Key, "en-US"));
+```
+</TabItem>
+
+* A key may contain any characters, including dots, dashes, spaces, quotes, backslashes,  
+  newlines, and emoji. The client escapes the key for whichever command format it generates:
+  * In a **JSON Patch** command the key becomes a JSON Pointer segment,  
+    with `~` escaped as `~0` and `/` as `~1`.
+  * In a **JavaScript patch** command the key is written as a quoted JavaScript string literal  
+    in bracket notation, for example `this.Preferences["key-with-dash"] = args.val_0;`  
+    or `delete this.Preferences["key.with.dot"];`.
+
+* An empty or whitespace-only key is supported, and is applied through a JavaScript patch command.  
+  A `null` key throws `ArgumentNullException`.
+
+* **Enum keys** are always written as their string names, such as `"Engine"`,  
+  regardless of the [SaveEnumsAsIntegers](../../../../client-api/configuration/conventions.mdx#saveenumsasintegers) convention.  
+  The `SaveEnumsAsIntegersForPatching` convention applies to an entry's **value**, not to its key.
+
+</Admonition>
+        
+---        
+
+### Session API using Defer syntax
+
+The non-typed Session API for patches uses the `Session.Advanced.Defer` function which allows registering one or more commands.  
+One of the possible commands is the `PatchCommandData`, describing single document patch command.  
+The patch request will be sent to the server only when calling `SaveChanges`, this way it's possible to perform multiple operations in one request to the server.  
+
+#### `Session.Advanced.Defer`
+        
+<TabItem value="patch_non_generic_interface_in_session" label="patch_non_generic_interface_in_session">
+```csharp
+void Defer(ICommandData command, params ICommandData[] commands);
+
+void Defer(ICommandData[] commands);
+```
+</TabItem>
+
+<Admonition type="info" title="">
+
+#### PatchCommandData
+
+| Constructor        | Type           | Description                                                                                                                              |
+| ------------------ | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| **id**             | `string`       | ID of the document to be patched.                                                                                                        |
+| **changeVector**   | `string`       | [Can be null] Change vector of the document to be patched, used to verify that the document was not changed before the patch reached it. |
+| **patch**          | `PatchRequest` | Patch request to be performed on the document.                                                                                           |
+| **patchIfMissing** | `PatchRequest` | [Can be null] Patch request to be performed if no document with the given ID was found.                                                  |
+
+| Property             | Type                          | Description                                                                                               |
+| -------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **CreateIfMissing**  | `BlittableJsonReaderObject`   | [Can be null] Document to create if no document with the given ID was found, instead of running a script. |
+
+</Admonition>
+
+<Admonition type="info" title="">
+
+#### PatchRequest
+
+We highly recommend using scripts with parameters. This allows RavenDB to cache scripts and boost performance. 
+Parameters can be accessed in the script through the `args` object and passed using PatchRequest's "Values" parameter.
+    
+`PatchRequest.Script` is JavaScript. Properties accessed through `this` are fields in the stored document, 
+while properties accessed through `args` are values passed in `PatchRequest.Values`.  
+Property names used with `this` must match the stored JSON property names, including casing.   
+Assigning to a missing top-level property creates it, so a casing mismatch can create a second field instead of updating the intended one.    
+
+| Property   | Type                         | Description                                                                                                                        |
+| ---------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| **Script** | `string`                     | The patching script, written in JavaScript.                                                                                        |
+| **Values** | `Dictionary<string, object>` | Parameters to be passed to the script.<br/>Each parameter is accessed in the script as a property of `args`, e.g. `args.FirstName`. |
+
+</Admonition>
+
+---
+        
+### Operations API syntax
+
+An operations interface that exposes the full functionality and allows performing ad-hoc patch operations without creating a session.  
+
+The methods are exposed by `Raven.Client.Documents.Operations.OperationExecutor`,  
+which is available as `store.Operations`.  
+
+<TabItem value="patch_non_generic_interface_in_store" label="patch_non_generic_interface_in_store">
+```csharp
+PatchStatus Send(PatchOperation operation);
+
+Task<PatchStatus> SendAsync(PatchOperation operation, 
+                            SessionInfo sessionInfo = null, 
+                            CancellationToken token = default(CancellationToken));
+
+// Generic overloads, returning the document after the patch has been applied
+PatchOperation.Result<TEntity> Send<TEntity>(PatchOperation<TEntity> operation, 
+                                            SessionInfo sessionInfo = null);
+
+Task<PatchOperation.Result<TEntity>> SendAsync<TEntity>(PatchOperation<TEntity> operation, 
+                                                       SessionInfo sessionInfo = null, 
+                                                       CancellationToken token = default(CancellationToken));
+```
+</TabItem>
+
+<Admonition type="info" title="">
+
+#### PatchOperation.Result&lt;TEntity&gt;
+
+| Property     | Type          | Description                                                                       |
+| ------------ | ------------- | --------------------------------------------------------------------------------- |
+| **Status**   | `PatchStatus` | Status of the patch operation on the document.                                     |
+| **Document** | `TEntity`     | The document after the patch operation completed. The document may be unchanged.   |
+
+</Admonition>
+
+<Admonition type="info" title="PatchOperation" id="patchoperation" href="#patchoperation">
+
+| Constructor                         | Type           | Description                                                                                                                                                                                                                                                                              |
+| ----------------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **id**                              | `string`       | ID of the document to be patched.                                                                                                                                                                                                                                                        |
+| **changeVector**                    | `string`       | Change vector of the document to be patched.<br/>Used to verify that the document was not modified before the patch reached it.<br/>Can be `null`.                                                                                                                                       |
+| **patch**                           | `PatchRequest` | Patch request to perform on the document.                                                                                                                                                                                                                                                |
+| **patchIfMissing**                  | `PatchRequest` | Patch request to perform if the specified document is not found.<br/>Will run only if no `changeVector` was passed.<br/>Can be `null`.                                                                                                                                                   |
+| **skipPatchIfChangeVectorMismatch** | `bool`         | `true` - do not patch if the document has been modified.<br/>`false` (Default) - execute the patch even if document has been modified.<br/><br/>An exception is thrown if:<br/>this param is `false` + `changeVector` has value + document with that ID and change vector was not found. |
+
+</Admonition>
+
+---
+        
+### List of script methods syntax
+
+This is a list of a few of the javascript methods that can be used in patch scripts.  
+See the more comprehensive list at [Knowledge Base: JavaScript Engine](../../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).  
+
+| Method               | Arguments                                           | Description                                                                                                                                                                                                                                            |
+| -------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **load**             | `string` or `string[]`                              | Loads one or more documents into the context of the script by their document IDs                                                                                                                                                                       |
+| **loadPath**         | A document and a path to an ID within that document | Loads a related document by the path to its ID                                                                                                                                                                                                         |
+| **del**              | Document ID; change vector                          | Delete the given document by its ID. If you add the expected change vector and the document's current change vector does not match, the document will _not_ be deleted.                                                                                |
+| **put**              | Document ID; document; change vector                | Create or overwrite a document with a specified ID and entity. If you try to overwrite an existing document and pass the expected change vector, the put will fail if the specified change vector does not match the document's current change vector. |
+| **cmpxchg**          | Key                                                 | Load a compare exchange value into the context of the script using its key                                                                                                                                                                             |
+| **getMetadata**      | Document                                            | Returns the document's metadata                                                                                                                                                                                                                        |
+| **id**               | Document                                            | Returns the document's ID                                                                                                                                                                                                                              |
+| **lastModified**     | Document                                            | Returns the `DateTime` of the most recent modification made to the given document                                                                                                                                                                      |
+| **counter**          | Document; counter name                              | Returns the value of the specified counter in the specified document                                                                                                                                                                                   |
+| **counterRaw**       | Document; counter name                              | Returns the specified counter in the specified document as a key-value pair                                                                                                                                                                            |
+| **incrementCounter** | Document; counter name                              | Increases the value of the counter by one                                                                                                                                                                                                              |
+| **deleteCounter**    | Document; counter name                              | Deletes the counter                                                                                                                                                                                                                                    |
+| **spatial.distance** | Two points by latitude and longitude; spatial units | Find the distance between two points on the earth                                                                                                                                                                                                       |
+| **timeseries**       | Document; the time series' name                     | Returns the specified time series object                                                                                                                                                                                                               |
+| **attachments**      | Document; attachment name                           | Returns an attachment object providing `delete()`, `remote()`, and `copyFrom()` methods for managing the specified attachment via patching                                                                                                             |
+
+</Panel>

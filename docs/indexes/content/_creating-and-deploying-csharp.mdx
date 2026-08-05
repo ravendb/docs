@@ -429,7 +429,7 @@ public static void Main(string[] args)
 * For such queries, RavenDB's Query Optimizer searches for an existing auto-index that can satisfy the query.
   If no suitable auto-index is found, RavenDB will either create a new auto-index or optimize an existing auto-index.
   (Static-indexes are not taken into account when determining which auto-index should handle the query).
-* Note: dynamic queries can be issued either when [querying](../../studio/database/queries/query-view.mdx#query-view) or when [patching](../../studio/database/documents/patch-view.mdx#patch-configuration).
+* Note: dynamic queries can be issued either when [querying](../../studio/database/queries/query-view.mdx#query-view) or when [patching](../../documents/patching-documents/patch-multiple-documents/patch-view.mdx#patch-configuration).
 * Over time, RavenDB automatically adjusts and merges auto-indexes to efficiently serve your queries.  
   For more details, see [Query a collection - with filtering (dynamic query)](../../querying/overview.mdx#dynamicQuery).
 
@@ -498,7 +498,7 @@ where FirstName = "Robert" and LastName = "King"
   However, this will affect queries made only from the **Studio**.
 
    * To disable auto-index creation for a specific query made from the query view, see these [Query settings](../../studio/database/queries/query-view.mdx#query-settings).
-   * To disable auto-index creation for a specific query made from the patch view, see these [Patch settings](../../studio/database/documents/patch-view.mdx#patch-settings).
+   * To disable auto-index creation for a specific query made from the patch view, see these [Patch settings](../../documents/patching-documents/patch-multiple-documents/patch-view.mdx#patch-settings).
    * Disabling auto-index creation for ALL queries made on a database can be configured in the [Studio configuration view](../../studio/database/settings/studio-configuration.mdx#disabling-auto-index-creation-on-studio-queries-or-patches).
 
 

@@ -33,7 +33,10 @@ export default function QueryingFeaturesGrid() {
         {
             title: "Patching",
             icon: "patch",
-            url: `/${activeVersion.label}/client-api/operations/patching/single-document`,
+            url:
+                activeVersion.label >= "7.2"
+                    ? `/${activeVersion.label}/documents/patching-documents/overview`
+                    : `/${activeVersion.label}/client-api/operations/patching/single-document`,
             description: "Transform documents at scale with a script",
             minimumSupportedVersion: "4.0",
         },

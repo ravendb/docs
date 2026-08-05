@@ -1,0 +1,1391 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* This article is part of the single-document patching examples.  
+  It focuses on patching individual document fields and manipulating array and object fields.
+
+* For the available patching interfaces (Session API, Session API using defer, and Operations API) and their full syntax,  
+  see [Patch a Single Document: API Overview](../../../../../documents/patching-documents/patch-a-single-document/api-overview.mdx).
+
+* Every Node.js patching method is executed by the server as a JavaScript patch script.  
+  The Node.js client does not provide a JSON Patch (RFC 6902) API.
+
+* Patching examples in this article:
+  * [Modify value of single field](#modify-value-of-single-field)  
+  * [Modify values of two fields](#modify-values-of-two-fields)  
+  * [Increment value](#increment-value)  
+  * [Add or increment](#add-or-increment)  
+  * [Add or patch](#add-or-patch)  
+  * [Add item to array](#add-item-to-array)  
+  * [Add items to an array with addOrPatchArray](#add-items-to-an-array-with-addorpatcharray)  
+  * [Insert item at a specific array index](#insert-item-at-a-specific-array-index)  
+  * [Replace item at a specific array index](#replace-item-at-a-specific-array-index)  
+  * [Remove item at a specific array index](#remove-item-at-a-specific-array-index)  
+  * [Remove all matching items from an array](#remove-all-matching-items-from-an-array)  
+  * [Patch an object](#patch-an-object)  
+  * [Remove property](#remove-property)  
+  * [Rename property](#rename-property)  
+
+</Admonition>
+
+<Panel heading="Patching examples">
+
+<ContentFrame>
+
+### Modify value of single field
+    
+The Session example passes `"FirstName"` as the field path.  
+The deferred and Operations examples target the same field as `this.FirstName`.    
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```js
+// Set FirstName without loading the document.
+// The Session 'patch' method generates a JavaScript patch script.
+session.advanced.patch("employees/1-A", "FirstName", "Robert");
+
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```js
+// Queue an explicit JavaScript patch in the session batch.
+// Pass the new value through args instead of embedding it in the script.
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.FirstName = args.FirstName;";
+patchRequest.values = { FirstName: "Robert" };
+
+const patchCommand = new PatchCommandData("employees/1-A", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```js
+// Send an explicit JavaScript patch directly through the document store.
+// Pass the new value through args instead of embedding it in the script.
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.FirstName = args.FirstName;";
+patchRequest.values = { FirstName: "Robert" };
+
+const patchOp = new PatchOperation("employees/1-A", null, patchRequest);
+await documentStore.operations.send(patchOp);
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Modify values of two fields
+
+* The following examples update both fields atomically without loading the document.
+
+* The Session API merges the two `patch` calls for the same document into a single patch command,  
+  so both assignments are performed by one server-side script.  
+  The Session API using `defer` and the Operations API each perform both assignments in a single JavaScript patch.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```js
+// Modify FirstName to Robert and LastName to Carter in a single request.
+
+// Queue both field updates for the same document.
+session.advanced.patch("employees/1-A", "FirstName", "Robert");
+session.advanced.patch("employees/1-A", "LastName", "Carter");
+
+// The session merges both calls into one patch command.
+// saveChanges sends the command in the session batch,
+// which the server commits atomically.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```js
+// Modify FirstName to Robert and LastName to Carter in a single request.
+
+// Queue one explicit JavaScript patch in the session.
+// Both field assignments are part of the same patch command.
+const patchRequest = new PatchRequest();
+patchRequest.script = `this.FirstName = args.FirstName;
+                       this.LastName = args.LastName;`;
+// Pass the new values separately as script arguments.
+patchRequest.values = {
+    FirstName: "Robert",
+    LastName: "Carter"
+};
+
+const patchCommand = new PatchCommandData("employees/1-A", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+// saveChanges sends the deferred command in the session batch,
+// which the server commits atomically.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```js
+// Modify FirstName to Robert and LastName to Carter in a single request.
+
+// Send one explicit JavaScript patch directly through the document store.
+// Both field assignments are part of the same patch command.
+// This API does not use a session, so saveChanges is not required.
+const patchRequest = new PatchRequest();
+patchRequest.script = `this.FirstName = args.FirstName;
+                       this.LastName = args.LastName;`;
+// Pass the new values separately as script arguments.
+patchRequest.values = {
+    FirstName: "Robert",
+    LastName: "Carter"
+};
+
+const patchOp = new PatchOperation("employees/1-A", null, patchRequest);
+await documentStore.operations.send(patchOp);
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Increment value
+
+* The following examples increment the existing `UnitsInStock` value by `10` without loading the document.
+
+* The Session API `increment` helper generates the script  
+  `this.UnitsInStock = this.UnitsInStock ? this.UnitsInStock + args.val_N : args.val_N;`  
+  A missing field is therefore set to the specified increment value.  
+  Because the generated script performs a truthiness check, an existing falsy value  
+  (for example `0`, `false`, or an empty string) is replaced by the increment value rather than added to.
+
+* The explicit JavaScript examples use `+=`, which follows JavaScript coercion rules.  
+  A missing field evaluates to `NaN`, while a string value is concatenated.  
+  These explicit examples therefore assume that `UnitsInStock` exists and holds a numeric value.  
+  To create the document if it is missing, use [Add or increment](#add-or-increment).
+
+* If the document does not exist, the patch has no effect, no document is created,  
+  and no exception is thrown.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```js
+// Increment the current UnitsInStock value by 10.
+
+// Queue an increment operation in the session.
+session.advanced.increment("products/1-A", "UnitsInStock", 10);
+
+// Send the queued increment command in the session batch.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```js
+// Increment the current UnitsInStock value by 10.
+
+// Queue an explicit JavaScript patch in the session.
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.UnitsInStock += args.UnitsToAdd;";
+// Pass the increment amount separately as a script argument.
+patchRequest.values = { UnitsToAdd: 10 };
+
+const patchCommand = new PatchCommandData("products/1-A", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+// Send the deferred patch in the session batch.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```js
+// Increment the current UnitsInStock value by 10.
+
+// Send an explicit JavaScript patch directly through the document store.
+// This API does not use a session, so saveChanges is not required.
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.UnitsInStock += args.UnitsToAdd;";
+// Pass the increment amount separately as a script argument.
+patchRequest.values = { UnitsToAdd: 10 };
+
+const patchOp = new PatchOperation("products/1-A", null, patchRequest);
+await documentStore.operations.send(patchOp);
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Add or increment
+
+`addOrIncrement` behaves as follows:
+
+* If the document exists:
+  * If the field exists, RavenDB adds the specified value to it.  
+    This increments a numeric value or concatenates a string value.
+  * If the field does not exist, RavenDB creates it with the specified value.
+  * The provided entity is ignored.
+* If the document does not exist:
+  * RavenDB creates it from the provided entity.
+  * The value to increment by is ignored.
+
+`PatchCommandData` exposes a `createIfMissing` property that takes the new document as a plain object,  
+which is exactly what `addOrIncrement` sets internally.  
+`PatchOperation` has no such property, so the Operations example below builds the new document  
+with a `patchIfMissing` script instead.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```js
+// Increment loginCount by 1, or create users/1 if it does not exist.
+
+// This entity is used only if the document does not exist.
+const newUser = new User();
+newUser.firstName = "John";
+newUser.lastName = "Doe";
+newUser.loginCount = 1;
+
+session.advanced.addOrIncrement(
+    // The document id on which the operation is performed
+    "users/1",
+    // If the document is not found, it is created from this entity
+    newUser,
+    // If the document exists, increment this field by the value below.
+    // If the field does not exist, add it with that value.
+    "loginCount",
+    1);
+
+// Send the queued command in the session batch.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```js
+// Increment loginCount by 1, or create users/1 if it does not exist.
+
+// This script runs only if the document already exists.
+// Add to the field if it is present; otherwise create it with the value.
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.loginCount = this.loginCount ? this.loginCount + args.valueToAdd : args.valueToAdd;";
+patchRequest.values = { valueToAdd: 1 };
+
+const patchCommand = new PatchCommandData("users/1", null, patchRequest);
+
+// If the document is not found, it is created from this object as-is
+// (the value to increment by is ignored).
+// Set '@collection' so the new document lands in the right collection.
+patchCommand.createIfMissing = {
+    firstName: "John",
+    lastName: "Doe",
+    loginCount: 1,
+    "@metadata": { "@collection": "Users" }
+};
+
+session.advanced.defer(patchCommand);
+
+// Send the deferred command in the session batch.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```js
+// Increment loginCount by 1, or create users/1 if it does not exist.
+
+// Send explicit JavaScript patches directly through the document store.
+// This API does not use a session, so saveChanges is not required.
+
+// This patch runs only if the document already exists.
+// Add to the field if it is present; otherwise create it with the value.
+const patch = new PatchRequest();
+patch.script = "this.loginCount = this.loginCount ? this.loginCount + args.valueToAdd : args.valueToAdd;";
+patch.values = { valueToAdd: 1 };
+
+// This patch runs only if the document does not exist.
+// It builds the new document and assigns it to the Users collection.
+const patchIfMissing = new PatchRequest();
+patchIfMissing.script = `this.firstName = args.firstName;
+                         this.lastName = args.lastName;
+                         this.loginCount = args.initialLoginCount;
+                         this['@metadata'] = { '@collection': 'Users' };`;
+patchIfMissing.values = {
+    firstName: "John",
+    lastName: "Doe",
+    initialLoginCount: 1
+};
+
+const patchOp = new PatchOperation("users/1", null, patch, patchIfMissing, false);
+await documentStore.operations.send(patchOp);
+```
+</TabItem>
+<TabItem value="User_class" label="User_class">
+```js
+class User {
+    constructor(
+        id = null,
+        firstName = "",
+        lastName = "",
+        loginCount = 0,
+        lastLogin = new Date(),
+        loginTimes = []
+    ) {
+        Object.assign(this, {
+            id,
+            firstName,
+            lastName,
+            loginCount,
+            lastLogin,
+            loginTimes
+        });
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Add or patch
+
+`addOrPatch` behaves as follows:
+
+* If the document exists:
+  * RavenDB sets the specified field to the patch value,  
+    replacing its current value or adding the field if it does not exist.
+  * The provided entity is ignored.
+* If the document does not exist:
+  * RavenDB creates it from the provided entity.
+  * The patch value is ignored.
+
+As with [Add or increment](#add-or-increment), the `defer` example uses the `createIfMissing` property of  
+`PatchCommandData`, while the Operations example builds the new document with a `patchIfMissing` script.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```js
+// If users/1 exists, set lastLogin to September 12, 2021.
+// Otherwise, create the document with an initial lastLogin of January 1, 2021.
+
+// This entity is used only if the document does not exist.
+// Note that JavaScript months are zero-based, so 0 is January.
+const newUser = new User();
+newUser.firstName = "John";
+newUser.lastName = "Doe";
+newUser.lastLogin = new Date(2021, 0, 1);
+
+session.advanced.addOrPatch(
+    // The document id on which the operation is performed
+    "users/1",
+    // If the document is not found, it is created from this entity
+    newUser,
+    // If the document exists, replace this field with the value below.
+    // If the field does not exist, add it with that value.
+    "lastLogin",
+    // Month 8 is September
+    new Date(2021, 8, 12));
+
+// Send the queued command in the session batch.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```js
+// If users/1 exists, set lastLogin to September 12, 2021.
+// Otherwise, create the document with an initial lastLogin of January 1, 2021.
+
+// This script runs only if the document already exists.
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.lastLogin = args.newValue;";
+patchRequest.values = { newValue: new Date(2021, 8, 12) };
+
+const patchCommand = new PatchCommandData("users/1", null, patchRequest);
+
+// If the document is not found, it is created from this object as-is
+// (the value to patch by is ignored).
+// Set '@collection' so the new document lands in the right collection.
+// This object is sent as-is, without passing through the store conventions,
+// so a Date is serialized in ISO-8601 UTC rather than the client's date format.
+patchCommand.createIfMissing = {
+    firstName: "John",
+    lastName: "Doe",
+    lastLogin: new Date(2021, 0, 1),
+    "@metadata": { "@collection": "Users" }
+};
+
+session.advanced.defer(patchCommand);
+
+// Send the deferred command in the session batch.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```js
+// If users/1 exists, set lastLogin to September 12, 2021.
+// Otherwise, create the document with an initial lastLogin of January 1, 2021.
+
+// Send explicit JavaScript patches directly through the document store.
+// This API does not use a session, so saveChanges is not required.
+
+// This patch runs only if the document already exists.
+const patch = new PatchRequest();
+patch.script = "this.lastLogin = args.newValue;";
+patch.values = { newValue: new Date(2021, 8, 12) };
+
+// This patch runs only if the document does not exist.
+// It builds the new document and assigns it to the Users collection.
+const patchIfMissing = new PatchRequest();
+patchIfMissing.script = `this.firstName = args.firstName;
+                         this.lastName = args.lastName;
+                         this.lastLogin = args.initialLastLogin;
+                         this['@metadata'] = { '@collection': 'Users' };`;
+patchIfMissing.values = {
+    firstName: "John",
+    lastName: "Doe",
+    initialLastLogin: new Date(2021, 0, 1)
+};
+
+const patchOp = new PatchOperation("users/1", null, patch, patchIfMissing, false);
+await documentStore.operations.send(patchOp);
+```
+</TabItem>
+<TabItem value="User_class" label="User_class">
+```js
+class User {
+    constructor(
+        id = null,
+        firstName = "",
+        lastName = "",
+        loginCount = 0,
+        lastLogin = new Date(),
+        loginTimes = []
+    ) {
+        Object.assign(this, {
+            id,
+            firstName,
+            lastName,
+            loginCount,
+            lastLogin,
+            loginTimes
+        });
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Add item to array
+
+Adding an item to an array behaves as follows:
+
+* If the document and the specified array exist, RavenDB appends the item to the array.
+* If the document exists but the specified array is missing or `null`,  
+  no exception is thrown, no patching is done, and RavenDB does not create the array.
+* If the document exists but the specified field holds a value that is not an array  
+  (for example a string or a number), the patch fails.
+* If the document does not exist, no exception is thrown, no patching is done,  
+  and no document is created.
+
+The Session API `patchArray` helper exposes only `push` and `removeAt`.  
+`push` accepts multiple items and can be chained.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```js
+// Append a new comment to the existing comments array.
+// The document and the comments array must already exist.
+
+// The new comment to add:
+const newBlogComment = new BlogComment();
+newBlogComment.title = "New comment";
+newBlogComment.content = "Lorem ipsum.";
+
+session.advanced.patchArray(
+    "blogPosts/1",  // Document id to patch
+    "comments",     // The array to add the comment to
+    comments => {   // Append the new comment
+        comments.push(newBlogComment);
+    });
+
+// Send the queued patch command in the session batch.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```js
+// Append a new comment to the existing comments array.
+// The document and the comments array must already exist.
+
+// Queue an explicit JavaScript patch in the session.
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.comments.push(args.comment);";
+// Pass the new comment separately as a script argument.
+patchRequest.values = {
+    comment: {
+        title: "New comment",
+        content: "Lorem ipsum."
+    }
+};
+
+// Passing no patchIfMissing script means the document is not created if it is missing.
+const patchCommand = new PatchCommandData("blogPosts/1", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+// Send the deferred patch in the session batch.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```js
+// Append a new comment to the existing comments array.
+// The document and the comments array must already exist.
+
+// Send an explicit JavaScript patch directly through the document store.
+// This API does not use a session, so saveChanges is not required.
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.comments.push(args.comment);";
+// Pass the new comment separately as a script argument.
+patchRequest.values = {
+    comment: {
+        title: "New comment",
+        content: "Lorem ipsum."
+    }
+};
+
+// Passing no patchIfMissing script means the document is not created if it is missing.
+const patchOp = new PatchOperation("blogPosts/1", null, patchRequest);
+await documentStore.operations.send(patchOp);
+```
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+```js
+class BlogPost {
+    constructor(
+        id = null,
+        title = "",
+        body = "",
+        comments = []
+    ) {
+        Object.assign(this, {
+            id,
+            title,
+            body,
+            comments
+        });
+    }
+}
+
+class BlogComment {
+    constructor(
+        title = "",
+        content = ""
+    ) {
+        Object.assign(this, {
+            title,
+            content
+        });
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Add items to an array with addOrPatchArray
+
+`addOrPatchArray` behaves as follows:
+
+* If the document and the specified array exist:
+  * RavenDB appends the specified items to the array.
+  * The provided entity is ignored.
+* If the document exists but the specified array is missing or `null`:
+  * No exception is thrown, no patching is done, and RavenDB does not create the array.
+  * The provided entity is ignored.
+* If the document exists but the specified field holds a value that is not an array:
+  * The patch fails.
+  * The provided entity is ignored.
+* If the document does not exist:
+  * RavenDB creates it from the provided entity.
+  * The array modification is ignored.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```js
+// If users/1 and its loginTimes array exist, append two login times.
+// Otherwise, if the document is missing, create it with one initial login time.
+
+// This entity is used only if the document does not exist.
+// Note that JavaScript months are zero-based, so 0 is January.
+const newUser = new User();
+newUser.firstName = "John";
+newUser.lastName = "Doe";
+newUser.loginTimes = [new Date(2021, 0, 1)];
+
+session.advanced.addOrPatchArray(
+    // The document id on which the operation is performed
+    "users/1",
+    // If the document is not found, it is created from this entity
+    newUser,
+    // If the document exists, this array must already exist
+    "loginTimes",
+    // Append both values to the existing array
+    loginTimes => loginTimes.push(
+        new Date(1993, 8, 12),
+        new Date(2000, 0, 1)));
+
+// Send the queued command in the session batch.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```js
+// If users/1 and its loginTimes array exist, append two login times.
+// Otherwise, if the document is missing, create it with one initial login time.
+
+// This script runs only if the document already exists.
+// loginTimes must already be an array.
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.loginTimes.push(args.firstTime, args.secondTime);";
+patchRequest.values = {
+    firstTime: new Date(1993, 8, 12),
+    secondTime: new Date(2000, 0, 1)
+};
+
+const patchCommand = new PatchCommandData("users/1", null, patchRequest);
+
+// If the document is not found, it is created from this object as-is
+// (the values to append are ignored).
+// Set '@collection' so the new document lands in the right collection.
+// This object is sent as-is, without passing through the store conventions,
+// so a Date is serialized in ISO-8601 UTC rather than the client's date format.
+patchCommand.createIfMissing = {
+    firstName: "John",
+    lastName: "Doe",
+    loginTimes: [new Date(2021, 0, 1)],
+    "@metadata": { "@collection": "Users" }
+};
+
+session.advanced.defer(patchCommand);
+
+// Send the deferred command in the session batch.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```js
+// If users/1 and its loginTimes array exist, append two login times.
+// Otherwise, if the document is missing, create it with one initial login time.
+
+// Send explicit JavaScript patches directly through the document store.
+// This API does not use a session, so saveChanges is not required.
+
+// This patch runs only if the document already exists.
+// loginTimes must already be an array.
+const patch = new PatchRequest();
+patch.script = "this.loginTimes.push(args.firstTime, args.secondTime);";
+patch.values = {
+    firstTime: new Date(1993, 8, 12),
+    secondTime: new Date(2000, 0, 1)
+};
+
+// This patch runs only if the document does not exist.
+// It builds the new document and assigns it to the Users collection.
+const patchIfMissing = new PatchRequest();
+patchIfMissing.script = `this.firstName = args.firstName;
+                         this.lastName = args.lastName;
+                         this.loginTimes = [args.initialLoginTime];
+                         this['@metadata'] = { '@collection': 'Users' };`;
+patchIfMissing.values = {
+    firstName: "John",
+    lastName: "Doe",
+    initialLoginTime: new Date(2021, 0, 1)
+};
+
+const patchOp = new PatchOperation("users/1", null, patch, patchIfMissing, false);
+await documentStore.operations.send(patchOp);
+```
+</TabItem>
+<TabItem value="User_class" label="User_class">
+```js
+class User {
+    constructor(
+        id = null,
+        firstName = "",
+        lastName = "",
+        loginCount = 0,
+        lastLogin = new Date(),
+        loginTimes = []
+    ) {
+        Object.assign(this, {
+            id,
+            firstName,
+            lastName,
+            loginCount,
+            lastLogin,
+            loginTimes
+        });
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Insert item at a specific array index
+
+* The Session API array helper provides only `push` and `removeAt`.  
+  To insert an item at a specific index, use an explicit JavaScript patch through `defer` or the Operations API.
+
+* JavaScript array indexes are zero-based.  
+  In the examples below, `splice(index, 0, item)` inserts the item before the existing item at the given index without removing anything.  
+  The examples insert at index `1`, which is the second position.
+
+* The document and the specified array must already exist.  
+  If the array is missing or `null`, no exception is thrown and no patching is done.  
+  If the field holds a value that is not an array, the patch fails.  
+  If the document does not exist, no document is created.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```js
+// Insert a new comment at index 1 in the existing comments array.
+// Index 1 is the second position because array indexes are zero-based.
+// The document and the comments array must already exist.
+
+// Queue an explicit JavaScript patch in the session.
+// splice(startIndex, deleteCount, item) inserts the item at the given index
+// and removes no existing items because deleteCount is 0.
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.comments.splice(args.index, 0, args.comment);";
+// Pass the insertion index and the new comment as script arguments.
+patchRequest.values = {
+    index: 1,
+    comment: {
+        title: "New comment",
+        content: "Lorem ipsum."
+    }
+};
+
+// Do not create the document if it does not exist.
+const patchCommand = new PatchCommandData("blogPosts/1", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+// Send the deferred patch in the session batch.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```js
+// Insert a new comment at index 1 in the existing comments array.
+// Index 1 is the second position because array indexes are zero-based.
+// The document and the comments array must already exist.
+
+// Send an explicit JavaScript patch directly through the document store.
+// This API does not use a session, so saveChanges is not required.
+// splice(startIndex, deleteCount, item) inserts the item at the given index
+// and removes no existing items because deleteCount is 0.
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.comments.splice(args.index, 0, args.comment);";
+// Pass the insertion index and the new comment as script arguments.
+patchRequest.values = {
+    index: 1,
+    comment: {
+        title: "New comment",
+        content: "Lorem ipsum."
+    }
+};
+
+// Do not create the document if it does not exist.
+const patchOp = new PatchOperation("blogPosts/1", null, patchRequest);
+await documentStore.operations.send(patchOp);
+```
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+```js
+class BlogPost {
+    constructor(
+        id = null,
+        title = "",
+        body = "",
+        comments = []
+    ) {
+        Object.assign(this, {
+            id,
+            title,
+            body,
+            comments
+        });
+    }
+}
+
+class BlogComment {
+    constructor(
+        title = "",
+        content = ""
+    ) {
+        Object.assign(this, {
+            title,
+            content
+        });
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Replace item at a specific array index
+
+* Use the Session API with an indexed path, `defer`, or the Operations API  
+  to replace an array item at a specified zero-based index.
+
+* The following examples replace the entire `BlogComment` at index `3`, which is the fourth item in the array.  
+  The document, the `comments` array, and the item at index `3` are expected to exist.
+
+* All three examples perform a JavaScript indexed assignment.
+
+* If the array is missing or `null`, the patch fails with  
+  `Cannot convert undefined or null to object`.  
+  Assigning through a missing field requires coercing it to an object, which throws.  
+  This differs from the method-call examples above, where a missing array is a silent no-op.
+
+* Assigning to a non-negative index at or beyond the current array length extends the array  
+  rather than reporting a missing target.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```js
+// Replace the comment at index 3 in the comments array.
+// Index 3 is the fourth position because array indexes are zero-based.
+// The document, array, and item at index 3 are expected to exist.
+
+const updatedComment = new BlogComment();
+updatedComment.title = "Updated comment";
+updatedComment.content = "Updated content.";
+
+// An indexed path assigns directly to the array item,
+// generating the script 'this.comments[3] = args.val_N;'
+session.advanced.patch("blogPosts/1", "comments[3]", updatedComment);
+
+// Send the queued patch command in the session batch.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```js
+// Replace the comment at index 3 in the comments array.
+// Index 3 is the fourth position because array indexes are zero-based.
+// The document, array, and item at index 3 are expected to exist.
+
+// Queue an explicit JavaScript patch in the session.
+// Indexed assignment replaces the existing item at the specified index.
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.comments[args.index] = args.comment;";
+patchRequest.values = {
+    index: 3,
+    comment: {
+        title: "Updated comment",
+        content: "Updated content."
+    }
+};
+
+// Do not create the document if it does not exist.
+const patchCommand = new PatchCommandData("blogPosts/1", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+// Send the deferred patch in the session batch.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```js
+// Replace the comment at index 3 in the comments array.
+// Index 3 is the fourth position because array indexes are zero-based.
+// The document, array, and item at index 3 are expected to exist.
+
+// Send an explicit JavaScript patch directly through the document store.
+// This API does not use a session, so saveChanges is not required.
+// Indexed assignment replaces the existing item at the specified index.
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.comments[args.index] = args.comment;";
+patchRequest.values = {
+    index: 3,
+    comment: {
+        title: "Updated comment",
+        content: "Updated content."
+    }
+};
+
+// Do not create the document if it does not exist.
+const patchOp = new PatchOperation("blogPosts/1", null, patchRequest);
+await documentStore.operations.send(patchOp);
+```
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+```js
+class BlogPost {
+    constructor(
+        id = null,
+        title = "",
+        body = "",
+        comments = []
+    ) {
+        Object.assign(this, {
+            id,
+            title,
+            body,
+            comments
+        });
+    }
+}
+
+class BlogComment {
+    constructor(
+        title = "",
+        content = ""
+    ) {
+        Object.assign(this, {
+            title,
+            content
+        });
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Remove item at a specific array index
+
+* Use `removeAt` with the Session API array helper, or JavaScript `splice`,  
+  to remove an item at a specified zero-based array index.
+
+* `removeAt(index)` generates a `splice(index, 1)` call,  
+  so all three examples below run equivalent server-side scripts.
+
+* The document and the target array must exist.  
+  If the document does not exist, no document is created.  
+  If the array is missing or `null`, no exception is thrown and no patching is done.  
+  If the field holds a value that is not an array, the patch fails.
+
+* If the specified non-negative index is at or beyond the array length,  
+  `splice` performs no operation and does not throw.
+
+* JavaScript `splice` treats a negative index as an offset from the end of the array,  
+  so a negative value can remove an item instead of being a no-op.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```js
+// Remove the comment at index 3 (the fourth item) from the comments array.
+// If index 3 does not exist, the patch performs no operation.
+session.advanced.patchArray(
+    "blogPosts/1",  // Document id to patch
+    "comments",     // The array to remove from
+    comments => {   // Remove the item at index 3
+        comments.removeAt(3);
+    });
+
+// Send the pending patch operation to the server.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```js
+// Queue a JavaScript patch that removes one comment from the comments array.
+// splice(startIndex, deleteCount) removes one item at the zero-based index.
+// If the index is outside the array, splice performs no operation.
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.comments.splice(args.index, 1);";
+patchRequest.values = { index: 3 };
+
+const patchCommand = new PatchCommandData("blogPosts/1", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+// Send the deferred patch command to the server.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```js
+// Execute a JavaScript patch that removes one comment from the comments array.
+// splice(startIndex, deleteCount) removes one item at the zero-based index.
+// If the index is outside the array, splice performs no operation.
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.comments.splice(args.index, 1);";
+patchRequest.values = { index: 3 };
+
+const patchOp = new PatchOperation("blogPosts/1", null, patchRequest);
+await documentStore.operations.send(patchOp);
+```
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+```js
+class BlogPost {
+    constructor(
+        id = null,
+        title = "",
+        body = "",
+        comments = []
+    ) {
+        Object.assign(this, {
+            id,
+            title,
+            body,
+            comments
+        });
+    }
+}
+
+class BlogComment {
+    constructor(
+        title = "",
+        content = ""
+    ) {
+        Object.assign(this, {
+            title,
+            content
+        });
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Remove all matching items from an array
+
+* Use JavaScript `filter` to remove every array item that matches a predicate.  
+  The Session API array helper provides only `push` and `removeAt`,  
+  so predicate-based removal requires an explicit JavaScript patch through `defer` or the Operations API.
+
+* In these examples, matching is case-sensitive and substring-based.  
+  Every comment whose `content` contains `"wrong"` is removed.
+
+* If the document does not exist, the patch has no effect and no document is created.  
+  If the array is empty or no item matches, the array remains unchanged.
+
+* If the `comments` field is missing, the server evaluates `filter` to an empty array,  
+  so the script sets `comments` to an empty array.  
+  If the field is explicitly `null`, the script sets it to `null`.  
+  If it holds a value that is not an array, the patch fails.  
+  Guard the assignment if none of these outcomes is desired.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```js
+// Queue a JavaScript patch that removes every comment whose content
+// contains the case-sensitive substring "wrong".
+
+// filter keeps items for which the callback returns true.
+// Negating includes keeps only comments that do not contain the substring.
+const patchRequest = new PatchRequest();
+patchRequest.script = `this.comments = this.comments.filter(
+    comment => !comment.content.includes(args.text));`;
+patchRequest.values = { text: "wrong" };
+
+const patchCommand = new PatchCommandData("blogPosts/1", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+// Send the deferred patch command to the server.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```js
+// Execute a JavaScript patch that removes every comment whose content
+// contains the case-sensitive substring "wrong".
+
+// filter keeps items for which the callback returns true.
+// Negating includes keeps only comments that do not contain the substring.
+const patchRequest = new PatchRequest();
+patchRequest.script = `this.comments = this.comments.filter(
+    comment => !comment.content.includes(args.text));`;
+patchRequest.values = { text: "wrong" };
+
+const patchOp = new PatchOperation("blogPosts/1", null, patchRequest);
+await documentStore.operations.send(patchOp);
+```
+</TabItem>
+<TabItem value="Blog_classes" label="Blog_classes">
+```js
+class BlogPost {
+    constructor(
+        id = null,
+        title = "",
+        body = "",
+        comments = []
+    ) {
+        Object.assign(this, {
+            id,
+            title,
+            body,
+            comments
+        });
+    }
+}
+
+class BlogComment {
+    constructor(
+        title = "",
+        content = ""
+    ) {
+        Object.assign(this, {
+            title,
+            content
+        });
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Patch an object
+
+* Use `patchObject` with the Session API, or an explicit JavaScript patch,  
+  to add, update, or remove entries in an object field that is used as a dictionary:
+  * `set(key, value)` adds the key if it does not exist, or replaces its value if the key already exists.
+  * `remove(key)` deletes the entry with the specified key.
+
+* The document and the target object must exist.  
+  If the document does not exist, the patch has no effect and no document is created.  
+  If the object field is missing or `null`, the patch fails with  
+  `Cannot convert undefined or null to object`, because assigning through a missing field  
+  requires coercing it to an object.
+
+* Removing a key that does not exist has no effect and does not throw an exception.
+
+* The Session API helper interpolates the key into the generated script using dot notation,  
+  for example `this.preferences.language = args.val_N;`.  
+  For keys that are not valid JavaScript identifiers, such as keys containing a hyphen, a dot, or a space,  
+  use an explicit JavaScript patch with bracket notation, as shown in the `defer` and Operations examples.
+
+* The two Session API `patchObject` calls below target the same document,  
+  so the session merges them into a single patch command.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_syntax" label="Session_syntax">
+```js
+// Add the "language" preference or update its value if the key already exists.
+session.advanced.patchObject("users/1", "preferences",
+    prefs => prefs.set("language", "en-US"));
+
+// Remove the "theme" preference.
+// Removing a key that does not exist has no effect.
+session.advanced.patchObject("users/1", "preferences",
+    prefs => prefs.remove("theme"));
+
+// Send both pending changes to the server in a single request.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```js
+// Queue a JavaScript patch that adds or updates the "language" preference
+// and removes the "theme" preference.
+
+// Assignment adds the key or replaces its current value.
+// delete removes the key and is a no-op if the key does not exist.
+const patchRequest = new PatchRequest();
+patchRequest.script = `this.preferences[args.keyToAddOrUpdate] = args.value;
+                       delete this.preferences[args.keyToRemove];`;
+patchRequest.values = {
+    keyToAddOrUpdate: "language",
+    value: "en-US",
+    keyToRemove: "theme"
+};
+
+const patchCommand = new PatchCommandData("users/1", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+// Send the deferred patch command to the server.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```js
+// Execute a JavaScript patch that adds or updates the "language" preference
+// and removes the "theme" preference.
+
+// Assignment adds the key or replaces its current value.
+// delete removes the key and is a no-op if the key does not exist.
+const patchRequest = new PatchRequest();
+patchRequest.script = `this.preferences[args.keyToAddOrUpdate] = args.value;
+                       delete this.preferences[args.keyToRemove];`;
+patchRequest.values = {
+    keyToAddOrUpdate: "language",
+    value: "en-US",
+    keyToRemove: "theme"
+};
+
+const patchOp = new PatchOperation("users/1", null, patchRequest);
+await documentStore.operations.send(patchOp);
+```
+</TabItem>
+<TabItem value="User_class" label="User_class">
+```js
+class User {
+    constructor(
+        id = null,
+        firstName = "",
+        lastName = "",
+        loginCount = 0,
+        lastLogin = new Date(),
+        loginTimes = [],
+        // Stores user preferences as key-value pairs,
+        // for example: "theme": "dark" and "language": "en".
+        preferences = {}
+    ) {
+        Object.assign(this, {
+            id,
+            firstName,
+            lastName,
+            loginCount,
+            lastLogin,
+            loginTimes,
+            preferences
+        });
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Remove property
+
+* Use the JavaScript `delete` operator to remove a property from a document.  
+  Removing an arbitrary document property is not supported by the Session API `patch` method;  
+  use a deferred patch command or the Operations API.
+
+* The property is removed entirely rather than assigned a `null` value.  
+  If the property does not exist, `delete` has no effect and does not throw an exception.
+
+* If the document does not exist, the patch has no effect and no document is created.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```js
+// Queue a JavaScript patch that removes the Extension property from the document.
+// delete removes the property entirely instead of assigning it a null value.
+// If Extension does not exist, delete has no effect.
+const patchRequest = new PatchRequest();
+patchRequest.script = "delete this.Extension;";
+
+const patchCommand = new PatchCommandData("employees/1-A", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+// Send the deferred patch command to the server.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```js
+// Execute a JavaScript patch that removes the Extension property from the document.
+// delete removes the property entirely instead of assigning it a null value.
+// If Extension does not exist, delete has no effect.
+const patchRequest = new PatchRequest();
+patchRequest.script = "delete this.Extension;";
+
+const patchOp = new PatchOperation("employees/1-A", null, patchRequest);
+await documentStore.operations.send(patchOp);
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Rename property
+
+* Rename a property by copying its value to a new property and then deleting the original property.  
+  Renaming an arbitrary document property is not supported by the Session API `patch` method;  
+  use a deferred JavaScript patch command or the Operations API.
+
+* The examples perform the rename only if the original property exists.  
+  Its value, including a `null` value, is preserved. If the destination property already exists, its value is replaced.
+
+* Checking for the source property matters: reading a property that does not exist yields `undefined`  
+  inside a patch script, and `undefined` is stored as `null`.  
+  An unguarded rename would therefore overwrite the destination property with a `null` value.
+
+* If the original property does not exist, the patch has no effect.  
+  If the document does not exist, no document is created.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```js
+// Queue a JavaScript patch that renames HomePhone to Phone.
+// If HomePhone exists, its value is preserved and HomePhone is removed.
+// If Phone already exists, its current value is replaced.
+
+// Check for the source property so a missing HomePhone is a no-op.
+const patchRequest = new PatchRequest();
+patchRequest.script = `
+    if (this[args.oldPropertyName] !== undefined) {
+        const value = this[args.oldPropertyName];
+        delete this[args.oldPropertyName];
+        this[args.newPropertyName] = value;
+    }`;
+patchRequest.values = {
+    oldPropertyName: "HomePhone",
+    newPropertyName: "Phone"
+};
+
+const patchCommand = new PatchCommandData("employees/1-A", null, patchRequest);
+session.advanced.defer(patchCommand);
+
+// Send the deferred patch command to the server.
+await session.saveChanges();
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```js
+// Execute a JavaScript patch that renames HomePhone to Phone.
+// If HomePhone exists, its value is preserved and HomePhone is removed.
+// If Phone already exists, its current value is replaced.
+
+// Check for the source property so a missing HomePhone is a no-op.
+const patchRequest = new PatchRequest();
+patchRequest.script = `
+    if (this[args.oldPropertyName] !== undefined) {
+        const value = this[args.oldPropertyName];
+        delete this[args.oldPropertyName];
+        this[args.newPropertyName] = value;
+    }`;
+patchRequest.values = {
+    oldPropertyName: "HomePhone",
+    newPropertyName: "Phone"
+};
+
+const patchOp = new PatchOperation("employees/1-A", null, patchRequest);
+await documentStore.operations.send(patchOp);
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>

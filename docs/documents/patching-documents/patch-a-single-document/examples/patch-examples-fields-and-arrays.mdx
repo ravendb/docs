@@ -1,0 +1,33 @@
+---
+title: "Single-Document Patching Examples: Fields and Arrays"
+sidebar_label: "Fields and Arrays"
+description: "Examples of patching single-document fields, arrays, and dictionaries in RavenDB using the Session, defer, and Operations APIs."
+sidebar_position: 1
+supported_languages: ["csharp", "java", "nodejs", "python"]
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import PatchExamplesFieldsArraysCsharp from './content/_patch-examples-fields-and-arrays-csharp.mdx';
+import PatchExamplesFieldsArraysJava from './content/_patch-examples-fields-and-arrays-java.mdx';
+import PatchExamplesFieldsArraysNodejs from './content/_patch-examples-fields-and-arrays-nodejs.mdx';
+import PatchExamplesFieldsArraysPython from './content/_patch-examples-fields-and-arrays-python.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <PatchExamplesFieldsArraysCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <PatchExamplesFieldsArraysJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <PatchExamplesFieldsArraysNodejs />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <PatchExamplesFieldsArraysPython />
+</LanguageContent>

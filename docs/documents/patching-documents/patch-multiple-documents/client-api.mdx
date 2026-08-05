@@ -1,18 +1,18 @@
 ---
-title: "Set-Based Patch Operations"
-sidebar_label: Set Based
+title: "Patch Multiple Documents Using the Client API"
+sidebar_label: "Using the Client API"
 description: "Patch multiple RavenDB documents matching a query using PatchByQueryOperation with JavaScript transformation scripts."
 sidebar_position: 1
-supported_languages: ["csharp", "java", "nodejs"]
+supported_languages: ["csharp", "java", "nodejs", "python"]
 see_also:
      - title: "What are operations"
        link: "client-api/operations/what-are-operations"
        source: "docs"
        path: "Client API > Operations"
-     - title: "Single document patch operations"
-       link: "client-api/operations/patching/single-document"
+     - title: "Patch Single Document"
+       link: "documents/patching-documents/patch-a-single-document/api-overview"
        source: "docs"
-       path: "Client API > Operations > Patching"
+       path: "Documents > Patching Documents"
      - title: "JavaScript engine"
        link: "server/kb/javascript-engine"
        source: "docs"
@@ -26,9 +26,10 @@ see_also:
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
-import SetBasedCsharp from './content/_set-based-csharp.mdx';
-import SetBasedJava from './content/_set-based-java.mdx';
-import SetBasedNodejs from './content/_set-based-nodejs.mdx';
+import SetBasedCsharp from './content/_client-api-csharp.mdx';
+import SetBasedJava from './content/_client-api-java.mdx';
+import SetBasedNodejs from './content/_client-api-nodejs.mdx';
+import SetBasedPython from './content/_client-api-python.mdx';
 
 
 <LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
@@ -43,6 +44,10 @@ import SetBasedNodejs from './content/_set-based-nodejs.mdx';
 
 <LanguageContent language="nodejs">
    <SetBasedNodejs />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <SetBasedPython />
 </LanguageContent>
 
 
