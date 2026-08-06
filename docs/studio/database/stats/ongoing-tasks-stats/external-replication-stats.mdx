@@ -6,100 +6,159 @@ sidebar_position: 1
 ---
 
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 # Ongoing Task Stats: External Replication Stats
+
 <Admonition type="note" title="">
 
-* The **External Replication Task** replicates your database data to another RavenDB database.  
-  Learn more about the External Replication Task [here](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx).  
-* The data shown in the graph will be either 'Outgoing' or 'Incoming', depending on whether the source or the target database is viewed.  
+* Studio's Ongoing Task Stats view draws an **activity track** for each active 
+  [ongoing task](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx) of the currently 
+  selected database, and populates the track with **operation bars** that report individual task 
+  operations.  
+  Learn more about this view in the 
+  [Ongoing Task Stats](../../../../monitoring/performance-views/ongoing-task-stats.mdx) article.  
 
-* Studio's [Ongoing Task Stats](../../../../monitoring/performance-views/ongoing-task-stats.mdx) 
-  view draws a track for each of a database's ongoing tasks.  
-  This page covers the track of an external replication task.  
+* See below how to read the activity track drawn for an 
+  [external replication task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx).  
+
+* An external replication task replicates data from one RavenDB database to another.  
+  On this view, replication tracks are labeled `Outgoing External Replication` when the source 
+  database is selected and `Incoming External Replication` when the destination database is 
+  selected.  
 
 * In this article:  
-   * [External Replication Stats Closed View](../../../../studio/database/stats/ongoing-tasks-stats/external-replication-stats.mdx#external-replication-stats-closed-view)  
-   * [External Replication Stats Expanded View](../../../../studio/database/stats/ongoing-tasks-stats/external-replication-stats.mdx#external-replication-stats-expanded-view)  
+   * [The collapsed track](../../../../studio/database/stats/ongoing-tasks-stats/external-replication-stats.mdx#the-collapsed-track)  
+   * [The expanded track](../../../../studio/database/stats/ongoing-tasks-stats/external-replication-stats.mdx#the-expanded-track)  
+      * [Outgoing replication](../../../../studio/database/stats/ongoing-tasks-stats/external-replication-stats.mdx#outgoing-replication)  
+      * [Incoming replication](../../../../studio/database/stats/ongoing-tasks-stats/external-replication-stats.mdx#incoming-replication)  
 
 </Admonition>
-## External Replication Stats
 
-### External Replication Stats Closed View
+<Panel heading="The collapsed track">
 
-![External Replication Stats Closed View](./assets/stats-view-07-external-replication-closed-view.png)
+![The collapsed external replication track](./assets/stats-view-07-external-replication-closed-view.png)
 
 1. **Task Type**  
-   The task type will be either 'Outgoing' or 'Incoming', depending on whether the viewed database is the source or the target database.  
-   Click the arrow or the task type to toggle Closed/Expanded View.  
+   Click the track label or bar to expand the track and display additional operation bars.  
+   When expanded, collapse the track by clicking its label or arrow indicator.  
 
 2. **Replication URL**  
-    * On the Source database: The server URL & database name to which documents are replicated.  
-    * On the Target database: The server URL & database name of the source database.  
+    * On a source database: the server URL and database name to which documents are replicated.  
+    * On a target database: the server URL and database name of the source database.  
+
 3. **Task Bar**  
-    * Hover over the bar to display a tooltip with the task's information.  
-    * Click the bar for the expanded view.  
-    * Click and Drag the bar to slide the graph.  
-    * Zoom in & out using the mouse wheel.  
-### External Replication Stats Expanded View
+    * Hovering over the bar displays the details of the replication batch.  
+    * Dragging the bar slides the graph along the time axis.  
+    * Rolling the mouse wheel zooms in or out.  
 
-#### Outgoing Replication  
+</Panel>
 
-![External Replication Stats Expanded View - Outgoing](./assets/stats-view-08_1-external-replication-expanded-view-outgoing.png)
+<Panel heading="The expanded track">
 
-* **Outgoing External Replication**  
-     * **Total Duration**  
-       Overall replication time.  
-     * **Sent Last Etag**  
-       Last replicated item identifier.  
-     * **Storage Input Count**  
+Expanding an external replication track reveals the operations included in each batch.  
+On a **source** database, the view depicts an [outgoing track](../../../../studio/database/stats/ongoing-tasks-stats/external-replication-stats.mdx#outgoing-replication).  
+On a **destination** database, the view depicts an [incoming track](../../../../studio/database/stats/ongoing-tasks-stats/external-replication-stats.mdx#incoming-replication).  
+
+Hover above an operation bar of an expanded track to see the bar's properties as depicted below.  
+
+<ContentFrame>
+
+### Outgoing replication
+
+![The expanded outgoing external replication track](./assets/stats-view-08_1-external-replication-expanded-view-outgoing.png)
+
+* **Outgoing External Replication** bar.  
+  The topmost bar, reporting properties measured over the whole batch:  
+     * **Total duration**  
+       The duration of the whole batch.  
+     * **Sent last Etag**  
+       The etag of the last item sent in the batch.  
+     * **Batch Size**  
+       The size of the data sent in the batch.  
+     * **Last accepted change vector**  
+       The change vector the destination database last acknowledged.  
+
+* **Storage/Read** bar.  
+  Properties measured while reading the items to be replicated from the source database's storage:  
+     * **Duration**  
+       The time it took to read the items.  
+     * **Storage input count**  
        The number of items read from storage.  
-     * **Documents output count**  
-       The number of replicated documents.  
-     * **Attachments read count**  
-       The number of attachments read from storage.  
+     * **Artificial document skip count**  
+       The number of skipped artificial items, such as the documents a map-reduce index outputs,
+       which are not replicated.  
+     * **System document skip count**  
+       The number of skipped system documents.  
+     * **Change Vector skip count**  
+       The number of items skipped because the destination database already has them.  
 
-* **Storage/Read Duration**  
-  The time it took the server to read all replicated data from storage.  
+  The counts and sizes of the read items are reported under the **Network/Write** bar.  
 
-* **Network/Write Duration**  
-  The time it took the server to transmit all replicated data.  
+* **Network/Write** bar.  
+  Properties measured while transmitting the read items to the destination database:  
+     * **Duration**  
+       The time it took to transmit the items.  
+     * A count and a size for each item type the batch carried, so the number of lines varies from
+       batch to batch. The image above shows six of them.  
+       The possible lines are **Documents output**, **Documents Tombstone output**, **Attachments
+       output**, **Attachments Stream output**, **Attachments Tombstone output**, **Counters
+       output**, **Time Series Segments output**, **Time Series Deleted Ranges output**, **Revisions
+       output**, and **Revisions Tombstone output**.  
 
-* **Storage/DocumentRead Duration**  
-  The time it took the server to read replicated documents from storage.  
+* **Storage/DocumentRead**, **Storage/AttachmentRead**, **Storage/CounterRead**, 
+  **Storage/TimeSeriesRead**, and **Storage/TombstoneRead** bars.  
+  Properties measured while reading each item type included in the **Storage/Read** operation:  
+     * **Duration**  
+       The time it took to read the items of the bar's type.  
 
-* **Storage/TimeSeriesRead Duration**  
-  The time it took the server to read replicated time series from storage.  
-#### Incoming Replication
+</ContentFrame>
 
-![External Replication Stats Expanded View - Incoming](./assets/stats-view-08_2-external-replication-expanded-view-incoming.png)
+<ContentFrame>
 
-* **Incoming External Replication**  
-     * **Total Duration**  
-       Overall batch replication time.  
-     * **Received Last Etag**  
-       Last replicated item identifier.  
-     * **Network Input Count**  
-       The number of transferred items.  
-     * **Documents read count**  
-       The number of transferred documents.  
-     * **Attachments read count**  
-       The number of transferred attachments.  
+### Incoming replication
 
-* **Network/Read Duration**  
-  The time it took the current batch to be transmitted over the network
+![The expanded incoming external replication track](./assets/stats-view-08_2-external-replication-expanded-view-incoming.png)
 
-* **Network/DocumentRead Duration**  
-  The time it took the documents in this batch to be transmitted over the network
+* **Incoming External Replication** bar.  
+  The topmost bar, reporting properties measured over the whole batch:  
+     * **Total duration**  
+       The duration of the whole batch.  
+     * **Received last Etag**  
+       The etag of the last item received in the batch.  
+     * **Batch Size**  
+       The size of the data received in the batch.  
+     * **Change vector**  
+       The change vector of the receiving database.  
 
-* **Storage/Write**  
-  The time it took the server to write replicated date to storage.  
+* **Network/Read** bar.  
+  Properties measured while receiving the replicated items over the network:  
+     * **Duration**  
+       The time it took to receive the items.  
+     * **Input count**  
+       The overall number of items received.  
+     * A count and a size for each item type the batch carried, so the number of lines varies from
+       batch to batch. The image above shows **Documents input** and **Revisions input**.  
+       The possible lines are **Documents input**, **Documents Tombstone input**, **Attachments
+       input**, **Attachments Stream input**, **Attachments Tombstone input**, **Counters input**,
+       **Time Series Segments input**, **Time Series Deleted Ranges input**, **Revisions input**,
+       and **Revisions Tombstone input**.  
 
+* **Storage/Write** bar.  
+  Properties measured while writing the received items to the destination database's storage:  
+     * **Duration**  
+       The time it took to write the items.  
 
+  The counts and sizes of the written items are reported under the **Network/Read** bar.  
 
+* **Network/DocumentRead**, **Network/AttachmentRead**, **Network/CounterRead**, 
+  **Network/TimeSeriesRead**, **Network/TimeSeriesDeletedRangeRead**, and **Network/TombstoneRead** 
+  bars.  
+  Properties measured while receiving each item type included in the **Network/Read** operation:  
+     * **Duration**  
+       The time it took to receive the items of the bar's type.  
 
+</ContentFrame>
+
+</Panel>

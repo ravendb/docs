@@ -18,9 +18,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
   Use this view to follow tasks as they run. e.g., examine the duration of task operations, the
   volume of data each operation handles, and periods with no task activity.  
 
-* The graph shows a separate track for each monitored task (like an ETL task or a data
+* The graph shows a separate **activity track** for each monitored task (like an ETL task or a data
   subscription), and for each incoming and outgoing replication connection, including internal
   replication within the database group.  
+
+* Each track is populated with **operation bars**, one per operation performed by the task.  
 
 * Any user with read access to the database can open this view.  
   You can see the activity of the selected database's ongoing tasks, on the node that Studio is
@@ -35,12 +37,14 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [The Ongoing Task Stats view](../../monitoring/performance-views/ongoing-task-stats.mdx#the-ongoing-task-stats-view)
       * [Selecting a time range](../../monitoring/performance-views/ongoing-task-stats.mdx#selecting-a-time-range)
       * [Skipped idle periods](../../monitoring/performance-views/ongoing-task-stats.mdx#skipped-idle-periods)
-   * [Task tracks](../../monitoring/performance-views/ongoing-task-stats.mdx#task-tracks)
+   * [Activity tracks](../../monitoring/performance-views/ongoing-task-stats.mdx#activity-tracks)
       * [Expanding a track](../../monitoring/performance-views/ongoing-task-stats.mdx#expanding-a-track)
-      * [What a bar reports](../../monitoring/performance-views/ongoing-task-stats.mdx#what-a-bar-reports)
+      * [Operation bars](../../monitoring/performance-views/ongoing-task-stats.mdx#operation-bars)
       * [Operations in progress](../../monitoring/performance-views/ongoing-task-stats.mdx#operations-in-progress)
       * [Script or query preview](../../monitoring/performance-views/ongoing-task-stats.mdx#script-or-query-preview)
-   * [The tasks shown in the view](../../monitoring/performance-views/ongoing-task-stats.mdx#the-tasks-shown-in-the-view)
+   * [What is monitored](../../monitoring/performance-views/ongoing-task-stats.mdx#what-is-monitored)
+      * [Tasks](../../monitoring/performance-views/ongoing-task-stats.mdx#tasks)
+      * [Internal replication](../../monitoring/performance-views/ongoing-task-stats.mdx#internal-replication)
       * [Monitoring backup tasks](../../monitoring/performance-views/ongoing-task-stats.mdx#monitoring-backup-tasks)
    * [The AI Task Stats view](../../monitoring/performance-views/ongoing-task-stats.mdx#the-ai-task-stats-view)
 
@@ -48,8 +52,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Panel heading="The Ongoing Task Stats view">
 
-Each bar in the graph spans the duration of one operation, positioned on the time axis at the
-operation's start time.  
+Each bar spans the duration of one operation, positioned on the time axis at the operation's start 
+time.  
 **`Stats` > `Ongoing Task Stats`**
 
 ![The Ongoing Task Stats view](./assets/ongoing-task-stats-view.png)
@@ -90,16 +94,18 @@ operation's start time.
     The line's height shows how many operations were running at each moment.  
     Drag the pointer across the strip to select a time range.
 
-11. **[The graph](../../monitoring/performance-views/ongoing-task-stats.mdx#task-tracks)**  
+11. **[The graph](../../monitoring/performance-views/ongoing-task-stats.mdx#activity-tracks)**  
     The graph area, where the tracks are drawn one under another over a single time axis.  
-    A collapsed track shows the operations on a single row, and expanding a track separates the
-    operations into several rows.
+    A collapsed track shows the operation bars side by side. Expanding the track spreads the bars
+    over several rows.
 
 12. **The track label**  
     The label shows the task type followed by the track name.  
     Click the arrow at the label's left to expand or collapse the track.  
-    A task's track is named after the task, and a replication connection's track after the URL of
-    the source or destination database.
+    A task's track is named after the task.  
+    An outgoing replication connection's track is named with the URL of the destination database,
+    and an incoming connection's track with the URL of the source database followed by the source
+    database's ID.
 
 <ContentFrame>
 
@@ -152,14 +158,14 @@ into a short time range may display several labels sharing the same second.
 
 </Panel>
 
-<Panel heading="Task tracks">
+<Panel heading="Activity tracks">
 
 <ContentFrame>
 
 ### Expanding a track
 
-Click the arrow on a track label to expand or collapse a single track, or click a bar in a
-collapsed track.  
+Click an **activity track**'s label or one of its **operation bars** to expand or collapse the 
+track.  
 
 ![Two expanded tracks](./assets/ongoing-task-stats-expanded-tracks.png)
 
@@ -174,33 +180,47 @@ collapsed track.
    Learn below about the
    [script or query preview](../../monitoring/performance-views/ongoing-task-stats.mdx#script-or-query-preview).
 
-4. **Nested operations**  
-   The top bar of each work batch represents the batch as a whole.  
-   The bars beneath it represent the operations included in the batch.
+4. **The track's operation bars**  
+   The framed track shows one batch replicated by an external replication task to the destination
+   database.  
+   The top bar represents the entire batch, and the lower bars represent operations performed
+   by the task while handling this batch.
 
 </ContentFrame>
 
 <ContentFrame>
 
-### What a bar reports
+### Operation bars
 
-Hovering over a bar displays the details recorded for the operation the bar represents.  
+Hovering over an operation bar displays the properties recorded for the operation.  
+The images below show the popups of a RavenDB ETL track, in the scope of a single batch.  
 
-![The details of a work batch and of the operations inside it](./assets/ongoing-task-stats-bar-details.png)
+![The popups of an expanded RavenDB ETL track](./assets/ongoing-task-stats-bar-details.png)
 
-The popup for a work batch's top bar is headed by the task type, and gives the batch's total
-duration.  
-The popup for an operation's bar is headed by the operation name, and gives the duration of the
-operation.  
-The figures listed after the duration depend on the task type.  
-e.g., [RavenDB ETL Stats](../../studio/database/stats/ongoing-tasks-stats/ravendb-etl-stats.mdx#ravendb-etl-stats-expanded-view)
+The popup for the top bar reports the properties of the batch as a whole: the total duration,
+the reason the batch ended, the memory the server allocated to the task, and the size of the
+data the batch carried.  
+
+The popup for a lower bar reports the duration of a single operation and the figures the
+operation produced, e.g., the number of items extracted or the speed at which the
+transformation script processed them.  
+
+<Admonition type="info" title="">
+
+The properties reported in the popups differ from one task type to another.  
+A dedicated article describes the properties reported for each task type,  
+e.g., [RavenDB ETL Stats](../../studio/database/stats/ongoing-tasks-stats/ravendb-etl-stats.mdx#the-expanded-track)
 or [Subscription Stats](../../studio/database/stats/ongoing-tasks-stats/subscription-stats.mdx#subscription-stats-expanded-view).
 
-A triangle marks a work batch that ended with errors.  
-For an ETL task the popup names the failing stage, transform or load, and points to the
-notification center.  
+</Admonition>
 
-![The error marker on a work batch's bar](./assets/ongoing-task-stats-error-marker.png)
+---
+
+A triangle marks an operation that ended with errors.  
+For an ETL task, the error popup names the failing stage (transform or load) and references the
+notification center where additional details are available.  
+
+![The error marker on a RavenDB ETL task's bar](./assets/ongoing-task-stats-error-marker.png)
 
 </ContentFrame>
 
@@ -220,7 +240,7 @@ The bars turn solid once the operations complete.
 
 ### Script or query preview
 
-An ETL task's track lists each transformation script on a row of its own, and a data
+An ETL task's track lists each transformation script below the track label, and a data
 subscription's track lists the subscription query.  
 Click the
 [eye icon](../../monitoring/performance-views/ongoing-task-stats.mdx#expanding-a-track)
@@ -235,17 +255,22 @@ on, and shows the script itself.
 
 </Panel>
 
-<Panel heading="The tasks shown in the view">
+<Panel heading="What is monitored">
 
-A track is drawn for each of the following:
+<ContentFrame>
 
-| Monitored work | Tracks |
+### Tasks
+
+An **activity track** is drawn for each of the following ongoing tasks:
+
+| Monitored task | Tracks |
 |----------------|--------|
 | **ETL tasks** | One track per task, for every ETL type: RavenDB, SQL, Snowflake, OLAP, Elasticsearch, Kafka, RabbitMQ, Azure Queue Storage, and Amazon SQS.<br />[Embeddings generation](../../ai-integration/generating-embeddings/overview.mdx) and [GenAI](../../ai-integration/gen-ai-integration/overview.mdx) tasks are reported as ETL tasks as well. |
 | **Queue sinks** | One track per task: Kafka, RabbitMQ, and Azure Service Bus. |
 | **CDC sinks** | One track per task. |
 | **Data subscriptions** | One track per subscription. |
-| **Replication connections** | One track per connection, incoming and outgoing: external replication, internal replication within the database group, and hub and sink replication. |
+| **External replication tasks** | One track per connection: `Outgoing External Replication` on the source database, and `Incoming External Replication` on the destination database. |
+| **Hub-sink replication tasks** | One track per connection: `Outgoing Pull Replication` on the sending database, and `Incoming Pull Replication` on the receiving database. |
 
 The following articles describe the figures reported for a specific task type:  
 [External Replication Stats](../../studio/database/stats/ongoing-tasks-stats/external-replication-stats.mdx)  
@@ -253,6 +278,18 @@ The following articles describe the figures reported for a specific task type:
 [RavenDB ETL Stats](../../studio/database/stats/ongoing-tasks-stats/ravendb-etl-stats.mdx)  
 [SQL ETL Stats](../../studio/database/stats/ongoing-tasks-stats/sql-etl-stats.mdx)  
 [OLAP ETL Stats](../../studio/database/stats/ongoing-tasks-stats/olap-etl-stats.mdx)
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Internal replication
+
+Replication within the database group is not an ongoing task, but the view draws an activity track
+for each of its connections, incoming and outgoing, labeled `Incoming Internal Replication` and
+`Outgoing Internal Replication`.  
+
+</ContentFrame>
 
 <ContentFrame>
 
@@ -284,7 +321,7 @@ Backup tasks, the only ongoing tasks absent from this view, can be monitored:
 
 The **AI Task Stats** view, opened from the **AI Hub** menu, is similar in every way to the
 **Ongoing Task Stats** view explained above, except for displaying only the activity of
-[two AI task types](../../monitoring/performance-views/ongoing-task-stats.mdx#the-tasks-shown-in-the-view):
+[two AI task types](../../monitoring/performance-views/ongoing-task-stats.mdx#tasks):
 **embeddings generation** and **GenAI**.  
 **`AI Hub` > `AI Task Stats`**
 
