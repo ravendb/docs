@@ -22,14 +22,14 @@ import Panel from '@site/src/components/Panel';
 
 * In this article:
    * [The advanced-debug view](../../monitoring/debug/advanced-debug-view.mdx#the-advanced-debug-view)
-   * [Threads Runtime Info](../../monitoring/debug/advanced-debug-view.mdx#threads-runtime-info)
-   * [Memory Mapped Files](../../monitoring/debug/advanced-debug-view.mdx#memory-mapped-files)
-   * [Cluster Observer Log](../../monitoring/debug/advanced-debug-view.mdx#cluster-observer-log)
-   * [Cluster Debug](../../monitoring/debug/advanced-debug-view.mdx#cluster-debug)
+   * [Threads Runtime Info tab](../../monitoring/debug/advanced-debug-view.mdx#threads-runtime-info-tab)
+   * [Memory Mapped Files tab](../../monitoring/debug/advanced-debug-view.mdx#memory-mapped-files-tab)
+   * [Cluster Observer Log tab](../../monitoring/debug/advanced-debug-view.mdx#cluster-observer-log-tab)
+   * [Cluster Debug tab](../../monitoring/debug/advanced-debug-view.mdx#cluster-debug-tab)
       * [The cluster summary](../../monitoring/debug/advanced-debug-view.mdx#the-cluster-summary)
       * [The Log Entries table](../../monitoring/debug/advanced-debug-view.mdx#the-log-entries-table)
-   * [Record Transaction Commands](../../monitoring/debug/advanced-debug-view.mdx#record-transaction-commands)
-   * [Replay Transaction Commands](../../monitoring/debug/advanced-debug-view.mdx#replay-transaction-commands)
+   * [Record Transaction Commands tab](../../monitoring/debug/advanced-debug-view.mdx#record-transaction-commands-tab)
+   * [Replay Transaction Commands tab](../../monitoring/debug/advanced-debug-view.mdx#replay-transaction-commands-tab)
 
 </Admonition>
 
@@ -55,7 +55,7 @@ can open the view.
 
 </Panel>
 
-<Panel heading="Threads Runtime Info">
+<Panel heading="Threads Runtime Info tab">
 
 When the server consumes more CPU or memory than you expect, use the `Threads Runtime Info`
 tab to find out which threads are responsible.  
@@ -161,11 +161,19 @@ the data arrives.
 
    Click **Refresh** to sample the stack trace again without closing the dialog.
 
+   <Admonition type="info" title="">
+
+   This dialog captures the stack trace of a single thread.  
+   To capture the stack traces of **all server threads at once**, use the
+   [Stack Traces view](../../monitoring/debug/stack-traces.mdx).
+
+   </Admonition>
+
    </ContentFrame>
 
 </Panel>
 
-<Panel heading="Memory Mapped Files">
+<Panel heading="Memory Mapped Files tab">
 
 RavenDB's [storage engine](../../server/storage/storage-engine.mdx) is based on memory mapped
 files.  
@@ -204,7 +212,7 @@ of each file that is mapped into memory.
 
 </Panel>
 
-<Panel heading="Cluster Observer Log">
+<Panel heading="Cluster Observer Log tab">
 
 The [Cluster Observer](../../server/clustering/distribution/cluster-observer.mdx) supervises
 the cluster's databases: running on the leader node, the observer monitors the health of each
@@ -251,7 +259,7 @@ connected to.
 
 </Panel>
 
-<Panel heading="Cluster Debug">
+<Panel heading="Cluster Debug tab">
 
 Every cluster-wide operation, like the creation of a database or the deployment of an index,
 is executed as a [Raft command](../../glossary/raft-command.mdx): the leader appends the
@@ -348,11 +356,11 @@ security clearance.
 
 </Panel>
 
-<Panel heading="Record Transaction Commands">
+<Panel heading="Record Transaction Commands tab">
 
 A transaction-commands recording captures the write operations a database executes (e.g., `Put`
 and `Delete` document operations) in a file that the
-[Replay Transaction Commands](../../monitoring/debug/advanced-debug-view.mdx#replay-transaction-commands)
+[Replay Transaction Commands](../../monitoring/debug/advanced-debug-view.mdx#replay-transaction-commands-tab)
 tab can later replay on another database.  
 Some problems are triggered only by the exact sequence of operations that reaches the
 database (e.g., a document left with unexpected contents after two clients modified the
@@ -389,10 +397,10 @@ states; stop the recording once the sequence has been captured.
 
 </Panel>
 
-<Panel heading="Replay Transaction Commands">
+<Panel heading="Replay Transaction Commands tab">
 
 Replaying a
-[transaction-commands recording](../../monitoring/debug/advanced-debug-view.mdx#record-transaction-commands)
+[transaction-commands recording](../../monitoring/debug/advanced-debug-view.mdx#record-transaction-commands-tab)
 executes the recorded operations, in the recorded order, on a database of your choice.
 
 <Admonition type="warning" title="">
