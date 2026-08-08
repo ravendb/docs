@@ -454,6 +454,20 @@
         }
     },
     {
+        "key": "/studio/server/debug/advanced/cluster-observer",
+        "value": {
+            "targetUrl": "/monitoring/debug/advanced-debug-view",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/server/debug/admin-js-console",
+        "value": {
+            "targetUrl": "/studio/server/admin-js-console",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/server/troubleshooting/traffic-watch",
         "value": {
             "targetUrl": "/monitoring/traffic-watch/overview",
