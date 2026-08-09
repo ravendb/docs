@@ -1,0 +1,51 @@
+---
+title: "Monitoring: Start"
+sidebar_label: "Start"
+description: "Start monitoring RavenDB: live Studio views, endpoints and integrations for external monitoring tools, built-in alerts, and step-by-step guides."
+sidebar_position: 1
+---
+
+import CardWithImage from "@site/src/components/Common/CardWithImage";
+import ColGrid from "@site/src/components/ColGrid";
+
+# Monitoring
+
+### Watch your cluster's health, performance, and activity.
+RavenDB monitors itself at every level of the deployment, from the whole cluster down to a
+single request.  
+You can follow the collected data live in Studio views, read it from HTTP endpoints, or feed it
+to external monitoring tools like Zabbix, Prometheus, and Grafana.  
+The server also raises alerts and performance hints in Studio's notification center when a
+condition requires your attention.
+
+### Use cases
+Use RavenDB's monitoring tools in any operational scenario, including:  
+* **Performance diagnosis**  
+  Locate slow queries, a saturated disk, or the node behind a slowdown.
+* **Cluster health at a glance**  
+  Follow node state, resource use, and task activity on one dashboard.
+* **Proactive alerting**  
+  Learn about conditions that require your attention, like low disk space, as they develop.
+* **Feeding an existing monitoring stack**  
+  Serve metrics to tools like Zabbix, Prometheus, and Grafana.
+* **Working with support**  
+  Package diagnostic information for the RavenDB support team.
+
+### Technical documentation
+Begin with the overview, and continue to the pages of each monitoring area:
+
+<ColGrid colCount={2}>
+    <CardWithImage title="Monitoring Overview" description={<>The entry point to the monitoring documentation:<br />a linked map of the articles that document each monitoring area, from Studio views and endpoints to integrations and alerts.</>} url="../monitoring/overview" imgIcon="dashboard" />
+    <CardWithImage title="Cluster Dashboard" description="Learn about Studio's live whole-cluster diagnostics view, its widgets and customization." url="../monitoring/cluster-dashboard/overview" imgIcon="cluster-dashboard" />
+</ColGrid>
+
+#### Learn more: monitoring guides
+Step-by-step guides that solve operational problems using the monitoring tools:
+
+<ColGrid colCount={3}>
+    <CardWithImage title="How is my database today?" description="Diagnose and investigate database performance issues using Studio's Cluster Dashboard, Traffic Watch, Admin Logs, and other built-in tools." url="../../guides/how-is-my-database-today" imgIcon="cluster-dashboard" />
+    <CardWithImage title="Troubleshooting ETL with the RavenDB ETL Errors View" description="Diagnose and fix ETL pipeline issues, including script errors, connection failures, and transformation problems." url="../../guides/etl-troubleshooting-with-ravendb-etl-errors-view" imgIcon="ravendb-etl" />
+    <CardWithImage title="What Requests Hit My Cloud Cluster?" description="See the requests your RavenDB Cloud cluster handles, using Traffic Watch, Admin Logs, and notifications." url="https://ravendb.net/articles/what-requests-hit-my-cloud-cluster" imgIcon="traffic-watch" />
+</ColGrid>
+
+Browse all monitoring-related guides under the [monitoring tag](../../guides/tags/monitoring).
