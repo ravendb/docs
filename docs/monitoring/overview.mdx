@@ -155,8 +155,8 @@ To learn about task errors and the health states they drive, see the
 ### Tombstones
 
 When a document is deleted, RavenDB replaces it with a marker called a
-[tombstone](../monitoring/tombstones/overview.mdx), so that indexing, replication, ETL, and
-incremental backup can handle the deletion.  
+[tombstone](../monitoring/tombstones/overview.mdx), so that indexing, replication, and the ETL
+and incremental backup tasks can handle the deletion.  
 RavenDB removes tombstones that are no longer needed through a periodic cleanup.  
 The [Tombstones view](../monitoring/tombstones/tombstones-view.mdx) shows the progress of this
 cleanup for each collection, and the number of tombstones each process still has to handle.
