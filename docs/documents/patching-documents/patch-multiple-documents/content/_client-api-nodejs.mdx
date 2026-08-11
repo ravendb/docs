@@ -1,0 +1,533 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* Set-based patch operations apply changes to documents selected by a query,  
+  rather than targeting each document individually.
+
+* To patch a single document, see [Patch a Single Document](../../../../documents/patching-documents/patch-a-single-document/api-overview.mdx).  
+  You can also patch multiple documents using the [Patch view in Studio](../../../../documents/patching-documents/patch-multiple-documents/patch-view.mdx).
+
+* In this article: 
+  * [Overview](#overview)
+      * [Defining set-based patching](#defining-set-based-patching)
+      * [Important characteristics](#important-characteristics)
+  * [Examples](#examples)
+      * [Update all documents in a collection](#update-all-documents-in-a-collection)
+      * [Change the collection of matching documents](#change-the-collection-of-matching-documents)
+      * [Update by dynamic query](#update-by-dynamic-query)
+      * [Update by static index query](#update-by-static-index-query)
+      * [Update all documents in the database](#update-all-documents-in-the-database)
+      * [Update documents by ID](#update-documents-by-id)
+      * [Update documents by ID using parameters](#update-documents-by-id-using-parameters)
+      * [Increment a counter](#increment-a-counter)
+      * [Append a time series entry](#append-a-time-series-entry)
+      * [Allow patching based on stale index results](#allow-patching-based-on-stale-index-results)
+  * [Syntax](#syntax)  
+      * [Send syntax](#send-syntax)  
+      * [PatchByQueryOperation syntax](#patchbyqueryoperation-syntax)  
+
+</Admonition>
+
+<Panel heading="Overview">
+
+<Admonition type="note" title="">
+
+#### Defining set-based patching
+
+* In a relational database, a SQL statement that updates a set of rows might look like this:  
+  `UPDATE Users SET IsActive = 0 WHERE LastLogin < '2020-01-01'`
+
+* In RavenDB, a `PatchByQueryOperation` combines two components:
+
+  1. **The QUERY**:  
+     An [RQL](../../../../querying/rql/what-is-rql.mdx) query that selects the documents to update.  
+     The selection portion uses the same RQL syntax used to query collections and indexes.
+
+  2. **The UPDATE**:  
+     A JavaScript `update` clause that defines the changes to apply to each selected document.
+
+* When you send the `PatchByQueryOperation`, the server runs the query and executes the `update` clause for each selected document.
+
+<Tabs groupId='languageSyntax'>    
+<TabItem value="rql" label="RQL">
+```sql
+// Query and update example
+// Increase Freight for Orders documents that match the query criteria.
+// ====================================================================
+
+from Orders
+where Freight < 10
+update {
+    this.Freight += 10;
+}
+```
+</TabItem>
+</Tabs>    
+
+</Admonition>
+    
+<Admonition type="note" title="">
+
+#### Important characteristics
+
+* **Transactional batches**:  
+  RavenDB patches the selected documents in batches of up to 1,024.  
+  Each batch runs in a separate write transaction, so the operation as a whole is not atomic.
+
+* **Document selection**:  
+  Do not rely on documents created after the operation starts being included.
+
+* **Concurrency**:  
+  The operation does not hold a snapshot of document contents for its entire duration.  
+  RavenDB performs no per-document concurrency checks, so a selected document can be modified or deleted before its batch is processed.  
+  If the document still exists, the patch is applied to its current version.
+
+* **Stale indexes**:  
+  When the query uses an auto-index or static index, RavenDB rejects stale results by default.  
+  You can explicitly allow patching based on stale index results, but the selected set may omit newly matching documents or include documents based on outdated indexed values.  
+  See [Allow patching based on stale index results](../../../../documents/patching-documents/patch-multiple-documents/client-api.mdx#allow-patching-based-on-stale-index-results).
+
+* **Map-reduce indexes**:  
+  Set-based patch operations cannot be executed against map-reduce indexes.
+
+* **Long-running operations**:  
+  `PatchByQueryOperation` runs as a background server operation and may take a long time to complete.  
+  The `send` method resolves to an `OperationCompletionAwaiter` object that you can use to wait for completion  
+  or kill the operation.  
+  See [Manage lengthy operations](../../../../client-api/operations/what-are-operations.mdx#manage-lengthy-operations).
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Examples">
+
+<ContentFrame>
+
+### Update all documents in a collection
+
+This query targets every document in the `Orders` collection and does not require an index.
+
+<TabItem value="update_whole_collection" label="update_whole_collection">
+```js
+// Update all documents in the Orders collection
+// ==============================================
+
+// Define the query and JavaScript update clause.
+const patchByQueryOp = new PatchByQueryOperation(
+    `from Orders as o
+     update
+     {
+         o.Freight += 10;
+     }`);
+
+// Send the operation to the server.
+const operation = await documentStore.operations.send(patchByQueryOp);
+
+// Wait for the background operation to complete.
+await operation.waitForCompletion();
+```
+</TabItem>
+
+</ContentFrame>
+<ContentFrame>
+
+### Change the collection of matching documents
+
+Changing a document’s `@collection` metadata requires deleting and recreating the document with the same ID.
+
+<TabItem value="update_collection_name" label="update_collection_name">
+```js
+// Recreate all Orders documents in the ArchivedOrders collection
+// ===============================================================
+
+const patchByQueryOp = new PatchByQueryOperation(
+    `from Orders
+     update
+     {
+         var documentId = id(this);
+
+         del(documentId);
+         this["@metadata"]["@collection"] = "ArchivedOrders";
+         put(documentId, this);
+     }`);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+await operation.waitForCompletion();
+```
+</TabItem>
+<br/>    
+
+<Admonition type="warning" title="Document extensions are deleted">
+
+Deleting the document also deletes its attachments, counters, and time series.  
+When [revisions](../../../../document-extensions/revisions/overview.mdx) are enabled, RavenDB may also create revision entries for the deletion and recreation.
+
+</Admonition>    
+
+</ContentFrame>
+<ContentFrame>
+
+### Update by dynamic query
+
+RavenDB evaluates this query using a matching auto-index, creating one if necessary.
+
+<TabItem value="update_by_dynamic_query" label="update_by_dynamic_query">
+```js
+// Update documents selected by a dynamic query
+// ============================================
+
+// Set the discount on every line of each order handled by the specified employee.
+const patchByQueryOp = new PatchByQueryOperation(
+    `from Orders as o
+     where o.Employee = 'employees/4-A'
+     update
+     {
+         o.Lines.forEach(line => line.Discount = 0.3);
+     }`);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+await operation.waitForCompletion();
+```
+</TabItem>
+
+</ContentFrame>
+<ContentFrame>
+
+### Update by static index query
+
+The static index selects the source documents to patch.  
+The `update` clause modifies those documents, not the index entries.
+
+The index must be a map index; set-based patching does not support map-reduce indexes.
+
+<Tabs>
+<TabItem value="patch-operation" label="Patch operation">
+```js
+// Deploy the static index.
+await new Products_BySupplier().execute(documentStore);
+
+const patchByQueryOp = new PatchByQueryOperation(
+    `from index 'Products/BySupplier' as p
+     where p.Supplier = 'suppliers/12-A'
+     update
+     {
+         p.Supplier = 'suppliers/13-A';
+     }`);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+await operation.waitForCompletion();
+```
+</TabItem>
+
+<TabItem value="index-definition" label="Index definition">
+```js
+class Products_BySupplier extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        // Define the index-fields
+        this.map("Products", p => ({
+            Supplier: p.Supplier
+        }));
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Update all documents in the database
+
+Use `@all_docs` to select documents from every collection without requiring an index.  
+Use this scope carefully because the same patch is applied across all collections.
+
+<TabItem value="update_all_documents" label="update_all_documents">
+```js
+// Update documents across all collections
+// =======================================
+
+const patchByQueryOp = new PatchByQueryOperation(
+    `from @all_docs
+     update
+     {
+         this.Updated = true;
+     }`);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+await operation.waitForCompletion();
+```
+</TabItem>
+
+</ContentFrame>
+<ContentFrame>
+
+### Update documents by ID
+
+Use `@all_docs` to select documents by ID across different collections.  
+This query does not require an index, and IDs that do not exist are not patched.
+
+<TabItem value="update_by_id" label="update_by_id">
+```js
+// Update documents with the specified IDs
+// =======================================
+
+const patchByQueryOp = new PatchByQueryOperation(
+    `from @all_docs as d
+     where id(d) in ('orders/1-A', 'companies/1-A')
+     update
+     {
+         d.Updated = true;
+     }`);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+await operation.waitForCompletion();
+```
+</TabItem>
+
+</ContentFrame>
+<ContentFrame>
+
+### Update documents by ID using parameters
+
+Use `queryParameters` to pass the document IDs without embedding them in the RQL string.  
+The ID-based query does not require an index.
+
+<TabItem value="update_by_id_using_parameters" label="update_by_id_using_parameters">
+```js
+const indexQuery = new IndexQuery();
+
+indexQuery.query = `from @all_docs as d
+                    where id(d) in ($ids)
+                    update
+                    {
+                        d.Updated = true;
+                    }`;
+
+indexQuery.queryParameters = {
+    ids: ["orders/830-A", "companies/91-A"]
+};
+
+const patchByQueryOp = new PatchByQueryOperation(indexQuery);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+await operation.waitForCompletion();
+```
+</TabItem>
+
+</ContentFrame>
+<ContentFrame>
+
+### Increment a counter
+
+Use `incrementCounter(document, counterName, incrementBy)` to increment a counter on every document selected by the query.  
+    
+You can omit `incrementBy` to increment by `1`.  
+If the counter does not exist, RavenDB creates it with the incremented value.
+
+This example uses a direct collection query and does not require an index.
+
+<TabItem value="increment_counter" label="increment_counter">
+```js
+// Increment a counter on every Product document
+// =============================================
+
+const query = new IndexQuery();
+
+query.query = `from Products as p
+               update
+               {
+                   incrementCounter(p, $counterName, $incrementBy);
+               }`;
+
+query.queryParameters = {
+    counterName: "PriceUpdates",
+    incrementBy: 1
+};
+
+const patchByQueryOp = new PatchByQueryOperation(query);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+await operation.waitForCompletion();
+```
+</TabItem>
+<br/>
+    
+For additional patch-script operations, including retrieving and deleting counters, see [Counter operations](../../../../server/kb/javascript-engine.mdx#counter-operations).
+
+</ContentFrame>
+<ContentFrame>
+
+### Append a time series entry
+
+Use `timeseries(document, name).append(timestamp, values)` to append an entry to a time series on every document selected by the query.  
+    
+`values` must be an array of numbers.  
+You can optionally pass a tag as the third argument to `append`.
+
+If the time series does not exist, RavenDB creates it.  
+Time series timestamps supplied to patch scripts are treated as UTC.
+
+This example uses a direct collection query and does not require an index.
+
+<TabItem value="append_time_series_entry" label="append_time_series_entry">
+```js
+// Record the current product price in a time series
+// =================================================
+
+const query = new IndexQuery();
+
+query.query = `from Products as p
+               update
+               {
+                   timeseries(p, $timeSeriesName)
+                       .append($timestamp, [p.PricePerUnit]);
+               }`;
+
+query.queryParameters = {
+    timeSeriesName: "PriceHistory",
+    timestamp: new Date().toISOString()
+};
+
+const patchByQueryOp = new PatchByQueryOperation(query);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+await operation.waitForCompletion();
+```
+</TabItem>
+<br/>
+    
+For additional patch-script operations, including retrieving and deleting time series data,  
+see [Patch time series data - multiple documents](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#patch-time-series-data---multiple-documents).
+
+</ContentFrame>    
+<ContentFrame>
+
+### Allow patching based on stale index results
+
+By default, RavenDB rejects a set-based patch operation when its auto-index or static index is stale.
+
+Set `allowStale` to `true` only when you accept selection based on the index’s current,  
+potentially incomplete or outdated results.  
+A stale index can omit newly matching documents or select documents that no longer match.
+
+The patch is applied to each selected document’s current version.
+When necessary, recheck the condition inside the `update` clause to avoid modifying documents that no longer match.
+
+<TabItem value="update_stale_results" label="update_stale_results">
+```js
+const query = new IndexQuery();
+
+query.query = `from Orders as o
+               where o.Company = $currentCompany
+               update
+               {
+                   // Recheck the current document value because the index result may be stale.
+                   if (o.Company === $currentCompany)
+                   {
+                       o.Company = $newCompany;
+                   }
+               }`;
+
+query.queryParameters = {
+    currentCompany: "companies/12-A",
+    newCompany: "companies/13-A"
+};
+
+const options = {
+    allowStale: true
+};
+
+const patchByQueryOp = new PatchByQueryOperation(query, options);
+
+const operation = await documentStore.operations.send(patchByQueryOp);
+await operation.waitForCompletion();
+```
+</TabItem>
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Syntax">
+    
+#### Send syntax
+
+```js
+await documentStore.operations.send(operation);
+```
+<br/>
+
+| Parameter     | Type                    | Description                                                                                 |
+|---------------|-------------------------|-----------------------------------------------------------------------------------------------|
+| **operation** | `PatchByQueryOperation` | The operation to execute, describing the query and the patch to apply.                      |
+
+| Return value                          | Description |
+|---------------------------------------|-------------|
+| `Promise<OperationCompletionAwaiter>` | A promise that resolves to a handle used to wait for the server-side operation to complete (`waitForCompletion`) or to request its cancellation (`kill`). |
+
+#### PatchByQueryOperation syntax
+
+```js
+// Available overloads:
+patchByQueryOp = new PatchByQueryOperation(queryToUpdate);
+patchByQueryOp = new PatchByQueryOperation(queryToUpdate, options);
+```
+<br/>
+
+| Parameter         | Type                    | Description |
+|-------------------|-------------------------|-------------|
+| **queryToUpdate** | `string`                | The complete RQL patch statement, containing the query that selects documents and the `update` clause with the JavaScript patching code. |
+| **queryToUpdate** | `IndexQuery`            | An object containing the RQL patch statement and, optionally, query parameters. |
+| **options**       | `QueryOperationOptions` | Options that control how the patch operation is executed. |
+
+#### Relevant IndexQuery properties
+
+```js
+// Relevant properties inherited by IndexQuery:
+class IndexQuery {
+    query;           // string
+    queryParameters; // Record<string, object>
+}
+```
+<br/>
+
+| Property            | Description |
+|---------------------|-------------|
+| **query**           | The complete RQL patch statement. |
+| **queryParameters** | Values for parameters referenced in the RQL statement. |
+
+#### QueryOperationOptions properties
+
+```js
+// Options for 'PatchByQueryOperation'
+{
+    allowStale;              // boolean
+
+    ignoreMaxStepsForScript; // boolean
+
+    staleTimeout;            // number
+
+    maxOpsPerSecond;         // number
+
+    retrieveDetails;         // boolean
+}
+```
+<br/>                    
+
+| Property                    | Description |
+|-----------------------------|-------------|
+| **allowStale**              | Determines whether an index-backed patch may operate on stale index results. The default is `false`. |
+| **ignoreMaxStepsForScript** | Determines whether the server-defined limit on the number of script steps is ignored. The default is `false`. |
+| **staleTimeout**            | When `allowStale` is `false`, specifies how long to wait for a stale index to become non-stale. An exception is thrown if the timeout is exceeded. |
+| **maxOpsPerSecond**         | Limits the number of matched documents processed per second. When specified, the value must be greater than zero. |
+| **retrieveDetails**         | Determines whether per-document operation details are requested from the server. The default is `false`. |
+
+</Panel>

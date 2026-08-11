@@ -1,0 +1,243 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* This article is part of the single-document patching examples.  
+  It focuses on loading related documents, patching document metadata, and adding, cloning, and deleting documents from a patch script.
+
+* For the available patching interfaces (Session API, Session API using defer, and Operations API) and their full syntax,  
+  see [Patch a Single Document: API Overview](../../../../../documents/patching-documents/patch-a-single-document/api-overview.mdx).
+
+* Patching examples in this article:
+  * [Loading documents in a script](#loading-documents-in-a-script)  
+  * [Patch document metadata](#patch-document-metadata)  
+  * [Add document](#add-document)  
+  * [Clone document](#clone-document)  
+  * [Delete document](#delete-document)  
+
+</Admonition>
+
+<Panel heading="Patching examples">
+
+<ContentFrame>
+
+### Loading documents in a script
+
+* Loading related documents from a patch script is supported only by the _defer_ or the _operations_ syntax.  
+* The following example loads the product referenced by each order line and copies the product's current name to the order line.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Update each order line with the current name from its referenced product document
+patch_request = PatchRequest()
+patch_request.script = """this.Lines.forEach(line => {
+                              var product = load(line.Product);
+                              if (product) {
+                                  line.ProductName = product.Name;
+                              }
+                          });"""
+
+session.advanced.defer(PatchCommandData("orders/1-A", None, patch_request))
+
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Update each order line with the current name from its referenced product document
+patch_request = PatchRequest()
+patch_request.script = """this.Lines.forEach(line => {
+                              var product = load(line.Product);
+                              if (product) {
+                                  line.ProductName = product.Name;
+                              }
+                          });"""
+
+store.operations.send(PatchOperation("orders/1-A", None, patch_request))
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Patch document metadata
+
+* A patch script can modify a document's metadata by accessing `this['@metadata']`.
+* The following example sets `@expires` to one minute in the future.  
+  When [document expiration](../../../../../server/extensions/expiration.mdx) is enabled, RavenDB deletes the document after this time is reached.
+* Patching metadata with a script is supported only by the _defer_ or _operations_ syntax.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Schedule the document for expiration
+expires = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=1)
+
+patch_request = PatchRequest()
+patch_request.script = "this['@metadata']['@expires'] = args.expires;"
+# @expires must contain an ISO 8601 UTC date-time string
+patch_request.values = {"expires": expires.isoformat()}
+
+session.advanced.defer(PatchCommandData("users/1", None, patch_request))
+
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Schedule the document for expiration
+expires = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=1)
+
+patch_request = PatchRequest()
+patch_request.script = "this['@metadata']['@expires'] = args.expires;"
+# @expires must contain an ISO 8601 UTC date-time string
+patch_request.values = {"expires": expires.isoformat()}
+
+store.operations.send(PatchOperation("users/1", None, patch_request))
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Add document
+
+* Use the `put(documentId, document)` patch-script function to store another document.
+* In this example:
+  * The `projects/` prefix tells RavenDB to generate a new project ID.
+  * `id(this)` returns the ID of the employee being patched and stores it in `ProjectLeader`.
+  * `@metadata.@collection` places the new document in the `Projects` collection.
+* Adding a document from a patch script is supported only by the _defer_ or the _operations_ syntax.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Create a project with a server-generated ID
+# and reference the patched employee as its project leader
+patch_request = PatchRequest()
+patch_request.script = """put('projects/', {
+                              ProjectLeader: id(this),
+                              ProjectDesc: 'New project',
+                              '@metadata': { '@collection': 'Projects' }
+                          });"""
+
+session.advanced.defer(PatchCommandData("employees/1-A", None, patch_request))
+
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Create a project with a server-generated ID
+# and reference the patched employee as its project leader
+patch_request = PatchRequest()
+patch_request.script = """put('projects/', {
+                              ProjectLeader: id(this),
+                              ProjectDesc: 'New project',
+                              '@metadata': { '@collection': 'Projects' }
+                          });"""
+
+store.operations.send(PatchOperation("employees/1-A", None, patch_request))
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Clone document
+
+* To clone a document from a patch script, pass the current document (`this`) to `put` with a new document ID.  
+ The `employees/` prefix tells RavenDB to generate the clone's ID.
+* Cloning a document from a patch script is supported only by the _defer_ or the _operations_ syntax.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Clone the current document under a new server-generated employee ID
+patch_request = PatchRequest()
+patch_request.script = "put('employees/', this);"
+
+session.advanced.defer(PatchCommandData("employees/1-A", None, patch_request))
+
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Clone the current document under a new server-generated employee ID
+patch_request = PatchRequest()
+patch_request.script = "put('employees/', this);"
+
+store.operations.send(PatchOperation("employees/1-A", None, patch_request))
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="">
+
+**Document data, related items, and revisions:**
+
+* The clone receives a copy of the source document's body.
+* Attachments, counters, and time series are stored separately and are not copied automatically.  
+  The source document's revision history is not copied either.
+* To manage related items from a patch script, use the predefined JavaScript methods:
+  * [Counter methods](../../../../../server/kb/javascript-engine.mdx#counter-operations)
+  * [Time series methods](../../../../../server/kb/javascript-engine.mdx#time-series-operations)
+  * [Attachment methods](../../../../../server/kb/javascript-engine.mdx#attachment-operations)
+* When [cloning a document via Studio](../../../../../studio/database/documents/create-new-document.mdx#clone-an-existing-document),  
+  Studio copies the document body, attachments, counters, and time series.  
+  It does not copy the source document's revision history.
+
+**Archived documents:**
+
+* If the source document is archived, the cloned document will not be archived.  
+  See [Data archival overview](../../../../../data-archival/overview.mdx).
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Delete document
+
+* Use RavenDB's `del(documentId)` patch-script function to delete the document with the specified ID.
+* The example below passes `id(this)` to delete the document currently being patched.
+* Do not confuse `del(...)` with JavaScript's `delete` operator.  
+  For example, `delete this.Extension` removes only the `Extension` property from the document.  
+  See [Remove property](../../../../../documents/patching-documents/patch-a-single-document/examples/patch-examples-fields-and-arrays.mdx#remove-property).
+* Deleting a document from a patch script is supported only by the _defer_ or the _operations_ syntax.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session_defer_syntax" label="Session_defer_syntax">
+```python
+# Delete the document currently being patched
+patch_request = PatchRequest()
+patch_request.script = "del(id(this));"
+
+session.advanced.defer(PatchCommandData("employees/1-A", None, patch_request))
+
+session.save_changes()
+```
+</TabItem>
+<TabItem value="Operations_syntax" label="Operations_syntax">
+```python
+# Delete the document currently being patched
+patch_request = PatchRequest()
+patch_request.script = "del(id(this));"
+
+store.operations.send(PatchOperation("employees/1-A", None, patch_request))
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>

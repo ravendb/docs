@@ -338,7 +338,35 @@
         "key": "/client-api/operations/patching",
         "value": {
             "targetUrl": "/client-api/operations/patching/single-document",
-            "minimumVersion": "6.2"
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/patching/single-document",
+        "value": {
+            "targetUrl": "/documents/patching-documents/patch-a-single-document/api-overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/patching/set-based",
+        "value": {
+            "targetUrl": "/documents/patching-documents/patch-multiple-documents/client-api",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/operations/patching/json-patch-syntax",
+        "value": {
+            "targetUrl": "/documents/patching-documents/patch-a-single-document/json-patch",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/database/documents/patch-view",
+        "value": {
+            "targetUrl": "/documents/patching-documents/patch-multiple-documents/patch-view",
+            "minimumVersion": "7.2"
         }
     },
     {

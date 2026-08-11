@@ -97,8 +97,8 @@ using (var asyncSession = store.OpenAsyncSession())
 * Use `attachments(targetDocument, targetAttachmentName).copyFrom(sourceDocId, sourceAttachmentName)` to copy an attachment between documents within a patch script.
   The method copies the attachment from the source document and assigns it to the target document under the specified name.
     
-* In both [single-document patches](../../../client-api/operations/patching/single-document.mdx)
-  and [patch-by-query operations](../../../client-api/operations/patching/set-based.mdx),
+* In both [single-document patches](../../../documents/patching-documents/patch-a-single-document/api-overview.mdx)
+  and [patch-by-query operations](../../../documents/patching-documents/patch-multiple-documents/client-api.mdx),
   the copy is performed entirely server-side,  
   without requiring the attachment to be downloaded and re-uploaded through the client.        
     

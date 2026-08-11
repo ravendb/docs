@@ -151,7 +151,7 @@ See [importAsync](../../../client-api/smuggler/what-is-smuggler.mdx#methods) and
 
 `TransformScript` lets you modify or filter out each document during an export or import, using JavaScript that you provide.  
 
-The JavaScript engine is the same one used for [patching operations](../../../client-api/operations/patching/single-document.mdx), so you have identical syntax and capabilities, plus the ability to filter out a document by throwing a `skip` exception.  
+The JavaScript engine is the same one used for [patching operations](../../../documents/patching-documents/patch-a-single-document/api-overview.mdx), so you have identical syntax and capabilities, plus the ability to filter out a document by throwing a `skip` exception.  
 
 ```javascript
 var id = this['@metadata']['@id'];

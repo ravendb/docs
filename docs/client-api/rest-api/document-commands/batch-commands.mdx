@@ -39,7 +39,7 @@ This is a cURL request to a database named "Example" on our [playground server](
 It batches two commands:  
 
 1. Upload a new document called "person/1".  
-2. Execute a [patch](../../../client-api/operations/patching/single-document.mdx) on that same document.  
+2. Execute a [patch](../../../documents/patching-documents/patch-a-single-document/api-overview.mdx) on that same document.  
 
 <TabItem value="bash" label="bash">
 <CodeBlock language="bash">
@@ -248,7 +248,7 @@ Format within the `Commands` array in the [request body](../../../client-api/res
 
 ### Patch Document Command
 
-Update a document. A [patch](../../../client-api/operations/patching/single-document.mdx) is executed on the server side and 
+Update a document. A [patch](../../../documents/patching-documents/patch-a-single-document/api-overview.mdx) is executed on the server side and 
 does not involve loading the document, avoiding the cost of sending the entire document in a round trip over the network.  
 
 Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands.mdx#request-format):  
