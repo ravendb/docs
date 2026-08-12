@@ -24,6 +24,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Export specific collections](../../../client-api/smuggler/what-is-smuggler.mdx#export-specific-collections)
    * [Import](../../../client-api/smuggler/what-is-smuggler.mdx#import)
       * [Import specific collections](../../../client-api/smuggler/what-is-smuggler.mdx#import-specific-collections)
+   * [ImportIncrementalAsync](../../../client-api/smuggler/what-is-smuggler.mdx#importincrementalasync)
    * [TransformScript](../../../client-api/smuggler/what-is-smuggler.mdx#transformscript)
    * [Syntax](../../../client-api/smuggler/what-is-smuggler.mdx#syntax)
       * [Methods](../../../client-api/smuggler/what-is-smuggler.mdx#methods)
@@ -97,7 +98,9 @@ await exportOperation.WaitForCompletionAsync();
 
 <br />
 
-See [ExportAsync](../../../client-api/smuggler/what-is-smuggler.mdx#methods) and [DatabaseSmugglerExportOptions](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerexportoptions) in the [Syntax](../../../client-api/smuggler/what-is-smuggler.mdx#syntax) section.  
+See [ExportAsync](../../../client-api/smuggler/what-is-smuggler.mdx#methods)
+and [DatabaseSmugglerExportOptions](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerexportoptions)
+in the [Syntax](../../../client-api/smuggler/what-is-smuggler.mdx#syntax) section.  
 
 </Panel>
 
@@ -154,7 +157,45 @@ await importOperation.WaitForCompletionAsync();
 
 <br />
 
-See [ImportAsync](../../../client-api/smuggler/what-is-smuggler.mdx#methods) and [DatabaseSmugglerImportOptions](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions) in the [Syntax](../../../client-api/smuggler/what-is-smuggler.mdx#syntax) section.  
+See [ImportAsync](../../../client-api/smuggler/what-is-smuggler.mdx#methods) and
+[DatabaseSmugglerImportOptions](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions)
+in the [Syntax](../../../client-api/smuggler/what-is-smuggler.mdx#syntax) section.  
+
+</Panel>
+
+<Panel heading="ImportIncrementalAsync">
+
+A RavenDB backup folder contains one full backup file and any number of incremental backup files accumulated since
+the last full backup.  
+Use `ImportIncrementalAsync` to import all [logical-backup](../../../backup/overview.mdx#logical-backup) files
+from a backup folder into an existing database in a single call, instead of importing each file individually.
+
+After finding all backup files in the specified folder, the method orders them chronologically and imports them in sequence.  
+Indexes and Subscriptions are excluded from all files except the last, ensuring only their most recent state is applied.
+
+<Admonition type="note" title="">
+`ImportIncrementalAsync` imports your backup into an **existing** database.  
+To create a **new** database from backup, use [`RestoreBackupOperation`](../../../backup/restore.mdx).
+</Admonition>
+
+<ContentFrame>
+
+### Example
+
+```csharp
+// Import all backup files from a backup folder into an existing database
+await store.Smuggler.ImportIncrementalAsync(
+    new DatabaseSmugglerImportOptions(),
+    @"C:\RavenDB\Backups\Northwind.2024-01-15T12-00-00");
+```
+
+</ContentFrame>
+
+<br />
+
+See [ImportIncrementalAsync](../../../client-api/smuggler/what-is-smuggler.mdx#methods) and
+[DatabaseSmugglerImportOptions](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions)
+in the [Syntax](../../../client-api/smuggler/what-is-smuggler.mdx#syntax) section.  
 
 </Panel>
 
@@ -162,7 +203,8 @@ See [ImportAsync](../../../client-api/smuggler/what-is-smuggler.mdx#methods) and
 
 `TransformScript` lets you modify or filter out each document during an export or import, using JavaScript that you provide.  
 
-The JavaScript engine is the same one used for [patching operations](../../../documents/patching-documents/patch-a-single-document/api-overview.mdx), so you have identical syntax and capabilities, plus the ability to filter out a document by throwing a `skip` exception.  
+The JavaScript engine is the same one used for [patching operations](../../../documents/patching-documents/patch-a-single-document/api-overview.mdx),
+so you have identical syntax and capabilities, plus the ability to filter out a document by throwing a `skip` exception.  
 
 ```javascript
 var id = this['@metadata']['@id'];
@@ -262,7 +304,7 @@ Imports data from a file or a stream into the database.
 Task<Operation> ImportAsync(
     DatabaseSmugglerImportOptions options,
     string fromFile,
-    CancellationToken token = default);
+    CancellationToken cancellationToken = default);
 
 Task<Operation> ImportAsync(
     DatabaseSmugglerImportOptions options,
@@ -285,11 +327,44 @@ var importOperation = await store.Smuggler.ImportAsync(options, fromFile, token)
 | **options** | `DatabaseSmugglerImportOptions` | Options used during the import. See [DatabaseSmugglerImportOptions](../../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions). |
 | **fromFile** | `string` | Path to the file the data is imported from. |
 | **stream** | `Stream` | Stream with the data to import. |
-| **token** | `CancellationToken` | Token used to cancel the operation. |
+| **cancellationToken** | `CancellationToken` | Token used to cancel the operation, in the overload that imports from a file. |
+| **token** | `CancellationToken` | Token used to cancel the operation, in the overload that imports from a stream. |
 
 | Return value | |
 |-----------|-------------|
 | `Operation` | An `Operation` instance you can use to wait for completion and subscribe to progress events. |
+
+</TabItem>
+<TabItem value="ImportIncrementalAsync" label="ImportIncrementalAsync">
+
+Imports the logical-backup files found in a backup folder, in chronological order.
+
+```csharp
+Task ImportIncrementalAsync(
+    DatabaseSmugglerImportOptions options,
+    string fromDirectory,
+    CancellationToken cancellationToken = default);
+```
+
+<br />
+
+Usage:
+
+```csharp
+await store.Smuggler.ImportIncrementalAsync(options, fromDirectory, token);
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **options** | `DatabaseSmugglerImportOptions` | Options applied to each file imported from the directory. `Tombstones` and `CompareExchangeTombstones` are added automatically. |
+| **fromDirectory** | `string` | Path to the backup folder containing the backup files to import. |
+| **cancellationToken** | `CancellationToken` | Token used to cancel the operation. |
+
+| Return value | |
+|-----------|-------------|
+| `Task` | Completes when all backup files in the folder have been imported. |
 
 </TabItem>
 </Tabs>
