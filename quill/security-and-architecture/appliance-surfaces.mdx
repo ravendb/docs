@@ -1,0 +1,387 @@
+---
+title: "Appliance Surfaces"
+sidebar_label: "Appliance Surfaces"
+description: "How Quill routes and protects its network surfaces, including TLS, authentication, direct RavenDB access, and network limitations."
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+    
+* Quill is a self-contained Docker appliance.   
+  Its dashboard, API, public chat pages, and RavenDB server are all reached through a single TLS entry point  
+  on port `443`.
+
+* This article explains what runs inside the appliance, how incoming connections reach the correct service,  
+  and how each network surface is protected.
+
+* In this article:
+  * [What is inside the appliance](#what-is-inside-the-appliance)
+  * [How a connection is routed](#how-a-connection-is-routed)  
+  * [The appliance hostnames](#the-appliance-hostnames)  
+  * [What is public](#what-is-public)  
+  * [What is protected, and by what](#what-is-protected-and-by-what)  
+  * [The TLS front and the wildcard certificate](#the-tls-front-and-the-wildcard-certificate)  
+  * [Direct database access](#direct-database-access)
+    
+</Admonition>
+
+<Panel heading="What is inside the appliance">
+
+Quill runs in a single Docker container.   
+Its three main components are RavenDB, the Quill web application, and nginx.
+
+* **RavenDB**  
+  Stores the documents mirrored from your SQL source and the data belonging to each Quill app, including its agents, channels, and conversations.
+
+* **The Quill web application**  
+  Serves the dashboard, the Quill API, and the public chat pages.  
+  It listens on port `5000` inside the container.
+    
+* **nginx**  
+  Acts as the appliance's reverse proxy and external TLS entry point.  
+  It listens on port `443` and uses the requested hostname to route each connection to either the Quill web application or RavenDB.
+
+In the default Docker Compose configuration, only port `443` is published to the host.  
+The internal ports used by the Quill web application and RavenDB are not published,  
+so external connections can only enter through nginx.
+
+</Panel>
+
+<Panel heading="How a connection is routed">
+
+All external connections enter through nginx on port `443`.
+
+At the beginning of a TLS connection, the caller includes the requested hostname in a field called **Server Name Indication (SNI)**.
+nginx reads this hostname before terminating TLS and uses it to select one of two destination services:
+
+* **The web hostnames** (`dashboard.*`, `api.*`, and `public.*`) route to the Quill web application.  
+  nginx terminates TLS using the appliance's wildcard server certificate and forwards the request as plain HTTP over the container's internal network.
+
+* **The database hostnames** (`db.*` and `a.*`) route to RavenDB.  
+  nginx passes the encrypted connection through unchanged. 
+  RavenDB terminates TLS and validates the caller's client certificate, preserving mutual TLS directly between the caller and RavenDB.
+
+The current nginx configuration matches these hostnames by prefix.
+A hostname that does not begin with `db.`, `a.`, `public.`, or `api.` follows the dashboard route and remains subject to dashboard authentication.    
+
+```text
+                         ┌────────────────── the container ──────────────────┐
+                         │                                                   │
+caller ── TLS :443 ────> │  nginx                                            │
+                         │    ├─ dashboard.* ─┐                              │
+                         │    ├─ api.*       ─┼─ terminate TLS ─> Quill web  │
+                         │    ├─ public.*    ─┘                              │
+                         │    │                                              │
+                         │    ├─ db.*      ──┐                               │
+                         │    └─ a.*       ──┴─ TLS passthrough ─> RavenDB   │
+                         │                                                   │
+                         │  Quill web ── admin client certificate ─> RavenDB │
+                         └───────────────────────────────────────────────────┘
+```
+<br/>
+    
+The current nginx front does not preserve the caller's IP address.  
+The Quill web application and RavenDB see nginx's loopback address instead,  
+so downstream logs cannot identify individual callers by source IP.
+
+The login endpoint and public chat endpoint both apply IP-based rate limits.  
+Because the original caller IP is not preserved, each limit uses one shared appliance-wide bucket instead of separate buckets for individual clients.
+
+</Panel>
+
+<Panel heading="The appliance hostnames">
+
+During sign-up, you choose a **Quill name** for your Quill instance.
+Quill uses this name to create its addresses under the `myquill.ai` domain; you do not need to own a domain or create the DNS records yourself.
+
+For example, if you choose `acme` as the Quill name, your instance uses the base domain `acme.myquill.ai`.  
+In the examples below, `<domain>` represents this base domain.
+
+| Hostname                         | Routes to             | What it serves                                        | Who uses it                         |
+| -------------------------------- | --------------------- | ----------------------------------------------------- | ----------------------------------- |
+| `dashboard.acme.myquill.ai`      | Quill web application | The operator dashboard, the Quill API, and `/healthz` | Operators using a browser           |
+| `api.acme.myquill.ai`            | Quill web application | The Quill API and `/healthz`; no dashboard UI         | Scripts and monitoring tools        |
+| `public.acme.myquill.ai`         | Quill web application | Embedded chat pages and their chat streams            | End users                           |
+| `db.acme.myquill.ai`             | RavenDB               | Direct RavenDB access over mutual TLS                 | Applications using `RavenDB.Client` |
+
+nginx restricts which web routes each hostname can expose:
+
+* `api.<domain>` forwards `/api/*` and `/healthz`. Other paths return `404`.
+* `public.<domain>` forwards only `/apps/{slug}/embed/*`. Other paths return `404`.
+* `dashboard.<domain>` serves the dashboard, `/api/*`, and `/healthz`, but returns `404` for public embed routes.
+
+<Admonition type="info" title="">
+    
+#### The a. routing alias    
+
+The nginx configuration also recognizes `a.<domain>` and passes it to the same RavenDB listener as `db.<domain>`.  
+RavenDB uses this address as its advertised node URL.
+
+This is not a separate Quill web surface.  
+Use `db.<domain>` when configuring your own applications.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="What is public">
+
+`public.<domain>` is Quill's end-user surface.  
+It does not use the Dashboard API key, a browser session, or a client certificate.  
+Instead, access is granted by the embed-link token included in the URL.  
+
+nginx forwards only these two routes on `public.<domain>`:
+
+| Endpoint                               | Purpose                                      |
+| -------------------------------------- | -------------------------------------------- |
+| `GET /apps/{slug}/embed/{token}`       | Loads the embedded chat page                 |
+| `POST /apps/{slug}/embed/{token}/chat` | Sends a prompt and streams the agent's reply |
+
+All other paths on `public.<domain>` return `404`.
+
+Anyone with an active embed link can use its chat page, subject to the link and channel controls:
+
+* The link belongs to one channel in one Quill app.
+* The link expires at its configured time.
+* The link allows a configured maximum number of chat invocations.
+* An operator can revoke the link, preventing subsequent access.
+* The channel can restrict which websites may embed its chat page by listing their allowed origins.  
+  The dashboard leaves this list empty by default, allowing the widget to be embedded on any website until you add one or more origins.
+
+Allowed origins restrict browser embedding and chat requests that identify their origin,  
+but they do not replace the embed-link token as the access credential.  
+Chat requests that do not contain an `Origin` header are allowed.          
+
+Quill resolves the app slug first and then looks for the embed-link token only in that app's RavenDB database.  
+The link identifies a channel and agent within the same app, so using it with another app slug returns `404`.  
+The separate database for each app provides an additional isolation boundary.
+
+A few support endpoints on `dashboard.<domain>` and `api.<domain>` are reachable without presenting the Dashboard API key or an authenticated browser session:                                
+
+| Endpoint                    | Why it is available before authentication                     |
+| --------------------------- | ------------------------------------------------------------- |
+| `GET /healthz`              | Reports appliance health                                      |
+| `POST /api/auth/login`      | Validates the Dashboard API key and creates a browser session |
+| `POST /api/auth/logout`     | Ends the current browser session                              |
+| `GET /api/auth/status`      | Reports whether the caller is authenticated                   |
+| `GET /api/bootstrap/status` | Reports activation progress                                   |
+
+The dashboard's HTML and static assets are also available so that the login screen can load.  
+They do not expose app data or administrative functionality.  
+All operational API endpoints for apps, agents, channels, connection strings, conversations, certificates, and usage require the Dashboard API key or an authenticated browser session.                
+
+</Panel>
+
+<Panel heading="What is protected, and by what">
+
+The dashboard and database surfaces use separate credentials.
+
+<ContentFrame>
+    
+### Dashboard API key    
+
+The Dashboard API key protects Quill's operational API endpoints on `dashboard.<domain>` and `api.<domain>`.
+
+Programmatic callers send the key in the `X-Api-Key` header.  
+An operator signing in through the dashboard exchanges the key for a browser session cookie.
+
+Protected endpoints return `401 Unauthorized` when neither a valid Dashboard API key nor an authenticated browser session is provided.
+
+For example, the following request uses the Dashboard API key to retrieve the list of apps:
+    
+```bash
+curl -H "X-Api-Key: QUILLDASH-..." \
+  https://api.<domain>/api/apps/
+```
+<br/>
+        
+The Quill instance receives the Dashboard API key through the `QUILL_API_KEY` environment variable.  
+It persists only a salted hash of the key in its configuration database and uses constant-time comparisons during validation.
+
+The Dashboard API key is separate from the License key supplied through `QUILL_LICENSE_KEY`,  
+which Quill uses to retrieve the setup package during activation.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Client certificate
+    
+A client certificate protects direct RavenDB access through `db.<domain>` and the `a.<domain>` routing alias.
+
+The Dashboard API key cannot authenticate a direct connection to RavenDB.  
+The caller must present a client certificate that RavenDB recognizes.
+
+You can generate client certificates from the dashboard's Certificates page and assign each certificate the appropriate security clearance and database permissions.
+
+</ContentFrame>
+    
+<Admonition type="warning" title="">
+
+#### If the Dashboard API key is exposed
+
+* Quill does not currently provide an in-appliance command for rotating or revoking the Dashboard API key.
+
+* To replace the Dashboard API key accepted by this Quill instance, set `QUILL_API_KEY` to a new high-entropy value in your deployment configuration and recreate the container.  
+  Quill reads the new value at startup and replaces the salted hash stored in its configuration database.
+
+* This changes only the Dashboard API key accepted by that Quill instance.  
+  It does not rotate the signup-issued Dashboard API key, which can be supplied again to Quill instances registered later under the same email address.
+
+* Repeat the local replacement on every existing Quill instance that uses the exposed Dashboard API key.  
+  If the signup-issued Dashboard API key itself is exposed, contact Quill support.
+
+</Admonition>
+
+<Admonition type="warning" title="">
+    
+#### Publish only port 443    
+
+* The default `docker-compose.yml` publishes only the nginx entry point on port `443`.
+
+* Before activation, RavenDB starts without TLS on port `8080` and listens on all container interfaces.  
+  The default configuration does not publish this port, so it is not part of the appliance's public surface.  
+  Do not publish port `8080` or allow untrusted workloads to access the appliance's Docker network while activation is pending.
+
+* After activation, RavenDB restarts in secured mode and listens only on the container's loopback interface,  
+  at `127.0.0.1:8443`.
+  This allows nginx and the Quill web application to reach RavenDB from inside the container while preventing other containers from connecting directly.
+
+* The Quill web application listens on port `5000` inside the container, but the default configuration does not publish that port.  
+  Do not publish it: requests sent directly to port `5000` bypass the hostname restrictions enforced by nginx.
+
+* For diagnostics, run commands inside the container instead of publishing an internal port:
+
+    ```bash
+    docker exec quill curl -s http://127.0.0.1:5000/api/bootstrap/status
+    ```
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="The TLS front and the wildcard certificate">
+
+The appliance's setup package contains a wildcard server certificate for `*.<domain>`.  
+This certificate covers the four appliance hostnames and RavenDB's `a.<domain>` routing alias.
+
+The wildcard server certificate is separate from the client certificates used to authenticate direct RavenDB connections.
+
+You do not install the server certificate manually.  
+During activation, Quill extracts the setup package and configures both nginx and RavenDB to use the certificate:
+  * nginx converts the certificate and private key into the required PEM format and presents it for `dashboard.<domain>`, `api.<domain>`, and `public.<domain>`.
+  * For `db.<domain>` and `a.<domain>`, nginx passes TLS through unchanged, so RavenDB presents the certificate itself.
+                
+RavenDB checks the server certificate once an hour and renews it automatically.  
+By default, renewal begins when 30% of the certificate's validity period remains (about 27 days for a 90-day Let's Encrypt certificate).
+
+Renewal requires outbound HTTPS access to `api.ravendb.net` and the default Let's Encrypt ACME service at `acme-v02.api.letsencrypt.org`.  
+If renewal cannot complete before the certificate expires, clients will reject TLS connections to every appliance hostname.
+
+When RavenDB replaces the certificate file, Quill regenerates the PEM files used by nginx and reloads nginx.  
+No new setup package or manual certificate installation is required.
+
+Renewal failures are recorded in `/var/lib/quill/logs/ravendb.log`.  
+Successful nginx certificate reloads are recorded in `/var/lib/quill/logs/certwatch.log`.
+
+Inspect these logs from the host:
+
+```bash
+docker exec quill tail -n 100 /var/lib/quill/logs/ravendb.log
+docker exec quill tail -n 100 /var/lib/quill/logs/certwatch.log
+```
+<br/>
+
+<Admonition type="tip" title="">
+
+#### Why port 443 is unavailable before activation    
+
+* nginx waits for the server certificate and does not start until the certificate is available.  
+  A newly started appliance therefore does not accept connections on port `443` while activation is still in progress.
+
+* This is expected. Check the activation status from inside the container:
+
+    ```bash
+    docker exec quill curl -s http://127.0.0.1:5000/api/bootstrap/status
+    ```
+    
+* Once activation reports `Ready`, connect through port `443` normally.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Direct database access">
+
+### Client certificates for your applications    
+    
+`db.<domain>` gives your applications direct access to the appliance's RavenDB server.  
+The connection passes through nginx, but the Quill web application is not in the request path.
+    
+nginx forwards the encrypted TLS connection unchanged. RavenDB then:
+
+* presents the appliance's wildcard server certificate;
+* requires the caller to present a recognized client certificate;
+* applies the security clearance and database permissions assigned to that certificate.
+
+<Admonition type="note" title="">
+
+#### Native TCP is not exposed
+
+* The generated RavenDB settings bind the native TCP listener to `tcp://127.0.0.1:38888`,  
+  so it is reachable only from inside the container.  
+  RavenDB advertises this listener as `tcp://a.<domain>:38888`, but the default Docker Compose configuration publishes only port `443`, 
+  and nginx does not route port `38888`.
+
+* Direct access through `db.<domain>` therefore uses RavenDB's HTTPS API on port `443`.  
+  Features that require RavenDB's native TCP protocol, such as data subscriptions, cannot connect from outside the appliance.
+
+</Admonition>
+
+The hostname and database name select different things:
+
+* `db.<domain>` selects the RavenDB server.
+* The database name selects the data belonging to a specific Quill app.
+
+A Quill appliance runs one RavenDB server with a separate database for each app.  
+The database name is the app slug shown in the dashboard.
+
+Generate a client certificate from the dashboard's Certificates page before connecting your application.  
+
+---
+        
+### The appliance's admin certificate
+
+The setup package also contains an admin client certificate for Quill's own RavenDB access.  
+During activation, Quill loads this certificate inside the container and configures RavenDB to trust it.
+
+The Quill web application uses the certificate for internal operations such as creating app databases, 
+configuring ongoing tasks, managing certificates, and invoking RavenDB APIs.
+
+The certificate is not forwarded to browsers, chat widgets, or API callers, and Quill does not expose an endpoint for downloading it. 
+Instead, Quill authenticates each web request and performs the corresponding RavenDB operation internally.
+
+Browsers and chat widgets therefore cannot authenticate a direct RavenDB connection.  
+Applications that require direct access must use their own client certificate with appropriately scoped permissions.
+
+</Panel>
+
+<Panel heading="Summary">
+
+* The default Docker Compose configuration publishes one port, `443`, with nginx as the external entry point.
+* Four appliance hostnames expose the dashboard, API, public chat, and direct RavenDB surfaces.  
+  The additional `a.` hostname is RavenDB's advertised node alias.
+* The public hostname exposes only embed-link chat routes, which require an active embed-link token.
+* Quill's operational APIs require the Dashboard API key or an authenticated browser session.
+* Direct RavenDB access uses the HTTPS API on port `443`, requires a recognized client certificate,  
+  and preserves end-to-end mutual TLS through nginx.
+* The default appliance surface does not expose RavenDB's native TCP listener,  
+  so features such as data subscriptions are unavailable externally.
+* One wildcard server certificate covers the appliance hostnames and the `a.` alias.
+* Quill's admin client certificate remains internal to the appliance and is not exposed to callers.
+
+</Panel>
