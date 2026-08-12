@@ -1,5 +1,5 @@
 ---
-title: "Ongoing Task Stats"
+title: "Performance Views: Ongoing Task Stats"
 sidebar_label: "Ongoing Task Stats"
 description: "Follow the activity of a database's ongoing tasks over time in Studio's Ongoing Task Stats view."
 sidebar_position: 4
@@ -9,8 +9,7 @@ import Admonition from '@theme/Admonition';
 import Panel from "@site/src/components/Panel";
 import ContentFrame from "@site/src/components/ContentFrame";
 
-# Ongoing Task Stats
-
+# Performance Views: Ongoing Task Stats
 <Admonition type="note" title="">
 
 * Studio's **Ongoing Task Stats** view draws a graph of the work a database's
@@ -52,8 +51,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Panel heading="The Ongoing Task Stats view">
 
-Each bar spans the duration of one operation, positioned on the time axis at the operation's start 
-time.  
+The **Ongoing Task Stats** view draws a separate activity track for each monitored task and each
+replication connection, over a shared time axis.  
 **`Stats` > `Ongoing Task Stats`**
 
 ![The Ongoing Task Stats view](./assets/ongoing-task-stats-view.png)
@@ -95,9 +94,14 @@ time.
     Drag the pointer across the strip to select a time range.
 
 11. **[The graph](../../monitoring/performance-views/ongoing-task-stats.mdx#activity-tracks)**  
-    The graph area, where the tracks are drawn one under another over a single time axis.  
-    A collapsed track shows the operation bars side by side. Expanding the track spreads the bars
-    over several rows.
+    The graph area, where activity tracks are drawn one under another over a single time axis,
+    one track per monitored task or replication connection.  
+    Operations are plotted on the tracks as bars, each bar positioned at its operation's start
+    time, spanning the operation's duration.  
+     * A **collapsed** track shows a single row of operation bars.  
+     * **Expanding** the track adds a row for each level of nested operations, so the steps
+       that make up each operation become visible, and hovering over the bars can reveal
+       additional details.
 
 12. **The track label**  
     The label shows the task type followed by the track name.  
