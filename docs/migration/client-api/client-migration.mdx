@@ -17,6 +17,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * In this article:
    * [Client migration to RavenDB `7.x`](../../migration/client-api/client-migration.mdx#client-migration-to-ravendb-7x)
+   * [Deploying multiple indexes is now atomic](../../migration/client-api/client-migration.mdx#deploying-multiple-indexes-is-now-atomic)
 
 </Admonition>
 ## Client migration to RavenDB 7.x
@@ -33,5 +34,23 @@ Version `7.0`'s client API ability to connect to a server depends on the
   <Admonition type="info" title="">
   [See how to switch the algorithm to Gzip](../../migration/client-api/previous-versions-client-breaking-changes.mdx#http-compression-algorithm-is-now-zstd-by-default)
   </Admonition>
+
+## Deploying multiple indexes is now atomic
+
+This change applies to the **.NET client** only.  
+
+Prior to version `7.0`, `IndexCreation.CreateIndexes` retried the deployment index-by-index after a 
+failed batch, so valid indexes were still created and the failures were reported as an 
+`AggregateException`.  
+From version `7.0` on, `IndexCreation.CreateIndexes` and `DocumentStore.ExecuteIndexes` behave 
+identically and the batch is atomic: if any index fails to compile, none of the indexes in the batch 
+are created, and an `IndexCompilationException` naming the offending index is thrown.  
+
+If your deployment flow relied on the valid indexes being created despite one of them failing, 
+deploy the indexes in separate calls, or call `Execute` on each index individually.  
+
+<Admonition type="info" title="">
+[See the full description of this breaking change](../../migration/client-api/previous-versions-client-breaking-changes.mdx#deploying-multiple-indexes-is-now-atomic)
+</Admonition>
 
 

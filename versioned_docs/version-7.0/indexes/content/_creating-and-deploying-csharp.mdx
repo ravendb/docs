@@ -152,9 +152,10 @@ await store.ExecuteIndexAsync(new Orders_ByTotal());
 
 ##### Deploy multiple indexes
 * Use `ExecuteIndexes()` or `IndexCreation.CreateIndexes()` to deploy multiple indexes.
-* The `IndexCreation.CreateIndexes` method attempts to create all indexes in a single request.  
-  If it fails, it will repeat the execution by calling the `Execute` method for each index, one by one,  
-  in separate requests.
+* Both methods send all index definitions to the server in a single request, and behave identically.
+* If any index in the batch fails to compile, the entire batch fails and none of the indexes are created.  
+  An `IndexCompilationException` is thrown, naming the index that caused the failure.
+* Deploying an empty list of indexes is a no-op: no request is sent to the server and no exception is thrown.
 * The following examples deploy indexes `Ordes/ByTotal` and `Employees/ByLastName` to the default database defined in your _DocumentStore_ object.  
   See the [syntax](../../indexes/creating-and-deploying.mdx#deploy-syntax) section below for all available overloads.
 
@@ -271,6 +272,12 @@ Task ExecuteIndexAsync(IAbstractIndexCreationTask index, string database = null,
     CancellationToken token = default(CancellationToken));
 Task ExecuteIndexesAsync(IEnumerable<IAbstractIndexCreationTask> indexes,
     string database = null, CancellationToken token = default(CancellationToken));
+
+// In this overload, 'conventions' and 'database' have no default values.
+// Pass null to use the store's conventions or the store's default database.
+Task ExecuteIndexesAsync(IEnumerable<IAbstractIndexCreationTask> indexes,
+    DocumentConventions conventions, string database,
+    CancellationToken token = default(CancellationToken));
 
 // Call these static methods on the IndexCreation class
 Task CreateIndexesAsync(IEnumerable<IAbstractIndexCreationTask> indexes,
