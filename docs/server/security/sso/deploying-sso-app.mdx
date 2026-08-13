@@ -18,29 +18,27 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * The SSO application is distributed as a single Docker image (`ravendb/sso`) that bundles Nginx, the
   authentication sidecar, and `oauth2-proxy`.
 
-* The [ravendb/sso](https://github.com/ravendb/sso) repository ships with an **interactive installer**
-  (`install.sh` for Linux/macOS, `install.ps1` for Windows) that asks all the questions, pre-flights DNS
+* An **interactive installer**
+  (`install.sh` for Linux/macOS, `install.ps1` for Windows) asks all the questions, pre-flights DNS
   and host permissions, generates a complete deployment directory, and optionally starts the stack. This
   is the recommended way to set up a new SSO application.
 
-<Admonition type="tip" title="Use the installer">
-Unless you have a specific reason to assemble the deployment by hand (for example because you're
-integrating into existing automation), run `install.sh` / `install.ps1`.  
-The installer produces the same artifacts
-that the manual setup below describes, but with secrets generated for you, file permissions set, and DNS
-sanity-checked.
-</Admonition>
+* <Admonition type="tip" title="Use the installer">
+  Run `install.sh` / `install.ps1` to set up a new deployment.  
+  The installer generates the secrets for you, sets file permissions, and sanity-checks DNS, then writes a
+  complete deployment directory you can edit afterwards.
+  </Admonition>
 
 * In this article:
    * [Prerequisites](../../../server/security/sso/deploying-sso-app.mdx#prerequisites)
    * [DNS setup](../../../server/security/sso/deploying-sso-app.mdx#dns-setup)
    * [Recommended: interactive installer](../../../server/security/sso/deploying-sso-app.mdx#recommended-interactive-installer)
       * [What the installer produces](../../../server/security/sso/deploying-sso-app.mdx#what-the-installer-produces)
-   * [Manual deployment with Docker Compose](../../../server/security/sso/deploying-sso-app.mdx#manual-deployment-with-docker-compose)
-      * [1. Copy and fill the environment files](../../../server/security/sso/deploying-sso-app.mdx#1-copy-and-fill-the-environment-files)
+   * [Editing the generated deployment](../../../server/security/sso/deploying-sso-app.mdx#editing-the-generated-deployment)
+      * [1. Fill in the environment files](../../../server/security/sso/deploying-sso-app.mdx#1-fill-in-the-environment-files)
       * [2. (Optional) Configure clusters via settings.json](../../../server/security/sso/deploying-sso-app.mdx#2-optional-configure-clusters-via-settingsjson)
       * [3. Start the stack](../../../server/security/sso/deploying-sso-app.mdx#3-start-the-stack)
-      * [4. Volumes and on-host layout](../../../server/security/sso/deploying-sso-app.mdx#4-volumes-and-on-host-layout)
+      * [4. On-host layout](../../../server/security/sso/deploying-sso-app.mdx#4-on-host-layout)
    * [Quick start (single container)](../../../server/security/sso/deploying-sso-app.mdx#quick-start-single-container)
    * [Registering OAuth providers](../../../server/security/sso/deploying-sso-app.mdx#registering-oauth-providers)
       * [GitHub](../../../server/security/sso/deploying-sso-app.mdx#github)
@@ -85,8 +83,7 @@ The installer probes both records before continuing and will warn (but not block
 <Panel heading="Recommended: interactive installer">
 
 The installer is a single self-contained script - every template it writes (including `nlog.config` and
-the `docker-compose.yml`) is embedded inline, so you can download and run it directly without cloning the
-repository.
+the `docker-compose.yml`) is embedded inline, so you can download and run it directly.
 
 <Tabs>
 <TabItem value="linux" label="Linux / macOS">
@@ -126,14 +123,6 @@ iex (irm https://ravendb-build-assets.s3.us-east-1.amazonaws.com/Sso/install.ps1
 </TabItem>
 </Tabs>
 
-If you'd rather have the rest of the repository (for the manual `example/` deployment, source, or tests),
-clone it and run the script from there instead:
-
-```bash
-git clone https://github.com/ravendb/sso.git && cd sso && ./install.sh
-```
-<br />
-
 The script walks through the following steps:
 
 1. **Output directory** - defaults to `./sso-deploy`. Must be empty.
@@ -166,7 +155,7 @@ sso-deploy/
   docker-compose.yml    # Two services if certbot, one if manual certs
   config/
     settings.json       # Generated cluster topology
-    nlog.config         # Copied from the example
+    nlog.config         # Logging configuration
   certs/                # Pre-created, owned by UID 10000 (populated by certbot or pre-staged)
   logs/                 # Pre-created, owned by UID 10000
   README-deploy.md      # Per-deployment quick reference
@@ -189,27 +178,27 @@ As its final step, the installer offers to run `docker compose up -d` for you.
 
 </Panel>
 
-<Panel heading="Manual deployment with Docker Compose">
+<Panel heading="Editing the generated deployment">
 
-If you can't or don't want to run the installer, the example under `Raven.Sso/example/` in the
-[ravendb/sso](https://github.com/ravendb/sso) repository is the same layout the installer generates, just
-filled in by hand. The compose file runs two containers:
+The installer writes a complete deployment directory, `sso-deploy` by default, with every file the stack needs.  
+This section covers what each of these files carries and what you would change in it.
 
-- **[certbot](https://certbot.eff.org)** - `certbot/dns-route53`. Obtains the wildcard certificate on first start and renews every 12 hours.
-- **`sso`** - `ravendb/sso:latest`. Starts once `certbot` has produced a valid certificate, and reloads Nginx
-  every 6 hours to pick up renewals.
+The generated `docker-compose.yml` runs these containers:
+
+- **[certbot](https://certbot.eff.org)** - `certbot/dns-route53`  
+  Included only if you picked the `certbot-route53` certificate strategy.  
+  Obtains the wildcard certificate on first start and renews every 12 hours.
+- **`sso`** - `ravendb/sso:latest`  
+  Starts once `certbot` has produced a valid certificate, and reloads Nginx every 6 hours to pick up renewals.
 
 <ContentFrame>
 
-### 1. Copy and fill the environment files
+### 1. Fill in the environment files
 
-The example splits environment variables into two files so AWS credentials aren't exposed to the SSO container:
+The installer splits environment variables into two files so AWS credentials aren't exposed to the SSO container:
 
-```bash
-cp sso.env.example sso.env
-cp certbot.env.example certbot.env
-```
-<br />
+- `sso.env` - the SSO application's own settings.
+- `certbot.env` - the AWS credentials and the Let's Encrypt email address.
 
 Edit each file with your domain, OAuth credentials, and AWS keys. The complete list of variables is on the
 [SSO application configuration](../../../server/security/sso/sso-configuration.mdx) page.
@@ -220,7 +209,7 @@ Edit each file with your domain, OAuth credentials, and AWS keys. The complete l
 
 ### 2. (Optional) Configure clusters via `settings.json`
 
-The list of RavenDB clusters the SSO application should proxy can live in `config/settings.json`:
+The RavenDB clusters that the SSO application proxies are configured in `config/settings.json`:
 
 ```json
 {
@@ -243,17 +232,20 @@ file values.
 
 ### 3. Start the stack
 
+Start, or restart, the stack from the deployment directory:
+
 ```bash
+cd sso-deploy
 docker compose up -d
 ```
 <br />
 
-On first run, `certbot` requests the wildcard certificate from Let's Encrypt; this can take 1–2 minutes
+On first run, `certbot` requests the wildcard certificate from Let's Encrypt; this can take 1-2 minutes
 while the DNS TXT record propagates. The SSO container's `depends_on` waits for `certbot` to report healthy
 before starting Nginx.
 
 <Admonition type="warning" title="Use RSA keys">
-The example's `certbot` entrypoint pins `--key-type rsa`. RavenDB's certificate utilities only support RSA;
+The generated `certbot` entrypoint pins `--key-type rsa`. RavenDB's certificate utilities only support RSA;
 do not switch this to ECDSA.
 </Admonition>
 
@@ -261,12 +253,12 @@ do not switch this to ECDSA.
 
 <ContentFrame>
 
-### 4. Volumes and on-host layout
+### 4. On-host layout
 
-The deployment maps these host directories into the containers:
+The deployment directory on the host holds these files:
 
 ```
-example/
+sso-deploy/
   sso.env                # SSO env vars
   certbot.env            # certbot env vars
   docker-compose.yml
@@ -286,10 +278,10 @@ example/
 
 <Panel heading="Quick start (single container)">
 
-For local testing without Let's Encrypt, build the image directly and pass credentials on the command line:
+For local testing without Let's Encrypt, pull the image and pass credentials on the command line:
 
 ```bash
-docker build -t ravendb/sso .
+docker pull ravendb/sso
 
 docker run --rm -it \
     -p 8080:8080 \
