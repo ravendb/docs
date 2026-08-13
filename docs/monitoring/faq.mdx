@@ -1,0 +1,214 @@
+---
+title: "Monitoring: FAQ"
+sidebar_label: "FAQ"
+description: "Frequently asked questions about monitoring RavenDB: slow requests, disk use, task failures, alerts, diagnostics, and what to send support."
+sidebar_position: 18
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Monitoring: FAQ
+
+<Admonition type="note" title="">
+
+* This page answers common operational questions related to monitoring.  
+  Each answer names the monitoring tool for the job, and links to the articles that explain
+  the tool in full.  
+
+* In this article:  
+    * [My requests are slow - where do I start?](../monitoring/faq.mdx#my-requests-are-slow---where-do-i-start)  
+    * [Can I stop a query that runs for too long?](../monitoring/faq.mdx#can-i-stop-a-query-that-runs-for-too-long)  
+    * [Is the disk the bottleneck?](../monitoring/faq.mdx#is-the-disk-the-bottleneck)  
+    * [Disk space is running out - what is taking it?](../monitoring/faq.mdx#disk-space-is-running-out---what-is-taking-it)  
+    * [I deleted documents, but the database keeps growing](../monitoring/faq.mdx#i-deleted-documents-but-the-database-keeps-growing)  
+    * [An ETL or AI task stopped working - how do I find out why?](../monitoring/faq.mdx#an-etl-or-ai-task-stopped-working---how-do-i-find-out-why)  
+    * [How do I get alerted before trouble?](../monitoring/faq.mdx#how-do-i-get-alerted-before-trouble)  
+    * [How do I silence a notification I do not need?](../monitoring/faq.mdx#how-do-i-silence-a-notification-i-do-not-need)  
+    * [The server hangs or burns CPU - what is it doing?](../monitoring/faq.mdx#the-server-hangs-or-burns-cpu---what-is-it-doing)  
+    * [How do I raise the logging detail without restarting the server?](../monitoring/faq.mdx#how-do-i-raise-the-logging-detail-without-restarting-the-server)  
+    * [How do I read RavenDB metrics in an external monitoring tool?](../monitoring/faq.mdx#how-do-i-read-ravendb-metrics-in-an-external-monitoring-tool)  
+    * [What do I send the support team when I report an issue?](../monitoring/faq.mdx#what-do-i-send-the-support-team-when-i-report-an-issue)  
+
+</Admonition>
+
+<Panel heading="Frequently Asked Questions">
+
+<ContentFrame>
+
+### My requests are slow - where do I start?
+
+Open the [Cluster Dashboard](../monitoring/cluster-dashboard/overview.mdx) for the whole-cluster
+picture: its CPU, Traffic, and Indexing widgets report each metric for every cluster node.  
+Then open the [Running Queries view](../monitoring/performance-views/running-queries.mdx) to
+list the queries the server is currently running, and inspect the requests themselves using
+[Traffic Watch](../monitoring/traffic-watch/overview.mdx).  
+When a query's duration exceeds the configured threshold, the server raises a
+[request-latency performance hint](../monitoring/alerts-and-notifications/performance-hints.mdx#request-latency)
+on its own.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Can I stop a query that runs for too long?
+
+Yes. The [Running Queries view](../monitoring/performance-views/running-queries.mdx) lists the
+queries running on the node you are connected to, and you can abort a query from its row.  
+The abort action does not stop the query on the spot. RavenDB signals the query to stop, and
+the query ends shortly afterwards.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Is the disk the bottleneck?
+
+The [IO Stats views](../monitoring/performance-views/io-stats.mdx) draw a timeline of the disk
+operations RavenDB performs. Use these views to spot the operations that are slow to complete.  
+The [IO Stats widget](../monitoring/cluster-dashboard/widgets.mdx#io-stats) on the cluster
+dashboard reads per-drive counters from the operating system, like IOPS and throughput.  
+When disk writes are extremely slow, the server raises a
+[slow-writes performance hint](../monitoring/alerts-and-notifications/performance-hints.mdx#slow-writes).
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Disk space is running out - what is taking it?
+
+The [Storage Reports](../monitoring/performance-views/storage-reports.mdx) show the disk space a
+database uses, broken down by component, and the storage of the server-wide data RavenDB keeps
+outside any user database.  
+The [Storage widget](../monitoring/cluster-dashboard/widgets.mdx#storage) reports the used disk
+space and total capacity of every cluster node at a glance.  
+When disk space is not reclaimed after documents are deleted, see
+[I deleted documents, but the database keeps growing](../monitoring/faq.mdx#i-deleted-documents-but-the-database-keeps-growing)
+below.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### I deleted documents, but the database keeps growing
+
+RavenDB replaces every deleted document with a marker called a
+[tombstone](../monitoring/tombstones/overview.mdx), so that indexing, replication, and the ETL
+and incremental backup tasks can handle the deletion.  
+Tombstones take up disk space until RavenDB removes them, and the periodic tombstone cleanup
+clears only the tombstones that no process still needs.  
+When a process lags behind, tombstones accumulate, and the space they take grows with every
+deletion.  
+The [Tombstones view](../monitoring/tombstones/tombstones-view.mdx) shows the progress of this
+cleanup for each collection, and the number of tombstones each process still has to handle.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### An ETL or AI task stopped working - how do I find out why?
+
+When an ETL task or an AI task
+([Embeddings Generation](../ai-integration/generating-embeddings/overview.mdx) or
+[GenAI](../ai-integration/gen-ai-integration/overview.mdx)) fails to process an item or a
+batch, the failure is stored as a [task error](../monitoring/task-errors/overview.mdx).  
+The [Task Errors view](../monitoring/task-errors/studio-views.mdx) lists these errors, and
+shows each task's health classification: `Healthy`, `Impaired`, or `Failed`.  
+To follow the task as it runs, open the
+[Ongoing Task Stats view](../monitoring/performance-views/ongoing-task-stats.mdx).
+This view draws the task's operations over time.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### How do I get alerted before trouble?
+
+The server raises [alerts](../monitoring/alerts-and-notifications/notification-center.mdx#alerts)
+in Studio's notification center when it detects a condition that requires your attention, like
+low disk space.  
+To be alerted outside Studio, connect an external monitoring tool.  
+The [Zabbix community template](../monitoring/integrations/snmp/setup-zabbix.mdx) includes
+triggers for common operational concerns, like an expiring certificate, and a
+[Prometheus](../monitoring/integrations/prometheus.mdx) server can raise alerts when a metric
+crosses a threshold you have set.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### How do I silence a notification I do not need?
+
+Use the `Notifications.FilterOut`
+[configuration key](../monitoring/alerts-and-notifications/notification-center.mdx#configuration)
+to filter out the notifications you do not need: a whole notification type, or only the
+notifications raised for a specific *reason*.  
+The [Notification center](../monitoring/alerts-and-notifications/notification-center.mdx)
+article lists the values this key accepts, and the way to read an alert's `Reason`.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### The server hangs or burns CPU - what is it doing?
+
+The [Stack Traces view](../monitoring/debug/stack-traces.mdx) captures the stack traces of all
+server threads at once, and draws the traces as a graph that groups threads running the same
+code, so you can figure out the exact code a misbehaving server runs.  
+To capture the stack trace of a single thread rather than that of all threads, use the
+advanced-debug view's
+[Threads Runtime Info tab](../monitoring/debug/advanced-debug-view.mdx#threads-runtime-info-tab).
+This tab also lists the server's threads and the CPU each thread uses, so you can locate the
+thread behind the load.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### How do I raise the logging detail without restarting the server?
+
+Use Studio's [Admin Logs view](../monitoring/logging/admin-logs.mdx) to change the logging
+settings, including the minimum logging level.  
+The settings take effect immediately, without a server restart.  
+You can also make the same change from your own code, using the
+[logging client API](../monitoring/logging/client-api.mdx).
+
+</ContentFrame>
+
+<ContentFrame>
+
+### How do I read RavenDB metrics in an external monitoring tool?
+
+RavenDB exposes its metrics in the formats common monitoring systems read, so an external tool
+can collect RavenDB metrics the same way it collects metrics from any other service:
+
+* A tool that reads JSON over HTTP, like Telegraf, can poll the
+  [JSON monitoring endpoints](../monitoring/json-monitoring-endpoints.mdx).  
+* A [Prometheus](../monitoring/integrations/prometheus.mdx) server can collect RavenDB metrics
+  through the Prometheus endpoint, store their values over time, graph them, and raise alerts.  
+* Zabbix, PRTG, and other SNMP-based tools can read the metrics as
+  [SNMP](../monitoring/integrations/snmp/overview.mdx) OIDs.  
+* An [OpenTelemetry](../monitoring/integrations/open-telemetry.mdx) Collector, or any other
+  consumer of OTLP (OpenTelemetry Protocol), can receive the metrics RavenDB sends over the
+  protocol.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### What do I send the support team when I report an issue?
+
+When you encounter an incident or an issue with RavenDB and turn to the support team, the team
+needs relevant information to diagnose and resolve the issue.  
+Use the [Collect Info for Support](../monitoring/collect-info.mdx) article to learn about
+collecting this information, including the creation of a
+[debug package](../monitoring/debug/debug-package/create-debug-package.mdx) and the download of
+server logs.  
+Before sending a debug package to support, you can inspect it yourself using the
+[Debug Package Analyzer](../monitoring/debug/debug-package/debug-package-analyzer.mdx), and
+possibly locate the problem on your own.
+
+</ContentFrame>
+
+</Panel>

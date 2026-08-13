@@ -8,13 +8,13 @@ author: "Paweł Lachowski"
 proficiency_level: "Beginner"
 see_also:
   - title: "Cluster Dashboard Overview"
-    link: "studio/cluster/cluster-dashboard/cluster-dashboard-overview"
+    link: "monitoring/cluster-dashboard/overview"
     source: "docs"
-    path: "Studio > Cluster > Cluster Dashboard"
+    path: "Monitoring > Cluster dashboard"
   - title: "Admin Logs"
-    link: "studio/server/debug/admin-logs"
+    link: "monitoring/logging/admin-logs"
     source: "docs"
-    path: "Studio > Server > Debug"
+    path: "Monitoring > Logging"
   - title: "Statistics"
     link: "monitoring/statistics/overview"
     source: "docs"
@@ -84,7 +84,7 @@ Problems it identifies:
 
 The Cluster Dashboard is the view that RavenDB Studio opens by default. It provides a modular overview of the server and cluster, allowing you to quickly check the current state of the system.
 
-The [Cluster Dashboard](https://docs.ravendb.net/studio/cluster/cluster-dashboard/cluster-dashboard-overview) is composed of widgets, which can be added or removed from the bottom-right corner. 
+The [Cluster Dashboard](https://docs.ravendb.net/monitoring/cluster-dashboard/overview) is composed of widgets, which can be added or removed from the bottom-right corner. 
 
 <Image img={require("./assets/database-today3.webp")} alt="RavenDB Cluster Dashboard displaying CPU, traffic, IO, and GC metric widgets" />
 <br />
@@ -166,7 +166,7 @@ Problems it identifies:
 
 Some problems happen deeper inside the server and are not visible through metrics. Internal tasks, background processes, or unexpected errors may leave their traces only in the logs.
 
-[Admin Logs](https://docs.ravendb.net/studio/server/debug/admin-logs/) provide detailed information about what the database is doing internally. By reviewing them, you can observe server activity and identify operations that may be consuming unusually high amounts of resources. So if your query sometimes doesn’t respond and Traffic Watch doesn’t give you enough information, Admin Logs are a great place to check.
+[Admin Logs](https://docs.ravendb.net/monitoring/logging/admin-logs/) provide detailed information about what the database is doing internally. By reviewing them, you can observe server activity and identify operations that may be consuming unusually high amounts of resources. So if your query sometimes doesn’t respond and Traffic Watch doesn’t give you enough information, Admin Logs are a great place to check.
 
 In addition to performance-related information, the logs can reveal errors, warnings, or unexpected behavior that might not immediately appear in the UI. This makes them especially useful when you don’t know exactly what happened in the database that caused the issue. It is also a useful tool if you need to check later what led to problems, as you can download your logs to the disk after setup.
 

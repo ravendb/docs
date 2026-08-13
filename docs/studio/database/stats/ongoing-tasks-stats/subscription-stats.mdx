@@ -1,5 +1,5 @@
 ---
-title: "Ongoing Tasks Stats: Subscription Stats"
+title: "Ongoing Task Stats: Subscription Stats"
 sidebar_label: Subscription Stats
 description: "Monitor RavenDB data subscription performance in Studio with connection tracking, batch statistics, and client processing metrics."
 sidebar_position: 2
@@ -12,7 +12,7 @@ import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
-# Ongoing Tasks Stats: Subscription Stats
+# Ongoing Task Stats: Subscription Stats
 <Admonition type="note" title="">
 
 * A **Subscription Task** is an ongoing task in which the server sends documents that match a query defined on 
@@ -21,7 +21,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
   consumption of each batch before sending the next.  
 * Learn more about data subscription tasks [here](../../../../studio/database/tasks/ongoing-tasks/subscription-task.mdx).  
 
-* In this page:  
+* Studio's [Ongoing Task Stats](../../../../monitoring/performance-views/ongoing-task-stats.mdx) 
+  view draws a track for each of a database's ongoing tasks.  
+  This page covers the activity of a data subscription.  
+
+* In this article:  
    * [Subscription Stats Closed View](../../../../studio/database/stats/ongoing-tasks-stats/subscription-stats.mdx#subscription-stats-closed-view)  
    * [Subscription Stats Expanded View](../../../../studio/database/stats/ongoing-tasks-stats/subscription-stats.mdx#subscription-stats-expanded-view)  
    * [Connection Event Indicators](../../../../studio/database/stats/ongoing-tasks-stats/subscription-stats.mdx#connection-event-indicators)  
@@ -78,10 +82,10 @@ import LanguageContent from "@site/src/components/LanguageContent";
 Connection Event Indicators signify events related to the initiation, state, 
 or termination of a client connection.  
 
-* Indicators are shown in both the [Closed](../../../../studio/database/stats/ongoing-tasks-stats/overview.mdx#task-rulers-closed-view) 
-  and the [Expanded](../../../../studio/database/stats/ongoing-tasks-stats/overview.mdx#task-rulers-expanded-view) 
-  task views.  
-* Hovering over a connection event indicator will popup information related to it, if available.  
+* Indicators are shown in both the collapsed and the 
+  [expanded](../../../../monitoring/performance-views/ongoing-task-stats.mdx#expanding-a-track) 
+  task tracks.  
+* Hovering over a connection event indicator displays the details of the event, when details are available.  
 **Connection Initiated**  
 ![Connnection Initiated](./assets/stats-view-connection-initiated.png)  
 **Connection Aborted**  

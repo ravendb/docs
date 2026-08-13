@@ -562,7 +562,7 @@ RavenDB exposes SNMP endpoints for monitoring, including endpoints showing backu
 | --- | --- | --- | --- |
 | Node | `1.13.1` | `Integer32` | Number of backup operations currently running. |
 | Node | `1.13.2` | `Integer32` | Max number of backup operations that can run concurrently. |
-| All cluster databases |  `5.1.3` | `TimeTicks` | Time elapsed since the oldest backup across all databases. |
+| All cluster databases |  `5.1.3` | `TimeTicks` | The time elapsed since the last backup of the least recently backed-up database.<br />Databases with no backup task are excluded. A database whose backup task has never run reports the maximum value. |
 | All cluster databases | `5.1.11.15` | `Integer32` | Number of enabled backup tasks across all databases. |
 | All cluster databases |  `5.1.11.16` | `Integer32` | Number of active backup tasks across all databases.<br /><br />An **active** backup task is:<br />Enabled.<br />On a database that is loaded on this node.<br />On the node responsible for the task. |
 
@@ -582,7 +582,7 @@ use the **root OID** + `1.13.1`:
 
 You can retrieve a backup task's **status**, which reflects the task's **most recent completed backup run** (whether scheduled or [triggered manually](../backup/create/periodic-tasks/database-backup.mdx#triggering-an-immediate-backup-operation)).
 
-The retrieved status includes details such as the number of backups performed by the task and the lasy backup operation's timestamp, duration, destination path, and potentially error information.  
+The retrieved status includes details such as the number of backups performed by the task and the last backup operation's timestamp, duration, destination path, and potentially error information.  
 
 [Learn to retrieve the status of a database backup task](../backup/create/periodic-tasks/database-backup.mdx#getting-backup-task-status)  
 [Learn to retrieve the status of a server-wide derived backup task](../backup/create/periodic-tasks/server-wide-backup.mdx#getting-a-derived-backup-task-status)  

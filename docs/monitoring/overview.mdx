@@ -1,0 +1,243 @@
+---
+title: "Monitoring: Overview"
+sidebar_label: "Overview"
+description: "A map of RavenDB's monitoring: live Studio views, HTTP endpoints in JSON and Prometheus formats, integrations with external monitoring tools, and built-in alerts."
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Monitoring: Overview
+
+<Admonition type="note" title="">
+
+* You can monitor every level of a RavenDB deployment: the cluster and its nodes, server
+  resources like CPU and memory, each database with its indexes and ongoing tasks, and the
+  requests clients send.  
+
+* Monitoring data is shown live in Studio views, exposed by HTTP endpoints as JSON or
+  Prometheus metrics, and available for external monitoring tools like Zabbix and Grafana.  
+
+* The server also watches itself: **alerts** report conditions that require your attention,
+  like a failed backup task, and **performance hints** point out inefficiencies you can
+  remove, like a query that retrieves an excessive number of results.  
+  Studio's [notification center](../monitoring/alerts-and-notifications/notification-center.mdx)
+  presents both.  
+
+* For configuration options related to monitoring, see the
+  [Monitoring: Configuration](../monitoring/configuration.mdx) article.  
+
+* For the security clearances, license requirements, and exposure considerations related to
+  monitoring, see the [Security concerns](../monitoring/security-concerns.mdx) article.  
+
+* For short answers to common operational questions, like locating the source of a slowdown,
+  see the [FAQ](../monitoring/faq.mdx).  
+
+* In this article:
+    * [What can be monitored](../monitoring/overview.mdx#what-can-be-monitored)  
+    * [Monitoring in Studio](../monitoring/overview.mdx#monitoring-in-studio)  
+    * [Monitoring over HTTP via endpoints and the client API](../monitoring/overview.mdx#monitoring-over-http-via-endpoints-and-the-client-api)  
+    * [Connecting external monitoring tools](../monitoring/overview.mdx#connecting-external-monitoring-tools)  
+    * [Deep diagnostics and support](../monitoring/overview.mdx#deep-diagnostics-and-support)  
+
+</Admonition>
+
+<Panel heading="What can be monitored">
+
+Monitoring data, grouped by the part of the deployment it describes:
+
+| Monitored area | Data you can follow |
+| -------------- | ------------------- |
+| **The cluster and its nodes** | The state and resource use of every cluster node, and the cluster observer's decisions |
+| **Server resources** | CPU power, memory, disk space, and disk I/O, for the machine and for the RavenDB process |
+| **Databases** | Document and document-extension counts, the disk space a database uses (broken down by component), and per-node details like the database ID |
+| **Indexes** | The indexing counters of each index, and stale or faulty indexes |
+| **Ongoing tasks** | Task activity over time, the duration and data volume of each operation, and each task's errors and health |
+| **Requests and queries** | The requests the server receives, streamed live or logged to file, and the queries currently running |
+| **Server notifications** | The alerts, performance hints, and operation reports the server raises, stored per node |
+
+</Panel>
+
+<Panel heading="Monitoring in Studio">
+
+<ContentFrame>
+
+### Cluster Dashboard
+
+The [Cluster Dashboard](../monitoring/cluster-dashboard/overview.mdx) presents live diagnostics
+for the whole cluster: each [widget](../monitoring/cluster-dashboard/widgets.mdx) shows a set of
+metrics, gathered from every cluster node.  
+You can [customize](../monitoring/cluster-dashboard/customize.mdx) the dashboard by adding,
+removing, resizing, and repositioning widgets.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Statistics
+
+Studio's [Stats view](../monitoring/statistics/stats-view.mdx) shows the statistics of a single
+database: the counts of the database's documents and document extensions, per-node details like
+the database ID, and the indexing counters of each index.  
+Statistics can also be retrieved using other Studio views and dedicated endpoints, listed in the
+[Statistics overview](../monitoring/statistics/overview.mdx) article.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Performance views
+
+Use the performance views to follow RavenDB's activity as it happens:
+
+* [IO Stats](../monitoring/performance-views/io-stats.mdx) draws a timeline of RavenDB's disk
+  operations.  
+* [Running Queries](../monitoring/performance-views/running-queries.mdx) lists the queries a
+  server is currently running.  
+  You can abort a query that runs for too long.  
+* [Storage Reports](../monitoring/performance-views/storage-reports.mdx) show disk space use,
+  broken down by component.  
+* [Ongoing Task Stats](../monitoring/performance-views/ongoing-task-stats.mdx) draws a graph of
+  the work a database's ongoing tasks perform over time.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Logging
+
+Use Studio's [Admin Logs view](../monitoring/logging/admin-logs.mdx) to follow the server's log
+as entries arrive, and to change the logging settings without restarting the server.  
+To learn about RavenDB's logging system, see the
+[Logging overview](../monitoring/logging/overview.mdx) article.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Traffic Watch
+
+Studio's [Traffic Watch](../monitoring/traffic-watch/overview.mdx) view shows a live stream of
+the requests the server receives.  
+You can also log the requests to file, and monitor them using API calls and endpoints.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Alerts and notifications
+
+The [notification center](../monitoring/alerts-and-notifications/notification-center.mdx)
+presents alerts, [performance hints](../monitoring/alerts-and-notifications/performance-hints.mdx),
+reports of running operations, and errors, raised by the server or by Studio itself.  
+You can read, dismiss, postpone, and filter out these notifications.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Task errors
+
+The [Task Errors view](../monitoring/task-errors/studio-views.mdx) lists the errors raised when
+an ETL task or an AI task ([Embeddings Generation](../ai-integration/generating-embeddings/overview.mdx)
+or [GenAI](../ai-integration/gen-ai-integration/overview.mdx)) fails to process an item or a batch.  
+Each task also carries a health classification that reflects its recent error rate: `Healthy`,
+`Impaired`, or `Failed`.  
+To learn about task errors and the health states they drive, see the
+[Task errors overview](../monitoring/task-errors/overview.mdx) article.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Tombstones
+
+When a document is deleted, RavenDB replaces it with a marker called a
+[tombstone](../monitoring/tombstones/overview.mdx), so that indexing, replication, and the ETL
+and incremental backup tasks can handle the deletion.  
+RavenDB removes tombstones that are no longer needed through a periodic cleanup.  
+The [Tombstones view](../monitoring/tombstones/tombstones-view.mdx) shows the progress of this
+cleanup for each collection, and the number of tombstones each process still has to handle.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Monitoring over HTTP via endpoints and the client API">
+
+RavenDB exposes monitoring data over HTTP in several forms:
+
+* [JSON monitoring endpoints](../monitoring/json-monitoring-endpoints.mdx) report performance
+  and health metrics for the server itself, its databases, indexes, and collections, and for ETL,
+  AI, and CDC (Change Data Capture) Sink tasks.  
+  Any monitoring tool that reads JSON over HTTP can poll these endpoints.  
+* The [Prometheus endpoint](../monitoring/integrations/prometheus.mdx) returns metrics in the
+  Prometheus format, so a Prometheus server can scrape and handle them.  
+* [Debug endpoints](../monitoring/debug/debug-endpoints.mdx) report internal server and
+  database information for diagnostics.  
+* Using the client API, you can [retrieve statistics](../monitoring/statistics/client-api.mdx)
+  and [read and change the logging configuration](../monitoring/logging/client-api.mdx) at
+  runtime, without restarting the server.
+
+</Panel>
+
+<Panel heading="Connecting external monitoring tools">
+
+External monitoring systems can read RavenDB's metrics through several integrations:
+
+* Over [SNMP](../monitoring/integrations/snmp/overview.mdx), monitoring tools like Zabbix and
+  PRTG can read RavenDB's metrics.  
+  The [Zabbix community template](../monitoring/integrations/snmp/setup-zabbix.mdx) provides
+  ready-made queries, alert rules, graphs, and a dashboard.  
+* Through [OpenTelemetry](../monitoring/integrations/open-telemetry.mdx), RavenDB sends its
+  metrics over OTLP (OpenTelemetry Protocol) to any consumer that accepts the protocol, commonly
+  an OpenTelemetry Collector.  
+* A [Prometheus](../monitoring/integrations/prometheus.mdx) server can scrape RavenDB's metrics,
+  store their values over time, graph them, and raise alerts when a value crosses a threshold you
+  have set.  
+* Telegraf's [RavenDB input plugin](../monitoring/integrations/telegraf.mdx) reads metrics from
+  the JSON monitoring endpoints and forwards them to the destination set in the Telegraf
+  configuration, commonly InfluxDB, with the data charted by Grafana.
+
+</Panel>
+
+<Panel heading="Deep diagnostics and support">
+
+Use the following tools to look into the server's internals and package diagnostic information:
+
+* The [advanced-debug view](../monitoring/debug/advanced-debug-view.mdx) presents diagnostic
+  tabs with which you can inspect the server's
+  [threads](../monitoring/debug/advanced-debug-view.mdx#threads-runtime-info-tab) and
+  [memory mapped files](../monitoring/debug/advanced-debug-view.mdx#memory-mapped-files-tab),
+  follow the
+  [Cluster Observer's decisions](../monitoring/debug/advanced-debug-view.mdx#cluster-observer-log-tab),
+  browse the [Raft log](../monitoring/debug/advanced-debug-view.mdx#cluster-debug-tab), and
+  [record](../monitoring/debug/advanced-debug-view.mdx#record-transaction-commands-tab) and
+  [replay](../monitoring/debug/advanced-debug-view.mdx#replay-transaction-commands-tab) a
+  database's transaction commands.  
+* The [Stack Traces view](../monitoring/debug/stack-traces.mdx) captures the stack traces of all
+  server threads at once, and draws the traces as a graph that groups threads running the same
+  code, so you can figure out the exact code a misbehaving server runs.  
+* You can collect diagnostic information about a server or a cluster into a single
+  [debug package](../monitoring/debug/debug-package/create-debug-package.mdx).  
+  The [Debug Package Analyzer](../monitoring/debug/debug-package/debug-package-analyzer.mdx)
+  allows you to inspect a debug package you prepared, and reports the state of the cluster, its
+  nodes, and its databases, along with any detected issues.  
+* When you contact support about an incident, use the
+  [Collect Info for Support](../monitoring/collect-info.mdx) article to learn about collecting
+  the information the support team needs to diagnose and resolve the issue.
+
+<Admonition type="note" title="">
+
+Using the [Admin JS Console](../studio/server/admin-js-console.mdx), you can run JavaScript code
+on the server or on a specific database, with low-level access.
+
+<Admonition type="warning" title="">
+Incorrect usage may crash the server or corrupt data; do **not** use the console unless you are sure of what you are doing.
+</Admonition>
+
+</Admonition>
+
+</Panel>

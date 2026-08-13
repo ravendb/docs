@@ -1,8 +1,8 @@
 ---
 title: "Logging: Configuration"
 sidebar_label: "Configuration options"
-description: "Configuration keys for RavenDB server logging, including log levels, output file paths, retention policies, and Microsoft-log settings."
-sidebar_position: 2
+description: "Configuration keys for RavenDB server logging, including log levels, output file paths, retention policies, Microsoft-log settings, and the event listener."
+sidebar_position: 4
 ---
 
 import Admonition from '@theme/Admonition';
@@ -37,6 +37,12 @@ import ContentFrame from "@site/src/components/ContentFrame";
       [Logs.NuGet.PackageSourceUrl](configuration.mdx#logsnugetpackagesourceurl)  
       [Logs.Path](configuration.mdx#logspath)  
       [Logs.ThrowConfigExceptions](configuration.mdx#logsthrowconfigexceptions)  
+    * [Event listener configuration keys](configuration.mdx#event-listener-configuration-keys):  
+      [Debug.EventListener.AllocationsLoggingCount](configuration.mdx#debugeventlistenerallocationsloggingcount)  
+      [Debug.EventListener.AllocationsLoggingIntervalInMs](configuration.mdx#debugeventlistenerallocationsloggingintervalinms)  
+      [Debug.EventListener.EventTypes](configuration.mdx#debugeventlistenereventtypes)  
+      [Debug.EventListener.MinimumDurationInMs](configuration.mdx#debugeventlistenerminimumdurationinms)  
+      [Debug.EventListener.Mode](configuration.mdx#debugeventlistenermode)  
     * [NLog internal logging keys](configuration.mdx#nlog-internal-logging-keys):  
       [Logs.Internal.Level](configuration.mdx#logsinternallevel)  
       [Logs.Internal.LogToStandardError](configuration.mdx#logsinternallogtostandarderror)  
@@ -240,6 +246,84 @@ Determines whether to throw an exception if NLog detects a logging configuration
 
 - **Type**: `bool`
 - **Default**: `false`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Event listener configuration keys">
+
+These keys control the event listener, which writes .NET runtime events into RavenDB's log files: garbage collections, memory allocations, lock contention, and thread pool activity.  
+The same settings can be changed at runtime in Studio's [Admin Logs view](admin-logs.mdx#5-event-listener).
+
+<ContentFrame>
+
+### Debug.EventListener.AllocationsLoggingCount
+
+The number of allocation types listed each time the top allocations are logged.  
+RavenDB groups the allocations of each
+[interval](configuration.mdx#debugeventlistenerallocationsloggingintervalinms) by allocation
+type, and logs the types that allocated the most.
+
+- **Type**: `int`
+- **Default**: `5`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Debug.EventListener.AllocationsLoggingIntervalInMs
+
+The interval, in milliseconds, at which RavenDB logs its top allocations.  
+Each entry holds the total allocated during the interval, followed by the leading allocation types.
+
+- **Type**: `int`
+- **Default**: `5000`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Debug.EventListener.EventTypes
+
+Only the listed runtime event types are recorded.  
+Provide a semicolon-separated list; when left empty, events of every type are recorded.  
+e.g., `GC;GCSuspend;Contention`
+
+- **Type**: `EventType[]`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+Possible values:
+
+`GC`, `GCSuspend`, `GCRestart`, `GCFinalizers`, `GCJoin`, `GCHeapStats`, `Allocations`, `Contention`, `ThreadPoolWorkerThreadStart`, `ThreadPoolWorkerThreadWait`, `ThreadPoolWorkerThreadStop`, `ThreadPoolMinMaxThreads`, `ThreadPoolWorkerThreadAdjustment`, `ThreadPoolWorkerThreadAdjustmentSample`, `ThreadPoolWorkerThreadAdjustmentStats`, `ThreadCreating`, `ThreadCreated`, `ThreadRunning`, `GCCreateConcurrentThread_V1`
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Debug.EventListener.MinimumDurationInMs
+
+Only events that lasted at least this many milliseconds are recorded.
+
+- **Type**: `int`
+- **Default**: `0`
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Debug.EventListener.Mode
+
+Sets whether the event listener writes runtime events to the log file.  
+Set to `ToLogFile` to enable the listener, or `Off` to disable it.
+
+- **Type**: `enum EventListenerMode` (`Off`, `ToLogFile`)
+- **Default**: `Off`
 - **Scope**: Server-wide only
 
 </ContentFrame>

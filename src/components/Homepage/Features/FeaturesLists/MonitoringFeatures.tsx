@@ -16,7 +16,10 @@ export default function MonitoringFeaturesGrid() {
         {
             title: "Cluster dashboard",
             icon: "cluster-dashboard",
-            url: `/${activeVersion.label}/studio/cluster/cluster-dashboard/cluster-dashboard-overview`,
+            url:
+                activeVersion.label >= "7.2"
+                    ? `/${activeVersion.label}/monitoring/cluster-dashboard/overview`
+                    : `/${activeVersion.label}/studio/cluster/cluster-dashboard/cluster-dashboard-overview`,
             description: "Customizable live view of your cluster's health and performance",
             minimumSupportedVersion: "5.2",
         },

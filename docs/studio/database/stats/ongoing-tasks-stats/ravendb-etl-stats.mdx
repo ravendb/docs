@@ -1,86 +1,114 @@
 ---
-title: "Ongoing Tasks Stats: RavenDB ETL Stats"
+title: "Ongoing Task Stats: RavenDB ETL Stats"
 sidebar_label: RavenDB ETL Stats
 description: "Monitor RavenDB-to-RavenDB ETL task performance in Studio with batch counts, document throughput, and error tracking metrics."
 sidebar_position: 3
 ---
 
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
 
-# Ongoing Tasks Stats: RavenDB ETL Stats
+# Ongoing Task Stats: RavenDB ETL Stats
+
 <Admonition type="note" title="">
 
-* **RavenDB ETL** (Extract, Transform, Load) is a process that reads data from a RavenDB database, 
-  transforms it, and stores it in another RavenDB database.
-* Learn more about the RavenDB ETL task [here](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx).  
+* Studio's Ongoing Task Stats view draws an **activity track** for each active 
+  [ongoing task](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx) of the currently 
+  selected database, and populates the track with **operation bars** that report individual task 
+  operations.  
+  Learn more about this view in the 
+  [Ongoing Task Stats](../../../../monitoring/performance-views/ongoing-task-stats.mdx) article.  
 
-* In this page:  
-    * [RavenDB ETL Stats Closed View](../../../../studio/database/stats/ongoing-tasks-stats/ravendb-etl-stats.mdx#ravendb-etl-stats-closed-view)  
-    * [RavenDB ETL Stats Expanded View](../../../../studio/database/stats/ongoing-tasks-stats/ravendb-etl-stats.mdx#ravendb-etl-stats-expanded-view)  
+* See below how to read the activity track drawn for a 
+  [RavenDB ETL task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx).  
+
+* **RavenDB ETL** (Extract, Transform, Load) is a process that reads data from a RavenDB database, 
+  transforms it, and stores it in another RavenDB database.  
+
+* In this article:  
+   * [The collapsed track](../../../../studio/database/stats/ongoing-tasks-stats/ravendb-etl-stats.mdx#the-collapsed-track)  
+   * [The expanded track](../../../../studio/database/stats/ongoing-tasks-stats/ravendb-etl-stats.mdx#the-expanded-track)  
 
 </Admonition>
-## RavenDB ETL Stats
 
-### RavenDB ETL Stats Closed View
+<Panel heading="The collapsed track">
 
-![RavenDB ETL Stats Closed View](./assets/stats-view-09-etl-closed-view.png)
+![The collapsed RavenDB ETL track](./assets/stats-view-09-etl-closed-view.png)
 
 1. **Task Type**  
-   Click the arrow or the task type to toggle Closed/Expanded View.  
+   Click the track label or bar to expand the track and display additional operation bars.  
+   When expanded, collapse the track by clicking its label or arrow indicator.  
+
 2. **Task Name**  
+   The name given to the ETL task.  
+
 3. **Transform Script**  
-   Click to display the ETL transform script.  
+   The name of the transformation script.  
+   Click the eye icon to display the script.  
+
 4. **Task Bar**  
-    * Hover over the bar to display a tooltip with the task's information.  
-    * Click the bar for the expanded view.  
-    * Click and Drag the bar to slide the graph.  
-    * Zoom in & out using the mouse wheel.  
-### RavenDB ETL Stats Expanded View
-![RavenDB ETL Stats Expanded View](./assets/stats-view-10-etl-expanded-view.png)
+    * Hovering over the bar displays the details of the ETL batch.  
+    * Dragging the bar slides the graph along the time axis.  
+    * Rolling the mouse wheel zooms in or out.  
 
-* **RavenDB ETL**  
-   * **Total Duration**  
-     Overall ETL operation time, including the Extraction, 
-     Transformation, and Loading phases.  
-   * **Batch Complete Reason**  
-     The reason the operation ended, e.g. -  
-     "No more items to process",  
-     "Stopping the batch because maximum batch size limit was reached",  
-     and others.  
-   * **Currently Allocated**  
-     The amount of memory allocated by the server to handle this task.  
-   * **Batch Size**  
-     Size of ETL batches.  
+</Panel>
 
-* **Extract Phase**  
-   * **Duration**  
-     The time it took to extract the documents from the database.  
-   * **Extracted Documents**  
-     The number of documents extracted from the database.  
+<Panel heading="The expanded track">
 
-* **Transform Phase**  
-   * **Duration**  
-     The time it took to process the documents using the transform script.  
-   * **Transformed Documents**  
-     The number of documents processed by the transform script.  
-   * **Documents Processing Speed**  
-     Average Doc/Sec transformation speed.  
-   * **Last Transformed Etag for Document**  
-     Last transformed document's identifier.  
+Expanding a RavenDB ETL track reveals the operations included in each batch.  
 
-* **Load Phase**  
-   * **Duration**  
-     The time it took to transfer the documents to their destination.  
-   * **Successfully Loaded**  
-     Documents transfer verification.  
-   * **Last Loaded Etag**  
-     Last loaded document's identifier.  
+Hover above an operation bar of an expanded track to see the bar's properties as depicted below.  
 
+![The expanded RavenDB ETL track](./assets/stats-view-10-etl-expanded-view.png)
 
+* **RavenDB ETL** bar.  
+  The topmost bar, reporting properties measured over the whole batch:  
+     * **Total duration**  
+       The duration of the whole batch, covering the extract, transform, and load operations.  
+     * **Batch complete reason**  
+       The reason the batch ended, e.g., "No more items to process" or "Stopping the batch because 
+       maximum batch size limit was reached".  
+     * **Currently allocated**  
+       The amount of memory the server allocated to handle the task.  
+     * **Batch size**  
+       The size of the data the batch carried.  
+     * **ETL task has Transform errors** or **ETL task has Load errors**  
+       Potential error notices, reported only when the transformation script failed on at least one 
+       item or when the batch's load did not succeed, pointing to the notification center for 
+       further details.  
 
+* **Extract** bar.  
+  Properties measured while extracting the items from the source database:  
+     * **Duration**  
+       The time it took to extract the items.  
+     * A count for each item type the batch carried, so the number of lines varies from batch to 
+       batch. The image above shows **Extracted Documents**.  
+       The item types are documents and counter groups.  
+     * **Last filtered out Etag for Document**  
+       The etag of the last item the transformation script filtered out, reported per item type.  
 
+* **Transform** bar.  
+  Properties measured while running the transformation script over the extracted items:  
+     * **Duration**  
+       The time it took to run the script.  
+     * **Transformed Documents**  
+       The number of items the script processed, reported per item type.  
+     * **Documents Processing Speed**  
+       The average number of items the script processed per second, reported per item type.  
+     * **Transformed Documents tombstones**  
+       The number of tombstones the script processed, reported per item type.  
+     * **Transformation error count**  
+       The number of items the script failed on.  
+     * **Last transformed Etag for Document**  
+       The etag of the last item the script processed, reported per item type.  
+
+* **Load** bar.  
+  Properties measured while loading the transformed items into the destination database:  
+     * **Duration**  
+       The time it took to load the items.  
+     * **Successfully loaded**  
+       `Yes` when the items reached the destination, `No` when the load failed.  
+     * **Last loaded Etag**  
+       The etag of the last item loaded.  
+
+</Panel>

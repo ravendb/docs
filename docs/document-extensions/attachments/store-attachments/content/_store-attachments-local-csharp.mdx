@@ -12,7 +12,7 @@ import Panel from '@site/src/components/Panel';
     
 * In this article
   * [Overview](../../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#overview)  
-  * [Store attachments using the **Studio**](../../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#store-attachments-using-the-studio)  
+  * [Store attachments using **Studio**](../../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#store-attachments-using-studio)  
   * [Store attachments using the **Client API**](../../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#store-attachments-using-the-client-api)  
     * [Store via the Session](../../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#store-attachments-via-the-session)  
     * [Store via an Operation](../../../../document-extensions/attachments/store-attachments/store-attachments-local.mdx#store-attachments-via-an-operation) 
@@ -26,7 +26,7 @@ import Panel from '@site/src/components/Panel';
 
 * **To store attachments**:  
     * First, create or load a document.  
-    * Then, attach any number of files using the Studio or the Client API.
+    * Then, attach any number of files using Studio or the Client API.
 
 * The document’s metadata is updated to reference each attachment that is added.  
   This metadata update is considered a document change, which causes the document to be replicated to all other nodes in the database group.  
@@ -43,9 +43,9 @@ import Panel from '@site/src/components/Panel';
     
 </Panel>
 
-<Panel heading="Store attachments using the Studio">
+<Panel heading="Store attachments using Studio">
 
-You can add and manage attachments directly in the Studio.
+You can add and manage attachments directly in Studio.
 
 ![Add attachment to local storage](../assets/add-attachment-to-local-storage.png)
 
@@ -53,7 +53,7 @@ You can add and manage attachments directly in the Studio.
 2. Open the _Attachments_ tab in the document _Properties_ pane.    
 3. Click **Add Attachment** and select the file to attach.  
    The file will appear in the list and will be automatically associated with the document.  
-4. The Studio does not show detailed attachment metadata in the document editor.  
+4. Studio does not show detailed attachment metadata in the document editor.  
    It only shows the `@flags` property with the value `HasAttachments` in the document's `@metadata` section  
    to indicate that the document has attachments.
 5. Click this JSON button to view the document's raw content, including its full metadata.  

@@ -131,10 +131,10 @@ Documentation is versioned. The current version is 7.2. Use the `/7.2/` URL pref
 
 ## Monitoring
 
-- [Cluster Dashboard](https://docs.ravendb.net/7.2/studio/cluster/cluster-dashboard/cluster-dashboard-overview): Live view of cluster health and performance
-- [SNMP Monitoring](https://docs.ravendb.net/7.2/server/administration/snmp/snmp-overview): Expose metrics to monitoring tools via SNMP
-- [OpenTelemetry](https://docs.ravendb.net/7.2/server/administration/monitoring/open-telemetry): Export telemetry data using OpenTelemetry
-- [Telegraf and Grafana](https://docs.ravendb.net/7.2/server/administration/monitoring/telegraf): Push metrics into Grafana dashboards
+- [Cluster Dashboard](https://docs.ravendb.net/7.2/monitoring/cluster-dashboard/overview): Live view of cluster health and performance
+- [SNMP Monitoring](https://docs.ravendb.net/7.2/monitoring/integrations/snmp/overview): Expose metrics to monitoring tools via SNMP
+- [OpenTelemetry](https://docs.ravendb.net/7.2/monitoring/integrations/open-telemetry): Export telemetry data using OpenTelemetry
+- [Telegraf and Grafana](https://docs.ravendb.net/7.2/monitoring/integrations/telegraf): Push metrics into Grafana dashboards
 
 ## Integrations
 

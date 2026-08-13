@@ -13,7 +13,7 @@ import CodeBlock from '@theme/CodeBlock';
       For example, tracking document revisions allows you to check how an employee's contract has changed over time,
       restore a single corrupted document without requiring a backup file, or conduct a full-scale audit of your data.  
       </Admonition>
-* Managed via the Client API or from the Studio, revisions can be created **automatically** or **manually**:
+* Managed via the Client API or from Studio, revisions can be created **automatically** or **manually**:
 
     * **Automatic revisions creation**:  
       When revisions settings are defined and enabled for a collection, a document revision is automatically created whenever documents are created, modified, or deleted.
@@ -53,17 +53,17 @@ import CodeBlock from '@theme/CodeBlock';
     * Conflict revisions are **enabled** by default.
     * Read about the conflict revisions API here:
       [Conflict Revisions Configuration](../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx)
-    * Read about managing conflict revisions via the Studio here:
+    * Read about managing conflict revisions via Studio here:
       [Editing the Conflicting Document Defaults](../../../studio/database/settings/document-revisions.mdx#editing-the-conflicting-document-defaults)
     
     </Admonition>
 #### Defining a revisions configuration
 
-You can apply a revisions configuration using the Studio or the Client API:
+You can apply a revisions configuration using Studio or the Client API:
 
 * Via Studio:
     * Manage the revisions configuration in the [Document Revisions Settings](../../../studio/database/settings/document-revisions.mdx) view.
-    * Inspect existing revisions and manually create a new revision in the [Revisions tab](../../../studio/database/document-extensions/revisions/revisions-overview.mdx#revisions-tab) in the Studio's Document View.
+    * Inspect existing revisions and manually create a new revision in the [Revisions tab](../../../studio/database/document-extensions/revisions/revisions-overview.mdx#revisions-tab) in Studio's Document View.
 * Via Client API:
     * Use the [ConfigureRevisionsOperation](../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx) _Store_ operation to define and apply a revisions configuration.
 #### Default settings and collection-specific configurations
@@ -131,19 +131,19 @@ Default and collection-specific configurations are executed when -
 Let's play with revisions a little to get a taste of its advantages.
 
 1. **Enable Revisions** so we can experiment with the feature.  
-   Revisions can be enabled from the [Studio](../../../studio/database/settings/document-revisions.mdx)
+   Revisions can be enabled from [Studio](../../../studio/database/settings/document-revisions.mdx)
    or using the [ConfigureRevisionsOperation](../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx) _Store_ operation.
 
      ![Enable Revisions for the Users Collection](../assets/revisions-1.png)
 
 2. **Create a new document in the `Users` collection**.  
    We will follow the automatic creation of revisions for this document.  
-   You can create the document in the [Studio](../../../studio/database/documents/create-new-document.mdx#create-new-document)
+   You can create the document in [Studio](../../../studio/database/documents/create-new-document.mdx#create-new-document)
    or using the [session.Store](../../../client-api/session/storing-entities.mdx#example) method.
 
      ![Create a Document](../assets/revisions-2.png)
 
-3. **Inspect the new document's [Revisions Tab](../../../studio/database/document-extensions/revisions/revisions-overview.mdx#revisions-tab)** in the Studio.  
+3. **Inspect the new document's [Revisions Tab](../../../studio/database/document-extensions/revisions/revisions-overview.mdx#revisions-tab)** in Studio.  
    Creating the document also created its first revision.
 
      ![Revision for Document Creation](../assets/revisions-3.png)
@@ -165,7 +165,7 @@ Let's play with revisions a little to get a taste of its advantages.
      </Admonition>
 
      To see the revisions created for the document before it was deleted:  
-     * Open the `Documents > Revisions Bin` section in the Studio  
+     * Open the `Documents > Revisions Bin` section in Studio  
      * Click the deleted document's ID
 
      ![Revisions Bin](../assets/revisions-5.png)
@@ -218,7 +218,7 @@ However, you can also **force the creation** of a document revision, whether the
 This is useful when you choose to disable automatic revisions creation but still want to create a revision for a specific document,
 e.g. take a snapshot of the document as a precaution before editing it.
 
-* You can force the creation of a revision via the [Studio](../../../document-extensions/revisions/overview.mdx#force-revision-creation-via-the-studio)
+* You can force the creation of a revision via [Studio](../../../document-extensions/revisions/overview.mdx#force-revision-creation-via-studio)
   or use the [Client API](../../../document-extensions/revisions/overview.mdx#force-revision-creation-via-the-client-api).
 * A revision **will** be created even if the revisions configuration is disabled for the document's collection.
 * A revision **will** be created even if the document has not been modified  
@@ -226,9 +226,9 @@ e.g. take a snapshot of the document as a precaution before editing it.
 * Similar to revisions created automatically due to the revisions configuration,  
   deleting a document with a manually created revision will move the revision to the [Revisions Bin](../../../studio/database/document-extensions/revisions/revisions-bin.mdx),  
   and a "Delete Revision" will be created.
-##### Force revision creation via the Studio
+##### Force revision creation via Studio
 
-To create a revision manually via the Studio,  
+To create a revision manually via Studio,  
 click the **Create Revision** button in the Revisions Tab in the document view.
 
 ![Create a revision manually](../assets/revisions-8.png)

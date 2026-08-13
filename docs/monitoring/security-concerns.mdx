@@ -1,0 +1,160 @@
+---
+title: "Monitoring: Security Concerns"
+sidebar_label: "Security Concerns"
+description: "The security aspects of RavenDB's monitoring tools: the clearance each view and endpoint requires, the license features some of them depend on, and exposure considerations."
+sidebar_position: 17
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Monitoring: Security Concerns
+<Admonition type="note" title="">
+
+* The monitoring views and endpoints are protected like the rest of RavenDB: on a secure
+  server, access requires a client certificate with a sufficient
+  [security clearance](../server/security/authorization/security-clearance-and-permissions.mdx).  
+
+* Some monitoring channels are enabled by specific [license](https://ravendb.net/buy) features.  
+
+* This page lists the clearance each monitoring view and endpoint requires, the license
+  features some of them depend on, and exposure considerations.  
+
+* In this article:
+    * [Access control](../monitoring/security-concerns.mdx#access-control)  
+    * [License requirements](../monitoring/security-concerns.mdx#license-requirements)  
+    * [Exposure considerations](../monitoring/security-concerns.mdx#exposure-considerations)  
+
+</Admonition>
+
+<Panel heading="Access control">
+
+On a [secure server](../server/security/overview.mdx), the monitoring views and endpoints
+require a client certificate.  
+The table below lists the
+[security clearance](../server/security/authorization/security-clearance-and-permissions.mdx)
+the certificate needs for each view and endpoint:
+
+| View or endpoint | Required clearance |
+| ------------------ | ------------------ |
+| [JSON monitoring endpoints](../monitoring/json-monitoring-endpoints.mdx) | `Operator` or higher |
+| The [Prometheus endpoint](../monitoring/integrations/prometheus.mdx) | `Operator` or higher |
+| [SNMP metrics over HTTP](../monitoring/integrations/snmp/overview.mdx#access-metrics-via-http), including [MIB generation](../monitoring/integrations/snmp/mib-generation.mdx) | `Operator` or higher |
+| The [Traffic Watch](../monitoring/traffic-watch/overview.mdx) live stream, endpoints, and configuration | `Operator` or higher |
+| The [IO Stats views](../monitoring/performance-views/io-stats.mdx) | `Operator` or higher |
+| The [advanced-debug view](../monitoring/debug/advanced-debug-view.mdx), the [Stack Traces view](../monitoring/debug/stack-traces.mdx), and the [Admin Logs view](../monitoring/logging/admin-logs.mdx) | `Operator` or higher |
+| Deleting an entry from the Raft log, in the advanced-debug view's [Cluster Debug tab](../monitoring/debug/advanced-debug-view.mdx#cluster-debug-tab) | `Cluster Admin` |
+| The [Admin JS Console](../studio/server/admin-js-console.mdx) | `Cluster Admin` |
+| The [Running Queries view](../monitoring/performance-views/running-queries.mdx) | Every clearance.<br />Users with `User` clearance see only the queries of the databases their certificates grant access to. |
+| The [notification center](../monitoring/alerts-and-notifications/notification-center.mdx) | Every clearance.<br />Users with `User` clearance see only the notifications of the databases their certificates grant access to. |
+| The [Ongoing Task Stats view](../monitoring/performance-views/ongoing-task-stats.mdx) | Read access to the database |
+
+On an unsecure server, no certificate is needed, and the per-database visibility restrictions
+do not apply.
+
+</Panel>
+
+<Panel heading="License requirements">
+
+<ContentFrame>
+
+### The Monitoring Endpoints feature
+
+A [license](https://ravendb.net/buy) that includes the **Monitoring Endpoints** feature enables:
+
+* The [JSON monitoring endpoints](../monitoring/json-monitoring-endpoints.mdx)  
+* The [Prometheus endpoint](../monitoring/integrations/prometheus.mdx)  
+* [OpenTelemetry](../monitoring/integrations/open-telemetry.mdx) support  
+
+When the license does not include this feature, requests to the endpoints fail with HTTP status
+`402 Payment Required`.  
+When the license is upgraded to include this feature while the server is running, OpenTelemetry
+meters are registered only on the next server restart; until then, RavenDB collects no
+OpenTelemetry metrics.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### The SNMP feature
+
+[SNMP](../monitoring/integrations/snmp/overview.mdx) support, including the
+[Zabbix template](../monitoring/integrations/snmp/setup-zabbix.mdx) that reads RavenDB metrics
+over SNMP, requires a [license](https://ravendb.net/buy) that includes the **SNMP** feature.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Exposure considerations">
+
+<ContentFrame>
+
+### Cleartext community string in SNMPv2c
+
+#### Concern: SNMPv2c sends the community string, which is used as a password, in cleartext.
+
+* **Mitigation: Use SNMPv3**  
+  SNMPv3 adds user authentication and traffic encryption, and is the right choice when SNMP
+  traffic crosses an untrusted network.  
+  Set the SNMPv3 credentials using the `Monitoring.Snmp.*`
+  [configuration keys](../monitoring/integrations/configuration.mdx).  
+
+* **Mitigation: Use a trusted network**  
+  When you use SNMPv2c, keep the SNMP traffic inside a trusted local network.  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Open monitoring data on an unsecure server
+
+#### Concern: On an unsecure server, the monitoring views and endpoints require no certificate, and anyone with network access to the server can read the monitoring data.
+
+* **Mitigation: Run a secure server**  
+  On a [secure server](../server/security/overview.mdx), every monitoring view and endpoint
+  requires a client certificate with the clearance listed in
+  [Access control](../monitoring/security-concerns.mdx#access-control) above.  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Operational details in streamed requests and log files
+
+#### Concern: Traffic Watch and the server logs record operational details, like database names, request URLs, and client certificate thumbprints.
+
+* **Mitigation: Clearance gates**  
+  Connecting to the [Traffic Watch](../monitoring/traffic-watch/overview.mdx) live stream and
+  opening the [Admin Logs view](../monitoring/logging/admin-logs.mdx) both require an `Operator`
+  clearance or higher.  
+
+* **Mitigation: Log-to-file filters**  
+  The [Traffic Watch configuration keys](../monitoring/traffic-watch/configuration.mdx) filter
+  the log output, e.g., to requests made to listed databases or with listed client certificate
+  thumbprints.  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Diagnostic tools that modify the server
+
+#### Concern: Some diagnostic tools modify data rather than just observe it, and may corrupt the data and crash the server.
+
+This concern relates to the [Admin JS Console](../studio/server/admin-js-console.mdx), and to
+the deletion of Raft-log entries in the advanced-debug view's
+[Cluster Debug tab](../monitoring/debug/advanced-debug-view.mdx#cluster-debug-tab).
+
+* **Mitigation: `Cluster Admin` clearance**  
+  Both running JavaScript code in the JS console and deleting a log entry require a `Cluster Admin`
+  clearance.  
+
+* **Mitigation: Explicit confirmation**  
+  Deleting an entry from the Raft log requires a confirmation that states the risk: the deletion
+  can lead to data inconsistencies and cluster instability.  
+
+</ContentFrame>
+
+</Panel>

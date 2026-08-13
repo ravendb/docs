@@ -447,6 +447,27 @@
         }
     },
     {
+        "key": "/studio/server/debug/admin-logs",
+        "value": {
+            "targetUrl": "/monitoring/logging/admin-logs",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/server/debug/advanced/cluster-observer",
+        "value": {
+            "targetUrl": "/monitoring/debug/advanced-debug-view",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/server/debug/admin-js-console",
+        "value": {
+            "targetUrl": "/studio/server/admin-js-console",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/server/troubleshooting/traffic-watch",
         "value": {
             "targetUrl": "/monitoring/traffic-watch/overview",
@@ -612,6 +633,34 @@
         "value": {
             "targetUrl": "/studio/cluster/cluster-dashboard/cluster-dashboard-overview",
             "minimumVersion": "6.2"
+        }
+    },
+    {
+        "key": "/studio/cluster/cluster-dashboard/cluster-dashboard-overview",
+        "value": {
+            "targetUrl": "/monitoring/cluster-dashboard/overview",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/cluster/cluster-dashboard/cluster-dashboard-customize",
+        "value": {
+            "targetUrl": "/monitoring/cluster-dashboard/customize",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/cluster/cluster-dashboard/cluster-dashboard-widgets",
+        "value": {
+            "targetUrl": "/monitoring/cluster-dashboard/widgets",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/database/stats/storage-report",
+        "value": {
+            "targetUrl": "/monitoring/performance-views/storage-reports",
+            "minimumVersion": "7.2"
         }
     },
     {
