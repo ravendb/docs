@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="970" height="400" viewBox="0 0 970 400" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="970" height="400" fill="#eaf3fa"/>
+
+  <g transform="translate(-10 0)">
+
+  <g id="your-applications">
+    <rect x="60" y="70" width="200" height="50" rx="8" fill="#ffffff" stroke="#64748b"/>
+    <text x="160" y="100" text-anchor="middle" font-size="15" fill="#1e293b">Your applications</text>
+  </g>
+  <g id="your-database">
+    <rect x="40" y="280" width="240" height="70" rx="8" fill="#ffffff" stroke="#64748b"/>
+    <text x="160" y="310" text-anchor="middle" font-size="15" fill="#1e293b">Your SQL database</text>
+    <text x="160" y="330" text-anchor="middle" font-size="12" fill="#475569">PostgreSQL / SQL Server / MySQL</text>
+  </g>
+  <line x1="160" y1="122" x2="160" y2="278" stroke="#475569" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+  <text x="170" y="205" font-size="12" fill="#475569">reads and writes</text>
+
+  <g id="quill-container">
+    <rect x="400" y="30" width="290" height="340" rx="12" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+    <text x="416" y="56" font-size="14" font-weight="bold" fill="#9a3412">Quill (Docker container)</text>
+  </g>
+  <g id="agent">
+    <rect x="420" y="80" width="122" height="50" rx="8" fill="#ffffff" stroke="#64748b"/>
+    <text x="481" y="110" text-anchor="middle" font-size="15" fill="#1e293b">AI agent</text>
+  </g>
+  <g id="channels">
+    <rect x="562" y="80" width="115" height="50" rx="8" fill="#ffffff" stroke="#64748b"/>
+    <text x="619" y="110" text-anchor="middle" font-size="15" fill="#1e293b">Channels</text>
+  </g>
+  <line x1="544" y1="105" x2="560" y2="105" stroke="#475569" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+  <g id="internal-database">
+    <rect x="440" y="185" width="190" height="70" rx="8" fill="#ffffff" stroke="#64748b"/>
+    <text x="535" y="213" text-anchor="middle" font-size="15" fill="#1e293b">Internal database</text>
+    <text x="535" y="233" text-anchor="middle" font-size="12" fill="#475569">your data, mirrored</text>
+  </g>
+  <g id="mirroring">
+    <rect x="460" y="300" width="150" height="50" rx="8" fill="#ffffff" stroke="#64748b"/>
+    <text x="535" y="330" text-anchor="middle" font-size="15" fill="#1e293b">Mirroring</text>
+  </g>
+
+  <line x1="282" y1="320" x2="458" y2="322" stroke="#475569" marker-end="url(#arrow)"/>
+  <text x="300" y="310" font-size="12" fill="#475569">changes (CDC)</text>
+  <line x1="535" y1="298" x2="535" y2="257" stroke="#475569" marker-end="url(#arrow)"/>
+  <text x="545" y="282" font-size="12" fill="#475569">applies the changes</text>
+  <line x1="481" y1="132" x2="481" y2="183" stroke="#475569" marker-end="url(#arrow)"/>
+  <text x="491" y="162" font-size="12" fill="#475569">queries</text>
+
+  <g id="chat-box">
+    <rect x="790" y="80" width="160" height="60" rx="8" fill="#ffffff" stroke="#64748b"/>
+    <text x="870" y="106" text-anchor="middle" font-size="15" fill="#1e293b">Chat widget</text>
+    <text x="870" y="126" text-anchor="middle" font-size="12" fill="#475569">embedded in your site</text>
+  </g>
+  <line x1="679" y1="105" x2="788" y2="105" stroke="#475569" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+  <text x="733" y="95" text-anchor="middle" font-size="12" fill="#475569">over HTTPS</text>
+
+  <g id="your-users">
+    <rect x="790" y="190" width="160" height="50" rx="8" fill="#ffffff" stroke="#64748b"/>
+    <text x="870" y="220" text-anchor="middle" font-size="15" fill="#1e293b">Your users</text>
+  </g>
+  <line x1="870" y1="188" x2="870" y2="142" stroke="#475569" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+  <text x="862" y="170" text-anchor="end" font-size="12" fill="#475569">questions and replies</text>
+
+  <g id="llm">
+    <rect x="790" y="300" width="160" height="50" rx="8" fill="#eff6ff" stroke="#2563eb"/>
+    <text x="870" y="321" text-anchor="middle" font-size="15" fill="#1e293b">LLM</text>
+    <text x="870" y="339" text-anchor="middle" font-size="12" fill="#475569">your key, your provider</text>
+  </g>
+  <line x1="544" y1="125" x2="788" y2="322" stroke="#475569" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+  <text x="696" y="244" font-size="12" fill="#475569">your key</text>
+</g>
+</svg>
