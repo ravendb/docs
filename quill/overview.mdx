@@ -41,6 +41,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [What is public and what is protected](overview.mdx#what-is-public-and-what-is-protected)
    * [From sign-up to a working chat](overview.mdx#from-sign-up-to-a-working-chat)
    * [The management dashboard](overview.mdx#the-management-dashboard)
+   * [Working with Quill using code](overview.mdx#working-with-quill-using-code)
 
 </Admonition>
 
@@ -251,6 +252,52 @@ The dashboard opens with the deployment's apps; each app then has an overview of
 
 The sidebar leads to the app's sections: the data source, the agents, the conversations, and settings like channels
 and analytics.
+
+</Panel>
+
+<Panel heading="Working with Quill using code">
+
+Developers can work with Quill using code as well as through the management dashboard.
+
+* **Managing Quill through its API**  
+  Your Quill deployment exposes an API; requests to this API are authenticated using the API key that sign-up
+  provides.  
+  The API covers Quill's management operations, like connecting a data source, creating agents and channels, and
+  generating embed links.  
+  e.g., your site can use the API to generate a personal embed link for each signed-in user.
+
+  A minimal API call, listing the deployment's apps:
+
+  ```bash
+  curl -H "X-Api-Key: <your-api-key>" https://api.<your-domain>/api/apps/
+  ```
+* **Reading the mirrored database directly**  
+  Quill's internal database is a full RavenDB database.  
+  Your applications can connect to this database using RavenDB client libraries and a client certificate that the
+  deployment provides.  
+  e.g., an application can run full-text searches over the mirrored data without adding any load to your SQL
+  database.
+
+  Connecting with the C# client:
+
+  ```csharp
+  using var store = new DocumentStore
+  {
+      Urls = new[] { "https://db.<your-domain>" },
+      Database = "<app-database>",
+      Certificate = new X509Certificate2("quill.client.pfx")
+  };
+  store.Initialize();
+  ```
+* **Embedding the chat widget**  
+  Quill delivers each embed link as a ready-made HTML segment.  
+  A developer can add this segment to the code of any of your site's pages; the page will then display the chat
+  widget.
+
+  ```html
+  <iframe src="https://public.<your-domain>/apps/<app-slug>/embed/<link-token>"
+          width="400" height="600"></iframe>
+  ```
 
 </Panel>
 
