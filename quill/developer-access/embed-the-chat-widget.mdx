@@ -1,0 +1,796 @@
+---
+title: "Embed the Chat Widget"
+sidebar_label: "Embed the Chat Widget"
+description: "How to place a Quill chat widget on your website with an iframe, restrict which sites can load it, mint embed links from your own backend, and style the widget."
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* Embed a Quill **web widget channel** in your website using an `<iframe>`.  
+  You do not need to install a client library or add a Quill script to your page.
+
+* Set the iframe's source to an **embed link** generated for the channel.  
+  The token in this link is the credential: each link has an expiration time and a usage cap, and can be revoked.
+
+* This article assumes that you already have a web widget channel.
+  It explains how to embed the widget, configure which sites may embed it, mint links securely from your backend, and customize the widget's appearance.
+
+* In this article:
+  * [Embedding the widget](#embedding-the-widget)
+    * [The embed link is the credential](#the-embed-link-is-the-credential)
+    * [Place the iframe on your page](#place-the-iframe-on-your-page)
+    * [Restrict where the widget loads](#restrict-where-the-widget-loads)
+    * [Lifetime, usage cap, and revocation](#lifetime-usage-cap-and-revocation)
+    * [Mint links from your own backend](#mint-links-from-your-own-backend)
+  * [Styling the widget](#styling-the-widget)
+    * [How the widget theme is resolved](#how-the-widget-theme-is-resolved)
+    * [Theme settings](#theme-settings)
+    * [Writing custom CSS](#writing-custom-css)
+    * [The theme endpoints](#the-theme-endpoints)
+  * [Summary](#summary)
+
+</Admonition>
+
+## Embedding the widget
+
+<Panel heading="The embed link is the credential">
+
+A web widget channel has no fixed public URL.  
+To open the widget, mint an embed link for the channel:
+
+```text
+https://public.<domain>/apps/<slug>/embed/<token>
+```
+<br/>
+
+The link contains an opaque bearer token. Anyone holding an active link can open the widget,
+send prompts to the assigned agent, and view the conversation associated with that link.  
+Treat the complete URL as a credential: do not publish it or reuse it among unrelated visitors.
+
+Each embed link is bound to:
+
+| The link is bound to           | What it means                                                                                                   |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| One app and web widget channel | The link opens the channel for which it was minted.                                                             |
+| One agent                      | Prompts are routed to the agent assigned to that channel.                                                       |
+| Agent parameter values         | Values supplied by your backend are stored with the link and used for its prompts.                              |
+| An expiration time             | The link can no longer be used after it expires.                                                                |
+| A usage cap                    | Each prompt-and-response turn counts toward the cap.<br/>Once the cap is reached, Quill refuses additional prompts. |
+| One conversation               | Opening the same link again restores the conversation history created through it.                               |
+
+Anyone sharing a link also shares its conversation history and usage cap.  
+Mint a separate link for each user or browser session rather than publishing one link on a public page.
+
+On a deployed appliance, the returned URL points to `public.<domain>`.  
+This origin serves the embed page, its same-origin chat endpoint, and the widget bundle under `/widget/assets/*`.  
+The equivalent embed path on `dashboard.<domain>` returns `404`.
+
+</Panel>
+
+<Panel heading="Place the iframe on your page">
+
+When your front end obtains the embed URL from your backend at runtime, start with an iframe that has no fixed `src`.  
+Assign the returned `url` to it after minting the link, as shown later in this article.  
+If your backend mints the link while rendering the page, it can put the returned `url` directly in `src` instead.
+
+```html
+<iframe
+  id="quill-chat"
+  title="Support chat"
+  style="width: 100%; height: 600px; border: 0;"
+></iframe>
+```
+<br/>
+
+The widget loads its own scripts and styles from the Quill public origin and sends chat requests
+back to that same origin. Your website does not need a widget library, a bundler step, or a
+third-party content-delivery-network reference.
+
+---
+    
+When placing the frame:
+
+* **Set its dimensions.**  
+  The widget fills the frame and scrolls internally.  
+  Quill does not resize the iframe automatically, so give it an explicit height and set its width to fit your layout.
+
+* **Provide a descriptive `title`.**  
+  The iframe's `title` helps screen-reader users understand what the embedded content provides.
+
+* **Configure `sandbox` carefully, if you use it.**  
+  The `sandbox` attribute is optional.  
+  To preserve all widget functionality when using it, specify:  
+  `sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"`
+
+  `allow-scripts` runs the widget, while `allow-same-origin` keeps its chat request same-origin.  
+  Without `allow-same-origin`, the iframe receives an opaque origin and the browser blocks the resulting cross-origin JSON request during CORS processing.
+
+  `allow-forms` enables the Send button's form submission event.  
+  `allow-popups` lets links in responses open in a new tab,
+  while `allow-popups-to-escape-sandbox` prevents those destinations from inheriting the widget's remaining sandbox restrictions.
+
+  Because the widget must run scripts with its normal origin, treat this sandbox as defense in depth
+  for capabilities you have not enabled, not as isolation from the widget's JavaScript.
+
+* **The embed URL is not forwarded in referrer headers.**  
+  Once the embed page loads, it applies `Referrer-Policy: no-referrer`, preventing requests made
+  by the widget from sending the token-bearing URL as a referrer.
+
+<Admonition type="warning" title="">
+
+#### Do not mint links in the browser
+
+* Your backend must call the embed-link API using the Dashboard API key.  
+  Never place this key in front-end code, a public repository, or content visible to your users.
+
+* Mint the link after your backend has established the intended user or browser session, and return only the resulting `url` to the browser.
+  See [Mint links from your own backend](#mint-links-from-your-own-backend).
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Restrict where the widget loads">
+
+Each web widget channel has an **allowed origins** list that identifies the websites permitted to embed it.  
+Add the origin of the page containing the iframe, not the Quill embed URL.
+
+The `allowedOrigins` property is required when creating a web widget channel.  
+Omitting it returns `400 Bad Request`; pass an empty array explicitly to allow any website to embed the widget.
+
+When updating a channel, omitting `allowedOrigins` preserves the existing list.  
+Supplying the property replaces the complete list, including when you supply an empty array.
+
+Each entry must contain only an origin:
+
+* Only `http` and `https` are accepted.
+* Specify the scheme, host, and optional port, such as `https://support.example.com`.
+* Paths, query strings, fragments, and user information are rejected. A single trailing `/` is allowed.
+* Quill normalizes each entry by lowercasing the host, removing the trailing `/`, and dropping the default port.  
+  For example, `https://Example.com:443/` becomes `https://example.com`.
+* The wildcard `*` is not accepted. List each permitted origin explicitly.
+* A channel can contain up to `32` origins, each no longer than `256` characters.
+
+Matching is exact after normalization.  
+Scheme, host, subdomain, and any non-default port must agree:
+
+| Page origin                | Matches `https://example.com` |
+| -------------------------- | ----------------------------- |
+| `https://example.com`      | Yes                           |
+| `https://www.example.com`  | No                            |
+| `http://example.com`       | No                            |
+| `https://example.com:8443` | No                            |
+
+List every origin from which your users may load the page, including each required subdomain
+and non-default port.
+
+<ContentFrame>
+
+### How allowed origins are enforced
+
+When the allowed-origins list is not empty, Quill adds a `frame-ancestors` directive to an active embed page's `Content-Security-Policy` header.
+The directive permits the widget's own public origin, the Quill dashboard, and the origins configured for the channel.
+The browser refuses to display an active widget inside a page from any other origin.
+
+When the list is empty, Quill omits `frame-ancestors`, allowing any website to frame an active widget.
+
+Standalone `404`, `410`, and `503` notice pages intentionally omit `frame-ancestors`, regardless of the channel's allowed-origins list.
+This ensures that every embedding page can display the failure notice instead of an empty frame.
+Test framing restrictions with an active embed link, not an expired, invalid, or otherwise unavailable one.
+
+For chat requests that include an `Origin` header, Quill accepts the configured origins and the widget's own public origin.
+Any other origin receives `403` with the error code `origin_forbidden`.
+This check occurs before Quill reserves a turn, so a rejected request does not consume the link's usage cap.
+
+</ContentFrame>
+
+<Admonition type="warning" title="">
+
+#### Allowed origins are not authentication
+
+* The embed-link token is the credential.  
+  Allowed origins are a browser-enforced embedding restriction, not proof of the caller's identity.
+
+* The widget's JSON chat request normally includes an `Origin` header containing the embed page's
+  own origin, which Quill explicitly accepts. Quill also permits requests without an `Origin` header,
+  and a non-browser client can omit it. Allowed origins therefore remain a browser embedding
+  restriction rather than authentication.
+
+* With an empty allowed-origins list, Quill neither restricts framing nor checks a supplied origin.
+
+* Keep link lifetimes and usage caps appropriate for your application, and revoke links that should
+  no longer be used.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Lifetime, usage cap, and revocation">
+
+Every embed link has an expiration time and a usage cap. You can also revoke a link before it expires.
+
+| Control          | Accepted range                                  | Default                 |
+| ---------------- | ----------------------------------------------- | ----------------------- |
+| `ttlSeconds`     | `60` to `2592000` seconds (1 minute to 30 days) | `3600` seconds (1 hour) |
+| `maxInvocations` | `1` to `1000000` turns                          | `100` turns             |
+
+**A turn** is one prompt-and-response exchange. Loading or reloading the widget does not consume a turn.
+
+Quill reserves a turn before processing each prompt. This prevents concurrent requests from exceeding the link's cap.  
+If processing fails before any part of the response is streamed, Quill returns the reserved turn to the link.  
+The turn remains counted after streaming begins or if the browser stops the request by closing the page,  
+navigating away, or cancelling the response.
+
+<ContentFrame>
+
+### When a link or widget cannot be used
+
+| Condition                                                                                                                   | What happens                                                                                                                                                                                                                                       |
+| --------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The link expires, is revoked, or its channel is disabled                                                                    | Loading the embed URL returns `410 Gone` and displays “This conversation has ended.” The notice posts an `expired` message with `reason: "expired"`. An already-open widget becomes inactive when its next prompt returns `410`.                   |
+| The usage cap is reached                                                                                                    | The widget still loads its conversation history. A new prompt returns `429` with the code `invocation_limit`; the widget disables the composer and posts an `expired` message with `reason: "limit"`.                                              |
+| The token or app slug is malformed, the app or link is unknown, or the channel is missing or no longer a web widget channel | Loading the embed URL returns `404 Not Found` and displays “This conversation is not available.” The standalone notice posts an `error` message with `message: "not found"`. An expired link whose record has been removed also enters this state. |
+| The widget bundle is unavailable                                                                                            | An otherwise active link returns `503 Service Unavailable` and displays “The assistant is unavailable.” The notice posts an `error` message with `message: "widget unavailable"`.                                                                  |
+
+A `404` received by an already-open widget's chat request is handled differently from an initial page load:  
+the widget treats it as a terminal inactive link and posts `expired`.
+
+The widget and standalone notice pages report their lifecycle to the page containing the iframe
+using `postMessage`:
+
+| Message type | Meaning                                                                                                                                                                                                                                                           |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ready`      | The widget bundle has loaded successfully. The host page can hide its loading indicator.                                                                                                                                                                          |
+| `expired`    | The open widget can no longer continue. The payload's `reason` is `expired` or `limit`.                                                                                                                                                                           |
+| `error`      | A standalone notice, retryable chat failure, or terminal widget startup failure occurred. The payload contains a message. Some startup failures post `error` without ever posting `ready`, so the host should stop waiting for `ready` when this message arrives. |
+
+Before acting on a message, verify that `event.origin` is your appliance's `public.<domain>` origin and that the message contains `source: "raven-quill"` and `version: 1`.
+
+When the host receives `expired`, it can request a new link from its backend and replace the iframe's `src`.  
+The new link starts a new conversation.  
+For `error`, handle the reported failure rather than automatically assuming that the link expired.
+
+</ContentFrame>
+
+Revocation takes effect immediately and cannot be reversed. Mint a new link if access should be restored.
+
+Revoking is idempotent: for an existing app, the API returns `204 No Content` for any well-formed token,  
+including one that is already revoked, expired, or no longer stored.
+
+Listing an app's embed links returns its non-expired, non-revoked links across all web widget channels, ordered from newest to oldest by `createdAt`.
+Each item includes its creation time, identifies its channel and agent, and reports its expiration time, usage cap, and number of turns consumed.
+The list can include links that have already exhausted their usage cap.
+
+<Admonition type="note" title="">
+
+#### The public chat endpoint also has an appliance-wide rate limit
+
+* In addition to each link's usage cap, the public chat endpoint accepts up to `60` requests per
+  minute across the entire appliance. Every visitor, app, channel, and embed link shares this limit.
+
+* Requests beyond the limit receive `429` and are not queued.  
+  On a deployed appliance, nginx forwards its loopback address to Quill, so the application cannot partition this limit by the visitor's IP address.
+  A direct local run that bypasses nginx can behave differently.
+
+* A request rejected by this rate limit does not consume a turn from the link.  
+  The widget displays “Too many requests right now. Please try again in a moment.”  
+  and allows the visitor to retry after the rate-limit window resets.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Mint links from your own backend">
+
+The dashboard can generate links interactively.  
+For a website integration, mint a link from your backend whenever a user or browser session needs to open the widget.
+
+The browser calls an endpoint in your application.  
+Your backend then calls Quill's embed-link API and returns only the generated `url` to the browser.
+
+<Admonition type="warning" title="">
+
+#### Keep the Dashboard API key on your server
+
+The Dashboard API key configured through `QUILL_API_KEY` grants access to every app in the appliance,  
+not only to one channel or widget. Never include it in browser code or return it to the user.
+
+The embed-link API does not send CORS headers.  
+A cross-origin browser request like the one below requires a preflight because `X-Api-Key` is not a CORS-safelisted request header and `application/json` is not a CORS-safelisted value for `Content-Type`.
+The preflight therefore fails, but you must still keep the key exclusively on your backend.
+
+</Admonition>
+
+Send the following request from your backend:
+
+```bash
+curl -X POST \
+  "https://api.<domain>/api/apps/<slug>/embed-links" \
+  -H "X-Api-Key: <your QUILL_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "channelId": "<channel-id>",
+    "ttlSeconds": 3600,
+    "maxInvocations": 100,
+    "parameters": {
+      "customerId": "customers/1-A"
+    }
+  }'
+```
+<br/>
+
+The dashboard's channel page shows the same request prefilled with the app slug, channel ID,
+and declared parameter names. Examples are available for cURL, PowerShell, C#, Python, and Node.js.
+
+| Field            | Required | Description                                                                                                                         |
+| ---------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `channelId`      | Yes      | The web widget channel for which to mint the link.                                                                                  |
+| `ttlSeconds`     | No       | Link lifetime in seconds. Defaults to `3600`.                                                                                       |
+| `maxInvocations` | No       | Maximum prompt-and-response turns. Defaults to `100`.                                                                               |
+| `parameters`     | Depends  | Values for the parameters declared by the channel's agent.<br/>Required when the agent declares parameters; omit when it declares none. |
+
+A successful request returns the token, an absolute embed URL, the expiration time, and the usage cap:
+
+```json
+{
+  "token": "3f1c0b9d84e34f8ab7c2d5e6f708192a",
+  "url": "https://public.<domain>/apps/<slug>/embed/3f1c0b9d84e34f8ab7c2d5e6f708192a",
+  "expiresAt": "2026-08-18T15:04:05.1234567Z",
+  "maxInvocations": 100
+}
+```
+<br/>
+                
+The `expiresAt` value is a UTC ISO 8601 timestamp and can include up to seven fractional-second digits.                
+
+Use the returned `url` instead of constructing the embed URL yourself.
+On a deployed appliance, the API request normally goes to `api.<domain>`, and Quill replaces the first DNS label to produce `public.<domain>`.
+
+More precisely, Quill leaves an IP literal or a hostname without a dot unchanged.
+For any other hostname, it replaces everything before the first dot with `public` and retains the original port, if present.
+It does not determine whether the first label is semantically a subdomain, which is another reason to use the returned URL without modifying it.
+
+Expose an endpoint in your own application that returns `{ url }` after performing this mint request.  
+The browser can then assign that URL to the iframe:
+
+```js
+async function openSession() {
+  const response = await fetch("/api/quill-session", {
+    method: "POST",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Could not start the assistant: ${response.status}`);
+  }
+
+  const { url } = await response.json();
+  document.getElementById("quill-chat").src = url;
+}
+
+void openSession();
+```
+<br/>
+
+`/api/quill-session` in this example is your endpoint, not a Quill endpoint.
+It authenticates or identifies the intended user, calls Quill with the Dashboard API key, and returns only the embed URL.
+
+Call `openSession()` again when the widget reports an `expired` lifecycle message to mint a new link and replace the iframe's `src`.
+
+<ContentFrame>
+
+### How agent parameters are bound
+
+When the channel's agent declares parameters, Quill resolves their values while minting the link and stores the resolved values with that link.
+
+* Supply every declared parameter with a non-empty value. Parameter names are matched case-insensitively.
+* If a declared parameter is missing or its supplied value is blank or contains only whitespace,  
+  Quill returns `400` with the code `missing_parameters` and identifies the affected parameters.
+* Values for undeclared parameters are ignored and are not stored.
+* Bound values are not included separately in the embed URL or exposed in the widget configuration.  
+  A visitor cannot replace them using a query parameter or chat request.
+
+Parameter binding provides trusted context from your backend, such as a customer ID.
+It does not enforce data authorization by itself.
+Configure the agent's queries and actions to use the bound parameters whenever they must restrict which data the visitor can access.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Other embed-link requests
+
+| Request                                       | Purpose                                                                                                                                                                                                                                                                  |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `GET /api/apps/{slug}/embed-links`            | Lists the app's non-expired, non-revoked links, ordered from newest to oldest by `createdAt`. The response includes each link's token, channel, agent, bound parameters, creation and expiration times, usage cap, and turns consumed. Exhausted links can still appear. |
+| `POST /api/apps/{slug}/embed-links`           | Mints a link.                                                                                                                                                                                                                                                            |
+| `DELETE /api/apps/{slug}/embed-links/{token}` | Revokes a link. For an existing app, a well-formed token returns `204` even if the link is already inactive or no longer exists.                                                                                                                                         |
+
+All three requests require the Dashboard API key or an authenticated dashboard session.  
+A backend can provide the API key in either of these forms:
+
+* `X-Api-Key: <your QUILL_API_KEY>`
+* `Authorization: Bearer <your QUILL_API_KEY>`
+
+The `X-Api-Key` form is used by the dashboard's generated examples.  
+Missing or invalid authentication returns `401 Unauthorized`.
+
+The listing response contains the bearer tokens for every returned link. Protect this response with
+the same care as the Dashboard API key and never expose it through a browser-facing endpoint.
+
+Minting returns:
+
+* `400` without an error code when the request body is empty, `channelId` is blank,  
+  or the lifetime or usage cap is outside its accepted range.
+* `400` with the code `channel_disabled` when the channel is disabled.
+* `400` with the code `missing_parameters` when required agent parameters are missing.
+* `404` when the app or channel does not exist, the channel is not a web widget channel,  
+  or its agent is no longer registered.
+
+</ContentFrame>
+
+</Panel>
+
+## Styling the widget
+
+<Panel heading="How the widget theme is resolved">
+
+A widget theme contains:
+
+* Color settings for both light and dark appearances.
+* Shared appearance settings such as the font, font size, corner radius, and logo.
+* Header, greeting, suggested-prompt, input-placeholder, and disclaimer content.
+* Optional custom CSS.
+
+When Quill serves the embed page, it resolves the theme in this order:
+
+| Priority | Theme source                                                                                                   |
+| -------- | -------------------------------------------------------------------------------------------------------------- |
+| 1        | The web widget channel's own theme, when it has one and the complete theme passes validation.                  |
+| 2        | The app-wide default theme, when the channel follows it and the complete default passes validation.            |
+| 3        | Quill's built-in theme, when no app default has been configured or the selected stored theme fails validation. |
+
+A channel theme replaces the app default as a complete theme; Quill does not merge individual channel fields with fields from the app default.
+If a stored channel or app theme fails validation, Quill discards that complete theme and uses the built-in theme. An invalid channel theme does not fall through to the app default.
+
+After resolving the theme, Quill performs one channel-specific substitution.  
+If `headerTitle` is blank and the channel has a display name, Quill uses the trimmed channel display name, truncated to `120` characters.
+A valid theme can leave the title blank only when its header is hidden, so this substitution provides the embed document's browser-tab title without making the header visible.
+
+Clearing a channel's theme makes it follow the app default again and removes its previously saved channel-specific settings, including any custom CSS.
+Changing the app default affects every channel that follows it the next time its widget page loads.
+
+Resetting the app default explicitly stores Quill's current built-in theme as the app default.  
+The built-in theme uses the `System` appearance, which follows the visitor's operating-system color preference.
+
+### Select the displayed appearance
+
+Each theme stores both its light and dark color settings.  
+Its `appearance` property determines which set the widget displays:  
+
+* `Light` always uses the light settings.
+* `Dark` always uses the dark settings.
+* `System` follows the visitor's `prefers-color-scheme` setting.
+
+The embedding page can override this selection for an individual visitor by appending `?appearance=light`,  
+`?appearance=dark`, or `?appearance=system` to the embed URL. Query-parameter values are case-insensitive.
+
+Quill applies this override only after it resolves an active link.  
+Standalone `404` and `410` notice pages are returned before that step and therefore ignore the query parameter.  
+A `503` notice caused by a missing widget bundle occurs after link resolution and does use the requested appearance.
+
+To change the appearance while the widget is open, send the complete message envelope to the iframe:
+
+```js
+const iframe = document.getElementById("quill-chat");
+
+iframe.contentWindow?.postMessage(
+  {
+    source: "raven-quill",
+    version: 1,
+    type: "appearance",
+    payload: {
+      appearance: "Dark",
+    },
+  },
+  new URL(iframe.src).origin
+);
+```
+<br/>
+    
+Send this message only after assigning a minted URL to the iframe's `src`.
+Until then, a source-less iframe has neither a widget to receive the message nor an origin that can be derived from `iframe.src`.    
+
+For `postMessage`, the `appearance` value is case-sensitive and must be `Light`, `Dark`, or `System`.  
+`Light` and `Dark` select the corresponding palette stored in the resolved theme.   
+`System` follows the visitor's `prefers-color-scheme` setting to choose between those palettes.  
+These overrides do not modify the saved channel or app configuration.
+
+### How custom CSS is applied
+
+Custom CSS is an optional part of the resolved theme, not a separate appearance or preset.  
+Quill places it after the widget's bundled stylesheet, so its declarations participate in the normal CSS cascade and can override rules from that stylesheet.
+
+This ordering does not automatically override the inline values generated from the structured theme settings.  
+Use the corresponding theme fields for standard colors and layout values.
+
+The custom CSS is applied together with whichever light or dark appearance is currently selected.  
+It does not implicitly start from Light and does not replace the theme's other settings.
+
+</Panel>
+
+<Panel heading="Theme settings">
+
+The dashboard and theme API configure the widget through a structured theme object.   
+The widget derives its text, border, surface, hover, and other internal colors from these settings.
+
+The old `--ai-*` CSS properties are not part of the current widget.  
+Use the theme fields for standard customization and reserve custom CSS for changes that the theme does not expose.
+
+### Colors
+
+A theme must provide colors for both its `light` and `dark` objects, even when its default appearance always selects one of them.
+
+| Field                                            | Controls                                   |
+| ------------------------------------------------ | ------------------------------------------ |
+| `light.buttonColor` / `dark.buttonColor`         | Buttons, links, and other accent elements. |
+| `light.messageColor` / `dark.messageColor`       | The visitor's message bubbles.             |
+| `light.backgroundColor` / `dark.backgroundColor` | The widget's main background.              |
+
+Each value must be a three- or six-digit hexadecimal color, such as `#fff` or `#2f6f4f`.  
+Quill derives the remaining colors used by the widget from these values.
+
+### Layout and branding
+
+| Field               | Accepted values or format                      | Purpose                                                                                                                                                                                                                                                           |
+| ------------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `appearance`        | `Light`, `Dark`, or `System`                   | Selects the default color scheme.                                                                                                                                                                                                                                 |
+| `radius`            | `None`, `Small`, `Medium`, or `Large`          | Controls corner rounding throughout the widget.                                                                                                                                                                                                                   |
+| `fontFamily`        | A required font stack                          | Sets the widget's typeface. See the restrictions below.                                                                                                                                                                                                           |
+| `fontSize`          | `Small`, `Medium`, `Large`, or `Custom`        | Sets the widget's base text size.                                                                                                                                                                                                                                 |
+| `customFontSizeRem` | `0.625` to `1.5`                               | Required when `fontSize` is `Custom`; otherwise it is ignored.                                                                                                                                                                                                    |
+| `logo`              | `null` or a base64 PNG, JPEG, or WebP data URI | Displays a logo in the header. The value can contain up to `150000` characters.                                                                                                                                                                                   |
+| `logoRadius`        | `None`, `Small`, `Medium`, `Large`, or `Pill`  | Controls only the logo's corner rounding.                                                                                                                                                                                                                         |
+| `showHeader`        | `true` or `false`                              | Shows or hides the widget header.                                                                                                                                                                                                                                 |
+| `headerTitle`       | Text, up to `120` characters                   | Sets the visible header title and the embed document's page title. It is required when the header is shown. When the header is hidden and this value is blank, Quill uses the trimmed channel display name, truncated to `120` characters, as the document title. |
+| `headerSubtitle`    | Text or `null`, up to `200` characters         | Sets the smaller text below the header title.                                                                                                                                                                                                                     |
+
+The widget does not download third-party web fonts. 
+Set `fontFamily` to a stack available on the visitor's device.
+
+Prefer a stack returned in the theme API's `fontOptions` array, copying its `stack` value exactly.  
+A hand-written stack can contain at most `200` characters and may contain only ASCII letters, digits, spaces, commas, hyphens, and single or double quotes.
+Any other character causes the theme API to return `400 Bad Request`.
+
+### Welcome screen and composer
+
+| Field              | Purpose                                                                                                                                |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `greetingTitle`    | Optional welcome-screen heading, up to `160` characters.                                                                               |
+| `greetingBody`     | Optional welcome-screen text, up to `1000` characters.                                                                                 |
+| `suggestedPrompts` | Prompts displayed on the welcome screen. Supply an empty array for none; up to `10` prompts are accepted, each up to `200` characters. |
+| `inputPlaceholder` | Required placeholder text for the prompt input, up to `160` characters.                                                                |
+| `disclaimer`       | Optional text displayed below the composer, up to `600` characters.                                                                    |
+| `customCss`        | Optional CSS applied after the widget's own styles. See [Writing custom CSS](#writing-custom-css).                                     |
+
+Blank optional text values are normalized to `null`, and blank suggested prompts are removed.
+
+<Admonition type="note" title="">
+
+#### Theme updates replace the complete theme
+
+The theme API does not patch individual fields.  
+When setting a channel theme or the app-wide default, send a complete `WidgetTheme` object.
+
+To change only one setting, first retrieve the current theme, modify the required field in your application,  
+and send the complete updated object.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Writing custom CSS">
+
+Use custom CSS for adjustments that the theme settings do not cover, such as scrollbars, spacing, or other one-off refinements.
+Enter it in the dashboard's **Custom CSS** editor, or provide it in the theme's `customCss` field through the API.
+
+Quill inserts custom CSS after the widget's bundled stylesheet.  
+This lets it override declarations from that stylesheet through the normal CSS cascade.
+
+However, the widget applies its generated `--rq-*` properties as an inline style on the element immediately inside `#rq-root`.
+Selector specificity alone cannot override those inline declarations, and setting a property on `#rq-root` changes only the inherited value - 
+it does not replace a value declared directly on the child.  
+Prefer the structured theme settings for colors, fonts, radius, and spacing.
+If you deliberately override an inline property, target the element that owns it, currently `#rq-root > div`, and use `!important`.
+
+The widget is mounted under `#rq-root`.  
+Scope your rules to that ID to avoid overly broad selectors:
+
+```css
+/* Adjust the conversation scrollbar. */
+#rq-root [role="log"] {
+    scrollbar-color: #94a3b8 transparent;
+    scrollbar-width: thin;
+}
+
+/* Add more vertical space around the composer. */
+#rq-root form {
+    padding-block: 1rem;
+}
+
+@media (max-width: 480px) {
+    #rq-root form {
+        padding-inline: 0.75rem;
+    }
+}
+```
+<br/>
+
+The widget does not expose a versioned set of selectors for its internal components.   
+Its utility classes and exact element hierarchy can change between appliance versions.
+Prefer semantic elements and accessibility attributes for narrow adjustments, and test your CSS after upgrading the appliance.
+
+The following validation rules apply:
+
+- Custom CSS can contain at most `10,000` characters.
+- It must not contain `</style`, in any letter case.
+- The dashboard checks the structural syntax before saving.  
+  The API enforces the length and `</style` restrictions but does not validate CSS property names or values.
+
+The widget's content security policy restricts resources referenced by custom CSS:
+
+```text
+default-src 'none'; script-src 'self' 'nonce-<nonce>';
+style-src 'self' 'nonce-<nonce>'; img-src 'self' data:;
+font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'
+```
+<br/>
+
+Consequently:
+
+- External stylesheets and `@import` rules from other origins are blocked.
+- Images can come from the widget's origin or from `data:` URLs.
+- Fonts can come only from the widget's origin. External font services and `data:` fonts are blocked.
+- External resources referenced through `url()` are blocked according to their resource type.
+
+Custom CSS affects only the document inside the iframe.  
+Set the iframe's dimensions and placement in the host page.  
+Media queries in the custom CSS respond to the iframe's viewport. 
+
+</Panel>
+
+<Panel heading="The theme endpoints">
+
+You can retrieve and update widget themes through the API.  
+All theme endpoints require either:
+
+- The Dashboard API key in the `X-Api-Key` header.
+- An authenticated dashboard session.
+
+Keep the API key on your backend.  
+Do not call these endpoints directly from browser code.
+
+| Request                                         | Purpose                                                                                      |
+| ----------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `GET /api/apps/{slug}/iframe/{channelId}/theme` | Returns the channel's own theme, the app default it follows, and the available font options. |
+| `PUT /api/apps/{slug}/iframe/{channelId}/theme` | Replaces or clears the channel's own theme.                                                  |
+| `GET /api/apps/{slug}/iframe/default-theme`     | Returns the app-wide default theme and the available font options.                           |
+| `PUT /api/apps/{slug}/iframe/default-theme`     | Replaces the app-wide default theme or resets it to the built-in theme.                      |
+
+The channel `GET` and `PUT` endpoints return:
+
+| Field          | Description                                                                                                                                   |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `theme`        | The channel's own `WidgetTheme`, or `null` when the channel follows the app default.                                                          |
+| `defaultTheme` | The resolved app-wide default. If no valid default is stored, this is the built-in theme.                                                     |
+| `fontOptions`  | The server-owned list of curated font choices. Each entry contains `{ label, stack }`; the dashboard renders its font choices from this list. |
+
+The app-default endpoints return `theme` and `fontOptions`.   
+Their `theme` value is always a complete `WidgetTheme`.
+
+Each `PUT` request expects the following body:
+
+```json
+{
+    "theme": {}
+}
+```
+<br/>
+
+Replace `{}` with a complete `WidgetTheme` object.  
+These endpoints replace the entire theme; they do not patch individual fields.
+
+To change one field from backend JavaScript, retrieve the current theme, modify it, and send the complete object:
+
+```javascript
+const endpoint =
+    "https://api.<domain>/api/apps/<slug>/iframe/<channel-id>/theme";
+
+const headers = {
+    "X-Api-Key": process.env.QUILL_API_KEY,
+    "Content-Type": "application/json"
+};
+
+const response = await fetch(endpoint, { headers });
+if (!response.ok) {
+    throw new Error(`Could not retrieve the theme: ${response.status}`);
+}
+
+const current = await response.json();
+const theme = {
+    ...(current.theme ?? current.defaultTheme),
+    appearance: "Dark"
+};
+
+const updateResponse = await fetch(endpoint, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ theme })
+});
+
+if (!updateResponse.ok) {
+    throw new Error(`Could not update the theme: ${updateResponse.status}`);
+}
+```
+<br/>
+
+Sending `"theme": null` has different effects depending on the endpoint:
+
+- On the channel endpoint, it clears the channel's own theme so that the channel follows the app default.
+- On the app-default endpoint, it resets the app default to Quill's built-in theme.
+
+The `PUT` endpoints validate the request body and complete theme before looking up the app or channel.
+Therefore, an invalid body or theme returns `400 Bad Request` even if the referenced app or channel does not exist.
+After the request passes validation, a missing app, missing channel, or channel that is not a web widget channel returns `404 Not Found`.
+
+<Admonition type="tip" title="">
+
+#### Theme changes do not change embed links
+
+The theme is resolved whenever the embed page loads.  
+After saving a change, reload an open iframe to display the updated theme.
+
+Existing embed links retain their expiration, invocation cap, and conversation.  
+You do not need to mint new links or change the iframe's `src`.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Summary">
+
+* Embed a web widget channel with an `<iframe>` whose `src` is a minted embed link.  
+  Quill provides no fixed public widget URL, client library, or script to install.
+
+* The token in the embed link is a bearer credential.
+  It binds the link to one app, channel, agent, set of agent parameters, and conversation, together with its expiration and invocation cap.
+
+* Mint links from your backend with `POST /api/apps/{slug}/embed-links`, using the Dashboard API key.  
+  Usually, mint a separate link for each user or session and return only the resulting URL to the browser.
+
+* Allowed origins control which sites may frame the widget and validate `Origin` headers when browsers supply them.
+  They are not authentication. An empty list permits any framing origin, and requests without an `Origin` header are allowed.
+
+* Expired, revoked, and disabled links return `410 Gone`.  
+  A malformed or unknown token, an unknown app, or a missing link or web widget channel returns `404 Not Found`.  
+  If the widget bundle is unavailable, the embed page returns `503 Service Unavailable`.  
+  An exhausted link can still load its conversation, but a new prompt returns `429 Too Many Requests`.
+
+* A valid channel theme takes precedence over the app-wide default.  
+  Quill does not merge their fields, except that it substitutes the channel's display name for a blank `headerTitle`.  
+  If the selected stored theme fails validation, Quill discards it completely and uses the built-in theme.
+
+* Each `WidgetTheme` contains light and dark palettes, shared layout and content settings, and optional custom CSS.  
+  The selected appearance determines which stored palette the widget displays.
+
+* Theme API updates replace the complete theme.
+  Saved changes appear when the iframe reloads and do not alter existing embed links, conversations, expiration times, or invocation caps.
+
+* Custom CSS is appended after the widget's bundled styles.  
+  It can contain at most `10,000` characters, must not contain `</style`, and is subject to the widget's content security policy.
+
+</Panel>
