@@ -79,8 +79,9 @@ export default function Heading({ as: As, id, ...props }: Props): ReactNode {
             >
                 &#8203;
                 <span
+                    data-copied-label={copiedTitle}
                     className={clsx(
-                        "pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2",
+                        "hash-link__copied pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2",
                         "whitespace-nowrap rounded-md border px-2.5 py-1 text-xs font-medium shadow-lg backdrop-blur",
                         "border-black/10 bg-white/90 text-gray-700",
                         "dark:border-white/10 dark:bg-[#1b1b1d]/90 dark:text-gray-200",
@@ -88,9 +89,7 @@ export default function Heading({ as: As, id, ...props }: Props): ReactNode {
                         copied ? "opacity-100" : "opacity-0"
                     )}
                     aria-hidden="true"
-                >
-                    {copiedTitle}
-                </span>
+                />
             </a>
         </As>
     );

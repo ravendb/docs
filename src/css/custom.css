@@ -267,6 +267,10 @@ pre,
     @apply opacity-100;
 }
 
+.hash-link__copied::before {
+    content: attr(data-copied-label);
+}
+
 /* Custom breadcrumbs styling */
 .breadcrumbsContainer {
     --ifm-breadcrumb-size-multiplier: 0.8;
