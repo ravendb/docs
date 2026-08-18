@@ -2,7 +2,7 @@
 title: "Quill: Overview"
 sidebar_label: Overview
 sidebar_position: 1
-description: "Quill is a service that mirrors selected tables of your existing database and lets your users ask questions about your data through an AI chat widget."
+description: "Quill adds AI capabilities to your existing relational database (PostgreSQL, SQL Server, or MySQL): it mirrors the data you select, with no data migration and no schema changes, and lets AI agents answer your users from the mirrored data."
 ---
 
 import Admonition from '@theme/Admonition';
@@ -25,7 +25,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   Your existing infrastructure, including your data, workflows, and applications, remains unchanged.
   
 * Quill reads from your database only to mirror part of your data: you select the tables it may draw answers from, and
-  Quill keeps a live copy of these tables in an internal database.  
+  Quill keeps a live copy of their data in an internal database.  
   Replies are drawn from this internal database, while your own database goes on serving your applications exactly as before.
 
 * Getting Quill running is a guided process, from the sign-up page, through a setup wizard, to a working AI interface for your users.  
@@ -82,11 +82,11 @@ Parts of the Quill service and the data flow between them:
 
 #### Mirroring
 
-* Quill begins mirroring your data by reading the selected tables from your SQL database in full, and copies their current
-  contents into its internal database.  
+* During setup, Quill begins mirroring your data by reading the selected tables from your SQL database in full, and copies
+  their current contents into its internal database.  
   This initial operation may take some time when large tables are copied; if the operation is interrupted, Quill will
   resume it where it stopped rather than start over.
-* To keep its internal database current, Quill uses your database's **change-recording** facility.
+* To keep the data in its internal database current, Quill uses your SQL database's **change-recording** facility.
   * PostgreSQL, SQL Server, and MySQL each provide a built-in facility that records every change made to the data.
   * Quill continuously reads this record of changes, and applies each insert, update, and deletion made in the selected
     tables to the internal database.  
@@ -98,19 +98,19 @@ Parts of the Quill service and the data flow between them:
 
 #### Internal database
 
-* The result is a **mirrored database**: a live copy of the selected tables, kept current as your data changes.
+* The result is a **mirrored database**: a live copy of the data in the selected tables, kept current as the source data changes.
 * Quill's internal database is a RavenDB document database, and Quill therefore stores the mirrored data not in tables but
   as JSON documents.  
   During setup, Quill suggests how the rows of each selected table become documents, and you can accept or adjust the
   suggestion.  
-  For example, a customer's orders, read from your SQL database, can be stored in the **customer** document, or kept as
-  separate **order** documents that link to the **customer** document.
+  For example, an order's **lines**, read from your SQL database, can be stored in the **order** document, or kept as
+  separate **order-line** documents that link to the **order** document.
 
 #### AI agent
 
 * Agents are AI components that Quill uses to handle user conversations.
-* You can provide your agents with **query tools** and **actions**, and the agents will apply both freely during
-  conversations.
+* Agents carry two kinds of tools, and apply both freely during conversations: **query tools** and **actions**.  
+  Quill drafts an agent's query tools for you; you can adjust them, add your own, and define the agent's actions.
   * An agent will use a **query tool** to retrieve from Quill's internal database data required by a user, and then
     answer the user based on the retrieved data.
   * An agent will use an **action** to send a request to a web address on behalf of the user, e.g., to open a support
@@ -148,10 +148,10 @@ Parts of the Quill service and the data flow between them:
 
 ### Answering questions
 
-Each exchange between a user and an agent starts at the chat widget and is answered from the mirrored database, a full
-RavenDB database running inside the Docker container.
+Each exchange between a user and an agent starts at a channel, like the chat widget on your site, and is answered with
+data from the mirrored database, a full RavenDB database running inside the Docker container.
 
-* When a user types a question in the chat widget, the agent queries the mirrored database for the data the answer needs.
+* When a user types a question in the chat widget, the agent queries Quill's internal database for the data the answer needs.
 * The agent passes the query results to the LLM, and the LLM phrases the reply.
 * The reply returns to the user's chat widget.  
   Your SQL database takes no part in answering.
@@ -165,7 +165,7 @@ RavenDB database running inside the Docker container.
 
 * An **app** groups the working parts described above: a connection to one source database, the mirrored database
   built from it, and the agents and channels that answer from this database.
-* A single Quill container can run several apps, each with its own source, mirrored database, agents, and channels
+* A single Quill container can run several apps, each with its own source, database, agents, and channels
   (e.g., one app for your store and another for your support system).
 * Quill's dashboard lists your apps side by side and is where you create and manage them.
 
@@ -185,9 +185,8 @@ moment Quill first starts, with no certificate handling on your side.
 * A chat widget page is reached through an **embed link** you place in your page.  
   Each link expires, serves a limited number of exchanges, and can be revoked at any time.
 * Quill's management dashboard requires the API key you receive at sign-up.
-* Direct access to [Quill's mirrored database](overview.mdx#internal-database) requires a client certificate.
-* Quill reaches the [LLM provider](overview.mdx#llm) under your own account, using the access details your provider
-  requires.
+* Direct access to [Quill's internal database](overview.mdx#internal-database) requires a client certificate.
+* Quill reaches the [LLM provider](overview.mdx#llm) using the access details your provider requires.
 * All traffic runs over HTTPS, using the TLS certificates issued at sign-up.
 
 </Panel>
@@ -202,7 +201,7 @@ The road from sign-up to a working AI interface:
 1. **Sign-up**  
    *The deployment gets its identity.*  
    On the sign-up page, you choose a name for the new deployment and provide the address of the machine that will
-   run Quill; the name becomes the deployment's web address.  
+   run Quill; the name becomes the deployment's subdomain: `<your-name>.myquill.ai`.  
    The page returns a license key, an API key, and a ready-to-run install command.
 
 2. **First start**  
@@ -216,7 +215,7 @@ The road from sign-up to a working AI interface:
    A setup wizard in the management dashboard takes the connection details of your SQL database and lists the
    database's tables.  
    You select the tables that Quill will mirror, and approve or adjust the document mapping Quill suggests.  
-   When the wizard completes, Quill starts mirroring the selected tables, and keeps the mirrored database current from then on.
+   When the wizard completes, Quill starts mirroring the selected tables, and keeps this data current from then on.
 
 4. **LLM connection**  
    *Quill gets access to an LLM.*  
@@ -226,8 +225,9 @@ The road from sign-up to a working AI interface:
 
 5. **Agent creation**  
    *The deployment gains its first agent.*  
-   Quill examines the mirrored data and drafts a few agent configurations you can start from (e.g., a catalog
-   assistant for product tables).  
+   Quill examines the mirrored data and drafts agent configurations that fit it, their query tools already written.  
+   If your data includes a product catalog, for example, one draft will be a catalog assistant; if it includes
+   orders, another will be an order-support assistant.  
    You pick a draft or configure an agent of your own, adjust the agent's tools, and test the agent in the dashboard.
 
 6. **Channel creation**  
@@ -259,45 +259,49 @@ and analytics.
 
 Developers can work with Quill using code as well as through the management dashboard.
 
-* **Managing Quill through its API**  
-  Your Quill deployment exposes an API; requests to this API are authenticated using the API key that sign-up
-  provides.  
-  The API covers Quill's management operations, like connecting a data source, creating agents and channels, and
-  generating embed links.  
-  e.g., your site can use the API to generate a personal embed link for each signed-in user.
+* **Managing Quill through its API**
+  * Your Quill deployment exposes an API; requests to this API are authenticated using the API key that sign-up
+    provides.
+  * The API covers Quill's management operations, like connecting a data source, creating agents and channels, and
+    generating embed links.  
+    e.g., your site can use the API to generate a personal embed link for each signed-in user.
+  * A minimal API call, listing the deployment's apps:
 
-  A minimal API call, listing the deployment's apps:
+    ```bash
+    curl -H "X-Api-Key: <your-api-key>" https://api.<your-domain>/api/apps/
+    ```
+    <br />
 
-  ```bash
-  curl -H "X-Api-Key: <your-api-key>" https://api.<your-domain>/api/apps/
-  ```
-* **Reading the mirrored database directly**  
-  Quill's internal database is a full RavenDB database.  
-  Your applications can connect to this database using RavenDB client libraries and a client certificate that the
-  deployment provides.  
-  e.g., an application can run full-text searches over the mirrored data without adding any load to your SQL
-  database.
+* **Reading the mirrored database directly**
+  * Quill's internal database is a full RavenDB database.
+  * Your applications can connect to this database using RavenDB client libraries and a client certificate that you
+    generate in the dashboard's **Certificates** view.  
+    e.g., an application can run full-text searches over the mirrored data without adding any load to your SQL
+    database.
+  * Connecting with the C# client:
 
-  Connecting with the C# client:
+    ```csharp
+    using var store = new DocumentStore
+    {
+        Urls = new[] { "https://db.<your-domain>" },
+        Database = "<app-database>",
+        Certificate = new X509Certificate2("quill.client.pfx")
+    };
+    store.Initialize();
+    ```
+    <br />
 
-  ```csharp
-  using var store = new DocumentStore
-  {
-      Urls = new[] { "https://db.<your-domain>" },
-      Database = "<app-database>",
-      Certificate = new X509Certificate2("quill.client.pfx")
-  };
-  store.Initialize();
-  ```
-* **Embedding the chat widget**  
-  Quill delivers each embed link as a ready-made HTML segment.  
-  A developer can add this segment to the code of any of your site's pages; the page will then display the chat
-  widget.
+* **Embedding the chat widget**
+  * Quill delivers each embed link as a ready-made HTML segment.
+  * A developer can add this segment to the code of any of your site's pages; the page will then display the chat
+    widget.
+  * The embed segment, as Quill delivers it:
 
-  ```html
-  <iframe src="https://public.<your-domain>/apps/<app-slug>/embed/<link-token>"
-          width="400" height="600"></iframe>
-  ```
+    ```html
+    <iframe src="https://public.<your-domain>/apps/<app-slug>/embed/<link-token>"
+            width="400" height="600"></iframe>
+    ```
+    <br />
 
 </Panel>
 
