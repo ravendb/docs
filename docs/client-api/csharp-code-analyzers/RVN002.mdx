@@ -1,0 +1,53 @@
+---
+title: "RVN002 — RavenDB query operator after projection"
+sidebar_label: RVN002
+sidebar_position: 2
+---
+
+# RVN002 — RavenDB query operator after projection
+
+| Property | Value |
+|----------|-------|
+| **ID** | RVN002 |
+| **Title** | RavenDB query operator after projection |
+| **Severity** | Info (default) |
+| **Category** | Usage |
+| **Code fix** | No |
+
+## Description
+
+RavenDB LINQ query operators such as `Where`, `OrderBy`, `Search`, `Spatial`, `VectorSearch`, `Filter`, `GroupBy`, and their variants bind against the **source document or index shape**. When `.ProjectInto<T>()` or `.Select(x => new { … })` appears earlier in the chain, it changes the element type. Any operator placed *after* the projection then operates on the projected type instead of the source type, silently producing incorrect results or throwing at runtime.
+
+## Operators covered
+
+The following methods are flagged when they appear after a projection: `Where`, `OrderBy`, `OrderByDescending`, `ThenBy`, `ThenByDescending`, `GroupBy`, `Search`, `Spatial`, `OrderByDistance`, `OrderByDistanceDescending`, `OrderByScore`, `OrderByScoreDescending`, `ThenByScore`, `ThenByScoreDescending`, `MoreLikeThis`, `VectorSearch`, `Filter`, `GroupByArrayValues`, `GroupByArrayContent`.
+
+## Trigger condition
+
+The analyzer fires when the immediate receiver of a forbidden method is an `IRavenQueryable<T>`, and walking back through the invocation chain finds a `.ProjectInto` or `.Select` call whose own receiver is also an `IRavenQueryable<T>`.
+
+## What to do
+
+Move the projection call to the **end** of the query chain, after all filtering and ordering.
+
+### Before (triggers RVN002)
+
+```csharp
+var results = session.Query<Order, Orders_ByCompany>()
+    .ProjectInto<OrderDto>()
+    .Where(x => x.Company == "companies/1-A")  // RVN002: Where after ProjectInto
+    .ToList();
+```
+
+### After (correct)
+
+```csharp
+var results = session.Query<Order, Orders_ByCompany>()
+    .Where(x => x.Company == "companies/1-A")
+    .ProjectInto<OrderDto>()
+    .ToList();
+```
+
+## See also
+
+- [RVN003](./RVN003.mdx) — fires when `.ProjectInto` is called twice on the same chain.
