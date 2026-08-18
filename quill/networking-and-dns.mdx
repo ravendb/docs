@@ -99,11 +99,9 @@ For that internal connection, Quill changes the URL to RavenDB's internal HTTPS 
 For more information about direct RavenDB connections and your Quill's network limitations,  
 see [Direct database access](security-and-architecture/appliance-surfaces.mdx#direct-database-access).
 
-{/* TODO before publication:
-Confirm the supported DNS behavior of a.<domain>.
-The container currently expects it to resolve to loopback, and update-dns.sh excludes it from IP updates.
-However, external RavenDB.Client instances can receive a.<domain> through topology discovery.
-Do not state that operators must or must not repoint this hostname until that contract is settled and tested.
+{/* TODO before publication - See RavenDB-27224:
+Do not document how a.<domain> resolves publicly or inside the container until the implementation is complete and verified.
+Recheck whether a.<domain> must be included in the DNS update command and the record-verification steps.
 */}
 
 </Panel>
@@ -225,6 +223,16 @@ If only the existing host's externally reachable IP address changes, no data-vol
 
 <Panel heading="Update the records">
 
+{/* TODO before publication - See RavenDB-27372:
+Do not publish either `docker exec quill update-dns --ip ...` 
+or the direct `/app/ravendb/rvn dns update ...` command 
+until the release image is finalized and the supported command is verified.
+
+The default release image currently has neither the wrapper nor an `rvn` version that supports `dns update`. 
+Dockerfile.source has them but is planned for removal. 
+The dashboard currently displays the wrapper command.
+*/}    
+
 Run the DNS update from the Docker host after your Quill is available at its new address.
 
 The container must:
@@ -306,15 +314,6 @@ Verify the published records before running the command again.
 
 </Admonition>
 
-{/* TODO before publication:
-1. Confirm the supported update behavior for a.<domain>. The command above intentionally lists only
-   dashboard, db, public, and api while that contract remains unresolved.
-2. Do not replace the direct rvn command with `docker exec quill update-dns --ip ...` until the wrapper
-   is present and functional in the default release image and the source-built image.
-The current dashboard displays the wrapper command, but the Dockerfiles do not package a consistently
-working wrapper/rvn combination.
-*/}
-
 </Panel>
 
 <Panel heading="DNS propagation and TTL">
@@ -388,9 +387,6 @@ nslookup db.<domain>
 
 Each hostname should return the new address.  
 If you intentionally assigned several addresses, the results should contain every address you configured.
-
-Do not include `a.<domain>` in this check:  
-the command in [Update the records](#update-the-records) updates only the four published hostnames.
 
 If a resolver still returns the old address, allow for the caching period described in [DNS propagation and TTL](#dns-propagation-and-ttl),  
 and then query it again.
