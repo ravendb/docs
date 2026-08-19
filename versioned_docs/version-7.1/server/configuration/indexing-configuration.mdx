@@ -648,8 +648,13 @@ The default number of edges that will be created for a vector during vector inde
 
 ## Indexing.Corax.VectorSearch.MaximumConcurrentBatchesForHnswAcceleration
 
-EXPERT ONLY:  
-The maximum number of concurrent batches for HNSW distance computation acceleration.
+EXPERT ONLY:
+
+The maximum number of concurrent batches used to accelerate HNSW distance calculations during vector indexing.
+
+Parallel graph construction can improve indexing throughput, but the resulting graph is not guaranteed to be identical
+to a strictly sequential build. As a result, approximate vector search results may differ slightly even for the same data
+and insertion order. Learn more in [What affects vector search results](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#the-approximate-nature-of-hnsw).
 
 - **Type**: `int`
 - **Default**: `512`

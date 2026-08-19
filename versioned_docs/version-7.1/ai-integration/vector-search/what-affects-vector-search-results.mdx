@@ -58,6 +58,23 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * This means that two databases containing the same documents may return different vector search results
     if the documents were inserted in a different order.
 
+* **Parallel graph construction**:
+
+  * To accelerate vector indexing, RavenDB can keep multiple HNSW placement operations in flight,
+    batch the loading of vectors, and calculate distances in parallel.
+  * Because in-flight vectors do not participate in graph construction exactly as they would in a strictly sequential build,
+    the resulting graph is not guaranteed to be identical, even when the data and insertion order are the same.  
+    Vector search results may therefore differ slightly.
+  * To compensate, RavenDB adds edges from a vector being placed to other vectors whose placement is still in flight,
+    allowing concurrently indexed vectors that would otherwise not consider one another during placement to become neighbors.
+    These are regular graph edges: they can remain in the completed graph, although later edge filtering may remove them.
+  * The results remain valid approximate nearest-neighbor results.  
+    Greater build parallelism can improve indexing throughput at the cost of graph repeatability.
+  * This behavior is controlled by the
+    [Indexing.Corax.VectorSearch.MaximumConcurrentBatchesForHnswAcceleration](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchmaximumconcurrentbatchesforhnswacceleration)
+    configuration key. Server-wide and database values affect both static and auto indexes;
+    static indexes can also override the setting per index.
+
 * **Greedy search**:  
 
   * HNSW uses a greedy search strategy to perform approximate nearest-neighbor (ANN) searches:  
@@ -110,8 +127,16 @@ They help keep memory usage and indexing time under control, but may also limit 
     If not explicitly set, or when using **dynamic queries** -  
     the value is taken from the [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforindexing) configuration key.
 
-For all parameters that can be defined at indexing time (including the ones above),  
-see [Parameters defined at index definition](../../ai-integration/vector-search/vector-search-using-static-index.mdx#parameters-defined-at-index-definition).
+* **Build parallelism**:
+
+  * The [Indexing.Corax.VectorSearch.MaximumConcurrentBatchesForHnswAcceleration](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchmaximumconcurrentbatchesforhnswacceleration)
+    configuration key controls the build parallelism described under
+    [The approximate nature of HNSW](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#the-approximate-nature-of-hnsw).
+  * This is an index configuration setting, not a vector-field parameter.  
+    It can be configured server-wide or per database, and static indexes can override it per index.
+
+For the vector-field parameters described above, see
+[Parameters defined at index definition](../../ai-integration/vector-search/vector-search-using-static-index.mdx#parameters-defined-in-the-index-definition).
 
 ## Query-time parameters
 
