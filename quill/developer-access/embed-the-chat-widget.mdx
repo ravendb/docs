@@ -268,17 +268,16 @@ The list can include links that have already exhausted their usage cap.
 
 <Admonition type="note" title="">
 
-#### The public chat endpoint also has an appliance-wide rate limit
+#### The public chat endpoint also has a per-IP rate limit
 
-* In addition to each link's usage cap, the public chat endpoint accepts up to `60` requests per
-  minute across the entire appliance. Every visitor, app, channel, and embed link shares this limit.
+* In addition to each link's usage cap, the public chat endpoint accepts up to `60` requests per minute from each client IP address.
+  All apps, channels, and embed links accessed from the same client IP share this limit.
 
-* Requests beyond the limit receive `429` and are not queued.  
-  On a deployed appliance, nginx forwards its loopback address to Quill, so the application cannot partition this limit by the visitor's IP address.
-  A direct local run that bypasses nginx can behave differently.
+* Requests beyond the limit receive `429` and are not queued.
+  Visitors behind the same NAT, proxy, or gateway may appear under the same client IP and therefore share this limit.
 
-* A request rejected by this rate limit does not consume a turn from the link.  
-  The widget displays “Too many requests right now. Please try again in a moment.”  
+* A request rejected by this rate limit does not consume a turn from the link.
+  The widget displays “Too many requests right now. Please try again in a moment.”
   and allows the visitor to retry after the rate-limit window resets.
 
 </Admonition>
