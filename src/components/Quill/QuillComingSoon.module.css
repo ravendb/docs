@@ -1,16 +1,67 @@
-/* Blueprint grid background — masked to fade out toward the edges. */
+/* Blueprint grid background — masked to fade out toward the edges. The mask is a wide,
+   multi-stop falloff: the old single stop from opaque to transparent still held ~40% of the
+   grid at the left and right edges, which read as a panel with a soft border rather than a
+   texture dissolving into the page. */
 .grid {
+    --grid-mask: radial-gradient(
+        ellipse 62% 58% at 50% 44%,
+        #000 0%,
+        rgba(0, 0, 0, 0.6) 40%,
+        rgba(0, 0, 0, 0.2) 70%,
+        transparent 100%
+    );
+
     background-image:
         linear-gradient(to right, var(--ifm-color-emphasis-200) 1px, transparent 1px),
         linear-gradient(to bottom, var(--ifm-color-emphasis-200) 1px, transparent 1px);
     background-size: 44px 44px;
-    mask-image: radial-gradient(ellipse 70% 70% at 50% 45%, #000 30%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 45%, #000 30%, transparent 100%);
+    mask-image: var(--grid-mask);
+    -webkit-mask-image: var(--grid-mask);
+    opacity: 0.65;
 }
 
-/* Soft brand-colored glow behind the content. */
+/* Dark mode carries the whole reduction: #444950 lines on a #1b1b1d ground are a far stronger
+   figure than #ebedf0 on white, which is already at the edge of visible. */
+[data-theme="dark"] .grid {
+    opacity: 0.22;
+}
+
+/* Soft brand-colored glow behind the content, breathing slowly. The keyframes animate the
+   standalone `scale` property rather than `transform`, because the centering comes from Tailwind's
+   `-translate-x-1/2` / `-translate-y-1/2`, which compile to the standalone `translate` property.
+   A `transform: translate(...) scale(...)` here would compose with that instead of replacing it
+   and shift the glow by a full 100%, off into the corner. */
 .glow {
     background: radial-gradient(circle, var(--ifm-color-primary) 0%, transparent 70%);
+    animation: glowBreathe 14s ease-in-out infinite;
+}
+
+@keyframes glowBreathe {
+    0%,
+    100% {
+        opacity: 0.1;
+        scale: 0.94;
+    }
+    50% {
+        opacity: 0.2;
+        scale: 1.08;
+    }
+}
+
+/* "Coming soon" badge. Infima's --ifm-color-primary-contrast-background is a static hex derived
+   from Infima's own default blue — rgb(16, 36, 69) in dark — and does not follow an
+   --ifm-color-primary override, so it read as navy against the coral text. Tinting the surface
+   from the active primary instead means the badge follows whatever palette the section carries. */
+.badge {
+    border-color: color-mix(in oklab, var(--ifm-color-primary) 30%, transparent);
+    background: color-mix(in oklab, var(--ifm-color-primary) 10%, var(--ifm-background-color));
+    /* The primary itself is only 4.35:1 on a tint this pale; one step down clears AA at 5.0:1. */
+    color: var(--ifm-color-primary-darker);
+}
+
+[data-theme="dark"] .badge {
+    background: color-mix(in oklab, var(--ifm-color-primary) 16%, var(--ifm-background-color));
+    color: var(--ifm-color-primary);
 }
 
 /* Pulsing dot in the "Coming soon" badge. */
@@ -20,12 +71,12 @@
 
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(var(--quill-pulse-rgb, 15 118 110), 0.5);
+        box-shadow: 0 0 0 0 color-mix(in oklab, var(--ifm-color-primary) 50%, transparent);
     }
     70% {
-        box-shadow: 0 0 0 8px rgba(var(--quill-pulse-rgb, 15 118 110), 0);
+        box-shadow: 0 0 0 8px color-mix(in oklab, var(--ifm-color-primary) 0%, transparent);
     }
     100% {
-        box-shadow: 0 0 0 0 rgba(var(--quill-pulse-rgb, 15 118 110), 0);
+        box-shadow: 0 0 0 0 color-mix(in oklab, var(--ifm-color-primary) 0%, transparent);
     }
 }

@@ -118,7 +118,7 @@ pre[class*="language-"] {
     --docsearch-key-gradient: transparent;
 }
 
-/* Custom cloud themes */
+/* Custom Cloud themes */
 .plugin-id-cloud:root {
     --ifm-color-primary: #417c5a;
     --ifm-color-primary-dark: #3b7051;
@@ -137,6 +137,31 @@ pre[class*="language-"] {
     --ifm-color-primary-light: #86ffba;
     --ifm-color-primary-lighter: #98ffc4;
     --ifm-color-primary-lightest: #cdffe3;
+}
+
+/* Custom Quill themes — the Quill brand ramp, hue 31.73, anchored on the brand coral #ff775f.
+   Infima spends the primary on link text, so light mode takes the step below the brand colour:
+   coral is 2.61:1 on white and cannot carry body text, #c6432e is 4.95:1. On dark surfaces the
+   brand colour reads at 6.6:1, so dark mode is the coral itself and the light steps climb the
+   ramp toward it. */
+.plugin-id-quill:root {
+    --ifm-color-primary: #c6432e;
+    --ifm-color-primary-dark: #be402b;
+    --ifm-color-primary-darker: #b63d29;
+    --ifm-color-primary-darkest: #a83826;
+    --ifm-color-primary-light: #ca442e;
+    --ifm-color-primary-lighter: #cd452f;
+    --ifm-color-primary-lightest: #d04731;
+}
+
+.plugin-id-quill[data-theme="dark"] {
+    --ifm-color-primary: #ff775f;
+    --ifm-color-primary-dark: #f36148;
+    --ifm-color-primary-darker: #e95941;
+    --ifm-color-primary-darkest: #d54b35;
+    --ifm-color-primary-light: #fd9885;
+    --ifm-color-primary-lighter: #feb9ab;
+    --ifm-color-primary-lightest: #fed2c9;
 }
 
 /* Merge Infima colors to tailwind table */
