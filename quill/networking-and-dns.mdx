@@ -206,7 +206,7 @@ The Quill domain and the URLs used by operators, chat users, and applications re
 Repointing the DNS records therefore does not require a new domain, new URLs, a new wildcard certificate,  
 or a different Dashboard API key.
 
-For details about the wildcard certificate, see [The TLS front and the wildcard certificate](security-and-architecture/appliance-surfaces.mdx#the-tls-front-and-the-wildcard-certificate).
+For details about the wildcard certificate, see [The TLS front and the wildcard certificate](security-and-architecture/appliance-surfaces.mdx#the-tls-front-and-the-wildcard-certificate).  
 For information about preserving or replacing the Dashboard API key, see [Operator Authentication](security-and-architecture/operator-authentication.mdx).
 
 <Admonition type="warning" title="">
@@ -341,13 +341,13 @@ A resolver that cached the old answer immediately before the update may continue
 
 * Prepare your Quill on the new host before updating the records.
 
-* During the propagation window, some callers may reach the new address while others continue using the old one.  
+* During the propagation window, some callers may reach the new address while others continue using the old one.
   If the old host is stopped immediately, callers with a cached answer can fail until their cache expires.
 
 * The DNS change does not alter existing embed URLs or their tokens.  
   During propagation, new embed-page loads and chat requests may reach either address.
 
-* An in-flight chat remains on its existing connection.   
+* An in-flight chat remains on its existing connection.
   If the old host is stopped before the chat finishes, the connection can be interrupted and the user may need to retry after their DNS cache refreshes.
 
 * Do not run two independent copies of your Quill with separately changing data merely to cover the DNS transition.  
@@ -433,7 +433,7 @@ If your deployment uses the other surfaces, verify them through their normal acc
   * open an existing embed link through `public.<domain>`;
   * connect to `db.<domain>` with a recognized client certificate.
 
-For the requirements of a direct RavenDB connection, see [Direct database access](security-and-architecture/appliance-surfaces.mdx#direct-database-access).
+For the requirements of a direct RavenDB connection, see [Direct database access](security-and-architecture/appliance-surfaces.mdx#direct-database-access).  
 If any verification step fails, continue with [Diagnose failures](#diagnose-failures).
 
 </Panel>
@@ -550,7 +550,8 @@ For client-certificate requirements, see [Direct database access](security-and-a
   Inside the container, it resolves to `127.0.0.1` so Quill's communication with RavenDB remains internal.
 
 * DNS maps each hostname to an address.  
-  Routing, TLS termination, and authorization are handled by your Quill after the connection reaches the host on port `443`.
+  Routing, TLS termination, and authorization are handled by your Quill after the connection reaches the host  
+  on port `443`.
 
 * If the host's externally reachable IP address changes, update all five DNS records.  
   The update uses the activated license file to authorize the request.
