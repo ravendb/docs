@@ -89,16 +89,15 @@ or the container is recreated. See [Replacing an exposed key](#replacing-an-expo
 
 <Admonition type="info" title="">
 
-#### The sign-in rate limit is instance-wide
+#### The sign-in rate limit is per client IP address
 
-* The login endpoint accepts 10 attempts per minute and returns `429 Too Many Requests`  
-  when that limit is exceeded.
+* The login endpoint accepts 10 attempts per minute from each client IP address and returns `429 Too Many Requests`  
+  when that address's limit is exceeded.
 
-* Quill's nginx front does not preserve the caller's IP address, as described in [Appliance Surfaces](appliance-surfaces.mdx#how-a-connection-is-routed).  
-  All login attempts therefore share a single instance-wide limit.
+* nginx passes the original caller address to Quill, as described in [Appliance Surfaces](appliance-surfaces.mdx#how-a-connection-is-routed).  
+  Login attempts from different client IP addresses therefore use separate rate-limit buckets.
 
-* Attempts made by another client can temporarily prevent you from signing in.  
-  If this happens, wait up to one minute and try again.
+* If a client exhausts its limit, wait up to one minute before trying again from that address.
 
 </Admonition>
 
@@ -305,7 +304,7 @@ and recreate those containers.
 * Dashboard sign-in creates a sliding session cookie that expires after eight hours of inactivity.  
   Programmatic callers send the key with every request using `X-Api-Key` or `Authorization: Bearer`.
     
-* The login rate limit is a single instance-wide bucket because nginx does not preserve the original caller IP.
+* The login rate limit uses a separate bucket for each client IP address.
     
 * The signup-issued key belongs to the signup account and works on every Quill instance that is still configured with it.
   A locally chosen replacement applies only to the Quill instance on which it is configured.

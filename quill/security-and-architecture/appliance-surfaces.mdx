@@ -84,12 +84,14 @@ caller ── TLS :443 ────> │  nginx                                 
 ```
 <br/>
     
-The current nginx front does not preserve the caller's IP address.  
-The Quill web application and RavenDB see nginx's loopback address instead,  
-so downstream logs cannot identify individual callers by source IP.
+For the web hostnames, nginx carries the caller's IP address from the SNI front to the TLS-terminating listeners using the PROXY protocol.  
+Those listeners restore the original address and pass it to the Quill web application in `X-Forwarded-For`.
+
+For `db.<domain>` and `a.<domain>`, an internal stream hop consumes the PROXY header before relaying the encrypted connection to RavenDB.  
+TLS remains end-to-end between the caller and RavenDB, but RavenDB sees the internal proxy hop rather than the caller's source address.
 
 The login endpoint and public chat endpoint both apply IP-based rate limits.  
-Because the original caller IP is not preserved, each limit uses one shared appliance-wide bucket instead of separate buckets for individual clients.
+Because the Quill web application receives the original client address, each limit uses separate per-client buckets.
 
 </Panel>
 
@@ -134,12 +136,16 @@ Use `db.<domain>` when configuring your own applications.
 It does not use the Dashboard API key, a browser session, or a client certificate.  
 Instead, access is granted by the embed-link token included in the URL.  
 
-nginx forwards only these two routes on `public.<domain>`:
+nginx forwards these three endpoint patterns on `public.<domain>`:
 
-| Endpoint                               | Purpose                                      |
-| -------------------------------------- | -------------------------------------------- |
-| `GET /apps/{slug}/embed/{token}`       | Loads the embedded chat page                 |
-| `POST /apps/{slug}/embed/{token}/chat` | Sends a prompt and streams the agent's reply |
+| Endpoint                               | Purpose                                               |
+| -------------------------------------- | ----------------------------------------------------- |
+| `GET /apps/{slug}/embed/{token}`       | Loads the embedded chat page                          |
+| `POST /apps/{slug}/embed/{token}/chat` | Sends a prompt and streams the agent's reply          |
+| `GET /widget/assets/{file}`            | Loads the JavaScript and CSS required by the chat page |
+
+The embedded chat page loads its widget assets from the same `public.<domain>` origin.  
+Any proxy or web application firewall placed in front of Quill must allow this path.
 
 All other paths on `public.<domain>` return `404`.
 
