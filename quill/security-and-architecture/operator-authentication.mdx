@@ -94,7 +94,7 @@ or the container is recreated. See [Replacing an exposed key](#replacing-an-expo
 * The login endpoint accepts 10 attempts per minute from each client IP address and returns `429 Too Many Requests`  
   when that address's limit is exceeded.
 
-* nginx passes the original caller address to Quill, as described in [Appliance Surfaces](appliance-surfaces.mdx#how-a-connection-is-routed).  
+* nginx passes the original caller address to Quill, as described in [Network Architecture](network-architecture.mdx#how-a-connection-is-routed).  
   Login attempts from different client IP addresses therefore use separate rate-limit buckets.
 
 * If a client exhausts its limit, wait up to one minute before trying again from that address.
@@ -133,7 +133,7 @@ A missing or incorrect key returns `401 Unauthorized`.
 `api.<domain>` exposes `/api/*` and the anonymous `/healthz` endpoint, but does not serve the dashboard UI.  
 The API endpoints are also reachable on `dashboard.<domain>` with the same authentication headers.
 
-See [the Quill hostnames](appliance-surfaces.mdx#the-appliance-hostnames).
+See [the Quill hostnames](network-architecture.mdx#the-quill-hostnames).
 
 </Panel>
 
@@ -266,12 +266,12 @@ Three surfaces use different access controls:
   They do not authenticate requests or prevent direct use of a disclosed embed token.
 
   Never place the Dashboard API key in a front-end application.  
-  See [what is public](appliance-surfaces.mdx#what-is-public).
+  See [what is public](network-architecture.mdx#what-is-public).
 
 * **Direct database access**  
   Applications connect to RavenDB on `db.<domain>` using a client certificate over mutual TLS.  
   The Dashboard API key cannot authenticate this connection, and a client certificate does not grant dashboard access.
-  See [direct database access](appliance-surfaces.mdx#direct-database-access).
+  See [direct database access](network-architecture.mdx#direct-database-access).
 
 * **Health and activation endpoints**  
   `/healthz` and `/api/bootstrap/status` answer without authentication,  
