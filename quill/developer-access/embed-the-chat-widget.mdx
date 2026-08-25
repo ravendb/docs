@@ -66,7 +66,7 @@ Each embed link is bound to:
 Anyone sharing a link also shares its conversation history and usage cap.  
 Mint a separate link for each user or browser session rather than publishing one link on a public page.
 
-On a deployed appliance, the returned URL points to `public.<domain>`.  
+In a Quill deployment, the returned URL points to `public.<domain>`.  
 This origin serves the embed page, its same-origin chat endpoint, and the widget bundle under `/widget/assets/*`.  
 The equivalent embed path on `dashboard.<domain>` returns `404`.
 
@@ -249,7 +249,7 @@ using `postMessage`:
 | `expired`    | The open widget can no longer continue. The payload's `reason` is `expired` or `limit`.                                                                                                                                                                           |
 | `error`      | A standalone notice, retryable chat failure, or terminal widget startup failure occurred. The payload contains a message. Some startup failures post `error` without ever posting `ready`, so the host should stop waiting for `ready` when this message arrives. |
 
-Before acting on a message, verify that `event.origin` is your appliance's `public.<domain>` origin and that the message contains `source: "raven-quill"` and `version: 1`.
+Before acting on a message, verify that `event.origin` is the `public.<domain>` origin of your Quill deployment and that the message contains `source: "raven-quill"` and `version: 1`.
 
 When the host receives `expired`, it can request a new link from its backend and replace the iframe's `src`.  
 The new link starts a new conversation.  
@@ -296,7 +296,7 @@ Your backend then calls Quill's embed-link API and returns only the generated `u
 
 #### Keep the Dashboard API key on your server
 
-The Dashboard API key configured through `QUILL_API_KEY` grants access to every app in the appliance,  
+The Dashboard API key configured through `QUILL_API_KEY` grants access to every app in your Quill instance,  
 not only to one channel or widget. Never include it in browser code or return it to the user.
 
 The embed-link API does not send CORS headers.  
@@ -348,7 +348,7 @@ A successful request returns the token, an absolute embed URL, the expiration ti
 The `expiresAt` value is a UTC ISO 8601 timestamp and can include up to seven fractional-second digits.                
 
 Use the returned `url` instead of constructing the embed URL yourself.
-On a deployed appliance, the API request normally goes to `api.<domain>`, and Quill replaces the first DNS label to produce `public.<domain>`.
+In a Quill deployment, the API request normally goes to `api.<domain>`, and Quill replaces the first DNS label to produce `public.<domain>`.
 
 More precisely, Quill leaves an IP literal or a hostname without a dot unchanged.
 For any other hostname, it replaces everything before the first dot with `public` and retains the original port, if present.
@@ -630,8 +630,8 @@ Scope your rules to that ID to avoid overly broad selectors:
 <br/>
 
 The widget does not expose a versioned set of selectors for its internal components.   
-Its utility classes and exact element hierarchy can change between appliance versions.
-Prefer semantic elements and accessibility attributes for narrow adjustments, and test your CSS after upgrading the appliance.
+Its utility classes and exact element hierarchy can change between Quill versions.
+Prefer semantic elements and accessibility attributes for narrow adjustments, and test your CSS after upgrading Quill.
 
 The following validation rules apply:
 
