@@ -41,6 +41,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Name your app and enter the connection details](connect-your-database.mdx#name-your-app-and-enter-the-connection-details)
    * [Verify your schema](connect-your-database.mdx#verify-your-schema)
       * [Choose the tables](connect-your-database.mdx#choose-the-tables)
+      * [When schema discovery fails](connect-your-database.mdx#when-schema-discovery-fails)
 
 </Admonition>
 
@@ -311,9 +312,11 @@ The wizard opens on its first step:
      `5432` for PostgreSQL, `1433` for SQL Server, and `3306` for MySQL.  
      Edit this value if your server listens on a different port.
    * **Database**  
-     The **source database name**.
+     The **source database name**.  
+     e.g., `northwind`
    * **Username**  
-     The **database user** that Quill will use to connect with the source database.
+     The **database user** that Quill will use to connect with the source database.  
+     e.g., `postgres`
    * **Password**  
      The **database user's password**.
 
@@ -341,13 +344,18 @@ The wizard opens on its first step:
 <Panel heading="Verify your schema">
 
 The wizard's second step lists all the tables Quill discovered in your source database, and allows you to select
-the tables that the app will work with.  
-Only the tables you select are carried into the mapping and into the app's configuration; unselected tables, and
-relationships that point to them, are ignored.
+the tables that the app will work with.
+
+* Only the tables you select in this step are carried into the mapping and into the app's configuration.
+* Unselected tables are ignored.
+
+---
 
 <ContentFrame>
 
 ### Choose the tables
+
+Discovered tables are listed for you to select from.
 
 ![Verify your schema](./assets/connect-your-database_verify-schema-step.png)
 
@@ -411,24 +419,29 @@ relationships that point to them, are ignored.
      * Quill reads one row from each selected table, confirming the tables can be read.
      * Quill removes the objects it created, leaving the source database as it found it.
 
-     ---
-
-     A passing verification shows as:  
-     ![Schema verified](./assets/connect-your-database_schema-verified.png)
-
-     A failing verification reports:  
-     ![Replication privilege error](./assets/connect-your-database_replication-privilege-error.png)
-
-     * **A. The error**: explains what blocked the verification, and carries a statement that can be executed by a
-       database administrator to fix it.
-     * **B. The table list**: stays empty until the verification passes.
-
      </Admonition>
 
 8. **Next**  
    Click to advance to the mapping steps, covered in [Map your tables](map-your-tables.mdx).  
    Clicking **Next** runs the same verification as **Verify schema** above, ensuring that
    [CDC](connect-your-database.mdx#prerequisites) can run on the selected tables before advancing to the next step.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### When schema discovery fails
+
+When Quill cannot read your source database's schema, the failure is reported.  
+The cause for such failures is usually a condition from
+[Prerequisites](connect-your-database.mdx#prerequisites) that the source database does not meet. In the example
+below, the database user lacks the permission Quill needs to set up change recording.
+
+![Schema discovery failed](./assets/connect-your-database_replication-privilege-error.png)
+
+* A. **The error message** explains what blocked tables discovery, and carries a statement that can be executed by a
+  database administrator to fix it.
+* B. **The table list** remains empty until the problem is resolved.
 
 </ContentFrame>
 
