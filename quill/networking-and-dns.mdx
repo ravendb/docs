@@ -1,0 +1,565 @@
+---
+title: "Networking & DNS"
+sidebar_label: "Networking & DNS"
+description: "The DNS records created for your Quill instance, what they point at, and how to repoint them when your server's IP address changes."
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* During sign-up, the **Quill name** you choose determines your instance's base domain: `<quill-name>.myquill.ai`.  
+  You do not need to own a domain or manage a DNS zone.
+
+* The published hostnames for your Quill instance normally point to the IP address provided during sign-up.  
+  If the host's IP address changes, update those records so callers reach your Quill at its new address.
+
+* This article explains the DNS names associated with a Quill instance, what DNS controls,  
+  and how to update and verify the published records after the host's IP address changes.
+
+* In this article:
+  * [Quill DNS records](#quill-dns-records)
+    * [The published hostnames](#the-published-hostnames)  
+    * [The `a` hostname](#the-a-hostname)  
+    * [Who manages the records](#who-manages-the-records)  
+    * [DNS and Quill routing](#dns-and-quill-routing)  
+  * [Moving your Quill to a new IP](#moving-your-quill-to-a-new-ip)
+    * [When the records must be updated](#when-the-records-must-be-updated)  
+    * [What remains unchanged](#what-remains-unchanged)  
+    * [Update the records](#update-the-records)  
+    * [DNS propagation and TTL](#dns-propagation-and-ttl)  
+    * [Verify the change](#verify-the-change)  
+    * [Diagnose failures](#diagnose-failures)
+  * [Summary](#summary)    
+
+</Admonition>
+
+## Quill DNS records
+
+<Panel heading="The published hostnames">
+
+During sign-up, you choose a **Quill name** and provide the IP address of the host that will run your Quill instance.  
+Quill assigns your instance a base domain in the following form:
+
+```text
+<quill-name>.myquill.ai
+```
+<br/>
+    
+For example, the Quill name `acme` produces the base domain `acme.myquill.ai`.  
+In this article, `<domain>` represents this complete base domain.
+
+Quill provisions five DNS hostnames beneath the base domain.  
+By default, all five resolve to the IP address provided during sign-up:
+
+| Hostname             | Used for                                                                                 |
+| -------------------- | ---------------------------------------------------------------------------------------- |
+| `dashboard.<domain>` | The operator dashboard, dashboard API requests, and health checks.                       |
+| `api.<domain>`       | Programmatic access to the Quill API and health checks, without the dashboard UI.        |
+| `public.<domain>`    | Embedded chat pages and their chat requests.                                             |
+| `db.<domain>`        | Direct RavenDB access for applications authenticated with a client certificate.          |
+| `a.<domain>`         | RavenDB's advertised node URL, which RavenDB.Client may receive through topology discovery. |
+
+The first four hostnames expose Quill's customer-facing service surfaces.  
+`a.<domain>` identifies the RavenDB node rather than a separate Quill web surface.
+
+Quill does not publish corresponding `-tcp` records.  
+Direct RavenDB access through `db.<domain>` or a topology-discovered `a.<domain>` address uses HTTPS on port `443`;  
+the native RavenDB TCP listener is not exposed by default.  
+See [Direct database access](security-and-architecture/network-architecture.mdx#direct-database-access).
+
+For details about how connections to these hostnames are routed and protected,  
+see [The Quill hostnames](security-and-architecture/network-architecture.mdx#the-quill-hostnames).
+
+The behavior of the RavenDB node hostname is described in [The `a` hostname](#the-a-hostname).
+
+</Panel>
+
+<Panel heading="The `a` hostname">
+
+`a.<domain>` is one of the five DNS hostnames provisioned for each Quill instance:
+
+```text
+a.<domain>
+```
+<br/>
+
+This hostname identifies the RavenDB node.  
+RavenDB stores `https://a.<domain>` as its `PublicServerUrl` and advertises that address as its node URL.
+
+In public DNS, `a.<domain>` resolves to the externally reachable address configured for the other DNS records.  
+This allows appropriately authenticated RavenDB clients to reach the advertised node URL.
+
+Inside the Quill container, startup adds `a.<domain>` to `/etc/hosts` with the address `127.0.0.1`.  
+Quill uses this hostname with RavenDB's internal HTTPS port and disables topology updates.  
+As a result, communication between Quill and RavenDB remains on loopback without changing the public DNS record.
+
+`a.<domain>` differs from the other service hostnames:
+
+* It does not represent a separate dashboard, API, or chat surface.
+* Applications should use `https://db.<domain>` as their initial address for direct RavenDB access.
+* A RavenDB.Client that updates its topology may subsequently receive `https://a.<domain>` as the RavenDB node address.
+* DNS updates include `a.<domain>` together with the other four records.
+
+For more information about direct RavenDB connections and your Quill's network limitations,  
+see [Direct database access](security-and-architecture/network-architecture.mdx#direct-database-access).
+
+</Panel>
+
+<Panel heading="Who manages the records">
+
+RavenDB operates the `myquill.ai` domain and manages its DNS records.
+During sign-up, Quill assigns your instance its `<quill-name>.myquill.ai` base domain and provisions the required records on your behalf.
+
+Because the records belong to a RavenDB-managed DNS zone:
+
+* You do not need to register a domain or configure a DNS provider.
+* You do not receive DNS-provider credentials or a DNS console for the instance.
+* Moving or restarting your Quill does not update the records automatically.
+
+When a record must change, the update is requested through the RavenDB DNS service at `api.ravendb.net`.  
+The supported update command reads the license file from the activated setup package and uses it to authorize the request for the licensed domain.
+
+The exact command and the records it updates are described in [Update the records](#update-the-records).
+
+</Panel>
+
+<Panel heading="DNS and Quill routing">
+
+DNS resolution determines which IP address receives a connection.
+It does not determine which Quill component handles the connection, which routes are available, or whether the caller is authorized.
+
+The five DNS hostnames normally resolve to the same host address.  
+Clients then connect to that host over HTTPS on port `443`.  
+After the connection reaches your Quill, nginx uses the requested hostname to route it:
+
+  * Connections to `dashboard.<domain>`, `api.<domain>`, and `public.<domain>` terminate TLS at nginx.  
+    nginx forwards only the routes allowed for that hostname to the Quill web application.
+  * Connections to `db.<domain>` and `a.<domain>` are passed to RavenDB without terminating TLS at nginx.  
+    RavenDB terminates TLS and validates the caller's client certificate.
+
+DNS also does not make the host reachable.
+The host's firewall, cloud security rules, and any intervening NAT configuration must allow inbound TCP traffic on port `443`.
+
+DNS and TLS are separate as well. DNS points a hostname to an address, while the wildcard certificate for your Quill proves the identity of that hostname. Changing the address behind a hostname does not change the hostname itself.
+
+For the complete routing and TLS model, see
+[How a connection is routed](security-and-architecture/network-architecture.mdx#how-a-connection-is-routed) and
+[The TLS front and the wildcard certificate](security-and-architecture/network-architecture.mdx#the-tls-front-and-the-wildcard-certificate).  
+For dashboard and API authentication, see [Operator Authentication](security-and-architecture/operator-authentication.mdx).
+
+</Panel>  
+
+## Moving your Quill to a new IP
+    
+<Panel heading="When the records must be updated">
+
+The five DNS records continue to return the address configured during sign-up until you explicitly update them.
+
+Update the records whenever the IP address through which callers reach your Quill changes.  
+This can happen when:
+
+    * you move your Quill to another host;
+    * you rebuild or restore the host and it receives a different address;
+    * a cloud provider or internet service provider reassigns the host's address;
+    * you move your Quill between environments, such as from a local machine to a cloud virtual machine;
+    * you change the network or NAT configuration so that a different address receives inbound traffic for your Quill.
+
+You do not need to update the records when:
+
+    * the container restarts or is recreated on the same host;
+    * Docker assigns the container a different internal address;
+    * an internal network address changes but callers still reach your Quill through the same host address.
+
+<Admonition type="note" title="">
+
+Use the address through which operators, chat users, and applications can reach the host on port `443`.  
+Do not use the container's internal Docker address or a loopback address.
+
+</Admonition>
+
+Until the records are updated, DNS continues to direct callers to the old address.  
+If the old host remains available, traffic continues reaching it.   
+If it is no longer available, the dashboard, embedded chats, API calls, and direct RavenDB connections fail to reach your Quill.
+
+Updating DNS does not move the container or its persisted data.  
+Complete the host migration separately, and then update the records as described in [Update the records](#update-the-records).
+
+</Panel>
+
+<Panel heading="What remains unchanged">
+
+Changing the host's IP address changes only the address stored in the published DNS records.  
+The Quill domain and the URLs used by operators, chat users, and applications remain the same.
+
+| Item | What remains unchanged |
+| ---- | ---------------------- |
+| Base domain and hostnames | `<domain>` and the `dashboard`, `api`, `public`, `db`, and `a` hostnames keep the same names. |
+| Wildcard server certificate | The certificate is issued for `*.<domain>`, not for a particular IP address. |
+| Activated setup package and license | Your Quill continues using the existing activated setup package and its license file. |
+| Dashboard API key | The key is independent of the host's IP address; supply the same `QUILL_API_KEY` value to a replacement container. |
+| Quill configuration and data | Apps, agents, channels, conversations, RavenDB databases, and certificate registrations remain in the `quill-data` volume. |
+        
+Repointing the DNS records therefore does not require a new domain, new URLs, a new wildcard certificate,  
+or a different Dashboard API key.
+
+For details about the wildcard certificate, see [The TLS front and the wildcard certificate](security-and-architecture/network-architecture.mdx#the-tls-front-and-the-wildcard-certificate).  
+For information about preserving or replacing the Dashboard API key, see [Operator Authentication](security-and-architecture/operator-authentication.mdx).
+
+<Admonition type="warning" title="">
+
+#### Moving to another host
+
+A DNS update does not copy your Quill's data or container configuration.
+
+When moving your Quill to another host, transfer the `quill-data` volume and preserve the required deployment environment values, 
+including `QUILL_API_KEY` and `QUILL_LICENSE_KEY`, before directing traffic to the new host.
+
+If only the existing host's externally reachable IP address changes, no data-volume migration is required.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Update the records">
+
+{/* TODO before publication - See RavenDB-27372:
+Do not publish either `docker exec quill update-dns --ip ...` 
+or the direct `/app/ravendb/rvn dns update ...` command 
+until the release image is finalized and the supported command is verified.
+
+The default release image currently has neither the wrapper nor an `rvn` version that supports `dns update`. 
+Dockerfile.source has them but is planned for removal. 
+The dashboard currently displays the wrapper command.
+*/}    
+
+Run the DNS update from the Docker host after your Quill is available at its new address.
+
+The container must:
+  * be running and activated;
+  * contain the activated setup package and its `license.json` file;
+  * have outbound HTTPS access to `api.ravendb.net`.
+
+The DNS update uses the license file for authorization.  
+It does not use the Dashboard API key or an authenticated browser session.
+
+---
+    
+### Find the base domain
+
+If you do not know the instance's base domain, read `PublicServerUrl` from the activated setup package:
+
+```bash
+docker exec quill jq -r '.PublicServerUrl' \
+  /var/lib/quill/setup/A/settings.json
+```
+<br/>
+
+The value has the form `https://a.<domain>`.  
+Use only the `<domain>` portion in the DNS update command, without `https://`, `a.`, or a port number.
+
+---
+        
+### Update the five DNS records
+
+Run the following command, replacing `<domain>` with the base domain and `<new-ip>` with the host's new address:
+
+```bash
+docker exec quill /app/ravendb/rvn dns update \
+  -l /var/lib/quill/setup/license.json \
+  -d <domain> \
+  -n <new-ip>=a,dashboard,db,public,api
+```
+<br/>
+
+The command updates all five DNS records in one request:
+
+* `dashboard.<domain>`
+* `api.<domain>`
+* `public.<domain>`
+* `db.<domain>`
+* `a.<domain>`
+
+The command reports its progress while `api.ravendb.net` processes the request and prints a confirmation when the records have been registered.
+
+Completing the command confirms that the DNS service accepted and processed the update.  
+Callers may still receive the previous address from DNS caches, as explained in [DNS propagation and TTL](#dns-propagation-and-ttl).
+
+<Admonition type="tip" title="">
+
+#### Assigning more than one address
+
+To assign several addresses to each of the five DNS hostnames, list them before the `=` and separate them with commas:
+
+```bash
+docker exec quill /app/ravendb/rvn dns update \
+  -l /var/lib/quill/setup/license.json \
+  -d <domain> \
+  -n <ip-1>,<ip-2>=a,dashboard,db,public,api
+```
+<br/>
+
+The command accepts both IPv4 and IPv6 addresses.
+
+</Admonition>
+
+<Admonition type="warning" title="">
+
+#### If the command times out
+
+The command waits up to 15 minutes for the DNS service to complete the request.
+
+A timeout means that the command stopped waiting.   
+It does not necessarily mean that the DNS update was rejected or rolled back.  
+Verify the published records before running the command again.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="DNS propagation and TTL">
+
+The Quill DNS records are published with a time to live (TTL) of **1800 seconds**, or **30 minutes**.
+
+The TTL controls how long a DNS resolver may reuse a cached answer.  
+It is separate from the time the update command spends submitting and processing the change.
+
+After the authoritative records are updated:
+  * callers without a cached answer receive the new address;
+  * callers whose cached answer has expired receive the new address;
+  * callers that still hold the previous answer continue using the old address until that cached answer expires.
+
+The remaining cache time depends on when each resolver last looked up the hostname.  
+A resolver that cached the old answer immediately before the update may continue returning it for approximately 30 minutes.
+
+<Admonition type="warning" title="">
+
+#### Plan for callers using both addresses
+
+* Prepare your Quill on the new host before updating the records.
+
+* During the propagation window, some callers may reach the new address while others continue using the old one.
+  If the old host is stopped immediately, callers with a cached answer can fail until their cache expires.
+
+* The DNS change does not alter existing embed URLs or their tokens.  
+  During propagation, new embed-page loads and chat requests may reach either address.
+
+* An in-flight chat remains on its existing connection.
+  If the old host is stopped before the chat finishes, the connection can be interrupted and the user may need to retry after their DNS cache refreshes.
+
+* Do not run two independent copies of your Quill with separately changing data merely to cover the DNS transition.  
+  If both old and new hosts remain reachable, make sure your migration plan prevents their persisted data from diverging.
+
+</Admonition>
+
+Operating systems, browsers, DNS resolvers, and application runtimes may add their own caching behavior.  
+Some callers can therefore retain an address longer than the DNS TTL.
+
+Restarting an affected browser or application may clear its local cache, but it does not clear an answer cached by an intermediate DNS resolver.
+
+After allowing for propagation, confirm the current answers as described in [Verify the change](#verify-the-change).
+
+{/* TTL verified against the live Quill DNS records on 2026-08-17.
+Reverify if the DNS service configuration changes before publication.
+*/}
+
+</Panel>
+
+<Panel heading="Verify the change">
+
+Verify the change in two stages:
+
+1. Confirm that all five DNS hostnames resolve to the intended address.
+2. Confirm that HTTPS reaches your Quill through its normal hostname.
+
+---
+    
+### Check the DNS records
+
+Resolve each of the five DNS hostnames from the Docker host or another machine outside the container:
+
+```bash
+nslookup dashboard.<domain>
+nslookup api.<domain>
+nslookup public.<domain>
+nslookup db.<domain>
+nslookup a.<domain>
+```
+<br/>
+
+Each hostname should return the new address.  
+If you intentionally assigned several addresses, the results should contain every address you configured.
+
+Inside the Quill container, `a.<domain>` intentionally resolves to `127.0.0.1`.  
+This internal override does not change its public DNS record.
+
+If a resolver still returns the old address, allow for the caching period described in [DNS propagation and TTL](#dns-propagation-and-ttl),  
+and then query it again.
+
+---
+    
+### Check HTTPS and certificate validation
+
+Confirm that the dashboard hostname reaches your Quill and that its TLS certificate is accepted:
+
+```bash
+curl --fail --silent --show-error \
+  https://dashboard.<domain>/healthz
+```
+<br/>
+
+Do not add curl's `-k` or `--insecure` option.  
+Skipping certificate validation could hide a certificate or hostname problem introduced during the move.
+
+You can also verify the API hostname independently:
+
+```bash
+curl --fail --silent --show-error \
+  https://api.<domain>/healthz
+```
+<br/>
+
+A successful response confirms that:
+  * DNS resolves the hostname to a reachable address;
+  * inbound traffic reaches the host on port `443`;
+  * nginx recognizes the hostname and routes the request;
+  * the wildcard server certificate is valid for the hostname;
+  * the Quill web application is responding.
+
+If your deployment uses the other surfaces, verify them through their normal access paths as well:
+  * open an existing embed link through `public.<domain>`;
+  * connect to `db.<domain>` with a recognized client certificate.
+
+For the requirements of a direct RavenDB connection, see [Direct database access](security-and-architecture/network-architecture.mdx#direct-database-access).  
+If any verification step fails, continue with [Diagnose failures](#diagnose-failures).
+
+</Panel>
+
+<Panel heading="Diagnose failures">
+
+Use the point at which verification fails to identify the affected layer:
+
+| Symptom | Likely cause | Next check |
+| ------- | ------------ | ---------- |
+| The DNS update command exits with an error | The new IP address is invalid, the activated setup package or license file is unavailable, outbound HTTPS failed, or the DNS service rejected the request | Read the returned error, verify the new IP address and setup files, confirm outbound access to `api.ravendb.net`, and verify all five DNS records before retrying |
+| A hostname does not resolve | The hostname or base domain is incorrect, or the record was not provisioned | Compare the hostname with the `PublicServerUrl` in the activated setup package |
+| A hostname still resolves to the old address | The answer is cached or the update has not completed | Allow for the TTL, then resolve all five hostnames again |
+| The hostname resolves correctly, but the connection times out | External TCP port `443` is blocked or does not reach container port `443` | Check the firewall, cloud security rules, NAT or load-balancer forwarding, and Docker port mapping |
+| The hostname resolves correctly, but the connection is refused | The container is stopped or nothing is accepting the forwarded connection | Check the container state and Docker port mapping |
+| HTTPS reports a certificate error | The certificate is expired, invalid, or does not cover the requested hostname | Inspect the certificate and certificate-renewal logs |
+| `/healthz` returns an unsuccessful response | The Quill web application or RavenDB is not ready | Check bootstrap status and the Quill logs |
+| `/healthz` succeeds, but the dashboard or API returns `401` | The DNS change succeeded, but the expected Dashboard API key was not preserved | Check `QUILL_API_KEY` and see [Operator Authentication](security-and-architecture/operator-authentication.mdx) |
+| Dashboard health succeeds, but `db.<domain>` connections fail | DNS and the web surface are working; investigate the client certificate and RavenDB connection separately | See [Direct database access](security-and-architecture/network-architecture.mdx#direct-database-access) |
+    
+---
+    
+### Check the container and published port
+
+Confirm that the container is running:
+
+```bash
+docker inspect quill --format "Status={{.State.Status}}"
+```
+<br/>
+
+Confirm that the container's HTTPS port is published:
+
+```bash
+docker port quill 443/tcp
+```
+<br/>
+
+If the container is stopped, start it before continuing.  
+If port `443` is not published, review the Docker Compose configuration.
+
+---
+    
+### Check Quill from inside the container
+
+Bypass external DNS, the host firewall, and nginx by calling the Quill web application directly:
+
+```bash
+docker exec quill curl --fail --silent --show-error \
+  http://127.0.0.1:5000/healthz
+```
+<br/>
+
+Then inspect the activation state:
+
+```bash
+docker exec quill curl --silent --show-error \
+  http://127.0.0.1:5000/api/bootstrap/status
+```
+<br/>
+
+If the internal health check succeeds but the external health check fails, investigate DNS, port `443`, nginx, the host firewall, or NAT.
+
+If the internal health check also fails, investigate the Quill web application and RavenDB startup state.
+
+---
+    
+### Read the Quill logs
+
+Read the most recent Quill web application messages:
+
+```bash
+docker exec quill tail -n 100 \
+  /var/lib/quill/logs/web.log
+```
+<br/>
+
+For nginx routing or TLS-termination failures, read:
+
+```bash
+docker exec quill tail -n 100 \
+  /var/lib/quill/logs/proxy.log
+```
+<br/>
+
+For RavenDB startup or direct database failures, read:
+
+```bash
+docker exec quill tail -n 100 \
+  /var/lib/quill/logs/ravendb.log
+```
+<br/>
+
+For wildcard-certificate renewal failures, read:
+
+```bash
+docker exec quill tail -n 100 \
+  /var/lib/quill/logs/certwatch.log
+```
+<br/>
+
+For certificate behavior and renewal, see [The TLS front and the wildcard certificate](security-and-architecture/network-architecture.mdx#the-tls-front-and-the-wildcard-certificate).  
+For dashboard and API authorization failures, see [Operator Authentication](security-and-architecture/operator-authentication.mdx).  
+For client-certificate requirements, see [Direct database access](security-and-architecture/network-architecture.mdx#direct-database-access).  
+
+</Panel>   
+
+<Panel heading="Summary">
+
+* During sign-up, Quill provisions five DNS records under `<quill-name>.myquill.ai`:  
+  `dashboard`, `api`, `public`, `db`, and `a`. RavenDB manages these records.
+
+* `a.<domain>` is RavenDB's advertised node URL.  
+  Inside the container, it resolves to `127.0.0.1` so Quill's communication with RavenDB remains internal.
+
+* DNS maps each hostname to an address.  
+  Routing, TLS termination, and authorization are handled by your Quill after the connection reaches the host  
+  on port `443`.
+
+* If the host's externally reachable IP address changes, update all five DNS records.  
+  The update uses the activated license file to authorize the request.
+
+* Updating DNS does not move your Quill to another host.  
+  Preserve the `quill-data` volume and the required deployment environment values when moving it.
+
+* The records have a TTL of 30 minutes.  
+  After an update, verify both DNS resolution and HTTPS connectivity.
+
+</Panel>         
