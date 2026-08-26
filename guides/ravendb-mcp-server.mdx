@@ -47,7 +47,7 @@ fill up with payload nobody asked for. You set it up once and that holds for eve
 afterwards.
 
 By the end of this guide the server is running in your own agent, and you have watched it work
-through three situations where the difference shows: an endpoint that starts timing out, a
+through three sessions where the difference shows: an endpoint that starts timing out, a
 configuration audit that must not leak credentials, and a cluster you have just inherited.
 
 ## What is the MCP server?
@@ -93,7 +93,7 @@ You notice it in four places.
   redacted before they reach the model, and per-tool approval in the client, so the answer can be
   yes.
 
-The rest of the time it simply sits there. Ask about your code and nothing reaches for the cluster;
+The rest of the time it sits there. Ask about your code and nothing reaches for the cluster;
 ask something the cluster knows and the answer comes from the cluster. You are not choosing between
 those, the agent is, and it now has both.
 
@@ -101,45 +101,36 @@ those, the agent is, and it now has both.
 
 A running cluster the agent can reach, and its URL. If the cluster is secured you also need a
 [client certificate](/7.2/client-api/setting-up-authentication-and-authorization) as a `.pfx`, and
-its password if it has one. Nothing else: the MCP server holds no state of its own and stores nothing
-between runs.
+its password if it has one. The MCP server holds no state of its own and stores nothing between
+runs.
 
-`npx` and the prebuilt binary both run the same self-contained build, so both want `libicu` on the
-machine. On a minimal Linux image that is the one thing you have to add. `dnx` takes it from the
-.NET SDK you already have, and the directory and extension bundles carry their own.
+`npx` runs a self-contained build that wants `libicu` on the machine, which on a minimal Linux image
+is the one thing you have to add. `dnx` takes it from the .NET SDK you already have, and the
+marketplace install carries its own.
 
 ## Installing it
 
-However you do it, the same thing happens: the MCP server runs with `RAVENDB_URLS` pointing at your
-cluster. The directory and the desktop extension ship it with a launcher of their own, so there is
-nothing for you to install; a config file names the command yourself. Three ways to arrange one
-thing, and the only real difference is who writes it down.
+Two ways in. Pick whichever matches your client.
 
-### Pick it from the directory
+### Claude Desktop
 
-Open your connector settings, search for RavenDB, enable it, and fill in the cluster URL when
-prompted. Nothing to install and nothing to edit.
+Available in the [official connectors directory](https://claude.ai/directory?q=ravendb).
 
-<Image img={require("./assets/ravendb-mcp1.webp")} alt="The RavenDB entry in the Claude connectors directory, marked verified" />
+Open your connector settings, search for RavenDB, and enable it. Fill in the cluster URL when
+prompted.
 
-The entry is verified rather than community-submitted, so what you enable is the server this guide
-describes.
+<Image img={require("./assets/ravendb-mcp1.webp")} alt="The RavenDB entry in the Claude connector marketplace, marked verified" />
 
-### Install the desktop extension
+The entry is verified. The settings page afterwards:
 
-For Claude Desktop, take the `.mcpb` bundle from the
-[latest release](https://github.com/ravendb/ravendb-mcp/releases) and install it through
-**Settings > Extensions > Advanced settings > Install Extension**. Opening the file directly does
-nothing; no handler is registered for `.mcpb`.
-
-The settings page afterwards is worth a look, because it shows you what this guide has been
-claiming.
-
-<Image img={require("./assets/ravendb-mcp2.webp")} alt="The ravendb-mcp extension settings in Claude Desktop: cluster URL, optional client certificate, and twenty-one read-only tools with per-tool approval" />
+<Image img={require("./assets/ravendb-mcp2.webp")} alt="The ravendb-mcp settings in Claude Desktop: cluster URL, optional client certificate, and twenty-one read-only tools with per-tool approval" />
 
 Twenty-one tools, the whole catalogue, and the client itself labels them read-only. Each one can be
 set to run freely, ask first, or never run at all, so you can hand the agent the cluster and still
 keep the live diagnostics behind a prompt.
+
+For a secured cluster the same page takes the certificate: give the URL an `https` scheme, point
+**Client certificate** at your `.pfx`, and add the password only if it has one.
 
 ### Write it into a config file
 
@@ -186,34 +177,9 @@ args = ["-y", "@ravendb/mcp"]
 env = { RAVENDB_URLS = "http://localhost:8080" }
 ```
 
-All of these point at `http://localhost:8080`. Change it to wherever your cluster is and you are
-done.
+All of these point at `http://localhost:8080`. Change it to wherever your cluster is.
 
-<Admonition type="note" title="Searching the editor gallery will not find it">
-VS Code's built-in MCP gallery is a curated list and this server is not on it, so use the file
-above rather than the gallery search. These editor configs were checked against each client's
-documented schema; the runs behind this guide used Claude Code and the Claude Desktop extension, so
-if one of the editors behaves differently for you, tell us on Discord.
-</Admonition>
-
-### Two knobs, whichever path you took
-
-**The runtime.** Skip this unless your machine forces your hand. The directory and the extension
-bring their own, and the config examples above use `npx`, which works wherever Node is already
-installed. Two situations change the answer:
-
-- **No Node, but you have the .NET SDK.** Replace `npx -y @ravendb/mcp` with
-  `dnx RavenDB.Mcp --yes`. Nothing else in the config changes.
-- **The machine must not fetch packages at run time**, because it is locked down, offline, or you
-  want the version pinned. Take a
-  [prebuilt binary](https://github.com/ravendb/ravendb-mcp/releases), put it on the machine, and
-  point `command` at its path.
-
-**The certificate**, for a secured cluster. If you came in from the directory or the desktop
-extension, it is two fields on the settings page shown above: give the URL an `https` scheme, point
-**Client certificate** at your `.pfx`, and fill in the password only if it has one. No file to edit.
-
-In a config file it is the same two values as environment variables:
+For a secured cluster the certificate sits beside the URL:
 
 ```json
 "env": {
@@ -223,16 +189,12 @@ In a config file it is the same two values as environment variables:
 }
 ```
 
-The certificate decides what the agent can see, so a certificate scoped to one database gives you an
-agent scoped to one database. That is a reasonable way to introduce this to a production cluster.
+The certificate decides what the agent can see, so one scoped to a single database gives you an agent
+scoped to a single database. `RAVENDB_URLS` also takes several nodes of the **same** cluster, comma or semicolon separated; for a
+second cluster, run a second instance.
 
-`RAVENDB_URLS` takes several nodes of the **same** cluster, comma or semicolon separated:
-
-```
-RAVENDB_URLS=https://a.example.com:443,https://b.example.com:443
-```
-
-For a second cluster, run a second instance.
+If the machine has the .NET SDK but no Node, swap `npx -y @ravendb/mcp` for `dnx RavenDB.Mcp --yes`
+and change nothing else.
 
 ## Checking the wiring
 
@@ -267,7 +229,12 @@ Work outwards from there: is the URL right, is the cluster up, and on an `https`
 certificate belong to that cluster. A certificate the cluster does not recognise fails during the
 handshake, so the message mentions TLS rather than a refused connection.
 
-## An endpoint that started timing out
+## Demo
+
+Setup is done. Let's see how it works in practice, across three scenarios we ran against a live
+cluster.
+
+### An endpoint that started timing out
 
 Here is the situation as it usually arrives. A reports endpoint that was fine for months is timing
 out, and nothing in that code path changed.
@@ -318,7 +285,7 @@ orders and 11.2 once load testing pushed the collection past 600,000. That trend
 the data, not of the code, which is why nothing in the code path had to change for this morning to
 be the morning it broke.
 
-### Why the agent stopped inventing RQL
+#### Why the agent stopped inventing RQL
 
 The reason agents write bad RQL is not that RQL is hard. It is that three of its rules cascade, and
 an agent working from memory of SQL trips all three: clause order is fixed, dynamic `group by`
@@ -352,7 +319,7 @@ What that looks like in a session is one wrong turn and no second one:
 The agent does not guess twice. It goes and reads what the server publishes, and every query after
 that point parses.
 
-## A configuration audit that must not leak credentials
+### A configuration audit that must not leak credentials
 
 Ask an agent what a database's backup and ETL tasks connect to, and you have asked it to read
 connection strings. Those hold access keys.
@@ -382,7 +349,7 @@ samples, and debug packages are **not** scrubbed: they are the raw material and 
 files. Treat them the way you would treat the files themselves.
 </Admonition>
 
-## A cluster you just inherited
+### A cluster you just inherited
 
 The shortest useful tour is three questions.
 
@@ -481,15 +448,8 @@ agent reads them rather than recalling them, and the syntax itself stays where i
 
 ## Summary
 
-Connecting an agent to a live cluster came down to one environment variable and a client that knows
-how to launch the server.
-
-1. Install it from the connectors directory, or add it to your client with `RAVENDB_URLS`.
-2. Add `RAVENDB_CERTIFICATE_PATH` if the cluster is secured, and let the certificate decide what the
-   agent can see.
-3. Ask it to list the databases to prove the wiring.
-
-What changes afterwards:
+Connecting an agent to a live cluster came down to one environment variable, plus a certificate if
+the cluster is secured. What changes afterwards:
 
 - The agent reads cluster state instead of inferring it, so
   [index staleness](/7.2/indexes/stale-indexes), task lag and live load
