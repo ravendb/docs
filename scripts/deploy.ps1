@@ -185,10 +185,10 @@ if ($LASTEXITCODE) { throw 'Docusaurus build failed' }
 $BuildDir = [IO.Path]::Combine($PSScriptRoot, '..', 'build')
 if (-not (Test-Path $BuildDir)) { throw "Build folder not produced ($BuildDir)" }
 
-# Warn on empty (0-byte) assets under build/assets/ (static/ files may be 0 bytes on purpose).
+# Publishing a 0-byte hashed asset is unrecoverable: immutable caching pins it in every client until its content hash changes.
 $empty = Get-ChildItem (Join-Path $BuildDir 'assets') -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -eq 0 }
 if ($empty) {
-    Write-Warning "Build produced $($empty.Count) empty (0-byte) asset(s) under assets/, e.g.: $(($empty | Select-Object -First 10 -ExpandProperty Name) -join ', ')"
+    throw "Build produced $($empty.Count) empty (0-byte) asset(s) under assets/, e.g.: $(($empty | Select-Object -First 10 -ExpandProperty Name) -join ', ')"
 }
 
 if ($DryRun) {
