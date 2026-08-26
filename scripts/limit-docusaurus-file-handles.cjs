@@ -80,7 +80,7 @@ function installWriteFileSemaphore(fs, maxConcurrent) {
 
         function runWrite() {
             try {
-                return originalWriteFile.apply(receiver, args);
+                originalWriteFile.apply(receiver, args);
             } catch (error) {
                 releasePermit();
                 throw error;
@@ -89,7 +89,17 @@ function installWriteFileSemaphore(fs, maxConcurrent) {
 
         const permit = pool.acquire();
 
-        return permit === undefined ? runWrite() : permit.then(runWrite);
+        // Never return a value here: callback-form writeFile yields undefined, and
+        // handing back a promise makes util.promisify emit DEP0174 on every call.
+        if (permit === undefined) {
+            runWrite();
+            return undefined;
+        }
+
+        // Queued, so the synchronous channel is gone and errors go to the callback.
+        permit.then(runWrite).catch(callback);
+
+        return undefined;
     };
 }
 
