@@ -33,14 +33,14 @@ database. So it infers. It reads your entity classes, decides what the documents
 writes a query from whatever it remembers about RQL, and when the answer comes back wrong it asks
 you to open the Studio and describe what you see.
 
-That is the situation this guide is written for. The RavenDB MCP server closes the gap, and it does
-more than let the agent look. It hands it twenty-one tools, each one labelled for what it answers.
+That is the situation this guide is written for. The RavenDB MCP server closes the gap. It gives the
+agent twenty-one tools, each one labelled for what it answers.
 So when you ask, the agent already has something to check with and already knows which tool answers
 the question. The part where it works out how to approach the task at all does not happen: no
 hunting for the right endpoint, no reading up on how to authenticate against a secured cluster, no
 learning RQL by trial and error. Its turns go on your problem rather than on getting to it.
 
-The server looks after the parts you would otherwise have to watch. Every tool is read-only.
+The MCP server looks after the parts you would otherwise have to watch. Every tool is read-only.
 Credentials are stripped out of configuration before it reaches the model. Results carry what the
 question needs rather than everything an endpoint happens to return, so the conversation does not
 fill up with payload nobody asked for. You set it up once and that holds for every session
@@ -68,10 +68,10 @@ reading it.
 | Live diagnostics | `sample_live_feed`, `export_server_logs`, `collect_debug_package` |
 | AI Agents | `get_ai_agents` |
 
-Every one of them is read-only. There is no tool that creates, patches or deletes a document, RQL
-that mutates is rejected before it reaches the cluster, and the whole surface is scoped to the
-certificate you hand it. An agent connected this way can answer questions about your cluster and
-cannot change it.
+Every one of them is read-only. Nothing creates, patches or deletes a document; nothing edits
+configuration, indexes or ongoing tasks; RQL that mutates is rejected before it reaches the cluster;
+and the whole surface is scoped to the certificate you hand it. An agent connected this way can
+answer questions about your cluster and cannot change it.
 
 ## What changes once it is installed
 
@@ -87,8 +87,8 @@ You notice it in four places.
   back to you.
 - **Debugging and troubleshooting.** It checks the cluster's state instead of reasoning about it
   from the code, which is the difference between a theory and an answer.
-- **During an incident.** The same thing, under time pressure, where the minutes it takes are the
-  cheapest minutes of the outage.
+- **During an incident.** The same thing under time pressure. Whatever the agent spends looking is
+  small next to what the outage costs while nobody knows the cause yet.
 - **When someone asks whether an agent can touch production.** Read-only by construction, secrets
   redacted before they reach the model, and per-tool approval in the client, so the answer can be
   yes.
@@ -101,7 +101,7 @@ those, the agent is, and it now has both.
 
 A running cluster the agent can reach, and its URL. If the cluster is secured you also need a
 [client certificate](/7.2/client-api/setting-up-authentication-and-authorization) as a `.pfx`, and
-its password if it has one. Nothing else: the server holds no state of its own and stores nothing
+its password if it has one. Nothing else: the MCP server holds no state of its own and stores nothing
 between runs.
 
 `npx` and the prebuilt binary both run the same self-contained build, so both want `libicu` on the
@@ -110,7 +110,7 @@ machine. On a minimal Linux image that is the one thing you have to add. `dnx` t
 
 ## Installing it
 
-However you do it, the same thing happens: the server runs with `RAVENDB_URLS` pointing at your
+However you do it, the same thing happens: the MCP server runs with `RAVENDB_URLS` pointing at your
 cluster. The directory and the desktop extension ship it with a launcher of their own, so there is
 nothing for you to install; a config file names the command yourself. Three ways to arrange one
 thing, and the only real difference is who writes it down.
@@ -186,7 +186,8 @@ args = ["-y", "@ravendb/mcp"]
 env = { RAVENDB_URLS = "http://localhost:8080" }
 ```
 
-All of these point at `http://localhost:8080`. Change the URL and you are done.
+All of these point at `http://localhost:8080`. Change it to wherever your cluster is and you are
+done.
 
 <Admonition type="note" title="Searching the editor gallery will not find it">
 VS Code's built-in MCP gallery is a curated list and this server is not on it, so use the file
@@ -225,8 +226,13 @@ In a config file it is the same two values as environment variables:
 The certificate decides what the agent can see, so a certificate scoped to one database gives you an
 agent scoped to one database. That is a reasonable way to introduce this to a production cluster.
 
-`RAVENDB_URLS` takes several nodes of the **same** cluster, comma or semicolon separated. For a
-second cluster, run a second instance.
+`RAVENDB_URLS` takes several nodes of the **same** cluster, comma or semicolon separated:
+
+```
+RAVENDB_URLS=https://a.example.com:443,https://b.example.com:443
+```
+
+For a second cluster, run a second instance.
 
 ## Checking the wiring
 
@@ -298,7 +304,7 @@ in-memory aggregation.
 
 Nothing in the reporting code references it. It lives in the analytics feature's folder, written by
 someone else for something else. To know it is there you either read the whole repository or you ask
-the server what it has.
+the MCP server what it has.
 
 The agent also has room to be careful rather than lucky, and this is where reading the cluster beats
 guessing twice over. The index reduces by product **and** day, so "top products since X" still has
@@ -322,12 +328,12 @@ The server publishes those rules as resources under `rql://`, so the agent can r
 recalling them.
 
 That is measurable, so we measured it: the same model against the same seeded cluster, eleven runs
-per arm, one arm with the server and one with only a shell, transcripts counted by script. Across
+per arm, one arm with the MCP server and one with only a shell, transcripts counted by script. Across
 every scenario, queries written through the server were rejected by the parser **zero times in 176
 attempts**. Without it, **34 of 73** were rejected.
 
 That is not an artifact of asking fewer questions: the
-agent with the server queried the database roughly two and a half times **more** often. It asked
+agent with the MCP server queried the database roughly two and a half times **more** often. It asked
 more and got it right every time.
 
 What that looks like in a session is one wrong turn and no second one:
@@ -423,7 +429,7 @@ An agent that can see the cluster is more thorough than one that cannot, and tho
 on the bill. Here is where that shows up.
 
 The cost of a session is the conversation re-read on every turn, so it comes to roughly the context
-carried multiplied by the turns taken. An agent with the server asks more questions and gets a
+carried multiplied by the turns taken. An agent with the MCP server asks more questions and gets a
 complete answer to each one, so both factors go up. On the longest session we ran, twenty-two tasks
 against one cluster, it issued 48 successful queries where
 the same agent without the server attempted 36 and had about half of them rejected by the parser.
@@ -450,19 +456,20 @@ few seconds of live traffic comes back folded by request shape rather than one e
 
 ## Cheatsheet
 
-**What to ask, and what it will go and read**
+**What to ask, and which tool answers it**
 
-You ask in your own words. The right-hand column is what the agent reaches for, so you can tell
-whether the answer came off the cluster or out of the model.
+You ask in your own words. The right-hand column names the tool the agent should reach for, so you
+can check the call it made against the answer it gave.
 
-| If you want to know | Ask for it like this | What it reads |
+| If you want to know | Ask for it like this | Tool it reaches for |
 |---|---|---|
-| whether anything is wrong at all | "Is anything wrong with this cluster right now?" | alerts and performance hints |
-| why something got slow this morning | "This endpoint started timing out. Find out why." | index staleness, index errors, live workload |
-| whether a task is keeping up | "Is the nightly backup still on schedule?" | ongoing tasks and their runtime state |
-| what an unfamiliar cluster holds | "What is in this cluster, and what is configured?" | topology, database records, alerts |
-| what a connection string points at | "What does the archive task connect to?" | the database record, credentials redacted |
-| what the data actually looks like | "Show me a few orders from last week." | a paged, projected query |
+| whether anything is wrong at all | "Is anything wrong with this cluster right now?" | `get_notifications` |
+| why something got slow this morning | "This endpoint started timing out. Find out why." | `get_database_stats`, then `get_index` |
+| what is loading the server right now | "What is hitting the cluster at the moment?" | `get_live_workload` |
+| whether a task is keeping up | "Is the nightly backup still on schedule?" | `get_tasks` |
+| what an unfamiliar cluster holds | "What is in this cluster, and what is configured?" | `list_databases`, `get_cluster_overview` |
+| what a connection string points at | "What does the archive task connect to?" | `get_database_record`, credentials redacted |
+| what the data actually looks like | "Show me a few orders from last week." | `run_query`, paged and projected |
 
 **What it no longer gets wrong**
 
