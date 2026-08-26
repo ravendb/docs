@@ -8,7 +8,7 @@ const globals = require("globals");
 module.exports = [
     js.configs.recommended,
     {
-        files: ["**/*.{ts,tsx,js,jsx}"],
+        files: ["**/*.{ts,tsx,js,jsx,cjs}"],
         languageOptions: {
             parser: tsparser,
             parserOptions: {
