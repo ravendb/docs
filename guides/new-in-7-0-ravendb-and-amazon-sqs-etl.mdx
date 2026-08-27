@@ -31,7 +31,7 @@ import Image from "@theme/IdealImage";
 
 ## Introduction
 
-In version 7.0, we introduced a new ongoing task: [Amazon SQS ETL](https://ravendb.net/docs/article-page/csharp/server/ongoing-tasks/etl/queue-etl/amazon-sqs). Amazon SQS, short for Simple Queue Services, is a fully managed queuing service that is part of AWS.
+In version 7.0, we introduced a new ongoing task: [Amazon SQS ETL](https://docs.ravendb.net/server/ongoing-tasks/etl/queue-etl/amazon-sqs). Amazon SQS, short for Simple Queue Services, is a fully managed queuing service that is part of AWS.
 
 This ETL will allow you to integrate your RavenDB database into the AWS ecosystem, with an AWS SQS queue as an entry point. We will also show you how to process documents received by SQS using Lambda.
 
@@ -52,7 +52,7 @@ Let’s cover an actual usage scenario. We’ve written a speeding tickets data 
 
 ### 1. Create a new ETL task
 
-Open your chosen database and select the tasks menu. There, you want to choose ‘Ongoing Tasks’ and click ‘Add Database Task.’ In this menu, you can select which task you want to add; we need ‘[Amazon SQS ETL](https://ravendb.net/docs/article-page/csharp/studio/database/tasks/ongoing-tasks/amazon-sqs-etl).’
+Open your chosen database and select the tasks menu. There, you want to choose ‘Ongoing Tasks’ and click ‘Add Database Task.’ In this menu, you can select which task you want to add; we need ‘[Amazon SQS ETL](https://docs.ravendb.net/studio/database/tasks/ongoing-tasks/amazon-sqs-etl).’
 
 <Image img={require("./assets/amazon-sqs-etl1.webp")} alt="RavenDB Studio Add Database Task menu with Amazon SQS ETL selected" />
 
@@ -90,7 +90,7 @@ loadTo('TicketsQueue', {
 });
 ```
 
-LoadTo queues the document to be loaded by an [ETL process](https://ravendb.net/docs/article-page/csharp/server/ongoing-tasks/etl/basics) to a specified queue. If a queue doesn't exist, it will automatically create one. In our example, we’re just creating a JSON out of document fields, but with your data, you can do whatever you need in the transformation code. You may modify it, make conditionals, use multiple loads, etc.
+LoadTo queues the document to be loaded by an [ETL process](https://docs.ravendb.net/server/ongoing-tasks/etl/basics) to a specified queue. If a queue doesn't exist, it will automatically create one. In our example, we’re just creating a JSON out of document fields, but with your data, you can do whatever you need in the transformation code. You may modify it, make conditionals, use multiple loads, etc.
 
 ### 4. Add the collection
 
