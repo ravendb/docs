@@ -1,6 +1,6 @@
 ---
-title: "Getting started: Sign up"
-sidebar_label: Sign up
+title: "Getting started: Signing up"
+sidebar_label: Signing up
 sidebar_position: 2
 description: "Sign up for Quill: the beta form, email verification, naming the domain your Quill deployment is served on, the address of the machine that will run it, and the API key and Docker command you receive at the end."
 ---
@@ -9,24 +9,30 @@ import Admonition from '@theme/Admonition';
 import Panel from "@site/src/components/Panel";
 import ContentFrame from "@site/src/components/ContentFrame";
 
-# Getting started: Sign up
+# Getting started: Signing up
 <Admonition type="tip" title="">
 
-The **Getting Started** section will get you from the initial signing up for Quill to the execution of an AI
+The **Getting Started** section takes you from the initial signing up for Quill to the execution of an AI
 agent that handles user conversations, in six steps:  
-**signing up**, **starting Quill**, **connecting the source database**, **mapping the tables
-Quill reads**, **adding an AI agent**, and **adding a channel that carries the agent**.
+**Signing up**, **Starting Quill**, **Connecting your database**, **Mapping your tables**, **Adding an AI agent**,
+and **Adding a channel**.
 
 </Admonition>
 
 <Admonition type="note" title="">
 
-* This page covers the first getting started step, **signing up**, walking you through the creation of a Quill domain and handing
-  you two access keys.
+* This page covers the first getting started step, **Signing up**, walking you through the creation of a Quill
+  domain and handing you two access keys.
+
+   <Admonition type="info" title="">
+
+   New terms:
+
    * A **Quill domain** is a web address that your Quill deployment can be reached at.
-   * The access keys are:
-      * a **license key** that activates Quill.
-      * an **API key** that signs you into the deployment's management dashboard.
+   * A **license key** activates Quill.
+   * An **API key** signs you into the deployment's management dashboard.
+
+   </Admonition>
 
 * The signing-up routine includes a form for your contact details and a verification of your email address,
   followed by these wizard stages:
@@ -34,17 +40,15 @@ Quill reads**, **adding an AI agent**, and **adding a channel that carries the a
    * Reviewing the details before they are registered.
    * Getting the Docker command that runs Quill.
 
-* Next step: [Start Quill](start-quill.mdx)
-
 * In this article:
-   * [Prerequisites](sign-up.mdx#prerequisites)
-   * [Sign up](sign-up.mdx#sign-up)
-      * [Fill in the sign-up form](sign-up.mdx#fill-in-the-sign-up-form)
-      * [Enter the verification code](sign-up.mdx#enter-the-verification-code)
-   * [Register your Quill deployment](sign-up.mdx#register-your-quill-deployment)
-      * [Name your Quill domain](sign-up.mdx#name-your-quill-domain)
-      * [Review and confirm](sign-up.mdx#review-and-confirm)
-   * [Save your setup details](sign-up.mdx#save-your-setup-details)
+   * [Prerequisites](signing-up.mdx#prerequisites)
+   * [Signing up](signing-up.mdx#signing-up)
+      * [Filling in the sign-up form](signing-up.mdx#filling-in-the-sign-up-form)
+      * [Entering the verification code](signing-up.mdx#entering-the-verification-code)
+   * [Registering your Quill deployment](signing-up.mdx#registering-your-quill-deployment)
+      * [Naming your Quill domain](signing-up.mdx#naming-your-quill-domain)
+      * [Reviewing and confirming](signing-up.mdx#reviewing-and-confirming)
+   * [Saving your setup details](signing-up.mdx#saving-your-setup-details)
 
 </Admonition>
 
@@ -52,14 +56,14 @@ Quill reads**, **adding an AI agent**, and **adding a channel that carries the a
 
 Before signing up, make sure you have:
 
-* An email box address for Quill's access details.
-* The public IP address of the machine that will run Quill.
+* **An email box address** for Quill's access details.
+* **The public IP address** of the machine that will run Quill.
    * Your Quill domain will point at this address.
    * To try Quill on your own machine, use `127.0.0.1`.
 
 </Panel>
 
-<Panel heading="Sign up">
+<Panel heading="Signing up">
 
 Signing up starts a 90-day free trial.
 
@@ -67,7 +71,7 @@ For the sign-up form, open [ravendb.net/quill-beta](https://ravendb.net/quill-be
 
 <ContentFrame>
 
-### Fill in the sign-up form
+### Filling in the sign-up form
 
 ![Sign-up form](./assets/sign-up_get-started-form.png)
 
@@ -91,7 +95,7 @@ For the sign-up form, open [ravendb.net/quill-beta](https://ravendb.net/quill-be
 
 <ContentFrame>
 
-### Enter the verification code
+### Entering the verification code
 
 ![Enter your code](./assets/sign-up_enter-your-code.png)
 
@@ -99,7 +103,7 @@ For the sign-up form, open [ravendb.net/quill-beta](https://ravendb.net/quill-be
    Enter the six-digit code sent to your address.  
    The code expires in 15 minutes, and can be used only once.  
    A valid code will start the three-stage wizard to
-   [register your Quill deployment](sign-up.mdx#register-your-quill-deployment).
+   [register your Quill deployment](signing-up.mdx#registering-your-quill-deployment).
 
 2. **Resend code**  
    Click to resend if the code didn't arrive at your address.
@@ -108,11 +112,11 @@ For the sign-up form, open [ravendb.net/quill-beta](https://ravendb.net/quill-be
 
 </Panel>
 
-<Panel heading="Register your Quill deployment">
+<Panel heading="Registering your Quill deployment">
 
 <ContentFrame>
 
-### Name your Quill domain
+### Naming your Quill domain
 
 ![Name your Quill](./assets/sign-up_name-your-quill.png)
 
@@ -120,7 +124,9 @@ For the sign-up form, open [ravendb.net/quill-beta](https://ravendb.net/quill-be
    * Enter a name for your Quill deployment.  
      The domain forms below the field, as `<name>.myquill.ai`, and is marked **Available** if the name hasn't
      been taken yet.  
-     e.g., **baloo**
+     e.g.,  
+     Quill name: **baloo**  
+     Quill domain: `baloo.myquill.ai`
    * If your account already holds Quill domains, the field offers them in a dropdown.  
      Select an existing domain to edit its details.
 
@@ -131,30 +137,30 @@ For the sign-up form, open [ravendb.net/quill-beta](https://ravendb.net/quill-be
    To try Quill on your own machine, use `127.0.0.1`.
 
 3. **Continue**  
-   Click for the next wizard stage: [Review and confirm](sign-up.mdx#review-and-confirm)
+   Click for the next wizard stage: [Reviewing and confirming](signing-up.mdx#reviewing-and-confirming)
 
 </ContentFrame>
 
 <ContentFrame>
 
-### Review and confirm
+### Reviewing and confirming
 
 This wizard stage gathers the details collected so far, for a final check before the domain is registered.
 
 ![One last look before you launch](./assets/sign-up_review.png)
 
 1. **Edit**  
-   Click to reopen the [Name your Quill domain](sign-up.mdx#name-your-quill-domain) stage and modify its details.
+   Click to reopen the [Name your Quill](signing-up.mdx#naming-your-quill-domain) stage and modify its details.
 
 2. **Confirm & generate**  
    Click to register the domain, generate the access keys, and
-   [save your setup details](sign-up.mdx#save-your-setup-details).
+   [save your setup details](signing-up.mdx#saving-your-setup-details).
 
 </ContentFrame>
 
 </Panel>
 
-<Panel heading="Save your setup details">
+<Panel heading="Saving your setup details">
 
 The wizard's last stage presents the registered domain, the dashboard API key, and the Docker command that
 starts Quill, allowing you to review and copy them.  
@@ -180,7 +186,7 @@ All the details that are displayed here are also sent to the email address you p
    **bash** or **PowerShell** form.  
    The Docker command already includes both the license key and the dashboard API key, so you do not have to add
    these keys separately.  
-   See more about the Docker command in [Start Quill](start-quill.mdx).
+   See more about the Docker command in [Starting Quill](starting-quill.mdx).
 
 4. **Once Quill is running**  
    The address of your management dashboard, and the steps that follow: connecting your data, mapping it, and

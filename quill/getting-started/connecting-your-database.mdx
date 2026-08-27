@@ -1,6 +1,6 @@
 ---
-title: "Getting started: Connect your database"
-sidebar_label: Connect your database
+title: "Getting started: Connecting your database"
+sidebar_label: Connecting your database
 sidebar_position: 4
 description: "Connect Quill to your source PostgreSQL, SQL Server, or MySQL database and choose the tables it may read: the settings and permissions each database needs, the connection details Quill asks for, and the readiness checks it runs before your tables are mapped."
 ---
@@ -9,41 +9,47 @@ import Admonition from '@theme/Admonition';
 import Panel from "@site/src/components/Panel";
 import ContentFrame from "@site/src/components/ContentFrame";
 
-# Getting started: Connect your database
+# Getting started: Connecting your database
+<Admonition type="tip" title="">
+
+Covered so far in [Getting Started](signing-up.mdx):  
+[Signing up](signing-up.mdx) - After this step, your deployment has a name, a license key, and a dashboard API key.  
+[Starting Quill](starting-quill.mdx) - After this step, Quill is running on your machine, and its
+management dashboard is open.
+
+</Admonition>
+
 <Admonition type="note" title="">
 
-* An [app](../overview.mdx#one-quill-several-apps) answers its users from
-  [Quill's internal database](../overview.mdx#internal-database), a live copy of your source data.
+* This page covers the third getting started step, **Connecting your database**, walking you through pointing
+  Quill at your source PostgreSQL, SQL Server, or MySQL database, and settling the tables it may read.
 
-* The two setup steps described on this page establish Quill's access to your source PostgreSQL, SQL Server,
-  or MySQL database:
-   * Allowing Quill to connect to your database.
-   * Settling the tables Quill may read.
+   <Admonition type="info" title="">
+
+   New terms:
+
+   * An [app](../overview.mdx#one-quill-several-apps) answers its users from Quill's internal database.
+   * [Quill's internal database](../overview.mdx#internal-database) is a live copy of your source data.
+
+   </Admonition>
 
 * Quill's internal database stays current by [following the changes](../overview.mdx#mirroring) your source
   SQL database records.  
   Your source database has to be set up to record these changes. Quill sets it up where it can, and reports what
   is left for manual configuration.  
-  See [Prerequisites](connect-your-database.mdx#prerequisites) below for details.
-
-* Covered so far in Getting Started:
-   * [Sign up](sign-up.mdx) - After this step, your deployment has a name, a license key, and a dashboard API key.
-   * [Start Quill](start-quill.mdx) - After this step, Quill is running on your machine, and its
-     management dashboard is open.
-
-* Next step: [Map your tables](map-your-tables.mdx)
+  See [Prerequisites](connecting-your-database.mdx#prerequisites) below for details.
 
 * In this article:
-   * [Prerequisites](connect-your-database.mdx#prerequisites)
-      * [PostgreSQL](connect-your-database.mdx#postgresql)
-      * [SQL Server](connect-your-database.mdx#sql-server)
-      * [MySQL and MariaDB](connect-your-database.mdx#mysql-and-mariadb)
-   * [Connect to your source database](connect-your-database.mdx#connect-to-your-source-database)
-      * [Start the add-app wizard](connect-your-database.mdx#start-the-add-app-wizard)
-      * [Name your app and enter the connection details](connect-your-database.mdx#name-your-app-and-enter-the-connection-details)
-   * [Verify your schema](connect-your-database.mdx#verify-your-schema)
-      * [Choose the tables](connect-your-database.mdx#choose-the-tables)
-      * [When schema discovery fails](connect-your-database.mdx#when-schema-discovery-fails)
+   * [Prerequisites](connecting-your-database.mdx#prerequisites)
+      * [PostgreSQL](connecting-your-database.mdx#postgresql)
+      * [SQL Server](connecting-your-database.mdx#sql-server)
+      * [MySQL and MariaDB](connecting-your-database.mdx#mysql-and-mariadb)
+   * [Connecting to your source database](connecting-your-database.mdx#connecting-to-your-source-database)
+      * [Starting the add-app wizard](connecting-your-database.mdx#starting-the-add-app-wizard)
+      * [Naming your app and entering the connection details](connecting-your-database.mdx#naming-your-app-and-entering-the-connection-details)
+   * [Verifying your schema](connecting-your-database.mdx#verifying-your-schema)
+      * [Choosing the tables](connecting-your-database.mdx#choosing-the-tables)
+      * [When schema discovery fails](connecting-your-database.mdx#when-schema-discovery-fails)
 
 </Admonition>
 
@@ -59,7 +65,7 @@ Two conditions have to hold before CDC can start:
    * Your source database runs outside Quill's container, so the address you give Quill has to lead out of the
      container to the machine that hosts the database.
    * To find the address to use, see the
-     [Connect to your source database](connect-your-database.mdx#connect-to-your-source-database) section below.
+     [Connect to your source database](connecting-your-database.mdx#connecting-to-your-source-database) section below.
 
 * **The source database must be recording its changes.**
    * On PostgreSQL and SQL Server, Quill turns change recording on for you, as long as the database user whose
@@ -87,7 +93,7 @@ Must be set to `logical`.
 * When set to `logical`, the write-ahead log carries enough to reconstruct each change. At the other values it
   does not.
 * Quill reads `wal_level` when it lists your tables, in the
-  [Verify your schema](connect-your-database.mdx#verify-your-schema) stage, and reports an error unless the value
+  [Verify your schema](connecting-your-database.mdx#verifying-your-schema) stage, and reports an error unless the value
   is `logical`.
 
 #### The `REPLICATION` attribute:
@@ -140,7 +146,7 @@ Must be running.
   normal, and never receives a change.  
   Nothing about the connection or the tables is wrong, so Quill reports a stopped Agent service as a warning
   rather than an error.  
-  The warning appears in the [Verify your schema](connect-your-database.mdx#verify-your-schema) stage below,
+  The warning appears in the [Verify your schema](connecting-your-database.mdx#verifying-your-schema) stage,
   alongside the list of tables.
 * Azure SQL Database has no Agent service, and needs none: the Azure platform schedules the job itself.
 
@@ -162,7 +168,7 @@ MySQL or MariaDB server is configured with.
 A MySQL or MariaDB server reads its system variables from its configuration file, `my.cnf` on Linux or `my.ini` on
 Windows, so a value written there takes effect when the server restarts.  
 Quill reads the three variables below when it lists your tables, in the
-[Verify your schema](connect-your-database.mdx#verify-your-schema) stage, and reports an error for any of the three
+[Verify your schema](connecting-your-database.mdx#verifying-your-schema) stage, and reports an error for any of the three
 that does not hold the required value.
 
 #### `binlog_format`:
@@ -173,7 +179,7 @@ Must be set to `ROW`.
   changed. `ROW` selects the changed rows.
 * Quill needs `binlog_format` to be set to `ROW` because changed rows are what it copies into its internal
   database.
-* MariaDB differs here. See [On MariaDB](connect-your-database.mdx#on-mariadb) at the end of this section.
+* MariaDB differs here. See [On MariaDB](connecting-your-database.mdx#on-mariadb) at the end of this section.
 
 #### `binlog_row_image`:
 
@@ -198,7 +204,7 @@ Must be set to `ON`.
   a restart.
 * `enforce_gtid_consistency` has to be set to `ON` as well, because a MySQL server refuses to turn `gtid_mode` on
   without it.
-* MariaDB differs here. See [On MariaDB](connect-your-database.mdx#on-mariadb) at the end of this section.
+* MariaDB differs here. See [On MariaDB](connecting-your-database.mdx#on-mariadb) at the end of this section.
 
 ---
 
@@ -215,7 +221,7 @@ using a `GRANT` statement.
   keeps and where the server is writing now.
 
 Quill does not check these privileges.  
-A missing `SELECT` privilege surfaces in the [Verify your schema](connect-your-database.mdx#verify-your-schema)
+A missing `SELECT` privilege surfaces in the [Verify your schema](connecting-your-database.mdx#verifying-your-schema)
 stage, where Quill reads from the tables you select.  
 A missing `REPLICATION SLAVE` or `REPLICATION CLIENT` privilege surfaces only after the app is created, when Quill
 starts following the changes.
@@ -224,25 +230,25 @@ starts following the changes.
 
 #### On MariaDB
 
-* [binlog_format](connect-your-database.mdx#binlog_format) - A MariaDB server's default value is `MIXED`, so this
+* [binlog_format](connecting-your-database.mdx#binlog_format) - A MariaDB server's default value is `MIXED`, so this
   variable always needs to be set to `ROW`.
-* [gtid_mode](connect-your-database.mdx#gtid_mode) - A MariaDB server has no such variable. Transaction identifiers
+* [gtid_mode](connecting-your-database.mdx#gtid_mode) - A MariaDB server has no such variable. Transaction identifiers
   are always on, and Quill reads no value here.
 
 </ContentFrame>
 
 </Panel>
 
-<Panel heading="Connect to your source database">
+<Panel heading="Connecting to your source database">
 
-After [making your source database reachable and ready to record its changes](connect-your-database.mdx#prerequisites),
+After [making your source database reachable and ready to record its changes](connecting-your-database.mdx#prerequisites),
 Quill needs a name for your app, and the credentials it will use to reach the source database.
 
 <ContentFrame>
 
-### Start the add-app wizard
+### Starting the add-app wizard
 
-Open **Quill's management dashboard** (as explained in the previous step, [Start Quill](start-quill.mdx)).  
+Open **Quill's management dashboard** (as explained in the previous step, [Starting Quill](starting-quill.mdx)).  
 Then open: **My apps > Add application**
 
 ![My apps](./assets/connect-your-database_dashboard.png)
@@ -257,7 +263,7 @@ Then open: **My apps > Add application**
 
 <ContentFrame>
 
-### Name your app and enter the connection details
+### Naming your app and entering the connection details
 
 The wizard opens on its first stage:
 
@@ -343,7 +349,7 @@ The wizard opens on its first stage:
 
 </Panel>
 
-<Panel heading="Verify your schema">
+<Panel heading="Verifying your schema">
 
 The wizard's second stage lists all the tables Quill discovered in your source database, and allows you to select
 the tables that the app will work with.
@@ -355,7 +361,7 @@ the tables that the app will work with.
 
 <ContentFrame>
 
-### Choose the tables
+### Choosing the tables
 
 Discovered tables are listed for you to select from.
 
@@ -424,9 +430,9 @@ Discovered tables are listed for you to select from.
      </Admonition>
 
 8. **Next**  
-   Click to advance to the mapping stages, covered in [Map your tables](map-your-tables.mdx).  
-   Clicking **Next** runs the same verification as **Verify schema** above, ensuring that
-   [CDC](connect-your-database.mdx#prerequisites) can run on the selected tables before advancing to the next stage.
+   Click to advance to the mapping stages, covered in [Mapping your tables](mapping-your-tables.mdx).  
+   Clicking **Next** runs the same verification as **Verify schema**, described above, ensuring that
+   [CDC](connecting-your-database.mdx#prerequisites) can run on the selected tables before advancing to the next stage.
 
 </ContentFrame>
 
@@ -436,7 +442,7 @@ Discovered tables are listed for you to select from.
 
 When Quill cannot read your source database's schema, the failure is reported.  
 The cause for such failures is usually a condition from
-[Prerequisites](connect-your-database.mdx#prerequisites) that the source database does not meet. In the example
+[Prerequisites](connecting-your-database.mdx#prerequisites) that the source database does not meet. In the example
 below, the database user lacks the permission Quill needs to set up change recording.
 
 ![Schema discovery failed](./assets/connect-your-database_replication-privilege-error.png)
