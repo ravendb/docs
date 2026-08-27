@@ -28,7 +28,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * Covered so far in Getting Started:
    * [Sign up](sign-up.mdx) - After this step, your deployment has a name, a license key, and a dashboard API key.
-   * [Install and activate](install-and-activate.mdx) - After this step, Quill is running on your machine, and its
+   * [Start Quill](start-quill.mdx) - After this step, Quill is running on your machine, and its
      management dashboard is open.
 
 * Next step: [Map your tables](map-your-tables.mdx)
@@ -87,7 +87,7 @@ Must be set to `logical`.
 * When set to `logical`, the write-ahead log carries enough to reconstruct each change. At the other values it
   does not.
 * Quill reads `wal_level` when it lists your tables, in the
-  [Verify your schema](connect-your-database.mdx#verify-your-schema) step, and reports an error unless the value
+  [Verify your schema](connect-your-database.mdx#verify-your-schema) stage, and reports an error unless the value
   is `logical`.
 
 #### The `REPLICATION` attribute:
@@ -140,7 +140,7 @@ Must be running.
   normal, and never receives a change.  
   Nothing about the connection or the tables is wrong, so Quill reports a stopped Agent service as a warning
   rather than an error.  
-  The warning appears in the [Verify your schema](connect-your-database.mdx#verify-your-schema) step below,
+  The warning appears in the [Verify your schema](connect-your-database.mdx#verify-your-schema) stage below,
   alongside the list of tables.
 * Azure SQL Database has no Agent service, and needs none: the Azure platform schedules the job itself.
 
@@ -162,7 +162,7 @@ MySQL or MariaDB server is configured with.
 A MySQL or MariaDB server reads its system variables from its configuration file, `my.cnf` on Linux or `my.ini` on
 Windows, so a value written there takes effect when the server restarts.  
 Quill reads the three variables below when it lists your tables, in the
-[Verify your schema](connect-your-database.mdx#verify-your-schema) step, and reports an error for any of the three
+[Verify your schema](connect-your-database.mdx#verify-your-schema) stage, and reports an error for any of the three
 that does not hold the required value.
 
 #### `binlog_format`:
@@ -216,7 +216,7 @@ using a `GRANT` statement.
 
 Quill does not check these privileges.  
 A missing `SELECT` privilege surfaces in the [Verify your schema](connect-your-database.mdx#verify-your-schema)
-step, where Quill reads from the tables you select.  
+stage, where Quill reads from the tables you select.  
 A missing `REPLICATION SLAVE` or `REPLICATION CLIENT` privilege surfaces only after the app is created, when Quill
 starts following the changes.
 
@@ -242,7 +242,7 @@ Quill needs a name for your app, and the credentials it will use to reach the so
 
 ### Start the add-app wizard
 
-Start **Quill's management dashboard** (as explained in the previous step, [Install and activate](install-and-activate.mdx)).  
+Open **Quill's management dashboard** (as explained in the previous step, [Start Quill](start-quill.mdx)).  
 Then open: **My apps > Add application**
 
 ![My apps](./assets/connect-your-database_dashboard.png)
@@ -259,7 +259,7 @@ Then open: **My apps > Add application**
 
 ### Name your app and enter the connection details
 
-The wizard opens on its first step:
+The wizard opens on its first stage:
 
 ![Connect to your source database](./assets/connect-your-database_connect-step.png)
 
@@ -337,7 +337,7 @@ The wizard opens on its first step:
    ![Connection verified](./assets/connect-your-database_connection-verified.png)
 
 9. **Next**  
-   Click for the next step, **Verify your schema**.
+   Click for the next stage, **Verify your schema**.
 
 </ContentFrame>
 
@@ -345,10 +345,10 @@ The wizard opens on its first step:
 
 <Panel heading="Verify your schema">
 
-The wizard's second step lists all the tables Quill discovered in your source database, and allows you to select
+The wizard's second stage lists all the tables Quill discovered in your source database, and allows you to select
 the tables that the app will work with.
 
-* Only the tables you select in this step are carried into the mapping and into the app's configuration.
+* Only the tables you select in this stage are carried into the mapping and into the app's configuration.
 * Unselected tables are ignored.
 
 ---
@@ -424,9 +424,9 @@ Discovered tables are listed for you to select from.
      </Admonition>
 
 8. **Next**  
-   Click to advance to the mapping steps, covered in [Map your tables](map-your-tables.mdx).  
+   Click to advance to the mapping stages, covered in [Map your tables](map-your-tables.mdx).  
    Clicking **Next** runs the same verification as **Verify schema** above, ensuring that
-   [CDC](connect-your-database.mdx#prerequisites) can run on the selected tables before advancing to the next step.
+   [CDC](connect-your-database.mdx#prerequisites) can run on the selected tables before advancing to the next stage.
 
 </ContentFrame>
 
