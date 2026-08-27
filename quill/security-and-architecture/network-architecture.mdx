@@ -249,24 +249,8 @@ You can generate client certificates from the dashboard's Certificates page and 
 
 * The default `docker-compose.yml` publishes only the nginx entry point on port `443`.
 
-{/* TODO before publication - See RavenDB-27414 and ravendb/ravendb#23436:
-Wait until https://github.com/ravendb/ravendb/pull/23436 is merged and verify the final startup behavior.
-
-If it is merged with the currently proposed behavior:
-1. Delete the bullet stating that RavenDB starts unsecured on port 8080 before activation.
-2. In the following bullet, replace "After activation, RavenDB restarts in secured mode" with
-   "RavenDB starts in secured mode".
-3. Retain the statement that RavenDB listens only on 127.0.0.1:8443 and is inaccessible directly from other containers.
-
-Do not change the visible documentation until the merged implementation is verified.
-*/}    
-    
-* Before activation, RavenDB starts without TLS on port `8080` and listens on all container interfaces.  
-  The default configuration does not publish this port, so it is not publicly exposed.  
-  Do not publish port `8080` or allow untrusted workloads to access the Docker network used by Quill while activation is pending.
-
-* After activation, RavenDB restarts in secured mode and listens only on the container's loopback interface,  
-  at `127.0.0.1:8443`.
+* RavenDB does not start until the setup package is available.  
+  It then starts in secured mode and listens only on the container's loopback interface, at `127.0.0.1:8443`.  
   This allows nginx and the Quill web application to reach RavenDB from inside the container while preventing other containers from connecting directly.
 
 * The Quill web application listens on port `5000` inside the container, but the default configuration does not publish that port.  
