@@ -1,10 +1,209 @@
 ---
 title: "Diacritic-Sensitive Search in RavenDB"
-tags: [demo, querying, use-case]
-description: "Read about Diacritic-Sensitive Search in RavenDB on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/diacritic-sensitive-search-in-ravendb"
+tags: [querying, indexes, csharp, use-case]
+icon: "full-text-search"
+description: "Match accented terms like Kraków against both Kraków and Krakow. Compares manual diacritics normalization with a custom ASCIIFoldingFilter analyzer for Lucene and Corax indexes."
 published_at: 2025-05-09
-image: "https://ravendb.net/wp-content/uploads/2025/05/diacritic-sensitive-article.jpg"
+see_also:
+  - title: "Using Analyzers"
+    link: "indexes/using-analyzers"
+    source: "docs"
+    path: "Indexes > Using Analyzers"
+  - title: "Full-Text Search"
+    link: "client-api/session/querying/text-search/full-text-search"
+    source: "docs"
+    path: "Client API > Session > Querying > Text Search"
+  - title: "Custom Analyzers"
+    link: "studio/database/settings/custom-analyzers"
+    source: "docs"
+    path: "Studio > Database > Settings > Custom Analyzers"
 proficiency_level: "Expert"
+author: "Maciej Aszyk"
 ---
 
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+## Introduction
+
+Diacritical marks are used to change the sound value of letters in many Latin alphabet languages. This can make searching more difficult, as users may omit diacritics during search, but the word may still be relevant. To be more precise, it's not uncommon to replace diacritics with the closest letter in the Latin alphabet, e.g. **Ó => O** or **Ü => U**. You may want to end up matching a word term like **Kraków** with the exact term **Kraków** but also **Krakow**. Methods described below work for Lucene and Corax indexes.
+
+## Approaches
+
+### Diacritics normalization
+
+Queries in RavenDB are always performed on an index, by comparing search terms against index entries. Hence, it is common that the first thing you might try is to populate the index with normalized entries:
+
+```csharp
+class SearchIndex : AbstractIndexCreationTask<Cities>
+{
+    public SearchIndex()
+    {
+        Map = cities => from doc in cities
+                        select new
+                        {
+                            Name = doc.Name
+                                .Replace("Ü", "U")
+                                .Replace("Ó", "O")
+                                // ...and one more Replace for every diacritic you care about
+                        };
+
+        Index(x => x.Name, FieldIndexing.Search);
+    }
+}
+```
+
+Code that replaces diacritics can also be defined as an [additional source](https://demo.ravendb.net/demos/csharp/static-indexes/additional-sources-index) to write more complex logic and increase the readability of the index definition.
+
+This can be problematic when dealing with multiple languages and requires a lot of effort. As the normalization was done manually in the index definition, you will also have to take care of it when querying.
+
+```csharp
+session.Query<Cities, SearchIndex>()
+   .Where(x => x.Name == searchedPhrase.Replace("Ü", "U").Replace("Ó", "O"));
+```
+
+As you can see, this approach requires a lot of effort to get it right.
+
+### Custom analyzer
+
+During indexing, RavenDB uses analyzers to transform your initial data into a format that is useful for querying. You can think of an analyzer as a text pipeline: it processes your sentences (the data) into tokens (this is called tokenization), then runs each token through some filter (e.g. remove [stop-words](https://en.wikipedia.org/wiki/Stop_word)) and transforms it (e.g. lowercase the term) before storing it in an index.
+
+We've built in a couple of analyzers like Full-Text-Search (known also as **RavenStandardAnalyzer**) or **LowercaseAnalyzer**, however we give users the possibility to define [custom analyzers](https://docs.ravendb.net/studio/database/settings/custom-analyzers) to deal with non-standard requirements. User-defined analyzers are called custom analyzers. To learn more you can visit our documentation page about using [analyzers](https://docs.ravendb.net/indexes/using-analyzers).
+
+Let's start at the very beginning. If you want to define an analyzer in your C# project, you need a reference to **Lucene.Net.dll** ([version 3.0.3](https://www.nuget.org/packages/Lucene.Net/)), since every analyzer inherits from **Lucene.Net.Analysis.Analyzer**. If you cannot add the library, you can always define the class as a plain string and deploy it that way, or set it up through [RavenDB Studio](https://docs.ravendb.net/studio/database/settings/custom-analyzers).
+
+```csharp
+public class LanguageAnalyzer : Lucene.Net.Analysis.Analyzer
+{
+    public override TokenStream TokenStream(string fieldName, TextReader reader)
+    {
+        // ...build your token stream here
+        return tokenStream;
+    }
+}
+```
+
+Since we're more likely to be dealing with search, we may want to take advantage of the standard analyzer and not implement everything from scratch, so that our analyzer can inherit from **StandardAnalyzer** instead of **Lucene.Net.Analysis.Analyzer**. **StandardAnalyzer** requires a version passed in its constructor to match some underlying behavior. Currently, we recommend using **Lucene.Net.Util.Version.LUCENE_30**, since RavenDB's default full-text search also uses it.
+
+The **StandardAnalyzer** performs tokenization (splitting your sentence into words) and also removes irrelevant words (stop words from the English dictionary).  
+The Lucene library contains a filter that converts all non-ascii diacritical characters into the nearest ASCII ones, and it's available as **Lucene.Net.Analysis.ASCIIFoldingFilter**. Since we only want to fold the analyzer stream, the **TokenStream** method will look like this:
+
+```csharp
+using System.IO;
+using Lucene.Net.Analysis;
+using Lucene.Net.Analysis.Standard;
+namespace Analyzer;
+
+public class LanguageAnalyzer : Lucene.Net.Analysis.Standard.StandardAnalyzer
+{
+    public LanguageAnalyzer() : base(Lucene.Net.Util.Version.LUCENE_30)
+    {
+    }
+
+    public override TokenStream TokenStream(string fieldName, System.IO.TextReader reader)
+    {
+        return new ASCIIFoldingFilter(base.TokenStream(fieldName, reader));
+    }
+}
+```
+
+The final step is to attach the analyzer to a field in your index. Since we've multiple ways of declaring it, examples below are in the constructor of the index (**`AbstractIndexCreationTask<T>`**).
+
+```csharp
+//Analyzer as a class:
+Analyzers.Add(x => x.Name, typeof(LanguageAnalyzer).AssemblyQualifiedName);
+
+//Or by name
+string analyzerName = "LanguageAnalyzer";
+Analyzers.Add(x => x.Name, analyzerName);
+```
+
+To learn more about how to attach an analyzer visit our [docs](https://docs.ravendb.net/indexes/using-analyzers#creating-custom-analyzers).
+
+#### Deployment via operation
+
+Besides the Studio, you can deploy the analyzer straight from your code with **PutAnalyzersOperation**. The **Name** has to match the analyzer's class name, and **Code** is the analyzer's source as a plain string, namespace and `using` statements included.
+
+```csharp
+var putAnalyzerOp = new PutAnalyzersOperation(new AnalyzerDefinition
+{
+    // The name must match the analyzer's class name
+    Name = "LanguageAnalyzer",
+
+    Code = @"
+        using System.IO;
+        using Lucene.Net.Analysis;
+        using Lucene.Net.Analysis.Standard;
+
+        namespace Analyzer
+        {
+            public class LanguageAnalyzer : Lucene.Net.Analysis.Standard.StandardAnalyzer
+            {
+                public LanguageAnalyzer() : base(Lucene.Net.Util.Version.LUCENE_30)
+                {
+                }
+
+                public override TokenStream TokenStream(string fieldName, TextReader reader)
+                {
+                    return new ASCIIFoldingFilter(base.TokenStream(fieldName, reader));
+                }
+            }
+        }"
+});
+
+store.Maintenance.Send(putAnalyzerOp);
+```
+
+By default the operation applies to the default database of the document store you're using. To target a different one, use `ForDatabase("YourDatabase")`. If you want the analyzer available across the whole server, send **PutServerWideAnalyzersOperation** instead. The full set of options is covered in the [Client API section of the analyzers docs](https://docs.ravendb.net/indexes/using-analyzers#add-custom-analyzer-via-client-api).
+
+<Admonition type="warning" title="Deploy the analyzer before the index">
+Analyzer deployment via operation has to be done before deploying a related index. Otherwise, deployment of an index will throw compilation errors within the database.
+</Admonition>
+
+Finally, after following all the steps above, we get our term normalized.
+
+<Image img={require("./assets/diacritic-search1.webp")} alt="Indexed Name field terms shown with diacritics folded to plain ASCII characters" />
+
+As you can see, in our **Name** field the characters with diacritics have been folded to their plain ASCII equivalents.
+
+Complete index definition:
+
+```csharp
+class MyIndex : AbstractIndexCreationTask<Cities>
+{
+    public MyIndex()
+    {
+        Map = cities => cities.Select(x => new
+        {
+            OriginalName = x.Name,
+            Name = x.Name
+        });
+
+        Analyze(x => x.Name, "LanguageAnalyzer");
+        Index("OriginalName", FieldIndexing.Search);
+    }
+}
+```
+
+#### Lowercased term without diacritics
+
+In the example above I have used **StandardAnalyzer**, which splits your text into tokens using grammar-based rules and creates an array of terms. If you want to treat the whole sentence as a single term we suggest using [KeywordAnalyzer](https://docs.ravendb.net/indexes/using-analyzers#analyzers-available-in-ravendb) as base instead.
+
+### Querying
+
+To use your custom analyzer to transform text in the query, you have to use the **search()** method. Our search engine will apply the analyzer used during indexing to the sentences used for querying in **search(FieldName, queried_text)**. For example, when **queried_text** is **Kraków**, the searched term (after transformation) will be **krakow**.
+
+For other methods in the WHERE clause, RavenDB will use the standard analyzer (lowercase) instead. To learn more about what this method can do, visit the [search documentation](https://docs.ravendb.net/client-api/session/querying/text-search/full-text-search).
+
+It is worth mentioning that since RavenDB v6.0, we have changed the way we handle search queries with wildcards. Queries that contain prefix or/and suffix wildcards are transformed with custom analyzers as well. That would mean a query like “mün*” will be analyzed before being sent to the search engine. The standard analyzer will remove all non alphabetical characters ( “mün*” => “mun”), and will not perform a prefix search. You can learn more about it [here](https://docs.ravendb.net/migration/server/previous-versions-server-breaking-changes#full-text-search-with-wildcards).
+
+## Summary
+
+You can handle diacritics by hand in your application, as we saw in the first approach. That gives you full control over what gets replaced and how, but you have to apply the same normalization everywhere, both when indexing and when querying. The more your application grows, the easier it is to miss a spot.
+
+The custom analyzer approach moves that work into the database instead. You define the analyzer once, attach it to the field, and then you can forget about it. Your documents stay untouched, your client code stays clean, and every new query gets the same normalization for free.
