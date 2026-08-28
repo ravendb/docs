@@ -201,7 +201,7 @@ The Quill domain and the URLs used by operators, chat users, and applications re
 | Wildcard server certificate | The certificate is issued for `*.<domain>`, not for a particular IP address. |
 | Activated setup package and license | Your Quill continues using the existing activated setup package and its license file. |
 | Dashboard API key | The key is independent of the host's IP address; supply the same `QUILL_API_KEY` value to a replacement container. |
-| Quill configuration and data | Apps, agents, channels, conversations, RavenDB databases, and certificate registrations remain in the `quill-data` volume. |
+| Quill configuration and data | Apps, agents, channels, conversations, RavenDB databases, and certificate registrations remain in the persistent Docker volume mounted at `/var/lib/quill`. |
         
 Repointing the DNS records therefore does not require a new domain, new URLs, a new wildcard certificate,  
 or a different Dashboard API key.
@@ -215,7 +215,7 @@ For information about preserving or replacing the Dashboard API key, see [Operat
 
 A DNS update does not copy your Quill's data or container configuration.
 
-When moving your Quill to another host, transfer the `quill-data` volume and preserve the required deployment environment values, 
+When moving your Quill to another host, transfer the persistent Docker volume mounted at `/var/lib/quill` and preserve the required deployment environment values, 
 including `QUILL_API_KEY` and `QUILL_LICENSE_KEY`, before directing traffic to the new host.
 
 If only the existing host's externally reachable IP address changes, no data-volume migration is required.
@@ -240,15 +240,17 @@ You do not need to supply the domain, the Dashboard API key, or an authenticated
         
 ### Update the five DNS records
 
+In the commands below, `<container-name>` is the name specified by `docker run --name`.  
+By default, it matches your Quill name.
+
 Run the following command, replacing `<new-ip>` with the host's new address:
 
 ```bash
-docker exec quill update-dns --ip <new-ip>
+docker exec <container-name> update-dns --ip <new-ip>
 ```
 <br/>
 
-The command examples in this section use the container name `quill`, as defined in the supplied Docker Compose file.
-If your container has a different name, replace `quill` with its actual name.
+If the container uses the default name, the dashboard's **Settings > IP configuration** page generates this command with the container name filled in after you enter a new IPv4 address.
 
 The command updates all five DNS records in one request:
 
@@ -270,7 +272,7 @@ Callers may still receive the previous address from DNS caches, as explained in 
 To assign several addresses to each of the five DNS hostnames, separate them with commas in the value passed to `--ip`:
 
 ```bash
-docker exec quill update-dns --ip <ip-1>,<ip-2>
+docker exec <container-name> update-dns --ip <ip-1>,<ip-2>
 ```
 <br/>
 
@@ -413,7 +415,7 @@ Use the point at which verification fails to identify the affected layer:
 | Symptom | Likely cause | Next check |
 | ------- | ------------ | ---------- |
 | The DNS update command exits with an error | The new IP address is invalid, the activated server certificate or license file is unavailable, outbound HTTPS failed, or the DNS service rejected the request | Read the returned error, verify the new IP address and the activated setup package, confirm outbound access to `api.ravendb.net`, and verify all five DNS records before retrying |
-| A hostname does not resolve | The hostname or base domain is incorrect, the record was not provisioned, or a resolver cached an earlier "not found" response | Compare the hostname with the `PublicServerUrl` in the activated setup package. If the hostname was recently provisioned, wait for the cached response to expire, then resolve it again |
+| A hostname does not resolve | The hostname or base domain is incorrect, the record was not provisioned, or a resolver cached an earlier "not found" response | Compare the hostname with the `PublicServerUrl` in the activated setup package. If the hostname was recently provisioned, wait up to 15 minutes for the cached response to expire, then resolve it again |
 | A hostname still resolves to the old address | The answer is cached or the update has not completed | Allow for the TTL, then resolve all five hostnames again |
 | The hostname resolves correctly, but the connection times out | External TCP port `443` is blocked or does not reach container port `443` | Check the firewall, cloud security rules, NAT or load-balancer forwarding, and Docker port mapping |
 | The hostname resolves correctly, but the connection is refused | The container is stopped or nothing is accepting the forwarded connection | Check the container state and Docker port mapping |
@@ -426,22 +428,24 @@ Use the point at which verification fails to identify the affected layer:
     
 ### Check the container and published port
 
+In the commands below, `<container-name>` is the name specified by `docker run --name`. By default, it matches your Quill name.
+
 Confirm that the container is running:
 
 ```bash
-docker inspect quill --format "Status={{.State.Status}}"
+docker inspect <container-name> --format "Status={{.State.Status}}"
 ```
 <br/>
 
 Confirm that the container's HTTPS port is published:
 
 ```bash
-docker port quill 443/tcp
+docker port <container-name> 443/tcp
 ```
 <br/>
 
 If the container is stopped, start it before continuing.  
-If port `443` is not published, review the Docker Compose configuration.
+If port `443` is not published, review how the container was started and confirm that container port `443` is published to the host.
 
 ---
     
@@ -450,7 +454,7 @@ If port `443` is not published, review the Docker Compose configuration.
 Bypass external DNS, the host firewall, and nginx by calling the Quill web application directly:
 
 ```bash
-docker exec quill curl --fail --silent --show-error \
+docker exec <container-name> curl --fail --silent --show-error \
   http://127.0.0.1:5000/healthz
 ```
 <br/>
@@ -458,7 +462,7 @@ docker exec quill curl --fail --silent --show-error \
 Then inspect the activation state:
 
 ```bash
-docker exec quill curl --silent --show-error \
+docker exec <container-name> curl --silent --show-error \
   http://127.0.0.1:5000/api/bootstrap/status
 ```
 <br/>
@@ -474,7 +478,7 @@ If the internal health check also fails, investigate the Quill web application a
 Read the most recent Quill web application messages:
 
 ```bash
-docker exec quill tail -n 100 \
+docker exec <container-name> tail -n 100 \
   /var/lib/quill/logs/web.log
 ```
 <br/>
@@ -482,7 +486,7 @@ docker exec quill tail -n 100 \
 For nginx routing or TLS-termination failures, read:
 
 ```bash
-docker exec quill tail -n 100 \
+docker exec <container-name> tail -n 100 \
   /var/lib/quill/logs/proxy.log
 ```
 <br/>
@@ -490,7 +494,7 @@ docker exec quill tail -n 100 \
 For RavenDB startup or direct database failures, read:
 
 ```bash
-docker exec quill tail -n 100 \
+docker exec <container-name> tail -n 100 \
   /var/lib/quill/logs/ravendb.log
 ```
 <br/>
@@ -498,7 +502,7 @@ docker exec quill tail -n 100 \
 For wildcard-certificate renewal failures, read:
 
 ```bash
-docker exec quill tail -n 100 \
+docker exec <container-name> tail -n 100 \
   /var/lib/quill/logs/certwatch.log
 ```
 <br/>
@@ -521,11 +525,11 @@ For client-certificate requirements, see [Direct database access](security-and-a
   Routing, TLS termination, and authorization are handled by your Quill after the connection reaches the host  
   on port `443`.
 
-* If the host's externally reachable IP address changes, run `docker exec quill update-dns --ip <new-ip>`.
+* If the host's externally reachable IP address changes, run `docker exec <container-name> update-dns --ip <new-ip>`.
   The command derives the domain from the activated server certificate and uses the activated license to authorize the update of all five DNS records.
 
 * Updating DNS does not move your Quill to another host.  
-  Preserve the `quill-data` volume and the required deployment environment values when moving it.
+  Preserve the persistent Docker volume mounted at `/var/lib/quill` and the required deployment environment values when moving it.
 
 * The records have a TTL of 30 minutes.  
   After an update, verify both DNS resolution and HTTPS connectivity.

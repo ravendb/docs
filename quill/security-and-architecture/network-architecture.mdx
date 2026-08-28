@@ -46,7 +46,7 @@ Its three main components are RavenDB, the Quill web application, and nginx.
   Acts as Quill's reverse proxy and external TLS entry point.  
   It listens on port `443` and uses the requested hostname to route each connection to either the Quill web application or RavenDB.
 
-In the default Docker Compose configuration, only port `443` is published to the host.  
+The default Quill deployment publishes only port `443` to the host.  
 The internal ports used by the Quill web application and RavenDB are not published,  
 so external connections can only enter through nginx.
 
@@ -248,7 +248,7 @@ You can generate client certificates from the dashboard's Certificates page and 
     
 #### Publish only port 443    
 
-* The default `docker-compose.yml` publishes only the nginx entry point on port `443`.
+* The default Quill deployment publishes only the nginx entry point on port `443`.
 
 * RavenDB does not start until the setup package is available.  
   It then starts in secured mode and listens only on the container's loopback interface, at `127.0.0.1:8443`.  
@@ -259,8 +259,11 @@ You can generate client certificates from the dashboard's Certificates page and 
 
 * For diagnostics, run commands inside the container instead of publishing an internal port:
 
+    In this command, `<container-name>` is the name specified by `docker run --name`.  
+    By default, it matches your Quill name.
+
     ```bash
-    docker exec quill curl -s http://127.0.0.1:5000/api/bootstrap/status
+    docker exec <container-name> curl -s http://127.0.0.1:5000/api/bootstrap/status
     ```
 
 </Admonition>
@@ -293,9 +296,12 @@ Successful nginx certificate reloads are recorded in `/var/lib/quill/logs/certwa
 
 Inspect these logs from the host:
 
+In the commands below, `<container-name>` is the name specified by `docker run --name`.  
+By default, it matches your Quill name.
+
 ```bash
-docker exec quill tail -n 100 /var/lib/quill/logs/ravendb.log
-docker exec quill tail -n 100 /var/lib/quill/logs/certwatch.log
+docker exec <container-name> tail -n 100 /var/lib/quill/logs/ravendb.log
+docker exec <container-name> tail -n 100 /var/lib/quill/logs/certwatch.log
 ```
 <br/>
 
@@ -309,7 +315,7 @@ docker exec quill tail -n 100 /var/lib/quill/logs/certwatch.log
 * This is expected. Check the activation status from inside the container:
 
     ```bash
-    docker exec quill curl -s http://127.0.0.1:5000/api/bootstrap/status
+    docker exec <container-name> curl -s http://127.0.0.1:5000/api/bootstrap/status
     ```
     
 * Once activation reports `Ready`, connect through port `443` normally.
@@ -337,7 +343,7 @@ nginx forwards the encrypted TLS connection unchanged. RavenDB then:
 
 * The generated RavenDB settings bind the native TCP listener to `tcp://127.0.0.1:38888`,  
   so it is reachable only from inside the container.  
-  RavenDB advertises this listener as `tcp://a.<domain>:38888`, but the default Docker Compose configuration publishes only port `443`, 
+  RavenDB advertises this listener as `tcp://a.<domain>:38888`, but the default Quill deployment publishes only port `443`, 
   and nginx does not route port `38888`.
 
 * Direct access through `db.<domain>` therefore uses RavenDB's HTTPS API on port `443`.  
@@ -375,7 +381,7 @@ Applications that require direct access must use their own client certificate wi
 
 <Panel heading="Summary">
 
-* The default Docker Compose configuration publishes one port, `443`, with nginx as the external entry point.
+* The default Quill deployment publishes one port, `443`, with nginx as the external entry point.
 * Four customer-facing hostnames expose the dashboard, API, public chat, and direct RavenDB surfaces.  
   The additional `a.` hostname is RavenDB's advertised node alias.
 * The public hostname exposes only embed-link chat routes, which require an active embed-link token.
