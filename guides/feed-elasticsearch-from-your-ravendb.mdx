@@ -1,10 +1,308 @@
 ---
 title: "Feed Elasticsearch from Your RavenDB"
-tags: [background-tasks, integration, architecture, use-case]
-description: "Read about Feed Elasticsearch from Your RavenDB on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/feed-elasticsearch-from-your-ravendb"
+tags: [ongoing-tasks, integration, background-tasks]
+icon: "elastic-search-etl"
+description: "Set up RavenDB's native Elasticsearch ETL to continuously extract, transform, and load your RavenDB collections into Elasticsearch indexes, with no custom pipelines or bespoke integration code."
 published_at: 2025-12-14
-image: "https://ravendb.net/wp-content/uploads/2025/12/elastic-search-article-image.png"
+author: "Paweł Lachowski"
+see_also:
+  - title: "Ongoing Tasks: Elasticsearch ETL"
+    link: "server/ongoing-tasks/etl/elasticsearch"
+    source: "docs"
+    path: "Server > Ongoing Tasks > ETL"
+  - title: "Elasticsearch ETL Task"
+    link: "studio/database/tasks/ongoing-tasks/elasticsearch-etl-task"
+    source: "docs"
+    path: "Studio > Database > Tasks > Ongoing Tasks"
+  - title: "Ongoing Tasks: ETL Basics"
+    link: "server/ongoing-tasks/etl/basics"
+    source: "docs"
+    path: "Server > Ongoing Tasks > ETL"
 proficiency_level: "Expert"
 ---
 
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+If you care about your craft, you probably compare various products before selecting them for your next project. While Elasticsearch is an independent building block in your system, RavenDB is an all-in-one solution that provides full-text search, vector search capabilities, and much [more](https://ravendb.net/features)…
+
+If you decide to bet on RavenDB, it not only eliminates the need for an external indexing solution but also reduces the complexity and maintenance costs of your system. It’s reliable, performant at scale, and packed with features to cover any usage scenario.
+
+Still, RavenDB’s broad catalog of use cases means you may be adopting it for entirely different reasons than just full text search - for example, as your transactional database, [AI-native database](https://docs.ravendb.net/ai-integration/start), or even time-series store. Or you might already have an Elasticsearch cluster running in your environment, since it handles system logs via the ELK stack.
+
+In those situations, you’ll often want to push some RavenDB collections into Elasticsearch. Building this manually can get complicated fast: custom pipelines, background workers, job schedulers - all just to wire two systems together.
+
+But there’s no need to reinvent the wheel.
+
+RavenDB ships with an [ETL engine](/7.2/server/ongoing-tasks/etl/basics), including native Elasticsearch ETL support. It’s easy to configure, highly reliable, and removes the need for any bespoke integration code. Your data flows directly from RavenDB to Elasticsearch in a controlled, incremental, production-ready way - right out of the box.
+
+ETL (extract, transform, load) is a process that continuously extracts data from a source (e.g. RavenDB database), transforms it according to the script, and then loads it to a designated place. It allows us to continuously propagate new documents and their changes (or deletions) from RavenDB to Elasticsearch and, if needed, transform them to match your Elastic data model.
+
+In this guide, we’ll show you how easily you can set up your own RavenDB Elasticsearch ETL, which will abstract out the complexity of connecting these two services.
+
+## Prerequisites
+
+The only requirements are RavenDB with an [enterprise](https://ravendb.net/buy) license and your Elasticsearch project. If you just want to try things out, claim a [**free developer license**](https://ravendb.net/dev).
+
+If unsure of your licence, you can check whether you can use ETL by opening the chosen database in RavenDB, selecting the Tasks section, and then Ongoing Tasks. Then, try to create a new ongoing Elasticsearch ETL task. If still in doubt, check Info Hub's licensing section on the right.
+
+<Image img={require("./assets/elasticsearch-etl1.webp")} alt="RavenDB feeding data into an Elasticsearch cluster" />
+
+In this guide, we’ll use RavenDB v7.1 with a [sample dataset](https://docs.ravendb.net/studio/database/tasks/create-sample-data) and an [Elastic Cloud](https://www.elastic.co/cloud) instance.
+
+## Setup
+
+There are two halves to this. First we collect an endpoint and an API key on the Elasticsearch side, then we hand both to RavenDB and write the transformation script.
+
+### Elasticsearch
+
+To start, we will need two things from Elasticsearch:
+
+- Elasticsearch Endpoint URL  
+- API key (that has been granted specific permissions)
+
+Enter your Elasticsearch project, and you can immediately copy the first needed thing - the Elasticsearch Endpoint. For an on-premise Elasticsearch endpoint, it is just a URL (host + port) your client communicates with, for example: `https://127.0.0.1:9200`. Copy it aside, as we will need it for the connection string:
+
+<Image img={require("./assets/elasticsearch-etl2.webp")} alt="Copying the Elasticsearch endpoint URL from the Elastic project page" />
+
+Then, next to it, we click Create API key. This opens a menu where we select the name, then choose the permission. To assign specific permissions, you enable “Control security privileges”, which opens a menu to enter JSON.
+
+<Image img={require("./assets/elasticsearch-etl3.webp")} alt="Creating an Elasticsearch API key with control security privileges enabled" />
+
+To enable RavenDB to connect to Elasticsearch and move data to it, it needs a few index permissions. Minimal permissions JSON should look like this: 
+
+```json
+{
+  "ravendb-role": {
+    "cluster": [
+      "monitor"
+    ],
+    "indices": [
+      {
+        "names": [
+          "*"
+        ],
+        "privileges": [
+          "create_index",
+          "read",
+          "write",
+          "delete",
+          "maintenance"
+        ],
+        "allow_restricted_indices": false
+      }
+    ],
+    "applications": [],
+    "run_as": [],
+    "metadata": {},
+    "transient_metadata": {
+      "enabled": true
+    }
+  }
+}
+```
+
+<Admonition type="note" title="Permissions RavenDB needs">
+To run an Elasticsearch ETL, the role needs cluster-level `monitor` access plus index-level `create_index`, `read`, `write`, `delete`, and `maintenance` privileges.
+</Admonition>
+
+Inside these security privileges, we define what the ravendb-role is allowed to do. The role is granted cluster-level monitoring access. For indexes, the role receives broad permissions across all index names (“*”, adjust it manually based on what indexes your ETL will use), including creating new indexes, reading and writing data, deleting documents, and performing maintenance operations.
+
+If you want to create such an API key on your on-premise instance, you can read about how to do it in the [official Elasticsearch docs](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-security-create-api-key).
+
+With these inside security privileges, you can finalize API key creation. Copy it to a safe place, as it will be unavailable after leaving the current page. Then we can move to RavenDB and its ongoing tasks. 
+
+### RavenDB
+
+Open the chosen database in RavenDB, select the Tasks section, and then Ongoing Tasks. Then create a new ongoing Elasticsearch ETL task.
+
+<Image img={require("./assets/elasticsearch-etl4.webp")} alt="Creating a new Elasticsearch ETL ongoing task in RavenDB" />
+
+Inside, we will start by setting up the connection. 
+
+1. Select Task Name, and if not switched on, select ‘Create a new Elasticsearch connection string’.   
+2. You input your Connection String’s Name; it can be whatever you want.   
+3. In ‘Nodes URLs’, enter your Elasticsearch endpoint (or multiple if running a high-availability cluster)   
+4. Add it using the ‘Add URL’ button on the right.
+
+Then you want to switch your Authentication method to an encoded API Key, since that is the one we have. You can also authenticate using different options, such as an unencoded API key, Basic (username and password), or a certificate.  
+
+<Image img={require("./assets/elasticsearch-etl5.webp")} alt="Configuring the Elasticsearch connection string and encoded API key authentication in RavenDB" />
+
+Now we need to tell RavenDB which indexes to create or update, and which fields we want from our documents.
+
+### Transformation Script
+
+<Image img={require("./assets/elasticsearch-etl6.webp")} alt="The Elasticsearch ETL transformation script editor in RavenDB" />
+
+Start selecting which document collections you want to process, below the script. You can do this at the bottom. The transformation script can be as advanced as you need. For example, the easiest way to try is just to transfer the whole document. Pick the Products collection, and the whole script is one line. The index name is baked into the function name, so `loadToProduct` sends the document to the `product` index:
+
+```js
+loadToProduct(this);
+```
+
+`loadToChosenIndex(object);` function is a signal to RavenDB that the object you target should be sent to a specific Elasticsearch index. It is a basic function to work with Elasticsearch using RavenDB.
+
+We can also shape it a little better, and include only the required information, or try to fit it into your existing Elastic data model. To extract only what we need, we can do it like this:
+
+```js
+var productData = { 
+    ProductId: id(this), // property with RavenDB document ID
+    QtyPerUnit: this.QuantityPerUnit,
+    Category: this.Category, 
+    Cost: this.PricePerUnit 
+};
+
+loadToProduct(productData);
+```
+
+As you can see, we select fields, put them into an object, and later send it to Elasticsearch.
+
+The key element here is:
+
+`ProductId: id(this)`
+
+This will extract RavenDB’s Id of the documents from the collection you attach. You can change first Id to anything you want, for example:
+
+- `ReportId: id(this)`
+- `SourceDocumentId: id(this)`
+
+But what if we want to transform some data that has nested fields? Let’s use the following script:
+
+```js
+var orderData = {
+    Id: id(this), // property with RavenDB document ID
+    OrderLinesCount: this.Lines.length,
+    TotalCost: 0
+};
+
+for (var i = 0; i < this.Lines.length; i++) {
+    var line = this.Lines[i];
+    var cost = (line.Quantity * line.PricePerUnit) * ( 1 - line.Discount);
+    orderData.TotalCost += cost;
+    loadToOrderLines({
+        OrderId: id(this), // property with RavenDB document ID
+        Qty: line.Quantity,
+        Product: line.Product,
+        Cost: line.PricePerUnit
+    });
+}
+
+loadToOrders(orderData); // load to Elasticsearch Index 'orders'
+```
+
+In this example, we propagate aggregated order details by defining `OrderLinesCount` and `TotalCost`, which are bumped later when processing OrderLines and the OrderLines themselves, as independent items.
+
+<Image img={require("./assets/elasticsearch-etl7.webp")} alt="Elasticsearch ETL transformation script with the loadTo output indexes defined" />
+
+After saving the script, review the Elasticsearch Indexes under the connection string. The indexes you define there must match the names used in your script. This means the name passed to `loadTo` needs to match the index name, and the document ID field you send must match the ID defined in the transformation.
+
+<Admonition type="tip" title="Matching indexes to your script">
+The index name you register must match the target in your `loadTo<Index>` call (lowercased), and the Document Id field must match the ID you set in the transformation.
+</Admonition>
+
+For example
+
+```js
+ReportId: id(this)
+loadToReports(reportsData);
+```
+
+Means we need to input “reports” (lowercased) as Index name and “ReportId” as Document Id.
+
+After this, all you need to do is save your task and let RavenDB transport the selected documents. And that’s it. All selected data will be synced up with Elasticsearch.
+
+## Do you still need two search engines?
+
+Once your ETL is in place and your Elasticsearch index starts receiving data, you’ve got everything you need to keep your existing setup operational.
+
+But when you have a moment to step back and look at the bigger picture, it’s worth thinking about whether you actually need two separate search engines long-term.
+
+RavenDB isn’t just a simple OLTP database - it ships with a powerful full-text search engine ([Corax](/7.2/indexes/search-engine/corax)), semantic and [vector search](/7.2/ai-integration/vector-search/overview), and if you prefer Lucene, it’s also available. If your system is already moving toward RavenDB, it may simplify your life to unify both storage and search under a single roof.
+
+About Lucene that we mentioned, Elasticsearch uses it too, and RavenDB can run on it as well. That shared ancestry means the everyday full-text toolkit lines up closely. Here is how the pieces actually map:
+
+| Elasticsearch capability | RavenDB equivalent | Notes |
+| --- | --- | --- |
+| `match` / `query_string` full-text | [`search()`](/7.2/client-api/session/querying/text-search/full-text-search) in RQL | Same tokenized matching, expressed inline in the query |
+| Analyzers and tokenizers | [Lucene analyzers](/7.2/indexes/using-analyzers), including custom ones | Corax fully supports all Lucene analyzers |
+| Fuzzy matching | [`fuzzy()`](/7.2/client-api/session/querying/text-search/fuzzy-search) | |
+| Phrase and proximity | [`proximity()`](/7.2/client-api/session/querying/text-search/proximity-search) plus quoted phrases | |
+| Prefix, wildcard, regex | [`startsWith`](/7.2/client-api/session/querying/text-search/starts-with-query), [`endsWith`](/7.2/client-api/session/querying/text-search/ends-with-query), [`regex`](/7.2/client-api/session/querying/text-search/using-regex) | |
+| Field and term boosting | [`boost()`](/7.2/client-api/session/querying/text-search/boost-search-results) | |
+| Highlighting | [Highlighting](/7.2/indexes/querying/highlighting) | |
+| Terms and range aggregations | [Facets](/7.2/indexes/querying/faceted-search) with Sum, Min, Max, Average | |
+| Suggesters (did-you-mean) | [Suggestions](/7.2/indexes/querying/suggestions) | |
+| More Like This | [MoreLikeThis](/7.2/indexes/querying/morelikethis) | |
+| Geo queries | [Spatial queries](/7.2/indexes/querying/spatial) | |
+| kNN / dense vector search | [`vector.search()`](/7.2/ai-integration/vector-search/overview) | RavenDB can also [generate the embeddings](/7.2/ai-integration/generating-embeddings/overview) for you |
+| Synonym token filters | No built-in equivalent | Reachable through a custom analyzer, but you build it yourself |
+| Percolator (stored queries matched against new docs) | No equivalent | |
+| Pipeline aggregations, date histograms | [Map-reduce indexes](/7.2/indexes/map-reduce-indexes) | A different model, not a drop-in translation |
+| Kibana, Logstash, Beats | No equivalent | |
+
+So the search primitives you reach for day to day are all there, and a few things are not. The honest dividing line is what your Elasticsearch cluster is actually doing for you. If it powers application search over your operational data, that job moves to RavenDB cleanly and you drop a moving part. If it is the E in your ELK stack, holding logs and Kibana dashboards, keep it, because RavenDB is not trying to replace that.
+
+You don’t have to make that decision today. But when you’re ready, bringing that search layer into RavenDB is a smooth transition - especially when you compare how expressive queries can be.
+
+What you can do in Elasticsearch with code like this
+
+```json
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "query_string": {
+            "query": "robots AND \"science fiction\"",
+            "fields": [ "title", "description" ]
+          }
+        }
+      ],
+      "filter": [
+        { "term":  { "isReleased": true }},
+        { "range": { "release_date": { "gte": "2010-01-01" }}}
+      ]
+    }
+  }
+}
+```
+
+You can do the same in RavenDB, just like this:
+
+```sql
+from Movies
+where (search(Title, "robots \"science fiction\"")
+      or search(Description, "robots \"science fiction\""))
+and IsReleased = true
+and ReleaseDate >= "2010-01-01"
+```
+
+Or just use semantic search:
+
+```sql
+$p0 = ["science fiction", "robots"]
+
+from Movies
+where vector.search(embedding.text(Description), $p0, 0.8)
+and IsReleased = true
+and ReleaseDate >= "2010-01-01"
+```
+
+## Summary
+
+Your data is now flowing to Elasticsearch! Here is what we wired up along the way:
+
+- An Elasticsearch API key scoped to a `ravendb-role` with cluster `monitor` access and `create_index`, `read`, `write`, `delete`, and `maintenance` privileges on the target indexes.
+- A RavenDB Elasticsearch connection string pointing at your node URLs, authenticated with that encoded API key.
+- A transformation script that picks the fields you actually want and hands them to `loadTo<Index>`, including a nested example that fans order lines out into their own index.
+- Index registrations whose names match the `loadTo` targets (lowercased) and whose Document Id fields match the IDs set in the script.
+
+In the meantime, while your ETL transports data to Elasticsearch, take a look at how RavenDB can help you implement *semantic search* [here](./enable-ai-search-in-your-web-app-in-5-minutes).
+
+Interested in RavenDB? Grab the developer license dedicated to testing under this link [here](https://ravendb.net/dev) or get a free cloud database [here](https://ravendb.net/cloud). Any questions about this feature, or just want to hang out and talk with the RavenDB team? Join our Discord Community Server - invitation link is [here](https://discord.com/invite/ravendb).
