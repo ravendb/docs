@@ -10,7 +10,7 @@
         "name": "Omer Ratsaby",
         "job_title": "DevOps Engineer",
         "url": null,
-        "image_url": "https://ravendb.net/wp-content/uploads/2024/11/Default-author-thumbnail-150x150.png",
+        "image_url": "https://ravendb.net/api/media/file/2024-08-omer.png",
         "socials": {}
     },
     "Gracjan Sadowicz": {
@@ -40,5 +40,54 @@
         "url": null,
         "image_url": "https://ravendb.net/wp-content/uploads/2022/01/Bartosz.jpg",
         "socials": {}
+    },
+        "Maciej Aszyk": {
+        "name": "Maciej Aszyk",
+        "job_title": "Software Developer",
+        "url": null,
+        "image_url": "https://ravendb.net/wp-content/uploads/2022/01/Maciej.jpg",
+        "socials": {}
+    },
+    "Stav Lagziel": {
+        "name": "Stav Lagziel",
+        "job_title": "Backend developer",
+        "url": null,
+        "image_url": "https://ravendb.net/api/media/file/2024-11-stav.jpg",
+        "socials": {}
+    },
+        "Lev Skuditsky": {
+        "name": "Lev Skuditsky",
+        "job_title": "Software Developer",
+        "url": null,
+        "image_url": "https://ravendb.net/api/media/file/2022-09-lev.jpg",
+        "socials": {}
+    },
+    "Michał Leśniak": {
+        "name": "Michał Leśniak",
+        "job_title": "Backend C# Developer",
+        "url": null,
+        "image_url": "https://ravendb.net/wp-content/uploads/2024/11/Default-author-thumbnail-150x150.png",
+        "socials": { "linkedin": "https://www.linkedin.com/in/michal-lesniak/" }
+    },
+    "Shiran Shalom Abramowsky": {
+        "name": "Shiran Shalom Abramowsky",
+        "job_title": "Backend Developer",
+        "url": null,
+        "image_url": "https://ravendb.net/api/media/file/2021-06-shiran_shalom.jpg",
+        "socials": { "linkedin": "https://www.linkedin.com/in/shiran-shalom/" }
+    },
+    "Arkadiusz Paliński": {
+        "name": "Arkadiusz Paliński",
+        "job_title": "Development Team Lead",
+        "url": null,
+        "image_url": "https://ravendb.net/api/media/file/2021-01-arek_palinski.jpg",
+        "socials": { "linkedin": "https://pl.linkedin.com/in/arekpalinski" }
+    },
+    "Mateusz Ziemiewicz": {
+        "name": "Mateusz Ziemiewicz",
+        "job_title": "Cloud Developer",
+        "url": null,
+        "image_url": "https://ravendb.net/wp-content/uploads/2024/11/Default-author-thumbnail-150x150.png",
+        "socials": { "linkedin": "https://www.linkedin.com/in/mateusz-ziemiewicz-2883211b3/" }
     }
 }
