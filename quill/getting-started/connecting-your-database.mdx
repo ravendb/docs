@@ -21,12 +21,11 @@ management dashboard is open.
 
 <Admonition type="note" title="">
 
-* This page covers the third getting started step, **Connecting your database**, walking you through pointing
-  Quill at your source PostgreSQL, SQL Server, or MySQL database, and settling the tables it may read.
+* This page covers the third Getting Started step, **Connecting your database**, walking you through the
+  **Add new app** wizard's first stages: pointing Quill at your source PostgreSQL, SQL Server, or MySQL
+  database, and settling the tables it may read.
 
    <Admonition type="info" title="">
-
-   New terms:
 
    * An [app](../overview.mdx#one-quill-several-apps) answers its users from Quill's internal database.
    * [Quill's internal database](../overview.mdx#internal-database) is a live copy of your source data.
@@ -45,7 +44,7 @@ management dashboard is open.
       * [SQL Server](connecting-your-database.mdx#sql-server)
       * [MySQL and MariaDB](connecting-your-database.mdx#mysql-and-mariadb)
    * [Connecting to your source database](connecting-your-database.mdx#connecting-to-your-source-database)
-      * [Starting the add-app wizard](connecting-your-database.mdx#starting-the-add-app-wizard)
+      * [Starting the Add new app wizard](connecting-your-database.mdx#starting-the-add-new-app-wizard)
       * [Naming your app and entering the connection details](connecting-your-database.mdx#naming-your-app-and-entering-the-connection-details)
    * [Verifying your schema](connecting-your-database.mdx#verifying-your-schema)
       * [Choosing the tables](connecting-your-database.mdx#choosing-the-tables)
@@ -246,18 +245,18 @@ Quill needs a name for your app, and the credentials it will use to reach the so
 
 <ContentFrame>
 
-### Starting the add-app wizard
+### Starting the Add new app wizard
 
 Open **Quill's management dashboard** (as explained in the previous step, [Starting Quill](starting-quill.mdx)).  
-Then open: **My apps > Add application**
+Then open: **My apps > Add app**
 
 ![My apps](./assets/connect-your-database_dashboard.png)
 
 1. **My apps**  
    Open the **My apps** view.
 
-2. **Add application**  
-   Start the wizard to add an application.
+2. **Add app**  
+   Start the **Add new app** wizard.
 
 </ContentFrame>
 
@@ -265,7 +264,7 @@ Then open: **My apps > Add application**
 
 ### Naming your app and entering the connection details
 
-The wizard opens on its first stage:
+The **Add new app** wizard opens on its first stage:
 
 ![Connect to your source database](./assets/connect-your-database_connect-step.png)
 
@@ -273,13 +272,13 @@ The wizard opens on its first stage:
    An app's configuration can be exported and reused.  
    Import an exported configuration to fill in its connection and table mapping details.
 
-2. **Application name**  
-   Enter a name for your new application.  
-   e.g., **Northwind Demo**
+2. **App name**  
+   Enter a name for your new app.  
+   e.g., **Northwind Traders**
 
 3. **Public URL slug**  
-   Enter a unique identifier for the application, or click **Regenerate** to create it automatically.  
-   e.g., **Northwind Demo** becomes `northwind-demo`  
+   Enter a unique identifier for the app, or click **Regenerate** to create it automatically.  
+   e.g., **Northwind Traders** becomes `northwind-traders`  
    The identifier appears in the public URLs the app is served on, and becomes the name of the app's internal
    database.
 
@@ -316,9 +315,9 @@ The wizard opens on its first stage:
       * For a source database **on another machine**, enter the other machine's address.  
         e.g., `db.example.com`
    * **Port**  
-     The wizard prefills this field with the default port of the database type you selected:  
-     `5432` for PostgreSQL, `1433` for SQL Server, and `3306` for MySQL.  
-     Edit this value if your server listens on a different port.
+     Enter the port your source database listens on.  
+     The field shows the default port for the database type you selected, `5432` for PostgreSQL, `1433` for SQL
+     Server, or `3306` for MySQL.
    * **Database**  
      The **source database name**.  
      e.g., `northwind`
@@ -416,7 +415,9 @@ Discovered tables are listed for you to select from.
 7. **The selection bar**  
    Appears once a table is selected, to show how many of the discovered tables are selected.
    * Click **Deselect all** to clear the selection.
-   * Click **Verify schema** to check that CDC can run on the selected tables.
+   * Click **Verify schema** to check that CDC can run on the selected tables.  
+     The button is replaced by a confirmation when the check passes:  
+     ![Schema verified](./assets/connect-your-database_schema-verified.png)
 
      <Admonition type="info" title="">
 
