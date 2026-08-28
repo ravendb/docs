@@ -1,10 +1,186 @@
 ---
 title: "Master RavenDB Projections Performance"
-tags: [indexes, perf-tuning, deep-dive]
-description: "Read about Master RavenDB Projections Performance on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/master-ravendb-projections-performance"
+author: "Paweł Lachowski"
+tags: [indexes, querying, perf-tuning, deep-dive]
+icon: "documents-query"
+description: "How RavenDB projections return only the fields you need, why projected data comes from documents by default, and how to store fields in a static index and tune projection behavior for faster reads."
 published_at: 2025-07-30
-image: "https://ravendb.net/wp-content/uploads/2025/07/master-ravendb-article-cover.png"
+see_also:
+  - title: "Projections"
+    link: "indexes/querying/projections"
+    source: "docs"
+    path: "Indexes > Querying > Projections"
+  - title: "Storing Data in Index"
+    link: "indexes/storing-data-in-index"
+    source: "docs"
+    path: "Indexes > Storing Data in Index"
+  - title: "Project Query Results"
+    link: "client-api/session/querying/how-to-project-query-results"
+    source: "docs"
+    path: "Client API > Session > Querying"
 proficiency_level: "Expert"
 ---
 
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+## Introduction
+
+When working with larger data models, you might not be interested in the whole document. If you want to select a few specific fields, you can use RavenDB projections. [Projections](/7.2/indexes/querying/projections) are a flexible and high-performance tool that allows you to choose a few fields without fetching the full document. Let’s take a look at how RavenDB projections work and what you can tune to make them faster.
+
+### How projections work
+
+Using projections doesn’t require any setup; you can use them immediately. When creating a query, instead of using the standard method, use the [`select` keyword](/7.2/querying/overview) to display only specific fields. For example:
+
+<Image img={require("./assets/projections1.webp")} alt="RQL query using the select keyword to project specific fields" />
+<Image img={require("./assets/projections2.webp")} alt="Query results showing only the selected projected fields" />
+
+As you can see, the query returned only selected fields. It is worth noting that projections are the last step in making a query. They are applied after all has been processed, filtered, sorted, and paged. This allows projections to be created only from results, not from all unfiltered documents, saving a lot of performance and letting you filter out unnecessary data. But how does it work, and what can we set up? Let’s dive in and see what we can learn.
+
+## Behind the curtain
+
+One crucial fact about projections is that they, by default, do not originate from indexes. By default, queries do not return indexed data directly as query results; they use them to find documents faster, and then they work directly with documents, returning the whole file. This approach ensures that all data remains accessible to the user.
+
+Because we work with whole documents, not only indexed fields, we can query using different fields that you select, not just the fields that are part of the index. The index should contain only the fields that you care about when filtering or searching the data. Once RavenDB finds index entries that match your criteria, it fetches the documents that these entries represent, where you have all document fields. That might not be so obvious for people still learning RavenDB. For example, a query like this:
+
+```sql
+from index "EmployeesIndex" 
+where Address_City == "Seattle"
+```
+
+Will initially work on an index with entries that contain only the document ID and “City” field, so you won’t make a full table scan while searching for correct documents matching the query. Index looking like this:
+
+<Image img={require("./assets/projections3.webp")} alt="Index entries containing only the document ID and City field" />
+
+After obtaining the IDs of matching documents, by default, the context moves to the documents, letting you choose different fields from it. For example:
+
+```sql
+select FirstName as EmployeeFirstName, Title as EmployeeTitle
+```
+
+And it will still return our data because RavenDB retrieves it from the document, not the index entries.
+
+Some users often get confused about the fact that fields do not come from the index.
+This confusion arises because when you query an index, it seems intuitive to assume that all the data returned comes directly from the index entries themselves. But in reality, the index just helps locate which documents match the query faster; the complete data is still stored and loaded from the documents in the database by default.
+
+<Image img={require("./assets/projections4.webp")} alt="Query projecting document fields that are not part of the index" />
+
+That doesn’t mean you can’t retrieve data directly from the index. In fact, it’s usually faster to do so, and this behavior can be configured - more on that in the [projection behavior](#projection-behavior) section of this article. The trade-off is that storing data in the index can increase its size, and if done wrong, slow down performance. In short, you can choose between faster reads from the index or reading data from the document itself without increasing the index size. To get those fields from index, you need to [store your fields](/7.2/indexes/storing-data-in-index).
+
+## Storing projection fields in the index
+
+There will be cases when you need an index that allows you to query your data as quickly as possible, but on the other hand, there will also be cases when you want your index to be as lightweight as possible (e.g., IoT).
+
+Storing projection fields in the index will increase the index size, but shorten the time to get your projected results. To achieve this, you need to use a [static index](/7.2/indexes/map-indexes) to gain complete control over it. You can set that either in the studio or in code.
+
+In code, you just use `Stores.Add` after fields. For example:
+
+```csharp
+public class Employees_ByFirstAndLastName : AbstractIndexCreationTask<Employee>
+{
+    public Employees_ByFirstAndLastName()
+    {
+        Map = employees => from employee in employees
+                           select new
+                           {
+                               employee.FirstName,
+                               employee.LastName
+                           };
+
+        Stores.Add(x => x.FirstName, FieldStorage.Yes);
+        Stores.Add(x => x.LastName, FieldStorage.Yes);
+    }
+}
+```
+
+You can also use the Studio. Go to your index and at the bottom, add a field. Specify which fields you want to store:
+
+<Image img={require("./assets/projections5.webp")} alt="Studio index editor with fields set to be stored" />
+
+### Storing computed values for projections
+
+You can use stored computed values in your index to get those in your projection in a query. For example, let’s say your index puts together FirstName and LastName into one field called FullName.
+
+<Image img={require("./assets/projections6.webp")} alt="Static index combining FirstName and LastName into a FullName field" />
+<Image img={require("./assets/projections7.webp")} alt="Query projecting the stored computed FullName field" />
+
+If you want to retrieve the ready-made FullName when querying, you simply need to store it in the index as mentioned above.
+
+## Projection behavior
+
+You can customize how projection queries to this index are handled by adjusting the projection behavior in the top-right settings of your query menu. This lets you control whether results are pulled directly from the index or include data from the associated documents.
+
+<Image img={require("./assets/projections8.webp")} alt="Query menu projection behavior settings in the Studio" />
+
+In code, it can be done as shown in this example:
+
+```csharp
+var projectedResults = session
+    .Query<Employees_ByNameAndTitleWithStoredFields.IndexEntry,
+        Employees_ByNameAndTitleWithStoredFields>()
+     // Call 'Customize'
+     // Pass the requested projection behavior to the 'Projection' method
+    .Customize(x => x.Projection(ProjectionBehavior.FromIndexOrThrow))
+     // Select the fields that will be returned by the projection
+    .Select(x => new EmployeeDetails
+    {
+        FirstName = x.FirstName,
+        Title = x.Title
+    })
+    .ToList();
+```
+
+### Projection behavior options
+
+Default
+
+* Retrieve values from the stored index fields when available.
+* If fields are not stored, then get values from the document; a field that is not found in the document is skipped.
+
+FromIndex
+
+* Retrieve values from the stored index fields when available.
+* A field that is not stored in the index is skipped.
+
+FromIndexOrThrow
+
+* Retrieve values from the stored index fields when available.
+* An exception is thrown if the index does not store the requested field.
+
+FromDocument
+
+* Retrieve values directly from the documents.
+* A field that is not found in the document is skipped.
+
+FromDocumentOrThrow
+
+* Retrieve values directly from the documents store.
+* An exception is thrown if the document does not contain the requested field.
+
+## Fetching nested fields from the index in the code
+
+If you’re storing a nested field (e.g., `Address.City`) in your static index, and want to use projection to fetch it. For example, index like this:
+
+<Image img={require("./assets/projections9.webp")} alt="Static index storing the nested Address.City field" />
+
+Typically, when using nested fields, we divide parts of field names with underscores (_). We need the same type in fields on the client side. For example, Address.City in your document might be stored as Address_City in the index. This difference can cause issues when projecting fields.
+
+To handle this, you can use a convention to automatically translate property names when querying. By default, static indexes replace dots (.) in nested field names with underscores (_). You set this [convention](/7.2/client-api/configuration/conventions) when initializing your DocumentStore. Use this convention to customize this:
+
+```csharp
+store.Conventions.FindPropertyNameForIndex = (indexedType, indexName, path, prop) =>
+    (path + prop).Replace(",", "_").Replace(".", "_");
+```
+
+This ensures your application’s projection paths match how fields are stored in your static indexes.
+
+## Summary
+
+In summary, projections are a simple way to get only the fields you need, but the performance technicalities may not be the simplest. Projection performance is configurable in many ways, offering a range of options tailored to your specific development needs.
+
+If you want to learn more about projections, ask some questions, or chat with us, `select` our Discord community server and come talk with our core team and community. See you in the chat!
