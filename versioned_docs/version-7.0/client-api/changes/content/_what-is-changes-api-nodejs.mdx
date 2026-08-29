@@ -18,7 +18,6 @@ import CodeBlock from '@theme/CodeBlock';
   * [Unsubscribing](../../../client-api/changes/what-is-changes-api.mdx#unsubscribing)  
   * [FAQ](../../../client-api/changes/what-is-changes-api.mdx#faq)  
      * [Changes API and Database Timeout](../../../client-api/changes/what-is-changes-api.mdx#changes-api-and-database-timeout)  
-     * [Changes API and Method Overloads](../../../client-api/changes/what-is-changes-api.mdx#changes-api-and-method-overloads)  
   * [Changes API -vs- Data Subscriptions](../../../client-api/changes/what-is-changes-api.mdx#changes-api--vs--data-subscriptions)  
 </Admonition>
 ## Accessing Changes API
@@ -110,14 +109,6 @@ try \{
 
 One or more open Changes API connections will prevent a database from becoming 
 idle and unloaded, regardless of [the configuration value for database idle timeout](../../../server/configuration/database-configuration.mdx#databasesmaxidletimeinsec).  
-#### Changes API and Method Overloads
-
-<Admonition type="warning" title="">
-To get more method overloads, especially ones supporting **delegates**, please add the 
-[System.Reactive.Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project.  
-</Admonition>
-
-
 
 ## Changes API -vs- Data Subscriptions
 
