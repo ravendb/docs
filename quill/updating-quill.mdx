@@ -1,0 +1,406 @@
+---
+title: "Updating Quill"
+sidebar_label: "Updating Quill"
+description: "How to update Quill by replacing its Docker container while preserving its data volume, and how to recover from an expired build."
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">   
+
+* A Quill build expires **90 days after its release date**. If the build has expired when its container starts,  
+  Quill displays the **This build has expired** notice instead of making its normal services available.
+
+* Build expiry is separate from license expiry. Each condition requires a different recovery procedure.  
+  See [Build expiry and license expiry](#build-expiry-and-license-expiry).
+  
+* Updating Quill means replacing its Docker container with one created from a newer image.  
+  A running container cannot be updated in place because it continues to use the image from which it was created.
+
+* Removing and replacing the container does not remove your Quill data.  
+  Quill's persistent files are stored in a Docker volume mounted at `/var/lib/quill`,  
+  and removing the container leaves that volume in place.
+  See [What an update replaces](#what-an-update-replaces).
+
+* Before removing the container, identify and record which Docker volume is mounted at `/var/lib/quill`.  
+  Do not continue unless you can confirm the volume.
+  See [Identify the container and its data volume](#identify-the-container-and-its-data-volume).
+    
+* This article explains how to identify Quill's current container and data volume, 
+  replace the container with one created from a newer image, verify that Quill is ready and using the expected data, and troubleshoot update problems.    
+
+* In this article:
+  * [Before you update](#before-you-update)
+    * [When to update](#when-to-update)
+    * [Build expiry and license expiry](#build-expiry-and-license-expiry)  
+    * [What an update replaces](#what-an-update-replaces)  
+    * [Identify the container and its data volume](#identify-the-container-and-its-data-volume)
+  * [Update Quill](#update-quill)
+    * [Stop and remove the current container](#stop-and-remove-the-current-container)  
+    * [Pull the newer image and start Quill](#pull-the-newer-image-and-start-quill)  
+    * [Verify the update](#verify-the-update)  
+    * [Troubleshoot the update](#troubleshoot-the-update)
+  * [Summary](#summary)
+
+</Admonition>
+
+## Before you update
+
+<Panel heading="When to update">
+
+Update Quill when:
+
+  * it displays the **This build has expired** notice;
+  * a newer Quill image is available and you want to move to it before the current build expires.
+
+The update procedure is the same in either case.
+
+</Panel>
+
+<Panel heading="Build expiry and license expiry">
+
+Each Quill build has a release date and expires 90 days after that date.  
+Quill evaluates the build age when the container starts.  
+A container that is already running when the 90-day period ends continues running until it is restarted.
+
+When a container starts from an expired build:
+  * The dashboard, the Quill API, and embedded chat pages return the **This build has expired** notice.
+  * The container's health check still returns HTTP `200`, with `expired` in the response body.
+
+The successful health response is intentional:  
+  * Build expiry prevents Quill from serving its normal surfaces, but it does not represent a crashed container. 
+  * Monitoring that checks only the HTTP status can therefore report an expired Quill as healthy.
+
+Build expiry and license expiry are separate conditions:
+
+| Condition      | Resolution                                                       |
+| -------------- | ---------------------------------------------------------------- |
+| Build expiry   | Replace the container with one created from a newer Quill image. |
+| License expiry | Renew or replace the Quill license.                              |
+
+Updating to a newer image does **not** renew the license,  
+and renewing the license does **not** reset the build's 90-day expiry period.
+
+</Panel>
+
+<Panel heading="What an update replaces">
+
+Quill runs as a single Docker container.  
+The container is created from a Quill image, while its persistent files are stored in a Docker volume mounted at:
+
+```text
+/var/lib/quill
+```
+<br/>
+
+That volume contains the RavenDB data, Quill settings and activated setup package, certificates, and logs.  
+Removing the container does **not** remove a named volume mounted into it.
+
+The examples in this article use the following naming convention:
+
+```text
+Container:  quill-<name>
+Volume:     quill-<name>-data
+Mount:      quill-<name>-data  ->  /var/lib/quill
+```
+<br/>
+
+In these names:
+
+  * `<name>` is the short Quill name selected during sign-up, for example `acme`.
+  * `<domain>` is the complete base domain assigned to the Quill deployment, for example `acme.myquill.ai`.
+
+For `https://dashboard.acme.myquill.ai`, the examples use `quill-acme` as the container name and `quill-acme-data` as the volume name. 
+If your deployment uses different names, use the actual names identified in the next panel.
+
+For the hostnames published beneath the base domain, see [The published hostnames](networking-and-dns.mdx#the-published-hostnames).
+
+Mounting the same data volume at `/var/lib/quill` reconnects the replacement container to the existing Quill data.  
+Preserve the same required environment values and port mapping so that Quill returns with the same credentials and at the same address.
+
+</Panel>
+
+<Panel heading="Identify the container and its data volume">
+
+Have the `docker run` command from your Quill setup email available.
+Use it to identify the image reference, port mapping, environment values, and volume mount needed to recreate the container.  
+    
+If it specifies a container name, record that name as well.  
+Because the command contains credentials, do not paste it into tickets, chat messages, or logs.
+
+First, list all containers and identify the container that runs the Quill image:
+
+```bash
+docker ps --all --format "table {{.Names}}\t{{.Image}}\t{{.Status}}"
+```
+<br/>
+
+In the commands below, replace `<container-name>` and `<recorded-volume-name>` with the actual values you record from your deployment.
+`quill-<name>` and `quill-<name>-data` are naming examples only.
+
+Inspect the container's mounts before removing anything:
+
+```bash
+docker inspect <container-name> \
+  --format "{{range .Mounts}}{{.Type}} {{.Name}} -> {{.Destination}}{{println}}{{end}}"
+```
+<br/>
+
+If your deployment follows the naming convention used in this article, the output looks like this:
+
+```text
+volume quill-<name>-data -> /var/lib/quill
+```
+<br/>
+
+Record the actual values from your deployment; do not substitute the example values:
+
+| Value to record       | Example used in this article |
+| --------------------- | ---------------------------- |
+| Container name        | `quill-<name>`               |
+| Quill image           | `ravendb/quill:latest`       |
+| Data-volume type      | `volume`                     |
+| Data-volume name      | `quill-<name>-data`          |
+| Destination in Quill  | `/var/lib/quill`             |
+
+Then compare the recorded values with the `docker run` command from the setup email.  
+In particular, confirm that its `-v` option mounts the recorded data volume at `/var/lib/quill`.
+
+<Admonition type="warning" title="">
+
+#### Do not remove the container until the data mount is confirmed    
+
+* Some earlier setup commands may have used a different container name, volume name, or destination.    
+* If the current container does not show a named volume mounted at `/var/lib/quill`,  
+  or if the setup-email command would mount a different volume or destination, **do not remove the container**.
+* Preserve it until the deployment's data location and the required migration procedure have been confirmed.
+
+</Admonition>
+
+<Admonition type="warning" title="">
+    
+#### Do not remove any volumes    
+
+The update procedure uses plain `docker rm`, without `-v` or `--volumes`.
+
+* Plain `docker rm` removes the container and leaves its volumes in place.    
+* `docker rm -v` can remove anonymous volumes associated with the container.  
+  This is especially risky until older deployment layouts have been ruled out.    
+* `docker volume rm` explicitly removes a named volume. Do not run it against the recorded Quill data volume.
+
+</Admonition>
+
+</Panel>
+
+## Update Quill
+
+<Panel heading="Stop and remove the current container">
+
+After confirming and recording the data-volume mount, stop and remove the existing container:
+
+```bash
+docker stop <container-name> && docker rm <container-name>
+```
+<br/>
+
+`docker stop` asks Docker to stop the container and waits for it to exit.  
+The `&&` operator runs `docker rm` only if the stop command succeeds.  
+The plain `docker rm` command then removes the stopped container without removing its volumes.  
+
+At this point, the container name is available for the replacement, while the recorded data volume remains in place.
+
+</Panel>
+
+<Panel heading="Pull the newer image and start Quill">
+
+<ContentFrame>
+
+### Refresh the image
+
+Check the `docker run` command from the setup email.
+
+If it includes `--pull=always`, Docker checks for and pulls the current image before creating the replacement container. 
+No separate `docker pull` command is needed.
+
+If it does not include `--pull=always`, pull the current Quill image explicitly:
+
+```bash
+docker pull ravendb/quill:latest
+```
+<br/>
+
+If the setup-email command uses a different image registry or image name, pull that image instead.  
+    
+If it uses a version tag for the expired build, obtain the current Quill image reference rather than recreating the container from the same expired tag.
+
+</ContentFrame>
+
+<ContentFrame>    
+
+### Recreate the container
+
+Run the `docker run` command from the setup email again only after confirming that it mounts the recorded data volume at `/var/lib/quill`.
+
+The command must preserve:
+
+  * the recorded container name in `--name <container-name>`, if the original command specifies `--name`;
+  * the recorded named volume, mounted with `-v <recorded-volume-name>:/var/lib/quill`;
+  * the published port mapping;
+  * the `QUILL_API_KEY` and `QUILL_LICENSE_KEY` environment values;
+  * the current Quill image reference.
+
+With these values preserved, the replacement container starts from the newer image,  
+reconnects to the existing Quill data, and returns at the same domain.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Verify the update">
+    
+The replacement can take a minute to become ready while Quill and RavenDB start.
+
+During startup, `/healthz` can return HTTP `503`.
+With the command below, `curl` reports this as an error instead of printing the `Unhealthy` response body.
+Wait a few seconds and retry.
+
+Check the external health endpoint:
+
+```bash
+curl --fail --silent --show-error \
+  https://dashboard.<domain>/healthz
+```
+<br/>
+
+A ready, non-expired Quill returns:
+
+```text
+Healthy
+```
+<br/>
+
+Do not treat the HTTP status alone as proof that the update succeeded.   
+An expired build intentionally returns HTTP `200` from `/healthz`, but its response body is:
+
+```text
+expired
+```
+<br/>
+
+Then open `https://dashboard.<domain>` and sign in.  
+Confirm that:  
+
+  * the dashboard loads instead of the **This build has expired** notice;
+  * the expected apps are listed;
+  * an existing app still shows its data source, agents, channels, and conversations.
+
+If Quill is still starting, inspect its bootstrap state from the Docker host:
+
+```bash
+docker exec <container-name> curl --silent --show-error \
+  http://127.0.0.1:5000/api/bootstrap/status
+```
+<br/>
+
+The `state` field reports `Ready` when startup is complete.
+
+</Panel>
+
+<Panel heading="Troubleshoot the update">
+
+| Symptom                                                                             | Likely cause                                                                                    | What to do                                                                                                                                                                                                                                       |
+| ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `docker run` reports that the container name is already in use                      | The old container, or an unsuccessful replacement, still exists                                 | Run `docker ps --all` and inspect the container. After confirming that it is the replaceable container, follow [Stop and remove the current container](#stop-and-remove-the-current-container), then rerun the verified setup command.           |
+| `/healthz` returns `expired`, or the dashboard still shows the expired-build notice | The replacement was created from the same expired image                                         | Confirm that the command uses the current image reference and `--pull=always`, or explicitly pull the current image. Stop and remove the unsuccessful replacement, then recreate it.                                                             |
+| The dashboard loads, but the expected apps or data are missing                      | The replacement mounted the wrong volume, or created a new empty volume                         | Stop the replacement container and follow [Recover the recorded data volume](#recover-the-recorded-data-volume).                                                                                                                                 |
+| The container does not remain running                                               | Startup failed                                                                                  | Read `docker logs --tail 100 <container-name>` and verify the image, port mapping, and environment options against the setup-email command.                                                                                                      |
+| The dashboard returns `401`                                                         | The replacement uses a different Dashboard API key, or you are signing in with the previous key | Sign in with the `QUILL_API_KEY` supplied to the replacement. If the key changed unintentionally, recreate the container with the recorded original value. See [Operator Authentication](security-and-architecture/operator-authentication.mdx). |
+| Quill is not reachable at its usual address                                         | The published port changed, or the host address or DNS records no longer match                  | Confirm the port mapping. If the host address changed, follow [Networking & DNS](networking-and-dns.mdx).                                                                                                                                        |
+
+<ContentFrame>
+
+### Recover the recorded data volume
+
+If the replacement starts without the expected data, do not add apps or make configuration changes in the empty deployment.
+
+1. Stop the replacement container:
+
+   ```bash
+   docker stop <container-name>
+   ```
+
+2. Inspect its mounts and compare them with the volume information recorded before the update:
+
+   ```bash
+   docker inspect <container-name> \
+     --format "{{range .Mounts}}{{.Type}} {{.Name}} -> {{.Destination}}{{println}}{{end}}"
+   ```
+
+3. Confirm that the recorded named volume still exists:
+
+   ```bash
+   docker volume inspect <recorded-volume-name>
+   ```
+
+4. Remove the unsuccessful replacement without removing any volumes:
+
+   ```bash
+   docker rm <container-name>
+   ```
+
+5. Correct the `-v` option so that the recorded named volume is mounted at `/var/lib/quill`,   
+   and rerun the otherwise unchanged setup-email command:
+
+   ```text
+   -v <recorded-volume-name>:/var/lib/quill
+   ```
+
+If the pre-update mount used a different destination such as `/data`, used an anonymous volume, 
+or is otherwise different from the current layout, do not guess at the migration command. 
+Keep every remaining container and volume available, and contact RavenDB Support with the recorded `docker inspect` output.
+
+</ContentFrame>
+    
+<ContentFrame>    
+
+### Read the logs
+
+For a container that starts and then exits, read Docker's captured output:
+
+```bash
+docker logs --tail 100 <container-name>
+```
+<br/>
+
+For a running container that does not serve the dashboard, read the Quill web application log:
+
+```bash
+docker exec <container-name> tail -n 100 \
+  /var/lib/quill/logs/web.log
+```
+<br/>
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Summary">
+
+* A Quill build expires 90 days after its release date. Build expiry is separate from license expiry.
+
+* Updating replaces the Docker container with one created from a newer image.  
+  It does not update the existing container in place.
+
+* Before removing anything, record the actual container name and confirm which named volume is mounted   
+  at `/var/lib/quill`.
+
+* Stop the existing container, remove it with plain `docker rm` without `-v`, refresh the image,   
+  and recreate the container with the same recorded data volume, port mapping, and environment values.
+
+* Verify both the `/healthz` response body and the expected data in the dashboard.  
+  HTTP `200` alone does not distinguish a ready build from an expired one.
+
+</Panel>
