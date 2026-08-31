@@ -12,19 +12,19 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Getting started: Adding an AI agent
 <Admonition type="tip" title="">
 
-Achieved so far in [Getting Started](signing-up.mdx):  
-[Signing up](signing-up.mdx) - your deployment has a name, a license key, and a dashboard API key.  
-[Starting Quill](starting-quill.mdx) - Quill is running on your machine, and its management dashboard is open.  
-[Connecting your database](connecting-your-database.mdx) - Quill can reach your source database, and the tables
+Achieved so far in [Getting Started](../getting-started/signing-up.mdx):  
+[Signing up](../getting-started/signing-up.mdx) - your deployment has a name, a license key, and a dashboard API key.  
+[Starting Quill](../getting-started/starting-quill.mdx) - Quill is running on your machine, and its management dashboard is open.  
+[Connecting your database](../getting-started/connecting-your-database.mdx) - Quill can reach your source database, and the tables
 your app will work with are selected.  
-[Mapping your tables](mapping-your-tables.mdx) - your app is created, and Quill keeps its internal database
+[Mapping your tables](../getting-started/mapping-your-tables.mdx) - your app is created, and Quill keeps its internal database
 current with your source data.
 
 </Admonition>
 
 <Admonition type="note" title="">
 
-* The app's internal database now [holds a copy of your source data](mapping-your-tables.mdx#creating-the-app).  
+* The app's internal database now [holds a copy of your source data](../getting-started/mapping-your-tables.mdx#creating-the-app).  
   **Adding an AI agent**, the fifth Getting Started step, walks you through the creation of the app's first
   agent using the **Add agent** wizard.
 
@@ -34,7 +34,7 @@ current with your source data.
   fetch from the internal database the data an answer needs, the **actions** you define, and the connection
   Quill uses to reach your LLM provider.
 
-* Quill can draft the agent's configuration from the app's [mapping](mapping-your-tables.mdx). You can also
+* Quill can draft the agent's configuration from the app's [mapping](../getting-started/mapping-your-tables.mdx). You can also
   provide a description of the intended agent, that Quill will apply while creating the draft.  
   Or, you can build the agent yourself, starting from an empty form.  
   Whichever route you choose, you can change any part of the configuration before the agent is created.
@@ -46,18 +46,18 @@ current with your source data.
   **channel** (covered in the next Getting Started step).
 
 * In this article:
-   * [Prerequisites](adding-an-ai-agent.mdx#prerequisites)
-   * [Opening the Add agent wizard](adding-an-ai-agent.mdx#opening-the-add-agent-wizard)
-   * [Connecting to your LLM provider](adding-an-ai-agent.mdx#connecting-to-your-llm-provider)
-   * [Drafting your agent](adding-an-ai-agent.mdx#drafting-your-agent)
-      * [Accepting the AI Terms of Use](adding-an-ai-agent.mdx#accepting-the-ai-terms-of-use)
-      * [Choosing a starting point](adding-an-ai-agent.mdx#choosing-a-starting-point)
-   * [Reviewing your agent](adding-an-ai-agent.mdx#reviewing-your-agent)
-      * [Reviewing the drafted agent](adding-an-ai-agent.mdx#reviewing-the-drafted-agent)
-      * [Modifying the agent configuration](adding-an-ai-agent.mdx#modifying-the-agent-configuration)
-   * [Testing and saving your agent](adding-an-ai-agent.mdx#testing-and-saving-your-agent)
-      * [Chatting with the draft agent](adding-an-ai-agent.mdx#chatting-with-the-draft-agent)
-      * [Saving the agent](adding-an-ai-agent.mdx#saving-the-agent)
+   * [Prerequisites](#prerequisites)
+   * [Opening the Add agent wizard](#opening-the-add-agent-wizard)
+   * [Connecting to your LLM provider](#connecting-to-your-llm-provider)
+   * [Drafting your agent](#drafting-your-agent)
+      * [Accepting the AI Terms of Use](#accepting-the-ai-terms-of-use)
+      * [Choosing a starting point](#choosing-a-starting-point)
+   * [Reviewing your agent](#reviewing-your-agent)
+      * [Reviewing the drafted agent](#reviewing-the-drafted-agent)
+      * [Modifying the agent configuration](#modifying-the-agent-configuration)
+   * [Testing and saving your agent](#testing-and-saving-your-agent)
+      * [Chatting with the draft agent](#chatting-with-the-draft-agent)
+      * [Saving the agent](#saving-the-agent)
 
 </Admonition>
 
@@ -80,10 +80,10 @@ Before adding an agent, make sure you have the access details for an
 The **Add agent** wizard can be started in two ways:
 
 * If you arrived here from the previous Getting Started step, you are already in the right place: you followed
-  the **Add new app** wizard, clicked **[Continue](mapping-your-tables.mdx#creating-the-app)** at its last
+  the **Add new app** wizard, clicked **[Continue](../getting-started/mapping-your-tables.mdx#creating-the-app)** at its last
   stage, and are now at the **Add agent** wizard.
 * If you didn't arrive through the Getting Started path,
-  [open Quill's management dashboard](starting-quill.mdx#signing-in-to-the-management-dashboard) and click
+  [open Quill's management dashboard](../getting-started/starting-quill.mdx#signing-in-to-the-management-dashboard) and click
   the app to which you want to add an agent, on the **My apps** list.
 
    ![My apps](./assets/adding-an-ai-agent_my-apps.png)
@@ -136,7 +136,7 @@ the agent's replies.
    </ContentFrame>
 
 2. **Next**  
-   Continue to the **[Create your Agent with AI](adding-an-ai-agent.mdx#drafting-your-agent)** stage.
+   Continue to the **[Create your Agent with AI](#drafting-your-agent)** stage.
 
 </Panel>
 
@@ -154,7 +154,7 @@ do**) send the app's mapping and your description to the RavenDB AI service. The
 you accept the Terms of Use. As long as you do not accept the terms, you can only set agent configurations
 manually.
 
-If you reached here through [Mapping your tables](mapping-your-tables.mdx) and used **AI Suggest** there, you
+If you reached here through [Mapping your tables](../getting-started/mapping-your-tables.mdx) and used **AI Suggest** there, you
 have already accepted the terms and no further acceptance is required for the AI options to work.
 
 ![AI options awaiting consent](./assets/adding-an-ai-agent_create-agent_needs-consent.png)
@@ -178,7 +178,7 @@ have already accepted the terms and no further acceptance is required for the AI
 ![Create your Agent with AI](./assets/adding-an-ai-agent_create-agent.png)
 
 1. **AI-suggested agents based on your data**  
-   Quill reads the app's [mapping](mapping-your-tables.mdx) and proposes agent configurations that suit your
+   Quill reads the app's [mapping](../getting-started/mapping-your-tables.mdx) and proposes agent configurations that suit your
    data, each with its own fitting system prompt and query tools.  
    Click a suggestion card to select the agent configuration it describes.  
    Quill drafts these suggestions live when you open this stage, so their number and content may differ from
@@ -192,7 +192,7 @@ have already accepted the terms and no further acceptance is required for the AI
    Click to start from an empty form and write the configuration yourself.
 
 4. **Next**  
-   Continue to the **[Review & edit your agent](adding-an-ai-agent.mdx#reviewing-your-agent)** stage.
+   Continue to the **[Review & edit your agent](#reviewing-your-agent)** stage.
 
 </ContentFrame>
 
@@ -223,10 +223,10 @@ Manual setup skips the AI suggestion overview since there is no suggestion to sh
    use to reach the LLM, the parameters set for the agent, and the query tools written for the app's data.
 
 4. **Test agent**  
-   Click to [chat with the draft agent before saving it](adding-an-ai-agent.mdx#chatting-with-the-draft-agent)
+   Click to [chat with the draft agent before saving it](#chatting-with-the-draft-agent)
 
 5. **Save agent**  
-   Click to [create the agent and add it to the app](adding-an-ai-agent.mdx#saving-the-agent).
+   Click to [create the agent and add it to the app](#saving-the-agent).
 
 </ContentFrame>
 
@@ -317,7 +317,7 @@ what data is retrieved from the database.
 
 ### Chatting with the draft agent
 
-Click **Test agent** from the wizard's [Review & edit your agent](adding-an-ai-agent.mdx#reviewing-your-agent)
+Click **Test agent** from the wizard's [Review & edit your agent](#reviewing-your-agent)
 stage to open the chat.
 
 ![Test agent](./assets/adding-an-ai-agent_review_footer_test-agent.png)

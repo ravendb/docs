@@ -12,20 +12,20 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Getting started: Adding a chat widget
 <Admonition type="tip" title="">
 
-Achieved so far in [Getting Started](signing-up.mdx):  
-[Signing up](signing-up.mdx) - your deployment has a name, a license key, and a dashboard API key.  
-[Starting Quill](starting-quill.mdx) - Quill is running on your machine, and its management dashboard is open.  
-[Connecting your database](connecting-your-database.mdx) - Quill can reach your source database, and the tables
+Achieved so far in [Getting Started](../getting-started/signing-up.mdx):  
+[Signing up](../getting-started/signing-up.mdx) - your deployment has a name, a license key, and a dashboard API key.  
+[Starting Quill](../getting-started/starting-quill.mdx) - Quill is running on your machine, and its management dashboard is open.  
+[Connecting your database](../getting-started/connecting-your-database.mdx) - Quill can reach your source database, and the tables
 your app will work with are selected.  
-[Mapping your tables](mapping-your-tables.mdx) - your app is created, and Quill keeps its internal database
+[Mapping your tables](../getting-started/mapping-your-tables.mdx) - your app is created, and Quill keeps its internal database
 current with your source data.  
-[Adding an AI agent](adding-an-ai-agent.mdx) - your app has an agent that answers from its internal database.
+[Adding an AI agent](../getting-started/adding-an-ai-agent.mdx) - your app has an agent that answers from its internal database.
 
 </Admonition>
 
 <Admonition type="note" title="">
 
-* You have now [created an agent](adding-an-ai-agent.mdx#saving-the-agent) that is ready to answer, but your
+* You have now [created an agent](../getting-started/adding-an-ai-agent.mdx#saving-the-agent) that is ready to answer, but your
   users have no way to reach it yet.  
   In **Adding a chat widget**, the sixth Getting Started step, you create the app's first channel and place a
   working chat on a page of your own site.
@@ -49,14 +49,14 @@ current with your source data.
   data. They are not required to have an account or know anything about Quill.
 
 * In this article:
-   * [Creating the chat widget channel](adding-a-chat-widget.mdx#creating-the-chat-widget-channel)
-      * [Opening the Add channel menu](adding-a-chat-widget.mdx#opening-the-add-channel-menu)
-      * [Naming the channel and setting its allowed origins](adding-a-chat-widget.mdx#naming-the-channel-and-setting-its-allowed-origins)
-   * [Generating an embed link](adding-a-chat-widget.mdx#generating-an-embed-link)
-      * [Opening the Generate embed link dialog](adding-a-chat-widget.mdx#opening-the-generate-embed-link-dialog)
-      * [Setting the link limits](adding-a-chat-widget.mdx#setting-the-link-limits)
-      * [Copying the link and trying it out](adding-a-chat-widget.mdx#copying-the-link-and-trying-it-out)
-   * [Placing the widget on your page](adding-a-chat-widget.mdx#placing-the-widget-on-your-page)
+   * [Creating the chat widget channel](#creating-the-chat-widget-channel)
+      * [Opening the Add channel menu](#opening-the-add-channel-menu)
+      * [Naming the channel and setting its allowed origins](#naming-the-channel-and-setting-its-allowed-origins)
+   * [Generating an embed link](#generating-an-embed-link)
+      * [Opening the Generate embed link dialog](#opening-the-generate-embed-link-dialog)
+      * [Setting the link limits](#setting-the-link-limits)
+      * [Copying the link and trying it out](#copying-the-link-and-trying-it-out)
+   * [Placing the widget on your page](#placing-the-widget-on-your-page)
 
 </Admonition>
 
@@ -77,7 +77,7 @@ A channel is added from the **Add channel** menu, which can be reached in two wa
    Click **Add channel** to open the menu of channel types.
 
 * If you didn't arrive through the Getting Started path,
-  [open Quill's management dashboard](starting-quill.mdx#signing-in-to-the-management-dashboard) and click the
+  [open Quill's management dashboard](../getting-started/starting-quill.mdx#signing-in-to-the-management-dashboard) and click the
   app you want to add a channel to, on the **My apps** list.
 
    ![The app's Overview](./assets/adding-a-chat-widget_overview.png)
@@ -213,7 +213,7 @@ into the link, so the agent's queries and answers will relate only to this custo
 
 2. **Embed snippet**  
    The same address, wrapped in an `<iframe>` element that you can place on your page
-   (see [Placing the widget on your page](adding-a-chat-widget.mdx#placing-the-widget-on-your-page)).
+   (see [Placing the widget on your page](#placing-the-widget-on-your-page)).
 
 3. **The link's limits**  
    The link's expiration time and number of allowed chats.
@@ -258,7 +258,7 @@ any dealings with Quill.
 Two things are left to settle before a page like this faces real visitors:
 
 * **The allowed origins of the channel.**  
-  While the [allowed origins list](adding-a-chat-widget.mdx#naming-the-channel-and-setting-its-allowed-origins)
+  While the [allowed origins list](#naming-the-channel-and-setting-its-allowed-origins)
   is empty, your widget can be placed on any site.  
   Edit the channel and enter the addresses of your own pages if you want to keep the widget to them.
 
@@ -268,6 +268,8 @@ Two things are left to settle before a page like this faces real visitors:
   A live site commonly generates a link per visitor, and places the link in the page as the page is served.
 
 Both are covered in [Embed the Chat Widget](../developer-access/embed-the-chat-widget.mdx).
+
+</Panel>
 
 <Admonition type="tip" title="">
 
@@ -280,8 +282,6 @@ and your users can reach the agent through a chat widget on your website.
 There is much more to Quill than these pages cover, including, for example, other channels besides the chat
 widget, and actions your agents may run.  
 The [Overview](../overview.mdx) page is a good starting point for more, and you can then navigate the
-documentation and, above all, try Quill out yourself.
+documentation and, above all, experiment in your own deployment.
 
 </Admonition>
-
-</Panel>

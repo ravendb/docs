@@ -33,15 +33,15 @@ import ContentFrame from "@site/src/components/ContentFrame";
   data and to the user-facing side, like the chat widget, as well as usage and license tracking.
 
 * In this article:
-   * [What Quill is](overview.mdx#what-quill-is)
-   * [How the parts work together](overview.mdx#how-the-parts-work-together)
-      * [The components](overview.mdx#the-components)
-      * [Answering questions](overview.mdx#answering-questions)
-      * [One Quill, several apps](overview.mdx#one-quill-several-apps)
-   * [What is public and what is protected](overview.mdx#what-is-public-and-what-is-protected)
-   * [From sign-up to a working chat](overview.mdx#from-sign-up-to-a-working-chat)
-   * [The management dashboard](overview.mdx#the-management-dashboard)
-   * [Working with Quill using code](overview.mdx#working-with-quill-using-code)
+   * [What Quill is](#what-quill-is)
+   * [How the parts work together](#how-the-parts-work-together)
+      * [The components](#the-components)
+      * [Answering questions](#answering-questions)
+      * [One Quill, several apps](#one-quill-several-apps)
+   * [What is public and what is protected](#what-is-public-and-what-is-protected)
+   * [From sign-up to a working chat](#from-sign-up-to-a-working-chat)
+   * [The management dashboard](#the-management-dashboard)
+   * [Working with Quill using code](#working-with-quill-using-code)
 
 </Admonition>
 
@@ -176,17 +176,17 @@ data from the mirrored database, a full RavenDB database running inside the Dock
 <Panel heading="What is public and what is protected">
 
 Keeping Quill secure is part of the package: at sign-up, Quill receives its own web address and TLS certificates,
-so its management dashboard and the [chat widget](overview.mdx#chat-widget) it runs are served over HTTPS from the
+so its management dashboard and the [chat widget](#chat-widget) it runs are served over HTTPS from the
 moment Quill first starts, with no certificate handling on your side.
 
-* Quill reaches [your SQL database](overview.mdx#your-sql-database) using the access details you provide; your data
+* Quill reaches [your SQL database](#your-sql-database) using the access details you provide; your data
   is only read, never modified.
 * Chat widget pages are the only public part of the service.
 * A chat widget page is reached through an **embed link** you place in your page.  
   Each link expires, serves a limited number of exchanges, and can be revoked at any time.
 * Quill's management dashboard requires the API key you receive at sign-up.
-* Direct access to [Quill's internal database](overview.mdx#internal-database) requires a client certificate.
-* Quill reaches the [LLM provider](overview.mdx#llm) using the access details your provider requires.
+* Direct access to [Quill's internal database](#internal-database) requires a client certificate.
+* Quill reaches the [LLM provider](#llm) using the access details your provider requires.
 * All traffic runs over HTTPS, using the TLS certificates issued at sign-up.
 
 </Panel>

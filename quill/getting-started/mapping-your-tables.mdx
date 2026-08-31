@@ -12,10 +12,10 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Getting started: Mapping your tables
 <Admonition type="tip" title="">
 
-Achieved so far in [Getting Started](signing-up.mdx):  
-[Signing up](signing-up.mdx) - your deployment has a name, a license key, and a dashboard API key.  
-[Starting Quill](starting-quill.mdx) - Quill is running on your machine, and its management dashboard is open.  
-[Connecting your database](connecting-your-database.mdx) - Quill can reach your source database, and the tables
+Achieved so far in [Getting Started](../getting-started/signing-up.mdx):  
+[Signing up](../getting-started/signing-up.mdx) - your deployment has a name, a license key, and a dashboard API key.  
+[Starting Quill](../getting-started/starting-quill.mdx) - Quill is running on your machine, and its management dashboard is open.  
+[Connecting your database](../getting-started/connecting-your-database.mdx) - Quill can reach your source database, and the tables
 your app will work with are selected.
 
 </Admonition>
@@ -41,10 +41,10 @@ your app will work with are selected.
   From then on Quill keeps these documents current as your source data changes.
 
 * In this article:
-   * [Choosing the mapping method: AI Suggest or Manual](mapping-your-tables.mdx#choosing-the-mapping-method-ai-suggest-or-manual)
-   * [Settling the mapping](mapping-your-tables.mdx#settling-the-mapping)
-   * [Testing your mapping](mapping-your-tables.mdx#testing-your-mapping)
-   * [Creating the app](mapping-your-tables.mdx#creating-the-app)
+   * [Choosing the mapping method: AI Suggest or Manual](#choosing-the-mapping-method-ai-suggest-or-manual)
+   * [Settling the mapping](#settling-the-mapping)
+   * [Testing your mapping](#testing-your-mapping)
+   * [Creating the app](#creating-the-app)
 
 </Admonition>
 
@@ -52,12 +52,12 @@ your app will work with are selected.
 
 <ContentFrame>
 
-This page starts where [Connecting your database](connecting-your-database.mdx) left off: you are at the
+This page starts where [Connecting your database](../getting-started/connecting-your-database.mdx) left off: you are at the
 **How would you like to map your schema?** stage of the **Add new app** wizard.
 
 </ContentFrame>
 
-After [Verifying your schema](connecting-your-database.mdx#verifying-your-schema), the **Add new app** wizard lets you choose the
+After [Verifying your schema](../getting-started/connecting-your-database.mdx#verifying-your-schema), the **Add new app** wizard lets you choose the
 mapping's starting point: a draft in which AI has already gathered your joined tables into documents, or a plain
 draft for you to shape.  
 Either way, the next stage will still allow you to change the mapping before the app is created.
@@ -76,7 +76,7 @@ Either way, the next stage will still allow you to change the mapping before the
    Click to draft the mapping yourself, starting from a plain mapping Quill builds from your schema.
 
 4. **Next**  
-   Continue to the **[Map schema](mapping-your-tables.mdx#settling-the-mapping)** stage.
+   Continue to the **[Map schema](#settling-the-mapping)** stage.
 
 </Panel>
 
@@ -89,7 +89,7 @@ If **AI Suggest** is selected, give it the time it needs to finish the mapping.
 
 1. **Verify tables**  
    Click to check that CDC can run on the tables this mapping captures.  
-   This is the check the **[Verify your schema](connecting-your-database.mdx#verifying-your-schema)** stage ran,
+   This is the check the **[Verify your schema](../getting-started/connecting-your-database.mdx#verifying-your-schema)** stage ran,
    repeated here because attaching or removing tables changes the set it covers.  
    The button is replaced by a confirmation when the check passes:
 
@@ -230,7 +230,7 @@ If **AI Suggest** is selected, give it the time it needs to finish the mapping.
    </ContentFrame>
 
 5. **Next**  
-   Continue to the **[Preview before full ingest](mapping-your-tables.mdx#testing-your-mapping)** stage.
+   Continue to the **[Preview before full ingest](#testing-your-mapping)** stage.
 
 </Panel>
 
@@ -261,13 +261,13 @@ objects or linked references appear in the documents you see.
    The credentials are the ones you entered for your source database in the wizard's first stage.
 
    A saved configuration can be loaded through
-   **[Import configuration](connecting-your-database.mdx#naming-your-app-and-entering-the-connection-details)**
+   **[Import configuration](../getting-started/connecting-your-database.mdx#naming-your-app-and-entering-the-connection-details)**
    in the wizard's first stage, to fill the new app's connection and mapping details.  
    e.g., to create a second app against the same database without filling the wizard in again.
 
 5. **Create app & continue**  
    Click to create the app and start the first load, as described in
-   [Creating the app](mapping-your-tables.mdx#creating-the-app).
+   [Creating the app](#creating-the-app).
 
 </Panel>
 
@@ -296,7 +296,7 @@ The **Active** chip stays on while a batch is in progress, and for a minute afte
    took.
 
 5. **Continue**  
-   Click to advance to the next Getting Started step, [Adding an AI agent](adding-an-ai-agent.mdx).  
+   Click to advance to the next Getting Started step, [Adding an AI agent](../getting-started/adding-an-ai-agent.mdx).  
    Loading will continue in the background.
 
 </Panel>
