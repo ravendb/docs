@@ -12,12 +12,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Getting started: Mapping your tables
 <Admonition type="tip" title="">
 
-Covered so far in [Getting Started](signing-up.mdx):  
-[Signing up](signing-up.mdx) - After this step, your deployment has a name, a license key, and a dashboard API key.  
-[Starting Quill](starting-quill.mdx) - After this step, Quill is running on your machine, and its
-management dashboard is open.  
-[Connecting your database](connecting-your-database.mdx) - After this step, Quill can reach your source
-database, and the tables your app will work with are selected.
+Achieved so far in [Getting Started](signing-up.mdx):  
+[Signing up](signing-up.mdx) - your deployment has a name, a license key, and a dashboard API key.  
+[Starting Quill](starting-quill.mdx) - Quill is running on your machine, and its management dashboard is open.  
+[Connecting your database](connecting-your-database.mdx) - Quill can reach your source database, and the tables
+your app will work with are selected.
 
 </Admonition>
 
@@ -30,7 +29,7 @@ database, and the tables your app will work with are selected.
   In **Mapping your tables**, the fourth Getting Started step, you continue through the **Add new app** wizard and settle
   the mapping.
 
-* As one document can hold data from several joined tables, not every mapped table becomes a set of documents.  
+* As one document can hold data from several joined tables, a mapped table does not always become a set of documents.  
   Quill can work the whole mapping out from your source schema, or draft a plain mapping, one set of documents
   per table, and leave every further choice to you.
 
@@ -50,6 +49,13 @@ database, and the tables your app will work with are selected.
 </Admonition>
 
 <Panel heading="Choosing the mapping method: AI Suggest or Manual">
+
+<ContentFrame>
+
+This page starts where [Connecting your database](connecting-your-database.mdx) left off: you are at the
+**How would you like to map your schema?** stage of the **Add new app** wizard.
+
+</ContentFrame>
 
 After [Verifying your schema](connecting-your-database.mdx#verifying-your-schema), the **Add new app** wizard lets you choose the
 mapping's starting point: a draft in which AI has already gathered your joined tables into documents, or a plain
@@ -290,6 +296,7 @@ The **Active** chip stays on while a batch is in progress, and for a minute afte
    took.
 
 5. **Continue**  
-   Click to leave the wizard. Loading will continue in the background.
+   Click to advance to the next Getting Started step, [Adding an AI agent](adding-an-ai-agent.mdx).  
+   Loading will continue in the background.
 
 </Panel>
