@@ -49,14 +49,14 @@ Typical examples include application search, reporting, scheduled processing, an
 
 With `RavenDB.Client`, your application accesses the **mirrored data in RavenDB**, not the source relational database:
 
-  * The source database remains the system of record.
+  * The source relational database remains the source of truth.
   * Quill's CDC task applies source changes to the mirrored documents asynchronously,  
     so the mirrored data can lag behind the source.
   * Querying the mirrored data does not add query load to the source database.
   * Changes made directly in RavenDB are not written back to the source database.
     
 `RavenDB.Client` connects to RavenDB through `https://db.<domain>` without passing through the Quill web application.  
-For details about this connection path and its TLS handling, see [Direct database access](../../quill/security-and-architecture/network-architecture.mdx#direct-database-access).
+For details about this connection path and its TLS handling, see [Direct database access](../security-and-architecture/network-architecture.mdx#direct-database-access).
     
 </Panel>
 
@@ -117,10 +117,9 @@ Because that connection string can contain source database credentials, reserve 
 Generated client certificates are valid for five years and cannot be renewed in place.  
 Before a certificate expires, generate a replacement, update the application to use it, and then disable the old certificate.
 
-For a standard Quill domain, RavenDB presents a publicly trusted wildcard server certificate,   
-so the application needs no additional server-certificate trust configuration.  
-Client certificates are registered separately by thumbprint,  
-so renewing the Quill server certificate does not invalidate them.
+For a standard Quill domain, RavenDB presents a publicly trusted wildcard server certificate,
+so the application needs no additional server-certificate trust configuration.
+Client certificates are registered separately by thumbprint, so renewing the Quill server certificate does not invalidate them.
 
 </Panel>
 
@@ -152,7 +151,7 @@ X-Api-Key: <dashboard-api-key>
 Each app in the response includes both `slug` and `database`.  
 Set `DocumentStore.Database` to the value of `database`; do not derive it from the app's display name.
 
-For more information about authenticating this Quill API request, see [Operator Authentication](../../quill/security-and-architecture/operator-authentication.mdx).
+For more information about authenticating this Quill API request, see [Operator Authentication](../security-and-architecture/operator-authentication.mdx).
 
 </Panel>
 
@@ -239,7 +238,7 @@ See [Topology discovery](#topology-discovery) if the application uses custom DNS
 <Panel heading="Understand the mirrored document structure">    
 
 The source relational schema is not mirrored one-to-one as a separate RavenDB collection for every table.  
-The CDC mapping defined for the app determines:
+The way Quill maps data from the source relational database to RavenDB determines:    
 
   * the collection, document, and property names;
   * which source tables produce root documents;
@@ -261,12 +260,7 @@ You can then inspect the database's collections, documents, and attachments.
 ---      
     
 For each row from a mapped root table, CDC builds the RavenDB document ID from the mapped collection name and the source primary-key value.
-For example, a row with primary key `1` mapped to the `Products` collection becomes:
-
-```text
-Products/1
-```
-<br/>
+For example, a row with primary key `1` mapped to the `Products` collection becomes `Products/1`.
     
 For a composite primary key, each key value contributes another segment to the document ID.
 Use the collection names, document IDs, and property names found in the app database rather than deriving them from the original table names.
@@ -303,7 +297,7 @@ Other collections and documents are used internally by Quill, so your applicatio
 
 <Panel heading="Inspect the CDC task">
 
-Quill creates a CDC Sink task in each app database to keep its mapped documents synchronized with the source relational database.
+Quill creates a [CDC Sink task](/7.2/server/ongoing-tasks/cdc-sink/overview) in each app database to keep its mapped documents synchronized with the source relational database.
 
 You can inspect the task and its status:
 
@@ -416,7 +410,7 @@ store.Initialize();
 <br/>
 
 Configure `DisableTopologyUpdates` before calling `Initialize()`.  
-For more information, see [The `a` hostname](../../quill/networking-and-dns.mdx#the-a-hostname).
+For more information, see [The `a` hostname](../networking-and-dns.mdx#the-a-hostname).
 
 </Panel>
 
@@ -441,7 +435,7 @@ If the Quill deployment is unavailable, RavenDB.Client cannot switch to another 
 
 If the Quill host moves to another IP address, update all Quill DNS records so that `db.<domain>`, `a.<domain>`,  
 and the other Quill hostnames resolve to the new address.
-See [Moving your Quill to a new IP](../../quill/networking-and-dns.mdx#moving-your-quill-to-a-new-ip).
+See [Moving your Quill to a new IP](../networking-and-dns.mdx#moving-your-quill-to-a-new-ip).
 
 </Panel>
 
