@@ -1,10 +1,552 @@
 ---
 title: "Machine Learning Inside RavenDB Indexing"
-tags: [ai, indexes, demo, use-case]
-description: "Read about Machine Learning Inside RavenDB Indexing on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/incorporating-machine-learning-into-ravendb-indexing"
+tags: [ai, indexes, csharp, use-case]
+icon: "ai"
+description: "Extend RavenDB's indexing process with machine learning in C#: train an ML.NET model to flag toxic comments during indexing, and use a pre-trained Catalyst model to detect each document's language, all through AdditionalAssemblies and AdditionalSources."
 published_at: 2024-12-02
-image: "https://ravendb.net/wp-content/uploads/2024/12/machine-learning-article-cover.jpg"
+see_also:
+  - title: "Extending an Index"
+    link: "indexes/extending-indexes"
+    source: "docs"
+    path: "Indexes > Extending Indexes"
+  - title: "Additional Assemblies"
+    link: "indexes/additional-assemblies"
+    source: "docs"
+    path: "Indexes > Additional Assemblies"
+  - title: "Indexing Attachments"
+    link: "indexes/indexing-attachments"
+    source: "docs"
+    path: "Indexes > Indexing Attachments"
 proficiency_level: "Expert"
+author: "Michał Leśniak"
 ---
 
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+## What you will learn
+
+In this article you'll find out how to use machine learning in the RavenDB indexing process.
+Both examples build on two RavenDB features that let an index run your own code:
+[AdditionalSources](https://docs.ravendb.net/indexes/extending-indexes) for the classifier code itself, and
+[AdditionalAssemblies](https://docs.ravendb.net/indexes/additional-assemblies) for the NuGet packages it depends on.
+Following examples explain step-by-step how to:
+
+1. Train your own sentiment prediction model and use it to automatically classify comments as either toxic or non-toxic.
+2. Use a NuGet package with an already trained model to automatically recognize the language of text.
+
+<Admonition type="note" title="Before you start">
+
+A few things worth knowing before you copy any of this into a real server:
+
+* The packages are resolved by the server, not by your client. RavenDB pulls them from the feed set in [`Indexing.NuGetPackageSourceUrl`](https://docs.ravendb.net/server/configuration/indexing-configuration#indexingnugetpackagesourceurl) (nuget.org by default) and caches them under [`Indexing.NuGetPackagesPath`](https://docs.ravendb.net/server/configuration/indexing-configuration#indexingnugetpackagespath). Both are server-wide settings, so the server itself needs to be able to reach that feed.
+* The package versions below are the ones these examples were written against: `Microsoft.ML` 3.0.1, `Catalyst` 1.0.48839, and `Catalyst.Models.*` 1.0.30952. Newer versions have shipped since, so check before pinning.
+* The Catalyst example points `Storage.Current` at a `catalyst-models` directory, which means the server needs write permission there to save the downloaded language models.
+* Storing the model as a file next to the server, rather than as a document attachment, only works on-premise.
+* Whatever your classifier does, it runs on the indexing thread for every document it touches, so the model's speed becomes your indexing speed.
+
+</Admonition>
+
+## Using self-trained model in RavenDB indexing
+
+Let's imagine we're running a website where users can leave comments. We'd like to make its moderation easier by automatically detecting toxic comments. In this example we'll train our own prediction model to handle this task.
+
+We'll use [ML.NET](https://learn.microsoft.com/en-us/dotnet/machine-learning/how-does-mldotnet-work) library to create the model and a dataset of Wikipedia comments from [machinelearning-samples](https://github.com/dotnet/machinelearning-samples/blob/main/samples/CLI/BinaryClassification_CLI/wikiDetoxAnnotated40kRows.tsv) GitHub repository to obtain data we can train it on.
+
+### Data model
+
+Our training data file consists of a set of rows with the following structure.
+
+| label | rev_id | comment | year | logged_in | ns | sample | split |
+| ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
+| 0 | 75474 | Perhaps a mention of this fact should be made? | 2015 | True | article | blocked | train |
+| 1 | 75475 | I don't like this at all, it's dumb and stupid. | 2016 | False  | user | random | train |
+| 0 | 75476 | Thanks for the discussion. | 2017 | False | article | random | test |
+
+* **label** - defines whether the comment is toxic (value 1) or not (value 0)
+* **comment** - text of the comment
+
+Remaining columns are not relevant for our use case.
+
+Our data representation in C# code consists of two classes.
+
+Input for our prediction model, represented by the `SentimentEntry` class.
+
+```csharp
+public class SentimentEntry
+{
+    // LoadColumn annotation defines which column from
+    // file will be loaded to annotated property.
+    [LoadColumn(0)]
+    public bool Label { get; set; }
+
+    [LoadColumn(2)]
+    public string Text { get; set; }
+}
+```
+
+Output of our prediction model, represented by the `SentimentPrediction` class.
+
+```csharp
+public class SentimentPrediction
+{
+    // ColumnName attribute is used to change the column name
+    // from its default value, which is the name of the field.
+    [ColumnName("PredictedLabel")]
+    public bool Prediction { get; set; }
+
+    // No need to specify ColumnName attribute, because the field
+    // name "Probability" is the column name we want.
+    public float Probability { get; set; }
+
+    public float Score { get; set; }
+}
+```
+
+### Model creation and training
+
+First, we have to load our data and split it into two subsets - training subset containing 80% of all rows from our dataset and test subset containing remaining rows.
+
+```csharp
+// Create MLContext and set the seed for repeatable results
+var mlContext = new MLContext(seed: 1);
+
+// Load data from file
+IDataView dataView = mlContext.Data.LoadFromTextFile<SentimentEntry>(DataPath, hasHeader: true);
+
+// Split data into train and test subset
+DataOperationsCatalog.TrainTestData trainTestSplit = mlContext.Data.TrainTestSplit(dataView, testFraction: 0.2);
+IDataView trainingData = trainTestSplit.TrainSet;
+IDataView testData = trainTestSplit.TestSet;
+```
+
+Next, we have to create a pipeline defining what will happen in the training process. In our case we do two things:
+
+1. [Featurize](https://www.kaggle.com/discussions/general/223108) the `comment` values, which transforms the text into a vector of numbers.
+2. Perform `SdcaLogisticRegression`, which is a method of predicting the value of target binary variable (`label` in our case) based on values of other relevant variables (featurized `comment` in our case).
+
+```csharp
+// Create a pipeline with a single step - featurizing the text
+var dataProcessPipeline = mlContext.Transforms.Text.FeaturizeText(outputColumnName: "Features", inputColumnName: nameof(SentimentEntry.Text));
+
+// Create binary classifier
+var trainer = mlContext.BinaryClassification.Trainers.SdcaLogisticRegression(labelColumnName: "Label", featureColumnName: "Features");
+
+// Add binary classifier to previously created pipeline
+var trainingPipeline = dataProcessPipeline.Append(trainer);
+```
+
+After creating the pipeline, we can use it to train our model on the training dataset. When training finishes, we can use the model to predict the labels of the test dataset and evaluate its metrics, such as accuracy, on the test dataset.
+
+```csharp
+// Train model using previously loaded training data
+ITransformer trainedModel = trainingPipeline.Fit(trainingData);
+
+// Create predictions for test data
+var predictions = trainedModel.Transform(testData);
+
+// Evaluate metrics (e.g. accuracy) of previously created predictions
+var metrics = mlContext.BinaryClassification.Evaluate(data: predictions, labelColumnName: "Label", scoreColumnName: "Score");
+
+Console.WriteLine($"Accuracy: {metrics.Accuracy}");
+```
+
+Now we can save our trained model to the file so it can be reused later. We can also check if it works on entirely new data.
+
+```csharp
+// Save trained model to file so it can be reused
+mlContext.Model.Save(trainedModel, trainingData.Schema, ModelPath);
+
+Console.WriteLine($"Model saved to {ModelPath}");
+
+// Create new input for model
+SentimentEntry sampleStatement = new SentimentEntry { Text = "I love this movie!" };
+
+// Create prediction engine
+var predEngine = mlContext.Model.CreatePredictionEngine<SentimentEntry, SentimentPrediction>(trainedModel);
+
+// Predict the sentiment of input
+var resultPrediction = predEngine.Predict(sampleStatement);
+
+Console.WriteLine($"Text: {sampleStatement.Text} | Prediction: {(Convert.ToBoolean(resultPrediction.Prediction) ? "Toxic" : "Non Toxic")} sentiment | Probability of being toxic: {resultPrediction.Probability} ");
+Console.WriteLine("Press any key to exit.");
+Console.ReadKey();
+```
+
+As a result, we created a file with a saved model that will be used in next steps.
+
+### Creating the RavenDB index
+
+Let's assume we have a collection of documents called `Comments` represented by the following C# class.
+
+```csharp
+private class Comment
+{
+    public string Id { get; set; }
+    public string Text { get; set; }
+}
+```
+
+Our goal is to query toxic documents. In order to do this, we'll use the previously saved model in a [map index](https://docs.ravendb.net/indexes/map-indexes).
+
+There are two ways to store the model in RavenDB:
+
+1. Storing it as a document attachment.
+2. Storing it as a file in the RavenDB directory (works only for RavenDB on-premise).
+
+In this example we'll store it as an attachment of a document from `Models` collection with the following structure.
+
+```csharp
+private class Model
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+}
+```
+
+First, we have to create a few example comments and a single model document, then attach the model file to it using the [Store](https://docs.ravendb.net/document-extensions/attachments/store-attachments/store-attachments-local) method.
+
+```csharp
+// Create a document we'll attach model file to
+var modelDoc = new Model() { Id = "models/1", Name = "Sentiment analysis model" };
+
+session.Store(modelDoc);
+
+using (var modelFile = File.Open(ModelFilePath, FileMode.Open))
+{
+    // Attach the model file
+    session.Advanced.Attachments.Store(modelDoc.Id, "SentimentModel.zip", modelFile);
+
+    // Create some example comments
+    var comment1 = new Comment() { Text = "Perhaps a mention of this fact should be made?" };
+    var comment2 = new Comment() { Text = "I don't like this at all, it's dumb and stupid." };
+    var comment3 = new Comment() { Text = "Thanks for the discussion." };
+
+    session.Store(comment1);
+    session.Store(comment2);
+    session.Store(comment3);
+
+    session.SaveChanges();
+}
+```
+
+Next, we have to create an index in the RavenDB by executing the following code.
+
+```csharp
+var commentsBySentiment = new Comments_BySentiment();
+
+commentsBySentiment.Execute(store);
+
+// Because indexing in RavenDB is an asynchronous process, it's necessary
+// to wait for it to finish in tests
+// Raven Test Driver has a method to handle this called 'WaitForIndexing'
+WaitForIndexing(store);
+```
+
+`WaitForIndexing` comes from the [Raven Test Driver](https://docs.ravendb.net/start/test-driver), so it is available in tests only.
+
+It has the following definition.
+
+```csharp
+private class Comments_BySentiment : AbstractIndexCreationTask<Comment>
+{
+    public class IndexEntry
+    {
+        public string Text { get; set; }
+        public bool IsToxic { get; set; }
+    }
+
+    public Comments_BySentiment()
+    {
+        Map = comments => from comment in comments
+            // We only load the model if it's not already loaded to avoid unnecessary work.
+            let modelStream = SentimentClassifier.IsModelLoaded == false ? LoadAttachment(LoadDocument<Model>("models/1", "Models"), "SentimentModel.zip").GetContentAsStream() : Stream.Null
+            select new IndexEntry()
+            {
+                Text = comment.Text,
+                IsToxic = SentimentClassifier.Classify(comment.Text, modelStream)
+            };
+
+        AdditionalSources = new Dictionary<string, string>()
+        {
+            {
+                "SentimentClassifier",
+                ReadTextOfEmbeddedResource("Raven.Documentation.Samples.SentimentAnalysis.SentimentClassifier.cs")
+            }
+        };
+
+        AdditionalAssemblies = new HashSet<AdditionalAssembly>
+        {
+            AdditionalAssembly.FromNuGet
+            (
+                packageName: "Microsoft.ML",
+                packageVersion: "3.0.1",
+                usings: new HashSet<string> { "Microsoft.ML", "Microsoft.ML.Data", "System.IO" }
+            )
+        };
+    }
+}
+```
+
+Every document from the `Comments` collection is processed by a map function that does two things:
+
+1. Loads the model from attachment using the [LoadAttachment](https://docs.ravendb.net/document-extensions/attachments/indexing-attachments) method if it hasn't already been loaded.
+2. Uses the model to predict the sentiment of the `Text` property of currently indexed document.
+
+To include the additional source we have to do the following steps:
+
+1. In the `.csproj` file we mark our file as an embedded resource and link it to the project.
+
+```xml
+<EmbeddedResource Include="SentimentAnalysis\SentimentClassifier.cs" Link="SentimentAnalysis\SentimentClassifier.cs" />
+```
+
+2. We use `ReadTextOfEmbeddedResource` that takes the embedded resource name as a parameter, and returns its content as text.
+
+An additional source containing the code of our classifier looks like this.
+
+```csharp
+using System;
+using System.IO;
+using Microsoft.ML;
+using Microsoft.ML.Data;
+
+namespace Raven.Documentation.Samples.SentimentAnalysis;
+
+public static class SentimentClassifier
+{
+    [ThreadStatic]
+    public static bool IsModelLoaded;
+
+    [ThreadStatic]
+    private static PredictionEngine<SentimentEntry, SentimentPrediction> Engine;
+
+    private static void Init(Stream modelStream)
+    {
+        MLContext mlContext = new MLContext();
+        var model = mlContext.Model.Load(modelStream, out DataViewSchema _);
+        Engine = mlContext.Model.CreatePredictionEngine<SentimentEntry, SentimentPrediction>(model);
+    }
+
+    public static bool Classify(string text, Stream modelStream)
+    {
+        // We don't want to load the model if it's already loaded
+        if (IsModelLoaded == false)
+        {
+            Init(modelStream);
+            IsModelLoaded = true;
+        }
+
+        // Predict the sentiment of text
+        var sentiment = Engine.Predict(new SentimentEntry { Text = text });
+
+        // We only want to mark comment as toxic
+        // if probability is at least 85%
+        if (sentiment.Probability < 0.85)
+            return false;
+
+        return sentiment.Prediction;
+    }
+}
+
+public class SentimentEntry
+{
+    [LoadColumn(0)]
+    public bool Label { get; set; }
+
+    [LoadColumn(2)]
+    public string Text { get; set; }
+}
+
+public class SentimentPrediction
+{
+    [ColumnName("PredictedLabel")]
+    public bool Prediction { get; set; }
+
+    public float Probability { get; set; }
+
+    public float Score { get; set; }
+}
+```
+
+Note that for model input and output we're using the same classes that we used for the model training.
+
+In RavenDB, each index has its own dedicated thread for indexing work. Using [ThreadStatic](https://learn.microsoft.com/en-us/dotnet/api/system.threadstaticattribute?view=net-8.0) annotation for `IsModelLoaded` and `Engine` properties ensures that we initialize the engine using `Init` method only once per index.
+
+After indexing finishes we can easily query toxic comments.
+
+```csharp
+var toxicComments = session.Query<Comments_BySentiment.IndexEntry, Comments_BySentiment>().Where(x => x.IsToxic).OfType<Comment>().ToList();
+```
+
+## Using pre-trained model from NuGet package
+
+In this example we'll use a pre-trained prediction model from the [Catalyst](https://github.com/curiosity-ai/catalyst) NuGet package in order to classify indexed documents by detected language.
+
+### Creating the index
+
+We start from the same `Comments` collection and the same `Comment` class as in the previous example.
+This time our goal is to index these documents by their language, using the pre-trained model from the `Catalyst` NuGet package instead of one we trained ourselves.
+
+First, we have to create example data. It consists of three documents in different languages.
+
+```csharp
+// Japanese
+var comment1 = new Comment() { Text = "今日、多言語ドキュメントを扱う必要性が高まっています。 多言語ドキュメントを言語ごとに分割できれば、コード切り替えやコード混合などの言語現象の調査と、必要に応じて各セグメントの計算処理の両方に非常に役立ちます。 したがって、特定の小さなテキストから言語を識別することは重要な問題です。 このペーパーは、小さなテキストサンプルからの言語識別に関するものです。" };
+
+// French
+var comment2 = new Comment() { Text = "De nos jours, il est de plus en plus nécessaire de traiter des documents multilingues. Si nous pouvions segmenter les documents multilingues d'un point de vue linguistique, cela serait très utile à la fois pour l'exploration de phénomènes linguistiques, tels que la commutation de code et le mélange de code, et pour le traitement informatique de chaque segment, le cas échéant. L'identification de la langue à partir d'un petit texte donné est donc un problème important. Ce document concerne l'identification de la langue à partir de petits échantillons de texte." };
+
+// Norwegian
+var comment3 = new Comment() { Text = "Det er et økende behov for å håndtere flerspråklige dokumenter i dag. Hvis vi kunne segmentere flerspråklige dokumenter språkmessig, ville det være veldig nyttig både for utforsking av språklige fenomener, for eksempel kodebytte og kodeblanding, og for beregningsbehandling av hvert segment etter behov. Identifisering av språk fra et gitt lite stykke tekst er derfor et viktig problem. Denne artikkelen handler om språkidentifikasjon fra små tekstprøver." };
+
+session.Store(comment1);
+session.Store(comment2);
+session.Store(comment3);
+
+session.SaveChanges();
+```
+
+Next, we have to create and execute an index.
+
+```csharp
+var commentsByLanguage = new CommentsByLanguage();
+
+commentsByLanguage.Execute(store);
+
+WaitForIndexing(store);
+```
+
+Its definition looks like this.
+
+```csharp
+private class CommentsByLanguage : AbstractIndexCreationTask<Comment>
+{
+    public class IndexEntry
+    {
+        public string Text { get; set; }
+        public string Language { get; set; }
+    }
+
+    public CommentsByLanguage()
+    {
+        Map = comments => from comment in comments
+            select new IndexEntry()
+            {
+                Text = comment.Text,
+                Language = LanguageClassifier.Classify(comment.Text)
+            };
+
+        AdditionalSources = new Dictionary<string, string>()
+        {
+            {
+                "LanguageClassifier", ReadTextOfEmbeddedResource("Raven.Documentation.Samples.SentimentAnalysis.LanguageClassifier.cs")
+            }
+        };
+
+        // All packages have to go into a single AdditionalAssemblies set:
+        // the base Catalyst package plus one package per language we want to detect.
+        AdditionalAssemblies = new HashSet<AdditionalAssembly>
+        {
+            AdditionalAssembly.FromNuGet
+            (
+                packageName: "Catalyst",
+                packageVersion: "1.0.48839",
+                usings: new HashSet<string> { "Catalyst", "Catalyst.Models", "Mosaik.Core" }
+            ),
+            AdditionalAssembly.FromNuGet
+            (
+                packageName: "Catalyst.Models.French",
+                packageVersion: "1.0.30952",
+                usings: new HashSet<string> {}
+            ),
+            AdditionalAssembly.FromNuGet
+            (
+                packageName: "Catalyst.Models.Japanese",
+                packageVersion: "1.0.30952",
+                usings: new HashSet<string> {}
+            ),
+            AdditionalAssembly.FromNuGet
+            (
+                packageName: "Catalyst.Models.Norwegian",
+                packageVersion: "1.0.30952",
+                usings: new HashSet<string> {}
+            )
+        };
+    }
+}
+```
+
+Every document from the `Comments` collection is processed by a map function that predicts its language using the `Classify` method from a declared additional source.
+
+To load the additional source we used the `ReadTextOfEmbeddedResource` method like in the previous example.
+
+```csharp
+using System;
+using Catalyst;
+using Catalyst.Models;
+using Mosaik.Core;
+using Version = Mosaik.Core.Version;
+
+namespace Raven.Documentation.Samples.SentimentAnalysis;
+
+public static class LanguageClassifier
+{
+    [ThreadStatic]
+    public static bool IsLanguageDetectorInitialized;
+
+    [ThreadStatic]
+    private static LanguageDetector LanguageDetector;
+
+    private static void Init()
+    {
+        // Register relevant language models
+        French.Register();
+        Japanese.Register();
+        Norwegian.Register();
+
+        // Mosaik package used by Catalyst requires write permission to provided directory to store the models
+        Storage.Current = new DiskStorage("catalyst-models");
+
+        LanguageDetector = LanguageDetector.FromStoreAsync(Language.Any, Version.Latest, "").Result;
+    }
+
+    public static string Classify(string text)
+    {
+        if (IsLanguageDetectorInitialized == false)
+        {
+            Init();
+            IsLanguageDetectorInitialized = true;
+        }
+
+        var document = new Document(text);
+
+        LanguageDetector.Process(document);
+
+        return document.Language.ToString();
+    }
+}
+```
+
+Now we can easily query documents by their language.
+
+```csharp
+var norwegianComments = session.Query<CommentsByLanguage.IndexEntry, CommentsByLanguage>()
+    .Where(x => x.Language == Language.Norwegian.ToString()).OfType<Comment>().ToList();
+```
+
+## Summary
+
+In this article we extended the RavenDB indexing process using two functionalities - [AdditionalAssemblies](https://docs.ravendb.net/indexes/additional-assemblies) and [AdditionalSources](https://docs.ravendb.net/indexes/extending-indexes). They allow you to execute custom code, which opens endless possibilities to extend your database with machine learning and multiple other features.
+
+* AdditionalSources brings your own classes into an index definition, AdditionalAssemblies brings the NuGet packages those classes need, and your sources have access to every assembly the index declares.
+* A model you trained yourself can travel with the database as a document attachment, loaded inside the map function with `LoadAttachment`, so nothing has to sit on the server's disk.
+* Each index runs on its own indexing thread, so marking the prediction engine `[ThreadStatic]` and guarding it with a flag loads the model once per index instead of once per document.
+* Every package an index needs has to go into a single `AdditionalAssemblies` set, because a second assignment replaces the first rather than adding to it.
+
+If you are after semantic similarity rather than classification, RavenDB now ships that natively. See [New in 7.0: RavenDB Vector Search](./new-in-7-0-ravendbs-vector-search) and [Embeddings Generation with RavenDB](./embeddings-generation-with-ravendb).
