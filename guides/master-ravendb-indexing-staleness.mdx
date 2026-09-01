@@ -1,10 +1,205 @@
 ---
 title: "Indexing Staleness Explained"
 tags: [perf-tuning, deep-dive, troubleshooting, indexes]
-description: "Read about Indexing Staleness Explained on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/master-ravendb-indexing-staleness"
+icon: "index-stale"
+description: "Why RavenDB queries can return stale results, when that is perfectly fine, and how to force fresh results per query, per session, or across the whole document store."
 published_at: 2025-11-25
-image: "https://ravendb.net/wp-content/uploads/2025/11/acid-base-article-cover.svg"
+see_also:
+  - title: "Stale Indexes"
+    link: "indexes/stale-indexes"
+    source: "docs"
+    path: "Indexes > Stale Indexes"
+  - title: "Transaction Support (BASE for query operations)"
+    link: "client-api/faq/transaction-support"
+    source: "docs"
+    path: "Client API > FAQ > Transaction Support"
+  - title: "Exploration Queries (Filter)"
+    link: "indexes/querying/exploration-queries"
+    source: "docs"
+    path: "Indexes > Querying > Exploration Queries"
 proficiency_level: "Expert"
+author: "Paweł Lachowski"
 ---
 
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+Imagine inserting thousands or millions of documents into your database. If you had to choose to slow down the writes because of indexing data as they come in or delegate the indexing process to a background non-blocking operation, what would you choose?
+
+In short: RavenDB stores your documents synchronously and updates indexes in the background, so a query can return results that do not yet reflect your most recent write. Only index-backed queries are affected, and you can opt out of staleness per query, per session, or across the whole document store.
+
+Some databases enforce strict consistency, ensuring that every query reflects the most recent committed state. Others, however, prioritize speed and availability over immediate query consistency while maintaining stored data consistency.
+
+RavenDB is a hybrid between the strict data consistency of ACID and the availability of the BASE paradigms. This distinction ensures your data is safely stored, while indexes prioritize speed and availability. This might result in indexing staleness, which will be the main topic of this article. Let’s explore staleness in RavenDB and how you can control it.
+
+## Soft state
+
+While our Voron storage system is fully ACID compliant, our indexes follow the BASE paradigm. BASE trades strong consistency for high availability. If you want to learn more about BASE (Basically Available, Soft state, Eventual consistency) you can read about [BASE for query operations](https://docs.ravendb.net/client-api/faq/transaction-support/#base-for-query-operations).
+
+It means that, after introducing new data, the indexes will be in a soft state. It comes from the BASE paradigm, and it’s called soft because the state of the database changes while they process recent changes.
+
+In RavenDB, when you input new data, it is stored immediately. Indexes, on the other hand, update it asynchronously; the indexing has no detrimental effect on data ingress. In other words, they work in the background batch by batch while queries will still respond.
+
+The freshness of query results changes over time as RavenDB index is processing new entries. When the index completes its indexing work, the query results become up to date with recent changes in the data.
+
+The speed of achieving up-to-date results strictly depends on indexing performance, but in the majority of real systems, data accessibility is much more important than up-to-date results. At the same time, long periods of staleness are highly unlikely, so it might not be a problem at all.
+
+<Admonition type="note" title="">
+
+Not every read from the database is impacted by staleness. Staleness might impact only operations that work with indexes - queries.
+
+</Admonition>
+
+| Operation | Potential staleness | Example |
+| :---- | :---- | :---- |
+| Query | ✅ | `session.Query<Employees>().Where(x => x.Name == "Laura").ToList();` |
+| Load from ID | ❌ | `session.Load<Reports>("reports/2025-03-02");` |
+| Get all from the collection | ❌ | `session.Query<Reports>().ToList();` |
+| Load ID that starts with | ❌ | `session.Query<Reports>().Where(x => x.Id.StartsWith("reports/2025-03/")).ToList();` |
+
+There is an interesting case of filtering. `Filter` is not a search engine of its own: it is post-query filtering, executed by RavenDB’s JavaScript engine over the dataset the query already retrieved, without requiring or creating an index. Applied to a collection query, it never touches an index at all, so it cannot be stale. Applied on top of an index query, the filtering itself is always fresh, but the result set it filters comes from the index and can still be stale. It is handy for one-off exploration, but scanning the whole retrieved dataset costs real server resources, so using it without understanding might cause performance issues. You can read more about [exploration queries and `filter`](https://docs.ravendb.net/indexes/querying/exploration-queries/#filter).
+
+```csharp
+.Filter(f => f.Address.Country == "USA", limit: 500)
+```
+
+## To wait or not to wait
+
+Let's take a look at practical examples that will show when the staleness is fine and in some cases where it’s not:
+
+### Good enough
+
+In the majority of the cases, handling a request requires no follow-up consistent query. This means that working with the default settings is by-design safe and correct. For example, an e-commerce product catalogue search doesn’t need to be 100% accurate immediately. A slight data lag doesn’t ruin application experience. The product can take some time to appear on the catalogue page; users will not notice anyway. The same rules apply to most of the applications. Being able to handle requests faster is always an advantage. Even if there’s a slight possibility of having a stale query result.
+
+Depending on the size of the changes, this propagation might take a couple of milliseconds to a few seconds when adding many new documents to the database. For new indexes, it can take more than a few minutes to be fully processed. The processing time changes depending on several factors like the system resources utilization, or if your indexes are poorly optimized (learn how to prevent it in [spotting red flags in index definitions](./master-ravendb-spotting-red-flags-in-index-definitions-guide)).
+
+### Rare case
+
+Being honest there are very few examples of real life scenarios where you can’t rely on stale query results. For example, testing software. When you write unit or end to end tests, sometimes a slight delay may result in a false negative test success result. On the other hand, we could name a few extreme cases, e.g. you can’t allow yourself to make high frequency trading using old data. The speed required for this can be counted in milliseconds, if not less, and errors can cost money.
+
+But how to check if your results are stale?
+
+## Stale or not
+
+To check if your results are stale, you can use the statistics method. It gives you access to useful variables like isStale or indexUsed that can give you the information you desire. Basic query without those variables looks like this:
+
+```csharp
+employees = session.Query<Employees>()
+                .Where(x => x.Name == "Laura")
+                .ToList();
+```
+
+We add two variables and change it to:
+
+```csharp
+employees = session.Query<Employees>()
+                .Statistics(out QueryStatistics stats)
+                .Where(x => x.Name == "Laura")
+                .ToList();
+
+bool isStale = stats.IsStale; // Is it stale?
+string indexUsed = stats.IndexName; // which index was used
+```
+
+Which would return us:
+
+<Image img={require("./assets/indexing-staleness1.webp")} alt="Query statistics output showing the IsStale flag and the IndexName of the index used" />
+
+This way, you can see if your results are stale and use that information to your advantage. As you can see, first you get the query and then you get your stats. The property isStale tells if your index is stale, and indexUsed shows which index is used.
+
+## Keeping it fresh
+
+Removing staleness is a performance-accuracy trade-off, but this may not be a problem, e.g., in unit tests, where you need fresh data to prevent flaky fails. Staleness can be stopped in three ways; let’s explore all three.
+
+### Single Query
+
+Need a single query that always avoids staleness? Use the `Customize` function to wait for up-to-date results.
+
+```csharp
+List<Product> results = session.Query<Product>()
+  .Customize(x => x.WaitForNonStaleResults(TimeSpan.FromSeconds(5)))
+  .Where(x => x.PricePerUnit > 10)
+  .ToList();
+```
+
+This will give you results that are fresh just for this query. Useful if you don’t need precision all the time. By default, it will timeout after 15 seconds with exception; you can customize it using the timeout parameter.
+
+### Single Session
+
+To keep data up to date in a single session, you can use `WaitForIndexesAfterSaveChanges` method in our client SDK. This way, you will always wait for indexes, after calling `saveChanges`.
+
+```csharp
+session.Advanced.WaitForIndexesAfterSaveChanges(
+  timeout: TimeSpan.FromSeconds(5),
+  throwOnTimeout: false,
+  indexes: new[] { "Products/ByName" });
+```
+
+`Timeout` specifies how long the operation will wait before timing out. If set to null, it will wait for up to 15 seconds.
+`ThrowOnTimeout` determines whether an exception should be thrown when the timeout period is reached. If set to false, the operation will not throw an exception even if it times out.
+`Indexes` let you pick for which exact indexes your client app will be waiting for. If set to null, the operation will wait for all indexes affected by the session’s changes to update.
+
+### Document store
+
+If really needed, you can set up a whole document store to wait for up-to-date indexes. You can add it as a convention to your document store so all sessions will wait for reindexing:
+
+```csharp
+store.OnBeforeQuery += (sender, beforeQueryExecutedArgs) =>
+{
+  beforeQueryExecutedArgs.QueryCustomization.WaitForNonStaleResults();
+};
+```
+
+As you can see RavenDB allows you to customize it on many levels.
+
+## When it stays stale
+
+Everything above assumes staleness that clears on its own. If an index is still stale minutes or hours later, and the write load has died down, that is not staleness catching up. That is a stuck index, and waiting for it will not help.
+
+Start with the index state. An index can be in one of several states, and three of them keep queries stale indefinitely:
+
+| State | What happens | How it clears |
+| :---- | :---- | :---- |
+| `Paused` | New data is not indexed, so queries stay stale | Resume indexing, restart the server, or reload the database |
+| `Disabled` | New data is not indexed, and this survives a restart | Enable the index explicitly; a restart will not do it |
+| `Error` | The index cannot be queried at all, queries throw | Fix the definition, or reset the index |
+
+You can read the state on the local node with `GetIndexStatisticsOperation`:
+
+```csharp
+IndexStats stats = store.Maintenance.Send(
+  new GetIndexStatisticsOperation("Products/ByName"));
+
+IndexState state = stats.State; // Normal, Paused, Disabled or Error
+bool isStale = stats.IsStale;
+```
+
+An index does not land in `Error` on a single bad document. RavenDB tracks indexing attempts against failures and marks the index as errored once the failure rate goes above 15%. For a stale index it waits for more than 100 indexing attempts before applying that threshold; a non-stale index where every single attempt has failed is marked immediately. So an `Error` state means something is consistently wrong with the definition or with the shape of your documents, not that one record was odd.
+
+To see what actually failed, pull the errors:
+
+```csharp
+IndexErrors[] indexErrors = store.Maintenance.Send(
+  new GetIndexErrorsOperation());
+```
+
+In Studio the same information is a click away: the index list view has a Status column showing whether each index is up to date or stale, and index errors are surfaced per index.
+
+<Admonition type="warning" title="">
+
+Waiting will not rescue a stuck index. `WaitForNonStaleResults` against a paused or disabled index just burns the full timeout and then throws, because nothing is processing in the background for it to wait on. Check the state before you reach for a longer timeout.
+
+</Admonition>
+
+Once you know the cause, the fix is usually small: resume or enable the index if someone paused it, fix the definition if it is throwing, or reset the index to force a re-index of every matching document if its data needs rebuilding.
+
+## Summary
+
+At the end of the day, index staleness is a natural consequence of speed and availability. In the majority of applications this consequence has no real impact on the design of an application. If you are more interested in indexes and how to handle them well, check our guide on [spotting red flags in index definitions](./master-ravendb-spotting-red-flags-in-index-definitions-guide), and don’t be stale on your RavenDB knowledge.
+
+Interested in RavenDB? Grab the [developer license dedicated to testing](https://ravendb.net/dev) or get a [free cloud database](https://ravendb.net/cloud). Any more questions or just want to hang out and talk with the RavenDB team? Join our [Discord Community Server](https://discord.com/invite/ravendb).
