@@ -12,7 +12,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Getting started: Connecting your database
 <Admonition type="tip" title="">
 
-Achieved so far in [Getting Started](../getting-started/signing-up.mdx):  
+**Achieved so far** in [Getting Started](../getting-started/overview.mdx#the-six-steps):  
 [Signing up](../getting-started/signing-up.mdx) - your deployment has a name, a license key, and a dashboard API key.  
 [Starting Quill](../getting-started/starting-quill.mdx) - Quill is running on your machine, and its management dashboard is open.
 
@@ -268,7 +268,7 @@ The **Add new app** wizard opens on its first stage:
 ![Connect to your source database](./assets/connect-your-database_connect-step.png)
 
 1. **Import configuration**  
-   An app's configuration can be exported and reused.  
+   An app's configuration can be [exported](../getting-started/mapping-your-tables.mdx#testing-your-mapping) and reused.  
    Import an exported configuration to fill in its connection and table mapping details.
 
 2. **App name**  
@@ -278,7 +278,8 @@ The **Add new app** wizard opens on its first stage:
 3. **Public URL slug**  
    Enter a unique identifier for the app, or click **Regenerate** to create it automatically.  
    e.g., **Northwind Traders** becomes `northwind-traders`  
-   The identifier appears in the public URLs the app is served on, and becomes the name of the app's internal
+   The identifier appears in the [public URLs](../security-and-architecture/network-architecture.mdx#what-is-public) the app is
+   served on, and becomes the name of the app's internal
    database.
 
    Once the app is created, the identifier can no longer be changed.
@@ -321,7 +322,7 @@ The **Add new app** wizard opens on its first stage:
      The **source database name**.  
      e.g., `northwind`
    * **Username**  
-     The **database user** that Quill will use to connect with the source database.  
+     The **database user** that Quill will use to connect to the source database.  
      e.g., `postgres`
    * **Password**  
      The **database user's password**.

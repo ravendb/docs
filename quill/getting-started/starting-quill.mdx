@@ -14,7 +14,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Getting started: Starting Quill
 <Admonition type="tip" title="">
 
-Achieved so far in [Getting Started](../getting-started/signing-up.mdx):  
+**Achieved so far** in [Getting Started](../getting-started/overview.mdx#the-six-steps):  
 [Signing up](../getting-started/signing-up.mdx) - your deployment has a name, a license key, and a dashboard API key.
 
 </Admonition>
@@ -47,10 +47,12 @@ Before starting Quill, make sure you have:
 * **Docker**, on the machine that will run Quill, at the address you gave at sign-up.
    * Docker Desktop on Windows and macOS, or Docker Engine on Linux.
 * **Port 443 available** on Quill's machine.
-   * The dashboard, the API, and the chat channels of your deployment are all served on this one port.
+   * The dashboard, the API, and the chat channels of your deployment are all
+     [served on this one port](../security-and-architecture/network-architecture.mdx#publish-only-port-443).
 * **Internet access** from Quill's machine to Docker Hub and to `api.ravendb.net`.
    * Docker pulls [Quill's image](https://hub.docker.com/r/ravendb/quill-nightly) from Docker Hub.
-   * Quill fetches the certificate and configuration for your domain from `api.ravendb.net`.
+   * Quill fetches the [certificate and configuration](../security-and-architecture/network-architecture.mdx#the-tls-front-and-the-wildcard-certificate)
+     for your domain from `api.ravendb.net`.
 * **The Docker command and the dashboard API key** you copied at the end of signing up.
    * The command carries your license key.
    * The API key signs you into the management dashboard.
@@ -102,7 +104,7 @@ The command's parts:
 | `-p 443:443` | Publishes port 443, Quill's only external port. |
 | `-e QUILL_LICENSE_KEY=...` | Your license key, which Quill uses to fetch the certificate and configuration for your domain. |
 | `-e QUILL_API_KEY=...` | Your dashboard API key, `primary/` prefix included. |
-| `-v quill-baloo-data:/var/lib/quill` | A Docker volume holding everything Quill keeps: its settings, its certificate, and your mirrored data. |
+| `-v quill-baloo-data:/var/lib/quill` | A Docker volume holding everything Quill keeps: its settings, its certificate, and your mirrored data. When [Quill is updated](../updating-quill.mdx), the new container mounts this same volume. |
 | `ravendb/quill-nightly:latest` | Quill's image. |
 
 The command does not return to the prompt, and Quill reports its progress in the terminal you started it in.  
@@ -134,8 +136,8 @@ normally end within a minute.
 
 * **Status: READY**: indicates that your deployment can be accessed.
 * **Dashboard**: this is where you sign in to manage Quill.
-* **Database**: reaches the RavenDB server inside the container, allowing you to read the
-  [mirrored data](../overview.mdx#the-components) directly.
+* **Database**: reaches the RavenDB server inside the container, allowing you to
+  [read the mirrored data directly](../security-and-architecture/network-architecture.mdx#direct-database-access).
 
 </ContentFrame>
 
@@ -182,8 +184,8 @@ docker exec quill-<name> sh -c "grep -i exception /var/lib/quill/logs/web.log | 
 <Panel heading="Signing in to the management dashboard">
 
 Open the **Dashboard** address the terminal printed (e.g., `https://dashboard.baloo.myquill.ai`) in a browser.  
-Quill asks for the dashboard API key that was displayed and sent to you by email at the end of the signing-up
-routine.
+Quill asks for the [dashboard API key](../security-and-architecture/operator-authentication.mdx#signing-in-to-the-dashboard) that was
+displayed and sent to you by email at the end of signing up.
 
 ![Sign in](./assets/starting-quill_sign-in.png)
 

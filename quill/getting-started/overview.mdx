@@ -1,0 +1,101 @@
+---
+title: "Getting started: Overview"
+sidebar_label: Overview
+sidebar_position: 1
+description: "The map of the Getting Started path: the six steps from signing up for Quill to a chat widget answering your users from Quill's live copy of your SQL data, and the things to prepare before you start."
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Getting started: Overview
+<Admonition type="note" title="">
+
+* Quill adds AI capabilities to your existing SQL database (PostgreSQL, SQL Server, or MySQL).  
+  The **Getting Started** section takes you, in six steps, from signing up for Quill to a **chat widget**
+  on your site, where your users ask and your AI agent answers from Quill's live copy of your SQL data.  
+  This page presents [the six steps](#the-six-steps) and [the things to prepare](#prerequisites) before you start.
+
+* The configuration steps run in wizards that save you the manual work: Quill drafts the mapping of your
+  data, the agent, and the agent's queries, and you approve or adjust each draft.
+
+* The chat widget is one of several channel types Quill offers, all carrying conversations between your
+  users and an agent: once the widget runs, a Telegram bot, a Slack app, or a Discord bot can follow.
+
+* Terms like [mirroring](../overview.mdx#mirroring), [agents](../overview.mdx#ai-agent), and [channels](../overview.mdx#channels) are
+  explained on the **Overview** page.
+
+* You can walk the whole path with Quill running on your own machine.
+
+* In this article:
+   * [The six steps](#the-six-steps)
+   * [Prerequisites](#prerequisites)
+
+</Admonition>
+
+<Panel heading="The six steps">
+
+The first step runs on the sign-up page, the second in a terminal on your machine, and the rest in Quill's
+management dashboard.
+
+1. **[Signing up](../getting-started/signing-up.mdx)**  
+   On the sign-up page, name your new Quill deployment, and receive the access keys and the Docker command
+   that starts it.  
+   *Your deployment has a name, a license key, and a dashboard API key.*
+
+2. **[Starting Quill](../getting-started/starting-quill.mdx)**  
+   Run the Docker command in a terminal on your machine.  
+   *Quill is running on your machine, and its management dashboard is open.*
+
+3. **[Connecting your database](../getting-started/connecting-your-database.mdx)**  
+   In the management dashboard, start the **Add new app** wizard: point Quill at your source database and
+   select the tables to read from.  
+   *Quill can reach your source database, and the tables your app will work with are selected.*
+
+4. **[Mapping your tables](../getting-started/mapping-your-tables.mdx)**  
+   Continue through the same **Add new app** wizard: settle the **mapping**, by which Quill builds its
+   internal database documents from your tables, and create the app.  
+   *Your app is created, and Quill keeps its internal database current with your source data.*
+
+5. **[Adding an AI agent](../getting-started/adding-an-ai-agent.mdx)**  
+   In the **Add agent** wizard, connect Quill to your LLM provider, pick a drafted agent or configure one
+   of your own, and chat with the draft agent before saving it.  
+   *Your app has an agent that answers from its internal database.*
+
+6. **[Adding a chat widget](../getting-started/adding-a-chat-widget.mdx)**  
+   Create a **Web widget** channel for the agent, generate an **embed link** for the channel, and place
+   the widget on a page of your site.  
+   *Your users can reach the agent through a chat widget on your website.*
+
+</Panel>
+
+<Panel heading="Prerequisites">
+
+Before taking the first step, make sure you have:
+
+* **An email address**, to receive Quill's access details.
+
+* **A machine that will run Quill.**
+   * The machine needs **Docker** installed: Docker Desktop on Windows and macOS, or Docker Engine on Linux.
+   * Port `443` must be available: the dashboard, the API, and the chat channels of your deployment are all
+     [served on this one port](../security-and-architecture/network-architecture.mdx#publish-only-port-443).
+   * Quill's machine needs internet access: Docker pulls Quill's image from Docker Hub, and Quill fetches
+     the [certificate and configuration](../security-and-architecture/network-architecture.mdx#the-tls-front-and-the-wildcard-certificate)
+     for your domain from `api.ravendb.net`.
+   * The machine's **public IP address**: your Quill domain will point at this address.  
+     To try Quill on your own machine, use `127.0.0.1`.
+
+* **Your source database: PostgreSQL, SQL Server, or MySQL.**
+   * Quill must be able to reach the database from inside its Docker container.
+   * The database must be recording its changes, and the conditions each database type must meet are
+     detailed in [Connecting your database](../getting-started/connecting-your-database.mdx#prerequisites).
+   * The credentials of a **database user**: Quill connects to the source database as this user.
+
+* **The access details for an LLM provider.**  
+  Quill connects to **OpenAI**, **Azure OpenAI**, or **Ollama** using
+  [access details that you provide](../getting-started/adding-an-ai-agent.mdx#connecting-to-your-llm-provider),
+  e.g., your OpenAI API key.  
+  Your agent will use the LLM to phrase its replies.
+
+</Panel>

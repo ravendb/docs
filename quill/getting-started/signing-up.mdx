@@ -12,10 +12,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Getting started: Signing up
 <Admonition type="tip" title="">
 
-The **Getting Started** section takes you from the initial signing up for Quill to the execution of an AI
-agent that handles user conversations, in six steps:  
-**Signing up**, **Starting Quill**, **Connecting your database**, **Mapping your tables**, **Adding an AI agent**,
-and **Adding a chat widget**.
+The **Getting Started** section takes you, [in six steps](../getting-started/overview.mdx#the-six-steps), from the initial signing up
+for Quill to an AI agent answering your users through your first channel: a chat widget on your site. **Signing up** is the first step.
 
 </Admonition>
 
@@ -26,9 +24,10 @@ and **Adding a chat widget**.
 
    <Admonition type="info" title="">
 
-   * A **Quill domain** is a web address that your Quill deployment can be reached at.
+   * A [Quill domain](../networking-and-dns.mdx#quill-dns-records) is a web address that your Quill deployment can be reached at.
    * A **license key** activates Quill.
-   * An **API key** signs you into the deployment's management dashboard.
+   * An [API key](../security-and-architecture/operator-authentication.mdx#the-dashboard-api-key) signs you into the deployment's
+     management dashboard.
 
    </Admonition>
 
@@ -54,7 +53,7 @@ and **Adding a chat widget**.
 
 Before signing up, make sure you have:
 
-* **An email box address** for Quill's access details.
+* **An email address** for Quill's access details.
 * **The public IP address** of the machine that will run Quill.
    * Your Quill domain will point at this address.
    * To try Quill on your own machine, use `127.0.0.1`.
@@ -167,11 +166,13 @@ All the details that are displayed here are also sent to the email address you p
 ![Quill is ready to start](./assets/sign-up_ready-to-start.png)
 
 1. **Your Quill domain**  
-   The dashboard, the API, and the chat channels of your deployment are all served at this address.
+   The dashboard, the API, and the chat channels of your deployment are all
+   [served at this address](../security-and-architecture/network-architecture.mdx#the-quill-hostnames).
 
 2. **Dashboard API key**  
    The key that signs you into the management dashboard.  
-   Copy the key before leaving this stage.
+   Copy the key before leaving this stage.  
+   A lost key can be [recovered](../security-and-architecture/operator-authentication.mdx#recovering-a-lost-key).
 
    <Admonition type="warning" title="">
 
@@ -191,7 +192,7 @@ All the details that are displayed here are also sent to the email address you p
    adding an agent.
 
 5. **If your server IP changes**  
-   The command that re-registers the domain with a new address.  
+   The command that [re-registers the domain](../networking-and-dns.mdx#moving-your-quill-to-a-new-ip) with a new address.  
    Run it on the machine that hosts Quill.
 
 6. **Done**  

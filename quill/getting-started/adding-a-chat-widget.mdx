@@ -12,7 +12,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Getting started: Adding a chat widget
 <Admonition type="tip" title="">
 
-Achieved so far in [Getting Started](../getting-started/signing-up.mdx):  
+**Achieved so far** in [Getting Started](../getting-started/overview.mdx#the-six-steps):  
 [Signing up](../getting-started/signing-up.mdx) - your deployment has a name, a license key, and a dashboard API key.  
 [Starting Quill](../getting-started/starting-quill.mdx) - Quill is running on your machine, and its management dashboard is open.  
 [Connecting your database](../getting-started/connecting-your-database.mdx) - Quill can reach your source database, and the tables
@@ -185,6 +185,10 @@ can use it to approach the widget.
 3. **Generate link**  
    Click to generate the link.
 
+The limits' exact behavior, including the message your users will see once a link expires or its chats are
+used up, is covered in
+[Lifetime, usage cap, and revocation](../developer-access/embed-the-chat-widget.mdx#lifetime-usage-cap-and-revocation).
+
 ---
 
 When the agent takes parameters, the dialog opens a field for each parameter.
@@ -220,7 +224,7 @@ into the link, so the agent's queries and answers will relate only to this custo
 
 4. **The widget**  
    A working chat widget, served by the link shown above it.  
-   Ask the widget a question that can be answered from your data. The agent will reply here as it will on your
+   Ask the widget a question that can be answered from your app's data. The agent will reply here as it will on your
    site.  
    Chats initiated here **are** counted against the link's limit.
 
@@ -265,7 +269,8 @@ Two things are left to settle before a page like this faces real visitors:
 * **A link for each visitor.**  
   A link carries one conversation and one set of limits, so everybody visiting a page that holds an embed link
   will share the same conversation and limits.  
-  A live site commonly generates a link per visitor, and places the link in the page as the page is served.
+  A live site commonly [generates a link per visitor](../developer-access/embed-the-chat-widget.mdx#mint-links-from-your-own-backend),
+  and places the link in the page as the page is served.
 
 Both are covered in [Embed the Chat Widget](../developer-access/embed-the-chat-widget.mdx).
 
@@ -276,10 +281,10 @@ Both are covered in [Embed the Chat Widget](../developer-access/embed-the-chat-w
 This concludes the Getting Started path:  
 Quill is deployed and you can access and manage it,  
 your source data is mirrored into your app's internal database,  
-an agent answers from your own data,  
+an agent answers from this internal database,  
 and your users can reach the agent through a chat widget on your website.
 
-There is much more to Quill than these pages cover, including, for example, other channels besides the chat
+There is much more to Quill than these pages cover, including other channels besides the chat
 widget, and actions your agents may run.  
 The [Overview](../overview.mdx) page is a good starting point for more, and you can then navigate the
 documentation and, above all, experiment in your own deployment.
