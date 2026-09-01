@@ -1,10 +1,338 @@
 ---
 title: "Dynamic Fields in RavenDB"
-tags: [deep-dive, indexes]
-description: "Read about Dynamic Fields in RavenDB on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/dynamic-fields"
+tags: [indexes, querying, deep-dive]
+icon: "index-fields"
+description: "How to use dynamic fields in RavenDB static indexes to query on properties that aren't defined at index-creation time, plus the pitfalls to watch for with duplicate field names and stored projections."
 published_at: 2024-10-28
-image: "https://ravendb.net/wp-content/uploads/2024/10/dynamic-fields-cover.jpg"
+see_also:
+  - title: "Using Dynamic Fields"
+    link: "indexes/using-dynamic-fields"
+    source: "docs"
+    path: "Indexes > Using Dynamic Fields"
+  - title: "Indexing Nested Data"
+    link: "indexes/indexing-nested-data"
+    source: "docs"
+    path: "Indexes > Indexing Nested Data"
+  - title: "Storing Data in Index"
+    link: "indexes/storing-data-in-index"
+    source: "docs"
+    path: "Indexes > Storing Data in Index"
 proficiency_level: "Expert"
+author: "Maciej Aszyk"
 ---
 
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+## Introduction
+
+RavenDB, as a schemaless database, gives you flexibility in how you persist data in the system, allowing the system to evolve freely over time, and it's not only restricted to the documents. Static indexes (written in C# or JavaScript) provide the possibility of producing/generating specialized data structures for efficient querying. At first glance, it might appear that the static indexes don't offer the flexibility in defining fields for querying, as they require static, compile-time binding of the index field to one or more document fields/properties. Adding an additional field necessitates changing the definition and rebuilding the indexes, which can be time-consuming for large datasets.
+
+Fortunately, it only *seems* that way.
+
+## Examples of use cases
+
+For our examples, let's assume we are developing an e-commerce site to make them more practical and understandable.
+
+### Product attributes
+
+Your e-commerce site has a product catalog. We know that some products have common attributes such as `Name` or `Price`, but often a product can have distinguishing properties like `Color`. It makes sense to filter, for example, T-Shirts by color, but does it make sense to filter software by colors? When building a catalog, it is hard to predict what we would filter on in the future, and we do not want to edit the definition each time something new appears.
+
+Normally, the definition of the ProductSearch index would probably look like this:
+
+```csharp
+from doc in docs.Products
+select new
+{
+    Name = doc.Name,
+    Price = doc.Price,
+}
+```
+
+Alternatively, in JavaScript:
+
+```javascript
+map("Products", (product) => {
+    return {
+        Name: product.Name,
+        Price: product.Price
+    };
+})
+```
+
+and when a new property appears, we explicitly add the field to the definition. However, this isn't very flexible. Yet, with a little help from the [dynamic fields](/7.2/indexes/using-dynamic-fields) feature we can make our index flexible.
+
+Depending on the document structure we have a couple of possibilities there. Let's assume we have a document in format like this:
+
+```javascript
+{
+    "Name": "Unique T-Shirt",
+    "Price": 20,
+    "Attributes": {
+        "Color": "Black"
+    }
+}
+```
+
+This is a win-win situation, so let's change our index definition:
+
+```csharp
+from doc in docs.Products
+select new
+{
+    Name = doc.Name,
+    Price = doc.Price,
+    _ = doc.Attributes.Select(attribute => CreateField(attribute.Key, attribute.Value))
+}
+```
+
+```javascript
+map("Products", (product) => {
+    return {
+        Name: product.Name,
+        Price: product.Price,
+        _: Object.entries(product.Attributes).map(([key, value]) => createField(key, value, {
+            indexing: 'Default',
+            storage: false,
+            termVector: null
+        }))
+    };
+})
+```
+
+The `CreateField` method creates an additional index field for document index entry with the name `Color` and pushes `Black` as a value.
+When we look into the raw index entry (the [docs](/7.2/indexes/indexing-nested-data#simple-index---single-index-entry-per-document) show you how to get one), our document has these fields:
+
+```javascript
+{
+    "Color": "black",
+    "Name": "unique t-shirt",
+    "Price": "20",
+    "id()": "products/1-a"
+}
+```
+
+Notice that the term is stored lowercased. A dynamic field created with `indexing: 'Default'` gets no explicit analyzer, so RavenDB falls back to the Default Analyzer, which is `LowerCaseKeywordAnalyzer`: the whole field value becomes a single, lowercased token. The query term goes through the same analyzer, which is why `'Black'` still matches the term `black`. If you need different behavior, for example full-text search or diacritic-sensitive matching on a dynamic field, you have to configure the analyzer explicitly. See [Configuring analyzers for dynamic fields](/7.2/indexes/using-dynamic-fields#configuring-analyzers-for-dynamic-fields) and [Using Analyzers](/7.2/indexes/using-analyzers), and the [Diacritic-Sensitive Search in RavenDB](./diacritic-sensitive-search-in-ravendb) guide for a worked example.
+
+This gives the possibility to query by color even though we do not have any explicit `Color` field in our index definition:
+
+```sql
+from index 'ProductSearch' where Color == 'Black'
+```
+
+Or from the client:
+
+```csharp
+session.Query<ProductIndexResult, ProductSearch>()
+    .Where(x => x.Color == "Black")
+    .ProjectInto<Product>()
+    .ToList();
+```
+
+Remember, no term is written under the `Color` field for documents that don't have a `Color` attribute.
+
+As always, you can have totally different document structures, like properties are not aggregated in the dictionary but stored in root (like the `Name`), what to do in such a case? You can always index all fields from document, e.g:
+
+```csharp
+from doc in docs.Products
+select new
+{
+    _ = AsJson(doc).Select(x => CreateField(x.Key, x.Value))
+}
+```
+
+```javascript
+map('Products', function (product) {
+    return {
+        _: Object.keys(product).map(key => createField(key, product[key], {
+            indexing: 'Default',
+            storage: false,
+            termVector: null
+        }))
+    };
+})
+```
+
+Let's analyze the example above. RavenDB offers AsJson() indexing method, which returns a document as a dictionary object, which gives a lot of flexibility in creating unbounded indexes, however such usage should be carefully considered and analyzed. The great advantage of such an approach is a schemaless index, so you will be able to automatically use new fields added to documents. On the other hand, you will probably index fields that are unnecessary, which means higher disk usage and slower indexing when your documents are big. If you go down this road, keep an eye on what the index actually costs you: see [Which Index Ate My Disk?](./troubleshooting-which-index-ate-my-disk).
+
+Secondly, when you have complex values (e.g. you store some class as value of property) the indexed term will be a JSON so querying it would be hard since you would have to match JSON.
+
+In such scenarios, it is simply better to have a field with the names of the attributes to be additionally indexed.
+
+```javascript
+{
+    "Name": "Unique T-Shirt",
+    "Price": 20,
+    "Color": "Black",
+    "ForSearch": ["Color"]
+}
+```
+
+```csharp
+from doc in docs.Products
+select new
+{
+    Name = doc.Name,
+    Price = doc.Price,
+    _ = AsJson(doc).Where(x => doc.ForSearch?.Contains(x.Key) ?? false)
+        .Select(field => CreateField(field.Key, field.Value))
+}
+```
+
+```javascript
+map("Products", (product) => {
+    return {
+        Name: product.Name,
+        Price: product.Price,
+        _: !Array.isArray(product.ForSearch)
+            ? null
+            : product.ForSearch
+                .filter(key => product.hasOwnProperty(key))
+                .map(key => createField(key, product[key], {
+                    indexing: 'Default',
+                    storage: false,
+                    termVector: null
+                }))
+    };
+})
+```
+
+Both versions read the field names from `ForSearch` and pull the values from the root of the document, which is where `Color` lives in the document above. If your attributes sit in a nested `Attributes` object instead, read from `doc.Attributes` / `product.Attributes` in both places.
+
+In such a scenario you control what you index per document and avoid unwanted fields.
+
+The `CreateField` method also lets you configure field options such as indexing behavior, storage, and term vectors. See [Using Dynamic Fields](/7.2/indexes/using-dynamic-fields) for the full set.
+
+A note on null-safety: all of the examples above assume the source property exists. `doc.Attributes.Select(...)` throws for a document that has no `Attributes` object at all, and RavenDB will record that as an index error rather than silently skipping the document. In a real catalog where the shape genuinely varies, guard first, the same way the `ForSearch` example does:
+
+```csharp
+_ = doc.Attributes == null
+    ? null
+    : ((IEnumerable<dynamic>)doc.Attributes).Select(attribute => CreateField(attribute.Key, attribute.Value))
+```
+
+## Dynamic fields: things to be aware of
+
+Dynamic fields give the possibility to make our index flexible, but we should be careful what and how we index. Let's discuss some scenarios that might happen to you.
+
+### Duplicated names
+
+Let's have an index definition like this:
+
+```csharp
+from doc in docs.Products
+select new
+{
+    CreationDate = doc.CreationDate,
+    _ = doc.Attributes.Select(x => CreateField(x.Key, x.Value))
+}
+```
+
+```javascript
+map("Products", (product) => {
+    return {
+        CreationDate: product.CreationDate,
+        _: Object.entries(product.Attributes).map(([key, value]) => createField(key, value, {
+            indexing: 'Default',
+            storage: false,
+            termVector: null
+        }))
+    };
+})
+```
+
+And our document has two properties with the same name, but one of them is nested.
+
+```javascript
+{
+    [...]
+    "CreationDate": "2022-02-01",
+    "Attributes": {
+        "CreationDate": "2023-01-01"
+    }
+    [...]
+}
+```
+
+Situations like this can happen. For example: the `CreationDate` in the root of the document can mean the creation of the product in our catalog, but the `CreationDate` in the `Attributes` can mean the creation date of the product itself.
+
+After indexing, we can query our document like this:
+
+```sql
+from index 'Index' where CreationDate == "2022-02-01"
+```
+
+or
+
+```sql
+from index 'Index' where CreationDate == "2023-01-01"
+```
+
+Both queries match our document, which can lead to mismatches in queries because terms can have different meanings.
+
+Please be careful when creating dynamic fields with non-unique naming conventions (e.g. prefixes/suffixes), as this may inadvertently push additional terms into fields we do not initially want.
+
+### Creating different projection
+
+The example above shows us how dangerous it could be if we've duplicated names, but there is another scenario. RavenDB lets us store data in the index, either for performance or to keep a transformed version of the data ready for projections. Normally a projection has to go back to disk and load the document. When the document is big and we know upfront that we only need a couple of properties out of it, we can store those in the index instead and skip loading the whole thing, which can cut query time significantly. Learn more about storing fields [here](/7.2/indexes/storing-data-in-index), and see the [Master RavenDB Projections Performance](./master-ravendb-projections-performance) guide for how stored fields compare to the other projection strategies.
+We can do a trick with a dynamic field and have stored different values than we index.
+
+Let's have document like this:
+
+```javascript
+{
+    "Name": "ProductOne",
+    "OrderedAt": "2023-03-01T12:00:00.0000000"
+}
+```
+
+We have a page where we show our salespeople all orders with the date, of course we would not show them the date as a raw string but with nice formatting.
+We could do this in our application or we could have all data already prepared and just stream the model from our index.
+
+```csharp
+from order in docs.Orders
+select new
+{
+    Name = order.ProductName,
+    OrderedAt = order.OrderedAt, // indexed as a sortable ISO 8601 string
+    _ = CreateField(
+        "OrderedAt",
+        ((DateTime)order.OrderedAt).ToString("D", CultureInfo.GetCultureInfo("pl-PL")),
+        new CreateFieldOptions
+        {
+            Indexing = FieldIndexing.No,
+            Storage = FieldStorage.Yes,
+            TermVector = FieldTermVector.No
+        })
+}
+```
+
+Note that `CreateField` takes its options as a positional third argument, and that the culture name is `pl-PL`, with a hyphen. Note also that the culture has to be available to the server process, so a server running in globalization-invariant mode will not produce the formatting you expect here.
+
+We indexed our date with the explicit field (`OrderedAt`). RavenDB writes it as a lexically sortable ISO 8601 term in the form `yyyy-MM-ddTHH:mm:ss.fffffff`, which is exactly why the range query below can compare against plain date strings. Alongside it, we inserted a custom projection (as a stored field) via a dynamic field.
+Now we could query like this:
+
+```sql
+from index 'Index' where OrderedAt between "2023-02-01T12:00:00.0000000" and "2023-04-01T12:00:00.0000000"
+    select Name, OrderedAt
+```
+
+and it will return JSON like this:
+
+```javascript
+{
+    "Name": "ProductOne",
+    "OrderedAt": "środa, 1 marca 2023"
+}
+```
+
+Please be aware that this is not recommended to implement in most cases, but it is shown as a showcase to raise awareness of the implications caused by using the same name.
+
+## Summary
+
+This article walks through some non-trivial uses of dynamic fields. Used well, they let your index keep up with data that changes shape over time, so you touch the index definition far less often. Used carelessly, they quietly push terms into fields you never meant to create. A great source of knowledge about the possibilities of dynamic fields can be found in our [documentation page](/7.2/indexes/using-dynamic-fields).
