@@ -1,8 +1,8 @@
 ---
-title: "Sending Your RavenDB 7.0 Logs to Grafana Cloud"
+title: "Sending Your RavenDB Logs to Grafana Cloud"
 tags: [monitoring, integration, administration]
 icon: "grafana"
-description: "Route RavenDB 7.0 server logs to Grafana Cloud by configuring the NLog Loki target, then view and filter them in Grafana Explore."
+description: "Route RavenDB server logs to Grafana Cloud by configuring the NLog Loki target, then view and filter them in Grafana Explore."
 published_at: 2025-02-25
 author: "Paweł Lachowski"
 see_also:
@@ -39,7 +39,9 @@ import Image from "@theme/IdealImage";
 
 ## Introduction
 
-With RavenDB 7.0, we've introduced the NLog system, bringing log management and monitoring to a whole new level. This upgrade unlocks new and useful NLog integrations, now compatible with RavenDB. In this guide, we will leverage that upgrade, and show you how to connect RavenDB logs to Grafana Cloud using Grafana Loki. You can also use this guide as a reference for connecting your database to other integrations.
+RavenDB 7.0 introduced the NLog logging system, bringing log management and monitoring to a whole new level. This upgrade unlocks new and useful NLog integrations, now compatible with RavenDB. In this guide, we will leverage that upgrade, and show you how to connect RavenDB logs to Grafana Cloud using Grafana Loki. You can also use this guide as a reference for connecting your database to other integrations.
+
+The `settings.json` keys and the `NLog.config` markup shown here apply to RavenDB 7.0 and later, including the current 7.2 release.
 
 ## Prerequisites
 
@@ -83,12 +85,12 @@ Let's get back on the topic of setting up connection. We already have most of th
 {
  // rest of the settings on top
  // ...
- "Logs.NuGet.AdditionalPackages": { "NLog.Targets.Loki": "2.2.0" },
+ "Logs.NuGet.AdditionalPackages": { "NLog.Targets.Loki": "2.5.0" },
   "Logs.ConfigPath": "NLog.config",
 }
 ```
 
-It will provide you the required package (**This article is using the 2.2.0 version. Please check if there is a newer version. The latest version is available [here](https://github.com/corentinaltepe/nlog.loki).**) and reroute your NLog settings into a newly created file. The first one is downloading a NuGet package that lets us connect NLog with Loki, while the second one overrides NLog config path. **Keep in mind that RavenDB needs an internet connection to handle everything for you.**
+It will provide you the required package (**this guide pins 2.5.0; check [NLog.Targets.Loki on NuGet](https://www.nuget.org/packages/NLog.Targets.Loki) for a newer release before you copy it**) and reroute your NLog settings into a newly created file. The first one is downloading a NuGet package that lets us connect NLog with Loki, while the second one overrides NLog config path. **Keep in mind that RavenDB needs an internet connection to handle everything for you.**
 
 ### Step 2: Register the NLog.Loki extension
 
