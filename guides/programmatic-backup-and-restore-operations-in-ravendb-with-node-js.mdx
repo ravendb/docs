@@ -1,10 +1,410 @@
 ---
 title: "Programmatic Backup and Restore with Node.js"
-tags: [nodejs, data-governance]
-description: "Read about Programmatic Backup and Restore with Node.js on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/programmatic-backup-and-restore-operations-in-ravendb-with-node-js"
-published_at: 2024-07-29
+tags: [nodejs, ongoing-tasks, data-governance]
 icon: "backup"
+description: "Automate RavenDB backup and restore from the Node.js client: define backup destinations, schedule periodic tasks, trigger backups manually, restore databases, and monitor your backup tasks."
+published_at: 2024-07-29
+see_also:
+  - title: "Backup Overview"
+    link: "backup/overview"
+    source: "docs"
+    path: "Backup > Overview"
+  - title: "Periodic Backup Tasks"
+    link: "backup/create/periodic-tasks/database-backup"
+    source: "docs"
+    path: "Backup > Create and manage backups > Periodic Backup Tasks > Database backup"
+  - title: "Restore"
+    link: "backup/restore"
+    source: "docs"
+    path: "Backup > Restore"
 proficiency_level: "Beginner"
+author: "Lev Skuditsky"
 ---
 
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+At RavenDB, we continuously strive to expand our documentation to cover all use cases and client preferences. As part of this effort, we’re excited to share some practical examples and tips on using RavenDB’s powerful backup and restore capabilities with the Node.js client.
+
+## Setting Up Your Environment
+
+To get started, make sure you have the [ravendb npm package](https://www.npmjs.com/package/ravendb) installed. If not, add it to your project with the following command:
+
+```bash
+npm install ravendb
+```
+
+Every operation used in this guide ships with that package. For the full surface area, see the [Node.js client API reference](https://docs.ravendb.net/client-api/what-is-a-public-api) and the [client source on GitHub](https://github.com/ravendb/ravendb-nodejs-client).
+
+## Creating a Periodic Backup Task
+
+Setting up a periodic backup task in RavenDB using the Node.js client allows you to ensure your data is consistently backed up across various destinations. Here’s a comprehensive example, with explanations for each part, demonstrating how to create a periodic backup task that can be customized to fit your specific needs, whether you want to back up to local storage, Amazon S3, Azure, Glacier, FTP, or Google Cloud.
+
+### Step 1: Define Your Backup Destinations
+
+You have the flexibility to choose where you want to store your backups. RavenDB supports multiple destinations, and you can configure any combination of these based on your requirements. Here are examples of how to define settings for each destination:
+
+```ts
+// Define local settings for backup storage on the machine where RavenDB is deployed
+let localSettings: LocalSettings = {
+    folderPath: "/path/to/backup/folder"
+};
+
+// Define Amazon S3 settings for backup storage
+let s3Settings: S3Settings = {
+    bucketName: "YourBucketName",
+    awsAccessKey: "YourAccessKey",
+    awsSecretKey: "YourSecretKey",
+    awsSessionToken: "YourSessionToken",
+    awsRegionName: "YourRegionName",
+    customServerUrl: "YourCustomServerUrl",
+    remoteFolderName: "YourRemoteFolderName",
+    forcePathStyle: false
+};
+
+// The node.js API also offers AzureSettings, GlacierSettings, FtpSettings and GoogleCloudSettings 
+// to match any scenario you have.
+```
+
+Feel free to use one or more of these settings based on your specific backup requirements.
+
+### Step 2: Configure the Backup Task
+
+Once you’ve defined your backup destinations, you can configure the periodic backup task. This includes setting the backup type, scheduling full and incremental backups, and associating the previously defined destination settings.
+
+```ts
+// Define the backup configuration
+let config: PeriodicBackupConfiguration = {
+    name: "Backup Task Example",
+    backupType: "Backup", // Options: "Backup" | "Snapshot"
+    fullBackupFrequency: "0 2 * * *", // Every day at 2:00 AM
+    incrementalBackupFrequency: "0 * * * *", // Every hour
+    localSettings: localSettings, // Use any of the defined settings here
+    s3Settings: s3Settings,       // For example, using S3 and Azure together
+};
+```
+
+In this example, the backup configuration sets up daily full backups at 2:00 AM and hourly incremental backups. Note that the scheduling uses Cron expressions. For more details on Cron scheduling, refer to [this explanation](https://en.wikipedia.org/wiki/Cron).
+
+Additionally, it’s helpful to understand the differences between the two backup types available in RavenDB:
+
+* **Backup**: A logical backup that saves data, index definitions, and ongoing tasks in compressed JSON files. For more details, visit the [Backup Types documentation](https://docs.ravendb.net/backup/overview#logical-backup).
+
+* **Snapshot**: A compressed binary duplication of the full database structure, including fully built indexes and ongoing tasks. For more details, visit the [Snapshot Backup documentation](https://docs.ravendb.net/backup/overview#snapshot-image).
+
+### Step 3: Create and Send the Backup Operation
+
+Finally, create the update operation for the periodic backup and send it to the RavenDB server to initialize the backup task.
+
+```ts
+// Create the update operation
+const operation = new UpdatePeriodicBackupOperation(config);
+const result = await store.maintenance.forDatabase('YourDatabaseName').send<UpdatePeriodicBackupOperationResult>(operation);
+
+console.log('Periodic Backup task created.');
+```
+
+By following these steps, you can set up a periodic backup task that ensures your data is securely backed up across multiple destinations, providing robust data protection and recovery options tailored to your specific needs.
+
+## Restoring from a Backup
+
+Restoring a database from a backup in RavenDB using the Node.js client is a straightforward process that involves specifying various configuration parameters. Here’s a breakdown of each parameter you might need to use:
+
+* **databaseName** (string): Name for the new database.
+
+* **backupLocation** (string): Local path of the backup file to be restored. This path must be local for the restoration to continue.
+
+* **lastFileNameToRestore** (string, optional): The last incremental backup file to restore. If omitted, the default behavior is to restore all backup files in the folder.
+
+* **dataDirectory** (string, optional): The new database data directory. If omitted, the default folder is under the “Databases” folder, in a folder that carries the restored database’s name.
+
+* **encryptionKey** (string, optional): A key for an encrypted database. If omitted, the default behavior is to try to restore as if the database is unencrypted.
+
+* **disableOngoingTasks** (boolean, optional): Set to true to disable ongoing tasks when the restore is complete. If set to false, ongoing tasks will be enabled when the restore is complete. The default is false.
+
+* **skipIndexes** (boolean, optional): Set to true to disable indexes import. If set to false, indexes will be imported. The default is false, meaning all indexes will be restored. This option applies to both logical backups and binary snapshots. When skipIndexes is false, logical backups restore only the index definitions, while binary snapshots restore the full content of the indexes.
+
+Here’s an example of how to configure and initiate a restore operation:
+
+```ts
+async function restoreBackup() {
+    let encryptionSettings: BackupEncryptionSettings = {
+        encryptionMode: "None",
+        key: ""
+    };
+
+    let restoreConfig: RestoreBackupConfiguration = {
+        backupEncryptionSettings: encryptionSettings,
+        dataDirectory: "C:\\DataDirectory",
+        encryptionKey: "",
+        lastFileNameToRestore: "",
+        skipIndexes: false,
+        backupLocation: "C:\\Backup",
+        databaseName: "YourDatabaseName",
+        disableOngoingTasks: true,
+        type: "Local"
+    };
+
+    const operation = new RestoreBackupOperation(restoreConfig);
+    const op = await store.maintenance.send(operation);
+
+    // Wait for the restore operation to complete
+    await op.waitForCompletion();
+
+    console.log('Restore operation completed successfully.');
+}
+```
+
+This example demonstrates a restore operation from a specified backup location, restoring the database to the given data directory and configuring various optional parameters. By understanding and utilizing these parameters, you can tailor the restore process to fit your specific requirements.
+
+## Manually Triggering a Backup
+
+In some scenarios, you may need to trigger a backup manually outside the regular schedule. This can be particularly useful for on-demand backups before major updates or changes. Here’s how you can manually start a backup:
+
+First, you can retrieve the task information and use its taskId to manually start the backup. Note that the true parameter indicates a full backup:
+
+```ts
+async function triggerManualBackup(store: IDocumentStore, backupName: string) {
+    const myBackup = await store.maintenance.send(
+        new GetOngoingTaskInfoOperation(backupName, "Backup")
+    ) as OngoingTaskBackup;
+
+    const startBackupOperation = new StartBackupOperation(true, myBackup.taskId); // true indicates a full backup
+    const send = await store.maintenance.send(startBackupOperation);
+
+    console.log('Manual backup started:', send.operationId);
+}
+
+triggerManualBackup(store, "myBackup").catch(console.error);
+```
+
+By leveraging this capability, you can ensure that you have up-to-date backups whenever needed, providing an additional layer of flexibility and security in your backup strategy.
+
+## Monitoring and Managing Backup Tasks
+
+Effectively monitoring your backup tasks is crucial to ensure data integrity and timely backups. Let’s explore how you can leverage RavenDB’s capabilities to monitor, manage, and verify backup tasks.
+
+### Retrieving Backup Task Information
+
+First, you need to retrieve information about your backup task. Suppose you have a backup task named “myBackup”. You can use the GetOngoingTaskInfoOperation to fetch the details:
+
+```ts
+const myBackup = await store.maintenance.send(
+    new GetOngoingTaskInfoOperation("myBackup", "Backup")
+) as OngoingTaskBackup;
+```
+
+This operation provides a comprehensive set of details about the backup task, including the last full and incremental backups, the status of any ongoing backups, and the schedule for the next backup.
+
+### Understanding Backup Task Information
+
+The OngoingTaskBackup interface provides a wealth of information about the backup task. Here are the key fields and what they represent:
+
+| Field | Type | Description |
+|---|---|---|
+| `taskType` | `string` | Type of the task, which in this case is “Backup”. |
+| `backupType` | `string` | The type of backup (e.g., “Backup” or “Snapshot”). |
+| `backupDestinations` | `string[]` | The destinations where backups are stored (e.g., local, S3, Azure). |
+| `lastFullBackup` | `Date` | The date and time of the last full backup. |
+| `lastIncrementalBackup` | `Date` | The date and time of the last incremental backup. |
+| `onGoingBackup` | `RunningBackup` | Information about any currently running backup. |
+| `nextBackup` | `NextBackup` | Details about the next scheduled backup. |
+| `retentionPolicy` | `RetentionPolicy` | The retention policy for the backup task. |
+| `isEncrypted` | `boolean` | Indicates whether the backup is encrypted. |
+| `lastExecutingNodeTag` | `string` | The node tag of the last executing node for the backup task. |
+
+If a backup is currently running, the onGoingBackup field provides additional details:
+
+| Field | Type | Description |
+|---|---|---|
+| `startTime` | `Date` | The start time of the running backup. |
+| `isFull` | `boolean` | Indicates whether the running backup is a full backup. |
+| `runningBackupTaskId` | `number` | The task ID of the running backup. |
+
+The nextBackup field contains information about the upcoming scheduled backup:
+
+| Field | Type | Description |
+|---|---|---|
+| `timeSpan` | `string` | The time span until the next backup. |
+| `dateTime` | `Date` | The date and time when the next backup is scheduled. |
+| `isFull` | `boolean` | Indicates whether the next backup will be a full backup. |
+| `originalBackupTime` | `Date` | The originally scheduled time for the backup which was delayed. |
+
+By understanding and utilizing these fields, you can effectively monitor and manage your backup tasks, ensuring that your data is backed up and restored as needed with minimal manual intervention. This level of detail and control is invaluable for maintaining robust data protection and ensuring business continuity.
+
+## Checking the Status of Periodic Backups
+
+To verify the execution results of your periodic backups, you can use the GetPeriodicBackupStatusOperation method. This allows you to retrieve detailed information about the backup process and its results.
+
+```ts
+// Pass the ongoing backup task ID to GetPeriodicBackupStatusOperation
+const backupStatus = await store.maintenance.send(new GetPeriodicBackupStatusOperation(myBackup.taskId));
+```
+
+`GetPeriodicBackupStatusOperation` returns a `GetPeriodicBackupStatusOperationResult`, which wraps the actual data in a `status` property of type `PeriodicBackupStatus`. That is why every field below is read as `backupStatus.status.<field>`. The status is `null` if the task has never run, so check for it before reading anything off it.
+
+The status carries both the backup parameters you configured and the results of the last execution. Some fields overlap with `OngoingTaskBackup`, so here we focus on the data that is unique to the most recent run.
+
+### Key Fields in PeriodicBackupStatus
+
+| Field | Type | Description |
+|---|---|---|
+| `lastFullBackup` | `Date` | The date and time of the last full backup. |
+| `lastIncrementalBackup` | `Date` | The date and time of the last incremental backup. |
+| `isFull` | `boolean` | Indicates whether the backup was a full backup. |
+| `nodeTag` | `string` | The node tag where the backup was run. |
+| `delayUntil` | `Date` | The time until the next backup if someone delayed it. |
+| `originalBackupTime` | `Date` | The originally scheduled time for the backup which was delayed. |
+| `localBackup` | `LocalBackup` | Information about local backups. |
+
+### Detailed Upload Information
+
+Unlike OngoingTaskBackup, which lists the backup destinations, backupStatus provides detailed information about where the backup was actually performed:
+
+| Field | Type | Description |
+|---|---|---|
+| `uploadToS3` | `UploadToS3` | Information about uploads to S3. |
+| `uploadToGlacier` | `UploadToGlacier` | Information about uploads to Glacier. |
+| `uploadToAzure` | `UploadToAzure` | Information about uploads to Azure. |
+| `updateToGoogleCloud` | `UpdateToGoogleCloud` | Information about uploads to Google Cloud. |
+| `uploadToFtp` | `UploadToFtp` | Information about uploads to FTP. |
+
+Each of these types (UploadToS3, UploadToGlacier, etc.) extends the CloudUploadStatus interface, which includes:
+
+| Field | Type | Description |
+|---|---|---|
+| `uploadProgress` | `UploadProgress` | Details about the upload progress. |
+| `skipped` | `boolean` | Indicates if the upload was skipped. |
+
+The UploadProgress interface provides more granular details:
+
+| Field | Type | Description |
+|---|---|---|
+| `uploadType` | `UploadType` | The type of upload. |
+| `uploadState` | `UploadState` | The current state of the upload. |
+| `uploadedInBytes` | `number` | The number of bytes uploaded. |
+| `totalInBytes` | `number` | The total number of bytes to be uploaded. |
+| `bytesPutsPerSec` | `number` | The upload speed in bytes per second. |
+| `uploadTimeInMs` | `number` | The total time taken for the upload in milliseconds. |
+
+This information allows you to verify the result of each backup and upload, ensuring that the data was correctly transferred to the designated destinations.
+
+### Additional Fields of Interest
+
+| Field | Type | Description |
+|---|---|---|
+| `lastEtag` | `number` | The last ETag value. |
+| `lastDatabaseChangeVector` | `string` | The last database change vector. |
+| `lastRaftIndex` | `LastRaftIndex` | The last Raft index. |
+| `folderName` | `string` | The name of the backup folder. |
+| `durationInMs` | `number` | The duration of the backup in milliseconds. |
+| `localRetentionDurationInMs` | `number` | The local retention duration in milliseconds. |
+| `version` | `number` | The version of the backup. |
+| `error` | `PeriodicBackupError` | Any errors encountered during the backup. |
+| `lastOperationId` | `number` | The ID of the last operation. |
+| `isEncrypted` | `boolean` | Indicates whether the backup is encrypted. |
+
+By focusing on these fields, you can gain a comprehensive understanding of the backup process, verify the integrity of the backup, and troubleshoot any issues that arise. This level of detail ensures that your backup strategy is robust and reliable, providing the necessary safeguards for your data.
+
+## Practical Example: Setting Up a Monitoring System for Backup Tasks
+
+Imagine you want to set up a monitoring system that keeps track of your backups, ensuring they are executed as scheduled and alerting you if the intervals between backups exceed a specified limit. Here’s how you can do it:
+
+```ts
+async function monitorBackupTask(store: IDocumentStore) {
+    const myBackup = await store.maintenance.send(
+        new GetOngoingTaskInfoOperation("myBackup", "Backup")
+    ) as OngoingTaskBackup;
+
+    const backupStatus = await store.maintenance.send(
+        new GetPeriodicBackupStatusOperation(myBackup.taskId)
+    );
+
+    const lastFullBackup = backupStatus.status.lastFullBackup;
+    const lastIncrementalBackup = backupStatus.status.lastIncrementalBackup;
+    // The next scheduled run lives on the ongoing task, not on the status of the last run.
+    // delayUntil is only populated when someone delayed the task, so it stays null in normal operation.
+    const nextBackup = myBackup.nextBackup?.dateTime;
+    const delayedUntil = backupStatus.status.delayUntil;
+    const isOngoing = !!myBackup.onGoingBackup;
+    const localBackup = backupStatus.status.localBackup;
+    // Pair each status with its destination name, so we can label the output.
+    const uploadDestinations: [string, CloudUploadStatus][] = [
+        ["S3", backupStatus.status.uploadToS3],
+        ["Glacier", backupStatus.status.uploadToGlacier],
+        ["Azure", backupStatus.status.uploadToAzure],
+        ["Google Cloud", backupStatus.status.updateToGoogleCloud],
+        ["FTP", backupStatus.status.uploadToFtp]
+    ];
+
+    console.log(`Last full backup: ${lastFullBackup}`);
+    console.log(`Last incremental backup: ${lastIncrementalBackup}`);
+    console.log(`Next backup scheduled: ${nextBackup}`);
+    console.log(`Is a backup currently running? ${isOngoing}`);
+
+    if (delayedUntil) {
+        console.log(`Task is delayed until: ${delayedUntil}`);
+    }
+
+    // Check if the interval between backups is within acceptable limits
+    const maxInterval = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    const now = new Date().getTime();
+    const lastBackup = lastIncrementalBackup ?
+                       new Date(lastIncrementalBackup).getTime() :
+                       new Date(lastFullBackup).getTime();
+    const interval = now - lastBackup;
+
+    if (interval > maxInterval) {
+        console.warn(`Warning: The interval between backups has exceeded the limit of 24 hours.`);
+        // Trigger an alert in your monitoring system
+    } else {
+        console.log(`Backup intervals are within the acceptable limits.`);
+    }
+
+    if (isOngoing) {
+        const ongoingBackup = myBackup.onGoingBackup;
+        console.log(`Ongoing backup started at: ${ongoingBackup.startTime}`);
+        console.log(`Is it a full backup? ${ongoingBackup.isFull}`);
+    }
+
+    // Check local backup details
+    console.log(`Local backup folder: ${localBackup.backupDirectory}`);
+    console.log(`Local backup retention duration: ${backupStatus.status.localRetentionDurationInMs} ms`);
+
+    // Check detailed upload information
+    uploadDestinations.forEach(([destination, upload]) => {
+        if (upload) {
+            console.log(`Upload to ${destination} status:`);
+            console.log(`Upload progress: ${upload.uploadProgress.uploadedInBytes}/${upload.uploadProgress.totalInBytes} bytes`);
+            console.log(`Upload speed: ${upload.uploadProgress.bytesPutsPerSec} bytes/sec`);
+            console.log(`Upload time: ${upload.uploadProgress.uploadTimeInMs} ms`);
+            console.log(`Upload skipped: ${upload.skipped}`);
+        }
+    });
+
+    // Additional checks
+    console.log(`Last ETag: ${backupStatus.status.lastEtag}`);
+    console.log(`Last database change vector: ${backupStatus.status.lastDatabaseChangeVector}`);
+    console.log(`Backup duration: ${backupStatus.status.durationInMs} ms`);
+    console.log(`Backup version: ${backupStatus.status.version}`);
+    console.log(`Backup encrypted: ${backupStatus.status.isEncrypted}`);
+
+    if (backupStatus.status.error) {
+        console.error(`Backup error: ${backupStatus.status.error.exception}`);
+    }
+}
+```
+
+By integrating this function into your monitoring system, you can automate the process of tracking backup status and intervals. This ensures that you are promptly alerted if backups are not performed as expected, allowing you to take corrective actions swiftly.
+
+## Summary
+
+* Define where backups go using `LocalSettings`, `S3Settings`, `AzureSettings`, `GlacierSettings`, `FtpSettings`, or `GoogleCloudSettings`, then pass any combination of them into a single `PeriodicBackupConfiguration`.
+* Schedule full and incremental runs with Cron expressions and deploy the task with `UpdatePeriodicBackupOperation`.
+* Run a backup outside the schedule with `StartBackupOperation`, and restore a database with `RestoreBackupOperation` followed by `waitForCompletion()`.
+* Read task metadata with `GetOngoingTaskInfoOperation` and the results of the last run with `GetPeriodicBackupStatusOperation`. Together they give you everything you need to build alerting on top.
