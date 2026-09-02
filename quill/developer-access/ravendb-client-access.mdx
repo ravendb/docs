@@ -91,7 +91,7 @@ Generate the client certificate in the Quill dashboard:
 
 Keep **Security clearance** set to **User** for an ordinary application.  
 An **Operator** certificate has server-wide authority and is not limited to the selected app.  
-It can access every app database and Quill's configuration database.  
+It can access every app database and Quill's internal configuration database (`quill-config` by default).    
 
 **Admin** access to an app database can read its database configuration, including the source connection string used by the CDC task.
 Because that connection string can contain source database credentials, reserve both **Admin** access and **Operator** clearance for trusted operators.
@@ -269,14 +269,16 @@ Use the collection names, document IDs, and property names found in the app data
 
 <Panel heading="Identify the mapped collections">
 
-The app database contains both mirrored source data and documents that Quill uses internally for agent-related configuration, channels, conversations, and CDC processing.
-    
-These internal documents are not mirrored from the source relational database and should not be used as application data.
+An app database can contain:
 
-Most collections containing these internal documents begin with `@`, but not all of them do.  
-For example, the `WidgetThemeDefaults` collection contains Quill's `widget-theme-defaults/config` document and has no `@` prefix.
+* **Mapped collections**, which contain data mirrored from the source relational database.
+* **Internal collections**, whose names begin with `@` and contain operational data used by Quill or RavenDB.  
+  Examples include `@channels`, `@conversations`, `@cdc-states`, and `@widget-theme-defaults`.
+* **Application-owned collections**, if an application stores its own documents directly in the app database.
 
-The following Quill API endpoint lists currently present collections whose names do not begin with `@`:
+Do not use the `@`-prefixed internal collections as application data.
+
+The following Quill API endpoint lists the collections currently present in the app database whose names do not begin with `@`:
 
 ```http
 GET https://api.<domain>/api/apps/{slug}/collections
@@ -284,20 +286,18 @@ X-Api-Key: <dashboard-api-key>
 ```
 <br/>
 
-The endpoint filters collections only by their name prefix.
-Its response can therefore include a non-`@` Quill collection such as `WidgetThemeDefaults`, 
-and it may not include a mapped collection that currently has no documents.
+The endpoint excludes internal collections, but it does not distinguish CDC-mapped collections from application-owned collections.
+It may also omit a mapped collection that currently has no documents.
 
-Use the response as a starting point, then confirm the mapped collections against the app's CDC mapping or by inspecting their documents in RavenDB Studio.
-Use only confirmed mapped collections as application data.  
-        
-Other collections and documents are used internally by Quill, so your application should not depend on their structure or contents.        
+Use the response as a starting point.
+Then confirm which collections are mirrored from the source relational database by checking the mapping configured for the app's CDC task
+or by inspecting representative documents in RavenDB Studio.
 
 </Panel>
 
 <Panel heading="Inspect the CDC task">
 
-Quill creates a [CDC Sink task](/7.2/server/ongoing-tasks/cdc-sink/overview) in each app database to keep its mapped documents synchronized with the source relational database.
+Quill creates a [CDC Sink task](https://docs.ravendb.net/server/ongoing-tasks/cdc-sink/overview) in each app database to keep its mapped documents synchronized with the source relational database.
 
 You can inspect the task and its status:
 
