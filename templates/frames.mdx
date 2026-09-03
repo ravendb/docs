@@ -109,7 +109,7 @@ Use `headingLevel` (1–6) to control the semantic level. Default is 2.
   Content...
 </Panel>
 
-The heading renders via `@theme/Heading`, so it automatically gets the anchor link. The id is generated from the `heading` text.
+The `heading` prop is hoisted into a real Markdown heading at build time, so it gets the anchor link and appears in the right-hand "In this article" TOC. The id is generated from the `heading` text.
 
 ### Flush variant (removes the outer vertical margin)
 ```mdx
@@ -216,7 +216,7 @@ Keep the heading hierarchy consistent using `headingLevel` to preserve a correct
 
 | Prop         | Type                      | Default | Description                                                            |
 | ------------ | ------------------------- | ------- | ---------------------------------------------------------------------- |
-| heading      | string                    | —       | Panel heading text. Used to generate the anchor id (slug).             |
+| heading      | string                    | —       | Panel heading text. Becomes a real heading: anchor id (slug) + TOC entry. |
 | headingLevel | 1 \| 2 \| 3 \| 4 \| 5 \| 6 | 2       | Semantic level of the heading (`h1`..`h6`).                             |
 | children     | React.ReactNode           | —       | Content placed inside the panel body.                                   |
 | className    | string                    | —       | Additional classes for custom styling.                       |

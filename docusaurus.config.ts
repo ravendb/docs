@@ -1,6 +1,7 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
+import remarkPanelHeadings from "./src/plugins/remark-panel-headings";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { CURRENT_VERSION, ACTIVE_VERSIONS, LEGACY_VERSIONS } = require("./scripts/lib/version-policy.js") as {
     CURRENT_VERSION: string;
@@ -97,6 +98,7 @@ const config: Config = {
             {
                 docs: {
                     sidebarPath: "sidebars.ts",
+                    beforeDefaultRemarkPlugins: [remarkPanelHeadings],
                     routeBasePath: "/",
                     includeCurrentVersion: true,
                     lastVersion: "current",
@@ -129,6 +131,7 @@ const config: Config = {
             "content-docs",
             {
                 id: "cloud",
+                beforeDefaultRemarkPlugins: [remarkPanelHeadings],
                 path: "cloud",
                 routeBasePath: "cloud",
                 sidebarPath: require.resolve("./sidebarsCloud.js"),
@@ -139,6 +142,7 @@ const config: Config = {
             "content-docs",
             {
                 id: "quill",
+                beforeDefaultRemarkPlugins: [remarkPanelHeadings],
                 path: "quill",
                 routeBasePath: "quill",
                 sidebarPath: require.resolve("./sidebarsQuill.js"),
@@ -149,6 +153,7 @@ const config: Config = {
             "content-docs",
             {
                 id: "guides",
+                beforeDefaultRemarkPlugins: [remarkPanelHeadings],
                 path: "guides",
                 routeBasePath: "guides",
                 sidebarPath: require.resolve("./sidebarsGuides.js"),
@@ -159,6 +164,7 @@ const config: Config = {
             "content-docs",
             {
                 id: "templates",
+                beforeDefaultRemarkPlugins: [remarkPanelHeadings],
                 path: "templates",
                 routeBasePath: "templates",
                 sidebarPath: require.resolve("./sidebarsTemplates.js"),
@@ -169,6 +175,7 @@ const config: Config = {
             "content-docs",
             {
                 id: "samples",
+                beforeDefaultRemarkPlugins: [remarkPanelHeadings],
                 path: "samples",
                 routeBasePath: "samples",
                 sidebarPath: require.resolve("./sidebarsSamples.js"),
