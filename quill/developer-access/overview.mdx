@@ -1,0 +1,89 @@
+---
+title: "Developer Access: Overview"
+sidebar_label: "Overview"
+description: "How users and applications can access a Quill app through a channel and its assigned agent, or connect directly to the app's mirrored data with RavenDB.Client."
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* Once you have set up a Quill app, Quill mirrors the selected data from your source relational database  
+  into a RavenDB database created for the app.
+
+* Quill makes this mirrored data available in two ways:    
+
+  * **Conversational access through a channel:**  
+    Users send questions to the agent assigned to the channel.  
+    Quill processes the messages through the agent, its configured LLM, and the conversation system.  
+    The agent can query the mirrored data when needed.
+
+  * **Direct data access with RavenDB.Client:**  
+    Your application uses `RavenDB.Client` to connect directly to the RavenDB database that contains the app's mirrored data
+    and execute queries defined by your code, without going through a Quill agent, an LLM, or the conversation system.
+
+* The two methods are independent. An application can use both.
+
+* In this article:
+  * [Choose an access method](#choose-an-access-method)
+  * [Use a channel for conversations with an agent](#use-a-channel-for-conversations-with-an-agent)
+  * [Use RavenDB.Client to query mirrored data directly](#use-ravendbclient-to-query-mirrored-data-directly)
+
+</Admonition>
+
+<Panel heading="Choose an access method">
+
+Choose an access method based on whether users need conversational answers or your application needs direct control over its data queries:
+
+| Access method    | Use when                                                                  | How it works                                                                              | Uses an agent and LLM | Detailed documentation                                                        |
+| ---------------- | ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | --------------------- | ----------------------------------------------------------------------------- |
+| Channel          | Users should ask questions in natural language and receive agent replies. | Messages are routed to the assigned agent, which can query the mirrored data when needed. | Yes                   | Channels overview {/* TODO RDoc-4085: Link "Channels overview" once that article is added to the documentation tree. */}                                              |
+| `RavenDB.Client` | Application code needs to query or process the mirrored data directly.    | The application connects directly to and queries the app's mirrored RavenDB database.     | No                    | [Access the Mirrored Database with RavenDB.Client](ravendb-client-access.mdx) |
+
+</Panel>
+
+<Panel heading="Use a channel for conversations with an agent">
+
+A channel is the communication path between users and the Quill agent assigned to it.  
+Users send messages through the channel, and the agent's replies return through the same channel.
+
+When the agent handles a message, it can use the query tools defined in its configuration to query the app's mirrored data when needed. 
+The request goes through the assigned agent, the configured LLM, and Quill's conversation system.
+
+Unlike direct access with `RavenDB.Client`, neither the user nor your application defines the database query.  
+The agent decides whether to query the data and which of its configured query tools to use.
+
+**To integrate Quill chat into your own application or website, use a web widget channel.**  
+Your page embeds the widget, and your backend generates the embed links that open it.  
+For implementation details, see [Embed the Chat Widget](embed-the-chat-widget.mdx).
+
+For a comparison of all available channel types and their setup guides, see the **Channels overview**.
+
+{/* TODO RDoc-4085: Link "Channels overview" once its target article exists. */}
+
+</Panel>
+
+<Panel heading="Use RavenDB.Client to query mirrored data directly">
+
+Use `RavenDB.Client` when your application code needs to query or process the app's mirrored documents directly, rather than receive an answer composed by a Quill agent.
+Your code defines the queries and handles the results.
+
+Connect to the RavenDB server in the Quill deployment at `https://db.<domain>`,  
+and set `DocumentStore.Database` to the RavenDB database name assigned to the app.  
+For apps created through the current setup flow, this database name matches the app slug.
+
+Authenticate with a **client certificate** generated on the dashboard's **Certificates** page.  
+For a **User** certificate, its per-app permissions determine which app databases the application can access and whether it has **Read/Write** or **Admin** access. 
+The current dashboard does not offer a **Read-only** grant.
+
+Requests made with `RavenDB.Client` reach RavenDB directly.  
+They do not pass through a Quill channel, agent, LLM, conversation system, or the Quill API.
+
+This connection reaches the app's **mirrored RavenDB database**, not the source relational database.  
+Changes made directly to the mirrored database are never written back to the source database.
+
+For the complete connection procedure and query examples, see [Access the Mirrored Database with RavenDB.Client](ravendb-client-access.mdx).
+
+</Panel>
