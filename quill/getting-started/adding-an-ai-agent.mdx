@@ -12,7 +12,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Getting started: Adding an AI agent
 <Admonition type="tip" title="">
 
-**Achieved so far** in [Getting Started](../getting-started/overview.mdx#the-six-steps):  
+**Achieved so far** in Getting Started:  
 [Signing up](../getting-started/signing-up.mdx) - your deployment has a name, a license key, and a dashboard API key.  
 [Starting Quill](../getting-started/starting-quill.mdx) - Quill is running on your machine, and its management dashboard is open.  
 [Connecting your database](../getting-started/connecting-your-database.mdx) - Quill can reach your source database, and the tables
@@ -66,10 +66,10 @@ current with your source data.
 Before adding an agent, make sure you have the access details for an
 [LLM provider](../overview.mdx#llm), which your agent will use to phrase its replies:
 
-* Quill works with three chat-model providers: **OpenAI** and **Azure OpenAI**, hosted services you hold an
-  API key for, and **Ollama**, running locally on your own machine.  
-  A local model keeps your conversations off a third party's servers, at the cost of quality: answers can fall
-  well short of a hosted provider's.
+* The chat-model providers Quill can work with are **OpenAI** and **Azure OpenAI**, hosted services you hold
+  an API key for, and **Ollama**, running locally on your own machine.  
+  A local model keeps your conversations private: they stay on your own machine, and never reach a third
+  party's servers.
 * The model you name has to be a chat model. Quill tests the connection before saving it, and refuses a model
   that cannot hold a conversation.
 
@@ -80,8 +80,8 @@ Before adding an agent, make sure you have the access details for an
 The **Add agent** wizard can be started in two ways:
 
 * If you arrived here from the previous Getting Started step, you are already in the right place: you followed
-  the **Add new app** wizard, clicked **[Continue](../getting-started/mapping-your-tables.mdx#creating-the-app)** at its last
-  stage, and are now at the **Add agent** wizard.
+  the **[Add new app](../getting-started/mapping-your-tables.mdx#creating-the-app)** wizard, clicked
+  **Continue** at its last stage, and are now at the **Add agent** wizard.
 * If you didn't arrive through the Getting Started path,
   [open Quill's management dashboard](../getting-started/starting-quill.mdx#signing-in-to-the-management-dashboard) and click
   the app to which you want to add an agent, on the **My apps** list.

@@ -12,7 +12,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Getting started: Signing up
 <Admonition type="tip" title="">
 
-The **Getting Started** section takes you, [in six steps](../getting-started/overview.mdx#the-six-steps), from the initial signing up
+The **[Getting Started](../getting-started/overview.mdx#the-getting-started-steps)** section takes you from the initial signing up
 for Quill to an AI agent answering your users through your first channel: a chat widget on your site. **Signing up** is the first step.
 
 </Admonition>
@@ -25,17 +25,14 @@ for Quill to an AI agent answering your users through your first channel: a chat
    <Admonition type="info" title="">
 
    * A [Quill domain](../networking-and-dns.mdx#quill-dns-records) is a web address that your Quill deployment can be reached at.
-   * A **license key** activates Quill.
+   * A [license key](#saving-your-setup-details) activates Quill.
    * An [API key](../security-and-architecture/operator-authentication.mdx#the-dashboard-api-key) signs you into the deployment's
      management dashboard.
 
    </Admonition>
 
-* The signing-up routine includes a form for your contact details and a verification of your email address,
-  followed by these wizard stages:
-   * Naming the domain, and giving the address of the machine that will run Quill.
-   * Reviewing the details before they are registered.
-   * Getting the Docker command that runs Quill.
+* The signing-up routine takes your details and those of the machine you want to run Quill on, and hands you
+  the Docker command that starts Quill.
 
 * In this article:
    * [Prerequisites](#prerequisites)
@@ -56,7 +53,7 @@ Before signing up, make sure you have:
 * **An email address** for Quill's access details.
 * **The public IP address** of the machine that will run Quill.
    * Your Quill domain will point at this address.
-   * To try Quill on your own machine, use `127.0.0.1`.
+   * To try Quill locally, use `127.0.0.1`.
 
 </Panel>
 
@@ -64,7 +61,8 @@ Before signing up, make sure you have:
 
 Signing up starts a 90-day free trial.
 
-For the sign-up form, open [ravendb.net/quill-beta](https://ravendb.net/quill-beta).
+Open [ravendb.net/quill-beta](https://ravendb.net/quill-beta), fill in the form, and confirm your email address
+with the code Quill sends you.
 
 <ContentFrame>
 
@@ -93,6 +91,8 @@ For the sign-up form, open [ravendb.net/quill-beta](https://ravendb.net/quill-be
 <ContentFrame>
 
 ### Entering the verification code
+
+Clicking **Get started** will send a verification code to your email address and open this dialog:
 
 ![Enter your code](./assets/sign-up_enter-your-code.png)
 
@@ -131,7 +131,7 @@ For the sign-up form, open [ravendb.net/quill-beta](https://ravendb.net/quill-be
 
 2. **Server IP**  
    Enter the public IP address of the machine that will run Quill.  
-   To try Quill on your own machine, use `127.0.0.1`.
+   To try Quill locally, use `127.0.0.1`.
 
 3. **Continue**  
    Click for the next wizard stage: [Reviewing and confirming](#reviewing-and-confirming)

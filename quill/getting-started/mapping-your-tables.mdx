@@ -12,7 +12,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Getting started: Mapping your tables
 <Admonition type="tip" title="">
 
-**Achieved so far** in [Getting Started](../getting-started/overview.mdx#the-six-steps):  
+**Achieved so far** in Getting Started:  
 [Signing up](../getting-started/signing-up.mdx) - your deployment has a name, a license key, and a dashboard API key.  
 [Starting Quill](../getting-started/starting-quill.mdx) - Quill is running on your machine, and its management dashboard is open.  
 [Connecting your database](../getting-started/connecting-your-database.mdx) - Quill can reach your source database, and the tables
@@ -52,12 +52,12 @@ your app will work with are selected.
 
 <ContentFrame>
 
-This page starts where [Connecting your database](../getting-started/connecting-your-database.mdx) left off: you are at the
-**How would you like to map your schema?** stage of the **Add new app** wizard.
+This page starts where [Connecting your database](../getting-started/connecting-your-database.mdx#verifying-your-schema)
+left off: you are at the **How would you like to map your schema?** stage of the **Add new app** wizard.
 
 </ContentFrame>
 
-After [Verifying your schema](../getting-started/connecting-your-database.mdx#verifying-your-schema), the **Add new app** wizard lets you choose the
+After verifying your schema, the **Add new app** wizard lets you choose the
 mapping's starting point: a draft in which AI has already gathered your joined tables into documents, or a plain
 draft for you to shape.  
 Either way, the next stage will still allow you to change the mapping before the app is created.
@@ -158,8 +158,13 @@ If **AI Suggest** is selected, give it the time it needs to finish the mapping.
    * **C. Schema name**  
      Names the source schema that the rows below the name were discovered in.
    * **D. A mapped table**  
-     Names the source table on the left and the collection Quill builds from it on the right.  
-     In the mapping above, `categories` is mapped to `Categories`.
+     Names the source table on the left and the collection Quill builds from it on the right.
+
+     * Click a row to show its mapping in the configuration pane.  
+       A row that carries attached tables has an arrow at its left, to fold or reveal these tables.
+     * In the mapping above, `categories` is mapped to `Categories`.  
+       `orders` is mapped to `Orders`, and carries two attached tables.
+
    * **E. Table actions**  
      Opens the row's menu.
 
@@ -176,14 +181,10 @@ If **AI Suggest** is selected, give it the time it needs to finish the mapping.
      * **Remove**  
        Takes the table out of the mapping.
 
-   * **F. A root table**  
-     Click a row to show its mapping in the configuration pane, and click the arrow at its left to fold the
-     tables attached to it away.  
-     In the mapping above, `orders` is mapped to `Orders`, and two tables are attached to it.
-   * **G. A linked table (marked by a link icon)**  
+   * **F. A linked table (marked by a link icon)**  
      See **Add linked table** under **E. Table actions**.  
      In the mapping above, every `Orders` document will reference a `Customers` document.
-   * **H. An embedded table (marked by a layers icon)**  
+   * **G. An embedded table (marked by a layers icon)**  
      See **Add embedded table** under **E. Table actions**.  
      In the mapping above, every `Orders` document will carry its own `order_details` rows.
 
@@ -274,15 +275,15 @@ objects or linked references appear in the documents you see.
 <Panel heading="Creating the app">
 
 **Create app & continue** creates the app and starts the first load.  
-The load runs in the background, so you do not have to wait up, and Quill reports its progress while it runs.  
-Quill writes the documents in batches, and reports each batch as it completes.  
+The load runs in the background, so you do not have to wait up; Quill reports its progress while it runs.  
+Each document Quill writes is reported as a **message**. Quill writes the messages in batches, and reports each
+batch as it completes.  
 The **Active** chip stays on while a batch is in progress, and for a minute after the completion of the last batch.
 
 ![App created](./assets/mapping-your-tables_app-created.png)
 
 1. **Recent writes**  
-   The number of messages processed in the batches listed below.  
-   Each message is one document Quill wrote to its internal database.
+   The number of messages processed in the batches listed below.
 
 2. **Errors**  
    The number of errors in the batches listed below, whether raised while reading from your source database or

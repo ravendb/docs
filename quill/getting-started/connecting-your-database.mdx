@@ -12,7 +12,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Getting started: Connecting your database
 <Admonition type="tip" title="">
 
-**Achieved so far** in [Getting Started](../getting-started/overview.mdx#the-six-steps):  
+**Achieved so far** in Getting Started:  
 [Signing up](../getting-started/signing-up.mdx) - your deployment has a name, a license key, and a dashboard API key.  
 [Starting Quill](../getting-started/starting-quill.mdx) - Quill is running on your machine, and its management dashboard is open.
 
@@ -33,8 +33,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * Quill's internal database stays current by [following the changes](../overview.mdx#mirroring) your source
   SQL database records.  
-  Your source database has to be set up to record these changes. Quill sets it up where it can, and reports what
-  is left for manual configuration.  
+  Your database needs to be recording those changes. Quill turns change recording on where it can, and reports
+  anything left to set up.  
   See [Prerequisites](#prerequisites) below for details.
 
 * In this article:
@@ -66,8 +66,11 @@ Two conditions have to hold before CDC can start:
      [Connect to your source database](#connecting-to-your-source-database) section below.
 
 * **The source database must be recording its changes.**
-   * On PostgreSQL and SQL Server, Quill turns change recording on for you, as long as the database user whose
-     credentials you provide has the required permissions.
+   * On PostgreSQL, a database administrator turns change recording on in the server's configuration. Quill then
+     creates the objects the change stream needs, as long as the database user whose credentials you provide
+     holds the `REPLICATION` attribute.
+   * On SQL Server, Quill turns change recording on for you, as long as the database user is a member of the
+     `db_owner` role.
    * On MySQL and MariaDB, the change-recording settings are set by a database administrator, and Quill
      verifies them rather than setting them up.
    * The settings and permissions each database requires are given below.
@@ -107,6 +110,17 @@ Must be held by the source database user.
 * Without the `REPLICATION` attribute, Quill cannot read the stream at all, and reports an error.  
   The error carries the `ALTER ROLE` statement that gives the attribute to the PostgreSQL user Quill connects as,
   which a PostgreSQL superuser can run.
+
+---
+
+<Admonition type="note" title="">
+
+When a row is deleted from **a table that has no primary key**, PostgreSQL does not report which row it was, so
+Quill cannot remove the matching row from its internal database.  
+Quill will therefore show a warning beside every such table when you
+[select the tables](#verifying-your-schema) that your app works with.
+
+</Admonition>
 
 </ContentFrame>
 
@@ -269,7 +283,8 @@ The **Add new app** wizard opens on its first stage:
 
 1. **Import configuration**  
    An app's configuration can be [exported](../getting-started/mapping-your-tables.mdx#testing-your-mapping) and reused.  
-   Import an exported configuration to fill in its connection and table mapping details.
+   Import an exported configuration to fill in its connection and table mapping details.  
+   e.g., to create a second app against the same database without filling the wizard in again.
 
 2. **App name**  
    Enter a name for your new app.  
@@ -393,8 +408,8 @@ Discovered tables are listed for you to select from.
 
    <Admonition type="note" title="">
 
-   A table is listed with a warning beside its name, when Quill is unable to carry out deletions made in the
-   table.
+   On PostgreSQL, a table is listed with a warning beside its name when its rows cannot be identified in delete
+   events, which happens when the table has no primary key.
 
    Quill cannot carry out these deletions, when the source database informs that a row was deleted, but doesn't
    specify which row it was. As a result, the deleted row remains in Quill's internal database.

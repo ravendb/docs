@@ -2,7 +2,7 @@
 title: "Getting started: Overview"
 sidebar_label: Overview
 sidebar_position: 1
-description: "The map of the Getting Started path: the six steps from signing up for Quill to a chat widget answering your users from Quill's live copy of your SQL data, and the things to prepare before you start."
+description: "The map of the Getting Started path: the steps from signing up for Quill to a chat widget answering your users from Quill's live copy of your SQL data, and the things to prepare before you start."
 ---
 
 import Admonition from '@theme/Admonition';
@@ -12,29 +12,60 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Getting started: Overview
 <Admonition type="note" title="">
 
-* Quill adds AI capabilities to your existing SQL database (PostgreSQL, SQL Server, or MySQL).  
-  The **Getting Started** section takes you, in six steps, from signing up for Quill to a **chat widget**
+* The **Getting Started** section takes you from signing up for Quill to a **chat widget**
   on your site, where your users ask and your AI agent answers from Quill's live copy of your SQL data.  
-  This page presents [the six steps](#the-six-steps) and [the things to prepare](#prerequisites) before you start.
+  This page presents [the Getting Started steps](#the-getting-started-steps) and [the things to prepare](#prerequisites) before you start.
 
 * The configuration steps run in wizards that save you the manual work: Quill drafts the mapping of your
   data, the agent, and the agent's queries, and you approve or adjust each draft.
 
 * The chat widget is one of several channel types Quill offers, all carrying conversations between your
-  users and an agent: once the widget runs, a Telegram bot, a Slack app, or a Discord bot can follow.
+  users and an agent. You can also add a Telegram bot, a Slack app, or a Discord bot.
 
 * Terms like [mirroring](../overview.mdx#mirroring), [agents](../overview.mdx#ai-agent), and [channels](../overview.mdx#channels) are
   explained on the **Overview** page.
 
-* You can walk the whole path with Quill running on your own machine.
+* No separate server is needed to try Quill locally: you can take all the steps on your own machine, with your
+  Quill domain pointing at `127.0.0.1`.
 
 * In this article:
-   * [The six steps](#the-six-steps)
    * [Prerequisites](#prerequisites)
+   * [The Getting Started steps](#the-getting-started-steps)
 
 </Admonition>
 
-<Panel heading="The six steps">
+<Panel heading="Prerequisites">
+
+Before taking the first step, make sure you have:
+
+* **An email address**, to receive Quill's access details.
+
+* **A machine that will run Quill.**
+   * The machine needs **Docker** installed: Docker Desktop on Windows and macOS, or Docker Engine on Linux.
+   * Port `443` must be available: the dashboard, the API, and the chat channels of your deployment are all
+     [served on this one port](../security-and-architecture/network-architecture.mdx#publish-only-port-443).
+   * Quill's machine needs internet access: Docker pulls Quill's image from Docker Hub, and Quill fetches
+     the [certificate and configuration](../security-and-architecture/network-architecture.mdx#the-tls-front-and-the-wildcard-certificate)
+     for your domain from `api.ravendb.net`.
+   * The machine's **public IP address**: your Quill domain will point at this address.  
+     To try Quill locally, use `127.0.0.1`.
+
+* **Your source database: PostgreSQL, SQL Server, or MySQL.**
+   * Quill must be able to reach the database from inside its Docker container.
+   * The database must be recording its changes. Quill turns change recording on where it can.  
+     For the conditions each database type must meet, see
+     [Connecting your database](../getting-started/connecting-your-database.mdx#prerequisites).
+   * The credentials of a **database user**: Quill connects to the source database as this user.
+
+* **The access details for an LLM provider.**  
+  Quill connects to **OpenAI**, **Azure OpenAI**, or **Ollama** using
+  [access details that you provide](../getting-started/adding-an-ai-agent.mdx#connecting-to-your-llm-provider),
+  e.g., your OpenAI API key.  
+  Your agent will use the LLM in every conversation it handles.
+
+</Panel>
+
+<Panel heading="The Getting Started steps">
 
 The first step runs on the sign-up page, the second in a terminal on your machine, and the rest in Quill's
 management dashboard.
@@ -70,32 +101,3 @@ management dashboard.
 
 </Panel>
 
-<Panel heading="Prerequisites">
-
-Before taking the first step, make sure you have:
-
-* **An email address**, to receive Quill's access details.
-
-* **A machine that will run Quill.**
-   * The machine needs **Docker** installed: Docker Desktop on Windows and macOS, or Docker Engine on Linux.
-   * Port `443` must be available: the dashboard, the API, and the chat channels of your deployment are all
-     [served on this one port](../security-and-architecture/network-architecture.mdx#publish-only-port-443).
-   * Quill's machine needs internet access: Docker pulls Quill's image from Docker Hub, and Quill fetches
-     the [certificate and configuration](../security-and-architecture/network-architecture.mdx#the-tls-front-and-the-wildcard-certificate)
-     for your domain from `api.ravendb.net`.
-   * The machine's **public IP address**: your Quill domain will point at this address.  
-     To try Quill on your own machine, use `127.0.0.1`.
-
-* **Your source database: PostgreSQL, SQL Server, or MySQL.**
-   * Quill must be able to reach the database from inside its Docker container.
-   * The database must be recording its changes, and the conditions each database type must meet are
-     detailed in [Connecting your database](../getting-started/connecting-your-database.mdx#prerequisites).
-   * The credentials of a **database user**: Quill connects to the source database as this user.
-
-* **The access details for an LLM provider.**  
-  Quill connects to **OpenAI**, **Azure OpenAI**, or **Ollama** using
-  [access details that you provide](../getting-started/adding-an-ai-agent.mdx#connecting-to-your-llm-provider),
-  e.g., your OpenAI API key.  
-  Your agent will use the LLM to phrase its replies.
-
-</Panel>

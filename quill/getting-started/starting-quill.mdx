@@ -14,7 +14,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Getting started: Starting Quill
 <Admonition type="tip" title="">
 
-**Achieved so far** in [Getting Started](../getting-started/overview.mdx#the-six-steps):  
+**Achieved so far** in Getting Started:  
 [Signing up](../getting-started/signing-up.mdx) - your deployment has a name, a license key, and a dashboard API key.
 
 </Admonition>
@@ -22,7 +22,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Admonition type="note" title="">
 
 * This page covers the second Getting Started step, **Starting Quill**, walking you through running Quill on the
-  machine whose address you gave at sign-up, and signing into the management dashboard.
+  machine whose public IP address you gave at sign-up, and signing into the management dashboard.
 
 * Quill runs as a single **Docker container**, started by the
   [Docker command](../getting-started/signing-up.mdx#saving-your-setup-details) you copied at the end of signing up.
@@ -44,7 +44,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 Before starting Quill, make sure you have:
 
-* **Docker**, on the machine that will run Quill, at the address you gave at sign-up.
+* **Docker**, on the machine that will run Quill, at the public IP address you gave at sign-up.
    * Docker Desktop on Windows and macOS, or Docker Engine on Linux.
 * **Port 443 available** on Quill's machine.
    * The dashboard, the API, and the chat channels of your deployment are all
@@ -110,13 +110,13 @@ The command's parts:
 | `--name quill-baloo` | Names the container `quill-` followed by your deployment's name, so later commands can address Quill by name. |
 | `-p 443:443` | Publishes port 443, Quill's only external port. |
 | `-e QUILL_LICENSE_KEY=...` | Your license key, which Quill uses to fetch the certificate and configuration for your domain. |
-| `-e QUILL_API_KEY=...` | Your dashboard API key, `primary/` prefix included. |
+| `-e QUILL_API_KEY=...` | Your dashboard API key, exactly as issued, prefix included. |
 | `-v quill-baloo-data:/var/lib/quill` | A Docker volume holding everything Quill keeps: its settings, its certificate, and your mirrored data. When [Quill is updated](../updating-quill.mdx), the new container mounts this same volume. |
 | `ravendb/quill-nightly:latest` | Quill's image. |
 
-The command does not return to the prompt, and Quill reports its progress in the terminal you started it in.  
-Quill goes on running even when you close the terminal you ran it from, since its container is run by the Docker
-service, not by your terminal.
+The Docker command does not return to the prompt.  
+Quill goes on running even after you close the terminal you ran it in, since its container is run by the Docker
+service.
 
 </ContentFrame>
 
@@ -124,10 +124,9 @@ service, not by your terminal.
 
 ### Watching Quill come up
 
-Quill reports its progress in the terminal, one line at a time, with the seconds elapsed since the container
-started.  
-The first run is longer, since Quill also fetches the certificate and configuration for your domain; it will
-normally end within a minute.
+Quill reports its progress in the terminal you ran the Docker command in, one line at a time, with the seconds
+elapsed since the container started.  
+The first run is longer, since Quill also fetches the certificate and configuration for your domain.
 
 ```
   Logs:      /var/lib/quill/logs/{ravendb,web,proxy,certwatch}.log
@@ -152,37 +151,50 @@ normally end within a minute.
 
 ### When Quill does not come up
 
-When Quill cannot finish starting, the terminal shows a failure in place of `Status: READY`.
+If Quill stops before reaching `Status: READY`, the terminal reports the failure.
 
-```
-2026-08-27 03:56:20  Sharpening the quill... (5s)
-2026-08-27 03:56:25  Status:    FAILED
-                     Reason:    activation failed: could not retrieve the setup package
-                     Details:   /var/lib/quill/logs/web.log
-```
-<br />
+* **A failed activation** prints `Status: FAILED`, a `Reason:` naming what went wrong, and a `Details:` line
+  naming the log the error is written to.
 
-**Reason** is Quill's account of the failure. The message above may mean that the licensing service rejected your
-license key, or that Quill's machine cannot reach `api.ravendb.net`.
+   ```
+   2026-09-03 13:12:37  Sharpening the quill... (5s)
+   2026-09-03 13:12:42  Status:    FAILED
+                        Reason:    activation failed: the license key was not recognized
+                        Details:   /var/lib/quill/logs/web.log
+   ```
+   <br />
 
-Two other lines in the terminal report a start that never completed:
+* **Two kinds of failure** print an `ERROR:` message and a `Details:` line naming the log the error is written
+  to.
+   * Quill was started without its license key:
 
-* `ERROR: QUILL_LICENSE_KEY is not set, so the appliance cannot activate.`  
-  appears when the command was executed without its license key.
-* `ERROR: still not ready after 180s.`  
-  appears when three minutes pass with no result.
+      ```
+      2026-09-03 13:09:50  ERROR:     QUILL_LICENSE_KEY is not set, so the appliance cannot activate.
+                           Details:   /var/lib/quill/logs/web.log
+      ```
+      <br />
 
-<Admonition type="info" title="">
+   * Quill did not become ready within its startup grace period:
 
-Each such failure prints a `Details` line, naming a log file inside the container, in which the error is
-recorded.  
-To print the exception, replace `<name>` with your deployment name:
+      ```
+      2026-09-03 13:14:20  ERROR:     still not ready after 180s.
+                           Details:   /var/lib/quill/logs/web.log
+      ```
+      <br />
 
-```bash
-docker exec quill-<name> sh -c "grep -i exception /var/lib/quill/logs/web.log | head -20"
-```
+* **To read the log that holds the error**, replace `<name>` in the command below with your deployment name and
+  `<log>` with the file named on the `Details:` line, then run the command:
 
-</Admonition>
+   ```bash
+   docker exec quill-<name> sh -c "tail -40 /var/lib/quill/logs/<log>"
+   ```
+   <br />
+
+   e.g., for the deployment `baloo` and the failures above:
+
+   ```bash
+   docker exec quill-baloo sh -c "tail -40 /var/lib/quill/logs/web.log"
+   ```
 
 </ContentFrame>
 
