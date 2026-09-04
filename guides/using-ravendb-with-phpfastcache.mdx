@@ -1,10 +1,172 @@
 ---
-title: "Using RavenDB with PHPFastCache"
-tags: [php]
-description: "Read about Using RavenDB with PHPFastCache on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/using-ravendb-with-phpfastcache"
+title: "Using RavenDB with PhpFastCache"
+tags: [php, integration, perf-tuning]
+icon: "performance"
+description: "Use RavenDB as the backend cache for PhpFastCache: install the Composer packages, configure the driver, and inspect cached documents in the RavenDB Studio."
 published_at: 2024-08-05
-image: "https://ravendb.net/wp-content/uploads/2024/08/phpfastcache.png"
+see_also:
+  - title: "Setup Aggressive Caching"
+    link: "client-api/how-to/setup-aggressive-caching"
+    source: "docs"
+    path: "Client API > How to"
+  - title: "Creating a Document Store"
+    link: "client-api/creating-document-store"
+    source: "docs"
+    path: "Client API"
+  - title: "Document Expiration"
+    link: "server/extensions/expiration"
+    source: "docs"
+    path: "Server > Extensions"
+  - title: "What is a Session and How Does it Work"
+    link: "client-api/session/what-is-a-session-and-how-does-it-work"
+    source: "docs"
+    path: "Client API > Session"
+author: "Egor Shamanaev"
 proficiency_level: "Beginner"
 ---
 
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+In this article, we'll dive into the [RavenDB extension for the PhpFastCache library](https://github.com/PHPSocialNetwork/ravendb-extension). This powerful tool lets you add caching to your PHP applications, enhancing your website's performance and reducing page load times.
+
+## What is PhpFastCache?
+
+PhpFastCache is a high-performance backend cache system designed to speed up dynamic web applications by reducing database load. When implemented effectively, it can drastically reduce database load, resulting in faster page load times for users and better resource utilization. This library is both simple and powerful, making it easy to integrate caching into your PHP applications.
+
+PhpFastCache provides an array of APIs that allow you to implement a caching strategy of your choice with ease. It's not just a traditional file system caching solution; it supports a variety of adapters, giving you the flexibility to choose from high-performance back-ends like Memcache, Redis, RavenDB, and others. This versatility makes PhpFastCache an essential tool for PHP developers looking to enhance their website's performance and efficiency.
+
+In the next sections, we'll guide you through installing and configuring PhpFastCache with the RavenDB extension. We'll explore using RavenDB, and we'll walk you through a few examples to demonstrate how it works.
+
+Using RavenDB as the backend for PhpFastCache allows you to use a distributed replicated database as the backend cache for your website. This provides high performance and scalable infrastructure to speed up your web applications.
+
+## Installation and Configuration
+
+In this section, we'll cover how to install and configure the RavenDB extension for the PhpFastCache library.
+
+We'll be installing the PhpFastCache & PhpFastCache RavenDB extension as a Composer package, which is the preferred method since it makes future maintenance and upgrades easier. Composer is a dependency manager for the PHP language, if you haven't installed Composer yet, you'll need to do that first. You can see the Composer installation guide for various OSes on [their website](https://getcomposer.org/doc/00-intro.md).
+
+For other installation option please refer to the [PhpFastCache official site](https://www.phpfastcache.com/).
+
+After installing Composer, you can get the PhpFastCache and RavenDB extension packages with these commands:
+
+```bash
+# Install phpfastcache
+composer require phpfastcache/phpfastcache
+# Install phpfastcache RavenDB extension
+composer require phpfastcache/ravendb-extension
+```
+
+Once the command is successfully executed, you should see a vendor directory, which includes everything needed to run the PhpFastCache library.
+
+The only remaining step is to include the autoload.php file in your application to start using PhpFastCache. You can find autoload.php in the vendor directory.
+
+```php
+// load fastphpcache package
+require __DIR__ . '/vendor/autoload.php';
+```
+
+You're all set to start caching and enjoying the benefits of the PhpFastCache library. In the next section, we'll explore a couple of practical examples showing how to use PhpFastCache with the RavenDB extension in your application.
+
+## Caching Using the RavenDB Extension Driver
+
+Before we continue, you need to have the RavenDB server up and running and make sure the server has database called `phpfastcache`.
+
+For demonstration I will use the [RavenDB public instance](http://live-test.ravendb.net/). The server can be on a dedicated machine, or even a whole cluster of RavenDB servers can be used as the persistence layer for PhpFastCache.
+
+To install RavenDB on your own, you can follow the instructions in the [documentation](https://docs.ravendb.net/start/installation/manual) or [host RavenDB in the Cloud](https://ravendb.net/cloud).
+
+### Running the example
+
+Let's create a file named `example-ravendb-cache.php` with the following content:
+
+```php
+<?php
+// load fastphpcache package
+require __DIR__ . '/vendor/autoload.php';
+
+use Phpfastcache\CacheManager;
+use Phpfastcache\Config\ConfigurationOption;
+use Phpfastcache\Drivers\Ravendb\Config as RavenDBConfig;
+
+// create config
+$config = new RavenDBConfig();
+$config->setHost(['http://live-test.ravendb.net']);
+$config->setDatabaseName('phpfastcache');
+$config->setCollectionName('CachedItems');
+
+// create cache instance
+$cacheInstance = CacheManager::getInstance('RavenDB', $config);
+
+$key = "product_page";
+$product_data = 'First product';
+
+// init
+$val = $cacheInstance->getItem($key);
+if ($val->isHit() == false) {
+    // if the item is not cached, add it
+    // save the product_data string to cache under key
+    // set expire to 5 seconds
+    $val->set($product_data)->expiresAfter(5);
+    $cacheInstance->save($val);
+
+    echo "Added to cache the value of product_page: " . $val->get();
+} else {
+    // if the item is cached, return from cache
+    echo "Returned from cache the value of product_page: " . $val->get();
+}
+?>
+```
+
+### Configuring the driver
+
+Let's go through the code and give some explanations about it. We add using of Phpfastcache\Drivers\Ravendb\Config class:
+
+```php
+use Phpfastcache\CacheManager;
+use Phpfastcache\Drivers\Ravendb\Config as RavenDBConfig;
+```
+
+We set the RavenDB server URL and select the database to use, which is the same pair of values you would hand to a [document store](https://docs.ravendb.net/client-api/creating-document-store) in the PHP client. In the example I used the RavenDB public instance URL, database named phpfastcache and using the [collection](https://docs.ravendb.net/client-api/faq/what-is-a-collection) CachedItems.
+
+```php
+// create config
+$config = new RavenDBConfig();
+$config->setHost(['http://live-test.ravendb.net']);
+$config->setDatabaseName('phpfastcache');
+$config->setCollectionName('CachedItems');
+```
+
+In cache instance creation we specify that we want to use RavenDB as the backing store and provide the config we just created:
+
+```php
+$cacheInstance = CacheManager::getInstance('RavenDB', $config);
+```
+
+This is all the setup you need in order to integrate RavenDB into PhpFastCache. From this point forward, all the API is the same API that you are already used to.
+
+### Inspecting cached documents in the Studio
+
+In RavenDB Server, in the phpfastcache database there will be a new document created in the CachedItems collection with id pfc/product_page. That id is a combination of the static pfc prefix and the cached item key. You can see the document in the [RavenDB Studio](https://docs.ravendb.net/studio/database/documents/documents-and-collections):
+
+<Image img={require("./assets/phpfastcache1.webp")} alt="The pfc/product_page cache document listed in the phpfastcache database in the RavenDB Studio" />
+
+If we go into the RavenDB Studio and open the document, we can see the actual data cached and the expiration date of the cached item:
+
+<Image img={require("./assets/phpfastcache2.webp")} alt="The cache document opened in the RavenDB Studio, showing the cached value and its expiration date" />
+
+The nice thing about using the RavenDB extension for PhpFastCache is that storing the data inside of RavenDB not only makes it highly available and distributed. It also gives you the ability to inspect the content of the cache and understand what the system is doing on the backend.
+
+As you can see, there isn't much involved in actually making use of RavenDB & PhpFastCache. You can also integrate RavenDB more deeply into your PHP application. We have a [full blown PHP client API](https://github.com/ravendb/ravendb-php-client) that you can use to gain the same benefits as PhpFastCache is using. If you have any questions, we'll be happy to answer them in the [GitHub discussions group](https://github.com/ravendb/ravendb/discussions/).
+
+## Summary
+
+- PhpFastCache is a PHP caching library with pluggable back-ends, and the `phpfastcache/ravendb-extension` package makes RavenDB one of them.
+- Install both packages with Composer, require `vendor/autoload.php`, and the rest of the PhpFastCache API stays exactly the same.
+- The driver needs three settings: the server host, the database name, and the collection that will hold the cached items.
+- Every cached entry lands in RavenDB as a regular document under the `pfc/` prefix, so you can inspect the cache in the Studio.

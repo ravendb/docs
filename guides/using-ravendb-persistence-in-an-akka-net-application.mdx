@@ -1,10 +1,382 @@
 ---
 title: "Using RavenDB Persistence in an Akka.NET Application"
 tags: [integration, csharp, use-case]
-description: "Read about Using RavenDB Persistence in an Akka.NET Application on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/using-ravendb-persistence-in-an-akka-net-application"
+icon: "akka-net"
+description: "Build a persistent Akka.NET console app that stores its actor state in RavenDB through event sourcing and snapshots, so it can recover exactly where it left off after a crash or restart."
+keywords: [Akka.NET persistence, Akka Persistence RavenDB, event sourcing, snapshot store, persistent actor, journal, ReceivePersistentActor, actor state recovery, .NET]
 published_at: 2025-08-26
-image: "https://ravendb.net/wp-content/uploads/2024/08/akka.png"
+author: "Stav Lagziel"
+see_also:
+  - title: "Integrating with Akka.NET Persistence"
+    link: "integrations/akka.net-persistence/integrating-with-akka-persistence"
+    source: "docs"
+    path: "Integrations > Akka.NET Persistence"
+  - title: "Events and Snapshots"
+    link: "integrations/akka.net-persistence/events-and-snapshots"
+    source: "docs"
+    path: "Integrations > Akka.NET Persistence"
+  - title: "Queries"
+    link: "integrations/akka.net-persistence/queries"
+    source: "docs"
+    path: "Integrations > Akka.NET Persistence"
 proficiency_level: "Expert"
 ---
 
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+RavenDB can act as the persistence backend for Akka.NET actors, storing their state as a stream of events plus optional snapshots. An actor then rebuilds itself after a crash or a restart instead of starting from scratch. By the end of this guide you’ll have a console app whose actor state lives in RavenDB, and you’ll have watched it pick up mid-game across restarts.
+
+## What is Akka.NET Persistence?
+
+Akka is an actor-based framework for building highly concurrent, distributed, and resilient message-driven applications. While the original Akka is based on scala, Akka.NET is its sister implementation, designed for developers using the .NET platform.
+
+In an Akka system, each actor has its own distinct role and responsibility, contributing to the overall functionality and resilience of the application. Actors are lightweight, independent entities that encapsulate state and behavior, processing messages asynchronously. This design allows for clear separation of concerns, where each actor focuses on a specific task or service. For example, some actors may handle user requests, others might manage database interactions, while others coordinate complex workflows. By delegating responsibilities to individual actors, Akka systems achieve high levels of concurrency, scalability, and fault tolerance. Actors can be distributed across multiple nodes, and each one recovers independently from failures.
+
+Akka Persistence extends the core capabilities of Akka by introducing durable state management for actors. It allows actors to persist their internal state so that it can be recovered and restored even after a crash or a restart. This is achieved through event sourcing, where state changes are stored as a sequence of events. Optional snapshots capture the state at a particular point in time for quicker recovery. By using Akka Persistence, developers can build robust applications that maintain state consistency and reliability across distributed systems, making it an ideal choice for applications requiring high availability and resilience.
+
+## How to build a persistent Akka application with RavenDB Persistence
+
+In this guide we’ll set up a very simple console application that uses Akka.NET with RavenDB as a persistence layer. When our app crashes or restarts, we will be able to pick up where we left off.
+
+To do this we will create a simple ping pong app that moves a “ball” back and forth between our actors. Our in-memory state which we will persist will be the number of receives we’ve reached so far. The ping pong example is the basic hello world of actor based systems.
+
+### Create the project and add the persistence package
+
+Let’s start by creating a new .NET project and adding the Akka.NET package to it
+
+```bash
+dotnet new console -n PingPong
+```
+
+Add the [`Akka.Persistence.RavenDB.Hosting`](https://www.nuget.org/packages/Akka.Persistence.RavenDB.Hosting) package.
+
+This package includes the base [`Akka.Persistence.RavenDB`](https://www.nuget.org/packages/Akka.Persistence.RavenDB) which in turn includes the base Akka Nuget. We use Hosting since it provides a quick and easy way to set up our app and its persistence without having to set up a HOCON config file.
+
+We’ll add the appropriate Nuget package to the project using the following command:
+
+```bash
+dotnet add package Akka.Persistence.RavenDB.Hosting
+```
+
+### Add the ping pong actors
+
+Open `Program.cs` and add two new actor classes:
+
+1. `ReceiverActor` - this one will be responsible for keeping count of the number of times the ball has reached them, and serve it back.
+2. `PitcherActor` - this will be a “dumb” actor whose entire responsibility will be to serve the ball back.
+
+Once our receiver reaches a certain number of balls received it will set the `TaskCompletionSource` and our program will be terminated.
+
+We also added a little delay between pitches to give us some time to view our current score and play and see at what point we shut it down.
+
+```csharp
+public class Ball 
+{ 
+  public override string ToString() => "ball";
+}
+
+public class ReceiverActor : ReceiveActor
+{
+  public ReceiverActor(IActorRef actor, long repeat, 
+             TaskCompletionSource<bool> latch)
+  {
+    var received = 0L;
+    Receive<Ball>(m =>
+    {
+      received++;
+      Console.WriteLine($"| {received:000} ...O|\n");
+      if (received < repeat)
+      {
+        Context.System.Scheduler.ScheduleTellOnceCancelable(
+          TimeSpan.FromSeconds(1), actor, m, Self);
+      }
+      else
+      {
+        latch.TrySetResult(true);
+      }
+    });
+  }
+}
+public class PitcherActor : UntypedActor
+{
+  protected override void OnReceive(object message)
+  {
+    Console.WriteLine($"|O           |");
+    if (message is Ball)
+      Sender.Tell(message);
+  }
+}
+```
+
+### Wire up the actors in `Main()`
+
+Then in our `Main()` we’ll kickstart our actors by sending a message to the pitcher and setting the Sender as our ReceiverActor. This way it will send the message back to the receiver, which will in turn serve it back, and in this way the game has started.
+
+```csharp
+var host = new HostBuilder()
+   .ConfigureServices((context, services) =>
+   {
+     services.AddAkka("PingPongActorSystem", 
+      (builder, provider) =>
+     {
+       builder.WithActors((system, registry, resolver) =>
+       {
+         var ts = new TaskCompletionSource<bool>();
+         long repeats = 50;
+         var pitcherActor = system.ActorOf<PitcherActor>("pitcher-actor");
+         var props = new Props(typeof (ReceiverActor), null, pitcherActor, repeats, ts);
+         var receiverActor = system.ActorOf(props, "receiver-actor");
+         //serve the first ball
+         receiverActor.Tell(new Ball(), pitcherActor);
+         // wait for ts to complete
+         ts.Task.Wait();
+         system.Terminate();
+       });
+     });
+   });
+var app = host.Build();
+await app.RunAsync();
+```
+
+Try running the program and see that count going up.
+
+Currently our state `received` is only saved in-memory, which means that if our system crashes we will lose all of our progress so far.
+
+This is where `Akka.Persistence.RavenDB` comes in.
+
+## Persisting your actor state with RavenDB
+
+We can choose which events we want to persist and save in RavenDB as the game progresses. In the case of a system restart, Akka will fetch all of these events from the RavenDB database. It feeds them one by one into the persistence actor, eventually reaching the state we left off at.
+
+### Point Akka at your RavenDB instance
+
+First we need to set up a RavenDB instance to act as our database where we will persist all of the events.
+
+For production purposes it is recommended to set up an instance in [RavenDB Cloud](https://ravendb.net/products/cloud). For this demo app, we will use the [public live test instance](http://live-test.ravendb.net/). Go to the [public instance](http://live-test.ravendb.net/) and make sure that a database named PingPong exists there ([see here for the guide](https://docs.ravendb.net/studio/database/create-new-database/general-flow)).
+
+Now let’s tell Akka to use our RavenDB instance for persistence. This is very simple to do with Akka hosting, you can see the additional code to add in the following snippet. The full set of connection and journal options is documented in [Integrating with Akka.NET Persistence](https://docs.ravendb.net/integrations/akka.net-persistence/integrating-with-akka-persistence).
+
+```csharp
+var host = new HostBuilder()
+  .ConfigureServices((context, services) => {
+    services.AddAkka("PingPongActorSystem", (builder, provider) => {
+/// <NEW CODE>
+      builder.WithRavenDbPersistence(
+        urls: new [] { "http://live-test.ravendb.net" },
+        databaseName: "PingPong",
+        // add the certificate path here when using 
+        // a cloud instance or a secured on-perm instance
+        certificatePath: null, 
+        mode: PersistenceMode.Both);
+// </NEW CODE>
+      builder.WithActors((system, registry, resolver) => {
+        var ts = new TaskCompletionSource<bool>();
+        long repeats = 50;
+        var pitcherActor = system.ActorOf<PitcherActor>("pitcher-actor");
+        var props = new Props(typeof(ReceiverActor), null, pitcherActor, repeats, ts);
+        var receiverActor = system.ActorOf(props, "receiver-actor");
+        //serve the first ball
+        receiverActor.Tell(new Ball(), pitcherActor);
+        // wait for ts to complete
+        ts.Task.Wait();
+        system.Terminate();
+      });
+    });
+  });
+var app = host.Build();
+await app.RunAsync();
+```
+
+### Turn the receiver into a persistent actor
+
+Now that we’re all wired up, we need to make a few changes to our code to work with persistence:
+
+Change `ReceiveActor` to a persistent actor by replacing the inherited `ReceiveActor` with `ReceivePersistentActor` and implementing the required `PersistenceId`. The persistent actor also requires us to change any `Receive` case into `Command`.
+
+```csharp
+// <NEW CODE>
+public class ReceiverActor : ReceivePersistentActor
+{
+  public override string PersistenceId => "ping-pong-receiver-actor";
+// </NEW CODE>
+  public ReceiverActor(IActorRef actor, long repeat, 
+             TaskCompletionSource<bool> latch)
+  {
+    var received = 0L;
+// <NEW CODE>
+    Command<Ball>(m =>
+// </NEW CODE>
+    {
+      received++;
+      Console.WriteLine($"| {received:000} ...O|\n");
+      if (received < repeat)
+      {
+        Context.System.Scheduler.ScheduleTellOnceCancelable(
+          TimeSpan.FromSeconds(1), actor, m, Self);
+      }
+      else
+      {
+        latch.TrySetResult(true);
+      }
+    });
+  }
+}
+```
+
+### Persist and recover the state
+
+We’re not done yet. We still need to tell our actor what it should persist and how it should recover.
+
+Since our current in-memory state keeps count of the score, this is the data we will want to save in our database. Basically we will catalog each event as the number of times that we needed to increment our count.
+
+We simply need to call `Persist()` and Akka will save this as an event tied to this `PersistenceId`.
+
+Note we are using `Persist(long, ..)` which means this event’s payload will be saved as a `long` in the database. In general, this could be any object we choose. For more complex scenarios, you’ll usually save a more meaningful event, of course.
+
+Add this to the code to save every ball pass:
+
+```csharp
+Command<Ball>(m =>
+ {
+   // save an event with payload of 1 in the database
+   // after success, fire the handler function
+   Persist(1, _ =>
+   {
+     received++;
+     Console.WriteLine($"| {received:000} ...O|\n");
+     if (received < repeat)
+     {
+       Context.System.Scheduler.ScheduleTellOnceCancelable(
+        TimeSpan.FromSeconds(1), actor, m, Self);
+     }
+     else
+     {
+       latch.TrySetResult(true);
+     }
+   });
+ });
+```
+
+Finally we will tell the actor what to do when we recover. In our case each event that is fetched from the database represents a ball receive. All we need to do is increase our receive count for every event we get.
+
+Add this above `Command<Ball>`:
+
+```csharp
+Recover<long>(m =>
+{
+      received++;
+      if (received >= repeat)
+      {
+          latch.TrySetResult(true);
+      }
+});
+```
+
+We now have a working journal!
+
+### Test the journal
+
+Let’s test our app now that it’s persistent.
+
+In our program code, we’ll set `repeats` to 6.
+
+Run the program until it shuts down after the sixth serve.
+
+<Image img={require("./assets/akka-persistence1.webp")} alt="Console output of the ping pong app after six ball serves, ready to shut down" />
+
+If we open the RavenDB studio and go to `Events` collection, we can see the list of events and our payloads:
+
+<Image img={require("./assets/akka-persistence2.webp")} alt="RavenDB Studio showing the Events collection with the persisted ball-pass payloads" />
+
+Now set `repeats` to 10 and run the app again. This time the app will try to reach 10 receives before it shuts down. However, it will recover the first 6 that we already persisted, and only actually run the last 4. This also simulates a recovery of an app after a crash. As we can see in the terminal, we only start going from the last round we played.
+
+<Image img={require("./assets/akka-persistence3.webp")} alt="Console output showing the app recovering persisted events and resuming from the last round played" />
+
+Note that at any point in debugging, we might mess around with the code until our `Events` collection is no longer faithful to it. We can just delete the entire collection, and RavenDB will create a fresh one automatically on the next run. Changing the code and running the application on top of deprecated data might not always work. Akka will be fed messages in an old format, or in an order that is no longer possible in our updated code.
+
+Note that deleting the whole collection is obviously something that you should only do in debug. For production usage, you’ll need to handle messages in the old format. The alternative is to ensure, via the snapshots feature we’ll discuss shortly, that no such messages are retained by the time your new code is deployed.
+
+Our app can work fine like this, but we can make it better by adding snapshots as well.
+
+## Using Snapshot to reduce recovery time
+
+Snapshots keep a state that represents a point in time. Consider a process that has a lot of back and forth. Each message that the actor receives will persist an event to RavenDB. Recovery time at that point is linear to the number of events we have. Instead of having to go through all events from the beginning of time, we can persist a snapshot, which allows us to “fast-forward” much of the work.
+
+For example, let’s say we choose to save a snapshot for every 10 events. Say we have 12 events of ball passes. Instead of 12 events to go through, we will end up with a snapshot that has a payload of 10, plus two additional events. When we start our app again it will first load the snapshot, then the last 2 events.
+
+### Add snapshot support
+
+Let’s add snapshot support to our app.
+
+In our actor, we need to tell Akka what to do with the snapshot. Add this to our actor.
+
+```csharp
+Recover<SnapshotOffer>(offer =>
+{
+      received = (long)offer.Snapshot;
+});
+```
+
+Now we can tell Akka to persist a snapshot of our state whenever we reach the limit. You can see the new behavior in the following snippet:
+
+```csharp
+Command<Ball>(m =>
+ {
+   Persist(1, _ =>
+   {
+     received++;
+     Console.WriteLine($"|   {received:000}    ...O|\n");
+// <NEW CODE>
+     const int SnapShotInterval = 10;
+     if (LastSequenceNr % SnapShotInterval == 0 && LastSequenceNr != 0)
+     {
+       SaveSnapshot(received);
+     }
+// </NEW CODE>
+     if (received < repeat)
+     {
+       Context.System.Scheduler.ScheduleTellOnceCancelable(
+                TimeSpan.FromSeconds(1), actor, m, Self);
+     }
+     else
+     {
+       latch.TrySetResult(true);
+     }
+   });
+ });
+```
+
+All done!
+
+Run the program again. We’ll let our program pass the ball 15 times by setting `repeats` to 15 and then check the studio:
+
+<Image img={require("./assets/akka-persistence4.webp")} alt="RavenDB Studio showing the new Snapshots collection with one saved snapshot" />
+
+We have a new “Snapshots” collection with 1 saved snapshot. Great!
+
+Note that we added a _new_ snapshot, on top of the already created events. The first time we run the program, we need to go through all the persisted events. The next time we’ll run it, we’ll start from the snapshot and be able to skip running through the older events.
+
+Our `Events` collection still has the entire history of the game, as you can see:
+
+<Image img={require("./assets/akka-persistence5.webp")} alt="RavenDB Studio showing the Events collection retaining the full history of the game" />
+
+You can configure Akka to delete the events that are already included in the snapshot, since they are no longer needed. Or you can keep them around if they are interesting to you over the long term. Check out the [Akka.NET documentation](https://getakka.net/articles/persistence/snapshots.html#snapshot-deletion) for more details on the topic. How RavenDB stores both sides, the journal and the snapshot store, is covered in [Events and Snapshots](https://docs.ravendb.net/integrations/akka.net-persistence/events-and-snapshots).
+
+Now when we restart our program, our snapshot will be sent to `Recover<SnapshotOffer>` where we will set our `received` internal state to the snapshot’s payload, then load events 11-15. This is a lot better and quicker than recovering all of our events one by one.
+
+If you want to read that stored history back yourself instead of just replaying it, Akka’s persistence query interfaces are covered in [Queries](https://docs.ravendb.net/integrations/akka.net-persistence/queries).
+
+## Summary
+
+- `Persist()` writes one event per message into the `Events` collection, tied to the actor’s `PersistenceId`. On restart, Akka replays those events one by one through `Recover<T>`, so the actor rebuilds its in-memory state instead of starting from zero.
+- `SaveSnapshot()` stores a point in time copy of the state in the `Snapshots` collection. Akka hands the newest snapshot to `Recover<SnapshotOffer>` first, then replays only the events recorded after it.
+- Without snapshots, recovery time grows linearly with the number of events. With a snapshot every 10 events, a 12 event history costs one snapshot load plus two event replays instead of twelve.
+- Deleting the `Events` collection to clear out stale data is a debug only move. In production, old format events either have to stay readable by the new code, or be aged out behind a snapshot before that code ships.
+
+This has been a whirlwind tour of how to use Akka Persistence with RavenDB. If you have any questions, feel free to ask them in our [GitHub Discussions group](https://github.com/ravendb/ravendb/discussions).

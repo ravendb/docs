@@ -1,10 +1,182 @@
 ---
 title: "Sending Your RavenDB 7.0 Logs to Grafana Cloud"
-tags: [integration, monitoring]
-description: "Read about Sending Your RavenDB 7.0 Logs to Grafana Cloud on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/sending-your-ravendb-7-0-logs-to-grafana-cloud"
+tags: [monitoring, integration, administration]
+icon: "grafana"
+description: "Route RavenDB 7.0 server logs to Grafana Cloud by configuring the NLog Loki target, then view and filter them in Grafana Explore."
 published_at: 2025-02-25
-image: "https://ravendb.net/wp-content/uploads/2025/02/grafana-cloud-article-cover.jpg"
+author: "Paweł Lachowski"
+see_also:
+  - title: "Logging Overview"
+    link: "monitoring/logging/overview"
+    source: "docs"
+    path: "Server > Monitoring > Logging"
+  - title: "Logging Configuration"
+    link: "monitoring/logging/configuration"
+    source: "docs"
+    path: "Server > Monitoring > Logging"
+  - title: "OpenTelemetry"
+    link: "monitoring/integrations/open-telemetry"
+    source: "docs"
+    path: "Server > Monitoring > Integrations"
 proficiency_level: "Beginner"
 ---
 
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+## What you will learn
+
+* How to point RavenDB at your own `NLog.config` instead of the shipped template
+* How to pull in the `NLog.Targets.Loki` package straight from `settings.json`
+* How to add a Loki target and a logging rule to `NLog.config`
+* How to find your endpoint, username, tenant, and write token in Grafana Cloud
+* How to view your RavenDB logs in Grafana Explore and tune which levels get sent
+
+## Introduction
+
+With RavenDB 7.0, we've introduced the NLog system, bringing log management and monitoring to a whole new level. This upgrade unlocks new and useful NLog integrations, now compatible with RavenDB. In this guide, we will leverage that upgrade, and show you how to connect RavenDB logs to Grafana Cloud using Grafana Loki. You can also use this guide as a reference for connecting your database to other integrations.
+
+## Prerequisites
+
+What you will need:
+
+* [Grafana Cloud](https://grafana.com/) account
+* [RavenDB](https://ravendb.net/) cluster with database
+
+### RavenDB
+
+Before connecting RavenDB to Grafana, ensure your RavenDB cluster is running. If you don't have it - let's show you how to get started.
+
+1. Download RavenDB from our [website](https://ravendb.net/download), selecting 'Download on-premise' for your OS.
+2. Then extract the files and run *run.ps1* or *run.sh* in terminal.
+3. Set up a new cluster.
+4. Choose your desired security level (this guide uses 'Unsecured' for simplicity, be aware that for production systems running Unsecured setup is... Unsecure) and complete rest of the setup.
+
+If you encounter any problems or need help, please refer to this setup wizard & cluster creation [guide](/7.2/start/installation/setup-wizard/overview).
+
+### Grafana Cloud
+
+If you have your RavenDB server running, but you lack a Grafana Cloud instance, let's also show how to get it. Visit the Grafana website, create an account, and activate it. Next, choose a stack URL and deployment region that are geographically close to your RavenDB server to begin configuring Grafana. To speed up the setup you can skip the onboarding part that Grafana is offering and just click on "I'm already familiar with Grafana. Skip Setup" button to move on.
+
+<Image img={require("./assets/grafana-cloud-logs1.webp")} alt="Grafana Cloud welcome screen with the 'I'm already familiar with Grafana. Skip setup' button highlighted" />
+
+If you encounter any difficulties, please refer to the [Grafana guide](https://grafana.com/docs/grafana-cloud/get-started/).
+
+## Setup
+
+Now that you have prepared - a Grafana Cloud account and a RavenDB server - it's time to connect them. Start by selecting 'Stacks' on your Grafana home page, which will take you to the Grafana Cloud panel where you get all the options you need. On the left side, under Grafana Cloud, click on your stack name you want to connect. There, you need to click 'Send Logs' under the Loki category.
+
+<Image img={require("./assets/grafana-cloud-logs2.webp")} alt="Grafana Cloud stack management panel with Send Logs highlighted under Loki" />
+
+You may ask - "What even [Loki](https://grafana.com/oss/loki/) is"? It's a log aggregation system developed by the Grafana team for managing and querying logs. As a part of the Grafana ecosystem, it is a great way to connect your logs with it.
+
+### Step 1: Install the Loki package and point RavenDB at your own NLog config
+
+Let's get back on the topic of setting up connection. We already have most of the stuff we need from Grafana Cloud, but before we can make it work, let's head back to the RavenDB Server directory. You need to copy the `NLog.template.config` file, and rename the copy to `NLog.config`. Next, open the `settings.json` file and add the following settings (if they aren't already there):
+
+```json
+{
+ // rest of the settings on top
+ // ...
+ "Logs.NuGet.AdditionalPackages": { "NLog.Targets.Loki": "2.2.0" },
+  "Logs.ConfigPath": "NLog.config",
+}
+```
+
+It will provide you the required package (**This article is using the 2.2.0 version. Please check if there is a newer version. The latest version is available [here](https://github.com/corentinaltepe/nlog.loki).**) and reroute your NLog settings into a newly created file. The first one is downloading a NuGet package that lets us connect NLog with Loki, while the second one overrides NLog config path. **Keep in mind that RavenDB needs an internet connection to handle everything for you.**
+
+### Step 2: Register the NLog.Loki extension
+
+Now, after directing control over NLog to the `NLog.config` file, let's customize it. Open it with your preferred text editor and let's get it started. Start a new line under the `<nlog>` root XML node on the top of the file, paste the following code:
+
+```xml
+	<extensions>
+		<add assembly="NLog.Loki" />
+	</extensions>
+```
+
+### Step 3: Add the Loki target
+
+Next, we need to add a new target into the already existing `<targets>` XML node. This will connect our database to the Grafana Cloud that we define. Insert extra target markup code inside the `<targets>` node, ideally at the end after other targets for convenience. This piece of code will define how to send our logs to Grafana Cloud:
+
+```xml
+<target
+name="loki"
+xsi:type="loki"
+batchSize="200"
+taskDelayMilliseconds="500"
+endpoint="https://logs-YOUR_ENDPOINT.grafana.net"
+username="YOUR_USERNAME"
+password="YOUR_GRAFANA_CLOUD_LOKI_SECURITY_TOKEN"
+orderWrites="true"
+compressionLevel="noCompression"
+eventPropertiesAsLabels="false"
+ layout="${longdate}|${level:uppercase=true}|${event-properties:item=Resource}|${event-properties:item=Component}|${logger}|${message:withexception=true}|${event-properties:item=Data}"
+tenant="grafanacloud-Your_Domain_Name-logs">
+		<label name="app" layout="YOUR_RAVENDB_SERVER_NAME" />
+		<label name="Level" layout="${level}" />
+<label name="Component" layout="${event-properties:item=Component}" />
+<label name="Resource" layout="${event-properties:item=Resource}" />
+	</target>
+```
+
+Of course, you need to adjust a few parts of this code, but we'll cover this later when we will have all the code pieces in place.
+
+### Step 4: Add a logging rule that writes to Loki
+
+The final part of XML code is adding a new rule that will direct selected data from loggers to your target. This will not disable writing logs to a file, we simply add another destination. Find the 'rules' section and add the following markup code.
+
+```xml
+<logger ruleName="Raven_Loki" name="*" levels="Info,Warn,Error,Fatal" writeTo="loki" />
+```
+
+### Step 5: Fill in your Grafana Cloud credentials
+
+We've configured the integration properly. Now, the only thing left is to point Grafana Loki to its target Grafana account. Head back to Grafana and copy the necessary account information.
+
+**In short, what you need to set is:**
+
+* `endpoint="https://logs-YOUR_ENDPOINT.grafana.net"`
+* `username="YOUR_USERNAME"`
+* `tenant="grafanacloud-Your_Domain_Name-logs"`
+* `password="YOUR_GRAFANA_CLOUD_LOKI_SECURITY_TOKEN"`
+* `layout="YOUR_RAVENDB_SERVER_NAME"`
+
+Let's grab your Grafana URL, that'll substitute the `https://logs-YOUR_ENDPOINT.grafana.net` value. You can find this value in your Grafana Loki configuration panel as a URL.
+Now copy your Name and paste it as a "tenant" value. Copy "User" that is a set of numbers and paste it as a username. Please, remember to change your domain name in layout just under tenant.
+
+For the password (which is a generated token), generate a new token with write permissions. At the moment, 'Generate now' at the top has only read permission. Don't forget to copy it before closing the window so you don't lose it. Paste it as a password value in your config file, and you're all set.
+
+<Image img={require("./assets/grafana-cloud-logs3.webp")} alt="Mapping Grafana Data Source settings to the NLog Loki target configuration values" />
+
+Once you added all of it, save your NLog.config and then start your RavenDB server again to make RavenDB refresh new data.
+
+When it's all set, last thing to do is checking if this works. In your Grafana Cloud stack management, click 'Launch' under the Grafana section. On the left sidebar find the 'Explore'(1) category, expand it to find the 'Logs'(2) page. There, you select your tenant name from a list under the name 'Data Source'(3). Next thing to do is just to refresh with the button (4) on the right.
+
+Logs should appear - if they do, it means you successfully connected your logs to Grafana!
+
+<Image img={require("./assets/grafana-cloud-logs4.webp")} alt="Grafana Explore Logs view showing RavenDB logs from the Loki data source" />
+
+We may want to adjust what is sent to Loki too - in your NLog config, check the rules at the bottom. The rule you added with `writeTo="loki"` allows you to customize your output using `levels=`. For example, we can add "Debug" level to have also Debug logs sent to Loki.
+
+After such adjustment, your rule would look like this:
+
+```xml
+<logger ruleName="Raven_Loki" name="*" levels="Debug,Info,Warn,Error,Fatal" writeTo="loki" />
+```
+
+This change should provide more detailed logs in your Grafana whenever you need it. Of course, you can remove Debug and Info levels, if you want only Warn level logs and [above](https://nlog-project.org/documentation/v5.0.0/html/T_NLog_LogLevel.htm) displayed. There are also many other customisation options for your filtering needs. Most of these advanced filtering can be set, for example, in labels in `<target>`.
+
+## Summary
+
+* Two entries in `settings.json` do the heavy lifting: `Logs.NuGet.AdditionalPackages` fetches the Loki target for you, and `Logs.ConfigPath` hands NLog control over to your own `NLog.config`.
+* The Loki target plus a `writeTo="loki"` rule is all NLog needs to ship logs to Grafana Cloud, and it runs alongside the existing file target rather than replacing it.
+* The endpoint, username, tenant, and write token all come from the Send Logs panel of your Grafana Cloud stack, and the token has to be generated with write permissions.
+* Once the server restarts, the `levels=` attribute on the rule is your dial for how much gets sent, and the labels on the target are what you filter by in Grafana Explore.
+
+The full config file is available as a [gist](https://gist.github.com/Netzach-Nyss/569215bae6f955ce00f3566614ad744e).

@@ -1,10 +1,267 @@
 ---
 title: "New in 7.0: RavenDB Vector Search"
-tags: [ai, querying]
-description: "Read about New in 7.0: RavenDB Vector Search on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/new-in-7-0-ravendbs-vector-search"
+tags: [ai, querying, indexes]
+icon: "vector-search"
+description: "Run semantic searches over your documents with RavenDB 7.0 vector search: generate embeddings on the server with no external tools, and query them through static indexes or auto-indexes."
 published_at: 2025-10-27
-image: "https://ravendb.net/wp-content/uploads/2025/02/vector-search-article-cover.jpg"
+see_also:
+  - title: "Vector Search Overview"
+    link: "ai-integration/vector-search/overview"
+    source: "docs"
+    path: "AI Integration > Vector Search"
+  - title: "Vector Search using a Static Index"
+    link: "ai-integration/vector-search/vector-search-using-static-index"
+    source: "docs"
+    path: "AI Integration > Vector Search"
+  - title: "Vector Search using a Dynamic Query"
+    link: "ai-integration/vector-search/vector-search-using-dynamic-query"
+    source: "docs"
+    path: "AI Integration > Vector Search"
 proficiency_level: "Expert"
+author: "Maciej Aszyk"
 ---
 
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+We’re happy to announce that starting with version v7.0, RavenDB now supports vector indexing and querying, enabling you to utilize AI capabilities to enhance your search experience. In this article, we’ll guide you through what you can achieve by using this feature and how to set it up quickly.
+
+## Introduction
+
+Vector search is a method for finding the vectors that are closest, by a defined distance metric, to the vector provided in the query. The idea of distance between vectors is that similar vectors are close to each other, aggregated in clusters.
+
+For example, vectors generated for the words “tea”, “coffee”, and “beverage” would be relatively close to each other since tea and coffee are beverages.
+
+In this article, we will cover vector search used for semantic search. However, vector search can be used in various ways like recommendation systems, pattern recognition and many more[1].
+
+## A Glimpse of What You Can Achieve With It
+
+<div style={{position: "relative", paddingBottom: "56.25%", height: 0, overflow: "hidden"}}>
+  <iframe
+    style={{position: "absolute", top: 0, left: 0, width: "100%", height: "100%"}}
+    src="https://www.youtube.com/embed/W0ENz5f7tgU"
+    title="RavenDB vector search demo"
+    frameBorder="0"
+    allow="accelerated-media; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+  />
+</div>
+
+For just the beginning, let’s look at a small example. One of the most significant vector search usages is semantic search. It allows the user to find semantically related text in your documents.
+
+In our sample database, we have a collection of documents called Products. It contains the names of the products. Until now, to make a field "searchable", we'd need to use a full-text search feature. It won't cover synonyms, just text similarity. Take a look:
+
+<Image img={require("./assets/vector-search1.webp")} alt="RavenDB Studio full-text search on the 'choc' prefix returning chocolate products" />
+
+Knowing that there are chocolate products in our database, we will find them if we search for the ‘choc’ prefix.
+
+However, let’s imagine our user wants to search for ***any*** ***candies***. Directly searching for the word candies will return no documents. However, with vector search, we can find them:
+
+<Image img={require("./assets/vector-search2.webp")} alt="RavenDB Studio vector search returning candy products for the term 'candies'" />
+
+If this interests you, we will discuss all the details in the following chapters of this article.
+
+## Indexing
+
+Under the hood, RavenDB uses a **HNSW** algorithm[2] to store vectors in the index. It is an approximate nearest neighbor search technique for searching vectors that are relatively close to the searched vector. Advantages of this method include the speed of search since it is optimized to give approximate results instead of going through all elements in the index, which can hold millions of elements.
+
+To mark a field to be processed as a vector, you need to use the **CreateVector** method, which can look like this:
+
+```csharp
+from doc in docs.Products
+select new
+{
+Vector = CreateVector(doc.Name)	
+}
+```
+
+Or accordingly in JavaScript:
+
+```javascript
+map('Products', function (e) {
+    return {
+        Vector: createVector(e.Name)
+    };
+})
+```
+
+By default, *no more configuration is required*.
+
+The parameter passed into CreateVector may be either:
+
+1) Numerical array - we will index the array as a single vector
+2) Textual values - we will automatically generate the embedding of the input
+
+Let’s talk more about textual values (option 2 above). A nice addition to the VectorSearch feature is the auto-generation of embeddings on your instance **without the need for any external tools**.
+
+Internally, we’re using the **bge-micro-v2**[3] model, which is sufficient for certain use cases. If you need a stronger or more domain-specific model, you don’t have to leave RavenDB to get one: define an [AI connection string](/7.2/ai-integration/connection-strings/overview) for OpenAI, Azure OpenAI, Google AI, Vertex AI, Hugging Face, Mistral AI, or a local Ollama instance, and let an [Embeddings Generation task](/7.2/ai-integration/generating-embeddings/overview) produce the vectors for you. Those vectors are queried exactly like the ones in this article.
+
+We’ve shared multiple configuration options to match user needs. Let’s take a look at them.
+
+### SourceEmbeddingType and DestinationEmbeddingType
+
+**SourceEmbeddingType** is used to define the underlying data type stored in the document. This setting accepts the following values:
+
+* **VectorEmbeddingType.Single** - when your field contains array(s) of floats
+* **VectorEmbeddingType.Text** - when field contains textual value(s). This will force embedding generation during the indexing via the model described above.
+* **VectorEmbeddingType.Int8** - when your field contains array(s) of signed bytes as result of quantized singles
+* **VectorEmbeddingType.Binary -** when your field contains array(s) of bytes as result of quantized singles
+
+RavenDB supports indexing the quantized[4] values by methods provided in Clients. Example how to create quantized values can be found in our [documentation](/7.2/ai-integration/vector-search/vector-search-using-dynamic-query#quantization-options). The main reason that you may want to store quantized values is saving storage space. You can gain:
+
+- Int8 quantization: it’s saving 75% storage space compared to single.
+- Binary quantization: it is saving around 96% storage space compared to singles
+
+However, bear in mind that quantization loses precision.
+
+**DestinationEmbeddingType** defines the indexing output form. You can store non-quantized vectors in the document, but to save space in the index itself, you can configure that indexed values will be quantized.
+
+### Dimensions
+
+The number of dimensions can be configured at indexing time to ensure consistency across all document vectors. If not provided, the first encountered vector will determine the dimension size of embeddings.
+
+### HNSW - Number of edges
+
+The HNSW algorithm is graph-based. All the vectors inside it have connections to their neighbors. In our conventions, the number of neighbor links is called *NumberOfEdges*.
+A larger number of edges increases the searchability (accuracy) of the graph search; however, it also means that indexing and querying will be slower - during traversal, we will check more vectors.
+
+### HNSW - Number of candidates
+
+We’re also providing the ability to configure a number of candidates (both querying and indexing), but let’s focus on the indexing part. When a new vector is added to the graph, we have to find its neighbors to store them in the graph and create links between them. The **NumberOfCandidatesForIndexing** defines how many vectors we need to consider when finding the best neighbors for our new vector. A larger number will increase indexing time; however, it should provide a better neighbor list (see NumberOfEdges description above), which can improve the search quality.
+
+## Querying
+
+We introduced new methods in RQL to extend its ability to handle vector searches.
+The basic method looks like this:
+
+```rql
+from index MyIndex where vector.search(FieldName, QueriedValue, MinimumMatch, NumberOfCandidates)
+```
+
+| Parameter | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `FieldName` | field name | yes | n/a | The name of the vector field in the index. |
+| `QueriedValue` | string or parameter | yes | n/a | The value we’re looking for. Textual values can be a direct string or a parameter. Numerical values must be passed as a parameter, there is no direct support for passing a vector (as an array) in the RQL. |
+| `MinimumMatch` | float | no | `0.75` | Minimum similarity score that indicates if the vector is included in the result set, a value between 0 and 1.0. |
+| `NumberOfCandidates` | int | no | `16` | Max amount of vectors that we will consider to return from the graph search. |
+
+For example, with a textual value:
+
+```rql
+from index MyIndex where vector.search(VectorFromText, "name")
+```
+
+And with a numerical value:
+
+```rql
+$p0 = [0.1, 0.2]
+from index MyIndex where vector.search(VectorFromArray, $p0)
+```
+
+Default values can be changed via the [configuration](/7.2/ai-integration/vector-search/what-affects-vector-search-results). If we do not want to override the default value, we can safely pass a `null` value instead. This indicates to the query builder that the default value should be used.
+
+### AutoIndexes
+
+VectorSearch is also available via AutoIndexes search. To use it, the user simply needs to define the data source in the `FieldName` of the query. Additionally, the user must specify the source embedding type in the query, as it is not possible to pass the configuration the way it is done with static indexes.
+
+To do so, we have introduced new methods in the RQL with the `embedding`[5] prefixes.
+
+It is easier to explain it in examples, so let’s dive deep into the syntax.
+For AutoIndexes, the underlying values are considered numerical singles when the field name is not wrapped in any methods.
+
+```rql
+$p0 = [0.1, 0.2]
+from Products where vector.search(FieldName, $p0)
+```
+
+However, when we want to create a vector field from textual value, we simply need to wrap it in a method:
+
+```rql
+from Products where vector.search(embedding.text(Name), "candy")
+```
+
+We also support the quantization feature, which can be specified directly within the embedding method.
+
+```rql
+from Products where vector.search(embedding.text_i8(Name), "Name")
+```
+
+As you can see, the embedding method follows a specific pattern. The pattern works as follows:
+- Only datasource: for defining only the data source, use `embedding.DataSource`, such as `embedding.text`, `embedding.i8`, or `embedding.i1`
+- Apply quantization: to define quantization, use the pattern `embedding.DataSource_DataDestination`.
+
+**Supported methods**:
+
+| Method | Source data in the document | Stored in the index as |
+| --- | --- | --- |
+| `embedding.f32_i8` | array of floats | Int8, quantized |
+| `embedding.f32_i1` | array of floats | binary, quantized |
+| `embedding.i8` | array of signed bytes | Int8 |
+| `embedding.i1` | array of bytes | binary |
+| `embedding.text` | textual value | single |
+| `embedding.text_i8` | textual value | Int8, quantized |
+| `embedding.text_i1` | textual value | binary, quantized |
+
+## Semantic Search Example: Northwind Products
+
+Nothing is better than an example of how we can use the feature. I want to show how easily you can use semantic search with our sample data.
+
+1. To create sample data, follow this [instruction](/7.2/studio/database/tasks/create-sample-data#create-sample-data). We are using the Northwind database as a sample database containing a collection called Products. Those documents include the product names - they look like a good candidate for creating a semantic search with those values.
+
+2. In the New index view, let's define the vector field:
+
+   <Image img={require("./assets/vector-search3.webp")} alt="RavenDB Studio New index view with a vector field defined on the Product name" />
+
+3. We may want to configure the vector field explicitly:
+
+   <Image img={require("./assets/vector-search4.webp")} alt="RavenDB Studio index field settings panel with the Enable Vector Search option" />
+
+   First, click the “Add field” button, then “Enable Vector Search” on the right side of the widget.
+
+4. Let’s set source embedding as “Text” (since we’ve only textual values in documents) and output as Single (we do not want to perform quantization yet)
+
+   <Image img={require("./assets/vector-search5.webp")} alt="RavenDB Studio vector field settings with source embedding set to Text and output as Single" />
+
+5. Click save, and we're ready to go after the index is built. So let’s play with the queries. We can look for similar things by name:
+
+   <Image img={require("./assets/vector-search6.webp")} alt="RavenDB Studio vector search query returning products with names similar to the search term" />
+
+6. But the hidden power behind the vector search in this case is the semantic search, so let’s run another query:
+
+   <Image img={require("./assets/vector-search7.webp")} alt="RavenDB Studio semantic vector search query for the term 'Italian'" />
+
+7. We searched for Italian, which can be **Italian food or Italian products**. Our embedder generated vectors of items that seem to be close to the word Italian if we increase the minimumSimilarity to be more exact:
+
+   <Image img={require("./assets/vector-search8.webp")} alt="RavenDB Studio vector search results with a higher minimum similarity value" />
+
+The embedding generated on the CPU produces excellent results using a simpler model. If you want more accurate vectors, point an [Embeddings Generation task](/7.2/ai-integration/generating-embeddings/overview) at the provider of your choice and query the result the same way.
+
+The same results can also be achieved by using the AutoIndexes feature without any other configuration and static index:
+
+<Image img={require("./assets/vector-search9.webp")} alt="RavenDB Studio auto-index vector search returning the same results without a static index" />
+
+## Summary
+
+In this article, we discussed the vector.search feature, with explanations of the options we are sharing. We go through all possibilities vector.search and basic examples of how semantic search could be achieved without needing external tools within a single query.
+
+- Semantic search finds documents by meaning rather than by text similarity, so a query for "candies" can surface chocolate products that a full-text prefix search would miss.
+- RavenDB generates embeddings on your own instance with the built-in bge-micro-v2 model, so you can start with vector search without wiring up any external embedding provider.
+- Quantization trades precision for space: Int8 saves about 75% and Binary about 96% versus single-precision vectors, which matters once your index holds millions of entries.
+- HNSW tuning is a speed-versus-accuracy dial: more edges and more candidates improve search quality but make both indexing and querying slower.
+
+## Bibliography
+
+[1] [https://en.wikipedia.org/wiki/Nearest_neighbor_search](https://en.wikipedia.org/wiki/Nearest_neighbor_search)
+
+[2] [https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world)
+
+[3] [https://huggingface.co/TaylorAI/bge-micro-v2](https://huggingface.co/TaylorAI/bge-micro-v2)
+
+[4] [https://en.wikipedia.org/wiki/Quantization_(signal_processing)](https://en.wikipedia.org/wiki/Quantization_(signal_processing))
+
+[5] For semantic search: [https://en.wikipedia.org/wiki/Word_embedding](https://en.wikipedia.org/wiki/Word_embedding)

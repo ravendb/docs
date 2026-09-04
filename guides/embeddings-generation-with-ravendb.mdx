@@ -1,10 +1,161 @@
 ---
 title: "Embeddings Generation with RavenDB"
-tags: [ai, use-case]
-description: "Read about Embeddings Generation with RavenDB on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/embeddings-generation-with-ravendb"
+tags: [ai, getting-started, ongoing-tasks, querying]
+icon: "embeddings"
+description: "Connect an AI provider like OpenAI, create an embeddings generation task, and query your documents by meaning with RavenDB vector search."
 published_at: 2025-03-31
-image: "https://ravendb.net/wp-content/uploads/2025/03/ai-search-article-cover.jpg"
+see_also:
+  - title: "Embeddings Generation Task"
+    link: "ai-integration/generating-embeddings/embeddings-generation-task"
+    source: "docs"
+    path: "AI Integration > Generating Embeddings"
+  - title: "Vector Search Overview"
+    link: "ai-integration/vector-search/overview"
+    source: "docs"
+    path: "AI Integration > Vector Search"
+  - title: "OpenAI Connection String"
+    link: "ai-integration/connection-strings/open-ai"
+    source: "docs"
+    path: "AI Integration > Connection Strings"
 proficiency_level: "Beginner"
+author: "Paweł Lachowski"
 ---
 
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+## Introduction
+
+As AI models improve, ignoring their potential would be a *mistake*. Following this market trend, we engineered and released AI Integration. We’ve put effort into not giving you an AI filler but a well-optimized, convenient, and seamlessly fitting RavenDB ecosystem solution with the best DX possible.
+
+With AI Integration you can quickly generate embeddings via third-party providers (like OpenAI or HuggingFace). Embeddings are “meaning vectors”, so the embedding generation process extracts your data’s “meaning” into vectors. It lets you instantly search your data by meaning, without any work on your side, just using RavenDB features.
+
+You can use those generated embeddings to perform [vector search](https://docs.ravendb.net/ai-integration/vector-search/overview), or use AI to change your custom query text into embedding for querying. This way you can go creative with the queries while everything will still work. Your embeddings that are generated while querying are also cached, to be cost-efficient for you.
+
+Connecting a third-party provider needs a license that includes the AI stack, either Enterprise or the dedicated RavenDB AI license. Check the [licensing overview](https://docs.ravendb.net/licensing/overview) for the current tiers. There is also an embedded version using the [bge-micro-v2](https://huggingface.co/SmartComponents/bge-micro-v2) model that runs on your own machine instead of calling out to a provider. Let’s dive in and see how to connect and use this awesome feature.
+
+If vector search itself is new to you, [New in 7.0: RavenDB Vector Search](./new-in-7-0-ravendbs-vector-search.mdx) covers the querying side first.
+
+<Admonition type="note" title="Before you start">
+
+* The static index later in this article has to use [Corax](https://docs.ravendb.net/indexes/search-engine/corax). A static index that defines vector fields cannot deploy on Lucene, it fails with a `NotSupportedException`. Professional and Enterprise licenses default to Lucene, so set this before you build the index.
+* Auto-indexes are easier here, they pick Corax on their own even when the configured default is Lucene.
+* An API key from your provider, unless you go with the embedded model.
+* The sample data set, if you want the query at the end to return the same results shown here.
+
+</Admonition>
+
+## Connecting
+
+To begin, start in the new ‘AI Hub’ tab on the left bar after selecting any database. To connect your AI model to the database, create the [AI Connection String](https://docs.ravendb.net/ai-integration/connection-strings/overview), that we will use later. The model providers we support:
+
+* Azure OpenAI
+* Google AI
+* Ollama
+* OpenAI
+* MistralAI
+* Hugging Face
+* Embedded model, that will use your machine resources
+
+Now, let’s connect one of those. We will connect OpenAI in this article, but the process should be more or less similar for all options.
+<Image img={require("./assets/embeddings-generation1.webp")} alt="Create a new AI connection string in the AI Hub" />
+
+Let’s start with the name and identifier. Provide it yourself, or just enter the name, and the identifier will be generated automatically. Select OpenAI and get the [API key from here](https://platform.openai.com/api-keys). Paste your API key and put [`https://api.openai.com/v1/`](https://api.openai.com/v1/) as the endpoint. What is left is selecting a model. For OpenAI, [you can find embeddings generation models here](https://platform.openai.com/docs/models#model-endpoint-compatibility). This article uses `text-embedding-3-small.`
+
+After confirming your connection by clicking ‘Test connection’ at the bottom, save the connection string.
+
+### Defining a new ongoing AI Task
+
+Now, we want to create an embedding generation Task. Go back into ‘AI hub’ and select ‘AI Tasks’. First, name your task and generate its identifier; it can be called the same way as the connection string. Select your connection string at the bottom, and let’s go to the right side.
+<Image img={require("./assets/embeddings-generation2.webp")} alt="Create a new embeddings generation AI task" />
+
+### Select the text to be transformed
+
+Choose the collection of the documents for which you want to generate embeddings. You can attach only one collection to one task. If you wish for more collections to use AI, you need to create more tasks.
+
+After selecting a path, you must add ‘Source Text Path’, which indicates for which text field you want your embeddings to be generated. In my case, I will be using ‘Name’, so I put it in and clicked ‘Add path configuration’. You can put any field you want to use here.
+
+<Image img={require("./assets/embeddings-generation3.webp")} alt="Configure the source text path for the embeddings generation task" />
+
+You can also use JS script to do that. For example
+
+```javascript
+embeddings.generate({
+    Name: text.splitLines(this.Name, 2048),
+});
+```
+
+Be aware of chunking and its different methods. To simplify, the chunking is the process of dividing your fields into smaller pieces to fit your text into the AI token limit. A few methods use TextChunker from SematicKernel, [which you can learn more about here](https://learn.microsoft.com/en-us/dotnet/api/microsoft.semantickernel.text.textchunker?view=semantic-kernel-dotnet). Meanwhile, Plain Text Split does not “see” separators and won’t cut words. It also splits after defined tokens. It produces hashes that are case-insensitive and trim white spaces.
+
+The last one, HTML Strip, strips your chunks from HTML and then works the same as Plain Text Split.
+
+If your documents are long enough that a chunk loses the thread of what it belongs to, [additional context in embedded chunks](./additional-context-in-embedded-chunks.mdx) shows how to carry document-level context into every chunk.
+
+### About Quantization
+
+If you are worried about the available storage space for the embeddings, we can help you. At the bottom of this menu, we have [‘Quantization’](https://docs.ravendb.net/ai-integration/vector-search/vector-search-using-dynamic-query#quantization-options), which can significantly reduce the size of the embeddings we generate, with a slight loss of precision.
+
+We have three options counting in lack of quantization. The other two are Int8 and Binary. When creating embedding, the size of each value in embedding is 4 bytes if we are not using quantization. Int8 reduces it to 1 byte, and binary reduces it to 1 bit. By changing generated values, we reduce their size while precision is affected only slightly. You can even try and create two databases without and with quantization to notice the difference. The easiest would be to notice binary quantization because it changes values above zero to 1 and smaller than zero to 0.
+
+### Finish
+
+After saving, the ongoing task will generate a new collection called `@embeddings/YourCollectionName` that will hold your embeddings. The embeddings should look similar to this one:
+
+<Image img={require("./assets/embeddings-generation4.webp")} alt="The generated @embeddings collection holding embedding documents" />
+
+Those documents have the embeddings stored as document attachments. The next thing you can change here is the expiration date of the embedding cache. As mentioned, we cache your embeddings and queries for cost efficiency, so we don’t spend unnecessary tokens by generating embedding for the exact text more than once. Cached embeddings can be seen in the form of attachments in generated documents. By default, cached embeddings generated from your source documents expire after 90 days, and those generated from vector search query terms expire after 14 days. Both are per-task settings, `EmbeddingsCacheExpiration` and `EmbeddingsCacheForQueryingExpiration` in the [embeddings generation task](https://docs.ravendb.net/ai-integration/generating-embeddings/embeddings-generation-task). You can see those embeddings in the collection ‘@embeddings-cache’ like ordinary documents.
+
+## Static index
+
+Let’s create a static index that will use embeddings generated by our task. This index will use sample data to test it. Products/ByNameVector
+
+```csharp
+from doc in docs.Products
+select new
+{
+    NameVector = LoadVector("Name", "openai")
+}
+```
+
+We also need to check if we are using [Corax](https://docs.ravendb.net/indexes/search-engine/corax) on the bottom menu in the ‘Configuration’ tab, as this is a Corax-dedicated feature. This is the prerequisite from the top of the article, and it is where it bites: a static index with vector fields set to Lucene will not deploy at all. `LoadVector` is a new function that will index those new embeddings after providing the field name and task name. It will use the task to locate your embeddings for this indexing. Now, we can save, let indexing finish, and then query with it.
+
+## Querying
+
+Now, in the ‘Query’ tab, let’s query our static index for Italian food using the ‘NameVector’ field to see if it works. Use this structure:
+
+```sql
+from index 'Products/ByNameVector' where vector.search(NameVector, "Italian food", 0.7)
+```
+
+If you are creating your query, remember to replace ‘Products/ByNameVector’ with the name of your index. You can change “Italian food” to whatever you want, but I recommend testing it first because we know what will come up on sample data. The number at the end defines the similarity the query will look for. After launching this query, you should get relevant results.
+
+<Image img={require("./assets/embeddings-generation5.webp")} alt="Query results from the static index using vector search for Italian food" />
+
+As mentioned, this generates an embedding for the query parameter ‘Italian food’. This embedding will be cached and used if the query hits the same parameter again, making it as cost-efficient as possible. At this moment, it is also worth mentioning that you can do this without a static index. We only need to make our connection string and ongoing AI task to do that. To query with autogenerated indexes, you can use this query structure:
+
+```sql
+from "Products" where vector.search(embedding.text(Name, ai.task("openai")), "italian food", 0.7)
+```
+
+All you need to do is change those three elements:
+
+* Products
+* Name
+* openai
+
+After inputting your data, it should work as you want. That’s all. It’s an easy, efficient, and valuable tool you can implement quickly and effortlessly. To see the same query wired into a real front end, have a look at [Enable AI Search in Your Web App in 5 Minutes](./enable-ai-search-in-your-web-app-in-5-minutes.mdx).
+
+## Summary
+
+This article quickly explored the new AI Integration feature, which can instantly elevate your application. We covered basic setup to show you how easy it is to integrate AI into your database, so you and your application no longer need to worry about embedding generation!
+
+* An AI connection string points RavenDB at a provider such as OpenAI, Ollama, Mistral, Hugging Face, or the embedded bge-micro-v2 model.
+* An embeddings generation task covers one source text path in one collection, so more collections means more tasks.
+* Generated embeddings are stored as attachments and tracked in a `@embeddings/YourCollectionName` collection, while the cache lives in `@embeddings-cache`.
+* Quantization trades a little precision for a lot of space, taking each value from 4 bytes down to 1 byte with Int8 or 1 bit with Binary.
+* `LoadVector` pulls the embeddings into a Corax static index, and `vector.search` queries them, though `embedding.text` with `ai.task` lets you skip the static index entirely.
