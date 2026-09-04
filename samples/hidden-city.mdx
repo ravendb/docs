@@ -1,0 +1,172 @@
+---
+title: "Hidden City: RavenDB as In-Cluster Working Memory for LLM Agents"
+description: "RavenDB co-located with inference pods eliminates egress traffic and token payload inflation on every retrieval call, powering a conversational flight-search agent with hidden-city detection that keeps price history, routes, and preferences entirely in-cluster."
+challenges_solutions_tags: [llm-context-egress-cost, token-payload-inflation, in-cluster-agent-memory, kubernetes-native-database, conversational-ai-agents]
+feature_tags: [ai-agents, full-text-search, vector-search, document-expiration, attachments, data-subscriptions, batched-document-load, client-certificate-auth]
+tech_stack_tags: [python, fastapi, openai, kubernetes, docker, kind, helm]
+category: "Travel"
+license: "MIT License"
+license_url: "https://github.com/ravendb/samples-hidden-city/blob/main/LICENSE"
+repository_url: "https://github.com/ravendb/samples-hidden-city"
+languages: ["Python"]
+image: "/img/samples/hidden-city/cover.webp"
+img_alt: "Hidden City chat UI showing a conversational flight search result with hidden-city detection"
+gallery:
+  - src: "/img/samples/hidden-city/cover.webp"
+    alt: "Hidden City chat UI showing a conversational flight search result with hidden-city detection"
+related_resources:
+  - type: documentation
+    documentation_type: docs
+    subtitle: "Vector Search Overview"
+    article_key: "ai-integration/vector-search/overview"
+  - type: documentation
+    documentation_type: docs
+    subtitle: "What are Data Subscriptions?"
+    article_key: "client-api/data-subscriptions/what-are-data-subscriptions"
+  - type: guide
+    subtitle: "RavenDB Kubernetes Operator: Secured Cluster Setup Guide"
+    article_key: "the-ravendb-kubernetes-operator-way"
+---
+
+import { FeatureAccordion, SampleLayout } from '@site/src/components/Samples';
+
+<SampleLayout>
+
+## Overview
+
+This project solves the hidden cost problem in LLM agents by keeping the agent's working memory in the same cluster as the model call. Instead of stuffing raw API responses into every prompt, the agent queries RavenDB, co-located in Kubernetes, as an explicit tool call. The LLM only ever sees a pre-structured, token-budgeted result, never the raw payload.
+
+The application also demonstrates conversational hidden-city flight detection. Airlines price connecting routes cheaper than direct legs; the agent compares cached and live prices from Travelpayouts, scores the savings against a risk profile, and surfaces the opportunity as information only, never automating a booking.
+
+To fully embed itself in the Kubernetes ecosystem, the RavenDB cluster is declared as a `RavenDBCluster` custom resource and reconciled by the [RavenDB Kubernetes Operator](https://github.com/ravendb/ravendb-operator), which handles bootstrap, certificate wiring, and rolling node upgrades. On top of this, a CronJob bulk-ingests Travelpayouts prices every 6 hours, and a RavenDB Data Subscription pushes price-drop alerts to a worker with no polling loop.
+
+The business value is cost, made visible. Every retrieval that stays inside the cluster is a retrieval that never crosses the egress boundary and never inflates the token payload billed by the inference provider — the demo costs each of the three architecture stages live, from a naive ~40k–100k tokens per call down to a ~2,500 token budget enforced end to end.
+
+## Features used
+
+<FeatureAccordion
+    title="Tool-calling agent loop"
+    description="RavenDB is queried only through explicit LLM tool calls, never injected as a sidecar."
+    icon="ai-agents"
+>
+    The model decides what to retrieve and when. Nothing is blindly pushed into the prompt: `search_routes`, `get_live_prices`, `get_user_profile`, and `update_constraints` are tool definitions the model calls explicitly, and only their (token-budgeted) results re-enter the conversation.
+    ```python
+    tools = [search_routes, get_live_prices, get_user_profile, update_constraints]
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=history,
+        tools=tools,
+    )
+    ```
+    One narrow, documented exception pre-resolves unambiguous "from X to Y" messages and pre-fetches `search_routes` itself, cutting a turn from two OpenAI calls to one (~2,100 tokens down to ~750 measured) — it only fires when both airports resolve to exactly one match each, and falls back to the model unchanged otherwise.
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Full-text search over airports"
+    description="Auto-index resolves 'from X to Y' messages to IATA codes with no static index ever defined."
+    icon="full-text-search"
+>
+    Airport city/IATA lookup runs against a RavenDB auto-index RavenDB creates on first query — no index definition is checked into the codebase.
+    ```python
+    session.query(object_type=Airport) \
+        .search("name", query_text) \
+        .first()
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Vector search for nearby airports"
+    description="Falls back to a 3D unit-sphere projection of lat/lng when no direct or connecting route exists."
+    icon="vector-search"
+>
+    Airport documents carry a `location_vector` field. When `search_routes` finds no direct or connecting route, it queries that field to find geographically nearby airports instead of relying on a hand-curated list — one document type, no separate vector database.
+    ```python
+    session.query(object_type=Airport) \
+        .vector_search(lambda f: f.with_field("location_vector"), origin_vector) \
+        .take(5)
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Document expiration for price data"
+    description="Price fields auto-expire 20 minutes after write via `@expires` metadata, no cleanup job."
+    icon="document-expiration"
+>
+    Route documents are refreshed hourly by ETL and stamped with a short TTL on their price fields, so stale prices fall out of query results automatically instead of needing a scheduled cleanup task.
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Attachments for user documents"
+    description="Passport scan, bag photo, and a preference PDF stored as binary blobs, never inflating a query."
+    icon="attachment"
+>
+    Binary user data lives as RavenDB attachments on the `users/...` document — not queryable, not indexed, uploaded and retrieved whole via the Profile screen, separate from the `get_user_profile` tool the agent calls.
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Data subscriptions for price-drop alerts"
+    description="Push-only alerts to a worker, no polling and no message broker."
+    icon="data-subscriptions"
+>
+    A RavenDB Subscription pushes price changes straight to the worker process. There is no polling loop and no Kafka topic to stand up just to move a price delta from the database to a notifier.
+    ```python
+    with store.subscriptions.get_subscription_worker(subscription_name) as worker:
+        def process_batch(batch):
+            for item in batch.items:
+                notify_price_drop(item.result)
+        worker.run(process_batch)
+    ```
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Durable, queryable conversation memory"
+    description="Session documents survive pod restarts and expose indexed constraints without reading the full turn history."
+    icon="memory"
+>
+    Conversation state is a RavenDB document, not pod RAM or a Redis sidecar. `active_constraints` (carry-on only, max stops) are indexed fields, not buried in turn text, so the agent loads only the last N turns plus constraints at the start of each turn — never the full raw history. Killing the agent pod mid-conversation and resuming is part of the demo.
+</FeatureAccordion>
+
+<FeatureAccordion
+    title="Client certificate authentication"
+    description="mTLS between every Python process and RavenDB inside the cluster, never plaintext."
+    icon="certificate"
+>
+    The agent, worker, and scraper all connect to RavenDB over mutual TLS, wired automatically by the RavenDB Kubernetes Operator's certificate handling.
+</FeatureAccordion>
+
+## Technologies
+
+- [RavenDB 7.2](https://ravendb.net/)
+- [Python 3.11–3.13](https://www.python.org/)
+- [FastAPI](https://fastapi.tiangolo.com/) + [Uvicorn](https://www.uvicorn.org/)
+- [OpenAI API](https://platform.openai.com/) (`gpt-4o-mini`)
+- [Kubernetes](https://kubernetes.io/) + [RavenDB Kubernetes Operator](https://github.com/ravendb/ravendb-operator)
+- [Docker](https://www.docker.com/) / Docker Compose
+- [kind](https://kind.sigs.k8s.io/), [Helm](https://helm.sh/), kubectl (local Kubernetes)
+- [uv](https://github.com/astral-sh/uv) (Python package/venv manager)
+
+## Run locally
+
+1. Check out the repository.
+2. Install prerequisites: Python 3.11–3.13, [uv](https://github.com/astral-sh/uv), and Docker (Docker Desktop or Docker Engine) for local mode; Kubernetes mode additionally fetches kubectl, Helm, and kind automatically.
+3. Windows: run `.\start.ps1` and pick Local or K8s mode when prompted (or pass `-Mode Local` / `-Mode K8s` directly). macOS/Linux/WSL2, Kubernetes mode: run `bash k8s/start-k8s.sh`.
+4. When prompted, provide an `OPENAI_API_KEY` (required). A `TRAVELPAYOUTS_TOKEN` and a RavenDB license are optional — without them the app falls back to fixture data and RavenDB Developer Mode respectively.
+5. Once running, open the agent's `/setup` wizard at `http://localhost:8001/setup` to add any key you skipped, and RavenDB Studio at `http://localhost:8080` (Local mode) or `https://localhost:8081` (Kubernetes mode) to inspect the enriched `Routes` collection.
+
+## Notes
+
+Every demo scenario runs end to end on fixture data seeded locally, so no live Travelpayouts API dependency is required to see the full flow. This project demonstrates the *detection* of hidden-city pricing patterns for educational purposes only — it does not automate booking, generate itineraries, or interact with airline reservation systems.
+
+## Community & Support
+
+If you spot a bug, have an idea, or want to ask a question, open an issue or pull request in the repository. The RavenDB team also hangs out on the [RavenDB Discord server](https://discord.gg/ravendb).
+
+## Contributing
+
+Contributions are welcome. See the repository's [CONTRIBUTING](https://github.com/ravendb/samples-hidden-city/blob/main/CONTRIBUTING.md) file for details.
+
+## License
+
+This project is licensed with the [MIT license](https://github.com/ravendb/samples-hidden-city/blob/main/LICENSE).
+
+</SampleLayout>
