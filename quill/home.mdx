@@ -1,14 +1,47 @@
 ---
 slug: /
 title: Quill Documentation
+sidebar_label: Home
 sidebar_position: 0
-hide_title: true
 pagination_next: null
 pagination_prev: null
 wrapperClassName: quillHomePage
 hide_table_of_contents: true
+description: "Quill gives your PostgreSQL, SQL Server, or MySQL database an AI agent that answers your users from a live copy of your data, through a chat widget on your site or a Telegram, Slack, or Discord bot. Start here."
 ---
 
-import QuillComingSoon from "@site/src/components/Quill/QuillComingSoon";
+import CardWithImage from "@site/src/components/Common/CardWithImage";
+import ColGrid from "@site/src/components/ColGrid";
 
-<QuillComingSoon />
+# Quill: AI agents for the database you already have
+AI conversations with your users, answered from a live copy of your SQL data.
+
+Quill gives your PostgreSQL, SQL Server, or MySQL database AI agents, without changing the database itself.
+It runs as a single Docker container beside your database, mirrors the tables you select into an internal database
+of its own, and lets the agents talk with your users through a chat widget on your site or a bot in Telegram,
+Slack, or Discord.  
+Your data, your workflows, and your applications remain unchanged.
+
+* **Mirroring** - Quill keeps a live copy of the tables you select, and keeps it current as your data changes.
+* **Agents** - AI agents query the mirrored data, compose the replies, and phrase them with the LLM provider you
+  connect.
+* **Channels** - A chat widget on your site, or a Telegram, Slack, or Discord bot, carries the conversations between
+  your users and your agents.
+
+### Start here
+Signing up starts a 90-day free trial. From there, Getting Started walks you through setting Quill up, and the
+Overview explains what you are setting up.
+
+<ColGrid colCount={3}>
+    <CardWithImage title="Sign up for Quill" description="Open the sign-up form on ravendb.net and start your free trial." url="https://ravendb.net/quill/start" imgSrc="/img/quill/home_card-sign-up.svg" imgAlt="Sign up for Quill" />
+    <CardWithImage title="Getting Started" description="From signing up to a chat widget on your site, step by step." url="/quill/getting-started/overview" imgSrc="/img/quill/home_card-getting-started.svg" imgAlt="Getting Started" />
+    <CardWithImage title="Overview" description="What Quill is, how its parts work together, and how a running Quill is managed." url="/quill/overview" imgSrc="/img/quill/home_card-overview.svg" imgAlt="Overview" />
+</ColGrid>
+
+### Documentation
+
+<ColGrid colCount={3}>
+    <CardWithImage title="Dashboard" description="Manage a running Quill: your apps, the AI connection strings your agents use, and your license." url="/quill/dashboard/my-apps" imgSrc="/img/quill/home_card-dashboard.svg" imgAlt="Dashboard" />
+    <CardWithImage title="Security & Architecture" description="How Quill routes and protects connections, and how operators and programs authenticate." url="/quill/security-and-architecture/network-architecture" imgSrc="/img/quill/home_card-security.svg" imgAlt="Security & Architecture" />
+    <CardWithImage title="Developer access" description="Reach an app from your own code: through a channel and its agent, or straight to the mirrored data." url="/quill/developer-access/overview" imgSrc="/img/quill/home_card-developer-access.svg" imgAlt="Developer access" />
+</ColGrid>
