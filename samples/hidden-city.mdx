@@ -98,7 +98,7 @@ The business value is cost, made visible. Every retrieval that stays inside the 
 <FeatureAccordion
     title="Attachments for user documents"
     description="Passport scan, bag photo, and a preference PDF stored as binary blobs, never inflating a query."
-    icon="attachments"
+    icon="attachment"
 >
     Binary user data lives as RavenDB attachments on the `users/...` document — not queryable, not indexed, uploaded and retrieved whole via the Profile screen, separate from the `get_user_profile` tool the agent calls.
 </FeatureAccordion>
@@ -121,7 +121,7 @@ The business value is cost, made visible. Every retrieval that stays inside the 
 <FeatureAccordion
     title="Durable, queryable conversation memory"
     description="Session documents survive pod restarts and expose indexed constraints without reading the full turn history."
-    icon="batched-document-load"
+    icon="memory"
 >
     Conversation state is a RavenDB document, not pod RAM or a Redis sidecar. `active_constraints` (carry-on only, max stops) are indexed fields, not buried in turn text, so the agent loads only the last N turns plus constraints at the start of each turn — never the full raw history. Killing the agent pod mid-conversation and resuming is part of the demo.
 </FeatureAccordion>
@@ -129,7 +129,7 @@ The business value is cost, made visible. Every retrieval that stays inside the 
 <FeatureAccordion
     title="Client certificate authentication"
     description="mTLS between every Python process and RavenDB inside the cluster, never plaintext."
-    icon="client-certificate-auth"
+    icon="certificate"
 >
     The agent, worker, and scraper all connect to RavenDB over mutual TLS, wired automatically by the RavenDB Kubernetes Operator's certificate handling.
 </FeatureAccordion>
