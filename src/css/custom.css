@@ -822,3 +822,67 @@ a {
 .plugin-id-samples [class*="tocCollapsibleButton"] {
     display: none;
 }
+
+/* Quill start page background. The blueprint grid and the breathing coral glow are lifted from
+   QuillComingSoon.module.css and painted behind the whole article of quill/home.mdx. The page is
+   pinned by the two classes the theme puts on <html>: the plugin's and the doc id's (a docs page's
+   `wrapperClassName` frontmatter is not applied anywhere in this theme). Two pseudo-elements under
+   the content container carry the drawing, so the page's MDX needs no wrapper of its own. */
+html.plugin-id-quill.docs-doc-id-home [class*="docItemContainer"] {
+    position: relative;
+    isolation: isolate;
+}
+
+html.plugin-id-quill.docs-doc-id-home [class*="docItemContainer"]::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    --quill-grid-mask: radial-gradient(
+        ellipse 62% 58% at 50% 28%,
+        #000 0%,
+        rgba(0, 0, 0, 0.6) 40%,
+        rgba(0, 0, 0, 0.2) 70%,
+        transparent 100%
+    );
+    background-image:
+        linear-gradient(to right, var(--ifm-color-emphasis-200) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--ifm-color-emphasis-200) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: var(--quill-grid-mask);
+    -webkit-mask-image: var(--quill-grid-mask);
+    opacity: 0.65;
+}
+
+[data-theme="dark"] html.plugin-id-quill.docs-doc-id-home [class*="docItemContainer"]::before {
+    opacity: 0.22;
+}
+
+html.plugin-id-quill.docs-doc-id-home [class*="docItemContainer"]::after {
+    content: "";
+    position: absolute;
+    top: 16%;
+    left: 50%;
+    width: min(1120px, 115%);
+    height: 560px;
+    translate: -50% -50%;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(circle, var(--ifm-color-primary) 0%, transparent 70%);
+    filter: blur(40px);
+    opacity: 0.12;
+    animation: quillGlowBreathe 14s ease-in-out infinite;
+}
+
+@keyframes quillGlowBreathe {
+    0%,
+    100% {
+        opacity: 0.1;
+        scale: 0.94;
+    }
+    50% {
+        opacity: 0.2;
+        scale: 1.08;
+    }
+}

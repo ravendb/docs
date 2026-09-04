@@ -1,0 +1,219 @@
+---
+title: "Getting started: Starting Quill"
+sidebar_label: Starting Quill
+sidebar_position: 3
+description: "Start your Quill deployment with the Docker command you received at sign-up: the machine's requirements, the parts of the command, the progress Quill prints as it starts, and signing into the management dashboard."
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Getting started: Starting Quill
+<Admonition type="tip" title="">
+
+**Achieved so far** in Getting Started:  
+[Signing up](../getting-started/signing-up.mdx) - your deployment has a name, a license key, and a dashboard API key.
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+* This page covers the second Getting Started step, **Starting Quill**, walking you through running Quill on the
+  machine whose public IP address you gave at sign-up, and signing into the management dashboard.
+
+* Quill runs as a single **Docker container**, started by the
+  [Docker command](../getting-started/signing-up.mdx#saving-your-setup-details) you copied at the end of signing up.
+
+* On its first run, Quill uses your license key to fetch the certificate and configuration for your domain.  
+  Once the certificate and configuration are in place, your dashboard becomes reachable.
+
+* In this article:
+   * [Prerequisites](#prerequisites)
+   * [Starting Quill](#starting-quill)
+      * [Running the Docker command](#running-the-docker-command)
+      * [Watching Quill come up](#watching-quill-come-up)
+      * [When Quill does not come up](#when-quill-does-not-come-up)
+   * [Signing in to the management dashboard](#signing-in-to-the-management-dashboard)
+
+</Admonition>
+
+<Panel heading="Prerequisites">
+
+Before starting Quill, make sure you have:
+
+* **Docker**, on the machine that will run Quill, at the public IP address you gave at sign-up.
+   * Docker Desktop on Windows and macOS, or Docker Engine on Linux.
+* **Port 443 available** on Quill's machine.
+   * The dashboard, the API, and the chat channels of your deployment are all
+     [served on this one port](../security-and-architecture/network-architecture.mdx#publish-only-port-443).
+* **Internet access** from Quill's machine to Docker Hub and to `api.ravendb.net`.
+   * Docker pulls [Quill's image](https://hub.docker.com/r/ravendb/quill-nightly) from Docker Hub.
+   * Quill fetches the [certificate and configuration](../security-and-architecture/network-architecture.mdx#the-tls-front-and-the-wildcard-certificate)
+     for your domain from `api.ravendb.net`.
+* **The Docker command and the dashboard API key** you copied at the end of signing up.
+   * The command carries your license key.
+   * The API key signs you into the management dashboard.
+
+</Panel>
+
+<Panel heading="Starting Quill">
+
+<ContentFrame>
+
+### Running the Docker command
+
+Open a terminal on Quill's machine and run the Docker command.  
+Its two forms differ only in the character that continues a command across lines.
+
+<Tabs groupId='start-quill-command'>
+<TabItem value="bash" label="bash">
+
+```bash
+docker run --sig-proxy=false --name quill-baloo \
+  -p 443:443 \
+  -e QUILL_LICENSE_KEY=QUILL-... \
+  -e QUILL_API_KEY=primary/QUILLDASH-... \
+  -v quill-baloo-data:/var/lib/quill \
+  ravendb/quill-nightly:latest
+```
+
+</TabItem>
+<TabItem value="powershell" label="PowerShell">
+
+```powershell
+docker run --sig-proxy=false --name quill-baloo `
+  -p 443:443 `
+  -e QUILL_LICENSE_KEY=QUILL-... `
+  -e QUILL_API_KEY=primary/QUILLDASH-... `
+  -v quill-baloo-data:/var/lib/quill `
+  ravendb/quill-nightly:latest
+```
+
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="">
+
+The Docker command carries your license key and your dashboard API key: share it with no one.  
+For example, pasting the command into a support ticket or a chat exposes both keys.
+
+</Admonition>
+
+The command's parts:
+
+| Part | Description |
+|---|---|
+| `--sig-proxy=false` | Quill runs in the terminal you start it in, where an interruption, e.g., Ctrl+C, would ordinarily reach the container and stop it. This setting keeps interruptions from reaching Quill, so it will keep on running. |
+| `--name quill-baloo` | Names the container `quill-` followed by your deployment's name, so later commands can address Quill by name. |
+| `-p 443:443` | Publishes port 443, Quill's only external port. |
+| `-e QUILL_LICENSE_KEY=...` | Your license key, which Quill uses to fetch the certificate and configuration for your domain. |
+| `-e QUILL_API_KEY=...` | Your dashboard API key, exactly as issued, prefix included. |
+| `-v quill-baloo-data:/var/lib/quill` | A Docker volume holding everything Quill keeps: its settings, its certificate, and your mirrored data. When [Quill is updated](../updating-quill.mdx), the new container mounts this same volume. |
+| `ravendb/quill-nightly:latest` | Quill's image. |
+
+The Docker command does not return to the prompt.  
+Quill goes on running even after you close the terminal you ran it in, since its container is run by the Docker
+service.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Watching Quill come up
+
+Quill reports its progress in the terminal you ran the Docker command in, one line at a time, with the seconds
+elapsed since the container started.  
+The first run is longer, since Quill also fetches the certificate and configuration for your domain.
+
+```
+  Logs:      /var/lib/quill/logs/{ravendb,web,proxy,certwatch}.log
+2026-08-26 10:23:42  Sharpening the quill... (5s)
+2026-08-26 10:23:48  Warming up the inkwell... (10s)
+2026-08-26 10:23:53  Dipping the quill... (15s)
+2026-08-26 10:23:58  Unrolling the parchment... (20s)
+2026-08-26 10:24:03  Status:    READY
+                     Dashboard: https://dashboard.baloo.myquill.ai
+                     Database:  https://db.baloo.myquill.ai
+```
+<br />
+
+* **Status: READY**: indicates that your deployment can be accessed.
+* **Dashboard**: this is where you sign in to manage Quill.
+* **Database**: reaches the RavenDB server inside the container, allowing you to
+  [read the mirrored data directly](../security-and-architecture/network-architecture.mdx#direct-database-access).
+
+</ContentFrame>
+
+<ContentFrame>
+
+### When Quill does not come up
+
+If Quill stops before reaching `Status: READY`, the terminal reports the failure.
+
+* **A failed activation** prints `Status: FAILED`, a `Reason:` naming what went wrong, and a `Details:` line
+  naming the log the error is written to.
+
+   ```
+   2026-09-03 13:12:37  Sharpening the quill... (5s)
+   2026-09-03 13:12:42  Status:    FAILED
+                        Reason:    activation failed: the license key was not recognized
+                        Details:   /var/lib/quill/logs/web.log
+   ```
+   <br />
+
+* **Two kinds of failure** print an `ERROR:` message and a `Details:` line naming the log the error is written
+  to.
+   * Quill was started without its license key:
+
+      ```
+      2026-09-03 13:09:50  ERROR:     QUILL_LICENSE_KEY is not set, so the appliance cannot activate.
+                           Details:   /var/lib/quill/logs/web.log
+      ```
+      <br />
+
+   * Quill did not become ready within its startup grace period:
+
+      ```
+      2026-09-03 13:14:20  ERROR:     still not ready after 180s.
+                           Details:   /var/lib/quill/logs/web.log
+      ```
+      <br />
+
+* **To read the log that holds the error**, replace `<name>` in the command below with your deployment name and
+  `<log>` with the file named on the `Details:` line, then run the command:
+
+   ```bash
+   docker exec quill-<name> sh -c "tail -40 /var/lib/quill/logs/<log>"
+   ```
+   <br />
+
+   e.g., for the deployment `baloo` and the failures above:
+
+   ```bash
+   docker exec quill-baloo sh -c "tail -40 /var/lib/quill/logs/web.log"
+   ```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Signing in to the management dashboard">
+
+Open the **Dashboard** address the terminal printed (e.g., `https://dashboard.baloo.myquill.ai`) in a browser.  
+Quill asks for the [dashboard API key](../security-and-architecture/operator-authentication.mdx#signing-in-to-the-dashboard) that was
+displayed and sent to you by email at the end of signing up.
+
+![Sign in](./assets/starting-quill_sign-in.png)
+
+1. **Dashboard API key**  
+   Enter the dashboard API key you copied at the end of signing up.
+
+2. **Continue**  
+   Click to sign in.  
+   The management dashboard opens on **My apps**, where
+   [Connecting your database](../getting-started/connecting-your-database.mdx) begins.
+
+</Panel>
