@@ -36,7 +36,7 @@ described [here](https://ravendb.net/docs/article-page/latest/csharp/integration
 *Power BI* is a security-related feature: **enabling or disabling** it requires the [**Manager** (or **Admin**) preset together with the **Security admin** add-on](./cloud-account.mdx#permission-presets), while the **Security admin** add-on alone is enough to *configure* it once enabled.
 </Admonition>
 
-## Configuration
+### Configuration
 
 <Admonition type="warning" title="Required " id="required" href="#required">
 *Power Bi* IPs must be configured after enabling *PowerBi* feature.
@@ -49,7 +49,7 @@ Your product will be restarted automatically node by node to apply settings need
 To access *Power Bi* Configuration View click **Configure** Button in *Power Bi* feature row. Here you can edit your IP
 addresses that will have access to *RavenDB Power Bi* port.
 
-!["Power Bi Configuration View"](./assets/product-features-powerbi-configuration.png)
+![Power Bi Configuration View](./assets/product-features-powerbi-configuration.png)
 
 <Admonition type="info" title="">
 *Power Bi* IPs entries are [CIDR ranges](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notation)
@@ -120,7 +120,15 @@ data collection and analysis by an OpenTelemetry retriever.
 *Monitoring* (SNMP / *OpenTelemetry*) is a security-related feature: **enabling or disabling** it requires the [**Manager** (or **Admin**) preset together with the **Security admin** add-on](./cloud-account.mdx#permission-presets), while the **Security admin** add-on alone is enough to *configure* it once enabled.
 </Admonition>
 
-## Configuration
+<Admonition type="info" title="Alerts">
+Enabling *Monitoring* also unlocks the product's **Alerts** tab, where you can have
+[Cluster Health](./cloud-maintenance-troubleshooting.mdx#cluster-health) events emailed to you as a daily summary or as
+per-event custom alerts. See [Alerts](./cloud-maintenance-troubleshooting.mdx#alerts).
+
+Disabling *Monitoring* **discards** the product's alert rules.
+</Admonition>
+
+### Configuration
 
 Click the **Configure** button in the *Monitoring* feature row to configure this feature.
 You will be taken to the *Monitoring Configuration View*, which is divided into two tabs:
@@ -137,8 +145,8 @@ You will be taken to the *Monitoring Configuration View*, which is divided into 
 
    - Specify where these Meters should be sent.
 
-!["Monitoring Configuration View SNMP"](./assets/product-features-monitoring-configuration.png)
-!["Monitoring Configuration View OpenTelemetry"](./assets/product-features-monitoring-configuration-opentelemetry.png)
+![Monitoring Configuration View SNMP](./assets/product-features-monitoring-configuration.png)
+![Monitoring Configuration View OpenTelemetry](./assets/product-features-monitoring-configuration-opentelemetry.png)
 
 <Admonition type="info" title="Availability " id="availability" href="#availability">
 OpenTelemetry feature is available only for *RavenDB* **6.2 and newer**.
@@ -156,7 +164,7 @@ Your product will be restarted automatically (node by node) to apply settings ne
 
 This section allows you to specify IPs that will have access to your product using the *SNMP* protocol.
 
-!["Edit SNMP Monitoring IPs"](./assets/product-features-monitoring-edit-ips.png)
+![Edit SNMP Monitoring IPs](./assets/product-features-monitoring-edit-ips.png)
 
 ### SNMPv3 Monitoring credentials
 
@@ -183,37 +191,86 @@ This section allows you to select meters and specify where these should be sent 
 
 You can read step by step OpenTelemetry & Grafana configuration [here](https://ravendb.net/articles/grafana-cloud-configuration-with-opentelemetry).
 
-!["Edit OpenTelemetry"](./assets/product-features-monitoring-edit-opentelemetry.png)
+![Edit OpenTelemetry](./assets/product-features-monitoring-edit-opentelemetry.png)
 
 
 
 ## Autoscaling 
 
-*RavenDB Cloud* allows you to autoscale your *RavenDB Cloud* instances based on the CPU usage.
+*RavenDB Cloud* can resize your instance automatically, within a range you choose, so it follows your actual workload
+instead of being fixed to the size you provisioned.
 
-## Configuration
+Scaling is driven by three sustained signals, each watched independently:
 
-Click **Configure** Button in *Autoscaling* feature row in order to configure this feature.
-You will see Autoscaling Configuration View. It's separated into downscaling parameters and upscaling parameters.
+* **Load average** — how busy the node's CPUs are.
+* **Available memory** — how much memory is left for processing.
+* **IO wait** — how much time the node spends waiting on disk.
 
-| Parameter                   | Description                                                                                                                                          |
-|-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Highest Type                | The maximum virtual machine size (inclusive) available for upscaling.                                                                                |
-| Upscaling Grace Period      | The time delay before upscaling begins after a high resource threshold is exceeded, allowing the system to avoid immediate scaling.                  |
-| High Cpu Threshold          | The average CPU usage percentage from last *High CPU Threshold Duration* that triggers the upscaling process.                                        |
-| High Cpu Threshold Duration | The duration for which the average CPU usage must exceed the threshold before triggering upscaling.                                                  |
-| Upscaling Step              | Determines by how many instances upscaling should take place in one go. For example with step set to 2 it will scale up from *Dev10* to *Dev30*.     |
-| Lowest Type                 | The minimum virtual machine size (inclusive) available for downscaling.                                                                              |
-| Downscaling Grace Period    | The time delay before downscaling begins after a low resource threshold is exceeded, allowing the system to avoid immediate scaling.                 |
-| Low Cpu Threshold           | The average CPU usage percentage from last *Low CPU Threshold Duration* that triggers the downscaling process.                                       |
-| Low Cpu Threshold Duration  | The duration for which the average CPU usage must exceed the threshold before triggering downscaling.                                                |
-| Downscaling Step            | Determines by how many instances downscaling should take place in one go. For example with step set to 2 it will scale down from *Dev30* to *Dev10*. |
+Each signal has a low and a high limit, and each limit has its own duration. A limit must be breached for the whole of
+its duration before it counts, and a **grace period** then applies before the resize itself, so a brief spike never
+moves your instance.
 
-!["Autoscaling Configuration"](./assets/product-features-autoscaling-configuration.png)
+### Autoscaling range
 
-You can edit Autoscaling parameters by clicking on **Edit** button.
+**Lowest type** and **Highest type** bound the resizing. Autoscaling never moves your instance below the lowest or above
+the highest type, and both bounds are inclusive.
 
-!["Autoscaling Edit Configuration"](./assets/product-features-autoscaling-configuration-edit.png)
+### Configuration
+
+Click the **Configure** button in the *Autoscaling* feature row to open the Autoscaling Configuration view, which is
+split into upscaling and downscaling parameters.
+
+![Autoscaling Configuration](./assets/product-features-autoscaling-configuration.png)
+
+#### Upscaling parameters
+
+| Parameter                            | Range       | Description                                                                                          |
+|--------------------------------------|-------------|------------------------------------------------------------------------------------------------------|
+| Upscaling grace period               | 3–60 min    | The delay before upscaling begins after a high resource threshold is exceeded, so short spikes do not trigger a resize. |
+| High load average threshold          | 50–90%      | The average load percentage, over the *high load average threshold duration*, that triggers upscaling. |
+| High load average threshold duration | 180–600 sec | How long the average load must stay above the threshold before upscaling is triggered.               |
+| Low available memory threshold       | 1–15%       | The available memory percentage below which upscaling is triggered.                                  |
+| Low available memory duration        | 180–600 sec | How long available memory must stay below the threshold before upscaling is triggered.               |
+| IO wait max value                    | 25–95%      | The IO wait percentage above which upscaling is triggered.                                           |
+| IO wait max duration                 | 180–600 sec | How long IO wait must stay above the maximum before upscaling is triggered.                          |
+| Upscaling step                       | 1–3         | How many instance sizes to move in one go. With a step of 2, a *Dev10* scales up to *Dev30*.          |
+
+#### Downscaling parameters
+
+| Parameter                           | Range       | Description                                                                                           |
+|-------------------------------------|-------------|-------------------------------------------------------------------------------------------------------|
+| Downscaling grace period            | 3–60 min    | The delay before downscaling begins after a low resource threshold is reached.                        |
+| Low load average threshold          | 1–35%       | The average load percentage, over the *low load average threshold duration*, that triggers downscaling. |
+| Low load average threshold duration | 180–600 sec | How long the average load must stay below the threshold before downscaling is triggered.              |
+| High available memory threshold     | 20–90%      | The available memory percentage above which downscaling is allowed.                                   |
+| High available memory duration      | 180–600 sec | How long available memory must stay above the threshold before downscaling is triggered.              |
+| IO wait min value                   | 0–15%       | The IO wait percentage below which the node is considered idle enough to allow downscaling.           |
+| IO wait min duration                | 180–600 sec | How long IO wait must stay below the minimum before downscaling is triggered.                         |
+| Downscaling step                    | 1–3         | How many instance sizes to move in one go. With a step of 2, a *Dev30* scales down to *Dev10*.         |
+
+<Admonition type="note" title="Which limit drives which direction">
+Load average and IO wait follow utilisation, so their **low** limits belong to downscaling and their **high** limits to
+upscaling. **Available memory runs the other way** — it is what's left, not what's used — so it is the **low** available
+memory limit that triggers upscaling and the **high** one that permits downscaling.
+</Admonition>
+
+You can edit the Autoscaling parameters by clicking the **Edit** button.
+
+![Autoscaling Edit Configuration](./assets/product-features-autoscaling-configuration-edit.png)
+
+### Serverless Autoscaling
+
+[Serverless products](../cloud/cloud-instances.mdx#a-serverless-cloud-product) autoscale on the same three signals,
+using the same defaults, but the feature is presented separately as **Serverless Autoscaling** and behaves differently
+in two ways:
+
+* It is **always enabled**. You cannot turn it off yourself — a Serverless product that did not resize itself would not
+  be serverless. Contact support if you need it disabled.
+* Its configuration exposes **only the instance range** — the lowest and highest type, set with a slider. The thresholds
+  and grace periods above are managed for you and are not editable.
+
+To leave Serverless autoscaling behind entirely, switch the product to a regular deployment — see
+[Switching to Regular Deployment](../cloud/cloud-instances.mdx#switching-to-regular-deployment).
 
 
 
@@ -253,10 +310,90 @@ This feature is available only for *RavenDB* **7.0 and newer**.
 
 ## Automatic Storage Extension
 
-*RavenDB Cloud* allows you to automatically extend your *RavenDB Cloud* instances disk storage upon reaching set threshold of used memory percentage.
+*RavenDB Cloud* can extend your instance's disk automatically once disk usage passes a threshold you set,
+so a growing dataset does not run the product out of space while you are not watching.
 
-Click **Configure** Button in *Automatic Storage Extension* feature row in order to configure the threshold.
+The feature is **enabled by default** with a threshold of **90%**, and the feature itself is **free of charge** —
+you are billed only for the larger disk it provisions, at the normal
+[storage rate](./cloud-pricing-payment-billing.mdx).
 
-!["Autoscaling Configuration"](./assets/product-features-automatic-storage-extension-configuration.png)
+<Admonition type="info" title="Availability">
+Automatic Storage Extension is offered on
+[Development](./cloud-instances.mdx#a-development-cloud-server) and
+[Production](./cloud-instances.mdx#a-production-cloud-cluster) tier products, except for **Dev10** and
+**PN**-type instances. It is not offered on the [Free tier](./cloud-instances.mdx#a-free-cloud-node).
 
+Products that are not eligible have no *Automatic Storage Extension* row in the *Additional Features* table.
+</Admonition>
 
+### How it works
+
+Each node reports its disk usage to *RavenDB Cloud*. Once usage exceeds the configured threshold, the disk is
+extended to the **next larger size available for the current instance type** — not to the size that would merely
+clear the threshold — and the product briefly enters *Deploying changes* while the volume is resized.
+
+You are notified by email when this happens. The message states the previous size, the new size, and the
+**maximum size your instance type allows**, which is the point at which extension stops and an instance type
+upgrade becomes necessary.
+
+<Admonition type="note" title="Azure Premium disks">
+On *Azure* **Premium** disks, disk performance follows disk size. When the new size belongs to a higher
+[performance tier](./cloud-scaling.mdx#azure-premium---azure-performance-tier-customization), the extension
+raises **IOPS** and **throughput** to that tier as well. *Standard* disks keep their fixed performance.
+</Admonition>
+
+### Configuration {#storage-extension-configuration}
+
+Click the **Configure** button in the *Automatic Storage Extension* feature row to open the
+**Storage Extension configuration** dialog, then click **Edit** to change the single setting it holds:
+
+**Disk Space Used Threshold** — the percentage of disk usage above which the storage is extended. It accepts a value
+between **70** and **95**, and **defaults to 90**.
+
+<Admonition type="note" title="When the threshold cannot be changed">
+* The product must be **Active**.
+* The threshold **cannot be changed on yearly contracts** — only on *On-Demand* products.
+* The feature itself must be enabled, which requires the
+  [**Manager** (or **Admin**) preset](./cloud-account.mdx#permission-presets).
+
+Where a condition is not met the **Edit** button is disabled and the reason is shown in its tooltip.
+</Admonition>
+
+![Automatic Storage Extension Configuration](./assets/product-features-automatic-storage-extension-configuration.png)
+
+You can edit the threshold by clicking the **Edit** button.
+
+![Automatic Storage Extension Edit Configuration](./assets/product-features-automatic-storage-extension-configuration-edit.png)
+
+### Enabling and disabling
+
+The *Automatic Storage Extension* row carries a **Disable** button while the feature is active, and an **Enable**
+button once it is off. Both require the product to be **Active** and the
+[**Manager** (or **Admin**) preset](./cloud-account.mdx#permission-presets); otherwise the button is disabled and
+its tooltip gives the reason.
+
+While the feature is off, the disk is never extended automatically — no matter how full it gets — and the
+**Configure** button disappears with it.
+
+### When storage is not extended
+
+Some products cannot be extended even with the feature on. In those cases nothing is resized and you receive an
+email instead, so the condition does not pass unnoticed:
+
+| Condition | What happens |
+|---|---|
+| **The instance type's maximum disk size is reached** | No larger size is available. The email names your instance type and its limit; extension resumes only after you [upgrade the instance type](./cloud-scaling.mdx#scaling---change-instance-type). |
+| **The cloud provider's root-disk limit is reached** | Products whose data lives on the OS disk cannot grow past **1,000 GB** on *AWS* and *GCP*, or **1,024 GB** on *Azure*. Migrate the storage to a [Data Disk](./cloud-scaling.mdx#data-disks) to grow beyond that. |
+| **The product is on a yearly contract** | Storage cannot be changed under a yearly contract. Contact [support](./cloud-support.mdx) for a tailored solution. |
+| **The product is on the Free tier** | Free tier storage is fixed. Reduce the stored data or move to a paid tier. |
+
+<Admonition type="note" title="One warning per day">
+At most **one** such email is sent per product per **24 hours**, so a product sitting above its threshold does not
+produce a stream of identical messages.
+</Admonition>
+
+<Admonition type="warning" title="Storage modification rate">
+Storage changes — automatic and manual alike — are rate limited per product: at least **6 hours** must pass between
+two changes on *AWS*, and **12 hours** on *Azure* **Premium** disks. An automatic extension that falls inside that
+window is skipped and retried later, so a disk filling up quickly may cross its threshold well before it grows.
+</Admonition>
