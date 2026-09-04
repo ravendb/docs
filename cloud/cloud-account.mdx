@@ -68,6 +68,10 @@ Per-product access is assigned as a single **preset** — you choose one preset 
 The **Monitoring/OpenTelemetry** and **Power BI** features are a special case. **Enabling or disabling** them requires the **Manager** (or **Admin**) preset **together with** the **Security admin** add-on. To only **configure** such a feature once it is enabled, the **Security admin** add-on is sufficient.
 </Admonition>
 
+<Admonition type="warning" title="Effect on product alerts">
+Removing a user from the account — or revoking their permissions for a single product — also removes their email address from every [product alert](./cloud-maintenance-troubleshooting.mdx#alerts) rule they were subscribed to. If they were a rule's **last** remaining subscriber, that rule is **deleted**. Prefer a shared alias as a rule's subscriber when the alert matters to your operations.
+</Admonition>
+
 ### Who can manage product permissions
 
 Product permissions are managed by the **Account Owner** and by users with the **Account with User Management** role, subject to a **subset rule**:
@@ -100,3 +104,7 @@ This can be useful if you need to separate environments, teams, or billing conte
 However, creating multiple Cloud Accounts under one email is not available through the self-service UI. 
 
 To set this up, please contact *RavenDB Cloud Support* and request a multi-account configuration.
+
+Once you have more than one account, use the **account switcher** at the top of the
+[Portal sidebar](./portal/cloud-portal.mdx#cloud-portal-overview) to move between them. Each account is identified there
+by its **domain name**.

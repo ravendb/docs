@@ -35,7 +35,7 @@ like adding or removing nodes, and run recurring tasks like backing up your data
         - [Register](../cloud/cloud-overview.mdx#register-your-account)
         - [Login](../cloud/cloud-overview.mdx#login-to-your-account)
             - [Login with a magic link](../cloud/cloud-overview.mdx#login-with-a-magic-link)
-            - [Login with GitHub or Google](../cloud/cloud-overview.mdx#login-with-github-or-google)
+            - [Login with Google, GitHub or Microsoft](../cloud/cloud-overview.mdx#login-with-google-github-or-microsoft)
     * [RavenDB on the Cloud](../cloud/cloud-overview.mdx#ravendb-on-the-cloud)
         * [Instances, Provisioning and RavenDB Products](../cloud/cloud-overview.mdx#instances-provisioning-and-ravendb-products)
         * [RavenDB Tiers: Free, Development and Production](../cloud/cloud-overview.mdx#ravendb-tiers)
@@ -71,11 +71,11 @@ To create a new account, enter [https://cloud.ravendb.net/user/register](https:/
 and allow the wizard to walk you through the 5 simple stages of the registration procedure:
 
 <Admonition type="info" title="">
-You can also start registration by clicking **Login via GitHub** or **Login via Google** on the
+You can also start registration with the **Sign in with Google**, **Sign in with GitHub** or **Sign in with Microsoft** buttons on the
 [login page](../cloud/cloud-overview.mdx#login-to-your-account). If no Cloud account exists yet for
 the email reported by the provider, a registration link is sent to that address and the registration
 form opens with the email already filled in.
-See [Login with GitHub or Google](../cloud/cloud-overview.mdx#login-with-github-or-google).
+See [Login with Google, GitHub or Microsoft](../cloud/cloud-overview.mdx#login-with-google-github-or-microsoft).
 </Admonition>
 
 1. **Email**
@@ -84,20 +84,20 @@ See [Login with GitHub or Google](../cloud/cloud-overview.mdx#login-with-github-
 4. **Payment information**
 5. **Summary**
 #### 1. Email
-!["Figure 1 - Registration page: Email Address"](./assets/registration-page-email-address.png)
+![Registration page: Email Address](./assets/registration-page-email-address.png)
 
 - Provide your email address.
 - Read the **terms & conditions** and the **privacy policy**.
 - Click the **Continue** button.
 #### 2. Account information
-!["Figure 2 - Registration page: Domain Name"](./assets/registration-page-domain-name-and-account-type.png)
+![Registration page: Domain Name](./assets/registration-page-domain-name-and-account-type.png)
 
 - Enter an unoccupied domain name of your choice, that would be used for your cloud products.  
   The domain name is typically your organization or project name and will be used in all your products' URLs. The procedure will check this name's availability.
 - Select your account type. For typical purposes, select the **Regular** button. If you need a *HIPAA-compliant* account, select the **HIPAA** button.
 - Click the **Continue** button.
 #### 3. Billing information
-!["Figure 3 - Registration page: Billing information"](./assets/registration-page-billing-information.png)
+![Registration page: Billing information](./assets/registration-page-billing-information.png)
 
 - Enter your billing information.
 - Click the **Continue** button.
@@ -106,17 +106,17 @@ See [Login with GitHub or Google](../cloud/cloud-overview.mdx#login-with-github-
 Click the **Skip Billing Information** button if you prefer to evaluate the cloud service for now using the free product.
 </Admonition>
 #### 4. Payment information
-!["Figure 4 - Registration page: Payment information"](./assets/registration-page-payment-information.png)
+![Registration page: Payment information](./assets/registration-page-payment-information.png)
 
 - Enter your payment information.
 - Click the **Continue** button.
 #### 5. Summary
-!["Figure 5 - Registration page: Summary"](./assets/registration-page-summary.png)
+![Registration page: Summary](./assets/registration-page-summary.png)
 
 - Verify your choices, confirm you're not a robot, and click the **Create account** button to register your cloud account.
 - You’ll receive an email with sign in link which allows you to sign in to the RavenDB Cloud portal.
 
-!["Figure 6 - Registration page: Thank you page"](./assets/registration-page-thank-you.png)
+![Registration page: Thank you page](./assets/registration-page-thank-you.png)
 #### Signing up will send you a message with a link to your email.
 
 - The sign-up process will send a registration link to your email.
@@ -130,9 +130,9 @@ Click the **Skip Billing Information** button if you prefer to evaluate the clou
 To access your account, click [https://cloud.ravendb.net/user/login](https://cloud.ravendb.net/user/login).
 
 You can sign in either with a **magic link** sent to your email, or by using your
-**GitHub** or **Google** account.
+**Google**, **GitHub** or **Microsoft** account.
 #### Login with a magic link
-!["Figure 7 - Login page"](./assets/login-page-email.png)
+![Login page](./assets/login-page-email.png)
 
 - Enter the same email address you provided during registration, confirm you're not a robot, and
   click the **Send Magic Link** button
@@ -152,22 +152,64 @@ You can sign in either with a **magic link** sent to your email, or by using you
   We advise you to enable 2FA. Setup is described [here](../cloud/cloud-security.mdx#enable-mfa).  
   </Admonition>
 
-#### Login with GitHub or Google
+#### Login with Google, GitHub or Microsoft
 
-In addition to the magic link, you can sign in using your **GitHub** or **Google** account.
-The login page shows **Login via GitHub** and **Login via Google** buttons below the magic-link form.
+In addition to the magic link, you can sign in using your **Google**, **GitHub** or **Microsoft**
+account. The login page shows **Sign in with Google**, **Sign in with GitHub** and
+**Sign in with Microsoft** buttons below the magic-link form.
 
-!["Figure 8 - Login page with GitHub and Google buttons"](./assets/login-page-oauth-buttons.png)
+![Login page with the single sign-on buttons](./assets/login-page-oauth-buttons.png)
 
-- Click **Login via GitHub** or **Login via Google**.
-- Authorize RavenDB Cloud at the chosen provider.
+- Click the button for the provider you want to use.
+- Authorize RavenDB Cloud at that provider.
 - You are returned to RavenDB Cloud and signed in to the account whose email address matches the one
   reported by the provider.
 
 <Admonition type="note" title="">
-Your RavenDB Cloud account is identified by **email address**. GitHub and Google sign in only
-succeed when the email reported by the provider matches the email of an existing Cloud account.
+Your RavenDB Cloud account is identified by **email address**. Single sign-on only succeeds when the
+email reported by the provider matches the email of an existing Cloud account.
 </Admonition>
+
+<Admonition type="warning" title="The email address must be verified at the provider">
+RavenDB Cloud only accepts an email address that the provider itself vouches for:
+
+- **Google** — the address must be verified on your Google account.
+- **GitHub** — the address must be both **verified** and set as your **primary** email.
+- **Microsoft** — a **personal** Microsoft account is accepted, because Microsoft verifies those
+  addresses when the account is created. For a **work or school** (Microsoft Entra ID) account, the
+  sign-in token must additionally carry proof that the tenant owns the address's domain - see the note
+  below.
+
+If the address cannot be verified, sign-in is refused. Verify it at the provider (or, on GitHub, set a
+verified address as primary) and try again.
+</Admonition>
+
+<Admonition type="info" title="Work or school Microsoft accounts">
+A tenant administrator in Microsoft Entra ID can set a user's email address to a domain the tenant does
+not own, so RavenDB Cloud does not take the address on trust. It requires the token to include the
+**optional claim that attests domain-owner verification** (`xms_edov`), which a tenant administrator
+enables for the application in Entra ID.
+
+If your organization's tenant does not emit that claim, Microsoft sign-in fails with *"Your Microsoft
+account's email address could not be verified"*, even though the address is correct. Ask your Entra ID
+administrator to enable the claim, or use a [magic link](../cloud/cloud-overview.mdx#login-to-your-account)
+instead.
+</Admonition>
+
+**When sign-in cannot complete**
+
+If sign-in cannot be completed you stay on the login page with an explanation. The most common cases:
+
+| Message | What it means |
+|---|---|
+| The email address on the selected account has not been verified with your provider | The provider returned an address it does not report as verified. Verify it at the provider and retry. |
+| The selected account does not expose an email address | The provider shared no email address - for example, because the permission was declined. Grant access to your email address and retry. |
+| Your Microsoft account's email address could not be verified | A work or school account whose tenant does not attest domain ownership - see the note above. |
+| Your Microsoft sign-in could not be processed | The token was internally inconsistent. This needs [Support](../cloud/cloud-support.mdx) to look at it. |
+| *Provider* authentication failed | Authorization failed or was cancelled at the provider. Retry, or use a magic link. |
+| This sign-in method is currently unavailable | That provider is temporarily not configured. Use another provider or a magic link. |
+
+You can always fall back to the [magic link](../cloud/cloud-overview.mdx#login-to-your-account) sign-in.
 
 <Admonition type="info" title="2FA">
 Users are responsible for enabling and maintaining Two-Factor Authentication (2FA) on their designated Single Sign-On (SSO) provider.
@@ -175,11 +217,11 @@ Users are responsible for enabling and maintaining Two-Factor Authentication (2F
 
 **No Cloud account for the email**
 
-If no RavenDB Cloud account exists for the email returned by GitHub or Google, you are taken to a
+If no RavenDB Cloud account exists for the email returned by the provider, you are taken to a
 **Check your inbox** page and an email with a sign-in link is sent to that address. Following the
 link opens the registration form with the email pre-filled, so you can finish creating the account.
 
-!["Figure 9 - Check your inbox page"](./assets/login-oauth-check-email-page.png)
+![Check your inbox page](./assets/login-oauth-check-email-page.png)
 
 ## RavenDB on the Cloud
 
@@ -226,8 +268,8 @@ HW selection or a multi-region cluster.
 | **Tier** | **Sub-tiers** | **CPU** | **Options** | **SLA** |
 | -- | -- | -- | -- | -- |
 | Free | - | Very low | None | No |
-| Development | Dev10-Dev70 | Very low - High | All | [Yes](../cloud/portal/cloud-portal-support-tab.mdx#support-entitlement) |
-| Production | **By CPU Priority** (Basic/Standard/Performance) <br/> **By Cluster Size**| Up to extra performance, high network and reserved NVMe | All | [Yes](../cloud/portal/cloud-portal-support-tab.mdx#support-entitlement) |
+| Development | Dev10-Dev70 | Very low - High | All | [Yes](../cloud/cloud-support.mdx#available-support-options) |
+| Production | **By CPU Priority** (Basic/Standard/Performance) <br/> **By Cluster Size**| Up to extra performance, high network and reserved NVMe | All | [Yes](../cloud/cloud-support.mdx#available-support-options) |
 
 ## Burstable vs. Reserved clusters
 
@@ -265,7 +307,7 @@ Credits are **consumed** when the instance uses computing and I/O resources, and
   </Admonition>
 
 * **Burstable CLUSTERS and throttling**  
-  [Basic-grade production clusters](../cloud/cloud-instances.mdx#basic-grade-production-cluster) are burstable: each node of such a cluster
+  [Basic-grade production clusters](../cloud/cloud-instances.mdx#1-basic-grade-production-cluster) are burstable: each node of such a cluster
   is accommodated by a burstable instance.  
   When the budget of a burstable cluster is drained or nearly so, the cluster automatically shifts the workload to cluster nodes that still have
   credits to work with.  

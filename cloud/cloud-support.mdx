@@ -49,6 +49,13 @@ The **Cloud Support option** requires at least **one production tier** instance.
 
 For a full support options comparison please check the [Pricing](https://cloud.ravendb.net/pricing#support-options) page.  
 
+<Admonition type="tip" title="">
+With an active **Cloud Support** option, you can open a request straight from a product using
+**Request support for this instance**, which pre-selects that product on the support form.
+See [Request support from a product](./portal/cloud-portal-support-tab.mdx#request-support-from-a-product).
+</Admonition>
+
+
 
 
 ## Severity and response time types
@@ -71,9 +78,25 @@ Please make sure you understand what each of the options stands for, so your req
 | Next business day | Reply within a next business day.                                                   |
 | Within 2 hours    | Your query will be responded to within two hours.                                   |
 
-<Admonition type="info" title="">
-**Within 2 hours** response time is only available for **Production tier** related issues.  
-**Within 2 hours** and **Next business day** response times are only available for Customers with the **Cloud Support** support option.  
+<Admonition type="info" title="Which response times you can choose">
+**Standard** is always available. The two faster response times are offered only when **all** of the conditions below
+are met — otherwise they appear greyed out on the form:
+
+| Response time | Requires |
+|---|---|
+| **Next business day** | The **Cloud Support** option, **and** a severity of *Normal* or *Critical*. |
+| **Within 2 hours** | The **Cloud Support** option, **and** a severity of *Critical*, **and** — for a product-related question — a product that is **not** on the *Free* or *Development* tier. |
+
+Severity is the condition most often overlooked: a *Minor* issue can only be submitted with the **Standard** response
+time, however your account is licensed.
+
+The tier condition applies only to **product-related** questions. A **general** question is never restricted by tier,
+so a Cloud Support customer can select **Within 2 hours** for a critical general question even with no production
+product.
+
+You do not have to work this out yourself: the form states the outcome under the options — *"Based on your current
+Cloud Support contract and selected Severity, the maximum Response Type is …"*. Raising the severity re-evaluates it
+immediately.
 </Admonition>
 
 

@@ -49,13 +49,16 @@ You can [contact support](../cloud/portal/cloud-portal-support-tab.mdx) to prolo
 </Admonition>
 #### The Backup Task
 
-To view or activate the mandatory backup task, open your product's management studio and -  
+The mandatory backup is a [Server-Wide Backup](../7.2/backup/create/periodic-tasks/server-wide-backup) task, so it
+covers every database on the product rather than being defined per database.
 
-* Choose the database whose backup task you want to view  
-* Click **Manage Ongoing Tasks**  
-* Click the "Server Wide Backup" task.  
+To view it, open your product's RavenDB Studio and -  
 
-!["Backup Task"](./assets/backup-and-restore-001-backup-task.png)  
+* Choose any database on the product  
+* Open the **Ongoing Tasks** view  
+* Click the **Server Wide Backup** task.  
+
+![Backup Task](./assets/backup-and-restore-001-backup-task.png)  
 
 #### Tier Requirements and Failure Disclaimer
 
@@ -180,13 +183,13 @@ Your mandatory backup files are encrypted.
 You can create your own [ongoing backup tasks](https://ravendb.net/docs/article-page/4.2/Csharp/studio/database/tasks/ongoing-tasks/backup-task) 
 on your RavenDB cloud instance, as you would off-cloud.  
 Use your cloud instance's management Studio to create a new task.  
-!["Create Task"](./assets/backup-001-add-backup-task.png)  
+![Create Task](./assets/backup-001-add-backup-task.png)  
 Add a Backup task  
-!["Backup Task"](./assets/backup-002-add-backup-task.png)  
+![Backup Task](./assets/backup-002-add-backup-task.png)  
 You can store custom-backup files on an unrelated cloud service like an S3 bucket, a Glacier vault, or an Azure platform.  
 
 Activate and configure your unrelated cloud storage service, e.g. the bucket in which your backup files would be kept.  
-!["Set S3 Bucket"](./assets/backup-003-set-s3-bucket.png)  
+![Set S3 Bucket](./assets/backup-003-set-s3-bucket.png)  
 
 
 
@@ -199,27 +202,27 @@ Backup files that have already been created, are listed in the backups tab.
   Its backups will be shown, listed by the databases they've been created for.  
 * Click "Generate Restore Link" for the database you want to restore.  
   The backup link window will open.
-  !["Backups List"](./assets/backup-and-restore-002-mandatory-backups-tab-list.png "Backups List")  
+  ![Backups List](./assets/backup-and-restore-002-mandatory-backups-tab-list.png "Backups List")  
 #### Restore the Database  
 Clicking the **Generate Restore Link** button will show you a simple procedure. Follow it to restore your database.  
 
-!["Backup Link"](./assets/backup-and-restore-003-backup-link-window.png)  
+![Backup Link](./assets/backup-and-restore-003-backup-link-window.png)  
 
 * **A.** Create a **New Database From Backup**  
-  !["New DB From Backup"](./assets/backup-and-restore-004-new-database-from-backup.png)  
+  ![New DB From Backup](./assets/backup-and-restore-004-new-database-from-backup.png)  
 * **B.** Choose **Cloud** as your Source  
-  !["Source Is Cloud"](./assets/backup-and-restore-005-source-is-cloud.png)  
+  ![Source Is Cloud](./assets/backup-and-restore-005-source-is-cloud.png)  
 * **C.** Copy the Backup Link you've been given in the Backups Tab, to the **Backup Link** box here.  
-  !["Paste Backup Link Here"](./assets/backup-and-restore-006-paste-backup-link.png)  
+  ![Paste Backup Link Here](./assets/backup-and-restore-006-paste-backup-link.png)  
 * **D.** Choose a **Restore Point**  
-  !["Choose Restore Point"](./assets/backup-and-restore-007-restore-point.png)  
+  ![Choose Restore Point](./assets/backup-and-restore-007-restore-point.png)  
 * **E.** Encryption Key for an **Encrypted** Database  
   If your original database **is** encrypted, its backup has been encrypted with the same key. Find it and paste it here.  
-  !["Encryption Key: Encrypted Database"](./assets/backup-and-restore-008-encryption-key-1.png)  
+  ![Encryption Key: Encrypted Database](./assets/backup-and-restore-008-encryption-key-1.png)  
 * **F.**  Encryption Key for an **Unencrypted** Database  
   If your original database is **not** encrypted, we used your account-wide encryption key to encrypt your backup file.  
   Copy it from the right Backups Tab box.  
-  !["Encryption Key: Unencrypted Database"](./assets/backup-and-restore-009-encryption-key-2.png)  
+  ![Encryption Key: Unencrypted Database](./assets/backup-and-restore-009-encryption-key-2.png)  
 
 
 

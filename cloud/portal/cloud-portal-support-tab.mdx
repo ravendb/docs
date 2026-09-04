@@ -22,11 +22,13 @@ Use the Support tab to contact our *RavenDB Cloud* support team.
   * [The Support Tab](../../cloud/portal/cloud-portal-support-tab.mdx#the-support-tab)  
      * [Submit a General Support request](../../cloud/portal/cloud-portal-support-tab.mdx#submit-a-general-support-request)  
      * [Submit a Product-Related Support request](../../cloud/portal/cloud-portal-support-tab.mdx#submit-a-product-related-support-request)
+     * [Resources that may help you](../../cloud/portal/cloud-portal-support-tab.mdx#resources-that-may-help-you)
+     * [Request support from a product](../../cloud/portal/cloud-portal-support-tab.mdx#request-support-from-a-product)
      * [Request to enable the Cloud Support option](../../cloud/portal/cloud-portal-support-tab.mdx#request-to-enable-the-cloud-support-option)
 </Admonition>
 ## The Support Tab
 
-!["Figure 1 - Support Tab"](./assets/portal-support-tab.png)
+![Support Tab](./assets/portal-support-tab.png)
 
 The root selection is between submitting a support request regarding a **general** topic or a **product-related** one.  
 
@@ -35,40 +37,84 @@ A user with the account-level [**Support**](../../cloud/cloud-account.mdx#accoun
 </Admonition>
 ### Submit a General Support request  
 
-!["Figure 2 - Support General Message"](./assets/portal-support-general-question-cloud-support.png)
+![Support General Message](./assets/portal-support-general-question-cloud-support.png)
 
-   **1**. Select to raise a general question.  
-   **2**. Select the issue severity: *Minor*, *Normal*, or *Critical*.  
-   **3**. Select the expected response time: *Standard*, *Next business day*, or *Within 2 hours*.  
-   **4**. Enter your support request title.  
-   **5**. Enter your question.  
-   **6**. Submit your support request.
+   **1**. Under *Is your question related to one of your products?*, choose **No, general question**.  
+   **2**. Select the **Severity**: *Minor*, *Normal*, or *Critical*.  
+   **3**. Pass the **Resources that may help you** step — see [below](#resources-that-may-help-you).  
+   **4**. Select the **Expected Response Time**: *Standard*, *Next business day*, or *Within 2 hours*.  
+   **5**. Enter a **Title**.  
+   **6**. Enter your **Message**.  
+   **7**. Click **Send request**.
 
-You can read more about the *Severity* and *Response time* types in the [Support](../../cloud/cloud-support.mdx#response-time-types) page.
+You can read more about the *Severity* and *Response time* types in the [Support](../../cloud/cloud-support.mdx#severity-and-response-time-types) page.
 ### Submit a Product-Related Support Request  
 
-!["Figure 3 - Support Product-Related Message"](./assets/portal-support-instance-related-question-cloud-support.png)
+![Support Product-Related Message](./assets/portal-support-instance-related-question-cloud-support.png)
     
-   **1**. Select to raise a Product-related question.  
-   **2**. Select the product you relate to.  
-   **3**. Select the issue severity: *Minor*, *Normal*, or *Critical*.  
-   **4**. Select the expected response time: *Standard*, *Next business day*, or *Within 2 hours*.  
-   **5**. Select the issue category.  
-   **6**. Select the option associated with the instance restart action.  
-   **7**. Enter your support request title.  
-   **8**. Enter your question.  
-   **9**. Submit your support request.
+   **1**. Under *Is your question related to one of your products?*, choose **Yes**.  
+   **2**. Pick the **Relevant product**.  
+   **3**. Select the **Severity**: *Minor*, *Normal*, or *Critical*.  
+   **4**. Pass the **Resources that may help you** step — see [below](#resources-that-may-help-you).  
+   **5**. Select the **Expected Response Time**: *Standard*, *Next business day*, or *Within 2 hours*.  
+   **6**. Select the **Issue category**.  
+   **7**. Answer *Have you tried restarting your instance?* — **Yes**, **No**, or **Not relevant**.  
+   **8**. Enter a **Title**.  
+   **9**. Enter your **Message**.  
+   **10**. Click **Send request**.
 
-You can read more about the *Severity* and *Response time* types in the [Support](../../cloud/cloud-support.mdx#response-time-types) page.
+You can read more about the *Severity* and *Response time* types in the [Support](../../cloud/cloud-support.mdx#severity-and-response-time-types) page.
+
+### Resources that may help you
+
+Both flows include a step you cannot skip. After choosing the severity — and, for a product-related request, the
+product — the form shows a **Resources that may help you** panel linking to *GitHub discussions* and the
+*RavenDB documentation*, in case your question is already answered there.
+
+Below it, **Still looking for an answer?** offers a **Proceed to create support request** button. The button is briefly
+disabled and counts down (*"You can proceed within…"*) before it can be clicked.
+
+The rest of the form — starting with the **Expected Response Time** section — only appears once you click that button.
+If you cannot find the response time options, this is why.
+
+### Request support from a product
+
+You do not have to start from the Support view. Every product view carries a
+[**Subscription & support**](../../cloud/portal/cloud-portal-products-tab.mdx#subscription-and-support) card, which offers
+direct links to the *Documentation*, *GitHub discussions* and the *Discord community*, and shows whether the product is
+covered by **Paid support** or the **Free tier**.
+
+* With an **active paid support option**, the panel offers **Request support for this instance**. It takes you to the
+  Support view with the question type set to product-related and **this product already selected**, so you only need to
+  fill in the request itself. You can still change the selected product before submitting.
+* **Without** a paid support option, the panel instead links to a comparison of the paid support plans. See
+  [Request to enable the Cloud Support option](../../cloud/portal/cloud-portal-support-tab.mdx#request-to-enable-the-cloud-support-option)
+  below.
+
+Opening the Support view directly works exactly as before — no product is pre-selected.
+
 ### Request to enable the Cloud Support option
 
-!["Figure 4 - Request to enable the Cloud Support option"](./assets/portal-support-request-cloud-support-on-free-support.png)
+![Request to enable the Cloud Support option](./assets/portal-support-request-cloud-support-on-free-support.png)
 
-To request the **Cloud Support option**, please click the *Request Cloud Support Activation* button.
-This will show you Support Activation Request Form. There you can select type of support you want to activate and send a
-support request to our *RavenDB Cloud* support team with *Request Activation* button.
+If your account is on the **Free** plan, the Support view also shows a **Need some extra care?** panel offering the paid
+support options. It lists what the option includes — *24/7 availability*, *call and e-mail support*, a *2 hour SLA*, and
+coverage for **all products in your account** — with a link to the *Terms of service*.
 
-!["Figure 5 - Support Activation Request Form"](./assets/portal-support-activation-request-form.png)
+Two commitments are offered — a **12 month plan** and a **6 month plan** — each shown with its price and commitment
+length.
+
+Click **Choose plan** on the one you want. An *Upgrade to premium support* dialog opens with a summary of the plan you
+picked, which you confirm with **Send activation request**.
+
+![Upgrade to premium support: 12 months plan](./assets/portal-support-activation-request-form.png)
+
+![Upgrade to premium support: 6 months plan](./assets/portal-support-activation-request-form-6-months.png)
+
+<Admonition type="note" title="Requirement">
+The paid support option requires at least one **production tier** instance. Its price is a share of your hosting
+cost, with a minimum of **$79/month**.
+</Admonition>
 
 
 After verification, the support team will add the support option to your account, which 

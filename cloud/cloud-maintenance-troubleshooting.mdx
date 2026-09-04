@@ -49,6 +49,11 @@ This dashboard has four separated sections:
 - [Suggestions](cloud-maintenance-troubleshooting#suggestions)
 - [Product changes in time](cloud-maintenance-troubleshooting#product-changes-in-time)
 
+<Admonition type="tip" title="Get notified by email">
+Instead of checking this dashboard, you can have the events it records emailed to you - as a daily digest or as soon as
+they happen. See [Alerts](#alerts).
+</Admonition>
+
 ## Nodes Availability
 
 The **Nodes Availability** section shows the availability status of each node within your cluster.
@@ -67,7 +72,7 @@ Each node's status is color-coded based on its availability percentage:
 | 95% – 99.9%  | Degraded | 🟡 Yellow |
 | < 95%        | Critical | 🔴 Red    |
 
-!["Cluster Health: Nodes availability section"](./assets/cluster-health-nodes-availability.png)
+![Cluster Health: Nodes availability section](./assets/cluster-health-nodes-availability.png)
 
 These thresholds help you identify which nodes might require attention:
 
@@ -80,7 +85,7 @@ These thresholds help you identify which nodes might require attention:
 The *RavenDB Cloud* monitoring system tracks incidents and cluster performance.  
 This section lets you analyse your cluster incidents for a selected *time period*, *cluster node*, *severity*, *category* and *event status*.
 
-!["Cluster Health: Incidents History section"](./assets/cluster-health-incidents-history.png)
+![Cluster Health: Incidents History section](./assets/cluster-health-incidents-history.png)
 
 #### Categories and their descriptions
 
@@ -95,11 +100,16 @@ Incidents are split into *six* categories. **Description** column contains addit
 | IO            | Product is experiencing high input/output operations.                                  |
 | Availability  | Product is currently not responding to input or commands or has been restarted.        |
 
+<Admonition type="note" title="">
+Node restarts are **always** recorded here, including the reason the node's service stopped, so *Incidents History*
+remains the complete record of your cluster's availability events.
+</Admonition>
+
 ## Suggestions
 
 This section displays suggestions for a selected *cluster node* based on incident trends.
 
-!["Cluster Health: Suggestions section"](./assets/cluster-health-suggestions.png)
+![Cluster Health: Suggestions section](./assets/cluster-health-suggestions.png)
 
 Suggestions are generated based on a 60-day period divided in half.  
 
@@ -128,18 +138,92 @@ Suggestions are generated using three types of analyses for specific suggestion 
 
 Below examples of the suggestions with the analyses: 
 
-!["Cluster Health: An example of `Current period above previous period by percents` analyse"](./assets/cluster-health-suggestions-current-month-above-previous-month-by-percents.png)
+![Cluster Health: An example of `Current period above previous period by percents` analyse](./assets/cluster-health-suggestions-current-month-above-previous-month-by-percents.png)
 
 
-!["Cluster Health: An example of `Current period above previous period by numbers` analyse"](./assets/cluster-health-suggestions-current-month-above-previous-month-by-numbers.png)
+![Cluster Health: An example of `Current period above previous period by numbers` analyse](./assets/cluster-health-suggestions-current-month-above-previous-month-by-numbers.png)
 
 
-!["Cluster Health: An example of `Current period above threshold by percents` analyse"](./assets/cluster-health-suggestions-current-month-above-threshold-by-percents.png)
+![Cluster Health: An example of `Current period above threshold by percents` analyse](./assets/cluster-health-suggestions-current-month-above-threshold-by-percents.png)
 
 ## Product changes in time
 
 This view shows changes in product type over time. Changes can be presented as a graph or a table.
 
-!["Cluster Health: Product changes in time - graph"](./assets/cluster-health-product-changes-in-time-graph.png)  
+![Cluster Health: Product changes in time - graph](./assets/cluster-health-product-changes-in-time-graph.png)  
 
-!["Cluster Health: Product changes in time - table"](./assets/cluster-health-product-changes-in-time-table.png)
+![Cluster Health: Product changes in time - table](./assets/cluster-health-product-changes-in-time-table.png)
+
+## Alerts
+
+*Alerts* have the events described above **emailed to you**, so you do not have to watch the dashboard to learn that an
+instance is under pressure. They are configured per product, on the
+[Alerts tab](./portal/cloud-portal-products-tab.mdx#view-the-alerts) of the product view.
+
+There are two kinds of rule, and a product can use both at once.
+
+### Daily summary
+
+A **single digest email per day**, listing everything that happened to the product in the last 24 hours.
+A product can have **at most one** daily summary.
+
+* It covers **every** trigger event, so there is nothing to choose - the panel lists them all for reference.
+* The email groups the events by name and includes the counts for the period.
+* It also carries the current [Suggestions](#suggestions) for the product, when there are any.
+* If nothing happened in the period, **no email is sent** - a daily summary never arrives empty.
+
+### Custom alerts
+
+A custom alert is sent **as soon as** a matching event is recorded, rather than waiting for the daily digest.
+Use custom alerts to route specific conditions to specific people - disk-space warnings to your operations mailbox,
+*Node not responding* to an on-call address.
+
+* A custom alert must name **at least one** trigger event; a rule with no events is rejected.
+* Several rules may watch the same event with different recipients. Each fires independently, to its own list.
+* When an open incident **recovers**, a second email follows to report the recovery.
+
+### Trigger events
+
+A custom alert can be triggered by any of the conditions listed in the [Labels](#labels) table above - *Node not
+responding*, *High CPU usage*, *High IO usage*, *Low memory*, *CPU Credits are low*, the two disk-space levels, and the
+four uptime degradation bands. That table also gives the **thresholds** for the disk-space and uptime conditions.
+
+Use [Incidents History](#incidents-history) to see which of them your product actually raises before deciding what to
+subscribe to.
+
+### Rules and subscribers
+
+Every rule has a name, a state (**Enabled** or **Disabled** - a disabled rule is kept but sends nothing), its trigger
+events, and its own list of recipient email addresses.
+
+Recipients do **not** have to be users of your cloud account, so a shared alias or a dedicated notifications mailbox
+works - usually what you want for an on-call rota.
+
+The following limits apply per product:
+
+| Limit | Value |
+|---|---|
+| Alert rules per product | **25** |
+| Recipients per rule | **20** |
+| Daily summary rules per product | **1** |
+
+An address may appear only once within a rule, and every address must be a valid email address. A rule with no
+recipients is rejected, because it could never deliver anything. Requests that break any of these rules are rejected
+with an explanation, and nothing is saved.
+
+### When alert rules are removed automatically
+
+Alert rules are tied to the product and to the people subscribed to them, so a few unrelated actions clear them.
+This is by design, but worth knowing before you rely on an alert:
+
+* **Disabling the [Monitoring](./cloud-features.mdx#monitoring) feature** discards all of the product's alert rules.
+  Re-enabling Monitoring does not bring them back - you have to define them again.
+* **Terminating a product** deletes its alert rules, so no alerts are sent about an instance that no longer exists.
+* **Removing a user from the cloud account** strips their address from every alert rule on the account. If that user was
+  a rule's **last** remaining recipient, **the whole rule is deleted**.
+* **Revoking a user's permissions for a single product** does the same, limited to that product's rules.
+
+<Admonition type="info" title="">
+If your alerts matter to your operations, prefer a **shared alias** over an individual's mailbox as a rule's only
+recipient. An alias is not affected when people join or leave the account.
+</Admonition>

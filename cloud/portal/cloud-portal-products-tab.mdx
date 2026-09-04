@@ -26,11 +26,15 @@ and [Production](../../cloud/cloud-overview.mdx#the-production-tier).
   * [Provisioning a New Product](../../cloud/portal/cloud-portal-products-tab.mdx#provisioning-a-new-product)  
   * [View the Product Metrics](../../cloud/portal/cloud-portal-products-tab.mdx#view-the-product-metrics)  
   * [View the Cluster Health](../../cloud/portal/cloud-portal-products-tab.mdx#view-the-cluster-health)  
+  * [View the Alerts](../../cloud/portal/cloud-portal-products-tab.mdx#view-the-alerts)  
   * [Managing an Existing Product](../../cloud/portal/cloud-portal-products-tab.mdx#managing-an-existing-product)  
+     - [Instance Access: Open Studio](../../cloud/portal/cloud-portal-products-tab.mdx#instance-access)  
      - [Change Instance Type and Storage](../../cloud/portal/cloud-portal-products-tab.mdx#change-instance-type-and-storage)  
-     - [Security: Your Certificate, Audit Logs and Allowed IPs](../../cloud/portal/cloud-portal-products-tab.mdx#security-your-certificate-audit-logs-and-allowed-ips)  
+     - [Security: Certificate and Audit Logs](../../cloud/portal/cloud-portal-products-tab.mdx#security-your-certificate-audit-logs-and-allowed-ips)  
+     - [Allowed IPs](../../cloud/portal/cloud-portal-products-tab.mdx#allowed-ips)  
      - [Manage features](#manage-features)
      - [Nodes: Additional product nodes](../../cloud/portal/cloud-portal-products-tab.mdx#nodes-additional-product-nodes)
+     - [Subscription & support](../../cloud/portal/cloud-portal-products-tab.mdx#subscription-and-support)  
      - [Maintenance and Danger Zones: Terminate and Restart your Instance](../../cloud/portal/cloud-portal-products-tab.mdx#maintenance-and-danger-zones)  
      - [User Access](../../cloud/portal/cloud-portal-products-tab.mdx#user-access)  
 </Admonition>
@@ -38,7 +42,7 @@ and [Production](../../cloud/cloud-overview.mdx#the-production-tier).
 ## Provisioning a New Product
 To provision a new product, open your Portal's Products tab and click **Add Product**.
 
-!["Figure 1 - Add Product"](./assets/portal-product-list-add-product-button.png)
+![Add Product](./assets/portal-product-list-add-product-button.png)
 
 <Admonition type="note" title="Access required">
 Creating a product requires the [**Products Creation**](../../cloud/cloud-account.mdx#account-roles) account role — the **Add Product** button is hidden otherwise. Users without any relevant access do not see the **Products** tab at all.
@@ -52,10 +56,23 @@ C. [Billing](../../cloud/portal/cloud-portal-products-tab.mdx#c-new-product-bill
 D. [Customize](../../cloud/portal/cloud-portal-products-tab.mdx#d-new-product-customize)  
 E. [Summary](../../cloud/portal/cloud-portal-products-tab.mdx#e-new-product-summary)  
 
+<Admonition type="note" title="Stages you may not see">
+**Account** and **Billing** are only asked for when the wizard still needs that information:
+
+* **Account** appears only when your account has neither its details nor a payment method on file.
+* **Billing** appears only when no payment method is on file, and never for
+  [Microsoft Azure](../cloud-microsoft-azure-marketplace.mdx) or [AWS](../cloud-aws-marketplace.mdx) Marketplace
+  accounts, whose payment is handled by the provider.
+
+So the first product you provision usually walks through all five stages, while later ones typically go straight from
+**Plan** to **Customize** and **Summary**.
+</Admonition>
+
+
 #### A. New Product: Plan
 Use the Plan page to choose your product's cloud **Provider**, **Region**, **Tier**, **Instance**, **Storage** and **Payment model**.  
 
-!["Figure 2 - Plan Provider Region & Tier"](./assets/provider-region-tier-selection.png)
+![Plan Provider Region & Tier](./assets/provider-region-tier-selection.png)
 
 1.  **Cloud Provider**  
    Choose your cloud host. It can currently be one of three providers:  
@@ -85,17 +102,17 @@ Use the Plan page to choose your product's cloud **Provider**, **Region**, **Tie
 #### B. New Product: Account
 Enter your account information and click **Next**.  
 
-!["Figure 3 - New Product: Account"](./assets/portal-product-create-account-section.png)
+![New Product: Account](./assets/portal-product-create-account-section.png)
 
 #### C. New Product: Billing
 Enter your billing details and click **Next**.  
 
-!["Figure 4 - New Product: Billing"](./assets/portal-product-create-billing-section.png)
+![New Product: Billing](./assets/portal-product-create-billing-section.png)
 
 #### D. New Product: Customize
 Choose your product's display name, release channel and allowed IP addresses.
 
-!["Figure 5 - New Product: Customize"](./assets/portal-product-create-customize-section.png)
+![New Product: Customize](./assets/portal-product-create-customize-section.png)
 
 The **Display Name** is simply the name that would appear in your Cloud Products tab.  
 <Admonition type="note" title="Important " id="important" href="#important">
@@ -107,17 +124,17 @@ The **Display Name** is simply the name that would appear in your Cloud Products
 #### E. New Product: Summary  
 The Summary stage shows you your choices and lets you edit them if you wish.
 
-!["Figure 6 - New Product: Summary"](./assets/portal-product-create-summary-section.png)
+![New Product: Summary](./assets/portal-product-create-summary-section.png)
 When you finish defining your product, the cloud provisioning routine will show you 
 your new product's status until it's ready to go.  
 
-!["Figure 7 - New Product: Provisioning"](./assets/portal-product-list-product-creating.png)
+![New Product: Provisioning](./assets/portal-product-list-product-creating.png)
 
-!["Figure 8 - New Product: Active"](./assets/portal-product-list-product-active.png)
+![New Product: Active](./assets/portal-product-list-product-active.png)
 
 ## View the Product Metrics
 
-!["Figure 9 - Product Metrics: General View"](./assets/portal-product-details-metrics.png)
+![Product Metrics: General View](./assets/portal-product-details-metrics.png)
 
 This allows you to analyse your machine resources for a selected time period and cluster node.
 It's useful for analysing usage, instance overload and traffic.
@@ -128,7 +145,7 @@ The **Metrics** and **Cluster Health** buttons — on both the product list and 
 
 ## View the Cluster Health
 
-!["Figure 10 - Cluster Health: General View"](./assets/portal-product-details-cluster-health.png)
+![Cluster Health: General View](./assets/portal-product-details-cluster-health.png)
 
 This allows you to analyse your cluster incidents for a selected *time period*, *cluster node*, *severity*, *category* and *event status*.  
 In addition, **Cluster Health** generates suggestions for a selected *cluster node* based on incident trends that can help resolve cluster stability issues.
@@ -136,6 +153,23 @@ The view also shows node availability for the last 30 days and a history of prod
 It's useful for analysing usage, instance overload and traffic.  
 
 More details can be found [here](../cloud-maintenance-troubleshooting.mdx#cluster-health).
+
+## View the Alerts
+
+![Alerts: General View](./assets/portal-product-alerts.png)
+
+This allows you to have the events recorded by **Cluster Health** emailed to you, so you do not have to watch the Portal
+to learn that an instance is under pressure. You can configure a single *daily summary* digest and any number of
+*custom alerts* that fire as soon as a chosen event is recorded, each with its own list of recipients.
+
+<Admonition type="note" title="Access required">
+The **Alerts** tab requires the [Monitoring](../cloud-features.mdx#monitoring) feature to be enabled on the product,
+plus at least [**Viewer** access](../../cloud/cloud-account.mdx#permission-presets) to it. Changing the rules
+additionally requires the **Manage features** permission together with the
+[**Security admin** add-on](../../cloud/cloud-account.mdx#permission-presets), and the product must be **Active**.
+</Admonition>
+
+More details can be found [here](../cloud-maintenance-troubleshooting.mdx#alerts).
 
 ## Managing an Existing Product
 
@@ -145,24 +179,43 @@ The actions available on a product depend on your [per-product permissions](../.
 
 To modify an existing product, find it in the Products tab and click its Manage button.  
 
-!["Figure 11 - Manage Product: Manage Button"](./assets/portal-product-list-manage-button.png)
+![Manage Product: Manage Button](./assets/portal-product-list-manage-button.png)
 
 This is a general view of the product details page:
 
-!["Figure 12 - Product Details"](./assets/portal-product-details.png)
+![Product Details](./assets/portal-product-details.png)
 
 This is a general view of the serverless product details page:
 
-!["Figure 13 - Serverless Product Details"](./assets/portal-product-details-serverless.png)
+![Serverless Product Details](./assets/portal-product-details-serverless.png)
+
+### Instance Access: Open Studio {#instance-access}
+
+The bar at the top of the product view — above the **Manage**, **Metrics**, **Cluster Health** and **Alerts** tabs —
+shows the product's name and status, and carries the **Open Studio** button that takes you to RavenDB Studio.
+
+* On a **single-node** product, **Open Studio** is a plain button that opens that node's Studio in a new tab.
+* On a **multi-node** product, **Open Studio** is a dropdown listing every node — **Node A**, **Node B**, and so on —
+  so you can pick the node whose Studio you want to open.
+
+The button appears only while the product is **Active** or **Deploying changes**. Until you have downloaded the client
+certificate, hovering it shows the reminder *"Please remember to download Certificate before accessing studio"* —
+Studio will not let you in without an installed certificate, so
+[download it first](#security-your-certificate-audit-logs-and-allowed-ips).
+
+<Admonition type="note" title="">
+**Open Studio** is also available per product directly in the [Products list](#managing-an-existing-product), next to
+the **Manage** button.
+</Admonition>
 
 ### Change Instance Type and Storage  
 You can view your configuration and change your product's instance type and storage size here.  
 
-!["Figure 14 - Manage Product tab"](./assets/portal-product-details-instance-parameters.png)
+![Manage Product tab](./assets/portal-product-details-instance-parameters.png)
 * **Change Instance Type**  
   Use sliders to set your desired configuration. This can be changed later as you need to scale to changing data processing needs.
 
-!["Figure 15 - Manage Product: Scale"](./assets/portal-product-details-edit-tier.png)
+![Manage Product: Scale](./assets/portal-product-details-edit-tier.png)
 
   <Admonition type="note" title="Important " id="important" href="#important">
     Changing instance type for Serverless product is not possible. 
@@ -172,36 +225,48 @@ You can view your configuration and change your product's instance type and stor
 * **Change Storage**  
   Use this slider to modify your product's storage.  
 
-!["Figure 16 - Manage Product: Change Storage"](./assets/portal-product-details-edit-storage.png)
+![Manage Product: Change Storage](./assets/portal-product-details-edit-storage.png)
 
   Disk can be migrated to **Data Disk** using *Migrate disk* button.
 
-!["Figure 17 - Manage Product: Storage"](./assets/portal-product-details-storage.png)
+![Manage Product: Storage](./assets/portal-product-details-storage.png)
 
   When eligible, the *Storage* section also shows an **Upgrade to Premium V2** button to upgrade
   the disk to **Azure Premium SSD v2**.
 
-!["Figure 18 - Storage section with Upgrade to Premium V2 button"](./assets/portal-product-details-storage-upgrade-to-premium-v2.png)
+![Storage section with Upgrade to Premium V2 button](./assets/portal-product-details-storage-upgrade-to-premium-v2.png)
 
   More details can be found [here](../cloud-scaling.mdx#scaling---change-storage). For
   **Azure Premium SSD v2** — eligibility, constraints, and behavior of the upgrade — see
   [Azure Premium SSD v2](../cloud-scaling.mdx#azure-premium-ssd-v2).
   
-### Instance Access
+### Security: Certificate and Audit Logs {#security-your-certificate-audit-logs-and-allowed-ips}
 
-* **Open Studio**  
-  Click this button to open the RavenDB Studio of node A.
+The **Security** card holds your instance's client certificate and its audit logs.
+See the [Security](../../cloud/cloud-security.mdx) page for the wider picture.
 
-### Security: Your Certificate, Audit Logs and Allowed IPs  
-Use the security tab to download your [certificate](../../cloud/cloud-security.mdx) or determine which addresses are 
-allowed to connect your database instance.  
+![Manage Product: Security card](./assets/portal-product-edit-security.png)
 
-!["Figure 19 - Manage Product: Manage access"](./assets/portal-product-details-manage-access.png)
+<Admonition type="note" title="Access required">
+**Download certificate** and **Regenerate certificate** require the **Security admin** add-on — no
+[base preset](../../cloud/cloud-account.mdx#permission-presets) grants it on its own.
+**See audit logs** requires the [**Operator** preset](../../cloud/cloud-account.mdx#permission-presets) or higher.
+Buttons you are not permitted to use are disabled, with a tooltip explaining why.
+</Admonition>
 
-* **Download Certificate** Click this button to download the **Initial Client Certificate**.
-  This is an **operator-level** certificate used to perform cluster-wide operations (like creating/deleting databases) and for your first login to RavenDB Studio.
+* **Download certificate**  
+  Downloads the **Initial Client Certificate** package — a zip archive containing the `.pfx` files.
+  This is an **operator-level** certificate used to perform cluster-wide operations (like creating or deleting databases)
+  and for your first login to RavenDB Studio.
 
-* **Regenerate Certificate** Click the dropdown next to the *Download certificate* button to regenerate it.
+  The first time you use it, the portal opens the **Downloading and Installing Initial Certificate** dialog, which walks
+  you through downloading the package and installing it, with instructions for **Windows + Chrome** and
+  **Linux + Chrome**. You can reopen that dialog later from **How to setup certificate?** in the dropdown next to the
+  button.
+
+* **Regenerate certificate**  
+  Click the dropdown next to **Download certificate** and choose **Regenerate certificate**. Use it when your current
+  certificate has expired, or when you want to stop using the one you hold.
 
   <Admonition type="warning" title="Note on Regeneration">
       Regenerating a certificate creates a new identity. After this operation, you must download and install the new certificate to maintain access via the portal.
@@ -209,6 +274,17 @@ allowed to connect your database instance.
   <Admonition type="danger" title="">
     The previous certificate is **not** automatically removed from the cluster by this operation. To revoke old certificates, you must use the RavenDB Studio Certificates view.
   </Admonition>
+
+* **Certificate expiration date**  
+  The card shows how long the current client certificate remains valid. Cloud client certificates are issued for
+  **five years**, and renewal is handled for you:
+
+  * **60 days** before expiry, the account is emailed a notice stating the expiration date and the date of the
+    automatic renewal.
+  * **30 days** before expiry, the certificate is regenerated automatically.
+
+  An automatic renewal behaves like a manual one: download and install the new certificate to keep your access working,
+  and remove the old certificate from the RavenDB Studio Certificates view when you no longer need it.
 
   <Admonition type="tip" title="Best Practice: Certificate Management">
     For maximum security and performance, we recommend using the initial certificate only for setup and emergency access.
@@ -219,21 +295,39 @@ allowed to connect your database instance.
       We recommend **generating certificates off-cloud** (on your own machine) and importing them into the Studio via **Settings > Certificates**.
   </Admonition>
 
-* **See audit logs**
-  Click this button to view audit logs. A popup will show where you have to select a year and month.
-  You can download audit logs from there.
-  !["Figure 20 - See audit logs"](./assets/portal-product-details-audit-logs.png)
+* **See audit logs**  
+  Opens the **Select date to load audit logs** dialog. Pick a year and month, then expand a node tag to list the audit
+  log files that node recorded in that month and download them.
 
-* **Edit**  
-  Click this button to edit your product's list of Allowed IPs.
+  ![See audit logs](./assets/portal-product-details-audit-logs.png)
 
-  !["Figure 21 - Manage Product: Edit IPs"](./assets/portal-product-details-allowed-ips.png)
+### Allowed IPs
 
-  <Admonition type="info" title="We recommend fortifying your security by allowing access only to specific IPs" id="we-recommend-fortifying-your-security-by-allowing-access-only-to-specific-ips" href="#we-recommend-fortifying-your-security-by-allowing-access-only-to-specific-ips">
-  You can increase your system's security further using this in-depth security measure and restrict access to
-  trusted sources, e.g. your application servers. 
-  More details can be found in the [Security](../cloud-security.mdx#access-your-product) page.
-  </Admonition>
+The **Allowed IPs** card determines which addresses are allowed to connect to your database instance, adding an
+important layer of security at the network level. It lists the current entries as **IP Address** and **Alias** pairs.
+A `0.0.0.0/0` (**Allow all**) entry is pinned to the top of the list and flagged with a warning, because it leaves your
+instance reachable from anywhere.
+
+<Admonition type="note" title="Access required">
+Editing the list requires the **Security admin** add-on — no
+[base preset](../../cloud/cloud-account.mdx#permission-presets) grants it on its own. Without it the **Edit** button is
+disabled, with a tooltip explaining why.
+</Admonition>
+
+Click **Edit** to change the list.
+
+![Manage Product: Edit IPs](./assets/portal-product-details-allowed-ips.png)
+
+Each row takes an address in [CIDR notation](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+(for example `192.168.0.0/24`) and a free-text alias. **Add my IP** inserts the address you are currently connecting
+from, **Add new IP** adds an empty row, and the bin button removes a row. Click **Save** to apply your changes, or
+**Cancel** to discard them.
+
+<Admonition type="info" title="We recommend fortifying your security by allowing access only to specific IPs" id="we-recommend-fortifying-your-security-by-allowing-access-only-to-specific-ips" href="#we-recommend-fortifying-your-security-by-allowing-access-only-to-specific-ips">
+You can increase your system's security further using this in-depth security measure and restrict access to
+trusted sources, e.g. your application servers. 
+More details can be found in the [Security](../cloud-security.mdx#access-your-product) page.
+</Admonition>
 
 ### Manage features
 
@@ -243,7 +337,7 @@ You can view features available for your product, enable, disable and configure 
 After enabling features some of them must be configured to work properly.
 </Admonition>
 
-!["Figure 22 - Manage Features: Configure or disable features"](./assets/portal-product-features-enabled.png)
+![Manage Features: Configure or disable features](./assets/portal-product-features-enabled.png)
 
 Available features are described on [Product Features](../cloud-features.mdx) page.
 
@@ -255,14 +349,54 @@ Enabling, disabling, and configuring features requires the [**Manager** (or **Ad
 
 You can expand your cluster by adding *more product nodes* to your cluster. This helps improve *High Availability* and *task/load balancing*.
 
-!["Figure 23 - Nodes: Manage additional nodes"](./assets/portal-product-nodes-additional-nodes.png)
+![Nodes: Manage additional nodes](./assets/portal-product-nodes-additional-nodes.png)
 
 More details can be found [here](../cloud-scaling.mdx#additional-product-nodes---general).
+
+### Subscription & support {#subscription-and-support}
+
+The **Subscription & support** card gathers what your product is paying for, which RavenDB build it tracks, and where to
+get help with it.
+
+![Subscription & support](./assets/portal-support-subscriptions-tab.png)
+
+#### Subscription details
+
+| Field | Description |
+|---|---|
+| **Payment** | Your payment model — *On-Demand*, *Yearly All Upfront* or *Yearly No Upfront*. See [Pricing, Payment and Billing](../cloud-pricing-payment-billing.mdx). |
+| **Contract** | The date your current contract runs until. Shown only for term contracts. |
+| **Release channel** | The RavenDB release channel this product tracks, as chosen in the [Customize](#d-new-product-customize) stage. |
+
+When a newer release channel than the one your product tracks becomes available, an **Update available** pill appears
+next to the release channel. Clicking it opens the [Support](./cloud-portal-support-tab.mdx#request-support-from-a-product)
+view with this product selected, so you can ask for the upgrade — changing the release channel is not a self-service
+action.
+
+<Admonition type="note" title="Marketplace accounts">
+For [Microsoft Azure](../cloud-microsoft-azure-marketplace.mdx) and [AWS](../cloud-aws-marketplace.mdx) Marketplace
+accounts the **Payment** and **Contract** rows are not shown, because billing is handled by the provider. Only the
+release channel appears.
+</Admonition>
+
+#### Support & help resources
+
+This part of the card offers direct links to the *Documentation*, *GitHub discussions* and the *Discord community*,
+and a badge showing whether the product is covered by **Paid support** or the **Free tier**.
+
+If your account has an active paid support option, the card also offers **Request support for this instance**, which
+opens the [Support](./cloud-portal-support-tab.mdx#request-support-from-a-product) view with this product already
+selected. Otherwise it links to a comparison of the paid support plans.
+
+<Admonition type="note" title="Access required">
+The support badge and the request/compare panel are shown only to users with the
+[**Support** account role](../../cloud/cloud-account.mdx#account-roles). The three resource links are always available.
+</Admonition>
 
 ### Maintenance and Danger Zones
 You can restart your product nodes, deploy additional tools and terminate your product here.
 
-!["Figure 24 - Manage Product: Maintenance and Termination"](./assets/portal-product-details-maintenance-and-termination.png)
+![Manage Product: Maintenance and Termination](./assets/portal-product-details-maintenance-and-termination.png)
 * **Maintenance Zone**  
   Use this tab to restart selected node and deploy RavenDB tools. For *Serverless* products, you can switch to regular deployment.
   
@@ -270,11 +404,11 @@ You can restart your product nodes, deploy additional tools and terminate your p
 Changing your product deployment type is **irreversible**.
 </Admonition>
 
-!["Figure 25 - Manage Product: Storage"](./assets/portal-product-details-maintenance-zone.png)
+![Manage Product: Maintenance Zone](./assets/portal-product-details-maintenance-zone.png)
 * **Danger Zone**  
   Use this tab's **Terminate** button to eliminate your cluster.
 
-!["Figure 26 - Manage Product: Terminate"](./assets/portal-product-details-terminate-product.png)
+![Manage Product: Terminate](./assets/portal-product-details-terminate-product.png)
 
   <Admonition type="danger" title="">
   Terminating your instance is **irreversible**. Your data and cluster properties will be permanently lost.  
@@ -284,4 +418,5 @@ Changing your product deployment type is **irreversible**.
 
 The product view includes a **User Access** widget that lists the account users who have access to this product, together with their access level. If you can manage users, you can change a user's [preset](../cloud-account.mdx#permission-presets) and toggle the **Security admin** add-on directly in the widget, then click **Save changes** — without leaving the product view. The **Account Owner** is always shown with **full access**. Use **Manage in Users & Access** to open the [Users & Access](./cloud-portal-users-and-access-tab.mdx) page for the full user-management view. When no other users have been granted access yet, the widget shows an empty state.
 
-!["Product Details: User Access widget"](./assets/portal-products-tab-user-access-widget.png)
+![Product Details: User Access widget](./assets/portal-products-tab-user-access-widget.png)
+
