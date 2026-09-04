@@ -31,29 +31,29 @@ In order to do so, the **source server** needs to have the **destination server'
 
 Open the [Management Studio](../7.2/studio/overview) of each server.
 Each server's Studio is available in the [Portal](../cloud/portal/cloud-portal.mdx#cloud-portal)'s 
-[Product tab](../cloud/portal/cloud-portal-products-tab.mdx#cloud-account-portal-products).  
+[Product tab](../cloud/portal/cloud-portal-products-tab.mdx#managing-an-existing-product).  
 
 Learn how to [install the certificate and access RavenDB Cloud Studio](../cloud/cloud-overview.mdx#ravendb-studio---graphic-user-interface) if this is your first time using Cloud Studio.
 
 If you have already installed the certificate and accessed Studio, 
 click the URLs in the Products tab to open a Studio GUI for each node.  
 
-!["Server URLs"](./assets/migration-001-urls.png)
+![Server URLs](./assets/migration-001-urls.png)
 In each studio, select server dashboard and click **Manage certificates**.  
 
-!["Manage Certificates"](./assets/migration-cloud-studio-manage-certificates.png)
+![Manage Certificates](./assets/migration-cloud-studio-manage-certificates.png)
 Export the **destination server**'s **Cluster certificate**.  
 
-!["Cluster Certificate"](./assets/migration-003-cluster-certificate.png)
+![Cluster Certificate](./assets/migration-003-cluster-certificate.png)
 Import the certificate as a **Client Certificate** by the **source server**.  
 
-!["Client Certificate"](./assets/migration-004-client-certificate.png)
+![Client Certificate](./assets/migration-004-client-certificate.png)
 Configure the Client Certificate's **Database Permissions** to include the database whose data you want to migrate.  
 
-!["Database Permissions"](./assets/migration-005-database-permissions.png)
+![Database Permissions](./assets/migration-005-database-permissions.png)
 In the Destination Server, create or select an empty database and open its **Tasks --&gt; Import Data** option.  
 
-!["Import Data"](./assets/migrating-data-from-ravendb-steps.png)
+![Import Data](./assets/migrating-data-from-ravendb-steps.png)
 
 1. Select the **Tasks** tab.  
 2. Select **Import Data**.  
@@ -75,7 +75,7 @@ Another option is to [export a database](../7.2/studio/database/tasks/export-dat
 This option doesn't require passing certificates:  
 #### First export the data from source server  
 
-!["Export Data to File"](./assets/studio-view-export-database-tofile-steps.png)
+![Export Data to File](./assets/studio-view-export-database-tofile-steps.png)
 
 1. In the source server, select a database to export and go to **Tasks tab**.  
 2. Select **Export Database**.  
@@ -85,7 +85,7 @@ This option doesn't require passing certificates:
 5. After choosing which data to export, click **Export Database**.  
 #### Next import the data to destination server from file
 
-!["Import Data from File"](./assets/studio-view-import-fromfile-steps.png)
+![Import Data from File](./assets/studio-view-import-fromfile-steps.png)
 
 1. In the destination server, go to **Tasks** tab.  
 2. Select **Import Data**.  

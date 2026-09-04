@@ -95,6 +95,18 @@ There are two types of storage: **Standard** and **Premium**. They differ signif
 depending on the cloud provider in question. Pick either to change your current storage capacity.  
 
 ![Scaling storage](./assets/portal-product-details-edit-storage.png)
+
+<Admonition type="info" title="">
+Storage can also grow **on its own**: with
+[Automatic Storage Extension](./cloud-features.mdx#automatic-storage-extension) enabled, the disk is extended to the
+next available size once disk usage passes a threshold you set.
+</Admonition>
+
+<Admonition type="warning" title="Storage modification rate">
+Storage changes are rate limited per product: at least **6 hours** must pass between two changes on *AWS*, and
+**12 hours** on *Azure* **Premium** disks. Until the window elapses the storage form reports how long is left.
+</Admonition>
+
 ### AWS Disks
 
 #### AWS Standard & Premium - Default Performance
@@ -143,7 +155,7 @@ default one.
 **IOPS** and **Throughput** that can be configured independently of the disk size, giving you finer
 control over storage performance and cost.
 
-!["Figure - Azure Premium SSD v2 storage edit form with editable IOPS and Throughput"](./assets/portal-product-details-edit-storage-premium-ssd-v2.png)
+![Azure Premium SSD v2 storage edit form with editable IOPS and Throughput](./assets/portal-product-details-edit-storage-premium-ssd-v2.png)
 
 **Availability and constraints:**
 
@@ -180,7 +192,7 @@ There are two ways to start using **Premium SSD v2**:
    [Managing an Existing Product](../cloud/portal/cloud-portal-products-tab.mdx#change-instance-type-and-storage)
    in the portal documentation.
 
-!["Figure - Upgrade to Azure Premium SSD v2 modal with IOPS and Throughput fields"](./assets/portal-product-details-upgrade-to-premium-v2-modal.png)
+![Upgrade to Azure Premium SSD v2 modal with IOPS and Throughput fields](./assets/portal-product-details-upgrade-to-premium-v2-modal.png)
 
 The upgrade is performed **node by node**. Each node being migrated is briefly unavailable, and the
 full operation may take **multiple hours** to complete. The migration uses your current **IOPS** and
@@ -199,7 +211,7 @@ The use of a data disk is mandatory for deployments requiring more than 1TB of s
 
 **Data Disk** can be selected during instance creation or migrated to on already existing instances.
 
-!["Figure - Migrate to data disk modal showing Premium SSD v2 information"](./assets/portal-product-details-migrate-to-data-disk-premium-v2.png)
+![Migrate to data disk modal showing Premium SSD v2 information](./assets/portal-product-details-migrate-to-data-disk-premium-v2.png)
 
 <Admonition type="info" title="Azure: data disk created as Premium SSD v2">
 On **Azure**, when the product's region supports **Premium SSD v2**, migrating to a Data Disk
