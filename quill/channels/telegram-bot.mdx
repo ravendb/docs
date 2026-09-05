@@ -22,7 +22,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * The channel is added from Quill's management dashboard, using one short form that asks you to select one of the agents you
   created and provide the bot token and an optional channel name.
-   * If the selected agent declares parameters, the form also asks you to settle each parameter's value.  
+   * If the selected agent has parameters, the form also asks you to settle each parameter's value.  
      You can either provide a fixed value, or take the value from the Telegram user the bot is chatting with, e.g., the user's
      phone number.
    * When an agent parameter takes the user's phone number, the bot will ask each user it chats with to share the number before
@@ -44,6 +44,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Sharing the phone number](#sharing-the-phone-number)
       * [Returning users](#returning-users)
    * [Managing the channel](#managing-the-channel)
+      * [Pausing and deleting the channel](#pausing-and-deleting-the-channel)
       * [Rotating the bot token](#rotating-the-bot-token)
       * [The tabs of the details view](#the-tabs-of-the-details-view)
    * [Telegram bot limitations](#telegram-bot-limitations)
@@ -56,9 +57,10 @@ import ContentFrame from "@site/src/components/ContentFrame";
 Before adding a Telegram bot channel, make sure you have:
 
 * **An agent in your app.**  
-  The channel is added for one of the app's agents, and this agent will answer the users who chat with the bot.
+  The channel is added for one of the app's agents, and this agent will answer the users who chat with the bot.  
+  To add an agent, see [Getting started: Adding an AI agent](../getting-started/adding-an-ai-agent.mdx).
 * **A Telegram account.**  
-  The bot is created in a private chat with @BotFather from your account.  
+  The bot is created in a private chat with @BotFather from your [Telegram account](https://telegram.org).  
   Once the channel is added, you can try the bot out from the same account.
 * **Access to Telegram from the machine running Quill.**  
   The only connection the bot needs is the one Quill opens to Telegram's servers, `api.telegram.org`, over HTTPS.  
@@ -69,7 +71,7 @@ Before adding a Telegram bot channel, make sure you have:
 
 <Panel heading="Creating a bot using @BotFather">
 
-To create the bot, open a chat with **@BotFather** in your Telegram client and send this command: `/newbot`  
+To create the bot, open a chat with [**@BotFather**](https://t.me/BotFather) in your Telegram client and send this command: `/newbot`  
 The genuine @BotFather carries Telegram's blue verification mark next to its name.  
 @BotFather then asks for two details, one at a time:
 
@@ -100,10 +102,11 @@ If the token ever leaks, have @BotFather issue a new token and enter it in the c
 
 <Panel heading="Connecting the bot to your app">
 
-The bot is connected to the app by adding a **Telegram bot** channel for one of the app's agents.  
-The channel is added in a short form where you provide the bot token from @BotFather and select the agent that will answer the
-users.  
-Once the channel is added, Quill starts operating the bot, and messages sent to the bot will reach the agent.
+To connect the bot to the app, add a **Telegram bot** channel for one of the app's agents.
+
+* The channel is added in a short form that asks you to provide the bot token issued by @BotFather, and to select the agent that
+  will answer the users.
+* Once the channel is added, Quill starts operating the bot, and messages sent to the bot will reach the agent.
 
 <ContentFrame>
 
@@ -114,9 +117,13 @@ section's **Add channel** button to open the menu of channel types, and select *
 
 ![The Add channel menu](./assets/telegram-bot_add-channel-menu.png)
 
-The **Add agent** wizard ends on an **Add a channel** stage that shows the same Channels section, so a bot can also be connected
-right after its agent is created. The form then has no **Agent** field: the channel is added for the agent the wizard just
-created.
+<Admonition type="info" title="">
+
+The [Add agent wizard](../getting-started/adding-an-ai-agent.mdx#saving-the-agent) ends on an **Add a channel** stage that shows
+the same Channels section, so a bot can also be connected right after its agent is created.  
+The form then has no **Agent** field: the channel is added for the agent the wizard just created.
+
+</Admonition>
 
 </ContentFrame>
 
@@ -129,8 +136,14 @@ Selecting **Telegram bot** opens the **New Telegram bot channel** form.
 ![New Telegram bot channel](./assets/telegram-bot_new-channel.png)
 
 1. **Agent**  
-   Select the agent that will answer the bot's users. The list holds the app's agents.  
+   Select the agent that will answer the bot's users. The list holds the app's agents.
+
+   <Admonition type="info" title="">
+
    When the form is opened from the **Add agent** wizard, the channel is added for the new agent and this field is absent.
+
+   </Admonition>
+
 2. **Bot token**  
    Paste the token you received from @BotFather. The field shows the token as dots; click the eye icon to reveal it.  
    Quill validates the token with Telegram when the channel is added, and never displays it again afterwards.
@@ -151,10 +164,11 @@ The new channel appears in the **Channels** section:
 ![The new channel](./assets/telegram-bot_channel-created.png)
 
 1. **Channel name**  
-   The channel's name, with the bot's username beneath it. In this example the name was left empty, so the channel is named
-   after the username.
+   The channel's name, with the bot's username beneath it.  
+   In this example the name was left empty, so the channel is named after the username.
 2. **Status**  
-   **Active**: the channel is enabled. Pausing and resuming a channel is described in
+   **Active**: the channel is enabled; **Disabled**: the channel is paused.  
+   Pausing and resuming a channel is described in
    [Dashboard: Channels view](../dashboard/channels-view.mdx#pausing-and-resuming-a-channel).
 3. **Active links**  
    Embed links belong to web widget channels; a Telegram bot channel has none, so the column shows a dash.
@@ -183,7 +197,8 @@ The reply is streamed into the chat as the agent composes it.
 An answer longer than Telegram's message limit is delivered in several messages.  
 The conversation keeps its context, so a follow-up question like "Which of these is the cheapest?" is understood against the
 earlier answer.  
-Messages a user sends while the bot is still answering are gathered and answered together, as a single question.  
+Messages a user sends while the bot is still answering are gathered and answered together, as a single question, as long as the
+chat's queue has room; see [Telegram bot limitations](#telegram-bot-limitations).  
 The bot recognizes only two Telegram commands: `/start` and `/clear`. Any other string is handled as text, even if preceded by `/`.
 
 </ContentFrame>
@@ -192,7 +207,8 @@ The bot recognizes only two Telegram commands: `/start` and `/clear`. Any other 
 
 ### Clearing the conversation
 
-A conversation lasts one day: at midnight UTC, the next message opens a fresh conversation, with none of the earlier context.  
+A conversation lasts one day at most: at midnight UTC, the next message opens a fresh conversation, and the agent no longer sees
+the earlier messages.  
 A user can also start afresh at any moment by sending `/clear`. The bot confirms, and the next message opens a new conversation.
 
 ![Clearing the conversation](./assets/telegram-bot_clear.png)
@@ -218,32 +234,48 @@ The bot answers in private chats only. Added to a group, the bot posts one refus
 
 <Panel heading="Binding agent parameters">
 
-An agent's **parameters** are values its queries need, provided by the channel rather than chosen by the LLM.  
-A Telegram bot channel binds each parameter either to a constant value, the same for every user, or to a detail of the Telegram
-user who is chatting, so the agent's answers can stay tied to this user's data.  
+Some agents have **parameters**: values the agent's queries require, and that must come from the channel rather than be chosen by
+the LLM. e.g., the phone number of the customer whose orders the agent looks up.  
+When you add a Telegram bot channel for such an agent, the form asks you to bind each parameter to a source, which can be:
+
+* A constant value that you type, which is then the same for all bot users.
+* A detail of the Telegram user who is messaging the bot: the user's Telegram id, username, or phone number.  
+  The parameter then carries a different value for each user, so that each user is answered about this user's own data.
+
 This section describes the sources a parameter can be bound to, and what a user meets when the bot needs the user's phone number.
 
 <ContentFrame>
 
 ### Choosing a source for each parameter
 
-When the selected agent declares parameters, the channel form presents a **Parameters** section with one row per parameter, named as
-in the agent's configuration.  
-Each row selects the parameter's source:
+When the selected agent has parameters, the channel form presents a **Parameters** section with one row per parameter, labeled
+with the parameter's name, e.g., `customerPhone`.  
+In each parameter row, select where the parameter's value comes from:
 
-| Source | The value bound |
-|---|---|
-| **Constant value** | A value that you type in the form. Quill will then pass this value to the agent with every message, from every user.<br />e.g., to mark every user of this bot as a member of a specific customer group. |
-| **Telegram user id** | The numeric id of the Telegram user who sent the message. |
-| **Telegram username** | The Telegram username of the user who sent the message, without the `@`.<br />A user who has no username set will be asked to add one before the agent answers. |
-| **Telegram phone number** | The phone number of the user's Telegram account.<br />The user will be asked to share the number once, as described below. |
+![Binding a parameter](./assets/telegram-bot_parameter-mapping.png)
 
-![Binding a parameter to the phone number](./assets/telegram-bot_parameter-mapping.png)
+1. **The parameter's source**  
+   Select the source from the list:
+   * **Constant value**  
+     A value that you type in the form. Quill will then pass this value to the agent with every message, from every user. e.g., to
+     mark every user of this bot as a member of a specific customer group.
+   * **Telegram user id**  
+     The numeric id of the Telegram user who sent the message.
+   * **Telegram username**  
+     The Telegram username of the user who sent the message, without the `@`. A user who has no username set will be asked to add
+     one before the agent answers.
+   * **Telegram phone number**  
+     The phone number of the user's Telegram account. The user will be asked to share the number once, as described in
+     [Sharing the phone number](#sharing-the-phone-number).
 
-In this example, the agent's `customerPhone` parameter is bound to the account's phone number, so the agent's queries will match each
-user to a customer record by the phone number the user shared.  
+   The user id, username, and phone number sources tie the answers to the Telegram user, and suit an app whose data holds these
+   details.
+2. **Value**  
+   The value to bind when the source is **Constant value**.
+
+In this article's example, `customerPhone` is bound to **Telegram phone number**, as the following sections show.  
 The bindings can be changed later in the channel's **Parameters** tab, described in the
-[Parameters](#parameters) tab section of Managing the channel.
+[Parameters](#the-parameters-tab) tab section of Managing the channel.
 
 </ContentFrame>
 
@@ -288,28 +320,40 @@ A new channel, even one added for the same bot, knows nothing of earlier shares 
 
 <Panel heading="Managing the channel">
 
-Once added, the channel is managed from the app's **Channels** view, described in
-[Dashboard: Channels view](../dashboard/channels-view.mdx): the channel's details view offers the actions common to every
-channel type, where the channel's name can be changed, and the channel can be paused and resumed, or deleted.  
-Two of these actions have a Telegram side worth knowing:
+Once added, the channel is managed from its details view, described in
+[Dashboard: Channels view](../dashboard/channels-view.mdx): the view's header carries the **Pause**/**Resume** button and the **⋮**
+menu with **Edit** and **Delete**, common to every channel type, and the tabs below the header are specific to the channel type.
+
+To open the details view, open the app from **My apps** in Quill's management dashboard, select **Channels** in the sidebar, and
+click the channel's box:
+
+![The channel's box in the Channels view](./assets/telegram-bot_channel-box.png)
+
+---
+
+<ContentFrame>
+
+### Pausing and deleting the channel
+
+To pause or resume the channel, click **Pause**/**Resume** in the header; to delete it, select **Delete** in the header's **⋮** menu.
+
+![Pause and the channel's menu in the details view's header](./assets/telegram-bot_channel-menu.png)
+
+Both actions are explained in the Channels view article, in
+[Pausing and resuming a channel](../dashboard/channels-view.mdx#pausing-and-resuming-a-channel) and
+[Deleting a channel](../dashboard/channels-view.mdx#deleting-a-channel). Each of them also has a Telegram side, explained here:
 
 * A paused bot stops answering, and messages users send meanwhile are held by Telegram for up to 24 hours, to be answered if
-  the channel is resumed within this time. See
-  [Pausing and resuming a channel](../dashboard/channels-view.mdx#pausing-and-resuming-a-channel).
+  the channel is resumed within this time.
 * A deleted channel stops the bot, but the bot itself remains yours on Telegram, and its token can be used to connect it again.
-  See [Deleting a channel](../dashboard/channels-view.mdx#deleting-a-channel).
 
-This section covers management options specific to a Telegram bot, in the order the bot's details view presents them: replacing
-a leaked token, acquiring the bot's address so you can hand it to your users, changing the parameter bindings, and customizing the
-bot's own messages.
+</ContentFrame>
 
 <ContentFrame>
 
 ### Rotating the bot token
 
-The header of the bot's details view carries the actions common to every channel type, described in
-[The channel's details view](../dashboard/channels-view.mdx#the-channel-s-details-view). Its **Edit** entry opens the
-**Edit channel** form, which allows you to manage the bot's token rotation.  
+To replace the bot token, select **Edit** in the header's **⋮** menu, and rotate the token in the **Edit channel** form.  
 If you have @BotFather issue a new token for any reason (e.g., because the existing token leaked), you can switch the channel to
 the new token here.
 
@@ -318,7 +362,8 @@ the new token here.
 1. **Rotate bot token**  
    Turn the toggle on to replace the current token.
 2. **New bot token**  
-   Paste the new token. Quill will validate the token with Telegram before saving it.
+   Paste the new token. Quill will validate the token with Telegram before saving it.  
+   The token has to belong to the same bot as the current one; the token of a different bot is refused.
 3. **Save changes**  
    Click to save.  
    The bot continues to answer under the new token; the old token is no longer used.
@@ -329,11 +374,12 @@ the new token here.
 
 ### The tabs of the details view
 
-Below [the channel's details view](../dashboard/channels-view.mdx#the-channel-s-details-view)'s header, there are three tabs:
+The details view presents an informative **Connect** tab, a **Parameters** tab that allows you to change the bindings of the
+agent's parameters, and a **Bot messages** tab that allows you to replace the bot's own messages with texts of yours:
 
 ---
 
-#### Connect
+#### The Connect tab
 
 The **Connect** tab shows the bot's address on Telegram, which you can hand to your users so they can open a chat with the bot,
 and the two commands a user needs in the chat, `/start` and `/clear`.
@@ -349,39 +395,40 @@ and the two commands a user needs in the chat, `/start` and `/clear`.
 
 ---
 
-#### Parameters
+#### The Parameters tab
 
 The **Parameters** tab lists the agent's parameters and the source each of them is currently bound to, as set when the
 channel was added, and lets you change the bindings.  
-A parameter added to the agent configuration after the channel was added appears in this tab unbound, and the bot will not
-answer until the parameter is bound: users are told that the assistant is not fully configured yet.
+A parameter that is added to the [agent configuration](../getting-started/adding-an-ai-agent.mdx#modifying-the-agent-configuration)
+after the channel was added appears in this tab unbound, and the bot will not answer until the parameter is bound: users are told
+that the assistant is not fully configured yet.
 
 ![The Parameters tab](./assets/telegram-bot_parameters.png)
 
 1. **Parameters**  
    Open the Parameters tab.
 2. **Edit**  
-   Click to make the bindings editable, and **Save** when done.
+   Click to make the bindings editable, and click **Save** when done.
 3. **customerPhone**  
-   The example agent declares one parameter, `customerPhone`: the phone number its queries use to find a customer's orders
+   The example agent has one parameter, `customerPhone`: the phone number its queries use to find a customer's orders
    (see [Binding agent parameters](#binding-agent-parameters)).  
    Each row shows a parameter's name, as in the agent's configuration, and the source the parameter is bound to; here, the
    Telegram phone number.
 
 ---
 
-#### Bot messages
+#### The Bot messages tab
 
 Besides replying to user messages, the bot sends messages of its own: the greeting, the confirmation after `/clear`, the requests
-for the user's details, and the notices sent when the bot cannot answer. Each of these messages has a default text, shown in the
-**Bot messages** tab, and can be replaced with a text of your own.
+for the user's details, and the notices sent when the bot cannot answer.  
+The default text of each of these messages is shown in the **Bot messages** tab, and can be replaced with a text of your own.
 
 ![The Bot messages tab](./assets/telegram-bot_bot-messages.png)
 
 1. **Bot messages**  
    Open the Bot messages tab.
 2. **Edit**  
-   Click to make the message fields editable, and **Save** when done.
+   Click to make the message fields editable, and click **Save** when done.
 3. **Greeting (/start)**  
    The bot's reply to `/start`. Type a text of your own, or leave the field empty to keep the default text.
 
@@ -410,7 +457,7 @@ The limits below follow this design and Telegram's own rules. None of them can b
 * **Anyone on Telegram can chat with the bot.**  
   The channel cannot select the users that will have access to the bot: any Telegram user who finds the bot can ask it questions.  
   Agent parameters bound to the Telegram user can tie the answers to this user's own data, but cannot turn anyone away.
-* **One bot per channel, one channel per agent.**
+* **One bot per channel, one agent per channel.**
    * An agent can serve several channels at once, e.g., a chat widget on your site and a Telegram bot.
    * A channel serves the agent it was added for: it cannot serve multiple agents, or be switched to a different agent.
    * A bot can serve only the channel it was connected to. To connect a bot to a different channel, delete the channel and add a
@@ -421,52 +468,97 @@ The limits below follow this design and Telegram's own rules. None of them can b
   A photo, a document, a sticker, or a voice message gets no reply. A contact card is accepted only when an agent parameter
   takes the user's phone number.
 * **A conversation lasts one day at most.**  
-  At midnight UTC the conversation's context is dropped, and the next message opens a fresh conversation. A user can also start a
-  fresh conversation earlier by sending `/clear`.
-* **Messages sent in a flood may be dropped.**  
-  Messages a user sends while the bot is still answering are queued. When the queue is full, further messages are dropped. The bot
-  then sends one notice, asking the user to resend the dropped message after the bot has replied.
+  At midnight UTC the conversation ends: the next message opens a new conversation, and the agent no longer sees the earlier
+  messages. A user can also end a conversation earlier by sending `/clear`.
+* **Messages sent faster than the bot answers may go unanswered.**  
+  Messages a user sends while the bot is still answering are queued. When the queue is full, further messages are not taken. The bot
+  then sends one notice, asking the user to send the message again after the bot has replied.
 
 </Panel>
 
 <Panel heading="Troubleshooting">
 
-The symptoms below are shown by a Telegram bot channel when something goes wrong, each with its likely cause and what to do about
-it.  
-Bot messages are quoted in their [default](#bot-messages) form; a channel with customized messages will show your texts instead.
+The symptoms below are shown by a Telegram bot channel when something goes wrong, each with its likely cause and what to do about it.  
+The first symptoms are seen in Quill's management dashboard: in the channel form, in the **Edit channel** form, and in the Channels
+view. The rest are encountered by the bot's users in their chats with the bot on Telegram.  
+The bot's messages are quoted in their default form, shown in [The Bot messages tab](#the-bot-messages-tab); a channel with
+customized messages shows your texts instead.
 
-* **The channel shows as Active, but the bot does not answer.**  
-  Likely cause: the bot token may have been revoked or replaced using @BotFather, so Telegram no longer serves the bot's requests.  
-  The dashboard shows no warning for a dead token, and messages users sent meanwhile are lost.  
-  What to do: enter a valid token in the channel, as described in [Rotating the bot token](#rotating-the-bot-token).
-* **The channel shows as Disabled, and the bot does not answer.**  
-  Likely cause: the channel may have been paused.  
-  Messages users sent meanwhile are held by Telegram for up to 24 hours, and will be answered if the channel is resumed within
-  this time.  
-  What to do: resume the channel, as described in
-  [Pausing and resuming a channel](../dashboard/channels-view.mdx#pausing-and-resuming-a-channel).
-* **The bot replies "This assistant is not fully configured yet."**  
-  Likely cause: the agent may declare a parameter the channel does not bind, e.g., a parameter added to the agent after the
-  channel was added.  
-  What to do: bind the parameter in the channel's [Parameters](#parameters) tab.
-* **Adding the channel fails with "bot ... is already connected in app ...".**  
-  Likely cause: the bot is already connected to another channel, in this app or in another app of the deployment; one bot can
-  serve only one channel.  
-  What to do: delete the channel that holds the bot, or create a second bot using @BotFather. See
+**In the dashboard**
+
+* **Clicking `Connect bot` fails with "invalid bot token format".**  
+  Likely cause: the token pasted in the form may be incomplete or mistyped. A bot token is the bot's numeric id, a colon, and a
+  secret string, e.g., `123456789:AA...`.  
+  What to do: copy the whole token from @BotFather's message, as described in
+  [Creating a bot using @BotFather](#creating-a-bot-using-botfather), and paste it in the form's
+  [Bot token](#filling-in-the-channel-form) field.
+* **Clicking `Connect bot` fails with "telegram rejected the bot token".**  
+  Likely cause: the token may have been replaced using @BotFather, so Telegram no longer accepts the old one.  
+  What to do: paste the token @BotFather issued last in the form's [Bot token](#filling-in-the-channel-form) field; if you are not
+  sure which token is current, have @BotFather issue a new one and paste it.
+* **Clicking `Connect bot` fails with "could not reach telegram" or "telegram did not respond".**  
+  Likely cause: the machine running Quill may have no access to `api.telegram.org`, as required in [Prerequisites](#prerequisites);
+  a firewall or a proxy blocking the address is the usual cause.  
+  What to do: allow outgoing HTTPS connections from the machine running Quill to `api.telegram.org` in the firewall or proxy that
+  blocks them, or ask your network administrator to.
+* **Clicking `Connect bot` fails with "bot @... is already connected".**  
+  Likely cause: the bot is already connected to another channel, in this app or in another app of the deployment; a bot can serve
+  only one channel. When the channel is in another app, the message names that app.  
+  What to do: delete the channel that holds the bot, in this app or in the app the message names, as described in
+  [Pausing and deleting the channel](#pausing-and-deleting-the-channel); or create another bot using @BotFather, as described in
+  [Creating a bot using @BotFather](#creating-a-bot-using-botfather), and paste the new bot's token in this form instead.
+* **Clicking `Save changes` in the `Edit channel` form fails with "the token belongs to a different bot".**  
+  Likely cause: the new token may have been copied from @BotFather's message about a different bot.  
+  What to do: paste the token of the bot the channel was added for in the **New bot token** field of the **Edit channel** form.  
+  To switch to a different bot, add a new channel for that bot instead, as described in
+  [Connecting the bot to your app](#connecting-the-bot-to-your-app).
+* **The channel shows as `Active` in the Channels view, but the bot does not answer.**  
+  Likely cause: the bot token may have been replaced using @BotFather, so Telegram no longer answers the requests Quill makes
+  with the old one.  
+  The dashboard shows no warning for a replaced token, and messages users send meanwhile are lost.  
+  What to do: enter the token @BotFather issued last in the channel, as described in [Rotating the bot token](#rotating-the-bot-token).
+* **The channel shows as `Disabled` in the Channels view, and the bot does not answer.**  
+  Likely cause: the channel was paused, using **Pause** in the header of its details view.  
+  Messages users send while the channel is paused are held by Telegram for up to 24 hours, and are answered if the channel is
+  resumed within this time.  
+  What to do: resume the channel, as described in [Pausing and deleting the channel](#pausing-and-deleting-the-channel).
+
+**On Telegram**
+
+* **The bot replies "This assistant is not fully configured yet. Please contact whoever set up this bot."**  
+  Likely cause: the agent may have a parameter the channel does not bind, e.g., a parameter added to the agent after the channel
+  was added.  
+  What to do: bind the parameter in the channel's [Parameters](#the-parameters-tab) tab.
+* **The bot replies "Sorry - something went wrong handling that message. Please try again."**  
+  Likely cause: the agent failed to produce the answer, e.g., because the database it queries or the LLM service it uses could not
+  be reached.  
+  What to do: verify that the app's database, and the LLM service behind the agent's AI connection string, can be reached. The
+  connection string can be tested as described in
+  [Dashboard: AI connection strings](../dashboard/ai-connection-strings.mdx#test-and-save-the-connection). Then try the bot from
+  your own Telegram account.
+* **The bot replies "This assistant needs your Telegram username. Set one in Telegram Settings and send your message again."**  
+  Likely cause: a parameter is bound to **Telegram username**, and the user has no username set in Telegram.  
+  What to do: advise the user to set a username in Telegram's settings and send the question again; or bind the parameter to
+  another source, in the channel's [Parameters](#the-parameters-tab) tab.
+* **The bot does not reply to a photo, a document, a sticker, a voice message, or a contact card.**  
+  Likely cause: the bot answers text only; a contact card is accepted only when a parameter is bound to **Telegram phone number**.  
+  What to do: advise the user to send the question as text. See [Messages the bot ignores](#messages-the-bot-ignores).
+* **The bot replies "I only work in one-on-one chats. Message me directly to start a conversation." in a group, and then stays
+  silent there.**  
+  Likely cause: the bot was added to a Telegram group; the bot answers in private chats only.  
+  What to do: hand the users the bot's address, shown in the channel's [Connect](#the-connect-tab) tab, and advise them to open a
+  private chat with the bot at that address.
+* **The bot replies "I'm still working through your earlier messages, so that one didn't make it. Please resend it once I've
+  replied."**  
+  Likely cause: the user may have sent more messages than the chat's queue can hold while an answer was still being composed.  
+  What to do: advise the user to wait for the bot's reply, and then send the message again. See
   [Telegram bot limitations](#telegram-bot-limitations).
-* **The bot ignores a message.**  
-  Likely cause: the message may not be text, or may have been sent in a group. The bot answers text only, and only in private chats.  
-  What to do: send the question as text, in a private chat with the bot. See [Messages the bot ignores](#messages-the-bot-ignores).
 * **The bot answers from outdated information.**  
   Likely cause: the conversation may still hold earlier answers, which the agent reads along with the new question.  
-  What to do: send `/clear` to start a fresh conversation, as described in [Clearing the conversation](#clearing-the-conversation).
+  What to do: advise the user to send `/clear` and ask again, as described in [Clearing the conversation](#clearing-the-conversation).
 * **The bot asks a returning user for the phone number again.**  
-  Likely cause: the channel may have been deleted and re-added. The number is kept per channel, so a new channel has no record of
-  the number the user shared.  
-  What to do: the user can share the number again; the new channel will keep it. See [Returning users](#returning-users).
-* **The bot replies "I'm still working through your earlier messages, so that one didn't make it."**  
-  Likely cause: the user may have sent more messages than the bot's queue holds while an answer was still being composed.  
-  What to do: the user can send the dropped message again once the bot has replied. See
-  [Telegram bot limitations](#telegram-bot-limitations).
+  Likely cause: the channel may have been deleted and added again. The number is kept per channel, so a new channel has no record
+  of the number the user shared.  
+  What to do: advise the user to share the number again. See [Returning users](#returning-users).
 
 </Panel>
