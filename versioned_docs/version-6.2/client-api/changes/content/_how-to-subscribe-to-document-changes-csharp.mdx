@@ -1,27 +1,44 @@
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-Following methods allow you to subscribe to document changes:
+<Admonition type="note" title="">
 
-- [ForDocument](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)
-- [ForDocumentsInCollection](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)
-- [ForDocumentsStartingWith](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)
-- [ForAllDocuments](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)
+Subscribe to document changes using `ForDocument`, `ForDocumentsInCollection`,
+`ForDocumentsStartingWith`, or `ForAllDocuments`.
 
-## ForDocument
+<Admonition type="warning" title="">
+The `Subscribe` method on the observable these methods return accepts only an `IObserver` object
+by default.  
+To instead subscribe with a delegate, like the `change => ...` lambda used in the examples below,
+add the [System.Reactive](https://www.nuget.org/packages/System.Reactive/) package to your project.  
+This adds `Subscribe` overloads that take delegates, including ones with error and
+completion handlers.  
+</Admonition>
+
+* In this article:
+   * [ForDocument](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)
+   * [ForDocumentsInCollection](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)
+   * [ForDocumentsStartingWith](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)
+   * [ForAllDocuments](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)
+   * [DocumentChange and DocumentChangeTypes syntax](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange-and-documentchangetypes-syntax)
+
+</Admonition>
+
+<Panel heading="ForDocument">
 
 Single document changes can be observed using `ForDocument` method.
 
+<ContentFrame>
+
 ### Syntax
 
-<TabItem value="document_changes_1" label="document_changes_1">
-<CodeBlock language="csharp">
-{`IChangesObservable<DocumentChange> ForDocument(string docId);
-`}
-</CodeBlock>
-</TabItem>
+```csharp
+IChangesObservable<DocumentChange> ForDocument(string docId);
+```
+<br />
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -29,48 +46,50 @@ Single document changes can be observed using `ForDocument` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document. |
+| IChangesObservable&lt;[DocumentChange](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange-and-documentchangetypes-syntax)&gt; | Observable that allows to add subscriptions to notifications for given document. |
+
+</ContentFrame>
+<ContentFrame>
 
 ### Example
 
-<TabItem value="document_changes_2" label="document_changes_2">
-<CodeBlock language="csharp">
-{`IDisposable subscription = store
+```csharp
+IDisposable subscription = store
     .Changes()
     .ForDocument("employees/1")
     .Subscribe(
         change =>
-        \{
+        {
             switch (change.Type)
-            \{
+            {
                 case DocumentChangeTypes.Put:
                     // do something
                     break;
                 case DocumentChangeTypes.Delete:
                     // do something
                     break;
-            \}
-        \});
-`}
-</CodeBlock>
-</TabItem>
+            }
+        });
+```
 
+</ContentFrame>
 
+</Panel>
 
-## ForDocumentsInCollection
+<Panel heading="ForDocumentsInCollection">
 
 To observe all document changes in particular collection use `ForDocumentInCollection` method. This method filters documents by `@collection` metadata property value.
 
+<ContentFrame>
+
 ### Syntax
 
-<TabItem value="document_changes_3" label="document_changes_3">
-<CodeBlock language="csharp">
-{`IChangesObservable<DocumentChange> ForDocumentsInCollection(string collectionName);
+```csharp
+IChangesObservable<DocumentChange> ForDocumentsInCollection(string collectionName);
 
 IChangesObservable<DocumentChange> ForDocumentsInCollection<TEntity>();
-`}
-</CodeBlock>
-</TabItem>
+```
+<br />
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -78,51 +97,51 @@ IChangesObservable<DocumentChange> ForDocumentsInCollection<TEntity>();
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
+| IChangesObservable&lt;[DocumentChange](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange-and-documentchangetypes-syntax)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
 
 <Admonition type="info" title="">
 Overload with `TEntity` type uses `Conventions.GetCollectionName` to get collection name.
 </Admonition>
 
+</ContentFrame>
+<ContentFrame>
+
 ### Example
 
-<TabItem value="document_changes_4" label="document_changes_4">
-<CodeBlock language="csharp">
-{`IDisposable subscription = store
+```csharp
+IDisposable subscription = store
     .Changes()
     .ForDocumentsInCollection<Employee>()
-    .Subscribe(change => Console.WriteLine("\{0\} on document \{1\}", change.Type, change.Id));
-`}
-</CodeBlock>
-</TabItem>
+    .Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
+```
+<br />
 
 or
 
-<TabItem value="document_changes_5" label="document_changes_5">
-<CodeBlock language="csharp">
-{`string collectionName = store.Conventions.FindCollectionName(typeof(Employee));
+```csharp
+string collectionName = store.Conventions.FindCollectionName(typeof(Employee));
 IDisposable subscription = store
     .Changes()
     .ForDocumentsInCollection(collectionName)
-    .Subscribe(change => Console.WriteLine("\{0\} on document \{1\}", change.Type, change.Id));
-`}
-</CodeBlock>
-</TabItem>
+    .Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
+```
 
+</ContentFrame>
 
+</Panel>
 
-## ForDocumentsStartingWith
+<Panel heading="ForDocumentsStartingWith">
 
 To observe all document changes for documents with ID that contains given prefix use `ForDocumentsStartingWith` method.
 
+<ContentFrame>
+
 ### Syntax
 
-<TabItem value="document_changes_9" label="document_changes_9">
-<CodeBlock language="csharp">
-{`IChangesObservable<DocumentChange> ForDocumentsStartingWith(string docIdPrefix);
-`}
-</CodeBlock>
-</TabItem>
+```csharp
+IChangesObservable<DocumentChange> ForDocumentsStartingWith(string docIdPrefix);
+```
+<br />
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -130,66 +149,100 @@ To observe all document changes for documents with ID that contains given prefix
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document ID prefix. |
+| IChangesObservable&lt;[DocumentChange](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange-and-documentchangetypes-syntax)&gt; | Observable that allows to add subscriptions to notifications for given document ID prefix. |
+
+</ContentFrame>
+<ContentFrame>
 
 ### Example
 
-<TabItem value="document_changes_1_0" label="document_changes_1_0">
-<CodeBlock language="csharp">
-{`IDisposable subscription = store
+```csharp
+IDisposable subscription = store
     .Changes()
     .ForDocumentsStartingWith("employees/1") // employees/1, employees/10, employees/11, etc.
-    .Subscribe(change => Console.WriteLine("\{0\} on document \{1\}", change.Type, change.Id));
-`}
-</CodeBlock>
-</TabItem>
+    .Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
+```
 
+</ContentFrame>
 
+</Panel>
 
-## ForAllDocuments
+<Panel heading="ForAllDocuments">
 
 To observe all document changes use `ForAllDocuments` method.
 
+<ContentFrame>
+
 ### Syntax
 
-<TabItem value="document_changes_1_1" label="document_changes_1_1">
-<CodeBlock language="csharp">
-{`IChangesObservable<DocumentChange> ForAllDocuments();
-`}
-</CodeBlock>
-</TabItem>
+```csharp
+IChangesObservable<DocumentChange> ForAllDocuments();
+```
+<br />
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for all documents. |
+| IChangesObservable&lt;[DocumentChange](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange-and-documentchangetypes-syntax)&gt; | Observable that allows to add subscriptions to notifications for all documents. |
+
+</ContentFrame>
+<ContentFrame>
 
 ### Example
 
-<TabItem value="document_changes_1_2" label="document_changes_1_2">
-<CodeBlock language="csharp">
-{`IDisposable subscription = store
+```csharp
+IDisposable subscription = store
     .Changes()
     .ForAllDocuments() // employees/1, orders/1, customers/1, etc.
-    .Subscribe(change => Console.WriteLine("\{0\} on document \{1\}", change.Type, change.Id));
-`}
-</CodeBlock>
-</TabItem>
+    .Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
+```
 
+</ContentFrame>
 
+</Panel>
 
-## DocumentChange
+<Panel heading="DocumentChange and DocumentChangeTypes syntax">
 
-| Name | Type | Description |
+<Tabs>
+<TabItem value="DocumentChange" label="DocumentChange">
+
+**The notification object delivered to subscribers when a document changes.**
+
+```csharp
+class DocumentChange
+{
+    DocumentChangeTypes Type
+    string Id
+    string CollectionName
+    string ChangeVector
+}
+```
+<br />
+
+| Property | Type | Description |
 | ------------- | ------------- | ----- |
-| **Type** | [DocumentChangeTypes](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchangetypes) | Document change type enum |
+| **Type** | [DocumentChangeTypes](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange-and-documentchangetypes-syntax) | Document change type enum |
 | **Id** | string | Document identifier |
 | **CollectionName** | string | Document's collection name |
-| **TypeName** | string | Type name |
-| **ChangeVector** | string | Document's ChangeVector|
+| **ChangeVector** | string | Document's ChangeVector |
 
+</TabItem>
+<TabItem value="DocumentChangeTypes" label="DocumentChangeTypes">
 
-
-## DocumentChangeTypes
+```csharp
+enum DocumentChangeTypes
+{
+    None,
+    Put,
+    Delete,
+    BulkInsertStarted,
+    BulkInsertEnded,
+    BulkInsertError,
+    DeleteOnTombstoneReplication,
+    Conflict,
+    Common,
+}
+```
+<br />
 
 | Name | Value |
 | ---- | ----- |
@@ -201,15 +254,9 @@ To observe all document changes use `ForAllDocuments` method.
 | **BulkInsertError** | `16` |
 | **DeleteOnTombstoneReplication** | `32` |
 | **Conflict** | `64` |
-| **Common** | `Put & Delete` |
+| **Common** | `Put \| Delete` |
 
+</TabItem>
+</Tabs>
 
-
-## Remarks
-
-<Admonition type="warning" title="">
-To get more method overloads, especially ones supporting **delegates**, please add the 
-[System.Reactive.Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project.  
-</Admonition>
-
-
+</Panel>

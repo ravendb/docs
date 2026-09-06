@@ -1,7 +1,5 @@
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
 
 <Admonition type="note" title="">
 
@@ -11,33 +9,36 @@ import CodeBlock from '@theme/CodeBlock';
 * Using the Changes API allows you to notify users of various changes without requiring 
   any expensive polling.  
 
-* In this page:  
+<Admonition type="warning" title="">
+The `Subscribe` method on the observables the Changes API returns accepts only an `IObserver`
+object by default.  
+To instead subscribe with a delegate, like the `change => ...` lambda used in the examples below,
+add the [System.Reactive](https://www.nuget.org/packages/System.Reactive/) package to your project.  
+This adds `Subscribe` overloads that take delegates, including ones with error and
+completion handlers.  
+</Admonition>
+
+* In this article:  
   * [Accessing Changes API](../../../client-api/changes/what-is-changes-api.mdx#accessing-changes-api)  
   * [Connection interface](../../../client-api/changes/what-is-changes-api.mdx#connection-interface)  
   * [Subscribing](../../../client-api/changes/what-is-changes-api.mdx#subscribing)  
   * [Unsubscribing](../../../client-api/changes/what-is-changes-api.mdx#unsubscribing)  
-  * [FAQ](../../../client-api/changes/what-is-changes-api.mdx#faq)  
-     * [Changes API and Database Timeout](../../../client-api/changes/what-is-changes-api.mdx#changes-api-and-database-timeout)  
-     * [Changes API and Method Overloads](../../../client-api/changes/what-is-changes-api.mdx#changes-api-and-method-overloads)  
+  * [Changes API and Database Timeout](../../../client-api/changes/what-is-changes-api.mdx#changes-api-and-database-timeout)  
   * [Changes API -vs- Data Subscriptions](../../../client-api/changes/what-is-changes-api.mdx#changes-api--vs--data-subscriptions)  
+
 </Admonition>
-## Accessing Changes API
+
+<Panel heading="Accessing Changes API">
 
 The changes subscription is accessible by a document store through its `IDatabaseChanges` 
 or `ISingleNodeDatabaseChanges` interfaces.
 
-<TabItem value="changes_1" label="changes_1">
-<CodeBlock language="csharp">
-{`IDatabaseChanges Changes(string database = null);
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="changes_ISingleNodeDatabaseChanges" label="changes_ISingleNodeDatabaseChanges">
-<CodeBlock language="csharp">
-{`ISingleNodeDatabaseChanges Changes(string database, string nodeTag);
-`}
-</CodeBlock>
-</TabItem>
+```csharp
+IDatabaseChanges Changes(string database = null);
+
+ISingleNodeDatabaseChanges Changes(string database, string nodeTag);
+```
+<br />
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -57,19 +58,18 @@ or `ISingleNodeDatabaseChanges` interfaces.
   the second overload, passing both a database name and a node tag: `store.Changes(dbName, nodeTag)`  
   </Admonition>
 
+</Panel>
 
-
-## Connection interface
+<Panel heading="Connection interface">
 
 `IDatabaseChanges` inherits from `IConnectableChanges<TChanges>` interface that represent the connection.
 
-<TabItem value="connectable_changes" label="connectable_changes">
-<CodeBlock language="csharp">
-{`public interface IConnectableChanges<TChanges> : IDisposable
+```csharp
+public interface IConnectableChanges<TChanges> : IDisposable
     where TChanges : IDatabaseChanges
-\{
+{
     // returns state of the connection
-    bool Connected \{ get; \}
+    bool Connected { get; }
 
     // A task that ensures that the connection to the server was established.
     Task<TChanges> EnsureConnectedNow();
@@ -79,14 +79,12 @@ or `ISingleNodeDatabaseChanges` interfaces.
 
     //An action to take if an error occured in the connection to the server
     event Action<Exception> OnError;
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
 
+</Panel>
 
-
-## Subscribing
+<Panel heading="Subscribing">
 
 To receive notifications regarding server-side events, subscribe using one of the following methods.  
 
@@ -133,51 +131,40 @@ To receive notifications regarding server-side events, subscribe using one of th
       * a **specific time series** of a given document (by Doc ID and Time Series Name)  
       * **any time series** of a given document (by Doc ID)  
 
+</Panel>
 
-
-## Unsubscribing
+<Panel heading="Unsubscribing">
 
 To end a subscription (stop listening for particular notifications) you must 
 `Dispose` of the subscription.  
 
-<TabItem value="changes_2" label="changes_2">
-<CodeBlock language="csharp">
-{`IDatabaseChanges changes = store.Changes();
+```csharp
+IDatabaseChanges changes = store.Changes();
 await changes.EnsureConnectedNow();
 var subscription = changes
         .ForAllDocuments()
-        .Subscribe(change => Console.WriteLine("\{0\} on document \{1\}", change.Type, change.Id));
+        .Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
 try
-\{
+{
     // application code here
-\}
+}
 finally
-\{
+{
     if (subscription != null)
         subscription.Dispose();
-\}
-`}
-</CodeBlock>
-</TabItem>
+}
+```
 
+</Panel>
 
-
-## FAQ
-
-#### Changes API and Database Timeout
+<Panel heading="Changes API and Database Timeout">
 
 One or more open Changes API connections will prevent a database from becoming 
 idle and unloaded, regardless of [the configuration value for database idle timeout](../../../server/configuration/database-configuration.mdx#databasesmaxidletimeinsec).  
-#### Changes API and Method Overloads
 
-<Admonition type="warning" title="">
-To get more method overloads, especially ones supporting **delegates**, please add the 
-[System.Reactive.Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project.  
-</Admonition>
+</Panel>
 
-
-
-## Changes API -vs- Data Subscriptions
+<Panel heading="Changes API -vs- Data Subscriptions">
 
 **Changes API** and [Data Subscription](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
 are services that a RavenDB Server provides subscribing clients.  
@@ -189,7 +176,7 @@ to their subscribers.
      took place on the server, without receiving the actual data entities 
      affected by these events.  
      For the modification of a document, for example, the client will receive 
-     a [DocumentChange](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange) 
+     a [DocumentChange](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange-and-documentchangetypes-syntax) 
      object with details like the document's ID and collection name.  
 
    * The server does **not** keep track of sent notifications or 
@@ -208,3 +195,5 @@ to their subscribers.
 | What can the server Track    | [Documents](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#documents-processing) <br/> [Revisions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx) <br/> [Counters](../../../client-api/data-subscriptions/creation/examples.mdx#including-counters) <br/> Time Series | [Documents](../../../client-api/changes/how-to-subscribe-to-document-changes.mdx) <br/> [Indexes](../../../client-api/changes/how-to-subscribe-to-index-changes.mdx) <br/> [Operations](../../../client-api/changes/how-to-subscribe-to-operation-changes.mdx) <br/> [Counters](../../../client-api/changes/how-to-subscribe-to-counter-changes.mdx) <br/> [Time Series](../../../client-api/changes/how-to-subscribe-to-time-series-changes.mdx) |
 | What can the server Deliver  | Documents <br/> Revisions <br/> Counters <br/> Time Series                                                                                                                                                       | Notifications                                                                                                                                                                                                                        |
 | Management                   | Managed by the Server                                                                                                                                                                                           | Managed by the Client                                                                                                                                                                                                                |
+
+</Panel>
