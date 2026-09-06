@@ -68,11 +68,10 @@ The first four hostnames expose Quill's customer-facing service surfaces.
 
 Quill does not publish corresponding `-tcp` records.  
 Direct RavenDB access through `db.<domain>` or a topology-discovered `a.<domain>` address uses HTTPS on port `443`;  
-the native RavenDB TCP listener is not exposed by default.  
-See [Direct database access](security-and-architecture/network-architecture.mdx#direct-database-access).
+the native RavenDB TCP listener is not exposed by default.
+Learn more in [Direct database access](../security-and-architecture/network-architecture.mdx#direct-database-access).
 
-For details about how connections to these hostnames are routed and protected,  
-see [The Quill hostnames](security-and-architecture/network-architecture.mdx#the-quill-hostnames).
+For details about how connections to these hostnames are routed and protected, see [The Quill hostnames](../security-and-architecture/network-architecture.mdx#the-quill-hostnames).
 
 The behavior of the RavenDB node hostname is described in [The `a` hostname](#the-a-hostname).
 
@@ -213,12 +212,12 @@ For information about preserving or replacing the Dashboard API key, see [Operat
 
 #### Moving to another host
 
-A DNS update does not copy your Quill's data or container configuration.
+* A DNS update does not copy your Quill's data or container configuration.
 
-When moving your Quill to another host, transfer the persistent Docker volume mounted at `/var/lib/quill` and preserve the required deployment environment values, 
-including `QUILL_API_KEY` and `QUILL_LICENSE_KEY`, before directing traffic to the new host.
+* When moving your Quill to another host, transfer the persistent Docker volume mounted at `/var/lib/quill` and preserve the required deployment environment values,
+  including `QUILL_API_KEY` and `QUILL_LICENSE_KEY`, before directing traffic to the new host.
 
-If only the existing host's externally reachable IP address changes, no data-volume migration is required.
+* If only the existing host's externally reachable IP address changes, no data-volume migration is required.
 
 </Admonition>
 
@@ -269,14 +268,13 @@ Callers may still receive the previous address from DNS caches, as explained in 
 
 #### Assigning more than one address
 
-To assign several addresses to each of the five DNS hostnames, separate them with commas in the value passed to `--ip`:
+* To assign several addresses to each of the five DNS hostnames, separate them with commas in the value passed to `--ip`:
 
-```bash
-docker exec <container-name> update-dns --ip <ip-1>,<ip-2>
-```
-<br/>
+    ```bash
+    docker exec <container-name> update-dns --ip <ip-1>,<ip-2>
+    ```
 
-The command accepts both IPv4 and IPv6 addresses.
+* The command accepts both IPv4 and IPv6 addresses.
 
 </Admonition>
 
@@ -284,11 +282,11 @@ The command accepts both IPv4 and IPv6 addresses.
 
 #### If the command times out
 
-The command waits up to 15 minutes for the DNS service to complete the request.
+* The command waits up to 15 minutes for the DNS service to complete the request.
 
-A timeout means that the command stopped waiting.   
-It does not necessarily mean that the DNS update was rejected or rolled back.  
-Verify the published records before running the command again.
+* A timeout means that the command stopped waiting.   
+  It does not necessarily mean that the DNS update was rejected or rolled back.  
+  Verify the published records before running the command again.
 
 </Admonition>
 
@@ -483,13 +481,33 @@ docker exec <container-name> tail -n 100 \
 ```
 <br/>
 
-For nginx routing or TLS-termination failures, read:
+For nginx request-routing and response-status details, read the access log:
+
+```bash
+docker exec <container-name> tail -n 100 \
+  /var/lib/quill/proxy/access.log
+```
+<br/>
+
+The access log currently has no timestamps or built-in rotation and can continue growing in the persistent data volume. Monitor its size.
+
+The access log covers HTTP requests to `dashboard.<domain>`, `api.<domain>`, and `public.<domain>`;  
+connections passed through to RavenDB for `db.<domain>` and `a.<domain>` do not appear there.
+
+Quill does not record `/healthz` requests routed to the dashboard or API listeners in the access log.  
+On `public.<domain>`, `/healthz` is not an allowed endpoint; the resulting `404` request is logged.
+
+For nginx startup, configuration, certificate-loading, or upstream connection failures, read the error log:
 
 ```bash
 docker exec <container-name> tail -n 100 \
   /var/lib/quill/logs/proxy.log
 ```
 <br/>
+
+The current `warn` log level does not record common client-side TLS handshake failures or SNI-preread diagnostics that nginx emits below `warn`.  
+
+Quill masks embed-link and Slack webhook tokens in both proxy logs, retaining only the first six characters for correlation.
 
 For RavenDB startup or direct database failures, read:
 
