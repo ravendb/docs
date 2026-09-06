@@ -207,8 +207,8 @@ The bot recognizes only two Telegram commands: `/start` and `/clear`. Any other 
 
 ### Clearing the conversation
 
-A conversation lasts one day at most: at midnight UTC, the next message opens a fresh conversation, and the agent no longer sees
-the earlier messages.  
+The agent remembers a conversation for one day at most: at midnight UTC the agent forgets the earlier exchange, and the next
+message is answered without the earlier context.  
 A user can also start afresh at any moment by sending `/clear`. The bot confirms, and the next message opens a new conversation.
 
 ![Clearing the conversation](./assets/telegram-bot_clear.png)
@@ -223,7 +223,7 @@ Clearing also deletes the conversation from the app's **Conversations** view in 
 
 ### Messages the bot ignores
 
-The bot answers text only. A photo, a document, a sticker, or a voice message gets no reply.  
+The bot answers text-only messages. A photo, a document, a sticker, or a voice message gets no reply.  
 A contact card is accepted only when an agent parameter takes the user's phone number, as described in
 [Binding agent parameters](#binding-agent-parameters); otherwise the card is ignored as well.  
 The bot answers in private chats only. Added to a group, the bot posts one refusal and then stays silent in the group.
@@ -321,8 +321,9 @@ A new channel, even one added for the same bot, knows nothing of earlier shares 
 <Panel heading="Managing the channel">
 
 Once added, the channel is managed from its details view, described in
-[Dashboard: Channels view](../dashboard/channels-view.mdx): the view's header carries the **Pause**/**Resume** button and the **⋮**
-menu with **Edit** and **Delete**, common to every channel type, and the tabs below the header are specific to the channel type.
+[Dashboard: Channels view](../dashboard/channels-view.mdx#the-channel-s-details-view): the view's header carries the
+**Pause**/**Resume** button and the **⋮** menu with **Edit** and **Delete**, common to every channel type, and the tabs below the
+header are specific to the channel type.
 
 To open the details view, open the app from **My apps** in Quill's management dashboard, select **Channels** in the sidebar, and
 click the channel's box:
@@ -412,8 +413,7 @@ that the assistant is not fully configured yet.
 3. **customerPhone**  
    The example agent has one parameter, `customerPhone`: the phone number its queries use to find a customer's orders
    (see [Binding agent parameters](#binding-agent-parameters)).  
-   Each row shows a parameter's name, as in the agent's configuration, and the source the parameter is bound to; here, the
-   Telegram phone number.
+   Each row shows a parameter's name and the source the parameter is bound to; here, the Telegram phone number.
 
 ---
 
@@ -464,12 +464,12 @@ The limits below follow this design and Telegram's own rules. None of them can b
      new channel for the bot.
 * **The bot answers in private chats only.**  
   Added to a group, the bot posts one refusal and then stays silent in the group.
-* **The bot answers text only.**  
+* **The bot answers text-only messages.**  
   A photo, a document, a sticker, or a voice message gets no reply. A contact card is accepted only when an agent parameter
   takes the user's phone number.
-* **A conversation lasts one day at most.**  
-  At midnight UTC the conversation ends: the next message opens a new conversation, and the agent no longer sees the earlier
-  messages. A user can also end a conversation earlier by sending `/clear`.
+* **The agent remembers a conversation for one day at most.**  
+  At midnight UTC the agent forgets the earlier exchange, and the next message is answered without the earlier context. A user
+  can also make the agent forget sooner by sending `/clear`.
 * **Messages sent faster than the bot answers may go unanswered.**  
   Messages a user sends while the bot is still answering are queued. When the queue is full, further messages are not taken. The bot
   then sends one notice, asking the user to send the message again after the bot has replied.
@@ -541,7 +541,8 @@ customized messages shows your texts instead.
   What to do: advise the user to set a username in Telegram's settings and send the question again; or bind the parameter to
   another source, in the channel's [Parameters](#the-parameters-tab) tab.
 * **The bot does not reply to a photo, a document, a sticker, a voice message, or a contact card.**  
-  Likely cause: the bot answers text only; a contact card is accepted only when a parameter is bound to **Telegram phone number**.  
+  Likely cause: the bot answers text-only messages; a contact card is accepted only when a parameter is bound to
+  **Telegram phone number**.  
   What to do: advise the user to send the question as text. See [Messages the bot ignores](#messages-the-bot-ignores).
 * **The bot replies "I only work in one-on-one chats. Message me directly to start a conversation." in a group, and then stays
   silent there.**  

@@ -259,9 +259,9 @@ The following holds for every conversation with the bot:
   The bot answers them one by one, as long as its queue has room; see [Discord bot limitations](#discord-bot-limitations).
 * **The bot recognizes no commands.**  
   Every message is handled as a question, including messages that start with `/`.
-* **A conversation lasts one day at most.**  
-  At midnight UTC, the next message opens a fresh conversation, with none of the earlier context.  
-  A user cannot start a fresh conversation earlier.
+* **The agent remembers a conversation for one day at most.**  
+  At midnight UTC the agent forgets the earlier exchange, and the next message is answered without the earlier context.  
+  The messages themselves remain in the Discord chat, and a user cannot make the agent forget sooner.
 
 </ContentFrame>
 
@@ -269,8 +269,8 @@ The following holds for every conversation with the bot:
 
 ### Messages the bot does not answer
 
-The bot answers text only. A message that carries an attachment, like a photo or a file, or that has no text at all, is answered
-with "I can only read text messages right now."  
+The bot answers text-only messages. A message that carries an attachment, like a photo or a file, or that has no text at all, is
+answered with "I can only read text messages right now."  
 The bot answers in direct messages only. A message posted in one of the server's chat rooms, such as #general, where every member
 can read it, gets no reply, even if the message mentions the bot.
 
@@ -341,8 +341,9 @@ A constant value suits a channel whose users all share the value, like the bot a
 <Panel heading="Managing the channel">
 
 Once added, the channel is managed from its details view, described in
-[Dashboard: Channels view](../dashboard/channels-view.mdx): the view's header carries the **Pause**/**Resume** button and the **⋮**
-menu with **Edit** and **Delete**, common to every channel type, and the tabs below the header are specific to the channel type.
+[Dashboard: Channels view](../dashboard/channels-view.mdx#the-channel-s-details-view): the view's header carries the
+**Pause**/**Resume** button and the **⋮** menu with **Edit** and **Delete**, common to every channel type, and the tabs below the
+header are specific to the channel type.
 
 To open the details view, open the app from **My apps** in Quill's management dashboard, select **Channels** in the sidebar, and
 click the channel's box:
@@ -364,7 +365,7 @@ Both actions are explained in the Channels view article, in
 [Deleting a channel](../dashboard/channels-view.mdx#deleting-a-channel). Each of them also has a Discord side, explained here:
 
 * A paused bot stops answering, and Quill closes its connection to Discord, so the bot appears offline on Discord.  
-  Messages users send while the channel is paused do not reach Quill, and are not answered when the channel is resumed.
+  Messages users send while the channel is paused do not reach Quill, and will not be answered when the channel is resumed.
 * A deleted channel stops the bot, but the bot itself remains yours in the Discord Developer Portal, and a member of your server;
   its token can be used to connect it again.
 
@@ -449,10 +450,7 @@ reply "Sorry - something went wrong handling that message. Please try again."
 3. **customerPhone**  
    The example agent has one parameter, `customerPhone`, bound to a constant value: the phone number of the customer the bot
    serves (see [Binding agent parameters](#binding-agent-parameters)).  
-   Each row shows a parameter's name, as in the agent's configuration, the source the parameter is bound to, and, for a constant,
-   the bound value.
-
-For an agent without parameters, the tab reads "The agent declares no parameters, so this channel binds nothing."
+   Each row shows a parameter's name, the source the parameter is bound to, and, for a constant, the bound value.
 
 </ContentFrame>
 
@@ -474,12 +472,12 @@ The limits below follow this design and Discord's own rules. None of them can be
 * **The bot answers in direct messages only.**  
   A message posted in one of the server's chat rooms, such as #general, where every member can read it, gets no reply, even if the
   message mentions the bot.
-* **The bot answers text only.**  
+* **The bot answers text-only messages.**  
   In a direct message, a message with an attachment, e.g., an image or a file, or a message with no text, gets the reply "I can only
   read text messages right now."
-* **A conversation lasts one day at most.**  
-  At midnight UTC the conversation ends: the next message opens a new conversation, and the agent no longer sees the earlier
-  messages. A user cannot end a conversation earlier.
+* **The agent remembers a conversation for one day at most.**  
+  At midnight UTC the agent forgets the earlier exchange, and the next message is answered without the earlier context. A user
+  cannot make the agent forget sooner.
 * **Messages sent faster than the bot answers may go unanswered.**  
   Messages a user sends while the bot is still answering are queued. When the queue is full, further messages are not taken. The bot
   then sends one notice, asking the user to send the message again after the bot has replied.
