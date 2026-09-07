@@ -1,0 +1,412 @@
+---
+title: "Logging"
+sidebar_label: Logging
+sidebar_position: 8
+description: "Locate Quill's service, application, and audit logs; configure log levels and optional file sinks; and use a custom NLog configuration."
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* Quill has no Logs page in the management dashboard.  
+  Configure logging when the Quill container starts through **environment variables** or a **custom NLog configuration file**.
+
+* By default, Quill writes application messages at `Info` and higher levels to its console (`stdout`) stream.  
+  The container redirects this stream to the rotated `web` log, available at `/var/lib/quill/logs/web.log`;  
+  these messages do not appear in `docker logs <container-name>`.
+
+* The optional `quill.log` and `quill.audit.log` NLog file sinks are disabled by default.
+
+* Quill provides no dashboard or API for changing logging settings while it is running:
+  * To change an environment variable, recreate the container with the new value and reuse its data volume.
+  * To apply changes made in `/var/lib/quill/quill.nlog.config`, restart the container.
+
+---
+    
+* In this article:
+  * [Log locations](#log-locations)
+  * [Default logging](#default-logging)
+  * [Configure logging with environment variables](#configure-logging-with-environment-variables)
+  * [Audit logging](#audit-logging)
+  * [Use a custom NLog configuration](#use-a-custom-nlog-configuration)
+  * [Rotation and retention](#rotation-and-retention)
+  * [Verify and troubleshoot logging](#verify-and-troubleshoot-logging)
+
+</Admonition>
+
+<Panel heading="Log locations">
+
+Quill writes several separate log streams:
+
+| Location                                               | Contents                                                                                 |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| `docker logs <container-name>`                         | The startup banner, readiness status, and service-status messages.                       |
+| `/var/lib/quill/logs/web.log`                          | Quill application messages, including activation, dashboard API, agent, and chat activity. |
+| `/var/lib/quill/logs/ravendb.log`                      | Console output from the RavenDB server process running in the Quill container.           |
+| `/var/lib/quill/logs/proxy.log`                        | Proxy-service output, including nginx warnings and errors at `warn` and higher severity. Embed-link and Slack webhook tokens in request paths are masked after their first six characters. |
+| `/var/lib/quill/proxy/access.log`                      | nginx HTTP access log. Requests to `/healthz` are excluded. Embed-link and Slack webhook tokens in request paths are masked after their first six characters. |
+| `/var/lib/quill/logs/certwatch.log`                    | Certificate-watcher output.                                                              |
+| `/var/lib/quill/logs/ravendb-server/`                  | Log files written by the RavenDB server itself.                                          |
+| `<RAVEN_QUILL_LOGS_PATH>/quill.log`                    | Optional second copy of Quill's application messages.                                    |
+| `<RAVEN_QUILL_SECURITY_AUDITLOG_PATH>/quill.audit.log` | Optional Quill audit log.                                                                |
+
+Only Quill's status service writes directly to the container's output stream.  
+The other service streams are redirected to files under `/var/lib/quill/logs`.
+
+The `web.log`, `ravendb.log`, `proxy.log`, and `certwatch.log` entries are symbolic links to the
+current files in their corresponding rotated-log directories. For example, `web.log` points to
+`/var/lib/quill/logs/web/current`.
+
+<Admonition type="note" title="">
+    
+#### Preserving logs when replacing the container    
+
+* When you replace the Quill container and reuse its `/var/lib/quill` data volume,  
+  the logs stored on that volume are preserved.  
+  See [Updating Quill](updating-quill.mdx).
+
+* Place optional log files under `/var/lib/quill` so they use the same volume.  
+  A file written elsewhere in the container is lost when the container is removed unless that location has its own persistent mount.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Default logging">
+
+When no logging environment variables are set and `/var/lib/quill/quill.nlog.config` does not exist,  
+Quill uses its built-in configuration:
+
+* Quill application messages at `Info` and higher levels are written to the console (`stdout`) stream.  
+  The container redirects this stream to the rotated `web` log, available at `/var/lib/quill/logs/web.log`.
+    
+* The additional `quill.log` file is not written.
+    
+* Audit logging is disabled.
+    
+* .NET framework logging is not captured. `Microsoft.*` and `System.*` messages are not connected to
+  Quill's NLog configuration, so adding rules for these loggers does not enable them.
+
+---
+    
+Quill uses the following log layout:
+
+```text
+Date|Level|ThreadID|Resource|Component|Logger|Message|Data
+```
+<br/>
+    
+Timestamps are written in UTC.  
+    
+The `Resource` column contains `Quill` for messages written by Quill and `Client` for messages written by the RavenDB client used by Quill.
+
+</Panel>
+
+<Panel heading="Configure logging with environment variables">
+
+Use the following environment variables for the common logging settings:
+
+| Environment variable                 | Effect                                                                                                               |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| `RAVEN_QUILL_LOGS_MINLEVEL`          | Sets the lowest level for Quill application messages written to the console and, when enabled, to `quill.log`. The default is `Info`. |
+| `RAVEN_QUILL_LOGS_PATH`              | Enables `quill.log` and specifies the directory in which it is written.                                              |
+| `RAVEN_QUILL_SECURITY_AUDITLOG_PATH` | Enables `quill.audit.log` and specifies the directory in which it is written.                                        |
+| `RAVEN_QUILL_LOGS_CONFIG_PATH`       | Specifies the path to a custom NLog configuration file. The file must exist when Quill starts.                       |
+    
+The first three variables configure Quill's built-in logging.  
+When Quill loads a custom NLog configuration, the file controls its logging rules and targets.  
+The supplied template can still read the two path variables. See [Configuration precedence](#configuration-precedence).    
+
+For example, add these options to the replacement `docker run` command to write Quill application messages
+at `Debug` and higher levels to both `web.log` and an additional `quill.log` file:
+
+```text
+-e RAVEN_QUILL_LOGS_MINLEVEL=Debug
+-e RAVEN_QUILL_LOGS_PATH=/var/lib/quill/logs/quill
+```
+<br/>
+    
+With this configuration, the optional `quill.log` file is written to `/var/lib/quill/logs/quill/quill.log`.
+    
+* Use one of these level names: `Trace`, `Debug`, `Info`, `Warn`, `Error`, `Fatal`, or `Off`.  
+  Names are matched without regard to case.
+    
+* The minimum level applies to both the console and `quill.log`.  
+  Use a [custom NLog configuration](#use-a-custom-nlog-configuration) to give targets different levels.
+    
+* `Off` disables normal Quill application logging.  
+  It does not disable an audit log, which has its own rule.
+    
+* Log and audit paths must be absolute.  
+  Quill creates the directories when necessary and verifies that it can write to them during startup.
+    
+* An invalid path or a directory that cannot be created or written to prevents Quill from becoming ready.
+
+<Admonition type="warning" title="">
+    
+#### Recreate the container to change its environment    
+
+* Docker does not let you change the environment of an existing container.  
+  To change these settings, create a replacement container with the updated `-e` options and mount the same Quill data volume.
+  A `docker restart` command only restarts the container with its existing environment.
+    
+* See [Updating Quill](updating-quill.mdx) for the container-replacement workflow.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Audit logging">
+
+<ContentFrame>
+
+### Enable the audit log
+
+The audit log is **disabled** by default. 
+    
+To **enable** it without using a custom NLog configuration,
+add an absolute directory through `RAVEN_QUILL_SECURITY_AUDITLOG_PATH` when you create the container:
+
+```text
+-e RAVEN_QUILL_SECURITY_AUDITLOG_PATH=/var/lib/quill/logs/audit
+```
+<br/>
+    
+Quill then writes `/var/lib/quill/logs/audit/quill.audit.log`.  
+The directory is created and tested for writability during startup.
+
+The `Message` column in the first audit entry indicates that the log started:
+
+```text
+internal, no principal, AUDIT log started
+```
+<br/>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Understand audit-log contents
+
+**What the audit log records**:
+
+    * Current audit entries include authentication events and selected management actions involving apps,
+      agents, channels, embed links, AI connection strings, client certificates, setup, and activation.   
+      Audit coverage varies by operation; do not treat the audit log as a record of every dashboard or API request.
+    
+    * Audit messages record action details and resource identifiers.  
+      They do not include credential secret values, prompts, or model output.
+
+**How to read the `Message` column**:
+
+    * For an entry generated by a request, the `Message` column identifies the request's source IP address, authentication method, and operation.
+      For example:
+    
+      ```text
+      203.0.113.10, ApiKey [operator], DELETE App 'northwind' (database=northwind)
+      ```
+    
+    * `ApiKey [operator]` identifies a request authenticated with the Dashboard API key, and `Cookies [operator]` identifies an authenticated dashboard session.
+      An unauthenticated request uses `no principal`.  
+      An operation performed internally by Quill uses `internal` as its source.
+
+<Admonition type="note" title="Audit entries do not identify individuals">
+
+Audit attribution is based on the source address and authentication method, not on the individual operator.  
+Multiple people using the same Dashboard API key cannot be distinguished.
+See [Operator Authentication](security-and-architecture/operator-authentication.mdx).
+
+</Admonition>
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Use a custom NLog configuration">
+
+Use a custom NLog configuration when you need settings that the environment variables do not expose,  
+such as different levels per target, filters, layouts, rotation settings, or additional targets.
+
+<ContentFrame>
+
+### Create the configuration file
+
+Copy the supplied template from the container, edit it, and copy it to the Quill data volume:
+
+```bash
+docker cp <container-name>:/app/web/quill.nlog.template.config ./quill.nlog.config
+# Edit ./quill.nlog.config, then run:
+docker cp ./quill.nlog.config <container-name>:/var/lib/quill/quill.nlog.config
+docker exec <container-name> chown quill:quill /var/lib/quill/quill.nlog.config
+docker restart <container-name>
+```
+<br/>
+                
+Quill automatically loads `/var/lib/quill/quill.nlog.config` when it starts.  
+The template under `/app/web` is a reference copy and is not loaded directly.
+
+To load a file from another location inside the container, set `RAVEN_QUILL_LOGS_CONFIG_PATH` when creating the container.
+The file must exist at that path when Quill starts, typically through a persistent mount.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Configuration precedence
+
+At startup, Quill selects its logging configuration in this order:
+
+1. If `RAVEN_QUILL_LOGS_CONFIG_PATH` is set, Quill loads the file it names.
+2. Otherwise, if `/var/lib/quill/quill.nlog.config` exists, Quill loads that file.
+3. Otherwise, Quill builds its configuration from `RAVEN_QUILL_LOGS_MINLEVEL`, `RAVEN_QUILL_LOGS_PATH`,  
+   and `RAVEN_QUILL_SECURITY_AUDITLOG_PATH`.
+
+When Quill loads an NLog configuration file, the rules and targets in that file replace the built-in
+configuration.
+
+The supplied template defines `logPath` and `auditLogPath` from the two path environment variables.  
+Its `fileName` layouts reference those variables. If your copy retains both the declarations and references,  
+the environment variables still provide the target directories.
+
+The template's minimum level is a literal value in the `Raven_Default` rule; change that rule to set the level.
+
+Quill parses the minimum-level and path environment variables before loading the NLog file.  
+Remove or correct an invalid value even when the custom file does not use it.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Enable file targets
+
+The template defines both file targets, but its rules do not send messages to them by default.  
+To enable the audit log and the additional Quill application log, set the rules as follows:
+
+```xml
+<logger ruleName="Raven_Default_Audit" name="Audit" levels="Info" final="true" writeTo="AuditAsyncTargetWrapper" />
+<logger ruleName="Raven_Default" name="*" minlevel="Info" writeTo="AsyncTargetWrapper,Console" />
+```
+<br/>
+    
+Set the directories as literal values in the template's `logPath` and `auditLogPath` declarations,  
+or retain their `${environment:...}` expressions and configure the corresponding path variables.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Configuration requirements
+
+* Keep the `Raven_Default` and `Raven_Default_Audit` rule names.  
+  Quill looks up both rules at startup and stops if either is missing.
+    
+* Use literal values for numeric target attributes such as `archiveAboveSize`;  
+  the NLog environment renderer is not converted for these attributes.
+    
+* Do not use `${rvn:NodeTag}`. That renderer is registered by the RavenDB server, not by Quill.
+    
+* Adding `Microsoft.*` or `System.*` rules does not capture .NET framework messages because Quill does not connect the framework logging providers to NLog.
+    
+* Store the custom configuration file and any file targets under `/var/lib/quill`,  
+  or provide another persistent mount, if they must survive container replacement.
+
+<Admonition type="warning" title="">
+
+#### Verify custom file targets
+    
+* When environment variables configure a file sink, Quill tests the directory before becoming ready.  
+  It does not perform that test for targets defined by a custom NLog file.  
+  NLog can therefore fail to write a custom target without stopping Quill.
+    
+* After restarting, verify that every expected file is being written.
+
+</Admonition>
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Rotation and retention">
+
+| Log files                                                  | Default rotation                                                                                                       |
+| ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `web.log`, `ravendb.log`, `proxy.log`, and `certwatch.log` | The active `current` file and up to three archived files per service. Rotation begins when `current` approaches 10 MB. |
+| `/var/lib/quill/proxy/access.log`                          | No automatic rotation or retention is configured.                                                                      |
+| `quill.log` and `quill.audit.log`                          | Rotated when they exceed 128 MB. An existing file above 128 MB is also archived when Quill starts. Archives use date-and-sequence names, are retained for three days, and are not compressed. |
+| Files under `/var/lib/quill/logs/ravendb-server/`          | Controlled by the RavenDB server's logging configuration.                                                                                                                 |
+
+The service-log rotation settings are built into the container and are not controlled by Quill's logging environment variables or NLog configuration.
+
+To change rotation or retention for `quill.log` and `quill.audit.log`, use a [custom NLog configuration](#use-a-custom-nlog-configuration) and edit the corresponding `File` targets.
+
+</Panel>
+
+<Panel heading="Verify and troubleshoot logging">
+
+<ContentFrame>
+
+### Verify the active logging configuration
+
+When `Info` messages are enabled and routed to the `Console` target, Quill records how logging was
+configured during startup. Search `web.log` for this message:
+
+```bash
+docker exec <container-name> sh -c "grep 'Logging' /var/lib/quill/logs/web.log | tail -n 5"
+```
+<br/>
+    
+The built-in configuration produces a message such as:
+
+```text
+Logging set to [Info, Fatal] level, writing to the console.
+```
+<br/>
+    
+When an NLog file is loaded, the message names it:
+
+```text
+Logging configured from '/var/lib/quill/quill.nlog.config' configuration file and set to [Info, Fatal] level.
+```
+<br/>
+    
+These startup messages are emitted at `Info`. 
+They do not appear in `web.log` when the effective minimum level is higher than `Info` or is `Off`,
+or when a custom configuration does not route them to the `Console` target.  
+If the custom configuration routes them to another target, search that target instead.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Troubleshoot startup failures
+
+Invalid logging settings, or a custom NLog configuration that Quill cannot load,
+prevent Quill from becoming ready rather than being ignored or replaced with defaults.
+Causes include:
+
+  * A relative log or audit path.
+  * An unrecognized minimum-level value.
+  * A built-in file-sink directory that cannot be created or written to.
+  * A path supplied through `RAVEN_QUILL_LOGS_CONFIG_PATH` that does not exist.
+  * An NLog file that cannot be parsed.
+  * A custom file without the `Raven_Default` or `Raven_Default_Audit` rule.
+
+Read the Quill service log for the startup exception:
+
+```bash
+docker exec <container-name> sh -c "tail -40 /var/lib/quill/logs/web.log"
+```
+<br/>
+        
+The container's status output also points to `web.log` when Quill does not become ready:
+
+```bash
+docker logs <container-name>
+```
+
+</ContentFrame>
+
+</Panel>
