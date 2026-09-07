@@ -166,18 +166,22 @@ A channel is paused and resumed using the **Pause**/**Resume** button in the hea
 
 What a pause means for the channel's users depends on the channel type:
 
-* A paused web widget stops answering:  
+* **Web widget**  
+  A paused web widget will stop answering.  
   A page that embeds it reports that the conversation has ended, as it does for an expired embed link.  
   No new embed link can be generated for the channel while it is paused.  
   Once the channel is resumed, its embed links that have not expired work again.
-* A paused Telegram bot stops answering:  
+* **Telegram bot**  
+  A paused Telegram bot will stop answering.  
   Messages users send meanwhile are held by Telegram for up to 24 hours, and answered if the channel is resumed within this time.  
   See [Channels: Telegram bot](../channels/telegram-bot.mdx#pausing-and-deleting-the-channel).
-* A paused Slack bot stops answering:  
+* **Slack bot**  
+  A paused Slack bot will stop answering.  
   Slack keeps delivering the users' messages, which Quill discards; messages sent while the channel is paused are not answered when
   the channel is resumed.  
   See [Channels: Slack bot](../channels/slack-bot.mdx#pausing-and-deleting-the-channel).
-* A paused Discord bot stops answering, and appears offline on Discord:  
+* **Discord bot**  
+  A paused Discord bot will stop answering and appear offline on Discord.  
   Messages users send while the channel is paused do not reach Quill, and are not answered when the channel is resumed.  
   See [Channels: Discord bot](../channels/discord-bot.mdx#pausing-and-deleting-the-channel).
 
@@ -195,16 +199,20 @@ A channel is deleted using the trash icon or the **Delete** menu entry described
 The conversations the channel carried are kept, and remain available in the app's **Conversations** view.  
 What else the deletion means depends on the channel type:
 
-* A deleted web widget's embed links stop working:  
+* **Web widget**  
+  A deleted web widget's embed links will stop working.  
   A page that embeds an embed link reports that the conversation is not available.
-* A deleted Telegram bot channel stops the bot:  
+* **Telegram bot**  
+  A deleted Telegram bot channel will stop the bot.  
   The bot itself remains yours on Telegram, and its token can be used to connect it again, to this app or to another.  
   See [Channels: Telegram bot](../channels/telegram-bot.mdx#pausing-and-deleting-the-channel).
-* A deleted Slack bot channel stops the bot:  
+* **Slack bot**  
+  A deleted Slack bot channel will stop the bot.  
   The bot itself remains installed in the workspace, and its credentials can be used to connect it again, in a new channel with a
   new request URL.  
   See [Channels: Slack bot](../channels/slack-bot.mdx#pausing-and-deleting-the-channel).
-* A deleted Discord bot channel stops the bot:  
+* **Discord bot**  
+  A deleted Discord bot channel will stop the bot.  
   The bot itself remains yours in the Discord Developer Portal, and a member of your server; its token can be used to connect it
   again.  
   See [Channels: Discord bot](../channels/discord-bot.mdx#pausing-and-deleting-the-channel).

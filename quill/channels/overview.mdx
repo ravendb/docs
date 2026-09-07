@@ -12,18 +12,19 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Channels: Overview
 <Admonition type="note" title="">
 
-* A [channel](../overview.mdx#channels) carries the conversations between your users and an [agent](../overview.mdx#ai-agent)
+* A **channel** carries the conversations between your users and an [agent](../overview.mdx#ai-agent)
   of your app: user messages reach the agent through the channel, and replies return the same way.  
   Quill offers four channel types: a chat widget on your site, or a bot on Telegram, Slack, or Discord, reaching your users where
   they already are.
 
-* Each channel type has an article of its own, describing how a channel of this type is added and what its users meet.  
+* Each channel type has an article of its own, describing how a channel of this type is added, and what the channel's users encounter.  
   This article covers what applies to channels of every type.
 
 * In this article:
    * [Channel types](#channel-types)
    * [Channels and agents](#channels-and-agents)
    * [Adding and managing channels](#adding-and-managing-channels)
+   * [Binding agent parameters](#binding-agent-parameters)
    * [Behavior and limitations common to all channels](#behavior-and-limitations-common-to-all-channels)
    * [Troubleshooting](#troubleshooting)
 
@@ -48,6 +49,13 @@ A channel's type is selected in the **Add channel** menu, described in [Adding a
 * **Discord**  
   A bot that the members of a Discord server message directly, created in the Discord Developer Portal.  
   See [Channels: Discord bot](../channels/discord-bot.mdx).
+
+| Channel type | Where your users chat | What you set up outside Quill | Quill reachable from the internet |
+|---|---|---|---|
+| Chat widget | On a page of your site | The embed snippet, in the page's HTML | Not required |
+| Telegram bot | In Telegram | A bot, using @BotFather | Not required |
+| Slack bot | In the Slack client | A Slack app, from Quill's manifest | Required |
+| Discord bot | In Discord | A bot, in the Discord Developer Portal | Not required |
 
 </Panel>
 
@@ -86,45 +94,67 @@ Channels of every type are added and managed in the same places of Quill's manag
 
 </Panel>
 
+<Panel heading="Binding agent parameters">
+
+Some agents have **parameters**: values the agent's queries require, and that must come from the channel rather than be chosen by
+the LLM, like the phone number of the customer whose orders the agent looks up.  
+Agent parameters are bound by the channel, and the source of a parameter's value depends on the channel type:
+
+* A **bot channel** binds each parameter when the channel is added, to a constant value or to a selected detail of each user who sends
+  the channel a message; the user details that can be bound differ by platform, and are listed in each bot's article.  
+  A parameter left unbound, e.g., a parameter added to the agent after the channel was added, stops the bot from answering until
+  the parameter is bound in the **Parameters** tab of the
+  [channel's details view](../dashboard/channels-view.mdx#the-channel-s-details-view).
+* A **chat widget** binds the parameters into each embed link
+  [when the link is generated](../getting-started/adding-a-chat-widget.mdx#setting-the-link-limits), and a link cannot be generated
+  until every parameter has a value.
+
+</Panel>
+
 <Panel heading="Behavior and limitations common to all channels">
 
-The behavior described below is set by Quill, and holds for channels of every type unless a point says otherwise.
-
 * **Users need no account with Quill.**  
-  Who can reach a channel depends on the channel type: a chat widget is reached by whoever opens the page that holds its embed
-  link, a Telegram bot by any Telegram user who finds it, a Slack bot by the members of the workspace the bot is installed in, and
-  a Discord bot by the members of a server the bot is in.
-* **The reply is streamed as the agent composes it.**  
-  On Telegram, Slack, and Discord, an answer longer than the platform's message limit is delivered in several messages.
-* **Quill keeps the conversation's context, so a follow-up question is understood against the earlier answers.**  
-  On Telegram, Slack, and Discord, the agent remembers a conversation for one day at most: at midnight UTC the agent forgets the
-  earlier exchange, and the next message is answered without the earlier context. The messages themselves remain in the chat.
-  A Telegram user can make the agent forget sooner by sending `/clear`; Slack and Discord users cannot.  
-  In a chat widget, the conversation belongs to the embed link that opened the widget, and lasts as long as the link does: everyone
-  who opens the widget through the same link shares one conversation, and the conversation ends when the link
-  [expires, reaches its usage cap, or is revoked](../getting-started/adding-a-chat-widget.mdx#setting-the-link-limits).
+  Who can reach a channel depends on the channel type:
+   * A chat widget is reached by whoever opens the page that holds its embed link.
+   * A Telegram bot is reached by any Telegram user who finds it.
+   * A Slack bot is reached by the members of the workspace the bot is installed in.
+   * A Discord bot is reached by the members of a server the bot is in.
+* **The reply is streamed into the chat as the agent composes it.**
+* **A long answer is delivered in several messages.**  
+  On Telegram, Slack, and Discord, an answer that exceeds the platform's message limit is split across several messages.  
+  In a chat widget the whole answer appears in a single reply.
+* **Quill keeps the conversation's context, so a follow-up question is understood against the earlier exchange.**  
+  The duration of a conversation depends on the channel type:
+
+  | Channel type | The conversation lasts | A user can end it sooner |
+  |---|---|---|
+  | Chat widget | As long as the embed link that opened the widget | No |
+  | Telegram bot | Until midnight UTC | Yes, by sending `/clear` |
+  | Slack bot | Until midnight UTC | No |
+  | Discord bot | Until midnight UTC | No |
+
+   * On Telegram, Slack, and Discord, the agent remembers a conversation for one day at most: at midnight UTC the agent forgets
+     the earlier exchange, and the next message is answered without the earlier context. The messages themselves remain in the
+     chat.  
+     A Telegram user can make the agent forget sooner by sending `/clear`; Slack and Discord users cannot.
+   * In a chat widget, the conversation belongs to the embed link that opened the widget, and lasts as long as the link does:
+     everyone who opens the widget through the same link shares one conversation, and the conversation ends when the link
+     [expires, reaches its usage cap, or is revoked](../getting-started/adding-a-chat-widget.mdx#setting-the-link-limits).
 * **Messages sent faster than the bot answers may go unanswered.**  
-  On Telegram, Slack, and Discord, messages a user sends while the bot is still answering are queued. When the queue is full,
-  further messages are not taken, and the bot sends one notice asking the user to send the message again after the bot has replied.  
+  On Telegram, Slack, and Discord, a message a user sends while the bot is still answering waits in a queue that Quill keeps for
+  this user. When the queue is full, further messages are not taken, and the bot sends one notice asking the user to send the
+  message again after the bot has replied.  
   A Telegram bot answers the queued messages together, as a single question; a Slack or Discord bot answers them one by one.
 * **The bots answer text-only messages.**  
   On Telegram, a photo, a document, a sticker, or a voice message gets no reply. On Slack and Discord, a message that carries a file
   gets the reply "I can only read text messages right now."
-* **Agent parameters are bound by the channel.**  
-  Some agents have **parameters**: values the agent's queries require, and that must come from the channel rather than be chosen by
-  the LLM, e.g., the phone number of the customer whose orders the agent looks up.  
-  A bot channel binds each parameter, when the channel is added, to a constant value or to a selected detail of each user who sends
-  the channel a message; the user details that can be bound differ by platform, and are listed in each bot's article. A parameter
-  left unbound, e.g., a parameter added to the agent after the channel was added, stops the bot from answering until the parameter
-  is bound in the **Parameters** tab of the [channel's details view](../dashboard/channels-view.mdx#the-channel-s-details-view).  
-  A chat widget binds the parameters into each embed link
-  [when the link is generated](../getting-started/adding-a-chat-widget.mdx#setting-the-link-limits), and a link cannot be generated
-  until every parameter has a value.
-* **Pausing a channel takes it out of service; deleting a channel removes it, but keeps the conversations it carried.**  
+* **Pausing a channel takes it out of service; deleting a channel removes it.**  
   Both actions are described in the Channels view article, in
   [Pausing and resuming a channel](../dashboard/channels-view.mdx#pausing-and-resuming-a-channel) and
-  [Deleting a channel](../dashboard/channels-view.mdx#deleting-a-channel). What each action means for the channel's users, and for
-  a bot on its platform, depends on the channel type and is described in the type's article.
+  [Deleting a channel](../dashboard/channels-view.mdx#deleting-a-channel). The conversations a deleted channel carried remain
+  available in the app's **Conversations** view.  
+  What each action means for the channel's users, and for a bot on its platform, depends on the channel type and is described in
+  the type's article.
 * **The messages a channel sends on its own have a default text set by Quill.**  
   The notices a chat widget shows when its embed link no longer works, and the replies a Slack or Discord bot sends on its own, like
   "I can only read text messages right now.", cannot be changed. A Telegram bot's own messages can be replaced with texts of yours
@@ -156,10 +186,14 @@ The bots' messages are quoted in their default form; a Telegram bot with customi
 **In a channel of any type**
 
 * **The agent answers from outdated information.**  
-  Likely cause: the conversation may still hold earlier answers, which the agent reads along with the new question.  
-  What to do: advise the user to ask explicitly to look the information up again. In a chat with a bot, the agent forgets the
-  earlier answers at midnight UTC in any case, and a Telegram user can also send `/clear` and ask again; in a chat widget, a new
-  embed link starts a new conversation.
+  Likely cause: one of the following may have happened.
+  * The app's internal database may not yet hold the latest changes from the source database.  
+    What to do: check the state of the mirroring in the app's **Data source** view, which shows the number of recent writes and
+    reports any errors met while syncing.
+  * The conversation may hold earlier replies carrying data the agent had retrieved, that the agent now reads instead of
+    retrieving the data again.  
+    What to do: the agent retrieves the data again once it forgets the earlier exchange, as described in
+    [Behavior and limitations common to all channels](#behavior-and-limitations-common-to-all-channels).
 
 Symptoms specific to a channel type, including those seen in Quill's management dashboard and on the bot's platform, are listed in
 the Troubleshooting section of the type's article: [Telegram bot](../channels/telegram-bot.mdx#troubleshooting),

@@ -12,9 +12,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Channels: Discord bot
 <Admonition type="note" title="">
 
-* A Quill **Discord bot** [channel](../overview.mdx#channels) lets your users converse with an [agent](../overview.mdx#ai-agent)
+* A Quill **Discord bot** channel lets your users converse with an [agent](../overview.mdx#ai-agent)
   of your app in a direct message with a bot on Discord.  
-  Users can message the bot from any Discord client, and the agent will answer from the app's data.
+  Users can message the bot from any Discord client, and the agent will answer from the app's internal database.
 
 * The bot is created in the **Discord Developer Portal**, as part of a Discord application, free of charge.  
   The Discord Developer Portal also issues the **bot token**, a credential that Quill needs to operate the bot.  
@@ -61,7 +61,8 @@ Before adding a Discord bot channel, make sure you have:
   The channel is added for one of the app's agents, and this agent will answer the users who message the bot.  
   To add an agent, see [Getting started: Adding an AI agent](../getting-started/adding-an-ai-agent.mdx).
 * **A Discord account.**  
-  The bot is created in the Discord Developer Portal, signed in with your [Discord account](https://discord.com/register).  
+  The bot is created in the Discord Developer Portal, while you are signed in with your
+  [Discord account](https://discord.com/register).  
   Once the channel is added, you can try the bot out from the same account.
 * **A Discord server your users are in.**  
   Once the channel is added, you invite the bot to this server using a link that Quill provides, since a user can message a bot
@@ -224,8 +225,8 @@ The new channel appears in the **Channels** section:
 
 <Panel heading="Chatting with the bot">
 
-Once the bot is invited to your Discord server, every member of the server can message it: a user who opens a direct message with
-the bot can ask questions, and the agent will answer from the app's data.  
+Once the bot is invited to your Discord server, every member of the server can message it. A user who opens a direct message with
+the bot can ask questions, and the agent will answer from the app's internal database.  
 The users need no account with Quill and no instructions. This section describes the chat as an end user experiences it, so that
 you know what to expect and what to tell your users.
 
@@ -253,7 +254,7 @@ The following holds for every conversation with the bot:
   The bot posts the reply and keeps updating the message until the reply is complete, which is why Discord marks the message as
   **(edited)**.
 * **Messages a user sends while the bot is still answering wait their turn.**  
-  The bot answers them one by one, as long as its queue has room.
+  The bot answers them one by one, as long as the queue Quill keeps for this user has room.
 * **The bot recognizes no commands.**  
   Every message is handled as a question, including messages that start with `/`.
 
@@ -487,6 +488,13 @@ The limits below follow this design and Discord's own rules. None of them can be
 
 <Panel heading="Troubleshooting">
 
+<Admonition type="note" title="">
+
+Symptoms met by the users of every bot type, not just of a Discord bot, are listed in the channels overview, in
+[Troubleshooting](../channels/overview.mdx#troubleshooting).
+
+</Admonition>
+
 The symptoms below are shown by a Discord bot channel when something goes wrong, each with its likely cause and what to do about it.  
 The first symptoms are seen in Quill's management dashboard: in the channel form, in the **Edit channel** form, and in the channel's
 [Connect](#the-connect-tab) tab. The rest are encountered by the bot's users on Discord, in the server's chat rooms or in their direct
@@ -574,8 +582,6 @@ messages with the bot.
   [Dashboard: AI connection strings](../dashboard/ai-connection-strings.mdx#test-and-save-the-connection). Then send the bot a
   question again.
 
-Symptoms met by the users of every bot type, like the notice sent when the bot's queue is full, are listed in the channels overview,
-in [Troubleshooting](../channels/overview.mdx#troubleshooting).
 </ContentFrame>
 
 </Panel>

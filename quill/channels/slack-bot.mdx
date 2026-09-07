@@ -12,9 +12,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Channels: Slack bot
 <Admonition type="note" title="">
 
-* A Quill **Slack bot** [channel](../overview.mdx#channels) lets your users converse with an [agent](../overview.mdx#ai-agent)
+* A Quill **Slack bot** channel lets your users converse with an [agent](../overview.mdx#ai-agent)
   of your app in a direct message with a bot on Slack.  
-  Users can message the bot from any Slack client, and the agent will answer from the app's data.
+  Users can message the bot from any Slack client, and the agent will answer from the app's internal database.
 
 * The bot is a **Slack app** installed in the Slack workspace the users belong to.  
   The bot is created at `api.slack.com/apps`, free of charge, from a manifest that Quill provides.  
@@ -77,8 +77,8 @@ Before adding a Slack bot channel, make sure you have:
 
 <Panel heading="Creating a Slack bot from Quill's manifest">
 
-The bot is created on Slack from a **manifest**: a short text, provided by Quill, that describes the bot to Slack, including the
-bot's name and the permissions the bot needs.  
+The bot is created on Slack as a **Slack app**, from a **manifest**: a short text, provided by Quill, that describes the bot to
+Slack, including the bot's name and the permissions the bot needs.  
 Creating the bot takes three steps:
 
 * Copying the manifest from Quill.
@@ -145,10 +145,9 @@ Open [api.slack.com/apps](https://api.slack.com/apps), sign in with your Slack a
    The workspace cannot be changed after the bot is created.
 4. **Next**  
    Click to proceed.  
-   
-Slack will show a summary of the bot as described by the manifest.
-Click **Create and Install** under the summary, and then **Allow** when Slack asks you to permit the bot's installation in the
-workspace.  
+   On the next page, Slack will show a summary of the bot as described by the manifest.
+   Click **Create and Install** under the summary, and then **Allow** when Slack asks you to permit the bot's installation in
+   the workspace.  
 
 <Admonition type="note" title="">
 
@@ -171,6 +170,7 @@ with a collapsed **Your app credentials** card. Expand the card:
 ![Your app credentials](./assets/slack-bot_app-credentials.png)
 
 Copy the **Bot token**: this token is the first of the two credentials you need to collect.  
+Note that this card also shows an **App token**, which Quill does not use and you do not need to copy.  
 
 <Admonition type="note" title="">
 
@@ -185,7 +185,7 @@ sidebar, and copy the **Bot User OAuth Token**:
 
 #### Collecting the signing secret:
 
-To find the **signing secret**, click **Go to App Settings** at the bottom of the Quill is ready! page.  
+To find the **signing secret**, click **Go to App Settings** at the bottom of the **Quill is ready!** page.  
 Open the **Basic Information** page from the bot settings sidebar, and find **Signing Secret** in the **App Credentials** section:
 
 ![The signing secret](./assets/slack-bot_signing-secret.png)
@@ -344,8 +344,8 @@ Back in Quill, you can now see the new channel in the Overview's **Channels** se
 
 <Panel heading="Chatting with the bot">
 
-Once the channel is connected, every member of the workspace can message the bot: a user who opens a direct message with the bot
-can ask questions, and the agent will answer from the app's data.  
+Once the channel is connected, every member of the workspace can message the bot. A user who opens a direct message with the bot
+can ask questions, and the agent will answer from the app's internal database.  
 The users need no account with Quill and no instructions. This section describes the chat as an end user experiences it, so that
 you know what to expect and what to tell your users.
 
@@ -361,7 +361,7 @@ and types a question in the bot's **Messages** tab.
 The following holds for every conversation with the bot:
 
 * **Messages a user sends while the bot is still answering wait their turn.**  
-  The bot answers the waiting messages one by one, as long as its queue has room.
+  The bot answers the waiting messages one by one, as long as the queue Quill keeps for this user has room.
 * **The bot has no commands.**  
   Every message the bot receives is handled as a question.
 
@@ -602,6 +602,13 @@ The limits below follow this design and Slack's own rules. None of them can be c
 
 <Panel heading="Troubleshooting">
 
+<Admonition type="note" title="">
+
+Symptoms met by the users of every bot type, not just of a Slack bot, are listed in the channels overview, in
+[Troubleshooting](../channels/overview.mdx#troubleshooting).
+
+</Admonition>
+
 The symptoms below are shown by a Slack bot channel when something goes wrong, each with its likely cause and what to do about it.  
 The first symptoms are seen in Quill's management dashboard: in the channel form and in the channel's [Connect](#the-connect-tab)
 tab. One symptom is seen in the bot's settings on Slack, on the **Event Subscriptions** page. The rest are encountered by the bot's
@@ -713,8 +720,6 @@ users in the Slack client.
   [Dashboard: AI connection strings](../dashboard/ai-connection-strings.mdx#test-and-save-the-connection). Then send the bot a
   question again.
 
-Symptoms met by the users of every bot type, like the notice sent when the bot's queue is full, are listed in the channels overview,
-in [Troubleshooting](../channels/overview.mdx#troubleshooting).
 </ContentFrame>
 
 </Panel>

@@ -12,9 +12,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Channels: Telegram bot
 <Admonition type="note" title="">
 
-* A Quill **Telegram bot** [channel](../overview.mdx#channels) lets your users converse with an [agent](../overview.mdx#ai-agent)
+* A Quill **Telegram bot** channel lets your users converse with an [agent](../overview.mdx#ai-agent)
   of your app in a private chat with a bot on Telegram.  
-  Users can chat with the bot using any Telegram client, and the agent will answer from the app's data.
+  Users can chat with the bot using any Telegram client, and the agent will answer from the app's internal database.
 
 * The bot is created using **@BotFather**, an official Telegram bot that creates other bots, free of charge.  
   @BotFather also issues the **bot token**, a credential that Quill needs to operate the bot.  
@@ -179,8 +179,8 @@ The new channel appears in the **Channels** section:
 
 <Panel heading="Chatting with the bot">
 
-Once the channel is added, the bot is reachable by anyone on Telegram: a user who finds the bot, by its username or through a
-search, can open a private chat with it and ask questions, and the agent will answer from the app's data.  
+Once the channel is added, the bot is reachable by anyone on Telegram. A user who finds the bot, by its username or through a
+search, can open a private chat with it and ask questions, and the agent will answer from the app's internal database.  
 The users need no account with Quill and no instructions. This section describes the chat as an end user experiences it, so that
 you know what to expect and what to tell your users.
 
@@ -194,7 +194,7 @@ The bot answers with a greeting, and from then on every message the user sends i
 ![A conversation with the bot](./assets/telegram-bot_conversation.png)
 
 Messages a user sends while the bot is still answering are gathered and answered together, as a single question, as long as the
-chat's queue has room.  
+queue Quill keeps for this chat has room.  
 The bot recognizes only two Telegram commands: `/start` and `/clear`. Any other string is handled as text, even if preceded by `/`.  
 The behavior common to all channels, like the streaming of the reply and the conversation's context, is described in the channels
 overview, in [Behavior and limitations common to all channels](../channels/overview.mdx#behavior-and-limitations-common-to-all-channels).
@@ -474,6 +474,13 @@ The limits below follow this design and Telegram's own rules. None of them can b
 
 <Panel heading="Troubleshooting">
 
+<Admonition type="note" title="">
+
+Symptoms met by the users of every bot type, not just of a Telegram bot, are listed in the channels overview, in
+[Troubleshooting](../channels/overview.mdx#troubleshooting).
+
+</Admonition>
+
 The symptoms below are shown by a Telegram bot channel when something goes wrong, each with its likely cause and what to do about it.  
 The first symptoms are seen in Quill's management dashboard: in the channel form, in the **Edit channel** form, and in the Channels
 view. The rest are encountered by the bot's users in their chats with the bot on Telegram.  
@@ -552,8 +559,6 @@ customized messages shows your texts instead.
   of the number the user shared.  
   What to do: advise the user to share the number again. See [Returning users](#returning-users).
 
-Symptoms met by the users of every bot type, like the notice sent when the bot's queue is full, are listed in the channels overview,
-in [Troubleshooting](../channels/overview.mdx#troubleshooting).
 </ContentFrame>
 
 </Panel>
