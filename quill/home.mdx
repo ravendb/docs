@@ -6,42 +6,155 @@ sidebar_position: 0
 pagination_next: null
 pagination_prev: null
 wrapperClassName: quillHomePage
+hide_title: true
 hide_table_of_contents: true
 description: "Quill gives your PostgreSQL, SQL Server, or MySQL database an AI agent that answers your users from a live copy of your data, through a chat widget on your site or a Telegram, Slack, or Discord bot. Start here."
 ---
 
-import CardWithImage from "@site/src/components/Common/CardWithImage";
-import ColGrid from "@site/src/components/ColGrid";
+import QuillHero from "@site/src/components/Quill/QuillHero";
+import QuillWidgetDemo from "@site/src/components/Quill/QuillWidgetDemo";
+import { QuillFlow, QuillSteps } from "@site/src/components/Quill/QuillHowItWorks";
+import CardWithIcon from "@site/src/components/Common/CardWithIcon";
 
-# Quill: AI agents for the database you already have
-AI conversations for your users, answered from a live copy of your SQL data.
+<QuillHero
+    title="AI agents for the database you already have"
+    lead="Quill keeps a live copy of the tables you choose from PostgreSQL, SQL Server, or MySQL, and lets AI agents answer your users from that copy, through a chat widget on your site or a Telegram, Slack, or Discord bot. Your database, your applications, and your workflows stay as they are."
+    primary={{ label: "Start your free trial", url: "https://ravendb.net/quill/start", external: true }}
+    secondary={{ label: "Set up Quill", url: "/quill/getting-started/overview" }}
+    note="One Docker container beside your database. No migration, no schema changes, your own LLM key."
+    visual={<QuillWidgetDemo />}
+/>
 
-Quill gives your PostgreSQL, SQL Server, or MySQL database AI agents, without changing the database itself.
-It runs as a single Docker container beside your database, mirrors the tables you select into an internal database
-of its own, and lets the agents talk with your users through a chat widget on your site or a bot in Telegram,
-Slack, or Discord.  
-Your data, your workflows, and your applications remain unchanged.
+## How it works
 
-* **Mirroring** - Quill keeps a live copy of the tables you select, and keeps it current as your data changes.
-* **Agents** - AI agents query the mirrored data, compose the replies, and phrase them with the LLM provider you
-  connect.
-* **Channels** - A chat widget on your site, or a Telegram, Slack, or Discord bot, carries the conversations between
-  your users and your agents.
+Quill reads only the tables you select and keeps a mirrored copy of them current as your data changes. Agents
+answer from that copy, so your own database goes on serving your applications exactly as before.
 
-### Start here
-Signing up starts a 90-day free trial. From there, Getting Started walks you through setting Quill up, and the
-Overview explains what you are setting up.
+<QuillFlow
+    nodes={[
+        {
+            icon: "database",
+            title: "Your SQL database",
+            description: "PostgreSQL, SQL Server, or MySQL. Read by Quill, never modified.",
+            url: "/quill/overview#your-sql-database",
+        },
+        {
+            icon: "sql-replication",
+            title: "Mirroring",
+            description: "A live copy of the tables you select, kept current by change data capture.",
+            url: "/quill/overview#mirroring",
+        },
+        {
+            icon: "ai-agents",
+            title: "AI agent",
+            description: "Queries the copy and phrases the replies with the LLM provider you connect.",
+            url: "/quill/overview#ai-agent",
+        },
+        {
+            icon: "notifications",
+            title: "Channels",
+            description: "A chat widget on your site, or a Telegram, Slack, or Discord bot.",
+            url: "/quill/overview#channels",
+        },
+    ]}
+/>
 
-<ColGrid colCount={3}>
-    <CardWithImage title="Sign up for Quill" description="Open the sign-up form on ravendb.net and start your free trial." url="https://ravendb.net/quill/start" imgSrc="/img/quill/home_card-sign-up.svg" imgAlt="Sign up for Quill" />
-    <CardWithImage title="Getting Started" description="From signing up to a chat widget on your site, step by step." url="/quill/getting-started/overview" imgSrc="/img/quill/home_card-getting-started.svg" imgAlt="Getting Started" />
-    <CardWithImage title="Overview" description="What Quill is, how its parts work together, and how a running Quill is managed." url="/quill/overview" imgSrc="/img/quill/home_card-overview.svg" imgAlt="Overview" />
-</ColGrid>
+## Three steps to a working chat
 
-### Documentation
+After you [sign up](getting-started/signing-up.mdx) and [start the container](getting-started/starting-quill.mdx),
+three wizard-guided steps take you to a chat that answers your users. Quill drafts the table mapping, the agent,
+and its queries; you approve or adjust each draft.
 
-<ColGrid colCount={3}>
-    <CardWithImage title="Dashboard" description="Manage a running Quill: your apps, the AI connection strings your agents use, and your license." url="/quill/dashboard/my-apps" imgSrc="/img/quill/home_card-dashboard.svg" imgAlt="Dashboard" />
-    <CardWithImage title="Security & Architecture" description="How Quill routes and protects connections, and how operators and programs authenticate." url="/quill/security-and-architecture/network-architecture" imgSrc="/img/quill/home_card-security.svg" imgAlt="Security & Architecture" />
-    <CardWithImage title="Developer access" description="Reach an app from your own code: through a channel and its agent, or straight to the mirrored data." url="/quill/developer-access/overview" imgSrc="/img/quill/home_card-developer-access.svg" imgAlt="Developer access" />
-</ColGrid>
+<QuillSteps
+    steps={[
+        {
+            title: "Connect your database",
+            description:
+                "Point Quill at your PostgreSQL, SQL Server, or MySQL, choose the tables it may read, and let it map them.",
+            url: "/quill/getting-started/connecting-your-database",
+        },
+        {
+            title: "Create an AI agent",
+            description:
+                "Connect your LLM provider, let Quill draft the agent and its queries from your data, and chat with the draft before you save it.",
+            url: "/quill/getting-started/adding-an-ai-agent",
+        },
+        {
+            title: "Add a channel",
+            description:
+                "Create a chat widget channel, mint its embed link, and place the widget in a page of your site. Or add a Telegram, Slack, or Discord bot.",
+            url: "/quill/getting-started/adding-a-chat-widget",
+        },
+    ]}
+/>
+
+## Explore the documentation
+
+### Learn
+
+<div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <CardWithIcon
+        title="Overview"
+        icon="book"
+        description="What Quill is, how its parts work together, and how a running Quill is managed."
+        url="/quill/overview"
+    />
+    <CardWithIcon
+        title="Getting Started"
+        icon="rocket"
+        description="The setup path from signing up to a chat widget on your site, and what to prepare before you start."
+        url="/quill/getting-started/overview"
+    />
+    <CardWithIcon
+        title="Security & Architecture"
+        icon="shield"
+        description="How Quill routes and protects connections, and how operators and programs authenticate."
+        url="/quill/security-and-architecture/network-architecture"
+    />
+</div>
+
+### Operate
+
+<div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <CardWithIcon
+        title="Dashboard"
+        icon="dashboard"
+        description="Your apps and their activity, the AI connection strings your agents use, and your license."
+        url="/quill/dashboard/my-apps"
+    />
+    <CardWithIcon
+        title="Networking & DNS"
+        icon="server-topology"
+        description="The DNS records created for your Quill, what they point at, and how to repoint them when your IP changes."
+        url="/quill/networking-and-dns"
+    />
+    <CardWithIcon
+        title="Updating Quill"
+        icon="refresh"
+        description="Replace the Docker container while keeping its data volume, and recover from an expired build."
+        url="/quill/updating-quill"
+    />
+</div>
+
+### Build
+
+<div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <CardWithIcon
+        title="Developer access"
+        icon="code"
+        description="Reach an app from your own code: through a channel and its agent, or straight to the mirrored data."
+        url="/quill/developer-access/overview"
+    />
+    <CardWithIcon
+        title="Embed the chat widget"
+        icon="integrations"
+        description="Place the widget on your site with an iframe, restrict which sites may load it, and style it."
+        url="/quill/developer-access/embed-the-chat-widget"
+    />
+    <CardWithIcon
+        title="RavenDB.Client access"
+        icon="database-client-configuration"
+        description="Connect an application directly to the mirrored database with a scoped client certificate."
+        url="/quill/developer-access/ravendb-client-access"
+    />
+</div>
