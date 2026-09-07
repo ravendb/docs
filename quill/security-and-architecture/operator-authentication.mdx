@@ -32,19 +32,18 @@ import ContentFrame from '@site/src/components/ContentFrame';
 <Panel heading="The Dashboard API key">
 
 Quill reads its Dashboard API key from the `QUILL_API_KEY` environment variable when the container starts.  
-In the default Docker Compose configuration, you supply it in the `.env` file next to `docker-compose.yml`.
+You supply it through the `-e QUILL_API_KEY=...` option in the `docker run` command.
 
-The key is required:
+The key is required for protected operational access:
 
-* The default Docker Compose configuration prevents the container from starting when `QUILL_API_KEY` is missing.
-* If Quill is started another way without the key, it rejects all requests to protected operational API endpoints.  
+* If Quill starts without the key, it rejects all requests to protected operational API endpoints.  
   It does not allow anonymous access or use a default key.
 * When the key is configured, it can be used to create a browser session or authenticate an API request directly.
 
 For validation, Quill stores a salted SHA-256 hash in its configuration database and compares hashes using a constant-time operation.
 Quill does not expose the original key through its dashboard or API.
 
-The original value remains in your deployment configuration, such as the `.env` file and the container environment.  
+The original value remains in your deployment configuration or secret store and in the container environment.  
 Protect access to that configuration as you would any other secret.
 
 <Admonition type="warning" title="">
@@ -64,7 +63,7 @@ Using the License key instead results in `401 Unauthorized`.
 </Admonition>
 
 If you replace the signup-issued Dashboard API key with a value of your own, use a high-entropy value.  
-Quill logs a startup warning when `QUILL_API_KEY` is shorter than 16 characters.
+Quill logs a warning the first time it validates a Dashboard API key if `QUILL_API_KEY` is shorter than 16 characters.
 
 </Panel>
 
@@ -85,15 +84,14 @@ The browser sends this cookie with later requests, so you do not need to enter t
 Quill validates the session cookie independently and does not re-check it against the Dashboard API key.  
 Signing out does not invalidate a copy of the cookie held elsewhere.
 
-A session created before the Dashboard API key is changed therefore remains valid until it expires  
-or the container is recreated. See [Replacing an exposed key](#replacing-an-exposed-key).
+A session created before the Dashboard API key is changed therefore remains valid until it expires after eight hours of inactivity.
+Recreating the container with the same persistent volume does not invalidate it. See [Replacing an exposed key](#replacing-an-exposed-key).
 
 <Admonition type="info" title="">
 
 #### The sign-in rate limit is per client IP address
 
-* The login endpoint accepts 10 attempts per minute from each client IP address and returns `429 Too Many Requests`  
-  when that address's limit is exceeded.
+* The login endpoint accepts 10 attempts per minute from each client IP address and returns `429 Too Many Requests` when that address's limit is exceeded.
 
 * nginx passes the original caller address to Quill, as described in [Network Architecture](network-architecture.mdx#how-a-connection-is-routed).  
   Login attempts from different client IP addresses therefore use separate rate-limit buckets.
@@ -145,12 +143,13 @@ The same key is issued for every Quill instance registered under the same email 
 
 By default, you configure each of those Quill instances with the signup-issued key:
 
-* Every Quill instance that is still configured with that key accepts it.
-* If you replace `QUILL_API_KEY` on a Quill instance, that instance accepts the replacement value instead.  
-  The change does not rotate the signup-issued key or affect other Quill instances.
-* If the signup-issued key is exposed, treat every Quill instance that still accepts it as affected.  
-  Replace the key and recreate the container on each affected instance.  
-  See [Replacing an exposed key](#replacing-an-exposed-key).
+  * Every Quill instance that is still configured with that key accepts it.
+    
+  * If you replace `QUILL_API_KEY` on a Quill instance, that instance accepts the replacement value instead.  
+    The change does not rotate the signup-issued key or affect other Quill instances.
+    
+  * If the signup-issued key is exposed, treat every Quill instance that still accepts it as affected.  
+    Replace the key and recreate the container on each affected instance. See [Replacing an exposed key](#replacing-an-exposed-key).
 
 </Panel>
 
@@ -159,8 +158,7 @@ By default, you configure each of those Quill instances with the signup-issued k
 Quill cannot derive the original Dashboard API key from the salted hash in its configuration database,  
 and it does not expose the key through its dashboard or API.
 
-First, check the deployment configuration from which `QUILL_API_KEY` was supplied,  
-such as the `.env` file or your secret store.
+First, check the deployment configuration or secret store from which `QUILL_API_KEY` was supplied.
 
 If the Quill instance still uses the signup-issued key, you can also recover it in either of these ways:
 
@@ -185,34 +183,23 @@ and recreate the container.
 
 <ContentFrame>
 
-### Docker Compose
+### Recreate the container
 
-Edit `QUILL_API_KEY` in the `.env` file next to `docker-compose.yml`, then run:
-
-```bash
-docker compose up -d
-```
-<br/>
-
-Compose detects the changed environment and recreates the container with the new key.
-
-</ContentFrame>
-
-<ContentFrame>
-
-### docker run
+In these commands, `<container-name>` is the name specified after `--name` in your original `docker run` command.  
+By default, it matches your Quill name.  
+`<recorded-volume-name>` is the volume name specified before `:/var/lib/quill` in that command.
 
 Remove the existing container, then rerun it with the new key and the same data volume:
 
 ```bash
-docker rm -f quill
+docker rm -f <container-name>
 
-docker run -d --name quill \
+docker run -d --name <container-name> \
   --restart unless-stopped \
   -p 443:443 \
   -e QUILL_LICENSE_KEY="YOUR_EXISTING_LICENSE_KEY" \
   -e QUILL_API_KEY="YOUR_NEW_DASHBOARD_API_KEY" \
-  -v quill-data:/var/lib/quill \
+  -v <recorded-volume-name>:/var/lib/quill \
   ravendb/quill:latest
 ```
 <br/>
@@ -220,37 +207,54 @@ docker run -d --name quill \
 If your original command used different ports, image tags, environment options, or volume names,  
 preserve those values when recreating the container.
 
-</ContentFrame>
-
 <Admonition type="warning" title="">
 
-#### Recreate the container; do not restart it
+#### Restarting the container is not enough
 
-Quill reads `QUILL_API_KEY` from the container environment when it starts.  
-Restarting the existing container reuses the same environment, so `docker restart quill`  
-keeps the exposed key in force.
+* Quill reads `QUILL_API_KEY` from the container environment when it starts.  
+  Restarting the existing container reuses the same environment, so `docker restart <container-name>`  
+  keeps the exposed key in force.
 
-A browser session is not re-checked against the Dashboard API key after login.  
-Restarting the existing container therefore also leaves previously issued session cookies valid  
-until they expire after eight hours of inactivity.
+* A browser session is not re-checked against the Dashboard API key after login.  
+  Changing the key therefore does not revoke previously issued session cookies.
 
-With the default container layout, the cookie-protection keys are stored in the container’s writable layer,
-outside the quill-data volume. Recreating the container discards those keys and invalidates previously issued sessions.
+* With the default container layout, the web application stores its cookie-protection keys beneath  
+  `/var/lib/quill/.aspnet/DataProtection-Keys`, inside the persistent volume.  
+  Recreating the container with that volume preserves the keys, so existing sessions remain valid until they expire after eight hours of inactivity.
+  Continued activity renews the session.
+
+* Quill does not currently provide a built-in way to invalidate all active browser sessions.
 
 </Admonition>
 
-Recreating the container preserves the Quill data stored in the `quill-data` volume,  
-including its databases, activated setup package, and configured apps.
+<Admonition type="info" title="">
 
-Do not delete that volume or run `docker compose down -v`; those operations remove the persisted Quill data.
+#### Reuse the existing data volume
 
-Which Quill instances must be updated depends on which key was exposed:
+* Recreating the container preserves the Quill data stored in the persistent volume mounted at  
+  `/var/lib/quill`, including its databases, activated setup package, and configured apps.
 
-* If a locally chosen replacement key was exposed, replace it on that instance.
-* If the signup-issued key was exposed, replace it on every Quill instance that still accepts it.  
-  Changing `QUILL_API_KEY` locally does not rotate the account-level signup key or update other Quill instances.
-* Store each replacement key in your deployment secret store.  
-  The signup email continues to contain the original signup-issued key.
+* Do not delete that volume; doing so removes the persisted Quill data.
+
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Which Quill instances to update
+
+The instances you must update depend on which key was exposed:
+
+    * If a locally chosen replacement key was exposed, replace it on that instance.
+        
+    * If the signup-issued key was exposed, replace it on every Quill instance that still accepts it.  
+      Changing `QUILL_API_KEY` locally does not rotate the account-level signup key or update other Quill instances.
+        
+    * Store each replacement key in your deployment secret store.  
+      The signup email continues to contain the original signup-issued key.
+
+</ContentFrame>
 
 </Panel>
 
@@ -287,7 +291,8 @@ Anyone holding the Dashboard API key has full operator access to the dashboard a
 
 Quill treats all key holders as the same operator and cannot distinguish which person performed an action.  
 If someone who knows the key should no longer have access, replace it on every affected Quill instance  
-and recreate those containers.
+and recreate those containers to load the new value. This prevents new authentication with the exposed key,  
+but does not invalidate browser sessions that were already issued.
 
 </Admonition>
 
@@ -296,8 +301,7 @@ and recreate those containers.
 <Panel heading="Summary">
 
 * The Dashboard API key is required for Quill's operational API.  
-  The default Docker Compose configuration prevents startup without it.  
-  If Quill is started another way without the key, all requests to protected operational API endpoints are rejected.
+  If Quill starts without the key, all requests to protected operational API endpoints are rejected.
     
 * Quill stores a salted hash in its configuration database and does not expose the original key through its dashboard or API.
   Keep the original value in your deployment secret store.
@@ -314,7 +318,8 @@ and recreate those containers.
   Recover a locally chosen key from your deployment configuration, or configure another key.
     
 * To replace an exposed key, update `QUILL_API_KEY` and recreate every affected container.  
-  Restarting an existing container does not load a changed environment or invalidate existing browser sessions.
+  Restarting an existing container does not load a changed environment.
+  Neither restarting nor recreating the container with the same persistent volume invalidates existing browser sessions.
     
 * The Dashboard API key does not authenticate embed links, direct RavenDB connections, `/healthz`,  
   or `/api/bootstrap/status`. Those surfaces use embed tokens, mTLS client certificates, or anonymous access.
