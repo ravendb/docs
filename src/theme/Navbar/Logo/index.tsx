@@ -48,7 +48,7 @@ export default function NavbarLogo(): ReactNode {
             ) : isQuillPath ? (
                 <>
                     <Link
-                        to="https://ravendb.net/quill-beta"
+                        to="https://ravendb.net/quill"
                         aria-label="Quill"
                         className="inline-block !transition-all hover:opacity-75 group"
                     >
