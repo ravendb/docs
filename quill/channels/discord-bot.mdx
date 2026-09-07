@@ -252,16 +252,13 @@ The following holds for every conversation with the bot:
 * **The reply is streamed into the chat as the agent composes it.**  
   The bot posts the reply and keeps updating the message until the reply is complete, which is why Discord marks the message as
   **(edited)**.
-* **An answer longer than Discord's message limit is delivered in several messages.**
-* **Quill keeps the conversation's context.**  
-  A follow-up question like "Which of these is the cheapest?" is understood against the earlier answer.
 * **Messages a user sends while the bot is still answering wait their turn.**  
-  The bot answers them one by one, as long as its queue has room; see [Discord bot limitations](#discord-bot-limitations).
+  The bot answers them one by one, as long as its queue has room.
 * **The bot recognizes no commands.**  
   Every message is handled as a question, including messages that start with `/`.
-* **The agent remembers a conversation for one day at most.**  
-  At midnight UTC the agent forgets the earlier exchange, and the next message is answered without the earlier context.  
-  The messages themselves remain in the Discord chat, and a user cannot make the agent forget sooner.
+
+The behavior common to all channels, like the conversation's context, is described in the channels overview, in
+[Behavior and limitations common to all channels](../channels/overview.mdx#behavior-and-limitations-common-to-all-channels).
 
 </ContentFrame>
 
@@ -476,15 +473,15 @@ The limits below follow this design and Discord's own rules. None of them can be
   In a direct message, a message with an attachment, e.g., an image or a file, or a message with no text, gets the reply "I can only
   read text messages right now."
 * **The agent remembers a conversation for one day at most.**  
-  At midnight UTC the agent forgets the earlier exchange, and the next message is answered without the earlier context. A user
-  cannot make the agent forget sooner.
+  A user cannot make the agent forget sooner.  
+  See [Behavior and limitations common to all channels](../channels/overview.mdx#behavior-and-limitations-common-to-all-channels)
+  in the channels overview.
 * **Messages sent faster than the bot answers may go unanswered.**  
-  Messages a user sends while the bot is still answering are queued. When the queue is full, further messages are not taken. The bot
-  then sends one notice, asking the user to send the message again after the bot has replied.
+  See [Behavior and limitations common to all channels](../channels/overview.mdx#behavior-and-limitations-common-to-all-channels)
+  in the channels overview.
 * **The bot's own messages cannot be customized.**  
-  The replies the bot sends on its own, "I can only read text messages right now.", "I'm still working through your earlier
-  messages, so that one didn't make it. Please resend it once I've replied.", and "Sorry - something went wrong handling that
-  message. Please try again.", are set by Quill and cannot be changed.
+  See [Behavior and limitations common to all channels](../channels/overview.mdx#behavior-and-limitations-common-to-all-channels)
+  in the channels overview.
 
 </Panel>
 
@@ -495,7 +492,9 @@ The first symptoms are seen in Quill's management dashboard: in the channel form
 [Connect](#the-connect-tab) tab. The rest are encountered by the bot's users on Discord, in the server's chat rooms or in their direct
 messages with the bot.
 
-**In the dashboard**
+<ContentFrame>
+
+### In the dashboard
 
 * **Clicking `Connect bot` fails with "discord rejected the bot token".**  
   Likely cause: the token pasted in the form may be incomplete or mistyped, or a newer token may have been issued for the bot in the
@@ -549,7 +548,11 @@ messages with the bot.
   What to do: the fix is on the user's side. Advise the user to undo whichever of these applies: rejoin the server, unblock the bot,
   or allow direct messages from server members again.
 
-**On Discord**
+</ContentFrame>
+
+<ContentFrame>
+
+### On Discord
 
 * **A user cannot find the bot, or cannot open a direct message with it.**  
   Likely cause: the user may not be a member of the server the bot was invited to. On Discord, a user can message a bot only if the
@@ -562,9 +565,6 @@ messages with the bot.
   #general, where every member can read it, does not reach the bot, even if the message mentions the bot.  
   What to do: advise the user to send the question in a direct message with the bot, opened as described in
   [Finishing the connection on Discord](#finishing-the-connection-on-discord).
-* **The bot replies "I can only read text messages right now."**  
-  Likely cause: the user's message may carry an attachment, like an image or a file, or contain no text.  
-  What to do: in either case, advise the user to send the question as text, without an attachment.
 * **The bot replies "Sorry - something went wrong handling that message. Please try again."**  
   Likely cause: either the agent has a parameter the channel does not bind, e.g., a parameter added to the agent after the channel
   was added, or the agent failed to answer, e.g., because the database it queries or the LLM service it uses could not be reached.  
@@ -573,14 +573,9 @@ messages with the bot.
   connection string, can be reached. The connection string can be tested as described in
   [Dashboard: AI connection strings](../dashboard/ai-connection-strings.mdx#test-and-save-the-connection). Then send the bot a
   question again.
-* **The bot replies "I'm still working through your earlier messages, so that one didn't make it. Please resend it once I've
-  replied."**  
-  Likely cause: the user may have sent more messages than the bot's queue can hold while an answer was still being composed.  
-  What to do: advise the user to wait for the bot's reply, and then send the message again. See
-  [Discord bot limitations](#discord-bot-limitations).
-* **The bot answers from outdated information.**  
-  Likely cause: the conversation may still hold earlier answers, which the agent reads along with the new question.  
-  What to do: advise the user to ask the bot explicitly to look the information up again. A new conversation, without the earlier
-  answers, starts at midnight UTC in any case. See [Discord bot limitations](#discord-bot-limitations).
+
+Symptoms met by the users of every bot type, like the notice sent when the bot's queue is full, are listed in the channels overview,
+in [Troubleshooting](../channels/overview.mdx#troubleshooting).
+</ContentFrame>
 
 </Panel>

@@ -360,17 +360,13 @@ and types a question in the bot's **Messages** tab.
 
 The following holds for every conversation with the bot:
 
-* **The reply is streamed into the chat as the agent composes it.**
-* **A long answer is delivered in several messages.**
-* **Quill keeps the conversation's context.**  
-  A follow-up question like "Which of these is the cheapest?" is understood against the earlier answer.
 * **Messages a user sends while the bot is still answering wait their turn.**  
-  The bot answers the waiting messages one by one, as long as its queue has room; see [Slack bot limitations](#slack-bot-limitations).
+  The bot answers the waiting messages one by one, as long as its queue has room.
 * **The bot has no commands.**  
   Every message the bot receives is handled as a question.
-* **The agent remembers a conversation for one day at most.**  
-  At midnight UTC the agent forgets the earlier exchange, and the next message is answered without the earlier context.  
-  The messages themselves remain in the Slack chat, and a user cannot make the agent forget sooner.
+
+The behavior common to all channels, like the streaming of the reply and the conversation's context, is described in the channels
+overview, in [Behavior and limitations common to all channels](../channels/overview.mdx#behavior-and-limitations-common-to-all-channels).
 
 </ContentFrame>
 
@@ -592,15 +588,15 @@ The limits below follow this design and Slack's own rules. None of them can be c
   moment, the message does not reach Quill. Slack may retry the delivery a few times shortly afterwards; a message that no retry
   delivers is never answered.
 * **The agent remembers a conversation for one day at most.**  
-  At midnight UTC the agent forgets the earlier exchange, and the next message is answered without the earlier context. A user
-  cannot make the agent forget sooner.
+  A user cannot make the agent forget sooner.  
+  See [Behavior and limitations common to all channels](../channels/overview.mdx#behavior-and-limitations-common-to-all-channels)
+  in the channels overview.
 * **Messages sent faster than the bot answers may go unanswered.**  
-  Messages a user sends while the bot is still answering are queued. When the queue is full, further messages are not taken. The bot
-  then sends one notice, asking the user to send the message again after the bot has replied.
+  See [Behavior and limitations common to all channels](../channels/overview.mdx#behavior-and-limitations-common-to-all-channels)
+  in the channels overview.
 * **The bot's own messages cannot be customized.**  
-  The replies the bot sends on its own, "I can only read text messages right now.", "I'm still working through your earlier
-  messages, so that one didn't make it. Please resend it once I've replied.", and "Sorry - something went wrong handling that
-  message. Please try again.", are set by Quill and cannot be changed.
+  See [Behavior and limitations common to all channels](../channels/overview.mdx#behavior-and-limitations-common-to-all-channels)
+  in the channels overview.
 
 </Panel>
 
@@ -611,7 +607,9 @@ The first symptoms are seen in Quill's management dashboard: in the channel form
 tab. One symptom is seen in the bot's settings on Slack, on the **Event Subscriptions** page. The rest are encountered by the bot's
 users in the Slack client.
 
-**In the dashboard**
+<ContentFrame>
+
+### In the dashboard
 
 * **The `Bot token` field reports "The bot token starts with xoxb- (not a user or app-level token)".**  
   Likely cause: the pasted token may be the **App token** (`xapp-...`) shown next to the bot token on the **Quill is ready!** page
@@ -669,7 +667,11 @@ users in the Slack client.
   Messages users send while the channel is paused do not reach the agent and are not answered later.  
   What to do: resume the channel, as described in [Pausing and deleting the channel](#pausing-and-deleting-the-channel).
 
-**In the bot's settings on Slack**
+</ContentFrame>
+
+<ContentFrame>
+
+### In the bot's settings on Slack
 
 * **The `Request URL` field of the `Event Subscriptions` page shows "Your URL didn't respond."**  
   Likely cause: Slack may be unable to reach the deployment at the URL: Quill may be stopped, the machine that runs Quill may not
@@ -682,7 +684,11 @@ users in the Slack client.
   described in [Prerequisites](#prerequisites). Then paste the URL again from the channel's [Connect](#the-connect-tab) tab, and
   click **Retry**. If the channel was deleted, add a channel for the bot again and paste the new channel's request URL instead.
 
-**In the Slack client**
+</ContentFrame>
+
+<ContentFrame>
+
+### In the Slack client
 
 * **A user cannot find the bot.**  
   Likely cause: the user may not be a member of the workspace the bot is installed in, or the bot may not be listed in the user's
@@ -694,9 +700,6 @@ users in the Slack client.
   Likely cause: the bot reads only the direct messages sent to it. A message posted in a Slack channel, such as #general, or in a
   group direct message with several people, does not reach the bot, even if the message mentions the bot.  
   What to do: advise the user to send the question in a direct message with the bot.
-* **The bot replies "I can only read text messages right now."**  
-  Likely cause: the user's message may carry a file, like an image or a document.  
-  What to do: advise the user to send the question as text, without a file.
 * **The bot replies "Sorry - something went wrong handling that message. Please try again."**  
   Likely cause: one of the following may have happened.
   * The agent has a parameter the channel does not bind, e.g., a parameter added to the agent after the channel was added.
@@ -709,14 +712,9 @@ users in the Slack client.
   connection string, can be reached. The connection string can be tested as described in
   [Dashboard: AI connection strings](../dashboard/ai-connection-strings.mdx#test-and-save-the-connection). Then send the bot a
   question again.
-* **The bot replies "I'm still working through your earlier messages, so that one didn't make it. Please resend it once I've
-  replied."**  
-  Likely cause: the user may have sent more messages than the bot's queue can hold while an answer was still being composed.  
-  What to do: advise the user to wait for the bot's reply, and then send the message again. See
-  [Slack bot limitations](#slack-bot-limitations).
-* **The bot answers from outdated information.**  
-  Likely cause: the conversation may still hold earlier answers, which the agent reads along with the new question.  
-  What to do: advise the user to ask the bot explicitly to look the information up again. The agent forgets the earlier answers at
-  midnight UTC in any case. See [Slack bot limitations](#slack-bot-limitations).
+
+Symptoms met by the users of every bot type, like the notice sent when the bot's queue is full, are listed in the channels overview,
+in [Troubleshooting](../channels/overview.mdx#troubleshooting).
+</ContentFrame>
 
 </Panel>

@@ -193,13 +193,11 @@ The bot answers with a greeting, and from then on every message the user sends i
 
 ![A conversation with the bot](./assets/telegram-bot_conversation.png)
 
-The reply is streamed into the chat as the agent composes it.  
-An answer longer than Telegram's message limit is delivered in several messages.  
-The conversation keeps its context, so a follow-up question like "Which of these is the cheapest?" is understood against the
-earlier answer.  
 Messages a user sends while the bot is still answering are gathered and answered together, as a single question, as long as the
-chat's queue has room; see [Telegram bot limitations](#telegram-bot-limitations).  
-The bot recognizes only two Telegram commands: `/start` and `/clear`. Any other string is handled as text, even if preceded by `/`.
+chat's queue has room.  
+The bot recognizes only two Telegram commands: `/start` and `/clear`. Any other string is handled as text, even if preceded by `/`.  
+The behavior common to all channels, like the streaming of the reply and the conversation's context, is described in the channels
+overview, in [Behavior and limitations common to all channels](../channels/overview.mdx#behavior-and-limitations-common-to-all-channels).
 
 </ContentFrame>
 
@@ -457,22 +455,20 @@ The limits below follow this design and Telegram's own rules. None of them can b
 * **Anyone on Telegram can chat with the bot.**  
   The channel cannot select the users that will have access to the bot: any Telegram user who finds the bot can ask it questions.  
   Agent parameters bound to the Telegram user can tie the answers to this user's own data, but cannot turn anyone away.
-* **One bot per channel, one agent per channel.**
-   * An agent can serve several channels at once, e.g., a chat widget on your site and a Telegram bot.
-   * A channel serves the agent it was added for: it cannot serve multiple agents, or be switched to a different agent.
-   * A bot can serve only the channel it was connected to. To connect a bot to a different channel, delete the channel and add a
-     new channel for the bot.
+* **One bot per channel, one agent per channel.**  
+  See [Channels and agents](../channels/overview.mdx#channels-and-agents) in the channels overview.
 * **The bot answers in private chats only.**  
   Added to a group, the bot posts one refusal and then stays silent in the group.
 * **The bot answers text-only messages.**  
   A photo, a document, a sticker, or a voice message gets no reply. A contact card is accepted only when an agent parameter
   takes the user's phone number.
 * **The agent remembers a conversation for one day at most.**  
-  At midnight UTC the agent forgets the earlier exchange, and the next message is answered without the earlier context. A user
-  can also make the agent forget sooner by sending `/clear`.
+  A user can make the agent forget sooner by sending `/clear`, as described in [Clearing the conversation](#clearing-the-conversation).  
+  See also [Behavior and limitations common to all channels](../channels/overview.mdx#behavior-and-limitations-common-to-all-channels)
+  in the channels overview.
 * **Messages sent faster than the bot answers may go unanswered.**  
-  Messages a user sends while the bot is still answering are queued. When the queue is full, further messages are not taken. The bot
-  then sends one notice, asking the user to send the message again after the bot has replied.
+  See [Behavior and limitations common to all channels](../channels/overview.mdx#behavior-and-limitations-common-to-all-channels)
+  in the channels overview.
 
 </Panel>
 
@@ -484,7 +480,9 @@ view. The rest are encountered by the bot's users in their chats with the bot on
 The bot's messages are quoted in their default form, shown in [The Bot messages tab](#the-bot-messages-tab); a channel with
 customized messages shows your texts instead.
 
-**In the dashboard**
+<ContentFrame>
+
+### In the dashboard
 
 * **Clicking `Connect bot` fails with "invalid bot token format".**  
   Likely cause: the token pasted in the form may be incomplete or mistyped. A bot token is the bot's numeric id, a colon, and a
@@ -523,7 +521,11 @@ customized messages shows your texts instead.
   resumed within this time.  
   What to do: resume the channel, as described in [Pausing and deleting the channel](#pausing-and-deleting-the-channel).
 
-**On Telegram**
+</ContentFrame>
+
+<ContentFrame>
+
+### On Telegram
 
 * **The bot replies "This assistant is not fully configured yet. Please contact whoever set up this bot."**  
   Likely cause: the agent may have a parameter the channel does not bind, e.g., a parameter added to the agent after the channel
@@ -540,26 +542,18 @@ customized messages shows your texts instead.
   Likely cause: a parameter is bound to **Telegram username**, and the user has no username set in Telegram.  
   What to do: advise the user to set a username in Telegram's settings and send the question again; or bind the parameter to
   another source, in the channel's [Parameters](#the-parameters-tab) tab.
-* **The bot does not reply to a photo, a document, a sticker, a voice message, or a contact card.**  
-  Likely cause: the bot answers text-only messages; a contact card is accepted only when a parameter is bound to
-  **Telegram phone number**.  
-  What to do: advise the user to send the question as text. See [Messages the bot ignores](#messages-the-bot-ignores).
 * **The bot replies "I only work in one-on-one chats. Message me directly to start a conversation." in a group, and then stays
   silent there.**  
   Likely cause: the bot was added to a Telegram group; the bot answers in private chats only.  
   What to do: hand the users the bot's address, shown in the channel's [Connect](#the-connect-tab) tab, and advise them to open a
   private chat with the bot at that address.
-* **The bot replies "I'm still working through your earlier messages, so that one didn't make it. Please resend it once I've
-  replied."**  
-  Likely cause: the user may have sent more messages than the chat's queue can hold while an answer was still being composed.  
-  What to do: advise the user to wait for the bot's reply, and then send the message again. See
-  [Telegram bot limitations](#telegram-bot-limitations).
-* **The bot answers from outdated information.**  
-  Likely cause: the conversation may still hold earlier answers, which the agent reads along with the new question.  
-  What to do: advise the user to send `/clear` and ask again, as described in [Clearing the conversation](#clearing-the-conversation).
 * **The bot asks a returning user for the phone number again.**  
   Likely cause: the channel may have been deleted and added again. The number is kept per channel, so a new channel has no record
   of the number the user shared.  
   What to do: advise the user to share the number again. See [Returning users](#returning-users).
+
+Symptoms met by the users of every bot type, like the notice sent when the bot's queue is full, are listed in the channels overview,
+in [Troubleshooting](../channels/overview.mdx#troubleshooting).
+</ContentFrame>
 
 </Panel>

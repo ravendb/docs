@@ -22,8 +22,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
   Channels view.
 
 * This page covers Channels view features that are common to all channel types.  
-  Features and behaviors specific to each channel type are covered in the pages dedicated to the various types, like
-  [Channels: Telegram bot](../channels/telegram-bot.mdx).
+  Features and behaviors specific to each channel type are covered in the pages dedicated to the various types, listed in
+  [Channels: Overview](../channels/overview.mdx#channel-types).
 
 * In this article:
    * [Opening the Channels view](#opening-the-channels-view)
@@ -90,6 +90,7 @@ The form for each type and what it asks for are described on the type's own page
    Not available yet; **Coming soon**.
 4. **Slack** and **Discord**  
    A Slack app, or a Discord bot, that your users message directly.
+   See [Channels: Slack bot](../channels/slack-bot.mdx) and [Channels: Discord bot](../channels/discord-bot.mdx).
 
 </Panel>
 
@@ -141,7 +142,9 @@ The agent the channel was added for cannot be changed; to serve another agent, a
    The section that belongs to the channel's type. For the web widget shown here: the sites the widget may be embedded in
    (see [Restrict where the widget loads](../developer-access/embed-the-chat-widget.mdx#restrict-where-the-widget-loads));
    for a Telegram bot: the option to replace the bot token (see
-   [Channels: Telegram bot](../channels/telegram-bot.mdx#managing-the-channel)).
+   [Channels: Telegram bot](../channels/telegram-bot.mdx#rotating-the-bot-token)); for a Slack bot: the option to rotate the
+   credentials (see [Channels: Slack bot](../channels/slack-bot.mdx#rotating-the-credentials)); for a Discord bot: the option to
+   replace the bot token (see [Channels: Discord bot](../channels/discord-bot.mdx#rotating-the-bot-token)).
 3. **Save changes**  
    Click to save the changes. **Cancel** closes the form without saving.
 
@@ -169,7 +172,14 @@ What a pause means for the channel's users depends on the channel type:
   Once the channel is resumed, its embed links that have not expired work again.
 * A paused Telegram bot stops answering:  
   Messages users send meanwhile are held by Telegram for up to 24 hours, and answered if the channel is resumed within this time.  
-  See [Channels: Telegram bot](../channels/telegram-bot.mdx#managing-the-channel).
+  See [Channels: Telegram bot](../channels/telegram-bot.mdx#pausing-and-deleting-the-channel).
+* A paused Slack bot stops answering:  
+  Slack keeps delivering the users' messages, which Quill discards; messages sent while the channel is paused are not answered when
+  the channel is resumed.  
+  See [Channels: Slack bot](../channels/slack-bot.mdx#pausing-and-deleting-the-channel).
+* A paused Discord bot stops answering, and appears offline on Discord:  
+  Messages users send while the channel is paused do not reach Quill, and are not answered when the channel is resumed.  
+  See [Channels: Discord bot](../channels/discord-bot.mdx#pausing-and-deleting-the-channel).
 
 </Panel>
 
@@ -189,7 +199,15 @@ What else the deletion means depends on the channel type:
   A page that embeds an embed link reports that the conversation is not available.
 * A deleted Telegram bot channel stops the bot:  
   The bot itself remains yours on Telegram, and its token can be used to connect it again, to this app or to another.  
-  See [Channels: Telegram bot](../channels/telegram-bot.mdx#managing-the-channel).
+  See [Channels: Telegram bot](../channels/telegram-bot.mdx#pausing-and-deleting-the-channel).
+* A deleted Slack bot channel stops the bot:  
+  The bot itself remains installed in the workspace, and its credentials can be used to connect it again, in a new channel with a
+  new request URL.  
+  See [Channels: Slack bot](../channels/slack-bot.mdx#pausing-and-deleting-the-channel).
+* A deleted Discord bot channel stops the bot:  
+  The bot itself remains yours in the Discord Developer Portal, and a member of your server; its token can be used to connect it
+  again.  
+  See [Channels: Discord bot](../channels/discord-bot.mdx#pausing-and-deleting-the-channel).
 
 </Panel>
 
