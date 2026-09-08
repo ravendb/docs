@@ -209,6 +209,24 @@ pre[class*="language-"] {
             transform: translate(var(--dx), var(--dy));
         }
     }
+
+    /* QuillFlow (src/components/Quill): the stage cards fade and rise in sequence, each <li> setting
+       --flow-delay so the row is drawn left to right. The "both" fill keeps a card hidden through its
+       own delay. Note this is safe under the global prefers-reduced-motion rule at the top of this
+       file: dropping the animation leaves the card at its normal opacity rather than stuck at 0, which
+       is why the hidden state lives in the keyframe and never in the element's own styles. */
+    --animate-quill-flow-in: quill-flow-in 460ms var(--flow-delay, 0ms) ease-out both;
+
+    @keyframes quill-flow-in {
+        from {
+            opacity: 0;
+            transform: translateY(0.625rem);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 }
 
 /* Custom font-faces — fonts served from static/css/fonts/ (unhashed) so preload links work */
@@ -853,14 +871,15 @@ a {
     display: none;
 }
 
-/* Quill start page background. The blueprint grid and the coral glow are lifted from
-   QuillComingSoon.module.css and painted behind the whole article of quill/home.mdx. The glow is
-   static here: an always-on blurred animation repaints the whole page on every frame. The page is
-   pinned by the two classes the theme puts on <html>: the plugin's and the doc id's (a docs page's
-   `wrapperClassName` frontmatter is not applied anywhere in this theme). Two pseudo-elements under
-   the content container carry the drawing, so the page's MDX needs no wrapper of its own. The glow is
-   wider than the container, so horizontal overflow is clipped there to keep the page from scrolling
-   sideways. */
+/* Quill start page background: one static coral glow painted behind the whole article of
+   quill/home.mdx. Only the glow is lifted from QuillComingSoon.module.css — that component's
+   blueprint grid is deliberately not reused here. The glow does not breathe the way
+   QuillComingSoon's does, because an always-on blurred animation would repaint the whole page on
+   every frame. The page is pinned by the two classes the theme puts on <html>: the plugin's and the
+   doc id's (a docs page's `wrapperClassName` frontmatter is not applied anywhere in this theme). A
+   single ::after on the content container carries the glow, so the page's MDX needs no wrapper of
+   its own. The glow is wider than the container, so horizontal overflow is clipped there to keep the
+   page from scrolling sideways. */
 html.plugin-id-quill.docs-doc-id-home [class*="docItemContainer"] {
     position: relative;
     isolation: isolate;

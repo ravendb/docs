@@ -1,6 +1,5 @@
-import React, { type ReactNode } from "react";
+import React, { type CSSProperties, type ReactNode } from "react";
 import Link from "@docusaurus/Link";
-import Heading from "@theme/Heading";
 import clsx from "clsx";
 import { Icon } from "@site/src/components/Common/Icon";
 import { IconName } from "@site/src/typescript/iconName";
@@ -12,30 +11,36 @@ export interface QuillFlowNode {
     url?: string;
 }
 
-export interface QuillStep {
-    title: string;
-    description: ReactNode;
-    url: string;
-    linkLabel?: string;
-}
+const flowCard = clsx(
+    "flex h-full w-full flex-col gap-3 rounded-xl p-4",
+    "border border-black/10 bg-black/[0.03]",
+    "dark:border-white/10 dark:bg-white/[0.04]"
+);
 
-const nodeBody = "flex items-start gap-3 md:flex-col md:gap-3";
+const flowCardLink = clsx(
+    "group !text-inherit !no-underline !transition-all",
+    "hover:border-black/25 hover:bg-black/[0.06] hover:!text-inherit hover:!no-underline",
+    "dark:hover:border-white/25 dark:hover:bg-white/[0.08]"
+);
 
 /**
- * The data path through Quill, read left to right: source database, mirroring, agent, channels.
- * Stacks vertically on small screens. Nodes optionally link to their explanation on the Overview page;
- * linked nodes get a tinted hover surface and a slightly brighter tile so they read as clickable.
+ * The data path through Quill, read left to right as four stages: source database, mirroring,
+ * agent, channels. Each stage is its own card so the four read as a sequence rather than a feature
+ * grid, and an arrow sits in the gutter between cards — pointing right on wide screens, rotated to
+ * point down once the cards stack. The arrows carry the sequence on their own; the stages are
+ * deliberately not numbered. Nothing on the home page enumerates the setup steps: the road from
+ * sign-up to a live chat is listed in one place only, Getting Started > Overview, so the home page
+ * cannot contradict it. Stages optionally link to their explanation on the Overview page.
+ *
+ * On load the cards fade and rise in turn (--flow-delay, 90ms apart) so the path is drawn left to
+ * right. The section sits just under the hero and is in view on load, so this is a plain CSS
+ * animation rather than a scroll observer — no hydration flash, and it degrades correctly under
+ * prefers-reduced-motion. See --animate-quill-flow-in in src/css/custom.css.
  */
 export function QuillFlow({ nodes }: { nodes: QuillFlowNode[] }): ReactNode {
     return (
-        <ol
-            className={clsx(
-                "!m-0 !p-4 md:!p-5 !list-none",
-                "grid grid-cols-1 gap-y-4 md:grid-cols-4 md:gap-x-6",
-                "rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5"
-            )}
-        >
-            {nodes.map((node) => {
+        <ol className="!m-0 !p-0 !pb-4 !list-none flex flex-col gap-7 md:flex-row md:gap-8">
+            {nodes.map((node, index) => {
                 const body = (
                     <>
                         <span
@@ -47,7 +52,7 @@ export function QuillFlow({ nodes }: { nodes: QuillFlowNode[] }): ReactNode {
                         >
                             <Icon icon={node.icon} size="sm" />
                         </span>
-                        <span className="flex flex-col gap-0.5">
+                        <span className="flex flex-col gap-1">
                             <span className="font-semibold leading-5">{node.title}</span>
                             <span className="text-sm leading-5 text-[color:var(--ifm-color-emphasis-700)]">
                                 {node.description}
@@ -56,72 +61,35 @@ export function QuillFlow({ nodes }: { nodes: QuillFlowNode[] }): ReactNode {
                     </>
                 );
                 return (
-                    <li key={node.title} className="!m-0">
-                        {node.url ? (
-                            <Link
-                                to={node.url}
+                    <li
+                        key={node.title}
+                        className="!m-0 relative flex md:flex-1 animate-quill-flow-in"
+                        style={{ "--flow-delay": `${index * 90}ms` } as CSSProperties}
+                    >
+                        {index > 0 && (
+                            <span
+                                aria-hidden="true"
                                 className={clsx(
-                                    nodeBody,
-                                    "group -m-2 rounded-xl p-2 !transition-all",
-                                    "!text-inherit !no-underline hover:!text-inherit hover:!no-underline",
-                                    "hover:bg-black/5 dark:hover:bg-white/5"
+                                    "absolute left-1/2 -top-3.5 -translate-x-1/2 -translate-y-1/2 rotate-90",
+                                    "md:-left-4 md:top-1/2 md:rotate-0",
+                                    // emphasis-600 inverts between themes; emphasis-500 is the same
+                                    // faint grey in both and disappears against the light background.
+                                    "text-[color:var(--ifm-color-emphasis-300)]"
                                 )}
                             >
+                                <Icon icon="arrow-thin-right" size="sm" />
+                            </span>
+                        )}
+                        {node.url ? (
+                            <Link to={node.url} className={clsx(flowCard, flowCardLink)}>
                                 {body}
                             </Link>
                         ) : (
-                            <div className={nodeBody}>{body}</div>
+                            <div className={flowCard}>{body}</div>
                         )}
                     </li>
                 );
             })}
-        </ol>
-    );
-}
-
-/**
- * Numbered setup steps, each a card linking to its Getting Started page.
- */
-export function QuillSteps({ steps }: { steps: QuillStep[] }): ReactNode {
-    return (
-        <ol className="!m-0 !p-0 !list-none grid grid-cols-1 gap-4 md:grid-cols-3">
-            {steps.map((step, index) => (
-                <li key={step.title} className="!m-0 flex">
-                    <Link
-                        to={step.url}
-                        className={clsx(
-                            "group flex h-full w-full flex-col gap-3 rounded-2xl p-5",
-                            "border border-black/10 bg-black/5 !text-inherit",
-                            "hover:border-black/20 hover:bg-black/10 hover:!text-inherit",
-                            "dark:border-white/10 dark:bg-white/5 dark:hover:border-white/20 dark:hover:bg-white/10",
-                            "!no-underline hover:!no-underline !transition-all"
-                        )}
-                    >
-                        <span
-                            className={clsx(
-                                "flex h-8 w-8 items-center justify-center rounded-full",
-                                "bg-primary text-sm font-bold text-white dark:text-black"
-                            )}
-                        >
-                            {index + 1}
-                        </span>
-                        <Heading as="h3" className="!mb-0 !text-base !font-bold !leading-5">
-                            {step.title}
-                        </Heading>
-                        <p className="!mb-0 text-sm leading-5 text-[color:var(--ifm-color-emphasis-700)]">
-                            {step.description}
-                        </p>
-                        <span className="mt-auto inline-flex items-center gap-1 pt-1 text-sm font-medium text-primary-darker dark:text-primary">
-                            {step.linkLabel ?? "Open the guide"}
-                            <Icon
-                                icon="arrow-thin-right"
-                                size="xs"
-                                className="!transition-transform group-hover:translate-x-0.5"
-                            />
-                        </span>
-                    </Link>
-                </li>
-            ))}
         </ol>
     );
 }
