@@ -1,0 +1,77 @@
+/* The field's coordinate box: the whole hero. Slots in blobPositions.ts are offsets from the card, placed
+   into this box by IntegrationBlobField and clamped to its edges. */
+.box {
+    position: absolute;
+    inset: 0;
+}
+
+/* The drifting wrapper carries the drift transform; the chip inside carries scale, blur, and opacity.
+   Centring uses negative margins rather than a translate, so the drift keyframe does not wipe it. */
+.drift {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    margin: -32px 0 0 -32px;
+    will-change: transform;
+}
+
+.chip {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Glow, then glass, then the mark: document order puts the tinted glow behind the disc. */
+.glow {
+    position: absolute;
+    inset: -28%;
+    border-radius: 9999px;
+    background: radial-gradient(circle, var(--tint), transparent 68%);
+    opacity: var(--glow);
+}
+
+/* Glass on dark, not solid white. No backdrop-filter: on a near-black ground the flat translucent gradient
+   is visually indistinguishable, and a dozen backdrop-filtered, blurred elements cost real compositing. */
+.glass {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: linear-gradient(160deg, rgb(255 255 255 / 0.14), rgb(255 255 255 / 0.05));
+    border: 1px solid rgb(255 255 255 / 0.18);
+    box-shadow:
+        0 10px 26px -10px rgb(0 0 0 / 0.85),
+        inset 0 1px 0 rgb(255 255 255 / 0.15);
+}
+
+:global([data-theme="light"]) .glass {
+    background: linear-gradient(160deg, rgb(255 255 255 / 0.95), rgb(255 255 255 / 0.7));
+    border-color: rgb(0 0 0 / 0.08);
+    box-shadow:
+        0 10px 26px -12px rgb(0 0 0 / 0.28),
+        inset 0 1px 0 rgb(255 255 255 / 0.9);
+}
+
+.mark {
+    position: relative;
+    width: 28px;
+    height: 28px;
+}
+
+/* Mobile fallback: the same chips at 40px in a centred row, no blur, no drift. */
+.rowChip {
+    position: relative;
+    display: flex;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+.rowMark {
+    position: relative;
+    width: 18px;
+    height: 18px;
+}

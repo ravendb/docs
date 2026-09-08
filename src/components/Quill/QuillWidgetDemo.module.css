@@ -1,0 +1,372 @@
+/* A re-creation of the Quill chat widget's default theme (packages/widget in Raven.Quill.Web). The custom
+   properties are the widget's own `--rq-*` set, with the values `widgetThemeStyle(DEFAULT_THEME, ...)`
+   derives: the light scheme on the root and the dark scheme when the docs theme is dark, so the mockup
+   follows the page the way the real widget follows its host. The rules below mirror the Tailwind classes
+   the widget's components use, written as plain CSS because the docs' Tailwind theme has no `rq-*`
+   aliases, and because Infima's global table, list, and code styles would otherwise bleed into the
+   markdown the mockup renders. */
+.root {
+    color-scheme: light;
+    --rq-bg: #ffffff;
+    --rq-surface: #f7f7f7;
+    --rq-fg: #101828;
+    --rq-muted-fg: #596273;
+    --rq-border: #e6e6e6;
+    --rq-accent: #ff775f;
+    --rq-accent-fg: #000000;
+    --rq-user-bubble-bg: #ffefec;
+    --rq-user-bubble-fg: #101828;
+    --rq-code-bg: #f5f5f5;
+    --rq-radius: 12px;
+    --rq-radius-sm: 6px;
+    --rq-radius-pill: 20px;
+    --rq-font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --rq-gap: 1rem;
+    --rq-pad-x: 1rem;
+    --rq-pad-y: 0.875rem;
+    --rq-bubble-pad-y: 0.625rem;
+    --rq-line-height: 1.6;
+
+    display: flex;
+    flex-direction: column;
+    height: 27rem;
+    font-family: var(--rq-font);
+    font-size: 1rem;
+    line-height: 1.5;
+    background: var(--rq-bg);
+    color: var(--rq-fg);
+    -webkit-font-smoothing: antialiased;
+    text-align: start;
+}
+
+:global([data-theme="dark"]) .root {
+    color-scheme: dark;
+    --rq-bg: #0d1117;
+    --rq-surface: #191d23;
+    --rq-fg: #e6e9ef;
+    --rq-muted-fg: #98a2b3;
+    --rq-border: #2a2e33;
+    --rq-user-bubble-bg: #472928;
+    --rq-user-bubble-fg: #e6e9ef;
+    --rq-code-bg: #1e2227;
+}
+
+/* Header */
+.header {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.75rem;
+    padding: var(--rq-pad-y) var(--rq-pad-x);
+    border-bottom: 1px solid var(--rq-border);
+}
+
+.headerText {
+    min-width: 0;
+}
+
+.headerTitle,
+.headerSubtitle {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.headerTitle {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 600;
+}
+
+.headerSubtitle {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: var(--rq-muted-fg);
+}
+
+/* Feed */
+.feed {
+    position: relative;
+    min-height: 0;
+    flex: 1;
+}
+
+.feedScroll {
+    height: 100%;
+    overflow-y: auto;
+    padding: var(--rq-pad-y) var(--rq-pad-x);
+    scrollbar-width: none;
+    transition: opacity 0.35s ease;
+}
+
+.feedScroll::-webkit-scrollbar {
+    display: none;
+}
+
+.feedHidden {
+    opacity: 0;
+}
+
+.transcript {
+    display: grid;
+    gap: var(--rq-gap);
+}
+
+.userRow {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.userBubble {
+    max-width: 85%;
+    padding: var(--rq-bubble-pad-y) 0.875rem;
+    border-radius: var(--rq-radius);
+    background: var(--rq-user-bubble-bg);
+    color: var(--rq-user-bubble-fg);
+    font-size: 0.875rem;
+    line-height: var(--rq-line-height);
+    white-space: pre-wrap;
+}
+
+.assistant {
+    min-width: 0;
+    font-size: 0.875rem;
+    line-height: var(--rq-line-height);
+}
+
+/* Greeting (the empty-transcript state) */
+.greeting {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--rq-gap);
+    padding: 2rem 0;
+}
+
+.greetingTitle {
+    margin: 0;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    font-weight: 600;
+}
+
+.greetingBody {
+    margin: 0.5rem 0 0;
+    font-size: 0.875rem;
+    line-height: 1.625;
+    color: var(--rq-muted-fg);
+}
+
+/* Thinking indicator: Tailwind's `animate-bounce` on three dots */
+.thinking {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--rq-muted-fg);
+}
+
+.dots {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.dot {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 9999px;
+    background: currentColor;
+    animation: quillDemoBounce 1s infinite;
+}
+
+@keyframes quillDemoBounce {
+    0%,
+    100% {
+        transform: translateY(-25%);
+        animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+        transform: none;
+        animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+}
+
+/* Assistant markdown, matching the widget's react-markdown component styles. The extra resets undo
+   Infima's global `p`, `li`, `code`, and `table` rules, which this mockup inherits from the docs page. */
+.assistant p {
+    margin: 0.5rem 0;
+}
+
+.assistant > :first-child {
+    margin-top: 0;
+}
+
+.assistant > :last-child {
+    margin-bottom: 0;
+}
+
+.assistant strong {
+    font-weight: 600;
+}
+
+.assistant ul {
+    margin: 0.5rem 0;
+    padding: 0 0 0 1.25rem;
+    list-style: disc;
+}
+
+.assistant li {
+    margin: 0;
+    padding: 0;
+}
+
+.assistant li + li {
+    margin-top: 0.25rem;
+}
+
+.assistant code {
+    padding: 0.125rem 0.25rem;
+    border: 0;
+    border-radius: var(--rq-radius-sm);
+    background: var(--rq-code-bg);
+    color: inherit;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.9em;
+    vertical-align: baseline;
+}
+
+.tableWrap {
+    margin: 0.75rem 0;
+    overflow-x: auto;
+    border: 1px solid var(--rq-border);
+    border-radius: var(--rq-radius-sm);
+}
+
+.tableWrap table {
+    display: table;
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+    font-size: 13px;
+    text-align: start;
+}
+
+.tableWrap thead {
+    background: var(--rq-surface);
+}
+
+.tableWrap tr {
+    border: 0;
+    border-bottom: 1px solid var(--rq-border);
+    background: transparent;
+}
+
+.tableWrap tr:nth-child(2n) {
+    background: transparent;
+}
+
+.tableWrap tbody tr:last-child {
+    border-bottom: 0;
+}
+
+.tableWrap th,
+.tableWrap td {
+    padding: 0.5rem 0.75rem;
+    border: 0;
+    text-align: start;
+    vertical-align: top;
+}
+
+.tableWrap th {
+    font-weight: 600;
+}
+
+/* Composer */
+.composer {
+    flex-shrink: 0;
+    padding: var(--rq-pad-y) var(--rq-pad-x);
+    border-top: 1px solid var(--rq-border);
+}
+
+.composerBox {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+    padding: 0.375rem 0.375rem 0.375rem 0.875rem;
+    border: 1px solid var(--rq-border);
+    border-radius: var(--rq-radius-pill);
+    background: var(--rq-surface);
+    transition: border-color 0.15s ease;
+}
+
+.composerBoxActive {
+    border-color: var(--rq-accent);
+}
+
+.input {
+    flex: 1;
+    min-width: 0;
+    margin: 0.375rem 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.placeholder {
+    color: var(--rq-muted-fg);
+}
+
+.caret {
+    display: inline-block;
+    width: 1px;
+    height: 1em;
+    margin-left: 1px;
+    vertical-align: -0.15em;
+    background: currentColor;
+    animation: quillDemoBlink 1s steps(1) infinite;
+}
+
+@keyframes quillDemoBlink {
+    50% {
+        opacity: 0;
+    }
+}
+
+.send {
+    display: flex;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--rq-radius-pill);
+    background: var(--rq-accent);
+    color: var(--rq-accent-fg);
+    transition: opacity 0.15s ease;
+}
+
+.sendDisabled {
+    opacity: 0.4;
+}
+
+.icon {
+    width: 1rem;
+    height: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dot,
+    .caret {
+        animation: none;
+    }
+
+    .feedScroll,
+    .composerBox,
+    .send {
+        transition: none;
+    }
+}

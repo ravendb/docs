@@ -181,6 +181,54 @@ pre[class*="language-"] {
     --color-pre-background: var(--ifm-pre-background);
 }
 
+/* Animation tokens whose timing comes from per-element custom properties (--shine-duration, --dur, --del).
+   "inline" makes Tailwind paste the value into the utility instead of pointing at a :root variable, so the
+   var() references resolve on the element that sets them. On :root they are undefined, which would make the
+   whole animation invalid and silently drop it. */
+@theme inline {
+    /* ShineBorder (src/components/Common): the highlight is a 300%-sized gradient whose position loops. */
+    --animate-shine: shine var(--shine-duration, 14s) infinite linear;
+
+    @keyframes shine {
+        0% {
+            background-position: 0% 0%;
+        }
+        50% {
+            background-position: 100% 100%;
+        }
+        100% {
+            background-position: 0% 0%;
+        }
+    }
+
+    /* IntegrationBlobField (src/components/Quill): each blob sets --dur, --del, --dx, --dy inline. */
+    --animate-blob-drift: blob-drift var(--dur) var(--del) ease-in-out infinite alternate;
+
+    @keyframes blob-drift {
+        to {
+            transform: translate(var(--dx), var(--dy));
+        }
+    }
+
+    /* QuillFlow (src/components/Quill): the stage cards fade and rise in sequence, each <li> setting
+       --flow-delay so the row is drawn left to right. The "both" fill keeps a card hidden through its
+       own delay. Note this is safe under the global prefers-reduced-motion rule at the top of this
+       file: dropping the animation leaves the card at its normal opacity rather than stuck at 0, which
+       is why the hidden state lives in the keyframe and never in the element's own styles. */
+    --animate-quill-flow-in: quill-flow-in 460ms var(--flow-delay, 0ms) ease-out both;
+
+    @keyframes quill-flow-in {
+        from {
+            opacity: 0;
+            transform: translateY(0.625rem);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
 /* Custom font-faces — fonts served from static/css/fonts/ (unhashed) so preload links work */
 @font-face {
     font-family: "Inter";
@@ -823,66 +871,46 @@ a {
     display: none;
 }
 
-/* Quill start page background. The blueprint grid and the breathing coral glow are lifted from
-   QuillComingSoon.module.css and painted behind the whole article of quill/home.mdx. The page is
-   pinned by the two classes the theme puts on <html>: the plugin's and the doc id's (a docs page's
-   `wrapperClassName` frontmatter is not applied anywhere in this theme). Two pseudo-elements under
-   the content container carry the drawing, so the page's MDX needs no wrapper of its own. */
+/* Quill start page background: one static coral glow painted behind the whole article of
+   quill/home.mdx. Only the glow is lifted from QuillComingSoon.module.css — that component's
+   blueprint grid is deliberately not reused here. The glow does not breathe the way
+   QuillComingSoon's does, because an always-on blurred animation would repaint the whole page on
+   every frame. The page is pinned by the two classes the theme puts on <html>: the plugin's and the
+   doc id's (a docs page's `wrapperClassName` frontmatter is not applied anywhere in this theme). A
+   single ::after on the content container carries the glow, so the page's MDX needs no wrapper of
+   its own. The glow is wider than the container, so horizontal overflow is clipped there to keep the
+   page from scrolling sideways. */
 html.plugin-id-quill.docs-doc-id-home [class*="docItemContainer"] {
     position: relative;
     isolation: isolate;
-}
-
-html.plugin-id-quill.docs-doc-id-home [class*="docItemContainer"]::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    --quill-grid-mask: radial-gradient(
-        ellipse 62% 58% at 50% 28%,
-        #000 0%,
-        rgba(0, 0, 0, 0.6) 40%,
-        rgba(0, 0, 0, 0.2) 70%,
-        transparent 100%
-    );
-    background-image:
-        linear-gradient(to right, var(--ifm-color-emphasis-200) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--ifm-color-emphasis-200) 1px, transparent 1px);
-    background-size: 44px 44px;
-    mask-image: var(--quill-grid-mask);
-    -webkit-mask-image: var(--quill-grid-mask);
-    opacity: 0.65;
-}
-
-[data-theme="dark"] html.plugin-id-quill.docs-doc-id-home [class*="docItemContainer"]::before {
-    opacity: 0.22;
+    overflow-x: clip;
 }
 
 html.plugin-id-quill.docs-doc-id-home [class*="docItemContainer"]::after {
     content: "";
     position: absolute;
-    top: 16%;
     left: 50%;
-    width: min(1120px, 115%);
-    height: 560px;
-    translate: -50% -50%;
+    width: min(640px, 115%);
+    height: 480px;
     z-index: -1;
     pointer-events: none;
-    background: radial-gradient(circle, var(--ifm-color-primary) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--ifm-color-primary) 0%, transparent 60%);
     filter: blur(40px);
-    opacity: 0.12;
-    animation: quillGlowBreathe 14s ease-in-out infinite;
+    opacity: 0.1;
+    top: 20%;
+    translate: -50% -50%;
 }
 
-@keyframes quillGlowBreathe {
-    0%,
-    100% {
-        opacity: 0.1;
-        scale: 0.94;
+@media (min-width: 1280px) {
+    html.plugin-id-quill.docs-doc-id-home [class*="docItemContainer"]::after {
+        top: 15%;
+        translate: 0% -50%;
     }
-    50% {
-        opacity: 0.2;
-        scale: 1.08;
-    }
+}
+
+/* Quill start page prose: section intros are plain markdown paragraphs, capped at a readable measure so
+   they do not run the full width the card grids below them need. */
+html.plugin-id-quill.docs-doc-id-home .markdown > p {
+    max-width: 72ch;
+    color: var(--ifm-color-emphasis-800);
 }
