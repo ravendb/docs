@@ -14,7 +14,12 @@ Prerequisites
   `AWS_DEFAULT_REGION` (and optional `AWS_SESSION_TOKEN`)
 * Environment variable **`WHATS_NEW_URL`** set (only required when regenerating
   *What's New* for specific versions)
+* Environment variable **`KVS_ARN`** set (CloudFront KeyValueStore holding the
+  redirect table)
 * Project `package.json` includes `@docusaurus/core` and `@docusaurus/cli`
+
+Phase 3 also pushes the CloudFront config kept in this repo: the redirect table,
+the viewer-request function and the CSP. See CLAUDE.md.
 
 Example
 -------
@@ -25,6 +30,8 @@ $env:WHATS_NEW_URL = 'https://whats.new.api/v1/docs'
 pwsh deploy.ps1 \
      -S3BucketName my-docs-bucket \
      -CloudFrontDistributionId ABCD1234 \
+     -EdgeFunctionName <function> \
+     -ResponseHeadersPolicyId <policy-id> \
      -Versions "6.0,6.2,7.0,7.1,8.0"
 ```
 ------------------------------------------------------------------------------!#>
@@ -37,6 +44,12 @@ param(
     [Parameter(HelpMessage = 'CloudFront distribution ID to invalidate (optional)')]
     [string]$CloudFrontDistributionId,
 
+    [Parameter(HelpMessage = 'CloudFront function name for handle_redirects.js. Defaults to $env:EDGE_FUNCTION_NAME. Skipped when neither is set.')]
+    [string]$EdgeFunctionName = $env:EDGE_FUNCTION_NAME,
+
+    [Parameter(HelpMessage = 'CloudFront response headers policy ID carrying the CSP. Defaults to $env:RESPONSE_HEADERS_POLICY_ID. Skipped when neither is set.')]
+    [string]$ResponseHeadersPolicyId = $env:RESPONSE_HEADERS_POLICY_ID,
+
     [Parameter(HelpMessage = "Comma-separated versions to regenerate Whats New for e.g. '6.0,6.2,7.0'")]
     [string]$Versions = "",
 
@@ -46,6 +59,8 @@ param(
 
 $PythonWhatsNewPath = Join-Path $PSScriptRoot 'build_whats_new.py'
 $RedirectsFilePath = Join-Path $PSScriptRoot 'redirects.json'
+$SyncEdgeFunctionPath = Join-Path $PSScriptRoot 'sync-edge-function.ps1'
+$SyncCspPath = Join-Path $PSScriptRoot 'sync-csp.ps1'
 
 function ThrowIfEmpty {
     param (
@@ -156,6 +171,25 @@ function Update-CloudFrontKVS {
     }
 }
 
+# Neither script gets -CloudFrontDistributionId: the invalidation below covers all three. Both are
+# no-ops when the live config already matches, and are skipped when their identifier is absent so a
+# local deploy needs no CloudFront write access.
+function Sync-CloudFrontConfig {
+    if ($EdgeFunctionName) {
+        & $SyncEdgeFunctionPath -FunctionName $EdgeFunctionName -DryRun:$DryRun
+        if ($LASTEXITCODE) { throw "sync-edge-function.ps1 failed (exit $LASTEXITCODE)" }
+    } else {
+        Write-Host '  edge function: skipped, no EDGE_FUNCTION_NAME' -ForegroundColor Yellow
+    }
+
+    if ($ResponseHeadersPolicyId) {
+        & $SyncCspPath -ResponseHeadersPolicyId $ResponseHeadersPolicyId -DryRun:$DryRun
+        if ($LASTEXITCODE) { throw "sync-csp.ps1 failed (exit $LASTEXITCODE)" }
+    } else {
+        Write-Host '  CSP: skipped, no RESPONSE_HEADERS_POLICY_ID' -ForegroundColor Yellow
+    }
+}
+
 Ensure-Dependencies
 
 ThrowIfEmpty $Env:AWS_ACCESS_KEY_ID     'AWS_ACCESS_KEY_ID not set'
@@ -192,7 +226,7 @@ if ($empty) {
 }
 
 if ($DryRun) {
-    Write-Host "Dry run mode enabled. Skipping sync to s3://$S3BucketName/, CloudFront KeyValueStore update and CloudFront invalidation." -ForegroundColor Yellow
+    Write-Host "Dry run mode enabled. Skipping sync to s3://$S3BucketName/, CloudFront KeyValueStore update, edge function publish, CSP push and CloudFront invalidation." -ForegroundColor Yellow
 } else {
 
     Write-Host "Syncing to s3://$S3BucketName/ ..." -ForegroundColor Cyan
@@ -217,10 +251,14 @@ if ($DryRun) {
         --delete
     if ($LASTEXITCODE) { throw 'aws s3 sync (static files) failed' }
 
-    # Phase 3 — invalidate CloudFront so every edge location fetches the new
-    # index.html, which references the new hashed asset filenames
+    # Phase 3: push the CloudFront configuration that lives in this repo, then
+    # invalidate so every edge location fetches the new index.html, which
+    # references the new hashed asset filenames
     Write-Host "Updating CloudFront KeyValueStore" -ForegroundColor Cyan
     Update-CloudFrontKVS
+
+    Write-Host 'Syncing CloudFront configuration' -ForegroundColor Cyan
+    Sync-CloudFrontConfig
 
     if ($CloudFrontDistributionId) {
         Write-Host "Invalidating CloudFront distribution $CloudFrontDistributionId" -ForegroundColor Cyan

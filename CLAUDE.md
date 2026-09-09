@@ -84,6 +84,23 @@ these URLs 301 to a versioned path that does not exist.
 
 ---
 
+## CloudFront Configuration as Code
+
+Three pieces of CloudFront config are versioned here and do not travel with the S3 upload, so a
+local build never exercises them. `deploy.ps1` phase 3 pushes all three:
+
+| Source | Pushed by | Identifier |
+|---|---|---|
+| `scripts/redirects.json` | `Update-CloudFrontKVS` in `deploy.ps1` | `$env:KVS_ARN` |
+| `scripts/handle_redirects.js` | `scripts/sync-edge-function.ps1` | `-EdgeFunctionName` |
+| `scripts/lib/csp-policy.js` | `scripts/sync-csp.ps1` | `-ResponseHeadersPolicyId` |
+
+Both AWS APIs replace the whole config, so both sync scripts re-send it verbatim and verify
+afterwards: the response headers policy also holds CORS and HSTS, and the function config holds
+the KVS binding. `-Check` reports drift without writing, for CI.
+
+---
+
 ## Content Authoring
 
 ### File Format
