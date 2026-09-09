@@ -41,6 +41,7 @@ src/
   pages/                     # Custom standalone pages
   theme/                     # Docusaurus theme overrides
 scripts/                     # Build/deploy automation
+static/skills/ravendb/       # Agent skill served verbatim at /skills/ravendb/
 static/icons/                # SVG icon assets (source for icon type generation)
 sidebars.ts                  # Main docs sidebar config
 sidebarsCloud.js             # Cloud docs sidebar
@@ -71,6 +72,15 @@ versions.json                # Active version list
   - Both checks fail the build under `DOCUSAURUS_STRICT_SEO=true`. Registered **after** all `content-docs` instances so HTML is already emitted when it runs.
 
 Noindex for legacy versions is set declaratively in `docusaurus.config.ts` (`versions[v].noIndex: true`); template pages are marked `unlisted: true` in frontmatter. No custom plugin writes the meta tag — the versioned-seo-plugin only verifies it landed.
+
+---
+
+## Hosted Agent Skill
+
+`static/skills/ravendb/` is served verbatim at `/skills/ravendb/SKILL.md`, outside the version
+prefix. `SKILL.md` links to `references/` with relative paths, so moving or flattening the tree
+breaks navigation, and `md` must stay in `staticAssetRegex` in `scripts/handle_redirects.js` or
+these URLs 301 to a versioned path that does not exist.
 
 ---
 
