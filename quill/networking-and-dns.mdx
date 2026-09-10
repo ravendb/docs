@@ -61,7 +61,7 @@ By default, all five resolve to the IP address provided during sign-up:
 | `api.<domain>`       | Programmatic access to the Quill API and health checks, without the dashboard UI.        |
 | `public.<domain>`    | Embedded chat pages, widget assets, chat requests, and public channel webhooks.          |
 | `db.<domain>`        | Direct RavenDB access for applications authenticated with a client certificate.          |
-| `a.<domain>`         | RavenDB's advertised node URL, which RavenDB.Client may receive through topology discovery. |
+| `a.<domain>`         | RavenDB's advertised node URL, which the RavenDB Client API may receive through topology discovery. |
 
 The first four hostnames expose Quill's customer-facing service surfaces.  
 `a.<domain>` identifies the RavenDB node rather than a separate Quill web surface.
@@ -100,7 +100,7 @@ As a result, communication between Quill and RavenDB remains on loopback without
 
 * It does not represent a separate dashboard, API, or chat surface.
 * Applications should use `https://db.<domain>` as their initial address for direct RavenDB access.
-* A RavenDB.Client that updates its topology may subsequently receive `https://a.<domain>` as the RavenDB node address.
+* An application using the RavenDB Client API with topology updates enabled may subsequently receive `https://a.<domain>` as the RavenDB node address.
 * DNS updates include `a.<domain>` together with the other four records.
 
 For more information about direct RavenDB connections and your Quill's network limitations,  
