@@ -1,0 +1,78 @@
+---
+title: "RVN012 — Batch independent session operations using the lazy API"
+sidebar_label: RVN012
+sidebar_position: 12
+---
+
+# RVN012 — Batch independent session operations using the lazy API
+
+| Property | Value |
+|----------|-------|
+| **ID** | RVN012 |
+| **Title** | Batch independent session operations using the lazy API |
+| **Severity** | Info (default) |
+| **Category** | Usage |
+| **Code fix** | Yes |
+
+## Description
+
+Each eager `Load` or materializing query (`ToList`, `First`, `Single`, etc.) sends a separate HTTP request to the RavenDB server. When a method contains two or more independent operations on the same session, they can be registered as lazy and executed together in a single **multi-get** request, reducing network round-trips and latency.
+
+An operation is considered **independent** when its input (the document ID for `Load`, the query definition for a query) does not depend on the result of another operation in the same method.
+
+## Detected operations
+
+- `session.Load<T>(id)` / `session.LoadAsync<T>(id)` — when the `id` argument is a literal, a method parameter, a field, a property, or a local variable not derived from a prior load or query result.
+- Materializing query calls (`ToList`, `ToListAsync`, `ToArray`, `ToArrayAsync`, `First`, `Single`, `Any`, `Count`, etc.) on an `IRavenQueryable<T>`.
+
+## Trigger condition
+
+The analyzer fires when, inside a single method body (excluding nested lambdas and local functions), two or more of the above operations resolve to the same session symbol and are determined to be independent.
+
+## What to do
+
+Convert the eager calls to their lazy equivalents, then call `session.Advanced.Eagerly.ExecuteAllPendingLazyOperations()` (or the async variant) once to trigger the batch. The automated code fix performs the complete transformation when all flagged statements are consecutive and refer to the same session.
+
+### Before (triggers RVN012)
+
+```csharp
+var order   = session.Load<Order>("orders/1-A");        // RVN012 — round-trip 1
+var product = session.Load<Product>("products/1-A");    // RVN012 — round-trip 2
+```
+
+### After (manual)
+
+```csharp
+var lazyOrder   = session.Advanced.Lazily.Load<Order>("orders/1-A");
+var lazyProduct = session.Advanced.Lazily.Load<Product>("products/1-A");
+session.Advanced.Eagerly.ExecuteAllPendingLazyOperations();
+
+var order   = lazyOrder.Value;
+var product = lazyProduct.Value;
+```
+
+### Async variant
+
+```csharp
+var lazyOrder   = session.Advanced.Lazily.LoadAsync<Order>("orders/1-A");
+var lazyProduct = session.Advanced.Lazily.LoadAsync<Product>("products/1-A");
+await session.Advanced.Eagerly.ExecuteAllPendingLazyOperationsAsync();
+
+var order   = await lazyOrder.Value;
+var product = await lazyProduct.Value;
+```
+
+### Mixing loads and queries
+
+```csharp
+var lazyOrder   = session.Advanced.Lazily.Load<Order>("orders/1-A");
+var lazySummary = session.Query<Order>().Where(x => x.Company == "companies/1").Lazily();
+session.Advanced.Eagerly.ExecuteAllPendingLazyOperations();
+
+var order   = lazyOrder.Value;
+var summary = lazySummary.Value.ToList();
+```
+
+## Code fix details
+
+The fix rewrites all flagged consecutive statements: replaces each `Load` with `session.Advanced.Lazily.Load[Async]<T>(id)`, replaces each materializing query call with `query.Lazily()`, inserts `ExecuteAllPendingLazyOperations[Async]()` after the last lazy registration, then replaces each original variable declaration with `.Value`. The fix bails out entirely if any statement cannot be safely rewritten, to avoid partial transformations.

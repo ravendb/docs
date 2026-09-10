@@ -1,0 +1,56 @@
+---
+title: "RVN006 — Multi-map index uses only a single AddMap"
+sidebar_label: RVN006
+sidebar_position: 6
+---
+
+# RVN006 — Multi-map index uses only a single AddMap
+
+| Property | Value |
+|----------|-------|
+| **ID** | RVN006 |
+| **Title** | Multi-map index uses only a single AddMap |
+| **Severity** | Info (default) |
+| **Category** | Usage |
+| **Code fix** | No |
+
+## Description
+
+Multi-map index base classes (`AbstractMultiMapIndexCreationTask` and its variants) are designed for indexes that map over multiple document types. When only one `AddMap` call is present across all constructors, a regular `AbstractIndexCreationTask<TDocument>` is simpler, equally expressive, and has slightly lower overhead.
+
+## Trigger condition
+
+The analyzer fires when the class inherits from a multi-map index base class, and the total count of `AddMap` / `AddMapForAll` calls across all constructors is exactly one.
+
+## What to do
+
+Replace the multi-map base class with `AbstractIndexCreationTask<TDocument>` and replace the `AddMap<T>(lambda)` call with a `Map = lambda` assignment.
+
+### Before (triggers RVN006)
+
+```csharp
+public class Orders_ByCompany : AbstractMultiMapIndexCreationTask
+{
+    public Orders_ByCompany()
+    {
+        AddMap<Order>(orders => from o in orders select new { o.Company });
+        // Only one AddMap — a regular index would suffice
+    }
+}
+```
+
+### After (correct)
+
+```csharp
+public class Orders_ByCompany : AbstractIndexCreationTask<Order>
+{
+    public Orders_ByCompany()
+    {
+        Map = orders => from o in orders select new { o.Company };
+    }
+}
+```
+
+## See also
+
+- [RVN005](./RVN005.mdx) — fires when a multi-map index has zero `AddMap` calls.
