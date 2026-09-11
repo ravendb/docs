@@ -23,8 +23,10 @@ const kvsHandle = cf.kvs();
 
 const defaultVersion = CURRENT_VERSION;
 
+// `md` is listed so the hosted agent skill under /skills/**.md reaches S3 instead of being
+// version-prefixed into a path that does not exist.
 const staticAssetRegex =
-    /\.(html|css|js|json|jpg|jpeg|png|gif|webp|svg|ico|ttf|otf|woff|woff2|eot|mp4|mp3|webm|avi|mov|pdf|txt|xml)$/i;
+    /\.(html|css|js|json|jpg|jpeg|png|gif|webp|svg|ico|ttf|otf|woff|woff2|eot|mp4|mp3|webm|avi|mov|pdf|txt|xml|md)$/i;
 
 const versionRegex = /^\/(\d+\.\d+)(\/.*)?/;
 

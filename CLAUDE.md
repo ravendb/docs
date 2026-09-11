@@ -41,6 +41,7 @@ src/
   pages/                     # Custom standalone pages
   theme/                     # Docusaurus theme overrides
 scripts/                     # Build/deploy automation
+static/skills/ravendb/       # Agent skill served verbatim at /skills/ravendb/
 static/icons/                # SVG icon assets (source for icon type generation)
 sidebars.ts                  # Main docs sidebar config
 sidebarsCloud.js             # Cloud docs sidebar
@@ -72,6 +73,32 @@ versions.json                # Active version list
   - Both checks fail the build under `DOCUSAURUS_STRICT_SEO=true`. Registered **after** all `content-docs` instances so HTML is already emitted when it runs.
 
 Noindex for legacy versions is set declaratively in `docusaurus.config.ts` (`versions[v].noIndex: true`); template pages are marked `unlisted: true` in frontmatter. No custom plugin writes the meta tag — the versioned-seo-plugin only verifies it landed.
+
+---
+
+## Hosted Agent Skill
+
+`static/skills/ravendb/` is served verbatim at `/skills/ravendb/SKILL.md`, outside the version
+prefix. `SKILL.md` links to `references/` with relative paths, so moving or flattening the tree
+breaks navigation, and `md` must stay in `staticAssetRegex` in `scripts/handle_redirects.js` or
+these URLs 301 to a versioned path that does not exist.
+
+---
+
+## CloudFront Configuration as Code
+
+Three pieces of CloudFront config are versioned here and do not travel with the S3 upload, so a
+local build never exercises them. `deploy.ps1` phase 3 pushes all three:
+
+| Source | Pushed by | Identifier |
+|---|---|---|
+| `scripts/redirects.json` | `Update-CloudFrontKVS` in `deploy.ps1` | `$env:KVS_ARN` |
+| `scripts/handle_redirects.js` | `scripts/sync-edge-function.ps1` | `-EdgeFunctionName` |
+| `scripts/lib/csp-policy.js` | `scripts/sync-csp.ps1` | `-ResponseHeadersPolicyId` |
+
+Both AWS APIs replace the whole config, so both sync scripts re-send it verbatim and verify
+afterwards: the response headers policy also holds CORS and HSTS, and the function config holds
+the KVS binding. `-Check` reports drift without writing, for CI.
 
 ---
 
