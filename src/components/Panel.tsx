@@ -1,29 +1,29 @@
 import clsx from "clsx";
 import React from "react";
-import Heading from "@theme/Heading";
 
 export type PanelProps = {
     children: React.ReactNode;
     className?: string;
     flush?: boolean;
-    heading: string;
-    headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
+    /** Set by the remark-panel-headings plugin: the heading arrives as the first child. */
+    headingInContent?: boolean;
 };
 
+function splitHeadingFromBody(children: React.ReactNode): [React.ReactNode, React.ReactNode] {
+    const [first, ...rest] = React.Children.toArray(children);
+    return React.isValidElement(first) ? [first, rest] : [null, children];
+}
+
 export function Panel(props: PanelProps) {
-    const { children, className, flush, heading, headingLevel = 2 } = props;
-    const headingTag = `h${headingLevel}` as any;
-    const id = heading
-        .toLowerCase()
-        .replace(/[^\w]+/g, "-")
-        .replace(/^-|-$/g, "");
+    const { children, className, flush, headingInContent } = props;
+    const [heading, body]: [React.ReactNode, React.ReactNode] = headingInContent
+        ? splitHeadingFromBody(children)
+        : [null, children];
 
     return (
         <section className={clsx("panel", flush ? "" : "my-4", className)}>
-            <Heading as={headingTag} id={id} className="panel__heading">
-                {heading}
-            </Heading>
-            <div className="panel__body">{children}</div>
+            {heading}
+            <div className="panel__body">{body}</div>
         </section>
     );
 }

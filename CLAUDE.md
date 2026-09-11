@@ -65,6 +65,7 @@ versions.json                # Active version list
 ## Custom Docusaurus Plugins (`src/plugins/`)
 - `tailwind-config` — registers Tailwind CSS 4 via PostCSS.
 - `recent-guides-plugin` — indexes `guides/*.mdx`, exposes sorted list + tag counts.
+- `remark-panel-headings` — runs as `beforeDefaultRemarkPlugins` on every content instance and hoists `<Panel heading="...">` into a real Markdown heading node, so panel headings reach the compile-time TOC (Docusaurus' `remark/toc` only sees Markdown headings, never JSX props). It also pre-sets the legacy anchor id, which `remark/headings` honours, so existing panel anchors stay valid. Heading ids are a build-time concern: `Panel` just renders the hoisted heading it receives as its first child.
 - `versioned-seo-plugin` — two responsibilities, both running during `postBuild` on the same walk of versioned HTML files:
   - rewrites `<link rel="canonical">` in built HTML to the current-version URL, resolving redirect chains from `scripts/redirects.json`. Legacy-version files get a self-canonical. Verifies every rewritten canonical against the Docusaurus route universe.
   - asserts every legacy-version page carries `<meta name="robots" content="noindex,...">`. The injection itself is delegated to Docusaurus' native per-version `noIndex` config (see `docusaurus.config.ts`); the plugin only audits.

@@ -11,6 +11,9 @@ import { useEffect, useState } from "react";
 //
 // Docusaurus team has an open issue for this problem:
 // https://github.com/facebook/docusaurus/issues/6201
+//
+// Panel headings reach this TOC only because src/plugins/remark-panel-headings hoists them into
+// real Markdown headings at build time.
 
 export default function useFilteredToc(originalToc: readonly TOCItem[]): readonly TOCItem[] {
     const language = useLanguage();
