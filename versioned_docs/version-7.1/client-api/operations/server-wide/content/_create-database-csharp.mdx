@@ -19,6 +19,28 @@ import CodeBlock from '@theme/CodeBlock';
    * [Syntax](../../../../client-api/operations/server-wide/create-database.mdx#syntax)
 
 </Admonition>
+
+<Admonition type="note" title="">
+
+**Sizing the database group**
+
+The default replication factor is 1, which puts the database on a single node.
+For high availability, set the replication factor to at least 3 so the database
+survives losing a node and stays synchronized through
+[internal replication](../../../../server/clustering/replication/replication-overview.mdx#internal-replication).
+
+If the database also uses
+[cluster-wide transactions](../../../../server/clustering/cluster-transactions.mdx),
+prefer an odd replication factor (3, 5, or 7).  
+A cluster-wide transaction commits only after a majority of the database
+group's voting members have accepted it, and an odd group size means that majority
+is always a clean (n/2 + 1) - never a tie.
+
+For the full reasoning, see
+[Cluster: Best Practices](../../../../server/clustering/cluster-best-practice-and-configuration.mdx#clusters-should-have-an-odd-number-of-at-least-3-nodes).
+
+</Admonition>
+
 ## Create new database
 
 <Admonition type="note" title="">
