@@ -1,7 +1,7 @@
 ---
-title: "Dashboard: Channels view"
+title: "App: Channels view"
 sidebar_label: Channels view
-sidebar_position: 14
+sidebar_position: 5
 description: "The Channels view of a Quill app: the channels the app serves its users through, listed by type, with the actions common to every channel type: adding a channel, opening its details view, editing, pausing and resuming, and deleting it."
 ---
 
@@ -9,10 +9,10 @@ import Admonition from '@theme/Admonition';
 import Panel from "@site/src/components/Panel";
 import ContentFrame from "@site/src/components/ContentFrame";
 
-# Dashboard: Channels view
+# App: Channels view
 <Admonition type="note" title="">
 
-* A [channel](../overview.mdx#channels) carries the conversations between your users and one of your app's agents: a chat widget
+* A [channel](../../overview.mdx#channels) carries the conversations between your users and one of your app's agents: a chat widget
   on your site, a Telegram bot, a Slack app, or a Discord bot.  
   The **Channels** view lists the channels you already created, and allows you to view and modify channel settings, add new
   channels, check each channel's status, and perform other channel-related tasks like pausing or deleting a channel.
@@ -23,7 +23,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * This page covers Channels view features that are common to all channel types.  
   Features and behaviors specific to each channel type are covered in the pages dedicated to the various types, listed in
-  [Channels: Overview](../channels/overview.mdx#channel-types).
+  [Channels: Overview](../../channels/overview.mdx#channel-types).
 
 * In this article:
    * [Opening the Channels view](#opening-the-channels-view)
@@ -65,7 +65,7 @@ To open it, open the app in Quill's management dashboard and click **Channels** 
    <Admonition type="note" title="">
 
    The channel box depicted above is for a Telegram bot. A web widget's box also carries a **Generate link** icon, which opens
-   [the dialog for generating an embed link](../getting-started/adding-a-chat-widget.mdx#generating-an-embed-link) for the widget.
+   [the dialog for generating an embed link](../../getting-started/adding-a-chat-widget.mdx#generating-an-embed-link) for the widget.
 
    </Admonition>
 
@@ -73,7 +73,8 @@ To open it, open the app in Quill's management dashboard and click **Channels** 
 
 <Panel heading="Adding a channel">
 
-A channel is added for one of the app's agents, and carries conversations to this agent alone.  
+A channel is added for one of the app's [agents](../../dashboard/manage-an-app/app-agents-view.mdx), and carries
+conversations to this agent alone.  
 Adding a new channel starts with selecting the channel's type: click **New channel** in the Channels view (or **Add channel**
 in the [Overview's channels list](#an-additional-entry-point-the-channels-list-in-the-overview)) to open the menu of types, and
 select a type to open its form.  
@@ -83,14 +84,14 @@ The form for each type and what it asks for are described on the type's own page
 
 1. **Web widget**  
    A chat widget embedded in a page of your site.
-   See [Getting started: Adding a chat widget](../getting-started/adding-a-chat-widget.mdx).
+   See [Getting started: Adding a chat widget](../../getting-started/adding-a-chat-widget.mdx).
 2. **Telegram bot**  
-   A bot your users chat with on Telegram. See [Channels: Telegram bot](../channels/telegram-bot.mdx).
+   A bot your users chat with on Telegram. See [Channels: Telegram bot](../../channels/telegram-bot.mdx).
 3. **WhatsApp Personal** and **WhatsApp Business**  
    Not available yet; **Coming soon**.
 4. **Slack** and **Discord**  
    A Slack app, or a Discord bot, that your users message directly.
-   See [Channels: Slack bot](../channels/slack-bot.mdx) and [Channels: Discord bot](../channels/discord-bot.mdx).
+   See [Channels: Slack bot](../../channels/slack-bot.mdx) and [Channels: Discord bot](../../channels/discord-bot.mdx).
 
 </Panel>
 
@@ -100,7 +101,7 @@ Clicking a channel's box in the Channels view, or **Open details** in the
 [Overview's channels list](#an-additional-entry-point-the-channels-list-in-the-overview), opens the channel's details view.  
 The view's header is the same for every channel type. The tabs below the header change per channel type: those depicted in the
 image below, for example, are a web widget's tabs. The tabs provided for each channel type are described in the type's dedicated
-page, e.g., [Channels: Telegram bot](../channels/telegram-bot.mdx#managing-the-channel).
+page, e.g., [Channels: Telegram bot](../../channels/telegram-bot.mdx#managing-the-channel).
 
 ![The channel's details view](./assets/channels-view_channel-details.png)
 
@@ -140,11 +141,11 @@ The agent the channel was added for cannot be changed; to serve another agent, a
    Change the name shown for the channel in the Channels view and in the Overview's channels list.
 2. **Allowed origins**  
    The section that belongs to the channel's type. For the web widget shown here: the sites the widget may be embedded in
-   (see [Restrict where the widget loads](../developer-access/embed-the-chat-widget.mdx#restrict-where-the-widget-loads));
+   (see [Restrict where the widget loads](../../developer-access/embed-the-chat-widget.mdx#restrict-where-the-widget-loads));
    for a Telegram bot: the option to replace the bot token (see
-   [Channels: Telegram bot](../channels/telegram-bot.mdx#rotating-the-bot-token)); for a Slack bot: the option to rotate the
-   credentials (see [Channels: Slack bot](../channels/slack-bot.mdx#rotating-the-credentials)); for a Discord bot: the option to
-   replace the bot token (see [Channels: Discord bot](../channels/discord-bot.mdx#rotating-the-bot-token)).
+   [Channels: Telegram bot](../../channels/telegram-bot.mdx#rotating-the-bot-token)); for a Slack bot: the option to rotate the
+   credentials (see [Channels: Slack bot](../../channels/slack-bot.mdx#rotating-the-credentials)); for a Discord bot: the option to
+   replace the bot token (see [Channels: Discord bot](../../channels/discord-bot.mdx#rotating-the-bot-token)).
 3. **Save changes**  
    Click to save the changes. **Cancel** closes the form without saving.
 
@@ -174,16 +175,16 @@ What a pause means for the channel's users depends on the channel type:
 * **Telegram bot**  
   A paused Telegram bot will stop answering.  
   Messages users send meanwhile are held by Telegram for up to 24 hours, and answered if the channel is resumed within this time.  
-  See [Channels: Telegram bot](../channels/telegram-bot.mdx#pausing-and-deleting-the-channel).
+  See [Channels: Telegram bot](../../channels/telegram-bot.mdx#pausing-and-deleting-the-channel).
 * **Slack bot**  
   A paused Slack bot will stop answering.  
   Slack keeps delivering the users' messages, which Quill discards; messages sent while the channel is paused are not answered when
   the channel is resumed.  
-  See [Channels: Slack bot](../channels/slack-bot.mdx#pausing-and-deleting-the-channel).
+  See [Channels: Slack bot](../../channels/slack-bot.mdx#pausing-and-deleting-the-channel).
 * **Discord bot**  
   A paused Discord bot will stop answering and appear offline on Discord.  
   Messages users send while the channel is paused do not reach Quill, and are not answered when the channel is resumed.  
-  See [Channels: Discord bot](../channels/discord-bot.mdx#pausing-and-deleting-the-channel).
+  See [Channels: Discord bot](../../channels/discord-bot.mdx#pausing-and-deleting-the-channel).
 
 </Panel>
 
@@ -205,17 +206,17 @@ What else the deletion means depends on the channel type:
 * **Telegram bot**  
   A deleted Telegram bot channel will stop the bot.  
   The bot itself remains yours on Telegram, and its token can be used to connect it again, to this app or to another.  
-  See [Channels: Telegram bot](../channels/telegram-bot.mdx#pausing-and-deleting-the-channel).
+  See [Channels: Telegram bot](../../channels/telegram-bot.mdx#pausing-and-deleting-the-channel).
 * **Slack bot**  
   A deleted Slack bot channel will stop the bot.  
   The bot itself remains installed in the workspace, and its credentials can be used to connect it again, in a new channel with a
   new request URL.  
-  See [Channels: Slack bot](../channels/slack-bot.mdx#pausing-and-deleting-the-channel).
+  See [Channels: Slack bot](../../channels/slack-bot.mdx#pausing-and-deleting-the-channel).
 * **Discord bot**  
   A deleted Discord bot channel will stop the bot.  
   The bot itself remains yours in the Discord Developer Portal, and a member of your server; its token can be used to connect it
   again.  
-  See [Channels: Discord bot](../channels/discord-bot.mdx#pausing-and-deleting-the-channel).
+  See [Channels: Discord bot](../../channels/discord-bot.mdx#pausing-and-deleting-the-channel).
 
 </Panel>
 
@@ -239,7 +240,7 @@ The list's **Add channel** button opens the same menu of channel types as the Ch
 <Admonition type="note" title="">
 
 The channel row depicted above is for a Telegram bot. A web widget's row also carries a **Generate link** icon, which opens
-[the dialog for generating an embed link](../getting-started/adding-a-chat-widget.mdx#generating-an-embed-link) for the widget.
+[the dialog for generating an embed link](../../getting-started/adding-a-chat-widget.mdx#generating-an-embed-link) for the widget.
 
 </Admonition>
 
