@@ -1,7 +1,7 @@
 ---
 title: "Operator Authentication"
 sidebar_label: "Operator Authentication"
-description: "How the Quill operator signs in, how programmatic callers authenticate, and how to handle a lost or exposed Dashboard API key."
+description: "How the Quill operator signs in, how programmatic callers authenticate, and how to find, recover, or replace a Dashboard API key."
 sidebar_position: 2
 ---
 
@@ -15,14 +15,14 @@ import ContentFrame from '@site/src/components/ContentFrame';
   The **Dashboard API key** controls access to the dashboard and operational API.
 
 * This article explains how the operator signs in, how programmatic callers authenticate,  
-  and what to do when the key is lost or exposed.
+  and how to find or recover the key, or replace it if it is exposed.
 
 * In this article:
   * [The Dashboard API key](#the-dashboard-api-key)  
   * [Signing in to the dashboard](#signing-in-to-the-dashboard)  
   * [Authenticating programmatic calls](#authenticating-programmatic-calls)  
   * [One key per account](#one-key-per-account)  
-  * [Recovering a lost key](#recovering-a-lost-key)  
+  * [Finding or recovering your Dashboard API key](#finding-or-recovering-your-dashboard-api-key)  
   * [Replacing an exposed key](#replacing-an-exposed-key)  
   * [What the key does not cover](#what-the-key-does-not-cover)  
   * [Summary](#summary)    
@@ -43,8 +43,8 @@ The key is required for protected operational access:
 For validation, Quill stores a salted SHA-256 hash in its configuration database and compares hashes using a constant-time operation.
 Quill does not expose the original key through its dashboard or API.
 
-The original value remains in your deployment configuration or secret store and in the container environment.  
-Protect access to that configuration as you would any other secret.
+The original value may remain in the Docker command or other deployment settings, in the container environment,  
+or in any password manager or secrets-management service you used. Protect access to it as you would any other secret.
 
 <Admonition type="warning" title="">
 
@@ -153,12 +153,14 @@ By default, you configure each of those Quill instances with the signup-issued k
 
 </Panel>
 
-<Panel heading="Recovering a lost key">
+<Panel heading="Finding or recovering your Dashboard API key">
 
 Quill cannot derive the original Dashboard API key from the salted hash in its configuration database,  
 and it does not expose the key through its dashboard or API.
 
-First, check the deployment configuration or secret store from which `QUILL_API_KEY` was supplied.
+First, check the Docker command or other deployment settings used to create the Quill container.  
+The Dashboard API key is the value assigned to `QUILL_API_KEY`.  
+If your organization stored the value in a password manager or secrets-management service, check there as well.
 
 If the Quill instance still uses the signup-issued key, you can also recover it in either of these ways:
 
@@ -170,7 +172,7 @@ If the Quill instance still uses the signup-issued key, you can also recover it 
   Dashboard API key and issues a fresh setup package. It does not create or rotate the key.
 
 If the Quill instance uses a locally chosen replacement key, the signup email does not contain that value.  
-If you cannot recover it from your deployment configuration, configure another key and recreate the container.  
+If you cannot find it in those locations, configure another key and recreate the container.  
 See [Replacing an exposed key](#replacing-an-exposed-key).
 
 </Panel>
@@ -251,7 +253,7 @@ The instances you must update depend on which key was exposed:
     * If the signup-issued key was exposed, replace it on every Quill instance that still accepts it.  
       Changing `QUILL_API_KEY` locally does not rotate the account-level signup key or update other Quill instances.
         
-    * Store each replacement key in your deployment secret store.  
+    * Store each replacement key in the password manager or secrets-management service used for your deployment.  
       The signup email continues to contain the original signup-issued key.
 
 </ContentFrame>
@@ -304,7 +306,7 @@ but does not invalidate browser sessions that were already issued.
   If Quill starts without the key, all requests to protected operational API endpoints are rejected.
     
 * Quill stores a salted hash in its configuration database and does not expose the original key through its dashboard or API.
-  Keep the original value in your deployment secret store.
+  Keep the original value in the password manager or secrets-management service used for your deployment.
     
 * Dashboard sign-in creates a sliding session cookie that expires after eight hours of inactivity.  
   Programmatic callers send the key with every request using `X-Api-Key` or `Authorization: Bearer`.
@@ -315,7 +317,7 @@ but does not invalidate browser sessions that were already issued.
   A locally chosen replacement applies only to the Quill instance on which it is configured.
     
 * Recover the signup-issued key from the signup email or by registering the same domain again.  
-  Recover a locally chosen key from your deployment configuration, or configure another key.
+  Recover a locally chosen key from your deployment settings or the service where it was stored, or configure another key.
     
 * To replace an exposed key, update `QUILL_API_KEY` and recreate every affected container.  
   Restarting an existing container does not load a changed environment.
