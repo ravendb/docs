@@ -109,14 +109,13 @@ If the connection fails or closes, Quill displays "_Could not connect to the liv
    For the app's database write usage over a selected period, see the **WRU** tile on the [Overview](./app-overview.mdx#activity) page.
 
 3. **Errors**  
-   Quill shows the higher of two counts:  
-   the errors reported in the live batches and the number of entries returned in the sync error list.  
+   Quill shows the higher of these two counts:  
+     * Errors reported in the live batches.
+     * Entries returned in the sync error list.
+
+   The returned list contains up to 25 of the most recent errors, but the tile can exceed 25 when the live batches report more errors.  
     
-   The returned error list contains at most 25 entries,  
-   but the tile can exceed 25 when the live batches report more errors.  
-    
-   Some failures occur before a batch is created,  
-   so this tile can report errors even when every listed batch shows **Success**.  
+   Some failures occur before a batch is created, so this tile can report errors even when every listed batch shows **Success**.  
     
    See [Sync errors](#sync-errors) to inspect the reported errors.
 
