@@ -129,7 +129,7 @@ In the examples below, `<domain>` represents this base domain.
 | `dashboard.acme.myquill.ai`      | Quill web application | The operator dashboard, the Quill API, and `/healthz` | Operators using a browser           |
 | `api.acme.myquill.ai`            | Quill web application | The Quill API and `/healthz`; no dashboard UI         | Scripts and monitoring tools        |
 | `public.acme.myquill.ai`         | Quill web application | Embedded chat pages, widget assets, and Slack webhooks | End users and Slack                 |
-| `db.acme.myquill.ai`             | RavenDB               | Direct RavenDB access over mutual TLS                 | Applications using `RavenDB.Client` |
+| `db.acme.myquill.ai`             | RavenDB               | Direct RavenDB access over mutual TLS                 | Applications using the RavenDB Client API |
 
 nginx restricts which web routes each hostname can expose:
 

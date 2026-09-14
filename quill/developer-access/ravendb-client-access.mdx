@@ -1,7 +1,7 @@
 ---
-title: "Access the Mirrored Database with RavenDB.Client"
-sidebar_label: "RavenDB.Client Access"
-description: "How to connect an application directly to a Quill app's mirrored database with RavenDB.Client and a scoped client certificate."
+title: "Access the Mirrored Database with the RavenDB Client API"
+sidebar_label: "RavenDB Client API Access"
+description: "How to connect an application directly to a Quill app's mirrored database with the RavenDB Client API and a scoped client certificate."
 sidebar_position: 3
 ---
 
@@ -13,7 +13,7 @@ import Panel from '@site/src/components/Panel';
 * Quill mirrors selected data from your source relational database into a separate RavenDB database for each Quill app.  
   Quill agents use the mirrored data to compose answers to users' questions.    
     
-* Your application can also query the mirrored data directly in RavenDB with `RavenDB.Client`.      
+* Your application can also query the mirrored data directly in RavenDB with the RavenDB Client API.      
   These queries do not pass through a Quill agent, an LLM, any Quill channel, or the Quill API.
     
 * Direct access uses a client certificate generated on the dashboard's **Certificates** page.  
@@ -42,12 +42,12 @@ import Panel from '@site/src/components/Panel';
 
 <Panel heading="When to use direct access">
 
-Use `RavenDB.Client` when your application needs to query or process the mirrored documents directly,  
+Use the RavenDB Client API when your application needs to query or process the mirrored documents directly,  
 rather than receive an answer composed by a Quill agent.
 
 Typical examples include application search, reporting, scheduled processing, and queries whose exact shape is controlled by your code.
 
-With `RavenDB.Client`, your application accesses the **mirrored data in RavenDB**, not the source relational database:
+With the RavenDB Client API, your application accesses the **mirrored data in RavenDB**, not the source relational database:
 
   * The source relational database remains the source of truth.
   * Quill's CDC task applies source changes to the mirrored documents asynchronously,  
@@ -55,7 +55,7 @@ With `RavenDB.Client`, your application accesses the **mirrored data in RavenDB*
   * Querying the mirrored data does not add query load to the source database.
   * Changes made directly in RavenDB are not written back to the source database.
     
-`RavenDB.Client` connects to RavenDB through `https://db.<domain>` without passing through the Quill web application.  
+The RavenDB Client API connects to RavenDB through `https://db.<domain>` without passing through the Quill web application.  
 For details about this connection path and its TLS handling, see [Direct database access](../security-and-architecture/network-architecture.mdx#direct-database-access).
     
 </Panel>
@@ -101,7 +101,7 @@ Because that connection string can contain source database credentials, reserve 
 #### Protect the downloaded archive    
 
 * The downloaded archive contains a `.pfx`, a `.crt`, and a `.key` file.  
-  `RavenDB.Client` uses the `.pfx`.  
+  The RavenDB Client API uses the `.pfx`.  
     
 * The optional certificate password encrypts only the `.pfx`.  
   The `.key` contains the same private key in unencrypted PEM form, so protect the complete archive as a secret.
@@ -223,7 +223,7 @@ Applications targeting .NET 8 or earlier can load the certificate with `new X509
 `X509CertificateLoader` is the recommended API in .NET 9 and later.
 
 The explicit `collectionName` makes the query target the mapped collection exactly.
-Without it, RavenDB.Client derives the collection name from the .NET type—for example, `Query<Customer>()` targets `Customers` by default.
+Without it, the RavenDB Client API derives the collection name from the .NET type—for example, `Query<Customer>()` targets `Customers` by default.
 
 The `collectionName` argument applies only to this query.
 To override the collection convention throughout the application, configure `FindCollectionName` before calling `Initialize()`, which freezes the store conventions.
@@ -323,7 +323,7 @@ A **User** certificate with **Read** or **Read/Write** access can inspect the ta
 #### Do not modify the CDC task directly    
     
 Quill reads the task configuration from the app database.  
-Changes made in RavenDB Studio or through `RavenDB.Client` therefore affect the task used by the Quill app.
+Changes made in RavenDB Studio or through the RavenDB Client API therefore affect the task used by the Quill app.
 
 | Direct change                            | Effect |
 | ---------------------------------------- | ------ |
@@ -345,7 +345,7 @@ This prevents the application from changing either the mirrored documents or Qui
 
 #### Writes do not update the source database
 
-Changes made through `RavenDB.Client` affect only the app's RavenDB database.  
+Changes made through the RavenDB Client API affect only the app's RavenDB database.  
 They are never written back to the source relational database.
 
 Do not modify mirrored documents or documents used internally by Quill, including the CDC progress documents in the `@cdc-states` collection.    
@@ -381,7 +381,7 @@ Monitor the task's CDC health and errors rather than relying only on its enabled
 
 Use `https://db.<domain>` as the initial server URL.
 
-After connecting, RavenDB.Client reads the server topology.
+After connecting, the RavenDB Client API reads the server topology.
 RavenDB advertises its node as `https://a.<domain>`, so the client may send subsequent requests through that hostname.
 
 In a standard Quill deployment:
@@ -422,7 +422,7 @@ Document loads, queries, and the Changes API require no additional inbound Raven
 The Changes API uses WebSockets through the same HTTPS endpoint.
 
 The Quill container does not expose RavenDB's native TCP listener or publish a corresponding TCP hostname.
-RavenDB.Client features that open a native TCP connection - most notably data subscription workers - therefore cannot connect from outside the Quill container.
+RavenDB Client API features that require a native TCP connection, such as data subscription workers, are therefore unavailable to applications running outside the Quill container.
 
 </Panel>
 
@@ -431,7 +431,7 @@ RavenDB.Client features that open a native TCP connection - most notably data su
 A Quill deployment runs a single RavenDB node.
 The topology-discovered `a.<domain>` hostname provides another route to that same node, not a second node for failover.
 
-If the Quill deployment is unavailable, RavenDB.Client cannot switch to another RavenDB node.
+If the Quill deployment is unavailable, the RavenDB Client API cannot switch to another RavenDB node.
 
 If the Quill host moves to another IP address, update all Quill DNS records so that `db.<domain>`, `a.<domain>`,  
 and the other Quill hostnames resolve to the new address.
@@ -441,7 +441,7 @@ See [Moving your Quill to a new IP](../networking-and-dns.mdx#moving-your-quill-
 
 <Panel heading="Summary">
 
-* `RavenDB.Client` provides a direct path to the mirrored documents and can be used in addition to Quill agents and channels.
+* The RavenDB Client API provides a direct path to the mirrored documents and can be used in addition to Quill agents and channels.
     
 * Generate a **User** client certificate on the dashboard's Certificates page and grant it access only to the intended app.
   Prefer **Read** access when the application only queries data.
@@ -449,7 +449,7 @@ See [Moving your Quill to a new IP](../networking-and-dns.mdx#moving-your-quill-
 * Configure the `DocumentStore` with `https://db.<domain>`, the app database name, and the downloaded `.pfx` certificate.
     
 * Inspect the mapped collections, document structure, and attachments before defining application classes and queries.
-  Use the exact mapped collection name when it differs from RavenDB.Client's naming convention.
+  Use the exact mapped collection name when it differs from the RavenDB Client API's naming convention.
     
 * Treat both mirrored documents and documents used internally by Quill as read-only.
   Direct writes are not sent to the source database and can be overwritten by CDC or prevent the mirror from advancing.
