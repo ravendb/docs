@@ -1,10 +1,305 @@
 ---
 title: "AI Image Search with RavenDB"
-tags: [ai, csharp, demo, use-case]
-description: "Read about AI Image Search with RavenDB on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/ai-image-search-with-ravendb"
-published_at: 2025-09-09 
-icon: "ai"
+tags: [ai, python, attachments, use-case]
+icon: "vector-search"
+description: "Build text-to-image and image-to-image product search on top of RavenDB vector search, using CLIP embeddings stored in documents and the original images kept as attachments."
+published_at: 2025-09-09
+see_also:
+  - title: "Vector Search Overview"
+    link: "ai-integration/vector-search/overview"
+    source: "docs"
+    path: "AI Integration > Vector Search"
+  - title: "Vector Search Using a Dynamic Query"
+    link: "ai-integration/vector-search/vector-search-using-dynamic-query"
+    source: "docs"
+    path: "AI Integration > Vector Search"
+  - title: "Attachments Overview"
+    link: "document-extensions/attachments/overview"
+    source: "docs"
+    path: "Document Extensions > Attachments"
 proficiency_level: "Expert"
+author: "Paweł Lachowski"
 ---
 
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+A few months ago, we introduced [native vector search](/7.2/ai-integration/vector-search/overview) in RavenDB. Up to this point, we’ve mainly focused on text embeddings, showing how well vector search can work with language-based data. But let’s not stop there: vector search isn’t limited to text, and we can go beyond words.
+
+Let’s take it a level higher with image vector search. By generating embeddings from images and placing them in documents, we can easily search images - whether by typing a text description or by using a similar image. Just to recall, embeddings represent data “meaning” (in our case, text or images) as vectors within a model. This allows us to search efficiently by meaning by comparing vectors.
+
+Let’s tackle this concept with an e-commerce example. In e-commerce, looking for a desired product can be frustrating for users if they need to look for too long. We can reduce this time with image search. Nobody likes to look for what they are determined to buy, just to struggle for hours to find the product they know they need. You might know how to describe it or even have a photo, but without image search, you are forced to either work harder or smarter.
+
+With image search, users would be able to browse for their desired products by describing them or providing an image. This will provide a better user experience, better product positioning, less frustration, and increased sales.
+
+We will show you how to implement both text-to-image and image-to-image searching using our database.
+
+## Prerequisites
+
+- Some images to search for
+- [CLIP embeddings model](https://openai.com/index/clip/) to turn both text and images into vectors within the same space
+- [RavenDB 7.0+](https://ravendb.net/download) with a database created for the products
+
+The demo is a FastAPI service. Install the RavenDB client alongside the model packages:
+
+```bash
+pip install ravendb sentence-transformers fastapi uvicorn pillow
+```
+
+Then point the client at your server and load CLIP once, so every request reuses the same store and the same encoder:
+
+```py
+import os
+from typing import List, Optional
+
+from pydantic import BaseModel
+from ravendb import DocumentStore
+from sentence_transformers import SentenceTransformer
+
+RAVEN_DB_URL = os.environ.get("RAVEN_URL", "http://localhost:8080")
+RAVEN_DATABASE = os.environ.get("RAVEN_DATABASE", "VectorSearchImages")
+
+document_store = DocumentStore(RAVEN_DB_URL, RAVEN_DATABASE)
+document_store.initialize()
+
+EMBEDDING_MODEL_NAME = os.environ.get("EMBEDDING_MODEL", "clip-ViT-B-32")
+_sentence_transformer: Optional[SentenceTransformer] = None
+
+
+def get_model() -> SentenceTransformer:
+    """Return a singleton SentenceTransformer instance."""
+    global _sentence_transformer
+    if _sentence_transformer is None:
+        _sentence_transformer = SentenceTransformer(EMBEDDING_MODEL_NAME)
+    return _sentence_transformer
+```
+
+A product is just a document with a name, a price, the embedding, and the filename of its image attachment:
+
+```py
+class Product(BaseModel):
+    Id: Optional[str] = None
+    name: str
+    price: float
+    embedding: List[float]
+    image_filename: str
+```
+
+Every snippet below uses that `document_store`, that `get_model()`, and that `Product`. Run the finished service with `uvicorn server:app --reload`.
+
+## How it works
+
+First, let’s see quickly how easy it can be to query an image with text. We are preparing an e-commerce store. To make the lives of our users easier, we want to use vector search. We generated a basic UI and connected a simple script to it. At the end of the article, you will find a gist with the full code we wrote for this article demo.
+
+Let’s search for ‘boots’ using the semantic search bar:
+
+<Image img={require("./assets/ai-image-search1.webp")} alt="Semantic search bar with the term 'boots' entered, returning six boot products from the store" />
+
+As you can see, after entering the search term ‘boots’ and clicking the search button, we retrieved six different boot products from our database. Let’s add another product. We can simply do that using a top-right button. Underneath, we will store it as a product with an image and an embedding, but we will explain that later.
+
+We select "Add Product" and upload an image of a jacket along with its name. In a normal app, you would have more options, like setting the price, for example, but we skipped it as it is just a demo.
+
+<Image img={require("./assets/ai-image-search2.webp")} alt="The Add Product dialog with a jacket image uploaded and a product name filled in" />
+
+After a moment, the product is created successfully, meaning that it’s now findable. Let’s simply type 'winter’ into the search bar and check the results.
+
+<Image img={require("./assets/ai-image-search3.webp")} alt="Search results for the term 'winter', with the newly added jacket among the returned products" />
+
+You can even search with an image. Let’s find a jacket similar to this one:
+
+<Image img={require("./assets/ai-image-search4.webp")} alt="A photo of a jacket used as the query image for image-to-image search" />
+
+After inserting this photo into Image Search, we get:
+
+<Image img={require("./assets/ai-image-search5.webp")} alt="Image search results showing jackets visually similar to the uploaded query photo" />
+
+But how does it work? Let's see how RavenDB makes it simple!
+
+## Under the hood
+
+The first step of our search engine’s magic is embedding: we take the input, whether text or image, and convert it into CLIP model vectors. What is CLIP? Fully called “clip-ViT-B-32”, is a model designed to work with both images and text, allowing us to find a ‘common language’ for both pictures and text.
+
+### Storing products and their embeddings
+
+But how to get those embeddings? We can use a simple Python method that fetches our images for CLIP and uses it to process the embeddings. Let’s look into it.
+
+```py
+def get_img_embedding(model: SentenceTransformer, img: bytes) -> List[float]: 
+    from PIL import Image
+    import io
+
+    with Image.open(io.BytesIO(img)) as img:
+        embedding = model.encode(img)
+    return embedding.tolist()
+```
+
+We load our image bytes and transform them using `model.encode(img)`. Now that we have them, we use the session to store them in RavenDB. We also add the name, a random price, and the original image as an [attachment](/7.2/document-extensions/attachments/overview). We do this with this endpoint.
+
+```py
+@app.post(
+    "/products",
+    response_class=JSONResponse,
+    summary="Upload a product image and store it with its embedding",
+)
+async def upload_product(
+    image: UploadFile = File(...),
+    name: str = Form(..., min_length=1),
+):
+    model = get_model()
+    with document_store.open_session() as session:
+        doc = store_product_with_attachment(session, image, model, name)
+        session.save_changes()
+        return {"id": doc.Id, "name": doc.name, "price": doc.price}
+```
+
+And this function.
+
+```py
+def store_product_with_attachment(
+    session, image: UploadFile, model: SentenceTransformer, name: str
+) -> Product:
+    """Store a product (image) and its embedding in RavenDB."""
+    file_bytes = image.file.read()
+    embedding = get_img_embedding(model, file_bytes)
+
+    doc = Product(
+        name=name.strip(),
+        price=round(random.uniform(PRICE_MIN, PRICE_MAX), 2), # random price
+        embedding=embedding,
+        image_filename=image.filename,
+    )
+
+    session.store(doc)
+    session.advanced.attachments.store(doc.Id, doc.image_filename, file_bytes)
+    return doc
+```
+
+### Searching with text and images
+
+With embeddings (meaning vectors) inside the database, we now need to compare them with our search terms. But, we can’t really compare the text/image provided by the user with a vector, right? That doesn’t make any sense - it’s like comparing an apple to a truck.
+
+We need to use our model again. Let’s use CLIP to generate search term embeddings on the fly. Now, depending on whether we are using image search or text search, we need to handle the case according to the data format. Both searches are similar, but let’s examine text search first:
+
+```py
+@app.get("/products", response_class=JSONResponse)
+async def search_products(query: str, limit: int):
+    model = get_model()
+    # Transforms it into an embedding
+    qvec = compute_text_embedding(model, query)
+    # Compares it with other embeddings in a database
+    return vector_search_common(qvec, limit) 
+```
+
+As you can see, this endpoint receives the query term, transforms it into an embedding, and compares it with other embeddings in a database. Vector search calculates vector similarity and returns the result to our Python code.
+
+For this model, both images and text embeddings belong to the same vector space, allowing them to be searched for in all image-to-text, image-to-image, and text-to-image searches. This allows us to search for images using natural language. That makes the image search endpoint code very similar:
+
+```py
+@app.post(
+    "/products/search-by-image",
+    response_class=JSONResponse,
+    summary="Find products similar to an uploaded image",
+)
+async def search_products_by_image(
+    image: UploadFile = File(..., description="Uploaded image file"), 
+    limit: int = Query(1, ge=1, le=50, description="Maximum number of similar products to return"),
+):
+    model = get_model()
+    file_bytes = image.file.read()
+    # Transforms it into an embedding
+    qvec = compute_image_embedding(model, file_bytes)
+    # Compares it with other embeddings in a database 
+    return vector_search_common(qvec, limit) 
+
+```
+
+As you can see in both endpoints, we utilize almost the same methods. It processes our inputs into embeddings with methods that utilize the CLIP model. Text and image methods are separate, but both produce embeddings in the same vector space.
+
+To turn images into vectors, we use the following method:
+
+```py
+def get_img_embedding(model: SentenceTransformer, img: bytes) -> List[float]:
+    from PIL import Image
+    import io
+
+    with Image.open(io.BytesIO(img)) as img:
+        embedding = model.encode(img)
+    return embedding.tolist()
+```
+
+And text is handled with this basic function:
+
+```py
+def get_txt_embedding(model: SentenceTransformer, txt: str) -> List[float]:
+    return model.encode(txt).tolist()
+```
+
+Then, the `vector_search_common` method is used to perform a vector search on them. Let’s look at it.
+
+```py
+def vector_search_common(query_embedding: List[float], limit: int):
+# Open RavenDB session
+   with document_store.open_session() as session:
+        results = (
+            session.query(object_type=Product)
+# Perform vector search on Product documents
+            .vector_search("embedding", query_embedding)
+            .take(limit)
+        )
+        products = list(results)
+        if not products:
+            raise HTTPException(status_code=404, detail="No products found")
+        return products
+```
+
+The function `vector_search_common` takes a query embedding and a limit, opens a RavenDB session, and performs a vector search on Product documents using the embedding field.
+
+The query returns product documents with the most similar image to the text/image we sent. Then we send the related product back to the browser.
+
+<Image img={require("./assets/ai-image-search6.webp")} alt="The browser showing the product returned by the vector search query" />
+
+In short, we:
+
+1. Generated embeddings for each product image.
+2. Stored both the image and its vector embedding in RavenDB (the image as an attachment, the embedding in a document).
+3. Query using vector search with a text prompt and return the closest match.
+
+If you would like to view the entire code, you can browse the [full demo source on GitHub](https://gist.github.com/Netzach-Nyss/07b1002d9fd89e7ba1b70c432afef35a).
+
+## Tuning the search
+
+The query above is a [dynamic query](/7.2/ai-integration/vector-search/vector-search-using-dynamic-query), so we never had to define an index. On the first call, RavenDB creates an auto-index over the `embedding` field and keeps it updated as products are added. That is why the jacket became findable seconds after we uploaded it.
+
+Under that auto-index sits an HNSW graph. HNSW is an approximate nearest-neighbor algorithm: it walks a layered graph toward the query vector instead of comparing against every stored vector, which is what keeps the search fast as the catalog grows. Approximate is the operative word. A poorly connected vector can be missed, and two databases holding the same products can return slightly different results if the documents were inserted in a different order. The [factors affecting vector search results](/7.2/ai-integration/vector-search/what-affects-vector-search-results) page covers this in depth.
+
+Two query-time parameters are worth knowing before you ship something like this:
+
+```py
+results = (
+    session.query(object_type=Product)
+    .vector_search(
+        embedding_field="embedding",
+        vector=query_embedding,
+        minimum_similarity=0.75,
+        number_of_candidates=32,
+    )
+    .take(limit)
+)
+```
+
+`minimum_similarity` is a threshold between `0.0` and `1.0`, and it defaults to `0.0`. Our demo never sets it, which means the search always hands back `limit` products no matter how unrelated they are. Search for 'submarine' in a store that sells boots and you still get boots. Raising the threshold is what turns a nearest-neighbor lookup into a search that can legitimately return nothing.
+
+`number_of_candidates`, the _efSearch_ parameter, controls how many nodes the traversal evaluates before it stops. A larger pool finds more of the genuinely closest vectors and costs more time per query. If you need guaranteed accuracy over speed, RavenDB also offers an [exact search](/7.2/ai-integration/vector-search/what-affects-vector-search-results#using-exact-search) that scans every indexed vector.
+
+Scale changes the arithmetic. `clip-ViT-B-32` emits 512 floating-point values per image, so a hundred thousand products is roughly 200 MB of raw vectors before graph overhead. RavenDB can quantize embeddings to Int8 or Binary to shrink that considerably, and moving to a [static index](/7.2/ai-integration/vector-search/vector-search-using-static-index) lets you pin the graph parameters, set the quantization format, and combine the vector field with ordinary filters such as category or stock status.
+
+## Summary
+
+Vector search is a powerful feature that, when used with images, can significantly enhance the user experience. If you like vector search, GenAI might be your next stop. You can read about it in [Survive the AI Tidal Wave with RavenDB GenAI](./survive-the-ai-tidal-wave-with-ravendb-genai).
+
+If you want to try RavenDB, you can [download it](https://ravendb.net/download) and give it a try. Want to hang out with the RavenDB team to chat about this feature and meet our community. Here is our [Discord - RavenDB’s Developers Community](https://discord.gg/ravendb) server.
