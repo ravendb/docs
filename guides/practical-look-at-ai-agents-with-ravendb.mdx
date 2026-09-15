@@ -1,10 +1,410 @@
 ---
 title: "A Practical Look at AI Agents with RavenDB"
-tags: [ai, csharp, deep-dive, demo, getting-started]
-description: "Read about A Practical Look at AI Agents with RavenDB on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/practical-look-at-ai-agents-with-ravendb"
+tags: [ai, csharp, deep-dive]
+icon: "ai-agents"
+image: "/img/guides-ai-agents.webp"
+description: "Build an AI agent with RavenDB: create an Orders Manager in Studio, wire up Query and Action tools, and scope conversation data per user."
 published_at: 2025-12-24
-image: "https://ravendb.net/wp-content/uploads/2025/09/practical-look-ai-agents-article-image.jpg"
+see_also:
+  - title: "AI Agents Overview"
+    link: "ai-integration/ai-agents/overview"
+    source: "docs"
+    path: "AI Integration > AI Agents"
+  - title: "Getting Started with AI Agents"
+    link: "ai-integration/ai-agents/start"
+    source: "docs"
+    path: "AI Integration > AI Agents"
+  - title: "AI Agents Security Concerns"
+    link: "ai-integration/ai-agents/security-concerns"
+    source: "docs"
+    path: "AI Integration > AI Agents"
 proficiency_level: "Expert"
+author: "Gracjan Sadowicz"
 ---
 
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+AI Agents are quietly becoming a new kind of application frontend. Instead of clicking through screens, in this paradigm we can just tell the agent:
+
+- “show the last three orders for this customer”
+- “draft an email with the tracking link”
+- “open a ticket if delivery is late”
+- “see if we handled similar support issue before and tell me what was the outcome”
+
+Done right, that’s a deeply *customizable experience* for both customers and internal teams: the app bends to the task, not the other way around.
+
+By *agent*, we mean an LLM-backed component that can retrieve the data from your systems and **request** actions, a component that ***acts*** for us, solves real business problems, and speeds up the company processes.
+
+At first glance it looks amazing. Finally we don’t need to do the boring stuff. AI does it for us with minimal ceremony, while we can focus on the interesting part of the job.
+
+Since previous AI features required almost no setup, many people don’t realize the complexity involved in creating a proper AI agent. Let’s decompose the process of creating an AI Agent for your application from scratch.
+
+## What stops you from building an agent?
+
+### Conversations, not just a chat
+
+The truth is, building an agent isn’t “prompt + ship”. The difference lies in the scale. You aren’t just using a chat now. You want to provide *chats*. You want your work colleagues, or your customers, to be able to talk with the “same agent”, but in different conversations that they own.
+
+This means you need to store their conversation histories, to be able to continue them from the last message on demand, and trim them when they become too heavy or expensive to maintain.
+
+As we said, the agent is not only an LLM-chat but rather a functional and operable entity that uses LLM as a reasoning component. This means we need to keep the connection between the agent and the LLM, possibly with different kinds of models, each with its own API, response schemas, or SDKs, to prevent LLM lock-in in the future.
+
+All of this, done correctly, needs a lot of effort put into research, system design, and pure development. And you’re just getting an overengineered *chat* that you actually can get by simply *googling “chatgpt”*. We didn’t talk about **any** *actions* yet.
+
+### Keeping the agent in bounds
+
+To make these efforts worthwhile, we need to design how your agent will determine whether to execute an operation or retrieve data for better results, based on the conversation context.
+
+Should agents be able to do anything they want? What if one suddenly gets a brilliant idea of canceling an order that seems not to move (which we expect, and the agent doesn’t know about it), to clean up the delivery system, following a reckless “clean up my orders” prompt?
+
+You may have come across stories of agents wiping data they were never meant to touch. The agent had access to a knowledge base describing system usage, and developers prompted them to figure the rest out. Unsupervised approaches like this cause disasters. An agent may be intelligent, but it can make mistakes. Sometimes it’s just a bad, too ambiguous prompt and the agent wants to accomplish it like any other one, with all accessible means.
+
+Most probably, your agent will need just a set of flexible operations (send an email, query orders *of a logged employee*, etc.) that are needed in the general agent usage scenarios, so nothing unexpected will happen. But how can we ensure that the agent will use just this set?
+
+More and more challenges arise, system complexity grows, and we haven’t even come close to the audit logs, which are essential for tracking whose prompt caused some changes, and why even LLM followed them, both for debugging and investigation purposes.
+
+Even when you finally achieve a safe and working solution, your system will evolve, and the agent will also need to. Launching an agent once is one thing; evolving its internal code safely is another challenge to tackle.
+
+You may be asking - “Come on - seriously? I just want a simple, prompted agent with a set of practical tools for my app users. Either I’ll invest tons of R&D, or I’ll be **agen’t**?”
+
+We’ve noticed you. This is the point when **we’re** stepping in, to help you sort it out 💙
+
+## RavenDB’s take on AI Agents
+
+In the latest RavenDB update (7.1.2), we’ve released a new feature that simplifies building [AI Agents](/7.2/ai-integration/ai-agents/start) into a *casual task* by shifting the responsibility for hosting & maintaining it from application to the **database layer**. The goal is set to let you focus on actual agent functionality, not the work around it.
+
+Following this approach, we have developed a robust, customizable, and **easy-to-use** template. It’s ready to be used on top of both new and already existing databases. All you need to do is create an agent, connect your app to it using Client API, and wire-up interface to let your users start conversations.
+
+Aware of the agents’ unpredictability, we wanted to make it safe by design. Every action the agent can take is defined within [**tools**](/7.2/ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_studio) by the developer (not LLM 😉), making you the one in control over its capabilities. We covered RavenDB reads in dedicated **Query tools**, while any other actions (e.g. data modifications, external reads, system ops) are defined by **Action tools**.
+
+You don’t need any external services, there’s no risk of vendor lock-in. You just point to an LLM provider using AI Connection String (e.g. [OpenAI](/7.2/ai-integration/connection-strings/open-ai), [Ollama](/7.2/ai-integration/connection-strings/ollama)), and it just works.
+
+We’ve exposed [robust APIs](/7.2/ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api), ready to be used inside your application codebase:
+
+```csharp
+public record SendEmailArgs(string EmailContent, string Address);
+public record AgentReply(string Reply);
+
+// Create a conversation
+var chat = store.AI.Conversation(
+    agentId: "orders-manager",
+    conversationId: "Chats/",
+    new AiConversationCreationOptions().AddParameter("employee_id", employeeId));
+
+// Setup handling of the email action request
+chat.Handle("SendEmail", (SendEmailArgs req) =>
+{
+    _emailWorker.Send(req.Address, req.EmailContent);
+    return "email sent";
+});
+
+// Send user message
+var messageFromUser = "send my recent 3 orders to josh@example.com";
+chat.SetUserPrompt(messageFromUser);
+
+var result = await chat.RunAsync<AgentReply>();
+if (result.Status == AiConversationResult.Done)
+{
+    Console.WriteLine($"Agent: {result.Answer?.Reply}");
+}
+```
+
+The agent replies:
+
+```text
+I've successfully fetched your last 3 orders and sent them to josh@example.com. Let me know if you need anything else.
+```
+
+All of this combined allows you to deploy **any agent** you need in days, not weeks.
+
+## Building the agent with RavenDB
+
+Let’s take a look at a **practical** example. Let’s say we want to build an orders manager - an AI agent that will help our employees manage their work more efficiently. We will leverage RavenDB capabilities to focus just on the agent functionality.
+
+Note: We’re using RavenDB Studio to work on the initial configuration on the RavenDB side, but after every step, we will also provide the code that performs the same task.
+
+<Admonition type="info" title="What you need to follow along">
+
+- RavenDB 7.1.2 or later.
+- An [AI Connection String](/7.2/ai-integration/connection-strings/overview) with an API key for a hosted LLM provider, or a local model endpoint.
+- A database populated with the Northwind sample data.
+- The RavenDB .NET client, for the `store.AI` API used in the code samples below.
+
+</Admonition>
+
+Let’s start in RavenDB Studio. We have already created a new database and used “[Create Sample Data](/7.2/studio/database/tasks/create-sample-data)” to populate it with the Northwind dataset. Let’s visit AI Hub, and then “AI Agents”:
+
+<Image img={require("./assets/ai-agents1.webp")} alt="RavenDB Studio AI Hub with the AI Agents section" />
+
+We want to create a new AI Agent, so let’s add one:
+
+<Image img={require("./assets/ai-agents2.webp")} alt="Adding a new AI Agent in RavenDB Studio" />
+
+Let’s give it a **name**: “Orders Manager.” The **identifier** is customizable, but we’ll use an auto-filled one:
+
+<Image img={require("./assets/ai-agents3.webp")} alt="Naming the Orders Manager agent and setting its identifier" />
+
+Let’s also point to the LLM model that our agent will use to reason. We need to create an **AI Connection String**, pick a provider, and fill in credentials:
+
+<Image img={require("./assets/ai-agents4.webp")} alt="Creating an AI Connection String and selecting an LLM provider" />
+
+Let’s test if it connects:
+
+<Image img={require("./assets/ai-agents5.webp")} alt="Testing the AI Connection String to the LLM provider" />
+
+We’re connected to GPT5, let’s save it.
+
+Now, the inevitable step - we need to write a good **system prompt**. The system prompt is a set of instructions that our agent will follow throughout the entire conversation. Typically, we let them know what their function (or persona) is, what their capabilities are, what to do & what not to do:
+
+<Image img={require("./assets/ai-agents6.webp")} alt="Writing the agent's system prompt in RavenDB Studio" />
+
+We should standardize the response from the agent to ensure it will always be handled correctly on the application side. Let’s prepare a **response schema**:
+
+<Image img={require("./assets/ai-agents7.webp")} alt="Defining the agent's response schema from a sample object" />
+
+We’re only interested in the textual answer, so we’ll stick to only one field. We can provide a sample object, and RavenDB will automatically generate the schema for it. If we want to be more precise, we can always give it a JSON schema; however, for most cases, including ours, the sample object is sufficient.
+
+This way, we just completed **basic configuration**.
+
+Here’s the code that’d do the exactly same thing:
+
+```csharp
+var cs = new AiConnectionString
+{
+    Name = "OpenAI GPT5",
+    Identifier = "openai-gpt5",
+    OpenAiSettings = new OpenAiSettings(
+        apiKey: "YOUR_OPENAI_API_KEY",
+        endpoint: "https://api.openai.com/v1",
+        model: "gpt-5")
+};
+store.Maintenance.Send(new PutConnectionStringOperation<AiConnectionString>(cs));
+
+var agent = new AiAgentConfiguration(
+    name: "Orders Manager",
+    connectionStringName: "OpenAI GPT5",
+    systemPrompt: "You are an internal Orders Assistant for (...)")
+{
+    Identifier = "orders-manager",
+    MaxModelIterationsPerCall = 3,
+    ChatTrimming = new AiAgentChatTrimmingConfiguration(
+        new AiAgentSummarizationByTokens
+        {
+            MaxTokensBeforeSummarization = 32768,
+            MaxTokensAfterSummarization = 2048
+        })
+};
+agent.SampleObject = "{\"Reply\":\"here goes the answer\"}";
+await store.AI.CreateAgentAsync(agent);
+```
+
+Let’s save and try to talk with our agent. Let’s code a simple chat loop…
+
+```csharp
+using Raven.Client.Documents;
+using Raven.Client.Documents.AI;
+
+var store = new DocumentStore { Urls = new[] { "..." }, Database = "ai" }.Initialize();
+
+var chat = store.AI.Conversation(
+    agentId: "orders-manager",
+    conversationId: "Chats/",
+    creationOptions: new AiConversationCreationOptions());
+
+while (true)
+{
+    Console.Write("> ");
+    var input = Console.ReadLine();
+
+    chat.SetUserPrompt(input);
+    var reply = await chat.RunAsync<Answer>();
+    Console.WriteLine(reply.Answer.Reply);
+}
+
+public record Answer { public string Reply { get; set; } }
+```
+
+…and then run it:
+
+<Image img={require("./assets/ai-agents8.webp")} alt="Running the simple chat loop and talking with the agent" />
+
+All right - it works! But can it actually do anything for us?
+
+<Image img={require("./assets/ai-agents9.webp")} alt="The agent replying that it cannot perform actions yet" />
+
+Not really. But that’s actually good - we hadn’t let them do anything yet.
+
+### Adding a Query tool
+
+Let’s extend their capabilities by specific data retrieval, by defining a **Query tool**:
+
+<Image img={require("./assets/ai-agents10.webp")} alt="Defining a Query tool for the agent in RavenDB Studio" />
+
+We filled the description with information on how & when the agent should use the tool. To make it a bit more elastic we introduced a *$limit* parameter - our agent will figure out how many recent orders the user wants to get, and call the tool with correct input.
+
+Let’s give it a try now:
+
+<Image img={require("./assets/ai-agents11.webp")} alt="The agent returning recent orders after adding the Query tool" />
+
+That doesn’t feel right. Users shouldn’t see the data that doesn’t belong to them. But we don’t want to create one agent for each user, with a different “where user_id=” in the query tool.
+
+For this type of scenario, the **agent parameter** is a perfect match. Let’s parametrize each conversation with the logged user ID, and use it when calling queries:
+
+<Image img={require("./assets/ai-agents12.webp")} alt="Using an agent parameter to scope the query to the logged-in user" />
+
+This way, the agent has only one tool to fetch the orders, which is actually safe to use.
+
+We need to parametrize the conversation on the application level, in an immutable way:
+
+```csharp
+var loggedEmployee = "employees/1-A";
+var ordersManagerConversationOptions = new AiConversationCreationOptions();
+ordersManagerConversationOptions.AddParameter("employee_id", loggedEmployee);
+
+var chat = store.AI.Conversation(
+    agentId: "orders-manager",
+    conversationId: "Chats/",
+    creationOptions: ordersManagerConversationOptions
+);
+```
+
+Let’s try a [malicious prompt](/7.2/ai-integration/ai-agents/security-concerns):
+
+<Image img={require("./assets/ai-agents13.webp")} alt="The agent refusing a malicious prompt that tries to reach other users' data" />
+
+Ok, it doesn’t work - so let’s play nice - just our orders:
+
+<Image img={require("./assets/ai-agents14.webp")} alt="The agent returning only the logged-in user's orders" />
+
+Now it feels a lot safer. Here’s the code that includes this Query Tool:
+
+```csharp
+var agent = new AiAgentConfiguration(...); // configured as in the previous step
+
+agent.Queries.Add(new AiAgentToolQuery
+{
+    Name = "GetRecentOrders",
+    Description = "You should trigger this query when the user needs to fetch recent orders.",
+    Query = "from Orders where Employee == $employee_id order by OrderedAt desc limit $limit",
+    ParametersSampleObject = "{\"limit\": 5}"
+});
+```
+
+For more control and debug purposes, we can **inspect tool call chain** in the Studio, and even continue the conversation here:
+
+<Image img={require("./assets/ai-agents15.webp")} alt="Inspecting the agent's tool call chain in RavenDB Studio" />
+
+<Image img={require("./assets/ai-agents16.webp")} alt="Continuing the conversation from the Studio tool call view" />
+
+This tool will be invaluable throughout your development process.
+
+### Adding Action tools
+
+Let’s make the agent capable of performing tasks outside the database; we want to enable it to trigger the “send email” on our request.
+
+We said “trigger”, because the agent shouldn’t do it entirely by themself. That would force us, again, to rely on trusting the agent, that it won’t make any mistakes while trying to succeed.
+
+To be more concrete, we will create a dedicated code block that should be run when the agent is supposed to trigger it. Let’s start in Studio by adding an **Action tool**, then we will head back to the code.
+
+The SendEmail action should receive the recipient address and the email content from the chat:
+<Image img={require("./assets/ai-agents17.webp")} alt="Adding a SendEmail Action tool with recipient and content parameters" />
+
+Now, the agent will send a special message every time the Action tool is called, requesting action to be taken on our *application side*, and an *answer* back (if it succeeded, how long did it take, and other relevant details). RavenDB Client provides a convenient API to handle such requests easily:
+
+```csharp
+var chat = store.AI.Conversation(
+    agentId: "orders-manager",
+    conversationId: "Chats/",
+    creationOptions: ordersManagerConversationOptions
+);
+
+public record SendEmailArgs(string EmailContent, string Address);
+
+// Handle SendEmail actions 
+chat.Handle("SendEmail", (SendEmailArgs req) =>
+{
+    _emailWorker.Send(req.Address, req.EmailContent); // mock 
+    return "email sent";
+});
+```
+
+Let’s give it a try by forcing it to use both the query and action tools to answer correctly:
+
+<Image img={require("./assets/ai-agents18.webp")} alt="The agent combining the query and action tools to answer" />
+
+It works. Let’s inspect how it was processed in the RavenDB Studio:
+
+<Image img={require("./assets/ai-agents19.webp")} alt="Inspecting how the combined tool calls were processed in Studio" />
+
+It combined multiple functionalities to provide the best results. Kudos to the developers! 😎
+
+As our users continue to use our agent, the conversation history will continue to expand. LLM doesn’t acknowledge conversation history - all previous messages need to be sent continuously, which can be troublesome for the LLMs with a small context size.
+
+To avoid context-size troubles, you can configure [**chat trimming**](/7.2/ai-integration/ai-agents/overview). This summarization tool will condense the conversation history into a concise, meaningful summary that will be logically attached to your message instead of the full conversation history. In the studio, select “Summarize chat” as the trimming method, and optionally customize it. We will stay with the default configuration for now:
+
+<Image img={require("./assets/ai-agents20.webp")} alt="Configuring chat trimming with the Summarize chat method" />
+
+Alternatively, you can do the same thing using the Client API:
+
+```csharp
+AiAgentSummarizationByTokens summarization = new AiAgentSummarizationByTokens()
+{
+  MaxTokensBeforeSummarization = 32768,
+  MaxTokensAfterSummarization = 1024
+};
+
+agent.ChatTrimming = new AiAgentChatTrimmingConfiguration(summarization);
+```
+
+Thanks to that, we can rest assured that our model won’t waste precious tokens trying to process large amounts of data within its context.
+
+What if we’d like to **change** the model? Let’s assume that OpenAI suddenly becomes *5 times more expensive.* This is a valid point for considering another LLM provider. We can do that by creating a new AI Connection String (like in the beginning) that points to a new provider, and just edit the existing agent configuration:
+
+<Image img={require("./assets/ai-agents21.webp")} alt="Editing the agent configuration to point to a new AI Connection String" />
+
+Everything’s set. Just see how simple it is. Everything lives in a database, while you’re just connecting to the final result - a working & customized AI Agent!
+
+## Summary
+
+- Agent configuration lives in the database, so your application connects to a working agent instead of hosting and maintaining one itself.
+- Query tools cover RavenDB reads and Action tools cover everything else the agent may request, and the developer defines both, not the LLM.
+- Agent parameters scope every conversation to the logged-in user, so a single agent can serve everyone without leaking data between them.
+- Chat trimming summarizes long conversation histories, keeping token usage and context size under control as chats grow.
+
+## Try it yourself, share your thoughts
+
+We could improve this AI Agent with a variety of capabilities, queries, and tweaks - but let’s stop here, so you can take the pieces from this guide and try extending it yourself!
+
+[Download RavenDB](https://ravendb.net/download) and grab your [free developer license](https://ravendb.net/dev). If you have any insights or feedback on this feature, [join the RavenDB Discord](https://discord.gg/ravendb) and share your thoughts. Enjoy!
+
+## Frequently Asked Questions
+
+**When should I use a Query tool instead of an Action tool?**
+
+Use a Query tool whenever the agent needs to read from RavenDB. The query is RQL that you write yourself, it runs inside the database, and the agent only chooses the parameter values. Use an Action tool for everything else: sending mail, calling an external API, writing data, or triggering a system operation. Action tools do not execute in the database at all. The agent emits a request, your application handles it in `chat.Handle` and returns a result string, so the code that performs the side effect stays in your codebase where you can test and audit it.
+
+**How do I stop the agent from reading another user's data?**
+
+Scope the conversation with an agent parameter, the way the `employee_id` example above does, and reference it in the query as `$employee_id` instead of letting the LLM supply the filter. The value is fixed when the conversation is created, so no prompt can talk the agent out of it. If the parameter is something the model should never see in the first place, such as a session token or an account number, pass `new AiConversationParameterOptions { SendToModel = false }` to `AddParameter`. Queries and action tools still receive the value, but it never enters a prompt. See [AI Agents security concerns](/7.2/ai-integration/ai-agents/security-concerns) for the full set of mitigations.
+
+**Where is the conversation history stored, and can I show it in my own UI?**
+
+RavenDB keeps every message of a conversation in a dedicated document in the `@conversation` collection, which is what lets you resume a chat from its last message instead of replaying it yourself. The messages stay readable after the conversation ends, and the client API returns them as a single time-ordered timeline, so you can populate a chat view or a tracing screen from it. See [reading conversation history](/7.2/ai-integration/ai-agents/reading-conversation-history).
+
+**What happens when a conversation grows past the model's context window?**
+
+That is what the chat trimming configuration handles. With `AiAgentSummarizationByTokens`, RavenDB watches the conversation size and, once it crosses `MaxTokensBeforeSummarization`, condenses the history down toward `MaxTokensAfterSummarization` and sends that summary in place of the full transcript. Your application code does not change. The thresholds shown in this guide are a starting point rather than a rule, and a model with a small context window wants a lower one.
+
+**Do I have to change my application code to switch LLM providers?**
+
+No. Create a second AI Connection String pointing at the new provider and repoint the agent configuration at it, exactly as the last step of this guide does. Your application addresses the agent by its identifier, `orders-manager`, and never names the model, so the swap happens entirely on the database side. This is also why the credentials live in a connection string instead of in the client.
+
+**What stops the agent from calling tools in a loop?**
+
+`MaxModelIterationsPerCall`, set to 3 in the configuration above, caps how many model iterations a single user message can trigger, where one iteration is a round in which the model issues a query, an action, or a sub-agent call. Raise it when an agent legitimately needs to chain several tools to reach an answer, and keep it low when you would rather the agent gave up than kept spending tokens.
