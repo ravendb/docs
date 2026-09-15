@@ -7,9 +7,10 @@ import type { Props } from "@theme/DocSidebar/Mobile";
 import Link from "@docusaurus/Link";
 import { useActiveDocContext, useLatestVersion } from "@docusaurus/plugin-content-docs/client";
 import { Icon } from "@site/src/components/Common/Icon";
+import { SectionNavLink } from "@site/src/components/Common/SectionNavLink";
 import type { Props as DocSidebarProps } from "@theme/DocSidebar";
 import SidebarVersionDropdown from "@site/src/components/SidebarVersionDropdown";
-import { getPathType, getLandingPagePath, PathType } from "../../../typescript/pathUtils";
+import { getPathType, getSectionNavItems, PathType } from "../../../typescript/pathUtils";
 
 function DocSidebarMobileSecondaryMenu({ sidebar, path }: DocSidebarProps) {
     const mobileSidebar = useNavbarMobileSidebar();
@@ -20,63 +21,21 @@ function DocSidebarMobileSecondaryMenu({ sidebar, path }: DocSidebarProps) {
     const versionLabel = activeVersion?.label ?? latestVersion.label;
 
     const pathType = getPathType(path);
-    const landingPagePath = getLandingPagePath(pathType, versionLabel);
+    const sectionNavItems = getSectionNavItems(pathType, versionLabel);
 
     const shouldDisplayContent = pathType !== PathType.Guides && pathType !== PathType.Samples;
 
     return (
         <ul className={clsx(ThemeClassNames.docs.docSidebarMenu, "menu__list")}>
-            <li className="menu__list-item">
-                <div className="menu__list-item-collapsible">
-                    <Link to={landingPagePath} className="menu__link" onClick={() => mobileSidebar.toggle()}>
-                        <Icon icon="home" size="xs" className="me-2" /> Start
-                    </Link>
-                </div>
-            </li>
-            {pathType !== PathType.Guides && (
-                <Link to="/guides" className="menu__link group">
-                    <Icon icon="guides" size="xs" className="me-2" /> Guides
-                    <small className="flex items-center ms-auto gap-1 text-[0.675rem]">
-                        Switch <Icon icon="arrow-thin-right" size="xs" />
-                    </small>
-                </Link>
-            )}
-            {pathType !== PathType.Documentation && (
-                <Link to={`/${versionLabel}`} className="menu__link group">
-                    <Icon icon="database" size="xs" className="me-2" /> RavenDB Docs
-                    <small className="flex items-center ms-auto gap-1 text-[0.675rem]">
-                        Switch <Icon icon="arrow-thin-right" size="xs" />
-                    </small>
-                </Link>
-            )}
-            {pathType !== PathType.Samples && (
-                <Link to="/samples" className="menu__link group">
-                    <Icon icon="create-sample-data" size="xs" className="me-2" /> Samples
-                    <small className="flex items-center ms-auto gap-1 text-[0.675rem]">
-                        Switch <Icon icon="arrow-thin-right" size="xs" />
-                    </small>
-                </Link>
-            )}
-            {pathType !== PathType.Cloud && (
-                <Link to="/cloud" className="menu__link group">
-                    <Icon icon="cloud" size="xs" className="me-2" /> RavenDB Cloud Docs
-                    <small className="flex items-center ms-auto gap-1 text-[0.675rem]">
-                        Switch <Icon icon="arrow-thin-right" size="xs" />
-                    </small>
-                </Link>
-            )}
-            {pathType !== PathType.Quill && (
-                <Link to="/quill" className="menu__link group">
-                    <Icon icon="sparkles" size="xs" className="me-2" /> Quill Docs
-                    <small className="flex items-center ms-auto gap-1 text-[0.675rem]">
-                        Switch <Icon icon="arrow-thin-right" size="xs" />
-                    </small>
-                </Link>
-            )}
-            <Link to="https://ravendb.net/community" className="menu__link group">
-                <Icon icon="community" size="xs" className="me-2" /> Community
-                <Icon icon="newtab" size="xs" className="ms-auto" />
-            </Link>
+            {sectionNavItems.map((item) => (
+                <li key={item.label} className="menu__list-item">
+                    <SectionNavLink
+                        item={item}
+                        isActive={item.pathType === pathType}
+                        onClick={() => mobileSidebar.toggle()}
+                    />
+                </li>
+            ))}
             {pathType === PathType.Documentation && (
                 <li className="menu__list-item">
                     <Link
