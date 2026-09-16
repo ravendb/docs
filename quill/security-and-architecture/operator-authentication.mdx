@@ -138,10 +138,10 @@ See [the Quill hostnames](network-architecture.mdx#the-quill-hostnames).
 
 <Panel heading="One key per account">
 
-The Dashboard API key issued during signup belongs to the signup account, not to an individual Quill instance.  
-The same key is issued for every Quill instance registered under the same email address.
+The Dashboard API key issued during signup belongs to the signup account, not to an individual Quill domain.  
+The same key is issued for every Quill domain registered under the same email address.
 
-By default, you configure each of those Quill instances with the signup-issued key:
+By default, each corresponding Quill instance is configured with the signup-issued key:
 
   * Every Quill instance that is still configured with that key accepts it.
     
