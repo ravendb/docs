@@ -35,6 +35,36 @@ function Invoke-CloudFrontInvalidation {
     if ($LASTEXITCODE) { throw 'CloudFront invalidation failed' }
 }
 
+# get-response-headers-policy returns `{}` for headers that are not configured, but
+# update-response-headers-policy refuses them: once XSSProtection, FrameOptions or ReferrerPolicy
+# appears in the payload it requires its own fields. The read shape is therefore not a valid write
+# shape, so empty objects are dropped before the config goes back. Empty arrays are left alone,
+# since {Quantity: 0, Items: []} is valid on the way in.
+function Remove-EmptyObjects {
+    param([AllowNull()] $Node)
+
+    if ($null -eq $Node) { return $null }
+
+    if ($Node -is [System.Collections.IEnumerable] -and $Node -isnot [string]) {
+        $items = [System.Collections.ArrayList]::new()
+        foreach ($item in $Node) { [void]$items.Add((Remove-EmptyObjects $item)) }
+        # Comma-prefix keeps a one-element array an array; returning it bare would unroll it to a
+        # scalar and turn {Items: ["x"]} into {Items: "x"}, which CloudFront rejects.
+        return , $items.ToArray()
+    }
+
+    if ($Node -isnot [System.Management.Automation.PSCustomObject]) { return $Node }
+
+    $kept = [ordered]@{}
+    foreach ($property in $Node.PSObject.Properties) {
+        $value = Remove-EmptyObjects $property.Value
+        $isEmptyObject = $value -is [System.Management.Automation.PSCustomObject] -and
+            @($value.PSObject.Properties).Count -eq 0
+        if (-not $isEmptyObject) { $kept[$property.Name] = $value }
+    }
+    return [pscustomobject]$kept
+}
+
 # Paths where $Candidate differs from $Reference: node kind, array length, added or dropped
 # property, or scalar value. Proves a patch touched only the field it meant to.
 function Get-JsonDifference {

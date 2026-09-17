@@ -50,7 +50,7 @@ $current = aws cloudfront get-response-headers-policy --id $ResponseHeadersPolic
 if ($LASTEXITCODE) { throw 'aws get-response-headers-policy failed' }
 
 $etag = $current.ETag
-$config = $current.ResponseHeadersPolicy.ResponseHeadersPolicyConfig
+$config = Remove-EmptyObjects $current.ResponseHeadersPolicy.ResponseHeadersPolicyConfig
 
 if (Compare-CloudFrontValue -Live $config.SecurityHeadersConfig.ContentSecurityPolicy.ContentSecurityPolicy -Local $csp -Noun 'policy') { return }
 
@@ -105,7 +105,8 @@ try {
 $reread = aws cloudfront get-response-headers-policy --id $ResponseHeadersPolicyId | ConvertFrom-Json
 if ($LASTEXITCODE) { throw 'aws get-response-headers-policy failed on re-read' }
 
-$now = $reread.ResponseHeadersPolicy.ResponseHeadersPolicyConfig | ConvertTo-Json -Depth 30 -Compress | ConvertFrom-Json
+$now = Remove-EmptyObjects $reread.ResponseHeadersPolicy.ResponseHeadersPolicyConfig |
+    ConvertTo-Json -Depth 30 -Compress | ConvertFrom-Json
 $postDiffs = @(Get-JsonDifference -Reference $before -Candidate $now | Where-Object { $_ -notlike "$CspPath*" })
 if ($postDiffs.Count) {
     throw "The policy changed outside the CSP: $($postDiffs -join '; '). Restore the affected headers from the CloudFront console."

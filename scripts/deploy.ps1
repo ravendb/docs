@@ -257,8 +257,16 @@ if ($DryRun) {
     Write-Host "Updating CloudFront KeyValueStore" -ForegroundColor Cyan
     Update-CloudFrontKVS
 
+    # A config-sync failure must not strand the content phases 1 and 2 already uploaded, so the
+    # error is held and rethrown after the invalidation and cleanup. The build still goes red.
     Write-Host 'Syncing CloudFront configuration' -ForegroundColor Cyan
-    Sync-CloudFrontConfig
+    $configError = $null
+    try {
+        Sync-CloudFrontConfig
+    } catch {
+        $configError = $_
+        Write-Host "  CloudFront config sync failed: $_" -ForegroundColor Red
+    }
 
     if ($CloudFrontDistributionId) {
         Write-Host "Invalidating CloudFront distribution $CloudFrontDistributionId" -ForegroundColor Cyan
@@ -275,6 +283,8 @@ if ($DryRun) {
         --cache-control "public, max-age=31536000, immutable" `
         --delete
     if ($LASTEXITCODE) { throw 'aws s3 sync (hashed assets – cleanup) failed' }
+
+    if ($configError) { throw $configError }
 
 }
 
