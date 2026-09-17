@@ -1,0 +1,744 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* A data subscription is a server-side task that sends documents matching a query to connected
+  clients ("workers"), in batches.  
+* This page explains how to create and update a subscription using the Client API.  
+  You can also [create a subscription using Studio](../../../data-subscriptions/creating-subscription/creating-subscription_studio.mdx).  
+* A subscription's definition and its processing progress are kept on the cluster rather than on
+  a single node, and the cluster assigns one node to manage the task.  
+
+* In this article:
+   * [Creating a subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#creating-a-subscription)
+   * [Subscription name](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#subscription-name)
+   * [Responsible node](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#responsible-node)
+   * [Updating a subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#updating-a-subscription)
+   * [Subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#subscription-query)
+   * [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples)
+      * [Sending an entire collection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-sending-an-entire-collection)
+      * [Filtering documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-documents)
+      * [Filtering with a regular expression](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-with-a-regular-expression)
+      * [Filtering and projecting fields](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-and-projecting-fields)
+      * [Projecting from a related document](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-projecting-from-a-related-document)
+      * [Including documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-documents)
+      * [Including counters](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-counters)
+      * [Including time series](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-time-series)
+      * [Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-creating-a-subscription-via-update)
+      * [Updating an existing subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-updating-an-existing-subscription)
+   * [Syntax](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Creating a subscription">
+
+To create a subscription, define which documents the server should send to the worker, then register
+this definition with the server using the `create` method on the document store's `subscriptions`
+property.
+
+You can define a subscription in two ways:
+
+* **By document type**  
+  Pass the collection's document type, so the server sends that entire collection.  
+* **By a raw RQL (Raven Query Language) query**  
+  Set the `query` string on the options object, which lets you filter, project, and include.  
+
+The simplest definition sends an entire collection:
+
+```js
+// The server sends every document in the 'Orders' collection
+// to any client that connects to this subscription.
+const subscriptionName = await documentStore.subscriptions.create(Order);
+```
+
+<br />
+
+For filtering, projections, and includes, see the [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples) below.  
+To subscribe to document revisions, see [Revisions support](../../../data-subscriptions/revisions-support.mdx).
+
+</Panel>
+
+<Panel heading="Subscription name">
+
+Every subscription has a name, which clients use to identify the subscription they want to
+consume.  
+If you do not provide a name when creating the subscription, the server generates one for you.  
+To set your own:
+
+```js
+const subscriptionName = await documentStore.subscriptions.create({
+    // Set a custom name for the subscription
+    name: "OrdersProcessingSubscription",
+    documentType: Order
+});
+```
+
+<br />
+
+Setting your own name is useful for long-running batch processes: a readable name is easier to
+work with in code, and you can reuse the same name across environments, as long as the
+subscription is created in advance.
+
+<Admonition type="info" title="">
+A subscription name must be unique within its database. You cannot create two subscriptions with
+the same name in the same database.
+</Admonition>
+
+</Panel>
+
+<Panel heading="Responsible node">
+
+When a subscription is created, the cluster assigns one node to manage it. As long as this node is available, 
+it remains responsible for the subscription. If a worker connects to another node, that node will redirect it 
+to the responsible node.  
+
+If the responsible node goes down and your license includes
+[highly available tasks](../../../server/clustering/distribution/highly-available-tasks.mdx),
+the task is reassigned to another node.  
+While the assigned node is online, it remains the one managing the subscription.
+
+To choose the responsible node yourself, set its tag in the `mentorNode` property:
+
+```js
+const subscriptionName = await documentStore.subscriptions.create({
+    // Make node D responsible for the subscription
+    mentorNode: "D",
+    documentType: Order
+});
+```
+
+<br />
+
+Choosing the node manually lets you pick a server based on its hardware, proximity to the
+consuming clients, or other considerations.
+
+</Panel>
+
+<Panel heading="Updating a subscription">
+
+You can change an existing subscription's definition using the [update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods) method.  
+Pass an [update options](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) object, which extends the creation options with two
+additional fields, `id` and `createNew`:
+
+* **`id`** targets the subscription by the ID the server assigned it at creation, instead of by
+  name.  
+  Because the ID identifies the subscription independently of its name, you can use it to rename
+  a subscription: provide the ID and a new `name`.  
+* **`createNew`** controls what happens when the subscription you are updating does not exist.  
+  Set it to `true` to create the subscription instead, or leave it `false`, the default, to
+  throw an exception.  
+
+```js
+// Rename a subscription by targeting it with its id
+await documentStore.subscriptions.update({
+    id: subscriptionId,
+    name: "NewSubscriptionName"
+});
+```
+
+<br />
+
+For a full update example, see the [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples) below.
+
+</Panel>
+
+<Panel heading="Subscription query">
+
+Every subscription is ultimately expressed as an RQL statement.  
+A subscription query can have these parts:
+
+* **A `declare` functions section**, as in ordinary RQL.  
+  These functions can hold any JavaScript code, and support `load` and `include` operations.  
+* **A `from` clause** naming the document source, for example `from Orders`.  
+  This clause can address only a collection; indexes are not supported.  
+* **A `where` clause** deciding the documents the server sends to the worker.  
+  This clause supports RQL equality operators (`=`, `==`), plain JavaScript expressions,
+  and calls to declared functions, so you can express complex filtering.  
+  Subscription RQL does not support RQL's search keywords.  
+* **A `select` clause** defining the projection.  
+  This clause can call functions, allowing complex transformations.  
+* **An `include` clause** defining paths to include.  
+
+<Admonition type="info" title="">
+Although a subscription query has an RQL-like structure, it supports only the `declare`,
+`select`, and `where` keywords; no other RQL keywords are supported. JavaScript ES5 syntax is
+supported. For more details, see [JavaScript engine](../../../server/kb/javascript-engine.mdx).
+</Admonition>
+
+<Admonition type="info" title="">
+
+Paths in a subscription query are handled as JavaScript expressions rather than as regular RQL
+paths.  
+A query that in RQL would be written as:
+
+```rql
+from Orders as o
+where o.Lines[].Product = "products/1-A"
+```
+
+<br />
+
+is written in a subscription query as follows:
+
+```rql
+declare function filterLines(doc, productId)
+{
+    if (!!doc.Lines){
+        return doc.Lines.filter(x => x.Product == productId).length > 0;
+    }
+    return false;
+}
+
+from Orders as o
+where filterLines(o, "products/1-A")
+```
+
+</Admonition>
+
+To create a subscription over document revisions, see
+[Revisions support](../../../data-subscriptions/revisions-support.mdx).
+
+</Panel>
+
+<Panel heading="Examples">
+
+<ContentFrame>
+
+### Example: Sending an entire collection
+
+In this example, the subscription sends to the worker every document in the `Orders` collection, with no filter or projection.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="generic" label="Generic API">
+
+```js
+const subscriptionName = await documentStore.subscriptions.create(Order);
+```
+
+</TabItem>
+<TabItem value="rql" label="RQL">
+
+```js
+const subscriptionName = await documentStore.subscriptions.create({
+    query: "from Orders"
+});
+```
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Filtering documents
+
+In this example, the subscription sends to the worker only `Orders` whose total revenue exceeds 100.  
+The server evaluates the filter and sends just the matching documents.
+
+```js
+const query = `declare function getOrderLinesSum(doc) {
+                   var sum = 0;
+                   for (var i in doc.Lines) {
+                       sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;
+                   }
+                   return sum;
+               }
+
+               from Orders as o
+               where getOrderLinesSum(o) > 100`;
+
+const subscriptionName = await documentStore.subscriptions.create({ query });
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Filtering with a regular expression
+
+In this example, the subscription filters documents with a regular expression.  
+Use the RQL `regex` function to match a field against a pattern on the server, here `Orders` whose
+`ShipTo.City` starts with `New`.
+
+```js
+const query = "from Orders where regex(ShipTo.City, '^New')";
+
+const subscriptionName = await documentStore.subscriptions.create({ query });
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Filtering and projecting fields
+
+In this example, the subscription filters `Orders` by total revenue, and projects only two fields into each item
+sent to the client: the document ID and the computed total.
+
+```js
+const query = `declare function getOrderLinesSum(doc) {
+                   var sum = 0;
+                   for (var i in doc.Lines) {
+                       sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;
+                   }
+                   return sum;
+               }
+
+               declare function projectOrder(doc) {
+                   return {
+                       Id: doc.Id,
+                       Total: getOrderLinesSum(doc)
+                   };
+               }
+
+               from Orders as o
+               where getOrderLinesSum(o) > 100
+               select projectOrder(o)`;
+
+const subscriptionName = await documentStore.subscriptions.create({ query });
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Projecting from a related document
+
+In this example, the subscription projects fields from each `Order` and also pulls data from a
+[related document](../../../indexes/indexing-related-documents.mdx#what-are-related-documents),
+loaded using `load`.
+
+```js
+const query = `declare function getOrderLinesSum(doc) {
+                   var sum = 0;
+                   for (var i in doc.Lines) {
+                       sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;
+                   }
+                   return sum;
+               }
+
+               declare function projectOrder(doc) {
+                   var employee = load(doc.Employee);
+                   return {
+                       Id: doc.Id,
+                       Total: getOrderLinesSum(doc),
+                       ShipTo: doc.ShipTo,
+                       EmployeeName: employee.FirstName + ' ' + employee.LastName
+                   };
+               }
+
+               from Orders as o
+               where getOrderLinesSum(o) > 100
+               select projectOrder(o)`;
+
+const subscriptionName = await documentStore.subscriptions.create({ query });
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Including documents
+
+In this example, the subscription sends every `Order` and includes the `Product` documents related to the order
+in the same batch, so the consuming worker can later read each `Product` without an extra call to
+the server.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="builder" label="Builder">
+
+```js
+const options = {
+    // The documents whose IDs are in each order line's 'Product' property
+    // will be included in the batch
+    includes: builder => builder.includeDocuments("Lines[].Product"),
+    documentType: Order
+};
+
+const subscriptionName = await documentStore.subscriptions.create(options);
+```
+
+</TabItem>
+<TabItem value="rql-path" label="RQL path">
+
+```js
+const subscriptionName = await documentStore.subscriptions.create({
+    query: "from Orders include Lines[].Product"
+});
+```
+
+</TabItem>
+<TabItem value="rql-js" label="RQL JavaScript">
+
+```js
+const query = `declare function includeProducts(doc) {
+                   let linesCount = doc.Lines.length;
+
+                   for (let i = 0; i < linesCount; i++) {
+                       include(doc.Lines[i].Product);
+                   }
+
+                   return doc;
+               }
+
+               from Orders as o select includeProducts(o)`;
+
+const subscriptionName = await documentStore.subscriptions.create({ query });
+```
+
+</TabItem>
+</Tabs>
+
+<br />
+
+Using the builder, assign an include function to the `includes` property of the options object.  
+The builder includes related documents through `includeDocuments`, and its methods can be chained.
+
+In RQL, write the include in one of two ways: append the `include` keyword followed by the paths
+to the fields holding the IDs to include (preferred, for both clarity and slightly better
+performance), or call `include` inside a JavaScript function invoked from the `select` clause.
+
+<Admonition type="info" title="">
+When you include documents alongside a projection, the `include` resolves paths against the
+projected fields rather than the original document.
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Including counters
+
+In this example, the subscription sends to the worker every `Order` and includes the values of the
+named counters in the batch.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="builder" label="Builder">
+
+```js
+const options = {
+    // Values for the specified counters will be included in the batch
+    includes: builder => builder.includeCounters(["Pros", "Cons"]),
+    documentType: Order
+};
+
+const subscriptionName = await documentStore.subscriptions.create(options);
+```
+
+</TabItem>
+<TabItem value="rql" label="RQL">
+
+```js
+const subscriptionName = await documentStore.subscriptions.create({
+    query: "from Orders include counters('Pros'), counters('Cons')"
+});
+```
+
+</TabItem>
+</Tabs>
+
+<br />
+
+The include builder offers three methods for including counters:
+
+```js
+// Include a single counter
+includeCounter(name);
+
+// Include multiple counters
+includeCounters(names);
+
+// Include ALL counters from ALL documents that match the subscription criteria
+includeAllCounters();
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **name** | `string` | The name of a counter. The subscription includes every counter with this name in the documents it retrieves. |
+| **names** | `string[]` | An array of counter names. |
+
+All of these methods can be chained.  
+The following subscription includes several counters and a related document:
+
+```js
+const options = {
+    includes: builder => builder
+        .includeCounter("Likes")
+        .includeCounters(["Pros", "Cons"])
+        .includeDocuments("Employee"),
+    documentType: Order
+};
+
+const subscriptionName = await documentStore.subscriptions.create(options);
+```
+
+<br />
+
+<Admonition type="note" title="">
+Changing the value of an existing counter after the document was sent does not trigger a
+re-send.  
+Adding a new counter to the document, or removing one, does trigger re-sending the document.
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Including time series
+
+In this example, the subscription sends every `Order` and includes time-series entries for each
+document in the batch, so the worker has those entries without issuing additional requests to the server.
+
+```js
+const options = {
+    // Include the last 10 entries of each document's "HeartRate" time series
+    includes: builder => builder.includeTimeSeries("HeartRate", "Last", 10),
+    documentType: Order
+};
+
+const subscriptionName = await documentStore.subscriptions.create(options);
+```
+
+<br />
+
+The include builder includes time series through these methods:
+
+```js
+// Include entries of a named time series, by a time range or by a number of entries
+includeTimeSeries(name, type, time);
+includeTimeSeries(name, type, count);
+
+// The same, for several named time series
+includeTimeSeries(names, type, time);
+includeTimeSeries(names, type, count);
+
+// Include all time series
+includeAllTimeSeries(type, time);
+includeAllTimeSeries(type, count);
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **name** / **names** | `string` / `string[]` | The time series to include. |
+| **type** | `string` | The range type: `"None"` or `"Last"`. |
+| **time** | `TimeValue` | A time range to include, for example `TimeValue.ofDays(7)`. |
+| **count** | `number` | A number of entries to include, counted from the most recent. |
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Creating a subscription via update
+
+When the subscription you update does not exist, set `createNew` to `true` to create it instead,
+using the provided query.
+
+```js
+const subscriptionName = await documentStore.subscriptions.update({
+    name: "my subscription",
+    query: "from Products where PricePerUnit > 20",
+
+    // Set to true so that a new subscription is created
+    // if a subscription named "my subscription" does not exist
+    createNew: true
+});
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Updating an existing subscription
+
+You can change a subscription's definition after creation. Target it by name, or by the ID the
+server assigned it at creation. The ID also lets you rename the subscription.
+
+Update by name, here changing the filter query of a subscription named "my subscription":
+
+```js
+const subscriptionName = await documentStore.subscriptions.update({
+    // Specify the subscription you wish to modify
+    name: "my subscription",
+
+    // Provide a new query
+    query: "from Products where PricePerUnit > 50"
+});
+```
+
+<br />
+
+Update by ID, retrieving the ID from the subscription's state:
+
+```js
+// Get the subscription's ID
+const mySubscription = await documentStore.subscriptions.getSubscriptionState("my subscription");
+const subscriptionId = mySubscription.subscriptionId;
+
+// Update the subscription
+const subscriptionName = await documentStore.subscriptions.update({
+    id: subscriptionId,
+    query: "from Products where PricePerUnit > 50"
+});
+```
+
+<br />
+
+Targeting by ID also lets you rename the subscription:
+
+```js
+// Get the subscription's ID
+const mySubscription = await documentStore.subscriptions.getSubscriptionState("my subscription");
+const subscriptionId = mySubscription.subscriptionId;
+
+// Update the subscription name
+const subscriptionName = await documentStore.subscriptions.update({
+    id: subscriptionId,
+    name: "New name"
+});
+```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Syntax">
+
+<ContentFrame>
+
+### Methods
+
+<Tabs groupId='syntaxMethods'>
+<TabItem value="create" label="create">
+
+Create a subscription on the server.
+
+```js
+// Overloads:
+create(options);
+create(options, database);
+create(documentType);
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **options** | `object` | The subscription creation options. See the [Classes](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) below. |
+| **database** | `string` | The database where the subscription is created. If not specified, the document store's default database is used. |
+| **documentType** | `object` | The document class whose collection the subscription draws from. |
+
+| Return value | |
+|-----------|-------------|
+| `Promise<string>` | Resolves to the name of the created subscription. If a name was provided in the options it is returned; otherwise the server generates a unique name. |
+
+</TabItem>
+<TabItem value="update" label="update">
+
+Update an existing subscription's definition.
+
+```js
+// Overloads:
+update(options);
+update(options, database);
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **options** | `object` | The subscription update options. See the [Classes](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) below. |
+| **database** | `string` | The database where the subscription resides. If not specified, the document store's default database is used. |
+
+| Return value | |
+|-----------|-------------|
+| `Promise<string>` | Resolves to the name of the updated subscription. |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Classes
+
+<Tabs groupId='subscriptionOptionClasses'>
+<TabItem value="creation-options" label="SubscriptionCreationOptions">
+
+```js
+// The subscription creation options object:
+{
+    name;
+    query;
+    includes;
+    changeVector;
+    mentorNode;
+    pinToMentorNode;
+    disabled;
+    documentType;
+}
+```
+
+</TabItem>
+<TabItem value="update-options" label="SubscriptionUpdateOptions">
+
+```js
+// The subscription update options object extends the creation options
+// object and adds two fields:
+{
+    id;
+    createNew;
+}
+```
+
+</TabItem>
+</Tabs>
+
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **name** | `string` | A user-defined name for the subscription. Must be unique within the database. |
+| **query** | `string` | An RQL query that defines the subscription. Supports JavaScript functions inside the `where` clause and special semantics for subscriptions on document revisions. |
+| **includes** | `(builder) => void` | A function receiving an include builder, used to include related documents, counters, and time series in the batch. The include methods can be chained. |
+| **changeVector** | `string` | A change vector marking where the subscription starts processing. See the note below. |
+| **mentorNode** | `string` | The tag of the node you want to handle the subscription. Useful when you prefer a specific server for its hardware, its proximity to clients, or other reasons. |
+| **pinToMentorNode** | `boolean` | `true` pins the task to the responsible node; `false` lets another node run it if the responsible node is down. |
+| **disabled** | `boolean` | `true` creates the task in a disabled state; `false` creates it enabled. |
+| **documentType** | `object` | The document class whose collection the subscription draws from. |
+
+<br />
+
+The update options object adds two properties to the creation options:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **id** | `number` | The ID the server assigned the subscription at creation. Retrieve it from the subscription's state. When updating, the `id` can be used instead of the `name` and takes precedence over it, which lets you rename the subscription: provide the `id` and a new `name`. |
+| **createNew** | `boolean` | What to do when the target subscription does not exist. `true` creates a new subscription from the provided options; `false` throws. Default: `false`. |
+
+<br />
+
+<Admonition type="note" title="">
+
+The `changeVector` property sets a starting point for processing, which is useful for an ad-hoc
+process that needs only recent changes.  
+Set it to `"LastDocument"` to start from the latest document in the collection, or pass an actual
+change vector to start from a specific point.  
+By default the subscription sends all documents matching its query, regardless of when they were
+created.
+
+</Admonition>
+
+</ContentFrame>
+
+</Panel>
