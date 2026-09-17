@@ -18,6 +18,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
     * [Configure basic settings](#configure-basic-settings)
     * [Schema explorer](#schema-explorer)
     * [Configured tables](#configured-tables)
+    * [Add missing root tables](#add-missing-root-tables)
     * [Configure linked tables](#configure-linked-tables)
     * [Configure embedded tables](#configure-embedded-tables)
     * [Test mapping](#test-mapping)
@@ -229,6 +230,32 @@ long taskId = result.TaskId;
 11. Once you've finished configuring all tables and their advanced settings (see below),  
     click **Save task configuration** to save the task.
 12. Click **Test** to preview the mapping output before saving.
+
+---
+    
+### Add missing root tables
+
+When a linked table references a source table that is not configured as a root table,
+Studio displays a warning above the configured tables.
+
+The parent document will contain the linked document ID,
+but CDC Sink will not create the referenced document until the source table is also configured as a root table.
+
+![Add missing root table warning](../assets/create-task-6.1.png)
+
+1. **Missing root table warning**  
+   Indicates how many referenced source tables are not configured as root tables.
+2. **Add root table**  
+   Click to open the **Add root tables** dialog.
+
+![Add root tables dialog](../assets/create-task-6.2.png)
+
+1. Select the source tables that you want to configure as root tables.  
+   Studio selects all missing tables by default.
+2. Click **Add 1 root table** (or **Add _n_ root tables** when multiple tables are selected).
+
+Studio adds the selected tables to the configuration as root tables.  
+Review the generated mappings, then click **Save task configuration** to save the changes.
     
 ---
     
