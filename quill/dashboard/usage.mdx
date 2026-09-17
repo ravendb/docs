@@ -11,7 +11,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* The **Usage** view shows write activity reported under the installed Quill license, measured in **Write Request Units (WRU)**.  
+* The **Usage** view shows write activity reported under the installed Quill license,  
+  measured in **Write Request Units (WRU)**.  
+
   Open it under **License & usage** in the dashboard sidebar, at `https://dashboard.<your-domain>/usage`.
 
 * This is a **license-wide** view. If the same license is used by more than one Quill deployment,  
@@ -66,19 +68,24 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 ### What WRU counts
 
-**Write Request Unit (WRU)** is the unit used to measure write activity in the RavenDB databases reported under your Quill license.
+**Write Request Unit (WRU)** is the billing unit Quill uses for metered write activity.  
+Under Quill's pricing model, each document insert, update, or delete counts as one WRU, regardless of document size or ingestion speed.
 
-Sources of write activity include:
+Writes that count include:
 
-* Quill [mirroring](../overview.mdx#mirroring) changes from a source relational database to an app's RavenDB database.
-* Quill storing conversations in an app's RavenDB database.
+* Quill's initial import and later [mirroring](../overview.mdx#mirroring) of changes from a source relational database to an app's RavenDB database.
+* Quill storing conversation messages in an app's RavenDB database.
+* Generating embeddings for app data, which Quill's pricing model counts as writes rather than internal index maintenance.
 * Applications writing directly to an app database with [the RavenDB Client API](../overview.mdx#working-with-quill-using-code).
 * Quill writing to its own configuration storage, shown in the table as [@system](#usage-per-app).
+
+Reads, queries, and the indexes Quill maintains internally are not metered.  
+For current WRU billing rules and published plan allowances, see [Quill pricing](https://ravendb.net/quill/pricing).
 
 Usage is reported every 15 minutes, so recent write activity may not appear immediately.
 
 For details about the installed license and its connectivity to RavenDB's licensing API,  
-open [**License**](../dashboard/license.mdx) under **License & usage**.
+open the [**License**](../dashboard/license.mdx) view under **License & usage**.
 
 </ContentFrame>
 
@@ -182,8 +189,11 @@ When no usage was reported for the selected period, the table displays **No usag
 
 <Panel heading="Data freshness and errors">
 
-The Usage view shows write usage already reported under the installed license.  
-It does not display a quota, remaining allowance, or usage cap.
+The Usage view shows write usage already reported under the installed license.
+It does not show the plan associated with the license, its included WRU volume, the remaining allowance, or resulting charges.  
+
+For published plan allowances and pricing, see [Quill pricing](https://ravendb.net/quill/pricing).  
+To confirm the terms of your installed license, contact RavenDB sales.
 
 * The view does not poll for updates.  
   Reload the page, or leave the view and return later, to request newer figures.  

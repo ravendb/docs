@@ -17,9 +17,12 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * Use this page to view the license expiration date and ID, open **Support**, review available plans,  
   and check connectivity to RavenDB's licensing API.
 
+* The Quill license includes the RavenDB capabilities required by the appliance; it does not include every RavenDB Server feature.  
+  For example, it does not include [read-only certificates](certificates.mdx#read-only-access-is-not-available).  
+  You do not need to obtain or install a separate RavenDB Server license.
+
 * You cannot install or change a license from this page.  
-  To view write usage associated with the license, select **Usage** under **License & usage**.  
-  {/* TODO: link to usage.mdx */}
+  To view write usage associated with the license, open the [Usage](../dashboard/usage.mdx) view under **License & usage**.
 
 * In this article:
    * [License overview](#license-overview)
@@ -79,7 +82,8 @@ The **Available plans** section displays the available plan information.
 It is marked **Coming soon**, and the plan cards are disabled.
 
 You cannot select or purchase a plan from this page.  
-To install or change a license, contact RavenDB sales.
+To install or change a license, contact RavenDB sales.  
+For current plan details and pricing, see [Quill pricing](https://ravendb.net/quill/pricing).
 
 </Panel>
 
@@ -114,8 +118,7 @@ Your Quill deployment uses RavenDB's licensing API to:
 
 * **Report and retrieve write usage.**  
   RavenDB reports write usage approximately every 15 minutes.  
-  The **Usage** page retrieves the aggregated write usage from the same API.  
-  {/* TODO: link to usage.mdx */}
+  The [**Usage**](../dashboard/usage.mdx) view retrieves the aggregated write usage from the same API.
 
 **Connectivity and license validity are separate**:  
 a failed connectivity check does not remove the installed license.

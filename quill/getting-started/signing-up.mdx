@@ -59,7 +59,8 @@ Before signing up, make sure you have:
 
 <Panel heading="Signing up">
 
-Signing up starts a 90-day free trial.
+Signing up starts a 90-day free trial. No credit card or sales call is required, and WRU usage is unlimited during the trial.  
+For current plan details, see [Quill pricing](https://ravendb.net/quill/pricing).
 
 Open [ravendb.net/quill/start](https://ravendb.net/quill/start), fill in the form, and confirm your email address
 with the code Quill sends you.
@@ -185,7 +186,13 @@ All the details that are displayed here are also sent to the email address you p
    **bash** or **PowerShell** form.  
    The Docker command already includes both the license key and the dashboard API key, so you do not have to add
    these keys separately.  
-   See more about the Docker command in [Starting Quill](../getting-started/starting-quill.mdx).
+
+   * The license key retrieves the setup package for the registered domain.  
+   * The dashboard API key, by contrast, belongs to the signup account.  
+     The same key is issued for every Quill domain registered under the same email address.  
+     See [One key per account](../security-and-architecture/operator-authentication.mdx#one-key-per-account).  
+
+   Learn more about the Docker command in [Starting Quill](../getting-started/starting-quill.mdx).
 
 4. **Once Quill is running**  
    The address of your management dashboard, and the steps that follow: connecting your data, mapping it, and

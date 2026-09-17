@@ -97,9 +97,10 @@ Hovering over a point shows the bucket's date; in the Day view, it also shows th
    including input and output tokens.
 
 5. **WRU**  
-   **Write Request Unit** - a measure of write activity in each app's RavenDB database.
-     * WRU includes writes made when Quill [mirrors](../overview.mdx#mirroring) changes from source databases, records conversations,  
-       and when applications write [directly with the RavenDB Client API](../overview.mdx#working-with-quill-using-code).
+   **Write Request Unit (WRU)** is the billing unit Quill uses for metered write activity.  
+   This tile totals WRU reported for the RavenDB databases belonging to the current apps.
+     * It does not include **@system** configuration-storage usage, usage from other Quill deployments sharing the license, or historical databases that no longer belong to a current app.
+     * For the billing rules and examples of writes that count, see [Write usage (WRU)](usage.mdx#write-usage-wru).
      * Write usage is reported every 15 minutes, so recent writes may not be included yet.
 
 <Admonition type="note" title="">
