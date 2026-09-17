@@ -39,7 +39,7 @@ Choose an access method based on whether users need conversational answers or yo
 
 | Access method    | Use when                                                                  | How it works                                                                              | Uses an agent and LLM | Detailed documentation                                                        |
 | ---------------- | ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | --------------------- | ----------------------------------------------------------------------------- |
-| Channel          | Users should ask questions in natural language and receive agent replies. | Messages are routed to the assigned agent, which can query the mirrored data when needed. | Yes                   | Channels overview {/* TODO RDoc-4085: Link "Channels overview" once that article is added to the documentation tree. */}                                              |
+| Channel          | Users should ask questions in natural language and receive agent replies. | Messages are routed to the assigned agent, which can query the mirrored data when needed. | Yes                   | [Channels overview](../channels/overview.mdx)                                              |
 | RavenDB Client API | Application code needs to query or process the mirrored data directly.    | The application connects directly to and queries the app's mirrored RavenDB database.     | No                    | [Access the Mirrored Database with the RavenDB Client API](ravendb-client-access.mdx) |
 
 </Panel>
@@ -59,9 +59,7 @@ The agent decides whether to query the data and which of its configured query to
 Your page embeds the widget, and your backend generates the embed links that open it.  
 For implementation details, see [Embed the Chat Widget](embed-the-chat-widget.mdx).
 
-For a comparison of all available channel types and their setup guides, see the **Channels overview**.
-
-{/* TODO RDoc-4085: Link "Channels overview" once its target article exists. */}
+For a comparison of all available channel types and their setup guides, see [Channels: Overview](../channels/overview.mdx#channel-types).
 
 </Panel>
 
