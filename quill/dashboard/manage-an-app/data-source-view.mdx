@@ -31,7 +31,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Panel heading="The data source view">
 
-![Data source](./assets/app-data-source-1.png)    
+![Data source](./assets/data-source-view-1.png)    
 
 1. **Data source**  
    To open the selected app's **Data source** page, click **Data source** under **Database** in the sidebar.    
@@ -60,7 +60,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
    An additional **Restart sync** button appears beside the menu when the page reports sync errors.  
    See [Data source actions](#data-source-actions) for instructions and the effects of each action.
     
-      ![Data source](./assets/app-data-source-2.png)
+      ![Data source](./assets/data-source-view-2.png)
 
 5. **Sync performance**  
    Shows the sync's current activity, the **Recent writes** and **Errors** counters, and a live batch log.  
@@ -78,7 +78,7 @@ This section updates automatically as sync reports arrive.
 While establishing the live connection, it displays "_Connecting to the live data sync..._".  
 If the connection fails or closes, Quill displays "_Could not connect to the live data sync_" with a **Retry** button.
 
-![Data source - Sync performance](./assets/app-data-source-3.png)
+![Data source - Sync performance](./assets/data-source-view-3.png)
 
 <ContentFrame>
 
@@ -106,7 +106,7 @@ If the connection fails or closes, Quill displays "_Could not connect to the liv
    It includes recent batches available when you open the page, plus batches received while the page remains open.  
     
    Reloading the page can change the total because older batches may no longer be available.  
-   For the app's database write usage over a selected period, see the **WRU** tile on the [Overview](./app-overview.mdx#activity) page.
+   For the app's database write usage over a selected period, see the **WRU** tile on the [Overview](./overview.mdx#activity) page.
 
 3. **Errors**  
    Quill shows the higher of these two counts:  
@@ -173,7 +173,7 @@ If the connection fails or closes, Quill displays "_Could not connect to the liv
 
 ### Sync errors
 
-![Data source - Sync errors](./assets/app-data-source-4.png)
+![Data source - Sync errors](./assets/data-source-view-4.png)
 
 * A **Sync errors detected** banner appears at the top of **Sync performance** when the sync error list
   contains entries. The banner shows the number of errors returned in that list, up to 25.
@@ -197,7 +197,7 @@ If the connection fails or closes, Quill displays "_Could not connect to the liv
 
 <Panel heading="Collections">
 
-![Data source - Collections](./assets/app-data-source-5.png)
+![Data source - Collections](./assets/data-source-view-5.png)
 
 The **Collections** table lists the collections in the app's RavenDB database, in alphabetical order.  
 The badge beside the heading shows how many collections there are.  
