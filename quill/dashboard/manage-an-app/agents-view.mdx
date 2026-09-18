@@ -1,6 +1,6 @@
 ---
-title: "App: Agents view"
-sidebar_label: Agents view
+title: "App: Agents View"
+sidebar_label: Agents View
 sidebar_position: 3
 description: "The Agents view of a Quill app: the agents that answer your users, listed with their status and activity, and an agent's configuration, where its basic settings, parameters, query tools, and actions are modified, and the agent is tested, saved, or deleted."
 ---
@@ -11,7 +11,6 @@ import TabItem from '@theme/TabItem';
 import Panel from "@site/src/components/Panel";
 import ContentFrame from "@site/src/components/ContentFrame";
 
-# App: Agents view
 <Admonition type="note" title="">
 
 * An [AI agent](../../overview.mdx#ai-agent) answers your users from the app's internal database.  
@@ -19,7 +18,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   agents, open an agent to modify and test its configuration, and delete an agent.
 
 * The Agents view is opened from the app's sidebar, where it is listed under the **Database** group.  
-  The app's [Overview](../../dashboard/manage-an-app/app-overview.mdx) page also lists the existing agents,
+  The app's [Overview](../../dashboard/manage-an-app/overview.mdx) page also lists the existing agents,
   to provide an overall view of the app's activity, agents, and channels.
 
 * An agent is added using the **Add agent** wizard, described in
@@ -41,7 +40,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 To open the Agents view, select the app in Quill's management dashboard and click **Agents** in the sidebar, under **Database**.
 
-![The Agents view](./assets/app-agents-view_agents-view.png)
+![The Agents view](./assets/agents-view_agents-view.png)
 
 1. **Agents**  
    Open the Agents view.
@@ -80,7 +79,7 @@ To open the Agents view, select the app in Quill's management dashboard and clic
 An agent's behaviour is set by its configuration.  
 To review and modify an agent's configuration, click the agent's pencil icon in the agents list.
 
-![The agent's configuration](./assets/app-agents-view_agent-view.png)
+![The agent's configuration](./assets/agents-view_agent-view.png)
 
 You can expand or collapse each configuration section: [Basic settings](#basic-settings),
 [Agent parameters](#agent-parameters), [Agent tools](#agent-tools), and [Agent actions](#agent-actions).
@@ -96,7 +95,7 @@ You can expand or collapse each configuration section: [Basic settings](#basic-s
 
    ### Basic settings
 
-   ![Basic settings](./assets/app-agents-view_agent-view_basic-settings.png)
+   ![Basic settings](./assets/agents-view_agent-view_basic-settings.png)
 
    * **A. Agent name**  
      The **Agent name** field is disabled; it cannot be modified since the agent's identifier is derived from its name
@@ -121,11 +120,11 @@ You can expand or collapse each configuration section: [Basic settings](#basic-s
    Expanding the **Agent parameters** section shows the parameters defined for the agent.  
    The image below lists a single parameter, `customerPhone`.
 
-   ![Agent parameters](./assets/app-agents-view_agent-parameters.png)
+   ![Agent parameters](./assets/agents-view_agent-parameters.png)
 
    Adding or editing a parameter reveals the following fields:
 
-   ![Configure parameter](./assets/app-agents-view_agent-parameters_configure.png)
+   ![Configure parameter](./assets/agents-view_agent-parameters_configure.png)
 
    * **A. Parameter name**  
      The name by which agent queries refer to the parameter.
@@ -164,11 +163,11 @@ You can expand or collapse each configuration section: [Basic settings](#basic-s
    Expanding the **Agent tools** section shows the query tools defined for the agent.  
    The image below lists two such tools, `getCustomerByPhone` and `findCategoryProducts`.
 
-   ![Agent tools](./assets/app-agents-view_agent-tools.png)
+   ![Agent tools](./assets/agents-view_agent-tools.png)
 
    Adding or editing a query tool reveals the following fields:
 
-   ![Configure query tool](./assets/app-agents-view_agent-tools_configure.png)
+   ![Configure query tool](./assets/agents-view_agent-tools_configure.png)
 
    * **A. Tool name**  
      The name the LLM uses to trigger the query.  
@@ -261,11 +260,11 @@ You can expand or collapse each configuration section: [Basic settings](#basic-s
    Expanding the **Agent actions** section shows the actions defined for the agent.  
    The image below lists a single action, `create_ticket`.
 
-   ![Agent actions](./assets/app-agents-view_agent-actions.png)
+   ![Agent actions](./assets/agents-view_agent-actions.png)
 
    Adding or editing an action reveals the following fields:
 
-   ![Configure action](./assets/app-agents-view_agent-actions_configure.png)
+   ![Configure action](./assets/agents-view_agent-actions_configure.png)
 
    * **A. Action name**  
      The name the LLM uses to trigger this action.  
@@ -337,7 +336,7 @@ agent's menu described in [The agent's configuration](#the-agent-s-configuration
 An agent cannot be deleted as long as any channel is bound to it; delete the agent's channels from the
 [Channels view](../../dashboard/manage-an-app/channels-view.mdx) first, and only then the agent.
 
-![Deleting an agent that channels are bound to](./assets/app-agents-view_delete-refused.png)
+![Deleting an agent that channels are bound to](./assets/agents-view_delete-refused.png)
 
 The conversations the agent has held are kept, and remain available in the app's [Conversations view](../../dashboard/manage-an-app/conversations-view.mdx).
 
@@ -345,10 +344,10 @@ The conversations the agent has held are kept, and remain available in the app's
 
 <Panel heading="An additional entry point: the agents list in the Overview">
 
-Similarly to the Agents view discussed here, the app's [Overview](../../dashboard/manage-an-app/app-overview.mdx) page
+Similarly to the Agents view discussed here, the app's [Overview](../../dashboard/manage-an-app/overview.mdx) page
 lists your existing agents and allows you to add an agent or edit an existing agent's configuration.
 
-![The agents list in the Overview](./assets/app-agents-view_overview-agents.png)
+![The agents list in the Overview](./assets/agents-view_overview-agents.png)
 
 1. **Add agent**  
    Start the [Add agent wizard](../../getting-started/adding-an-ai-agent.mdx) to add an agent to the app.
