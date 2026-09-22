@@ -1,0 +1,301 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* When the [Revisions feature](../../document-extensions/revisions/overview.mdx) is enabled, a
+  revision is created with each change made in a document.  
+  Each revision is a snapshot of the document at the time of the change. Over time, a complete 
+  audit trail is formed.
+
+* A data subscription can subscribe not only to documents but also to their revisions, allowing workers 
+  to track the changes made in documents over time.
+
+* To subscribe to revisions, consume the subscription with `getSubscriptionWorkerForRevisions`, 
+  or add `(Revisions = true)` to its RQL query.
+
+* In this article:
+   * [Regular subscription vs revisions subscription](../../data-subscriptions/revisions-support.mdx#regular-subscription-vs-revisions-subscription)
+   * [Revisions processing order](../../data-subscriptions/revisions-support.mdx#revisions-processing-order)
+   * [Creating and consuming a revisions subscription](../../data-subscriptions/revisions-support.mdx#creating-and-consuming-a-revisions-subscription)
+   * [Filtering revisions](../../data-subscriptions/revisions-support.mdx#filtering-revisions)
+   * [Projecting fields from revisions](../../data-subscriptions/revisions-support.mdx#projecting-fields-from-revisions)
+
+</Admonition>
+
+<Panel heading="Regular subscription vs revisions subscription">
+
+A subscription can target a collection's documents or their revisions. The two behave differently
+in what they process, what the server-side query can see, and what reaches the worker.
+
+<ContentFrame>
+
+### Regular subscription
+
+* **Processed items**  
+  The subscription processes documents from the defined collection. Only the current version of
+  each document is processed, even if the document has revisions.
+* **Query access scope**  
+  The subscription query running on the server has access only to the current version of each document.
+* **Data sent to the worker**  
+  Each item in the batch contains a single document, or a projection of it, as defined in the subscription.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Revisions subscription
+
+* **Processed items**  
+  The subscription processes all revisions of documents from the defined collection, including
+  revisions of deleted documents from the revisions bin if they have not been purged.
+* **Query access scope**  
+  For each revision, the subscription query running on the server has access to both the revision
+  being processed and its preceding revision, so it can compare the two revisions and act on what
+  changed between them.
+* **Data sent to the worker**  
+  Unless the query [projects specific fields](../../data-subscriptions/revisions-support.mdx#projecting-fields-from-revisions),
+  each item in the batch contains both the processed revision (`result.current`) and its preceding
+  revision (`result.previous`). For a document's first revision, `result.previous` is `null`.
+
+</ContentFrame>
+
+<Admonition type="warning" title="">
+
+* For a revisions subscription to work, [Revisions must be configured](../../document-extensions/revisions/overview.mdx#defining-a-revisions-configuration)
+  and enabled for the collection the subscription targets.
+
+* A document that has no revisions is not processed, so make sure your revisions configuration does
+  not purge revisions before the subscription has had a chance to process them.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Revisions processing order">
+
+In a revisions subscription, the worker receives revisions in consecutive pairs: each revision
+together with the one immediately before it.  
+This gives the worker, and the subscription query, the document's state both before and after every
+change, so they can detect what changed and act on it, for example to filter or project by the difference.
+
+For example, take this `User` document:
+
+```json
+{
+    "Name": "James",
+    "Age": "21"
+}
+```
+
+<br />
+
+Suppose its `Age` field is then updated twice, first to `22` and then to `23`. The worker receives
+three batch items, each pairing a revision with the one before it:
+
+| Batch item | Previous | Current |
+|------------|----------|---------|
+| item #1 | `null` | `{ Name: "James", Age: "21" }` |
+| item #2 | `{ Name: "James", Age: "21" }` | `{ Name: "James", Age: "22" }` |
+| item #3 | `{ Name: "James", Age: "22" }` | `{ Name: "James", Age: "23" }` |
+
+The first item pairs the document's creation with a `null` previous. Each later item carries the
+earlier revision as `previous` and the next as `current`.
+
+</Panel>
+
+<Panel heading="Creating and consuming a revisions subscription">
+
+This basic revisions subscription delivers to the worker pairs of consecutive `Order` revisions.
+
+#### Example: Creating the subscription
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="generic" label="Generic API">
+
+```js
+const subscriptionName = await documentStore.subscriptions.createForRevisions({
+    // Set the collection whose revisions are processed
+    documentType: Order
+});
+```
+
+</TabItem>
+<TabItem value="rql" label="RQL">
+
+```js
+const subscriptionName = await documentStore.subscriptions.create({
+    // Add (Revisions = true) to the subscription's RQL
+    query: "from Orders (Revisions = true)"
+});
+```
+
+</TabItem>
+</Tabs>
+
+<br />
+
+#### Example: Consuming the subscription
+
+```js
+const workerOptions = { subscriptionName };
+
+const revisionsWorker =
+    // Use getSubscriptionWorkerForRevisions to receive revision pairs
+    documentStore.subscriptions.getSubscriptionWorkerForRevisions(workerOptions);
+
+revisionsWorker.on("batch", (batch, callback) => {
+    try {
+        for (const item of batch.items) {
+            // The preceding revision (null for a document's first revision)
+            const previousRevision = item.result.previous;
+
+            // The revision being processed
+            const currentRevision = item.result.current;
+
+            processOrderRevisions(previousRevision, currentRevision); // your processing logic
+        }
+        callback();
+    } catch (err) {
+        callback(err);
+    }
+});
+```
+
+</Panel>
+
+<Panel heading="Filtering revisions">
+
+This subscription sends to the worker only the revisions in which the order was shipped to Mexico.
+
+#### Example: Creating the subscription
+
+```js
+const subscriptionName = await documentStore.subscriptions.create({
+    // Only revisions of orders shipped to Mexico are sent to the worker
+    query: `declare function isSentToMexico(doc) {
+                return doc.Current.ShipTo.Country == 'Mexico'
+            }
+
+            from 'Orders' (Revisions = true) as doc
+            where isSentToMexico(doc) == true`
+});
+```
+
+<br />
+
+#### Example: Consuming the subscription
+
+```js
+const workerOptions = { subscriptionName };
+
+const worker =
+    documentStore.subscriptions.getSubscriptionWorkerForRevisions(workerOptions);
+
+worker.on("batch", (batch, callback) => {
+    try {
+        for (const item of batch.items) {
+            console.log(`
+                This is a revision of document ${item.id}.
+                The order in this revision was shipped at ${item.result.current.ShippedAt}.`);
+        }
+        callback();
+    } catch (err) {
+        callback(err);
+    }
+});
+```
+
+</Panel>
+
+<Panel heading="Projecting fields from revisions">
+
+This subscription filters the revisions and sends to the worker only the projected data rather than
+the full revision pair.
+
+#### Example: Creating the subscription
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="subscription" label="Subscription definition">
+
+```js
+const subscriptionName = await documentStore.subscriptions.create({
+    // Process only revisions whose revenue exceeds the preceding revision's by more than 2500,
+    // and project the fields sent to the worker
+    query: `declare function isRevenueDeltaAboveThreshold(doc, threshold) {
+                return doc.Previous !== null && doc.Current.Lines.map(function(x) {
+                    return x.PricePerUnit * x.Quantity;
+                }).reduce((a, b) => a + b, 0) > doc.Previous.Lines.map(function(x) {
+                    return x.PricePerUnit * x.Quantity;
+                }).reduce((a, b) => a + b, 0) + threshold
+            }
+
+            from 'Orders' (Revisions = true) as doc
+            where isRevenueDeltaAboveThreshold(doc, 2500)
+
+            select {
+                previousRevenue: doc.Previous.Lines.map(function(x) {
+                    return x.PricePerUnit * x.Quantity;
+                }).reduce((a, b) => a + b, 0),
+
+                currentRevenue: doc.Current.Lines.map(function(x) {
+                    return x.PricePerUnit * x.Quantity;
+                }).reduce((a, b) => a + b, 0)
+            }`
+});
+```
+
+</TabItem>
+<TabItem value="projection-class" label="Projection class">
+
+```js
+class OrderRevenues {
+    constructor() {
+        this.previousRevenue;
+        this.currentRevenue;
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+<br />
+
+#### Example: Consuming the subscription
+
+Because the revision fields are projected into `OrderRevenues` in the subscription's definition,
+each batch item has the shape of that projected class rather than the default `result.previous` and
+`result.current` fields shown in the
+[simple example](../../data-subscriptions/revisions-support.mdx#creating-and-consuming-a-revisions-subscription).
+
+```js
+const workerOptions = {
+    subscriptionName,
+    // Use the projected class as the item type, so use getSubscriptionWorker (not ...ForRevisions)
+    documentType: OrderRevenues
+};
+
+const revenuesComparisonWorker =
+    documentStore.subscriptions.getSubscriptionWorker(workerOptions);
+
+revenuesComparisonWorker.on("batch", (batch, callback) => {
+    try {
+        for (const item of batch.items) {
+            console.log(`
+                Revenue for order ${item.id}
+                grew from ${item.result.previousRevenue}
+                to ${item.result.currentRevenue}`);
+        }
+        callback();
+    } catch (err) {
+        callback(err);
+    }
+});
+```
+
+</Panel>

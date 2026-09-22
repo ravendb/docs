@@ -1,0 +1,353 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* When the [Revisions feature](../../document-extensions/revisions/overview.mdx) is enabled, a
+  revision is created with each change made in a document.  
+  Each revision is a snapshot of the document at the time of the change. Over time, a complete 
+  audit trail is formed.
+
+* A data subscription can subscribe not only to documents but also to their revisions, allowing workers 
+  to track the changes made in documents over time.
+
+* To subscribe to revisions, use [Revision&lt;T&gt;](../../data-subscriptions/revisions-support.mdx#creating-and-consuming-a-revisions-subscription) 
+  as the subscription's item type, or add `(Revisions = true)` to its RQL query.
+
+* In this article:
+   * [Regular subscription vs revisions subscription](../../data-subscriptions/revisions-support.mdx#regular-subscription-vs-revisions-subscription)
+   * [Revisions processing order](../../data-subscriptions/revisions-support.mdx#revisions-processing-order)
+   * [Creating and consuming a revisions subscription](../../data-subscriptions/revisions-support.mdx#creating-and-consuming-a-revisions-subscription)
+   * [Filtering revisions](../../data-subscriptions/revisions-support.mdx#filtering-revisions)
+   * [Projecting fields from revisions](../../data-subscriptions/revisions-support.mdx#projecting-fields-from-revisions)
+   * [Syntax](../../data-subscriptions/revisions-support.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Regular subscription vs revisions subscription">
+
+A subscription can target a collection's documents or their revisions. The two behave differently
+in what they process, what the server-side query can see, and what reaches the worker.
+
+<ContentFrame>
+
+### Regular subscription
+
+* **Processed items**  
+  The subscription processes documents from the defined collection. Only the current version of
+  each document is processed, even if the document has revisions.
+* **Query access scope**  
+  The subscription query running on the server has access only to the current version of each document.
+* **Data sent to the worker**  
+  Each item in the batch contains a single document, or a projection of it, as defined in the subscription.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Revisions subscription
+
+* **Processed items**  
+  The subscription processes all revisions of documents from the defined collection, including
+  revisions of deleted documents from the revisions bin if they have not been purged.
+* **Query access scope**  
+  For each revision, the subscription query running on the server has access to both the revision
+  being processed and its preceding revision, so it can compare the two revisions and act on what
+  changed between them.
+* **Data sent to the worker**  
+  Unless the query [projects specific fields](../../data-subscriptions/revisions-support.mdx#projecting-fields-from-revisions),
+  each item in the batch contains both the processed revision (`Result.Current`) and its preceding
+  revision (`Result.Previous`). For a document's first revision, `Result.Previous` is `null`.
+
+</ContentFrame>
+
+<Admonition type="warning" title="">
+
+* For a revisions subscription to work, [Revisions must be configured](../../document-extensions/revisions/overview.mdx#defining-a-revisions-configuration)
+  and enabled for the collection the subscription targets.
+
+* A document that has no revisions is not processed, so make sure your revisions configuration does
+  not purge revisions before the subscription has had a chance to process them.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Revisions processing order">
+
+In a revisions subscription, the worker receives revisions in consecutive pairs: each revision
+together with the one immediately before it.  
+This gives the worker, and the subscription query, the document's state both before and after every
+change, so they can detect what changed and act on it, for example to filter or project by the difference.
+
+For example, take this `User` document:
+
+```json
+{
+    "Name": "James",
+    "Age": "21"
+}
+```
+
+<br />
+
+Suppose its `Age` field is then updated twice, first to `22` and then to `23`. The worker receives
+three batch items, each pairing a revision with the one before it:
+
+| Batch item | Previous | Current |
+|------------|----------|---------|
+| item #1 | `null` | `{ Name: "James", Age: "21" }` |
+| item #2 | `{ Name: "James", Age: "21" }` | `{ Name: "James", Age: "22" }` |
+| item #3 | `{ Name: "James", Age: "22" }` | `{ Name: "James", Age: "23" }` |
+
+The first item pairs the document's creation with a `null` previous. Each later item carries the
+earlier revision as `Previous` and the next as `Current`.
+
+</Panel>
+
+<Panel heading="Creating and consuming a revisions subscription">
+
+This basic revisions subscription delivers to the worker pairs of consecutive `Order` revisions.
+
+#### Example: Creating the subscription
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="generic" label="Generic API">
+
+```csharp
+subscriptionName = store.Subscriptions.Create(
+    // Use Revision<T> as the processed-item type, e.g. Revision<Order>
+    new SubscriptionCreationOptions<Revision<Order>>());
+```
+
+</TabItem>
+<TabItem value="rql" label="RQL">
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    // Add (Revisions = true) to the subscription's RQL
+    Query = @"from Orders (Revisions = true)"
+});
+```
+
+</TabItem>
+</Tabs>
+
+<br />
+
+#### Example: Consuming the subscription
+
+```csharp
+SubscriptionWorker<Revision<Order>> revisionsWorker =
+    store.Subscriptions.GetSubscriptionWorker<Revision<Order>>(subscriptionName);
+
+await revisionsWorker.Run((SubscriptionBatch<Revision<Order>> batch) =>
+{
+    foreach (var item in batch.Items)
+    {
+        // The preceding revision (null for a document's first revision)
+        var previousRevision = item.Result.Previous;
+
+        // The revision being processed
+        var currentRevision = item.Result.Current;
+
+        ProcessOrderRevisions(previousRevision, currentRevision); // your processing logic
+    }
+});
+```
+
+</Panel>
+
+<Panel heading="Filtering revisions">
+
+This subscription sends to the worker only the revisions in which the order was shipped to Mexico.
+
+#### Example: Creating the subscription
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="generic" label="Generic API">
+
+```csharp
+subscriptionName = store.Subscriptions.Create(
+    new SubscriptionCreationOptions<Revision<Order>>()
+    {
+        // Only revisions of orders shipped to Mexico are sent to the worker
+        Filter = revision => revision.Current.ShipTo.Country == "Mexico"
+    });
+```
+
+</TabItem>
+<TabItem value="rql" label="RQL">
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"declare function isSentToMexico(doc) {
+                  return doc.Current.ShipTo.Country == 'Mexico'
+              }
+
+              from 'Orders' (Revisions = true) as doc
+              where isSentToMexico(doc) == true"
+});
+```
+
+</TabItem>
+</Tabs>
+
+<br />
+
+#### Example: Consuming the subscription
+
+```csharp
+SubscriptionWorker<Revision<Order>> worker =
+    store.Subscriptions.GetSubscriptionWorker<Revision<Order>>(subscriptionName);
+
+await worker.Run(batch =>
+{
+    foreach (var item in batch.Items)
+    {
+        Console.WriteLine($@"
+            This is a revision of document {item.Id}.
+            The order in this revision was shipped at {item.Result.Current.ShippedAt}.");
+    }
+});
+```
+
+</Panel>
+
+<Panel heading="Projecting fields from revisions">
+
+This subscription filters the revisions and sends to the worker only the projected data rather than
+the full revision pair.
+
+#### Example: Creating the subscription
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="generic" label="Generic API">
+
+```csharp
+subscriptionName = store.Subscriptions.Create(
+    new SubscriptionCreationOptions<Revision<Order>>()
+    {
+        // Process only revisions whose revenue exceeds the preceding revision's by more than 2500
+        Filter = revision =>
+            revision.Previous != null &&
+            revision.Current.Lines.Sum(x => x.PricePerUnit * x.Quantity) >
+            revision.Previous.Lines.Sum(x => x.PricePerUnit * x.Quantity) + 2500,
+
+        // Project the fields sent to the worker
+        Projection = revision => new OrderRevenues()
+        {
+            PreviousRevenue = revision.Previous.Lines.Sum(x => x.PricePerUnit * x.Quantity),
+            CurrentRevenue = revision.Current.Lines.Sum(x => x.PricePerUnit * x.Quantity)
+        }
+    });
+```
+
+</TabItem>
+<TabItem value="rql" label="RQL">
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"declare function isRevenueDeltaAboveThreshold(doc, threshold) {
+                  return doc.Previous !== null && doc.Current.Lines.map(function(x) {
+                      return x.PricePerUnit * x.Quantity;
+                  }).reduce((a, b) => a + b, 0) > doc.Previous.Lines.map(function(x) {
+                      return x.PricePerUnit * x.Quantity;
+                  }).reduce((a, b) => a + b, 0) + threshold
+              }
+
+              from 'Orders' (Revisions = true) as doc
+              where isRevenueDeltaAboveThreshold(doc, 2500)
+
+              select {
+                  PreviousRevenue: doc.Previous.Lines.map(function(x) {
+                      return x.PricePerUnit * x.Quantity;
+                  }).reduce((a, b) => a + b, 0),
+
+                  CurrentRevenue: doc.Current.Lines.map(function(x) {
+                      return x.PricePerUnit * x.Quantity;
+                  }).reduce((a, b) => a + b, 0)
+              }"
+});
+```
+
+</TabItem>
+</Tabs>
+
+The projection targets this class:
+
+```csharp
+public class OrderRevenues
+{
+    public decimal PreviousRevenue { get; set; }
+    public decimal CurrentRevenue { get; set; }
+}
+```
+
+<br />
+
+#### Example: Consuming the subscription
+
+Because the revision fields are projected into `OrderRevenues` in the subscription's definition,
+each batch item has the shape of that projected class rather than the default `Result.Previous` and
+`Result.Current` fields shown in the
+[simple example](../../data-subscriptions/revisions-support.mdx#creating-and-consuming-a-revisions-subscription).
+
+```csharp
+SubscriptionWorker<OrderRevenues> revenuesComparisonWorker =
+    // Use the projected class type for the items the worker processes
+    store.Subscriptions.GetSubscriptionWorker<OrderRevenues>(subscriptionName);
+
+await revenuesComparisonWorker.Run(batch =>
+{
+    foreach (var item in batch.Items)
+    {
+        Console.WriteLine($@"Revenue for order {item.Id}
+                             grew from {item.Result.PreviousRevenue}
+                             to {item.Result.CurrentRevenue}");
+    }
+});
+```
+
+</Panel>
+
+<Panel heading="Syntax">
+
+<ContentFrame>
+
+### Classes
+
+<Tabs groupId='revisionsClasses'>
+<TabItem value="revision" label="Revision&lt;T&gt;">
+
+The processed-item type for a revisions subscription. Each batch item's `Result` is a
+`Revision<T>` holding the revision being processed and the one before it.
+
+```csharp
+public sealed class Revision<T> where T : class
+{
+    public T Previous;
+    public T Current;
+}
+```
+
+<br />
+
+| Field | Type | Description |
+|-------|------|-------------|
+| **Previous** | `T` | The preceding revision. `null` when `Current` is the document's first revision. |
+| **Current** | `T` | The revision being processed. |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>

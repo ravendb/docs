@@ -1,0 +1,29 @@
+---
+title: "Creating a data subscription: API"
+sidebar_label: "Client API"
+description: "Create and update RavenDB data subscriptions using the Client API, with filtering, projections, includes, and configurable subscription options."
+sidebar_position: 1
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import CreatingSubscriptionApiCsharp from './content/_creating-subscription_api-csharp.mdx';
+import CreatingSubscriptionApiNodejs from './content/_creating-subscription_api-nodejs.mdx';
+import CreatingSubscriptionApiPython from './content/_creating-subscription_api-python.mdx';
+
+export const supportedLanguages = ["csharp", "nodejs", "python"];
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+
+<LanguageContent language="csharp">
+   <CreatingSubscriptionApiCsharp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <CreatingSubscriptionApiNodejs />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <CreatingSubscriptionApiPython />
+</LanguageContent>

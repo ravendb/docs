@@ -1,0 +1,739 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* A **subscription worker** is the client-side component that consumes a subscription.  
+
+* The worker connects to the server, receives a batch of documents, hands the batch to your processing code, and
+  when done, acknowledges its progress to the server so the server can keep track and provide the next batch.  
+
+* This page explains how to create and run a subscription worker using the client API.  
+
+* In this article:
+   * [Creating a subscription worker](../../data-subscriptions/consuming-subscription.mdx#creating-a-subscription-worker)
+   * [Running the worker](../../data-subscriptions/consuming-subscription.mdx#running-the-worker)
+   * [At-least-once delivery](../../data-subscriptions/consuming-subscription.mdx#at-least-once-delivery)
+   * [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)
+   * [Error handling](../../data-subscriptions/consuming-subscription.mdx#error-handling)
+   * [Examples](../../data-subscriptions/consuming-subscription.mdx#examples)
+      * [Full exception handling with retries](../../data-subscriptions/consuming-subscription.mdx#example-full-exception-handling-with-retries)
+      * [Setting the batch size](../../data-subscriptions/consuming-subscription.mdx#example-setting-the-batch-size)
+      * [Processing documents in a session](../../data-subscriptions/consuming-subscription.mdx#example-processing-documents-in-a-session)
+      * [Processing dynamic objects](../../data-subscriptions/consuming-subscription.mdx#example-processing-dynamic-objects)
+      * [End when no documents are left](../../data-subscriptions/consuming-subscription.mdx#example-end-when-no-documents-are-left)
+      * [Including documents in the batch](../../data-subscriptions/consuming-subscription.mdx#example-including-documents-in-the-batch)
+      * [Primary and secondary workers](../../data-subscriptions/consuming-subscription.mdx#example-primary-and-secondary-workers)
+   * [Syntax](../../data-subscriptions/consuming-subscription.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Creating a subscription worker">
+
+Create a worker using the store's `subscriptions.getSubscriptionWorker` method, passing either the
+subscription name or a [subscription worker options](../../data-subscriptions/consuming-subscription.mdx#classes) object.
+
+```js
+const subscriptionWorker = documentStore.subscriptions.getSubscriptionWorker(subscriptionName);
+```
+
+This constructs the worker but does not run it yet.
+
+</Panel>
+
+<Panel heading="Running the worker">
+
+To start processing the documents the server sends, attach a handler to the worker's `batch` event.
+Attaching the first `batch` listener starts the worker:
+
+```js
+subscriptionWorker.on("batch", (batch, callback) => {
+    try {
+        // your batch-processing logic here
+
+        // Call callback() when done, so the worker acknowledges the batch
+        callback();
+    } catch (err) {
+        callback(err);
+    }
+});
+```
+
+<br />
+
+From this point on, the worker receives and processes document batches. Call `callback()` after
+processing each batch so the server can keep track of the subscription's progress and provide the
+next batch if available; call `callback(err)` to report a processing failure.
+
+</Panel>
+
+<Panel heading="At-least-once delivery">
+
+The server advances a subscription's progress only when the worker acknowledges a batch.  
+If a worker stops (or its connection fails) before acknowledging a batch, the server will re-send the
+same batch the next time a worker connects to the subscription.
+
+Delivery is therefore at-least-once: documents may be processed more than once, but none are skipped.
+Make your processing idempotent to make sure that reprocessing a document has no unintended effect.
+
+[Concurrent subscriptions](../../data-subscriptions/concurrent-subscriptions.mdx#connection-failure-and-reassignment)
+add another way a document can be reprocessed, by reassigning a dropped worker's documents to the
+other workers.
+
+</Panel>
+
+<Panel heading="Worker strategies">
+
+A worker is configured with a strategy, set in the 
+[subscription worker options](../../data-subscriptions/consuming-subscription.mdx#classes) 
+`strategy` property, that decides whether the worker may connect to the subscription 
+and how it behaves toward a worker that is already connected.
+
+The following strategies allow only one worker connected at a time:
+
+* **`"OpenIfFree"`**  
+  The server lets the worker connect only if no other worker is connected.  
+  If another worker is already connected, the incoming worker fails with a `SubscriptionInUseException`.  
+* **`"WaitForFree"`**  
+  If the subscription is in use, the worker waits for the connected worker to disconnect, 
+  then takes its place.  
+  This suits failover, where a standby worker waits to take over from the active one.  
+* **`"TakeOver"`**  
+  The incoming worker tries to take over the existing connection.  
+  It succeeds if the connected worker does not itself use `"TakeOver"`.  
+   - If the takeover succeeds, the worker that has been taken over fails with a `SubscriptionInUseException`.  
+   - If the takeover fails, the incoming worker fails with the exception instead.  
+
+To let several workers consume the same subscription at the same time, use the `"Concurrent"` strategy.
+See [Concurrent subscriptions](../../data-subscriptions/concurrent-subscriptions.mdx).
+
+<ContentFrame>
+
+### First worker to connect sets the subscription mode
+
+The first worker to connect sets whether the subscription runs in single-worker or concurrent mode,
+and this mode holds until all workers disconnect:
+
+* A subscription running concurrent workers admits only other concurrent workers. A worker that uses
+  a single-worker strategy is rejected with `SubscriptionInUseException`.
+* A subscription running a single-worker strategy admits no concurrent worker until the connected
+  worker disconnects. A concurrent worker is rejected with `SubscriptionInUseException`.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Error handling">
+
+<ContentFrame>
+
+### Connection failures
+
+When an unexpected error occurs during communication with the server, the worker tries to
+reconnect.  
+It stops without reconnecting in these cases:
+
+* The subscription no longer exists.  
+* Another worker took over the subscription (see [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)).  
+* The worker cannot connect to any of the servers.  
+* The worker could not learn which node is responsible for the task (e.g., when the cluster
+  has no leader).  
+* An authorization error occurred.  
+* An error occurred while establishing the connection.  
+* The database does not exist.  
+
+---
+
+When the worker tries to reconnect after a failure, the `connectionRetry` event fires.  
+Subscribe to it to log worker connection errors:
+
+```js
+// Log connection-retry errors
+subscriptionWorker.on("connectionRetry", error => {
+    console.error("Subscription connection error: " + subscriptionName, error);
+});
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Errors while processing a batch
+
+When your batch-processing code throws (or calls `callback(err)`), the `ignoreSubscriberErrors`
+option determines what happens:
+
+* **`false`** (default)  
+  Processing stops. The worker wraps the exception in a `SubscriberErrorException` and emits it
+  through the `error` event, without acknowledging progress.  
+* **`true`**  
+  The failed batch is acknowledged without a retry, and the worker continues with the next
+  batches.  
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Reconnection and timeouts
+
+These worker options govern reconnection after a failure:
+
+* **`timeToWaitBeforeConnectionRetry`**  
+  How long the worker waits before each reconnect attempt, in milliseconds.  
+  Default: 5 seconds.  
+* **`maxErroneousPeriod`**  
+  How long the connection may stay in an erroneous state before the worker stops retrying, in
+  milliseconds.  
+  Default: 5 minutes.  
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Examples">
+
+<ContentFrame>
+
+### Example: Full exception handling with retries
+
+In this example, the client handles the exceptions the worker may emit, 
+recreating the worker to resume processing when the error is recoverable.
+
+```js
+// Create the subscription task on the server:
+const subscriptionName = await documentStore.subscriptions.create({
+    name: "ProcessOrdersWithLowFreight",
+    query: "from Orders where Freight < 0.5"
+});
+
+// Create the subscription worker that will consume the documents:
+await setupReconnectingWorker(subscriptionName);
+
+async function setupReconnectingWorker(subscriptionName) {
+    let subscriptionWorker;
+
+    function closeWorker(worker) {
+        worker.dispose();
+    }
+
+    function reconnect() {
+        if (subscriptionWorker) {
+            closeWorker(subscriptionWorker);
+        }
+
+        // Configure the worker:
+        const subscriptionWorkerOptions = {
+            subscriptionName: subscriptionName,
+            // Allow a downtime of up to 2 hours
+            maxErroneousPeriod: 2 * 3600 * 1000,
+            // Wait 2 minutes before reconnecting
+            timeToWaitBeforeConnectionRetry: 2 * 60 * 1000
+        };
+
+        subscriptionWorker = documentStore.subscriptions.getSubscriptionWorker(subscriptionWorkerOptions);
+
+        // Subscribe to connection retry events, and log any exceptions
+        subscriptionWorker.on("connectionRetry", error => {
+            console.error("Error during subscription processing: " + subscriptionName, error);
+        });
+
+        // Run the worker:
+        subscriptionWorker.on("batch", (batch, callback) => {
+            try {
+                for (const item of batch.items) {
+                    const orderDocument = item.result;
+
+                    // Forcefully stop processing if the order's Company is "companies/46-A",
+                    // and report an error to let external logic handle the specific case
+                    if (orderDocument.Company && orderDocument.Company === "companies/46-A") {
+                        // The error reported here will be wrapped by `SubscriberErrorException`
+                        callback(new Error("Company ID can't be 'companies/46-A', please fix"));
+                        return;
+                    }
+
+                    // Process the order document - provide your own logic
+                    processOrder(orderDocument);
+                }
+                // Call 'callback' once you're done so the worker acknowledges the batch
+                callback();
+            } catch (err) {
+                callback(err);
+            }
+        });
+
+        // Handle errors:
+        subscriptionWorker.on("error", error => {
+            console.error("Failure in subscription: " + subscriptionName, error);
+
+            // The following errors are not recoverable
+            if (error.name === "DatabaseDoesNotExistException" ||
+                error.name === "SubscriptionDoesNotExistException" ||
+                error.name === "SubscriptionInvalidStateException" ||
+                error.name === "AuthorizationException") {
+                throw error;
+            }
+
+            if (error.name === "SubscriptionClosedException") {
+                // Subscription probably closed explicitly by admin
+                return closeWorker(subscriptionWorker);
+            }
+
+            // Otherwise, try reconnecting
+            setTimeout(reconnect, 1000);
+        });
+    }
+
+    reconnect();
+}
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Setting the batch size
+
+In this example, the worker sets the maximum number of documents the server sends in each batch.
+
+```js
+const workerOptions = {
+    subscriptionName: subscriptionName,
+    maxDocsPerBatch: 20
+};
+
+const worker = documentStore.subscriptions.getSubscriptionWorker(workerOptions);
+
+worker.on("batch", (batch, callback) => {
+    try {
+        // your custom logic
+        callback();
+    } catch (err) {
+        callback(err);
+    }
+});
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Processing documents in a session
+
+In this example, the subscription sends to the worker `Orders` that have no shipping date.  
+The worker sets each document's `ShippedAt` field and saves it back through a session.
+
+<Admonition type="info" title="">
+Open the session using `batch.openSession`, not `documentStore.openSession`.
+</Admonition>
+
+```js
+// Create the subscription task on the server:
+const subscriptionName = await documentStore.subscriptions.create({
+    name: "ProcessOrdersThatWereNotShipped",
+    query: "from Orders as o where o.ShippedAt = null"
+});
+
+// Create the subscription worker that will consume the documents:
+const worker = documentStore.subscriptions.getSubscriptionWorker({ subscriptionName });
+
+worker.on("batch", async (batch, callback) => {
+    try {
+        // Open a session using 'batch.openSession'
+        const session = batch.openSession();
+
+        for (const item of batch.items) {
+            const orderDocument = item.result;
+
+            transferOrderToShipmentCompany(orderDocument); // call your custom method
+            orderDocument.ShippedAt = new Date();          // update the document field
+        }
+
+        // Save the updated Order documents
+        await session.saveChanges();
+        callback();
+    } catch (err) {
+        callback(err);
+    }
+});
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Processing dynamic objects
+
+In this example, the subscription projects each `Order` into a dynamic shape, and the worker processes the
+dynamic objects it receives.
+
+```js
+// Create the subscription task on the server:
+const subscriptionName = await documentStore.subscriptions.create({
+    name: "ProcessDynamicFields",
+    query: `from Orders as o
+            select {
+                dynamicField: "Company: " + o.Company + " Employee: " + o.Employee
+            }`
+});
+
+// Create the subscription worker that will consume the documents:
+const worker = documentStore.subscriptions.getSubscriptionWorker({ subscriptionName });
+
+worker.on("batch", (batch, callback) => {
+    try {
+        for (const item of batch.items) {
+            // Access the dynamic field in the document
+            const field = item.result.dynamicField;
+
+            processItem(field); // call your custom method
+        }
+        callback();
+    } catch (err) {
+        callback(err);
+    }
+});
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: End when no documents are left
+
+In this example, the worker runs until no new documents remain, which suits ad-hoc, single-use processing where
+you need every matching document processed once.  
+Set `closeWhenNoDocsLeft` to `true`; the worker then emits a `SubscriptionClosedException` when
+it finishes.
+
+```js
+// Create the subscription task on the server:
+const query = `declare function getOrderLinesSum(doc) {
+                   var sum = 0;
+                   for (var i in doc.Lines) {
+                       sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;
+                   }
+                   return sum;
+               }
+
+               from Orders as o
+               where getOrderLinesSum(o) > 10000`;
+
+const subscriptionName = await documentStore.subscriptions.create({ query });
+
+// Create the subscription worker that will consume the documents:
+const workerOptions = {
+    subscriptionName: subscriptionName,
+    // Stop when there are no more documents left to send,
+    // emitting a SubscriptionClosedException when it finishes
+    closeWhenNoDocsLeft: true
+};
+
+const highValueOrdersWorker = documentStore.subscriptions.getSubscriptionWorker(workerOptions);
+
+highValueOrdersWorker.on("batch", (batch, callback) => {
+    try {
+        for (const item of batch.items) {
+            sendThankYouNoteToCompany(item.result); // call your custom method
+        }
+        callback();
+    } catch (err) {
+        callback(err);
+    }
+});
+
+highValueOrdersWorker.on("error", err => {
+    if (err.name === "SubscriptionClosedException") {
+        // That's expected, no more documents to process
+    }
+});
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Including documents in the batch
+
+In this example, the subscription sends to the worker every `Order` and includes in the batch
+`Product` documents referenced in the order.  
+When the worker accesses an included `Product`, the product's data has already arrived in the batch,
+so the worker doesn't need to fetch it from the server.
+
+```js
+// Create the subscription task on the server:
+const subscriptionName = await documentStore.subscriptions.create({
+    name: "ProcessIncludedDocuments",
+    query: "from Orders include Lines[].Product"
+});
+
+// Create the subscription worker that will consume the documents:
+const worker = documentStore.subscriptions.getSubscriptionWorker({ subscriptionName });
+
+worker.on("batch", async (batch, callback) => {
+    try {
+        // Open a session using 'batch.openSession' to access the Product documents
+        const session = batch.openSession();
+
+        for (const item of batch.items) {
+            const orderDocument = item.result;
+
+            for (const orderLine of orderDocument.Lines) {
+                // Calling 'load' will not generate a request to the server,
+                // because orderLine.Product was included in the batch
+                const product = await session.load(orderLine.Product);
+
+                processOrderAndProduct(orderDocument, product); // call your custom method
+            }
+        }
+        callback();
+    } catch (err) {
+        callback(err);
+    }
+});
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Primary and secondary workers
+
+In this example, the two workers form an active-standby pair: the primary, using `"TakeOver"`, establishes the
+connection; the secondary, using `"WaitForFree"`, waits to take over if the primary fails.
+
+The primary worker:
+
+```js
+const worker1 = documentStore.subscriptions.getSubscriptionWorker({
+    subscriptionName,
+    strategy: "TakeOver",
+    documentType: Order
+});
+
+worker1.on("batch", (batch, callback) => {
+    // your logic
+    callback();
+});
+
+worker1.on("error", err => {
+    // retry
+});
+```
+
+<br />
+
+The secondary worker:
+
+```js
+const worker2 = documentStore.subscriptions.getSubscriptionWorker({
+    subscriptionName,
+    strategy: "WaitForFree",
+    documentType: Order
+});
+
+worker2.on("batch", (batch, callback) => {
+    // your logic
+    callback();
+});
+
+worker2.on("error", err => {
+    // retry
+});
+```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Syntax">
+
+<ContentFrame>
+
+### Methods
+
+<Tabs groupId='subscriptionWorkerMethods'>
+<TabItem value="get-worker" label="getSubscriptionWorker">
+
+Create a subscription worker through `documentStore.subscriptions`.
+
+```js
+// Overloads:
+getSubscriptionWorker(subscriptionName);
+getSubscriptionWorker(subscriptionName, database);
+getSubscriptionWorker(options);
+getSubscriptionWorker(options, database);
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **subscriptionName** | `string` | The name of the subscription the worker connects to. |
+| **options** | `object` | Options that affect how the worker interacts with the subscription. They do not change the subscription's own definition. See the [Classes](../../data-subscriptions/consuming-subscription.mdx#classes) below. |
+| **database** | `string` | The database where the subscription task resides. If not specified, the document store's default database is used. |
+
+| Return value | |
+|-----------|-------------|
+| `SubscriptionWorker` | The created worker. It starts processing once you attach a handler to its `batch` event. |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Classes
+
+<Tabs groupId='workerOptionClasses'>
+<TabItem value="worker-options" label="SubscriptionWorkerOptions">
+
+When you create a worker with options, the only required property is `subscriptionName`; the rest
+fall back to their defaults.
+
+```js
+// The subscription worker options object:
+{
+    subscriptionName;
+    documentType;
+    ignoreSubscriberErrors;
+    closeWhenNoDocsLeft;
+    maxDocsPerBatch;
+    timeToWaitBeforeConnectionRetry;
+    maxErroneousPeriod;
+    strategy;
+}
+```
+
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **subscriptionName** | `string` | The name of the subscription the worker connects to. |
+| **documentType** | `object` | The document class of the subscription's documents. |
+| **ignoreSubscriberErrors** | `boolean` | Whether processing continues when your batch-handling code throws. `true` continues; `false` (default) aborts. |
+| **closeWhenNoDocsLeft** | `boolean` | Whether the connection closes when no new documents remain. `true` processes all available documents and then emits a `SubscriptionClosedException` (useful for one-time processing); `false` (default) keeps the worker waiting for new documents. |
+| **maxDocsPerBatch** | `number` | The maximum number of documents the server tries to send in a batch. If it finds fewer, it sends what it has without waiting. Default: 4096. |
+| **timeToWaitBeforeConnectionRetry** | `number` | The wait before each reconnect attempt after a non-aborting failure, in milliseconds. Default: 5 seconds. |
+| **maxErroneousPeriod** | `number` | The maximum time the connection may stay in an erroneous state before it is terminated, in milliseconds. Default: 5 minutes. |
+| **strategy** | `string` | How the server handles this worker's connection attempt. Default: `"OpenIfFree"`. |
+
+</TabItem>
+<TabItem value="opening-strategy" label="SubscriptionOpeningStrategy">
+
+The strategy that decides whether a worker may connect to a subscription, set as a string on the
+`strategy` option. See [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies).
+
+```js
+// Available values:
+"OpenIfFree"   // Connect if no other worker is connected
+"TakeOver"     // Take over the connection
+"WaitForFree"  // Wait for the currently connected worker to disconnect
+"Concurrent"   // Connect concurrently
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs groupId='batchClasses'>
+<TabItem value="batch" label="SubscriptionBatch">
+
+The batch passed to your `batch` event handler.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **items** | `Item[]` | The items in the batch. |
+
+| Method | Return value | Description |
+|--------|--------------|-------------|
+| **getNumberOfItemsInBatch()** | `number` | The number of items in the batch. |
+| **getNumberOfIncludes()** | `number` | The number of included documents in the batch. |
+| **openSession()** | `object` | Opens a session that tracks all items and their included items in the current batch. |
+| **openSession(options)** | `object` | Opens a session with the given [session options](../../client-api/session/opening-a-session.mdx#session-options). |
+
+<Admonition type="info" title="">
+As long as no exception occurs, the worker keeps addressing the server it received the first
+batch from.  
+If it cannot reach that node, it fails over to another node from the session's topology, see
+[load balancing](../../client-api/configuration/load-balance/overview.mdx). The node it reaches
+then tells it which node currently handles data subscriptions.
+</Admonition>
+
+</TabItem>
+<TabItem value="batch-item" label="Item">
+
+A single item in a subscription batch.
+
+```js
+class Item
+{
+    result;
+    exceptionMessage;
+    id;
+    changeVector;
+    projection;
+    revision;
+    rawResult;
+    rawMetadata;
+    metadata;
+}
+```
+
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **result** | `object` | The batch item. |
+| **exceptionMessage** | `string` | The exception message thrown while processing the document on the server side. |
+| **id** | `string` | The document ID of the item's underlying document. |
+| **changeVector** | `string` | The change vector of the item's underlying document. |
+| **projection** | `boolean` | `true` when the item is a projection produced by the subscription query rather than a full document. |
+| **revision** | `boolean` | `true` when the item is a document revision, for a subscription that streams revisions. |
+| **rawResult** | `object` | The item before deserialization. |
+| **rawMetadata** | `object` | The metadata of the item's underlying document. |
+| **metadata** | `object` | The item's underlying metadata values. |
+
+</TabItem>
+</Tabs>
+
+<Tabs groupId='workerClass'>
+<TabItem value="worker" label="SubscriptionWorker">
+
+The worker returned by `getSubscriptionWorker`.
+
+**Methods**
+
+| Method | Return type | Description |
+|--------|-------------|-------------|
+| **dispose()** | `void` | Aborts the worker. |
+| **on(event, handler)** | `object` | Attaches an event listener. |
+| **getWorkerId()** | `string` | The worker ID. |
+
+**Events**
+
+| Event | Listener signature | Description |
+|-------|--------------------|-------------|
+| **"batch"** | `(batch, callback) => void` | Fires when a batch of documents arrives from the server. Call `callback()` when done so the worker acknowledges the batch and the server sends the next one. |
+| **"afterAcknowledgment"** | `(batch, callback) => void` | Fires after the server acknowledges the progress of a processed batch. |
+| **"connectionRetry"** | `(error) => void` | Fires when the worker tries to reconnect after a failure. |
+| **"unexpectedSubscriptionError"** | `(error) => void` | Fires when an unexpected error interrupts the worker's connection, before it reconnects automatically. |
+| **"error"** | `(error) => void` | Fires on subscription errors. |
+| **"end"** | `(error) => void` | Fires when the subscription finishes and no more batches will be emitted. |
+
+**Properties**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **currentNodeTag** | `string` | The node tag of the RavenDB server currently handling the subscription. |
+| **subscriptionName** | `string` | The name of the subscription being processed. |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>

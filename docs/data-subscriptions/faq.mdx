@@ -1,0 +1,202 @@
+---
+title: "Data subscriptions: FAQ"
+sidebar_label: "FAQ"
+description: "Answers to common questions about RavenDB data subscriptions: delivery guarantees, document order, failure handling, concurrent workers, permissions, and limits."
+sidebar_position: 10
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Data subscriptions: FAQ
+
+<Admonition type="note" title="">
+
+* In this article:
+   * [Can the same document be processed more than once?](../data-subscriptions/faq.mdx#can-the-same-document-be-processed-more-than-once)
+   * [In what order are documents sent?](../data-subscriptions/faq.mdx#in-what-order-are-documents-sent)
+   * [What happens if a worker disconnects or crashes?](../data-subscriptions/faq.mdx#what-happens-if-a-worker-disconnects-or-crashes)
+   * [Can several workers consume the same subscription at once?](../data-subscriptions/faq.mdx#can-several-workers-consume-the-same-subscription-at-once)
+   * [What access level is needed to create or consume a subscription?](../data-subscriptions/faq.mdx#what-access-level-is-needed-to-create-or-consume-a-subscription)
+   * [What happens if the responsible node goes down?](../data-subscriptions/faq.mdx#what-happens-if-the-responsible-node-goes-down)
+   * [Can a subscription's query be changed after creation?](../data-subscriptions/faq.mdx#can-a-subscriptions-query-be-changed-after-creation)
+   * [Does a subscription stop when no documents are left?](../data-subscriptions/faq.mdx#does-a-subscription-stop-when-no-documents-are-left)
+   * [Can a subscription deliver document revisions?](../data-subscriptions/faq.mdx#can-a-subscription-deliver-document-revisions)
+   * [How is a subscription different from ETL or external replication?](../data-subscriptions/faq.mdx#how-is-a-subscription-different-from-etl-or-external-replication)
+   * [Is there a limit on the number of concurrent connections?](../data-subscriptions/faq.mdx#is-there-a-limit-on-the-number-of-concurrent-connections)
+
+</Admonition>
+
+<Panel heading="Frequently Asked Questions">
+
+<ContentFrame>
+
+### Can the same document be processed more than once?
+
+Yes. Data subscriptions provide at-least-once delivery, so a document can reach a worker more than
+once in two situations:
+
+* A worker fails before acknowledging a batch it has processed. The server re-sends that batch the
+  next time a worker connects.
+
+* In a concurrent subscription, a worker drops, and the server reassigns the documents it was
+  processing to the other workers.
+
+Make your processing idempotent so that reprocessing a document has no unintended effect.
+
+See: [At-least-once delivery](../data-subscriptions/consuming-subscription.mdx#at-least-once-delivery)
+
+</ContentFrame>
+
+<ContentFrame>
+
+### In what order are documents sent?
+
+The server sends documents to the worker in Etag order, which reflects the order in which the
+documents were last modified.
+
+A document the worker has already acknowledged is not sent again, except in these cases:
+
+* It was modified after the server sent it.
+
+* It belongs to a batch the worker received but did not acknowledge.
+
+* The subscription was reassigned to another node.
+
+See: [Processing order and re-sending](../data-subscriptions/overview.mdx#processing-order-and-re-sending)
+
+</ContentFrame>
+
+<ContentFrame>
+
+### What happens if a worker disconnects or crashes?
+
+The server keeps track of the batches the worker has acknowledged, so a worker that reconnects
+continues after the last acknowledged batch instead of starting over.
+
+A batch the worker received but did not acknowledge is sent again, so some documents may be
+processed more than once.
+
+See: [Progress persistence and failover](../data-subscriptions/overview.mdx#progress-persistence-and-failover)
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Can several workers consume the same subscription at once?
+
+By default, only one worker consumes a subscription at a time. A worker's strategy decides whether
+it connects only when free, takes over, or waits for the current worker to disconnect.
+
+To let several workers consume the subscription simultaneously and divide the processing load, use
+the **concurrent** strategy.
+
+See: [Concurrent subscriptions](../data-subscriptions/concurrent-subscriptions.mdx) and
+[Worker strategies](../data-subscriptions/consuming-subscription.mdx#worker-strategies)
+
+</ContentFrame>
+
+<ContentFrame>
+
+### What access level is needed to create or consume a subscription?
+
+Most ongoing tasks can be created, updated, and deleted only by a client with database admin
+clearance.
+
+A data subscription is the exception: any client with Read/Write access to the database can create,
+update, and delete one.
+
+Consuming a subscription requires **Read Only** access.
+
+See: [Security considerations](../data-subscriptions/overview.mdx#security-considerations)
+
+</ContentFrame>
+
+<ContentFrame>
+
+### What happens if the responsible node goes down?
+
+The subscription's progress is stored at the cluster level, so the subscription can continue on
+another node.
+
+If your license includes **highly available tasks**, the cluster reassigns it to another node
+automatically. Otherwise, it resumes on its original node once that node is back online.
+
+See: [highly available tasks](../server/clustering/distribution/highly-available-tasks.mdx)
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Can a subscription's query be changed after creation?
+
+Yes. Change the subscription's definition, including its query, using the `Update` method.
+
+You can target the subscription by name, or by the ID the server assigned it at creation.
+
+See: [Updating a subscription](../data-subscriptions/creating-subscription/creating-subscription_api.mdx#updating-a-subscription)
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Does a subscription stop when no documents are left?
+
+Not by default.
+
+When no matching documents remain, the worker waits, and the server sends new matching documents as
+they arrive.
+
+To process every current match once and then stop, set `CloseWhenNoDocsLeft` so the worker throws a
+`SubscriptionClosedException` when it finishes.
+
+See: [End when no documents are left](../data-subscriptions/consuming-subscription.mdx#example-end-when-no-documents-are-left)
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Can a subscription deliver document revisions?
+
+Yes. When the Revisions feature is enabled for the collection, a subscription can process
+consecutive pairs of document revisions instead of current documents.
+
+The worker can then act on what changed between revisions.
+
+See: [Revisions support](../data-subscriptions/revisions-support.mdx)
+
+</ContentFrame>
+
+<ContentFrame>
+
+### How is a subscription different from ETL or external replication?
+
+All three send data out of the database, but to different destinations:
+
+* **ETL** pushes transformed data to an external system, such as a relational database, a message
+  queue, or another RavenDB instance.
+
+* **External replication** keeps another RavenDB database in sync.
+
+* **A data subscription** streams matching documents to a worker in your own application, in batches
+  it acknowledges, while the server tracks progress so processing can pause and resume.
+
+See: [What is a data subscription](../data-subscriptions/overview.mdx#what-is-a-data-subscription)
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Is there a limit on the number of concurrent connections?
+
+Yes. The number of concurrent connections allowed per database is capped by a configuration key that
+defaults to 1000.
+
+The key can be set server-wide or per database.
+
+See: [Subscriptions.MaxNumberOfConcurrentConnections](../data-subscriptions/configuration.mdx#subscriptionsmaxnumberofconcurrentconnections)
+
+</ContentFrame>
+
+</Panel>
