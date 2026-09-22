@@ -1186,5 +1186,11 @@
             "targetUrl": "/integrations/connection-strings/per-database/remove-connection-string",
             "minimumVersion": "7.2"
         }
+    },
+    {
+        "key": "/quill/getting-started/adding-a-chat-widget",
+        "value": {
+            "targetUrl": "/quill/getting-started/adding-a-web-widget-channel"
+        }
     }
 ]

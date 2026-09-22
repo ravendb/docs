@@ -48,7 +48,7 @@ Before starting Quill, make sure you have:
    * Docker Desktop on Windows and macOS, or Docker Engine on Linux.
 * **Port 443 available** on Quill's machine.
    * The dashboard, the API, and the chat channels of your deployment are all
-     [served on this one port](../security-and-architecture/network-architecture.mdx#publish-only-port-443).
+     [served on this one port](../security-and-architecture/network-architecture.mdx#how-a-connection-is-routed).
 * **Internet access** from Quill's machine to Docker Hub and to `api.ravendb.net`.
    * Docker pulls [Quill's image](https://hub.docker.com/r/ravendb/quill-nightly) from Docker Hub.
    * Quill fetches the [certificate and configuration](../security-and-architecture/network-architecture.mdx#the-tls-front-and-the-wildcard-certificate)

@@ -1,15 +1,15 @@
 ---
-title: "Getting started: Adding a chat widget"
-sidebar_label: Adding a chat widget
+title: "Getting started: Adding a web widget channel"
+sidebar_label: Adding a web widget channel
 sidebar_position: 7
-description: "Give your users a way to reach your app's agent: create a chat widget channel, generate the embed link that opens it, and place the widget in a page of your own site."
+description: "Give your users a way to reach your app's agent: create a web widget channel, generate the embed link that opens its chat box, and place the chat box in a page of your own website."
 ---
 
 import Admonition from '@theme/Admonition';
 import Panel from "@site/src/components/Panel";
 import ContentFrame from "@site/src/components/ContentFrame";
 
-# Getting started: Adding a chat widget
+# Getting started: Adding a web widget channel
 <Admonition type="tip" title="">
 
 **Achieved so far** in Getting Started:  
@@ -27,40 +27,40 @@ current with your source data.
 
 * You have now [created an agent](../getting-started/adding-an-ai-agent.mdx#saving-the-agent) that is ready to answer, but your
   users have no way to reach it yet.  
-  In **Adding a chat widget**, the sixth Getting Started step, you create the app's first channel and place a
-  working chat on a page of your own site.
+  In **Adding a web widget channel**, the sixth Getting Started step, you create the app's first channel and place a
+  working chat box on a page of your own website.
 
    <Admonition type="info" title="">
 
    * A [channel](../overview.mdx#channels) carries the conversations between your users and an agent.
-   * A [chat widget](../overview.mdx#chat-widget) is a channel that runs inside a page of your site.
+   * A [web widget](../overview.mdx#web-widget) is a channel that opens to a chat box on your website page.
 
    </Admonition>
 
-* The chat widget is one of the [channel types Quill offers](../channels/overview.mdx#channel-types). You can also add channels
+* The web widget is one of the [channel types Quill offers](../channels/overview.mdx#channel-types). You can also add channels
   that carry conversations through a Telegram bot, a Slack app, or a Discord bot, reaching your users where they already are.
 
 * A channel has no address of its own.  
-  A chat widget is opened through an **embed link**, an address you generate for the channel and place on your
-  page.  
-  You can choose how long a link will last before it expires, and how many chats are allowed through it.
+  A chat box is opened through an **embed link**, an address you generate for a specific conversation carried by the channel 
+  and place on your page.  
+  You can choose how long an embed link and the conversation it opens will last, and how many chats are allowed through this link.
 
-* Once the widget is on your page, your users can use it to ask their questions and are answered from your app's
+* Once the chat box is on your page, your users can use it to ask their questions and are answered from your app's
   data. They are not required to have an account or know anything about Quill.
 
 * In this article:
-   * [Creating the chat widget channel](#creating-the-chat-widget-channel)
+   * [Creating the web widget channel](#creating-the-web-widget-channel)
       * [Opening the Add channel menu](#opening-the-add-channel-menu)
       * [Naming the channel and setting its allowed origins](#naming-the-channel-and-setting-its-allowed-origins)
    * [Generating an embed link](#generating-an-embed-link)
       * [Opening the Generate embed link dialog](#opening-the-generate-embed-link-dialog)
       * [Setting the link limits](#setting-the-link-limits)
       * [Copying the link and trying it out](#copying-the-link-and-trying-it-out)
-   * [Placing the widget on your page](#placing-the-widget-on-your-page)
+   * [Placing the chat box on your page](#placing-the-chat-box-on-your-page)
 
 </Admonition>
 
-<Panel heading="Creating the chat widget channel">
+<Panel heading="Creating the web widget channel">
 
 <ContentFrame>
 
@@ -72,7 +72,7 @@ A channel is added from the **Add channel** menu, which can be reached in two wa
   **Save agent** at the last stage of the **Add agent** wizard created the agent and opened the
   **Add a channel** stage.
 
-   ![The Add a channel stage](./assets/adding-a-chat-widget_add-a-channel-stage.png)
+   ![The Add a channel stage](./assets/adding-a-web-widget-channel_add-a-channel-stage.png)
 
    Click **Add channel** to open the menu of channel types.
 
@@ -80,7 +80,7 @@ A channel is added from the **Add channel** menu, which can be reached in two wa
   [open Quill's management dashboard](../getting-started/starting-quill.mdx#signing-in-to-the-management-dashboard) and click the
   app you want to add a channel to, on the **My apps** list.
 
-   ![The app's Overview](./assets/adding-a-chat-widget_overview.png)
+   ![The app's Overview](./assets/adding-a-web-widget-channel_overview.png)
 
    1. **Overview**  
       The app opens on this view, where your agents and channels are listed.
@@ -99,10 +99,10 @@ A channel is added from the **Add channel** menu, which can be reached in two wa
 
 Both routes reach the same menu:
 
-![The Add channel menu](./assets/adding-a-chat-widget_add-channel-menu.png)
+![The Add channel menu](./assets/adding-a-web-widget-channel_add-channel-menu.png)
 
 1. **Web widget**  
-   Click to add a chat widget channel, the channel this page walks you through.
+   Click to add a web widget channel.
 
 2. **Telegram bot**  
    Carries the conversations through a Telegram bot that you create with Telegram's own `@BotFather`.
@@ -120,10 +120,10 @@ Both routes reach the same menu:
 
 ### Naming the channel and setting its allowed origins
 
-![New web widget channel](./assets/adding-a-chat-widget_new-channel.png)
+![New web widget channel](./assets/adding-a-web-widget-channel_new-channel.png)
 
 1. **Agent**  
-   Select the agent that will answer the conversations this widget carries.  
+   Select the agent that will answer the conversations this channel carries.  
    When you reach this form from the **Add agent** wizard, the agent you just created is already set and this
    field is not shown.
 
@@ -134,8 +134,8 @@ Both routes reach the same menu:
    This field is optional. If you leave it empty, Quill names the channel for you.
 
 3. **Allowed origins**  
-   Enter the addresses of the sites that may hold this widget, one entry per site.  
-   While the list is empty, the widget can be placed on any site.
+   Enter the addresses of the websites allowed to embed the chat box, one entry per website.  
+   While the list is empty, any website can embed the chat box.
 
 4. **Create channel**  
    Click to create the channel and add it to the app.
@@ -146,15 +146,15 @@ Both routes reach the same menu:
 
 <Panel heading="Generating an embed link">
 
-The channel now exists, but there is no way to connect with its widget yet.  
-An **embed link** is such a way: you generate a link for the channel, embed it in your site, and your users
-can use it to approach the widget.
+The channel now exists, but there is no way to reach its chat box yet.  
+An **embed link** is such a way: you generate a link to a conversation carried by the channel, 
+embed the link in your site, and your users can use the chat box it opens.
 
 <ContentFrame>
 
 ### Opening the Generate embed link dialog
 
-![The new channel](./assets/adding-a-chat-widget_channel-created.png)
+![The new channel](./assets/adding-a-web-widget-channel_channel-created.png)
 
 1. **The new channel**  
    The new channel's entry under **Channels** shows the agent that answers its conversations, and its type,
@@ -173,27 +173,27 @@ can use it to approach the widget.
 
 ### Setting the link limits
 
-![Generate embed link](./assets/adding-a-chat-widget_generate-link.png)
+![Generate embed link](./assets/adding-a-web-widget-channel_generate-link.png)
 
 1. **Link expires after**  
    Select how long the link will last: 1 hour, 4 hours, 24 hours, 7 days, or **Custom** for a duration of your
-   own, entered in seconds and ranging from one minute to thirty days.
+   own, entered as a number and a time unit, from one minute to thirty days.
 
 2. **Max invocations**  
-   Enter the number of chats that the link allows, up to 1,000,000.
+   Enter the number of chats that the link allows, 100 by default and up to 1,000,000.
 
 3. **Generate link**  
    Click to generate the link.
 
 The limits' exact behavior, including the message your users will see once a link expires or its chats are
 used up, is covered in
-[Lifetime, usage cap, and revocation](../developer-access/embed-the-chat-widget.mdx#lifetime-usage-cap-and-revocation).
+[Invalid links](../channels/web-widget.mdx#invalid-links).
 
 ---
 
 When the agent takes parameters, the dialog opens a field for each parameter.
 
-![An agent parameter in the dialog](./assets/adding-a-chat-widget_generate-link_parameter.png)
+![An agent parameter in the dialog](./assets/adding-a-web-widget-channel_generate-link_parameter.png)
 
 The field's name and the text under it are the parameter's name and description, taken from the agent's
 configuration.  
@@ -209,23 +209,22 @@ the link, so the agent's queries and answers will relate only to this product.
 
 ### Copying the link and trying it out
 
-![The generated link](./assets/adding-a-chat-widget_link-minted.png)
+![The generated link](./assets/adding-a-web-widget-channel_link-minted.png)
 
 1. **Embed URL**  
-   The address that opens the widget.  
-   Copy the address, or open it in a browser to see the widget on a page of its own.
+   The address that opens the chat box.  
+   Copy the address, or open it in a browser to see the chat box on a page of its own.
 
 2. **Embed snippet**  
    The same address, wrapped in an `<iframe>` element that you can place on your page
-   (see [Placing the widget on your page](#placing-the-widget-on-your-page)).
+   (see [Placing the chat box on your page](#placing-the-chat-box-on-your-page)).
 
 3. **The link's limits**  
    The link's expiration time and number of allowed chats.
 
-4. **The widget**  
-   A working chat widget, served by the link shown above it.  
-   Ask the widget a question that can be answered from your app's data. The agent will reply here as it will on your
-   site.  
+4. **The chat box**  
+   A working chat box, served by the link shown above it.  
+   Ask a question in the chat box that can be answered from your app's data. The agent will reply here as it will on your site.  
    Chats initiated here **are** counted against the link's limit.
 
 5. **Generate another**  
@@ -239,25 +238,24 @@ the link, so the agent's queries and answers will relate only to this product.
 
 </Panel>
 
-<Panel heading="Placing the widget on your page">
+<Panel heading="Placing the chat box on your page">
 
-The **Embed snippet** you copied is the whole integration. Paste it into the HTML of the page that will carry
-the widget:
+The **Embed snippet** you copied is the whole integration. Paste it into the HTML of the page that will offer the chat box:
 
 ```html
 <iframe src="https://public.<your-domain>/apps/<app-slug>/embed/<link-token>" width="400" height="600"></iframe>
 ```
 <br />
 
-The widget serves itself from your Quill deployment, so the page needs nothing else: no library to install, no
+The chat box is served by your Quill deployment, so the page needs nothing else: no library to install, no
 script to add, and no styling to write.  
 Set the `width` and `height` to suit your layout, and shape the element as you please: a `title` attribute,
-a style, or any other addition that blends the widget into your site.
+a style, or any other addition that blends the chat box into your website.
 
-![The widget on a page](./assets/adding-a-chat-widget_widget-in-page.png)
+![The chat box on a page](./assets/adding-a-web-widget-channel_widget-in-page.png)
 
-A visitor types a question into the widget and is answered from your app's data, without an account and without
-any dealings with Quill.
+A visitor types a question into the chat box and is answered from your app's data, without an account or 
+any other dealings with Quill.
 
 ---
 
@@ -265,8 +263,8 @@ Two things are left to settle before a page like this faces real visitors:
 
 * **The allowed origins of the channel.**  
   While the [allowed origins list](#naming-the-channel-and-setting-its-allowed-origins)
-  is empty, your widget can be placed on any site.  
-  Edit the channel and enter the addresses of your own pages if you want to keep the widget to them.
+  is empty, any website can embed the chat box.  
+  Edit the channel and enter the addresses of your own websites if you want to keep the chat box to them.
 
 * **A link for each visitor.**  
   A link carries one conversation and one set of limits, so everybody visiting a page that holds an embed link
@@ -284,9 +282,12 @@ This concludes the Getting Started path:
 Quill is deployed and you can access and manage it,  
 your source data is mirrored into your app's internal database,  
 an agent answers from this internal database,  
-and your users can reach the agent through a chat widget on your website.
+and your users can reach the agent through a chat box on your website.
 
-There is much more to Quill than these pages cover, including other channels besides the chat
+The channel's full documentation, including its management options and limitations, is in
+[Channels: Web widget](../channels/web-widget.mdx).
+
+There is much more to Quill than these pages cover, including other channels besides the web
 widget, and actions your agents may run.  
 The [Overview](../overview.mdx) page is a good starting point for more, and you can then navigate the
 documentation and, above all, experiment in your own deployment.
