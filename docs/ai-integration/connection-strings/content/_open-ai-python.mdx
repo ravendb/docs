@@ -87,10 +87,10 @@ import Panel from '@site/src/components/Panel';
     
 ### Configuring a chat model
 
-* When configuring a chat model, the UI displays the same base fields as those used for [text embedding models](../../../ai-integration/connection-strings/open-ai.mdx#configuring-a-text-embedding-mode),  
+* When configuring a chat model, the UI displays the same base fields as those used for [text embedding models](../../../ai-integration/connection-strings/open-ai.mdx#configuring-a-text-embedding-model),  
   including the connection string _Name_, optional _Identifier_, _API Key_, _Endpoint_, _Model_ name, _Organization ID_, and _Project ID_.
 
-* Additional settings specific to chat models are: _Prompt Cache Key_ & _Temperature_.
+* Additional settings specific to chat models are: _Reasoning effort_, _Prompt Cache Key_, and _Temperature_.
 
 ![connection string to open ai](../assets/open-ai-2.png)
 
@@ -100,7 +100,31 @@ import Panel from '@site/src/components/Panel';
 2. **Model**  
    Enter the name of the OpenAI model to use for chat completions.
 
-3. **Prompt Cache Key** (optional)
+3. **Reasoning effort** (optional)  
+   
+   * Controls the amount of internal reasoning performed by supported chat models.  
+     Lower values can reduce latency, while higher values can improve results for complex requests.
+   
+   * Select one of the listed values or enter a custom value supported by the selected model and provider.  
+     The listed values are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`.
+     Supported values vary by model.  
+     For example, OpenAI GPT-5.1 and later models do not support `minimal`; use `none` instead.
+   
+   * For model names matching GPT-5.4 or later, RavenDB sends `none` even when no value is selected or another value is configured.
+     RavenDB applies this override to avoid function-tool errors with OpenAI's Chat Completions API.
+     Because the override is based on the model name, it also applies to OpenAI-compatible providers that use a matching name, such as `openai/gpt-5.6-sol`.
+   
+   * For other model names:
+     * If no value is specified, RavenDB omits `reasoning_effort` and the model applies its default.
+     * RavenDB converts only the exact, case-sensitive legacy values `Minimal`, `Low`, `Medium`, and `High` to lowercase before sending them.
+     * All other non-empty values are trimmed and sent without validation or case conversion.  
+       This allows new provider values to be used without waiting for a RavenDB release.  
+       Providers match the value exactly; OpenAI requires lowercase values.
+   
+   * The Python Client API's `OpenAiSettings` does not expose this setting.
+     Configure it from Studio or the C# Client API.
+    
+4. **Prompt Cache Key** (optional)
     
    * Controls whether RavenDB includes the `prompt_cache_key` field in chat completion 
      requests sent to the AI provider when using [AI Agents](../../../ai-integration/ai-agents/overview.mdx).
@@ -123,14 +147,34 @@ import Panel from '@site/src/components/Panel';
      * `True` - Always send the cache key.  
      * `False` - Never send the cache key.  
         Set to _False_ if your provider does not support the field and returns errors instead of ignoring it.  
-
-4. **Temperature** (optional)  
-   The temperature setting controls the randomness and creativity of the model’s output.  
-   Valid values typically range from `0.0` to `2.0`:  
+   
+   * The Python Client API's `OpenAiSettings` does not expose this setting.
+     Configure it from Studio or the C# Client API.
+    
+5. **Temperature** (optional)  
+   
+   * Controls the randomness and creativity of the model's output.  
+     Valid values typically range from `0.0` to `2.0`:  
      * Higher values (e.g., `1.0` or above) produce more diverse and creative responses.
-     * Lower values (e.g., `0.2`) result in more focused, consistent, and deterministic output.
-     * If not explicitly set, OpenAI uses a default temperature of `1.0`.  
-       See [OpenAI chat completions parameters](https://platform.openai.com/docs/api-reference/chat/create#chat_create-temperature).
+     * Lower values (e.g., `0.2`) produce more focused, consistent, and deterministic output.
+   
+   * If no value is specified, RavenDB omits `temperature` and the model applies its default.
+   
+   * RavenDB does not validate whether the selected model or provider supports `temperature`.  
+     When a value is specified, RavenDB sends it to the provider.
+   
+   * For model names matching GPT-5.4 or later, RavenDB separately forces reasoning effort to `none`.
+     For OpenAI GPT-5.4, the resulting `none` value is the only reasoning-effort value with which `temperature` is supported.
+     This override does not guarantee that later models or OpenAI-compatible providers support `temperature`.
+   
+   * OpenAI GPT-5.1 and GPT-5.2 support `temperature` only when reasoning effort is `none`,
+     which is the default for both models.
+     Because the Python Client API cannot set reasoning effort, it relies on this default.
+     Older GPT-5 models do not support `temperature`. Check the provider's documentation for other models.
+   
+   * See [GPT-5.4 parameter compatibility](https://developers.openai.com/api/docs/guides/latest-model?model=gpt-5.4#gpt-54-parameter-compatibility),
+     [GPT-5.2 parameter compatibility](https://developers.openai.com/api/docs/guides/latest-model?model=gpt-5.2#gpt-52-parameter-compatibility),
+     and the [GPT-5.1 model page](https://developers.openai.com/api/docs/models/gpt-5.1).
 
 </Panel>
 
@@ -228,7 +272,14 @@ class OpenAiSettings(OpenAiBaseSettings):
         # Controls the randomness and creativity of the model's output.
         # Higher values (e.g., 1.0 or above) produce more diverse and creative responses.
         # Lower values (e.g., 0.2) result in more focused and deterministic output.
-        # If set to 'null', the temperature is not sent and the model's default will be used.
+        # If None, the temperature is not sent and the model's default will be used.
+        # RavenDB does not validate model compatibility; it sends any configured value.
+        # For model names matching GPT-5.4 or later, RavenDB separately forces
+        # reasoning effort to 'none'.
+        # OpenAI documents that GPT-5.4 supports temperature only with reasoning effort 'none'.
+        # This does not guarantee that later models or compatible providers support temperature.
+        # OpenAI GPT-5.1 and GPT-5.2 also support it only with 'none';
+        # older GPT-5 models do not support it.
         temperature: float = None,
         embeddings_max_concurrent_batches: int = None,
     ):
