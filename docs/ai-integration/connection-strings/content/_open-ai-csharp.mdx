@@ -158,7 +158,7 @@ import Panel from '@site/src/components/Panel';
      When a value is specified, RavenDB sends it to the provider.
    
    * For model names matching GPT-5.4 or later, RavenDB separately forces reasoning effort to `none`.
-     For OpenAI GPT-5.4, the resulting `none` value is the only reasoning-effort value with which `temperature` is supported.
+     OpenAI GPT-5.4 supports `temperature` only when reasoning effort is `none`, so this override keeps `temperature` usable for that model.
      This override does not guarantee that later models or OpenAI-compatible providers support `temperature`.
    
    * OpenAI GPT-5.1 and GPT-5.2 also support `temperature` only when reasoning effort is set to `none`.  
