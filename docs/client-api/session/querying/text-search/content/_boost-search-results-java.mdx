@@ -30,7 +30,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * In this article:
   * [Boost results - when making a full-text search](#boost-results-when-making-a-full-text-search)
   * [Boost results - when querying with where clause](#boost-results-when-querying-with-where-clause)
-    * [Boost a where_exists() condition with Corax](#boost-a-where_exists-condition-with-corax)
+    * [Boost a whereExists() condition with Corax](#boost-a-whereexists-condition-with-corax)
 
 </Admonition>
 
@@ -41,26 +41,25 @@ To apply boosting while running a full-text search, use the
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-```python
-employees = list(
-    session
-    # Make a dynamic full-text search Query on 'Employees' collection
-    .query(object_type=Employee)
-    # This search predicate will use the default boost value of 1
+```java
+List<Employee> employees = session
+     // Make a dynamic full-text search query on 'Employees' collection
+    .query(Employee.class)
+     // This search predicate will use the default boost value of 1
     .search("Notes", "English")
-    # This search predicate will use a boost value of 10
+     // This search predicate will use a boost value of 10
     .search("Notes", "Italian")
-    # Call 'boost' to set the boost value to previous 'search' call
+     // Call 'boost' to set the boost value of the previous 'search' call
     .boost(10)
-)
+    .toList();
 
-# * Results will contain all Employee documents that have
-#   EITHER 'English' OR 'Italian' in their 'Notes' field.
-#
-# * Matching documents with 'Italian' will be listed FIRST in the results,
-#   before those with 'English'.
-#
-# * Search is case-insensitive.
+// * Results will contain all Employee documents that have
+//   EITHER 'English' OR 'Italian' in their 'Notes' field (case-insensitive).
+//
+// * Matching documents that contain 'Italian' will get a HIGHER score
+//   than those that contain 'English'.
+//
+// * Unless configured otherwise, the resulting documents will be ordered by their score.
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -80,32 +79,30 @@ returned by different `where` clauses.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-```python
-companies = list(
-    session.advanced
-    # Make a dynamic DocumentQuery on 'Companies' collection
-    .document_query(object_type=Company)
-    # Define a 'where' condition
-    .where_starts_with("Name", "O")
-    # Call 'boost' to set the boost value of the previous 'where' predicate
+```java
+List<Company> companies = session
+     // Make a dynamic query on 'Companies' collection
+    .query(Company.class)
+     // Define a 'where' condition
+    .whereStartsWith("Name", "O")
+     // Call 'boost' to set the boost value of the previous 'where' predicate
     .boost(10)
-    # Call 'or_else' so that OR operator will be used between statements
-    .or_else()
-    .where_starts_with("Name", "P")
+     // Call 'orElse' so that OR operator will be used between statements
+    .orElse()
+    .whereStartsWith("Name", "P")
     .boost(50)
-    .or_else()
-    .where_ends_with("Name", "OP")
+    .orElse()
+    .whereEndsWith("Name", "OP")
     .boost(90)
-)
+    .toList();
 
-# * Results will contain all Company documents that either
-#   (start-with 'O') OR (start-with 'P') OR (end-with 'OP') in their 'Name' field.
-#
-# * Matching documents the end-with 'OP' will be listed FIRST.
-#   Matching documents that start-with 'P' will then be listed.
-#   Matching documents that start-with 'O' will be listed LAST.
-#
-# * Search is case-insensitive.
+// * Results will contain all Company documents that either
+//   (start-with 'O') OR (start-with 'P') OR (end-with 'OP') in their 'Name' field (case-insensitive).
+//
+// * Matching documents that end-with 'OP' will get the HIGHEST scores.
+//   Matching documents that start-with 'O' will get the LOWEST scores.
+//
+// * Unless configured otherwise, the resulting documents will be ordered by their score.
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -120,15 +117,15 @@ boost(endsWith(Name, "OP"), 90)
 
 <ContentFrame>
     
-### Boost a `where_exists()` condition with Corax
+### Boost a `whereExists()` condition with Corax
     
-In RavenDB 7.2.6 and later, when using the Corax search engine, a boosted `where_exists()` condition (`exists()` in RQL)
+In RavenDB 7.2.6 and later, when using the Corax search engine, a boosted `whereExists()` condition (`exists()` in RQL)
 contributes `1` multiplied by the query boost, rather than a relevance score calculated from the field's values.
     
-For example, `.where_exists("Fax").boost(3)` (`boost(exists(Fax), 3)` in RQL) contributes `3`
+For example, `.whereExists("Fax").boost(3)` (`boost(exists(Fax), 3)` in RQL) contributes `3`
 once per matching document, before any index-entry boost is applied.
     
-The `where_starts_with()` and `where_ends_with()` conditions in the example above use relevance-based scoring.      
+The `whereStartsWith()` and `whereEndsWith()` conditions in the example above use relevance-based scoring.      
 Learn more in [Corax: Scoring](../../../../../indexes/search-engine/corax.mdx#scoring).
 
 </ContentFrame>
