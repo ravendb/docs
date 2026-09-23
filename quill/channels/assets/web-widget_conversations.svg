@@ -1,82 +1,79 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420" font-family="Segoe UI, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1030" height="560" viewBox="0 0 1030 560" font-family="Segoe UI, Arial, sans-serif">
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
     </marker>
   </defs>
-  <rect width="900" height="420" fill="#eaf3fa"/>
-
-  <!-- Your website: three pages, each holding a chat box opened through its own embed link -->
+  <rect width="1030" height="560" fill="#eaf3fa"/>
+  <!-- Your website: two pages, each with one chat box that all of the page visitors share -->
   <g id="your-website">
-    <rect x="30" y="30" width="300" height="360" rx="12" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
-    <text x="46" y="56" font-size="14" font-weight="bold" fill="#1e293b">Your website</text>
+    <rect x="30" y="30" width="350" height="500" rx="12" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
+    <text x="48" y="62" font-size="18" font-weight="bold" fill="#1e293b">Your website</text>
   </g>
+  <g id="page-1">
+    <text x="52" y="110" font-size="17" fill="#1e293b">Page 1</text>
+    <rect x="50" y="120" width="310" height="110" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
+    <circle cx="68" cy="159" r="9" fill="#ffffff" stroke="#64748b" stroke-width="1.4"/>
+    <path d="M 55 181 a 13 13 0 0 1 26 0" fill="#ffffff" stroke="#64748b" stroke-width="1.4"/>
+    <circle cx="102" cy="159" r="9" fill="#ffffff" stroke="#64748b" stroke-width="1.4"/>
+    <path d="M 89 181 a 13 13 0 0 1 26 0" fill="#ffffff" stroke="#64748b" stroke-width="1.4"/>
+    <circle cx="136" cy="159" r="9" fill="#ffffff" stroke="#64748b" stroke-width="1.4"/>
+    <path d="M 123 181 a 13 13 0 0 1 26 0" fill="#ffffff" stroke="#64748b" stroke-width="1.4"/>
+    <line x1="160" y1="170" x2="186" y2="170" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+    <rect x="193" y="145" width="150" height="50" rx="6" fill="#ffffff" stroke="#64748b"/>
+    <text x="268" y="167" text-anchor="middle" font-size="17" fill="#1e293b">Chat box</text>
+    <text x="268" y="187" text-anchor="middle" font-size="16" fill="#1e293b">Embed link 1</text>
+  </g>
+  <g id="page-2">
+    <text x="52" y="290" font-size="17" fill="#1e293b">Page 2</text>
+    <rect x="50" y="300" width="310" height="110" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
+    <circle cx="102" cy="339" r="9" fill="#ffffff" stroke="#64748b" stroke-width="1.4"/>
+    <path d="M 89 361 a 13 13 0 0 1 26 0" fill="#ffffff" stroke="#64748b" stroke-width="1.4"/>
+    <circle cx="136" cy="339" r="9" fill="#ffffff" stroke="#64748b" stroke-width="1.4"/>
+    <path d="M 123 361 a 13 13 0 0 1 26 0" fill="#ffffff" stroke="#64748b" stroke-width="1.4"/>
+    <line x1="160" y1="350" x2="186" y2="350" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+    <rect x="193" y="325" width="150" height="50" rx="6" fill="#ffffff" stroke="#64748b"/>
+    <text x="268" y="347" text-anchor="middle" font-size="17" fill="#1e293b">Chat box</text>
+    <text x="268" y="367" text-anchor="middle" font-size="16" fill="#1e293b">Embed link 2</text>
+  </g>
+  <text x="205" y="490" text-anchor="middle" font-size="17" fill="#1e293b">All visitors of each page share</text>
+  <text x="205" y="513" text-anchor="middle" font-size="17" fill="#1e293b">its chat box and conversation</text>
 
-  <g id="chat-box-1">
-    <rect x="50" y="124" width="260" height="52" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
-    <text x="62" y="154" font-size="12" fill="#475569">Page 1</text>
-    <rect x="120" y="130" width="170" height="40" rx="6" fill="#ffffff" stroke="#64748b"/>
-    <text x="205" y="147" text-anchor="middle" font-size="13" fill="#1e293b">Chat box</text>
-    <text x="205" y="162" text-anchor="middle" font-size="11" fill="#475569">embed link 1</text>
-  </g>
-  <g id="chat-box-2">
-    <rect x="50" y="184" width="260" height="52" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
-    <text x="62" y="214" font-size="12" fill="#475569">Page 2</text>
-    <rect x="120" y="190" width="170" height="40" rx="6" fill="#ffffff" stroke="#64748b"/>
-    <text x="205" y="207" text-anchor="middle" font-size="13" fill="#1e293b">Chat box</text>
-    <text x="205" y="222" text-anchor="middle" font-size="11" fill="#475569">embed link 2</text>
-  </g>
-  <g id="chat-box-3">
-    <rect x="50" y="244" width="260" height="52" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
-    <text x="62" y="274" font-size="12" fill="#475569">Page 3</text>
-    <rect x="120" y="250" width="170" height="40" rx="6" fill="#ffffff" stroke="#64748b"/>
-    <text x="205" y="267" text-anchor="middle" font-size="13" fill="#1e293b">Chat box</text>
-    <text x="205" y="282" text-anchor="middle" font-size="11" fill="#475569">embed link 3</text>
-  </g>
 
   <!-- Quill: the web widget channel carrying one conversation per chat box, and the agent -->
   <g id="quill-container">
-    <rect x="400" y="30" width="470" height="360" rx="12" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
-    <text x="416" y="56" font-size="14" font-weight="bold" fill="#9a3412">Quill</text>
+    <rect x="510" y="30" width="490" height="500" rx="12" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+    <text x="528" y="62" font-size="18" font-weight="bold" fill="#9a3412">Quill</text>
   </g>
-
   <g id="web-widget-channel">
-    <rect x="420" y="75" width="200" height="235" rx="8" fill="#ffffff" stroke="#64748b"/>
-    <text x="520" y="100" text-anchor="middle" font-size="15" fill="#1e293b">Web widget channel</text>
+    <rect x="530" y="95" width="200" height="390" rx="8" fill="#ffffff" stroke="#64748b"/>
+    <text x="630" y="128" text-anchor="middle" font-size="18" fill="#1e293b">Web widget channel</text>
   </g>
-
-  <!-- One conversation per chat box, carried through the channel to the agent -->
+  <g id="agent">
+    <rect x="770" y="200" width="210" height="200" rx="8" fill="#ffffff" stroke="#64748b"/>
+    <text x="875" y="295" text-anchor="middle" font-size="18" fill="#1e293b">Agent</text>
+    <text x="875" y="320" text-anchor="middle" font-size="16" fill="#1e293b">Answers all conversations</text>
+  </g>
+  <g id="internal-database">
+    <rect x="770" y="440" width="210" height="55" rx="8" fill="#ffffff" stroke="#64748b"/>
+    <text x="875" y="474" text-anchor="middle" font-size="17" fill="#1e293b">Internal database</text>
+  </g>
+  <line x1="875" y1="402" x2="875" y2="438" stroke="#475569" marker-end="url(#arrow)"/>
+  <text x="886" y="425" font-size="16" fill="#1e293b">Queries</text>
   <g id="conversations" stroke="#475569" stroke-width="1.5" fill="none">
-    <line x1="292" y1="150" x2="418" y2="150" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
-    <line x1="292" y1="210" x2="418" y2="210" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
-    <line x1="292" y1="270" x2="418" y2="270" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <line x1="345" y1="175" x2="528" y2="230" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <line x1="345" y1="355" x2="528" y2="330" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
   </g>
-  <g id="conversation-labels" font-size="11" fill="#475569" text-anchor="middle">
-    <text x="355" y="142">conversation 1</text>
-    <text x="355" y="202">conversation 2</text>
-    <text x="355" y="262">conversation 3</text>
+  <g id="conversation-labels" font-size="17" fill="#1e293b" text-anchor="middle">
+    <text x="442" y="192" transform="rotate(16.7 442 192)">Conversation 1</text>
+    <text x="445" y="332" transform="rotate(-7.8 445 332)">Conversation 2</text>
   </g>
   <g id="threads-in-channel" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 3" fill="none">
-    <line x1="436" y1="150" x2="604" y2="150"/>
-    <line x1="436" y1="210" x2="604" y2="210"/>
-    <line x1="436" y1="270" x2="604" y2="270"/>
+    <line x1="548" y1="230" x2="712" y2="230"/>
+    <line x1="548" y1="330" x2="712" y2="330"/>
   </g>
   <g id="channel-to-agent" stroke="#475569" stroke-width="1.5" fill="none">
-    <line x1="622" y1="150" x2="658" y2="150" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
-    <line x1="622" y1="210" x2="658" y2="210" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
-    <line x1="622" y1="270" x2="658" y2="270" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <line x1="732" y1="230" x2="768" y2="230" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <line x1="732" y1="330" x2="768" y2="330" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
   </g>
-
-  <g id="agent">
-    <rect x="660" y="120" width="190" height="180" rx="8" fill="#ffffff" stroke="#64748b"/>
-    <text x="755" y="205" text-anchor="middle" font-size="15" fill="#1e293b">Agent</text>
-    <text x="755" y="225" text-anchor="middle" font-size="11" fill="#475569">answers all conversations</text>
-  </g>
-
-  <g id="internal-database">
-    <rect x="660" y="330" width="190" height="45" rx="8" fill="#ffffff" stroke="#64748b"/>
-    <text x="755" y="358" text-anchor="middle" font-size="14" fill="#1e293b">Internal database</text>
-  </g>
-  <line x1="755" y1="302" x2="755" y2="328" stroke="#475569" marker-end="url(#arrow)"/>
-  <text x="765" y="320" font-size="11" fill="#475569">queries</text>
 </svg>

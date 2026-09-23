@@ -21,7 +21,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   Quill collects the incoming messages from Telegram, so the deployment needs no public address or open inbound port.
 
 * The channel is added from Quill's management dashboard, using one short form that asks you to select one of the agents you
-  created and provide the bot token and an optional channel name.
+  created and provide the bot token and a channel name.
    * If the selected agent has parameters, the form also asks you to settle each parameter's value.  
      You can either provide a fixed value, or take the value from the Telegram user the bot is chatting with, e.g., the user's
      phone number.
@@ -149,7 +149,8 @@ Selecting **Telegram bot** opens the **New Telegram bot channel** form.
    Paste the token you received from @BotFather. The field shows the token as dots; click the eye icon to reveal it.  
    Quill validates the token with Telegram when the channel is added, and never displays it again afterwards.
 3. **Channel name**  
-   This field is optional. If you leave it empty, Quill will name the channel after the bot's username, e.g., `@NorthwindCatalogBot`.
+   Enter a name for the channel (e.g., `Support Telegram`).  
+   The name will be displayed on the channel's box in the [Channels view](../dashboard/manage-an-app/channels-view.mdx).
 4. **Connect bot**  
    Click to add the channel. If Telegram rejects the token, or the bot is already connected to another channel, the form will
    report the error and no channel will be added.
