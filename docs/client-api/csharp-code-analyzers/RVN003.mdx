@@ -1,0 +1,48 @@
+---
+title: "RVN003 — ProjectInto called more than once in a query chain"
+sidebar_label: RVN003
+sidebar_position: 3
+---
+
+# RVN003 — ProjectInto called more than once in a query chain
+
+| Property | Value |
+|----------|-------|
+| **ID** | RVN003 |
+| **Title** | ProjectInto called more than once in a query chain |
+| **Severity** | Info (default) |
+| **Category** | Usage |
+| **Code fix** | No |
+
+## Description
+
+RavenDB's `ProjectInto<T>()` can only be called once per query chain. Calling it a second time throws `InvalidOperationException` at runtime because the projection is already registered on the query provider. This diagnostic catches the double-call at compile time.
+
+## Trigger condition
+
+The analyzer fires when a `.ProjectInto` invocation on an `IRavenQueryable<T>` receiver is found, and walking back through the invocation chain finds a previous `.ProjectInto` call whose own receiver is also an `IRavenQueryable<T>`.
+
+## What to do
+
+Remove the duplicate `.ProjectInto` call. If you need to project into a different type, restructure the query or use a single projection with a combined DTO.
+
+### Before (triggers RVN003)
+
+```csharp
+var results = session.Query<Order>()
+    .ProjectInto<OrderSummaryDto>()
+    .ProjectInto<OrderSummaryDto>()  // RVN003: second ProjectInto throws at runtime
+    .ToList();
+```
+
+### After (correct)
+
+```csharp
+var results = session.Query<Order>()
+    .ProjectInto<OrderSummaryDto>()
+    .ToList();
+```
+
+## See also
+
+- [RVN002](./RVN002.mdx) — fires when a query operator appears after a projection.

@@ -1,0 +1,64 @@
+---
+title: "RVN007 — Query field not present in the index projection"
+sidebar_label: RVN007
+sidebar_position: 7
+---
+
+# RVN007 — Query field not present in the index projection
+
+| Property | Value |
+|----------|-------|
+| **ID** | RVN007 |
+| **Title** | Query field not present in the index projection |
+| **Severity** | Info (default) |
+| **Category** | Usage |
+| **Code fix** | No |
+
+## Description
+
+When querying a specific index (via `session.Query<T, TIndex>()`), all fields referenced in `Where`, `OrderBy`, and `Search` lambdas should match the fields projected by the index's `Map` expression. A field that is not part of the index projection cannot be searched or sorted by the server, and the query will return no results for that field.
+
+## Trigger condition
+
+The analyzer fires when a `Where`, `OrderBy`, `OrderByDescending`, `ThenBy`, `ThenByDescending`, or `Search` lambda is found on an `IRavenQueryable<T>`, the query was created with an explicit index type argument (e.g., `Query<Order, MyIndex>()`), and a member referenced in the lambda does not appear in the set of fields extracted from the index's `Map` expression. The index class must be available in the same compilation for the field extraction to succeed; if the index is in a separate assembly the check is skipped conservatively.
+
+## What to do
+
+Ensure the fields you query on are part of the index projection, or switch to a different index that includes those fields.
+
+### Before (triggers RVN007)
+
+```csharp
+public class Orders_ByCompany : AbstractIndexCreationTask<Order>
+{
+    public Orders_ByCompany()
+    {
+        Map = orders => from o in orders select new { o.Company };
+        // 'Employee' is not in the projection
+    }
+}
+
+var results = session.Query<Order, Orders_ByCompany>()
+    .Where(x => x.Employee == "employees/1-A")  // RVN007: Employee not indexed
+    .ToList();
+```
+
+### After (correct)
+
+```csharp
+public class Orders_ByCompany : AbstractIndexCreationTask<Order>
+{
+    public Orders_ByCompany()
+    {
+        Map = orders => from o in orders select new { o.Company, o.Employee };
+    }
+}
+
+var results = session.Query<Order, Orders_ByCompany>()
+    .Where(x => x.Employee == "employees/1-A")
+    .ToList();
+```
+
+## See also
+
+- [RVN008](./RVN008.mdx) — fires when a projected field is not retrievable from the index or source document.
