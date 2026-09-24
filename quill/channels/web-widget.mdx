@@ -553,24 +553,40 @@ so that all page visitors share a single conversation, or **automatically** by y
 the page is loaded, so that each visitor holds a separate conversation.  
 
 The **Embed** tab provides the means for the second option, automatic generation of embed links by the website, 
-including **the request** your website needs to send to Quill's API and the `<iframe>` element you need to place on your page 
-for the returned link.  
-Learn about this option in detail in [Embed the Chat Widget](../developer-access/embed-the-chat-widget.mdx#mint-links-from-your-own-backend).
+including **the request** your website needs to send to Quill's API and **the snippet** that carries the returned link, 
+to place on your page or in your app.  
 
 ![The Embed tab](./assets/web-widget_embed-tab.png)
 
 1. **Embed**  
    Open the tab.
 2. **The request**  
-   The request that your website server needs to send to Quill's API to generate an embed link,  
-   for cURL, PowerShell, C#, Python, or Node.js.  
-   The app and the channel are already filled in; you still need to enter the Dashboard API key.
-   <Admonition type="warning" title="">
-   The Dashboard API key grants access to every app of your deployment,  
-   and **must never reach the visitor's browser**.
-   </Admonition>
-3. **The `<iframe>`**  
-   The `<iframe>` element you need to place on your page, in which your website places the returned link.  
+   The request that your website server needs to send to Quill's API to generate an embed link.  
+
+   ![The request languages](./assets/web-widget_embed-tab_request-languages.png)
+    * The **app** and the **channel** are already filled in; you still need to enter the **Dashboard API key**.  
+    * Your website server needs an **endpoint** that the snippet (see below) can call.  
+      The endpoint sends the request to Quill with the Dashboard API key each time the snippet calls it,  
+      and returns nothing but the embed link.  
+      <Admonition type="warning" title="">
+      The Dashboard API key grants access to every app of your deployment,  
+      and **must never reach the visitor's browser**.
+      </Admonition>
+    * Select the script or language your server's code is written in: `cURL`, `PowerShell`, `C#`, `Python`, or `Node.js`.  
+    * Learn more in [Mint links from your own backend](../developer-access/embed-the-chat-widget.mdx#mint-links-from-your-own-backend).
+3. **The embed snippet**  
+   The snippet that carries the returned link. Place the snippet on your page or in your app.  
+
+   ![The embed snippet platforms](./assets/web-widget_embed-tab_snippet-platforms.png)
+    * Select the language or framework that matches your platform:  
+      plain `HTML`, `React`, or `Vue` for your website page,  
+      `Kotlin` or `Swift` for a chat box opened from a phone app.  
+    * The snippet calls your endpoint and gets a new link each time the page or the app opens the chat box.  
+      This way, each visit gets a new link and opens a separate conversation.  
+    * While the chat box stays open, it notifies the snippet that hosts it whenever the conversation ends 
+      (whether the link expired or served all its chats), the snippet asks the endpoint for another link, and when 
+      the link arrives a new conversation opens in the chat box.  
+    * Learn more in [Place the iframe on your page](../developer-access/embed-the-chat-widget.mdx#place-the-iframe-on-your-page).
 
 ---
 
