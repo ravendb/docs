@@ -121,8 +121,7 @@ import Panel from '@site/src/components/Panel';
        This allows new provider values to be used without waiting for a RavenDB release.  
        Providers match the value exactly; OpenAI requires lowercase values.
    
-   * The Node.js Client API's `OpenAiReasoningEffort` type exposes only `Minimal`, `Low`, `Medium`, and `High`.  
-     Use Studio or the C# Client API to configure `none`, `xhigh`, `max`, or a custom provider value.
+   * The Node.js Client API's `OpenAiReasoningEffort` type suggests the listed values but also accepts any string.
     
 4. **Prompt Cache Key** (optional)
     
@@ -230,7 +229,7 @@ connectionString.openAiSettings = new OpenAiSettings(
     null,   // dimensions is not relevant for chat models
     null,   // temperature is not set
     true,   // enable prompt cache (optional)
-    "Low"); // reasoning effort (optional)
+    "low"); // reasoning effort (optional)
 
 // Deploy the connection string to the server    
 const putConnectionStringOp = new PutConnectionStringOperation(connectionString);
@@ -245,7 +244,8 @@ const putConnectionStringResult = await store.maintenance.send(putConnectionStri
 
 <TabItem value="open_ai_settings" label="open_ai_settings">
 ```js
-// OpenAiReasoningEffort: "Minimal" | "Low" | "Medium" | "High"
+// OpenAiReasoningEffort accepts any string.
+// Suggested values: "none" | "minimal" | "low" | "medium" | "high" | "xhigh" | "max"
 
 new OpenAiSettings(
     apiKey,
@@ -304,8 +304,9 @@ class OpenAiSettings
     
     // Relevant only for CHAT models:
     // Controls the amount of internal reasoning performed by supported models.
-    // The Node.js client exposes only 'Minimal', 'Low', 'Medium', and 'High';
-    // RavenDB converts these exact PascalCase values to lowercase.
+    // Suggested values are 'none', 'minimal', 'low', 'medium', 'high', 'xhigh', and 'max',
+    // but custom strings are also accepted.
+    // RavenDB converts the exact legacy values 'Minimal', 'Low', 'Medium', and 'High' to lowercase.
     // For model names matching GPT-5.4 or later, RavenDB sends 'none' even when unset.
     // For other model names, null or undefined omits the setting.
     reasoningEffort; // OpenAiReasoningEffort (optional)
