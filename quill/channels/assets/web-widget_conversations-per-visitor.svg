@@ -8,7 +8,7 @@
   <!-- Your website, page 1: every visit gets an embed link of its own, so each visitor holds a separate conversation -->
   <g id="your-website-page">
     <rect x="30" y="30" width="350" height="500" rx="12" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
-    <text x="48" y="62" font-size="18" font-weight="bold" fill="#1e293b">Your website: page 1</text>
+    <text x="48" y="62" font-size="18" font-weight="bold" fill="#1e293b">Your website page</text>
   </g>
   <g id="visitor-1">
     <circle cx="80" cy="134" r="9" fill="#ffffff" stroke="#64748b" stroke-width="1.4"/>
@@ -37,8 +37,8 @@
     <text x="216" y="382" text-anchor="middle" font-size="17" fill="#1e293b">Chat box</text>
     <text x="216" y="402" text-anchor="middle" font-size="16" fill="#1e293b">Embed link 3</text>
   </g>
-  <text x="205" y="490" text-anchor="middle" font-size="17" fill="#1e293b">Different visitors of the same page</text>
-  <text x="205" y="513" text-anchor="middle" font-size="17" fill="#1e293b">get separate conversations</text>
+  <text x="205" y="490" text-anchor="middle" font-size="17" fill="#1e293b">Each page visitor gets a separate</text>
+  <text x="205" y="513" text-anchor="middle" font-size="17" fill="#1e293b">chat box and conversation</text>
 
 
   <!-- Quill: the web widget channel carrying one conversation per chat box, and the agent -->
