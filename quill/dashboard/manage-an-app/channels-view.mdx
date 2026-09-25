@@ -11,8 +11,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* A [channel](../../overview.mdx#channels) carries the conversations between your users and one of your app's agents: a chat widget
-  on your site, a Telegram bot, a Slack app, or a Discord bot.  
+* A [channel](../../overview.mdx#channels) carries the conversations between your users and one of your app's agents.  
+  The available channels are a web widget channel with a chat box on your website, a Telegram bot, a Slack app, or a Discord bot.  
   The **Channels** view lists the channels you already created, and allows you to view and modify channel settings, add new
   channels, check each channel's status, and perform other channel-related tasks like pausing or deleting a channel.
 
@@ -63,8 +63,9 @@ To open it, open the app in Quill's management dashboard and click **Channels** 
 
    <Admonition type="note" title="">
 
-   The channel box depicted above is for a Telegram bot. A web widget's box also carries a **Generate link** icon, which opens
-   [the dialog for generating an embed link](../../getting-started/adding-a-chat-widget.mdx#generating-an-embed-link) for the widget.
+   The channel box depicted above is for a Telegram bot. A web widget's channel box also includes a **Generate link** icon that opens 
+   the **Generate embed link** dialog, allowing you to [generate an embed link](../../channels/web-widget.mdx#generating-an-embed-link) 
+   for the channel.
 
    </Admonition>
 
@@ -82,8 +83,8 @@ The form for each type and what it asks for are described on the type's own page
 ![The New channel menu](./assets/channels-view_new-channel-menu.png)
 
 1. **Web widget**  
-   A chat widget embedded in a page of your site.
-   See [Getting started: Adding a chat widget](../../getting-started/adding-a-chat-widget.mdx).
+   A channel that opens to a chat box on your website page.
+   See [Channels: Web widget](../../channels/web-widget.mdx).
 2. **Telegram bot**  
    A bot your users chat with on Telegram. See [Channels: Telegram bot](../../channels/telegram-bot.mdx).
 3. **WhatsApp Personal** and **WhatsApp Business**  
@@ -109,8 +110,8 @@ page, e.g., [Channels: Telegram bot](../../channels/telegram-bot.mdx#managing-th
 2. **Pause**  
    Pause the channel, or resume its activity when paused. See [Pausing and resuming a channel](#pausing-and-resuming-a-channel).
 3. **Edit or Delete the channel**  
-   The **⋮** button opens the channel's menu. The same two actions are also offered on the channel's box in the Channels view, as
-   the pencil and trash icons:
+   The **⋮** button opens the channel's menu.  
+   The same two actions are also offered on the channel's box in the Channels view, as the pencil and trash icons:
 
    | Edit/delete on the channel's menu | Edit/delete on a channel's box |
    |---|---|
@@ -139,12 +140,16 @@ The agent the channel was added for cannot be changed; to serve another agent, a
 1. **Channel name**  
    Change the name shown for the channel in the Channels view and in the Overview's channels list.
 2. **Allowed origins**  
-   The section that belongs to the channel's type. For the web widget shown here: the sites the widget may be embedded in
-   (see [Restrict where the widget loads](../../developer-access/embed-the-chat-widget.mdx#restrict-where-the-widget-loads));
-   for a Telegram bot: the option to replace the bot token (see
-   [Channels: Telegram bot](../../channels/telegram-bot.mdx#rotating-the-bot-token)); for a Slack bot: the option to rotate the
-   credentials (see [Channels: Slack bot](../../channels/slack-bot.mdx#rotating-the-credentials)); for a Discord bot: the option to
-   replace the bot token (see [Channels: Discord bot](../../channels/discord-bot.mdx#rotating-the-bot-token)).
+   The websites allowed to embed the chat box (see [Editing the channel name and allowed origins](../../channels/web-widget.mdx#editing-the-channel-name-and-allowed-origins)).  
+   <Admonition type="info" title="">
+
+   This area of the form holds a different section for each channel type:  
+    - For a Web widget: [the allowed origins](../../channels/web-widget.mdx#editing-the-channel-name-and-allowed-origins), as depicted above.  
+    - For a Telegram bot: the option to [replace the bot token](../../channels/telegram-bot.mdx#rotating-the-bot-token).  
+    - For a Slack bot: the option to [rotate the credentials](../../channels/slack-bot.mdx#rotating-the-credentials).  
+    - For a Discord bot: the option to [replace the bot token](../../channels/discord-bot.mdx#rotating-the-bot-token).
+
+   </Admonition>
 3. **Save changes**  
    Click to save the changes. **Cancel** closes the form without saving.
 
@@ -170,7 +175,8 @@ What a pause means for the channel's users depends on the channel type:
   A paused web widget will stop answering.  
   A page that embeds it reports that the conversation has ended, as it does for an expired embed link.  
   No new embed link can be generated for the channel while it is paused.  
-  Once the channel is resumed, its embed links that have not expired work again.
+  Once the channel is resumed, its embed links that have not expired work again.  
+  See [Channels: Web widget](../../channels/web-widget.mdx#pausing-and-deleting-the-channel).
 * **Telegram bot**  
   A paused Telegram bot will stop answering.  
   Messages users send meanwhile are held by Telegram for up to 24 hours, and answered if the channel is resumed within this time.  
@@ -201,7 +207,8 @@ What else the deletion means depends on the channel type:
 
 * **Web widget**  
   A deleted web widget's embed links will stop working.  
-  A page that embeds an embed link reports that the conversation is not available.
+  A page that embeds an embed link reports that the conversation is not available.  
+  See [Channels: Web widget](../../channels/web-widget.mdx#pausing-and-deleting-the-channel).
 * **Telegram bot**  
   A deleted Telegram bot channel will stop the bot.  
   The bot itself remains yours on Telegram, and its token can be used to connect it again, to this app or to another.  
@@ -238,8 +245,9 @@ The list's **Add channel** button opens the same menu of channel types as the Ch
 
 <Admonition type="note" title="">
 
-The channel row depicted above is for a Telegram bot. A web widget's row also carries a **Generate link** icon, which opens
-[the dialog for generating an embed link](../../getting-started/adding-a-chat-widget.mdx#generating-an-embed-link) for the widget.
+The channel row depicted above is for a Telegram bot. A web widget's row also includes a **Generate link** icon that opens 
+the **Generate embed link** dialog, allowing you to [generate an embed link](../../channels/web-widget.mdx#generating-an-embed-link) 
+for the channel.
 
 </Admonition>
 

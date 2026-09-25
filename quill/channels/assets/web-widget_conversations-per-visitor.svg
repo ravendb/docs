@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1030" height="560" viewBox="0 0 1030 560" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="1030" height="560" fill="#eaf3fa"/>
+  <!-- Your website, page 1: every visit gets an embed link of its own, so each visitor holds a separate conversation -->
+  <g id="your-website-page">
+    <rect x="30" y="30" width="350" height="500" rx="12" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
+    <text x="48" y="62" font-size="18" font-weight="bold" fill="#1e293b">Your website page</text>
+  </g>
+  <g id="visitor-1">
+    <circle cx="80" cy="134" r="9" fill="#ffffff" stroke="#64748b" stroke-width="1.4"/>
+    <path d="M 67 156 a 13 13 0 0 1 26 0" fill="#ffffff" stroke="#64748b" stroke-width="1.4"/>
+    <text x="80" y="180" text-anchor="middle" font-size="16" fill="#1e293b">Visitor 1</text>
+    <line x1="108" y1="145" x2="134" y2="145" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+    <rect x="141" y="120" width="150" height="50" rx="6" fill="#ffffff" stroke="#64748b"/>
+    <text x="216" y="142" text-anchor="middle" font-size="17" fill="#1e293b">Chat box</text>
+    <text x="216" y="162" text-anchor="middle" font-size="16" fill="#1e293b">Embed link 1</text>
+  </g>
+  <g id="visitor-2">
+    <circle cx="80" cy="254" r="9" fill="#ffffff" stroke="#64748b" stroke-width="1.4"/>
+    <path d="M 67 276 a 13 13 0 0 1 26 0" fill="#ffffff" stroke="#64748b" stroke-width="1.4"/>
+    <text x="80" y="300" text-anchor="middle" font-size="16" fill="#1e293b">Visitor 2</text>
+    <line x1="108" y1="265" x2="134" y2="265" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+    <rect x="141" y="240" width="150" height="50" rx="6" fill="#ffffff" stroke="#64748b"/>
+    <text x="216" y="262" text-anchor="middle" font-size="17" fill="#1e293b">Chat box</text>
+    <text x="216" y="282" text-anchor="middle" font-size="16" fill="#1e293b">Embed link 2</text>
+  </g>
+  <g id="visitor-3">
+    <circle cx="80" cy="374" r="9" fill="#ffffff" stroke="#64748b" stroke-width="1.4"/>
+    <path d="M 67 396 a 13 13 0 0 1 26 0" fill="#ffffff" stroke="#64748b" stroke-width="1.4"/>
+    <text x="80" y="420" text-anchor="middle" font-size="16" fill="#1e293b">Visitor 3</text>
+    <line x1="108" y1="385" x2="134" y2="385" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+    <rect x="141" y="360" width="150" height="50" rx="6" fill="#ffffff" stroke="#64748b"/>
+    <text x="216" y="382" text-anchor="middle" font-size="17" fill="#1e293b">Chat box</text>
+    <text x="216" y="402" text-anchor="middle" font-size="16" fill="#1e293b">Embed link 3</text>
+  </g>
+  <text x="205" y="490" text-anchor="middle" font-size="17" fill="#1e293b">Each page visitor gets a separate</text>
+  <text x="205" y="513" text-anchor="middle" font-size="17" fill="#1e293b">chat box and conversation</text>
+
+
+  <!-- Quill: the web widget channel carrying one conversation per chat box, and the agent -->
+  <g id="quill-container">
+    <rect x="510" y="30" width="490" height="500" rx="12" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+    <text x="528" y="62" font-size="18" font-weight="bold" fill="#9a3412">Quill</text>
+  </g>
+  <g id="web-widget-channel">
+    <rect x="530" y="95" width="200" height="390" rx="8" fill="#ffffff" stroke="#64748b"/>
+    <text x="630" y="128" text-anchor="middle" font-size="18" fill="#1e293b">Web widget channel</text>
+  </g>
+  <g id="agent">
+    <rect x="770" y="200" width="210" height="200" rx="8" fill="#ffffff" stroke="#64748b"/>
+    <text x="875" y="295" text-anchor="middle" font-size="18" fill="#1e293b">Agent</text>
+    <text x="875" y="320" text-anchor="middle" font-size="16" fill="#1e293b">Answers all conversations</text>
+  </g>
+  <g id="internal-database">
+    <rect x="770" y="440" width="210" height="55" rx="8" fill="#ffffff" stroke="#64748b"/>
+    <text x="875" y="474" text-anchor="middle" font-size="17" fill="#1e293b">Internal database</text>
+  </g>
+  <line x1="875" y1="402" x2="875" y2="438" stroke="#475569" marker-end="url(#arrow)"/>
+  <text x="886" y="425" font-size="16" fill="#1e293b">Queries</text>
+  <g id="conversations" stroke="#475569" stroke-width="1.5" fill="none">
+    <line x1="293" y1="145" x2="528" y2="230" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <line x1="293" y1="265" x2="528" y2="290" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <line x1="293" y1="385" x2="528" y2="350" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  </g>
+  <g id="conversation-labels" font-size="17" fill="#1e293b" text-anchor="middle">
+    <text x="440" y="176" transform="rotate(19.9 440 176)">Conversation 1</text>
+    <text x="444" y="266" transform="rotate(6.1 444 266)">Conversation 2</text>
+    <text x="444" y="356" transform="rotate(-8.5 444 356)">Conversation 3</text>
+  </g>
+  <g id="threads-in-channel" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 3" fill="none">
+    <line x1="548" y1="230" x2="712" y2="230"/>
+    <line x1="548" y1="290" x2="712" y2="290"/>
+    <line x1="548" y1="350" x2="712" y2="350"/>
+  </g>
+  <g id="channel-to-agent" stroke="#475569" stroke-width="1.5" fill="none">
+    <line x1="732" y1="230" x2="768" y2="230" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <line x1="732" y1="290" x2="768" y2="290" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <line x1="732" y1="350" x2="768" y2="350" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  </g>
+</svg>
