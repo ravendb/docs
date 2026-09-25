@@ -24,6 +24,10 @@ import ContentFrame from "@site/src/components/ContentFrame";
   * Per session, to apply it selectively.
   * Per document, to override the session-level settings.  
 
+* You can also have the server verify a document that is **not loaded** into the session,  
+  such as a document that was read in another session, by registering its ID and change vector.  
+  See [Conditionally save changes based on a document not loaded into the session](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#conditionally-save-changes-based-on-a-document-not-loaded-into-the-session).
+
 ---
     
 * In this article:
@@ -36,6 +40,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
   * [Configure per session](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#configure-per-session)
   * [Disable for specific document (when enabled on the session)](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#disable-for-specific-document-when-enabled-on-session)  
   * [Enable for specific document (when disabled on the session)](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#enable-for-specific-document-when-disabled-on-session)
+  * [Conditionally save changes based on a document not loaded into the session](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#conditionally-save-changes-based-on-a-document-not-loaded-into-the-session)
   * [Constraints](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#constraints)    
   * [Syntax](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#syntax)
 
@@ -655,12 +660,200 @@ using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
     
 </Panel>
 
+<Panel heading="Conditionally save changes based on a document not loaded into the session">
+
+* When you want `SaveChanges()` to reject a save if a document that was **not loaded into the current session** has been modified since it was previously read,
+  register a concurrency check for that document by calling `session.Advanced.RegisterForConcurrencyCheck()`.
+  Pass the document's ID and its expected change vector, typically obtained by calling [GetChangeVectorFor](../../../../client-api/session/how-to/get-entity-change-vector.mdx) in the session that read the document.
+
+* This is useful when the session's changes depend on a document that was read elsewhere -  
+  for example, in another session, another process, or an earlier request.
+
+* Registering the check does not load the document or immediately contact the server.  
+  When you call `SaveChanges()`, the check is sent with the batch and validated in the same transaction as the batch's changes.
+  If the document's current change vector does not match the registered value, `SaveChanges()` throws a `ConcurrencyException`, and **none** of the batch's changes are saved.
+
+* Unlike `WritesAndReads` mode, which checks a document against the version loaded by the current session,  
+  a registered check uses the version obtained earlier without requiring the current session to load the document.
+
+* The registered check is performed regardless of the session's [optimistic concurrency mode](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#optimistic-concurrency-modes),  
+  including the default `None` mode.
+
+---
+
+<ContentFrame>
+
+### Change vector values
+
+The change vector you pass determines what the server checks:
+
+| Change vector | Check performed by the server |
+|---------------|-------------------------------|
+| A non-empty change vector | The document must still have this change vector. |
+| `string.Empty` | The document must not exist. |
+| `null` | No registered or `WritesAndReads` check is sent for this document ID. |
+
+* Passing `null` suppresses an earlier registration for the ID,  
+  and also suppresses the check that `WritesAndReads` mode performs for a document loaded into the session.
+
+* Passing `null` does not disable a change-vector check carried by a `PUT` or `DELETE` for the same document,  
+  such as a write in `Writes` mode or a change vector passed explicitly to `Store()` or `Delete()`.
+
+* Like other registrations, a `null` registration is cleared after a `SaveChanges()` request succeeds.  
+  In `WritesAndReads` mode, later `SaveChanges()` calls will again check the loaded document.
+
+</ContentFrame>
+
+---
+
+### Example
+
+<Tabs>
+<TabItem value="Sync" label="Sync">
+```csharp
+string productChangeVector;
+decimal pricePerUnit;
+
+// Session A: read a product, e.g., to display its price to a customer
+using (IDocumentSession sessionA = store.OpenSession())
+{
+    Product product = sessionA.Load<Product>("products/1-A");
+    pricePerUnit = product.PricePerUnit;
+
+    // Keep the change vector of the version the customer saw
+    productChangeVector = sessionA.Advanced.GetChangeVectorFor(product);
+}
+
+// Session B: place an order at the price the customer saw
+// (e.g., in a later request, or in another process)
+using (IDocumentSession sessionB = store.OpenSession())
+{
+    sessionB.Store(new Order
+    {
+        Lines = new List<OrderLine>
+        {
+            new OrderLine { Product = "products/1-A", PricePerUnit = pricePerUnit, Quantity = 1 }
+        }
+    });
+
+    // Register the product's ID and the change vector obtained in session A.
+    // The product is not loaded into this session, and no request is sent to the server.
+    sessionB.Advanced.RegisterForConcurrencyCheck("products/1-A", productChangeVector);
+
+    try
+    {
+        // The server verifies that 'products/1-A' still has the registered change vector.
+        // The check and the new order are handled in the same transaction.
+        sessionB.SaveChanges();
+    }
+    catch (ConcurrencyException e)
+    {
+        // 'products/1-A' was modified after session A read it (e.g., its price changed),
+        // so the order was not saved.
+        Console.WriteLine($"Document ID: {e.Id}");
+        Console.WriteLine($"Expected change vector: {e.ExpectedChangeVector}");
+        Console.WriteLine($"Actual change vector: {e.ActualChangeVector}");
+    }
+}
+```
+</TabItem>
+<TabItem value="Async" label="Async">
+```csharp
+string productChangeVector;
+decimal pricePerUnit;
+
+// Session A: read a product, e.g., to display its price to a customer
+using (IAsyncDocumentSession asyncSessionA = store.OpenAsyncSession())
+{
+    Product product = await asyncSessionA.LoadAsync<Product>("products/1-A");
+    pricePerUnit = product.PricePerUnit;
+
+    // Keep the change vector of the version the customer saw
+    productChangeVector = asyncSessionA.Advanced.GetChangeVectorFor(product);
+}
+
+// Session B: place an order at the price the customer saw
+// (e.g., in a later request, or in another process)
+using (IAsyncDocumentSession asyncSessionB = store.OpenAsyncSession())
+{
+    await asyncSessionB.StoreAsync(new Order
+    {
+        Lines = new List<OrderLine>
+        {
+            new OrderLine { Product = "products/1-A", PricePerUnit = pricePerUnit, Quantity = 1 }
+        }
+    });
+
+    // Register the product's ID and the change vector obtained in session A.
+    // The product is not loaded into this session, and no request is sent to the server.
+    // The method is synchronous even in an async session.
+    asyncSessionB.Advanced.RegisterForConcurrencyCheck("products/1-A", productChangeVector);
+
+    try
+    {
+        // The server verifies that 'products/1-A' still has the registered change vector.
+        // The check and the new order are handled in the same transaction.
+        await asyncSessionB.SaveChangesAsync();
+    }
+    catch (ConcurrencyException e)
+    {
+        // 'products/1-A' was modified after session A read it (e.g., its price changed),
+        // so the order was not saved.
+        Console.WriteLine($"Document ID: {e.Id}");
+        Console.WriteLine($"Expected change vector: {e.ExpectedChangeVector}");
+        Console.WriteLine($"Actual change vector: {e.ActualChangeVector}");
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+---
+
+<ContentFrame>
+
+### How registered checks behave
+
+* **Registrations are one-shot**:  
+  A successful `SaveChanges()` request consumes all registrations,
+  so later `SaveChanges()` calls on the same session do not repeat them.  
+  If `SaveChanges()` fails, all registrations are kept, and calling `SaveChanges()` again repeats them.  
+  To check against a newer version, register the ID again with that version's change vector.
+
+* **The registration takes precedence over session tracking**:
+  * Loading the document into the session after registering it does not replace the registered change vector,  
+    including in `WritesAndReads` mode.
+  * If the document is also modified or deleted in the session with its own concurrency check,  
+    both checks are included in the batch.
+
+* **The last registration for an ID wins**:  
+  Registering the same ID again replaces the earlier change vector.  
+  To suppress a check until the next `SaveChanges()` request succeeds, register the ID again with `null`.  
+  To remove all registrations, [clear the session](../../../../client-api/session/how-to/clear-a-session.mdx).
+
+* **A check can be sent on its own**:  
+  If the session has no other changes to save, `SaveChanges()` still sends a request that only performs the check,
+  and throws a `ConcurrencyException` if the check fails.  
+  This lets you verify that a document has not changed without saving anything.  
+  Note that [HasChanges](../../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx) returns `false` in this case.  
+  A registration with a `null` change vector is not sent: if there is nothing else to send, `SaveChanges()` does not contact the server,
+  and the `null` registration remains in effect.
+
+* **Where registered checks are not supported**:  
+  Registered checks are not supported in cluster-wide sessions, sessions with tracking disabled, or sharded databases.
+  See [Registered check limitations](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#registered-check-limitations).
+
+</ContentFrame>
+
+</Panel>
+
 <Panel heading="Constraints">
 
 * [Cannot combine _Writes_ and _WritesAndReads_ with _NoTracking_](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#cannot-combinewritesandwritesandreadswithnotracking).
 * [Cannot combine _Writes_ and _WritesAndReads_ with _TransactionMode.ClusterWide_](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#cannot-combineewritesandwritesandreadswithtransactionmodeclusterwide).
 * [_UseOptimisticConcurrency_ is deprecated](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#useoptimisticconcurrencyis-deprecated).
 * _WritesAndReads_ mode is not supported with [Sharding](../../../../sharding/overview.mdx).
+* [Registered check limitations](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#registered-check-limitations).
     
 ---
 
@@ -791,6 +984,24 @@ rather than set explicitly in the session.
     
 </Admonition>
 
+<ContentFrame>
+
+### Registered check limitations
+
+* A check registered with [RegisterForConcurrencyCheck](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#conditionally-save-changes-based-on-a-document-not-loaded-into-the-session)
+  is not supported in:
+  * [Cluster-wide sessions](../../../../client-api/session/cluster-transaction/overview.mdx):  
+    `SaveChanges()` throws a `NotSupportedException`.
+  * Sessions with [tracking disabled](../../../../client-api/session/configuration/how-to-disable-tracking.mdx):  
+    `SaveChanges()` throws an `InvalidOperationException`,  
+    since a session with tracking disabled cannot save changes.
+  * [Sharded databases](../../../../sharding/overview.mdx):  
+    `SaveChanges()` throws a `NotSupportedInShardingException`.
+
+* Registering the check does not throw. The exception is thrown by `SaveChanges()`.
+
+</ContentFrame>
+
 </Panel>
 
 <Panel heading="Syntax"> 
@@ -819,6 +1030,14 @@ public enum OptimisticConcurrencyMode
     // both modified and unmodified
     WritesAndReads
 }
+    
+// session.Advanced
+void RegisterForConcurrencyCheck(string id, string changeVector);
 ```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **id** | `string` | The ID of the document to verify during the next `SaveChanges()`.<br/>Throws an `ArgumentNullException` if `null` or empty. |
+| **changeVector** | `string` | The change vector the document is expected to have.<ul><li>A non-empty change vector - the document must still have this change vector.</li><li>`string.Empty` - the document must not exist.</li><li>`null` - suppress the registered check for this ID and any check added for it by `WritesAndReads` until the next `SaveChanges()` request succeeds.<br/>This does not disable a change-vector check carried by a `PUT` or `DELETE`.</li></ul> |
     
 </Panel>
