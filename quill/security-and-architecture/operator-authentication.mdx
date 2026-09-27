@@ -188,7 +188,7 @@ and recreate the container.
 ### Recreate the container
 
 In these commands, `<container-name>` is the name specified after `--name` in your original `docker run` command.  
-By default, it matches your Quill name.  
+The sign-up Docker command sets it to `quill-` followed by your Quill name, e.g., `quill-baloo`.  
 `<recorded-volume-name>` is the volume name specified before `:/var/lib/quill` in that command.
 
 Remove the existing container, then rerun it with the new key and the same data volume:

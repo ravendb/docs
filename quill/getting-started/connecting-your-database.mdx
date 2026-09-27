@@ -233,8 +233,12 @@ using a `GRANT` statement.
   keeps and where the server is writing now.
 
 Quill does not check these privileges.  
-A missing `SELECT` privilege surfaces in the [Verify your schema](#verifying-your-schema)
-stage, where Quill reads from the tables you select.  
+A missing `SELECT` privilege surfaces before Quill verifies the tables:
+* MySQL and MariaDB servers show a user only the tables the user holds a privilege on, so a table the database user
+  holds no privilege on is not listed in the [Verify your schema](#verifying-your-schema) stage.
+* A database user who holds no privilege on the source database at all cannot connect to it: clicking **Test connection**
+  reports that access to the database is denied.
+
 A missing `REPLICATION SLAVE` or `REPLICATION CLIENT` privilege surfaces only after the app is created, when Quill
 starts following the changes.
 
