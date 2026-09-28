@@ -662,23 +662,50 @@ using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
 
 <Panel heading="Conditionally save changes based on a document not loaded into the session">
 
-* When you want `SaveChanges()` to reject a save if a document that was **not loaded into the current session** has been modified since it was previously read,
-  register a concurrency check for that document by calling `session.Advanced.RegisterForConcurrencyCheck()`.
-  Pass the document's ID and its expected change vector, typically obtained by calling [GetChangeVectorFor](../../../../client-api/session/how-to/get-entity-change-vector.mdx) in the session that read the document.
+* **When to use**:  
+  Use `RegisterForConcurrencyCheck()` when you already have a document's change vector
+  and want `SaveChanges()` to succeed only if that document has not changed, **without loading it into the current session**.  
+  Pass the document's ID and its expected change vector,
+  typically obtained by calling [GetChangeVectorFor](../../../../client-api/session/how-to/get-entity-change-vector.mdx) when the document was originally read.
 
-* This is useful when the session's changes depend on a document that was read elsewhere -  
-  for example, in another session, another process, or an earlier request.
+  For example, a web application can read `users/1-A` once and keep its change vector on the client (e.g., in a cookie).  
+  On later requests, it can save changes to other documents while verifying that `users/1-A` still has that change vector, without loading it again.
 
-* Registering the check does not load the document or immediately contact the server.  
+* **When and how the check runs**:  
+  Registering the check does not load the document or immediately contact the server.  
   When you call `SaveChanges()`, the check is sent with the batch and validated in the same transaction as the batch's changes.
   If the document's current change vector does not match the registered value, `SaveChanges()` throws a `ConcurrencyException`, and **none** of the batch's changes are saved.
 
-* Unlike `WritesAndReads` mode, which checks a document against the version loaded by the current session,  
+* **Compared with WritesAndReads**:  
+  Unlike `WritesAndReads` mode, which checks a document against the version loaded by the current session,  
   a registered check uses the version obtained earlier without requiring the current session to load the document.
 
-* The registered check is performed regardless of the session's [optimistic concurrency mode](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#optimistic-concurrency-modes),  
+* **Concurrency mode**:  
+  The registered check is performed regardless of the session's [optimistic concurrency mode](../../../../client-api/session/configuration/how-to-enable-optimistic-concurrency.mdx#optimistic-concurrency-modes),  
   including the default `None` mode.
 
+* <Admonition type="info" title="">
+
+  #### Registered checks are one-shot    
+    
+  * A successful `SaveChanges()` request consumes all registrations.
+    Call `RegisterForConcurrencyCheck()` again before **every** later `SaveChanges()` that should perform the check.
+        
+  * If `SaveChanges()` fails, the registrations are not consumed.
+    
+  ```csharp
+  session.Advanced.RegisterForConcurrencyCheck("users/1-A", userChangeVector);
+  session.SaveChanges(); // Checks 'users/1-A'
+    
+  // ... make more changes
+        
+  // Re-register the check before the next SaveChanges() call
+  session.Advanced.RegisterForConcurrencyCheck("users/1-A", userChangeVector);
+  session.SaveChanges(); // Checks 'users/1-A' again
+  ```
+    
+  </Admonition>    
+    
 ---
 
 <ContentFrame>
@@ -699,8 +726,8 @@ The change vector you pass determines what the server checks:
 * Passing `null` does not disable a change-vector check carried by a `PUT` or `DELETE` for the same document,  
   such as a write in `Writes` mode or a change vector passed explicitly to `Store()` or `Delete()`.
 
-* Like other registrations, a `null` registration is cleared after a `SaveChanges()` request succeeds.  
-  In `WritesAndReads` mode, later `SaveChanges()` calls will again check the loaded document.
+* In `WritesAndReads` mode, a `null` registration suppresses the check on the loaded document only until the next `SaveChanges()` request succeeds.  
+  Later `SaveChanges()` calls check the document again unless you register `null` again.
 
 </ContentFrame>
 
@@ -814,30 +841,44 @@ using (IAsyncDocumentSession asyncSessionB = store.OpenAsyncSession())
 
 ### How registered checks behave
 
-* **Registrations are one-shot**:  
-  A successful `SaveChanges()` request consumes all registrations,
-  so later `SaveChanges()` calls on the same session do not repeat them.  
-  If `SaveChanges()` fails, all registrations are kept, and calling `SaveChanges()` again repeats them.  
-  To check against a newer version, register the ID again with that version's change vector.
+* **The registration takes precedence over session tracking**:  
+  Loading the document into the session after registering it does not replace the registered change vector,
+  including in `WritesAndReads` mode.
 
-* **The registration takes precedence over session tracking**:
-  * Loading the document into the session after registering it does not replace the registered change vector,  
-    including in `WritesAndReads` mode.
-  * If the document is also modified or deleted in the session with its own concurrency check,  
-    both checks are included in the batch.
+* **Avoid combining a registered check with a `PUT` or `DELETE` check for the same document**:  
+  A `PUT` or `DELETE` carries its own concurrency check in `Writes` and `WritesAndReads` modes,  
+  or when a change vector is passed explicitly to `Store()` or `Delete()`.  
+  If you also register a check for that document, the two checks are independent and both must succeed.  
+  If they use different change vectors, `SaveChanges()` throws a `ConcurrencyException`.
 
 * **The last registration for an ID wins**:  
   Registering the same ID again replaces the earlier change vector.  
-  To suppress a check until the next `SaveChanges()` request succeeds, register the ID again with `null`.  
-  To remove all registrations, [clear the session](../../../../client-api/session/how-to/clear-a-session.mdx).
+  To suppress a check until the next `SaveChanges()` request succeeds, register the ID again with `null`.
 
-* **A check can be sent on its own**:  
-  If the session has no other changes to save, `SaveChanges()` still sends a request that only performs the check,
+* **Removing registrations**:  
+  To remove all registrations, [clear the session](../../../../client-api/session/how-to/clear-a-session.mdx).  
+  Calling [Evict()](../../../../client-api/session/how-to/evict-entity-from-a-session.mdx) does not remove a registration
+  because registrations are kept separately from session tracking.
+
+* **A registration is sent even when there is nothing else to save**:  
+  If the session has no other changes, `SaveChanges()` still sends a request that only performs the check,  
   and throws a `ConcurrencyException` if the check fails.  
-  This lets you verify that a document has not changed without saving anything.  
   Note that [HasChanges](../../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx) returns `false` in this case.  
-  A registration with a `null` change vector is not sent: if there is nothing else to send, `SaveChanges()` does not contact the server,
-  and the `null` registration remains in effect.
+  A registration with a `null` change vector is not sent: if there is nothing else to send,  
+  `SaveChanges()` does not contact the server, and the `null` registration remains in effect.
+
+* **When there are no changes to save, prefer a `HEAD` request**:  
+  A registered check sent through `SaveChanges()` is processed in a write transaction on the server.  
+  If you only need to verify that a document still has a given change vector, send a `HeadDocumentCommand` instead.  
+  It returns the document's current change vector without fetching the document contents.
+
+  ```csharp
+  var command = new HeadDocumentCommand("users/1-A", userChangeVector);
+  session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+
+  // Result is the current change vector, or null if the document does not exist
+  bool unchanged = command.Result == userChangeVector;
+  ```
 
 * **Where registered checks are not supported**:  
   Registered checks are not supported in cluster-wide sessions, sessions with tracking disabled, or sharded databases.
