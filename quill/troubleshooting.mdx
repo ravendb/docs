@@ -426,8 +426,9 @@ with which to tell Quill which row an update or a deletion changed.
 <Admonition type="warning" title="">
 
 Once the app is created, Quill adds the table to a publication, the list of tables whose changes PostgreSQL streams to
-Quill. From then on, PostgreSQL refuses every `UPDATE` and `DELETE` statement on the table, with an error such as
-"cannot delete from table … because it does not have a replica identity and publishes deletes".
+Quill. From then on, PostgreSQL rejects `UPDATE` and `DELETE` statements on the table, with an error such as
+"cannot delete from table … because it does not have a replica identity and publishes deletes", until a database
+administrator runs the statement described below.
 
 </Admonition>
 
