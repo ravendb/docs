@@ -309,17 +309,21 @@ or by inspecting representative documents in RavenDB Studio.
 
 Quill creates a [CDC Sink task](https://docs.ravendb.net/server/ongoing-tasks/cdc-sink/overview) in each app database to keep its mapped documents synchronized with the source relational database.
 
-You can inspect the task and its status:
+You can inspect the task and its status:  
+In RavenDB Studio, open the app database and go to **Ongoing Tasks**.  
+If needed, identify the task by the `cdcTaskName` returned for the app by `GET https://api.<domain>/api/apps/`.
 
-* In RavenDB Studio, open the app database and go to **Ongoing Tasks**.
-* In client code, use `GetOngoingTaskInfoOperation`.  
-  The task name is the `cdcTaskName` returned for the app by `GET https://api.<domain>/api/apps/`.
-
+{/* 
+TODO: When the PHP client adds CDC Sink to OngoingTaskType,
+remove the note below and add a GetOngoingTaskInfoOperation example using cdcTaskName. 
+Verified against version 5.2.6.
+*/}    
+    
 <Admonition type="note" title="">
 
 The RavenDB PHP client (`5.2.6`) does not define a CDC Sink member in `OngoingTaskType`,  
-so `GetOngoingTaskInfoOperation` cannot request this task type from PHP.  
-Inspect the task in RavenDB Studio, or from an application written in a client that exposes the CDC Sink task type.
+so its ongoing-task API cannot inspect CDC Sink tasks.  
+Use a client that exposes the CDC Sink task type if the application needs to inspect the task in code.
 
 </Admonition>
 
