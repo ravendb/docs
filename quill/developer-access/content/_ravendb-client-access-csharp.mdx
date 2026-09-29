@@ -22,7 +22,7 @@ import Panel from '@site/src/components/Panel';
     * [Understand the mirrored document structure](#understand-the-mirrored-document-structure)
     * [Identify the mapped collections](#identify-the-mapped-collections)
     * [Inspect the CDC task](#inspect-the-cdc-task)
-    * [Keep direct access read-only when possible](#keep-direct-access-read-only-when-possible)
+    * [Write only to your application's own documents](#write-only-to-your-applications-own-documents)
   * [Network behavior and limitations](#network-behavior-and-limitations)
     * [Topology discovery](#topology-discovery)
     * [Native TCP features are unavailable](#native-tcp-features-are-unavailable)
@@ -216,7 +216,8 @@ Applications targeting .NET 8 or earlier can load the certificate with `new X509
 `X509CertificateLoader` is the recommended API in .NET 9 and later.
 
 The explicit `collectionName` makes the query target the mapped collection exactly.
-Without it, the RavenDB Client API derives the collection name from the .NET type—for example, `Query<Customer>()` targets `Customers` by default.
+Without it, the RavenDB Client API derives the collection name from the .NET type.
+For example, `Query<Customer>()` targets `Customers` by default.
 
 The `collectionName` argument applies only to this query.
 To override the collection convention throughout the application, configure `FindCollectionName` before calling `Initialize()`, which freezes the store conventions.
@@ -329,7 +330,7 @@ Changes made in RavenDB Studio or through the RavenDB Client API therefore affec
 
 </Panel>
 
-<Panel heading="Keep direct access read-only when possible">
+<Panel heading="Write only to your application's own documents">
 
 For an application that only queries the mirrored data, use a **User** certificate with the minimum available **Read/Write** access and keep the application logically read-only.  
 Quill does not grant new **Read** permissions, so this access level does not technically prevent writes.

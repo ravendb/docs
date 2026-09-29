@@ -22,7 +22,7 @@ import Panel from '@site/src/components/Panel';
     * [Understand the mirrored document structure](#understand-the-mirrored-document-structure)
     * [Identify the mapped collections](#identify-the-mapped-collections)
     * [Inspect the CDC task](#inspect-the-cdc-task)
-    * [Keep direct access read-only when possible](#keep-direct-access-read-only-when-possible)
+    * [Write only to your application's own documents](#write-only-to-your-applications-own-documents)
   * [Network behavior and limitations](#network-behavior-and-limitations)
     * [Topology discovery](#topology-discovery)
     * [Native TCP features are unavailable](#native-tcp-features-are-unavailable)
@@ -218,8 +218,9 @@ If the `.pfx` was created without a password, the environment variable can be ab
 `type` selects the certificate format.
 Set it to `"pfx"` for the `.pfx` in the downloaded archive, or to `"pem"` to supply the certificate and its private key in PEM form.
 
-The explicit `collection` option makes the query target the mapped collection exactly.
-Without it, the RavenDB Client API derives the collection name from the document type—for example, `query({ documentType: Customer })` targets `Customers` by default.
+The explicit `collection` option makes the query target the mapped collection exactly.  
+Without it, the RavenDB Client API derives the collection name from the document type.  
+For example, `query({ documentType: Customer })` targets `Customers` by default.
 
 The `collection` option applies only to this query.
 To override the collection convention throughout the application, configure `findCollectionName` before calling `initialize()`, which freezes the store conventions.
@@ -334,7 +335,7 @@ Changes made in RavenDB Studio or through the RavenDB Client API therefore affec
 
 </Panel>
 
-<Panel heading="Keep direct access read-only when possible">
+<Panel heading="Write only to your application's own documents">
 
 For an application that only queries the mirrored data, use a **User** certificate with the minimum available **Read/Write** access and keep the application logically read-only.  
 Quill does not grant new **Read** permissions, so this access level does not technically prevent writes.
