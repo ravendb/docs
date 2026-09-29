@@ -697,68 +697,185 @@ The **Customize appearance** tab holds the chat box's theme: its colors, style, 
 
 <Panel heading="Troubleshooting">
 
-<Admonition type="note" title="">
-
 Symptoms met by the users of every channel type are listed in the channels overview, in
 [Troubleshooting](../channels/overview.mdx#troubleshooting).
 
-</Admonition>
-
 The symptoms below are shown by a web widget channel when something goes wrong, each with its likely cause and what to do about it.  
 
-<ContentFrame>
+---
 
 ### In the dashboard
 
-* **Creating or saving the channel fails with "is not an origin (scheme+host[:port] only)".**  
-  Likely cause: an **Allowed origins** entry carries more than the website's address, 
-  e.g., a page path (`https://shop.example.com/help`).  
-  What to do: enter the website's address only (`https://shop.example.com`), as described in
-  [Filling in the channel form](#filling-in-the-channel-form).
-* **Creating or saving the channel fails with "wildcard '*' is not an allowed origin".**  
-  Likely cause: `*` was entered in **Allowed origins** to permit every website.  
-  What to do: leave the list empty to permit every website, or list each website by its address.
-* **The `New web widget channel` form shows "Create an agent first" instead of its fields.**  
-  Likely cause: the app has no agent yet.  
-  What to do: add an agent, as described in [Prerequisites](#prerequisites), and then add the channel.
-* **The `Generate link` button is disabled.**  
-  Likely cause: the channel is paused.  
-  What to do: resume the channel, as described in [Pausing and deleting the channel](#pausing-and-deleting-the-channel).
+<ContentFrame>
+
+##### An allowed origin is refused
+
+Creating or saving the channel fails with `is not an origin (scheme+host[:port] only)`.
+
+<Admonition type="note" title="">
+
+**Cause:** an **Allowed origins** entry carries more than the website's address, 
+e.g., a page path (`https://shop.example.com/help`).
+
+</Admonition>
+
+**What to do:** enter the website's address only (`https://shop.example.com`), as described in
+[Filling in the channel form](#filling-in-the-channel-form).
 
 </ContentFrame>
 
 <ContentFrame>
 
+##### The `*` wildcard is refused
+
+Creating or saving the channel fails with `wildcard '*' is not an allowed origin`.
+
+<Admonition type="note" title="">
+
+**Cause:** `*` was entered in **Allowed origins** to permit every website.
+
+</Admonition>
+
+**What to do:** leave the list empty to permit every website, or list each website by its address.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The channel form asks to create an agent first
+
+The `New web widget channel` form shows `Create an agent first` instead of its fields.
+
+<Admonition type="note" title="">
+
+**Cause:** the app has no agent yet.
+
+</Admonition>
+
+**What to do:** add an agent, as described in [Prerequisites](#prerequisites), and then add the channel.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The `Generate link` button is disabled
+
+<Admonition type="note" title="">
+
+**Cause:** the channel is paused.
+
+</Admonition>
+
+**What to do:** resume the channel, as described in [Pausing and deleting the channel](#pausing-and-deleting-the-channel).
+
+</ContentFrame>
+
+---
+
 ### On your website page
 
-* **The chat box does not appear: the `<iframe>` element remains empty, or shows a browser message that the page cannot be displayed.**  
-  Likely cause: the website is not in the channel's **Allowed origins** list, or is listed with a different scheme or port
-  (e.g., `http://` where the site is served over `https://`, or `http://localhost` without the port the site runs on).  
-  What to do: add the website's exact address to the list, as described in
-  [Editing the channel name and allowed origins](#editing-the-channel-name-and-allowed-origins).
-* **A question is answered with "Something went wrong. Please try again. (HTTP 403)".**  
-  Likely cause: the website was removed from the channel's **Allowed origins** list after the page loaded the chat box.  
-  What to do: add the website's address back to the list, as described in
-  [Editing the channel name and allowed origins](#editing-the-channel-name-and-allowed-origins).
-* **The chat box is replaced by a notice, or a question is answered with a notice, that the conversation has ended,
-  is not available, is no longer active, or has reached its usage limit.**  
-  Likely cause: the embed link is no longer valid. The cause behind each notice is given in [Invalid links](#invalid-links).  
-  What to do: generate a new embed link and place it in the page instead of the invalid link, as described in
-  [Placing the embed snippet on your page](#placing-the-embed-snippet-on-your-page); if the channel is paused, resume it.
-* **A question is answered with "Too many requests right now. Please try again in a moment."**  
-  Likely cause: more than 60 questions were sent within a minute from the user's IP address, typically because users behind 
-  a shared address, like a company network, are counted together. See [Web widget limitations](#web-widget-limitations).  
-  What to do: advise the user to wait a moment and send the question again.
-* **A question is answered with "the value bound for parameter '...' is not a valid ...".**  
-  Likely cause: a value bound into the embed link does not match an agent parameter's type, e.g., because the type was changed in
-  the agent after the link was generated.  
-  What to do: generate a new embed link with a valid value, as described in [Binding agent parameters](#binding-agent-parameters).
-* **A question is answered with "Chat failed. See server logs for details."**  
-  Likely cause: the agent failed to produce the answer, e.g., because the LLM service or the app's database could not be reached,
-  or because the agent has a parameter that the link does not bind (a parameter added to the agent after the link was generated).  
-  What to do: verify that the LLM service behind the agent's AI connection string can be reached, as described in
-  [Dashboard: AI connection strings](../dashboard/ai-connection-strings.mdx#test-and-save-the-connection); if the agent's
-  parameters were changed, generate a new embed link. The server logs name the exact error.
+<ContentFrame>
+
+##### The chat box does not appear
+
+The chat box does not appear: the `<iframe>` element remains empty, or shows a browser message that the page cannot be displayed.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the website is not in the channel's **Allowed origins** list, or is listed with a different scheme or port
+(e.g., `http://` where the site is served over `https://`, or `http://localhost` without the port the site runs on).
+
+</Admonition>
+
+**What to do:** add the website's exact address to the list, as described in
+[Editing the channel name and allowed origins](#editing-the-channel-name-and-allowed-origins).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### A question is answered with an HTTP 403 error
+
+A question is answered with `Something went wrong. Please try again. (HTTP 403)`.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the website was removed from the channel's **Allowed origins** list after the page loaded the chat box.
+
+</Admonition>
+
+**What to do:** add the website's address back to the list, as described in
+[Editing the channel name and allowed origins](#editing-the-channel-name-and-allowed-origins).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The chat box reports that the conversation has ended
+
+The chat box is replaced by a notice, or a question is answered with a notice, that the conversation has ended, is not available, is no longer active, or has reached its usage limit.
+
+<Admonition type="note" title="">
+
+**Cause:** the embed link is no longer valid. The cause behind each notice is given in [Invalid links](#invalid-links).
+
+</Admonition>
+
+**What to do:** generate a new embed link and place it in the page instead of the invalid link, as described in
+[Placing the embed snippet on your page](#placing-the-embed-snippet-on-your-page); if the channel is paused, resume it.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The chat box reports too many requests
+
+A question is answered with `Too many requests right now. Please try again in a moment.`
+
+<Admonition type="note" title="">
+
+**Cause:** more than 60 questions were sent within a minute from the user's IP address, typically because users behind 
+a shared address, like a company network, are counted together. See [Web widget limitations](#web-widget-limitations).
+
+</Admonition>
+
+**What to do:** advise the user to wait a moment and send the question again.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### A bound parameter value is not valid
+
+A question is answered with `the value bound for parameter '...' is not a valid ...`.
+
+<Admonition type="note" title="">
+
+**Cause:** a value bound into the embed link does not match an agent parameter's type, e.g., because the type was changed in
+the agent after the link was generated.
+
+</Admonition>
+
+**What to do:** generate a new embed link with a valid value, as described in [Binding agent parameters](#binding-agent-parameters).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The chat fails
+
+A question is answered with `Chat failed. See server logs for details.`
+
+<Admonition type="note" title="">
+
+**Likely cause:** the agent failed to produce the answer, e.g., because the LLM service or the app's database could not be reached,
+or because the agent has a parameter that the link does not bind (a parameter added to the agent after the link was generated).
+
+</Admonition>
+
+**What to do:** verify that the LLM service behind the agent's AI connection string can be reached, as described in
+[Dashboard: AI connection strings](../dashboard/ai-connection-strings.mdx#test-and-save-the-connection); if the agent's
+parameters were changed, generate a new embed link. The server logs name the exact error.
 
 </ContentFrame>
 

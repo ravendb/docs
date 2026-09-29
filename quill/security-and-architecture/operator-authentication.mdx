@@ -78,13 +78,13 @@ The browser sends this cookie with later requests, so you do not need to enter t
 | --------------------- | ------------------------------------------------------- |
 | Cookie name           | `quill.session`                                         |
 | Flags                 | `HttpOnly`, `Secure`, `SameSite=Strict`                 |
-| Authentication expiry | After 8 hours of inactivity; continued activity renews it |
+| Authentication expiry | Between 4 and 8 hours after the dashboard was last used |
 | Sign out              | Deletes the cookie from the current browser             |
 
 Quill validates the session cookie independently and does not re-check it against the Dashboard API key.  
 Signing out does not invalidate a copy of the cookie held elsewhere.
 
-A session created before the Dashboard API key is changed therefore remains valid until it expires after eight hours of inactivity.
+A session created before the Dashboard API key is changed therefore remains valid until it expires, between 4 and 8 hours after the dashboard was last used.
 Recreating the container with the same persistent volume does not invalidate it. See [Replacing an exposed key](#replacing-an-exposed-key).
 
 <Admonition type="info" title="">
@@ -222,8 +222,8 @@ preserve those values when recreating the container.
 
 * With the default container layout, the web application stores its cookie-protection keys beneath  
   `/var/lib/quill/.aspnet/DataProtection-Keys`, inside the persistent volume.  
-  Recreating the container with that volume preserves the keys, so existing sessions remain valid until they expire after eight hours of inactivity.
-  Continued activity renews the session.
+  Recreating the container with Quill's data volume preserves the keys, so existing sessions remain valid until they expire,
+  between 4 and 8 hours after the dashboard was last used.
 
 * Quill does not currently provide a built-in way to invalidate all active browser sessions.
 
@@ -308,7 +308,7 @@ but does not invalidate browser sessions that were already issued.
 * Quill stores a salted hash in its configuration database and does not expose the original key through its dashboard or API.
   Keep the original value in the password manager or secrets-management service used for your deployment.
     
-* Dashboard sign-in creates a sliding session cookie that expires after eight hours of inactivity.  
+* Dashboard sign-in creates a session cookie that expires between 4 and 8 hours after the dashboard was last used.  
   Programmatic callers send the key with every request using `X-Api-Key` or `Authorization: Bearer`.
     
 * The login rate limit uses a separate bucket for each client IP address.

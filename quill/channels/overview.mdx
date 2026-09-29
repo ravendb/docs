@@ -117,7 +117,8 @@ Agent parameters are bound by the channel, and the source of a parameter's value
 
 * **Users need no account with Quill.**  
   Who can reach a channel depends on the channel type:
-   * A web widget channel is reached by any visitor to a website page that holds one of the channel's embed links.
+   * A web widget channel is reached by any website visitor or phone app user who opens a chat box using one of the channel's
+     embed links.
    * A Telegram bot is reached by any Telegram user who finds the bot.
    * A Slack bot is reached by the members of the workspace the bot is installed in.
    * A Discord bot is reached by the members of a server the bot is in.
@@ -140,7 +141,7 @@ Agent parameters are bound by the channel, and the source of a parameter's value
      chat.  
      A Telegram user can make the agent forget sooner by sending `/clear`; Slack and Discord users cannot.
    * In a web widget channel, the conversation belongs to the embed link that opened the chat box, and lasts as long as the link is valid:
-     all website visitors who open the chat box through the same link share the same conversation, which ends when 
+     all users who open the chat box through the same link share the same conversation, which ends when 
      the link [expires, reaches its chat limit, or is revoked](../channels/web-widget.mdx#invalid-links).
 * **Messages sent faster than the bot answers may go unanswered.**  
   On Telegram, Slack, and Discord, a message a user sends while the bot is still answering waits in a queue that Quill keeps for
@@ -169,34 +170,72 @@ Agent parameters are bound by the channel, and the source of a parameter's value
 The symptoms below may be met by a channel's users, each with its likely cause and what to do about it.  
 The bots' messages are quoted in their default form; a Telegram bot with customized messages shows your texts instead.
 
-**In a chat with a Telegram, Slack, or Discord bot**
+---
 
-* **The bot does not reply to a photo or a file, or replies "I can only read text messages right now."**  
-  Likely cause: the bots answer text-only messages, as stated in
-  [Behavior and limitations common to all channels](#behavior-and-limitations-common-to-all-channels), and the user's message may
-  carry a file, like an image or a document. A Telegram bot gives such a message no reply; a Slack or Discord bot answers with the
-  quoted notice.  
-  What to do: advise the user to send the question as text.  
-  A chat box takes text only, so its users do not meet this symptom.
-* **The bot replies "I'm still working through your earlier messages, so that one didn't make it. Please resend it once I've
-  replied."**  
-  Likely cause: the user may have sent more messages than the bot's queue can hold while an answer was still being composed, as
-  stated in [Behavior and limitations common to all channels](#behavior-and-limitations-common-to-all-channels).  
-  What to do: advise the user to wait for the bot's reply, and then send the message again.  
-  A chat box takes no new message while the agent is still answering, so its users do not meet this symptom.
+### In a chat with a Telegram, Slack, or Discord bot
 
-**In a channel of any type**
+<ContentFrame>
 
-* **The agent answers from outdated information.**  
-  Likely cause: one of the following may have happened.
-  * The app's internal database may not yet hold the latest changes from the source database.  
-    What to do: check the state of the mirroring in the app's **Data source** view, which shows the number of recent writes and
-    reports any errors met while syncing.
-  * The conversation may hold earlier replies carrying data the agent had retrieved, that the agent now reads instead of
-    retrieving the data again.  
-    What to do: a message that asks pointedly for the current data may make the agent retrieve it again.  
-    In any case, the agent retrieves the data again once it forgets the earlier exchange, as described in
-    [Behavior and limitations common to all channels](#behavior-and-limitations-common-to-all-channels).
+##### The bot does not reply to a photo or a file
+
+The bot does not reply to a photo or a file, or replies `I can only read text messages right now.`
+
+<Admonition type="note" title="">
+
+**Likely cause:** the bots answer text-only messages, as stated in
+[Behavior and limitations common to all channels](#behavior-and-limitations-common-to-all-channels), and the user's message may
+carry a file, like an image or a document. A Telegram bot gives such a message no reply; a Slack or Discord bot answers with the
+quoted notice.
+
+</Admonition>
+
+**What to do:** advise the user to send the question as text.  
+A chat box takes text only, so its users do not meet this symptom.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The bot asks to resend a message
+
+The bot replies `I'm still working through your earlier messages, so that one didn't make it. Please resend it once I've replied.`
+
+<Admonition type="note" title="">
+
+**Likely cause:** the user may have sent more messages than the bot's queue can hold while an answer was still being composed, as
+stated in [Behavior and limitations common to all channels](#behavior-and-limitations-common-to-all-channels).
+
+</Admonition>
+
+**What to do:** advise the user to wait for the bot's reply, and then send the message again.  
+A chat box takes no new message while the agent is still answering, so its users do not meet this symptom.
+
+</ContentFrame>
+
+---
+
+### In a channel of any type
+
+<ContentFrame>
+
+##### The agent answers from outdated information
+
+<Admonition type="note" title="">
+
+**Likely cause:** one of the following may have happened.
+
+</Admonition>
+
+* The app's internal database may not yet hold the latest changes from the source database.  
+  **What to do:** check the state of the mirroring in the app's **Data source** view, which shows the number of recent writes and
+  reports any errors met while syncing.
+* The conversation may hold earlier replies carrying data the agent had retrieved, that the agent now reads instead of
+  retrieving the data again.  
+  **What to do:** a message that asks pointedly for the current data may make the agent retrieve it again.  
+  In any case, the agent retrieves the data again once it forgets the earlier exchange, as described in
+  [Behavior and limitations common to all channels](#behavior-and-limitations-common-to-all-channels).
+
+</ContentFrame>
 
 Symptoms specific to a channel type, including those seen in Quill's management dashboard and on the bot's platform, are listed in
 the Troubleshooting section of the type's article: [Telegram bot](../channels/telegram-bot.mdx#troubleshooting),

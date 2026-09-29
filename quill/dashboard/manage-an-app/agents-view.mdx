@@ -60,7 +60,8 @@ To open the Agents view, select the app in Quill's management dashboard and clic
      A dash is shown when the model cannot be resolved.
    * **Last run**  
      The hour at which the agent's most recent conversation started.  
-     This time does not change while an earlier conversation continues.
+     This time does not change while an earlier conversation continues.  
+     A dash is shown while the agent has no conversations.
    * **Conversations**  
      The number of conversations the agent has held.
    * **Prompts**  
@@ -76,7 +77,7 @@ To open the Agents view, select the app in Quill's management dashboard and clic
 
 <Panel heading="The agent's configuration">
 
-An agent's behaviour is set by its configuration.  
+An agent's behavior is set by its configuration.  
 To review and modify an agent's configuration, click the agent's pencil icon in the agents list.
 
 ![The agent's configuration](./assets/agents-view_agent-view.png)
@@ -143,8 +144,17 @@ You can expand or collapse each configuration section: [Basic settings](#basic-s
      **Default**: the LLM may generate a value for the parameter.  
      **Forbid model generation**: the LLM may not generate a value. The value can only be inherited from a parameter of
      the same name in the calling agent, and the call will fail if the calling agent has no such parameter.
+
+     <Admonition type="note" title="">
+
+     **Quill does not currently support sub-agents.**  
+     The dashboard offers no way to add a sub-agent to an agent, and Quill refuses to save an agent configuration that
+     includes sub-agents.
+
+     </Admonition>
+
    * **E. Send to model**  
-     Set whether the parameter's value is included in the text sent to the LLM,  
+     Set whether the parameter's value is included in the text sent to the LLM.  
      **On** (default): the parameter's value is sent to the LLM, and the agent's queries receive the value as well.  
      **Off**: the parameter's value is **not** sent to the LLM. The agent's queries still receive the value.
 
@@ -172,7 +182,8 @@ You can expand or collapse each configuration section: [Basic settings](#basic-s
    * **A. Tool name**  
      The name the LLM uses to trigger the query.  
      A name can be used only once; you cannot give the same name to two query tools, or to a query tool and an
-     [action](#agent-actions).
+     [action](#agent-actions).  
+     A name can contain only letters, digits, underscores (`_`), and hyphens (`-`).
    * **B. Description**  
      A description of the data the query returns.
    * **C. Query**  
@@ -184,6 +195,14 @@ You can expand or collapse each configuration section: [Basic settings](#basic-s
 
      Each placeholder must have exactly one of these sources: Quill refuses to save the agent's configuration if a
      placeholder has neither, or has both.
+
+     <Admonition type="note" title="">
+
+     A query tool returns 32 results at most: when you save the agent's configuration, Quill adds `limit 32` to a query that
+     has no `limit` clause, and replaces a larger limit with 32.
+
+     </Admonition>
+
    * **D. Sample parameters object / Parameters JSON schema**  
      Define, either as a **sample object** or as a **JSON schema**, the parameters the LLM provides when it
      requests this query.  
@@ -220,7 +239,8 @@ You can expand or collapse each configuration section: [Basic settings](#basic-s
      </TabItem>
      </Tabs>
 
-     Either a sample object or a JSON schema must be defined. If you define both, the schema will be applied.
+     If the query takes no values from the LLM, leave both the sample object and the JSON schema empty.  
+     If you define both, the schema will be applied.
 
      <Admonition type="note" title="">
 
@@ -231,13 +251,14 @@ You can expand or collapse each configuration section: [Basic settings](#basic-s
        field, which tells the LLM the parameter's type and what value to provide for it.
 
      </Admonition>
+
    * **E. Allow model queries**  
      Select whether the LLM is allowed to run this query tool.  
-     **True**: the LLM can run the tool whenever needed.  
+     **Default** or **True**: the LLM can run the tool whenever needed.  
      **False**: this tool is not offered to the LLM at all.
    * **F. Add to initial context**  
      Select when Quill runs this query tool.  
-     **Default**: run this tool only when the LLM requests its query.  
+     **Default** or **False**: run this tool only when the LLM requests its query.  
      **True**: also run this tool before the conversation starts, and hand the results to the LLM.  
      e.g., a query that returns the list of product categories can be added to the initial context, so the LLM will
      have this data before the first question arrives.
@@ -252,12 +273,12 @@ You can expand or collapse each configuration section: [Basic settings](#basic-s
    </ContentFrame>
 
 6. **Agent actions**  
-   The agent can use **actions** you define here, that ask Quill to call systems outside Quill.
+   The agent can use the **actions** you define here to have Quill call systems outside Quill.
 
    * The LLM that the agent uses knows of these actions and is free to apply them as needed.
-   * The LLM **cannot** call an outside system directly: it can only request an action from the agent, providing values
-     for any defined parameters, so Quill will make the call.
-   * An outside system's response is passed back to the LLM as a text, indicating whether the call succeeded, the
+   * The LLM **cannot** call an outside system directly: it can only request an action from the agent, with values for
+     the action's parameters if any are defined, and Quill then makes the call.
+   * An outside system's response is passed back to the LLM as text, indicating whether the call succeeded, the
      status code, notable headers, the response body (up to the set limit), and, when the body is cut, a truncation
      marker pointing it out.
 
@@ -280,7 +301,8 @@ You can expand or collapse each configuration section: [Basic settings](#basic-s
 
    * **A. Action name**  
      The name the LLM uses to trigger this action.  
-     A name can be used only once; you cannot give the same name to two actions, or to an action and a query tool.
+     A name can be used only once; you cannot give the same name to two actions, or to an action and a query tool.  
+     A name can contain only letters, digits, underscores (`_`), and hyphens (`-`).
    * **B. Description**  
      A description of the situation in which the agent should trigger this action.
    * **C. Sample parameters object / Parameters JSON schema**  
@@ -316,18 +338,27 @@ You can expand or collapse each configuration section: [Basic settings](#basic-s
      ```
      </TabItem>
      </Tabs>
+
+     Define one of the two, not both: Quill refuses to save an action that has both a sample object and a JSON schema.  
+     If the action takes no values from the LLM, leave both empty.
+
    * **D. Webhook URL**  
      The address Quill calls when the agent triggers the action.  
+     Quill sends the call as a `POST` request whose JSON body holds the values the LLM provided for the action's parameters.  
      The address must be absolute, and start with `http://` or `https://`.
 
      <Admonition type="note" title="">
+
      Quill waits 30 seconds at most for the outside system's response, and does not follow redirects, so the address must
      be the one that answers the call itself.
+
      </Admonition>
+
    * **E. Secret**  
-     An optional value Quill sends with every call, for the receiver to check.
+     An optional value Quill sends with every call in the `X-Quill-Secret` header, for the receiver to check.
    * **F. Max response size (optional)**  
-     The number of response bytes passed back to the agent, 4096 by default and 256 KB at most.
+     The number of response bytes passed back to the agent, 4096 by default.  
+     A value you set must be between 256 and 65536.
 
    </ContentFrame>
 
@@ -336,6 +367,13 @@ You can expand or collapse each configuration section: [Basic settings](#basic-s
 8. **Test agent**  
    Chat with the agent to try the configuration currently in the form, unsaved changes included.  
    The button stays disabled until the system prompt and the connection string are both set.
+
+   <Admonition type="note" title="">
+
+   Actions are left out of a test chat, so the agent is tested without them.
+
+   </Admonition>
+
 9. **Save changes**  
    Save the modified configuration.  
    A save attempted while any configuration section still requires your attention opens all four sections, and marks

@@ -2,7 +2,7 @@
 title: "Getting started: Connecting your database"
 sidebar_label: Connecting your database
 sidebar_position: 4
-description: "Connect Quill to your source PostgreSQL, SQL Server, or MySQL database and choose the tables it may read: the settings and permissions each database needs, the connection details Quill asks for, and the readiness checks it runs before your tables are mapped."
+description: "Connect Quill to your source PostgreSQL, SQL Server, MySQL, or MariaDB database and choose the tables it may read: the settings and permissions each database needs, the connection details Quill asks for, and the readiness checks it runs before your tables are mapped."
 ---
 
 import Admonition from '@theme/Admonition';
@@ -21,8 +21,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Admonition type="note" title="">
 
 * This page covers the third Getting Started step, **Connecting your database**, walking you through the
-  **Add new app** wizard's first stages: pointing Quill at your source PostgreSQL, SQL Server, or MySQL
-  database, and settling the tables it may read.
+  **Add new app** wizard's first stages: pointing Quill at your source PostgreSQL, SQL Server, MySQL, or
+  MariaDB database, and settling the tables it may read.
 
    <Admonition type="info" title="">
 
@@ -68,7 +68,8 @@ Two conditions have to hold before CDC can start:
 * **The source database must be recording its changes.**
    * On PostgreSQL, a database administrator turns change recording on in the server's configuration. Quill then
      creates the objects the change stream needs, as long as the database user whose credentials you provide
-     holds the `REPLICATION` attribute.
+     holds the `REPLICATION` attribute and the `CREATE` privilege on the database, and owns the tables you will select
+     for the app.
    * On SQL Server, Quill turns change recording on for you, as long as the database user is a member of the
      `db_owner` role.
    * On MySQL and MariaDB, the change-recording settings are set by a database administrator, and Quill
@@ -102,23 +103,40 @@ Must be set to `logical`.
 Must be held by the source database user.
 
 * In PostgreSQL, a **role attribute** is a permission attached to a database user.
-* The `REPLICATION` role attribute allows two things: reading the stream of changes, and creating the two objects
-  the stream needs.
-   * A **publication** lists the tables PostgreSQL streams.
-   * A **replication slot** records how far Quill has read, so it resumes from the same point after a restart.
-* With the `REPLICATION` attribute, Quill creates the publication and the replication slot by itself.
+* The stream of changes needs two objects, which Quill creates by itself:
+   * A **publication** that lists the tables PostgreSQL streams.  
+     Creating this object requires the `CREATE` privilege, described below.
+   * A **replication slot** that records how far Quill has read, so it resumes from the same point after a restart.  
+     Creating this object requires the `REPLICATION` attribute.
+* The `REPLICATION` attribute also allows reading the stream of changes.
 * Without the `REPLICATION` attribute, Quill cannot read the stream at all, and reports an error.  
   The error carries the `ALTER ROLE` statement that gives the attribute to the PostgreSQL user Quill connects as,
   which a PostgreSQL superuser can run.
+
+#### The `CREATE` privilege:
+
+Must be held by the source database user on the source database.
+
+* The `CREATE` privilege on a database allows a user to create a publication in this database.
+* Without the `CREATE` privilege, Quill cannot create the publication, and reports an error in the
+  [Verify your schema](#verifying-your-schema) stage.  
+  A database administrator can grant the privilege using `GRANT CREATE ON DATABASE <database> TO <user>;`.
+
+#### Table ownership:
+
+The source database user must own every table you select for the app in the [Verify your schema](#verifying-your-schema) stage.
+
+* Only a table's owner can add the table to a publication.
+* If the source database user does not own one of the selected tables, Quill cannot create the publication, and reports
+  an error in the [Verify your schema](#verifying-your-schema) stage.
 
 ---
 
 <Admonition type="note" title="">
 
-When a row is deleted from **a table that has no primary key**, PostgreSQL does not report which row it was, so
-Quill cannot remove the matching row from its internal database.  
-Quill will therefore show a warning beside every such table when you
-[select the tables](#verifying-your-schema) that your app works with.
+Quill shows a warning beside a PostgreSQL table that has **no primary key**, or whose replica identity is set to `NOTHING`,
+when you [select the tables](#verifying-your-schema) that your app works with, as described in
+[Choosing the tables](#choosing-the-tables).
 
 </Admonition>
 
@@ -412,16 +430,15 @@ Discovered tables are listed for you to select from.
 
    <Admonition type="note" title="">
 
-   On PostgreSQL, a table is listed with a warning beside its name when its rows cannot be identified in delete
-   events, which happens when the table has no primary key.
+   Quill cannot mirror a table that has no primary key, since Quill forms the ID of each document from the primary key
+   values of the row the document is created from.  
+   When you click **Verify schema** in the selection bar, or **Next**, Quill refuses such a table with the message:
+   `Table '…' has no primary key, so CDC cannot derive stable document ids for it.`
 
-   Quill cannot carry out these deletions, when the source database informs that a row was deleted, but doesn't
-   specify which row it was. As a result, the deleted row remains in Quill's internal database.
-
-   Each warning includes a statement that your database administrator can run on the source database for the table
-   that the warning relates to. After its execution, the source database will start recording whole deleted rows
-   of the table, and Quill will be able to remove the matching rows from its internal database.  
-   e.g., `ALTER TABLE <schema>.<table> REPLICA IDENTITY FULL;`
+   For a PostgreSQL source database, Quill also shows a warning beside the name of a table that has no primary key, or
+   whose replica identity is set to `NOTHING`.  
+   The warnings, and what to do about them, are described in
+   [Troubleshooting: A PostgreSQL table is listed with a warning](../troubleshooting.mdx#a-postgresql-table-is-listed-with-a-warning).
 
    </Admonition>
 

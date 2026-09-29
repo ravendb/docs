@@ -29,7 +29,7 @@ import Panel from '@site/src/components/Panel';
     * [Understand the mirrored document structure](#understand-the-mirrored-document-structure)
     * [Identify the mapped collections](#identify-the-mapped-collections)
     * [Inspect the CDC task](#inspect-the-cdc-task)
-    * [Keep direct access read-only when possible](#keep-direct-access-read-only-when-possible)
+    * [Avoid writing through direct access](#avoid-writing-through-direct-access)
   * [Network behavior and limitations](#network-behavior-and-limitations)
     * [Topology discovery](#topology-discovery)
     * [Native TCP features are unavailable](#native-tcp-features-are-unavailable)
@@ -223,7 +223,7 @@ Applications targeting .NET 8 or earlier can load the certificate with `new X509
 `X509CertificateLoader` is the recommended API in .NET 9 and later.
 
 The explicit `collectionName` makes the query target the mapped collection exactly.
-Without it, the RavenDB Client API derives the collection name from the .NET type—for example, `Query<Customer>()` targets `Customers` by default.
+Without it, the RavenDB Client API derives the collection name from the .NET type. For example, `Query<Customer>()` targets `Customers` by default.
 
 The `collectionName` argument applies only to this query.
 To override the collection convention throughout the application, configure `FindCollectionName` before calling `Initialize()`, which freezes the store conventions.
@@ -315,7 +315,7 @@ var task = await store.Maintenance.SendAsync(
 ```
 <br/>
 
-A **User** certificate with **Read** or **Read/Write** access can inspect the task.  
+A **User** certificate with **Read/Write** or **Admin** access can inspect the task.  
 **Admin** access is required to edit, enable, disable, or delete it.
 
 <Admonition type="warning" title="">
@@ -336,10 +336,12 @@ Changes made in RavenDB Studio or through the RavenDB Client API therefore affec
 
 </Panel>
 
-<Panel heading="Keep direct access read-only when possible">
+<Panel heading="Avoid writing through direct access">
 
-For an application that only queries the mirrored data, use a **User** certificate with **Read** access.  
-This prevents the application from changing either the mirrored documents or Quill's internal data.
+Quill does not grant **Read** access: the lowest access level a **User** certificate can have is **Read/Write**, as described in
+[Certificates: Read-only access is not available](../dashboard/certificates.mdx#read-only-access-is-not-available).  
+An application that only queries the mirrored data can therefore still change the mirrored documents and Quill's internal data,
+so make sure the application does not write to the app's database.
 
 <Admonition type="warning" title="">
 
@@ -444,7 +446,8 @@ See [Moving your Quill to a new IP](../networking-and-dns.mdx#moving-your-quill-
 * The RavenDB Client API provides a direct path to the mirrored documents and can be used in addition to Quill agents and channels.
     
 * Generate a **User** client certificate on the dashboard's Certificates page and grant it access only to the intended app.
-  Prefer **Read** access when the application only queries data.
+  An application that only queries data should not write to the app's database: the lowest access level Quill grants is
+  **Read/Write**.
     
 * Configure the `DocumentStore` with `https://db.<domain>`, the app database name, and the downloaded `.pfx` certificate.
     

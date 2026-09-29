@@ -604,123 +604,262 @@ The limits below follow this design and Slack's own rules. None of them can be c
 
 <Panel heading="Troubleshooting">
 
-<Admonition type="note" title="">
-
 Symptoms met by the users of every bot type, not just of a Slack bot, are listed in the channels overview, in
 [Troubleshooting](../channels/overview.mdx#troubleshooting).
-
-</Admonition>
 
 The symptoms below are shown by a Slack bot channel when something goes wrong, each with its likely cause and what to do about it.  
 The first symptoms are seen in Quill's management dashboard: in the channel form and in the channel's [Connect](#the-connect-tab)
 tab. One symptom is seen in the bot's settings on Slack, on the **Event Subscriptions** page. The rest are encountered by the bot's
 users in the Slack client.
 
-<ContentFrame>
+---
 
 ### In the dashboard
 
-* **The `Bot token` field reports "The bot token starts with xoxb- (not a user or app-level token)".**  
-  Likely cause: the pasted token may be the **App token** (`xapp-...`) shown next to the bot token on the **Quill is ready!** page
-  on Slack.  
-  What to do: copy the **Bot User OAuth Token** from the bot's **OAuth & Permissions** page on Slack, as described in
-  [Collecting the bot token and the signing secret](#collecting-the-bot-token-and-the-signing-secret), and paste it in the field.
-* **Clicking `Connect bot` fails with "slack rejected the bot token".**  
-  Likely cause: the token pasted in the form may be incomplete or mistyped, or it may have been revoked on Slack since it was
-  copied.  
-  What to do: copy the **Bot User OAuth Token** from the bot's OAuth & Permissions page on Slack again, and paste it in the form's
-  [Bot token](#filling-in-the-channel-form) field. If the bot was uninstalled, reinstall it from the same page first.
-* **Clicking `Connect bot` fails with "slack is rate-limiting the token check" or "could not reach the Slack API".**  
-  Likely cause: Slack may be limiting Quill's requests for a moment, or the machine that runs Quill may be unable to reach
-  `slack.com`.  
-  What to do: wait a minute or two and try again. If the failure persists, verify that the machine that runs Quill can open HTTPS
-  connections to `slack.com`, as described in [Prerequisites](#prerequisites).
-* **Clicking `Connect bot` fails with "Slack bot ... is already connected".**  
-  Likely cause: the bot is already connected to another channel, in this app or in another app of the deployment; a bot can serve
-  only one channel. When the channel is in another app, the message names that app.  
-  What to do: delete the channel that holds the bot, in this app or in the app the message names, as described in
-  [Pausing and deleting the channel](#pausing-and-deleting-the-channel); or create another bot from the manifest, with a name of its
-  own, as described in [Creating a Slack bot from Quill's manifest](#creating-a-slack-bot-from-quill-s-manifest), and paste the new
-  bot's credentials in this form instead.
-* **The `Connect` tab shows "Token rejected", and the bot does not answer.**  
-  Likely cause: the bot's token may have been revoked on Slack, by **Revoke All OAuth Tokens** on its OAuth & Permissions page or by
-  uninstalling the bot from the workspace.  
-  The users' messages still reach Quill, but the bot cannot post its replies, so the messages are not answered, and are not answered
-  later. Quill re-checks the token every few minutes, so the badge may turn red a few minutes after the revocation. The tab then
-  also shows the red alert "The bot couldn't deliver a reply" under the connection card, which remains until Quill is restarted.
+<ContentFrame>
 
-  ![The Connect tab with a rejected token](./assets/slack-bot_token-rejected.png)
+##### The token is not a bot token
 
-  What to do: reinstall the bot from its OAuth & Permissions page on Slack, copy the new **Bot User OAuth Token** the page then
-  shows, and enter it in the channel, as described in [Rotating the credentials](#rotating-the-credentials).
-* **The `Connect` tab shows a red alert, "A delivery failed signature verification", under the connection card.**  
-  Likely cause: the signing secret held by the channel may differ from the bot's: the secret may have been regenerated on Slack,
-  or mistyped when the channel was added.  
-  Quill rejects the deliveries it cannot verify, so the users' messages are not answered until the secrets match.
+The `Bot token` field reports `The bot token starts with xoxb- (not a user or app-level token)`.
 
-  ![The Connect tab with a failed signature verification](./assets/slack-bot_signature-failed.png)
+<Admonition type="note" title="">
 
-  What to do: copy the **Signing Secret** from the **App Credentials** section of the bot's **Basic Information** page on Slack, and
-  enter it in the channel, as described in [Rotating the credentials](#rotating-the-credentials). The alert disappears once a
-  delivery is verified.
-* **The `Connect` tab shows "Token valid", but "Last message" does not change when users message the bot, and the bot does not
-  answer.**  
-  Likely cause: Slack may not be delivering the messages to Quill: the event subscription may be incomplete, the request URL may
-  have failed Slack's verification, or the deployment may no longer be reachable from the internet.  
-  What to do: open the bot's **Event Subscriptions** page on Slack and check that **Enable Events** is on, that the **Request URL**
-  is marked **Verified**, that `message.im` is listed under **Subscribe to bot events**, and that the changes were saved, as
-  described in [Finishing the event subscription on Slack](#finishing-the-event-subscription-on-slack). If the URL is not verified,
-  see the "Your URL didn't respond." entry below.
-* **The `Connect` tab opens with "This channel is paused, so the bot isn't answering right now."**  
-  Likely cause: the channel was paused, using **Pause** in the header of its details view.  
-  Messages users send while the channel is paused do not reach the agent and are not answered later.  
-  What to do: resume the channel, as described in [Pausing and deleting the channel](#pausing-and-deleting-the-channel).
+**Likely cause:** the pasted token may be the **App token** (`xapp-...`) shown next to the bot token on the **Quill is ready!** page
+on Slack.
+
+</Admonition>
+
+**What to do:** copy the **Bot User OAuth Token** from the bot's **OAuth & Permissions** page on Slack, as described in
+[Collecting the bot token and the signing secret](#collecting-the-bot-token-and-the-signing-secret), and paste it in the field.
 
 </ContentFrame>
 
 <ContentFrame>
+
+##### Slack rejects the bot token
+
+Clicking `Connect bot` fails with `slack rejected the bot token`.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the token pasted in the form may be incomplete or mistyped, or it may have been revoked on Slack since it was
+copied.
+
+</Admonition>
+
+**What to do:** copy the **Bot User OAuth Token** from the bot's OAuth & Permissions page on Slack again, and paste it in the form's
+[Bot token](#filling-in-the-channel-form) field. If the bot was uninstalled, reinstall it from the same page first.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Quill cannot verify the token with Slack
+
+Clicking `Connect bot` fails with `slack is rate-limiting the token check` or `could not reach the Slack API`.
+
+<Admonition type="note" title="">
+
+**Likely cause:** Slack may be limiting Quill's requests for a moment, or the machine that runs Quill may be unable to reach
+`slack.com`.
+
+</Admonition>
+
+**What to do:** wait a minute or two and try again. If the failure persists, verify that the machine that runs Quill can open HTTPS
+connections to `slack.com`, as described in [Prerequisites](#prerequisites).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The bot is already connected
+
+Clicking `Connect bot` fails with `Slack bot ... is already connected`.
+
+<Admonition type="note" title="">
+
+**Cause:** the bot is already connected to another channel, in this app or in another app of the deployment; a bot can serve
+only one channel. When the channel is in another app, the message names that app.
+
+</Admonition>
+
+**What to do:** delete the channel that holds the bot, in this app or in the app the message names, as described in
+[Pausing and deleting the channel](#pausing-and-deleting-the-channel); or create another bot from the manifest, with a name of its
+own, as described in [Creating a Slack bot from Quill's manifest](#creating-a-slack-bot-from-quill-s-manifest), and paste the new
+bot's credentials in this form instead.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The bot's token is rejected
+
+The `Connect` tab shows `Token rejected`, and the bot does not answer.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the bot's token may have been revoked on Slack, by **Revoke All OAuth Tokens** on its OAuth & Permissions page or by
+uninstalling the bot from the workspace.  
+The users' messages still reach Quill, but the bot cannot post its replies, so the messages are not answered, and are not answered
+later. Quill re-checks the token every few minutes, so the badge may turn red a few minutes after the revocation. The tab then
+also shows the red alert "The bot couldn't deliver a reply" under the connection card, which remains until Quill is restarted.
+
+</Admonition>
+
+![The Connect tab with a rejected token](./assets/slack-bot_token-rejected.png)
+
+**What to do:** reinstall the bot from its OAuth & Permissions page on Slack, copy the new **Bot User OAuth Token** the page then
+shows, and enter it in the channel, as described in [Rotating the credentials](#rotating-the-credentials).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Quill rejects the messages Slack delivers
+
+The `Connect` tab shows a red alert, `A delivery failed signature verification`, under the connection card.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the signing secret held by the channel may differ from the bot's: the secret may have been regenerated on Slack,
+or mistyped when the channel was added.  
+Quill rejects the deliveries it cannot verify, so the users' messages are not answered until the secrets match.
+
+</Admonition>
+
+![The Connect tab with a failed signature verification](./assets/slack-bot_signature-failed.png)
+
+**What to do:** copy the **Signing Secret** from the **App Credentials** section of the bot's **Basic Information** page on Slack, and
+enter it in the channel, as described in [Rotating the credentials](#rotating-the-credentials). The alert disappears once a
+delivery is verified.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The bot receives no messages
+
+The `Connect` tab shows `Token valid`, but `Last message` does not change when users message the bot, and the bot does not answer.
+
+<Admonition type="note" title="">
+
+**Likely cause:** Slack may not be delivering the messages to Quill: the event subscription may be incomplete, the request URL may
+have failed Slack's verification, or the deployment may no longer be reachable from the internet.
+
+</Admonition>
+
+**What to do:** open the bot's **Event Subscriptions** page on Slack and check that **Enable Events** is on, that the **Request URL**
+is marked **Verified**, that `message.im` is listed under **Subscribe to bot events**, and that the changes were saved, as
+described in [Finishing the event subscription on Slack](#finishing-the-event-subscription-on-slack). If the URL is not verified,
+see the "Your URL didn't respond." entry below.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The channel is paused
+
+The `Connect` tab opens with `This channel is paused, so the bot isn't answering right now.`
+
+<Admonition type="note" title="">
+
+**Cause:** the channel was paused, using **Pause** in the header of its details view.  
+Messages users send while the channel is paused do not reach the agent and are not answered later.
+
+</Admonition>
+
+**What to do:** resume the channel, as described in [Pausing and deleting the channel](#pausing-and-deleting-the-channel).
+
+</ContentFrame>
+
+---
 
 ### In the bot's settings on Slack
 
-* **The `Request URL` field of the `Event Subscriptions` page shows "Your URL didn't respond."**  
-  Likely cause: Slack may be unable to reach the deployment at the URL: Quill may be stopped, the machine that runs Quill may not
-  accept connections from the internet, or the URL may have been pasted incompletely. A channel that was deleted no longer answers
-  at its URL either.
+<ContentFrame>
 
-  ![The Request URL field after a failed verification](./assets/slack-bot_url-not-responding.png)
+##### Slack cannot verify the Request URL
 
-  What to do: make sure that Quill is running, and that the machine that runs it accepts HTTPS connections from the internet, as
-  described in [Prerequisites](#prerequisites). Then paste the URL again from the channel's [Connect](#the-connect-tab) tab, and
-  click **Retry**. If the channel was deleted, add a channel for the bot again and paste the new channel's request URL instead.
+The `Request URL` field of the `Event Subscriptions` page shows `Your URL didn't respond.`
+
+<Admonition type="note" title="">
+
+**Likely cause:** Slack may be unable to reach the deployment at the URL: Quill may be stopped, the machine that runs Quill may not
+accept connections from the internet, or the URL may have been pasted incompletely. A channel that was deleted no longer answers
+at its URL either.
+
+</Admonition>
+
+![The Request URL field after a failed verification](./assets/slack-bot_url-not-responding.png)
+
+**What to do:** make sure that Quill is running, and that the machine that runs it accepts HTTPS connections from the internet, as
+described in [Prerequisites](#prerequisites). Then paste the URL again from the channel's [Connect](#the-connect-tab) tab, and
+click **Retry**. If the channel was deleted, add a channel for the bot again and paste the new channel's request URL instead.
+
+</ContentFrame>
+
+---
+
+### In the Slack client
+
+<ContentFrame>
+
+##### A user cannot find the bot
+
+<Admonition type="note" title="">
+
+**Likely cause:** the user may not be a member of the workspace the bot is installed in, or the bot may not be listed in the user's
+sidebar.
+
+</Admonition>
+
+**What to do:** if the user is not a member of the workspace, have a workspace admin invite the user. Then advise the user to search
+for the bot's name in the Slack client's search box, and to write in the bot's **Messages** tab, as described in
+[Starting a conversation](#starting-a-conversation).
 
 </ContentFrame>
 
 <ContentFrame>
 
-### In the Slack client
+##### The bot does not reply in a channel or a group message
 
-* **A user cannot find the bot.**  
-  Likely cause: the user may not be a member of the workspace the bot is installed in, or the bot may not be listed in the user's
-  sidebar.  
-  What to do: if the user is not a member of the workspace, have a workspace admin invite the user. Then advise the user to search
-  for the bot's name in the Slack client's search box, and to write in the bot's **Messages** tab, as described in
-  [Starting a conversation](#starting-a-conversation).
-* **The bot does not reply to a message posted in a Slack channel or in a group direct message.**  
-  Likely cause: the bot reads only the direct messages sent to it. A message posted in a Slack channel, such as #general, or in a
-  group direct message with several people, does not reach the bot, even if the message mentions the bot.  
-  What to do: advise the user to send the question in a direct message with the bot.
-* **The bot replies "Sorry - something went wrong handling that message. Please try again."**  
-  Likely cause: one of the following may have happened.
-  * The agent has a parameter the channel does not bind, e.g., a parameter added to the agent after the channel was added.
-  * A parameter is bound to **Sender email**, and the Slack profile of the user who sent the message carries no email address.
-  * The agent failed to answer, e.g., because the database it queries or the LLM service it uses could not be reached.
+The bot does not reply to a message posted in a Slack channel or in a group direct message.
 
-  What to do: if a parameter is shown unbound in the channel's [Parameters](#the-parameters-tab) tab, bind it. If a parameter is
-  bound to **Sender email**, ask the user to check that the Slack profile shows an email address. If every parameter is bound, the
-  agent itself most likely failed to produce the answer: verify that the app's database, and the LLM service behind the agent's AI
-  connection string, can be reached. The connection string can be tested as described in
-  [Dashboard: AI connection strings](../dashboard/ai-connection-strings.mdx#test-and-save-the-connection). Then send the bot a
-  question again.
+<Admonition type="note" title="">
+
+**Cause:** the bot reads only the direct messages sent to it. A message posted in a Slack channel, such as #general, or in a
+group direct message with several people, does not reach the bot, even if the message mentions the bot.
+
+</Admonition>
+
+**What to do:** advise the user to send the question in a direct message with the bot.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The bot reports that something went wrong
+
+The bot replies `Sorry - something went wrong handling that message. Please try again.`
+
+<Admonition type="note" title="">
+
+**Likely cause:** one of the following may have happened.
+
+</Admonition>
+
+* The agent has a parameter the channel does not bind, e.g., a parameter added to the agent after the channel was added.
+* A parameter is bound to **Sender email**, and the Slack profile of the user who sent the message carries no email address.
+* A parameter is bound to a value the agent parameter's type no longer accepts, e.g., because the type was changed in the
+  agent after the channel was added.
+* The agent failed to answer, e.g., because the database it queries or the LLM service it uses could not be reached.
+
+**What to do:** if a parameter is shown unbound in the channel's [Parameters](#the-parameters-tab) tab, bind it. If a parameter is
+bound to **Sender email**, ask the user to check that the Slack profile shows an email address. If an agent parameter's type was
+changed, bind the parameter again in the Parameters tab, with a value or a source that matches the type. If every parameter is
+bound, the agent itself most likely failed to produce the answer: verify that the app's database, and the LLM service behind the
+agent's AI connection string, can be reached. The connection string can be tested as described in [Dashboard: AI connection
+strings](../dashboard/ai-connection-strings.mdx#test-and-save-the-connection). Then send the bot a question again.
 
 </ContentFrame>
 
