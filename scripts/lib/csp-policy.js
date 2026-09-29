@@ -144,6 +144,8 @@ const CSP_DIRECTIVES = {
         "www.facebook.com",
         // Zoho SalesIQ renders the chat panel in an iframe
         "*.zoho.com",
+        // The <Video> component's player
+        "www.youtube-nocookie.com",
     ],
 
     // Stylesheets, fonts and workers pulled in by third-party widgets (Zoho SalesIQ
