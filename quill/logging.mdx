@@ -28,6 +28,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
     
 * In this article:
   * [Log locations](#log-locations)
+  * [Read a log file](#read-a-log-file)
   * [Default logging](#default-logging)
   * [Configure logging with environment variables](#configure-logging-with-environment-variables)
   * [Audit logging](#audit-logging)
@@ -72,6 +73,35 @@ current files in their corresponding rotated-log directories. For example, `web.
   A file written elsewhere in the container is lost when the container is removed unless that location has its own persistent mount.
 
 </Admonition>
+
+</Panel>
+
+<Panel heading="Read a log file">
+
+The file paths listed in [Log locations](#log-locations) are inside the Quill container.  
+Use `docker exec` to read them.
+    
+---    
+
+For example, to show the last 100 lines of `web.log`:
+
+```bash
+docker exec <container-name> tail -n 100 /var/lib/quill/logs/web.log
+```
+<br/>
+
+To follow new messages, including after the log rotates, use `tail -F`. Press `Ctrl+C` to stop.
+
+```bash
+docker exec -it <container-name> tail -F /var/lib/quill/logs/web.log
+```
+<br/>
+
+To browse the log files interactively, open a shell in the container:
+
+```bash
+docker exec -it <container-name> sh
+```
 
 </Panel>
 
