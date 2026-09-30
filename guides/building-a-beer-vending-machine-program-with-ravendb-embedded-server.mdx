@@ -1,10 +1,593 @@
 ---
-title: "Building a Beer Vending Machine with RavenDB Embedded"
-tags: [demo, getting-started]
-description: "Read about Building a Beer Vending Machine with RavenDB Embedded on the RavenDB.net news section"
-external_url: "https://ravendb.net/articles/building-a-beer-vending-machine-program-with-ravendb-embedded-server"
-published_at: 2025-12-23
-image: "https://ravendb.net/wp-content/uploads/2024/11/article-beer-2.jpg"
+title: "When Your Application Owns the Database, RavenDB Embedded"
+tags: [csharp, python, demo, getting-started]
+icon: "server"
+description: "See how RavenDB Embedded lets a C# or Python application start and manage its own local RavenDB server, then build a vending machine whose stock survives restarts."
+published_at: 2026-09-30
+see_also:
+  - title: "RavenDB Embedded"
+    link: "server/embedded"
+    source: "docs"
+    path: "Server"
+  - title: "Replication with Embedded instances"
+    link: "server/clustering/replication/replication-and-embedded-instance"
+    source: "docs"
+    path: "Server > Clustering > Replication"
+  - title: "ravendb-embedded for Python"
+    link: "https://pypi.org/project/ravendb-embedded/"
+    source: "external"
+author: "Paweł Lachowski"
 proficiency_level: "Beginner"
 ---
 
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+Some applications need a proper database but don't need, or can't depend on, a separately deployed database server. Kiosks, industrial machines, edge devices, and offline-first applications often maintain their local state and should continue working even when the surrounding network doesn't.
+
+That's where RavenDB Embedded comes in.
+
+Instead of deploying RavenDB separately and configuring your application to connect to it, the application starts and manages its own RavenDB server. You still get RavenDB and its normal database capabilities, but the server becomes part of how the application is deployed and run rather than a separate piece of infrastructure that someone has to install, configure, and keep alive.
+
+Later in this article, we'll build one of those: a vending machine that keeps the stock of each slot in a local RavenDB database and remembers every sale across restarts. Before we get there, it's worth looking at what Embedded actually means, why you would use it, and what happens when the application starts the server.
+
+## What is RavenDB Embedded?
+
+The word *embedded* can suggest that the database engine is linked directly into the application process, but that isn't how RavenDB Embedded works. The Embedded package starts a real RavenDB server as a separate process, manages that process for the application, and then gives the application a regular `DocumentStore` connected to it.
+
+That distinction matters because RavenDB Embedded is not a reduced edition with a different storage model or a smaller API. The application still works with RavenDB as usual, what changes is who is responsible for running the server.
+
+With a regular RavenDB deployment, the server already exists somewhere, and the application connects to it. With Embedded, the application takes responsibility for starting the RavenDB server it needs and managing its lifecycle.
+
+Once the server is running, the application still works with documents, sessions, queries, indexes, subscriptions, replication, and the rest of RavenDB through the normal client API. Embedded changes the deployment model much more than it changes the way application code talks to the database. Which of those features the server enables depends on its license, exactly as it would for a standalone server; we'll come back to that before we start the server.
+
+## Why use RavenDB Embedded?
+
+Running the database alongside the application makes sense when the application and its data naturally belong together, especially when each installation maintains its own local state and should continue working without depending on a database elsewhere on the network.
+
+A point-of-sale terminal may need to continue accepting transactions when its connection to headquarters is lost. An industrial machine may collect data throughout the day and synchronize it later. A desktop application may need a proper local database without asking the user to install and configure one before the application can even start.
+
+The same applies to the vending machine we'll build later. It needs to remember what is available in each slot and keep that information after a restart, but maintaining a separately configured database service for every machine would add infrastructure without helping the machine do its job.
+
+### Application and database deployed together
+
+Without Embedded, deploying an application with RavenDB typically means deploying two components: the application itself and a RavenDB server the application can reach. You then have to make sure the server is installed, started, and available before the application begins using it.
+
+With Embedded, starting RavenDB becomes part of starting the application. The database is still a real RavenDB server, but the application is responsible for bringing it online, which makes the two pieces much easier to deploy as a single unit.
+
+The common thread is not the type of application but the ownership model: the application owns its local data, and the database belongs to that application rather than to a shared infrastructure layer.
+
+### Local data without falling back to files
+
+For very small amounts of state, writing to a file may be enough, but that approach becomes less attractive as soon as the application starts requiring database-like behavior. Once you need structured queries, reliable updates, persistent operational data, synchronization, or background processing, you start building more and more database behavior around those files.
+
+RavenDB Embedded gives the application a local document database instead, without requiring that database to be deployed and managed as a separate service.
+
+That also means a local application doesn't need one persistence model while it is small and a completely different one later if it becomes part of a larger system. The application is already using RavenDB from the beginning.
+
+### Offline operation
+
+Because the database is running locally, losing a network connection doesn't mean losing access to the application's data. Reads and writes can continue against the local RavenDB server even when the device is disconnected, making Embedded useful for systems that need to keep operating over unreliable connectivity.
+
+The local database does not have to remain isolated forever. An Embedded deployment can still connect back to a wider RavenDB system when the architecture calls for it, which is useful for applications that work locally first and synchronize later.
+
+### When Embedded isn't the right fit
+
+Embedded isn't a replacement for every RavenDB deployment. If many applications need to share a single central database, or if the database should be monitored, upgraded, scaled, and operated independently of any single application, then a standard RavenDB server or cluster is usually the more natural architecture.
+
+Embedded fits best when the application and its local database belong together as a single deployable unit, and when letting the application own the database lifecycle makes the system simpler rather than more complicated.
+
+## How RavenDB Embedded works
+
+So what actually happens when an application starts RavenDB Embedded?
+
+The important thing to keep in mind is that RavenDB remains a server. The Embedded package is responsible for starting and controlling it, while the application communicates with that server through the normal RavenDB client API. There are a few details worth understanding before we start building.
+
+### A real local server
+
+By default, RavenDB Embedded starts the server on the local machine and binds it to the loopback address `127.0.0.1`, making it available to the application without exposing it as a network service.
+
+It keeps the server off the network, but not off the machine: it runs unsecured, and RavenDB allows unsecured access from local addresses by default, so any process on the device can reach it. That is a reasonable default for a database the application owns, and it is why exposing the same server to a network later costs so much more.
+
+The server by default uses a dynamically selected free port, which means the application doesn't need to reserve or hard-code one in advance. The Embedded package handles starting the server, waiting for it to become available, and connecting the application's `DocumentStore` to it.
+
+Both defaults are worth remembering past development. A server bound to loopback on an automatically chosen port is reachable only from the device it runs on, which is exactly what you want from a machine standing in a public corridor, and exactly what makes that machine awkward to look inside once it is deployed. From the application's point of view, the important thing is that it receives a normal RavenDB store and can continue using the regular client API.
+
+### The application owns the server lifecycle
+
+Because the application starts the server, bringing RavenDB online becomes part of application startup rather than a separate operational step. The Embedded API also lets the application stop or restart that server when explicit lifecycle control is needed. RavenDB is still a separate process, but it is no longer separately managed infrastructure.
+
+That difference is one of the main reasons Embedded can simplify deployment. Instead of requiring an operator or installer to prepare RavenDB first and then point the application at it, the application can bring up the database it needs as part of its own startup.
+
+### Persistent local data
+
+By default, Embedded is not temporary or in-memory. RavenDB stores its database files on disk, and the application can control where those files are kept. Starting the application again against the same data directory gives it the same database it was using before the process stopped. You can run the server in memory by passing `--RunInMemory=true` through `CommandLineArgs` in C# or `command_line_args` in Python, but then the data doesn't survive a restart. The RavenDB Test Drivers run in memory by default; Embedded doesn't.
+
+That persistence is going to matter directly in the vending-machine demo. If the last bottle of water has been sold, simply restarting the machine won't put it back, unfortunately. The application may own the server process, but the data outlives that process.
+
+### Configuration when you need it
+
+The common Embedded case is designed to require very little setup, but the application can still control the parts of the server environment that matter to a real deployment.
+
+That includes things such as:
+
+- where the database files are stored,
+- which local address the server uses,
+- where the RavenDB server files come from,
+- which runtime is used to launch the server,
+- licensing,
+- startup and process behavior.
+
+For now, the model to keep in mind is simple:
+
+RavenDB Embedded gives the application its own RavenDB server, lets the application manage that server as part of its lifecycle, and keeps the application's data locally between runs.
+
+## Building the vending machine
+
+Now that we know what RavenDB Embedded is doing for the application, we can put that model into something concrete. The vending machine is deliberately simple: it has five numbered slots, keeps the current stock for each one in a local RavenDB database, and needs to remember every sale even after the application itself has stopped.
+
+We'll build it in seven steps rather than dropping the whole program on the page at once. The code can be switched between C# and Python. The steps are the same in both languages, and where the two Embedded packages differ, that language's tab explains how.
+
+### Step 1: Create the project
+
+Create a console project and install the Embedded package. There is no separate RavenDB installation: the package brings the RavenDB server with it. What differs between the languages is how that server gets the runtime it runs on.
+
+<Tabs groupId="embedded-language">
+<TabItem value="csharp" label="C#" default>
+
+```bash
+dotnet new console -o VendingMachine
+cd VendingMachine
+dotnet add package RavenDB.Embedded
+```
+
+The server files are copied into your build output, and the server runs on a .NET runtime already installed on the machine. That requirement is about the server, not your project: `RavenDB.Embedded` targets `netstandard2.0`, so an existing .NET 8 application can adopt Embedded without retargeting, as long as the machine has the .NET and ASP.NET Core runtimes the server needs: 10.0.11 or a later 10.0 patch for `RavenDB.Embedded` 7.2.6. When the defaults aren't enough, `DotNetPath` and `FrameworkVersion` in `ServerOptions` control which runtime launches the server.
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```bash
+pip install ravendb-embedded
+```
+
+The code goes into a single `vending_machine.py`.
+
+The package ships a framework-dependent RavenDB server inside the wheel, so the machine still needs the .NET and ASP.NET Core runtimes to launch it: 10.0.11 or a later 10.0 patch for `ravendb-embedded` 7.2.6. If `dotnet` is installed somewhere outside `PATH`, point the package at it with `dot_net_path`. Carrying the server also makes the package heavy: the wheel is about 240 MB and expands to about 660 MB on disk.
+
+Python can also run the server without any .NET on the machine. Step 3 shows how.
+
+</TabItem>
+</Tabs>
+
+### Step 2: Add a license
+
+The server starts even without a license. It then runs in AGPL / limited mode: a limited feature set, unsecured access only, and at most 3 CPU cores and 6 GB of RAM. That is fine for following this demo, but the mode is not permitted for production use, and a machine deployed in the field is production.
+
+- For development, get a free developer license at [https://ravendb.net/dev](https://ravendb.net/dev). It is meant for development, CI and QA (not production, staging or UAT), isn't applicable for commercial use, and must be renewed every 6 months.
+- For deployed machines, use a production license from [https://ravendb.net/buy](https://ravendb.net/buy). Embedded servers take the same license types as any other RavenDB server.
+
+Save the license as `license.json` next to the application, and the next step points the server at it. If no license is found, the server starts unlicensed, so you can skip this step while following the demo.
+
+<Admonition type="note" title="Where else the server finds a license">
+Embedded passes the application's environment to the server, so a `RAVEN_License` environment variable on the machine is picked up and takes precedence over `license.json`. Once a license is activated, it is stored in the data directory and stays in effect even if the file or variable is removed. See the [licensing overview](https://docs.ravendb.net/licensing/overview).
+</Admonition>
+
+### Step 3: Start the local database
+
+The machine needs its own RavenDB server and a database called `VendingMachine`. We also give the server an explicit data directory, because persistence is one of the things we want this demo to prove, and point it at the license from step 2.
+
+<Tabs groupId="embedded-language">
+<TabItem value="csharp" label="C#" default>
+
+```csharp
+using Raven.Client.Documents;
+using Raven.Embedded;
+
+var options = new ServerOptions
+{
+    // Absolute. Resolved by the RavenDB server process, whose working
+    // directory is its own folder under bin/, not your project folder.
+    DataDirectory = Path.GetFullPath("RavenDB"),
+
+    Licensing = new ServerOptions.LicensingOptions
+    {
+        LicensePath = Path.GetFullPath("license.json")
+    }
+};
+
+EmbeddedServer.Instance.StartServer(options);
+
+using IDocumentStore store =
+    await EmbeddedServer.Instance.GetDocumentStoreAsync("VendingMachine");
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import os
+
+from ravendb_embedded import EmbeddedServer, ServerOptions
+
+here = os.path.dirname(os.path.abspath(__file__))
+
+options = ServerOptions()
+# Absolute. Resolved by the RavenDB server process, whose working directory
+# is inside the installed package, not your script's folder.
+options.data_directory = os.path.join(here, "RavenDB")
+
+options.licensing.license_path = os.path.join(here, "license.json")
+
+with EmbeddedServer() as server:
+    server.start_server(options)
+
+    with server.get_document_store("VendingMachine") as store:
+        # The next steps go here.
+        pass
+```
+
+<Admonition type="note" title="Running without .NET on the machine">
+Instead of the server bundled in the wheel, the package can download a self-contained RavenDB server built for the current operating system and architecture. That server carries its own runtime, so the machine doesn't need a separate .NET installation, which helps on CI machines and on devices where you don't want to manage another runtime. Call it right after creating the options:
+
+```python
+options = ServerOptions()
+options.with_auto_downloaded_server()
+```
+
+The download happens as soon as `with_auto_downloaded_server()` is called, not when the server starts. It fetches the latest self-contained server in the package's release line (for 7.2.6 on Windows, a 146 MB download that unpacks to about 327 MB) and caches it under `~/.cache/ravendb-embedded/7.2/`. Later calls reuse the cached copy without checking for a newer one, so the server can stay on an older 7.2.x release than the package until you clear the cache.
+
+The first call needs network access. A deployment that must work completely offline can ship a self-contained RavenDB server itself and point the package at it with `with_external_server(...)`.
+</Admonition>
+
+</TabItem>
+</Tabs>
+
+Both versions are doing the same thing: start RavenDB locally, keep its data under the `RavenDB` directory, and obtain a normal RavenDB client store for the `VendingMachine` database. The database is created on the first run if it doesn't exist yet. From this point on, most of the code is no longer specific to Embedded at all; it is ordinary RavenDB client code talking to the server the application just started.
+
+<Admonition type="warning" title="Keep the data directory absolute">
+Use an absolute path, as above. A relative one is not resolved against your application's working directory, but against the RavenDB server's own folder, so `RavenDB` does not create a directory beside your code: it lands inside `site-packages` for Python, or under `bin/` for C#. There, recreating the virtual environment, deleting `bin/`, or simply building in another configuration (`dotnet run -c Release` gets its own `bin/Release/...` folder) leaves the application with a fresh, empty database. For a demo about data outliving the application, that is the one place the database should not be.
+
+The directory also belongs to the running server while it is up, so a second copy of the application won't start alongside the first: its server fails because it can't lock the data directory.
+</Admonition>
+
+The code from the next steps goes into that same file. In C#, the calls from step 7 go right after `GetDocumentStoreAsync`, the static functions from steps 4 to 6 after them, and the `Product` class at the very end of `Program.cs`. In Python, the class and functions go above the `with` block, and the calls from step 7 replace the `pass` inside it. The Studio lines in [Looking inside](#looking-inside) go right after those calls (in Python, still inside the `with` blocks, while the server is running).
+
+### Step 4: Give each slot a document
+
+A vending-machine slot already gives us a useful identity, so we'll use it directly in the document id. Slot 1 becomes `products/1`, slot 2 becomes `products/2`, and so on.
+
+Each document only needs the slot number, product name, and current stock.
+
+<Tabs groupId="embedded-language">
+<TabItem value="csharp" label="C#" default>
+
+```csharp
+static string SlotId(int number) => $"products/{number}";
+
+public class Product
+{
+    public string? Id { get; set; }
+    public int Number { get; set; }
+    public string? Name { get; set; }
+    public int Stock { get; set; }
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+class Product:
+    def __init__(
+        self,
+        Id: str = None,
+        Number: int = 0,
+        Name: str = None,
+        Stock: int = 0,
+    ):
+        self.Id = Id
+        self.Number = Number
+        self.Name = Name
+        self.Stock = Stock
+
+
+def slot_id(number: int) -> str:
+    return f"products/{number}"
+```
+
+</TabItem>
+</Tabs>
+
+The predictable id matters for more than convenience. When the machine starts tomorrow, slot 5 is still slot 5, so the application can check whether `products/5` already exists instead of blindly creating another copy of the same product.
+
+### Step 5: Stock a new machine without restocking every reboot
+
+We'll start with five products:
+
+- Water — 10
+- Cola — 5
+- Orange Soda — 8
+- Chocolate Bar — 6
+- Chips — 2
+
+The initialization routine checks each expected document before storing it. On a brand-new database that creates the inventory, on every subsequent start, the existing documents are left exactly as they are.
+
+<Tabs groupId="embedded-language">
+<TabItem value="csharp" label="C#" default>
+
+```csharp
+static async Task InitializeInventoryAsync(IDocumentStore store)
+{
+    var inventory = new[]
+    {
+        new Product { Id = SlotId(1), Number = 1, Name = "Water",         Stock = 10 },
+        new Product { Id = SlotId(2), Number = 2, Name = "Cola",          Stock = 5  },
+        new Product { Id = SlotId(3), Number = 3, Name = "Orange Soda",   Stock = 8  },
+        new Product { Id = SlotId(4), Number = 4, Name = "Chocolate Bar", Stock = 6  },
+        new Product { Id = SlotId(5), Number = 5, Name = "Chips",         Stock = 2  }
+    };
+
+    using var session = store.OpenAsyncSession();
+
+    foreach (var product in inventory)
+    {
+        if (await session.LoadAsync<Product>(product.Id) is null)
+            await session.StoreAsync(product);
+    }
+
+    await session.SaveChangesAsync();
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+def initialize_inventory(store):
+    inventory = [
+        Product(slot_id(1), 1, "Water", 10),
+        Product(slot_id(2), 2, "Cola", 5),
+        Product(slot_id(3), 3, "Orange Soda", 8),
+        Product(slot_id(4), 4, "Chocolate Bar", 6),
+        Product(slot_id(5), 5, "Chips", 2),
+    ]
+
+    with store.open_session() as session:
+        for product in inventory:
+            if session.load(product.Id, Product) is None:
+                session.store(product, product.Id)
+
+        session.save_changes()
+```
+
+</TabItem>
+</Tabs>
+
+This is the first place where the local database matters to the behavior of the machine. Initialization is allowed to fill an empty database, but application startup is **not** the same thing as physically restocking the machine, so existing stock values must survive untouched.
+
+### Step 6: Sell one product
+
+A sale only needs one document. Load the selected slot, make sure something is still available, decrement its stock, and save the session.
+
+<Tabs groupId="embedded-language">
+<TabItem value="csharp" label="C#" default>
+
+```csharp
+static async Task SellAsync(IDocumentStore store, int selection)
+{
+    using var session = store.OpenAsyncSession();
+
+    var product = await session.LoadAsync<Product>(SlotId(selection));
+
+    if (product is null || product.Stock <= 0)
+    {
+        Console.WriteLine($"Slot {selection} is unavailable.");
+        return;
+    }
+
+    product.Stock--;
+    await session.SaveChangesAsync();
+
+    Console.WriteLine($"Dispensing {product.Name}.");
+
+    if (product.Stock == 0)
+        Console.WriteLine($"Slot {product.Number} is empty and needs restocking.");
+    else
+        Console.WriteLine($"{product.Stock} remaining in slot {product.Number}.");
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+def sell(store, selection: int):
+    with store.open_session() as session:
+        product = session.load(slot_id(selection), Product)
+
+        if product is None or product.Stock <= 0:
+            print(f"Slot {selection} is unavailable.")
+            return
+
+        product.Stock -= 1
+        session.save_changes()
+
+        print(f"Dispensing {product.Name}.")
+
+        if product.Stock == 0:
+            print(f"Slot {product.Number} is empty and needs restocking.")
+        else:
+            print(f"{product.Stock} remaining in slot {product.Number}.")
+```
+
+</TabItem>
+</Tabs>
+
+There is nothing special about this operation because RavenDB happens to be Embedded. Once the application has its store, loading and saving the product works just like it would against another RavenDB deployment, which is exactly the separation we wanted: Embedded owns the server lifecycle, while the rest of the application keeps using the normal client API. The one practical difference is that the server runs on the same machine, so the sale doesn't wait on a remote database or depend on the network being up. Selling from more than one thread at a time would need concurrency handling, which is a RavenDB client concern rather than an Embedded one and out of scope here.
+
+<Admonition type="note" title="Transactions">
+Embedding RavenDB doesn't change its [transaction guarantees](https://docs.ravendb.net/client-api/faq/transaction-support). The changes saved by a single `SaveChanges()` call are executed in a single ACID transaction, so the batch either succeeds entirely or none of its changes are persisted. A recorded sale is just as durable as it would be on a separate server, and the five products stored in step 5 are saved together or not at all.
+</Admonition>
+
+<Admonition type="note" title="Reacting to an empty slot">
+The sale only prints that a slot needs restocking. A real machine could turn that into a signal with a RavenDB [Data Subscription](https://docs.ravendb.net/client-api/data-subscriptions/what-are-data-subscriptions): client code processes changes as the server sends them, so the application can react when a product reaches zero stock instead of running a loop that keeps checking every slot. RavenDB keeps track of subscription progress, so processing can stop and later continue from where it left off. An unlicensed server allows up to three subscriptions per database.
+</Admonition>
+
+### Step 7: Sell on every start
+
+All that's left is to call the two functions. For the demo, initialize the machine and sell one packet of Chips every time the application runs:
+
+<Tabs groupId="embedded-language">
+<TabItem value="csharp" label="C#" default>
+
+```csharp
+await InitializeInventoryAsync(store);
+await SellAsync(store, 5);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+initialize_inventory(store)
+sell(store, 5)
+```
+
+</TabItem>
+</Tabs>
+
+### Restart it and keep the inventory
+
+Now we get to the behavior the demo was built to show.
+
+Run the application once:
+
+<Tabs groupId="embedded-language">
+<TabItem value="csharp" label="C#" default>
+
+```bash
+dotnet run
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```bash
+python vending_machine.py
+```
+
+</TabItem>
+</Tabs>
+
+On the first run, slot 5 starts with two packets of Chips, so the result is:
+
+```text
+Dispensing Chips.
+1 remaining in slot 5.
+```
+
+Stop the application and start it again. The initialization code finds `products/5` already in the database and leaves it alone, so the second run starts from the stock value written by the first:
+
+```text
+Dispensing Chips.
+Slot 5 is empty and needs restocking.
+```
+
+Start it a third time and the same document is still at zero:
+
+```text
+Slot 5 is unavailable.
+```
+
+The application process has stopped twice and RavenDB has been started again twice, but the inventory has continued from the state stored on disk. That's the Embedded behavior the demo is meant to prove: the application can own the RavenDB server lifecycle without owning the lifetime of the data itself. To run the demo from the beginning again, stop the application and delete the `RavenDB` directory.
+
+## Looking inside
+
+Because the application is running a real RavenDB server, RavenDB Studio is still available. Where you can reach it from is a different question, and the answer depends on whether you are looking at your own machine or at a deployed one.
+
+### On the machine you're developing on
+
+The Embedded API can open Studio for the local server without making you find the dynamically selected port yourself: use `OpenStudioInBrowser()` in C# or `open_studio_in_browser()` in Python.
+
+One detail matters here, and it follows directly from the application owning the server lifecycle. The demo above finishes its sale and exits, which stops the child server with it. In C# that happens when the process ends; in Python it happens when the `with EmbeddedServer()` block closes. A browser needs a few seconds and a live server, so the program has to stay running long enough for Studio to load:
+
+<Tabs groupId="embedded-language">
+<TabItem value="csharp" label="C#" default>
+
+```csharp
+EmbeddedServer.Instance.OpenStudioInBrowser();
+
+Console.WriteLine("Studio is open. Press Enter to stop the server.");
+Console.ReadLine();
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+server.open_studio_in_browser()
+
+input("Studio is open. Press Enter to stop the server.")
+```
+
+</TabItem>
+</Tabs>
+
+The server now lives exactly as long as that prompt goes unanswered. Press Enter and the normal shutdown path runs. If the application is killed instead, the server notices that its parent process is gone and shuts itself down a few seconds later. It is still holding the data directory while the prompt is open, so this is not the moment to start a second run and watch the numbers change.
+
+Open the `VendingMachine` database and the `Products` collection, then inspect `products/5`. After the second run, its `Stock` value should be `0`, and restarting the application won't change it. The other four slots are the more interesting part of the same view: `products/1` through `products/4` still hold their starting stock, which is the initialization behavior from earlier in one screen.
+
+### On a deployed machine
+
+That call opens a browser on the host where the code is running. On a development box that is your own browser, which is the whole point. On a vending machine in a corridor there is no browser, no display and usually nobody at a keyboard, and if there were, you would be putting a database administration tool on the screen in front of a customer. Studio is not how you inspect a deployed device.
+
+That isn't a gap in Embedded so much as the earlier defaults doing their job. A server bound to loopback on a port chosen at startup is a database that cannot be reached from anywhere except the device itself, on an address that changes every time it starts. That is a good security posture and an inconvenient support story, and a fleet needs an answer to the second half. Roughly in order of how little they cost you:
+
+- Forward the port and run Studio from your own machine. Open an SSH tunnel to the device, forward the RavenDB port to your laptop, and point your browser at the forwarded address. This works despite the loopback binding because the connection to RavenDB is made on the device itself, which is what loopback allows; SSH only carries the result back to you over its own authenticated channel. This is the one place where the automatically selected port stops being a convenience: give the server a fixed local address in `ServerOptions` (for example `ServerUrl = "http://127.0.0.1:8080"` in C#, or `options.server_url = "http://127.0.0.1:8080"` in Python) so the same tunnel command works on every device and after every restart.
+- Don't inspect the device at all. Replicate the machine's database to a central RavenDB and read it there. This turns "what is in slot 5 on machine 214" into a query against a database you already have open, for the whole fleet at once, and it keeps working while the machine itself is unreachable. It needs a license on the device that includes replication (see the note below).
+- Bind the server to a network interface. This looks like the easy option and costs the most. It gives up the loopback property that made the local server safe by default: by default RavenDB accepts unsecured connections only from local addresses, so exposing the device responsibly means setting up certificates and authentication, and secured mode requires a license.
+
+<Admonition type="note" title="Replicating to a central database">
+An Embedded database doesn't have to remain an island. It can [replicate](https://docs.ravendb.net/server/clustering/replication/replication-and-embedded-instance) to another RavenDB database like any other server, so the machine keeps selling from its local data while it is disconnected and sends its changes to the central deployment when the connection is available.
+
+Replication is a licensed feature. An unlicensed server can't create an external replication task or act as a pull-replication sink, so a device that should send its data anywhere needs a license that includes [external replication](https://docs.ravendb.net/server/ongoing-tasks/external-replication) or [hub/sink replication](https://docs.ravendb.net/server/ongoing-tasks/hub-sink-replication).
+
+Copies that work independently can also change the same document while disconnected. RavenDB tracks document versions with change vectors, detects when replicated versions diverge, and applies the configured conflict resolution: selecting the latest version (the default), applying a conflict-resolution script, or leaving the conflict to be resolved explicitly. See [replication conflicts](https://docs.ravendb.net/server/clustering/replication/replication-conflicts). Offline operation and later synchronization don't require building a separate conflict system around the local database.
+</Admonition>
+
+Studio isn't something the physical vending machine needs in order to operate. It's how we inspect what the Embedded server is storing while we build and test the application. Once the machine is in the field, the data is easier to reach through a tunnel or a replication destination than through the device's own screen.
+
+## Complete examples
+
+The snippets above build the application piece by piece. Complete, runnable versions live separately, so the article doesn't need to repeat all of that code in one large block. They contain everything shown here, organized as three commands: `sell [slot]` (the default, which sells from slot 5), `list` to show every slot, and `studio` for the Studio step. They load `license.json` only when the file exists. The C# version is a single-file app for the .NET 10 SDK, so you run it with `dotnet run vending_machine.cs` instead of creating a project.
+
+- [Complete C# Example](https://gist.github.com/Netzach-Nyss/670993719580af0a193cf8b728b97be1)
+- [Complete Python Example](https://gist.github.com/Netzach-Nyss/875a7606b17ec06adfda0dacd5f0d655)
+
+## Embedded cheatsheet
+
+| **What you want** | **C#** | **Python** |
+|---|---|---|
+| Start the server | `StartServer()` | `start_server()` |
+| Get a database store | `GetDocumentStoreAsync(...)` | `get_document_store(...)` |
+| Choose the data directory | `DataDirectory` | `data_directory` |
+| Open Studio (in a browser on the host running the code) | `OpenStudioInBrowser()` | `open_studio_in_browser()` |
+| Restart the server | `RestartServerAsync()` | `restart_server()` |
+| Stop the server | `StopServerAsync()` | `stop_server()` |
+
+The method names follow each language's conventions, but the lifecycle is the same: the application starts its local RavenDB server, gets a normal client store, and lets Embedded manage the server alongside the application.
+
+## What we built
+
+The application logic is intentionally small because the interesting part of the demo isn't the inventory bookkeeping. It's where that state lives and what happens to it when the application goes away.
+
+The application starts its own RavenDB server, keeps its data in a local persistent database, uses the standard RavenDB client to work with it, and finds that same data again after both the application and the server have restarted. C# and Python arrive there through slightly different APIs and packaging, but the Embedded model underneath them is the same.
+
+And because that local database is still RavenDB, keeping the data beside the application doesn't turn it into a separate or reduced storage system. The same server that holds the machine's stock also gives it ACID transactions, Data Subscriptions for reacting to changes such as an empty slot, and replication to a central database, with conflict handling when disconnected copies meet again. The application can stay self-contained when that's what the deployment needs, while still having the option to participate in a wider RavenDB architecture later.
+
+Grab a free developer license at [https://ravendb.net/dev](https://ravendb.net/dev) and try Embedded in an application that needs to keep its data close. If you build something interesting with it, share it with us and the community on Discord: [https://discord.gg/ravendb](https://discord.gg/ravendb)
