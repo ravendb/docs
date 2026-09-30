@@ -453,6 +453,18 @@ order by score()
 </TabItem>
 </Tabs>
 
+<Admonition type="note" title="">
+    
+#### Scoring with Corax    
+
+* Not every condition uses relevance-based scoring.       
+  In **RavenDB 7.2.6 and later**, when using the Corax search engine, an `exists()` condition   
+  (`whereExists()` in the Java client) contributes a constant score to each matching document.  
+  A `where true` condition contributes no score.    
+* Learn more in [Corax: Scoring](../../../indexes/search-engine/corax.mdx#scoring).
+
+</Admonition>
+
 <Admonition type="info" title="">
 
 #### Get resulting score:

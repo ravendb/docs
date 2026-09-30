@@ -39,38 +39,45 @@ Applying a boost value to an index-field allows prioritization of matching docum
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="LINQ_index" label="LINQ_index">
-```java
-public static class Orders_ByCountries_BoostByField
-        extends AbstractIndexCreationTask {
-    public Orders_ByCountries_BoostByField() {
-        // Boost index-field 'ShipToCountry':
-        // * Use method 'Boost', pass a numeric value to boost by
-        // * Documents that match the query criteria for this field will rank higher
-        map = "from order in docs.Orders " +
-              "let company = LoadDocument(order.Company, \"Companies\") " +
-              "select new { " +
-              "    ShipToCountry = order.ShipTo.Country.Boost(10), " +
-              "    CompanyCountry = company.Address.Country " +
-              "}";
-    }
-}
+```python
+class Orders_ByCountries_BoostByField(AbstractIndexCreationTask):
+    class IndexEntry:
+        def __init__(self, ShipToCountry: str = None, CompanyCountry: str = None):
+            # Index-field 'ShipToCountry' will be boosted in the map definition below
+            self.ShipToCountry = ShipToCountry
+            self.CompanyCountry = CompanyCountry
+
+    def __init__(self):
+        super().__init__()
+        # Boost index-field 'ShipToCountry':
+        # * Use method 'Boost', pass a numeric value to boost by
+        # * Documents that match the query criteria for this field will rank higher
+        self.map = (
+            "from order in docs.Orders "
+            'let company = LoadDocument(order.Company, "Companies") '
+            "select new { "
+            "    ShipToCountry = order.ShipTo.Country.Boost(10), "
+            "    CompanyCountry = company.Address.Country "
+            "}"
+        )
 ```
 </TabItem>
 <TabItem value="JavaScript_index" label="JavaScript_index">
-```java
-public static class Orders_ByCountries_BoostByField_JS
-        extends AbstractJavaScriptIndexCreationTask {
-    public Orders_ByCountries_BoostByField_JS() {
-        setMaps(Sets.newHashSet(
-            "map('orders', function(order) {" +
-            "    let company = load(order.Company, 'Companies');" +
-            "    return {" +
-            "        ShipToCountry: boost(order.ShipTo.Country, 10)," +
-            "        CompanyCountry: company.Address.Country" +
-            "    };" +
-            "})"));
-    }
-}
+```python
+class Orders_ByCountries_BoostByField_JS(AbstractJavaScriptIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.maps = {
+            """
+            map('orders', function(order) {
+                let company = load(order.Company, 'Companies')
+                return {
+                    ShipToCountry: boost(order.ShipTo.Country, 10),
+                    CompanyCountry: company.Address.Country
+                };
+            })
+            """
+        }
 ```
 </TabItem>
 </Tabs>
@@ -79,19 +86,21 @@ public static class Orders_ByCountries_BoostByField_JS
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-```java
-List<Order> orders = session
-     // Query the index
-    .query(Order.class, Orders_ByCountries_BoostByField.class)
-    .whereEquals("ShipToCountry", "Poland")
-    .orElse()
-    .whereEquals("CompanyCountry", "Portugal")
-    .toList();
+```python
+orders = list(
+    session.query_index_type(
+        Orders_ByCountries_BoostByField, Orders_ByCountries_BoostByField.IndexEntry
+    )
+    .where_equals("ShipToCountry", "Poland")
+    .or_else()
+    .where_equals("CompanyCountry", "Portugal")
+    .of_type(Order)
+)
 
-// Because index-field 'ShipToCountry' was boosted (inside the index definition),
-// then documents containing 'Poland' in their 'ShipTo.Country' field
-// will get a higher score than documents containing a company
-// that is located in 'Portugal'.
+# Because index-field 'ShipToCountry' was boosted (inside the index definition),
+# then documents containing 'Poland' in their 'ShipTo.Country' field
+# will get a higher score than documents containing a company
+# that is located in 'Portugal'.
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -112,41 +121,47 @@ Applying a boost value to the whole index-entry allows prioritization of matchin
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="LINQ_index" label="LINQ_index">
-```java
-public static class Orders_ByCountries_BoostByIndexEntry
-        extends AbstractIndexCreationTask {
-    public Orders_ByCountries_BoostByIndexEntry() {
-        // Boost the whole index-entry:
-        // * Use method 'Boost'
-        // * Pass a document-field that will set the boost level dynamically
-        //   per document indexed.
-        // * The boost level will vary from one document to another
-        //   based on the value of this field.
-        map = "from order in docs.Orders " +
-              "let company = LoadDocument(order.Company, \"Companies\") " +
-              "select new { " +
-              "    ShipToCountry = order.ShipTo.Country, " +
-              "    CompanyCountry = company.Address.Country " +
-              "}.Boost((float) order.Freight)";
-    }
-}
+```python
+class Orders_ByCountries_BoostByIndexEntry(AbstractIndexCreationTask):
+    class IndexEntry:
+        def __init__(self, ShipToCountry: str = None, CompanyCountry: str = None):
+            self.ShipToCountry = ShipToCountry
+            self.CompanyCountry = CompanyCountry
+
+    def __init__(self):
+        super().__init__()
+        # Boost the whole index-entry:
+        # * Use method 'Boost'
+        # * Pass a document-field that will set the boost level dynamically
+        #   per document indexed.
+        # * The boost level will vary from one document to another
+        #   based on the value of this field.
+        self.map = (
+            "from order in docs.Orders "
+            'let company = LoadDocument(order.Company, "Companies") '
+            "select new { "
+            "    ShipToCountry = order.ShipTo.Country, "
+            "    CompanyCountry = company.Address.Country "
+            "}.Boost((float) order.Freight)"
+        )
 ```
 </TabItem>
 <TabItem value="JavaScript_index" label="JavaScript_index">
-```java
-public static class Orders_ByCountries_BoostByIndexEntry_JS
-        extends AbstractJavaScriptIndexCreationTask {
-    public Orders_ByCountries_BoostByIndexEntry_JS() {
-        setMaps(Sets.newHashSet(
-            "map('orders', function(order) {" +
-            "    let company = load(order.Company, 'Companies');" +
-            "    return boost({" +
-            "        ShipToCountry: order.ShipTo.Country," +
-            "        CompanyCountry: company.Address.Country" +
-            "    }, order.Freight);" +
-            "})"));
-    }
-}
+```python
+class Orders_ByCountries_BoostByIndexEntry_JS(AbstractJavaScriptIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.maps = {
+            """
+            map('orders', function(order) {
+                let company = load(order.Company, 'Companies')
+                return boost({
+                    ShipToCountry: order.ShipTo.Country,
+                    CompanyCountry: company.Address.Country
+                }, order.Freight)
+            })
+            """
+        }
 ```
 </TabItem>
 </Tabs>
@@ -155,18 +170,21 @@ public static class Orders_ByCountries_BoostByIndexEntry_JS
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-```java
-List<Order> orders = session
-     // Query the index
-    .query(Order.class, Orders_ByCountries_BoostByIndexEntry.class)
-    .whereEquals("ShipToCountry", "Poland")
-    .orElse()
-    .whereEquals("CompanyCountry", "Portugal")
-    .toList();
+```python
+orders = list(
+    session.query_index_type(
+        Orders_ByCountries_BoostByIndexEntry,
+        Orders_ByCountries_BoostByIndexEntry.IndexEntry,
+    )
+    .where_equals("ShipToCountry", "Poland")
+    .or_else()
+    .where_equals("CompanyCountry", "Portugal")
+    .of_type(Order)
+)
 
-// The resulting score per matching document is affected by
-// the value of the document-field 'Freight'.
-// Documents with a higher 'Freight' value will rank higher.
+# The resulting score per matching document is affected by
+# the value of the document-field 'Freight'.
+# Documents with a higher 'Freight' value will rank higher.
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -208,9 +226,9 @@ where ShipToCountry == "poland" or CompanyCountry == "portugal"
 ---
     
 * **Corax scoring for `exists()` and `where true`**:
-  * In RavenDB 7.2.6 and later, when Corax calculates a score for a query, an `exists()` condition (`whereExists()` in the Java client) 
+  * In RavenDB 7.2.6 and later, when Corax calculates a score for a query, an `exists()` condition (`where_exists()` in the Python client) 
     contributes `1` multiplied by its query boost, once per matching document, regardless of the field's value or number of values.  
-  * For example, `.whereExists("Fax").boost(3)` (`boost(exists(Fax), 3)` in RQL) contributes `3` before any index-entry boost is applied.  
+  * For example, `.where_exists("Fax").boost(3)` (`boost(exists(Fax), 3)` in RQL) contributes `3` before any index-entry boost is applied.  
   * A `where true` condition contributes no score.  
   * Learn more in [Corax: Scoring](../../indexes/search-engine/corax.mdx#scoring).
 

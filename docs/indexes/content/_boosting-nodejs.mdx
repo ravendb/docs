@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
@@ -9,9 +11,9 @@ import CodeBlock from '@theme/CodeBlock';
   calculated by the underlying engine for each document in the results.  
 
 * Providing a **boost value** to selected fields allows prioritization of the resulting documents.  
-  The boos value is integrated with the basic score, increasing the document rank.  
+  The boost value is integrated with the basic score, increasing the document rank.  
 
-* The automatic ordering of results by their score is [configurable](../../indexes/boosting.mdx#automatic-score-based-ordering).  
+* The automatic ordering of results by their score is [configurable](#automatic-score-based-ordering).  
 
 * Boosting can be achieved in the following ways:
 
@@ -21,27 +23,28 @@ import CodeBlock from '@theme/CodeBlock';
     * **Via index definition**:  
       By applying a boost factor in the index definition, as described in this article.  
  
-* In this page:
-    * [Assign a boost factor to an index-field](../../indexes/boosting.mdx#assign-a-boost-factor-to-an-index-field)
-    * [Assign a boost factor to the index-entry](../../indexes/boosting.mdx#assign-a-boost-factor-to-the-index-entry)
-    * [Automatic score-based ordering](../../indexes/boosting.mdx#automatic-score-based-ordering)
-    * [Corax vs Lucene: boosting differences](../../indexes/boosting.mdx#automatic-score-based-ordering)
+* In this article:
+    * [Assign a boost factor to an index-field](#assign-a-boost-factor-to-an-index-field)
+    * [Assign a boost factor to the index-entry](#assign-a-boost-factor-to-the-index-entry)
+    * [Automatic score-based ordering](#automatic-score-based-ordering)
+    * [Corax vs Lucene: boosting differences](#corax-vs-lucene-boosting-differences)
 
 </Admonition>
-## Assign a boost factor to an index-field
+
+<Panel heading="Assign a boost factor to an index-field">
 
 Applying a boost value to an index-field allows prioritization of matching documents based on an index-field.
+    
 ##### The index:
 
-<TabItem value="index_1" label="index_1">
-<CodeBlock language="js">
-{`class Orders_ByCountries_BoostByField extends AbstractCsharpIndexCreationTask \{
-    constructor() \{
+```js
+class Orders_ByCountries_BoostByField extends AbstractCsharpIndexCreationTask {
+    constructor() {
         super();
 
-        this.map = \`from order in docs.Orders
+        this.map = `from order in docs.Orders
              let company = LoadDocument(order.Company, "Companies")
-             select new \{
+             select new {
              
                  // Boost index-field 'ShipToCountry':
                  // * Use method 'Boost', pass a numeric value to boost by 
@@ -49,19 +52,17 @@ Applying a boost value to an index-field allows prioritization of matching docum
                 
                  ShipToCountry = order.ShipTo.Country.Boost(10),
                  CompanyCountry = company.Address.Country
-             \}\`;
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+             }`;
+    }
+}
+```
 
 ##### The query:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="js">
-{`const orders = await session
+```js
+const orders = await session
     .query({ indexName: "Orders/ByCountries/BoostByField" })
     .whereEquals("ShipToCountry", "Poland")
     .orElse()
@@ -69,81 +70,79 @@ Applying a boost value to an index-field allows prioritization of matching docum
     .all();
 
 // Because index-field 'ShipToCountry' was boosted (inside the index definition),
-// then documents containing 'Poland' in their 'ShipTo.Country' field will get a higher score than
-// documents containing a company that is located in 'Portugal'.
-`}
-</CodeBlock>
+// then documents containing 'Poland' in their 'ShipTo.Country' field
+// will get a higher score than documents containing a company
+// that is located in 'Portugal'.
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from index "Orders/ByCountries/BoostByField"
+```sql
+from index "Orders/ByCountries/BoostByField"
 where ShipToCountry == "poland" or CompanyCountry == "portugal"
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Assign a boost factor to the index-entry
+<Panel heading="Assign a boost factor to the index-entry">
 
 Applying a boost value to the whole index-entry allows prioritization of matching documents by content from the document.
+    
 ##### The index:
 
-<TabItem value="index_2" label="index_2">
-<CodeBlock language="js">
-{`class Orders_ByCountries_BoostByIndexEntry extends AbstractCsharpIndexCreationTask \{
-    constructor() \{
+```js
+class Orders_ByCountries_BoostByIndexEntry extends AbstractCsharpIndexCreationTask {
+    constructor() {
         super();
 
-        this.map = \`from order in docs.Orders
+        this.map = `from order in docs.Orders
              let company = LoadDocument(order.Company, "Companies")
-             select new \{
+             select new {
                  ShipToCountry = order.ShipTo.Country,
                  CompanyCountry = company.Address.Country
-             \}
+             }
              
              // Boost the whole index-entry:
              // * Use method 'Boost'
-             // * Pass a document-field that will set the boost level dynamically per document indexed.  
-             // * The boost level will vary from one document to another based on the value of this field.
+             // * Pass a document-field that will set the boost level dynamically
+             //   per document indexed.
+             // * The boost level will vary from one document to another
+             //   based on the value of this field.
             
-             .Boost(order.Freight)\`;
-    \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+             .Boost(order.Freight)`;
+    }
+}
+```
 
 ##### The query:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="js">
-{`const orders = await session
+```js
+const orders = await session
     .query({ indexName: "Orders/ByCountries/BoostByIndexEntry" })
     .whereEquals("ShipToCountry", "Poland")
     .orElse()
     .whereEquals("CompanyCountry", "Portugal")
     .all();
 
-// The resulting score per matching document is affected by the value of the document-field 'Freight'. 
+// The resulting score per matching document is affected by
+// the value of the document-field 'Freight'.
 // Documents with a higher 'Freight' value will rank higher.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from index "Orders/ByCountries/BoostByIndexEntry"
+```sql
+from index "Orders/ByCountries/BoostByIndexEntry"
 where ShipToCountry == "poland" or CompanyCountry == "portugal"
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
+</Panel>
 
-
-## Automatic score-based ordering
+<Panel heading="Automatic score-based ordering">
 
 * By default, whenever boosting is applied, either via dynamic querying or when querying an index 
   that has a boosting factor in its definition, the results will be automatically ordered by the score.  
@@ -154,21 +153,28 @@ where ShipToCountry == "poland" or CompanyCountry == "portugal"
 * Refer to the [Get resulting score](../../querying/sorting-query-results/sort-query-results.mdx#get-resulting-score) 
   section to learn how to retrieve the calculated score of each result.  
 
+</Panel>
 
+<Panel heading="Corax vs Lucene: boosting differences">
 
-## Corax vs Lucene: boosting differences
+* **Boosting features available:**  
+  * When using **Corax** as the underlying indexing engine, a boost factor can only be assigned to the [index-entry](#assign-a-boost-factor-to-the-index-entry).  
+    Applying a boost factor to an _index-field_ is Not supported.    
+  * When using **Lucene**, a boost factor can be assigned to both the index-field and the whole index-entry.  
 
-* **Boosting features available:**
-
-    * When using **Corax** as the underlying indexing engine, you can only [assign a boost factor to the index-entry](../../indexes/boosting.mdx#assign-a-boost-factor-to-the-index-entry).  
-      Applying a boost factor to an index-field is Not supported.
-
-    * When using **Lucene**, you can assign a boost factor to both the index-field and the whole index-entry.
-
+---
+    
 * **Algorithm used**:  
-  Corax ranks search results using the [BM25 algorithm](https://en.wikipedia.org/wiki/Okapi_BM25).   
-  Other search engines, e.g. Lucene, may use a different ranking algorithm and return different search results.
+  * Corax uses the [BM25 algorithm](https://en.wikipedia.org/wiki/Okapi_BM25) to score term-based conditions.  
+  * Other search engines, e.g. Lucene, may use a different ranking algorithm and return different search results.  
 
+---
+    
+* **Corax scoring for `exists()` and `where true`**:
+  * In RavenDB 7.2.6 and later, when Corax calculates a score for a query, an `exists()` condition (`whereExists()` in the Node.js client) 
+    contributes `1` multiplied by its query boost, once per matching document, regardless of the field's value or number of values.  
+  * For example, `.whereExists("Fax").boost(3)` (`boost(exists(Fax), 3)` in RQL) contributes `3` before any index-entry boost is applied.  
+  * A `where true` condition contributes no score.  
+  * Learn more in [Corax: Scoring](../../indexes/search-engine/corax.mdx#scoring).
 
-
-
+</Panel>
