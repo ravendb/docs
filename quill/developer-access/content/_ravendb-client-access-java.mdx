@@ -22,7 +22,7 @@ import Panel from '@site/src/components/Panel';
     * [Understand the mirrored document structure](#understand-the-mirrored-document-structure)
     * [Identify the mapped collections](#identify-the-mapped-collections)
     * [Inspect the CDC task](#inspect-the-cdc-task)
-    * [Write only to your application's own documents](#write-only-to-your-applications-own-documents)
+    * [Write only to your application's own documents](#write-only-to-your-application-s-own-documents)
   * [Network behavior and limitations](#network-behavior-and-limitations)
     * [Topology discovery](#topology-discovery)
     * [Native TCP features are unavailable](#native-tcp-features-are-unavailable)
@@ -364,9 +364,10 @@ Changes made in RavenDB Studio or through the RavenDB Client API therefore affec
 <Panel heading="Write only to your application's own documents">
 
 For an application that only queries the mirrored data, use a **User** certificate with the minimum available **Read/Write** access and keep the application logically read-only.  
-Quill does not grant new **Read** permissions, so this access level does not technically prevent writes.
+Quill does not grant new **Read** permissions, so this access level does not technically prevent writes.  
+Learn more in: [Certificates: Read-only access is not available](../../dashboard/certificates.mdx#read-only-access-is-not-available).
 
-<Admonition type="warning" title="">
+<Admonition type="info" title="">
 
 #### Writes do not update the source database
 
