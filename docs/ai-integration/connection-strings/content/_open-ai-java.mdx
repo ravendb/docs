@@ -120,6 +120,10 @@ import Panel from '@site/src/components/Panel';
      * All other non-empty values are trimmed and sent without validation or case conversion.  
        This allows new provider values to be used without waiting for a RavenDB release.  
        Providers match the value exactly; OpenAI requires lowercase values.
+   
+   * The Java Client API's `OpenAiReasoningEffort` enum exposes only `MINIMAL`, `LOW`, `MEDIUM`, and `HIGH`,  
+     which the client sends as `Minimal`, `Low`, `Medium`, and `High`.  
+     Use Studio or the C# Client API to configure `none`, `xhigh`, `max`, or a custom provider value.
     
 4. **Prompt Cache Key** (optional)
     
@@ -173,78 +177,82 @@ import Panel from '@site/src/components/Panel';
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Connection_string_for_text_embedding_model" label="Connection_string_for_text_embedding_model">
-```csharp
-using (var store = new DocumentStore())
-{
+```java
+try (IDocumentStore store = new DocumentStore(
+        new String[] { "http://localhost:8080" }, "YourDatabase")) {
+    store.initialize();
+
     // Define the connection string to OpenAI
-    var connectionString = new AiConnectionString
-    {
-        // Connection string Name & Identifier
-        Name = "ConnectionStringToOpenAI", 
-        Identifier = "identifier-to-the-connection-string", // optional
-        
-        // Model type
-        ModelType = AiModelType.TextEmbeddings,
-        
-        // OpenAI connection settings
-        OpenAiSettings = new OpenAiSettings
-        {
-            ApiKey = "your-api-key",
-            Endpoint = "https://api.openai.com/v1",
-    
-            // Name of text embedding model to use
-            Model = "text-embedding-3-small",
-            
-            // Optionally, override the default maximum number of query embedding batches
-            // that can be processed concurrently 
-            EmbeddingsMaxConcurrentBatches = 10
-        }
-    };
-    
+    AiConnectionString connectionString = new AiConnectionString();
+
+    // Connection string Name & Identifier
+    connectionString.setName("ConnectionStringToOpenAI");
+    connectionString.setIdentifier("identifier-to-the-connection-string"); // optional
+
+    // Model type
+    connectionString.setModelType(AiModelType.TextEmbeddings);
+
+    // OpenAI connection settings
+    OpenAiSettings openAiSettings = new OpenAiSettings();
+    openAiSettings.setApiKey("your-api-key");
+    openAiSettings.setEndpoint("https://api.openai.com/v1");
+
+    // Name of text embedding model to use
+    openAiSettings.setModel("text-embedding-3-small");
+
+    // Optionally, override the default maximum number of query embedding batches
+    // that can be processed concurrently
+    openAiSettings.setEmbeddingsMaxConcurrentBatches(10);
+
+    connectionString.setOpenAiSettings(openAiSettings);
+
     // Deploy the connection string to the server
-    var putConnectionStringOp = 
-        new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
+    PutConnectionStringOperation<AiConnectionString> putConnectionStringOp =
+        new PutConnectionStringOperation<>(connectionString);
+    PutConnectionStringResult putConnectionStringResult =
+        store.maintenance().send(putConnectionStringOp);
 }
 ```
 </TabItem>
 <TabItem value="Connection_string_for_chat_model" label="Connection_string_for_chat_model">
-```csharp
-using (var store = new DocumentStore())
-{
+```java
+try (IDocumentStore store = new DocumentStore(
+        new String[] { "http://localhost:8080" }, "YourDatabase")) {
+    store.initialize();
+
     // Define the connection string to OpenAI
-    var connectionString = new AiConnectionString
-    {
-        // Connection string Name & Identifier
-        Name = "ConnectionStringToOpenAI", 
-        Identifier = "identifier-to-the-connection-string", // optional
-        
-        // Model type
-        ModelType = AiModelType.Chat,
-        
-        // OpenAI connection settings
-        OpenAiSettings = new OpenAiSettings
-        {
-            ApiKey = "your-api-key",
-            Endpoint = "https://api.openai.com/v1",
-    
-            // Name of chat model to use
-            Model = "gpt-5.1",
-            
-            // Optionally, set the reasoning effort supported by the selected model.
-            // Since GPT-5.1 accepts Temperature only with 'none',
-            // this example leaves Temperature unset.
-            ReasoningEffort = "low",
-            
-            // Optionally, enable or disable prompt prefix caching
-            EnablePromptCache = true
-        }
-    };
-    
+    AiConnectionString connectionString = new AiConnectionString();
+
+    // Connection string Name & Identifier
+    connectionString.setName("ConnectionStringToOpenAI");
+    connectionString.setIdentifier("identifier-to-the-connection-string"); // optional
+
+    // Model type
+    connectionString.setModelType(AiModelType.Chat);
+
+    // OpenAI connection settings
+    OpenAiSettings openAiSettings = new OpenAiSettings();
+    openAiSettings.setApiKey("your-api-key");
+    openAiSettings.setEndpoint("https://api.openai.com/v1");
+
+    // Name of chat model to use
+    openAiSettings.setModel("gpt-5.1");
+
+    // Optionally, set the reasoning effort supported by the selected model.
+    // Since GPT-5.1 accepts temperature only with 'none',
+    // this example leaves temperature unset.
+    openAiSettings.setReasoningEffort(OpenAiReasoningEffort.LOW);
+
+    // Optionally, enable or disable prompt prefix caching
+    openAiSettings.setEnablePromptCache(true);
+
+    connectionString.setOpenAiSettings(openAiSettings);
+
     // Deploy the connection string to the server
-    var putConnectionStringOp = 
-        new PutConnectionStringOperation<AiConnectionString>(connectionString);
-    var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
+    PutConnectionStringOperation<AiConnectionString> putConnectionStringOp =
+        new PutConnectionStringOperation<>(connectionString);
+    PutConnectionStringResult putConnectionStringResult =
+        store.maintenance().send(putConnectionStringOp);
 }
 ```
 </TabItem>
@@ -255,64 +263,105 @@ using (var store = new DocumentStore())
 <Panel heading="Syntax">
 
 <TabItem value="open_ai_settings" label="open_ai_settings">
-```csharp
-public class AiConnectionString
-{
-    public string Name { get; set; }
-    public string Identifier { get; set; }
-    public AiModelType ModelType { get; set; }
-    public OpenAiSettings OpenAiSettings { get; set; }
+```java
+public final class AiConnectionString extends ConnectionString {
+    private String identifier;
+    private AiModelType modelType;
+    private OpenAiSettings openAiSettings;
+    // getters and setters, e.g.:
+    // setName(), setIdentifier(), setModelType(), setOpenAiSettings()
 }
 
-public class OpenAiSettings : AbstractAiSettings
-{
-    public string ApiKey { get; set; }
-    public string Endpoint { get; set; }
-    public string Model { get; set; }
-    
-    public string OrganizationId { get; set; } // default organization is used if not set 
-    public string ProjectId { get; set; }      // default project is used if not set
-    
-    // Relevant only for TEXT EMBEDDING models:
-    // Specifies the number of dimensions in the generated embedding vectors.
-    public int? Dimensions { get; set; } // optional
-    
-    // Relevant only for CHAT models:
-    // Controls the randomness and creativity of the model’s output.
-    // Higher values (e.g., 1.0 or above) produce more diverse and creative responses.
-    // Lower values (e.g., 0.2) result in more focused and deterministic output.    
-    // If set to 'null', the temperature is not sent and the model's default will be used.
-    // RavenDB does not validate model compatibility; it sends any configured value.    
-    // For model names matching GPT-5.4 or later, RavenDB separately forces
-    // reasoning effort to 'none'.
-    // OpenAI documents that GPT-5.4 supports temperature only with reasoning effort 'none'.
-    // This does not guarantee that later models or compatible providers support temperature.    
-    // OpenAI GPT-5.1 and GPT-5.2 also support it only with 'none';
-    // older GPT-5 models do not support it.    
-    public double? Temperature { get; set; } // optional
-    
+public enum AiModelType {
+    TextEmbeddings,
+    Chat
+}
+
+public final class OpenAiSettings extends OpenAiBaseSettings {
+
+    // Constructors:
+    // OpenAiSettings()
+    // OpenAiSettings(String apiKey, String endpoint, String model)
+    // OpenAiSettings(String apiKey, String endpoint, String model,
+    //                Integer dimensions, Double temperature)
+    // OpenAiSettings(String apiKey, String endpoint, String model,
+    //                String organizationId, String projectId)
+    // OpenAiSettings(String apiKey, String endpoint, String model,
+    //                String organizationId, String projectId,
+    //                Integer dimensions)
+    // OpenAiSettings(String apiKey, String endpoint, String model,
+    //                String organizationId, String projectId,
+    //                Integer dimensions, Double temperature)
+    // OpenAiSettings(String apiKey, String endpoint, String model,
+    //                String organizationId, String projectId,
+    //                Integer dimensions, Double temperature,
+    //                OpenAiReasoningEffort reasoningEffort, Integer seed)
+
+    private String organizationId; // default organization is used if not set
+    private String projectId;      // default project is used if not set
+
     // Relevant only for CHAT models:
     // Controls the amount of internal reasoning performed by supported models.
+    // The Java client exposes only MINIMAL, LOW, MEDIUM, and HIGH,
+    // sent as 'Minimal', 'Low', 'Medium', and 'High';
+    // RavenDB converts these exact PascalCase values to lowercase.
     // For model names matching GPT-5.4 or later, RavenDB sends 'none' even when unset.
-    // For other model names, null or whitespace omits the setting.
-    public string ReasoningEffort { get; set; } // optional
-    
+    // For other model names, null omits the setting.
+    private OpenAiReasoningEffort reasoningEffort; // optional
+
     // Relevant only for CHAT models:
     // Available through the Client API only; it is not exposed in Studio.
     // Makes the model's sampling more reproducible across requests.
     // Does not guarantee deterministic output.
-    public int? Seed { get; set; } // optional
-    
+    private Integer seed; // optional
+
+    // getters and setters
+}
+
+public abstract class OpenAiBaseSettings extends AbstractAiSettings {
+    private String apiKey;
+    private String endpoint;
+    private String model;
+
+    // Relevant only for TEXT EMBEDDING models:
+    // Specifies the number of dimensions in the generated embedding vectors.
+    private Integer dimensions; // optional
+
+    // Relevant only for CHAT models:
+    // Controls the randomness and creativity of the model's output.
+    // Higher values (e.g., 1.0 or above) produce more diverse and creative responses.
+    // Lower values (e.g., 0.2) result in more focused and deterministic output.
+    // If null, the temperature is not sent and the model's default will be used.
+    // RavenDB does not validate model compatibility; it sends any configured value.
+    // For model names matching GPT-5.4 or later, RavenDB separately forces
+    // reasoning effort to 'none'.
+    // OpenAI documents that GPT-5.4 supports temperature only with reasoning effort 'none'.
+    // This does not guarantee that later models or compatible providers support temperature.
+    // OpenAI GPT-5.1 and GPT-5.2 also support it only with 'none';
+    // older GPT-5 models do not support it.
+    private Double temperature; // optional
+
     // Relevant only for CHAT models:
     // Controls whether the 'prompt_cache_key' field is included in chat completion requests.
     // When enabled, the conversation's document ID is sent as the cache key to the AI provider.
     // Default: enabled (true) for OpenAI and OpenAI-compatible providers
-    public bool? EnablePromptCache { get; set; } // optional
+    private Boolean enablePromptCache; // optional
+
+    // getters and setters
 }
 
-public class AbstractAiSettings
-{
-    public int? EmbeddingsMaxConcurrentBatches { get; set; }
+public enum OpenAiReasoningEffort {
+    MINIMAL,
+    LOW,
+    MEDIUM,
+    HIGH
+}
+
+public abstract class AbstractAiSettings {
+    // Maximum number of query embedding batches that can be processed concurrently
+    private Integer embeddingsMaxConcurrentBatches; // optional
+
+    // getters and setters
 }
 ```
 </TabItem>
