@@ -2,6 +2,7 @@ import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 import remarkPanelHeadings from "./src/plugins/remark-panel-headings";
+import { createVideoEmbedChecks } from "./src/plugins/remark-video-embeds";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { CURRENT_VERSION, ACTIVE_VERSIONS, LEGACY_VERSIONS } = require("./scripts/lib/version-policy.js") as {
     CURRENT_VERSION: string;
@@ -22,6 +23,8 @@ function getOnlyIncludeVersions(): string[] | undefined {
 }
 
 const isStrict = process.env.DOCUSAURUS_STRICT === "true";
+
+const videoEmbeds = createVideoEmbedChecks();
 
 // Per-version `noIndex: true` - Docusaurus injects noindex meta
 const legacyVersionsAsNoIndex: Record<string, { noIndex: true }> = Object.fromEntries(
@@ -98,7 +101,7 @@ const config: Config = {
             {
                 docs: {
                     sidebarPath: "sidebars.ts",
-                    beforeDefaultRemarkPlugins: [remarkPanelHeadings],
+                    beforeDefaultRemarkPlugins: [remarkPanelHeadings, videoEmbeds.remarkVideoEmbeds],
                     routeBasePath: "/",
                     includeCurrentVersion: true,
                     lastVersion: "current",
@@ -131,7 +134,7 @@ const config: Config = {
             "content-docs",
             {
                 id: "cloud",
-                beforeDefaultRemarkPlugins: [remarkPanelHeadings],
+                beforeDefaultRemarkPlugins: [remarkPanelHeadings, videoEmbeds.remarkVideoEmbeds],
                 path: "cloud",
                 routeBasePath: "cloud",
                 sidebarPath: require.resolve("./sidebarsCloud.js"),
@@ -142,7 +145,7 @@ const config: Config = {
             "content-docs",
             {
                 id: "quill",
-                beforeDefaultRemarkPlugins: [remarkPanelHeadings],
+                beforeDefaultRemarkPlugins: [remarkPanelHeadings, videoEmbeds.remarkVideoEmbeds],
                 path: "quill",
                 routeBasePath: "quill",
                 sidebarPath: require.resolve("./sidebarsQuill.js"),
@@ -153,7 +156,7 @@ const config: Config = {
             "content-docs",
             {
                 id: "guides",
-                beforeDefaultRemarkPlugins: [remarkPanelHeadings],
+                beforeDefaultRemarkPlugins: [remarkPanelHeadings, videoEmbeds.remarkVideoEmbeds],
                 path: "guides",
                 routeBasePath: "guides",
                 sidebarPath: require.resolve("./sidebarsGuides.js"),
@@ -164,7 +167,7 @@ const config: Config = {
             "content-docs",
             {
                 id: "templates",
-                beforeDefaultRemarkPlugins: [remarkPanelHeadings],
+                beforeDefaultRemarkPlugins: [remarkPanelHeadings, videoEmbeds.remarkVideoEmbeds],
                 path: "templates",
                 routeBasePath: "templates",
                 sidebarPath: require.resolve("./sidebarsTemplates.js"),
@@ -175,7 +178,7 @@ const config: Config = {
             "content-docs",
             {
                 id: "samples",
-                beforeDefaultRemarkPlugins: [remarkPanelHeadings],
+                beforeDefaultRemarkPlugins: [remarkPanelHeadings, videoEmbeds.remarkVideoEmbeds],
                 path: "samples",
                 routeBasePath: "samples",
                 sidebarPath: require.resolve("./sidebarsSamples.js"),
@@ -193,6 +196,7 @@ const config: Config = {
         ],
         require.resolve("./src/plugins/recent-guides-plugin"),
         require.resolve("./src/plugins/versioned-seo-plugin"),
+        videoEmbeds.videoAvailabilityPlugin,
         require.resolve("./src/plugins/recent-samples-plugin"),
     ],
     headTags: [

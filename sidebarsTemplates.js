@@ -102,6 +102,11 @@ export default {
                     id: "see-also",
                     label: "See also",
                 },
+                {
+                    type: "doc",
+                    id: "video",
+                    label: "Video",
+                },
             ],
         },
     ],
