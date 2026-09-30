@@ -652,14 +652,15 @@ The bot replies `Sorry - something went wrong handling that message. Please try 
 </Admonition>
 
 * A parameter is bound to a value the agent parameter's type no longer accepts, e.g., because the type was changed in the
-  agent after the channel was added.
+  agent after the channel was added.  
+  **What to do:** bind the parameter again in the channel's [Parameters](#the-parameters-tab) tab, with a value or a source
+  that matches the type.
 * The agent failed to produce the answer, e.g., because the database it queries or the LLM service it uses could not be
-  reached.
+  reached.  
+  **What to do:** verify that the app's database, and the LLM service behind the agent's AI connection string, can be reached.
+  The connection string can be tested as described in [Dashboard: AI connection strings](../dashboard/ai-connection-strings.mdx#test-and-save-the-connection).
 
-**What to do:** if an agent parameter's type was changed, bind the parameter again in the channel's [Parameters](#the-parameters-tab)
-tab, with a value or a source that matches the type. Otherwise, verify that the app's database, and the LLM service behind the
-agent's AI connection string, can be reached. The connection string can be tested as described in [Dashboard: AI connection
-strings](../dashboard/ai-connection-strings.mdx#test-and-save-the-connection). Then try the bot from your own Telegram account.
+After the fix, try the bot from your own Telegram account.
 
 </ContentFrame>
 

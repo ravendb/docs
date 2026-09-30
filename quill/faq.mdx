@@ -777,7 +777,8 @@ Updating Quill does not renew the license, and renewing the license does not res
 
 </Admonition>
 
-Quill writes its startup and readiness messages to the container's output, which `docker logs` shows.  
+Quill writes its status messages (e.g., `Status: READY`, or `ERROR: ravendb is down` when the RavenDB server stops) to the
+container's output, which `docker logs` shows.  
 The other logs are files inside Quill's container, most of them under `/var/lib/quill/logs`. For example, `web.log` holds Quill's
 application messages, including agent and chat activity.
 

@@ -709,16 +709,16 @@ The bot replies `Sorry - something went wrong handling that message. Please try 
 
 </Admonition>
 
-* The agent has a parameter the channel does not bind, e.g., a parameter added to the agent after the channel was added.
+* The agent has a parameter the channel does not bind, e.g., a parameter added to the agent after the channel was added.  
+  **What to do:** bind the parameter, shown unbound in the channel's [Parameters](#the-parameters-tab) tab.
 * A parameter is bound to a value the agent parameter's type no longer accepts, e.g., because the type was changed in the
-  agent after the channel was added.
-* The agent failed to answer, e.g., because the database it queries or the LLM service it uses could not be reached.
+  agent after the channel was added.  
+  **What to do:** bind the parameter again in the Parameters tab, with a value or a source that matches the type.
+* The agent failed to answer, e.g., because the database it queries or the LLM service it uses could not be reached.  
+  **What to do:** verify that the app's database, and the LLM service behind the agent's AI connection string, can be reached.
+  The connection string can be tested as described in [Dashboard: AI connection strings](../dashboard/ai-connection-strings.mdx#test-and-save-the-connection).
 
-**What to do:** if a parameter is shown unbound in the channel's [Parameters](#the-parameters-tab) tab, bind it. If an agent
-parameter's type was changed, bind the parameter again in the Parameters tab, with a value or a source that matches the type. If
-every parameter is bound, the agent itself failed to produce the answer: verify that the app's database, and the LLM service
-behind the agent's AI connection string, can be reached. The connection string can be tested as described in [Dashboard: AI
-connection strings](../dashboard/ai-connection-strings.mdx#test-and-save-the-connection). Then send the bot a question again.
+After the fix, send the bot a question again.
 
 </ContentFrame>
 

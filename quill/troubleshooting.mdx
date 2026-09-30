@@ -117,11 +117,14 @@ The terminal prints `Status: FAILED` with `Reason: activation failed; see server
 
 </Admonition>
 
-**What to do:** to find the error that stopped the activation, read `web.log`, using the command shown in
-[Starting Quill: When Quill does not come up](getting-started/starting-quill.mdx#when-quill-does-not-come-up).  
-After correcting the problem the error names, restart the container using `docker restart quill-<name>`, with your
-container's name instead of `quill-<name>`. Quill attempts the activation once each time it starts, so it does not retry a
-failed activation until the container restarts.
+**What to do:**
+
+1. Read `web.log` to find the error that stopped the activation, using the command shown in
+   [Starting Quill: When Quill does not come up](getting-started/starting-quill.mdx#when-quill-does-not-come-up).
+2. Correct the problem the error names.
+3. Restart the container using `docker restart quill-<name>`, with your container's name instead of `quill-<name>`.  
+   Quill attempts the activation once each time it starts, so it does not retry a failed activation until the container
+   restarts.
 
 </ContentFrame>
 
@@ -180,16 +183,27 @@ container: the server did not answer within 30 seconds of the attempt, or answer
 
 </Admonition>
 
-**What to do:** wait for Quill's next attempt. After a failed attempt, the web application tries again 15 seconds later, and keeps
-trying until the RavenDB server answers. The terminal then prints `Status: READY`.  
-If the terminal does not print `Status: READY`, read the RavenDB server's logs to find the reason the server does not answer,
-using the commands shown in [Quill is running but not serving requests](#quill-is-running-but-not-serving-requests).
+**What to do:**
+
+1. Wait for Quill's next attempt.  
+   After a failed attempt, the web application tries again 15 seconds later, and keeps trying until the RavenDB server
+   answers. The terminal then prints `Status: READY`.
+2. If the terminal does not print `Status: READY`, read the web application's log, in which each failed attempt is recorded
+   with its error, using the command below with your container's name instead of `quill-<name>`.
+
+   ```bash
+   docker exec quill-<name> sh -c "tail -40 /var/lib/quill/logs/web.log"
+   ```
+   <br />
+
+3. To find the reason the RavenDB server does not answer, read the server's logs, using the commands shown in
+   [Quill is running, but is not serving requests](#quill-is-running-but-is-not-serving-requests).
 
 </ContentFrame>
 
 <ContentFrame>
 
-##### Quill is running but not serving requests
+##### Quill is running, but is not serving requests
 
 The terminal prints `Status: DEGRADED - the appliance is not serving requests`.
 
@@ -200,19 +214,74 @@ channels, cannot reach the RavenDB server inside Quill's container.
 
 </Admonition>
 
-**What to do:** to find the reason the web application cannot reach the RavenDB server, read the RavenDB server's logs,
-using the commands below with your container's name instead of `quill-<name>`.  
-The first command prints the server process's output (e.g., a crash). The second prints the server's own log file, in
-which the server records its errors.
+**What to do:** read the web application's log, in which its failed attempts to reach the RavenDB server are recorded with
+their error (e.g., `Connection refused` when the RavenDB server is not running), using the command below with your
+container's name instead of `quill-<name>`.
 
 ```bash
-docker exec quill-<name> sh -c "tail -40 /var/lib/quill/logs/ravendb.log"
+docker exec quill-<name> sh -c "tail -40 /var/lib/quill/logs/web.log"
 ```
 <br />
 
-```bash
-docker exec quill-<name> sh -c "tail -40 /var/lib/quill/logs/ravendb-server/server.log"
-```
+To find the reason the RavenDB server does not answer, read the server's logs using the commands below:
+
+* The server's own log file, in which the server records its errors, including the reason it failed to start, if it did.
+
+  ```bash
+  docker exec quill-<name> sh -c "tail -40 /var/lib/quill/logs/ravendb-server/server.log"
+  ```
+  <br />
+
+* The server process's console output, including the full error when the server fails to start.  
+  The terminal names this file when the RavenDB server stops: it prints `ERROR: ravendb is down` or
+  `ERROR: ravendb stopped unexpectedly and was restarted`, followed by `Details: /var/lib/quill/logs/ravendb.log`.
+
+  ```bash
+  docker exec quill-<name> sh -c "tail -40 /var/lib/quill/logs/ravendb.log"
+  ```
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The terminal reports that a Quill service is down
+
+The terminal prints `ERROR: <service> is down` or `ERROR: <service> stopped unexpectedly and was restarted`, followed by
+`Details:` and the service's log file.
+
+<Admonition type="note" title="">
+
+**Cause:** one of the services inside Quill's container stopped. Quill starts a stopped service again, and the terminal then
+prints `<service> is back up`.
+
+</Admonition>
+
+The effect depends on the service that stopped:
+
+* `web`, Quill's web application  
+  While `web` is down, the management dashboard and the channels do not answer, and the terminal prints no status.
+* `proxy`, nginx, which receives every connection to Quill  
+  While `proxy` is down, nothing outside Quill's container reaches Quill, although the terminal may still show
+  `Status: READY`.
+* `certwatch`, which reloads nginx when Quill's certificate is renewed  
+  While `certwatch` is down, the dashboard answers as usual.
+
+For `ravendb`, see [Quill is running, but is not serving requests](#quill-is-running-but-is-not-serving-requests).
+
+**What to do:**
+
+1. Wait for the terminal to print `<service> is back up`. For `web`, also wait for `Status: READY`.
+2. If the service stays down or keeps stopping, read the log file named in the `Details:` line (e.g., when nginx cannot
+   start, `proxy.log` records the reason), using the command below with the service's name instead of `<service>` and your
+   container's name instead of `quill-<name>`.
+
+   ```bash
+   docker exec quill-<name> sh -c "tail -40 /var/lib/quill/logs/<service>.log"
+   ```
+   <br />
+
+3. If the log names a cause that another entry on this page describes, follow that entry. Otherwise, contact support, as
+   described in [Contacting support](#contacting-support), and include the log lines you found.
 
 </ContentFrame>
 
@@ -291,11 +360,14 @@ Signing in fails with the message: `We couldn't sign you in. Please try again in
 
 ##### The dashboard API key is lost
 
-**What to do:** find the key in the Docker command the container was started with.  
-If the container still uses the key issued at sign-up, you can also find the key in the email sent at sign-up, or
-[sign up again](https://ravendb.net/quill/start) with the same email address and select your deployment's domain
-in the **Quill name** field: RavenDB then shows you the same key again, and emails it to you.  
-If the key cannot be found, choose a new key and recreate the container with it.  
+**What to do:** try the following, in this order:
+
+1. Find the key in the Docker command the container was started with.
+2. If the container still uses the key issued at sign-up, find the key in the email sent at sign-up, or
+   [sign up again](https://ravendb.net/quill/start) with the same email address and select your deployment's domain
+   in the **Quill name** field: RavenDB then shows you the same key again, and emails it to you.
+3. If the key cannot be found, choose a new key and recreate the container with it.
+
 These steps are described in
 [Operator Authentication: Finding or recovering your Dashboard API key](security-and-architecture/operator-authentication.mdx#finding-or-recovering-your-dashboard-api-key).
 
@@ -329,9 +401,9 @@ The key sent to you at sign-up will no longer sign you into this deployment.
 
 <ContentFrame>
 
-##### The old API key still signs in
+##### Signing in with the old API key still works
 
-The old dashboard API key still signs in after the key was changed.
+Signing in with the old dashboard API key still works after the key was changed.
 
 <Admonition type="note" title="">
 
@@ -676,9 +748,9 @@ The **Connection details** fields are described in
 
 <ContentFrame>
 
-##### Agents answer differently after a connection string was added
+##### Agents answer differently after a connection string is added
 
-Agents answer differently after a new AI connection string was added.
+Agents that were set up before a new connection string was added in the `AI connection strings` view now answer differently.
 
 <Admonition type="note" title="">
 
@@ -771,9 +843,13 @@ suggestion).
 
 </Admonition>
 
-**What to do:** make sure Quill's machine allows outgoing HTTPS connections to `api.ravendb.net`. To check whether Quill's
-container can reach it, use the command shown in [Quill is not ready after 180 seconds](#quill-is-not-ready-after-180-seconds).  
-Then have Quill request the suggested agents again: click **Back**, and then **Next**.  
+**What to do:**
+
+1. Make sure Quill's machine allows outgoing HTTPS connections to `api.ravendb.net`.  
+   To check whether Quill's container can reach `api.ravendb.net`, use the command shown in
+   [Quill is not ready after 180 seconds](#quill-is-not-ready-after-180-seconds).
+2. Have Quill request the suggested agents again: click **Back**, and then **Next**.
+
 Until the suggestions arrive, you can set the agent up using the **Setup manually** option, as described in
 [Adding an AI agent: Choosing a starting point](getting-started/adding-an-ai-agent.mdx#choosing-a-starting-point).
 
@@ -1024,10 +1100,13 @@ mappings).
 
 </Admonition>
 
-**What to do:** correct the cause the errors name. Connection settings and table mappings are corrected in the **Edit app**
-wizard, which the **Edit** option of the view's three-dot menu opens.  
-Then click the **Restart sync** option of the same menu again, as described in
-[Data Source View: Restart sync](dashboard/manage-an-app/data-source-view.mdx#restart-sync).
+**What to do:**
+
+1. Correct the cause the errors name.  
+   Connection settings and table mappings are corrected in the **Edit app** wizard, which the **Edit** option of the view's
+   three-dot menu opens.
+2. Click the **Restart sync** option of the same menu again, as described in
+   [Data Source View: Restart sync](dashboard/manage-an-app/data-source-view.mdx#restart-sync).
 
 </ContentFrame>
 
@@ -1164,11 +1243,13 @@ The DNS service may still complete the update.
 
 </Admonition>
 
-**What to do:** look up Quill's hostnames, using the commands described in
-[Networking & DNS: Verify the change](networking-and-dns.mdx#verify-the-change), and check the address the lookups show.  
-A lookup may show the old address for up to 30 minutes after the update, since the computers and networks answering
-lookups may keep a copy of the old address for this long.  
-If the lookups still show the old address 30 minutes after the `update-dns` command timed out, run the command again.
+**What to do:**
+
+1. Look up Quill's hostnames, using the commands described in
+   [Networking & DNS: Verify the change](networking-and-dns.mdx#verify-the-change), and check the address the lookups show.  
+   A lookup may show the old address for up to 30 minutes after the update, since the computers and networks answering
+   lookups may keep a copy of the old address for this long.
+2. If the lookups still show the old address 30 minutes after the `update-dns` command timed out, run the command again.
 
 </ContentFrame>
 
