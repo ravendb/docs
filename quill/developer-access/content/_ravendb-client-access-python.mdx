@@ -198,8 +198,9 @@ Protect the file with filesystem permissions and keep it out of source control.
 Concatenate the `.crt` and `.key` from the downloaded archive, or convert the `.pfx` with `openssl pkcs12 -in quill-client.pfx -out quill-client.pem -nodes`.  
 Set `store.trust_store_path` as well only when the server certificate is not publicly trusted.
 
-The RavenDB Python client converts document property names to snake_case when it matches them to the entity's `__init__` parameters,
-so the mapped `Name` property is read as `product.name`, and a mapped `UnitPrice` as `product.unit_price`.
+The RavenDB Python client converts document property names to snake_case and sets only the properties that match the entity's `__init__` parameters.
+For example, the mapped `Name` property is read as `product.name`.  
+To read a mapped `UnitPrice` as `product.unit_price`, add a `unit_price` parameter to `__init__`.
 
 The explicit `query_collection` makes the query target the mapped collection exactly.  
 Without it, the RavenDB Client API derives the collection name from the entity class.  
