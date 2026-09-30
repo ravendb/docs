@@ -74,7 +74,7 @@ To finish creating an agent, its app must have an available `Chat` connection st
 
 <Panel heading="Add an AI connection string">
 
-![AI connection strings](./assets/dashboard-connection-strings-2.png) 
+![Add an AI connection string](./assets/dashboard-connection-strings-2.png) 
 
 1. **Name**  
    Enter a name that identifies the connection string to your agents.
@@ -216,38 +216,46 @@ Quill asks you to confirm before discarding them.
 
 <Panel heading="Edit an AI connection string">
 
-Click the edit icon in the connection string's row to open the **Edit connection string** side panel:  
-
-  * The side panel displays the stored connection-string settings.
-  * If the connection string is in use, an **In use** notice at the top of the side panel lists each agent and task that uses it.
-  * The **Name** field is disabled and cannot be changed because agents and tasks refer to the connection string by name.
-  * For a `Chat` connection string that uses a supported provider, you can change the provider and its settings,  
-    unless a GenAI or embeddings generation task uses the connection string (see below).
-  * Clicking **Save changes** runs the connection test unless the current settings are already verified.
-
---- 
+Click the edit icon in the connection string's row to open the **Edit connection string** side panel.  
+The side panel displays the stored settings.
     
-Saving changes updates the server-wide connection string under its existing name.  
-Any agent or task that refers to that name will use the updated settings on its next request.
+![Edit connection string](./assets/dashboard-connection-strings-3.png)     
 
-If a GenAI or embeddings generation task uses the connection string, its provider and model cannot be changed.  
-The **Provider** and **Model** fields are disabled, as are related fields such as **Deployment Name** for Azure OpenAI,  
-and the **In use** notice explains that you must create a new connection string to change them.
+1. **In use**  
+   Lists the agents and tasks that use the connection string.
 
-To use a different name, create a new connection string, update every agent or task that refers to the old connection string,
-and then delete the old connection string.
+2. **Name**  
+   The name cannot be changed because agents and tasks refer to the connection string by name.  
+   **To use a different name**, create a new connection string, update every agent or task that refers to the old connection string,
+   and then delete the old connection string.
 
+3. **Provider and Model**  
+   Remain editable when only [Agents](manage-an-app/agents-view.mdx) use the connection string, as shown above.  
+   If a [GenAI](https://docs.ravendb.net/ai-integration/gen-ai-integration/overview) or
+   [Embeddings generation](https://docs.ravendb.net/ai-integration/generating-embeddings/overview) task uses it, these fields are disabled,  
+   along with related fields such as **Deployment Name** for Azure OpenAI.  
+   To change these settings, create a new connection string.
+
+4. **Save changes**  
+   Quill can save changes only to `Chat` connection strings that use a supported provider.  
+   Quill runs the connection test unless the current settings are already verified, and saves only if verification succeeds.
+
+   Saving changes updates the server-wide connection string under its existing name.  
+   Any agent or task that refers to that name will use the updated settings on its next request.
+    
+---
+    
 <Admonition type="warning" title="">
-    
-#### Provider API keys can be viewed in the Dashboard    
+
+#### Provider API keys can be viewed in the Dashboard
 
 When you edit an OpenAI or Azure OpenAI connection string, the side panel loads the complete stored provider API key.
 The key is masked by default, but an authenticated Dashboard operator can reveal it by clicking the eye icon.
 
-Treat access to the Dashboard as access to these provider credentials.  
+Treat access to the Dashboard as access to these provider credentials.
 The provider API key is separate from the [Dashboard API key](../security-and-architecture/operator-authentication.mdx) used to authenticate to the Dashboard.
 
-</Admonition>    
+</Admonition>
 
 </Panel>
 
@@ -273,7 +281,7 @@ Quill permanently deletes the connection string. This cannot be undone.
 If **Used by** shows a usage count, such as `2 uses`, the delete icon is dimmed and cannot be used.  
 Hover over the usage count to see what uses the connection string:
 
-![Uses of a connection string in the Used by column](./assets/dashboard-connection-strings-3.png)
+![Uses of a connection string](./assets/dashboard-connection-strings-4.png)
 
 Remove each listed use:
 
