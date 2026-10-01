@@ -2,7 +2,7 @@
 title: "Quill: Overview"
 sidebar_label: Overview
 sidebar_position: 1
-description: "Quill adds AI capabilities to your existing relational database (PostgreSQL, SQL Server, or MySQL): it mirrors the data you select, with no data migration and no schema changes, and lets AI agents answer your users from the mirrored data."
+description: "Quill adds AI capabilities to your existing relational database (PostgreSQL, SQL Server, MySQL, or MariaDB): it mirrors the data you select, with no data migration and no schema changes, and lets AI agents answer your users from the mirrored data."
 ---
 
 import Admonition from '@theme/Admonition';
@@ -48,7 +48,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Panel heading="What Quill is">
 
-Quill is a complete AI service for your PostgreSQL, SQL Server, or MySQL database, packaged as a single Docker container.
+Quill is a complete AI service for your PostgreSQL, SQL Server, MySQL, or MariaDB database, packaged as a single Docker container.
 
 Quill's Docker container includes everything Quill runs:
 
@@ -77,7 +77,7 @@ Parts of the Quill service and the data flow between them:
 
 #### Your SQL database
 
-* Your existing SQL database: PostgreSQL, SQL Server, or MySQL.
+* Your existing SQL database: PostgreSQL, SQL Server, MySQL, or MariaDB.
 * Quill reaches your database using a connection string you provide, and reads only the tables you select.
 * Your data is only read, never modified.
 
@@ -88,7 +88,7 @@ Parts of the Quill service and the data flow between them:
   This initial operation may take some time when large tables are copied; if the operation is interrupted, Quill will
   resume it where it stopped rather than start over.
 * To keep the data in its internal database current, Quill uses your SQL database's **change-recording** facility.
-  * PostgreSQL, SQL Server, and MySQL each provide a built-in facility that records every change made to the data.
+  * PostgreSQL, SQL Server, MySQL, and MariaDB each provide a built-in facility that records every change made to the data.
   * Quill continuously reads this record of changes, and applies each insert, update, and deletion made in the selected
     tables to the internal database.  
     Preparing the change-recording facility for the selected tables is

@@ -466,9 +466,9 @@ The limits below follow this design and Discord's own rules. None of them can be
   * Any member of a server the bot was invited to can open a direct message with the bot and ask it questions.
   * Agent parameters bound to the Discord user can tie the answers to this user's own data, but cannot turn anyone away.
 
-  What you do control is which servers the bot is added to. The **Public Bot** toggle on the app's Bot page in the Discord Developer
-  Portal decides who can add the bot to a server: when the toggle is on, as it is by default, anyone who has the invite link can add
-  the bot to a server that this person manages; when the toggle is off, only you can.
+  What you do control is which servers the bot is added to. To be the only one who can add the bot to a server, turn off the
+  **Public Bot** toggle on the app's Bot page in the Discord Developer Portal.  
+  While the toggle is on, as it is by default, anyone who has the invite link can add the bot to a server that this person manages.
 * **The bot answers in direct messages only.**  
   A message posted in one of the server's chat rooms, such as #general, where every member can read it, gets no reply, even if the
   message mentions the bot.
@@ -490,99 +490,235 @@ The limits below follow this design and Discord's own rules. None of them can be
 
 <Panel heading="Troubleshooting">
 
-<Admonition type="note" title="">
-
 Symptoms met by the users of every bot type, not just of a Discord bot, are listed in the channels overview, in
 [Troubleshooting](../channels/overview.mdx#troubleshooting).
-
-</Admonition>
 
 The symptoms below are shown by a Discord bot channel when something goes wrong, each with its likely cause and what to do about it.  
 The first symptoms are seen in Quill's management dashboard: in the channel form, in the **Edit channel** form, and in the channel's
 [Connect](#the-connect-tab) tab. The rest are encountered by the bot's users on Discord, in the server's chat rooms or in their direct
 messages with the bot.
 
-<ContentFrame>
+---
 
 ### In the dashboard
 
-* **Clicking `Connect bot` fails with "discord rejected the bot token".**  
-  Likely cause: the token pasted in the form may be incomplete or mistyped, or a newer token may have been issued for the bot in the
-  Discord Developer Portal, so this one is no longer accepted.  
-  What to do: whichever the cause, reset the token, since the Discord Developer Portal shows a token only once: open the app's Bot
-  page there, click **Reset Token**, and paste the new token in the form's [Bot token](#filling-in-the-channel-form) field.
-* **Clicking `Connect bot` fails with "that token belongs to a user account, not a bot".**  
-  Likely cause: the pasted token may be the token of a Discord user account rather than the bot's.  
-  What to do: copy the token from the app's Bot page in the Discord Developer Portal, as described in
-  [Creating a bot in the Discord Developer Portal](#creating-a-bot-in-the-discord-developer-portal).
-* **Clicking `Connect bot` fails with "Discord bot ... is already connected".**  
-  Likely cause: the bot is already connected to another channel, in this app or in another app of the deployment; a bot can serve
-  only one channel. When the channel is in another app, the message names that app.  
-  What to do: delete the channel that holds the bot, in this app or in the app the message names, as described in
-  [Pausing and deleting the channel](#pausing-and-deleting-the-channel); or create another application, with its own bot, in the
-  Discord Developer Portal, as described in
-  [Creating a bot in the Discord Developer Portal](#creating-a-bot-in-the-discord-developer-portal), and paste the new bot's token in
-  this form instead.
-* **Clicking `Save changes` in the `Edit channel` form fails with "the token belongs to a different bot".**  
-  Likely cause: the new token may have been copied from the Bot page of a different application in the Discord Developer Portal.  
-  What to do: copy the token from the Bot page, in the Discord Developer Portal, of the application whose bot the channel was created
-  for.  
-  To switch to a different bot, add a new channel for that bot instead, as described in
-  [Connecting the bot to your app](#connecting-the-bot-to-your-app).
-* **The `Connect` tab shows "Token rejected", and the bot does not answer.**  
-  Likely cause: the token may have been reset in the Discord Developer Portal, so Discord no longer accepts it.  
-  The bot is offline on Discord, and messages users send meanwhile do not reach Quill and are not answered later.
+<ContentFrame>
 
-  ![The Connect tab with a rejected token](./assets/discord-bot_token-rejected.png)
+##### Discord rejects the bot token
 
-  What to do: if you hold the token issued at the reset, enter it in the channel, as described in
-  [Rotating the bot token](#rotating-the-bot-token). If you do not, click **Reset Token** on the app's Bot page in the Discord
-  Developer Portal, and enter the token it shows in the channel the same way.
-* **The `Connect` tab shows "Gateway disconnected" or "Connecting...", and the bot does not answer.**  
-  Likely cause: Quill may be unable to reach Discord. The red alert under the connection card in the Connect tab quotes the error
-  Quill received.  
-  The bot needs the machine running Quill to have access to `discord.com` and `gateway.discord.gg`, as described in
-  [Prerequisites](#prerequisites); a firewall or a proxy blocking these addresses is the usual cause.  
-  What to do: allow outgoing HTTPS connections from the machine running Quill to these two addresses in the firewall or proxy that
-  blocks them, or ask your network administrator to. Quill reconnects on its own, within a few minutes of the access returning.
-* **The `Connect` tab shows "Paused", and the bot does not answer.**  
-  Likely cause: the channel was paused, using **Pause** in the header of its details view.  
-  Messages users send while the channel is paused do not reach Quill and are not answered later.  
-  What to do: resume the channel, as described in [Pausing and deleting the channel](#pausing-and-deleting-the-channel).
-* **The `Connect` tab shows a red alert, "Last reply could not be delivered", under the connection card.**  
-  Likely cause: Discord may have refused to deliver the bot's last reply. The alert quotes Discord's error; the usual reason is that
-  the user can no longer receive messages from the bot, because the user left the server the bot is in, blocked the bot, or turned
-  off direct messages from server members in Discord's **Privacy & Safety** settings.  
-  The alert does not name the user; most likely, it is the user whose message arrived last, at the time shown under
-  **Last message**.  
-  What to do: the fix is on the user's side. Advise the user to undo whichever of these applies: rejoin the server, unblock the bot,
-  or allow direct messages from server members again.
+Clicking `Connect bot` fails with `discord rejected the bot token`.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the token pasted in the form may be incomplete or mistyped, or a newer token may have been issued for the bot in the
+Discord Developer Portal, so this one is no longer accepted.
+
+</Admonition>
+
+**What to do:** whichever the cause, reset the token, since the Discord Developer Portal shows a token only once: open the app's Bot
+page there, click **Reset Token**, and paste the new token in the form's [Bot token](#filling-in-the-channel-form) field.
 
 </ContentFrame>
 
 <ContentFrame>
 
+##### The token belongs to a user account, not to a bot
+
+Clicking `Connect bot` fails with `that token belongs to a user account, not a bot`.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the pasted token may be the token of a Discord user account rather than the bot's.
+
+</Admonition>
+
+**What to do:** copy the token from the app's Bot page in the Discord Developer Portal, as described in
+[Creating a bot in the Discord Developer Portal](#creating-a-bot-in-the-discord-developer-portal).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The bot is already connected
+
+Clicking `Connect bot` fails with `Discord bot ... is already connected`.
+
+<Admonition type="note" title="">
+
+**Cause:** the bot is already connected to another channel, in this app or in another app of the deployment; a bot can serve
+only one channel. When the channel is in another app, the message names that app.
+
+</Admonition>
+
+**What to do:** delete the channel that holds the bot, in this app or in the app the message names, as described in
+[Pausing and deleting the channel](#pausing-and-deleting-the-channel); or create another application, with its own bot, in the
+Discord Developer Portal, as described in
+[Creating a bot in the Discord Developer Portal](#creating-a-bot-in-the-discord-developer-portal), and paste the new bot's token in
+this form instead.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The new token belongs to a different bot
+
+Clicking `Save changes` in the `Edit channel` form fails with `the token belongs to a different bot`.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the new token may have been copied from the Bot page of a different application in the Discord Developer Portal.
+
+</Admonition>
+
+**What to do:** copy the token from the Bot page, in the Discord Developer Portal, of the application whose bot the channel was created
+for.  
+To switch to a different bot, add a new channel for that bot instead, as described in
+[Connecting the bot to your app](#connecting-the-bot-to-your-app).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The bot's token is rejected
+
+The `Connect` tab shows `Token rejected`, and the bot does not answer.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the token may have been reset in the Discord Developer Portal, so Discord no longer accepts it.  
+The bot is offline on Discord, and messages users send meanwhile do not reach Quill and are not answered later.
+
+</Admonition>
+
+![The Connect tab with a rejected token](./assets/discord-bot_token-rejected.png)
+
+**What to do:** if you hold the token issued at the reset, enter it in the channel, as described in
+[Rotating the bot token](#rotating-the-bot-token). If you do not, click **Reset Token** on the app's Bot page in the Discord
+Developer Portal, and enter the token it shows in the channel the same way.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The bot is disconnected from Discord
+
+The `Connect` tab shows `Gateway disconnected` or `Connecting...`, and the bot does not answer.
+
+<Admonition type="note" title="">
+
+**Likely cause:** Quill may be unable to reach Discord. The red alert under the connection card in the Connect tab quotes the error
+Quill received.  
+The bot needs the machine running Quill to have access to `discord.com` and `gateway.discord.gg`, as described in
+[Prerequisites](#prerequisites); a firewall or a proxy blocking these addresses is the usual cause.
+
+</Admonition>
+
+**What to do:** allow outgoing HTTPS connections from the machine running Quill to these two addresses in the firewall or proxy that
+blocks them, or ask your network administrator to. Quill reconnects on its own, within a few minutes of the access returning.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The channel is paused
+
+The `Connect` tab shows `Paused`, and the bot does not answer.
+
+<Admonition type="note" title="">
+
+**Cause:** the channel was paused, using **Pause** in the header of its details view.  
+Messages users send while the channel is paused do not reach Quill and are not answered later.
+
+</Admonition>
+
+**What to do:** resume the channel, as described in [Pausing and deleting the channel](#pausing-and-deleting-the-channel).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The bot's last reply could not be delivered
+
+The `Connect` tab shows a red alert, `Last reply could not be delivered`, under the connection card.
+
+<Admonition type="note" title="">
+
+**Likely cause:** Discord may have refused to deliver the bot's last reply. The alert quotes Discord's error; the usual reason is that
+the user can no longer receive messages from the bot, because the user left the server the bot is in, blocked the bot, or turned
+off direct messages from server members in Discord's **Privacy & Safety** settings.  
+The alert does not name the user; most likely, it is the user whose message arrived last, at the time shown under
+**Last message**.
+
+</Admonition>
+
+**What to do:** the fix is on the user's side. Advise the user to undo whichever of these applies: rejoin the server, unblock the bot,
+or allow direct messages from server members again.
+
+</ContentFrame>
+
+---
+
 ### On Discord
 
-* **A user cannot find the bot, or cannot open a direct message with it.**  
-  Likely cause: the user may not be a member of the server the bot was invited to. On Discord, a user can message a bot only if the
-  user and the bot are both members of the same server.  
-  What to do: invite the bot to a server the user is a member of, using the invite link in the [Connect](#the-connect-tab) tab, or
-  advise the user to join the server the bot is in. Then advise the user to open a direct message with the bot, as described in
-  [Finishing the connection on Discord](#finishing-the-connection-on-discord).
-* **The bot does not reply to a message a user posted in one of the server's chat rooms.**  
-  Likely cause: the bot reads only the direct messages sent to it. A message posted in one of the server's chat rooms, such as
-  #general, where every member can read it, does not reach the bot, even if the message mentions the bot.  
-  What to do: advise the user to send the question in a direct message with the bot, opened as described in
-  [Finishing the connection on Discord](#finishing-the-connection-on-discord).
-* **The bot replies "Sorry - something went wrong handling that message. Please try again."**  
-  Likely cause: either the agent has a parameter the channel does not bind, e.g., a parameter added to the agent after the channel
-  was added, or the agent failed to answer, e.g., because the database it queries or the LLM service it uses could not be reached.  
-  What to do: if a parameter is shown unbound in the channel's [Parameters](#the-parameters-tab) tab, bind it. If every parameter is
-  bound, the agent itself failed to produce the answer: verify that the app's database, and the LLM service behind the agent's AI
-  connection string, can be reached. The connection string can be tested as described in
-  [Dashboard: AI connection strings](../dashboard/ai-connection-strings.mdx#test-and-save-the-connection). Then send the bot a
-  question again.
+<ContentFrame>
+
+##### A user cannot find the bot or message it
+
+A user cannot find the bot, or cannot open a direct message with it.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the user may not be a member of the server the bot was invited to. On Discord, a user can message a bot only if the
+user and the bot are both members of the same server.
+
+</Admonition>
+
+**What to do:** invite the bot to a server the user is a member of, using the invite link in the [Connect](#the-connect-tab) tab, or
+advise the user to join the server the bot is in. Then advise the user to open a direct message with the bot, as described in
+[Finishing the connection on Discord](#finishing-the-connection-on-discord).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The bot does not reply in a chat room
+
+The bot does not reply to a message a user posted in one of the server's chat rooms.
+
+<Admonition type="note" title="">
+
+**Cause:** the bot reads only the direct messages sent to it. A message posted in one of the server's chat rooms, such as
+#general, where every member can read it, does not reach the bot, even if the message mentions the bot.
+
+</Admonition>
+
+**What to do:** advise the user to send the question in a direct message with the bot, opened as described in
+[Finishing the connection on Discord](#finishing-the-connection-on-discord).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The bot reports that something went wrong
+
+The bot replies `Sorry - something went wrong handling that message. Please try again.`
+
+<Admonition type="note" title="">
+
+**Likely cause:** one of the following may have happened.
+
+</Admonition>
+
+* The agent has a parameter the channel does not bind, e.g., a parameter added to the agent after the channel was added.  
+  **What to do:** bind the parameter, shown unbound in the channel's [Parameters](#the-parameters-tab) tab.
+* A parameter is bound to a value the agent parameter's type no longer accepts, e.g., because the type was changed in the
+  agent after the channel was added.  
+  **What to do:** bind the parameter again in the Parameters tab, with a value or a source that matches the type.
+* The agent failed to answer, e.g., because the database it queries or the LLM service it uses could not be reached.  
+  **What to do:** verify that the app's database, and the LLM service behind the agent's AI connection string, can be reached.
+  The connection string can be tested as described in [Dashboard: AI connection strings](../dashboard/ai-connection-strings.mdx#test-and-save-the-connection).
+
+After the fix, send the bot a question again.
 
 </ContentFrame>
 

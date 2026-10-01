@@ -1,0 +1,734 @@
+---
+title: "Quill: FAQ"
+sidebar_label: FAQ
+sidebar_position: 10
+description: "Questions about Quill, each answered in brief, with a link to the article section that explains the answer in full."
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Quill: FAQ
+<Admonition type="note" title="">
+
+* The questions below are answered in brief. Each answer links to the article section that explains it in full.
+
+* For symptoms that may appear while setting Quill up or running it, and what to do about them, see
+  [Troubleshooting](troubleshooting.mdx).
+
+* In this article:
+   * [About Quill](#about-quill)
+   * [Trying Quill](#trying-quill)
+   * [Data and privacy](#data-and-privacy)
+   * [Mirroring](#mirroring)
+   * [Agents](#agents)
+   * [Channels](#channels)
+   * [Licensing and usage](#licensing-and-usage)
+   * [Operating Quill](#operating-quill)
+
+</Admonition>
+
+<Panel heading="About Quill">
+
+<ContentFrame>
+
+##### What is Quill?
+
+Quill is an AI service for your PostgreSQL, SQL Server, MySQL, or MariaDB database, packaged as a single Docker container.  
+Quill mirrors the tables you select into its internal database: it copies them, and keeps the copy current as your data changes.  
+Its AI agents can then answer your users' questions from this data.  
+You can give your users access to Quill's agents through **channels**, such as a Telegram bot, or a chat box on your
+website or in your phone app.  
+Quill is described in full in [Overview: What Quill is](overview.mdx#what-quill-is).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Does Quill change my database?
+
+No, Quill never changes your data. It only [reads the tables you select](overview.mdx#your-sql-database).
+
+To keep its internal database current, Quill reads the changes your database records.  
+For this, your database needs to be
+[recording changes](getting-started/connecting-your-database.mdx#prerequisites).  
+Turning change recording on affects your database's settings, not its data.
+
+* **PostgreSQL:** a database administrator turns change recording on. Quill then sets up the rest in your database, if
+  the [database user you provide](getting-started/connecting-your-database.mdx#naming-your-app-and-entering-the-connection-details)
+  has the permission to do so.
+
+  <Admonition type="note" title="">
+
+  Quill may also set the **replica identity** of an [embedded table](getting-started/mapping-your-tables.mdx#settling-the-mapping)
+  to `FULL`, so Quill can tell which document a deleted row belongs to.  
+  Quill changes this setting only for an embedded table that is joined to its parent table by columns that are not part
+  of its primary key.
+
+  </Admonition>
+
+* **SQL Server:** Quill turns change recording on in your database, if the database user you provide has the permission
+  to do so.
+* **MySQL and MariaDB:** a database administrator turns change recording on, and Quill only checks it.
+
+<Admonition type="warning" title="">
+
+On PostgreSQL, while Quill is stopped, your database keeps the changes Quill has not read yet, and they take up disk space on the database's machine.  
+Quill reads them once it runs again, and PostgreSQL then frees the space.
+
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Which source databases does Quill support?
+
+PostgreSQL, SQL Server, MySQL, and MariaDB.  
+Each needs its change recording turned on, and a database user with the
+[permissions Quill requires](getting-started/connecting-your-database.mdx#prerequisites).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Can one Quill serve several databases?
+
+Yes. One Quill container can run multiple [apps](overview.mdx#one-quill-several-apps) (e.g., one app for your store and another for your support system).  
+Each Quill app connects to one source database and keeps its data in an internal database of its own.  
+Each app also has
+its own agents and channels.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Can I work with Quill using code?
+
+Yes. Quill is managed through its management dashboard, and developers can also
+[work with it in three ways](overview.mdx#working-with-quill-using-code):
+
+* **Quill's API**  
+  The API covers Quill's management operations, e.g., connecting a data source, creating agents and channels, and
+  generating embed links. Quill authenticates API requests with the dashboard API key.
+* **The internal database**  
+  Your applications can connect to an app's internal database directly, using a RavenDB client library and a client
+  certificate you generate in the management dashboard's **Certificates** view.
+* **The chat box**  
+  A developer can [embed the chat box](developer-access/embed-the-chat-widget.mdx) in a page of your website, or in a
+  phone app, using the HTML segment Quill delivers for each embed link.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Trying Quill">
+
+<ContentFrame>
+
+##### Can I try Quill on my own machine?
+
+Yes. No separate server is needed: when you sign up, give `127.0.0.1` as the IP address of Quill's machine, and run
+Quill with Docker on your own machine.  
+Your machine still needs the [prerequisites](getting-started/overview.mdx#prerequisites) of any Quill machine, e.g.,
+internet access and a free port 443.
+
+<Admonition type="info" title="">
+
+With `127.0.0.1`, only your own machine can reach Quill:
+
+* The management dashboard and a [chat box](channels/web-widget.mdx) work in a browser on your machine.
+* A [Telegram bot](channels/telegram-bot.mdx) or a [Discord bot](channels/discord-bot.mdx) works for users anywhere.
+  Quill opens the connection to Telegram or Discord itself, and the users' messages arrive over it.
+* A [Slack bot](channels/slack-bot.mdx) does not work, since Slack delivers each message to Quill over the internet.
+
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Is there a free trial?
+
+Yes. [Signing up](getting-started/signing-up.mdx#signing-up) starts a 90-day free trial, with no credit card or sales
+call required.  
+For current plan details, see [Quill pricing](https://ravendb.net/quill/pricing).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### What runs inside Quill's container, and which ports does it publish?
+
+Quill's container runs
+[three main components](security-and-architecture/network-architecture.mdx#what-runs-inside-quill):
+
+* **[A RavenDB server](overview.mdx#internal-database)**, holding an internal database for each Quill app you create.
+* **[The Quill web application](security-and-architecture/network-architecture.mdx#what-runs-inside-quill)**, which
+  serves the management dashboard, Quill's API, and the channels.
+* **[nginx](security-and-architecture/network-architecture.mdx#how-a-connection-is-routed)**, which receives every
+  connection to Quill and routes it to the RavenDB server or to the web application.
+
+The container publishes only port 443 on Quill's machine, so 443 is the only port your firewall needs to open for
+connections to Quill.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Data and privacy">
+
+<ContentFrame>
+
+##### Which LLM providers can I use?
+
+Quill works with three [LLM providers](getting-started/adding-an-ai-agent.mdx#prerequisites): OpenAI, Azure OpenAI, and
+Ollama.  
+The model you choose must be a chat model able to request tools, since an agent uses tools to query your data and to
+call other systems.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Do my users' conversations stay private?
+
+Your users' messages, and the data an agent retrieves to answer them, are sent to the LLM provider the agent uses.
+With OpenAI or Azure OpenAI, they reach the provider's servers.  
+To keep conversations private, use [Ollama](dashboard/ai-connection-strings.mdx#ollama-settings), with a model running on a
+machine you control.  
+RavenDB's AI service receives no conversations, whichever provider you use.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Can data from my database appear in conversations?
+
+Yes. Answering your users from your data is what an agent does:
+
+1. The agent retrieves data from the app's internal database, using its
+   [query tools](dashboard/manage-an-app/agents-view.mdx#agent-tools).
+2. The agent passes the data to the LLM, which composes the reply.
+3. The reply may include the data. Quill stores the conversation, including the data the query tools returned, whether
+   the reply includes this data or not.
+
+An agent can retrieve only the data its query tools return, so only this data can reach the LLM provider and the
+conversations.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### What do the AI options send to RavenDB's AI service?
+
+Descriptions of your data, never the data itself.
+
+* **AI Suggest**, which drafts the mapping when you
+  [map the app's tables](getting-started/mapping-your-tables.mdx#choosing-the-mapping-method-ai-suggest-or-manual),
+  sends the structure of the tables you selected:
+  * The tables' names.
+  * Their columns.
+  * Their keys.
+
+  AI Suggest also sends the source database's name, and the intent prompt you add, if you add one.
+* **The two AI options** of the [agent wizard](getting-started/adding-an-ai-agent.mdx#drafting-your-agent), which draft
+  an agent for you, send:
+  * The app's mapping, which defines how the tables' rows become documents.
+  * The description you enter, if you describe the agent you want.
+  * The names of the app's existing agents, so the drafted agents differ from them.
+
+These options work only after you accept the
+[Terms of Use](getting-started/adding-an-ai-agent.mdx#accepting-the-ai-terms-of-use) of RavenDB's AI service.  
+Until you accept the terms, mapping the tables manually and setting up an agent manually send nothing to the service.
+
+Once you have accepted the terms, each wizard sends its request ahead of time, so the draft is ready by the stage in
+which you choose between the AI option and the manual option. It sends the request even if you then choose the manual
+option:
+
+* The **Add new app** wizard sends the structure of the tables you selected when you click **Next** in its
+  **Verify your schema** stage, before its **How would you like to map your schema?** stage.
+* The agent wizard sends the app's mapping and the names of the app's existing agents when you reach its
+  **Connect your agent to AI Provider** stage, before its **Create your Agent with AI** stage.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Are conversations stored, and where can I read them?
+
+Yes. Quill stores each conversation in the app's internal database, and you can read its transcript, including the
+messages exchanged and the history of the agent's tool usage, in the app's
+[Conversations view](dashboard/manage-an-app/conversations-view.mdx).  
+The view keeps showing conversations after the agents that held them, or the channels that carried them, are deleted.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### How long are conversations kept?
+
+As long as the app exists, unless a user of a Telegram bot deletes a conversation:
+
+* Quill deletes no conversation on its own.
+* Conversations cannot be deleted in the Conversations view.
+* A user of a [Telegram bot](channels/telegram-bot.mdx#clearing-the-conversation) can delete the current conversation with
+  the bot by sending `/clear`.  
+  Each day's conversation is kept separately, from midnight to midnight UTC, so the conversations of earlier days remain.
+
+A very long conversation is kept in a shorter form.  
+Each time the agent answers a user prompt, Quill sends to the LLM the whole conversation so far, including the data the query
+tools returned. When the conversation Quill sends, together with the LLM's reply, exceeds `262,144` tokens, Quill has the LLM summarize
+the conversation, and replaces all of the conversation's messages with this summary.  
+The original messages are not kept: the conversation's transcript in the Conversations view no longer shows the messages
+exchanged before the summary, nor the summary itself.
+
+[Deleting an app](dashboard/my-apps.mdx#apps) deletes its internal database, including the app's conversations.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Is the data encrypted at rest?
+
+Quill does not encrypt its internal databases.  
+Quill keeps its data in its [data volume](getting-started/starting-quill.mdx#running-the-docker-command) on Quill's machine.  
+To encrypt the data at rest, encrypt the disk the volume is stored on.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Can dashboard users see my LLM provider's API key?
+
+Yes. Anyone signed in to the management dashboard can
+[reveal the API key](dashboard/ai-connection-strings.mdx#provider-api-keys-can-be-viewed-in-the-dashboard) of an OpenAI or
+Azure OpenAI connection string, by clicking the eye icon in the connection string's side panel.  
+Quill's API returns the key too, to callers using the dashboard API key.
+
+<Admonition type="warning" title="">
+
+Handle access to the management dashboard as access to these keys.
+
+</Admonition>
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Mirroring">
+
+<ContentFrame>
+
+##### Does Quill read my whole database?
+
+Only the tables you choose. When you create an app, Quill lists your source database's tables so you can
+[choose the app's tables](getting-started/connecting-your-database.mdx#choosing-the-tables). To list them, Quill reads
+their names and structure only.  
+Quill then mirrors the tables you chose, and ignores the others.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### How many tables can an app use?
+
+Up to 64 tables.  
+To handle a larger number of tables, use multiple Quill apps.  
+An agent can read only its own app's tables, so keep the tables an agent needs in the same app.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### What if a table has no primary key?
+
+Quill cannot mirror a table without a primary key, since Quill forms the ID of each document from the primary key values
+of the row the document is created from.  
+If you select a table that has no primary key when you
+[choose the app's tables](getting-started/connecting-your-database.mdx#choosing-the-tables), Quill refuses the table
+with the message: `Table '…' has no primary key, so CDC cannot derive stable document ids for it.`  
+To mirror the table, have a database administrator add a primary key to it. Otherwise, leave the table out of the app.
+
+On PostgreSQL, Quill also shows a warning beside a table without a primary key, and the warning carries a
+`REPLICA IDENTITY FULL` statement. Running the statement removes the warning, but Quill still refuses the table.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Can I change an app's public URL slug later?
+
+No. Once the app is created, its [public URL slug](getting-started/connecting-your-database.mdx#naming-your-app-and-entering-the-connection-details)
+can no longer be changed.  
+The slug appears in the public URLs the app is served on, and names the app's internal database.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Does deleting an app delete my source database?
+
+No. [Deleting an app](dashboard/my-apps.mdx#apps) deletes the app and its internal database, including the app's agents,
+channels, and conversations. Your source database and its data stay as they are.
+
+The change recording Quill set up in your source database stays in place too:
+
+* **PostgreSQL:** the publication and the replication slot Quill created to receive the changes remain, named
+  `rvn_cdc_p_…` and `rvn_cdc_s_…`.  
+  An embedded table whose replica identity Quill set to `FULL`, as described in
+  [Does Quill change my database?](#does-quill-change-my-database), keeps this setting.
+* **SQL Server:** Change Data Capture remains enabled on the database and on the app's tables.
+* **MySQL and MariaDB:** Quill [did not set anything up itself](#does-quill-change-my-database), so only the
+  change-recording settings you set up yourself remain.
+
+<Admonition type="warning" title="">
+
+On PostgreSQL, a remaining replication slot keeps the database from clearing its change log, so the log keeps growing on
+the database's machine.  
+After deleting an app, have a database administrator remove the app's replication slot, e.g.,
+using `SELECT pg_drop_replication_slot('rvn_cdc_s_…');` with the slot's name.
+
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Do changes in an app's internal database reach my source database?
+
+No. Changes made directly in an app's internal database, e.g., by an application using a RavenDB client, are never
+written back to your source database.  
+When a row changes in your source database, Quill updates the row's document in the internal database, and may
+overwrite changes made directly to this document.  
+Leave the documents Quill creates from your tables for Quill to write, as explained in
+[RavenDB Client API Access: Writes do not update the source database](developer-access/ravendb-client-access.mdx#writes-do-not-update-the-source-database).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Agents">
+
+<ContentFrame>
+
+##### Can an agent change my data?
+
+No. An agent reads the app's internal database through its
+[query tools](dashboard/manage-an-app/agents-view.mdx#agent-tools), and a query tool can only read: an agent whose query
+tool would update or delete documents cannot be saved. Quill never changes the data in your source database either.  
+An agent can ask another system to make a change, through an [action](#can-an-agent-call-other-systems) you define.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Can an agent call other systems?
+
+Yes, through the **actions** you define for it.  
+An action calls a web address you configure, e.g., to open a support ticket, when the LLM decides a conversation requires
+this action.  
+Quill makes the call itself: the LLM cannot reach any system directly, so an agent can call only the addresses its
+[actions](dashboard/manage-an-app/agents-view.mdx#agent-actions) define.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Can I test an agent before my users reach it?
+
+Yes. Your users cannot reach an agent until you bind a [channel](channels/overview.mdx) to it, so you can test the agent
+first, for as long as you need.  
+Use the **Test agent** button to chat with the agent:
+
+* In the wizard, [while you create the agent](getting-started/adding-an-ai-agent.mdx#testing-and-saving-your-agent).
+* In the [agent's configuration](dashboard/manage-an-app/agents-view.mdx#the-agent-s-configuration), after the agent is
+  saved. The chat uses the configuration in the form, unsaved changes included.
+
+Test chats are not saved, and each message is sent on its own, so the agent does not remember earlier messages.  
+Test chats also run without the agent's actions, so the agent cannot call other systems while you test it.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Channels">
+
+<ContentFrame>
+
+##### Which channel types are there?
+
+Four [channel types](channels/overview.mdx#channel-types):
+
+* **Web widget:** a chat box on a page of your website, or in a phone app that displays web pages.
+* **Telegram bot:** a bot your users chat with on Telegram.
+* **Slack bot:** a bot the members of a Slack workspace message directly.
+* **Discord bot:** a bot the members of a Discord server message directly.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Do my users need a Quill account?
+
+No. Your users chat with an agent through a channel, and need only what the channel requires, e.g., a Telegram
+account to chat with a Telegram bot, or membership in the Slack workspace a Slack bot is installed in.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Can I limit who can chat with an agent?
+
+It depends on the channel type:
+
+* **Web widget:** any website visitor or phone app user who opens the chat box can chat with the agent. Quill does not
+  identify the chat box's users.  
+  To limit who can chat, place the chat box in parts of your website or phone app that only the intended users can reach,
+  e.g., pages that require signing in to your website.  
+  The channel's **Allowed origins** list names the websites permitted to embed the chat box. However, a user who obtains an
+  [embed link](channels/web-widget.mdx#generating-an-embed-link) can also open the link directly in a browser and join the
+  link's conversation, as described in [Web widget: Web widget limitations](channels/web-widget.mdx#web-widget-limitations).
+* **Slack bot:** any member of the workspace the bot is installed in can chat with it.
+* **Discord bot:** any member of a server the bot is in can chat with it.  
+  To be the only one who can add the bot to a server, turn off the **Public Bot** toggle in the Discord Developer Portal, as
+  described in [Discord bot: Discord bot limitations](channels/discord-bot.mdx#discord-bot-limitations).
+* **Telegram bot:** any Telegram user who finds the bot can chat with it.
+
+A bot channel cannot select users within a Slack workspace, a Discord server, or Telegram.  
+Agent parameters bound to the user can tie the answers to the user's own data, but cannot choose which users the agent
+answers.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Can I limit how many questions a user asks?
+
+In a web widget channel, yes.  
+Each [embed link](channels/web-widget.mdx#setting-the-link-limits) accepts a set number of
+user prompts (100 by default), and stops accepting prompts when this number is reached, when the link expires, or when
+you revoke the link.  
+Your backend can generate a separate embed link for each visitor or app user, as described in
+[Web widget: Having your backend generate the link](channels/web-widget.mdx#having-your-backend-generate-the-link).  
+The prompt limit then applies to each visitor's or app user's link separately.
+
+In addition, Quill accepts up to 60 prompts per minute from each IP address:
+
+* Prompts sent from the same IP address count toward this limit together, even when they are sent to different web
+  widget channels or apps. Messages to Telegram, Slack, and Discord bots are not affected by this limit and are not
+  counted toward it.
+* Users who connect through the same network, e.g., an office network, may reach Quill from the same IP address, and then
+  share this limit.
+
+The Telegram, Slack, and Discord bots set no limit on the number of messages a user sends. A message sent while the bot is
+still answering waits in a queue. When the queue is full, the bot takes no further messages and asks the user to send them
+again after it replies, as described in
+[Channels Overview: Behavior and limitations common to all channels](channels/overview.mdx#behavior-and-limitations-common-to-all-channels).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### How long does an agent remember a conversation?
+
+It depends on the channel type:
+
+* **Web widget:** until the embed link the chat box was opened with expires, reaches its prompt limit, or is revoked.
+* **Telegram, Slack, and Discord bots:** until midnight UTC. After midnight, the agent answers the next message without
+  the earlier exchange.  
+  A Telegram user can make the agent forget the earlier exchange sooner, by sending `/clear`.
+
+The duration of a conversation in each channel type is described in
+[Channels Overview: Behavior and limitations common to all channels](channels/overview.mdx#behavior-and-limitations-common-to-all-channels).
+
+What the agent remembers is separate from what Quill keeps: Quill keeps the conversations, as described in
+[How long are conversations kept?](#how-long-are-conversations-kept).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Can I change the agent a channel serves?
+
+No. A channel serves the agent it was added for, as described in
+[Channels Overview: Channels and agents](channels/overview.mdx#channels-and-agents).  
+To have another agent answer your users, add a new channel for the other agent, and then move your users to the new channel:
+
+* **Web widget:** wherever the chat box is placed, replace the old channel's embed links with links generated for the new
+  channel.  
+  If your backend generates the embed links, as described in
+  [Web widget: Having your backend generate the link](channels/web-widget.mdx#having-your-backend-generate-the-link),
+  have the backend generate links for the new channel.  
+  The old channel's links keep working, with the old agent, until they expire or are revoked. To stop them at once,
+  pause or delete the old channel, as described in
+  [Web widget: Pausing and deleting the channel](channels/web-widget.mdx#pausing-and-deleting-the-channel).
+* **Telegram, Slack, and Discord bots:** to let your users keep chatting with the same bot, connect the bot to the new
+  channel.  
+  A bot can be connected to one channel only, so delete the old channel first, and then add the new channel with the same
+  bot.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Licensing and usage">
+
+<ContentFrame>
+
+##### What is a WRU, and which writes are measured in WRU?
+
+A WRU (Write Request Unit) is the unit in which Quill's usage is measured and billed.  
+Each document write is measured as one WRU, whether the write inserts, updates, or deletes a document, and whatever the
+document's size is.
+
+Document writes are made, for example, by:
+
+* Mirroring: the first copy of your tables, and each later change Quill copies into an app's internal database.
+* Quill, when it stores conversation messages.
+* Your applications, when they write directly to an app's internal database.
+
+Reads and queries are not measured in WRU.
+
+Your usage is shown in the [Usage view](dashboard/usage.mdx) of the management dashboard. The RavenDB server inside
+Quill's container reports usage every 15 minutes, so the latest writes may not appear yet.  
+If you run more than one Quill deployment under the same license, the Usage view shows the usage of all deployments.
+
+During a free trial period, WRU usage is unlimited. For plan allowances and prices, see
+[Quill pricing](https://ravendb.net/quill/pricing).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Do I need a separate RavenDB license?
+
+No. Quill's license covers the RavenDB server inside Quill's container as well.  
+Quill installs its license when it first starts, using the license key in the Docker command sent to you at sign-up.
+
+Quill's license includes only the RavenDB features Quill requires, e.g., it does not include read-only client
+certificates, as described in
+[Certificates View: Read-only access is not available](dashboard/certificates.mdx#read-only-access-is-not-available).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### What is the difference between build expiry and license expiry?
+
+They are separate conditions, each requiring a different action:
+
+* **Build expiry:** each Quill build expires 90 days after its release date.  
+  Quill checks the build's age when its container is started. In a container started from an expired build, the management
+  dashboard, Quill's API, and the chat boxes all show a notice titled `Quill needs updating` instead of their usual
+  content. A container that is already running when its build expires keeps running until it restarts.  
+  To replace an expired build, [update Quill](updating-quill.mdx#update-quill) to a newer build.
+* **License expiry:** the license's expiration date is shown in the
+  [License view](dashboard/license.mdx#current-license) of the management dashboard. Once the date has passed, the
+  License view also shows the message: `This license has expired.`  
+  The RavenDB server inside Quill's container checks for a renewed license shortly after it starts and every 24 hours,
+  and installs a renewed license automatically.  
+  To renew or change the license, [contact RavenDB sales](https://ravendb.net/contact).
+
+Updating Quill does not renew the license, and renewing the license does not reset the build's 90 days.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Operating Quill">
+
+<ContentFrame>
+
+##### Where are Quill's logs?
+
+Quill writes its status messages (e.g., `Status: READY`, or `ERROR: ravendb is down` when the RavenDB server stops) to the
+container's output, which `docker logs` shows.  
+The other logs are files inside Quill's container, most of them under `/var/lib/quill/logs`. For example, `web.log` holds Quill's
+application messages, including agent and chat activity.
+
+The log files are kept in Quill's data volume, so they remain when you [update Quill](updating-quill.mdx#update-quill)
+and the new container mounts the same volume.  
+Each log and its contents are listed in [Logging: Log locations](logging.mdx#log-locations).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Does updating Quill delete my data?
+
+No, as long as the new container mounts the same data volume.  
+Updating Quill replaces its container with a container created from a newer image. Quill keeps its data (e.g., your
+apps, their internal databases, and the conversations) in a Docker volume mounted at `/var/lib/quill`, and removing the
+old container leaves this volume in place.
+
+<Admonition type="warning" title="">
+
+* Before removing the old container, find the data volume the container mounts at `/var/lib/quill`, and make sure the
+  new container mounts the same volume, as described in
+  [Updating Quill: Identify the container and its data volume](updating-quill.mdx#identify-the-container-and-its-data-volume).
+* A new container that does not mount this volume starts without your apps. The data remains in the old volume, and returns
+  once a container mounts this volume again, as described in
+  [Updating Quill: Recover the recorded data volume](updating-quill.mdx#recover-the-recorded-data-volume).
+* Remove the old container using plain `docker rm`, without `-v`: with `-v`, Docker also deletes a data volume that was
+  created without a name.
+
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Do I need a new domain or certificate when the IP address of Quill's machine changes?
+
+No. Quill's domain, hostnames, certificate, keys, and data stay as they are, since none of them depends on the IP address.
+
+Only the DNS records change. DNS is the service computers use to find the IP address of a hostname, and Quill's DNS
+records pair each of Quill's hostnames with the IP address of Quill's machine.  
+To pair the hostnames with the new address, run the `update-dns` command in Quill's container, as described in
+[Networking & DNS: Update the records](networking-and-dns.mdx#update-the-records). Until you run the command, users
+and applications keep reaching the old address.
+
+If you move Quill to another machine, also move Quill's data volume to the new machine, and start the new container with
+the same license key and dashboard API key, as described in
+[Networking & DNS: What remains unchanged](networking-and-dns.mdx#what-remains-unchanged).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Can I have separate operator accounts?
+
+No. Quill has a single operator credential: the dashboard API key.  
+Anyone who has the key has full access to the management dashboard and to Quill's API, and Quill cannot identify the
+person who performed an action.
+
+To stop someone who knows the key from signing in, replace the key, as described in
+[Operator Authentication: Replacing an exposed key](security-and-architecture/operator-authentication.mdx#replacing-an-exposed-key).  
+Replacing the key does not end the sessions opened with the old key, as described in
+[How long does a dashboard session last?](#how-long-does-a-dashboard-session-last).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### How long does a dashboard session last?
+
+Between 4 and 8 hours after you last use the management dashboard.  
+A session is valid for 8 hours at a time. When you use the dashboard after more than half of this period has passed,
+Quill starts a new 8-hour period.
+
+* Signing out ends the session in the browser you sign out from.
+* Closing the browser can also end the session, unless the browser restores its previous session when it starts again.
+* A session does not end while a browser tab shows a dashboard view that refreshes itself (e.g., an app's **Overview**), even if nobody
+  uses the dashboard.
+* Replacing the dashboard API key does not end the sessions opened with the old key. Each of these sessions ends as it
+  would have with the old key.
+
+Dashboard sessions are described in
+[Operator Authentication: Signing in to the dashboard](security-and-architecture/operator-authentication.mdx#signing-in-to-the-dashboard).
+
+</ContentFrame>
+
+</Panel>
