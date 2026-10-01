@@ -33,11 +33,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### What is Quill?
-
-</Admonition>
 
 Quill is an AI service for your PostgreSQL, SQL Server, MySQL, or MariaDB database, packaged as a single Docker container.  
 Quill mirrors the tables you select into its internal database: it copies them, and keeps the copy current as your data changes.  
@@ -50,26 +46,28 @@ Quill is described in full in [Overview: What Quill is](overview.mdx#what-quill-
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Does Quill change my database?
-
-</Admonition>
 
 No, Quill never changes your data. It only [reads the tables you select](overview.mdx#your-sql-database).
 
-To keep its internal database current, Quill follows the changes your database records.  
-Turning this
-[change recording](getting-started/connecting-your-database.mdx#prerequisites) on changes your database's settings, not
-its data:
+To keep its internal database current, Quill reads the changes your database records.  
+For this, your database needs to be
+[recording changes](getting-started/connecting-your-database.mdx#prerequisites).  
+Turning change recording on affects your database's settings, not its data.
 
 * **PostgreSQL:** a database administrator turns change recording on. Quill then sets up the rest in your database, if
   the [database user you provide](getting-started/connecting-your-database.mdx#naming-your-app-and-entering-the-connection-details)
-  has the permission to do so.  
-  If an [embedded table](getting-started/mapping-your-tables.mdx#settling-the-mapping) is joined to its parent table by
-  columns that are not part of its primary key, Quill also sets the embedded table's replica identity to `FULL`.
-  PostgreSQL then includes these columns in each deletion it reports, so Quill can remove the deleted row from the right
-  document.
+  has the permission to do so.
+
+  <Admonition type="note" title="">
+
+  Quill may also set the **replica identity** of an [embedded table](getting-started/mapping-your-tables.mdx#settling-the-mapping)
+  to `FULL`, so Quill can tell which document a deleted row belongs to.  
+  Quill changes this setting only for an embedded table that is joined to its parent table by columns that are not part
+  of its primary key.
+
+  </Admonition>
+
 * **SQL Server:** Quill turns change recording on in your database, if the database user you provide has the permission
   to do so.
 * **MySQL and MariaDB:** a database administrator turns change recording on, and Quill only checks it.
@@ -85,11 +83,7 @@ Quill reads them once it runs again, and PostgreSQL then frees the space.
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Which source databases does Quill support?
-
-</Admonition>
 
 PostgreSQL, SQL Server, MySQL, and MariaDB.  
 Each needs its change recording turned on, and a database user with the
@@ -99,11 +93,7 @@ Each needs its change recording turned on, and a database user with the
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Can one Quill serve several databases?
-
-</Admonition>
 
 Yes. One Quill container can run multiple [apps](overview.mdx#one-quill-several-apps) (e.g., one app for your store and another for your support system).  
 Each Quill app connects to one source database and keeps its data in an internal database of its own.  
@@ -114,11 +104,7 @@ its own agents and channels.
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Can I work with Quill using code?
-
-</Admonition>
 
 Yes. Quill is managed through its management dashboard, and developers can also
 [work with it in three ways](overview.mdx#working-with-quill-using-code):
@@ -130,8 +116,8 @@ Yes. Quill is managed through its management dashboard, and developers can also
   Your applications can connect to an app's internal database directly, using a RavenDB client library and a client
   certificate you generate in the management dashboard's **Certificates** view.
 * **The chat box**  
-  A developer can embed the chat box in a page of your website, or in a phone app, using the HTML segment Quill delivers
-  for each embed link.
+  A developer can [embed the chat box](developer-access/embed-the-chat-widget.mdx) in a page of your website, or in a
+  phone app, using the HTML segment Quill delivers for each embed link.
 
 </ContentFrame>
 
@@ -141,11 +127,7 @@ Yes. Quill is managed through its management dashboard, and developers can also
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Can I try Quill on my own machine?
-
-</Admonition>
 
 Yes. No separate server is needed: when you sign up, give `127.0.0.1` as the IP address of Quill's machine, and run
 Quill with Docker on your own machine.  
@@ -167,11 +149,7 @@ With `127.0.0.1`, only your own machine can reach Quill:
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Is there a free trial?
-
-</Admonition>
 
 Yes. [Signing up](getting-started/signing-up.mdx#signing-up) starts a 90-day free trial, with no credit card or sales
 call required.  
@@ -181,11 +159,7 @@ For current plan details, see [Quill pricing](https://ravendb.net/quill/pricing)
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### What runs inside Quill's container, and which ports does it publish?
-
-</Admonition>
 
 Quill's container runs
 [three main components](security-and-architecture/network-architecture.mdx#what-runs-inside-quill):
@@ -207,11 +181,7 @@ connections to Quill.
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Which LLM providers can I use?
-
-</Admonition>
 
 Quill works with three [LLM providers](getting-started/adding-an-ai-agent.mdx#prerequisites): OpenAI, Azure OpenAI, and
 Ollama.  
@@ -222,11 +192,7 @@ call other systems.
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
-##### Can my users' conversations stay private?
-
-</Admonition>
+##### Do my users' conversations stay private?
 
 Your users' messages, and the data an agent retrieves to answer them, are sent to the LLM provider the agent uses.
 With OpenAI or Azure OpenAI, they reach the provider's servers.  
@@ -238,11 +204,7 @@ RavenDB's AI service receives no conversations, whichever provider you use.
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Can data from my database appear in conversations?
-
-</Admonition>
 
 Yes. Answering your users from your data is what an agent does:
 
@@ -259,11 +221,7 @@ conversations.
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### What do the AI options send to RavenDB's AI service?
-
-</Admonition>
 
 Descriptions of your data, never the data itself.
 
@@ -298,11 +256,7 @@ option:
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Are conversations stored, and where can I read them?
-
-</Admonition>
 
 Yes. Quill stores each conversation in the app's internal database, and you can read its transcript, including the
 messages exchanged and the history of the agent's tool usage, in the app's
@@ -313,11 +267,7 @@ The view keeps showing conversations after the agents that held them, or the cha
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### How long are conversations kept?
-
-</Admonition>
 
 As long as the app exists, unless a user of a Telegram bot deletes a conversation:
 
@@ -340,11 +290,7 @@ exchanged before the summary, nor the summary itself.
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Is the data encrypted at rest?
-
-</Admonition>
 
 Quill does not encrypt its internal databases.  
 Quill keeps its data in its [data volume](getting-started/starting-quill.mdx#running-the-docker-command) on Quill's machine.  
@@ -354,11 +300,7 @@ To encrypt the data at rest, encrypt the disk the volume is stored on.
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Can dashboard users see my LLM provider's API key?
-
-</Admonition>
 
 Yes. Anyone signed in to the management dashboard can
 [reveal the API key](dashboard/ai-connection-strings.mdx#provider-api-keys-can-be-viewed-in-the-dashboard) of an OpenAI or
@@ -379,11 +321,7 @@ Handle access to the management dashboard as access to these keys.
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Does Quill read my whole database?
-
-</Admonition>
 
 Only the tables you choose. When you create an app, Quill lists your source database's tables so you can
 [choose the app's tables](getting-started/connecting-your-database.mdx#choosing-the-tables). To list them, Quill reads
@@ -394,11 +332,7 @@ Quill then mirrors the tables you chose, and ignores the others.
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### How many tables can an app use?
-
-</Admonition>
 
 Up to 64 tables.  
 To handle a larger number of tables, use multiple Quill apps.  
@@ -408,11 +342,7 @@ An agent can read only its own app's tables, so keep the tables an agent needs i
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### What if a table has no primary key?
-
-</Admonition>
 
 Quill cannot mirror a table without a primary key, since Quill forms the ID of each document from the primary key values
 of the row the document is created from.  
@@ -428,11 +358,7 @@ On PostgreSQL, Quill also shows a warning beside a table without a primary key, 
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Can I change an app's public URL slug later?
-
-</Admonition>
 
 No. Once the app is created, its [public URL slug](getting-started/connecting-your-database.mdx#naming-your-app-and-entering-the-connection-details)
 can no longer be changed.  
@@ -442,11 +368,7 @@ The slug appears in the public URLs the app is served on, and names the app's in
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Does deleting an app delete my source database?
-
-</Admonition>
 
 No. [Deleting an app](dashboard/my-apps.mdx#apps) deletes the app and its internal database, including the app's agents,
 channels, and conversations. Your source database and its data stay as they are.
@@ -474,11 +396,7 @@ using `SELECT pg_drop_replication_slot('rvn_cdc_s_…');` with the slot's name.
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Do changes in an app's internal database reach my source database?
-
-</Admonition>
 
 No. Changes made directly in an app's internal database, e.g., by an application using a RavenDB client, are never
 written back to your source database.  
@@ -495,11 +413,7 @@ Leave the documents Quill creates from your tables for Quill to write, as explai
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Can an agent change my data?
-
-</Admonition>
 
 No. An agent reads the app's internal database through its
 [query tools](dashboard/manage-an-app/agents-view.mdx#agent-tools), and a query tool can only read: an agent whose query
@@ -510,11 +424,7 @@ An agent can ask another system to make a change, through an [action](#can-an-ag
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Can an agent call other systems?
-
-</Admonition>
 
 Yes, through the **actions** you define for it.  
 An action calls a web address you configure, e.g., to open a support ticket, when the LLM decides a conversation requires
@@ -526,11 +436,7 @@ Quill makes the call itself: the LLM cannot reach any system directly, so an age
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Can I test an agent before my users reach it?
-
-</Admonition>
 
 Yes. Your users cannot reach an agent until you bind a [channel](channels/overview.mdx) to it, so you can test the agent
 first, for as long as you need.  
@@ -551,11 +457,7 @@ Test chats also run without the agent's actions, so the agent cannot call other 
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Which channel types are there?
-
-</Admonition>
 
 Four [channel types](channels/overview.mdx#channel-types):
 
@@ -568,11 +470,7 @@ Four [channel types](channels/overview.mdx#channel-types):
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Do my users need a Quill account?
-
-</Admonition>
 
 No. Your users chat with an agent through a channel, and need only what the channel requires, e.g., a Telegram
 account to chat with a Telegram bot, or membership in the Slack workspace a Slack bot is installed in.
@@ -581,11 +479,7 @@ account to chat with a Telegram bot, or membership in the Slack workspace a Slac
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Can I limit who can chat with an agent?
-
-</Admonition>
 
 It depends on the channel type:
 
@@ -610,11 +504,7 @@ answers.
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Can I limit how many questions a user asks?
-
-</Admonition>
 
 In a web widget channel, yes.  
 Each [embed link](channels/web-widget.mdx#setting-the-link-limits) accepts a set number of
@@ -641,11 +531,7 @@ again after it replies, as described in
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### How long does an agent remember a conversation?
-
-</Admonition>
 
 It depends on the channel type:
 
@@ -664,11 +550,7 @@ What the agent remembers is separate from what Quill keeps: Quill keeps the conv
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Can I change the agent a channel serves?
-
-</Admonition>
 
 No. A channel serves the agent it was added for, as described in
 [Channels Overview: Channels and agents](channels/overview.mdx#channels-and-agents).  
@@ -695,11 +577,7 @@ To have another agent answer your users, add a new channel for the other agent, 
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### What is a WRU, and which writes are measured in WRU?
-
-</Admonition>
 
 A WRU (Write Request Unit) is the unit in which Quill's usage is measured and billed.  
 Each document write is measured as one WRU, whether the write inserts, updates, or deletes a document, and whatever the
@@ -724,11 +602,7 @@ During a free trial period, WRU usage is unlimited. For plan allowances and pric
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Do I need a separate RavenDB license?
-
-</Admonition>
 
 No. Quill's license covers the RavenDB server inside Quill's container as well.  
 Quill installs its license when it first starts, using the license key in the Docker command sent to you at sign-up.
@@ -741,11 +615,7 @@ certificates, as described in
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### What is the difference between build expiry and license expiry?
-
-</Admonition>
 
 They are separate conditions, each requiring a different action:
 
@@ -771,11 +641,7 @@ Updating Quill does not renew the license, and renewing the license does not res
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Where are Quill's logs?
-
-</Admonition>
 
 Quill writes its status messages (e.g., `Status: READY`, or `ERROR: ravendb is down` when the RavenDB server stops) to the
 container's output, which `docker logs` shows.  
@@ -790,11 +656,7 @@ Each log and its contents are listed in [Logging: Log locations](logging.mdx#log
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Does updating Quill delete my data?
-
-</Admonition>
 
 No, as long as the new container mounts the same data volume.  
 Updating Quill replaces its container with a container created from a newer image. Quill keeps its data (e.g., your
@@ -818,11 +680,7 @@ old container leaves this volume in place.
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Do I need a new domain or certificate when the IP address of Quill's machine changes?
-
-</Admonition>
 
 No. Quill's domain, hostnames, certificate, keys, and data stay as they are, since none of them depends on the IP address.
 
@@ -840,11 +698,7 @@ the same license key and dashboard API key, as described in
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### Can I have separate operator accounts?
-
-</Admonition>
 
 No. Quill has a single operator credential: the dashboard API key.  
 Anyone who has the key has full access to the management dashboard and to Quill's API, and Quill cannot identify the
@@ -859,11 +713,7 @@ Replacing the key does not end the sessions opened with the old key, as describe
 
 <ContentFrame>
 
-<Admonition type="note" title="">
-
 ##### How long does a dashboard session last?
-
-</Admonition>
 
 Between 4 and 8 hours after you last use the management dashboard.  
 A session is valid for 8 hours at a time. When you use the dashboard after more than half of this period has passed,
