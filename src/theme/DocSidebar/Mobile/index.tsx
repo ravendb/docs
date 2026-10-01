@@ -4,13 +4,13 @@ import { NavbarSecondaryMenuFiller, ThemeClassNames } from "@docusaurus/theme-co
 import { useNavbarMobileSidebar } from "@docusaurus/theme-common/internal";
 import DocSidebarItems from "@theme/DocSidebarItems";
 import type { Props } from "@theme/DocSidebar/Mobile";
-import Link from "@docusaurus/Link";
 import { useActiveDocContext, useLatestVersion } from "@docusaurus/plugin-content-docs/client";
-import { Icon } from "@site/src/components/Common/Icon";
 import { SectionNavLink } from "@site/src/components/Common/SectionNavLink";
+import { PRODUCT_BRAND_COLORS } from "@site/src/components/Common/productBrandColors";
 import type { Props as DocSidebarProps } from "@theme/DocSidebar";
 import SidebarVersionDropdown from "@site/src/components/SidebarVersionDropdown";
-import { getPathType, getSectionNavItems, PathType } from "../../../typescript/pathUtils";
+import SidebarProductSwitcher from "@site/src/components/SidebarProductSwitcher";
+import { getPathType, getSidebarNav, PathType } from "../../../typescript/pathUtils";
 
 function DocSidebarMobileSecondaryMenu({ sidebar, path }: DocSidebarProps) {
     const mobileSidebar = useNavbarMobileSidebar();
@@ -21,38 +21,37 @@ function DocSidebarMobileSecondaryMenu({ sidebar, path }: DocSidebarProps) {
     const versionLabel = activeVersion?.label ?? latestVersion.label;
 
     const pathType = getPathType(path);
-    const sectionNavItems = getSectionNavItems(pathType, versionLabel);
+    const nav = getSidebarNav(path, versionLabel);
 
     const shouldDisplayContent = pathType !== PathType.Guides && pathType !== PathType.Samples;
 
     return (
         <ul className={clsx(ThemeClassNames.docs.docSidebarMenu, "menu__list")}>
-            {sectionNavItems.map((item) => (
+            {nav.links.map((item) => (
                 <li key={item.label} className="menu__list-item">
+                    <SectionNavLink item={item} isActive={item.isActive} onClick={() => mobileSidebar.toggle()} />
+                </li>
+            ))}
+            {nav.productDocs.map((product) => (
+                <li key={product.label} className="menu__list-item">
                     <SectionNavLink
-                        item={item}
-                        isActive={item.pathType === pathType}
+                        item={product}
+                        isActive={false}
+                        iconClassName={PRODUCT_BRAND_COLORS[product.pathType]}
                         onClick={() => mobileSidebar.toggle()}
                     />
                 </li>
             ))}
-            {pathType === PathType.Documentation && (
-                <li className="menu__list-item">
-                    <Link
-                        to={`/${versionLabel}/whats-new`}
-                        className="menu__link"
-                        onClick={() => mobileSidebar.toggle()}
-                    >
-                        <Icon icon="star-filled" size="xs" className="me-2" /> What's new
-                    </Link>
+            {nav.currentProduct && (
+                <li className="menu__list-item !my-3 flex flex-col gap-3 px-2">
+                    <SidebarProductSwitcher
+                        products={nav.products}
+                        currentProduct={nav.currentProduct}
+                        onNavigate={() => mobileSidebar.toggle()}
+                    />
+                    {pathType === PathType.Documentation && <SidebarVersionDropdown />}
                 </li>
             )}
-            {shouldDisplayContent && (
-                <li className="menu__list-item !my-3">
-                    <hr className="!my-0 !mx-3 !bg-black/10 dark:!bg-white/10" />
-                </li>
-            )}
-            {pathType === PathType.Documentation && <SidebarVersionDropdown />}
             {shouldDisplayContent && (
                 <DocSidebarItems
                     items={sidebar}
@@ -68,6 +67,16 @@ function DocSidebarMobileSecondaryMenu({ sidebar, path }: DocSidebarProps) {
                     level={1}
                 />
             )}
+            <li className="menu__list-item sticky bottom-0 !mt-3 pt-2 flex flex-col gap-1 border-t border-black/10 dark:border-white/10 bg-[var(--ifm-navbar-background-color)]">
+                {nav.footer.map((item) => (
+                    <SectionNavLink
+                        key={item.label}
+                        item={item}
+                        isActive={item.isActive}
+                        onClick={() => mobileSidebar.toggle()}
+                    />
+                ))}
+            </li>
         </ul>
     );
 }
