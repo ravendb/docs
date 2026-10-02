@@ -7,12 +7,13 @@ import Content from "@theme/DocSidebar/Desktop/Content";
 import type { Props } from "@theme/DocSidebar/Desktop";
 
 import styles from "./styles.module.css";
-import Link from "@docusaurus/Link";
 import SidebarVersionDropdown from "@site/src/components/SidebarVersionDropdown";
+import SidebarProductSwitcher from "@site/src/components/SidebarProductSwitcher";
 
 import { useActiveDocContext, useLatestVersion } from "@docusaurus/plugin-content-docs/client";
-import { Icon } from "@site/src/components/Common/Icon";
-import { getPathType, getLandingPagePath, PathType } from "../../../typescript/pathUtils";
+import { SectionNavLink } from "@site/src/components/Common/SectionNavLink";
+import { PRODUCT_BRAND_COLORS } from "@site/src/components/Common/productBrandColors";
+import { getPathType, getSidebarNav, PathType } from "../../../typescript/pathUtils";
 
 function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
     const {
@@ -28,7 +29,7 @@ function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
     const versionLabel = activeVersion?.label ?? latestVersion.label;
 
     const pathType = getPathType(path);
-    const landingPagePath = getLandingPagePath(pathType, versionLabel);
+    const nav = getSidebarNav(path, versionLabel);
 
     const shouldDisplayContent = pathType !== PathType.Guides && pathType !== PathType.Samples;
 
@@ -41,69 +42,31 @@ function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
             )}
         >
             {hideOnScroll && <Logo tabIndex={-1} className={styles.sidebarLogo} />}
-            <div className="menu thin-scrollbar menu_Y1UP shrink-0 !grow-0">
-                <div className="menu__list-item-collapsible">
-                    <Link to={landingPagePath} className="menu__link">
-                        <Icon icon="home" size="xs" className="me-2" /> Start
-                    </Link>
-                </div>
-                {pathType !== PathType.Guides && (
-                    <Link to="/guides" className="menu__link group">
-                        <Icon icon="guides" size="xs" className="me-2" /> Guides
-                        <small className="flex items-center ms-auto gap-1 text-[0.675rem] opacity-0 group-hover:opacity-100 !transition-all">
-                            Switch <Icon icon="arrow-thin-right" size="xs" />
-                        </small>
-                    </Link>
-                )}
-                {pathType !== PathType.Samples && (
-                    <Link to="/samples" className="menu__link group">
-                        <Icon icon="create-sample-data" size="xs" className="me-2" /> Samples
-                        <small className="flex items-center ms-auto gap-1 text-[0.675rem] opacity-0 group-hover:opacity-100 !transition-all">
-                            Switch <Icon icon="arrow-thin-right" size="xs" />
-                        </small>
-                    </Link>
-                )}
-                {pathType !== PathType.Documentation && (
-                    <Link to={`/${versionLabel}`} className="menu__link group">
-                        <Icon icon="database" size="xs" className="me-2" /> RavenDB Docs
-                        <small className="flex items-center ms-auto gap-1 text-[0.675rem] opacity-0 group-hover:opacity-100 !transition-all">
-                            Switch <Icon icon="arrow-thin-right" size="xs" />
-                        </small>
-                    </Link>
-                )}
-                {pathType !== PathType.Cloud && (
-                    <Link to="/cloud" className="menu__link group">
-                        <Icon icon="cloud" size="xs" className="me-2" /> RavenDB Cloud Docs
-                        <small className="flex items-center ms-auto gap-1 text-[0.675rem] opacity-0 group-hover:opacity-100 !transition-all">
-                            Switch <Icon icon="arrow-thin-right" size="xs" />
-                        </small>
-                    </Link>
-                )}
-                {pathType !== PathType.Quill && (
-                    <Link to="/quill" className="menu__link group">
-                        <Icon icon="quill" size="xs" className="me-2" /> Quill Docs
-                        <small className="flex items-center ms-auto gap-1 text-[0.675rem] opacity-0 group-hover:opacity-100 !transition-all">
-                            Switch <Icon icon="arrow-thin-right" size="xs" />
-                        </small>
-                    </Link>
-                )}
-                <Link to="https://ravendb.net/community" className="menu__link group">
-                    <Icon icon="community" size="xs" className="me-2" /> Community
-                    <Icon
-                        icon="newtab"
-                        size="xs"
-                        className="ms-auto opacity-0 group-hover:opacity-100 !transition-all"
+            <nav aria-label="Documentation sections" className="menu shrink-0 !grow-0 p-2 flex flex-col gap-1">
+                {nav.links.map((item) => (
+                    <SectionNavLink key={item.label} item={item} isActive={item.isActive} />
+                ))}
+                {nav.productDocs.map((product) => (
+                    <SectionNavLink
+                        key={product.label}
+                        item={product}
+                        isActive={false}
+                        iconClassName={PRODUCT_BRAND_COLORS[product.pathType]}
                     />
-                </Link>
-                {pathType === PathType.Documentation && (
-                    <Link to={`/${versionLabel}/whats-new`} className="menu__link">
-                        <Icon icon="star-filled" size="xs" className="me-2" /> What's new
-                    </Link>
-                )}
-            </div>
-            {shouldDisplayContent && <hr className="!my-0 !mx-3 !bg-black/10 dark:!bg-white/10" />}
-            {pathType === PathType.Documentation && <SidebarVersionDropdown />}
+                ))}
+            </nav>
+            {nav.currentProduct && (
+                <div className="flex flex-col gap-3 px-4 pt-1">
+                    <SidebarProductSwitcher products={nav.products} currentProduct={nav.currentProduct} />
+                    {pathType === PathType.Documentation && <SidebarVersionDropdown />}
+                </div>
+            )}
             {shouldDisplayContent && <Content path={path} sidebar={sidebar} />}
+            <div className="menu shrink-0 !grow-0 mt-auto p-2 flex flex-col gap-1 border-t border-black/10 dark:border-white/10">
+                {nav.footer.map((item) => (
+                    <SectionNavLink key={item.label} item={item} isActive={item.isActive} />
+                ))}
+            </div>
             {hideable && <CollapseButton onClick={onCollapse} />}
         </div>
     );
