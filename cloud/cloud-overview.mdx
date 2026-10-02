@@ -36,6 +36,7 @@ like adding or removing nodes, and run recurring tasks like backing up your data
         - [Login](../cloud/cloud-overview.mdx#login-to-your-account)
             - [Login with a magic link](../cloud/cloud-overview.mdx#login-with-a-magic-link)
             - [Login with Google, GitHub or Microsoft](../cloud/cloud-overview.mdx#login-with-google-github-or-microsoft)
+            - [Login with External SSO](../cloud/cloud-overview.mdx#login-with-external-sso)
     * [RavenDB on the Cloud](../cloud/cloud-overview.mdx#ravendb-on-the-cloud)
         * [Instances, Provisioning and RavenDB Products](../cloud/cloud-overview.mdx#instances-provisioning-and-ravendb-products)
         * [RavenDB Tiers: Free, Development and Production](../cloud/cloud-overview.mdx#ravendb-tiers)
@@ -129,23 +130,22 @@ Click the **Skip Billing Information** button if you prefer to evaluate the clou
 
 To access your account, click [https://cloud.ravendb.net/user/login](https://cloud.ravendb.net/user/login).
 
-You can sign in either with a **magic link** sent to your email, or by using your
-**Google**, **GitHub** or **Microsoft** account.
+You can sign in with a **magic link** sent to your email, or by using your
+**Google**, **GitHub** or **Microsoft** account. If your organization has set up
+[External SSO](../cloud/cloud-sso.mdx), you sign in through your organization's identity provider instead.
+
+![Login page](./assets/login-page-oauth-buttons.png)
+
 #### Login with a magic link
-![Login page](./assets/login-page-email.png)
 
 - Enter the same email address you provided during registration, confirm you're not a robot, and
-  click the **Send Magic Link** button
+  click the **Continue with email** button
 
 
 * The login procedure will send you a message with a link. Click the link to enter your account, no password required.
 
   <Admonition type="note" title="">
   The magic link is expirable to make sure each visit is logged and keep account activity trackable and more secure.  
-  </Admonition>
-
-  <Admonition type="note" title="">
-  An account can currently be managed by a single operator, we will soon add multiple-operators management.  
   </Admonition>
 
   <Admonition type="note" title="">
@@ -156,9 +156,8 @@ You can sign in either with a **magic link** sent to your email, or by using you
 
 In addition to the magic link, you can sign in using your **Google**, **GitHub** or **Microsoft**
 account. The login page shows **Sign in with Google**, **Sign in with GitHub** and
-**Sign in with Microsoft** buttons below the magic-link form.
-
-![Login page with the single sign-on buttons](./assets/login-page-oauth-buttons.png)
+**Sign in with Microsoft** buttons below the magic-link form, together with the
+[**Sign in with External SSO**](../cloud/cloud-overview.mdx#login-with-external-sso) button.
 
 - Click the button for the provider you want to use.
 - Authorize RavenDB Cloud at that provider.
@@ -166,8 +165,8 @@ account. The login page shows **Sign in with Google**, **Sign in with GitHub** a
   reported by the provider.
 
 <Admonition type="note" title="">
-Your RavenDB Cloud account is identified by **email address**. Single sign-on only succeeds when the
-email reported by the provider matches the email of an existing Cloud account.
+Your RavenDB Cloud account is identified by **email address**. Signing in with Google, GitHub or Microsoft
+only succeeds when the email reported by the provider matches the email of an existing Cloud account.
 </Admonition>
 
 <Admonition type="warning" title="The email address must be verified at the provider">
@@ -212,7 +211,7 @@ If sign-in cannot be completed you stay on the login page with an explanation. T
 You can always fall back to the [magic link](../cloud/cloud-overview.mdx#login-to-your-account) sign-in.
 
 <Admonition type="info" title="2FA">
-Users are responsible for enabling and maintaining Two-Factor Authentication (2FA) on their designated Single Sign-On (SSO) provider.
+Users are responsible for enabling and maintaining Two-Factor Authentication (2FA) at the provider they sign in with - Google, GitHub or Microsoft.
 </Admonition>
 
 **No Cloud account for the email**
@@ -222,6 +221,19 @@ If no RavenDB Cloud account exists for the email returned by the provider, you a
 link opens the registration form with the email pre-filled, so you can finish creating the account.
 
 ![Check your inbox page](./assets/login-oauth-check-email-page.png)
+
+#### Login with External SSO
+
+If your organization has set up [External SSO & User Management](../cloud/cloud-sso.mdx), you sign in
+through your organization's identity provider:
+
+- Click **Sign in with External SSO** on the login page.
+- Enter your **Account domain** and click **Continue with SSO**.
+- Sign in at your identity provider. You are returned to the RavenDB Cloud Portal.
+
+Your administrator can also give you a sign-in link that fills in the account domain for you.
+External SSO only signs in users your administrator has added or your identity provider has provisioned.
+See [Signing in with SSO](../cloud/cloud-sso.mdx#signing-in-with-sso).
 
 ## RavenDB on the Cloud
 

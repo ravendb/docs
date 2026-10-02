@@ -97,6 +97,15 @@ depending on the cloud provider in question. Pick either to change your current 
 
 ![Scaling storage](./portal/assets/portal-product-details-edit-storage.png)
 
+**Switching between Standard and Premium** keeps your current capacity, even when it is larger than your
+instance type offers for new disks. This applies to AWS and Azure products whose data is on the main
+disk; products with a separate data disk cannot switch the storage type.
+
+* The other type starts at its default performance for that capacity.
+* Switching back to your current type restores your current IOPS, throughput and *Performance Tier*.
+* When you change the **capacity**, your IOPS are kept within the range the new size allows, and a raised
+  Azure *Performance Tier* is kept as long as the new size still offers it.
+
 <Admonition type="info" title="">
 Storage can also grow **on its own**: with
 [Automatic Storage Extension](./cloud-features.mdx#automatic-storage-extension) enabled, the disk is extended to the
@@ -141,6 +150,9 @@ To handle events that temporarily require higher
 level of performance, the **Premium** Disk type on **Azure** lets you use a higher *Performance Tier* for as
 long as you need it. This feature allows you to increase the disk performance without increasing the disk size. 
 You can then return to the original Tier when you no longer need the additional performance. 
+
+Changing only the *Performance Tier* is applied without stopping the node, so it causes no downtime -
+also on a single-node Development product.
 
 ![Azure Performance Tier on Azure Premium Disks](./assets/portal-product-details-edit-storage-with-azure-performance-tier.png)
 
