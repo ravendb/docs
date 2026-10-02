@@ -1,5 +1,5 @@
-// js-yaml ships no types and is only used here to read one frontmatter field.
-const yaml = require("js-yaml") as { load(source: string): unknown };
+import { load } from "js-yaml";
+import path from "path";
 
 // Visually hidden, the sr-only recipe. Inline so it holds before any stylesheet loads.
 const VISUALLY_HIDDEN =
@@ -16,16 +16,21 @@ export function escapeHtml(value: string): string {
         .replace(/'/g, "&#39;");
 }
 
+/** Absolute URL of a file served from static/, honouring the site's baseUrl. */
+export function buildStaticUrl(siteUrl: string, baseUrl: string, staticPath: string): string {
+    return new URL(path.posix.join(baseUrl, staticPath), siteUrl).href;
+}
+
 /**
  * The skill's frontmatter `description` is its measured trigger text: rewording it changed how
  * often agents opened the skill. The hint reuses it verbatim rather than paraphrasing it.
  */
 export function readSkillDescription(skillMarkdown: string): string {
-    const match = FRONTMATTER.exec(skillMarkdown);
+    const match = FRONTMATTER.exec(skillMarkdown.replace(/^\uFEFF/, ""));
     if (!match) {
         throw new Error("SKILL.md has no frontmatter block");
     }
-    const frontMatter = yaml.load(match[1]) as { description?: unknown } | null;
+    const frontMatter = load(match[1]) as { description?: unknown } | null;
     const description = frontMatter?.description;
     if (typeof description !== "string" || description.trim() === "") {
         throw new Error("SKILL.md frontmatter has no description");

@@ -6,14 +6,14 @@ import type { LoadContext, Plugin } from "@docusaurus/types";
 import fs from "fs";
 import path from "path";
 
-import { buildAgentHint, readSkillDescription } from "./lib/hint.js";
+import { buildAgentHint, buildStaticUrl, readSkillDescription } from "./lib/hint.js";
 
 // Served verbatim from static/, so the file path and the URL path are the same.
 const SKILL_PATH = "skills/ravendb/SKILL.md";
 
 export default function agentHintPlugin(context: LoadContext): Plugin {
     const skillFile = path.join(context.siteDir, "static", SKILL_PATH);
-    const skillUrl = new URL(SKILL_PATH, context.siteConfig.url).href;
+    const skillUrl = buildStaticUrl(context.siteConfig.url, context.baseUrl, SKILL_PATH);
 
     return {
         name: "agent-hint-plugin",

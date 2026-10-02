@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { buildAgentHint, escapeHtml, readSkillDescription } from "../lib/hint.js";
+import { buildAgentHint, buildStaticUrl, escapeHtml, readSkillDescription } from "../lib/hint.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SKILL_FILE = path.join(__dirname, "..", "..", "..", "..", "static", "skills", "ravendb", "SKILL.md");
@@ -18,6 +18,10 @@ test("readSkillDescription reads the hosted skill's description", () => {
 test("readSkillDescription accepts CRLF frontmatter", () => {
     const skill = "---\r\nname: x\r\ndescription: Read this first.\r\n---\r\n\r\n# X\r\n";
     assert.equal(readSkillDescription(skill), "Read this first.");
+});
+
+test("readSkillDescription accepts a leading byte-order mark", () => {
+    assert.equal(readSkillDescription("\uFEFF---\ndescription: Read this first.\n---\n"), "Read this first.");
 });
 
 test("readSkillDescription throws without frontmatter", () => {
@@ -37,9 +41,20 @@ test("buildAgentHint carries the skill URL and description", () => {
 });
 
 test("buildAgentHint is hidden from people and kept out of the tab order", () => {
-    const html = buildAgentHint(SKILL_URL, "d");
-    assert.match(html, /^<blockquote data-agent-hint aria-hidden="true" style="[^"]*clip:rect\(0,0,0,0\)/);
-    assert.match(html, /tabindex="-1"/);
+    const opening = buildAgentHint(SKILL_URL, "d").match(/^<blockquote [^>]*>/)?.[0] ?? "";
+    assert.ok(opening.includes('aria-hidden="true"'));
+    assert.match(opening, /style="[^"]*clip:rect\(0,0,0,0\)/);
+    assert.match(buildAgentHint(SKILL_URL, "d"), /<a [^>]*tabindex="-1"/);
+});
+
+test("buildStaticUrl resolves against the site url and baseUrl", () => {
+    const skillPath = "skills/ravendb/SKILL.md";
+    assert.equal(buildStaticUrl("https://docs.ravendb.net/", "/", skillPath), SKILL_URL);
+    assert.equal(buildStaticUrl("https://docs.ravendb.net", "/", skillPath), SKILL_URL);
+    assert.equal(
+        buildStaticUrl("https://example.com", "/docs/", skillPath),
+        "https://example.com/docs/skills/ravendb/SKILL.md"
+    );
 });
 
 test("buildAgentHint escapes markup in the description", () => {
