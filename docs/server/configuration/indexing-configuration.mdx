@@ -68,6 +68,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
     [Indexing.Corax.MaxMemoizationSizeInMb](../../server/configuration/indexing-configuration.mdx#indexingcoraxmaxmemoizationsizeinmb)  
     [Indexing.Corax.Static.ComplexFieldIndexingBehavior](../../server/configuration/indexing-configuration.mdx#indexingcoraxstaticcomplexfieldindexingbehavior)  
     [Indexing.Corax.UnmanagedAllocationsBatchSizeLimitInMb](../../server/configuration/indexing-configuration.mdx#indexingcoraxunmanagedallocationsbatchsizelimitinmb)  
+    [Indexing.Corax.VectorSearch.CacheSizeInMb](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchcachesizeinmb)  
     [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultminimumsimilarity)  
     [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforindexing)  
     [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforquerying)  
@@ -599,6 +600,27 @@ The maximum amount of memory in megabytes that Corax can use for memoization dur
    * In all other cases (i.e., standard 64-bit environments), the default is `2048 MB`.
 - **Type**: `int`
 - **Default**: `DefaultValueSetInConstructor`
+- **Scope**: Server-wide, or per database, or per index
+
+
+
+## Indexing.Corax.VectorSearch.CacheSizeInMb
+
+* The memory budget (in MB) used to size the HNSW node cache for each vector field in an index.  
+  The cache keeps the upper-level nodes of the HNSW graph in memory, so vector queries read less from disk.
+
+* Set to `0` to disable the cache.  
+  Changing this value does not require re-indexing.
+
+* The cache is not supported on [encrypted databases](../../server/security/encryption/database-encryption.mdx#vector-search-node-cache).
+
+* This setting is available from RavenDB 7.2.5.
+  In RavenDB 7.2.6 and later, this setting is ignored on encrypted databases, and vector search reads the HNSW graph from disk.
+
+---
+
+- **Type**: `int`
+- **Default**: `10`
 - **Scope**: Server-wide, or per database, or per index
 
 

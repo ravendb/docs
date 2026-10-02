@@ -1,5 +1,5 @@
 ---
-title: "Encryption: Database Encryption"
+title: "Database Encryption"
 sidebar_label: Database Encryption
 description: "Encrypt RavenDB databases at rest using XChaCha20-Poly1305 encryption with master key protection and per-database encryption keys."
 sidebar_position: 1
@@ -8,149 +8,275 @@ sidebar_position: 1
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-# Encryption: Database Encryption
+<Admonition type="note" title="">
 
-In RavenDB you can create encrypted databases. Each encrypted database will have its own secret key which is used to encrypt and decrypt data.
+* RavenDB supports database encryption at rest.  
+  Each encrypted database has its own secret key, used to encrypt and decrypt its data.
 
-## Creating An Encrypted Database Using The Studio
+* In this article:
+    * [Creating an encrypted database using Studio](#creating-an-encrypted-database-using-studio)
+    * [Creating an encrypted database using the REST API and the Client API](#creating-an-encrypted-database-using-the-rest-api-and-the-client-api)
+      * [Windows example](#windows-example)
+      * [Linux example](#linux-example)
+    * [Considerations for encrypted databases](#considerations-for-encrypted-databases)
 
-When [creating an encrypted database using the Studio](../../../studio/database/create-new-database/encrypted.mdx), you will receive a secret key which will 
-allow you to recover the encrypted data in case of a disaster, and when restoring from backup. During normal operations there is no need to supply the secret key to RavenDB.  
+</Admonition>
+
+<Panel heading="Creating an encrypted database using Studio">
+
+When [creating an encrypted database using Studio](../../../studio/database/create-new-database/encrypted.mdx), Studio provides the database's secret key.  
+Save this key for recovery, including restoring backups encrypted with that key.  
+You do not need to supply it during normal database operations.    
 See [Secret Key Management](../../../server/security/encryption/secret-key-management.mdx) for more information.  
 
 ![Figure 1. Secret Key](./assets/1.png)
 
-<Admonition type="danger" title="Danger" id="danger" href="#danger">
-Download, print, or copy and save the secret key in a safe place. It will NOT be available again!
+<Admonition type="danger" title="">
+    
+#### Save the secret key
+    
+Download, print, or copy the secret key and store it in a safe place before completing database creation.  
+After creation, the key will no longer be displayed in the database creation dialog.
+    
 </Admonition>
 
-## Creating An Encrypted Database Using The REST API And The Client API
+</Panel>
 
-Before creating the database, a secret key must be generated. Generating and storing secret keys is restricted to `Operator` or `ClusterAdmin` Security Clearances.
-RavenDB uses a [cryptographically secure pseudo-random number generator](https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator) and 
-it is recommended that you use it. If you must use your own secret key, please make sure it is 256 bits long and cryptographically secure.  
+<Panel heading="Creating an encrypted database using the REST API and the Client API">
 
-You must use a client certificate to make the request because the server is using authentication.
+Before creating the database, generate a 32-byte (256-bit) key and supply it as a Base64 string.  
+    
+The examples below use RavenDB's key generation endpoint.  
+If you generate your own key, use a cryptographically secure random number generator.  
+Keep a secure copy of the key for recovery.
 
-## Windows Example
+These examples require:
 
-Load the client certificate in PowerShell:
-<TabItem value="powershell" label="powershell">
-<CodeBlock language="powershell">
-{`$cert = Get-PfxCertificate -FilePath C:\\secrets\\admin.client.certificate.example.pfx
-`}
-</CodeBlock>
-</TabItem>
+* A RavenDB server configured for HTTPS and authentication.
+* A license that includes database encryption.
+* A client certificate with `Operator` or `ClusterAdmin` clearance.
+* An initialized `DocumentStore` configured with that certificate.
 
-Make sure to use TLS 1.2 (or 1.3):
-<TabItem value="powershell" label="powershell">
-<CodeBlock language="powershell">
-{`[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-`}
-</CodeBlock>
-</TabItem>
+The examples create `MyEncryptedDatabase` on a single node (`A`).  
+Replace `https://your-server-url` with the URL of the node that will host the database,   
+and replace `A` with that node's tag.
+
+Storing a key through `/admin/secrets` installs it only on the server receiving the request.  
+For multiple nodes, use `POST /admin/secrets/distribute?name=MyEncryptedDatabase&node=A&node=B&node=C`  
+to store the same key on each node before creating the database.  
+Send the Base64 key in the request body. Include those same nodes in `DatabaseRecord.Topology.Members`.
+
+Use a new database name when repeating the complete example.  
+By default, RavenDB rejects a different secret key if one is already stored for that name.
+
+<ContentFrame>
+
+### Windows example
+
+These commands use Windows PowerShell 5.1.
+
+Load the client certificate:
+    
+```powershell
+$cert = Get-PfxCertificate -FilePath C:\secrets\admin.client.certificate.example.pfx
+```
+<br/>
+
+Configure Windows PowerShell to use TLS 1.2:
+
+```powershell
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+```
+<br/>
 
 Ask RavenDB to generate a key for you: 
-<TabItem value="powershell" label="powershell">
-<CodeBlock language="powershell">
-{`$response = Invoke-WebRequest https://your-server-url/admin/secrets/generate -Certificate $cert
-`}
-</CodeBlock>
-</TabItem>
 
-Then send the key to the RavenDB server on which the database will be created. Note that the database doesn't exist yet, but you will still need to supply its name. Make the following POST request to assign the secret key to a specific database:
-<TabItem value="powershell" label="powershell">
-<CodeBlock language="powershell">
-{`$payload = [System.Text.Encoding]::ASCII.GetString($response.Content) 
-Invoke-WebRequest https://your-server-url/admin/secrets?name=MyEncryptedDatabase -Certificate $cert -Method POST -Body $payload
-`}
-</CodeBlock>
-</TabItem>
+```powershell
+$response = Invoke-WebRequest -UseBasicParsing `
+    -Uri "https://your-server-url/admin/secrets/generate" `
+    -Certificate $cert
+```
+<br/>
+
+Store the key on the node that will host the database, using the future database name (`MyEncryptedDatabase`).  
+The database does not need to exist yet:
+
+```powershell
+$payload = [System.Text.Encoding]::ASCII.GetString($response.Content)
+
+Invoke-WebRequest -UseBasicParsing `
+    -Uri "https://your-server-url/admin/secrets?name=MyEncryptedDatabase" `
+    -Certificate $cert `
+    -Method POST `
+    -ContentType "text/plain" `
+    -Body $payload
+```
+<br/>
 
 Finally, create the encrypted database using the Client API:
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`store.Maintenance.Server.Send(new CreateDatabaseOperation(new DatabaseRecord("MyEncryptedDatabase")
-{
-    Encrypted = true
-}));
-`}
-</CodeBlock>
+```csharp
+store.Maintenance.Server.Send(
+    new CreateDatabaseOperation(
+        new DatabaseRecord("MyEncryptedDatabase")
+        {
+            Encrypted = true,
+            Topology = new DatabaseTopology
+            {
+                Members = { "A" }
+            }
+        }));
+```
 </TabItem>
 <TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`await store.Maintenance.Server.SendAsync(new CreateDatabaseOperation(new DatabaseRecord("MyEncryptedDatabase")
-{
-    Encrypted = true
-}));
-`}
-</CodeBlock>
+```csharp
+await store.Maintenance.Server.SendAsync(
+    new CreateDatabaseOperation(
+        new DatabaseRecord("MyEncryptedDatabase")
+        {
+            Encrypted = true,
+            Topology = new DatabaseTopology
+            {
+                Members = { "A" }
+            }
+        }));
+```
 </TabItem>
 </Tabs>
 
-## Linux Example
+</ContentFrame>
 
-When generating a client certificate using RavenDB, you will receive a Zip file containing an admin client certificate (.pfx, .crt, .key).
+<ContentFrame>
 
-First we will create a .pem certificate file from the .crt and .key files:
-<TabItem value="plain" label="plain">
-<CodeBlock language="plain">
-{`cat admin.client.certificate.example.crt admin.client.certificate.example.key > clientCert.pem
-`}
-</CodeBlock>
-</TabItem>
+### Linux example
+
+The certificate ZIP downloaded from Studio contains `.pfx`, `.crt`, and `.key` files.  
+Use the `.crt` and `.key` files to create a `.pem` file:
+
+```bash
+cat admin.client.certificate.example.crt \
+    admin.client.certificate.example.key > clientCert.pem
+```
+<br/>
 
 Ask RavenDB to generate a key for you: 
-<TabItem value="plain" label="plain">
-<CodeBlock language="plain">
-{`key=$(curl --cert clientCert.pem  https://your-server-url/admin/secrets/generate)
-`}
-</CodeBlock>
-</TabItem>
 
-Then send the key to the RavenDB server on which the database will be created. Note that the database doesn't exist yet, but you will still need to supply its name. Make the following POST request to assign the secret key to a specific database:
-<TabItem value="plain" label="plain">
-<CodeBlock language="plain">
-{`curl -X POST -H "Content-Type: text/plain" --data $key --cert clientCert.pem https://your-server-url/admin/secrets?name=MyEncryptedDatabase
-`}
-</CodeBlock>
-</TabItem>
+```bash
+key=$(
+    curl --fail --silent --show-error \
+        --cert clientCert.pem \
+        "https://your-server-url/admin/secrets/generate"
+)
+```
+<br/>
+
+Store the key on the node that will host the database, using the future database name (`MyEncryptedDatabase`).  
+The database does not need to exist yet:
+
+```bash
+curl --fail --silent --show-error \
+    -X POST \
+    -H "Content-Type: text/plain" \
+    --data "$key" \
+    --cert clientCert.pem \
+    "https://your-server-url/admin/secrets?name=MyEncryptedDatabase"
+```
+<br/>
 
 Finally, create the encrypted database using the Client API:
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
-<CodeBlock language="csharp">
-{`store.Maintenance.Server.Send(new CreateDatabaseOperation(new DatabaseRecord("MyEncryptedDatabase")
-{
-    Encrypted = true
-}));
-`}
-</CodeBlock>
+```csharp
+store.Maintenance.Server.Send(
+    new CreateDatabaseOperation(
+        new DatabaseRecord("MyEncryptedDatabase")
+        {
+            Encrypted = true,
+            Topology = new DatabaseTopology
+            {
+                Members = { "A" }
+            }
+        }));
+```
 </TabItem>
 <TabItem value="Async" label="Async">
-<CodeBlock language="csharp">
-{`await store.Maintenance.Server.SendAsync(new CreateDatabaseOperation(new DatabaseRecord("MyEncryptedDatabase")
-{
-    Encrypted = true
-}));
-`}
-</CodeBlock>
+```csharp
+await store.Maintenance.Server.SendAsync(
+    new CreateDatabaseOperation(
+        new DatabaseRecord("MyEncryptedDatabase")
+        {
+            Encrypted = true,
+            Topology = new DatabaseTopology
+            {
+                Members = { "A" }
+            }
+        }));
+```
 </TabItem>
 </Tabs>
 
-## Remarks
+</ContentFrame>
 
-Database encryption must be enabled when creating the database. If you wish to use encryption in an existing database, it must be exported and then imported back into a new encrypted database.
+</Panel>
 
-<Admonition type="danger" title="Indexing transaction size" id="indexing-transaction-size" href="#indexing-transaction-size">
-Indexing is most efficient when it is performed in the largest transactions possible. However, using encryption is very memory intensive, and if memory 
-runs out before the transaction completes, the entire transaction will fail. To avoid this, you can limit the size of indexing batches in encrypted 
-databases using [Indexing.Encrypted.TransactionSizeLimitInMb](../../../server/configuration/indexing-configuration.mdx#indexingencryptedtransactionsizelimitinmb).  
+<Panel heading="Considerations for encrypted databases">
+
+<Admonition type="note" title="">
+    
+### Enabling database encryption
+    
+* Database encryption must be enabled when creating the database.
+   
+* To encrypt an existing database, export its data and import it into a new encrypted database.
+    
 </Admonition>
 
+<Admonition type="note" title="">
+    
+### Indexing transaction size
+    
+* Indexing is most efficient when it is performed in the largest transactions possible.  
+  However, using encryption is very memory intensive, and if memory runs out before the transaction completes, the entire transaction will fail.
+    
+* To avoid this, you can limit the size of indexing batches in encrypted databases 
+  using [Indexing.Encrypted.TransactionSizeLimitInMb](../../../server/configuration/indexing-configuration.mdx#indexingencryptedtransactionsizelimitinmb).
+    
+</Admonition>
 
+<Admonition type="note" title="">
+    
+### Vector search node cache
+    
+* In RavenDB 7.2.6 and later, the HNSW node cache is disabled for **Corax vector indexes on encrypted databases**.
+  This applies to both static indexes and auto-indexes created by dynamic vector queries.
+
+* The cache is incompatible with encryption, so [Indexing.Corax.VectorSearch.CacheSizeInMb](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchcachesizeinmb) is ignored on encrypted databases.
+  Vector queries read the HNSW graph from disk.
+
+* Without the cache, vector queries may require more disk reads, which can reduce query performance.  
+  Query results remain unchanged.
+
+* Lucene indexes and Corax indexes without vector fields are unaffected.  
+  On unencrypted databases, the HNSW node cache remains available and is controlled by `Indexing.Corax.VectorSearch.CacheSizeInMb`.
+    
+</Admonition>
+
+<Admonition type="warning" title="">
+    
+### Recovering vector indexes affected by RavenDB 7.2.5 regression   
+    
+* A regression in RavenDB 7.2.5 caused Corax vector indexes on encrypted databases to fail during indexing.
+    
+* If an index entered Error state because of this regression, upgrade to RavenDB 7.2.6 or later and [reset the affected index](../../../indexes/index-administration.mdx#reset-index).
+  With the [default index startup behavior](../../../server/configuration/indexing-configuration.mdx#indexingerrorindexstartupbehavior), upgrading alone does not clear the Error state.  
+  Resetting rebuilds the index from the documents.
+    
+</Admonition>
+
+</Panel>
