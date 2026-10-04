@@ -1,0 +1,57 @@
+---
+title: "Data subscriptions configuration options"
+sidebar_label: "Configuration"
+description: "Configure data subscription behavior on a RavenDB server: the default processing of archived documents and the maximum number of concurrent connections per subscription."
+sidebar_position: 8
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Data subscriptions configuration options
+
+<Admonition type="note" title="">
+
+* Use the configuration keys below to set data subscription options.  
+* Learn how to apply configuration keys in the [Configuration overview](../server/configuration/configuration-options.mdx).
+
+* On this page:
+   * [Subscriptions.ArchivedDataProcessingBehavior](../data-subscriptions/configuration.mdx#subscriptionsarchiveddataprocessingbehavior)
+   * [Subscriptions.MaxNumberOfConcurrentConnections](../data-subscriptions/configuration.mdx#subscriptionsmaxnumberofconcurrentconnections)
+
+</Admonition>
+
+<Panel heading="Configuration keys">
+
+The following keys control data subscription behavior. Each can be set server-wide or per database.
+
+---
+
+<ContentFrame>
+
+## Subscriptions.ArchivedDataProcessingBehavior
+
+The default processing behavior for archived documents in a subscription query.
+
+- **Type**: `enum ArchivedDataProcessingBehavior`:
+   * `ExcludeArchived`: only non-archived documents are processed by the subscription query.
+   * `IncludeArchived`: both archived and non-archived documents are processed by the subscription query.
+   * `ArchivedOnly`: only archived documents are processed by the subscription query.
+- **Default**: `ExcludeArchived`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+<ContentFrame>
+
+## Subscriptions.MaxNumberOfConcurrentConnections
+
+The maximum number of concurrent subscription connections allowed per database.
+
+- **Type**: `int`
+- **Default**: `1000`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+</Panel>

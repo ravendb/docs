@@ -1,0 +1,931 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* A data subscription is a server-side task that sends documents matching a query to connected
+  clients ("workers"), in batches.  
+* This page explains how to create and update a subscription using the Client API.  
+  You can also [create a subscription using Studio](../../../data-subscriptions/creating-subscription/creating-subscription_studio.mdx).  
+* A subscription's definition and its processing progress are kept on the cluster rather than on
+  a single node, and the cluster assigns one node to manage the task.  
+
+* In this article:
+   * [Creating a subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#creating-a-subscription)
+   * [Subscription name](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#subscription-name)
+   * [Responsible node](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#responsible-node)
+   * [Updating a subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#updating-a-subscription)
+   * [Subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#subscription-query)
+   * [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples)
+      * [Sending an entire collection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-sending-an-entire-collection)
+      * [Filtering documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-documents)
+      * [Filtering with a regular expression](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-with-a-regular-expression)
+      * [Filtering and projecting fields](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-and-projecting-fields)
+      * [Projecting from a related document](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-projecting-from-a-related-document)
+      * [Including documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-documents)
+      * [Including counters](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-counters)
+      * [Including time series](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-time-series)
+      * [Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-creating-a-subscription-via-update)
+      * [Updating an existing subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-updating-an-existing-subscription)
+   * [Syntax](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Creating a subscription">
+
+To create a subscription, define which documents the server should send to the worker, then register
+this definition with the server using the `Create` method on the document store's `Subscriptions`
+property.
+
+You can define a subscription in three ways:
+
+* **A typed filter and projection**  
+  Pass a [SubscriptionCreationOptions&lt;T&gt;](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) whose `Filter`, `Projection`, and
+  `Includes` expressions are written in C#.  
+* **A predicate**  
+  Pass a lambda predicate directly to [Create&lt;T&gt;](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods).  
+* **A raw RQL (Raven Query Language) query**  
+  Set the `Query` string on [SubscriptionCreationOptions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes).  
+
+The simplest definition sends an entire collection:
+
+```csharp
+// The server sends every document in the 'Orders' collection
+// to any client that connects to this subscription.
+subscriptionName = store.Subscriptions.Create<Order>();
+```
+
+<br />
+
+For filtering, projections, includes, and revisions, see the [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples) below.
+
+</Panel>
+
+<Panel heading="Subscription name">
+
+Every subscription has a name, which clients use to identify the subscription they want to
+consume.  
+If you do not provide a name when creating the subscription, the server generates one for you.  
+To set your own:
+
+```csharp
+subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>
+{
+    // Set a custom name for the subscription
+    Name = "OrdersProcessingSubscription"
+});
+```
+
+<br />
+
+Setting your own name is useful for long-running batch processes: a readable name is easier to
+work with in code, and you can reuse the same name across environments, as long as the
+subscription is created in advance.
+
+<Admonition type="info" title="">
+A subscription name must be unique within its database. You cannot create two subscriptions with
+the same name in the same database.
+</Admonition>
+
+</Panel>
+
+<Panel heading="Responsible node">
+
+When a subscription is created, the cluster assigns one node to manage it. As long as this node is available, 
+it remains responsible for the subscription. If a worker connects to another node, that node will redirect it 
+to the responsible node.  
+
+If the responsible node goes down and your license includes
+[highly available tasks](../../../server/clustering/distribution/highly-available-tasks.mdx),
+the task is reassigned to another node.  
+While the assigned node is online, it remains the one managing the subscription.
+
+To choose the responsible node yourself, set its tag in the `MentorNode` property:
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions<Order>
+{
+    // Make node D responsible for the subscription
+    MentorNode = "D"
+});
+```
+
+<br />
+
+Choosing the node manually lets you pick a server based on its hardware, proximity to the
+consuming clients, or other considerations.
+
+</Panel>
+
+<Panel heading="Updating a subscription">
+
+You can change an existing subscription's definition using the [Update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods) method.  
+Pass a [SubscriptionUpdateOptions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes), which extends the creation options with two
+additional fields, `Id` and `CreateNew`:
+
+* **`Id`** targets the subscription by the ID the server assigned it at creation, instead of by
+  name.  
+  Because the ID identifies the subscription independently of its name, you can use it to rename
+  a subscription: provide the ID and a new `Name`.  
+* **`CreateNew`** controls what happens when the subscription you are updating does not exist.  
+  Set it to `true` to create the subscription instead, or leave it `false`, the default, to
+  throw an exception.  
+
+```csharp
+// Rename a subscription by targeting it with its Id
+store.Subscriptions.Update(new SubscriptionUpdateOptions
+{
+    Id = subscriptionId,
+    Name = "NewSubscriptionName"
+});
+```
+
+<br />
+
+For a full update example, see the [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples) below.
+
+</Panel>
+
+<Panel heading="Subscription query">
+
+Every subscription is ultimately expressed as an RQL statement.  
+A subscription query can have these parts:
+
+* **A `declare` functions section**, as in ordinary RQL.  
+  These functions can hold any JavaScript code, and support `load` and `include` operations.  
+* **A `from` clause** naming the document source, for example `from Orders`.  
+  This clause can address only a collection; indexes are not supported.  
+* **A `where` clause** deciding the documents the server sends to the worker.  
+  This clause supports RQL equality operators (`=`, `==`), plain JavaScript expressions,
+  and calls to declared functions, so you can express complex filtering.  
+  Subscription RQL does not support RQL's search keywords.  
+* **A `select` clause** defining the projection.  
+  This clause can call functions, allowing complex transformations.  
+* **An `include` clause** defining paths to include.  
+
+<Admonition type="info" title="">
+Although a subscription query has an RQL-like structure, it supports only the `declare`,
+`select`, and `where` keywords; no other RQL keywords are supported. JavaScript ES5 syntax is
+supported. For more details, see [JavaScript engine](../../../server/kb/javascript-engine.mdx).
+</Admonition>
+
+<Admonition type="info" title="">
+
+Paths in a subscription query are handled as JavaScript expressions rather than as regular RQL
+paths.  
+A query that in RQL would be written as:
+
+```rql
+from Orders as o
+where o.Lines[].Product = "products/1-A"
+```
+
+<br />
+
+is written in a subscription query as follows:
+
+```rql
+declare function filterLines(doc, productId)
+{
+    if (!!doc.Lines){
+        return doc.Lines.filter(x => x.Product == productId).length > 0;
+    }
+    return false;
+}
+
+from Orders as o
+where filterLines(o, "products/1-A")
+```
+
+</Admonition>
+
+To create a subscription over document revisions, see
+[Revisions support](../../../data-subscriptions/revisions-support.mdx).
+
+</Panel>
+
+<Panel heading="Examples">
+
+<ContentFrame>
+
+### Example: Sending an entire collection
+
+In this example, the subscription sends to the worker every document in the `Orders` collection, with no filter or projection.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="generic" label="Generic API">
+
+```csharp
+subscriptionName = store.Subscriptions.Create<Order>();
+```
+
+</TabItem>
+<TabItem value="rql" label="RQL">
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = "from Orders"
+});
+```
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Filtering documents
+
+In this example, the subscription sends to the worker only `Orders` whose total revenue exceeds 100.  
+The server evaluates the filter and sends just the matching documents.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="generic" label="Generic API">
+
+```csharp
+subscriptionName = store.Subscriptions.Create<Order>(x =>
+    // Only documents matching this filter will be sent
+    x.Lines.Sum(line => line.PricePerUnit * line.Quantity) > 100);
+```
+
+</TabItem>
+<TabItem value="rql" label="RQL">
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"declare function getOrderLinesSum(doc) {
+                  var sum = 0;
+                  for (var i in doc.Lines) {
+                      sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;
+                  }
+                  return sum;
+              }
+
+              from Orders as o
+              where getOrderLinesSum(o) > 100"
+});
+```
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Filtering with a regular expression
+
+In this example, the subscription filters documents with a regular expression.  
+Use `Regex.IsMatch` inside the filter expression to match a field against a pattern on the
+server, here `Orders` whose `ShipTo.City` starts with `New`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="generic" label="Generic API">
+
+```csharp
+// Filter using Regex.IsMatch in the subscription's LINQ filter
+subscriptionName = store.Subscriptions.Create<Order>(x =>
+    Regex.IsMatch(x.ShipTo.City, "^New"));
+```
+
+</TabItem>
+<TabItem value="rql" label="RQL">
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"from Orders
+              where regex(ShipTo.City, '^New')"
+});
+```
+
+</TabItem>
+</Tabs>
+
+<br />
+
+Pass supported `RegexOptions` as a third argument:
+
+```csharp
+// Filter with case-insensitive regex matching
+subscriptionName = store.Subscriptions.Create<Order>(x =>
+    Regex.IsMatch(x.ShipTo.City, "^new", RegexOptions.IgnoreCase));
+```
+
+<br />
+
+<Admonition type="note" title="">
+
+The following `RegexOptions` are supported: `RegexOptions.IgnoreCase`, `RegexOptions.Multiline`,
+and `RegexOptions.Singleline`.  
+Other values, such as `Compiled` or `ExplicitCapture`, and the timeout overload are not
+supported and throw a `NotSupportedException`.  
+The pattern must be a constant expression; it cannot be a value computed at runtime from
+document fields.
+
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Filtering and projecting fields
+
+In this example, the subscription filters `Orders` by total revenue, and projects only two fields into each item
+sent to the client: the document ID and the computed total.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="generic" label="Generic API">
+
+```csharp
+subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>()
+{
+    // The subscription criteria:
+    Filter = x => x.Lines.Sum(line => line.PricePerUnit * line.Quantity) > 100,
+
+    // The object properties that will be sent for each matching document:
+    Projection = x => new
+    {
+        Id = x.Id,
+        Total = x.Lines.Sum(line => line.PricePerUnit * line.Quantity)
+    }
+});
+```
+
+</TabItem>
+<TabItem value="rql" label="RQL">
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"declare function getOrderLinesSum(doc) {
+                  var sum = 0;
+                  for (var i in doc.Lines) {
+                      sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;
+                  }
+                  return sum;
+              }
+
+              declare function projectOrder(doc) {
+                  return {
+                      Id: doc.Id,
+                      Total: getOrderLinesSum(doc)
+                  };
+              }
+
+              from Orders as o
+              where getOrderLinesSum(o) > 100
+              select projectOrder(o)"
+});
+```
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Projecting from a related document
+
+In this example, the subscription projects fields from each `Order` and also pulls data from a
+[related document](../../../indexes/indexing-related-documents.mdx#what-are-related-documents),
+loaded using `Load`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="generic" label="Generic API">
+
+```csharp
+subscriptionName = store.Subscriptions.Create<Order>(
+    new SubscriptionCreationOptions<Order>()
+    {
+        // The subscription criteria:
+        Filter = x => x.Lines.Sum(line => line.PricePerUnit * line.Quantity) > 100,
+
+        // The object properties that will be sent for each matching document:
+        Projection = x => new
+        {
+            Id = x.Id,
+            Total = x.Lines.Sum(line => line.PricePerUnit * line.Quantity),
+            ShipTo = x.ShipTo,
+
+            // 'Load' the related Employee document and use its data in the projection
+            // Both Load calls resolve to a single server-side load
+            EmployeeName = RavenQuery.Load<Employee>(x.Employee).FirstName + " " +
+                           RavenQuery.Load<Employee>(x.Employee).LastName
+        }
+    });
+```
+
+</TabItem>
+<TabItem value="rql" label="RQL">
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"declare function getOrderLinesSum(doc) {
+                  var sum = 0;
+                  for (var i in doc.Lines) {
+                      sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;
+                  }
+                  return sum;
+              }
+
+              declare function projectOrder(doc) {
+                  var employee = load(doc.Employee);
+                  return {
+                      Id: doc.Id,
+                      Total: getOrderLinesSum(doc),
+                      ShipTo: doc.ShipTo,
+                      EmployeeName: employee.FirstName + ' ' + employee.LastName
+                  };
+              }
+
+              from Orders as o
+              where getOrderLinesSum(o) > 100
+              select projectOrder(o)"
+});
+```
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Including documents
+
+In this example, the subscription sends every `Order` and includes the `Product` documents related to the order
+in the same batch, so the consuming worker can later read each `Product` without an extra call to
+the server.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="builder" label="Builder">
+
+```csharp
+subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>()
+{
+    Includes = builder => builder
+         // The documents whose IDs are in each order line's 'Product' property
+         // will be included in the batch
+        .IncludeDocuments(x => x.Lines.Select(y => y.Product))
+});
+```
+
+</TabItem>
+<TabItem value="rql-path" label="RQL path">
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"from Orders include Lines[].Product"
+});
+```
+
+</TabItem>
+<TabItem value="rql-js" label="RQL JavaScript">
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"declare function includeProducts(doc) {
+                  let linesCount = doc.Lines.length;
+
+                  for (let i = 0; i < linesCount; i++) {
+                      include(doc.Lines[i].Product);
+                  }
+
+                  return doc;
+              }
+
+              from Orders as o select includeProducts(o)"
+});
+```
+
+</TabItem>
+</Tabs>
+
+<br />
+
+Using the builder, assign an `ISubscriptionIncludeBuilder` to the `Includes` property of
+`SubscriptionCreationOptions<T>`.  
+The builder includes related documents through `IncludeDocuments`, and its methods can be
+chained.
+
+In RQL, write the include in one of two ways: append the `include` keyword followed by the paths
+to the fields holding the IDs to include (preferred, for both clarity and slightly better
+performance), or call `include` inside a JavaScript function invoked from the `select` clause.
+
+<Admonition type="info" title="">
+When you include documents alongside a projection, the `include` resolves paths against the
+projected fields rather than the original document.
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Including counters
+
+In this example, the subscription sends to the worker every `Order` and includes the values of the
+named counters in the batch.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="builder" label="Builder">
+
+```csharp
+subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>()
+{
+    Includes = builder => builder
+         // Values for the specified counters will be included in the batch
+        .IncludeCounters(new[] { "Pros", "Cons" })
+});
+```
+
+</TabItem>
+<TabItem value="rql" label="RQL">
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"from Orders include counters('Pros'), counters('Cons')"
+});
+```
+
+</TabItem>
+</Tabs>
+
+<br />
+
+`ISubscriptionIncludeBuilder` offers three methods for including counters:
+
+```csharp
+// Include a single counter
+ISubscriptionIncludeBuilder<T> IncludeCounter(string name);
+
+// Include multiple counters
+ISubscriptionIncludeBuilder<T> IncludeCounters(string[] names);
+
+// Include ALL counters from ALL documents that match the subscription criteria
+ISubscriptionIncludeBuilder<T> IncludeAllCounters();
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **name** | `string` | The name of a counter. The subscription includes every counter with this name in the documents it retrieves. |
+| **names** | `string[]` | An array of counter names. |
+
+All of these methods can be chained.  
+The following subscription includes several counters and a related document:
+
+```csharp
+subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>()
+{
+    Includes = builder => builder
+        .IncludeCounter("Likes")
+        .IncludeCounters(new[] { "Pros", "Cons" })
+        .IncludeDocuments("Employee")
+});
+```
+
+<br />
+
+<Admonition type="note" title="">
+Changing the value of an existing counter after the document was sent does not trigger a
+re-send.  
+Adding a new counter to the document, or removing one, does trigger re-sending the document.
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Including time series
+
+In this example, the subscription sends every `Order` and includes time-series entries for each
+document in the batch, so the worker has those entries without issuing additional requests to the server.
+
+```csharp
+subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>()
+{
+    Includes = builder => builder
+        // Include the last 10 entries of each document's "HeartRate" time series
+        .IncludeTimeSeries("HeartRate", TimeSeriesRangeType.Last, 10)
+});
+```
+
+<br />
+
+`ISubscriptionIncludeBuilder` includes time series through these methods:
+
+```csharp
+// Include entries of a named time series, by a time range or by a number of entries
+ISubscriptionIncludeBuilder<T> IncludeTimeSeries(string name, TimeSeriesRangeType type, TimeValue time);
+ISubscriptionIncludeBuilder<T> IncludeTimeSeries(string name, TimeSeriesRangeType type, int count);
+
+// The same, for several named time series
+ISubscriptionIncludeBuilder<T> IncludeTimeSeries(string[] names, TimeSeriesRangeType type, TimeValue time);
+ISubscriptionIncludeBuilder<T> IncludeTimeSeries(string[] names, TimeSeriesRangeType type, int count);
+
+// Include all time series
+ISubscriptionIncludeBuilder<T> IncludeAllTimeSeries(TimeSeriesRangeType type, TimeValue time);
+ISubscriptionIncludeBuilder<T> IncludeAllTimeSeries(TimeSeriesRangeType type, int count);
+ISubscriptionIncludeBuilder<T> IncludeAllTimeSeries(DateTime? from, DateTime? to);
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **name** / **names** | `string` / `string[]` | The time series to include. |
+| **type** | `TimeSeriesRangeType` | The range type: `None` or `Last`. |
+| **time** | `TimeValue` | A time range to include, for example the last 7 days. |
+| **count** | `int` | A number of entries to include, counted from the most recent. |
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Creating a subscription via update
+
+When the subscription you update does not exist, set `CreateNew` to `true` to create it instead,
+using the provided query.
+
+```csharp
+subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
+{
+    Name = "my subscription",
+    Query = "from Products where PricePerUnit > 20",
+
+    // Set to true so that a new subscription is created
+    // if a subscription named "my subscription" does not exist
+    CreateNew = true
+});
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Updating an existing subscription
+
+You can change a subscription's definition after creation. Target it by name, or by the ID the
+server assigned it at creation. The ID also lets you rename the subscription.
+
+Update by name, here changing the filter query of a subscription named "my subscription":
+
+```csharp
+subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
+{
+    // Specify the subscription you wish to modify
+    Name = "my subscription",
+
+    // Provide a new query
+    Query = "from Products where PricePerUnit > 50"
+});
+```
+
+<br />
+
+Update by ID, retrieving the ID from the subscription's state:
+
+```csharp
+// Get the subscription's ID
+SubscriptionState mySubscription = store.Subscriptions.GetSubscriptionState("my subscription");
+long subscriptionId = mySubscription.SubscriptionId;
+
+// Update the subscription
+subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
+{
+    Id = subscriptionId,
+    Query = "from Products where PricePerUnit > 50"
+});
+```
+
+<br />
+
+Targeting by ID also lets you rename the subscription:
+
+```csharp
+// Get the subscription's ID
+mySubscription = store.Subscriptions.GetSubscriptionState("my subscription");
+subscriptionId = mySubscription.SubscriptionId;
+
+// Update the subscription name
+subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
+{
+    Id = subscriptionId,
+    Name = "New name"
+});
+```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Syntax">
+
+<ContentFrame>
+
+### Methods
+
+<Tabs groupId='syntaxMethods'>
+<TabItem value="create" label="Create">
+
+Create a subscription on the server.
+
+```csharp
+string Create(SubscriptionCreationOptions options,
+              string database = null);
+
+string Create<T>(SubscriptionCreationOptions options = null,
+                 string database = null);
+
+string Create<T>(SubscriptionCreationOptions<T> options,
+                 string database = null);
+
+string Create<T>(Expression<Func<T, bool>> predicate,
+                 PredicateSubscriptionCreationOptions options = null,
+                 string database = null);
+
+Task<string> CreateAsync(SubscriptionCreationOptions options,
+                         string database = null,
+                         CancellationToken token = default);
+
+Task<string> CreateAsync<T>(SubscriptionCreationOptions options = null,
+                            string database = null,
+                            CancellationToken token = default);
+
+Task<string> CreateAsync<T>(SubscriptionCreationOptions<T> options,
+                            string database = null,
+                            CancellationToken token = default);
+
+Task<string> CreateAsync<T>(Expression<Func<T, bool>> predicate,
+                            PredicateSubscriptionCreationOptions options = null,
+                            string database = null,
+                            CancellationToken token = default);
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **predicate** | `Expression<Func<T, bool>>` | An optional lambda expression returning a boolean that defines the subscription's filter. |
+| **options** | `SubscriptionCreationOptions<T>`, `SubscriptionCreationOptions`, or `PredicateSubscriptionCreationOptions` | The subscription creation options. See the [Classes](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) below. |
+| **database** | `string` | The database where the subscription is created. If `null`, the document store's default database is used. |
+| **token** | `CancellationToken` | A token used to cancel the creation operation. |
+
+| Return value | |
+|-----------|-------------|
+| `string` | The name of the created subscription. If a name was provided in the options it is returned; otherwise the server generates a unique name. |
+
+</TabItem>
+<TabItem value="update" label="Update">
+
+Update an existing subscription's definition.
+
+```csharp
+string Update(SubscriptionUpdateOptions options, string database = null);
+
+Task<string> UpdateAsync(SubscriptionUpdateOptions options, string database = null,
+                         CancellationToken token = default);
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **options** | `SubscriptionUpdateOptions` | The subscription update options. See the [Classes](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) below. |
+| **database** | `string` | The database where the subscription resides. If `null`, the document store's default database is used. |
+| **token** | `CancellationToken` | A token used to cancel the update operation. |
+
+| Return value | |
+|-----------|-------------|
+| `string` | The name of the updated subscription. |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Classes
+
+<Tabs groupId='subscriptionOptionClasses'>
+<TabItem value="creation-options-generic" label="SubscriptionCreationOptions&lt;T&gt;">
+
+```csharp
+public class SubscriptionCreationOptions<T>
+{
+    public string Name { get; set; }
+    public Expression<Func<T, bool>> Filter { get; set; }
+    public Expression<Func<T, object>> Projection { get; set; }
+    public Action<ISubscriptionIncludeBuilder<T>> Includes { get; set; }
+    public string ChangeVector { get; set; }
+    public bool Disabled { get; set; }
+    public string MentorNode { get; set; }
+    public bool PinToMentorNode { get; set; }
+    public ArchivedDataProcessingBehavior? ArchivedDataProcessingBehavior { get; set; }
+}
+```
+
+</TabItem>
+<TabItem value="creation-options" label="SubscriptionCreationOptions">
+
+```csharp
+public class SubscriptionCreationOptions
+{
+    public string Name { get; set; }
+    public string Query { get; set; }
+    public string ChangeVector { get; set; }
+    public virtual bool Disabled { get; set; }
+    public string MentorNode { get; set; }
+    public virtual bool PinToMentorNode { get; set; }
+    public ArchivedDataProcessingBehavior? ArchivedDataProcessingBehavior { get; set; }
+}
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs groupId='subscriptionUpdateClasses'>
+<TabItem value="predicate-options" label="PredicateSubscriptionCreationOptions">
+
+```csharp
+public sealed class PredicateSubscriptionCreationOptions
+{
+    public string Name { get; set; }
+    public string ChangeVector { get; set; }
+    public bool Disabled { get; set; }
+    public string MentorNode { get; set; }
+    public bool PinToMentorNode { get; set; }
+    public ArchivedDataProcessingBehavior? ArchivedDataProcessingBehavior { get; set; }
+}
+```
+
+</TabItem>
+<TabItem value="update-options" label="SubscriptionUpdateOptions">
+
+```csharp
+public class SubscriptionUpdateOptions : SubscriptionCreationOptions
+{
+    public long? Id { get; set; }
+    public bool CreateNew { get; set; }
+}
+```
+
+</TabItem>
+</Tabs>
+
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **&lt;T&gt;** | `T` | The type whose collection the subscription draws its documents from. |
+| **Name** | `string` | A user-defined name for the subscription. Must be unique within the database. |
+| **Query** | `string` | An RQL query that defines the subscription. Supports JavaScript functions inside the `where` clause and special semantics for subscriptions on document revisions. |
+| **Filter** | `Expression<Func<T, bool>>` | A lambda expression defining the subscription's filter. Translated to a JavaScript function. |
+| **Projection** | `Expression<Func<T, object>>` | A lambda expression defining the projection sent for each matching document. Translated to a JavaScript function. |
+| **Includes** | `Action<ISubscriptionIncludeBuilder<T>>` | An action defining the subscription's include clauses. Included documents, counters, and time series are part of the batch the subscription sends. The include methods can be chained. |
+| **ChangeVector** | `string` | A change vector marking where the subscription starts processing. See the note below. |
+| **Disabled** | `bool` | `true` creates the task in a disabled state; `false` creates it enabled. |
+| **MentorNode** | `string` | The tag of the node you want to handle the subscription. Useful when you prefer a specific server for its hardware, its proximity to clients, or other reasons. |
+| **PinToMentorNode** | `bool` | `true` pins the task to the responsible node; `false` lets another node run it if the responsible node is down. |
+| **ArchivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior?` | Whether archived documents are included in the subscription. See [Archived documents and subscriptions](../../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions). |
+
+<br />
+
+`SubscriptionUpdateOptions` adds two properties to the creation options:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **Id** | `long?` | The ID the server assigned the subscription at creation. Retrieve it from the subscription's state. When updating, the `Id` can be used instead of the `Name` and takes precedence over the `Name`, which lets you rename the subscription: provide the `Id` and a new `Name`. |
+| **CreateNew** | `bool` | What to do when the target subscription does not exist. `true` creates a new subscription from the provided options; `false` throws. Default: `false`. |
+
+<br />
+
+<Admonition type="note" title="">
+
+The `ChangeVector` property sets a starting point for processing, which is useful for an ad-hoc
+process that needs only recent changes.  
+Set it to `"LastDocument"` to start from the latest document in the collection, or pass an actual
+change vector to start from a specific point.  
+By default the subscription sends all documents matching its query, regardless of when they were
+created.
+
+</Admonition>
+
+</ContentFrame>
+
+</Panel>
