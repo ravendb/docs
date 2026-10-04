@@ -44,6 +44,7 @@ import Panel from '@site/src/components/Panel';
 * Use this article to diagnose common CDC Sink task problems and find the relevant recovery steps.    
 
 * In this article:
+  * [Table verification fails or returns warnings](#table-verification-fails-or-returns-warnings)
   * [Task fails to start](#task-fails-to-start)
   * [Task enters error state](#task-enters-error-state)
   * [Documents not appearing](#documents-not-appearing)
@@ -55,6 +56,118 @@ import Panel from '@site/src/components/Panel';
   * [Shared replication slot across databases](#shared-replication-slot-across-databases)
 
 </Admonition>
+
+<Panel heading="Table verification fails or returns warnings">
+
+**Symptom**:  
+
+[**Verify tables**](../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx#verify-tables) in Studio shows **Verification failed** or **Tables verified with warnings**,  
+or Studio asks you to confirm with **Save anyway** when you save the task.  
+When using the [dry-run REST endpoint](../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx#verify-the-configuration), the response has `Success: false` or a non-empty `Warnings` list.  
+
+**Verification failed**:
+
+Verification stopped at an error. The task may encounter the same problem when it starts.  
+A verification failure can also be transient or specific to the node that ran verification.  
+Verification stops at the first error, so after fixing it, verify again to check for further errors.
+
+**Common causes**:
+
+* **Source database unreachable**  
+  The RavenDB node Studio is connected to cannot reach the source database, or the credentials are wrong.
+* **Missing permissions**  
+  Errors about setting up CDC objects on the source include the command an administrator can run instead.  
+  For PostgreSQL, see [Check permissions with Verify tables](../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/permissions-and-roles.mdx#check-permissions-with-verify-tables).
+* **Source database not configured for CDC**  
+  For example, PostgreSQL `wal_level` is not `logical`, or MySQL `binlog_format` is not `ROW`.
+* **Missing table or column**  
+  A configured source table or mapped column does not exist in the source database.
+* **Timeout**  
+  Verification timed out while checking the source database (_"CDC verification timed out."_).
+* **Request failed**  
+  The verification request itself failed (_"The dry run request failed. Check the Notification Center for details."_).  
+  Check the [Notification Center](../../../monitoring/alerts-and-notifications/notification-center.mdx) for the reason.
+
+**Tables verified with warnings**:
+
+Verification completed, but reported conditions the task may run into, or will handle itself, when it starts.  
+Warnings do not prevent saving the task.
+
+* **PostgreSQL: publication does not include all tables**  
+  _"Publication '&lt;name&gt;' does not include tables: ..."_  
+  Verification does not change the publication.  
+  When the task starts, it adds the missing tables to the publication.  
+  This requires ownership of the publication and the tables being added.  
+  Otherwise, a database administrator must add them with `ALTER PUBLICATION ... ADD TABLE`.
+
+* **PostgreSQL: embedded table needs REPLICA IDENTITY FULL**  
+  _"Insufficient permissions to set REPLICA IDENTITY FULL on '&lt;table&gt;'..."_  
+  Verification does not attempt this change, so the warning is reported whether or not the user has permission to make it.
+  It means that when the task starts, it runs `ALTER TABLE ... REPLICA IDENTITY FULL` on this table, which requires ownership of the table.
+  Only the first embedded table that needs the change is reported.  
+  Learn more in [REPLICA IDENTITY](../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/replica-identity.mdx).
+
+* **Source cleanup failed**  
+  _"source cleanup failed: ..."_  
+  Verification could not remove CDC objects it created on the source database, see below.
+
+**Tables verified**:
+
+Verification completed without an error.  
+This does not mean the tables contain rows: empty tables also pass.  
+Some conditions are checked only when the task starts reading changes, for example:
+
+* SQL Server: whether the SQL Server Agent is running.
+* MySQL/MariaDB: whether binary logging is enabled, and whether the user has the replication privileges.
+
+**Objects left on the source database after a cleanup failure**:
+
+When verification completes, it attempts to remove the CDC objects it created.  
+It allows up to 30 seconds for the cleanup, including after a verification timeout.  
+If the cleanup fails, objects may remain on the source database:
+
+* **PostgreSQL** - a publication that verification created.  
+  The replication slot that verification creates is temporary, so PostgreSQL drops it automatically.
+* **SQL Server** - CDC enabled on the database or on configured tables.
+* **MySQL/MariaDB** - nothing, verification creates nothing on the source database.
+
+A leftover PostgreSQL publication does not retain WAL.  
+If it has the name configured for the task, the task uses it when it starts.  
+When no publication name is configured, verification uses `rvn_cdc_p_<32 hex characters>`,  
+while a saved task uses `rvn_cdc_p_<numeric task ID>`.  
+The query below lists both. Drop a leftover publication only after confirming that no task uses it.
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+```sql
+-- List publications with the CDC Sink prefix (includes publications used by tasks)
+SELECT pubname FROM pg_publication WHERE pubname LIKE 'rvn_cdc_p_%';
+
+-- Drop the publication left by verification (one that no task uses)
+DROP PUBLICATION IF EXISTS "rvn_cdc_p_<id>";
+```
+</TabItem>
+</Tabs>
+
+Before disabling SQL Server CDC that verification left enabled,  
+make sure no CDC Sink task or other application relies on CDC for that database or table.
+
+<Tabs>
+<TabItem value="sql" label="SQL">
+```sql
+-- If CDC was not enabled on the database before verification
+EXEC sys.sp_cdc_disable_db;
+
+-- Otherwise, for each table that verification enabled
+EXEC sys.sp_cdc_disable_table
+    @source_schema = N'dbo',
+    @source_name = N'orders',
+    @capture_instance = N'all';
+```
+</TabItem>
+</Tabs>
+
+</Panel>
 
 <Panel heading="Task fails to start">
 
@@ -78,6 +191,9 @@ Task remains in `Error` state immediately after creation.
   See [WAL Configuration](../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/wal-configuration.mdx).
 
 Check the error message in the [Notification Center](../../../monitoring/alerts-and-notifications/notification-center.mdx) (bell icon in Studio) for the specific failure reason.
+
+To catch most of these problems before the task is saved, use **Verify tables**,
+see [Table verification fails or returns warnings](#table-verification-fails-or-returns-warnings).
 
 </Panel>
 
