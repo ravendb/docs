@@ -20,6 +20,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [At-least-once delivery](../../data-subscriptions/consuming-subscription.mdx#at-least-once-delivery)
    * [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)
    * [Error handling](../../data-subscriptions/consuming-subscription.mdx#error-handling)
+   * [Worker status](../../data-subscriptions/consuming-subscription.mdx#worker-status)
    * [Examples](../../data-subscriptions/consuming-subscription.mdx#examples)
       * [Full exception handling with retries](../../data-subscriptions/consuming-subscription.mdx#example-full-exception-handling-with-retries)
       * [Setting the batch size](../../data-subscriptions/consuming-subscription.mdx#example-setting-the-batch-size)
@@ -159,30 +160,9 @@ The worker stops without reconnecting in these cases:
 
 ---
 
-To follow the worker's attempts to reconnect, subscribe to these worker events:
-
-* **`unexpectedSubscriptionError`**  
-  Fires when the worker hits an error it does not recognize (e.g., a dropped network connection),
-  before the worker waits to reconnect.  
-* **`connectionRetry`**  
-  Fires each time the worker is about to reconnect, after the wait set in `timeToWaitBeforeConnectionRetry`.  
-
-When the worker stops instead of reconnecting, neither event fires, and the worker emits the error
-through its `error` event.
-
-The following code subscribes to both events and writes the error message that each event receives to the console:
-
-```js
-// Fires for an error the worker does not recognize, before the wait
-subscriptionWorker.on("unexpectedSubscriptionError", error => {
-    console.log("Unexpected subscription error: " + error.message);
-});
-
-// Fires before each reconnection attempt, after the wait
-subscriptionWorker.on("connectionRetry", error => {
-    console.log("Reconnecting to the subscription after: " + error.message);
-});
-```
+When the worker stops instead of reconnecting, the worker emits the error through its `error` event.  
+To follow the worker's connection and reconnection attempts,
+see [Worker status](../../data-subscriptions/consuming-subscription.mdx#worker-status).
 
 </ContentFrame>
 
@@ -219,6 +199,121 @@ These worker options govern reconnection and connection timeouts:
   How long the worker's connection with the server may go without sending or receiving data
   before the worker treats the connection as broken and tries to reconnect, in milliseconds.  
   Default: 30 seconds. Cannot be set below 15 seconds.  
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Worker status">
+
+<ContentFrame>
+
+### Status and state changes
+
+To check the worker's current activity (e.g., whether the worker is connected to the server), read the worker's `status` property.  
+The `status` property returns a [SubscriptionWorkerStatus](../../data-subscriptions/consuming-subscription.mdx#classes) object,
+whose `state` property holds one of the following states:
+
+* **`"NotStarted"`**  
+  No handler was attached to the worker's `batch` event yet, so the worker has not started.  
+* **`"Connecting"`**  
+  The worker is connecting to the subscription, at startup or before a reconnection.  
+* **`"WaitingForDocuments"`**  
+  The worker is connected and waiting for the next batch.  
+* **`"Processing"`**  
+  Your processing code is handling a batch.  
+  This state lasts until the worker acknowledges the batch to the server.  
+* **`"Retrying"`**  
+  The connection failed, and the worker is waiting to reconnect
+  (see [Connection failures](../../data-subscriptions/consuming-subscription.mdx#connection-failures)).  
+* **`"Faulted"`**  
+  The worker stopped without reconnecting, and emitted the error through its `error` event.  
+* **`"Stopped"`**  
+  The worker was disposed.  
+
+Once the worker reaches `"Faulted"` or `"Stopped"`, the worker's state no longer changes.
+
+When the state is `"Retrying"` or `"Faulted"`, the `error` property of the `SubscriptionWorkerStatus` object holds the failure
+that caused the state.  
+If the worker fails repeatedly, the `error` property holds the latest failure.  
+The `failingSinceUtc` property of the `SubscriptionWorkerStatus` object holds the time of the first failure since the worker's
+last successful connection, or `null` while the worker is connected.
+
+Read `status` when your application needs the worker's state at a specific moment (e.g., when a health check runs).  
+To be notified of every state change as soon as the change happens (e.g., to raise an alert when the worker starts retrying),
+attach a handler to the worker's `stateChanged` event.  
+The event passes the worker's new status (a `SubscriptionWorkerStatus` object) and the worker to your handler.  
+The worker calls your handler synchronously and does not continue until the handler returns, so avoid long-running work
+in the handler.  
+If the handler throws an error, the worker catches the error and continues.
+
+```js
+// failingSinceUtc is null while the worker is connected, and is set while the worker is failing
+const status = subscriptionWorker.status;
+if (status.failingSinceUtc) {
+    console.log("Failing since " + status.failingSinceUtc + ": " + status.error?.message);
+}
+
+// Write each change of the worker's state to the console
+subscriptionWorker.on("stateChanged", (newStatus, worker) => {
+    console.log("Worker state: " + newStatus.state);
+});
+```
+
+<br />
+
+To monitor the subscription on the server side using Studio,
+see [Monitoring a data subscription](../../data-subscriptions/monitoring.mdx).
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Worker events
+
+<Admonition type="note" title="">
+
+Attach a handler to a worker event using the worker's `on` method, and detach the handler using the worker's `off` method.  
+To detach a handler later, keep a reference to the handler when you attach it (e.g., use a named function rather than
+an inline arrow function), since `off` must receive the same handler.
+
+</Admonition>
+
+To react to the worker's connections, failures, acknowledged batches, and end, attach handlers to these worker events:
+
+* **`onEstablishedSubscriptionConnection`**  
+  Fires each time the worker connects to the subscription, both the first time and after every reconnection.  
+* **`unexpectedSubscriptionError`**  
+  Fires when the worker hits an error it does not recognize (e.g., a dropped network connection),
+  before the worker waits to reconnect.  
+* **`connectionRetry`**  
+  Fires each time the worker is about to reconnect, after the wait set in `timeToWaitBeforeConnectionRetry`.  
+* **`afterAcknowledgment`**  
+  Fires after the server acknowledges the progress of a processed batch.  
+* **`end`**  
+  Fires when the worker stops processing batches.  
+  If the worker stopped on an error, `end` fires after the `error` event.  
+
+When the worker stops instead of reconnecting, neither `unexpectedSubscriptionError` nor `connectionRetry` fires.
+
+The following code writes a message to the console on each connection, unrecognized error, and reconnection attempt:
+
+```js
+// Fires on the first connection and after every reconnection
+subscriptionWorker.on("onEstablishedSubscriptionConnection", () => {
+    console.log("Connected to the subscription");
+});
+
+// Fires for an error the worker does not recognize, before the wait
+subscriptionWorker.on("unexpectedSubscriptionError", error => {
+    console.log("Unexpected subscription error: " + error.message);
+});
+
+// Fires before each reconnection attempt, after the wait
+subscriptionWorker.on("connectionRetry", error => {
+    console.log("Reconnecting to the subscription after: " + error.message);
+});
+```
 
 </ContentFrame>
 
@@ -743,6 +838,7 @@ The worker returned by `getSubscriptionWorker`.
 |--------|-------------|-------------|
 | **dispose()** | `void` | Aborts the worker. |
 | **on(event, handler)** | `object` | Attaches an event listener. |
+| **off(event, handler)** | `object` | Detaches an event listener. |
 | **getWorkerId()** | `string` | The worker ID. |
 
 **Events**
@@ -750,11 +846,13 @@ The worker returned by `getSubscriptionWorker`.
 | Event | Listener signature | Description |
 |-------|--------------------|-------------|
 | **"batch"** | `(batch, callback) => void` | Fires when a batch of documents arrives from the server. Call `callback()` when done so the worker acknowledges the batch and the server sends the next one. |
+| **"onEstablishedSubscriptionConnection"** | `(worker) => void` | Fires each time the worker connects to the subscription, both the first time and after every reconnection. |
+| **"stateChanged"** | `(status, worker) => void` | Fires on every change of the worker's state.<br />Receives the worker's new status and the worker. |
 | **"afterAcknowledgment"** | `(batch, callback) => void` | Fires after the server acknowledges the progress of a processed batch. |
 | **"connectionRetry"** | `(error) => void` | Fires each time the worker is about to reconnect, after the wait set in `timeToWaitBeforeConnectionRetry`. |
 | **"unexpectedSubscriptionError"** | `(error) => void` | Fires when the worker hits an error it does not recognize, before the worker waits to reconnect. |
 | **"error"** | `(error) => void` | Fires on subscription errors. |
-| **"end"** | `(error) => void` | Fires when the subscription finishes and no more batches will be emitted. |
+| **"end"** | `() => void` | Fires when the worker stops processing batches.<br />If the worker stopped on an error, `end` fires after the `error` event. |
 
 **Properties**
 
@@ -762,6 +860,51 @@ The worker returned by `getSubscriptionWorker`.
 |----------|------|-------------|
 | **currentNodeTag** | `string` | The node tag of the RavenDB server currently handling the subscription. |
 | **subscriptionName** | `string` | The name of the subscription being processed. |
+| **status** | `SubscriptionWorkerStatus` | The worker's current status (see [Status and state changes](../../data-subscriptions/consuming-subscription.mdx#status-and-state-changes)). |
+
+</TabItem>
+</Tabs>
+
+<Tabs groupId='workerStatusClasses'>
+<TabItem value="worker-status" label="SubscriptionWorkerStatus">
+
+The worker's status, returned by the worker's `status` property and passed to `stateChanged` handlers.
+See [Status and state changes](../../data-subscriptions/consuming-subscription.mdx#status-and-state-changes).
+
+```js
+// The worker status object:
+{
+    state;
+    error;
+    sinceUtc;
+    failingSinceUtc;
+}
+```
+
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **state** | `SubscriptionWorkerState` | The worker's current state. |
+| **error** | `Error` | The failure that caused the `"Retrying"` or `"Faulted"` state, or `null` in other states.<br />If the worker fails repeatedly, this property holds the latest failure. |
+| **sinceUtc** | `Date` | The time the worker entered the current state. |
+| **failingSinceUtc** | `Date` | The time of the first failure since the worker's last successful connection, or `null` while the worker is connected. |
+
+</TabItem>
+<TabItem value="worker-state" label="SubscriptionWorkerState">
+
+The stages of a worker's activity, as strings. See [Status and state changes](../../data-subscriptions/consuming-subscription.mdx#status-and-state-changes).
+
+```js
+// Available values:
+"NotStarted"           // No handler was attached to the batch event yet
+"Connecting"           // Connecting to the subscription, at startup or before a reconnection
+"WaitingForDocuments"  // Connected and waiting for the next batch
+"Processing"           // Processing a batch, until the worker acknowledges the batch to the server
+"Retrying"             // The connection failed, and the worker is waiting to reconnect
+"Faulted"              // Stopped without reconnecting, and emitted the error through the error event
+"Stopped"              // The worker was disposed
+```
 
 </TabItem>
 </Tabs>
