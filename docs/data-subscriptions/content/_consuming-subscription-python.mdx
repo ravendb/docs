@@ -42,6 +42,8 @@ subscription name or a [SubscriptionWorkerOptions](../../data-subscriptions/cons
 subscription_worker = store.subscriptions.get_subscription_worker_by_name(subscription_name, Order)
 ```
 
+<br />
+
 This constructs the worker but does not run it yet.
 
 </Panel>
@@ -64,7 +66,7 @@ subscription_worker.run(process_batch)
 From this point on, the worker receives and processes document batches, acknowledging each batch 
 so the server can keep track of the subscription's progress and provide the next batch if available.  
 
-`run` returns a `Future` that stays alive while the worker is processing. If processing is aborted,
+The `run` method returns a `Future` that stays alive while the worker is processing. If processing is aborted,
 the future completes with an exception.
 
 </Panel>
@@ -499,8 +501,8 @@ When you create a worker using `SubscriptionWorkerOptions`, the only required pr
 |----------|------|-------------|
 | **subscription_name** | `str` | The name of the subscription the worker connects to. |
 | **max_docs_per_batch** | `int` | The maximum number of documents the server tries to send in a batch. If it finds fewer, it sends what it has without waiting. Default: 4096. |
-| **send_buffer_size** | `int` | The size of the TCP socket buffer used for sending data. Default: 32,768 bytes (32 KiB). |
-| **receive_buffer_size** | `int` | The size of the TCP socket buffer used for receiving data. Default: 32,768 bytes (32 KiB). |
+| **send_buffer_size** | `int` | The size of the TCP socket buffer the worker uses to send data. Default: 32,768 bytes (32 KiB). |
+| **receive_buffer_size** | `int` | The size of the TCP socket buffer the worker uses to receive data. Default: 32,768 bytes (32 KiB). |
 | **ignore_subscriber_errors** | `bool` | Whether processing continues when your batch-handling code throws. `True` continues; `False` (default) aborts. |
 | **close_when_no_docs_left** | `bool` | Whether the connection closes when no new documents remain. `True` processes all available documents and then throws a `SubscriptionClosedException` (useful for one-time processing); `False` (default) keeps the worker waiting for new documents. |
 | **time_to_wait_before_connection_retry** | `timedelta` | The wait before each reconnect attempt after a non-aborting failure. Default: 5 seconds. |

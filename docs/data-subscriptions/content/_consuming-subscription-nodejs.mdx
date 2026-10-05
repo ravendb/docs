@@ -41,6 +41,8 @@ subscription name or a [subscription worker options](../../data-subscriptions/co
 const subscriptionWorker = documentStore.subscriptions.getSubscriptionWorker(subscriptionName);
 ```
 
+<br />
+
 This constructs the worker but does not run it yet.
 
 </Panel>
@@ -461,7 +463,7 @@ highValueOrdersWorker.on("error", err => {
 In this example, the subscription sends to the worker every `Order` and includes in the batch
 `Product` documents referenced in the order.  
 When the worker accesses an included `Product`, the product's data has already arrived in the batch,
-so the worker doesn't need to fetch it from the server.
+so the worker does not need to fetch the product from the server.
 
 ```js
 // Create the subscription task on the server:

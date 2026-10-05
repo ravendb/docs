@@ -43,6 +43,8 @@ SubscriptionWorker<Order> subscriptionWorker =
     store.subscriptions().getSubscriptionWorker(Order.class, subscriptionName);
 ```
 
+<br />
+
 This constructs the worker but does not run it yet.
 
 </Panel>
@@ -63,7 +65,7 @@ subscriptionWorker.run(batch -> {
 From this point on, the worker receives and processes document batches, acknowledging each batch 
 so the server can keep track of the subscription's progress and provide the next batch if available.  
 
-`run` returns a `CompletableFuture` that stays alive while the worker is processing. If processing is
+The `run` method returns a `CompletableFuture` that stays alive while the worker is processing. If processing is
 aborted, this future completes with an exception.
 
 </Panel>
@@ -401,7 +403,7 @@ try {
 In this example, the subscription sends to the worker every `Order` and includes in the batch
 `Product` documents referenced in the order.  
 When the worker accesses an included `Product`, the product's data has already arrived in the batch,
-so the worker doesn't need to fetch it from the server.
+so the worker does not need to fetch the product from the server.
 
 ```java
 // Create the subscription task on the server:
@@ -555,8 +557,8 @@ When you create a worker using `SubscriptionWorkerOptions`, the only required pr
 |----------|------|-------------|
 | **subscriptionName** | `String` | The name of the subscription the worker connects to. |
 | **maxDocsPerBatch** | `int` | The maximum number of documents the server tries to send in a batch. If it finds fewer, it sends what it has without waiting. Default: 4096. |
-| **sendBufferSize** | `int` | The size of the TCP socket buffer used for sending data. Default: 32,768 bytes (32 KiB). |
-| **receiveBufferSize** | `int` | The size of the TCP socket buffer used for receiving data. Default: 32,768 bytes (32 KiB). |
+| **sendBufferSize** | `int` | The size of the TCP socket buffer the worker uses to send data. Default: 32,768 bytes (32 KiB). |
+| **receiveBufferSize** | `int` | The size of the TCP socket buffer the worker uses to receive data. Default: 32,768 bytes (32 KiB). |
 | **ignoreSubscriberErrors** | `boolean` | Whether processing continues when your batch-handling code throws. `true` continues; `false` (default) aborts. |
 | **closeWhenNoDocsLeft** | `boolean` | Whether the connection closes when no new documents remain. `true` processes all available documents and then throws a `SubscriptionClosedException` (useful for one-time processing); `false` (default) keeps the worker waiting for new documents. |
 | **timeToWaitBeforeConnectionRetry** | `Duration` | The wait before each reconnect attempt after a non-aborting failure. Default: 5 seconds. |

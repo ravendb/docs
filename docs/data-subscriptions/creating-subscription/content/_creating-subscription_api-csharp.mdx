@@ -19,6 +19,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [Subscription name](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#subscription-name)
    * [Responsible node](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#responsible-node)
    * [Updating a subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#updating-a-subscription)
+      * [Updating a subscription defined using typed expressions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#updating-a-subscription-defined-using-typed-expressions)
    * [Subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#subscription-query)
    * [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples)
       * [Sending an entire collection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-sending-an-entire-collection)
@@ -31,25 +32,48 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Including time series](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-time-series)
       * [Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-creating-a-subscription-via-update)
       * [Updating an existing subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-updating-an-existing-subscription)
+      * [Updating a subscription defined using typed expressions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-updating-a-subscription-defined-using-typed-expressions)
    * [Syntax](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#syntax)
 
 </Admonition>
 
 <Panel heading="Creating a subscription">
 
-To create a subscription, define which documents the server should send to the worker, then register
+To create a subscription, define the documents that the server should send to the worker, then register
 this definition with the server using the `Create` method on the document store's `Subscriptions`
 property.
 
-You can define a subscription in three ways:
+You can define a subscription in two ways:
 
-* **A typed filter and projection**  
-  Pass a [SubscriptionCreationOptions&lt;T&gt;](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) whose `Filter`, `Projection`, and
-  `Includes` expressions are written in C#.  
-* **A predicate**  
-  Pass a lambda predicate directly to [Create&lt;T&gt;](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods).  
+* **Typed expressions**  
+  Write the definition as C# expressions, in one of these forms:
+   * Pass a [SubscriptionCreationOptions&lt;T&gt;](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) object whose `Filter`, `Projection`, and
+     `Includes` expressions define the subscription.
+
+     ```csharp
+     subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions<Order>
+     {
+         Filter = x => x.Freight > 100
+     });
+     ```
+
+   * Pass a lambda predicate directly to [Create&lt;T&gt;](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods).
+
+     ```csharp
+     subscriptionName = store.Subscriptions.Create<Order>(x => x.Freight > 100);
+     ```
+
 * **A raw RQL (Raven Query Language) query**  
-  Set the `Query` string on [SubscriptionCreationOptions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes).  
+  Set the `Query` string in a [SubscriptionCreationOptions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) object.
+
+  ```csharp
+  subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions
+  {
+      Query = "from Orders where Freight > 100"
+  });
+  ```
+
+<br />
 
 The simplest definition sends an entire collection:
 
@@ -124,14 +148,14 @@ consuming clients, or other considerations.
 <Panel heading="Updating a subscription">
 
 You can change an existing subscription's definition using the [Update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods) method.  
-Pass a [SubscriptionUpdateOptions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes), which extends the creation options with two
+Pass a [SubscriptionUpdateOptions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) object, which extends the creation options with two
 additional fields, `Id` and `CreateNew`:
 
 * **`Id`** targets the subscription by the ID the server assigned it at creation, instead of by
   name.  
   Because the ID identifies the subscription independently of its name, you can use it to rename
   a subscription: provide the ID and a new `Name`.  
-* **`CreateNew`** controls what happens when the subscription you are updating does not exist.  
+* **`CreateNew`** applies when the subscription you are updating does not exist.  
   Set it to `true` to create the subscription instead, or leave it `false`, the default, to
   throw an exception.  
 
@@ -147,6 +171,43 @@ store.Subscriptions.Update(new SubscriptionUpdateOptions
 <br />
 
 For a full update example, see the [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples) below.
+
+<ContentFrame>
+
+### Updating a subscription defined using typed expressions
+
+The `Update` method described above accepts a subscription's definition only as an RQL query, not as typed expressions.  
+To update a subscription you defined using a [SubscriptionCreationOptions&lt;T&gt;](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes)
+object, call the object's `ToSubscriptionCreationOptions` method.  
+This method translates the object's `Filter`, `Projection`, and `Includes` expressions into an RQL query, and returns
+the query in the `Query` property of a [SubscriptionCreationOptions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) object.  
+Pass the translated query to `Update`:
+
+```csharp
+var typedOptions = new SubscriptionCreationOptions<Order>
+{
+    Name = "OrdersProcessingSubscription",
+    // The changed filter
+    Filter = x => x.Lines.Sum(line => line.PricePerUnit * line.Quantity) > 200
+};
+
+// Translate the typed expressions into an RQL query, using the store's conventions
+SubscriptionCreationOptions translated = typedOptions.ToSubscriptionCreationOptions(store.Conventions);
+
+// Update the subscription with the translated query
+store.Subscriptions.Update(new SubscriptionUpdateOptions
+{
+    Name = translated.Name,
+    Query = translated.Query
+});
+```
+
+<br />
+
+Using the translated query, you can also check whether your typed expressions still match the subscription's current
+definition (e.g., after you change a filter in your code), as shown in the [example below](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-updating-a-subscription-defined-using-typed-expressions).
+
+</ContentFrame>
 
 </Panel>
 
@@ -515,10 +576,9 @@ subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
 
 <br />
 
-Using the builder, assign an `ISubscriptionIncludeBuilder` to the `Includes` property of
-`SubscriptionCreationOptions<T>`.  
-The builder includes related documents through `IncludeDocuments`, and its methods can be
-chained.
+To include related documents, assign a function to the `Includes` property of the `SubscriptionCreationOptions<T>` object.  
+The function receives an `ISubscriptionIncludeBuilder` object and calls the builder's `IncludeDocuments` method.  
+Calls to the builder's methods can be chained.
 
 In RQL, write the include in one of two ways: append the `include` keyword followed by the paths
 to the fields holding the IDs to include (preferred, for both clarity and slightly better
@@ -565,7 +625,7 @@ subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
 
 <br />
 
-`ISubscriptionIncludeBuilder` offers three methods for including counters:
+To include counters, use these three methods of the `ISubscriptionIncludeBuilder` interface:
 
 ```csharp
 // Include a single counter
@@ -626,7 +686,7 @@ subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOpt
 
 <br />
 
-`ISubscriptionIncludeBuilder` includes time series through these methods:
+To include time series, use these methods of the `ISubscriptionIncludeBuilder` interface:
 
 ```csharp
 // Include entries of a named time series, by a time range or by a number of entries
@@ -731,6 +791,61 @@ subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
 
 </ContentFrame>
 
+<ContentFrame>
+
+### Example: Updating a subscription defined using typed expressions
+
+In this example, the application compares the RQL query translated from its typed expressions with the subscription's
+current query, and updates the subscription only if the two queries differ.  
+The application retrieves the current query from the server using [GetSubscriptionState](../../../data-subscriptions/maintenance-operations.mdx#getting-a-subscription-state).  
+An application can run this check at startup, e.g., after a new version of the application has changed the subscription's filter.
+
+```csharp
+// The subscription's definition, as the application's code defines it now
+var typedOptions = new SubscriptionCreationOptions<Order>
+{
+    Name = "OrdersProcessingSubscription",
+    Filter = x => x.Lines.Sum(line => line.PricePerUnit * line.Quantity) > 200
+};
+
+// Translate the typed expressions into an RQL query, using the store's conventions
+SubscriptionCreationOptions translated = typedOptions.ToSubscriptionCreationOptions(store.Conventions);
+
+// Get the subscription's current query from the server
+SubscriptionState state = store.Subscriptions.GetSubscriptionState(translated.Name);
+
+// Update the subscription only if its current query differs from the translated query
+if (state.Query != translated.Query)
+{
+    store.Subscriptions.Update(new SubscriptionUpdateOptions
+    {
+        Name = translated.Name,
+        Query = translated.Query
+    });
+}
+```
+
+---
+
+<Admonition type="note" title="">
+
+When the typed expressions include a filter, a projection, or includes, the translated query spans several lines, and the characters
+that end each line (the **line breaks**) follow the format of the operating system that runs the translation
+(`\r\n` on Windows, `\n` on Linux).  
+If the subscription's current query was translated on another operating system, the two queries differ in their
+line breaks even when the typed expressions are the same, so the subscription is updated although its definition has not changed.  
+The server then disconnects the workers connected to the subscription, and the workers reconnect to it.  
+The subscription keeps its processing progress.  
+To avoid an unneeded update, compare the queries with their line breaks normalized:
+
+```csharp
+if (state.Query.Replace("\r\n", "\n") != translated.Query.Replace("\r\n", "\n"))
+```
+
+</Admonition>
+
+</ContentFrame>
+
 </Panel>
 
 <Panel heading="Syntax">
@@ -814,6 +929,25 @@ Task<string> UpdateAsync(SubscriptionUpdateOptions options, string database = nu
 | `string` | The name of the updated subscription. |
 
 </TabItem>
+<TabItem value="to-subscription-creation-options" label="ToSubscriptionCreationOptions">
+
+Translate the typed expressions of a `SubscriptionCreationOptions<T>` object into an RQL query, without contacting the server.
+
+```csharp
+SubscriptionCreationOptions ToSubscriptionCreationOptions(DocumentConventions conventions);
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **conventions** | `DocumentConventions` | The conventions used in the translation (e.g., to resolve the collection name of `T`).<br />Pass the document store's conventions, `store.Conventions`. |
+
+| Return value | |
+|-----------|-------------|
+| `SubscriptionCreationOptions` | A new options object whose `Query` holds the translated RQL query.<br />The new object's `Name`, `ChangeVector`, `MentorNode`, `PinToMentorNode`, `Disabled`, and `ArchivedDataProcessingBehavior` are copied from the `SubscriptionCreationOptions<T>` object. |
+
+</TabItem>
 </Tabs>
 
 </ContentFrame>
@@ -826,7 +960,7 @@ Task<string> UpdateAsync(SubscriptionUpdateOptions options, string database = nu
 <TabItem value="creation-options-generic" label="SubscriptionCreationOptions&lt;T&gt;">
 
 ```csharp
-public class SubscriptionCreationOptions<T>
+public sealed class SubscriptionCreationOptions<T>
 {
     public string Name { get; set; }
     public Expression<Func<T, bool>> Filter { get; set; }
@@ -902,11 +1036,11 @@ public class SubscriptionUpdateOptions : SubscriptionCreationOptions
 | **Disabled** | `bool` | `true` creates the task in a disabled state; `false` creates it enabled. |
 | **MentorNode** | `string` | The tag of the node you want to handle the subscription. Useful when you prefer a specific server for its hardware, its proximity to clients, or other reasons. |
 | **PinToMentorNode** | `bool` | `true` pins the task to the responsible node; `false` lets another node run it if the responsible node is down. |
-| **ArchivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior?` | Whether archived documents are included in the subscription. See [Archived documents and subscriptions](../../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions). |
+| **ArchivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior?` | The subscription's handling of archived documents. See [Archived documents and subscriptions](../../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions). |
 
 <br />
 
-`SubscriptionUpdateOptions` adds two properties to the creation options:
+The `SubscriptionUpdateOptions` class adds two properties to the creation options:
 
 | Property | Type | Description |
 |----------|------|-------------|
@@ -917,8 +1051,8 @@ public class SubscriptionUpdateOptions : SubscriptionCreationOptions
 
 <Admonition type="note" title="">
 
-The `ChangeVector` property sets a starting point for processing, which is useful for an ad-hoc
-process that needs only recent changes.  
+The `ChangeVector` property sets the point from which the subscription starts sending documents to the worker.  
+This is useful for an ad-hoc process that needs only recent changes.  
 Set it to `"LastDocument"` to start from the latest document in the collection, or pass an actual
 change vector to start from a specific point.  
 By default the subscription sends all documents matching its query, regardless of when they were
