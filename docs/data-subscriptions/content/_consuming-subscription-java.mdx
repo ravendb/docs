@@ -20,6 +20,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [At-least-once delivery](../../data-subscriptions/consuming-subscription.mdx#at-least-once-delivery)
    * [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)
    * [Error handling](../../data-subscriptions/consuming-subscription.mdx#error-handling)
+   * [Worker events](../../data-subscriptions/consuming-subscription.mdx#worker-events)
    * [Examples](../../data-subscriptions/consuming-subscription.mdx#examples)
       * [Full exception handling with retries](../../data-subscriptions/consuming-subscription.mdx#example-full-exception-handling-with-retries)
       * [Setting the batch size](../../data-subscriptions/consuming-subscription.mdx#example-setting-the-batch-size)
@@ -156,31 +157,9 @@ The worker stops without reconnecting in these cases:
 
 ---
 
-To follow the worker's attempts to reconnect, register listeners using these worker methods:
-
-* **`addOnUnexpectedSubscriptionError`**  
-  The listener is called when the worker hits an error it does not recognize (e.g., a dropped
-  network connection), before the worker waits to reconnect.  
-* **`addOnSubscriptionConnectionRetry`**  
-  The listener is called each time the worker is about to reconnect, after the wait set in
-  `timeToWaitBeforeConnectionRetry`.  
-
-When the worker stops instead of reconnecting, neither listener is called, and the future returned
-by `run` completes in error.
-
-The following code registers both listeners and writes the error message that each listener receives to the console:
-
-```java
-// Called for an error the worker does not recognize, before the wait
-subscriptionWorker.addOnUnexpectedSubscriptionError(exception -> {
-    System.out.println("Unexpected subscription error: " + exception.getMessage());
-});
-
-// Called before each reconnection attempt, after the wait
-subscriptionWorker.addOnSubscriptionConnectionRetry(exception -> {
-    System.out.println("Reconnecting to the subscription after: " + exception.getMessage());
-});
-```
+When the worker stops instead of reconnecting, the future returned by `run` completes in error.  
+To follow the worker's connection and reconnection attempts,
+see [Worker events](../../data-subscriptions/consuming-subscription.mdx#worker-events).
 
 </ContentFrame>
 
@@ -215,6 +194,54 @@ These `SubscriptionWorkerOptions` properties govern reconnection after a failure
   Default: 5 minutes.  
 
 </ContentFrame>
+
+</Panel>
+
+<Panel heading="Worker events">
+
+<Admonition type="note" title="">
+
+The worker reports its events to listeners: register a listener using the worker's matching `add` method, and unregister
+the listener using the matching `remove` method (e.g., `addOnSubscriptionConnectionRetry` and `removeOnSubscriptionConnectionRetry`).  
+To unregister a listener later, keep a reference to the listener when you register it, since the `remove` method must receive
+the same listener.
+
+</Admonition>
+
+To react to the worker's connections, failures, and acknowledged batches, register listeners using these worker methods:
+
+* **`addOnEstablishedSubscriptionConnection`**  
+  The listener is called each time the worker connects to the subscription, both the first time and after every reconnection.  
+* **`addOnUnexpectedSubscriptionError`**  
+  The listener is called when the worker hits an error it does not recognize (e.g., a dropped
+  network connection), before the worker waits to reconnect.  
+* **`addOnSubscriptionConnectionRetry`**  
+  The listener is called each time the worker is about to reconnect, after the wait set in
+  `timeToWaitBeforeConnectionRetry`.  
+* **`addAfterAcknowledgmentListener`**  
+  The listener is called after the server acknowledges the progress of a processed batch.  
+
+When the worker stops instead of reconnecting, the listeners registered using `addOnUnexpectedSubscriptionError`
+and `addOnSubscriptionConnectionRetry` are not called.
+
+The following code writes a message to the console on each connection, unrecognized error, and reconnection attempt:
+
+```java
+// Called on the first connection and after every reconnection
+subscriptionWorker.addOnEstablishedSubscriptionConnection(v -> {
+    System.out.println("Connected to the subscription");
+});
+
+// Called for an error the worker does not recognize, before the wait
+subscriptionWorker.addOnUnexpectedSubscriptionError(exception -> {
+    System.out.println("Unexpected subscription error: " + exception.getMessage());
+});
+
+// Called before each reconnection attempt, after the wait
+subscriptionWorker.addOnSubscriptionConnectionRetry(exception -> {
+    System.out.println("Reconnecting to the subscription after: " + exception.getMessage());
+});
+```
 
 </Panel>
 
@@ -678,10 +705,10 @@ The worker returned by `getSubscriptionWorker`.
 
 | Event | Type | Description |
 |-------|------|-------------|
+| **addOnEstablishedSubscriptionConnection** | `Consumer<Void>` | Fires each time the worker connects to the subscription, both the first time and after every reconnection. |
 | **addAfterAcknowledgmentListener** | `Consumer<SubscriptionBatch<T>>` | Fires after the server acknowledges the progress of a processed batch. |
 | **addOnSubscriptionConnectionRetry** | `Consumer<Exception>` | Fires each time the worker is about to reconnect, after the wait set in `timeToWaitBeforeConnectionRetry`.<br />Receives the exception that caused the reconnection. |
 | **addOnUnexpectedSubscriptionError** | `Consumer<Exception>` | Fires when the worker hits an error it does not recognize, before the worker waits to reconnect.<br />Receives the exception. |
-| **onClosed** | `Consumer<SubscriptionWorker<T>>` | Fires after the worker is disposed. |
 
 **Properties**
 

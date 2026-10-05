@@ -20,6 +20,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [At-least-once delivery](../../data-subscriptions/consuming-subscription.mdx#at-least-once-delivery)
    * [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)
    * [Error handling](../../data-subscriptions/consuming-subscription.mdx#error-handling)
+   * [Worker status](../../data-subscriptions/consuming-subscription.mdx#worker-status)
    * [Examples](../../data-subscriptions/consuming-subscription.mdx#examples)
       * [Full exception handling with retries](../../data-subscriptions/consuming-subscription.mdx#example-full-exception-handling-with-retries)
       * [Setting the batch size](../../data-subscriptions/consuming-subscription.mdx#example-setting-the-batch-size)
@@ -157,32 +158,9 @@ The worker stops without reconnecting in these cases:
 
 ---
 
-To follow the worker's attempts to reconnect, subscribe to these worker events:
-
-* **`OnUnexpectedSubscriptionError`**  
-  Fires when the worker hits an error it does not recognize (e.g., a dropped network connection),
-  before the worker waits to reconnect.  
-* **`OnSubscriptionConnectionRetry`**  
-  Fires each time the worker is about to reconnect, after the wait set in `TimeToWaitBeforeConnectionRetry`.  
-
-When the worker stops instead of reconnecting, neither event fires, and the task returned by `Run`
-completes in error.
-
-The following code subscribes to both events and writes the error message that each event receives to the console:
-
-```csharp
-// Fires for an error the worker does not recognize, before the wait
-subscriptionWorker.OnUnexpectedSubscriptionError += exception =>
-{
-    Console.WriteLine($"Unexpected subscription error: {exception.Message}");
-};
-
-// Fires before each reconnection attempt, after the wait
-subscriptionWorker.OnSubscriptionConnectionRetry += exception =>
-{
-    Console.WriteLine($"Reconnecting to the subscription after: {exception.Message}");
-};
-```
+When the worker stops instead of reconnecting, the task returned by `Run` completes in error.  
+To follow the worker's connection and reconnection attempts,
+see [Worker status](../../data-subscriptions/consuming-subscription.mdx#worker-status).
 
 </ContentFrame>
 
@@ -225,6 +203,126 @@ var options = new SubscriptionWorkerOptions(subscriptionName);
 
 // Set the worker's timeout period
 options.ConnectionStreamTimeout = TimeSpan.FromSeconds(45);
+```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Worker status">
+
+<ContentFrame>
+
+### Status and state changes
+
+To check the worker's current activity (e.g., whether the worker is connected to the server), read the worker's `Status` property.  
+The `Status` property returns a [SubscriptionWorkerStatus](../../data-subscriptions/consuming-subscription.mdx#classes) object,
+whose `State` property holds one of the following states:
+
+* **`NotStarted`**  
+  The worker was created, but `Run` has not been called yet.  
+* **`Connecting`**  
+  The worker is connecting to the subscription, at startup or before a reconnection.  
+* **`WaitingForDocuments`**  
+  The worker is connected and waiting for the next batch.  
+* **`Processing`**  
+  Your processing code is handling a batch.  
+  This state lasts until the worker acknowledges the batch to the server.  
+* **`Retrying`**  
+  The connection failed, and the worker is waiting to reconnect
+  (see [Connection failures](../../data-subscriptions/consuming-subscription.mdx#connection-failures)).  
+* **`Faulted`**  
+  The worker stopped without reconnecting, and the task returned by `Run` completed in error.  
+* **`Stopped`**  
+  The worker was disposed, or the cancellation token passed to `Run` was canceled.  
+
+Once the worker reaches `Faulted` or `Stopped`, the worker's state no longer changes.
+
+When the state is `Retrying` or `Faulted`, the `Exception` property of the `SubscriptionWorkerStatus` object holds the failure
+that caused the state.  
+If the worker fails repeatedly, the `Exception` property holds the latest failure.  
+The `FailingSinceUtc` property of the `SubscriptionWorkerStatus` object holds the time of the first failure since the worker's
+last successful connection, or `null` while the worker is connected.
+
+Read `Status` when your application needs the worker's state at a specific moment (e.g., when a health check runs).  
+To be notified of every state change as soon as the change happens (e.g., to raise an alert when the worker starts retrying),
+subscribe to the worker's `OnStateChanged` event.  
+The event passes the worker and the worker's new status (a `SubscriptionWorkerStatus` object) to your handler.  
+The worker does not continue until your handler returns, so avoid long-running or blocking work in the handler:
+a handler that never returns keeps the worker from continuing.  
+If the handler throws an exception, the worker catches the exception and continues.
+
+```csharp
+// FailingSinceUtc is null while the worker is connected, and is set while the worker is failing
+SubscriptionWorkerStatus status = subscriptionWorker.Status;
+if (status.FailingSinceUtc != null)
+    Console.WriteLine($"Failing since {status.FailingSinceUtc}: {status.Exception?.Message}");
+
+// Write each change of the worker's state to the console
+subscriptionWorker.OnStateChanged += (worker, newStatus) =>
+{
+    Console.WriteLine($"Worker state: {newStatus.State}");
+};
+```
+
+<br />
+
+To monitor the subscription on the server side using Studio,
+see [Monitoring a data subscription](../../data-subscriptions/monitoring.mdx).
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Worker events
+
+<Admonition type="note" title="">
+
+The worker's events are standard C# events: attach a handler to an event using `+=`, and detach the handler using `-=`
+(see [Subscribing to store events](../../client-api/how-to/subscribe-to-store-events.mdx), which shows both operations
+on the document store's events).  
+To detach a handler later, keep a reference to the handler when you attach it (e.g., use a named method rather than
+a lambda expression), since `-=` must receive the same handler.
+
+</Admonition>
+
+To react to the worker's connections, failures, acknowledged batches, and disposal, subscribe to these worker events:
+
+* **`OnEstablishedSubscriptionConnection`**  
+  Fires each time the worker connects to the subscription, both the first time and after every reconnection.  
+* **`OnUnexpectedSubscriptionError`**  
+  Fires when the worker hits an error it does not recognize (e.g., a dropped network connection),
+  before the worker waits to reconnect.  
+* **`OnSubscriptionConnectionRetry`**  
+  Fires each time the worker is about to reconnect, after the wait set in `TimeToWaitBeforeConnectionRetry`.  
+* **`AfterAcknowledgment`**  
+  Fires after the server acknowledges the progress of a processed batch.  
+* **`OnDisposed`**  
+  Fires after the worker is disposed.  
+
+When the worker stops instead of reconnecting, neither `OnUnexpectedSubscriptionError`
+nor `OnSubscriptionConnectionRetry` fires.
+
+The following code writes a message to the console on each connection, unrecognized error, and reconnection attempt:
+
+```csharp
+// Fires on the first connection and after every reconnection
+subscriptionWorker.OnEstablishedSubscriptionConnection += () =>
+{
+    Console.WriteLine("Connected to the subscription");
+};
+
+// Fires for an error the worker does not recognize, before the wait
+subscriptionWorker.OnUnexpectedSubscriptionError += exception =>
+{
+    Console.WriteLine($"Unexpected subscription error: {exception.Message}");
+};
+
+// Fires before each reconnection attempt, after the wait
+subscriptionWorker.OnSubscriptionConnectionRetry += exception =>
+{
+    Console.WriteLine($"Reconnecting to the subscription after: {exception.Message}");
+};
 ```
 
 </ContentFrame>
@@ -858,6 +956,8 @@ The worker returned by `GetSubscriptionWorker`.
 | **AfterAcknowledgment** | `AfterAcknowledgmentAction` | Fires after the server acknowledges the progress of a processed batch. |
 | **OnSubscriptionConnectionRetry** | `Action<Exception>` | Fires each time the worker is about to reconnect, after the wait set in `TimeToWaitBeforeConnectionRetry`.<br />Receives the exception that caused the reconnection. |
 | **OnUnexpectedSubscriptionError** | `Action<Exception>` | Fires when the worker hits an error it does not recognize, before the worker waits to reconnect.<br />Receives the exception. |
+| **OnEstablishedSubscriptionConnection** | `Action` | Fires each time the worker connects to the subscription, both the first time and after every reconnection. |
+| **OnStateChanged** | `Action<SubscriptionWorker<T>, SubscriptionWorkerStatus>` | Fires on every change of the worker's state.<br />Receives the worker and the worker's new status. |
 | **OnDisposed** | `Action<SubscriptionWorker<T>>` | Fires after the worker is disposed. |
 
 **Properties**
@@ -866,7 +966,61 @@ The worker returned by `GetSubscriptionWorker`.
 |----------|------|-------------|
 | **CurrentNodeTag** | `string` | The node tag of the RavenDB server currently handling the subscription. |
 | **SubscriptionName** | `string` | The name of the subscription being processed. |
+| **Status** | `SubscriptionWorkerStatus` | The worker's current status (see [Status and state changes](../../data-subscriptions/consuming-subscription.mdx#status-and-state-changes)). |
 | **WorkerId** | `string` | The worker ID. |
+
+</TabItem>
+</Tabs>
+
+<Tabs groupId='workerStatusClasses'>
+<TabItem value="worker-status" label="SubscriptionWorkerStatus">
+
+The worker's status, returned by the worker's `Status` property and passed to `OnStateChanged` handlers.
+See [Status and state changes](../../data-subscriptions/consuming-subscription.mdx#status-and-state-changes).
+
+```csharp
+public sealed class SubscriptionWorkerStatus
+{
+    public SubscriptionWorkerState State { get; }
+    public Exception Exception { get; }
+    public DateTime SinceUtc { get; }
+    public DateTime? FailingSinceUtc { get; }
+}
+```
+
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **State** | `SubscriptionWorkerState` | The worker's current state. |
+| **Exception** | `Exception` | The failure that caused the `Retrying` or `Faulted` state, or `null` in other states.<br />If the worker fails repeatedly, this property holds the latest failure. |
+| **SinceUtc** | `DateTime` | The time the worker entered the current state. |
+| **FailingSinceUtc** | `DateTime?` | The time of the first failure since the worker's last successful connection, or `null` while the worker is connected. |
+
+</TabItem>
+<TabItem value="worker-state" label="SubscriptionWorkerState">
+
+The stages of a worker's activity. See [Status and state changes](../../data-subscriptions/consuming-subscription.mdx#status-and-state-changes).
+
+```csharp
+public enum SubscriptionWorkerState
+{
+    // Run has not been called yet
+    NotStarted,
+    // Connecting to the subscription, at startup or before a reconnection
+    Connecting,
+    // Connected and waiting for the next batch
+    WaitingForDocuments,
+    // Processing a batch, until the worker acknowledges the batch to the server
+    Processing,
+    // The connection failed, and the worker is waiting to reconnect
+    Retrying,
+    // Stopped without reconnecting, and the task returned by Run completed in error
+    Faulted,
+    // Disposed, or the cancellation token passed to Run was canceled
+    Stopped
+}
+```
 
 </TabItem>
 </Tabs>
