@@ -43,6 +43,8 @@ subscription name or a [SubscriptionWorkerOptions](../../data-subscriptions/cons
 subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
 ```
 
+<br />
+
 This constructs the worker but does not run it yet.
 
 </Panel>
@@ -64,7 +66,7 @@ subscriptionRuntimeTask = subscriptionWorker.Run(batch =>
 From this point on, the worker receives and processes document batches, acknowledging each batch 
 so the server can keep track of the subscription's progress and provide the next batch if available.  
 
-`Run` returns a task that stays alive while the worker is processing. If processing is aborted,
+The `Run` method returns a task that stays alive while the worker is processing. If processing is aborted,
 this task completes with an exception.
 
 </Panel>
@@ -498,7 +500,7 @@ catch (SubscriptionClosedException)
 In this example, the subscription sends to the worker every `Order` and includes in the batch
 `Product` documents referenced in the order.  
 When the worker accesses an included `Product`, the product's data has already arrived in the batch,
-so the worker doesn't need to fetch it from the server.
+so the worker does not need to fetch the product from the server.
 
 ```csharp
 // Create the subscription task on the server:
@@ -691,7 +693,7 @@ When you create a worker using `SubscriptionWorkerOptions`, the only required pr
 `SubscriptionName`; the rest fall back to their defaults.
 
 ```csharp
-public class SubscriptionWorkerOptions
+public sealed class SubscriptionWorkerOptions
 {
     public string SubscriptionName { get; }
     public int MaxDocsPerBatch { get; set; }
@@ -712,8 +714,8 @@ public class SubscriptionWorkerOptions
 |----------|------|-------------|
 | **SubscriptionName** | `string` | The name of the subscription the worker connects to. |
 | **MaxDocsPerBatch** | `int` | The maximum number of documents the server tries to send in a batch. If it finds fewer, it sends what it has without waiting. Default: 4096. |
-| **SendBufferSizeInBytes** | `int` | The size of the TCP socket buffer used for sending data. Default: 32,768 bytes (32 KiB). |
-| **ReceiveBufferSizeInBytes** | `int` | The size of the TCP socket buffer used for receiving data. Default: 32,768 bytes (32 KiB). |
+| **SendBufferSizeInBytes** | `int` | The size of the TCP socket buffer the worker uses to send data. Default: 32,768 bytes (32 KiB). |
+| **ReceiveBufferSizeInBytes** | `int` | The size of the TCP socket buffer the worker uses to receive data. Default: 32,768 bytes (32 KiB). |
 | **IgnoreSubscriberErrors** | `bool` | Whether processing continues when your batch-handling code throws. `true` continues; `false` (default) aborts. |
 | **CloseWhenNoDocsLeft** | `bool` | Whether the connection closes when no new documents remain. `true` processes all available documents and then throws a `SubscriptionClosedException` (useful for one-time processing); `false` (default) keeps the worker waiting for new documents. |
 | **TimeToWaitBeforeConnectionRetry** | `TimeSpan` | The wait before each reconnect attempt after a non-aborting failure. Default: 5 seconds. |

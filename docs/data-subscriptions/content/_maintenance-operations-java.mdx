@@ -117,9 +117,9 @@ List<SubscriptionState> allSubscriptions = store.subscriptions().getSubscription
 
 To retrieve the state of a single subscription from the server use `getSubscriptionState`, passing it the subscription's name.  
 The returned `SubscriptionState` lets you inspect the subscription. For example, read
-`lastBatchAckTime` to see when the server last acknowledged progress,
-`changeVectorForNextBatchStartingPoint` to see where it will resume, or `disabled` to check whether
-it currently accepts workers.
+`lastBatchAckTime` for the time the server last acknowledged the worker's progress,
+`changeVectorForNextBatchStartingPoint` for the point the next batch will start from, or `disabled` to check
+whether the subscription currently accepts workers.
 
 ```java
 SubscriptionState getSubscriptionState(String subscriptionName);
@@ -149,7 +149,7 @@ Its properties:
 | **lastBatchAckTime** | `Date` | The last time the server acknowledged progress on the subscription's documents. |
 | **lastClientConnectionTime** | `Date` | The last time a client connected (retained after the connection ends). |
 | **disabled** | `boolean` | When `true`, the subscription does not allow workers to connect. |
-| **archivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior` | Whether archived documents are included in the subscription. |
+| **archivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior` | The subscription's handling of archived documents. |
 
 </Panel>
 

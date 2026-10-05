@@ -36,7 +36,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Panel heading="Creating a subscription">
 
-To create a subscription, define which documents the server should send to the worker, then register
+To create a subscription, define the documents that the server should send to the worker, then register
 this definition with the server using the `create_for_class` or `create_for_options` method on the
 document store's `subscriptions` property.
 
@@ -118,14 +118,14 @@ consuming clients, or other considerations.
 <Panel heading="Updating a subscription">
 
 You can change an existing subscription's definition using the [update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods) method.  
-Pass a [SubscriptionUpdateOptions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes), which extends the creation options with two
+Pass a [SubscriptionUpdateOptions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) object, which extends the creation options with two
 additional fields, `key` and `create_new`:
 
 * **`key`** targets the subscription by the ID the server assigned it at creation, instead of by
   name.  
   Because the ID identifies the subscription independently of its name, you can use it to rename
   a subscription: provide the `key` and a new `name`.  
-* **`create_new`** controls what happens when the subscription you are updating does not exist.  
+* **`create_new`** applies when the subscription you are updating does not exist.  
   Set it to `True` to create the subscription instead, or leave it `False`, the default, to
   throw an exception.  
 
@@ -404,8 +404,9 @@ store.subscriptions.create_for_options(
 
 <br />
 
-Using the builder, assign an include function to the `includes` property of `SubscriptionCreationOptions`.  
-The builder includes related documents through `include_documents`, and its methods can be chained.
+To include related documents, assign a function to the `includes` property of the `SubscriptionCreationOptions` object.  
+The function receives the include builder and calls the builder's `include_documents` method.  
+Calls to the builder's methods can be chained.
 
 In RQL, write the include in one of two ways: append the `include` keyword followed by the paths
 to the fields holding the IDs to include (preferred, for both clarity and slightly better
@@ -450,7 +451,7 @@ store.subscriptions.create_for_options(
 
 <br />
 
-The include builder offers three methods for including counters:
+To include counters, use these three methods of the include builder:
 
 ```python
 # Include a single counter
@@ -516,7 +517,7 @@ store.subscriptions.create_for_class(
 
 <br />
 
-`SubscriptionIncludeBuilder` includes time series through these methods:
+To include time series, use these methods of the `SubscriptionIncludeBuilder` class:
 
 ```python
 # Include entries of a named time series, by a time range or by a number of entries
@@ -695,7 +696,7 @@ class SubscriptionUpdateOptions(SubscriptionCreationOptions):
 
 <br />
 
-`SubscriptionUpdateOptions` adds two properties to the creation options:
+The `SubscriptionUpdateOptions` class adds two properties to the creation options:
 
 | Property | Type | Description |
 |----------|------|-------------|
@@ -706,8 +707,8 @@ class SubscriptionUpdateOptions(SubscriptionCreationOptions):
 
 <Admonition type="note" title="">
 
-The `change_vector` property sets a starting point for processing, which is useful for an ad-hoc
-process that needs only recent changes.  
+The `change_vector` property sets the point from which the subscription starts sending documents to the worker.  
+This is useful for an ad-hoc process that needs only recent changes.  
 Set it to `"LastDocument"` to start from the latest document in the collection, or pass an actual
 change vector to start from a specific point.  
 By default the subscription sends all documents matching its query, regardless of when they were

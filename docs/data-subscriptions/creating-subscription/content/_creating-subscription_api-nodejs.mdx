@@ -37,7 +37,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Panel heading="Creating a subscription">
 
-To create a subscription, define which documents the server should send to the worker, then register
+To create a subscription, define the documents that the server should send to the worker, then register
 this definition with the server using the `create` method on the document store's `subscriptions`
 property.
 
@@ -129,7 +129,7 @@ additional fields, `id` and `createNew`:
   name.  
   Because the ID identifies the subscription independently of its name, you can use it to rename
   a subscription: provide the ID and a new `name`.  
-* **`createNew`** controls what happens when the subscription you are updating does not exist.  
+* **`createNew`** applies when the subscription you are updating does not exist.  
   Set it to `true` to create the subscription instead, or leave it `false`, the default, to
   throw an exception.  
 
@@ -397,8 +397,9 @@ const subscriptionName = await documentStore.subscriptions.create({ query });
 
 <br />
 
-Using the builder, assign an include function to the `includes` property of the options object.  
-The builder includes related documents through `includeDocuments`, and its methods can be chained.
+To include related documents, assign a function to the `includes` property of the options object.  
+The function receives the include builder and calls the builder's `includeDocuments` method.  
+Calls to the builder's methods can be chained.
 
 In RQL, write the include in one of two ways: append the `include` keyword followed by the paths
 to the fields holding the IDs to include (preferred, for both clarity and slightly better
@@ -445,7 +446,7 @@ const subscriptionName = await documentStore.subscriptions.create({
 
 <br />
 
-The include builder offers three methods for including counters:
+To include counters, use these three methods of the include builder:
 
 ```js
 // Include a single counter
@@ -509,7 +510,7 @@ const subscriptionName = await documentStore.subscriptions.create(options);
 
 <br />
 
-The include builder includes time series through these methods:
+To include time series, use these methods of the include builder:
 
 ```js
 // Include entries of a named time series, by a time range or by a number of entries
@@ -730,8 +731,8 @@ The update options object adds two properties to the creation options:
 
 <Admonition type="note" title="">
 
-The `changeVector` property sets a starting point for processing, which is useful for an ad-hoc
-process that needs only recent changes.  
+The `changeVector` property sets the point from which the subscription starts sending documents to the worker.  
+This is useful for an ad-hoc process that needs only recent changes.  
 Set it to `"LastDocument"` to start from the latest document in the collection, or pass an actual
 change vector to start from a specific point.  
 By default the subscription sends all documents matching its query, regardless of when they were

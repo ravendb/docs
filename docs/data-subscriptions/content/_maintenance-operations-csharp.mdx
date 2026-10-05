@@ -123,9 +123,9 @@ List<SubscriptionState> allSubscriptions = store.Subscriptions.GetSubscriptions(
 
 To retrieve the state of a single subscription from the server use `GetSubscriptionState`, passing it the subscription's name.  
 The returned `SubscriptionState` lets you inspect the subscription. For example, read
-`LastBatchAckTime` to see when the server last acknowledged progress,
-`ChangeVectorForNextBatchStartingPoint` to see where it will resume, or `Disabled` to check whether
-it currently accepts workers.
+`LastBatchAckTime` for the time the server last acknowledged the worker's progress,
+`ChangeVectorForNextBatchStartingPoint` for the point the next batch will start from, or `Disabled` to check
+whether the subscription currently accepts workers.
 
 ```csharp
 SubscriptionState GetSubscriptionState(string subscriptionName, string database = null);
@@ -156,7 +156,7 @@ Its properties:
 | **LastBatchAckTime** | `DateTime?` | The last time the server acknowledged progress on the subscription's documents. |
 | **LastClientConnectionTime** | `DateTime?` | The last time a client connected (retained after the connection ends). |
 | **Disabled** | `bool` | When `true`, the subscription does not allow workers to connect. |
-| **ArchivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior?` | Whether archived documents are included in the subscription. |
+| **ArchivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior?` | The subscription's handling of archived documents. |
 
 </Panel>
 

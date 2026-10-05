@@ -36,8 +36,8 @@ in what they process, what the server-side query can see, and what reaches the w
 ### Regular subscription
 
 * **Processed items**  
-  The subscription processes documents from the defined collection. Only the current version of
-  each document is processed, even if the document has revisions.
+  The subscription selects documents from the defined collection. Only the current version of
+  each document is selected, even if the document has revisions.
 * **Query access scope**  
   The subscription query running on the server has access only to the current version of each document.
 * **Data sent to the worker**  
@@ -50,7 +50,7 @@ in what they process, what the server-side query can see, and what reaches the w
 ### Revisions subscription
 
 * **Processed items**  
-  The subscription processes all revisions of documents from the defined collection, including
+  The subscription selects all revisions of documents from the defined collection, including
   revisions of deleted documents from the revisions bin if they have not been purged.
 * **Query access scope**  
   For each revision, the subscription query running on the server has access to both the revision

@@ -31,6 +31,7 @@ To create a subscription, open **`Tasks` > `Ongoing Tasks` > `Add a database tas
 1. Open the **Tasks** menu.
 2. Select **Ongoing Tasks**.
 3. Click **Add a database task** and select **Subscription**.
+
    ![Open the ongoing tasks view](./assets/subscriptions_subscription-task-selection.png)
 
 </ContentFrame>
@@ -53,32 +54,41 @@ Enter a task name, then define the subscription:
    Click **Syntax** for help writing the query.  
 
 4. **Archived data processing behavior**  
+
    ![Defining the subscription task](./assets/subscriptions_archived-data-processing.png)
-   Set how the subscription processes archived documents.  
+
+   Set the subscription's handling of archived documents:  
    * **Default**: use the archived-data behavior [configured for the server or database](../../data-subscriptions/configuration.mdx#subscriptionsarchiveddataprocessingbehavior).  
    * **Exclude archived**: Only non-archived documents will be included in processing.  
    * **Include archived**: Both archived and non-archived documents will be included in processing.
    * **Archived only**: Only archived documents will be included in processing.  
   
 5. **Use a defined starting point**  
+
    ![Defining the subscription task](./assets/subscriptions_use-defined-starting-point.png)
+
    Set the point from which the server sends the first batch.  
    * **Beginning of Time** (default): the server sends every document matching the query, regardless of its creation time.  
    * **Latest Document**: start from the first document added after the subscription is created.  
    * **Change Vector**: start from a specified document change vector.  
 
 6. **Set responsible node**  
+
    ![Defining the subscription task](./assets/subscriptions_set-responsible-node.png)
+
    Toggle **Set responsible node** to choose the responsible node yourself.  
    By default, the server selects the responsible node. If that node goes down and your license includes
    [highly available tasks](../../server/clustering/distribution/highly-available-tasks.mdx), the server
    automatically reassigns the subscription to another node.  
     * When you select a responsible node manually, you can also **pin** it to the task. Pinning prevents
       another node from taking over if the responsible node goes down.  
+
       ![Defining the subscription task](./assets/subscriptions_set-responsible-node_pin-node.png)
 
 7. **Test subscription**  
+
    ![Testing the subscription](./assets/subscriptions_test-subscription.png)
+
    Testing shows the documents that match the subscription's query, so you can verify it before saving the task.  
    * **A. Results limit** - The maximum number of documents to retrieve for the test.  
    * **B. Time limit** - The test run time, in seconds. Default: 15.  

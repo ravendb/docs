@@ -14,8 +14,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* A data subscription is a server-side task that selects documents by a defined query. The server
-  sends the selected documents in batches to consuming clients (**workers**) for processing.  
+* A data subscription is a server-side task that selects documents by a defined query.  
+  The subscription sends the selected documents in batches to consuming clients (**workers**) that process the documents.  
 
 * The server sends a batch, the worker processes and acknowledges it, and only then does the
   server send the next batch.  
@@ -173,7 +173,7 @@ You can set these options while creating a subscription:
 
 <Panel heading="Consuming and managing the subscription">
 
-These options and operations control how a subscription is consumed and managed:  
+You can consume and manage a subscription using these options and operations:  
 
 * **Worker strategies**  
   Control how a worker connects to a subscription that another worker is already consuming: connect
