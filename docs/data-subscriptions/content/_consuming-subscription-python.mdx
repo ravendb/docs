@@ -110,30 +110,52 @@ and how it behaves toward a worker that is already connected:
 
 ### Connection failures
 
-When an unexpected error occurs during communication with the server, the worker tries to
-reconnect.  
-It stops without reconnecting in these cases:
+When an error interrupts the worker's communication with the server, the worker tries to reconnect.  
+The worker keeps retrying even when the cluster has no leader to name the node responsible for the
+subscription, until the period set in `max_erroneous_period` passes
+(see [Reconnection and timeouts](../../data-subscriptions/consuming-subscription.mdx#reconnection-and-timeouts)).
 
-* The subscription no longer exists.  
-* Another worker took over the subscription (see [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)).  
-* The worker cannot connect to any of the servers.  
-* The worker could not learn which node is responsible for the task (e.g., when the cluster
-  has no leader).  
+The worker stops without reconnecting in these cases:
+
+* The subscription does not exist (e.g., it was deleted).  
+* The subscription is in use by another worker, or another worker took it over
+  (see [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)).  
+* The subscription was disabled, or the worker's connection was dropped
+  (see [Dropping a connection](../../data-subscriptions/maintenance-operations.mdx#dropping-a-connection)).  
+* The worker cannot reach any of the servers.  
+* The worker failed to connect for longer than `max_erroneous_period`.  
 * An authorization error occurred.  
-* An error occurred while establishing the connection.  
 * The database does not exist.  
+* Your batch-processing code raised an exception, and `ignore_subscriber_errors` is not set
+  (see [Errors while processing a batch](../../data-subscriptions/consuming-subscription.mdx#errors-while-processing-a-batch)).  
+* The worker runs with `close_when_no_docs_left` and no documents are left
+  (see [End when no documents are left](../../data-subscriptions/consuming-subscription.mdx#example-end-when-no-documents-are-left)).  
 
 ---
 
-When the worker tries to reconnect after a failure, the registered connection-retry handler is
-called. Register one to log worker connection errors:
+To follow the worker's attempts to reconnect, register handlers using these worker methods:
+
+* **`add_on_unexpected_subscription_error`**  
+  The handler is called when the worker hits an error it does not recognize (e.g., a dropped
+  network connection), before the worker waits to reconnect.  
+* **`add_on_subscription_connection_retry`**  
+  The handler is called each time the worker is about to reconnect, after the wait set in
+  `time_to_wait_before_connection_retry`.  
+
+When the worker stops instead of reconnecting, neither handler is called, and the future returned
+by `run` completes in error.
+
+The following code registers both handlers and writes the error message that each handler receives to the console:
 
 ```python
-# Log connection-retry errors
+# Called for an error the worker does not recognize, before the wait
+subscription_worker.add_on_unexpected_subscription_error(
+    lambda exception: print(f"Unexpected subscription error: {exception}")
+)
+
+# Called before each reconnection attempt, after the wait
 subscription_worker.add_on_subscription_connection_retry(
-    lambda exception: logger.error(
-        f"Subscription connection error: {subscription_name}", exc_info=exception
-    )
+    lambda exception: print(f"Reconnecting to the subscription after: {exception}")
 )
 ```
 
@@ -143,8 +165,8 @@ subscription_worker.add_on_subscription_connection_retry(
 
 ### Errors while processing a batch
 
-When your batch-processing code throws, the `ignore_subscriber_errors` option in
-`SubscriptionWorkerOptions` determines what happens:
+When your batch-processing code raises an exception, the worker's response depends on the
+`ignore_subscriber_errors` option of the `SubscriptionWorkerOptions` object:
 
 * **`False`** (default)  
   Processing stops. The worker wraps the exception in a `SubscriberErrorException` and rethrows
@@ -165,7 +187,8 @@ These `SubscriptionWorkerOptions` properties govern reconnection after a failure
   How long the worker waits before each reconnect attempt.  
   Default: 5 seconds.  
 * **`max_erroneous_period`**  
-  How long the connection may stay in an erroneous state before the worker stops retrying.  
+  How long the worker may keep failing to reconnect, counted from the first failure since its last successful
+  connection, before the worker stops retrying.  
   Default: 5 minutes.  
 
 </ContentFrame>
@@ -192,11 +215,9 @@ while True:
     subscription_worker = store.subscriptions.get_subscription_worker(options, Order)
 
     try:
-        # Log any exception that occurs during processing
+        # Before each reconnection attempt, write the error that caused it to the console
         subscription_worker.add_on_subscription_connection_retry(
-            lambda exception: logger.error(
-                f"Error during subscription processing: {subscription_name}", exc_info=exception
-            )
+            lambda exception: print(f"Reconnecting to the subscription after: {exception}")
         )
 
         def _process_documents_callback(batch):
@@ -216,7 +237,7 @@ while True:
         # run completes normally if you have disposed the subscription
         return
     except Exception as e:
-        logger.error(f"Failure in subscription: {subscription_name}", exc_info=e)
+        print(f"Failure in subscription {subscription_name}: {e}")
         exception_type = type(e)
 
         # The following exceptions are not recoverable
@@ -505,8 +526,8 @@ When you create a worker using `SubscriptionWorkerOptions`, the only required pr
 | **receive_buffer_size** | `int` | The size of the TCP socket buffer the worker uses to receive data. Default: 32,768 bytes (32 KiB). |
 | **ignore_subscriber_errors** | `bool` | Whether processing continues when your batch-handling code throws. `True` continues; `False` (default) aborts. |
 | **close_when_no_docs_left** | `bool` | Whether the connection closes when no new documents remain. `True` processes all available documents and then throws a `SubscriptionClosedException` (useful for one-time processing); `False` (default) keeps the worker waiting for new documents. |
-| **time_to_wait_before_connection_retry** | `timedelta` | The wait before each reconnect attempt after a non-aborting failure. Default: 5 seconds. |
-| **max_erroneous_period** | `timedelta` | The maximum time the connection may stay in an erroneous state before it is terminated. Default: 5 minutes. |
+| **time_to_wait_before_connection_retry** | `timedelta` | The wait before each reconnection attempt.<br />Default: 5 seconds. |
+| **max_erroneous_period** | `timedelta` | How long the worker may keep failing to reconnect, counted from the first failure since its last successful connection, before the worker stops retrying.<br />Default: 5 minutes. |
 | **strategy** | `SubscriptionOpeningStrategy` | How the server handles this worker's connection attempt. Default: `OPEN_IF_FREE`. |
 
 </TabItem>
@@ -592,7 +613,8 @@ The worker returned by `get_subscription_worker`.
 
 | Event | Type | Description |
 |-------|------|-------------|
-| **add_on_subscription_connection_retry** | `Callable[[Exception], None]` | Fires when the worker tries to reconnect after a failure. Receives the exception that interrupted processing. |
+| **add_on_subscription_connection_retry** | `Callable[[Exception], None]` | Fires each time the worker is about to reconnect, after the wait set in `time_to_wait_before_connection_retry`.<br />Receives the exception that caused the reconnection. |
+| **add_on_unexpected_subscription_error** | `Callable[[Exception], None]` | Fires when the worker hits an error it does not recognize, before the worker waits to reconnect.<br />Receives the exception. |
 | **after_acknowledgment** | `Callable[[SubscriptionBatch[_T]], None]` | Fires after the server acknowledges the progress of a processed batch. |
 
 **Properties**

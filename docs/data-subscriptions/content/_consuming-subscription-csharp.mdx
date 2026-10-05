@@ -133,32 +133,54 @@ and this mode holds until all workers disconnect:
 
 ### Connection failures
 
-When an unexpected error occurs during communication with the server, the worker tries to
-reconnect.  
-It stops without reconnecting in these cases:
+When an error interrupts the worker's communication with the server, the worker tries to reconnect.  
+The worker keeps retrying even when it cannot reach any server, or when the cluster has no leader to
+name the node responsible for the subscription, until the period set in `MaxErroneousPeriod` passes
+(see [Reconnection and timeouts](../../data-subscriptions/consuming-subscription.mdx#reconnection-and-timeouts)).
 
-* The subscription no longer exists.  
-* Another worker took over the subscription (see [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)).  
-* The worker cannot connect to any of the servers.  
-* The worker could not learn which node is responsible for the task (e.g., when the cluster
-  has no leader).  
+The worker stops without reconnecting in these cases:
+
+* The subscription does not exist (e.g., it was deleted).  
+* The subscription is in use by another worker, or another worker took it over
+  (see [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)).  
+* The subscription was disabled, or the worker's connection was dropped
+  (see [Dropping a connection](../../data-subscriptions/maintenance-operations.mdx#dropping-a-connection)).  
+* The worker failed to connect for longer than `MaxErroneousPeriod`.  
+* The subscription cannot run in its current state (e.g., a revisions subscription on a collection
+  whose revisions are disabled).  
 * An authorization error occurred.  
-* An error occurred while establishing the connection.  
 * The database does not exist.  
+* Your batch-processing code threw an exception, and `IgnoreSubscriberErrors` is not set
+  (see [Errors while processing a batch](../../data-subscriptions/consuming-subscription.mdx#errors-while-processing-a-batch)).  
+* The worker runs with `CloseWhenNoDocsLeft` and no documents are left
+  (see [End when no documents are left](../../data-subscriptions/consuming-subscription.mdx#example-end-when-no-documents-are-left)).  
 
 ---
 
-When an unexpected error interrupts the worker's connection to the server, the
-`OnUnexpectedSubscriptionError` event fires and then the worker automatically attempts to
-reconnect.  
-Subscribe to this event to log worker connection errors:
+To follow the worker's attempts to reconnect, subscribe to these worker events:
+
+* **`OnUnexpectedSubscriptionError`**  
+  Fires when the worker hits an error it does not recognize (e.g., a dropped network connection),
+  before the worker waits to reconnect.  
+* **`OnSubscriptionConnectionRetry`**  
+  Fires each time the worker is about to reconnect, after the wait set in `TimeToWaitBeforeConnectionRetry`.  
+
+When the worker stops instead of reconnecting, neither event fires, and the task returned by `Run`
+completes in error.
+
+The following code subscribes to both events and writes the error message that each event receives to the console:
 
 ```csharp
-// Subscribe to the worker's connection-error event
+// Fires for an error the worker does not recognize, before the wait
 subscriptionWorker.OnUnexpectedSubscriptionError += exception =>
 {
-    // Log the error
-    Logger.Error("Subscription connection error: " + subscriptionName, exception);
+    Console.WriteLine($"Unexpected subscription error: {exception.Message}");
+};
+
+// Fires before each reconnection attempt, after the wait
+subscriptionWorker.OnSubscriptionConnectionRetry += exception =>
+{
+    Console.WriteLine($"Reconnecting to the subscription after: {exception.Message}");
 };
 ```
 
@@ -168,8 +190,8 @@ subscriptionWorker.OnUnexpectedSubscriptionError += exception =>
 
 ### Errors while processing a batch
 
-When your batch-processing code throws, the `IgnoreSubscriberErrors` option in
-`SubscriptionWorkerOptions` determines what happens:
+When your batch-processing code throws an exception, the worker's response depends on the
+`IgnoreSubscriberErrors` option of the `SubscriptionWorkerOptions` object:
 
 * **`false`** (default)  
   Processing stops. The worker wraps the exception in a `SubscriberErrorException` and rethrows
@@ -190,10 +212,12 @@ These `SubscriptionWorkerOptions` properties govern reconnection and connection 
   How long the worker waits before each reconnect attempt.  
   Default: 5 seconds.  
 * **`MaxErroneousPeriod`**  
-  How long the connection may stay in an erroneous state before the worker stops retrying.  
+  How long the worker may keep failing to reconnect, counted from the first failure since its last successful
+  connection, before the worker stops retrying.  
   Default: 5 minutes.  
 * **`ConnectionStreamTimeout`**  
-  How long the worker waits after losing connectivity before timing out.  
+  How long the worker waits for data from the server, or for a write to the server to complete,
+  before treating the connection as broken and trying to reconnect.  
   Default: 30 seconds. Cannot be set below 15 seconds.  
 
 ```csharp
@@ -232,12 +256,10 @@ while (true)
 
     try
     {
-        // Subscribe to connection retry events
-        // and log any exceptions that occur during processing
+        // Before each reconnection attempt, write the error that caused it to the console
         subscriptionWorker.OnSubscriptionConnectionRetry += exception =>
         {
-            Logger.Error("Error during subscription processing: " + subscriptionName,
-                exception);
+            Console.WriteLine($"Reconnecting to the subscription after: {exception.Message}");
         };
 
         // Run the worker:
@@ -266,7 +288,7 @@ while (true)
     }
     catch (Exception e)
     {
-        Logger.Error("Failure in subscription: " + subscriptionName, e);
+        Console.WriteLine($"Failure in subscription {subscriptionName}: {e.Message}");
 
         // The following exceptions are not recoverable
         if (e is DatabaseDoesNotExistException ||
@@ -718,9 +740,9 @@ public sealed class SubscriptionWorkerOptions
 | **ReceiveBufferSizeInBytes** | `int` | The size of the TCP socket buffer the worker uses to receive data. Default: 32,768 bytes (32 KiB). |
 | **IgnoreSubscriberErrors** | `bool` | Whether processing continues when your batch-handling code throws. `true` continues; `false` (default) aborts. |
 | **CloseWhenNoDocsLeft** | `bool` | Whether the connection closes when no new documents remain. `true` processes all available documents and then throws a `SubscriptionClosedException` (useful for one-time processing); `false` (default) keeps the worker waiting for new documents. |
-| **TimeToWaitBeforeConnectionRetry** | `TimeSpan` | The wait before each reconnect attempt after a non-aborting failure. Default: 5 seconds. |
-| **ConnectionStreamTimeout** | `TimeSpan` | How long the worker waits after losing connectivity before timing out. Default: 30 seconds. |
-| **MaxErroneousPeriod** | `TimeSpan` | The maximum time the connection may stay in an erroneous state before it is terminated. Default: 5 minutes. |
+| **TimeToWaitBeforeConnectionRetry** | `TimeSpan` | The wait before each reconnection attempt.<br />Default: 5 seconds. |
+| **ConnectionStreamTimeout** | `TimeSpan` | How long the worker waits for data from the server, or for a write to the server to complete, before treating the connection as broken.<br />Default: 30 seconds. Minimum: 15 seconds. |
+| **MaxErroneousPeriod** | `TimeSpan` | How long the worker may keep failing to reconnect, counted from the first failure since its last successful connection, before the worker stops retrying.<br />Default: 5 minutes. |
 | **Strategy** | `SubscriptionOpeningStrategy` | How the server handles this worker's connection attempt. Default: `OpenIfFree`. |
 
 </TabItem>
@@ -834,8 +856,8 @@ The worker returned by `GetSubscriptionWorker`.
 | Event | Type | Description |
 |-------|------|-------------|
 | **AfterAcknowledgment** | `AfterAcknowledgmentAction` | Fires after the server acknowledges the progress of a processed batch. |
-| **OnSubscriptionConnectionRetry** | `Action<Exception>` | Fires when the worker tries to reconnect after a failure. Receives the exception that interrupted processing. |
-| **OnUnexpectedSubscriptionError** | `Action<Exception>` | Fires when an unexpected error interrupts the worker's connection to the server, before the worker reconnects automatically. Receives the exception. |
+| **OnSubscriptionConnectionRetry** | `Action<Exception>` | Fires each time the worker is about to reconnect, after the wait set in `TimeToWaitBeforeConnectionRetry`.<br />Receives the exception that caused the reconnection. |
+| **OnUnexpectedSubscriptionError** | `Action<Exception>` | Fires when the worker hits an error it does not recognize, before the worker waits to reconnect.<br />Receives the exception. |
 | **OnDisposed** | `Action<SubscriptionWorker<T>>` | Fires after the worker is disposed. |
 
 **Properties**
