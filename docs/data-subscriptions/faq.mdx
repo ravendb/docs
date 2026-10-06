@@ -35,13 +35,16 @@ import ContentFrame from "@site/src/components/ContentFrame";
 ### Can the same document be processed more than once?
 
 Yes. Data subscriptions provide at-least-once delivery, so a document can reach a worker more than
-once in two situations:
+once in these situations:
 
-* A worker fails before acknowledging a batch it has processed. The server re-sends that batch the
+* A worker fails before acknowledging a batch it has processed. The server re-sends the batch the
   next time a worker connects.
 
 * In a concurrent subscription, a worker drops, and the server reassigns the documents it was
   processing to the other workers.
+
+* The subscription moves to another node (e.g., after a node failure), and the new node cannot always
+  locate the exact point the previous node reached, so some documents may be sent again.
 
 Make your processing idempotent so that reprocessing a document has no unintended effect.
 

@@ -58,10 +58,10 @@ Enter a task name, then define the subscription:
    ![Defining the subscription task](./assets/subscriptions_archived-data-processing.png)
 
    Set the subscription's handling of archived documents:  
-   * **Default**: use the archived-data behavior [configured for the server or database](../../data-subscriptions/configuration.mdx#subscriptionsarchiveddataprocessingbehavior).  
-   * **Exclude archived**: Only non-archived documents will be included in processing.  
-   * **Include archived**: Both archived and non-archived documents will be included in processing.
-   * **Archived only**: Only archived documents will be included in processing.  
+   * **Default**: The subscription uses the behavior [configured for the server or database](../../data-subscriptions/configuration.mdx#subscriptionsarchiveddataprocessingbehavior).  
+   * **Exclude Archived**: The subscription selects only non-archived documents.  
+   * **Include Archived**: The subscription selects both archived and non-archived documents.  
+   * **Archived Only**: The subscription selects only archived documents.  
   
 5. **Use a defined starting point**  
 
@@ -69,7 +69,7 @@ Enter a task name, then define the subscription:
 
    Set the point from which the server sends the first batch.  
    * **Beginning of Time** (default): the server sends every document matching the query, regardless of its creation time.  
-   * **Latest Document**: start from the first document added after the subscription is created.  
+   * **Latest Document**: the server sends only documents created or modified after the subscription is created.  
    * **Change Vector**: start from a specified document change vector.  
 
 6. **Set responsible node**  

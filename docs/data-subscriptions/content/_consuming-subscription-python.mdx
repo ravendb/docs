@@ -26,7 +26,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Processing documents in a session](../../data-subscriptions/consuming-subscription.mdx#example-processing-documents-in-a-session)
       * [Processing dynamic objects](../../data-subscriptions/consuming-subscription.mdx#example-processing-dynamic-objects)
       * [End when no documents are left](../../data-subscriptions/consuming-subscription.mdx#example-end-when-no-documents-are-left)
-      * [Failing over to another node](../../data-subscriptions/consuming-subscription.mdx#example-failing-over-to-another-node)
+      * [Standby workers on several machines](../../data-subscriptions/consuming-subscription.mdx#example-standby-workers-on-several-machines)
       * [Primary and secondary workers](../../data-subscriptions/consuming-subscription.mdx#example-primary-and-secondary-workers)
    * [Syntax](../../data-subscriptions/consuming-subscription.mdx#syntax)
 
@@ -393,10 +393,14 @@ except SubscriptionClosedException:
 
 <ContentFrame>
 
-### Example: Failing over to another node
+### Example: Standby workers on several machines
 
-With the `WAIT_FOR_FREE` strategy, any available node can create a worker, and another node takes
-over the connection if the worker fails.
+In this example, the same worker code runs on several machines, all using the `WAIT_FOR_FREE` strategy.  
+One worker connects to the subscription, and the other workers wait.  
+If the connected worker disconnects (e.g., when its machine goes down), one of the waiting workers connects and
+continues processing.  
+Unlike in the [primary and secondary workers](../../data-subscriptions/consuming-subscription.mdx#example-primary-and-secondary-workers)
+example, a worker that reconnects after a failure does not take the connection back, but joins the waiting workers.
 
 ```python
 worker = store.subscriptions.get_subscription_worker(

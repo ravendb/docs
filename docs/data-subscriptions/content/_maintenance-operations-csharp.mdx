@@ -66,11 +66,17 @@ store.Subscriptions.Enable(subscriptionName);
 
 <Panel heading="Dropping a connection">
 
-Drop a subscription's active connections using `DropConnection`, passing the subscription name.  
-Dropping a connection ends the worker's `Run` task, but leaves the subscription enabled. 
-Once dropped, the worker will not reconnect on its own. To resume, run it again. 
-To stop the subscription from accepting workers, 
-[disable it](../../data-subscriptions/maintenance-operations.mdx#enabling-and-disabling-a-subscription).  
+Drop a subscription's active connections using `DropConnection`, passing the subscription name.
+
+* Dropping a connection ends the worker's `Run` task, but leaves the subscription enabled.  
+  Once dropped, the worker will not reconnect on its own.
+* To resume, [create a new worker](../../data-subscriptions/consuming-subscription.mdx#creating-a-subscription-worker) and run it.  
+  The new worker continues processing after the last batch the previous worker acknowledged.  
+  If the connection was dropped before the previous worker acknowledged a batch, the server sends the batch again
+  to the next worker that connects to the subscription, so the batch's documents may be processed more than once
+  (see [At-least-once delivery](../../data-subscriptions/consuming-subscription.mdx#at-least-once-delivery)).
+* To stop the subscription from accepting workers,
+  [disable it](../../data-subscriptions/maintenance-operations.mdx#enabling-and-disabling-a-subscription).
 
 ```csharp
 void DropConnection(string name, string database = null);
@@ -143,7 +149,7 @@ SubscriptionState subscriptionState = store.Subscriptions.GetSubscriptionState(s
 
 <br />
 
-Its properties:
+The returned `SubscriptionState` object includes, among others, the following properties:
 
 | Property | Type | Description |
 |----------|------|-------------|
@@ -151,6 +157,7 @@ Its properties:
 | **SubscriptionName** | `string` | The subscription's name, which is also its unique identifier. |
 | **SubscriptionId** | `long` | The subscription's internal identifier, assigned by the cluster at creation. |
 | **MentorNode** | `string` | The mentor node, if one was set manually. |
+| **PinToMentorNode** | `bool` | `true` when the subscription is pinned to the mentor node, so another node does not take it over. |
 | **NodeTag** | `string` | The tag of the server node processing the subscription. |
 | **ChangeVectorForNextBatchStartingPoint** | `string` | The change vector from which the subscription will begin sending documents to the worker. Updated on batch acknowledgment, and can also be set manually. |
 | **LastBatchAckTime** | `DateTime?` | The last time the server acknowledged progress on the subscription's documents. |

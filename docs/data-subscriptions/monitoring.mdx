@@ -23,8 +23,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * In this article:
    * [Subscription details](../data-subscriptions/monitoring.mdx#subscription-details)
+      * [Opening the subscription details](../data-subscriptions/monitoring.mdx#opening-the-subscription-details)
       * [Status and connected clients](../data-subscriptions/monitoring.mdx#status-and-connected-clients)
    * [Subscription performance](../data-subscriptions/monitoring.mdx#subscription-performance)
+      * [The subscription bar](../data-subscriptions/monitoring.mdx#the-subscription-bar)
+      * [Connection and batch metrics](../data-subscriptions/monitoring.mdx#connection-and-batch-metrics)
       * [Connection event indicators](../data-subscriptions/monitoring.mdx#connection-event-indicators)
 
 </Admonition>
@@ -32,6 +35,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Panel heading="Subscription details">
 
 <ContentFrame>
+
+### Opening the subscription details
 
 Open **`Tasks` > `Ongoing Tasks`**, where subscription tasks are listed under **Subscriptions**.  
 Expand a subscription bar to view its current status and connected clients.
@@ -53,7 +58,8 @@ Expand a subscription bar to view its current status and connected clients.
    The last time a worker connected to the subscription.  
 
 3. **Change vector for next batch**  
-   The point from which the server sends the next batch. Hover the info icon for the value.  
+   The point from which the server sends the next batch.  
+   Hovering over the info icon shows the value.  
 
 4. **Task details**  
    * **Node** - the node in the database group that runs the subscription, shown in
@@ -79,6 +85,8 @@ and [Dropping a connection](../data-subscriptions/maintenance-operations.mdx#dro
 
 <ContentFrame>
 
+### The subscription bar
+
 Open **`Stats` > `Ongoing Task Stats`**, where a bar on the performance timeline shows the
 subscription's activity.
 
@@ -94,8 +102,11 @@ subscription's activity.
 
 <ContentFrame>
 
+### Connection and batch metrics
+
 [Expanding the bar](../monitoring/performance-views/ongoing-task-stats.mdx#expanding-a-track) breaks each client
-connection into the batches it processed and the time spent in each phase. Hover any bar for its metrics:
+connection into the batches it processed and the time spent in each phase.  
+Hovering over a bar shows the bar's metrics:
 
 ![The expanded subscription bar](./assets/subscriptions_task-stats_expanded.png)
 
@@ -133,15 +144,17 @@ Available indicators:
 
 ---
 
-Example:
+#### Example: Rejected and pending connections
 
 ![Connection event indicators on the timeline](./assets/subscriptions_task-stats_indicators-pending.png)
 
 In this example:
 
 1. Worker **A**, using the `OpenIfFree` strategy, connects to the subscription.
-2. Worker **B**, using the `WaitForFree` strategy, attempts to connect to the same subscription and rejected.  
-3. Because A holds the subscription, B does not connect immediately and transitions to a **pending** state.
+2. Worker **C**, using the `OpenIfFree` strategy, attempts to connect to the same subscription.  
+   Because A holds the subscription, the server rejects C's connection attempt.
+3. Worker **B**, using the `WaitForFree` strategy, attempts to connect to the same subscription.  
+   Because A holds the subscription, B does not connect immediately and waits in a **pending** state.
 4. Worker **A** ends its connection with the subscription.
 5. Worker **B** now connects.
 6. Worker **B** aborts its connection.

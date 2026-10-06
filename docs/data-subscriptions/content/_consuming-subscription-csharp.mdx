@@ -29,7 +29,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Processing a blittable object](../../data-subscriptions/consuming-subscription.mdx#example-processing-a-blittable-object)
       * [End when no documents are left](../../data-subscriptions/consuming-subscription.mdx#example-end-when-no-documents-are-left)
       * [Including documents in the batch](../../data-subscriptions/consuming-subscription.mdx#example-including-documents-in-the-batch)
-      * [Failing over to another node](../../data-subscriptions/consuming-subscription.mdx#example-failing-over-to-another-node)
+      * [Standby workers on several machines](../../data-subscriptions/consuming-subscription.mdx#example-standby-workers-on-several-machines)
       * [Primary and secondary workers](../../data-subscriptions/consuming-subscription.mdx#example-primary-and-secondary-workers)
    * [Syntax](../../data-subscriptions/consuming-subscription.mdx#syntax)
 
@@ -656,10 +656,14 @@ var subscriptionRuntimeTask = subscriptionWorker.Run(batch =>
 
 <ContentFrame>
 
-### Example: Failing over to another node
+### Example: Standby workers on several machines
 
-With the `WaitForFree` strategy, any available node can create a worker, and another node takes
-over the connection if the worker fails.
+In this example, the same worker code runs on several machines, all using the `WaitForFree` strategy.  
+One worker connects to the subscription, and the other workers wait.  
+If the connected worker disconnects (e.g., when its machine goes down), one of the waiting workers connects and
+continues processing.  
+Unlike in the [primary and secondary workers](../../data-subscriptions/consuming-subscription.mdx#example-primary-and-secondary-workers)
+example, a worker that reconnects after a failure does not take the connection back, but joins the waiting workers.
 
 ```csharp
 var worker = store.Subscriptions.GetSubscriptionWorker<Order>(
@@ -922,7 +926,7 @@ public struct Item
 | **ChangeVector** | `string` | The change vector of the item's underlying document. |
 | **Projection** | `bool` | `true` when the item is a projection produced by the subscription query rather than a full document. |
 | **Revision** | `bool` | `true` when the item is a document revision, for a subscription that streams revisions. |
-| **RawResult** | `BlittableJsonReaderObject` | The item before serialization to `T`. |
+| **RawResult** | `BlittableJsonReaderObject` | The item before deserialization to `T`. |
 | **RawMetadata** | `BlittableJsonReaderObject` | The metadata of the item's underlying document. |
 | **Metadata** | `IMetadataDictionary` | The item's underlying metadata values. |
 
