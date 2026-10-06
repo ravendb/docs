@@ -194,6 +194,7 @@ const config: Config = {
         require.resolve("./src/plugins/recent-guides-plugin"),
         require.resolve("./src/plugins/versioned-seo-plugin"),
         require.resolve("./src/plugins/recent-samples-plugin"),
+        require.resolve("./src/plugins/agent-hint-plugin"),
     ],
     headTags: [
         {

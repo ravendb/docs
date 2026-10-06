@@ -71,6 +71,7 @@ versions.json                # Active version list
   - rewrites `<link rel="canonical">` in built HTML to the current-version URL, resolving redirect chains from `scripts/redirects.json`. Legacy-version files get a self-canonical. Verifies every rewritten canonical against the Docusaurus route universe.
   - asserts every legacy-version page carries `<meta name="robots" content="noindex,...">`. The injection itself is delegated to Docusaurus' native per-version `noIndex` config (see `docusaurus.config.ts`); the plugin only audits.
   - Both checks fail the build under `DOCUSAURUS_STRICT_SEO=true`. Registered **after** all `content-docs` instances so HTML is already emitted when it runs.
+- `agent-hint-plugin`: puts a hidden pointer to the hosted agent skill at the top of every page's `<body>`. See "Hosted Agent Skill" below.
 
 Noindex for legacy versions is set declaratively in `docusaurus.config.ts` (`versions[v].noIndex: true`); template pages are marked `unlisted: true` in frontmatter. No custom plugin writes the meta tag — the versioned-seo-plugin only verifies it landed.
 
@@ -82,6 +83,13 @@ Noindex for legacy versions is set declaratively in `docusaurus.config.ts` (`ver
 prefix. `SKILL.md` links to `references/` with relative paths, so moving or flattening the tree
 breaks navigation, and `md` must stay in `staticAssetRegex` in `scripts/handle_redirects.js` or
 these URLs 301 to a versioned path that does not exist.
+
+Every page points agents at the skill through `agent-hint-plugin`: a pre-body blockquote hidden
+from people (`sr-only` styling, `aria-hidden`, `tabindex="-1"` on its link) that survives the
+HTML-to-Markdown conversion agents run on fetched pages. Its text is the `description` from
+`SKILL.md`'s frontmatter, read at build time, so editing that description changes what agents
+read on every page, and the build fails if it is missing. Keep the hint in static HTML: anything
+rendered client-side never reaches an agent, which is also why `LanguageContent` shows agents C# only.
 
 ---
 
