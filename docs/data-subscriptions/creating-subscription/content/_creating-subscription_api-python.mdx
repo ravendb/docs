@@ -37,13 +37,13 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Panel heading="Creating a subscription">
 
 To create a subscription, define the documents that the server should send to the worker, then register
-this definition with the server using the `create_for_class` or `create_for_options` method on the
-document store's `subscriptions` property.
+this definition with the server using `store.subscriptions.create_for_class` or
+`store.subscriptions.create_for_options`.
 
 You can define a subscription in two ways:
 
 * **By document type**  
-  Pass the collection's document type to `create_for_class`, so the server sends that entire collection.  
+  Pass the collection's document type to `create_for_class`, so the server sends the entire collection.  
 * **By a raw RQL (Raven Query Language) query**  
   Set the `query` string on `SubscriptionCreationOptions` and pass it to `create_for_options`, which
   lets you filter, project, and include.  
@@ -129,6 +129,9 @@ additional fields, `key` and `create_new`:
   Set it to `True` to create the subscription instead, or leave it `False`, the default, to
   throw an exception.  
 
+Any property you leave unset in the `SubscriptionUpdateOptions` object keeps the subscription's current value.  
+e.g., when you only rename a subscription, the subscription keeps its query and processing progress:
+
 ```python
 # Rename a subscription by targeting it with its key (the server-assigned ID)
 store.subscriptions.update(SubscriptionUpdateOptions(key=subscription_id, name="NewSubscriptionName"))
@@ -158,9 +161,9 @@ A subscription query can have these parts:
 * **An `include` clause** defining paths to include.  
 
 <Admonition type="info" title="">
-Although a subscription query has an RQL-like structure, it supports only the `declare`,
-`select`, and `where` keywords; no other RQL keywords are supported. JavaScript ES5 syntax is
-supported. For more details, see [JavaScript engine](../../../server/kb/javascript-engine.mdx).
+Although a subscription query has an RQL-like structure, it supports only the `declare`, `from`, `as`,
+`load`, `where`, `select`, and `include` keywords.  
+To learn about the JavaScript that subscription functions can use, see [JavaScript engine](../../../server/kb/javascript-engine.mdx).
 </Admonition>
 
 <Admonition type="info" title="">
@@ -534,7 +537,7 @@ def include_all_time_series_by_range_type_and_count(self, ts_type, count) -> Sub
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | **name** | `str` | The time series to include. |
-| **ts_type** | `TimeSeriesRangeType` | The range type: `NONE` or `LAST`. |
+| **ts_type** | `TimeSeriesRangeType` | The range type, which must be `LAST`. |
 | **time** | `TimeValue` | A time range to include. |
 | **count** | `int` | A number of entries to include, counted from the most recent. |
 
@@ -709,8 +712,8 @@ The `SubscriptionUpdateOptions` class adds two properties to the creation option
 
 The `change_vector` property sets the point from which the subscription starts sending documents to the worker.  
 This is useful for an ad-hoc process that needs only recent changes.  
-Set it to `"LastDocument"` to start from the latest document in the collection, or pass an actual
-change vector to start from a specific point.  
+Set it to `"LastDocument"` so the subscription sends only documents created or modified after its creation,
+or pass an actual change vector to start from a specific point.  
 By default the subscription sends all documents matching its query, regardless of when they were
 created.
 

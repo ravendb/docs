@@ -34,10 +34,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Panel heading="Defining concurrent workers">
 
 To run workers concurrently, set each worker's strategy to `"Concurrent"`.  
-Create the worker using [getSubscriptionWorker](../../data-subscriptions/consuming-subscription.mdx#methods),
-pass it a [subscription worker options](../../data-subscriptions/consuming-subscription.mdx#classes)
-object whose `strategy` is `"Concurrent"`, and run it as you would any other worker by listening for
-its `batch` event.
+To create each worker, pass a [subscription worker options](../../data-subscriptions/consuming-subscription.mdx#classes) object whose `strategy` is
+`"Concurrent"` to [getSubscriptionWorker](../../data-subscriptions/consuming-subscription.mdx#methods).  
+Run the workers the same way you run single workers, by attaching a handler to each worker's `batch` event.
 
 #### Example: Running two concurrent workers
 

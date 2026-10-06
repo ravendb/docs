@@ -40,8 +40,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Panel heading="Creating a subscription">
 
 To create a subscription, define the documents that the server should send to the worker, then register
-this definition with the server using the `Create` method on the document store's `Subscriptions`
-property.
+this definition with the server using `store.Subscriptions.Create`.
 
 You can define a subscription in two ways:
 
@@ -85,7 +84,8 @@ subscriptionName = store.Subscriptions.Create<Order>();
 
 <br />
 
-For filtering, projections, includes, and revisions, see the [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples) below.
+For filtering, projections, and includes, see the [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples) below.  
+To subscribe to document revisions, see [Revisions support](../../../data-subscriptions/revisions-support.mdx).
 
 </Panel>
 
@@ -143,6 +143,12 @@ subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions<Or
 Choosing the node manually lets you pick a server based on its hardware, proximity to the
 consuming clients, or other considerations.
 
+<Admonition type="note" title="">
+To keep the subscription on the node you choose even if the node goes down, also set the `PinToMentorNode` property to `true`.  
+Pinning prevents another node from taking over the subscription, so processing resumes only when the chosen node
+is back online.
+</Admonition>
+
 </Panel>
 
 <Panel heading="Updating a subscription">
@@ -158,6 +164,9 @@ additional fields, `Id` and `CreateNew`:
 * **`CreateNew`** applies when the subscription you are updating does not exist.  
   Set it to `true` to create the subscription instead, or leave it `false`, the default, to
   throw an exception.  
+
+Any property you leave unset in the `SubscriptionUpdateOptions` object keeps the subscription's current value.  
+e.g., when you only rename a subscription, the subscription keeps its query and processing progress:
 
 ```csharp
 // Rename a subscription by targeting it with its Id
@@ -229,9 +238,9 @@ A subscription query can have these parts:
 * **An `include` clause** defining paths to include.  
 
 <Admonition type="info" title="">
-Although a subscription query has an RQL-like structure, it supports only the `declare`,
-`select`, and `where` keywords; no other RQL keywords are supported. JavaScript ES5 syntax is
-supported. For more details, see [JavaScript engine](../../../server/kb/javascript-engine.mdx).
+Although a subscription query has an RQL-like structure, it supports only the `declare`, `from`, `as`,
+`load`, `where`, `select`, and `include` keywords.  
+To learn about the JavaScript that subscription functions can use, see [JavaScript engine](../../../server/kb/javascript-engine.mdx).
 </Admonition>
 
 <Admonition type="info" title="">
@@ -700,7 +709,6 @@ ISubscriptionIncludeBuilder<T> IncludeTimeSeries(string[] names, TimeSeriesRange
 // Include all time series
 ISubscriptionIncludeBuilder<T> IncludeAllTimeSeries(TimeSeriesRangeType type, TimeValue time);
 ISubscriptionIncludeBuilder<T> IncludeAllTimeSeries(TimeSeriesRangeType type, int count);
-ISubscriptionIncludeBuilder<T> IncludeAllTimeSeries(DateTime? from, DateTime? to);
 ```
 
 <br />
@@ -708,7 +716,7 @@ ISubscriptionIncludeBuilder<T> IncludeAllTimeSeries(DateTime? from, DateTime? to
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | **name** / **names** | `string` / `string[]` | The time series to include. |
-| **type** | `TimeSeriesRangeType` | The range type: `None` or `Last`. |
+| **type** | `TimeSeriesRangeType` | The range type, which must be `Last`. |
 | **time** | `TimeValue` | A time range to include, for example the last 7 days. |
 | **count** | `int` | A number of entries to include, counted from the most recent. |
 
@@ -895,7 +903,7 @@ Task<string> CreateAsync<T>(Expression<Func<T, bool>> predicate,
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| **predicate** | `Expression<Func<T, bool>>` | An optional lambda expression returning a boolean that defines the subscription's filter. |
+| **predicate** | `Expression<Func<T, bool>>` | A lambda expression returning a boolean that defines the subscription's filter. |
 | **options** | `SubscriptionCreationOptions<T>`, `SubscriptionCreationOptions`, or `PredicateSubscriptionCreationOptions` | The subscription creation options. See the [Classes](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) below. |
 | **database** | `string` | The database where the subscription is created. If `null`, the document store's default database is used. |
 | **token** | `CancellationToken` | A token used to cancel the creation operation. |
@@ -1053,8 +1061,8 @@ The `SubscriptionUpdateOptions` class adds two properties to the creation option
 
 The `ChangeVector` property sets the point from which the subscription starts sending documents to the worker.  
 This is useful for an ad-hoc process that needs only recent changes.  
-Set it to `"LastDocument"` to start from the latest document in the collection, or pass an actual
-change vector to start from a specific point.  
+Set it to `"LastDocument"` so the subscription sends only documents created or modified after its creation,
+or pass an actual change vector to start from a specific point.  
 By default the subscription sends all documents matching its query, regardless of when they were
 created.
 
