@@ -252,7 +252,7 @@ It explains how to define the index, configure indexing & query-time parameters,
     
 ## Vector search on encrypted databases
     
-* In RavenDB 7.2.6 and later, vector queries on [encrypted databases](../../server/security/encryption/database-encryption.mdx#vector-search-node-cache) run without the HNSW node cache.  
+* Vector queries on [encrypted databases](../../server/security/encryption/database-encryption.mdx#vector-search-node-cache) run without the HNSW node cache.  
   Without the cache, vector queries may require more disk reads, which can reduce query performance.  
     
 * Disabling the cache does not change query results.  

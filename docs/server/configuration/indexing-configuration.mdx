@@ -612,10 +612,10 @@ The maximum amount of memory in megabytes that Corax can use for memoization dur
 * Set to `0` to disable the cache.  
   Changing this value does not require re-indexing.
 
-* The cache is not supported on [encrypted databases](../../server/security/encryption/database-encryption.mdx#vector-search-node-cache).
+* The cache is not supported on [encrypted databases](../../server/security/encryption/database-encryption.mdx#vector-search-node-cache).  
+  This setting is ignored on encrypted databases, and vector search reads the HNSW graph from disk.
 
 * This setting is available from RavenDB 7.2.5.
-  In RavenDB 7.2.6 and later, this setting is ignored on encrypted databases, and vector search reads the HNSW graph from disk.
 
 ---
 

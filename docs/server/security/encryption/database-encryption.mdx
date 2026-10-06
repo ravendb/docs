@@ -253,7 +253,7 @@ await store.Maintenance.Server.SendAsync(
     
 ### Vector search node cache
     
-* In RavenDB 7.2.6 and later, the HNSW node cache is disabled for **Corax vector indexes on encrypted databases**.
+* The HNSW node cache is disabled for **Corax vector indexes on encrypted databases**.
   This applies to both static indexes and auto-indexes created by dynamic vector queries.
 
 * The cache is incompatible with encryption, so [Indexing.Corax.VectorSearch.CacheSizeInMb](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchcachesizeinmb) is ignored on encrypted databases.
