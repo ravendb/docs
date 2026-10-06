@@ -1,0 +1,59 @@
+---
+title: "Video"
+unlisted: true
+hide_table_of_contents: false
+sidebar_label: Video
+---
+
+# Video
+
+`<Video>` embeds a YouTube video in any page: `docs/`, `versioned_docs/`, `cloud/`, `quill/`, `guides/` and `samples/`,
+including language partials. It is registered globally, so no import is needed.
+
+Use it instead of a hand-written `<iframe>`. The site's Content-Security-Policy blocks YouTube's own embed code in
+production, so the build rejects a YouTube iframe written by hand.
+
+## Basic usage
+
+```mdx
+<Video url="https://www.youtube.com/watch?v=W0ENz5f7tgU" title="RavenDB vector search demo" />
+```
+
+#### Live example
+
+<Video url="https://www.youtube.com/watch?v=W0ENz5f7tgU" title="RavenDB vector search demo" />
+
+## With a caption
+
+```mdx
+<Video
+  url="https://youtu.be/qMJfgQicjwk"
+  title="Using Cloudflare Workers with RavenDB"
+  caption="Deploying a Worker connected to RavenDB with mTLS, step by step."
+/>
+```
+
+#### Live example
+
+<Video
+  url="https://youtu.be/qMJfgQicjwk"
+  title="Using Cloudflare Workers with RavenDB"
+  caption="Deploying a Worker connected to RavenDB with mTLS, step by step."
+/>
+
+## Props
+
+| Prop      | Required | Description                                                                                                        |
+| --------- | -------- | ------------------------------------------------------------------------------------------------------------------ |
+| `url`     | yes      | A YouTube watch or `youtu.be` link, or a bare 11-character video ID.                                              |
+| `title`   | yes      | What the video is. Screen readers announce it on the play button and the player, and it is the poster's alt text. |
+| `caption` | no       | Text shown under the player.                                                                                       |
+
+A `url` that is not a plain-string YouTube URL fails the build with the file and line. The CI build also checks every
+video with YouTube and fails on one that was deleted, made private or had embedding turned off.
+
+## Writing tips
+
+- Write the `title` for someone who cannot see the poster: name the video, not the platform. "Using Cloudflare Workers
+  with RavenDB", not "YouTube video player".
+- Paste the URL as YouTube gives it. Share-link tracking parameters such as `?si=` are dropped.
