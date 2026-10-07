@@ -35,6 +35,14 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 Applying a boost value to an index-field allows prioritization of matching documents based on an index-field.
 
+<Admonition type="note" title="">
+
+Boosting an index-field is supported only by the **Lucene** search engine.  
+With **Corax**, only the [index-entry](#assign-a-boost-factor-to-the-index-entry) can be boosted in the index definition.  
+Learn more in [Corax vs Lucene: boosting differences](#corax-vs-lucene-boosting-differences).
+
+</Admonition>
+
 ##### The index:
 
 <Tabs groupId='languageSyntax'>
