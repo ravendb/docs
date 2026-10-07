@@ -26,9 +26,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 ```python
-# Only documents that contain field 'first_name' will be returned
-    
-results = list(session.advanced.document_query(object_type=Employee).where_exists("first_name"))
+# Only documents that contain field 'FirstName' will be returned
+
+results = list(session.advanced.document_query(object_type=Employee).where_exists("FirstName"))
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -48,10 +48,10 @@ where exists("FirstName")
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 ```python
-# Only documents that contain the 'latitude' property in the specified path will be returned
-    
+# Only documents that contain the 'Latitude' property in the specified path will be returned
+
 results = list(
-    session.advanced.document_query(object_type=Employee).where_exists("address.location.latitude")
+    session.advanced.document_query(object_type=Employee).where_exists("Address.Location.Latitude")
 )
 ```
 </TabItem>

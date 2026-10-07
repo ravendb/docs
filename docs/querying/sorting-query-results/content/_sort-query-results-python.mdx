@@ -519,9 +519,9 @@ The score details can be retrieved by either:
         
         employees = list(
             session.query(object_type=Employee)
-            .search("notes", "English")
+            .search("Notes", "English")
             .or_else()
-            .search("notes", "Italian")
+            .search("Notes", "Italian")
             .boost(10)
         )
         

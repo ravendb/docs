@@ -77,12 +77,12 @@ where exists("Address.Location.Latitude")
 <Panel heading="Syntax">
 
 ```php
-public function whereExists(?string $fieldName): DocumentQueryInterface;
+public function whereExists(string $fieldName): DocumentQueryInterface;
 ```
 <br/>
 
-| Parameter      | Type      | Description                                        |
-|----------------|-----------|----------------------------------------------------|
-| **$fieldName** | `?string` | The name / path of the document field to filter by |
+| Parameter      | Type     | Description                                        |
+|----------------|----------|----------------------------------------------------|
+| **$fieldName** | `string` | The name / path of the document field to filter by |
 
 </Panel>
