@@ -159,21 +159,24 @@ additional fields, `Id` and `CreateNew`:
 
 * **`Id`** targets the subscription by the ID the server assigned it at creation, instead of by
   name.  
-  Because the ID identifies the subscription independently of its name, you can use it to rename
-  a subscription: provide the ID and a new `Name`.  
 * **`CreateNew`** applies when the subscription you are updating does not exist.  
   Set it to `true` to create the subscription instead, or leave it `false`, the default, to
   throw an exception.  
 
+<Admonition type="note" title="">
+You cannot rename a subscription by providing its `Id` and a new `Name`.  
+Doing this keeps the existing subscription under its current name and adds a second subscription with the new name and the same ID.
+</Admonition>
+
 Any property you leave unset in the `SubscriptionUpdateOptions` object keeps the subscription's current value.  
-e.g., when you only rename a subscription, the subscription keeps its query and processing progress:
+e.g., when you only change the query, the subscription keeps its name and processing progress:
 
 ```csharp
-// Rename a subscription by targeting it with its Id
+// Target the subscription by its Id and change only its query
 store.Subscriptions.Update(new SubscriptionUpdateOptions
 {
     Id = subscriptionId,
-    Name = "NewSubscriptionName"
+    Query = "from Orders where Freight > 200"
 });
 ```
 
@@ -748,7 +751,7 @@ subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
 ### Example: Updating an existing subscription
 
 You can change a subscription's definition after creation. Target it by name, or by the ID the
-server assigned it at creation. The ID also lets you rename the subscription.
+server assigned it at creation.
 
 Update by name, here changing the filter query of a subscription named "my subscription":
 
@@ -777,23 +780,6 @@ subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
 {
     Id = subscriptionId,
     Query = "from Products where PricePerUnit > 50"
-});
-```
-
-<br />
-
-Targeting by ID also lets you rename the subscription:
-
-```csharp
-// Get the subscription's ID
-mySubscription = store.Subscriptions.GetSubscriptionState("my subscription");
-subscriptionId = mySubscription.SubscriptionId;
-
-// Update the subscription name
-subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
-{
-    Id = subscriptionId,
-    Name = "New name"
 });
 ```
 
@@ -1052,7 +1038,7 @@ The `SubscriptionUpdateOptions` class adds two properties to the creation option
 
 | Property | Type | Description |
 |----------|------|-------------|
-| **Id** | `long?` | The ID the server assigned the subscription at creation. Retrieve it from the subscription's state. When updating, the `Id` can be used instead of the `Name` and takes precedence over the `Name`, which lets you rename the subscription: provide the `Id` and a new `Name`. |
+| **Id** | `long?` | The ID the server assigned the subscription at creation. Retrieve it from the subscription's state. When updating, the `Id` can be used instead of the `Name` and takes precedence over the `Name`. |
 | **CreateNew** | `bool` | What to do when the target subscription does not exist. `true` creates a new subscription from the provided options; `false` throws. Default: `false`. |
 
 <br />
