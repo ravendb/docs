@@ -227,6 +227,7 @@ Using it outside this scope may cause unexpected behavior.
 |-----------------------------------|:--------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| 
 | **AfterAcknowledgment**           | `AfterAcknowledgmentAction`     | Triggered after each time the server acknowledges the progress of batch processing.                                                                                             |
 | **OnSubscriptionConnectionRetry** | `Action<Exception>`             | Triggered when the subscription worker attempts to reconnect to the server after a failure.<br/>The event receives as a parameter the exception that interrupted the processing. |
+| **OnUnexpectedSubscriptionError** | `Action<Exception>` | Triggered when the subscription worker hits an error it does not recognize, before the worker waits to reconnect to the server.<br/>The event receives as a parameter the exception that interrupted the processing. |
 | **OnDisposed**                    | `Action<SubscriptionWorker<T>>` | Triggered after the subscription worker is disposed.                                                                                                                            |
 
 <Admonition type="info" title="">

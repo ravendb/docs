@@ -186,6 +186,7 @@ is not supported.
 | Event                     | Type\Return type                          | Description                                                                      |
 |---------------------------|-------------------------------------------|----------------------------------------------------------------------------------| 
 | **after\_acknowledgment** | `Callable[[SubscriptionBatch[_T]], None]` | Event invoked after each time the server acknowledges batch processing progress. |
+| **add\_on\_unexpected\_subscription\_error** | `Callable[[Exception], None]` | Event invoked when the worker hits an error it does not recognize, before the worker waits to reconnect to the server. |
 
 | `after_acknowledgment` Parameters  |                         |                                          |
 |------------------------------------|-------------------------|------------------------------------------|

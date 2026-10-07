@@ -619,7 +619,7 @@ The worker returned by `get_subscription_worker`.
 |-------|------|-------------|
 | **add_on_subscription_connection_retry** | `Callable[[Exception], None]` | Fires each time the worker is about to reconnect, after the wait set in `time_to_wait_before_connection_retry`.<br />Receives the exception that caused the reconnection. |
 | **add_on_unexpected_subscription_error** | `Callable[[Exception], None]` | Fires when the worker hits an error it does not recognize, before the worker waits to reconnect.<br />Receives the exception. |
-| **after_acknowledgment** | `Callable[[SubscriptionBatch[_T]], None]` | Fires after the server acknowledges the progress of a processed batch. |
+| **add_after_acknowledgment** | `Callable[[SubscriptionBatch[_T]], None]` | Fires after the server acknowledges the progress of a processed batch. |
 
 **Properties**
 

@@ -961,8 +961,8 @@ The worker returned by `GetSubscriptionWorker`.
 | **OnSubscriptionConnectionRetry** | `Action<Exception>` | Fires each time the worker is about to reconnect, after the wait set in `TimeToWaitBeforeConnectionRetry`.<br />Receives the exception that caused the reconnection. |
 | **OnUnexpectedSubscriptionError** | `Action<Exception>` | Fires when the worker hits an error it does not recognize, before the worker waits to reconnect.<br />Receives the exception. |
 | **OnEstablishedSubscriptionConnection** | `Action` | Fires each time the worker connects to the subscription, both the first time and after every reconnection. |
-| **OnStateChanged** | `Action<SubscriptionWorker<T>, SubscriptionWorkerStatus>` | Fires on every change of the worker's state.<br />Receives the worker and the worker's new status. |
-| **OnDisposed** | `Action<SubscriptionWorker<T>>` | Fires after the worker is disposed. |
+| **OnStateChanged** | `Action<AbstractSubscriptionWorker<SubscriptionBatch<T>, T>, SubscriptionWorkerStatus>` | Fires on every change of the worker's state.<br />Receives the worker and the worker's new status. |
+| **OnDisposed** | `Action<AbstractSubscriptionWorker<SubscriptionBatch<T>, T>>` | Fires after the worker is disposed. |
 
 **Properties**
 

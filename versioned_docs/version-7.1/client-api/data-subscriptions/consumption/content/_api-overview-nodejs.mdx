@@ -191,6 +191,7 @@ This class represents a single item in a subscription batch result.
 | **"batch"**                       | `(batch, callback) => void` | Emitted when a batch of documents is sent from the server to the client.<br/><br/>Once processing is done, `callback` *must  be called* in order to continue batches' emission. |
 | **"afterAcknowledgment"**         | `(batch, callback) => void` | Emitted after each time the server acknowledges the progress of batch processing.                                                                                             |
 | **"connectionRetry"**             | `(error) => void`           | Emitted when the worker attempts to reconnect to the server after a failure.                                                                                                  |
+| **"unexpectedSubscriptionError"** | `(error) => void` | Emitted when the worker hits an error it does not recognize, before the worker waits to reconnect to the server. |
 | **"error"**                       | `(error) => void`           | Emitted on subscription errors.                                                                                                                                               |
 | **"end"**                         | `(error) => void`          | Emitted when subscription is finished.<br/>No more batches are going to be emitted.                                                                                            |
 
