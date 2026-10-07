@@ -123,18 +123,21 @@ additional fields, `key` and `create_new`:
 
 * **`key`** targets the subscription by the ID the server assigned it at creation, instead of by
   name.  
-  Because the ID identifies the subscription independently of its name, you can use it to rename
-  a subscription: provide the `key` and a new `name`.  
 * **`create_new`** applies when the subscription you are updating does not exist.  
   Set it to `True` to create the subscription instead, or leave it `False`, the default, to
   throw an exception.  
 
+<Admonition type="note" title="">
+You cannot rename a subscription by providing its `key` and a new `name`.  
+Doing this keeps the existing subscription under its current name and adds a second subscription with the new name and the same ID.
+</Admonition>
+
 Any property you leave unset in the `SubscriptionUpdateOptions` object keeps the subscription's current value.  
-e.g., when you only rename a subscription, the subscription keeps its query and processing progress:
+e.g., when you only change the query, the subscription keeps its name and processing progress:
 
 ```python
-# Rename a subscription by targeting it with its key (the server-assigned ID)
-store.subscriptions.update(SubscriptionUpdateOptions(key=subscription_id, name="NewSubscriptionName"))
+# Target the subscription by its key (the server-assigned ID) and change only its query
+store.subscriptions.update(SubscriptionUpdateOptions(key=subscription_id, query="from Orders where Freight > 200"))
 ```
 
 <br />
@@ -548,7 +551,7 @@ def include_all_time_series_by_range_type_and_count(self, ts_type, count) -> Sub
 ### Example: Updating an existing subscription
 
 You can change a subscription's definition after creation. Target it by name, or by the ID the
-server assigned it at creation. The ID also lets you rename the subscription.
+server assigned it at creation.
 
 Update by name, here changing the filter query of a subscription named "my subscription":
 
@@ -571,19 +574,6 @@ subscription_id = my_subscription.subscription_id
 store.subscriptions.update(
     SubscriptionUpdateOptions(key=subscription_id, query="from Products where PricePerUnit > 50")
 )
-```
-
-<br />
-
-Targeting by ID also lets you rename the subscription:
-
-```python
-# Get the subscription's ID
-my_subscription = store.subscriptions.get_subscription_state("my subscription")
-subscription_id = my_subscription.subscription_id
-
-# Update the subscription name
-store.subscriptions.update(SubscriptionUpdateOptions(key=subscription_id, name="New name"))
 ```
 
 </ContentFrame>
@@ -703,7 +693,7 @@ The `SubscriptionUpdateOptions` class adds two properties to the creation option
 
 | Property | Type | Description |
 |----------|------|-------------|
-| **key** | `int` | The ID the server assigned the subscription at creation. Retrieve it from the subscription's state. When updating, the `key` can be used instead of the `name` and takes precedence over it, which lets you rename the subscription: provide the `key` and a new `name`. |
+| **key** | `int` | The ID the server assigned the subscription at creation. Retrieve it from the subscription's state. When updating, the `key` can be used instead of the `name` and takes precedence over it. |
 | **create_new** | `bool` | What to do when the target subscription does not exist. `True` creates a new subscription from the provided options; `False` throws. Default: `False`. |
 
 <br />

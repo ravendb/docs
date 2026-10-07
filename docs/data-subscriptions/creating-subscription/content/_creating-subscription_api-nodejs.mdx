@@ -132,20 +132,23 @@ additional fields, `id` and `createNew`:
 
 * **`id`** targets the subscription by the ID the server assigned it at creation, instead of by
   name.  
-  Because the ID identifies the subscription independently of its name, you can use it to rename
-  a subscription: provide the ID and a new `name`.  
 * **`createNew`** applies when the subscription you are updating does not exist.  
   Set it to `true` to create the subscription instead, or leave it `false`, the default, to
   throw an exception.  
 
+<Admonition type="note" title="">
+You cannot rename a subscription by providing its `id` and a new `name`.  
+Doing this keeps the existing subscription under its current name and adds a second subscription with the new name and the same ID.
+</Admonition>
+
 Any property you leave unset in the update options object keeps the subscription's current value.  
-e.g., when you only rename a subscription, the subscription keeps its query and processing progress:
+e.g., when you only change the query, the subscription keeps its name and processing progress:
 
 ```js
-// Rename a subscription by targeting it with its id
+// Target the subscription by its id and change only its query
 await documentStore.subscriptions.update({
     id: subscriptionId,
-    name: "NewSubscriptionName"
+    query: "from Orders where Freight > 200"
 });
 ```
 
@@ -570,7 +573,7 @@ const subscriptionName = await documentStore.subscriptions.update({
 ### Example: Updating an existing subscription
 
 You can change a subscription's definition after creation. Target it by name, or by the ID the
-server assigned it at creation. The ID also lets you rename the subscription.
+server assigned it at creation.
 
 Update by name, here changing the filter query of a subscription named "my subscription":
 
@@ -597,22 +600,6 @@ const subscriptionId = mySubscription.subscriptionId;
 const subscriptionName = await documentStore.subscriptions.update({
     id: subscriptionId,
     query: "from Products where PricePerUnit > 50"
-});
-```
-
-<br />
-
-Targeting by ID also lets you rename the subscription:
-
-```js
-// Get the subscription's ID
-const mySubscription = await documentStore.subscriptions.getSubscriptionState("my subscription");
-const subscriptionId = mySubscription.subscriptionId;
-
-// Update the subscription name
-const subscriptionName = await documentStore.subscriptions.update({
-    id: subscriptionId,
-    name: "New name"
 });
 ```
 
@@ -732,7 +719,7 @@ The update options object adds two properties to the creation options:
 
 | Property | Type | Description |
 |----------|------|-------------|
-| **id** | `number` | The ID the server assigned the subscription at creation. Retrieve it from the subscription's state. When updating, the `id` can be used instead of the `name` and takes precedence over it, which lets you rename the subscription: provide the `id` and a new `name`. |
+| **id** | `number` | The ID the server assigned the subscription at creation. Retrieve it from the subscription's state. When updating, the `id` can be used instead of the `name` and takes precedence over it. |
 | **createNew** | `boolean` | What to do when the target subscription does not exist. `true` creates a new subscription from the provided options; `false` throws. Default: `false`. |
 
 <br />
