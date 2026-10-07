@@ -1,0 +1,1636 @@
+---
+title: "Quill: Troubleshooting"
+sidebar_label: Troubleshooting
+sidebar_position: 9
+description: "Symptoms that may appear while setting Quill up or running it, each with its likely cause and what to do about it."
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# Quill: Troubleshooting
+<Admonition type="note" title="">
+
+* The symptoms below may be met while setting Quill up or running it, each listed with its likely cause and what to do about it.
+
+* The fixes for most symptoms are explained in the articles that document the affected features.  
+  Such a symptom's entry states the fix in brief, and links to the article section that explains the fix in full.
+
+* Some causes are named only in Quill's logs, e.g., an LLM provider that no longer accepts the API key set in an
+  AI connection string.
+
+   <Admonition type="info" title="">
+   Find the location and content of each Quill log in [Logging](logging.mdx#log-locations).
+   </Admonition>
+
+* The symptoms of each channel type are listed in the channel's own article, as described in [Channels](#channels).
+
+* If a problem remains after you followed its entry, contact RavenDB's support, as described in
+  [Contacting support](#contacting-support).
+
+* In this article:
+   * [Starting Quill](#starting-quill)
+   * [Signing in to the management dashboard](#signing-in-to-the-management-dashboard)
+   * [Connecting the source database](#connecting-the-source-database)
+   * [Mapping the source tables](#mapping-the-source-tables)
+   * [AI connection strings](#ai-connection-strings)
+   * [Agents](#agents)
+   * [Mirroring](#mirroring)
+   * [Channels](#channels)
+   * [Network and DNS](#network-and-dns)
+   * [Updates and expiry](#updates-and-expiry)
+   * [Contacting support](#contacting-support)
+
+</Admonition>
+
+<Panel heading="Starting Quill">
+
+Quill reports its progress in the terminal you ran the Docker command in, until `Status: READY` indicates that your
+deployment can be accessed, as described in [Starting Quill: Watching Quill come up](getting-started/starting-quill.mdx#watching-quill-come-up).  
+The symptoms below may appear while Quill starts, or keep Quill from starting.  
+In the commands below, `quill-<name>` is the name the sign-up Docker command gives the container, where `<name>` is
+your deployment name. If the container was started under another name, use that name instead.
+
+<ContentFrame>
+
+##### Port 443 is already in use
+
+`docker run` fails with an error that port 443 is already allocated, already in use, or not available.
+
+<Admonition type="note" title="">
+
+**Likely cause:** another container or program on Quill's machine uses port 443 (e.g., an earlier Quill container, or a web server).
+
+</Admonition>
+
+**What to do:** stop the program that uses port 443, remove the container if Docker created one, using
+`docker rm -f quill-<name>` with your container's name instead of `quill-<name>`, and run the Docker command you copied at sign-up again.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The license key is not set
+
+The terminal prints the error: `ERROR: QUILL_LICENSE_KEY is not set, so the appliance cannot activate.`
+
+<Admonition type="note" title="">
+
+**Likely cause:** the Docker command was executed without its `-e QUILL_LICENSE_KEY=...` line, or with an empty value.
+
+</Admonition>
+
+**What to do:** remove the container using `docker rm -f quill-<name>` with your container's name instead of `quill-<name>`,
+and run the Docker command you copied at sign-up again, unchanged.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The license key is not recognized
+
+The terminal prints `Status: FAILED` with `Reason: activation failed: the license key was not recognized`.
+
+<Admonition type="note" title="">
+
+**Cause:** the RavenDB service at `api.ravendb.net`, from which Quill fetches the certificate and configuration for your
+domain, does not recognize the license key the container was started with (e.g., because the key was copied incompletely).
+
+</Admonition>
+
+**What to do:** copy the Docker command again from the email sent to you at sign-up, as described in
+[Signing up: Saving your setup details](getting-started/signing-up.mdx#saving-your-setup-details).  
+Then remove the container using `docker rm -f quill-<name>` with your container's name instead of `quill-<name>`, and run the command you copied.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The activation failed
+
+The terminal prints `Status: FAILED` with `Reason: activation failed; see server logs for details`.
+
+<Admonition type="note" title="">
+
+**Likely cause:** an unexpected error stopped the activation.
+
+</Admonition>
+
+**What to do:**
+
+1. Read `web.log` to find the error that stopped the activation, using the command shown in
+   [Starting Quill: When Quill does not come up](getting-started/starting-quill.mdx#when-quill-does-not-come-up).
+2. Correct the problem the error names.
+3. Restart the container using `docker restart quill-<name>`, with your container's name instead of `quill-<name>`.  
+   Quill attempts the activation once each time it starts, so it does not retry a failed activation until the container
+   restarts.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Quill is not ready after 180 seconds
+
+The terminal prints the error: `ERROR: still not ready after 180s.`
+
+<Admonition type="note" title="">
+
+**Likely cause:** one of the following may have happened.
+
+</Admonition>
+
+* Quill cannot reach `api.ravendb.net` to fetch the certificate and configuration for your domain.  
+  Quill keeps retrying the connection until it succeeds.  
+  To confirm this cause, check whether Quill's container can reach `api.ravendb.net` by running the command below,
+  with your container's name instead of `quill-<name>`.  
+  The command prints nothing if the connection succeeds, and an error if it fails.
+
+  ```bash
+  docker exec quill-<name> curl -sS -o /dev/null --max-time 20 https://api.ravendb.net
+  ```
+  <br />
+
+  **What to do:** if the command prints an error, allow outgoing HTTPS connections from Quill's machine to `api.ravendb.net`.  
+  Quill's next attempt to connect will then succeed and complete the activation, with no restart, and the terminal
+  will print `Status: READY`.
+* The container was started with a logging setting that Quill cannot use (e.g., a relative log path).  
+  To confirm this cause, read `web.log` using the command shown in
+  [Starting Quill: When Quill does not come up](getting-started/starting-quill.mdx#when-quill-does-not-come-up),
+  and look for an error Quill logged while starting, naming a log path, a log level, or the logging configuration.  
+  **What to do:** if such an error appears, correct the setting it names, as described in
+  [Logging: Troubleshoot startup failures](logging.mdx#troubleshoot-startup-failures).
+* The container runs an expired Quill build. Each Quill build expires 90 days after its release date.  
+  To confirm this cause, open the dashboard address, `https://dashboard.<name>.myquill.ai`,
+  with your deployment name instead of `<name>`, in a browser.
+  An expired build shows a notice titled `Quill needs updating` there, instead of the dashboard.  
+  **What to do:** if the notice appears, replace the container with a container created from a newer Quill image, as
+  described in
+  [Updating Quill: Build expiry and license expiry](updating-quill.mdx#build-expiry-and-license-expiry).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The RavenDB server is not reachable
+
+The terminal prints `Status: FAILED` with `Reason: ravendb is not reachable:`, followed by an error message.
+
+<Admonition type="note" title="">
+
+**Cause:** while starting, Quill's web application could not complete its first requests to the RavenDB server inside Quill's
+container: the server did not answer within 30 seconds of the attempt, or answered with an error.
+
+</Admonition>
+
+**What to do:**
+
+1. Wait for Quill's next attempt.  
+   After a failed attempt, the web application tries again 15 seconds later, and keeps trying until the RavenDB server
+   answers. The terminal then prints `Status: READY`.
+2. If the terminal does not print `Status: READY`, read the web application's log, in which each failed attempt is recorded
+   with its error, using the command below with your container's name instead of `quill-<name>`.
+
+   ```bash
+   docker exec quill-<name> sh -c "tail -40 /var/lib/quill/logs/web.log"
+   ```
+   <br />
+
+3. To find the reason the RavenDB server does not answer, read the server's logs, using the commands shown in
+   [Quill is running, but is not serving requests](#quill-is-running-but-is-not-serving-requests).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Quill is running, but is not serving requests
+
+The terminal prints `Status: DEGRADED - the appliance is not serving requests`.
+
+<Admonition type="note" title="">
+
+**Likely cause:** Quill has been activated, but Quill's web application, which serves the management dashboard and the
+channels, cannot reach the RavenDB server inside Quill's container.
+
+</Admonition>
+
+**What to do:** read the web application's log, in which its failed attempts to reach the RavenDB server are recorded with
+their error (e.g., `Connection refused` when the RavenDB server is not running), using the command below with your
+container's name instead of `quill-<name>`.
+
+```bash
+docker exec quill-<name> sh -c "tail -40 /var/lib/quill/logs/web.log"
+```
+<br />
+
+To find the reason the RavenDB server does not answer, read the server's logs using the commands below:
+
+* The server's own log file, in which the server records its errors, including the reason it failed to start, if it did.
+
+  ```bash
+  docker exec quill-<name> sh -c "tail -40 /var/lib/quill/logs/ravendb-server/server.log"
+  ```
+  <br />
+
+* The server process's console output, including the full error when the server fails to start.  
+  The terminal names this file when the RavenDB server stops: it prints `ERROR: ravendb is down` or
+  `ERROR: ravendb stopped unexpectedly and was restarted`, followed by `Details: /var/lib/quill/logs/ravendb.log`.
+
+  ```bash
+  docker exec quill-<name> sh -c "tail -40 /var/lib/quill/logs/ravendb.log"
+  ```
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The terminal reports that a Quill service is down
+
+The terminal prints `ERROR: <service> is down` or `ERROR: <service> stopped unexpectedly and was restarted`, followed by
+`Details:` and the service's log file.
+
+<Admonition type="note" title="">
+
+**Cause:** one of the services inside Quill's container stopped. Quill starts a stopped service again, and the terminal then
+prints `<service> is back up`.
+
+</Admonition>
+
+The effect depends on the service that stopped:
+
+* `web`, Quill's web application  
+  While `web` is down, the management dashboard and the channels do not answer, and the terminal prints no status.
+* `proxy`, nginx, which receives every connection to Quill  
+  While `proxy` is down, nothing outside Quill's container reaches Quill, although the terminal may still show
+  `Status: READY`.
+* `certwatch`, which reloads nginx when Quill's certificate is renewed  
+  While `certwatch` is down, the dashboard answers as usual.
+
+For `ravendb`, see [Quill is running, but is not serving requests](#quill-is-running-but-is-not-serving-requests).
+
+**What to do:**
+
+1. Wait for the terminal to print `<service> is back up`. For `web`, also wait for `Status: READY`.
+2. If the service stays down or keeps stopping, read the log file named in the `Details:` line (e.g., when nginx cannot
+   start, `proxy.log` records the reason), using the command below with the service's name instead of `<service>` and your
+   container's name instead of `quill-<name>`.
+
+   ```bash
+   docker exec quill-<name> sh -c "tail -40 /var/lib/quill/logs/<service>.log"
+   ```
+   <br />
+
+3. If the log names a cause that another entry on this page describes, follow that entry. Otherwise, contact support, as
+   described in [Contacting support](#contacting-support), and include the log lines you found.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The dashboard address does not open
+
+The browser cannot open the dashboard address, and reports a connection error (e.g., that the connection was closed, reset, or refused).
+
+<Admonition type="note" title="">
+
+**Likely cause:** Quill has not been activated yet. Quill accepts connections on port 443 only once the activation is complete.
+
+</Admonition>
+
+**What to do:** wait until the terminal prints `Status: READY`, as explained in
+[Network Architecture: Why port 443 is unavailable before activation](security-and-architecture/network-architecture.mdx#why-port-443-is-unavailable-before-activation).
+
+</ContentFrame>
+</Panel>
+
+<Panel heading="Signing in to the management dashboard">
+
+Only one key signs you into the management dashboard: the dashboard API key the container was started with, set by
+`QUILL_API_KEY` in the [Docker command](getting-started/starting-quill.mdx#running-the-docker-command).  
+The entries below cover the symptoms that may appear when signing in, and the steps to take when the key is lost or exposed.
+
+<ContentFrame>
+
+##### The API key is not accepted
+
+Signing in fails with the message: `That API key wasn't accepted. Double-check it and try again.`
+
+<Admonition type="note" title="">
+
+**Likely cause:** one of the following may have happened.
+
+</Admonition>
+
+* The license key was entered instead of the dashboard API key. The email sent at sign-up contains both keys.  
+  **What to do:** enter the dashboard API key, the value that follows `QUILL_API_KEY=` in the Docker command, as explained in
+  [Operator Authentication: Do not confuse the two signup keys](security-and-architecture/operator-authentication.mdx#do-not-confuse-the-two-signup-keys).
+* The container was recreated with a different `QUILL_API_KEY` value (e.g., while updating Quill), so the key you enter is
+  no longer the key Quill accepts.  
+  **What to do:** sign in with the value the current container was started with, as described in
+  [Operator Authentication: Finding or recovering your Dashboard API key](security-and-architecture/operator-authentication.mdx#finding-or-recovering-your-dashboard-api-key).
+* The container was started without `QUILL_API_KEY`, so Quill accepts no key at all.  
+  **What to do:** recreate the container with the key, as described in
+  [Operator Authentication: Recreate the container](security-and-architecture/operator-authentication.mdx#recreate-the-container).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Signing in is refused for a moment
+
+Signing in fails with the message: `We couldn't sign you in. Please try again in a moment.`
+
+<Admonition type="note" title="">
+
+**Likely cause:** one of the following may have happened.
+
+</Admonition>
+
+* More than 10 sign-in attempts were made from your IP address within a minute.  
+  **What to do:** wait up to a minute, and then sign in again, as explained in
+  [Operator Authentication: The sign-in rate limit is per client IP address](security-and-architecture/operator-authentication.mdx#the-sign-in-rate-limit-is-per-client-ip-address).
+* The sign-in request did not reach Quill's web application, which serves the management dashboard (e.g., because the
+  web application was restarting, or the browser lost its connection to Quill).  
+  **What to do:** sign in again in a moment. If the message remains, check the symptoms listed in
+  [Starting Quill](#starting-quill).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The dashboard API key is lost
+
+**What to do:** try the following, in this order:
+
+1. Find the key in the Docker command the container was started with.
+2. If the container still uses the key issued at sign-up, find the key in the email sent at sign-up, or
+   [sign up again](https://ravendb.net/quill/start) with the same email address and select your deployment's domain
+   in the **Quill name** field: RavenDB then shows you the same key again, and emails it to you.
+3. If the key cannot be found, choose a new key and recreate the container with it.
+
+These steps are described in
+[Operator Authentication: Finding or recovering your Dashboard API key](security-and-architecture/operator-authentication.mdx#finding-or-recovering-your-dashboard-api-key).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The dashboard API key was exposed
+
+The dashboard API key was exposed, e.g., by being pasted into a support ticket.
+
+**What to do:** choose a new key yourself (a long random value, e.g., one created by a password generator), set it in
+`QUILL_API_KEY`, and recreate the container, as described in
+[Operator Authentication: Replacing an exposed key](security-and-architecture/operator-authentication.mdx#replacing-an-exposed-key).  
+The key sent to you at sign-up will no longer sign you into this deployment.
+
+<Admonition type="warning" title="">
+
+* If the exposed key is the one issued at sign-up, every deployment registered under your email address and still started
+  with this key accepts it: replace the key in each of these deployments, as described in
+  [Operator Authentication: Which Quill instances to update](security-and-architecture/operator-authentication.mdx#which-quill-instances-to-update).
+* A browser in which someone signed in with the exposed key stays signed in after the key is replaced, until 4 to 8 hours
+  after anyone last used the management dashboard in this browser, as explained in
+  [Operator Authentication: Restarting the container is not enough](security-and-architecture/operator-authentication.mdx#restarting-the-container-is-not-enough).  
+  This browser stays signed in while one of its tabs shows a dashboard view that refreshes itself (e.g., an app's
+  **Overview**), even if nobody uses the dashboard.
+
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Signing in with the old API key still works
+
+Signing in with the old dashboard API key still works after the key was changed.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the container was restarted using `docker restart` rather than recreated, so Quill still reads the old key.
+
+</Admonition>
+
+**What to do:** recreate the container with the new key, as explained in
+[Operator Authentication: Restarting the container is not enough](security-and-architecture/operator-authentication.mdx#restarting-the-container-is-not-enough).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Connecting the source database">
+
+Quill connects to the source database and lists its tables in the first two stages of the **Add new app** wizard,
+as described in [Connecting your database: Connecting to your source database](getting-started/connecting-your-database.mdx#connecting-to-your-source-database).  
+The symptoms below may appear in these two stages.
+
+<ContentFrame>
+
+##### The connection test fails
+
+Clicking the `Test connection` button in the `Connect to your source database` stage of the **Add new app** wizard reports that the connection failed.
+
+<Admonition type="note" title="">
+
+**Likely cause:** one of the following may have happened.
+
+</Admonition>
+
+* `localhost` was entered as the host. Inside Quill's container, `localhost` points at the container itself, so the
+  connection never reaches a source database outside the container.  
+  **What to do:** enter an address that leads out of the container to the source database's machine, as described in
+  [Connecting your database: Naming your app and entering the connection details](getting-started/connecting-your-database.mdx#naming-your-app-and-entering-the-connection-details).
+* The source database's machine does not accept connections from Quill's machine (e.g., because a firewall blocks the
+  source database's port).  
+  **What to do:** allow connections from Quill's machine to the port the source database listens on, as described in
+  [Connecting your database: Prerequisites](getting-started/connecting-your-database.mdx#prerequisites).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Schema discovery fails
+
+The `Verify your schema` stage reports `Schema discovery failed`, and the table list stays empty.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the source database does not meet one of the conditions **CDC (Change Data Capture)** needs
+(e.g., a PostgreSQL server whose `wal_level` is not set to `logical`).  
+The error names the unmet condition, and may carry a statement that fixes it.
+
+</Admonition>
+
+**What to do:** have a database administrator run the statement the error carries, or change the setting the error names,
+as described for your database type in [Connecting your database: Prerequisites](getting-started/connecting-your-database.mdx#prerequisites).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The selected tables are refused
+
+Clicking the `Verify schema` button or the `Next` button in the `Verify your schema` stage of the **Add new app** wizard reports an error for the selected tables.
+
+<Admonition type="note" title="">
+
+**Likely cause:** Quill cannot set up change capture on one of the selected tables, or cannot read from one of them
+(e.g., because the database user whose credentials you provided to Quill is not allowed to create the publication through
+which a PostgreSQL source database streams the changes).
+
+</Admonition>
+
+**What to do:** do one of the following:
+
+* Grant this database user the permission the error names.
+* Have a database administrator run the statement the error carries.  
+  The statement may be in the error's details: click **Show details** under the message to see them.  
+  On PostgreSQL, grant the permission instead when the statement creates the publication or the replication slot: Quill
+  looks for these objects under names of its own, so a publication or slot created by an administrator is not used.
+
+The permissions each database type requires are listed in
+[Connecting your database: Prerequisites](getting-started/connecting-your-database.mdx#prerequisites).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Tables are missing from the list
+
+Tables that exist in the source database are not listed in the `Verify your schema` stage.
+
+<Admonition type="note" title="">
+
+**Likely cause:** one of the following may have happened.
+
+</Admonition>
+
+* The tables belong to a schema other than the connection's default schema (`public` on PostgreSQL), or other
+  schemas were named in the **Define schemas** side panel, which the stage's **Customize schemas** button opens, so the
+  default schema is no longer discovered.  
+
+  **What to do:** name the schemas the app's tables belong to:
+
+  1. In the `Verify your schema` stage, click the **Customize schemas** button.
+  2. In the **Define schemas** side panel that opens, click **Add schema** for each schema that holds the app's tables, and enter its name.  
+     Add the default schema too, if the app needs its tables.
+  3. Click the side panel's **Save & discover** button.
+
+  The side panel is described in [Connecting your database: Choosing the tables](getting-started/connecting-your-database.mdx#choosing-the-tables).
+
+  <Admonition type="note" title="">
+
+  On MySQL and MariaDB, the side panel has no effect: Quill lists only the tables of the database named in the
+  **Database** field of the `Connect to your source database` stage.
+
+  </Admonition>
+
+* The database user whose credentials you provided to Quill holds no privilege on the tables. A source database shows
+  a database user only the tables the user holds a privilege on.  
+  **What to do:** grant this database user the `SELECT` privilege on the tables.  
+  Then click the **Customize schemas** button, and click the side panel's **Save & discover** button to list the tables again.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### A PostgreSQL table is listed with a warning
+
+A table of a PostgreSQL source database is listed with a warning beside its name.
+
+<Admonition type="note" title="">
+
+**Cause:** the table has no primary key, or its replica identity is set to `NOTHING`. The warning names the condition, and
+carries a statement that sets the table's replica identity to `FULL`.
+
+</Admonition>
+
+**What to do**, by the warning:
+* `Table '…': the table has no primary key and REPLICA IDENTITY is DEFAULT, …`  
+  Quill cannot mirror a table without a primary key. When you click the `Verify schema` button or the `Next` button in the
+  `Verify your schema` stage of the **Add new app** wizard, Quill refuses the table with the message:
+  `Table '…' has no primary key, so CDC cannot derive stable document ids for it.`  
+  Running the statement the warning carries removes the warning, but Quill still refuses the table.  
+  Have a database administrator add a primary key to the table, or leave the table unselected.
+* `Table '…': REPLICA IDENTITY is set to NOTHING, …`  
+  PostgreSQL has no columns with which to identify the row an update or a deletion changed.  
+  Before creating the app, have a database administrator run the statement the warning carries
+  (e.g., `ALTER TABLE <schema>.<table> REPLICA IDENTITY FULL;`), or leave the table unselected, as described in
+  [Connecting your database: Choosing the tables](getting-started/connecting-your-database.mdx#choosing-the-tables).  
+  If the app is already created, running the statement lets the table's updates and deletions succeed again.
+
+  <Admonition type="warning" title="">
+
+  Once the app is created, Quill adds the table to a publication, the list of tables whose changes PostgreSQL streams to
+  Quill. If the table's replica identity is still `NOTHING`, PostgreSQL then rejects `UPDATE` and `DELETE` statements on
+  the table, with an error such as
+  `cannot delete from table … because it does not have a replica identity and publishes deletes`, until a database
+  administrator runs the statement.
+
+  </Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### SQL Server Agent is not running
+
+The `Verify your schema` stage shows the warning: `SQL Server Agent is not running.`
+
+<Admonition type="note" title="">
+
+**Cause:** the SQL Server Agent service is not running, so the capture tables Quill reads the changes from stay empty, and
+Quill will receive no changes until the service runs.
+
+</Admonition>
+
+**What to do:** start the SQL Server Agent service.  
+In an SQL Server Docker container, the service runs only if the container
+was started with `MSSQL_AGENT_ENABLED=true`.  
+The service is described in
+[Connecting your database: The SQL Server Agent service](getting-started/connecting-your-database.mdx#the-sql-server-agent-service).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Mapping the source tables">
+
+In the **Map schema** stage of the **Add new app** wizard, you settle a mapping that Quill has drafted, with or without
+**AI Suggest**, as described in [Mapping your tables: Settling the mapping](getting-started/mapping-your-tables.mdx#settling-the-mapping).  
+The symptoms below may appear in this stage, and in the **Preview before full ingest** stage that follows it.
+
+<ContentFrame>
+
+##### AI Suggest fails to draft the mapping
+
+After the `AI Suggest` option is selected, the `Map schema` stage shows an error message and a `Try again` button instead of the mapping.
+
+<Admonition type="note" title="">
+
+**Likely cause:** Quill could not get the mapping from the RavenDB AI service (e.g., because the service could not be reached
+from Quill's machine, or did not answer within the time Quill allows the request, five minutes by default).  
+The error message is the reason the RavenDB AI service gave, or `AI suggestion failed` followed by a status in parentheses.
+
+</Admonition>
+
+**What to do:** click the `Try again` button to request the mapping again.  
+Or, click the wizard's `Back` button, select the **Manual** option in the **How would you like to map your schema?** stage, and draft
+the mapping yourself, as described in
+[Mapping your tables: Choosing the mapping method: AI Suggest or Manual](getting-started/mapping-your-tables.mdx#choosing-the-mapping-method-ai-suggest-or-manual).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The `Raw JSON` toggle cannot be switched off
+
+Switching the `Raw JSON` toggle off in the `Map schema` stage of the **Add new app** wizard is refused with a message that names 
+a problem related to JSON, e.g.: `The raw configuration is not valid JSON.`
+
+<Admonition type="note" title="">
+
+**Likely cause:** the mapping's JSON text in the editor is not valid JSON, or does not have the shape of a mapping, an array
+with one entry per mapped table.  
+Until the JSON text is corrected, Quill keeps the last valid mapping, and the stage's `Verify tables` button stays disabled.
+
+</Admonition>
+
+**What to do:** correct the mapping's JSON text in the editor, and switch the toggle off again.  
+The shape of a mapping entry is shown where
+the **Raw JSON** toggle is described, in [Mapping your tables: Settling the mapping](getting-started/mapping-your-tables.mdx#settling-the-mapping).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### A JSON column appears as a string
+
+A column that holds JSON text appears as a string in the documents of the `Preview before full ingest` stage.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the column's field mapping is set to the **Default** type, which stores the column's value as it is.
+
+</Admonition>
+
+**What to do:** set the column's field mapping to the **JSON** type, which stores the column's JSON text as a nested object:
+
+1. Click the wizard's `Back` button to return to the **Map schema** stage.
+2. In the **Tables** pane, click the table's row to show the table's mapping in the configuration pane.
+3. In the configuration pane's **Field mapping** list, find the column's field mapping.  
+   If the list does not show it, click **Show more**.
+4. Set the field mapping's **Type** to **JSON**.
+
+The configuration pane is described in [Mapping your tables: Settling the mapping](getting-started/mapping-your-tables.mdx#settling-the-mapping).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The preview lacks embedded objects and linked references
+
+The documents of the `Preview before full ingest` stage carry no embedded objects and no linked references.
+
+<Admonition type="note" title="">
+
+**Cause:** the preview builds documents from the selected table's own mapping only, and leaves the tables attached to
+it out, as described in [Mapping your tables: Testing your mapping](getting-started/mapping-your-tables.mdx#testing-your-mapping).
+
+</Admonition>
+
+**What to do:** no action is needed.  
+Quill adds the embedded objects and linked references to the documents once the app is
+created and the first load runs.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="AI connection strings">
+
+An AI connection string holds the details through which an agent reaches its LLM: the provider, the model, and the
+credentials.  
+The symptoms below may appear while you add, edit, or delete AI connection strings in the management dashboard's
+`AI connection strings` view.
+
+<ContentFrame>
+
+##### Testing or saving a connection string fails
+
+Clicking the `Test connection` button or the `Save` button reports a failure, in the side panel that opens to add or edit an AI connection 
+string in the `AI connection strings` view.
+
+<Admonition type="note" title="">
+
+**Likely cause:** one of the following may have happened.
+
+</Admonition>
+
+* Quill could not reach the LLM provider using the entered details, or the selected model cannot complete a request.  
+  **What to do:** correct the settings the reported reason names, as described in
+  [AI Connection Strings View: Test and save the connection](dashboard/ai-connection-strings.mdx#test-and-save-the-connection).
+* The selected model cannot request tools, the capability an agent needs to use its query tools and actions.  
+  Quill then reports that the model `does not support function tools`.  
+  **What to do:** select a model that can request tools, as described in
+  [AI Connection Strings View: Test and save the connection](dashboard/ai-connection-strings.mdx#test-and-save-the-connection).
+* The connection string is for Ollama, and its **URI** field points at `localhost`. Inside Quill's container,
+  `localhost` points at the container itself, so the connection never reaches an Ollama server outside the container.  
+  **What to do:** enter a URI that leads out of the container to the Ollama server, as described in
+  [AI Connection Strings View: Ollama settings](dashboard/ai-connection-strings.mdx#ollama-settings).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### No models are suggested
+
+The `Model` field suggests no models, in the side panel that opens to add or edit an AI connection string in the `AI connection strings` view.
+
+<Admonition type="note" title="">
+
+**Likely cause:** one of the following may have happened.
+
+</Admonition>
+
+* The connection details Quill needs to contact the provider are not entered yet: the API key for OpenAI, the API key
+  and endpoint for Azure OpenAI, or the URI for Ollama.  
+  **What to do:** enter these details.
+* The provider could not be reached, or refused the request (e.g., because the API key is wrong or incomplete).  
+  **What to do:** click the side panel's `Test connection` button to see the reason the provider gave, and fix the problem it
+  names (e.g., enter the full API key again).
+
+In either case, you can also type the model's name in the field yourself.  
+The **Connection details** fields are described in
+[AI Connection Strings View: Add an AI connection string](dashboard/ai-connection-strings.mdx#add-an-ai-connection-string).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Agents answer differently after a connection string is added
+
+Agents that were set up before a new connection string was added in the `AI connection strings` view now answer differently.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the new connection string was given the name of an existing connection string, and replaced the settings
+stored under this name for every agent and task that uses it.
+
+</Admonition>
+
+**What to do:**
+
+1. In the `AI connection strings` view, click the edit icon in the connection string's row, and restore the replaced
+   settings.
+2. Add the new connection string again, giving it a unique name.
+
+Adding a connection string is described in
+[AI Connection Strings View: Add an AI connection string](dashboard/ai-connection-strings.mdx#add-an-ai-connection-string).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### A connection string cannot be deleted
+
+The delete icon of an AI connection string is dimmed, and hovering over it shows `Can’t be deleted while in use`.
+
+<Admonition type="note" title="">
+
+**Cause:** an agent or a task uses the connection string. A connection string cannot be deleted while it is in use.
+
+</Admonition>
+
+**What to do:**
+
+1. In the connection string's row, hover over the badge in the **Used by** column (e.g., `2 uses`) to see the agents
+   and tasks that use the connection string.
+2. Switch each such agent or task to another connection string, or delete it.
+3. Delete the connection string.
+
+Switching an agent or a task to another connection string, and deleting one, are described in
+[AI Connection Strings View: Delete an AI connection string](dashboard/ai-connection-strings.mdx#delete-an-ai-connection-string).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Agents">
+
+An agent's configuration defines the AI connection string through which the agent reaches its LLM, and the query tools and
+actions the agent uses to answer your users.  
+The symptoms below may appear while you set up an agent in the management dashboard, or while an agent answers.
+
+<ContentFrame>
+
+##### The AI options cannot be selected
+
+The two AI options of the `Create your Agent with AI` stage of the **Add agent** wizard cannot be selected.
+
+<Admonition type="note" title="">
+
+**Likely cause:** one of the following may have happened.
+
+</Admonition>
+
+* The Terms of Use of the RavenDB AI service were not accepted yet. The stage then shows a **Review the Terms of Use**
+  button.  
+  **What to do:** click the **Review the Terms of Use** button and accept the terms, or set the agent up using the
+  **Setup manually** option, as described in [Adding an AI agent: Accepting the AI Terms of Use](getting-started/adding-an-ai-agent.mdx#accepting-the-ai-terms-of-use).
+* Quill could not check whether the terms were accepted. Quill runs this check through the RavenDB server inside Quill's
+  container, which asks the RavenDB service at `api.ravendb.net`. The check fails when the RavenDB service cannot be
+  reached, or answers with an unexpected response. The stage then shows the message
+  `Could not check whether the AI service is available.` and a **Try again** button.  
+  **What to do:** make sure Quill's machine allows outgoing HTTPS connections to `api.ravendb.net`, and click the
+  **Try again** button. Until the check succeeds, you can set the agent up using the **Setup manually** option.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### No agents are suggested
+
+In the `Create your Agent with AI` stage of the **Add agent** wizard, the **AI-suggested agents based on your data** section shows
+the message `AI could not suggest agents from your data. Describe your own below, or set one up manually.` instead of suggestion
+cards.
+
+<Admonition type="note" title="">
+
+**Likely cause:** Quill could not get suggested agents from the RavenDB AI service (e.g., because the service could not be reached
+from Quill's machine, did not answer within the time Quill allows the request, five minutes by default, or returned no usable
+suggestion).
+
+</Admonition>
+
+**What to do:**
+
+1. Make sure Quill's machine allows outgoing HTTPS connections to `api.ravendb.net`.  
+   To check whether Quill's container can reach `api.ravendb.net`, use the command shown in
+   [Quill is not ready after 180 seconds](#quill-is-not-ready-after-180-seconds).
+2. Have Quill request the suggested agents again: click **Back**, and then **Next**.
+
+Until the suggestions arrive, you can set the agent up using the **Setup manually** option, as described in
+[Adding an AI agent: Choosing a starting point](getting-started/adding-an-ai-agent.mdx#choosing-a-starting-point).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The `Test agent` button is disabled
+
+The `Test agent` button of an agent's configuration is disabled.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the agent's system prompt or connection string is not set.
+
+</Admonition>
+
+**What to do:** set both in the **Basic settings** section of the agent's configuration, as described in
+[Agents View: The agent's configuration](dashboard/manage-an-app/agents-view.mdx#the-agent-s-configuration).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### An agent cannot be deleted
+
+Deleting an agent is refused.
+
+<Admonition type="note" title="">
+
+**Likely cause:** channels are bound to the agent.
+
+</Admonition>
+
+**What to do:**
+
+1. Open the app's **Channels** view by clicking **Channels** under **Settings** in the app's sidebar.
+2. Delete the channels bound to the agent.
+3. Delete the agent.
+
+Deleting an agent is described in [Agents View: Deleting an agent](dashboard/manage-an-app/agents-view.mdx#deleting-an-agent).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The agent's configuration is refused
+
+Saving an agent's configuration is refused with `agent configuration rejected; see server logs for details`, 
+or testing it with the `Test agent` button shows the message: `Agent test failed. See server logs for details.`
+
+<Admonition type="note" title="">
+
+**Likely cause:** Quill requires each `$name` placeholder in a query tool's query to be defined by exactly one source, either an
+agent parameter or a required parameter of the tool.
+The agent's configuration breaks this requirement: in one or more of its queries, a placeholder is defined by neither
+source, or by both.
+
+</Admonition>
+
+To confirm this cause, run the command below, with your container's name instead of `quill-<name>`. It prints the reason
+Quill logged, which names the query tool and the placeholder.
+
+```bash
+docker exec quill-<name> grep -E "contains parameters that are not defined|is defined on both the agent level" /var/lib/quill/logs/web.log
+```
+<br />
+
+If the command prints nothing, Quill refused the configuration for another reason (e.g., a query tool's query that is not
+a read query), or the test failed for another reason (e.g., an error returned by the LLM provider).  
+To print the reasons Quill logged for the latest refusals and failed tests, run the command below, with your container's
+name instead of `quill-<name>`. Each reason follows the last `|` of its line (e.g., `Expected end of query but got: update`).
+
+```bash
+docker exec quill-<name> sh -c "grep -E 'Agent (edit|provisioning) rejected by RavenDB|setup/try failed' /var/lib/quill/logs/web.log | tail -3"
+```
+<br />
+
+**What to do**, by the reason the commands print:
+* `Tool query '…' contains parameters that are not defined in the agent configuration: '…'`  
+  No source defines the placeholder.  
+  Give it one, in one of these ways:
+  * Add an agent parameter with the placeholder's name, so that the value is set when a conversation starts.
+  * Add a parameter with the placeholder's name to the query tool's **Sample parameters object**, or to its **Parameters
+    JSON schema** with the name listed under the schema's `required` field, so the LLM will provide the value when it
+    calls the tool.
+* `Parameter … is defined on both the agent level and the query level for …`  
+  Both an agent parameter and a required parameter of the query tool define the placeholder.  
+  Remove one of the two.
+* Any other reason  
+  Correct the part of the configuration the reason names (e.g., remove the `update` clause from the query tool's query).
+
+Both sources are described in [Agents View: Agent tools](dashboard/manage-an-app/agents-view.mdx#agent-tools).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### An action call failed
+
+An action call listed in a conversation's transcript returned a response that starts with `action failed:`.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the call to the outside system failed. The rest of the response names the failure.
+
+</Admonition>
+
+**What to do**, by the response:
+* `action failed: webhook timed out`  
+  The outside system did not answer within 30 seconds.  
+  Make sure it answers within 30 seconds.
+* `action failed: webhook returned` followed by a redirect status (3xx) and a `Location` line  
+  The **Webhook URL** leads to an address that redirects the call, and Quill does not follow redirects.  
+  Set the **Webhook URL** to the address the `Location` line names.
+* `action failed: webhook returned` followed by another status code  
+  The outside system answered with a failure status.  
+  Correct the outside system, or the action's settings it rejects. Any reason the outside system gave is included in the
+  response.
+* `action failed:` followed by any other message  
+  Quill could not reach the **Webhook URL** (e.g., because its host name cannot be resolved).  
+  Correct the **Webhook URL**.
+
+Actions are described in [Agents View: Agent actions](dashboard/manage-an-app/agents-view.mdx#agent-actions).  
+The conversation's transcript is described in
+[Conversations View: The conversation's transcript](dashboard/manage-an-app/conversations-view.mdx#the-conversation-s-transcript).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### An action's response is truncated
+
+The response of an action, as listed in a conversation's transcript, ends with `[truncated]`.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the outside system's response is longer than the action's **Max response size**, 4096 bytes by default.
+
+</Admonition>
+
+**What to do:** raise the action's **Max response size**, up to 65536 bytes, as described in [Agents View: Agent actions](dashboard/manage-an-app/agents-view.mdx#agent-actions).  
+The conversation's transcript is described in
+[Conversations View: The conversation's transcript](dashboard/manage-an-app/conversations-view.mdx#the-conversation-s-transcript).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Mirroring">
+
+Once the app is created, Quill keeps the app's internal database current by mirroring the changes the source database
+records.  
+The app's **Data source** view shows the progress of the mirroring and any errors met while syncing, as described in
+[Data Source View: Sync performance](dashboard/manage-an-app/data-source-view.mdx#sync-performance).  
+To open the view, open the app in the management dashboard and click **Data source** under **Database** in the app's sidebar.
+
+<ContentFrame>
+
+##### The agent answers from outdated information
+
+<Admonition type="note" title="">
+
+**Likely cause:** the app's internal database may not hold the latest changes from the source database yet.
+
+</Admonition>
+
+**What to do:** check the recent writes and the errors reported in the app's **Data source** view.  
+Another cause, related to the conversation rather than to mirroring, is described in
+[Channels Overview: The agent answers from outdated information](channels/overview.mdx#the-agent-answers-from-outdated-information).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Data is missing soon after the app is created
+
+Soon after the app is created, the agent's answers miss data that exists in the source database.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the first load, in which Quill reads the selected tables and builds their documents, is still running in
+the background.
+
+</Admonition>
+
+**What to do:** wait until the first load completes.  
+The sync state badge in the app's **Data source** view shows **Active** while
+a batch is in progress, and **Idle** once no batch has completed for a minute, as described in
+[Data Source View: Sync state](dashboard/manage-an-app/data-source-view.mdx#sync-state).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Sync errors are detected
+
+The app's Data source view shows a `Sync errors detected` banner.
+
+<Admonition type="note" title="">
+
+**Likely cause:** Quill met errors while reading changes from the source database or while building documents from them
+(e.g., because the connection to the source database was lost).
+
+</Admonition>
+
+**What to do:**
+
+1. Click the banner's **View errors** button, and read the errors in the side panel that opens.
+2. Correct the cause the errors name.
+3. Restart the sync using the **Restart sync** option of the view's three-dot menu.
+
+Restarting the sync is described in [Data Source View: Restart sync](dashboard/manage-an-app/data-source-view.mdx#restart-sync).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Sync errors remain listed after the fix
+
+Sync errors are still listed after their cause was corrected.
+
+<Admonition type="note" title="">
+
+**Cause:** Quill does not mark sync errors as resolved, so errors remain listed after their cause is gone.  
+The list is cleared when you change the app's settings and save them in the **Edit app** wizard. Restarting the sync does
+not clear it.
+
+</Admonition>
+
+**What to do:** no action is needed.  
+Once the cause is corrected, new batches complete successfully, and are marked **Success**. A successful batch shows that
+the batch ran without errors, not that every earlier problem is resolved, as explained in
+[Data Source View: Sync errors](dashboard/manage-an-app/data-source-view.mdx#sync-errors).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Sync errors continue after a restart
+
+Sync errors keep appearing in the app's Data source view after the sync was restarted using the view's `Restart sync` option.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the cause named in the sync errors was not corrected yet (e.g., wrong connection settings or table
+mappings).
+
+</Admonition>
+
+**What to do:**
+
+1. Correct the cause the errors name.  
+   Connection settings and table mappings are corrected in the **Edit app** wizard, which the **Edit** option of the view's
+   three-dot menu opens.
+2. Click the **Restart sync** option of the same menu again, as described in
+   [Data Source View: Restart sync](dashboard/manage-an-app/data-source-view.mdx#restart-sync).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### No changes arrive from SQL Server
+
+No changes arrive from an SQL Server source database while its tables change.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the SQL Server Agent service is stopped, so the capture tables Quill reads the changes from stay empty.
+
+</Admonition>
+
+**What to do:** start the SQL Server Agent service, as described in
+[Connecting your database: The SQL Server Agent service](getting-started/connecting-your-database.mdx#the-sql-server-agent-service).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### No changes arrive from MySQL or MariaDB
+
+No changes arrive from a MySQL or MariaDB source database once the app is created, and sync errors are reported.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the database user whose credentials you provided to Quill lacks the `REPLICATION SLAVE` or the
+`REPLICATION CLIENT` privilege. Quill needs these privileges only once it starts following the changes, so Quill does not
+report their absence before the app is created.
+
+</Admonition>
+
+**What to do:** grant both privileges to this database user, as described in
+[Connecting your database: Privileges](getting-started/connecting-your-database.mdx#privileges).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Channels">
+
+Each channel article ends with a **Troubleshooting** section, listing the symptoms that may appear while setting the channel
+up in the management dashboard, or while your users chat through it.  
+Find the symptoms of each channel type in:
+
+* [Channels Overview: Troubleshooting](channels/overview.mdx#troubleshooting)  
+  Symptoms common to the Telegram, Slack, and Discord bots, and a symptom that may appear in a channel of any type.
+* [Web Widget: Troubleshooting](channels/web-widget.mdx#troubleshooting)  
+  Symptoms that may appear in the management dashboard, and on the website page that embeds the chat box.
+* [Telegram Bot: Troubleshooting](channels/telegram-bot.mdx#troubleshooting)  
+  Symptoms that may appear in the management dashboard, and on Telegram.
+* [Slack Bot: Troubleshooting](channels/slack-bot.mdx#troubleshooting)  
+  Symptoms that may appear in the management dashboard, in the bot's settings on Slack, and in the Slack client.
+* [Discord Bot: Troubleshooting](channels/discord-bot.mdx#troubleshooting)  
+  Symptoms that may appear in the management dashboard, and on Discord.
+
+</Panel>
+
+<Panel heading="Network and DNS">
+
+When you sign up, RavenDB adds Quill's hostnames to DNS, the service computers use to find the IP address of a hostname,
+and pairs each hostname with the IP address you give for Quill's machine, as described in
+[Networking & DNS: The published hostnames](networking-and-dns.mdx#the-published-hostnames).  
+Each hostname ends with your deployment name and `myquill.ai`, e.g., `dashboard.<name>.myquill.ai`, where `<name>` is your
+deployment name.  
+The symptoms below may appear when the IP address of Quill's machine changes, or when users and applications cannot reach
+Quill through its hostnames.
+
+<ContentFrame>
+
+##### Quill cannot be reached after an IP change or a move
+
+After Quill's machine received a new IP address, or you moved Quill to another machine, users and applications can no longer reach Quill through its hostnames.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the DNS service still pairs Quill's hostnames with the old address. RavenDB changes these pairs only when
+you run the `update-dns` command.
+
+</Admonition>
+
+**What to do:**
+
+1. If you moved Quill to another machine, complete the move: move the data volume to the new machine, and start the new
+   container with the same `QUILL_LICENSE_KEY` and `QUILL_API_KEY` values, as described in
+   [Networking & DNS: What remains unchanged](networking-and-dns.mdx#what-remains-unchanged).
+2. Run the command below on Quill's machine, with your container's name instead of `quill-<name>` and the machine's new
+   IP address instead of `<new-ip>`:
+
+   ```bash
+   docker exec quill-<name> update-dns --ip <new-ip>
+   ```
+   <br />
+
+   When the DNS service completes the update, which may take up to 15 minutes, `update-dns` prints the message:
+   `Successfully registered DNS record(s) for '<name>.myquill.ai' in api.ravendb.net.`
+
+Updating the records is described in [Networking & DNS: Update the records](networking-and-dns.mdx#update-the-records).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The IP configuration view's command fails
+
+The `update-dns` command copied from the `IP configuration` view of the management dashboard fails with `No such container`.
+
+<Admonition type="note" title="">
+
+**Cause:** in the command the view shows, the container's name is your deployment name (e.g., `baloo`), while the default name the sign-up
+Docker command gives the container is `quill-` followed by your deployment name (e.g., `quill-baloo`).
+
+</Admonition>
+
+**What to do:** replace the container's name in the copied command with the correct container name, and run the
+command again.  
+To open the view, click **My apps** at the top of the management dashboard's sidebar, and then click
+**IP configuration** under **Settings**.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The `update-dns` command times out
+
+The `update-dns` command fails with `Request failed due to a timeout error`.
+
+<Admonition type="note" title="">
+
+**Cause:** the DNS service did not confirm the update within 15 minutes, the time limit set in `update-dns`.
+The DNS service may still complete the update.
+
+</Admonition>
+
+**What to do:**
+
+1. Look up Quill's hostnames, using the commands described in
+   [Networking & DNS: Verify the change](networking-and-dns.mdx#verify-the-change), and check the address the lookups show.  
+   A lookup may show the old address for up to 30 minutes after the update, since the computers and networks answering
+   lookups may keep a copy of the old address for this long.
+2. If the lookups still show the old address 30 minutes after the `update-dns` command timed out, run the command again.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The `update-dns` command fails with another error
+
+<Admonition type="note" title="">
+
+**Likely cause:** one of the reasons below, which the error message names.
+
+</Admonition>
+
+**What to do**, by the message:
+* `Invalid IP address '…'`  
+  The address given after `--ip` is not a valid IPv4 or IPv6 address.  
+  Correct the address, and run the command again.
+* `Invalid record '=a,dashboard,db,public,api'`  
+  The address is missing after `--ip`.  
+  Run the command again, with the address after `--ip`.
+* Any other message  
+  One of the following may have happened:
+  * The activated setup package is missing or unreadable.
+  * Quill's machine does not allow outbound HTTPS connections to `api.ravendb.net`.
+  * The DNS service rejected the request.
+
+  Follow the checks in the "The DNS update command exits with an error" row of the table in
+  [Networking & DNS: Diagnose failures](networking-and-dns.mdx#diagnose-failures).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Some users still reach the old address
+
+Some users or applications still reach the old address after you updated the DNS records.
+
+<Admonition type="note" title="">
+
+**Likely cause:** their computers, or the networks they use, still keep a copy of the old address. RavenDB publishes Quill's
+DNS records with a 30-minute limit on how long computers and networks may keep a copy of an address they looked up, and
+some browsers and applications may keep their copy of the address even longer.
+
+</Admonition>
+
+**What to do:** wait up to 30 minutes.  
+Restarting an affected browser or application removes its copy of the old address, but a network's copy remains until
+the 30 minutes pass.  
+The 30-minute limit is described in
+[Networking & DNS: DNS propagation and TTL](networking-and-dns.mdx#dns-propagation-and-ttl).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Connections fail although the address is right
+
+A lookup of one of Quill's hostnames shows the right address, but a connection to the hostname times out, is refused, or fails with a certificate error.
+
+<Admonition type="note" title="">
+
+**Likely cause:** one of the following, by what happens to the connection.
+
+</Admonition>
+
+* The connection times out: a firewall, cloud security rules, or NAT or load-balancer settings block connections on port
+  443 to Quill's machine or its container.  
+  **What to do:** allow inbound connections on port 443 in these settings, and make sure port 443 of the container is
+  published on Quill's machine.
+* The connection is refused: the container is stopped, or its port 443 is not published.  
+
+  **What to do**, by the cause:
+  * If the container is stopped, start it using `docker start quill-<name>`, with your container's name instead of
+    `quill-<name>`.
+  * If port 443 is not published:
+    1. Make sure the Docker command you copied at sign-up mounts the container's data volume, as described in
+       [Updating Quill: Identify the container and its data volume](updating-quill.mdx#identify-the-container-and-its-data-volume).
+    2. Remove the container using `docker rm -f quill-<name>`, with your container's name instead of `quill-<name>`.
+    3. Run the Docker command again. Its `-p 443:443` part publishes port 443.
+
+    <br />
+
+    <Admonition type="warning" title="">
+
+    A Docker command without the container's data volume starts Quill with a new, empty volume, and the apps are missing.
+
+    </Admonition>
+
+* The connection fails with a certificate error: the certificate for your domain has expired, e.g., because the RavenDB server
+  inside Quill's container failed to renew it, or the browser or application connected to an address the certificate
+  does not cover, such as the IP address of Quill's machine or a hostname of your own.  
+
+  **What to do**, by the cause:
+  * If the browser or application connected to an address the certificate does not cover, use one of Quill's hostnames
+    in it instead (e.g., `dashboard.<name>.myquill.ai`). The certificate covers only hostnames ending with
+    `.<name>.myquill.ai`.
+  * If the certificate has expired, find the reason its renewal failed, using the command below, with your container's
+    name instead of `quill-<name>`:
+
+    ```bash
+    docker exec quill-<name> sh -c "grep -h -A 10 'Failed to replace the server certificate' /var/lib/quill/logs/ravendb-server/*.log"
+    ```
+    <br />
+
+    If the log shows failed connections to `api.ravendb.net` or `acme-v02.api.letsencrypt.org`, allow outbound HTTPS
+    connections from Quill's machine to both. The RavenDB server renews the certificate through the RavenDB service at
+    `api.ravendb.net` and through Let's Encrypt at `acme-v02.api.letsencrypt.org`. It tries again every hour, with no
+    restart needed.
+
+The checks for each case are listed in [Networking & DNS: Diagnose failures](networking-and-dns.mdx#diagnose-failures).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Data subscriptions cannot connect
+
+An external application (an application outside Quill) using data subscriptions, or another RavenDB feature requiring a TCP connection, 
+cannot connect to a Quill app's database through `db.<name>.myquill.ai`.
+
+<Admonition type="note" title="">
+
+**Cause:** external applications connect through `db.<name>.myquill.ai` to the RavenDB server inside Quill's container,
+which holds the apps' databases, as described in
+[Network Architecture: Direct database access](security-and-architecture/network-architecture.mdx#direct-database-access).
+The server accepts TCP connections only from inside the container, so external applications can reach it only through its
+HTTPS API, on port 443.
+
+</Admonition>
+
+**What to do:** in the external application, use features the RavenDB server provides through its HTTPS API (e.g., queries,
+and loading and storing documents) instead of features requiring a TCP connection.  
+Why these features cannot connect from outside Quill's container is described in
+[Network Architecture: Native TCP is not exposed](security-and-architecture/network-architecture.mdx#native-tcp-is-not-exposed).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Access remains after a certificate change
+
+An external application keeps its access to a Quill app's database after you disabled or deleted its client certificate, or reduced its access.
+
+<Admonition type="note" title="">
+
+**Cause:** the RavenDB server inside Quill's container checks the external application's client certificate once, when the
+application opens a connection to the server through `db.<name>.myquill.ai`, and the access it granted remains in effect
+for as long as the connection stays open.
+
+</Admonition>
+
+**What to do:** close the external application's connections, or restart the external application.  
+If the certificate is compromised, close every connection by restarting Quill's container, using
+`docker restart quill-<name>` with your container's name instead of `quill-<name>`.
+
+<Admonition type="warning" title="">
+
+Quill is unavailable while its container restarts: the management dashboard, the apps' databases, and the channels stop
+responding until Quill is ready again.
+
+</Admonition>
+
+This behavior is described in
+[Certificates View: Existing connections are not terminated](dashboard/certificates.mdx#existing-connections-are-not-terminated).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Updates and expiry">
+
+Each Quill build expires 90 days after its release date. Quill checks the build's age when its container starts, as
+described in [Updating Quill: Build expiry and license expiry](updating-quill.mdx#build-expiry-and-license-expiry).  
+Updating Quill replaces its container with a container created from a newer Quill image, keeping Quill's data as long
+as its Docker command mounts the same data volume, as described in
+[Updating Quill: What an update replaces](updating-quill.mdx#what-an-update-replaces).  
+The symptoms below may appear when a build expires, while you update Quill, or when Quill's license expires.
+
+<ContentFrame>
+
+##### The build has expired
+
+Instead of the management dashboard, the browser shows a notice titled `Quill needs updating`, with the message: `This build has expired.`
+
+<Admonition type="note" title="">
+
+**Cause:** the container was started from a build released more than 90 days ago.  
+Quill checks the build's age only when its container starts; a container started before its build expired keeps
+working until it restarts (e.g., using `docker restart`, or `docker start` after the container stopped).
+
+</Admonition>
+
+Docker still reports the container as healthy, since Quill answers Docker's health check with `expired` and HTTP status 200.  
+**What to do:** update Quill, replacing the container with a container created from a newer Quill image, as described in
+[Updating Quill: Update Quill](updating-quill.mdx#update-quill).  
+Renewing Quill's license does not help: a build expires 90 days after its release date whatever the license's state, as
+explained in [Updating Quill: Build expiry and license expiry](updating-quill.mdx#build-expiry-and-license-expiry).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The build is still expired after an update
+
+After you updated Quill, the browser still shows a notice titled `Quill needs updating`.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the replacement container was created from the same expired build. One of the following may have happened.
+
+</Admonition>
+
+* The Docker command names the image by a version tag (e.g., `ravendb/quill-nightly:7.2.7-quill-nightly-20260924-0326`),
+  which refers to one specific build.
+* The Docker command names the image by the `latest` tag but does not include `--pull=always`, so Docker used the copy
+  of the image already on Quill's machine instead of downloading the newer image.
+
+**What to do**, in either case:
+
+1. Change the Docker command to name the image `ravendb/quill:latest` and include `--pull=always`, like the Docker
+   command RavenDB sends at sign-up.
+2. Make sure the command mounts Quill's data volume, the volume the container used before the update, as described in
+   [Updating Quill: Identify the container and its data volume](updating-quill.mdx#identify-the-container-and-its-data-volume).
+3. Remove the replacement container using `docker stop quill-<name>` and `docker rm quill-<name>`, with your container's
+   name instead of `quill-<name>`.
+4. Run the changed command.
+
+Refreshing the image is described in [Updating Quill: Refresh the image](updating-quill.mdx#refresh-the-image).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The container name is already in use
+
+`docker run` fails with `Conflict. The container name … is already in use`.
+
+<Admonition type="note" title="">
+
+**Cause:** a container with this name still exists: the old container, or an earlier, unsuccessful replacement.
+
+</Admonition>
+
+**What to do:**
+
+1. Make sure the Docker command mounts Quill's data volume, the volume the container used before the update, as described
+   in [Updating Quill: Identify the container and its data volume](updating-quill.mdx#identify-the-container-and-its-data-volume).
+2. Remove the existing container using `docker stop quill-<name>` and `docker rm quill-<name>`, with your container's
+   name instead of `quill-<name>`.
+3. Run the Docker command again.
+
+<br />
+
+<Admonition type="warning" title="">
+
+Do not add `-v` to `docker rm`: it removes the container's anonymous volumes, and one of them may hold Quill's data.
+
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Apps are missing after an update
+
+After you updated Quill, the management dashboard opens, but the apps are missing.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the replacement container does not use Quill's data volume. Its Docker command mounts another volume at
+`/var/lib/quill`, or mounts none, and Docker created a new, empty volume for the container.
+
+</Admonition>
+
+<Admonition type="warning" title="">
+
+Do not add apps or change settings in the new, empty deployment.
+
+</Admonition>
+
+**What to do:** stop the replacement container and recreate it with Quill's data volume mounted at `/var/lib/quill`, as
+described in [Updating Quill: Recover the recorded data volume](updating-quill.mdx#recover-the-recorded-data-volume).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The license has expired
+
+The `License` view shows the message: `This license has expired.`
+
+<Admonition type="note" title="">
+
+**Cause:** the expiration date of Quill's license, shown in the view, has passed.
+
+</Admonition>
+
+**What to do:** to renew the license, [contact RavenDB sales](https://ravendb.net/contact).  
+Updating Quill does not renew the license.  
+To open the view, click **My apps** at the top of the management dashboard's sidebar, and then click **License** under
+**License & usage**. The view is described in [License View: Current license](dashboard/license.mdx#current-license).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Contacting support">
+
+<Admonition type="info" title="">
+
+If none of the entries above solves a problem, contact RavenDB's support.  
+
+</Admonition>
+
+To open the support page, click **Help center** at the bottom of the management dashboard's sidebar, and then click
+**Support**. The support page opens with your license ID included.  
+
+If the management dashboard cannot be opened, go to [ravendb.net/support](https://ravendb.net/support) instead, and enter
+your license ID (every Quill deployment has a license, including a deployment you did not purchase).  
+Use the command below to print your license ID, with your container's name instead of `quill-<name>`:
+
+```bash
+docker exec quill-<name> jq -r .Id /var/lib/quill/setup/license.json
+```
+
+<ContentFrame>
+
+### Collect the details below before contacting support  
+
+A support engineer handling your request will probably ask for the following details.  
+Run each command on Quill's machine, with your container's name instead of `quill-<name>`.
+
+* **The symptom**  
+  What you did, what you expected to happen, and the exact message Quill showed or printed.
+* **The Quill image the container runs**
+
+  ```bash
+  docker inspect quill-<name> --format "{{.Config.Image}}"
+  ```
+  <br />
+
+* **The messages Quill printed while starting and running**
+
+  ```bash
+  docker logs --tail 100 quill-<name>
+  ```
+  <br />
+
+* **Quill's activation state**  
+  Use the command below to print the activation state, e.g., `{"state":"Ready","reason":null}`, and, if the activation
+  failed, the reason for the failure.
+
+  ```bash
+  docker exec quill-<name> curl --silent http://127.0.0.1:5000/api/bootstrap/status
+  ```
+  <br />
+
+* **Quill's recent application messages**
+
+  ```bash
+  docker exec quill-<name> tail -n 200 /var/lib/quill/logs/web.log
+  ```
+  <br />
+
+* **The log of the service the problem concerns**  
+  Each service's log is listed in [Logging: Log locations](logging.mdx#log-locations), e.g., the RavenDB server's own logs
+  in `/var/lib/quill/logs/ravendb-server/` when the certificate renewal fails.
+* **The source database and the LLM provider**  
+  The source database's type and version, when the problem concerns mirroring, and the LLM provider and model the agent
+  uses, when the problem concerns an agent.
+
+<Admonition type="warning" title="">
+
+* Read every log before sending it, and remove any details you do not want to share.
+* Never send the Docker command, or the output of `docker inspect` run without `--format`: both contain your license key
+  and your dashboard API key.
+* If your dashboard API key was exposed in any way, replace it, as described in
+  [Operator Authentication: Replacing an exposed key](security-and-architecture/operator-authentication.mdx#replacing-an-exposed-key).
+
+</Admonition>
+
+</ContentFrame>
+
+</Panel>

@@ -1,5 +1,5 @@
 ---
-title: "Networking & DNS"
+title: "Quill: Networking & DNS"
 sidebar_label: "Networking & DNS"
 description: "The DNS records created for your Quill instance, what they point at, and how to repoint them when your server's IP address changes."
 sidebar_position: 6
@@ -240,7 +240,7 @@ You do not need to supply the domain, the Dashboard API key, or an authenticated
 ### Update the five DNS records
 
 In the commands below, `<container-name>` is the name specified by `docker run --name`.  
-By default, it matches your Quill name.
+In the Docker command you received at sign-up, it is `quill-` followed by your Quill name (e.g., `quill-baloo`).
 
 Run the following command, replacing `<new-ip>` with the host's new address:
 
@@ -249,7 +249,9 @@ docker exec <container-name> update-dns --ip <new-ip>
 ```
 <br/>
 
-If the container uses the default name, the dashboard's **Settings > IP configuration** page generates this command with the container name filled in after you enter a new IPv4 address.
+The dashboard's **Settings > IP configuration** page also generates this command after you enter a new IPv4 address, but names the container by your Quill name alone (e.g., `baloo`).  
+Replace this name with your container's name before running the command, as described in
+[Troubleshooting: The IP configuration view's command fails](troubleshooting.mdx#the-ip-configuration-views-command-fails).
 
 The command updates all five DNS records in one request:
 
@@ -426,7 +428,7 @@ Use the point at which verification fails to identify the affected layer:
     
 ### Check the container and published port
 
-In the commands below, `<container-name>` is the name specified by `docker run --name`. By default, it matches your Quill name.
+In the commands below, `<container-name>` is the name specified by `docker run --name`. In the Docker command you received at sign-up, it is `quill-` followed by your Quill name (e.g., `quill-baloo`).
 
 Confirm that the container is running:
 
@@ -509,7 +511,7 @@ The current `warn` log level does not record common client-side TLS handshake fa
 
 Quill masks embed-link and Slack webhook tokens in both proxy logs, retaining only the first six characters for correlation.
 
-For RavenDB startup or direct database failures, read:
+For RavenDB startup failures, read the RavenDB server's console output:
 
 ```bash
 docker exec <container-name> tail -n 100 \
@@ -517,7 +519,21 @@ docker exec <container-name> tail -n 100 \
 ```
 <br/>
 
-For wildcard-certificate renewal failures, read:
+For direct database failures, read the RavenDB server's own logs:
+
+```bash
+docker exec <container-name> sh -c "tail -n 100 /var/lib/quill/logs/ravendb-server/*.log"
+```
+<br/>
+
+For wildcard-certificate renewal failures, search the RavenDB server's own logs:
+
+```bash
+docker exec <container-name> sh -c "grep -h -A 10 'Failed to replace the server certificate' /var/lib/quill/logs/ravendb-server/*.log"
+```
+<br/>
+
+To confirm that nginx picked up a renewed certificate, read the certificate watcher's log:
 
 ```bash
 docker exec <container-name> tail -n 100 \

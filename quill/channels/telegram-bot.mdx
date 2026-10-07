@@ -214,8 +214,10 @@ A user can also start afresh at any moment by sending `/clear`. The bot confirms
 ![Clearing the conversation](./assets/telegram-bot_clear.png)
 
 In the chat above, the question answered before `/clear` can no longer be answered after it, since the list the question referred to
-is no longer part of the conversation.  
-Clearing also deletes the conversation from the app's [Conversations view](../dashboard/manage-an-app/conversations-view.mdx) in the management dashboard.
+is no longer part of the conversation.
+
+Clearing also deletes the current day's conversation from the app's [Conversations view](../dashboard/manage-an-app/conversations-view.mdx) in the management dashboard.  
+The conversations of earlier days remain in the view.
 
 </ContentFrame>
 
@@ -476,12 +478,8 @@ The limits below follow this design and Telegram's own rules. None of them can b
 
 <Panel heading="Troubleshooting">
 
-<Admonition type="note" title="">
-
 Symptoms met by the users of every bot type, not just of a Telegram bot, are listed in the channels overview, in
 [Troubleshooting](../channels/overview.mdx#troubleshooting).
-
-</Admonition>
 
 The symptoms below are shown by a Telegram bot channel when something goes wrong, each with its likely cause and what to do about it.  
 The first symptoms are seen in Quill's management dashboard: in the channel form, in the **Edit channel** form, and in the Channels
@@ -489,77 +487,231 @@ view. The rest are encountered by the bot's users in their chats with the bot on
 The bot's messages are quoted in their default form, shown in [The Bot messages tab](#the-bot-messages-tab); a channel with
 customized messages shows your texts instead.
 
-<ContentFrame>
+---
 
 ### In the dashboard
 
-* **Clicking `Connect bot` fails with "invalid bot token format".**  
-  Likely cause: the token pasted in the form may be incomplete or mistyped. A bot token is the bot's numeric id, a colon, and a
-  secret string, e.g., `123456789:AA...`.  
-  What to do: copy the whole token from @BotFather's message, as described in
-  [Creating a bot using @BotFather](#creating-a-bot-using-botfather), and paste it in the form's
-  [Bot token](#filling-in-the-channel-form) field.
-* **Clicking `Connect bot` fails with "telegram rejected the bot token".**  
-  Likely cause: the token may have been replaced using @BotFather, so Telegram no longer accepts the old one.  
-  What to do: paste the token @BotFather issued last in the form's [Bot token](#filling-in-the-channel-form) field; if you are not
-  sure which token is current, have @BotFather issue a new one and paste it.
-* **Clicking `Connect bot` fails with "could not reach telegram" or "telegram did not respond".**  
-  Likely cause: the machine running Quill may have no access to `api.telegram.org`, as required in [Prerequisites](#prerequisites);
-  a firewall or a proxy blocking the address is the usual cause.  
-  What to do: allow outgoing HTTPS connections from the machine running Quill to `api.telegram.org` in the firewall or proxy that
-  blocks them, or ask your network administrator to.
-* **Clicking `Connect bot` fails with "bot @... is already connected".**  
-  Likely cause: the bot is already connected to another channel, in this app or in another app of the deployment; a bot can serve
-  only one channel. When the channel is in another app, the message names that app.  
-  What to do: delete the channel that holds the bot, in this app or in the app the message names, as described in
-  [Pausing and deleting the channel](#pausing-and-deleting-the-channel); or create another bot using @BotFather, as described in
-  [Creating a bot using @BotFather](#creating-a-bot-using-botfather), and paste the new bot's token in this form instead.
-* **Clicking `Save changes` in the `Edit channel` form fails with "the token belongs to a different bot".**  
-  Likely cause: the new token may have been copied from @BotFather's message about a different bot.  
-  What to do: paste the token of the bot the channel was added for in the **New bot token** field of the **Edit channel** form.  
-  To switch to a different bot, add a new channel for that bot instead, as described in
-  [Connecting the bot to your app](#connecting-the-bot-to-your-app).
-* **The channel shows as `Active` in the Channels view, but the bot does not answer.**  
-  Likely cause: the bot token may have been replaced using @BotFather, so Telegram no longer answers the requests Quill makes
-  with the old one.  
-  The dashboard shows no warning for a replaced token, and messages users send meanwhile are lost.  
-  What to do: enter the token @BotFather issued last in the channel, as described in [Rotating the bot token](#rotating-the-bot-token).
-* **The channel shows as `Disabled` in the Channels view, and the bot does not answer.**  
-  Likely cause: the channel was paused, using **Pause** in the header of its details view.  
-  Messages users send while the channel is paused are held by Telegram for up to 24 hours, and are answered if the channel is
-  resumed within this time.  
-  What to do: resume the channel, as described in [Pausing and deleting the channel](#pausing-and-deleting-the-channel).
+<ContentFrame>
+
+##### The bot token's format is invalid
+
+Clicking `Connect bot` fails with `invalid bot token format`.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the token pasted in the form may be incomplete or mistyped. A bot token is the bot's numeric id, a colon, and a
+secret string, e.g., `123456789:AA...`.
+
+</Admonition>
+
+**What to do:** copy the whole token from @BotFather's message, as described in
+[Creating a bot using @BotFather](#creating-a-bot-using-botfather), and paste it in the form's
+[Bot token](#filling-in-the-channel-form) field.
 
 </ContentFrame>
 
 <ContentFrame>
 
+##### Telegram rejects the bot token
+
+Clicking `Connect bot` fails with `telegram rejected the bot token`.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the token may have been replaced using @BotFather, so Telegram no longer accepts the old one.
+
+</Admonition>
+
+**What to do:** paste the token @BotFather issued last in the form's [Bot token](#filling-in-the-channel-form) field; if you are not
+sure which token is current, have @BotFather issue a new one and paste it.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Quill cannot reach Telegram
+
+Clicking `Connect bot` fails with `could not reach telegram` or `telegram did not respond`.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the machine running Quill may have no access to `api.telegram.org`, as required in [Prerequisites](#prerequisites);
+a firewall or a proxy blocking the address is the usual cause.
+
+</Admonition>
+
+**What to do:** allow outgoing HTTPS connections from the machine running Quill to `api.telegram.org` in the firewall or proxy that
+blocks them, or ask your network administrator to.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The bot is already connected
+
+Clicking `Connect bot` fails with `bot @... is already connected`.
+
+<Admonition type="note" title="">
+
+**Cause:** the bot is already connected to another channel, in this app or in another app of the deployment; a bot can serve
+only one channel. When the channel is in another app, the message names that app.
+
+</Admonition>
+
+**What to do:** delete the channel that holds the bot, in this app or in the app the message names, as described in
+[Pausing and deleting the channel](#pausing-and-deleting-the-channel); or create another bot using @BotFather, as described in
+[Creating a bot using @BotFather](#creating-a-bot-using-botfather), and paste the new bot's token in this form instead.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The new token belongs to a different bot
+
+Clicking `Save changes` in the `Edit channel` form fails with `the token belongs to a different bot`.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the new token may have been copied from @BotFather's message about a different bot.
+
+</Admonition>
+
+**What to do:** paste the token of the bot the channel was added for in the **New bot token** field of the **Edit channel** form.  
+To switch to a different bot, add a new channel for that bot instead, as described in
+[Connecting the bot to your app](#connecting-the-bot-to-your-app).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### An active channel's bot does not answer
+
+The channel shows as `Active` in the Channels view, but the bot does not answer.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the bot token may have been replaced using @BotFather, so Telegram no longer answers the requests Quill makes
+with the old one.  
+The dashboard shows no warning for a replaced token, and messages users send meanwhile are lost.
+
+</Admonition>
+
+**What to do:** enter the token @BotFather issued last in the channel, as described in [Rotating the bot token](#rotating-the-bot-token).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### A disabled channel's bot does not answer
+
+The channel shows as `Disabled` in the Channels view, and the bot does not answer.
+
+<Admonition type="note" title="">
+
+**Cause:** the channel was paused, using **Pause** in the header of its details view.  
+Messages users send while the channel is paused are held by Telegram for up to 24 hours, and are answered if the channel is
+resumed within this time.
+
+</Admonition>
+
+**What to do:** resume the channel, as described in [Pausing and deleting the channel](#pausing-and-deleting-the-channel).
+
+</ContentFrame>
+
+---
+
 ### On Telegram
 
-* **The bot replies "This assistant is not fully configured yet. Please contact whoever set up this bot."**  
-  Likely cause: the agent may have a parameter the channel does not bind, e.g., a parameter added to the agent after the channel
-  was added.  
-  What to do: bind the parameter in the channel's [Parameters](#the-parameters-tab) tab.
-* **The bot replies "Sorry - something went wrong handling that message. Please try again."**  
-  Likely cause: the agent failed to produce the answer, e.g., because the database it queries or the LLM service it uses could not
-  be reached.  
-  What to do: verify that the app's database, and the LLM service behind the agent's AI connection string, can be reached. The
-  connection string can be tested as described in
-  [Dashboard: AI connection strings](../dashboard/ai-connection-strings.mdx#test-and-save-the-connection). Then try the bot from
-  your own Telegram account.
-* **The bot replies "This assistant needs your Telegram username. Set one in Telegram Settings and send your message again."**  
-  Likely cause: a parameter is bound to **Telegram username**, and the user has no username set in Telegram.  
-  What to do: advise the user to set a username in Telegram's settings and send the question again; or bind the parameter to
-  another source, in the channel's [Parameters](#the-parameters-tab) tab.
-* **The bot replies "I only work in one-on-one chats. Message me directly to start a conversation." in a group, and then stays
-  silent there.**  
-  Likely cause: the bot was added to a Telegram group; the bot answers in private chats only.  
-  What to do: hand the users the bot's address, shown in the channel's [Connect](#the-connect-tab) tab, and advise them to open a
-  private chat with the bot at that address.
-* **The bot asks a returning user for the phone number again.**  
-  Likely cause: the channel may have been deleted and added again. The number is kept per channel, so a new channel has no record
-  of the number the user shared.  
-  What to do: advise the user to share the number again. See [Returning users](#returning-users).
+<ContentFrame>
+
+##### The bot reports that it is not fully configured
+
+The bot replies `This assistant is not fully configured yet. Please contact whoever set up this bot.`
+
+<Admonition type="note" title="">
+
+**Cause:** the agent has a parameter the channel does not bind, e.g., a parameter added to the agent after the channel
+was added.
+
+</Admonition>
+
+**What to do:** bind the parameter in the channel's [Parameters](#the-parameters-tab) tab.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The bot reports that something went wrong
+
+The bot replies `Sorry - something went wrong handling that message. Please try again.`
+
+<Admonition type="note" title="">
+
+**Likely cause:** one of the following may have happened.
+
+</Admonition>
+
+* A parameter is bound to a value the agent parameter's type no longer accepts, e.g., because the type was changed in the
+  agent after the channel was added.  
+  **What to do:** bind the parameter again in the channel's [Parameters](#the-parameters-tab) tab, with a value or a source
+  that matches the type.
+* The agent failed to produce the answer, e.g., because the database it queries or the LLM service it uses could not be
+  reached.  
+  **What to do:** verify that the app's database, and the LLM service behind the agent's AI connection string, can be reached.
+  The connection string can be tested as described in [Dashboard: AI connection strings](../dashboard/ai-connection-strings.mdx#test-and-save-the-connection).
+
+After the fix, try the bot from your own Telegram account.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The bot asks for a Telegram username
+
+The bot replies `This assistant needs your Telegram username. Set one in Telegram Settings and send your message again.`
+
+<Admonition type="note" title="">
+
+**Cause:** a parameter is bound to **Telegram username**, and the user has no username set in Telegram.
+
+</Admonition>
+
+**What to do:** advise the user to set a username in Telegram's settings and send the question again; or bind the parameter to
+another source, in the channel's [Parameters](#the-parameters-tab) tab.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The bot does not answer in a group
+
+The bot replies `I only work in one-on-one chats. Message me directly to start a conversation.` in a group, and then stays silent there.
+
+<Admonition type="note" title="">
+
+**Cause:** the bot was added to a Telegram group; the bot answers in private chats only.
+
+</Admonition>
+
+**What to do:** hand the users the bot's address, shown in the channel's [Connect](#the-connect-tab) tab, and advise them to open a
+private chat with the bot at that address.
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The bot asks for the phone number again
+
+The bot asks a returning user for the phone number again.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the channel may have been deleted and added again. The number is kept per channel, so a new channel has no record
+of the number the user shared.
+
+</Admonition>
+
+**What to do:** advise the user to share the number again. See [Returning users](#returning-users).
 
 </ContentFrame>
 
