@@ -156,8 +156,8 @@ if T is `ObjectNode`, no deserialization will take place
 | Event                              | Type\Return type                          | Description                                                                                                                                                                         |
 |------------------------------------|-------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| 
 | **addAfterAcknowledgmentListener** | `Consumer<SubscriptionBatch<T>>` (event)  | Event that is risen after each the server acknowledges batch processing progress.                                                                                                   |
-| **onSubscriptionConnectionRetry**  | `Consumer<Exception>` (event)             | Event that is fired when the subscription worker tries to reconnect to the server after a failure. The event receives as a parameter the exception that interrupted the processing. |
-| **onClosed**                       | `Consumer<SubscriptionWorker<T>>` (event) | Event that is fired after the subscription worker was disposed.                                                                                                                     |
+| **addOnSubscriptionConnectionRetry** | `Consumer<Exception>` (event)             | Event that is fired when the subscription worker tries to reconnect to the server after a failure. The event receives as a parameter the exception that interrupted the processing. |
+| **addOnUnexpectedSubscriptionError** | `Consumer<Exception>` (event) | Event that is fired when the subscription worker hits an error it does not recognize, before the worker waits to reconnect to the server. The event receives as a parameter the exception that interrupted the processing. |
 
 </Admonition>
 

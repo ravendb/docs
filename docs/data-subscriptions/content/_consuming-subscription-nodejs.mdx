@@ -848,7 +848,7 @@ The worker returned by `getSubscriptionWorker`.
 | **"batch"** | `(batch, callback) => void` | Fires when a batch of documents arrives from the server. Call `callback()` when done so the worker acknowledges the batch and the server sends the next one. |
 | **"onEstablishedSubscriptionConnection"** | `(worker) => void` | Fires each time the worker connects to the subscription, both the first time and after every reconnection. |
 | **"stateChanged"** | `(status, worker) => void` | Fires on every change of the worker's state.<br />Receives the worker's new status and the worker. |
-| **"afterAcknowledgment"** | `(batch, callback) => void` | Fires after the server acknowledges the progress of a processed batch. |
+| **"afterAcknowledgment"** | `(batch) => void` | Fires after the server acknowledges the progress of a processed batch. |
 | **"connectionRetry"** | `(error) => void` | Fires each time the worker is about to reconnect, after the wait set in `timeToWaitBeforeConnectionRetry`. |
 | **"unexpectedSubscriptionError"** | `(error) => void` | Fires when the worker hits an error it does not recognize, before the worker waits to reconnect. |
 | **"error"** | `(error) => void` | Fires on subscription errors. |
