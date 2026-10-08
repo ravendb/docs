@@ -5,13 +5,14 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* In this page:
+* On this page:
   * [Client with full exception handling and processing retries](../../../../client-api/data-subscriptions/consumption/examples.mdx#client-with-full-exception-handling-and-processing-retries)
   * [Worker with a specified batch size](../../../../client-api/data-subscriptions/consumption/examples.mdx#worker-with-a-specified-batch-size)
   * [Worker that operates with a session](../../../../client-api/data-subscriptions/consumption/examples.mdx#worker-that-operates-with-a-session)
   * [Worker that processes dynamic objects](../../../../client-api/data-subscriptions/consumption/examples.mdx#worker-that-processes-dynamic-objects)
   * [Subscription that ends when no documents are left](../../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-ends-when-no-documents-are-left)
   * [Subscription that uses included documents](../../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-uses-included-documents)
+  * [Subscription workers with failover on other nodes](../../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-workers-with-failover-on-other-nodes)
   * [Primary and secondary workers](../../../../client-api/data-subscriptions/consumption/examples.mdx#primary-and-secondary-workers)
 
 </Admonition>
@@ -396,6 +397,29 @@ worker.on("batch", async (batch, callback) => \{
 
 
 
+## Subscription workers with failover on other nodes
+
+In this configuration, the same worker code runs on several machines, all using the `WaitForFree` strategy.  
+One worker connects to the subscription, and the other workers wait.  
+If the connected worker disconnects (e.g., when its machine goes down), one of the waiting workers connects and
+continues processing.  
+Unlike in the [primary and secondary workers](../../../../client-api/data-subscriptions/consumption/examples.mdx#primary-and-secondary-workers)
+example, a worker that reconnects after a failure does not take the connection back, but joins the waiting workers.
+
+<TabItem value="waitforfree" label="waitforfree">
+<CodeBlock language="js">
+{`const worker = documentStore.subscriptions.getSubscriptionWorker(\{
+    subscriptionName,
+    // "WaitForFree": wait and take over if the connected worker fails
+    strategy: "WaitForFree",
+    documentType: Order
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
 ## Primary and secondary workers
 
 Here we create two workers:
@@ -407,20 +431,20 @@ The primary worker:
 
 <TabItem value="consume_7" label="consume_7">
 <CodeBlock language="js">
-{`const workerOptions1 = \{
+{`const primaryWorkerOptions = \{
     subscriptionName,
     strategy: "TakeOver",
     documentType: Order
 \};
 
-const worker1 = documentStore.subscriptions.getSubscriptionWorker(workerOptions1);
+const primaryWorker = documentStore.subscriptions.getSubscriptionWorker(primaryWorkerOptions);
 
-worker1.on("batch", (batch, callback) => \{
+primaryWorker.on("batch", (batch, callback) => \{
     // your logic
     callback();
 \});
 
-worker1.on("error", err => \{
+primaryWorker.on("error", err => \{
     // retry
 \});
 `}
@@ -431,20 +455,20 @@ The secondary worker:
 
 <TabItem value="consume_8" label="consume_8">
 <CodeBlock language="js">
-{`const workerOptions2 = \{
+{`const secondaryWorkerOptions = \{
     subscriptionName,
     strategy: "WaitForFree",
     documentType: Order
 \};
 
-const worker2 = documentStore.subscriptions.getSubscriptionWorker(workerOptions2);
+const secondaryWorker = documentStore.subscriptions.getSubscriptionWorker(secondaryWorkerOptions);
 
-worker2.on("batch", (batch, callback) => \{
+secondaryWorker.on("batch", (batch, callback) => \{
     // your logic
     callback();
 \});
 
-worker2.on("error", err => \{
+secondaryWorker.on("error", err => \{
     // retry
 \});
 `}

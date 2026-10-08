@@ -29,6 +29,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Processing raw objects](../../data-subscriptions/consuming-subscription.mdx#example-processing-raw-objects)
       * [End when no documents are left](../../data-subscriptions/consuming-subscription.mdx#example-end-when-no-documents-are-left)
       * [Including documents in the batch](../../data-subscriptions/consuming-subscription.mdx#example-including-documents-in-the-batch)
+      * [Standby workers on several machines](../../data-subscriptions/consuming-subscription.mdx#example-standby-workers-on-several-machines)
       * [Primary and secondary workers](../../data-subscriptions/consuming-subscription.mdx#example-primary-and-secondary-workers)
    * [Syntax](../../data-subscriptions/consuming-subscription.mdx#syntax)
 
@@ -529,6 +530,27 @@ subscriptionWorker.run(batch -> {
 
 <ContentFrame>
 
+### Example: Standby workers on several machines
+
+In this example, the same worker code runs on several machines, all using the `WAIT_FOR_FREE` strategy.  
+One worker connects to the subscription, and the other workers wait.  
+If the connected worker disconnects (e.g., when its machine goes down), one of the waiting workers connects and
+continues processing.  
+Unlike in the [primary and secondary workers](../../data-subscriptions/consuming-subscription.mdx#example-primary-and-secondary-workers)
+example, a worker that reconnects after a failure does not take the connection back, but joins the waiting workers.
+
+```java
+SubscriptionWorkerOptions options = new SubscriptionWorkerOptions(subscriptionName);
+// WAIT_FOR_FREE: wait and take over if the connected worker fails
+options.setStrategy(SubscriptionOpeningStrategy.WAIT_FOR_FREE);
+
+SubscriptionWorker<Order> worker = store.subscriptions().getSubscriptionWorker(Order.class, options);
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
 ### Example: Primary and secondary workers
 
 In this example, the two workers form an active-standby pair: the primary, using `TAKE_OVER`, establishes the
@@ -539,18 +561,19 @@ The primary worker:
 ```java
 while (true) {
     // Create a new worker for each attempt: a worker cannot run again once run was called
-    SubscriptionWorkerOptions options1 = new SubscriptionWorkerOptions(subscriptionName);
-    options1.setStrategy(SubscriptionOpeningStrategy.TAKE_OVER);
-    SubscriptionWorker<Order> worker1 = store.subscriptions().getSubscriptionWorker(Order.class, options1);
+    SubscriptionWorkerOptions primaryWorkerOptions = new SubscriptionWorkerOptions(subscriptionName);
+    primaryWorkerOptions.setStrategy(SubscriptionOpeningStrategy.TAKE_OVER);
+    SubscriptionWorker<Order> primaryWorker =
+        store.subscriptions().getSubscriptionWorker(Order.class, primaryWorkerOptions);
 
     try {
-        worker1.run(x -> {
+        primaryWorker.run(x -> {
             // your logic
         }).get();
     } catch (Exception e) {
         // retry
     } finally {
-        worker1.close();
+        primaryWorker.close();
     }
 }
 ```
@@ -562,18 +585,19 @@ The secondary worker:
 ```java
 while (true) {
     // Create a new worker for each attempt: a worker cannot run again once run was called
-    SubscriptionWorkerOptions options2 = new SubscriptionWorkerOptions(subscriptionName);
-    options2.setStrategy(SubscriptionOpeningStrategy.WAIT_FOR_FREE);
-    SubscriptionWorker<Order> worker2 = store.subscriptions().getSubscriptionWorker(Order.class, options2);
+    SubscriptionWorkerOptions secondaryWorkerOptions = new SubscriptionWorkerOptions(subscriptionName);
+    secondaryWorkerOptions.setStrategy(SubscriptionOpeningStrategy.WAIT_FOR_FREE);
+    SubscriptionWorker<Order> secondaryWorker =
+        store.subscriptions().getSubscriptionWorker(Order.class, secondaryWorkerOptions);
 
     try {
-        worker2.run(x -> {
+        secondaryWorker.run(x -> {
             // your logic
         }).get();
     } catch (Exception e) {
         // retry
     } finally {
-        worker2.close();
+        secondaryWorker.close();
     }
 }
 ```

@@ -481,6 +481,7 @@ example, a worker that reconnects after a failure does not take the connection b
 
 ```python
 worker = store.subscriptions.get_subscription_worker(
+    # WAIT_FOR_FREE: wait and take over if the connected worker fails
     SubscriptionWorkerOptions(subscription_name, strategy=SubscriptionOpeningStrategy.WAIT_FOR_FREE),
     Order,
 )

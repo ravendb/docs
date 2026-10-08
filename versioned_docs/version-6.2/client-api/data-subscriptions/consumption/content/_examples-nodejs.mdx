@@ -5,7 +5,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* In this page:
+* On this page:
   * [Client with full exception handling and processing retries](../../../../client-api/data-subscriptions/consumption/examples.mdx#client-with-full-exception-handling-and-processing-retries)
   * [Worker with a specified batch size](../../../../client-api/data-subscriptions/consumption/examples.mdx#worker-with-a-specified-batch-size)
   * [Worker that operates with a session](../../../../client-api/data-subscriptions/consumption/examples.mdx#worker-that-operates-with-a-session)
@@ -407,20 +407,20 @@ The primary worker:
 
 <TabItem value="consume_7" label="consume_7">
 <CodeBlock language="js">
-{`const workerOptions1 = \{
+{`const primaryWorkerOptions = \{
     subscriptionName,
     strategy: "TakeOver",
     documentType: Order
 \};
 
-const worker1 = documentStore.subscriptions.getSubscriptionWorker(workerOptions1);
+const primaryWorker = documentStore.subscriptions.getSubscriptionWorker(primaryWorkerOptions);
 
-worker1.on("batch", (batch, callback) => \{
+primaryWorker.on("batch", (batch, callback) => \{
     // your logic
     callback();
 \});
 
-worker1.on("error", err => \{
+primaryWorker.on("error", err => \{
     // retry
 \});
 `}
@@ -431,20 +431,20 @@ The secondary worker:
 
 <TabItem value="consume_8" label="consume_8">
 <CodeBlock language="js">
-{`const workerOptions2 = \{
+{`const secondaryWorkerOptions = \{
     subscriptionName,
     strategy: "WaitForFree",
     documentType: Order
 \};
 
-const worker2 = documentStore.subscriptions.getSubscriptionWorker(workerOptions2);
+const secondaryWorker = documentStore.subscriptions.getSubscriptionWorker(secondaryWorkerOptions);
 
-worker2.on("batch", (batch, callback) => \{
+secondaryWorker.on("batch", (batch, callback) => \{
     // your logic
     callback();
 \});
 
-worker2.on("error", err => \{
+secondaryWorker.on("error", err => \{
     // retry
 \});
 `}
