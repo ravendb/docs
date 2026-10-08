@@ -146,19 +146,42 @@ Task Run(Func<SubscriptionBatch<T>, Task> processDocuments,
 |--------------------------|-----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **Items**                | `List<SubscriptionBatch<T>.Item>` | List of items in the batch.<br/>See [SubscriptionBatch&lt;T&gt;.Item](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatchtitem) below. |
 | **NumberOfItemsInBatch** | `int`                             | Number of items in the batch.                                                                                                                                          |
+| **LastSentChangeVectorInBatch** | `string` | The change vector of the last item in the batch.<br/>The worker acknowledges the batch to the server with this value, so do not change it. |
 
 | Method Signature       | Return value            | Description                                                                                                       |
 |------------------------|-------------------------|-------------------------------------------------------------------------------------------------------------------|
 | **OpenSession()**      | `IDocumentSession`      | Open a new document session that tracks all items and their included items within the current batch.              |
+| **OpenSession(SessionOptions options)** | `IDocumentSession` | Open a new document session with the given [session options](../../../../client-api/session/opening-a-session.mdx#session-options). |
 | **OpenAsyncSession()** | `IAsyncDocumentSession` | Open a new asynchronous document session that tracks all items and their included items within the current batch. |
+| **OpenAsyncSession(SessionOptions options)** | `IAsyncDocumentSession` | Open a new asynchronous document session with the given [session options](../../../../client-api/session/opening-a-session.mdx#session-options). |
+
+<Admonition type="note" title="">
+
+* Do not set `Database` or `RequestExecutor` in the session options:
+  the session always uses the subscription's database and the node the worker is connected to.
+  Setting either of them, or a transaction mode other than `SingleNode`, throws an exception.
+
+* The session does not fail over to other nodes. If the node the worker is connected to fails while your code uses
+  the session, the session's requests throw an exception, which reaches your batch-processing code
+  (see [Batch processing execution failures](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#batch-processing-execution-failures)).
+
+* You can open only one session per batch. A second call to `OpenSession` or `OpenAsyncSession` throws an exception.
+
+</Admonition>
 
 <Admonition type="info" title="">
 
 ##### Subscription worker connectivity
 
-As long as there is no exception, the worker will continue addressing the same server that the first batch was received from.  
-If the worker fails to reach that node, it will try to [failover](../../../../client-api/configuration/load-balance/overview.mdx) to another node from the session's topology list.  
-The node that the worker succeeded connecting to, will inform the worker which node is currently responsible for data subscriptions.  
+* The worker first contacts one of the database group's nodes. If this node does not run the subscription task,
+  the node redirects the worker to the node that does.  
+  The worker keeps using the node that runs the task as long as no error occurs.
+
+* If the task is pinned to its mentor node, the worker is always redirected to the mentor node,
+  so while the mentor node is down the worker cannot process the subscription.
+
+* If the worker loses the connection and cannot reach the node again, the worker tries the database group's
+  other nodes in turn. A node that does not run the task redirects the worker to the node that does.
 
 </Admonition>
 
@@ -236,11 +259,11 @@ Using it outside this scope may cause unexpected behavior.
 
 | Parameter   |                        |                                          |
 |-------------|------------------------|------------------------------------------|
-| **batch**   | `SubscriptionBatch<T>` | The batch process which was acknowledged |
+| **batch**   | `SubscriptionBatch<T>` | The acknowledged batch. |
 
 | Return value   |                                                                                                         |
 |----------------|---------------------------------------------------------------------------------------------------------|
-| `Task`         | Task for which the worker will wait for the event processing to be finished (for async functions, etc.) |
+| `Task`         | The worker passes the next batch to your code only after this task completes. |
 
 </Admonition>
 
