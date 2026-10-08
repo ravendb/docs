@@ -54,14 +54,22 @@ When an unexpected error arises, the worker will attempt to **reconnect to the s
 
 However, there are several conditions under which the worker will stop its operation but will Not attempt to reconnect:
 
-* The subscription no longer exists or has been deleted.
-* Another worker has taken control of the subscription (see [connection strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#available-worker-strategies)).
-* The worker is unable to connect to any of the servers.
-* The worker could not receive the node responsible for the task  
-  (this can happen when there is no leader in the cluster).
-* An authorization exception occurred.
-* An exception occurred during the connection establishment phase.
-* The database doesn't exist.
+* The subscription does not exist (e.g., it was deleted).  
+* The subscription is in use by another worker, or another worker took it over
+  (see [Worker strategies](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies)).  
+* The worker uses the `Concurrent` strategy on a sharded database, which does not support concurrent subscriptions
+  (see [Unsupported Features](../../../../sharding/subscriptions.mdx#unsupported-features)).  
+* The subscription was disabled, or the worker's connection was dropped
+  (see [Drop connection](../../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#drop-connection)).  
+* The worker failed to connect for longer than `MaxErroneousPeriod`.  
+* The subscription cannot run in its current state (e.g., a revisions subscription on a collection
+  whose revisions are disabled).  
+* An authorization error occurred.  
+* The database does not exist.  
+* Your batch-processing code threw an exception, and `IgnoreSubscriberErrors` is not set
+  (see [Batch processing execution failures](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#batch-processing-execution-failures)).  
+* The worker runs with `CloseWhenNoDocsLeft` and no documents are left
+  (see [Subscription that ends when no documents are left](../../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-ends-when-no-documents-are-left)).  
 
 </Admonition>
 
@@ -111,6 +119,8 @@ object control the behavior of a worker attempting to reconnect with the server:
 <Admonition type="info" title="Timing out" id="timing-out" href="#timing-out">
 
 A worker will time out after losing its connectivity with the server for a given time period.  
+When the timeout period passes, the worker treats the connection as broken and tries to reconnect
+(see [Reconnecting](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#reconnecting)).  
 
 * The timeout period can be set using the `ConnectionStreamTimeout` option. E.g.:  
 <TabItem value="worker_timeout_minimal_sample" label="worker_timeout_minimal_sample">
@@ -122,7 +132,8 @@ options.ConnectionStreamTimeout = TimeSpan.FromSeconds(45);
 `}
 </CodeBlock>
 </TabItem>
-* Default timeout period: 30 second  
+* Default timeout period: 30 seconds  
+* Minimum timeout period: 15 seconds  
 
 </Admonition>
 
@@ -131,7 +142,8 @@ options.ConnectionStreamTimeout = TimeSpan.FromSeconds(45);
 `OnUnexpectedSubscriptionError` is the event that is triggered when a connection failure occurs between the subscription worker and the server,
 resulting in an unexpected exception.  
 When this happens, the worker will automatically attempt to reconnect.  
-This event is useful for logging these unexpected exceptions.
+This event is useful for logging these unexpected exceptions.  
+To learn about the worker's other events, see [Events](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#events).
 
 </Admonition>
 
