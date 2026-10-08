@@ -413,7 +413,7 @@ subscriptionCreationOptions.setName("My dynamic subscription");
 subscriptionCreationOptions.setQuery(
     "from Orders as o\n" +
     "select {\n" +
-    "    DynamicField_1: 'Company: ' + o.Company + ' Employee: ' + o.Employee\n" +
+    "    DynamicField: 'Company: ' + o.Company + ' Employee: ' + o.Employee\n" +
     "}");
 
 // Create the subscription worker that will consume the documents:
@@ -426,7 +426,7 @@ worker.run(x -> {
         ObjectNode result = item.getResult();
 
         // Access the dynamic field in the document
-        processItem(result.get("DynamicField_1")); // call your custom method
+        processItem(result.get("DynamicField")); // call your custom method
     }
 });
 ```
@@ -443,6 +443,25 @@ Set `closeWhenNoDocsLeft` to `true`; the worker then throws a `SubscriptionClose
 it finishes.
 
 ```java
+// Create the subscription task on the server:
+SubscriptionCreationOptions subscriptionCreationOptions = new SubscriptionCreationOptions();
+subscriptionCreationOptions.setQuery(
+    "declare function getOrderLinesSum(doc) {\n" +
+    "    var sum = 0;\n" +
+    "    for (var i in doc.Lines) {\n" +
+    "        sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;\n" +
+    "    }\n" +
+    "    return sum;\n" +
+    "}\n" +
+    "from Orders as o\n" +
+    "where getOrderLinesSum(o) > 10000\n" +
+    "select {\n" +
+    "    OrderId: id(o),\n" +
+    "    Company: load(o.Company)\n" +
+    "}");
+String subscriptionName = store.subscriptions().create(subscriptionCreationOptions);
+
+// Create the subscription worker that will consume the documents:
 SubscriptionWorkerOptions options = new SubscriptionWorkerOptions(subscriptionName);
 
 // Stop when there are no more documents left to send,
@@ -458,7 +477,12 @@ try {
             sendThankYouNoteToCompany(item.getResult()); // call your custom method
         }
     }).get();
-} catch (SubscriptionClosedException e) {
+} catch (Exception e) {
+    // 'get' wraps the worker's exception, so unwrap it before checking its type
+    RuntimeException cause = ExceptionsUtils.unwrapException(e);
+    if (!(cause instanceof SubscriptionClosedException)) {
+        throw cause;
+    }
     // That's expected, no more documents to process
 }
 ```
@@ -513,17 +537,20 @@ connection; the secondary, using `WAIT_FOR_FREE`, waits to take over if the prim
 The primary worker:
 
 ```java
-SubscriptionWorkerOptions options1 = new SubscriptionWorkerOptions(subscriptionName);
-options1.setStrategy(SubscriptionOpeningStrategy.TAKE_OVER);
-SubscriptionWorker<Order> worker1 = store.subscriptions().getSubscriptionWorker(Order.class, options1);
-
 while (true) {
+    // Create a new worker for each attempt: a worker cannot run again once run was called
+    SubscriptionWorkerOptions options1 = new SubscriptionWorkerOptions(subscriptionName);
+    options1.setStrategy(SubscriptionOpeningStrategy.TAKE_OVER);
+    SubscriptionWorker<Order> worker1 = store.subscriptions().getSubscriptionWorker(Order.class, options1);
+
     try {
         worker1.run(x -> {
             // your logic
-        });
+        }).get();
     } catch (Exception e) {
         // retry
+    } finally {
+        worker1.close();
     }
 }
 ```
@@ -533,17 +560,20 @@ while (true) {
 The secondary worker:
 
 ```java
-SubscriptionWorkerOptions options2 = new SubscriptionWorkerOptions(subscriptionName);
-options2.setStrategy(SubscriptionOpeningStrategy.WAIT_FOR_FREE);
-SubscriptionWorker<Order> worker2 = store.subscriptions().getSubscriptionWorker(Order.class, options2);
-
 while (true) {
+    // Create a new worker for each attempt: a worker cannot run again once run was called
+    SubscriptionWorkerOptions options2 = new SubscriptionWorkerOptions(subscriptionName);
+    options2.setStrategy(SubscriptionOpeningStrategy.WAIT_FOR_FREE);
+    SubscriptionWorker<Order> worker2 = store.subscriptions().getSubscriptionWorker(Order.class, options2);
+
     try {
         worker2.run(x -> {
             // your logic
-        });
+        }).get();
     } catch (Exception e) {
         // retry
+    } finally {
+        worker2.close();
     }
 }
 ```

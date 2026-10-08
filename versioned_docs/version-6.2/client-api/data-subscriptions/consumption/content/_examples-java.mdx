@@ -155,14 +155,14 @@ SubscriptionCreationOptions subscriptionCreationOptions = new SubscriptionCreati
 subscriptionCreationOptions.setName("My dynamic subscription");
 subscriptionCreationOptions.setQuery("from Orders as o \\n" +
     "select \{ \\n" +
-    "   DynamicField_1: 'Company:' + o.Company + ' Employee: ' + o.Employee \\n" +
+    "   DynamicField: 'Company:' + o.Company + ' Employee: ' + o.Employee \\n" +
     "\}");
 
 SubscriptionWorker<ObjectNode> worker = store.subscriptions().getSubscriptionWorker(subscriptionName);
 worker.run(x -> \{
     for (SubscriptionBatch.Item<ObjectNode> item : x.getItems()) \{
         ObjectNode result = item.getResult();
-        raiseNotification(result.get("DynamicField_1"));
+        raiseNotification(result.get("DynamicField"));
     \}
 \});
 `}

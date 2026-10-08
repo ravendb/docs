@@ -71,6 +71,31 @@ so the server can keep track of the subscription's progress and provide the next
 The `Run` method returns a task that stays alive while the worker is processing. If processing is aborted,
 this task completes with an exception.
 
+<Admonition type="info" title="Processing batches asynchronously">
+
+<br />
+
+Processing batches **synchronously** (by passing `Run` a synchronous function) may delay other operations your
+application is running.  
+When your batch-processing code performs an operation that waits for an external resource (e.g., saving changes
+to the server through the batch's session), the thread that runs your code is blocked until the operation
+completes, and other operations cannot use this thread meanwhile.  
+When many threads are blocked this way (e.g., when several workers wait at the same time), other operations may
+have to wait for a free thread.
+
+Processing batches **asynchronously** frees the thread while an operation that waits for an external resource
+is in progress, so other operations can use the thread.  
+To process batches asynchronously, pass `Run` an `async` function that awaits asynchronous methods
+(like the `LoadAsync` and `SaveChangesAsync` methods of a session opened with `batch.OpenAsyncSession`).  
+See, for instance, the **Async** tab of the
+[processing documents in a session](../../data-subscriptions/consuming-subscription.mdx#example-processing-documents-in-a-session)
+example.
+
+Whether you process batches synchronously or asynchronously, the worker passes the next batch to your code only
+after your code finishes processing the current batch.
+
+</Admonition>
+
 </Panel>
 
 <Panel heading="Node connection and failover">
@@ -479,8 +504,11 @@ In this example, the subscription sends to the worker `Orders` that have no ship
 The worker sets each document's `ShippedAt` field and saves it back through a session.
 
 <Admonition type="info" title="">
-Open the session using `batch.OpenSession`, not `store.OpenSession`.
+Open the session using `batch.OpenSession` or `batch.OpenAsyncSession`, not `store.OpenSession` or `store.OpenAsyncSession`.
 </Admonition>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
 
 ```csharp
 // Create the subscription task on the server:
@@ -508,6 +536,39 @@ var subscriptionRuntimeTask = subscriptionWorker.Run(batch =>
 });
 ```
 
+</TabItem>
+<TabItem value="Async" label="Async">
+
+```csharp
+// Create the subscription task on the server:
+var subscriptionName = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+{
+    Query = @"from Orders as o where o.ShippedAt = null"
+});
+
+// Create the subscription worker that will consume the documents:
+var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
+// Pass an async function, so the thread is not blocked while your code awaits the server
+var subscriptionRuntimeTask = subscriptionWorker.Run(async batch =>
+{
+    // Open an asynchronous session using 'batch.OpenAsyncSession'
+    using (var session = batch.OpenAsyncSession())
+    {
+        foreach (var order in batch.Items.Select(x => x.Result))
+        {
+            TransferOrderToShipmentCompany(order); // call your custom method
+            order.ShippedAt = DateTime.UtcNow;     // update the document field
+        }
+
+        // Save the updated Order documents
+        await session.SaveChangesAsync();
+    }
+});
+```
+
+</TabItem>
+</Tabs>
+
 </ContentFrame>
 
 <ContentFrame>
@@ -524,7 +585,7 @@ store.Subscriptions.Create(new SubscriptionCreationOptions<Order>()
 {
     Name = subscriptionName,
     Projection = order =>
-        new { DynamicField_1 = "Company: " + order.Company + " Employee: " + order.Employee }
+        new { DynamicField = "Company: " + order.Company + " Employee: " + order.Employee }
 });
 
 // Create the subscription worker that will consume the documents:
@@ -534,7 +595,7 @@ var subscriptionRuntimeTask = subscriptionWorker.Run(batch =>
     foreach (var item in batch.Items)
     {
         // Access the dynamic field in the document
-        dynamic field = item.Result.DynamicField_1;
+        dynamic field = item.Result.DynamicField;
 
         // Call your custom method
         ProcessItem(field);
@@ -642,6 +703,9 @@ In this example, the subscription sends to the worker every `Order` and includes
 When the worker accesses an included `Product`, the product's data has already arrived in the batch,
 so the worker does not need to fetch the product from the server.
 
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+
 ```csharp
 // Create the subscription task on the server:
 var subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
@@ -671,6 +735,43 @@ var subscriptionRuntimeTask = subscriptionWorker.Run(batch =>
     }
 });
 ```
+
+</TabItem>
+<TabItem value="Async" label="Async">
+
+```csharp
+// Create the subscription task on the server:
+var subscriptionName = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+{
+    // Include the referenced Product documents for each Order document
+    Query = @"from Orders include Lines[].Product"
+});
+
+// Create the subscription worker that will consume the documents:
+var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
+// Pass an async function, so the thread is not blocked while your code awaits the server
+var subscriptionRuntimeTask = subscriptionWorker.Run(async batch =>
+{
+    // Open an asynchronous session using 'batch.OpenAsyncSession' to access the Product documents
+    using (var session = batch.OpenAsyncSession())
+    {
+        foreach (var order in batch.Items.Select(x => x.Result))
+        {
+            foreach (var orderLine in order.Lines)
+            {
+                // Calling LoadAsync will not generate a request to the server,
+                // since orderLine.Product was included in the batch
+                var product = await session.LoadAsync<Product>(orderLine.Product);
+
+                ProcessOrderAndProduct(order, product); // call your custom method
+            }
+        }
+    }
+});
+```
+
+</TabItem>
+</Tabs>
 
 </ContentFrame>
 
@@ -706,14 +807,15 @@ connection; the secondary, using `WaitForFree`, waits to take over if the primar
 The primary worker:
 
 ```csharp
-var primaryWorker = store.Subscriptions.GetSubscriptionWorker<Order>(
-    new SubscriptionWorkerOptions(subscriptionName)
-    {
-        Strategy = SubscriptionOpeningStrategy.TakeOver
-    });
-
 while (true)
 {
+    // Create a new worker for each attempt: a worker cannot run again once Run was called
+    var primaryWorker = store.Subscriptions.GetSubscriptionWorker<Order>(
+        new SubscriptionWorkerOptions(subscriptionName)
+        {
+            Strategy = SubscriptionOpeningStrategy.TakeOver
+        });
+
     try
     {
         await primaryWorker.Run(x =>
@@ -725,6 +827,10 @@ while (true)
     {
         // retry
     }
+    finally
+    {
+        primaryWorker.Dispose();
+    }
 }
 ```
 
@@ -733,14 +839,15 @@ while (true)
 The secondary worker:
 
 ```csharp
-var secondaryWorker = store.Subscriptions.GetSubscriptionWorker<Order>(
-    new SubscriptionWorkerOptions(subscriptionName)
-    {
-        Strategy = SubscriptionOpeningStrategy.WaitForFree
-    });
-
 while (true)
 {
+    // Create a new worker for each attempt: a worker cannot run again once Run was called
+    var secondaryWorker = store.Subscriptions.GetSubscriptionWorker<Order>(
+        new SubscriptionWorkerOptions(subscriptionName)
+        {
+            Strategy = SubscriptionOpeningStrategy.WaitForFree
+        });
+
     try
     {
         await secondaryWorker.Run(x =>
@@ -751,6 +858,10 @@ while (true)
     catch (Exception)
     {
         // retry
+    }
+    finally
+    {
+        secondaryWorker.Dispose();
     }
 }
 ```

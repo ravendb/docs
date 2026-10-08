@@ -50,11 +50,12 @@ If the exception is recoverable, the client retries creating the worker.
                     )
                 process_order(item.result)
 
-            # Run will complete normally if you have disposed the subscription
-            return
+        # Pass the callback to worker.run(), and block on the returned future
+        # so processing exceptions surface here
+        subscription_worker.run(_process_documents_callback).result()
 
-        # Pass the callback to worker.run()
-        subscription_worker.run(_process_documents_callback)
+        # Run will complete normally if you have disposed the subscription
+        return
 
     except Exception as e:
         logger.error(f"Failure in subscription: \{subscription_name\}", exc_info=e)
@@ -81,7 +82,7 @@ If the exception is recoverable, the client retries creating the worker.
 
         # handle this depending on subscription
         # open strategy (discussed later)
-        if e is SubscriptionInUseException:
+        if exception_type is SubscriptionInUseException:
             continue
 
         return
@@ -158,7 +159,7 @@ store.subscriptions.create_for_class(
         From Orders as o
         Select 
         \{
-            dynamic_field_1: "Company: " + o.Company + " Employee: " + o.Employee,
+            dynamic_field: "Company: " + o.Company + " Employee: " + o.Employee,
         \}
         """,
     ),
@@ -168,7 +169,7 @@ subscription_worker = store.subscriptions.get_subscription_worker_by_name(subscr
 
 def _raise_notification_callback(batch: SubscriptionBatch[Order]):
     for item in batch.items:
-        raise_notification(item.result.dynamic_field_1)
+        raise_notification(item.result.dynamic_field)
 
 _ = subscription_worker.run(_raise_notification_callback)
 `}
@@ -201,7 +202,7 @@ try:
         for item in batch.items:
             send_thank_you_note_to_employee(item.result)
 
-    high_value_orders_worker.run(_subscription_batch_callback)
+    high_value_orders_worker.run(_subscription_batch_callback).result()
 except SubscriptionClosedException:
     # that's expected
     ...
@@ -219,39 +220,30 @@ will include all the referenced _Product_ documents in the batch sent to the wor
 When the worker accesses these _Product_ documents, no additional requests will be made to the server.
 
 <TabItem value="subscription_with_includes_path_usage" label="subscription_with_includes_path_usage">
-<CodeBlock language="csharp">
-{`// Create the subscription task on the server:
-// ===========================================
+<CodeBlock language="python">
+{`# Create the subscription task on the server:
+subscription_name = store.subscriptions.create_for_options(
+    SubscriptionCreationOptions(
+        # Include the referenced Product documents for each Order document
+        query="from Orders include Lines[].Product"
+    )
+)
 
-var subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
-\{
-    // Include the referenced Product documents for each Order document
-    Query = @"from Orders include Lines[].Product"
-\});
+# Create the subscription worker that will consume the documents:
+subscription_worker = store.subscriptions.get_subscription_worker_by_name(subscription_name, Order)
 
-// Create the subscription worker that will consume the documents:
-// ===============================================================
+def _process_orders_and_products_callback(batch):
+    # Open a session using 'batch.open_session' to access the Product documents
+    with batch.open_session() as session:
+        for order in (item.result for item in batch.items):
+            for order_line in order.lines:
+                # Calling load will not generate a request to the server,
+                # since order_line["Product"] was included in the batch
+                product = session.load(order_line["Product"], Product)
 
-var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
-_ = subscriptionWorker.Run(batch =>
-\{
-    // Open a session via 'batch.OpenSession'
-    // in order to access the Product documents
-    using (var session = batch.OpenSession())
-    \{
-        foreach (var order in batch.Items.Select(x => x.Result))
-        \{
-            foreach (var orderLine in order.Lines)
-            \{
-                // Calling Load will Not generate a request to the server,
-                // because orderLine.Product was included in the batch
-                var product = session.Load<Product>(orderLine.Product);
-                
-                ProcessOrderAndProduct(order, product); // call your custom method
-            \}
-        \}
-    \}
-\});
+                process_order_and_product(order, product)  # call your custom method
+
+subscription_worker.run(_process_orders_and_products_callback)
 `}
 </CodeBlock>
 </TabItem>
@@ -260,8 +252,12 @@ _ = subscriptionWorker.Run(batch =>
 
 ## Subscription workers with failover on other nodes
 
-In this configuration, any available node will create a worker.  
-If the worker fails, another available node will take over.
+In this configuration, the same worker code runs on several machines, all using the `WAIT_FOR_FREE` strategy.  
+One worker connects to the subscription, and the other workers wait.  
+If the connected worker disconnects (e.g., when its machine goes down), one of the waiting workers connects and
+continues processing.  
+Unlike in the [primary and secondary workers](../../../../client-api/data-subscriptions/consumption/examples.mdx#primary-and-secondary-workers)
+example, a worker that reconnects after a failure does not take the connection back, but joins the waiting workers.
 
 <TabItem value="waitforfree" label="waitforfree">
 <CodeBlock language="python">
@@ -284,13 +280,19 @@ Here we create two workers:
 The primary worker:  
 <TabItem value="waiting_subscription_1" label="waiting_subscription_1">
 <CodeBlock language="python">
-{`primary_worker = store.subscriptions.get_subscription_worker(SubscriptionWorkerOptions(subscription_name, strategy=SubscriptionOpeningStrategy.TAKE_OVER), Order)
+{`while True:
+    # Create a new worker for each attempt: a worker cannot run again once run was called
+    primary_worker = store.subscriptions.get_subscription_worker(
+        SubscriptionWorkerOptions(subscription_name, strategy=SubscriptionOpeningStrategy.TAKE_OVER),
+        Order,
+    )
 
-while True:
     try:
-        run_future = primary_worker.run(lambda batch: ...) # your logic
+        primary_worker.run(lambda batch: ...).result()  # your logic
     except Exception:
-        ... # retry
+        ...  # retry
+    finally:
+        primary_worker.close(False)
 `}
 </CodeBlock>
 </TabItem>
@@ -298,13 +300,19 @@ while True:
 The secondary worker:  
 <TabItem value="waiting_subscription_2" label="waiting_subscription_2">
 <CodeBlock language="python">
-{`secondary_worker = store.subscriptions.get_subscription_worker(SubscriptionWorkerOptions(subscription_name), strategy=SubscriptionOpeningStrategy.WAIT_FOR_FREE)
+{`while True:
+    # Create a new worker for each attempt: a worker cannot run again once run was called
+    secondary_worker = store.subscriptions.get_subscription_worker(
+        SubscriptionWorkerOptions(subscription_name, strategy=SubscriptionOpeningStrategy.WAIT_FOR_FREE),
+        Order,
+    )
 
-while True:
     try:
-        run_future = secondary_worker.run(lambda batch: ...) # your logic
+        secondary_worker.run(lambda batch: ...).result()  # your logic
     except Exception:
-        ... # retry
+        ...  # retry
+    finally:
+        secondary_worker.close(False)
 `}
 </CodeBlock>
 </TabItem>
