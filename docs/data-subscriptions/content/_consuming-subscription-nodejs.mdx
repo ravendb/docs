@@ -29,6 +29,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Processing dynamic objects](../../data-subscriptions/consuming-subscription.mdx#example-processing-dynamic-objects)
       * [End when no documents are left](../../data-subscriptions/consuming-subscription.mdx#example-end-when-no-documents-are-left)
       * [Including documents in the batch](../../data-subscriptions/consuming-subscription.mdx#example-including-documents-in-the-batch)
+      * [Standby workers on several machines](../../data-subscriptions/consuming-subscription.mdx#example-standby-workers-on-several-machines)
       * [Primary and secondary workers](../../data-subscriptions/consuming-subscription.mdx#example-primary-and-secondary-workers)
    * [Syntax](../../data-subscriptions/consuming-subscription.mdx#syntax)
 
@@ -641,6 +642,28 @@ worker.on("batch", async (batch, callback) => {
 
 <ContentFrame>
 
+### Example: Standby workers on several machines
+
+In this example, the same worker code runs on several machines, all using the `"WaitForFree"` strategy.  
+One worker connects to the subscription, and the other workers wait.  
+If the connected worker disconnects (e.g., when its machine goes down), one of the waiting workers connects and
+continues processing.  
+Unlike in the [primary and secondary workers](../../data-subscriptions/consuming-subscription.mdx#example-primary-and-secondary-workers)
+example, a worker that reconnects after a failure does not take the connection back, but joins the waiting workers.
+
+```js
+const worker = documentStore.subscriptions.getSubscriptionWorker({
+    subscriptionName,
+    // "WaitForFree": wait and take over if the connected worker fails
+    strategy: "WaitForFree",
+    documentType: Order
+});
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
 ### Example: Primary and secondary workers
 
 In this example, the two workers form an active-standby pair: the primary, using `"TakeOver"`, establishes the
@@ -649,18 +672,18 @@ connection; the secondary, using `"WaitForFree"`, waits to take over if the prim
 The primary worker:
 
 ```js
-const worker1 = documentStore.subscriptions.getSubscriptionWorker({
+const primaryWorker = documentStore.subscriptions.getSubscriptionWorker({
     subscriptionName,
     strategy: "TakeOver",
     documentType: Order
 });
 
-worker1.on("batch", (batch, callback) => {
+primaryWorker.on("batch", (batch, callback) => {
     // your logic
     callback();
 });
 
-worker1.on("error", err => {
+primaryWorker.on("error", err => {
     // retry
 });
 ```
@@ -670,18 +693,18 @@ worker1.on("error", err => {
 The secondary worker:
 
 ```js
-const worker2 = documentStore.subscriptions.getSubscriptionWorker({
+const secondaryWorker = documentStore.subscriptions.getSubscriptionWorker({
     subscriptionName,
     strategy: "WaitForFree",
     documentType: Order
 });
 
-worker2.on("batch", (batch, callback) => {
+secondaryWorker.on("batch", (batch, callback) => {
     // your logic
     callback();
 });
 
-worker2.on("error", err => {
+secondaryWorker.on("error", err => {
     // retry
 });
 ```
