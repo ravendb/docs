@@ -17,6 +17,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * In this article:
    * [Creating a subscription worker](../../data-subscriptions/consuming-subscription.mdx#creating-a-subscription-worker)
    * [Running the worker](../../data-subscriptions/consuming-subscription.mdx#running-the-worker)
+   * [Node connection and failover](../../data-subscriptions/consuming-subscription.mdx#node-connection-and-failover)
    * [At-least-once delivery](../../data-subscriptions/consuming-subscription.mdx#at-least-once-delivery)
    * [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)
    * [Error handling](../../data-subscriptions/consuming-subscription.mdx#error-handling)
@@ -68,6 +69,20 @@ so the server can keep track of the subscription's progress and provide the next
 
 The `run` method returns a `CompletableFuture` that stays alive while the worker is processing. If processing is
 aborted, this future completes with an exception.
+
+</Panel>
+
+<Panel heading="Node connection and failover">
+
+* The worker first contacts one of the database group's nodes. If this node does not run the subscription task,
+  the node redirects the worker to the node that does.  
+  The worker keeps using the node that runs the task as long as no error occurs.
+
+* If the task is pinned to its mentor node, the worker is always redirected to the mentor node,
+  so while the mentor node is down the worker cannot process the subscription.
+
+* If the worker loses the connection and cannot reach the node again, the worker tries the database group's
+  other nodes in turn. A node that does not run the task redirects the worker to the node that does.
 
 </Panel>
 
@@ -133,7 +148,8 @@ and this mode holds until all workers disconnect:
 
 ### Connection failures
 
-When an error interrupts the worker's communication with the server, the worker tries to reconnect.  
+When an error interrupts the worker's communication with the server, the worker tries to reconnect
+(see [Node connection and failover](../../data-subscriptions/consuming-subscription.mdx#node-connection-and-failover)).  
 The worker keeps retrying even when it cannot reach any server, or when the cluster has no leader to
 name the node responsible for the subscription, until the period set in `maxErroneousPeriod` passes
 (see [Reconnection and timeouts](../../data-subscriptions/consuming-subscription.mdx#reconnection-and-timeouts)).
@@ -646,23 +662,35 @@ public enum SubscriptionOpeningStrategy {
 <Tabs groupId='batchClasses'>
 <TabItem value="batch" label="SubscriptionBatch&lt;T&gt;">
 
-The batch passed to your `run` delegate.
+The batch passed to your `run` delegate (see [Running the worker](#running-the-worker)).
 
 | Property | Type | Description |
 |----------|------|-------------|
 | **items** | `List<SubscriptionBatch<T>.Item>` | The items in the batch. |
 | **numberOfItemsInBatch** | `int` | The number of items in the batch. |
+| **lastSentChangeVectorInBatch** | `String` | The change vector of the last item in the batch.<br />The worker acknowledges the batch to the server with this value, so do not change it. |
 
 | Method | Return value | Description |
 |--------|--------------|-------------|
+| **getNumberOfIncludes()** | `int` | `1` if the server sent included documents with the batch, `0` if it did not. |
 | **openSession()** | `IDocumentSession` | Opens a session that tracks all items and their included items in the current batch. |
+| **openSession(SessionOptions options)** | `IDocumentSession` | Opens a session with the given [session options](../../client-api/session/opening-a-session.mdx#options). |
 
-<Admonition type="info" title="">
-As long as no exception occurs, the worker keeps addressing the server it received the first
-batch from.  
-If it cannot reach that node, it fails over to another node from the session's topology, see
-[load balancing](../../client-api/configuration/load-balance/overview.mdx). The node it reaches
-then tells it which node currently handles data subscriptions.
+<Admonition type="note" title="">
+
+* Do not set `database` or `requestExecutor` in the session options:
+  the session always uses the subscription's database and the node the worker is connected to.
+  Setting either of them throws an exception.
+
+* Set the transaction mode in the session options to `SINGLE_NODE` explicitly.
+  Any other transaction mode throws an exception, and so does leaving the transaction mode unset.
+
+* The session does not fail over to other nodes. If the node the worker is connected to fails while your code uses
+  the session, the session's requests throw an exception, which reaches your batch-processing code
+  (see [Errors while processing a batch](#errors-while-processing-a-batch)).
+
+* You can open only one session per batch. A second call to `openSession` throws an exception.
+
 </Admonition>
 
 </TabItem>
