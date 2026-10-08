@@ -53,14 +53,18 @@ When an unexpected error arises, the worker will attempt to **reconnect to the s
 
 However, there are several conditions under which the worker will stop its operation but will Not attempt to reconnect:
 
-* The subscription no longer exists or has been deleted.
-* Another worker has taken control of the subscription (see [connection strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#available-worker-strategies)).
-* The worker is unable to connect to any of the servers.
-* The worker could not receive the node responsible for the task  
-  (this can happen when there is no leader in the cluster).
-* An authorization exception occurred.
-* An exception occurred during the connection establishment phase.
-* The database doesn't exist.
+* The subscription does not exist (e.g., it was deleted).  
+* The subscription is in use by another worker, or another worker took it over
+  (see [Worker strategies](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies)).  
+* The subscription was disabled, or the worker's connection was dropped.  
+* The worker cannot reach any of the servers.  
+* The worker failed to connect for longer than `max_erroneous_period`.  
+* An authorization error occurred.  
+* The database does not exist.  
+* Your batch-processing code raised an exception, and `ignore_subscriber_errors` is not set
+  (see [Batch processing execution failures](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#batch-processing-execution-failures)).  
+* The worker runs with `close_when_no_docs_left` and no documents are left
+  (see [Subscription that ends when no documents are left](../../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-ends-when-no-documents-are-left)).  
 
 </Admonition>
 
@@ -110,12 +114,13 @@ object control the behavior of a worker attempting to reconnect with the server:
 
 </Admonition>
 
-<Admonition type="info" title="`on_unexpected_subscription_error`" id="on_unexpected_subscription_error" href="#on_unexpected_subscription_error">
+<Admonition type="info" title="`add_on_unexpected_subscription_error`" id="on_unexpected_subscription_error" href="#on_unexpected_subscription_error">
 
-`on_unexpected_subscription_error` is the event that is triggered when a connection failure occurs between the subscription worker and the server,
+`add_on_unexpected_subscription_error` is the event that is triggered when a connection failure occurs between the subscription worker and the server,
 resulting in an unexpected exception.  
 When this happens, the worker will automatically attempt to reconnect.  
-This event is useful for logging these unexpected exceptions.
+This event is useful for logging these unexpected exceptions.  
+To learn about the worker's other events, see [Events](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#events).
 
 </Admonition>
 
