@@ -204,7 +204,7 @@ store.Subscriptions.Create(new SubscriptionCreationOptions<Order>()
 \{
     Name = subscriptionName,
     Projection = order => 
-        new \{ DynanamicField_1 = "Company: " + order.Company + " Employee: " + order.Employee \}
+        new \{ DynamicField = "Company: " + order.Company + " Employee: " + order.Employee \}
 \});
 
 // Create the subscription worker that will consume the documents:
@@ -216,7 +216,7 @@ _ = subscriptionWorker.Run(batch =>
     foreach (var item in batch.Items)
     \{
         // Access the dynamic field in the document
-        dynamic field = item.Result.DynanamicField_1;
+        dynamic field = item.Result.DynamicField;
         
         // Call your custom method
         ProcessItem(field); 
@@ -368,8 +368,12 @@ _ = subscriptionWorker.Run(batch =>
 
 ## Subscription workers with failover on other nodes
 
-In this configuration, any available node will create a worker.  
-If the worker fails, another available node will take over.
+In this configuration, the same worker code runs on several machines, all using the `WaitForFree` strategy.  
+One worker connects to the subscription, and the other workers wait.  
+If the connected worker disconnects (e.g., when its machine goes down), one of the waiting workers connects and
+continues processing.  
+Unlike in the [primary and secondary workers](../../../../client-api/data-subscriptions/consumption/examples.mdx#primary-and-secondary-workers)
+example, a worker that reconnects after a failure does not take the connection back, but joins the waiting workers.
 
 <TabItem value="waitforfree" label="waitforfree">
 <CodeBlock language="csharp">
@@ -394,14 +398,15 @@ Here we create two workers:
 The primary worker:  
 <TabItem value="waiting_subscription_1" label="waiting_subscription_1">
 <CodeBlock language="csharp">
-{`var primaryWorker = store.Subscriptions.GetSubscriptionWorker<Order>(
-    new SubscriptionWorkerOptions(subscriptionName)
+{`while (true)
 \{
-    Strategy = SubscriptionOpeningStrategy.TakeOver
-\});
+    // Create a new worker for each attempt: a worker cannot run again once Run was called
+    var primaryWorker = store.Subscriptions.GetSubscriptionWorker<Order>(
+        new SubscriptionWorkerOptions(subscriptionName)
+        \{
+            Strategy = SubscriptionOpeningStrategy.TakeOver
+        \});
 
-while (true)
-\{
     try
     \{
         await primaryWorker.Run(x =>
@@ -413,6 +418,10 @@ while (true)
     \{
         // retry
     \}
+    finally
+    \{
+        primaryWorker.Dispose();
+    \}
 \}
 `}
 </CodeBlock>
@@ -421,14 +430,15 @@ while (true)
 The secondary worker:  
 <TabItem value="waiting_subscription_2" label="waiting_subscription_2">
 <CodeBlock language="csharp">
-{`var secondaryWorker = store.Subscriptions.GetSubscriptionWorker<Order>(
-    new SubscriptionWorkerOptions(subscriptionName)
+{`while (true)
 \{
-    Strategy = SubscriptionOpeningStrategy.WaitForFree
-\});
+    // Create a new worker for each attempt: a worker cannot run again once Run was called
+    var secondaryWorker = store.Subscriptions.GetSubscriptionWorker<Order>(
+        new SubscriptionWorkerOptions(subscriptionName)
+        \{
+            Strategy = SubscriptionOpeningStrategy.WaitForFree
+        \});
 
-while (true)
-\{
     try
     \{
         await secondaryWorker.Run(x =>
@@ -439,6 +449,10 @@ while (true)
     catch (Exception)
     \{
         // retry
+    \}
+    finally
+    \{
+        secondaryWorker.Dispose();
     \}
 \}
 `}

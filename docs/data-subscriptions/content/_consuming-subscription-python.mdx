@@ -27,6 +27,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Processing documents in a session](../../data-subscriptions/consuming-subscription.mdx#example-processing-documents-in-a-session)
       * [Processing dynamic objects](../../data-subscriptions/consuming-subscription.mdx#example-processing-dynamic-objects)
       * [End when no documents are left](../../data-subscriptions/consuming-subscription.mdx#example-end-when-no-documents-are-left)
+      * [Including documents in the batch](../../data-subscriptions/consuming-subscription.mdx#example-including-documents-in-the-batch)
       * [Standby workers on several machines](../../data-subscriptions/consuming-subscription.mdx#example-standby-workers-on-several-machines)
       * [Primary and secondary workers](../../data-subscriptions/consuming-subscription.mdx#example-primary-and-secondary-workers)
    * [Syntax](../../data-subscriptions/consuming-subscription.mdx#syntax)
@@ -355,7 +356,7 @@ store.subscriptions.create_for_class(
         query="""
         from Orders as o
         select {
-            dynamic_field_1: "Company: " + o.Company + " Employee: " + o.Employee
+            dynamic_field: "Company: " + o.Company + " Employee: " + o.Employee
         }
         """,
     ),
@@ -367,7 +368,7 @@ subscription_worker = store.subscriptions.get_subscription_worker_by_name(subscr
 def _raise_notification_callback(batch):
     for item in batch.items:
         # Access the dynamic field in the document
-        raise_notification(item.result.dynamic_field_1)  # call your custom method
+        raise_notification(item.result.dynamic_field)  # call your custom method
 
 subscription_worker.run(_raise_notification_callback)
 ```
@@ -384,6 +385,29 @@ Set `close_when_no_docs_left` to `True`; the worker then throws a `SubscriptionC
 it finishes.
 
 ```python
+# Create the subscription task on the server:
+subscription_name = store.subscriptions.create_for_options(
+    SubscriptionCreationOptions(
+        query="""
+        declare function getOrderLinesSum(doc) {
+            var sum = 0;
+            for (var i in doc.Lines) {
+                sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;
+            }
+            return sum;
+        }
+
+        from Orders as o
+        where getOrderLinesSum(o) > 10000
+        select {
+            OrderId: id(o),
+            Company: load(o.Company)
+        }
+        """
+    )
+)
+
+# Create the subscription worker that will consume the documents:
 high_value_orders_worker = store.subscriptions.get_subscription_worker(
     SubscriptionWorkerOptions(
         subscription_name,
@@ -403,6 +427,43 @@ try:
 except SubscriptionClosedException:
     # That's expected, no more documents to process
     ...
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Including documents in the batch
+
+In this example, the subscription sends to the worker every `Order` and includes in the batch
+`Product` documents referenced in the order.  
+When the worker accesses an included `Product`, the product's data has already arrived in the batch,
+so the worker does not need to fetch the product from the server.
+
+```python
+# Create the subscription task on the server:
+subscription_name = store.subscriptions.create_for_options(
+    SubscriptionCreationOptions(
+        # Include the referenced Product documents for each Order document
+        query="from Orders include Lines[].Product"
+    )
+)
+
+# Create the subscription worker that will consume the documents:
+subscription_worker = store.subscriptions.get_subscription_worker_by_name(subscription_name, Order)
+
+def _process_orders_and_products_callback(batch):
+    # Open a session using 'batch.open_session' to access the Product documents
+    with batch.open_session() as session:
+        for order in (item.result for item in batch.items):
+            for order_line in order.lines:
+                # Calling load will not generate a request to the server,
+                # since order_line["Product"] was included in the batch
+                product = session.load(order_line["Product"], Product)
+
+                process_order_and_product(order, product)  # call your custom method
+
+subscription_worker.run(_process_orders_and_products_callback)
 ```
 
 </ContentFrame>
@@ -437,16 +498,19 @@ connection; the secondary, using `WAIT_FOR_FREE`, waits to take over if the prim
 The primary worker:
 
 ```python
-primary_worker = store.subscriptions.get_subscription_worker(
-    SubscriptionWorkerOptions(subscription_name, strategy=SubscriptionOpeningStrategy.TAKE_OVER),
-    Order,
-)
-
 while True:
+    # Create a new worker for each attempt: a worker cannot run again once run was called
+    primary_worker = store.subscriptions.get_subscription_worker(
+        SubscriptionWorkerOptions(subscription_name, strategy=SubscriptionOpeningStrategy.TAKE_OVER),
+        Order,
+    )
+
     try:
         primary_worker.run(lambda batch: ...).result()  # your logic
     except Exception:
         ...  # retry
+    finally:
+        primary_worker.close(False)
 ```
 
 <br />
@@ -454,16 +518,19 @@ while True:
 The secondary worker:
 
 ```python
-secondary_worker = store.subscriptions.get_subscription_worker(
-    SubscriptionWorkerOptions(subscription_name, strategy=SubscriptionOpeningStrategy.WAIT_FOR_FREE),
-    Order,
-)
-
 while True:
+    # Create a new worker for each attempt: a worker cannot run again once run was called
+    secondary_worker = store.subscriptions.get_subscription_worker(
+        SubscriptionWorkerOptions(subscription_name, strategy=SubscriptionOpeningStrategy.WAIT_FOR_FREE),
+        Order,
+    )
+
     try:
         secondary_worker.run(lambda batch: ...).result()  # your logic
     except Exception:
         ...  # retry
+    finally:
+        secondary_worker.close(False)
 ```
 
 </ContentFrame>

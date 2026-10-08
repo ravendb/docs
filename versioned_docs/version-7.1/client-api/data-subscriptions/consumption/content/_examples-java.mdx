@@ -133,8 +133,13 @@ try \{
         for (SubscriptionBatch.Item<OrderAndCompany> item : batch.getItems()) \{
             sendThankYouNoteToEmployee(item.getResult());
         \}
-    \});
-\} catch (SubscriptionClosedException e) \{
+    \}).get();
+\} catch (Exception e) \{
+    // 'get' wraps the worker's exception, so unwrap it before checking its type
+    RuntimeException cause = ExceptionsUtils.unwrapException(e);
+    if (!(cause instanceof SubscriptionClosedException)) \{
+        throw cause;
+    \}
     //that's expected
 \}
 `}
@@ -155,14 +160,14 @@ SubscriptionCreationOptions subscriptionCreationOptions = new SubscriptionCreati
 subscriptionCreationOptions.setName("My dynamic subscription");
 subscriptionCreationOptions.setQuery("from Orders as o \\n" +
     "select \{ \\n" +
-    "   DynamicField_1: 'Company:' + o.Company + ' Employee: ' + o.Employee \\n" +
+    "   DynamicField: 'Company:' + o.Company + ' Employee: ' + o.Employee \\n" +
     "\}");
 
 SubscriptionWorker<ObjectNode> worker = store.subscriptions().getSubscriptionWorker(subscriptionName);
 worker.run(x -> \{
     for (SubscriptionBatch.Item<ObjectNode> item : x.getItems()) \{
         ObjectNode result = item.getResult();
-        raiseNotification(result.get("DynamicField_1"));
+        raiseNotification(result.get("DynamicField"));
     \}
 \});
 `}
@@ -248,19 +253,20 @@ The primary worker:
 
 <TabItem value="waiting_subscription_1" label="waiting_subscription_1">
 <CodeBlock language="java">
-{`SubscriptionWorkerOptions options1 = new SubscriptionWorkerOptions(subscriptionName);
-options1.setStrategy(SubscriptionOpeningStrategy.TAKE_OVER);
-SubscriptionWorker<Order> worker1 = store.subscriptions().getSubscriptionWorker(Order.class, options1);
+{`while (true) \{
+    // Create a new worker for each attempt: a worker cannot run again once run was called
+    SubscriptionWorkerOptions options1 = new SubscriptionWorkerOptions(subscriptionName);
+    options1.setStrategy(SubscriptionOpeningStrategy.TAKE_OVER);
+    SubscriptionWorker<Order> worker1 = store.subscriptions().getSubscriptionWorker(Order.class, options1);
 
-
-while (true) \{
     try \{
-        worker1
-            .run(x -> \{
-                // your logic
-            \});
+        worker1.run(x -> \{
+            // your logic
+        \}).get();
     \} catch (Exception e) \{
         // retry
+    \} finally \{
+        worker1.close();
     \}
 \}
 `}
@@ -271,18 +277,20 @@ The secondary worker:
 
 <TabItem value="waiting_subscription_2" label="waiting_subscription_2">
 <CodeBlock language="java">
-{`SubscriptionWorkerOptions options2 = new SubscriptionWorkerOptions(subscriptionName);
-options2.setStrategy(SubscriptionOpeningStrategy.WAIT_FOR_FREE);
-SubscriptionWorker<Order> worker2 = store.subscriptions().getSubscriptionWorker(Order.class, options2);
+{`while (true) \{
+    // Create a new worker for each attempt: a worker cannot run again once run was called
+    SubscriptionWorkerOptions options2 = new SubscriptionWorkerOptions(subscriptionName);
+    options2.setStrategy(SubscriptionOpeningStrategy.WAIT_FOR_FREE);
+    SubscriptionWorker<Order> worker2 = store.subscriptions().getSubscriptionWorker(Order.class, options2);
 
-while (true) \{
     try \{
-        worker2
-            .run(x -> \{
-                // your logic
-            \});
+        worker2.run(x -> \{
+            // your logic
+        \}).get();
     \} catch (Exception e) \{
         // retry
+    \} finally \{
+        worker2.close();
     \}
 \}
 `}
