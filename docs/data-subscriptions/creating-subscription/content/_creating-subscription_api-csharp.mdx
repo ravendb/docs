@@ -18,9 +18,13 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [Creating a subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#creating-a-subscription)
    * [Subscription name](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#subscription-name)
    * [Responsible node](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#responsible-node)
+   * [Starting point](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#starting-point)
    * [Updating a subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#updating-a-subscription)
       * [Updating a subscription defined using typed expressions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#updating-a-subscription-defined-using-typed-expressions)
    * [Subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#subscription-query)
+      * [Supported query parts](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#supported-query-parts)
+      * [Unsupported RQL features](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#unsupported-rql-features)
+      * [Paths in a subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#paths-in-a-subscription-query)
    * [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples)
       * [Sending an entire collection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-sending-an-entire-collection)
       * [Filtering documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-documents)
@@ -34,6 +38,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Updating an existing subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-updating-an-existing-subscription)
       * [Updating a subscription defined using typed expressions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-updating-a-subscription-defined-using-typed-expressions)
    * [Syntax](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#syntax)
+      * [Include builder](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#include-builder)
 
 </Admonition>
 
@@ -151,6 +156,35 @@ is back online.
 
 </Panel>
 
+<Panel heading="Starting point">
+
+The `ChangeVector` property of the [subscription creation options](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) sets the point from which the
+subscription starts sending documents to the worker.  
+`ChangeVector` accepts these values:
+
+* **`"BeginningOfTime"`**  
+  The subscription sends all documents matching its query, regardless of their creation or modification time.  
+  The subscription behaves the same way when `ChangeVector` is not set.
+* **`"LastDocument"`**  
+  The subscription sends only documents created or modified after the subscription's creation.  
+  This is useful for an ad-hoc process that needs only recent changes.
+* **An actual change vector**  
+  The subscription starts from the point this change vector marks.
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions<Order>
+{
+    // Send only documents created or modified after the subscription's creation
+    ChangeVector = "LastDocument"
+});
+```
+
+<br />
+
+To change the starting point of an existing subscription, see [Updating a subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#updating-a-subscription).
+
+</Panel>
+
 <Panel heading="Updating a subscription">
 
 You can change an existing subscription's definition using the [Update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods) method.  
@@ -181,6 +215,10 @@ store.Subscriptions.Update(new SubscriptionUpdateOptions
 ```
 
 <br />
+
+You can also move the subscription's [starting point](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#starting-point) when you update it.  
+Set `ChangeVector` to `"BeginningOfTime"` to process all matching documents again, or to `"LastDocument"` to send only
+documents created or modified after the update.
 
 For a full update example, see the [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples) below.
 
@@ -226,6 +264,15 @@ definition (e.g., after you change a filter in your code), as shown in the [exam
 <Panel heading="Subscription query">
 
 Every subscription is ultimately expressed as an RQL statement.  
+Although a subscription query has an RQL-like structure, it supports only the `declare`, `from`, `as`,
+`load`, `where`, `select`, and `include` keywords.  
+To create a subscription over document revisions, see
+[Revisions support](../../../data-subscriptions/revisions-support.mdx).
+
+<ContentFrame>
+
+### Supported query parts
+
 A subscription query can have these parts:
 
 * **A `declare` functions section**, as in ordinary RQL.  
@@ -233,20 +280,44 @@ A subscription query can have these parts:
 * **A `from` clause** naming the document source, for example `from Orders`.  
   This clause can address only a collection; indexes are not supported.  
 * **A `where` clause** deciding the documents the server sends to the worker.  
-  This clause supports RQL equality operators (`=`, `==`), plain JavaScript expressions,
-  and calls to declared functions, so you can express complex filtering.  
-  Subscription RQL does not support RQL's search keywords.  
+  This clause supports:
+   * **Comparison operators**: `=`, `==`, `!=`, `<`, `>`, `<=`, `>=`
+   * **Logical operators**: `and`, `or`, `and not`
+   * **The `in` operator**, e.g., `o.Company in ('companies/1-A', 'companies/2-A')`
+   * **Methods**:
+      * `startsWith(field, prefix)`
+      * `endsWith(field, suffix)`
+      * `regex(field, pattern)`
+      * `exists(field)`
+      * `intersect(condition, condition, ...)`
+   * **JavaScript**: plain JavaScript expressions and calls to declared functions, so you can express complex filtering.
 * **A `select` clause** defining the projection.  
   This clause can call functions, allowing complex transformations.  
 * **An `include` clause** defining paths to include.  
 
-<Admonition type="info" title="">
-Although a subscription query has an RQL-like structure, it supports only the `declare`, `from`, `as`,
-`load`, `where`, `select`, and `include` keywords.  
 To learn about the JavaScript that subscription functions can use, see [JavaScript engine](../../../server/kb/javascript-engine.mdx).
-</Admonition>
 
-<Admonition type="info" title="">
+</ContentFrame>
+
+<ContentFrame>
+
+### Unsupported RQL features
+
+A subscription query does not support:
+
+* The `order by`, `group by`, and `update` clauses, or `select distinct`.
+* Querying an index. The `from` clause can name only a collection.
+* The `search`, `boost`, `lucene`, and `exact` methods, spatial methods, or vector search.
+* The `now()` and `today()` functions.
+* The `between` operator. Use `>=` and `<=` instead.
+
+The subscription does not apply `limit` and `filter` clauses, although it accepts a query that includes them.
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Paths in a subscription query
 
 Paths in a subscription query are handled as JavaScript expressions rather than as regular RQL
 paths.  
@@ -274,10 +345,7 @@ from Orders as o
 where filterLines(o, "products/1-A")
 ```
 
-</Admonition>
-
-To create a subscription over document revisions, see
-[Revisions support](../../../data-subscriptions/revisions-support.mdx).
+</ContentFrame>
 
 </Panel>
 
@@ -590,7 +658,9 @@ subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
 
 To include related documents, assign a function to the `Includes` property of the `SubscriptionCreationOptions<T>` object.  
 The function receives an `ISubscriptionIncludeBuilder` object and calls the builder's `IncludeDocuments` method.  
-Calls to the builder's methods can be chained.
+Calls to the builder's methods can be chained.  
+For the syntax of the builder's methods that include documents, see
+[Include builder: documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#include-builder-documents).
 
 In RQL, write the include in one of two ways: append the `include` keyword followed by the paths
 to the fields holding the IDs to include (preferred, for both clarity and slightly better
@@ -637,27 +707,10 @@ subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
 
 <br />
 
-To include counters, use these three methods of the `ISubscriptionIncludeBuilder` interface:
+For the syntax of the builder's methods that include counters, see
+[Include builder: counters](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#include-builder-counters).
 
-```csharp
-// Include a single counter
-ISubscriptionIncludeBuilder<T> IncludeCounter(string name);
-
-// Include multiple counters
-ISubscriptionIncludeBuilder<T> IncludeCounters(string[] names);
-
-// Include ALL counters from ALL documents that match the subscription criteria
-ISubscriptionIncludeBuilder<T> IncludeAllCounters();
-```
-
-<br />
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| **name** | `string` | The name of a counter. The subscription includes every counter with this name in the documents it retrieves. |
-| **names** | `string[]` | An array of counter names. |
-
-All of these methods can be chained.  
+The include builder's methods can be chained.  
 The following subscription includes several counters and a related document:
 
 ```csharp
@@ -698,30 +751,8 @@ subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOpt
 
 <br />
 
-To include time series, use these methods of the `ISubscriptionIncludeBuilder` interface:
-
-```csharp
-// Include entries of a named time series, by a time range or by a number of entries
-ISubscriptionIncludeBuilder<T> IncludeTimeSeries(string name, TimeSeriesRangeType type, TimeValue time);
-ISubscriptionIncludeBuilder<T> IncludeTimeSeries(string name, TimeSeriesRangeType type, int count);
-
-// The same, for several named time series
-ISubscriptionIncludeBuilder<T> IncludeTimeSeries(string[] names, TimeSeriesRangeType type, TimeValue time);
-ISubscriptionIncludeBuilder<T> IncludeTimeSeries(string[] names, TimeSeriesRangeType type, int count);
-
-// Include all time series
-ISubscriptionIncludeBuilder<T> IncludeAllTimeSeries(TimeSeriesRangeType type, TimeValue time);
-ISubscriptionIncludeBuilder<T> IncludeAllTimeSeries(TimeSeriesRangeType type, int count);
-```
-
-<br />
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| **name** / **names** | `string` / `string[]` | The time series to include. |
-| **type** | `TimeSeriesRangeType` | The range type, which must be `Last`. |
-| **time** | `TimeValue` | A time range to include, for example the last 7 days. |
-| **count** | `int` | A number of entries to include, counted from the most recent. |
+For the syntax of the builder's methods that include time series, see
+[Include builder: time series](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#include-builder-time-series).
 
 </ContentFrame>
 
@@ -1022,14 +1053,14 @@ public class SubscriptionUpdateOptions : SubscriptionCreationOptions
 |----------|------|-------------|
 | **&lt;T&gt;** | `T` | The type whose collection the subscription draws its documents from. |
 | **Name** | `string` | A user-defined name for the subscription. Must be unique within the database. |
-| **Query** | `string` | An RQL query that defines the subscription. Supports JavaScript functions inside the `where` clause and special semantics for subscriptions on document revisions. |
+| **Query** | `string` | An RQL query that defines the subscription.<br />See [Subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#subscription-query). |
 | **Filter** | `Expression<Func<T, bool>>` | A lambda expression defining the subscription's filter. Translated to a JavaScript function. |
 | **Projection** | `Expression<Func<T, object>>` | A lambda expression defining the projection sent for each matching document. Translated to a JavaScript function. |
-| **Includes** | `Action<ISubscriptionIncludeBuilder<T>>` | An action defining the subscription's include clauses. Included documents, counters, and time series are part of the batch the subscription sends. The include methods can be chained. |
-| **ChangeVector** | `string` | A change vector marking where the subscription starts processing. See the note below. |
-| **Disabled** | `bool` | `true` creates the task in a disabled state; `false` creates it enabled. |
+| **Includes** | `Action<ISubscriptionIncludeBuilder<T>>` | An action defining the subscription's include clauses. Included documents, counters, and time series are part of the batch the subscription sends. The [include methods](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#include-builder) can be chained. |
+| **ChangeVector** | `string` | A change vector marking where the subscription starts processing. See [Starting point](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#starting-point). |
+| **Disabled** | `bool` | `true` creates the subscription disabled, so the subscription does not accept worker connections until you [enable it](../../../data-subscriptions/maintenance-operations.mdx#enabling-and-disabling-a-subscription).<br />Default: `false`. |
 | **MentorNode** | `string` | The tag of the node you want to handle the subscription. Useful when you prefer a specific server for its hardware, its proximity to clients, or other reasons. |
-| **PinToMentorNode** | `bool` | `true` pins the task to the responsible node; `false` lets another node run it if the responsible node is down. |
+| **PinToMentorNode** | `bool` | `true` keeps the subscription on the node set in `MentorNode`, even while that node is down.<br />See [Responsible node](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#responsible-node). Default: `false`. |
 | **ArchivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior?` | The subscription's handling of archived documents. See [Archived documents and subscriptions](../../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions). |
 
 <br />
@@ -1041,18 +1072,89 @@ The `SubscriptionUpdateOptions` class adds two properties to the creation option
 | **Id** | `long?` | The ID the server assigned the subscription at creation. Retrieve it from the subscription's state. When updating, the `Id` can be used instead of the `Name` and takes precedence over the `Name`. |
 | **CreateNew** | `bool` | What to do when the target subscription does not exist. `true` creates a new subscription from the provided options; `false` throws. Default: `false`. |
 
+</ContentFrame>
+
+<ContentFrame>
+
+### Include builder
+
+The function you assign to the `Includes` property of a [SubscriptionCreationOptions&lt;T&gt;](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) object
+receives an `ISubscriptionIncludeBuilder<T>` object, whose methods add includes to the subscription.  
+Calls to the builder's methods can be chained.  
+See, for instance, the chained calls in [Example: Including counters](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-counters).
+
+#### Include builder: documents
+
+```csharp
+// Include the documents whose IDs are held by the field at the given path
+ISubscriptionIncludeBuilder<T> IncludeDocuments(string path);
+ISubscriptionIncludeBuilder<T> IncludeDocuments(Expression<Func<T, string>> path);
+ISubscriptionIncludeBuilder<T> IncludeDocuments(Expression<Func<T, IEnumerable<string>>> path);
+
+// The same, for a field holding IDs without their collection prefix
+ISubscriptionIncludeBuilder<T> IncludeDocuments<TInclude>(Expression<Func<T, string>> path);
+ISubscriptionIncludeBuilder<T> IncludeDocuments<TInclude>(Expression<Func<T, IEnumerable<string>>> path);
+```
+
 <br />
 
-<Admonition type="note" title="">
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **path** | `string` | The path to the field holding the ID or IDs of the documents to include, e.g., `"Employee"` or `"Lines[].Product"`. |
+| **path** | `Expression<Func<T, string>>` | An expression selecting the field holding the ID of the document to include, e.g., `x => x.Employee`. |
+| **path** | `Expression<Func<T, IEnumerable<string>>>` | An expression selecting the IDs of the documents to include, e.g., `x => x.Lines.Select(y => y.Product)`. |
+| **&lt;TInclude&gt;** | `TInclude` | The type of the included documents.<br />Use it when the field holds IDs without their collection prefix: the ID prefix of `TInclude` (e.g., `products/`) is added to each ID. |
 
-The `ChangeVector` property sets the point from which the subscription starts sending documents to the worker.  
-This is useful for an ad-hoc process that needs only recent changes.  
-Set it to `"LastDocument"` so the subscription sends only documents created or modified after its creation,
-or pass an actual change vector to start from a specific point.  
-By default the subscription sends all documents matching its query, regardless of when they were
-created.
+See [Example: Including documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-documents).
 
-</Admonition>
+#### Include builder: counters
+
+```csharp
+// Include a single counter
+ISubscriptionIncludeBuilder<T> IncludeCounter(string name);
+
+// Include multiple counters
+ISubscriptionIncludeBuilder<T> IncludeCounters(string[] names);
+
+// Include ALL counters from ALL documents that match the subscription criteria
+ISubscriptionIncludeBuilder<T> IncludeAllCounters();
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **name** | `string` | The name of a counter. The subscription includes every counter with this name in the documents it retrieves. |
+| **names** | `string[]` | An array of counter names. |
+
+See [Example: Including counters](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-counters).
+
+#### Include builder: time series
+
+```csharp
+// Include entries of a named time series, by a time range or by a number of entries
+ISubscriptionIncludeBuilder<T> IncludeTimeSeries(string name, TimeSeriesRangeType type, TimeValue time);
+ISubscriptionIncludeBuilder<T> IncludeTimeSeries(string name, TimeSeriesRangeType type, int count);
+
+// The same, for several named time series
+ISubscriptionIncludeBuilder<T> IncludeTimeSeries(string[] names, TimeSeriesRangeType type, TimeValue time);
+ISubscriptionIncludeBuilder<T> IncludeTimeSeries(string[] names, TimeSeriesRangeType type, int count);
+
+// Include all time series
+ISubscriptionIncludeBuilder<T> IncludeAllTimeSeries(TimeSeriesRangeType type, TimeValue time);
+ISubscriptionIncludeBuilder<T> IncludeAllTimeSeries(TimeSeriesRangeType type, int count);
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **name** / **names** | `string` / `string[]` | The time series to include. |
+| **type** | `TimeSeriesRangeType` | The range type, which must be `Last`. |
+| **time** | `TimeValue` | A time range to include, for example the last 7 days. |
+| **count** | `int` | A number of entries to include, counted from the most recent. |
+
+See [Example: Including time series](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-time-series).
 
 </ContentFrame>
 
