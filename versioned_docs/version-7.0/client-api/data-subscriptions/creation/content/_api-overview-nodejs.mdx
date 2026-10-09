@@ -72,7 +72,7 @@ Examples for creating subscriptions are available [here](../../../../client-api/
 | **name**            | `string`            | User defined name for the subscription.<br/>The name must be unique in the database.                                                                                                                                                                                                                                   |
 | **query**           | `string`            | RQL query that defines the subscription. This RQL comes with additional support to JavaScript functions inside the `where` clause and special semantics for subscriptions on documents revisions.<br/>Learn more in [subscription RQL](../../../../client-api/data-subscriptions/creation/api-overview.mdx#subscription-rql). |
 | **includes**        | `(builder) => void` | A function that accepts a builder object, which allows you to include related documents, counters, and time series in the batch that is sent to the client.<br/>See [Include methods](../../../../client-api/data-subscriptions/creation/api-overview.mdx#include-methods).                                                   |
-| **changeVector**    | `string`            | Allows to define a change vector from which the subscription will start processing. Useful for ad-hoc processes that need to process only recent changes. In such cases, you can set the field to _"LastDocument"_ to start processing from the latest document in the collection.                                    |
+| **changeVector**    | `string`            | Allows to define a change vector from which the subscription will start processing. Useful for ad-hoc processes that need to process only recent changes. In such cases, you can set the field to _"LastDocument"_ to send only documents created or modified after the subscription's creation.                                    |
 | **mentorNode**      | `string`            | Allows to define a specific node in the cluster to handle the subscription. Useful when you prefer a specific server due to its stronger hardware, closer geographic proximity to clients, or other reasons.                                                                                                          |
 | **pinToMentorNode** | `boolean`           | `true` - task will only be handled by the specified mentor node.<br/>`false` - When the specified mentor node is down, the cluster selects another node from the Database Group to handle the task.<br/>Learn more in [pinning a task](../../../../server/clustering/distribution/highly-available-tasks.mdx#pinning-a-task).  |
 | **disabled**        | `boolean`           | `true` - the created subscription will be in a disabled state.<br/>`false` (default) - the created subscription will be enabled.                                                                                                                                                                                       |
@@ -242,8 +242,13 @@ All subscriptions are eventually translated to an RQL-like statement. These stat
 * From statement, defining the documents source, ex: `from Orders`. The from statement can only address collections, therefore, indexes are not supported.    
 
 * Where statement describing the criteria according to which it will be decided to either 
-  send the documents to the worker or not. Those statements support either RQL like `equality` operations (`=`, `==`) ,  
-  plain JavaScript expressions or declared function calls, allowing to perform complex filtering logic.  
+  send the documents to the worker or not. Those statements support:
+   * RQL comparison operators: `=`, `==`, `!=`, `<`, `>`, `<=`, `>=`
+   * RQL logical operators: `and`, `or`, `and not`
+   * The RQL `in` operator, e.g., `o.Company in ('companies/1-A', 'companies/2-A')`
+   * The RQL methods `startsWith`, `endsWith`, `regex`, `exists`, and `intersect`
+   * Plain JavaScript expressions and declared function calls, allowing to perform complex filtering logic
+
   The subscriptions RQL does not support any of the known RQL searching keywords.
 
 * Select statement, that defines the projection to be performed. 
@@ -252,7 +257,7 @@ All subscriptions are eventually translated to an RQL-like statement. These stat
 * Include statement allowing to define include path in document.  
 
 <Admonition type="info" title="Keywords" id="keywords" href="#keywords">
-Although subscription's query syntax has an RQL-like structure, it supports only the `declare`, `select` and `where` keywords, usage of all other RQL keywords is not supported.  
+Although subscription's query syntax has an RQL-like structure, it supports only the `declare`, `from`, `as`, `load`, `where`, `select`, and `include` keywords; usage of all other RQL keywords is not supported.  
 Usage of JavaScript ES5 syntax is supported.
 </Admonition>
 

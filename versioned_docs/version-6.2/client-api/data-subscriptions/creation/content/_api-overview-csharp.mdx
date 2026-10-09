@@ -96,7 +96,7 @@ A generic version of the subscription creation options object.
 | **Filter**       | `Expression<Func<T, bool>>`              | Lambda expression defining the filter logic for the subscription. Will be translated to a JavaScript function.                                                                                                                                                                                                                                                                                      |
 | **Projection**   | `Expression<Func<T, object>>`            | Lambda expression defining the projection that will be sent by the subscription for each matching document. Will be translated to a JavaScript function.                                                                                                                                                                                                                                            |
 | **Includes**     | `Action<ISubscriptionIncludeBuilder<T>>` | An action that defines include clauses for the subscription. [Included documents](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-documents) and/or [included counters](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters) will be part of the batch sent by the subscription. Include methods can be chained. |
-| **ChangeVector** | `string`                                 | Allows to define a change vector from which the subscription will start processing. Useful for ad-hoc processes that need to process only recent changes. In such cases, you can set the field to _"LastDocument"_ to start processing from the latest document in the collection.                                                                                                                  |
+| **ChangeVector** | `string`                                 | Allows to define a change vector from which the subscription will start processing. Useful for ad-hoc processes that need to process only recent changes. In such cases, you can set the field to _"LastDocument"_ to send only documents created or modified after the subscription's creation.                                                                                                                  |
 | **MentorNode**   | `string`                                 | Allows to define a specific node in the cluster to handle the subscription. Useful when you prefer a specific server due to its stronger hardware, closer geographic proximity to clients, or other reasons.                                                                                                                                                                                       |
 
 
@@ -109,7 +109,7 @@ A non-generic version of the subscription creation options object.
 |------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| 
 | **Name**         | `string` | User defined name for the subscription.<br/>The name must be unique in the database.                                                                                                                                                                                                |
 | **Query**        | `string` | RQL query that defines the subscription. This RQL comes with additional support to JavaScript functions inside the `where` clause and special semantics for subscriptions on documents revisions.                                                                                 |
-| **ChangeVector** | `string` | Allows to define a change vector from which the subscription will start processing. Useful for ad-hoc processes that need to process only recent changes. In such cases, you can set the field to _"LastDocument"_ to start processing from the latest document in the collection. |
+| **ChangeVector** | `string` | Allows to define a change vector from which the subscription will start processing. Useful for ad-hoc processes that need to process only recent changes. In such cases, you can set the field to _"LastDocument"_ to send only documents created or modified after the subscription's creation. |
 | **MentorNode**   | `string` | Allows to define a specific node in the cluster to handle the subscription. Useful when you prefer a specific server due to its stronger hardware, closer geographic proximity to clients, or other reasons.                                                                       |
 
 
@@ -173,8 +173,13 @@ All subscriptions are eventually translated to an RQL-like statement. These stat
 * From statement, defining the documents source, ex: `from Orders`. The from statement can only address collections, therefore, indexes are not supported.    
 
 * Where statement describing the criteria according to which it will be decided to either 
-  send the documents to the worker or not. Those statements support either RQL like `equality` operations (`=`, `==`) ,  
-  plain JavaScript expressions or declared function calls, allowing to perform complex filtering logic.  
+  send the documents to the worker or not. Those statements support:
+   * RQL comparison operators: `=`, `==`, `!=`, `<`, `>`, `<=`, `>=`
+   * RQL logical operators: `and`, `or`, `and not`
+   * The RQL `in` operator, e.g., `o.Company in ('companies/1-A', 'companies/2-A')`
+   * The RQL methods `startsWith`, `endsWith`, `regex`, `exists`, and `intersect`
+   * Plain JavaScript expressions and declared function calls, allowing to perform complex filtering logic
+
   The subscriptions RQL does not support any of the known RQL searching keywords.
 
 * Select statement, that defines the projection to be performed. 
@@ -183,7 +188,7 @@ All subscriptions are eventually translated to an RQL-like statement. These stat
 * Include statement allowing to define include path in document.  
 
 <Admonition type="info" title="Keywords" id="keywords" href="#keywords">
-Although subscription's query syntax has an RQL-like structure, it supports only the `declare`, `select` and `where` keywords, usage of all other RQL keywords is not supported.  
+Although subscription's query syntax has an RQL-like structure, it supports only the `declare`, `from`, `as`, `load`, `where`, `select`, and `include` keywords; usage of all other RQL keywords is not supported.  
 Usage of JavaScript ES5 syntax is supported.
 </Admonition>
 

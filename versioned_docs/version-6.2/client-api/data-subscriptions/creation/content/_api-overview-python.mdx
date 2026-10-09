@@ -69,7 +69,7 @@ An RQL statement will be built based on the fields.
 |------------------------------|:-----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| 
 | **name** (Optional)          | `str`                                    | User-defined name of the subscription: allows to have a human readable identification of a subscription. The name must be unique in the database.                                                                                                                                                                                                                                            |
 | **query** (Optional)         | `str`                                    | RQL query that describes the subscription. This RQL comes with additional support to JavaScript functions inside the `where` clause and special semantics for subscriptions on documents revisions.                                                                                                                                                                                          |
-| **change_vector** (Optional) | `str`                                    | Allows to define a change vector from which the subscription will start processing. Useful for ad-hoc processes that need to process only recent changes. In such cases, you can set the field to _"LastDocument"_ to start processing from the latest document in the collection.                                                                                                           |
+| **change_vector** (Optional) | `str`                                    | Allows to define a change vector from which the subscription will start processing. Useful for ad-hoc processes that need to process only recent changes. In such cases, you can set the field to _"LastDocument"_ to send only documents created or modified after the subscription's creation.                                                                                                           |
 | **mentor_node** (Optional)   | `str`                                    | Allows to define a specific node in the cluster to handle the subscription. Useful when you prefer a specific server due to its stronger hardware, closer geographic proximity to clients, or other reasons.                                                                                                                                                                                 |
 | **includes** (Optional)      | `[Callable[[SubscriptionIncludeBuilder]` | Action with a [SubscriptionIncludeBuilder](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-documents) parameter that allows you to define an include clause for the subscription. Methods can be chained to include documents as well as [counters](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters). |
 
@@ -135,8 +135,13 @@ All subscriptions are eventually translated to an RQL-like statement. These stat
 * From statement, defining the documents source, ex: `from Orders`. The from statement can only address collections, therefore, indexes are not supported.    
 
 * Where statement describing the criteria according to which it will be decided to either 
-  send the documents to the worker or not. Those statements support either RQL like `equality` operations (`=`, `==`) ,  
-  plain JavaScript expressions or declared function calls, allowing to perform complex filtering logic.  
+  send the documents to the worker or not. Those statements support:
+   * RQL comparison operators: `=`, `==`, `!=`, `<`, `>`, `<=`, `>=`
+   * RQL logical operators: `and`, `or`, `and not`
+   * The RQL `in` operator, e.g., `o.Company in ('companies/1-A', 'companies/2-A')`
+   * The RQL methods `startsWith`, `endsWith`, `regex`, `exists`, and `intersect`
+   * Plain JavaScript expressions and declared function calls, allowing to perform complex filtering logic
+
   The subscriptions RQL does not support any of the known RQL searching keywords.
 
 * Select statement, that defines the projection to be performed. 
@@ -145,7 +150,7 @@ All subscriptions are eventually translated to an RQL-like statement. These stat
 * Include statement allowing to define include path in document.  
 
 <Admonition type="info" title="Keywords" id="keywords" href="#keywords">
-Although subscription's query syntax has an RQL-like structure, it supports only the `declare`, `select` and `where` keywords, usage of all other RQL keywords is not supported.  
+Although subscription's query syntax has an RQL-like structure, it supports only the `declare`, `from`, `as`, `load`, `where`, `select`, and `include` keywords; usage of all other RQL keywords is not supported.  
 Usage of JavaScript ES5 syntax is supported.
 </Admonition>
 
