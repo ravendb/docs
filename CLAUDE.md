@@ -202,6 +202,7 @@ Each folder contains `_category_.json`:
 - Tags defined in `guides/tags.yml` (~40 predefined tags — do not invent new ones without adding there first).
 - Guide-specific frontmatter: `tags`, `description`, `icon`, `image`, `published_at` (ISO date), `external_url`, `proficiency_level`, `author`.
 - Indexed and sorted by `src/plugins/recent-guides-plugin.ts`.
+- Every hosted guide ends with `GuideCtaFooter` (Discord, developer license, free Cloud, more guides), rendered by `src/theme/DocItem/Footer`. Don't hand-write those calls to action in guide content; end on the guide's own takeaways.
 
 ### Guides Frontmatter Example
 ```yaml

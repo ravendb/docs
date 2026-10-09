@@ -1,0 +1,37 @@
+---
+title: "Guide CTA footer"
+unlisted: true
+hide_table_of_contents: false
+sidebar_label: CTA footer
+see_also:
+    - title: "Adding new guides"
+      link: "/templates/new-guides"
+      source: "docs"
+      path: "Templates > Guides"
+---
+
+import Admonition from "@theme/Admonition";
+import GuideCtaFooter from "@site/src/components/Guides/GuideCtaFooter";
+
+# Guide CTA footer
+
+Every hosted guide ends with the same call to action block: the Discord community, a free developer
+license, a free RavenDB Cloud database, and the rest of the guides.
+
+## How it works
+
+- `src/theme/DocItem/Footer` renders `GuideCtaFooter` under every page of the `guides` plugin.
+- The guides home page and external guides (`external_url` in frontmatter) don't get it.
+- It sits right after the content, before the `see_also` links.
+- The copy and links live in `src/components/Guides/GuideCtaFooter.tsx`. Change them there and every
+  guide picks up the change.
+
+<Admonition type="warning" title="Don't write your own CTA paragraph">
+    End the guide on its own takeaways: a summary, or links to related guides and docs. Don't add
+    "Join our Discord", "Grab a developer license" or "Get a free cloud database" paragraphs; the footer
+    already covers them, right below your last paragraph.
+</Admonition>
+
+## Preview
+
+<GuideCtaFooter />
