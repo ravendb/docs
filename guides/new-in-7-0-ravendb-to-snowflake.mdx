@@ -188,5 +188,3 @@ In this article, we walked through the entire process of setting up RavenDB Snow
 - The transformation script both filters and reshapes each document, and a single script can route different subsets to different Snowflake tables with multiple loadTo calls.
 - Snowflake ETL runs continuously and transfers in batches, so new documents keep syncing automatically and you should avoid restarting the task mid-transfer.
 - Once documents land in Snowflake, ordinary SQL turns raw sensor rows into real-time analytics, such as joining two locations on vehicle plates and time to compute speed and detect traffic jams.
-
-Want to try this on your own cluster? Grab a free developer license at [ravendb.net/dev](https://ravendb.net/dev), and bring questions to the RavenDB community on [Discord](https://discord.gg/ravendb).

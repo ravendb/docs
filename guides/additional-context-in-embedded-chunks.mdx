@@ -186,5 +186,3 @@ If you are unsure whether to use it, test it on a small piece of your own data. 
 - The context prefix acts as a confidence amplifier: it narrows result sets and improves precision, but it can also drop borderline-relevant documents that would have otherwise ranked inside the top 10, so recall may fall for broad category queries.
 - Token budget is a real constraint: every token given to the prefix is unavailable for chunk content, so keep prefixes short and focused on the single piece of missing context rather than trying to summarize the whole document.
 - Before committing to the feature, run a controlled test on your own data: create two identical embedding tasks that differ only in the presence of `withContextPrefix(...)`, then compare precision, recall, and F1 for the query types your users actually issue.
-
-Any questions about RavenDB features, or just want to hang out and talk with the RavenDB team? Join our [Discord Community Server](https://discord.com/invite/ravendb).
