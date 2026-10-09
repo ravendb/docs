@@ -23,6 +23,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
     * [Configure embedded tables](#configure-embedded-tables)
     * [Test mapping](#test-mapping)
     * [Advanced settings](#advanced-settings)
+    * [Verify tables](#verify-tables)
+    * [Save the task configuration](#save-the-task-configuration)
     * [The created task](#the-created-task)
   * [Create a CDC Sink task via REST API](#create-a-cdc-sink-task-via-rest-api)
 
@@ -143,14 +145,14 @@ long taskId = result.TaskId;
 
 ### Create task
     
-![Create task 1](../assets/create-task-1.png)    
+![Add a database task](../assets/create-task-1.png)    
 
 1. Navigate to **Databases** → your database → **Tasks** → **Ongoing Tasks**.
 2. Click **Add a Database Task** 
     
 ---
     
-![Create task 2](../assets/create-task-2.png)        
+![Select CDC Sink](../assets/create-task-2.png)        
     
 1. The **Add a database task** view opens.
 2. Filter by the **Sink** category to show only source-to-RavenDB sink tasks.
@@ -160,7 +162,7 @@ long taskId = result.TaskId;
     
 ### Configure basic settings       
     
-![Create task 3](../assets/create-task-3.png)   
+![Basic task settings](../assets/create-task-3.png)   
     
 1. **Configure basic settings**  
    In this section you specify the task name, select a connection string, and configure task options.
@@ -185,7 +187,7 @@ long taskId = result.TaskId;
     
 ### Schema explorer
     
-![Create task 4](../assets/create-task-4.png)     
+![Discovered tables](../assets/create-task-4.png)     
 
 1. **Schema Explorer**  
    In this section you can discover existing tables from the configured connection.
@@ -194,7 +196,7 @@ long taskId = result.TaskId;
 3. **Available tables**  
    Discovered tables appear here showing each table's name, primary keys, column count, and any warnings.
     
-![Create task 5](../assets/create-task-5.png)     
+![Select source tables](../assets/create-task-5.png)     
 
 1. **Select tables**  
    Check the box next to each source table you want to sink into RavenDB as documents.
@@ -206,7 +208,7 @@ long taskId = result.TaskId;
     
 ### Configured tables
     
-![Create task 6](../assets/create-task-6.png)      
+![Root table mapping](../assets/create-task-6.png)      
     
 1. **Configured Tables** - In this section, configure how source tables are mapped to target RavenDB collections.
 2. **Tables** - the list of configured tables. Select a table to edit its mapping.  
@@ -227,9 +229,12 @@ long taskId = result.TaskId;
    * `JSON` - parsed as JSON before storing  
    * `Attachment` - stored as a RavenDB attachment  
 10. **Advanced settings** - expand to configure patch scripts and delete handling.
-11. Once you've finished configuring all tables and their advanced settings (see below),  
-    click **Save task configuration** to save the task.
-12. Click **Test** to preview the mapping output before saving.
+11. **Verify tables** - click to check that the CDC flow can run against the configured source database and tables.  
+    Learn more in [Verify tables](#verify-tables) below. 
+12. Click **Save task configuration** to save the task once you've finished configuring all tables and their advanced settings.
+    Studio may first verify the configuration against the source database.  
+    Learn more in [Save the task configuration](#save-the-task-configuration) below.
+13. Click **Test** to preview the mapping output before saving.
 
 ---
     
@@ -241,14 +246,14 @@ Studio displays a warning above the configured tables.
 The parent document will contain the linked document ID,
 but CDC Sink will not create the referenced document until the source table is also configured as a root table.
 
-![Add missing root table warning](../assets/create-task-6.1.png)
+![Missing root table warning](../assets/create-task-6.1.png)
 
 1. **Missing root table warning**  
    Indicates how many referenced source tables are not configured as root tables.
 2. **Add root table**  
    Click to open the **Add root tables** dialog.
 
-![Add root tables dialog](../assets/create-task-6.2.png)
+![Add root tables](../assets/create-task-6.2.png)
 
 1. Select the source tables that you want to configure as root tables.  
    Studio selects all missing tables by default.
@@ -265,7 +270,7 @@ A **linked table** turns a foreign-key relationship into a document-ID reference
 instead of copying the related row's data into the document,
 the parent document stores a reference (a document ID) to a document in another collection.
     
-![Create task 7.0](../assets/create-task-7.0.png)
+![Add a linked table](../assets/create-task-7.0.png)
     
 1. On a root (or embedded) table in the **Tables** list, click the three-dots **Table actions** icon.
 2. Select **Add new linked table**.    
@@ -275,7 +280,7 @@ the parent document stores a reference (a document ID) to a document in another 
 In this example, the `customers` table is linked under the `orders` root table.  
 The resulting Order document gets a `Customer` property holding a document-ID reference into the `Customers` collection.    
     
-![Create task 7](../assets/create-task-7.png)
+![Linked table mapping](../assets/create-task-7.png)
 
 1. **The source table that is linked**    
 2. **Source schema**  
@@ -299,14 +304,14 @@ The resulting Order document gets a `Customer` property holding a document-ID re
     
 An **embedded table** nests the related rows _inside_ the parent document instead of referencing them.
     
-![Create task 8](../assets/create-task-8.png)
+![Add an embedded table](../assets/create-task-8.png)
     
 1. On a root (or embedded) table in the **Tables** list, click the three-dots **Table actions** icon.
 2. Select **Add new embedded table**.
     
 ---    
     
-![Create task 9](../assets/create-task-9.png)
+![Embedded table mapping](../assets/create-task-9.png)
     
 1. The embedded table appears nested under its parent in the **Tables** list (marked with `{+}`).
 2. **Source schema**  
@@ -332,7 +337,7 @@ An **embedded table** nests the related rows _inside_ the parent document instea
     
 ### Test mapping
     
-![Create task 10](../assets/create-task-10.png)
+![Test mapping panel](../assets/create-task-10.png)
     
 1. Select the table whose mapping you want to test.
 2. Click **Test** to open the test panel.
@@ -352,12 +357,15 @@ An **embedded table** nests the related rows _inside_ the parent document instea
      to preview your delete handling (Skip deletion / Delete patch).
 5. Click **Run test** to execute the test against the source data.
 6. The resulting RavenDB document(s) are shown as **JSON**.
+
+Test mapping previews the documents produced from the selected table's rows.  
+It does not check whether the source database is ready for CDC, see [Verify tables](#verify-tables).
     
 ---    
     
 ### Advanced settings
     
-![Create task 11](../assets/create-task-11.png)
+![Patch and delete settings](../assets/create-task-11.png)
     
 1. Expand **Advanced settings** for the selected table.
 2. **Case sensitive keys**  
@@ -377,9 +385,87 @@ An **embedded table** nests the related rows _inside_ the parent document instea
     
 ---
     
+### Verify tables
+    
+![Verify tables](../assets/create-task-13.png)    
+
+Use **Verify tables** to check that the CDC flow can run against the live source database for the configured connection string and tables
+before you save the task.
+
+* Verification runs the same source-side setup and initial-load steps the task runs when it starts,  
+  but reads at most one row from each configured table and does not stream changes.  
+  It reads these rows even if **Skip initial load** is enabled.
+* Verification does **not** create the task, and does not write documents, checkpoints, or task state to RavenDB.
+* When verification completes, it attempts to remove the CDC objects it created on the source database.  
+  If cleanup fails, verification reports a warning.  
+  Which objects are created depends on the source database, see
+  [PostgreSQL](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/prerequisites-checklist.mdx#check-prerequisites-with-verify-tables),
+  [SQL Server](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/sql-server/overview.mdx#table-verification),
+  or [MySQL/MariaDB](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/mysql/overview.mdx#table-verification).
+* Disabled tables are not verified,
+  see [Enable/Disable a configured table](../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/enable-disable-task.mdx#enable-disable-a-configured-table-via-studio).
+* The RavenDB node you are connected to in Studio performs the verification.  
+  The CDC Sink task may run on a different node.
+
+When you click **Verify tables**, the button shows _"Verifying tables..."_ while verification runs, and then the result:
+
+* **Tables verified** - verification completed without errors or warnings.
+    
+  ![Tables verified](../assets/create-task-14.png)
+    
+* **Tables verified with warnings** - verification completed and reported warnings.  
+  Warnings describe conditions the task may run into, or will handle itself, when it starts.  
+  Warnings do not prevent saving the task.
+    
+  ![Missing publication tables](../assets/create-task-15.png)
+    
+* **Verification failed** - verification stopped at the first error.  
+  After fixing it, click **Verify tables** again to check for further errors.
+    
+  ![Missing source column](../assets/create-task-16.png)
+
+  The error message describes what failed.  
+  Errors about setting up CDC objects may include a command an administrator can run to fix the problem.  
+  Click **Show details**, when available, to view the full error, including the stack trace.
+    
+The result applies to the connection string selection, PostgreSQL publication and slot names, and table configuration.  
+Changing any of them resets the button to **Verify tables**.
+
+To interpret the result, see [Troubleshooting: Table verification fails or returns warnings](../../../../../server/ongoing-tasks/cdc-sink/troubleshooting.mdx#table-verification-fails-or-returns-warnings).
+
+---
+
+### Save the task configuration
+
+Click **Save task configuration** to save the task.
+
+Before saving, Studio verifies the configuration if:
+
+* the task is new, or
+* the connection string selection, the PostgreSQL publication or slot name, or the table configuration has changed since the task was last saved.
+
+If a verification result is already available for the current configuration, Studio uses it instead of verifying again.  
+This applies to results from **Verify tables** or an earlier save attempt, including results with warnings or a verification error.
+
+If verification completes without warnings, the task is saved.  
+If verification reports warnings or fails, Studio asks you to confirm:
+
+![Save anyway confirmation](../assets/create-task-17.png)
+
+* Click **Save anyway** to save the task configuration despite the warnings or error.  
+  The task may encounter the same problem when it starts.
+* Click **Cancel** to return to the configuration without saving.
+
+If the verification request itself fails, for example because of a network error,  
+Studio shows it as a failed verification (_"The dry run request failed. Check the Notification Center for details."_).  
+A failed request is not reused as a verification result, so Studio verifies again on save when verification is required.  
+If that request also fails, you can still save with **Save anyway**.
+
+---
+    
 ### The created task    
     
-![Create task 12](../assets/create-task-12.png)    
+![Created CDC Sink task](../assets/create-task-12.png)    
     
 1. The new task appears under **Ongoing Tasks**.
 2. It is listed under the **SINK (SOURCE ⇒ RavenDB)** group, showing the task name, its responsible node, and its state.  
@@ -405,6 +491,33 @@ For PostgreSQL, you can include `Schemas` to limit schema discovery (defaults to
 | Method | Endpoint | Auth |
 |--------|----------|------|
 | `POST` | `/databases/{databaseName}/admin/cdc-sink/schema` | `DatabaseAdmin` |
+
+</ContentFrame>
+<ContentFrame>
+    
+### Verify the configuration
+
+Use this endpoint to run the CDC flow once against the source database before creating or updating the task,  
+as **Verify tables** does in Studio.  
+It does not create the task, and does not write documents, checkpoints, or task state to RavenDB.
+
+The request body should include:
+* `Configuration` - the `CdcSinkConfiguration` to verify. `Name` is not required.
+* `Connection` - the `SqlConnectionString` of the source database, passed inline.  
+  This endpoint does not resolve `ConnectionStringName`.
+
+The response includes:
+* `Success` - `true` if verification completed without an error. Warnings do not affect this value.
+* `Error` - the full text of the error that stopped verification, or `null`.
+* `Warnings` - conditions reported during verification, including source cleanup failures.
+* `CompletedTables` - the configured tables, as `schema.table`, whose initial-load step completed, including empty tables.
+
+Verification uses a two-minute timeout that is refreshed as it reads the configured tables.  
+The total request can take longer, including source cleanup.
+
+| Method | Endpoint | Auth |
+|--------|----------|------|
+| `POST` | `/databases/{databaseName}/admin/cdc-sink/dry-run` | `DatabaseAdmin` |
 
 </ContentFrame>
 <ContentFrame>

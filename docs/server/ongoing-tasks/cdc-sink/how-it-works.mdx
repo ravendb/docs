@@ -65,8 +65,10 @@ import ContentFrame from '@site/src/components/ContentFrame';
 When a CDC Sink task starts, it first verifies that the source database is ready for change capture.  
 The specific checks depend on the source database provider.  
     
-If a check fails, CDC Sink reports the problem and the command an administrator can run to fix it.  
-The task does not continue until all checks pass.    
+If a check fails, CDC Sink reports the problem, in most cases with the command an administrator can run to fix it.  
+The task does not continue until the failing check passes.  
+You can run most of these checks before saving the task,
+see [Verify tables](../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx#verify-tables).
 
 After verification, CDC Sink creates the required change-tracking infrastructure in the source database,  
 then begins the initial load.    
@@ -90,17 +92,22 @@ for the full list of requirements.
 ### SQL Server
 
 CDC Sink checks that Change Data Capture is enabled on the database and on each captured table,  
-and that the SQL Server Agent service is running (it drives the CDC capture jobs).  
-    
-Learn more in [CDC Sink for SQL Server](../../../server/ongoing-tasks/cdc-sink/source-database-setup/sql-server/overview.mdx).
+and enables it if the connecting user has permission to do so.
+
+When the task starts reading changes, it also checks that the SQL Server Agent service is running (it drives the CDC capture jobs).
+If the Agent is not detected, the task raises a warning and continues.
+
+See the [SQL Server prerequisites](../../../server/ongoing-tasks/cdc-sink/source-database-setup/sql-server/overview.mdx#prerequisites).  
 
 </ContentFrame>    
 <ContentFrame>
     
 ### MySQL / MariaDB
 
-CDC Sink checks that binary logging is enabled with `binlog_format = ROW`,
-and that the connecting user has the `REPLICATION SLAVE` and `REPLICATION CLIENT` privileges required to read the binlog.  
+CDC Sink checks that `binlog_format` is `ROW`, `binlog_row_image` is `FULL`, and, on MySQL, that `gtid_mode` is `ON`.
+
+Binary logging itself (`log-bin`) and the `REPLICATION SLAVE` and `REPLICATION CLIENT` privileges are not checked up front.
+If one is missing, the error surfaces when the task connects to the binlog stream, after the initial load completes.  
     
 Learn more in [CDC Sink for MySQL](../../../server/ongoing-tasks/cdc-sink/source-database-setup/mysql/overview.mdx).
     
@@ -129,7 +136,7 @@ so reads and writes overlap instead of running one after another.
     
 Tables are scanned in dependency order. 
 Root tables are loaded first, then embedded tables.  
-This minimizes the number of stub documents created (see [Child before parent](#child-before-parent) below).    
+This minimizes the number of stub documents created (see [Embedded row before root row](#embedded-row-before-root-row) below).    
 
 ---
     
