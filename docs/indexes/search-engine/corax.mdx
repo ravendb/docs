@@ -46,6 +46,7 @@ import Panel from '@site/src/components/Panel';
       * [Per database](../../indexes/search-engine/corax.mdx#select-search-engine-per-database)  
       * [Per static index](../../indexes/search-engine/corax.mdx#select-search-engine-per-static-index)  
    * [Unsupported features](../../indexes/search-engine/corax.mdx#unsupported-features)  
+   * [Scoring](../../indexes/search-engine/corax.mdx#scoring)  
    * [Handling complex JSON objects](../../indexes/search-engine/corax.mdx#handling-complex-json-objects)  
    * [Compound fields](../../indexes/search-engine/corax.mdx#compound-fields)  
    * [Limits](../../indexes/search-engine/corax.mdx#limits)  
@@ -266,6 +267,48 @@ If the `Orders/ByCompany` index uses Corax, running this query will fail.
   ![Method Not Implemented Exception](./assets/corax-07_exception-method-not-implemented.png)
     
 </Admonition>
+
+</Panel>
+
+<Panel heading="Scoring">
+
+* Corax calculates scores in any of the following cases:
+  * The query orders by `score()`.
+  * The query uses [`boost()`](../../client-api/session/querying/text-search/boost-search-results.mdx).
+  * The queried index boosts index entries.
+  * The query uses vector search.
+
+  By default, when the query specifies no other ordering, RavenDB orders scored results by score.  
+  For term-based conditions, such as equality, `search()`, and `startsWith()`,  
+  Corax uses the [BM25 algorithm](https://en.wikipedia.org/wiki/Okapi_BM25) to calculate relevance.
+
+* **Existence checks add a constant score**:
+    
+  * **Before RavenDB 7.2.6**,   
+    a scored `exists()` condition used BM25 relevance calculated for each distinct field value. 
+    
+  * **In RavenDB 7.2.6 and later**,  
+    a scored `exists()` condition contributes `1` multiplied by its query boost once per matching document, regardless of the field's value or number of values.
+    For example, `boost(exists(Fax), 3)` contributes `3` before any index-entry boost is applied.
+    This change does not affect which documents match, but it can change `@index-score` values and score-based ordering compared with earlier versions.
+  
+* **`where true` adds no score**:  
+  A `where true` condition matches all documents and adds nothing to their score.
+
+* **Effect on ranking**:
+    
+  * An optional `exists()` condition in an `or` adds to the score of documents that contain the field,  
+    but not to the score of documents that do not.
+    
+  * A required `exists()` condition in an `and` adds the same constant to every result.  
+    Without index-entry boosting, it does not change their relative order.  
+    Different index-entry boosts can change that order because each document's index-entry boost multiplies its combined score.
+
+* **Performance**:  
+  When scoring is required, Corax scores `exists()` matches in batches instead of calculating BM25 relevance for each distinct field value.
+  This improves performance, especially for fields with many distinct values, such as IDs or email addresses.
+
+* Learn more about boosting with Corax in [Corax vs Lucene: boosting differences](../../indexes/boosting.mdx#corax-vs-lucene-boosting-differences).
 
 </Panel>
 
