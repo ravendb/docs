@@ -19,7 +19,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   are compressed, including nodes' 
   [database replication](../server/clustering/replication/replication-overview.mdx)
   and the data submitted by 
-  [Data Subscriptions](../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
+  [Data Subscriptions](../data-subscriptions/overview.mdx) 
   to their workers.  
 
 * Especially on the cloud, the significant reduction in the amount of transferred 
@@ -46,7 +46,7 @@ With the **TCP compression** feature enabled, data **in transit** is compressed 
   Replication makes a large portion of a cluster's traffic, and compressing 
   replicated data will minimize the traffic volume and expedite data delivery.  
 
-* [Data Subscriptions](../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
+* [Data Subscriptions](../data-subscriptions/overview.mdx) 
   will also transfer compressed data to their workers.  
   Data subscriptions are used to automate documents processing, 
   and may transfer large quantities of documents on a regular basis. 

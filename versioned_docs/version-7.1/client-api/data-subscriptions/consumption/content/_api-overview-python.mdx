@@ -107,6 +107,7 @@ The `run` function receives the client-side code as a function that will process
 |------------------------------|------------------------------------|------------------------------| 
 | **items**                    | `SubscriptionBatch[_T].Item` array | List of items in the batch   |
 | **number_of_items_in_batch** | `int`                              | Number of items in the batch |
+| **number_of_includes** | `int` | `1` if the server sent included documents with the batch, `0` if it did not. |
 
 <TabItem value="number_of_items_in_batch_definition" label="number_of_items_in_batch_definition">
 <CodeBlock language="python">
@@ -117,14 +118,37 @@ The `run` function receives the client-side code as a function that will process
 </TabItem>
 
 
+| Method                         | Return value      | Description |
+|--------------------------------|-------------------|-------------|
+| **open_session(options=None)** | `DocumentSession` | Opens a session that tracks all items and their included items in the current batch.<br/>Pass `options` to open the session with the given [session options](../../../../client-api/session/opening-a-session.mdx#session-options). |
+
+<Admonition type="note" title="">
+
+* Do not set `database` or `request_executor` in the session options:
+  the session always uses the subscription's database and the node the worker is connected to.
+  Setting either of them throws an exception.
+
+* Set the transaction mode in the session options to `TransactionMode.SINGLE_NODE` explicitly.
+  Any other transaction mode throws an exception, and so does leaving the transaction mode unset.
+
+* The session does not fail over to other nodes. If the node the worker is connected to fails while your code uses
+  the session, the session's requests throw an exception, which reaches your batch-processing code
+  (see [Batch processing execution failures](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#batch-processing-execution-failures)).
+
+</Admonition>
+
 <Admonition type="note" title="Subscription worker connectivity" id="subscription-worker-connectivity" href="#subscription-worker-connectivity">
-As long as there is no exception, the worker will continue addressing the same 
-server that the first batch was received from.  
-If the worker fails to reach that node, it will try to 
-[failover](../../../../client-api/configuration/load-balance/overview.mdx) to another node 
-from the session's topology list.  
-The node that the worker succeeds connecting to, will inform the worker which 
-node is currently responsible for data subscriptions.  
+
+* The worker first contacts one of the database group's nodes. If this node does not run the subscription task,
+  the node redirects the worker to the node that does.  
+  The worker keeps using the node that runs the task as long as no error occurs.
+
+* If the task is pinned to its mentor node, the worker is always redirected to the mentor node,
+  so while the mentor node is down the worker cannot process the subscription.
+
+* If the worker loses the connection and cannot reach the node again, the worker tries the database group's
+  other nodes in turn. A node that does not run the task redirects the worker to the node that does.
+
 </Admonition>
 
 <TabItem value="Item_definition" label="Item_definition">
@@ -186,6 +210,7 @@ is not supported.
 | Event                     | Type\Return type                          | Description                                                                      |
 |---------------------------|-------------------------------------------|----------------------------------------------------------------------------------| 
 | **after\_acknowledgment** | `Callable[[SubscriptionBatch[_T]], None]` | Event invoked after each time the server acknowledges batch processing progress. |
+| **add\_on\_unexpected\_subscription\_error** | `Callable[[Exception], None]` | Event invoked when the worker hits an error it does not recognize, before the worker waits to reconnect to the server. |
 
 | `after_acknowledgment` Parameters  |                         |                                          |
 |------------------------------------|-------------------------|------------------------------------------|
