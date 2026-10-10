@@ -52,8 +52,8 @@ export default function CustomVersionDropdown() {
     const currentLabel = activeVersion?.label ?? latestVersion.label;
 
     return (
-        <div ref={wrapperRef} className="relative w-full px-4 my-2">
-            <span className="text-xs text-ifm-menu mb-1">Documentation version</span>
+        <div ref={wrapperRef} className="relative w-full">
+            <span className="block text-xs text-ifm-menu mb-1">Version</span>
             <button
                 ref={buttonRef}
                 onClick={() => setOpen((o) => !o)}
@@ -81,7 +81,7 @@ export default function CustomVersionDropdown() {
                 }`}
                 style={{ width: buttonWidth ?? "100%" }}
             >
-                <ul className="!p-0 !m-0">
+                <ul className="!p-0 !m-0 flex flex-col gap-1">
                     {versions.map((version) => (
                         <li key={version.name} className="rounded-sm overflow-hidden">
                             <Link

@@ -70,6 +70,7 @@ body:has([data-drawer-open="true"]) {
     --docsearch-searchbox-focus-background: var(--ifm-background-color) !important;
     --docsearch-hit-color: var(--ifm-color-primary-lightest) !important;
     --ifm-footer-color: var(--ifm-menu-color);
+    --ifm-menu-color-background-active: color-mix(in srgb, var(--ifm-color-primary) 10%, transparent);
     --default-transition-duration: 300ms;
 }
 
@@ -286,6 +287,31 @@ pre,
 /* Custom border for sidebar and navbar */
 [class*="docSidebarContainer"] {
     @apply !border-black/10 dark:!border-white/10;
+}
+
+/* Fixed docs sidebar, with the footer starting beside it instead of pushing it up */
+@media (min-width: 997px) {
+    aside[class*="docSidebarContainer"] {
+        clip-path: none;
+        border-right: 0;
+    }
+
+    [class*="docSidebarContainer"] [class*="sidebarViewport"] {
+        @apply border-r border-black/10 dark:border-white/10;
+        position: fixed;
+        width: var(--doc-sidebar-width);
+        height: 100vh;
+        max-height: none;
+    }
+
+    [class*="docSidebarContainer"] .menu.thin-scrollbar {
+        padding: 0.5rem;
+        scrollbar-gutter: auto;
+    }
+
+    .main-wrapper:has([class*="docSidebarContainer"]) ~ .footer {
+        margin-left: var(--doc-sidebar-width);
+    }
 }
 
 .navbar {
