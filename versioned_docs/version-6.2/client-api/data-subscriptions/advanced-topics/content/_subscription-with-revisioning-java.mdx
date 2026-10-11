@@ -50,8 +50,13 @@ The data subscriptions revisions processing mechanism will receive pairs of revi
 | 3 | `{ Name:'James', Age:'22' }` | `{ Name:'James', Age:'23' }` |
  
 <Admonition type="warning" title="">
-The revisions subscription will be able to function properly only if the revisions it needs to process are available.
-Please make sure that your revisions configuration doesn't purge revisions before the subscription had the chance to process them.  
+
+* A document that has no revisions is not processed, so make sure your revisions configuration does not purge revisions
+  before the subscription has had a chance to process them.
+
+* A revisions subscription **ignores** the [processing behavior for archived documents](../../../../server/configuration/subscription-configuration.mdx#subscriptionsarchiveddataprocessingbehavior)
+  and selects the revisions of archived and non-archived documents alike.
+
 </Admonition>
 
 
