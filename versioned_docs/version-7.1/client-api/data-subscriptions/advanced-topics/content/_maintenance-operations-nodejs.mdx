@@ -207,6 +207,7 @@ getSubscriptionState(subscriptionName, database);
 | **changeVectorForNextBatchStartingPoint** | `string`  | The Change Vector from which the subscription will begin sending documents.<br/>This value is updated on batch acknowledgement and can also be set manually. |
 | **disabled**                              | `boolean` | If `true`, subscription will not allow workers to connect.                                                                                                  |
 | **lastClientConnectionTime**              | `string`  | Time when last client was connected (value sustained after disconnection).                                                                                  |                
+| **archivedDataProcessingBehavior** | `string` | The subscription's handling of archived documents.<br/>See [Subscriptions.ArchivedDataProcessingBehavior](../../../../server/configuration/subscription-configuration.mdx#subscriptionsarchiveddataprocessingbehavior). |
 
 </Admonition>
 

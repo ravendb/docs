@@ -24,6 +24,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Supported query parts](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#supported-query-parts)
       * [Unsupported RQL features](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#unsupported-rql-features)
       * [Paths in a subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#paths-in-a-subscription-query)
+   * [Archived documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#archived-documents)
    * [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples)
       * [Sending an entire collection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-sending-an-entire-collection)
       * [Filtering documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-documents)
@@ -281,6 +282,53 @@ where filterLines(o, "products/1-A")
 ```
 
 </ContentFrame>
+
+</Panel>
+
+<Panel heading="Archived documents">
+
+You can schedule documents to be [archived](../../../data-archival/overview.mdx) (e.g., orders you no longer process regularly).  
+RavenDB compresses archived documents to save disk space.  
+By default, a subscription sends only non-archived documents to the worker.
+
+To have the subscription send archived documents as well, or only archived documents, set the
+`archivedDataProcessingBehavior` property of the [subscription creation options](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes)
+when you create the subscription:
+
+* **`"ExcludeArchived"`**  
+  The subscription selects only non-archived documents.
+* **`"IncludeArchived"`**  
+  The subscription selects both archived and non-archived documents.  
+  e.g., for a process that handles every order, including archived orders.
+* **`"ArchivedOnly"`**  
+  The subscription selects only archived documents.  
+  e.g., for a process that copies archived orders to an external storage system.
+
+```js
+const subscriptionName = await documentStore.subscriptions.create({
+    // Send only archived documents to the worker
+    archivedDataProcessingBehavior: "ArchivedOnly",
+    documentType: Order
+});
+```
+
+<br />
+
+If you leave `archivedDataProcessingBehavior` unset, the subscription uses the handling set by the
+[Subscriptions.ArchivedDataProcessingBehavior](../../../data-subscriptions/configuration.mdx#subscriptionsarchiveddataprocessingbehavior) configuration key (`ExcludeArchived` by default).  
+The subscription keeps the key's value from the time the subscription is created, so a later change to the key
+does not affect existing subscriptions.
+
+<Admonition type="note" title="">
+* The [update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods) method does not change the subscription's handling of archived documents, even if you set
+  `archivedDataProcessingBehavior` in the update options object.  
+  To change an existing subscription's handling of archived documents, edit the subscription task in Studio's
+  [Ongoing Tasks view](../../../studio/database/tasks/ongoing-tasks/general-info.mdx#the-ongoing-tasks-list), and set the task's **Archived Data Processing Behavior** option.  
+  This option is described in [Creating a data subscription: Studio](../../../data-subscriptions/creating-subscription/creating-subscription_studio.mdx#defining-the-subscription-task).
+* A subscription to [document revisions](../../../data-subscriptions/revisions-support.mdx) **ignores** `archivedDataProcessingBehavior` and sends the revisions of archived and non-archived documents alike.
+</Admonition>
+
+To learn more about a subscription's handling of archived documents, see [Data archival: Archived documents and subscriptions](../../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions).
 
 </Panel>
 
@@ -711,6 +759,7 @@ update(options, database);
     changeVector;
     mentorNode;
     pinToMentorNode;
+    archivedDataProcessingBehavior;
     disabled;
     documentType;
 }
@@ -741,6 +790,7 @@ update(options, database);
 | **changeVector** | `string` | A change vector marking where the subscription starts processing. See [Starting point](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#starting-point). |
 | **mentorNode** | `string` | The tag of the node you want to handle the subscription. Useful when you prefer a specific server for its hardware, its proximity to clients, or other reasons. |
 | **pinToMentorNode** | `boolean` | `true` keeps the subscription on the node set in `mentorNode`, even while that node is down.<br />See [Responsible node](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#responsible-node). Default: `false`. |
+| **archivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior` | The subscription's handling of archived documents.<br />See [Archived documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#archived-documents). |
 | **disabled** | `boolean` | `true` creates the subscription disabled, so the subscription does not accept worker connections until you [enable it](../../../data-subscriptions/maintenance-operations.mdx#enabling-and-disabling-a-subscription).<br />Default: `false`. |
 | **documentType** | `object` | The document class whose collection the subscription draws from. |
 

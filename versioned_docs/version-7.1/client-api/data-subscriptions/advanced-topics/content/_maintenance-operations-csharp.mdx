@@ -198,6 +198,7 @@ usage:
 | **ChangeVectorForNextBatchStartingPoint** | `string`    | The Change Vector from which the subscription will begin sending documents.&lt;br.This value is updated on batch acknowledgement and can also be set manually. |
 | **Disabled**                              | `bool`      | If `true`, subscription will not allow workers to connect.                                                                                                    |
 | **LastClientConnectionTime**              | `DateTime?` | Time when last client was connected (value sustained after disconnection).                                                                                  |                
+| **ArchivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior?` | The subscription's handling of archived documents.<br/>See [Subscriptions.ArchivedDataProcessingBehavior](../../../../server/configuration/subscription-configuration.mdx#subscriptionsarchiveddataprocessingbehavior). |
 
 </Admonition>
 

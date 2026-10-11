@@ -61,7 +61,7 @@ in what they process, what the server-side query can see, and what reaches the w
   each item in the batch contains both the processed revision (`getResult().getCurrent()`) and its
   preceding revision (`getResult().getPrevious()`). For a document's first revision, `getPrevious()` is `null`.
 
-</ContentFrame>
+<br />
 
 <Admonition type="warning" title="">
 
@@ -71,7 +71,12 @@ in what they process, what the server-side query can see, and what reaches the w
 * A document that has no revisions is not processed, so make sure your revisions configuration does
   not purge revisions before the subscription has had a chance to process them.
 
+* A revisions subscription **ignores** the [processing behavior for archived documents](../../data-subscriptions/configuration.mdx#subscriptionsarchiveddataprocessingbehavior)
+  and selects the revisions of archived and non-archived documents alike.
+
 </Admonition>
+
+</ContentFrame>
 
 </Panel>
 

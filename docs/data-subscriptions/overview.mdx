@@ -147,25 +147,32 @@ resumes on its original node once that node is back online.
 You can set these options while creating a subscription:  
 
 * **Filtering**  
-  Send to the worker only the documents that match a condition, for example only orders shipped to a
-  specific country.  
+  Select only the documents that match a condition (e.g., orders shipped to a specific country).  
   [Filtering documents](../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-documents)  
 
 * **Projections**  
-  Send to the worker only selected fields, or computed values, instead of the full document.  
+  Instead of full documents, workers can receive only selected fields or computed values.  
   [Projecting fields](../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-and-projecting-fields)  
   [Projecting from a related document](../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-projecting-from-a-related-document)  
 
 * **Includes**  
-  Include related documents or counters alongside each item, so the worker has them without
-  issuing additional requests to the server.  
+  Related documents, counters, and time series can be included in the batches, so workers do not need to
+  request this data from the server.  
   [Including documents](../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-documents)  
   [Including counters](../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-counters)  
+  [Including time series](../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-time-series)  
 
 * **Revisions**  
-  Process consecutive pairs of document revisions instead of current documents, so the worker can
-  act on what changed between revisions.  
+  Subscribe to document revisions rather than to the documents themselves.  
+  Workers then receive each revision together with the revision that preceded it, and can act on the
+  changes between the two revisions.  
   [Revisions support](../data-subscriptions/revisions-support.mdx)  
+
+* **Archived documents**  
+  Subscriptions can send their workers only non-archived documents (the default),
+  both non-archived and [archived](../data-archival/overview.mdx) documents, or only archived documents
+  (e.g., to copy archived orders to an external storage system).  
+  [Archived documents](../data-subscriptions/creating-subscription/creating-subscription_api.mdx#archived-documents)  
 
 </Panel>
 

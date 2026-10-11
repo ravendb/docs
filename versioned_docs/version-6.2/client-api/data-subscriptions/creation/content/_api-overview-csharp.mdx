@@ -161,6 +161,13 @@ and adds two additional fields:
 | **Id**        | `long?` | The unique ID that was assigned to the subscription by the server at creation time.<br/>You can retrieve it by [getting the subscription status](../../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#getting-subscription-status).<br/>When updating, the `Id` can be used instead of the `Name` field, and takes precedence over it. |
 | **CreateNew** | `bool`  | Determines the behavior when the subscription you wish to update does Not exist.<br/>`true` - a new subscription is created with the provided option parameters.<br/>`false` - an exception will be thrown.<br/>Default: `false`                                                                                                                                                                                                                                            |
 
+<Admonition type="note" title="Archived documents">
+The `Update` method does not change the subscription's handling of [archived documents](../../../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions),
+even if you set `ArchivedDataProcessingBehavior` in the `SubscriptionUpdateOptions` object.  
+To change an existing subscription's handling of archived documents, edit the [subscription task](../../../../studio/database/tasks/ongoing-tasks/subscription-task.mdx)
+in Studio and set the task's **Archived Data Processing Behavior** option.
+</Admonition>
+
 
 
 ## Subscription query 
