@@ -164,7 +164,7 @@ The worker stops without reconnecting in these cases:
 * The subscription is in use by another worker, or another worker took it over
   (see [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)).  
 * The subscription was disabled, or the worker's connection was dropped
-  (see [Dropping a connection](../../data-subscriptions/maintenance-operations.mdx#dropping-a-connection)).  
+  (see [Dropping connections](../../data-subscriptions/maintenance-operations.mdx#dropping-connections)).  
 * The worker failed to connect for longer than `maxErroneousPeriod`.  
 * The subscription cannot run in its current state (e.g., a revisions subscription on a collection
   whose revisions are disabled).  

@@ -188,7 +188,7 @@ The worker stops without reconnecting in these cases:
 * The worker uses the `Concurrent` strategy on a sharded database, which does not support concurrent subscriptions
   (see [Unsupported features](../../sharding/subscriptions.mdx#unsupported-features)).  
 * The subscription was disabled, or the worker's connection was dropped
-  (see [Dropping a connection](../../data-subscriptions/maintenance-operations.mdx#dropping-a-connection)).  
+  (see [Dropping connections](../../data-subscriptions/maintenance-operations.mdx#dropping-connections)).  
 * The worker failed to connect for longer than `MaxErroneousPeriod`.  
 * The subscription cannot run in its current state (e.g., a revisions subscription on a collection
   whose revisions are disabled).  

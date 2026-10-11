@@ -13,7 +13,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * In this article:
    * [Deleting a subscription](../../data-subscriptions/maintenance-operations.mdx#deleting-a-subscription)
    * [Enabling and disabling a subscription](../../data-subscriptions/maintenance-operations.mdx#enabling-and-disabling-a-subscription)
-   * [Dropping a connection](../../data-subscriptions/maintenance-operations.mdx#dropping-a-connection)
+   * [Dropping connections](../../data-subscriptions/maintenance-operations.mdx#dropping-connections)
+      * [Dropping all connections](../../data-subscriptions/maintenance-operations.mdx#dropping-all-connections)
+      * [Dropping a specific worker's connection](../../data-subscriptions/maintenance-operations.mdx#dropping-a-specific-workers-connection)
    * [Listing subscriptions](../../data-subscriptions/maintenance-operations.mdx#listing-subscriptions)
    * [Getting a subscription state](../../data-subscriptions/maintenance-operations.mdx#getting-a-subscription-state)
    * [Updating a subscription](../../data-subscriptions/maintenance-operations.mdx#updating-a-subscription)
@@ -64,17 +66,25 @@ store.Subscriptions.Enable(subscriptionName);
 
 </Panel>
 
-<Panel heading="Dropping a connection">
+<Panel heading="Dropping connections">
+
+<ContentFrame>
+
+### Dropping all connections
 
 Drop a subscription's active connections using `DropConnection`, passing the subscription name.
 
 * Dropping a connection ends the worker's `Run` task, but leaves the subscription enabled.  
   Once dropped, the worker will not reconnect on its own.
 * To resume, [create a new worker](../../data-subscriptions/consuming-subscription.mdx#creating-a-subscription-worker) and run it.  
-  The new worker continues processing after the last batch the previous worker acknowledged.  
+  The new worker continues processing after the last batch the previous worker acknowledged.
+
+  <Admonition type="note" title="">
   If the connection was dropped before the previous worker acknowledged a batch, the server sends the batch again
   to the next worker that connects to the subscription, so the batch's documents may be processed more than once
   (see [At-least-once delivery](../../data-subscriptions/consuming-subscription.mdx#at-least-once-delivery)).
+  </Admonition>
+
 * To stop the subscription from accepting workers,
   [disable it](../../data-subscriptions/maintenance-operations.mdx#enabling-and-disabling-a-subscription).
 
@@ -91,10 +101,17 @@ Usage:
 store.Subscriptions.DropConnection(subscriptionName);
 ```
 
-<Admonition type="note" title="">
-To disconnect a specific concurrent worker, use `DropSubscriptionWorker`.  
-See [Concurrent subscriptions](../../data-subscriptions/concurrent-subscriptions.mdx#dropping-a-worker).
-</Admonition>
+</ContentFrame>
+
+<ContentFrame>
+
+### Dropping a specific worker's connection
+
+To drop the connection of a specific worker, rather than all the subscription's connections, pass the worker object to `DropSubscriptionWorker`.  
+This is useful with [concurrent subscriptions](../../data-subscriptions/concurrent-subscriptions.mdx#dropping-a-worker), where several workers are connected at the same time.  
+When the subscription runs in single-worker mode, only one worker is connected at a time, so dropping this worker's connection has the same effect as dropping all connections.
+
+</ContentFrame>
 
 </Panel>
 
